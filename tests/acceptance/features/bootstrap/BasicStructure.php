@@ -25,7 +25,8 @@ use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 
@@ -489,7 +490,23 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getOCSResponseStatusCode($response) {
-		return (string) $response->xml()->meta[0]->statuscode;
+		return (string) $this->getResponseXml($response)->meta[0]->statuscode;
+	}
+
+	/**
+	 * Parses the response as XML
+	 *
+	 * @param ResponseInterface $response
+	 *
+	 * @return SimpleXMLElement
+	 */
+	public function getResponseXml($response = null) {
+		if ($response === null) {
+			$response = $this->response;
+		}
+		// rewind just to make sure we can re-parse it in case it was parsed already...
+		$response->getBody()->rewind();
+		return new SimpleXMLElement($response->getBody()->getContents());
 	}
 
 	/**
@@ -501,7 +518,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getOCSResponseStatusMessage($response) {
-		return (string) $response->xml()->meta[0]->message;
+		return (string) $this->getResponseXml($response)->meta[0]->message;
 	}
 
 	/**
@@ -514,7 +531,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getXMLKey1Key2Value($response, $key1, $key2) {
-		return $response->xml()->$key1->$key2;
+		return $this->getResponseXml($response)->$key1->$key2;
 	}
 
 	/**
@@ -528,7 +545,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getXMLKey1Key2Key3Value($response, $key1, $key2, $key3) {
-		return $response->xml()->$key1->$key2->$key3;
+		return $this->getResponseXml($response)->$key1->$key2->$key3;
 	}
 
 	/**
@@ -545,7 +562,7 @@ trait BasicStructure {
 	public function getXMLKey1Key2Key3AttributeValue(
 		$response, $key1, $key2, $key3, $attribute
 	) {
-		return (string) $response->xml()->$key1->$key2->$key3->attributes()->$attribute;
+		return (string) $this->getResponseXml($response)->$key1->$key2->$key3->attributes()->$attribute;
 	}
 
 	/**
@@ -656,15 +673,16 @@ trait BasicStructure {
 
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-			$options['body'] = $fd;
+			$options['form_params'] = $fd;
 		}
 
 		try {
-			$request = $client->createRequest($verb, $fullUrl, $options);
+			$headers = [];
 			if (isset($this->requestToken)) {
-				$request->addHeader('requesttoken', $this->requestToken);
+				$headers['requesttoken'] = $this->requestToken;
 			}
-			$this->response = $client->send($request);
+			$request = new Request($verb, $fullUrl, $headers);
+			$this->response = $client->send($request, $options);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -821,7 +839,7 @@ trait BasicStructure {
 		$response = $client->post(
 			$loginUrl,
 			[
-				'body' => [
+				'form_params' => [
 					'user' => $user,
 					'password' => $password,
 					'requesttoken' => $this->requestToken,
@@ -843,16 +861,16 @@ trait BasicStructure {
 	 */
 	public function sendingAToWithRequesttoken($method, $url) {
 		$client = new Client();
-		$request = $client->createRequest(
+		$request = new Request(
 			$method,
 			$this->getBaseUrl() . $url,
-			[
-				'cookies' => $this->cookieJar,
-			]
+			['requesttoken' => $this->requestToken]
 		);
-		$request->addHeader('requesttoken', $this->requestToken);
+		$options = [
+				'cookies' => $this->cookieJar,
+		];
 		try {
-			$this->response = $client->send($request);
+			$this->response = $client->send($request, $options);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
@@ -869,15 +887,12 @@ trait BasicStructure {
 	 */
 	public function sendingAToWithoutRequesttoken($method, $url) {
 		$client = new Client();
-		$request = $client->createRequest(
-			$method,
-			$this->getBaseUrl() . $url,
-			[
-				'cookies' => $this->cookieJar,
-			]
-		);
+		$request = new Request($method, $this->getBaseUrl() . $url);
+		$options = [
+			'cookies' => $this->cookieJar,
+		];
 		try {
-			$this->response = $client->send($request);
+			$this->response = $client->send($request, $options);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
@@ -1016,7 +1031,7 @@ trait BasicStructure {
 		$options['auth'] = $this->getAuthOptionForUser('admin');
 		try {
 			$this->response = $client->send(
-				$client->createRequest('GET', $fullUrl, $options)
+				new Request('GET', $fullUrl), $options
 			);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
@@ -1243,6 +1258,6 @@ trait BasicStructure {
 		}
 
 		$options['auth'] = [$adminUsername, $adminPassword];
-		$client->send($client->createRequest('POST', $fullUrl, $options));
+		$client->send(new Request('POST', $fullUrl), $options);
 	}
 }

@@ -24,7 +24,8 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Psr7\Request;
 
 /**
  * CalDav functions
@@ -191,16 +192,17 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		$davUrl = $this->featureContext->getBaseUrl()
 			. '/remote.php/dav/calendars/' . $user . '/' . $name;
 
-		$request = $this->client->createRequest(
+		$options = [
+			'auth' => $this->featureContext->getAuthOptionForUser($user)
+		];
+		$request = new Request(
 			'MKCALENDAR',
 			$davUrl,
-			[
-				'body' => '<c:mkcalendar xmlns:c="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:a="http://apple.com/ns/ical/" xmlns:o="http://owncloud.org/ns"><d:set><d:prop><d:displayname>test</d:displayname><o:calendar-enabled>1</o:calendar-enabled><a:calendar-color>#21213D</a:calendar-color><c:supported-calendar-component-set><c:comp name="VEVENT"/></c:supported-calendar-component-set></d:prop></d:set></c:mkcalendar>',
-				'auth' => $this->featureContext->getAuthOptionForUser($user)
-			]
+			[],
+			'<c:mkcalendar xmlns:c="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:a="http://apple.com/ns/ical/" xmlns:o="http://owncloud.org/ns"><d:set><d:prop><d:displayname>test</d:displayname><o:calendar-enabled>1</o:calendar-enabled><a:calendar-color>#21213D</a:calendar-color><c:supported-calendar-component-set><c:comp name="VEVENT"/></c:supported-calendar-component-set></d:prop></d:set></c:mkcalendar>'
 		);
 
-		$this->response = $this->client->send($request);
+		$this->response = $this->client->send($request, $options);
 		$this->theCalDavHttpStatusCodeShouldBe(201);
 	}
 }

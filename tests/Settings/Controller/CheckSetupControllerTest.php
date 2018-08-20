@@ -29,11 +29,13 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDisplayResponse;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
+use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
+use Psr\Http\Message\ResponseInterface;
 use Test\TestCase;
 
 /**
@@ -63,28 +65,28 @@ class CheckSetupControllerTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->request = $this->getMockBuilder('\OCP\IRequest')
+		$this->request = $this->getMockBuilder(IRequest::class)
 			->disableOriginalConstructor()->getMock();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
+		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()->getMock();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
+		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()->getMock();
-		$this->clientService = $this->getMockBuilder('\OCP\Http\Client\IClientService')
+		$this->clientService = $this->getMockBuilder(IClientService::class)
 			->disableOriginalConstructor()->getMock();
-		$this->util = $this->getMockBuilder('\OC_Util')
+		$this->util = $this->getMockBuilder(\OC_Util::class)
 			->disableOriginalConstructor()->getMock();
-		$this->urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+		$this->urlGenerator = $this->getMockBuilder(IURLGenerator::class)
 			->disableOriginalConstructor()->getMock();
-		$this->l10n = $this->getMockBuilder('\OCP\IL10N')
+		$this->l10n = $this->getMockBuilder(IL10N::class)
 			->disableOriginalConstructor()->getMock();
 		$this->l10n->expects($this->any())
 			->method('t')
 			->will($this->returnCallback(function ($message, array $replace) {
 				return \vsprintf($message, $replace);
 			}));
-		$this->checker = $this->getMockBuilder('\OC\IntegrityCheck\Checker')
+		$this->checker = $this->getMockBuilder(Checker::class)
 				->disableOriginalConstructor()->getMock();
-		$this->checkSetupController = $this->getMockBuilder('\OC\Settings\Controller\CheckSetupController')
+		$this->checkSetupController = $this->getMockBuilder(CheckSetupController::class)
 			->setConstructorArgs([
 				'settings',
 				$this->request,
@@ -118,7 +120,7 @@ class CheckSetupControllerTest extends TestCase {
 			->with('has_internet_connection', true)
 			->will($this->returnValue(true));
 
-		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
+		$client = $this->getMockBuilder(IClient::class)
 			->disableOriginalConstructor()->getMock();
 		$client->expects($this->at(0))
 			->method('get')
@@ -145,7 +147,7 @@ class CheckSetupControllerTest extends TestCase {
 			->with('has_internet_connection', true)
 			->will($this->returnValue(true));
 
-		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
+		$client = $this->getMockBuilder(IClient::class)
 			->disableOriginalConstructor()->getMock();
 		$client->expects($this->at(0))
 			->method('get')
@@ -170,7 +172,7 @@ class CheckSetupControllerTest extends TestCase {
 			->with('has_internet_connection', true)
 			->will($this->returnValue(true));
 
-		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
+		$client = $this->getMockBuilder(IClient::class)
 			->disableOriginalConstructor()->getMock();
 		$client->expects($this->at(0))
 			->method('get')
@@ -305,7 +307,7 @@ class CheckSetupControllerTest extends TestCase {
 			->method('getRemoteAddress')
 			->willReturn('4.3.2.1');
 
-		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
+		$client = $this->getMockBuilder(IClient::class)
 			->disableOriginalConstructor()->getMock();
 		$client->expects($this->at(0))
 			->method('get')
@@ -359,7 +361,7 @@ class CheckSetupControllerTest extends TestCase {
 	}
 
 	public function testGetCurlVersion() {
-		$checkSetupController = $this->getMockBuilder('\OC\Settings\Controller\CheckSetupController')
+		$checkSetupController = $this->getMockBuilder(CheckSetupController::class)
 			->setConstructorArgs([
 				'settings',
 				$this->request,
@@ -449,12 +451,12 @@ class CheckSetupControllerTest extends TestCase {
 			->expects($this->once())
 			->method('getCurlVersion')
 			->will($this->returnValue(['ssl_version' => 'NSS/1.0.2b']));
-		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
+		$client = $this->getMockBuilder(IClient::class)
 			->disableOriginalConstructor()->getMock();
 		/** @var ClientException | \PHPUnit_Framework_MockObject_MockObject $exception */
-		$exception = $this->getMockBuilder('\GuzzleHttp\Exception\ClientException')
+		$exception = $this->getMockBuilder(ClientException::class)
 			->disableOriginalConstructor()->getMock();
-		$response = $this->getMockBuilder('\GuzzleHttp\Message\ResponseInterface')
+		$response = $this->getMockBuilder(ResponseInterface::class)
 			->disableOriginalConstructor()->getMock();
 		$response->expects($this->once())
 			->method('getStatusCode')
@@ -483,12 +485,12 @@ class CheckSetupControllerTest extends TestCase {
 			->expects($this->once())
 			->method('getCurlVersion')
 			->will($this->returnValue(['ssl_version' => 'NSS/1.0.2b']));
-		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
+		$client = $this->getMockBuilder(IClient::class)
 			->disableOriginalConstructor()->getMock();
 		/** @var ClientException | \PHPUnit_Framework_MockObject_MockObject $exception */
-		$exception = $this->getMockBuilder('\GuzzleHttp\Exception\ClientException')
+		$exception = $this->getMockBuilder(ClientException::class)
 			->disableOriginalConstructor()->getMock();
-		$response = $this->getMockBuilder('\GuzzleHttp\Message\ResponseInterface')
+		$response = $this->getMockBuilder(ResponseInterface::class)
 			->disableOriginalConstructor()->getMock();
 		$response->expects($this->once())
 			->method('getStatusCode')
