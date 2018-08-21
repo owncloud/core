@@ -775,21 +775,16 @@ class Encryption extends Wrapper {
 			}
 		} else {
 			try {
-				$source = $sourceStorage->fopen($sourceInternalPath, 'r');
+				$source = $sourceStorage->readFile($sourceInternalPath);
 				if ($isRename && (\count($mount) === 1)) {
 					$sourceStorageMountPoint = $mount[0]->getMountPoint();
 					$this->sourcePath[$targetInternalPath] = $sourceStorageMountPoint . '/' . $sourceInternalPath;
 				} else {
 					unset($this->sourcePath[$targetInternalPath]);
 				}
-				$target = $this->fopen($targetInternalPath, 'w');
-				list(, $result) = \OC_Helper::streamCopy($source, $target);
-				\fclose($source);
-				\fclose($target);
+				$result = $this->writeFile($targetInternalPath, $source);
 			} catch (\Exception $e) {
 				Encryption::setDisableWriteEncryption(false);
-				\fclose($source);
-				\fclose($target);
 				throw $e;
 			}
 			if ($result) {
