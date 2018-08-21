@@ -712,15 +712,14 @@ class OwncloudPage extends Page {
 	 */
 	public function quotedText($text) {
 		if (\strstr($text, "'") === false) {
-			return "'" . $text . "'";
+			return "'$text'";
 		} elseif (\strstr($text, '"') === false) {
 			return '"' . $text . '"';
 		} else {
 			// The text contains both single and double quotes.
 			// With current xpath v1 there is no way to encode that.
 			throw new \InvalidArgumentException(
-				"mixing both single and double quotes is unsupported - '"
-				. $text . "'"
+				"mixing both single and double quotes is unsupported - '$text'"
 			);
 		}
 	}

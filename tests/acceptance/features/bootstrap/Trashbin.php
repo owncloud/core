@@ -63,7 +63,7 @@ trait Trashbin {
 		$this->sendingToWithDirectUrl(
 			$user,
 			'GET',
-			'/index.php/apps/files_trashbin/ajax/list.php' . $params,
+			"/index.php/apps/files_trashbin/ajax/list.php$params",
 			null
 		);
 		$this->theHTTPStatusCodeShouldBe('200');
@@ -97,7 +97,7 @@ trait Trashbin {
 
 		$subdir = \trim(\dirname($sections[1]), '/');
 		if ($subdir !== '' && $subdir !== '.') {
-			$subdir = $firstEntry . '/' . $subdir;
+			$subdir = "$firstEntry/$subdir";
 		} else {
 			$subdir = $firstEntry;
 		}

@@ -253,9 +253,7 @@ trait Tags {
 		PHPUnit_Framework_Assert::assertEquals(
 			$tagData['{http://owncloud.org/ns}groups'],
 			$groups,
-			'Tag has groups "'
-			. $tagData['{http://owncloud.org/ns}groups']
-			. '" instead of the expected "' . $groups . '"'
+			"Tag has groups '{$tagData['{http://owncloud.org/ns}groups']}' instead of the expected '$groups'"
 		);
 	}
 
@@ -516,7 +514,7 @@ trait Tags {
 	private function untag($untaggingUser, $tagName, $fileName, $fileOwner) {
 		$fileID = $this->getFileIdForPath($fileOwner, $fileName);
 		$tagID = $this->findTagIdByName($tagName);
-		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
+		$path = "/systemtags-relations/files/$fileID/$tagID";
 		try {
 			$this->response = $this->makeDavRequest(
 				$untaggingUser,

@@ -116,8 +116,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 			if ($permissionsCheckbox === null) {
 				throw new ElementNotFoundException(
 					__METHOD__ .
-					" findField($permissions)" .
-					" could not find the permission checkbox"
+					" findField($permissions) could not find the permission checkbox"
 				);
 			}
 			$permissionsCheckbox->click();
@@ -162,8 +161,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->expirationDateInputXpath" .
-				" could not find input field for the expiration date" .
-				" of the public link"
+				" could not find input field for the expiration date of the public link"
 			);
 		}
 		$expirationDateInput->setValue($date);

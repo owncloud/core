@@ -71,8 +71,8 @@ class Notification extends OwncloudPage {
 		);
 		if ($link === null) {
 			throw new ElementNotFoundException(
-				__METHOD__ . " could not find notification link " .
-				"with xpath " . $this->notificationLinkXpath
+				__METHOD__ .
+				" could not find notification link with xpath $this->notificationLinkXpath"
 			);
 		}
 		$destination = $link->getAttribute('href');
@@ -102,8 +102,7 @@ class Notification extends OwncloudPage {
 		if ($button === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath " . $buttonXpath .
-				" could not find button with the given text"
+				" xpath $buttonXpath could not find button with the given text"
 			);
 		}
 		$button->click();

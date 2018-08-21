@@ -117,8 +117,7 @@ class SharedWithYouPage extends FilesPageBasic {
 			if (\is_array($name)) {
 				$name = \implode($name);
 			}
-			$message = "INFORMATION: retried to decline file '" . $name . "' " .
-				$counter . " times";
+			$message = "INFORMATION: retried to decline file '$name' $counter times";
 			echo $message;
 			\error_log($message);
 		}

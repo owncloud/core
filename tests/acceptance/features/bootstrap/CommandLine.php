@@ -161,8 +161,7 @@ trait CommandLine {
 	public function theCommandShouldHaveBeenSuccessful() {
 		$exceptions = $this->findExceptions();
 		if ($this->lastCode !== 0) {
-			$msg = 'The command was not successful, exit code was '
-				. $this->lastCode . '.';
+			$msg = "The command was not successful, exit code was $this->lastCode.";
 			if (!empty($exceptions)) {
 				$msg .= ' Exceptions: ' . \implode(', ', $exceptions);
 			}
@@ -185,8 +184,8 @@ trait CommandLine {
 	public function theCommandFailedWithExitCode($exitCode) {
 		if ($this->lastCode !== (int)$exitCode) {
 			throw new \Exception(
-				'The command was expected to fail with exit code '
-				. $exitCode . ' but got ' . $this->lastCode
+				"The command was expected to fail with exit code $exitCode but got "
+				. $this->lastCode
 			);
 		}
 	}
@@ -207,8 +206,7 @@ trait CommandLine {
 
 		if (!\in_array($exceptionText, $exceptions)) {
 			throw new \Exception(
-				'The command did not throw any exception with the text "'
-				. $exceptionText . '"'
+				"The command did not throw any exception with the text '$exceptionText'"
 			);
 		}
 	}
@@ -225,8 +223,7 @@ trait CommandLine {
 		$lines = $this->findLines($this->lastStdOut, $text);
 		if (empty($lines)) {
 			throw new \Exception(
-				'The command did not output the expected text on stdout "'
-				. $text . '"'
+				"The command did not output the expected text on stdout '$text'"
 			);
 		}
 	}
@@ -243,8 +240,7 @@ trait CommandLine {
 		$lines = $this->findLines($this->lastStdErr, $text);
 		if (empty($lines)) {
 			throw new \Exception(
-				'The command did not output the expected text on stderr "'
-				. $text . '"'
+				"The command did not output the expected text on stderr '$text'"
 			);
 		}
 	}
@@ -322,7 +318,7 @@ trait CommandLine {
 	 * @return void
 	 */
 	public function transferringOwnershipPath($path, $user1, $user2) {
-		$path = '--path=' . $path;
+		$path = "--path=$path";
 		if ($this->runOcc(['files:transfer-ownership', $path, $user1, $user2]) === 0) {
 			$this->lastTransferPath
 				= $this->findLastTransferFolderForUser($user1, $user2);

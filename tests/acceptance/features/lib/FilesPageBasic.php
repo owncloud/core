@@ -122,7 +122,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$previousFileCount = 0;
 		$currentFileCount = null;
 		$spaceLeftTillBottom = 0;
-		$this->scrollToPosition('#' . $this->appContentId, 0, $session);
+		$this->scrollToPosition("#$this->appContentId", 0, $session);
 
 		if (\is_array($name)) {
 			if (\count($name) === 1) {
@@ -209,7 +209,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 		if (\count($fileNameMatch) === 0) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" could not find file with the name '" . $name . "'"
+				" could not find file with the name '$name'"
 			);
 		}
 
@@ -246,7 +246,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function scrollDownAppContent(Session $session) {
 		$this->scrollToPosition(
-			'#' . $this->appContentId,
+			"#$this->appContentId",
 			'$("#' . $this->appContentId . '").scrollTop() + $("#' .
 			$this->appContentId . '").height() - $("#' .
 			$this->controlsId . '").height()',
@@ -338,8 +338,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 			if (\is_array($name)) {
 				$name = \implode($name);
 			}
-			$message = "INFORMATION: retried to delete file '" . $name . "' " .
-					   $counter . " times";
+			$message = "INFORMATION: retried to delete file '$name' $counter times";
 			echo $message;
 			\error_log($message);
 		}
