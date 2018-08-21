@@ -39,7 +39,6 @@ class SharingBlacklist {
 
 	public function __construct(IConfig $config) {
 		$this->config = $config;
-		$this->initCache();
 	}
 
 	/**
@@ -48,6 +47,7 @@ class SharingBlacklist {
 	 * @return bool true if the group is blacklisted, false otherwise
 	 */
 	public function isGroupBlacklisted(IGroup $group) {
+		$this->initCache();
 		return (isset($this->blacklistCache['receivers']['ids'][$group->getGID()]));
 	}
 
