@@ -2306,14 +2306,25 @@ class UsersControllerTest extends \Test\TestCase {
 	public function testDifferentLoggedUserAndRequestUser() {
 		$token = 'AVerySecretToken';
 		$userId = 'ExistingUser';
+		$differentUserId = 'ExistingUser2';
 		$mailAddress = 'sample@email.com';
-		$userObject = $this->getMockBuilder('OCP\IUser')
+		$userObject = $this->getMockBuilder(IUser::class)
 			->disableOriginalConstructor()->getMock();
-		$diffUserObject = $this->getMockBuilder('OCP\IUser')
+		$userObject
+			->expects($this->atLeastOnce())
+			->method('getUID')
+			->willReturn($userId);
+
+		$diffUserObject = $this->getMockBuilder(IUser::class)
 			->disableOriginalConstructor()->getMock();
 
+		$diffUserObject
+			->expects($this->atLeastOnce())
+			->method('getUID')
+			->willReturn($differentUserId);
+			
 		$this->container['UserManager']
-			->expects($this->once())
+			->expects($this->atLeastOnce())
 			->method('get')
 			->with($userId)
 			->will($this->returnValue($userObject));

@@ -823,7 +823,7 @@ class UsersController extends Controller {
 		$user = $this->userManager->get($userId);
 		$sessionUser = $this->userSession->getUser();
 
-		if ($user !== $sessionUser) {
+		if ($user->getUID() !== $sessionUser->getUID()) {
 			$this->log->error("The logged in user is different than expected.", ['app' => 'settings']);
 			return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error']));
 		}
