@@ -39,9 +39,11 @@ use OC\User\NoUserException;
 use OCP\Constants;
 use OCP\Files\Cache\ICacheEntry;
 use OCP\Files\NotFoundException;
+use OCP\Files\NotPermittedException;
 use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\Persistent\ILock;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Convert target path to source path and pass the function call to the correct storage provider
@@ -475,5 +477,37 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 
 	public function unlockNodePersistent(string $internalPath, array $lockInfo) {
 		parent::unlockNodePersistent($this->getSourcePath($internalPath), $lockInfo);
+	}
+
+	public function readFile(string $path, array $options = []): StreamInterface {
+		if (!$this->file_exists($path)) {
+			throw new NotFoundException();
+		}
+
+		return parent::readFile($path, $options);
+	}
+
+	public function writeFile(string $path, StreamInterface $stream): int {
+		$creatable = $this->isCreatable($path);
+		$updatable = $this->isUpdatable($path);
+		// if neither permissions given, no need to continue
+		if (!$creatable && !$updatable) {
+			throw new NotPermittedException();
+		}
+
+		$exists = $this->file_exists($path);
+		// if a file exists, updatable permissions are required
+		if ($exists && !$updatable) {
+			throw new NotPermittedException();
+		}
+
+		// part file is allowed if !$creatable but the final file is $updatable
+		if (\pathinfo($path, PATHINFO_EXTENSION) !== 'part') {
+			if (!$exists && !$creatable) {
+				throw new NotPermittedException();
+			}
+		}
+
+		return parent::writeFile($path, $stream);
 	}
 }

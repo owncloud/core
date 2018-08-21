@@ -669,53 +669,62 @@ class View {
 	 */
 	public function file_put_contents($path, $data) {
 		return $this->emittingCall(function () use (&$path, &$data) {
-			if (\is_resource($data)) { //not having to deal with streams in file_put_contents makes life easier
-				$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
-				if (Filesystem::isValidPath($path)
-					and !Filesystem::isForbiddenFileOrDir($path)
-				) {
-					$path = $this->getRelativePath($absolutePath);
+			$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
+			if (Filesystem::isValidPath($path)
+				and !Filesystem::isForbiddenFileOrDir($path)
+			) {
+				$path = $this->getRelativePath($absolutePath);
 
-					$this->lockFile($path, ILockingProvider::LOCK_SHARED);
+				$this->lockFile($path, ILockingProvider::LOCK_SHARED);
 
-					$exists = $this->file_exists($path);
-					$run = true;
-					if ($this->shouldEmitHooks($path)) {
-						$this->emit_file_hooks_pre($exists, $path, $run);
-					}
-					if (!$run) {
-						$this->unlockFile($path, ILockingProvider::LOCK_SHARED);
-						return false;
-					}
+				$exists = $this->file_exists($path);
+				$run = true;
+				if ($this->shouldEmitHooks($path)) {
+					$this->emit_file_hooks_pre($exists, $path, $run);
+				}
+				if (!$run) {
+					$this->unlockFile($path, ILockingProvider::LOCK_SHARED);
+					return false;
+				}
 
-					$this->changeLock($path, ILockingProvider::LOCK_EXCLUSIVE);
+				$this->changeLock($path, ILockingProvider::LOCK_EXCLUSIVE);
+				$hasExclusiveLock = true;
 
-					/** @var \OC\Files\Storage\Storage $storage */
-					list($storage, $internalPath) = $this->resolvePath($path);
-					$result = $storage->writeFile($internalPath, stream_for($data)) >= 0;
+				/** @var \OC\Files\Storage\Storage $storage */
+				list($storage, $internalPath) = $this->resolvePath($path);
+				try {
+					$result = $storage->writeFile($internalPath, stream_for($data));
 					if (\is_resource($data)) {
 						\fclose($data);
 					}
 
 					$this->writeUpdate($storage, $internalPath);
-
 					$this->changeLock($path, ILockingProvider::LOCK_SHARED);
+					$hasExclusiveLock = false;
 
 					if ($this->shouldEmitHooks($path) && $result !== false) {
 						$this->emit_file_hooks_post($exists, $path);
 					}
+				} finally {
+					if ($hasExclusiveLock) {
+						$this->changeLock($path, ILockingProvider::LOCK_SHARED);
+					}
 					$this->unlockFile($path, ILockingProvider::LOCK_SHARED);
-					return $result;
-				} else {
-					return false;
 				}
-			} else {
-				$hooks = ($this->file_exists($path)) ? ['update', 'write'] : ['create', 'write'];
-				return $this->basicOperation('file_put_contents', $path, $hooks, $data);
+
+				return $result;
 			}
+
+			return false;
 		}, ['before' => ['path' => $this->getAbsolutePath($path)], 'after' => ['path' => $this->getAbsolutePath($path)]], 'file', 'update');
 	}
 
+	/**
+	 * @param string $path
+	 * @param StreamInterface $stream
+	 * @return int
+	 * @throws \Exception
+	 */
 	public function writeFile(string $path, StreamInterface $stream): int {
 		return $this->file_put_contents($path, $stream->detach());
 	}

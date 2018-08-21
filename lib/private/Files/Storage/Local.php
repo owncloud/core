@@ -38,6 +38,7 @@ namespace OC\Files\Storage;
 
 use function GuzzleHttp\Psr7\stream_for;
 use OCP\Files\ForbiddenException;
+use OCP\Files\IOException;
 use OCP\Files\Storage\IStorage;
 use Psr\Http\Message\StreamInterface;
 
@@ -488,8 +489,11 @@ class Local extends Common {
 	 */
 	public function writeFile(string $path, StreamInterface $stream): int {
 		$data = $stream->getContents();
-		\file_put_contents($this->getSourcePath($path), $data);
+		$result = \file_put_contents($this->getSourcePath($path), $data);
+		if ($result === false) {
+			throw new IOException("Writing to $path failed");
+		}
 
-		return \strlen($data);
+		return $result;
 	}
 }

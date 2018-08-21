@@ -28,9 +28,11 @@
 
 namespace OCA\Files_Sharing\Tests;
 
+use function GuzzleHttp\Psr7\stream_for;
 use OC\Files\View;
 use OCA\Files_Sharing\SharedStorage;
 use OCP\Files\NotFoundException;
+use OCP\Files\NotPermittedException;
 use OCP\Share\IShare;
 
 /**
@@ -137,7 +139,7 @@ class SharedStorageTest extends TestCase {
 		// create part file
 		$result = $user2View->file_put_contents($this->folder . '/foo.txt.part', 'some test data');
 
-		$this->assertInternalType('int', $result);
+		$this->assertEquals(14, $result);
 		// rename part file to real file
 		$result = $user2View->rename($this->folder . '/foo.txt.part', $this->folder . '/foo.txt');
 
@@ -231,12 +233,10 @@ class SharedStorageTest extends TestCase {
 		$user2View = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2 . '/files');
 
 		// part file should be forbidden
-		$handle = $user2View->fopen($this->folder . '/test.txt.part', 'w');
-		$this->assertFalse($handle);
+		$this->assertWritingIsNotAllowed($user2View, $this->folder . '/test.txt.part');
 
 		// regular file forbidden
-		$handle = $user2View->fopen($this->folder . '/test.txt', 'w');
-		$this->assertFalse($handle);
+		$this->assertWritingIsNotAllowed($user2View, $this->folder . '/test.txt');
 
 		// rename forbidden
 		$this->assertFalse($user2View->rename($this->folder . '/existing.txt', $this->folder . '/existing2.txt'));
@@ -264,14 +264,12 @@ class SharedStorageTest extends TestCase {
 		$user2View = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2 . '/files');
 
 		// create part file allowed
-		$handle = $user2View->fopen($this->folder . '/test.txt.part', 'w');
-		$this->assertNotFalse($handle);
-		\fclose($handle);
+		$bytesWritten = $user2View->writeFile($this->folder . '/test.txt.part', stream_for('test'));
+		$this->assertEquals(4, $bytesWritten);
 
 		// create regular file allowed
-		$handle = $user2View->fopen($this->folder . '/test-create.txt', 'w');
-		$this->assertNotFalse($handle);
-		\fclose($handle);
+		$bytesWritten = $user2View->writeFile($this->folder . '/test-create.txt', stream_for('testtest'));
+		$this->assertEquals(8, $bytesWritten);
 
 		// rename file never allowed
 		$this->assertFalse($user2View->rename($this->folder . '/test-create.txt', $this->folder . '/newtarget.txt'));
@@ -281,8 +279,7 @@ class SharedStorageTest extends TestCase {
 		$this->assertFalse($user2View->rename($this->folder . '/newtarget.txt', $this->folder . '/existing.txt'));
 
 		// overwriting file not allowed
-		$handle = $user2View->fopen($this->folder . '/existing.txt', 'w');
-		$this->assertFalse($handle);
+		$this->assertWritingIsNotAllowed($user2View, $this->folder . '/existing.txt');
 
 		// overwrite forbidden (no update permission)
 		$this->assertFalse($user2View->rename($this->folder . '/test.txt.part', $this->folder . '/existing.txt'));
@@ -309,13 +306,11 @@ class SharedStorageTest extends TestCase {
 		$user2View = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2 . '/files');
 
 		// create part file allowed
-		$handle = $user2View->fopen($this->folder . '/test.txt.part', 'w');
-		$this->assertNotFalse($handle);
-		\fclose($handle);
+		$bytesWritten = $user2View->writeFile($this->folder . '/test.txt.part', stream_for('test'));
+		$this->assertEquals(4, $bytesWritten);
 
 		// create regular file not allowed
-		$handle = $user2View->fopen($this->folder . '/test-create.txt', 'w');
-		$this->assertFalse($handle);
+		$this->assertWritingIsNotAllowed($user2View, $this->folder . '/test-create.txt');
 
 		// rename part file not allowed to non-existing file
 		$this->assertFalse($user2View->rename($this->folder . '/test.txt.part', $this->folder . '/nonexist.txt'));
@@ -329,9 +324,8 @@ class SharedStorageTest extends TestCase {
 		$this->assertTrue($user2View->file_exists($this->folder . '/existing-renamed.txt'));
 
 		// overwriting file directly is allowed
-		$handle = $user2View->fopen($this->folder . '/existing-renamed.txt', 'w');
-		$this->assertNotFalse($handle);
-		\fclose($handle);
+		$bytesWritten = $user2View->writeFile($this->folder . '/existing-renamed.txt', stream_for('test'));
+		$this->assertEquals(4, $bytesWritten);
 
 		// delete forbidden
 		$this->assertFalse($user2View->unlink($this->folder . '/existing-renamed.txt'));
@@ -355,12 +349,10 @@ class SharedStorageTest extends TestCase {
 		$user2View = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2 . '/files');
 
 		// part file should be forbidden
-		$handle = $user2View->fopen($this->folder . '/test.txt.part', 'w');
-		$this->assertFalse($handle);
+		$this->assertWritingIsNotAllowed($user2View, $this->folder . '/test.txt.part');
 
 		// regular file forbidden
-		$handle = $user2View->fopen($this->folder . '/test.txt', 'w');
-		$this->assertFalse($handle);
+		$this->assertWritingIsNotAllowed($user2View, $this->folder . '/test.txt');
 
 		// rename forbidden
 		$this->assertFalse($user2View->rename($this->folder . '/existing.txt', $this->folder . '/existing2.txt'));
@@ -590,5 +582,19 @@ class SharedStorageTest extends TestCase {
 		// trigger init
 		$this->assertInstanceOf(\OC\Files\Cache\FailedCache::class, $storage->getCache());
 		$this->assertInstanceOf(\OC\Files\Storage\FailedStorage::class, $storage->getSourceStorage());
+	}
+
+	/**
+	 * @param View $view
+	 * @param string $path
+	 * @throws \Exception
+	 */
+	private function assertWritingIsNotAllowed(View $view, string $path): void {
+		try {
+			$view->writeFile($path, stream_for('not allowed'));
+			$this->assertTrue(false, 'An exception is expected');
+		} catch (NotPermittedException $ex) {
+			// this exception is expected
+		}
 	}
 }

@@ -36,6 +36,8 @@ use OCP\Files\Cache\IScanner;
 use OCP\Files\Cache\IUpdater;
 use OCP\Files\Cache\IWatcher;
 use OCP\Files\InvalidPathException;
+use OCP\Files\IOException;
+use OCP\Files\NotPermittedException;
 use OCP\Files\StorageNotAvailableException;
 use Psr\Http\Message\StreamInterface;
 
@@ -512,6 +514,7 @@ interface IStorage {
 	 * @param string $path
 	 * @param array $options
 	 * @return StreamInterface
+	 * @throws NotPermittedException
 	 * @since 11.0.0
 	 */
 	public function readFile(string $path, array $options = []) : StreamInterface;
@@ -520,6 +523,8 @@ interface IStorage {
 	 * @param string $path
 	 * @param StreamInterface $stream
 	 * @return int
+	 * @throws NotPermittedException
+	 * @throws IOException
 	 * @since 11.0.0
 	 */
 	public function writeFile(string $path, StreamInterface $stream) : int;
