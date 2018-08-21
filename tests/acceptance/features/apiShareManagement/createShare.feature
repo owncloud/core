@@ -4,6 +4,7 @@ Feature: sharing
 		Given using old DAV path
 		And user "user0" has been created
 
+	@skipOnEncryptionType:user-keys @issue-32322
 	Scenario Outline: Creating a new share with user
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
