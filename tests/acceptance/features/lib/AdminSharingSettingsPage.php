@@ -74,7 +74,7 @@ class AdminSharingSettingsPage extends OwncloudPage {
 		if ($checkbox === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" Xpath $checkboxXpath " .
+				" xpath $checkboxXpath " .
 				"could not find label for checkbox"
 			);
 		}
@@ -95,7 +95,7 @@ class AdminSharingSettingsPage extends OwncloudPage {
 			}
 		} else {
 			throw new \Exception(
-				__METHOD__ . " invalid action: " . $action
+				__METHOD__ . " invalid action: $action"
 			);
 		}
 	}

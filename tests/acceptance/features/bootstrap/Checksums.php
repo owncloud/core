@@ -155,7 +155,7 @@ trait Checksums {
 
 		if ($status !== 'HTTP/1.1 404 Not Found') {
 			throw new \Exception(
-				"Expected 'HTTP/1.1 404 Not Found', got " . $status
+				"Expected 'HTTP/1.1 404 Not Found', got $status"
 			);
 		}
 	}
@@ -194,7 +194,7 @@ trait Checksums {
 		try {
 			$num -= 1;
 			$data = \GuzzleHttp\Stream\Stream::factory($data);
-			$file = $destination . '-chunking-42-' . $total . '-' . $num;
+			$file = "$destination-chunking-42-$total-$num";
 			$this->response = $this->makeDavRequest(
 				$user,
 				'PUT',

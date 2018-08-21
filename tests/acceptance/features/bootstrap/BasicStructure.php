@@ -776,7 +776,7 @@ trait BasicStructure {
 		);
 		PHPUnit_Framework_Assert::assertTrue(
 			\version_compare($value, '0.0.1') >= 0,
-			'attribute ' . $attribute . ' value ' . $value . ' is not a valid version string'
+			"attribute $attribute value $value is not a valid version string"
 		);
 	}
 
@@ -890,8 +890,8 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public static function removeFile($path, $filename) {
-		if (\file_exists("$path" . "$filename")) {
-			\unlink("$path" . "$filename");
+		if (\file_exists("$path$filename")) {
+			\unlink("$path$filename");
 		}
 	}
 
@@ -902,7 +902,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function createFileSpecificSize($name, $size) {
-		$file = \fopen("work/" . "$name", 'w');
+		$file = \fopen("work/$name", 'w');
 		\fseek($file, $size - 1, SEEK_CUR);
 		\fwrite($file, 'a'); // write a dummy char at SIZE position
 		\fclose($file);
@@ -915,7 +915,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function createFileWithText($name, $text) {
-		$file = \fopen("work/" . "$name", 'w');
+		$file = \fopen("work/$name", 'w');
 		\fwrite($file, $text);
 		\fclose($file);
 	}

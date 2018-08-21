@@ -93,7 +93,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 */
 	public function userRequestsCalendarUsingTheAPI($user, $calendar) {
 		$davUrl = $this->featureContext->getBaseUrl()
-			. '/remote.php/dav/calendars/' . $calendar;
+			. "/remote.php/dav/calendars/$calendar";
 
 		try {
 			$this->response = $this->client->get(
@@ -189,7 +189,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 */
 	public function userHasCreatedACalendarNamed($user, $name) {
 		$davUrl = $this->featureContext->getBaseUrl()
-			. '/remote.php/dav/calendars/' . $user . '/' . $name;
+			. "/remote.php/dav/calendars/$user/$name";
 
 		$request = $this->client->createRequest(
 			'MKCALENDAR',

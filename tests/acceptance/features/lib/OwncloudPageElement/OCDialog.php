@@ -138,13 +138,12 @@ class OCDialog extends OwncloudPage {
 	 * @return void
 	 */
 	public function clickButton(Session $session, $label) {
-		$button = $this->dialogElement->find(
-			"xpath", \sprintf($this->buttonByLabelXpath, $label)
-		);
+		$xpathToFind = \sprintf($this->buttonByLabelXpath, $label);
+		$button = $this->dialogElement->find("xpath", $xpathToFind);
 		if ($button === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath " . \sprintf($this->buttonByLabelXpath, $label) .
+				" xpath $xpathToFind" .
 				" could not find button with the given label"
 			);
 		}

@@ -296,7 +296,7 @@ class FilesPage extends FilesPageBasic {
 			}
 		}
 		if ($counter > 0) {
-			$message = "INFORMATION: retried to rename file " . $counter . " times";
+			$message = "INFORMATION: retried to rename file $counter times";
 			echo $message;
 			\error_log($message);
 		}
@@ -337,7 +337,7 @@ class FilesPage extends FilesPageBasic {
 		}
 		if ($retryCounter > 0) {
 			$message
-				= "INFORMATION: retried to move file " . $retryCounter . " times";
+				= "INFORMATION: retried to move file $retryCounter times";
 			echo $message;
 			\error_log($message);
 		}
@@ -408,11 +408,11 @@ class FilesPage extends FilesPageBasic {
 		$fileId, $folderName = '/', $detailsTab = null
 	) {
 		$url = \rtrim($this->getUrl(), '/');
-		$fullUrl = $url . '/?dir=' . $folderName . '&fileid=' . $fileId;
+		$fullUrl = "$url/?dir=$folderName&fileid=$fileId";
 
 		if ($detailsTab !== null) {
 			$detailsDialog = $this->getDetailsDialog();
-			$fullUrl = $fullUrl . '&details=' . $detailsDialog->getDetailsTabId($detailsTab);
+			$fullUrl = "$fullUrl&details=" . $detailsDialog->getDetailsTabId($detailsTab);
 		}
 
 		$this->getDriver()->visit($fullUrl);

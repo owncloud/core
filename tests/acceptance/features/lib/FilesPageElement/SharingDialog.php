@@ -201,7 +201,7 @@ class SharingDialog extends OwncloudPage {
 			}
 		}
 		if ($retryCounter > 0 && $quiet === false) {
-			$message = "INFORMATION: retried to share file " . $retryCounter . " times";
+			$message = "INFORMATION: retried to share file $retryCounter times";
 			echo $message;
 			\error_log($message);
 		}
@@ -397,7 +397,7 @@ class SharingDialog extends OwncloudPage {
 	public function getSharedWithGroupAndSharerName() {
 		if ($this->sharedWithGroupAndSharerName === null) {
 			$text = $this->getTrimmedText($this->findSharerInformationItem());
-			if (\preg_match("/" . $this->sharedWithAndByRegEx . "/", $text, $matches)) {
+			if (\preg_match("/$this->sharedWithAndByRegEx/", $text, $matches)) {
 				$this->sharedWithGroupAndSharerName = [
 					"sharedWithGroup" => $matches [1],
 					"sharer" => $matches [2]

@@ -66,7 +66,7 @@ class ShareesContext implements Context {
 		if ($body instanceof TableNode) {
 			$parameters = [];
 			foreach ($body->getRowsHash() as $key => $value) {
-				$parameters[] = $key . '=' . $value;
+				$parameters[] = "$key=$value";
 			}
 			if (!empty($parameters)) {
 				$url .= '?' . \implode('&', $parameters);

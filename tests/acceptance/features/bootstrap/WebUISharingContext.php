@@ -497,7 +497,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		PHPUnit_Framework_Assert::assertContains(
 			$userOrGroupName,
 			$autocompleteItems,
-			"'" . $userOrGroupName . "' not in autocomplete list"
+			"'$userOrGroupName' not in autocomplete list"
 		);
 	}
 
@@ -552,7 +552,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 					PHPUnit_Framework_Assert::assertContains(
 						$displayName,
 						$autocompleteItems,
-						"'" . $displayName . "' not in autocomplete list"
+						"'$displayName' not in autocomplete list"
 					);
 					$numExpectedItems = $numExpectedItems + 1;
 				}
@@ -562,7 +562,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		PHPUnit_Framework_Assert::assertCount(
 			$numExpectedItems,
 			$autocompleteItems,
-			'expected ' . $numExpectedItems . ' in autocomplete list but there are ' . \count($autocompleteItems)
+			"expected $numExpectedItems in autocomplete list but there are " . \count($autocompleteItems)
 		);
 
 		PHPUnit_Framework_Assert::assertNotContains(
@@ -739,9 +739,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$sharingWasPossible = true;
 		} catch (ElementNotFoundException $e) {
 			$possibleMessages = [
-				'could not find share-with-field',
-				'could not find sharing button in fileRow',
-				'could not share with \'' . $shareWith . '\''
+				"could not find share-with-field",
+				"could not find sharing button in fileRow",
+				"could not share with '$shareWith'"
 			];
 			$foundMessage = false;
 			foreach ($possibleMessages as $message) {

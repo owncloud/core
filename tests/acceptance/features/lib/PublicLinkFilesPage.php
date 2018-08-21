@@ -79,8 +79,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		if ($addToYourOcBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" id " . $this->addToYourOcBtnId .
-				" could not find 'add to your owncloud' button"
+				" id $this->addToYourOcBtnId could not find 'add to your owncloud' button"
 			);
 		}
 		$addToYourOcBtn->click();
@@ -88,8 +87,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		if ($remoteAddressInput === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" id " . $this->remoteAddressInputId .
-				" could not find remote address input field"
+				" id $this->remoteAddressInputId could not find remote address input field"
 			);
 		}
 		$remoteAddressInput->setValue($server);
@@ -97,8 +95,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		if ($confirmBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" id " . $this->confirmBtnId .
-				" could not find confirm button"
+				" id $this->confirmBtnId could not find confirm button"
 			);
 		}
 		$confirmBtn->click();
