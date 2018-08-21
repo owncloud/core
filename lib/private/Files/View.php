@@ -104,6 +104,8 @@ class View {
 
 	private $eventDispatcher;
 
+	private static $ignorePartFile = false;
+
 	/**
 	 * @param string $root
 	 * @throws \Exception If $root contains an invalid path
@@ -837,7 +839,7 @@ class View {
 						$result = $storage2->moveFromStorage($storage1, $internalPath1, $internalPath2);
 					}
 
-					if ((Cache\Scanner::isPartialFile($path1) && !Cache\Scanner::isPartialFile($path2)) && $result !== false) {
+					if ((Cache\Scanner::isPartialFile($path1) && !Cache\Scanner::isPartialFile($path2)) && $result !== false && (self::$ignorePartFile === false)) {
 						// if it was a rename from a part file to a regular file it was a write and not a rename operation
 
 						$this->writeUpdate($storage2, $internalPath2);
@@ -2191,5 +2193,17 @@ class View {
 		}
 		$this->mkdir($filePath);
 		return true;
+	}
+
+	/**
+	 * User can create part files example to a call for rename(), in effect
+	 * it might not be a part file. So for better control in such cases this
+	 * method would help to let the method in rename() to know if it is a
+	 * part file.
+	 *
+	 * @param bool $isIgnored
+	 */
+	public static function setIgnorePartFile($isIgnored) {
+		self::$ignorePartFile = $isIgnored;
 	}
 }
