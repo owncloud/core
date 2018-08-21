@@ -22,7 +22,9 @@
 namespace OCA\Files\Command;
 
 use OC\Files\FileInfo;
+use OC\Files\Storage\FailedStorage;
 use OC\Files\Storage\Wrapper\Checksum;
+use OCA\Files_Sharing\ISharedStorage;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use OCP\Files\NotFoundException;
@@ -49,7 +51,6 @@ class VerifyChecksums extends Command {
 	 * @var IRootFolder
 	 */
 	private $rootFolder;
-
 	/**
 	 * @var IUserManager
 	 */
@@ -94,19 +95,34 @@ class VerifyChecksums extends Command {
 		$walkFunction = function (Node $node) use ($input, $output) {
 			$path = $node->getInternalPath();
 			$currentChecksums = $node->getChecksum();
+			$owner = $node->getOwner()->getUID();
+			$storage = $node->getStorage();
 
-			// Files without calculated checksum can't cause checksum errors
-			if (empty($currentChecksums)) {
-				$output->writeln("Skipping $path => No Checksum", OutputInterface::VERBOSITY_VERBOSE);
+			if ($storage->instanceOfStorage(ISharedStorage::class) || $storage->instanceOfStorage(FailedStorage::class)) {
 				return;
 			}
 
-			$output->writeln("Checking $path => $currentChecksums", OutputInterface::VERBOSITY_VERBOSE);
-			$actualChecksums = self::calculateActualChecksums($path, $node->getStorage());
+			if (!self::fileExistsOnDisk($node)) {
+				$output->writeln("Skipping $owner/$path => File is in file-cache but doesn't exist on storage/disk", OutputInterface::VERBOSITY_VERBOSE);
+				return;
+			}
 
+			if (!$node->isReadable()) {
+				$output->writeln("Skipping $owner/$path => File not readable", OutputInterface::VERBOSITY_VERBOSE);
+				return;
+			}
+
+			// Files without calculated checksum can't cause checksum errors
+			if (empty($currentChecksums)) {
+				$output->writeln("Skipping $owner/$path => No Checksum", OutputInterface::VERBOSITY_VERBOSE);
+				return;
+			}
+
+			$output->writeln("Checking $owner/$path => $currentChecksums", OutputInterface::VERBOSITY_VERBOSE);
+			$actualChecksums = self::calculateActualChecksums($path, $node->getStorage());
 			if ($actualChecksums !== $currentChecksums) {
 				$output->writeln(
-					"<info>Mismatch for $path:\n Filecache:\t$currentChecksums\n Actual:\t$actualChecksums</info>"
+					"<info>Mismatch for $owner/$path:\n Filecache:\t$currentChecksums\n Actual:\t$actualChecksums</info>"
 				);
 
 				$this->exitStatus = self::EXIT_CHECKSUM_ERRORS;
@@ -176,6 +192,16 @@ class VerifyChecksums extends Command {
 			$node->getId(),
 			['checksum' => $correctChecksum]
 		);
+	}
+
+	/**
+	 *
+	 * @param Node $node
+	 * @return bool
+	 */
+	private static function fileExistsOnDisk(Node $node) {
+		$statResult = @$node->stat();
+		return \is_array($statResult) && isset($statResult['size']) && $statResult['size'] !== false;
 	}
 
 	/**
