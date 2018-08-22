@@ -133,14 +133,14 @@ class SystemTagManager implements ISystemTagManager {
 			->from(self::TAG_TABLE);
 
 		if ($visibilityFilter !== null) {
-			$query->andWhere($query->expr()->eq('visibility', $query->createNamedParameter((int)$visibilityFilter)));
+			$query->andWhere($query->expr()->eq('visibility', $query->createPositionalParameter((int)$visibilityFilter)));
 		}
 
 		if (!empty($nameSearchPattern)) {
 			$query->andWhere(
 				$query->expr()->like(
 					'name',
-					$query->createNamedParameter('%' . $this->connection->escapeLikeParameter($nameSearchPattern). '%')
+					$query->createPositionalParameter('%' . $this->connection->escapeLikeParameter($nameSearchPattern). '%')
 				)
 			);
 		}
