@@ -431,7 +431,7 @@ class Scanner extends BasicEmitter implements IScanner {
 					} elseif ($data['mimetype'] === 'httpd/unix-directory' and $recursive === self::SCAN_RECURSIVE_INCOMPLETE and $data['size'] === -1) {
 						// only recurse into folders which aren't fully scanned
 						$childQueue[$child] = $data['fileid'];
-					} elseif ($data['size'] === -1) {
+					} elseif (!isset($data['size']) || $data['size'] === -1) {
 						$size = -1;
 					} elseif ($size !== -1) {
 						$size += $data['size'];
