@@ -733,7 +733,7 @@ class Util {
 	 * @return array
 	 * @since 10.0
 	 */
-	public static function getStatusInfo($includeVersion = false, $serverHide = false) {
+	public static function getStatusInfo($includeVersion = false, $serverHide = false, $hostnameShort = false) {
 		$systemConfig = \OC::$server->getSystemConfig();
 
 		$installed = (bool) $systemConfig->getValue('installed', false);
@@ -759,7 +759,13 @@ class Util {
 			$values['productname'] = $defaults->getName();
 			// expose the servername only if allowed via version, but never when called via status.php
 			if ($serverHide === false) {
-				$values['hostname'] = \gethostname();
+				$hostname = \gethostname();
+				if (($hostnameShort) &&
+					(\is_string($hostname))) {
+					$splitted = \explode('.', $hostname);
+					$hostname = $splitted[0];
+				}
+				$values['hostname'] = $hostname;
 			}
 		}
 
