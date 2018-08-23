@@ -260,24 +260,41 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 
 		try {
 			$result = $this->share->rename($this->root . $source, $this->root . $target);
-			$this->removeFromCache($this->root . $source);
-			$this->removeFromCache($this->root . $target);
+			if ($result) {
+				$this->removeFromCache($this->root . $source);
+				$this->removeFromCache($this->root . $target);
+			}
 		} catch (AlreadyExistsException $e) {
 			$this->swallow(__FUNCTION__, $e);
-			$this->unlink($target);
-			$result = $this->share->rename($this->root . $source, $this->root . $target);
-			$this->removeFromCache($this->root . $source);
-			$this->removeFromCache($this->root . $target);
+			if ($this->unlink($target)) {
+				$result = $this->share->rename($this->root . $source, $this->root . $target);
+				if ($result) {
+					$this->removeFromCache($this->root . $source);
+					$this->removeFromCache($this->root . $target);
+				}
+			} else {
+				$result = false;
+			}
 		} catch (Exception $e) {
 			$this->swallow(__FUNCTION__, $e);
 			// Icewind\SMB\Exception\Exception, not a plain exception
 			if ($e->getCode() === 22) {
-				$this->unlink($target);
-				$result = $this->share->rename($this->root . $source, $this->root . $target);
-				$this->removeFromCache($this->root . $source);
-				$this->removeFromCache($this->root . $target);
-			} else {
+				if ($this->unlink($target)) {
+					$result = $this->share->rename($this->root . $source, $this->root . $target);
+					if ($result) {
+						$this->removeFromCache($this->root . $source);
+						$this->removeFromCache($this->root . $target);
+					}
+				} else {
+					$result = false;
+				}
+			} elseif ($e->getCode() === 16) {
+				$this->swallow(__FUNCTION__, $e);
 				$result = false;
+			} else {
+				$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+				$this->leave(__FUNCTION__, $ex);
+				throw $ex;
 			}
 		} catch (\Exception $e) {
 			$this->swallow(__FUNCTION__, $e);
@@ -304,6 +321,10 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		} catch (NotFoundException $e) {
 			$this->swallow(__FUNCTION__, $e);
 			$result = false;
+		} catch (Exception $e) {
+			$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+			$this->leave(__FUNCTION__, $ex);
+			throw $ex;
 		}
 		return $this->leave(__FUNCTION__, $result);
 	}
@@ -366,19 +387,22 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 				$result = $this->rmdir($path);
 			} else {
 				$path = $this->buildPath($path);
-				unset($this->statCache[$path]);
 				$this->share->del($path);
+				unset($this->statCache[$path]);
 				$result = true;
 			}
 		} catch (NotFoundException $e) {
 			$this->swallow(__FUNCTION__, $e);
 		} catch (ForbiddenException $e) {
 			$this->swallow(__FUNCTION__, $e);
-		} catch (ConnectException $e) {
-			$ex = new StorageNotAvailableException(
-				$e->getMessage(), $e->getCode(), $e);
-			$this->leave(__FUNCTION__, $ex);
-			throw $ex;
+		} catch (Exception $e) {
+			if ($e->getCode() === 16) {
+				$this->swallow(__FUNCTION__, $e);
+			} else {
+				$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+				$this->leave(__FUNCTION__, $ex);
+				throw $ex;
+			}
 		}
 		return $this->leave(__FUNCTION__, $result);
 	}
@@ -461,11 +485,14 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			$this->swallow(__FUNCTION__, $e);
 		} catch (ForbiddenException $e) {
 			$this->swallow(__FUNCTION__, $e);
-		} catch (ConnectException $e) {
-			$ex = new StorageNotAvailableException(
-				$e->getMessage(), $e->getCode(), $e);
-			$this->leave(__FUNCTION__, $ex);
-			throw $ex;
+		} catch (Exception $e) {
+			if ($e->getCode() === 16) {
+				$this->swallow(__FUNCTION__, $e);
+			} else {
+				$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+				$this->leave(__FUNCTION__, $ex);
+				throw $ex;
+			}
 		}
 		return $this->leave(__FUNCTION__, $result);
 	}
@@ -495,30 +522,35 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			$this->swallow(__FUNCTION__, $e);
 		} catch (ForbiddenException $e) {
 			$this->swallow(__FUNCTION__, $e);
-		} catch (ConnectException $e) {
-			$ex = new StorageNotAvailableException(
-				$e->getMessage(), $e->getCode(), $e);
-			$this->leave(__FUNCTION__, $ex);
-			throw $ex;
+		} catch (Exception $e) {
+			if ($e->getCode() === 16) {
+				$this->swallow(__FUNCTION__, $e);
+			} else {
+				$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+				$this->leave(__FUNCTION__, $ex);
+				throw $ex;
+			}
 		}
 		return $this->leave(__FUNCTION__, $result);
 	}
 
 	public function touch($path, $time = null) {
 		$this->log('enter: '.__FUNCTION__."($path, $time)");
+		$result = false;
 		try {
 			if (!$this->file_exists($path)) {
 				$fh = $this->share->write($this->buildPath($path));
 				\fclose($fh);
 				$result = true;
-			} else {
-				$result = false;
 			}
-		} catch (ConnectException $e) {
-			$ex = new StorageNotAvailableException(
-				$e->getMessage(), $e->getCode(), $e);
-			$this->leave(__FUNCTION__, $ex);
-			throw $ex;
+		} catch (Exception $e) {
+			if ($e->getCode() === 16) {
+				$this->swallow(__FUNCTION__, $e);
+			} else {
+				$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+				$this->leave(__FUNCTION__, $ex);
+				throw $ex;
+			}
 		}
 		return $this->leave(__FUNCTION__, $result);
 	}
@@ -537,6 +569,10 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			$this->swallow(__FUNCTION__, $e);
 		} catch (ForbiddenException $e) {
 			$this->swallow(__FUNCTION__, $e);
+		} catch (Exception $e) {
+			$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+			$this->leave(__FUNCTION__, $ex);
+			throw $ex;
 		}
 		return $this->leave(__FUNCTION__, $result);
 	}
@@ -550,6 +586,10 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			$this->swallow(__FUNCTION__, $e);
 		} catch (ForbiddenException $e) {
 			$this->swallow(__FUNCTION__, $e);
+		} catch (Exception $e) {
+			$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+			$this->leave(__FUNCTION__, $ex);
+			throw $ex;
 		}
 		return $this->leave(__FUNCTION__, $result);
 	}
@@ -560,13 +600,18 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		$path = $this->buildPath($path);
 		try {
 			$result = $this->share->mkdir($path);
-		} catch (ConnectException $e) {
-			$ex = new StorageNotAvailableException(
-				$e->getMessage(), $e->getCode(), $e);
-			$this->leave(__FUNCTION__, $ex);
-			throw $ex;
-		} catch (Exception $e) {
+		} catch (ForbiddenException $e) {
 			$this->swallow(__FUNCTION__, $e);
+		} catch (AlreadyExistsException $e) {
+			$this->swallow(__FUNCTION__, $e);
+		} catch (Exception $e) {
+			if ($e->getCode() === 16) {
+				$this->swallow(__FUNCTION__, $e);
+			} else {
+				$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+				$this->leave(__FUNCTION__, $ex);
+				throw $ex;
+			}
 		}
 		return $this->leave(__FUNCTION__, $result);
 	}
@@ -581,9 +626,8 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			$this->swallow(__FUNCTION__, $e);
 		} catch (ForbiddenException $e) {
 			$this->swallow(__FUNCTION__, $e);
-		} catch (ConnectException $e) {
-			$ex = new StorageNotAvailableException(
-				$e->getMessage(), $e->getCode(), $e);
+		} catch (Exception $e) {
+			$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
 			$this->leave(__FUNCTION__, $ex);
 			throw $ex;
 		}
@@ -600,6 +644,10 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			$this->swallow(__FUNCTION__, $e);
 		} catch (ForbiddenException $e) {
 			$this->swallow(__FUNCTION__, $e);
+		} catch (Exception $e) {
+			$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+			$this->leave(__FUNCTION__, $ex);
+			throw $ex;
 		}
 		return $this->leave(__FUNCTION__, $result);
 	}
@@ -616,6 +664,10 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			$this->swallow(__FUNCTION__, $e);
 		} catch (ForbiddenException $e) {
 			$this->swallow(__FUNCTION__, $e);
+		} catch (Exception $e) {
+			$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+			$this->leave(__FUNCTION__, $ex);
+			throw $ex;
 		}
 		return $this->leave(__FUNCTION__, $result);
 	}
@@ -630,6 +682,10 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			$this->swallow(__FUNCTION__, $e);
 		} catch (ForbiddenException $e) {
 			$this->swallow(__FUNCTION__, $e);
+		} catch (Exception $e) {
+			$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+			$this->leave(__FUNCTION__, $ex);
+			throw $ex;
 		}
 		return $this->leave(__FUNCTION__, $result);
 	}
