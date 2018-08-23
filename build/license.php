@@ -251,7 +251,6 @@ if (isset($argv[1])) {
 		__DIR__ . '/../apps/files_versions',
 		__DIR__ . '/../apps/provisioning_api',
 		__DIR__ . '/../apps/systemtags',
-		__DIR__ . '/../apps/testing',
 		__DIR__ . '/../apps/updatenotification',
 		__DIR__ . '/../core',
 		__DIR__ . '/../lib',
