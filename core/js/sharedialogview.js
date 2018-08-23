@@ -408,7 +408,7 @@
 				isLinkSharingAllowed: this.configModel.isShareWithLinkAllowed(),
 				localSharesLabel: t('core', 'User and Groups'),
 				publicSharesLabel: t('core', 'Public Links'),
-				noSharingPlaceholder: t('core', 'Resharing is not allowed')
+				noSharingPlaceholder: t('core', 'Sharing is not allowed')
 			}));
 
 			var $shareField = this.$el.find('.shareWithField');
