@@ -23,7 +23,6 @@
 !/apps/files_versions
 !/apps/provisioning_api
 !/apps/systemtags
-!/apps/testing
 !/apps/updatenotification
 !/apps/theme-example
 /apps/files_external/3rdparty/irodsphp/PHPUnitTest
