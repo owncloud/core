@@ -242,7 +242,6 @@ $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 	rm -Rf $@; mkdir -p $@/config
 	cp -R $(core_all_src) $@
 	cp -R config/config.sample.php $@/config
-	rm -Rf $(dist_dir)/owncloud/apps/testing
 	find $@ -name .gitkeep -delete
 	find $@ -name .gitignore -delete
 	find $@ -name no-php -delete
