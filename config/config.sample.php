@@ -103,7 +103,7 @@ $CONFIG = array(
  * Optionally, use the short hostname in the server.php.
  * Defaults to use the gethostname() return value.
  */
-'use_server_shortname' => false,
+'use_relative_domain_name' => false,
 
 /**
  * Identifies the database used with this installation. See also config option
