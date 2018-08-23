@@ -13,9 +13,7 @@ cache:
 env:
   global:
     - TEST_DAV=$(tests/travis/changed_app.sh dav)
-    - TC=litmus-v2
-    - TEST_SERVER_URL=http://owncloud:8889
-    - TEST_SERVER_FED_URL=http://owncloud:8989
+    - TC=carddav
     - SRV_HOST_NAME=owncloud
     - SRV_HOST_PORT=8889
     - REMOTE_FED_SRV_HOST_NAME=owncloud
@@ -240,10 +238,6 @@ matrix:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
-    - php: 7.1
-      env: DB=pgsql TC=litmus-v1
-    - php: 7.1
-      env: DB=sqlite TC=carddav
     - php: 7.1
       env: DB=sqlite TC=caldav
     - php: 7.1
