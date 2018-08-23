@@ -32,7 +32,16 @@ script('core', 'lostpassword');
 			<label for="password" class="infield"><?php p($l->t('New password')); ?></label>
 			<input type="password" name="password" id="password" value="" placeholder="<?php p($l->t('New Password')); ?>" required autofocus />
 		</p>
-		<input type="submit" id="submit" value="<?php p($l->t('Reset password')); ?>" />
+		<input type="submit" id="submit" value="<?php
+			$link =  \explode('/', $_['link']);
+			$uid = \array_pop($link);
+			$user = \OC::$server->getUserManager()->get($uid);
+			if (($user !== null) && ($user->getLastLogin() > 0)) {
+				p($l->t('Reset password for'));
+			} else {
+				p($l->t('Please set your password'));
+			}
+		?>" />
 		<p class="text-center">
 			<img class="hidden" id="float-spinner" src="<?php p(image_path('core', 'loading-dark.gif'));?>"/>
 		</p>
