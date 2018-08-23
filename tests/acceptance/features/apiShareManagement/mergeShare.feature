@@ -95,6 +95,7 @@ Feature: sharing
 		Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
 		And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" should not exist
 
+	@skipOnLDAP @user_ldap-issue-274
 	Scenario: Merging shares for recipient when shared from outside with user then group and recipient renames in between
 		Given user "user0" has created a folder "/merge-test-outside-groups-renamebeforesecondshare"
 		When user "user0" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with user "user1" using the sharing API
