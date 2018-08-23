@@ -24,6 +24,7 @@ pipeline:
     pull: true
     commands:
       - cd /drone/fed-server
+      - git clone https://github.com/owncloud/testing.git /drone/fed-server/apps/testing
       - php occ a:l
       - php occ a:e testing
       - php occ a:l
