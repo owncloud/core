@@ -28,6 +28,10 @@ So that I can remove unnecessary groups
 			| maint+eng           | Plus sign                               |
 			| $x<=>[y*z^2]!       | Maths symbols                           |
 			| Mgmt\Middle         | Backslash                               |
+			| Mgmt/Sydney         | Slash (special escaping happens)        |
+			| Mgmt//NSW/Sydney    | Multiple slash                          |
+			| var/../etc          | using slash-dot-dot                     |
+			| priv/subadmins/1    | Subadmins mentioned not at the end      |
 			| 50%pass             | Percent sign (special escaping happens) |
 			| 50%25=0             | %25 literal looks like an escaped "%"   |
 			| 50%2Eagle           | %2E literal looks like an escaped "."   |
