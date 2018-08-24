@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\PersonalGeneralSettingsPage;
+use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
 
@@ -38,6 +39,12 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @var FeatureContext
 	 */
 	private $featureContext;
+
+	/**
+	 *
+	 * @var WebUIGeneralContext
+	 */
+	private $webUIGeneralContext;
 
 	/**
 	 * WebUIPersonalGeneralSettingsContext constructor.
@@ -60,6 +67,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 		$this->personalGeneralSettingsPage->open();
 		$this->personalGeneralSettingsPage->waitForOutstandingAjaxCalls(
 			$this->getSession()
+		);
+		$this->webUIGeneralContext->setCurrentPageObject(
+			$this->personalGeneralSettingsPage
 		);
 	}
 
@@ -124,7 +134,57 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 			$oldPassword, $newPassword, $this->getSession()
 		);
 	}
-	
+
+	/**
+	 * @When the user changes the full name to :newFullname using the webUI
+	 *
+	 * @param string $newFullname
+	 *
+	 * @return void
+	 */
+	public function theUserChangesTheFullnameToUsingTheWebUI($newFullname) {
+		$this->personalGeneralSettingsPage->changeFullname(
+			$newFullname, $this->getSession()
+		);
+	}
+
+	/**
+	 * @When the user changes the email address to :emailAddress using the webUI
+	 *
+	 * @param string $emailAddress
+	 *
+	 * @return void
+	 */
+	public function theUserChangesTheEmailAddressToUsingTheWebUI($emailAddress) {
+		$this->personalGeneralSettingsPage->changeEmailAddress(
+			$emailAddress, $this->getSession()
+		);
+	}
+
+	/**
+	 * @When the user follows the email change confirmation link received by :emailAddress using the webUI
+	 *
+	 * @param string $emailAddress
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserFollowsTheEmailChangeConfirmationLinkEmail($emailAddress) {
+		$content = EmailHelper::getBodyOfLastEmail(
+			EmailHelper::getMailhogUrl(), $emailAddress
+		);
+		$matches = [];
+		\preg_match(
+			'/Use the following link to confirm your changes to the email address: (http.*)/',
+			$content, $matches
+		);
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			1, $matches,
+			"Couldn't find confirmation link in the email"
+		);
+		$this->visitPath($matches[1]);
+	}
+
 	/**
 	 * @Then a password error message should be displayed on the webUI with the text :wrongPasswordmessageText
 	 *
@@ -156,5 +216,6 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 	}
 }

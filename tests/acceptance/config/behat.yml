@@ -270,6 +270,8 @@ default:
         - WebUIFilesContext:
         - WebUIPersonalSecuritySettingsContext:
         - WebUIPersonalGeneralSettingsContext:
+        - WebUIUserContext:
+        - EmailContext:
 
     webUISharingNotifications:
       paths:
