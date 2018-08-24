@@ -30,6 +30,40 @@ So that I can manage group membership
 		And the OCS status code should be "200"
 		And the HTTP status code should be "200"
 
+	# Note: when the issue is fixed, use this scenario and delete the scenario above.
+	@skip @issue-31015
+	Scenario: admin gets groups of an user, including groups containing a slash
+		Given user "brand-new-user" has been created
+		And group "unused-group" has been created
+		And group "new-group" has been created
+		And group "0" has been created
+		And group "Admin & Finance (NP)" has been created
+		And group "admin:Pokhara@Nepal" has been created
+		And group "नेपाली" has been created
+		And group "Mgmt/Sydney" has been created
+		And group "var/../etc" has been created
+		And group "priv/subadmins/1" has been created
+		And user "brand-new-user" has been added to group "new-group"
+		And user "brand-new-user" has been added to group "0"
+		And user "brand-new-user" has been added to group "Admin & Finance (NP)"
+		And user "brand-new-user" has been added to group "admin:Pokhara@Nepal"
+		And user "brand-new-user" has been added to group "नेपाली"
+		And user "brand-new-user" has been added to group "Mgmt/Sydney"
+		And user "brand-new-user" has been added to group "var/../etc"
+		And user "brand-new-user" has been added to group "priv/subadmins/1"
+		When user "admin" sends HTTP method "GET" to OCS API endpoint "/cloud/users/brand-new-user/groups"
+		Then the groups returned by the API should be
+			| new-group            |
+			| 0                    |
+			| Admin & Finance (NP) |
+			| admin:Pokhara@Nepal  |
+			| नेपाली               |
+			| Mgmt/Sydney          |
+			| var/../etc           |
+			| priv/subadmins/1     |
+		And the OCS status code should be "200"
+		And the HTTP status code should be "200"
+
 	Scenario: subadmin tries to get other groups of the user in his group
 		Given user "newuser" has been created
 		And user "subadmin" has been created
