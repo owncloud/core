@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\PersonalGeneralSettingsPage;
+use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
 
@@ -158,6 +159,30 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 		$this->personalGeneralSettingsPage->changeEmailAddress(
 			$emailAddress, $this->getSession()
 		);
+	}
+
+	/**
+	 * @When the user follows the email change confirmation link received by :emailAddress using the webUI
+	 *
+	 * @param string $emailAddress
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserFollowsTheEmailChangeConfirmationLinkEmail($emailAddress) {
+		$content = EmailHelper::getBodyOfLastEmail(
+			EmailHelper::getMailhogUrl(), $emailAddress
+		);
+		$matches = [];
+		\preg_match(
+			'/Use the following link to confirm your changes to the email address: (http.*)/',
+			$content, $matches
+		);
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			1, $matches,
+			"Couldn't find confirmation link in the email"
+		);
+		$this->visitPath($matches[1]);
 	}
 
 	/**
