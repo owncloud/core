@@ -637,6 +637,19 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to URL "([^"]*)" with password "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function userSendsHTTPMethodToUrlWithPassword($user, $verb, $url, $password) {
+		$this->sendingToWithDirectUrl($user, $verb, $url, null, $password);
+	}
+
+	/**
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
@@ -644,12 +657,16 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public function sendingToWithDirectUrl($user, $verb, $url, $body) {
+	public function sendingToWithDirectUrl($user, $verb, $url, $body, $password = null) {
 		$fullUrl = $this->getBaseUrl() . $url;
 		$client = new Client();
 		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($user);
-
+		if ($password === null) {
+			$options['auth'] = $this->getAuthOptionForUser($user);
+		} else {
+			$options['auth'] = [$user, $password];
+		}
+		
 		if (!empty($this->cookieJar->toArray())) {
 			$options['cookies'] = $this->cookieJar;
 		}
