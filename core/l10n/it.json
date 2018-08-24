@@ -198,7 +198,6 @@
     "{sharee} (at {server})" : "{sharee} (su {server})",
     "User and Groups" : "Utenti e gruppi",
     "Public Links" : "Collegamenti pubblici",
-    "Resharing is not allowed" : "La ri-condivisione non è consentita",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Condividi con persone su altri ownCloud utilizzando la sintassi nomeutente@esempio.com/owncloud",
     "Share with users…" : "Condividi con utenti...",
     "Share with users, groups or remote users…" : "Condividi con utenti, gruppi o utenti remoti...",

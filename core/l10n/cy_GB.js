@@ -67,7 +67,6 @@ OC.L10N.register(
     "create" : "creu",
     "delete" : "dileu",
     "access control" : "rheolaeth mynediad",
-    "Resharing is not allowed" : "Does dim hawl ail-rannu",
     "Delete" : "Dileu",
     "Rename" : "Ailenwi",
     "The object type is not specified." : "Nid yw'r math o wrthrych wedi cael ei nodi.",

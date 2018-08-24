@@ -123,7 +123,6 @@ OC.L10N.register(
     "change" : "mainīt",
     "delete" : "dzēst",
     "access control" : "piekļuves vadība",
-    "Resharing is not allowed" : "Atkārtota dalīšanās nav atļauta",
     "Delete" : "Dzēst",
     "Rename" : "Pārsaukt",
     "The object type is not specified." : "Nav norādīts objekta tips.",

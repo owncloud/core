@@ -100,7 +100,6 @@ OC.L10N.register(
     "change" : "تغيير",
     "delete" : "حذف",
     "access control" : "ضبط الوصول",
-    "Resharing is not allowed" : "لا يسمح بعملية إعادة المشاركة",
     "Delete" : "إلغاء",
     "Rename" : "إعادة التسمية",
     "The object type is not specified." : "نوع العنصر غير محدد.",

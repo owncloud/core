@@ -203,7 +203,6 @@
     "{sharee} (at {server})" : "{sharee} (palvelimella {server})",
     "User and Groups" : "Käyttäjät ja ryhmät",
     "Public Links" : "Julkiset linkit",
-    "Resharing is not allowed" : "Jakaminen uudelleen ei ole salittu",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Jaa toisia ownCloud-järjestelmiä käyttävien kesken käyttäen syntaksia käyttäjätunnus@esimerkki.fi/owncloud",
     "Share with users…" : "Jaa käyttäjien kanssa…",
     "Share with users, groups or remote users…" : "Jaa käyttäjien, ryhmien tai etäkäyttäjien kanssa…",

@@ -212,7 +212,6 @@ OC.L10N.register(
     "{sharee} (at {server})" : "{sharee} (na {server})",
     "User and Groups" : "Użytkownicy i Grupy",
     "Public Links" : "Linki publiczne",
-    "Resharing is not allowed" : "Współdzielenie nie jest możliwe",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Współdziel z użytkownikami innych chmur ownCloud używając wzorca uzytkownik@example.com/owncloud",
     "Share with users…" : "Współdziel z użytkownikami...",
     "Share with users, groups or remote users…" : "Współdziel z użytkownikami, grupami lub zdalnym użytkownikiem...",

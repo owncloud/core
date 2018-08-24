@@ -177,7 +177,6 @@ OC.L10N.register(
     "An error occurred. Please try again" : "An error occurred. Please try again",
     "{sharee} (group)" : "{sharee} (group)",
     "{sharee} (at {server})" : "{sharee} (at {server})",
-    "Resharing is not allowed" : "Resharing is not allowed",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Share with people on other ownClouds using the syntax username@example.com/owncloud",
     "Share with users…" : "Share with users…",
     "Share with users, groups or remote users…" : "Share with users, groups or remote users…",

@@ -198,7 +198,6 @@ OC.L10N.register(
     "{sharee} (at {server})" : "{sharee} (at {server})",
     "User and Groups" : "Brukar og grupper",
     "Public Links" : "Offentlege lenker",
-    "Resharing is not allowed" : "Vidaredeling er ikkje tillate",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Del med folk på annan ownCloud med syntaks username@example.com/owncloud",
     "Share with users…" : "Del med brukarar...",
     "Share with users, groups or remote users…" : "Del med brukar, gruppe enn ekstern brukar...",

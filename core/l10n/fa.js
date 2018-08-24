@@ -198,7 +198,6 @@ OC.L10N.register(
     "{sharee} (at {server})" : "{به اشتراک گذاری} (در {سرور})",
     "User and Groups" : "کاربر و گروه ها",
     "Public Links" : "پیوندهای عمومی",
-    "Resharing is not allowed" : "اشتراک گذاری مجدد مجاز نمی باشد",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "اشتراک‌گذاری با دیگر افراد بر روی ownClouds بصورت username@example.com/owncloud",
     "Share with users…" : "به اشتراک گذاری با کاربران...",
     "Share with users, groups or remote users…" : "به اشتراک گذاری با کاربران، گروه ها یا کاربران از راه دور...",

@@ -206,7 +206,6 @@
     "{sharee} (at {server})" : "{sharee} (ב- {server})",
     "User and Groups" : "משתמש וקבוצות",
     "Public Links" : "קישורים ציבוריים",
-    "Resharing is not allowed" : "אסור לעשות שיתוף מחדש",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "ניתן לשתף עם אנשים אחרים המשתמשים ב- ownClouds בעזרת הפורמט הבא username@example.com/owncloud",
     "Share with users…" : "שיתוף עם משתמשים...",
     "Share with users, groups or remote users…" : "שיתוף עם משתמשים, קבוצות או משתמשים מרוחקים...",

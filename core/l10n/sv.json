@@ -194,7 +194,6 @@
     "{sharee} (at {server})" : "{sharee} (at {server})",
     "User and Groups" : "Användare och grupper",
     "Public Links" : "Publika länkar",
-    "Resharing is not allowed" : "Dela vidare är inte tillåtet",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Dela med folk på andra ownClouds med följande syntax username@example.com/owncloud",
     "Share with users…" : "Dela med användare...",
     "Share with users, groups or remote users…" : "Dela med användare, grupper och fjärranvändare...",

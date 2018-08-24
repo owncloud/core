@@ -218,7 +218,6 @@ OC.L10N.register(
     "{sharee} (federated)" : "{sharee} (federated)",
     "User and Groups" : "Корисници и Групи",
     "Public Links" : "Јавни линкови",
-    "Resharing is not allowed" : "Повторно споделување не е дозволено",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Споделете со луѓе на други OwnClouds сервери користејќи ја синтаксата username@example.com/owncloud",
     "Share with users…" : "Сподели со корисници...",
     "Share with users, groups or remote users…" : "Споделете со корисници, групи или оддалечени корисници...",

@@ -205,7 +205,6 @@
     "{sharee} (at {server})" : "{sharee} ({server} で)",
     "User and Groups" : "ユーザーとグループ",
     "Public Links" : "公開リンク",
-    "Resharing is not allowed" : "再共有は許可されていません",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "次の形式で指定して他のownCloudのユーザーと、共有",
     "Share with users…" : "ユーザーと共有...",
     "Share with users, groups or remote users…" : "ユーザー、グループもしくはリモートユーザーと共有 ...",

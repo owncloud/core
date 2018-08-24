@@ -70,7 +70,6 @@ OC.L10N.register(
     "create" : "შექმნა",
     "delete" : "წაშლა",
     "access control" : "დაშვების კონტროლი",
-    "Resharing is not allowed" : "მეორეჯერ გაზიარება არ არის დაშვებული",
     "Delete" : "წაშლა",
     "Rename" : "გადარქმევა",
     "The object type is not specified." : "ობიექტის ტიპი არ არის მითითებული.",

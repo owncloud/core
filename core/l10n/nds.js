@@ -115,7 +115,6 @@ OC.L10N.register(
     "can edit" : "kann editieren",
     "change" : "Verändern",
     "delete" : "Löschen",
-    "Resharing is not allowed" : "Weiterteilen ist nicht erlaubt",
     "Delete" : "Löschen",
     "Personal" : "Persönlich",
     "Imprint" : "Impressum",

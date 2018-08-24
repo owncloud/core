@@ -146,7 +146,6 @@ OC.L10N.register(
     "delete" : "hapus",
     "access control" : "kontrol akses",
     "Share details could not be loaded for this item." : "Rincian berbagi tidak dapat dimuat untuk item ini.",
-    "Resharing is not allowed" : "Berbagi ulang tidak diizinkan",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Bagikan dengan orang lain di ownCloud menggunakan sintaks username@example.com/owncloud",
     "Delete" : "Hapus",
     "Rename" : "Ubah nama",

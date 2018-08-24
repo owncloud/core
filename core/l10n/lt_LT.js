@@ -148,7 +148,6 @@ OC.L10N.register(
     "delete" : "ištrinti",
     "access control" : "priėjimo kontrolė",
     "Public Links" : "Viešos nuorodos",
-    "Resharing is not allowed" : "Dalijinasis išnaujo negalimas",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Dalintis su vartotoju kitame ownCloud debesyje, sintaksė vartotojas@example.com/owncloud",
     "Share with users…" : "Dalintis su vartotojais...",
     "Share with users, groups or remote users…" : "Dalintis su vartotojais, grupėmis, ar nutolusiais vartotojais...",

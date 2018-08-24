@@ -188,7 +188,6 @@
     "{sharee} (at {server})" : "{sharee} (на {server})",
     "User and Groups" : "Потребители и Групи",
     "Public Links" : "Публични връзки",
-    "Resharing is not allowed" : "Повторно споделяне не е разрешено.",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Споделете с хора на други ownClouds използвайки синтаксиса username@example.com/ownCloud",
     "Share with users…" : "Споделяне с потребители...",
     "Share with users, groups or remote users…" : "Споделяне с потребители, групи или отдалечени потребители...",

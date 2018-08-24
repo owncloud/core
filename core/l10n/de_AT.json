@@ -160,7 +160,6 @@
     "An error occurred. Please try again" : "Es ist ein Fehler aufgetreten. Bitte versuche es noch einmal",
     "{sharee} (group)" : "{sharee} (group)",
     "{sharee} (at {server})" : "{sharee} (at {server})",
-    "Resharing is not allowed" : "Weiterverteilen ist nicht erlaubt",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Mit Benutzern anderer ownClouds unter Verwendung der Syntax benutzername@beispiel.com/owncloud teilen",
     "Share with users…" : "Mit Benutzern teilen…",
     "Share with users, groups or remote users…" : "Mit Benutzern, Gruppen oder entfernten Benutzern teilen…",

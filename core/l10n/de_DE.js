@@ -218,7 +218,6 @@ OC.L10N.register(
     "{sharee} (federated)" : "{sharee} (federated)",
     "User and Groups" : "Nutzer und Gruppen",
     "Public Links" : "Öffentliche Links",
-    "Resharing is not allowed" : "Das Weiterverteilen ist nicht erlaubt",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Mit Benutzern anderer ownClouds unter Verwendung der Syntax benutzername@beispiel.com/owncloud teilen",
     "Share with users…" : "Mit Benutzern teilen…",
     "Share with users, groups or remote users…" : "Mit Benutzern, Gruppen oder entfernten Benutzern teilen…",

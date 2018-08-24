@@ -170,7 +170,6 @@ OC.L10N.register(
     "{sharee} (at {server})" : "{sharee} (by {server})",
     "User and Groups" : "Gebruiker en Groepe",
     "Public Links" : "Openbare Skakels",
-    "Resharing is not allowed" : "Herdeling is nie toegelaat nie ",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Deel met mense op ander ownClouds deur die sintaks gebruikernaam@voorbeeld.com/owncloud te gebruik",
     "Share with users…" : "Deel met gebruikers…",
     "Share with users, groups or remote users…" : "Deel met gebruikers, groepe of afstandsgebruikers…",

@@ -209,7 +209,6 @@ OC.L10N.register(
     "{sharee} (at {server})" : "{sharee} (位于 {server})",
     "User and Groups" : "用户和组",
     "Public Links" : "公共链接",
-    "Resharing is not allowed" : "不允许二次共享",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "使用语法 username@example.com/owncloud 分享给其他 ownCloud 上的用户",
     "Share with users…" : "与用户分享...",
     "Share with users, groups or remote users…" : "与用户，组或远程用户分享...",

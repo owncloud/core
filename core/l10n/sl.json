@@ -198,7 +198,6 @@
     "{sharee} (at {server})" : "{sharee} (na {server})",
     "User and Groups" : "Uporabnik in skupine",
     "Public Links" : "Javne povezave",
-    "Resharing is not allowed" : "Nadaljnja souporaba ni dovoljena",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Souporaba z uporabniki, ki so na drugih oblakih ownCloud s povezavo uporabnik@domena.si/owncloud",
     "Share with users…" : "Omogoči souporabo z ...",
     "Share with users, groups or remote users…" : "Souporaba z uporabniki, skupinami ali zunanjimi uporabniki ...",
