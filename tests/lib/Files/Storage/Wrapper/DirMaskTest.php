@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Test\Files\Storage\Wrapper;
 
 use OC\Files\Storage\Temporary;
