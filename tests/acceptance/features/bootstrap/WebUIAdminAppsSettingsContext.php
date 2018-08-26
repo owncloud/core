@@ -50,8 +50,8 @@ class WebUIAdminAppsSettingsContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the admin browses to the admin apps settings page
-	 * @Given the admin has browsed to the admin apps settings page
+	 * @When the administrator browses to the admin apps settings page
+	 * @Given the administrator has browsed to the admin apps settings page
 	 *
 	 * @return void
 	 */
@@ -64,7 +64,7 @@ class WebUIAdminAppsSettingsContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given the admin has browsed to disabled apps page
+	 * @Given the administrator has browsed to the disabled apps page
 	 *
 	 * @return void
 	 */
@@ -76,7 +76,7 @@ class WebUIAdminAppsSettingsContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the admin disables the app :app using the webUI
+	 * @When the administrator disables the app :app using the webUI
 	 *
 	 * @param string $appName
 	 *
@@ -90,7 +90,7 @@ class WebUIAdminAppsSettingsContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the admin enables the app :app using the webUI
+	 * @When the administrator enables the app :app using the webUI
 	 *
 	 * @param string $appName
 	 *

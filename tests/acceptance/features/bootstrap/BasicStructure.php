@@ -1022,7 +1022,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When the admin requests status.php
+	 * @When the administrator requests status.php
 	 *
 	 * @return void
 	 */
