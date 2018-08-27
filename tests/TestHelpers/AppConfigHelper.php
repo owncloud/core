@@ -306,4 +306,65 @@ class AppConfigHelper {
 		}
 		SetupHelper::resetOpcache($baseUrl, $user, $password);
 	}
+
+	/**
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $app
+	 * @param string $parameter
+	 * @param int $ocsApiVersion (1|2)
+	 *
+	 * @return void
+	 */
+	public static function deleteAppConfig(
+		$baseUrl, $user, $password, $app, $parameter, $ocsApiVersion = 2
+	) {
+		$body = [];
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$user,
+			$password,
+			'delete',
+			"/apps/testing/api/v1/app/{$app}/{$parameter}",
+			$body,
+			$ocsApiVersion
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		if ($ocsApiVersion === 1) {
+			PHPUnit_Framework_Assert::assertEquals(
+				"100", self::getOCSResponse($response)
+			);
+		}
+	}
+
+	/**
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param array $appParameterValues 'appid' and 'configkey' to delete
+	 * @param int $ocsApiVersion (1|2)
+	 *
+	 * @return void
+	 */
+	public static function deleteAppConfigs(
+		$baseUrl, $user, $password, $appParameterValues, $ocsApiVersion = 2
+	) {
+		$body = ['values' => $appParameterValues];
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$user,
+			$password,
+			'delete',
+			"/apps/testing/api/v1/apps",
+			$body,
+			$ocsApiVersion
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		if ($ocsApiVersion === 1) {
+			PHPUnit_Framework_Assert::assertEquals(
+				"100", self::getOCSResponse($response)
+			);
+		}
+	}
 }
