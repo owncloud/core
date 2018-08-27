@@ -31,7 +31,7 @@ trait Ip {
 	 * The local source IP address from which to initiate API actions.
 	 * Defaults to system-selected address matching IP address family and scope.
 	 *
-	 * @var string
+	 * @var string|null
 	 */
 	private $sourceIpAddress = null;
 
@@ -94,6 +94,8 @@ trait Ip {
 		} else {
 			$this->baseUrlForSourceIp = $this->featureContext->getBaseUrl();
 		}
+		
+		$this->featureContext->setSourceIpAddress($sourceIpAddress);
 	}
 
 	/**
