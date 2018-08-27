@@ -304,7 +304,6 @@ class AppConfigHelper {
 				"100", self::getOCSResponse($response)
 			);
 		}
-		SetupHelper::resetOpcache($baseUrl, $user, $password);
 	}
 
 	/**
