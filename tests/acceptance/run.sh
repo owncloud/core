@@ -12,6 +12,55 @@ OC_PATH=${SCRIPT_PATH}/../../
 OCC=${OC_PATH}occ
 BEHAT=${OC_PATH}lib/composer/bin/behat
 
+BEHAT_TAGS_OPTION_FOUND=false
+
+# The following environment variables can be specified:
+#
+# ACCEPTANCE_TEST_TYPE - see "--type" description
+# BEHAT_FEATURE - see "--feature" description
+# BEHAT_FILTER_TAGS - see "--tags" description
+# BEHAT_SUITE - see "--suite" description
+# BEHAT_YML - see "--config" description
+# BROWSER - see "--browser" description
+# NORERUN - see "--norerun" description
+# RERUN_FAILED_WEBUI_SCENARIOS - opposite of NORERUN
+# RUN_PART and DIVIDE_INTO_NUM_PARTS - see "--part" description
+# SHOW_OC_LOGS - see "--show-oc-logs" description
+# TESTING_REMOTE_SYSTEM - see "--remote" description
+
+# Default to testing a local system
+if [ -z "${TESTING_REMOTE_SYSTEM}" ]
+then
+	TESTING_REMOTE_SYSTEM=false
+fi
+
+# Default to not show ownCloud logs
+if [ -z "${SHOW_OC_LOGS}" ]
+then
+	SHOW_OC_LOGS=false
+fi
+
+# Default to re-run failed webUI scenarios
+if [ -z "${RERUN_FAILED_WEBUI_SCENARIOS}" ]
+then
+	RERUN_FAILED_WEBUI_SCENARIOS=true
+fi
+
+# Allow callers to specify NORERUN=true as an environment variable
+if [ "${NORERUN}" = true ]
+then
+	RERUN_FAILED_WEBUI_SCENARIOS=false
+fi
+
+# Default to API tests
+# Note: if a specific feature or suite is also specified, then the acceptance
+#       test type is deduced from the suite name, and this environment variable
+#       ACCEPTANCE_TEST_TYPE is overridden.
+if [ -z "${ACCEPTANCE_TEST_TYPE}" ]
+then
+	ACCEPTANCE_TEST_TYPE="api"
+fi
+
 # Look for command line options for:
 # -c or --config - specify a behat.yml to use
 # --feature - specify a single feature to run
@@ -19,6 +68,8 @@ BEHAT=${OC_PATH}lib/composer/bin/behat
 # --type - api or webui - if no individual feature or suite is specified, then
 #          specify the type of acceptance tests to run. Default api.
 # --tags - specify tags for scenarios to run (or not)
+# --browser - for webUI tests, which browser to use. "chrome", "firefox",
+#             "internet explorer" and "MicrosoftEdge" are possible.
 # --remote - the server under test is remote, so we cannot locally enable the
 #            testing app. We have to assume it is already enabled.
 # --show-oc-logs - tail the ownCloud log after the test run
@@ -26,12 +77,9 @@ BEHAT=${OC_PATH}lib/composer/bin/behat
 # --part - run a subset of scenarios, need two numbers.
 #          first number: which part to run
 #          second number: in how many parts to divide the set of scenarios
-BEHAT_TAGS_OPTION_FOUND=false
-REMOTE_ONLY=false
-SHOW_OC_LOGS=false
-RERUN_FAILED_WEBUI_SCENARIOS=true
-ACCEPTANCE_TEST_TYPE="api"
 
+# Command line options processed here will override environment variables that
+# might have been set by the caller, or in the code above.
 while [[ $# -gt 0 ]]
 do
 	key="$1"
@@ -73,7 +121,7 @@ do
 			shift 2
 			;;
 		--remote)
-			REMOTE_ONLY=true
+			TESTING_REMOTE_SYSTEM=true
 			;;
 		--show-oc-logs)
 			SHOW_OC_LOGS=true
@@ -530,7 +578,7 @@ fi
 # a remote instance (e.g. inside docker).
 # If we have a remote instance we cannot enable the testing app and
 # we have to hope it is enabled already, by other ways
-if [ "${REMOTE_ONLY}" = false ]
+if [ "${TESTING_REMOTE_SYSTEM}" = false ]
 then
 	# Enable testing app
 	PREVIOUS_TESTING_APP_STATUS=$(${OCC} --no-warnings app:list "^testing$")
@@ -688,7 +736,7 @@ OWNCLOUD_VERSION=`echo ${OWNCLOUD_VERSION} | cut -d"." -f1`
 BEHAT_FILTER_TAGS='~@skipOnOcV'${OWNCLOUD_VERSION}'&&'${BEHAT_FILTER_TAGS}
 
 # If we are running remote only tests add another skip '@skipWhenTestingRemoteSystems'
-if [ "${REMOTE_ONLY}" = true ]
+if [ "${TESTING_REMOTE_SYSTEM}" = true ]
 then
 	BEHAT_FILTER_TAGS='~@skipWhenTestingRemoteSystems&&'${BEHAT_FILTER_TAGS}
 fi
