@@ -131,6 +131,14 @@ trait BasicStructure {
 	private $requestToken;
 
 	/**
+	 * The local source IP address from which to initiate API actions.
+	 * Defaults to system-selected address matching IP address family and scope.
+	 *
+	 * @var string|null
+	 */
+	private $sourceIpAddress = null;
+
+	/**
 	 * BasicStructure constructor.
 	 *
 	 * @param string $baseUrl
@@ -307,6 +315,20 @@ trait BasicStructure {
 	 */
 	public function getOcsApiVersion() {
 		return $this->ocsApiVersion;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getSourceIpAddress() {
+		return $this->sourceIpAddress;
+	}
+	
+	/**
+	 * @param string
+	 */
+	public function setSourceIpAddress($sourceIpAddress) {
+		$this->sourceIpAddress = $sourceIpAddress;
 	}
 
 	/**
@@ -668,6 +690,14 @@ trait BasicStructure {
 			$options['auth'] = [$user, $password];
 		}
 		
+		if ($this->sourceIpAddress !== null) {
+			$options ['config'] = [
+				'curl' => [
+					CURLOPT_INTERFACE => $this->sourceIpAddress
+				]
+			];
+		}
+		
 		if (!empty($this->cookieJar->toArray())) {
 			$options['cookies'] = $this->cookieJar;
 		}
@@ -825,28 +855,27 @@ trait BasicStructure {
 		$loginUrl = $this->getBaseUrl() . '/login';
 		// Request a new session and extract CSRF token
 		$client = new Client();
-		$response = $client->get(
-			$loginUrl,
-			[
-				'cookies' => $this->cookieJar,
-			]
-		);
+		$options = [];
+		if ($this->sourceIpAddress !== null) {
+			$options ['config'] = [
+				'curl' => [
+					CURLOPT_INTERFACE => $this->sourceIpAddress
+				]
+			];
+		}
+		$options ['cookies'] = $this->cookieJar;
+		$response = $client->get($loginUrl, $options);
 		$this->extractRequestTokenFromResponse($response);
 
 		// Login and extract new token
 		$password = $this->getPasswordForUser($user);
 		$client = new Client();
-		$response = $client->post(
-			$loginUrl,
-			[
-				'body' => [
-					'user' => $user,
-					'password' => $password,
-					'requesttoken' => $this->requestToken,
-				],
-				'cookies' => $this->cookieJar,
-			]
-		);
+		$options ['body'] = [
+			'user' => $user,
+			'password' => $password,
+			'requesttoken' => $this->requestToken
+		];
+		$response = $client->post($loginUrl, $options);
 		$this->extractRequestTokenFromResponse($response);
 	}
 
@@ -861,12 +890,17 @@ trait BasicStructure {
 	 */
 	public function sendingAToWithRequesttoken($method, $url) {
 		$client = new Client();
+		$options = [];
+		if ($this->sourceIpAddress !== null) {
+			$options ['config'] = [
+				'curl' => [
+					CURLOPT_INTERFACE => $this->sourceIpAddress
+				]
+			];
+		}
+		$options ['cookies'] = $this->cookieJar;
 		$request = $client->createRequest(
-			$method,
-			$this->getBaseUrl() . $url,
-			[
-				'cookies' => $this->cookieJar,
-			]
+			$method, $this->getBaseUrl() . $url, $options
 		);
 		$request->addHeader('requesttoken', $this->requestToken);
 		try {
@@ -887,12 +921,17 @@ trait BasicStructure {
 	 */
 	public function sendingAToWithoutRequesttoken($method, $url) {
 		$client = new Client();
+		$options = [];
+		if ($this->sourceIpAddress !== null) {
+			$options ['config'] = [
+				'curl' => [
+					CURLOPT_INTERFACE => $this->sourceIpAddress
+				]
+			];
+		}
+		$options ['cookies'] = $this->cookieJar;
 		$request = $client->createRequest(
-			$method,
-			$this->getBaseUrl() . $url,
-			[
-				'cookies' => $this->cookieJar,
-			]
+			$method, $this->getBaseUrl() . $url, $options
 		);
 		try {
 			$this->response = $client->send($request);
@@ -1031,6 +1070,14 @@ trait BasicStructure {
 		$fullUrl = $this->getBaseUrl() . "/status.php";
 		$client = new Client();
 		$options = [];
+		if ($this->sourceIpAddress !== null) {
+			$options ['config'] = [
+				'curl' => [
+					CURLOPT_INTERFACE => $this->sourceIpAddress
+				]
+			];
+		}
+		$options ['cookies'] = $this->cookieJar;
 		$options['auth'] = $this->getAuthOptionForUser('admin');
 		try {
 			$this->response = $client->send(
