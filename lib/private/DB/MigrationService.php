@@ -57,14 +57,19 @@ class MigrationService {
 	 * @throws \Exception
 	 */
 	public function __construct($appName,
-						 IDBConnection $connection,
-						 IOutput $output = null,
-						 AppLocator $appLocator = null) {
+						IDBConnection $connection,
+						IOutput $output = null,
+						AppLocator $appLocator = null,
+						ILogger $logger = null) {
 		$this->appName = $appName;
 		$this->connection = $connection;
 		$this->output = $output;
 		if ($this->output === null) {
 			$this->output = new SimpleOutput(\OC::$server->getLogger(), $appName);
+		}
+		$this->logger = $logger;
+		if ($this->logger === null) {
+			$this->logger = \OC::$server->getLogger();
 		}
 
 		if ($appName === 'core') {
@@ -385,6 +390,7 @@ class MigrationService {
 	 * @param string $version
 	 */
 	public function executeStep($version) {
+		$this->logger->debug("Migrations: starting $version from app {$this->appName}", ['app' => 'core']);
 		$instance = $this->createInstance($version);
 		if ($instance instanceof ISimpleMigration) {
 			$instance->run($this->output);
@@ -403,6 +409,7 @@ class MigrationService {
 			$this->connection->migrateToSchema($toSchema);
 		}
 		$this->markAsExecuted($version);
+		$this->logger->debug("Migrations: completed $version from app {$this->appName}", ['app' => 'core']);
 	}
 
 	private function ensureMigrationsAreLoaded() {
