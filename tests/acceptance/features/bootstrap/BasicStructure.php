@@ -638,6 +638,7 @@ trait BasicStructure {
 
 	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to URL "([^"]*)" with password "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to URL "([^"]*)" with password "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $verb
