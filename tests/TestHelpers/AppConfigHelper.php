@@ -69,7 +69,7 @@ class AppConfigHelper {
 		// also changes some sub-settings. So the "interim" state as we set
 		// the config values could be unexpectedly different from the original
 		// saved state.
-		self::modifyServerConfig(
+		self::modifyAppConfig(
 			$baseUrl,
 			$user,
 			$password,
@@ -148,7 +148,7 @@ class AppConfigHelper {
 			}
 		}
 
-		self::modifyServerConfigs(
+		self::modifyAppConfigs(
 			$baseUrl,
 			$user,
 			$password,
@@ -251,7 +251,7 @@ class AppConfigHelper {
 	 *
 	 * @return void
 	 */
-	public static function modifyServerConfig(
+	public static function modifyAppConfig(
 		$baseUrl,
 		$user,
 		$password, $app, $parameter, $value, $ocsApiVersion = 2
@@ -283,7 +283,7 @@ class AppConfigHelper {
 	 *
 	 * @return void
 	 */
-	public static function modifyServerConfigs(
+	public static function modifyAppConfigs(
 		$baseUrl,
 		$user,
 		$password, $appParameterValues, $ocsApiVersion = 2
