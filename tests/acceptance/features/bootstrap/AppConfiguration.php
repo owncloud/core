@@ -93,7 +93,7 @@ trait AppConfiguration {
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
 
-		$this->modifyServerConfig($app, $parameter, $value);
+		$this->modifyAppConfig($app, $parameter, $value);
 
 		$this->currentUser = $user;
 	}
@@ -290,8 +290,8 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	protected function modifyServerConfig($app, $parameter, $value) {
-		AppConfigHelper::modifyServerConfig(
+	protected function modifyAppConfig($app, $parameter, $value) {
+		AppConfigHelper::modifyAppConfig(
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
@@ -307,8 +307,8 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	protected function modifyServerConfigs($appParameterValues) {
-		AppConfigHelper::modifyServerConfigs(
+	protected function modifyAppConfigs($appParameterValues) {
+		AppConfigHelper::modifyAppConfigs(
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
@@ -388,7 +388,7 @@ trait AppConfiguration {
 			if (($server === 'LOCAL') || $this->federatedServerExists()) {
 				$this->usingServer($server);
 				if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {
-					$this->modifyServerConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
+					$this->modifyAppConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
 				}
 			}
 		}

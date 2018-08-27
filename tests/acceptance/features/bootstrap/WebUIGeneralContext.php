@@ -589,7 +589,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function tearDownSuite() {
-		AppConfigHelper::modifyServerConfigs(
+		AppConfigHelper::modifyAppConfigs(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
