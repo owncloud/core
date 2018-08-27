@@ -158,7 +158,8 @@ class Application extends App {
 				$c->query('DefaultMailAddress'),
 				$c->query('URLGenerator'),
 				$c->query('OCP\\App\\IAppManager'),
-				$c->query('OCP\\IAvatarManager')
+				$c->query('OCP\\IAvatarManager'),
+				$c->query('ServerContainer')->getEventDispatcher()
 			);
 		});
 		$container->registerService('LogSettingsController', function (IContainer $c) {

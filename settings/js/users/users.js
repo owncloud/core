@@ -711,6 +711,19 @@ $(document).ready(function () {
 	// TODO: move other init calls inside of initialize
 	UserList.initialize($('#userlist'));
 
+	OC.AppConfig.getValue('core', 'umgmt_set_password', 'false', function (data) {
+		var showPassword = $.parseJSON(data);
+		if (showPassword === true) {
+			$("#newuserpassword").show();
+			$("#newemail").hide();
+			$('#CheckBoxPasswordOnUserCreate').attr('checked', true);
+		} else {
+			$("#newemail").show();
+			$("#newuserpassword").hide();
+			$('#CheckBoxPasswordOnUserCreate').attr('checked', false);
+		}
+	});
+
 	$userListBody.on('click', '.password', function (event) {
 		event.stopPropagation();
 
@@ -883,20 +896,20 @@ $(document).ready(function () {
 			}));
 			return false;
 		}
-		if ($.trim(password) === '') {
-			OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
-				message: t('settings', 'A valid password must be provided')
-			}));
-			return false;
-		}
-		if(!$('#CheckboxMailOnUserCreate').is(':checked')) {
-			email = '';
-		}
-		if ($('#CheckboxMailOnUserCreate').is(':checked') && $.trim(email) === '') {
-			OC.Notification.showTemporary( t('settings', 'Error creating user: {message}', {
-				message: t('settings', 'A valid email must be provided')
-			}));
-			return false;
+		if ($('#CheckBoxPasswordOnUserCreate').is(':checked')) {
+			if ($.trim(password) === '') {
+				OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
+					message: t('settings', 'A valid password must be provided')
+				}));
+				return false;
+			}
+		} else {
+			if ($.trim(email) === '') {
+				OC.Notification.showTemporary( t('settings', 'Error creating user: {message}', {
+					message: t('settings', 'A valid email must be provided')
+				}));
+				return false;
+			}
 		}
 
 		var promise;
@@ -1014,17 +1027,19 @@ $(document).ready(function () {
 		}
 	});
 
-	if ($('#CheckboxMailOnUserCreate').is(':checked')) {
-		$("#newemail").show();
+	if ($('#CheckBoxPasswordOnUserCreate').is(':checked')) {
+		$("#newuserpassword").show();
 	}
 	// Option to display/hide the "E-Mail" input field
-	$('#CheckboxMailOnUserCreate').click(function() {
-		if ($('#CheckboxMailOnUserCreate').is(':checked')) {
-			$("#newemail").show();
-			OC.AppConfig.setValue('core', 'umgmt_send_email', 'true');
+	$('#CheckBoxPasswordOnUserCreate').click(function () {
+		if ($('#CheckBoxPasswordOnUserCreate').is(':checked')) {
+			OC.AppConfig.setValue('core', 'umgmt_set_password', 'true');
+			$('#newemail').hide();
+			$('#newuserpassword').show();
 		} else {
-			$("#newemail").hide();
-			OC.AppConfig.setValue('core', 'umgmt_send_email', 'false');
+			OC.AppConfig.setValue('core', 'umgmt_set_password', 'false');
+			$('#newemail').show();
+			$("#newuserpassword").hide();
 		}
 	});
 
