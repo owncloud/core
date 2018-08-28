@@ -201,6 +201,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user browses directly to display the :tabName details of file :fileName in folder :folderName
+	 * @Given the user has browsed directly to display the :tabName details of file :fileName in folder :folderName
 	 *
 	 * @param string $tabName
 	 * @param string $fileName
@@ -333,6 +334,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When /^the user creates a folder with the (invalid|)\s?name ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
+	 * @Given /^the user has created a folder with the (invalid|)\s?name ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
 	 *
 	 * @param string $invalid contains "invalid"
 	 *                        if the folder creation is expected to fail
@@ -376,6 +378,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user creates a folder with the following name using the webUI
+	 * @Given the user has created a folder with the following name using the webUI
 	 *
 	 * @param TableNode $namePartsTable table of parts of the file name
 	 *                                  table headings: must be: |name-parts |
@@ -839,6 +842,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	/**
 	 * @When the user chooses :label in the upload dialog
 	 * @When I click the :label button
+	 * @Given the user has chosen :label in the upload dialog
+	 * @Given I have clicked the :label button
 	 *
 	 * @param string $label
 	 *
@@ -1597,6 +1602,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user enables the setting to view hidden files/folders on the webUI
+	 * @Given the user has enabled the setting to view hidden files/folders on the webUI
 	 * @return void
 	 */
 	public function theUserEnablesTheSettingToViewHiddenFoldersOnTheWebUI() {
