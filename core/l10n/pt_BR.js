@@ -218,6 +218,7 @@ OC.L10N.register(
     "{sharee} (federated)" : "{sharee} (federated)",
     "User and Groups" : "Usuário e Grupos",
     "Public Links" : "Links Públicos",
+    "Sharing is not allowed" : "Não é permitido o compartilhamento",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Compartilhar com usuários em outros ownClouds usando a sintaxe username@example.com/owncloud",
     "Share with users…" : "Compartilhar com os usuários...",
     "Share with users, groups or remote users…" : "Compartilhar com usuários, grupos ou usuários remoto…",
