@@ -31,7 +31,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
+/** @phan-file-suppress PhanUndeclaredMethod */
 /** @var $application Symfony\Component\Console\Application */
 $application->add(new OC\Core\Command\Status);
 $application->add(new OC\Core\Command\Check(\OC::$server->getConfig()));
