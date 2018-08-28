@@ -27,6 +27,7 @@ that is not academically correct but saves a lot of time
 		Then the file "zzzz-zzzz-will-be-at-the-end-of-the-folder-when-uploaded.txt" should be listed on the webUI
 		And the content of "zzzz-zzzz-will-be-at-the-end-of-the-folder-when-uploaded.txt" should be the same as the local "zzzz-zzzz-will-be-at-the-end-of-the-folder-when-uploaded.txt"
 
+	@smokeTest
 	Scenario Outline: upload a new file into a sub folder
 		Given a file with the size of "3000" bytes and the name "0" has been created locally
 		When the user opens the folder <folder-to-upload-to> using the webUI

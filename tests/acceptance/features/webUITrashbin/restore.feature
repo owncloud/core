@@ -12,6 +12,7 @@ So that I can recover accidentally deleted files/folders in ownCloud
 		And the user has logged in with username "user1" and password "1234" using the webUI
 		And the user has browsed to the files page
 
+	@smokeTest
 	Scenario: Restore files
 		When the user deletes the file "data.zip" using the webUI
 		Then the file "data.zip" should be listed in the trashbin on the webUI
@@ -28,6 +29,7 @@ So that I can recover accidentally deleted files/folders in ownCloud
 		When the user browses to the files page
 		Then the folder "folder with space" should be listed on the webUI
 
+	@smokeTest
 	Scenario: Select some trashbin files and restore them in a batch
 		Given the following files have been deleted
 			| name          |

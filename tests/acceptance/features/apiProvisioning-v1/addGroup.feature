@@ -7,6 +7,18 @@ So that I can more easily manage access to resources by groups rather than indiv
 	Background:
 		Given using OCS API version "1"
 
+	@smokeTest
+	Scenario Outline: admin creates a group
+		When the administrator sends a group creation request for group "<group_id>" using the provisioning API
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And group "<group_id>" should exist
+		Examples:
+			| group_id            | comment                                 |
+			| simplegroup         | nothing special here                    |
+			| España              | special European characters             |
+			| नेपाली                                   | Unicode group name                       |
+
 	Scenario Outline: admin creates a group
 		When the administrator sends a group creation request for group "<group_id>" using the provisioning API
 		Then the OCS status code should be "100"
@@ -17,8 +29,6 @@ So that I can more easily manage access to resources by groups rather than indiv
 			| new-group           | dash                                    |
 			| the.group           | dot                                     |
 			| left,right          | comma                                   |
-			| España              | special European characters             |
-			| नेपाली                                   | Unicode group name                       |
 			| 0                   | The "false" group                       |
 			| Finance (NP)        | Space and brackets                      |
 			| Admin&Finance       | Ampersand                               |

@@ -12,6 +12,7 @@ So that I can login with my new password
 		And the user has logged in with username "user1" and password "1234" using the webUI
 		And the user has browsed to the personal general settings page
 
+	@smokeTest
 	Scenario: Change password 
 		When the user changes the password to "passcode" using the webUI
 		And the user re-logs in with username "user1" and password "passcode" using the webUI

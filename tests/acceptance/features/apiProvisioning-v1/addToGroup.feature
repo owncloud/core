@@ -7,6 +7,20 @@ So that I can give a user access to the resources of the group
 	Background:
 		Given using OCS API version "1"
 
+	@smokeTest
+	Scenario Outline: adding a user to a group
+		Given user "brand-new-user" has been created
+		And group "<group_id>" has been created
+		When user "admin" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
+			| groupid | <group_id> |
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		Examples:
+			| group_id            | comment                                 |
+			| simplegroup         | nothing special here                    |
+			| España              | special European characters             |
+			| नेपाली              | Unicode group name                      |
+
 	Scenario Outline: adding a user to a group
 		Given user "brand-new-user" has been created
 		And group "<group_id>" has been created
@@ -19,8 +33,6 @@ So that I can give a user access to the resources of the group
 			| new-group           | dash                                    |
 			| the.group           | dot                                     |
 			| left,right          | comma                                   |
-			| España              | special European characters             |
-			| नेपाली              | Unicode group name                      |
 			| 0                   | The "false" group                       |
 			| Finance (NP)        | Space and brackets                      |
 			| Admin&Finance       | Ampersand                               |

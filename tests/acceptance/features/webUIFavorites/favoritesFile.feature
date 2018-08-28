@@ -13,6 +13,7 @@ So that I can find my favorite file/folder easily
 		And the user has logged in with username "user1" and password "1234" using the webUI
 		And the user has browsed to the files page
 
+	@smokeTest
 	Scenario: mark a file as favorite and list it in favorites page
 		When the user marks the file "data.zip" as favorite using the webUI
 		Then the file "data.zip" should be marked as favorite on the webUI

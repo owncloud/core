@@ -4,6 +4,7 @@ Feature: sharing
 		Given using old DAV path
 		And user "user0" has been created
 
+	@smokeTest
 	@skipOnEncryptionType:user-keys @issue-32322
 	Scenario Outline: Creating a new share with user
 		Given using OCS API version "<ocs_api_version>"
@@ -78,6 +79,7 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
+	@smokeTest
 	Scenario Outline: Creating a new public share of a file with password
 		Given using OCS API version "<ocs_api_version>"
 		When user "user0" creates a share using the sharing API with settings
@@ -228,6 +230,7 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
+	@smokeTest
 	Scenario Outline: Share of folder to a group
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
@@ -280,6 +283,7 @@ Feature: sharing
 			| shareType | 3           |
 		Then the share ids should match
 
+	@smokeTest
 	Scenario: unique target names for incoming shares
 		Given using OCS API version "1"
 		And user "user1" has been created

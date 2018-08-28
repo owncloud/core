@@ -9,6 +9,7 @@ So that ownCloud users cannot share file or folder
 		And user "user0" has been created
 		And user "user1" has been created
 
+	@smokeTest
 	Scenario Outline: user tries to share a file with another user when the sharing api has been disabled
 		Given using OCS API version "<ocs_api_version>"
 		When parameter "shareapi_enabled" of app "core" has been set to "no"
@@ -68,6 +69,7 @@ So that ownCloud users cannot share file or folder
 			|1              |200             |
 			|2              |404             |
 
+	@smokeTest
 	Scenario Outline: user tries to create public share of a folder when the sharing api has been disabled
 		Given using OCS API version "<ocs_api_version>"
 		When parameter "shareapi_enabled" of app "core" has been set to "no"
@@ -79,6 +81,7 @@ So that ownCloud users cannot share file or folder
 			|1              |200             |
 			|2              |404             |
 
+	@smokeTest
 	Scenario Outline: user tries to share a file with user who is not in his group when sharing outside the group has been restricted
 		Given using OCS API version "<ocs_api_version>"
 		And group "grp1" has been created
@@ -123,6 +126,7 @@ So that ownCloud users cannot share file or folder
 			|1              |100            |
 			|2              |200            |
 
+	@smokeTest
 	Scenario Outline: user who is not a member of a group tries to share a file in the group when group sharing has been disabled
 		Given using OCS API version "<ocs_api_version>"
 		And group "grp1" has been created

@@ -7,6 +7,7 @@ So that I can use the app features again
 	Background:
 		Given using OCS API version "1"
 
+	@smokeTest
 	Scenario: Admin enables an app
 		Given the app "comments" has been disabled
 		When the administrator enables the app "comments"

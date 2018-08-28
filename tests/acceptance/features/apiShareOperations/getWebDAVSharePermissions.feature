@@ -6,6 +6,7 @@ Feature: sharing
 		And user "user0" has been created
 		And user "user1" has been created
 
+	@smokeTest
 	Scenario: Correct webdav share-permissions for owned file
 		Given user "user0" has uploaded file with content "foo" to "/tmp.txt"
 		When user "user0" gets the following properties of file "/tmp.txt" using the WebDAV API

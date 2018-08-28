@@ -10,6 +10,7 @@ So that I can store it in owncloud
 		|username|password|displayname|email       |
 		|user1   |1234    |User One   |u1@oc.com.np|
 
+	@smokeTest
 	Scenario: simple upload of a file with the size greater than the size of quota
 		Given the quota of user "user1" has been set to "10 MB"
 		And the user has browsed to the login page

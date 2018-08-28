@@ -16,6 +16,7 @@ Feature: quota
 			| old           |
 			| new           |
 
+	@smokeTest
 	Scenario Outline: Uploading a file as owner having insufficient quota
 		Given using <dav_version> DAV path
 		And user "user0" has been created

@@ -7,6 +7,7 @@ So that I cam manage administrative access rights for groups
 	Background:
 		Given using OCS API version "1"
 
+	@smokeTest
 	Scenario: admin removes subadmin from a group
 		Given user "brand-new-user" has been created
 		And group "new-group" has been created

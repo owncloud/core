@@ -10,6 +10,7 @@ So that users cannot share files
 		|user1   |1234    |User One   |u1@oc.com.np|
 		
 	@TestAlsoOnExternalUserBackend
+	@smokeTest
 	Scenario: Users tries to share via WebUI when Sharing is disabled
 		Given the setting "Allow apps to use the Share API" in the section "Sharing" has been disabled
 		And the user has browsed to the login page

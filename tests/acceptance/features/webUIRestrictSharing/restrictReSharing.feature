@@ -20,6 +20,7 @@ I want to be able to forbid a user that received a share from me to share it fur
 		And the user has logged in with username "user2" and password "1234" using the webUI
 
 	@skipOnMICROSOFTEDGE @TestAlsoOnExternalUserBackend
+	@smokeTest
 	Scenario: share a folder with another internal user and prohibit resharing
 		Given the setting "Allow resharing" in the section "Sharing" has been enabled
 		And the user has browsed to the files page
@@ -30,6 +31,7 @@ I want to be able to forbid a user that received a share from me to share it fur
 		Then it should not be possible to share the folder "simple-folder (2)" using the webUI
 
 	@TestAlsoOnExternalUserBackend
+	@smokeTest
 	Scenario: forbid resharing globally
 		Given the setting "Allow resharing" in the section "Sharing" has been disabled
 		And the user has browsed to the files page

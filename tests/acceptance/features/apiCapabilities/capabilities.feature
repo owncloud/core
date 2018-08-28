@@ -4,12 +4,14 @@ Feature: capabilities
 		Given using OCS API version "1"
 		And as user "admin"
 
+	@smokeTest
 	Scenario: Check that the sharing API can be enabled
 		Given parameter "shareapi_enabled" of app "core" has been set to "no"
 		And the capabilities setting of "files_sharing" path "api_enabled" has been confirmed to be ""
 		When the administrator sets parameter "shareapi_enabled" of app "core" to "yes"
 		Then the capabilities setting of "files_sharing" path "api_enabled" should be "1"
 
+	@smokeTest
 	Scenario: Check that the sharing API can be disabled
 		Given parameter "shareapi_enabled" of app "core" has been set to "yes"
 		And the capabilities setting of "files_sharing" path "api_enabled" has been confirmed to be "1"
@@ -29,6 +31,7 @@ Feature: capabilities
 		When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "no"
 		Then the capabilities setting of "files_sharing" path "group_sharing" should be ""
 
+	@smokeTest
 	Scenario: getting capabilities with admin user
 		When the user retrieves the capabilities using the capabilities API
 		Then the capabilities should contain

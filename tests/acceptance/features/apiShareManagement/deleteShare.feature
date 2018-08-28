@@ -21,6 +21,7 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
+	@smokeTest
 	Scenario Outline: delete a share
 		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has shared file "textfile0.txt" with user "user1"
@@ -72,6 +73,7 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
+	@smokeTest
 	Scenario: deleting a file out of a share as recipient creates a backup for the owner
 		Given using OCS API version "1"
 		And user "user0" has created a folder "/shared"
@@ -99,6 +101,7 @@ Feature: sharing
 		And as "user1" the folder "/sub" should exist in trash
 		And as "user1" the file "/sub/shared_file.txt" should exist in trash
 
+	@smokeTest
 	Scenario Outline: unshare from self
 		Given using OCS API version "<ocs_api_version>"
 		And group "grp1" has been created

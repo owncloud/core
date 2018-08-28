@@ -4,7 +4,8 @@ Feature: sharing
 		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
-	
+
+	@smokeTest
 	Scenario Outline: Sharee can see the share
 		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has shared file "textfile0.txt" with user "user1"
@@ -17,6 +18,7 @@ Feature: sharing
 		|1              |100            |
 		|2              |200            |
 
+	@smokeTest
 	Scenario Outline: Sharee can see the filtered share
 		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has shared file "textfile0.txt" with user "user1"
@@ -30,6 +32,7 @@ Feature: sharing
 		|1              |100            |
 		|2              |200            |
 
+	@smokeTest
 	Scenario Outline: Sharee can't see the share that is filtered out
 		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has shared file "textfile0.txt" with user "user1"
@@ -43,6 +46,7 @@ Feature: sharing
 		|1              |100            |
 		|2              |200            |
 
+	@smokeTest
 	Scenario Outline: Sharee can see the group share
 		Given using OCS API version "<ocs_api_version>"
 		And group "grp1" has been created

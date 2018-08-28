@@ -7,6 +7,7 @@ So that I can give people controlled individual access to resources on the ownCl
 	Background:
 		Given using OCS API version "2"
 
+	@smokeTest
 	Scenario: Create a user
 		Given user "brand-new-user" has been deleted
 		When the administrator sends a user creation request for user "brand-new-user" password "456firstpwd" using the provisioning API

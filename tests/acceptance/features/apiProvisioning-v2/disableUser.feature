@@ -7,6 +7,7 @@ So that I can remove access to files and resources for a user, without actually 
 	Background:
 		Given using OCS API version "2"
 
+	@smokeTest
 	Scenario: admin disables an user
 		Given user "user1" has been created
 		When user "admin" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/user1/disable"
@@ -14,6 +15,7 @@ So that I can remove access to files and resources for a user, without actually 
 		And the HTTP status code should be "200"
 		And user "user1" should be disabled
 
+	@smokeTest
 	Scenario: Subadmin should be able to disable an user in their group
 		Given user "subadmin" has been created
 		And user "user1" has been created
@@ -100,6 +102,7 @@ So that I can remove access to files and resources for a user, without actually 
 		And the HTTP status code should be "400"
 		And user "subadmin" should be enabled
 
+	@smokeTest
 	Scenario: Making a web request with a disabled user
 		Given user "user0" has been created
 		And user "user0" has been disabled

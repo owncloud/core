@@ -17,6 +17,7 @@ Feature: accept/decline shares coming from internal users
 		And user "user2" has been added to group "grp1"
 		And the user has browsed to the login page
 
+	@smokeTest
 	Scenario: Auto-accept disabled results in "Pending" shares
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user2" has shared folder "/simple-folder" with group "grp1"
@@ -60,6 +61,7 @@ Feature: accept/decline shares coming from internal users
 		Then the folder "simple-folder" shared by "User One" should be in state "Pending" in the shared-with-you page on the webUI
 		And the folder "simple-folder" shared by "User Two" should be in state "Pending" in the shared-with-you page on the webUI
 
+	@smokeTest
 	Scenario: accept an offered share
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user2" has shared folder "/simple-folder" with user "user1"
@@ -73,6 +75,7 @@ Feature: accept/decline shares coming from internal users
 		And the folder "simple-folder (2)" should be listed in the files page on the webUI
 		And the file "testimage (2).jpg" should not be listed in the files page on the webUI
 
+	@smokeTest
 	Scenario: decline an offered (pending) share
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user2" has shared folder "/simple-folder" with user "user1"
@@ -84,6 +87,7 @@ Feature: accept/decline shares coming from internal users
 		And the folder "simple-folder (2)" should not be listed in the files page on the webUI
 		And the file "testimage (2).jpg" should not be listed in the files page on the webUI
 
+	@smokeTest
 	Scenario: decline an accepted share (with page-reload in between)
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user2" has shared folder "/simple-folder" with user "user1"
@@ -153,6 +157,7 @@ Feature: accept/decline shares coming from internal users
 		Then the folder "simple-folder (2)" should be in state "Declined" in the shared-with-you page on the webUI
 		And the folder "simple-folder (2)" should not be listed in the files page on the webUI
 
+	@smokeTest
 	Scenario: unshare an accepted share on the "All files" page
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user2" has shared folder "/simple-folder" with user "user1"
@@ -167,6 +172,7 @@ Feature: accept/decline shares coming from internal users
 		And the folder "simple-folder (2)" should be in state "Declined" in the shared-with-you page on the webUI
 		And the file "testimage (2).jpg" should be in state "Declined" in the shared-with-you page on the webUI
 
+	@smokeTest
 	Scenario: Auto-accept shares
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
 		And user "user2" has shared folder "/simple-folder" with group "grp1"

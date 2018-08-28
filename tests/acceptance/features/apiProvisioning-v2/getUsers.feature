@@ -7,6 +7,7 @@ So that I can see who has access to ownCloud
 	Background:
 		Given using OCS API version "2"
 
+	@smokeTest
 	Scenario: admin gets all users
 		Given user "brand-new-user" has been created
 		When user "admin" sends HTTP method "GET" to OCS API endpoint "/cloud/users"
@@ -16,6 +17,7 @@ So that I can see who has access to ownCloud
 			| brand-new-user |
 			| admin          |
 
+	@smokeTest
 	Scenario: subadmin gets the users in his group
 		Given user "brand-new-user" has been created
 		And user "another-new-user" has been created

@@ -7,6 +7,7 @@ So that I can give a user access to their files and resources again if they are 
 	Background:
 		Given using OCS API version "1"
 
+	@smokeTest
 	Scenario: admin enables an user
 		Given user "user1" has been created
 		And user "user1" has been disabled

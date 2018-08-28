@@ -12,6 +12,7 @@ So that I can organise my data structure
 		And the user has logged in with username "user1" and password "1234" using the webUI
 		And the user has browsed to the files page
 
+	@smokeTest
 	Scenario: Create a folder inside another folder
 		When the user creates a folder with the name "top-folder" using the webUI
 		And the user opens the folder "top-folder" using the webUI

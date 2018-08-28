@@ -7,6 +7,7 @@ So that I can see all the groups in my ownCloud
 	Background:
 		Given using OCS API version "1"
 
+	@smokeTest
 	Scenario: admin gets all the groups
 		Given group "0" has been created
 		And group "new-group" has been created

@@ -6,6 +6,7 @@ So that I can get information about user
 	Background:
 		Given using OCS API version "2"
 
+	@smokeTest
 	Scenario: admin gets an existing user
 		Given user "brand-new-user" has been created
 		When user "admin" sends HTTP method "GET" to OCS API endpoint "/cloud/users/brand-new-user"
@@ -19,6 +20,7 @@ So that I can get information about user
 		And the HTTP status code should be "404"
 		And the API should not return any data
 
+	@smokeTest
 	Scenario: subadmin gets information of a user in his group
 		Given user "subadmin" has been created
 		And user "newuser" has been created
@@ -50,6 +52,7 @@ So that I can get information about user
 		And the HTTP status code should be "401"
 		And the API should not return any data
 
+	@smokeTest
 	Scenario: normal user gets his own information
 		Given user "newuser" has been created
 		When user "newuser" sends HTTP method "GET" to OCS API endpoint "/cloud/users/newuser"
