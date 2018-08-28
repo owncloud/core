@@ -550,7 +550,8 @@ class ShareesTest extends TestCase {
 			$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 			$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
 			$this->shareManager,
-			$this->sharingBlacklist
+			$this->sharingBlacklist,
+			$this->getMockBuilder(FederatedShareProvider::class)->disableOriginalConstructor()->getMock()
 		);
 		$this->invokePrivate($this->sharees, 'limit', [2]);
 		$this->invokePrivate($this->sharees, 'offset', [0]);
