@@ -589,8 +589,7 @@ class ShareesController extends OCSController {
 			if ($itemType === 'file' || $itemType === 'folder') {
 				return $this->federatedShareProvider->isOutgoingServer2serverShareEnabled();
 			}
-			$backend = Share::getBackend($itemType);
-			return $backend->isShareTypeAllowed(Share::SHARE_TYPE_REMOTE);
+			return false;
 		} catch (\Exception $e) {
 			return false;
 		}

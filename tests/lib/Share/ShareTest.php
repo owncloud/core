@@ -82,7 +82,6 @@ class ShareTest extends \Test\TestCase {
 		$g2->addUser($u4);
 		$gAU->addUser($u2);
 		$gAU->addUser($u3);
-		\OCP\Share::registerBackend('test', 'Test\Share\Backend');
 		\OC_Hook::clear('OCP\\Share');
 		\OC::registerShareHooks();
 		$this->resharing = \OC::$server->getAppConfig()->getValue('core', 'shareapi_allow_resharing', 'yes');

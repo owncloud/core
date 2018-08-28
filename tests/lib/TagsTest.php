@@ -287,7 +287,6 @@ class TagsTest extends TestCase {
 
 	public function testShareTags() {
 		$testTag = 'TestTag';
-		\OCP\Share::registerBackend('test', 'Test\Share\Backend');
 
 		$tagger = $this->tagMgr->load('test');
 		$tagger->tagAs(1, $testTag);
