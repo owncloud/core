@@ -229,34 +229,6 @@ class Share extends \OC\Share\Constants {
 	}
 
 	/**
-	 * Unshare an item from a user, group, or delete a private link
-	 * @param string $itemType
-	 * @param string $itemSource
-	 * @param int $shareType SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
-	 * @param string $shareWith User or group the item is being shared with
-	 * @param string $owner owner of the share, if null the current user is used
-	 * @return boolean true on success or false on failure
-	 * @since 5.0.0 - parameter $owner was added in 8.0.0
-	 */
-	public static function unshare($itemType, $itemSource, $shareType, $shareWith, $owner = null) {
-		return \OC\Share\Share::unshare($itemType, $itemSource, $shareType, $shareWith, $owner);
-	}
-
-	/**
-	 * Unshare an item shared with the current user
-	 * @param string $itemType
-	 * @param string $itemOrigin Item target or source
-	 * @param boolean $originIsSource true if $itemOrigin is the source, false if $itemOrigin is the target (optional)
-	 * @return boolean true on success or false on failure
-	 *
-	 * Unsharing from self is not allowed for items inside collections
-	 * @since 5.0.0 - parameter $originIsSource was added in 8.0.0
-	 */
-	public static function unshareFromSelf($itemType, $itemOrigin, $originIsSource = false) {
-		return \OC\Share\Share::unshareFromSelf($itemType, $itemOrigin, $originIsSource);
-	}
-
-	/**
 	 * sent status if users got informed by mail about share
 	 * @param string $itemType
 	 * @param string $itemSource
