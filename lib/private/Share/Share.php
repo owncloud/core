@@ -625,38 +625,6 @@ class Share extends Constants {
 	}
 
 	/**
-	 * Unshare an item from all users, groups, and remove all links
-	 * @param string $itemType
-	 * @param string $itemSource
-	 * @return boolean true on success or false on failure
-	 */
-	public static function unshareAll($itemType, $itemSource) {
-		// Get all of the owners of shares of this item.
-		$query = \OC_DB::prepare('SELECT `uid_owner` from `*PREFIX*share` WHERE `item_type`=? AND `item_source`=?');
-		$result = $query->execute([$itemType, $itemSource]);
-		$shares = [];
-		// Add each owner's shares to the array of all shares for this item.
-		while ($row = $result->fetchRow()) {
-			$shares = \array_merge($shares, self::getItems($itemType, $itemSource, null, null, $row['uid_owner']));
-		}
-		if (!empty($shares)) {
-			// Pass all the vars we have for now, they may be useful
-			$hookParams = [
-				'itemType' => $itemType,
-				'itemSource' => $itemSource,
-				'shares' => $shares,
-			];
-			\OC_Hook::emit('OCP\Share', 'pre_unshareAll', $hookParams);
-			foreach ($shares as $share) {
-				self::unshareItem($share);
-			}
-			\OC_Hook::emit('OCP\Share', 'post_unshareAll', $hookParams);
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Unshare an item shared with the current user
 	 * @param string $itemType
 	 * @param string $itemOrigin Item target or source

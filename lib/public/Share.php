@@ -257,17 +257,6 @@ class Share extends \OC\Share\Constants {
 	}
 
 	/**
-	 * Unshare an item from all users, groups, and remove all links
-	 * @param string $itemType
-	 * @param string $itemSource
-	 * @return boolean true on success or false on failure
-	 * @since 5.0.0
-	 */
-	public static function unshareAll($itemType, $itemSource) {
-		return \OC\Share\Share::unshareAll($itemType, $itemSource);
-	}
-
-	/**
 	 * Unshare an item shared with the current user
 	 * @param string $itemType
 	 * @param string $itemOrigin Item target or source
