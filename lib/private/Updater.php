@@ -58,6 +58,9 @@ class Updater extends BasicEmitter {
 	/** @var Checker */
 	private $checker;
 
+	/** @var bool */
+	private $forceMajorUpgrade = false;
+
 	private $logLevelNames = [
 		0 => 'Debug',
 		1 => 'Info',
@@ -105,6 +108,7 @@ class Updater extends BasicEmitter {
 
 		$success = true;
 		try {
+			$this->checkAppsCompatibility();
 			$this->doUpgrade($currentVersion, $installedVersion);
 		} catch (\Exception $exception) {
 			$this->log->logException($exception, ['app' => 'core']);
@@ -185,6 +189,34 @@ class Updater extends BasicEmitter {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param $forceMajorUpgrade
+	 */
+	public function setForceMajorUpgrade($forceMajorUpgrade) {
+		$this->forceMajorUpgrade = $forceMajorUpgrade;
+	}
+
+	/**
+	 * Check if we have empty app folders or incompatible apps enabled
+	 */
+	private function checkAppsCompatibility() {
+		$dispatcher = \OC::$server->getEventDispatcher();
+		// App compatibility check
+		$repair = new Repair(
+			[
+				new Repair\Apps(
+					\OC::$server->getAppManager(),
+					$dispatcher,
+					$this->config,
+					new \OC_Defaults(),
+					$this->forceMajorUpgrade
+				),
+			],
+			$dispatcher
+		);
+		$repair->run();
 	}
 
 	/**
