@@ -7,6 +7,7 @@ So that I can change user information
 	Background:
 		Given using OCS API version "1"
 
+	@smokeTest
 	Scenario: Edit a user
 		Given user "brand-new-user" has been created
 		When user "admin" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/brand-new-user" with body
@@ -36,6 +37,7 @@ So that I can change user information
 		And the user attributes returned by the API should include
 			| email | brand-new-user@example.com |
 
+	@smokeTest
 	Scenario: subadmin should be able to edit the user information in his group
 		Given user "subadmin" has been created
 		And user "brand-new-user" has been created

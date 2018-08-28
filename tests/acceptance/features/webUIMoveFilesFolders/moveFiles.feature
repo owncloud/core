@@ -17,6 +17,7 @@ So that I can organise my data structure
 		Then near the file "data.zip" a tooltip with the text 'File name cannot contain "/".' should be displayed on the webUI
 
 	@skipOnFIREFOX
+	@smokeTest
 	Scenario: move a file into a folder
 		When the user moves the file "data.zip" into the folder "simple-empty-folder" using the webUI
 		Then the file "data.zip" should not be listed on the webUI
@@ -47,6 +48,7 @@ So that I can organise my data structure
 		And the file "strängé filename (duplicate #2 &).txt" should be listed on the webUI
 
 	@skipOnFIREFOX
+	@smokeTest
 	Scenario: Move multiple files at once
 		When the user batch moves these files into the folder "simple-empty-folder" using the webUI
 		| name        |

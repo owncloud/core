@@ -25,6 +25,7 @@ So that I can efficiently share my files with other users or groups
 		And the user has browsed to the login page
 
 	@skipOnLDAP @user_ldap-issue-175
+	@smokeTest
 	Scenario: autocompletion of regular existing users
 		Given the user has logged in with username "regularuser" and password "1234" using the webUI
 		And the user has browsed to the files page
@@ -34,6 +35,7 @@ So that I can efficiently share my files with other users or groups
 		And the users own name should not be listed in the autocomplete list on the webUI
 
 	@skipOnLDAP
+	@smokeTest
 	Scenario: autocompletion of regular existing groups
 		Given the user has logged in with username "regularuser" and password "1234" using the webUI
 		And the user has browsed to the files page

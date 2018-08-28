@@ -28,6 +28,7 @@ Feature: favorite
 			| old           |
 			| new           |
 
+    @smokeTest
     Scenario Outline: Favorite a file
         Given using <dav_version> DAV path
         And user "user0" has been created
@@ -40,6 +41,7 @@ Feature: favorite
 			| old           |
 			| new           |
 
+    @smokeTest
     Scenario Outline: Favorite and unfavorite a file
         Given using <dav_version> DAV path
         And user "user0" has been created
@@ -53,6 +55,7 @@ Feature: favorite
 			| old           |
 			| new           |
 
+    @smokeTest
     Scenario Outline: Get favorited elements of a folder
         Given using <dav_version> DAV path
         And user "user0" has been created

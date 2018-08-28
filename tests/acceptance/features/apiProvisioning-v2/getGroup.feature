@@ -7,6 +7,7 @@ So that I can know which users are in a group
 	Background:
 		Given using OCS API version "2"
 
+	@smokeTest
 	Scenario: admin gets users in the group
 		Given user "brand-new-user" has been created
 		And user "123" has been created
@@ -26,7 +27,8 @@ So that I can know which users are in a group
 		Then the OCS status code should be "200"
 		And the HTTP status code should be "200"
 		And the list of users returned by the API should be empty
-		
+
+	@smokeTest
 	Scenario: subadmin gets users in a group he is responsible for
 		Given user "user1" has been created
 		And user "user2" has been created

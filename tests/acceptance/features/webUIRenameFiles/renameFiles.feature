@@ -12,6 +12,7 @@ So that I can organise my data structure
 		And the user has logged in with username "user1" and password "1234" using the webUI
 		And the user has browsed to the files page
 
+	@smokeTest
 	Scenario Outline: Rename a file using special characters
 		When the user renames the file "lorem.txt" to <to_file_name> using the webUI
 		Then the file <to_file_name> should be listed on the webUI
@@ -33,6 +34,7 @@ So that I can organise my data structure
 		|"strängé filename (duplicate #2 &).txt"|"strängé filename (duplicate #3).txt"|
 		|"'single'quotes.txt"                 |"single-quotes.txt"                  |
 
+	@smokeTest
 	Scenario: Rename a file using special characters and check its existence after page reload
 		When the user renames the file "lorem.txt" to "लोरेम।तयक्स्त $%&" using the webUI
 		And the user reloads the current page of the webUI

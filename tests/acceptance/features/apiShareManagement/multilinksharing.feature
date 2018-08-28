@@ -6,6 +6,7 @@ Feature: multilinksharing
 		And user "user0" has been created
 		And as user "user0"
 
+	@smokeTest
 	Scenario Outline: Creating three public shares of a folder
 		Given using OCS API version "<ocs_api_version>"
 		And the user has created a share with settings

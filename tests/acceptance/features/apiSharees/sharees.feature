@@ -10,6 +10,7 @@ Feature: sharees
 		And group "ShareeGroup2" has been created
 		And user "user1" has been added to group "ShareeGroup2"
 
+	@smokeTest
 	Scenario: Search without exact match
 		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | sharee |

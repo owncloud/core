@@ -7,6 +7,7 @@ So that I can stop the app features being used
 	Background:
 		Given using OCS API version "1"
 
+	@smokeTest
 	Scenario: Admin disables an app
 		Given the app "comments" has been enabled
 		When the administrator disables the app "comments"

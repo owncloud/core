@@ -19,6 +19,7 @@ Feature: Display notifications when receiving a share
 		And user "user1" has been added to group "grp1"
 		And user "user2" has been added to group "grp1"
 
+	@smokeTest
 	Scenario: share to user sends notification
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
 		When user "user0" shares folder "/PARENT" with user "user1" using the sharing API

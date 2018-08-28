@@ -6,6 +6,7 @@ Feature: sharing
 		And user "user0" has been created
 		And user "user1" has been created
 
+	@smokeTest
 	Scenario: moving a file into a share as recipient
 		Given user "user0" has created a folder "/shared"
 		And user "user0" has shared folder "/shared" with user "user1"
@@ -13,6 +14,7 @@ Feature: sharing
 		Then as "user1" the file "/shared/shared_file.txt" should exist
 		And as "user0" the file "/shared/shared_file.txt" should exist
 
+	@smokeTest
 	Scenario: moving a file out of a share as recipient creates a backup for the owner
 		Given user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"

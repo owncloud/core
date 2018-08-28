@@ -8,6 +8,7 @@ Feature: download file
     Given using OCS API version "1"
     And user "user0" has been created
 
+  @smokeTest
   Scenario Outline: download a file
     Given using <dav_version> DAV path
     When user "user0" downloads the file "/textfile0.txt" using the WebDAV API
@@ -50,6 +51,7 @@ Feature: download file
       | old         |
       | new         |
 
+  @smokeTest
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
     When user "user0" downloads the file "/welcome.txt" using the WebDAV API

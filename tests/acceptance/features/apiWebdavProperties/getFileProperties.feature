@@ -8,6 +8,7 @@ Feature: get file properties
     Given using OCS API version "1"
     And user "user0" has been created
 
+  @smokeTest
   Scenario Outline: Do a PROPFIND of various file names
     Given using <dav_version> DAV path
     And user "user0" has uploaded file with content "uploaded content" to "<file_name>"
@@ -17,14 +18,22 @@ Feature: get file properties
       | dav_version | file_name         |
       | old         | /upload.txt       |
       | old         | /strängé file.txt |
-      | old         | /C++ file.cpp     |
       | old         | /नेपाली.txt       |
-      | old         | /file #2.txt      |
-      | old         | /file ?2.txt      |
       | new         | /upload.txt       |
       | new         | /strängé file.txt |
-      | new         | /C++ file.cpp     |
       | new         | /नेपाली.txt       |
+
+  Scenario Outline: Do a PROPFIND of various file names
+    Given using <dav_version> DAV path
+    And user "user0" has uploaded file with content "uploaded content" to "<file_name>"
+    When user "user0" gets the properties of file "<file_name>" using the WebDAV API
+    Then the properties response should contain an etag
+    Examples:
+      | dav_version | file_name         |
+      | old         | /C++ file.cpp     |
+      | old         | /file #2.txt      |
+      | old         | /file ?2.txt      |
+      | new         | /C++ file.cpp     |
       | new         | /file #2.txt      |
       | new         | /file ?2.txt      |
 
@@ -153,6 +162,7 @@ Feature: get file properties
       | old         |
       | new         |
 
+  @smokeTest
   Scenario Outline: Retrieving private link
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
