@@ -48,7 +48,7 @@ class Capabilities implements ICapability {
 			]
 		];
 
-		if ($this->config->getSystemValue('dav.enable.async', true)) {
+		if ($this->config->getSystemValue('dav.enable.async', false)) {
 			$cap['async'] = '1.0';
 		}
 
