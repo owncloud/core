@@ -137,6 +137,8 @@ trait BasicStructure {
 	 * @var string|null
 	 */
 	private $sourceIpAddress = null;
+	
+	private $guzzleClientHeaders = [];
 
 	/**
 	 * BasicStructure constructor.
@@ -329,6 +331,29 @@ trait BasicStructure {
 	 */
 	public function setSourceIpAddress($sourceIpAddress) {
 		$this->sourceIpAddress = $sourceIpAddress;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getGuzzleClientHeaders() {
+		return $this->guzzleClientHeaders;
+	}
+	
+	/**
+	 * @param array $guzzleClientHeaders ['X-Foo' => 'Bar']
+	 */
+	public function setGuzzleClientHeaders($guzzleClientHeaders) {
+		$this->guzzleClientHeaders = $guzzleClientHeaders;
+	}
+
+	/**
+	 * @param array $guzzleClientHeaders ['X-Foo' => 'Bar']
+	 */
+	public function addGuzzleClientHeaders($guzzleClientHeaders) {
+		$this->guzzleClientHeaders = \array_merge(
+			$this->guzzleClientHeaders, $guzzleClientHeaders
+		);
 	}
 
 	/**
@@ -690,6 +715,10 @@ trait BasicStructure {
 			$options['auth'] = [$user, $password];
 		}
 		
+		if (!empty($this->guzzleClientHeaders)) {
+			$options ['headers'] = $this->guzzleClientHeaders;
+		}
+		
 		if ($this->sourceIpAddress !== null) {
 			$options ['config'] = [
 				'curl' => [
@@ -856,6 +885,10 @@ trait BasicStructure {
 		// Request a new session and extract CSRF token
 		$client = new Client();
 		$options = [];
+		if (!empty($this->guzzleClientHeaders)) {
+			$options ['headers'] = $this->guzzleClientHeaders;
+		}
+		
 		if ($this->sourceIpAddress !== null) {
 			$options ['config'] = [
 				'curl' => [
@@ -891,6 +924,10 @@ trait BasicStructure {
 	public function sendingAToWithRequesttoken($method, $url) {
 		$client = new Client();
 		$options = [];
+		if (!empty($this->guzzleClientHeaders)) {
+			$options ['headers'] = $this->guzzleClientHeaders;
+		}
+		
 		if ($this->sourceIpAddress !== null) {
 			$options ['config'] = [
 				'curl' => [
@@ -922,6 +959,10 @@ trait BasicStructure {
 	public function sendingAToWithoutRequesttoken($method, $url) {
 		$client = new Client();
 		$options = [];
+		if (!empty($this->guzzleClientHeaders)) {
+			$options ['headers'] = $this->guzzleClientHeaders;
+		}
+		
 		if ($this->sourceIpAddress !== null) {
 			$options ['config'] = [
 				'curl' => [
@@ -1070,6 +1111,10 @@ trait BasicStructure {
 		$fullUrl = $this->getBaseUrl() . "/status.php";
 		$client = new Client();
 		$options = [];
+		if (!empty($this->guzzleClientHeaders)) {
+			$options ['headers'] = $this->guzzleClientHeaders;
+		}
+		
 		if ($this->sourceIpAddress !== null) {
 			$options ['config'] = [
 				'curl' => [
