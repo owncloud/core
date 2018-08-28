@@ -1671,7 +1671,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	/**
 	 * @return IShutdownManager
 	 * @throws QueryException
-	 * @since 11.0.0
+	 * @since 10.0.10
 	 */
 	public function getShutdownHandler() {
 		return $this->query(ShutDownManager::class);
