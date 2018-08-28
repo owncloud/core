@@ -154,11 +154,20 @@ pipeline:
       matrix:
         TEST_OBJECTSTORAGE: true
 
-  php-phan:
+  php-phan-71:
     image: owncloudci/php:7.1
     pull: true
     commands:
-      - make test-php-phan
+    - make test-php-phan
+    when:
+      matrix:
+        TEST_SUITE: phan
+
+  php-phan-72:
+    image: owncloudci/php:7.2
+    pull: true
+    commands:
+    - make test-php-phan
     when:
       matrix:
         TEST_SUITE: phan
