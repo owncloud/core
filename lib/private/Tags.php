@@ -97,14 +97,6 @@ class Tags implements \OCP\ITags {
 	 */
 	private $mapper;
 
-	/**
-	 * The sharing backend for objects of $this->type. Required if
-	 * $this->includeShared === true to determine ownership of items.
-	 *
-	 * @var \OCP\Share_Backend
-	 */
-	private $backend;
-
 	const TAG_TABLE = '*PREFIX*vcategory';
 	const RELATION_TABLE = '*PREFIX*vcategory_to_object';
 
@@ -123,12 +115,8 @@ class Tags implements \OCP\ITags {
 		$this->mapper = $mapper;
 		$this->user = $user;
 		$this->type = $type;
-		$this->includeShared = $includeShared;
+		$this->includeShared = false; // obsolete
 		$this->owners = [$this->user];
-		if ($this->includeShared) {
-			$this->owners = \array_merge($this->owners, \OC\Share\Share::getSharedItemsOwners($this->user, $this->type, true));
-			$this->backend = \OC\Share\Share::getBackend($this->type);
-		}
 		$this->tags = $this->mapper->loadTags($this->owners, $this->type);
 
 		if (\count($defaultTags) > 0 && \count($this->tags) === 0) {
@@ -297,20 +285,7 @@ class Tags implements \OCP\ITags {
 			while ($row = $result->fetchRow()) {
 				$id = (int)$row['objid'];
 
-				if ($this->includeShared) {
-					// We have to check if we are really allowed to access the
-					// items that are tagged with $tag. To that end, we ask the
-					// corresponding sharing backend if the item identified by $id
-					// is owned by any of $this->owners.
-					foreach ($this->owners as $owner) {
-						if ($this->backend->isValidSource($id, $owner)) {
-							$ids[] = $id;
-							break;
-						}
-					}
-				} else {
-					$ids[] = $id;
-				}
+				$ids[] = $id;
 			}
 		}
 
