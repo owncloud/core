@@ -471,13 +471,13 @@ describe('OCA.Sharing.Util tests', function() {
 	});
 
 	describe('ShareTabView interaction', function() {
-		var shareTabSpy;
+		var onSpy;
 		var fileInfoModel;
 		var configModel;
 		var shareModel;
 
 		beforeEach(function() {
-			shareTabSpy = sinon.spy(OCA.Sharing, 'ShareTabView');
+			onSpy = sinon.spy(OCA.Sharing.ShareTabView.prototype, 'on');
 
 			var attributes = {
 				itemType: 'file',
@@ -530,14 +530,14 @@ describe('OCA.Sharing.Util tests', function() {
 			fileList.setFiles(testFiles);
 		});
 		afterEach(function() { 
-			shareTabSpy.restore(); 
+			onSpy.restore();
 		});
 
 		it('updates fileInfoModel when shares changed', function() {
 			var changeHandler = sinon.stub();
 			fileInfoModel.on('change', changeHandler);
 
-			shareTabSpy.getCall(0).thisValue.trigger('sharesChanged', shareModel);
+			onSpy.thisValues[0].trigger('sharesChanged', shareModel);
 
 			expect(changeHandler.calledOnce).toEqual(true);
 			expect(changeHandler.getCall(0).args[0].changed).toEqual({
