@@ -318,8 +318,10 @@ OC.FileUpload.prototype = {
 			true,
 			headers
 		).then(function (status, response) {
+			// a 202 response means the server is performing the final MOVE in an async manner,
+			// so we need to poll its status
 			if (status === 202) {
-				function poll() {
+				var poll = function() {
 					$.ajax(response.xhr.getResponseHeader('oc-jobstatus-location')).then(function(data) {
 						var obj = JSON.parse(data);
 						if (obj.status === 'finished') {
@@ -333,8 +335,8 @@ OC.FileUpload.prototype = {
 							// call it again after some short delay
 							setTimeout(poll, 1000);
 						}
-					})
-				}
+					});
+				};
 
 				// start the polling
 				poll();

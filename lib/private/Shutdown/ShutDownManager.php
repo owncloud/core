@@ -45,7 +45,7 @@ class ShutDownManager implements IShutdownManager {
 	 * @param \Closure $callback
 	 * @param int $priority - the lower the number the higher is the priority
 	 * @return void
-	 * @since 11.0.0
+	 * @since 10.0.10
 	 */
 	public function register(\Closure $callback, $priority = self::LOW) {
 		if (!isset($this->callbacks[$priority])) {
