@@ -33,6 +33,7 @@ use OCP\Migration\ISqlMigration;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
+use OCP\ILogger;
 
 class MigrationService {
 
