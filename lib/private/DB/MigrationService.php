@@ -46,6 +46,8 @@ class MigrationService {
 	private $connection;
 	/** @var string */
 	private $appName;
+	/** @var ILogger */
+	private $logger;
 
 	/**
 	 * MigrationService constructor.
