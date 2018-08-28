@@ -45,6 +45,8 @@ trait Ip {
 
 	private $ipv4Url;
 	private $ipv6Url;
+	
+	private $guzzleClientHeaders = [];
 
 	/**
 	 * returns the base URL that matches the currently selected source IP
@@ -61,6 +63,28 @@ trait Ip {
 		return $this->baseUrlForSourceIp;
 	}
 
+	/**
+	 * @return array
+	 */
+	public function getGuzzleClientHeaders() {
+		return $this->guzzleClientHeaders;
+	}
+	
+	/**
+	 * @param array $guzzleClientHeaders ['X-Foo' => 'Bar']
+	 */
+	public function setGuzzleClientHeaders($guzzleClientHeaders) {
+		$this->guzzleClientHeaders = $guzzleClientHeaders;
+	}
+
+	/**
+	 * @param array $guzzleClientHeaders ['X-Foo' => 'Bar']
+	 */
+	public function addGuzzleClientHeaders($guzzleClientHeaders) {
+		$this->guzzleClientHeaders = \array_merge(
+			$this->guzzleClientHeaders, $guzzleClientHeaders
+		);
+	}
 	/**
 	 * @When the client accesses the server from a :networkScope :ipAddressFamily address
 	 *
@@ -98,6 +122,20 @@ trait Ip {
 		$this->featureContext->setSourceIpAddress($sourceIpAddress);
 	}
 
+	/**
+	 * @When the client accesses the server from IP address :sourceIpAddress using X-Forwarded-For header
+	 *
+	 * @param string $sourceIpAddress an IPv4 or IPv6 address
+	 *
+	 * @return void
+	 */
+	public function theClientAccessesTheServerFromIpAddressUsingXForwardedForHeader(
+		$sourceIpAddress
+	) {
+		$this->addGuzzleClientHeaders(["X-Forwarded-For" => $sourceIpAddress]);
+		$this->featureContext->addGuzzleClientHeaders(["X-Forwarded-For" => $sourceIpAddress]);
+	}
+	
 	/**
 	 * @BeforeScenario
 	 *
