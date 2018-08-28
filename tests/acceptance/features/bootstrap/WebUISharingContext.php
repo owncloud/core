@@ -286,6 +286,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user types :input in the share-with-field
+	 * @Given the user has typed :input in the share-with-field
 	 *
 	 * @param string $input
 	 *
@@ -401,6 +402,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the public accesses the last created public link using the webUI
+	 * @Given the public has accessed the last created public link using the webUI
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -420,6 +422,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the public adds the public link to :server as user :username with the password :password using the webUI
+	 * @Given the public has added the public link to :server as user :username with the password :password using the webUI
 	 *
 	 * @param string $server
 	 * @param string $username
@@ -443,6 +446,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When /^the user (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the webUI$/
+	 * @Given /^the user has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)" using the webUI$/
 	 *
 	 * @param string $action
 	 * @param string $share
@@ -461,7 +465,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$found = false;
 		foreach ($fileRows as $fileRow) {
 			if ($offeredBy === $fileRow->getSharer()) {
-				if ($action === "accepts") {
+				if (\substr($action, 0, 6) === "accept") {
 					$fileRow->acceptShare($this->getSession());
 				} else {
 					$fileRow->declineShare($this->getSession());

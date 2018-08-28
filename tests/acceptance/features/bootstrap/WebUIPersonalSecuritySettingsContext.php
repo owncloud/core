@@ -118,6 +118,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 
 	/**
 	 * @When the user re-logs in with username :username and generated app password using the webUI
+	 * @Given the user has re-logged in with username :username and generated app password using the webUI
 	 *
 	 * @param string $username
 	 *
@@ -131,6 +132,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 
 	/**
 	 * @When the user deletes the app password
+	 * @Given the user has deleted the app password
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -148,6 +150,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 
 	/**
 	 * @When the user re-logs in with username :username and deleted app password using the webUI
+	 * @Given the user has re-logged in with username :username and deleted app password using the webUI
 	 *
 	 * @param string $username
 	 *

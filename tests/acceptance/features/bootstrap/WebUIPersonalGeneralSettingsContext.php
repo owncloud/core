@@ -78,6 +78,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * if the expected page is not actually reached.
 	 *
 	 * @When /^the user attempts to browse to the personal general settings page$/
+	 * @Given /^the user has attempted to browse to the personal general settings page$/
 	 *
 	 * @return void
 	 */
@@ -91,6 +92,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 
 	/**
 	 * @When the user changes the language to :language using the webUI
+	 * @Given the user has changed the language to :language using the webUI
 	 *
 	 * @param string $language
 	 *
@@ -105,6 +107,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 
 	/**
 	 * @When the user changes the password to :newPassword using the webUI
+	 * @Given the user has changed the password to :newPassword using the webUI
 	 *
 	 * @param string $newPassword
 	 *
@@ -121,6 +124,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	
 	/**
 	 * @When the user changes the password to :newPassword entering the wrong current password using the webUI
+	 * @Given the user has changed the password to :newPassword entering the wrong current password using the webUI
 	 *
 	 * @param string $newPassword
 	 *
@@ -137,6 +141,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 
 	/**
 	 * @When the user changes the full name to :newFullname using the webUI
+	 * @Given the user has changed the full name to :newFullname using the webUI
 	 *
 	 * @param string $newFullname
 	 *
@@ -150,6 +155,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 
 	/**
 	 * @When the user changes the email address to :emailAddress using the webUI
+	 * @Given the user has changed the email address to :emailAddress using the webUI
 	 *
 	 * @param string $emailAddress
 	 *
@@ -163,6 +169,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 
 	/**
 	 * @When the user follows the email change confirmation link received by :emailAddress using the webUI
+	 * @Given the user has followed the email change confirmation link received by :emailAddress using the webUI
 	 *
 	 * @param string $emailAddress
 	 *
