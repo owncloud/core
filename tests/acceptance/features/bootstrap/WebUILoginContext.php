@@ -72,6 +72,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user re-logs in with username :username and password :password using the webUI
+	 * @Given the user has re-logged in with username :username and password :password using the webUI
 	 *
 	 * @param string $username
 	 * @param string $password
@@ -106,6 +107,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user re-logs in with username :username and password :password to :server using the webUI
+	 * @Given the user has re-logged in with username :username and password :password to :server using the webUI
 	 *
 	 * @param string $username
 	 * @param string $password
@@ -168,6 +170,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user logs in with username :username and password :password using the webUI after a redirect from the :page page
+	 * @Given the user has logged in with username :username and password :password using the webUI after a redirect from the :page page
 	 *
 	 * @param string $username
 	 * @param string $password
@@ -229,6 +232,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user requests the password reset link using the webUI
+	 * @Given the user has requested the password reset link using the webUI
 	 *
 	 * @return void
 	 */
@@ -253,6 +257,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user follows the password reset link from email address :emailAddress
+	 * @Given the user has followed the password reset link from email address :emailAddress
 	 *
 	 * @param string $emailAddress
 	 *
@@ -276,6 +281,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user resets the password to :newPassword using the webUI
+	 * @Given the user has reset the password to :newPassword using the webUI
 	 *
 	 * @param string $newPassword
 	 *
