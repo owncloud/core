@@ -100,6 +100,7 @@ window.oc_appconfig = {
 	core: {}
 };
 window.oc_defaults = {};
+window.oc_requesttoken = 'testrequesttoken';
 
 /* jshint camelcase: true */
 
@@ -155,6 +156,9 @@ window.isPhantom = /phantom/i.test(navigator.userAgent);
 		// custom responses
 		window.fakeServer = fakeServer;
 
+		window.oc_requesttoken = 'testrequesttoken';
+		OC.requestToken = window.oc_requesttoken;
+
 		if (!OC.TestUtil) {
 			OC.TestUtil = TestUtil;
 		}
@@ -163,6 +167,9 @@ window.isPhantom = /phantom/i.test(navigator.userAgent);
 
 		// reset plugins
 		OC.Plugins._plugins = [];
+
+		// reset default Files.Client instance
+		delete OC.Files._defaultClient;
 
 		// dummy select2 (which isn't loaded during the tests)
 		$.fn.select2 = function() { return this; };
