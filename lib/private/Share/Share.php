@@ -76,35 +76,6 @@ class Share extends Constants {
 	 */
 
 	/**
-	 * Register a sharing backend class that implements OCP\Share_Backend for an item type
-	 * @param string $itemType Item type
-	 * @param string $class Backend class
-	 * @param string $collectionOf (optional) Depends on item type
-	 * @param array $supportedFileExtensions (optional) List of supported file extensions if this item type depends on files
-	 * @return boolean true if backend is registered or false if error
-	 */
-	public static function registerBackend($itemType, $class, $collectionOf = null, $supportedFileExtensions = null) {
-		if (self::isEnabled()) {
-			if ($itemType === 'file' || $itemType === 'folder') {
-				throw new \InvalidArgumentException('Item type "' . $itemType . '" not supported by old share API any more');
-			}
-			if (!isset(self::$backendTypes[$itemType])) {
-				self::$backendTypes[$itemType] = [
-					'class' => $class,
-					'collectionOf' => $collectionOf,
-					'supportedFileExtensions' => $supportedFileExtensions
-				];
-				return true;
-			}
-			\OCP\Util::writeLog('OCP\Share',
-				'Sharing backend '.$class.' not registered, '.self::$backendTypes[$itemType]['class']
-				.' is already registered for '.$itemType,
-				\OCP\Util::WARN);
-		}
-		return false;
-	}
-
-	/**
 	 * Check if the Share API is enabled
 	 * @return boolean true if enabled or false
 	 *
