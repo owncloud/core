@@ -91,7 +91,7 @@ class Server {
 		$this->server = new \OCA\DAV\Connector\Sabre\Server($tree);
 
 		$config = \OC::$server->getConfig();
-		if ($config->getSystemValue('dav.enable.async', true)) {
+		if ($config->getSystemValue('dav.enable.async', false)) {
 			$this->server->addPlugin(new LazyOpsPlugin(
 				\OC::$server->getUserSession(),
 				\OC::$server->getURLGenerator(),
