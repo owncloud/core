@@ -25,13 +25,16 @@ namespace OCA\DAV\CalDAV;
 
 use OCA\DAV\DAV\Sharing\IShareable;
 use OCP\IL10N;
-use Sabre\CalDAV\Backend\BackendInterface;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\PropPatch;
+use OCA\DAV\CalDAV\CalDavBackend;
 
+/**
+ * @property CalDavBackend $caldavBackend
+ */
 class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
-	public function __construct(BackendInterface $caldavBackend, $calendarInfo, IL10N $l10n) {
+	public function __construct(CalDavBackend $caldavBackend, $calendarInfo, IL10N $l10n) {
 		parent::__construct($caldavBackend, $calendarInfo);
 
 		if ($this->getName() === BirthdayService::BIRTHDAY_CALENDAR_URI) {
@@ -58,9 +61,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	 * @return void
 	 */
 	public function updateShares(array $add, array $remove) {
-		/** @var CalDavBackend $calDavBackend */
-		$calDavBackend = $this->caldavBackend;
-		$calDavBackend->updateShares($this, $add, $remove);
+		$this->caldavBackend->updateShares($this, $add, $remove);
 	}
 
 	/**
@@ -76,9 +77,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	 * @return array
 	 */
 	public function getShares() {
-		/** @var CalDavBackend $calDavBackend */
-		$calDavBackend = $this->caldavBackend;
-		return $calDavBackend->getShares($this->getResourceId());
+		return $this->caldavBackend->getShares($this->getResourceId());
 	}
 
 	/**
@@ -137,9 +136,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 			];
 		}
 
-		/** @var CalDavBackend $calDavBackend */
-		$calDavBackend = $this->caldavBackend;
-		return $calDavBackend->applyShareAcl($this->getResourceId(), $acl);
+		return $this->caldavBackend->applyShareAcl($this->getResourceId(), $acl);
 	}
 
 	public function getChildACL() {
@@ -164,9 +161,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 				throw new Forbidden();
 			}
 
-			/** @var CalDavBackend $calDavBackend */
-			$calDavBackend = $this->caldavBackend;
-			$calDavBackend->updateShares($this, [], [
+			$this->caldavBackend->updateShares($this, [], [
 				$principal
 			]);
 			return;
