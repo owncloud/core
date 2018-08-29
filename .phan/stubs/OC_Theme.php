@@ -48,4 +48,10 @@ class OC_Theme {
 	public function buildDocLinkToKey($key) {}
 
 	public function getMailHeaderColor() {}
+
+	public function getiOSClientUrl() {}
+
+	public function getiTunesAppId() {}
+
+	public function getAndroidClientUrl() {}
 }
