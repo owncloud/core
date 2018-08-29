@@ -214,7 +214,7 @@ test-php-style-fix: $(composer_dev_deps)
 
 .PHONY: test-php-phan
 test-php-phan: $(PHAN_BIN)
-	php $(PHAN_BIN) --config-file .phan/config.php --require-config-exists -p
+	php $(PHAN_BIN) --config-file .phan/config.php --require-config-exists
 
 .PHONY: test-php-phpstan
 test-php-phpstan: $(PHPSTAN_BIN)
