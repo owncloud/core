@@ -48,6 +48,7 @@ namespace OC\Files;
 use Icewind\Streams\CallbackWrapper;
 use OC\Files\Mount\MoveableMount;
 use OC\Files\Storage\Storage;
+use OC\Files\Storage\Local;
 use OC\User\RemoteUser;
 use OCP\Constants;
 use OCP\Events\EventEmitterTrait;
@@ -377,7 +378,7 @@ class View {
 	 * @return mixed
 	 */
 	public function readdir($handle) {
-		$fsLocal = new Storage\Local(['datadir' => '/']);
+		$fsLocal = new Local(['datadir' => '/']);
 		return $fsLocal->readdir($handle);
 	}
 

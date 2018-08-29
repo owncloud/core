@@ -30,6 +30,7 @@
  */
 
 use OCA\Files_External\AppInfo\Application;
+use OCP\Files\External\Backend\Backend;
 
 /**
  * Class to configure mount.json globally and for users
