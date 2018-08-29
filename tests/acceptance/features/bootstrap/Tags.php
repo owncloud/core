@@ -23,7 +23,6 @@
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\TagsHelper;
 
@@ -49,19 +48,18 @@ trait Tags {
 	private function createTag(
 		$user, $userVisible, $userAssignable, $name, $groups = null
 	) {
-		try {
-			$createdTag = TagsHelper::createTag(
-				$this->getBaseUrl(),
-				$user,
-				$this->getPasswordForUser($user),
-				$name, $userVisible, $userAssignable, $groups,
-				$this->getDavPathVersion('systemtags')
-			);
-			$lastTagId = $createdTag['lastTagId'];
-			$this->response = $createdTag['HTTPResponse'];
+		$this->response = TagsHelper::createTag(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			$name, $userVisible, $userAssignable, $groups,
+			$this->getDavPathVersion('systemtags')
+		);
+		$responseHeaders = $this->response->getHeaders();
+		if (isset($responseHeaders['Content-Location'][0])) {
+			$tagUrl = $responseHeaders['Content-Location'][0];
+			$lastTagId = \substr($tagUrl, \strrpos($tagUrl, '/') + 1);
 			\array_push($this->createdTags, $lastTagId);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
 		}
 	}
 
@@ -359,17 +357,13 @@ trait Tags {
 	 */
 	public function userDeletesTag($user, $name) {
 		$tagID = $this->findTagIdByName($name);
-		try {
-			$this->response = TagsHelper::deleteTag(
-				$this->getBaseUrl(),
-				$user,
-				$this->getPasswordForUser($user),
-				$tagID,
-				$this->getDavPathVersion('systemtags')
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-		}
+		$this->response = TagsHelper::deleteTag(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			$tagID,
+			$this->getDavPathVersion('systemtags')
+		);
 		
 		unset($this->createdTags[$tagID]);
 	}
@@ -383,19 +377,15 @@ trait Tags {
 	 * @return void
 	 */
 	private function tag($taggingUser, $tagName, $fileName, $fileOwner) {
-		try {
-			$this->response = TagsHelper::tag(
-				$this->getBaseUrl(),
-				$taggingUser,
-				$this->getPasswordForUser($taggingUser),
-				$tagName,
-				$fileName,
-				$fileOwner,
-				$this->getDavPathVersion('systemtags')
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-		}
+		$this->response = TagsHelper::tag(
+			$this->getBaseUrl(),
+			$taggingUser,
+			$this->getPasswordForUser($taggingUser),
+			$tagName,
+			$fileName,
+			$fileOwner,
+			$this->getDavPathVersion('systemtags')
+		);
 	}
 
 	/**
@@ -515,20 +505,16 @@ trait Tags {
 		$fileID = $this->getFileIdForPath($fileOwner, $fileName);
 		$tagID = $this->findTagIdByName($tagName);
 		$path = "/systemtags-relations/files/$fileID/$tagID";
-		try {
-			$this->response = $this->makeDavRequest(
-				$untaggingUser,
-				"DELETE",
-				$path,
-				null,
-				null,
-				"uploads",
-				null,
-				$this->getDavPathVersion('systemtags')
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-		}
+		$this->response = $this->makeDavRequest(
+			$untaggingUser,
+			"DELETE",
+			$path,
+			null,
+			null,
+			"uploads",
+			null,
+			$this->getDavPathVersion('systemtags')
+		);
 	}
 
 	/**
@@ -557,17 +543,13 @@ trait Tags {
 	public function cleanupTags() {
 		$this->deleteTokenAuthEnforcedAfterScenario();
 		foreach ($this->createdTags as $tagID) {
-			try {
-				$this->response = TagsHelper::deleteTag(
-					$this->getBaseUrl(),
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					$tagID,
-					2
-				);
-			} catch (BadResponseException  $e) {
-				$this->response = $e->getResponse();
-			}
+			$this->response = TagsHelper::deleteTag(
+				$this->getBaseUrl(),
+				$this->getAdminUsername(),
+				$this->getAdminPassword(),
+				$tagID,
+				2
+			);
 		}
 	}
 }
