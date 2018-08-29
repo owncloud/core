@@ -44,7 +44,7 @@ class SharingBlacklistTest extends \Test\TestCase {
 		return [
 			[[]],
 			[["group1"]],
-			[["group1", "group2", "$group3"]],
+			[["group1", "group2", "group3"]],
 		];
 	}
 
