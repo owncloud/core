@@ -21,7 +21,6 @@
  */
 namespace OCA\DAV\CalDAV;
 
-use Sabre\CalDAV\Backend\BackendInterface;
 use Sabre\CalDAV\Backend\NotificationSupport;
 use Sabre\CalDAV\Backend\SchedulingSupport;
 use Sabre\CalDAV\Backend\SubscriptionSupport;
@@ -29,13 +28,17 @@ use Sabre\CalDAV\Schedule\Inbox;
 use Sabre\CalDAV\Schedule\Outbox;
 use Sabre\CalDAV\Subscriptions\Subscription;
 use Sabre\DAV\Exception\NotFound;
+use OCA\DAV\CalDAV\CalDavBackend;
 
+/**
+ * @property CalDavBackend $caldavBackend
+ */
 class CalendarHome extends \Sabre\CalDAV\CalendarHome {
 
 	/** @var \OCP\IL10N */
 	private $l10n;
 
-	public function __construct(BackendInterface $caldavBackend, $principalInfo) {
+	public function __construct(CalDavBackend $caldavBackend, $principalInfo) {
 		parent::__construct($caldavBackend, $principalInfo);
 		$this->l10n = \OC::$server->getL10N('dav');
 	}

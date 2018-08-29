@@ -23,6 +23,7 @@ namespace OCA\DAV\DAV;
 
 use Sabre\DAV\PropertyStorage\Plugin;
 use Sabre\DAV\Server;
+use OCA\DAV\DAV\FileCustomPropertiesBackend;
 
 /**
  * Class FileCustomPropertiesPlugin
@@ -32,6 +33,8 @@ use Sabre\DAV\Server;
  * fileId in the backend and delete properties for this fileId
  *
  * @package OCA\DAV\DAV
+ *
+ * @property FileCustomPropertiesBackend $backend
  */
 class FileCustomPropertiesPlugin extends Plugin {
 	/**

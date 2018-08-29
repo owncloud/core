@@ -180,7 +180,7 @@ class PublishPlugin extends ServerPlugin {
 			$acl = $this->server->getPlugin('acl');
 
 			// If there's no ACL support, we allow everything
-			if ($acl) {
+			if ($acl instanceof \Sabre\DAVACL\Plugin) {
 				$acl->checkPrivileges($path, '{DAV:}write');
 			}
 
@@ -208,7 +208,7 @@ class PublishPlugin extends ServerPlugin {
 			$acl = $this->server->getPlugin('acl');
 
 			// If there's no ACL support, we allow everything
-			if ($acl) {
+			if ($acl instanceof \Sabre\DAVACL\Plugin) {
 				$acl->checkPrivileges($path, '{DAV:}write');
 			}
 

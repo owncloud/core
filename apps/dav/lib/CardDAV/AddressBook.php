@@ -25,7 +25,11 @@ use Sabre\CardDAV\Card;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\PropPatch;
+use OCA\DAV\CardDAV\CardDavBackend;
 
+/**
+ * @property CardDavBackend $carddavBackend
+ */
 class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 
 	/**
@@ -47,9 +51,7 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 	 * @return void
 	 */
 	public function updateShares(array $add, array $remove) {
-		/** @var CardDavBackend $carddavBackend */
-		$carddavBackend = $this->carddavBackend;
-		$carddavBackend->updateShares($this, $add, $remove);
+		$this->carddavBackend->updateShares($this, $add, $remove);
 	}
 
 	/**
@@ -65,9 +67,7 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 	 * @return array
 	 */
 	public function getShares() {
-		/** @var CardDavBackend $carddavBackend */
-		$carddavBackend = $this->carddavBackend;
-		return $carddavBackend->getShares($this->getResourceId());
+		return $this->carddavBackend->getShares($this->getResourceId());
 	}
 
 	public function getACL() {
@@ -104,9 +104,7 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 			];
 		}
 
-		/** @var CardDavBackend $carddavBackend */
-		$carddavBackend = $this->carddavBackend;
-		return $carddavBackend->applyShareAcl($this->getResourceId(), $acl);
+		return $this->carddavBackend->applyShareAcl($this->getResourceId(), $acl);
 	}
 
 	public function getChildACL() {
@@ -147,9 +145,7 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 				throw new Forbidden();
 			}
 
-			/** @var CardDavBackend $cardDavBackend */
-			$cardDavBackend = $this->carddavBackend;
-			$cardDavBackend->updateShares($this, [], [
+			$this->carddavBackend->updateShares($this, [], [
 				$principal
 			]);
 			return;
@@ -165,10 +161,7 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 	}
 
 	public function getContactsGroups() {
-		/** @var CardDavBackend $cardDavBackend */
-		$cardDavBackend = $this->carddavBackend;
-
-		return $cardDavBackend->collectCardProperties($this->getResourceId(), 'CATEGORIES');
+		return $this->carddavBackend->collectCardProperties($this->getResourceId(), 'CATEGORIES');
 	}
 
 	private function canWrite() {

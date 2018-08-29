@@ -78,7 +78,8 @@ class ImageExportPlugin extends ServerPlugin {
 		$this->server->transactionType = 'carddav-image-export';
 
 		// Checking ACL, if available.
-		if ($aclPlugin = $this->server->getPlugin('acl')) {
+		$aclPlugin = $this->server->getPlugin('acl');
+		if ($aclPlugin instanceof \Sabre\DAVACL\Plugin) {
 			/** @var \Sabre\DAVACL\Plugin $aclPlugin */
 			$aclPlugin->checkPrivileges($path, '{DAV:}read');
 		}
