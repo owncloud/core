@@ -750,7 +750,7 @@ $CONFIG = array(
  *                new apps will only install in a directory where writable is set to true.
  *
  * The configuration example shows how to add a second directory, called ``/apps-external``.
- * Here, new apps and updates are only writen to the ``/apps-external`` directory.
+ * Here, new apps and updates are only written to the ``/apps-external`` directory.
  * This eases upgrade procedures of owncloud where shipped apps are delivered to apps/ by default.
  * ``OC::$SERVERROOT`` points to the web root of your instance.
  * Please see the Apps Management description on how to move custom apps properly.
@@ -1055,7 +1055,7 @@ $CONFIG = array(
 	// Enable Binary Protocol
 	\Memcached::OPT_BINARY_PROTOCOL =>      true,
 
-	// Binary serializer vill be enabled if the igbinary PECL module is available
+	// Binary serializer will be enabled if the igbinary PECL module is available
 	//\Memcached::OPT_SERIALIZER => \Memcached::SERIALIZER_IGBINARY,
 ),
 
@@ -1370,7 +1370,7 @@ $CONFIG = array(
  * If set incorrectly, a client can spoof their IP address as visible to
  * ownCloud, bypassing access controls and making logs useless!
  *
- * Defaults to 'HTTP_X_FORWARED_FOR' if unset
+ * Defaults to 'HTTP_X_FORWARDED_FOR' if unset
  */
 'forwarded_for_headers' => array('HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR'),
 
