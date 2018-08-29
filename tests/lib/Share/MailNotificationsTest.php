@@ -151,7 +151,7 @@ class MailNotificationsTest extends TestCase {
 			->method('setSubject')
 			->with('TestUser shared »MyFile« with you');
 		$message
-			->expects($this->once())
+			->expects($this->exactly(2))
 			->method('setTo')
 			->with(['lukas@owncloud.com']);
 		$message
@@ -195,7 +195,7 @@ class MailNotificationsTest extends TestCase {
 			$calledEvent[] = 'share.sendmail';
 			$calledEvent[] = $event;
 		});
-		$this->assertSame([], $mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, "personal note\n", ['bcc' => 'foo@bar.com,fabulous@world.com', 'cc' => 'abc@foo.com,tester@world.com']));
+		$this->assertSame([], $mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, "personal note\n", ['to' => 'lukas@owncloud.com', 'bcc' => 'foo@bar.com,fabulous@world.com', 'cc' => 'abc@foo.com,tester@world.com']));
 
 		$this->assertEquals('share.sendmail', $calledEvent[0]);
 		$this->assertInstanceOf(GenericEvent::class, $calledEvent[1]);
@@ -218,7 +218,7 @@ class MailNotificationsTest extends TestCase {
 			->method('setSubject')
 			->with('TestUser shared »MyFile« with you');
 		$message
-			->expects($this->once())
+			->expects($this->exactly(2))
 			->method('setTo')
 			->with(['lukas@owncloud.com']);
 		$message
@@ -262,7 +262,7 @@ class MailNotificationsTest extends TestCase {
 			$calledEvent[] = 'share.sendmail';
 			$calledEvent[] = $event;
 		});
-		$this->assertSame([], $mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, "personal note\n"));
+		$this->assertSame([], $mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, "personal note\n", ['to' => 'lukas@owncloud.com']));
 
 		$this->assertEquals('share.sendmail', $calledEvent[0]);
 		$this->assertInstanceOf(GenericEvent::class, $calledEvent[1]);
@@ -340,13 +340,13 @@ class MailNotificationsTest extends TestCase {
 
 	public function dataSendLinkShareMailException() {
 		return [
-			['lukas@owncloud.com', '', '', 'lukas@owncloud.com'],
-			['you@owncloud.com', 'cc1@example.com,cc2@example.com', '', 'you@owncloud.com,cc1@example.com,cc2@example.com'],
-			['you@owncloud.com', '', 'phil@example.com,jim@example.com.np', 'you@owncloud.com,phil@example.com,jim@example.com.np'],
-			['you@owncloud.com', 'cc1@example.com,cc2@example.com', 'phil@example.com,jim@example.com.np', 'you@owncloud.com,cc1@example.com,cc2@example.com,phil@example.com,jim@example.com.np'],
-			['', 'cc1@example.com,cc2@example.com', '', 'cc1@example.com,cc2@example.com'],
-			['', '', 'phil@example.com,jim@example.com.np', 'phil@example.com,jim@example.com.np'],
-			['', 'cc1@example.com,cc2@example.com', 'phil@example.com,jim@example.com.np', 'cc1@example.com,cc2@example.com,phil@example.com,jim@example.com.np'],
+			['lukas@owncloud.com', '', '', 'abc@foo.com', 'lukas@owncloud.com,abc@foo.com'],
+			['you@owncloud.com', 'cc1@example.com,cc2@example.com', '', '', 'you@owncloud.com,cc1@example.com,cc2@example.com'],
+			['you@owncloud.com', '', 'phil@example.com,jim@example.com.np', '', 'you@owncloud.com,phil@example.com,jim@example.com.np'],
+			['you@owncloud.com', 'cc1@example.com,cc2@example.com', 'phil@example.com,jim@example.com.np', '', 'you@owncloud.com,cc1@example.com,cc2@example.com,phil@example.com,jim@example.com.np'],
+			['', 'cc1@example.com,cc2@example.com', '', '', 'cc1@example.com,cc2@example.com'],
+			['', '', 'phil@example.com,jim@example.com.np', '', 'phil@example.com,jim@example.com.np'],
+			['', 'cc1@example.com,cc2@example.com', 'phil@example.com,jim@example.com.np', '', 'cc1@example.com,cc2@example.com,phil@example.com,jim@example.com.np'],
 		];
 	}
 
@@ -357,7 +357,7 @@ class MailNotificationsTest extends TestCase {
 	 * @param string $bcc
 	 * @param string $expectedRecipientErrorList
 	 */
-	public function testSendLinkShareMailException($to, $cc, $bcc, $expectedRecipientErrorList) {
+	public function testSendLinkShareMailException($to, $cc, $bcc, $toList, $expectedRecipientErrorList) {
 		$this->setupMailerMock('TestUser shared »MyFile« with you', [$to]);
 
 		$mailNotifications = new MailNotifications(
@@ -372,6 +372,10 @@ class MailNotificationsTest extends TestCase {
 		);
 
 		$options = [];
+
+		if ($toList !== '') {
+			$options['to'] = $toList;
+		}
 
 		if ($cc !== '') {
 			$options['cc'] = $cc;
@@ -621,17 +625,17 @@ class MailNotificationsTest extends TestCase {
 				->method('setSubject')
 				->with($subject);
 		$message
-				->expects($this->once())
+				->expects($this->any())
 				->method('setTo')
 				->with($to);
 		$message
 				->expects($this->once())
 				->method('setHtmlBody');
 		$message
-				->expects($this->once())
+				->expects($this->any())
 				->method('setPlainBody');
 		$message
-				->expects($this->once())
+				->expects($this->any())
 				->method('setFrom')
 				->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
 
@@ -641,7 +645,7 @@ class MailNotificationsTest extends TestCase {
 				->will($this->returnValue($message));
 		if ($exceptionOnSend) {
 			$this->mailer
-					->expects($this->once())
+					->expects($this->any())
 					->method('send')
 					->with($message)
 					->will($this->throwException(new \Exception('Some Exception Message')));
