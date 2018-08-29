@@ -141,8 +141,7 @@ class TagsHelper {
 	 * @param string $groups separated by "|"
 	 * @param int $davPathVersionToUse (1|2)
 	 *
-	 * @return array ['lastTagId', 'HTTPResponse']
-	 * @throws \GuzzleHttp\Exception\ClientException
+	 * @return \GuzzleHttp\Message\ResponseInterface|NULL|\GuzzleHttp\Message\FutureResponse
 	 * @link self::makeDavRequest()
 	 */
 	public static function createTag(
@@ -166,7 +165,7 @@ class TagsHelper {
 			$body['groups'] = $groups;
 		}
 
-		$response = WebDavHelper::makeDavRequest(
+		return WebDavHelper::makeDavRequest(
 			$baseUrl,
 			$user,
 			$password,
@@ -178,10 +177,6 @@ class TagsHelper {
 			$davPathVersionToUse,
 			"systemtags"
 		);
-		$responseHeaders = $response->getHeaders();
-		$tagUrl = $responseHeaders['Content-Location'][0];
-		$lastTagId = \substr($tagUrl, \strrpos($tagUrl, '/') + 1);
-		return ['lastTagId' => $lastTagId, 'HTTPResponse' => $response];
 	}
 
 	/**
@@ -193,7 +188,6 @@ class TagsHelper {
 	 * @param int $davPathVersionToUse (1|2)
 	 *
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
-	 * @throws \GuzzleHttp\Exception\ClientException
 	 */
 	public static function deleteTag(
 		$baseUrl,

@@ -21,8 +21,6 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Client as GClient;
-
 /**
  * manage Shares via OCS API
  *
@@ -81,7 +79,6 @@ class SharingHelper {
 		$sharingApiVersion = 1
 	) {
 		$fd = [];
-		$options = [];
 		foreach ([$path, $baseUrl, $user, $password] as $variableToCheck) {
 			if (!\is_string($variableToCheck)) {
 				throw new \InvalidArgumentException(
@@ -155,8 +152,6 @@ class SharingHelper {
 			$fullUrl .= '/';
 		}
 		$fullUrl .= "ocs/v{$ocsApiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
-		$client = new GClient();
-		$options['auth'] = [$user, $password];
 		$fd['path'] = $path;
 		$fd['shareType'] = $shareType;
 
@@ -173,8 +168,6 @@ class SharingHelper {
 			$fd['name'] = $linkName;
 		}
 
-		$options['body'] = $fd;
-
-		return $client->send($client->createRequest("POST", $fullUrl, $options));
+		return HttpRequestHelper::post($fullUrl, $user, $password, null, $fd);
 	}
 }
