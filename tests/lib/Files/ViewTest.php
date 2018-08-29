@@ -1297,7 +1297,9 @@ class ViewTest extends TestCase {
 		$scanner->scan('');
 		Filesystem::mount($storage, [], '/test/');
 		$view = new View('');
+		\OC::$server->getConfig()->setAppValue('core', 'ignorepartfile', 'true');
 		$this->assertTrue($view->rename('/test/foo.txt', '/test/foo/bar.txt'));
+		\OC::$server->getConfig()->deleteAppValue('core', 'ignorepartfile');
 	}
 
 	public function testSetMountOptionsInStorage() {
