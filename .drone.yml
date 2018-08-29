@@ -114,15 +114,6 @@ pipeline:
       matrix:
         TEST_SUITE: lint
 
-  php-cs-fixer:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      - make test-php-style
-    when:
-      matrix:
-        TEST_SUITE: php-cs-fixer
-
   php-phan:
     image: owncloudci/php:7.1
     pull: true
