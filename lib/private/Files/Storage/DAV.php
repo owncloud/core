@@ -46,7 +46,7 @@ use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Util;
 use Sabre\DAV\Xml\Property\ResourceType;
-use Sabre\HTTP\Client;
+use Sabre\DAV\Client;
 use Sabre\HTTP\ClientHttpException;
 use Sabre\DAV\Exception\InsufficientStorage;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
