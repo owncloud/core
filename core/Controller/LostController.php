@@ -205,7 +205,8 @@ class LostController extends Controller {
 	public function email($user) {
 		// FIXME: use HTTP error codes
 		try {
-			$this->sendEmail($user);
+			list($link, $token) = $this->generateTokenAndLink($user);
+			$this->sendEmail($user, $token, $link);
 		} catch (\Exception $e) {
 			return $this->error($e->getMessage());
 		}
@@ -279,11 +280,27 @@ class LostController extends Controller {
 	}
 
 	/**
+	 * @param string $userId
+	 * @return array
+	 */
+	public function generateTokenAndLink($userId) {
+		$token = $this->secureRandom->generate(21,
+			ISecureRandom::CHAR_DIGITS .
+			ISecureRandom::CHAR_LOWER .
+			ISecureRandom::CHAR_UPPER);
+
+		$link = $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', ['userId' => $userId, 'token' => $token]);
+		return [$link, $token];
+	}
+
+	/**
 	 * @param string $user
+	 * @param string $token
+	 * @param string $link
 	 * @throws \Exception
 	 * @return boolean
 	 */
-	protected function sendEmail($user) {
+	public function sendEmail($user, $token, $link) {
 		if ($this->userManager->userExists($user)) {
 			$userObject = $this->userManager->get($user);
 			$email = $userObject->getEMailAddress();
@@ -310,22 +327,16 @@ class LostController extends Controller {
 			}
 		}
 
-		$token = $this->config->getUserValue($user, 'owncloud', 'lostpassword');
-		if ($token !== '') {
-			$splittedToken = \explode(':', $token);
+		$getToken = $this->config->getUserValue($user, 'owncloud', 'lostpassword');
+		if ($getToken !== '') {
+			$splittedToken = \explode(':', $getToken);
 			if ((\count($splittedToken)) === 2 && $splittedToken[0] > ($this->timeFactory->getTime() - 60 * 5)) {
 				$this->logger->alert('The email is not sent because a password reset email was sent recently.');
 				return false;
 			}
 		}
 
-		$token = $this->secureRandom->generate(21,
-			ISecureRandom::CHAR_DIGITS .
-			ISecureRandom::CHAR_LOWER .
-			ISecureRandom::CHAR_UPPER);
 		$this->config->setUserValue($user, 'owncloud', 'lostpassword', $this->timeFactory->getTime() . ':' . $token);
-
-		$link = $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', ['userId' => $user, 'token' => $token]);
 
 		$tmpl = new \OC_Template('core', 'lostpassword/email');
 		$tmpl->assign('link', $link);
