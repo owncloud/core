@@ -19,9 +19,7 @@
  *    config option
  *  * use RST syntax
  */
-
-$CONFIG = array(
-
+$CONFIG = [
 
 /**
  * Default Parameters
@@ -29,7 +27,6 @@ $CONFIG = array(
  * These parameters are configured by the ownCloud installer, and are required
  * for your ownCloud server to operate.
  */
-
 
 /**
  * This is a unique identifier for your ownCloud installation, created
@@ -57,15 +54,14 @@ $CONFIG = array(
 /**
  * Your list of trusted domains that users can log into. Specifying trusted
  * domains prevents host header poisoning. Do not remove this, as it performs
- * necessary security checks. Please consider that for backend processes like 
+ * necessary security checks. Please consider that for backend processes like
  * background jobs or occ commands, the url parameter in key ``overwrite.cli.url``
  * is used. For more details please see that key.
  */
-'trusted_domains' =>
-  array (
+'trusted_domains' => [
     'demo.example.org',
     'otherdomain.example.org',
-  ),
+],
 
 /**
  * The global list of CORS domains. All users can use tools running CORS
@@ -143,14 +139,12 @@ $CONFIG = array(
  */
 'dbtableprefix' => '',
 
-
 /**
  * Indicates whether the ownCloud instance was installed successfully; ``true``
  * indicates a successful installation, and ``false`` indicates an unsuccessful
  * installation.
  */
 'installed' => false,
-
 
 /**
  * User Experience
@@ -216,10 +210,10 @@ $CONFIG = array(
 'session_keepalive' => true,
 
 /**
- * Enforces token only authentication for apps and clients connecting to ownCloud. 
- * If enabled, all access requests using the users password are blocked for enhanced security. 
- * Users have to generate special app-passwords (tokens) for their apps or clients in their personal 
- * settings which are further used for app or client authentication. Browser logon is not affected. 
+ * Enforces token only authentication for apps and clients connecting to ownCloud.
+ * If enabled, all access requests using the users password are blocked for enhanced security.
+ * Users have to generate special app-passwords (tokens) for their apps or clients in their personal
+ * settings which are further used for app or client authentication. Browser logon is not affected.
  */
 'token_auth_enforced' => false,
 
@@ -255,12 +249,12 @@ $CONFIG = array(
  * configure alternate authentication backends. Supported backends are:
  * IMAP (OC_User_IMAP), SMB (OC_User_SMB), and FTP (OC_User_FTP).
  */
-'user_backends' => array(
-	array(
+'user_backends' => [
+	[
 		'class' => 'OC_User_IMAP',
-		'arguments' => array('{imap.gmail.com:993/imap/ssl}INBOX')
-	)
-),
+		'arguments' => ['{imap.gmail.com:993/imap/ssl}INBOX']
+	]
+],
 
 /**
  * If your user backend does not allow password resets (e.g. when it's a
@@ -280,10 +274,10 @@ $CONFIG = array(
 'accounts.enable_medial_search' => true,
 
 /**
- * Defines the minimum characters entered before a search returns results for 
+ * Defines the minimum characters entered before a search returns results for
  * users or groups in the share autocomplete form. Lower values increase search
  * time especially for large backends.
- * Any exact matches to a user or group will be returned, even though less than 
+ * Any exact matches to a user or group will be returned, even though less than
  * the minimum characters have been entered. The search is case insensitive.
  * e.g. entering "tom" will always return "Tom" if there is an exact match.
  */
@@ -382,7 +376,6 @@ $CONFIG = array(
  */
 'mail_smtppassword' => '',
 
-
 /**
  * Proxy Configurations
  */
@@ -429,7 +422,7 @@ $CONFIG = array(
  * ``https://www.example.com/owncloud``
  * As an example, alerts shown in the browser to upgrade an app are triggered by
  * a cron background process and therefore uses the url of this key, even if the user
- * has logged on via a different domain defined in key ``trusted_domains``. When the 
+ * has logged on via a different domain defined in key ``trusted_domains``. When the
  * user clicks an alert like this, he will be redirected to that URL and must logon again.
  */
 'overwrite.cli.url' => '',
@@ -469,7 +462,6 @@ $CONFIG = array(
  * The format is: ``username:password``.
  */
 'proxyuserpwd' => '',
-
 
 /**
  * Deleted Items (trash bin)
@@ -606,11 +598,11 @@ $CONFIG = array(
 
 /**
  * Logging
- * 
+ *
  * These parameters configure the logging options.
- * For additional information or advanced configuration, please see the logging 
+ * For additional information or advanced configuration, please see the logging
  * section in the documentation.
- * 
+ *
  */
 
 /**
@@ -668,18 +660,26 @@ $CONFIG = array(
  * Defaults to an empty array.
  */
 'log.conditions' => [
-        [
+    [
 		'shared_secret' => '57b58edb6637fe3059b3595cf9c41b9',
-		'users' => ['user1'],
-		'apps' => ['files_texteditor'],
+		'users' => [
+			'user1'
+		],
+		'apps' => [
+			'files_texteditor'
+		],
 		'logfile' => '/tmp/test.log'
-        ],
-        [
+	],
+	[
 		'shared_secret' => '57b58edb6637fe3059b3595cf9c41b9',
-		'users' => ['user1'],
-		'apps' => ['gallery'],
+		'users' => [
+			'user1'
+		],
+		'apps' => [
+			'gallery'
+		],
 		'logfile' => '/tmp/gallery.log'
-        ],
+	],
 ],
 
 /**
@@ -699,16 +699,15 @@ $CONFIG = array(
 'cron_log' => true,
 
 /**
- * Enables log rotation and limits the total size of the logfiles. 
- * The default is 0 or false which disables log rotation. 
- * Specify a size in bytes, for example 104857600 
- * (100 megabytes = 100 * 1024 * 1024 bytes). 
- * A new logfile is created with a new name when the old logfile reaches the defined limit. 
+ * Enables log rotation and limits the total size of the logfiles.
+ * The default is 0 or false which disables log rotation.
+ * Specify a size in bytes, for example 104857600
+ * (100 megabytes = 100 * 1024 * 1024 bytes).
+ * A new logfile is created with a new name when the old logfile reaches the defined limit.
  * If a rotated log file is already present, it will be overwritten.
  * If enabled, only the active log file and one rotated file are stored.
  */
 'log_rotate_size' => false,
-
 
 /**
  * Alternate Code Locations
@@ -720,21 +719,18 @@ $CONFIG = array(
  * This section is for configuring the download links for ownCloud clients, as
  * seen in the first-run wizard and on Personal pages.
  */
-'customclient_desktop' =>
-	'https://owncloud.org/install/#install-clients',
-'customclient_android' =>
-	'https://play.google.com/store/apps/details?id=com.owncloud.android',
-'customclient_ios' =>
-	'https://itunes.apple.com/us/app/owncloud/id543672169?mt=8',
+'customclient_desktop' => 'https://owncloud.org/install/#install-clients',
+'customclient_android' => 'https://play.google.com/store/apps/details?id=com.owncloud.android',
+'customclient_ios' => 'https://itunes.apple.com/us/app/owncloud/id543672169?mt=8',
 
 /**
- * If you want to store apps in a custom directory instead of ownCloud’s default 
- * ``/app``, you need to modify the ``apps_paths`` key. There, you need to add a 
+ * If you want to store apps in a custom directory instead of ownCloud’s default
+ * ``/app``, you need to modify the ``apps_paths`` key. There, you need to add a
  * new associative array that contains three elements. These are:
  *
  * - ``path``     The absolute file system path to the custom app folder.
  * - ``url``      The request path to that folder relative to the ownCloud web root, prefixed with /.
- * - ``writable`` Whether users can install apps in that folder. After the configuration is added, 
+ * - ``writable`` Whether users can install apps in that folder. After the configuration is added,
  *                new apps will only install in a directory where writable is set to true.
  *
  * The configuration example shows how to add a second directory, called ``/apps-external``.
@@ -743,21 +739,18 @@ $CONFIG = array(
  * ``OC::$SERVERROOT`` points to the web root of your instance.
  * Please see the Apps Management description on how to move custom apps properly.
  */
-'apps_paths' =>
-    array (
-      0 => 
-      array (
-        'path' => OC::$SERVERROOT.'/apps',
-        'url' => '/apps',
-        'writable' => false,
-      ),
-      1 => 
-      array (
-        'path' => OC::$SERVERROOT.'/apps-external',
-        'url' => '/apps-external',
-        'writable' => true,
-      ),
-    ),
+'apps_paths' => [
+	[
+		'path' => OC::$SERVERROOT . '/apps',
+		'url' => '/apps',
+		'writable' => false,
+	],
+	[
+		'path' => OC::$SERVERROOT . '/apps-external',
+		'url' => '/apps-external',
+		'writable' => true,
+	],
+],
 
 /**
  * Previews
@@ -778,16 +771,19 @@ $CONFIG = array(
  * ``false``, to disable previews
  */
 'enable_previews' => true,
+
 /**
  * The maximum width, in pixels, of a preview. A value of ``null`` means there
  * is no limit.
  */
 'preview_max_x' => 2048,
+
 /**
  * The maximum height, in pixels, of a preview. A value of ``null`` means there
  * is no limit.
  */
 'preview_max_y' => 2048,
+
 /**
  * If a lot of small pictures are stored on the ownCloud instance and the
  * preview system generates blurry previews, you might want to consider setting
@@ -811,6 +807,7 @@ $CONFIG = array(
  * custom path for LibreOffice/OpenOffice binary
  */
 'preview_libreoffice_path' => '/usr/bin/libreoffice',
+
 /**
  * Use this if LibreOffice/OpenOffice requires additional arguments.
  */
@@ -862,7 +859,7 @@ $CONFIG = array(
  *  - OC\Preview\OpenDocument
  *  - OC\Preview\StarOffice
  */
-'enabledPreviewProviders' => array(
+'enabledPreviewProviders' => [
 	'OC\Preview\PNG',
 	'OC\Preview\JPEG',
 	'OC\Preview\GIF',
@@ -871,7 +868,7 @@ $CONFIG = array(
 	'OC\Preview\MP3',
 	'OC\Preview\TXT',
 	'OC\Preview\MarkDown'
-),
+],
 
 /**
  * Comments
@@ -916,7 +913,6 @@ $CONFIG = array(
  */
 'singleuser' => false,
 
-
 /**
  * SSL
  */
@@ -924,9 +920,9 @@ $CONFIG = array(
 /**
  * Extra SSL options to be used for configuration.
  */
-'openssl' => array(
+'openssl' => [
 	'config' => '/absolute/location/of/openssl.cnf',
-),
+],
 
 /**
  * Allow the configuration of system wide trusted certificates
@@ -1010,18 +1006,21 @@ $CONFIG = array(
 /**
  * Server details for one or more memcached servers to use for memory caching.
  */
-'memcached_servers' => array(
+'memcached_servers' => [
 	// hostname, port and optional weight. Also see:
 	// http://www.php.net/manual/en/memcached.addservers.php
 	// http://www.php.net/manual/en/memcached.addserver.php
-	array('localhost', 11211),
+	[
+		'localhost',
+		11211
+	],
 	//array('other.host.local', 11211),
-),
+],
 
 /**
  * Connection options for memcached, see http://apprize.info/php/scaling/15.html
  */
-'memcached_options' => array(
+'memcached_options' => [
 	// Set timeouts to 50ms
 	\Memcached::OPT_CONNECT_TIMEOUT => 50,
 	\Memcached::OPT_RETRY_TIMEOUT =>   50,
@@ -1040,8 +1039,7 @@ $CONFIG = array(
 
 	// Binary serializer will be enabled if the igbinary PECL module is available
 	//\Memcached::OPT_SERIALIZER => \Memcached::SERIALIZER_IGBINARY,
-),
-
+],
 
 /**
  * Location of the cache folder, defaults to ``data/$user/cache`` where
@@ -1086,7 +1084,6 @@ $CONFIG = array(
  */
 'sharing.federation.allowHttpFallback' => false,
 
-
 /**
  * All other configuration options
  */
@@ -1095,10 +1092,10 @@ $CONFIG = array(
  * Additional driver options for the database connection, eg. to enable SSL
  * encryption in MySQL or specify a custom wait timeout on a cheap hoster.
  */
-'dbdriveroptions' => array(
+'dbdriveroptions' => [
 	PDO::MYSQL_ATTR_SSL_CA => '/file/path/to/ca_cert.pem',
 	PDO::MYSQL_ATTR_INIT_COMMAND => 'SET wait_timeout = 28800'
-),
+],
 
 /**
  * sqlite3 journal mode can be specified using this configuration parameter -
@@ -1110,13 +1107,13 @@ $CONFIG = array(
  * During setup, if requirements are met (see below), this setting is set to true
  * and MySQL can handle 4 byte characters instead of 3 byte characters.
  *
- * If you want to convert an existing 3-byte setup into a 4-byte setup please 
+ * If you want to convert an existing 3-byte setup into a 4-byte setup please
  * set the parameters in MySQL as mentioned below and run the migration command:
  *  ./occ db:convert-mysql-charset
  * The config setting will be set automatically after a successful run.
- * 
+ *
  * Consult the documentation for more details.
- * 
+ *
  * MySQL requires a special setup for longer indexes (> 767 bytes) which are
  * needed:
  *
@@ -1148,12 +1145,12 @@ $CONFIG = array(
  * 	- pgsql (PostgreSQL)
  * 	- oci (Oracle - Enterprise Edition Only)
  */
-'supportedDatabases' => array(
+'supportedDatabases' => [
 	'sqlite',
 	'mysql',
 	'pgsql',
 	'oci',
-),
+],
 
 /**
  * Override where ownCloud stores temporary files. Useful in situations where
@@ -1178,7 +1175,9 @@ $CONFIG = array(
  * with this name. ``.htaccess`` is blocked by default.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
-'blacklisted_files' => array('.htaccess'),
+'blacklisted_files' => [
+	'.htaccess'
+],
 
 /**
  * Exclude specific directory names and disallow scanning, creating and renaming
@@ -1189,34 +1188,33 @@ $CONFIG = array(
  * Use when the storage backend supports eg snapshot directories to be excluded.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
-'excluded_directories' =>
-	array (
-		'.snapshot',
-		'~snapshot',
-	),
+'excluded_directories' => [
+	'.snapshot',
+	'~snapshot',
+],
+
 /**
  * Exclude files from the integrity checker command
  */
-'integrity.excluded.files' =>
-	array (
-		'.DS_Store',
-		'Thumbs.db',
-		'.directory',
-		'.webapp',
-		'.htaccess',
-		'.user.ini',
-	),
+'integrity.excluded.files' => [
+	'.DS_Store',
+	'Thumbs.db',
+	'.directory',
+	'.webapp',
+	'.htaccess',
+	'.user.ini',
+],
+
 /**
  * The list of apps that are allowed to have no signature.json. Besides
  * ownCloud apps, this is particularly useful when creating ownCloud themes,
- * because themes are treated as apps. The app is identified with it´s app-id. 
+ * because themes are treated as apps. The app is identified with it´s app-id.
  * The following example allows app-1 and theme-2 to have no signature.
  */
-'integrity.ignore.missing.app.signature' =>
-	array(
-		'app-id of app-1',
-		'app-id of theme-2',
-	),
+'integrity.ignore.missing.app.signature' => [
+	'app-id of app-1',
+	'app-id of theme-2',
+],
 
 /**
  * Define a default folder for shared files and folders other than root.
@@ -1293,7 +1291,10 @@ $CONFIG = array(
  * If you configure these also consider setting `forwarded_for_headers` which
  * otherwise defaults to `HTTP_X_FORWARDED_FOR` (the `X-Forwarded-For` header).
  */
-'trusted_proxies' => array('203.0.113.45', '198.51.100.128'),
+'trusted_proxies' => [
+	'203.0.113.45',
+	'198.51.100.128'
+],
 
 /**
  * Headers that should be trusted as client IP address in combination with
@@ -1305,7 +1306,10 @@ $CONFIG = array(
  *
  * Defaults to 'HTTP_X_FORWARDED_FOR' if unset
  */
-'forwarded_for_headers' => array('HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR'),
+'forwarded_for_headers' => [
+	'HTTP_X_FORWARDED',
+	'HTTP_FORWARDED_FOR'
+],
 
 /**
  * max file size for animating gifs on public-sharing-site.
@@ -1315,7 +1319,6 @@ $CONFIG = array(
  * ``-1`` for no limit.
  */
 'max_filesize_animated_gifs_public_sharing' => 10,
-
 
 /**
  * Enables transactional file locking.
@@ -1401,6 +1404,6 @@ $CONFIG = array(
 /**
  * Set this property to true if you want to enable debug logging for SMB access.
  */
-'smb.logging.enable' => false, 
+'smb.logging.enable' => false,
 
-);
+];
