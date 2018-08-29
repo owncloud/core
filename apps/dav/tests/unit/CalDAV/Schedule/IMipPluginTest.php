@@ -32,7 +32,7 @@ use Test\TestCase;
 use OC\Log;
 
 class IMipPluginTest extends TestCase {
-	public function testDelivery(): void {
+	public function testDelivery() {
 		$mailMessage = new \OC\Mail\Message(new \Swift_Message());
 		/** @var Mailer | \PHPUnit_Framework_MockObject_MockObject $mailer */
 		$mailer = $this->createMock(Mailer::class);
@@ -63,7 +63,7 @@ class IMipPluginTest extends TestCase {
 		$this->assertEquals('text/calendar; charset=UTF-8; method=REQUEST', $mailMessage->getSwiftMessage()->getContentType());
 	}
 
-	public function testFailedDeliveryWithException(): void {
+	public function testFailedDeliveryWithException() {
 		$mailMessage = new \OC\Mail\Message(new \Swift_Message());
 		/** @var Mailer | \PHPUnit_Framework_MockObject_MockObject $mailer */
 		$mailer = $this->createMock(Mailer::class);
@@ -94,7 +94,7 @@ class IMipPluginTest extends TestCase {
 		$this->assertEquals('text/calendar; charset=UTF-8; method=REQUEST', $mailMessage->getSwiftMessage()->getContentType());
 	}
 
-	public function testFailedDelivery(): void {
+	public function testFailedDelivery() {
 		$mailMessage = new \OC\Mail\Message(new \Swift_Message());
 		/** @var Mailer | \PHPUnit_Framework_MockObject_MockObject $mailer */
 		$mailer = $this->createMock(Mailer::class);
