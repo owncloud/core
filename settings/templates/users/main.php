@@ -81,12 +81,12 @@ translation('settings');
 					</label>
 				</p>
 				<p>
-					<input type="checkbox" name="MailOnUserCreate" value="MailOnUserCreate" id="CheckboxMailOnUserCreate"
-						class="checkbox" <?php if ($_['send_email'] === 'true') {
+					<input type="checkbox" name="AddPasswordOnUserCreate" value="AddPasswordOnUserCreate" id="CheckBoxPasswordOnUserCreate"
+						class="checkbox" <?php if ($_['add_password'] === 'true') {
 	print_unescaped('checked="checked"');
 } ?> />
-					<label for="CheckboxMailOnUserCreate">
-						<?php p($l->t('Send email to new user')) ?>
+					<label for="CheckBoxPasswordOnUserCreate">
+						<?php p($l->t('Set password for new users')) ?>
 					</label>
 				</p>
 				<p>

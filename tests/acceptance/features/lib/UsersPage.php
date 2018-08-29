@@ -211,9 +211,9 @@ class UsersPage extends OwncloudPage {
 	public function createUser(
 		Session $session, $username, $password, $email = null, $groups = null
 	) {
+		$this->setSetting("Set password for new users", $password !== null);
 		$this->fillField($this->newUserUsernameFieldId, $username);
 		$this->fillField($this->newUserPasswordFieldId, $password);
-		$this->setSetting("Send email to new user", $email !== null);
 		if ($email !== null) {
 			$this->fillField($this->newUserEmailFieldId, $email);
 		}

@@ -67,6 +67,10 @@ $application->registerRoutes($this, [
 		['name' => 'Cors#removeDomain', 'url' => '/settings/domains/{id}', 'verb' => 'DELETE'],
 		['name' => 'LegalSettings#setImprintUrl', 'url' => '/settings/admin/legal/imprint', 'verb' => 'POST'],
 		['name' => 'LegalSettings#setPrivacyPolicyUrl', 'url' => '/settings/admin/legal/privacypolicy', 'verb' => 'POST'],
+		['name' => 'ChangePassword#changePassword', 'url' => '/users/changepassword', 'verb' => 'POST'],
+		['name' => 'Users#setPasswordForm', 'url' => '/settings/users/setpassword/form/{token}/{userId}', 'verb' => 'GET'],
+		['name' => 'Users#resendToken', 'url' => '/resend/token/{userId}', 'verb' => 'POST'],
+		['name' => 'Users#setPassword', 'url' => '/setpassword/{token}/{userId}', 'verb' => 'POST'],
 	]
 ]);
 
