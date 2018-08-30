@@ -1448,6 +1448,31 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^the HTTP status code of all upload responses should be between "(\d+)" and "(\d+)"$/
+	 *
+	 * @param int $minStatusCode
+	 * @param int $maxStatusCode
+	 *
+	 * @return void
+	 */
+	public function theHTTPStatusCodeOfAllUploadResponsesShouldBeBetween(
+		$minStatusCode, $maxStatusCode
+	) {
+		foreach ($this->uploadResponses as $response) {
+			PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+				$minStatusCode,
+				$response->getStatusCode(),
+				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+			);
+			PHPUnit_Framework_Assert::assertLessThanOrEqual(
+				$maxStatusCode,
+				$response->getStatusCode(),
+				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+			);
+		}
+	}
+
+	/**
 	 * Check that all the files uploaded with old/new dav and chunked/non-chunked exist.
 	 *
 	 * @Then as :user the files uploaded to :destination with all mechanisms should exist
@@ -1715,7 +1740,7 @@ trait WebDav {
 			$num -= 1;
 			$data = \GuzzleHttp\Stream\Stream::factory($data);
 			$file = "$destination-chunking-42-$total-$num";
-			$this->makeDavRequest(
+			$this->response = $this->makeDavRequest(
 				$user, 'PUT', $file, ['OC-Chunked' => '1'], $data, "uploads"
 			);
 		} catch (\GuzzleHttp\Exception\RequestException $ex) {
