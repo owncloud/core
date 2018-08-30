@@ -1127,6 +1127,8 @@ trait WebDav {
 	 * @param string $properties properties which needs to be included in the report
 	 *
 	 * @return array
+	 *
+	 * @throws Sabre\HTTP\ClientException, - in case a curl error occurred.
 	 */
 	public function reportElementComments($user, $path, $properties) {
 		$client = $this->getSabreClient($user);

@@ -92,17 +92,9 @@ trait Comments {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
-		try {
-			$elementList = $this->reportElementComments(
-				$user, $commentsPath, $properties
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-			$statusCode = $this->response->getStatusCode();
-			PHPUnit_Framework_Assert::fail(
-				"checkComments failed to get comments for user $user path $path status $statusCode"
-			);
-		}
+		$elementList = $this->reportElementComments(
+			$user, $commentsPath, $properties
+		);
 
 		if ($expectedElements instanceof TableNode) {
 			$elementRows = $expectedElements->getRows();
@@ -136,20 +128,12 @@ trait Comments {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
-		try {
-			$elementList = $this->reportElementComments(
-				$user, $commentsPath, $properties
-			);
-			PHPUnit_Framework_Assert::assertCount(
-				(int) $numberOfComments, $elementList
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-			$statusCode = $this->response->getStatusCode();
-			PHPUnit_Framework_Assert::fail(
-				"checkNumberOfComments failed to get comments for user $user path $path status $statusCode"
-			);
-		}
+		$elementList = $this->reportElementComments(
+			$user, $commentsPath, $properties
+		);
+		PHPUnit_Framework_Assert::assertCount(
+			(int) $numberOfComments, $elementList
+		);
 	}
 
 	/**
