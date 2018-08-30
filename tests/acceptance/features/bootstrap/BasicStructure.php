@@ -327,7 +327,9 @@ trait BasicStructure {
 	}
 	
 	/**
-	 * @param string
+	 * @param string $sourceIpAddress
+	 *
+	 * @return void
 	 */
 	public function setSourceIpAddress($sourceIpAddress) {
 		$this->sourceIpAddress = $sourceIpAddress;
@@ -342,6 +344,8 @@ trait BasicStructure {
 	
 	/**
 	 * @param array $guzzleClientHeaders ['X-Foo' => 'Bar']
+	 *
+	 * @return void
 	 */
 	public function setGuzzleClientHeaders($guzzleClientHeaders) {
 		$this->guzzleClientHeaders = $guzzleClientHeaders;
@@ -349,6 +353,8 @@ trait BasicStructure {
 
 	/**
 	 * @param array $guzzleClientHeaders ['X-Foo' => 'Bar']
+	 *
+	 * @return void
 	 */
 	public function addGuzzleClientHeaders($guzzleClientHeaders) {
 		$this->guzzleClientHeaders = \array_merge(
@@ -690,6 +696,7 @@ trait BasicStructure {
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
+	 * @param string $password
 	 *
 	 * @return void
 	 */
@@ -702,6 +709,7 @@ trait BasicStructure {
 	 * @param string $verb
 	 * @param string $url
 	 * @param TableNode $body
+	 * @param string $password
 	 *
 	 * @return void
 	 */
