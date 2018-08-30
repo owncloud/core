@@ -1,4 +1,4 @@
-@api @skipWhenTestingRemoteSystems
+@api
 Feature: AppManagement
 
   Background:
