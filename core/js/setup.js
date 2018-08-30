@@ -61,7 +61,7 @@ $(document).ready(function() {
 		$('input', this).addClass('ui-state-disabled').prop('disabled', true);
 		// only disable buttons if they are present
 		if($('#selectDbType').find('.ui-button').length > 0) {
-			$('#selectDbType').buttonset('disable');
+			$('#selectDbType').controlgroup('disable');
 		}
 		$('.strengthify-wrapper, .tipsy')
 			.css('-ms-filter', '"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"')
