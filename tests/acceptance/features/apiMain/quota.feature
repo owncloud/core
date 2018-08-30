@@ -35,7 +35,7 @@ Feature: quota
 		And the quota of user "user0" has been set to "10 MB"
 		And user "user0" has uploaded file with content "test" to "/testquota.txt"
 		When user "user0" overwrites file "data/textfile.txt" to "/testquota.txt" with all mechanisms using the WebDAV API
-		Then the HTTP status code of all upload responses should be "204"
+		Then the HTTP status code of all upload responses should be between "201" and "204"
 		Examples:
 			| dav_version   |
 			| old           |
@@ -97,7 +97,7 @@ Feature: quota
 		And user "user1" has uploaded file with content "test" to "/testquota/testquota.txt"
 		And user "user1" has shared folder "/testquota" with user "user0" with permissions 31
 		When user "user0" overwrites file "data/textfile.txt" to "/testquota/testquota.txt" with all mechanisms using the WebDAV API
-		Then the HTTP status code of all upload responses should be "204"
+		Then the HTTP status code of all upload responses should be between "201" and "204"
 		Examples:
 			| dav_version   |
 			| old           |
@@ -131,7 +131,7 @@ Feature: quota
 		And user "user1" has uploaded file with content "test" to "/testquota.txt"
 		And user "user1" has shared file "/testquota.txt" with user "user0" with permissions 19
 		When user "user0" overwrites file "data/textfile.txt" to "/testquota.txt" with all mechanisms using the WebDAV API
-		Then the HTTP status code of all upload responses should be "204"
+		Then the HTTP status code of all upload responses should be between "201" and "204"
 		Examples:
 			| dav_version   |
 			| old           |
