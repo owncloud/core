@@ -127,6 +127,32 @@ pipeline:
       matrix:
         INSTALL_TESTING_APP: true
 
+  federated:
+    image: toolhippie/docker:latest
+    pull: true
+    detach: true
+    environment:
+      - DOCKER_HOST=tcp://docker:2375
+    commands:
+      - |
+        docker run -p 8000:80 \
+        -e DEBUG=true \
+        -e OWNCLOUD_APPS_INSTALL=https://github.com/owncloud/testing/releases/download/latest/testing.tar.gz \
+        -e OWNCLOUD_APPS_ENABLE=testing \
+        owncloud/server:latest
+    when:
+      matrix:
+        TEST_FEDERATION: true
+
+  wait-for-federated-server:
+    image: owncloud/ubuntu:latest
+    pull: true
+    commands:
+      - wait-for-it -t 600 docker:8000
+    when:
+      matrix:
+        TEST_FEDERATION: true
+
   prepare-objectstore:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -321,19 +347,11 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-<<<<<<< HEAD
       - TEST_SERVER_URL=https://server
-    commands:
-      - touch /drone/saved-settings.sh
-      - . /drone/saved-settings.sh
-      - make test-acceptance-api TESTING_REMOTE_SYSTEM=true
-=======
-      - TEST_SERVER_URL=http://server
       - TEST_FEDERATION=${TEST_FEDERATION}
     commands:
-      - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://federated"; fi
-      - ./tests/drone/test-acceptance.sh --remote
->>>>>>> use official docker container for federaated servers
+      - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://docker:8000"; fi
+      - make test-acceptance-api TESTING_REMOTE_SYSTEM=true
     when:
       matrix:
         TEST_SUITE: api
@@ -364,14 +382,8 @@ pipeline:
       - MAILHOG_HOST=email
       - TEST_FEDERATION=${TEST_FEDERATION}
     commands:
-<<<<<<< HEAD
-      - touch /drone/saved-settings.sh
-      - . /drone/saved-settings.sh
+      - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://docker:8000"; fi
       - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
-=======
-      - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://federated"; fi
-      - ./tests/drone/test-acceptance.sh --remote
->>>>>>> use official docker container for federaated servers
     when:
       matrix:
         TEST_SUITE: selenium
@@ -485,17 +497,17 @@ services:
     image: owncloud/server
     pull: true
     environment:
-<<<<<<< HEAD
       - APACHE_WEBROOT=/drone/fed-server/
       - APACHE_CONFIG_TEMPLATE=ssl
       - APACHE_SSL_CERT_CN=federated
       - APACHE_SSL_CERT=/drone/federated.crt
       - APACHE_SSL_KEY=/drone/federated.key
-    command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
-=======
       - OWNCLOUD_APPS_INSTALL=https://github.com/owncloud/testing/releases/download/latest/testing.tar.gz
       - OWNCLOUD_APPS_ENABLE=testing
->>>>>>> use official docker container for federaated servers
+    command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
+
+  docker:
+    image: docker:18.04-dind
     when:
       matrix:
         TEST_FEDERATION: true
@@ -1127,10 +1139,7 @@ matrix:
       BEHAT_SUITE: webUISharingNotifications
       DB_TYPE: mariadb
       USE_SERVER: true
-<<<<<<< HEAD
-=======
-      TEST_FEDERATION: trues
->>>>>>> use official docker container for federaated servers
+      TEST_FEDERATION: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
