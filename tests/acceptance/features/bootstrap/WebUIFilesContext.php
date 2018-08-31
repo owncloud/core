@@ -24,11 +24,9 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
-use GuzzleHttp\Exception\ClientException;
 use Page\FavoritesPage;
 use Page\FilesPage;
 use Page\FilesPageElement\ConflictDialog;
-use Page\FilesPageElement\FileRow;
 use Page\OwncloudPage;
 use Page\SharedWithYouPage;
 use Page\TrashbinPage;
@@ -602,22 +600,26 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$end = $currentTime + (LONGUIWAITTIMEOUTMILLISEC / 1000);
 			//retry deleting in case the file is locked (code 403)
 			while ($currentTime <= $end) {
-				try {
-					DeleteHelper::delete(
-						$this->featureContext->getBaseUrl(),
-						$username,
-						$this->featureContext->getUserPassword($username),
-						$file['name']
-					);
+				$response = DeleteHelper::delete(
+					$this->featureContext->getBaseUrl(),
+					$username,
+					$this->featureContext->getUserPassword($username),
+					$file['name']
+				);
+				
+				if ($response->getStatusCode() >= 200
+					&& $response->getStatusCode() <= 399
+				) {
 					break;
-				} catch (ClientException $e) {
-					if ($e->getResponse()->getStatusCode() === 423) {
-						$message = "INFORMATION: file '" . $file['name'] .
-								   "' is locked";
-						\error_log($message);
-					} else {
-						throw $e;
-					}
+				} elseif ($response->getStatusCode() === 423) {
+					$message = "INFORMATION: file '" . $file['name'] .
+					"' is locked";
+					\error_log($message);
+				} else {
+					throw new \Exception(
+						"could not delete file. Response code: " .
+						$response->getStatusCode()
+					);
 				}
 				
 				\usleep(STANDARDSLEEPTIMEMICROSEC);

@@ -20,12 +20,11 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
+use TestHelpers\HttpRequestHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -296,16 +295,14 @@ trait Provisioning {
 	public function userEnablesOrDisablesApp($user, $action, $app) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps/$app";
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($user);
-		try {
-			if ($action === 'enables') {
-				$this->response = $this->client->post($fullUrl, $options);
-			} else {
-				$this->response = $this->client->delete($fullUrl, $options);
-			}
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
+		if ($action === 'enables') {
+			$this->response = HttpRequestHelper::post(
+				$fullUrl, $user, $this->getPasswordForUser($user)
+			);
+		} else {
+			$this->response = HttpRequestHelper::delete(
+				$fullUrl, $user, $this->getPasswordForUser($user)
+			);
 		}
 	}
 
@@ -545,11 +542,7 @@ trait Provisioning {
 	public function initializeUser($user, $password) {
 		$url = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
-		$client = new Client();
-		$options = [
-			'auth' => [$user, $password],
-		];
-		$client->send($client->createRequest('GET', $url, $options));
+		HttpRequestHelper::get($url, $user, $password);
 	}
 
 	/**
@@ -691,12 +684,10 @@ trait Provisioning {
 	public function cleanupGroup($group) {
 		try {
 			$this->deleteTheGroupUsingTheProvisioningApi($group);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
+		} catch (\Exception $e) {
 			\error_log(
 				"INFORMATION: There was an unexpected problem trying to delete group " .
-				"'$group' status code " . $this->response->getStatusCode() .
-				" message '" . $e->getMessage() . "'"
+				"'$group' message '" . $e->getMessage() . "'"
 			);
 		}
 
@@ -718,16 +709,13 @@ trait Provisioning {
 	 */
 	public function userExists($user) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-		try {
-			$this->response = $client->get($fullUrl, $options);
-			return true;
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
+		if ($this->response->getStatusCode() >= 400) {
 			return false;
 		}
+		return true;
 	}
 
 	/**
@@ -740,11 +728,9 @@ trait Provisioning {
 	 */
 	public function userShouldBelongToGroup($user, $group) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user/groups";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertContains($group, $respondedArray);
@@ -763,11 +749,9 @@ trait Provisioning {
 	 */
 	public function userShouldNotBelongToGroup($user, $group) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user/groups";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertNotContains($group, $respondedArray);
@@ -784,11 +768,9 @@ trait Provisioning {
 	 */
 	public function userBelongsToGroup($user, $group) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user/groups";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 
 		if (\in_array($group, $respondedArray)) {
@@ -1049,12 +1031,8 @@ trait Provisioning {
 	public function adminDisablesUserUsingTheProvisioningApi($user) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user/disable";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-
-		$this->response = $client->send(
-			$client->createRequest("PUT", $fullUrl, $options)
+		$this->response = HttpRequestHelper::put(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
 	}
 
@@ -1143,16 +1121,13 @@ trait Provisioning {
 	public function groupExists($group) {
 		$group = \rawurlencode($group);
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-		try {
-			$this->response = $client->get($fullUrl, $options);
-			return true;
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
+		if ($this->response->getStatusCode() >= 400) {
 			return false;
 		}
+		return true;
 	}
 
 	/**
@@ -1191,11 +1166,9 @@ trait Provisioning {
 	 */
 	public function userShouldBeSubadminOfGroup($user, $group) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
 		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertContains($user, $respondedArray);
@@ -1218,14 +1191,10 @@ trait Provisioning {
 	) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user/subadmins";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-		$options['body'] = [
-							'groupid' => $group
-							];
-		$this->response = $client->send(
-			$client->createRequest("POST", $fullUrl, $options)
+		$body = ['groupid' => $group];
+		$this->response = HttpRequestHelper::post(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword(), null,
+			$body
 		);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
@@ -1245,11 +1214,9 @@ trait Provisioning {
 		$user, $group
 	) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
 		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertNotContains($user, $respondedArray);
@@ -1392,10 +1359,9 @@ trait Provisioning {
 	 */
 	public function theUserIsTheSubadminOfTheGroup($user, $group) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = [$this->getAdminUsername(),$this->getAdminPassword()];
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		$listOfSubadmins = $this->getArrayOfSubadminsResponded($this->response);
 		PHPUnit_Framework_Assert::assertContains(
 			$user,
@@ -1413,10 +1379,9 @@ trait Provisioning {
 	 */
 	public function theUserIsNotTheSubadminOfTheGroup($user, $group) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = [$this->getAdminUsername(),$this->getAdminPassword()];
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		$listOfSubadmins = $this->getArrayOfSubadminsResponded($this->response);
 		PHPUnit_Framework_Assert::assertNotContains(
 			$user,
@@ -1515,11 +1480,9 @@ trait Provisioning {
 	 */
 	public function appShouldBeDisabled($app) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=disabled";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
 		PHPUnit_Framework_Assert::assertContains($app, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(
@@ -1536,11 +1499,9 @@ trait Provisioning {
 	 */
 	public function appShouldBeEnabled($app) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=enabled";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
 		PHPUnit_Framework_Assert::assertContains($app, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(
@@ -1557,11 +1518,9 @@ trait Provisioning {
 	 */
 	public function theInformationForAppShouldHaveAValidVersion($app) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps/$app";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
@@ -1588,11 +1547,9 @@ trait Provisioning {
 	public function userShouldBeDisabled($user) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		PHPUnit_Framework_Assert::assertEquals(
 			"false", $this->response->xml()->data[0]->enabled
 		);
@@ -1608,11 +1565,9 @@ trait Provisioning {
 	public function useShouldBeEnabled($user) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		PHPUnit_Framework_Assert::assertEquals(
 			"true", $this->response->xml()->data[0]->enabled
 		);
@@ -1671,10 +1626,9 @@ trait Provisioning {
 	public function getUserHome($user) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		return $this->response->xml()->data[0]->home;
 	}
 
@@ -1837,10 +1791,9 @@ trait Provisioning {
 	 */
 	public function getEnabledApps() {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=enabled";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		return ($this->getArrayOfAppsResponded($this->response));
 	}
 
@@ -1851,10 +1804,9 @@ trait Provisioning {
 	 */
 	public function getDisabledApps() {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=disabled";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
 		return ($this->getArrayOfAppsResponded($this->response));
 	}
 }
