@@ -193,6 +193,7 @@
 
 			$.ajax({
 				type: 'GET',
+				dataType: 'text',
 				url: OC.generateUrl('heartbeat'),
 				allowAuthErrors: true
 			}).then(afterCall, afterCall);

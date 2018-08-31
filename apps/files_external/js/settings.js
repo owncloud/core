@@ -1007,7 +1007,7 @@ MountConfigListView.prototype = _.extend({
 
 						// disable any other inputs
 						$tr.find('.mountOptionsToggle, .remove').empty();
-						$tr.find('input:not(.user_provided), select:not(.user_provided)').attr('disabled', 'disabled');
+						$tr.find('input:not(.user_provided), select:not(.user_provided)').prop('disabled', true);
 
 						if (isUserGlobal) {
 							$tr.find('.configuration').find(':not(.user_provided)').remove();
@@ -1588,7 +1588,7 @@ OCA.External.Settings.OAuth2.verifyCode = function (backendUrl, data) {
 				OCA.External.Settings.mountConfig.saveStorageConfig($tr, function(status) {
 					if (status) {
 						$tr.find('.configuration input.auth-param')
-							.attr('disabled', 'disabled')
+							.prop('disabled', true)
 							.addClass('disabled-success')
 					}
 					deferredObject.resolve(status);
