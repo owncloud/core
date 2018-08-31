@@ -21,9 +21,7 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Message\ResponseInterface;
-use GuzzleHttp\Exception\ClientException;
 
 /**
  * Helper to make requests to the OCS API
@@ -42,7 +40,6 @@ class OcsApiHelper {
 	 * @param int $ocsApiVersion (1|2) default 2
 	 *
 	 * @return ResponseInterface
-	 * @throws ClientException
 	 */
 	public static function sendRequest(
 		$baseUrl, $user, $password, $method, $path, $body = [], $ocsApiVersion = 2
@@ -52,25 +49,7 @@ class OcsApiHelper {
 			$fullUrl .= '/';
 		}
 		$fullUrl .= "ocs/v{$ocsApiVersion}.php" . $path;
-		$client = new Client();
-		$options = [];
-		if ($user !== null) {
-			$options['auth'] = [$user, $password];
-		}
-		$options['body'] = $body;
 		
-		try {
-			$response = $client->send(
-				$client->createRequest($method, $fullUrl, $options)
-			);
-		} catch (ClientException $ex) {
-			$response = $ex->getResponse();
-			
-			//if the response was null for some reason do not return it but re-throw
-			if ($response === null) {
-				throw $ex;
-			}
-		}
-		return $response;
+		return HttpRequestHelper::sendRequest($fullUrl, $method, $user, $password, [], $body);
 	}
 }

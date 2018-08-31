@@ -20,14 +20,13 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Client as GClient;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\FutureResponse;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\StreamInterface;
 use Sabre\DAV\Client as SClient;
 use Sabre\DAV\Xml\Property\ResourceType;
 use TestHelpers\WebDavHelper;
+use TestHelpers\HttpRequestHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -278,13 +277,9 @@ trait WebDav {
 	) {
 		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
-		try {
-			$this->response = $this->makeDavRequest(
-				$user, "MOVE", $fileSource, $headers
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-		}
+		$this->response = $this->makeDavRequest(
+			$user, "MOVE", $fileSource, $headers
+		);
 	}
 
 	/**
@@ -320,13 +315,9 @@ trait WebDav {
 	) {
 		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
-		try {
-			$this->response = $this->makeDavRequest(
-				$user, "COPY", $fileSource, $headers
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-		}
+		$this->response = $this->makeDavRequest(
+			$user, "COPY", $fileSource, $headers
+		);
 	}
 
 	/**
@@ -369,16 +360,11 @@ trait WebDav {
 	public function downloadPublicFileWithRange($range) {
 		$token = $this->lastShareData->data->token;
 		$fullUrl = $this->getBaseUrl() . "/public.php/webdav";
-
-		$client = new GClient();
-		$options = [];
-		$options['auth'] = [$token, ""];
-		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
-
-		$request = $client->createRequest("GET", $fullUrl, $options);
-		$request->addHeader('Range', $range);
-
-		$this->response = $client->send($request);
+		$headers = [
+			'X-Requested-With' => 'XMLHttpRequest',
+			'Range' => $range
+		];
+		$this->response = HttpRequestHelper::get($fullUrl, $token, "", $headers);
 	}
 
 	/**
@@ -390,17 +376,14 @@ trait WebDav {
 	 * @return void
 	 */
 	public function downloadPublicFileInsideAFolderWithRange($path, $range) {
-		$token = $this->lastShareData->data->token;
 		$fullUrl = $this->getBaseUrl() . "/public.php/webdav$path";
-		$client = new GClient();
-		$options = [];
-		$options['auth'] = [$token, ""];
-		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
-
-		$request = $client->createRequest("GET", $fullUrl, $options);
-		$request->addHeader('Range', $range);
-
-		$this->response = $client->send($request);
+		$headers = [
+			'X-Requested-With' => 'XMLHttpRequest',
+			'Range' => $range
+		];
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->lastShareData->data->token, "", $headers
+		);
 	}
 
 	/**
@@ -415,19 +398,16 @@ trait WebDav {
 	public function publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
 		$path, $password, $range
 	) {
-		$token = $this->lastShareData->data->token;
 		$fullUrl = $this->getBaseUrl() . "/public.php/webdav$path";
-		$client = new GClient();
-		$options = [];
-		$options['auth'] = [$token, $password];
-		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
-		
-		$request = $client->createRequest("GET", $fullUrl, $options);
-		$request->addHeader('Range', $range);
-		
-		$this->response = $client->send($request);
+		$headers = [
+			'X-Requested-With' => 'XMLHttpRequest',
+			'Range' => $range
+		];
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->lastShareData->data->token, $password, $headers
+		);
 	}
-
+	
 	/**
 	 * @Then /^the public should be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder with password "([^"]*)" and the content should be "([^"]*)"$/
 	 *
@@ -577,13 +557,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userDownloadsTheFileUsingTheAPI($user, $fileName) {
-		try {
-			$this->response = $this->makeDavRequest(
-				$user, 'GET', $fileName, []
-			);
-		} catch (BadResponseException $ex) {
-			$this->response = $ex->getResponse();
-		}
+		$this->response = $this->makeDavRequest(
+			$user, 'GET', $fileName, []
+		);
 	}
 
 	/**
@@ -1242,14 +1218,9 @@ trait WebDav {
 	 */
 	public function userUploadsAFileTo($user, $source, $destination) {
 		$file = \GuzzleHttp\Stream\Stream::factory(\fopen($source, 'r'));
-		try {
-			$this->response = $this->makeDavRequest(
-				$user, "PUT", $destination, [], $file
-			);
-		} catch (BadResponseException $e) {
-			// 4xx and 5xx responses cause an exception
-			$this->response = $e->getResponse();
-		}
+		$this->response = $this->makeDavRequest(
+			$user, "PUT", $destination, [], $file
+		);
 	}
 
 	/**
@@ -1388,44 +1359,33 @@ trait WebDav {
 			$suffix = '';
 
 			// regular upload
-			try {
-				if (!$overwriteMode) {
-					$suffix = "-{$dav}dav-regular";
-				}
-				$this->userUploadsAFileTo(
-					$user, $source, $destination . $suffix
-				);
-				$responses[] = $this->response;
-			} catch (BadResponseException $e) {
-				$responses[] = $e->getResponse();
+			if (!$overwriteMode) {
+				$suffix = "-{$dav}dav-regular";
 			}
+			$this->userUploadsAFileTo(
+				$user, $source, $destination . $suffix
+			);
+			$responses[] = $this->response;
 
 			// old chunking upload
 			if ($dav === 'old') {
 				if (!$overwriteMode) {
 					$suffix = "-{$dav}dav-oldchunking";
 				}
-				try {
-					$this->userUploadsAFileToWithChunks(
-						$user, $source, $destination . $suffix, 'old'
-					);
-					$responses[] = $this->response;
-				} catch (BadResponseException $e) {
-					$responses[] = $e->getResponse();
-				}
+				
+				$this->userUploadsAFileToWithChunks(
+					$user, $source, $destination . $suffix, 'old'
+				);
+				$responses[] = $this->response;
 			}
 			if ($dav === 'new') {
 				if (!$overwriteMode) {
 					$suffix = "-{$dav}dav-newchunking";
 				}
-				try {
-					$this->userUploadsAFileToWithChunks(
-						$user, $source, $destination . $suffix, 'new'
-					);
-					$responses[] = $this->response;
-				} catch (BadResponseException $e) {
-					$responses[] = $e->getResponse();
-				}
+				$this->userUploadsAFileToWithChunks(
+					$user, $source, $destination . $suffix, 'new'
+				);
+				$responses[] = $this->response;
 			}
 		}
 
@@ -1530,26 +1490,17 @@ trait WebDav {
 		$user, $content, $destination
 	) {
 		$file = \GuzzleHttp\Stream\Stream::factory($content);
-		try {
-			$time = \time();
-			if ($this->lastUploadTime !== null && $time - $this->lastUploadTime < 1) {
-				// prevent creating two uploads with the same "stime" which is
-				// based on seconds, this prevents creation of uploads with same etag
-				\sleep(1);
-			}
-			$this->response = $this->makeDavRequest(
-				$user, "PUT", $destination, [], $file
-			);
-			$this->lastUploadTime = \time();
-			return $this->response->getHeader('oc-fileid');
-		} catch (BadResponseException $e) {
-			// 4xx and 5xx responses cause an exception
-			$this->response = $e->getResponse();
+		$time = \time();
+		if ($this->lastUploadTime !== null && $time - $this->lastUploadTime < 1) {
+			// prevent creating two uploads with the same "stime" which is
+			// based on seconds, this prevents creation of uploads with same etag
+			\sleep(1);
 		}
-
-		// Return an invalid file id so that any later step that tries to use it
-		// will fail.
-		return "";
+		$this->response = $this->makeDavRequest(
+			$user, "PUT", $destination, [], $file
+		);
+		$this->lastUploadTime = \time();
+		return $this->response->getHeader('oc-fileid');
 	}
 
 	/**
@@ -1567,18 +1518,13 @@ trait WebDav {
 		$user, $checksum, $content, $destination
 	) {
 		$file = \GuzzleHttp\Stream\Stream::factory($content);
-		try {
-			$this->response = $this->makeDavRequest(
-				$user,
-				"PUT",
-				$destination,
-				['OC-Checksum' => $checksum],
-				$file
-			);
-		} catch (BadResponseException $e) {
-			// 4xx and 5xx responses cause an exception
-			$this->response = $e->getResponse();
-		}
+		$this->response = $this->makeDavRequest(
+			$user,
+			"PUT",
+			$destination,
+			['OC-Checksum' => $checksum],
+			$file
+		);
 	}
 
 	/**
@@ -1624,12 +1570,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userDeletesFile($user, $file) {
-		try {
-			$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
-		} catch (BadResponseException $e) {
-			// 4xx and 5xx responses cause an exception
-			$this->response = $e->getResponse();
-		}
+		$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
 	}
 
 	/**
@@ -1658,15 +1599,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userCreatesAFolder($user, $destination) {
-		try {
-			$destination = '/' . \ltrim($destination, '/');
-			$this->response = $this->makeDavRequest(
-				$user, "MKCOL", $destination, []
-			);
-		} catch (BadResponseException $e) {
-			// 4xx and 5xx responses cause an exception
-			$this->response = $e->getResponse();
-		}
+		$destination = '/' . \ltrim($destination, '/');
+		$this->response = $this->makeDavRequest(
+			$user, "MKCOL", $destination, []
+		);
 	}
 
 	/**
@@ -1738,16 +1674,12 @@ trait WebDav {
 	public function userUploadsChunkedFile(
 		$user, $num, $total, $data, $destination
 	) {
-		try {
-			$num -= 1;
-			$data = \GuzzleHttp\Stream\Stream::factory($data);
-			$file = "$destination-chunking-42-$total-$num";
-			$this->response = $this->makeDavRequest(
-				$user, 'PUT', $file, ['OC-Chunked' => '1'], $data, "uploads"
-			);
-		} catch (\GuzzleHttp\Exception\RequestException $ex) {
-			$this->response = $ex->getResponse();
-		}
+		$num -= 1;
+		$data = \GuzzleHttp\Stream\Stream::factory($data);
+		$file = "$destination-chunking-42-$total-$num";
+		$this->response = $this->makeDavRequest(
+			$user, 'PUT', $file, ['OC-Chunked' => '1'], $data, "uploads"
+		);
 	}
 
 	/**
@@ -1806,14 +1738,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userCreatesANewChunkingUploadWithId($user, $id) {
-		try {
-			$destination = "/uploads/$user/$id";
-			$this->makeDavRequest(
-				$user, 'MKCOL', $destination, [], null, "uploads"
-			);
-		} catch (\GuzzleHttp\Exception\RequestException $ex) {
-			$this->response = $ex->getResponse();
-		}
+		$destination = "/uploads/$user/$id";
+		$this->response = $this->makeDavRequest(
+			$user, 'MKCOL', $destination, [], null, "uploads"
+		);
 	}
 
 	/**
@@ -1828,15 +1756,11 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsNewChunkFileOfWithToId($user, $num, $data, $id) {
-		try {
-			$data = \GuzzleHttp\Stream\Stream::factory($data);
-			$destination = "/uploads/$user/$id/$num";
-			$this->makeDavRequest(
-				$user, 'PUT', $destination, [], $data, "uploads"
-			);
-		} catch (\GuzzleHttp\Exception\RequestException $ex) {
-			$this->response = $ex->getResponse();
-		}
+		$data = \GuzzleHttp\Stream\Stream::factory($data);
+		$destination = "/uploads/$user/$id/$num";
+		$this->response = $this->makeDavRequest(
+			$user, 'PUT', $destination, [], $data, "uploads"
+		);
 	}
 
 	/**
@@ -1924,13 +1848,9 @@ trait WebDav {
 
 		$headers['Destination'] = $destination;
 
-		try {
-			$this->response = $this->makeDavRequest(
-				$user, 'MOVE', $source, $headers, null, "uploads"
-			);
-		} catch (BadResponseException $ex) {
-			$this->response = $ex->getResponse();
-		}
+		$this->response = $this->makeDavRequest(
+			$user, 'MOVE', $source, $headers, null, "uploads"
+		);
 	}
 
 	/**
@@ -1944,14 +1864,9 @@ trait WebDav {
 	 */
 	private function deleteUpload($user, $id, $headers) {
 		$source = "/uploads/$user/$id";
-
-		try {
-			$this->response = $this->makeDavRequest(
-				$user, 'DELETE', $source, $headers, null, "uploads"
-			);
-		} catch (BadResponseException $ex) {
-			$this->response = $ex->getResponse();
-		}
+		$this->response = $this->makeDavRequest(
+			$user, 'DELETE', $source, $headers, null, "uploads"
+		);
 	}
 
 	/**
@@ -2090,13 +2005,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function connectingToDavEndpoint() {
-		try {
-			$this->response = $this->makeDavRequest(
-				null, 'PROPFIND', '', []
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-		}
+		$this->response = $this->makeDavRequest(
+			null, 'PROPFIND', '', []
+		);
 	}
 
 	/**

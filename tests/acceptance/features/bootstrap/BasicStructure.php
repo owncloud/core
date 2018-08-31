@@ -22,12 +22,11 @@
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
-use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
+use TestHelpers\HttpRequestHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -715,44 +714,39 @@ trait BasicStructure {
 	 */
 	public function sendingToWithDirectUrl($user, $verb, $url, $body, $password = null) {
 		$fullUrl = $this->getBaseUrl() . $url;
-		$client = new Client();
-		$options = [];
+
 		if ($password === null) {
-			$options['auth'] = $this->getAuthOptionForUser($user);
-		} else {
-			$options['auth'] = [$user, $password];
+			$password = $this->getPasswordForUser($user);
 		}
 		
-		if (!empty($this->guzzleClientHeaders)) {
-			$options ['headers'] = $this->guzzleClientHeaders;
-		}
-		
+		$headers = $this->guzzleClientHeaders;
+
+		$config = null;
 		if ($this->sourceIpAddress !== null) {
-			$options ['config'] = [
+			$config = [
 				'curl' => [
 					CURLOPT_INTERFACE => $this->sourceIpAddress
 				]
 			];
 		}
 		
+		$cookies = null;
 		if (!empty($this->cookieJar->toArray())) {
-			$options['cookies'] = $this->cookieJar;
+			$cookies = $this->cookieJar;
 		}
 
+		$fd = null;
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-			$options['body'] = $fd;
 		}
 
-		try {
-			$request = $client->createRequest($verb, $fullUrl, $options);
-			if (isset($this->requestToken)) {
-				$request->addHeader('requesttoken', $this->requestToken);
-			}
-			$this->response = $client->send($request);
-		} catch (BadResponseException $ex) {
-			$this->response = $ex->getResponse();
+		if (isset($this->requestToken)) {
+			$headers['requesttoken'] = $this->requestToken;
 		}
+
+		$this->response = HttpRequestHelper::sendRequest(
+			$fullUrl, $verb, $user, $password, $headers, $fd, $config, $cookies
+		);
 	}
 
 	/**
@@ -891,32 +885,31 @@ trait BasicStructure {
 	public function userHasLoggedInToAWebStyleSessionUsingTheAPI($user) {
 		$loginUrl = $this->getBaseUrl() . '/login';
 		// Request a new session and extract CSRF token
-		$client = new Client();
-		$options = [];
-		if (!empty($this->guzzleClientHeaders)) {
-			$options ['headers'] = $this->guzzleClientHeaders;
-		}
 		
+		$config = null;
 		if ($this->sourceIpAddress !== null) {
-			$options ['config'] = [
+			$config = [
 				'curl' => [
 					CURLOPT_INTERFACE => $this->sourceIpAddress
 				]
 			];
 		}
-		$options ['cookies'] = $this->cookieJar;
-		$response = $client->get($loginUrl, $options);
+
+		$response = HttpRequestHelper::get(
+			$loginUrl, null, null, $this->guzzleClientHeaders, null, $config, $this->cookieJar
+		);
 		$this->extractRequestTokenFromResponse($response);
 
 		// Login and extract new token
 		$password = $this->getPasswordForUser($user);
-		$client = new Client();
-		$options ['body'] = [
+		$body = [
 			'user' => $user,
 			'password' => $password,
 			'requesttoken' => $this->requestToken
 		];
-		$response = $client->post($loginUrl, $options);
+		$response = HttpRequestHelper::post(
+			$loginUrl, null, null, $this->guzzleClientHeaders, $body, $config, $this->cookieJar
+		);
 		$this->extractRequestTokenFromResponse($response);
 	}
 
@@ -930,29 +923,23 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function sendingAToWithRequesttoken($method, $url) {
-		$client = new Client();
-		$options = [];
-		if (!empty($this->guzzleClientHeaders)) {
-			$options ['headers'] = $this->guzzleClientHeaders;
-		}
+		$headers = $this->guzzleClientHeaders;
 		
+		$config = null;
 		if ($this->sourceIpAddress !== null) {
-			$options ['config'] = [
+			$config = [
 				'curl' => [
 					CURLOPT_INTERFACE => $this->sourceIpAddress
 				]
 			];
 		}
-		$options ['cookies'] = $this->cookieJar;
-		$request = $client->createRequest(
-			$method, $this->getBaseUrl() . $url, $options
+
+		$headers['requesttoken'] = $this->requestToken;
+
+		$url = $this->getBaseUrl() . $url;
+		$this->response = HttpRequestHelper::sendRequest(
+			$url, $method, null, null, $headers, null, $config, $this->cookieJar
 		);
-		$request->addHeader('requesttoken', $this->requestToken);
-		try {
-			$this->response = $client->send($request);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-		}
 	}
 
 	/**
@@ -965,28 +952,20 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function sendingAToWithoutRequesttoken($method, $url) {
-		$client = new Client();
-		$options = [];
-		if (!empty($this->guzzleClientHeaders)) {
-			$options ['headers'] = $this->guzzleClientHeaders;
-		}
-		
+		$config = null;
 		if ($this->sourceIpAddress !== null) {
-			$options ['config'] = [
+			$config = [
 				'curl' => [
 					CURLOPT_INTERFACE => $this->sourceIpAddress
 				]
 			];
 		}
-		$options ['cookies'] = $this->cookieJar;
-		$request = $client->createRequest(
-			$method, $this->getBaseUrl() . $url, $options
+
+		$url = $this->getBaseUrl() . $url;
+		$this->response = HttpRequestHelper::sendRequest(
+			$url, $method, null, null, $this->guzzleClientHeaders,
+			null, $config, $this->cookieJar
 		);
-		try {
-			$this->response = $client->send($request);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-		}
 	}
 
 	/**
@@ -1117,28 +1096,20 @@ trait BasicStructure {
 	 */
 	public function getStatusPhp() {
 		$fullUrl = $this->getBaseUrl() . "/status.php";
-		$client = new Client();
-		$options = [];
-		if (!empty($this->guzzleClientHeaders)) {
-			$options ['headers'] = $this->guzzleClientHeaders;
-		}
 		
+		$config = null;
 		if ($this->sourceIpAddress !== null) {
-			$options ['config'] = [
+			$config = [
 				'curl' => [
 					CURLOPT_INTERFACE => $this->sourceIpAddress
 				]
 			];
 		}
-		$options ['cookies'] = $this->cookieJar;
-		$options['auth'] = $this->getAuthOptionForUser('admin');
-		try {
-			$this->response = $client->send(
-				$client->createRequest('GET', $fullUrl, $options)
-			);
-		} catch (BadResponseException $ex) {
-			$this->response = $ex->getResponse();
-		}
+
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(),
+			$this->getAdminPassword(), $this->guzzleClientHeaders, null, $config
+		);
 	}
 
 	/**
@@ -1329,8 +1300,6 @@ trait BasicStructure {
 			$fullUrl .= '/';
 		}
 		$fullUrl .= "ocs/v1.php/apps/testing/api/v1/increasefileid";
-		$client = new Client();
-		$options = [];
 		$suiteSettingsContexts = $scope->getSuite()->getSettings()['contexts'];
 		$adminUsername = null;
 		$adminPassword = null;
@@ -1360,7 +1329,6 @@ trait BasicStructure {
 			);
 		}
 
-		$options['auth'] = [$adminUsername, $adminPassword];
-		$client->send($client->createRequest('POST', $fullUrl, $options));
+		HttpRequestHelper::post($fullUrl, $adminUsername, $adminPassword);
 	}
 }
