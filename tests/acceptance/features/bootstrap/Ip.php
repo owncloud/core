@@ -72,6 +72,8 @@ trait Ip {
 	
 	/**
 	 * @param array $guzzleClientHeaders ['X-Foo' => 'Bar']
+	 *
+	 * @return void
 	 */
 	public function setGuzzleClientHeaders($guzzleClientHeaders) {
 		$this->guzzleClientHeaders = $guzzleClientHeaders;
@@ -79,6 +81,8 @@ trait Ip {
 
 	/**
 	 * @param array $guzzleClientHeaders ['X-Foo' => 'Bar']
+	 *
+	 * @return void
 	 */
 	public function addGuzzleClientHeaders($guzzleClientHeaders) {
 		$this->guzzleClientHeaders = \array_merge(
