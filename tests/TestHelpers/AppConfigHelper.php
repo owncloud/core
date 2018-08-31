@@ -22,7 +22,6 @@
 namespace TestHelpers;
 
 use GuzzleHttp\Message\ResponseInterface;
-use GuzzleHttp\Exception\ServerException;
 use PHPUnit_Framework_Assert;
 
 /**

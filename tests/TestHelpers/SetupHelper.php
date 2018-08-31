@@ -20,6 +20,7 @@
  *
  */
 namespace TestHelpers;
+
 use Behat\Testwork\Hook\Scope\HookScope;
 use GuzzleHttp\Exception\ServerException;
 use Exception;
