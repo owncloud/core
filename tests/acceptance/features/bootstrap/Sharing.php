@@ -97,7 +97,7 @@ trait Sharing {
 		$this->response = HttpRequestHelper::post(
 			$fullUrl, $user, $this->getPasswordForUser($user), null, $fd
 		);
-		$this->lastShareData = $this->response->xml();
+		$this->lastShareData = $this->getResponseXml();
 	}
 
 	/**
@@ -155,7 +155,7 @@ trait Sharing {
 			$this->ocsApiVersion,
 			$this->sharingApiVersion
 		);
-		$this->lastShareData = $this->response->xml();
+		$this->lastShareData = $this->getResponseXml();
 	}
 
 	/**
@@ -572,7 +572,7 @@ trait Sharing {
 			$this->ocsApiVersion,
 			$this->sharingApiVersion
 		);
-		$this->lastShareData = $this->response->xml();
+		$this->lastShareData = $this->getResponseXml();
 	}
 
 	/**
@@ -582,7 +582,7 @@ trait Sharing {
 	 * @return bool
 	 */
 	public function isFieldInResponse($field, $contentExpected) {
-		$data = $this->response->xml()->data[0];
+		$data = $this->getResponseXml()->data[0];
 		if ((string)$field == 'expiration') {
 			$contentExpected
 				= \date('Y-m-d', \strtotime($contentExpected)) . " 00:00:00";
@@ -712,7 +712,7 @@ trait Sharing {
 	 * @return bool
 	 */
 	public function isUserOrGroupInSharedData($userOrGroup, $permissions = null) {
-		$data = $this->response->xml()->data[0];
+		$data = $this->getResponseXml()->data[0];
 		foreach ($data as $element) {
 			if ($element->share_with == $userOrGroup
 				&& ($permissions === null || $permissions == $element->permissions)
@@ -969,7 +969,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkingTheResponseEntriesCount($count) {
-		$actualCount = \count($this->response->xml()->data[0]);
+		$actualCount = \count($this->getResponseXml()->data[0]);
 		PHPUnit_Framework_Assert::assertEquals($count, $actualCount);
 	}
 
@@ -1093,7 +1093,7 @@ trait Sharing {
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $user, $this->getPasswordForUser($user)
 		);
-		return $this->response->xml()->data->element;
+		return $this->getResponseXml()->data->element;
 	}
 
 	/**

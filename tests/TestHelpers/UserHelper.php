@@ -21,7 +21,8 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
+use SimpleXMLElement;
 
 /**
  * Helper to administrate users (and groups) through the provisioning API
@@ -232,11 +233,24 @@ class UserHelper {
 		$baseUrl, $adminUser, $adminPassword, $search =""
 	) {
 		$result = self::getGroups($baseUrl, $adminUser, $adminPassword, $search);
-		$groups = $result->xml()->xpath(".//groups")[0];
+		$groups = self::getResponseXml($result)->xpath(".//groups")[0];
 		$return = [];
 		foreach ($groups as $group) {
 			$return[] = $group->__toString();
 		}
 		return $return;
+	}
+
+	/**
+	 * Parses the response as XML
+	 *
+	 * @param ResponseInterface $response
+	 *
+	 * @return SimpleXMLElement
+	 */
+	public static function getResponseXml($response) {
+		// rewind just to make sure we can re-parse it in case it was parsed already...
+		$response->getBody()->rewind();
+		return new SimpleXMLElement($response->getBody()->getContents());
 	}
 }

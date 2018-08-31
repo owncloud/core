@@ -20,7 +20,7 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
@@ -1397,7 +1397,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theDisplayNameReturnedByTheApiShouldBe($displayname) {
-		$responseName = $this->response->xml()->data[0]->displayname;
+		$responseName = $this->getResponseXml()->data[0]->displayname;
 		PHPUnit_Framework_Assert::assertEquals($displayname, $responseName);
 	}
 
@@ -1409,7 +1409,8 @@ trait Provisioning {
 	 * @return array
 	 */
 	public function getArrayOfUsersResponded($resp) {
-		$listCheckedElements = $resp->xml()->data[0]->users[0]->element;
+		$listCheckedElements
+			= $this->getResponseXml($resp)->data[0]->users[0]->element;
 		$extractedElementsArray
 			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
@@ -1423,7 +1424,8 @@ trait Provisioning {
 	 * @return array
 	 */
 	public function getArrayOfGroupsResponded($resp) {
-		$listCheckedElements = $resp->xml()->data[0]->groups[0]->element;
+		$listCheckedElements
+			= $this->getResponseXml($resp)->data[0]->groups[0]->element;
 		$extractedElementsArray
 			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
@@ -1437,7 +1439,8 @@ trait Provisioning {
 	 * @return array
 	 */
 	public function getArrayOfAppsResponded($resp) {
-		$listCheckedElements = $resp->xml()->data[0]->apps[0]->element;
+		$listCheckedElements
+			= $this->getResponseXml($resp)->data[0]->apps[0]->element;
 		$extractedElementsArray
 			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
@@ -1451,7 +1454,8 @@ trait Provisioning {
 	 * @return array
 	 */
 	public function getArrayOfSubadminsResponded($resp) {
-		$listCheckedElements = $resp->xml()->data[0]->element;
+		$listCheckedElements
+			= $this->getResponseXml($resp)->data[0]->element;
 		$extractedElementsArray
 			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
@@ -1465,7 +1469,8 @@ trait Provisioning {
 	 * @return array
 	 */
 	public function getArrayOfAppInfoResponded($resp) {
-		$listCheckedElements = $resp->xml()->data[0];
+		$listCheckedElements
+			= $this->getResponseXml($resp)->data[0];
 		$extractedElementsArray
 			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
@@ -1551,7 +1556,7 @@ trait Provisioning {
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
 		PHPUnit_Framework_Assert::assertEquals(
-			"false", $this->response->xml()->data[0]->enabled
+			"false", $this->getResponseXml()->data[0]->enabled
 		);
 	}
 
@@ -1569,7 +1574,7 @@ trait Provisioning {
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
 		PHPUnit_Framework_Assert::assertEquals(
-			"true", $this->response->xml()->data[0]->enabled
+			"true", $this->getResponseXml()->data[0]->enabled
 		);
 	}
 
@@ -1629,7 +1634,7 @@ trait Provisioning {
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
-		return $this->response->xml()->data[0]->home;
+		return $this->getResponseXml()->data[0]->home;
 	}
 
 	/**
@@ -1642,7 +1647,7 @@ trait Provisioning {
 	public function checkUserAttributes($body) {
 		$fd = $body->getRowsHash();
 		foreach ($fd as $field => $value) {
-			$data = $this->response->xml()->data[0];
+			$data = $this->getResponseXml()->data[0];
 			$field_array = \explode(' ', $field);
 			foreach ($field_array as $field_name) {
 				$data = $data->$field_name;
@@ -1677,7 +1682,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theApiShouldNotReturnAnyData() {
-		$responseData = $this->response->xml()->data[0];
+		$responseData = $this->getResponseXml()->data[0];
 		PHPUnit_Framework_Assert::assertEmpty(
 			$responseData,
 			"Response data is not empty but it should be empty"
@@ -1690,7 +1695,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theListOfUsersReturnedByTheApiShouldBeEmpty() {
-		$usersList = $this->response->xml()->data[0]->users[0];
+		$usersList = $this->getResponseXml()->data[0]->users[0];
 		PHPUnit_Framework_Assert::assertEmpty(
 			$usersList,
 			"Users list is not empty but it should be empty"
@@ -1703,7 +1708,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theListOfGroupsReturnedByTheApiShouldBeEmpty() {
-		$groupsList = $this->response->xml()->data[0]->groups[0];
+		$groupsList = $this->getResponseXml()->data[0]->groups[0];
 		PHPUnit_Framework_Assert::assertEmpty(
 			$groupsList,
 			"Groups list is not empty but it should be empty"
