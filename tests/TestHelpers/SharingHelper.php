@@ -21,6 +21,8 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\Message\ResponseInterface;
+
 /**
  * manage Shares via OCS API
  *
@@ -61,7 +63,8 @@ class SharingHelper {
 	 * @param int $ocsApiVersion
 	 * @param int $sharingApiVersion
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @throws \InvalidArgumentException
+	 * @return ResponseInterface
 	 */
 	public static function createShare(
 		$baseUrl,

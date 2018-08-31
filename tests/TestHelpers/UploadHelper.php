@@ -21,7 +21,6 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\FutureResponse;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\Stream;
 use PHPUnit_Framework_Assert;
@@ -50,7 +49,7 @@ class UploadHelper {
 	 *                                    if set to null chunking will not be used
 	 * @param int    $noOfChunks          how many chunks do we want to upload
 	 *
-	 * @return FutureResponse|ResponseInterface|NULL
+	 * @return ResponseInterface
 	 */
 	public static function upload(
 		$baseUrl,
