@@ -25,6 +25,7 @@ use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\FutureResponse;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\StreamInterface;
+use GuzzleHttp\Psr7\Request;
 use Sabre\DAV\Client as SClient;
 use Sabre\DAV\Xml\Property\ResourceType;
 use TestHelpers\WebDavHelper;
@@ -45,7 +46,8 @@ trait WebDav {
 	 */
 	private $usingOldDavPath = true;
 	/**
-	 * @var ResponseInterface[]
+	 * @var array ResponseInterface with keys 'response' and
+	 *                              'upload_type' string text describing the type of upload
 	 */
 	private $uploadResponses;
 	/**
@@ -373,12 +375,12 @@ trait WebDav {
 		$client = new GClient();
 		$options = [];
 		$options['auth'] = [$token, ""];
-		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
+		$headers['Range'] = $range;
+		$headers['X-Requested-With'] = 'XMLHttpRequest';
 
-		$request = $client->createRequest("GET", $fullUrl, $options);
-		$request->addHeader('Range', $range);
+		$request = new Request("GET", $fullUrl, $headers);
 
-		$this->response = $client->send($request);
+		$this->response = $client->send($request, $options);
 	}
 
 	/**
@@ -395,12 +397,12 @@ trait WebDav {
 		$client = new GClient();
 		$options = [];
 		$options['auth'] = [$token, ""];
-		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
+		$headers['Range'] = $range;
+		$headers['X-Requested-With'] = 'XMLHttpRequest';
 
-		$request = $client->createRequest("GET", $fullUrl, $options);
-		$request->addHeader('Range', $range);
+		$request = new Request("GET", $fullUrl, $headers);
 
-		$this->response = $client->send($request);
+		$this->response = $client->send($request, $options);
 	}
 
 	/**
@@ -418,14 +420,18 @@ trait WebDav {
 		$token = $this->lastShareData->data->token;
 		$fullUrl = $this->getBaseUrl() . "/public.php/webdav$path";
 		$client = new GClient();
+
 		$options = [];
 		$options['auth'] = [$token, $password];
-		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
-		
-		$request = $client->createRequest("GET", $fullUrl, $options);
-		$request->addHeader('Range', $range);
-		
-		$this->response = $client->send($request);
+
+		$headers = [];
+		$headers['X-Requested-With'] = 'XMLHttpRequest';
+		$headers['Range'] = $range;
+
+		$this->response = $client->send(
+			new Request('GET', $fullUrl, $headers),
+			$options
+		);
 	}
 
 	/**
@@ -599,7 +605,20 @@ trait WebDav {
 			$headerName = $header[0];
 			$expectedHeaderValue = $header[1];
 			$returnedHeader = $this->response->getHeader($headerName);
-			if ($returnedHeader !== $expectedHeaderValue) {
+			if (\is_array($returnedHeader)) {
+				if (empty($returnedHeader)) {
+					throw new \Exception(
+						\sprintf(
+							"Missing expected header '%s'",
+							$headerName
+						)
+					);
+				}
+				$headerValue = $returnedHeader[0];
+			} else {
+				$headerValue = $returnedHeader;
+			}
+			if ($headerValue !== $expectedHeaderValue) {
 				throw new \Exception(
 					\sprintf(
 						"Expected value '%s' for header '%s', got '%s'",
@@ -1113,7 +1132,7 @@ trait WebDav {
 					</oc:filter-files>';
 
 		$response = $client->request(
-			'REPORT', $this->makeSabrePath($user, $path), $body
+			'REPORT', $this->makeSabrePath($user, $path), $body, []
 		);
 		$parsedResponse = $client->parseMultistatus($response['body']);
 		return $parsedResponse;
@@ -1139,7 +1158,7 @@ trait WebDav {
 							 </oc:filter-comments>';
 
 		$response = $client->request(
-			'REPORT', $this->makeSabrePathNotForFiles($path), $body
+			'REPORT', $this->makeSabrePathNotForFiles($path), $body, []
 		);
 
 		$parsedResponse = $client->parseMultistatus($response['body']);
@@ -1241,7 +1260,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsAFileTo($user, $source, $destination) {
-		$file = \GuzzleHttp\Stream\Stream::factory(\fopen($source, 'r'));
+		$file = \fopen($source, 'r');
 		try {
 			$this->response = $this->makeDavRequest(
 				$user, "PUT", $destination, [], $file
@@ -1395,10 +1414,15 @@ trait WebDav {
 				$this->userUploadsAFileTo(
 					$user, $source, $destination . $suffix
 				);
-				$responses[] = $this->response;
+				$response = $this->response;
 			} catch (BadResponseException $e) {
-				$responses[] = $e->getResponse();
+				$response = $e->getResponse();
 			}
+
+			$responses[] = [
+				'response' => $response,
+				'upload_type' => $dav . ' regular'
+			];
 
 			// old chunking upload
 			if ($dav === 'old') {
@@ -1409,11 +1433,18 @@ trait WebDav {
 					$this->userUploadsAFileToWithChunks(
 						$user, $source, $destination . $suffix, 'old'
 					);
-					$responses[] = $this->response;
+					$response = $this->response;
 				} catch (BadResponseException $e) {
-					$responses[] = $e->getResponse();
+					$response = $e->getResponse();
 				}
+
+				$responses[] = [
+					'response' => $response,
+					'upload_type' => $dav . ' chunking'
+				];
 			}
+
+			// new chunking upload
 			if ($dav === 'new') {
 				if (!$overwriteMode) {
 					$suffix = "-{$dav}dav-newchunking";
@@ -1422,10 +1453,15 @@ trait WebDav {
 					$this->userUploadsAFileToWithChunks(
 						$user, $source, $destination . $suffix, 'new'
 					);
-					$responses[] = $this->response;
+					$response = $this->response;
 				} catch (BadResponseException $e) {
-					$responses[] = $e->getResponse();
+					$response = $e->getResponse();
 				}
+
+				$responses[] = [
+					'response' => $response,
+					'upload_type' => $dav . ' chunking'
+				];
 			}
 		}
 
@@ -1443,8 +1479,8 @@ trait WebDav {
 		foreach ($this->uploadResponses as $response) {
 			PHPUnit_Framework_Assert::assertEquals(
 				$statusCode,
-				$response->getStatusCode(),
-				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+				$response['response']->getStatusCode(),
+				'Response for dav upload ' . $response['upload_type'] . ' did not return expected status code'
 			);
 		}
 	}
@@ -1463,13 +1499,13 @@ trait WebDav {
 		foreach ($this->uploadResponses as $response) {
 			PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
 				$minStatusCode,
-				$response->getStatusCode(),
-				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+				$response['response']->getStatusCode(),
+				'Response for dav upload ' . $response['upload_type'] . ' did not return expected status code'
 			);
 			PHPUnit_Framework_Assert::assertLessThanOrEqual(
 				$maxStatusCode,
-				$response->getStatusCode(),
-				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+				$response['response']->getStatusCode(),
+				'Response for dav upload ' . $response['upload_type'] . ' did not return expected status code'
 			);
 		}
 	}
@@ -1529,7 +1565,6 @@ trait WebDav {
 	public function userUploadsAFileWithContentTo(
 		$user, $content, $destination
 	) {
-		$file = \GuzzleHttp\Stream\Stream::factory($content);
 		try {
 			$time = \time();
 			if ($this->lastUploadTime !== null && $time - $this->lastUploadTime < 1) {
@@ -1538,7 +1573,7 @@ trait WebDav {
 				\sleep(1);
 			}
 			$this->response = $this->makeDavRequest(
-				$user, "PUT", $destination, [], $file
+				$user, "PUT", $destination, [], $content
 			);
 			$this->lastUploadTime = \time();
 			return $this->response->getHeader('oc-fileid');
@@ -1566,14 +1601,13 @@ trait WebDav {
 	public function userUploadsAFileWithChecksumAndContentTo(
 		$user, $checksum, $content, $destination
 	) {
-		$file = \GuzzleHttp\Stream\Stream::factory($content);
 		try {
 			$this->response = $this->makeDavRequest(
 				$user,
 				"PUT",
 				$destination,
 				['OC-Checksum' => $checksum],
-				$file
+				$content
 			);
 		} catch (BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
@@ -1740,7 +1774,6 @@ trait WebDav {
 	) {
 		try {
 			$num -= 1;
-			$data = \GuzzleHttp\Stream\Stream::factory($data);
 			$file = "$destination-chunking-42-$total-$num";
 			$this->response = $this->makeDavRequest(
 				$user, 'PUT', $file, ['OC-Chunked' => '1'], $data, "uploads"
@@ -1829,7 +1862,6 @@ trait WebDav {
 	 */
 	public function userUploadsNewChunkFileOfWithToId($user, $num, $data, $id) {
 		try {
-			$data = \GuzzleHttp\Stream\Stream::factory($data);
 			$destination = "/uploads/$user/$id/$num";
 			$this->makeDavRequest(
 				$user, 'PUT', $destination, [], $data, "uploads"

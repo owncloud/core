@@ -34,6 +34,8 @@ use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IWebDavClientService;
 use OCP\Lock\LockedException;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Sabre\DAV\Client;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\InsufficientStorage;
@@ -102,7 +104,7 @@ class DavTest extends TestCase {
 		$this->davClient = $this->createMock(Client::class);
 		$this->webDavClientService->method('newClient')->willReturn($this->davClient);
 
-		$this->instance = $this->getMockBuilder(\OC\Files\Storage\DAV::class)
+		$this->instance = $this->getMockBuilder(DAV::class)
 			->setConstructorArgs([[
 				'user' => 'davuser',
 				'password' => 'davpassword',
@@ -152,7 +154,7 @@ class DavTest extends TestCase {
 			])
 			->willReturn($this->davClient);
 
-		$this->instance = new \OC\Files\Storage\DAV([
+		$this->instance = new DAV([
 			'user' => 'davuser',
 			'password' => 'davpassword',
 			'host' => 'davhost',
@@ -188,7 +190,7 @@ class DavTest extends TestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function testInstantiateWebDavClientInvalidConfig($params) {
-		new \OC\Files\Storage\DAV($params);
+		new DAV($params);
 	}
 
 	private function createClientHttpException($statusCode) {
@@ -199,15 +201,15 @@ class DavTest extends TestCase {
 	}
 
 	private function createGuzzleClientException($statusCode) {
-		$request = $this->createMock(\GuzzleHttp\Message\RequestInterface::class);
-		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
+		$request = $this->createMock(RequestInterface::class);
+		$response = $this->createMock(ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn($statusCode);
 		return new ClientException('ClientException', $request, $response);
 	}
 
 	private function createGuzzleServerException($statusCode) {
-		$request = $this->createMock(\GuzzleHttp\Message\RequestInterface::class);
-		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
+		$request = $this->createMock(RequestInterface::class);
+		$response = $this->createMock(ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn($statusCode);
 		return new ServerException('ServerException', $request, $response);
 	}
@@ -222,7 +224,7 @@ class DavTest extends TestCase {
 		];
 
 		$testCases = [
-			[new \Sabre\DAV\Exception\Forbidden('Forbidden'), \Sabre\DAV\Exception\Forbidden::class],
+			[new Forbidden('Forbidden'), Forbidden::class],
 			[new \InvalidArgumentException(), StorageNotAvailableException::class],
 			[new StorageNotAvailableException(), StorageNotAvailableException::class],
 			[new StorageInvalidException(), StorageInvalidException::class],
@@ -239,7 +241,7 @@ class DavTest extends TestCase {
 		$testCases[] = [
 			new ServerException(
 				'ServerException with no response',
-				$this->createMock(\GuzzleHttp\Message\RequestInterface::class),
+				$this->createMock(RequestInterface::class),
 				null
 			),
 			StorageNotAvailableException::class
@@ -517,7 +519,7 @@ class DavTest extends TestCase {
 	}
 
 	public function testFopenRead() {
-		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
+		$response = $this->createMock(ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn(Http::STATUS_OK);
 		$response->method('getBody')->willReturn(\fopen('data://text/plain,response body', 'r'));
 
@@ -573,7 +575,7 @@ class DavTest extends TestCase {
 	 * @expectedException \OCP\Lock\LockedException
 	 */
 	public function testFopenReadLockedException() {
-		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
+		$response = $this->createMock(ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn(Http::STATUS_LOCKED);
 		$response->method('getBody')->willReturn(\fopen('data://text/plain,response body', 'r'));
 
