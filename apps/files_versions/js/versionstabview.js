@@ -9,6 +9,21 @@
  */
 
 (function() {
+
+	function getPreviewUrl(model) {
+		var mime = model.get('mimetype');
+
+		var enabledPreviewProviders = OC.appConfig.core.enabledPreviewProviders || [];
+		if (enabledPreviewProviders.length > 0) {
+			var allMimesPattern = new RegExp(enabledPreviewProviders.join('|'));
+			if (OC.appConfig.core.previewsEnabled && allMimesPattern.test(mime)) {
+				return model.getPreviewUrl();
+			}
+		}
+
+		return OC.MimeType.getIconUrl(mime);
+	}
+
 	var TEMPLATE_ITEM =
 		'<li data-revision="{{versionId}}">' +
 		'<div>' +
@@ -185,6 +200,7 @@
 		_formatItem: function(version) {
 			var timestamp = version.get('timestamp') * 1000;
 			var size = version.has('size') ? version.get('size') : 0;
+
 			return _.extend({
 				versionId: version.get('id'),
 				formattedTimestamp: OC.Util.formatDate(timestamp),
@@ -195,7 +211,7 @@
 				downloadUrl: version.getDownloadUrl(),
 				downloadIconUrl: OC.imagePath('core', 'actions/download'),
 				revertIconUrl: OC.imagePath('core', 'actions/history'),
-				previewUrl: version.getPreviewUrl(),
+				previewUrl: getPreviewUrl(version),
 				revertLabel: t('files_versions', 'Restore'),
 				canRevert: (this.collection.getFileInfo().get('permissions') & OC.PERMISSION_UPDATE) !== 0
 			}, version.attributes);
