@@ -89,4 +89,11 @@ class ShareTest extends \Test\TestCase {
 		$this->share->setProviderId('foo');
 		$this->share->setProviderId('bar');
 	}
+
+	public function testSetShouldHashPassword() {
+		$this->share->setShouldHashPassword(false);
+		$this->assertFalse($this->share->getShouldHashPassword());
+		$this->share->setShouldHashPassword(true);
+		$this->assertTrue($this->share->getShouldHashPassword());
+	}
 }
