@@ -22,7 +22,7 @@
 namespace TestHelpers;
 
 use Exception;
-use GuzzleHttp\Client as GClient;
+use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Stream\StreamInterface;
 use InvalidArgumentException;
@@ -88,7 +88,7 @@ class WebDavHelper {
 	 * @param string $sourceIpAddress to initiate the request from
 	 * @param string $authType basic|bearer
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return ResponseInterface
 	 */
 	public static function makeDavRequest(
 		$baseUrl,

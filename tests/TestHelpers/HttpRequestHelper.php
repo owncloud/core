@@ -25,6 +25,7 @@ namespace TestHelpers;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Message\ResponseInterface;
 
 /**
  * Helper for HTTP requests
@@ -43,7 +44,7 @@ class HttpRequestHelper {
 	 * @param boolean $stream
 	 *
 	 * @throws BadResponseException
-	 * @return \GuzzleHttp\Message\ResponseInterface|NULL|\GuzzleHttp\Message\FutureResponse
+	 * @return ResponseInterface
 	 */
 	public static function sendRequest(
 		$url,
@@ -112,7 +113,7 @@ class HttpRequestHelper {
 	 * @param boolean $stream
 	 *
 	 * @throws BadResponseException
-	 * @return \GuzzleHttp\Message\ResponseInterface|NULL|\GuzzleHttp\Message\FutureResponse
+	 * @return ResponseInterface
 	 */
 	public static function get(
 		$url,
@@ -144,7 +145,7 @@ class HttpRequestHelper {
 	 * @param boolean $stream
 	 *
 	 * @throws BadResponseException
-	 * @return \GuzzleHttp\Message\ResponseInterface|NULL|\GuzzleHttp\Message\FutureResponse
+	 * @return ResponseInterface
 	 */
 	public static function post(
 		$url,
@@ -176,7 +177,7 @@ class HttpRequestHelper {
 	 * @param boolean $stream
 	 *
 	 * @throws BadResponseException
-	 * @return \GuzzleHttp\Message\ResponseInterface|NULL|\GuzzleHttp\Message\FutureResponse
+	 * @return ResponseInterface
 	 */
 	public static function put(
 		$url,
@@ -208,7 +209,7 @@ class HttpRequestHelper {
 	 * @param boolean $stream
 	 *
 	 * @throws BadResponseException
-	 * @return \GuzzleHttp\Message\ResponseInterface|NULL|\GuzzleHttp\Message\FutureResponse
+	 * @return ResponseInterface
 	 */
 	public static function delete(
 		$url,

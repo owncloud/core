@@ -20,7 +20,6 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Message\FutureResponse;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\StreamInterface;
 use Sabre\DAV\Client as SClient;
@@ -213,7 +212,7 @@ trait WebDav {
 	 * @param string|null $requestBody
 	 * @param string|null $davPathVersion
 	 *
-	 * @return FutureResponse|ResponseInterface|NULL
+	 * @return ResponseInterface
 	 */
 	public function makeDavRequest(
 		$user,

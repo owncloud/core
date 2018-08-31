@@ -21,6 +21,8 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\Message\ResponseInterface;
+
 /**
  * Helper to administer Tags
  *
@@ -39,7 +41,7 @@ class TagsHelper {
 	 * @param string $fileOwner
 	 * @param int $davPathVersionToUse (1|2)
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return ResponseInterface
 	 */
 	public static function tag(
 		$baseUrl,
@@ -141,7 +143,7 @@ class TagsHelper {
 	 * @param string $groups separated by "|"
 	 * @param int $davPathVersionToUse (1|2)
 	 *
-	 * @return \GuzzleHttp\Message\ResponseInterface|NULL|\GuzzleHttp\Message\FutureResponse
+	 * @return ResponseInterface
 	 * @link self::makeDavRequest()
 	 */
 	public static function createTag(
@@ -187,7 +189,7 @@ class TagsHelper {
 	 * @param int $tagID
 	 * @param int $davPathVersionToUse (1|2)
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return ResponseInterface
 	 */
 	public static function deleteTag(
 		$baseUrl,
