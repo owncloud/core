@@ -21,7 +21,6 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Message\ResponseInterface;
 
 /**
@@ -38,16 +37,17 @@ class EmailHelper {
 	 * @return mixed JSON encoded contents
 	 */
 	public static function getEmails($mailhogUrl) {
-		$client = new Client();
-		$options = ['headers' => ['Content-Type' => 'application/json']];
-		$request = $client->createRequest(
-			'GET', $mailhogUrl . "/api/v2/messages", $options
+		$response = HttpRequestHelper::get(
+			$mailhogUrl . "/api/v2/messages",
+			null,
+			null,
+			['Content-Type' => 'application/json']
 		);
-		$response = $client->send($request);
 
 		$json = \json_decode($response->getBody()->getContents());
 		return $json;
 	}
+
 	/**
 	 *
 	 * @param string $mailhogUrl
@@ -79,12 +79,9 @@ class EmailHelper {
 	 * @return ResponseInterface
 	 */
 	public static function deleteAllMessages($mailhogUrl) {
-		$client = new Client();
-		$request = $client->createRequest(
-			'DELETE', $mailhogUrl . "/api/v1/messages"
+		return HttpRequestHelper::delete(
+			$mailhogUrl . "/api/v1/messages"
 		);
-		$response = $client->send($request);
-		return $response;
 	}
 
 	/**
