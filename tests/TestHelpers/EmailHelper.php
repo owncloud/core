@@ -23,6 +23,7 @@ namespace TestHelpers;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Psr7\Request;
 
 /**
  * Helper to test email sending, using mailhog
@@ -39,9 +40,10 @@ class EmailHelper {
 	 */
 	public static function getEmails($mailhogUrl) {
 		$client = new Client();
-		$options = ['headers' => ['Content-Type' => 'application/json']];
-		$request = $client->createRequest(
-			'GET', $mailhogUrl . "/api/v2/messages", $options
+		$request = new Request(
+			'GET',
+			$mailhogUrl . "/api/v2/messages",
+			['Content-Type' => 'application/json']
 		);
 		$response = $client->send($request);
 
@@ -80,8 +82,9 @@ class EmailHelper {
 	 */
 	public static function deleteAllMessages($mailhogUrl) {
 		$client = new Client();
-		$request = $client->createRequest(
-			'DELETE', $mailhogUrl . "/api/v1/messages"
+		$request = new Request(
+			'DELETE',
+			$mailhogUrl . "/api/v1/messages"
 		);
 		$response = $client->send($request);
 		return $response;
