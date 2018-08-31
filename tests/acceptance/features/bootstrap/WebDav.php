@@ -1499,13 +1499,13 @@ trait WebDav {
 		foreach ($this->uploadResponses as $response) {
 			PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
 				$minStatusCode,
-				$response->getStatusCode(),
-				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+				$response['response']->getStatusCode(),
+				'Response for dav upload ' . $response['upload_type'] . ' did not return expected status code'
 			);
 			PHPUnit_Framework_Assert::assertLessThanOrEqual(
 				$maxStatusCode,
-				$response->getStatusCode(),
-				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+				$response['response']->getStatusCode(),
+				'Response for dav upload ' . $response['upload_type'] . ' did not return expected status code'
 			);
 		}
 	}
