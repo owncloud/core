@@ -91,7 +91,7 @@ class DefaultToken extends Entity implements IToken {
 	 * @return string
 	 */
 	public function getLoginName() {
-		return $this->loginName;
+		return parent::getter('loginName');
 	}
 
 	/**
@@ -100,7 +100,7 @@ class DefaultToken extends Entity implements IToken {
 	 * @return string
 	 */
 	public function getPassword() {
-		return $this->password;
+		return parent::getter('password');
 	}
 
 	public function jsonSerialize() {
@@ -119,7 +119,7 @@ class DefaultToken extends Entity implements IToken {
 	 * @return int
 	 */
 	public function getLastCheck() {
-		return $this->lastCheck;
+		return parent::getter('lastCheck');
 	}
 
 	/**
