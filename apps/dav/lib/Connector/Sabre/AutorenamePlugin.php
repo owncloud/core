@@ -95,6 +95,11 @@ class AutorenamePlugin extends ServerPlugin {
 				return;
 			}
 
+			// Even though we are inferring a object type before phan can not
+			// detect this on properties for the time being.
+			// https://github.com/phan/phan/issues/204#issuecomment-417475152
+			//
+			// @phan-suppress-next-line PhanUndeclaredMethod
 			$view = $this->server->tree->getView();
 			list($nodePath, $nodeName) = \Sabre\Uri\split($node->getPath());
 			$newName = \OC_Helper::buildNotExistingFileNameForView($nodePath, $nodeName, $view);
