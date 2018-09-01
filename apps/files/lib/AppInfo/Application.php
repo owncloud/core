@@ -27,8 +27,10 @@ namespace OCA\Files\AppInfo;
 use OCA\Files\Controller\ApiController;
 use OCA\Files\Controller\ViewController;
 use OCA\Files\Service\TagService;
+use OCA\Files\Service\TransferOwnership\TransferRequestManager;
 use OCP\AppFramework\App;
 use OCP\IContainer;
+use OCP\Notification\Events\RegisterNotifierEvent;
 
 class Application extends App {
 	public function __construct(array $urlParams= []) {
@@ -94,5 +96,25 @@ class Application extends App {
 		 * Register capabilities
 		 */
 		$container->registerCapability('OCA\Files\Capabilities');
+
+	}
+
+	/**
+	 * Registers the notifier
+	 */
+	public function registerNotifier() {
+		$container = $this->getContainer();
+		$dispatcher = $container->getServer()->getEventDispatcher();
+
+		$dispatcher->addListener(
+			RegisterNotifierEvent::NAME,
+			function (RegisterNotifierEvent $event) use ($container) {
+			$l10n = $container->getServer()->getL10N('files');
+			$event->registerNotifier(
+				$container->query(TransferRequestManager::class),
+				'files',
+				$l10n->t('Files'));
+		});
+
 	}
 }

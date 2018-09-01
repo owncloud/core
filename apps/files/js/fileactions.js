@@ -661,6 +661,22 @@
 				}
 			});
 
+			// TODO only for folders, not files
+			this.registerAction({
+				name: 'Transfer',
+				displayName: function(context) {
+					return t('files', 'Transfer');
+				},
+				mime: 'httpd/unix-directory',
+				order: 1000,
+				permissions: OC.PERMISSION_READ,
+				iconClass: 'icon-give',
+				actionHandler: function(fileName, context) {
+					context.fileList.do_transfer(fileName, context.dir);
+					$('.tipsy').remove();
+				}
+			});
+
 			this.setDefault('dir', 'Open');
 		},
 

@@ -169,6 +169,10 @@ img.icon-loading-small-dark, object.icon-loading-small-dark, video.icon-loading-
 	background-image: url('../img/actions/download.svg');
 }
 
+.icon-give {
+	background-image: url('../img/actions/give.svg');
+}
+
 .icon-download-white {
 	background-image: url('../img/actions/download-white.svg');
 }

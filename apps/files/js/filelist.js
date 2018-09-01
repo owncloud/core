@@ -2411,6 +2411,54 @@
 		},
 
 		/**
+		 * Give the current files to a certain user
+		 * @param files file names list (without path)
+		 * @param dir directory in which to delete the files, defaults to the current
+		 * directory
+		 */
+		do_transfer:function(files, dir) {
+			// TODO only do this if they own the file
+			var self = this;
+			if (files && files.substr) {
+				files=[files];
+			}
+			if (!files) {
+				// delete all files in directory
+				files = _.pluck(this.files, 'name');
+			}
+			if (files) {
+				this.showFileBusyState(files, true);
+			}
+			// Finish any existing actions
+			if (this.lastAction) {
+				this.lastAction();
+			}
+
+			dir = dir || this.getCurrentDirectory();
+
+
+			OC.dialogs.prompt(
+				'Please enter the username of the user who should receive the folder and corresponding shares.',
+				'Transfer folder to another user',
+				function(result, userid) {
+					$.post(OC.generateUrl('/apps/files/api/v1/transfer'), {
+						file: files[0],
+						uid: userid,
+						dir: dir
+					}).done(function(){
+						OC.Notification.showTemporary('Transfer request created. Wait for the user to accept.');
+					}).fail(function(){
+						OC.Notification.showTemporary('There was an error creating the transfer request');
+					});
+
+					self.showFileBusyState(files, false);
+				},
+				true,
+				'Username',
+				false);
+			},
+
+		/**
 		 * Delete the given files from the given dir
 		 * @param files file names list (without path)
 		 * @param dir directory in which to delete the files, defaults to the current

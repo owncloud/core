@@ -59,6 +59,21 @@ $application->registerRoutes(
 				'url' => '/',
 				'verb' => 'GET',
 			],
+			[
+				'name' => 'Transfer#transfer',
+				'url' => '/api/v1/transfer/',
+				'verb' => 'POST',
+			],
+			[
+				'name' => 'Transfer#accept',
+				'url' => '/api/v1/transfer/{requestId}',
+				'verb' => 'POST',
+			],
+			[
+				'name' => 'Transfer#reject',
+				'url' => '/api/v1/transfer/{requestId}',
+				'verb' => 'DELETE',
+			],
 
 		]
 	]
