@@ -124,9 +124,11 @@ class Add extends Command {
 			$dialog = $this->getHelperSet()->get('question');
 			$q = new Question('<question>Enter password: </question>', false);
 			$q->setHidden(true);
+			// @phan-suppress-next-line PhanUndeclaredMethod
 			$password = $dialog->ask($input, $output, $q);
 			$q = new Question('<question>Confirm password: </question>', false);
 			$q->setHidden(true);
+			// @phan-suppress-next-line PhanUndeclaredMethod
 			$confirm = $dialog->ask($input, $output, $q);
 
 			if ($password !== $confirm) {

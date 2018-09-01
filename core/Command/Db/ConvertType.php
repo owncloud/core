@@ -162,6 +162,7 @@ class ConvertType extends Command {
 			$dialog = $this->getHelperSet()->get('question');
 			$q = new Question('<question>Enter a new password: </question>', false);
 			$q->setHidden(true);
+			// @phan-suppress-next-line PhanUndeclaredMethod
 			$password = $dialog->ask($input, $output, $q);
 			$input->setOption('password', $password);
 			return;
@@ -195,6 +196,7 @@ class ConvertType extends Command {
 			}
 			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 			$dialog = $this->getHelperSet()->get('question');
+			// @phan-suppress-next-line PhanUndeclaredMethod
 			if (!$dialog->ask($input, $output, new Question('<question>Continue with the conversion (y/n)? [n] </question>', false))) {
 				return;
 			}

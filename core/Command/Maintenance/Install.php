@@ -138,6 +138,7 @@ class Install extends Command {
 				$dialog = $this->getHelperSet()->get('question');
 				$q = new Question("<question>What is the password to access the database with user <$dbUser>?</question>", false);
 				$q->setHidden(true);
+				// @phan-suppress-next-line PhanUndeclaredMethod
 				$dbPass = $dialog->ask($input, $output, $q);
 			}
 		}
@@ -147,6 +148,7 @@ class Install extends Command {
 			$dialog = $this->getHelperSet()->get('question');
 			$q = new Question("<question>What is the password you like to use for the admin account <$adminLogin>?</question>", false);
 			$q->setHidden(true);
+			// @phan-suppress-next-line PhanUndeclaredMethod
 			$adminPassword = $dialog->ask($input, $output, $q);
 		}
 
