@@ -25,6 +25,7 @@ use Behat\Testwork\Hook\Scope\HookScope;
 use GuzzleHttp\Exception\ServerException;
 use Exception;
 use GuzzleHttp\Message\ResponseInterface;
+use SimpleXMLElement;
 
 /**
  * Helper to setup UI / Integration tests
@@ -161,7 +162,9 @@ class SetupHelper {
 	 * @return string[]
 	 */
 	public static function getGroups() {
-		return \json_decode(self::runOcc(['group:list', '--output=json'])['stdOut']);
+		return \json_decode(
+			self::runOcc(['group:list', '--output=json'])['stdOut']
+		);
 	}
 	/**
 	 *
@@ -183,7 +186,9 @@ class SetupHelper {
 	 *
 	 * @return void
 	 */
-	public static function init($adminUsername, $adminPassword, $baseUrl, $ocPath) {
+	public static function init(
+		$adminUsername, $adminPassword, $baseUrl, $ocPath
+	) {
 		foreach (\func_get_args() as $variableToCheck) {
 			if (!\is_string($variableToCheck)) {
 				throw new \InvalidArgumentException(
@@ -211,6 +216,104 @@ class SetupHelper {
 		}
 
 		return self::$ocPath;
+	}
+
+	/**
+	 *
+	 * @param string $baseUrl
+	 * @param string $adminUsername
+	 * @param string $adminPassword
+	 *
+	 * @return SimpleXMLElement
+	 * @throws Exception
+	 */
+	public static function getSysInfo(
+		$baseUrl, $adminUsername, $adminPassword
+	) {
+		$result = OcsApiHelper::sendRequest(
+			$baseUrl, $adminUsername, $adminPassword, "GET",
+			"/apps/testing/api/v1/sysinfo"
+		);
+		if ($result->getStatusCode() !== 200) {
+			throw new \Exception(
+				"could not get sysinfo " . $result->getReasonPhrase()
+			);
+		}
+		return $result->xml()->data;
+	}
+
+	/**
+	 *
+	 * @param string $baseUrl
+	 * @param string $adminUsername
+	 * @param string $adminPassword
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public static function getServerRoot(
+		$baseUrl, $adminUsername, $adminPassword
+	) {
+		$sysInfo = self::getSysInfo(
+			$baseUrl, $adminUsername, $adminPassword
+		);
+		return $sysInfo->server_root;
+	}
+
+	/**
+	 *
+	 * @param string $baseUrl
+	 * @param string $adminUsername
+	 * @param string $adminPassword
+	 * @param string $dirPathFromServerRoot e.g. 'apps2/myapp/appinfo'
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public static function mkDirOnServer(
+		$baseUrl, $adminUsername, $adminPassword, $dirPathFromServerRoot
+	) {
+		$result = OcsApiHelper::sendRequest(
+			$baseUrl, $adminUsername, $adminPassword, "POST",
+			"/apps/testing/api/v1/dir",
+			['dir' => $dirPathFromServerRoot]
+		);
+
+		if ($result->getStatusCode() !== 200) {
+			throw new \Exception(
+				"could not create directory $dirPathFromServerRoot " . $result->getReasonPhrase()
+			);
+		}
+	}
+
+	/**
+	 *
+	 * @param string $baseUrl
+	 * @param string $adminUsername
+	 * @param string $adminPassword
+	 * @param string $filePathFromServerRoot e.g. 'app2/myapp/appinfo/info.xml'
+	 * @param string $content
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public static function createFileOnServer(
+		$baseUrl, $adminUsername, $adminPassword, $filePathFromServerRoot, $content
+	) {
+		$result = OcsApiHelper::sendRequest(
+			$baseUrl, $adminUsername, $adminPassword, "POST",
+			"/apps/testing/api/v1/file",
+			[
+				'file' => $filePathFromServerRoot,
+				'content' => $content
+			]
+		);
+
+		if ($result->getStatusCode() !== 200) {
+			throw new \Exception(
+				"could not create file $filePathFromServerRoot " . $result->getReasonPhrase()
+			);
+		}
 	}
 
 	/**
