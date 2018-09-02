@@ -2413,22 +2413,13 @@
 		/**
 		 * Give the current files to a certain user
 		 * @param files file names list (without path)
-		 * @param dir directory in which to delete the files, defaults to the current
+		 * @param dir directory in which to transfer the files from, defaults to the current
 		 * directory
 		 */
-		do_transfer:function(files, dir) {
+		do_transfer:function(file, dir) {
 			// TODO only do this if they own the file
 			var self = this;
-			if (files && files.substr) {
-				files=[files];
-			}
-			if (!files) {
-				// delete all files in directory
-				files = _.pluck(this.files, 'name');
-			}
-			if (files) {
-				this.showFileBusyState(files, true);
-			}
+
 			// Finish any existing actions
 			if (this.lastAction) {
 				this.lastAction();
@@ -2442,7 +2433,7 @@
 				'Transfer folder to another user',
 				function(result, userid) {
 					$.post(OC.generateUrl('/apps/files/api/v1/transfer'), {
-						file: files[0],
+						file: file,
 						uid: userid,
 						dir: dir
 					}, function() {
