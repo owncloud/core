@@ -268,11 +268,20 @@ class TransferRequestManager implements INotifier {
 				}
 				return $notification;
 				break;
-			case 'transfer_request_actioned':
+			case 'transfer_request_actioned_source':
 				$notification->setParsedSubject((string) $l->t('Transfer completed'));
 				$notification->setParsedMessage(
 					(string) $l->t(
 						'"%1$s" accepted your transfer of "%2$s" and it was completed',
+						$notification->getMessageParameters())
+				);
+				return $notification;
+				break;
+			case 'transfer_request_actioned_destination':
+				$notification->setParsedSubject((string) $l->t('Transfer completed'));
+				$notification->setParsedMessage(
+					(string) $l->t(
+						'"%1$s" was transferred to you from "%2$s"',
 						$notification->getMessageParameters())
 				);
 				return $notification;
@@ -291,7 +300,7 @@ class TransferRequestManager implements INotifier {
 	}
 
 	/**
-	 * Tell the source user that the trasnfer has happened
+	 * Tell the source user and destination user that the transfer has happened
 	 * @param TransferRequest $request
 	 * @throws NotFoundException
 	 * @throws \OCP\Files\InvalidPathException
@@ -304,7 +313,26 @@ class TransferRequestManager implements INotifier {
 		$notification->setApp('files')
 			->setUser($request->getSourceUserId())
 			->setDateTime($time)
-			->setObject('transfer_request_actioned', $request->getId());
+			->setObject('transfer_request', $request->getId());
+
+		$notification->setIcon(
+			$this->urlGenerator->imagePath('core', 'actions/give.svg')
+		);
+
+		$destinationUser = $this->userManager->get($request->getDestinationUserId());
+		$folder = $this->rootFolder->getById($request->getFileId())[0];
+		$notification->setSubject("transfer_request_actioned_source");
+		$notification->setMessage("transfer_request_actioned_source", [$destinationUser->getDisplayName(), $folder->getName()]);
+		$this->notificationManager->notify($notification);
+
+		// Set to now
+		$time = new \DateTime();
+		$time->setTimestamp($request->getActionedTime());
+		$notification = $this->notificationManager->createNotification();
+		$notification->setApp('files')
+			->setUser($request->getDestinationUserId())
+			->setDateTime($time)
+			->setObject('transfer_request', $request->getId());
 
 		$notification->setIcon(
 			$this->urlGenerator->imagePath('core', 'actions/give.svg')
@@ -312,11 +340,14 @@ class TransferRequestManager implements INotifier {
 
 		$sourceUser = $this->userManager->get($request->getSourceUserId());
 		$folder = $this->rootFolder->getById($request->getFileId())[0];
-		$notification->setSubject("transfer_request_actioned");
-		$notification->setMessage("transfer_request_actioned", [$sourceUser->getDisplayName(), $folder->getName()]);
+		$notification->setSubject("transfer_request_actioned_destination");
+		$notification->setMessage("transfer_request_actioned_destination", [$folder->getName(), $sourceUser->getDisplayName()]);
 		$this->notificationManager->notify($notification);
 	}
 
+	/**
+	 * Background job for cleaning up old requests, removes notifications, request and locks
+	 */
 	public function cleanup() {
 		// Delete request that are older than 24 hours
 		$oldRequests = $this->requestMapper->findOpenRequestsOlderThan(1);
@@ -342,10 +373,22 @@ class TransferRequestManager implements INotifier {
 		}
 	}
 
+	/**
+	 * Helper to get the lock token id associated with a request
+	 * @param TransferRequest $request
+	 * @return string
+	 */
 	protected function getLockTokenFromRequest(TransferRequest $request) {
 		return 'transfer-request-'.$request->getId();
 	}
 
+	/**
+	 * Helper to get a request object from the mapper without another dep injection
+	 * @param $requestId
+	 * @return TransferRequest|\OCP\AppFramework\Db\Entity
+	 * @throws DoesNotExistException
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 */
 	public function getRequestById($requestId) {
 		return $this->requestMapper->findById($requestId);
 	}
