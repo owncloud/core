@@ -7,7 +7,7 @@ use OCA\Files\Service\TransferOwnership\TransferRequestMapper;
 use OCP\Migration\ISchemaMigration;
 
 /**
- * Auto-generated migration step: Please modify to your needs!
+ * Create table to track user initiated transfer requests
  */
 class Version20180901190932 implements ISchemaMigration {
 
