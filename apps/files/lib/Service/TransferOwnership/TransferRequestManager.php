@@ -165,7 +165,6 @@ class TransferRequestManager implements INotifier {
 		if ($request->getAcceptedTime() !== null || $request->getActionedTime() !== null || $request->getRejectedTime() !== null) {
 			throw new \Exception('Already actioned, accepted or rejected');
 		}
-		// Create a background job, update accepted time
 		$request->setRejectedTime($this->timeFactory->getTime());
 		$this->requestMapper->update($request);
 		$notification = $this->notificationManager->createNotification();
@@ -173,7 +172,7 @@ class TransferRequestManager implements INotifier {
 			->setUser($request->getDestinationUserId())
 			->setObject('transfer_request', $request->getId());
 		$this->notificationManager->markProcessed($notification);
-		$file = $this->rootFolder->getById($request->getFileId())[0];
+		$file = $this->rootFolder->getUserFolder($request->getSourceUserId())->getById($request->getFileId())[0];
 		/** @var IPersistentLockingStorage $storage */
 		$storage = $file->getStorage();
 		$storage->unlockNodePersistent($file->getInternalPath(), ['token' => $this->getLockTokenFromRequest($request)]);
@@ -211,7 +210,8 @@ class TransferRequestManager implements INotifier {
 		);
 
 		$sourceUser = $this->userManager->get($request->getSourceUserId());
-		$folder = $this->rootFolder->getById($request->getFileId())[0];
+		$sourceUserFolder = $this->rootFolder->getUserFolder($sourceUser->getUID());
+		$folder = $sourceUserFolder->getById($request->getFileId())[0];
 		$notification->setSubject("new_transfer_request");
 		$notification->setMessage("new_transfer_request", [$sourceUser->getDisplayName(), $folder->getName(), Util::humanFileSize($folder->getSize())]);
 
@@ -258,8 +258,8 @@ class TransferRequestManager implements INotifier {
 	}
 
 	protected function formatNotification(INotification $notification, IL10N $l) {
-		switch($notification->getObjectType()) {
-			case 'transfer_request':
+		switch($notification->getSubject()) {
+			case 'new_transfer_request':
 				$notification->setParsedSubject((string) $l->t('A user would like to transfer a folder to you'));
 				$notification->setParsedMessage(
 					(string) $l->t(
@@ -388,6 +388,7 @@ class TransferRequestManager implements INotifier {
 		$folder = $this->rootFolder->getById($request->getFileId())[0];
 		$notification->setSubject("transfer_request_actioned_destination");
 		$notification->setMessage("transfer_request_actioned_destination", [$folder->getName(), $sourceUser->getDisplayName()]);
+		$notification->setLink($this->urlGenerator->getAbsoluteURL('/f/'.$folder->getId()));
 		$this->notificationManager->notify($notification);
 	}
 

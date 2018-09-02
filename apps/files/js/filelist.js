@@ -2445,13 +2445,13 @@
 						file: files[0],
 						uid: userid,
 						dir: dir
-					}).done(function(){
+					}, function() {
 						OC.Notification.showTemporary('Transfer request created. Wait for the user to accept.');
+					}).done(function(){
+						self.showFileBusyState(files, false);
 					}).fail(function(){
 						OC.Notification.showTemporary('There was an error creating the transfer request');
 					});
-
-					self.showFileBusyState(files, false);
 				},
 				true,
 				'Username',

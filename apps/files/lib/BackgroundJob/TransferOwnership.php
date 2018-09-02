@@ -75,14 +75,13 @@ class TransferOwnership extends QueuedJob {
 		$destinationUser = $this->userManager->get($request->getDestinationUserId());
 
 		if ($sourceUser === null || $destinationUser === null) {
-			$this->logger->error("Trasnfer job called but at least one of the users in the request are missing: source:{$request->getSourceUserId()} destination:{$request->getDestinationUserId()}", ['app' => 'files']);
+			$this->logger->error("Transfer job called but at least one of the users in the request are missing: source:{$request->getSourceUserId()} destination:{$request->getDestinationUserId()}", ['app' => 'files']);
 			return;
 		}
 
 		try {
-			$sourcePath = $this->rootFolder->getUserFolder($request->getSourceUserId())
-				->getById($request->getFileId())[0]
-				->getInternalPath();
+			$userFolder = $this->rootFolder->getUserFolder($request->getSourceUserId());
+			$sourcePath = $userFolder->getRelativePath($userFolder->getById($request->getFileId())[0]->getPath());
 		} catch (NotFoundException $e) {
 			$this->logger->error("Transfer job called but node no longer exists");
 			$this->requestManager->deleteRequest($request);
