@@ -39,6 +39,8 @@ use OCP\Notification\IManager;
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 use OCP\Util;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class TransferRequestManager implements INotifier {
 
@@ -58,6 +60,8 @@ class TransferRequestManager implements INotifier {
 	protected $factory;
 	/** @var IJobList */
 	protected $jobList;
+	/** @var EventDispatcherInterface  */
+	protected $eventDispatcher;
 
 	public function __construct(
 		IRootFolder $rootFolder,
@@ -67,7 +71,8 @@ class TransferRequestManager implements INotifier {
 		TransferRequestMapper $requestMapper,
 		IURLGenerator $urlGenerator,
 		IFactory $factory,
-		IJobList $jobList) {
+		IJobList $jobList,
+		EventDispatcherInterface $eventDispatcher) {
 		$this->rootFolder = $rootFolder;
 		$this->notificationManager = $notificationManager;
 		$this->userManager = $userManager;
@@ -76,6 +81,7 @@ class TransferRequestManager implements INotifier {
 		$this->urlGenerator = $urlGenerator;
 		$this->factory = $factory;
 		$this->jobList = $jobList;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -330,6 +336,12 @@ class TransferRequestManager implements INotifier {
 		$this->requestMapper->update($request);
 		// Notify the source user it was accepted
 		$this->notifyActioned($request);
+		$this->eventDispatcher->dispatch('files:user-transfer-complete', new GenericEvent([
+			'requestId' => $request,
+			'sourceUser' => $request->getSourceUserId(),
+			'destinationUser' => $request->getDestinationUserId(),
+			'sourceNode' => $request->getFileId()
+		]));
 	}
 
 	/**
