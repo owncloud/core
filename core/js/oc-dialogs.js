@@ -98,6 +98,7 @@ var OCdialogs = {
 			});
 			var input = $('<input/>');
 			input.attr('type', password ? 'password' : 'text').attr('id', dialogName + '-input');
+			input.attr('autofocus', true);
 			var label = $('<label/>').attr('for', dialogName + '-input').text(name + ': ');
 			$dlg.append(label);
 			$dlg.append(input);
