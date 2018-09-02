@@ -75,6 +75,7 @@ class TransferOwnership extends QueuedJob {
 			$this->service->transfer($sourceUser, $destinationUser, $sourcePath);
 		} catch (\Exception $e) {
 			$this->logger->logException($e, ['app' =>  'files']);
+			$this->requestManager->actionRequestFailure($request);
 			return;
 		}
 

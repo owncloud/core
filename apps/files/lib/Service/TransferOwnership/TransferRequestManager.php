@@ -286,6 +286,24 @@ class TransferRequestManager implements INotifier {
 				);
 				return $notification;
 				break;
+			case 'transfer_request_failed_destination':
+				$notification->setParsedSubject((string) $l->t('Transfer failed'));
+				$notification->setParsedMessage(
+					(string) $l->t(
+						'The transfer of "%1$s" from "%2$s failed. Ask the sender to try again."',
+						$notification->getMessageParameters())
+				);
+				return $notification;
+			break;
+			case 'transfer_request_failed_source':
+				$notification->setParsedSubject((string) $l->t('Transfer failed'));
+				$notification->setParsedMessage(
+					(string) $l->t(
+						'The transfer of "%1$s" to "%2$s" failed with message: "%3$s"',
+						$notification->getMessageParameters())
+				);
+				return $notification;
+				break;
 			default:
 				throw new \InvalidArgumentException('Not a notifcation that can be formatted by this class');
 		}
@@ -297,6 +315,19 @@ class TransferRequestManager implements INotifier {
 		$this->requestMapper->update($request);
 		// Notify the source user it was accepted
 		$this->notifyActioned($request);
+	}
+
+	/**
+	 * Cleanup and notify
+	 * @param TransferRequest $request
+	 * @throws NotFoundException
+	 * @throws \OCP\Files\InvalidPathException
+	 */
+	public function actionRequestFailure(TransferRequest $request, $message = null) {
+		// Notify the users that it failed
+		$this->notifyActionedFailure($request, $message);
+		$this->cleanupRequest($request);
+
 	}
 
 	/**
@@ -346,6 +377,52 @@ class TransferRequestManager implements INotifier {
 	}
 
 	/**
+	 * Tell the source user and destination user that the transfer failed
+	 * @param TransferRequest $request
+	 * @throws NotFoundException
+	 * @throws \OCP\Files\InvalidPathException
+	 */
+	public function notifyActionedFailure(TransferRequest $request, $message = null) {
+		// Set to now
+		$time = new \DateTime();
+		$time->setTimestamp($this->timeFactory->getTime());
+		$notification = $this->notificationManager->createNotification();
+		$notification->setApp('files')
+			->setUser($request->getSourceUserId())
+			->setDateTime($time)
+			->setObject('transfer_request', $request->getId());
+
+		$notification->setIcon(
+			$this->urlGenerator->imagePath('core', 'actions/give.svg')
+		);
+
+		$destinationUser = $this->userManager->get($request->getDestinationUserId());
+		$folder = $this->rootFolder->getById($request->getFileId())[0];
+		$notification->setSubject("transfer_request_failed_source");
+		$notification->setMessage("transfer_request_failed_source", [$folder->getName(), $destinationUser->getDisplayName(), $message]);
+		$this->notificationManager->notify($notification);
+
+		// Set to now
+		$time = new \DateTime();
+		$time->setTimestamp($request->getActionedTime());
+		$notification = $this->notificationManager->createNotification();
+		$notification->setApp('files')
+			->setUser($request->getDestinationUserId())
+			->setDateTime($time)
+			->setObject('transfer_request', $request->getId());
+
+		$notification->setIcon(
+			$this->urlGenerator->imagePath('core', 'actions/give.svg')
+		);
+
+		$sourceUser = $this->userManager->get($request->getSourceUserId());
+		$folder = $this->rootFolder->getById($request->getFileId())[0];
+		$notification->setSubject("transfer_request_failed_destination");
+		$notification->setMessage("transfer_request_failed_destination", [$folder->getName(), $sourceUser->getDisplayName()]);
+		$this->notificationManager->notify($notification);
+	}
+
+	/**
 	 * Background job for cleaning up old requests, removes notifications, request and locks
 	 */
 	public function cleanup() {
@@ -353,24 +430,32 @@ class TransferRequestManager implements INotifier {
 		$oldRequests = $this->requestMapper->findOpenRequestsOlderThan(1);
 		/** @var TransferRequest $request */
 		foreach ($oldRequests as $request) {
-			// Remove the lock
-			try {
-				$file = $this->rootFolder->getById($request->getFileId())[0];
-				/** @var IPersistentLockingStorage $storage */
-				$storage = $file->getStorage();
-				$storage->unlockNodePersistent($file->getInternalPath(), $this->getLockTokenFromRequest($request));
-			} catch (\Exception $e) {
-				\OC::$server->getLogger()->logException($e, ['app' => 'files']);
-			}
-			// Now remove the request
-			$this->requestMapper->delete($request);
-			// And lets remove the notification to save confusion
-			$notification = $this->notificationManager->createNotification();
-			$notification->setApp('files')
-				->setUser($request->getDestinationUserId())
-				->setObject('transfer_request', $request->getId());
-			$this->notificationManager->markProcessed($notification);
+			$this->cleanupRequest($request);
 		}
+	}
+
+	/**
+	 * Delete request, delete lock, and delete requested notification
+	 * @param TransferRequest $request
+	 */
+	protected function cleanupRequest(TransferRequest $request) {
+		// Remove the lock
+		try {
+			$file = $this->rootFolder->getById($request->getFileId())[0];
+			/** @var IPersistentLockingStorage $storage */
+			$storage = $file->getStorage();
+			$storage->unlockNodePersistent($file->getInternalPath(), $this->getLockTokenFromRequest($request));
+		} catch (\Exception $e) {
+			\OC::$server->getLogger()->logException($e, ['app' => 'files']);
+		}
+		// Now remove the request
+		$this->requestMapper->delete($request);
+		// And lets remove the notification to save confusion
+		$notification = $this->notificationManager->createNotification();
+		$notification->setApp('files')
+			->setUser($request->getDestinationUserId())
+			->setObject('transfer_request', $request->getId());
+		$this->notificationManager->markProcessed($notification);
 	}
 
 	/**
