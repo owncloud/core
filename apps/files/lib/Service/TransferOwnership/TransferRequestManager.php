@@ -113,7 +113,7 @@ class TransferRequestManager implements INotifier {
 			$storage->lockNodePersistent($sourceFolder->getInternalPath(), [
 				'depth' => ILock::LOCK_DEPTH_INFINITE,
 				'token' => $this->getLockTokenFromRequest($request),
-				'timeout' => 60*60*2 // 2 hours to allow a cron run
+				'timeout' => 60*60*24 // 24 hours to allow a cron run and acceptance
 			]);
 		} catch (\Exception $e) {
 			// Cleanup transfer request and fail
@@ -134,9 +134,7 @@ class TransferRequestManager implements INotifier {
 		$sourcePath = $this->rootFolder->getUserFolder(
 			$request->getSourceUserId())->getById($request->getFileId())[0]->getInternalPath();
 		$this->jobList->add(TransferOwnership::class, json_encode([
-			'sourcePath' => $sourcePath,
-			'sourceUser' => $request->getSourceUserId(),
-			'destinationUser' => $request->getDestinationUserId()
+			'requestId' => $request->getId(),
 		]));
 		$notification = $this->notificationManager->createNotification();
 		$notification->setApp('files')
@@ -404,7 +402,7 @@ class TransferRequestManager implements INotifier {
 
 		// Set to now
 		$time = new \DateTime();
-		$time->setTimestamp($request->getActionedTime());
+		$time->setTimestamp($this->timeFactory->getTime());
 		$notification = $this->notificationManager->createNotification();
 		$notification->setApp('files')
 			->setUser($request->getDestinationUserId())
@@ -444,7 +442,7 @@ class TransferRequestManager implements INotifier {
 			$file = $this->rootFolder->getById($request->getFileId())[0];
 			/** @var IPersistentLockingStorage $storage */
 			$storage = $file->getStorage();
-			$storage->unlockNodePersistent($file->getInternalPath(), $this->getLockTokenFromRequest($request));
+			$storage->unlockNodePersistent($file->getInternalPath(), ['token' => $this->getLockTokenFromRequest($request)]);
 		} catch (\Exception $e) {
 			\OC::$server->getLogger()->logException($e, ['app' => 'files']);
 		}
