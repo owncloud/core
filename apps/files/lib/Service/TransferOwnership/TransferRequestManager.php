@@ -3,6 +3,7 @@
 namespace OCA\Files\Service\TransferOwnership;
 
 use OC\Command\CommandJob;
+use OCA\Files\BackgroundJob\TransferOwnership;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\IJobList;
@@ -132,11 +133,11 @@ class TransferRequestManager implements INotifier {
 		$this->requestMapper->update($request);
 		$sourcePath = $this->rootFolder->getUserFolder(
 			$request->getSourceUserId())->getById($request->getFileId())[0]->getInternalPath();
-		$this->jobList->add(CommandJob::class, [
+		$this->jobList->add(TransferOwnership::class, json_encode([
 			'sourcePath' => $sourcePath,
 			'sourceUser' => $request->getSourceUserId(),
 			'destinationUser' => $request->getDestinationUserId()
-		]);
+		]));
 		$notification = $this->notificationManager->createNotification();
 		$notification->setApp('files')
 			->setUser($request->getDestinationUserId())
@@ -193,7 +194,6 @@ class TransferRequestManager implements INotifier {
 		$notification->setIcon(
 			$this->urlGenerator->imagePath('core', 'actions/give.svg')
 		);
-		$notification->setLink('test.com');
 
 		$sourceUser = $this->userManager->get($request->getSourceUserId());
 		$folder = $this->rootFolder->getById($request->getFileId())[0];
@@ -243,31 +243,78 @@ class TransferRequestManager implements INotifier {
 	}
 
 	protected function formatNotification(INotification $notification, IL10N $l) {
-		$notification->setParsedSubject((string) $l->t('A user would like to transfer a folder to you'));
-
-		$notification->setParsedMessage(
-			(string) $l->t(
-				'"%1$s" requested to transfer "%2$s" to you (%3$s)"',
-				$notification->getMessageParameters())
-		);
-
-		foreach ($notification->getActions() as $action) {
-			switch ($action->getLabel()) {
-				case 'accept':
-					$action->setParsedLabel(
-						(string) $l->t('Accept')
-					);
-					break;
-				case 'reject':
-					$action->setParsedLabel(
-						(string) $l->t('Decline')
-					);
-					break;
-			}
-			$notification->addParsedAction($action);
+		switch($notification->getObjectType()) {
+			case 'transfer_request':
+				$notification->setParsedSubject((string) $l->t('A user would like to transfer a folder to you'));
+				$notification->setParsedMessage(
+					(string) $l->t(
+						'"%1$s" requested to transfer "%2$s" to you (%3$s)"',
+						$notification->getMessageParameters())
+				);
+				foreach ($notification->getActions() as $action) {
+					switch ($action->getLabel()) {
+						case 'accept':
+							$action->setParsedLabel(
+								(string) $l->t('Accept')
+							);
+							break;
+						case 'reject':
+							$action->setParsedLabel(
+								(string) $l->t('Decline')
+							);
+							break;
+					}
+					$notification->addParsedAction($action);
+				}
+				return $notification;
+				break;
+			case 'transfer_request_actioned':
+				$notification->setParsedSubject((string) $l->t('Transfer completed'));
+				$notification->setParsedMessage(
+					(string) $l->t(
+						'"%1$s" accepted your transfer of "%2$s" and it was completed',
+						$notification->getMessageParameters())
+				);
+				return $notification;
+				break;
+			default:
+				throw new \InvalidArgumentException('Not a notifcation that can be formatted by this class');
 		}
 
-		return $notification;
+	}
+
+	public function actionRequest(TransferRequest $request) {
+		$request->setActionedTime($this->timeFactory->getTime());
+		$this->requestMapper->update($request);
+		// Notify the source user it was accepted
+		$this->notifyActioned($request);
+	}
+
+	/**
+	 * Tell the source user that the trasnfer has happened
+	 * @param TransferRequest $request
+	 * @throws NotFoundException
+	 * @throws \OCP\Files\InvalidPathException
+	 */
+	public function notifyActioned(TransferRequest $request) {
+		// Set to now
+		$time = new \DateTime();
+		$time->setTimestamp($request->getActionedTime());
+		$notification = $this->notificationManager->createNotification();
+		$notification->setApp('files')
+			->setUser($request->getSourceUserId())
+			->setDateTime($time)
+			->setObject('transfer_request_actioned', $request->getId());
+
+		$notification->setIcon(
+			$this->urlGenerator->imagePath('core', 'actions/give.svg')
+		);
+
+		$sourceUser = $this->userManager->get($request->getSourceUserId());
+		$folder = $this->rootFolder->getById($request->getFileId())[0];
+		$notification->setSubject("transfer_request_actioned");
+		$notification->setMessage("transfer_request_actioned", [$sourceUser->getDisplayName(), $folder->getName()]);
+		$this->notificationManager->notify($notification);
 	}
 
 	public function cleanup() {

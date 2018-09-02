@@ -24,19 +24,9 @@
 
 namespace OCA\Files\Command;
 
-use OC\Encryption\Manager;
-use OC\Files\Filesystem;
-use OC\Files\View;
-use OC\Share20\ProviderFactory;
 use OCA\Files\Service\TransferOwnership\TransferOwnershipService;
-use OCP\Files\FileInfo;
-use OCP\Files\Mount\IMountManager;
-use OCP\ILogger;
 use OCP\IUserManager;
-use OCP\Share\IManager;
-use OCP\Share\IShare;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
