@@ -72,13 +72,9 @@ class TransferRequestManager implements INotifier {
 		if ($sourceUser->getUID() === $destinationUser->getUID()) {
 			throw new \Exception('Cannot transfer to self');
 		}
-		// Check folder exists
+		// Check node exists
 		$sourceFolder = $this->rootFolder->getById($fileId)[0];
-		// Check we are a folder
-		if (!$sourceFolder instanceof Folder) {
-			throw new \Exception('Must be a folder');
-		}
-		// Check source user owns the file
+		// Check source user owns the node
 		if ($sourceFolder->getOwner()->getUID() !== $sourceUser->getUID()) {
 			throw new NotPermittedException('Cannot move a file you dont own');
 		}
@@ -89,7 +85,7 @@ class TransferRequestManager implements INotifier {
 		// Check therer is no request with the same signature
 		if (count($this->requestMapper->findRequestWithSameSignature($sourceUser->getUID(), $destinationUser->getUID(), $fileId)) > 0) {
 			// There is
-			throw new \Exception('There is already a request to transer this file');
+			throw new \Exception('There is already a request to transfer this file/folder');
 		}
 		// Check we are not trying to request a transfer for a folder that is inside a current request
 		$folder = $sourceFolder;
@@ -99,7 +95,7 @@ class TransferRequestManager implements INotifier {
 			$fileids[] = $folder->getId();
 		}
 		if (count($this->requestMapper->findOpenRequestForGivenFiles($fileids)) > 0) {
-			throw new \Exception('This folder is already pending an existing transfer');
+			throw new \Exception('This file/folder is already pending an existing transfer');
 		}
 
 		// Create the transfer request object
