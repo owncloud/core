@@ -25,7 +25,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\AdminSharingSettingsPage;
-use Page\LoginPage;
 
 /**
  * WebUI AdminSharingSettings context.
