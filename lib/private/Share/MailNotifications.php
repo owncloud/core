@@ -209,9 +209,10 @@ class MailNotifications {
 		 * - cc ( the cc recipient in mail )
 		 * - bcc ( the bcc recipient in mail )
 		 */
+		$toRecipients = isset($options['to']) ? $options['to'] : '';
 		$ccRecipients = isset($options['cc']) ? $options['cc'] : '';
 		$bccRecipients = isset($options['bcc']) ? $options['bcc'] : '';
-		$event = new GenericEvent(null, ['link' => $link, 'to' => $recipient, 'cc' => $ccRecipients, 'bcc' => $bccRecipients]);
+		$event = new GenericEvent(null, ['link' => $link, 'to' => $toRecipients, 'cc' => $ccRecipients, 'bcc' => $bccRecipients]);
 		$this->eventDispatcher->dispatch('share.sendmail', $event);
 		$options['l10n'] = $l10n;
 		return $this->sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options);
@@ -223,7 +224,7 @@ class MailNotifications {
 	 * @param string $recipient recipient email address
 	 * @param string $filename the shared file
 	 * @param string $link the public link
-	 * @param array $options allows ['cc'] and ['bcc'] recipients
+	 * @param array $options allows ['to], ['cc'] and ['bcc'] recipients
 	 * @param int $expiration expiration date (timestamp)
 	 * @return string[] $result of failed recipients
 	 */
@@ -232,6 +233,7 @@ class MailNotifications {
 		if ($recipient !== null) {
 			$recipients    = $this->_mailStringToArray($recipient);
 		}
+		$toRecipients  = (isset($options['to']) && $options['to'] !== '') ? $this->_mailStringToArray($options['to']) : null;
 		$ccRecipients  = (isset($options['cc']) && $options['cc'] !== '') ? $this->_mailStringToArray($options['cc']) : null;
 		$bccRecipients = (isset($options['bcc']) && $options['bcc'] !== '') ? $this->_mailStringToArray($options['bcc']) : null;
 		$l10n = (isset($options['l10n'])) ? $options['l10n'] : $this->l;
@@ -242,6 +244,9 @@ class MailNotifications {
 			$message->setTo($recipients);
 			if ($htmlBody !== null) {
 				$message->setHtmlBody($htmlBody);
+			}
+			if ($toRecipients !== null) {
+				$message->setTo($toRecipients);
 			}
 			if ($bccRecipients !== null) {
 				$message->setBcc($bccRecipients);
@@ -260,6 +265,12 @@ class MailNotifications {
 			$allRecipientsArr = [];
 			if ($recipient !== null && $recipient !== '') {
 				$allRecipientsArr = \explode(',', $recipient);
+			}
+			if (isset($options['to']) && $options['to'] !== '') {
+				$allRecipientsArr = \array_merge(
+					$allRecipientsArr,
+					\explode(',', $options['to'])
+				);
 			}
 			if (isset($options['cc']) && $options['cc'] !== '') {
 				$allRecipientsArr = \array_merge(
