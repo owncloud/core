@@ -186,8 +186,9 @@ class WebDavHelper {
 				'password' => $password,
 				'authType' => SClient::AUTH_BASIC
 		];
-		
-		return new SClient($settings);
+		$client = new SClient($settings);
+		$client->addCurlSetting(CURLOPT_SSL_VERIFYPEER, false);
+		return $client;
 	}
 
 	/**
