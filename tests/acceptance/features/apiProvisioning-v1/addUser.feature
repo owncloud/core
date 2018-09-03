@@ -9,23 +9,23 @@ So that I can give people controlled individual access to resources on the ownCl
 
 	@smokeTest
 	Scenario: admin creates a user
-		Given user "brand-new-user" has been deleted
-		When the administrator sends a user creation request for user "brand-new-user" password "456firstpwd" using the provisioning API
+		Given user "meta" has been deleted
+		When the administrator sends a user creation request for user "meta" password "456firstpwd" using the provisioning API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And user "brand-new-user" should exist
+		And user "meta" should exist
 
 	Scenario: admin tries to create an existing user
-		Given user "brand-new-user" has been created
-		When the administrator sends a user creation request for user "brand-new-user" password "456newpwd" using the provisioning API
+		Given user "meta" has been created
+		When the administrator sends a user creation request for user "meta" password "456newpwd" using the provisioning API
 		Then the OCS status code should be "102"
 		And the HTTP status code should be "200"
 		And the API should not return any data
 
 	Scenario: admin tries to create an existing disabled user
-		Given user "brand-new-user" has been created
-		And user "brand-new-user" has been disabled
-		When the administrator sends a user creation request for user "brand-new-user" password "456newpwd" using the provisioning API
+		Given user "meta" has been created
+		And user "meta" has been disabled
+		When the administrator sends a user creation request for user "meta" password "456newpwd" using the provisioning API
 		Then the OCS status code should be "102"
 		And the HTTP status code should be "200"
 		And the API should not return any data

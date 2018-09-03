@@ -6,14 +6,14 @@ Feature: copy file
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created
+    And user "meta" has been created
 
   @smokeTest
   Scenario Outline: Copying a file
     Given using <dav_version> DAV path
-    When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt" using the WebDAV API
+    When user "meta" copies file "/welcome.txt" to "/FOLDER/welcome.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
+    And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "meta" with range "bytes=0-6" should be "Welcome"
     Examples:
       | dav_version |
       | old         |
@@ -22,9 +22,9 @@ Feature: copy file
   @smokeTest
   Scenario Outline: Copying and overwriting a file
     Given using <dav_version> DAV path
-    When user "user0" copies file "/welcome.txt" to "/textfile1.txt" using the WebDAV API
+    When user "meta" copies file "/welcome.txt" to "/textfile1.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And the downloaded content when downloading file "/textfile1.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
+    And the downloaded content when downloading file "/textfile1.txt" for user "meta" with range "bytes=0-6" should be "Welcome"
     Examples:
       | dav_version |
       | old         |
@@ -38,10 +38,10 @@ Feature: copy file
       | path        | testshare |
       | shareType   | 0         |
       | permissions | 1         |
-      | shareWith   | user0     |
-    When user "user0" copies file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
+      | shareWith   | meta     |
+    When user "meta" copies file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    And user "user0" downloads the file "/testshare/textfile0.txt" using the WebDAV API
+    And user "meta" downloads the file "/testshare/textfile0.txt" using the WebDAV API
     And the HTTP status code should be "404"
     Examples:
       | dav_version |
@@ -56,11 +56,11 @@ Feature: copy file
       | path        | testshare |
       | shareType   | 0         |
       | permissions | 1         |
-      | shareWith   | user0     |
+      | shareWith   | meta     |
     And user "user1" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
-    When user "user0" copies file "/textfile0.txt" to "/testshare/overwritethis.txt" using the WebDAV API
+    When user "meta" copies file "/textfile0.txt" to "/testshare/overwritethis.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    And the downloaded content when downloading file "/testshare/overwritethis.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
+    And the downloaded content when downloading file "/testshare/overwritethis.txt" for user "meta" with range "bytes=0-6" should be "Welcome"
     Examples:
       | dav_version |
       | old         |
@@ -68,11 +68,11 @@ Feature: copy file
 
   Scenario Outline: Copying file to a path with extension .part should not be possible
     Given using <dav_version> DAV path
-    When user "user0" copies file "/welcome.txt" to "/welcome.part" using the WebDAV API
+    When user "meta" copies file "/welcome.txt" to "/welcome.part" using the WebDAV API
     Then the HTTP status code should be "400"
-    And user "user0" should see the following elements
+    And user "meta" should see the following elements
       | /welcome.txt |
-    But user "user0" should not see the following elements
+    But user "meta" should not see the following elements
       | /welcome.part |
     Examples:
       | dav_version |

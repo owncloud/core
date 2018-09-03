@@ -6,15 +6,15 @@ Feature: delete folder contents
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created
+    And user "meta" has been created
 
   Scenario Outline: Removing everything of a folder
     Given using <dav_version> DAV path
-    And user "user0" has moved file "/welcome.txt" to "/FOLDER/welcome.txt"
-    And user "user0" has created a folder "/FOLDER/SUBFOLDER"
-    And user "user0" has copied file "/textfile0.txt" to "/FOLDER/SUBFOLDER/testfile0.txt"
-    When user "user0" deletes everything from folder "/FOLDER/" using the WebDAV API
-    Then user "user0" should see the following elements
+    And user "meta" has moved file "/welcome.txt" to "/FOLDER/welcome.txt"
+    And user "meta" has created a folder "/FOLDER/SUBFOLDER"
+    And user "meta" has copied file "/textfile0.txt" to "/FOLDER/SUBFOLDER/testfile0.txt"
+    When user "meta" deletes everything from folder "/FOLDER/" using the WebDAV API
+    Then user "meta" should see the following elements
       | /FOLDER/           |
       | /PARENT/           |
       | /PARENT/parent.txt |
@@ -23,7 +23,7 @@ Feature: delete folder contents
       | /textfile2.txt     |
       | /textfile3.txt     |
       | /textfile4.txt     |
-    And user "user0" should not see the following elements
+    And user "meta" should not see the following elements
       | /FOLDER/SUBFOLDER/              |
       | /FOLDER/welcome.txt             |
       | /FOLDER/SUBFOLDER/testfile0.txt |

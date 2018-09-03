@@ -5,15 +5,15 @@ Feature: sharing
 		And using old DAV path
 		And these users have been created: 
 			|username|displayname|
-			|user0   |User Zero  |
+			|meta   |User Zero  |
 
 	@smokeTest
 	Scenario Outline: Allow modification of reshare
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
 		And user "user2" has been created
-		And user "user0" has created a folder "/TMP"
-		And user "user0" has shared file "TMP" with user "user1"
+		And user "meta" has created a folder "/TMP"
+		And user "meta" has shared file "TMP" with user "user1"
 		And user "user1" has shared file "TMP" with user "user2"
 		When user "user1" updates the last share using the sharing API with
 			| permissions | 1 |
@@ -25,7 +25,7 @@ Feature: sharing
 
 	Scenario Outline: Creating a new public share, updating its expiration date and getting its info
 		Given using OCS API version "<ocs_api_version>"
-		And as user "user0"
+		And as user "meta"
 		When the user creates a share using the sharing API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
@@ -47,7 +47,7 @@ Feature: sharing
 			| token             | A_TOKEN              |
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
-			| uid_owner         | user0                |
+			| uid_owner         | meta                |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | User Zero            |
 			| url               | AN_URL               |
@@ -59,7 +59,7 @@ Feature: sharing
 
 	Scenario Outline: Creating a new public share with password and adding an expiration date
 		Given using OCS API version "<ocs_api_version>"
-		And as user "user0"
+		And as user "meta"
 		When the user creates a share using the sharing API with settings
 			| path      | welcome.txt |
 			| shareType | 3           |
@@ -76,7 +76,7 @@ Feature: sharing
 
 	Scenario Outline: Creating a new public share, updating its expiration date and getting its info
 		Given using OCS API version "<ocs_api_version>"
-		And as user "user0"
+		And as user "meta"
 		When the user creates a share using the sharing API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
@@ -98,7 +98,7 @@ Feature: sharing
 			| token             | A_TOKEN              |
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
-			| uid_owner         | user0                |
+			| uid_owner         | meta                |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | User Zero            |
 			| url               | AN_URL               |
@@ -110,7 +110,7 @@ Feature: sharing
 
 	Scenario Outline: Creating a new public share, updating its password and getting its info
 		Given using OCS API version "<ocs_api_version>"
-		And as user "user0"
+		And as user "meta"
 		When the user creates a share using the sharing API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
@@ -131,7 +131,7 @@ Feature: sharing
 			| token             | A_TOKEN              |
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
-			| uid_owner         | user0                |
+			| uid_owner         | meta                |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | User Zero            |
 			| url               | AN_URL               |
@@ -143,7 +143,7 @@ Feature: sharing
 
 	Scenario Outline: Creating a new public share, updating its permissions and getting its info
 		Given using OCS API version "<ocs_api_version>"
-		And as user "user0"
+		And as user "meta"
 		When the user creates a share using the sharing API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
@@ -164,7 +164,7 @@ Feature: sharing
 			| token             | A_TOKEN              |
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
-			| uid_owner         | user0                |
+			| uid_owner         | meta                |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | User Zero            |
 			| url               | AN_URL               |
@@ -176,7 +176,7 @@ Feature: sharing
 
 	Scenario Outline: Creating a new public share, updating publicUpload option and getting its info
 		Given using OCS API version "<ocs_api_version>"
-		And as user "user0"
+		And as user "meta"
 		When the user creates a share using the sharing API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
@@ -197,7 +197,7 @@ Feature: sharing
 			| token             | A_TOKEN              |
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
-			| uid_owner         | user0                |
+			| uid_owner         | meta                |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | User Zero            |
 			| url               | AN_URL               |
@@ -212,9 +212,9 @@ Feature: sharing
 		And user "user1" has been created
 		And group "grp1" has been created
 		And user "user1" has been added to group "grp1"
-		And user "user0" has shared file "textfile0.txt" with group "grp1"
+		And user "meta" has shared file "textfile0.txt" with group "grp1"
 		And user "user1" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
-		And as user "user0"
+		And as user "meta"
 		When the user updates the last share using the sharing API with
 			| permissions | 1 |
 		And the user gets the info of the last share using the sharing API
@@ -231,7 +231,7 @@ Feature: sharing
 			| stime             | A_NUMBER       |
 			| storage           | A_NUMBER       |
 			| mail_send         | 0              |
-			| uid_owner         | user0          |
+			| uid_owner         | meta          |
 			| file_parent       | A_NUMBER       |
 			| displayname_owner | User Zero      |
 			| mimetype          | text/plain     |
@@ -243,8 +243,8 @@ Feature: sharing
 	Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
-		And user "user0" has created a folder "/test"
-		And user "user0" has shared folder "/test" with user "user1" with permissions 17
+		And user "meta" has created a folder "/test"
+		And user "meta" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
 		And the user has created a share with settings
 			| path         | /test |
@@ -262,8 +262,8 @@ Feature: sharing
 	Scenario Outline: Cannot set permissions to zero
 		Given using OCS API version "<ocs_api_version>"
 		And group "grp1" has been created 
-		And user "user0" has shared folder "/FOLDER" with group "grp1"
-		When user "user0" updates the last share using the sharing API with
+		And user "meta" has shared folder "/FOLDER" with group "grp1"
+		When user "meta" updates the last share using the sharing API with
 			| permissions | 0 |
 		Then the OCS status code should be "400"
 		And the HTTP status code should be "<http_status_code>"
@@ -277,10 +277,10 @@ Feature: sharing
 			|username|displayname|
 			|user1   |User One   |
 			|user2   |User Two   |
-		And user "user0" has created a folder "/folder1"
-		And user "user0" has created a folder "/folder1/folder2"
+		And user "meta" has created a folder "/folder1"
+		And user "meta" has created a folder "/folder1/folder2"
 		And user "user1" has created a folder "/moved-out"
-		And user "user0" has shared folder "/folder1" with user "user1" with permissions 31
+		And user "meta" has shared folder "/folder1" with user "user1" with permissions 31
 		And user "user1" has shared folder "/folder1/folder2" with user "user2" with permissions 31
 		When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
 		And user "user1" gets the info of the last share using the sharing API
@@ -299,7 +299,7 @@ Feature: sharing
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | User One             |
 			| mimetype          | httpd/unix-directory |
-		And as "user0" the folder "/folder1/folder2" should not exist
+		And as "meta" the folder "/folder1/folder2" should not exist
 		And as "user2" the folder "/folder2" should exist
 
 	Scenario: Share ownership change after moving a shared file to another share
@@ -307,12 +307,12 @@ Feature: sharing
 			|username|displayname|
 			|user1   |User One   |
 			|user2   |User Two   |
-		And user "user0" has created a folder "/user0-folder"
-		And user "user0" has created a folder "/user0-folder/folder2"
+		And user "meta" has created a folder "/meta-folder"
+		And user "meta" has created a folder "/meta-folder/folder2"
 		And user "user2" has created a folder "/user2-folder"
-		And user "user0" has shared folder "/user0-folder" with user "user1" with permissions 31
+		And user "meta" has shared folder "/meta-folder" with user "user1" with permissions 31
 		And user "user2" has shared folder "/user2-folder" with user "user1" with permissions 31
-		When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2" using the WebDAV API
+		When user "user1" moves folder "/meta-folder/folder2" to "/user2-folder/folder2" using the WebDAV API
 		And user "user1" gets the info of the last share using the sharing API
 		Then the share fields of the last share should include
 			| id                | A_NUMBER             |
@@ -329,14 +329,14 @@ Feature: sharing
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | User Two             |
 			| mimetype          | httpd/unix-directory |
-		And as "user0" the folder "/user0-folder/folder2" should not exist
+		And as "meta" the folder "/meta-folder/folder2" should not exist
 		And as "user2" the folder "/user2-folder/folder2" should exist
 
 	Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
-		And user "user0" has created a folder "/test"
-		And user "user0" has shared folder "/test" with user "user1" with permissions 31
+		And user "meta" has created a folder "/test"
+		And user "meta" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
 		And the user has created a share with settings
 			| path         | /test |
@@ -354,8 +354,8 @@ Feature: sharing
 	Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
-		And user "user0" has created a folder "/test"
-		And user "user0" has shared folder "/test" with user "user1" with permissions 17
+		And user "meta" has created a folder "/test"
+		And user "meta" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
 		And the user has created a share with settings
 			| path        | /test |
@@ -373,8 +373,8 @@ Feature: sharing
 	Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
-		And user "user0" has created a folder "/test"
-		And user "user0" has shared folder "/test" with user "user1" with permissions 31
+		And user "meta" has created a folder "/test"
+		And user "meta" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
 		And the user has created a share with settings
 			| path        | /test |
