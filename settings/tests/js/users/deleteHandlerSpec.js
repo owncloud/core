@@ -79,7 +79,8 @@ describe('DeleteHandler tests', function() {
 
 		expect(showNotificationSpy.calledOnce).toEqual(true);
 		expect(showNotificationSpy.getCall(0).args[0]).toEqual('removed some_uid entry');
-		showNotificationSpy.reset();
+		showNotificationSpy.restore();
+		showNotificationSpy = sinon.spy(OC.Notification, 'showHtml');
 
 		handler.mark('some_other_uid');
 
