@@ -179,48 +179,57 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 			]);
 
 			$options = [];
-			$options['bcc'] = $filter->getToAddress();
-			if (isset($_POST['bccSelf']) && $_POST['bccSelf'] === 'true') {
-				$options['bcc'] .= ',' . \OC::$server->getUserSession()->getUser()->getEMailAddress();
+			$results = [];
+			$toEmails = \explode(',', $filter->getToAddress());
+
+			//Lets get the senders email address and add to the 'to'
+			if (isset($_POST['toSelf']) && $_POST['toSelf'] === 'true') {
+				$toEmails [] = \OC::$server->getUserSession()->getUser()->getEMailAddress();
 			}
+			//Send separate email
+			foreach ($toEmails as $toEmail) {
+				$options['to'] = $toEmail;
 
-			$l10n = \OC::$server->getL10N('lib');
+				$l10n = \OC::$server->getL10N('lib');
 
-			$sendingUser = \OC::$server->getUserSession()->getUser();
-			$mailNotification = new \OC\Share\MailNotifications(
-				$sendingUser,
-				$l10n,
-				\OC::$server->getMailer(),
-				\OC::$server->getConfig(),
-				\OC::$server->getLogger(),
-				$defaults,
-				\OC::$server->getURLGenerator(),
-				\OC::$server->getEventDispatcher()
-			);
+				$sendingUser = \OC::$server->getUserSession()->getUser();
+				$mailNotification = new \OC\Share\MailNotifications(
+					$sendingUser,
+					$l10n,
+					\OC::$server->getMailer(),
+					\OC::$server->getConfig(),
+					\OC::$server->getLogger(),
+					$defaults,
+					\OC::$server->getURLGenerator(),
+					\OC::$server->getEventDispatcher()
+				);
 
-			$expiration = null;
-			if ($filter->getExpirationDate() !== '') {
-				try {
-					$date = new DateTime($filter->getExpirationDate());
-					$expiration = $date->getTimestamp();
-				} catch (Exception $e) {
-					\OCP\Util::writeLog('sharing', "Couldn't read date: " . $e->getMessage(), \OCP\Util::ERROR);
+				$expiration = null;
+				if ($filter->getExpirationDate() !== '') {
+					try {
+						$date = new DateTime($filter->getExpirationDate());
+						$expiration = $date->getTimestamp();
+					} catch (Exception $e) {
+						\OCP\Util::writeLog('sharing', "Couldn't read date: " . $e->getMessage(), \OCP\Util::ERROR);
+					}
 				}
+
+				if ($emailBody !== null || $emailBody !== '') {
+					$emailBody = \strip_tags($emailBody);
+				}
+				$result = $mailNotification->sendLinkShareMail(
+					null,
+					$filter->getFile(),
+					$filter->getLink(),
+					$expiration,
+					$filter->getPersonalNote(),
+					$options
+				);
+
+				$results = \array_merge($results, $result);
 			}
 
-			if ($emailBody !== null || $emailBody !== '') {
-				$emailBody = \strip_tags($emailBody);
-			}
-			$result = $mailNotification->sendLinkShareMail(
-				null,
-				$filter->getFile(),
-				$filter->getLink(),
-				$expiration,
-				$filter->getPersonalNote(),
-				$options
-			);
-
-			if (empty($result)) {
+			if (empty($results)) {
 				// Get the token from the link
 				$linkParts = \explode('/', $filter->getLink());
 				$token = \array_pop($linkParts);
