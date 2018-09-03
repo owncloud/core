@@ -60,6 +60,8 @@ class LoggingHelper {
 	 * @param string $baseUrl
 	 * @param string $adminUsername
 	 * @param string $adminPassword
+	 * @param int $noOfLinesToRead
+	 *
 	 * @throws \Exception
 	 * @return \SimpleXMLElement[]
 	 */
