@@ -6,12 +6,12 @@ Feature: download file
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created
+    And user "meta" has been created
 
   @smokeTest
   Scenario Outline: download a file
     Given using <dav_version> DAV path
-    When user "user0" downloads the file "/textfile0.txt" using the WebDAV API
+    When user "meta" downloads the file "/textfile0.txt" using the WebDAV API
     Then the downloaded content should be "ownCloud test text file 0" plus end-of-line
     Examples:
       | dav_version |
@@ -20,7 +20,7 @@ Feature: download file
 
   Scenario Outline: download a file with range
     Given using <dav_version> DAV path
-    When user "user0" downloads file "/welcome.txt" with range "bytes=51-77" using the WebDAV API
+    When user "meta" downloads file "/welcome.txt" with range "bytes=51-77" using the WebDAV API
     Then the downloaded content should be "example file for developers"
     Examples:
       | dav_version |
@@ -29,7 +29,7 @@ Feature: download file
 
   Scenario Outline: download a public shared file with range
     Given using <dav_version> DAV path
-    When user "user0" creates a share using the sharing API with settings
+    When user "meta" creates a share using the sharing API with settings
       | path      | welcome.txt |
       | shareType | 3           |
     And the public downloads the last public shared file with range "bytes=51-77" using the old WebDAV API
@@ -41,7 +41,7 @@ Feature: download file
 
   Scenario Outline: download a public shared file inside a folder with range
     Given using <dav_version> DAV path
-    When user "user0" creates a share using the sharing API with settings
+    When user "meta" creates a share using the sharing API with settings
       | path      | PARENT |
       | shareType | 3      |
     And the public downloads file "/parent.txt" from inside the last public shared folder with range "bytes=1-7" using the old WebDAV API
@@ -54,7 +54,7 @@ Feature: download file
   @smokeTest
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
-    When user "user0" downloads the file "/welcome.txt" using the WebDAV API
+    When user "meta" downloads the file "/welcome.txt" using the WebDAV API
     Then the following headers should be set
       | Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
       | Content-Security-Policy           | default-src 'none';                                              |
@@ -72,8 +72,8 @@ Feature: download file
 
   Scenario Outline: Doing a GET with a web login should work without CSRF token on the new backend
     Given using <dav_version> DAV path
-    And user "user0" has logged in to a web-style session
-    When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken
+    And user "meta" has logged in to a web-style session
+    When the client sends a "GET" to "/remote.php/dav/files/meta/welcome.txt" without requesttoken
     Then the downloaded content should start with "Welcome to your ownCloud account!"
     And the HTTP status code should be "200"
     Examples:
@@ -83,8 +83,8 @@ Feature: download file
 
   Scenario Outline: Doing a GET with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
-    And user "user0" has logged in to a web-style session
-    When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
+    And user "meta" has logged in to a web-style session
+    When the client sends a "GET" to "/remote.php/dav/files/meta/welcome.txt" with requesttoken
     Then the downloaded content should start with "Welcome to your ownCloud account!"
     And the HTTP status code should be "200"
     Examples:

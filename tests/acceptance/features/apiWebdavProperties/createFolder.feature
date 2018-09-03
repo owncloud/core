@@ -6,12 +6,12 @@ Feature: create folder
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created
+    And user "meta" has been created
 
   Scenario Outline: create a folder
     Given using <dav_version> DAV path
-    When user "user0" creates a folder "<folder_name>" using the WebDAV API
-    Then as "user0" the folder "<folder_name>" should exist
+    When user "meta" creates a folder "<folder_name>" using the WebDAV API
+    Then as "meta" the folder "<folder_name>" should exist
     Examples:
       | dav_version | folder_name     |
       | old         | /upload         |
@@ -30,8 +30,8 @@ Feature: create folder
   @smokeTest
   Scenario Outline: Creating a folder
     Given using <dav_version> DAV path
-    And user "user0" has created a folder "/test_folder"
-    When user "user0" gets the following properties of folder "/test_folder" using the WebDAV API
+    And user "meta" has created a folder "/test_folder"
+    When user "meta" gets the following properties of folder "/test_folder" using the WebDAV API
       | {DAV:}resourcetype |
     Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
     Examples:
@@ -41,8 +41,8 @@ Feature: create folder
 
   Scenario Outline: Creating a folder with special chars
     Given using <dav_version> DAV path
-    And user "user0" has created a folder "/test_folder:5"
-    When user "user0" gets the following properties of folder "/test_folder:5" using the WebDAV API
+    And user "meta" has created a folder "/test_folder:5"
+    When user "meta" gets the following properties of folder "/test_folder:5" using the WebDAV API
       | {DAV:}resourcetype |
     Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
     Examples:
@@ -52,9 +52,9 @@ Feature: create folder
 
   Scenario Outline: Creating a directory which contains .part should not be possible
     Given using <dav_version> DAV path
-    When user "user0" creates a folder "/folder.with.ext.part" using the WebDAV API
+    When user "meta" creates a folder "/folder.with.ext.part" using the WebDAV API
     Then the HTTP status code should be "400"
-    And user "user0" should not see the following elements
+    And user "meta" should not see the following elements
       | /folder.with.ext.part |
     Examples:
       | dav_version |

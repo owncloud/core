@@ -2,13 +2,13 @@
 Feature: sharing
 	Background:
 		Given using old DAV path
-		And user "user0" has been created
+		And user "meta" has been created
 		And user "user1" has been created
 
 	Scenario Outline: User is not allowed to reshare file
 		Given using OCS API version "<ocs_api_version>"
 		And user "user2" has been created
-		And user "user0" has created a share with settings
+		And user "meta" has created a share with settings
 			| path        | /textfile0.txt |
 			| shareType   | 0              |
 			| shareWith   | user1          |
@@ -28,7 +28,7 @@ Feature: sharing
 	Scenario Outline: User is not allowed to reshare file with more permissions
 		Given using OCS API version "<ocs_api_version>"
 		And user "user2" has been created
-		And user "user0" has created a share with settings
+		And user "meta" has created a share with settings
 			| path        | /textfile0.txt |
 			| shareType   | 0              |
 			| shareWith   | user1          |
@@ -48,8 +48,8 @@ Feature: sharing
 	Scenario Outline: Do not allow reshare to exceed permissions
 		Given using OCS API version "<ocs_api_version>"
 		And user "user2" has been created
-		And user "user0" has created a folder "/TMP"
-		And user "user0" has created a share with settings
+		And user "meta" has created a folder "/TMP"
+		And user "meta" has created a share with settings
 			| path        | /TMP  |
 			| shareType   | 0     |
 			| shareWith   | user1 |
@@ -72,7 +72,7 @@ Feature: sharing
 	Scenario: Reshared files can be still accessed if a user in the middle removes it.
 		Given user "user2" has been created
 		And user "user3" has been created
-		And user "user0" has shared file "textfile0.txt" with user "user1"
+		And user "meta" has shared file "textfile0.txt" with user "user1"
 		And user "user1" has moved file "/textfile0 (2).txt" to "/textfile0_shared.txt"
 		And user "user1" has shared file "textfile0_shared.txt" with user "user2"
 		And user "user2" has shared file "textfile0_shared.txt" with user "user3"
@@ -82,8 +82,8 @@ Feature: sharing
 
 	Scenario Outline: resharing using a public link with read only permissions is not allowed
 		Given using OCS API version "<ocs_api_version>"
-		And user "user0" has created a folder "/test"
-		And user "user0" has shared folder "/test" with user "user1" with permissions 1
+		And user "meta" has created a folder "/test"
+		And user "meta" has shared folder "/test" with user "user1" with permissions 1
 		When user "user1" creates a share using the sharing API with settings
 			| path         | /test |
 			| shareType    | 3     |
@@ -97,8 +97,8 @@ Feature: sharing
 
 	Scenario Outline: resharing using a public link with read and write permissions only is not allowed
 		Given using OCS API version "<ocs_api_version>"
-		And user "user0" has created a folder "/test"
-		And user "user0" has shared folder "/test" with user "user1" with permissions 15
+		And user "meta" has created a folder "/test"
+		And user "meta" has shared folder "/test" with user "user1" with permissions 15
 		When user "user1" creates a share using the sharing API with settings
 			| path         | /test |
 			| shareType    | 3     |
@@ -113,7 +113,7 @@ Feature: sharing
 	Scenario Outline: resharing a file is not allowed when allow resharing has been disabled
 		Given using OCS API version "<ocs_api_version>"
 		And user "user2" has been created
-		And user "user0" has created a share with settings
+		And user "meta" has created a share with settings
 			| path        | /textfile0.txt |
 			| shareType   | 0              |
 			| shareWith   | user1          |
