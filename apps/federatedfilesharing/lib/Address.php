@@ -63,8 +63,10 @@ class Address {
 	 * @return string
 	 */
 	public function getUserId() {
+		// userId is everything except the last part
 		$parts = \explode('@', $this->cloudId);
-		return $parts[0];
+		\array_pop($parts);
+		return \implode('@', $parts);
 	}
 
 	/**
@@ -73,8 +75,9 @@ class Address {
 	 * @return string
 	 */
 	public function getHostName() {
+		// hostname is the last part
 		$parts = \explode('@', $this->cloudId);
-		return $parts[1];
+		return \array_pop($parts);
 	}
 
 	/**

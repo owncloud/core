@@ -23,6 +23,8 @@ namespace OCA\FederatedFileSharing\Controller;
 
 use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
+use OCA\FederatedFileSharing\FederatedShareProvider;
+use OCA\FederatedFileSharing\Ocm\Notification\FileNotification;
 use OCP\AppFramework\Http\JSONResponse;
 use OCA\FederatedFileSharing\Exception\InvalidShareException;
 use OCA\FederatedFileSharing\Exception\NotSupportedException;
@@ -33,6 +35,8 @@ use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
+use OCP\Share;
+use OCP\Share\IShare;
 
 /**
  * Class OcmController
@@ -41,6 +45,11 @@ use OCP\IUserManager;
  */
 class OcmController extends Controller {
 	const API_VERSION = '1.0-proposal1';
+
+	/**
+	 * @var FederatedShareProvider
+	 */
+	private $federatedShareProvider;
 
 	/**
 	 * @var IURLGenerator
@@ -72,6 +81,7 @@ class OcmController extends Controller {
 	 *
 	 * @param string $appName
 	 * @param IRequest $request
+	 * @param FederatedShareProvider $federatedShareProvider
 	 * @param IURLGenerator $urlGenerator
 	 * @param IUserManager $userManager
 	 * @param AddressHandler $addressHandler
@@ -80,6 +90,7 @@ class OcmController extends Controller {
 	 */
 	public function __construct($appName,
 									IRequest $request,
+									FederatedShareProvider $federatedShareProvider,
 									IURLGenerator $urlGenerator,
 									IUserManager $userManager,
 									AddressHandler $addressHandler,
@@ -88,6 +99,7 @@ class OcmController extends Controller {
 	) {
 		parent::__construct($appName, $request);
 
+		$this->federatedShareProvider = $federatedShareProvider;
 		$this->urlGenerator = $urlGenerator;
 		$this->userManager = $userManager;
 		$this->addressHandler = $addressHandler;
@@ -112,7 +124,7 @@ class OcmController extends Controller {
 				"{$this->appName}.ocm.index"
 			),
 			'shareTypes' => [
-				'name' => 'file',
+				'name' => FileNotification::RESOURCE_TYPE_FILE,
 				'protocols' => $this->getProtocols()
 			]
 		];
@@ -122,8 +134,6 @@ class OcmController extends Controller {
 	 * @NoCSRFRequired
 	 * @PublicPage
 	 *
-	 *
-	 *
 	 * @param string $shareWith identifier of the user or group
 	 * 							to share the resource with
 	 * @param string $name name of the shared resource
@@ -132,10 +142,10 @@ class OcmController extends Controller {
 	 * @param string $owner identifier of the user that owns the resource
 	 * @param string $ownerDisplayName display name of the owner
 	 * @param string $sender Provider specific identifier of the user that wants
-	 * 							to share the resource
+	 *							to share the resource
 	 * @param string $senderDisplayName Display name of the user that wants
 	 * 									to share the resource
-	 * @param string $shareType Share type (user or group share)
+	 * @param string $shareType Share type ('user' is supported atm)
 	 * @param string $resourceType only 'file' is supported atm
 	 * @param array $protocol
 	 * 		[
@@ -149,6 +159,7 @@ class OcmController extends Controller {
 	 * 				the 'sharedSecret" as username and password
 	 * 			]
 	 *
+	 * @return JSONResponse
 	 */
 	public function createShare($shareWith,
 								$name,
@@ -183,23 +194,48 @@ class OcmController extends Controller {
 					'The mountpoint name contains invalid characters.'
 				);
 			}
+
+			$shareWithAddress = new Address($shareWith);
+			$localShareWith = $shareWithAddress->getUserId();
+
 			// FIXME this should be a method in the user management instead
 			$this->logger->debug(
-				"shareWith before, $shareWith",
+				"shareWith before, $localShareWith",
 				['app' => $this->appName]
 			);
 			\OCP\Util::emitHook(
 				'\OCA\Files_Sharing\API\Server2Server',
 				'preLoginNameUsedAsUserName',
-				['uid' => &$shareWith]
+				['uid' => &$localShareWith]
 			);
 			$this->logger->debug(
-				"shareWith after, $shareWith",
+				"shareWith after, $localShareWith",
 				['app' => $this->appName]
 			);
 
-			if (!$this->userManager->userExists($shareWith)) {
-				throw new InvalidShareException("User $shareWith does not exist");
+			if ($this->isSupportedProtocol($protocol['name']) === false) {
+				return new JSONResponse(
+					['message' => "Protocol {$protocol['name']} is not supported"],
+					Http::STATUS_NOT_IMPLEMENTED
+				);
+			}
+
+			if ($this->isSupportedShareType($shareType) === false) {
+				return new JSONResponse(
+					['message' => "ShareType {$shareType} is not supported"],
+					Http::STATUS_NOT_IMPLEMENTED
+				);
+			}
+
+			if ($this->isSupportedResourceType($resourceType) === false) {
+				return new JSONResponse(
+					['message' => "ResourceType {$resourceType} is not supported"],
+					Http::STATUS_NOT_IMPLEMENTED
+				);
+			}
+
+			if (!$this->userManager->userExists($localShareWith)) {
+				throw new InvalidShareException("User $localShareWith does not exist");
 			}
 
 			$ownerAddress = new Address($owner, $ownerDisplayName);
@@ -208,7 +244,7 @@ class OcmController extends Controller {
 			$this->fedShareManager->createShare(
 				$ownerAddress,
 				$sharedByAddress,
-				$shareWith,
+				$localShareWith,
 				$providerId,
 				$name,
 				$protocol['options']['sharedSecret']
@@ -229,7 +265,9 @@ class OcmController extends Controller {
 				['app' => 'federatefilesharing']
 			);
 			return new JSONResponse(
-				['message' => "internal server error, was not able to add share from {$ownerAddress->getHostName()}"],
+				[
+					'message' => "internal server error, was not able to add share from {$ownerAddress->getHostName()}"
+				],
 				Http::STATUS_INTERNAL_SERVER_ERROR
 			);
 		}
@@ -240,6 +278,9 @@ class OcmController extends Controller {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 *
 	 * @param string $notificationType notification type (SHARE_REMOVED, etc)
 	 * @param string $resourceType only 'file' is supported atm
 	 * @param string $providerId Identifier of the resource at the provider side
@@ -248,15 +289,102 @@ class OcmController extends Controller {
 	 * 			optional additional parameters, depending on the notification
 	 * 				and the resource type
 	 * 		]
+	 *
+	 * @return JSONResponse
 	 */
 	public function processNotification($notificationType,
 										$resourceType,
 										$providerId,
 										$notification
 	) {
-		// TODO: implement
+		try {
+			$hasMissingParams = $this->hasNull(
+				[$notificationType, $resourceType, $providerId]
+			);
+			if ($hasMissingParams || !\is_array($notification)) {
+				throw new InvalidShareException(
+					'server can not add remote share, missing parameter'
+				);
+			}
+
+			if ($this->isSupportedResourceType($resourceType) === false) {
+				return new JSONResponse(
+					['message' => "ResourceType {$resourceType} is not supported"],
+					Http::STATUS_NOT_IMPLEMENTED
+				);
+			}
+			// TODO: check permissions/preconditions in all cases
+			switch ($notificationType) {
+				case FileNotification::NOTIFICATION_TYPE_SHARE_ACCEPTED:
+					$share = $this->getValidShare(
+						$providerId, $notification['sharedSecret']
+					);
+					$this->fedShareManager->acceptShare($share);
+					break;
+				case FileNotification::NOTIFICATION_TYPE_SHARE_DECLINED:
+					$share = $this->getValidShare(
+						$providerId, $notification['sharedSecret']
+					);
+					$this->fedShareManager->declineShare($share);
+					break;
+				case FileNotification::NOTIFICATION_TYPE_REQUEST_RESHARE:
+					$shareWithAddress = new Address($notification['shareWith']);
+					$localShareWith = $shareWithAddress->getUserId();
+					$share = $this->getValidShare(
+						$providerId, $notification['sharedSecret']
+					);
+					// TODO: permissions not needed ???
+					$this->fedShareManager->reShare(
+						$share, $providerId, $localShareWith, 0
+					);
+					break;
+				case FileNotification::NOTIFICATION_TYPE_RESHARE_CHANGE_PERMISSION:
+					$permissions = $notification['permission'];
+					// TODO: Map OCM permissions to numeric
+					$share = $this->getValidShare(
+						$providerId, $notification['sharedSecret']
+					);
+					$this->fedShareManager->updatePermissions($share, $permissions);
+					break;
+				case FileNotification::NOTIFICATION_TYPE_SHARE_UNSHARED:
+					$this->fedShareManager->unshare(
+						$providerId, $notification['sharedSecret']
+					);
+					break;
+				case FileNotification::NOTIFICATION_TYPE_RESHARE_UNDO:
+					$share = $this->getValidShare(
+						$providerId, $notification['sharedSecret']
+					);
+					$this->fedShareManager->revoke($share);
+					break;
+				default:
+					return new JSONResponse(
+						['message' => "Notification of type {$notificationType} is not supported"],
+						Http::STATUS_NOT_IMPLEMENTED
+					);
+			}
+		} catch (Share\Exceptions\ShareNotFound $e) {
+			return new JSONResponse(
+				['message' => $e->getMessage()],
+				Http::STATUS_BAD_REQUEST
+			);
+		} catch (InvalidShareException $e) {
+			return new JSONResponse(
+				['message' => 'Missing arguments'],
+				Http::STATUS_BAD_REQUEST
+			);
+		}
+		return new JSONResponse(
+			[],
+			Http::STATUS_CREATED
+		);
 	}
 
+	/**
+	 * Get list of supported protocols
+	 *
+	 * @return array
+	 */
 	protected function getProtocols() {
 		return [
 			'webdav' => '/public.php/webdav/'
@@ -276,5 +404,55 @@ class OcmController extends Controller {
 		} else {
 			return $param === null;
 		}
+	}
+
+	/**
+	 * Get share by id, validate it's type and token
+	 *
+	 * @param int $id
+	 * @param string $sharedSecret
+	 *
+	 * @return IShare
+	 *
+	 * @throws InvalidShareException
+	 * @throws Share\Exceptions\ShareNotFound
+	 */
+	protected function getValidShare($id, $sharedSecret) {
+		$share = $this->federatedShareProvider->getShareById($id);
+		if ($share->getShareType() !== FederatedShareProvider::SHARE_TYPE_REMOTE
+			|| $share->getToken() !== $sharedSecret
+		) {
+			// TODO: Split wrong token and wrong share type cases. Add a message
+			throw new InvalidShareException();
+		}
+		return $share;
+	}
+
+	/**
+	 * @param string $resourceType
+	 *
+	 * @return bool
+	 */
+	protected function isSupportedResourceType($resourceType) {
+		return $resourceType === FileNotification::RESOURCE_TYPE_FILE;
+	}
+
+	/**
+	 * @param string $shareType
+	 * @return bool
+	 */
+	protected function isSupportedShareType($shareType) {
+		// TODO: make it a constant
+		return $shareType === 'user';
+	}
+
+	/**
+	 * @param string $protocolName
+	 * @return bool
+	 */
+	protected function isSupportedProtocol($protocolName) {
+		$supportedProtocols = $this->getProtocols();
+		$supportedProtocolNames = \array_keys($supportedProtocols);
+		return \in_array($protocolName, $supportedProtocolNames);
 	}
 }
