@@ -1926,13 +1926,7 @@ trait WebDav {
 	public function changeFavStateOfAnElement(
 		$user, $path, $favOrUnfav
 	) {
-		$settings = [
-			'baseUri' => $this->getBaseUrl() . '/',
-			'userName' => $user,
-			'password' => $this->getPasswordForUser($user),
-			'authType' => SClient::AUTH_BASIC
-		];
-		$client = new SClient($settings);
+		$client = $this->getSabreClient($user);
 		$properties = [
 			'{http://owncloud.org/ns}favorite' => $favOrUnfav
 		];
