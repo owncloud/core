@@ -113,6 +113,7 @@ class Application extends App {
 				return new OcmController(
 					$c->query('AppName'),
 					$c->query('Request'),
+					$this->getFederatedShareProvider(),
 					$server->getURLGenerator(),
 					$server->getUserManager(),
 					$c->query('FederatedShareManager'),
