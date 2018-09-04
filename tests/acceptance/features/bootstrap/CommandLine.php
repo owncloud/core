@@ -89,8 +89,41 @@ trait CommandLine {
 		$baseUrl = null,
 		$ocPath = null
 	) {
+		return $this->runOccWithEnvVariables(
+			$args,
+			null,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		);
+	}
+
+	/**
+	 * Invokes an OCC command with an optional array of environment variables
+	 *
+	 * @param array $args of the occ command
+	 * @param array|null $envVariables to be defined before the command is run
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return int exit code
+	 * @throws Exception if ocPath has not been set yet or the testing app is not enabled
+	 */
+	public function runOccWithEnvVariables(
+		$args = [],
+		$envVariables = null,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
 		$args[] = '--no-ansi';
-		$return = SetupHelper::runOcc($args, $adminUsername, $adminPassword, $baseUrl, $ocPath);
+		$return = SetupHelper::runOcc(
+			$args, $adminUsername, $adminPassword, $baseUrl, $ocPath, $envVariables
+		);
 		$this->lastStdOut = $return['stdOut'];
 		$this->lastStdErr = $return['stdErr'];
 		$this->lastCode = (int) $return['code'];
@@ -108,6 +141,26 @@ trait CommandLine {
 	public function invokingTheCommand($cmd) {
 		$args = \explode(' ', $cmd);
 		$this->runOcc($args);
+	}
+
+	/**
+	 * @When /^the administrator invokes occ command "([^"]*)" with environment variable "([^"]*)" set to "([^"]*)"$/
+	 * @Given /^the administrator has invoked occ command "([^"]*)" with environment variable "([^"]*)" set to "([^"]*)"$/
+	 *
+	 * @param string $cmd
+	 * @param string $envVariableName
+	 * @param string $envVariableValue
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function invokingTheCommandWithEnvVariable(
+		$cmd, $envVariableName, $envVariableValue
+	) {
+		$args = \explode(' ', $cmd);
+		$this->runOccWithEnvVariables(
+			$args, [$envVariableName => $envVariableValue]
+		);
 	}
 
 	/**
@@ -212,7 +265,7 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command output should contain the text "([^"]*)"$/
+	 * @Then /^the command output should contain the text ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
 	 * @param string $text
 	 *
@@ -220,6 +273,9 @@ trait CommandLine {
 	 * @throws \Exception
 	 */
 	public function theCommandOutputContainsTheText($text) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$text = \trim($text, $text[0]);
 		$lines = $this->findLines($this->lastStdOut, $text);
 		if (empty($lines)) {
 			throw new \Exception(
@@ -229,7 +285,7 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command error output should contain the text "([^"]*)"$/
+	 * @Then /^the command error output should contain the text ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
 	 * @param string $text
 	 *
@@ -237,6 +293,9 @@ trait CommandLine {
 	 * @throws \Exception
 	 */
 	public function theCommandErrorOutputContainsTheText($text) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$text = \trim($text, $text[0]);
 		$lines = $this->findLines($this->lastStdErr, $text);
 		if (empty($lines)) {
 			throw new \Exception(
