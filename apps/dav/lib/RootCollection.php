@@ -91,6 +91,9 @@ class RootCollection extends SimpleCollection {
 		$avatarCollection = new Avatars\RootCollection($userPrincipalBackend, 'principals/users');
 		$avatarCollection->disableListing = $disableListing;
 
+		$queueCollection = new JobStatus\RootCollection($userPrincipalBackend, 'principals/users');
+		$queueCollection->disableListing = $disableListing;
+
 		$children = [
 				new SimpleCollection('principals', [
 						$userPrincipals,
@@ -106,7 +109,8 @@ class RootCollection extends SimpleCollection {
 				$systemTagRelationsCollection,
 				$uploadCollection,
 				$avatarCollection,
-				new \OCA\DAV\Meta\RootCollection(\OC::$server->getRootFolder())
+				new \OCA\DAV\Meta\RootCollection(\OC::$server->getRootFolder()),
+				$queueCollection
 		];
 
 		parent::__construct('root', $children);
