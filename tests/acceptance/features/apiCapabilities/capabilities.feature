@@ -39,7 +39,6 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
-			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | 1                 |
 			| files_sharing | public@@@send_mail                    | EMPTY             |
@@ -54,6 +53,14 @@ Feature: capabilities
 			| files         | bigfilechunking                       | 1                 |
 			| files         | undelete                              | 1                 |
 			| files         | versioning                            | 1                 |
+
+	#feature added in #31824 will be released in 10.0.10
+	@smokeTest @skipOnOcV10.0.9
+	Scenario: getting capabilities with admin user
+		When the user retrieves the capabilities using the capabilities API
+		Then the capabilities should contain
+			| capability    | path_to_element                       | value             |
+			| files_sharing | can_share                             | 1                 |
 
 	Scenario: Changing public upload
 		Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
