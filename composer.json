@@ -54,7 +54,7 @@
         "pimple/pimple": "3.2.3",
         "nikic/php-parser": "^4.0",
         "icewind/Streams": "0.5.2",
-        "swiftmailer/swiftmailer": "^5.4",
+        "swiftmailer/swiftmailer": "^6.1",
         "guzzlehttp/guzzle": "^5.3",
         "league/flysystem": "^1.0",
         "pear/pear-core-minimal": "^v1.10",
