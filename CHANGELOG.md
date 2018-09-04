@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Store user name in oc_preferences when provided by backend, use in external storage save in session mode [#32579](https://github.com/owncloud/core/pull/32579)
+- Support JSON format for settings passed to occ system:config:set - [#32524](https://github.com/owncloud/core/issues/32524)
 - occ decrypt-all command can now read password from an environment variable - [#32252](https://github.com/owncloud/core/issues/32252)
 - Roave Security Advisories as a development dependency - [#31818](https://github.com/owncloud/core/issues/31818)
 - Store timestamp when ownCloud was first installed - [#32000](https://github.com/owncloud/core/issues/32000)
@@ -24,15 +26,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Ability to create users and send them an email for password creation - [#32466](https://github.com/owncloud/core/issues/32466)
 - Command for resetting password now supports sending reset email and outputting link - [#32500](https://github.com/owncloud/core/issues/32500)
 - Added Phan static code analyzer to improve code quality - [#32492](https://github.com/owncloud/core/issues/32492)
+- Added method in PHP share API to set password hashes directly - [#32572](https://github.com/owncloud/core/issues/32572)
+- Experimental support for asynchronous MOVE operations - [#32414](https://github.com/owncloud/core/issues/32414)
 
 ### Changed
 - Handle SSL certificate verifications for others than Let's Encrypt - [#31858](https://github.com/owncloud/core/issues/31858)
 - Insufficient storage exception now logged with "debug" log level - [#31978](https://github.com/owncloud/core/issues/31978)
 - Skip filecache repair step for version greater than 10.0.4 - [#31803](https://github.com/owncloud/core/issues/31803)
-- Bump karma from 2.0.2 to 2.0.4 in /build - [#31892](https://github.com/owncloud/core/issues/31892)
-- Bump karma from 2.0.5 to 3.0.0 in /build - [#32317](https://github.com/owncloud/core/issues/32317)
+- Bump sinon from 2.4.1 to 6.1.5 in /build - [#32319](https://github.com/owncloud/core/issues/32319)
+- Bump karma from 2.0.2 to 3.0.0 in /build - [#31892](https://github.com/owncloud/core/issues/31892) [#32197](https://github.com/owncloud/core/issues/32197) [#32317](https://github.com/owncloud/core/issues/32317)
 - Bump behat/behat from 3.4.3 to 3.5.0 - [#32318](https://github.com/owncloud/core/issues/32318)
-- Bump symfony 3.4.11 to 3.4.12 - [#31912](https://github.com/owncloud/core/issues/31912)
 - Bump paragonie/random_compat v2.0.15 to v2.0.17 - [#32107](https://github.com/owncloud/core/issues/32107)
 - Bump symfony/event-dispatcher from 3.4.12 to 3.4.13 - [#32199](https://github.com/owncloud/core/issues/32199)
 - Bump symfony/console from 3.4.12 to 3.4.13 - [#32140](https://github.com/owncloud/core/issues/32140)
@@ -40,15 +43,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump symfony/process from 3.4.12 to 3.4.13 - [#32135](https://github.com/owncloud/core/issues/32135)
 - Bump symfony/translation from 3.4.12 to 3.4.13 - [#32198](https://github.com/owncloud/core/issues/32198)
 - Bump symfony polyfill 1.8.0 to 1.9.0 - [#32255](https://github.com/owncloud/core/issues/32255)
-- Bump karma from 2.0.4 to 2.0.5 in /build - [#32197](https://github.com/owncloud/core/issues/32197)
 - Bump swiftmailer/swiftmailer from 5.4.9 to 5.4.10 - [#32200](https://github.com/owncloud/core/issues/32200)
 - Minor dependency bumps 2018-08-26 - [#32439](https://github.com/owncloud/core/issues/32439)
+- Bump symfony 3.4.11 to 3.4.12 - [#31912](https://github.com/owncloud/core/issues/31912)
 - Bump symfony 3.4.15 and zend-stdlib 3.2.1 - [#32499](https://github.com/owncloud/core/issues/32499)
 - Allow slashes in generated resource routes in app framework - [#31939](https://github.com/owncloud/core/issues/31939)
 - Email field is now default in user management page - [#32466](https://github.com/owncloud/core/issues/32466)
+- Split of config.sample.php into two files for core and apps - [#32554](https://github.com/owncloud/core/issues/32554)
 
 ### Removed
 ### Fixed
+- Prevent logging LDAP password in case of failure - [#32592](https://github.com/owncloud/core/pull/32592)
+- Prevent passwords to be set to empty strings - [#32581](https://github.com/owncloud/core/pull/32581)
+- Fix update issue related to oc_jobs when automatically enabling market app to assist for update in OC 10 - [#32573](https://github.com/owncloud/core/pull/32573)
+- Trigger missing migrations in files_sharing app, adds indices and can speed up some instances - [#32562](https://github.com/owncloud/core/issues/32562)
+- Fix issue with spam filters when sending public link emails - [#32542](https://github.com/owncloud/core/issues/32542)
 - Fix version previews to fall back to icon when no preview provider is available - [#32474](https://github.com/owncloud/core/issues/32474)
 - Fix master key recreation - [#32504](https://github.com/owncloud/core/issues/32504)
 - Return correct status when IMip email delivery fails - [#32489](https://github.com/owncloud/core/issues/32489)
