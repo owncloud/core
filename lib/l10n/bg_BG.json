@@ -171,6 +171,7 @@
     "Storage is temporarily not available" : "Съхраняването е временно деактивирано",
     "Storage connection timeout. %s" : "Престъпен времеви лимит за свързване с дисково устройство. %s",
     "A safe home for all your data" : "Сигурен дом за цялата всичките Ви данни",
-    "Imprint" : "Imprint"
+    "Imprint" : "Imprint",
+    "__language_name__" : "Български"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

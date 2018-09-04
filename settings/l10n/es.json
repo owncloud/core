@@ -371,6 +371,10 @@
     "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "La contraseña de app o los tokens son contraseñas que permiten a la app o al dispositivo acceder a tu cuenta %s .",
     "Use them as a security measure to hide your actual password which you may only want to use for web interface login." : "Úselos como medida de seguridad para ocultar su contraseña actual, que debe ser usada unicamente para logarse en la interfaz Web.",
     "Create new app passcode" : "Crear una contraseña de app nueva",
-    "Password / Token" : "Contraseña / Token"
+    "Password / Token" : "Contraseña / Token",
+    "Owner language" : "Idioma del propietario",
+    "Language used for public mail notifications for shared files" : "Idioma usado para notificaciones por correo públicas para los archivos compartidos",
+    "Wrong current password" : "Contraseña actual equivocada",
+    "The new password cannot be the same as the previous one" : "La contraseña nueva no puede ser igual a la anterior"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -90,6 +90,9 @@ OC.L10N.register(
     "Add" : "Legg til",
     "%s password changed successfully" : "%spassord er endra",
     "Download logfile (%s)" : "Last ned logg (%s)",
-    "The logfile is bigger than 100 MB. Downloading it may take some time!" : "Logg fil er større enn 100MB. Nedlasting kan ta tid."
+    "The logfile is bigger than 100 MB. Downloading it may take some time!" : "Logg fil er større enn 100MB. Nedlasting kan ta tid.",
+    "Desktop client" : "Skrivebord klient",
+    "Android app" : "Android program",
+    "iOS app" : "iOS program"
 },
 "nplurals=2; plural=(n != 1);");

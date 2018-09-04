@@ -298,6 +298,8 @@ OC.L10N.register(
     "Default" : "Oletus",
     "Change" : "Muuta",
     "Share" : "Jaa",
-    "Add" : "Lisää"
+    "Add" : "Lisää",
+    "%s password changed successfully" : "%s salasana vaihdettiin onnistuneesti",
+    "Email has been changed successfully." : "Sähköpostiosoite vaihdettiin onnistuneesti."
 },
 "nplurals=2; plural=(n != 1);");

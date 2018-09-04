@@ -184,6 +184,7 @@
     "Sharing %s failed, could not find %s, check spelling and server availability." : "Ndarja me të tjerët e %s dështoi, s’u gjet dot %s, kontrollori i drejtshkrimit dhe shërbyesi në punë.",
     "Imprint" : "Imprint",
     "The username can not be longer than 64 characters" : "Emri i përdoruesit s’mund të jetë më i gjatë se 64 shenja",
-    "Privacy Policy" : "Rregulla Privatësie"
+    "Privacy Policy" : "Rregulla Privatësie",
+    "__language_name__" : "Shqip"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

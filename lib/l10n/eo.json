@@ -84,6 +84,7 @@
     "Please ask your server administrator to restart the web server." : "Bonvolu peti viajn serviladministranton, ke ŝi/li reekfunkciigu la TTT-servilon.",
     "PostgreSQL >= 9 required" : "PostgreSQL >= 9 necesas",
     "Please upgrade your database version" : "Bonvolu ĝisdatigi la eldonon de via datumbazo",
-    "Storage connection error. %s" : "Memorokonekta eraro. %s"
+    "Storage connection error. %s" : "Memorokonekta eraro. %s",
+    "__language_name__" : "Esperanto"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -307,6 +307,7 @@ OC.L10N.register(
     "Anyone with the link has access to the file/folder" : "Будь хто з цім посиланням має доступ до файлу/теки",
     "Menu" : "Меню",
     "Link name" : "Ім'я посилання",
-    "Imprint" : "Відбиток"
+    "Imprint" : "Відбиток",
+    "%s password changed successfully" : "%s пароль змінено успішно"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

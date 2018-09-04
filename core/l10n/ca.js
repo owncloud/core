@@ -297,6 +297,9 @@ OC.L10N.register(
     "An internal error occurred." : "Error intern",
     "You are trying to access a private link. Please log in first." : "Estàs accedint a un enllaç privat. Necessites registrar-te primer.",
     "Couldn't send mail to following recipient(s): %s " : "No s'ha pugut enviar l'email al(s) destinatari(s): %s",
-    "Imprint" : "Imprint"
+    "Imprint" : "Imprint",
+    "Link name" : "Nom de l'enllaç",
+    "Download / View" : "Descarregar / Veure",
+    "Download / View / Upload" : "Descarregar / Veure / Pujar"
 },
 "nplurals=2; plural=(n != 1);");

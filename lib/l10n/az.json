@@ -40,6 +40,7 @@
     "Token expired. Please reload page." : "Token vaxtı bitib. Xahiş olunur səhifəni yenidən yükləyəsiniz.",
     "Unknown user" : "Istifadəçi tanınmır ",
     "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "Bu ola bilər ki, cache/accelerator such tərəfindən cağırılıb hansi ki, Zend OPcache və eAccelerator-da olduğu kimidir.",
-    "Imprint" : "İşarələmək"
+    "Imprint" : "İşarələmək",
+    "__language_name__" : "__AZ_Azerbaijan__"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -362,6 +362,10 @@ OC.L10N.register(
     "Couldn't send mail to following recipient(s): %s " : "Gat ekki sent póst á eftirfarandi notendur: %s ",
     "{sharee} (federated)" : "{sharee} (federated)",
     "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Sjálfvirkar uppfærslur eru gerðar óvirkar í config.php. Til að uppfæra tilvikið þitt ættirðu að nota uppfærslutólið af skipanalínu (occ upgrade).",
-    "Imprint" : "Prenta"
+    "Imprint" : "Prenta",
+    "Download / View" : "Sækja / Skoða",
+    "Download / View / Upload" : "Sækja / Skoða / Senda inn",
+    "Recipients can view or download contents." : "Viðtakendur geta skoðað eða sótt efni.",
+    "Recipients can view, download, edit, delete and upload contents." : "Viðtakendur geta skoðað, sótt, breytt, eytt eða sent inn efni."
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

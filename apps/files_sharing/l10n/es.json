@@ -122,6 +122,10 @@
     "Decline Share" : "No aceptar compartido",
     "Only recipient can change accepted state" : "Solo el receptor puede cambiar el cambio de estado.",
     "File sharing" : "Compartir Archivos",
-    "State" : "Estado"
+    "State" : "Estado",
+    "The group is blacklisted for sharing" : "El grupo está en la lista negra de compartir",
+    "Files Sharing" : "Compartir archivos",
+    "Exclude groups from receiving shares." : "Excluir grupos de recibir compartidos",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Estos grupos no pueden recibir compartidos. Los miembros del grupo todavía pueden enviar y recibir compartidos fuera del grupo."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

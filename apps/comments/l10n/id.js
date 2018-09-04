@@ -20,6 +20,7 @@ OC.L10N.register(
     "You commented" : "Anda berkomentar",
     "%1$s commented" : "%1$s dikomentari",
     "You commented on %2$s" : "Anda berkomentar pada %2$s",
-    "%1$s commented on %2$s" : "%1$s dikomentari pada %2$s"
+    "%1$s commented on %2$s" : "%1$s dikomentari pada %2$s",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong> Komentar </strong> untuk berkas  (selalu terdapat di stream) </em>"
 },
 "nplurals=1; plural=0;");

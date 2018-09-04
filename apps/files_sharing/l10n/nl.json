@@ -115,6 +115,13 @@
     "Pending" : "In behandeling",
     "Accept" : "Accepteren",
     "Decline" : "Afwijzen",
-    "Declined" : "Afgewezen"
+    "Declined" : "Afgewezen",
+    "Accept Share" : "Share accepteren",
+    "Decline Share" : "Share afwijzen",
+    "The group is blacklisted for sharing" : "Deze groep is uitgesloten voor delen",
+    "Only recipient can change accepted state" : "Alleen de ontvanger kan de geaccepteerde status wijzigen",
+    "State" : "Status",
+    "Exclude groups from receiving shares." : "Groepen uitsluiten van het ontvangen van shares.",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Deze groepen zullen geen shares meer ontvangen. Leden van deze groep kunnen nog wel shares verzenden en ontvangen buiten deze groep om."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
