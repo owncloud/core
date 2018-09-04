@@ -88,7 +88,7 @@ class UploadHelper {
 		if ($chunkingVersion === 1) {
 			$headers['OC-Chunked'] = '1';
 		} elseif ($chunkingVersion === 2) {
-			WebDavHelper::makeDavRequest(
+			$result = WebDavHelper::makeDavRequest(
 				$baseUrl,
 				$user,
 				$password,
@@ -98,6 +98,9 @@ class UploadHelper {
 				$davPathVersionToUse,
 				"uploads"
 			);
+			if ($result->getStatusCode() >= 400) {
+				return $result;
+			}
 		}
 
 		//upload chunks
@@ -123,6 +126,9 @@ class UploadHelper {
 				$davPathVersionToUse,
 				$davRequestType
 			);
+			if ($result->getStatusCode() >= 400) {
+				return $result;
+			}
 		}
 		//finish upload for new chunking
 		if ($chunkingVersion === 2) {
@@ -141,6 +147,9 @@ class UploadHelper {
 				$davPathVersionToUse,
 				"uploads"
 			);
+			if ($result->getStatusCode() >= 400) {
+				return $result;
+			}
 		}
 		return $result;
 	}
