@@ -104,6 +104,12 @@
     "No favorites" : "لا يوجد مفضلات ",
     "Files and folders you mark as favorite will show up here" : "الملفات والمجلدات التي حددتها كامفضلة سوف تظهر هنا ",
     "Text file" : "ملف نصي",
-    "New text file.txt" : "ملف نصي جديد fille.txt"
+    "New text file.txt" : "ملف نصي جديد fille.txt",
+    "Processing files..." : "جارٍ معالجة الملفات ...",
+    "Target folder does not exist any more" : "المجلد الهدف غير موجود بعد الآن",
+    "Error when assembling chunks, status code {status}" : "خطأ عند تجميع القطع ، رمز الحالة {status}",
+    "No entries in this folder match {filter}" : "لا يوجد في هذا المجلد إدخالات تتطابق مع {filter}",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "الحد من الإخطارات حول تغييرات\n<strong>ملفاتك المفضلة</strong>",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "ليس مرخصا لك الوصول إلى هذا الملف أو المجلد - يرجى الاتصال بالمالك لمشاركة الترخيص معك."
 },"pluralForm" :"nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;"
 }

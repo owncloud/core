@@ -362,6 +362,19 @@ OC.L10N.register(
     "Email changed successfully for {user}." : "E-post ble endret for {user}.",
     "You are not a member of any groups." : "Du er ikke medlem av noen grupper.",
     "In a clustered setup please make sure to sync the config.php file across all nodes." : "I et klyngeoppsett må config.php synkroniseress til alle noder.",
-    "These are the web, desktop and mobile clients currently logged in to your %s." : "Dette er web-, desktop- og mobilklienter som for øyeblikket er logget på din %s,"
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Dette er web-, desktop- og mobilklienter som for øyeblikket er logget på din %s,",
+    "Automatically accept new incoming local user shares" : "Godta nye innkommende lokale brukerdelinger automatisk",
+    "Legal" : "Juridisk informasjon",
+    "Privacy Policy URL:" : "Personverns Regler URL:",
+    "Privacy Policy URL" : "Personverns Regler URL",
+    "App passwords / tokens" : "App-passord / tokens",
+    "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "Et app-passord eller token er et passordfrase som gir en app eller en enhet lov til å bruke %s-kontoen din.",
+    "Use them as a security measure to hide your actual password which you may only want to use for web interface login." : "Bruk dem som et sikkerhetstiltak for å skjule ditt faktiske passord som du kanskje bare vil bruke til webgrensesnittinnlogging.",
+    "Create new app passcode" : "Lag nytt app-passord",
+    "Password / Token" : "Password / Token",
+    "Owner language" : "Eierspråk",
+    "Language used for public mail notifications for shared files" : "Språk som brukes til offentlig postvarsling for delte filer",
+    "Wrong current password" : "Feil nåværende passord",
+    "The new password cannot be the same as the previous one" : "Det nye passordet kan ikke være det samme som det forrige"
 },
 "nplurals=2; plural=(n != 1);");

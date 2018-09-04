@@ -154,6 +154,8 @@
     "Storage is temporarily not available" : "Tallennustila ei juuri nyt ole käytettävissä",
     "Storage connection timeout. %s" : "Tallennustilan yhteyden aikakatkaisu. %s",
     "A safe home for all your data" : "Turvallinen koti tiedoillesi",
-    "Imprint" : "Tiedot"
+    "Imprint" : "Tiedot",
+    "__language_name__" : "_kielen_nimi_",
+    "Privacy Policy" : "Tietosuojalauseke"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -168,6 +168,7 @@
     "Storage connection timeout. %s" : "Tároló csatlakozási időtúllépés. %s",
     "To fix this issue update your libxml2 version and restart your web server." : "A probléma megoldásához, frissítse a libxml2 verziót és indítsa újra a web kiszolgálót.",
     "Imprint" : "Impresszum",
-    "Privacy Policy" : "Adatvédelmi szabályzat"
+    "Privacy Policy" : "Adatvédelmi szabályzat",
+    "__language_name__" : "__language_name__"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

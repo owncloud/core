@@ -363,6 +363,8 @@
     "An error occured while sending email" : "Une erreur est survenue lors de l'envoi du courriel",
     "E-Mail sent" : "Courriel envoyé",
     "Download / View" : "Télécharger / Voir",
-    "Download / View / Upload" : "Télécharger / Voir / Téléverser"
+    "Download / View / Upload" : "Télécharger / Voir / Téléverser",
+    "Recipients can view or download contents." : "Les bénéficiaires peuvent voir ou télécharger le contenu.",
+    "Recipients can view, download, edit, delete and upload contents." : "Les bénéficiaires peuvent voir, télécharger, modifier, supprimer et téléverser le contenu."
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

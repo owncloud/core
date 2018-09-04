@@ -371,6 +371,8 @@ OC.L10N.register(
     "Imprint" : "Штамп",
     "An error occured while sending email" : "При отправке письма произошла ошибка",
     "E-Mail sent" : "Письмо отправлено",
-    "Privacy Policy" : "Политика конфиденциальности"
+    "Privacy Policy" : "Политика конфиденциальности",
+    "Sharing is not allowed" : "Предоставление доступа не разрешено",
+    "Personal note from the sender: <br> %s." : "Личная заметка от отправителя: <br> %s."
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

@@ -351,6 +351,20 @@ OC.L10N.register(
     "Email notification was sent!" : "E-mailbericht verzonden!",
     "You are trying to access a private link. Please log in first." : "U probeert een privé link te benaderen. Meld u zich alstublieft eerst aan.",
     "{sharee} (federated)" : "{sharee} (gefedereerd)",
-    "Imprint" : "afdruk"
+    "Imprint" : "afdruk",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Neem contact op met de serverbeheerder als deze fout meerdere keren opnieuw optreedt en neem de onderstaande technische details op in uw melding.",
+    "Couldn't send mail to following recipient(s): %s " : "Kon geen e-mail versturen naar de volgende ontvanger(s): %s ",
+    "Choose an expiration date" : "Kies een vervaldatum",
+    "Download / View" : "Download / Bekijk",
+    "Download / View / Upload" : "Download / Bekijk / Upload",
+    "Send copy to self" : "Stuur een kopie naar uzelf",
+    "Add personal message" : "Voeg een persoonlijk bericht toe",
+    "Privacy Policy" : "Privacybeleid",
+    "Error adding {addItem}: {addItem} already exists" : "Fout bij toevoegen {addItem}: {addItem} bestaat al",
+    "Receive files from multiple recipients without revealing the contents of the folder." : "Ontvang bestanden van meerdere ontvangers zonder de inhoud van de map te weergeven.",
+    "Recipients can view or download contents." : "Ontvangers kunnen de inhoud bekijken of downloaden.",
+    "Recipients can view, download, edit, delete and upload contents." : "Ontvangers kunnen de inhoud bekijken, downloaden, bewerken, verwijderen en uploaden.",
+    "An error occured while sending email" : "Er trad een fout op bij het versturen van de e-mail",
+    "E-Mail sent" : "E-mail verzonden"
 },
 "nplurals=2; plural=(n != 1);");

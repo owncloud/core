@@ -85,6 +85,7 @@
     "Token expired. Please reload page." : "انتهت صلاحية الكلمة , يرجى اعادة تحميل الصفحة",
     "Unknown user" : "المستخدم غير معروف",
     "Storage is temporarily not available" : "وحدة التخزين غير متوفرة مؤقتاً",
-    "Imprint" : "الدمغة."
+    "Imprint" : "الدمغة.",
+    "__language_name__" : "__language_name__"
 },"pluralForm" :"nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;"
 }

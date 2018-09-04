@@ -371,6 +371,10 @@
     "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "Пароли и токены приложений — это коды доступа, которые дают разрешение приложению или устройству на доступ к вашей учётной записи %s.",
     "Use them as a security measure to hide your actual password which you may only want to use for web interface login." : "Используйте их как меру безопасности, чтобы скрыть ваш основной пароль, который вы вероятно захотите использовать только для входа в веб-интерфейс.",
     "Create new app passcode" : "Создать новый код доступа для приложения",
-    "Password / Token" : "Пароль / Токен"
+    "Password / Token" : "Пароль / Токен",
+    "Owner language" : "Язык владельца",
+    "Language used for public mail notifications for shared files" : "Язык, используемый для рассылок почтовых уведомлений по поводу файлов в совместном доступе",
+    "Wrong current password" : "Старый пароль неверен",
+    "The new password cannot be the same as the previous one" : "Новый пароль не совпадать с предыдущим"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }

@@ -279,6 +279,18 @@
     "You are using %s of %s (%s %%)" : "Używasz %s z %s (%s %%)",
     "You are member of the following groups:" : "Jesteś członkiem następujących grup:",
     "Email has been changed successfully." : "Pomyślnie zmieniono adres email.",
-    "Invalid email address" : "Nieprawidłowy adres email"
+    "Invalid email address" : "Nieprawidłowy adres email",
+    "No panels for this section." : "Brak paneli dla tej sekcji.",
+    "Empty app name is not allowed." : "Pusta nazwa aplikacji nie jest dozwolona.",
+    "SSL Root Certificates" : "Główny certyfikat SSL",
+    "User ID" : "ID użytkownika",
+    "Email address" : "Adres email",
+    "Email changed successfully for {user}." : "Pomyślnie zmieniono email użytkownika.",
+    "Enforce password protection for read-only links" : "Wymuś zabezpieczenie hasłem dla linków tylko do odczytu.",
+    "Enforce password protection for read & write links" : "Wymuś zabezpieczenie hasłem dla linków do zapisu.",
+    "Restrict users to only share with groups they are member of" : "Ogranicz użytkownikom współdzielenie tylko do grup, których są członkami.",
+    "Password / Token" : "Hasło / Token",
+    "Language used for public mail notifications for shared files" : "Język używany do publicznych powiadomień e-mail dla udostępnianych plików.",
+    "Wrong current password" : "Podano złe hasło"
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }

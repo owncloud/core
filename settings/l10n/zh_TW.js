@@ -281,6 +281,7 @@ OC.L10N.register(
     "Share" : "分享",
     "Domain" : "網域名稱",
     "Add" : "增加",
-    "Email has been changed successfully." : "電子郵件已經成功變更"
+    "Email has been changed successfully." : "電子郵件已經成功變更",
+    "%s password changed successfully" : "%s 密碼修改成功"
 },
 "nplurals=1; plural=0;");

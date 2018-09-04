@@ -343,6 +343,7 @@ OC.L10N.register(
     "An error occured while sending email" : "Се појави грешка при испраќање Email",
     "E-Mail sent" : "EMail испратен",
     "Set log level to debug" : "Поставете го нивото на логот на дебагирање",
-    "Reset log level" : "Ресетирај го нивото на логот"
+    "Reset log level" : "Ресетирај го нивото на логот",
+    "Privacy Policy" : "Политика за приватност"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

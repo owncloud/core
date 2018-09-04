@@ -182,6 +182,8 @@
     "File cannot be read" : "Soubor nelze přečíst",
     "%s is not supported and %s will not work properly on this platform. Use it at your own risk! " : "%s není podporována a %s nebude fungovat správně na této platformě. Používejte jen na vlastní nebezpečí! ",
     "Sharing %s failed, could not find %s, check spelling and server availability." : "Sdílení %s selhalo, %s se nepodařilo nalézt, zkontrolujte dostupnost serveru.",
-    "Imprint" : "Imprint"
+    "Imprint" : "Imprint",
+    "__language_name__" : "Česky",
+    "Privacy Policy" : "Ochrana soukromí"
 },"pluralForm" :"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;"
 }

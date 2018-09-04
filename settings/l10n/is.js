@@ -357,6 +357,8 @@ OC.L10N.register(
     "The config file is read only. Please adjust your setup by editing the config file manually." : "Uppsetningarskráin er einungis lesanleg. Lagaðu uppsetninguna þína handvirkt með því að breyta sjálfri uppsetningaskránni í ritli.",
     "Email changed successfully for {user}." : "Tókst að breyta tölvupóstfangi fyrir {user}.",
     "You are not a member of any groups." : "Þú ert ekki meðlimur í neinum hópi.",
-    "In a clustered setup please make sure to sync the config.php file across all nodes." : "Ef um klasauppsetningu er að ræða, gakktu úr skugga um að config.php sé samstillt yfir alla hnútana."
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "Ef um klasauppsetningu er að ræða, gakktu úr skugga um að config.php sé samstillt yfir alla hnútana.",
+    "Wrong current password" : "Rangt núverandi lykilorð",
+    "The new password cannot be the same as the previous one" : "Nýja lykilorðið má ekki vera eins og það fyrra"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");
