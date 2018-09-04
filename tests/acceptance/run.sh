@@ -151,7 +151,7 @@ export LANG=C
 # @return occ return code given in the xml data
 function remote_occ() {
 	COMMAND=`echo $3 | xargs`
-	CURL_OCC_RESULT=`curl -s -u $1 $2 -d "command=${COMMAND}"`
+	CURL_OCC_RESULT=`curl -k -s -u $1 $2 -d "command=${COMMAND}"`
 	# xargs is (miss)used to trim the output
 	RETURN=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/code)" - | xargs`
 	# We could not find a proper return of the testing app, so something went wrong
