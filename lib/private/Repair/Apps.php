@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Victor Dubiniuk <dubiniuk@aheadworks.com>
+ * @author Viktar Dubiniuk <dubiniuk@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -21,6 +21,8 @@
 
 namespace OC\Repair;
 
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Type;
 use OC\RepairException;
 use OC_App;
 use OCP\App\AppAlreadyInstalledException;
@@ -326,11 +328,63 @@ class Apps implements IRepairStep {
 		// Then we need to enable the market app to support app updates / downloads during upgrade
 		$output->info('Enabling market app to assist with update');
 		try {
+			// Prepare oc_jobs for older ownCloud version fixes https://github.com/owncloud/update-testing/issues/5
+			$connection = \OC::$server->getDatabaseConnection();
+			$toSchema = $connection->createSchema();
+			$this->changeSchema($toSchema, ['tablePrefix' => $connection->getPrefix()]);
+			$connection->migrateToSchema($toSchema);
+
 			$this->appManager->enableApp('market');
 			return true;
 		} catch (\Exception $ex) {
 			$output->warning($ex->getMessage());
 			return false;
+		}
+	}
+
+	/**
+	 * DB update for oc_jobs table
+	 * it is intentionally duplicates 20170213215145 and a part of 20170101215145
+	 * to allow seamless market app installation
+	 *
+	 * @param Schema $schema
+	 * @param array $options
+	 * @throws \Doctrine\DBAL\Schema\SchemaException
+	 */
+	private function changeSchema(Schema $schema, array $options) {
+		$prefix = $options['tablePrefix'];
+		if ($schema->hasTable("${prefix}jobs")) {
+			$jobsTable = $schema->getTable("${prefix}jobs");
+
+			if (!$jobsTable->hasColumn('last_checked')) {
+				$jobsTable->addColumn(
+					'last_checked',
+					Type::INTEGER,
+					[
+						'default' => 0,
+						'notnull' => false
+					]
+				);
+			}
+
+			if (!$jobsTable->hasColumn('reserved_at')) {
+				$jobsTable->addColumn(
+					'reserved_at',
+					Type::INTEGER,
+					[
+						'default' => 0,
+						'notnull' => false
+					]
+				);
+			}
+
+			if (!$jobsTable->hasColumn('execution_duration')) {
+				$jobsTable->addColumn('execution_duration', Type::INTEGER, [
+					'notnull' => true,
+					'length' => 5,
+					'default' => -1,
+				]);
+			}
 		}
 	}
 }
