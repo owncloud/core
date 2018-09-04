@@ -178,7 +178,17 @@ class ResetPasswordTest extends TestCase {
 		$this->assertEquals(0, $this->invokePrivate($this->resetPassword, 'execute', [$input, $output]));
 	}
 
-	public function testEmailLinkFailure() {
+	public function emailLinkFailureDataProvider() {
+		return [
+			[null],
+			[''],
+		];
+	}
+
+	/**
+	 * @dataProvider emailLinkFailureDataProvider
+	 */
+	public function testEmailLinkFailure($emailAddress) {
 		$input = $this->createMock(InputInterface::class);
 		$output = $this->createMock(OutputInterface::class);
 
@@ -198,7 +208,7 @@ class ResetPasswordTest extends TestCase {
 
 		$user->expects($this->once())
 			->method('getEMailAddress')
-			->willReturn(null);
+			->willReturn($emailAddress);
 		$user->method('getUID')
 			->willReturn('foo');
 
