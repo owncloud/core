@@ -19,39 +19,24 @@
  *
  */
 
-namespace OCA\DAV;
+namespace OCA\DAV\JobStatus\Entity;
 
-use OCP\Capabilities\ICapability;
-use OCP\IConfig;
+use OCP\AppFramework\Db\Entity;
 
-class Capabilities implements ICapability {
-	/** @var IConfig */
-	private $config;
-
-	/**
-	 * Capabilities constructor.
-	 *
-	 * @param IConfig $config
-	 */
-	public function __construct(IConfig $config) {
-		$this->config = $config;
-	}
-
-	public function getCapabilities() {
-		$cap =  [
-			'dav' => [
-				'chunking' => '1.0',
-				'zsync' => '1.0',
-				'reports' => [
-					'search-files',
-				]
-			]
-		];
-
-		if ($this->config->getSystemValue('dav.enable.async', false)) {
-			$cap['async'] = '1.0';
-		}
-
-		return $cap;
-	}
+/**
+ * Class JobStatus
+ *
+ * @method string getUuid()
+ * @method void setUuid(string $uuid)
+ * @method string getUserId()
+ * @method void setUserId(string $userId)
+ * @method string getStatusInfo()
+ * @method void setStatusInfo(string $statusInfo)
+ *
+ * @package OCA\DAV\JobStatus\Entity
+ */
+class JobStatus extends Entity {
+	protected $uuid;
+	protected $userId;
+	protected $statusInfo;
 }

@@ -41,7 +41,9 @@ class Syslog {
 	public static function init() {
 		\openlog(\OC::$server->getSystemConfig()->getValue("syslog_tag", "ownCloud"), LOG_PID | LOG_CONS, LOG_USER);
 		// Close at shutdown
-		\register_shutdown_function('closelog');
+		\OC::$server->getShutdownHandler()->register(function () {
+			\closelog();
+		});
 	}
 
 	/**

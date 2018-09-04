@@ -43,6 +43,7 @@
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
 use OCP\Security\IContentSecurityPolicyManager;
+use OCP\Shutdown\IShutdownManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -536,4 +537,10 @@ interface IServerContainer {
 	 * @since 10.0.3
 	 */
 	public function getThemeService();
+
+	/**
+	 * @return IShutdownManager
+	 * @since 10.0.10
+	 */
+	public function getShutdownHandler();
 }

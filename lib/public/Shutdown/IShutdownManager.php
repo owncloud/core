@@ -19,39 +19,29 @@
  *
  */
 
-namespace OCA\DAV;
+namespace OCP\Shutdown;
 
-use OCP\Capabilities\ICapability;
-use OCP\IConfig;
-
-class Capabilities implements ICapability {
-	/** @var IConfig */
-	private $config;
+/**
+ * Interface IShutdownManager
+ *
+ * @package OCP\Shutdown
+ * @since 10.0.10
+ */
+interface IShutdownManager {
+	const HIGH = 10;
+	const LOW = 1000;
 
 	/**
-	 * Capabilities constructor.
+	 * Any kind of cleanup should be added with priority LOW.
+	 * Anything which shall be processed before the cleanup routes better
+	 * uses a value smaller then LOW. You can use HIGH if you like.
+	 * In case two callbacks have the same prio they will be executed in the
+	 * order in which they have been registered.
 	 *
-	 * @param IConfig $config
+	 * @param \Closure $callback - a simple function with no arguments and no return
+	 * @param int $priority - the lower the number the higher is the priority
+	 * @return void
+	 * @since 10.0.10
 	 */
-	public function __construct(IConfig $config) {
-		$this->config = $config;
-	}
-
-	public function getCapabilities() {
-		$cap =  [
-			'dav' => [
-				'chunking' => '1.0',
-				'zsync' => '1.0',
-				'reports' => [
-					'search-files',
-				]
-			]
-		];
-
-		if ($this->config->getSystemValue('dav.enable.async', false)) {
-			$cap['async'] = '1.0';
-		}
-
-		return $cap;
-	}
+	public function register(\Closure $callback, $priority = self::LOW);
 }

@@ -37,6 +37,7 @@ class Server extends \Sabre\DAV\Server {
 
 	/**
 	 * @see \Sabre\DAV\Server
+	 * @param null $treeOrNode
 	 * @throws \Sabre\DAV\Exception
 	 */
 	public function __construct($treeOrNode = null) {

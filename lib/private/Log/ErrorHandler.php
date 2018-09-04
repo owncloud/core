@@ -50,7 +50,9 @@ class ErrorHandler {
 		} else {
 			\set_error_handler([$handler, 'onError']);
 		}
-		\register_shutdown_function([$handler, 'onShutdown']);
+		\OC::$server->getShutdownHandler()->register(function () use ($handler) {
+			$handler->onShutdown();
+		});
 		\set_exception_handler([$handler, 'onException']);
 	}
 

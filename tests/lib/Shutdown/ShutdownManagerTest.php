@@ -19,39 +19,30 @@
  *
  */
 
-namespace OCA\DAV;
+namespace Tests\Shutdown;
 
-use OCP\Capabilities\ICapability;
-use OCP\IConfig;
+use OC\Shutdown\ShutDownManager;
+use Test\TestCase;
 
-class Capabilities implements ICapability {
-	/** @var IConfig */
-	private $config;
+class ShutdownManagerTest extends TestCase {
+	public function testOrderedRun() {
+		/** @var ShutDownManager $manager */
+		$manager = $this->getMockBuilder(ShutDownManager::class)
+			->disableOriginalConstructor()
+			->setMethods(['__construct'])
+			->getMock();
+		$callOrder = '';
+		$manager->register(function () use (&$callOrder) {
+			$callOrder .= 'b';
+		}, 20);
+		$manager->register(function () use (&$callOrder) {
+			$callOrder .= 'c';
+		}, 30);
+		$manager->register(function () use (&$callOrder) {
+			$callOrder .= 'a';
+		}, 10);
 
-	/**
-	 * Capabilities constructor.
-	 *
-	 * @param IConfig $config
-	 */
-	public function __construct(IConfig $config) {
-		$this->config = $config;
-	}
-
-	public function getCapabilities() {
-		$cap =  [
-			'dav' => [
-				'chunking' => '1.0',
-				'zsync' => '1.0',
-				'reports' => [
-					'search-files',
-				]
-			]
-		];
-
-		if ($this->config->getSystemValue('dav.enable.async', false)) {
-			$cap['async'] = '1.0';
-		}
-
-		return $cap;
+		$manager->run();
+		$this->assertEquals('abc', $callOrder);
 	}
 }
