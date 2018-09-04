@@ -57,7 +57,7 @@ class FilesHome extends ObjectTree implements ICollection {
 		if ($path === null) {
 			return $this->rootNode->getChildren();
 		}
-		return parent::getChildren($path);
+		return \iterator_to_array(parent::getChildren($path));
 	}
 
 	public function childExists($name) {

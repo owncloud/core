@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff18e9c01a4dc2372c06e5c666e39972",
+    "content-hash": "9ff89e988ed1e9eb8c85823d049a4a29",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -1810,16 +1810,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "3.2.2",
+            "version": "3.3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/dav.git",
-                "reference": "e987775e619728f12205606c9cc3ee565ffb1516"
+                "reference": "6fd5483ef1713d15d6288e970b8ff4977218bbe1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/e987775e619728f12205606c9cc3ee565ffb1516",
-                "reference": "e987775e619728f12205606c9cc3ee565ffb1516",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/6fd5483ef1713d15d6288e970b8ff4977218bbe1",
+                "reference": "6fd5483ef1713d15d6288e970b8ff4977218bbe1",
                 "shasum": ""
             },
             "require": {
@@ -1855,11 +1855,6 @@
                 "bin/naturalselection"
             ],
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.1.0-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Sabre\\DAV\\": "lib/DAV/",
@@ -1889,7 +1884,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2017-02-15T03:06:08+00:00"
+            "time": "2018-06-05T06:29:46+00:00"
         },
         {
             "name": "sabre/event",
@@ -6956,6 +6951,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "sabre/dav": 20,
         "behat/mink-selenium2-driver": 20,
         "roave/security-advisories": 20
     },
