@@ -2235,7 +2235,17 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertArrayHasKey('shareObject', $calledBeforeShareCreate[1]);
 	}
 
-	public function testCreateShareLink() {
+	public function providesDataToHashPassword() {
+		return [
+			[true],
+			[false]
+		];
+	}
+
+	/**
+	 * @dataProvider providesDataToHashPassword
+	 */
+	public function testCreateShareLink($shouldHashPassword) {
 		$manager = $this->createManagerMock()
 			->setMethods([
 				'canShare',
@@ -2268,6 +2278,10 @@ class ManagerTest extends \Test\TestCase {
 			->setExpirationDate($date)
 			->setPassword('password');
 
+		if ($shouldHashPassword === false) {
+			$share->setShouldHashPassword($shouldHashPassword);
+		}
+
 		$manager->expects($this->once())
 			->method('canShare')
 			->with($share)
@@ -2293,10 +2307,12 @@ class ManagerTest extends \Test\TestCase {
 			->method('setLinkParent')
 			->with($share);
 
-		$this->hasher->expects($this->once())
-			->method('hash')
-			->with('password')
-			->willReturn('hashed');
+		if ($shouldHashPassword === true) {
+			$this->hasher->expects($this->once())
+				->method('hash')
+				->with('password')
+				->willReturn('hashed');
+		}
 
 		$this->secureRandom->method('getMediumStrengthGenerator')
 			->will($this->returnSelf());
@@ -2373,7 +2389,11 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertEquals('/target', $share->getTarget());
 		$this->assertSame($date, $share->getExpirationDate());
 		$this->assertEquals('token', $share->getToken());
-		$this->assertEquals('hashed', $share->getPassword());
+		if ($shouldHashPassword === true) {
+			$this->assertEquals('hashed', $share->getPassword());
+		} else {
+			$this->assertEquals('password', $share->getPassword());
+		}
 
 		$this->assertEquals('share.beforeCreate', $calledBeforeShareCreate[0]);
 		$this->assertEquals('share.afterCreate', $calledAfterShareCreate[0]);
@@ -3209,7 +3229,10 @@ class ManagerTest extends \Test\TestCase {
 		$manager->updateShare($share);
 	}
 
-	public function testUpdateShareLink() {
+	/**
+	 * @dataProvider providesDataToHashPassword
+	 */
+	public function testUpdateShareLink($shouldHashPassword) {
 		$manager = $this->createManagerMock()
 			->setMethods([
 				'canShare',
@@ -3244,6 +3267,15 @@ class ManagerTest extends \Test\TestCase {
 			->setExpirationDate($tomorrow)
 			->setNode($file)
 			->setPermissions(15);
+
+		if ($shouldHashPassword === false) {
+			$share->setShouldHashPassword(false);
+		} else {
+			$this->hasher->expects($this->once())
+				->method('hash')
+				->with('password')
+				->willReturn('hashed');
+		}
 
 		$manager->expects($this->once())->method('canShare')->willReturn(true);
 		$manager->expects($this->once())->method('getShareById')->with('foo:42')->willReturn($originalShare);
@@ -3287,6 +3319,11 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertNull($calledAfterUpdate[1]->getArgument('oldname'));
 		$this->assertArrayHasKey('shareobject', $calledAfterUpdate[1]);
 		$this->assertInstanceOf(Share::class, $calledAfterUpdate[1]->getArgument('shareobject'));
+		if ($shouldHashPassword === true) {
+			$this->assertEquals('hashed', $calledAfterUpdate[1]->getArgument('shareobject')->getPassword());
+		} else {
+			$this->assertEquals('password', $calledAfterUpdate[1]->getArgument('shareobject')->getPassword());
+		}
 	}
 
 	public function testUpdateShareLinkNoPasswordChange() {

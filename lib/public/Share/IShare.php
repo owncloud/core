@@ -355,4 +355,17 @@ interface IShare {
 	 * @since 10.0.9
 	 */
 	public function getState();
+
+	/**
+	 * @return bool shouldHashPassword
+	 * @since 10.0.10
+	 */
+	public function getShouldHashPassword();
+
+	/**
+	 * @param $status
+	 * @return null
+	 * @since 10.0.10
+	 */
+	public function setShouldHashPassword($status);
 }
