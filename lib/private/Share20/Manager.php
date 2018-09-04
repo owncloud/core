@@ -616,7 +616,7 @@ class Manager implements IManager {
 			}
 
 			// If a password is set. Hash it!
-			if ($share->getPassword() !== null) {
+			if (($share->getPassword() !== null) && ($share->getShouldHashPassword() === true)) {
 				$share->setPassword($this->hasher->hash($share->getPassword()));
 			}
 		}
@@ -843,7 +843,9 @@ class Manager implements IManager {
 				}
 
 				// If a password is set. Hash it! (only if the password has changed)
-				if ($share->getPassword() !== null && $share->getPassword() !== $originalShare->getPassword()) {
+				if (($share->getPassword() !== null) &&
+						($share->getPassword() !== $originalShare->getPassword()) &&
+						($share->getShouldHashPassword() === true)) {
 					$share->setPassword($this->hasher->hash($share->getPassword()));
 				}
 			}

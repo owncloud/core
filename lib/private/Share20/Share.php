@@ -69,6 +69,8 @@ class Share implements \OCP\Share\IShare {
 	private $name;
 	/** @var int */
 	private $state;
+	/** @var bool */
+	private $shouldHashPassword = true;
 
 	/** @var IRootFolder */
 	private $rootFolder;
@@ -451,5 +453,19 @@ class Share implements \OCP\Share\IShare {
 	 */
 	public function getState() {
 		return $this->state;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getShouldHashPassword() {
+		return $this->shouldHashPassword;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function setShouldHashPassword($status) {
+		$this->shouldHashPassword = $status;
 	}
 }
