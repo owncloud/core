@@ -9,6 +9,7 @@
     "Search" : "Suche",
     "Help" : "Hilfe",
     "Settings" : "Einstellungen",
-    "Users" : "Benutzer"
+    "Users" : "Benutzer",
+    "__language_name__" : "Deutsch (Österreich)"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

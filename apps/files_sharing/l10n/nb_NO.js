@@ -117,6 +117,17 @@ OC.L10N.register(
     "No permission to create share" : "Ingen tillatelse til å opprette deling",
     "Pending" : "Venter",
     "Accept" : "Aksepter",
-    "Decline" : "Avslå"
+    "Decline" : "Avslå",
+    "Declined" : "Avvist",
+    "An error occurred while updating share state: {message}" : "Det oppstod en feil ved oppdatering av delingen: {message}",
+    "Accept Share" : "Aksepter Deling",
+    "Decline Share" : "Avslå Deling",
+    "The group is blacklisted for sharing" : "Gruppen er svartelistet for deling",
+    "Only recipient can change accepted state" : "Kun mottaker kan endre akseptert tilstand",
+    "File sharing" : "Fildeling",
+    "State" : "Status",
+    "Files Sharing" : "Fildeling",
+    "Exclude groups from receiving shares." : "Ekskluder grupper fra å motta delinger.",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Disse gruppene vil ikke motta delinger. Medlemmer av gruppen kan fortsatt sende og motta delinger utenfor gruppen."
 },
 "nplurals=2; plural=(n != 1);");

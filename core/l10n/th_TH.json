@@ -369,6 +369,8 @@
     "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "การอัพเดทโดยอัตโนมัติถูกปิดใช้งานใน config.php เพื่ออัพเกรดอินสแตนซ์ของคุณโปรดใช้คำสั่งอัพเดท (occ upgrade)",
     "Imprint" : "ประทับ",
     "E-Mail sent" : "ส่งอิีเมล",
-    "Privacy Policy" : "นโยบายส่วนบุคคล"
+    "Privacy Policy" : "นโยบายส่วนบุคคล",
+    "Sharing is not allowed" : "ไม่อนุญาตให้แชร์",
+    "Personal note from the sender: <br> %s." : "บันทึกส่วนบุคคลจากผู้ส่ง: <br>%s"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

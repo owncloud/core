@@ -373,6 +373,10 @@ OC.L10N.register(
     "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "รหัสผ่านหรือโทเค็นของแอพคือรหัสผ่านที่ให้สิทธิ์แอพหรืออุปกรณ์ในการเข้าถึงบัญชี %s ของคุณ",
     "Use them as a security measure to hide your actual password which you may only want to use for web interface login." : "ใช้มาตรการรักษาความปลอดภัยสำหรับการเข้าสู่ระบบผ่านหน้าเว็บเพื่อซ่อนรหัสผ่านจริงของคุณ",
     "Create new app passcode" : "สร้างรหัสผ่านสำหรับแอพใหม่",
-    "Password / Token" : "รหัสผ่านหรือโทเค็น"
+    "Password / Token" : "รหัสผ่านหรือโทเค็น",
+    "Owner language" : "เจ้าของภาษา",
+    "Language used for public mail notifications for shared files" : "ภาษาที่ใช้แจ้งเตือนทางอีเมลสาธารณะสำหรับไฟล์ที่ใช้ร่วมกัน",
+    "Wrong current password" : "รหัสผ่านปัจจุบันไม่ถูกต้อง",
+    "The new password cannot be the same as the previous one" : "รหัสผ่านใหม่ต้องไม่ซ้ำกับรหัสเดิมที่เคยใช้มาก่อน"
 },
 "nplurals=1; plural=0;");

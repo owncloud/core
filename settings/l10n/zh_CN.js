@@ -353,6 +353,7 @@ OC.L10N.register(
     "Empty app name is not allowed." : "不允许输入空白的软件名称",
     "Email changed successfully for {user}." : "<br><div>{用户}电子邮件修改成功<br data-mce-bogus=\"1\"></div>",
     "You are not a member of any groups." : "你现在不是任何组的成员",
-    "In a clustered setup please make sure to sync the config.php file across all nodes." : "在群集设置中，请确保所有节点都同步config.php文件"
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "在群集设置中，请确保所有节点都同步config.php文件",
+    "Wrong current password" : "密码错误"
 },
 "nplurals=1; plural=0;");

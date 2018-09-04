@@ -270,6 +270,8 @@ OC.L10N.register(
     "Android app" : "Android апликација",
     "iOS app" : "iOS апликација",
     "No display name set" : "Нема поставено име за приказ",
-    "No email address set" : "Не е поставена Email адреса"
+    "No email address set" : "Не е поставена Email адреса",
+    "Wrong current password" : "Погрешна лозинка",
+    "The new password cannot be the same as the previous one" : "Новата лозинка неможе да биде иста со старата лозинка"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

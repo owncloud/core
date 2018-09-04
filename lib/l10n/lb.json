@@ -34,6 +34,7 @@
     "Users" : "Benotzer",
     "web services under your control" : "Web-Servicer ënnert denger Kontroll",
     "Authentication error" : "Authentifikatioun's Fehler",
-    "Imprint" : "Impressum"
+    "Imprint" : "Impressum",
+    "__language_name__" : "__language_name__"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

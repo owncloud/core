@@ -168,6 +168,7 @@
     "Storage connection error. %s" : "Fallu de conexón al almacenamientu. %s",
     "Storage connection timeout. %s" : "Tiempu escosao de conexón al almacenamientu. %s",
     "A safe home for all your data" : "Un llar seguru pa tolos sos datos",
-    "Imprint" : "Imprint"
+    "Imprint" : "Imprint",
+    "__language_name__" : "Asturianu"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

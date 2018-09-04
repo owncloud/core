@@ -371,6 +371,7 @@ OC.L10N.register(
     "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Përditësimi i vetvetishëm është i çaktivizuar te config.php. Që të përmirësoni instancën tuaj, ju lutemi, përdorni përditësuesin për rresht urdhrash (occ upgrade).",
     "Imprint" : "Imprint",
     "E-Mail sent" : "Email-i u dërgua",
-    "Privacy Policy" : "Rregulla Privatësie"
+    "Privacy Policy" : "Rregulla Privatësie",
+    "Personal note from the sender: <br> %s." : "Shënim personal nga dërguesi: <br> %s."
 },
 "nplurals=2; plural=(n != 1);");

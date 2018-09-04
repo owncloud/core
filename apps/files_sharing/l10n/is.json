@@ -115,6 +115,13 @@
     "No permission to create share" : "Þú hefur ekki heimild til að búa til sameign",
     "Pending" : "Í bið",
     "Accept" : "Samþykkja",
-    "Decline" : "Hafna"
+    "Decline" : "Hafna",
+    "Declined" : "Hafnað",
+    "Accept Share" : "Samþykkja sameign",
+    "Decline Share" : "Hafna sameign",
+    "File sharing" : "Skráadeiling",
+    "State" : "Staða",
+    "Files Sharing" : "Deiling skráa",
+    "Exclude groups from receiving shares." : "Undanskilja hópa frá því að taka á móti sameignum."
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }

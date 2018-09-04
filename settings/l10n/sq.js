@@ -373,6 +373,10 @@ OC.L10N.register(
     "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "Fjalëkalimet ose token-ët e aplikacionit janë frazëkalime që i japin leje një aplikacioni ose pajisjeje të hyjë në llogarinë tuaj %s.",
     "Use them as a security measure to hide your actual password which you may only want to use for web interface login." : "Përdorini ato si një masë sigurie për të fshehur fjalëkalimin tuaj faktik, të cilin mund të doni ta përdorni vetëm për hyrje në ndërfaqen web.",
     "Create new app passcode" : "Krijo fjalëkalim të ri aplikacioni",
-    "Password / Token" : "Fjalëkalim / Token"
+    "Password / Token" : "Fjalëkalim / Token",
+    "Owner language" : "Gjuha e të zotit",
+    "Language used for public mail notifications for shared files" : "Gjuhë e përdorur për njoftime publike me email për kartela të ndara me të tjerët",
+    "Wrong current password" : "Fjalëkalim i tanishëm i gabuar",
+    "The new password cannot be the same as the previous one" : "Fjalëkalimi i ri s’mund të jetë i njëjtë me atë të mëparshmin"
 },
 "nplurals=2; plural=(n != 1);");

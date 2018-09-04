@@ -123,6 +123,7 @@
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Palun veendu, et andmete kataloogis sisaldub fail \".ocdata\" ",
     "Could not obtain lock type %d on \"%s\"." : "Ei suutnud hankida %d tüüpi lukustust \"%s\".",
     "A safe home for all your data" : "Turvaline kodu kõigile sinu andmetele",
-    "Imprint" : "Impressum"
+    "Imprint" : "Impressum",
+    "__language_name__" : "Eesti"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
