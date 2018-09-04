@@ -272,6 +272,7 @@ class SetupHelper {
 	 * @param string|null $adminPassword
 	 * @param string|null $baseUrl
 	 * @param string|null $ocPath
+	 * @param array|null $envVariables
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
@@ -281,7 +282,8 @@ class SetupHelper {
 		$adminUsername = null,
 		$adminPassword = null,
 		$baseUrl = null,
-		$ocPath = null
+		$ocPath = null,
+		$envVariables = null
 	) {
 		if (self::$adminUsername === null
 			&& $adminUsername === null
@@ -323,11 +325,18 @@ class SetupHelper {
 		if ($ocPath === null) {
 			$ocPath = self::$ocPath;
 		}
+
+		$body = [];
+		$body['command'] = \implode(' ', $args);
+
+		if ($envVariables !== null) {
+			$body['env_variables'] = $envVariables;
+		}
+
 		try {
 			$result = OcsApiHelper::sendRequest(
-				$baseUrl, $adminUsername,
-				$adminPassword, "POST", $ocPath,
-				['command' => \implode(' ', $args)]
+				$baseUrl, $adminUsername, $adminPassword,
+				"POST", $ocPath, $body
 			);
 		} catch (ServerException $e) {
 			throw new Exception(
