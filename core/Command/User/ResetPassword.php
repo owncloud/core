@@ -44,6 +44,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Zend\Validator\EmailAddress;
 
 class ResetPassword extends Command {
 
@@ -123,7 +124,7 @@ class ResetPassword extends Command {
 			$userId = $user->getUID();
 			list($link, $token) = $this->lostController->generateTokenAndLink($userId);
 
-			if ($emailLink && $this->hasValidEmailAddress($user)) {
+			if ($emailLink && $this->hasValidEmailAddress($user->getEMailAddress())) {
 				try {
 					$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 					$this->lostController->sendEmail($userId, $token, $link);
@@ -184,14 +185,12 @@ class ResetPassword extends Command {
 	}
 
 	/**
-	 * Performs a simplistic test of whether the user's email address is valid.
+	 * Determines if the user's email address is valid.
 	 *
-	 * @param $user \OCP\IUser
+	 * @param string $emailAddress
 	 * @return bool
 	 */
-	protected function hasValidEmailAddress($user) {
-		$emailAddress = $user->getEMailAddress();
-
-		return ($emailAddress !== null && $emailAddress !== '');
+	protected function hasValidEmailAddress($emailAddress) {
+		return (new EmailAddress())->isValid($emailAddress);
 	}
 }
