@@ -123,7 +123,7 @@ class ResetPassword extends Command {
 			$userId = $user->getUID();
 			list($link, $token) = $this->lostController->generateTokenAndLink($userId);
 
-			if ($emailLink && $user->getEMailAddress() !== null) {
+			if ($emailLink && $this->hasValidEmailAddress($user)) {
 				try {
 					$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 					$this->lostController->sendEmail($userId, $token, $link);
@@ -181,5 +181,17 @@ class ResetPassword extends Command {
 			$output->writeln("<error>Error while resetting password!</error>");
 			return 1;
 		}
+	}
+
+	/**
+	 * Performs a simplistic test of whether the user's email address is valid.
+	 *
+	 * @param $user \OCP\IUser
+	 * @return bool
+	 */
+	protected function hasValidEmailAddress($user) {
+		$emailAddress = $user->getEMailAddress();
+
+		return ($emailAddress !== null && $emailAddress !== '');
 	}
 }
