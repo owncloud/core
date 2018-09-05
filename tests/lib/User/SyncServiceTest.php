@@ -34,6 +34,7 @@ use OCP\IConfig;
 use OCP\ILogger;
 use OCP\User\IProvidesHomeBackend;
 use OCP\User\IProvidesQuotaBackend;
+use OCP\User\IProvidesUserNameBackend;
 use OCP\UserInterface;
 use Test\TestCase;
 
@@ -220,6 +221,29 @@ class SyncServiceTest extends TestCase {
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		static::invokePrivate($s, 'syncQuota', [$a, $backend]);
+	}
+
+	public function testSyncUserName() {
+		$a = $this->createMock(Account::class);
+		$a->method('__call')->with('getUserId')->willReturn('user1');
+
+		/** @var UserInterface | IProvidesUserNameBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+		$backend = $this->createMock([UserInterface::class, IProvidesUserNameBackend::class]);
+		$backend->expects($this->once())
+			->method('getUserName')
+			->willReturn('userName1');
+
+		$this->config->expects($this->once())
+			->method('getUserValue')
+			->with('user1', 'core', 'username', null)
+			->willReturn(null);
+		
+		$this->config->expects($this->once())
+			->method('setUserValue')
+			->with('user1', 'core', 'username', 'userName1');
+
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		static::invokePrivate($s, 'syncUserName', [$a, $backend]);
 	}
 
 	public function testAnalyseExistingUsers() {

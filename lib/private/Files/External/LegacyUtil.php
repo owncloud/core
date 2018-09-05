@@ -66,7 +66,7 @@ class LegacyUtil {
 			$mountPoint = '/'.$uid.'/files'.$storage->getMountPoint();
 			$mountEntry = self::prepareMountPointEntry($storage, false);
 			foreach ($mountEntry['options'] as &$option) {
-				$option = self::setUserVars($uid, $option);
+				$option = self::setUserVars($user->getUserName(), $option);
 			}
 			$mountPoints[$mountPoint] = $mountEntry;
 		}
@@ -75,7 +75,7 @@ class LegacyUtil {
 			$mountPoint = '/'.$uid.'/files'.$storage->getMountPoint();
 			$mountEntry = self::prepareMountPointEntry($storage, true);
 			foreach ($mountEntry['options'] as &$option) {
-				$option = self::setUserVars($uid, $option);
+				$option = self::setUserVars($user->getUserName(), $option);
 			}
 			$mountPoints[$mountPoint] = $mountEntry;
 		}
@@ -190,8 +190,11 @@ class LegacyUtil {
 		if (self::$skipTest) {
 			return StorageNotAvailableException::STATUS_SUCCESS;
 		}
-		foreach ($options as $key => $option) {
-			$options[$key] = self::setUserVars(\OCP\User::getUser(), $option);
+		$user = \OC::$server->getUserSession()->getUser();
+		if ($user) {
+			foreach ($options as $key => $option) {
+				$options[$key] = self::setUserVars($user->getUserName(), $option);
+			}
 		}
 		if (\class_exists($class)) {
 			try {
