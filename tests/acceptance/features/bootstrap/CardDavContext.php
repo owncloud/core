@@ -157,17 +157,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function theCardDavExceptionShouldBe($message) {
-		$result = $this->responseXml['value'][0]['value'];
-
-		if ($message !== $result) {
-			throw new \Exception(
-				\sprintf(
-					'Expected %s got %s',
-					$message,
-					$result
-				)
-			);
-		}
+		$this->featureContext->theDavExceptionShouldBe($message, $this->responseXml);
 	}
 
 	/**
@@ -179,16 +169,6 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function theCardDavErrorMessageShouldBe($message) {
-		$result = $this->responseXml['value'][1]['value'];
-
-		if ($message !== $result) {
-			throw new \Exception(
-				\sprintf(
-					'Expected %s got %s',
-					$message,
-					$result
-				)
-			);
-		}
+		$this->featureContext->theDavErrorMessageShouldBe($message, $this->responseXml);
 	}
 }
