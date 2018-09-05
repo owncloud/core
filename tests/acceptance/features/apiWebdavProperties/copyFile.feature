@@ -70,6 +70,9 @@ Feature: copy file
     Given using <dav_version> DAV path
     When user "user0" copies file "/welcome.txt" to "/welcome.part" using the WebDAV API
     Then the HTTP status code should be "400"
+    And the DAV exception should be "OCA\DAV\Connector\Sabre\Exception\InvalidPath"
+    And the DAV message should be "Can`t upload files with extension .part because these extensions are reserved for internal use."
+    And the DAV reason should be "Can`t upload files with extension .part because these extensions are reserved for internal use."
     And user "user0" should see the following elements
       | /welcome.txt |
     But user "user0" should not see the following elements
