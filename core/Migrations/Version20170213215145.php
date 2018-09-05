@@ -13,12 +13,13 @@ class Version20170213215145 implements ISchemaMigration {
 		$prefix = $options['tablePrefix'];
 		if ($schema->hasTable("${prefix}jobs")) {
 			$table = $schema->getTable("${prefix}jobs");
-
-			$table->addColumn('execution_duration', 'integer', [
-				'notnull' => true,
-				'length' => 5,
-				'default' => -1,
-			]);
+			if (!$table->hasColumn('execution_duration')) {
+				$table->addColumn('execution_duration', 'integer', [
+					'notnull' => true,
+					'length' => 5,
+					'default' => -1,
+				]);
+			}
 		}
 	}
 }
