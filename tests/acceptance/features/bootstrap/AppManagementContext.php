@@ -20,6 +20,8 @@
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use TestHelpers\SetupHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -27,44 +29,133 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
  * App Management context.
  */
 class AppManagementContext implements Context {
-	private $oldAppPath;
-	
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
+
+	private $oldAppsPaths;
+
+	/**
+	 * @var string location of the root folder of ownCloud on the server
+	 */
+	private $serverRoot = null;
+
 	/**
 	 * @var string stdout of last command
 	 */
 	private $cmdOutput;
-	
+
 	/**
-	 * @BeforeScenario @skipWhenTestingRemoteSystems
+	 * Get the path of the ownCloud server root directory
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	private function getServerRoot() {
+		if ($this->serverRoot === null) {
+			$this->serverRoot = SetupHelper::getServerRoot(
+				$this->featureContext->getBaseUrl(),
+				$this->featureContext->getAdminUsername(),
+				$this->featureContext->getAdminPassword()
+			);
+		}
+		return $this->serverRoot;
+	}
+
+	/**
+	 * Make a directory under the server root on the ownCloud server
+	 *
+	 * @param string $dirPathFromServerRoot e.g. 'apps2/myapp/appinfo'
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	private function mkDirOnServer($dirPathFromServerRoot) {
+		SetupHelper::mkDirOnServer(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$dirPathFromServerRoot
+		);
+	}
+
+	/**
+	 * Create a file under the server root on the ownCloud server
+	 *
+	 * @param string $filePathFromServerRoot e.g. 'app2/myapp/appinfo/info.xml'
+	 * @param string $content
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	private function createFileOnServer($filePathFromServerRoot, $content) {
+		SetupHelper::createFileOnServer(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$filePathFromServerRoot,
+			$content
+		);
+	}
+
+	/**
+	 * @BeforeScenario
 	 *
 	 * Remember the config values before each scenario
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function prepareParameters() {
-		include_once __DIR__ . '/../../../../lib/base.php';
-		$this->oldAppPath = \OC::$server->getConfig()->getSystemValue(
-			'apps_paths', null
-		);
+		$value = SetupHelper::runOcc(
+			['config:system:get', 'apps_paths', '--output', 'json']
+		)['stdOut'];
+
+		if ($value === '') {
+			$this->oldAppsPaths = null;
+		} else {
+			$this->oldAppsPaths = \json_decode($value, true);
+		}
 	}
-	
+
 	/**
-	 * @AfterScenario @skipWhenTestingRemoteSystems
+	 * @AfterScenario
 	 *
 	 * Reset the config values after each scenario
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function undoChangingParameters() {
-		if ($this->oldAppPath !== null) {
-			\OC::$server->getConfig()->setSystemValue(
-				'apps_paths', $this->oldAppPath
-			);
+		if ($this->oldAppsPaths === null) {
+			SetupHelper::runOcc(['config:system:delete', 'apps_paths']);
 		} else {
-			\OC::$server->getConfig()->deleteSystemValue('apps_paths');
+			$this->setAppsPaths($this->oldAppsPaths);
 		}
 	}
-	
+
+	/**
+	 *
+	 * @param array $appsPaths of apps_paths entries
+	 *
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception
+	 */
+	public function setAppsPaths($appsPaths) {
+		return SetupHelper::runOcc(
+			[
+				'config:system:set',
+				'apps_paths',
+				'--type',
+				'json',
+				'--value',
+				\json_encode($appsPaths)
+			]
+		);
+	}
+
 	/**
 	 * @Given apps have been put in two directories :dir1 and :dir2
 	 *
@@ -72,19 +163,22 @@ class AppManagementContext implements Context {
 	 * @param string $dir2
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function setAppDirectories($dir1, $dir2) {
-		$fullpath1 = \OC::$SERVERROOT . "/$dir1";
-		$fullpath2 = \OC::$SERVERROOT . "/$dir2";
-		\OC::$server->getConfig()->setSystemValue(
-			'apps_paths',
+		$fullpath1 = $this->getServerRoot() . "/$dir1";
+		$fullpath2 = $this->getServerRoot() . "/$dir2";
+
+		$this->mkDirOnServer($dir1);
+		$this->mkDirOnServer($dir2);
+		$this->setAppsPaths(
 			[
 				['path' => $fullpath1, 'url' => $dir1, 'writable' => true],
 				['path' => $fullpath2, 'url' => $dir2, 'writable' => true]
 			]
 		);
 	}
-	
+
 	/**
 	 * @Given app :appId with version :version has been put in dir :dir
 	 *
@@ -93,11 +187,12 @@ class AppManagementContext implements Context {
 	 * @param string $dir app directory
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function appHasBeenPutInDir($appId, $version, $dir) {
-		$ocVersion = \OC::$server->getConfig()->getSystemValue(
-			'version', '0.0.0'
-		);
+		$ocVersion = SetupHelper::runOcc(
+			['config:system:get', 'version']
+		)['stdOut'];
 		$appInfo = \sprintf(
 			'<?xml version="1.0"?>
 			<info>
@@ -122,56 +217,25 @@ class AppManagementContext implements Context {
 			$ocVersion,
 			$ocVersion
 		);
-		$appsDir = \OC::$SERVERROOT . "/$dir";
-		if (!\file_exists($appsDir)) {
-			\mkdir($appsDir);
-		}
-		if (!\file_exists("$appsDir/$appId")) {
-			\mkdir("$appsDir/$appId");
-		}
-		
-		$fullpath = "$appsDir/$appId";
-		
-		if (!\file_exists("$fullpath/appinfo")) {
-			\mkdir("$fullpath/appinfo");
-		}
-		
-		\file_put_contents("$fullpath/appinfo/info.xml", $appInfo);
+		$targetDir = "$dir/$appId/appinfo";
+		$this->mkDirOnServer($targetDir);
+		$this->createFileOnServer("$targetDir/info.xml", $appInfo);
 	}
-	
+
 	/**
-	 * @When the administrator loads app :appId using the console
-	 * @Given the administrator has loaded app :appId using the console
+	 * @When the administrator gets the path for app :appId using the console
+	 * @Given the administrator has got the path for app :appId using the console
 	 *
 	 * @param string $appId app id
 	 *
 	 * @return void
 	 */
-	public function loadApp($appId) {
-		$args = \explode(' ', "app:getpath $appId");
-		$args = \array_map(
-			function ($arg) {
-				return \escapeshellarg($arg);
-			}, $args
-		);
-		$args[] = '--no-ansi';
-		$args = \implode(' ', $args);
-
-		$descriptor = [
-			0 => ['pipe', 'r'],
-			1 => ['pipe', 'w'],
-			2 => ['pipe', 'w'],
-		];
-		$process = \proc_open(
-			"php console.php $args",
-			$descriptor,
-			$pipes,
-			\OC::$SERVERROOT
-		);
-		$this->cmdOutput = \stream_get_contents($pipes[1]);
-		\proc_close($process);
+	public function adminGetsPathForApp($appId) {
+		$this->cmdOutput = SetupHelper::runOcc(
+			['app:getpath', $appId, '--no-ansi']
+		)['stdOut'];
 	}
-	
+
 	/**
 	 * @Then the path to :appId should be :dir
 	 *
@@ -180,10 +244,27 @@ class AppManagementContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function appVersionIs($appId, $dir) {
+	public function appPathIs($appId, $dir) {
 		PHPUnit_Framework_Assert::assertEquals(
-			\OC::$SERVERROOT . "/$dir/$appId",
+			$this->getServerRoot() . "/$dir/$appId",
 			\trim($this->cmdOutput)
 		);
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }
