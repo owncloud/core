@@ -174,6 +174,10 @@ class Internal extends Session {
 	}
 
 	private function getServerProtocol() {
+		$method = null;
+		if (isset($_SERVER['REQUEST_METHOD'])) {
+			$method = $_SERVER['REQUEST_METHOD'];
+		}
 		$req = new Request(
 			[
 				'get' => $_GET,
@@ -182,7 +186,7 @@ class Internal extends Session {
 				'server' => $_SERVER,
 				'env' => $_ENV,
 				'cookies' => $_COOKIE,
-				'method' => $_SERVER['REQUEST_METHOD'] ?? null,
+				'method' => $method,
 				'urlParams' => [],
 			],
 			null,
