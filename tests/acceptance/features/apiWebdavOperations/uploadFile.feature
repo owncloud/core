@@ -59,6 +59,9 @@ Feature: upload file
     Given using <dav_version> DAV path
     When user "user0" uploads file "data/textfile.txt" to "/textfile.part" using the WebDAV API
     Then the HTTP status code should be "400"
+    And the DAV exception should be "OCA\DAV\Connector\Sabre\Exception\InvalidPath"
+    And the DAV message should be "Can`t upload files with extension .part because these extensions are reserved for internal use."
+    And the DAV reason should be "Can`t upload files with extension .part because these extensions are reserved for internal use."
     And user "user0" should not see the following elements
       | /textfile.part |
     Examples:
