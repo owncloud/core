@@ -26,6 +26,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
+use SimpleXMLElement;
 
 /**
  * Helper for HTTP requests
@@ -224,5 +225,16 @@ class HttpRequestHelper {
 		return self::sendRequest(
 			$url, 'DELETE', $user, $password, $headers, $body, $config, $cookies, $stream
 		);
+	}
+
+	/**
+	 * Parses the response as XML
+	 *
+	 * @param ResponseInterface $response
+	 *
+	 * @return SimpleXMLElement
+	 */
+	public static function getResponseXml($response) {
+		return $response->xml();
 	}
 }

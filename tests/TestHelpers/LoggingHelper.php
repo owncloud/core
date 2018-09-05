@@ -21,6 +21,8 @@
  */
 namespace TestHelpers;
 
+use SimpleXMLElement;
+
 /**
  * Helper to read and analyze the owncloud log file
  *
@@ -63,7 +65,7 @@ class LoggingHelper {
 	 * @param int $noOfLinesToRead
 	 *
 	 * @throws \Exception
-	 * @return \SimpleXMLElement[]
+	 * @return SimpleXMLElement
 	 */
 	public static function getLogFileContent(
 		$baseUrl, $adminUsername, $adminPassword, $noOfLinesToRead = 0
@@ -77,7 +79,7 @@ class LoggingHelper {
 				"could not get logfile content " . $result->getReasonPhrase()
 			);
 		}
-		return $result->xml()->data->element;
+		return HttpRequestHelper::getResponseXml($result)->data->element;
 	}
 
 	/**
