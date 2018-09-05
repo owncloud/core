@@ -11,6 +11,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
+ * @author Matthew Setter <matthew@matthewsetter.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author nishiki <nishiki@yaegashi.fr>
@@ -116,14 +117,20 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 	}
 
 	/**
-	 * Set password
-	 * @param string $uid The username
+	 * Change a user's password
+	 *
+	 * @param string $uid The user's username
 	 * @param string $password The new password
 	 * @return bool
 	 *
-	 * Change the password of a user
+	 * @throws \OC\DatabaseException
+	 * @throws \InvalidArgumentException
 	 */
 	public function setPassword($uid, $password) {
+		if (Util::isEmptyString($password)) {
+			throw new \InvalidArgumentException('Password cannot be empty');
+		}
+
 		if ($this->userExists($uid)) {
 			$query = \OC_DB::prepare('UPDATE `*PREFIX*users` SET `password` = ? WHERE `uid` = ?');
 			$result = $query->execute([\OC::$server->getHasher()->hash($password), $uid]);

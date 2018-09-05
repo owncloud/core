@@ -49,6 +49,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class User implements IUser {
 	use EventEmitterTrait;
+
 	/** @var Account */
 	private $account;
 
@@ -281,13 +282,18 @@ class User implements IUser {
 	}
 
 	/**
-	 * Set the password of the user
+	 * Set the user's password
 	 *
 	 * @param string $password
 	 * @param string $recoveryPassword for the encryption app to reset encryption keys
 	 * @return bool
+	 * @throws \InvalidArgumentException
 	 */
 	public function setPassword($password, $recoveryPassword = null) {
+		if (\OCP\Util::isEmptyString($password)) {
+			throw new \InvalidArgumentException('Password cannot be empty');
+		}
+
 		return $this->emittingCall(function () use (&$password, &$recoveryPassword) {
 			if ($this->emitter) {
 				$this->emitter->emit('\OC\User', 'preSetPassword', [$this, $password, $recoveryPassword]);
