@@ -10,5 +10,5 @@ declare -x OC_TEST_ALT_HOME
 [[ -z "${OC_TEST_ALT_HOME}" ]] && OC_TEST_ALT_HOME=1
 
 pushd tests/acceptance
-    su-exec www-data ./run.sh "$@"
+    ./run.sh "$@"
 popd
