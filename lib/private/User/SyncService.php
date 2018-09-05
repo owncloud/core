@@ -24,11 +24,13 @@ namespace OC\User;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\ILogger;
+use OCP\PreConditionNotMetException;
 use OCP\User\IProvidesDisplayNameBackend;
 use OCP\User\IProvidesEMailBackend;
 use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\User\IProvidesHomeBackend;
 use OCP\User\IProvidesQuotaBackend;
+use OCP\User\IProvidesUserNameBackend;
 use OCP\UserInterface;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
@@ -293,6 +295,30 @@ class SyncService {
 	}
 
 	/**
+	 * TODO store username in account table instead of user preferences
+	 *
+	 * @param Account $a
+	 * @param UserInterface $backend
+	 */
+	private function syncUserName(Account $a, UserInterface $backend) {
+		$uid = $a->getUserId();
+		if ($backend instanceof IProvidesUserNameBackend) {
+			$userName = $backend->getUserName($uid);
+			$currentUserName = $this->config->getUserValue($uid, 'core', 'username', null);
+			if ($userName !== $currentUserName) {
+				try {
+					$this->config->setUserValue($uid, 'core', 'username', $userName);
+				} catch (PreConditionNotMetException $e) {
+					// ignore, because precondition is empty
+				}
+				$this->logger->debug(
+					"Setting userName for <$uid> from <$currentUserName> to <$userName>", ['app' => self::class]
+				);
+			}
+		}
+	}
+
+	/**
 	 * @param Account $a
 	 * @param UserInterface $backend
 	 */
@@ -322,6 +348,7 @@ class SyncService {
 		$this->syncQuota($a, $backend);
 		$this->syncHome($a, $backend);
 		$this->syncDisplayName($a, $backend);
+		$this->syncUserName($a, $backend);
 		$this->syncSearchTerms($a, $backend);
 		return $a;
 	}
