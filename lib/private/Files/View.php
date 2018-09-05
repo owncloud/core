@@ -1863,7 +1863,7 @@ class View {
 
 		$matches = [];
 
-		if (\preg_match('/' . FileInfo::BLACKLIST_FILES_REGEX . '/', $fileName) !== 0) {
+		if (\preg_match('/' . FileInfo::BLACKLIST_FILES_REGEX . '/', $fileName, $matches) !== 0) {
 			throw new InvalidPathException(
 				"Can`t upload files with extension {$matches[0]} because these extensions are reserved for internal use."
 			);

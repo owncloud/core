@@ -70,6 +70,12 @@ trait WebDav {
 	private $customDavPath = null;
 
 	/**
+	 * response content parsed from XML to an array
+	 * @var array
+	 */
+	private $responseXml = [];
+
+	/**
 	 * @Given /^using dav path "([^"]*)"$/
 	 *
 	 * @param string $davPath
@@ -203,6 +209,22 @@ trait WebDav {
 	}
 
 	/**
+	 * parses the body content of $response and sets $this->responseXml
+	 * @param ResponseInterface|null $response if null $this->response will be used
+	 */
+	public function parseResponseIntoXml($response = null) {
+		if ($response === null) {
+			$response = $this->response;
+		}
+		$body = $response->getBody()->getContents();
+		if ($body && \substr($body, 0, 1) === '<') {
+			$reader = new Sabre\Xml\Reader();
+			$reader->xml($body);
+			$this->responseXml = $reader->parse();
+		}
+	}
+
+	/**
 	 * @param string $user
 	 * @param string $method
 	 * @param string $path
@@ -279,6 +301,7 @@ trait WebDav {
 		$this->response = $this->makeDavRequest(
 			$user, "MOVE", $fileSource, $headers
 		);
+		$this->parseResponseIntoXml();
 	}
 
 	/**
@@ -317,6 +340,7 @@ trait WebDav {
 		$this->response = $this->makeDavRequest(
 			$user, "COPY", $fileSource, $headers
 		);
+		$this->parseResponseIntoXml();
 	}
 
 	/**
@@ -1220,6 +1244,7 @@ trait WebDav {
 		$this->response = $this->makeDavRequest(
 			$user, "PUT", $destination, [], $file
 		);
+		$this->parseResponseIntoXml();
 	}
 
 	/**
@@ -1602,6 +1627,7 @@ trait WebDav {
 		$this->response = $this->makeDavRequest(
 			$user, "MKCOL", $destination, []
 		);
+		$this->parseResponseIntoXml();
 	}
 
 	/**
@@ -2138,6 +2164,73 @@ trait WebDav {
 		PHPUnit_Framework_Assert::assertEquals(
 			$currentFileID, $this->storedFileID
 		);
+	}
+
+	/**
+	 * @Then the DAV exception should be :message
+	 *
+	 * @param string $message
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theDavExceptionShouldBe($message, $responseXml = null) {
+		$this->theDavResponseElementShouldBe("exception", $message, $responseXml);
+	}
+
+	/**
+	 * @Then the DAV message should be :message
+	 *
+	 * @param string $message
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theDavErrorMessageShouldBe($message, $responseXml = null) {
+		$this->theDavResponseElementShouldBe("message", $message, $responseXml);
+	}
+
+	/**
+	 * @Then the DAV reason should be :message
+	 *
+	 * @param string $message
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theDavReasonShouldBe($message, $responseXml = null) {
+		$this->theDavResponseElementShouldBe("reason", $message, $responseXml);
+	}
+
+	/**
+	 *
+	 * @param string $element exception|message|reason
+	 * @param string $expectedValue
+	 * @param array $responseXml
+	 * @throws \Exception
+	 */
+	public function theDavResponseElementShouldBe($element, $expectedValue, $responseXml = null) {
+		if ($responseXml == null) {
+			$responseXml = $this->responseXml;
+		}
+		
+		if ($element === "exception") {
+			$result = $responseXml['value'][0]['value'];
+		} elseif ($element === "message") {
+			$result = $responseXml['value'][1]['value'];
+		} elseif ($element === "reason") {
+			$result = $responseXml['value'][3]['value'];
+		}
+		
+		if ($expectedValue !== $result) {
+			throw new \Exception(
+				\sprintf(
+					'Expected %s got %s',
+					$expectedValue,
+					$result
+				)
+			);
+		}
 	}
 
 	/**
