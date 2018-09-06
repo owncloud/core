@@ -24,11 +24,13 @@ namespace OCA\FederatedFileSharing\Controller;
 use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
+use OCA\FederatedFileSharing\Ocm\Exception\BadRequestException;
+use OCA\FederatedFileSharing\Ocm\Exception\ForbiddenException;
+use OCA\FederatedFileSharing\Ocm\Exception\NotImplementedException;
 use OCA\FederatedFileSharing\Ocm\Notification\FileNotification;
 use OCP\AppFramework\Http\JSONResponse;
-use OCA\FederatedFileSharing\Exception\InvalidShareException;
-use OCA\FederatedFileSharing\Exception\NotSupportedException;
 use OCA\FederatedFileSharing\FedShareManager;
+use OCA\FederatedFileSharing\Ocm\Exception\OcmException;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\ILogger;
@@ -185,12 +187,12 @@ class OcmController extends Controller {
 				|| !\is_array($protocol['options'])
 				|| !isset($protocol['options']['sharedSecret'])
 			) {
-				throw new InvalidShareException(
+				throw new BadRequestException(
 					'server can not add remote share, missing parameter'
 				);
 			}
 			if (!\OCP\Util::isValidFileName($name)) {
-				throw new InvalidShareException(
+				throw new BadRequestException(
 					'The mountpoint name contains invalid characters.'
 				);
 			}
@@ -214,28 +216,25 @@ class OcmController extends Controller {
 			);
 
 			if ($this->isSupportedProtocol($protocol['name']) === false) {
-				return new JSONResponse(
-					['message' => "Protocol {$protocol['name']} is not supported"],
-					Http::STATUS_NOT_IMPLEMENTED
+				throw new NotImplementedException(
+					"Protocol {$protocol['name']} is not supported"
 				);
 			}
 
 			if ($this->isSupportedShareType($shareType) === false) {
-				return new JSONResponse(
-					['message' => "ShareType {$shareType} is not supported"],
-					Http::STATUS_NOT_IMPLEMENTED
+				throw new NotImplementedException(
+					"ShareType {$shareType} is not supported"
 				);
 			}
 
 			if ($this->isSupportedResourceType($resourceType) === false) {
-				return new JSONResponse(
-					['message' => "ResourceType {$resourceType} is not supported"],
-					Http::STATUS_NOT_IMPLEMENTED
+				throw new NotImplementedException(
+					"ResourceType {$resourceType} is not supported"
 				);
 			}
 
 			if (!$this->userManager->userExists($localShareWith)) {
-				throw new InvalidShareException("User $localShareWith does not exist");
+				throw new BadRequestException("User $localShareWith does not exist");
 			}
 
 			$ownerAddress = new Address($owner, $ownerDisplayName);
@@ -249,15 +248,10 @@ class OcmController extends Controller {
 				$name,
 				$protocol['options']['sharedSecret']
 			);
-		} catch (InvalidShareException $e) {
+		} catch (OcmException $e) {
 			return new JSONResponse(
 				['message' => $e->getMessage()],
-				Http::STATUS_BAD_REQUEST
-			);
-		} catch (NotSupportedException $e) {
-			return new JSONResponse(
-				['message' => 'Server does not support federated cloud sharing'],
-				Http::STATUS_SERVICE_UNAVAILABLE
+				$e->getHttpStatusCode()
 			);
 		} catch (\Exception $e) {
 			$this->logger->error(
@@ -302,15 +296,14 @@ class OcmController extends Controller {
 				[$notificationType, $resourceType, $providerId]
 			);
 			if ($hasMissingParams || !\is_array($notification)) {
-				throw new InvalidShareException(
+				throw new BadRequestException(
 					'server can not add remote share, missing parameter'
 				);
 			}
 
 			if ($this->isSupportedResourceType($resourceType) === false) {
-				return new JSONResponse(
-					['message' => "ResourceType {$resourceType} is not supported"],
-					Http::STATUS_NOT_IMPLEMENTED
+				throw new NotImplementedException(
+					"ResourceType {$resourceType} is not supported"
 				);
 			}
 			// TODO: check permissions/preconditions in all cases
@@ -363,15 +356,26 @@ class OcmController extends Controller {
 						Http::STATUS_NOT_IMPLEMENTED
 					);
 			}
+		} catch (OcmException $e) {
+			return new JSONResponse(
+				['message' => $e->getMessage()],
+				$e->getHttpStatusCode()
+			);
 		} catch (Share\Exceptions\ShareNotFound $e) {
 			return new JSONResponse(
 				['message' => $e->getMessage()],
 				Http::STATUS_BAD_REQUEST
 			);
-		} catch (InvalidShareException $e) {
+		} catch (\Exception $e) {
+			$this->logger->error(
+				"server can not process notification, {$e->getMessage()}",
+				['app' => 'federatefilesharing']
+			);
 			return new JSONResponse(
-				['message' => 'Missing arguments'],
-				Http::STATUS_BAD_REQUEST
+				[
+					'message' => "internal server error, was not able to process notification"
+				],
+				Http::STATUS_INTERNAL_SERVER_ERROR
 			);
 		}
 		return new JSONResponse(
@@ -414,16 +418,18 @@ class OcmController extends Controller {
 	 *
 	 * @return IShare
 	 *
-	 * @throws InvalidShareException
+	 * @throws BadRequestException
+	 * @throws ForbiddenException
 	 * @throws Share\Exceptions\ShareNotFound
 	 */
 	protected function getValidShare($id, $sharedSecret) {
 		$share = $this->federatedShareProvider->getShareById($id);
-		if ($share->getShareType() !== FederatedShareProvider::SHARE_TYPE_REMOTE
-			|| $share->getToken() !== $sharedSecret
-		) {
-			// TODO: Split wrong token and wrong share type cases. Add a message
-			throw new InvalidShareException();
+		if ($share->getShareType() !== FederatedShareProvider::SHARE_TYPE_REMOTE) {
+			throw new BadRequestException("Share with id {$id} des not exist");
+		}
+
+		if ($share->getToken() !== $sharedSecret) {
+			throw new ForbiddenException("The secret doesn not match");
 		}
 		return $share;
 	}
