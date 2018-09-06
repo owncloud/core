@@ -313,7 +313,7 @@
 			if (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) {
 				text = t('core', '{sharee} (group)', {
 					sharee: text
-				});
+				}, null, {escape: false});
 			} else if (item.value.shareType === OC.Share.SHARE_TYPE_REMOTE) {
 				if (item.value.server) {
 					text = t('core', '{sharee} (at {server})', {
