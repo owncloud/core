@@ -29,10 +29,11 @@ namespace OCA\FederatedFileSharing\Controller;
 use OC\OCS\Result;
 use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
-use OCA\FederatedFileSharing\Exception\NotSupportedException;
-use OCA\FederatedFileSharing\Exception\InvalidShareException;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
+use OCA\FederatedFileSharing\Ocm\Exception\BadRequestException;
+use OCA\FederatedFileSharing\Ocm\Exception\NotImplementedException;
+use OCA\FederatedFileSharing\Ocm\Exception\OcmException;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\OCSController;
@@ -121,12 +122,12 @@ class RequestHandlerController extends OCSController {
 				[$remote, $token, $name, $owner, $remoteId, $shareWith]
 			);
 			if ($hasMissingParams) {
-				throw new InvalidShareException(
+				throw new BadRequestException(
 					'server can not add remote share, missing parameter'
 				);
 			}
 			if (!\OCP\Util::isValidFileName($name)) {
-				throw new InvalidShareException(
+				throw new BadRequestException(
 					'The mountpoint name contains invalid characters.'
 				);
 			}
@@ -139,7 +140,7 @@ class RequestHandlerController extends OCSController {
 			);
 			\OCP\Util::writeLog('files_sharing', 'shareWith after, ' . $shareWith, \OCP\Util::DEBUG);
 			if (!$this->userManager->userExists($shareWith)) {
-				throw new InvalidShareException('User does not exist');
+				throw new BadRequestException('User does not exist');
 			}
 
 			if ($ownerFederatedId === null) {
@@ -162,17 +163,11 @@ class RequestHandlerController extends OCSController {
 				$name,
 				$token
 			);
-		} catch (InvalidShareException $e) {
+		} catch (OcmException $e) {
 			return new Result(
 				null,
-				Http::STATUS_BAD_REQUEST,
+				$e->getHttpStatusCode(),
 				$e->getMessage()
-			);
-		} catch (NotSupportedException $e) {
-			return new Result(
-				null,
-				Http::STATUS_SERVICE_UNAVAILABLE,
-				'Server does not support federated cloud sharing'
 			);
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog(
@@ -234,7 +229,7 @@ class RequestHandlerController extends OCSController {
 			);
 		} catch (Share\Exceptions\ShareNotFound $e) {
 			return new Result(null, Http::STATUS_NOT_FOUND);
-		} catch (InvalidShareException $e) {
+		} catch (BadRequestException $e) {
 			return new Result(null, Http::STATUS_FORBIDDEN);
 		} catch (\Exception $e) {
 			return new Result(null, Http::STATUS_BAD_REQUEST);
@@ -263,7 +258,7 @@ class RequestHandlerController extends OCSController {
 			$this->assertOutgoingSharingEnabled();
 			$share = $this->getValidShare($id);
 			$this->fedShareManager->acceptShare($share);
-		} catch (NotSupportedException $e) {
+		} catch (NotImplementedException $e) {
 			return new Result(
 				null,
 				Http::STATUS_SERVICE_UNAVAILABLE,
@@ -290,7 +285,7 @@ class RequestHandlerController extends OCSController {
 			$this->assertOutgoingSharingEnabled();
 			$share = $this->getValidShare($id);
 			$this->fedShareManager->declineShare($share);
-		} catch (NotSupportedException $e) {
+		} catch (NotImplementedException $e) {
 			return new Result(
 				null,
 				Http::STATUS_SERVICE_UNAVAILABLE,
@@ -320,7 +315,7 @@ class RequestHandlerController extends OCSController {
 			if ($token && $id) {
 				$this->fedShareManager->unshare($id, $token);
 			}
-		} catch (NotSupportedException $e) {
+		} catch (NotImplementedException $e) {
 			return new Result(
 				null,
 				Http::STATUS_SERVICE_UNAVAILABLE,
@@ -388,7 +383,7 @@ class RequestHandlerController extends OCSController {
 	 * @return IShare
 	 *
 	 * @throws Share\Exceptions\ShareNotFound
-	 * @throws InvalidShareException
+	 * @throws BadRequestException
 	 */
 	protected function getValidShare($id) {
 		$share = $this->federatedShareProvider->getShareById($id);
@@ -396,7 +391,7 @@ class RequestHandlerController extends OCSController {
 		if ($share->getShareType() !== FederatedShareProvider::SHARE_TYPE_REMOTE
 			|| $share->getToken() !== $token
 		) {
-			throw new InvalidShareException();
+			throw new BadRequestException();
 		}
 		return $share;
 	}
@@ -406,13 +401,13 @@ class RequestHandlerController extends OCSController {
 	 *
 	 * @return void
 	 *
-	 * @throws NotSupportedException
+	 * @throws NotImplementedException
 	 */
 	protected function assertIncomingSharingEnabled() {
 		if (!$this->appManager->isEnabledForUser('files_sharing')
 			|| !$this->federatedShareProvider->isIncomingServer2serverShareEnabled()
 		) {
-			throw new NotSupportedException();
+			throw new NotImplementedException();
 		}
 	}
 	
@@ -421,13 +416,13 @@ class RequestHandlerController extends OCSController {
 	 *
 	 * @return void
 	 *
-	 * @throws NotSupportedException
+	 * @throws NotImplementedException
 	 */
 	protected function assertOutgoingSharingEnabled() {
 		if (!$this->appManager->isEnabledForUser('files_sharing')
 			|| !$this->federatedShareProvider->isOutgoingServer2serverShareEnabled()
 		) {
-			throw new NotSupportedException();
+			throw new NotImplementedException();
 		}
 	}
 

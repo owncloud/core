@@ -116,7 +116,7 @@ class RequestHandlerTest extends TestCase {
 			->method('createShare');
 		$response = $this->requestHandlerController->createShare();
 		$this->assertEquals(
-			Http::STATUS_SERVICE_UNAVAILABLE,
+			Http::STATUS_NOT_IMPLEMENTED,
 			$response->getStatusCode()
 		);
 	}
@@ -126,7 +126,7 @@ class RequestHandlerTest extends TestCase {
 		$this->expectIncomingSharing('disabled');
 		$response = $this->requestHandlerController->createShare();
 		$this->assertEquals(
-			Http::STATUS_SERVICE_UNAVAILABLE,
+			Http::STATUS_NOT_IMPLEMENTED,
 			$response->getStatusCode()
 		);
 	}

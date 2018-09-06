@@ -19,12 +19,18 @@
  *
  */
 
-namespace OCA\FederatedFileSharing\Exception;
+namespace OCA\FederatedFileSharing\Ocm\Exception;
+
+use OCP\AppFramework\Http;
 
 /**
- * Exception that used when federated sharing is disabled
- *
- * @package OCA\FederatedFileSharing\Exception
+ * Used when a request has missing or invalid parameters
  */
-class NotSupportedException extends \Exception {
+class BadRequestException extends OcmException {
+	/**
+	 * @return int
+	 */
+	public function getHttpStatusCode() {
+		return Http::STATUS_BAD_REQUEST;
+	}
 }

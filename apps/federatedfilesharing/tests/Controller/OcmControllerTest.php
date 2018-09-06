@@ -275,7 +275,7 @@ class OcmControllerTest extends TestCase {
 				'sharedSecret' => "broken{$this->shareToken}"
 			]
 		);
-		$this->assertEquals(Http::STATUS_BAD_REQUEST, $response->getStatus());
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $response->getStatus());
 	}
 
 	public function testProcessAcceptShareSuccess() {
@@ -309,7 +309,7 @@ class OcmControllerTest extends TestCase {
 				'sharedSecret' => "broken{$this->shareToken}"
 			]
 		);
-		$this->assertEquals(Http::STATUS_BAD_REQUEST, $response->getStatus());
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $response->getStatus());
 	}
 
 	public function testProcessDeclineShareSuccess() {

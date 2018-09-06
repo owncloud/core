@@ -19,12 +19,14 @@
  *
  */
 
-namespace OCA\FederatedFileSharing\Exception;
+namespace OCA\FederatedFileSharing\Ocm\Exception;
 
 /**
- * Exception that used when request token doesn't match share token
- *
- * @package OCA\FederatedFileSharing\Exception
+ * Base Ocm Exception class
  */
-class InvalidShareException extends \Exception {
+abstract class OcmException extends \Exception {
+	/**
+	 * @return int
+	 */
+	abstract public function getHttpStatusCode();
 }
