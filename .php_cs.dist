@@ -15,7 +15,6 @@ $bundledApps = [
 	'files_versions',
 	'provisioning_api',
 	'systemtags',
-	'testing',
 	'updatenotification'
 ];
 
