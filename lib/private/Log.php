@@ -101,7 +101,14 @@ class Log implements ILogger {
 		'decrypt',
 
 		//LoginController
-		'tryLogin'
+		'tryLogin',
+
+		//bind
+		'bind',
+
+		//invokeLDAPMethod
+		'invokeLDAPMethod'
+
 	];
 
 	/**
