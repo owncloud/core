@@ -42,7 +42,9 @@ class HttpRequestHelper {
 	 * @param mixed $body
 	 * @param array $config
 	 * @param CookieJar $cookies
-	 * @param boolean $stream
+	 * @param bool $stream Set to true to stream a response rather
+	 *                     than download it all up-front.
+	 * @param int $timeout
 	 *
 	 * @throws BadResponseException
 	 * @return ResponseInterface
@@ -56,7 +58,8 @@ class HttpRequestHelper {
 		$body = null,
 		$config = null,
 		$cookies = null,
-		$stream = false
+		$stream = false,
+		$timeout = 0
 	) {
 		$client = new Client();
 		$options = [];
@@ -74,7 +77,7 @@ class HttpRequestHelper {
 		}
 		$options['stream'] = $stream;
 		$options['verify'] = false;
-		
+		$options['timeout'] = $timeout;
 		$request = $client->createRequest($method, $url, $options);
 		if ($headers !== null) {
 			foreach ($headers as $key => $value) {

@@ -22,10 +22,13 @@
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Ring\Exception\ConnectException;
 use GuzzleHttp\Stream\StreamInterface;
 use Sabre\DAV\Client as SClient;
 use Sabre\DAV\Xml\Property\ResourceType;
 use Sabre\Xml\LibXMLException;
+use TestHelpers\OcsApiHelper;
+use TestHelpers\SetupHelper;
 use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
 use Sabre\DAV\Xml\Property\Complex;
@@ -72,6 +75,10 @@ trait WebDav {
 	 */
 	private $customDavPath = null;
 
+	private $oldAsyncSetting = null;
+	
+	private $oldDavSlowdownSetting = null;
+	
 	/**
 	 * response content parsed from XML to an array
 	 *
@@ -79,6 +86,7 @@ trait WebDav {
 	 */
 	private $responseXml = [];
 
+	private $httpRequestTimeout = 0;
 	/**
 	 * @Given /^using dav path "([^"]*)"$/
 	 *
@@ -249,6 +257,8 @@ trait WebDav {
 	 * @param string $type
 	 * @param string|null $requestBody
 	 * @param string|null $davPathVersion
+	 * @param bool $stream Set to true to stream a response rather
+	 *                     than download it all up-front.
 	 * @param string|null $password
 	 *
 	 * @return ResponseInterface
@@ -262,6 +272,7 @@ trait WebDav {
 		$type = "files",
 		$requestBody = null,
 		$davPathVersion = null,
+		$stream = false,
 		$password = null
 	) {
 		if ($this->customDavPath !== null) {
@@ -279,7 +290,63 @@ trait WebDav {
 			$this->getBaseUrl(),
 			$user, $password, $method,
 			$path, $headers, $body, $requestBody, $davPathVersion,
-			$type
+			$type, null, "basic", $stream, $this->httpRequestTimeout
+		);
+	}
+
+	/**
+	 * @Given /^the administrator has (enabled|disabled) async operations$/
+	 */
+	public function triggerAsyncUpload($enabledOrDisabled) {
+		$switch = ($enabledOrDisabled !== "disabled");
+		if ($switch) {
+			$value = 'true';
+		} else {
+			$value = 'false';
+		}
+		if ($this->oldAsyncSetting === null) {
+			$oldAsyncSetting = SetupHelper::runOcc(
+				['config:system:get', 'dav.enable.async']
+			)['stdOut'];
+			$this->oldAsyncSetting = \trim($oldAsyncSetting);
+		}
+		$this->runOcc(
+			[
+				'config:system:set',
+				'dav.enable.async',
+				'--type',
+				'boolean',
+				'--value',
+				$value
+			]
+			);
+	}
+
+	/**
+	 * @Given the HTTP-Request-timeout is set to :seconds seconds
+	 * @param int $timeout
+	 */
+	public function setHttpTimeout($timeout) {
+		$this->httpRequestTimeout = (int)$timeout;
+	}
+
+	/**
+	 * @Given the :method dav requests are slowed down by :seconds seconds
+	 * @param int $timeout
+	 */
+	public function slowdownDavRequests($method, $seconds) {
+		if ($this->oldDavSlowdownSetting === null) {
+			$oldDavSlowdownSetting = SetupHelper::runOcc(
+				['config:system:get', 'dav.slowdown']
+			)['stdOut'];
+			$this->oldDavSlowdownSetting = \trim($oldDavSlowdownSetting);
+		}
+		OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			"PUT",
+			"/apps/testing/api/v1/davslowdown/$method/$seconds"
 		);
 	}
 
@@ -330,24 +397,41 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" moves (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the WebDAV API$/
+	 * @When /^user "([^"]*)" moves (?:file|folder|entry) "([^"]*)"\s?(asynchronously|) to "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
 	 * @param string $fileSource
+	 * @param string $type "asynchronously" or empty
 	 * @param string $fileDestination
 	 *
 	 * @return void
 	 */
 	public function userMovesFileUsingTheAPI(
-		$user, $fileSource, $fileDestination
+		$user, $fileSource, $type = "", $fileDestination
 	) {
 		$headers['Destination'] = $this->destinationHeaderValue(
 			$user, $fileDestination
 		);
-		$this->response = $this->makeDavRequest(
-			$user, "MOVE", $fileSource, $headers
-		);
-		$this->parseResponseIntoXml();
+		$stream = false;
+		if ($type === "asynchronously") {
+			$headers['OC-LazyOps'] = 'true';
+			if ($this->httpRequestTimeout > 0) {
+				//LazyOps is set and a request timeout, so we want to use stream
+				//to be able to read data from the request before its times out
+				//when doing LazyOps the server does not close the connection
+				//before its really finished
+				//but we want to read JobStatus-Location before the end of the job
+				//to see if it reports the correct values
+				$stream = true;
+			}
+		}
+		try {
+			$this->response = $this->makeDavRequest(
+				$user, "MOVE", $fileSource, $headers, null, "files", null, null, $stream
+			);
+			$this->parseResponseIntoXml();
+		} catch (ConnectException $e) {
+		}
 	}
 
 	/**
@@ -364,7 +448,7 @@ trait WebDav {
 		$user, $server, $fileSource, $fileDestination
 	) {
 		$previousServer = $this->usingServer($server);
-		$this->userMovesFileUsingTheAPI($user, $fileSource, $fileDestination);
+		$this->userMovesFileUsingTheAPI($user, $fileSource, "", $fileDestination);
 		$this->usingServer($previousServer);
 	}
 
@@ -873,6 +957,35 @@ trait WebDav {
 					$start,
 					$this->response->getBody()->getContents()
 				)
+			);
+		}
+	}
+
+	/**
+	 * @Then the oc job status values of last request for user :user should match these regular expressions
+	 *
+	 * @param string $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function jobStatusValuesShouldMatchRegEx($user, $table) {
+		$url = $this->response->getHeader("OC-JobStatus-Location");
+		$url = $this->getBaseUrlWithoutPath() . $url;
+		$response = HttpRequestHelper::get($url, $user, $this->getPasswordForUser($user));
+		$result = \json_decode($response->getBody()->getContents(), true);
+		PHPUnit_Framework_Assert::assertNotNull($result, "'$response' is not valid JSON");
+		foreach ($table->getTable() as $row) {
+			$expectedKey = $row[0];
+			PHPUnit_Framework_Assert::assertArrayHasKey(
+				$expectedKey, $result, "response does not have expected key '$expectedKey'"
+			);
+			$expectedValue = $this->substituteInLineCodes(
+				$row[1], ['preg_quote' => ['/'] ]
+			);
+			PHPUnit_Framework_Assert::assertNotFalse(
+				(bool)\preg_match($expectedValue, $result[$expectedKey]),
+				"'$expectedValue' does not match '$result[$expectedKey]'"
 			);
 		}
 	}
@@ -2023,10 +2136,11 @@ trait WebDav {
 	/**
 	 * New style chunking upload
 	 *
-	 * @When user :user uploads the following chunks to :file with new chunking and using the WebDAV API
-	 * @Given user :user has uploaded the following chunks to :file with new chunking
+	 * @When /^user "([^"]*)" uploads the following chunks\s?(asynchronously|) to "([^"]*)" with new chunking and using the WebDAV API$/
+	 * @Given /^user "([^"]*)" has uploaded the following chunks\s?(asynchronously|) to "([^"]*)" with new chunking$/
 	 *
 	 * @param string $user
+	 * @param string $type "asynchronously" or empty
 	 * @param string $file
 	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
 	 *                                content without column headings, e.g.
@@ -2036,9 +2150,15 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userUploadsTheFollowingChunksUsingNewChunking($user, $file, TableNode $chunkDetails) {
+	public function userUploadsTheFollowingChunksUsingNewChunking(
+		$user, $type = "", $file, TableNode $chunkDetails
+	) {
+		$async = false;
+		if ($type === "asynchronously") {
+			$async = true;
+		}
 		$this->userUploadsChunksUsingNewChunking(
-			$user, $file, 'chunking-42', $chunkDetails->getTable()
+			$user, $file, 'chunking-42', $chunkDetails->getTable(), $async
 		);
 	}
 
@@ -2053,17 +2173,23 @@ trait WebDav {
 	 *                            [0] the chunk number
 	 *                            [1] data content of the chunk
 	 *                            Chunks may be numbered out-of-order if desired.
-	 *
+	 * @param bool $async use asynchronous MOVE at the end or not
 	 * @return void
 	 */
-	public function userUploadsChunksUsingNewChunking($user, $file, $chunkingId, $chunkDetails) {
+	public function userUploadsChunksUsingNewChunking(
+		$user, $file, $chunkingId, $chunkDetails, $async = false
+	) {
 		$this->userCreatesANewChunkingUploadWithId($user, $chunkingId);
 		foreach ($chunkDetails as $chunkDetail) {
 			$chunkNumber = $chunkDetail[0];
 			$chunkContent = $chunkDetail[1];
 			$this->userUploadsNewChunkFileOfWithToId($user, $chunkNumber, $chunkContent, $chunkingId);
 		}
-		$this->userMovesNewChunkFileWithIdToMychunkedfile($user, $chunkingId, $file);
+		$headers = [];
+		if ($async === true) {
+			$headers = ['OC-LazyOps' => 'true'];
+		}
+		$this->moveNewDavChunkToFinalFile($user, $chunkingId, $file, $headers);
 	}
 
 	/**
@@ -2102,19 +2228,24 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user moves new chunk file with id :id to :dest using the WebDAV API
-	 * @Given user :user has moved new chunk file with id :id to :dest
+	 * @When /^user "([^"]*)" moves new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)" using the WebDAV API$/
+	 * @Given /^user "([^"]*)" has moved new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $id
+	 * @param string $type "asynchronously" or empty
 	 * @param string $dest
 	 *
 	 * @return void
 	 */
 	public function userMovesNewChunkFileWithIdToMychunkedfile(
-		$user, $id, $dest
+		$user, $id, $type, $dest
 	) {
-		$this->moveNewDavChunkToFinalFile($user, $id, $dest, []);
+		$headers = [];
+		if ($type === "asynchronously") {
+			$headers = ['OC-LazyOps' => 'true'];
+		}
+		$this->moveNewDavChunkToFinalFile($user, $id, $dest, $headers);
 	}
 
 	/**
@@ -2133,40 +2264,50 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user moves new chunk file with id :id to :dest with size :size using the WebDAV API
-	 * @Given user :user has moved new chunk file with id :id to :dest with size :size
+	 * @When /^user "([^"]*)" moves new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)" with size (.*) using the WebDAV API$/
+	 * @Given /^user "([^"]*)" has moved new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)" with size (.*)$/
 	 *
 	 * @param string $user
 	 * @param string $id
+	 * @param string $type "asynchronously" or empty
 	 * @param string $dest
 	 * @param int $size
 	 *
 	 * @return void
 	 */
 	public function userMovesNewChunkFileWithIdToMychunkedfileWithSize(
-		$user, $id, $dest, $size
+		$user, $id, $type, $dest, $size
 	) {
+		$headers = ['OC-Total-Length' => $size];
+		if ($type === "asynchronously") {
+			$headers['OC-LazyOps'] = 'true';
+		}
 		$this->moveNewDavChunkToFinalFile(
-			$user, $id, $dest, ['OC-Total-Length' => $size]
+			$user, $id, $dest, $headers
 		);
 	}
 
 	/**
-	 * @When user :user moves new chunk file with id :id to :dest with checksum :checksum using the WebDAV API
-	 * @Given user :user has moved new chunk file with id :id to :dest with checksum :checksum
+	 * @When /^user "([^"]*)" moves new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)" with checksum "([^"]*)" using the WebDAV API$/
+	 * @Given /^user "([^"]*)" has moved new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)" with checksum "([^"]*)"
 	 *
 	 * @param string $user
 	 * @param string $id
+	 * @param string $type "asynchronously" or empty
 	 * @param string $dest
 	 * @param string $checksum
 	 *
 	 * @return void
 	 */
 	public function userMovesNewChunkFileWithIdToMychunkedfileWithChecksum(
-		$user, $id, $dest, $checksum
+		$user, $id, $type, $dest, $checksum
 	) {
+		$headers = ['OC-Checksum' => $checksum];
+		if ($type === "asynchronously") {
+			$headers['OC-LazyOps'] = 'true';
+		}
 		$this->moveNewDavChunkToFinalFile(
-			$user, $id, $dest, ['OC-Checksum' => $checksum]
+			$user, $id, $dest, $headers
 		);
 	}
 
@@ -2389,6 +2530,52 @@ trait WebDav {
 			) {
 				throw new \Exception("Duplicate header found: $headerName");
 			}
+		}
+	}
+
+	/**
+	 * @Then the following headers should not be set
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingHeadersShouldNotBeSet(TableNode $table) {
+		foreach ($table->getTable() as $header) {
+			$headerName = $header[0];
+			$headerValue = $this->response->getHeader($headerName);
+			//Note: according to the documentation of getHeader it must return null
+			//if the header does not exist, but its returning an empty string
+			PHPUnit_Framework_Assert::assertEmpty(
+				$headerValue,
+				"header $headerName should not exist " .
+				"but does and is set to $headerValue"
+				);
+		}
+	}
+
+	/**
+	 * @Then the following headers should match these regular expressions
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function headersShouldMatchRegularExpressions(TableNode $table) {
+		foreach ($table->getTable() as $header) {
+			$headerName = $header[0];
+			$expectedHeaderValue = $header[1];
+			$expectedHeaderValue = $this->substituteInLineCodes(
+				$expectedHeaderValue, ['preg_quote' => ['/'] ]
+				);
+			
+			$returnedHeader = $this->response->getHeader($headerName);
+			PHPUnit_Framework_Assert::assertNotFalse(
+				(bool)\preg_match($expectedHeaderValue, $returnedHeader),
+				"'$expectedHeaderValue' does not match '$returnedHeader'"
+				);
 		}
 	}
 
@@ -2721,5 +2908,41 @@ trait WebDav {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * reset settings if they were set in the scenario
+	 *
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function resetOldSettingsAfterScenario() {
+		if ($this->oldAsyncSetting === "") {
+			SetupHelper::runOcc(['config:system:delete', 'dav.enable.async']);
+		} elseif ($this->oldAsyncSetting !== null) {
+			SetupHelper::runOcc(
+				[
+					'config:system:set',
+					'dav.enable.async',
+					'--type',
+					'boolean',
+					'--value',
+					$this->oldAsyncSetting
+				]
+			);
+		}
+		if ($this->oldDavSlowdownSetting === "") {
+			SetupHelper::runOcc(['config:system:delete', 'dav.slowdown']);
+		} elseif ($this->oldDavSlowdownSetting !== null) {
+			SetupHelper::runOcc(
+				[
+					'config:system:set',
+					'dav.slowdown',
+					'--value',
+					$this->oldDavSlowdownSetting
+				]
+			);
+		}
 	}
 }
