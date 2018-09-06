@@ -485,7 +485,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			return new \OC\BackgroundJob\JobList(
 				$c->getDatabaseConnection(),
 				$config,
-				new TimeFactory()
+				new TimeFactory(),
+				$c->getLogger()
 			);
 		});
 		$this->registerService('Router', function (Server $c) {

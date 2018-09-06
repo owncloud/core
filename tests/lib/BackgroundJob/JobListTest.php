@@ -10,6 +10,7 @@ namespace Test\BackgroundJob;
 
 use OCP\BackgroundJob\IJob;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\ILogger;
 use Test\TestCase;
 
 /**
@@ -31,6 +32,9 @@ class JobListTest extends TestCase {
 	/** @var \OCP\AppFramework\Utility\ITimeFactory|\PHPUnit\Framework\MockObject\MockObject */
 	protected $timeFactory;
 
+	/** @var ILogger|\PHPUnit_Framework_MockObject_MockObject */
+	protected $logger;
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -38,10 +42,12 @@ class JobListTest extends TestCase {
 		$this->clearJobsList();
 		$this->config = $this->createMock('OCP\IConfig');
 		$this->timeFactory = $this->createMock('OCP\AppFramework\Utility\ITimeFactory');
+		$this->logger = $this->createMock(ILogger::class);
 		$this->instance = new \OC\BackgroundJob\JobList(
 			$this->connection,
 			$this->config,
-			$this->timeFactory
+			$this->timeFactory,
+			$this->logger
 		);
 	}
 
@@ -245,5 +251,18 @@ class JobListTest extends TestCase {
 
 		$this->assertGreaterThanOrEqual($timeStart, $addedJob->getLastRun());
 		$this->assertLessThanOrEqual($timeEnd, $addedJob->getLastRun());
+	}
+
+	private function addWrongJob() {
+		$query = $this->connection->getQueryBuilder();
+		$query->insert('jobs')->values(['class' => $query->expr()->literal('wrong job title')]);
+		$query->execute();
+	}
+
+	public function testUnknownJobLogsException() {
+		$this->addWrongJob();
+		$this->logger->expects($this->once())->method('logException');
+		$this->instance->listJobs(function(){});
+		$this->clearJobsList();
 	}
 }
