@@ -71,6 +71,7 @@ trait WebDav {
 
 	/**
 	 * response content parsed from XML to an array
+	 *
 	 * @var array
 	 */
 	private $responseXml = [];
@@ -210,7 +211,10 @@ trait WebDav {
 
 	/**
 	 * parses the body content of $response and sets $this->responseXml
+	 *
 	 * @param ResponseInterface|null $response if null $this->response will be used
+	 *
+	 * @return void
 	 */
 	public function parseResponseIntoXml($response = null) {
 		if ($response === null) {
@@ -2170,6 +2174,7 @@ trait WebDav {
 	 * @Then the DAV exception should be :message
 	 *
 	 * @param string $message
+	 * @param array|null $responseXml
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -2182,6 +2187,7 @@ trait WebDav {
 	 * @Then the DAV message should be :message
 	 *
 	 * @param string $message
+	 * @param array|null $responseXml
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -2194,9 +2200,10 @@ trait WebDav {
 	 * @Then the DAV reason should be :message
 	 *
 	 * @param string $message
+	 * @param array|null $responseXml
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function theDavReasonShouldBe($message, $responseXml = null) {
 		$this->theDavResponseElementShouldBe("reason", $message, $responseXml);
@@ -2206,7 +2213,9 @@ trait WebDav {
 	 *
 	 * @param string $element exception|message|reason
 	 * @param string $expectedValue
-	 * @param array $responseXml
+	 * @param array|null $responseXml
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theDavResponseElementShouldBe($element, $expectedValue, $responseXml = null) {
