@@ -205,7 +205,7 @@ class AppConfigHelper {
 	 * @return string
 	 */
 	public static function getOCSResponse($response) {
-		return $response->xml()->meta[0]->statuscode;
+		return HttpRequestHelper::getResponseXml($response)->meta[0]->statuscode;
 	}
 
 	/**
@@ -236,7 +236,7 @@ class AppConfigHelper {
 	 * @return string retrieved capabilities in XML format
 	 */
 	public static function getCapabilitiesXml($response) {
-		return $response->xml()->data->capabilities;
+		return HttpRequestHelper::getResponseXml($response)->data->capabilities;
 	}
 
 	/**

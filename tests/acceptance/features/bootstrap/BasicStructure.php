@@ -541,7 +541,22 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getOCSResponseStatusCode($response) {
-		return (string) $response->xml()->meta[0]->statuscode;
+		return (string) $this->getResponseXml($response)->meta[0]->statuscode;
+	}
+
+	/**
+	 * Parses the response as XML
+	 *
+	 * @param ResponseInterface $response
+	 *
+	 * @return SimpleXMLElement
+	 */
+	public function getResponseXml($response = null) {
+		if ($response === null) {
+			$response = $this->response;
+		}
+
+		return HttpRequestHelper::getResponseXml($response);
 	}
 
 	/**
@@ -553,7 +568,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getOCSResponseStatusMessage($response) {
-		return (string) $response->xml()->meta[0]->message;
+		return (string) $this->getResponseXml($response)->meta[0]->message;
 	}
 
 	/**
@@ -566,7 +581,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getXMLKey1Key2Value($response, $key1, $key2) {
-		return $response->xml()->$key1->$key2;
+		return $this->getResponseXml($response)->$key1->$key2;
 	}
 
 	/**
@@ -580,7 +595,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getXMLKey1Key2Key3Value($response, $key1, $key2, $key3) {
-		return $response->xml()->$key1->$key2->$key3;
+		return $this->getResponseXml($response)->$key1->$key2->$key3;
 	}
 
 	/**
@@ -597,7 +612,7 @@ trait BasicStructure {
 	public function getXMLKey1Key2Key3AttributeValue(
 		$response, $key1, $key2, $key3, $attribute
 	) {
-		return (string) $response->xml()->$key1->$key2->$key3->attributes()->$attribute;
+		return (string) $this->getResponseXml($response)->$key1->$key2->$key3->attributes()->$attribute;
 	}
 
 	/**
