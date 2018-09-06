@@ -87,6 +87,9 @@ class WebDavHelper {
 	 * @param string $type of request
 	 * @param string $sourceIpAddress to initiate the request from
 	 * @param string $authType basic|bearer
+	 * @param bool $stream Set to true to stream a response rather
+	 *                     than download it all up-front.
+	 * @param int $timeout
 	 *
 	 * @return ResponseInterface
 	 */
@@ -102,7 +105,9 @@ class WebDavHelper {
 		$davPathVersionToUse = 1,
 		$type = "files",
 		$sourceIpAddress = null,
-		$authType = "basic"
+		$authType = "basic",
+		$stream = false,
+		$timeout = 0
 	) {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
@@ -138,7 +143,8 @@ class WebDavHelper {
 		}
 
 		return HttpRequestHelper::sendRequest(
-			$fullUrl, $method, $user, $password, $headers, $body, $config
+			$fullUrl, $method, $user, $password, $headers, $body, $config, null,
+			$stream, $timeout
 		);
 	}
 
