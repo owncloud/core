@@ -239,7 +239,7 @@ class SetupHelper {
 				"could not get sysinfo " . $result->getReasonPhrase()
 			);
 		}
-		return $result->xml()->data;
+		return HttpRequestHelper::getResponseXml($result)->data;
 	}
 
 	/**
