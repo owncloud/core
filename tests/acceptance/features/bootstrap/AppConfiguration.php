@@ -182,7 +182,6 @@ trait AppConfiguration {
 	) {
 		$path_to_element = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
-
 		foreach ($path_to_element as $element) {
 			$nameIndexParts = \explode('[', $element);
 			if (isset($nameIndexParts[1])) {
@@ -193,7 +192,9 @@ trait AppConfiguration {
 				// and use those to construct the reference into the next XML level
 				$answeredValue = $answeredValue->{$name}[$index];
 			} else {
-				$answeredValue = $answeredValue->{$element};
+				if ($element !== "") {
+					$answeredValue = $answeredValue->{$element};
+				}
 			}
 		}
 
