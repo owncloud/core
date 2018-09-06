@@ -32,27 +32,29 @@ use OCP\AutoloadNotAllowedException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\ILogger;
 
 class JobList implements IJobList {
 
 	/** @var IDBConnection */
 	protected $connection;
-
 	/**@var IConfig */
 	protected $config;
-
 	/**@var ITimeFactory */
 	protected $timeFactory;
+	/** @var ILogger  */
+	protected $logger;
 
 	/**
 	 * @param IDBConnection $connection
 	 * @param IConfig $config
 	 * @param ITimeFactory $timeFactory
 	 */
-	public function __construct(IDBConnection $connection, IConfig $config, ITimeFactory $timeFactory) {
+	public function __construct(IDBConnection $connection, IConfig $config, ITimeFactory $timeFactory, ILogger $logger) {
 		$this->connection = $connection;
 		$this->config = $config;
 		$this->timeFactory = $timeFactory;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -250,6 +252,7 @@ class JobList implements IJobList {
 				/** @var IJob $job */
 				$job = \OC::$server->query($row['class']);
 			} catch (QueryException $e) {
+				$this->logger->logException($e, ['app' => 'core']);
 				if (\class_exists($row['class'])) {
 					$class = $row['class'];
 					$job = new $class();
