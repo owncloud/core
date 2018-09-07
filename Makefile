@@ -63,6 +63,7 @@ core_src_files=$(wildcard *.php) index.html db_structure.xml .htaccess .user.ini
 core_src_dirs=apps core l10n lib occ ocs ocs-provider resources settings
 core_test_dirs=tests
 core_all_src=$(core_src_files) $(core_src_dirs) $(core_doc_files)
+core_config_files=config/config.sample.php config/config.apps.sample.php
 dist_dir=build/dist
 
 #
@@ -249,7 +250,7 @@ clean-docs:
 $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 	rm -Rf $@; mkdir -p $@/config
 	cp -R $(core_all_src) $@
-	cp -R config/config.sample.php $@/config
+	cp -R $(core_config_files) $@/config
 	find $@ -name .gitkeep -delete
 	find $@ -name .gitignore -delete
 	find $@ -name no-php -delete
@@ -300,7 +301,7 @@ $(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(c
 	rm -Rf $@; mkdir -p $@/config
 	cp -RL $(core_all_src) $@
 	cp -Rf $(core_test_dirs) $@
-	cp -R config/config.sample.php $@/config
+	cp -R $(core_config_files) $@/config
 	rm -Rf $@/lib/composer/bin; cp -R lib/composer/bin $@/lib/composer/bin
 	find $@ -name .gitkeep -delete
 	find $@ -name .gitignore -delete
