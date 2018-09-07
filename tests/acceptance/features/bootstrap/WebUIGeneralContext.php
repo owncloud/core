@@ -364,10 +364,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function theUserShouldBeRedirectedToAWebUIPageWithTheTitle($title) {
 		$this->owncloudPage->waitForOutstandingAjaxCalls($this->getSession());
-		$actualTitle = $this->getSession()->getPage()->find(
-			'xpath', './/title'
-		)->getHtml();
-		PHPUnit_Framework_Assert::assertEquals($title, \trim($actualTitle));
+		PHPUnit_Framework_Assert::assertEquals($title, $this->owncloudPage->getPageTitle());
 	}
 
 	/**
