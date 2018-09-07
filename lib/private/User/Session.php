@@ -986,7 +986,7 @@ class Session implements IUserSession, Emitter {
 				return false;
 			}
 
-			$this->manager->emit('\OC\User', 'preLogin', [$user->getUID(), $password]);
+			$this->manager->emit('\OC\User', 'preLogin', [$user, $password]);
 
 			if (!$user->isEnabled()) {
 				$message = \OC::$server->getL10N('lib')->t('User disabled');
