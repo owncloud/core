@@ -39,6 +39,7 @@ class OwncloudPage extends Page {
 	protected $notificationId = "notification";
 	protected $ocDialogXpath = ".//*[@class='oc-dialog']";
 	protected $avatarImgXpath = ".//div[@id='settings']//div[contains(@class, 'avatardiv')]/img";
+	protected $titleXpath = ".//title";
 
 	/**
 	 * used to store the unchanged path string when $path gets changed
@@ -179,6 +180,21 @@ class OwncloudPage extends Page {
 			\array_push($notificationsText, $this->getTrimmedText($notification));
 		}
 		return $notificationsText;
+	}
+
+	/**
+	 *
+	 * @throws ElementNotFoundException
+	 * @return string
+	 */
+	public function getPageTitle() {
+		$title = $this->find('xpath', $this->titleXpath);
+		if ($title === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ . " could not find title element"
+			);
+		}
+		return \trim($title->getHtml());
 	}
 
 	/**
