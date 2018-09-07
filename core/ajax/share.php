@@ -267,7 +267,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 				OCP\JSON::error([
 					'data' => [
 						'message' => $l->t("Couldn't send mail to following recipient(s): %s ",
-								\implode(', ', $result)
+								\implode(', ', $results)
 							)
 					]
 				]);
