@@ -284,6 +284,33 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When the administrator changes the password of user :user to :password using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function adminResetsUserPasswordUsingTheProvisioningApi(
+		$user, $password
+	) {
+		$result = UserHelper::editUser(
+			$this->getBaseUrl(),
+			$user,
+			'password',
+			$password,
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
+		if ($result->getStatusCode() !== 200) {
+			throw new \Exception(
+				"could not change password of user. "
+				. $result->getStatusCode() . " " . $result->getBody()
+			);
+		}
+	}
+	/**
 	 * @When /^user "([^"]*)" (enables|disables) the app "([^"]*)"$/
 	 *
 	 * @param string $user

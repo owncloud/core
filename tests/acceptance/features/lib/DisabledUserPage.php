@@ -22,47 +22,13 @@
 
 namespace Page;
 
-use Behat\Mink\Session;
-
 /**
  * Disabled page.
  */
-class DisabledUserPage extends OwncloudPage {
+class DisabledUserPage extends GeneralErrorPage {
 
 	/**
 	 * @var string $path
 	 */
 	protected $path = '/index.php/login';
-	protected $userDisabledXpath = ".//li[@class='error']";
-
-	/**
-	 *
-	 * @param Session $session
-	 * @param int $timeout_msec
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function waitTillPageIsLoaded(
-		Session $session,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
-	) {
-		$currentTime = \microtime(true);
-		$end = $currentTime + ($timeout_msec / 1000);
-		while ($currentTime <= $end) {
-			if ($this->findAll("xpath", $this->userDisabledXpath)) {
-				break;
-			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
-			$currentTime = \microtime(true);
-		}
-
-		if ($currentTime > $end) {
-			throw new \Exception(
-				__METHOD__ . " timeout waiting for page to load"
-			);
-		}
-
-		$this->waitForOutstandingAjaxCalls($session);
-	}
 }
