@@ -1582,7 +1582,8 @@ class SessionTest extends TestCase {
 		$iUser->expects($this->once())
 			->method('isEnabled')
 			->willReturn(false);
-		$iUser->method('getUID')
+		$iUser->expects($this->exactly(2))
+			->method('getUID')
 			->willReturn('foo');
 
 		$failedEvent = new GenericEvent(null, ['user' => 'foo']);
