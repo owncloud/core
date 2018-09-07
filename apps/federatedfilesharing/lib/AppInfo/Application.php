@@ -30,6 +30,8 @@ use OCA\FederatedFileSharing\Notifications;
 use OCA\FederatedFileSharing\Controller\RequestHandlerController;
 use OCA\FederatedFileSharing\TokenHandler;
 use OCP\AppFramework\App;
+use OCP\Share\Events\AcceptShare;
+use OCP\Share\Events\DeclineShare;
 
 class Application extends App {
 
@@ -169,6 +171,39 @@ class Application extends App {
 			\OC::$server->getLazyRootFolder(),
 			\OC::$server->getConfig(),
 			\OC::$server->getUserManager()
+		);
+	}
+
+	public function registerListeners() {
+		$container = $this->getContainer();
+		$server = $container->getServer();
+		$eventDispatcher = $server->getEventDispatcher();
+
+		// react to accept and decline share events
+		$eventDispatcher->addListener(
+			AcceptShare::class,
+			function (AcceptShare $event) use ($container) {
+				/** @var Notifications $notifications */
+				$notifications = $container->query('Notifications');
+				$notifications->sendAcceptShare(
+					$event->getRemote(),
+					$event->getRemoteId(),
+					$event->getShareToken()
+				);
+			}
+		);
+
+		$eventDispatcher->addListener(
+			DeclineShare::class,
+			function (DeclineShare $event) use ($container) {
+				/** @var Notifications $notifications */
+				$notifications = $container->query('Notifications');
+				$notifications->sendDeclineShare(
+					$event->getRemote(),
+					$event->getRemoteId(),
+					$event->getShareToken()
+				);
+			}
 		);
 	}
 }
