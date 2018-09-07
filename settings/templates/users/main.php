@@ -82,7 +82,7 @@ translation('settings');
 				</p>
 				<p>
 					<input type="checkbox" name="AddPasswordOnUserCreate" value="AddPasswordOnUserCreate" id="CheckBoxPasswordOnUserCreate"
-						class="checkbox" <?php if ($_['add_password'] === 'true') {
+						class="checkbox" <?php if ($_['set_password'] === 'true') {
 	print_unescaped('checked="checked"');
 } ?> />
 					<label for="CheckBoxPasswordOnUserCreate">
