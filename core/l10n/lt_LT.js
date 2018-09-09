@@ -132,6 +132,8 @@ OC.L10N.register(
     "Name" : "Pavadinimas",
     "Filename" : "Failo pavadinimas",
     "Password" : "Slaptažodis",
+    "Download / View" : "Atsisiųsti / Peržiūrėti",
+    "Download / View / Upload" : "Atsisiųsti / Peržiūrėti / Įkelti",
     "Share" : "Dalintis",
     "Save" : "Išsaugoti",
     "Email link to person" : "Nusiųsti nuorodą paštu",
