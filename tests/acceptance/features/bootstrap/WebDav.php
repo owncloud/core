@@ -24,6 +24,7 @@ use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\StreamInterface;
 use Sabre\DAV\Client as SClient;
 use Sabre\DAV\Xml\Property\ResourceType;
+use Sabre\Xml\LibXMLException;
 use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
 
@@ -222,9 +223,17 @@ trait WebDav {
 		}
 		$body = $response->getBody()->getContents();
 		if ($body && \substr($body, 0, 1) === '<') {
-			$reader = new Sabre\Xml\Reader();
-			$reader->xml($body);
-			$this->responseXml = $reader->parse();
+			try {
+				$reader = new Sabre\Xml\Reader();
+				$reader->xml($body);
+				$this->responseXml = $reader->parse();
+			} catch (LibXMLException $e) {
+				// Sometimes the body can be a real page of HTML and text.
+				// So it may not be a complete ordinary piece of XML.
+				// The XML parse might fail with an exception message like:
+				// Opening and ending tag mismatch: link line 31 and head.
+				$this->responseXml = [];
+			}
 		}
 	}
 
