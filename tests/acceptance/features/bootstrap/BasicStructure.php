@@ -1270,7 +1270,7 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public static function removeFilesFromLocalStorageBefore() {
+	public function removeFilesFromLocalStorageBefore() {
 		$dir = "./work/local_storage/";
 		$di = new RecursiveDirectoryIterator(
 			$dir, FilesystemIterator::SKIP_DOTS
@@ -1288,7 +1288,7 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public static function removeFilesFromLocalStorageAfter() {
+	public function removeFilesFromLocalStorageAfter() {
 		$dir = "./work/local_storage/";
 		$di = new RecursiveDirectoryIterator(
 			$dir, FilesystemIterator::SKIP_DOTS
