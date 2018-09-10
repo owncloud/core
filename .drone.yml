@@ -252,16 +252,6 @@ pipeline:
       matrix:
         CALDAV_CARDDAV_JOB: true
 
-  setup-api-acceptance-tests:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      # pre-create local_storage so fix-permissions will set its owner appropriately
-      - mkdir -p /drone/src/tests/acceptance/work/local_storage
-    when:
-      matrix:
-        TEST_SUITE: api
-
   install-notifications-app:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
