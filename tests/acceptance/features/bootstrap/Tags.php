@@ -459,6 +459,7 @@ trait Tags {
 		\array_shift($tagList);
 		$found = false;
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
+			$found = false;
 			foreach ($tagList as $path => $tagData) {
 				if (!empty($tagData)
 					&& $tagData['{http://owncloud.org/ns}display-name'] === $rowDisplayName
