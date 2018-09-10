@@ -166,6 +166,33 @@ function remote_occ() {
 	return ${RETURN}
 }
 
+# @param $1 admin authentication string username:password
+# @param $2 occ url
+# @param $3 directory to create, relative to the server's root
+# sets $REMOTE_OCC_STDOUT and $REMOTE_OCC_STDERR from returned xml data
+# @return return code given in the xml data
+function remote_dir() {
+	COMMAND=`echo $3 | xargs`
+	CURL_OCC_RESULT=`curl -k -s -u $1 $2 -d "dir=${COMMAND}"`
+	# xargs is (miss)used to trim the output
+	HTTP_STATUS=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/meta/statuscode)" - | xargs`
+	# We could not find a proper return of the testing app, so something went wrong
+	if [ -z "${HTTP_STATUS}" ]
+	then
+		RETURN=1
+		REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
+	else
+		if [ "${HTTP_STATUS}" = 200 ]
+		then
+			RETURN=0
+		else
+			RETURN=1
+			REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
+		fi
+	fi
+	return ${RETURN}
+}
+
 # $1 admin auth as needed for curl
 # $2 full URL of the occ command in the testing app
 # $3 system|app
@@ -379,6 +406,8 @@ function teardown() {
 	if [ "${RUNNING_API_TESTS}" = true ]
 	then
 		# Clear storage folder
+		# This depends on the test runner and server being the same file system
+		# ToDo: use the testing app to cleanup.
 		rm -Rf work/local_storage/*
 	fi
 	
@@ -427,6 +456,7 @@ then
 	# set it already here, so it can be used for remote_occ
 	# we know the TEST_SERVER_URL already
 	OCC_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/occ"
+	DIR_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/dir"
 	if [ -n "${TEST_SERVER_FED_URL}" ]
 	then
 		OCC_FED_URL="${TEST_SERVER_FED_URL}/ocs/v2.php/apps/testing/api/v1/occ"
@@ -469,6 +499,7 @@ else
 
 	# The endpoint to use to do occ commands via the testing app
 	OCC_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/occ"
+	DIR_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/dir"
 
 	# Give time for the PHP dev server to become available
 	# because we want to use it to get and change settings with the testing app
@@ -700,7 +731,7 @@ done
 # folder of a user, and then delete them in a batch.
 if [ "${RUNNING_API_TESTS}" = true ]
 then
-	mkdir -p work/local_storage || { echo "Unable to create work folder" >&2; exit 1; }
+	remote_dir ${ADMIN_AUTH} ${DIR_URL} "tests/acceptance/work/local_storage" || { echo "Unable to create work folder" >&2; exit 1; }
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:create local_storage local null::null -c datadir=${SCRIPT_PATH}/work/local_storage"
 	OUTPUT_CREATE_STORAGE=${REMOTE_OCC_STDOUT}
 	ID_STORAGE=`echo ${OUTPUT_CREATE_STORAGE} | awk {'print $5'}`
