@@ -439,6 +439,24 @@ trait Tags {
 	}
 
 	/**
+	 * @Then /^the HTTP status when user "([^"]*)" requests tags for (?:file|folder|entry) "([^"]*)" (?:shared|owned) by "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $fileName
+	 * @param string $sharingUser
+	 * @param string $status
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theHttpStatusWhenuserRequestsTagsForEntryOwnedByShouldBe(
+		$user, $fileName, $sharingUser, $status
+	) {
+		$response = $this->requestTagsForFile($user, $fileName, $sharingUser);
+		PHPUnit_Framework_Assert::assertEquals($status, $response->getStatus());
+	}
+
+	/**
 	 * @Then /^(?:file|folder|entry) "([^"]*)" (?:shared|owned) by "([^"]*)" should have the following tags$/
 	 *
 	 * @param string $fileName
@@ -452,10 +470,9 @@ trait Tags {
 		$fileName, $sharingUser, TableNode $table
 	) {
 		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
-		//Check if we are looking for no tags
-		if ((!\is_array($tagList)) && ($table->getRowAsString(0) === '|  |')) {
-			return true;
-		}
+		PHPUnit_Framework_Assert::assertInternalType('array', $tagList);
+		// The array of tags has a single "empty" item at the start.
+		// Remove this entry.
 		\array_shift($tagList);
 		$found = false;
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
@@ -492,6 +509,39 @@ trait Tags {
 		$fileName, $user, TableNode $table
 	) {
 		$this->sharedByHasTheFollowingTags($fileName, $user, $table);
+	}
+
+	/**
+	 * @Then /^(?:file|folder|entry) "([^"]*)" (?:shared|owned) by "([^"]*)" should have no tags$/
+	 *
+	 * @param string $fileName
+	 * @param string $sharingUser
+	 * @param TableNode $table
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function sharedByHasNoTags($fileName, $sharingUser) {
+		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
+		PHPUnit_Framework_Assert::assertInternalType('array', $tagList);
+		// The array of tags has a single "empty" item at the start.
+		// If there are no tags, then the array should have just this
+		// one entry.
+		PHPUnit_Framework_Assert::assertCount(1, $tagList);
+	}
+
+	/**
+	 * @Then file :fileName should have no tags for user :user
+	 *
+	 * @param string $fileName
+	 * @param string $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function fileHasNoTagsForUser($fileName, $user) {
+		$this->sharedByHasNoTags($fileName, $user);
 	}
 
 	/**
