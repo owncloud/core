@@ -88,6 +88,16 @@ Feature: tags
     Then the HTTP status code should be "204"
     And tag "JustARegularTagName" should not exist for "admin"
 
+  Scenario: Deleting a normal tag that has already been assigned to a file should work
+    Given user "user0" has been created
+    And user "user0" has created a "normal" tag with name "JustARegularTagName"
+    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
+    And user "user0" has added the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0"
+    When user "user0" deletes the tag with name "JustARegularTagName" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And tag "JustARegularTagName" should not exist for "admin"
+    And file "/myFileToTag.txt" should have no tags for user "user0"
+
   Scenario: Deleting a not user-assignable tag as regular user should fail
     Given user "user0" has been created
     And user "admin" has created a "not user-assignable" tag with name "JustARegularTagName"
@@ -378,8 +388,7 @@ Feature: tags
     When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then file "/myFileToTag.txt" should have the following tags for user "user0"
       | MyFirstTag | normal |
-    And file "/myFileToTag.txt" should have the following tags for user "user1"
-      ||
+    And the HTTP status when user "user1" requests tags for file "/myFileToTag.txt" owned by "user0" should be "404"
 
   Scenario: User can assign tags when in the tag's groups
     Given user "user0" has been created
