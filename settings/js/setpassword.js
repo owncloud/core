@@ -36,7 +36,15 @@
 
 		_resetDone : function(result){
 			if (result && result.status === 'success') {
-				OC.redirect(OC.getRootPath());
+				var getRootPath = OC.getRootPath();
+				if (getRootPath === '') {
+					/**
+					 * If owncloud is not run inside subfolder, the getRootPath
+					 * will return empty string
+					 */
+					getRootPath = "/";
+				}
+				OC.redirect(getRootPath);
 			}
 		}
 	};
