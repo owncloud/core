@@ -276,8 +276,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user resets the password to :newPassword using the webUI
-	 * @Given the user has reset the password to :newPassword using the webUI
+	 * @When the user resets/sets the password to :newPassword using the webUI
+	 * @Given the user has reset/set the password to :newPassword using the webUI
 	 *
 	 * @param string $newPassword
 	 *
