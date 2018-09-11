@@ -572,7 +572,6 @@ class UsersController extends Controller {
 		}
 
 		if (!\hash_equals($splittedToken[1], $token)) {
-			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			throw new UserTokenMismatchException($this->l10n->t('The token provided is invalid.'));
 		}
 	}
