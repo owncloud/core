@@ -1,4 +1,4 @@
-@api @skip_on_objectstore
+@api @skip_on_objectstore @encryption
 Feature: recreate-master-key
 
 	Scenario: recreate masterkey
