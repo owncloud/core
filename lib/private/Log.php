@@ -103,11 +103,14 @@ class Log implements ILogger {
 		//LoginController
 		'tryLogin',
 
-		//bind
+		//User_LDAP\Connection
 		'bind',
 
-		//invokeLDAPMethod
-		'invokeLDAPMethod'
+		//User_LDAP\LDAP
+		'invokeLDAPMethod',
+
+		//User_LDAP\Access
+		'areCredentialsValid'
 
 	];
 
