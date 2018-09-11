@@ -3285,4 +3285,118 @@ class UsersControllerTest extends \Test\TestCase {
 			], Http::STATUS_INTERNAL_SERVER_ERROR
 		), $result);
 	}
+
+	/**
+	 * First create a user with wrong email id,
+	 * then delete the user. Again create the same user with
+	 * a proper email id. Later try to set the password for the
+	 * user. The token of the user should not be deleted, if it
+	 * is a mismatch.
+	 */
+	public function testInvalidTokenNotDeleted() {
+		$user = $this->createMock(IUser::class);
+		$user->expects($this->any())
+			->method('getUID')
+			->willReturn('foo');
+		$user->expects($this->any())
+			->method('delete')
+			->willReturn(true);
+
+		$adminUser = $this->createMock(IUser::class);
+		$adminUser->expects($this->any())
+			->method('getUID')
+			->willReturn('admin');
+
+		$subAdmin = $this->createMock(SubAdmin::class);
+		$subAdmin->expects($this->any())
+			->method('getSubAdminsGroups')
+			->willReturn([]);
+		$subAdmin->expects($this->any())
+			->method('isUserAccessible')
+			->willReturn(true);
+
+		$this->container['Mailer']->expects($this->any())
+			->method('validateMailAddress')
+			->willReturn(true);
+
+		$this->container['UserSession']->expects($this->any())
+			->method('getUser')
+			->willReturn($adminUser);
+
+		$this->container['GroupManager']->expects($this->any())
+			->method('getSubAdmin')
+			->willReturn($subAdmin);
+
+		$this->container['UserManager']->expects($this->any())
+			->method('userExists')
+			->willReturn(false);
+
+		$userInstance = $this->createMock(User::class);
+		$userInstance->expects($this->any())
+			->method('getUID')
+			->willReturn('foo');
+
+		$this->container['UserManager']->expects($this->any())
+			->method('createUser')
+			->willReturn($userInstance);
+
+		$message = $this->createMock(Message::class);
+		$message->expects($this->any())
+			->method('setTo')
+			->willReturn($message);
+		$message->expects($this->any())
+			->method('setSubject')
+			->willReturn($message);
+		$message->expects($this->any())
+			->method('setHtmlBody')
+			->willReturn($message);
+		$message->expects($this->any())
+			->method('setPlainBody')
+			->willReturn($message);
+		$message->expects($this->any())
+			->method('setFrom')
+			->willReturn($message);
+
+		$this->container['Mailer']->expects($this->any())
+			->method('createMessage')
+			->willReturn($message);
+		$this->container['Mailer']->expects($this->any())
+			->method('send')
+			->with($message)
+			->willReturn([]);
+
+		//Create a user first
+		$firstCreateResult = $this->container['UsersController']->create('foo', null, [], 'bar@bar.com');
+		$this->assertEquals(Http::STATUS_CREATED, $firstCreateResult->getStatus());
+
+		$this->container['UserManager']->expects($this->any())
+			->method('get')
+			->willReturn($user);
+
+		//Now delete the user
+		$userDeleteResult = $this->container['UsersController']->destroy('foo');
+		$deleteResponseData = $userDeleteResult->getData();
+		$this->assertEquals('success', $deleteResponseData['status']);
+		$this->assertEquals('foo', $deleteResponseData['data']['username']);
+		$this->assertEquals(Http::STATUS_NO_CONTENT, $userDeleteResult->getStatus());
+
+		//Now create a new user with a different email id
+		$secondCreateResult = $this->container['UsersController']->create('foo', null, [], 'foo@bar.com');
+		$this->assertEquals(Http::STATUS_CREATED, $secondCreateResult->getStatus());
+
+		/**
+		 * Now when user tries to set the password, the token should not be deleted if
+		 * it is a mismatch
+		 */
+		$this->container['Config']->expects($this->never())
+			->method('deleteUserValue');
+		$this->container['Config']->expects($this->any())
+			->method('getUserValue')
+			->willReturn('foo:AsDfGh12345');
+		$result = $this->container['UsersController']->setPassword('AsDfGh1234', 'foo', 'foobar');
+		$this->assertEquals(Http::STATUS_UNAUTHORIZED, $result->getStatus());
+		$this->assertEquals('error', $result->getData()['status']);
+		$this->assertEquals('The token provided is invalid.', $result->getData()['message']);
+		$this->assertEquals('tokenfailure', $result->getData()['type']);
+	}
 }
