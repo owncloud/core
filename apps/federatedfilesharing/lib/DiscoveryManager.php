@@ -90,39 +90,100 @@ class DiscoveryManager {
 		if (\defined('PHPUNIT_RUN') && !$this->underTest) {
 			return $discoveredServices;
 		}
-		// Read the data from the response body
-		try {
-			$response = $this->client->get($remote . '/ocs-provider/', [
-				'timeout' => 10,
-				'connect_timeout' => 10,
-			]);
-			if ($response->getStatusCode() === 200) {
-				$decodedService = \json_decode($response->getBody(), true);
-				if (\is_array($decodedService)) {
-					$endpoints = [
-						'webdav',
-						'share',
-					];
 
-					foreach ($endpoints as $endpoint) {
-						if (isset($decodedService['services']['FEDERATED_SHARING']['endpoints'][$endpoint])) {
-							$endpointUrl = (string)$decodedService['services']['FEDERATED_SHARING']['endpoints'][$endpoint];
-							if ($this->isSafeUrl($endpointUrl)) {
-								$discoveredServices[$endpoint] = $endpointUrl;
-							}
-						}
+		$decodedService = $this->makeRequest($remote . '/ocs-provider/');
+		if (!empty($decodedService)) {
+			$endpoints = [
+				'webdav',
+				'share',
+			];
+
+			foreach ($endpoints as $endpoint) {
+				if (isset($decodedService['services']['FEDERATED_SHARING']['endpoints'][$endpoint])) {
+					$endpointUrl = (string)$decodedService['services']['FEDERATED_SHARING']['endpoints'][$endpoint];
+					if ($this->isSafeUrl($endpointUrl)) {
+						$discoveredServices[$endpoint] = $endpointUrl;
 					}
 				}
+			}
+		}
+
+		// Write into cache
+		$this->cache->set($remote, \json_encode($discoveredServices));
+		return $discoveredServices;
+	}
+
+	/**
+	 * Discover the actual data and do some naive caching to ensure that the data
+	 * is not requested multiple times.
+	 *
+	 * If no valid discovery data is found the ownCloud defaults are returned.
+	 *
+	 * @param string $remote
+	 * @return array
+	 */
+	private function ocmDiscover($remote) {
+		// Check if something is in the cache
+		if ($cacheData = $this->cache->get('OCM' . $remote)) {
+			return \json_decode($cacheData, true);
+		}
+
+		// Default response body
+		$discoveredServices = [
+			'webdav' => '/public.php/webdav',
+			'ocm' => '/index.php/apps/federatedfilesharing',
+		];
+
+		if (\defined('PHPUNIT_RUN') && !$this->underTest) {
+			return $discoveredServices;
+		}
+
+		$decodedService = $this->makeRequest($remote . '/ocm-provider/');
+		if (!empty($decodedService)) {
+			$discoveredServices['ocm'] = $decodedService['endPoint'];
+			$shareTypes = $discoveredServices['shareTypes'];
+			foreach ($shareTypes as $type) {
+				if ($type['name'] == 'file') {
+					$discoveredServices['webdav'] = $type['protocols']['webdav'];
+				}
+			}
+		}
+
+		// Write into cache
+		$this->cache->set('OCM' . $remote, \json_encode($discoveredServices));
+		return $discoveredServices;
+	}
+
+	/**
+	 * Send GET request and return decoded body of response on success
+	 *
+	 * @param $url
+	 *
+	 * @return array
+	 */
+	private function makeRequest($url) {
+		$decodedService = [];
+		try {
+			// make timeout configurable?
+			$response = $this->client->get(
+				$url,
+				[
+					'timeout' => 10,
+					'connect_timeout' => 10,
+				]
+			);
+			if ($response->getStatusCode() === 200) {
+				$decodedService = \json_decode($response->getBody(), true);
+			}
+			if (\is_array($decodedService) === false) {
+				$decodedService = [];
 			}
 		} catch (ClientException $e) {
 			// Don't throw any exception since exceptions are handled before
 		} catch (ConnectException $e) {
 			// Don't throw any exception since exceptions are handled before
 		}
-
-		// Write into cache
-		$this->cache->set($remote, \json_encode($discoveredServices));
-		return $discoveredServices;
+		return $decodedService;
 	}
 
 	/**
@@ -143,5 +204,13 @@ class DiscoveryManager {
 	 */
 	public function getShareEndpoint($host) {
 		return $this->discover($host)['share'];
+	}
+
+	public function getOcmWebDavEndPoint($host) {
+		return $this->ocmDiscover($host)['webdav'];
+	}
+
+	public function getOcmShareEndPoint($host) {
+		return $this->ocmDiscover($host)['ocm'];
 	}
 }

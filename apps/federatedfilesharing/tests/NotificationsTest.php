@@ -22,6 +22,7 @@
 
 namespace OCA\FederatedFileSharing\Tests;
 
+use OC\AppFramework\Http;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\Notifications;
@@ -94,10 +95,11 @@ class NotificationsTest extends \Test\TestCase {
 	 * @dataProvider dataTestSendUpdateToRemote
 	 *
 	 * @param int $try
+	 * @param array $ocmHttpRequestResult
 	 * @param array $httpRequestResult
 	 * @param bool $expected
 	 */
-	public function testSendUpdateToRemote($try, $httpRequestResult, $expected) {
+	public function testSendUpdateToRemote($try, $ocmHttpRequestResult, $httpRequestResult, $expected) {
 		$remote = 'remote';
 		$id = 42;
 		$timestamp = 63576;
@@ -106,11 +108,15 @@ class NotificationsTest extends \Test\TestCase {
 
 		$instance->expects($this->any())->method('getTimestamp')->willReturn($timestamp);
 
-		$instance->expects($this->once())->method('tryHttpPostToShareEndpoint')
+		$instance->expects($this->at(0))->method('tryHttpPostToShareEndpoint')
+			->with($remote, '/notifications', $this->anything(), true)
+			->willReturn($ocmHttpRequestResult);
+
+		$instance->expects($this->at(1))->method('tryHttpPostToShareEndpoint')
 			->with($remote, '/'.$id.'/unshare', ['token' => $token, 'data1Key' => 'data1Value'])
 			->willReturn($httpRequestResult);
 
-		$this->addressHandler->expects($this->once())->method('removeProtocolFromUrl')
+		$this->addressHandler->method('removeProtocolFromUrl')
 			->with($remote)->willReturn($remote);
 
 		// only add background job on first try
@@ -140,17 +146,17 @@ class NotificationsTest extends \Test\TestCase {
 	public function dataTestSendUpdateToRemote() {
 		return [
 			// test if background job is added correctly
-			[0, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
-			[1, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
-			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
-			[1, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
+			[1, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
+			[1, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
 			// test all combinations of 'statuscode' and 'success'
-			[0, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
-			[0, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], true],
-			[0, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
-			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
-			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], false],
-			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], true],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
 		];
 	}
 }

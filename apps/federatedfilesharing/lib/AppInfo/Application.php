@@ -117,9 +117,10 @@ class Application extends App {
 					$c->query('Request'),
 					$this->getFederatedShareProvider(),
 					$server->getURLGenerator(),
+					$server->getAppManager(),
 					$server->getUserManager(),
-					$c->query('FederatedShareManager'),
 					$c->query('AddressHandler'),
+					$c->query('FederatedShareManager'),
 					$server->getLogger()
 				);
 			}

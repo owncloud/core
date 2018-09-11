@@ -220,19 +220,24 @@ class FederatedShareProvider implements IShareProvider {
 		);
 
 		try {
-			$sharedByFederatedId = $share->getSharedBy();
-			if ($this->userManager->userExists($sharedByFederatedId)) {
-				$sharedByFederatedId = $sharedByFederatedId . '@' . $this->addressHandler->generateRemoteURL();
+			$instanceCloudId = $this->addressHandler->generateRemoteURL();
+			$sharedBy = $share->getSharedBy();
+			$sharedByCloudId = '';
+			if ($this->userManager->userExists($sharedBy)) {
+				$sharedByCloudId = $instanceCloudId;
 			}
+			$sharedByAddress = new Address("{$sharedBy}@{$sharedByCloudId}");
+			$owner = $share->getShareOwner();
+			$ownerAddress = new Address("{$owner}@{$instanceCloudId}");
+			$sharedWith = $share->getSharedWith();
+			$shareWithAddress = new Address($sharedWith);
 			$send = $this->notifications->sendRemoteShare(
+				$shareWithAddress,
+				$ownerAddress,
+				$sharedByAddress,
 				$token,
-				$share->getSharedWith(),
 				$share->getNode()->getName(),
-				$shareId,
-				$share->getShareOwner(),
-				$share->getShareOwner() . '@' . $this->addressHandler->generateRemoteURL(),
-				$share->getSharedBy(),
-				$sharedByFederatedId
+				$shareId
 			);
 
 			if ($send === false) {

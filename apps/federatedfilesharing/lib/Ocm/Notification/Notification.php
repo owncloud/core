@@ -84,7 +84,7 @@ abstract class Notification {
 
 	/**
 	 * @param string $field
-	 * @param string $value
+	 * @param mixed $value
 	 *
 	 * @return void
 	 */
