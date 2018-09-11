@@ -116,9 +116,13 @@ class Scanner extends BasicEmitter implements IScanner {
 		if ($data === null) {
 			\OCP\Util::writeLog(Scanner::class, "!!! Path '$path' is not accessible or present !!!", \OCP\Util::DEBUG);
 			// Last Line of Defence against potential Metadata-loss
-			if ($this->storage->instanceOfStorage(IHomeStorage::class) && !$this->storage->instanceOfStorage(ISharedStorage::class) && ($path === '' || $path === 'files')) {
-				\OCP\Util::writeLog(Scanner::class, 'Missing important folder "' . $path . '" in home storage!!! - ' . $this->storageId, \OCP\Util::ERROR);
-				throw new \OCP\Files\StorageNotAvailableException('Missing important folder "' . $path . '" in home storage - ' . $this->storageId);
+			if ($this->storage->instanceOfStorage(IHomeStorage::class)
+				&& !$this->storage->instanceOfStorage(ISharedStorage::class)
+				&& ($path === '' || $path === 'files')
+			) {
+				$errorMsg = \sprintf('Missing important folder "%s" in home storage - %s', $path, $this->storageId);
+				\OCP\Util::writeLog(Scanner::class, $errorMsg, \OCP\Util::ERROR);
+				throw new \OCP\Files\StorageNotAvailableException($errorMsg);
 			}
 		}
 		return $data;
