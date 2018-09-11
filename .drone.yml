@@ -937,6 +937,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       USE_EMAIL: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium

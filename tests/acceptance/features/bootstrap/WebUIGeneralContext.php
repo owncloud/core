@@ -29,9 +29,11 @@ use Page\LoginPage;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
+use TestHelpers\EmailHelper;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
+use Page\GeneralErrorPage;
 
 require_once 'bootstrap.php';
 
@@ -40,6 +42,11 @@ require_once 'bootstrap.php';
  */
 class WebUIGeneralContext extends RawMinkContext implements Context {
 	private $owncloudPage;
+	/**
+	 *
+	 * @var GeneralErrorPage
+	 */
+	private $generalErrorPage;
 	private $loginPage;
 	private $oldCSRFSetting = null;
 	private $oldPreviewSetting = null;
@@ -128,9 +135,14 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param OwncloudPage $owncloudPage
 	 * @param LoginPage $loginPage
 	 */
-	public function __construct(OwncloudPage $owncloudPage, LoginPage $loginPage) {
+	public function __construct(
+		OwncloudPage $owncloudPage,
+		LoginPage $loginPage,
+		GeneralErrorPage $generalErrorPage
+	) {
 		$this->owncloudPage = $owncloudPage;
 		$this->loginPage = $loginPage;
+		$this->generalErrorPage = $generalErrorPage;
 	}
 
 	/**
@@ -217,6 +229,23 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		if ($this->webUIFilesContext !== null) {
 			$this->webUIFilesContext->resetFilesContext();
 		}
+	}
+
+	/**
+	 *
+	 * @param string $emailAddress
+	 * @param string $regexSearch
+	 * @param string $errorMessage
+	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 */
+	public function followLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
+		$content = EmailHelper::getBodyOfEmail(
+			EmailHelper::getMailhogUrl(), $emailAddress, $numEmails
+		);
+		$matches = [];
+		\preg_match($regexSearch, $content, $matches);
+		PHPUnit_Framework_Assert::assertArrayHasKey(1, $matches, $errorMessage);
+		$this->visitPath($matches[1]);
 	}
 
 	/**
@@ -365,6 +394,33 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function theUserShouldBeRedirectedToAWebUIPageWithTheTitle($title) {
 		$this->owncloudPage->waitForOutstandingAjaxCalls($this->getSession());
 		PHPUnit_Framework_Assert::assertEquals($title, $this->owncloudPage->getPageTitle());
+	}
+
+	/**
+	 * @Then the user should be redirected to the general error webUI page with the title :title
+	 *
+	 * @param string $title
+	 *
+	 * @return void
+	 */
+	public function theUserShouldBeRedirectedToGeneralErrorPage($title) {
+		$this->generalErrorPage->waitTillPageIsLoaded($this->getSession());
+		PHPUnit_Framework_Assert::assertEquals(
+			$title, $this->generalErrorPage->getPageTitle()
+		);
+	}
+	
+	/**
+	 * @Then an error should be displayed on the general error webUI page saying :error
+	 *
+	 * @param string $error
+	 *
+	 * @return void
+	 */
+	public function anErrorShouldBeDisplayedOnTheGeneralErrorPage($error) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$error, $this->generalErrorPage->getErrorMessage()
+		);
 	}
 
 	/**

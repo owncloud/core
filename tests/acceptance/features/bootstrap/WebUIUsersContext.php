@@ -126,6 +126,25 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When /^the administrator (attempts to create|creates) a user with the name "([^"]*)" and the email "([^"]*)" without a password(?: that is a member of these groups)? using the webUI$/
+	 *
+	 * @param string $attemptTo
+	 * @param string $username
+	 * @param string $password
+	 * @param string $email
+	 * @param TableNode $groupsTable table of groups with a heading | group |
+	 *
+	 * @return void
+	 */
+	public function theAdminCreatesAUserUsingWithoutAPasswordTheWebUI(
+		$attemptTo, $username, $email, TableNode $groupsTable=null
+	) {
+		$this->theAdminCreatesAUserUsingTheWebUI(
+			$attemptTo, $username, null, $email, $groupsTable
+		);
+	}
+
+	/**
 	 *
 	 * @When the administrator deletes the group named :name using the webUI
 	 *
