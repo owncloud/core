@@ -268,18 +268,11 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserFollowsThePasswordResetLinkFromTheirEmail($emailAddress) {
-		$content = EmailHelper::getBodyOfLastEmail(
-			EmailHelper::getMailhogUrl(), $emailAddress
-		);
-		\preg_match(
-			'/Use the following link to reset your password: (http.*)/',
-			$content, $matches
-		);
-		PHPUnit_Framework_Assert::assertArrayHasKey(
-			1, $matches,
+		$this->webUIGeneralContext->followLinkFromEmail(
+			$emailAddress,
+			"/Use the following link to reset your password: (http.*)/",
 			"Couldn't find password reset link in the email"
 		);
-		$this->visitPath($matches[1]);
 	}
 
 	/**
@@ -294,6 +287,24 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$this->loginPage->resetThePassword($newPassword, $this->getSession());
 	}
 	
+	/**
+	 * @When /^the user follows the password set link received by "([^"]*)"(?: in Email number (\d+))? using the webUI$/
+	 *
+	 * @param string $emailAddress
+	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserFollowsThePasswordSetLinkReceivedByEmail($emailAddress, $numEmails = 1) {
+		$this->webUIGeneralContext->followLinkFromEmail(
+			$emailAddress,
+			"/Access it: (http.*)/",
+			"Couldn't find password set link in the email",
+			$numEmails
+		);
+	}
+
 	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.

@@ -59,9 +59,29 @@ class EmailHelper {
 	 * @return mixed
 	 */
 	public static function getBodyOfLastEmail($mailhogUrl, $address) {
+		return self::getBodyOfEmail($mailhogUrl, $address, 0);
+	}
+
+	/**
+	 *
+	 * @param string $mailhogUrl
+	 * @param string $address
+	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 *
+	 * @throws \Exception
+	 *
+	 * @return mixed
+	 */
+	public static function getBodyOfEmail($mailhogUrl, $address, $numEmails = 1) {
+		$skip = 1;
 		foreach (self::getEmails($mailhogUrl)->items as $item) {
 			$expectedEmail = $item->To[0]->Mailbox . "@" . $item->To[0]->Domain;
 			if ($expectedEmail === $address) {
+				if ($skip < $numEmails) {
+					$skip++;
+					continue;
+				}
+
 				$body = \str_replace(
 					"\r\n", "\n",
 					\quoted_printable_decode($item->Content->Body)

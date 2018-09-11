@@ -29,6 +29,7 @@ use Page\LoginPage;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
+use TestHelpers\EmailHelper;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
@@ -217,6 +218,23 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		if ($this->webUIFilesContext !== null) {
 			$this->webUIFilesContext->resetFilesContext();
 		}
+	}
+
+	/**
+	 *
+	 * @param string $emailAddress
+	 * @param string $regexSearch
+	 * @param string $errorMessage
+	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 */
+	public function followLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
+		$content = EmailHelper::getBodyOfEmail(
+			EmailHelper::getMailhogUrl(), $emailAddress, $numEmails
+		);
+		$matches = [];
+		\preg_match($regexSearch, $content, $matches);
+		PHPUnit_Framework_Assert::assertArrayHasKey(1, $matches, $errorMessage);
+		$this->visitPath($matches[1]);
 	}
 
 	/**
