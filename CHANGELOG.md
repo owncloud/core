@@ -7,13 +7,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
-- Store user name in oc_preferences when provided by backend, use in external storage save in session mode [#32579](https://github.com/owncloud/core/pull/32579)
+- Store user name in oc_preferences when provided by backend, use in external storage save in session mode [#32587](https://github.com/owncloud/core/pull/32587)
 - Support JSON format for settings passed to occ system:config:set - [#32524](https://github.com/owncloud/core/issues/32524)
-- occ decrypt-all command can now read password from an environment variable - [#32252](https://github.com/owncloud/core/issues/32252)
+- occ decrypt-all command can now read password from an environment variable - [#32252](https://github.com/owncloud/core/issues/32252) [#32677](https://github.com/owncloud/core/issues/32677)
 - Roave Security Advisories as a development dependency - [#31818](https://github.com/owncloud/core/issues/31818)
 - Store timestamp when ownCloud was first installed - [#32000](https://github.com/owncloud/core/issues/32000)
 - Symfony events for login action with token or Apache - [#31985](https://github.com/owncloud/core/issues/31985)
-- Search API for files using Webdav REPORT and underlying search provider - [#31946](https://github.com/owncloud/core/issues/31946) [#32328](https://github.com/owncloud/core/issues/32328)
+- Search API for files using Webdav REPORT and underlying search provider - [#31946](https://github.com/owncloud/core/issues/31946) [#32328](https://github.com/owncloud/core/issues/32328) [#32603](https://github.com/owncloud/core/issues/32603)
 - Add information whether user can share to capabilities API - [#31824](https://github.com/owncloud/core/issues/31824)
 - Reload the filelist view when accepting or rejecting a share - [#31798](https://github.com/owncloud/core/issues/31798)
 - Allow different language in public link share email - [#31767](https://github.com/owncloud/core/issues/31767)
@@ -30,6 +30,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Experimental support for asynchronous MOVE operations - [#32414](https://github.com/owncloud/core/issues/32414)
 
 ### Changed
+- Minimum desktop client version is 2.3.3 - [#32657](https://github.com/owncloud/core/issues/32657)
 - Handle SSL certificate verifications for others than Let's Encrypt - [#31858](https://github.com/owncloud/core/issues/31858)
 - Insufficient storage exception now logged with "debug" log level - [#31978](https://github.com/owncloud/core/issues/31978)
 - Skip filecache repair step for version greater than 10.0.4 - [#31803](https://github.com/owncloud/core/issues/31803)
@@ -48,11 +49,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump symfony 3.4.11 to 3.4.12 - [#31912](https://github.com/owncloud/core/issues/31912)
 - Bump symfony 3.4.15 and zend-stdlib 3.2.1 - [#32499](https://github.com/owncloud/core/issues/32499)
 - Allow slashes in generated resource routes in app framework - [#31939](https://github.com/owncloud/core/issues/31939)
-- Email field is now default in user management page - [#32466](https://github.com/owncloud/core/issues/32466)
-- Split of config.sample.php into two files for core and apps - [#32554](https://github.com/owncloud/core/issues/32554)
+- Email field is now default in user management page, users receive an email with token to set initial password - [#32466](https://github.com/owncloud/core/issues/32466) [#32648](https://github.com/owncloud/core/issues/32648) [#32636](https://github.com/owncloud/core/issues/32636) [#32672](https://github.com/owncloud/core/pull/32672)
+- Split of config.sample.php into two files for core and apps - [#32554](https://github.com/owncloud/core/issues/32554) [#32634](https://github.com/owncloud/core/issues/32634)
 
 ### Removed
 ### Fixed
+- Fix PHP 7.2 issue with ini_set - [#32538](https://github.com/owncloud/core/issues/32538)
 - Prevent logging LDAP password in case of failure - [#32592](https://github.com/owncloud/core/pull/32592)
 - Prevent passwords to be set to empty strings - [#32581](https://github.com/owncloud/core/pull/32581)
 - Fix update issue related to oc_jobs when automatically enabling market app to assist for update in OC 10 - [#32573](https://github.com/owncloud/core/pull/32573)
@@ -103,7 +105,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Remove sensitive shared_secret data from occ config:list output - [#31997](https://github.com/owncloud/core/issues/31997)
 - Fix file cache update function to properly handle empty string and nulls with Oracle - [#31996](https://github.com/owncloud/core/issues/31996)
 - Fix bogus etag update when propagating etag for federated shares - [#31992](https://github.com/owncloud/core/issues/31992)
-- Display all failed recipients when sending link share email - [#31935](https://github.com/owncloud/core/issues/31935)
+- Display all failed recipients when sending link share email - [#31935](https://github.com/owncloud/core/issues/31935) [#32633](https://github.com/owncloud/core/issues/32633)
 - Lock public link share dialog while processing - [#31928](https://github.com/owncloud/core/issues/31928)
 - AppManager text typo and PHPdoc return tags - [#31918](https://github.com/owncloud/core/issues/31918)
 - Optimize file uploads with PUT method, with custom mtime, use storage instead of view - [#31891](https://github.com/owncloud/core/issues/31891)
