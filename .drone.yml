@@ -151,8 +151,14 @@ pipeline:
     commands:
       - ./tests/drone/install-server.sh
       - git clone https://github.com/owncloud/testing.git $$DRONE_WORKSPACE/apps/testing
+      - wget -q -O- https://cloud.owncloud.com/index.php/s/SylZSDcFxOoTaLB/download | tar -xz -C $$DRONE_WORKSPACE/apps
       - php occ a:l
       - php occ a:e testing
+      - php occ a:e sentry
+      - php occ config:system:set 'sentry.dsn' --value="https://5e1a80e03d7844d99c5cb6da36fe530e@sentry.owncloud.com/13"
+      - php occ config:system:set 'sentry.public_dsn' --value="https://5e1a80e03d7844d99c5cb6da36fe530e@sentry.owncloud.com/13"
+      - php occ config:system:set 'sentry.environment' --value="${BEHAT_SUITE}-${DB_TYPE}-${DRONE_BUILD_NUMBER}"
+      - php occ sentry:test
       - php occ a:l
       - php occ config:system:set trusted_domains 1 --value=server
       - php occ config:system:set trusted_domains 2 --value=federated
@@ -582,204 +588,8 @@ services:
 
 matrix:
   include:
-
-  # frontend
-    - TEST_SUITE: javascript
-      PHP_VERSION: 7.1
-      COVERAGE: true
-
-    # linting
-    - TEST_SUITE: lint
-      PHP_VERSION: 5.6
-
-    - TEST_SUITE: lint
-      PHP_VERSION: 7.0
-
-    # PHP 5.6
-    #- PHP_VERSION: 5.6
-    #  DB_TYPE: sqlite
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    #- PHP_VERSION: 5.6
-    #  DB_TYPE: mariadb
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    #- PHP_VERSION: 5.6
-    #  DB_TYPE: mysql
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-
-    - PHP_VERSION: 5.6
-      DB_TYPE: postgres
-      TEST_SUITE: phpunit
-      INSTALL_SERVER: true
-
-    # - PHP_VERSION: 5.6
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
-    #   INSTALL_SERVER: true
-
-
-  # php-cs-fixer
-    - TEST_SUITE: php-cs-fixer
-      PHP_VERSION: 7.2
-
-  # phan
-    - TEST_SUITE: phan
-      PHP_VERSION: 7.1
-
-  # Litmus
-    - PHP_VERSION: 7.1
-      USE_SERVER: true
-      TEST_SUITE: litmus
-      INSTALL_SERVER: true
-
-  # Unit Tests
-    - PHP_VERSION: 7.1
-      DB_TYPE: mysql
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      INSTALL_SERVER: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: mysqlmb4
-      TEST_SUITE: phpunit
-      INSTALL_SERVER: true
-
-#    - PHP_VERSION: 7.1
-#      DB_TYPE: mariadb
-#      TEST_SUITE: phpunit
-#      INSTALL_SERVER: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: postgres
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      INSTALL_SERVER: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: oracle
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      INSTALL_SERVER: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: sqlite
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      INSTALL_SERVER: true
-
-
-    # PHP 7.2
-    - PHP_VERSION: 7.2
-      DB_TYPE: sqlite
-      TEST_SUITE: phpunit
-      INSTALL_SERVER: true
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: mariadb
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: mysql
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: postgres
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    # - PHP_VERSION: 7.2
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
-    #   INSTALL_SERVER: true
-#
-#    # Integration
-#    - PHP_VERSION: 7.1
-#      DB_TYPE: sqlite
-#      TEST_SUITE: integration
-#      INSTALL_SERVER: true
-
-    - PHP_VERSION: 7.2
-      DB_TYPE: mariadb
-      TEST_SUITE: phpunit
-      INSTALL_SERVER: true
-
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: mysql
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: postgres
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    # - PHP_VERSION: 7.2
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
-    #   INSTALL_SERVER: true
-
-  # Files External
-    - PHP_VERSION: 7.1
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      DB_TYPE: sqlite
-      FILES_EXTERNAL_TYPE: webdav_apache
-      INSTALL_SERVER: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      DB_TYPE: sqlite
-      FILES_EXTERNAL_TYPE: smb_samba
-      INSTALL_SERVER: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      DB_TYPE: sqlite
-      FILES_EXTERNAL_TYPE: smb_windows
-      INSTALL_SERVER: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      DB_TYPE: sqlite
-      FILES_EXTERNAL_TYPE: swift
-      INSTALL_SERVER: true
-
-  # Primary Objectstorage
-    - PHP_VERSION: 5.6
-      TEST_SUITE: phpunit
-      DB_TYPE: sqlite
-      OBJECTSTORE: swift
-      PRIMARY_OBJECTSTORE: swift
-      INSTALL_SERVER: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      DB_TYPE: sqlite
-      OBJECTSTORE: swift
-      PRIMARY_OBJECTSTORE: swift
-      INSTALL_SERVER: true
-
-  # files_primary_s3
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      DB_TYPE: sqlite
-      OBJECTSTORE: scality
-      PRIMARY_OBJECTSTORE: files_primary_s3
-      INSTALL_SERVER: true
-
   # API Acceptance tests
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
       DB_TYPE: mariadb
@@ -788,7 +598,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiMetadataApps
       DB_TYPE: mariadb
@@ -797,7 +607,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiSharingNotifications
       DB_TYPE: mariadb
@@ -807,7 +617,7 @@ matrix:
       OWNCLOUD_LOG: true
       INSTALL_NOTIFICATIONS-APP: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiCapabilities
       DB_TYPE: mariadb
@@ -816,7 +626,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiFederation
       DB_TYPE: mariadb
@@ -827,7 +637,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiProvisioning-v1
       DB_TYPE: mariadb
@@ -836,7 +646,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiProvisioning-v2
       DB_TYPE: mariadb
@@ -845,7 +655,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiSharees
       DB_TYPE: mariadb
@@ -854,7 +664,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiShareManagement
       DB_TYPE: mariadb
@@ -863,7 +673,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiShareOperations
       DB_TYPE: mariadb
@@ -872,7 +682,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiTrashbin
       DB_TYPE: mariadb
@@ -881,7 +691,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavOperations
       DB_TYPE: mariadb
@@ -890,7 +700,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavProperties
       DB_TYPE: mariadb
@@ -900,7 +710,7 @@ matrix:
       OWNCLOUD_LOG: true
 
   # UI Acceptance tests
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUILogin
       DB_TYPE: mariadb
@@ -910,7 +720,7 @@ matrix:
       OWNCLOUD_LOG: true
       USE_EMAIL: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIAdminSettings
       DB_TYPE: mariadb
@@ -919,7 +729,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingNotifications
       DB_TYPE: mariadb
@@ -939,7 +749,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIManageUsersGroups
       DB_TYPE: mariadb
@@ -947,9 +757,8 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       USE_EMAIL: true
-      OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIManageQuota
       DB_TYPE: mariadb
@@ -958,7 +767,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIPersonalSettings
       DB_TYPE: mariadb
@@ -968,7 +777,7 @@ matrix:
       OWNCLOUD_LOG: true
       USE_EMAIL: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIFiles
       DB_TYPE: mariadb
@@ -977,7 +786,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIMoveFilesFolders
       DB_TYPE: mariadb
@@ -986,7 +795,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRenameFiles
       DB_TYPE: mariadb
@@ -995,7 +804,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRenameFolders
       DB_TYPE: mariadb
@@ -1004,7 +813,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUITrashbin
       DB_TYPE: mariadb
@@ -1013,7 +822,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingInternalGroups
       DB_TYPE: mariadb
@@ -1022,7 +831,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingInternalUsers
       DB_TYPE: mariadb
@@ -1031,7 +840,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingExternal
       DB_TYPE: mariadb
@@ -1043,7 +852,7 @@ matrix:
       OWNCLOUD_LOG: true
       USE_EMAIL: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRestrictSharing
       DB_TYPE: mariadb
@@ -1052,7 +861,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIUpload
       DB_TYPE: mariadb
@@ -1062,7 +871,7 @@ matrix:
       OWNCLOUD_LOG: true
 
     # caldav test
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: caldav
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -1072,7 +881,7 @@ matrix:
       CALDAV_CARDDAV_JOB: true
 
     # carddav test
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: carddav
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -1082,7 +891,7 @@ matrix:
       CALDAV_CARDDAV_JOB: true
 
     # caldav-old-endpoint test
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: caldav-old-endpoint
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -1092,7 +901,7 @@ matrix:
       CALDAV_CARDDAV_JOB: true
 
     # carddav-old-endpoint test
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: carddav-old-endpoint
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -1101,25 +910,935 @@ matrix:
       OWNCLOUD_LOG: true
       CALDAV_CARDDAV_JOB: true
 
-    # encryption tests
-    - PHP_VERSION: 5.6
+  # API Acceptance tests
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
-      BEHAT_SUITE: apiEncryption
-      DB_TYPE: mariadb
+      BEHAT_SUITE: apiMain
+      DB_TYPE: mysqlmb4
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-      CONFIGURE_ENCRYPTION: true
-      ENCRYPTION_TYPE: masterkey
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: api
-      BEHAT_SUITE: apiEncryption
-      DB_TYPE: mariadb
+      BEHAT_SUITE: apiMetadataApps
+      DB_TYPE: mysqlmb4
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-      CONFIGURE_ENCRYPTION: true
-      ENCRYPTION_TYPE: masterkey
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharingNotifications
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_NOTIFICATIONS-APP: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiCapabilities
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiFederation
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioning-v1
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioning-v2
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharees
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiShareManagement
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiShareOperations
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiTrashbin
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavOperations
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavProperties
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+  # UI Acceptance tests
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingNotifications
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      USE_EMAIL: true
+      INSTALL_NOTIFICATIONS-APP: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIFavorites
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIAdminSettings
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIManageUsersGroups
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      USE_EMAIL: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIManageQuota
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIPersonalSettings
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      USE_EMAIL: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIFiles
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIMoveFilesFolders
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRenameFiles
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRenameFolders
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUITrashbin
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingInternalGroups
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingInternalUsers
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingExternal
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRestrictSharing
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIUpload
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    # caldav test
+    - PHP_VERSION: 7.2
+      TEST_SUITE: caldav
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+    # carddav test
+    - PHP_VERSION: 7.2
+      TEST_SUITE: carddav
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+    # caldav-old-endpoint test
+    - PHP_VERSION: 7.2
+      TEST_SUITE: caldav-old-endpoint
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+    # carddav-old-endpoint test
+    - PHP_VERSION: 7.2
+      TEST_SUITE: carddav-old-endpoint
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+  # API Acceptance tests
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiMain
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiMetadataApps
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharingNotifications
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_NOTIFICATIONS-APP: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiCapabilities
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiFederation
+      DB_TYPE: postgres
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioning-v1
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioning-v2
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharees
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiShareManagement
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiShareOperations
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiTrashbin
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavOperations
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavProperties
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+  # UI Acceptance tests
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingNotifications
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      USE_EMAIL: true
+      INSTALL_NOTIFICATIONS-APP: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIFavorites
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIAdminSettings
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIManageUsersGroups
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      USE_EMAIL: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIManageQuota
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIPersonalSettings
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      USE_EMAIL: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIFiles
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIMoveFilesFolders
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRenameFiles
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRenameFolders
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUITrashbin
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingInternalGroups
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingInternalUsers
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingExternal
+      DB_TYPE: postgres
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRestrictSharing
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIUpload
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    # caldav test
+    - PHP_VERSION: 7.2
+      TEST_SUITE: caldav
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+    # carddav test
+    - PHP_VERSION: 7.2
+      TEST_SUITE: carddav
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+    # caldav-old-endpoint test
+    - PHP_VERSION: 7.2
+      TEST_SUITE: caldav-old-endpoint
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+    # carddav-old-endpoint test
+    - PHP_VERSION: 7.2
+      TEST_SUITE: carddav-old-endpoint
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+  # API Acceptance tests
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiMain
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiMetadataApps
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharingNotifications
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_NOTIFICATIONS-APP: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiCapabilities
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiFederation
+      DB_TYPE: oracle
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioning-v1
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioning-v2
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharees
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiShareManagement
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiShareOperations
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiTrashbin
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavOperations
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavProperties
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+  # UI Acceptance tests
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingNotifications
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      USE_EMAIL: true
+      INSTALL_NOTIFICATIONS-APP: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIFavorites
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIAdminSettings
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIManageUsersGroups
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      USE_EMAIL: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIManageQuota
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIPersonalSettings
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      USE_EMAIL: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIFiles
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIMoveFilesFolders
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRenameFiles
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRenameFolders
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUITrashbin
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingInternalGroups
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingInternalUsers
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingExternal
+      DB_TYPE: oracle
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRestrictSharing
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.2
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIUpload
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    # caldav test
+    - PHP_VERSION: 7.2
+      TEST_SUITE: caldav
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+    # carddav test
+    - PHP_VERSION: 7.2
+      TEST_SUITE: carddav
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+    # caldav-old-endpoint test
+    - PHP_VERSION: 7.2
+      TEST_SUITE: caldav-old-endpoint
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+    # carddav-old-endpoint test
+    - PHP_VERSION: 7.2
+      TEST_SUITE: carddav-old-endpoint
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
