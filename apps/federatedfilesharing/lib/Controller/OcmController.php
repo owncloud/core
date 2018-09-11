@@ -28,6 +28,7 @@ use OCA\FederatedFileSharing\Ocm\Exception\BadRequestException;
 use OCA\FederatedFileSharing\Ocm\Exception\ForbiddenException;
 use OCA\FederatedFileSharing\Ocm\Exception\NotImplementedException;
 use OCA\FederatedFileSharing\Ocm\Notification\FileNotification;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Http\JSONResponse;
 use OCA\FederatedFileSharing\FedShareManager;
 use OCA\FederatedFileSharing\Ocm\Exception\OcmException;
@@ -59,6 +60,11 @@ class OcmController extends Controller {
 	protected $urlGenerator;
 
 	/**
+	 * @var IAppManager
+	 */
+	private $appManager;
+
+	/**
 	 * @var IUserManager
 	 */
 	protected $userManager;
@@ -85,6 +91,7 @@ class OcmController extends Controller {
 	 * @param IRequest $request
 	 * @param FederatedShareProvider $federatedShareProvider
 	 * @param IURLGenerator $urlGenerator
+	 * @param IAppManager $appManager
 	 * @param IUserManager $userManager
 	 * @param AddressHandler $addressHandler
 	 * @param FedShareManager $fedShareManager
@@ -94,6 +101,7 @@ class OcmController extends Controller {
 									IRequest $request,
 									FederatedShareProvider $federatedShareProvider,
 									IURLGenerator $urlGenerator,
+									IAppManager $appManager,
 									IUserManager $userManager,
 									AddressHandler $addressHandler,
 									FedShareManager $fedShareManager,
@@ -103,6 +111,7 @@ class OcmController extends Controller {
 
 		$this->federatedShareProvider = $federatedShareProvider;
 		$this->urlGenerator = $urlGenerator;
+		$this->appManager = $appManager;
 		$this->userManager = $userManager;
 		$this->addressHandler = $addressHandler;
 		$this->fedShareManager = $fedShareManager;
@@ -119,12 +128,13 @@ class OcmController extends Controller {
 	 * @return array
 	 */
 	public function discovery() {
+		$endPoint = $this->urlGenerator->linkToRouteAbsolute(
+			"{$this->appName}.ocm.index"
+		);
 		return [
 			'enabled' => true,
 			'apiVersion' => self::API_VERSION,
-			'endPoint' => $this->urlGenerator->linkToRouteAbsolute(
-				"{$this->appName}.ocm.index"
-			),
+			'endPoint' => \rtrim($endPoint, '/'),
 			'shareTypes' => [
 				'name' => FileNotification::RESOURCE_TYPE_FILE,
 				'protocols' => $this->getProtocols()
@@ -177,6 +187,7 @@ class OcmController extends Controller {
 
 	) {
 		try {
+			$this->assertIncomingSharingEnabled();
 			$hasMissingParams = $this->hasNull(
 				[$shareWith, $name, $providerId, $owner, $shareType, $resourceType]
 			);
@@ -327,8 +338,15 @@ class OcmController extends Controller {
 						$providerId, $notification['sharedSecret']
 					);
 					// TODO: permissions not needed ???
-					$this->fedShareManager->reShare(
+					$share = $this->fedShareManager->reShare(
 						$share, $providerId, $localShareWith, 0
+					);
+					return new JSONResponse(
+						[
+							'sharedSecret' => $share->getToken(),
+							'providerId' => $share->getId()
+						],
+						Http::STATUS_CREATED
 					);
 					break;
 				case FileNotification::NOTIFICATION_TYPE_RESHARE_CHANGE_PERMISSION:
@@ -396,6 +414,36 @@ class OcmController extends Controller {
 	}
 
 	/**
+	 * Make sure that incoming shares are enabled
+	 *
+	 * @return void
+	 *
+	 * @throws NotImplementedException
+	 */
+	protected function assertIncomingSharingEnabled() {
+		if (!$this->appManager->isEnabledForUser('files_sharing')
+			|| !$this->federatedShareProvider->isIncomingServer2serverShareEnabled()
+		) {
+			throw new NotImplementedException();
+		}
+	}
+
+	/**
+	 * Make sure that outgoing shares are enabled
+	 *
+	 * @return void
+	 *
+	 * @throws NotImplementedException
+	 */
+	protected function assertOutgoingSharingEnabled() {
+		if (!$this->appManager->isEnabledForUser('files_sharing')
+			|| !$this->federatedShareProvider->isOutgoingServer2serverShareEnabled()
+		) {
+			throw new NotImplementedException();
+		}
+	}
+
+	/**
 	 * Check if value is null or an array has any null item
 	 *
 	 * @param mixed $param
@@ -411,7 +459,7 @@ class OcmController extends Controller {
 	}
 
 	/**
-	 * Get share by id, validate it's type and token
+	 * Get share by id, validate its type and token
 	 *
 	 * @param int $id
 	 * @param string $sharedSecret
@@ -425,7 +473,7 @@ class OcmController extends Controller {
 	protected function getValidShare($id, $sharedSecret) {
 		$share = $this->federatedShareProvider->getShareById($id);
 		if ($share->getShareType() !== FederatedShareProvider::SHARE_TYPE_REMOTE) {
-			throw new BadRequestException("Share with id {$id} des not exist");
+			throw new BadRequestException("Share with id {$id} does not exist");
 		}
 
 		if ($share->getToken() !== $sharedSecret) {

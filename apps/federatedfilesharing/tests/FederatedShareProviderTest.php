@@ -24,6 +24,7 @@
  */
 namespace OCA\FederatedFileSharing\Tests;
 
+use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\Notifications;
@@ -134,17 +135,19 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->addressHandler->expects($this->any())->method('splitUserRemote')
 			->willReturn(['user', 'server.com']);
 
+		$shareWithAddress = new Address('user@server.com');
+		$ownerAddress = new Address('shareOwner@http://localhost/');
+		$sharedByAddress = new Address('sharedBy@http://localhost/');
+
 		$this->notifications->expects($this->once())
 			->method('sendRemoteShare')
 			->with(
+				$this->equalTo($shareWithAddress),
+				$this->equalTo($ownerAddress),
+				$this->equalTo($sharedByAddress),
 				$this->equalTo('token'),
-				$this->equalTo('user@server.com'),
 				$this->equalTo('myFile'),
-				$this->anything(),
-				'shareOwner',
-				'shareOwner@http://localhost/',
-				'sharedBy',
-				'sharedBy@http://localhost/'
+				$this->anything()
 			)->willReturn(true);
 
 		$this->rootFolder->expects($this->never())->method($this->anything());
@@ -205,17 +208,19 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->addressHandler->expects($this->any())->method('splitUserRemote')
 			->willReturn(['user', 'server.com']);
 
+		$shareWithAddress = new Address('user@server.com');
+		$ownerAddress = new Address('shareOwner@http://localhost/');
+		$sharedByAddress = new Address('sharedBy@http://localhost/');
+
 		$this->notifications->expects($this->once())
 			->method('sendRemoteShare')
 			->with(
+				$this->equalTo($shareWithAddress),
+				$this->equalTo($ownerAddress),
+				$this->equalTo($sharedByAddress),
 				$this->equalTo('token'),
-				$this->equalTo('user@server.com'),
 				$this->equalTo('myFile'),
-				$this->anything(),
-				'shareOwner',
-				'shareOwner@http://localhost/',
-				'sharedBy',
-				'sharedBy@http://localhost/'
+				$this->anything()
 			)->willReturn(false);
 
 		$this->rootFolder->method('getById')
@@ -254,25 +259,14 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->setPermissions(19)
 			->setNode($node);
 
-		$this->tokenHandler->method('generateToken')->willReturn('token');
-
 		$this->addressHandler->expects($this->any())->method('generateRemoteURL')
 			->willReturn('http://localhost/');
-		$this->addressHandler->expects($this->any())->method('splitUserRemote')
-			->willReturn(['user', 'server.com']);
+
+		$this->tokenHandler->method('generateToken')->willReturn('token');
 
 		$this->notifications->expects($this->once())
 			->method('sendRemoteShare')
-			->with(
-				$this->equalTo('token'),
-				$this->equalTo('user@server.com'),
-				$this->equalTo('myFile'),
-				$this->anything(),
-				'shareOwner',
-				'shareOwner@http://localhost/',
-				'sharedBy',
-				'sharedBy@http://localhost/'
-			)->willThrowException(new \Exception('dummy'));
+			->willThrowException(new \Exception('dummy'));
 
 		$this->rootFolder->method('getById')
 			->with('42')
@@ -357,17 +351,19 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->addressHandler->expects($this->any())->method('generateRemoteURL')
 			->willReturn('http://localhost/');
 
+		$shareWithAddress = new Address('user@server.com');
+		$ownerAddress = new Address('shareOwner@http://localhost/');
+		$sharedByAddress = new Address('sharedBy@http://localhost/');
+
 		$this->notifications->expects($this->once())
 			->method('sendRemoteShare')
 			->with(
+				$this->equalTo($shareWithAddress),
+				$this->equalTo($ownerAddress),
+				$this->equalTo($sharedByAddress),
 				$this->equalTo('token'),
-				$this->equalTo('user@server.com'),
 				$this->equalTo('myFile'),
-				$this->anything(),
-				'shareOwner',
-				'shareOwner@http://localhost/',
-				'sharedBy',
-				'sharedBy@http://localhost/'
+				$this->anything()
 			)->willReturn(true);
 
 		$this->rootFolder->expects($this->never())->method($this->anything());
@@ -420,17 +416,19 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->addressHandler->expects($this->any())->method('generateRemoteURL')
 			->willReturn('http://localhost/');
 
+		$shareWithAddress = new Address('user@server.com');
+		$ownerAddress = new Address("{$owner}@http://localhost/");
+		$sharedByAddress = new Address("{$sharedBy}@http://localhost/");
+
 		$this->notifications->expects($this->once())
 			->method('sendRemoteShare')
 			->with(
+				$this->equalTo($shareWithAddress),
+				$this->equalTo($ownerAddress),
+				$this->equalTo($sharedByAddress),
 				$this->equalTo('token'),
-				$this->equalTo('user@server.com'),
 				$this->equalTo('myFile'),
-				$this->anything(),
-				$owner,
-				$owner . '@http://localhost/',
-				$sharedBy,
-				$sharedBy . '@http://localhost/'
+				$this->anything()
 			)->willReturn(true);
 
 		if ($owner === $sharedBy) {

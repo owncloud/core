@@ -81,6 +81,17 @@ class Address {
 	}
 
 	/**
+	 * Get user host without protocol and trailing slash
+	 *
+	 * @return string
+	 */
+	public function getCleanHostName() {
+		$hostName = \rtrim($this->getHostName(), '/');
+		// replace all characters before :// and :// itself
+		return \preg_replace('|^(.*?://)|', '', $hostName);
+	}
+
+	/**
 	 * Get user display name, fallback to userId if it is empty
 	 *
 	 * @return string
