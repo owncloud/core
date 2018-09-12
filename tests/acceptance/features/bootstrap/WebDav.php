@@ -344,6 +344,17 @@ trait WebDav {
 	}
 
 	/**
+	 * @param string $user
+	 * @param string $fileDestination
+	 *
+	 * @return string
+	 */
+	private function destinationHeaderValue($user, $fileDestination) {
+		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
+		return $fullUrl . '/' . \ltrim($fileDestination, '/');
+	}
+
+	/**
 	 * @Given /^user "([^"]*)" has moved (?:file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -355,8 +366,9 @@ trait WebDav {
 	public function userHasMovedFile(
 		$user, $fileSource, $fileDestination
 	) {
-		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
-		$headers['Destination'] = $fullUrl . $fileDestination;
+		$headers['Destination'] = $this->destinationHeaderValue(
+			$user, $fileDestination
+		);
 		$this->response = $this->makeDavRequest(
 			$user, "MOVE", $fileSource, $headers
 		);
@@ -378,8 +390,11 @@ trait WebDav {
 	public function userMovesFileUsingTheAPI(
 		$user, $fileSource, $type = "", $fileDestination
 	) {
-		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
-		$headers = ['Destination' => $fullUrl . $fileDestination];
+		$headers = [
+			'Destination' => $this->destinationHeaderValue(
+				$user, $fileDestination
+			)
+		];
 		$stream = false;
 		if ($type === "asynchronously") {
 			$headers['OC-LazyOps'] = 'true';
@@ -433,8 +448,9 @@ trait WebDav {
 	public function userCopiesFileUsingTheAPI(
 		$user, $fileSource, $fileDestination
 	) {
-		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
-		$headers['Destination'] = $fullUrl . $fileDestination;
+		$headers['Destination'] = $this->destinationHeaderValue(
+			$user, $fileDestination
+		);
 		$this->response = $this->makeDavRequest(
 			$user, "COPY", $fileSource, $headers
 		);
@@ -2021,16 +2037,16 @@ trait WebDav {
 	 *
 	 * @param string $user user
 	 * @param string $id upload id
-	 * @param string $dest destination path
+	 * @param string $destination destination path
 	 * @param array $headers extra headers
 	 *
 	 * @return void
 	 */
-	private function moveNewDavChunkToFinalFile($user, $id, $dest, $headers) {
+	private function moveNewDavChunkToFinalFile($user, $id, $destination, $headers) {
 		$source = "/uploads/$user/$id/.file";
-		$destination = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user) . $dest;
-
-		$headers['Destination'] = $destination;
+		$headers['Destination'] = $this->destinationHeaderValue(
+			$user, $destination
+		);
 
 		$this->response = $this->makeDavRequest(
 			$user, 'MOVE', $source, $headers, null, "uploads"
