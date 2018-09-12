@@ -877,9 +877,7 @@ trait WebDav {
 	public function asTheFileOrFolderShouldNotExist($user, $entry, $path) {
 		$client = $this->getSabreClient($user);
 		$response = $client->request(
-			'HEAD', $this->makeSabrePath(
-				$user, '/' . \ltrim($path, '/')
-			)
+			'HEAD', $this->makeSabrePath($user, $path)
 		);
 		if ($response['statusCode'] !== 404) {
 			throw new \Exception(
@@ -1283,7 +1281,9 @@ trait WebDav {
 	 * @return string
 	 */
 	public function makeSabrePath($user, $path) {
-		return $this->encodePath($this->getDavFilesPath($user) . $path);
+		return $this->encodePath(
+			$this->getDavFilesPath($user) . '/' . \ltrim($path, '/')
+		);
 	}
 
 	/**
