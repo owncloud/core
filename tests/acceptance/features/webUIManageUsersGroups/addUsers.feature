@@ -127,7 +127,6 @@ Feature: add users
     Then the user should be redirected to the general error webUI page with the title "ownCloud"
     And an error should be displayed on the general error webUI page saying "The token provided is invalid."
 
-  @skip @issue-32651
   Scenario: when recreating a user with same second token can be used even if someone tried to use the first one
     When the administrator creates a user with the name "guiusr1" and the email "mistake@owncloud" without a password using the webUI
     And the administrator deletes the user "guiusr1" using the webUI
