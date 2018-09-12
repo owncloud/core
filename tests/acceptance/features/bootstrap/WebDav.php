@@ -30,6 +30,7 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
+use Sabre\DAV\Xml\Property\Complex;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -817,20 +818,24 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" sets property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has set property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 * @When /^user "([^"]*)" sets property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to\s?(complex|) "([^"]*)" using the WebDAV API$/
+	 * @Given /^user "([^"]*)" has set property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to\s?(complex|) "([^"]*)"$/
 	 *
-	 * @param string $user
-	 * @param string $propertyName
-	 * @param string $path
-	 * @param string $propertyValue
+	 * @param string $user user id who sets the property
+	 * @param string $propertyName name of property in Clark notation
+	 * @param string $path path on which to set properties to
+	 * @param string $complex if set to "complex", will parse the property value with the Complex type
+	 * @param string $propertyValue property value
 	 *
 	 * @return void
 	 */
 	public function userHasSetPropertyOfEntryTo(
-		$user, $propertyName, $path, $propertyValue
+		$user, $propertyName, $path, $complex = '', $propertyValue
 	) {
 		$client = $this->getSabreClient($user);
+		if ($complex === 'complex') {
+			$propertyValue = new Complex($propertyValue);
+		}
 		$properties = [
 				$propertyName => $propertyValue
 		];
