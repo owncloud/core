@@ -5,6 +5,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Sujith Haridasan <sharidasan@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -28,10 +29,17 @@
 namespace OCA\Encryption\Tests\Hooks;
 
 
+use OC\User\Manager;
 use OCA\Encryption\Crypto\Crypt;
 use OCA\Encryption\Hooks\UserHooks;
+use OCA\Encryption\KeyManager;
+use OCA\Encryption\Recovery;
+use OCA\Encryption\Session;
+use OCA\Encryption\Users\Setup;
 use OCA\Encryption\Util;
 use OCP\IConfig;
+use OCP\ILogger;
+use OCP\IUserSession;
 use Test\TestCase;
 
 /**
@@ -262,8 +270,86 @@ class UserHooksTest extends TestCase {
 		$this->assertNull($this->instance->setPassphrase($this->params));
 	}
 
+	/**
+	 * Test setPassphrase without session and no logger error should appear
+	 */
+	public function testSetPassphraseWithoutSession() {
+		$keyManager = $this->createMock(KeyManager::class);
+		$userManager = $this->createMock(Manager::class);
+		$logger = $this->createMock(ILogger::class);
+		$setUp = $this->createMock(Setup::class);
+		$userSession = $this->createMock(IUserSession::class);
+		$encryptionUtil = $this->createMock(Util::class);
+		$encryptionSession = $this->createMock(Session::class);
+		$recovery = $this->createMock(Recovery::class);
+		$crypt = $this->createMock(Crypt::class);
+		$config = $this->createMock(IConfig::class);
+
+		//$userHooks = new UserHooks($keyManager, $userManager, $logger, $setUp, $userSession, $encryptionUtil, $encryptionSession, $crypt, $recovery, $config);
+		$userHooks = $this->getMockBuilder(UserHooks::class)
+			->setConstructorArgs([
+				$keyManager, $userManager, $logger,
+				$setUp, $userSession, $encryptionUtil,
+				$encryptionSession, $crypt, $recovery, $config
+			])->setMethods(['initMountPoints'])->getMock();
+
+		$userSession->expects($this->any())
+			->method('getUser')
+			->willReturn(null);
+
+		$crypt->expects($this->any())
+			->method('encryptPrivateKey')
+			->willReturn(true);
+
+		$keyManager->expects($this->any())
+			->method('setPrivateKey')
+			->willReturn(true);
+
+		//No logger error should appear
+		$logger->expects($this->never())
+			->method('error');
+
+		$userHooks->setPassphrase($this->params);
+	}
+
+	public function testSetPassphraseWithoutSessionLoggerError() {
+		$keyManager = $this->createMock(KeyManager::class);
+		$userManager = $this->createMock(Manager::class);
+		$logger = $this->createMock(ILogger::class);
+		$setUp = $this->createMock(Setup::class);
+		$userSession = $this->createMock(IUserSession::class);
+		$encryptionUtil = $this->createMock(Util::class);
+		$encryptionSession = $this->createMock(Session::class);
+		$recovery = $this->createMock(Recovery::class);
+		$crypt = $this->createMock(Crypt::class);
+		$config = $this->createMock(IConfig::class);
+
+		//$userHooks = new UserHooks($keyManager, $userManager, $logger, $setUp, $userSession, $encryptionUtil, $encryptionSession, $crypt, $recovery, $config);
+		$userHooks = $this->getMockBuilder(UserHooks::class)
+			->setConstructorArgs([
+				$keyManager, $userManager, $logger,
+				$setUp, $userSession, $encryptionUtil,
+				$encryptionSession, $crypt, $recovery, $config
+			])->setMethods(['initMountPoints'])->getMock();
+
+		$userSession->expects($this->any())
+			->method('getUser')
+			->willReturn(null);
+
+		$crypt->expects($this->any())
+			->method('encryptPrivateKey')
+			->willReturn(false);
+
+		//No logger error should appear
+		$logger->expects($this->any())
+			->method('error')
+			->with('Encryption Could not update users encryption password');
+
+		$userHooks->setPassphrase($this->params);
+	}
+
 	public function testSetPasswordNoUser() {
-		$this->sessionMock->expects($this->once())
+		$this->sessionMock->expects($this->any())
 			->method('getPrivateKey')
 			->willReturn(true);
 
