@@ -134,6 +134,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @param OwncloudPage $owncloudPage
 	 * @param LoginPage $loginPage
+	 * @param GeneralErrorPage $generalErrorPage
 	 */
 	public function __construct(
 		OwncloudPage $owncloudPage,
@@ -237,6 +238,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $regexSearch
 	 * @param string $errorMessage
 	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 *
+	 * @return void
 	 */
 	public function followLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
 		$content = EmailHelper::getBodyOfEmail(
