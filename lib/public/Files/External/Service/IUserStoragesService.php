@@ -21,6 +21,8 @@
 
 namespace OCP\Files\External\Service;
 
+use OCP\Files\Config\IMountProviderCollection;
+
 /**
  * Service class to manage user external storages
  * (aka personal storages)
@@ -31,8 +33,9 @@ interface IUserStoragesService extends IStoragesService {
 	/**
 	 * Deletes the storages mounted to a user
 	 * @param \OCP\IUser $user
+	 * @param IMountProviderCollection $mountProviderCollection
 	 * @return bool
 	 * @since 10.0.10
 	 */
-	public function deleteAllMountsForUser(\OCP\IUser $user);
+	public function deleteAllMountsForUser(\OCP\IUser $user, IMountProviderCollection $mountProviderCollection);
 }

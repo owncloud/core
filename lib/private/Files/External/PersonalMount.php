@@ -97,4 +97,13 @@ class PersonalMount extends MountPoint implements MoveableMount {
 		// note: home storage check already done in View
 		return true;
 	}
+
+	/**
+	 * Get the numeric storage id
+	 *
+	 * @return int
+	 */
+	public function getNumbericStorage() {
+		return $this->numericStorageId;
+	}
 }

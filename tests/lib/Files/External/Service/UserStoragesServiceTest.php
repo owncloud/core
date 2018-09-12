@@ -24,16 +24,46 @@
 namespace Test\Files\External\Service;
 
 use OC\Files\Config\UserMountCache;
+use OC\Files\External\PersonalMount;
 use OC\Files\External\Service\GlobalStoragesService;
 use OC\Files\External\Service\UserStoragesService;
 use OC\Files\External\StorageConfig;
 use OC\Files\Filesystem;
+use OC\Files\Mount\Manager;
 use OC\Files\Mount\MountPoint;
+use OC\Files\Storage\Storage;
+use OC\Files\Storage\Temporary;
+use OCA\Files_External\Lib\Storage\SFTP;
+use OCP\Files\Config\IMountProvider;
 use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\Service\IStoragesService;
+use OCP\Files\Storage\IStorageFactory;
 use OCP\ILogger;
 use OCP\IUser;
+use Test\Files\DummyMountProvider;
 use Test\Traits\UserTrait;
+
+class DummyPersonalMountProvider implements IMountProvider {
+	private $mounts = [];
+
+	/**
+	 * @param array $mounts
+	 */
+	public function __construct(array $mounts) {
+		$this->mounts = $mounts;
+	}
+
+	/**
+	 * Get the pre-registered mount points
+	 *
+	 * @param IUser $user
+	 * @param IStorageFactory $loader
+	 * @return \OCP\Files\Mount\IMountPoint[]
+	 */
+	public function getMountsForUser(IUser $user, IStorageFactory $loader) {
+		return isset($this->mounts[$user->getUID()]) ? $this->mounts[$user->getUID()] : [];
+	}
+}
 
 /**
  * @group DB
@@ -258,12 +288,55 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 		$backendService = \OC::$server->getStoragesBackendService();
 		$userSession = \OC::$server->getUserSession();
 		$this->service = new UserStoragesService($backendService, $this->dbConfig, $userSession, $userMountCache);
-		$this->assertTrue($this->service->deleteAllMountsForUser($user1));
+
+		$sftpConfig = [
+			'run' => true,
+			'host' => 'somehost',
+			'user' => 'someuser',
+			'password' => 'somepassword',
+			'root' => '',
+		];
+
+		$dbConnection = \OC::$server->getDatabaseConnection();
+		$qb = $dbConnection->getQueryBuilder();
+		$qb->insert('external_mounts')
+			->values([
+				'mount_point' => $qb->expr()->literal('/foobar'),
+				'storage_backend' => $qb->expr()->literal('sftp'),
+				'auth_backend' => $qb->expr()->literal('password::password'),
+				'priority' => $qb->expr()->literal(100),
+				'type' => $qb->expr()->literal(2),
+			])->execute();
+
+		$qbSelect = $dbConnection->getQueryBuilder();
+		$storageId = $qbSelect->select('mount_id')
+			->from('external_mounts')
+			->where($qbSelect->expr()->eq('mount_point', $qbSelect->expr()->literal('/foobar')))
+			->execute()->fetchAll();
+
+		$sftpStorageForPersonal = new SFTP($sftpConfig);
+
+		$mount3 = new PersonalMount($this->service, (int)$storageId[0]['mount_id'], $sftpStorageForPersonal, '/foobar');
+
+		$mountProvider = new DummyPersonalMountProvider(['user1' => [$mount3]]);
+
+		\OC::$server->getMountProviderCollection()->registerProvider($mountProvider);
+		\OC::$server->getUserSession()->setUser($user2);
+
+		$this->assertTrue($this->service->deleteAllMountsForUser($user1, \OC::$server->getMountProviderCollection()));
 		$storarge1Result1 = $userMountCache->getMountsForStorageId(10);
 		$storarge1Result2 = $userMountCache->getMountsForStorageId(12);
+
 		$this->assertEquals(0, \count($storarge1Result1));
 		$this->assertEquals(1, \count($storarge1Result2));
 		$this->assertEquals(12, $storarge1Result2[0]->getStorageId());
 		$this->assertEquals('/bar/', $storarge1Result2[0]->getMountPoint());
+
+		$qb = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$qb->select('mount_id')
+			->from('external_mounts')
+			->where($qb->expr()->eq('mount_id', $qb->expr()->literal($storageId[0]['mount_id'])));
+		$personalMountResult = $qb->execute()->fetchAll();
+		$this->assertEquals(0, \count($personalMountResult));
 	}
 }

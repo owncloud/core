@@ -257,7 +257,7 @@ class User implements IUser {
 		\OC::$server->getConfig()->deleteAllUserValues($this->getUID());
 
 		// Delete all mount points for user
-		\OC::$server->getUserStoragesService()->deleteAllMountsForUser($this);
+		\OC::$server->getUserStoragesService()->deleteAllMountsForUser($this, \OC::$server->getMountProviderCollection());
 		//Delete external storage or remove user from applicableUsers list
 		\OC::$server->getGlobalStoragesService()->deleteAllForUser($this);
 

@@ -24,8 +24,10 @@
 
 namespace OC\Files\External\Service;
 
+use OC\Files\External\PersonalMount;
 use OC\Files\Filesystem;
 
+use OCP\Files\Config\IMountProviderCollection;
 use OCP\Files\Config\IUserMountCache;
 use OCP\IUser;
 use OCP\IUserSession;
@@ -146,10 +148,21 @@ class UserStoragesService extends StoragesService implements IUserStoragesServic
 	/**
 	 * Deletes the storages mounted to a user
 	 * @param IUser $user
+	 * @param IMountProviderCollection $mountProviderCollection
 	 * @return bool
 	 */
-	public function deleteAllMountsForUser(IUser $user) {
+	public function deleteAllMountsForUser(IUser $user, IMountProviderCollection $mountProviderCollection) {
 		$getUserMounts = $this->userMountCache->getMountsForUser($user);
+		$getMountCollection = $mountProviderCollection->getMountsForUser($user);
+		if (\count($getMountCollection) > 0) {
+			foreach ($getMountCollection as $userMount) {
+				if ($userMount instanceof PersonalMount) {
+					$storageId = $userMount->getNumbericStorage();
+					$this->removeStorage($storageId);
+				}
+			}
+		}
+
 		$result = false;
 		if (\count($getUserMounts) > 0) {
 			foreach ($getUserMounts as $userMount) {
