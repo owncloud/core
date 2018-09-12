@@ -516,7 +516,6 @@ trait Tags {
 	 *
 	 * @param string $fileName
 	 * @param string $sharingUser
-	 * @param TableNode $table
 	 *
 	 * @return bool
 	 * @throws \Exception
@@ -535,7 +534,6 @@ trait Tags {
 	 *
 	 * @param string $fileName
 	 * @param string $user
-	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws \Exception

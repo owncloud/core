@@ -731,7 +731,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasSetPropertyOfEntryTo(
-		$user, $propertyName, $path, $complex = '', $propertyValue
+		$user, $propertyName, $path, $complex, $propertyValue
 	) {
 		$client = $this->getSabreClient($user);
 		if ($complex === 'complex') {
