@@ -28,6 +28,9 @@ namespace OCP;
  * @since 10.0.10
  */
 class UserTokenExpiredException extends UserTokenException {
+	/** @var UserTokenExpiredException */
+	private $previousException;
+
 	/**
 	 * UserTokenExpiredException constructor.
 	 *
@@ -35,7 +38,7 @@ class UserTokenExpiredException extends UserTokenException {
 	 * @param int $code
 	 * @since 10.0.10
 	 */
-	public function __construct($message = "", $code = 0) {
-		parent::__construct($message, $code, $this);
+	public function __construct($message = "", $code = 0, \Exception $previous = null) {
+		parent::__construct($message, $code, $previous);
 	}
 }
