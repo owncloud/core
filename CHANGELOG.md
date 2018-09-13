@@ -5,7 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-
 ### Added
 - Store user name in oc_preferences when provided by backend, use in external storage save in session mode [#32587](https://github.com/owncloud/core/pull/32587)
 - Support JSON format for settings passed to occ system:config:set - [#32524](https://github.com/owncloud/core/issues/32524)
@@ -28,13 +27,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added Phan static code analyzer to improve code quality - [#32492](https://github.com/owncloud/core/issues/32492)
 - Added method in PHP share API to set password hashes directly - [#32572](https://github.com/owncloud/core/issues/32572)
 - Experimental support for asynchronous MOVE operations - [#32414](https://github.com/owncloud/core/issues/32414)
+- Config report now contains list of all migrations that have run, for easier debugging of update issues - [configreport/#68](https://github.com/owncloud/configreport/pull/68)
 
 ### Changed
+- Update CA bundle - 2018-06-20 - [#32688](https://github.com/owncloud/core/issues/32688)
 - Minimum desktop client version is 2.3.3 - [#32657](https://github.com/owncloud/core/issues/32657)
 - Handle SSL certificate verifications for others than Let's Encrypt - [#31858](https://github.com/owncloud/core/issues/31858)
 - Insufficient storage exception now logged with "debug" log level - [#31978](https://github.com/owncloud/core/issues/31978)
 - Skip filecache repair step for version greater than 10.0.4 - [#31803](https://github.com/owncloud/core/issues/31803)
-- Bump sinon from 2.4.1 to 6.1.5 in /build - [#32319](https://github.com/owncloud/core/issues/32319)
+- Bump sinon from 2.4.1 to 6.2.0 in /build - [#32319](https://github.com/owncloud/core/issues/32319) [#32662](https://github.com/owncloud/core/issues/32662)
 - Bump karma from 2.0.2 to 3.0.0 in /build - [#31892](https://github.com/owncloud/core/issues/31892) [#32197](https://github.com/owncloud/core/issues/32197) [#32317](https://github.com/owncloud/core/issues/32317)
 - Bump behat/behat from 3.4.3 to 3.5.0 - [#32318](https://github.com/owncloud/core/issues/32318)
 - Bump paragonie/random_compat v2.0.15 to v2.0.17 - [#32107](https://github.com/owncloud/core/issues/32107)
@@ -49,7 +50,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump symfony 3.4.11 to 3.4.12 - [#31912](https://github.com/owncloud/core/issues/31912)
 - Bump symfony 3.4.15 and zend-stdlib 3.2.1 - [#32499](https://github.com/owncloud/core/issues/32499)
 - Allow slashes in generated resource routes in app framework - [#31939](https://github.com/owncloud/core/issues/31939)
-- Email field is now default in user management page, users receive an email with token to set initial password - [#32466](https://github.com/owncloud/core/issues/32466) [#32648](https://github.com/owncloud/core/issues/32648) [#32636](https://github.com/owncloud/core/issues/32636) [#32672](https://github.com/owncloud/core/pull/32672)
+- Email field is now default in user management page, users receive an email with token to set initial password - [#32466](https://github.com/owncloud/core/issues/32466) [#32648](https://github.com/owncloud/core/issues/32648) [#32636](https://github.com/owncloud/core/issues/32636) [#32672](https://github.com/owncloud/core/pull/32672) [#32672](https://github.com/owncloud/core/issues/32672) [#32685](https://github.com/owncloud/core/issues/32685) [#32690](https://github.com/owncloud/core/issues/32690)
 - Split of config.sample.php into two files for core and apps - [#32554](https://github.com/owncloud/core/issues/32554) [#32634](https://github.com/owncloud/core/issues/32634)
 
 ### Removed
