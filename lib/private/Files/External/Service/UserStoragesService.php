@@ -150,12 +150,28 @@ class UserStoragesService extends StoragesService implements IUserStoragesServic
 	 */
 	public function deleteAllMountsForUser(IUser $user) {
 		$getUserMounts = $this->userMountCache->getMountsForUser($user);
+		$allMounts = $this->dbConfig->getAllMounts();
 		$result = false;
 		if (\count($getUserMounts) > 0) {
 			foreach ($getUserMounts as $userMount) {
 				$id = $userMount->getStorageId();
 				$this->userMountCache->removeUserStorageMount($id, $user->getUID());
 				$result = true;
+			}
+		}
+		if (\count($allMounts)) {
+			foreach ($allMounts as $userMount) {
+				/**
+				 * Remove any mounts which are applicable to only this user
+				 * Specifically targeted to, mounts created by the user.
+				 */
+				if (\count($userMount['applicable']) === 1) {
+					foreach ($userMount['applicable'] as $applicableUser) {
+						if ($applicableUser['value'] === $user->getUID()) {
+							$this->dbConfig->removeMount($applicableUser['mount_id']);
+						}
+					}
+				}
 			}
 		}
 		return $result;
