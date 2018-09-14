@@ -260,6 +260,7 @@ OC.L10N.register(
     "Line: %s" : "Riga: %s",
     "Trace" : "Traccia",
     "Imprint" : "Imprint",
+    "Privacy Policy" : "Regole sulla riservatezza",
     "Create an <strong>admin account</strong>" : "Crea un <strong>account amministratore</strong>",
     "Username" : "Nome utente",
     "Storage & database" : "Archiviazione e database",
