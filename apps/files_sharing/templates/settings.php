@@ -22,11 +22,11 @@ script('files_sharing', 'settings');
 ?>
 
 <div class="section" id="files_sharing">
-	<h2 class="app-name"><?php p($l->t('Files Sharing')); ?></h2>
+	<h2 class="app-name"><?php p($l->t('Group Sharing Blacklist')); ?></h2>
 	<div class="indent">
-		<p><?php p($l->t('Exclude groups from receiving shares.')); ?></p>
+		<p><?php p($l->t('Exclude groups from receiving shares')); ?></p>
 		<input name="blacklisted_receiver_groups" class="noautosave" value="<?php p($_['blacklistedReceivers']) ?>" style="width: 400px"/>
 		<br />
-		<em><?php p($l->t('These groups will not receive shares. Members of the group can still send and receive shares outside of the group.')); ?></em>
+		<em><?php p($l->t('These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual.')); ?></em>
 	</div>
 </div>

@@ -38,7 +38,7 @@ class AdminPanel implements ISettings {
 	}
 
 	public function getPriority() {
-		return 95;
+		return 80;
 	}
 
 	public function getSectionID() {
