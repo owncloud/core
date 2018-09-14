@@ -97,6 +97,7 @@ help:
 	@echo -e "Testing:\n"
 	@echo -e "make test\t\t\trun all tests"
 	@echo -e "make test-php\t\t\trun all PHP tests"
+	@echo -e "make test-php-style\t\trun PHP code style checks"
 	@echo -e "make test-js\t\t\trun Javascript tests"
 	@echo -e "make test-js-debug\t\trun Javascript tests in debug mode (continuous)"
 	@echo -e "make test-acceptance\t\trun acceptance tests"
@@ -106,8 +107,9 @@ help:
 	@echo -e "make test-php TEST_DATABASE=mysql TEST_PHP_SUITE=path/to/testfile.php"
 	@echo
 	@echo -e "Tools:\n"
+	@echo -e "make test-php-style-fix\t\trun PHP code style checks and fix any issues found"
 	@echo -e "make update-php-license-header\tUpdate license headers"
-	
+
 
 #
 # Basic required tools
@@ -210,6 +212,10 @@ test-php-lint: $(composer_dev_deps)
 test-php-style: $(composer_dev_deps)
 	$(composer_deps)/bin/php-cs-fixer fix -v --diff --diff-format udiff --dry-run --allow-risky yes
 
+
+.PHONY: test-php-style-fix
+test-php-style-fix: $(composer_dev_deps)
+	$(composer_deps)/bin/php-cs-fixer fix -v --diff --diff-format udiff --allow-risky yes
 
 .PHONY: test-php-phan
 test-php-phan: $(PHAN_BIN)
