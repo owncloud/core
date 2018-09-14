@@ -38,7 +38,7 @@ class SettingsPanel implements ISettings {
 	}
 
 	public function getPriority() {
-		return 0;
+		return 95;
 	}
 
 	public function getSectionID() {
