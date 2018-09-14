@@ -320,9 +320,7 @@ trait Sharing {
 		$url, $user = null, $password = null, $mimeType = null
 	) {
 		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
-		$this->response = HttpRequestHelper::get(
-			$url, $user, $password, $headers, null, null, null, true
-		);
+		$this->response = HttpRequestHelper::get($url, $user, $password, $headers);
 		PHPUnit_Framework_Assert::assertEquals(
 			200,
 			$this->response->getStatusCode()
@@ -470,7 +468,7 @@ trait Sharing {
 			$headers['OC-Autorename'] = 1;
 		}
 		$this->response = HttpRequestHelper::put(
-			$url, $token, $password, $headers, $body, null, null, true
+			$url, $token, $password, $headers, $body
 		);
 	}
 
