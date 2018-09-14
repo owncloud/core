@@ -18,6 +18,8 @@ Feature: upload file using new chunking
       | 3 | CCCCC |
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |
@@ -34,6 +36,8 @@ Feature: upload file using new chunking
       | 1 | AAAAA |
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |
@@ -50,6 +54,8 @@ Feature: upload file using new chunking
       | 1 | AAAAA |
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |
@@ -67,6 +73,8 @@ Feature: upload file using new chunking
       | 3 | CCCCC |
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |
@@ -93,6 +101,8 @@ Feature: upload file using new chunking
     When user "user0" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" with size 5 using the WebDAV API
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status       | /^error$/ |
@@ -104,9 +114,12 @@ Feature: upload file using new chunking
     And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
     And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
     And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
+    And the MOVE dav requests are slowed down by 3 seconds
     When user "user0" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" with size 15 using the WebDAV API
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |
@@ -122,9 +135,12 @@ Feature: upload file using new chunking
     And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
     And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
     And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
+    And the MOVE dav requests are slowed down by 3 seconds
     And user "user0" moves new chunk file with id "chunking-42" asynchronously to "/<file-name>" using the WebDAV API
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |

@@ -100,6 +100,7 @@ class LazyOpsPlugin extends ServerPlugin {
 
 		$response->setStatus(202);
 		$response->setHeader('Connection', 'close');
+		$response->setHeader('Content-Length', '0');
 		$response->setHeader('OC-JobStatus-Location', $location);
 
 		$this->shutdownManager->register(function () use ($request, $response) {

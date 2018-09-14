@@ -13,6 +13,8 @@ Feature: move (rename) file
     When user "user0" moves file "/welcome.txt" asynchronously to "/FOLDER/<destination-file-name>" using the WebDAV API
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |
@@ -33,6 +35,8 @@ Feature: move (rename) file
     When user "user0" moves file "/welcome.txt" asynchronously to "/FOLDER/welcome.txt" using the WebDAV API
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | ETag   | /^[0-9a-f]{32}$/  |
@@ -42,8 +46,11 @@ Feature: move (rename) file
 
   Scenario: Moving and overwriting a file
     When user "user0" moves file "/welcome.txt" asynchronously to "/textfile0.txt" using the WebDAV API
+    And the MOVE dav requests are slowed down by 3 seconds
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |
@@ -56,6 +63,8 @@ Feature: move (rename) file
     When user "user0" moves file "/textfile0.txt" asynchronously to "/TextFile0.txt" using the WebDAV API
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |
@@ -68,6 +77,8 @@ Feature: move (rename) file
     When user "user0" moves file "/textfile1.txt" asynchronously to "/TextFile0.txt" using the WebDAV API
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |
@@ -81,6 +92,8 @@ Feature: move (rename) file
     When user "user0" moves file "/textfile1.txt" asynchronously to "/PARENT/Parent.txt" using the WebDAV API
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |
@@ -258,12 +271,14 @@ Feature: move (rename) file
   Scenario: Moving and overwriting a file
     #need to slowdown the request for longer than the timeout
     #when doing LazyOps the server does not close the connection
-    #so we timout the request and chech the job-status
+    #so we timeout the request and check the job-status
     Given the HTTP-Request-timeout is set to 5 seconds
     And the MOVE dav requests are slowed down by 10 seconds
     When user "user0" moves file "/welcome.txt" asynchronously to "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions
+      | Connection | /^close$/ |
+      | Content-Length | /^0$/ |
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^started$/      |

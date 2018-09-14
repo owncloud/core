@@ -84,8 +84,9 @@ class LazyOpsPluginTest extends TestCase {
 		$request->method('getHeader')->with('OC-LazyOps')->willReturn(true);
 		$response= $this->createMock(ResponseInterface::class);
 		$response->expects($this->once())->method('setStatus')->with(202);
-		$response->expects($this->exactly(2))->method('setHeader')->withConsecutive(
+		$response->expects($this->exactly(3))->method('setHeader')->withConsecutive(
 			['Connection', 'close'],
+			['Content-Length', '0'],
 			['OC-JobStatus-Location', self::stringStartsWith('/remote.php/dav/job-status/alice/')]
 		);
 
