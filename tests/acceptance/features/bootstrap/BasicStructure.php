@@ -818,6 +818,100 @@ trait BasicStructure {
 	}
 
 	/**
+	 * Check the text in an HTTP reason phrase
+	 *
+	 * @Then /^the HTTP reason phrase should be "([^"]*)"$/
+	 *
+	 * @param string $reasonPhrase
+	 *
+	 * @return void
+	 */
+	public function theHTTPReasonPhraseShouldBe($reasonPhrase) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$reasonPhrase,
+			$this->getResponse()->getReasonPhrase(),
+			'Unexpected HTTP reason phrase in response'
+		);
+	}
+
+	/**
+	 * Check the text in an HTTP reason phrase
+	 * Use this step form if the expected text contains double quotes,
+	 * single quotes and other content that theHTTPReasonPhraseShouldBe()
+	 * cannot handle.
+	 *
+	 * After the step, write the expected text in PyString form like:
+	 *
+	 * """
+	 * File "abc.txt" can't be shared due to reason "xyz"
+	 * """
+	 *
+	 * @Then /^the HTTP reason phrase should be:$/
+	 *
+	 * @param PyStringNode $reasonPhrase
+	 *
+	 * @return void
+	 */
+	public function theHTTPReasonPhraseShouldBePyString(
+		PyStringNode $reasonPhrase
+	) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$reasonPhrase->getRaw(),
+			$this->getResponse()->getReasonPhrase(),
+			'Unexpected HTTP reason phrase in response'
+		);
+	}
+
+	/**
+	 * Check the text in an OCS status message
+	 *
+	 * @Then /^the OCS status message should be "([^"]*)"$/
+	 *
+	 * @param string $statusMessage
+	 *
+	 * @return void
+	 */
+	public function theOCSStatusMessageShouldBe($statusMessage) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$statusMessage,
+			$this->getOCSResponseStatusMessage(
+				$this->getResponse()
+			),
+			'Unexpected OCS status message in response'
+		);
+	}
+
+	/**
+	 * Check the text in an OCS status message.
+	 * Use this step form if the expected text contains double quotes,
+	 * single quotes and other content that theOCSStatusMessageShouldBe()
+	 * cannot handle.
+	 *
+	 * After the step, write the expected text in PyString form like:
+	 *
+	 * """
+	 * File "abc.txt" can't be shared due to reason "xyz"
+	 * """
+	 *
+	 * @Then /^the OCS status message should be:$/
+	 *
+	 * @param PyStringNode $statusMessage
+	 *
+	 * @return void
+	 */
+	public function theOCSStatusMessageShouldBePyString(
+		PyStringNode $statusMessage
+	) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$statusMessage->getRaw(),
+			$this->getOCSResponseStatusMessage(
+				$this->getResponse()
+			),
+			'Unexpected OCS status message in response'
+		);
+	}
+
+	/**
 	 * @Then /^the XML "([^"]*)" "([^"]*)" value should be "([^"]*)"$/
 	 *
 	 * @param string $key1
