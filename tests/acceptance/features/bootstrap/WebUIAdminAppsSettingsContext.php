@@ -26,6 +26,8 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\AdminAppsSettingsPage;
 
+require_once 'bootstrap.php';
+
 /**
  * WebUI AdminAppsSettings context.
  */
