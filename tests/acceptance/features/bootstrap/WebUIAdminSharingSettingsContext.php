@@ -26,6 +26,8 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\AdminSharingSettingsPage;
 
+require_once 'bootstrap.php';
+
 /**
  * WebUI AdminSharingSettings context.
  */
