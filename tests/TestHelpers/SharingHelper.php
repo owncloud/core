@@ -77,7 +77,7 @@ class SharingHelper {
 		$sharePassword = null,
 		$permissions = null,
 		$linkName = null,
-		$expireDate = null, // unused, to be implemented
+		$expireDate = null,
 		$ocsApiVersion = 1,
 		$sharingApiVersion = 1
 	) {
@@ -169,6 +169,9 @@ class SharingHelper {
 		}
 		if ($linkName !== null) {
 			$fd['name'] = $linkName;
+		}
+		if ($expireDate !== null) {
+			$fd['expireDate'] = \date('Y-m-d', \strtotime($expireDate));
 		}
 
 		return HttpRequestHelper::post($fullUrl, $user, $password, null, $fd);

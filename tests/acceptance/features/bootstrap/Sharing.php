@@ -130,6 +130,8 @@ trait Sharing {
 	 * @param boolean $publicUpload
 	 * @param string|null $sharePassword
 	 * @param string|int|string[]|int[]|null $permissions
+	 * @param string $linkName
+	 * @param string $expireDate
 	 *
 	 * @return void
 	 */
@@ -138,7 +140,9 @@ trait Sharing {
 		$path,
 		$publicUpload = false,
 		$sharePassword = null,
-		$permissions = null
+		$permissions = null,
+		$linkName = null,
+		$expireDate = null
 	) {
 		$this->response = SharingHelper::createShare(
 			$this->getBaseUrl(),
@@ -150,8 +154,8 @@ trait Sharing {
 			$publicUpload,
 			$sharePassword,
 			$permissions,
-			null, // linkName
-			null, // expireDate
+			$linkName,
+			$expireDate,
 			$this->ocsApiVersion,
 			$this->sharingApiVersion
 		);
@@ -210,6 +214,42 @@ trait Sharing {
 	public function aPublicShareOfIsCreatedWithPermission($path, $permissions) {
 		$this->createAPublicShare(
 			$this->currentUser, $path, true, null, $permissions
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has created a public share of (?:file|folder) "([^"]*)" with expiry "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param string $expiryDate in a valid date format, e.g. "+30 days"
+	 *
+	 * @return void
+	 */
+	public function userCreatesAPublicShareOfWithExpiry(
+		$user, $path, $expiryDate
+	) {
+		$this->createAPublicShare(
+			$user, $path, true, null, null, null, $expiryDate
+		);
+	}
+
+	/**
+	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)$"/
+	 * @Given /^the user has created a public share of (?:file|folder) "([^"]*)" with expiry "([^"]*)$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param string $expiryDate in a valid date format, e.g. "+30 days"
+	 *
+	 * @return void
+	 */
+	public function aPublicShareOfIsCreatedWithExpiry(
+		$user, $path, $expiryDate
+	) {
+		$this->createAPublicShare(
+			$this->currentUser, $path, true, null, null, null, $expiryDate
 		);
 	}
 
@@ -544,6 +584,7 @@ trait Sharing {
 	 * @param string $password
 	 * @param int $permissions
 	 * @param string $linkName
+	 * @param string $expireDate
 	 *
 	 * @return void
 	 */
@@ -555,7 +596,8 @@ trait Sharing {
 		$publicUpload = null,
 		$password = null,
 		$permissions = null,
-		$linkName = null
+		$linkName = null,
+		$expireDate = null
 	) {
 		$this->response = SharingHelper::createShare(
 			$this->getBaseUrl(),
@@ -568,7 +610,7 @@ trait Sharing {
 			$password,
 			$permissions,
 			$linkName,
-			null, //expireDate
+			$expireDate,
 			$this->ocsApiVersion,
 			$this->sharingApiVersion
 		);
