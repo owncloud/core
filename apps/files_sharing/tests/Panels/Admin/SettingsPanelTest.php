@@ -44,7 +44,7 @@ class SettingsPanelTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertEquals(0, $this->settingsPanel->getPriority());
+		$this->assertEquals(95, $this->settingsPanel->getPriority());
 	}
 
 	public function testGetPanel() {
