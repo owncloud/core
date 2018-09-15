@@ -127,9 +127,6 @@ OC.L10N.register(
     "%s is publicly shared" : "%s esta compartido publicamente",
     "Download" : "Descargar",
     "Download %s" : "Descargar %s",
-    "Direct link" : "Enlace directo",
-    "Files Sharing" : "Compartir archivos",
-    "Exclude groups from receiving shares." : "Excluir grupos de recibir compartidos",
-    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Estos grupos no pueden recibir compartidos. Los miembros del grupo todavía pueden enviar y recibir compartidos fuera del grupo."
+    "Direct link" : "Enlace directo"
 },
 "nplurals=2; plural=(n != 1);");

@@ -125,9 +125,6 @@
     "%s is publicly shared" : "%s wird öffentlich geteilt",
     "Download" : "Herunterladen",
     "Download %s" : "Download %s",
-    "Direct link" : "Direkte Verlinkung",
-    "Files Sharing" : "Dateifreigabe",
-    "Exclude groups from receiving shares." : "Gruppen vom Empfang von Freigaben ausschließen",
-    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Diese Gruppen werden keine Freigaben bekommen. Mitglieder der Gruppe können weiterhin Freigaben außerhalb der Gruppe senden und empfangen."
+    "Direct link" : "Direkte Verlinkung"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

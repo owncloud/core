@@ -125,9 +125,6 @@
     "%s is publicly shared" : "%s foi compartilhado publicamente",
     "Download" : "Baixar",
     "Download %s" : "Baixar %s",
-    "Direct link" : "Link direto",
-    "Files Sharing" : "Compartilhamento de Arquivos",
-    "Exclude groups from receiving shares." : "Excluir grupos de receber compartilhamentos.",
-    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Esses grupos não receberão compartilhamentos. Os membros do grupo ainda podem enviar e receber compartilhamentos fora do grupo."
+    "Direct link" : "Link direto"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

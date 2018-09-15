@@ -125,9 +125,6 @@
     "%s is publicly shared" : "%s ได้ถูกแชร์สู่สาธารณะแล้ว",
     "Download" : "ดาวน์โหลด",
     "Download %s" : "ดาวน์โหลด %s",
-    "Direct link" : "ลิงก์โดยตรง",
-    "Files Sharing" : "กำลังแชร์ไฟล์",
-    "Exclude groups from receiving shares." : "ยกเว้นกลุ่มที่ได้รับการแชร์",
-    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "กลุ่มเหล่านี้จะไม่ได้รับการแชร์ สมาชิกของกลุ่มยังสามารถส่งและรับการแชร์ที่อยู่นอกกลุ่มได้"
+    "Direct link" : "ลิงก์โดยตรง"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

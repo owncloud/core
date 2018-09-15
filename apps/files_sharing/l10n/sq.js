@@ -127,9 +127,6 @@ OC.L10N.register(
     "%s is publicly shared" : "%s ndahet publikisht me të tjerët",
     "Download" : "Shkarko",
     "Download %s" : "Shkarko %s",
-    "Direct link" : "Lidhje e drejtpërdrejtë",
-    "Files Sharing" : "Shkëmbim Kartelash",
-    "Exclude groups from receiving shares." : "Përjashtoni grupe nga marrje ndarjesh me të tjerë.",
-    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Këto grupe nuk do të marrin ndarje. Anëtarët e grupit munden prapëseprapë të dërgojnë dhe marrin ndarje jashtë grupit."
+    "Direct link" : "Lidhje e drejtpërdrejtë"
 },
 "nplurals=2; plural=(n != 1);");

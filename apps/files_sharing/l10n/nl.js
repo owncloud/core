@@ -123,8 +123,6 @@ OC.L10N.register(
     "%s is publicly shared" : "%s is openbaar gedeeld",
     "Download" : "Downloaden",
     "Download %s" : "Download %s",
-    "Direct link" : "Directe link",
-    "Exclude groups from receiving shares." : "Groepen uitsluiten van het ontvangen van shares.",
-    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Deze groepen zullen geen shares meer ontvangen. Leden van deze groep kunnen nog wel shares verzenden en ontvangen buiten deze groep om."
+    "Direct link" : "Directe link"
 },
 "nplurals=2; plural=(n != 1);");
