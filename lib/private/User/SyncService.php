@@ -223,12 +223,6 @@ class SyncService {
 				$a->setQuota($quota);
 			}
 		}
-		if ($quota === null) {
-			list($hasKey, $quota) = $this->readUserConfig($uid, 'files', 'quota');
-			if ($hasKey) {
-				$a->setQuota($quota);
-			}
-		}
 		if (\array_key_exists('quota', $a->getUpdatedFields())) {
 			$this->logger->debug(
 				"Setting quota for <$uid> to <$quota>", ['app' => self::class]
