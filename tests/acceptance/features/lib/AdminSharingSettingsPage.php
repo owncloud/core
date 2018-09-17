@@ -146,7 +146,7 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	}
 
 	/**
-	 * toggle mail notification on public share
+	 * toggle mail notification on public link share
 	 *
 	 * @param string $action "enables|disables"
 	 *
@@ -161,13 +161,13 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	}
 
 	/**
-	 * toggle social share on public share
+	 * toggle social share on public link share
 	 *
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function toggleSocialShareOnPublicShare($action) {
+	public function toggleSocialShareOnPublicLinkShare($action) {
 		$this->toggleCheckbox(
 			$action,
 			$this->shareFileViaSocialMediaOnPublicShareCheckboxXpath,

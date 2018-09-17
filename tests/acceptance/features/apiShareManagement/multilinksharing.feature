@@ -9,25 +9,22 @@ Feature: multilinksharing
 	@smokeTest
 	Scenario Outline: Creating three public shares of a folder
 		Given using OCS API version "<ocs_api_version>"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| shareType    | 3           |
 			| password     | publicpw    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
 			| permissions  | 15          |
 			| name         | sharedlink1 |
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| shareType    | 3           |
 			| password     | publicpw    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
 			| permissions  | 15          |
 			| name         | sharedlink2 |
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| shareType    | 3           |
 			| password     | publicpw    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
@@ -48,23 +45,20 @@ Feature: multilinksharing
 
 	Scenario Outline: Creating three public shares of a file
 		Given using OCS API version "<ocs_api_version>"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| shareType   | 3             |
 			| password    | publicpw      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink1   |
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| shareType   | 3             |
 			| password    | publicpw      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink2   |
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| shareType   | 3             |
 			| password    | publicpw      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
@@ -84,17 +78,15 @@ Feature: multilinksharing
 
 	Scenario Outline: Check that updating password doesn't remove name of links
 		Given using OCS API version "<ocs_api_version>"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| shareType    | 3           |
 			| password     | publicpw    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
 			| permissions  | 15          |
 			| name         | sharedlink1 |
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| shareType    | 3           |
 			| password     | publicpw    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
@@ -114,16 +106,14 @@ Feature: multilinksharing
 
 	Scenario: Deleting a file deletes also its public links
 		Given using OCS API version "1"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| shareType   | 3             |
 			| password    | publicpw      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink1   |
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| shareType   | 3             |
 			| password    | publicpw      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
@@ -135,30 +125,27 @@ Feature: multilinksharing
 		And as user "user0" the public shares of file "/textfile0.txt" should be
 			| | | |
 
-	Scenario Outline: Deleting one public share of a file doesn't affect the rest
+	Scenario Outline: Deleting one public link share of a file doesn't affect the rest
 		Given using OCS API version "<ocs_api_version>"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| shareType   | 3             |
 			| password    | publicpw      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink1   |
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| shareType   | 3             |
 			| password    | publicpw      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink2   |
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| shareType   | 3             |
 			| password    | publicpw      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink3   |
-		When user "user0" deletes public share named "sharedlink2" in file "/textfile0.txt" using the sharing API
+		When user "user0" deletes public link share named "sharedlink2" in file "/textfile0.txt" using the sharing API
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And as user "user0" the public shares of file "/textfile0.txt" should be
@@ -171,16 +158,14 @@ Feature: multilinksharing
 
 	Scenario: Overwriting a file doesn't remove its public shares
 		Given using OCS API version "1"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| shareType   | 3             |
 			| password    | publicpw      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink1   |
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| shareType   | 3             |
 			| password    | publicpw      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
@@ -192,17 +177,15 @@ Feature: multilinksharing
 
 	Scenario: Renaming a folder doesn't remove its public shares
 		Given using OCS API version "1"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| shareType    | 3           |
 			| password     | publicpw    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
 			| permissions  | 15          |
 			| name         | sharedlink1 |
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| shareType    | 3           |
 			| password     | publicpw    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
