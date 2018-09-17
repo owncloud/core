@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Reload the filelist view when accepting or rejecting a share - [#31798](https://github.com/owncloud/core/issues/31798)
 - Allow different language in public link share email - [#31767](https://github.com/owncloud/core/issues/31767)
 - Command files:scan now outputs items per second - [#32093](https://github.com/owncloud/core/issues/32093)
-- New option to prevent users to share with specific system groups - [#31740](https://github.com/owncloud/core/issues/31740) [#32533](https://github.com/owncloud/core/issues/32533) [#32501](https://github.com/owncloud/core/issues/32501)
+- New option to prevent users to share with specific system groups - [#31740](https://github.com/owncloud/core/issues/31740) [#32533](https://github.com/owncloud/core/issues/32533) [#32501](https://github.com/owncloud/core/issues/32501) [#32707](https://github.com/owncloud/core/issues/32707)
 - Hook "loadAdditionalScripts" now also available for public link page - [#31944](https://github.com/owncloud/core/issues/31944)
 - Add url parameter to files app which opens a specific sidebar tab - [#32202](https://github.com/owncloud/core/issues/32202)
 - Retry chunks in web UI on stalled or timed out uploads - [#32170](https://github.com/owncloud/core/issues/32170) [#32335](https://github.com/owncloud/core/issues/32335)
