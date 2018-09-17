@@ -8,9 +8,8 @@ Feature: sharing
 	@smokeTest
 	Scenario: Downloading from upload-only share is forbidden
 		Given user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path        | FOLDER |
-			| shareType   | 3      |
 			| permissions | 4      |
 		Then the public shared file "test.txt" should not be able to be downloaded
 		And the HTTP status code should be "404"
@@ -53,9 +52,8 @@ Feature: sharing
 
 	@smokeTest
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with default permissions
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path         | PARENT   |
-			| shareType    | 3        |
 			| password     | publicpw |
 		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
 
@@ -80,9 +78,8 @@ Feature: sharing
 		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read/Write permission 
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path         | PARENT   |
-			| shareType    | 3        |
 			| password     | publicpw |
 			| permissions  | 15       |
 		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
@@ -108,9 +105,8 @@ Feature: sharing
 		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read only permission 
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path         | PARENT   |
-			| shareType    | 3        |
 			| password     | publicpw |
 			| permissions  | 1        |
 		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"

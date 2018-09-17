@@ -103,12 +103,12 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When /^the administrator (enables|disables) mail notification on public share using the webUI$/
+	 * @When /^the administrator (enables|disables) mail notification on public link share using the webUI$/
 	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function adminTogglesMailNotificationOnPublicShare($action) {
+	public function adminTogglesMailNotificationOnPublicLinkShare($action) {
 		$this->adminSharingSettingsPage->toggleMailNotification($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
@@ -116,13 +116,13 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When /^the administrator (enables|disables) social media share on public share using the webUI$/
+	 * @When /^the administrator (enables|disables) social media share on public link share using the webUI$/
 	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function adminTogglesSocialShareOnPublicShare($action) {
-		$this->adminSharingSettingsPage->toggleSocialShareOnPublicShare($action);
+	public function adminTogglesSocialShareOnPublicLinkShare($action) {
+		$this->adminSharingSettingsPage->toggleSocialShareOnPublicLinkShare($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);

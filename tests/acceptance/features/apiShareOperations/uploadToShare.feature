@@ -8,9 +8,8 @@ Feature: sharing
 	@smokeTest
 	Scenario: Uploading same file to a public upload-only share multiple times
 		Given as user "user0"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | FOLDER |
-			| shareType   | 3      |
 			| permissions | 4      |
 		When the public uploads file "test.txt" with content "test" using the old WebDAV API
 		And the public uploads file "test.txt" with content "test2" with autorename mode using the old WebDAV API
@@ -18,18 +17,16 @@ Feature: sharing
 		And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
 
 	Scenario: Uploading file to a public upload-only share that was deleted does not work
-		Given user "user0" has created a share with settings
+		Given user "user0" has created a public link share with settings
 			| path        | FOLDER |
-			| shareType   | 3      |
 			| permissions | 4      |
 		When user "user0" deletes file "/FOLDER" using the WebDAV API
 		Then publicly uploading a file should not work
 		And the HTTP status code should be "404"
 
 	Scenario: Uploading file to a public read-only share folder does not work
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path        | FOLDER |
-			| shareType   | 3      |
 			| permissions | 1      |
 		Then publicly uploading a file should not work
 		And the HTTP status code should be "403"
@@ -58,18 +55,16 @@ Feature: sharing
 
 	Scenario: Uploading to a public upload-only share
 		Given as user "user0"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | FOLDER |
-			| shareType   | 3      |
 			| permissions | 4      |
 		When the public uploads file "test.txt" with content "test" using the old WebDAV API
 		Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
 	Scenario: Uploading to a public upload-only share with password
 		Given as user "user0"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | FOLDER   |
-			| shareType   | 3        |
 			| password    | publicpw |
 			| permissions | 4        |
 		When the public uploads file "test.txt" with password "publicpw" and content "test" using the old WebDAV API
@@ -99,9 +94,8 @@ Feature: sharing
 
 	Scenario: Uploading to a public read/write share with password
 		Given as user "user0"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | FOLDER   |
-			| shareType   | 3        |
 			| password    | publicpw |
 			| permissions | 15       |
 		When the public uploads file "test.txt" with password "publicpw" and content "test" using the old WebDAV API
@@ -142,9 +136,8 @@ Feature: sharing
 	@smokeTest
 	Scenario: Uploading to a public read/write share with password
 		Given as user "user0"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | FOLDER   |
-			| shareType   | 3        |
 			| password    | publicpw |
 			| permissions | 15       |
 		When the public uploads file "test.txt" with password "publicpw" and content "test" using the old WebDAV API
@@ -175,9 +168,8 @@ Feature: sharing
 		Then the HTTP status code should be "507"
 
 	Scenario: Uploading file to a public shared folder with read/write permission when the sharer has unsufficient quota does not work
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path        | FOLDER |
-			| shareType   | 3      |
 			| permissions | 15     |
 		When the quota of user "user0" has been set to "0"
 		Then publicly uploading a file should not work
@@ -208,18 +200,16 @@ Feature: sharing
 		Then the HTTP status code should be "507"
 
 	Scenario: Uploading file to a public shared folder with upload-only permission when the sharer has unsufficient quota does not work
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path        | FOLDER |
-			| shareType   | 3      |
 			| permissions | 4      |
 		When the quota of user "user0" has been set to "0"
 		Then publicly uploading a file should not work
 		And the HTTP status code should be "507"
 
 	Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled after sharing the folder
-		Given user "user0" has created a share with settings
+		Given user "user0" has created a public link share with settings
 			| path        | FOLDER |
-			| shareType   | 3      |
 			| permissions | 4      |
 		When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "no"
 		Then publicly uploading a file should not work
@@ -227,18 +217,16 @@ Feature: sharing
 
 	Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled before sharing and again enabled after sharing the folder
 		Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
-		And user "user0" has created a share with settings
+		And user "user0" has created a public link share with settings
 			| path        | FOLDER |
-			| shareType   | 3      |
 			| permissions | 31     |
 		When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "yes"
 		Then publicly uploading a file should not work
 		And the HTTP status code should be "403"
 
 	Scenario: Uploading file to a public shared folder works when allow public uploads has been disabled and again enabled after sharing the folder
-		Given user "user0" has created a share with settings
+		Given user "user0" has created a public link share with settings
 			| path        | FOLDER |
-			| shareType   | 3      |
 			| permissions | 4      |
 		And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
 		And parameter "shareapi_allow_public_upload" of app "core" has been set to "yes"

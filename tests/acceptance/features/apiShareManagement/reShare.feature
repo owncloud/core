@@ -84,9 +84,8 @@ Feature: sharing
 		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 1
-		When user "user1" creates a share using the sharing API with settings
+		When user "user1" creates a public link share using the sharing API with settings
 			| path         | /test |
-			| shareType    | 3     |
 			| publicUpload | false |
 		Then the OCS status code should be "404"
 		And the HTTP status code should be "<http_status_code>"
@@ -99,9 +98,8 @@ Feature: sharing
 		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 15
-		When user "user1" creates a share using the sharing API with settings
+		When user "user1" creates a public link share using the sharing API with settings
 			| path         | /test |
-			| shareType    | 3     |
 			| publicUpload | false |
 		Then the OCS status code should be "404"
 		And the HTTP status code should be "<http_status_code>"

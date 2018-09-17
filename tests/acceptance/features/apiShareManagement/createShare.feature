@@ -66,11 +66,10 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
-	Scenario Outline: Creating a new public share of a file
+	Scenario Outline: Creating a new public link share of a file
 		Given using OCS API version "<ocs_api_version>"
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path      | welcome.txt |
-			| shareType | 3           |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the last public shared file should be able to be downloaded without a password
@@ -80,11 +79,10 @@ Feature: sharing
 			|2              |200            |
 
 	@smokeTest
-	Scenario Outline: Creating a new public share of a file with password
+	Scenario Outline: Creating a new public link share of a file with password
 		Given using OCS API version "<ocs_api_version>"
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path      | welcome.txt |
-			| shareType | 3           |
 			| password  | publicpw    |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
@@ -94,11 +92,10 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
-	Scenario Outline: Trying to create a new public share of a file with edit permissions results in a read-only share
+	Scenario Outline: Trying to create a new public link share of a file with edit permissions results in a read-only share
 		Given using OCS API version "<ocs_api_version>"
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path        | welcome.txt |
-			| shareType   | 3           |
 			| permissions | 31          |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
@@ -115,11 +112,10 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
-	Scenario Outline: Creating a new public share of a folder
+	Scenario Outline: Creating a new public link share of a folder
 		Given using OCS API version "<ocs_api_version>"
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path      | PARENT   |
-			| shareType | 3        |
 			| password  | publicpw |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
@@ -158,9 +154,8 @@ Feature: sharing
 	Scenario Outline: Creating a link share with no specified permissions defaults to read permissions
 		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has created a folder "/afolder"
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path      | /afolder |
-			| shareType | 3        |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -176,9 +171,8 @@ Feature: sharing
 		Given using OCS API version "<ocs_api_version>"
 		And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
 		And user "user0" has created a folder "/afolder"
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path      | /afolder |
-			| shareType | 3        |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -193,9 +187,8 @@ Feature: sharing
 	Scenario Outline: Creating a link share with edit permissions keeps it
 		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has created a folder "/afolder"
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path        | /afolder |
-			| shareType   | 3        |
 			| permissions | 15       |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
@@ -260,11 +253,10 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
-	Scenario Outline: Do not allow sharing of the root
+	Scenario Outline: Do not allow public sharing of the root
 		Given using OCS API version "<ocs_api_version>"
-		When user "user0" creates a share using the sharing API with settings
+		When user "user0" creates a public link share using the sharing API with settings
 			| path      | / |
-			| shareType | 3 |
 		Then the OCS status code should be "<ocs_status_code>"
 		Examples:
 			|ocs_api_version|ocs_status_code|
@@ -274,13 +266,11 @@ Feature: sharing
 	Scenario: Only allow 1 link share per file/folder
 		Given using OCS API version "1"
 		And as user "user0"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path      | welcome.txt |
-			| shareType | 3           |
 		And the last share id has been remembered
-		When the user creates a share using the sharing API with settings
+		When the user creates a public link share using the sharing API with settings
 			| path      | welcome.txt |
-			| shareType | 3           |
 		Then the share ids should match
 
 	@smokeTest
