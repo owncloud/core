@@ -344,6 +344,7 @@ OC.L10N.register(
     "Recipients can view or download contents." : "I destinatari possono vedere o scaricare contenuti",
     "Download / View / Upload" : "Scarica / Visiona / Carica",
     "Recipients can view, download, edit, delete and upload contents." : "I destinatari possono vedere, scaricare, modificare, cancellare ed inviare contenuti",
-    "Imprint" : "Imprint"
+    "Imprint" : "Imprint",
+    "Privacy Policy" : "Regole sulla riservatezza"
 },
 "nplurals=2; plural=(n != 1);");
