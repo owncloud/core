@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## 10.0.10 - 2018-09-18
 ### Added
 - Store user name in oc_preferences when provided by backend, use in external storage save in session mode [#32587](https://github.com/owncloud/core/pull/32587)
 - Support JSON format for settings passed to occ system:config:set - [#32524](https://github.com/owncloud/core/issues/32524)
@@ -771,7 +771,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[Unreleased]: https://github.com/owncloud/core/compare/v10.0.9...stable10
+[10.0.10]: https://github.com/owncloud/core/compare/v10.0.9...v10.0.10
 [10.0.9]: https://github.com/owncloud/core/compare/v10.0.8...v10.0.9
 [10.0.8]: https://github.com/owncloud/core/compare/v10.0.7...v10.0.8
 [10.0.7]: https://github.com/owncloud/core/compare/v10.0.6...v10.0.7
