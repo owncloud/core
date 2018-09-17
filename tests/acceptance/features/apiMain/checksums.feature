@@ -141,6 +141,8 @@ Feature: checksums
     And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
     And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with checksum "SHA1:f005ba11" using the WebDAV API
     Then the HTTP status code should be "400"
+    And user "user0" should not see the following elements
+      | /myChunkedFile.txt |
 
   Scenario: Upload new dav chunked file using async MOVE where checksum matches
     Given using new DAV path
@@ -195,6 +197,8 @@ Feature: checksums
     And file "/chksumtst.txt" has been deleted for user "user0"
     When user "user0" uploads file with checksum "SHA1:f005ba11" and content "Some Text" to "/chksumtst.txt" using the WebDAV API
     Then the HTTP status code should be "400"
+    And user "user0" should not see the following elements
+      | /chksumtst.txt |
     Examples:
 			| dav_version   |
 			| old           |
@@ -242,3 +246,5 @@ Feature: checksums
     Given using new DAV path
     When user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e" using the WebDAV API
     Then the HTTP status code should be "503"
+    And user "user0" should not see the following elements
+      | /myChecksumFile.txt |
