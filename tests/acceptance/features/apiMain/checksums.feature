@@ -134,6 +134,7 @@ Feature: checksums
     And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with checksum "SHA1:5d84d61b03fdacf813640f5242d309721e0629b1" using the WebDAV API
     Then the HTTP status code should be "201"
 
+  @skipOnStorage:ceph @files_primary_s3-issue-128
   Scenario: Upload new dav chunked file where checksum does not match
     Given using new DAV path
     When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
@@ -144,6 +145,7 @@ Feature: checksums
     And user "user0" should not see the following elements
       | /myChunkedFile.txt |
 
+  @skipOnStorage:ceph @files_primary_s3-issue-128
   Scenario Outline: Upload a file where checksum does not match
     Given using <dav_version> DAV path
     And file "/chksumtst.txt" has been deleted for user "user0"
