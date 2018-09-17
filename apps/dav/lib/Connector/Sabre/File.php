@@ -206,9 +206,7 @@ class File extends Node implements IFile, IFileNode {
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 			}
 
-			if (!self::isChecksumValid($partStorage, $internalPartPath)) {
-				throw new BadRequest('The computed checksum does not match the one received from the client.');
-			}
+			self::isChecksumValid($partStorage, $internalPartPath);
 
 			if ($result === false) {
 				$expected = -1;
@@ -533,9 +531,7 @@ class File extends Node implements IFile, IFileNode {
 
 					$chunk_handler->file_assemble($partStorage, $partInternalPath);
 
-					if (!self::isChecksumValid($partStorage, $partInternalPath)) {
-						throw new BadRequest('The computed checksum does not match the one received from the client.');
-					}
+					self::isChecksumValid($partStorage, $partInternalPath);
 
 					// here is the final atomic rename
 					$renameOkay = $targetStorage->moveFromStorage($partStorage, $partInternalPath, $targetInternalPath);
@@ -607,7 +603,7 @@ class File extends Node implements IFile, IFileNode {
 	 *
 	 * @param Storage $storage
 	 * @param $path
-	 * @return bool
+	 * @throws BadRequest
 	 */
 	private static function isChecksumValid(Storage $storage, $path) {
 		$meta = $storage->getMetaData($path);
@@ -615,13 +611,15 @@ class File extends Node implements IFile, IFileNode {
 
 		if (!isset($request->server['HTTP_OC_CHECKSUM']) || !isset($meta['checksum'])) {
 			// No comparison possible, skip the check
-			return true;
+			return;
 		}
 
 		$expectedChecksum = \trim($request->server['HTTP_OC_CHECKSUM']);
 		$computedChecksums = $meta['checksum'];
 
-		return \strpos($computedChecksums, $expectedChecksum) !== false;
+		if (\strpos($computedChecksums, $expectedChecksum) === false) {
+			throw new BadRequest("The computed checksum ($computedChecksums) does not match the one received from the client ($expectedChecksum).");
+		}
 	}
 
 	/**
