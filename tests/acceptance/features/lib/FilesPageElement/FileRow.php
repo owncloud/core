@@ -58,6 +58,7 @@ class FileRow extends OwncloudPage {
 	protected $sharerXpath = "//a[@data-action='Share']";
 	protected $acceptShareBtnXpath = "//span[@class='fileactions']//a[contains(@class,'accept')]";
 	protected $declinePendingShareBtnXpath = "//a[@data-action='Reject']";
+	protected $sharingDialogXpath = ".//div[@class='dialogContainer']";
 
 	/**
 	 *
@@ -176,7 +177,18 @@ class FileRow extends OwncloudPage {
 	public function openSharingDialog() {
 		$this->findSharingButton()->click();
 		$this->waitTillElementIsNull($this->loadingIndicatorXpath);
-		return $this->getPage("FilesPageElement\\SharingDialog");
+		$sharingDailog = $this->find('xpath', $this->sharingDialogXpath);
+		if ($sharingDailog === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $xpathLocator could not find button '$action' in action Menu"
+			);
+		} else {
+			$this->waitFor(
+				STANDARDUIWAITTIMEOUTMILLISEC / 1000, [$sharingDailog, 'isVisible']
+			);
+			return $this->getPage("FilesPageElement\\SharingDialog");
+		}
 	}
 
 	/**
