@@ -43,6 +43,7 @@ class PublicLinkTab extends OwncloudPage {
 	private $popupXpath = ".//div[@class='oc-dialog' and not(contains(@style,'display: none'))]";
 	private $linkEntryByNameXpath = ".//*[@class='link-entry--title' and .=%s]/..";
 	private $linkUrlInputXpath = ".//input";
+	private $publicLinkWarningMessageXpath = ".//*[@class='error-message-global'][last()]";
 	
 	/**
 	 * as it's not possible to run __construct() we need to run this function
@@ -206,6 +207,15 @@ class PublicLinkTab extends OwncloudPage {
 	 */
 	public function copyLinkToClipboard($name) {
 		throw new Exception("not implemented");
+	}
+
+	/**
+	 * @return void
+	 */
+	public function getWarningMessage() {
+		$warningMessageField = $this->find("xpath", $this->publicLinkWarningMessageXpath);
+		$warningMessage = $warningMessageField->getText();
+		return $warningMessage;
 	}
 
 	/**
