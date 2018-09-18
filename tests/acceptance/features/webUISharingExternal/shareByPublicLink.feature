@@ -78,3 +78,15 @@ So that public sharing is limited according to organization policy
 		When the user uploads overwriting the file "lorem.txt" using the webUI and retries if the file is locked
 		Then the file "lorem.txt" should be listed on the webUI
 		And the content of "lorem.txt" on the remote server should be the same as the local "lorem.txt"
+
+	Scenario: public should be able to access a public link with correct password
+		When the user creates a new public link for the folder "simple-folder" using the webUI with
+		| password | pass123 |
+		And the public accesses the last created public link with password "pass123" using the webUI
+		Then the file "lorem.txt" should be listed on the webUI
+
+	Scenario: public should not be able to access a public link with wrong password
+		When the user creates a new public link for the folder "simple-folder" using the webUI with
+		| password | pass123 |
+		And the public tries to access the last created public link with wrong password "pass12" using the webUI
+		Then the public should not get access to the publicly shared file
