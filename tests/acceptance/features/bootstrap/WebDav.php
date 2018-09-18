@@ -19,6 +19,7 @@
  *
  */
 
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Ring\Exception\ConnectException;
@@ -602,6 +603,20 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^the content of file "([^"]*)" should be:$/
+	 *
+	 * @param string $fileName
+	 * @param PyStringNode $content
+	 *
+	 * @return void
+	 */
+	public function contentOfFileShouldBePyString(
+		$fileName, $user, PyStringNode $content
+	) {
+		$this->contentOfFileShouldBe($fileName, $content->getRaw());
+	}
+
+	/**
 	 * @Then /^the content of file "([^"]*)" should be "([^"]*)" plus end-of-line$/
 	 *
 	 * @param string $fileName
@@ -626,6 +641,21 @@ trait WebDav {
 	public function contentOfFileForUserShouldBe($fileName, $user, $content) {
 		$this->userDownloadsTheFileUsingTheAPI($user, $fileName);
 		$this->downloadedContentShouldBe($content);
+	}
+
+	/**
+	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" should be:$/
+	 *
+	 * @param string $fileName
+	 * @param string $user
+	 * @param PyStringNode $content
+	 *
+	 * @return void
+	 */
+	public function contentOfFileForUserShouldBePyString(
+		$fileName, $user, PyStringNode $content
+	) {
+		$this->contentOfFileForUserShouldBe($fileName, $user, $content->getRaw());
 	}
 
 	/**
