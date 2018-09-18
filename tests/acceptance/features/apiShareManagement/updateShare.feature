@@ -23,12 +23,11 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
-	Scenario Outline: Creating a new public share, updating its expiration date and getting its info
+	Scenario Outline: Creating a new public link share, updating its expiration date and getting its info
 		Given using OCS API version "<ocs_api_version>"
 		And as user "user0"
-		When the user creates a share using the sharing API with settings
+		When the user creates a public link share using the sharing API with settings
 			| path      | FOLDER |
-			| shareType | 3      |
 		And the user updates the last share using the sharing API with
 			| expireDate | +3 days |
 		And the user gets the info of the last share using the sharing API
@@ -57,12 +56,11 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
-	Scenario Outline: Creating a new public share with password and adding an expiration date
+	Scenario Outline: Creating a new public link share with password and adding an expiration date
 		Given using OCS API version "<ocs_api_version>"
 		And as user "user0"
-		When the user creates a share using the sharing API with settings
+		When the user creates a public link share using the sharing API with settings
 			| path      | welcome.txt |
-			| shareType | 3           |
 			| password  | publicpw    |
 		And the user updates the last share using the sharing API with
 			| expireDate | +3 days |
@@ -74,12 +72,11 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
-	Scenario Outline: Creating a new public share, updating its expiration date and getting its info
+	Scenario Outline: Creating a new public link share, updating its expiration date and getting its info
 		Given using OCS API version "<ocs_api_version>"
 		And as user "user0"
-		When the user creates a share using the sharing API with settings
+		When the user creates a public link share using the sharing API with settings
 			| path      | FOLDER |
-			| shareType | 3      |
 		And the user updates the last share using the sharing API with
 			| expireDate | +3 days |
 		And the user gets the info of the last share using the sharing API
@@ -108,12 +105,11 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
-	Scenario Outline: Creating a new public share, updating its password and getting its info
+	Scenario Outline: Creating a new public link share, updating its password and getting its info
 		Given using OCS API version "<ocs_api_version>"
 		And as user "user0"
-		When the user creates a share using the sharing API with settings
+		When the user creates a public link share using the sharing API with settings
 			| path      | FOLDER |
-			| shareType | 3      |
 		And the user updates the last share using the sharing API with
 			| password | publicpw |
 		And the user gets the info of the last share using the sharing API
@@ -141,12 +137,11 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
-	Scenario Outline: Creating a new public share, updating its permissions and getting its info
+	Scenario Outline: Creating a new public link share, updating its permissions and getting its info
 		Given using OCS API version "<ocs_api_version>"
 		And as user "user0"
-		When the user creates a share using the sharing API with settings
+		When the user creates a public link share using the sharing API with settings
 			| path      | FOLDER |
-			| shareType | 3      |
 		And the user updates the last share using the sharing API with
 			| permissions | 7 |
 		And the user gets the info of the last share using the sharing API
@@ -174,12 +169,11 @@ Feature: sharing
 			|1              |100            |
 			|2              |200            |
 
-	Scenario Outline: Creating a new public share, updating publicUpload option and getting its info
+	Scenario Outline: Creating a new public link share, updating publicUpload option and getting its info
 		Given using OCS API version "<ocs_api_version>"
 		And as user "user0"
-		When the user creates a share using the sharing API with settings
+		When the user creates a public link share using the sharing API with settings
 			| path      | FOLDER |
-			| shareType | 3      |
 		And the user updates the last share using the sharing API with
 			| publicUpload | true |
 		And the user gets the info of the last share using the sharing API
@@ -246,9 +240,8 @@ Feature: sharing
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path         | /test |
-			| shareType    | 3     |
 			| publicUpload | false |
 		When the user updates the last share using the sharing API with
 			| publicUpload | true |
@@ -338,9 +331,8 @@ Feature: sharing
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path         | /test |
-			| shareType    | 3     |
 			| publicUpload | false |
 		When the user updates the last share using the sharing API with
 			| publicUpload | true |
@@ -357,9 +349,8 @@ Feature: sharing
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | /test |
-			| shareType   | 3     |
 			| permissions | 1     |
 		When the user updates the last share using the sharing API with
 			| permissions | 15 |
@@ -376,9 +367,8 @@ Feature: sharing
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
-		And the user has created a share with settings
+		And the user has created a public link share with settings
 			| path        | /test |
-			| shareType   | 3     |
 			| permissions | 1     |
 		When the user updates the last share using the sharing API with
 			| permissions | 15 |

@@ -186,9 +186,8 @@ Feature: transfer-ownership
 		And user "user0" has created a folder "/test"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
-		And user "user1" has created a share with settings
+		And user "user1" has created a public link share with settings
 			| path      | /test/somefile.txt |
-			| shareType | 3                  |
 		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
 		And the command should have been successful
 		Then the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
@@ -253,13 +252,11 @@ Feature: transfer-ownership
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a folder "/test/foo"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
-		And user "user0" creates a share using the sharing API with settings
+		And user "user0" creates a public link share using the sharing API with settings
 			| path      | /test/somefile.txt |
-			| shareType | 3                  |
 		And user "user0" has shared file "/test" with user "user1" with permissions 31
-		And user "user1" creates a share using the sharing API with settings
+		And user "user1" creates a public link share using the sharing API with settings
 			| path      | /test |
-			| shareType | 3                  |
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
 		Then the command should have been successful
 		And as "user0" the folder "/test" should not exist
