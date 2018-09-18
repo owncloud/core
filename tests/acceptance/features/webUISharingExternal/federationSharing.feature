@@ -190,3 +190,13 @@ So that other users have access to these files
 		When the user unshares the file "lorem (2).txt" using the webUI
 		Then the file "lorem (2).txt" should not be listed on the webUI
 		And the file "lorem (2).txt" should not be listed in the files page on the webUI
+
+	@skip @issue-32732
+	Scenario: test sharing long file names with federation share
+		When user "user1" moves file "/lorem.txt" to "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" using the WebDAV API
+		And the user has reloaded the current page of the webUI
+		And the user shares the file "averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" with the remote user "user1@%remote_server_without_scheme%" using the webUI
+		And the user re-logs in with username "user1" and password "1234" to "%remote_server%" using the webUI
+		And the user accepts the offered remote shares using the webUI
+		And using server "REMOTE"
+		Then as "user1" the file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should exist
