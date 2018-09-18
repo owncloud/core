@@ -112,6 +112,34 @@ trait Sharing {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" creates a public link share using the sharing API with settings$/
+	 * @Given /^user "([^"]*)" has created a public link share with settings$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function userCreatesAPublicLinkShareWithSettings($user, $body) {
+		$rows = $body->getRows();
+		// A public link share is shareType 3
+		$rows[] = ['shareType', '3'];
+		$newBody = new TableNode($rows);
+		$this->userCreatesAShareWithSettings($user, $newBody);
+	}
+
+	/**
+	 * @When /^the user creates a public link share using the sharing API with settings$/
+	 *
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function theUserCreatesAPublicLinkShareWithSettings($body) {
+		$this->userCreatesAPublicLinkShareWithSettings($this->currentUser, $body);
+	}
+
+	/**
 	 * @Given /^the user has created a share with settings$/
 	 *
 	 * @param TableNode|null $body
@@ -120,6 +148,19 @@ trait Sharing {
 	 */
 	public function theUserHasCreatedAShareWithSettings($body) {
 		$this->userCreatesAShareWithSettings($this->currentUser, $body);
+		$this->theOCSStatusCodeShouldBe([100, 200]);
+		$this->theHTTPStatusCodeShouldBe(200);
+	}
+
+	/**
+	 * @Given /^the user has created a public link share with settings$/
+	 *
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function theUserHasCreatedAPublicLinkShareWithSettings($body) {
+		$this->theUserCreatesAPublicLinkShareWithSettings($body);
 		$this->theOCSStatusCodeShouldBe([100, 200]);
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
@@ -163,32 +204,32 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the sharing API$/
-	 * @Given /^user "([^"]*)" has created a public share of (?:file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" creates a public link share of (?:file|folder) "([^"]*)" using the sharing API$/
+	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function userCreatesAPublicShareOf($user, $path) {
+	public function userCreatesAPublicLinkShareOf($user, $path) {
 		$this->createAPublicShare($user, $path);
 	}
 
 	/**
-	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the sharing API$/
-	 * @Given /^the user has created a public share of (?:file|folder) "([^"]*)"$/
+	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API$/
+	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $path
 	 * @return void
 	 */
-	public function aPublicShareOfIsCreated($path) {
+	public function aPublicLinkShareOfIsCreated($path) {
 		$this->createAPublicShare($this->currentUser, $path);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|share|all) permission(?:s|)$/
-	 * @Given /^user "([^"]*)" has created a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @When /^user "([^"]*)" creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -196,30 +237,30 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userCreatesAPublicShareOfWithPermission(
+	public function userCreatesAPublicLinkShareOfWithPermission(
 		$user, $path, $permissions
 	) {
 		$this->createAPublicShare($user, $path, true, null, $permissions);
 	}
 
 	/**
-	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|share|all) permission(?:s|)$/
-	 * @Given /^the user has created a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 *
 	 * @param string $path
 	 * @param string|int|string[]|int[]|null $permissions
 	 *
 	 * @return void
 	 */
-	public function aPublicShareOfIsCreatedWithPermission($path, $permissions) {
+	public function aPublicLinkShareOfIsCreatedWithPermission($path, $permissions) {
 		$this->createAPublicShare(
 			$this->currentUser, $path, true, null, $permissions
 		);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)"$/
-	 * @Given /^user "([^"]*)" has created a public share of (?:file|folder) "([^"]*)" with expiry "([^"]*)"$/
+	 * @When /^user "([^"]*)" creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)" with expiry "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -227,7 +268,7 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userCreatesAPublicShareOfWithExpiry(
+	public function userCreatesAPublicLinkShareOfWithExpiry(
 		$user, $path, $expiryDate
 	) {
 		$this->createAPublicShare(
@@ -236,8 +277,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)$"/
-	 * @Given /^the user has created a public share of (?:file|folder) "([^"]*)" with expiry "([^"]*)$/
+	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)$"/
+	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with expiry "([^"]*)$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -245,7 +286,7 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function aPublicShareOfIsCreatedWithExpiry(
+	public function aPublicLinkShareOfIsCreatedWithExpiry(
 		$user, $path, $expiryDate
 	) {
 		$this->createAPublicShare(
@@ -452,14 +493,14 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should not be able to create a public share of (?:file|folder) "([^"]*)" using the sharing API$/
+	 * @Then /^user "([^"]*)" should not be able to create a public link share of (?:file|folder) "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
 	 *
 	 * @return void
 	 */
-	public function shouldNotBeAbleToCreatePublicShare($sharer, $filepath) {
+	public function shouldNotBeAbleToCreatePublicLinkShare($sharer, $filepath) {
 		$this->createAPublicShare($sharer, $filepath);
 		PHPUnit_Framework_Assert::assertEquals(
 			404,
@@ -1199,8 +1240,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (?:file|folder) "([^"]*)" using the sharing API$/
-	 * @Given /^user "([^"]*)" has deleted public share named "([^"]*)" in (?:file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" deletes public link share named "([^"]*)" in (?:file|folder) "([^"]*)" using the sharing API$/
+	 * @Given /^user "([^"]*)" has deleted public link share named "([^"]*)" in (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $name
@@ -1208,7 +1249,7 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userDeletesPublicShareNamedUsingTheSharingApi(
+	public function userDeletesPublicLinkShareNamedUsingTheSharingApi(
 		$user, $name, $path
 	) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);

@@ -108,9 +108,8 @@ Feature: get file properties
   Scenario Outline: A file that is shared by link has a share-types property
     Given using <dav_version> DAV path
     And user "user0" has created a folder "/test"
-    And user "user0" has created a share with settings
+    And user "user0" has created a public link share with settings
       | path        | test |
-      | shareType   | 3    |
       | permissions | 31   |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
       | {http://owncloud.org/ns}share-types |
@@ -137,9 +136,8 @@ Feature: get file properties
       | shareType   | 1    |
       | permissions | 31   |
       | shareWith   | grp2 |
-    And user "user0" has created a share with settings
+    And user "user0" has created a public link share with settings
       | path        | test |
-      | shareType   | 3    |
       | permissions | 31   |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
       | {http://owncloud.org/ns}share-types |

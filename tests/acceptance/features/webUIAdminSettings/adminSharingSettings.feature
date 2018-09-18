@@ -29,17 +29,17 @@ Feature: admin sharing settings
 			| capability    | path_to_element | value |
 			| files_sharing | public@@@upload | EMPTY |
 
-	Scenario: enable mail notification on public share
+	Scenario: enable mail notification on public link share
 		Given the administrator has browsed to the admin sharing settings page
-		When the administrator enables mail notification on public share using the webUI
+		When the administrator enables mail notification on public link share using the webUI
 		And the user retrieves the capabilities using the capabilities API
 		Then the capabilities should contain
 			| capability    | path_to_element    | value |
 			| files_sharing | public@@@send_mail | 1     |
 
-	Scenario: disable social media share on public share
+	Scenario: disable social media share on public link share
 		Given the administrator has browsed to the admin sharing settings page
-		When the administrator disables social media share on public share using the webUI
+		When the administrator disables social media share on public link share using the webUI
 		And the user retrieves the capabilities using the capabilities API
 		Then the capabilities should contain
 			| capability    | path_to_element       | value |
@@ -121,19 +121,19 @@ Feature: admin sharing settings
 			| capability    | path_to_element | value |
 			| files_sharing | public@@@upload | 1     |
 
-	Scenario: disable mail notification on public share
+	Scenario: disable mail notification on public link share
 		Given parameter "shareapi_allow_public_send_mail" of app "core" has been set to "no"
 		And the administrator has browsed to the admin sharing settings page
-		When the administrator disables mail notification on public share using the webUI
+		When the administrator disables mail notification on public link share using the webUI
 		And the user retrieves the capabilities using the capabilities API
 		Then the capabilities should contain
 			| capability    | path_to_element    | value |
 			| files_sharing | public@@@send_mail | EMPTY |
 
-	Scenario: enable social media share on public share
+	Scenario: enable social media share on public link share
 		Given parameter "shareapi_allow_social_share" of app "core" has been set to "no"
 		And the administrator has browsed to the admin sharing settings page
-		When the administrator enables social media share on public share using the webUI
+		When the administrator enables social media share on public link share using the webUI
 		And the user retrieves the capabilities using the capabilities API
 		Then the capabilities should contain
 			| capability    | path_to_element       | value |

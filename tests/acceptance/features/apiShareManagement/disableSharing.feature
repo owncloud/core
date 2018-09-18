@@ -58,10 +58,10 @@ So that ownCloud users cannot share file or folder
 			|1              |200             |
 			|2              |404             |
 
-	Scenario Outline: user tries to create public share of a file when the sharing api has been disabled
+	Scenario Outline: user tries to create public link share of a file when the sharing api has been disabled
 		Given using OCS API version "<ocs_api_version>"
 		When parameter "shareapi_enabled" of app "core" has been set to "no"
-		Then user "user0" should not be able to create a public share of file "welcome.txt" using the sharing API
+		Then user "user0" should not be able to create a public link share of file "welcome.txt" using the sharing API
 		And the OCS status code should be "404"
 		And the HTTP status code should be "<http_status_code>"
 		Examples:
@@ -70,10 +70,10 @@ So that ownCloud users cannot share file or folder
 			|2              |404             |
 
 	@smokeTest
-	Scenario Outline: user tries to create public share of a folder when the sharing api has been disabled
+	Scenario Outline: user tries to create public link share of a folder when the sharing api has been disabled
 		Given using OCS API version "<ocs_api_version>"
 		When parameter "shareapi_enabled" of app "core" has been set to "no"
-		Then user "user0" should not be able to create a public share of folder "/FOLDER" using the sharing API
+		Then user "user0" should not be able to create a public link share of folder "/FOLDER" using the sharing API
 		And the OCS status code should be "404"
 		And the HTTP status code should be "<http_status_code>"
 		Examples:

@@ -67,7 +67,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	}
 
 	/**
-	 * adding public share to particular server
+	 * adding public link share to particular server
 	 *
 	 * @param string $server
 	 *
