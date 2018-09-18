@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
 use Page\FilesPageElement\SharingDialog;
@@ -31,6 +32,7 @@ use Page\SharedWithYouPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\SetupHelper;
+use OC\Files\External\Auth\Password\Password;
 
 require_once 'bootstrap.php';
 
@@ -480,6 +482,50 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				" could not find share '$share' offered by '$offeredBy'"
 			);
 		}
+	}
+
+	/**
+	 * @When the public accesses the last created public link with password :password using the webUI
+	 *
+	 * @param string $password
+	 * @return void
+	 */
+	public function thePublicAccessesPublicLinkWithPasswordUsingTheWebui($password) {
+		$createdPublicLinks = $this->createdPublicLinks;
+		$baseUrl = $this->featureContext->getBaseUrl();
+		$this->publicLinkFilesPage->openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl);
+		$this->publicLinkFilesPage->enterPublicLinkPassword($password);
+		$this->publicLinkFilesPage->waitTillPageIsLoaded($this->getSession());
+		$this->webUIGeneralContext->setCurrentPageObject($this->publicLinkFilesPage);
+	}
+
+	/**
+	 * @When the public tries to access the last created public link with wrong password :wrongPassword using the webUI
+	 *
+	 * @param string $wrongPassword
+	 * @return void
+	 */
+	public function thePublicTriesToAccessPublicLinkWithWrongPasswordUsingTheWebui($wrongPassword) {
+		$createdPublicLinks = $this->createdPublicLinks;
+		$baseUrl = $this->featureContext->getBaseUrl();
+		$this->publicLinkFilesPage->openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl);
+		$this->publicLinkFilesPage->enterPublicLinkPassword($wrongPassword);
+		$this->sharedWithYouPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+	}
+
+	/**
+	 * @Then the public should not get access to the publicly shared file
+	 *
+	 * @return void
+	 */
+	public function thePublicShouldNotGetAccessToPublicShareFile() {
+		$warningMessage = $this->publicLinkFilesPage->getWarningMessage();
+		PHPUnit_Framework_Assert::assertEquals('The password is wrong. Try again.', $warningMessage);
+
+		$lastCreatedLink = \end($this->createdPublicLinks);
+		$lastSharePath = $lastCreatedLink['url'] . '/authenticate';
+		$currentPath = $this->getSession()->getCurrentUrl();
+		PHPUnit_Framework_Assert::assertEquals($lastSharePath, $currentPath);
 	}
 
 	/**

@@ -37,6 +37,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	protected $addToYourOcBtnId = "save-button";
 	protected $remoteAddressInputId = "remote_address";
 	protected $confirmBtnId = "save-button-confirm";
+	protected $passwordFieldId = 'password';
+	protected $passwordSubmitButtonId = 'password-submit';
+	protected $warningMessageCss = '.warning';
 
 	/**
 	 * @return string
@@ -147,6 +150,71 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$name, $destination, Session $session, $maxRetries = STANDARDRETRYCOUNT
 	) {
 		throw new \Exception("not implemented");
+	}
+
+	/**
+	 * enter public link password
+	 *
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function enterPublicLinkPassword($password) {
+		$passwordInputField = $this->findById($this->passwordFieldId);
+		if ($passwordInputField === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $this->passwordFieldId " .
+				"could not find password field"
+			);
+		}
+		$passwordInputField->setValue($password);
+		$passwordSubmitButton = $this->findById($this->passwordSubmitButtonId);
+		if ($passwordSubmitButton === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $this->passwordSubmitButtonId " .
+				"could not find password submit button"
+			);
+		}
+		$passwordSubmitButton->click();
+	}
+
+	/**
+	 * open public share authenticate url
+	 *
+	 * @param array $createdPublicLinks
+	 * @param string $baseUrl
+	 *
+	 * @return void
+	 */
+	public function openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl) {
+		$lastCreatedLink = \end($createdPublicLinks);
+		$path = \str_replace(
+			$baseUrl,
+			"",
+			$lastCreatedLink['url']
+		);
+		$this->setPagePath($path . '/authenticate');
+		$this->open();
+	}
+
+	/**
+	 * get warning message
+	 *
+	 * @return string
+	 */
+	public function getWarningMessage() {
+		$warningMessageBox = $this->find('css', $this->warningMessageCss);
+		if ($warningMessageBox === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" class $this->warningMessageClass " .
+				"could not find warning message field"
+			);
+		}
+		$warningMessage = $warningMessageBox->getText();
+		return $warningMessage;
 	}
 
 	/**
