@@ -251,3 +251,67 @@ Feature: checksums
     Then the HTTP status code should be "503"
     And user "user0" should not see the following elements
       | /myChecksumFile.txt |
+
+  ## upload overwriting
+  Scenario Outline: Uploading a file with MD5 checksum overwriting an existing file
+    Given using <dav_version> DAV path
+    When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a" using the WebDAV API
+    And user "user0" requests the checksum of "/textfile0.txt" via propfind
+    Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
+    And the content of file "/textfile0.txt" for user "user0" should be:
+      """
+      This is a testfile.
+      
+      Cheers.
+      """
+    Examples:
+      | dav_version   |
+      | old           |
+      | new           |
+
+  Scenario Outline: Uploading a file with SHA1 checksum overwriting an existing file
+    Given using <dav_version> DAV path
+    When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" with checksum "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f" using the WebDAV API
+    And user "user0" requests the checksum of "/textfile0.txt" via propfind
+    Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
+    And the content of file "/textfile0.txt" for user "user0" should be:
+      """
+      This is a testfile.
+      
+      Cheers.
+      """
+    Examples:
+      | dav_version   |
+      | old           |
+      | new           |
+
+  @skipOnStorage:ceph @files_primary_s3-issue-128
+  Scenario Outline: Uploading a file with invalid SHA1 checksum overwriting an existing file
+    Given using <dav_version> DAV path
+    When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" with checksum "SHA1:f005ba11f005ba11f005ba11f005ba11f005ba11" using the WebDAV API
+    And user "user0" requests the checksum of "/textfile0.txt" via propfind
+    Then the webdav checksum should match "SHA1:0c1d334e686d1039c9ead0dbc047f02dbf696be8 MD5:d991cd854c53729d066c6ed5e34bcda3 ADLER32:8685092b"
+    And the content of file "/textfile0.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
+    Examples:
+      | dav_version   |
+      | old           |
+      | new           |
+
+  Scenario: Upload overwriting a file with new chunking and correct checksum
+    Given using new DAV path
+    When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
+    And user "user0" moves new chunk file with id "chunking-42" to "/textfile0.txt" with checksum "SHA1:5d84d61b03fdacf813640f5242d309721e0629b1" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And the content of file "/textfile0.txt" for user "user0" should be "BBBBBCCCCC"
+
+  @skipOnStorage:ceph @files_primary_s3-issue-128
+  Scenario: Upload overwriting a file with new chunking and invalid checksum
+    Given using new DAV path
+    When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
+    And user "user0" moves new chunk file with id "chunking-42" to "/textfile0.txt" with checksum "SHA1:f005ba11" using the WebDAV API
+    Then the HTTP status code should be "400"
+    And the content of file "/textfile0.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
