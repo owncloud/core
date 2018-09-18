@@ -410,6 +410,60 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When the administrator resets the password of user :username to :password using the provisioning API
+	 * @Given the administrator has reset the password of user :username to :password
+	 *
+	 * @param string $username of the user whose password is reset
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function adminResetsPasswordOfUserUsingTheProvisioningApi($username, $password) {
+		$this->userResetsPasswordOfUserUsingTheProvisioningApi(
+			$this->getAdminUsername(),
+			$username,
+			$password
+		);
+	}
+
+	/**
+	 * @When user :user resets the password of user :username to :password using the provisioning API
+	 * @Given user :user has reset the password of user :username to :password
+	 *
+	 * @param string $user that does the password reset
+	 * @param string $username of the user whose password is reset
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userResetsPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
+		$this->userTriesToResetPasswordOfUserUsingTheProvisioningApi(
+			$user, $username, $password
+		);
+		$this->rememberUserPassword($username, $password);
+	}
+
+	/**
+	 * @When user :user tries to reset the password of user :username to :password using the provisioning API
+	 * @Given user :user has tried to reset the password of user :username to :password
+	 *
+	 * @param string $user that does the password reset
+	 * @param string $username of the user whose password is reset
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userTriesToResetPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
+		$bodyTable = new TableNode([['key', 'password'], ['value', $password]]);
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			"PUT",
+			"/cloud/users/$username",
+			$bodyTable
+		);
+	}
+
+	/**
 	 * @When /^the administrator sends a user deletion request for user "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
@@ -599,6 +653,29 @@ trait Provisioning {
 			$this->createdUsers[$user] = $userData;
 		} elseif ($this->currentServer === 'REMOTE') {
 			$this->createdRemoteUsers[$user] = $userData;
+		}
+	}
+
+	/**
+	 * remember the password of a user that already exists so that you can use
+	 * ordinary test steps after changing their password.
+	 *
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function rememberUserPassword(
+		$user, $password
+	) {
+		if ($this->currentServer === 'LOCAL') {
+			if (\array_key_exists($user, $this->createdUsers)) {
+				$this->createdUsers[$user]['password'] = $password;
+			}
+		} elseif ($this->currentServer === 'REMOTE') {
+			if (\array_key_exists($user, $this->createdRemoteUsers)) {
+				$this->createdRemoteUsers[$user]['password'] = $password;
+			}
 		}
 	}
 
