@@ -258,6 +258,7 @@ trait WebDav {
 	 * @param string|null $davPathVersion
 	 * @param bool $stream Set to true to stream a response rather
 	 *                     than download it all up-front.
+	 * @param string|null $password
 	 *
 	 * @return ResponseInterface
 	 */
@@ -270,7 +271,8 @@ trait WebDav {
 		$type = "files",
 		$requestBody = null,
 		$davPathVersion = null,
-		$stream = false
+		$stream = false,
+		$password = null
 	) {
 		if ($this->customDavPath !== null) {
 			$path = $this->customDavPath . $path;
@@ -280,9 +282,12 @@ trait WebDav {
 			$davPathVersion = $this->getDavPathVersion();
 		}
 
+		if ($password === null) {
+			$password  = $this->getPasswordForUser($user);
+		}
 		return WebDavHelper::makeDavRequest(
 			$this->getBaseUrl(),
-			$user, $this->getPasswordForUser($user), $method,
+			$user, $password, $method,
 			$path, $headers, $body, $requestBody, $davPathVersion,
 			$type, null, "basic", $stream, $this->httpRequestTimeout
 		);
@@ -566,6 +571,27 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^user "([^"]*)" using password "([^"]*)" should not be able to download file "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $password
+	 * @param string $fileName
+	 *
+	 * @return void
+	 */
+	public function userUsingPasswordShouldNotBeAbleToDownloadFile(
+		$user, $password, $fileName
+	) {
+		$this->downloadFileAsUserUsingPassword($user, $fileName, $password);
+		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+			400, $this->getResponse()->getStatusCode(), 'download must fail'
+		);
+		PHPUnit_Framework_Assert::assertLessThanOrEqual(
+			499, $this->getResponse()->getStatusCode(), '4xx error expected'
+		);
+	}
+
+	/**
 	 * @Then /^the downloaded content should be "([^"]*)"$/
 	 *
 	 * @param string $content
@@ -611,7 +637,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function contentOfFileShouldBePyString(
-		$fileName, $user, PyStringNode $content
+		$fileName, PyStringNode $content
 	) {
 		$this->contentOfFileShouldBe($fileName, $content->getRaw());
 	}
@@ -639,7 +665,24 @@ trait WebDav {
 	 * @return void
 	 */
 	public function contentOfFileForUserShouldBe($fileName, $user, $content) {
-		$this->userDownloadsTheFileUsingTheAPI($user, $fileName);
+		$this->downloadFileAsUserUsingPassword($user, $fileName);
+		$this->downloadedContentShouldBe($content);
+	}
+
+	/**
+	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" using password "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $fileName
+	 * @param string $user
+	 * @param string $password
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function contentOfFileForUserUsingPasswordShouldBe(
+		$fileName, $user, $password, $content
+	) {
+		$this->downloadFileAsUserUsingPassword($user, $fileName, $password);
 		$this->downloadedContentShouldBe($content);
 	}
 
@@ -659,6 +702,24 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" using password "([^"]*)" should be:$/
+	 *
+	 * @param string $fileName
+	 * @param string $user
+	 * @param string $password
+	 * @param PyStringNode $content
+	 *
+	 * @return void
+	 */
+	public function contentOfFileForUserUsingPasswordShouldBePyString(
+		$fileName, $user, $password, PyStringNode $content
+	) {
+		$this->contentOfFileForUserUsingPasswordShouldBe(
+			$fileName, $user, $password, $content->getRaw()
+		);
+	}
+
+	/**
 	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" should be "([^"]*)" plus end-of-line$/
 	 *
 	 * @param string $fileName
@@ -668,7 +729,27 @@ trait WebDav {
 	 * @return void
 	 */
 	public function contentOfFileForUserShouldBePlusEndOfLine($fileName, $user, $content) {
-		$this->contentOfFileForUserShouldBe($fileName, $user, "$content\n");
+		$this->contentOfFileForUserShouldBe(
+			$fileName, $user, "$content\n"
+		);
+	}
+
+	/**
+	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" using password "([^"]*)" should be "([^"]*)" plus end-of-line$/
+	 *
+	 * @param string $fileName
+	 * @param string $user
+	 * @param string $password
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function contentOfFileForUserUsingPasswordShouldBePlusEndOfLine(
+		$fileName, $user, $password, $content
+	) {
+		$this->contentOfFileForUserUsingPasswordShouldBe(
+			$fileName, $user, $password, "$content\n"
+		);
 	}
 
 	/**
@@ -712,7 +793,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function theUserDownloadsTheFileUsingTheAPI($fileName) {
-		$this->userDownloadsTheFileUsingTheAPI($this->currentUser, $fileName);
+		$this->downloadFileAsUserUsingPassword($this->currentUser, $fileName);
 	}
 
 	/**
@@ -723,9 +804,48 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userDownloadsTheFileUsingTheAPI($user, $fileName) {
+	public function userDownloadsTheFileUsingTheAPI(
+		$user, $fileName
+	) {
+		$this->downloadFileAsUserUsingPassword($user, $fileName);
+	}
+
+	/**
+	 * @When user :user using password :password downloads the file :fileName using the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $fileName
+	 * @param string|null $password
+	 *
+	 * @return void
+	 */
+	public function userUsingPasswordDownloadsTheFileUsingTheAPI(
+		$user, $password, $fileName
+	) {
+		$this->downloadFileAsUserUsingPassword($user, $fileName, $password);
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $fileName
+	 * @param string|null $password
+	 *
+	 * @return void
+	 */
+	public function downloadFileAsUserUsingPassword(
+		$user, $fileName, $password = null
+	) {
 		$this->response = $this->makeDavRequest(
-			$user, 'GET', $fileName, []
+			$user,
+			'GET',
+			$fileName,
+			[],
+			null,
+			"files",
+			null,
+			null,
+			false,
+			$password
 		);
 	}
 
