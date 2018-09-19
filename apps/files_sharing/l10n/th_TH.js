@@ -127,6 +127,9 @@ OC.L10N.register(
     "%s is publicly shared" : "%s ได้ถูกแชร์สู่สาธารณะแล้ว",
     "Download" : "ดาวน์โหลด",
     "Download %s" : "ดาวน์โหลด %s",
-    "Direct link" : "ลิงก์โดยตรง"
+    "Direct link" : "ลิงก์โดยตรง",
+    "Group Sharing Blacklist" : "แชร์กลุ่มบัญชีดำ",
+    "Exclude groups from receiving shares" : "ยกเว้นกลุ่มจากการแชร์",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "กลุ่มเหล่านี้จะไม่สามารถแชร์กับสมาชิกของกลุ่มที่ถูกจำกัดไว้ แต่สามารถแชร์กับกลุ่มอื่นๆที่เป็นสมาชิกได้ตามปกติ"
 },
 "nplurals=1; plural=0;");
