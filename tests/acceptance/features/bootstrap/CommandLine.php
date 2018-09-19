@@ -279,7 +279,9 @@ trait CommandLine {
 		$lines = $this->findLines($this->lastStdOut, $text);
 		if (empty($lines)) {
 			throw new \Exception(
-				"The command did not output the expected text on stdout '$text'"
+				"The command output did not contain the expected text on stdout '$text'\n" .
+				"The command output on stdout was:\n" .
+				$this->lastStdOut
 			);
 		}
 	}
@@ -299,7 +301,9 @@ trait CommandLine {
 		$lines = $this->findLines($this->lastStdErr, $text);
 		if (empty($lines)) {
 			throw new \Exception(
-				"The command did not output the expected text on stderr '$text'"
+				"The command output did not contain the expected text on stderr '$text'\n" .
+				"The command output on stderr was:\n" .
+				$this->lastStdOut
 			);
 		}
 	}
