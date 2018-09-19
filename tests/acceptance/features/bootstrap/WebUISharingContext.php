@@ -235,6 +235,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user tries to create a new public link for the file/folder :name using the webUI with
+	 * @When the user tries to create a new public link for the file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 * @param TableNode $settings table with the settings and no header
@@ -824,7 +825,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * create public share link
 	 *
 	 * @param string $name
-	 * @param TableNode $settings table with the settings and no header
+	 * @param TableNode|null $settings table with the settings and no header
 	 *                            possible settings: name, permission,
 	 *                            password, expiration, email
 	 *                            the permissions values has to be written exactly
@@ -832,7 +833,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *
 	 * @return string
 	 */
-	public function createPublicShareLink($name, $settings) {
+	public function createPublicShareLink($name, $settings = null) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		//close any open sharing dialog
 		//if there is no dialog open and we try to close it
