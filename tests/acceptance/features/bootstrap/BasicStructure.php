@@ -783,6 +783,10 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function theOCSStatusCodeShouldBe($statusCode, $message = "") {
+		if ($message === "") {
+			$message = "OCS status code is not the expected value";
+		}
+
 		if (\is_array($statusCode)) {
 			PHPUnit_Framework_Assert::assertContains(
 				$this->getOCSResponseStatusCode($this->response), $statusCode,
@@ -805,6 +809,10 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function theHTTPStatusCodeShouldBe($statusCode, $message = "") {
+		if ($message === "") {
+			$message = "HTTP status code is not the expected value";
+		}
+
 		if (\is_array($statusCode)) {
 			PHPUnit_Framework_Assert::assertContains(
 				$this->response->getStatusCode(), $statusCode,
