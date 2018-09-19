@@ -87,6 +87,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $oldMinCharactersForAutocomplete = null;
 	private $oldFedSharingFallbackSetting = null;
 
+	private $publicShareTab;
+	private $linkName;
+
 	/**
 	 * WebUISharingContext constructor.
 	 *
@@ -225,56 +228,59 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserCreatesANewPublicLinkForUsingTheWebUIWith(
 		$name, TableNode $settings = null
 	) {
-		$this->filesPage->waitTillPageIsloaded($this->getSession());
-		//close any open sharing dialog
-		//if there is no dialog open and we try to close it
-		//an exception will be thrown, but we do not care
-		try {
-			$this->filesPage->closeDetailsDialog();
-		} catch (Exception $e) {
-		}
-		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$name, $this->getSession()
-		);
-		$publicShareTab = $this->sharingDialog->openPublicShareTab();
-		if ($settings !== null) {
-			$settingsArray = $settings->getRowsHash();
-			if (!isset($settingsArray['name'])) {
-				$settingsArray['name'] = null;
-			}
-			if (!isset($settingsArray['permission'])) {
-				$settingsArray['permission'] = null;
-			}
-			if (!isset($settingsArray['password'])) {
-				$settingsArray['password'] = null;
-			}
-			if (!isset($settingsArray['expiration'])) {
-				$settingsArray['expiration'] = null;
-			}
-			if (!isset($settingsArray['email'])) {
-				$settingsArray['email'] = null;
-			}
-			$linkName = $publicShareTab->createLink(
-				$this->getSession(),
-				$settingsArray ['name'],
-				$settingsArray ['permission'],
-				$settingsArray ['password'],
-				$settingsArray ['expiration'],
-				$settingsArray ['email']
-			);
-			if ($settingsArray['name'] !== null) {
-				PHPUnit_Framework_Assert::assertSame(
-					$settingsArray ['name'], $linkName,
-					"set and retrieved public link names are not the same"
-				);
-			}
-		} else {
-			$linkName = $publicShareTab->createLink($this->getSession());
-		}
-		$linkUrl = $publicShareTab->getLinkUrl($linkName);
+		$linkName = $this->createPublicShareLink($name, $settings);
+		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
 		$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
 	}
-	
+
+	/**
+	 * @When the user tries to create a new public link for the file/folder :name using the webUI with
+	 * @When the user tries to create a new public link for the file/folder :name using the webUI
+	 *
+	 * @param string $name
+	 * @param TableNode $settings table with the settings and no header
+	 *                            possible settings: name, permission,
+	 *                            password, expiration, email
+	 *                            the permissions values has to be written exactly
+	 *                            the way its written in the UI
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserTriesToCreateANewPublicLinkForUsingTheWebUIWith(
+		$name, TableNode $settings = null
+	) {
+		$this->linkName = $this->createPublicShareLink($name, $settings);
+	}
+
+	/**
+	 * @Then the user should see a error message on public dialog saying :expectedWarningMessage
+	 *
+	 * @param string $expectedWarningMessage
+	 *
+	 * @return void
+	 */
+	public function theUserShouldSeeAErrorMessageSaying($expectedWarningMessage) {
+		$warningMessage = $this->publicShareTab->getWarningMessage();
+		PHPUnit_Framework_Assert::assertEquals($expectedWarningMessage, $warningMessage);
+	}
+
+	/**
+	 * @Then public link should not be generated
+	 *
+	 * @return void
+	 */
+	public function publicLinkShouldNotBeGenerated() {
+		try {
+			$this->publicShareTab->getLinkUrl($this->linkName);
+		} catch (Exception $e) {
+			PHPUnit_Framework_Assert::assertContains(
+				"could not find link entry with the given name",
+				$e->getMessage()
+			);
+		}
+	}
+
 	/**
 	 * @When the user closes the share dialog
 	 * @Given the user has closed the share dialog
@@ -813,6 +819,68 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		if ($sharingWasPossible === true) {
 			throw new Exception("It was possible to share the file");
 		}
+	}
+
+	/**
+	 * create public share link
+	 *
+	 * @param string $name
+	 * @param TableNode|null $settings table with the settings and no header
+	 *                            possible settings: name, permission,
+	 *                            password, expiration, email
+	 *                            the permissions values has to be written exactly
+	 *                            the way its written in the UI
+	 *
+	 * @return string
+	 */
+	public function createPublicShareLink($name, $settings = null) {
+		$this->filesPage->waitTillPageIsloaded($this->getSession());
+		//close any open sharing dialog
+		//if there is no dialog open and we try to close it
+		//an exception will be thrown, but we do not care
+		try {
+			$this->filesPage->closeDetailsDialog();
+		} catch (Exception $e) {
+		}
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
+			$name, $this->getSession()
+		);
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab();
+		if ($settings !== null) {
+			$settingsArray = $settings->getRowsHash();
+			if (!isset($settingsArray['name'])) {
+				$settingsArray['name'] = null;
+			}
+			if (!isset($settingsArray['permission'])) {
+				$settingsArray['permission'] = null;
+			}
+			if (!isset($settingsArray['password'])) {
+				$settingsArray['password'] = null;
+			}
+			if (!isset($settingsArray['expiration'])) {
+				$settingsArray['expiration'] = null;
+			}
+			if (!isset($settingsArray['email'])) {
+				$settingsArray['email'] = null;
+			}
+			$linkName = $this->publicShareTab->createLink(
+				$this->getSession(),
+				$settingsArray ['name'],
+				$settingsArray ['permission'],
+				$settingsArray ['password'],
+				$settingsArray ['expiration'],
+				$settingsArray ['email']
+			);
+			if ($settingsArray['name'] !== null) {
+				PHPUnit_Framework_Assert::assertSame(
+					$settingsArray ['name'], $linkName,
+					"set and retrieved public link names are not the same"
+				);
+			}
+		} else {
+			$linkName = $this->publicShareTab->createLink($this->getSession());
+		}
+		return $linkName;
 	}
 
 	/**

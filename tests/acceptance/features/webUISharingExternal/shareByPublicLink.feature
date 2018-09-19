@@ -90,3 +90,18 @@ So that public sharing is limited according to organization policy
 		| password | pass123 |
 		And the public tries to access the last created public link with wrong password "pass12" using the webUI
 		Then the public should not get access to the publicly shared file
+
+	Scenario: user tries to create a public link with name longer than 64 chars
+		Given user "user1" has moved file "/lorem.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+		And the user has reloaded the current page of the webUI
+		When the user tries to create a new public link for the file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" using the webUI
+		Then the user should see a error message on public dialog saying "Share name cannot be more than 64 characters"
+		And public link should not be generated
+
+	Scenario: user shares a public link with folder longer than 64 chars and shorter link name
+		Given user "user1" has moved folder "simple-folder" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+		And the user has reloaded the current page of the webUI
+		When the user creates a new public link for the folder "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" using the webUI with
+		|name | short_linkname |
+		And the public accesses the last created public link using the webUI
+		Then the file "lorem.txt" should be listed on the webUI
