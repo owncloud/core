@@ -56,7 +56,7 @@ class NotificationsEnabledOwncloudPage extends OwncloudPage {
 	public function waitForNotifications() {
 		$button = $this->findNotificationsButton();
 		$this->waitFor(
-			STANDARDUIWAITTIMEOUTMILLISEC / 1000, [$button, 'isVisible']
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$button, 'isVisible']
 		);
 	}
 

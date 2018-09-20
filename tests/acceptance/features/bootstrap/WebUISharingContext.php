@@ -132,7 +132,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserSharesTheFileFolderWithTheUserUsingTheWebUI(
-		$folder, $remote, $user, $maxRetries = STANDARDRETRYCOUNT, $quiet = false
+		$folder, $remote, $user, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		try {

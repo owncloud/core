@@ -57,7 +57,7 @@ class OwncloudPage extends Page {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -71,7 +71,7 @@ class OwncloudPage extends Page {
 					break;
 				}
 			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 
@@ -93,7 +93,7 @@ class OwncloudPage extends Page {
 	 */
 	public function waitTillElementIsNull(
 		$xpath,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -106,7 +106,7 @@ class OwncloudPage extends Page {
 			if ($element === null) {
 				break;
 			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 	}
@@ -119,7 +119,7 @@ class OwncloudPage extends Page {
 	 * @return NodeElement|null
 	 */
 	public function waitTillElementIsNotNull(
-		$xpath, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$xpath, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -130,12 +130,12 @@ class OwncloudPage extends Page {
 				 */
 				$element = $this->find("xpath", $xpath);
 				if ($element === null || !$element->isValid()) {
-					\usleep(STANDARDSLEEPTIMEMICROSEC);
+					\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				} else {
 					return $element;
 				}
 			} catch (WebDriverException $e) {
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			}
 			$currentTime = \microtime(true);
 		}
@@ -421,7 +421,7 @@ class OwncloudPage extends Page {
 	 */
 	public function waitForOutstandingAjaxCalls(
 		Session $session,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->initAjaxCounters($session);
 		$timeout_msec = (int) $timeout_msec;
@@ -437,7 +437,7 @@ class OwncloudPage extends Page {
 				//to catch non-jQuery XHR requests
 				//but if window.activeAjaxCount was not set, ignore it
 				$waitingResult = $session->wait(
-					STANDARDSLEEPTIMEMILLISEC,
+					STANDARD_SLEEP_TIME_MILLISEC,
 					"(
 						typeof jQuery != 'undefined' 
 						&& (0 === jQuery.active) 
@@ -454,7 +454,7 @@ class OwncloudPage extends Page {
 				//show Exception message, but do not throw it
 				echo $e->getMessage() . "\n";
 			} finally {
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				$currentTime = \microtime(true);
 			}
 		}
@@ -500,7 +500,7 @@ class OwncloudPage extends Page {
 			if ((int) $activeAjax > 0) {
 				break;
 			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 	}
@@ -516,13 +516,13 @@ class OwncloudPage extends Page {
 	 */
 	public function waitForAjaxCallsToStartAndFinish(
 		Session $session,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$start = \microtime(true);
 		$this->waitForAjaxCallsToStart($session);
 		$end = \microtime(true);
 		$timeout_msec = $timeout_msec - (($end - $start) * 1000);
-		$timeout_msec = \max($timeout_msec, MINIMUMUIWAITTIMEOUTMILLISEC);
+		$timeout_msec = \max($timeout_msec, MINIMUM_UI_WAIT_TIMEOUT_MILLISEC);
 		$this->waitForOutstandingAjaxCalls($session, $timeout_msec);
 	}
 
@@ -663,14 +663,14 @@ class OwncloudPage extends Page {
 	 */
 	public function waitForScrollingToFinish(
 		Session $session, $scrolledElement,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		// Wait so that, if scrolling is going to happen, it will have started.
 		// Otherwise, we might start checking early, before scrolling begins.
 		// The downside here is that if scrolling is not needed at all then we
 		// wasted time waiting.
 		// TODO: find a way to avoid this sleep
-		\usleep(MINIMUMUIWAITTIMEOUTMICROSEC);
+		\usleep(MINIMUM_UI_WAIT_TIMEOUT_MICROSEC);
 		$session->executeScript(
 			'
 			jQuery.scrolling = 0;
@@ -688,7 +688,7 @@ class OwncloudPage extends Page {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end && $result !== 0) {
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$result = (int)$session->evaluateScript("jQuery.scrolling");
 			$currentTime = \microtime(true);
 		}

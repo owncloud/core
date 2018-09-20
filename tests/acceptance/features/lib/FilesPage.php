@@ -100,7 +100,7 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function createFolder(
 		Session $session, $name = null,
-		$timeoutMsec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		if ($name === null) {
 			$name = \substr(\str_shuffle($this->strForNormalFileName), 0, 8);
@@ -165,7 +165,7 @@ class FilesPage extends FilesPageBasic {
 			if ($newFolderButton === null || !$newFolderButton->isVisible()) {
 				break;
 			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 		while ($currentTime <= $end) {
@@ -175,7 +175,7 @@ class FilesPage extends FilesPageBasic {
 			} catch (ElementNotFoundException $e) {
 				//loop around
 			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 
@@ -283,7 +283,7 @@ class FilesPage extends FilesPageBasic {
 		$fromFileName,
 		$toFileName,
 		Session $session,
-		$maxRetries = STANDARDRETRYCOUNT
+		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		if (\is_array($toFileName)) {
 			$toFileName = \implode($toFileName);
@@ -324,7 +324,7 @@ class FilesPage extends FilesPageBasic {
 	 * @return void
 	 */
 	public function moveFileTo(
-		$name, $destination, Session $session, $maxRetries = STANDARDRETRYCOUNT
+		$name, $destination, Session $session, $maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$toMoveFileRow = $this->findFileRowByName($name, $session);
 		$destinationFileRow = $this->findFileRowByName($destination, $session);
@@ -447,12 +447,12 @@ class FilesPage extends FilesPageBasic {
 			);
 		}
 		$currentTime = \microtime(true);
-		$end = $currentTime + (STANDARDUIWAITTIMEOUTMILLISEC / 1000);
+		$end = $currentTime + (STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000);
 		while ($uploadProgressbar->isVisible()) {
 			if ($currentTime > $end) {
 				break;
 			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 	}

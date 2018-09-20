@@ -276,13 +276,13 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	 */
 	public function waitForAjaxCallsToStartAndFinish(
 		Session $session,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$start = \microtime(true);
 		$this->waitForAjaxCallsToStart($session);
 		$end = \microtime(true);
 		$timeout_msec = $timeout_msec - (($end - $start) * 1000);
-		$timeout_msec = \max($timeout_msec, MINIMUMUIWAITTIMEOUTMILLISEC);
+		$timeout_msec = \max($timeout_msec, MINIMUM_UI_WAIT_TIMEOUT_MILLISEC);
 		$this->waitForOutstandingAjaxCalls($session, $timeout_msec);
 	}
 }
