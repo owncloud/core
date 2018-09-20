@@ -70,6 +70,15 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	}
 
 	/**
+	 *
+	 * {@inheritDoc}
+	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
+	 */
+	protected function getFilePathInRowXpath() {
+		throw new \Exception("not implemented in PublicLinkFilesPage");
+	}
+
+	/**
 	 * adding public link share to particular server
 	 *
 	 * @param string $server

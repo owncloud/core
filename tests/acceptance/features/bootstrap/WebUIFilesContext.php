@@ -33,6 +33,7 @@ use Page\TrashbinPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\DeleteHelper;
 use TestHelpers\DownloadHelper;
+use Page\FilesPageBasic;
 
 require_once 'bootstrap.php';
 
@@ -1108,12 +1109,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
 	 * @param string $folder
+	 * @param string $path if set, name and path (shown in the webUI) of the file need match
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function checkIfFileFolderIsListedOnTheWebUI(
-		$name, $shouldOrNot, $typeOfFilesPage = "", $folder = ""
+		$name, $shouldOrNot, $typeOfFilesPage = "", $folder = "", $path = ""
 	) {
 		$should = ($shouldOrNot !== "not");
 		$exceptionMessage = null;
@@ -1130,7 +1132,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			case "shared-with-you page":
 				$this->theUserBrowsesToTheSharedWithYouPage();
 				break;
+			case "search results page":
+				//nothing to do here, we cannot navigate to that page, except by performing a search
+				break;
 		}
+		/**
+		 *
+		 * @var FilesPageBasic $pageObject
+		 */
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->waitTillPageIsLoaded($this->getSession());
 		if ($folder !== "") {
@@ -1140,11 +1149,23 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 
 		try {
-			/**
-			 *
-			 * @var FileRow $fileRow
-			 */
-			$fileRow = $pageObject->findFileRowByName($name, $this->getSession());
+			if ($path === "") {
+				/**
+				 *
+				 * @var FileRow $fileRow
+				 */
+				$fileRow = $pageObject->findFileRowByName(
+					$name, $this->getSession()
+				);
+			} else {
+				/**
+				 *
+				 * @var FileRow $fileRow
+				 */
+				$fileRow = $pageObject->findFileRowByNameAndPath(
+					$name, $path, $this->getSession()
+				);
+			}
 			$exceptionMessage = '';
 		} catch (ElementNotFoundException $e) {
 			$exceptionMessage = $e->getMessage();
@@ -1158,6 +1179,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 
 		$fileLocationText = " file '$nameText'";
+
+		if ($path !== "") {
+			$fileLocationText .= " with path '$path'";
+		}
 
 		if ($folder !== "") {
 			$fileLocationText .= " in folder '$folder'";
