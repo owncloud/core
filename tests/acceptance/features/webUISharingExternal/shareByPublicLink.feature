@@ -105,3 +105,30 @@ So that public sharing is limited according to organization policy
 		|name | short_linkname |
 		And the public accesses the last created public link using the webUI
 		Then the file "lorem.txt" should be listed on the webUI
+
+	Scenario: user tries to create a public link with read only permission without entering share password while enforce password on read only public share is enforced
+		Given parameter "shareapi_enforce_links_password_read_only" of app "core" has been set to "yes"
+		When the user tries to create a new public link for the folder "simple-folder" using the webUI
+		Then the user should see a error message on public dialog saying "Passwords are enforced for link shares"
+		And public link should not be generated
+
+	Scenario: user tries to create a public link with read-write permission without entering share password while enforce password on read-write public share is enforced
+		Given parameter "shareapi_enforce_links_password_read_write" of app "core" has been set to "yes"
+		When the user tries to create a new public link for the folder "simple-folder" using the webUI with
+			| permission | read-write |
+		Then the user should see a error message on public dialog saying "Passwords are enforced for link shares"
+		And public link should not be generated
+
+	Scenario: user tries to create a public link with write only permission without entering share password while enforce password on write only public share is enforced
+		Given parameter "shareapi_enforce_links_password_write_only" of app "core" has been set to "yes"
+		When the user tries to create a new public link for the folder "simple-folder" using the webUI with
+			| permission | upload |
+		Then the user should see a error message on public dialog saying "Passwords are enforced for link shares"
+		And public link should not be generated
+
+	Scenario: user creates a public link with read-write permission without entering share password while enforce password on read only public share is enforced
+		Given parameter "shareapi_enforce_links_password_read_only" of app "core" has been set to "yes"
+		When the user creates a new public link for the folder "simple-folder" using the webUI with
+			| permission | read-write |
+		And the public accesses the last created public link using the webUI
+		Then the file "lorem.txt" should be listed on the webUI
