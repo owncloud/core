@@ -43,3 +43,16 @@ const MINIMUMUIWAITTIMEOUTMICROSEC = MINIMUMUIWAITTIMEOUTMILLISEC * 1000;
 const STANDARDRETRYCOUNT = 5;
 // Minimum number of times to retry where retries are useful
 const MINIMUMRETRYCOUNT = 2;
+
+// The remote server-under-test might or might not happen to have this directory.
+// If it does not exist, then the tests may end up creating it.
+const ACCEPTANCE_TEST_DIR_ON_REMOTE_SERVER = "tests/acceptance";
+
+// The following directory should NOT already exist on the remote server-under-test.
+// Acceptance tests are free to do anything needed in this directory, and to
+// delete it during or at the end of testing.
+const TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER = ACCEPTANCE_TEST_DIR_ON_REMOTE_SERVER . "/work";
+
+// The following directory is created, used, and deleted by tests that need to
+// use some "local external storage" on the server.
+const LOCAL_STORAGE_DIR_ON_REMOTE_SERVER = TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/local_storage";

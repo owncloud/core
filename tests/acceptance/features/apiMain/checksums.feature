@@ -73,7 +73,7 @@ Feature: checksums
   Scenario Outline: Downloading a file from local storage has correct checksum
     Given using <dav_version> DAV path
     # Create the file directly in local storage, bypassing ownCloud
-    And file "prueba_cksum.txt" with text "Test file for checksums" has been created in local storage
+    And file "prueba_cksum.txt" with text "Test file for checksums" has been created in local storage on the server
     # Do a first download, which will trigger ownCloud to calculate a checksum for the file
     When user "user0" downloads the file "/local_storage/prueba_cksum.txt" using the WebDAV API
     # Now do a download that is expected to have a checksum with it
