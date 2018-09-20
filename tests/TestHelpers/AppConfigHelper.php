@@ -365,4 +365,21 @@ class AppConfigHelper {
 			);
 		}
 	}
+
+	/**
+	 * @param array $appParameterValues 'appid' and 'configkey' to get config value of app config
+	 *
+	 * @return array
+	 */
+	public static function getAppConfigs($appParameterValues) {
+		foreach ($appParameterValues as $configKey) {
+			$configValues[] = [
+				'appid' => $configKey['appid'],
+				'configkey' => $configKey['configkey'],
+				'value' => \trim(SetupHelper::runOcc(["config:app:get",$configKey['appid'], $configKey['configkey']])['stdOut'])
+			];
+		}
+
+		return $configValues;
+	}
 }
