@@ -728,8 +728,8 @@ trait WebDav {
 	 * @When user :user using password :password downloads the file :fileName using the WebDAV API
 	 *
 	 * @param string $user
-	 * @param string $fileName
 	 * @param string|null $password
+	 * @param string $fileName
 	 *
 	 * @return void
 	 */
