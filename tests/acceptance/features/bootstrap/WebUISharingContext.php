@@ -826,10 +826,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $name
 	 * @param TableNode|null $settings table with the settings and no header
-	 *                            possible settings: name, permission,
-	 *                            password, expiration, email
-	 *                            the permissions values has to be written exactly
-	 *                            the way its written in the UI
+	 *                                 possible settings: name, permission,
+	 *                                 password, expiration, email
+	 *                                 the permissions values have to be written
+	 *                                 exactly the way they are written in the UI
 	 *
 	 * @return string
 	 */
