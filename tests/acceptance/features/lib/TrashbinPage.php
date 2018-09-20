@@ -73,6 +73,15 @@ class TrashbinPage extends FilesPageBasic {
 	}
 
 	/**
+	 *
+	 * {@inheritDoc}
+	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
+	 */
+	protected function getFilePathInRowXpath() {
+		throw new \Exception("not implemented in TrashbinPage");
+	}
+
+	/**
 	 * @throws ElementNotFoundException
 	 * @return NodeElement
 	 */

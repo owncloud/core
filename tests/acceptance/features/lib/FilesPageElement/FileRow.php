@@ -267,6 +267,24 @@ class FileRow extends OwncloudPage {
 	}
 
 	/**
+	 * return the path of the current file
+	 *
+	 * @param string $xpath xpath related to the fileRow element
+	 * @throws ElementNotFoundException
+	 * @return string
+	 */
+	public function getFilePath($xpath) {
+		$filePathElement = $this->rowElement->find("xpath", $xpath);
+		if ($filePathElement === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $xpath could not find file path element"
+			);
+		}
+		return \dirname($filePathElement->getText());
+	}
+
+	/**
 	 * finds and returns the thumbnail of the file
 	 *
 	 * @throws ElementNotFoundException

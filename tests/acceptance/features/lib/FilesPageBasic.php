@@ -72,6 +72,11 @@ abstract class FilesPageBasic extends OwncloudPage {
 	abstract protected function getEmptyContentXpath();
 
 	/**
+	 * @return string
+	 */
+	abstract protected function getFilePathInRowXpath();
+	
+	/**
 	 * @return int the number of files and folders listed on the page
 	 */
 	public function getSizeOfFileFolderList() {
@@ -107,6 +112,30 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function findFileRowByName($name, Session $session) {
 		return $this->findAllFileRowsByName($name, $session)[0];
+	}
+
+	/**
+	 * finds the complete row of a file with a given name and path
+	 * useful for pages where multiple files with the same name can be displayed
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 *
+	 * @return FileRow
+	 * @throws ElementNotFoundException
+	 */
+	public function findFileRowByNameAndPath($name, $path, Session $session) {
+		$fileRows = $this->findAllFileRowsByName($name, $session);
+		foreach ($fileRows as $fileRow) {
+			$filePath = $fileRow->getFilePath($this->getFilePathInRowXpath());
+			if ($filePath === $path) {
+				return $fileRow;
+			}
+		}
+		throw new ElementNotFoundException(
+			__METHOD__ .
+			" could not find file with the name '$name' and path '$path'"
+		);
 	}
 
 	/**
