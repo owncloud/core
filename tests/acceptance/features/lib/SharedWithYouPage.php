@@ -69,6 +69,15 @@ class SharedWithYouPage extends FilesPageBasic {
 
 	/**
 	 *
+	 * {@inheritDoc}
+	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
+	 */
+	protected function getFilePathInRowXpath() {
+		throw new \Exception("not implemented in SharedWithYouPage");
+	}
+
+	/**
+	 *
 	 * @param string|array $name
 	 * @param Session $session
 	 * @param bool $expectToDeleteFile

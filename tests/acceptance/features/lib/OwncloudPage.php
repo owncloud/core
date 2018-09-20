@@ -40,6 +40,7 @@ class OwncloudPage extends Page {
 	protected $ocDialogXpath = ".//*[@class='oc-dialog']";
 	protected $avatarImgXpath = ".//div[@id='settings']//div[contains(@class, 'avatardiv')]/img";
 	protected $titleXpath = ".//title";
+	protected $searchBoxId = "searchbox";
 
 	/**
 	 * used to store the unchanged path string when $path gets changed
@@ -303,6 +304,31 @@ class OwncloudPage extends Page {
 		return $avatarElement->isVisible();
 	}
 
+	/**
+	 *
+	 * @param Session $session
+	 * @param string $searchTerm
+	 * @throws ElementNotFoundException
+	 */
+	public function search($session, $searchTerm) {
+		$searchbox = $this->findById($this->searchBoxId);
+		if ($searchbox === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id: '$this->searchBoxId' " .
+				"could not find searchbox / button"
+			);
+		}
+		$searchbox->click();
+		$searchbox->setValue($searchTerm);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+		/**
+		 *
+		 * @var SearchResultInOtherFoldersPage $searchResultInOtherFoldersPage
+		 */
+		$searchResultInOtherFoldersPage = $this->getPage("SearchResultInOtherFoldersPage");
+		$searchResultInOtherFoldersPage->waitTillPageIsLoaded($session);
+	}
 	/**
 	 * return the path to the relevant page
 	 *

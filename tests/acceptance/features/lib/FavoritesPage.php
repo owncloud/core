@@ -64,4 +64,13 @@ class FavoritesPage extends FilesPageBasic {
 	protected function getEmptyContentXpath() {
 		return $this->emptyContentXpath;
 	}
+
+	/**
+	 *
+	 * {@inheritDoc}
+	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
+	 */
+	protected function getFilePathInRowXpath() {
+		throw new \Exception("not implemented in FavoritesPage");
+	}
 }
