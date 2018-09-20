@@ -1798,7 +1798,7 @@ trait WebDav {
 	 */
 	public function userAddsAFileTo($user, $destination, $bytes) {
 		$filename = "filespecificSize.txt";
-		$this->createFileSpecificSize($filename, $bytes);
+		$this->createLocalFileOfSpecificSize($filename, $bytes);
 		PHPUnit_Framework_Assert::assertFileExists($this->workStorageDirLocation() . $filename);
 		$this->userUploadsAFileTo(
 			$user,

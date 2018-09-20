@@ -330,7 +330,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$name,
 		Session $session,
 		$expectToDeleteFile = true,
-		$maxRetries = STANDARDRETRYCOUNT
+		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->initAjaxCounters($session);
 		$this->resetSumStartedAjaxRequests($session);
@@ -360,7 +360,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 						. "\n-------------------------\n"
 					);
 				}
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			}
 		}
 		if ($expectToDeleteFile && ($counter > 0)) {
@@ -542,7 +542,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = LONGUIWAITTIMEOUTMILLISEC
+		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->initAjaxCounters($session);
 		$currentTime = \microtime(true);
@@ -597,7 +597,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 				}
 			}
 
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 
@@ -622,7 +622,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function waitTillFileRowsAreReady(
 		Session $session,
-		$timeout_msec = LONGUIWAITTIMEOUTMILLISEC
+		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -639,7 +639,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 				}
 			}
 
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 
@@ -672,7 +672,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 				"could not find the appSettings section"
 			);
 		}
-		$timeout_msec = LONGUIWAITTIMEOUTMILLISEC;
+		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC;
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($appSettingsDiv->getAttribute('style') !== $this->styleOfCheckboxWhenVisible) {
@@ -682,7 +682,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 					" timed out waiting for show hidden files checkbox to appear"
 				);
 			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 		

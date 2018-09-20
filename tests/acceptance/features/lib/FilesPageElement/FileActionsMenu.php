@@ -66,7 +66,7 @@ class FileActionsMenu extends OwncloudPage {
 	 * @return void
 	 */
 	public function rename(
-		$xpathToWaitFor = null, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$xpathToWaitFor = null, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$renameBtn = $this->findButton($this->renameActionLabel);
 		if ($renameBtn === null) {
@@ -137,7 +137,7 @@ class FileActionsMenu extends OwncloudPage {
 			);
 		} else {
 			$this->waitFor(
-				STANDARDUIWAITTIMEOUTMILLISEC / 1000, [$button, 'isVisible']
+				STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$button, 'isVisible']
 			);
 			return $button;
 		}

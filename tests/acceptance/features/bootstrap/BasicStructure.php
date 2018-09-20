@@ -1113,12 +1113,15 @@ trait BasicStructure {
 	}
 
 	/**
+	 * Creates a file locally in the file system of the test runner
+	 * The file will be available to upload to the server
+	 *
 	 * @param string $name
 	 * @param string $size
 	 *
 	 * @return void
 	 */
-	public function createFileSpecificSize($name, $size) {
+	public function createLocalFileOfSpecificSize($name, $size) {
 		$file = \fopen($this->workStorageDirLocation() . $name, 'w');
 		\fseek($file, $size - 1, SEEK_CUR);
 		\fwrite($file, 'a'); // write a dummy char at SIZE position
@@ -1131,26 +1134,18 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public function createFileWithText($name, $text) {
-		$file = \fopen($this->workStorageDirLocation() . $name, 'w');
-		\fwrite($file, $text);
-		\fclose($file);
+	public function createFileOnServerWithText($name, $text) {
+		SetupHelper::createFileOnServer(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			$name,
+			$text
+		);
 	}
 
 	/**
-	 * @Given file :filename of size :size has been created in local storage
-	 *
-	 * @param string $filename
-	 * @param string $size
-	 *
-	 * @return void
-	 */
-	public function fileHasBeenCreatedInLocalStorageWithSize($filename, $size) {
-		$this->createFileSpecificSize("local_storage/$filename", $size);
-	}
-
-	/**
-	 * @Given file :filename with text :text has been created in local storage
+	 * @Given file :filename with text :text has been created in local storage on the server
 	 *
 	 * @param string $filename
 	 * @param string $text
@@ -1158,7 +1153,9 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function fileHasBeenCreatedInLocalStorageWithText($filename, $text) {
-		$this->createFileWithText("local_storage/$filename", $text);
+		$this->createFileOnServerWithText(
+			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$filename", $text
+		);
 	}
 
 	/**

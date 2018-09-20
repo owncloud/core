@@ -87,7 +87,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 			$this->createNewAppPasswordLoadingIndicatorClass
 		) !== false
 		) {
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 		}
 	}
 
