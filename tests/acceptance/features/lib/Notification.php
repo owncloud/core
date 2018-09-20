@@ -64,7 +64,7 @@ class Notification extends OwncloudPage {
 	 * @return void
 	 */
 	public function followLink(
-		Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		Session $session, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$link = $this->notificationElement->find(
 			"xpath", $this->notificationLinkXpath

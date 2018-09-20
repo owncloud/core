@@ -185,7 +185,7 @@ class FileRow extends OwncloudPage {
 			);
 		} else {
 			$this->waitFor(
-				STANDARDUIWAITTIMEOUTMILLISEC / 1000, [$sharingDailog, 'isVisible']
+				STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$sharingDailog, 'isVisible']
 			);
 			return $this->getPage("FilesPageElement\\SharingDialog");
 		}
