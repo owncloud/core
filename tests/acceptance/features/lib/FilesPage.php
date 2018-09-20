@@ -79,9 +79,11 @@ class FilesPage extends FilesPageBasic {
 	}
 	
 	/**
-	 *
 	 * {@inheritDoc}
+	 *
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
+	 *
+	 * @return void
 	 */
 	protected function getFilePathInRowXpath() {
 		throw new \Exception("not implemented in FilesPage");

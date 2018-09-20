@@ -308,7 +308,9 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 * @param string $searchTerm
+	 *
 	 * @throws ElementNotFoundException
+	 * @return void
 	 */
 	public function search($session, $searchTerm) {
 		$searchbox = $this->findById($this->searchBoxId);
@@ -329,6 +331,7 @@ class OwncloudPage extends Page {
 		$searchResultInOtherFoldersPage = $this->getPage("SearchResultInOtherFoldersPage");
 		$searchResultInOtherFoldersPage->waitTillPageIsLoaded($session);
 	}
+
 	/**
 	 * return the path to the relevant page
 	 *

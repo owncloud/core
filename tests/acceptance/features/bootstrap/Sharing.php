@@ -224,6 +224,7 @@ trait Sharing {
 	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $path
+	 *
 	 * @return void
 	 */
 	public function aPublicLinkShareOfIsCreated($path) {

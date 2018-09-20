@@ -238,6 +238,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * useful for pages where multiple files with the same name can be displayed
 	 *
 	 * @param string|array $name
+	 * @param string $path
 	 * @param Session $session
 	 *
 	 * @return FileRow

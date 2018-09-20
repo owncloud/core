@@ -205,6 +205,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $tabName
 	 * @param string $fileName
 	 * @param string $folderName
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -416,6 +417,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @Then there should be exactly :count folder/folders listed on the webUI
 	 *
 	 * @param string $count that is numeric
+	 *
 	 * @return void
 	 */
 	public function thereShouldBeCountFilesFoldersListedOnTheWebUI($count) {
@@ -920,17 +922,17 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with the path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
 	 *
 	 * @param string $name enclosed in single or double quotes
+	 * @param string $path
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
 	 * @param string $folder
-	 * @param string $path
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theFileFolderWithThePathShouldBeListedOnTheWebUI(
 		$name, $path, $shouldOrNot, $typeOfFilesPage = "", $folder = ""
-		) {
+	) {
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
 		if ($folder !== "") {
@@ -938,12 +940,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 		$path = \trim($path, $path[0]);
 		$this->checkIfFileFolderIsListedOnTheWebUI(
-				\trim($name, $name[0]),
-				$shouldOrNot,
-				$typeOfFilesPage,
-				$folder,
-				$path
-			);
+			\trim($name, $name[0]),
+			$shouldOrNot,
+			$typeOfFilesPage,
+			$folder,
+			$path
+		);
 	}
 
 	/**

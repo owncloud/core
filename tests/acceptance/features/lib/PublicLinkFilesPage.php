@@ -74,9 +74,12 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	}
 
 	/**
-	 *
 	 * {@inheritDoc}
+	 *
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
+	 *
+	 * @throws \Exception
+	 * @return void
 	 */
 	protected function getFilePathInRowXpath() {
 		throw new \Exception("not implemented in PublicLinkFilesPage");
@@ -176,7 +179,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		if ($previewContainer === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $this->textPreviewContainerXpath ".
+				" xpath $this->textPreviewContainerXpath " .
 				" could not find preview text container"
 			);
 		}
@@ -193,8 +196,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$downloadBtn = $this->find("xpath", $this->singleFileDownloadBtnXpath);
 		if ($downloadBtn === null) {
 			throw new ElementNotFoundException(
-				__METHOD__ . " xpath $this->singleFileDownloadBtnXpath ".
-				" could not find download button");
+				__METHOD__ . " xpath $this->singleFileDownloadBtnXpath " .
+				" could not find download button"
+			);
 		}
 		if ($downloadBtn->hasAttribute("href")) {
 			return $downloadBtn->getAttribute("href");
@@ -299,7 +303,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
-			$downloadButton = $this->find("xpath", $this->singleFileDownloadBtnXpath);
+			$downloadButton = $this->find(
+				"xpath", $this->singleFileDownloadBtnXpath
+			);
 			if ($fileList !== null) {
 				try {
 					$fileListIsVisible = $fileList->isVisible();
@@ -313,7 +319,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 						. "\n-------------------------\n"
 						. $e->getMessage()
 						. "\n-------------------------\n"
-						);
+					);
 					$fileListIsVisible = false;
 				} catch (StaleElementReference $e) {
 					// Somehow on Edge this can throw StaleElementReference
@@ -325,7 +331,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 						. "\n-------------------------\n"
 						. $e->getMessage()
 						. "\n-------------------------\n"
-						);
+					);
 					$fileListIsVisible = false;
 				}
 
@@ -338,7 +344,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 				$emptyContentElement = $this->find(
 					"xpath",
 					$this->getEmptyContentXpath()
-					);
+				);
 
 				if ($emptyContentElement !== null) {
 					if (!$emptyContentElement->hasClass("hidden")) {

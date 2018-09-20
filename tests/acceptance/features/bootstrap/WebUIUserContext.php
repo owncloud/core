@@ -51,6 +51,7 @@ class WebUIUserContext extends RawMinkContext implements Context {
 	 * @Then :displayname should be shown as the name of the current user on the WebUI
 	 *
 	 * @param string $displayname
+	 *
 	 * @return void
 	 */
 	public function displayNameOfTheCurrentUserOnTheWebUiShouldBe($displayname) {
