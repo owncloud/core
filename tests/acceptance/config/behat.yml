@@ -124,6 +124,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFilesContext:
+        - WebUISearchContext:
 
     webUIMoveFilesFolders:
       paths:
