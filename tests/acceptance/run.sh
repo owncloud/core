@@ -408,7 +408,7 @@ function teardown() {
 		# Clear storage folder
 		# This depends on the test runner and server being the same file system
 		# ToDo: use the testing app to cleanup.
-		rm -Rf work/local_storage/*
+		rm -Rf ${SCRIPT_PATH}/work/local_storage/*
 	fi
 	
 	if [ "${OC_TEST_ALT_HOME}" = "1" ]
@@ -577,7 +577,7 @@ fi
 
 if [ -z "${BEHAT_YML}" ]
 then
-	BEHAT_YML="config/behat.yml"
+	BEHAT_YML="${SCRIPT_PATH}/config/behat.yml"
 fi
 
 if [ -z "${MAILHOG_HOST}" ]

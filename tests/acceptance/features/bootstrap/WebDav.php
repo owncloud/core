@@ -1421,7 +1421,12 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsAFileTo($user, $source, $destination) {
-		$file = \GuzzleHttp\Stream\Stream::factory(\fopen($source, 'r'));
+		$file = \GuzzleHttp\Stream\Stream::factory(
+			\fopen(
+				$this->acceptanceTestsDirLocation() . $source,
+				'r'
+			)
+		);
 		$this->response = $this->makeDavRequest(
 			$user, "PUT", $destination, [], $file
 		);
@@ -1457,8 +1462,12 @@ trait WebDav {
 	public function userUploadsAFileToWithChunks(
 		$user, $source, $destination, $chunkingVersion = null
 	) {
-		$size = \filesize($source);
-		$contents = \file_get_contents($source);
+		$size = \filesize(
+			$this->acceptanceTestsDirLocation() . $source
+		);
+		$contents = \file_get_contents(
+			$this->acceptanceTestsDirLocation() . $source
+		);
 
 		// use two chunks for the sake of testing
 		$chunks = [];
@@ -1674,9 +1683,13 @@ trait WebDav {
 	public function userAddsAFileTo($user, $destination, $bytes) {
 		$filename = "filespecificSize.txt";
 		$this->createFileSpecificSize($filename, $bytes);
-		PHPUnit_Framework_Assert::assertFileExists("work/$filename");
-		$this->userUploadsAFileTo($user, "work/$filename", $destination);
-		$this->removeFile("work/", $filename);
+		PHPUnit_Framework_Assert::assertFileExists($this->workStorageDirLocation() . $filename);
+		$this->userUploadsAFileTo(
+			$user,
+			$this->temporaryStorageSubfolderName() . "/$filename",
+			$destination
+		);
+		$this->removeFile($this->workStorageDirLocation(), $filename);
 		$expectedElements = new TableNode([["$destination"]]);
 		$this->checkElementList($user, $expectedElements);
 	}
