@@ -349,9 +349,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				$count = (int) $count;
 			}
 			$currentTime = \microtime(true);
-			$end = $currentTime + (STANDARDUIWAITTIMEOUTMILLISEC / 1000);
+			$end = $currentTime + (STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000);
 			while ($currentTime <= $end && ($count !== \count($dialogs))) {
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				$currentTime = \microtime(true);
 				$dialogs = $this->owncloudPage->getOcDialogs();
 			}

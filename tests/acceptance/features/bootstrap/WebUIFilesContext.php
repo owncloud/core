@@ -542,7 +542,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			// We do not expect to be able to delete the file,
 			// so do not waste time doing too many retries.
 			$pageObject->deleteFile(
-				$name, $session, $expectToDeleteFile, MINIMUMRETRYCOUNT
+				$name, $session, $expectToDeleteFile, MINIMUM_RETRY_COUNT
 			);
 		}
 	}
@@ -598,7 +598,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		foreach ($filesTable as $file) {
 			$username = $this->featureContext->getCurrentUser();
 			$currentTime = \microtime(true);
-			$end = $currentTime + (LONGUIWAITTIMEOUTMILLISEC / 1000);
+			$end = $currentTime + (LONG_UI_WAIT_TIMEOUT_MILLISEC / 1000);
 			//retry deleting in case the file is locked (code 403)
 			while ($currentTime <= $end) {
 				$response = DeleteHelper::delete(
@@ -623,7 +623,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 					);
 				}
 				
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				$currentTime = \microtime(true);
 			}
 			
@@ -740,7 +740,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$previousNotificationsCount = 0;
 
 		for ($retryCounter = 0;
-			 $retryCounter < STANDARDRETRYCOUNT;
+			 $retryCounter < STANDARD_RETRY_COUNT;
 			 $retryCounter++) {
 			$this->theUserUploadsOverwritingTheFileUsingTheWebUI($name);
 
@@ -761,7 +761,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				echo $message;
 				\error_log($message);
 				$previousNotificationsCount = $currentNotificationsCount;
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			} else {
 				break;
 			}
@@ -1384,7 +1384,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		for ($i = 1; $i <= $this->filesPage->getSizeOfFileFolderList(); $i++) {
 			$actionMenu = $this->filesPage->openFileActionsMenuByNo($i);
 			
-			$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC;
+			$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC;
 			$currentTime = \microtime(true);
 			$end = $currentTime + ($timeout_msec / 1000);
 			while ($currentTime <= $end) {
@@ -1401,7 +1401,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				if ($windowHeight >= $deleteBtnCoordinates ["top"]) {
 					break;
 				}
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				$currentTime = \microtime(true);
 			}
 			
