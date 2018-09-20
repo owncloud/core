@@ -76,12 +76,13 @@ class PublicLinkTab extends OwncloudPage {
 	/**
 	 *
 	 * @param Session $session
-	 * @param string $name
-	 * @param string $permissions
-	 * @param string $password
-	 * @param string $expirationDate
-	 * @param string $email
-	 * @param bool $emailToSelf
+	 * @param string|null $name
+	 * @param string|null $permissions
+	 * @param string|null $password
+	 * @param string|null $expirationDate
+	 * @param string|null $email
+	 * @param bool|null $emailToSelf
+	 * @param string|null $personalMessage
 	 *
 	 * @return string the name of the created public link
 	 */
@@ -134,13 +135,13 @@ class PublicLinkTab extends OwncloudPage {
 	public function openSharingPopup() {
 		$createLinkBtn = $this->publicLinkTabElement->find(
 			"xpath", $this->createLinkBtnXpath
-			);
+		);
 		if ($createLinkBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->createLinkBtnXpath" .
 				" could not find create public link button"
-				);
+			);
 		}
 		$createLinkBtn->click();
 

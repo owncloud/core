@@ -32,6 +32,11 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * Object of a row on the FilesPage
  */
 class FavoritesFileRow extends FileRow {
+	/**
+	 * @param string $xpath
+	 *
+	 * @return null|string
+	 */
 	public function getFilePath($xpath) {
 		$filePath = $this->rowElement->getAttribute("data-path");
 		return $filePath;

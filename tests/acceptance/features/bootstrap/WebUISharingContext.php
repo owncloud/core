@@ -565,6 +565,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @When the public accesses the last created public link with password :password using the webUI
 	 *
 	 * @param string $password
+	 *
 	 * @return void
 	 */
 	public function thePublicAccessesPublicLinkWithPasswordUsingTheWebui($password) {
@@ -580,6 +581,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @When the public tries to access the last created public link with wrong password :wrongPassword using the webUI
 	 *
 	 * @param string $wrongPassword
+	 *
 	 * @return void
 	 */
 	public function thePublicTriesToAccessPublicLinkWithWrongPasswordUsingTheWebui($wrongPassword) {
