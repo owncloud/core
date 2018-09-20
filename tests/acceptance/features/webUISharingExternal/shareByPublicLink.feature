@@ -132,3 +132,9 @@ So that public sharing is limited according to organization policy
 			| permission | read-write |
 		And the public accesses the last created public link using the webUI
 		Then the file "lorem.txt" should be listed on the webUI
+
+	Scenario: public should be able to access the shared file through public link
+		When the user creates a new public link for the file 'lorem.txt' using the webUI
+		And the public accesses the last created public link using the webUI
+		Then the text preview of the public link should contain "Lorem ipsum dolor sit amet, consectetur"
+		And the content of the file shared by last public link should be the same as "lorem.txt"

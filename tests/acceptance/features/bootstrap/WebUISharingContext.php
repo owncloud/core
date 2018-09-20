@@ -31,6 +31,7 @@ use Page\PublicLinkFilesPage;
 use Page\SharedWithYouPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
+use TestHelpers\HttpRequestHelper;
 use TestHelpers\SetupHelper;
 use OC\Files\External\Auth\Password\Password;
 
@@ -881,6 +882,43 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$linkName = $this->publicShareTab->createLink($this->getSession());
 		}
 		return $linkName;
+	}
+
+	/**
+	 * @Then the text preview of the public link should contain :content
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theTextPreviewOfThePublicLinkShouldContain($content) {
+		$previewText = $this->publicLinkFilesPage->getPreviewText();
+		PHPUnit_Framework_Assert::assertContains(
+			$content, $previewText,
+			__METHOD__ . " file preview does not contain expected content"
+		);
+	}
+
+	/**
+	 * @Then the content of the file shared by last public link should be the same as :originalFile
+	 *
+	 * @param string $originalFile
+	 *
+	 * @return void
+	 */
+	public function theContentOfTheFileSharedByLastPublicLinkShouldBeTheSameAs($originalFile) {
+		$url = $this->publicLinkFilesPage->getDownloadUrl();
+		$response = HttpRequestHelper::get($url);
+		PHPUnit_Framework_Assert::assertEquals(200, $response->getStatusCode());
+		$body = $response->getBody()->getContents();
+
+		$user = $this->featureContext->getCurrentUser();
+		$password = $this->featureContext->getPasswordForUser($user);
+
+		$this->featureContext->downloadFileAsUserUsingPassword($user, $originalFile, $password);
+		$originalContent = $this->featureContext->getResponse()->getBody()->getContents();
+
+		PHPUnit_Framework_Assert::assertSame($originalContent, $body);
 	}
 
 	/**

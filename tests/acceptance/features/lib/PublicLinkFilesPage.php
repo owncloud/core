@@ -24,6 +24,8 @@ namespace Page;
 
 use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use WebDriver\Exception\NoSuchElement;
+use WebDriver\Exception\StaleElementReference;
 
 /**
  * Files page of a public link
@@ -35,6 +37,8 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	protected $fileListXpath = ".//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='emptycontent']";
 	protected $addToYourOcBtnId = "save-button";
+	protected $singleFileDownloadBtnXpath = "//a[@id='downloadFile']";
+	protected $textPreviewContainerXpath = "//div[@class='text-preview']";
 	protected $remoteAddressInputId = "remote_address";
 	protected $confirmBtnId = "save-button-confirm";
 	protected $passwordFieldId = 'password';
@@ -153,6 +157,43 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	}
 
 	/**
+	 * returns the preview text displayed on single file download page
+	 *
+	 * @return string
+	 * @throws ElementNotFoundException
+	 */
+	public function getPreviewText() {
+		$previewContainer = $this->find("xpath", $this->textPreviewContainerXpath);
+		if ($previewContainer === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->textPreviewContainerXpath ".
+				" could not find preview text container"
+			);
+		}
+		return $previewContainer->getText();
+	}
+
+	/**
+	 * returns the download url from single file download page
+	 *
+	 * @return string|null
+	 * @throws ElementNotFoundException
+	 */
+	public function getDownloadUrl() {
+		$downloadBtn = $this->find("xpath", $this->singleFileDownloadBtnXpath);
+		if ($downloadBtn === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ . " xpath $this->singleFileDownloadBtnXpath ".
+				" could not find download button");
+		}
+		if ($downloadBtn->hasAttribute("href")) {
+			return $downloadBtn->getAttribute("href");
+		}
+		return null;
+	}
+
+	/**
 	 * enter public link password
 	 *
 	 * @param string $password
@@ -229,5 +270,86 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 */
 	public function getTooltipOfFile($fileName, Session $session) {
 		throw new \Exception("not implemented");
+	}
+
+	/**
+	 * there is no reliable loading indicator on the files page, so wait for
+	 * the table or the Empty Folder message to be shown
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = LONGUIWAITTIMEOUTMILLISEC
+	) {
+		$this->initAjaxCounters($session);
+		$currentTime = \microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
+			$fileList = $this->find('xpath', $this->getFileListXpath());
+			$downloadButton = $this->find("xpath", $this->singleFileDownloadBtnXpath);
+			if ($fileList !== null) {
+				try {
+					$fileListIsVisible = $fileList->isVisible();
+				} catch (NoSuchElement $e) {
+					// Somehow on Edge this can throw NoSuchElement even though
+					// we just found the file list.
+					// TODO: Edge - if it keeps happening then find out why.
+					\error_log(
+						__METHOD__
+						. " NoSuchElement while doing fileList->isVisible()"
+						. "\n-------------------------\n"
+						. $e->getMessage()
+						. "\n-------------------------\n"
+						);
+					$fileListIsVisible = false;
+				} catch (StaleElementReference $e) {
+					// Somehow on Edge this can throw StaleElementReference
+					// even though we just found the file list.
+					// TODO: Edge - if it keeps happening then find out why.
+					\error_log(
+						__METHOD__
+						. " StaleElementReference while doing fileList->isVisible()"
+						. "\n-------------------------\n"
+						. $e->getMessage()
+						. "\n-------------------------\n"
+						);
+					$fileListIsVisible = false;
+				}
+
+				if ($fileListIsVisible
+					&& $fileList->has("xpath", "//a")
+				) {
+					break;
+				}
+
+				$emptyContentElement = $this->find(
+					"xpath",
+					$this->getEmptyContentXpath()
+					);
+
+				if ($emptyContentElement !== null) {
+					if (!$emptyContentElement->hasClass("hidden")) {
+						break;
+					}
+				}
+			} elseif ($downloadButton !== null) {
+				break;
+			}
+
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = \microtime(true);
+		}
+
+		if ($currentTime > $end) {
+			throw new \Exception(
+				__METHOD__ . " timeout waiting for page to load"
+			);
+		}
+
+		$this->waitForOutstandingAjaxCalls($session);
 	}
 }
