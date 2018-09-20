@@ -1104,7 +1104,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function createFileSpecificSize($name, $size) {
-		$file = \fopen("work/$name", 'w');
+		$file = \fopen($this->workStorageDirLocation() . $name, 'w');
 		\fseek($file, $size - 1, SEEK_CUR);
 		\fwrite($file, 'a'); // write a dummy char at SIZE position
 		\fclose($file);
@@ -1117,7 +1117,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function createFileWithText($name, $text) {
-		$file = \fopen("work/$name", 'w');
+		$file = \fopen($this->workStorageDirLocation() . $name, 'w');
 		\fwrite($file, $text);
 		\fclose($file);
 	}
@@ -1154,7 +1154,8 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function fileHasBeenDeletedInLocalStorage($filename) {
-		\unlink("work/local_storage/$filename");
+		// ToDo: use testing app to cleanup files in local storage
+		\unlink($this->localStorageDirLocation() . $filename);
 	}
 
 	/**
@@ -1368,12 +1369,41 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function temporaryStorageSubfolderName() {
+		return "work";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function acceptanceTestsDirLocation() {
+		return \dirname(__FILE__) . "/../../";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function workStorageDirLocation() {
+		return $this->acceptanceTestsDirLocation() . $this->temporaryStorageSubfolderName() . "/";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function localStorageDirLocation() {
+		return $this->workStorageDirLocation() . "local_storage/";
+	}
+
+	/**
 	 * @BeforeScenario @local_storage
 	 *
 	 * @return void
 	 */
 	public function removeFilesFromLocalStorageBefore() {
-		$dir = "./work/local_storage/";
+		// ToDo: use testing app to cleanup files in local storage
+		$dir = $this->localStorageDirLocation();
 		$di = new RecursiveDirectoryIterator(
 			$dir, FilesystemIterator::SKIP_DOTS
 		);
@@ -1391,7 +1421,8 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function removeFilesFromLocalStorageAfter() {
-		$dir = "./work/local_storage/";
+		// ToDo: use testing app to cleanup files in local storage
+		$dir = $this->localStorageDirLocation();
 		$di = new RecursiveDirectoryIterator(
 			$dir, FilesystemIterator::SKIP_DOTS
 		);
