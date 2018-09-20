@@ -385,7 +385,7 @@ pipeline:
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
-      - ./tests/drone/test-acceptance.sh --remote
+      - make test-acceptance-api TESTING_REMOTE_SYSTEM=true
     when:
       matrix:
         TEST_SUITE: api
@@ -403,7 +403,7 @@ pipeline:
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
-      - ./tests/drone/test-acceptance.sh --remote
+      - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
     when:
       matrix:
         TEST_SUITE: selenium
