@@ -126,6 +126,15 @@ pipeline:
       matrix:
         TEST_SUITE: phan
 
+  php-acceptance-test-style:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+    - make test-acceptance-style
+    when:
+      matrix:
+        TEST_SUITE: php-acceptance-test-style
+
   install-server:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -555,6 +564,10 @@ matrix:
   # phan
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
+
+  # php-acceptance-test-style
+    - TEST_SUITE: php-acceptance-test-style
+      PHP_VERSION: 7.2
 
   # Litmus
     - PHP_VERSION: 7.1

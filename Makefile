@@ -85,7 +85,7 @@ help:
 	@echo -e "make clean\t\t\tclean everything"
 	@echo -e "make install-composer-deps\tinstall composer dependencies"
 	@echo -e "make update-composer\t\tupdate composer.lock"
-	@echo -e "make install-nodejs-deps\t\tinstall Node JS and Javascript dependencies"
+	@echo -e "make install-nodejs-deps\tinstall Node JS and Javascript dependencies"
 	@echo
 	@echo -e "Note that running 'make' without arguments already installs all required dependencies"
 	@echo
@@ -93,6 +93,7 @@ help:
 	@echo -e "make test\t\t\trun all tests"
 	@echo -e "make test-php\t\t\trun all PHP tests"
 	@echo -e "make test-php-style\t\trun PHP code style checks"
+	@echo -e "make test-acceptance-style\trun extra PHP code style checks on acceptance test code"
 	@echo -e "make test-js\t\t\trun Javascript tests"
 	@echo -e "make test-js-debug\t\trun Javascript tests in debug mode (continuous)"
 	@echo -e "make test-acceptance\t\trun acceptance tests"
@@ -205,8 +206,12 @@ test-php-style-fix: $(composer_dev_deps)
 test-php-phan: $(PHAN_BIN)
 	php $(PHAN_BIN) --config-file .phan/config.php --require-config-exists -p
 
+.PHONY: test-acceptance-style
+test-acceptance-style: $(composer_dev_deps)
+	$(composer_deps)/bin/phpcs --runtime-set ignore_warnings_on_exit --standard=phpcs.xml tests/acceptance
+
 .PHONY: test
-test: test-php-lint test-php-style test-php test-js test-acceptance
+test: test-php-lint test-php-style test-acceptance-style test-php test-js test-acceptance
 
 .PHONY: clean-test-acceptance
 clean-test-acceptance:
