@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews
+@webUI @insulated @disablePreviews @mailhog
 Feature: Share by public link
 As a user
 I want to share files through a publicly accessible link
@@ -138,3 +138,14 @@ So that public sharing is limited according to organization policy
 		And the public accesses the last created public link using the webUI
 		Then the text preview of the public link should contain "Lorem ipsum dolor sit amet, consectetur"
 		And the content of the file shared by last public link should be the same as "lorem.txt"
+
+	Scenario: user shares a public link via email
+		Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
+		And the user has reloaded the current page of the webUI
+		When the user creates a new public link for the folder "simple-folder" using the webUI with
+		| email | foo@bar.co |
+		Then the email address "foo@bar.co" should have received an email with the body containing
+			"""
+			User One shared simple-folder with you
+			"""
+		And the email address "foo@bar.co" should have received an email containing last shared public link
