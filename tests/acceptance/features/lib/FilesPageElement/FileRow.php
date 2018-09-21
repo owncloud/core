@@ -59,6 +59,7 @@ class FileRow extends OwncloudPage {
 	protected $acceptShareBtnXpath = "//span[@class='fileactions']//a[contains(@class,'accept')]";
 	protected $declinePendingShareBtnXpath = "//a[@data-action='Reject']";
 	protected $sharingDialogXpath = ".//div[@class='dialogContainer']";
+	protected $highlightsXpath = "//div[@class='highlights']";
 
 	/**
 	 *
@@ -475,5 +476,24 @@ class FileRow extends OwncloudPage {
 		}
 		$element->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * returns the element that contains the highlighted content of the file
+	 * when using elastic search
+	 *
+	 * @throws ElementNotFoundException
+	 * @return NodeElement
+	 */
+	public function getHighlightsElement() {
+		$element = $this->rowElement->find("xpath", $this->highlightsXpath);
+		if ($element === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->highlightsXpath " .
+				" highlights element not found"
+			);
+		}
+		return $element;
 	}
 }
