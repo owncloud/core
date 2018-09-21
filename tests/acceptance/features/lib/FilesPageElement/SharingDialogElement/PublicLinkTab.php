@@ -92,7 +92,8 @@ class PublicLinkTab extends OwncloudPage {
 		$password = null,
 		$expirationDate = null,
 		$email = null,
-		$emailToSelf = null
+		$emailToSelf = null,
+		$personalMessage = null
 	) {
 		$editPublicLinkPopupPageObject = $this->openSharingPopup();
 		if ($name !== null) {
@@ -115,6 +116,9 @@ class PublicLinkTab extends OwncloudPage {
 		}
 		if ($emailToSelf === "true" && $email !== null) {
 			$editPublicLinkPopupPageObject->setEmailToSelf();
+		}
+		if ($personalMessage !== null && $email !== null) {
+			$editPublicLinkPopupPageObject->setPersonalMessage($personalMessage);
 		}
 		$linkName = $editPublicLinkPopupPageObject->getLinkName();
 		$editPublicLinkPopupPageObject->save();

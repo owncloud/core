@@ -43,6 +43,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	private $emailInputXpath = "//form[@id='emailPrivateLink']//input[@class='select2-input']";
 	private $emailToSelfCheckboxXpath = "//form[@id='emailPrivateLink']" . "//input[@class='emailPrivateLinkForm--emailToSelf']";
 	private $emailInputCloseXpath = "//a[@class='select2-search-choice-close']";
+	private $personalMessageInputXpath = "//*[@class='public-link-modal--input emailPrivateLinkForm--emailBodyField']";
 	private $shareButtonXpath = ".//button[contains(text(), 'Share')]";
 	private $permissionLabelXpath = [
 		'read' => ".//label[contains(@for, 'sharingDialogAllowPublicRead')]",
@@ -233,6 +234,25 @@ class EditPublicLinkPopup extends OwncloudPage {
 				);
 		}
 		$checkbox->click();
+	}
+
+	/**
+	 * @param string $personalMessage
+	 *
+	 * @return void
+	 */
+	public function setPersonalMessage($personalMessage) {
+		$personalMessageInput = $this->popupElement->find("xpath", $this->personalMessageInputXpath);
+		if ($personalMessageInput === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->personalMessageInputXpath" .
+				" could not find the input field for sending a personal message in the email."
+				);
+		}
+		$this->waitTillElementIsNotNull($this->personalMessageInputXpath);
+		$personalMessageInput->focus();
+		$personalMessageInput->setValue($personalMessage);
 	}
 
 	/**
