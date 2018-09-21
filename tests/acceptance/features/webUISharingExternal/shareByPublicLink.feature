@@ -166,3 +166,19 @@ So that public sharing is limited according to organization policy
 			"""
 		And the email address "foo@bar.co" should have received an email containing last shared public link
 		And the email address "u1@oc.com.np" should have received an email containing last shared public link
+
+	Scenario: user shares a public link via email with multiple addresses
+		Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
+		And the user has reloaded the current page of the webUI
+		When the user creates a new public link for the folder "simple-folder" using the webUI with
+		| email | foo@bar.co, foo@barr.co |
+		Then the email address "foo@bar.co" should have received an email with the body containing
+			"""
+			User One shared simple-folder with you
+			"""
+		And the email address "foo@barr.co" should have received an email with the body containing
+			"""
+			User One shared simple-folder with you
+			"""
+		And the email address "foo@bar.co" should have received an email containing last shared public link
+		And the email address "foo@barr.co" should have received an email containing last shared public link
