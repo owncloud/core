@@ -40,7 +40,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	private $passwordInputXpath = ".//input[@type='password']";
 	private $expirationDateLabelXpath = ".//label[contains(text(), 'Expiration')]";
 	private $expirationDateInputXpath = ".//input[contains(@class,'expirationDate')]";
-	private $emailInputXpath = ".//input[@type='email']";
+	private $emailInputXpath = "//form[@id='emailPrivateLink']//input[@class='select2-input']";
 	private $shareButtonXpath = ".//button[contains(text(), 'Share')]";
 	private $permissionLabelXpath = [
 		'read' => ".//label[contains(@for, 'sharingDialogAllowPublicRead')]",
@@ -193,7 +193,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 				" could not find input field for the email of the public link"
 			);
 		}
-		$emailInput->setValue($email);
+		$emailInput->setValue($email . "\n");
 	}
 
 	/**
