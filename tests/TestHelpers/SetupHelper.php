@@ -178,6 +178,18 @@ class SetupHelper {
 	}
 
 	/**
+	 * Fixup OC path so that it always starts with a "/" and does not end with
+	 * a "/".
+	 *
+	 * @param string $ocPath
+	 *
+	 * @return string
+	 */
+	private static function normaliseOcPath($ocPath) {
+		return '/' . \trim($ocPath, '/');
+	}
+
+	/**
 	 *
 	 * @param string $adminUsername
 	 * @param string $adminPassword
@@ -200,7 +212,7 @@ class SetupHelper {
 		self::$adminUsername = $adminUsername;
 		self::$adminPassword = $adminPassword;
 		self::$baseUrl = \rtrim($baseUrl, '/');
-		self::$ocPath = '/' . \trim($ocPath, '/');
+		self::$ocPath = self::normaliseOcPath($ocPath);
 	}
 
 	/**
@@ -427,6 +439,8 @@ class SetupHelper {
 		}
 		if ($ocPath === null) {
 			$ocPath = self::$ocPath;
+		} else {
+			$ocPath = self::normaliseOcPath($ocPath);
 		}
 
 		$body = [];
@@ -470,7 +484,7 @@ class SetupHelper {
 		self::resetOpcache($baseUrl, $adminUsername, $adminPassword);
 		return $return;
 	}
-	
+
 	/**
 	 * @param string $baseUrl
 	 * @param string $user
@@ -490,7 +504,7 @@ class SetupHelper {
 			);
 		} catch (ServerException $e) {
 			echo "could not reset opcache, if tests fail try to set " .
-				 "'opcache.revalidate_freq=0' in the php.ini file\n";
+				"'opcache.revalidate_freq=0' in the php.ini file\n";
 		}
 	}
 }
