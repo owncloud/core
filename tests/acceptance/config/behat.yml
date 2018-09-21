@@ -192,6 +192,7 @@ default:
         - WebUIFilesContext:
         - WebUISharingContext:
         - FederationContext:
+        - EmailContext:
 
     webUIUpload:
       paths:

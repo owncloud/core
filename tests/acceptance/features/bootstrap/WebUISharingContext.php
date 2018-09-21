@@ -32,6 +32,7 @@ use Page\SharedWithYouPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\HttpRequestHelper;
+use TestHelpers\EmailHelper;
 use TestHelpers\SetupHelper;
 use OC\Files\External\Auth\Password\Password;
 
@@ -919,6 +920,22 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$originalContent = $this->featureContext->getResponse()->getBody()->getContents();
 
 		PHPUnit_Framework_Assert::assertSame($originalContent, $body);
+	}
+
+	/**
+	 * @Then the email address :address should have received an email containing last shared public link
+	 *
+	 * @param string $address
+	 *
+	 * @return void
+	 */
+	public function theEmailAddressShouldHaveReceivedAnEmailContainingSharedPublicLink($address) {
+		$content = EmailHelper::getBodyOfLastEmail(
+			EmailHelper::getMailhogUrl(),
+			$address
+		);
+		$lastCreatedPublicLink = \end($this->createdPublicLinks);
+		PHPUnit_Framework_Assert::assertContains($lastCreatedPublicLink["url"], $content);
 	}
 
 	/**
