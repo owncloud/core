@@ -41,6 +41,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	private $expirationDateLabelXpath = ".//label[contains(text(), 'Expiration')]";
 	private $expirationDateInputXpath = ".//input[contains(@class,'expirationDate')]";
 	private $emailInputXpath = "//form[@id='emailPrivateLink']//input[@class='select2-input']";
+	private $emailToSelfCheckboxXpath = "//form[@id='emailPrivateLink']" . "//input[@class='emailPrivateLinkForm--emailToSelf']";
 	private $shareButtonXpath = ".//button[contains(text(), 'Share')]";
 	private $permissionLabelXpath = [
 		'read' => ".//label[contains(@for, 'sharingDialogAllowPublicRead')]",
@@ -194,6 +195,23 @@ class EditPublicLinkPopup extends OwncloudPage {
 			);
 		}
 		$emailInput->setValue($email . "\n");
+	}
+
+	/**
+	 *
+	 * @return void
+	 */
+	public function setEmailToSelf() {
+		$checkbox = $this->popupElement->find("xpath", $this->emailToSelfCheckboxXpath);
+		if ($checkbox === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->emailToSelfCheckboxXpath" .
+				" could not find the checkbox for sending the self copy of email of the public link. " .
+				" Maybe the email isn't filled."
+				);
+		}
+		$checkbox->click();
 	}
 
 	/**
