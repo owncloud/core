@@ -194,7 +194,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 				" could not find input field for the email of the public link"
 			);
 		}
-		$emailInput->setValue($email);
+		$emailInput->setValue($email . "\n");
 	}
 
 	/**
