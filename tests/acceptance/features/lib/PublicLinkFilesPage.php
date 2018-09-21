@@ -292,7 +292,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = LONGUIWAITTIMEOUTMILLISEC
+		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->initAjaxCounters($session);
 		$currentTime = \microtime(true);
