@@ -219,9 +219,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $name
 	 * @param TableNode $settings table with the settings and no header
 	 *                            possible settings: name, permission,
-	 *                            password, expiration, email
+	 *                            password, expiration, email, emailToSelf
 	 *                            the permissions values has to be written exactly
 	 *                            the way its written in the UI
+	 *                            Setting emailToSelf will send a copy of email to the link creator
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -864,13 +865,17 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			if (!isset($settingsArray['email'])) {
 				$settingsArray['email'] = null;
 			}
+			if (!isset($settingsArray['emailToSelf'])) {
+				$settingsArray['emailToSelf'] = null;
+			}
 			$linkName = $this->publicShareTab->createLink(
 				$this->getSession(),
 				$settingsArray ['name'],
 				$settingsArray ['permission'],
 				$settingsArray ['password'],
 				$settingsArray ['expiration'],
-				$settingsArray ['email']
+				$settingsArray ['email'],
+				$settingsArray ['emailToSelf']
 			);
 			if ($settingsArray['name'] !== null) {
 				PHPUnit_Framework_Assert::assertSame(

@@ -75,6 +75,7 @@ class PublicLinkTab extends OwncloudPage {
 	 * @param string $password
 	 * @param string $expirationDate
 	 * @param string $email
+	 * @param bool $emailToSelf
 	 *
 	 * @return string the name of the created public link
 	 */
@@ -84,7 +85,8 @@ class PublicLinkTab extends OwncloudPage {
 		$permissions = null,
 		$password = null,
 		$expirationDate = null,
-		$email = null
+		$email = null,
+		$emailToSelf = null
 	) {
 		$createLinkBtn = $this->publicLinkTabElement->find(
 			"xpath", $this->createLinkBtnXpath
@@ -121,6 +123,9 @@ class PublicLinkTab extends OwncloudPage {
 		}
 		if ($email !== null) {
 			$editPublicLinkPopupPageObject->setLinkEmail($email);
+		}
+		if ($emailToSelf === "true" && $email !== null) {
+			$editPublicLinkPopupPageObject->setEmailToSelf();
 		}
 		$linkName = $editPublicLinkPopupPageObject->getLinkName();
 		$editPublicLinkPopupPageObject->save();
