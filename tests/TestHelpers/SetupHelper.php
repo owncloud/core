@@ -372,6 +372,38 @@ class SetupHelper {
 
 	/**
 	 *
+	 * @param string $dirPathFromServerRoot e.g. 'apps2/myapp/appinfo'
+	 * @param string|null $baseUrl
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public static function rmDirOnServer(
+		$dirPathFromServerRoot,
+		$baseUrl = null,
+		$adminUsername = null,
+		$adminPassword = null
+	) {
+		$baseUrl = self::checkBaseUrl($baseUrl, "rmDirOnServer");
+		$adminUsername = self::checkAdminUsername($adminUsername, "rmDirOnServer");
+		$adminPassword = self::checkAdminPassword($adminPassword, "rmDirOnServer");
+		$result = OcsApiHelper::sendRequest(
+			$baseUrl, $adminUsername, $adminPassword, "DELETE",
+			"/apps/testing/api/v1/dir",
+			['dir' => $dirPathFromServerRoot]
+		);
+
+		if ($result->getStatusCode() !== 200) {
+			throw new \Exception(
+				"could not delete directory $dirPathFromServerRoot " . $result->getReasonPhrase()
+			);
+		}
+	}
+
+	/**
+	 *
 	 * @param string $filePathFromServerRoot e.g. 'app2/myapp/appinfo/info.xml'
 	 * @param string $content
 	 * @param string|null $baseUrl
@@ -403,6 +435,40 @@ class SetupHelper {
 		if ($result->getStatusCode() !== 200) {
 			throw new \Exception(
 				"could not create file $filePathFromServerRoot " . $result->getReasonPhrase()
+			);
+		}
+	}
+
+	/**
+	 *
+	 * @param string $filePathFromServerRoot e.g. 'app2/myapp/appinfo/info.xml'
+	 * @param string|null $baseUrl
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public static function deleteFileOnServer(
+		$filePathFromServerRoot,
+		$baseUrl = null,
+		$adminUsername = null,
+		$adminPassword = null
+	) {
+		$baseUrl = self::checkBaseUrl($baseUrl, "deleteFileOnServer");
+		$adminUsername = self::checkAdminUsername($adminUsername, "deleteFileOnServer");
+		$adminPassword = self::checkAdminPassword($adminPassword, "deleteFileOnServer");
+		$result = OcsApiHelper::sendRequest(
+			$baseUrl, $adminUsername, $adminPassword, "DELETE",
+			"/apps/testing/api/v1/file",
+			[
+				'file' => $filePathFromServerRoot
+			]
+		);
+
+		if ($result->getStatusCode() !== 200) {
+			throw new \Exception(
+				"could not delete file $filePathFromServerRoot " . $result->getReasonPhrase()
 			);
 		}
 	}
