@@ -1441,23 +1441,6 @@ trait BasicStructure {
 	}
 
 	/**
-	 * Get the path of the ownCloud server root directory
-	 *
-	 * @return string
-	 * @throws Exception
-	 */
-	public function getServerRoot() {
-		if ($this->localServerRoot === null) {
-			$this->localServerRoot = SetupHelper::getServerRoot(
-				$this->getBaseUrl(),
-				$this->getAdminUsername(),
-				$this->getAdminPassword()
-			);
-		}
-		return $this->localServerRoot;
-	}
-
-	/**
 	 * @BeforeScenario @local_storage
 	 *
 	 * @return void
