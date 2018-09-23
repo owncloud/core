@@ -1,10 +1,9 @@
-@api
+@api @local_storage
 Feature: external-storage
   Background:
     Given using OCS API version "1"
     And using old DAV path
 
-  @local_storage
   Scenario: Share by link a file inside a local external storage
     Given user "user0" has been created
     And user "user1" has been created
@@ -21,7 +20,6 @@ Feature: external-storage
       | token    | A_TOKEN              |
       | mimetype | httpd/unix-directory |
 
-  @local_storage
   Scenario: Move a file into storage
     Given user "user0" has been created
     And user "user1" has been created
@@ -30,7 +28,6 @@ Feature: external-storage
     Then as "user1" the file "/local_storage/foo1/textfile0.txt" should exist
     And as "user0" the file "/local_storage/foo1/textfile0.txt" should exist
 
-  @local_storage
   Scenario: Move a file out of storage
     Given user "user0" has been created
     And user "user1" has been created
@@ -41,7 +38,6 @@ Feature: external-storage
     And as "user0" the file "/local_storage/foo2/textfile0.txt" should not exist
     And as "user1" the file "/local.txt" should exist
 
-  @local_storage
   Scenario: Download a file that exists in filecache but not storage fails with 404
     Given user "user0" has been created
     And user "user0" has created a folder "/local_storage/foo3"
@@ -51,7 +47,6 @@ Feature: external-storage
     Then the HTTP status code should be "404"
     And as "user0" the file "local_storage/foo3/textfile0.txt" should not exist
 
-  @local_storage
   Scenario: Upload a file to external storage while quota is set on home storage
     Given user "user0" has been created
     And the quota of user "user0" has been set to "1 B"
