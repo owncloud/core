@@ -1,6 +1,8 @@
 OC.L10N.register(
     "settings",
     {
+    "Wrong current password" : "Das aktuelle Passwort ist falsch.",
+    "The new password cannot be the same as the previous one" : "Das neue Passwort kann nicht identisch zum alten Passwort sein.",
     "%s password changed successfully" : "%s Passwort erfolgreich geändert",
     "Couldn't send reset email. Please contact your administrator." : "Die E-Mail zum Zurücksetzen konnte nicht versendet werden. Bitte kontaktiere Deinen Administrator.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "Das Installieren und Aktualisieren von Apps durch den App-Store oder durch Federated Cloud Sharing",
@@ -12,6 +14,7 @@ OC.L10N.register(
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Beim Senden der E-Mail ist ein Problem aufgetreten. Bitte überprüfe Deine Einstellungen. (Fehler: %s)",
     "Email sent" : "E-Mail wurde verschickt",
     "You need to set your user email before being able to send test emails." : "Du musst zunächst Deine Benutzer-E-Mail-Adresse angeben, bevor Du Test-E-Mail verschicken kannst.",
+    "Owner language" : "Sprache des Anwenders",
     "Create" : "Anlegen",
     "Change" : "Ändern",
     "Delete" : "Löschen",
@@ -134,6 +137,7 @@ OC.L10N.register(
     "Enforce password protection for upload-only (File Drop) links" : "Password-Schutz für Upload-Links anwenden",
     "Set default expiration date" : "Standardmäßiges Ablaufdatum setzen",
     "Allow users to send mail notification for shared files" : "Benutzern erlauben, E-Mail-Benachrichtigungen für freigegebene Dateien zu senden",
+    "Language used for public mail notifications for shared files" : "Sprache für die Benachrichtigungs-Mail für geteilte Dateien.",
     "Allow users to share file via social media" : "Benutzern erlauben, Inhalte über die sozialen Medien zu teilen",
     "Expire after " : "Ablauf nach ",
     "days" : "Tagen",

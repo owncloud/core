@@ -127,6 +127,9 @@ OC.L10N.register(
     "%s is publicly shared" : "%s wird öffentlich geteilt",
     "Download" : "Herunterladen",
     "Download %s" : "Download %s",
-    "Direct link" : "Direkter Link"
+    "Direct link" : "Direkter Link",
+    "Group Sharing Blacklist" : "Vom Teilen ausgeschlossene Gruppen",
+    "Exclude groups from receiving shares" : "Gruppen von Teilen ausschliessen",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Diese Gruppen stehen nicht zum Teilen von Daten zur Verfügung. Einzelne Mitglieder können weiterhin Shares für andere Gruppen anlegen oder von ihnen empfangen, in denen sie Mitglied sind."
 },
 "nplurals=2; plural=(n != 1);");
