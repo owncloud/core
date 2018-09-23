@@ -41,6 +41,7 @@ Feature: external-storage
     And as "user0" the file "/local_storage/foo2/textfile0.txt" should not exist
     And as "user1" the file "/local.txt" should exist
 
+  @local_storage
   Scenario: Download a file that exists in filecache but not storage fails with 404
     Given user "user0" has been created
     And user "user0" has created a folder "/local_storage/foo3"
