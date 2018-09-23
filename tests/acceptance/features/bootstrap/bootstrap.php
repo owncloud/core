@@ -51,7 +51,7 @@ const ACCEPTANCE_TEST_DIR_ON_REMOTE_SERVER = "tests/acceptance";
 // The following directory should NOT already exist on the remote server-under-test.
 // Acceptance tests are free to do anything needed in this directory, and to
 // delete it during or at the end of testing.
-const TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER = ACCEPTANCE_TEST_DIR_ON_REMOTE_SERVER . "/work";
+const TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER = ACCEPTANCE_TEST_DIR_ON_REMOTE_SERVER . "/server_tmp";
 
 // The following directory is created, used, and deleted by tests that need to
 // use some "local external storage" on the server.
