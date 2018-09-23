@@ -66,6 +66,11 @@ trait BasicStructure {
 	private $ocPath = '';
 
 	/**
+	 * @var string location of the root folder of ownCloud on the local server under test
+	 */
+	private $localServerRoot = null;
+
+	/**
 	 * @var string
 	 */
 	private $currentUser = '';
@@ -1129,18 +1134,37 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @param string $name
-	 * @param string $text
+	 * Make a directory under the server root on the ownCloud server
+	 *
+	 * @param string $dirPathFromServerRoot e.g. 'apps2/myapp/appinfo'
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function mkDirOnServer($dirPathFromServerRoot) {
+		SetupHelper::mkDirOnServer(
+			$dirPathFromServerRoot,
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
+	}
+
+	/**
+	 * @param string $filePathFromServerRoot
+	 * @param string $content
 	 *
 	 * @return void
 	 */
-	public function createFileOnServerWithText($name, $text) {
+	public function createFileOnServerWithContent(
+		$filePathFromServerRoot, $content
+	) {
 		SetupHelper::createFileOnServer(
+			$filePathFromServerRoot,
+			$content,
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
-			$this->getAdminPassword(),
-			$name,
-			$text
+			$this->getAdminPassword()
 		);
 	}
 
@@ -1153,7 +1177,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function fileHasBeenCreatedInLocalStorageWithText($filename, $text) {
-		$this->createFileOnServerWithText(
+		$this->createFileOnServerWithContent(
 			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$filename", $text
 		);
 	}
@@ -1414,6 +1438,23 @@ trait BasicStructure {
 	 */
 	public function localStorageDirLocation() {
 		return $this->workStorageDirLocation() . "local_storage/";
+	}
+
+	/**
+	 * Get the path of the ownCloud server root directory
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public function getServerRoot() {
+		if ($this->localServerRoot === null) {
+			$this->localServerRoot = SetupHelper::getServerRoot(
+				$this->getBaseUrl(),
+				$this->getAdminUsername(),
+				$this->getAdminPassword()
+			);
+		}
+		return $this->localServerRoot;
 	}
 
 	/**

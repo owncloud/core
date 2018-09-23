@@ -273,18 +273,90 @@ class SetupHelper {
 	}
 
 	/**
+	 * @param string|null $adminUsername
+	 * @param string $callerName
 	 *
-	 * @param string $baseUrl
-	 * @param string $adminUsername
-	 * @param string $adminPassword
+	 * @return string
+	 * @throws Exception
+	 */
+	private static function checkAdminUsername(
+		$adminUsername, $callerName) {
+		if (self::$adminUsername === null
+			&& $adminUsername === null
+		) {
+			throw new Exception(
+				"$callerName called without adminUsername - pass the username or call SetupHelper::init"
+			);
+		}
+		if ($adminUsername === null) {
+			$adminUsername = self::$adminUsername;
+		}
+		return $adminUsername;
+	}
+
+	/**
+	 * @param string|null $adminPassword
+	 * @param string $callerName
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	private static function checkAdminPassword(
+		$adminPassword, $callerName) {
+		if (self::$adminPassword === null
+			&& $adminPassword === null
+		) {
+			throw new Exception(
+				"$callerName called without adminPassword - pass the password or call SetupHelper::init"
+			);
+		}
+		if ($adminPassword === null) {
+			$adminPassword = self::$adminPassword;
+		}
+		return $adminPassword;
+	}
+
+	/**
+	 * @param string|null $baseUrl
+	 * @param string $callerName
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	private static function checkBaseUrl(
+		$baseUrl, $callerName) {
+		if (self::$baseUrl === null
+			&& $baseUrl === null
+		) {
+			throw new Exception(
+				"$callerName called without baseUrl - pass the baseUrl or call SetupHelper::init"
+			);
+		}
+		if ($baseUrl === null) {
+			$baseUrl = self::$baseUrl;
+		}
+		return $baseUrl;
+	}
+
+	/**
+	 *
 	 * @param string $dirPathFromServerRoot e.g. 'apps2/myapp/appinfo'
+	 * @param string|null $baseUrl
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public static function mkDirOnServer(
-		$baseUrl, $adminUsername, $adminPassword, $dirPathFromServerRoot
+		$dirPathFromServerRoot,
+		$baseUrl = null,
+		$adminUsername = null,
+		$adminPassword = null
 	) {
+		$baseUrl = self::checkBaseUrl($baseUrl, "mkDirOnServer");
+		$adminUsername = self::checkAdminUsername($adminUsername, "mkDirOnServer");
+		$adminPassword = self::checkAdminPassword($adminPassword, "mkDirOnServer");
 		$result = OcsApiHelper::sendRequest(
 			$baseUrl, $adminUsername, $adminPassword, "POST",
 			"/apps/testing/api/v1/dir",
@@ -300,18 +372,25 @@ class SetupHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $adminUsername
-	 * @param string $adminPassword
 	 * @param string $filePathFromServerRoot e.g. 'app2/myapp/appinfo/info.xml'
 	 * @param string $content
+	 * @param string|null $baseUrl
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public static function createFileOnServer(
-		$baseUrl, $adminUsername, $adminPassword, $filePathFromServerRoot, $content
+		$filePathFromServerRoot,
+		$content,
+		$baseUrl = null,
+		$adminUsername = null,
+		$adminPassword = null
 	) {
+		$baseUrl = self::checkBaseUrl($baseUrl, "createFileOnServer");
+		$adminUsername = self::checkAdminUsername($adminUsername, "createFileOnServer");
+		$adminPassword = self::checkAdminPassword($adminPassword, "createFileOnServer");
 		$result = OcsApiHelper::sendRequest(
 			$baseUrl, $adminUsername, $adminPassword, "POST",
 			"/apps/testing/api/v1/file",
@@ -400,42 +479,15 @@ class SetupHelper {
 		$ocPath = null,
 		$envVariables = null
 	) {
-		if (self::$adminUsername === null
-			&& $adminUsername === null
-		) {
-			throw new Exception(
-				"runOcc called without adminUsername - pass the username or call SetupHelper::init"
-			);
-		}
-		if (self::$adminPassword === null
-			&& $adminPassword === null
-		) {
-			throw new Exception(
-				"runOcc called without adminPassword - pass the password or call SetupHelper::init"
-			);
-		}
-		if (self::$baseUrl === null
-			&& $baseUrl === null
-		) {
-			throw new Exception(
-				"runOcc called without baseUrl - pass the baseUrl or call SetupHelper::init"
-			);
-		}
+		$baseUrl = self::checkBaseUrl($baseUrl, "runOcc");
+		$adminUsername = self::checkAdminUsername($adminUsername, "runOcc");
+		$adminPassword = self::checkAdminPassword($adminPassword, "runOcc");
 		if (self::$ocPath === null
 			&& $ocPath === null
 		) {
 			throw new Exception(
 				"runOcc called without ocPath - pass the ocPath or call SetupHelper::init"
 			);
-		}
-		if ($adminUsername === null) {
-			$adminUsername = self::$adminUsername;
-		}
-		if ($adminPassword === null) {
-			$adminPassword = self::$adminPassword;
-		}
-		if ($baseUrl === null) {
-			$baseUrl = self::$baseUrl;
 		}
 		if ($ocPath === null) {
 			$ocPath = self::$ocPath;
