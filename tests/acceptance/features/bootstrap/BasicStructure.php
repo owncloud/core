@@ -1177,7 +1177,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given file :filename has been deleted in local storage
+	 * @Given file :filename has been deleted from local storage on the server
 	 *
 	 * @param string $filename
 	 *
