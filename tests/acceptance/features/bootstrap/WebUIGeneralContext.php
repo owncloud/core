@@ -204,6 +204,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function loginAs($username, $password, $target = 'FilesPage') {
+		$username = $this->featureContext->getActualUsername($username);
+		$password = $this->featureContext->getActualPassword($password);
 		$session = $this->getSession();
 		$this->loginPage->waitTillPageIsLoaded($session);
 		$nextPage = $this->loginPage->loginAs(

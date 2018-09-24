@@ -7,10 +7,10 @@ So that I can personalise the User Interface
 	@smokeTest
 	Scenario: change language
 		Given these users have been created:
-			|username|password|displayname|email       |
-			|user1   |1234    |User One   |u1@oc.com.np|
+			| username | password  | displayname | email        |
+			| user1    | %regular% | User One    | u1@oc.com.np |
 		And the user has browsed to the login page
-		And the user has logged in with username "user1" and password "1234" using the webUI
+		And the user has logged in with username "user1" and password "%regular%" using the webUI
 		And the user has browsed to the personal general settings page
 		When the user changes the language to "Русский" using the webUI
 		Then the user should be redirected to a webUI page with the title "Настройки - ownCloud"

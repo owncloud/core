@@ -50,7 +50,7 @@ trait Tags {
 	) {
 		$this->response = TagsHelper::createTag(
 			$this->getBaseUrl(),
-			$user,
+			$this->getActualUsername($user),
 			$this->getPasswordForUser($user),
 			$name, $userVisible, $userAssignable, $groups,
 			$this->getDavPathVersion('systemtags')
@@ -135,7 +135,7 @@ trait Tags {
 	public function requestTagsForUser($user, $withGroups = false) {
 		$this->response = TagsHelper:: requestTagsForUser(
 			$this->getBaseUrl(),
-			$user,
+			$this->getActualUsername($user),
 			$this->getPasswordForUser($user),
 			$withGroups
 		);
@@ -173,6 +173,7 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theFollowingTagsShouldExistFor($user, TableNode $table) {
+		$user = $this->getActualUsername($user);
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
 			$tagData = $this->requestTagByDisplayName($user, $rowDisplayName);
 			if ($tagData === null) {
@@ -340,6 +341,7 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function editTagGroups($user, $oldName, $groups) {
+		$user = $this->getActualUsername($user);
 		$properties = [
 						'{http://owncloud.org/ns}groups' => $groups
 					  ];
@@ -359,7 +361,7 @@ trait Tags {
 		$tagID = $this->findTagIdByName($name);
 		$this->response = TagsHelper::deleteTag(
 			$this->getBaseUrl(),
-			$user,
+			$this->getActualUsername($user),
 			$this->getPasswordForUser($user),
 			$tagID,
 			$this->getDavPathVersion('systemtags')
@@ -551,6 +553,8 @@ trait Tags {
 	 * @return void
 	 */
 	private function untag($untaggingUser, $tagName, $fileName, $fileOwner) {
+		$untaggingUser = $this->getActualUsername($untaggingUser);
+		$fileOwner = $this->getActualUsername($fileOwner);
 		$fileID = $this->getFileIdForPath($fileOwner, $fileName);
 		$tagID = $this->findTagIdByName($tagName);
 		$path = "/systemtags-relations/files/$fileID/$tagID";

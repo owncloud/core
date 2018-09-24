@@ -6,15 +6,15 @@ So that I can efficiently share my files with other users or groups
 
 	Background:
 		Given these users have been created but not initialized:
-			| username    | password | displayname     | email                 |
-			| user1       | 1234     | User One        | u1@oc.com.np          |
-			| two         | 1234     | User Two        | u2@oc.com.np          |
-			| user3       | 1234     | Three           | u3@oc.com.np          |
-			| u444        | 1234     | Four            | u3@oc.com.np          |
-			| usergrp     | 1234     | User Ggg        | u@oc.com.np           |
-			| five        | 1234     | User Group      | five@oc.com.np        |
-			| regularuser | 1234     | User Regular    | regularuser@oc.com.np |
-			| usersmith   | 1234     | John Finn Smith | js@oc.com.np          |
+			| username    | password  | displayname     | email                 |
+			| user1       | %regular% | User One        | u1@oc.com.np          |
+			| two         | %regular% | User Two        | u2@oc.com.np          |
+			| user3       | %regular% | Three           | u3@oc.com.np          |
+			| u444        | %regular% | Four            | u3@oc.com.np          |
+			| usergrp     | %regular% | User Ggg        | u@oc.com.np           |
+			| five        | %regular% | User Group      | five@oc.com.np        |
+			| regularuser | %regular% | User Regular    | regularuser@oc.com.np |
+			| usersmith   | %regular% | John Finn Smith | js@oc.com.np          |
 		And these groups have been created:
 			| groupname     |
 			| finance1      |
@@ -27,7 +27,7 @@ So that I can efficiently share my files with other users or groups
 	@skipOnLDAP @user_ldap-issue-175
 	@smokeTest
 	Scenario: autocompletion of regular existing users
-		Given the user has logged in with username "regularuser" and password "1234" using the webUI
+		Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
 		And the user has browsed to the files page
 		And the user has opened the share dialog for the folder "simple-folder"
 		When the user types "us" in the share-with-field
@@ -37,7 +37,7 @@ So that I can efficiently share my files with other users or groups
 	@skipOnLDAP
 	@smokeTest
 	Scenario: autocompletion of regular existing groups
-		Given the user has logged in with username "regularuser" and password "1234" using the webUI
+		Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
 		And the user has browsed to the files page
 		And the user has opened the share dialog for the folder "simple-folder"
 		When the user types "fi" in the share-with-field
@@ -45,7 +45,7 @@ So that I can efficiently share my files with other users or groups
 		And the users own name should not be listed in the autocomplete list on the webUI
 		
 	Scenario: autocompletion for a pattern that does not match any user or group
-		Given the user has logged in with username "regularuser" and password "1234" using the webUI
+		Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
 		And the user has browsed to the files page
 		And the user has opened the share dialog for the folder "simple-folder"
 		When the user types "doesnotexist" in the share-with-field
@@ -55,11 +55,11 @@ So that I can efficiently share my files with other users or groups
 	@skipOnLDAP
 	Scenario: autocomplete short user/display names when completely typed
 		Given the administrator has set the minimum characters for sharing autocomplete to "4"
-		And the user has logged in with username "regularuser" and password "1234" using the webUI
+		And the user has logged in with username "regularuser" and password "%regular%" using the webUI
 		And the user has browsed to the files page
 		And these users have been created but not initialized:
 			| username | password | displayname | email        |
-			| use      | 1234     | Use         | uz@oc.com.np |
+			| use      | %alt1%   | Use         | uz@oc.com.np |
 		And the user has opened the share dialog for the folder "simple-folder"
 		When the user types "Use" in the share-with-field
 		Then only "Use" should be listed in the autocomplete list on the webUI
@@ -70,7 +70,7 @@ So that I can efficiently share my files with other users or groups
 		And these groups have been created:
 			| groupname |
 			| fi        |
-		And the user has logged in with username "regularuser" and password "1234" using the webUI
+		And the user has logged in with username "regularuser" and password "%regular%" using the webUI
 		And the user has browsed to the files page
 		And the user has opened the share dialog for the folder "simple-folder"
 		When the user types "fi" in the share-with-field
@@ -78,7 +78,7 @@ So that I can efficiently share my files with other users or groups
 
 	@skipOnLDAP
 	Scenario: autocompletion when minimum characters is the default (2) and not enough characters are typed
-		Given the user has logged in with username "regularuser" and password "1234" using the webUI
+		Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
 		And the user has browsed to the files page
 		And the user has opened the share dialog for the folder "simple-folder"
 		When the user types "u" in the share-with-field
@@ -88,7 +88,7 @@ So that I can efficiently share my files with other users or groups
 	@skipOnLDAP
 	Scenario: autocompletion when minimum characters is increased and not enough characters are typed
 		Given the administrator has set the minimum characters for sharing autocomplete to "4"
-		And the user has logged in with username "regularuser" and password "1234" using the webUI
+		And the user has logged in with username "regularuser" and password "%regular%" using the webUI
 		And the user has browsed to the files page
 		And the user has opened the share dialog for the folder "simple-folder"
 		When the user types "use" in the share-with-field
@@ -98,7 +98,7 @@ So that I can efficiently share my files with other users or groups
 	@skipOnLDAP
 	Scenario: autocompletion when increasing the minimum characters for sharing autocomplete
 		Given the administrator has set the minimum characters for sharing autocomplete to "3"
-		And the user has logged in with username "regularuser" and password "1234" using the webUI
+		And the user has logged in with username "regularuser" and password "%regular%" using the webUI
 		And the user has browsed to the files page
 		And the user has opened the share dialog for the folder "simple-folder"
 		When the user types "use" in the share-with-field
@@ -107,7 +107,7 @@ So that I can efficiently share my files with other users or groups
 
 	@skipOnLDAP @user_ldap-issue-175
 	Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (folder)
-		Given the user has logged in with username "regularuser" and password "1234" using the webUI
+		Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
 		And the user has browsed to the files page
 		And the user has shared the folder "simple-folder" with the user "User One" using the webUI
 		And the user has opened the share dialog for the folder "simple-folder"
@@ -117,7 +117,7 @@ So that I can efficiently share my files with other users or groups
 
 	@skipOnLDAP @user_ldap-issue-175
 	Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (file)
-		Given the user has logged in with username "regularuser" and password "1234" using the webUI
+		Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
 		And the user has browsed to the files page
 		And the user has shared the file "data.zip" with the user "User Ggg" using the webUI
 		And the user has opened the share dialog for the file "data.zip"
@@ -127,7 +127,7 @@ So that I can efficiently share my files with other users or groups
 
 	@skipOnLDAP
 	Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (folder)
-		Given the user has logged in with username "regularuser" and password "1234" using the webUI
+		Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
 		And the user has browsed to the files page
 		And the user shares the folder "simple-folder" with the group "finance1" using the webUI
 		And the user has opened the share dialog for the folder "simple-folder"
@@ -137,7 +137,7 @@ So that I can efficiently share my files with other users or groups
 
 	@skipOnLDAP
 	Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (file)
-		Given the user has logged in with username "regularuser" and password "1234" using the webUI
+		Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
 		And the user has browsed to the files page
 		And the user shares the file "data.zip" with the group "finance1" using the webUI
 		And the user has opened the share dialog for the file "data.zip"

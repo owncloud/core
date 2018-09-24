@@ -3,7 +3,7 @@ Feature: trashbin-new-endpoint
 	Background:
 		Given using OCS API version "1"
 		And using new DAV path
-		And as user "admin"
+		And as user "%admin%"
 
 	@smokeTest
 	Scenario: deleting a file moves it to trashbin
