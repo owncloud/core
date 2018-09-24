@@ -58,6 +58,7 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	/**
 	 * WebUILoginContext constructor.
 	 *
+	 * @param OwncloudPage $ownCloudPage
 	 * @param SearchResultInOtherFoldersPage $searchResultInOtherFoldersPage
 	 */
 	public function __construct(
