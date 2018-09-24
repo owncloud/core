@@ -196,6 +196,12 @@ trait BasicStructure {
 		if ($adminPasswordFromEnvironment !== false) {
 			$this->adminPassword = $adminPasswordFromEnvironment;
 		}
+
+		// get the regular user password from the environment (if defined)
+		$regularUserPasswordFromEnvironment = $this->getRegularUserPasswordFromEnvironment();
+		if ($regularUserPasswordFromEnvironment !== false) {
+			$this->regularUserPassword = $regularUserPasswordFromEnvironment;
+		}
 	}
 
 	/**
@@ -214,6 +220,15 @@ trait BasicStructure {
 	 */
 	private static function getAdminPasswordFromEnvironment() {
 		return \getenv('ADMIN_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined regular user password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getRegularUserPasswordFromEnvironment() {
+		return \getenv('REGULAR_USER_PASSWORD');
 	}
 
 	/**
