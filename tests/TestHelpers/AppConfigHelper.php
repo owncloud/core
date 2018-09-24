@@ -367,19 +367,69 @@ class AppConfigHelper {
 	}
 
 	/**
-	 * @param array $appParameterValues 'appid' and 'configkey' to get config value of app config
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $app
+	 * @param int $ocsApiVersion (1|2)
 	 *
-	 * @return array
+	 * @return array with 'configkey', 'value' and 'appid'
 	 */
-	public static function getAppConfigs($appParameterValues) {
-		foreach ($appParameterValues as $configKey) {
-			$configValues[] = [
-				'appid' => $configKey['appid'],
-				'configkey' => $configKey['configkey'],
-				'value' => \trim(SetupHelper::runOcc(["config:app:get",$configKey['appid'], $configKey['configkey']])['stdOut'])
-			];
+	public static function getAppConfigs(
+		$baseUrl, $user, $password, $app, $ocsApiVersion = 2
+	) {
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$user,
+			$password,
+			'get',
+			"/apps/testing/api/v1/app/{$app}",
+			null,
+			$ocsApiVersion
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		if ($ocsApiVersion === 1) {
+			PHPUnit_Framework_Assert::assertEquals(
+				"100", self::getOCSResponse($response)
+			);
+		}
+			
+		$responseXml = HttpRequestHelper::getResponseXml($response)->data[0];
+		$response = \json_decode(\json_encode($responseXml), true)['element'];
+		return $response;
+	}
+
+	/**
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $app
+	 * @param string $parameter
+	 * @param int $ocsApiVersion (1|2)
+	 *
+	 * @return array with 'configkey', 'value' and 'appid'
+	 */
+	public static function getAppConfig(
+		$baseUrl, $user, $password, $app, $parameter, $ocsApiVersion = 2
+	) {
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$user,
+			$password,
+			'get',
+			"/apps/testing/api/v1/app/{$app}/{$parameter}",
+			null,
+			$ocsApiVersion
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		if ($ocsApiVersion === 1) {
+			PHPUnit_Framework_Assert::assertEquals(
+				"100", self::getOCSResponse($response)
+			);
 		}
 
-		return $configValues;
+		$responseXml = HttpRequestHelper::getResponseXml($response)->data[0];
+		$response = \json_decode(\json_encode($responseXml), true)['element'];
+		return $response;
 	}
 }
