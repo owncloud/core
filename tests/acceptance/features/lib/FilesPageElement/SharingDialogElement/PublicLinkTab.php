@@ -122,7 +122,10 @@ class PublicLinkTab extends OwncloudPage {
 			$editPublicLinkPopupPageObject->setLinkExpirationDate($expirationDate);
 		}
 		if ($email !== null) {
-			$editPublicLinkPopupPageObject->setLinkEmail($email);
+			$emails = \explode(",", $email);
+			foreach ($emails as $email) {
+				$editPublicLinkPopupPageObject->setLinkEmail(\trim($email));
+			}
 		}
 		if ($emailToSelf === "true" && $email !== null) {
 			$editPublicLinkPopupPageObject->setEmailToSelf();
