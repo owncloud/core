@@ -167,6 +167,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	public function theUserLogsInWithUsernameAndInvalidPasswordUsingTheWebUI(
 		$username, $password
 	) {
+		$username = $this->featureContext->getActualUsername($username);
+		$password = $this->featureContext->getActualPassword($password);
 		$this->loginPage->loginAs($username, $password, 'LoginPage');
 		$this->loginPage->waitTillPageIsLoaded($this->getSession());
 	}
@@ -284,6 +286,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserResetsThePasswordToUsingTheWebui($newPassword) {
+		$newPassword = $this->featureContext->getActualPassword($newPassword);
 		$this->loginPage->resetThePassword($newPassword, $this->getSession());
 	}
 

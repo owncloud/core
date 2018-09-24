@@ -6,10 +6,10 @@ So that I can enable, allow and deny access to and from other storage systems or
 
 	Background:
 			Given these users have been created but not initialized:
-			|username|password|displayname|email       |
-			|user1   |1234    |User One   |u1@oc.com.np|
+				| username | password  | displayname | email        |
+				| user1    | %regular% | User One    | u1@oc.com.np |
 			And the user has browsed to the login page
-			And the user has logged in with username "user1" and password "1234" using the webUI
+			And the user has logged in with username "user1" and password "%regular%" using the webUI
 			And the user has browsed to the personal security settings page
 
 	@smokeTest

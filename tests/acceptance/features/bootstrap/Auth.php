@@ -166,7 +166,7 @@ trait Auth {
 	public function aNewClientTokenHasBeenGenerated($user) {
 		$body = \json_encode(
 			[
-				'user' => $user,
+				'user' => $this->getActualUsername($user),
 				'password' => $this->getPasswordForUser($user),
 			]
 		);
@@ -268,7 +268,7 @@ trait Auth {
 
 		// Login and extract new token
 		$body = [
-			'user' => $user,
+			'user' => $this->getActualUsername($user),
 			'password' => $this->getPasswordForUser($user),
 			'requesttoken' => $this->requestToken
 		];

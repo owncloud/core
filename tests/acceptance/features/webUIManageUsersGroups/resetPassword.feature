@@ -7,10 +7,10 @@ So that I can login to my account again after forgetting the password
 
 	Background:
 		Given these users have been created but not initialized:
-			|username|password|displayname|email       |
-			|user1   |1234    |User One   |u1@oc.com.np|
+			| username | password  | displayname | email        |
+			| user1    | %regular% | User One    | u1@oc.com.np |
 		And the user has browsed to the login page
-		And the user logs in with username "user1" and invalid password "invalidpassword" using the webUI
+		And the user logs in with username "user1" and invalid password "%alt3%" using the webUI
 
 	@smokeTest
 	Scenario: send password reset email
@@ -30,10 +30,10 @@ So that I can login to my account again after forgetting the password
 		When the user requests the password reset link using the webUI
 		And the user follows the password reset link from email address "u1@oc.com.np"
 		Then the user should be redirected to a webUI page with the title "ownCloud"
-		When the user resets the password to "newpassword" using the webUI
+		When the user resets the password to "%alt1%" using the webUI
 		Then the email address "u1@oc.com.np" should have received an email with the body containing
 			"""
 			Password changed successfully
 			"""
-		When the user logs in with username "user1" and password "newpassword" using the webUI
+		When the user logs in with username "user1" and password "%alt1%" using the webUI
 		Then the user should be redirected to a webUI page with the title "Files - ownCloud"

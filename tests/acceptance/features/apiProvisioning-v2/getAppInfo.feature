@@ -9,7 +9,7 @@ So that I can get the information of a specific application
 
 	@smokeTest
 	Scenario: admin gets app info
-		When user "admin" sends HTTP method "GET" to OCS API endpoint "/cloud/apps/files"
+		When user "%admin%" sends HTTP method "GET" to OCS API endpoint "/cloud/apps/files"
 		Then the OCS status code should be "200"
 		And the HTTP status code should be "200"
 		And the XML "data" "id" value should be "files"

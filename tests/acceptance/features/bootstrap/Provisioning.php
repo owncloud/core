@@ -268,7 +268,7 @@ trait Provisioning {
 			}
 
 			if (isset($row['password'])) {
-				$password = $row['password'];
+				$password = $this->getActualPassword($row['password']);
 			} else {
 				$password = $this->getPasswordForUser($row ['username']);
 			}
@@ -375,6 +375,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminSendsUserCreationRequestUsingTheProvisioningApi($user, $password) {
+		$password = $this->getActualPassword($password);
 		$bodyTable = new TableNode([['userid', $user], ['password', $password]]);
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
@@ -437,6 +438,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userResetsPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
+		$password = $this->getActualPassword($password);
 		$this->userTriesToResetPasswordOfUserUsingTheProvisioningApi(
 			$user, $username, $password
 		);
@@ -454,6 +456,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userTriesToResetPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
+		$password = $this->getActualPassword($password);
 		$bodyTable = new TableNode([['key', 'password'], ['value', $password]]);
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
@@ -912,6 +915,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function userHasBeenAddedToGroup($user, $group, $method = null) {
+		$user = $this->getActualUsername($user);
 		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
 			$method = "ldap";

@@ -10,8 +10,8 @@ So that I can make a client app or script for provisioning users/groups that can
 	Scenario: admin deletes the user
 		Given user "brand-new-user" has been created
 		And group "new-group" has been created
-		And a new client token for "admin" has been generated
-		And a new browser session for "admin" has been started
+		And a new client token for "%admin%" has been generated
+		And a new browser session for "%admin%" has been started
 		And the user has generated a new app password named "my-client"
 		When the user requests "/ocs/v1.php/cloud/users/brand-new-user" with "DELETE" using the generated app password 
 		Then the HTTP status code should be "200"
