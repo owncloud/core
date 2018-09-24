@@ -2647,6 +2647,88 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^the (?:propfind|search) result of "([^"]*)" should (not|)\s?contain these files:$/
+	 *
+	 * @param string $user
+	 * @param string $shouldOrNot (not|)
+	 * @param TableNode $expectedFiles
+	 *
+	 * @return void
+	 */
+	public function propfindResultShouldContainFiles(
+		$user, $shouldOrNot, TableNode $expectedFiles
+	) {
+		$elementRows = $expectedFiles->getRows();
+		$should = ($shouldOrNot !== "not");
+		
+		foreach ($elementRows as $expectedFile) {
+			$fileFound = $this->findFileFromPropfindResponse(
+				$user, $expectedFile[0]
+			);
+			if ($should) {
+				PHPUnit_Framework_Assert::assertNotEmpty(
+					$fileFound,
+					"response does not contain the file '$expectedFile[0]'"
+				);
+			} else {
+				PHPUnit_Framework_Assert::assertFalse(
+					$fileFound,
+					"response does contain the file '$expectedFile[0]' but should not"
+				);
+			}
+		}
+	}
+
+	/**
+	 * @Then the propfind/search result of :user should contain :numFiles files
+	 *
+	 * @param string $user
+	 * @param int $numFiles
+	 *
+	 * @return void
+	 */
+	public function propfindResultShouldContainNumFiles($user, $numFiles) {
+		//if we are using that step the second time in a scenario e.g. 'But ... should not'
+		//then don't parse the result again, because the result in a ResponseInterface
+		if (empty($this->responseXml)) {
+			$this->parseResponseIntoXml();
+		}
+		$multistatusResults = $this->responseXml["value"];
+		PHPUnit_Framework_Assert::assertEquals((int)$numFiles, \count($multistatusResults));
+	}
+
+	/**
+	 * parses a PROPFIND response from $this->response into xml
+	 * and searches for a given filename in the response list
+	 *
+	 * @param string $user
+	 * @param string $fileNameToSearch
+	 *
+	 * @return string or false if file could not be found
+	 */
+	public function findFileFromPropfindResponse($user, $fileNameToSearch) {
+		//if we are using that step the second time in a scenario e.g. 'But ... should not'
+		//then don't parse the result again, because the result in a ResponseInterface
+		if (empty($this->responseXml)) {
+			$this->parseResponseIntoXml();
+		}
+		$multistatusResults = $this->responseXml["value"];
+		foreach ($multistatusResults as $multistatusResult) {
+			$filePath = $multistatusResult['value'][0]['value'];
+			$fullWebDavPath = \ltrim(
+				$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
+				"/"
+			);
+			$fileName = \str_replace($fullWebDavPath, "", $filePath);
+			$fileName = \rawurldecode($fileName);
+			if ($fileName === $fileNameToSearch) {
+				return $multistatusResult;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * reset settings if they were set in the scenario
 	 *
 	 * @AfterScenario
@@ -2666,7 +2748,7 @@ trait WebDav {
 					'--value',
 					$this->oldAsyncSetting
 				]
-			);
+				);
 		}
 		if ($this->oldDavSlowdownSetting === "") {
 			SetupHelper::runOcc(['config:system:delete', 'dav.slowdown']);
@@ -2678,7 +2760,7 @@ trait WebDav {
 					'--value',
 					$this->oldDavSlowdownSetting
 				]
-			);
+				);
 		}
 	}
 }
