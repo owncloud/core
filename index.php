@@ -44,7 +44,7 @@ if (\version_compare(PHP_VERSION, '7.4.0alpha1') !== -1) {
 
 // running oC on Windows is unsupported since 8.1, this has to happen here because
 // is seems that the autoloader on Windows fails later and just throws an exception.
-if (\strtoupper(\substr(PHP_OS, 0, 3)) === 'WIN') {
+if (\stripos(PHP_OS, 'WIN') === 0) {
 	echo 'ownCloud Server does not support Microsoft Windows.';
 	return;
 }
