@@ -7,11 +7,11 @@ So that those users can access the files and folders
 	Background:
 		Given the app "notifications" has been enabled
 		And these users have been created:
-			|username|password|displayname|email       |
-			|user1   |1234    |User One   |u1@oc.com.np|
-			|user2   |1234    |User Two   |u2@oc.com.np|
+			| username | password  | displayname | email        |
+			| user1    | %regular% | User One    | u1@oc.com.np |
+			| user2    | %alt1%    | User Two    | u2@oc.com.np |
 		And the user has browsed to the login page
-		And the user has logged in with username "user2" and password "1234" using the webUI
+		And the user has logged in with username "user2" and password "%alt1%" using the webUI
 
 	@smokeTest
 	Scenario: notifications about new share is displayed when autoacepting is disabled

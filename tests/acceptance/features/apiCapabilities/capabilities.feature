@@ -2,7 +2,7 @@
 Feature: capabilities
 	Background:
 		Given using OCS API version "1"
-		And as user "admin"
+		And as user "%admin%"
 
 	@smokeTest
 	Scenario: Check that the sharing API can be enabled

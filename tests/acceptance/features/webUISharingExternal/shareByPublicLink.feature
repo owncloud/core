@@ -10,10 +10,10 @@ So that public sharing is limited according to organization policy
 
 	Background:
 		Given these users have been created:
-		|username|password|displayname|email       |
-		|user1   |1234    |User One   |u1@oc.com.np|
+			| username | password  | displayname | email        |
+			| user1    | %regular% | User One    | u1@oc.com.np |
 		And the user has browsed to the login page
-		And the user has logged in with username "user1" and password "1234" using the webUI
+		And the user has logged in with username "user1" and password "%regular%" using the webUI
 
 	@smokeTest
 	Scenario: simple sharing by public link
@@ -46,12 +46,12 @@ So that public sharing is limited according to organization policy
 	Scenario: mount public link
 		Given using server "REMOTE"
 		And these users have been created:
-		|username|password|displayname|email       |
-		|user2   |1234    |User One   |u1@oc.com.np|
+			| username | password  | displayname | email        |
+			| user2    | %regular% | User One    | u1@oc.com.np |
 		When the user creates a new public link for the folder "simple-folder" using the webUI
 		And the user logs out of the webUI
 		And the public accesses the last created public link using the webUI
-		And the public adds the public link to "%remote_server%" as user "user2" with the password "1234" using the webUI
+		And the public adds the public link to "%remote_server%" as user "user2" with the password "%regular%" using the webUI
 		And the user accepts the offered remote shares using the webUI
 		Then the folder "simple-folder (2)" should be listed on the webUI
 		When the user opens the folder "simple-folder (2)" using the webUI
@@ -63,13 +63,13 @@ So that public sharing is limited according to organization policy
 	Scenario: mount public link and overwrite file
 		Given using server "REMOTE"
 		And these users have been created:
-		|username|password|displayname|email       |
-		|user2   |1234    |User One   |u1@oc.com.np|
+			| username | password  | displayname | email        |
+			| user2    | %regular% | User One    | u1@oc.com.np |
 		When the user creates a new public link for the folder "simple-folder" using the webUI with
 		| permission | read-write |
 		And the user logs out of the webUI
 		And the public accesses the last created public link using the webUI
-		And the public adds the public link to "%remote_server%" as user "user2" with the password "1234" using the webUI
+		And the public adds the public link to "%remote_server%" as user "user2" with the password "%regular%" using the webUI
 		And the user accepts the offered remote shares using the webUI
 		Then the folder "simple-folder (2)" should be listed on the webUI
 		When the user opens the folder "simple-folder (2)" using the webUI

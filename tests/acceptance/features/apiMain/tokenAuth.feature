@@ -4,13 +4,13 @@ Feature: tokenAuth
 	Background:
 		Given using OCS API version "1"
 		And these users have been created:
-			| username    | password | displayname  | email                 |
-			| user1       | 1234     | User One     | u1@oc.com.np          |
+			| username | password  | displayname | email        |
+			| user1    | %regular% | User One    | u1@oc.com.np |
 		And token auth has been enforced
 
 	Scenario: creating a user with basic auth should be blocked when token auth is enforced
 		Given user "brand-new-user" has been deleted
-		When the administrator sends a user creation request for user "brand-new-user" password "456firstpwd" using the provisioning API
+		When the administrator sends a user creation request for user "brand-new-user" password "%alt1%" using the provisioning API
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
 

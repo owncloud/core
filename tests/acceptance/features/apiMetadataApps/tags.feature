@@ -6,7 +6,7 @@ Feature: tags
     Given user "user0" has been created
     When user "user0" creates a "normal" tag with name "<tag_name>" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the following tags should exist for "admin"
+    And the following tags should exist for "%admin%"
       |<tag_name>|normal|
     And the following tags should exist for "user0"
       |<tag_name>|normal|
@@ -20,18 +20,18 @@ Feature: tags
     Given user "user0" has been created
     When user "user0" creates a "not user-assignable" tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "400"
-    And tag "JustARegularTagName" should not exist for "admin"
+    And tag "JustARegularTagName" should not exist for "%admin%"
 
   Scenario: Creating a not user-visible tag as regular user should fail
     Given user "user0" has been created
     When user "user0" creates a "not user-visible" tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "400"
-    And tag "JustARegularTagName" should not exist for "admin"
+    And tag "JustARegularTagName" should not exist for "%admin%"
 
   @smokeTest
   Scenario: Creating a not user-assignable tag with groups as admin should work
     Given user "user0" has been created
-    When user "admin" creates a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2" using the WebDAV API
+    When user "%admin%" creates a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2" using the WebDAV API
     Then the HTTP status code should be "201"
     And the "not user-assignable" tag with name "TagWithGroups" should have the groups "group1|group2"
 
@@ -44,9 +44,9 @@ Feature: tags
   @smokeTest
   Scenario Outline: Renaming a normal tag as regular user should work
     Given user "user0" has been created
-    And user "admin" has created a "normal" tag with name "<tag_name>"
+    And user "%admin%" has created a "normal" tag with name "<tag_name>"
     When user "user0" edits the tag with name "<tag_name>" and sets its name to "AnotherTagName" using the WebDAV API
-    Then the following tags should exist for "admin"
+    Then the following tags should exist for "%admin%"
       | AnotherTagName | normal |
     Examples:
       | tag_name            |
@@ -56,37 +56,37 @@ Feature: tags
 
   Scenario: Renaming a not user-assignable tag as regular user should fail
     Given user "user0" has been created
-    And user "admin" has created a "not user-assignable" tag with name "JustARegularTagName"
+    And user "%admin%" has created a "not user-assignable" tag with name "JustARegularTagName"
     When user "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
-    Then the following tags should exist for "admin"
+    Then the following tags should exist for "%admin%"
       | JustARegularTagName | not user-assignable |
 
   Scenario: Renaming a not user-visible tag as regular user should fail
     Given user "user0" has been created
-    And user "admin" has created a "not user-visible" tag with name "JustARegularTagName"
+    And user "%admin%" has created a "not user-visible" tag with name "JustARegularTagName"
     When user "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
-    Then the following tags should exist for "admin"
+    Then the following tags should exist for "%admin%"
       | JustARegularTagName | not user-visible |
 
   Scenario: Editing tag groups as admin should work
     Given user "user0" has been created
-    And user "admin" has created a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
-    When user "admin" edits the tag with name "TagWithGroups" and sets its groups to "group1|group3" using the WebDAV API
+    And user "%admin%" has created a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
+    When user "%admin%" edits the tag with name "TagWithGroups" and sets its groups to "group1|group3" using the WebDAV API
     Then the "not user-assignable" tag with name "TagWithGroups" should have the groups "group1|group3"
 
   Scenario: Editing tag groups as regular user should fail
     Given user "user0" has been created
-    And user "admin" has created a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
+    And user "%admin%" has created a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
     When user "user0" edits the tag with name "TagWithGroups" and sets its groups to "group1|group3" using the WebDAV API
     Then the "not user-assignable" tag with name "TagWithGroups" should have the groups "group1|group2"
 
   @smokeTest
   Scenario: Deleting a normal tag as regular user should work
     Given user "user0" has been created
-    And user "admin" has created a "normal" tag with name "JustARegularTagName"
+    And user "%admin%" has created a "normal" tag with name "JustARegularTagName"
     When user "user0" deletes the tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "204"
-    And tag "JustARegularTagName" should not exist for "admin"
+    And tag "JustARegularTagName" should not exist for "%admin%"
 
   Scenario: Deleting a normal tag that has already been assigned to a file should work
     Given user "user0" has been created
@@ -95,42 +95,42 @@ Feature: tags
     And user "user0" has added the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0"
     When user "user0" deletes the tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "204"
-    And tag "JustARegularTagName" should not exist for "admin"
+    And tag "JustARegularTagName" should not exist for "%admin%"
     And file "/myFileToTag.txt" should have no tags for user "user0"
 
   Scenario: Deleting a not user-assignable tag as regular user should fail
     Given user "user0" has been created
-    And user "admin" has created a "not user-assignable" tag with name "JustARegularTagName"
+    And user "%admin%" has created a "not user-assignable" tag with name "JustARegularTagName"
     When user "user0" deletes the tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "403"
-    And the following tags should exist for "admin"
+    And the following tags should exist for "%admin%"
       | JustARegularTagName | not user-assignable |
 
   Scenario: Deleting a not user-visible tag as regular user should fail
     Given user "user0" has been created
-    And user "admin" has created a "not user-visible" tag with name "JustARegularTagName"
+    And user "%admin%" has created a "not user-visible" tag with name "JustARegularTagName"
     When user "user0" deletes the tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "404"
-    And the following tags should exist for "admin"
+    And the following tags should exist for "%admin%"
       | JustARegularTagName | not user-visible |
 
   Scenario: Deleting a not user-assignable tag as admin should work
-    Given user "admin" has created a "not user-assignable" tag with name "JustARegularTagName"
-    When user "admin" deletes the tag with name "JustARegularTagName" using the WebDAV API
+    Given user "%admin%" has created a "not user-assignable" tag with name "JustARegularTagName"
+    When user "%admin%" deletes the tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "204"
-    And tag "JustARegularTagName" should not exist for "admin"
+    And tag "JustARegularTagName" should not exist for "%admin%"
 
   Scenario: Deleting a not user-visible tag as admin should work
-    Given user "admin" has created a "not user-visible" tag with name "JustARegularTagName"
-    When user "admin" deletes the tag with name "JustARegularTagName" using the WebDAV API
+    Given user "%admin%" has created a "not user-visible" tag with name "JustARegularTagName"
+    When user "%admin%" deletes the tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "204"
-    And tag "JustARegularTagName" should not exist for "admin"
+    And tag "JustARegularTagName" should not exist for "%admin%"
 
   @smokeTest
   Scenario: Assigning a normal tag to a file shared by someone else as regular user should work
     Given user "user0" has been created
     And user "user1" has been created
-    And user "admin" has created a "normal" tag with name "JustARegularTagName"
+    And user "%admin%" has created a "normal" tag with name "JustARegularTagName"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     When user "user1" adds the tag "JustARegularTagName" to "/myFileToTag.txt" shared by "user0" using the WebDAV API
@@ -141,8 +141,8 @@ Feature: tags
   Scenario: Assigning a normal tag to a file belonging to someone else as regular user should fail
     Given user "user0" has been created
     And user "user1" has been created
-    And user "admin" has created a "normal" tag with name "MyFirstTag"
-    And user "admin" has created a "normal" tag with name "MySecondTag"
+    And user "%admin%" has created a "normal" tag with name "MyFirstTag"
+    And user "%admin%" has created a "normal" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0" using the WebDAV API
     And user "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" owned by "user0" using the WebDAV API
@@ -153,8 +153,8 @@ Feature: tags
   Scenario: Assigning a not user-assignable tag to a file shared by someone else as regular user should fail
     Given user "user0" has been created
     And user "user1" has been created
-    And user "admin" has created a "normal" tag with name "MyFirstTag"
-    And user "admin" has created a "not user-assignable" tag with name "MySecondTag"
+    And user "%admin%" has created a "normal" tag with name "MyFirstTag"
+    And user "%admin%" has created a "not user-assignable" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0" using the WebDAV API
@@ -168,7 +168,7 @@ Feature: tags
     And user "user1" has been created
     And group "group1" has been created
     And user "user1" has been added to group "group1"
-    And user "admin" has created a "not user-assignable" tag with name "JustARegularTagName" and groups "group1"
+    And user "%admin%" has created a "not user-assignable" tag with name "JustARegularTagName" and groups "group1"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     When user "user1" adds the tag "JustARegularTagName" to "/myFileToTag.txt" shared by "user0" using the WebDAV API
@@ -179,8 +179,8 @@ Feature: tags
   Scenario: Assigning a not user-visible tag to a file shared by someone else as regular user should fail
     Given user "user0" has been created
     And user "user1" has been created
-    And user "admin" has created a "normal" tag with name "MyFirstTag"
-    And user "admin" has created a "not user-visible" tag with name "MySecondTag"
+    And user "%admin%" has created a "normal" tag with name "MyFirstTag"
+    And user "%admin%" has created a "not user-visible" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0" using the WebDAV API
@@ -228,8 +228,8 @@ Feature: tags
   Scenario: Unassigning a normal tag from a file shared by someone else as regular user should work
     Given user "user0" has been created
     And user "user1" has been created
-    And user "admin" has created a "normal" tag with name "MyFirstTag"
-    And user "admin" has created a "normal" tag with name "MySecondTag"
+    And user "%admin%" has created a "normal" tag with name "MyFirstTag"
+    And user "%admin%" has created a "normal" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has added the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0"
@@ -242,8 +242,8 @@ Feature: tags
   Scenario: Unassigning a normal tag from a file unshared by someone else as regular user should fail
     Given user "user0" has been created
     And user "user1" has been created
-    And user "admin" has created a "normal" tag with name "MyFirstTag"
-    And user "admin" has created a "normal" tag with name "MySecondTag"
+    And user "%admin%" has created a "normal" tag with name "MyFirstTag"
+    And user "%admin%" has created a "normal" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has added the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
     And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
@@ -361,7 +361,7 @@ Feature: tags
     And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
     And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
     And user "user0" has removed all shares from the file named "/myFileToTag.txt"
-    When user "admin" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    When user "%admin%" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "404"
 
   Scenario: Overwriting existing normal tags should fail
@@ -371,19 +371,19 @@ Feature: tags
     Then the HTTP status code should be "409"
 
   Scenario: Overwriting existing not user-assignable tags should fail
-    Given user "admin" has created a "not user-assignable" tag with name "MyFirstTag"
-    When user "admin" creates a "not user-assignable" tag with name "MyFirstTag" using the WebDAV API
+    Given user "%admin%" has created a "not user-assignable" tag with name "MyFirstTag"
+    When user "%admin%" creates a "not user-assignable" tag with name "MyFirstTag" using the WebDAV API
     Then the HTTP status code should be "409"
 
   Scenario: Overwriting existing not user-visible tags should fail
-    Given user "admin" has created a "not user-visible" tag with name "MyFirstTag"
-    When user "admin" creates a "not user-visible" tag with name "MyFirstTag" using the WebDAV API
+    Given user "%admin%" has created a "not user-visible" tag with name "MyFirstTag"
+    When user "%admin%" creates a "not user-visible" tag with name "MyFirstTag" using the WebDAV API
     Then the HTTP status code should be "409"
 
   Scenario: Getting tags only works with access to the file
     Given user "user0" has been created
     And user "user1" has been created
-    And user "admin" has created a "normal" tag with name "MyFirstTag"
+    And user "%admin%" has created a "normal" tag with name "MyFirstTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then file "/myFileToTag.txt" should have the following tags for user "user0"
@@ -394,12 +394,12 @@ Feature: tags
     Given user "user0" has been created
     And group "group1" has been created
     And user "user0" has been added to group "group1"
-    When user "admin" creates a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2" using the WebDAV API
+    When user "%admin%" creates a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2" using the WebDAV API
     Then the HTTP status code should be "201"
     And the user "user0" should be able to assign the "not user-assignable" tag with name "TagWithGroups"
 
   Scenario: User cannot assign tags when not in the tag's groups
     Given user "user0" has been created
-    When user "admin" creates a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2" using the WebDAV API
+    When user "%admin%" creates a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2" using the WebDAV API
     Then the HTTP status code should be "201"
     And the user "user0" should not be able to assign the "not user-assignable" tag with name "TagWithGroups"
