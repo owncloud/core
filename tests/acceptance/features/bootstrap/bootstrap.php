@@ -39,6 +39,10 @@ const STANDARD_UI_WAIT_TIMEOUT_MILLISEC = 10000;
 const MINIMUM_UI_WAIT_TIMEOUT_MILLISEC = 500;
 const MINIMUM_UI_WAIT_TIMEOUT_MICROSEC = MINIMUM_UI_WAIT_TIMEOUT_MILLISEC * 1000;
 
+// Minimum timeout for emails
+const EMAIL_WAIT_TIMEOUT_SEC = 10;
+const EMAIL_WAIT_TIMEOUT_MILLISEC = EMAIL_WAIT_TIMEOUT_SEC * 1000;
+
 // Default number of times to retry where retries are useful
 const STANDARD_RETRY_COUNT = 5;
 // Minimum number of times to retry where retries are useful
