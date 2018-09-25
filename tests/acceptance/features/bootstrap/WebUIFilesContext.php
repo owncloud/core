@@ -917,6 +917,36 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with the path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
+	 *
+	 * @param string $name enclosed in single or double quotes
+	 * @param string $shouldOrNot
+	 * @param string $typeOfFilesPage
+	 * @param string $folder
+	 * @param string $path
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFileFolderWithThePathShouldBeListedOnTheWebUI(
+		$name, $path, $shouldOrNot, $typeOfFilesPage = "", $folder = ""
+		) {
+		// The capturing groups of the regex include the quotes at each
+		// end of the captured string, so trim them.
+		if ($folder !== "") {
+			$folder = \trim($folder, $folder[0]);
+		}
+		$path = \trim($path, $path[0]);
+		$this->checkIfFileFolderIsListedOnTheWebUI(
+				\trim($name, $name[0]),
+				$shouldOrNot,
+				$typeOfFilesPage,
+				$folder,
+				$path
+			);
+	}
+
+	/**
 	 * @When the user batch deletes these files using the webUI
 	 * @Given the user has batch deleted these files using the webUI
 	 *
