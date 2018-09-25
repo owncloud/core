@@ -86,7 +86,8 @@ class PublicLinkTab extends OwncloudPage {
 		$password = null,
 		$expirationDate = null,
 		$email = null,
-		$emailToSelf = null
+		$emailToSelf = null,
+		$personalMessage = null
 	) {
 		$createLinkBtn = $this->publicLinkTabElement->find(
 			"xpath", $this->createLinkBtnXpath
@@ -129,6 +130,9 @@ class PublicLinkTab extends OwncloudPage {
 		}
 		if ($emailToSelf === "true" && $email !== null) {
 			$editPublicLinkPopupPageObject->setEmailToSelf();
+		}
+		if ($personalMessage !== null && $email !== null) {
+			$editPublicLinkPopupPageObject->setPersonalMessage($personalMessage);
 		}
 		$linkName = $editPublicLinkPopupPageObject->getLinkName();
 		$editPublicLinkPopupPageObject->save();
