@@ -74,15 +74,15 @@ So that I can find needed files quickly
       |oc:size              |
     Then the HTTP status code should be "207"
     And the file "/upload.txt" in the search result of "user0" should contain these properties:
-      |name                                      | value |
-      |{http://owncloud.org/ns}fileid            |\d*|
-      |{http://owncloud.org/ns}permissions       |RDNVW|
-      |{DAV:}getlastmodified                     |^[MTWFS][uedhfriatno]{2},\s(\d){2}\s[JFMAJSOND][anebrpyulgctov]{2}\s\d{4}\s\d{2}:\d{2}:\d{2} GMT$|
-      |{DAV:}getetag                             |^\"[a-f0-9]{32}\"$|
-      |{DAV:}getcontenttype                      |text\/plain|
-      |{http://owncloud.org/ns}size              |15|
-      |{http://owncloud.org/ns}owner-id          |user0|
-      |{http://owncloud.org/ns}owner-display-name|user0|
+      | name                                       | value                                                                                             |
+      | {http://owncloud.org/ns}fileid             | \d*                                                                                               |
+      | {http://owncloud.org/ns}permissions        | ^(RDNVW\|RMDNVW)$                                                                                 |
+      | {DAV:}getlastmodified                      | ^[MTWFS][uedhfriatno]{2},\s(\d){2}\s[JFMAJSOND][anebrpyulgctov]{2}\s\d{4}\s\d{2}:\d{2}:\d{2} GMT$ |
+      | {DAV:}getetag                              | ^\"[a-f0-9]{32}\"$                                                                                |
+      | {DAV:}getcontenttype                       | text\/plain                                                                                       |
+      | {http://owncloud.org/ns}size               | 15                                                                                                |
+      | {http://owncloud.org/ns}owner-id           | user0                                                                                             |
+      | {http://owncloud.org/ns}owner-display-name | user0                                                                                             |
     Examples:
       | dav_version |
       | old         |
