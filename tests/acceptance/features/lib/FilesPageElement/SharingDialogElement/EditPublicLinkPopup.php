@@ -42,13 +42,15 @@ class EditPublicLinkPopup extends OwncloudPage {
 	private $expirationDateInputXpath = ".//input[contains(@class,'expirationDate')]";
 	private $emailInputXpath = "//form[@id='emailPrivateLink']//input[@class='select2-input']";
 	private $emailToSelfCheckboxXpath = "//form[@id='emailPrivateLink']" . "//input[@class='emailPrivateLinkForm--emailToSelf']";
+	private $emailInputCloseXpath = "//a[@class='select2-search-choice-close']";
 	private $shareButtonXpath = ".//button[contains(text(), 'Share')]";
 	private $permissionLabelXpath = [
 		'read' => ".//label[contains(@for, 'sharingDialogAllowPublicRead')]",
 		'read-write' => ".//label[contains(@for, 'sharingDialogAllowPublicReadWrite')]",
 		'upload' => ".//label[contains(@for, 'sharingDialogAllowPublicUpload')]"
 	];
-	
+	private $popupCloseButton = "//a[@class='oc-dialog-close']";
+
 	/**
 	 * sets the NodeElement for the current popup
 	 * a little bit like __construct() but as we access this "sub-page-object"
@@ -198,6 +200,25 @@ class EditPublicLinkPopup extends OwncloudPage {
 	}
 
 	/**
+	 * Remove email from Email Input box
+	 *
+	 * @param string $email
+	 *
+	 * @return void
+	 */
+	public function unsetLinkEmail($email) {
+		$emailRemoveBtns = $this->popupElement->findAll("xpath", $this->emailInputCloseXpath);
+		foreach ($emailRemoveBtns as $emailRemoveBtn) {
+			$precedingSiblingNodeWithEmail = $emailRemoveBtn->getParent()->find('xpath', '/div');
+			$text = $precedingSiblingNodeWithEmail->getText();
+			if ($text === $email) {
+				$emailRemoveBtn->click();
+				return;
+			}
+		}
+	}
+
+	/**
 	 *
 	 * @return void
 	 */
@@ -228,5 +249,17 @@ class EditPublicLinkPopup extends OwncloudPage {
 			);
 		}
 		$saveButton->click();
+	}
+
+	public function close() {
+		$closeButton = $this->popupElement->find("xpath", $this->popupCloseButton);
+		if ($closeButton === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->popupCloseButton" .
+				" could not find save button of the public link popup"
+				);
+		}
+		$closeButton->click();
 	}
 }

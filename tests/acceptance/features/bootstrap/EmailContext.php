@@ -57,6 +57,24 @@ class EmailContext implements Context {
 	}
 
 	/**
+	 * @Then the email address :address should not have received an email
+	 *
+	 * @param string $address
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function assertThatEmailDoesntExistWithTheAddress($address) {
+		try {
+			EmailHelper::getBodyOfLastEmail($this->mailhogUrl, $address, 3);
+		} catch (\Exception $err) {
+			PHPUnit_Framework_Assert::assertTrue(true);
+			return;
+		}
+		throw \Exception("Email exists with email address: {$address}.");
+	}
+
+	/**
 	 * @BeforeScenario @mailhog
 	 *
 	 * @return void

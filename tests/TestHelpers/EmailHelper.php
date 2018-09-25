@@ -77,7 +77,7 @@ class EmailHelper {
 	public static function getBodyOfEmail($mailhogUrl, $address, $numEmails = 1, $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC) {
 		$currentTime = \time(true);
 		$end = $currentTime + $waitTimeSec;
-		
+
 		while ($currentTime <= $end) {
 			$skip = 1;
 			foreach (self::getEmails($mailhogUrl)->items as $item) {

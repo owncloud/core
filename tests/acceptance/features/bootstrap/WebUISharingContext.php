@@ -35,6 +35,7 @@ use TestHelpers\HttpRequestHelper;
 use TestHelpers\EmailHelper;
 use TestHelpers\SetupHelper;
 use OC\Files\External\Auth\Password\Password;
+use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
 
 require_once 'bootstrap.php';
 
@@ -90,6 +91,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $oldFedSharingFallbackSetting = null;
 
 	private $publicShareTab;
+	/**
+	 *
+	 * @var EditPublicLinkPopup
+	 */
+	private $publicSharingPopup;
 	private $linkName;
 
 	/**
@@ -198,6 +204,68 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
 			$name, $this->getSession()
 		);
+	}
+
+	/**
+	 * @Given the user has opened the public link share tab
+	 * @When the user opens the public link share tab
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserHasOpenedThePublicLinkShareTab() {
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab();
+	}
+
+	/**
+	 * @When the user opens the create public link share popup
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserOpensTheCreatePublicLinkSharePopup() {
+		$this->publicSharingPopup = $this->publicShareTab->openSharingPopup();
+	}
+
+	/**
+	 * @When the user adds the following email addresses using the webUI:
+	 *
+	 * @param TableNode $emails
+	 *
+	 * @return void
+	 */
+	public function theUserAddsTheFollowingEmailAddressesUsingTheWebUI(TableNode $emails) {
+		foreach ($emails as $row) {
+			$this->publicSharingPopup->setLinkEmail($row['email']);
+		}
+	}
+
+	/**
+	 * @When the user removes the following email addresses using the webUI:
+	 *
+	 * @param TableNode $emails
+	 *
+	 * @return void
+	 */
+	public function theUserRemovesTheFollowingEmailAddressesUsingTheWebui(TableNode $emails) {
+		foreach ($emails as $row) {
+			$this->publicSharingPopup->unsetLinkEmail($row['email']);
+		}
+	}
+
+	/**
+	 * @When the user creates the public link using the webUI
+	 *
+	 * @return void
+	 */
+	public function createsThePublicLinkUsingTheWebUI() {
+		$linkName = $this->publicSharingPopup->getLinkName();
+
+		$this->publicSharingPopup->save();
+		$this->publicSharingPopup->waitForAjaxCallsToStartAndFinish($this->getSession());
+
+		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
+		$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
 	}
 
 	/**
