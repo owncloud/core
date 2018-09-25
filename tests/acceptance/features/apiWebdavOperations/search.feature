@@ -1,8 +1,8 @@
 @api @TestAlsoOnExternalUserBackend
 Feature: Search
-As a user
-I would like to be able to search for files
-So that I can find needed files quickly
+  As a user
+  I would like to be able to search for files
+  So that I can find needed files quickly
 
   Background:
     Given user "user0" has been created
@@ -22,12 +22,12 @@ So that I can find needed files quickly
     When user "user0" searches for "upload" using the WebDAV API
     Then the HTTP status code should be "207"
     And the search result of "user0" should contain these files:
-      |/upload.txt                  |
-      |/just-a-folder/upload.txt    |
-      |/just-a-folder/uploadÜठिF.txt|
-      |/फनी näme/upload.txt    |
+      | /upload.txt                   |
+      | /just-a-folder/upload.txt     |
+      | /just-a-folder/uploadÜठिF.txt |
+      | /फनी näme/upload.txt          |
     But the search result of "user0" should not contain these files:
-      |/a-image.png                 |
+      | /a-image.png |
     Examples:
       | dav_version |
       | old         |
@@ -38,13 +38,13 @@ So that I can find needed files quickly
     When user "user0" searches for "png" using the WebDAV API
     Then the HTTP status code should be "207"
     And the search result of "user0" should contain these files:
-      |/a-image.png              |
-      |/just-a-folder/a-image.png|
-      |/फनी näme/a-image.png  |
+      | /a-image.png               |
+      | /just-a-folder/a-image.png |
+      | /फनी näme/a-image.png      |
     But the search result of "user0" should not contain these files:
-      |/upload.txt                  |
-      |/just-a-folder/upload.txt    |
-      |/just-a-folder/uploadÜठिF.txt|
+      | /upload.txt                   |
+      | /just-a-folder/upload.txt     |
+      | /just-a-folder/uploadÜठिF.txt |
     Examples:
       | dav_version |
       | old         |
@@ -63,26 +63,26 @@ So that I can find needed files quickly
   Scenario Outline: report extra properties in search results
     Given using <dav_version> DAV path
     When user "user0" searches for "upload" using the WebDAV API requesting these properties:
-      |oc:fileid            |
-      |oc:permissions       |
-      |a:getlastmodified    |
-      |a:getetag            |
-      |a:getcontenttype     |
-      |oc:size              |
-      |oc:owner-id          |
-      |oc:owner-display-name|
-      |oc:size              |
+      | oc:fileid             |
+      | oc:permissions        |
+      | a:getlastmodified     |
+      | a:getetag             |
+      | a:getcontenttype      |
+      | oc:size               |
+      | oc:owner-id           |
+      | oc:owner-display-name |
+      | oc:size               |
     Then the HTTP status code should be "207"
     And the file "/upload.txt" in the search result of "user0" should contain these properties:
-      |name                                      | value |
-      |{http://owncloud.org/ns}fileid            |\d*|
-      |{http://owncloud.org/ns}permissions       |RDNVW|
-      |{DAV:}getlastmodified                     |^[MTWFS][uedhfriatno]{2},\s(\d){2}\s[JFMAJSOND][anebrpyulgctov]{2}\s\d{4}\s\d{2}:\d{2}:\d{2} GMT$|
-      |{DAV:}getetag                             |^\"[a-f0-9]{32}\"$|
-      |{DAV:}getcontenttype                      |text\/plain|
-      |{http://owncloud.org/ns}size              |15|
-      |{http://owncloud.org/ns}owner-id          |user0|
-      |{http://owncloud.org/ns}owner-display-name|user0|
+      | name                                       | value                                                                                             |
+      | {http://owncloud.org/ns}fileid             | \d*                                                                                               |
+      | {http://owncloud.org/ns}permissions        | ^(RDNVW\|RMDNVW)$                                                                                 |
+      | {DAV:}getlastmodified                      | ^[MTWFS][uedhfriatno]{2},\s(\d){2}\s[JFMAJSOND][anebrpyulgctov]{2}\s\d{4}\s\d{2}:\d{2}:\d{2} GMT$ |
+      | {DAV:}getetag                              | ^\"[a-f0-9]{32}\"$                                                                                |
+      | {DAV:}getcontenttype                       | text\/plain                                                                                       |
+      | {http://owncloud.org/ns}size               | 15                                                                                                |
+      | {http://owncloud.org/ns}owner-id           | user0                                                                                             |
+      | {http://owncloud.org/ns}owner-display-name | user0                                                                                             |
     Examples:
       | dav_version |
       | old         |
