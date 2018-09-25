@@ -22,6 +22,7 @@
 namespace Tests\Core\Command\User;
 
 use OC\Core\Command\User\Add;
+use OC\User\Service\SigninWithEmail;
 use OC\User\User;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -43,7 +44,23 @@ class AddTest extends TestCase {
 		parent::setUp();
 
 		$application = new Application(\OC::$server->getConfig(), \OC::$server->getEventDispatcher(), \OC::$server->getRequest());
-		$command = new Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager(), \OC::$server->getMailer());
+		$command = new Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager(), \OC::$server->getMailer(),
+			new SigninWithEmail(
+				\OC::$server->getUserSession(),
+				\OC::$server->getGroupManager(),
+				\OC::$server->getURLGenerator(),
+				\OC::$server->getUserManager(),
+				\OC::$server->getSecureRandom(),
+				new \OC_Defaults(),
+				\OC::$server->getTimeFactory(),
+				\OC::$server->getMailer(),
+				\OC::$server->getL10N('settings'),
+				\OC::$server->getLogger(),
+				\OC::$server->getConfig(),
+				\OC::$server->getAppManager(),
+				\OC::$server->getAvatarManager(),
+				\OC::$server->getEventDispatcher()
+			));
 		$command->setApplication($application);
 		$this->commandTester = new CommandTester($command);
 		$this->createUser('user1');
@@ -77,6 +94,7 @@ class AddTest extends TestCase {
 			[['uid' => 'user1', ''],[], 'already exists.'],
 			[['uid' => 'user2', '--email' => 'invalidemail'], [], 'Invalid email address supplied'],
 			[['uid' => 'user2', '--password-from-env' => null], [], '--password-from-env given, but OC_PASS is empty!'],
+			[['uid' => 'user3', '--email' => 'foo@bar.com', '--display-name' => 'tester'], [], "The user \"user3\" was created successfully\nDisplay name set to \"tester\"\n"],
 			/*[['uid' => 'user2'], ['p@ssw0rd', 'password'], 'Passwords did not match'],
 			[['uid' => 'user2'], ['p@ssw0rd', 'p@ssw0rd'], 'was created successfully'],
 			[['uid' => 'user2', '--display-name' => 'John Doe'], ['p@ssw0rd', 'p@ssw0rd'], 'Display name set to '],

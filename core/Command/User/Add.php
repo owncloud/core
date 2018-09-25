@@ -23,7 +23,9 @@
 
 namespace OC\Core\Command\User;
 
+use OC\AppFramework\Http;
 use OC\Files\Filesystem;
+use OC\User\Service\SigninWithEmail;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -45,16 +47,24 @@ class Add extends Command {
 	/** @var IMailer  */
 	protected $mailer;
 
+	/** @var SigninWithEmail  */
+	protected $signinWithEmail;
+
 	/**
+	 * Add User constructor.
+	 *
 	 * @param IUserManager $userManager
 	 * @param IGroupManager $groupManager
 	 * @param IMailer $mailer
+	 * @param SigninWithEmail $signinWithEmail
 	 */
-	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IMailer $mailer) {
+	public function __construct(IUserManager $userManager, IGroupManager $groupManager,
+								IMailer $mailer, SigninWithEmail $signinWithEmail) {
 		parent::__construct();
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->mailer = $mailer;
+		$this->signinWithEmail = $signinWithEmail;
 	}
 
 	protected function configure() {
@@ -71,6 +81,12 @@ class Add extends Command {
 				null,
 				InputOption::VALUE_NONE,
 				'Read password from the OC_PASS environment variable.'
+			)
+			->addOption(
+				'password-from-cmdline',
+				'p',
+				InputOption::VALUE_NONE,
+				'Read password from user input'
 			)
 			->addOption(
 				'display-name',
@@ -92,52 +108,28 @@ class Add extends Command {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		$uid = $input->getArgument('uid');
-		if ($this->userManager->userExists($uid)) {
-			$output->writeln('<error>The user "' . $uid . '" already exists.</error>');
-			return 1;
+	protected function addUserToGroup(InputInterface $input, OutputInterface $output, IUser $user) {
+		$groups = $input->getOption('group');
+
+		if (!empty($groups)) {
+			// Make sure we init the Filesystem for the user, in case we need to
+			// init some group shares.
+			Filesystem::init($user->getUID(), '');
 		}
 
-		// Validate email before we create the user
-		if ($input->getOption('email')) {
-			// Validate first
-			if (!$this->mailer->validateMailAddress($input->getOption('email'))) {
-				// Invalid! Error
-				$output->writeln('<error>Invalid email address supplied</error>');
-				return 1;
-			} else {
-				$email = $input->getOption('email');
+		foreach ($groups as $groupName) {
+			$group = $this->groupManager->get($groupName);
+			if (!$group) {
+				$this->groupManager->createGroup($groupName);
+				$group = $this->groupManager->get($groupName);
+				$output->writeln('Created group "' . $group->getGID() . '"');
 			}
-		} else {
-			$email = null;
+			$group->addUser($user);
+			$output->writeln('User "' . $user->getUID() . '" added to group "' . $group->getGID() . '"');
 		}
+	}
 
-		if ($input->getOption('password-from-env')) {
-			$password = \getenv('OC_PASS');
-			if (!$password) {
-				$output->writeln('<error>--password-from-env given, but OC_PASS is empty!</error>');
-				return 1;
-			}
-		} elseif ($input->isInteractive()) {
-			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
-			$dialog = $this->getHelperSet()->get('question');
-			$q = new Question('<question>Enter password: </question>', false);
-			$q->setHidden(true);
-			$password = $dialog->ask($input, $output, $q);
-			$q = new Question('<question>Confirm password: </question>', false);
-			$q->setHidden(true);
-			$confirm = $dialog->ask($input, $output, $q);
-
-			if ($password !== $confirm) {
-				$output->writeln("<error>Passwords did not match!</error>");
-				return 1;
-			}
-		} else {
-			$output->writeln("<error>Interactive input or --password-from-env is needed for entering a password!</error>");
-			return 1;
-		}
-
+	protected function createUser(InputInterface $input, OutputInterface $output, $password, $email) {
 		$user = $this->userManager->createUser(
 			$input->getArgument('uid'),
 			$password
@@ -160,24 +152,77 @@ class Add extends Command {
 			$user->setEMailAddress($email);
 			$output->writeln('Email address set to "' . $user->getEMailAddress() . '"');
 		}
+	}
 
-		$groups = $input->getOption('group');
-
-		if (!empty($groups)) {
-			// Make sure we init the Filesystem for the user, in case we need to
-			// init some group shares.
-			Filesystem::init($user->getUID(), '');
+	protected function execute(InputInterface $input, OutputInterface $output) {
+		$uid = $input->getArgument('uid');
+		if ($this->userManager->userExists($uid)) {
+			$output->writeln('<error>The user "' . $uid . '" already exists.</error>');
+			return 1;
 		}
 
-		foreach ($groups as $groupName) {
-			$group = $this->groupManager->get($groupName);
-			if (!$group) {
-				$this->groupManager->createGroup($groupName);
-				$group = $this->groupManager->get($groupName);
-				$output->writeln('Created group "' . $group->getGID() . '"');
+		$readPasswordFromCmdLine = $input->getOption('password-from-cmdline');
+		// Validate email before we create the user
+		if ($input->getOption('email')) {
+			// Validate first
+			if (!$this->mailer->validateMailAddress($input->getOption('email'))) {
+				// Invalid! Error
+				$output->writeln('<error>Invalid email address supplied</error>');
+				return 1;
+			} else {
+				$email = $input->getOption('email');
 			}
-			$group->addUser($user);
-			$output->writeln('User "' . $user->getUID() . '" added to group "' . $group->getGID() . '"');
+		} else {
+			$email = null;
+		}
+
+		if ($input->getOption('password-from-env')) {
+			$password = \getenv('OC_PASS');
+			if (!$password) {
+				$output->writeln('<error>--password-from-env given, but OC_PASS is empty!</error>');
+				return 1;
+			}
+			$this->createUser($input, $output, $password, $email);
+			$this->addUserToGroup($input, $output, $this->userManager->get($uid));
+		} elseif ($readPasswordFromCmdLine) {
+			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
+			$dialog = $this->getHelperSet()->get('question');
+			$q = new Question('<question>Enter password: </question>', false);
+			$q->setHidden(true);
+			$password = $dialog->ask($input, $output, $q);
+			$q = new Question('<question>Confirm password: </question>', false);
+			$q->setHidden(true);
+			$confirm = $dialog->ask($input, $output, $q);
+
+			if ($password !== $confirm) {
+				$output->writeln("<error>Passwords did not match!</error>");
+				return 1;
+			}
+
+			$this->createUser($input, $output, $password, $email);
+			$this->addUserToGroup($input, $output, $this->userManager->get($uid));
+		} elseif ($input->getOption('email') && ($email !== null)) {
+			$response = $this->signinWithEmail->create($uid, '', $input->getOption('group'), $email);
+			if ($response->getStatus() === Http::STATUS_CREATED) {
+				$output->writeln('<info>The user "' . $response->getData()['name'] . '" was created successfully</info>');
+			}
+			if ($input->getOption('display-name')) {
+				$user = $this->userManager->get($uid);
+				$user->setDisplayName($input->getOption('display-name'));
+				$output->writeln('Display name set to "' . $user->getDisplayName() . '"');
+			}
+			if ($input->getOption('group')) {
+				if (\is_array($input->getOption('group'))) {
+					foreach ($input->getOption('group') as $group) {
+						if ($this->groupManager->isInGroup($uid, $group)) {
+							$output->writeln('User "' . $uid . '" added to group "' . $group . '"');
+						}
+					}
+				}
+			}
+		} else {
+			$output->writeln("<error>Interactive input or --password-from-env is needed for entering a password!</error>");
+			return 1;
 		}
 	}
 }

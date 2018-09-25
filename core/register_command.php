@@ -137,7 +137,13 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 		new \OC\Repair(\OC\Repair::getRepairSteps(), \OC::$server->getEventDispatcher()), \OC::$server->getConfig(),
 		\OC::$server->getEventDispatcher()));
 
-	$application->add(new OC\Core\Command\User\Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager(), \OC::$server->getMailer()));
+	$application->add(new OC\Core\Command\User\Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager(), \OC::$server->getMailer(),
+		new \OC\User\Service\SigninWithEmail(
+			\OC::$server->getUserSession(), \OC::$server->getGroupManager(), \OC::$server->getURLGenerator(),
+			\OC::$server->getUserManager(), \OC::$server->getSecureRandom(), new \OC_Defaults(), \OC::$server->getTimeFactory(),
+			\OC::$server->getMailer(), \OC::$server->getL10N('settings'), \OC::$server->getLogger(), \OC::$server->getConfig(),
+			\OC::$server->getAppManager(), \OC::$server->getAvatarManager(), \OC::$server->getEventDispatcher()
+		)));
 	$application->add(new OC\Core\Command\User\Delete(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\Disable(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\Enable(\OC::$server->getUserManager()));
