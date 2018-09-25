@@ -35,7 +35,7 @@ class FileRow extends OwncloudPage {
 	/**
 	 * @var NodeElement of this row
 	 */
-	private $rowElement;
+	protected $rowElement;
 
 	/**
 	 * name of the file
