@@ -749,6 +749,7 @@ trait WebDav {
 	public function downloadFileAsUserUsingPassword(
 		$user, $fileName, $password = null
 	) {
+		$password = $this->getActualPassword($password);
 		$this->response = $this->makeDavRequest(
 			$user,
 			'GET',

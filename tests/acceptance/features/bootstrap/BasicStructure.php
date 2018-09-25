@@ -63,6 +63,35 @@ trait BasicStructure {
 	/**
 	 * @var string
 	 */
+	private $alt1UserPassword = '';
+
+	/**
+	 * @var string
+	 */
+	private $alt2UserPassword = '';
+
+	/**
+	 * @var string
+	 */
+	private $alt3UserPassword = '';
+
+	/**
+	 * The password to use in tests that create a sub-admin user
+	 *
+	 * @var string
+	 */
+	private $subAdminPassword = '';
+
+	/**
+	 * The password to use in tests that create another admin user
+	 *
+	 * @var string
+	 */
+	private $alternateAdminPassword = '';
+
+	/**
+	 * @var string
+	 */
 	private $ocPath = '';
 
 	/**
@@ -155,9 +184,12 @@ trait BasicStructure {
 	 *
 	 */
 	public function __construct(
-		$baseUrl, $adminUsername, $adminPassword, $regularUserPassword, $ocPath
+		$baseUrl,
+		$adminUsername,
+		$adminPassword,
+		$regularUserPassword,
+		$ocPath
 	) {
-
 		// Initialize your context here
 		$this->baseUrl = \rtrim($baseUrl, '/');
 		$this->adminUsername = $adminUsername;
@@ -167,6 +199,14 @@ trait BasicStructure {
 		$this->currentServer = 'LOCAL';
 		$this->cookieJar = new CookieJar();
 		$this->ocPath = $ocPath;
+
+		// These passwords are referenced in tests and can be overridden by
+		// setting environment variables.
+		$this->alt1UserPassword = "1234";
+		$this->alt2UserPassword = "AaBb2Cc3Dd4";
+		$this->alt3UserPassword = "aVeryLongPassword42TheMeaningOfLife";
+		$this->subAdminPassword = "IamAJuniorAdmin42";
+		$this->alternateAdminPassword = "IHave99LotsOfPriv";
 
 		// in case of CI deployment we take the server url from the environment
 		$testServerUrl = \getenv('TEST_SERVER_URL');
@@ -202,6 +242,36 @@ trait BasicStructure {
 		if ($regularUserPasswordFromEnvironment !== false) {
 			$this->regularUserPassword = $regularUserPasswordFromEnvironment;
 		}
+
+		// get the alternate(1) user password from the environment (if defined)
+		$alt1UserPasswordFromEnvironment = $this->getAlt1UserPasswordFromEnvironment();
+		if ($alt1UserPasswordFromEnvironment !== false) {
+			$this->alt1UserPassword = $alt1UserPasswordFromEnvironment;
+		}
+
+		// get the alternate(2) user password from the environment (if defined)
+		$alt2UserPasswordFromEnvironment = $this->getAlt2UserPasswordFromEnvironment();
+		if ($alt2UserPasswordFromEnvironment !== false) {
+			$this->alt2UserPassword = $alt2UserPasswordFromEnvironment;
+		}
+
+		// get the alternate(3) user password from the environment (if defined)
+		$alt3UserPasswordFromEnvironment = $this->getAlt3UserPasswordFromEnvironment();
+		if ($alt3UserPasswordFromEnvironment !== false) {
+			$this->alt3UserPassword = $alt3UserPasswordFromEnvironment;
+		}
+
+		// get the sub-admin password from the environment (if defined)
+		$subAdminPasswordFromEnvironment = $this->getSubAdminPasswordFromEnvironment();
+		if ($subAdminPasswordFromEnvironment !== false) {
+			$this->subAdminPassword = $subAdminPasswordFromEnvironment;
+		}
+
+		// get the alternate admin password from the environment (if defined)
+		$alternateAdminPasswordFromEnvironment = $this->getAlternateAdminPasswordFromEnvironment();
+		if ($alternateAdminPasswordFromEnvironment !== false) {
+			$this->alternateAdminPassword = $alternateAdminPasswordFromEnvironment;
+		}
 	}
 
 	/**
@@ -229,6 +299,51 @@ trait BasicStructure {
 	 */
 	private static function getRegularUserPasswordFromEnvironment() {
 		return \getenv('REGULAR_USER_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined alternate(1) user password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getAlt1UserPasswordFromEnvironment() {
+		return \getenv('ALT1_USER_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined alternate(2) user password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getAlt2UserPasswordFromEnvironment() {
+		return \getenv('ALT2_USER_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined alternate(3) user password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getAlt3UserPasswordFromEnvironment() {
+		return \getenv('ALT3_USER_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined sub-admin password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getSubAdminPasswordFromEnvironment() {
+		return \getenv('SUB_ADMIN_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined alternate admin password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getAlternateAdminPasswordFromEnvironment() {
+		return \getenv('ALTERNATE_ADMIN_PASSWORD');
 	}
 
 	/**
@@ -400,7 +515,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function asUser($user) {
-		$this->currentUser = $user;
+		$this->currentUser = $this->getActualUsername($user);
 	}
 
 	/**
@@ -697,6 +812,7 @@ trait BasicStructure {
 		}
 
 		if ($user !== 'UNAUTHORIZED_USER') {
+			$user = $this->getActualUsername($user);
 			$password = $this->getPasswordForUser($user);
 		} else {
 			$user = null;
@@ -1214,6 +1330,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getPasswordForUser($userName) {
+		$userName = $this->getActualUsername($userName);
 		if ($userName === $this->getAdminUsername()) {
 			return (string) $this->getAdminPassword();
 		} elseif (\array_key_exists($userName, $this->createdUsers)) {
@@ -1224,6 +1341,44 @@ trait BasicStructure {
 			// The user has not been created yet, let the caller have the
 			// default password.
 			return (string) $this->regularUserPassword;
+		}
+	}
+
+	/**
+	 * @param string $functionalUsername
+	 *
+	 * @return string
+	 */
+	public function getActualUsername($functionalUsername) {
+		if ($functionalUsername === "%admin%") {
+			return (string) $this->getAdminUsername();
+		} else {
+			return $functionalUsername;
+		}
+	}
+
+	/**
+	 * @param string $functionalPassword
+	 *
+	 * @return string
+	 */
+	public function getActualPassword($functionalPassword) {
+		if ($functionalPassword === "%regular%") {
+			return (string) $this->regularUserPassword;
+		} elseif ($functionalPassword === "%alt1%") {
+			return (string) $this->alt1UserPassword;
+		} elseif ($functionalPassword === "%alt2%") {
+			return (string) $this->alt2UserPassword;
+		} elseif ($functionalPassword === "%alt3%") {
+			return (string) $this->alt3UserPassword;
+		} elseif ($functionalPassword === "%subadmin%") {
+			return (string) $this->subAdminPassword;
+		} elseif ($functionalPassword === "%admin%") {
+			return (string) $this->getAdminPassword();
+		} elseif ($functionalPassword === "%altadmin%") {
+			return (string) $this->alternateAdminPassword;
+		} else {
+			return $functionalPassword;
 		}
 	}
 

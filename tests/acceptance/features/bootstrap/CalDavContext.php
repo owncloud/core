@@ -82,6 +82,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 */
 	public function userRequestsCalendarUsingTheAPI($user, $calendar) {
+		$user = $this->featureContext->getActualUsername($user);
 		$davUrl = $this->featureContext->getBaseUrl()
 			. "/remote.php/dav/calendars/$calendar";
 
@@ -151,6 +152,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function userHasCreatedACalendarNamed($user, $name) {
+		$user = $this->featureContext->getActualUsername($user);
 		$davUrl = $this->featureContext->getBaseUrl()
 			. "/remote.php/dav/calendars/$user/$name";
 
