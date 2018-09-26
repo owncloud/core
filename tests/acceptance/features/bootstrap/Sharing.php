@@ -345,6 +345,25 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then the last public shared file should not be able to be downloaded with password :password
+	 *
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithPassword($password) {
+		$token = $this->getLastShareToken();
+		$fullUrl = $this->getBaseUrl() . "/public.php/webdav";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $token, $password
+		);
+		PHPUnit_Framework_Assert::assertEquals(
+			401,
+			$this->response->getStatusCode()
+		);
+	}
+
+	/**
 	 * @Then /^the user "([^"]*)" should be able to download the file "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $user
@@ -899,6 +918,18 @@ trait Sharing {
 			true,
 			$this->isUserOrGroupInSharedData($group, $permissions)
 		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" tries to update the last share using the sharing API with$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function userTriesToUpdateTheLastShareUsingTheSharingApiWith($user, TableNode $body) {
+		$this->userUpdatesTheLastShareWith($user, $body);
 	}
 
 	/**
