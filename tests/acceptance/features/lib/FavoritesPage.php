@@ -22,6 +22,8 @@
 
 namespace Page;
 
+use Behat\Mink\Session;
+
 /**
  * Favorites page.
  */
@@ -36,6 +38,7 @@ class FavoritesPage extends FilesPageBasic {
 	protected $fileNameMatchXpath = "//span[@class='nametext' and .=%s]";
 	protected $fileListXpath = ".//div[@id='app-content-favorites']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-favorites']//div[@id='emptycontent']";
+	protected $filePathInRowXpath = "//*[@data-tags='_\$!<Favorite>!\$_']";
 	
 	/**
 	 * @return string
@@ -71,6 +74,26 @@ class FavoritesPage extends FilesPageBasic {
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 */
 	protected function getFilePathInRowXpath() {
-		throw new \Exception("not implemented in FavoritesPage");
+		return $this->filePathInRowXpath;
+	}
+
+	/**
+	 * finds all rows that have the given name
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 *
+	 * @return FileRow[]
+	 * @throws ElementNotFoundException
+	 */
+	public function findAllFileRowsByName($name, Session $session) {
+		$fileRowElements = $this->getFileRowElementsByName($name, $session);
+		foreach ($fileRowElements as $fileRowElement) {
+			$fileRow = $this->getPage('FilesPageElement\\FavoritesFileRow');
+			$fileRow->setElement($fileRowElement);
+			$fileRow->setName($name);
+			$fileRows[] = $fileRow;
+		}
+		return $fileRows;
 	}
 }
