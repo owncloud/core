@@ -1,4 +1,4 @@
-@api
+@api @provisioning_api-app-required
 Feature: get users
 As an admin
 I want to be able to list the users that exist

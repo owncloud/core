@@ -1,4 +1,5 @@
-@api
+@api @files_versions-app-required
+
 Feature: dav-versions
   Background:
     Given using OCS API version "2"

@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @comments-app-required
 Feature: Comments
   Background:
     Given using new DAV path
