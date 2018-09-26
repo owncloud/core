@@ -226,7 +226,12 @@ class FederatedShareProvider implements IShareProvider {
 			if ($this->userManager->userExists($sharedBy)) {
 				$sharedByCloudId = $instanceCloudId;
 			}
-			$sharedByAddress = new Address("{$sharedBy}@{$sharedByCloudId}");
+
+			$sharedByFullAddress =  ($sharedByCloudId !== '')
+				? "{$sharedBy}@{$sharedByCloudId}"
+				: $sharedBy;
+
+			$sharedByAddress = new Address($sharedByFullAddress);
 			$owner = $share->getShareOwner();
 			$ownerAddress = new Address("{$owner}@{$instanceCloudId}");
 			$sharedWith = $share->getSharedWith();

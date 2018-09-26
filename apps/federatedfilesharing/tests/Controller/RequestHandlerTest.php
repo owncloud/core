@@ -30,8 +30,11 @@ use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
 use OCA\FederatedFileSharing\Controller\RequestHandlerController;
+use OCA\FederatedFileSharing\Middleware\OcmMiddleware;
+use OCA\FederatedFileSharing\Ocm\Exception\BadRequestException;
+use OCA\FederatedFileSharing\Ocm\Exception\ForbiddenException;
+use OCA\FederatedFileSharing\Ocm\Exception\NotImplementedException;
 use OCA\FederatedFileSharing\Tests\TestCase;
-use OCP\App\IAppManager;
 use OCP\AppFramework\Http;
 use OCP\Constants;
 use OCP\IRequest;
@@ -47,25 +50,21 @@ use OCP\Share\IShare;
  */
 class RequestHandlerTest extends TestCase {
 	const DEFAULT_TOKEN = 'abc';
-	/**
-	 * @var FederatedShareProvider | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $federatedShareProvider;
-
-	/**
-	 * @var IAppManager | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $appManager;
-
-	/**
-	 * @var IUserManager | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $userManager;
 
 	/**
 	 * @var IRequest | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $request;
+
+	/**
+	 * @var OcmMiddleware
+	 */
+	private $ocmMiddleware;
+
+	/**
+	 * @var IUserManager | \PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $userManager;
 
 	/**
 	 * @var AddressHandler | \PHPUnit_Framework_MockObject_MockObject
@@ -85,25 +84,15 @@ class RequestHandlerTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->federatedShareProvider = $this->getMockBuilder(
-			FederatedShareProvider::class
-		)
-			->disableOriginalConstructor()->getMock();
-		$this->appManager = $this->getMockBuilder(IAppManager::class)
-			->disableOriginalConstructor()->getMock();
-		$this->userManager = $this->getMockBuilder(IUserManager::class)
-			->disableOriginalConstructor()->getMock();
-		$this->request = $this->getMockBuilder(IRequest::class)
-			->disableOriginalConstructor()->getMock();
-		$this->addressHandler = $this->getMockBuilder(AddressHandler::class)
-			->disableOriginalConstructor()->getMock();
-		$this->fedShareManager = $this->getMockBuilder(FedShareManager::class)
-			->disableOriginalConstructor()->getMock();
+		$this->request = $this->createMock(IRequest::class);
+		$this->ocmMiddleware = $this->createMock(OcmMiddleware::class);
+		$this->userManager = $this->createMock(IUserManager::class);
+		$this->addressHandler = $this->createMock(AddressHandler::class);
+		$this->fedShareManager = $this->createMock(FedShareManager::class);
 		$this->requestHandlerController = new RequestHandlerController(
 			'federatedfilesharing',
 			$this->request,
-			$this->federatedShareProvider,
-			$this->appManager,
+			$this->ocmMiddleware,
 			$this->userManager,
 			$this->addressHandler,
 			$this->fedShareManager
@@ -111,7 +100,8 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testShareIsNotCreatedWhenSharingIsDisabled() {
-		$this->expectFileSharingApp('disabled');
+		$this->ocmMiddleware->method('assertIncomingSharingEnabled')
+			->willThrowException(new NotImplementedException());
 		$this->fedShareManager->expects($this->never())
 			->method('createShare');
 		$response = $this->requestHandlerController->createShare();
@@ -121,19 +111,7 @@ class RequestHandlerTest extends TestCase {
 		);
 	}
 
-	public function testShareIsNotCreatedWhenIncomingSharingIsDisabled() {
-		$this->expectFileSharingApp('enabled');
-		$this->expectIncomingSharing('disabled');
-		$response = $this->requestHandlerController->createShare();
-		$this->assertEquals(
-			Http::STATUS_NOT_IMPLEMENTED,
-			$response->getStatusCode()
-		);
-	}
-
 	public function testShareIsNotCreatedWithEmptyParams() {
-		$this->expectFileSharingApp('enabled');
-		$this->expectIncomingSharing('enabled');
 		$response = $this->requestHandlerController->createShare();
 		$this->assertEquals(
 			Http::STATUS_BAD_REQUEST,
@@ -142,8 +120,6 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testShareIsNotCreatedForNonExistingUser() {
-		$this->expectFileSharingApp('enabled');
-		$this->expectIncomingSharing('enabled');
 		$this->request->expects($this->any())
 			->method('getParam')
 			->willReturn('a');
@@ -158,8 +134,6 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testShareIsNotCreatedForEmptyPath() {
-		$this->expectFileSharingApp('enabled');
-		$this->expectIncomingSharing('enabled');
 		$this->request->expects($this->any())
 			->method('getParam')
 			->willReturn('');
@@ -171,8 +145,6 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testShareIsCreated() {
-		$this->expectFileSharingApp('enabled');
-		$this->expectIncomingSharing('enabled');
 		$this->request->expects($this->any())
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
@@ -189,6 +161,8 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testReshareFailedForEmptyParams() {
+		$this->ocmMiddleware->method('assertNotNull')
+			->willThrowException(new BadRequestException());
 		$response = $this->requestHandlerController->reShare(2);
 		$this->assertEquals(
 			Http::STATUS_BAD_REQUEST,
@@ -200,12 +174,12 @@ class RequestHandlerTest extends TestCase {
 		$this->request->expects($this->any())
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
 			->willThrowException(new Share\Exceptions\ShareNotFound());
 		$response = $this->requestHandlerController->reShare('a99');
 		$this->assertEquals(
-			Http::STATUS_NOT_FOUND,
+			Http::STATUS_BAD_REQUEST,
 			$response->getStatusCode()
 		);
 	}
@@ -215,8 +189,8 @@ class RequestHandlerTest extends TestCase {
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 		$share = $this->getValidShareMock(self::DEFAULT_TOKEN);
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
 			->willReturn($share);
 		$this->addressHandler->expects($this->any())
 			->method('compareAddresses')
@@ -233,8 +207,8 @@ class RequestHandlerTest extends TestCase {
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 		$share = $this->getValidShareMock(self::DEFAULT_TOKEN);
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
 			->willReturn($share);
 		$response = $this->requestHandlerController->reShare('a99');
 		$this->assertEquals(
@@ -244,16 +218,9 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testReshareFailedForTokenMismatch() {
-		$this->request->expects($this->any())
-			->method('getParam')
-			->willReturn(self::DEFAULT_TOKEN);
-		$share = $this->getValidShareMock('cba');
-		$share->expects($this->any())
-			->method('getPermissions')
-			->willReturn(Constants::PERMISSION_SHARE);
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
-			->willReturn($share);
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
+			->willThrowException(new ForbiddenException());
 
 		$response = $this->requestHandlerController->reShare('a99');
 		$this->assertEquals(
@@ -270,8 +237,8 @@ class RequestHandlerTest extends TestCase {
 		$share->expects($this->any())
 			->method('getPermissions')
 			->willReturn(Constants::PERMISSION_SHARE);
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
 			->willReturn($share);
 
 		$resultShare = $this->getMockBuilder(IShare::class)
@@ -294,7 +261,8 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testAcceptFailedWhenSharingIsDisabled() {
-		$this->expectFileSharingApp('disabled');
+		$this->ocmMiddleware->method('assertOutgoingSharingEnabled')
+			->willThrowException(new NotImplementedException());
 		$this->fedShareManager->expects($this->never())
 			->method('acceptShare');
 		$response = $this->requestHandlerController->acceptShare(2);
@@ -305,9 +273,6 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testAcceptSuccess() {
-		$this->expectFileSharingApp('enabled');
-		$this->expectOutgoingSharing('enabled');
-
 		$this->request->expects($this->any())
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
@@ -319,8 +284,8 @@ class RequestHandlerTest extends TestCase {
 			->method('getSharedBy')
 			->willReturn('Bob');
 
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
 			->willReturn($share);
 
 		$this->fedShareManager->expects($this->once())
@@ -334,7 +299,8 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testDeclineFailedWhenSharingIsDisabled() {
-		$this->expectFileSharingApp('disabled');
+		$this->ocmMiddleware->method('assertOutgoingSharingEnabled')
+			->willThrowException(new NotImplementedException());
 		$this->fedShareManager->expects($this->never())
 			->method('declineShare');
 		$response = $this->requestHandlerController->acceptShare(2);
@@ -345,9 +311,6 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testDeclineSuccess() {
-		$this->expectFileSharingApp('enabled');
-		$this->expectOutgoingSharing('enabled');
-
 		$this->request->expects($this->any())
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
@@ -359,8 +322,8 @@ class RequestHandlerTest extends TestCase {
 			->method('getSharedBy')
 			->willReturn('Bob');
 
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
 			->willReturn($share);
 
 		$this->fedShareManager->expects($this->once())
@@ -374,7 +337,8 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testUnshareFailedWhenSharingIsDisabled() {
-		$this->expectFileSharingApp('disabled');
+		$this->ocmMiddleware->method('assertOutgoingSharingEnabled')
+			->willThrowException(new NotImplementedException());
 		$this->fedShareManager->expects($this->never())
 			->method('unshare');
 		$response = $this->requestHandlerController->unshare(2);
@@ -398,8 +362,8 @@ class RequestHandlerTest extends TestCase {
 		$share->expects($this->any())
 			->method('getPermissions')
 			->willReturn(Constants::PERMISSION_SHARE);
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
 			->willReturn($share);
 		$this->requestHandlerController->updatePermissions(5);
 	}
@@ -414,24 +378,5 @@ class RequestHandlerTest extends TestCase {
 			->method('getShareType')
 			->willReturn(FederatedShareProvider::SHARE_TYPE_REMOTE);
 		return $share;
-	}
-
-	protected function expectIncomingSharing($state) {
-		$this->federatedShareProvider->expects($this->once())
-			->method('isIncomingServer2serverShareEnabled')
-			->willReturn($state === 'enabled');
-	}
-
-	protected function expectOutgoingSharing($state) {
-		$this->federatedShareProvider->expects($this->once())
-			->method('isOutgoingServer2serverShareEnabled')
-			->willReturn($state === 'enabled');
-	}
-
-	protected function expectFileSharingApp($state) {
-		$this->appManager->expects($this->once())
-			->method('isEnabledForUser')
-			->with('files_sharing')
-			->willReturn($state === 'enabled');
 	}
 }

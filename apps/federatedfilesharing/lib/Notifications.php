@@ -130,9 +130,9 @@ class Notifications {
 		$ocmNotificationManager = new NotificationManager();
 		$data = [
 			'shareWith' => $shareWith,
-			'senderId' => $id
+			'senderId' => $shareId
 		];
-		$ocmNotification = $ocmNotificationManager->convertToOcmFileNotification($shareId, $token, 'reshare', $data);
+		$ocmNotification = $ocmNotificationManager->convertToOcmFileNotification($id, $token, 'reshare', $data);
 		$ocmFields = $ocmNotification->toArray();
 
 		$url = \rtrim(
@@ -142,9 +142,9 @@ class Notifications {
 		$result = $this->tryHttpPostToShareEndpoint($url, '/notifications', $ocmFields, true);
 		if (isset($result['statusCode']) && $result['statusCode'] === Http::STATUS_CREATED) {
 			$response = \json_decode($result['result'], true);
-			if (\is_array($response) && isset($response['token'], $response['providerId'])) {
+			if (\is_array($response) && isset($response['sharedSecret'], $response['providerId'])) {
 				return [
-					$response['token'],
+					$response['sharedSecret'],
 					(int) $response['providerId']
 				];
 			}
