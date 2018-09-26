@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews
+@webUI @insulated @disablePreviews @files_trashbin-app-required
 Feature: Restore deleted files/folders
 As a user
 I would like to restore files/folders

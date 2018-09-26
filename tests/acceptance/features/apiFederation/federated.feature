@@ -1,4 +1,4 @@
-@api
+@api @federation-app-required
 Feature: federated
 	Background:
 		Given using OCS API version "1"

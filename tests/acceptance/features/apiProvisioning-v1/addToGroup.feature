@@ -1,4 +1,4 @@
-@api
+@api @provisioning_api-app-required
 Feature: add users to group
 As a admin
 I want to be able to add users to a group

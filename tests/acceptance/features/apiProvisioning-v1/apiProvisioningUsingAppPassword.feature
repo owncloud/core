@@ -1,4 +1,4 @@
-@api
+@api @provisioning_api-app-required
 Feature: access user provisioning API using app password
 As an ownCloud user
 I want to be able to use the provisioning API with an app password

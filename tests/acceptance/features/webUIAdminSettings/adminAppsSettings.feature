@@ -1,4 +1,4 @@
-@webUI
+@webUI @comments-app-required
 Feature: admin apps settings
 	As an admin
 	I want to be able to manage apps settings on the ownCloud server
