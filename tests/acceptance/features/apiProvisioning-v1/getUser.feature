@@ -1,4 +1,4 @@
-@api
+@api @provisioning_api-app-required
 Feature: get user
 As an admin 
 I want to be able to get user

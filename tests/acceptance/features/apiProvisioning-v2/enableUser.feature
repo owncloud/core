@@ -1,4 +1,4 @@
-@api
+@api @provisioning_api-app-required
 Feature: enable user
 As an admin
 I want to be able to enable a user

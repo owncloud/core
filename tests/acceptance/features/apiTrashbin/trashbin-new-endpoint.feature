@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend
+@api @TestAlsoOnExternalUserBackend @files_trashbin-app-required
 Feature: trashbin-new-endpoint
 	Background:
 		Given using OCS API version "1"

@@ -14,7 +14,7 @@ Feature: sharing
 		Then as "user1" the file "/shared/shared_file.txt" should exist
 		And as "user0" the file "/shared/shared_file.txt" should exist
 
-	@smokeTest
+	@smokeTest @files_trashbin-app-required
 	Scenario: moving a file out of a share as recipient creates a backup for the owner
 		Given user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
@@ -25,6 +25,7 @@ Feature: sharing
 		And as "user0" the file "/shared/shared_file.txt" should not exist
 		And as "user0" the file "/shared_file.txt" should exist in trash
 
+	@files_trashbin-app-required
 	Scenario: moving a folder out of a share as recipient creates a backup for the owner
 		Given user "user0" has created a folder "/shared"
 		And user "user0" has created a folder "/shared/sub"

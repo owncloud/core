@@ -1,4 +1,4 @@
-@api
+@api @provisioning_api-app-required
 Feature: get group
 As an admin
 I want to be able to get group details
