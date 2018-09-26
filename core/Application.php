@@ -38,6 +38,7 @@ use OC\Core\Controller\LostController;
 use OC\Core\Controller\TokenController;
 use OC\Core\Controller\TwoFactorChallengeController;
 use OC\Core\Controller\UserController;
+use OC\User\Service\UserSendMailService;
 use OC_Defaults;
 use OCP\AppFramework\App;
 use OCP\BackgroundJob\IJobList;
@@ -87,7 +88,19 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$c->query('UserManager'),
-				$c->query('Defaults')
+				$c->query('Defaults'),
+				new UserSendMailService(
+					$c->query('SecureRandom'),
+					$c->query('Config'),
+					$c->query('Mailer'),
+					$c->query('URLGenerator'),
+					$c->query('Defaults'),
+					$c->query('TimeFactory'),
+					$c->query('L10N')
+				),
+				$c->query('URLGenerator'),
+				$c->query('Logger'),
+				$c->query('L10N')
 			);
 		});
 		$container->registerService('AvatarController', function (SimpleContainer $c) {

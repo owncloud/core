@@ -25,7 +25,8 @@ namespace OC\Core\Command\User;
 
 use OC\AppFramework\Http;
 use OC\Files\Filesystem;
-use OC\User\Service\SigninWithEmail;
+use OC\User\Service\CreateUserService;
+use OC\User\User;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -47,8 +48,8 @@ class Add extends Command {
 	/** @var IMailer  */
 	protected $mailer;
 
-	/** @var SigninWithEmail  */
-	protected $signinWithEmail;
+	/** @var CreateUserService  */
+	protected $createUserService;
 
 	/**
 	 * Add User constructor.
@@ -56,15 +57,15 @@ class Add extends Command {
 	 * @param IUserManager $userManager
 	 * @param IGroupManager $groupManager
 	 * @param IMailer $mailer
-	 * @param SigninWithEmail $signinWithEmail
+	 * @param CreateUserService $signinWithEmail
 	 */
 	public function __construct(IUserManager $userManager, IGroupManager $groupManager,
-								IMailer $mailer, SigninWithEmail $signinWithEmail) {
+								IMailer $mailer, CreateUserService $createUserService) {
 		parent::__construct();
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->mailer = $mailer;
-		$this->signinWithEmail = $signinWithEmail;
+		$this->createUserService = $createUserService;
 	}
 
 	protected function configure() {
@@ -108,82 +109,61 @@ class Add extends Command {
 			);
 	}
 
-	protected function addUserToGroup(InputInterface $input, OutputInterface $output, IUser $user) {
-		$groups = $input->getOption('group');
-
-		if (!empty($groups)) {
-			// Make sure we init the Filesystem for the user, in case we need to
-			// init some group shares.
-			Filesystem::init($user->getUID(), '');
-		}
-
-		foreach ($groups as $groupName) {
-			$group = $this->groupManager->get($groupName);
-			if (!$group) {
-				$this->groupManager->createGroup($groupName);
-				$group = $this->groupManager->get($groupName);
-				$output->writeln('Created group "' . $group->getGID() . '"');
-			}
-			$group->addUser($user);
-			$output->writeln('User "' . $user->getUID() . '" added to group "' . $group->getGID() . '"');
-		}
-	}
-
-	protected function createUser(InputInterface $input, OutputInterface $output, $password, $email) {
-		$user = $this->userManager->createUser(
-			$input->getArgument('uid'),
-			$password
-		);
-
-		if ($user instanceof IUser) {
-			$output->writeln('<info>The user "' . $user->getUID() . '" was created successfully</info>');
-		} else {
-			$output->writeln('<error>An error occurred while creating the user</error>');
-			return 1;
-		}
-
-		if ($input->getOption('display-name')) {
-			$user->setDisplayName($input->getOption('display-name'));
-			$output->writeln('Display name set to "' . $user->getDisplayName() . '"');
-		}
-
-		// Set email if supplied & valid
-		if ($email !== null) {
-			$user->setEMailAddress($email);
-			$output->writeln('Email address set to "' . $user->getEMailAddress() . '"');
-		}
-	}
-
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$uid = $input->getArgument('uid');
+		$email = $input->getOption('email');
+		$displayName = $input->getOption('display-name');
+		$passwordFromEnv = $input->getOption('password-from-env');
+		$readPasswordFromCmdLine = $input->getOption('password-from-cmdline');
+		$groupInput = $input->getOption('group');
+
 		if ($this->userManager->userExists($uid)) {
 			$output->writeln('<error>The user "' . $uid . '" already exists.</error>');
-			return 1;
+			return 2;
 		}
 
-		$readPasswordFromCmdLine = $input->getOption('password-from-cmdline');
 		// Validate email before we create the user
-		if ($input->getOption('email')) {
+		if ($email) {
 			// Validate first
-			if (!$this->mailer->validateMailAddress($input->getOption('email'))) {
+			if (!$this->mailer->validateMailAddress($email)) {
 				// Invalid! Error
 				$output->writeln('<error>Invalid email address supplied</error>');
-				return 1;
-			} else {
-				$email = $input->getOption('email');
+				return 3;
 			}
 		} else {
-			$email = null;
+			$email = '';
 		}
 
-		if ($input->getOption('password-from-env')) {
+		if ($passwordFromEnv) {
 			$password = \getenv('OC_PASS');
 			if (!$password) {
 				$output->writeln('<error>--password-from-env given, but OC_PASS is empty!</error>');
+				return 4;
+			}
+
+			$newUser = $this->createUserService->createUser($uid, $password, $email);
+			if ($newUser instanceof IUser) {
+				$output->writeln('<info>The user "' . $uid . '" was created successfully</info>');
+				$failedGroups = $this->createUserService->addUserToGroups($newUser, $groupInput);
+				if (\count($failedGroups) > 0) {
+					$failedGroups = \implode(',', $failedGroups);
+					//$output->writeln('<warning>Unable to add user: ' . $uid . ' to groups ' . $failedGroups . '.</warning>');
+					$output->writeln("<warning>Unable to add user: $uid to groups $failedGroups </warning>");
+
+					return 7;
+				} else {
+					foreach ($groupInput as $groupName) {
+						$output->writeln("User $uid added to group $groupName");
+					}
+				}
+				if ($displayName) {
+					$newUser->setDisplayName($displayName);
+					$output->writeln('Display name set to "' . $displayName . '"');
+				}
+			} else {
+				$output->writeln('<error>An error occurred while creating the user</error>');
 				return 1;
 			}
-			$this->createUser($input, $output, $password, $email);
-			$this->addUserToGroup($input, $output, $this->userManager->get($uid));
 		} elseif ($readPasswordFromCmdLine) {
 			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 			$dialog = $this->getHelperSet()->get('question');
@@ -196,33 +176,66 @@ class Add extends Command {
 
 			if ($password !== $confirm) {
 				$output->writeln("<error>Passwords did not match!</error>");
-				return 1;
+				return 5;
 			}
 
-			$this->createUser($input, $output, $password, $email);
-			$this->addUserToGroup($input, $output, $this->userManager->get($uid));
-		} elseif ($input->getOption('email') && ($email !== null)) {
-			$response = $this->signinWithEmail->create($uid, '', $input->getOption('group'), $email);
-			if ($response->getStatus() === Http::STATUS_CREATED) {
-				$output->writeln('<info>The user "' . $response->getData()['name'] . '" was created successfully</info>');
+			$newUser = $this->createUserService->createUser($uid, $password, $email);
+			if ($newUser instanceof IUser) {
+				$output->writeln('<info>The user "' . $uid . '" was created successfully</info>');
+				$failedGroups = $this->createUserService->addUserToGroups($newUser, $groupInput);
+				if (\count($failedGroups) > 0) {
+					$failedGroups = \implode(',', $failedGroups);
+					$output->writeln("<warning>Unable to add user: $uid to groups $failedGroups</warning>");
+					return 7;
+				} else {
+					foreach ($groupInput as $groupName) {
+						if (!\in_array($groupName, $failedGroups, true)) {
+							$output->writeln("User $uid added to group $groupName");
+						}
+					}
+				}
+				if ($displayName) {
+					$newUser->setDisplayName($displayName);
+					$output->writeln('Display name set to "' . $displayName . '"');
+				}
+			} else {
+				$output->writeln('<error>An error occurred while creating the user</error>');
+				return 1;
 			}
-			if ($input->getOption('display-name')) {
-				$user = $this->userManager->get($uid);
-				$user->setDisplayName($input->getOption('display-name'));
-				$output->writeln('Display name set to "' . $user->getDisplayName() . '"');
+		} elseif ($email !== '') {
+			$newUser = $this->createUserService->createUser($uid, '', $email);
+			if ($newUser === false) {
+				$output->writeln('<warning>Unable to create user: ' . $uid . '</warning>');
+				return 6;
 			}
-			if ($input->getOption('group')) {
-				if (\is_array($input->getOption('group'))) {
-					foreach ($input->getOption('group') as $group) {
-						if ($this->groupManager->isInGroup($uid, $group)) {
-							$output->writeln('User "' . $uid . '" added to group "' . $group . '"');
+			if ($newUser->getEMailAddress() !== null) {
+				$output->writeln('Email address set to "' . $email . '"');
+			}
+
+			$output->writeln("<info>The user \"{$newUser->getUID()}\" was created successfully</info>");
+			if ($displayName) {
+				$newUser->setDisplayName($displayName);
+				$output->writeln('Display name set to "' . $displayName . '"');
+			}
+			if ($groupInput) {
+				$failedGroups = $this->createUserService->addUserToGroups($newUser, $groupInput);
+				if (\count($failedGroups) > 0) {
+					$failedGroups = \implode(',', $failedGroups);
+					$output->writeln('<warning>Unable to add user: ' . $uid . ' to groups ' . $failedGroups . '.</warning>');
+					return 7;
+				}
+
+				if (\is_array($groupInput)) {
+					foreach ($groupInput as $group) {
+						if (!\in_array($group, $failedGroups, true)) {
+							$output->writeln("User $uid added to group $group");
 						}
 					}
 				}
 			}
 		} else {
 			$output->writeln("<error>Interactive input or --password-from-env is needed for entering a password!</error>");
-			return 1;
+			return 8;
 		}
 	}
 }

@@ -27,6 +27,9 @@
 
 namespace OCA\Provisioning_API\AppInfo;
 
+use OC\User\Service\CreateUserService;
+use OC\User\Service\PasswordGeneratorService;
+use OC\User\Service\UserSendMailService;
 use OCA\Provisioning_API\Apps;
 use OCA\Provisioning_API\Groups;
 use OCA\Provisioning_API\Users;
@@ -37,6 +40,27 @@ $users = new Users(
 	\OC::$server->getUserManager(),
 	\OC::$server->getGroupManager(),
 	\OC::$server->getUserSession(),
+	new CreateUserService(
+		\OC::$server->getUserSession(),
+		\OC::$server->getGroupManager(),
+		\OC::$server->getUserManager(),
+		\OC::$server->getMailer(),
+		\OC::$server->getSecureRandom(),
+		\OC::$server->getLogger(),
+		new UserSendMailService(
+			\OC::$server->getSecureRandom(),
+			\OC::$server->getConfig(),
+			\OC::$server->getMailer(),
+			\OC::$server->getURLGenerator(),
+			new \OC_Defaults(),
+			\OC::$server->getTimeFactory(),
+			\OC::$server->getL10N('settings')
+		),
+		new PasswordGeneratorService(
+			\OC::$server->getEventDispatcher(),
+			\OC::$server->getSecureRandom()
+		)
+	),
 	\OC::$server->getLogger(),
 	\OC::$server->getTwoFactorAuthManager()
 );

@@ -29,7 +29,10 @@
 
 namespace OCA\Provisioning_API;
 
+use OC\AppFramework\Http;
 use OC\OCS\Result;
+use OC\User\Service\CreateUserService;
+use OC\User\User;
 use OC_Helper;
 use OCP\API;
 use OCP\Files\FileInfo;
@@ -50,6 +53,8 @@ class Users {
 	private $groupManager;
 	/** @var IUserSession */
 	private $userSession;
+	/** @var CreateUserService */
+	private $createUserService;
 	/** @var ILogger */
 	private $logger;
 	/** @var \OC\Authentication\TwoFactorAuth\Manager */
@@ -64,11 +69,13 @@ class Users {
 	public function __construct(IUserManager $userManager,
 								IGroupManager $groupManager,
 								IUserSession $userSession,
+								CreateUserService $createUserService,
 								ILogger $logger,
 								\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
+		$this->createUserService = $createUserService;
 		$this->logger = $logger;
 		$this->twoFactorAuthManager = $twoFactorAuthManager;
 	}
@@ -125,8 +132,9 @@ class Users {
 	 */
 	public function addUser() {
 		$userId = isset($_POST['userid']) ? $_POST['userid'] : null;
-		$password = isset($_POST['password']) ? $_POST['password'] : null;
-		$groups = isset($_POST['groups']) ? $_POST['groups'] : null;
+		$password = isset($_POST['password']) ? $_POST['password'] : '';
+		$groups = isset($_POST['groups']) ? $_POST['groups'] : [];
+		$emailAddress = isset($_POST['email']) ? $_POST['email'] : '';
 		$user = $this->userSession->getUser();
 		$isAdmin = $this->groupManager->isAdmin($user->getUID());
 		$subAdminManager = $this->groupManager->getSubAdmin();
@@ -156,14 +164,13 @@ class Users {
 		}
 
 		try {
-			$newUser = $this->userManager->createUser($userId, $password);
+			$newUser = $this->createUserService->createUser($userId, $password, $emailAddress);
 			$this->logger->info('Successful addUser call with userid: '.$userId, ['app' => 'ocs_api']);
 
-			if (\is_array($groups)) {
-				foreach ($groups as $group) {
-					$this->groupManager->get($group)->addUser($newUser);
-					$this->logger->info('Added userid '.$userId.' to group '.$group, ['app' => 'ocs_api']);
-				}
+			$failedGroups = $this->createUserService->addUserToGroups($newUser, $groups);
+			if (\count($failedGroups) > 0) {
+				$failedGroups = \implode(',', $failedGroups);
+				$this->logger->error("User $userId could not be added to groups " . $failedGroups);
 			}
 			return new Result(null, 100);
 		} catch (\Exception $e) {
