@@ -54,8 +54,8 @@ Feature: sharing
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with default permissions
 		When user "user0" creates a public link share using the sharing API with settings
 			| path         | PARENT   |
-			| password     | publicpw |
-		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
+			| password     | %public% |
+		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "%public%" and the content should be "wnCloud"
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read/Write permission 
 		Given user "user1" has been created
@@ -80,9 +80,9 @@ Feature: sharing
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read/Write permission 
 		When user "user0" creates a public link share using the sharing API with settings
 			| path         | PARENT   |
-			| password     | publicpw |
+			| password     | %public% |
 			| permissions  | 15       |
-		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
+		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "%public%" and the content should be "wnCloud"
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read only permission 
 		Given user "user1" has been created
@@ -107,6 +107,6 @@ Feature: sharing
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read only permission 
 		When user "user0" creates a public link share using the sharing API with settings
 			| path         | PARENT   |
-			| password     | publicpw |
+			| password     | %public% |
 			| permissions  | 1        |
-		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
+		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "%public%" and the content should be "wnCloud"
