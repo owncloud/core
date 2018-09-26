@@ -1,4 +1,4 @@
-@api
+@api @provisioning_api-app-required
 Feature: disable user
 As an admin
 I want to be able to disable a user
