@@ -21,11 +21,13 @@
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
 use Page\UsersPage;
+use TestHelpers\AppConfigHelper;
 
 require_once 'bootstrap.php';
 
@@ -52,6 +54,8 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @var FeatureContext
 	 */
 	private $featureContext;
+
+	private $appParameterValues = null;
 
 	/**
 	 * WebUIUsersContext constructor.
@@ -325,6 +329,53 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+
+		// user_management app configs
+		$configs = [
+			'umgmt_send_email' => '',
+			'umgmt_set_password' => '',
+			'umgmt_show_backend' => '',
+			'umgmt_show_email' => '',
+			'umgmt_show_is_enabled' => '',
+			'umgmt_show_last_login' => '',
+			'umgmt_show_storage_location' => ''
+		];
+		if ($this->appParameterValues === null) {
+			// Get app config values
+			$appConfigs =  AppConfigHelper::getAppConfigs(
+				$this->featureContext->getBaseUrl(),
+				$this->featureContext->getAdminUsername(),
+				$this->featureContext->getAdminPassword(),
+				'core'
+			);
+			$results = [];
+			foreach ($appConfigs as $appConfig) {
+				if (isset($configs[$appConfig['configkey']])) {
+					$results[] = $appConfig;
+				}
+			}
+			// Save the app configs
+			$this->appParameterValues = $results;
+		}
+	}
+
+	/**
+	 * After Scenario
+	 *
+	 * @AfterScenario @webUI
+	 *
+	 * @param AfterScenarioScope $afterScenarioScope
+	 *
+	 * @return void
+	 */
+	public function restoreScenario(AfterScenarioScope $afterScenarioScope) {
+		// Restore app config settings
+		AppConfigHelper::modifyAppConfigs(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->appParameterValues
+		);
 	}
 
 	/**
