@@ -541,6 +541,7 @@ trait WebDav {
 	public function publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
 		$path, $password, $range
 	) {
+		$password = $this->getActualPassword($password);
 		$fullUrl = $this->getBaseUrl() . "/public.php/webdav$path";
 		$headers = [
 			'X-Requested-With' => 'XMLHttpRequest',

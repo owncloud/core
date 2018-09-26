@@ -90,6 +90,13 @@ trait BasicStructure {
 	private $alternateAdminPassword = '';
 
 	/**
+	 * The password to use in tests that create public link shares
+	 *
+	 * @var string
+	 */
+	private $publicLinkSharePassword = '';
+
+	/**
 	 * @var string
 	 */
 	private $ocPath = '';
@@ -207,6 +214,7 @@ trait BasicStructure {
 		$this->alt3UserPassword = "aVeryLongPassword42TheMeaningOfLife";
 		$this->subAdminPassword = "IamAJuniorAdmin42";
 		$this->alternateAdminPassword = "IHave99LotsOfPriv";
+		$this->publicLinkSharePassword = "publicPwd1";
 
 		// in case of CI deployment we take the server url from the environment
 		$testServerUrl = \getenv('TEST_SERVER_URL');
@@ -271,6 +279,12 @@ trait BasicStructure {
 		$alternateAdminPasswordFromEnvironment = $this->getAlternateAdminPasswordFromEnvironment();
 		if ($alternateAdminPasswordFromEnvironment !== false) {
 			$this->alternateAdminPassword = $alternateAdminPasswordFromEnvironment;
+		}
+
+		// get the public link share password from the environment (if defined)
+		$publicLinkSharePasswordFromEnvironment = $this->getPublicLinkSharePasswordFromEnvironment();
+		if ($publicLinkSharePasswordFromEnvironment !== false) {
+			$this->publicLinkSharePassword = $publicLinkSharePasswordFromEnvironment;
 		}
 	}
 
@@ -344,6 +358,15 @@ trait BasicStructure {
 	 */
 	private static function getAlternateAdminPasswordFromEnvironment() {
 		return \getenv('ALTERNATE_ADMIN_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined public link share password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getPublicLinkSharePasswordFromEnvironment() {
+		return \getenv('PUBLIC_LINK_SHARE_PASSWORD');
 	}
 
 	/**
@@ -1392,6 +1415,8 @@ trait BasicStructure {
 			return (string) $this->getAdminPassword();
 		} elseif ($functionalPassword === "%altadmin%") {
 			return (string) $this->alternateAdminPassword;
+		} elseif ($functionalPassword === "%public%") {
+			return (string) $this->publicLinkSharePassword;
 		} else {
 			return $functionalPassword;
 		}

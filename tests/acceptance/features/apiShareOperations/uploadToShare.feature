@@ -65,9 +65,9 @@ Feature: sharing
 		Given as user "user0"
 		And the user has created a public link share with settings
 			| path        | FOLDER   |
-			| password    | publicpw |
+			| password    | %public% |
 			| permissions | 4        |
-		When the public uploads file "test.txt" with password "publicpw" and content "test" using the old WebDAV API
+		When the public uploads file "test.txt" with password "%public%" and content "test" using the old WebDAV API
 		Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
 	Scenario: Uploading file to a user upload-only share folder works
@@ -96,9 +96,9 @@ Feature: sharing
 		Given as user "user0"
 		And the user has created a public link share with settings
 			| path        | FOLDER   |
-			| password    | publicpw |
+			| password    | %public% |
 			| permissions | 15       |
-		When the public uploads file "test.txt" with password "publicpw" and content "test" using the old WebDAV API
+		When the public uploads file "test.txt" with password "%public%" and content "test" using the old WebDAV API
 		Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
 	@smokeTest
@@ -138,9 +138,9 @@ Feature: sharing
 		Given as user "user0"
 		And the user has created a public link share with settings
 			| path        | FOLDER   |
-			| password    | publicpw |
+			| password    | %public% |
 			| permissions | 15       |
-		When the public uploads file "test.txt" with password "publicpw" and content "test" using the old WebDAV API
+		When the public uploads file "test.txt" with password "%public%" and content "test" using the old WebDAV API
 		Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
 	Scenario: Uploading to a user shared folder with read/write permission when the sharer has unsufficient quota does not work

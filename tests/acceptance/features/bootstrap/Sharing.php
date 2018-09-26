@@ -93,6 +93,9 @@ trait Sharing {
 				$dateModification = $fd['expireDate'];
 				$fd['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
 			}
+			if (\array_key_exists('password', $fd)) {
+				$fd['password'] = $this->getActualPassword($fd['password']);
+			}
 		}
 		$this->response = HttpRequestHelper::post(
 			$fullUrl, $user, $this->getPasswordForUser($user), null, $fd
@@ -419,6 +422,7 @@ trait Sharing {
 	private function checkDownload(
 		$url, $user = null, $password = null, $mimeType = null
 	) {
+		$password = $this->getActualPassword($password);
 		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
 		$this->response = HttpRequestHelper::get($url, $user, $password, $headers);
 		PHPUnit_Framework_Assert::assertEquals(
@@ -559,6 +563,7 @@ trait Sharing {
 		$body = 'test',
 		$autorename = false
 	) {
+		$password = $this->getActualPassword($password);
 		$url = $this->getBaseUrl() . "/public.php/webdav/";
 		$url .= \rawurlencode(\ltrim($filename, '/'));
 		$token = $this->getLastShareToken();
