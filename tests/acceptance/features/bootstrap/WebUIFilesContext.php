@@ -1665,4 +1665,32 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserEnablesTheSettingToViewHiddenFoldersOnTheWebUI() {
 		$this->filesPage->enableShowHiddenFilesSettings();
 	}
+
+	/**
+	 * @When the user opens the file action menu of the file/folder :name in the webUI
+	 *
+	 * @param string $name Name of the file/Folder
+	 *
+	 * @return void
+	 */
+	public function theUserOpensTheFileActionMenuOfTheFolderInTheWebui($name) {
+		$session = $this->getSession();
+		$this->selectedFileRow = $this->filesPage->findFileRowByName($name, $session);
+		$this->openedFileActionMenu = $this->selectedFileRow->openFileActionsMenu($session);
+	}
+
+	/**
+	 * @Then the user should see :action_label file action translated to :translated_label in the webUI
+	 *
+	 * @param string $action_label
+	 * @param string $translated_label
+	 *
+	 * @return void
+	 */
+	public function theUserShouldSeeFileActionTranslatedToInTheWebui($action_label, $translated_label) {
+		PHPUnit_Framework_Assert::assertSame(
+			$translated_label,
+			$this->openedFileActionMenu->getActionLabelLocalized($action_label)
+		);
+	}
 }
