@@ -141,7 +141,7 @@ class DiscoveryManager {
 		$decodedService = $this->makeRequest($remote . '/ocm-provider/');
 		if (!empty($decodedService)) {
 			$discoveredServices['ocm'] = $decodedService['endPoint'];
-			$shareTypes = $discoveredServices['shareTypes'];
+			$shareTypes = $decodedService['shareTypes'];
 			foreach ($shareTypes as $type) {
 				if ($type['name'] == 'file') {
 					$discoveredServices['webdav'] = $type['protocols']['webdav'];

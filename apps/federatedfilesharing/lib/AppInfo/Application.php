@@ -26,6 +26,7 @@ use OCA\FederatedFileSharing\Controller\OcmController;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
+use OCA\FederatedFileSharing\Middleware\OcmMiddleware;
 use OCA\FederatedFileSharing\Notifications;
 use OCA\FederatedFileSharing\Controller\RequestHandlerController;
 use OCA\FederatedFileSharing\TokenHandler;
@@ -95,13 +96,25 @@ class Application extends App {
 		);
 
 		$container->registerService(
+			'OcmMiddleware',
+			function ($c) use ($server) {
+				return new OcmMiddleware(
+					$this->getFederatedShareProvider(),
+					$server->getAppManager(),
+					$server->getUserManager(),
+					$c->query('AddressHandler'),
+					$server->getLogger()
+				);
+			}
+		);
+
+		$container->registerService(
 			'RequestHandlerController',
 			function ($c) use ($server) {
 				return new RequestHandlerController(
 					$c->query('AppName'),
 					$c->query('Request'),
-					$this->getFederatedShareProvider(),
-					$server->getAppManager(),
+					$c->query('OcmMiddleware'),
 					$server->getUserManager(),
 					$c->query('AddressHandler'),
 					$c->query('FederatedShareManager')
@@ -115,9 +128,8 @@ class Application extends App {
 				return new OcmController(
 					$c->query('AppName'),
 					$c->query('Request'),
-					$this->getFederatedShareProvider(),
+					$c->query('OcmMiddleware'),
 					$server->getURLGenerator(),
-					$server->getAppManager(),
 					$server->getUserManager(),
 					$c->query('AddressHandler'),
 					$c->query('FederatedShareManager'),

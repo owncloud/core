@@ -25,6 +25,10 @@ use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
 use OCA\FederatedFileSharing\Controller\OcmController;
+use OCA\FederatedFileSharing\Middleware\OcmMiddleware;
+use OCA\FederatedFileSharing\Ocm\Exception\BadRequestException;
+use OCA\FederatedFileSharing\Ocm\Exception\ForbiddenException;
+use OCA\FederatedFileSharing\Ocm\Exception\NotImplementedException;
 use OCA\FederatedFileSharing\Ocm\Notification\FileNotification;
 use OCA\FederatedFileSharing\Tests\TestCase;
 use OCP\App\IAppManager;
@@ -48,9 +52,9 @@ class OcmControllerTest extends TestCase {
 	private $request;
 
 	/**
-	 * @var FederatedShareProvider | \PHPUnit_Framework_MockObject_MockObject
+	 * @var OcmMiddleware | \PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $federatedShareProvider;
+	private $ocmMiddleware;
 
 	/**
 	 * @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject
@@ -96,9 +100,7 @@ class OcmControllerTest extends TestCase {
 		parent::setUp();
 
 		$this->request = $this->createMock(IRequest::class);
-		$this->federatedShareProvider = $this->createMock(
-			FederatedShareProvider::class
-		);
+		$this->ocmMiddleware = $this->createMock(OcmMiddleware::class);
 		$this->urlGenerator = $this->createMock(IURLGenerator::class);
 		$this->appManager = $this->createMock(IAppManager::class);
 		$this->userManager = $this->createMock(IUserManager::class);
@@ -109,9 +111,8 @@ class OcmControllerTest extends TestCase {
 		$this->ocmController = new OcmController(
 			'federatedfilesharing',
 			$this->request,
-			$this->federatedShareProvider,
+			$this->ocmMiddleware,
 			$this->urlGenerator,
-			$this->appManager,
 			$this->userManager,
 			$this->addressHandler,
 			$this->fedShareManager,
@@ -126,7 +127,8 @@ class OcmControllerTest extends TestCase {
 	}
 
 	public function testShareIsNotCreatedWhenSharingIsDisabled() {
-		$this->expectFileSharingApp('disabled');
+		$this->ocmMiddleware->method('assertIncomingSharingEnabled')
+			->willThrowException(new NotImplementedException());
 		$response = $this->ocmController->createShare(
 			'bob@localhost',
 			'example.txt',
@@ -148,8 +150,6 @@ class OcmControllerTest extends TestCase {
 	}
 
 	public function testCreateShareWithMissingParam() {
-		$this->expectFileSharingApp('enabled');
-		$this->expectIncomingSharing('enabled');
 		$response = $this->ocmController->createShare(
 			'bob@localhost',
 			'example.txt',
@@ -171,8 +171,6 @@ class OcmControllerTest extends TestCase {
 	}
 
 	public function testCreateShareForNotExistingUser() {
-		$this->expectFileSharingApp('enabled');
-		$this->expectIncomingSharing('enabled');
 		$this->userManager->expects($this->once())
 			->method('userExists')
 			->with('bob')
@@ -199,8 +197,6 @@ class OcmControllerTest extends TestCase {
 	}
 
 	public function testCreateShareException() {
-		$this->expectFileSharingApp('enabled');
-		$this->expectIncomingSharing('enabled');
 		$this->userManager->expects($this->once())
 			->method('userExists')
 			->with('bob')
@@ -235,8 +231,6 @@ class OcmControllerTest extends TestCase {
 	}
 
 	public function testCreateShareSuccess() {
-		$this->expectFileSharingApp('enabled');
-		$this->expectIncomingSharing('enabled');
 		$this->userManager->expects($this->once())
 			->method('userExists')
 			->with('bob')
@@ -271,6 +265,9 @@ class OcmControllerTest extends TestCase {
 	}
 
 	public function testProcessNotificationWithMissingParam() {
+		$this->ocmMiddleware->expects($this->once())
+			->method('assertNotNull')
+			->willThrowException(new BadRequestException());
 		$response = $this->ocmController->processNotification(
 			FileNotification::NOTIFICATION_TYPE_SHARE_ACCEPTED,
 			FileNotification::RESOURCE_TYPE_FILE,
@@ -293,10 +290,9 @@ class OcmControllerTest extends TestCase {
 	}
 
 	public function testProcessAcceptShareNotificationForInvalidShare() {
-		$shareMock = $this->getValidShareMock($this->shareToken);
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
-			->willReturn($shareMock);
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
+			->willThrowException(new ForbiddenException());
 
 		$response = $this->ocmController->processNotification(
 			FileNotification::NOTIFICATION_TYPE_SHARE_ACCEPTED,
@@ -311,8 +307,8 @@ class OcmControllerTest extends TestCase {
 
 	public function testProcessAcceptShareSuccess() {
 		$shareMock = $this->getValidShareMock($this->shareToken);
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
 			->willReturn($shareMock);
 
 		$response = $this->ocmController->processNotification(
@@ -327,10 +323,9 @@ class OcmControllerTest extends TestCase {
 	}
 
 	public function testProcessDeclineShareNotificationForInvalidShare() {
-		$shareMock = $this->getValidShareMock($this->shareToken);
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
-			->willReturn($shareMock);
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
+			->willThrowException(new ForbiddenException());
 
 		$response = $this->ocmController->processNotification(
 			FileNotification::NOTIFICATION_TYPE_SHARE_DECLINED,
@@ -345,8 +340,8 @@ class OcmControllerTest extends TestCase {
 
 	public function testProcessDeclineShareSuccess() {
 		$shareMock = $this->getValidShareMock($this->shareToken);
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
 			->willReturn($shareMock);
 
 		$response = $this->ocmController->processNotification(
@@ -362,8 +357,8 @@ class OcmControllerTest extends TestCase {
 
 	public function testReShareUndoSuccess() {
 		$shareMock = $this->getValidShareMock($this->shareToken);
-		$this->federatedShareProvider->expects($this->once())
-			->method('getShareById')
+		$this->ocmMiddleware->expects($this->once())
+			->method('getValidShare')
 			->willReturn($shareMock);
 
 		$response = $this->ocmController->processNotification(
@@ -386,24 +381,5 @@ class OcmControllerTest extends TestCase {
 			->method('getShareType')
 			->willReturn(FederatedShareProvider::SHARE_TYPE_REMOTE);
 		return $share;
-	}
-
-	protected function expectIncomingSharing($state) {
-		$this->federatedShareProvider->expects($this->once())
-			->method('isIncomingServer2serverShareEnabled')
-			->willReturn($state === 'enabled');
-	}
-
-	protected function expectOutgoingSharing($state) {
-		$this->federatedShareProvider->expects($this->once())
-			->method('isOutgoingServer2serverShareEnabled')
-			->willReturn($state === 'enabled');
-	}
-
-	protected function expectFileSharingApp($state) {
-		$this->appManager->expects($this->once())
-			->method('isEnabledForUser')
-			->with('files_sharing')
-			->willReturn($state === 'enabled');
 	}
 }
