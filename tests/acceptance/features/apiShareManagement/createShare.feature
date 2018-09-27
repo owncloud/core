@@ -83,10 +83,10 @@ Feature: sharing
 		Given using OCS API version "<ocs_api_version>"
 		When user "user0" creates a public link share using the sharing API with settings
 			| path      | welcome.txt |
-			| password  | publicpw    |
+			| password  | %public%    |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
-		And the last public shared file should be able to be downloaded with password "publicpw"
+		And the last public shared file should be able to be downloaded with password "%public%"
 		Examples:
 			|ocs_api_version|ocs_status_code|
 			|1              |100            |
@@ -116,10 +116,10 @@ Feature: sharing
 		Given using OCS API version "<ocs_api_version>"
 		When user "user0" creates a public link share using the sharing API with settings
 			| path      | PARENT   |
-			| password  | publicpw |
+			| password  | %public% |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
-		Then the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
+		Then the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder with password "%public%" and the content should be "wnCloud"
 		Examples:
 			|ocs_api_version|ocs_status_code|
 			|1              |100            |
