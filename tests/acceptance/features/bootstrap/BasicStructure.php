@@ -1657,7 +1657,7 @@ trait BasicStructure {
 				'local',
 				'null::null',
 				'-c',
-				'datadir=' . $this->getServerRoot(). '/' . LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
+				'datadir=' . $this->getServerRoot() . '/' . LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
 			]
 		);
 		// stdOut should have a string like "Storage created with id 65"
