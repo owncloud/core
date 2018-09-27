@@ -65,6 +65,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 
 	/**
 	 * @When /^the administrator (enables|disables) the share API using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -78,6 +79,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 
 	/**
 	 * @When /^the administrator (enables|disables) share via link using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -91,6 +93,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 
 	/**
 	 * @When /^the administrator (enables|disables) public uploads using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -104,6 +107,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 
 	/**
 	 * @When /^the administrator (enables|disables) mail notification on public link share using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -117,6 +121,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 
 	/**
 	 * @When /^the administrator (enables|disables) social media share on public link share using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -130,6 +135,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 
 	/**
 	 * @When /^the administrator (enables|disables) enforce password protection for read-only links using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -143,6 +149,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 
 	/**
 	 * @When /^the administrator (enables|disables) enforce password protection for read and write links using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -156,6 +163,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 
 	/**
 	 * @When /^the administrator (enables|disables) enforce password protection for upload only links using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -169,6 +177,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 
 	/**
 	 * @When /^the administrator (enables|disables) resharing using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -182,6 +191,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 
 	/**
 	 * @When /^the administrator (enables|disables) sharing with groups using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -195,6 +205,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 
 	/**
 	 * @When /^the administrator (enables|disables) restrict users to only share with their group members using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void

@@ -111,6 +111,7 @@ trait WebDav {
 	 * @Given /^using (old|new) (?:dav|DAV) path$/
 	 *
 	 * @param string $oldOrNewDavPath
+	 *
 	 * @return void
 	 */
 	public function usingOldOrNewDavPath($oldOrNewDavPath) {
@@ -899,6 +900,7 @@ trait WebDav {
 	 *
 	 * @param string $propertyName
 	 * @param string $propertyValue
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */

@@ -69,9 +69,11 @@ class FavoritesPage extends FilesPageBasic {
 	}
 
 	/**
-	 *
 	 * {@inheritDoc}
+	 *
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
+	 *
+	 * @return void
 	 */
 	protected function getFilePathInRowXpath() {
 		return $this->filePathInRowXpath;
