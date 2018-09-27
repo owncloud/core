@@ -171,6 +171,11 @@ trait BasicStructure {
 	private $requestToken;
 
 	/**
+	 * @var string
+	 */
+	private $storageId = null;
+
+	/**
 	 * The local source IP address from which to initiate API actions.
 	 * Defaults to system-selected address matching IP address family and scope.
 	 *
@@ -1266,7 +1271,11 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function createLocalFileOfSpecificSize($name, $size) {
-		$file = \fopen($this->workStorageDirLocation() . $name, 'w');
+		$folder = $this->workStorageDirLocation();
+		if (!\is_dir($folder)) {
+			\mkDir($folder);
+		}
+		$file = \fopen($folder . $name, 'w');
 		\fseek($file, $size - 1, SEEK_CUR);
 		\fwrite($file, 'a'); // write a dummy char at SIZE position
 		\fclose($file);
@@ -1322,15 +1331,19 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given file :filename has been deleted in local storage
+	 * @Given file :filename has been deleted from local storage on the server
 	 *
 	 * @param string $filename
 	 *
 	 * @return void
 	 */
 	public function fileHasBeenDeletedInLocalStorage($filename) {
-		// ToDo: use testing app to cleanup files in local storage
-		\unlink($this->localStorageDirLocation() . $filename);
+		SetupHelper::deleteFileOnServer(
+			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$filename",
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
 	}
 
 	/**
@@ -1588,7 +1601,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function temporaryStorageSubfolderName() {
-		return "work";
+		return "work_tmp";
 	}
 
 	/**
@@ -1603,13 +1616,6 @@ trait BasicStructure {
 	 */
 	public function workStorageDirLocation() {
 		return $this->acceptanceTestsDirLocation() . $this->temporaryStorageSubfolderName() . "/";
-	}
-
-	/**
-	 * @return string
-	 */
-	public function localStorageDirLocation() {
-		return $this->workStorageDirLocation() . "local_storage/";
 	}
 
 	/**
@@ -1634,18 +1640,37 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public function removeFilesFromLocalStorageBefore() {
-		// ToDo: use testing app to cleanup files in local storage
-		$dir = $this->localStorageDirLocation();
-		$di = new RecursiveDirectoryIterator(
-			$dir, FilesystemIterator::SKIP_DOTS
+	public function setupLocalStorageBefore() {
+		SetupHelper::init(
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			$this->getBaseUrl(),
+			$this->getOcPath()
 		);
-		$ri = new RecursiveIteratorIterator(
-			$di, RecursiveIteratorIterator::CHILD_FIRST
+		SetupHelper::mkDirOnServer(
+			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
 		);
-		foreach ($ri as $file) {
-			$file->isDir() ?  \rmdir($file) : \unlink($file);
-		}
+		$result = SetupHelper::runOcc(
+			[
+				'files_external:create',
+				'local_storage',
+				'local',
+				'null::null',
+				'-c',
+				'datadir=' . $this->getServerRoot(). '/' . LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
+			]
+		);
+		// stdOut should have a string like "Storage created with id 65"
+		$storageIdWords = \explode(" ", \trim($result['stdOut']));
+		$this->storageId = $storageIdWords[4];
+		SetupHelper::runOcc(
+			[
+				'files_external:option',
+				$this->storageId,
+				'enable_sharing',
+				'true'
+			]
+		);
 	}
 
 	/**
@@ -1653,18 +1678,22 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public function removeFilesFromLocalStorageAfter() {
-		// ToDo: use testing app to cleanup files in local storage
-		$dir = $this->localStorageDirLocation();
-		$di = new RecursiveDirectoryIterator(
-			$dir, FilesystemIterator::SKIP_DOTS
-		);
-		$ri = new RecursiveIteratorIterator(
-			$di, RecursiveIteratorIterator::CHILD_FIRST
-		);
-		foreach ($ri as $file) {
-			$file->isDir() ?  \rmdir($file) : \unlink($file);
+	public function removeLocalStorageAfter() {
+		if ($this->storageId !== null) {
+			SetupHelper::runOcc(
+				[
+					'files_external:delete',
+					'-y',
+					$this->storageId
+				]
+			);
 		}
+		SetupHelper::rmDirOnServer(
+			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
+		);
+		SetupHelper::rmDirOnServer(
+			TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER
+		);
 	}
 
 	/**
