@@ -95,7 +95,8 @@ help:
 	@echo -e "make test-php-style\t\trun PHP code style checks"
 	@echo -e "make test-js\t\t\trun Javascript tests"
 	@echo -e "make test-js-debug\t\trun Javascript tests in debug mode (continuous)"
-	@echo -e "make test-acceptance\t\trun acceptance tests"
+	@echo -e "make test-acceptance-api\trun API acceptance tests"
+	@echo -e "make test-acceptance-webui\trun webUI acceptance tests"
 	@echo -e "make clean-test\t\t\tclean test results"
 	@echo
 	@echo It is also possible to run individual PHP test files with the following command:
@@ -180,13 +181,13 @@ test-js: $(nodejs_deps)
 test-js-debug: $(nodejs_deps)
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js
 
-.PHONY: test-acceptance
-test-acceptance: $(composer_dev_deps)
-	$(MAKE) -C tests/acceptance \
-		BEHAT_SUITE=$(BEHAT_SUITE) \
-		OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME) \
-		OC_TEST_ENCRYPTION_ENABLED=$(OC_TEST_ENCRYPTION_ENABLED) \
-		OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED=$(OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED)
+.PHONY: test-acceptance-api
+test-acceptance-api: $(composer_dev_deps)
+	./tests/acceptance/run.sh --type api
+
+.PHONY: test-acceptance-webui
+test-acceptance-webui: $(composer_dev_deps)
+	./tests/acceptance/run.sh --type webUI
 
 .PHONY: test-php-lint
 test-php-lint: $(composer_dev_deps)
@@ -206,7 +207,7 @@ test-php-phan: $(PHAN_BIN)
 	php $(PHAN_BIN) --config-file .phan/config.php --require-config-exists -p
 
 .PHONY: test
-test: test-php-lint test-php-style test-php test-js test-acceptance
+test: test-php-lint test-php-style test-php test-js test-acceptance-api test-acceptance-webui
 
 .PHONY: clean-test-acceptance
 clean-test-acceptance:
