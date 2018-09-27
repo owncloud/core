@@ -239,12 +239,6 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 7.1
-      env: DB=sqlite TC=caldav
-    - php: 7.1
-      env: DB=sqlite TC=caldav-old-endpoint
-    - php: 7.1
-      env: DB=sqlite TC=carddav-old-endpoint
-    - php: 7.1
       if: type = cron
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUILogin" PLATFORM="Windows 10" TEST_DAV=0
       addons:
