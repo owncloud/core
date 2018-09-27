@@ -34,6 +34,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 use TestHelpers\DeleteHelper;
 use TestHelpers\DownloadHelper;
 use Page\FilesPageBasic;
+use Page\FilesPageElement\FileActionsMenu;
+use Behat\Mink\Exception\ElementException;
 
 require_once 'bootstrap.php';
 
@@ -71,6 +73,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @var ConflictDialog
 	 */
 	private $conflictDialog;
+
+	/**
+	 *
+	 * @var FileActionsMenu
+	 */
+	private $openedFileActionMenu;
 
 	/**
 	 * Table of all files and folders that should have been deleted, stored so
@@ -1677,7 +1685,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theUserOpensTheFileActionMenuOfTheFolderInTheWebui($name) {
 		$session = $this->getSession();
-		$this->selectedFileRow = $this->filesPage->findFileRowByName($name, $session);
+		$this->selectedFileRow = $this->getCurrentPageObject()->findFileRowByName($name, $session);
 		$this->openedFileActionMenu = $this->selectedFileRow->openFileActionsMenu($session);
 	}
 
@@ -1694,5 +1702,61 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$translated_label,
 			$this->openedFileActionMenu->getActionLabelLocalized($action_label)
 		);
+	}
+
+	/**
+	 * @When the user clicks the :action_label file action in the webUI
+	 *
+	 * @param string $action_label
+	 *
+	 * @throws \Exception
+	 * @return void
+	 */
+	public function theUserClicksTheFileActionInTheWebui($action_label) {
+		switch ($action_label) {
+			case "details":
+				$this->openedFileActionMenu->openDetails();
+				break;
+			case "rename":
+				$this->openedFileActionMenu->rename();
+				break;
+			case "delete":
+				$this->openedFileActionMenu->delete();
+				break;
+			case "search results page":
+				throw new Exception("Action not available");
+				break;
+		}
+	}
+
+	/**
+	 * @Then the details dialog should be visible in the webUI
+	 *
+	 * @return void
+	 */
+	public function theDetailsDialogShouldBeVisibleInTheWebui() {
+		PHPUnit_Framework_Assert::assertTrue($this->filesPage->getDetailsDialog()->isDialogVisible());
+	}
+
+	/**
+	 * @Then the :tabName tab in details panel should be visible
+	 *
+	 * @param string $tabName
+	 *
+	 * @return void
+	 */
+	public function theTabInDetailsPanelShouldBeVisible($tabName) {
+		PHPUnit_Framework_Assert::assertTrue($this->filesPage->getDetailsDialog()->isVisible($tabName));
+	}
+
+	/**
+	 * @When the user switches to :tabName tab in details panel using the webUI
+	 *
+	 * @param string $tabName
+	 *
+	 * @return void
+	 */
+	public function theUserSwitchesToTabInDetailsPanelUsingTheWebui($tabName) {
+		$this->filesPage->getDetailsDialog()->changeDetailsTab($tabName);
 	}
 }
