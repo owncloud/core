@@ -18,40 +18,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+namespace OCA\DAV\JobStatus;
 
-namespace OCA\DAV;
+use OCA\DAV\JobStatus\Entity\JobStatusMapper;
+use Sabre\DAVACL\AbstractPrincipalCollection;
 
-use OCP\Capabilities\ICapability;
-use OCP\IConfig;
-
-class Capabilities implements ICapability {
-	/** @var IConfig */
-	private $config;
+class RootCollection extends AbstractPrincipalCollection {
 
 	/**
-	 * Capabilities constructor.
-	 *
-	 * @param IConfig $config
+	 * @inheritdoc
 	 */
-	public function __construct(IConfig $config) {
-		$this->config = $config;
+	public function getChildForPrincipal(array $principalInfo) {
+		/** @var JobStatusMapper $mapper */
+		$mapper = \OC::$server->query(JobStatusMapper::class);
+		return new Home($principalInfo, $mapper);
 	}
 
-	public function getCapabilities() {
-		$cap =  [
-			'dav' => [
-				'chunking' => '1.0',
-				'zsync' => '1.0',
-				'reports' => [
-					'search-files',
-				]
-			]
-		];
-
-		if ($this->config->getSystemValue('dav.enable.async', false)) {
-			$cap['async'] = '1.0';
-		}
-
-		return $cap;
+	/**
+	 * @inheritdoc
+	 */
+	public function getName() {
+		return 'job-status';
 	}
 }
