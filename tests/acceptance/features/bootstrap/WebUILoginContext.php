@@ -106,6 +106,21 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Given the user logs in with email :email and invalid password :password using the webUI
+	 *
+	 * @param string $email
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function theUserLogsInWithEmailAndInvalidPasswordUsingTheWebui(
+		$email, $password
+	) {
+		$this->loginPage->loginAs($email, $password, 'LoginPage');
+		$this->loginPage->waitTillPageIsLoaded($this->getSession());
+	}
+
+	/**
 	 * @When the user re-logs in with username :username and password :password to :server using the webUI
 	 * @Given the user has re-logged in with username :username and password :password to :server using the webUI
 	 *
