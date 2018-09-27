@@ -234,6 +234,20 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Given the user has browsed directly to display the details of file :fileName in folder :folderName
+	 * @When the user browses directly to display the details of file :fileName in folder :folderName
+	 *
+	 * @param string $fileName
+	 * @param string $folderName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserBrowsesDirectlyToDetailsDefaultTabOfFileInFolder($fileName, $folderName) {
+		$this->theUserBrowsesDirectlyToDetailsTabOfFileInFolder(null, $fileName, $folderName);
+	}
+
+	/**
 	 * @Then the thumbnail should be visible in the details panel
 	 *
 	 * @return void
@@ -1602,6 +1616,28 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				" The file $fileOrFolderName is marked as favorite but should not be"
 			);
 		}
+	}
+
+	/**
+	 * @When the user adds a tag :tagName to the file using the webUI
+	 *
+	 * @param string $tagName
+	 *
+	 * @return void
+	 */
+	public function theUserAddsATagToTheFileUsingTheWebUI($tagName) {
+		$this->filesPage->getDetailsDialog()->addTag($tagName);
+
+		// For tags to be created, OC checks (|for the permission) if the tag could be created
+		// and if it can, then only it creates a tag. So, in the webUI, it does two
+		// requests before the tags are created.
+		// If we use a single wait, it returns after it has checked for the permission.
+		// Locally that passes but sometimes fail on the ci. So, we need two waits for each requests.
+		// FIXME: Find a better way to wait for these calls
+		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+
+		$this->featureContext->addToTheListOfCreatedTagsByDisplayName($tagName);
 	}
 
 	/**

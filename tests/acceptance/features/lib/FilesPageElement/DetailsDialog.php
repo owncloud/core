@@ -47,6 +47,11 @@ class DetailsDialog extends OwncloudPage {
 		'sharing' => "shareTabView",
 		'versions' => "versionsTabView"
 	];
+	private $tagsContainer = "//div[@class='systemTagsInputFieldContainer']";
+
+	private $tagsInputXpath = "//li[@class='select2-search-field']//input";
+
+	private $tagsSuggestDropDown = "//div[contains(@class, 'systemtags-select2-dropdown') and contains(@id, 'select2-drop')]";
 
 	private $commentInputXpath = "//form[@class='newCommentForm']//textarea[@class='message']";
 	private $commentPostXpath = "//form[@class='newCommentForm']//input[@class='submit']";
@@ -268,6 +273,52 @@ class DetailsDialog extends OwncloudPage {
 			);
 		}
 		return $thumbnail;
+	}
+
+	/**
+	 * Add a tag on the files in the details dialog
+	 *
+	 * @param string $tagName
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function addTag($tagName) {
+		$inputField = $this->find(
+			"xpath",
+			$this->tagsContainer . $this->tagsInputXpath
+		);
+
+		if ($inputField === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->tagsContainer . $this->tagsInputXpath " .
+				"could not find input field"
+			);
+		}
+		$inputField->focus();
+		$inputField->setValue($tagName);
+
+		$this->waitTillElementIsNotNull($this->tagsSuggestDropDown);
+
+		$tagSuggestions = $this->findAll("xpath", $this->getTagsDropDownResultsXpath());
+
+		foreach ($tagSuggestions as $tag) {
+			if ($tag->getText() === $tagName) {
+				$tag->click();
+			}
+		}
+	}
+
+	/**
+	 * Returns xpath of the tag results dropdown
+	 *
+	 * @return string
+	 */
+	public function getTagsDropDownResultsXpath() {
+		return "//div[contains(@class, 'systemtags-select2-dropdown')]" .
+			"//ul[@class='select2-results']" .
+			"//span[@class='label']";
 	}
 
 	/**
