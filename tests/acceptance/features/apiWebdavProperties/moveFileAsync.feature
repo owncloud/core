@@ -22,7 +22,7 @@ Feature: move (rename) file
       | /welcome.txt |
     Examples:
       | destination-file-name |
-      | नेपाली.txt              |
+      | नेपाली.txt            |
       | strängé file.txt      |
       | C++ file.cpp          |
       | file #2.txt           |
@@ -35,7 +35,7 @@ Feature: move (rename) file
     And the following headers should match these regular expressions
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
-      | ETag   | /^[0-9a-f]{32}$/  |
+      | ETag | /^[0-9a-f]{32}$/ |
     And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
     And user "user0" should not see the following elements
       | /welcome.txt |
@@ -130,8 +130,8 @@ Feature: move (rename) file
     When user "user0" moves file "/welcome.txt" asynchronously to "/not-existing/welcome.txt" using the WebDAV API
     Then the HTTP status code should be "202"
     And the oc job status values of last request for user "user0" should match these regular expressions
-      | status       | /^error$/ |
-      | errorCode    | /^409$/   |
+      | status       | /^error$/                             |
+      | errorCode    | /^409$/                               |
       | errorMessage | /^The destination node is not found$/ |
     And user "user0" should see the following elements
       | /welcome.txt |
@@ -140,8 +140,8 @@ Feature: move (rename) file
     When user "user0" moves file "/welcome.txt" asynchronously to "/a\\a" using the WebDAV API
     Then the HTTP status code should be "202"
     And the oc job status values of last request for user "user0" should match these regular expressions
-      | status       | /^error$/ |
-      | errorCode    | /^400$/   |
+      | status       | /^error$/                                             |
+      | errorCode    | /^400$/                                               |
       | errorMessage | /^File name contains at least one invalid character$/ |
     And user "user0" should see the following elements
       | /welcome.txt |
@@ -150,8 +150,8 @@ Feature: move (rename) file
     When user "user0" moves file "/welcome.txt" asynchronously to "/.htaccess" using the WebDAV API
     Then the HTTP status code should be "202"
     And the oc job status values of last request for user "user0" should match these regular expressions
-      | status       | /^error$/ |
-      | errorCode    | /^403$/   |
+      | status    | /^error$/ |
+      | errorCode | /^403$/   |
     And user "user0" should see the following elements
       | /welcome.txt |
 
@@ -159,8 +159,8 @@ Feature: move (rename) file
     When user "user0" moves file "/welcome.txt" asynchronously to "/welcome.part" using the WebDAV API
     Then the HTTP status code should be "202"
     And the oc job status values of last request for user "user0" should match these regular expressions
-      | status       | /^error$/ |
-      | errorCode    | /^400$/   |
+      | status       | /^error$/                                                                                           |
+      | errorCode    | /^400$/                                                                                             |
       | errorMessage | /^Can`t upload files with extension .part because these extensions are reserved for internal use.$/ |
     And user "user0" should see the following elements
       | /welcome.txt |
@@ -266,4 +266,4 @@ Feature: move (rename) file
     And the following headers should match these regular expressions
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
-      | status | /^started$/      |
+      | status | /^started$/ |
