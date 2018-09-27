@@ -644,7 +644,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		if ($this->oldPreviewSetting === null) {
 			$oldPreviewSetting = SetupHelper::runOcc(
 				['config:system:get', 'enable_previews']
-				)['stdOut'];
+			)['stdOut'];
 			$this->oldPreviewSetting = \trim($oldPreviewSetting);
 		}
 		SetupHelper::runOcc(
@@ -656,7 +656,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				'--value',
 				'true'
 			]
-			);
+		);
 	}
 
 	/**
