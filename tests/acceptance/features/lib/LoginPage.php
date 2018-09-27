@@ -138,7 +138,6 @@ class LoginPage extends OwncloudPage {
 	/**
 	 *
 	 * @param string $newPassword
-	 *
 	 * @param Session $session
 	 *
 	 * @return void

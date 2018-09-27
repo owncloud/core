@@ -32,6 +32,11 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * Object of a row on the FilesPage
  */
 class TrashBinFileRow extends FileRow {
+	/**
+	 * @param string $xpath
+	 *
+	 * @return null|string
+	 */
 	public function getFilePath($xpath) {
 		$fileRowLabel = $this->rowElement->find("xpath", $xpath);
 		$filePath = $fileRowLabel->getAttribute("data-original-title");

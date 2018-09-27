@@ -31,23 +31,38 @@ class SearchResultInOtherFoldersPage extends FilesPageBasic {
 	protected $fileNameMatchXpath = "//div[@class='name' and .=%s]";
 	protected $fileNamesXpath = "//div[@class='name']";
 	protected $filePathInRowXpath = "//div[@class='path']";
-	
+
+	/**
+	 * @return string
+	 */
 	protected function getEmptyContentXpath() {
 		return $this->emptyContentXpath;
 	}
 
+	/**
+	 * @return string
+	 */
 	protected function getFileNameMatchXpath() {
 		return $this->fileNameMatchXpath;
 	}
 
+	/**
+	 * @return string
+	 */
 	protected function getFileNamesXpath() {
 		return $this->fileNamesXpath;
 	}
 
+	/**
+	 * @return string
+	 */
 	protected function getFileListXpath() {
 		return $this->fileListXpath;
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	protected function getFilePathInRowXpath() {
 		return $this->filePathInRowXpath;
 	}

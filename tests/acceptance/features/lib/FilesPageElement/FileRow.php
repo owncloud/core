@@ -271,6 +271,7 @@ class FileRow extends OwncloudPage {
 	 * return the path of the current file
 	 *
 	 * @param string $xpath xpath related to the fileRow element
+	 *
 	 * @throws ElementNotFoundException
 	 * @return string
 	 */

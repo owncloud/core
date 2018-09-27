@@ -84,8 +84,12 @@ class WebUISearchContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with the path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the search results in other folders section on the webUI$/
+	 *
 	 * @param string $fileName
 	 * @param string $path
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
 	 */
 	public function fileShouldBeListedSearchResultOtherFolders($fileName, $path, $shouldOrNot) {
 		$fileName = \trim($fileName, $fileName[0]);
@@ -100,6 +104,10 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the search results in other folders section on the webUI$/
 	 *
 	 * @param string $fileName
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 * @throws Exception
 	 */
 	public function fileShouldNotBeListedSearchResultOtherFolders($fileName, $shouldOrNot) {
 		$fileName = \trim($fileName, $fileName[0]);
