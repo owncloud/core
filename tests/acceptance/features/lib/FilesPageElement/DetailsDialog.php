@@ -38,7 +38,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @var string $path
 	 */
 	protected $path = '/index.php/apps/files/';
-
+	private $detailsdialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
 	private $detailsDialogCloseXpath = "//div[@id='app-sidebar']//*[@class='close icon-close']";
 	private $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
 	private $thumbnailFromContainerXpath = "/a";
@@ -85,6 +85,44 @@ class DetailsDialog extends OwncloudPage {
 			);
 		}
 		return $tab;
+	}
+
+	/**
+	 * change the active tab of details panel
+	 *
+	 * @param string $tabName e.g. comments, sharing, versions
+	 *
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function changeDetailsTab($tabName) {
+		$tabId = $this->getDetailsTabId($tabName);
+		$tabSwitchXpath = "//li[@data-tabid='".$tabId."']";
+		$tabSwitch = $this->find("xpath", $tabSwitchXpath);
+		if ($tabSwitch === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" could not find tab switch with id $tabName"
+				);
+		}
+		$this->waitTillElementIsNotNull($tabSwitchXpath);
+		$tabSwitch->focus();
+		$tabSwitch->click();
+	}
+
+	/**
+	 * checks if the details dialog is visible
+	 *
+	 * @return bool
+	 */
+	public function isDialogVisible() {
+		try {
+			$dialog = $this->find("xpath", $this->detailsdialogXpath);
+			$visible = $dialog !== null;
+		} catch (ElementNotFoundException $e) {
+			$visible = false;
+		}
+		return $visible;
 	}
 
 	/**
