@@ -43,7 +43,7 @@ Feature: external-storage
     Given user "user0" has been created
     And user "user0" has created a folder "/local_storage/foo3"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo3/textfile0.txt"
-    And file "foo3/textfile0.txt" has been deleted in local storage
+    And file "foo3/textfile0.txt" has been deleted from local storage on the server
     When user "user0" downloads the file "local_storage/foo3/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "404"
     And as "user0" the file "local_storage/foo3/textfile0.txt" should not exist
