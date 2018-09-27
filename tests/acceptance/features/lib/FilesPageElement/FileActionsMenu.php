@@ -162,4 +162,14 @@ class FileActionsMenu extends OwncloudPage {
 	public function getRenameActionLabel() {
 		return $this->renameActionLabel;
 	}
+
+	/**
+	 * the action labels are localized to the user preferred language
+	 *
+	 * @param string $action
+	 * @return string
+	 */
+	public function getActionLabelLocalized($action) {
+		return $this->findButton($action)->getText();
+	}
 }
