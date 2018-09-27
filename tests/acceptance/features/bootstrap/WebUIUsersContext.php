@@ -134,7 +134,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $attemptTo
 	 * @param string $username
-	 * @param string $password
 	 * @param string $email
 	 * @param TableNode $groupsTable table of groups with a heading | group |
 	 *
