@@ -27,6 +27,7 @@
 
 namespace OC\Files\Cache;
 
+use OC\Files\Utils\FileUtils;
 use OCP\Files\Cache\ICacheEntry;
 use OCP\Files\Cache\IUpdater;
 use OCP\Files\Storage\IStorage;
@@ -101,7 +102,7 @@ class Updater implements IUpdater {
 	 * @param int|null $time the timestamp to set as mtime for the parent folders, if left out the current time is used
 	 */
 	public function propagate($path, $time = null) {
-		if (Scanner::isPartialFile($path)) {
+		if (FileUtils::isPartialFile($path)) {
 			return;
 		}
 		$this->propagator->propagateChange($path, $time);
@@ -114,7 +115,7 @@ class Updater implements IUpdater {
 	 * @param int $time
 	 */
 	public function update($path, $time = null) {
-		if (!$this->enabled or Scanner::isPartialFile($path)) {
+		if (!$this->enabled or FileUtils::isPartialFile($path)) {
 			return;
 		}
 		if ($time === null) {
@@ -144,7 +145,7 @@ class Updater implements IUpdater {
 	 * @param string $path
 	 */
 	public function remove($path) {
-		if (!$this->enabled or Scanner::isPartialFile($path)) {
+		if (!$this->enabled or FileUtils::isPartialFile($path)) {
 			return;
 		}
 
@@ -176,7 +177,7 @@ class Updater implements IUpdater {
 	 * @param string $target
 	 */
 	public function renameFromStorage(IStorage $sourceStorage, $source, $target) {
-		if (!$this->enabled or Scanner::isPartialFile($source) or Scanner::isPartialFile($target)) {
+		if (!$this->enabled or FileUtils::isPartialFile($source) or FileUtils::isPartialFile($target)) {
 			return;
 		}
 
