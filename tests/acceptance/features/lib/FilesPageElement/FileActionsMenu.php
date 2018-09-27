@@ -167,6 +167,7 @@ class FileActionsMenu extends OwncloudPage {
 	 * the action labels are localized to the user preferred language
 	 *
 	 * @param string $action
+	 *
 	 * @return string
 	 */
 	public function getActionLabelLocalized($action) {
