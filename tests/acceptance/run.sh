@@ -351,11 +351,6 @@ function run_behat_tests() {
 }
 
 function teardown() {
-	if [ "${RUNNING_API_TESTS}" = true ]
-	then
-		remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:delete -y ${ID_STORAGE}"
-	fi
-	
 	# Enable any apps that were disabled for the test run
 	for i in "${!APPS_TO_REENABLE[@]}"
 	do
@@ -402,15 +397,7 @@ function teardown() {
 	then
 		curl -u ${REPORTING_WEBDAV_USER}:${REPORTING_WEBDAV_PWD} -T ${TEST_LOG_FILE} ${REPORTING_WEBDAV_URL}/"${TRAVIS_JOB_NUMBER}"_`date "+%F_%T"`.log
 	fi
-	
-	if [ "${RUNNING_API_TESTS}" = true ]
-	then
-		# Clear storage folder
-		# This depends on the test runner and server being the same file system
-		# ToDo: use the testing app to cleanup.
-		rm -Rf ${SCRIPT_PATH}/work/local_storage/*
-	fi
-	
+
 	if [ "${OC_TEST_ALT_HOME}" = "1" ]
 	then
 		env_alt_home_clear
@@ -724,19 +711,6 @@ for URL in ${OCC_URL} ${OCC_FED_URL}
 		fi
 	done
 done
-
-# Only make local storage when running API tests.
-# The local storage folder cannot be deleted by an ordinary user.
-# That makes problems for webUI tests that try to select all files in the top
-# folder of a user, and then delete them in a batch.
-if [ "${RUNNING_API_TESTS}" = true ]
-then
-	remote_dir ${ADMIN_AUTH} ${DIR_URL} "tests/acceptance/work/local_storage" || { echo "Unable to create work folder" >&2; exit 1; }
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:create local_storage local null::null -c datadir=${SCRIPT_PATH}/work/local_storage"
-	OUTPUT_CREATE_STORAGE=${REMOTE_OCC_STDOUT}
-	ID_STORAGE=`echo ${OUTPUT_CREATE_STORAGE} | awk {'print $5'}`
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:option ${ID_STORAGE} enable_sharing true"
-fi
 
 if [ "${OC_TEST_ALT_HOME}" = "1" ]
 then
