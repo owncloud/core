@@ -7,14 +7,14 @@ Feature: tags
     When user "user0" creates a "normal" tag with name "<tag_name>" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following tags should exist for "%admin%"
-      |<tag_name>|normal|
+      | <tag_name> | normal |
     And the following tags should exist for "user0"
-      |<tag_name>|normal|
+      | <tag_name> | normal |
     Examples:
       | tag_name            |
       | JustARegularTagName |
       | 😀                  |
-             |सिमप्ले                   |
+      | सिमप्ले             |
 
   Scenario: Creating a not user-assignable tag as regular user should fail
     Given user "user0" has been created
@@ -52,7 +52,7 @@ Feature: tags
       | tag_name            |
       | JustARegularTagName |
       | 😀                  |
-             |सिमप्ले                   |
+      | सिमप्ले             |
 
   Scenario: Renaming a not user-assignable tag as regular user should fail
     Given user "user0" has been created

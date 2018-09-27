@@ -27,13 +27,13 @@ Feature: upload file
     When user "user0" uploads file with content "uploaded content" to "<file_name>" using the WebDAV API
     Then the content of file "<file_name>" for user "user0" should be "uploaded content"
     Examples:
-      | dav_version | file_name         |
-      | old         | /C++ file.cpp     |
-      | old         | /file #2.txt      |
-      | old         | /file ?2.txt      |
-      | new         | /C++ file.cpp     |
-      | new         | /file #2.txt      |
-      | new         | /file ?2.txt      |
+      | dav_version | file_name     |
+      | old         | /C++ file.cpp |
+      | old         | /file #2.txt  |
+      | old         | /file ?2.txt  |
+      | new         | /C++ file.cpp |
+      | new         | /file #2.txt  |
+      | new         | /file ?2.txt  |
 
   Scenario Outline: upload a file into a folder and check download content
     Given using <dav_version> DAV path

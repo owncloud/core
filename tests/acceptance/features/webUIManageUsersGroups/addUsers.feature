@@ -23,30 +23,30 @@ Feature: add users
   Scenario Outline: use the webUI to create a user with special invalid characters
     When the administrator attempts to create a user with the name <user> and the password <pwd> using the webUI
     Then notifications should be displayed on the webUI with the text
-      |Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'"|
+      | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
     And the user should be redirected to a webUI page with the title "Users - ownCloud"
     Examples:
-      | user | pwd |
-      |"a#%"|"pwd1"|
-      |"a+^"|"pwd2"|
-      |"a)~"|"pwd2"|
-      |"a(="|"pwd2"|
-      |"a`*^"|"pwd2"|
+      | user   | pwd    |
+      | "a#%"  | "pwd1" |
+      | "a+^"  | "pwd2" |
+      | "a)~"  | "pwd2" |
+      | "a(="  | "pwd2" |
+      | "a`*^" | "pwd2" |
 
   Scenario: use the webUI to create a user with empty password
     When the administrator attempts to create a user with the name "bijay" and the password "" using the webUI
     Then notifications should be displayed on the webUI with the text
-      |Error creating user: A valid password must be provided|
+      | Error creating user: A valid password must be provided |
     And the user should be redirected to a webUI page with the title "Users - ownCloud"
 
   Scenario Outline: use the webUI to create a user with less than 3 characters
     When the administrator attempts to create a user with the name <user> and the password <pwd> using the webUI
     Then notifications should be displayed on the webUI with the text
-      |Error creating user: The username must be at least 3 characters long|
+      | Error creating user: The username must be at least 3 characters long |
     Examples:
-      |user|  pwd |
-      |"a" | "abc"|
-      |"a1"|"abcd"|
+      | user | pwd    |
+      | "a"  | "abc"  |
+      | "a1" | "abcd" |
 
   Scenario: use the webUI to create a simple user with an Email address but without a password
     When the administrator creates a user with the name "guiusr1" and the email "guiusr1@owncloud" without a password using the webUI
@@ -70,18 +70,18 @@ Feature: add users
     When the user logs in with username "<username>" and password "newpassword" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - ownCloud"
     Examples:
-     | username | comment              |
-     | guiusr1  | simple user-name     |
-     | a@-_.'b  | complicated user-name|
+      | username | comment               |
+      | guiusr1  | simple user-name      |
+      | a@-_.'b  | complicated user-name |
 
   Scenario Outline: webUI refuses to create users with invalid Email addresses
     When the administrator creates a user with the name "guiusr1" and the email "<email>" without a password using the webUI
     Then notifications should be displayed on the webUI with the text
-      |Error creating user: Invalid mail address|
+      | Error creating user: Invalid mail address |
     Examples:
-      |email   | comment       |
-      | string | no @ sign     |
-      | a@     | no domain name|
+      | email  | comment        |
+      | string | no @ sign      |
+      | a@     | no domain name |
       #there would be much more to test here, but its complicated and would be slow
       #see http://codefool.tumblr.com/post/15288874550/list-of-valid-and-invalid-email-addresses
       #email address validation would better go into an unit test
@@ -89,7 +89,7 @@ Feature: add users
   Scenario: webUI refuses to create a user with an empty Email address
     When the administrator creates a user with the name "guiusr1" and the email "" without a password using the webUI
     Then notifications should be displayed on the webUI with the text
-      |Error creating user: A valid email must be provided|
+      | Error creating user: A valid email must be provided |
 
   Scenario: changing the user password as an admin invalidates the user sets-password-token
     When the administrator creates a user with the name "guiusr1" and the email "guiusr1@owncloud" without a password using the webUI

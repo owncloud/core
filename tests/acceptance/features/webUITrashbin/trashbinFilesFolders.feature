@@ -15,10 +15,10 @@ Feature: files and folders exist in the trashbin after being deleted
   @smokeTest
   Scenario: Delete files & folders one by one and check that they are all in the trashbin
     When the user deletes the following elements using the webUI
-      | name                                |
-      | simple-folder                       |
-      | lorem.txt                           |
-      | strängé नेपाली folder                  |
+      | name                                  |
+      | simple-folder                         |
+      | lorem.txt                             |
+      | strängé नेपाली folder                 |
       | strängé filename (duplicate #2 &).txt |
     Then the deleted elements should be listed in the trashbin on the webUI
     And the file "lorem.txt" should be listed in the trashbin folder "simple-folder" on the webUI
@@ -63,17 +63,17 @@ Feature: files and folders exist in the trashbin after being deleted
 
   Scenario: Delete multiple file with same filename and check they are in trashbin
     When the user deletes the following elements using the webUI
-    | name      |
-    | lorem.txt |
+      | name      |
+      | lorem.txt |
     And the user opens the folder "simple-folder" using the webUI
     And the user deletes the following elements using the webUI
-    | name      |
-    | lorem.txt |
+      | name      |
+      | lorem.txt |
     And the user browses to the files page
     And the user opens the folder "strängé नेपाली folder" using the webUI
     And the user deletes the following elements using the webUI
-    | name      |
-    | lorem.txt |
+      | name      |
+      | lorem.txt |
     Then the deleted elements should be listed in the trashbin on the webUI
     And the file "lorem.txt" with the path "./lorem.txt" should be listed in the trashbin on the webUI
     And the file "lorem.txt" with the path "simple-folder/lorem.txt" should be listed in the trashbin on the webUI
