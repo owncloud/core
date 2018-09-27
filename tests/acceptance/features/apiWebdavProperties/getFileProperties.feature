@@ -29,13 +29,13 @@ Feature: get file properties
     When user "user0" gets the properties of file "<file_name>" using the WebDAV API
     Then the properties response should contain an etag
     Examples:
-      | dav_version | file_name         |
-      | old         | /C++ file.cpp     |
-      | old         | /file #2.txt      |
-      | old         | /file ?2.txt      |
-      | new         | /C++ file.cpp     |
-      | new         | /file #2.txt      |
-      | new         | /file ?2.txt      |
+      | dav_version | file_name     |
+      | old         | /C++ file.cpp |
+      | old         | /file #2.txt  |
+      | old         | /file ?2.txt  |
+      | new         | /C++ file.cpp |
+      | new         | /file #2.txt  |
+      | new         | /file ?2.txt  |
 
   Scenario Outline: Do a PROPFIND of various folder/file names
     Given using <dav_version> DAV path

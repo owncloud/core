@@ -1,5 +1,6 @@
 @api @local_storage
 Feature: external-storage
+
   Background:
     Given using OCS API version "1"
     And using old DAV path
@@ -11,7 +12,7 @@ Feature: external-storage
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo/textfile0.txt"
     And user "user0" has shared folder "/local_storage/foo" with user "user1"
     When user "user1" creates a public link share using the sharing API with settings
-      | path      | foo |
+      | path | foo |
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the share fields of the last share should include

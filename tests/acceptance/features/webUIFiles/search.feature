@@ -1,9 +1,9 @@
 @webUI @insulated @disablePreviews
 Feature: Search
 
-As a user
-I would like to be able to search for files
-So that I can find needed files quickly
+  As a user
+  I would like to be able to search for files
+  So that I can find needed files quickly
 
   Background:
     Given these users have been created:
