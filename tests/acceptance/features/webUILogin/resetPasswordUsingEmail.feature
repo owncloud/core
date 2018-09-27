@@ -26,6 +26,7 @@ So that I can login to my account again after forgetting the password
 
 	@skipOnEncryption
 	@smokeTest
+	@skip @issue-32868
 	Scenario: reset password for the ordinary (no encryption) case
 		When the user requests the password reset link using the webUI
 		And the user follows the password reset link from email address "u1@oc.com.np"
