@@ -629,6 +629,37 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * enable the previews on all tests tagged with '@enablePreviews'
+	 *
+	 * Sometimes when testing locally, or if the `enable_previews` is turned off,
+	 * the tests such as the one testing thumbnails may fail. This enables the preview
+	 * on such tests.
+	 *
+	 * @BeforeScenario @webUI&&@enablePreviews
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function enablePreviewBeforeScenario() {
+		if ($this->oldPreviewSetting === null) {
+			$oldPreviewSetting = SetupHelper::runOcc(
+				['config:system:get', 'enable_previews']
+				)['stdOut'];
+			$this->oldPreviewSetting = \trim($oldPreviewSetting);
+		}
+		SetupHelper::runOcc(
+			[
+				'config:system:set',
+				'enable_previews',
+				'--type',
+				'boolean',
+				'--value',
+				'true'
+			]
+			);
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getSessionId() {
