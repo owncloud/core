@@ -11,21 +11,21 @@ Feature: multilinksharing
 		Given using OCS API version "<ocs_api_version>"
 		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| password     | publicpw    |
+			| password     | %public%    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
 			| permissions  | 15          |
 			| name         | sharedlink1 |
 		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| password     | publicpw    |
+			| password     | %public%    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
 			| permissions  | 15          |
 			| name         | sharedlink2 |
 		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| password     | publicpw    |
+			| password     | %public%    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
 			| permissions  | 15          |
@@ -47,19 +47,19 @@ Feature: multilinksharing
 		Given using OCS API version "<ocs_api_version>"
 		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| password    | publicpw      |
+			| password    | %public%      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink1   |
 		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| password    | publicpw      |
+			| password    | %public%      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink2   |
 		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| password    | publicpw      |
+			| password    | %public%      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink3   |
@@ -80,14 +80,14 @@ Feature: multilinksharing
 		Given using OCS API version "<ocs_api_version>"
 		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| password     | publicpw    |
+			| password     | %public%    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
 			| permissions  | 15          |
 			| name         | sharedlink1 |
 		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| password     | publicpw    |
+			| password     | %public%    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
 			| permissions  | 15          |
@@ -108,13 +108,13 @@ Feature: multilinksharing
 		Given using OCS API version "1"
 		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| password    | publicpw      |
+			| password    | %public%      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink1   |
 		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| password    | publicpw      |
+			| password    | %public%      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink2   |
@@ -129,19 +129,19 @@ Feature: multilinksharing
 		Given using OCS API version "<ocs_api_version>"
 		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| password    | publicpw      |
+			| password    | %public%      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink1   |
 		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| password    | publicpw      |
+			| password    | %public%      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink2   |
 		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| password    | publicpw      |
+			| password    | %public%      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink3   |
@@ -160,13 +160,13 @@ Feature: multilinksharing
 		Given using OCS API version "1"
 		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| password    | publicpw      |
+			| password    | %public%      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink1   |
 		And the user has created a public link share with settings
 			| path        | textfile0.txt |
-			| password    | publicpw      |
+			| password    | %public%      |
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink2   |
@@ -179,14 +179,14 @@ Feature: multilinksharing
 		Given using OCS API version "1"
 		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| password     | publicpw    |
+			| password     | %public%    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
 			| permissions  | 15          |
 			| name         | sharedlink1 |
 		And the user has created a public link share with settings
 			| path         | FOLDER      |
-			| password     | publicpw    |
+			| password     | %public%    |
 			| expireDate   | +3 days     |
 			| publicUpload | true        |
 			| permissions  | 15          |

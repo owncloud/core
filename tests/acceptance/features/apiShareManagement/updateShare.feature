@@ -61,12 +61,12 @@ Feature: sharing
 		And as user "user0"
 		When the user creates a public link share using the sharing API with settings
 			| path      | welcome.txt |
-			| password  | publicpw    |
+			| password  | %public%    |
 		And the user updates the last share using the sharing API with
 			| expireDate | +3 days |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
-		And the last public shared file should be able to be downloaded with password "publicpw"
+		And the last public shared file should be able to be downloaded with password "%public%"
 		Examples:
 			|ocs_api_version|ocs_status_code|
 			|1              |100            |
@@ -111,7 +111,7 @@ Feature: sharing
 		When the user creates a public link share using the sharing API with settings
 			| path      | FOLDER |
 		And the user updates the last share using the sharing API with
-			| password | publicpw |
+			| password | %public% |
 		And the user gets the info of the last share using the sharing API
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
