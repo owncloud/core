@@ -1,4 +1,4 @@
-@api
+@api @systemtags-app-required
 Feature: tags
 
   @smokeTest
