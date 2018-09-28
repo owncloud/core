@@ -6,6 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Ross Nicoll <jrn@jrn.me.uk>
+ * @author Tjeerd Jan Heeringa <Heeringa@protonmail.ch>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *

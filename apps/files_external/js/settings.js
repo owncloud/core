@@ -19,6 +19,10 @@ var MOUNT_OPTIONS_DROPDOWN_TEMPLATE =
 	'		<label for="mountOptionsEncrypt">{{t "files_external" "Enable encryption"}}</label>' +
 	'	</div>' +
 	'	<div class="optionRow">' +
+	'		<input id="mountOptionsPreviews" name="read_only" type="checkbox" value="false" checked="checked"/>' +
+	'		<label for="mountOptionsPreviews">{{t "files_external" "Set read-only"}}</label>' +
+	'	</div>' +
+	'	<div class="optionRow">' +
 	'		<input id="mountOptionsPreviews" name="previews" type="checkbox" value="true" checked="checked"/>' +
 	'		<label for="mountOptionsPreviews">{{t "files_external" "Enable previews"}}</label>' +
 	'	</div>' +
@@ -960,6 +964,7 @@ MountConfigListView.prototype = _.extend({
 			// FIXME default backend mount options
 			$tr.find('input.mountOptions').val(JSON.stringify({
 				'encrypt': true,
+				'read_only': false,
 				'previews': true,
 				'enable_sharing': false,
 				'filesystem_check_changes': 1,
@@ -1342,6 +1347,7 @@ MountConfigListView.prototype = _.extend({
 		var $toggle = $tr.find('.mountOptionsToggle');
 		var dropDown = new MountOptionsDropdown();
 		var visibleOptions = [
+			'read_only',
 			'previews',
 			'filesystem_check_changes',
 			'encoding_compatibility'

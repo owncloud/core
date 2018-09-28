@@ -33,6 +33,7 @@
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Stefan Rado <owncloud@sradonia.net>
  * @author Stefan Weil <sw@weilnetz.de>
+ * @author Tjeerd Jan Heeringa <heeringa@protonmail.ch>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
@@ -168,6 +169,16 @@ class OC_Util {
 				return new \OC\Files\Storage\Wrapper\PermissionsMask([
 					'storage' => $storage,
 					'mask' => \OCP\Constants::PERMISSION_ALL - \OCP\Constants::PERMISSION_SHARE
+				]);
+			}
+			return $storage;
+		});
+
+		\OC\Files\Filesystem::addStorageWrapper('read_only', function ($mountPoint, IStorage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+			if ($mount->getOption('read_only', true) && !$storage->instanceOfStorage('\OC\Files\Storage\Home')) {
+				return new \OC\Files\Storage\Wrapper\PermissionsMask([
+					'storage' => $storage,
+					'mask' => \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_SHARE
 				]);
 			}
 			return $storage;

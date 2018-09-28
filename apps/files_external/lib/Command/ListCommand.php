@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Tjeerd Jan Heeringa <heeringa@protonmail.ch>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
@@ -218,6 +219,7 @@ class ListCommand extends Base {
 				'encrypt' => true,
 				'previews' => true,
 				'filesystem_check_changes' => 1,
+				'read_only' => false,
 				'enable_sharing' => false,
 				'encoding_compatibility' => false
 			];
