@@ -106,6 +106,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdminCreatesAUserUsingTheWebUI(
 		$attemptTo, $username, $password, $email=null, TableNode $groupsTable=null
 	) {
+		$password = $this->featureContext->getActualPassword($password);
 		if ($groupsTable !== null) {
 			$groups = $groupsTable->getColumn(0);
 			//get rid of the header
@@ -116,7 +117,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->usersPage->createUser(
 			$this->getSession(), $username, $password, $email, $groups
 		);
-
 		$shouldExist = ($attemptTo === "");
 
 		$this->featureContext->addUserToCreatedUsersList(
@@ -263,6 +263,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		 *
 		 * @var DisabledUserPage $disabledPage
 		 */
+		$password = $this->featureContext->getActualPassword($password);
 		$disabledPage = $this->loginPage->loginAs($username, $password, 'DisabledUserPage');
 		$disabledPage->waitTillPageIsLoaded($this->getSession());
 	}
