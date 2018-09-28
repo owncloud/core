@@ -27,6 +27,7 @@ use Behat\Mink\Session;
 use Page\UserPageElement\GroupList;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use WebDriver\Exception\NoSuchElement;
+use WebDriver\Exception\ElementNotVisible;
 
 /**
  * Users page.
@@ -44,6 +45,9 @@ class UsersPage extends OwncloudPage {
 	protected $quotaSelectXpath = ".//select[@class='quota-user']";
 
 	protected $quotaOptionXpath = "//option[contains(text(), '%s')]";
+
+	protected $emailColumnXpath = "//td[@class='mailAddress']";
+	protected $storageLocationColumnXpath = "//td[@class='storageLocation']";
 
 	protected $manualQuotaInputXpath = "//input[contains(@data-original-title,'Please enter storage quota')]";
 	protected $settingsBtnXpath = ".//*[@id='app-settings-header']/button";
@@ -113,6 +117,64 @@ class UsersPage extends OwncloudPage {
 		}
 
 		return $this->getTrimmedText($selectField);
+	}
+
+	/**
+	 * @param string $username
+	 *
+	 * @throws ElementNotFoundException
+	 * @return string email of user
+	 */
+	public function getEmailOfUser($username) {
+		$userTr = $this->findUserInTable($username);
+		$userEmail = $userTr->find('xpath', $this->emailColumnXpath);
+
+		if ($userEmail === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->emailColumnXpath " .
+				"email of user " . $username . " not found"
+			);
+		}
+
+		if (!$userEmail->isVisible()) {
+			throw new ElementNotVisible(
+				__METHOD__ .
+				" email of user " . $username . " is not visible"
+			);
+		};
+
+		return $this->getTrimmedText($userEmail);
+	}
+	/**
+	 * @param string $username
+	 *
+	 * @throws ElementNotFoundException
+	 * @return string storage location of user
+	 */
+	public function getStorageLocationOfUser($username) {
+		$userTr = $this->findUserInTable($username);
+		$userStorageLocation = $userTr->find(
+			'xpath',
+			$this->storageLocationColumnXpath
+		);
+
+		if ($userStorageLocation === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->storageLocationColumnXpath " .
+				"storage location of user " . $username . " not found"
+			);
+		}
+
+		if (!$userStorageLocation->isVisible()) {
+			throw new ElementNotVisible(
+				__METHOD__ .
+				" storage location of user " . $username . " is not visible"
+			);
+		};
+
+		return $this->getTrimmedText($userStorageLocation);
 	}
 
 	/**
