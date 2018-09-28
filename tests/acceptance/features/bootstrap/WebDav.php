@@ -406,7 +406,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userMovesFileUsingTheAPI(
-		$user, $fileSource, $type = "", $fileDestination
+		$user, $fileSource, $type, $fileDestination
 	) {
 		$headers = [
 			'Destination' => $this->destinationHeaderValue(
@@ -1010,7 +1010,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasSetPropertyOfEntryTo(
-		$user, $propertyName, $path, $complex = '', $propertyValue
+		$user, $propertyName, $path, $complex, $propertyValue
 	) {
 		$client = $this->getSabreClient($user);
 		if ($complex === 'complex') {
@@ -2050,7 +2050,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsTheFollowingChunksUsingNewChunking(
-		$user, $type = "", $file, TableNode $chunkDetails
+		$user, $type, $file, TableNode $chunkDetails
 	) {
 		$async = false;
 		if ($type === "asynchronously") {

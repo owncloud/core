@@ -110,7 +110,7 @@ class FileActionsMenu extends OwncloudPage {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" could not find action button with label $this->deleteActionLabel"
-				);
+			);
 		}
 		$detailsBtn->focus();
 		$detailsBtn->click();
