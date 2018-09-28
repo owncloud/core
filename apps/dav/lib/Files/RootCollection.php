@@ -25,7 +25,6 @@ use OCA\DAV\Connector\Sabre\Directory;
 use Sabre\DAV\INode;
 use Sabre\DAV\SimpleCollection;
 use Sabre\DAVACL\AbstractPrincipalCollection;
-use Sabre\HTTP\URLUtil;
 
 class RootCollection extends AbstractPrincipalCollection {
 
@@ -40,7 +39,7 @@ class RootCollection extends AbstractPrincipalCollection {
 	 * @return INode
 	 */
 	public function getChildForPrincipal(array $principalInfo) {
-		list(, $name) = URLUtil::splitPath($principalInfo['uri']);
+		list(, $name) = \Sabre\Uri\split($principalInfo['uri']);
 		$user = \OC::$server->getUserSession()->getUser();
 		if ($user === null || $name !== $user->getUID()) {
 			// a user is only allowed to see their own home contents, so in case another collection
