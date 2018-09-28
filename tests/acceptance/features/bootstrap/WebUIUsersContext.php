@@ -253,7 +253,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @When the disabled user :username tries to login using the password :password from the webUI
 	 *
 	 * @param string $username
-	 *
 	 * @param string $password
 	 *
 	 * @return void
@@ -285,7 +284,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @When the deleted user :username tries to login using the password :password using the webUI
 	 *
 	 * @param string $username
-	 *
 	 * @param string $password
 	 *
 	 * @return void

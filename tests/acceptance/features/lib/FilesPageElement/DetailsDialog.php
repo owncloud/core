@@ -97,13 +97,13 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function changeDetailsTab($tabName) {
 		$tabId = $this->getDetailsTabId($tabName);
-		$tabSwitchXpath = "//li[@data-tabid='".$tabId."']";
+		$tabSwitchXpath = "//li[@data-tabid='" . $tabId . "']";
 		$tabSwitch = $this->find("xpath", $tabSwitchXpath);
 		if ($tabSwitch === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" could not find tab switch with id $tabName"
-				);
+			);
 		}
 		$this->waitTillElementIsNotNull($tabSwitchXpath);
 		$tabSwitch->focus();
