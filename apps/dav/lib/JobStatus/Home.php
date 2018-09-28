@@ -20,15 +20,11 @@
  */
 namespace OCA\DAV\JobStatus;
 
-use OCA\DAV\DAV\LazyOpsPlugin;
 use OCA\DAV\JobStatus\Entity\JobStatusMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
 use Sabre\DAV\Collection;
-use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
-use Sabre\DAV\SimpleFile;
-use Sabre\HTTP\URLUtil;
 
 class Home extends Collection {
 	/** @var array */
@@ -62,7 +58,7 @@ class Home extends Collection {
 	}
 
 	public function getName() {
-		list(, $name) = URLUtil::splitPath($this->principalInfo['uri']);
+		list(, $name) = \Sabre\Uri\split($this->principalInfo['uri']);
 		return $name;
 	}
 }
