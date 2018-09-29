@@ -93,7 +93,7 @@ Feature: multilinksharing
       | permissions  | 15          |
       | name         | sharedlink2 |
     When the user updates the last share using the sharing API with
-      | password | newpassword |
+      | password | %alt1% |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as user "user0" the public shares of folder "/FOLDER" should be

@@ -632,6 +632,9 @@ trait Sharing {
 				$dateModification = $fd['expireDate'];
 				$fd['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
 			}
+			if (\array_key_exists('password', $fd)) {
+				$fd['password'] = $this->getActualPassword($fd['password']);
+			}
 		}
 
 		$this->response = HttpRequestHelper::put(

@@ -9,10 +9,10 @@ Feature: Display notifications when receiving a share
     And using OCS API version "1"
     And using new DAV path
     And these users have been created:
-      | username | displayname |
-      | user0    | User Zero   |
-      | user1    | User One    |
-      | user2    | User Two    |
+      | username |
+      | user0    |
+      | user1    |
+      | user2    |
     And these groups have been created:
       | groupname |
       | grp1      |
