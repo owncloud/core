@@ -5,15 +5,19 @@ Feature: Autocompletion of share-with names
   So that I can efficiently share my files with other users or groups
 
   Background:
+    # Users that are in the special known users already
+    Given these users have been created but not initialized:
+      | username    |
+      | user1       |
+      | user3       |
+      | usergrp     |
+      | regularuser |
+    # Some extra users to make the share autocompletion interesting
     Given these users have been created but not initialized:
       | username    | password  | displayname     | email                 |
-      | user1       | %regular% | User One        | u1@oc.com.np          |
       | two         | %regular% | User Two        | u2@oc.com.np          |
-      | user3       | %regular% | Three           | u3@oc.com.np          |
       | u444        | %regular% | Four            | u3@oc.com.np          |
-      | usergrp     | %regular% | User Ggg        | u@oc.com.np           |
       | five        | %regular% | User Group      | five@oc.com.np        |
-      | regularuser | %regular% | User Regular    | regularuser@oc.com.np |
       | usersmith   | %regular% | John Finn Smith | js@oc.com.np          |
     And these groups have been created:
       | groupname     |
@@ -119,10 +123,10 @@ Feature: Autocompletion of share-with names
   Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (file)
     Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
     And the user has browsed to the files page
-    And the user has shared the file "data.zip" with the user "User Ggg" using the webUI
+    And the user has shared the file "data.zip" with the user "User Grp" using the webUI
     And the user has opened the share dialog for the file "data.zip"
     When the user types "user" in the share-with-field
-    Then all users and groups that contain the string "user" in their name should be listed in the autocomplete list on the webUI except user "User Ggg"
+    Then all users and groups that contain the string "user" in their name should be listed in the autocomplete list on the webUI except user "User Grp"
     And the users own name should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP

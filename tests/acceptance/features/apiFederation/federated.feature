@@ -25,7 +25,7 @@ Feature: federated
       | mail_send              | 0              |
       | uid_owner              | user1          |
       | file_parent            | A_NUMBER       |
-      | displayname_owner      | user1          |
+      | displayname_owner      | User One       |
       | share_with             | user0@REMOTE   |
       | share_with_displayname | user0@REMOTE   |
 
@@ -46,7 +46,7 @@ Feature: federated
       | mail_send              | 0              |
       | uid_owner              | user0          |
       | file_parent            | A_NUMBER       |
-      | displayname_owner      | user0          |
+      | displayname_owner      | User Zero      |
       | share_with             | user1@LOCAL    |
       | share_with_displayname | user1@LOCAL    |
 
@@ -97,9 +97,9 @@ Feature: federated
       | mail_send              | 0                  |
       | uid_owner              | user1              |
       | file_parent            | A_NUMBER           |
-      | displayname_owner      | user1              |
+      | displayname_owner      | User One           |
       | share_with             | user2              |
-      | share_with_displayname | user2              |
+      | share_with_displayname | User Two           |
 
   Scenario: Overwrite a federated shared file as recipient - local server shares - remote server receives
     Given user "user1" from server "LOCAL" has shared "/textfile0.txt" with user "user0" from server "REMOTE"

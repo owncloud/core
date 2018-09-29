@@ -3,10 +3,8 @@ Feature: sharing
 
   Background:
     Given using old DAV path
-    And these users have been created:
-      | username | displayname |
-      | user0    | User Zero   |
-      | user1    | User One    |
+    And user "user0" has been created
+    And user "user1" has been created
 
   @smokeTest
   Scenario Outline: getting all shares of a user using that user

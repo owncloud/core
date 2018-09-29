@@ -76,6 +76,11 @@ trait BasicStructure {
 	private $alt3UserPassword = '';
 
 	/**
+	 * @var string
+	 */
+	private $alt4UserPassword = '';
+
+	/**
 	 * The password to use in tests that create a sub-admin user
 	 *
 	 * @var string
@@ -217,6 +222,7 @@ trait BasicStructure {
 		$this->alt1UserPassword = "1234";
 		$this->alt2UserPassword = "AaBb2Cc3Dd4";
 		$this->alt3UserPassword = "aVeryLongPassword42TheMeaningOfLife";
+		$this->alt4UserPassword = "ThisIsThe4thAlternatePwd";
 		$this->subAdminPassword = "IamAJuniorAdmin42";
 		$this->alternateAdminPassword = "IHave99LotsOfPriv";
 		$this->publicLinkSharePassword = "publicPwd1";
@@ -272,6 +278,12 @@ trait BasicStructure {
 		$alt3UserPasswordFromEnvironment = $this->getAlt3UserPasswordFromEnvironment();
 		if ($alt3UserPasswordFromEnvironment !== false) {
 			$this->alt3UserPassword = $alt3UserPasswordFromEnvironment;
+		}
+
+		// get the alternate(4) user password from the environment (if defined)
+		$alt4UserPasswordFromEnvironment = $this->getAlt4UserPasswordFromEnvironment();
+		if ($alt4UserPasswordFromEnvironment !== false) {
+			$this->alt4UserPassword = $alt4UserPasswordFromEnvironment;
 		}
 
 		// get the sub-admin password from the environment (if defined)
@@ -345,6 +357,15 @@ trait BasicStructure {
 	 */
 	private static function getAlt3UserPasswordFromEnvironment() {
 		return \getenv('ALT3_USER_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined alternate(4) user password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getAlt4UserPasswordFromEnvironment() {
+		return \getenv('ALT4_USER_PASSWORD');
 	}
 
 	/**
@@ -1373,10 +1394,110 @@ trait BasicStructure {
 			return (string) $this->createdUsers[$userName]['password'];
 		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
 			return (string) $this->createdRemoteUsers[$userName]['password'];
-		} else {
-			// The user has not been created yet, let the caller have the
-			// default password.
+		} elseif ($userName === 'regularuser') {
 			return (string) $this->regularUserPassword;
+		} elseif ($userName === 'user0') {
+			return (string) $this->regularUserPassword;
+		} elseif ($userName === 'user1') {
+			return (string) $this->alt1UserPassword;
+		} elseif ($userName === 'user2') {
+			return (string) $this->alt2UserPassword;
+		} elseif ($userName === 'user3') {
+			return (string) $this->alt3UserPassword;
+		} elseif ($userName === 'user4') {
+			return (string) $this->alt4UserPassword;
+		} elseif ($userName === 'usergrp') {
+			return (string) $this->regularUserPassword;
+		} elseif ($userName === 'sharee1') {
+			return (string) $this->regularUserPassword;
+		} else {
+			// The user has not been created yet and is not one of the pre-known
+			// users. So let the caller have the default password.
+			return (string) $this->regularUserPassword;
+		}
+	}
+
+	/**
+	 * Get the display name of the user.
+	 *
+	 * For users that have already been created, return their display name.
+	 * For special known user names, return the display name that is also used by LDAP tests.
+	 * For other users, return null. They will not be assigned any particular
+	 * display name by this function.
+	 *
+	 * @param string $userName
+	 *
+	 * @return string|null
+	 */
+	public function getDisplayNameForUser($userName) {
+		$userName = $this->getActualUsername($userName);
+		// The hard-coded user names and display names are also in ldap-users.ldif
+		// for testing in an LDAP environment. The mapping must be kept the
+		// same in both places.
+		if (\array_key_exists($userName, $this->createdUsers)) {
+			return (string) $this->createdUsers[$userName]['displayname'];
+		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
+			return (string)$this->createdRemoteUsers[$userName]['displayname'];
+		} elseif ($userName === 'regularuser') {
+			return 'Regular User';
+		} elseif ($userName === 'user0') {
+			return 'User Zero';
+		} elseif ($userName === 'user1') {
+			return 'User One';
+		} elseif ($userName === 'user2') {
+			return 'User Two';
+		} elseif ($userName === 'user3') {
+			return 'User Three';
+		} elseif ($userName === 'user4') {
+			return 'User Four';
+		} elseif ($userName === 'usergrp') {
+			return 'User Grp';
+		} elseif ($userName === 'sharee1') {
+			return 'Sharee One';
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Get the email address of the user.
+	 *
+	 * For users that have already been created, return their email address.
+	 * For special known user names, return the email address that is also used by LDAP tests.
+	 * For other users, return null. They will not be assigned any particular
+	 * email address by this function.
+	 *
+	 * @param string $userName
+	 *
+	 * @return string|null
+	 */
+	public function getEmailAddressForUser($userName) {
+		$userName = $this->getActualUsername($userName);
+		// The hard-coded user names and email addresses are also in ldap-users.ldif
+		// for testing in an LDAP environment. The mapping must be kept the
+		// same in both places.
+		if (\array_key_exists($userName, $this->createdUsers)) {
+			return (string) $this->createdUsers[$userName]['email'];
+		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
+			return (string)$this->createdRemoteUsers[$userName]['email'];
+		} elseif ($userName === 'regularuser') {
+			return 'regularuser@example.org';
+		} elseif ($userName === 'user0') {
+			return 'user0@example.org';
+		} elseif ($userName === 'user1') {
+			return 'user1@example.org';
+		} elseif ($userName === 'user2') {
+			return 'user2@example.org';
+		} elseif ($userName === 'user3') {
+			return 'user3@example.org';
+		} elseif ($userName === 'user4') {
+			return 'user4@example.org';
+		} elseif ($userName === 'usergrp') {
+			return 'usergrp@example.org';
+		} elseif ($userName === 'sharee1') {
+			return 'sharee1@example.org';
+		} else {
+			return null;
 		}
 	}
 
@@ -1407,6 +1528,8 @@ trait BasicStructure {
 			return (string) $this->alt2UserPassword;
 		} elseif ($functionalPassword === "%alt3%") {
 			return (string) $this->alt3UserPassword;
+		} elseif ($functionalPassword === "%alt4%") {
+			return (string) $this->alt4UserPassword;
 		} elseif ($functionalPassword === "%subadmin%") {
 			return (string) $this->subAdminPassword;
 		} elseif ($functionalPassword === "%admin%") {

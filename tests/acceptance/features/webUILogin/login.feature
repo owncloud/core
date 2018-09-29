@@ -11,10 +11,10 @@ Feature: login users
   @TestAlsoOnExternalUserBackend
   Scenario: simple user login
     Given these users have been created but not initialized:
-      | username | password  | displayname | email        |
-      | user1    | %regular% | User One    | u1@oc.com.np |
+      | username |
+      | user1    |
     And the user has browsed to the login page
-    When the user logs in with username "user1" and password "%regular%" using the webUI
+    When the user logs in with username "user1" and password "%alt1%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - ownCloud"
 
   @smokeTest

@@ -5,9 +5,7 @@ Feature: Search
   So that I can find needed files quickly
 
   Background:
-    Given these users have been created:
-      | username | password  | displayname | email        |
-      | user0    | %regular% | User Zero   | u1@oc.com.np |
+    Given user "user0" has been created
     And user "user0" has created a folder "/just-a-folder"
     And user "user0" has created a folder "/फनी näme"
     And user "user0" has uploaded file with content "does-not-matter" to "/upload.txt"

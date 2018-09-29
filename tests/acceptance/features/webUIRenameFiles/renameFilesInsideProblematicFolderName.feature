@@ -5,11 +5,9 @@ Feature: Renaming files inside a folder with problematic name
   So that I can recognize my file easily
 
   Background:
-    Given these users have been created:
-      | username | password  | displayname | email        |
-      | user1    | %regular% | User One    | u1@oc.com.np |
+    Given user "user1" has been created
     And the user has browsed to the login page
-    And the user has logged in with username "user1" and password "%regular%" using the webUI
+    And the user has logged in with username "user1" and password "%alt1%" using the webUI
 
   Scenario Outline: Rename the existing file inside a problematic folder
     When the user opens the folder <folder> using the webUI

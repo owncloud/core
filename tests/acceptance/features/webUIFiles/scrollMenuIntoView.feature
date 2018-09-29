@@ -5,11 +5,9 @@ Feature: scroll menu of actions that can be done on a file into view
   So that I can manage and work with my files
 
   Background:
-    Given these users have been created:
-      | username | password  | displayname | email        |
-      | user1    | %regular% | User One    | u1@oc.com.np |
+    Given user "user1" has been created
     And the user has browsed to the login page
-    And the user has logged in with username "user1" and password "%regular%" using the webUI
+    And the user has logged in with username "user1" and password "%alt1%" using the webUI
     And the user has browsed to the files page
 
   @skipOnINTERNETEXPLORER
