@@ -355,6 +355,23 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then /^the administrator should be able to see last login of the users as:$/
+	 *
+	 * @param TableNode $table table of usernames and last logins with a heading | username | and | last logins |
+	 *
+	 * @return void
+	 */
+	public function theAdministratorShouldBeAbleToSeeLastLoginOfTheUsersAs(
+		TableNode $table
+	) {
+		foreach ($table as $row) {
+			$userLastLogin = $this->usersPage->getLastLoginOfUser($row['username']);
+			
+			PHPUnit_Framework_Assert::assertContains($row['last login'], $userLastLogin);
+		}
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 *
 	 * @BeforeScenario @webUI
