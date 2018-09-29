@@ -92,7 +92,7 @@ Feature: tags
     Given user "user0" has been created
     And user "user0" has created a "normal" tag with name "JustARegularTagName"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
-    And user "user0" has added the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0"
+    And user "user0" has added the tag "MyFirstTag" to "/myFileToTag.txt"
     When user "user0" deletes the tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "204"
     And tag "JustARegularTagName" should not exist for "%admin%"
@@ -133,7 +133,7 @@ Feature: tags
     And user "%admin%" has created a "normal" tag with name "JustARegularTagName"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
-    When user "user1" adds the tag "JustARegularTagName" to "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    When user "user1" adds the tag "JustARegularTagName" to "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags
       | JustARegularTagName | normal |
@@ -144,7 +144,7 @@ Feature: tags
     And user "%admin%" has created a "normal" tag with name "MyFirstTag"
     And user "%admin%" has created a "normal" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
-    When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0" using the WebDAV API
+    When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" using the WebDAV API
     And user "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" owned by "user0" using the WebDAV API
     Then the HTTP status code should be "404"
     And file "/myFileToTag.txt" owned by "user0" should have the following tags
@@ -157,8 +157,8 @@ Feature: tags
     And user "%admin%" has created a "not user-assignable" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
-    When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0" using the WebDAV API
-    And user "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" using the WebDAV API
+    And user "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags
       | MyFirstTag | normal |
@@ -171,7 +171,7 @@ Feature: tags
     And user "%admin%" has created a "not user-assignable" tag with name "JustARegularTagName" and groups "group1"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
-    When user "user1" adds the tag "JustARegularTagName" to "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    When user "user1" adds the tag "JustARegularTagName" to "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags
       | JustARegularTagName | not user-assignable |
@@ -183,8 +183,8 @@ Feature: tags
     And user "%admin%" has created a "not user-visible" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
-    When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0" using the WebDAV API
-    And user "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" using the WebDAV API
+    And user "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "412"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags
       | MyFirstTag | normal |
@@ -197,8 +197,8 @@ Feature: tags
     And user "another_admin" has created a "not user-visible" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "another_admin"
-    When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0" using the WebDAV API
-    And user "another_admin" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" using the WebDAV API
+    And user "another_admin" adds the tag "MySecondTag" to "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" should have the following tags for user "another_admin"
       | MyFirstTag  | normal           |
@@ -214,8 +214,8 @@ Feature: tags
     And user "another_admin" has created a "not user-assignable" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "another_admin"
-    When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0" using the WebDAV API
-    And user "another_admin" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" using the WebDAV API
+    And user "another_admin" adds the tag "MySecondTag" to "/myFileToTag.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" should have the following tags for user "another_admin"
       | MyFirstTag  | normal              |
@@ -232,8 +232,8 @@ Feature: tags
     And user "%admin%" has created a "normal" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
-    And user "user0" has added the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0"
-    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" owned by "user0"
+    And user "user0" has added the tag "MyFirstTag" to "/myFileToTag.txt"
+    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt"
     When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "204"
     And file "/myFileToTag.txt" should have the following tags for user "user0"
@@ -245,8 +245,8 @@ Feature: tags
     And user "%admin%" has created a "normal" tag with name "MyFirstTag"
     And user "%admin%" has created a "normal" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
-    And user "user0" has added the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    And user "user0" has added the tag "MyFirstTag" to "/myFileToTag.txt"
+    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt"
     When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "404"
     And file "/myFileToTag.txt" should have the following tags for user "user0"
@@ -263,8 +263,8 @@ Feature: tags
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with user "another_admin"
-    And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt"
+    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt"
     When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "404"
     And file "/myFileToTag.txt" should have the following tags for user "user0"
@@ -283,8 +283,8 @@ Feature: tags
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with user "another_admin"
-    And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt"
+    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt"
     When user "another_admin" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "204"
     And file "/myFileToTag.txt" should have the following tags for user "user0"
@@ -302,8 +302,8 @@ Feature: tags
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with user "another_admin"
-    And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt"
+    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt"
     And user "user0" has removed all shares from the file named "/myFileToTag.txt"
     When user "another_admin" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "404"
@@ -318,8 +318,8 @@ Feature: tags
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with user "another_admin"
-    And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt"
+    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt"
     When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "403"
     And file "/myFileToTag.txt" should have the following tags for user "user0"
@@ -339,8 +339,8 @@ Feature: tags
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with user "another_admin"
-    And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt"
+    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt"
     When user "another_admin" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "204"
     And file "/myFileToTag.txt" should have the following tags for user "user0"
@@ -358,8 +358,8 @@ Feature: tags
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with user "another_admin"
-    And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    And user "another_admin" has added the tag "MyFirstTag" to "/myFileToTag.txt"
+    And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt"
     And user "user0" has removed all shares from the file named "/myFileToTag.txt"
     When user "%admin%" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "404"
@@ -385,7 +385,7 @@ Feature: tags
     And user "user1" has been created
     And user "%admin%" has created a "normal" tag with name "MyFirstTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
-    When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" using the WebDAV API
     Then file "/myFileToTag.txt" should have the following tags for user "user0"
       | MyFirstTag | normal |
     And the HTTP status when user "user1" requests tags for file "/myFileToTag.txt" owned by "user0" should be "404"

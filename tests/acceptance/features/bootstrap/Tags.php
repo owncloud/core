@@ -374,11 +374,17 @@ trait Tags {
 	 * @param string $taggingUser
 	 * @param string $tagName
 	 * @param string $fileName
-	 * @param string $fileOwner
+	 * @param string|null $fileOwner
 	 *
 	 * @return void
 	 */
-	private function tag($taggingUser, $tagName, $fileName, $fileOwner) {
+	private function tag(
+		$taggingUser, $tagName, $fileName, $fileOwner = null
+	) {
+		if ($fileOwner === null) {
+			$fileOwner = $taggingUser;
+		}
+
 		$this->response = TagsHelper::tag(
 			$this->getBaseUrl(),
 			$taggingUser,
@@ -386,6 +392,7 @@ trait Tags {
 			$tagName,
 			$fileName,
 			$fileOwner,
+			$this->getPasswordForUser($fileOwner),
 			$this->getDavPathVersion('systemtags')
 		);
 	}
@@ -421,6 +428,22 @@ trait Tags {
 		}
 		$this->response = $response;
 		return $response;
+	}
+
+	/**
+	 * @When /^user "([^"]*)" adds the tag "([^"]*)" to "([^"]*)" using the WebDAV API$/
+	 * @Given /^user "([^"]*)" has added the tag "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $taggingUser
+	 * @param string $tagName
+	 * @param string $fileName
+	 *
+	 * @return void
+	 */
+	public function addsTheTagTo(
+		$taggingUser, $tagName, $fileName
+	) {
+		$this->tag($taggingUser, $tagName, $fileName);
 	}
 
 	/**
