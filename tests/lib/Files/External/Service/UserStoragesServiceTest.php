@@ -24,6 +24,7 @@
 namespace Test\Files\External\Service;
 
 use OC\Files\Config\UserMountCache;
+use OC\Files\External\Service\DBConfigService;
 use OC\Files\External\Service\GlobalStoragesService;
 use OC\Files\External\Service\UserStoragesService;
 use OC\Files\External\StorageConfig;
@@ -258,6 +259,11 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 		$backendService = \OC::$server->getStoragesBackendService();
 		$userSession = \OC::$server->getUserSession();
 		$this->service = new UserStoragesService($backendService, $this->dbConfig, $userSession, $userMountCache);
+
+		$dbConfigService = new DBConfigService(\OC::$server->getDatabaseConnection(), \OC::$server->getCrypto());
+		$id = $dbConfigService->addMount('/directtest', 'foo', 'bar', 100, DBConfigService::MOUNT_TYPE_PERSONAl);
+		$dbConfigService->addApplicable($id, DBConfigService::APPLICABLE_TYPE_USER, 'user1');
+
 		$this->assertTrue($this->service->deleteAllMountsForUser($user1));
 		$storarge1Result1 = $userMountCache->getMountsForStorageId(10);
 		$storarge1Result2 = $userMountCache->getMountsForStorageId(12);
@@ -265,5 +271,6 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 		$this->assertEquals(1, \count($storarge1Result2));
 		$this->assertEquals(12, $storarge1Result2[0]->getStorageId());
 		$this->assertEquals('/bar/', $storarge1Result2[0]->getMountPoint());
+		$this->assertNull($dbConfigService->getMountById($id));
 	}
 }
