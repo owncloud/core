@@ -5,7 +5,9 @@ Feature: Search
   So that I can find needed files quickly
 
   Background:
-    Given user "user0" has been created
+    Given these users have been created:
+      | username | password  | displayname | email        |
+      | user0    | %regular% | User Zero   | u1@oc.com.np |
     And user "user0" has created a folder "/just-a-folder"
     And user "user0" has created a folder "/फनी näme"
     And user "user0" has uploaded file with content "does-not-matter" to "/upload.txt"
@@ -82,7 +84,7 @@ Feature: Search
       | {DAV:}getcontenttype                       | text\/plain                                                                                       |
       | {http://owncloud.org/ns}size               | 15                                                                                                |
       | {http://owncloud.org/ns}owner-id           | user0                                                                                             |
-      | {http://owncloud.org/ns}owner-display-name | user0                                                                                             |
+      | {http://owncloud.org/ns}owner-display-name | User Zero                                                                                         |
     Examples:
       | dav_version |
       | old         |
