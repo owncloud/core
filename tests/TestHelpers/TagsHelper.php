@@ -38,10 +38,12 @@ class TagsHelper {
 	 * @param string $password
 	 * @param string $tagName
 	 * @param string $fileName
-	 * @param string $fileOwner
+	 * @param string|null $fileOwner
+	 * @param string|null $fileOwnerPassword
 	 * @param int $davPathVersionToUse (1|2)
 	 *
 	 * @return ResponseInterface
+	 * @throws \Exception
 	 */
 	public static function tag(
 		$baseUrl,
@@ -49,11 +51,20 @@ class TagsHelper {
 		$password,
 		$tagName,
 		$fileName,
-		$fileOwner,
+		$fileOwner = null,
+		$fileOwnerPassword = null,
 		$davPathVersionToUse = 1
 	) {
+		if ($fileOwner === null) {
+			$fileOwner = $taggingUser;
+		}
+
+		if ($fileOwnerPassword === null) {
+			$fileOwnerPassword = $password;
+		}
+
 		$fileID = WebDavHelper::getFileIdForPath(
-			$baseUrl, $fileOwner, $password, $fileName
+			$baseUrl, $fileOwner, $fileOwnerPassword, $fileName
 		);
 
 		$tag = self::requestTagByDisplayName(
