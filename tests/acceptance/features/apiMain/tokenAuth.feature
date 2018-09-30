@@ -3,9 +3,7 @@ Feature: tokenAuth
 
   Background:
     Given using OCS API version "1"
-    And these users have been created:
-      | username | password  | displayname | email        |
-      | user1    | %regular% | User One    | u1@oc.com.np |
+    And user "user1" has been created
     And token auth has been enforced
 
   Scenario: creating a user with basic auth should be blocked when token auth is enforced

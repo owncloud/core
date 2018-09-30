@@ -7,11 +7,11 @@ Feature: Display notifications when receiving a share and follow embedded links
   Background:
     Given the app "notifications" has been enabled
     And these users have been created:
-      | username | password  | displayname | email        |
-      | user1    | %regular% | User One    | u1@oc.com.np |
-      | user2    | %alt1%    | User Two    | u2@oc.com.np |
+      | username |
+      | user1    |
+      | user2    |
     And the user has browsed to the login page
-    And the user has logged in with username "user2" and password "%alt1%" using the webUI
+    And the user has logged in with username "user2" and password "%alt2%" using the webUI
 
   @smokeTest
   Scenario: notification link redirection in case a share is pending

@@ -219,8 +219,9 @@ trait Provisioning {
 	 */
 	public function adminCreatesUserUsingTheProvisioningApi($user) {
 		if (!$this->userExists($user)) {
-			$password = $this->getPasswordForUser($user);
-			$this->createUser($user, $password, null, null, true, 'api');
+			$this->createUser(
+				$user, null, null, null, true, 'api'
+			);
 		}
 		$this->userShouldExist($user);
 	}
@@ -235,8 +236,9 @@ trait Provisioning {
 	 */
 	public function userHasBeenCreated($user) {
 		$this->createUser(
-			$user, $this->getPasswordForUser($user), null, null, true
+			$user, null, null, null, true
 		);
+
 		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") !== "true") {
 			$this->userShouldExist($user);
 		}
@@ -246,7 +248,7 @@ trait Provisioning {
 	 * @Given /^these users have been created\s?(but not initialized|):$/
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
-	 * displayname & email are optional
+	 * password, displayname & email are optional
 	 *
 	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
 	 * @param TableNode $table
@@ -261,6 +263,7 @@ trait Provisioning {
 			} else {
 				$displayName = null;
 			}
+
 			if (isset($row['email'])) {
 				$email = $row['email'];
 			} else {
@@ -270,7 +273,8 @@ trait Provisioning {
 			if (isset($row['password'])) {
 				$password = $this->getActualPassword($row['password']);
 			} else {
-				$password = $this->getPasswordForUser($row ['username']);
+				// Let createUser() select the password
+				$password = null;
 			}
 
 			$this->createUser(
@@ -702,19 +706,35 @@ trait Provisioning {
 	 * creates a single user
 	 *
 	 * @param string $user
-	 * @param string $password
-	 * @param string $displayName
-	 * @param string $email
+	 * @param string|null $password if null, then select a password
+	 * @param string|null $displayName
+	 * @param string|null $email
 	 * @param bool $initialize initialize the user skeleton files etc
-	 * @param string $method how to create the user api|occ
+	 * @param string|null $method how to create the user api|occ, default api
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	private function createUser(
-		$user, $password, $displayName = null, $email = null, $initialize = true,
+		$user,
+		$password = null,
+		$displayName = null,
+		$email = null,
+		$initialize = true,
 		$method = null
 	) {
+		if ($password === null) {
+			$password = $this->getPasswordForUser($user);
+		}
+
+		if ($displayName === null) {
+			$displayName = $this->getDisplayNameForUser($user);
+		}
+
+		if ($email === null) {
+			$email = $this->getEmailAddressForUser($user);
+		}
+
 		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
 			$method = "ldap";
