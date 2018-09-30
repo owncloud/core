@@ -6,25 +6,25 @@ Feature: Sharing files and folders with internal groups
 
   Scenario Outline: sharing  files and folder with an internal problematic group name
     Given these users have been created:
-      | username | password  | displayname | email        |
-      | user1    | %regular% | User One    | u1@oc.com.np |
-      | user2    | %alt1%    | User Two    | u2@oc.com.np |
-      | user3    | %alt2%    | User Three  | u2@oc.com.np |
+      | username |
+      | user1    |
+      | user2    |
+      | user3    |
     And these groups have been created:
       | groupname |
       | <group>   |
     And user "user1" has been added to group "<group>"
     And user "user2" has been added to group "<group>"
     And the user has browsed to the login page
-    And the user has logged in with username "user3" and password "%alt2%" using the webUI
+    And the user has logged in with username "user3" and password "%alt3%" using the webUI
     When the user shares the folder "simple-folder" with the group "<group>" using the webUI
     And the user shares the file "testimage.jpg" with the group "<group>" using the webUI
-    And the user re-logs in with username "user1" and password "%regular%" using the webUI
+    And the user re-logs in with username "user1" and password "%alt1%" using the webUI
     Then the folder "simple-folder (2)" should be listed on the webUI
     And the folder "simple-folder (2)" should be marked as shared with "<group>" by "User Three" on the webUI
     And the file "testimage (2).jpg" should be listed on the webUI
     And the file "testimage (2).jpg" should be marked as shared with "<group>" by "User Three" on the webUI
-    When the user re-logs in with username "user2" and password "%alt1%" using the webUI
+    When the user re-logs in with username "user2" and password "%alt2%" using the webUI
     Then the folder "simple-folder (2)" should be listed on the webUI
     And the folder "simple-folder (2)" should be marked as shared with "<group>" by "User Three" on the webUI
     And the file "testimage (2).jpg" should be listed on the webUI
@@ -33,4 +33,3 @@ Feature: Sharing files and folders with internal groups
       | group     |
       | ?\?@#%@,; |
       | नेपाली    |
-

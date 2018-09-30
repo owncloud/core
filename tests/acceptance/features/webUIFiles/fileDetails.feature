@@ -4,12 +4,10 @@ Feature: User can open the details panel for any file or folder
   I want to be able to open the details panel of any file or folder
   So that the details of the file or folder are visible to me
 
-  Background: 
-    Given these users have been created:
-      | username | password  | displayname | email        |
-      | user1    | %regular% | User One    | u1@oc.com.np |
+  Background:
+    Given user "user1" has been created
     And the user has browsed to the login page
-    And the user has logged in with username "user1" and password "%regular%" using the webUI
+    And the user has logged in with username "user1" and password "%alt1%" using the webUI
     And the user has browsed to the files page
 
   Scenario: View different areas of the details panel in files page

@@ -7,17 +7,17 @@ Feature: restrict resharing
 
   Background:
     Given these users have been created:
-      | username | password  | displayname | email        |
-      | user1    | %regular% | User One    | u1@oc.com.np |
-      | user2    | %alt1%    | User Two    | u2@oc.com.np |
-      | user3    | %alt2%    | User Three  | u2@oc.com.np |
+      | username |
+      | user1    |
+      | user2    |
+      | user3    |
     And these groups have been created:
       | groupname |
       | grp1      |
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
     And the user has browsed to the login page
-    And the user has logged in with username "user2" and password "%alt1%" using the webUI
+    And the user has logged in with username "user2" and password "%alt2%" using the webUI
 
   @skipOnMICROSOFTEDGE @TestAlsoOnExternalUserBackend
   @smokeTest
@@ -27,7 +27,7 @@ Feature: restrict resharing
     When the user shares the folder "simple-folder" with the user "User One" using the webUI
     And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
       | share | no |
-    And the user re-logs in with username "user1" and password "%regular%" using the webUI
+    And the user re-logs in with username "user1" and password "%alt1%" using the webUI
     Then it should not be possible to share the folder "simple-folder (2)" using the webUI
 
   @TestAlsoOnExternalUserBackend
@@ -36,5 +36,5 @@ Feature: restrict resharing
     Given the setting "Allow resharing" in the section "Sharing" has been disabled
     And the user has browsed to the files page
     When the user shares the folder "simple-folder" with the user "User One" using the webUI
-    And the user re-logs in with username "user1" and password "%regular%" using the webUI
+    And the user re-logs in with username "user1" and password "%alt1%" using the webUI
     Then it should not be possible to share the folder "simple-folder (2)" using the webUI

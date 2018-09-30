@@ -5,11 +5,9 @@ Feature: Change Login Password
   So that I can login with my new password
 
   Background:
-    Given these users have been created:
-      | username | password  | displayname | email        |
-      | user1    | %regular% | User One    | u1@oc.com.np |
+    Given user "user1" has been created
     And the user has browsed to the login page
-    And the user has logged in with username "user1" and password "%regular%" using the webUI
+    And the user has logged in with username "user1" and password "%alt1%" using the webUI
     And the user has browsed to the personal general settings page
 
   @smokeTest
@@ -23,5 +21,5 @@ Feature: Change Login Password
     Then a password error message should be displayed on the webUI with the text "Wrong current password"
 
   Scenario: New password is same as current password
-    When the user changes the password to "%regular%" using the webUI
+    When the user changes the password to "%alt1%" using the webUI
     Then a password error message should be displayed on the webUI with the text "The new password cannot be the same as the previous one"

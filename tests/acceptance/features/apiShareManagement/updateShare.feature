@@ -4,9 +4,7 @@ Feature: sharing
   Background:
     Given using OCS API version "1"
     And using old DAV path
-    And these users have been created:
-      | username | displayname |
-      | user0    | User Zero   |
+    And user "user0" has been created
 
   @smokeTest
   Scenario Outline: Allow modification of reshare
@@ -267,10 +265,8 @@ Feature: sharing
       | 2               | 400              |
 
   Scenario: Share ownership change after moving a shared file outside of an outer share
-    Given these users have been created:
-      | username | displayname |
-      | user1    | User One    |
-      | user2    | User Two    |
+    Given user "user1" has been created
+    And user "user2" has been created
     And user "user0" has created a folder "/folder1"
     And user "user0" has created a folder "/folder1/folder2"
     And user "user1" has created a folder "/moved-out"
@@ -297,10 +293,8 @@ Feature: sharing
     And as "user2" the folder "/folder2" should exist
 
   Scenario: Share ownership change after moving a shared file to another share
-    Given these users have been created:
-      | username | displayname |
-      | user1    | User One    |
-      | user2    | User Two    |
+    Given user "user1" has been created
+    And user "user2" has been created
     And user "user0" has created a folder "/user0-folder"
     And user "user0" has created a folder "/user0-folder/folder2"
     And user "user2" has created a folder "/user2-folder"

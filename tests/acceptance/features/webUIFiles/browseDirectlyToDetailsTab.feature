@@ -5,11 +5,9 @@ Feature: browse directly to details tab
   So that I can see the details immediately without needing to click in the UI
 
   Background:
-    Given these users have been created:
-      | username | password  | displayname | email        |
-      | user1    | %regular% | User One    | u1@oc.com.np |
+    Given user "user1" has been created
     And the user has browsed to the login page
-    And the user has logged in with username "user1" and password "%regular%" using the webUI
+    And the user has logged in with username "user1" and password "%alt1%" using the webUI
 
   @smokeTest
   Scenario Outline: Browse directly to the sharing details of a file

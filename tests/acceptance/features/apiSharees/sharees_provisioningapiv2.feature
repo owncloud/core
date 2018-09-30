@@ -4,9 +4,9 @@ Feature: sharees_provisioningapiv2
   Background:
     Given using OCS API version "2"
     And these users have been created:
-      | username | displayname |
-      | user1    | User One    |
-      | sharee1  | Sharee One  |
+      | username |
+      | user1    |
+      | sharee1  |
     And group "ShareeGroup" has been created
     And group "ShareeGroup2" has been created
     And user "user1" has been added to group "ShareeGroup2"
