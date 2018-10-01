@@ -54,7 +54,9 @@ class Address {
 	 * @return string
 	 */
 	public function getCloudId() {
-		return $this->cloudId;
+		$origin = $this->getOrigin();
+		$userId = $this->getUserId();
+		return "{$userId}@{$origin}";
 	}
 
 	/**
@@ -70,25 +72,25 @@ class Address {
 	}
 
 	/**
-	 * Get user host
+	 * Get user host without protocol, index.php and a trailing slash
 	 *
 	 * @return string
 	 */
 	public function getHostName() {
 		// hostname is the last part
-		$parts = \explode('@', $this->cloudId);
-		return \array_pop($parts);
+		$origin = $this->getCleanOrigin();
+
+		// replace all characters before :// and :// itself
+		return \preg_replace('|^(.*?://)|', '', $origin);
 	}
 
 	/**
-	 * Get user host without protocol and trailing slash
+	 * Get user host with protocol but without trailing slash and index.php
 	 *
 	 * @return string
 	 */
-	public function getCleanHostName() {
-		$hostName = \rtrim($this->getHostName(), '/');
-		// replace all characters before :// and :// itself
-		return \preg_replace('|^(.*?://)|', '', $hostName);
+	public function getOrigin() {
+		return $this->getCleanOrigin();
 	}
 
 	/**
@@ -98,5 +100,64 @@ class Address {
 	 */
 	public function getDisplayName() {
 		return ($this->displayName !== '') ? $this->displayName : $this->getUserId();
+	}
+
+	/**
+	 * Checks if the user and host is the same with another address
+	 *
+	 * @param Address $address
+	 *
+	 * @return bool
+	 */
+	public function equalTo(Address $address) {
+		$thisUserId = $this->translateUid($this->getUserId());
+		$otherUserId = $this->translateUid($address->getUserId());
+		return $this->getHostName() === $address->getHostName()
+			&& $thisUserId === $otherUserId;
+	}
+
+	/**
+	 * Some kind of ancient magic that was copypasted here and there
+	 *
+	 * @return mixed
+	 */
+	public function toLocalUid() {
+		return $this->translateUid($this->getUserId());
+	}
+
+	/**
+	 * Cut index.php and trailing slash from remote URL
+	 *
+	 * @return string
+	 */
+	protected function getCleanOrigin() {
+		//Origin is the last part
+		$parts = \explode('@', $this->cloudId);
+		$rawOrigin = \array_pop($parts);
+		if ($fileNamePosition = \strpos($rawOrigin, '/index.php')) {
+			$rawOrigin = \substr($rawOrigin, 0, $fileNamePosition);
+		}
+
+		$normalizedOrigin = \rtrim(
+			\strtolower($rawOrigin),
+			'/'
+		);
+
+		return $normalizedOrigin;
+	}
+
+	/**
+	 * @param string $uid
+	 * @return mixed
+	 */
+	protected function translateUid($uid) {
+		// FIXME this should be a method in the user management instead
+		// Move to a helper instead of C&P meanwhile?
+		\OCP\Util::emitHook(
+			'\OCA\Files_Sharing\API\Server2Server',
+			'preLoginNameUsedAsUserName',
+			['uid' => &$uid]
+		);
+		return $uid;
 	}
 }

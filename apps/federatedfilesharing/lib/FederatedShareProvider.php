@@ -151,17 +151,18 @@ class FederatedShareProvider implements IShareProvider {
 		}
 
 		// don't allow federated shares if source and target server are the same
-		list($user, $remote) = $this->addressHandler->splitUserRemote($shareWith);
-		$currentServer = $this->addressHandler->generateRemoteURL();
 		$currentUser = $sharedBy;
-		if ($this->addressHandler->compareAddresses($user, $remote, $currentUser, $currentServer)) {
+		$ownerAddress =  $this->addressHandler->getLocalUserFederatedAddress($currentUser);
+		$shareWithAddress = new Address($shareWith);
+
+		if ($ownerAddress->equalTo($shareWithAddress)) {
 			$message = 'Not allowed to create a federated share with the same user.';
 			$message_t = $this->l->t('Not allowed to create a federated share with the same user');
 			$this->logger->debug($message, ['app' => 'Federated File Sharing']);
 			throw new \Exception($message_t);
 		}
 
-		$share->setSharedWith($user . '@' . $remote);
+		$share->setSharedWith($shareWithAddress->getCloudId());
 
 		try {
 			$remoteShare = $this->getShareFromExternalShareTable($share);
@@ -220,20 +221,15 @@ class FederatedShareProvider implements IShareProvider {
 		);
 
 		try {
-			$instanceCloudId = $this->addressHandler->generateRemoteURL();
 			$sharedBy = $share->getSharedBy();
-			$sharedByCloudId = '';
 			if ($this->userManager->userExists($sharedBy)) {
-				$sharedByCloudId = $instanceCloudId;
+				$sharedByAddress = $this->addressHandler->getLocalUserFederatedAddress($sharedBy);
+			} else {
+				$sharedByAddress = new Address($sharedBy);
 			}
 
-			$sharedByFullAddress =  ($sharedByCloudId !== '')
-				? "{$sharedBy}@{$sharedByCloudId}"
-				: $sharedBy;
-
-			$sharedByAddress = new Address($sharedByFullAddress);
 			$owner = $share->getShareOwner();
-			$ownerAddress = new Address("{$owner}@{$instanceCloudId}");
+			$ownerAddress = $this->addressHandler->getLocalUserFederatedAddress($owner);
 			$sharedWith = $share->getSharedWith();
 			$shareWithAddress = new Address($sharedWith);
 			$send = $this->notifications->sendRemoteShare(

@@ -122,7 +122,7 @@ class FedShareManager {
 	) {
 		$owner = $ownerAddress->getUserId();
 		$shareId = $this->federatedShareProvider->addShare(
-			$ownerAddress->getHostName(), $token, $name, $owner, $shareWith, $remoteId
+			$ownerAddress->getOrigin(), $token, $name, $owner, $shareWith, $remoteId
 		);
 
 		$this->eventDispatcher->dispatch(
@@ -255,8 +255,7 @@ class FedShareManager {
 		if ($shareRow === false) {
 			return;
 		}
-		$remote = $this->addressHandler->normalizeRemote($shareRow['remote']);
-		$owner = $shareRow['owner'] . '@' . $remote;
+		$ownerAddress = new Address($shareRow['owner'] . '@' . $shareRow['remote']);
 		$mountpoint = $shareRow['mountpoint'];
 		$user = $shareRow['user'];
 		if ($shareRow['accepted']) {
@@ -270,7 +269,7 @@ class FedShareManager {
 		$this->publishActivity(
 			$user,
 			Activity::SUBJECT_REMOTE_SHARE_UNSHARED,
-			[$owner, $path],
+			[$ownerAddress->getCloudId(), $path],
 			'files',
 			'',
 			'',

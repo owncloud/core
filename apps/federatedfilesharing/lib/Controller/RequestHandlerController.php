@@ -36,10 +36,8 @@ use OCA\FederatedFileSharing\Ocm\Exception\NotImplementedException;
 use OCA\FederatedFileSharing\Ocm\Exception\OcmException;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\OCSController;
-use OCP\Constants;
 use OCP\IRequest;
 use OCP\IUserManager;
-use OCP\Share\IShare;
 
 /**
  * Class RequestHandlerController
@@ -138,16 +136,15 @@ class RequestHandlerController extends OCSController {
 				throw new BadRequestException('User does not exist');
 			}
 
-			if ($ownerFederatedId === null) {
-				$ownerFederatedId = $owner . '@' . $this->addressHandler->normalizeRemote($remote);
-			}
+			$ownerAddress = $ownerFederatedId === null
+				? new Address("{$owner}@{$remote}")
+				: new Address($ownerFederatedId);
 			// if the owner of the share and the initiator are the same user
 			// we also complete the federated share ID for the initiator
 			if ($sharedByFederatedId === null && $owner === $sharedBy) {
-				$sharedByFederatedId = $ownerFederatedId;
+				$sharedByFederatedId = $ownerAddress->getCloudId();
 			}
 
-			$ownerAddress = new Address($ownerFederatedId);
 			$sharedByAddress = new Address($sharedByFederatedId);
 
 			$this->fedShareManager->createShare(
@@ -210,17 +207,12 @@ class RequestHandlerController extends OCSController {
 			$share = $this->ocmMiddleware->getValidShare($id, $token);
 
 			// don't allow to share a file back to the owner
-			list($user, $remote) = $this->addressHandler->splitUserRemote($shareWith);
 			$owner = $share->getShareOwner();
-			$currentServer = $this->addressHandler->generateRemoteURL();
-			if ($this->addressHandler->compareAddresses($user, $remote, $owner, $currentServer)) {
-				return new Result(null, Http::STATUS_FORBIDDEN);
-			}
+			$ownerAddress = $this->addressHandler->getLocalUserFederatedAddress($owner);
+			$shareWithAddress = new Address($shareWith);
+			$this->ocmMiddleware->assertNotSameUser($ownerAddress, $shareWithAddress);
 
-			$reSharingAllowed = $share->getPermissions() & Constants::PERMISSION_SHARE;
-			if (!$reSharingAllowed) {
-				return new Result(null, Http::STATUS_BAD_REQUEST);
-			}
+			$this->ocmMiddleware->assertSharingPermissionSet($share);
 			$result = $this->fedShareManager->reShare(
 				$share,
 				$remoteId,

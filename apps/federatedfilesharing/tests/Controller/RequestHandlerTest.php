@@ -26,6 +26,7 @@
 
 namespace OCA\FederatedFileSharing\Tests\Controller;
 
+use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
@@ -189,12 +190,14 @@ class RequestHandlerTest extends TestCase {
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 		$share = $this->getValidShareMock(self::DEFAULT_TOKEN);
+		$this->addressHandler->method('getLocalUserFederatedAddress')
+			->willReturn(new Address('user@host'));
 		$this->ocmMiddleware->expects($this->once())
 			->method('getValidShare')
 			->willReturn($share);
-		$this->addressHandler->expects($this->any())
-			->method('compareAddresses')
-			->willReturn(true);
+		$this->ocmMiddleware->expects($this->any())
+			->method('assertNotSameUser')
+			->willThrowException(new ForbiddenException());
 		$response = $this->requestHandlerController->reShare('a99');
 		$this->assertEquals(
 			Http::STATUS_FORBIDDEN,
@@ -206,10 +209,15 @@ class RequestHandlerTest extends TestCase {
 		$this->request->expects($this->any())
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
+		$this->addressHandler->method('getLocalUserFederatedAddress')
+			->willReturn(new Address('user@host'));
 		$share = $this->getValidShareMock(self::DEFAULT_TOKEN);
 		$this->ocmMiddleware->expects($this->once())
 			->method('getValidShare')
 			->willReturn($share);
+		$this->ocmMiddleware->expects($this->once())
+			->method('assertSharingPermissionSet')
+			->willThrowException(new BadRequestException());
 		$response = $this->requestHandlerController->reShare('a99');
 		$this->assertEquals(
 			Http::STATUS_BAD_REQUEST,
@@ -240,6 +248,8 @@ class RequestHandlerTest extends TestCase {
 		$this->ocmMiddleware->expects($this->once())
 			->method('getValidShare')
 			->willReturn($share);
+		$this->addressHandler->method('getLocalUserFederatedAddress')
+			->willReturn(new Address('user@host'));
 
 		$resultShare = $this->getMockBuilder(IShare::class)
 			->disableOriginalConstructor()->getMock();
