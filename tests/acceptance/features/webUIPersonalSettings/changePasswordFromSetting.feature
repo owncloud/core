@@ -6,18 +6,17 @@ Feature: Change Login Password
 
   Background:
     Given user "user1" has been created
-    And the user has browsed to the login page
-    And the user has logged in with username "user1" and password "%alt1%" using the webUI
+    And user "user1" has logged in using the webUI
     And the user has browsed to the personal general settings page
 
   @smokeTest
   Scenario: Change password
-    When the user changes the password to "%alt1%" using the webUI
-    And the user re-logs in with username "user1" and password "%alt1%" using the webUI
+    When the user changes the password to "%alt3%" using the webUI
+    And the user re-logs in with username "user1" and password "%alt3%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - ownCloud"
 
   Scenario: Password change with wrong current password
-    When the user changes the password to "%alt1%" entering the wrong current password "%alt2%" using the webUI
+    When the user changes the password to "%alt3%" entering the wrong current password "%alt2%" using the webUI
     Then a password error message should be displayed on the webUI with the text "Wrong current password"
 
   Scenario: New password is same as current password
