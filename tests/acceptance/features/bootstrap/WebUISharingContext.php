@@ -325,23 +325,25 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the user should see a error message on public dialog saying :expectedWarningMessage
+	 * @Then the user should see an error message on the public link share dialog saying :expectedWarningMessage
 	 *
 	 * @param string $expectedWarningMessage
 	 *
 	 * @return void
 	 */
-	public function theUserShouldSeeAErrorMessageSaying($expectedWarningMessage) {
+	public function theUserShouldSeeAnErrorMessageOnThePublicLinkShareDialogSaying(
+		$expectedWarningMessage
+	) {
 		$warningMessage = $this->publicShareTab->getWarningMessage();
 		PHPUnit_Framework_Assert::assertEquals($expectedWarningMessage, $warningMessage);
 	}
 
 	/**
-	 * @Then public link should not be generated
+	 * @Then the public link should not have been generated
 	 *
 	 * @return void
 	 */
-	public function publicLinkShouldNotBeGenerated() {
+	public function thePublicLinkShouldNotHaveBeenGenerated() {
 		try {
 			$this->publicShareTab->getLinkUrl($this->linkName);
 		} catch (Exception $e) {
