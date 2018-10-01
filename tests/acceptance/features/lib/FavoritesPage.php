@@ -23,6 +23,8 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Page\FilesPageElement\DetailsDialog;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
  * Favorites page.
@@ -77,6 +79,16 @@ class FavoritesPage extends FilesPageBasic {
 	 */
 	protected function getFilePathInRowXpath() {
 		return $this->filePathInRowXpath;
+	}
+
+	/**
+	 * gets a details dialog object
+	 *
+	 * @throws ElementNotFoundException
+	 * @return DetailsDialog
+	 */
+	public function getDetailsDialog() {
+		return $this->getPage("FilesPageElement\\DetailsDialog");
 	}
 
 	/**

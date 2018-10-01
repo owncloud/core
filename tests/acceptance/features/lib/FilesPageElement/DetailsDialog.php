@@ -38,7 +38,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @var string $path
 	 */
 	protected $path = '/index.php/apps/files/';
-	private $detailsdialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
+	private $detailsDialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
 	private $detailsDialogCloseXpath = "//div[@id='app-sidebar']//*[@class='close icon-close']";
 	private $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
 	private $thumbnailFromContainerXpath = "/a";
@@ -47,6 +47,13 @@ class DetailsDialog extends OwncloudPage {
 		'sharing' => "shareTabView",
 		'versions' => "versionsTabView"
 	];
+
+	private $commentInputXpath = "//form[@class='newCommentForm']//textarea[@class='message']";
+	private $commentPostXpath = "//form[@class='newCommentForm']//input[@class='submit']";
+	private $commentEditFormXpath = "//ul[@class='comments']//div[@class='newCommentRow comment']";
+	private $commentEditButtonXpath = "//a[@data-original-title='Edit comment']";
+	private $commentDeleteButtonXpath = "//a[@data-original-title='Delete comment']";
+	private $commentListXpath = "//ul[@class='comments']//div[@class='message']";
 
 	/**
 	 * Lookup the id for the requested details tab.
@@ -88,6 +95,17 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
+	 * find the xpath of comment with given content
+	 *
+	 * @param string $content
+	 *
+	 * @return string
+	 */
+	private function getCommentXpath($content) {
+		return "//ul[@class='comments']//div[@class='message' and contains(., '" . $content . "')]";
+	}
+
+	/**
 	 * change the active tab of details panel
 	 *
 	 * @param string $tabName e.g. comments, sharing, versions
@@ -117,12 +135,86 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function isDialogVisible() {
 		try {
-			$dialog = $this->find("xpath", $this->detailsdialogXpath);
+			$dialog = $this->find("xpath", $this->detailsDialogXpath);
 			$visible = $dialog !== null;
 		} catch (ElementNotFoundException $e) {
 			$visible = false;
 		}
 		return $visible;
+	}
+
+	/**
+	 * get the list of comments listed in the webUI
+	 *
+	 * @return NodeElement[]
+	 */
+	public function getCommentList() {
+		$this->waitTillElementIsNotNull($this->detailsDialogXpath);
+		$dialog = $this->find("xpath", $this->detailsDialogXpath);
+		$commentList = $dialog->findAll("xpath", $this->commentListXpath);
+		return  $commentList;
+	}
+	/**
+	 * check if a comment with given text is listed in the webUI
+	 *
+	 * @param string $text
+	 *
+	 * @return bool
+	 */
+	public function isCommentOnUI($text) {
+		$commentList = $this->getCommentList();
+		if (\sizeof($commentList) === 0) {
+			return false;
+		}
+		foreach ($commentList as $comment) {
+			$this->waitTillElementIsNotNull($comment->getXpath());
+			if ($comment->getText() === $text) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * add a comment in a file whose details dialog is shown in the webUI
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function addComment($content) {
+		$commentInput = $this->find("xpath", $this->commentInputXpath);
+		$commentInput->setValue($content);
+		$postButton = $this->find("xpath", $this->commentPostXpath);
+		$postButton->focus();
+		$postButton->click();
+		$this->waitTillElementIsNotNull($this->getCommentXpath($content));
+	}
+
+	/**
+	 * delete the comment in a file whose details dialog is shown in the webUI with given content
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 *
+	 */
+	public function deleteComment($content) {
+		$commentList = $this->find("xpath", $this->getCommentXpath($content));
+		$this->waitTillElementIsNotNull($this->commentListXpath);
+
+		$this->waitTillElementIsNotNull($this->commentEditButtonXpath);
+		$commentEditButton = $commentList->getParent()->find("xpath", $this->commentEditButtonXpath);
+		$commentEditButton->focus();
+		$commentEditButton->click();
+
+		$this->waitTillElementIsNotNull($this->commentEditFormXpath);
+		$commentEditForm = $this->find("xpath", $this->commentEditFormXpath);
+		$commentEditForm->focus();
+
+		$commentDeleteButton = $commentEditForm->find("xpath", $this->commentDeleteButtonXpath);
+		$commentDeleteButton->focus();
+		$commentDeleteButton->click();
 	}
 
 	/**
