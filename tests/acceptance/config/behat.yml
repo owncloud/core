@@ -106,9 +106,11 @@ default:
         - %paths.base%/../features/webUIAdminSettings
       contexts:
         - FeatureContext: *common_feature_context_params
+        - EmailContext:
         - CapabilitiesContext:
         - WebUIAdminAppsSettingsContext:
         - WebUIAdminSharingSettingsContext:
+        - WebUIAdminGeneralSettingsContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
 
