@@ -89,8 +89,8 @@ Feature: Share by public link
     Given user "user1" has moved file "/lorem.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And the user has reloaded the current page of the webUI
     When the user tries to create a new public link for the file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" using the webUI
-    Then the user should see a error message on public dialog saying "Share name cannot be more than 64 characters"
-    And public link should not be generated
+    Then the user should see an error message on the public link share dialog saying "Share name cannot be more than 64 characters"
+    And the public link should not have been generated
 
   Scenario: user shares a public link with folder longer than 64 chars and shorter link name
     Given user "user1" has moved folder "simple-folder" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
@@ -103,22 +103,22 @@ Feature: Share by public link
   Scenario: user tries to create a public link with read only permission without entering share password while enforce password on read only public share is enforced
     Given parameter "shareapi_enforce_links_password_read_only" of app "core" has been set to "yes"
     When the user tries to create a new public link for the folder "simple-folder" using the webUI
-    Then the user should see a error message on public dialog saying "Passwords are enforced for link shares"
-    And public link should not be generated
+    Then the user should see an error message on the public link share dialog saying "Passwords are enforced for link shares"
+    And the public link should not have been generated
 
   Scenario: user tries to create a public link with read-write permission without entering share password while enforce password on read-write public share is enforced
     Given parameter "shareapi_enforce_links_password_read_write" of app "core" has been set to "yes"
     When the user tries to create a new public link for the folder "simple-folder" using the webUI with
       | permission | read-write |
-    Then the user should see a error message on public dialog saying "Passwords are enforced for link shares"
-    And public link should not be generated
+    Then the user should see an error message on the public link share dialog saying "Passwords are enforced for link shares"
+    And the public link should not have been generated
 
   Scenario: user tries to create a public link with write only permission without entering share password while enforce password on write only public share is enforced
     Given parameter "shareapi_enforce_links_password_write_only" of app "core" has been set to "yes"
     When the user tries to create a new public link for the folder "simple-folder" using the webUI with
       | permission | upload |
-    Then the user should see a error message on public dialog saying "Passwords are enforced for link shares"
-    And public link should not be generated
+    Then the user should see an error message on the public link share dialog saying "Passwords are enforced for link shares"
+    And the public link should not have been generated
 
   Scenario: user creates a public link with read-write permission without entering share password while enforce password on read only public share is enforced
     Given parameter "shareapi_enforce_links_password_read_only" of app "core" has been set to "yes"
