@@ -86,6 +86,8 @@
 			var lastSize = 30;
 			var lastResults = [];
 			var timeoutID = null;
+			/* For delaying search*/
+			var timeout = null;                                    
 
 			this.getLastQuery = function() {
 				return lastQuery;
@@ -319,18 +321,24 @@
 						renderCurrent();
 					}
 				} else {
-					var query = $searchBox.val();
-					if (lastQuery !== query) {
-						currentResult = -1;
-						if (query.length > 2) {
-							self.search(query);
-						} else {
-							self.hideResults();
+					/**
+			 		* Search begins 500 millisoconds after the user stops typing
+			 		*/
+					clearTimeout(timeout);
+					timeout = setTimeout(function () {
+						var query = $searchBox.val();
+						if (lastQuery !== query) {
+							currentResult = -1;
+							if (query.length > 2) {
+								self.search(query);
+							} else {
+								self.hideResults();
+							}
+							if(self.hasFilter(getCurrentApp())) {
+								self.getFilter(getCurrentApp())(query);
+							}
 						}
-						if(self.hasFilter(getCurrentApp())) {
-							self.getFilter(getCurrentApp())(query);
-						}
-					}
+    					}, 500);
 				}
 			});
 			$(document).keyup(function(event) {
