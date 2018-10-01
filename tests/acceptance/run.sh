@@ -13,6 +13,7 @@ OCC=${OC_PATH}occ
 BEHAT=${OC_PATH}lib/composer/bin/behat
 
 BEHAT_TAGS_OPTION_FOUND=false
+BEHAT_RERUN_TIMES=1
 
 # The following environment variables can be specified:
 #
@@ -74,6 +75,7 @@ fi
 #            testing app. We have to assume it is already enabled.
 # --show-oc-logs - tail the ownCloud log after the test run
 # --norerun - do not rerun failed webUI scenarios
+# --loop  - loop tests for given number of times. Only use it for debugging purposes
 # --part - run a subset of scenarios, need two numbers.
 #          first number: which part to run
 #          second number: in how many parts to divide the set of scenarios
@@ -94,6 +96,10 @@ do
 			;;
 		--suite)
 			BEHAT_SUITE="$2"
+			shift
+			;;
+		--loop)
+			BEHAT_RERUN_TIMES="$2"
 			shift
 			;;
 		--type)
@@ -861,8 +867,14 @@ for i in "${!BEHAT_SUITES[@]}"
 	do
 	BEHAT_SUITE_OPTION="--suite=${BEHAT_SUITES[$i]}"
 	SUITE_FEATURE_TEXT="${BEHAT_SUITES[$i]}"
-
-	run_behat_tests
+	for rerun_number in $(seq 1 $BEHAT_RERUN_TIMES)
+		do
+		if (($BEHAT_RERUN_TIMES > 1))
+		then
+			echo -e "\nTest repeat $rerun_number of $BEHAT_RERUN_TIMES"
+		fi
+		run_behat_tests
+	done
 
 	if [ "${PASSED}" = false ]
 	then
