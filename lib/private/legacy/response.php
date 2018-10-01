@@ -339,7 +339,7 @@ class OC_Response {
 		}
 
 		foreach ($allHeaders as $key => $value) {
-			$response->addHeader($key, \implode(",", $value));
+			$response->addHeader($key, \implode(',', $value));
 		}
 
 		return $response;

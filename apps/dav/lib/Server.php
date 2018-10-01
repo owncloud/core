@@ -195,7 +195,7 @@ class Server {
 
 		$this->server->addPlugin(new PreviewPlugin(\OC::$server->getTimeFactory(), \OC::$server->getPreviewManager()));
 		// wait with registering these until auth is handled and the filesystem is setup
-		$this->server->on('beforeMethod', function () use ($root) {
+		$this->server->on('beforeMethod:*', function () use ($root) {
 			// custom properties plugin must be the last one
 			$userSession = \OC::$server->getUserSession();
 			$user = $userSession->getUser();
