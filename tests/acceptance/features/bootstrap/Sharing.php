@@ -1442,7 +1442,6 @@ trait Sharing {
 	public function checkShareFields($body) {
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-
 			foreach ($fd as $field => $value) {
 				$value = $this->replaceValuesFromTable($field, $value);
 				if (!$this->isFieldInShareResponse($field, $value)) {

@@ -77,7 +77,6 @@ class Notifications {
 	 * @param Address $ownerAddress
 	 * @param Address $sharedByAddress
 	 * @param string $token
-	 * @param string $shareWith
 	 * @param string $name
 	 * @param int $remote_id
 	 *
@@ -382,7 +381,7 @@ class Notifications {
 			]
 		];
 
-		$url = $shareWithAddress->getCleanHostName();
+		$url = $shareWithAddress->getHostName();
 		$result = $this->tryHttpPostToShareEndpoint($url, '/shares', $fields, true);
 
 		if (isset($result['statusCode']) && $result['statusCode'] === Http::STATUS_CREATED) {
@@ -403,7 +402,7 @@ class Notifications {
 			'sharedByFederatedId' => $sharedByAddress->getUserId(),
 			'remote' => $this->addressHandler->generateRemoteURL(),
 		];
-		$url = $shareWithAddress->getCleanHostName();
+		$url = $shareWithAddress->getHostName();
 		$result = $this->tryHttpPostToShareEndpoint($url, '', $fields);
 		$status = \json_decode($result['result'], true);
 

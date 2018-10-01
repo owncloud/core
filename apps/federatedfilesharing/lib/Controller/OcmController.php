@@ -36,7 +36,6 @@ use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
-use OCP\Share\IShare;
 
 /**
  * Class OcmController
@@ -205,24 +204,6 @@ class OcmController extends Controller {
 				);
 			}
 
-			$shareWithAddress = new Address($shareWith);
-			$localShareWith = $shareWithAddress->getUserId();
-
-			// FIXME this should be a method in the user management instead
-			$this->logger->debug(
-				"shareWith before, $localShareWith",
-				['app' => $this->appName]
-			);
-			\OCP\Util::emitHook(
-				'\OCA\Files_Sharing\API\Server2Server',
-				'preLoginNameUsedAsUserName',
-				['uid' => &$localShareWith]
-			);
-			$this->logger->debug(
-				"shareWith after, $localShareWith",
-				['app' => $this->appName]
-			);
-
 			if ($this->isSupportedProtocol($protocol['name']) === false) {
 				throw new NotImplementedException(
 					"Protocol {$protocol['name']} is not supported"
@@ -241,6 +222,8 @@ class OcmController extends Controller {
 				);
 			}
 
+			$shareWithAddress = new Address($shareWith);
+			$localShareWith = $shareWithAddress->toLocalUid();
 			if (!$this->userManager->userExists($localShareWith)) {
 				throw new BadRequestException("User $localShareWith does not exist");
 			}
@@ -268,7 +251,7 @@ class OcmController extends Controller {
 			);
 			return new JSONResponse(
 				[
-					'message' => "internal server error, was not able to add share from {$ownerAddress->getHostName()}"
+					'message' => "internal server error, was not able to add share from {$owner}"
 				],
 				Http::STATUS_INTERNAL_SERVER_ERROR
 			);
@@ -336,17 +319,33 @@ class OcmController extends Controller {
 					break;
 				case FileNotification::NOTIFICATION_TYPE_REQUEST_RESHARE:
 					$this->ocmMiddleware->assertOutgoingSharingEnabled();
+					$this->ocmMiddleware->assertNotNull(
+						[
+							'shareWith' => $notification['shareWith'],
+							'senderId' => $notification['senderId'],
+						]
+					);
 					$share = $this->ocmMiddleware->getValidShare(
 						$providerId, $notification['sharedSecret']
 					);
+
+					// don't allow to share a file back to the owner
+					$owner = $share->getShareOwner();
+					$ownerAddress = $this->addressHandler->getLocalUserFederatedAddress($owner);
+					$shareWithAddress = new Address($notification['shareWith']);
+					$this->ocmMiddleware->assertNotSameUser($ownerAddress, $shareWithAddress);
+					$this->ocmMiddleware->assertSharingPermissionSet($share);
+
 					// TODO: permissions not needed ???
-					$share = $this->fedShareManager->reShare(
-						$share, $providerId, $notification['shareWith'], 0
+					$reShare = $this->fedShareManager->reShare(
+						$share, $notification['senderId'],
+						$notification['shareWith'],
+						0
 					);
 					return new JSONResponse(
 						[
-							'sharedSecret' => $share->getToken(),
-							'providerId' => $share->getId()
+							'sharedSecret' => $reShare->getToken(),
+							'providerId' => $reShare->getId()
 						],
 						Http::STATUS_CREATED
 					);

@@ -21,11 +21,13 @@
 
 namespace OCA\FederatedFileSharing\Middleware;
 
+use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\Ocm\Exception\BadRequestException;
 use OCA\FederatedFileSharing\Ocm\Exception\ForbiddenException;
 use OCA\FederatedFileSharing\Ocm\Exception\NotImplementedException;
+use OCP\Constants;
 use OCP\App\IAppManager;
 use OCP\ILogger;
 use OCP\IUserManager;
@@ -139,6 +141,34 @@ class OcmMiddleware {
 			throw new ForbiddenException("The secret does not match");
 		}
 		return $share;
+	}
+
+	/**
+	 * @param IShare $share
+	 *
+	 * @return void
+	 *
+	 * @throws BadRequestException
+	 */
+	public function assertSharingPermissionSet(IShare $share) {
+		$reSharingAllowed = $share->getPermissions() & Constants::PERMISSION_SHARE;
+		if (!$reSharingAllowed) {
+			throw new BadRequestException("Owner restricted sharing for this resource");
+		}
+	}
+
+	/**
+	 * @param Address $user1
+	 * @param Address $user2
+	 *
+	 * @return void
+	 *
+	 * @throws ForbiddenException
+	 */
+	public function assertNotSameUser(Address $user1, Address $user2) {
+		if ($user1->equalTo($user2)) {
+			throw new ForbiddenException('Sharing back to the owner is not allowed');
+		}
 	}
 
 	/**

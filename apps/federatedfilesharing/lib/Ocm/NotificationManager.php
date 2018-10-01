@@ -59,9 +59,19 @@ class NotificationManager {
 			'permissions' => FileNotification::NOTIFICATION_TYPE_RESHARE_CHANGE_PERMISSION,
 			'reshare' => FileNotification::NOTIFICATION_TYPE_REQUEST_RESHARE
 		];
+		$messages = [
+			'accept' => "Recipient accepted the share",
+			'decline' => "Recipient declined the share or unshared it from themself",
+			'unshare' => "File was unshared",
+			'revoke' => "Tell the owner (or the sender of a reshare) that the reshare was unshared",
+			'permissions' => "Tell the owner (or the sender of the reshare) that the permissions changed",
+			'reshare' => "Recipient of a share ask the owner to reshare the file with another user"
+		];
+
 		$notification->setNotificationType($map[$action]);
 		$notification->setProviderId($remoteId);
 		$notification->addNotificationData('sharedSecret', $token);
+		$notification->addNotificationData('message', $messages[$action]);
 
 		if ($action === 'permissions') {
 			$ocmPermissions = $this->toOcmPermissions($data['permissions']);
@@ -82,6 +92,7 @@ class NotificationManager {
 	 * Maps numeric permissions to an array of string permissions
 	 *
 	 * @param int $permissions
+	 *
 	 * @return array
 	 */
 	protected function toOcmPermissions($permissions) {
