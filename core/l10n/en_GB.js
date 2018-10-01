@@ -237,6 +237,7 @@ OC.L10N.register(
     "Line: %s" : "Line: %s",
     "Trace" : "Trace",
     "Imprint" : "Imprint",
+    "Privacy Policy" : "Privacy Policy",
     "Create an <strong>admin account</strong>" : "Create an <strong>admin account</strong>",
     "Username" : "Username",
     "Storage & database" : "Storage & database",
