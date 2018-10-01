@@ -9,8 +9,7 @@ Feature: File Upload
 
   Background:
     Given user "user1" has been created
-    And the user has browsed to the login page
-    And the user has logged in with username "user1" and password "%alt1%" using the webUI
+    And user "user1" has logged in using the webUI
 
   Scenario: simple upload of a file that does not exist before
     When the user uploads the file "new-'single'quotes.txt" using the webUI

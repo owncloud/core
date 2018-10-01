@@ -10,8 +10,7 @@ Feature: Display notifications when receiving a share and follow embedded links
       | username |
       | user1    |
       | user2    |
-    And the user has browsed to the login page
-    And the user has logged in with username "user2" and password "%alt2%" using the webUI
+    And user "user2" has logged in using the webUI
 
   @smokeTest
   Scenario: notification link redirection in case a share is pending

@@ -13,14 +13,12 @@ Feature: login users
     Given these users have been created but not initialized:
       | username |
       | user1    |
-    And the user has browsed to the login page
-    When the user logs in with username "user1" and password "%alt1%" using the webUI
+    When user "user1" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - ownCloud"
 
   @smokeTest
   Scenario: admin login
-    Given the user has browsed to the login page
-    When the user logs in with username "%admin%" and password "%admin%" using the webUI
+    When user "%admin%" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - ownCloud"
 
   @smokeTest
@@ -32,7 +30,7 @@ Feature: login users
   Scenario: access the personal general settings page when not logged in
     When the user attempts to browse to the personal general settings page
     Then the user should be redirected to a webUI page with the title "ownCloud"
-    When the user logs in with username "%admin%" and password "%admin%" using the webUI after a redirect from the "personal general settings" page
+    When user "%admin%" logs in using the webUI after a redirect from the "personal general settings" page
     Then the user should be redirected to a webUI page with the title "Settings - ownCloud"
 
   Scenario: access the personal general settings page when not logged in using incorrect then correct password
@@ -40,5 +38,5 @@ Feature: login users
     Then the user should be redirected to a webUI page with the title "ownCloud"
     When the user logs in with username "%admin%" and invalid password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "ownCloud"
-    When the user logs in with username "%admin%" and password "%admin%" using the webUI after a redirect from the "personal general settings" page
+    When user "%admin%" logs in using the webUI after a redirect from the "personal general settings" page
     Then the user should be redirected to a webUI page with the title "Settings - ownCloud"
