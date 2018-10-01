@@ -36,6 +36,7 @@ use TestHelpers\EmailHelper;
 use TestHelpers\SetupHelper;
 use OC\Files\External\Auth\Password\Password;
 use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
+use Behat\Mink\Exception\ElementException;
 
 require_once 'bootstrap.php';
 
@@ -215,6 +216,25 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theUserHasOpenedThePublicLinkShareTab() {
 		$this->publicShareTab = $this->sharingDialog->openPublicShareTab();
+	}
+
+	/**
+	 * @Given the user has renamed the public link name from :oldName to :newName
+	 * @When the user renames the public link name from :oldName to :newName
+	 *
+	 * @param string $oldName
+	 * @param string $newName
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserOpensThePublicLinkEditDialogOfThe($oldName, $newName) {
+		$this->publicShareTab->editLink($oldName, $newName);
+
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
+
+		$linkUrl = $this->publicShareTab->getLinkUrl($newName);
+		$this->addToListOfCreatedPublicLinks($newName, $linkUrl);
 	}
 
 	/**

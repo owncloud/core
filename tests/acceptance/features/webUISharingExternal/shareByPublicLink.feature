@@ -221,3 +221,26 @@ Feature: Share by public link
     And the email address "foo1234@barr.co" should have received an email containing last shared public link
     But the email address "foo1234@bar.co" should not have received an email
     And the email address "foo5678@barr.co" should not have received an email
+
+  Scenario: user shares a public link via email with a personal message
+    Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
+    And the user has reloaded the current page of the webUI
+    When the user creates a new public link for the folder "simple-folder" using the webUI with
+      | email           | foo@bar.co  |
+      | personalMessage | lorem ipsum |
+    Then the email address "foo@bar.co" should have received an email with the body containing
+			"""
+			User One shared simple-folder with you
+			"""
+    And the email address "foo@bar.co" should have received an email with the body containing
+			"""
+			lorem ipsum
+			"""
+    And the email address "foo@bar.co" should have received an email containing last shared public link
+
+  Scenario: user edits a name of an already existing public link
+    Given the user has created a new public link for the folder "simple-folder" using the webUI
+    And the user has opened the public link share tab
+    When the user renames the public link name from "simple-folder link" to "simple-folder Share"
+    And the public accesses the last created public link using the webUI
+    Then the file "lorem.txt" should be listed on the webUI
