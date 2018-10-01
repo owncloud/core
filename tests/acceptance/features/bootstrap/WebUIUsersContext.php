@@ -295,7 +295,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the administrator (enables|disables) the setting "([^"]*)" using the webUI$/
+	 * @When /^the administrator (enables|disables) the setting "([^"]*)" in the User Management page using the webUI$/
 	 *
 	 * @param string $action
 	 * @param string $setting
