@@ -228,3 +228,10 @@ Feature: Share by public link
     When the user renames the public link name from "simple-folder link" to "simple-folder Share"
     And the public accesses the last created public link using the webUI
     Then the file "lorem.txt" should be listed on the webUI
+
+  Scenario: user shares a file through public link and then it appears in a Shared by link page
+    Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
+    And the user has reloaded the current page of the webUI
+    And the user has created a new public link for the folder "simple-folder" using the webUI
+    When the user browses to the shared-by-link page
+    Then the folder "simple-folder" should be listed on the webUI
