@@ -16,7 +16,6 @@ Feature: manage user quota
     When the administrator changes the quota of user "user1" to "<wished_quota>" using the webUI
     And the administrator reloads the users page
     Then the quota of user "user1" should be set to "<expected_quota>" on the webUI
-
     Examples:
       | start_quota | wished_quota | expected_quota |
       | Unlimited   | 5 GB         | 5 GB           |
@@ -39,7 +38,6 @@ Feature: manage user quota
     When the administrator changes the quota of user "user1" to "<wished_quota>" using the webUI
     Then a notification should be displayed on the webUI with the text 'Invalid quota value "<wished_quota>"'
     And the quota of user "user1" should be set to "Default" on the webUI
-
     Examples:
       | wished_quota |
       | stupidtext   |
