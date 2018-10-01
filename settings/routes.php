@@ -60,6 +60,8 @@ $application->registerRoutes($this, [
 		['name' => 'Cors#removeDomain', 'url' => '/settings/domains/{id}', 'verb' => 'DELETE'],
 		['name' => 'LegalSettings#setImprintUrl', 'url' => '/settings/admin/legal/imprint', 'verb' => 'POST'],
 		['name' => 'LegalSettings#setPrivacyPolicyUrl', 'url' => '/settings/admin/legal/privacypolicy', 'verb' => 'POST'],
+		// Timezone set support from personal profile settings
+		['name' => 'Timezone#set', 'url' => '/settings/personal/timezone', 'verb' => 'POST']
 	]
 ]);
 

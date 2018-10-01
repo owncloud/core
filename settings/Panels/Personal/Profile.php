@@ -94,6 +94,17 @@ class Profile implements ISettings {
 		$selector->assign('commonlanguages', $commonLanguages);
 		$selector->assign('languages', $languages);
 
+		$timezoneSelector = new Template('settings', 'timezone');
+		$timezoneSelector->assign(
+			'activeTimezone',
+			$this->config->getUserValue(
+				$this->userSession->getUser()->getUID(),
+				'core',
+				'timezone',
+				null));
+		$timezoneSelector->assign('timezones', \DateTimeZone::listIdentifiers());
+
+
 		$tmpl = new Template('settings', 'panels/personal/profile');
 		$tmpl->assign('email', $this->userSession->getUser()->getEMailAddress());
 		$tmpl->assign('displayName', $this->userSession->getUser()->getDisplayName());
@@ -101,6 +112,7 @@ class Profile implements ISettings {
 		$tmpl->assign('avatarChangeSupported', $this->userSession->getUser()->canChangeAvatar());
 		$tmpl->assign('displayNameChangeSupported', $this->userSession->getUser()->canChangeDisplayName());
 		$tmpl->assign('passwordChangeSupported', $this->userSession->getUser()->canChangePassword());
+		$tmpl->assign('timezoneSelector', $timezoneSelector->fetchPage());
 		$groups = $this->groupManager->getUserGroupIds($this->userSession->getUser());
 		\sort($groups);
 		$tmpl->assign('groups', $groups);

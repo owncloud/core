@@ -230,8 +230,21 @@ $(document).ready(function () {
 				location.reload();
 			}
 			else {
-				$('#passworderror').text(data.data.message);
+				OC.Notification.showTemporary(t('settings', 'Error saving language: {message}', { message: data.data.message }));
 			}
+		});
+		return false;
+	});
+
+	$("#timezoneInput").change(function () {
+		// Serialize the data
+		var post = $("#timezoneInput").serialize();
+		// Ajax foo
+		$.post(OC.generateUrl('/settings/personal/timezone'), post, function (data) {
+			OC.Notification.showTemporary(t('settings', 'Timezone saved'));
+
+		}).fail(function(data) {
+			OC.Notification.showTemporary(t('settings', 'Error saving timezone: {message}', { message: data.responseJSON.message }));
 		});
 		return false;
 	});
