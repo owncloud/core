@@ -326,7 +326,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the administrator should be able to see email of the users as:$/
+	 * @Then /^the administrator should be able to see email of the users in the User Management page as:$/
 	 *
 	 * @param TableNode $table table of usernames and emails with a heading | username | and | email |
 	 *
@@ -339,7 +339,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		}
 	}
 	/**
-	 * @Then /^the administrator should be able to see storage location of the users as:$/
+	 * @Then /^the administrator should be able to see storage location of the users in the User Management page as:$/
 	 *
 	 * @param TableNode $table table of usernames and storage locations with a heading | username | and | storage location |
 	 *
@@ -355,7 +355,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the administrator should be able to see last login of the users as:$/
+	 * @Then /^the administrator should be able to see last login of the users in the User Management page as:$/
 	 *
 	 * @param TableNode $table table of usernames and last logins with a heading | username | and | last logins |
 	 *
