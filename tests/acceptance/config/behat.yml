@@ -248,6 +248,16 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
 
+    webUIComments:
+      paths:
+        - %paths.base%/../features/webUIComments
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIFilesContext:
+        - WebUISharingContext:
+
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:
           filename: report.xml

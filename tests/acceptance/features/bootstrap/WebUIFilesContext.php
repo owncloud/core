@@ -1759,4 +1759,55 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserSwitchesToTabInDetailsPanelUsingTheWebui($tabName) {
 		$this->filesPage->getDetailsDialog()->changeDetailsTab($tabName);
 	}
+
+	/**
+	 * @When the user comments with content :content using the WebUI
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theUserCommentsWithContentUsingTheWebui($content) {
+		$detailsDialog = $this->filesPage->getDetailsDialog();
+		$detailsDialog->addComment($content);
+		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+	}
+
+	/**
+	 * @When the user deletes the comment :content using the webUI
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theUserDeletesTheCommentUsingTheWebui($content) {
+		$detailsDialog = $this->filesPage->getDetailsDialog();
+		$detailsDialog->deleteComment($content);
+		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+	}
+
+	/**
+	 * @Then /^the comment ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the comments tab in details dialog$/
+	 *
+	 * @param string $text enclosed in single or double quotes
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 */
+	public function theCommentShouldBeListedInTheCommentsTabInDetailsDialog($text, $shouldOrNot) {
+		$should = ($shouldOrNot !== "not");
+		$text = \trim($text, $text[0]);
+		$detailsDialog = $this->getCurrentPageObject()->getDetailsDialog();
+		if ($should) {
+			PHPUnit_Framework_Assert::assertTrue(
+				$detailsDialog->isCommentOnUI($text),
+				"Failed to find comment with text $text in the webUI"
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertFalse(
+				$detailsDialog->isCommentOnUI($text),
+				"The comment with text $text exists in the webUI"
+			);
+		}
+	}
 }
