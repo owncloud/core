@@ -26,12 +26,11 @@ Feature: Autocompletion of share-with names
       | finance3      |
       | users-finance |
       | other         |
-    And the user has browsed to the login page
 
   @skipOnLDAP @user_ldap-issue-175
   @smokeTest
   Scenario: autocompletion of regular existing users
-    Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
+    Given user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for the folder "simple-folder"
     When the user types "us" in the share-with-field
@@ -41,7 +40,7 @@ Feature: Autocompletion of share-with names
   @skipOnLDAP
   @smokeTest
   Scenario: autocompletion of regular existing groups
-    Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
+    Given user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for the folder "simple-folder"
     When the user types "fi" in the share-with-field
@@ -49,7 +48,7 @@ Feature: Autocompletion of share-with names
     And the users own name should not be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion for a pattern that does not match any user or group
-    Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
+    Given user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for the folder "simple-folder"
     When the user types "doesnotexist" in the share-with-field
@@ -59,7 +58,7 @@ Feature: Autocompletion of share-with names
   @skipOnLDAP
   Scenario: autocomplete short user/display names when completely typed
     Given the administrator has set the minimum characters for sharing autocomplete to "4"
-    And the user has logged in with username "regularuser" and password "%regular%" using the webUI
+    And user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And these users have been created but not initialized:
       | username | password | displayname | email        |
@@ -74,7 +73,7 @@ Feature: Autocompletion of share-with names
     And these groups have been created:
       | groupname |
       | fi        |
-    And the user has logged in with username "regularuser" and password "%regular%" using the webUI
+    And user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for the folder "simple-folder"
     When the user types "fi" in the share-with-field
@@ -82,7 +81,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion when minimum characters is the default (2) and not enough characters are typed
-    Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
+    Given user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for the folder "simple-folder"
     When the user types "u" in the share-with-field
@@ -92,7 +91,7 @@ Feature: Autocompletion of share-with names
   @skipOnLDAP
   Scenario: autocompletion when minimum characters is increased and not enough characters are typed
     Given the administrator has set the minimum characters for sharing autocomplete to "4"
-    And the user has logged in with username "regularuser" and password "%regular%" using the webUI
+    And user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for the folder "simple-folder"
     When the user types "use" in the share-with-field
@@ -102,7 +101,7 @@ Feature: Autocompletion of share-with names
   @skipOnLDAP
   Scenario: autocompletion when increasing the minimum characters for sharing autocomplete
     Given the administrator has set the minimum characters for sharing autocomplete to "3"
-    And the user has logged in with username "regularuser" and password "%regular%" using the webUI
+    And user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for the folder "simple-folder"
     When the user types "use" in the share-with-field
@@ -111,7 +110,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP @user_ldap-issue-175
   Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (folder)
-    Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
+    Given user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user has shared the folder "simple-folder" with the user "User One" using the webUI
     And the user has opened the share dialog for the folder "simple-folder"
@@ -121,7 +120,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP @user_ldap-issue-175
   Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (file)
-    Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
+    Given user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user has shared the file "data.zip" with the user "User Grp" using the webUI
     And the user has opened the share dialog for the file "data.zip"
@@ -131,7 +130,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (folder)
-    Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
+    Given user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user shares the folder "simple-folder" with the group "finance1" using the webUI
     And the user has opened the share dialog for the folder "simple-folder"
@@ -141,7 +140,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (file)
-    Given the user has logged in with username "regularuser" and password "%regular%" using the webUI
+    Given user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
     And the user shares the file "data.zip" with the group "finance1" using the webUI
     And the user has opened the share dialog for the file "data.zip"

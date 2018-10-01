@@ -9,13 +9,12 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "user1" has been created
     And using server "LOCAL"
     And user "user1" has been created
-    And the user has browsed to the login page
-    And the user has logged in with username "user1" and password "%alt1%" using the webUI
+    And user "user1" has logged in using the webUI
 
   Scenario: test the single steps of sharing a folder to a remote server
     When the user shares the folder "simple-folder" with the remote user "user1@%remote_server_without_scheme%" using the webUI
     And the user shares the folder "simple-empty-folder" with the remote user "user1@%remote_server_without_scheme%" using the webUI
-    And the user re-logs in with username "user1" and password "%alt1%" to "%remote_server%" using the webUI
+    And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
     And using server "REMOTE"
     Then as "user1" the folder "/simple-folder (2)" should exist
@@ -59,18 +58,18 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user shares the folder "simple-folder" with the remote user "user1@%remote_server_without_scheme%" using the webUI
     And the user sets the sharing permissions of "user1@%remote_server_without_scheme% (federated)" for "simple-folder" using the webUI to
       | delete | no |
-    And the user re-logs in with username "user1" and password "%alt1%" to "%remote_server%" using the webUI
+    And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
     And the user opens the folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete the file "lorem.txt" using the webUI
 
   @skipOnMICROSOFTEDGE
   Scenario: share a folder with an remote user and prohibit deleting - remote server shares - local server receives
-    When the user re-logs in with username "user1" and password "%alt1%" to "%remote_server%" using the webUI
+    When user "user1" re-logs in to "%remote_server%" using the webUI
     And the user shares the folder "simple-folder" with the remote user "user1@%local_server_without_scheme%" using the webUI
     And the user sets the sharing permissions of "user1@%local_server_without_scheme% (federated)" for "simple-folder" using the webUI to
       | delete | no |
-    And the user re-logs in with username "user1" and password "%alt1%" to "%local_server%" using the webUI
+    And user "user1" re-logs in to "%local_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
     And the user opens the folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete the file "lorem.txt" using the webUI
@@ -79,7 +78,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
     When user "user1" on "REMOTE" uploads file "filesForUpload/lorem.txt" to "simple-folder (2)/lorem.txt" using the WebDAV API
-    And the user re-logs in with username "user1" and password "%alt1%" to "%local_server%" using the webUI
+    And user "user1" re-logs in to "%local_server%" using the webUI
     And the user opens the folder "simple-folder" using the webUI
     Then the file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" on the local server should be the same as the local "lorem.txt"
@@ -90,7 +89,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user accepts the offered remote shares using the webUI
     And the user opens the folder "simple-folder (2)" using the webUI
     And the user uploads overwriting the file "lorem.txt" using the webUI and retries if the file is locked
-    And the user re-logs in with username "user1" and password "%alt1%" to "%remote_server%" using the webUI
+    And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user opens the folder "simple-folder" using the webUI
     Then the file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" on the remote server should be the same as the local "lorem.txt"
@@ -99,7 +98,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
     When user "user1" on "REMOTE" uploads file "filesForUpload/new-lorem.txt" to "simple-folder (2)/new-lorem.txt" using the WebDAV API
-    And the user re-logs in with username "user1" and password "%alt1%" to "%local_server%" using the webUI
+    And user "user1" re-logs in to "%local_server%" using the webUI
     And the user opens the folder "simple-folder" using the webUI
     Then the file "new-lorem.txt" should be listed on the webUI
     And the content of "new-lorem.txt" on the local server should be the same as the local "new-lorem.txt"
@@ -110,7 +109,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user accepts the offered remote shares using the webUI
     And the user opens the folder "simple-folder (2)" using the webUI
     And the user uploads the file "new-lorem.txt" using the webUI
-    And the user re-logs in with username "user1" and password "%alt1%" to "%remote_server%" using the webUI
+    And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user opens the folder "simple-folder" using the webUI
     Then the file "new-lorem.txt" should be listed on the webUI
     And the content of "new-lorem.txt" on the remote server should be the same as the local "new-lorem.txt"
@@ -119,7 +118,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
     When user "user1" on "REMOTE" moves file "/simple-folder%20(2)/lorem-big.txt" to "/simple-folder%20(2)/renamed%20file.txt" using the WebDAV API
-    When the user re-logs in with username "user1" and password "%alt1%" to "%local_server%" using the webUI
+    And user "user1" re-logs in to "%local_server%" using the webUI
     And the user opens the folder "simple-folder" using the webUI
     Then the file "renamed file.txt" should be listed on the webUI
     But the file "lorem-big.txt" should not be listed on the webUI
@@ -131,7 +130,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user accepts the offered remote shares using the webUI
     When the user opens the folder "simple-folder (2)" using the webUI
     And the user renames the file "lorem-big.txt" to "renamed file.txt" using the webUI
-    And the user re-logs in with username "user1" and password "%alt1%" to "%remote_server%" using the webUI
+    And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user opens the folder "simple-folder" using the webUI
     Then the file "renamed file.txt" should be listed on the webUI
     And the content of "renamed file.txt" on the remote server should be the same as the original "simple-folder/lorem-big.txt"
@@ -141,7 +140,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
     When user "user1" on "REMOTE" deletes file "simple-folder (2)/data.zip" using the WebDAV API
-    And the user re-logs in with username "user1" and password "%alt1%" to "%local_server%" using the webUI
+    And user "user1" re-logs in to "%local_server%" using the webUI
     And the user opens the folder "simple-folder" using the webUI
     Then the file "data.zip" should not be listed on the webUI
 
@@ -151,7 +150,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user accepts the offered remote shares using the webUI
     And the user opens the folder "simple-folder (2)" using the webUI
     And the user deletes the file "data.zip" using the webUI
-    And the user re-logs in with username "user1" and password "%alt1%" to "%remote_server%" using the webUI
+    And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user opens the folder "simple-folder" using the webUI
     Then the file "data.zip" should not be listed on the webUI
 
@@ -190,7 +189,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When user "user1" moves file "/lorem.txt" to "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" using the WebDAV API
     And the user has reloaded the current page of the webUI
     And the user shares the file "averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" with the remote user "user1@%remote_server_without_scheme%" using the webUI
-    And the user re-logs in with username "user1" and password "%alt1%" to "%remote_server%" using the webUI
+    And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
     And using server "REMOTE"
     Then as "user1" the file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should exist

@@ -7,8 +7,7 @@ Feature: Unmark file/folder as favorite
 
   Background:
     Given user "user1" has been created
-    And the user has browsed to the login page
-    And the user has logged in with username "user1" and password "%alt1%" using the webUI
+    And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 
   @smokeTest

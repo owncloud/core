@@ -15,16 +15,15 @@ Feature: Sharing files and folders with internal groups
       | <group>   |
     And user "user1" has been added to group "<group>"
     And user "user2" has been added to group "<group>"
-    And the user has browsed to the login page
-    And the user has logged in with username "user3" and password "%alt3%" using the webUI
+    And user "user3" has logged in using the webUI
     When the user shares the folder "simple-folder" with the group "<group>" using the webUI
     And the user shares the file "testimage.jpg" with the group "<group>" using the webUI
-    And the user re-logs in with username "user1" and password "%alt1%" using the webUI
+    And the user re-logs in as "user1" using the webUI
     Then the folder "simple-folder (2)" should be listed on the webUI
     And the folder "simple-folder (2)" should be marked as shared with "<group>" by "User Three" on the webUI
     And the file "testimage (2).jpg" should be listed on the webUI
     And the file "testimage (2).jpg" should be marked as shared with "<group>" by "User Three" on the webUI
-    When the user re-logs in with username "user2" and password "%alt2%" using the webUI
+    When the user re-logs in as "user2" using the webUI
     Then the folder "simple-folder (2)" should be listed on the webUI
     And the folder "simple-folder (2)" should be marked as shared with "<group>" by "User Three" on the webUI
     And the file "testimage (2).jpg" should be listed on the webUI
