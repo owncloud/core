@@ -29,6 +29,7 @@ use Page\FilesPage;
 use Page\FilesPageElement\ConflictDialog;
 use Page\OwncloudPage;
 use Page\SharedWithYouPage;
+use Page\TagsPage;
 use Page\TrashbinPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\DeleteHelper;
@@ -68,6 +69,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	private $sharedWithYouPage;
 	
+	/**
+	 *
+	 * @var TagsPage
+	 */
+	private $tagsPage;
+
 	/**
 	 *
 	 * @var ConflictDialog
@@ -134,6 +141,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param ConflictDialog $conflictDialog
 	 * @param FavoritesPage $favoritesPage
 	 * @param SharedWithYouPage $sharedWithYouPage
+	 * @param TagsPage $tagsPage
 	 *
 	 * @return void
 	 */
@@ -142,13 +150,15 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		TrashbinPage $trashbinPage,
 		ConflictDialog $conflictDialog,
 		FavoritesPage $favoritesPage,
-		SharedWithYouPage $sharedWithYouPage
+		SharedWithYouPage $sharedWithYouPage,
+		TagsPage $tagsPage
 	) {
 		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
 		$this->conflictDialog = $conflictDialog;
 		$this->favoritesPage = $favoritesPage;
 		$this->sharedWithYouPage = $sharedWithYouPage;
+		$this->tagsPage = $tagsPage;
 	}
 
 	/**
@@ -350,6 +360,27 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$this->sharedWithYouPage->waitTillPageIsLoaded($this->getSession());
 			$this->webUIGeneralContext->setCurrentPageObject(
 				$this->sharedWithYouPage
+			);
+		}
+	}
+
+	/**
+	 * @When the user browses to the tags page
+	 * @Given the user has browsed to the tags page
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserBrowsesToTheTagsPage() {
+		$this->tagsPage->setPagePath(
+			$this->webUIGeneralContext->getCurrentServer() .
+			$this->tagsPage->getOriginalPath()
+		);
+		if (!$this->tagsPage->isOpen()) {
+			$this->tagsPage->open();
+			$this->tagsPage->waitTillPageIsLoaded($this->getSession());
+			$this->webUIGeneralContext->setCurrentPageObject(
+				$this->tagsPage
 			);
 		}
 	}
@@ -1845,5 +1876,16 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				"The comment with text $text exists in the webUI"
 			);
 		}
+	}
+	
+	/**
+	 * @When the user searches for tag :tag using the webUI
+	 *
+	 * @param string $tag
+	 *
+	 * @return void
+	 */
+	public function theUserSearchesForTagUsingTheWebui($tag) {
+		$this->tagsPage->searchByTag($tag);
 	}
 }
