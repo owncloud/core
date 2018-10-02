@@ -8,7 +8,7 @@ Feature: manage user quota
     Given these users have been created but not initialized:
       | username | password | displayname | email        |
       | user1    | 1234     | User One    | u1@oc.com.np |
-    And user admin has logged in using the webUI
+    And the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
   Scenario Outline: change quota to a valid value

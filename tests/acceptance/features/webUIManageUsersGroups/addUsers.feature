@@ -5,7 +5,7 @@ Feature: add users
   So that unauthorised access is impossible
 
   Background:
-    Given user admin has logged in using the webUI
+    Given the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
   Scenario: use the webUI to create a simple user

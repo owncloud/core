@@ -5,7 +5,7 @@ Feature: manage groups
   So that access to resources can be controlled more effectively
 
   Background:
-    Given user admin has logged in using the webUI
+    Given the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
   @skipOnOcV10.0.3
