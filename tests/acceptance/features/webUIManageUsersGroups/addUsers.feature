@@ -48,6 +48,7 @@ Feature: add users
       | "a"  | "%regular%" |
       | "a1" | "%alt1%"    |
 
+  @smokeTest
   Scenario: use the webUI to create a simple user with an Email address but without a password
     When the administrator creates a user with the name "guiusr1" and the email "guiusr1@owncloud" without a password using the webUI
     Then the email address "guiusr1@owncloud" should have received an email with the body containing
@@ -58,6 +59,7 @@ Feature: add users
       Access it:
       """
 
+  @smokeTest
   Scenario Outline: user sets his own password after being created with an Email address only
     When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
