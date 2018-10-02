@@ -30,6 +30,7 @@ use Page\FilesPageElement\ConflictDialog;
 use Page\OwncloudPage;
 use Page\SharedWithYouPage;
 use Page\TagsPage;
+use Page\SharedByLinkPage;
 use Page\TrashbinPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\DeleteHelper;
@@ -68,7 +69,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @var SharedWithYouPage
 	 */
 	private $sharedWithYouPage;
-	
+
+	/**
+	 *
+	 * @var SharedByLinkPage
+	 */
+	private $sharedByLinkPage;
+
 	/**
 	 *
 	 * @var TagsPage
@@ -142,6 +149,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param FavoritesPage $favoritesPage
 	 * @param SharedWithYouPage $sharedWithYouPage
 	 * @param TagsPage $tagsPage
+	 * @param SharedByLinkPage $sharedByLinkPage
 	 *
 	 * @return void
 	 */
@@ -151,7 +159,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		ConflictDialog $conflictDialog,
 		FavoritesPage $favoritesPage,
 		SharedWithYouPage $sharedWithYouPage,
-		TagsPage $tagsPage
+		TagsPage $tagsPage,
+		SharedByLinkPage $sharedByLinkPage
 	) {
 		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
@@ -159,6 +168,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->favoritesPage = $favoritesPage;
 		$this->sharedWithYouPage = $sharedWithYouPage;
 		$this->tagsPage = $tagsPage;
+		$this->sharedByLinkPage = $sharedByLinkPage;
 	}
 
 	/**
@@ -360,6 +370,27 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$this->sharedWithYouPage->waitTillPageIsLoaded($this->getSession());
 			$this->webUIGeneralContext->setCurrentPageObject(
 				$this->sharedWithYouPage
+			);
+		}
+	}
+
+	/**
+	 * @When the user browses to the shared-by-link page
+	 * @Given the user has browsed to the shared-by-link page
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserBrowsesToTheSharedByLinkPage() {
+		$this->sharedByLinkPage->setPagePath(
+			$this->webUIGeneralContext->getCurrentServer() .
+			$this->sharedByLinkPage->getOriginalPath()
+		);
+		if (!$this->sharedByLinkPage->isOpen()) {
+			$this->sharedByLinkPage->open();
+			$this->sharedByLinkPage->waitTillPageIsLoaded($this->getSession());
+			$this->webUIGeneralContext->setCurrentPageObject(
+				$this->sharedByLinkPage
 			);
 		}
 	}
@@ -1216,6 +1247,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				break;
 			case "shared-with-you page":
 				$this->theUserBrowsesToTheSharedWithYouPage();
+				break;
+			case "shared-by-link page":
+				$this->theUserBrowsesToTheSharedByLinkPage();
 				break;
 			case "search results page":
 				//nothing to do here, we cannot navigate to that page, except by performing a search
