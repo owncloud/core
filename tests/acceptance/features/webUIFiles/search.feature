@@ -43,6 +43,7 @@ Feature: Search
     And the file "lorem-big.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
     But the file "lorem.txt" with the path "/simple-folder" should not be listed in the search results in other folders section on the webUI
 
+  @systemtags-app-required
   Scenario: search for a file using a tag
     Given user "user1" has created a "normal" tag with name "ipsum"
     And user "user1" has added the tag "ipsum" to "/lorem.txt"
@@ -50,6 +51,7 @@ Feature: Search
     And the user searches for tag "ipsum" using the webUI
     Then the file "lorem.txt" should be listed on the webUI
 
+  @systemtags-app-required
   Scenario: search for a file with multiple tags
     Given user "user1" has created a "normal" tag with name "lorem"
     And user "user1" has created a "normal" tag with name "ipsum"
