@@ -64,6 +64,20 @@ trait Tags {
 	}
 
 	/**
+	 * Adds to the list of created tags using display name
+	 *
+	 * @param string $tagDisplayName
+	 *
+	 * @return void
+	 */
+	public function addToTheListOfCreatedTagsByDisplayName($tagDisplayName) {
+		\array_push(
+			$this->createdTags,
+			$this->findTagIdByName($tagDisplayName)
+		);
+	}
+
+	/**
 	 * @param array $tagData
 	 * @param string $type
 	 *
