@@ -171,6 +171,38 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
+	 * @Then the owncloud version should be displayed on the personal general settings page in the webUI
+	 *
+	 * @return void
+	 */
+	public function theOwncloudVersionShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui() {
+		PHPUnit_Framework_Assert::assertTrue($this->personalGeneralSettingsPage->isVersionDisplayed());
+	}
+
+	/**
+	 * @Then the federated cloud id for user :user should be displayed on the personal general settings page in the webUI
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theFederatedCloudIdForUserShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui($user) {
+		$userFederatedCloudId = $user . "@" . $this->featureContext->getLocalBaseUrlWithoutScheme();
+		PHPUnit_Framework_Assert::assertEquals($this->personalGeneralSettingsPage->getFederatedCloudID(), $userFederatedCloudId);
+	}
+
+	/**
+	 * @Then the group :groupName should be displayed on the personal general settings page in the webUI
+	 *
+	 * @param string $groupName
+	 *
+	 * @return void
+	 */
+	public function theGroupShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui($groupName) {
+		PHPUnit_Framework_Assert::assertTrue($this->personalGeneralSettingsPage->isGroupNameDisplayed($groupName));
+	}
+
+	/**
 	 * @When the user follows the email change confirmation link received by :emailAddress using the webUI
 	 * @Given the user has followed the email change confirmation link received by :emailAddress using the webUI
 	 *
