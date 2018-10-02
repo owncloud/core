@@ -25,6 +25,7 @@ namespace Page;
 use Behat\Gherkin\Node\TableNode;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use WebDriver\Session;
+use TestHelpers\EmailHelper;
 
 /**
  * Admin General Settings page.
@@ -58,37 +59,25 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	public function setEmailServerSettings($emailSettingsTable) {
 		foreach ($emailSettingsTable as $row) {
 			if ($row['setting'] === 'send mode') {
-
 				$this->selectFieldOption($this->sendModeTypeId, $row['value']);
-
 			} elseif ($row['setting'] === 'encryption') {
-
 				$this->selectFieldOption($this->encryptionTypeId, $row['value']);
-
 			} elseif ($row['setting'] === 'from address') {
-
 				$this->fillField($this->mailFromAddressFieldId, $row['value']);
-
 			} elseif ($row['setting'] === 'mail domain') {
-
 				$this->fillField($this->mailDomainFieldId, $row['value']);
-
 			} elseif ($row['setting'] === 'authentication method') {
-
 				$this->selectFieldOption($this->authMethodTypeId, $row['value']);
-
 			} elseif ($row['setting'] === 'authentication required') {
-
 				$this->checkRequiredAuthentication($row['value']);
-
 			} elseif ($row['setting'] === 'server address') {
+				if ($row['value'] === "%MAILHOG_HOST%") {
+					$row['value'] = EmailHelper::getMailhogHost();
+				}
 
 				$this->fillField($this->serverAddressFieldId, $row['value']);
-
 			} elseif ($row['setting'] === 'port') {
-
 				$this->fillField($this->serverPortFieldId, $row['value']);
-
 			}
 		}
 		$this->waitForAjaxCallsToStartAndFinish($this->getSession());
@@ -103,6 +92,15 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 */
 	public function sendTestEmail($session) {
 		$sendTestEmailBtn = $this->findById($this->sendTestEmailBtnId);
+
+		if ($sendTestEmailBtn === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $this->sendTestEmailBtnId " .
+				"could not find button"
+			);
+		}
+
 		$sendTestEmailBtn->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
@@ -130,7 +128,7 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 		if ($checkCheckbox === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" id $checkCheckbox " .
+				" id $this->authRequiredCheckboxId " .
 				"could not find checkbox"
 			);
 		}

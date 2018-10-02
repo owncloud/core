@@ -30,7 +30,7 @@ use Page\AdminGeneralSettingsPage;
 require_once 'bootstrap.php';
 
 /**
-//  * WebUI AdminGeneralSettings context.
+ * WebUI AdminGeneralSettings context.
  */
 class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context {
 	private $adminGeneralSettingsPage;
@@ -67,7 +67,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When the administrator sets the following settings in email server setting using the webUI
+	 * @When the administrator sets the following email server settings using the webUI
 	 *
 	 * @param TableNode $emailSettingsTable table of email server settings headings: must be: | setting | and | value |
 	 *
@@ -75,7 +75,6 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 */
 	public function administratorSetsTheFollowingSettingsInEmailServerSettingUsingTheWebui(TableNode $emailSettingsTable) {
 		$this->adminGeneralSettingsPage->setEmailServerSettings($emailSettingsTable);
-		
 	}
 
 	/**

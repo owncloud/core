@@ -504,6 +504,62 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When /^the administrator changes the email of user "([^"]*)" to "([^"]*)" using the provisioning API$/
+	 * @Given /^the administrator has changed the email of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $email
+	 *
+	 * @return void
+	 */
+	public function adminChangesTheEmailOfTheUserUsingTheProvisioningApi(
+		$user, $email
+	) {
+		$result = UserHelper::editUser(
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
+			'email',
+			$email,
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
+		if ($result->getStatusCode() !== 200) {
+			throw new \Exception(
+				"could not change email of user. "
+				. $result->getStatusCode() . " " . $result->getBody()
+			);
+		}
+	}
+
+	/**
+	 * @When /^the administrator changes the quota of user "([^"]*)" to "([^"]*)" using the provisioning API$/
+	 * @Given /^the administrator has changed the quota of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $quota
+	 *
+	 * @return void
+	 */
+	public function adminChangesTheQuotaOfTheUserUsingTheProvisioningApi(
+		$user, $quota
+	) {
+		$result = UserHelper::editUser(
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
+			'quota',
+			$quota,
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
+		if ($result->getStatusCode() !== 200) {
+			throw new \Exception(
+				"could not change quota of user. "
+				. $result->getStatusCode() . " " . $result->getBody()
+			);
+		}
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" should exist$/
 	 *
 	 * @param string $user
