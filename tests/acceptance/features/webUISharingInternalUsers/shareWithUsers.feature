@@ -91,3 +91,13 @@ Feature: Sharing files and folders with internal users
     And the user re-logs in as "user1" using the webUI
     And the user opens the folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete the file "lorem.txt" using the webUI
+
+  Scenario: share a folder with other user and then it should be listed on Shared with You for other user
+    Given the user has renamed the folder "simple-folder" to "new-simple-folder" using the webUI
+    And the user has renamed the file "lorem.txt" to "ipsum.txt" using the webUI
+    And the user has shared the file "ipsum.txt" with the user "User One" using the webUI
+    And the user has shared the folder "new-simple-folder" with the user "User One" using the webUI
+    When the user re-logs in as "user1" using the webUI
+    And the user browses to the shared-with-you page
+    Then the file "ipsum.txt" should be listed on the webUI
+    And the folder "new-simple-folder" should be listed on the webUI
