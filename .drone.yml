@@ -136,6 +136,33 @@ pipeline:
       matrix:
         INSTALL_SERVER: true
 
+  api-disable-comments:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+    - php occ a:d comments
+    when:
+      matrix:
+        TEST_SUITE: api
+
+  cli-disable-comments:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+    - php occ a:d comments
+    when:
+      matrix:
+        TEST_SUITE: cli
+
+  webui-disable-comments:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+    - php occ a:d comments
+    when:
+      matrix:
+        TEST_SUITE: selenium
+
   prepare-objectstore:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -354,7 +381,7 @@ pipeline:
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
-      - make test-acceptance-api TESTING_REMOTE_SYSTEM=true
+      - make test-acceptance-api TESTING_REMOTE_SYSTEM=true BEHAT_FILTER_TAGS=~comments-app-required
     when:
       matrix:
         TEST_SUITE: api
@@ -368,7 +395,7 @@ pipeline:
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
-      - make test-acceptance-cli TESTING_REMOTE_SYSTEM=true
+      - make test-acceptance-cli TESTING_REMOTE_SYSTEM=true BEHAT_FILTER_TAGS=~comments-app-required
     when:
       matrix:
         TEST_SUITE: cli
@@ -386,7 +413,7 @@ pipeline:
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
-      - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
+      - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true BEHAT_FILTER_TAGS=~comments-app-required
     when:
       matrix:
         TEST_SUITE: selenium
