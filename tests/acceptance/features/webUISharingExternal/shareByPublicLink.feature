@@ -238,6 +238,13 @@ Feature: Share by public link
 			"""
     And the email address "foo@bar.co" should have received an email containing last shared public link
 
+  Scenario: user edits a name of an already existing public link
+    Given the user has created a new public link for the folder "simple-folder" using the webUI
+    And the user has opened the public link share tab
+    When the user renames the public link name from "simple-folder link" to "simple-folder Share"
+    And the public accesses the last created public link using the webUI
+    Then the file "lorem.txt" should be listed on the webUI
+
   Scenario: user shares a file through public link and then it appears in a Shared by link page
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And the user has reloaded the current page of the webUI

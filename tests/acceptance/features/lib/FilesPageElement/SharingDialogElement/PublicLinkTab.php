@@ -44,6 +44,7 @@ class PublicLinkTab extends OwncloudPage {
 	private $linkEntryByNameXpath = ".//*[@class='link-entry--title' and .=%s]/..";
 	private $linkUrlInputXpath = ".//input";
 	private $publicLinkWarningMessageXpath = ".//*[@class='error-message-global'][last()]";
+	private $linkEditBtnXpath = "//div[@class='link-entry--icon-button editLink']";
 
 	/**
 	 *
@@ -156,6 +157,20 @@ class PublicLinkTab extends OwncloudPage {
 	}
 
 	/**
+	 * Updates sharing popup as popup may change
+	 *
+	 * @return void
+	 */
+	public function updateSharingPopup() {
+		$popupElement = $this->waitTillElementIsNotNull($this->popupXpath);
+
+		$this->editPublicLinkPopupPageObject = $this->getPage(
+			"FilesPageElement\\SharingDialogElement\\EditPublicLinkPopup"
+		);
+		$this->editPublicLinkPopupPageObject->setElement($popupElement);
+	}
+
+	/**
 	 *
 	 * @param string $name
 	 * @param string $newName
@@ -165,6 +180,7 @@ class PublicLinkTab extends OwncloudPage {
 	 * @param string $email
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function editLink(
 		$name,
@@ -174,7 +190,17 @@ class PublicLinkTab extends OwncloudPage {
 		$expirationDate = null,
 		$email = null
 	) {
-		throw new Exception("not implemented");
+		$linkEntry = $this->findLinkEntryByName($name);
+		$editLinkBtn = $linkEntry->find("xpath", $this->linkEditBtnXpath);
+
+		$editLinkBtn->click();
+
+		$this->updateSharingPopup();
+
+		if ($newName !== null) {
+			$this->editPublicLinkPopupPageObject->setLinkName($newName);
+		}
+		$this->editPublicLinkPopupPageObject->save();
 	}
 
 	/**
