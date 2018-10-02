@@ -303,6 +303,15 @@ default:
         - WebUIFilesContext:
         - WebUISharingContext:
 
+    webUITags:
+      paths:
+        - %paths.base%/../features/webUITags
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIFilesContext:
+
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:
           filename: report.xml

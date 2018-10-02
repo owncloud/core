@@ -421,10 +421,12 @@ class FilesPage extends FilesPageBasic {
 		$url = \rtrim($this->getUrl(), '/');
 		$fullUrl = "$url/?dir=$folderName&fileid=$fileId";
 
-		if ($detailsTab !== null) {
-			$detailsDialog = $this->getDetailsDialog();
-			$fullUrl = "$fullUrl&details=" . $detailsDialog->getDetailsTabId($detailsTab);
+		if ($detailsTab === null) {
+			$detailsTab = "";
 		}
+
+		$detailsDialog = $this->getDetailsDialog();
+		$fullUrl = "$fullUrl&details=" . $detailsDialog->getDetailsTabId($detailsTab);
 
 		$this->getDriver()->visit($fullUrl);
 
