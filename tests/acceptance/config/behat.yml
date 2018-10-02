@@ -108,6 +108,16 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
 
+    webUIComments:
+      paths:
+        - %paths.base%/../features/webUIComments
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIFilesContext:
+        - WebUISharingContext:
+
     webUIFavorites:
       paths:
         - %paths.base%/../features/webUIFavorites
@@ -232,6 +242,15 @@ default:
         - WebUINotificationsContext:
         - WebUISharingContext:
 
+    webUITags:
+      paths:
+        - %paths.base%/../features/webUITags
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIFilesContext:
+
     webUITrashbin:
       paths:
         - %paths.base%/../features/webUITrashbin
@@ -249,25 +268,6 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
-
-    webUIComments:
-      paths:
-        - %paths.base%/../features/webUIComments
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
-        - WebUISharingContext:
-
-    webUITags:
-      paths:
-        - %paths.base%/../features/webUITags
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
 
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:
