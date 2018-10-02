@@ -245,7 +245,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function followLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
 		$content = EmailHelper::getBodyOfEmail(
-			EmailHelper::getMailhogUrl(), $emailAddress, $numEmails
+			EmailHelper::getLocalMailhogUrl(), $emailAddress, $numEmails
 		);
 		$matches = [];
 		\preg_match($regexSearch, $content, $matches);
