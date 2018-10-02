@@ -521,8 +521,10 @@ trait Provisioning {
 			'email',
 			$email,
 			$this->getAdminUsername(),
-			$this->getAdminPassword()
+			$this->getAdminPassword(),
+			$this->ocsApiVersion
 		);
+		$this->response = $result;
 		if ($result->getStatusCode() !== 200) {
 			throw new \Exception(
 				"could not change email of user. "
@@ -549,8 +551,10 @@ trait Provisioning {
 			'quota',
 			$quota,
 			$this->getAdminUsername(),
-			$this->getAdminPassword()
+			$this->getAdminPassword(),
+			$this->ocsApiVersion
 		);
+		$this->response = $result;
 		if ($result->getStatusCode() !== 200) {
 			throw new \Exception(
 				"could not change quota of user. "

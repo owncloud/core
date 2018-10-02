@@ -87,6 +87,7 @@ class EmailHelper {
 						$skip++;
 						continue;
 					}
+
 					$body = \str_replace(
 						"\r\n", "\n",
 						\quoted_printable_decode($item->Content->Body)
