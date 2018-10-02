@@ -113,14 +113,22 @@ class EmailHelper {
 	}
 
 	/**
-	 *
 	 * @return string
 	 */
-	public static function getMailhogUrl() {
+	public static function getMailhogHost() {
 		$mailhogHost = \getenv('MAILHOG_HOST');
 		if ($mailhogHost === false) {
 			$mailhogHost = "127.0.0.1";
 		}
+		return $mailhogHost;
+	}
+	/**
+	 *
+	 * @return string
+	 */
+	public static function getMailhogUrl() {
+		$mailhogHost = self::getMailhogHost();
+
 		$mailhogPort = \getenv('MAILHOG_PORT');
 		if ($mailhogPort === false) {
 			$mailhogPort = "8025";
