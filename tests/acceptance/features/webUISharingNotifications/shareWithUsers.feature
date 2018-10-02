@@ -10,8 +10,7 @@ Feature: Sharing files and folders with internal users
       | username |
       | user1    |
       | user2    |
-    And the user has browsed to the login page
-    And the user has logged in with username "user2" and password "%alt2%" using the webUI
+    And user "user2" has logged in using the webUI
 
   @smokeTest
   Scenario: notifications about new share is displayed when autoacepting is disabled

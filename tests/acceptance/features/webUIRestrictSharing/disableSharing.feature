@@ -11,6 +11,5 @@ Feature: disable sharing
   @smokeTest
   Scenario: Users tries to share via WebUI when Sharing is disabled
     Given the setting "Allow apps to use the Share API" in the section "Sharing" has been disabled
-    And the user has browsed to the login page
-    When the user logs in with username "user1" and password "%alt1%" using the webUI
+    When user "user1" logs in using the webUI
     Then it should not be possible to share the folder "simple-folder" using the webUI
