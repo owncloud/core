@@ -1,4 +1,4 @@
-@webUI @insulated
+@webUI @insulated  @comments-app-required
 Feature: Add, delete and edit comments in files and folders
 
   As a user
