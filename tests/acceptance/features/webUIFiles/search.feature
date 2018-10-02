@@ -42,3 +42,22 @@ Feature: Search
     And the file "lorem.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
     And the file "lorem-big.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
     But the file "lorem.txt" with the path "/simple-folder" should not be listed in the search results in other folders section on the webUI
+
+  Scenario: search for a file using a tag
+    Given user "user1" has created a "normal" tag with name "ipsum"
+    And user "user1" has added the tag "ipsum" to "/lorem.txt"
+    When the user browses to the tags page
+    And the user searches for tag "ipsum" using the webUI
+    Then the file "lorem.txt" should be listed on the webUI
+
+  Scenario: search for a file with multiple tags
+    Given user "user1" has created a "normal" tag with name "lorem"
+    And user "user1" has created a "normal" tag with name "ipsum"
+    And user "user1" has added the tag "lorem" to "/lorem.txt"
+    And user "user1" has added the tag "lorem" to "/testimage.jpg"
+    And user "user1" has added the tag "ipsum" to "/lorem.txt"
+    When the user browses to the tags page
+    And the user searches for tag "lorem" using the webUI
+    And the user searches for tag "ipsum" using the webUI
+    Then the file "lorem.txt" should be listed on the webUI
+    And the file "testimage.jpg" should not be listed on the webUI
