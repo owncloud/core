@@ -181,9 +181,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When user admin logs in using the webUI
-	 * @Given user admin has logged in using the webUI
-	 *
 	 * @return void
 	 * @throws \Exception
 	 */
