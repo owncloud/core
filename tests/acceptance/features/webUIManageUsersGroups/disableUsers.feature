@@ -9,7 +9,7 @@ Feature: disable users
       | username | password | displayname | email        |
       | user1    | %regular%     | User One    | u1@oc.com.np |
       | user2    | %regular%     | User Two    | u2@oc.com.np |
-    And user admin has logged in using the webUI
+    And the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
   Scenario: disable a user

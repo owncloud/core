@@ -8,7 +8,7 @@ Feature: add users
       | username | password  | displayname | email        |
       | user1    | %regular% | User One    | u1@oc.com.np |
       | user2    | %regular% | User Two    | u2@oc.com.np |
-    And user admin has logged in using the webUI
+    And the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
    Scenario: administrator should be able to see email of a user
@@ -37,7 +37,7 @@ Feature: add users
     And the administrator logs out of the webUI
     And the user logs in with username "user1" and password "%regular%" using the webUI
     And the user logs out of the webUI
-    And user admin logs in using the webUI
+    And the administrator logs in using the webUI
     And the administrator browses to the users page
     Then the administrator should be able to see last login of the users in the User Management page as:
       | username | last login  |

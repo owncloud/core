@@ -5,7 +5,7 @@ Feature: Add group
   So that I can share documents with other users
 
   Background:
-    Given user admin has logged in using the webUI
+    Given the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
   Scenario Outline: Add group
