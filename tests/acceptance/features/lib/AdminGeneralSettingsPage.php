@@ -74,7 +74,6 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 				if ($row['value'] === "%MAILHOG_HOST%") {
 					$row['value'] = EmailHelper::getMailhogHost();
 				}
-
 				$this->fillField($this->serverAddressFieldId, $row['value']);
 			} elseif ($row['setting'] === 'port') {
 				$this->fillField($this->serverPortFieldId, $row['value']);

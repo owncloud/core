@@ -85,11 +85,12 @@ class UserHelper {
 	 * @param string $value
 	 * @param string $adminUser
 	 * @param string $adminPassword
+	 * @param int $ocsApiVersion
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function editUser(
-		$baseUrl, $user, $key, $value, $adminUser, $adminPassword
+		$baseUrl, $user, $key, $value, $adminUser, $adminPassword, $ocsApiVersion = 2
 	) {
 		return OcsApiHelper::sendRequest(
 			$baseUrl,
@@ -97,7 +98,8 @@ class UserHelper {
 			$adminPassword,
 			"PUT",
 			"/cloud/users/" . $user,
-			["key" => $key, "value" => $value]
+			["key" => $key, "value" => $value],
+			$ocsApiVersion
 		);
 	}
 

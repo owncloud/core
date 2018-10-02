@@ -8,27 +8,31 @@ Feature: edit users
     Given using OCS API version "1"
 
   @smokeTest
-  Scenario: Edit a user
+  Scenario: Edit a user email
     Given user "brand-new-user" has been created
-    When user "%admin%" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/brand-new-user" with body
-      | key   | quota                    |
-      | value | 12MB                     |
-      | key   | email                    |
-      | value | brand-new-user@gmail.com |
-    Then the OCS status code should be "100"
+    When the administrator changes the email of user "brand-new-user" to "brand-new-user@example.com" using the provisioning API
     And the HTTP status code should be "200"
+    And the OCS status code should be "100"
     And user "brand-new-user" should exist
+    And the user attributes returned by the API should include
+      | email | brand-new-user@example.com |
+
+  @smokeTest
+  Scenario: Edit a user quota
+    Given user "brand-new-user" has been created
+    When the administrator changes the quota of user "brand-new-user" to "12MB" using the provisioning API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "100"
+    And user "brand-new-user" should exist
+    And the user attributes returned by the API should include
+      | quota definition | 12 MB |
 
   Scenario: Override existing user email
     Given user "brand-new-user" has been created
-    And user "%admin%" has sent HTTP method "PUT" to OCS API endpoint "/cloud/users/brand-new-user" with body
-      | key   | email                    |
-      | value | brand-new-user@gmail.com |
+    And the administrator has changed the email of user "brand-new-user" to "brand-new-user@gmail.com"
     And the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And user "%admin%" has sent HTTP method "PUT" to OCS API endpoint "/cloud/users/brand-new-user" with body
-      | key   | email                      |
-      | value | brand-new-user@example.com |
+    And the administrator has changed the email of user "brand-new-user" to "brand-new-user@example.com"
     And the OCS status code should be "100"
     And the HTTP status code should be "200"
     When user "%admin%" sends HTTP method "GET" to OCS API endpoint "/cloud/users/brand-new-user"
