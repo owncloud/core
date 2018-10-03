@@ -136,6 +136,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISearchContext:
+        - WebUISharingContext:
 
     webUILogin:
       paths:
