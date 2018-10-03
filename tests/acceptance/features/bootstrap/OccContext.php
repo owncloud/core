@@ -56,15 +56,22 @@ class OccContext implements Context {
 
 			if (isset($row['displayname'])) {
 				$displayName = $row['displayname'];
-				$cmd = "$cmd --display-name='$displayName'";
 			} else {
-				$displayName = null;
+				$displayName = $this->featureContext->getDisplayNameForUser($username);
 			}
+
+			if ($displayName !== null) {
+				$cmd = "$cmd --display-name='$displayName'";
+			}
+
 			if (isset($row['email'])) {
 				$email = $row['email'];
-				$cmd = "$cmd --email='$email'";
 			} else {
-				$email = null;
+				$email = $this->featureContext->getEmailAddressForUser($username);
+			}
+
+			if ($email !== null) {
+				$cmd = "$cmd --email='$email'";
 			}
 
 			if (isset($row['password'])) {
