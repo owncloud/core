@@ -54,6 +54,10 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 
 	protected $releaseChannelId = 'release-channel';
 
+	protected $cronJobAjaxXpath = "//label[@for='backgroundjobs_ajax']";
+	protected $cronJobWebCronXpath = "//label[@for='backgroundjobs_webcron']";
+	protected $cronJobCronXpath = "//label[@for='backgroundjobs_cron']";
+
 	/**
 	 * set email server settings
 	 *
@@ -182,5 +186,35 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 */
 	public function setUpdateChannelValue($updateChannel) {
 		$this->selectFieldOption($this->releaseChannelId, $updateChannel);
+	}
+
+	/**
+	 * set cron job value
+	 *
+	 * @param string $cronJob
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function setCornJobValue($cronJob) {
+		if ($cronJob == "ajax") {
+			$selectCorn = $this->find("xpath", $this->cronJobAjaxXpath);
+		} elseif ($cronJob == "webcron") {
+			$selectCorn = $this->find("xpath", $this->cronJobWebCronXpath);
+		} elseif ($cronJob == "cron") {
+			$selectCorn = $this->find("xpath", $this->cronJobCronXpath);
+		} else {
+			throw new \Exception(
+				__METHOD__ . " invalid cron job type: $cronJob"
+			);
+		}
+		if ($selectCorn === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $selectCorn->getXpath() " .
+				"could xpath for radio button"
+			);
+		}
+		$selectCorn->click();
 	}
 }
