@@ -130,6 +130,17 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When the administrator sets the value of cron job to :cronJob using the webUI
+	 *
+	 * @param string $cronJob
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsTheValueOfCronJobToUsingTheWebui($cronJob) {
+		$this->adminGeneralSettingsPage->setCornJobValue($cronJob);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *

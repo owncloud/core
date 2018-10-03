@@ -45,3 +45,11 @@ Feature: admin general settings
     And the administrator sets the value of update channel to "daily" using the webUI
     And the administrator invokes occ command "config:app:get core OC_Channel"
     Then the command output should contain the text "daily"
+
+@smokeTest
+  Scenario: administrator changes the cron job
+    Given the administrator has invoked occ command "config:app:set core backgroundjobs_mode --value ajax"
+    When the user reloads the current page of the webUI
+    And the administrator sets the value of cron job to "webcron" using the webUI
+    And the administrator invokes occ command "config:app:get core backgroundjobs_mode"
+    Then the command output should contain the text "webcron"
