@@ -248,7 +248,25 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws ElementNotFoundException
 	 */
 	public function theUserChangesThePasswordOfThePublicLinkForTo($name, $newPassword) {
-		$this->publicShareTab->editLink($name, null, [], $newPassword);
+		$this->publicShareTab->editLink($name, null, null, $newPassword);
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
+
+		$linkUrl = $this->publicShareTab->getLinkUrl($name);
+		$this->addToListOfCreatedPublicLinks($name, $linkUrl);
+	}
+
+	/**
+	 * @Given the user has changed the permission of the public link for :name to :newPermission
+	 * @When the user changes the permission of the public link for :name to :newPermission
+	 *
+	 * @param string $name
+	 * @param string $newPermission
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserChangesThePermissionOfThePublicLinkForTo($name, $newPermission) {
+		$this->publicShareTab->editLink($name, null, $newPermission);
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($name);

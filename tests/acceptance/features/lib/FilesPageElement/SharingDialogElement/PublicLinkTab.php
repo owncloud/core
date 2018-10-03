@@ -174,7 +174,7 @@ class PublicLinkTab extends OwncloudPage {
 	 *
 	 * @param string $name
 	 * @param string $newName
-	 * @param array $permissions
+	 * @param string $permissions
 	 * @param string $password
 	 * @param string $expirationDate
 	 * @param string $email
@@ -202,6 +202,9 @@ class PublicLinkTab extends OwncloudPage {
 		}
 		if ($password !== null) {
 			$this->editPublicLinkPopupPageObject->setLinkPassword($password);
+		}
+		if ($permissions !== null) {
+			$this->editPublicLinkPopupPageObject->setLinkPermissions($permissions);
 		}
 		$this->editPublicLinkPopupPageObject->save();
 	}

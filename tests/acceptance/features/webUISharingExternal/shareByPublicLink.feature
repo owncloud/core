@@ -242,3 +242,30 @@ Feature: Share by public link
     When the user changes the password of the public link for "simple-folder link" to "pass1234"
     And the public accesses the last created public link with password "pass1234" using the webUI
     Then the file "lorem.txt" should be listed on the webUI
+
+  Scenario: user edits the password of an already existing public link and tries to access with old password
+    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+      | password | pass123 |
+    When the user changes the password of the public link for "simple-folder link" to "pass1234"
+    And the public tries to access the last created public link with wrong password "pass123" using the webUI
+    Then the public should not get access to the publicly shared file
+
+  Scenario: user edits the permission of an already existing public link from read-write to read
+    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read-write |
+    When the user changes the permission of the public link for "simple-folder link" to "read"
+    And the public accesses the last created public link using the webUI
+    Then the file "lorem.txt" should be listed on the webUI
+    And it should not be possible to delete the file "lorem.txt" using the webUI
+
+  Scenario: user edits the permission of an already existing public link from read to read-write
+    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read |
+    When the user changes the permission of the public link for "simple-folder link" to "read-write"
+    And the public accesses the last created public link using the webUI
+    And the user deletes the following elements using the webUI
+      | name                                  |
+      | simple-empty-folder                   |
+      | lorem.txt                             |
+    Then the deleted elements should not be listed on the webUI
+    And the deleted elements should not be listed on the webUI after a page reload
