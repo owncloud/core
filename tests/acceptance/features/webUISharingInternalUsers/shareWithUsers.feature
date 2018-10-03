@@ -101,3 +101,10 @@ Feature: Sharing files and folders with internal users
     And the user browses to the shared-with-you page
     Then the file "ipsum.txt" should be listed on the webUI
     And the folder "new-simple-folder" should be listed on the webUI
+
+  Scenario: share a folder with other user and then it should be listed on Shared with Others page
+    Given the user has shared the file "lorem.txt" with the user "User One" using the webUI
+    And the user has shared the folder "simple-folder" with the user "User One" using the webUI
+    When the user browses to the shared-with-others page
+    Then the file "lorem.txt" should be listed on the webUI
+    And the folder "simple-folder" should be listed on the webUI

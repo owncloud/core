@@ -28,6 +28,7 @@ use Page\FavoritesPage;
 use Page\FilesPage;
 use Page\FilesPageElement\ConflictDialog;
 use Page\OwncloudPage;
+use Page\SharedWithOthersPage;
 use Page\SharedWithYouPage;
 use Page\SharedByLinkPage;
 use Page\TagsPage;
@@ -75,6 +76,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @var SharedByLinkPage
 	 */
 	private $sharedByLinkPage;
+
+	/**
+	 * @var SharedWithOthersPage
+	 */
+	private $sharedWithOthersPage;
 
 	/**
 	 *
@@ -148,8 +154,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param ConflictDialog $conflictDialog
 	 * @param FavoritesPage $favoritesPage
 	 * @param SharedWithYouPage $sharedWithYouPage
-	 * @param SharedByLinkPage $sharedByLinkPage
 	 * @param TagsPage $tagsPage
+	 * @param SharedByLinkPage $sharedByLinkPage
+	 * @param SharedWithOthersPage $sharedWithOthersPage
 	 *
 	 * @return void
 	 */
@@ -159,8 +166,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		ConflictDialog $conflictDialog,
 		FavoritesPage $favoritesPage,
 		SharedWithYouPage $sharedWithYouPage,
+		TagsPage $tagsPage,
 		SharedByLinkPage $sharedByLinkPage,
-		TagsPage $tagsPage
+		SharedWithOthersPage $sharedWithOthersPage
 	) {
 		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
@@ -169,6 +177,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->sharedWithYouPage = $sharedWithYouPage;
 		$this->sharedByLinkPage = $sharedByLinkPage;
 		$this->tagsPage = $tagsPage;
+		$this->sharedWithOthersPage = $sharedWithOthersPage;
 	}
 
 	/**
@@ -391,6 +400,27 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$this->sharedByLinkPage->waitTillPageIsLoaded($this->getSession());
 			$this->webUIGeneralContext->setCurrentPageObject(
 				$this->sharedByLinkPage
+			);
+		}
+	}
+
+	/**
+	 * @When the user browses to the shared-with-others page
+	 * @Given the user has browsed to the shared-with-others page
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserBrowsesToTheSharedWithOthersPage() {
+		$this->sharedWithOthersPage->setPagePath(
+			$this->webUIGeneralContext->getCurrentServer() .
+			$this->sharedWithOthersPage->getOriginalPath()
+		);
+		if (!$this->sharedWithOthersPage->isOpen()) {
+			$this->sharedWithOthersPage->open();
+			$this->sharedWithOthersPage->waitTillPageIsLoaded($this->getSession());
+			$this->webUIGeneralContext->setCurrentPageObject(
+				$this->sharedWithOthersPage
 			);
 		}
 	}
