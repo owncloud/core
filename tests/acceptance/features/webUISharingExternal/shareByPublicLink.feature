@@ -251,3 +251,10 @@ Feature: Share by public link
     And the user has created a new public link for the folder "simple-folder" using the webUI
     When the user browses to the shared-by-link page
     Then the folder "simple-folder" should be listed on the webUI
+
+  Scenario: user edits the password of an already existing public link
+    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+      | password | pass123 |
+    When the user changes the password of the public link for "simple-folder link" to "pass1234"
+    And the public accesses the last created public link with password "pass1234" using the webUI
+    Then the file "lorem.txt" should be listed on the webUI

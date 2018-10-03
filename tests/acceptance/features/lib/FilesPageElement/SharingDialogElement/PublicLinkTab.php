@@ -200,6 +200,9 @@ class PublicLinkTab extends OwncloudPage {
 		if ($newName !== null) {
 			$this->editPublicLinkPopupPageObject->setLinkName($newName);
 		}
+		if ($password !== null) {
+			$this->editPublicLinkPopupPageObject->setLinkPassword($password);
+		}
 		$this->editPublicLinkPopupPageObject->save();
 	}
 
