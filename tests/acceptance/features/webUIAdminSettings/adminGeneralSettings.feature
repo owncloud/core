@@ -53,3 +53,11 @@ Feature: admin general settings
     And the administrator sets the value of cron job to "webcron" using the webUI
     And the administrator invokes occ command "config:app:get core backgroundjobs_mode"
     Then the command output should contain the text "webcron"
+
+@smokeTest
+  Scenario: administrator changes the log level
+    Given the administrator has invoked occ command "config:system:set loglevel --value 0"
+    When the user reloads the current page of the webUI
+    And the administrator sets the value of log level to 1 using the webUI
+    And the administrator invokes occ command "config:system:get loglevel"
+    Then the command output should contain the text "1"

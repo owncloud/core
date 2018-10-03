@@ -28,6 +28,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\AdminGeneralSettingsPage;
 use TestHelpers\AppConfigHelper;
+use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
 
@@ -50,6 +51,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	private $featureContext;
 
 	private $appParameterValues = null;
+	private $logLevelValue = null;
 	
 	/**
 	 * WebUIAdminAdminSettingsContext constructor.
@@ -137,7 +139,18 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function theAdministratorSetsTheValueOfCronJobToUsingTheWebui($cronJob) {
-		$this->adminGeneralSettingsPage->setCornJobValue($cronJob);
+		$this->adminGeneralSettingsPage->setCronJobValue($cronJob);
+	}
+
+	/**
+	 * @When the administrator sets the value of log level to :logLevel using the webUI
+	 *
+	 * @param integer $logLevel
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsTheLogLevelUsingTheWebui($logLevel) {
+		$this->adminGeneralSettingsPage->setLogLevel($logLevel);
 	}
 
 	/**
@@ -165,7 +178,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 			'legal.privacy_policy_url' => ''
 		];
 
-		if ($this->appParameterValues === null) {
+		if ($this->appParameterValues === null || $this->logLevelValue) {
 			// Get app config values
 			$appConfigs =  AppConfigHelper::getAppConfigs(
 				$this->featureContext->getBaseUrl(),
@@ -181,6 +194,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 			}
 			// Save the app configs
 			$this->appParameterValues = $results;
+			$this->logLevelValue = SetupHelper::runOcc(["config:system:get loglevel"])['stdOut'];
 		}
 	}
 
@@ -201,5 +215,6 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 			$this->featureContext->getAdminPassword(),
 			$this->appParameterValues
 		);
+		SetupHelper::runOcc(["config:system:set loglevel --value $this->logLevelValue"]);
 	}
 }

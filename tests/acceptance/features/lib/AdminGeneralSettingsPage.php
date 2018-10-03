@@ -58,6 +58,8 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	protected $cronJobWebCronXpath = "//label[@for='backgroundjobs_webcron']";
 	protected $cronJobCronXpath = "//label[@for='backgroundjobs_cron']";
 
+	protected $logLevelId = 'loglevel';
+
 	/**
 	 * set email server settings
 	 *
@@ -196,25 +198,43 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function setCornJobValue($cronJob) {
+	public function setCronJobValue($cronJob) {
 		if ($cronJob == "ajax") {
-			$selectCorn = $this->find("xpath", $this->cronJobAjaxXpath);
+			$selectCron = $this->find("xpath", $this->cronJobAjaxXpath);
 		} elseif ($cronJob == "webcron") {
-			$selectCorn = $this->find("xpath", $this->cronJobWebCronXpath);
+			$selectCron = $this->find("xpath", $this->cronJobWebCronXpath);
 		} elseif ($cronJob == "cron") {
-			$selectCorn = $this->find("xpath", $this->cronJobCronXpath);
+			$selectCron = $this->find("xpath", $this->cronJobCronXpath);
 		} else {
 			throw new \Exception(
 				__METHOD__ . " invalid cron job type: $cronJob"
 			);
 		}
-		if ($selectCorn === null) {
+		if ($selectCron === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $selectCorn->getXpath() " .
-				"could xpath for radio button"
+				" xpath $selectCron->getXpath() " .
+				"could not find xpath for radio button"
 			);
 		}
-		$selectCorn->click();
+		$selectCron->click();
+	}
+
+	/**
+	 * set log level
+	 *
+	 * @param integer $logLevel
+	 *
+	 * @return void
+	 */
+	public function setLogLevel($logLevel) {
+		$loglevels = [0, 1, 2, 3, 4];
+		if (\in_array($logLevel, $loglevels)) {
+			$this->selectFieldOption($this->logLevelId, $logLevel);
+		} else {
+			throw new \Exception(
+				__METHOD__ . " invalid log level: $logLevel"
+			);
+		}
 	}
 }
