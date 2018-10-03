@@ -22,10 +22,12 @@
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\AdminGeneralSettingsPage;
+use TestHelpers\AppConfigHelper;
 
 require_once 'bootstrap.php';
 
@@ -40,6 +42,14 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 * @var WebUIGeneralContext
 	 */
 	private $webUIGeneralContext;
+
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
+
+	private $appParameterValues = null;
 	
 	/**
 	 * WebUIAdminAdminSettingsContext constructor.
@@ -122,6 +132,52 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+
+		// user_management app configs
+		$configs = [
+			'OC_Channel' => '',
+			'backgroundjobs_mode' => '',
+			'legal.imprint_url' => '',
+			'legal.privacy_policy_url' => ''
+		];
+
+		if ($this->appParameterValues === null) {
+			// Get app config values
+			$appConfigs =  AppConfigHelper::getAppConfigs(
+				$this->featureContext->getBaseUrl(),
+				$this->featureContext->getAdminUsername(),
+				$this->featureContext->getAdminPassword(),
+				'core'
+			);
+			$results = [];
+			foreach ($appConfigs as $appConfig) {
+				if (isset($configs[$appConfig['configkey']])) {
+					$results[] = $appConfig;
+				}
+			}
+			// Save the app configs
+			$this->appParameterValues = $results;
+		}
+	}
+
+	/**
+	 * After Scenario
+	 *
+	 * @AfterScenario @webUI
+	 *
+	 * @param AfterScenarioScope $afterScenarioScope
+	 *
+	 * @return void
+	 */
+	public function restoreScenario(AfterScenarioScope $afterScenarioScope) {
+		// Restore app config settings
+		AppConfigHelper::modifyAppConfigs(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$this->appParameterValues
+		);
 	}
 }
