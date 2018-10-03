@@ -235,3 +235,21 @@ Feature: Share by public link
     And the user has created a new public link for the folder "simple-folder" using the webUI
     When the user browses to the shared-by-link page
     Then the folder "simple-folder" should be listed on the webUI
+
+  @skip @time-bound
+  Scenario: user shares a public link via email with a personal message
+    When the user creates a new public link for the folder "simple-folder" using the webUI with
+      | expiration | 4-10-2018 |
+    And the time passes by "1" week
+    # this should fail
+    And the public accesses the last created public link using the webUI
+    Then the file "lorem.txt" should be listed on the webUI
+
+  @skip @time-bound
+  Scenario: user shares a public link via email with a personal message
+    When the user creates a new public link for the folder "simple-folder" using the webUI with
+      | expiration | 4-10-2020 |
+    And the time passes by "2" week
+    # this should pass
+    And the public accesses the last created public link using the webUI
+    Then the file "lorem.txt" should be listed on the webUI

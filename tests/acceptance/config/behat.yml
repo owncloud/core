@@ -204,6 +204,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - EmailContext:
+        - TimeContext:
         - FederationContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
