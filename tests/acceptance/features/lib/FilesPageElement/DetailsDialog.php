@@ -51,7 +51,9 @@ class DetailsDialog extends OwncloudPage {
 
 	private $tagsInputXpath = "//li[@class='select2-search-field']//input";
 
-	private $tagsSuggestDropDown = "//div[contains(@class, 'systemtags-select2-dropdown') and contains(@id, 'select2-drop')]";
+	private $tagsSuggestDropDownXpath = "//div[contains(@class, 'systemtags-select2-dropdown') and contains(@id, 'select2-drop')]";
+
+	private $tagsResultFromDropdownXpath = "//li[contains(@class, 'select2-result')]";
 
 	private $commentInputXpath = "//form[@class='newCommentForm']//textarea[@class='message']";
 	private $commentPostXpath = "//form[@class='newCommentForm']//input[@class='submit']";
@@ -299,7 +301,12 @@ class DetailsDialog extends OwncloudPage {
 		$inputField->focus();
 		$inputField->setValue($tagName);
 
-		$this->waitTillElementIsNotNull($this->tagsSuggestDropDown);
+		$this->waitTillElementIsNotNull($this->tagsSuggestDropDownXpath);
+
+		// select2 requires some time to display the results even though the dropdown has appeared.
+		// Until that, select2 shows `Searching...` in the dropdown.
+		// We are waiting here till a single result show up on the dropdown.
+		$this->waitTillElementIsNotNull($this->tagsSuggestDropDownXpath . $this->tagsResultFromDropdownXpath);
 
 		$tagSuggestions = $this->findAll("xpath", $this->getTagsDropDownResultsXpath());
 
