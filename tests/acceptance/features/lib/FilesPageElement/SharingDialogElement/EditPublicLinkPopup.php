@@ -230,6 +230,8 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 */
 	public function setEmailToSelf() {
 		$checkbox = $this->popupElement->find("xpath", $this->emailToSelfCheckboxXpath);
+		$this->waitTillElementIsNotNull($this->emailToSelfCheckboxXpath);
+
 		if ($checkbox === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
@@ -238,7 +240,9 @@ class EditPublicLinkPopup extends OwncloudPage {
 				" Maybe the email isn't filled."
 			);
 		}
-		$checkbox->click();
+		if (!$checkbox->isChecked()) {
+			$checkbox->check();
+		}
 	}
 
 	/**
