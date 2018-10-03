@@ -119,6 +119,17 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When the administrator sets the value of update channel to :updateChannel using the webUI
+	 *
+	 * @param string $updateChannel
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsTheValueOfUpdateChannelUsingTheWebui($updateChannel) {
+		$this->adminGeneralSettingsPage->setUpdateChannelValue($updateChannel);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *

@@ -37,3 +37,11 @@ Feature: admin general settings
     When the administrator sets the value of privacy policy url to "privacy_policy.html" using the webUI
     And the administrator logs out of the webUI
     Then the privacy policy url on the login page should link to "privacy_policy.html"
+
+@smokeTest
+  Scenario: administrator sets update channel
+    Given the administrator has invoked occ command "config:app:set core OC_Channel --value git"
+    When the user reloads the current page of the webUI
+    And the administrator sets the value of update channel to "daily" using the webUI
+    And the administrator invokes occ command "config:app:get core OC_Channel"
+    Then the command output should contain the text "daily"
