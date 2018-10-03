@@ -87,6 +87,28 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When the administrator sets the value of imprint url to :imprintUrl using the webUI
+	 *
+	 * @param string $imprintUrl
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsTheValueOfImprintUrlToUsingTheWebui($imprintUrl) {
+		$this->adminGeneralSettingsPage->setLegalUrl("Imprint", $imprintUrl);
+	}
+
+	/**
+	 * @When the administrator sets the value of privacy policy url to :privacyPolicyUrl using the webUI
+	 *
+	 * @param string $privacyPolicyUrl
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsTheValueOfPrivacyPolicyUrlToUsingTheWebui($privacyPolicyUrl) {
+		$this->adminGeneralSettingsPage->setLegalUrl("Privacy Policy", $privacyPolicyUrl);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *

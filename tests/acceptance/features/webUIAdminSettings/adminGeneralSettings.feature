@@ -25,3 +25,15 @@ Feature: admin general settings
       """
       If you received this email, the settings seem to be correct.
       """
+
+  @smokeTest
+  Scenario: administrator sets legal URLs
+    When the administrator sets the value of imprint url to "imprinturl.html" using the webUI
+    And the administrator logs out of the webUI
+    Then the imprint url on the login page should link to "imprinturl.html"
+
+@smokeTest
+  Scenario: administrator sets legal URLs
+    When the administrator sets the value of privacy policy url to "privacy_policy.html" using the webUI
+    And the administrator logs out of the webUI
+    Then the privacy policy url on the login page should link to "privacy_policy.html"
