@@ -38,7 +38,7 @@ Feature: User can open the details panel for any file or folder
     When the user switches to "versions" tab in details panel using the webUI
     Then the "versions" details panel should be visible
 
-  Scenario: user shares a file through public link and then it appears in a Shared by link page
+  Scenario: user shares a file through public link and then the details dialog should work in a Shared by link page
     Given the user has created a new public link for the folder "simple-folder" using the webUI
     When the user browses to the shared-by-link page
     Then the folder "simple-folder" should be listed on the webUI
@@ -51,7 +51,7 @@ Feature: User can open the details panel for any file or folder
     When the user switches to "comments" tab in details panel using the webUI
     Then the "comments" details panel should be visible
 
-  Scenario: user shares a file and then it appears in a Shared with others page
+  Scenario: user shares a file and then the details dialog should work in a Shared with others page
     Given the user has shared the folder "simple-folder" with the user "User Two" using the webUI
     When the user browses to the shared-with-others page
     Then the folder "simple-folder" should be listed on the webUI
