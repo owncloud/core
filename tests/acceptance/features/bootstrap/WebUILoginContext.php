@@ -370,6 +370,36 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the imprint url on the login page should link to :expectedImprintUrl
+	 *
+	 * @param string $expectedImprintUrl
+	 *
+	 * @return void
+	 */
+	public function theImprintUrlOnTheLoginPageShouldLinkTo($expectedImprintUrl) {
+		$actualImprintUrl = $this->loginPage->getLegalUrl("Imprint");
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedImprintUrl,
+			$actualImprintUrl
+		);
+	}
+
+	/**
+	 * @Then the privacy policy url on the login page should link to :expectedPrivacyPolicyUrl
+	 *
+	 * @param string $expectedPrivacyPolicyUrl
+	 *
+	 * @return void
+	 */
+	public function thePrivacyPolicyUrlOnTheLoginPageShouldLinkTo($expectedPrivacyPolicyUrl) {
+		$actualPrivacyPolilcyUrl = $this->loginPage->getLegalUrl("Privacy Policy");
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedPrivacyPolicyUrl,
+			$actualPrivacyPolilcyUrl
+		);
+	}
+
+	/**
 	 * @When the user follows the password reset link from email address :emailAddress
 	 * @Given the user has followed the password reset link from email address :emailAddress
 	 *
