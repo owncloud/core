@@ -52,6 +52,8 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	protected $imprintUrlFieldId = 'legal_imprint';
 	protected $privacyPolicyUrlFieldId = 'legal_privacy_policy';
 
+	protected $releaseChannelId = 'release-channel';
+
 	/**
 	 * set email server settings
 	 *
@@ -169,5 +171,16 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 				__METHOD__ . " invalid legal url type: $legalUrlType"
 			);
 		}
+	}
+
+	/**
+	 * set update channel value
+	 *
+	 * @param string $updateChannel
+	 *
+	 * @return void
+	 */
+	public function setUpdateChannelValue($updateChannel) {
+		$this->selectFieldOption($this->releaseChannelId, $updateChannel);
 	}
 }
