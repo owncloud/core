@@ -49,6 +49,9 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	protected $serverPortFieldId = 'mail_smtpport';
 	protected $sendTestEmailBtnId = 'sendtestemail';
 
+	protected $imprintUrlFieldId = 'legal_imprint';
+	protected $privacyPolicyUrlFieldId = 'legal_privacy_policy';
+
 	/**
 	 * set email server settings
 	 *
@@ -143,6 +146,27 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 		} else {
 			throw new \Exception(
 				__METHOD__ . " invalid action: $action"
+			);
+		}
+	}
+
+	/**
+	 * set imprint url
+	 *
+	 * @param string $legalUrlType
+	 * @param string $legalUrlValue
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function setLegalUrl($legalUrlType, $legalUrlValue) {
+		if ($legalUrlType === "Imprint") {
+			$this->fillField($this->imprintUrlFieldId, $legalUrlValue);
+		} elseif ($legalUrlType === "Privacy Policy") {
+			$this->fillField($this->privacyPolicyUrlFieldId, $legalUrlValue);
+		} else {
+			throw new \Exception(
+				__METHOD__ . " invalid legal url type: $legalUrlType"
 			);
 		}
 	}
