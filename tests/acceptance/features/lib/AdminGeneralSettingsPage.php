@@ -52,6 +52,14 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	protected $imprintUrlFieldId = 'legal_imprint';
 	protected $privacyPolicyUrlFieldId = 'legal_privacy_policy';
 
+	protected $releaseChannelId = 'release-channel';
+
+	protected $cronJobAjaxXpath = "//label[@for='backgroundjobs_ajax']";
+	protected $cronJobWebCronXpath = "//label[@for='backgroundjobs_webcron']";
+	protected $cronJobCronXpath = "//label[@for='backgroundjobs_cron']";
+
+	protected $logLevelId = 'loglevel';
+
 	/**
 	 * set email server settings
 	 *
@@ -167,6 +175,65 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 		} else {
 			throw new \Exception(
 				__METHOD__ . " invalid legal url type: $legalUrlType"
+			);
+		}
+	}
+
+	/**
+	 * set update channel value
+	 *
+	 * @param string $updateChannel
+	 *
+	 * @return void
+	 */
+	public function setUpdateChannelValue($updateChannel) {
+		$this->selectFieldOption($this->releaseChannelId, $updateChannel);
+	}
+
+	/**
+	 * set cron job value
+	 *
+	 * @param string $cronJob
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function setCronJobValue($cronJob) {
+		if ($cronJob == "ajax") {
+			$selectCron = $this->find("xpath", $this->cronJobAjaxXpath);
+		} elseif ($cronJob == "webcron") {
+			$selectCron = $this->find("xpath", $this->cronJobWebCronXpath);
+		} elseif ($cronJob == "cron") {
+			$selectCron = $this->find("xpath", $this->cronJobCronXpath);
+		} else {
+			throw new \Exception(
+				__METHOD__ . " invalid cron job type: $cronJob"
+			);
+		}
+		if ($selectCron === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $selectCron->getXpath() " .
+				"could not find xpath for radio button"
+			);
+		}
+		$selectCron->click();
+	}
+
+	/**
+	 * set log level
+	 *
+	 * @param integer $logLevel
+	 *
+	 * @return void
+	 */
+	public function setLogLevel($logLevel) {
+		$loglevels = [0, 1, 2, 3, 4];
+		if (\in_array($logLevel, $loglevels)) {
+			$this->selectFieldOption($this->logLevelId, $logLevel);
+		} else {
+			throw new \Exception(
+				__METHOD__ . " invalid log level: $logLevel"
 			);
 		}
 	}

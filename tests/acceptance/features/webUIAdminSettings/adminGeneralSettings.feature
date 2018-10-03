@@ -37,3 +37,27 @@ Feature: admin general settings
     When the administrator sets the value of privacy policy url to "privacy_policy.html" using the webUI
     And the administrator logs out of the webUI
     Then the privacy policy url on the login page should link to "privacy_policy.html"
+
+@smokeTest
+  Scenario: administrator sets update channel
+    Given the administrator has invoked occ command "config:app:set core OC_Channel --value git"
+    When the user reloads the current page of the webUI
+    And the administrator sets the value of update channel to "daily" using the webUI
+    And the administrator invokes occ command "config:app:get core OC_Channel"
+    Then the command output should contain the text "daily"
+
+@smokeTest
+  Scenario: administrator changes the cron job
+    Given the administrator has invoked occ command "config:app:set core backgroundjobs_mode --value ajax"
+    When the user reloads the current page of the webUI
+    And the administrator sets the value of cron job to "webcron" using the webUI
+    And the administrator invokes occ command "config:app:get core backgroundjobs_mode"
+    Then the command output should contain the text "webcron"
+
+@smokeTest
+  Scenario: administrator changes the log level
+    Given the administrator has invoked occ command "config:system:set loglevel --value 0"
+    When the user reloads the current page of the webUI
+    And the administrator sets the value of log level to 1 using the webUI
+    And the administrator invokes occ command "config:system:get loglevel"
+    Then the command output should contain the text "1"
