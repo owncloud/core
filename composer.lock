@@ -3492,12 +3492,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/minkphp/MinkSelenium2Driver.git",
-                "reference": "f4efaf52fed6a98bf6037a04f3fdef94dc0c8841"
+                "reference": "391cf14385d09570e9f6a7d34e4b5e1a7ebac83d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/f4efaf52fed6a98bf6037a04f3fdef94dc0c8841",
-                "reference": "f4efaf52fed6a98bf6037a04f3fdef94dc0c8841",
+                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/391cf14385d09570e9f6a7d34e4b5e1a7ebac83d",
+                "reference": "391cf14385d09570e9f6a7d34e4b5e1a7ebac83d",
                 "shasum": ""
             },
             "require": {
@@ -3545,7 +3545,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2018-07-23T10:51:47+00:00"
+            "time": "2018-10-03T14:49:03+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -5260,6 +5260,12 @@
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
                 "reference": "67643fa62d521fb76855b0a4cc9a3de7ba38f85b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/67643fa62d521fb76855b0a4cc9a3de7ba38f85b",
+                "reference": "67643fa62d521fb76855b0a4cc9a3de7ba38f85b",
+                "shasum": ""
             },
             "conflict": {
                 "3f/pygmentize": "<1.2",
