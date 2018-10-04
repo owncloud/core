@@ -285,3 +285,12 @@ Feature: Share by public link
       | lorem.txt                             |
     Then the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
+
+  Scenario: share two file with same name but different paths by public link
+    When the user creates a new public link for the file "lorem.txt" using the webUI
+    And the user closes the details dialog
+    And the user opens the folder "simple-folder" using the webUI
+    And the user creates a new public link for the file "lorem.txt" using the webUI
+    And the user browses to the shared-by-link page
+    Then the file "lorem.txt" with the path "" should be listed in the shared with others page on the webUI
+    And the file "lorem.txt" with the path "/simple-folder" should be listed in the shared with others page on the webUI
