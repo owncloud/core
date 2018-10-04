@@ -12,6 +12,7 @@ Feature: User can open the details panel for any file or folder
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 
+  @files_versions-app-required
   Scenario: View different areas of the details panel in files page
     When the user opens the file action menu of the file "lorem.txt" in the webUI
     And the user clicks the details file action in the webUI
@@ -24,6 +25,7 @@ Feature: User can open the details panel for any file or folder
     When the user switches to "versions" tab in details panel using the webUI
     Then the "versions" details panel should be visible
 
+  @files_versions-app-required
   Scenario: View different areas of the details panel in favorites page
     When the user marks the file "lorem.txt" as favorite using the webUI
     And the user browses to the favorites page
