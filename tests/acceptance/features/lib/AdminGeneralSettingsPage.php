@@ -60,6 +60,9 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 
 	protected $logLevelId = 'loglevel';
 
+	protected $ownCloudVersionXpath = '//td[text() = "version"]/following-sibling::td';
+	protected $ownCloudVersionStringXpath = '//td[text() = "versionstring"]/following-sibling::td';
+
 	/**
 	 * set email server settings
 	 *
@@ -201,23 +204,71 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	public function setCronJobValue($cronJob) {
 		if ($cronJob == "ajax") {
 			$selectCron = $this->find("xpath", $this->cronJobAjaxXpath);
+			if ($selectCron === null) {
+				throw new ElementNotFoundException(
+					__METHOD__ .
+					" xpath $this->cronJobAjaxXpath " .
+					"could not find xpath for radio button"
+				);
+			}
 		} elseif ($cronJob == "webcron") {
 			$selectCron = $this->find("xpath", $this->cronJobWebCronXpath);
+			if ($selectCron === null) {
+				throw new ElementNotFoundException(
+					__METHOD__ .
+					" xpath $this->cronJobWebCronXpath " .
+					"could not find xpath for radio button"
+				);
+			}
 		} elseif ($cronJob == "cron") {
 			$selectCron = $this->find("xpath", $this->cronJobCronXpath);
+			if ($selectCron === null) {
+				throw new ElementNotFoundException(
+					__METHOD__ .
+					" xpath $this->cronJobCronXpath " .
+					"could not find xpath for radio button"
+				);
+			}
 		} else {
 			throw new \Exception(
 				__METHOD__ . " invalid cron job type: $cronJob"
 			);
 		}
-		if ($selectCron === null) {
+		$selectCron->click();
+	}
+
+	/**
+	 * get ownCloud version
+	 *
+	 * @return string ownCloud Version
+	 */
+	public function getOwncloudVersion() {
+		$actualVersion = $this->find("xpath", $this->ownCloudVersionXpath);
+		if ($actualVersion === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $selectCron->getXpath() " .
-				"could not find xpath for radio button"
+				" xpath $this->ownCloudVersionXpath " .
+				"could not find xpath for owncloud version"
 			);
 		}
-		$selectCron->click();
+		return $actualVersion->getText();
+	}
+
+	/**
+	 * get ownCloud version string
+	 *
+	 * @return string ownCloud Version String
+	 */
+	public function getOwncloudVersionString() {
+		$actualVersion = $this->find("xpath", $this->ownCloudVersionStringXpath);
+		if ($actualVersion === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->ownCloudVersionStringXpath " .
+				"could not find xpath for owncloud version string"
+			);
+		}
+		return $actualVersion->getText();
 	}
 
 	/**

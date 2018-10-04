@@ -199,6 +199,28 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @Then the version of the owncloud installation should be displayed on the admin general settings page
+	 *
+	 * @return void
+	 */
+	public function theVersionOfOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage() {
+		$actualVersion = $this->adminGeneralSettingsPage->getOwncloudVersion();
+		$expectedVersion = SetupHelper::runOcc(['config:system:get version'])['stdOut'];
+		PHPUnit_Framework_Assert::assertEquals(\trim($expectedVersion), $actualVersion);
+	}
+
+	/**
+	 * @Then the version string of the owncloud installation should be displayed on the admin general settings page
+	 *
+	 * @return void
+	 */
+	public function theVersionStringOfTheOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage() {
+		$actualVersion =  $this->adminGeneralSettingsPage->getOwncloudVersionString();
+		$expectedVersion = SetupHelper::runOcc(['-V'])['stdOut'];
+		PHPUnit_Framework_Assert::assertStringEndsWith($actualVersion, \trim($expectedVersion));
+	}
+
+	/**
 	 * After Scenario
 	 *
 	 * @AfterScenario @webUI
