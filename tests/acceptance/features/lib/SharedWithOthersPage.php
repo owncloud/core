@@ -38,6 +38,7 @@ class SharedWithOthersPage extends FilesPageBasic {
 	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext')) and .=%s]";
 	protected $fileListXpath = ".//div[@id='app-content-sharingout']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-sharingout']//div[@id='emptycontent']";
+	protected $filePathInRowXpath = ".//div[@id='app-content-sharingout']//tbody[@id='fileList']//tr";
 
 	/**
 	 * @return string
@@ -75,6 +76,26 @@ class SharedWithOthersPage extends FilesPageBasic {
 	 * @return void
 	 */
 	protected function getFilePathInRowXpath() {
-		throw new \Exception("not implemented in SharedWithOthersPage");
+		return $this->filePathInRowXpath;
+	}
+
+	/**
+	 * finds all rows that have the given name
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 *
+	 * @return FileRow[]
+	 * @throws ElementNotFoundException
+	 */
+	public function findAllFileRowsByName($name, Session $session) {
+		$fileRowElements = $this->getFileRowElementsByName($name, $session);
+		foreach ($fileRowElements as $fileRowElement) {
+			$fileRow = $this->getPage('FilesPageElement\\SharedWithOthersFileRow');
+			$fileRow->setElement($fileRowElement);
+			$fileRow->setName($name);
+			$fileRows[] = $fileRow;
+		}
+		return $fileRows;
 	}
 }

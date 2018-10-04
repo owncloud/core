@@ -63,3 +63,14 @@ Feature: Search
     And the user searches for tag "ipsum" using the webUI
     Then the file "lorem.txt" should be listed on the webUI
     And the file "testimage.jpg" should not be listed on the webUI
+
+  @systemtags-app-required
+  Scenario: search for a file with tags
+    Given user "user1" has created a "normal" tag with name "lorem"
+    And user "user1" has added the tag "lorem" to "/lorem.txt"
+    And user "user1" has added the tag "lorem" to "/simple-folder/lorem.txt"
+    When the user browses to the tags page
+    And the user searches for tag "lorem" using the webUI
+    Then the file "lorem.txt" should be listed on the webUI
+    And the file "lorem.txt" with the path "" should be listed in the tags page on the webUI
+    And the file "lorem.txt" with the path "/simple-folder" should be listed in the tags page on the webUI
