@@ -33,8 +33,6 @@ require_once 'bootstrap.php';
  * WebUI Login context.
  */
 class WebUILoginContext extends RawMinkContext implements Context {
-	private $loginFailedPageTitle = "ownCloud";
-	private $loginSuccessPageTitle = "Files - ownCloud";
 	private $loginPage;
 	private $filesPage;
 	private $expectedPage;
@@ -58,6 +56,23 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 */
 	public function __construct(LoginPage $loginPage) {
 		$this->loginPage = $loginPage;
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getLoginSuccessPageTitle() {
+		// When the login succeeds, we end up on the Files page
+		return "Files - " . $this->webUIGeneralContext->getProductName();
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getLoginFailedPageTitle() {
+		// When the login fails, we end up at a page with a title that is the
+		// themed product name, e.g. "ownCloud"
+		return $this->webUIGeneralContext->getProductName();
 	}
 
 	/**
@@ -332,14 +347,14 @@ class WebUILoginContext extends RawMinkContext implements Context {
 				$username, $password
 			);
 			$this->webUIGeneralContext->theUserShouldBeRedirectedToAWebUIPageWithTheTitle(
-				$this->loginSuccessPageTitle
+				$this->getLoginSuccessPageTitle()
 			);
 		} else {
 			$this->theUserLogsInWithUsernameAndInvalidPasswordUsingTheWebUI(
 				$username, $password
 			);
 			$this->webUIGeneralContext->theUserShouldBeRedirectedToAWebUIPageWithTheTitle(
-				$this->loginFailedPageTitle
+				$this->getLoginFailedPageTitle()
 			);
 		}
 	}

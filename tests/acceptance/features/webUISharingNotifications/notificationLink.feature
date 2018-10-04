@@ -17,4 +17,4 @@ Feature: Display notifications when receiving a share and follow embedded links
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
     And user "user1" has shared folder "/simple-folder" with user "user2"
     When the user follows the link of the first notification on the webUI
-    Then the user should be redirected to a webUI page with the title "Shared with you - ownCloud"
+    Then the user should be redirected to a webUI page with the title "Shared with you - %productname%"

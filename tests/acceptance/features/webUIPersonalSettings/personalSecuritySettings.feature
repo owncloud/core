@@ -13,11 +13,11 @@ Feature: personal security settings
   Scenario: login with new app password
     When the user creates a new App password using the webUI
     And the user re-logs in with username "user1" and generated app password using the webUI
-    Then the user should be redirected to a webUI page with the title "Files - ownCloud"
+    Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   @smokeTest
   Scenario: delete the app password
     When the user creates a new App password using the webUI
     And the user deletes the app password
     And the user re-logs in with username "user1" and deleted app password using the webUI
-    Then the user should be redirected to a webUI page with the title "ownCloud"
+    Then the user should be redirected to a webUI page with the title "%productname%"
