@@ -117,6 +117,7 @@ Feature: deleting files and folders
     When the user browses to the files page
     Then the file "lorem.txt" should not be listed on the webUI
 
+  @systemtags-app-required
   Scenario: delete files from tags page
     Given user "user1" has created a "normal" tag with name "lorem"
     And user "user1" has added the tag "lorem" to "/lorem.txt"
