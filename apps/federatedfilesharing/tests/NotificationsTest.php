@@ -26,6 +26,8 @@ use OC\AppFramework\Http;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\Notifications;
+use OCA\FederatedFileSharing\Ocm\NotificationManager;
+use OCA\FederatedFileSharing\Ocm\Permissions;
 use OCP\BackgroundJob\IJobList;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
@@ -42,6 +44,9 @@ class NotificationsTest extends \Test\TestCase {
 	/** @var  DiscoveryManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $discoveryManager;
 
+	/** @var NotificationManager | \PHPUnit_Framework_MockObject_MockObject */
+	private $notificationManager;
+
 	/** @var  IJobList | \PHPUnit_Framework_MockObject_MockObject */
 	private $jobList;
 
@@ -55,6 +60,9 @@ class NotificationsTest extends \Test\TestCase {
 		$this->config = $this->createMock(IConfig::class);
 		$this->discoveryManager = $this->getMockBuilder(DiscoveryManager::class)
 			->disableOriginalConstructor()->getMock();
+		$this->notificationManager = new NotificationManager(
+			$this->createMock(Permissions::class)
+		);
 		$this->httpClientService = $this->createMock(IClientService::class);
 		$this->addressHandler = $this->getMockBuilder(AddressHandler::class)
 			->disableOriginalConstructor()->getMock();
@@ -72,6 +80,7 @@ class NotificationsTest extends \Test\TestCase {
 				$this->addressHandler,
 				$this->httpClientService,
 				$this->discoveryManager,
+				$this->notificationManager,
 				$this->jobList,
 				$this->config
 			);
@@ -82,6 +91,7 @@ class NotificationsTest extends \Test\TestCase {
 						$this->addressHandler,
 						$this->httpClientService,
 						$this->discoveryManager,
+						$this->notificationManager,
 						$this->jobList,
 						$this->config
 					]

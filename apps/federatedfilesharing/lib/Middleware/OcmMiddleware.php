@@ -200,4 +200,19 @@ class OcmMiddleware {
 			throw new NotImplementedException();
 		}
 	}
+
+	/**
+	 * Drop unused bits for permissions
+	 *
+	 * @param int $permissions
+	 *
+	 * @return int
+	 */
+	public function normalizePermissions($permissions) {
+		$mask = Constants::PERMISSION_READ
+			| Constants::PERMISSION_CREATE
+			| Constants::PERMISSION_UPDATE
+			| Constants::PERMISSION_SHARE;
+		return $mask & $permissions;
+	}
 }

@@ -29,6 +29,8 @@ use OCA\FederatedFileSharing\FedShareManager;
 use OCA\FederatedFileSharing\Middleware\OcmMiddleware;
 use OCA\FederatedFileSharing\Notifications;
 use OCA\FederatedFileSharing\Controller\RequestHandlerController;
+use OCA\FederatedFileSharing\Ocm\NotificationManager;
+use OCA\FederatedFileSharing\Ocm\Permissions;
 use OCA\FederatedFileSharing\TokenHandler;
 use OCP\AppFramework\App;
 use OCP\Share\Events\AcceptShare;
@@ -74,6 +76,7 @@ class Application extends App {
 					$c->query('AddressHandler'),
 					$server->getHTTPClientService(),
 					$c->query('DiscoveryManager'),
+					$c->query('NotificationManager'),
 					$server->getJobList(),
 					$server->getConfig()
 				);
@@ -90,6 +93,7 @@ class Application extends App {
 					$server->getActivityManager(),
 					$server->getNotificationManager(),
 					$c->query('AddressHandler'),
+					$c->query('Permissions'),
 					$server->getEventDispatcher()
 				);
 			}
@@ -137,6 +141,22 @@ class Application extends App {
 				);
 			}
 		);
+
+		$container->registerService(
+			'NotificationManager',
+			function ($c) {
+				return new NotificationManager(
+					$c->query('Permissions')
+				);
+			}
+		);
+
+		$container->registerService(
+			'Permissions',
+			function ($c) {
+				return new Permissions();
+			}
+		);
 	}
 
 	/**
@@ -163,10 +183,14 @@ class Application extends App {
 			\OC::$server->getMemCacheFactory(),
 			\OC::$server->getHTTPClientService()
 		);
+		$notificationManager = new NotificationManager(
+			new Permissions()
+		);
 		$notifications = new Notifications(
 			$addressHandler,
 			\OC::$server->getHTTPClientService(),
 			$discoveryManager,
+			$notificationManager,
 			\OC::$server->getJobList(),
 			\OC::$server->getConfig()
 		);

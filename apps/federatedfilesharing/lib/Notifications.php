@@ -43,6 +43,9 @@ class Notifications {
 	/** @var DiscoveryManager */
 	private $discoveryManager;
 
+	/** @var NotificationManager */
+	private $notificationManager;
+
 	/** @var IJobList  */
 	private $jobList;
 
@@ -60,12 +63,14 @@ class Notifications {
 		AddressHandler $addressHandler,
 		IClientService $httpClientService,
 		DiscoveryManager $discoveryManager,
+		NotificationManager $notificationManager,
 		IJobList $jobList,
 		IConfig $config
 	) {
 		$this->addressHandler = $addressHandler;
 		$this->httpClientService = $httpClientService;
 		$this->discoveryManager = $discoveryManager;
+		$this->notificationManager = $notificationManager;
 		$this->jobList = $jobList;
 		$this->config = $config;
 	}
@@ -126,12 +131,11 @@ class Notifications {
 	 * @throws \Exception
 	 */
 	public function requestReShare($token, $id, $shareId, $remote, $shareWith, $permission) {
-		$ocmNotificationManager = new NotificationManager();
 		$data = [
 			'shareWith' => $shareWith,
 			'senderId' => $shareId
 		];
-		$ocmNotification = $ocmNotificationManager->convertToOcmFileNotification($id, $token, 'reshare', $data);
+		$ocmNotification = $this->notificationManager->convertToOcmFileNotification($id, $token, 'reshare', $data);
 		$ocmFields = $ocmNotification->toArray();
 
 		$url = \rtrim(
@@ -250,8 +254,7 @@ class Notifications {
 	 * @throws \Exception
 	 */
 	public function sendUpdateToRemote($remote, $remoteId, $token, $action, $data = [], $try = 0) {
-		$ocmNotificationManager = new NotificationManager();
-		$ocmNotification = $ocmNotificationManager->convertToOcmFileNotification($remoteId, $token, $action, $data);
+		$ocmNotification = $this->notificationManager->convertToOcmFileNotification($remoteId, $token, $action, $data);
 		$ocmFields = $ocmNotification->toArray();
 		$url = \rtrim(
 			$this->addressHandler->removeProtocolFromUrl($remote),
