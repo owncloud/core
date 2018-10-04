@@ -42,12 +42,25 @@ require_once 'bootstrap.php';
  */
 class WebUIGeneralContext extends RawMinkContext implements Context {
 	private $owncloudPage;
+
 	/**
 	 *
 	 * @var GeneralErrorPage
 	 */
 	private $generalErrorPage;
+
+	/**
+	 *
+	 * @var LoginPage
+	 */
 	private $loginPage;
+
+	/**
+	 *
+	 * @var string
+	 */
+	private $productName;
+
 	private $oldCSRFSetting = null;
 	private $oldPreviewSetting = null;
 	private $createdFiles = [];
@@ -178,6 +191,13 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function setCurrentServer($currentServer) {
 		$this->currentServer = $currentServer;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getProductName() {
+		return $this->productName;
 	}
 
 	/**
@@ -390,6 +410,17 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	private function replaceProductName($text) {
+		return \str_replace(
+			"%productname%", $this->getProductName(), $text
+		);
+	}
+
+	/**
 	 * @Then the user should be redirected to a webUI page with the title :title
 	 *
 	 * @param string $title
@@ -397,6 +428,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserShouldBeRedirectedToAWebUIPageWithTheTitle($title) {
+		$title = $this->replaceProductName($title);
 		$this->owncloudPage->waitForOutstandingAjaxCalls($this->getSession());
 		PHPUnit_Framework_Assert::assertEquals($title, $this->owncloudPage->getPageTitle());
 	}
@@ -409,6 +441,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserShouldBeRedirectedToGeneralErrorPage($title) {
+		$title = $this->replaceProductName($title);
 		$this->generalErrorPage->waitTillPageIsLoaded($this->getSession());
 		PHPUnit_Framework_Assert::assertEquals(
 			$title, $this->generalErrorPage->getPageTitle()
@@ -564,10 +597,18 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword()
 		);
+
+		$capabilitiesXml = AppConfigHelper::getCapabilitiesXml(
+			$response
+		);
+
 		$this->savedCapabilitiesXml[$this->featureContext->getBaseUrl()]
-			= AppConfigHelper::getCapabilitiesXml(
-				$response
-			);
+			= $capabilitiesXml;
+
+		$this->productName = $this->featureContext->getParameterValueFromXml(
+			$capabilitiesXml, "core", "status@@@productname"
+		);
+
 		if ($this->oldCSRFSetting === null) {
 			$oldCSRFSetting = SetupHelper::runOcc(
 				['config:system:get', 'csrf.disabled']
