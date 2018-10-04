@@ -573,9 +573,20 @@ then
 	BEHAT_YML="${SCRIPT_PATH}/config/behat.yml"
 fi
 
+# MAILHOG_HOST defines where the system-under-test can find the MailHog server
+# for sending email.
 if [ -z "${MAILHOG_HOST}" ]
 then
 	MAILHOG_HOST="127.0.0.1"
+fi
+
+# LOCAL_MAILHOG_HOST defines where this test script can find the MailHog server
+# for sending email. When testing a remote system, the MailHog server somewhere
+# "in the middle" might have a different host name from the point of view of
+# the test script.
+if [ -z "${LOCAL_MAILHOG_HOST}" ]
+then
+	LOCAL_MAILHOG_HOST="${MAILHOG_HOST}"
 fi
 
 if [ -z "${MAILHOG_SMTP_PORT}" ]

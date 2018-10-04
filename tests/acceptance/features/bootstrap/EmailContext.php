@@ -30,13 +30,13 @@ require_once 'bootstrap.php';
  * context file for email related steps.
  */
 class EmailContext implements Context {
-	private $mailhogUrl = null;
-	
+	private $localMailhogUrl = null;
+
 	/**
 	 * @return string
 	 */
-	public function getMailhogUrl() {
-		return $this->mailhogUrl;
+	public function getLocalMailhogUrl() {
+		return $this->localMailhogUrl;
 	}
 
 	/**
@@ -52,7 +52,7 @@ class EmailContext implements Context {
 		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
 		PHPUnit_Framework_Assert::assertContains(
 			$expectedContent,
-			EmailHelper::getBodyOfLastEmail($this->mailhogUrl, $address)
+			EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address)
 		);
 	}
 
@@ -66,7 +66,7 @@ class EmailContext implements Context {
 	 */
 	public function assertThatEmailDoesntExistWithTheAddress($address) {
 		try {
-			EmailHelper::getBodyOfLastEmail($this->mailhogUrl, $address, 3);
+			EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address, 3);
 		} catch (\Exception $err) {
 			PHPUnit_Framework_Assert::assertTrue(true);
 			return;
@@ -80,7 +80,7 @@ class EmailContext implements Context {
 	 * @return void
 	 */
 	public function setUpScenario() {
-		$this->mailhogUrl = EmailHelper::getMailhogUrl();
+		$this->localMailhogUrl = EmailHelper::getLocalMailhogUrl();
 		$this->clearMailHogMessages();
 	}
 
@@ -90,7 +90,7 @@ class EmailContext implements Context {
 	 */
 	protected function clearMailHogMessages() {
 		try {
-			EmailHelper::deleteAllMessages($this->getMailhogUrl());
+			EmailHelper::deleteAllMessages($this->getLocalMailhogUrl());
 		} catch (Exception $e) {
 			echo __METHOD__ .
 			" could not delete mailhog messages, is mailhog set up?\n" .
