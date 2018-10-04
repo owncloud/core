@@ -22,7 +22,6 @@
 namespace OCA\FederatedFileSharing\Ocm;
 
 use OCA\FederatedFileSharing\Ocm\Notification\FileNotification;
-use OCP\Constants;
 
 /**
  * Class NotificationManager
@@ -30,6 +29,20 @@ use OCP\Constants;
  * @package OCA\FederatedFileSharing\Ocm
  */
 class NotificationManager {
+	/**
+	 * @var Permissions
+	 */
+	protected $permissions;
+
+	/**
+	 * NotificationManager constructor.
+	 *
+	 * @param Permissions $permissions
+	 */
+	public function __construct(Permissions $permissions) {
+		$this->permissions = $permissions;
+	}
+
 	/**
 	 * @param string $type
 	 *
@@ -74,41 +87,15 @@ class NotificationManager {
 		$notification->addNotificationData('message', $messages[$action]);
 
 		if ($action === 'permissions') {
-			$ocmPermissions = $this->toOcmPermissions($data['permissions']);
+			$ocmPermissions = $this->permissions->toOcmPermissions($data['permissions']);
 			$notification->addNotificationData('permission', $ocmPermissions);
 		}
 
 		if ($action === 'reshare') {
-			$ocmPermissions = $this->toOcmPermissions($data['permissions']);
-			$notification->addNotificationData('permission', $ocmPermissions);
 			$notification->addNotificationData('senderId', $data['senderId']);
 			$notification->addNotificationData('shareWith', $data['shareWith']);
 		}
 
 		return $notification;
-	}
-
-	/**
-	 * Maps numeric permissions to an array of string permissions
-	 *
-	 * @param int $permissions
-	 *
-	 * @return array
-	 */
-	protected function toOcmPermissions($permissions) {
-		$permissions = (int) $permissions;
-		$ocmPermissions = [];
-		if ($permissions & Constants::PERMISSION_READ) {
-			$ocmPermissions[] = 'read';
-		}
-		if (($permissions & Constants::PERMISSION_CREATE)
-			|| ($permissions & Constants::PERMISSION_UPDATE)
-		) {
-			$ocmPermissions[] = 'write';
-		}
-		if ($permissions & Constants::PERMISSION_SHARE) {
-			$ocmPermissions[] = 'share';
-		}
-		return $ocmPermissions;
 	}
 }

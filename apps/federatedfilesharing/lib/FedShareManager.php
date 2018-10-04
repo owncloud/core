@@ -21,6 +21,7 @@
 
 namespace OCA\FederatedFileSharing;
 
+use OCA\FederatedFileSharing\Ocm\Permissions;
 use OCA\Files_Sharing\Activity;
 use OCP\Activity\IManager as ActivityManager;
 use OCP\Files\NotFoundException;
@@ -69,6 +70,11 @@ class FedShareManager {
 	private $addressHandler;
 
 	/**
+	 * @var Permissions
+	 */
+	private $permissions;
+
+	/**
 	 * @var EventDispatcherInterface
 	 */
 	private $eventDispatcher;
@@ -82,6 +88,7 @@ class FedShareManager {
 	 * @param ActivityManager $activityManager
 	 * @param NotificationManager $notificationManager
 	 * @param AddressHandler $addressHandler
+	 * @param Permissions $permissions
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
 	public function __construct(FederatedShareProvider $federatedShareProvider,
@@ -90,6 +97,7 @@ class FedShareManager {
 								ActivityManager $activityManager,
 								NotificationManager $notificationManager,
 								AddressHandler $addressHandler,
+								Permissions $permissions,
 								EventDispatcherInterface $eventDispatcher
 	) {
 		$this->federatedShareProvider = $federatedShareProvider;
@@ -98,6 +106,7 @@ class FedShareManager {
 		$this->activityManager = $activityManager;
 		$this->notificationManager = $notificationManager;
 		$this->addressHandler = $addressHandler;
+		$this->permissions = $permissions;
 		$this->eventDispatcher = $eventDispatcher;
 	}
 
@@ -174,14 +183,16 @@ class FedShareManager {
 	 * @param IShare $share
 	 * @param int $remoteId
 	 * @param string $shareWith
-	 * @param int $permissions
+	 * @param int|null $permissions - null for OCM 1.0-proposal1
 	 *
 	 * @return IShare
 	 *
 	 * @throws \OCP\Share\Exceptions\ShareNotFound
 	 */
-	public function reShare(IShare $share, $remoteId, $shareWith, $permissions) {
-		$share->setPermissions($share->getPermissions() & $permissions);
+	public function reShare(IShare $share, $remoteId, $shareWith, $permissions = null) {
+		if ($permissions !== null) {
+			$share->setPermissions($share->getPermissions() & $permissions);
+		}
 		// the recipient of the initial share is now the initiator for the re-share
 		$share->setSharedBy($share->getSharedWith());
 		$share->setSharedWith($shareWith);
@@ -243,7 +254,7 @@ class FedShareManager {
 	}
 
 	/**
-	 * Unshare an item
+	 * Unshare an item from self
 	 *
 	 * @param int $id
 	 * @param string $token
@@ -282,8 +293,21 @@ class FedShareManager {
 	 *
 	 * @return void
 	 */
-	public function revoke(IShare $share) {
+	public function undoReshare(IShare $share) {
 		$this->federatedShareProvider->removeShareFromTable($share);
+	}
+
+	/**
+	 * Update permissions
+	 *
+	 * @param IShare $share
+	 * @param string[] $ocmPermissions as ['read', 'write', 'share']
+	 *
+	 * @return void
+	 */
+	public function updateOcmPermissions(IShare $share, $ocmPermissions) {
+		$permissions = $this->permissions->toOcPermissions($ocmPermissions);
+		$this->updatePermissions($share, $permissions);
 	}
 
 	/**
@@ -295,8 +319,10 @@ class FedShareManager {
 	 * @return void
 	 */
 	public function updatePermissions(IShare $share, $permissions) {
-		$share->setPermissions($permissions);
-		$this->federatedShareProvider->update($share);
+		if ($share->getPermissions() !== $permissions) {
+			$share->setPermissions($permissions);
+			$this->federatedShareProvider->update($share);
+		}
 	}
 
 	/**

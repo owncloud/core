@@ -283,25 +283,32 @@ class OcmController extends Controller {
 										$notification
 	) {
 		try {
-			$this->ocmMiddleware->assertNotNull(
-				[
-					'notificationType' => $notificationType,
-					'resourceType' => $resourceType,
-					'providerId' => $providerId
-				]
-			);
 			if (!\is_array($notification)) {
 				throw new BadRequestException(
 					'server can not add remote share, missing parameter'
 				);
 			}
 
+			$notification = \array_merge(
+				['sharedSecret' => null],
+				$notification
+			);
+
+			$this->ocmMiddleware->assertNotNull(
+				[
+					'notificationType' => $notificationType,
+					'resourceType' => $resourceType,
+					'providerId' => $providerId,
+					'sharedSecret' => $notification['sharedSecret']
+				]
+			);
+
 			if ($this->isSupportedResourceType($resourceType) === false) {
 				throw new NotImplementedException(
 					"ResourceType {$resourceType} is not supported"
 				);
 			}
-			// TODO: check permissions/preconditions in all cases
+
 			switch ($notificationType) {
 				case FileNotification::NOTIFICATION_TYPE_SHARE_ACCEPTED:
 					$this->ocmMiddleware->assertOutgoingSharingEnabled();
@@ -336,11 +343,9 @@ class OcmController extends Controller {
 					$this->ocmMiddleware->assertNotSameUser($ownerAddress, $shareWithAddress);
 					$this->ocmMiddleware->assertSharingPermissionSet($share);
 
-					// TODO: permissions not needed ???
 					$reShare = $this->fedShareManager->reShare(
 						$share, $notification['senderId'],
-						$notification['shareWith'],
-						0
+						$notification['shareWith']
 					);
 					return new JSONResponse(
 						[
@@ -351,12 +356,18 @@ class OcmController extends Controller {
 					);
 					break;
 				case FileNotification::NOTIFICATION_TYPE_RESHARE_CHANGE_PERMISSION:
-					$permissions = $notification['permission'];
-					// TODO: Map OCM permissions to numeric
+					$this->ocmMiddleware->assertNotNull(
+						[
+							'permission' => $notification['permission']
+						]
+					);
 					$share = $this->ocmMiddleware->getValidShare(
 						$providerId, $notification['sharedSecret']
 					);
-					$this->fedShareManager->updatePermissions($share, $permissions);
+					$this->fedShareManager->updateOcmPermissions(
+						$share,
+						$notification['permission']
+					);
 					break;
 				case FileNotification::NOTIFICATION_TYPE_SHARE_UNSHARED:
 					$this->fedShareManager->unshare(
@@ -364,10 +375,11 @@ class OcmController extends Controller {
 					);
 					break;
 				case FileNotification::NOTIFICATION_TYPE_RESHARE_UNDO:
+					// owner or sender unshared a resource
 					$share = $this->ocmMiddleware->getValidShare(
 						$providerId, $notification['sharedSecret']
 					);
-					$this->fedShareManager->revoke($share);
+					$this->fedShareManager->undoReshare($share);
 					break;
 				default:
 					return new JSONResponse(

@@ -202,7 +202,9 @@ class RequestHandlerController extends OCSController {
 					'remoteId' => $remoteId
 				]
 			);
-			$permission = (int) $permission;
+			$permission = $this->ocmMiddleware->normalizePermissions(
+				(int) $permission
+			);
 			$remoteId = (int) $remoteId;
 			$share = $this->ocmMiddleware->getValidShare($id, $token);
 
@@ -332,8 +334,8 @@ class RequestHandlerController extends OCSController {
 	public function revoke($id) {
 		try {
 			$token = $this->request->getParam('token', null);
-			$share = $this->getValidShare($id, $token);
-			$this->fedShareManager->revoke($share);
+			$share = $this->ocmMiddleware->getValidShare($id, $token);
+			$this->fedShareManager->undoReshare($share);
 		} catch (\Exception $e) {
 			return new Result(null, Http::STATUS_BAD_REQUEST);
 		}
@@ -360,7 +362,10 @@ class RequestHandlerController extends OCSController {
 			if (!$validPermission) {
 				throw new \Exception();
 			}
-			$this->fedShareManager->updatePermissions($share, (int)$permissions);
+			$permissions = $this->ocmMiddleware->normalizePermissions(
+				(int) $permissions
+			);
+			$this->fedShareManager->updatePermissions($share, $permissions);
 		} catch (\Exception $e) {
 			return new Result(null, Http::STATUS_BAD_REQUEST);
 		}
