@@ -98,9 +98,9 @@ class CORSMiddleware extends Middleware {
 			$userId = $this->session->getUser()->getUID();
 		}
 
-		if ($this->request->getHeader("Origin") !== null &&
-			$this->reflector->hasAnnotation('CORS') && $userId !== null) {
-			$requesterDomain = $this->request->getHeader("Origin");
+		if ($this->request->getHeader('Origin') !== null &&
+			$this->reflector->hasAnnotation('CORS')) {
+			$requesterDomain = $this->request->getHeader('Origin');
 
 			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, $this->config);
 			foreach ($headers as $key => $value) {
