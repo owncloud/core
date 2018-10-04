@@ -32,13 +32,13 @@ class EmailHelper {
 	/**
 	 * retrieving emails sent from mailhog
 	 *
-	 * @param string $mailhogUrl
+	 * @param string $localMailhogUrl
 	 *
 	 * @return mixed JSON encoded contents
 	 */
-	public static function getEmails($mailhogUrl) {
+	public static function getEmails($localMailhogUrl) {
 		$response = HttpRequestHelper::get(
-			$mailhogUrl . "/api/v2/messages",
+			$localMailhogUrl . "/api/v2/messages",
 			null,
 			null,
 			['Content-Type' => 'application/json']
@@ -50,7 +50,7 @@ class EmailHelper {
 
 	/**
 	 *
-	 * @param string $mailhogUrl
+	 * @param string $localMailhogUrl
 	 *
 	 * @param string $address
 	 * @param int $waitTimeSec Time to wait for the email
@@ -59,13 +59,17 @@ class EmailHelper {
 	 *
 	 * @return mixed
 	 */
-	public static function getBodyOfLastEmail($mailhogUrl, $address, $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC) {
-		return self::getBodyOfEmail($mailhogUrl, $address, 0, $waitTimeSec);
+	public static function getBodyOfLastEmail(
+		$localMailhogUrl, $address, $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+	) {
+		return self::getBodyOfEmail(
+			$localMailhogUrl, $address, 0, $waitTimeSec
+		);
 	}
 
 	/**
 	 *
-	 * @param string $mailhogUrl
+	 * @param string $localMailhogUrl
 	 * @param string $address
 	 * @param int $numEmails which number of multiple emails to read (first email is 1)
 	 * @param int $waitTimeSec Time to wait for the email
@@ -74,13 +78,18 @@ class EmailHelper {
 	 *
 	 * @return mixed
 	 */
-	public static function getBodyOfEmail($mailhogUrl, $address, $numEmails = 1, $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC) {
+	public static function getBodyOfEmail(
+		$localMailhogUrl,
+		$address,
+		$numEmails = 1,
+		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+	) {
 		$currentTime = \time(true);
 		$end = $currentTime + $waitTimeSec;
 
 		while ($currentTime <= $end) {
 			$skip = 1;
-			foreach (self::getEmails($mailhogUrl)->items as $item) {
+			foreach (self::getEmails($localMailhogUrl)->items as $item) {
 				$expectedEmail = $item->To[0]->Mailbox . "@" . $item->To[0]->Domain;
 				if ($expectedEmail === $address) {
 					if ($skip < $numEmails) {
@@ -103,17 +112,20 @@ class EmailHelper {
 
 	/**
 	 *
-	 * @param string $mailhogUrl
+	 * @param string $localMailhogUrl
 	 *
 	 * @return ResponseInterface
 	 */
-	public static function deleteAllMessages($mailhogUrl) {
+	public static function deleteAllMessages($localMailhogUrl) {
 		return HttpRequestHelper::delete(
-			$mailhogUrl . "/api/v1/messages"
+			$localMailhogUrl . "/api/v1/messages"
 		);
 	}
 
 	/**
+	 * Returns the host name or address of the Mailhog server as seen from the
+	 * point of view of the system-under-test.
+	 *
 	 * @return string
 	 */
 	public static function getMailhogHost() {
@@ -123,17 +135,34 @@ class EmailHelper {
 		}
 		return $mailhogHost;
 	}
+
 	/**
+	 * Returns the host name or address of the Mailhog server as seen from the
+	 * point of view of the test runner.
 	 *
 	 * @return string
 	 */
-	public static function getMailhogUrl() {
-		$mailhogHost = self::getMailhogHost();
+	public static function getLocalMailhogHost() {
+		$localMailhogHost = \getenv('LOCAL_MAILHOG_HOST');
+		if ($localMailhogHost === false) {
+			$localMailhogHost = self::getMailhogHost();
+		}
+		return $localMailhogHost;
+	}
+
+	/**
+	 * Returns the host and port where Mailhog messages can be read and deleted
+	 * by the test runner.
+	 *
+	 * @return string
+	 */
+	public static function getLocalMailhogUrl() {
+		$localMailhogHost = self::getLocalMailhogHost();
 
 		$mailhogPort = \getenv('MAILHOG_PORT');
 		if ($mailhogPort === false) {
 			$mailhogPort = "8025";
 		}
-		return "http://$mailhogHost:$mailhogPort";
+		return "http://$localMailhogHost:$mailhogPort";
 	}
 }
