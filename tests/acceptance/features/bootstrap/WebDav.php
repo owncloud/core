@@ -584,6 +584,24 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^the public should be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder and the content should be "([^"]*)"$/
+	 *
+	 * @param string $range
+	 * @param string $path
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function shouldBeAbleToDownloadFileInsidePublicSharedFolder(
+		$range, $path, $content
+	) {
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
+			$path, null, $range
+		);
+		$this->downloadedContentShouldBe($content);
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" using password "([^"]*)" should not be able to download file "([^"]*)"$/
 	 *
 	 * @param string $user

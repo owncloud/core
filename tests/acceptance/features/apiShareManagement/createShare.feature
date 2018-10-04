@@ -385,3 +385,88 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 400             |
       | 2               | 400             |
+
+  Scenario Outline: user shares a file with file name longer than 64 chars to another user
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created
+    And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
+    When user "user0" shares file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" with user "user1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "user1" the file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  Scenario Outline: user shares a file with file name longer than 64 chars to a group
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    And user "user1" has been created
+    And user "user1" has been added to group "grp1"
+    And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
+    When user "user0" shares file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" with group "grp1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "user1" the file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created
+    And user "user0" has created a folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+    And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
+    When user "user0" shares folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" with user "user1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the downloaded content when downloading file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt" for user "user1" with range "bytes=1-6" should be "elcome"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  Scenario Outline: user shares a folder with folder name longer than 64 chars to a group
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    And user "user1" has been created
+    And user "user1" has been added to group "grp1"
+    And user "user0" has created a folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+    And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
+    When user "user0" shares folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" with group "grp1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the downloaded content when downloading file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt" for user "user1" with range "bytes=1-6" should be "elcome"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+Scenario Outline: user creates a public link share of a file with file name longer than 64 chars
+    Given using OCS API version "<ocs_api_version>"
+    And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path | /aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the last public shared file should be able to be downloaded without a password
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+Scenario Outline: user creates a public link share of a folder with folder name longer than 64 chars
+    Given using OCS API version "<ocs_api_version>"
+    And user "user0" has created a folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+    And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path | /aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    Then the public should be able to download the range "bytes=1-6" of file "/welcome.txt" from inside the last public shared folder and the content should be "elcome"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
