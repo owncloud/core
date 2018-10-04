@@ -5,7 +5,10 @@ Feature: deleting files and folders
   So that I can keep my filing system clean and tidy
 
   Background:
-    Given user "user1" has been created
+    Given these users have been created:
+      | username |
+      | user1    |
+      | user2    |
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 
@@ -92,3 +95,35 @@ Feature: deleting files and folders
   Scenario: Delete the last file in a folder
     When the user deletes the file "zzzz-must-be-last-file-in-folder.txt" using the webUI
     Then the file "zzzz-must-be-last-file-in-folder.txt" should not be listed on the webUI
+
+  Scenario: delete files from shared with others page
+    Given the user has shared the file "lorem.txt" with the user "User Two" using the webUI
+    And the user has shared the folder "simple-folder" with the user "User Two" using the webUI
+    And the user has browsed to the shared-with-others page
+    When the user deletes the file "lorem.txt" using the webUI
+    And the user deletes the folder "simple-folder" using the webUI
+    Then the file "lorem.txt" should not be listed on the webUI
+    And the folder "simple-folder" should not be listed on the webUI
+    When the user browses to the files page
+    Then the file "lorem.txt" should not be listed on the webUI
+    And the folder "simple-folder" should not be listed on the webUI
+
+  Scenario: delete files from shared by link page
+    Given the user has created a new public link for the file "lorem.txt" using the webUI
+    And the user has browsed to the shared-by-link page
+    Then the file "lorem.txt" should be listed on the webUI
+    When the user deletes the file "lorem.txt" using the webUI
+    Then the file "lorem.txt" should not be listed on the webUI
+    When the user browses to the files page
+    Then the file "lorem.txt" should not be listed on the webUI
+
+  Scenario: delete files from tags page
+    Given user "user1" has created a "normal" tag with name "lorem"
+    And user "user1" has added the tag "lorem" to "/lorem.txt"
+    When the user browses to the tags page
+    And the user searches for tag "lorem" using the webUI
+    Then the file "lorem.txt" should be listed on the webUI
+    When the user deletes the file "lorem.txt" using the webUI
+    Then the file "lorem.txt" should not be listed on the webUI
+    When the user browses to the files page
+    Then the file "lorem.txt" should not be listed on the webUI
