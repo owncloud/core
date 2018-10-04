@@ -61,3 +61,7 @@ Feature: admin general settings
     And the administrator sets the value of log level to 1 using the webUI
     And the administrator invokes occ command "config:system:get loglevel"
     Then the command output should contain the text "1"
+
+  Scenario: administrator should be able to see system status
+    Then the version of the owncloud installation should be displayed on the admin general settings page
+    And the version string of the owncloud installation should be displayed on the admin general settings page
