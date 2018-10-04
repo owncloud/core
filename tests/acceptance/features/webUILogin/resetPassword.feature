@@ -29,11 +29,11 @@ Feature: reset the password
   Scenario: reset password for the ordinary (no encryption) case
     When the user requests the password reset link using the webUI
     And the user follows the password reset link from email address "user1@example.org"
-    Then the user should be redirected to a webUI page with the title "ownCloud"
+    Then the user should be redirected to a webUI page with the title "%productname%"
     When the user resets the password to "%alt3%" using the webUI
     Then the email address "user1@example.org" should have received an email with the body containing
 			"""
 			Password changed successfully
 			"""
     When the user logs in with username "user1" and password "%alt3%" using the webUI
-    Then the user should be redirected to a webUI page with the title "Files - ownCloud"
+    Then the user should be redirected to a webUI page with the title "Files - %productname%"

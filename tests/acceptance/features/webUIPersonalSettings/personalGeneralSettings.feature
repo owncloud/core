@@ -12,7 +12,7 @@ Feature: personal general settings
   @smokeTest
   Scenario: change language
     When the user changes the language to "Русский" using the webUI
-    Then the user should be redirected to a webUI page with the title "Настройки - ownCloud"
+    Then the user should be redirected to a webUI page with the title "Настройки - %productname%"
 
   Scenario: change language and check that file actions menu have been translated
     When the user changes the language to "हिन्दी" using the webUI

@@ -13,7 +13,7 @@ Feature: Change Login Password
   Scenario: Change password
     When the user changes the password to "%alt3%" using the webUI
     And the user re-logs in with username "user1" and password "%alt3%" using the webUI
-    Then the user should be redirected to a webUI page with the title "Files - ownCloud"
+    Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario: Password change with wrong current password
     When the user changes the password to "%alt3%" entering the wrong current password "%alt2%" using the webUI
