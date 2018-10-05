@@ -25,6 +25,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\AdminSharingSettingsPage;
+use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
 
@@ -216,7 +217,21 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 			$this->getSession()
 		);
 	}
-	
+
+	/**
+	 * @When the administrator adds the group :group to the group sharing blacklist using the webUI
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorAddsTheGroupToTheGroupSharingBlacklistUsingTheWebui($group) {
+		$this->adminSharingSettingsPage->addGroupToGroupSharingBlacklist($group);
+		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
+			$this->getSession()
+		);
+	}
+
 	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
@@ -232,5 +247,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+		SetupHelper::runOcc(
+			['config:app:set files_sharing blacklisted_receiver_groups --value=']
+		);
 	}
 }

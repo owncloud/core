@@ -59,6 +59,10 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	protected $onlyShareWithGroupMembersCheckboxXpath = '//label[@for="onlyShareWithGroupMembers"]';
 	protected $onlyShareWithGroupMembersCheckboxId = 'onlyShareWithGroupMembers';
 
+	protected $groupSharingBlackListFieldXpath = '//div[@id="files_sharing"]//input[contains(@class,"select2-input")]';
+	protected $groupListXpath = '//div[@id="select2-drop"]//li[contains(@class, "select2-result")]';
+	protected $groupListDropDownXpath = "//div[@id='select2-drop']";
+
 	/**
 	 * toggle checkbox
 	 *
@@ -263,6 +267,40 @@ class AdminSharingSettingsPage extends OwncloudPage {
 			$this->onlyShareWithGroupMembersCheckboxXpath,
 			$this->onlyShareWithGroupMembersCheckboxId
 		);
+	}
+
+	/**
+	 * add group to group sharing blacklist
+	 *
+	 * @param string $groupName
+	 *
+	 * @return void
+	 */
+	public function addGroupToGroupSharingBlacklist($groupName) {
+		$groupSharingBlackListField = $this->find("xpath", $this->groupSharingBlackListFieldXpath);
+		if ($groupSharingBlackListField === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->groupSharingBlackListFieldXpath " .
+				"could not find input field"
+			);
+		}
+		$groupSharingBlackListField->click();
+		$this->waitTillElementIsNotNull($this->groupListDropDownXpath);
+		$this->waitTillElementIsNotNull($this->groupListXpath);
+		$groupList = $this->findAll("xpath", $this->groupListXpath);
+		if ($groupSharingBlackListField === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->groupListXpath " .
+				"could not find group list"
+			);
+		}
+		foreach ($groupList as $group) {
+			if ($this->getTrimmedText($group) === $groupName) {
+				$group->click();
+			}
+		}
 	}
 
 	/**
