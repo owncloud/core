@@ -2020,7 +2020,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			);
 		}
 	}
-	
+
 	/**
 	 * @When the user searches for tag :tag using the webUI
 	 *
@@ -2039,5 +2039,16 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theUserClosesTheDetailsDialog() {
 		$this->filesPage->closeDetailsDialog();
+	}
+
+	/**
+	 * @When the user deletes tag with name :name using the webUI
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function theUserDeletesTagWithNameUsingTheWebui($name) {
+		$this->filesPage->getDetailsDialog()->deleteTag($name);
 	}
 }

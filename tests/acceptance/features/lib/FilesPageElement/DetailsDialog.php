@@ -54,6 +54,8 @@ class DetailsDialog extends OwncloudPage {
 	private $tagsSuggestDropDownXpath = "//div[contains(@class, 'systemtags-select2-dropdown') and contains(@id, 'select2-drop')]";
 
 	private $tagsResultFromDropdownXpath = "//li[contains(@class, 'select2-result')]";
+	private $tagEditButtonInTagXpath = "//span[@class='systemtags-actions']//a[contains(@class, 'rename')]";
+	private $tagDeleteButtonInTagXpath = "//form[@class='systemtags-rename-form']//a";
 
 	private $commentInputXpath = "//form[@class='newCommentForm']//textarea[@class='message']";
 	private $commentPostXpath = "//form[@class='newCommentForm']//input[@class='submit']";
@@ -342,6 +344,30 @@ class DetailsDialog extends OwncloudPage {
 		}
 	}
 
+	/**
+	 * Delete the tag with the given name
+	 *
+	 * @param string $tagName
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function deleteTag($tagName) {
+		$this->insertTagNameInTheTagsField($tagName);
+		$suggestions = $this->getDropDownTagsSuggestionResults();
+		foreach ($suggestions as $tag) {
+			if ($tag->getText() === $tagName) {
+				$tagContainer = $tag->getParent();
+				$editBtn = $tagContainer->find("xpath", $this->tagEditButtonInTagXpath);
+				$editBtn->focus();
+				$editBtn->click();
+
+				$deleteBtn = $this->find("xpath", $this->tagDeleteButtonInTagXpath);
+				$deleteBtn->focus();
+				$deleteBtn->click();
+			}
+		}
+	}
 	/**
 	 * Returns xpath of the tag results dropdown
 	 *

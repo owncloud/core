@@ -8,6 +8,7 @@ Feature: Creation of tags for the files and folders
     Given these users have been created:
       | username |
       | user1    |
+      | user2    |
     And the user has browsed to the login page
     And the user has logged in with username "user1" and password "%alt1%" using the webUI
 
@@ -43,3 +44,31 @@ Feature: Creation of tags for the files and folders
     When the user browses directly to display the details of file "lorem.txt" in folder "simple-folder"
     And the user toggles a tag "lorem" on the file using the webUI
     Then file "simple-folder/lorem.txt" should have no tags for user "user1"
+
+  Scenario: Create and add tag on a shared file
+    When the user renames the file "lorem.txt" to "coolnewfile.txt" using the webUI
+    And the user browses directly to display the details of file "coolnewfile.txt" in folder ""
+    And the user adds a tag "tag1" to the file using the webUI
+    And the user shares the file "coolnewfile.txt" with the user "User Two" using the webUI
+    And the user re-logs in with username "user2" and password "%alt2%" using the webUI
+    And the user browses directly to display the details of file "coolnewfile.txt" in folder ""
+    And the user adds a tag "tag2" to the file using the webUI
+    Then file "coolnewfile.txt" should have the following tags for user "user1"
+      | tag1 | normal |
+      | tag2 | normal |
+    Then file "coolnewfile.txt" should have the following tags for user "user2"
+      | tag1 | normal |
+      | tag2 | normal |
+
+  Scenario: Delete a tag in a shared file
+    When the user renames the file "lorem.txt" to "coolnewfile.txt" using the webUI
+    When the user browses directly to display the details of file "coolnewfile.txt" in folder ""
+    And the user adds a tag "tag1" to the file using the webUI
+    And the user shares the file "coolnewfile.txt" with the user "User Two" using the webUI
+    And the user re-logs in with username "user2" and password "%alt2%" using the webUI
+    Then file "coolnewfile.txt" should have the following tags for user "user2"
+      | tag1 | normal |
+    When the user browses directly to display the details of file "coolnewfile.txt" in folder ""
+    And the user deletes tag with name "tag1" using the webUI
+    Then tag "tag1" should not exist for "user1"
+    And tag "tag1" should not exist for "user2"
