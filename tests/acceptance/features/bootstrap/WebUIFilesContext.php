@@ -1033,7 +1033,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with the path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
+	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with the path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|shared with others page|tags page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
 	 *
 	 * @param string $name enclosed in single or double quotes
 	 * @param string $path
@@ -1280,6 +1280,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				break;
 			case "shared-by-link page":
 				$this->theUserBrowsesToTheSharedByLinkPage();
+				break;
+			case "shared with others page":
+				$this->theUserBrowsesToTheSharedWithOthersPage();
+				break;
+			case "tags page":
 				break;
 			case "search results page":
 				//nothing to do here, we cannot navigate to that page, except by performing a search
@@ -1951,5 +1956,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theUserSearchesForTagUsingTheWebui($tag) {
 		$this->tagsPage->searchByTag($tag);
+	}
+
+	/**
+	 * @When the user closes the details dialog
+	 *
+	 * @return void
+	 */
+	public function theUserClosesTheDetailsDialog() {
+		$this->filesPage->closeDetailsDialog();
 	}
 }

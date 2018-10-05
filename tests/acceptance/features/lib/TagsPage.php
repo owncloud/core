@@ -72,7 +72,7 @@ class TagsPage extends FilesPageBasic {
 	 * @throws ElementNotFoundException
 	 */
 	protected function getFilePathInRowXpath() {
-		throw new \Exception("not implemented in TagsPage");
+		return $this->filePathInRowXpath;
 	}
 
 	/**
@@ -118,5 +118,25 @@ class TagsPage extends FilesPageBasic {
 			"//ul[@class='select2-results']" .
 			"//span";
 		return $resultXpath;
+	}
+
+	/**
+	 * finds all rows that have the given name
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 *
+	 * @return FileRow[]
+	 * @throws ElementNotFoundException
+	 */
+	public function findAllFileRowsByName($name, Session $session) {
+		$fileRowElements = $this->getFileRowElementsByName($name, $session);
+		foreach ($fileRowElements as $fileRowElement) {
+			$fileRow = $this->getPage('FilesPageElement\\SharedWithOthersFileRow');
+			$fileRow->setElement($fileRowElement);
+			$fileRow->setName($name);
+			$fileRows[] = $fileRow;
+		}
+		return $fileRows;
 	}
 }

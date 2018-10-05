@@ -108,3 +108,11 @@ Feature: Sharing files and folders with internal users
     When the user browses to the shared-with-others page
     Then the file "lorem.txt" should be listed on the webUI
     And the folder "simple-folder" should be listed on the webUI
+
+  Scenario: share two file with same name but different paths
+    Given the user has shared the file "lorem.txt" with the user "User One" using the webUI
+    When the user opens the folder "simple-folder" using the webUI
+    And the user shares the file "lorem.txt" with the user "User One" using the webUI
+    And the user browses to the shared-with-others page
+    Then the file "lorem.txt" with the path "" should be listed in the shared with others page on the webUI
+    And the file "lorem.txt" with the path "/simple-folder" should be listed in the shared with others page on the webUI
