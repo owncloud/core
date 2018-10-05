@@ -59,7 +59,10 @@ trait Tags {
 		if (isset($responseHeaders['Content-Location'][0])) {
 			$tagUrl = $responseHeaders['Content-Location'][0];
 			$lastTagId = \substr($tagUrl, \strrpos($tagUrl, '/') + 1);
-			\array_push($this->createdTags, $lastTagId);
+			$this->createdTags[$lastTagId]['name'] = $name;
+			if ($userAssignable) {
+				$this->createdTags[$lastTagId]['userAssignable'] = true;
+			}
 		}
 	}
 
@@ -71,10 +74,18 @@ trait Tags {
 	 * @return void
 	 */
 	public function addToTheListOfCreatedTagsByDisplayName($tagDisplayName) {
-		\array_push(
-			$this->createdTags,
-			$this->findTagIdByName($tagDisplayName)
-		);
+		$tagId = $this->findTagIdByName($tagDisplayName);
+		$this->createdTags[$tagId]['name'] = $tagDisplayName;
+		$this->createdTags[$tagId]['userAssignable'] = true;
+	}
+
+	/**
+	 * Return list of created tags
+	 *
+	 * @return array
+	 */
+	public function getListOfCreatedTags() {
+		return $this->createdTags;
 	}
 
 	/**
@@ -380,8 +391,9 @@ trait Tags {
 			$tagID,
 			$this->getDavPathVersion('systemtags')
 		);
-		
-		unset($this->createdTags[$tagID]);
+		if ($this->response->getStatusCode() === 204) {
+			unset($this->createdTags[$tagID]);
+		}
 	}
 
 	/**
@@ -632,7 +644,7 @@ trait Tags {
 	 */
 	public function cleanupTags() {
 		$this->deleteTokenAuthEnforcedAfterScenario();
-		foreach ($this->createdTags as $tagID) {
+		foreach ($this->createdTags as $tagID => $tag) {
 			$this->response = TagsHelper::deleteTag(
 				$this->getBaseUrl(),
 				$this->getAdminUsername(),
