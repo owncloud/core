@@ -375,6 +375,12 @@ class OcmController extends Controller {
 					);
 					break;
 				case FileNotification::NOTIFICATION_TYPE_RESHARE_UNDO:
+					// Stub. Let it fallback to the prev endpoint for now
+					return new JSONResponse(
+						['message' => "Notification of type {$notificationType} is not supported"],
+						Http::STATUS_NOT_IMPLEMENTED
+					);
+
 					// owner or sender unshared a resource
 					$share = $this->ocmMiddleware->getValidShare(
 						$providerId, $notification['sharedSecret']

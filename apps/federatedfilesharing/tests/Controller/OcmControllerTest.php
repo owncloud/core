@@ -355,23 +355,6 @@ class OcmControllerTest extends TestCase {
 		$this->assertEquals(Http::STATUS_CREATED, $response->getStatus());
 	}
 
-	public function testReShareUndoSuccess() {
-		$shareMock = $this->getValidShareMock($this->shareToken);
-		$this->ocmMiddleware->expects($this->once())
-			->method('getValidShare')
-			->willReturn($shareMock);
-
-		$response = $this->ocmController->processNotification(
-			FileNotification::NOTIFICATION_TYPE_RESHARE_UNDO,
-			FileNotification::RESOURCE_TYPE_FILE,
-			'90',
-			[
-				'sharedSecret' => $this->shareToken
-			]
-		);
-		$this->assertEquals(Http::STATUS_CREATED, $response->getStatus());
-	}
-
 	protected function getValidShareMock($token) {
 		$share = $this->createMock(IShare::class);
 		$share->expects($this->any())
