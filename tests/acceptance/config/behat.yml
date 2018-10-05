@@ -227,6 +227,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - WebUIAdminSharingSettingsContext:
 
     webUISharingInternalUsers:
       paths:
