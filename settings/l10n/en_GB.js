@@ -1,10 +1,15 @@
 OC.L10N.register(
     "settings",
     {
+    "Wrong current password" : "Wrong current password",
+    "The new password cannot be the same as the previous one" : "The new password cannot be the same as the previous one",
+    "%s password changed successfully" : "%s password changed successfully",
     "Couldn't send reset email. Please contact your administrator." : "Couldn't send reset email. Please contact your administrator.",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "installing and updating apps via the market or Federated Cloud Sharing",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably.",
     "Saved" : "Saved",
     "log-level out of allowed range" : "log-level out of allowed range",
+    "Invalid email address" : "Invalid email address",
     "test email settings" : "test email settings",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "A problem occurred while sending the email. Please revise your settings. (Error: %s)",
     "Email sent" : "Email sent",
@@ -54,6 +59,7 @@ OC.L10N.register(
     "Error while creating device token" : "Error whilst creating device token",
     "Error while deleting the token" : "Error whilst deleting the token",
     "Sending..." : "Sending...",
+    "Email has been changed successfully." : "Email has been changed successfully.",
     "Unable to change mail address" : "Unable to change mail address",
     "Your full name has been changed." : "Your full name has been changed.",
     "An error occurred: {message}" : "An error occurred: {message}",
