@@ -278,14 +278,14 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
-	 * Add a tag on the files in the details dialog
+	 * Insert tag name inside the tag field
 	 *
 	 * @param string $tagName
 	 *
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function addTag($tagName) {
+	public function insertTagNameInTheTagsField($tagName) {
 		$inputField = $this->find(
 			"xpath",
 			$this->tagsContainer . $this->tagsInputXpath
@@ -302,13 +302,38 @@ class DetailsDialog extends OwncloudPage {
 		$inputField->setValue($tagName);
 
 		$this->waitTillElementIsNotNull($this->tagsSuggestDropDownXpath);
+	}
+
+	/**
+	 * Get tag suggestions result from the dropdown
+	 *
+	 * @return NodeElement[]
+	 */
+	public function getDropDownTagsSuggestionResults() {
+		$this->waitTillElementIsNotNull($this->tagsSuggestDropDownXpath);
 
 		// select2 requires some time to display the results even though the dropdown has appeared.
 		// Until that, select2 shows `Searching...` in the dropdown.
 		// We are waiting here till a single result show up on the dropdown.
 		$this->waitTillElementIsNotNull($this->tagsSuggestDropDownXpath . $this->tagsResultFromDropdownXpath);
 
-		$tagSuggestions = $this->findAll("xpath", $this->getTagsDropDownResultsXpath());
+		return $this->findAll("xpath", $this->getTagsDropDownResultsXpath());
+	}
+
+	/**
+	 * Add a tag on the files in the details dialog
+	 *
+	 * @param string $tagName
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function addTag($tagName) {
+		$this->insertTagNameInTheTagsField($tagName);
+
+		$this->waitTillElementIsNotNull($this->tagsSuggestDropDownXpath);
+
+		$tagSuggestions = $this->getDropDownTagsSuggestionResults();
 
 		foreach ($tagSuggestions as $tag) {
 			if ($tag->getText() === $tagName) {
