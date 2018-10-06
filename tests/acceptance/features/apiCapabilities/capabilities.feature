@@ -55,7 +55,7 @@ Feature: capabilities
 	#feature added in #31824 will be released in 10.0.10
   @smokeTest @skipOnOcV10.0.9
   Scenario: getting capabilities with admin user
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element | value |
       | files_sharing | can_share       | 1     |
@@ -64,7 +64,7 @@ Feature: capabilities
   @skipOnOcV10.0.9
   Scenario: getting async capabilites when async operations are enabled
     Given the administrator has enabled async operations
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability | path_to_element | value |
       | async      |                 | 1.0   |
@@ -73,14 +73,14 @@ Feature: capabilities
   @skipOnOcV10.0.9
   Scenario: getting async capabilites when async operations are disabled
     Given the administrator has disabled async operations
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability | path_to_element | value |
       | async      |                 | EMPTY |
 
   Scenario: Changing public upload
     Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
