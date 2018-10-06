@@ -1621,8 +1621,36 @@ trait BasicStructure {
 	 */
 	public function statusPhpRespondedShouldMatch(PyStringNode $jsonExpected) {
 		$jsonExpectedDecoded = \json_decode($jsonExpected->getRaw(), true);
-		$jsonRespondedEncoded
-			= \json_encode(\json_decode($this->response->getBody(), true));
+		$jsonRespondedEncoded = \json_encode($this->getJsonDecodedResponse());
+
+		$this->theAdministratorGetsCapabilitiesCheckResponse();
+		$edition = $this->getParameterValueFromXml(
+			$this->getCapabilitiesXml(),
+			'core',
+			'status@@@edition'
+		);
+
+		if (!\strlen($edition)) {
+			PHPUnit_Framework_Assert::fail(
+				"Cannot get edition from capabilities"
+			);
+		}
+
+		$productName = $this->getParameterValueFromXml(
+			$this->getCapabilitiesXml(),
+			'core',
+			'status@@@productname'
+		);
+
+		if (!\strlen($edition)) {
+			PHPUnit_Framework_Assert::fail(
+				"Cannot get productname from capabilities"
+			);
+		}
+
+		$jsonExpectedDecoded['edition'] = $edition;
+		$jsonExpectedDecoded['productname'] = $productName;
+
 		$runOccStatus = $this->runOcc(['status']);
 		if ($runOccStatus === 0) {
 			$output = \explode("- ", $this->lastStdOut);
@@ -1645,6 +1673,63 @@ trait BasicStructure {
 				"Cannot get version variables from occ - status $runOccStatus"
 			);
 		}
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getJsonDecodedResponse() {
+		return \json_decode(
+			$this->getResponse()->getBody(), true
+		);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEditionFromStatus() {
+		$this->getStatusPhp();
+		$decodedResponse = $this->getJsonDecodedResponse();
+		if (isset($decodedResponse['edition'])) {
+			return $decodedResponse['edition'];
+		}
+		return '';
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getProductNameFromStatus() {
+		$this->getStatusPhp();
+		$decodedResponse = $this->getJsonDecodedResponse();
+		if (isset($decodedResponse['productname'])) {
+			return $decodedResponse['productname'];
+		}
+		return '';
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getVersionFromStatus() {
+		$this->getStatusPhp();
+		$decodedResponse = $this->getJsonDecodedResponse();
+		if (isset($decodedResponse['version'])) {
+			return $decodedResponse['version'];
+		}
+		return '';
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getVersionStringFromStatus() {
+		$this->getStatusPhp();
+		$decodedResponse = $this->getJsonDecodedResponse();
+		if (isset($decodedResponse['versionstring'])) {
+			return $decodedResponse['versionstring'];
+		}
+		return '';
 	}
 
 	/**
