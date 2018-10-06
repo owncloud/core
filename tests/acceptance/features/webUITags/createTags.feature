@@ -26,3 +26,20 @@ Feature: Creation of tags for the files and folders
     Then file "simple-folder/lorem.txt" should have the following tags for user "user1"
       | Top Secret | normal |
       | Top        | normal |
+
+  Scenario: Add a new tag that already exists for a file in a folder
+    Given the user has browsed directly to display the details of file "lorem.txt" in folder "simple-folder"
+    And the user has added a tag "lorem" to the file using the webUI
+    When the user browses directly to display the details of file "lorem-big.txt" in folder "simple-folder"
+    And the user adds a tag "lorem" to the file using the webUI
+    Then file "simple-folder/lorem.txt" should have the following tags for user "user1"
+      | lorem | normal |
+    And file "simple-folder/lorem-big.txt" should have the following tags for user "user1"
+      | lorem | normal |
+
+  Scenario: Remove a tag that already exists for a file in a folder
+    Given the user has browsed directly to display the details of file "lorem.txt" in folder "simple-folder"
+    And the user has added a tag "lorem" to the file using the webUI
+    When the user browses directly to display the details of file "lorem.txt" in folder "simple-folder"
+    And the user toggles a tag "lorem" on the file using the webUI
+    Then file "simple-folder/lorem.txt" should have no tags for user "user1"
