@@ -914,7 +914,7 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit']));
 	}
 
-	public function testEditUserRegularUserSelfEditChangeDisplayName() {
+	public function testEditUserRegularUserSelfEditChangeDisplay() {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->any())
@@ -937,6 +937,31 @@ class UsersTest extends OriginalTest {
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'display', 'value' => 'NewDisplayName']]));
+	}
+
+	public function testEditUserRegularUserSelfEditChangeDisplayName() {
+		$loggedInUser = $this->createMock(IUser::class);
+		$loggedInUser
+			->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('UserToEdit'));
+		$targetUser = $this->createMock(IUser::class);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($loggedInUser));
+		$this->userManager
+			->expects($this->once())
+			->method('get')
+			->with('UserToEdit')
+			->will($this->returnValue($targetUser));
+		$targetUser
+			->expects($this->once())
+			->method('setDisplayName')
+			->with('NewDisplayName');
+
+		$expected = new Result(null, 100);
+		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'displayname', 'value' => 'NewDisplayName']]));
 	}
 
 	public function testEditUserRegularUserSelfEditChangeEmailValid() {
