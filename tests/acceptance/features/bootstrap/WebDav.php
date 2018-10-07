@@ -526,6 +526,19 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^user "([^"]*)" should be able to access a skeleton file$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userShouldBeAbleToAccessASkeletonFile($user) {
+		$this->contentOfFileForUserShouldBePlusEndOfLine(
+			"textfile0.txt", $user, "ownCloud test text file 0"
+		);
+	}
+
+	/**
 	 * @Then /^the downloaded content should be "([^"]*)"$/
 	 *
 	 * @param string $content

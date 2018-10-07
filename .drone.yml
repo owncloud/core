@@ -350,6 +350,19 @@ pipeline:
       matrix:
         TEST_SUITE: api
 
+  cli-acceptance-tests:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    environment:
+      - TEST_SERVER_URL=https://server
+    commands:
+      - touch /drone/saved-settings.sh
+      - . /drone/saved-settings.sh
+      - make test-acceptance-cli TESTING_REMOTE_SYSTEM=true
+    when:
+      matrix:
+        TEST_SUITE: cli
+
   webui-acceptance-tests:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -785,6 +798,16 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavProperties
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+  # CLI Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: cli
+      BEHAT_SUITE: cliProvisioning
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
