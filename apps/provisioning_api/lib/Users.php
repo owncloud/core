@@ -245,6 +245,7 @@ class Users {
 		if ($targetUserId === $currentLoggedInUser->getUID()) {
 			// Editing self (display, email)
 			$permittedFields[] = 'display';
+			$permittedFields[] = 'displayname';
 			$permittedFields[] = 'email';
 			$permittedFields[] = 'password';
 			$permittedFields[] = 'two_factor_auth_enabled';
@@ -259,6 +260,7 @@ class Users {
 			|| $this->groupManager->isAdmin($currentLoggedInUser->getUID())) {
 				// They have permissions over the user
 				$permittedFields[] = 'display';
+				$permittedFields[] = 'displayname';
 				$permittedFields[] = 'quota';
 				$permittedFields[] = 'password';
 				$permittedFields[] = 'email';
@@ -275,6 +277,7 @@ class Users {
 		// Process the edit
 		switch ($parameters['_put']['key']) {
 			case 'display':
+			case 'displayname':
 				$targetUser->setDisplayName($parameters['_put']['value']);
 				break;
 			case 'quota':
