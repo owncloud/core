@@ -66,7 +66,7 @@ fi
 # -c or --config - specify a behat.yml to use
 # --feature - specify a single feature to run
 # --suite - specify a single suite to run
-# --type - api or webui - if no individual feature or suite is specified, then
+# --type - api, cli or webui - if no individual feature or suite is specified, then
 #          specify the type of acceptance tests to run. Default api.
 # --tags - specify tags for scenarios to run (or not)
 # --browser - for webUI tests, which browser to use. "chrome", "firefox",
@@ -103,7 +103,7 @@ do
 			shift
 			;;
 		--type)
-			# Lowercase the parameter value, so the user can provide "API", "webUI" etc
+			# Lowercase the parameter value, so the user can provide "API", "CLI", "webUI" etc
 			ACCEPTANCE_TEST_TYPE="${2,,}"
 			shift
 			;;
@@ -552,15 +552,24 @@ then
 	TEST_TYPE_TAG="@webUI"
 	TEST_TYPE_TEXT="webUI"
 	RUNNING_API_TESTS=false
+	RUNNING_CLI_TESTS=false
 	RUNNING_WEBUI_TESTS=true
+elif [[ "${BEHAT_SUITE}" == cli* ]] || [ "${ACCEPTANCE_TEST_TYPE}" = "cli" ]
+then
+	TEST_TYPE_TAG="@cli"
+	TEST_TYPE_TEXT="cli"
+	RUNNING_API_TESTS=false
+	RUNNING_CLI_TESTS=true
+	RUNNING_WEBUI_TESTS=false
 else
 	TEST_TYPE_TAG="@api"
 	TEST_TYPE_TEXT="API"
 	RUNNING_API_TESTS=true
+	RUNNING_CLI_TESTS=false
 	RUNNING_WEBUI_TESTS=false
 fi
 
-# Always have one of "@api" or "@webUI" filter tags
+# Always have one of "@api", "@cli" or "@webUI" filter tags
 if [ -z "${BEHAT_FILTER_TAGS}" ]
 then
 	BEHAT_FILTER_TAGS="${TEST_TYPE_TAG}"
@@ -633,6 +642,11 @@ fi
 # it is used for file comparisons in various tests
 if [ "${RUNNING_API_TESTS}" = true ]
 then
+	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/apiSkeleton"
+elif [ "${RUNNING_CLI_TESTS}" = true ]
+then
+	# CLI tests use the apiSkeleton so that API-based "then" steps can be used
+	# to check the state of users after CLI commands
 	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/apiSkeleton"
 else
 	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/webUISkeleton"
@@ -795,6 +809,10 @@ else
 fi
 
 if [ "${RUNNING_API_TESTS}" = true ]
+then
+	EXTRA_CAPABILITIES=""
+	BROWSER_TEXT=""
+elif [ "${RUNNING_CLI_TESTS}" = true ]
 then
 	EXTRA_CAPABILITIES=""
 	BROWSER_TEXT=""

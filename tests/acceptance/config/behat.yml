@@ -101,6 +101,13 @@ default:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
 
+    cliProvisioning:
+      paths:
+        - %paths.base%/../features/cliProvisioning
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+
     webUIAdminSettings:
       paths:
         - %paths.base%/../features/webUIAdminSettings

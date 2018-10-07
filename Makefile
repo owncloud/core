@@ -101,6 +101,7 @@ help:
 	@echo -e "make test-js\t\t\trun Javascript tests"
 	@echo -e "make test-js-debug\t\trun Javascript tests in debug mode (continuous)"
 	@echo -e "make test-acceptance-api\trun API acceptance tests"
+	@echo -e "make test-acceptance-cli\trun CLI acceptance tests"
 	@echo -e "make test-acceptance-webui\trun webUI acceptance tests"
 	@echo -e "make clean-test\t\t\tclean test results"
 	@echo
@@ -201,6 +202,10 @@ test-js-debug: $(nodejs_deps) $(js_deps) $(core_vendor)
 test-acceptance-api: $(composer_dev_deps)
 	./tests/acceptance/run.sh --type api
 
+.PHONY: test-acceptance-cli
+test-acceptance-cli: $(composer_dev_deps)
+	./tests/acceptance/run.sh --type cli
+
 .PHONY: test-acceptance-webui
 test-acceptance-webui: $(composer_dev_deps)
 	./tests/acceptance/run.sh --type webUI
@@ -223,7 +228,7 @@ test-php-phan: $(PHAN_BIN)
 	php $(PHAN_BIN) --config-file .phan/config.php --require-config-exists
 
 .PHONY: test
-test: test-php-lint test-php-style test-php test-js test-acceptance-api test-acceptance-webui
+test: test-php-lint test-php-style test-php test-js test-acceptance-api test-acceptance-cli test-acceptance-webui
 
 .PHONY: clean-test-acceptance
 clean-test-acceptance:
