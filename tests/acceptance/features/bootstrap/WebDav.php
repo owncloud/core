@@ -1839,6 +1839,18 @@ trait WebDav {
 	}
 
 	/**
+	 * @When /^the user (?:deletes|unshares) (?:file|folder) "([^"]*)" using the WebDAV API$/
+	 * @Given /^the user has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $file
+	 *
+	 * @return void
+	 */
+	public function theUserDeletesFile($file) {
+		$this->response = $this->makeDavRequest($this->getCurrentUser(), 'DELETE', $file, []);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" on "(LOCAL|REMOTE)" (?:deletes|unshares) (?:file|folder) "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" on "(LOCAL|REMOTE)" has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
 	 *
