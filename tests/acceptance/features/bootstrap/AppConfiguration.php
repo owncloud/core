@@ -127,7 +127,7 @@ trait AppConfiguration {
 	public function theCapabilitiesSettingOfAppParameterShouldBe(
 		$capabilitiesApp, $capabilitiesPath, $expectedValue
 	) {
-		$this->getCapabilitiesCheckResponse();
+		$this->theAdministratorGetsCapabilitiesCheckResponse();
 
 		PHPUnit_Framework_Assert::assertEquals(
 			$expectedValue,
@@ -152,15 +152,35 @@ trait AppConfiguration {
 	}
 
 	/**
+	 * @When user :username retrieves the capabilities using the capabilities API
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function userGetsCapabilitiesCheckResponse($username) {
+		$this->userSendsToOcsApiEndpoint($username, 'GET', '/cloud/capabilities');
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
+		);
+	}
+
+	/**
 	 * @When the user retrieves the capabilities using the capabilities API
 	 *
 	 * @return void
 	 */
 	public function getCapabilitiesCheckResponse() {
-		$this->theUserSendsToOcsApiEndpoint('GET', '/cloud/capabilities');
-		PHPUnit_Framework_Assert::assertEquals(
-			200, $this->response->getStatusCode()
-		);
+		$this->userGetsCapabilitiesCheckResponse($this->getCurrentUser());
+	}
+
+	/**
+	 * @When the administrator retrieves the capabilities using the capabilities API
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsCapabilitiesCheckResponse() {
+		$this->userGetsCapabilitiesCheckResponse($this->getAdminUsername());
 	}
 
 	/**
