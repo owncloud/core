@@ -15,7 +15,7 @@ Feature: disable users
     And the administrator has browsed to the users page
     When the administrator disables the user "user1" using the webUI
     And the disabled user "user1" tries to login using the password "%regular%" from the webUI
-    Then the user should be redirected to a webUI page with the title "ownCloud"
+    Then the user should be redirected to a webUI page with the title "%productname%"
     When the user has browsed to the login page
     And the user logs in with username "user2" and password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
@@ -30,7 +30,7 @@ Feature: disable users
     And the user has browsed to the users page
     When the user disables the user "user1" using the webUI
     And the disabled user "user1" tries to login using the password "%regular%" from the webUI
-    Then the user should be redirected to a webUI page with the title "ownCloud"
+    Then the user should be redirected to a webUI page with the title "%productname%"
     When the user has browsed to the login page
     And the user logs in with username "user2" and password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"

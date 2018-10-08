@@ -12,19 +12,19 @@ Feature: add users
     When the administrator creates a user with the name "guiusr1" and the password "%regular%" using the webUI
     And the administrator logs out of the webUI
     And the user logs in with username "guiusr1" and password "%regular%" using the webUI
-    Then the user should be redirected to a webUI page with the title "Files - ownCloud"
+    Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario: use the webUI to create a user with special valid characters
     When the administrator creates a user with the name "@-_.'" and the password "pwd" using the webUI
     And the administrator logs out of the webUI
     And the user logs in with username "@-_.'" and password "pwd" using the webUI
-    Then the user should be redirected to a webUI page with the title "Files - ownCloud"
+    Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario Outline: use the webUI to create a user with special invalid characters
     When the administrator attempts to create a user with the name <user> and the password <password> using the webUI
     Then notifications should be displayed on the webUI with the text
       | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
-    And the user should be redirected to a webUI page with the title "Users - ownCloud"
+    And the user should be redirected to a webUI page with the title "Users - %productname%"
     Examples:
       | user   | password    |
       | "a#%"  | "%regular%" |
@@ -37,7 +37,7 @@ Feature: add users
     When the administrator attempts to create a user with the name "bijay" and the password "" using the webUI
     Then notifications should be displayed on the webUI with the text
       | Error creating user: A valid password must be provided |
-    And the user should be redirected to a webUI page with the title "Users - ownCloud"
+    And the user should be redirected to a webUI page with the title "Users - %productname%"
 
   Scenario Outline: use the webUI to create a user with less than 3 characters
     When the administrator attempts to create a user with the name <user> and the password <password> using the webUI
@@ -70,7 +70,7 @@ Feature: add users
       Password changed successfully
       """
     When the user logs in with username "<username>" and password "%regular%" using the webUI
-    Then the user should be redirected to a webUI page with the title "Files - ownCloud"
+    Then the user should be redirected to a webUI page with the title "Files - %productname%"
     Examples:
       | username | comment               |
       | guiusr1  | simple user-name      |
@@ -98,7 +98,7 @@ Feature: add users
     And the administrator changes the password of user "guiusr1" to "123" using the provisioning API
     And the administrator logs out of the webUI
     And the user follows the password set link received by "guiusr1@owncloud" using the webUI
-    Then the user should be redirected to the general error webUI page with the title "ownCloud"
+    Then the user should be redirected to the general error webUI page with the title "%productname%"
     And an error should be displayed on the general error webUI page saying "The token provided is invalid."
 
   Scenario: sets-password-token cannot be used twice
@@ -107,7 +107,7 @@ Feature: add users
     And the user follows the password set link received by "guiusr1@owncloud" using the webUI
     And the user sets the password to "%regular%" using the webUI
     And the user follows the password set link received by "guiusr1@owncloud" in Email number 2 using the webUI
-    Then the user should be redirected to the general error webUI page with the title "ownCloud"
+    Then the user should be redirected to the general error webUI page with the title "%productname%"
     And an error should be displayed on the general error webUI page saying "The token provided is invalid."
 
   Scenario: recreating a user with same name after deletion sends a new token to new address
@@ -118,7 +118,7 @@ Feature: add users
     And the user follows the password set link received by "correct@owncloud" using the webUI
     And the user sets the password to "%regular%" using the webUI
     And the user logs in with username "guiusr1" and password "%regular%" using the webUI
-    Then the user should be redirected to a webUI page with the title "Files - ownCloud"
+    Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario: recreating a user with same name after deletion makes the first token invalid
     When the administrator creates a user with the name "guiusr1" and the email "mistake@owncloud" without a password using the webUI
@@ -126,7 +126,7 @@ Feature: add users
     And the administrator creates a user with the name "guiusr1" and the email "correct@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "mistake@owncloud" using the webUI
-    Then the user should be redirected to the general error webUI page with the title "ownCloud"
+    Then the user should be redirected to the general error webUI page with the title "%productname%"
     And an error should be displayed on the general error webUI page saying "The token provided is invalid."
 
   Scenario: when recreating a user with same second token can be used even if someone tried to use the first one
@@ -138,4 +138,4 @@ Feature: add users
     And the user follows the password set link received by "correct@owncloud" using the webUI
     And the user sets the password to "%regular%" using the webUI
     And the user logs in with username "guiusr1" and password "%regular%" using the webUI
-    Then the user should be redirected to a webUI page with the title "Files - ownCloud"
+    Then the user should be redirected to a webUI page with the title "Files - %productname%"
