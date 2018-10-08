@@ -3,7 +3,6 @@ Feature: capabilities
 
   Background:
     Given using OCS API version "1"
-    And as user "%admin%"
 
   @smokeTest
   Scenario: Check that the sharing API can be enabled
@@ -34,11 +33,15 @@ Feature: capabilities
 
   @smokeTest
   Scenario: getting capabilities with admin user
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
       | core          | webdav-root                           | remote.php/webdav |
+      | core          | status@@@edition                      | %edition%         |
+      | core          | status@@@productname                  | %productname%     |
+      | core          | status@@@version                      | %version%         |
+      | core          | status@@@versionstring                | %versionstring%   |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
       | files_sharing | public@@@enabled                      | 1                 |
@@ -58,7 +61,7 @@ Feature: capabilities
 
   Scenario: Changing public upload
     Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -82,7 +85,7 @@ Feature: capabilities
 
   Scenario: Disabling share api
     Given parameter "shareapi_enabled" of app "core" has been set to "no"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element       | value             |
       | core          | pollinterval          | 60                |
@@ -100,7 +103,7 @@ Feature: capabilities
 
   Scenario: Disabling public links
     Given parameter "shareapi_allow_links" of app "core" has been set to "no"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -122,7 +125,7 @@ Feature: capabilities
 
   Scenario: Changing resharing
     Given parameter "shareapi_allow_resharing" of app "core" has been set to "no"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -146,7 +149,7 @@ Feature: capabilities
 
   Scenario: Changing federation outgoing
     Given parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "no"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -170,7 +173,7 @@ Feature: capabilities
 
   Scenario: Changing federation incoming
     Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "no"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -194,7 +197,7 @@ Feature: capabilities
 
   Scenario: Changing "password enforced for read-only public link shares"
     Given parameter "shareapi_enforce_links_password_read_only" of app "core" has been set to "yes"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                                | value             |
       | core          | pollinterval                                   | 60                |
@@ -221,7 +224,7 @@ Feature: capabilities
 
   Scenario: Changing "password enforced for read-write public link shares"
     Given parameter "shareapi_enforce_links_password_read_write" of app "core" has been set to "yes"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                                | value             |
       | core          | pollinterval                                   | 60                |
@@ -248,7 +251,7 @@ Feature: capabilities
 
   Scenario: Changing "password enforced for write-only public link shares"
     Given parameter "shareapi_enforce_links_password_write_only" of app "core" has been set to "yes"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                                | value             |
       | core          | pollinterval                                   | 60                |
@@ -275,7 +278,7 @@ Feature: capabilities
 
   Scenario: Changing public notifications
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -299,7 +302,7 @@ Feature: capabilities
 
   Scenario: Changing public social share
     Given parameter "shareapi_allow_social_share" of app "core" has been set to "no"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -323,7 +326,7 @@ Feature: capabilities
 
   Scenario: Changing expire date
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -349,7 +352,7 @@ Feature: capabilities
   Scenario: Changing expire date enforcing
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -375,7 +378,7 @@ Feature: capabilities
 
   Scenario: Changing group sharing allowed
     Given parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -399,7 +402,7 @@ Feature: capabilities
 
   Scenario: Changing only share with group member
     Given parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -423,7 +426,7 @@ Feature: capabilities
 
   Scenario: Changing allow share dialog user enumeration
     Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element               | value             |
       | core          | pollinterval                  | 60                |
@@ -446,7 +449,7 @@ Feature: capabilities
 
   Scenario: Changing allow share dialog user enumeration for group members only
     Given parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -474,7 +477,7 @@ Feature: capabilities
     And group "hash#group" has been created
     And group "group-3" has been created
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1","hash#group","group-3"]'
-    When the user retrieves the capabilities using the capabilities API
+    When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -505,8 +508,7 @@ Feature: capabilities
     And group "ordinary-group" has been created
     And user "user0" has been added to group "hash#group"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1","hash#group","group-3"]'
-    And as user "user0"
-    When the user retrieves the capabilities using the capabilities API
+    When user "user0" retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -537,8 +539,7 @@ Feature: capabilities
     And group "ordinary-group" has been created
     And user "user0" has been added to group "ordinary-group"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1","hash#group","group-3"]'
-    And as user "user0"
-    When the user retrieves the capabilities using the capabilities API
+    When user "user0" retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |
@@ -570,8 +571,7 @@ Feature: capabilities
     And user "user0" has been added to group "hash#group"
     And user "user0" has been added to group "ordinary-group"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1","hash#group","group-3"]'
-    And as user "user0"
-    When the user retrieves the capabilities using the capabilities API
+    When user "user0" retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                       | value             |
       | core          | pollinterval                          | 60                |

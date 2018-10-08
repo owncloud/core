@@ -796,6 +796,12 @@ trait WebDav {
 			$headerName = $header[0];
 			$expectedHeaderValue = $header[1];
 			$returnedHeader = $this->response->getHeader($headerName);
+
+			if (\strpos($expectedHeaderValue, "%productname%") !== false) {
+				$productName = $this->getProductNameFromStatus();
+				$expectedHeaderValue = \str_replace("%productname%", $productName, $expectedHeaderValue);
+			}
+
 			if ($returnedHeader !== $expectedHeaderValue) {
 				throw new \Exception(
 					\sprintf(
