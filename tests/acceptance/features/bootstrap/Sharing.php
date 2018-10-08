@@ -846,6 +846,9 @@ trait Sharing {
 	public function userSharesFileWithUserUsingTheSharingApi(
 		$user1, $filepath, $user2, $permissions = null
 	) {
+		$user1 = $this->getActualUsername($user1);
+		$user2 = $this->getActualUsername($user2);
+
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
 		$this->response = HttpRequestHelper::get(
