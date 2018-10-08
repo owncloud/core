@@ -15,11 +15,11 @@ Feature: Sharing files and folders with internal groups
       | grp1      |
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
-    And user "user3" has logged in using the webUI
 
   @TestAlsoOnExternalUserBackend
   @smokeTest
   Scenario: share a folder with an internal group
+    Given user "user3" has logged in using the webUI
     When the user shares the folder "simple-folder" with the group "grp1" using the webUI
     And the user shares the file "testimage.jpg" with the group "grp1" using the webUI
     And the user re-logs in as "user1" using the webUI
@@ -35,6 +35,7 @@ Feature: Sharing files and folders with internal groups
 
   @TestAlsoOnExternalUserBackend
   Scenario: share a file with an internal group a member overwrites and unshares the file
+    Given user "user3" has logged in using the webUI
     When the user renames the file "lorem.txt" to "new-lorem.txt" using the webUI
     And the user shares the file "new-lorem.txt" with the group "grp1" using the webUI
     And the user re-logs in as "user1" using the webUI
@@ -55,6 +56,7 @@ Feature: Sharing files and folders with internal groups
 
   @TestAlsoOnExternalUserBackend
   Scenario: share a folder with an internal group and a member uploads, overwrites and deletes files
+    Given user "user3" has logged in using the webUI
     When the user renames the folder "simple-folder" to "new-simple-folder" using the webUI
     And the user shares the folder "new-simple-folder" with the group "grp1" using the webUI
     And the user re-logs in as "user1" using the webUI
@@ -86,6 +88,7 @@ Feature: Sharing files and folders with internal groups
   @TestAlsoOnExternalUserBackend
   @smokeTest
   Scenario: share a folder with an internal group and a member unshares the folder
+    Given user "user3" has logged in using the webUI
     When the user renames the folder "simple-folder" to "new-simple-folder" using the webUI
     And the user shares the folder "new-simple-folder" with the group "grp1" using the webUI
 		# unshare the received shared folder and check it is gone
@@ -104,3 +107,13 @@ Feature: Sharing files and folders with internal groups
     When the user opens the folder "new-simple-folder" using the webUI
     Then the file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
+
+  Scenario: user tries to share a file in a group which is blacklisted from sharing
+    Given the administrator has browsed to the admin sharing settings page
+    When the administrator adds the group "grp1" to the group sharing blacklist using the webUI
+    Then user "user3" should not be able to share folder "lorem.txt" with group "grp1" using the sharing API
+
+  Scenario: user tries to share a folder in a group which is blacklisted from sharing
+    Given the administrator has browsed to the admin sharing settings page
+    When the administrator adds the group "grp1" to the group sharing blacklist using the webUI
+    Then user "user3" should not be able to share folder "simple-folder" with group "grp1" using the sharing API
