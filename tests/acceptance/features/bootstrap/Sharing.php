@@ -876,6 +876,24 @@ trait Sharing {
 	}
 
 	/**
+	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
+	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))?$/
+	 *
+	 * @param string $filepath
+	 * @param string $user2
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function theUserSharesFileWithUserUsingTheSharingApi(
+		$filepath, $user2, $permissions = null
+	) {
+		$this->userSharesFileWithUserUsingTheSharingApi(
+			$this->getCurrentUser(), $filepath, $user2, $permissions
+		);
+	}
+
+	/**
 	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
 	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *

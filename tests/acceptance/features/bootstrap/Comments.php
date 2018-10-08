@@ -77,6 +77,19 @@ trait Comments {
 	}
 
 	/**
+	 * @When /^the user comments with content "([^"]*)" on (?:file|folder) "([^"]*)" using the WebDAV API$/
+	 * @Given /^the user has commented with content "([^"]*)" on (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $content
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theUserCommentsWithContentOnEntry($content, $path) {
+		$this->userCommentsWithContentOnEntry($this->getCurrentUser(), $content, $path);
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" should have the following comments on (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -113,6 +126,18 @@ trait Comments {
 	}
 
 	/**
+	 * @Then /^the user should have the following comments on (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $path
+	 * @param TableNode|null $expectedElements
+	 *
+	 * @return void
+	 */
+	public function checkCommentForCurrentUser($path, $expectedElements) {
+		$this->checkComments($this->getCurrentUser(), $path, $expectedElements);
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" should have (\d+) comments on (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -131,6 +156,18 @@ trait Comments {
 		PHPUnit_Framework_Assert::assertCount(
 			(int) $numberOfComments, $elementList
 		);
+	}
+
+	/**
+	 * @Then /^the user should have (\d+) comments on (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $numberOfComments
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function checkNumberOfCommentsForCurrentUser($numberOfComments, $path) {
+		$this->checkNumberOfComments($this->getCurrentUser(), $numberOfComments, $path);
 	}
 
 	/**
