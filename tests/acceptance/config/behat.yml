@@ -86,6 +86,12 @@ default:
         - FeatureContext: *common_feature_context_params
         - NotificationsCoreContext:
 
+    apiTags:
+      paths:
+        - %paths.base%/../features/apiTags
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
     apiTrashbin:
       paths:
         - %paths.base%/../features/apiTrashbin

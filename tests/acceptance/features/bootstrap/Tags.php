@@ -110,6 +110,34 @@ trait Tags {
 	}
 
 	/**
+	 * @When the administrator creates a :type tag with name :name using the WebDAV API
+	 * @Given the administrator has created a :type tag with name :name
+	 *
+	 * @param string $type
+	 * @param string $name
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorCreatesATagWithName($type, $name) {
+		$this->createsATagWithName($this->getAdminUsername(), $type, $name);
+	}
+
+	/**
+	 * @When the user creates a :type tag with name :name using the WebDAV API
+	 * @Given the user has created a :type tag with name :name
+	 *
+	 * @param string $type
+	 * @param string $name
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserCreatesATagWithName($type, $name) {
+		$this->createsATagWithName($this->getCurrentUser(), $type, $name);
+	}
+
+	/**
 	 * @When user :user creates a :type tag with name :name using the WebDAV API
 	 * @Given user :user has created a :type tag with name :name
 	 *
@@ -127,6 +155,36 @@ trait Tags {
 			TagsHelper::validateTypeOfTag($type)[1],
 			$name
 		);
+	}
+
+	/**
+	 * @When the user creates a :type tag with name :name and groups :groups using the WebDAV API
+	 * @Given the user has created a :type tag with name :name and groups :groups
+	 *
+	 * @param string $type
+	 * @param string $name
+	 * @param string $groups
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserCreatesATagWithNameAndGroups($type, $name, $groups) {
+		$this->createsATagWithNameAndGroups($this->getCurrentUser(), $type, $name, $groups);
+	}
+
+	/**
+	 * @When the administrator creates a :type tag with name :name and groups :groups using the WebDAV API
+	 * @Given the administrator has created a :type tag with name :name and groups :groups
+	 *
+	 * @param string $type
+	 * @param string $name
+	 * @param string $groups
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorCreatesATagWithNameAndGroups($type, $name, $groups) {
+		$this->createsATagWithNameAndGroups($this->getAdminUsername(), $type, $name, $groups);
 	}
 
 	/**
@@ -189,6 +247,30 @@ trait Tags {
 	}
 
 	/**
+	 * @Then the following tags should exist for the administrator
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingTagsShouldExistForTheAdministrator(TableNode $table) {
+		$this->theFollowingTagsShouldExistFor($this->getAdminUsername(), $table);
+	}
+
+	/**
+	 * @Then the following tags should exist for the user
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingTagsShouldExistForTheUser(TableNode $table) {
+		$this->theFollowingTagsShouldExistFor($this->getCurrentUser(), $table);
+	}
+
+	/**
 	 * @Then the following tags should exist for :user
 	 *
 	 * @param string $user
@@ -224,6 +306,30 @@ trait Tags {
 		PHPUnit_Framework_Assert::assertNull(
 			$tagData, "tag $tagDisplayName is in propfind answer"
 		);
+	}
+
+	/**
+	 * @Then tag :tagDisplayName should not exist for the administrator
+	 *
+	 * @param string $tagDisplayName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingTagsShouldNotExistForTheAdministrator(string $tagDisplayName) {
+		$this->tagShouldNotExistForUser($tagDisplayName, $this->getAdminUsername());
+	}
+
+	/**
+	 * @Then tag :tagDisplayName should not exist for the user
+	 *
+	 * @param string $tagDisplayName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingTagsShouldNotExistForTheUser(string $tagDisplayName) {
+		$this->tagShouldNotExistForUser($tagDisplayName, $this->getCurrentUser());
 	}
 
 	/**
@@ -337,6 +443,34 @@ trait Tags {
 	}
 
 	/**
+	 * @When the administrator edits the tag with name :oldName and sets its name to :newName using the WebDAV API
+	 * @Given the administrator has edited the tag with name :oldName and set its name to :newName
+	 *
+	 * @param string $oldName
+	 * @param string $newName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorEditsTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI($oldName, $newName) {
+		$this->editTagName($this->getAdminUsername(), $oldName, $newName);
+	}
+
+	/**
+	 * @When the user edits the tag with name :oldName and sets its name to :newName using the WebDAV API
+	 * @Given the user has edited the tag with name :oldName and set its name to :newName
+	 *
+	 * @param string $oldName
+	 * @param string $newName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserEditsTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI($oldName, $newName) {
+		$this->editTagName($this->getCurrentUser(), $oldName, $newName);
+	}
+
+	/**
 	 * @When user :user edits the tag with name :oldName and sets its name to :newName using the WebDAV API
 	 * @Given user :user has edited the tag with name :oldName and set its name to :newName
 	 *
@@ -352,6 +486,34 @@ trait Tags {
 						'{http://owncloud.org/ns}display-name' => $newName
 					  ];
 		$this->sendProppatchToSystemtags($user, $oldName, $properties);
+	}
+
+	/**
+	 * @When the administrator edits the tag with name :oldName and sets its groups to :groups using the WebDAV API
+	 * @Given the administrator has edited the tag with name :oldName and set its groups to :groups
+	 *
+	 * @param string $oldName
+	 * @param string $groups
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorEditsTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI($oldName, $groups) {
+		$this->editTagGroups($this->getAdminUsername(), $oldName, $groups);
+	}
+
+	/**
+	 * @When the user edits the tag with name :oldName and sets its groups to :groups using the WebDAV API
+	 * @Given the user has edited the tag with name :oldName and set its groups to :groups
+	 *
+	 * @param string $oldName
+	 * @param string $groups
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserEditsTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI($oldName, $groups) {
+		$this->editTagGroups($this->getCurrentUser(), $oldName, $groups);
 	}
 
 	/**
