@@ -534,6 +534,86 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" changes the email of user "([^"]*)" to "([^"]*)" using the provisioning API$/
+	 * @Given /^user "([^"]*)" has changed the email of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 * @param string $email
+	 *
+	 * @return void
+	 */
+	public function userChangesTheEmailOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser, $email
+	) {
+		$result = UserHelper::editUser(
+			$this->getBaseUrl(),
+			$this->getActualUsername($targetUser),
+			'email',
+			$email,
+			$this->getActualUsername($requestingUser),
+			$this->getPasswordForUser($requestingUser),
+			$this->ocsApiVersion
+		);
+		$this->response = $result;
+	}
+
+	/**
+	 * @When /^the administrator changes the display name of user "([^"]*)" to "([^"]*)" using the provisioning API$/
+	 * @Given /^the administrator has changed the display name of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $displayname
+	 *
+	 * @return void
+	 */
+	public function adminChangesTheDisplayNameOfTheUserUsingTheProvisioningApi(
+		$user, $displayname
+	) {
+		$result = UserHelper::editUser(
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
+			'display',
+			$displayname,
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			$this->ocsApiVersion
+		);
+		$this->response = $result;
+		if ($result->getStatusCode() !== 200) {
+			throw new \Exception(
+				"could not change display name of user. "
+				. $result->getStatusCode() . " " . $result->getBody()
+			);
+		}
+	}
+
+	/**
+	 * @When /^user "([^"]*)" changes the display name of user "([^"]*)" to "([^"]*)" using the provisioning API$/
+	 * @Given /^user "([^"]*)" has changed the display name of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 * @param string $displayName
+	 *
+	 * @return void
+	 */
+	public function userChangesTheDisplayNameOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser, $displayName
+	) {
+		$result = UserHelper::editUser(
+			$this->getBaseUrl(),
+			$this->getActualUsername($targetUser),
+			'display',
+			$displayName,
+			$this->getActualUsername($requestingUser),
+			$this->getPasswordForUser($requestingUser),
+			$this->ocsApiVersion
+		);
+		$this->response = $result;
+	}
+
+	/**
 	 * @When /^the administrator changes the quota of user "([^"]*)" to "([^"]*)" using the provisioning API$/
 	 * @Given /^the administrator has changed the quota of user "([^"]*)" to "([^"]*)"$/
 	 *
@@ -561,6 +641,74 @@ trait Provisioning {
 				. $result->getStatusCode() . " " . $result->getBody()
 			);
 		}
+	}
+
+	/**
+	 * @When /^user "([^"]*)" changes the quota of user "([^"]*)" to "([^"]*)" using the provisioning API$/
+	 * @Given /^user "([^"]*)" has changed the quota of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 * @param string $quota
+	 *
+	 * @return void
+	 */
+	public function userChangesTheQuotaOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser, $quota
+	) {
+		$result = UserHelper::editUser(
+			$this->getBaseUrl(),
+			$this->getActualUsername($targetUser),
+			'quota',
+			$quota,
+			$this->getActualUsername($requestingUser),
+			$this->getPasswordForUser($requestingUser),
+			$this->ocsApiVersion
+		);
+		$this->response = $result;
+	}
+
+	/**
+	 * @When /^the administrator retrieves the information of user "([^"]*)" using the provisioning API$/
+	 * @Given /^the administrator has retrieved the information of user "([^"]*)"$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function adminRetrievesTheInformationOfUserUsingTheProvisioningApi(
+		$user
+	) {
+		$result = UserHelper::getUser(
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			$this->ocsApiVersion
+		);
+		$this->response = $result;
+	}
+
+	/**
+	 * @When /^user "([^"]*)" retrieves the information of user "([^"]*)" using the provisioning API$/
+	 * @Given /^user "([^"]*)" has retrieved the information of user "([^"]*)"$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 *
+	 * @return void
+	 */
+	public function userRetrievesTheInformationOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser
+	) {
+		$result = UserHelper::getUser(
+			$this->getBaseUrl(),
+			$this->getActualUsername($targetUser),
+			$this->getActualUsername($requestingUser),
+			$this->getPasswordForUser($requestingUser),
+			$this->ocsApiVersion
+		);
+		$this->response = $result;
 	}
 
 	/**
