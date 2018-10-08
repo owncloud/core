@@ -192,14 +192,19 @@ trait Comments {
 
 	/**
 	 * @When user :user deletes the last created comment using the WebDAV API
+	 * @When the user deletes the last created comment using the WebDAV API
 	 * @Given user :user has deleted the last created comment
+	 * @Given the user has deleted the last created comment
 	 *
-	 * @param string $user
+	 * @param string $user | null
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userDeletesLastComment($user) {
+	public function userDeletesLastComment($user=null) {
+		if ($user === null) {
+			$user = $this->getCurrentUser();
+		}
 		$this->deleteComment($user, $this->lastFileId, $this->lastCommentId);
 	}
 
@@ -284,6 +289,21 @@ trait Comments {
 	public function userEditsLastCreatedComment($user, $content) {
 		$this->editAComment(
 			$user, $content, $this->lastFileId, $this->lastCommentId
+		);
+	}
+
+	/**
+	 * @When /^the user edits the last created comment with content "([^"]*)" using the WebDAV API$/
+	 * @Given /^the user has edited the last created comment with content "([^"]*)"$/
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserEditsLastCreatedComment($content) {
+		$this->editAComment(
+			$this->getCurrentUser(), $content, $this->lastFileId, $this->lastCommentId
 		);
 	}
 }
