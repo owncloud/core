@@ -715,6 +715,27 @@ trait Tags {
 	}
 
 	/**
+	 * @Then /^(?:file|folder|entry) "([^"]*)" (?:shared|owned) by the (administrator|user) should have the following tags$/
+	 *
+	 * @param string $fileName
+	 * @param string $adminOrUser
+	 * @param TableNode $table
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function sharedByTheUserOrAdminHasTheFollowingTags(
+		$fileName, $adminOrUser, TableNode $table
+	) {
+		if ($adminOrUser === 'user') {
+			$sharingUser = $this->getCurrentUser();
+		} else {
+			$sharingUser = $this->getAdminUsername();
+		}
+		$this->sharedByHasTheFollowingTags($fileName, $sharingUser, $table);
+	}
+
+	/**
 	 * @Then /^(?:file|folder|entry) "([^"]*)" (?:shared|owned) by "([^"]*)" should have the following tags$/
 	 *
 	 * @param string $fileName
@@ -751,6 +772,27 @@ trait Tags {
 			}
 		}
 		return $found;
+	}
+
+	/**
+	 * @Then /^file "([^"]*)" should have the following tags for the (administrator|user)$/
+	 *
+	 * @param string $fileName
+	 * @param string $adminOrUser
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function fileHasTheFollowingTagsForUserOrAdministrator(
+		$fileName, $adminOrUser, TableNode $table
+	) {
+		if ($adminOrUser === 'administrator') {
+			$user = $this->getAdminUsername();
+		} else {
+			$user = $this->getCurrentUser();
+		}
+		$this->fileHasTheFollowingTagsForUser($fileName, $user, $table);
 	}
 
 	/**
