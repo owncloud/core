@@ -430,7 +430,11 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function theUserShouldBeRedirectedToAWebUIPageWithTheTitle($title) {
 		$title = $this->replaceProductName($title);
 		$this->owncloudPage->waitForOutstandingAjaxCalls($this->getSession());
-		PHPUnit_Framework_Assert::assertEquals($title, $this->owncloudPage->getPageTitle());
+		// Just check that the actual title starts with the expected title.
+		// Theming can have other text following.
+		PHPUnit_Framework_Assert::assertStringStartsWith(
+			$title, $this->owncloudPage->getPageTitle()
+		);
 	}
 
 	/**
@@ -443,7 +447,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function theUserShouldBeRedirectedToGeneralErrorPage($title) {
 		$title = $this->replaceProductName($title);
 		$this->generalErrorPage->waitTillPageIsLoaded($this->getSession());
-		PHPUnit_Framework_Assert::assertEquals(
+		// Just check that the actual title starts with the expected title.
+		// Theming can have other text following.
+		PHPUnit_Framework_Assert::assertStringStartsWith(
 			$title, $this->generalErrorPage->getPageTitle()
 		);
 	}
