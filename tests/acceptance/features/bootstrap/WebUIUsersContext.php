@@ -237,7 +237,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the administrator disables the user :username using the webUI
+	 * @When the administrator/user disables the user :username using the webUI
 	 *
 	 * @param string $username
 	 *
