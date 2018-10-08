@@ -1096,6 +1096,22 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then group :group should not contain user :username
+	 *
+	 * @param string $group
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function groupShouldNotContainUser($group, $username) {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
+		$this->theUsersReturnedByTheApiShouldNotInclude($username);
+	}
+
+	/**
 	 * @param string $user
 	 * @param string $group
 	 *
