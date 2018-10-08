@@ -113,6 +113,30 @@ class UserHelper {
 	 *
 	 * @return ResponseInterface
 	 */
+	public static function getUser(
+		$baseUrl, $userName, $adminUser, $adminPassword, $ocsApiVersion = 2
+	) {
+		return OcsApiHelper::sendRequest(
+			$baseUrl,
+			$adminUser,
+			$adminPassword,
+			"GET",
+			"/cloud/users/" . $userName,
+			[],
+			$ocsApiVersion
+		);
+	}
+
+	/**
+	 *
+	 * @param string $baseUrl
+	 * @param string $userName
+	 * @param string $adminUser
+	 * @param string $adminPassword
+	 * @param int $ocsApiVersion
+	 *
+	 * @return ResponseInterface
+	 */
 	public static function deleteUser(
 		$baseUrl, $userName, $adminUser, $adminPassword, $ocsApiVersion = 2
 	) {
