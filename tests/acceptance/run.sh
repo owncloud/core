@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-# composer install
+[[ "${DEBUG}" == "true" ]] && set -x
 
 # from http://stackoverflow.com/a/630387
 SCRIPT_PATH="`dirname \"$0\"`"              # relative
