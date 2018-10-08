@@ -265,6 +265,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFilesContext:
+        - WebUISharingContext:
 
     webUITrashbin:
       paths:
