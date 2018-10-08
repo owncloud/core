@@ -277,13 +277,13 @@ trait CommandLine {
 		// end of the captured string, so trim them.
 		$text = \trim($text, $text[0]);
 		$lines = $this->findLines($this->lastStdOut, $text);
-		if (empty($lines)) {
-			throw new \Exception(
-				"The command output did not contain the expected text on stdout '$text'\n" .
-				"The command output on stdout was:\n" .
-				$this->lastStdOut
-			);
-		}
+		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+			1,
+			\count($lines),
+			"The command output did not contain the expected text on stdout '$text'\n" .
+			"The command output on stdout was:\n" .
+			$this->lastStdOut
+		);
 	}
 
 	/**
@@ -299,13 +299,13 @@ trait CommandLine {
 		// end of the captured string, so trim them.
 		$text = \trim($text, $text[0]);
 		$lines = $this->findLines($this->lastStdErr, $text);
-		if (empty($lines)) {
-			throw new \Exception(
-				"The command output did not contain the expected text on stderr '$text'\n" .
-				"The command output on stderr was:\n" .
-				$this->lastStdOut
-			);
-		}
+		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+			1,
+			\count($lines),
+			"The command output did not contain the expected text on stderr '$text'\n" .
+			"The command output on stderr was:\n" .
+			$this->lastStdErr
+		);
 	}
 
 	private $lastTransferPath;
