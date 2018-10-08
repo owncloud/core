@@ -559,6 +559,30 @@ trait Tags {
 	}
 
 	/**
+	 * @When the user deletes the tag with name :name using the WebDAV API
+	 * @Given the user has deleted the tag with name :name
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function theUserDeletesTagWithName($name) {
+		$this->userDeletesTag($this->getCurrentUser(), $name);
+	}
+
+	/**
+	 * @When the administrator deletes the tag with name :name using the WebDAV API
+	 * @Given the administrator has deleted the tag with name :name
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesTagWithName($name) {
+		$this->userDeletesTag($this->getAdminUsername(), $name);
+	}
+
+	/**
 	 * @param string $taggingUser
 	 * @param string $tagName
 	 * @param string $fileName
@@ -616,6 +640,27 @@ trait Tags {
 		}
 		$this->response = $response;
 		return $response;
+	}
+
+	/**
+	 * @When /^the (administrator|user) adds the tag "([^"]*)" to "([^"]*)" using the WebDAV API$/
+	 * @Given /^the (administrator|user) has added the tag "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $adminOrUser
+	 * @param string $tagName
+	 * @param string $fileName
+	 *
+	 * @return void
+	 */
+	public function theUserOrAdministratorAddsTheTagTo(
+		$adminOrUser, $tagName, $fileName
+	) {
+		if ($adminOrUser === 'administrator') {
+			$taggingUser = $this->getAdminUsername();
+		} else {
+			$taggingUser = $this->getCurrentUser();
+		}
+		$this->addsTheTagTo($taggingUser, $tagName, $fileName);
 	}
 
 	/**
@@ -744,14 +789,23 @@ trait Tags {
 
 	/**
 	 * @Then file :fileName should have no tags for user :user
+	 * @Then /^file "([^"]*)" should have no tags for the (administrator|user)?$/
 	 *
 	 * @param string $fileName
+	 * @param string $adminOrUser
 	 * @param string $user
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function fileHasNoTagsForUser($fileName, $user) {
+	public function fileHasNoTagsForUser($fileName, $adminOrUser=null, $user=null) {
+		if ($user === null) {
+			if ($adminOrUser === 'administrator') {
+				$user = $this->getAdminUsername();
+			} else {
+				$user = $this->getCurrentUser();
+			}
+		}
 		$this->sharedByHasNoTags($fileName, $user);
 	}
 
