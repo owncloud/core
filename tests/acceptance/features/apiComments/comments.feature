@@ -3,15 +3,16 @@ Feature: Comments
 
   Background:
     Given using new DAV path
+    And user "user0" has been created
 
   @smokeTest
   Scenario: Getting info of comments using files endpoint
-    Given user "user0" has been created
-    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
-    And user "user0" has commented with content "My first comment" on file "/myFileToComment.txt"
-    And user "user0" should have the following comments on file "/myFileToComment.txt"
+    Given as user "user0"
+    And the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    And the user has commented with content "My first comment" on file "/myFileToComment.txt"
+    And the user should have the following comments on file "/myFileToComment.txt"
       | user0 | My first comment |
-    When user "user0" gets the following properties of folder "/myFileToComment.txt" using the WebDAV API
+    When the user gets the following properties of folder "/myFileToComment.txt" using the WebDAV API
       | {http://owncloud.org/ns}comments-href   |
       | {http://owncloud.org/ns}comments-count  |
       | {http://owncloud.org/ns}comments-unread |
