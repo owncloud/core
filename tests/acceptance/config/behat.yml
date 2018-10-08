@@ -23,6 +23,12 @@ default:
         - FeatureContext: *common_feature_context_params
         - CapabilitiesContext:
 
+    apiComments:
+      paths:
+        - %paths.base%/../features/apiComments
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
     apiFederation:
       paths:
         - %paths.base%/../features/apiFederation

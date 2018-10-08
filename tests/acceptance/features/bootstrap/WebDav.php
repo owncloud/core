@@ -888,6 +888,18 @@ trait WebDav {
 	}
 
 	/**
+	 * @When /^the user gets the following properties of (?:file|folder|entry) "([^"]*)" using the WebDAV API$/
+	 *
+	 * @param string $path
+	 * @param TableNode|null $propertiesTable
+	 *
+	 * @return void
+	 */
+	public function theUserGetsPropertiesOfFolder($path, $propertiesTable) {
+		$this->userGetsPropertiesOfFolder($this->getCurrentUser(), $path, $propertiesTable);
+	}
+
+	/**
 	 * @When user :user gets a custom property :propertyName of file :path
 	 *
 	 * @param string $user
@@ -1475,6 +1487,19 @@ trait WebDav {
 	}
 
 	/**
+	 * @When the user uploads file :source to :destination using the WebDAV API
+	 * @Given the user has uploaded file :source to :destination
+	 *
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function theUserUploadsAFileTo($source, $destination) {
+		$this->userUploadsAFileTo($this->currentUser, $source, $destination);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" on "(LOCAL|REMOTE)" uploads file "([^"]*)" to "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
@@ -1863,6 +1888,18 @@ trait WebDav {
 			$user, "MKCOL", $destination, []
 		);
 		$this->parseResponseIntoXml();
+	}
+
+	/**
+	 * @When the user creates a folder :destination using the WebDAV API
+	 * @Given the user has created a folder :destination
+	 *
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function theUserCreatesAFolder($destination) {
+		$this->userCreatesAFolder($this->getCurrentUser(), $destination);
 	}
 
 	/**
