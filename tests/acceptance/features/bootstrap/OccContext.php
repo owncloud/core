@@ -146,6 +146,34 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator sends a group creation request for group :group using the occ command
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSendsAGroupCreationRequestForGroupUsingTheOccCommand($group) {
+		$this->featureContext->invokingTheCommand(
+			"group:add $group"
+		);
+		$this->featureContext->addGroupToCreatedGroupsList($group);
+	}
+
+	/**
+	 * @When the administrator adds the user :username to the group :group using the occ command
+	 *
+	 * @param string $username
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorAddsTheUserToTheGroupUsingTheOccCommand($username, $group) {
+		$this->featureContext->invokingTheCommand(
+			"group:add-member -m $username $group"
+		);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
