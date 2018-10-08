@@ -96,6 +96,39 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator tries to create a user :username using the occ command
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theAdministratorTriesToCreateAUserUsingTheOccCommand($username) {
+		$this->featureContext->invokingTheCommandWithEnvVariable(
+			"user:add $username  --password-from-env",
+			'OC_PASS',
+			$this->featureContext->getPasswordForUser($username)
+		);
+	}
+
+	/**
+	 * @When the administrator sends a user creation request for user :username password :password group :group using the occ command
+	 *
+	 * @param string $username
+	 * @param string $password
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSendsAUserCreationRequestForUserPasswordGroupUsingTheOccCommand($username, $password, $group) {
+		$cmd = "user:add $username  --password-from-env --group=$group";
+		$this->featureContext->invokingTheCommandWithEnvVariable(
+			$cmd,
+			'OC_PASS',
+			$this->featureContext->getActualPassword($password)
+		);
+	}
+
+	/**
 	 * @When the administrator resets the password of user :username to :password using the occ command
 	 *
 	 * @param string $username
