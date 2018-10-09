@@ -31,6 +31,20 @@ Feature: Editing the tags
     Then the following tags should exist for the administrator
       | JustARegularTagName | not user-visible |
 
+  Scenario: Renaming a not user-assignable tag as administrator should work
+    Given the administrator has created a "not user-assignable" tag with name "JustARegularTagName"
+    When the administrator edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
+    Then the following tags should exist for the administrator
+      | AnotherTagName | not user-assignable |
+    And tag "JustARegularTagName" should not exist for the administrator
+
+  Scenario: Renaming a not user-visible tag as administrator should work
+    Given the administrator has created a "not user-visible" tag with name "JustARegularTagName"
+    When the administrator edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
+    Then the following tags should exist for the administrator
+      | AnotherTagName | not user-visible |
+    And tag "JustARegularTagName" should not exist for the administrator
+
   Scenario: Editing tag groups as admin should work
     Given the administrator has created a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
     When the administrator edits the tag with name "TagWithGroups" and sets its groups to "group1|group3" using the WebDAV API
