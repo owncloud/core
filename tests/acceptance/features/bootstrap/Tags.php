@@ -349,7 +349,7 @@ trait Tags {
 	}
 
 	/**
-	 * @Then /^the user "([^"]*)" (should|should not) be able to assign the "([^"]*)" tag with name "([^"]*)"$/
+	 * @Then /^user "([^"]*)" (should|should not) be able to assign the "([^"]*)" tag with name "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $shouldOrNot should or should not
