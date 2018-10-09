@@ -42,9 +42,9 @@ default:
         - FeatureContext: *common_feature_context_params
         - FederationContext:
 
-    apiMetadataApps:
+    apiFavorites:
       paths:
-        - %paths.base%/../features/apiMetadataApps
+        - %paths.base%/../features/apiFavorites
       contexts:
         - FeatureContext: *common_feature_context_params
 

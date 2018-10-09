@@ -832,7 +832,7 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
-      BEHAT_SUITE: apiMetadataApps
+      BEHAT_SUITE: apiFavorites
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
