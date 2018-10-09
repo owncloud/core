@@ -71,6 +71,165 @@ trait CommandLine {
 	}
 
 	/**
+	 * Set a system config setting
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param string|null $type e.g. boolean or json
+	 * @param string|null $output e.g. json
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 */
+	public function setSystemConfig(
+		$key,
+		$value,
+		$type = null,
+		$output = null,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		$args = [];
+		$args[] = 'config:system:set';
+		$args[] = $key;
+		$args[] = '--value';
+		$args[] = $value;
+
+		if ($type !== null) {
+			$args[] = '--type';
+			$args[] = $type;
+		}
+
+		if ($output !== null) {
+			$args[] = '--output';
+			$args[] = $output;
+		}
+
+		$args[] = '--no-ansi';
+
+		return SetupHelper::runOcc(
+			$args,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		);
+	}
+
+	/**
+	 * Get a system config setting, including status code, output and standard
+	 * error output.
+	 *
+	 * @param string $key
+	 * @param string|null $output e.g. json
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 */
+	public function getSystemConfig(
+		$key,
+		$output = null,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		$args = [];
+		$args[] = 'config:system:get';
+		$args[] = $key;
+
+		if ($output !== null) {
+			$args[] = '--output';
+			$args[] = $output;
+		}
+
+		$args[] = '--no-ansi';
+
+		return SetupHelper::runOcc(
+			$args,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		);
+	}
+
+	/**
+	 * Get the value of a system config setting
+	 *
+	 * @param string $key
+	 * @param string|null $output e.g. json
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return string
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 */
+	public function getSystemConfigValue(
+		$key,
+		$output = null,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		return $this->getSystemConfig(
+			$key,
+			$output,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		)['stdOut'];
+	}
+
+	/**
+	 * Delete a system config setting
+	 *
+	 * @param string $key
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 */
+	public function deleteSystemConfig(
+		$key,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		$args = [];
+		$args[] = 'config:system:delete';
+		$args[] = $key;
+
+		$args[] = '--no-ansi';
+
+		return SetupHelper::runOcc(
+			$args,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		);
+	}
+
+	/**
 	 * Invokes an OCC command
 	 *
 	 * @param array $args of the occ command
