@@ -175,7 +175,7 @@ class OC_Util {
 		});
 
 		\OC\Files\Filesystem::addStorageWrapper('read_only', function ($mountPoint, IStorage $storage, \OCP\Files\Mount\IMountPoint $mount) {
-			if ($mount->getOption('read_only', true) && !$storage->instanceOfStorage('\OC\Files\Storage\Home')) {
+			if ($mount->getOption('read_only', false)) {
 				return new \OC\Files\Storage\Wrapper\PermissionsMask([
 					'storage' => $storage,
 					'mask' => \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_SHARE
