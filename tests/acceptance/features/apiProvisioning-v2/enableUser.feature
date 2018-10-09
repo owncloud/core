@@ -31,10 +31,11 @@ Feature: enable user
     And user "subadmin" has been added to group "new-group"
     And user "%admin%" has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
-    When user "%admin%" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/subadmin/disable"
+    And user "subadmin" has been disabled
+    When user "%admin%" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/subadmin/enable"
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
-    And user "subadmin" should be disabled
+    And user "subadmin" should be enabled
 
   Scenario: admin tries to enable himself
     And user "another-admin" has been created
