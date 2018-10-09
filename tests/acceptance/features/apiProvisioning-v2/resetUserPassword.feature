@@ -7,7 +7,7 @@ Feature: reset user password
   Background:
     Given using OCS API version "2"
 
-  @smokeTest
+  @smokeTest @skipOnEncryptionType:user-keys @encryption-issue-57
   Scenario: reset user password
     Given these users have been created:
       | username       | password  | displayname | email                    |
@@ -23,7 +23,7 @@ Feature: reset user password
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
 
-  @smokeTest
+  @smokeTest @skipOnEncryptionType:user-keys @encryption-issue-57
   Scenario: subadmin should be able to reset the password of a user in their group
     Given these users have been created:
       | username       | password   | displayname | email                    |
