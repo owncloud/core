@@ -126,6 +126,7 @@ class OccContext implements Context {
 			'OC_PASS',
 			$this->featureContext->getActualPassword($password)
 		);
+		$this->featureContext->addUserToCreatedUsersList($username, $password);
 	}
 
 	/**
@@ -142,6 +143,19 @@ class OccContext implements Context {
 			"user:resetpassword $username  --password-from-env",
 			'OC_PASS',
 			$password
+		);
+	}
+
+	/**
+	 * @When the administrator sends a user deletion request for user :username using the occ command
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSendsAUserDeletionRequestForUserUsingTheOccCommand($username) {
+		$this->featureContext->invokingTheCommand(
+			"user:delete $username"
 		);
 	}
 
@@ -184,7 +198,6 @@ class OccContext implements Context {
 		$this->featureContext->invokingTheCommand(
 			"group:delete $group"
 		);
-		$this->featureContext->rememberThatGroupIsNotExpectedToExist($group);
 	}
 
 	/**
