@@ -42,3 +42,18 @@ Feature: Creation of tags
     When the user creates a "normal" tag with name "JustARegularTagName" and groups "group1|group2" using the WebDAV API
     Then the HTTP status code should be "400"
     And tag "JustARegularTagName" should not exist for the user
+
+  Scenario: Overwriting existing normal tags should fail
+    And the user has created a "normal" tag with name "MyFirstTag"
+    When the user creates a "normal" tag with name "MyFirstTag" using the WebDAV API
+    Then the HTTP status code should be "409"
+
+  Scenario: Overwriting existing not user-assignable tags should fail
+    Given the administrator has created a "not user-assignable" tag with name "MyFirstTag"
+    When the administrator creates a "not user-assignable" tag with name "MyFirstTag" using the WebDAV API
+    Then the HTTP status code should be "409"
+
+  Scenario: Overwriting existing not user-visible tags should fail
+    Given the administrator has created a "not user-visible" tag with name "MyFirstTag"
+    When the administrator creates a "not user-visible" tag with name "MyFirstTag" using the WebDAV API
+    Then the HTTP status code should be "409"
