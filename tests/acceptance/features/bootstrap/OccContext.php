@@ -174,6 +174,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator deletes group :group using the occ command
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesGroupUsingTheOccCommand($group) {
+		$this->featureContext->invokingTheCommand(
+			"group:delete $group"
+		);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
