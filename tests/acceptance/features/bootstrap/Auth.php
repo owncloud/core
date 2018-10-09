@@ -294,15 +294,10 @@ trait Auth {
 		} else {
 			$value = 'false';
 		}
-		$this->runOcc(
-			[
-				'config:system:set',
-				'token_auth_enforced',
-				'--type',
-				'boolean',
-				'--value',
-				$value
-			]
+		$this->setSystemConfig(
+			'token_auth_enforced',
+			$value,
+			'boolean'
 		);
 
 		// Remember that we set this value, so it can be removed after the scenario
@@ -329,11 +324,8 @@ trait Auth {
 			} else {
 				$appTokenForOccCommand = null;
 			}
-			$this->runOcc(
-				[
-					'config:system:delete',
-					'token_auth_enforced'
-				],
+			$this->deleteSystemConfig(
+				'token_auth_enforced',
 				null,
 				$appTokenForOccCommand,
 				null,

@@ -43,42 +43,6 @@ class AppManagementContext implements Context {
 	private $cmdOutput;
 
 	/**
-	 * @BeforeScenario
-	 *
-	 * Remember the config values before each scenario
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function prepareParameters() {
-		$value = SetupHelper::runOcc(
-			['config:system:get', 'apps_paths', '--output', 'json']
-		)['stdOut'];
-
-		if ($value === '') {
-			$this->oldAppsPaths = null;
-		} else {
-			$this->oldAppsPaths = \json_decode($value, true);
-		}
-	}
-
-	/**
-	 * @AfterScenario
-	 *
-	 * Reset the config values after each scenario
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function undoChangingParameters() {
-		if ($this->oldAppsPaths === null) {
-			SetupHelper::runOcc(['config:system:delete', 'apps_paths']);
-		} else {
-			$this->setAppsPaths($this->oldAppsPaths);
-		}
-	}
-
-	/**
 	 *
 	 * @param array $appsPaths of apps_paths entries
 	 *
@@ -86,15 +50,10 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function setAppsPaths($appsPaths) {
-		return SetupHelper::runOcc(
-			[
-				'config:system:set',
-				'apps_paths',
-				'--type',
-				'json',
-				'--value',
-				\json_encode($appsPaths)
-			]
+		return $this->featureContext->setSystemConfig(
+			'apps_paths',
+			\json_encode($appsPaths),
+			'json'
 		);
 	}
 
@@ -132,9 +91,7 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function appHasBeenPutInDir($appId, $version, $dir) {
-		$ocVersion = SetupHelper::runOcc(
-			['config:system:get', 'version']
-		)['stdOut'];
+		$ocVersion = $this->featureContext->getSystemConfigValue('version');
 		$appInfo = \sprintf(
 			'<?xml version="1.0"?>
 			<info>
@@ -203,10 +160,36 @@ class AppManagementContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function prepareParameters(BeforeScenarioScope $scope) {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+
+		$value = $this->featureContext->getSystemConfigValue(
+			'apps_paths', 'json'
+		);
+
+		if ($value === '') {
+			$this->oldAppsPaths = null;
+		} else {
+			$this->oldAppsPaths = \json_decode($value, true);
+		}
+	}
+
+	/**
+	 * @AfterScenario
+	 *
+	 * Reset the config values after each scenario
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function undoChangingParameters() {
+		if ($this->oldAppsPaths === null) {
+			$this->featureContext->deleteSystemConfig('apps_paths');
+		} else {
+			$this->setAppsPaths($this->oldAppsPaths);
+		}
 	}
 }
