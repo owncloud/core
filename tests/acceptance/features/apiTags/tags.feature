@@ -2,52 +2,6 @@
 Feature: tags
 
   @smokeTest
-  Scenario: Deleting a normal tag as regular user should work
-    Given user "user0" has been created
-    And user "%admin%" has created a "normal" tag with name "JustARegularTagName"
-    When user "user0" deletes the tag with name "JustARegularTagName" using the WebDAV API
-    Then the HTTP status code should be "204"
-    And tag "JustARegularTagName" should not exist for "%admin%"
-
-  Scenario: Deleting a normal tag that has already been assigned to a file should work
-    Given user "user0" has been created
-    And user "user0" has created a "normal" tag with name "JustARegularTagName"
-    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
-    And user "user0" has added the tag "MyFirstTag" to "/myFileToTag.txt"
-    When user "user0" deletes the tag with name "JustARegularTagName" using the WebDAV API
-    Then the HTTP status code should be "204"
-    And tag "JustARegularTagName" should not exist for "%admin%"
-    And file "/myFileToTag.txt" should have no tags for user "user0"
-
-  Scenario: Deleting a not user-assignable tag as regular user should fail
-    Given user "user0" has been created
-    And user "%admin%" has created a "not user-assignable" tag with name "JustARegularTagName"
-    When user "user0" deletes the tag with name "JustARegularTagName" using the WebDAV API
-    Then the HTTP status code should be "403"
-    And the following tags should exist for "%admin%"
-      | JustARegularTagName | not user-assignable |
-
-  Scenario: Deleting a not user-visible tag as regular user should fail
-    Given user "user0" has been created
-    And user "%admin%" has created a "not user-visible" tag with name "JustARegularTagName"
-    When user "user0" deletes the tag with name "JustARegularTagName" using the WebDAV API
-    Then the HTTP status code should be "404"
-    And the following tags should exist for "%admin%"
-      | JustARegularTagName | not user-visible |
-
-  Scenario: Deleting a not user-assignable tag as admin should work
-    Given user "%admin%" has created a "not user-assignable" tag with name "JustARegularTagName"
-    When user "%admin%" deletes the tag with name "JustARegularTagName" using the WebDAV API
-    Then the HTTP status code should be "204"
-    And tag "JustARegularTagName" should not exist for "%admin%"
-
-  Scenario: Deleting a not user-visible tag as admin should work
-    Given user "%admin%" has created a "not user-visible" tag with name "JustARegularTagName"
-    When user "%admin%" deletes the tag with name "JustARegularTagName" using the WebDAV API
-    Then the HTTP status code should be "204"
-    And tag "JustARegularTagName" should not exist for "%admin%"
-
-  @smokeTest
   Scenario: Assigning a normal tag to a file shared by someone else as regular user should work
     Given user "user0" has been created
     And user "user1" has been created
