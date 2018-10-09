@@ -396,6 +396,18 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given /^the user has moved (?:file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $fileSource
+	 * @param string $fileDestination
+	 *
+	 * @return void
+	 */
+	public function theUserHasMovedFile($fileSource, $fileDestination) {
+		$this->userHasMovedFile($this->getCurrentUser(), $fileSource, $fileDestination);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" moves (?:file|folder|entry) "([^"]*)"\s?(asynchronously|) to "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
@@ -473,6 +485,19 @@ trait WebDav {
 			$user, "COPY", $fileSource, $headers
 		);
 		$this->parseResponseIntoXml();
+	}
+
+	/**
+	 * @When /^the user copies file "([^"]*)" to "([^"]*)" using the WebDAV API$/
+	 * @Given /^the user has copied file "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $fileSource
+	 * @param string $fileDestination
+	 *
+	 * @return void
+	 */
+	public function theUserCopiesFileUsingTheAPI($fileSource, $fileDestination) {
+		$this->userCopiesFileUsingTheAPI($this->getCurrentUser(), $fileSource, $fileDestination);
 	}
 
 	/**
@@ -2364,6 +2389,22 @@ trait WebDav {
 	}
 
 	/**
+	 * @When the user favorites element :path using the WebDAV API
+	 * @Given the user has favorited element :path
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 * @throws \Sabre\HTTP\ClientException
+	 * @throws \Sabre\HTTP\ClientHttpException
+	 */
+	public function theUserFavoritesElement($path) {
+		$this->response = $this->changeFavStateOfAnElement(
+			$this->getCurrentUser(), $path, 1
+		);
+	}
+
+	/**
 	 * @When user :user unfavorites element :path using the WebDAV API
 	 * @Given user :user has unfavorited element :path
 	 *
@@ -2377,6 +2418,22 @@ trait WebDav {
 	public function userUnfavoritesElement($user, $path) {
 		$this->response = $this->changeFavStateOfAnElement(
 			$user, $path, 0
+		);
+	}
+
+	/**
+	 * @When the user unfavorites element :path using the WebDAV API
+	 * @Given the user has unfavorited element :path
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 * @throws \Sabre\HTTP\ClientException
+	 * @throws \Sabre\HTTP\ClientHttpException
+	 */
+	public function theUserUnfavoritesElement($path) {
+		$this->response = $this->changeFavStateOfAnElement(
+			$this->getCurrentUser(), $path, 0
 		);
 	}
 
@@ -2549,6 +2606,20 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^the user in folder "([^"]*)" should have favorited the following elements$/
+	 *
+	 * @param string $folder
+	 * @param TableNode|null $expectedElements
+	 *
+	 * @return void
+	 */
+	public function checkFavoritedElementsForCurrentUser($folder, $expectedElements) {
+		$this->checkFavoritedElementsPaginated(
+			$this->getCurrentUser(), $folder, $expectedElements, null, null
+		);
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" in folder "([^"]*)" should have favorited the following elements from offset ([\d*]) and limit ([\d*])$/
 	 *
 	 * @param string $user
@@ -2580,6 +2651,24 @@ trait WebDav {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @Then /^the user in folder "([^"]*)" should have favorited the following elements from offset ([\d*]) and limit ([\d*])$/
+	 *
+	 * @param string $folder
+	 * @param TableNode|null $expectedElements
+	 * @param int $offset unused
+	 * @param int $limit unused
+	 *
+	 * @return void
+	 */
+	public function checkFavoritedElementsPaginatedForCurrentUser(
+		$folder, $expectedElements, $offset, $limit
+	) {
+		$this->checkFavoritedElementsPaginated(
+			$this->getCurrentUser(), $folder, $expectedElements, $offset, $limit
+		);
 	}
 
 	/**
