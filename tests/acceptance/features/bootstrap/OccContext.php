@@ -214,6 +214,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator disables the user :username using the occ command
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDisablesTheUserUsingTheOccCommand($username) {
+		$this->featureContext->invokingTheCommand(
+			"user:disable $username"
+		);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
