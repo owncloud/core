@@ -1702,6 +1702,22 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then /^the app "([^"]*)" should not be on the apps list$/
+	 *
+	 * @param string $appName
+	 *
+	 * @return void
+	 */
+	public function theAppShouldNotBeOnTheAppsList($appName) {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
+		$respondedArray = $this->getArrayOfAppsResponded($this->response);
+		PHPUnit_Framework_Assert::assertNotContains($appName, $respondedArray);
+	}
+
+	/**
 	 * @Then /^the user "([^"]*)" should be the subadmin of the group "([^"]*)"$/
 	 *
 	 * @param string $user
