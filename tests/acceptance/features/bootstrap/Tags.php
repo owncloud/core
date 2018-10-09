@@ -316,7 +316,7 @@ trait Tags {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFollowingTagsShouldNotExistForTheAdministrator(string $tagDisplayName) {
+	public function theFollowingTagsShouldNotExistForTheAdministrator($tagDisplayName) {
 		$this->tagShouldNotExistForUser($tagDisplayName, $this->getAdminUsername());
 	}
 
@@ -328,7 +328,7 @@ trait Tags {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFollowingTagsShouldNotExistForTheUser(string $tagDisplayName) {
+	public function theFollowingTagsShouldNotExistForTheUser($tagDisplayName) {
 		$this->tagShouldNotExistForUser($tagDisplayName, $this->getCurrentUser());
 	}
 
