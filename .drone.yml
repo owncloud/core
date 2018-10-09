@@ -792,7 +792,7 @@ matrix:
       INSTALL_SERVER: true
 
   # API Acceptance tests
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
       DB_TYPE: mariadb
@@ -801,7 +801,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiCapabilities
       DB_TYPE: mariadb
@@ -810,7 +810,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiComments
       DB_TYPE: mariadb
@@ -819,7 +819,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiFederation
       DB_TYPE: mariadb
@@ -830,7 +830,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiMetadataApps
       DB_TYPE: mariadb
@@ -839,7 +839,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiProvisioning-v1
       DB_TYPE: mariadb
@@ -848,7 +848,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiProvisioning-v2
       DB_TYPE: mariadb
@@ -857,7 +857,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiSharees
       DB_TYPE: mariadb
@@ -866,7 +866,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiShareManagement
       DB_TYPE: mariadb
@@ -875,7 +875,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiShareOperations
       DB_TYPE: mariadb
@@ -884,7 +884,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiSharingNotifications
       DB_TYPE: mariadb
@@ -894,7 +894,7 @@ matrix:
       OWNCLOUD_LOG: true
       INSTALL_NOTIFICATIONS-APP: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiTags
       DB_TYPE: mariadb
@@ -903,7 +903,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiTrashbin
       DB_TYPE: mariadb
@@ -912,7 +912,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavOperations
       DB_TYPE: mariadb
@@ -921,7 +921,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavProperties
       DB_TYPE: mariadb
@@ -931,7 +931,7 @@ matrix:
       OWNCLOUD_LOG: true
 
   # CLI Acceptance tests
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: cli
       BEHAT_SUITE: cliProvisioning
       DB_TYPE: mariadb
@@ -941,7 +941,7 @@ matrix:
       OWNCLOUD_LOG: true
 
   # UI Acceptance tests
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIAdminSettings
       DB_TYPE: mariadb
@@ -951,7 +951,7 @@ matrix:
       OWNCLOUD_LOG: true
       USE_EMAIL: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIComments
       DB_TYPE: mariadb
@@ -960,7 +960,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIFavorites
       DB_TYPE: mariadb
@@ -969,7 +969,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIFiles
       DB_TYPE: mariadb
@@ -978,7 +978,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUILogin
       DB_TYPE: mariadb
@@ -988,7 +988,7 @@ matrix:
       OWNCLOUD_LOG: true
       USE_EMAIL: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIMoveFilesFolders
       DB_TYPE: mariadb
@@ -997,7 +997,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIPersonalSettings
       DB_TYPE: mariadb
@@ -1007,7 +1007,7 @@ matrix:
       OWNCLOUD_LOG: true
       USE_EMAIL: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRenameFiles
       DB_TYPE: mariadb
@@ -1016,7 +1016,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRenameFolders
       DB_TYPE: mariadb
@@ -1025,7 +1025,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRestrictSharing
       DB_TYPE: mariadb
@@ -1034,7 +1034,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingExternal
       DB_TYPE: mariadb
@@ -1046,7 +1046,7 @@ matrix:
       OWNCLOUD_LOG: true
       USE_EMAIL: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingInternalGroups
       DB_TYPE: mariadb
@@ -1055,7 +1055,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingInternalUsers
       DB_TYPE: mariadb
@@ -1064,7 +1064,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingNotifications
       DB_TYPE: mariadb
@@ -1075,7 +1075,7 @@ matrix:
       USE_EMAIL: true
       INSTALL_NOTIFICATIONS-APP: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUITags
       DB_TYPE: mariadb
@@ -1084,7 +1084,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUITrashbin
       DB_TYPE: mariadb
@@ -1093,7 +1093,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIUpload
       DB_TYPE: mariadb
@@ -1103,7 +1103,7 @@ matrix:
       OWNCLOUD_LOG: true
 
     # This suite is part of the user_management app in later core versions
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIManageUsersGroups
       DB_TYPE: mariadb
@@ -1114,7 +1114,7 @@ matrix:
       OWNCLOUD_LOG: true
 
     # This suite is part of the user_management app in later core versions
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIManageQuota
       DB_TYPE: mariadb
@@ -1124,7 +1124,7 @@ matrix:
       OWNCLOUD_LOG: true
 
     # This suite is part of the user_management app in later core versions
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 5.6
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISettingsMenu
       DB_TYPE: mariadb
