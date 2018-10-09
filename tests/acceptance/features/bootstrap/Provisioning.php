@@ -573,7 +573,7 @@ trait Provisioning {
 		$result = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($user),
-			'display',
+			'displayname',
 			$displayname,
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
@@ -604,7 +604,7 @@ trait Provisioning {
 		$result = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($targetUser),
-			'display',
+			'displayname',
 			$displayName,
 			$this->getActualUsername($requestingUser),
 			$this->getPasswordForUser($requestingUser),
