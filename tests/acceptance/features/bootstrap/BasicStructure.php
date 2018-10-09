@@ -674,23 +674,12 @@ trait BasicStructure {
 	 * @return string the previous setting of csrf.disabled
 	 */
 	public function setCSRFDotDisabled($setting) {
-		$oldCSRFSetting = SetupHelper::runOcc(
-			['config:system:get', 'csrf.disabled']
-		)['stdOut'];
+		$oldCSRFSetting = $this->getSystemConfigValue('csrf.disabled');
 
 		if ($setting === "") {
-			SetupHelper::runOcc(['config:system:delete', 'csrf.disabled']);
+			$this->deleteSystemConfig('csrf.disabled');
 		} elseif (($setting === 'true') || ($setting === 'false')) {
-			SetupHelper::runOcc(
-				[
-					'config:system:set',
-					'csrf.disabled',
-					'--type',
-					'boolean',
-					'--value',
-					$setting
-				]
-			);
+			$this->setSystemConfig('csrf.disabled', $setting, 'boolean');
 		} else {
 			throw new \http\Exception\InvalidArgumentException(
 				'setting must be "true", "false" or ""'

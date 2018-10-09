@@ -51,9 +51,9 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function prepareParameters() {
-		$value = SetupHelper::runOcc(
-			['config:system:get', 'apps_paths', '--output', 'json']
-		)['stdOut'];
+		$value = $this->featureContext->getSystemConfigValue(
+			'apps_paths', 'json'
+		);
 
 		if ($value === '') {
 			$this->oldAppsPaths = null;
@@ -72,7 +72,7 @@ class AppManagementContext implements Context {
 	 */
 	public function undoChangingParameters() {
 		if ($this->oldAppsPaths === null) {
-			SetupHelper::runOcc(['config:system:delete', 'apps_paths']);
+			$this->featureContext->deleteSystemConfig('apps_paths');
 		} else {
 			$this->setAppsPaths($this->oldAppsPaths);
 		}
@@ -86,15 +86,10 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function setAppsPaths($appsPaths) {
-		return SetupHelper::runOcc(
-			[
-				'config:system:set',
-				'apps_paths',
-				'--type',
-				'json',
-				'--value',
-				\json_encode($appsPaths)
-			]
+		return $this->featureContext->setSystemConfig(
+			'apps_paths',
+			\json_encode($appsPaths),
+			'json'
 		);
 	}
 
@@ -132,9 +127,7 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function appHasBeenPutInDir($appId, $version, $dir) {
-		$ocVersion = SetupHelper::runOcc(
-			['config:system:get', 'version']
-		)['stdOut'];
+		$ocVersion = $this->featureContext->getSystemConfigValue('version');
 		$appInfo = \sprintf(
 			'<?xml version="1.0"?>
 			<info>
