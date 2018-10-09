@@ -333,6 +333,22 @@ trait Tags {
 	}
 
 	/**
+	 * @Then /^the user (should|should not) be able to assign the "([^"]*)" tag with name "([^"]*)"$/
+	 *
+	 * @param string $shouldOrNot should or should not
+	 * @param string $type
+	 * @param string $tagDisplayName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserCanAssignTheTag(
+		$shouldOrNot, $type, $tagDisplayName
+	) {
+		$this->userCanAssignTheTag($this->getCurrentUser(), $shouldOrNot, $type, $tagDisplayName);
+	}
+
+	/**
 	 * @Then /^the user "([^"]*)" (should|should not) be able to assign the "([^"]*)" tag with name "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -343,7 +359,7 @@ trait Tags {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserCanAssignTheTag(
+	public function userCanAssignTheTag(
 		$user, $shouldOrNot, $type, $tagDisplayName
 	) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
