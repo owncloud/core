@@ -147,6 +147,48 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator changes the email of user :username to :newEmail using the occ command
+	 *
+	 * @param string $username
+	 * @param string $newEmail
+	 *
+	 * @return void
+	 */
+	public function theAdministratorChangesTheEmailOfUserToUsingTheOccCommand($username, $newEmail) {
+		$this->featureContext->invokingTheCommand(
+			"user:modify $username email $newEmail"
+		);
+	}
+
+	/**
+	 * @When the administrator changes the display name of user :username to :newDisplayname using the occ command
+	 *
+	 * @param string $username
+	 * @param string $newDisplayname
+	 *
+	 * @return void
+	 */
+	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheOccCommand($username, $newDisplayname) {
+		$this->featureContext->invokingTheCommand(
+			"user:modify $username displayname '$newDisplayname'"
+		);
+	}
+
+	/**
+	 * @When the administrator changes the quota of user :username to :newQuota using the occ command
+	 *
+	 * @param string $username
+	 * @param string $newQuota
+	 *
+	 * @return void
+	 */
+	public function theAdministratorChangesTheQuotaOfUserToUsingTheOccCommand($username, $newQuota) {
+		$this->featureContext->invokingTheCommand(
+			"user:modify $username quota $newQuota"
+		);
+	}
+
+	/**
 	 * @When the administrator sends a user deletion request for user :username using the occ command
 	 *
 	 * @param string $username
