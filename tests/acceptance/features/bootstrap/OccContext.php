@@ -201,6 +201,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator disables the app :appName using the occ command
+	 *
+	 * @param string $appName
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDisablesTheAppUsingTheOccCommand($appName) {
+		$this->featureContext->invokingTheCommand(
+			"app:disable $appName"
+		);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
