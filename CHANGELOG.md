@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## Unreleased
+### Added
+- Allow loading JSON files in setups with pretty URLs - [#32835](https://github.com/owncloud/core/issues/32835)
+### Changed
+- Disable browser autocomplete for password fields - [#32590](https://github.com/owncloud/core/issues/32590)
+- Bump symfony 3.4.15 to 3.4.17 - [#33001](https://github.com/owncloud/core/issues/33001)
+- Bump jakub-onderka/php-console-highlighter from 0.3.2 to 0.4 - [#32944](https://github.com/owncloud/core/issues/32944)
+- Bump sinon from 6.2.0 to 6.3.4 in /build - [#32825](https://github.com/owncloud/core/issues/32825)
+### Removed
+### Fixed
+- Register areCredentialsValid as a sensitive logging method - [#32713](https://github.com/owncloud/core/issues/32713)
+- Deletion of user now also updates storages applicable fields - [#32906](https://github.com/owncloud/core/issues/32906)
+
 ## 10.0.10 - 2018-09-18
 ### Added
 - Store user name in oc_preferences when provided by backend, use in external storage save in session mode [#32587](https://github.com/owncloud/core/pull/32587)
