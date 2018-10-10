@@ -242,7 +242,7 @@ class SyncService {
 	 */
 	private function syncHome(Account $a, UserInterface $backend) {
 		// Fallback for backends that dont yet use the new interfaces
-		$proividesHome = $backend instanceof IProvidesHomeBackend || $backend->implementsActions(\OC_User_Backend::GET_HOME);
+		$proividesHome = $backend instanceof IProvidesHomeBackend || $backend->implementsActions(\OC\User\Backend::GET_HOME);
 		$uid = $a->getUserId();
 		// Log when the backend returns a string that is a different home to the current value
 		if ($proividesHome && \is_string($backend->getHome($uid)) && $a->getHome() !== $backend->getHome($uid)) {
@@ -283,7 +283,7 @@ class SyncService {
 	 */
 	private function syncDisplayName(Account $a, UserInterface $backend) {
 		$uid = $a->getUserId();
-		if ($backend instanceof IProvidesDisplayNameBackend || $backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
+		if ($backend instanceof IProvidesDisplayNameBackend || $backend->implementsActions(\OC\User\Backend::GET_DISPLAYNAME)) {
 			$displayName = $backend->getDisplayName($uid);
 			$a->setDisplayName($displayName);
 			if (\array_key_exists('displayName', $a->getUpdatedFields())) {

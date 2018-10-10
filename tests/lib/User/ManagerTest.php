@@ -104,7 +104,7 @@ class ManagerTest extends TestCase {
 		$backend->expects($this->any())
 			->method('implementsActions')
 			->will($this->returnCallback(function ($actions) {
-				if ($actions === \OC_User_Backend::CHECK_PASSWORD) {
+				if ($actions === \OC\User\Backend::CHECK_PASSWORD) {
 					return true;
 				} else {
 					return false;
