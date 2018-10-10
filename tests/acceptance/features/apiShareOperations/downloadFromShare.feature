@@ -6,7 +6,7 @@ Feature: sharing
     And using old DAV path
     And user "user0" has been created
 
-  @smokeTest
+  @smokeTest @public_link_share-feature-required
   Scenario: Downloading from upload-only share is forbidden
     Given user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
     When user "user0" creates a public link share using the sharing API with settings
@@ -51,7 +51,7 @@ Feature: sharing
     When user "user0" has shared folder "PARENT" with group "grp1"
     Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
-  @smokeTest
+  @smokeTest @public_link_share-feature-required
   Scenario: Download a file that is in a folder contained in a folder that has been shared with public with default permissions
     When user "user0" creates a public link share using the sharing API with settings
       | path     | PARENT   |
@@ -78,6 +78,7 @@ Feature: sharing
       | permissions | 15     |
     Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
+  @public_link_share-feature-required
   Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read/Write permission
     When user "user0" creates a public link share using the sharing API with settings
       | path        | PARENT   |
@@ -105,6 +106,7 @@ Feature: sharing
       | permissions | 1      |
     Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
+  @public_link_share-feature-required
   Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read only permission
     When user "user0" creates a public link share using the sharing API with settings
       | path        | PARENT   |

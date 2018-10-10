@@ -40,6 +40,7 @@ Feature: User can open the details panel for any file or folder
     When the user switches to "versions" tab in details panel using the webUI
     Then the "versions" details panel should be visible
 
+  @public_link_share-feature-required
   Scenario: user shares a file through public link and then the details dialog should work in a Shared by link page
     Given the user has created a new public link for the folder "simple-folder" using the webUI
     When the user browses to the shared-by-link page

@@ -27,6 +27,7 @@ Feature: download file
       | old         |
       | new         |
 
+  @public_link_share-feature-required
   Scenario Outline: download a public shared file with range
     Given using <dav_version> DAV path
     When user "user0" creates a public link share using the sharing API with settings
@@ -38,6 +39,7 @@ Feature: download file
       | old         |
       | new         |
 
+  @public_link_share-feature-required
   Scenario Outline: download a public shared file inside a folder with range
     Given using <dav_version> DAV path
     When user "user0" creates a public link share using the sharing API with settings

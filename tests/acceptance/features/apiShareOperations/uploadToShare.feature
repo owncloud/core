@@ -6,7 +6,7 @@ Feature: sharing
     And using old DAV path
     And user "user0" has been created
 
-  @smokeTest
+  @smokeTest @public_link_share-feature-required
   Scenario: Uploading same file to a public upload-only share multiple times
     Given as user "user0"
     And the user has created a public link share with settings
@@ -17,6 +17,7 @@ Feature: sharing
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
     And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
 
+  @public_link_share-feature-required
   Scenario: Uploading file to a public upload-only share that was deleted does not work
     Given user "user0" has created a public link share with settings
       | path        | FOLDER |
@@ -25,6 +26,7 @@ Feature: sharing
     Then publicly uploading a file should not work
     And the HTTP status code should be "404"
 
+  @public_link_share-feature-required
   Scenario: Uploading file to a public read-only share folder does not work
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
@@ -54,6 +56,7 @@ Feature: sharing
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
 
+  @public_link_share-feature-required
   Scenario: Uploading to a public upload-only share
     Given as user "user0"
     And the user has created a public link share with settings
@@ -62,6 +65,7 @@ Feature: sharing
     When the public uploads file "test.txt" with content "test" using the old WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
+  @public_link_share-feature-required
   Scenario: Uploading to a public upload-only share with password
     Given as user "user0"
     And the user has created a public link share with settings
@@ -93,6 +97,7 @@ Feature: sharing
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
 
+  @public_link_share-feature-required
   Scenario: Uploading to a public read/write share with password
     Given as user "user0"
     And the user has created a public link share with settings
@@ -134,7 +139,7 @@ Feature: sharing
     When user "user1" uploads file "data/textfile.txt" to "/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
 
-  @smokeTest
+  @smokeTest @public_link_share-feature-required
   Scenario: Uploading to a public read/write share with password
     Given as user "user0"
     And the user has created a public link share with settings
@@ -168,6 +173,7 @@ Feature: sharing
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "507"
 
+  @public_link_share-feature-required
   Scenario: Uploading file to a public shared folder with read/write permission when the sharer has unsufficient quota does not work
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
@@ -200,6 +206,7 @@ Feature: sharing
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "507"
 
+  @public_link_share-feature-required
   Scenario: Uploading file to a public shared folder with upload-only permission when the sharer has unsufficient quota does not work
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
@@ -208,6 +215,7 @@ Feature: sharing
     Then publicly uploading a file should not work
     And the HTTP status code should be "507"
 
+  @public_link_share-feature-required
   Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled after sharing the folder
     Given user "user0" has created a public link share with settings
       | path        | FOLDER |
@@ -216,6 +224,7 @@ Feature: sharing
     Then publicly uploading a file should not work
     And the HTTP status code should be "403"
 
+  @public_link_share-feature-required
   Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled before sharing and again enabled after sharing the folder
     Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     And user "user0" has created a public link share with settings
@@ -225,6 +234,7 @@ Feature: sharing
     Then publicly uploading a file should not work
     And the HTTP status code should be "403"
 
+  @public_link_share-feature-required
   Scenario: Uploading file to a public shared folder works when allow public uploads has been disabled and again enabled after sharing the folder
     Given user "user0" has created a public link share with settings
       | path        | FOLDER |

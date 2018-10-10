@@ -67,6 +67,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a file
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
@@ -79,7 +80,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest
+  @smokeTest @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a file with password
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
@@ -93,6 +94,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Trying to create a new public link share of a file with edit permissions results in a read-only share
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
@@ -113,6 +115,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Creating a new public link share of a folder
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
@@ -152,6 +155,7 @@ Feature: sharing
     Then the OCS status code should be "401"
     And the HTTP status code should be "401"
 
+  @public_link_share-feature-required
   Scenario Outline: Creating a link share with no specified permissions defaults to read permissions
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created a folder "/afolder"
@@ -168,6 +172,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Creating a link share with no specified permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -185,6 +190,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Creating a link share with edit permissions keeps it
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created a folder "/afolder"
@@ -254,6 +260,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Do not allow public sharing of the root
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
@@ -264,6 +271,7 @@ Feature: sharing
       | 1               | 403             |
       | 2               | 403             |
 
+  @public_link_share-feature-required
   Scenario: Only allow 1 link share per file/folder
     Given using OCS API version "1"
     And as user "user0"
@@ -444,7 +452,8 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-Scenario Outline: user creates a public link share of a file with file name longer than 64 chars
+  @public_link_share-feature-required
+  Scenario Outline: user creates a public link share of a file with file name longer than 64 chars
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
     When user "user0" creates a public link share using the sharing API with settings
@@ -457,7 +466,8 @@ Scenario Outline: user creates a public link share of a file with file name long
       | 1               | 100             |
       | 2               | 200             |
 
-Scenario Outline: user creates a public link share of a folder with folder name longer than 64 chars
+  @public_link_share-feature-required
+  Scenario Outline: user creates a public link share of a folder with folder name longer than 64 chars
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created a folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
