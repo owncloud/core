@@ -282,6 +282,17 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator gets the list of apps using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsTheListOfAppsUsingTheOccCommand() {
+		$this->featureContext->invokingTheCommand(
+			"config:list"
+		);
+	}
+
+	/**
 	 * @When the administrator disables the user :username using the occ command
 	 *
 	 * @param string $username
@@ -333,6 +344,25 @@ class OccContext implements Context {
 		$lastOutputArray = \json_decode($lastOutput, true);
 		$actualAppEnabledStatus = $lastOutputArray['apps'][$appName]['enabled'];
 		PHPUnit_Framework_Assert::assertEquals($appStatus, $actualAppEnabledStatus);
+	}
+
+	/**
+	 * @Then the apps returned by the occ command should include
+	 *
+	 * @param TableNode $appListTable table with apps name with no header
+	 *
+	 * @return void
+	 */
+	public function theAppsReturnedByTheOccCommandShouldInclude(TableNode $appListTable) {
+		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
+		$lastOutputApps = \array_keys(\json_decode($lastOutput, true)['apps']);
+
+		$apps = $appListTable->getRows();
+		$appsSimplified = $this->featureContext->simplifyArray($apps);
+
+		foreach ($appsSimplified as $app) {
+			PHPUnit_Framework_Assert::assertContains($app, $lastOutputApps);
+		}
 	}
 
 	/**
