@@ -1,4 +1,4 @@
-@webUI @mailhog
+@webUI @mailhog @admin_settings-feature-required
 Feature: admin general settings
   As an admin
   I want to be able to manage general settings on the ownCloud server
@@ -32,13 +32,13 @@ Feature: admin general settings
     And the administrator logs out of the webUI
     Then the imprint url on the login page should link to "imprinturl.html"
 
-@smokeTest
+  @smokeTest
   Scenario: administrator sets legal URLs
     When the administrator sets the value of privacy policy url to "privacy_policy.html" using the webUI
     And the administrator logs out of the webUI
     Then the privacy policy url on the login page should link to "privacy_policy.html"
 
-@smokeTest
+  @smokeTest
   Scenario: administrator sets update channel
     Given the administrator has invoked occ command "config:app:set core OC_Channel --value git"
     When the user reloads the current page of the webUI
@@ -46,7 +46,7 @@ Feature: admin general settings
     And the administrator invokes occ command "config:app:get core OC_Channel"
     Then the command output should contain the text "daily"
 
-@smokeTest
+  @smokeTest
   Scenario: administrator changes the cron job
     Given the administrator has invoked occ command "config:app:set core backgroundjobs_mode --value ajax"
     When the user reloads the current page of the webUI
@@ -54,7 +54,7 @@ Feature: admin general settings
     And the administrator invokes occ command "config:app:get core backgroundjobs_mode"
     Then the command output should contain the text "webcron"
 
-@smokeTest
+  @smokeTest
   Scenario: administrator changes the log level
     Given the administrator has invoked occ command "config:system:set loglevel --value 0"
     When the user reloads the current page of the webUI
