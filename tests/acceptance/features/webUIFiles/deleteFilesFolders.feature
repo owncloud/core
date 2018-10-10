@@ -108,6 +108,7 @@ Feature: deleting files and folders
     Then the file "lorem.txt" should not be listed on the webUI
     And the folder "simple-folder" should not be listed on the webUI
 
+  @public_link_share-feature-required
   Scenario: delete files from shared by link page
     Given the user has created a new public link for the file "lorem.txt" using the webUI
     And the user has browsed to the shared-by-link page

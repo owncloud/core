@@ -81,6 +81,7 @@ Feature: sharing
     And user "user3" downloads file "/textfile0_shared.txt" with range "bytes=1-7" using the WebDAV API
     Then the downloaded content should be "wnCloud"
 
+  @public_link_share-feature-required
   Scenario Outline: resharing using a public link with read only permissions is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created a folder "/test"
@@ -95,6 +96,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 404              |
 
+  @public_link_share-feature-required
   Scenario Outline: resharing using a public link with read and write permissions only is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created a folder "/test"
