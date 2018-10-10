@@ -5,9 +5,9 @@ Feature: Assign tags to file/folder
 
   Background:
     Given these users have been created:
-    | username |
-    | user0    |
-    | user1    |
+      | username |
+      | user0    |
+      | user1    |
     And as user "user0"
 
   @smokeTest
@@ -64,7 +64,7 @@ Feature: Assign tags to file/folder
       | MyFirstTag | normal |
 
   Scenario: Assigning a not user-visible tag to a file shared by someone else as admin user should work
-    And the administrator has created a "normal" tag with name "MyFirstTag"
+    Given the administrator has created a "normal" tag with name "MyFirstTag"
     And the administrator has created a "not user-visible" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "%admin%"
@@ -78,7 +78,7 @@ Feature: Assign tags to file/folder
       | MyFirstTag | normal |
 
   Scenario: Assigning a not user-assignable tag to a file shared by someone else as admin user should work
-    And the administrator has created a "normal" tag with name "MyFirstTag"
+    Given the administrator has created a "normal" tag with name "MyFirstTag"
     And the administrator has created a "not user-assignable" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "%admin%"
