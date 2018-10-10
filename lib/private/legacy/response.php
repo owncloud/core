@@ -289,7 +289,7 @@ class OC_Response {
 		// first check if any of the global CORS domains matches
 		$globalAllowedDomains = $config->getSystemValue('cors.allowed-domains', []);
 		$isCorsRequest = (\is_array($globalAllowedDomains) && \in_array($domain, $globalAllowedDomains));
-		if (!$isCorsRequest) {
+		if (!$isCorsRequest && $userId !== null) {
 			// check if any of the user specific CORS domains matches
 			$allowedDomains = \json_decode($config->getUserValue($userId, 'core', 'domains'));
 			$isCorsRequest = (\is_array($allowedDomains) && \in_array($domain, $allowedDomains));
