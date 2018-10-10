@@ -56,7 +56,17 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
+
+  @files_trashbin-app-required
+  Scenario: getting trashbin app capability with admin user
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
       | files         | undelete                              | 1                 |
+
+  @files_versions-app-required
+  Scenario: getting versions app capability with admin user
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
       | files         | versioning                            | 1                 |
 
   Scenario: Changing public upload
@@ -80,8 +90,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Disabling share api
     Given parameter "shareapi_enabled" of app "core" has been set to "no"
@@ -98,8 +106,6 @@ Feature: capabilities
       | files_sharing | federation@@@outgoing | 1                 |
       | files_sharing | federation@@@incoming | 1                 |
       | files         | bigfilechunking       | 1                 |
-      | files         | undelete              | 1                 |
-      | files         | versioning            | 1                 |
 
   Scenario: Disabling public links
     Given parameter "shareapi_allow_links" of app "core" has been set to "no"
@@ -120,8 +126,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Changing resharing
     Given parameter "shareapi_allow_resharing" of app "core" has been set to "no"
@@ -144,8 +148,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Changing federation outgoing
     Given parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "no"
@@ -168,8 +170,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Changing federation incoming
     Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "no"
@@ -192,8 +192,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Changing "password enforced for read-only public link shares"
     Given parameter "shareapi_enforce_links_password_read_only" of app "core" has been set to "yes"
@@ -219,8 +217,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled                     | 1                 |
       | files_sharing | user_enumeration@@@group_members_only          | EMPTY             |
       | files         | bigfilechunking                                | 1                 |
-      | files         | undelete                                       | 1                 |
-      | files         | versioning                                     | 1                 |
 
   Scenario: Changing "password enforced for read-write public link shares"
     Given parameter "shareapi_enforce_links_password_read_write" of app "core" has been set to "yes"
@@ -246,8 +242,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled                     | 1                 |
       | files_sharing | user_enumeration@@@group_members_only          | EMPTY             |
       | files         | bigfilechunking                                | 1                 |
-      | files         | undelete                                       | 1                 |
-      | files         | versioning                                     | 1                 |
 
   Scenario: Changing "password enforced for write-only public link shares"
     Given parameter "shareapi_enforce_links_password_write_only" of app "core" has been set to "yes"
@@ -273,8 +267,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled                     | 1                 |
       | files_sharing | user_enumeration@@@group_members_only          | EMPTY             |
       | files         | bigfilechunking                                | 1                 |
-      | files         | undelete                                       | 1                 |
-      | files         | versioning                                     | 1                 |
 
   Scenario: Changing public notifications
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
@@ -297,8 +289,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Changing public social share
     Given parameter "shareapi_allow_social_share" of app "core" has been set to "no"
@@ -321,8 +311,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Changing expire date
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
@@ -346,8 +334,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Changing expire date enforcing
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
@@ -373,8 +359,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Changing group sharing allowed
     Given parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
@@ -397,8 +381,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Changing only share with group member
     Given parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
@@ -421,8 +403,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Changing allow share dialog user enumeration
     Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
@@ -444,8 +424,6 @@ Feature: capabilities
       | files_sharing | share_with_group_members_only | EMPTY             |
       | files_sharing | user_enumeration@@@enabled    | EMPTY             |
       | files         | bigfilechunking               | 1                 |
-      | files         | undelete                      | 1                 |
-      | files         | versioning                    | 1                 |
 
   Scenario: Changing allow share dialog user enumeration for group members only
     Given parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
@@ -468,8 +446,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | 1                 |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Changing exclude groups from sharing
     Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
@@ -496,8 +472,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: When in a group that is excluded from sharing, can_share is off
     Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
@@ -527,8 +501,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: When not in any group that is excluded from sharing, can_share is on
     Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
@@ -558,8 +530,6 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: When in a group that is excluded from sharing and in another group, can_share is off
     Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
@@ -590,5 +560,3 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
