@@ -215,6 +215,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator gets the groups of user :username using the occ command
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsTheGroupsOfUserUsingTheOccCommand($username) {
+		$this->featureContext->invokingTheCommand(
+			"user:list-group $username --output=json"
+		);
+	}
+
+	/**
 	 * @When the administrator sends a group creation request for group :group using the occ command
 	 *
 	 * @param string $group
