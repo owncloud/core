@@ -578,7 +578,22 @@ fi
 
 if [ -z "${BEHAT_YML}" ]
 then
-	BEHAT_YML="${SCRIPT_PATH}/config/behat.yml"
+	# Look for a behat.yml somewhere below the current working directory
+	# This saves app acceptance tests being forced to specify BEHAT_YML
+	BEHAT_YML="config/behat.yml"
+	if [ ! -f "${BEHAT_YML}" ]
+	then
+		BEHAT_YML="acceptance/config/behat.yml"
+	fi
+	if [ ! -f "${BEHAT_YML}" ]
+	then
+		BEHAT_YML="tests/acceptance/config/behat.yml"
+	fi
+	# If no luck above, then use the core behat.yml that should live below this script
+	if [ ! -f "${BEHAT_YML}" ]
+	then
+		BEHAT_YML="${SCRIPT_PATH}/config/behat.yml"
+	fi
 fi
 
 # MAILHOG_HOST defines where the system-under-test can find the MailHog server
