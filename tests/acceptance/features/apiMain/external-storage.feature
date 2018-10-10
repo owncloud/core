@@ -5,7 +5,8 @@ Feature: external-storage
     Given using OCS API version "1"
     And using old DAV path
 
-  Scenario: Share by link a file inside a local external storage
+  @public_link_share-feature-required
+  Scenario: Share by public link a file inside a local external storage
     Given user "user0" has been created
     And user "user1" has been created
     And user "user0" has created a folder "/local_storage/foo"

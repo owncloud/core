@@ -178,7 +178,7 @@ Feature: transfer-ownership
     Then the command should have been successful
     And the downloaded content when downloading file "/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
-  @skipOnEncryptionType:user-keys
+  @skipOnEncryptionType:user-keys @public_link_share-feature-required
   Scenario: transferring ownership of folder shares which has public link
     Given user "user0" has been created
     And user "user1" has been created
@@ -245,7 +245,7 @@ Feature: transfer-ownership
     And using received transfer folder of "user1" as dav path
     And as "user1" the folder "/sub/test" should not exist
 
-  @skipOnEncryptionType:user-keys
+  @skipOnEncryptionType:user-keys @public_link_share-feature-required
   Scenario: transferring ownership of folder shared with transfer recipient and public link created of received share works
     Given user "user0" has been created
     And user "user1" has been created
