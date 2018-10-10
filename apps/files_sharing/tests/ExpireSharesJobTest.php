@@ -77,7 +77,7 @@ class ExpireSharesJobTest extends \Test\TestCase {
 
 		\OC::registerShareHooks();
 
-		$this->job = new ExpireSharesJob($this->connection, $this->shareManager);
+		$this->job = new ExpireSharesJob($this->connection, $this->shareManager, \OC::$server->getLogger());
 	}
 
 	protected function tearDown() {

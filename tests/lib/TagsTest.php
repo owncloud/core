@@ -284,33 +284,4 @@ class TagsTest extends TestCase {
 		$this->assertTrue($tagger->removeFromFavorites(1));
 		$this->assertEquals([], $tagger->getFavorites());
 	}
-
-	public function testShareTags() {
-		$testTag = 'TestTag';
-
-		$tagger = $this->tagMgr->load('test');
-		$tagger->tagAs(1, $testTag);
-
-		$otherUserId = $this->getUniqueID('user2_');
-		$otherUser = $this->createUser($otherUserId, 'pass');
-		\OC_User::setUserId($otherUserId);
-		/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject $otherUserSession */
-		$otherUserSession = $this->createMock(IUserSession::class);
-		$otherUserSession
-			->expects($this->any())
-			->method('getUser')
-			->will($this->returnValue($otherUser));
-
-		$otherTagMgr = new TagManager($this->tagMapper, $otherUserSession);
-		$otherTagger = $otherTagMgr->load('test');
-		$this->assertFalse($otherTagger->hasTag($testTag));
-
-		\OC_User::setUserId($this->user->getUID());
-		\OCP\Share::shareItem('test', 1, \OCP\Share::SHARE_TYPE_USER, $otherUserId, \OCP\Constants::PERMISSION_READ);
-
-		\OC_User::setUserId($otherUserId);
-		$otherTagger = $otherTagMgr->load('test', [], true); // Update tags, load shared ones.
-		$this->assertTrue($otherTagger->hasTag($testTag));
-		$this->assertContains(1, $otherTagger->getIdsForTag($testTag));
-	}
 }
