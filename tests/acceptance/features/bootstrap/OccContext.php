@@ -256,6 +256,17 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator gets the groups using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsTheGroupsUsingTheOccCommand() {
+		$this->featureContext->invokingTheCommand(
+			"group:list --output=json"
+		);
+	}
+
+	/**
 	 * @When the administrator disables the app :appName using the occ command
 	 *
 	 * @param string $appName
@@ -391,6 +402,22 @@ class OccContext implements Context {
 		foreach ($useridTable as $row) {
 			PHPUnit_Framework_Assert::assertArrayHasKey($row['uid'], $lastOutputUsers);
 			PHPUnit_Framework_Assert::assertContains($row['display name'], $lastOutputUsers);
+		}
+	}
+
+	/**
+	 * @Then the groups returned by the occ command should be
+	 *
+	 * @param TableNode $groupTableNode with group name with header group
+	 *
+	 * @return void
+	 */
+	public function theGroupsReturnedByTheOccCommandShouldBe(TableNode $groupTableNode) {
+		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
+		$lastOutputGroups = \json_decode($lastOutput, true);
+
+		foreach ($groupTableNode as $row) {
+			PHPUnit_Framework_Assert::assertContains($row['group'], $lastOutputGroups);
 		}
 	}
 
