@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @mailhog
+@webUI @insulated @disablePreviews @mailhog @public_link_share-feature-required
 Feature: Share by public link
   As a user
   I want to share files through a publicly accessible link
