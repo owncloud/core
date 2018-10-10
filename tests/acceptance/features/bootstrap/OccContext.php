@@ -202,6 +202,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator retrieves the information of user :username using the occ command
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRetrievesTheInformationOfUserUsingTheOccCommand($username) {
+		$this->featureContext->invokingTheCommand(
+			"user:list $username --output=json"
+		);
+	}
+
+	/**
 	 * @When the administrator sends a group creation request for group :group using the occ command
 	 *
 	 * @param string $group
@@ -419,6 +432,20 @@ class OccContext implements Context {
 		foreach ($groupTableNode as $row) {
 			PHPUnit_Framework_Assert::assertContains($row['group'], $lastOutputGroups);
 		}
+	}
+
+	/**
+	 * @Then the display name returned by the occ command should be :displayName
+	 *
+	 * @param string $displayName
+	 *
+	 * @return void
+	 */
+	public function theDisplayNameReturnedByTheOccCommandShouldBe($displayName) {
+		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
+		$lastOutputUser = \json_decode($lastOutput, true);
+		$lastOutputDisplayName = \array_column($lastOutputUser, 'displayName')[0];
+		PHPUnit_Framework_Assert::assertEquals($displayName, $lastOutputDisplayName);
 	}
 
 	/**

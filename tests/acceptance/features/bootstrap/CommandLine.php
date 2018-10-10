@@ -467,6 +467,16 @@ trait CommandLine {
 		);
 	}
 
+	/**
+	 * @Then the occ command JSON output should be empty
+	 *
+	 * @return void
+	 */
+	public function theOccCommandJsonOutputShouldNotReturnAnyData() {
+		PHPUnit_Framework_Assert::assertEquals(\trim($this->lastStdOut), "[]");
+		PHPUnit_Framework_Assert::assertEmpty($this->lastStdErr);
+	}
+
 	private $lastTransferPath;
 
 	/**
