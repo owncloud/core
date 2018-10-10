@@ -22,6 +22,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Creating a new public link share, updating its expiration date and getting its info
     Given using OCS API version "<ocs_api_version>"
     And as user "user0"
@@ -55,6 +56,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Creating a new public link share with password and adding an expiration date
     Given using OCS API version "<ocs_api_version>"
     And as user "user0"
@@ -71,6 +73,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Creating a new public link share, updating its expiration date and getting its info
     Given using OCS API version "<ocs_api_version>"
     And as user "user0"
@@ -104,6 +107,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Creating a new public link share, updating its password and getting its info
     Given using OCS API version "<ocs_api_version>"
     And as user "user0"
@@ -136,6 +140,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Creating a new public link share, updating its permissions and getting its info
     Given using OCS API version "<ocs_api_version>"
     And as user "user0"
@@ -168,6 +173,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Creating a new public link share, updating publicUpload option and getting its info
     Given using OCS API version "<ocs_api_version>"
     And as user "user0"
@@ -233,6 +239,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created
@@ -320,6 +327,7 @@ Feature: sharing
     And as "user0" the folder "/user0-folder/folder2" should not exist
     And as "user2" the folder "/user2-folder/folder2" should exist
 
+  @public_link_share-feature-required
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created
@@ -338,6 +346,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
   Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created
@@ -356,6 +365,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 404              |
 
+  @public_link_share-feature-required
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created

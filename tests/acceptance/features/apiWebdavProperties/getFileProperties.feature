@@ -105,6 +105,7 @@ Feature: get file properties
       | old         |
       | new         |
 
+  @public_link_share-feature-required
   Scenario Outline: A file that is shared by link has a share-types property
     Given using <dav_version> DAV path
     And user "user0" has created a folder "/test"
@@ -120,7 +121,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnLDAP @user_ldap-issue-268
+  @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required
   Scenario Outline: A file that is shared by user,group and link has a share-types property
     Given using <dav_version> DAV path
     And user "user1" has been created
