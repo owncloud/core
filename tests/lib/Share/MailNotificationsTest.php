@@ -353,7 +353,7 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	public function testSendInternalShareMail() {
-		$this->setupMailerMock('TestUser shared »&lt;welcome&gt;.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
+		$this->setupMailerMock('TestUser shared »<welcome>.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
 
 		$shareMock = $this->getShareMock(
 			['file_target' => '/<welcome>.txt', 'item_source' => 123, 'expiration' => '2017-01-01T15:03:01.012345Z']
@@ -385,14 +385,14 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	public function testSendInternalShareMailException() {
-		$this->setupMailerMock('TestUser shared »&lt;welcome&gt;.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
+		$this->setupMailerMock('TestUser shared »<welcome>.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
 
 		$share = $this->getShareMock(
 			['file_target' => '/<welcome>.txt', 'item_source' => 123, 'expiration' => 'foo']
 		);
 		$this->shareManager->method('getSharedWith')
 			->withAnyParameters()
-			->willReturn([$share]);
+			->willreturn([$share]);
 
 		$recipient = $this->createMock(IUser::class);
 		$recipient
