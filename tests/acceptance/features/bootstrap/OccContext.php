@@ -269,6 +269,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator gets the app info of the app :appName
+	 *
+	 * @param string $appName
+	 *
+	 * @return void
+	 */
+	public function administratorGetsTheAppInfoOfTheApp($appName) {
+		$this->featureContext->invokingTheCommand(
+			"config:list $appName"
+		);
+	}
+
+	/**
 	 * @When the administrator disables the user :username using the occ command
 	 *
 	 * @param string $username
@@ -292,6 +305,34 @@ class OccContext implements Context {
 		$this->featureContext->invokingTheCommand(
 			"user:enable $username"
 		);
+	}
+
+	/**
+	 * @Then the app name returned by the occ command should be :appName
+	 *
+	 * @param string $appName
+	 *
+	 * @return void
+	 */
+	public function theAppNameReturnedByTheOccCommandShouldBe($appName) {
+		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
+		$lastOutputArray = \json_decode($lastOutput, true);
+		PHPUnit_Framework_Assert::assertEquals($appName, \key($lastOutputArray['apps']));
+	}
+
+	/**
+	 * @Then the app enabled status of app :appName should be :appStatus
+	 *
+	 * @param string $appName
+	 * @param string $appStatus
+	 *
+	 * @return void
+	 */
+	public function theAppEnabledStatusShouldBe($appName, $appStatus) {
+		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
+		$lastOutputArray = \json_decode($lastOutput, true);
+		$actualAppEnabledStatus = $lastOutputArray['apps'][$appName]['enabled'];
+		PHPUnit_Framework_Assert::assertEquals($appStatus, $actualAppEnabledStatus);
 	}
 
 	/**
