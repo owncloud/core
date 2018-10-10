@@ -53,7 +53,7 @@ Feature: add users
     When the administrator creates a user with the name "guiusr1" and the email "guiusr1@owncloud" without a password using the webUI
     Then the email address "guiusr1@owncloud" should have received an email with the body containing
       """
-      just letting you know that you now have an ownCloud account.
+      just letting you know that you now have an %productname% account.
       
       Your username: guiusr1
       Access it:

@@ -414,7 +414,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return string
 	 */
-	private function replaceProductName($text) {
+	public function replaceProductName($text) {
 		return \str_replace(
 			"%productname%", $this->getProductName(), $text
 		);
