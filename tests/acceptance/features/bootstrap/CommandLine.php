@@ -298,8 +298,7 @@ trait CommandLine {
 	 * @return void
 	 */
 	public function invokingTheCommand($cmd) {
-		$args = \explode(' ', $cmd);
-		$this->runOcc($args);
+		$this->runOcc([$cmd]);
 	}
 
 	/**
@@ -316,7 +315,7 @@ trait CommandLine {
 	public function invokingTheCommandWithEnvVariable(
 		$cmd, $envVariableName, $envVariableValue
 	) {
-		$args = \explode(' ', $cmd);
+		$args = [$cmd];
 		$this->runOccWithEnvVariables(
 			$args, [$envVariableName => $envVariableValue]
 		);
