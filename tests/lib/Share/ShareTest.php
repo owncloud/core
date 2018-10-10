@@ -193,4 +193,3 @@ class ShareTest extends \Test\TestCase {
 		];
 	}
 }
-
