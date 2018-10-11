@@ -139,11 +139,16 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function resetUserPasswordUsingTheOccCommand($username, $password) {
+		$actualUsername = $this->featureContext->getActualUsername($username);
+		$password = $this->featureContext->getActualPassword($password);
 		$this->featureContext->invokingTheCommandWithEnvVariable(
-			"user:resetpassword $username  --password-from-env",
+			"user:resetpassword $actualUsername  --password-from-env",
 			'OC_PASS',
 			$password
 		);
+		if ($username === "%admin%") {
+			$this->featureContext->rememberNewAdminPassword($password);
+		}
 	}
 
 	/**
