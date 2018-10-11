@@ -21,6 +21,7 @@
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use TestHelpers\EmailHelper;
 
@@ -31,6 +32,12 @@ require_once 'bootstrap.php';
  */
 class EmailContext implements Context {
 	private $localMailhogUrl = null;
+
+	/**
+	 *
+	 * @var WebUIGeneralContext
+	 */
+	private $webUIGeneralContext;
 
 	/**
 	 * @return string
@@ -50,6 +57,9 @@ class EmailContext implements Context {
 	 */
 	public function assertThatEmailContains($address, PyStringNode $content) {
 		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
+		$expectedContent = $this->webUIGeneralContext->replaceProductName(
+			$expectedContent
+		);
 		PHPUnit_Framework_Assert::assertContains(
 			$expectedContent,
 			EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address)
@@ -77,9 +87,15 @@ class EmailContext implements Context {
 	/**
 	 * @BeforeScenario @mailhog
 	 *
+	 * @param BeforeScenarioScope $scope
+	 *
 	 * @return void
 	 */
-	public function setUpScenario() {
+	public function setUpScenario(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 		$this->localMailhogUrl = EmailHelper::getLocalMailhogUrl();
 		$this->clearMailHogMessages();
 	}
