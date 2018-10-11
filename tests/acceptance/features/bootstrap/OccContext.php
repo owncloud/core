@@ -304,6 +304,20 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator removes user :username from group :group using the occ command
+	 *
+	 * @param string $username
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRemovesUserFromGroupUsingTheOccCommand($username, $group) {
+		$this->featureContext->invokingTheCommand(
+			"group:remove-member -m $username $group"
+		);
+	}
+
+	/**
 	 * @When the administrator disables the app :appName using the occ command
 	 *
 	 * @param string $appName
