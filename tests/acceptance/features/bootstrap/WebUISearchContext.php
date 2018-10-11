@@ -23,8 +23,8 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Page\FilesPage;
 use Page\SearchResultInOtherFoldersPage;
-use Page\OwncloudPage;
 
 require_once 'bootstrap.php';
 
@@ -39,9 +39,9 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	private $searchResultInOtherFoldersPage;
 	/**
 	 *
-	 * @var OwncloudPage
+	 * @var FilesPage
 	 */
-	private $ownCloudPage;
+	private $filesPage;
 
 	/**
 	 *
@@ -58,14 +58,14 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	/**
 	 * WebUILoginContext constructor.
 	 *
-	 * @param OwncloudPage $ownCloudPage
+	 * @param FilesPage $filesPage
 	 * @param SearchResultInOtherFoldersPage $searchResultInOtherFoldersPage
 	 */
 	public function __construct(
-		OwncloudPage $ownCloudPage,
+		FilesPage $filesPage,
 		SearchResultInOtherFoldersPage $searchResultInOtherFoldersPage
 	) {
-		$this->ownCloudPage = $ownCloudPage;
+		$this->filesPage = $filesPage;
 		$this->searchResultInOtherFoldersPage = $searchResultInOtherFoldersPage;
 	}
 
@@ -78,8 +78,8 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserSearchesUsingTheWebUI($searchTerm) {
-		$this->ownCloudPage->waitTillPageIsLoaded($this->getSession());
-		$this->ownCloudPage->search($this->getSession(), $searchTerm);
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->filesPage->search($this->getSession(), $searchTerm);
 	}
 
 	/**
