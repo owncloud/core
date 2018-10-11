@@ -46,14 +46,19 @@ trait BasicStructure {
 	use CommandLine;
 
 	/**
-	 * @var array
+	 * @var string
 	 */
 	private $adminUsername = '';
 
 	/**
-	 * @var array
+	 * @var string
 	 */
 	private $adminPassword = '';
+
+	/**
+	 * @var string
+	 */
+	private $originalAdminPassword = '';
 
 	/**
 	 * @var string
@@ -303,6 +308,7 @@ trait BasicStructure {
 		if ($publicLinkSharePasswordFromEnvironment !== false) {
 			$this->publicLinkSharePassword = $publicLinkSharePasswordFromEnvironment;
 		}
+		$this->originalAdminPassword = $this->adminPassword;
 	}
 
 	/**
@@ -1382,6 +1388,15 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function rememberNewAdminPassword($password) {
+		$this->adminPassword = (string) $password;
+	}
+
+	/**
 	 * @param string $userName
 	 *
 	 * @return string
@@ -1898,6 +1913,21 @@ trait BasicStructure {
 				'true'
 			]
 		);
+	}
+
+	/**
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function restoreAdminPassword() {
+		if ($this->adminPassword !== $this->originalAdminPassword) {
+			$this->adminResetsPasswordOfUserUsingTheProvisioningApi(
+				$this->getAdminUsername(),
+				$this->originalAdminPassword
+			);
+			$this->adminPassword = $this->originalAdminPassword;
+		}
 	}
 
 	/**
