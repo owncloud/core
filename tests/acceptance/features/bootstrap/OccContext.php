@@ -202,6 +202,17 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator retrieves all the users using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRetrievesAllTheUsersUsingTheOccCommand() {
+		$this->featureContext->invokingTheCommand(
+			"user:list --output=json"
+		);
+	}
+
+	/**
 	 * @When the administrator retrieves the information of user :username using the occ command
 	 *
 	 * @param string $username
@@ -425,9 +436,18 @@ class OccContext implements Context {
 	public function theUsersReturnedByTheOccCommandShouldBe(TableNode $useridTable) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputUsers = \json_decode($lastOutput, true);
+		$result = [];
+		// check if an array is a multi-dimensional array with inner array key 'displayName'
+		if (\array_column($lastOutputUsers, 'displayName')) {
+			foreach ($lastOutputUsers as $key => $value) {
+				$result[$key] =  $value['displayName'];
+			}
+		} else {
+			$result = $lastOutputUsers;
+		}
 		foreach ($useridTable as $row) {
-			PHPUnit_Framework_Assert::assertArrayHasKey($row['uid'], $lastOutputUsers);
-			PHPUnit_Framework_Assert::assertContains($row['display name'], $lastOutputUsers);
+			PHPUnit_Framework_Assert::assertArrayHasKey($row['uid'], $result);
+			PHPUnit_Framework_Assert::assertContains($row['display name'], $result);
 		}
 	}
 
