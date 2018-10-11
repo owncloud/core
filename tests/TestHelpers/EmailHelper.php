@@ -100,8 +100,46 @@ class EmailHelper {
 					$body = \str_replace(
 						"\r\n", "\n",
 						\quoted_printable_decode($item->Content->Body)
-						);
+					);
 					return $body;
+				}
+			}
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
+			$currentTime = \time(true);
+		}
+		throw new \Exception("Could not find the email to the address: " . $address);
+	}
+
+	/**
+	 *
+	 * @param string $localMailhogUrl
+	 * @param string $address
+	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 * @param int $waitTimeSec Time to wait for the email
+	 *
+	 * @throws \Exception
+	 *
+	 * @return mixed
+	 */
+	public static function getSenderOfEmail(
+		$localMailhogUrl,
+		$address,
+		$numEmails = 1,
+		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+	) {
+		$currentTime = \time(true);
+		$end = $currentTime + $waitTimeSec;
+
+		while ($currentTime <= $end) {
+			$skip = 1;
+			foreach (self::getEmails($localMailhogUrl)->items as $item) {
+				$expectedEmail = $item->To[0]->Mailbox . "@" . $item->To[0]->Domain;
+				if ($expectedEmail === $address) {
+					if ($skip < $numEmails) {
+						$skip++;
+						continue;
+					}
+					return $item->From->Mailbox . '@' . $item->From->Domain;
 				}
 			}
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
