@@ -410,6 +410,17 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public function replaceProductName($text) {
+		return \str_replace(
+			"%productname%", $this->getProductNameFromStatus(), $text
+		);
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getOcPath() {
@@ -1553,9 +1564,17 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
+	public function theAdministratorRequestsStatusPhp() {
+		$this->response = $this->getStatusPhp();
+	}
+
+	/**
+	 *
+	 * @return ResponseInterface
+	 */
 	public function getStatusPhp() {
 		$fullUrl = $this->getBaseUrl() . "/status.php";
-		
+
 		$config = null;
 		if ($this->sourceIpAddress !== null) {
 			$config = [
@@ -1565,7 +1584,7 @@ trait BasicStructure {
 			];
 		}
 
-		$this->response = HttpRequestHelper::get(
+		return HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(),
 			$this->getAdminPassword(), $this->guzzleClientHeaders, null, $config
 		);
@@ -1650,11 +1669,26 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @return string|null
+	 * @param ResponseInterface|null $response
+	 *
+	 * @return array
 	 */
-	public function getJsonDecodedResponse() {
+	public function getJsonDecodedResponse($response = null) {
+		if ($response === null) {
+			$response = $this->getResponse();
+		}
 		return \json_decode(
-			$this->getResponse()->getBody(), true
+			$response->getBody(), true
+		);
+	}
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getJsonDecodedStatusPhp() {
+		return $this->getJsonDecodedResponse(
+			$this->getStatusPhp()
 		);
 	}
 
@@ -1662,8 +1696,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getEditionFromStatus() {
-		$this->getStatusPhp();
-		$decodedResponse = $this->getJsonDecodedResponse();
+		$decodedResponse = $this->getJsonDecodedStatusPhp();
 		if (isset($decodedResponse['edition'])) {
 			return $decodedResponse['edition'];
 		}
@@ -1674,8 +1707,7 @@ trait BasicStructure {
 	 * @return string|null
 	 */
 	public function getProductNameFromStatus() {
-		$this->getStatusPhp();
-		$decodedResponse = $this->getJsonDecodedResponse();
+		$decodedResponse = $this->getJsonDecodedStatusPhp();
 		if (isset($decodedResponse['productname'])) {
 			return $decodedResponse['productname'];
 		}
@@ -1686,8 +1718,7 @@ trait BasicStructure {
 	 * @return string|null
 	 */
 	public function getVersionFromStatus() {
-		$this->getStatusPhp();
-		$decodedResponse = $this->getJsonDecodedResponse();
+		$decodedResponse = $this->getJsonDecodedStatusPhp();
 		if (isset($decodedResponse['version'])) {
 			return $decodedResponse['version'];
 		}
@@ -1698,8 +1729,7 @@ trait BasicStructure {
 	 * @return string|null
 	 */
 	public function getVersionStringFromStatus() {
-		$this->getStatusPhp();
-		$decodedResponse = $this->getJsonDecodedResponse();
+		$decodedResponse = $this->getJsonDecodedStatusPhp();
 		if (isset($decodedResponse['versionstring'])) {
 			return $decodedResponse['versionstring'];
 		}
