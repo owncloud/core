@@ -334,11 +334,15 @@ class FedShareManager {
 	 */
 	protected function notifyRemote($share, $callback) {
 		if ($share->getShareOwner() !== $share->getSharedBy()) {
-			list(, $remote) = $this->addressHandler->splitUserRemote(
-				$share->getSharedBy()
-			);
-			$remoteId = $this->federatedShareProvider->getRemoteId($share);
-			$callback($remote, $remoteId, $share->getToken());
+			try {
+				list(, $remote) = $this->addressHandler->splitUserRemote(
+					$share->getSharedBy()
+				);
+				$remoteId = $this->federatedShareProvider->getRemoteId($share);
+				$callback($remote, $remoteId, $share->getToken());
+			} catch (\Exception $e) {
+				// expected fail if sender is a local user
+			}
 		}
 	}
 
