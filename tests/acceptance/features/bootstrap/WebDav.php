@@ -541,6 +541,8 @@ trait WebDav {
 	public function userUsingPasswordShouldNotBeAbleToDownloadFile(
 		$user, $password, $fileName
 	) {
+		$user = $this->getActualUsername($user);
+		$password = $this->getActualPassword($password);
 		$this->downloadFileAsUserUsingPassword($user, $fileName, $password);
 		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
 			400, $this->getResponse()->getStatusCode(), 'download must fail'
@@ -654,6 +656,8 @@ trait WebDav {
 	public function contentOfFileForUserUsingPasswordShouldBe(
 		$fileName, $user, $password, $content
 	) {
+		$user = $this->getActualUsername($user);
+		$password = $this->getActualPassword($password);
 		$this->downloadFileAsUserUsingPassword($user, $fileName, $password);
 		$this->downloadedContentShouldBe($content);
 	}
