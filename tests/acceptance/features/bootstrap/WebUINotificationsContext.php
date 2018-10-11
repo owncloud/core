@@ -169,7 +169,6 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 */
 	protected function openNotificationsDialog() {
 		$this->getSession()->reload();
-		$this->owncloudPage->waitTillPageIsLoaded($this->getSession());
 		$this->owncloudPage->waitForNotifications();
 		return $this->owncloudPage->openNotifications();
 	}
