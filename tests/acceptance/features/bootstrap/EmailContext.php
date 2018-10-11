@@ -35,9 +35,9 @@ class EmailContext implements Context {
 
 	/**
 	 *
-	 * @var WebUIGeneralContext
+	 * @var FeatureContext
 	 */
-	private $webUIGeneralContext;
+	private $featureContext;
 
 	/**
 	 * @return string
@@ -57,7 +57,7 @@ class EmailContext implements Context {
 	 */
 	public function assertThatEmailContains($address, PyStringNode $content) {
 		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
-		$expectedContent = $this->webUIGeneralContext->replaceProductName(
+		$expectedContent = $this->featureContext->replaceProductName(
 			$expectedContent
 		);
 		PHPUnit_Framework_Assert::assertContains(
@@ -95,7 +95,7 @@ class EmailContext implements Context {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
-		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->localMailhogUrl = EmailHelper::getLocalMailhogUrl();
 		$this->clearMailHogMessages();
 	}
