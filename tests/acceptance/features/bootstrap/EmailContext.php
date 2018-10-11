@@ -67,6 +67,21 @@ class EmailContext implements Context {
 	}
 
 	/**
+	 * @Then the reset email to :receiverAddress should be from :senderAddress
+	 *
+	 * @param string $receiverAddress
+	 * @param string $senderAddress
+	 *
+	 * @return void
+	 */
+	public function theResetEmailSenderEmailAddressShouldBe($receiverAddress, $senderAddress) {
+		PHPUnit_Framework_Assert::assertContains(
+			$senderAddress,
+			EmailHelper::getSenderOfEmail($this->localMailhogUrl, $receiverAddress)
+		);
+	}
+
+	/**
 	 * @Then the email address :address should not have received an email
 	 *
 	 * @param string $address

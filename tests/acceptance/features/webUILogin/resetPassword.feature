@@ -37,3 +37,14 @@ Feature: reset the password
 			"""
     When the user logs in with username "user1" and password "%alt3%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
+
+  Scenario: check if the sender email address is valid
+    When the user requests the password reset link using the webUI
+    And the user follows the password reset link from email address "user1@example.org"
+    Then the user should be redirected to a webUI page with the title "%productname%"
+    When the user resets the password to "%alt3%" using the webUI
+    Then the email address "user1@example.org" should have received an email with the body containing
+      """
+      Password changed successfully
+      """
+    And the reset email to "user1@example.org" should be from "owncloud@foobar.com"
