@@ -8,6 +8,7 @@ Feature: Search
   Background:
     Given user "user1" has been created
     And user "user1" has logged in using the webUI
+    And the user has browsed to the files page
 
   @smokeTest
   Scenario: Simple search
