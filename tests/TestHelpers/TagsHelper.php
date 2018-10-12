@@ -164,6 +164,7 @@ class TagsHelper {
 		$name,
 		$userVisible = true,
 		$userAssignable = true,
+		$userEditable = false,
 		$groups = null,
 		$davPathVersionToUse = 2
 	) {
@@ -172,6 +173,7 @@ class TagsHelper {
 			'name' => $name,
 			'userVisible' => $userVisible,
 			'userAssignable' => $userAssignable,
+			'userEditable' => $userEditable
 		];
 
 		if ($groups !== null) {
@@ -225,21 +227,22 @@ class TagsHelper {
 	 * @return boolean[]
 	 */
 	public static function validateTypeOfTag($type) {
-		$userVisible = true;
-		$userAssignable = true;
+		$userVisible = "1";
+		$userAssignable = "1";
+		$userEditable = "1";
 		switch ($type) {
 			case 'normal':
 				break;
 			case 'not user-assignable':
-				$userAssignable = false;
+				$userAssignable = "0";
 				break;
 			case 'not user-visible':
-				$userVisible = false;
+				$userVisible = "0";
 				break;
 			default:
 				throw new \Exception('Unsupported type');
 		}
 
-		return [$userVisible, $userAssignable];
+		return [$userVisible, $userAssignable, $userEditable];
 	}
 }

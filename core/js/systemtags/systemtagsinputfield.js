@@ -207,6 +207,7 @@
 					name: e.object.name.trim(),
 					userVisible: true,
 					userAssignable: true,
+					userEditable: true,
 					canAssign: true
 				}, {
 					success: function(model) {
@@ -279,6 +280,16 @@
 		},
 
 		/**
+		 * Returns true if tag is static tag else false
+		 *
+		 * @param data
+		 * @returns {boolean}
+		 */
+		_isStaticTag: function(data) {
+			return data.userEditable === false && data.userAssignable === true;
+		},
+
+		/**
 		 * Formats a single dropdown result
 		 *
 		 * @param {Object} data data to format
@@ -288,6 +299,25 @@
 			if (!this._resultTemplate) {
 				this._resultTemplate = Handlebars.compile(RESULT_TEMPLATE);
 			}
+
+			/**
+			 * Static tags are shown if the user belongs to group which is
+			 * whitelisted in the tag. Else the tag is not seen. If the tag
+			 * is visible, then no edit options are availbe to users. Admin user
+			 * is the only exception here. Admin user can edit, delete, assign or
+			 * unassign the tag.
+			 *
+			 */
+			this._allowActions = true;
+			if (data.editableInGroup === false && this._isStaticTag(data)) {
+				//No need to show the static tag as it is not viewable for the user
+				return;
+			}
+			if (this._isStaticTag(data)) {
+				//Show the name of the static tag, rename and delete actions are forbidden for the user
+				this._allowActions = false;
+			}
+
 			return this._resultTemplate(_.extend({
 				renameTooltip: t('core', 'Rename'),
 				allowActions: this._allowActions,

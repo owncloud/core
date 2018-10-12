@@ -1085,6 +1085,15 @@
 				<length>1</length>
 			</field>
 
+			<!-- Assignable: 0 user-not-assignable, 1 user-assignable -->
+			<field>
+				<name>assignable</name>
+				<type>integer</type>
+				<default>1</default>
+				<notnull>true</notnull>
+				<length>1</length>
+			</field>
+
 			<index>
 				<name>tag_ident</name>
 				<unique>true</unique>
@@ -1098,6 +1107,10 @@
 				</field>
 				<field>
 					<name>editable</name>
+					<sorting>ascending</sorting>
+				</field>
+				<field>
+					<name>assignable</name>
 					<sorting>ascending</sorting>
 				</field>
 			</index>
