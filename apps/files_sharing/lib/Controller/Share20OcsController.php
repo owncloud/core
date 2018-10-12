@@ -871,6 +871,84 @@ class Share20OcsController extends OCSController {
 	}
 
 	/**
+	 * Send a notification to share recipient(s)
+	 *
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 *
+	 * @param string $itemType
+	 * @param int $itemSource
+	 */
+	public function notifyRecipients($itemType, $itemSource) {
+		$l = \OC::$server->getL10N('core');
+		$shareType = (int) $this->request->getParam('shareType');
+		$recipient = (string)$this->request->getParam('recipient');
+
+		$recipientList = [];
+		if ($shareType === \OCP\Share::SHARE_TYPE_USER) {
+			$recipientList[] = $this->userManager->get($recipient);
+		} elseif ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
+			$group = \OC::$server->getGroupManager()->get($recipient);
+			$recipientList = $group->searchUsers('');
+		}
+		// don't send a mail to the user who shared the file
+		$recipientList = \array_filter($recipientList, function ($user) {
+			/** @var IUser $user */
+			return $user->getUID() !== $this->currentUser->getUID();
+		});
+
+		$defaults = new \OCP\Defaults();
+		$mailNotification = new \OC\Share\MailNotifications(
+			$this->currentUser,
+			\OC::$server->getL10N('lib'),
+			\OC::$server->getMailer(),
+			\OC::$server->getConfig(),
+			\OC::$server->getLogger(),
+			$defaults,
+			\OC::$server->getURLGenerator(),
+			\OC::$server->getEventDispatcher()
+		);
+
+		$result = $mailNotification->sendInternalShareMail($recipientList, $itemSource, $itemType);
+
+		// if we were able to send to at least one recipient, mark as sent
+		// allowing the user to resend would spam users who already got a notification
+		if (\count($result) < \count($recipientList)) {
+			\OCP\Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
+		}
+
+		if (empty($result)) {
+			\OCP\JSON::success();
+		} else {
+			\OCP\JSON::error([
+				'data' => [
+					'message' => $l->t("Couldn't send mail to following recipient(s): %s ",
+						\implode(', ', $result)
+					)
+				]
+			]);
+		}
+		exit();
+	}
+
+	/**
+	 * Just mark a notification to share recipient(s) as sent
+	 *
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 *
+	 * @param string $itemType
+	 * @param int $itemSource
+	 */
+	public function notifyRecipientsDisabled($itemType, $itemSource) {
+		$shareType = (int) $this->request->getParam('shareType');
+		$recipient = (string)$this->request->getParam('recipient');
+		\OCP\Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, false);
+		\OCP\JSON::success();
+		exit();
+	}
+
+	/**
 	 * @param $id
 	 * @param $state
 	 * @return \OC\OCS\Result

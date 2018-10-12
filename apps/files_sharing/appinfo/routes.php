@@ -81,6 +81,16 @@ $application->registerRoutes($this, [
 			'url' => '/api/v1/shares/{id}',
 			'verb' => 'DELETE'
 		],
+		[
+			'name' => 'Share20Ocs#notifyRecipients',
+			'url' => '/api/v1/notification/send',
+			'verb' => 'POST'
+		],
+		[
+			'name' => 'Share20Ocs#notifyRecipientsDisabled',
+			'url' => '/api/v1/notification/marksent',
+			'verb' => 'POST'
+		],
 	]
 ]);
 
