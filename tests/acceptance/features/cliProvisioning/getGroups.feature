@@ -8,7 +8,7 @@ Feature: get groups
     Given group "0" has been created
     And group "new-group" has been created
     And group "España" has been created
-    When the administrator gets the groups using the occ command
+    When the administrator gets the groups in JSON format using the occ command
     Then the command should have been successful
     And the groups returned by the occ command should be
       | group     |

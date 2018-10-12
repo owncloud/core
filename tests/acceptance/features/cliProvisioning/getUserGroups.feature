@@ -17,7 +17,7 @@ Feature: get user groups
     And user "brand-new-user" has been added to group "Admin & Finance (NP)"
     And user "brand-new-user" has been added to group "admin:Pokhara@Nepal"
     And user "brand-new-user" has been added to group "नेपाली"
-    When the administrator gets the groups of user "brand-new-user" using the occ command
+    When the administrator gets the groups of user "brand-new-user" in JSON format using the occ command
     Then the command should have been successful
     And the groups returned by the occ command should be
       | group                |
@@ -30,6 +30,6 @@ Feature: get user groups
 Scenario: admin gets groups of an user who is not in any groups
     Given user "brand-new-user" has been created
     And group "unused-group" has been created
-    When the administrator gets the groups of user "brand-new-user" using the occ command
+    When the administrator gets the groups of user "brand-new-user" in JSON format using the occ command
     Then the command should have been successful
     And the occ command JSON output should be empty

@@ -207,37 +207,37 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator retrieves all the users using the occ command
+	 * @When the administrator retrieves all the users in JSON format using the occ command
 	 *
 	 * @return void
 	 */
-	public function theAdministratorRetrievesAllTheUsersUsingTheOccCommand() {
+	public function theAdministratorRetrievesAllTheUsersInJsonUsingTheOccCommand() {
 		$this->featureContext->invokingTheCommand(
 			"user:list --output=json"
 		);
 	}
 
 	/**
-	 * @When the administrator retrieves the information of user :username using the occ command
+	 * @When the administrator retrieves the information of user :username in JSON format using the occ command
 	 *
 	 * @param string $username
 	 *
 	 * @return void
 	 */
-	public function theAdministratorRetrievesTheInformationOfUserUsingTheOccCommand($username) {
+	public function theAdministratorRetrievesTheInformationOfUserInJsonUsingTheOccCommand($username) {
 		$this->featureContext->invokingTheCommand(
 			"user:list $username --output=json"
 		);
 	}
 
 	/**
-	 * @When the administrator gets the groups of user :username using the occ command
+	 * @When the administrator gets the groups of user :username in JSON format using the occ command
 	 *
 	 * @param string $username
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsTheGroupsOfUserUsingTheOccCommand($username) {
+	public function theAdministratorGetsTheGroupsOfUserInJsonUsingTheOccCommand($username) {
 		$this->featureContext->invokingTheCommand(
 			"user:list-group $username --output=json"
 		);
@@ -285,24 +285,24 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator gets the users in the group :groupName using the occ command
+	 * @When the administrator gets the users in the group :groupName in JSON format using the occ command
 	 *
 	 * @param string $groupName
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsTheUsersInTheGroupUsingTheOccCommand($groupName) {
+	public function theAdministratorGetsTheUsersInTheGroupInJsonUsingTheOccCommand($groupName) {
 		$this->featureContext->invokingTheCommand(
 			"group:list-members $groupName --output=json"
 		);
 	}
 
 	/**
-	 * @When the administrator gets the groups using the occ command
+	 * @When the administrator gets the groups in JSON format using the occ command
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsTheGroupsUsingTheOccCommand() {
+	public function theAdministratorGetsTheGroupsInJsonUsingTheOccCommand() {
 		$this->featureContext->invokingTheCommand(
 			"group:list --output=json"
 		);
