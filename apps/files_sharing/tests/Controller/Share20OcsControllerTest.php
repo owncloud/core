@@ -25,7 +25,7 @@
 namespace OCA\Files_Sharing\Tests\API;
 
 use OC\OCS\Result;
-use OCA\Files_Sharing\API\Share20OCS;
+use OCA\Files_Sharing\Controller\Share20OcsController;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCA\Files_Sharing\SharingBlacklist;
 use OCP\Files\IRootFolder;
@@ -56,12 +56,12 @@ use OCP\Share\IShare;
 use OC\Files\Cache\Cache;
 
 /**
- * Class Share20OCSTest
+ * Class Share20OcsControllerTest
  *
- * @package OCA\Files_Sharing\Tests\API
+ * @package OCA\Files_Sharing\Tests\Controller
  * @group DB
  */
-class Share20OCSTest extends TestCase {
+class Share20OcsControllerTest extends TestCase {
 
 	/** @var \OC\Share20\Manager | \PHPUnit_Framework_MockObject_MockObject */
 	private $shareManager;
@@ -87,7 +87,7 @@ class Share20OCSTest extends TestCase {
 	/** @var IUser */
 	private $currentUser;
 
-	/** @var Share20OCS */
+	/** @var Share20OcsController */
 	private $ocs;
 
 	/** @var IL10N */
@@ -135,11 +135,12 @@ class Share20OCSTest extends TestCase {
 		$this->eventDispatcher = $this->createMock(EventDispatcher::class);
 		$this->sharingBlacklist = $this->createMock(SharingBlacklist::class);
 
-		$this->ocs = new Share20OCS(
+		$this->ocs = new Share20OcsController(
+			'files_sharing',
+			$this->request,
 			$this->shareManager,
 			$this->groupManager,
 			$this->userManager,
-			$this->request,
 			$this->rootFolder,
 			$this->urlGenerator,
 			$this->currentUser,
@@ -156,15 +157,16 @@ class Share20OCSTest extends TestCase {
 	}
 
 	/**
-	 * @return Share20OCS | \PHPUnit_Framework_MockObject_MockObject
+	 * @return Share20OcsController | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private function mockFormatShare() {
-		return $this->getMockBuilder(Share20OCS::class)
+		return $this->getMockBuilder(Share20OcsController::class)
 			->setConstructorArgs([
+				'files_sharing',
+				$this->request,
 				$this->shareManager,
 				$this->groupManager,
 				$this->userManager,
-				$this->request,
 				$this->rootFolder,
 				$this->urlGenerator,
 				$this->currentUser,
@@ -484,12 +486,13 @@ class Share20OCSTest extends TestCase {
 	 * @dataProvider dataGetShare
 	 */
 	public function testGetShare(\OCP\Share\IShare $share, array $result) {
-		$ocs = $this->getMockBuilder(Share20OCS::class)
+		$ocs = $this->getMockBuilder(Share20OcsController::class)
 				->setConstructorArgs([
+					'files_sharing',
+					$this->request,
 					$this->shareManager,
 					$this->groupManager,
 					$this->userManager,
-					$this->request,
 					$this->rootFolder,
 					$this->urlGenerator,
 					$this->currentUser,
@@ -2772,7 +2775,7 @@ class Share20OCSTest extends TestCase {
 	}
 
 	/**
-	 * @return Share20OCS
+	 * @return Share20OcsController
 	 */
 	public function getOcsDisabledAPI() {
 		$shareManager = $this->getMockBuilder(IManager::class)
@@ -2783,11 +2786,12 @@ class Share20OCSTest extends TestCase {
 			->method('shareApiEnabled')
 			->willReturn(false);
 
-		return new Share20OCS(
+		return new Share20OcsController(
+			'files_sharing',
+			$this->request,
 			$shareManager,
 			$this->groupManager,
 			$this->userManager,
-			$this->request,
 			$this->rootFolder,
 			$this->urlGenerator,
 			$this->currentUser,
@@ -2876,11 +2880,12 @@ class Share20OCSTest extends TestCase {
 		$recipient->method('getUID')->willReturn('recipient_id');
 		$recipient->method('getEMailAddress')->willReturn('email@example.com');
 
-		$ocs = new Share20OCS(
+		$ocs = new Share20OcsController(
+			'files_sharing',
+			$this->request,
 			$this->shareManager,
 			$this->groupManager,
 			$this->userManager,
-			$this->request,
 			$this->rootFolder,
 			$this->urlGenerator,
 			$this->currentUser,
