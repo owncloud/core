@@ -104,7 +104,7 @@ class ApiTest extends TestCase {
 	/**
 	 * @param \OCP\IRequest $request
 	 * @param string $userId The userId of the caller
-	 * @return \OCA\Files_Sharing\API\Share20OCS
+	 * @return \OCA\Files_Sharing\Controller\Share20OcsController
 	 */
 	private function createOCS($request, $userId) {
 		$currentUser = \OC::$server->getUserManager()->get($userId);
@@ -115,11 +115,12 @@ class ApiTest extends TestCase {
 				return \vsprintf($text, $parameters);
 			}));
 
-		return new \OCA\Files_Sharing\API\Share20OCS(
+		return new \OCA\Files_Sharing\Controller\Share20OcsController(
+			'files_sharing',
+			$request,
 			$this->shareManager,
 			\OC::$server->getGroupManager(),
 			\OC::$server->getUserManager(),
-			$request,
 			\OC::$server->getRootFolder(),
 			\OC::$server->getURLGenerator(),
 			$currentUser,

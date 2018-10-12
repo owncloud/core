@@ -29,7 +29,7 @@ use OCP\IGroup;
 use OCP\IUser;
 
 /**
- * Class Share20OCSTest
+ * Class NotificationPublisherTest
  *
  * @package OCA\Files_Sharing\Tests\Service
  * @group DB
