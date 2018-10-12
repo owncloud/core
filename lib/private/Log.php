@@ -110,7 +110,10 @@ class Log implements ILogger {
 		'invokeLDAPMethod',
 
 		//User_LDAP\Access
-		'areCredentialsValid'
+		'areCredentialsValid',
+
+		//UserManagement\Controller\UsersController
+		'setPassword'
 
 	];
 
