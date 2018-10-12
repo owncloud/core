@@ -47,7 +47,7 @@ class Base extends Command {
 				'output',
 				null,
 				InputOption::VALUE_OPTIONAL,
-				'The output format to use (plain, json or json_pretty, default is plain).',
+				'The output format to use (plain, json or json_pretty).',
 				$this->defaultOutputFormat
 			)
 		;
