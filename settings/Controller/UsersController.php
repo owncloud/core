@@ -713,7 +713,7 @@ class UsersController extends Controller {
 			$message->setTo([$email => $userId]);
 			$message->setSubject($this->l10n->t('%s password changed successfully', [$this->defaults->getName()]));
 			$message->setPlainBody($msg);
-			$message->setFrom([$email => $this->defaults->getName()]);
+			$message->setFrom([$this->fromMailAddress => $this->defaults->getName()]);
 			$this->mailer->send($message);
 		}
 	}
