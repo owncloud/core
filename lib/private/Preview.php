@@ -1231,14 +1231,16 @@ class Preview {
 	}
 
 	/**
-	 * @param array $args
-	 * @param string $prefix
+	 * @param array $args with 'path' for path relative to the prefix, 'user' user id
+	 * @param string $prefix prefix for path under the user's home, ex: "/files"
 	 */
 	public static function prepare_delete(array $args, $prefix = '') {
 		$path = Files\Filesystem::normalizePath($args['path']);
+		// this is the user id
 		$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
 		if ($user === false) {
-			$user = Filesystem::getOwner($path);
+			\OC::$server->getLogger()->warning("Cannot determine owner in Preview::prepare_delete handler for path \"$prefix/$path\", this could be a bug");
+			return;
 		}
 
 		$userFolder = \OC::$server->getUserFolder($user);
@@ -1296,19 +1298,26 @@ class Preview {
 	 * @param array $args
 	 */
 	public static function post_delete_versions($args) {
-		self::post_delete($args, 'files/');
+		self::post_delete($args, 'files_versions/');
 	}
 
 	/**
-	 * @param array $args
-	 * @param string $prefix
+	 * Post-delete hook handler.
+	 *
+	 * Deletes all previews related to the given path.
+	 *
+	 * @param array $args with 'path' for path relative to the prefix, 'user' user id
+	 * @param string $prefix prefix for path under the user's home, ex: "/files"
 	 */
 	public static function post_delete($args, $prefix = '') {
+		// path relative to the prefix
 		$path = Files\Filesystem::normalizePath($args['path']);
 		if (!isset(self::$deleteFileMapper[$path])) {
+			// this is the user id
 			$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
 			if ($user === false) {
-				$user = Filesystem::getOwner($path);
+				\OC::$server->getLogger()->warning("Cannot determine owner in Preview::post_delete handler for path \"$prefix/$path\", this could be a bug");
+				return;
 			}
 
 			$userFolder = \OC::$server->getUserFolder($user);
