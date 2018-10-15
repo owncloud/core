@@ -22,14 +22,14 @@
 
 namespace Test\OCS;
 
-use OC_OCS_Privatedata;
+use \OC\OCS\PrivateData;
 
 /**
- * Class PrivatedataTest
+ * Class PrivateDataTest
  *
  * @group DB
  */
-class PrivatedataTest extends \Test\TestCase {
+class PrivateDataTest extends \Test\TestCase {
 	private $appKey;
 
 	protected function setUp() {
@@ -40,33 +40,33 @@ class PrivatedataTest extends \Test\TestCase {
 
 	public function testGetEmptyOne() {
 		$params = ['app' => $this->appKey, 'key' => '123'];
-		$result = OC_OCS_Privatedata::get($params);
+		$result = PrivateData::get($params);
 		$this->assertOcsResult(0, $result);
 	}
 
 	public function testGetEmptyAll() {
 		$params = ['app' => $this->appKey];
-		$result = OC_OCS_Privatedata::get($params);
+		$result = PrivateData::get($params);
 		$this->assertOcsResult(0, $result);
 	}
 
 	public function testSetOne() {
 		$_POST = ['value' => 123456789];
 		$params = ['app' => $this->appKey, 'key' => 'k-1'];
-		$result = OC_OCS_Privatedata::set($params);
+		$result = PrivateData::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
-		$result = OC_OCS_Privatedata::get($params);
+		$result = PrivateData::get($params);
 		$this->assertOcsResult(1, $result);
 	}
 
 	public function testSetExisting() {
 		$_POST = ['value' => 123456789];
 		$params = ['app' => $this->appKey, 'key' => 'k-10'];
-		$result = OC_OCS_Privatedata::set($params);
+		$result = PrivateData::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
-		$result = OC_OCS_Privatedata::get($params);
+		$result = PrivateData::get($params);
 		$this->assertOcsResult(1, $result);
 		$data = $result->getData();
 		$data = $data[0];
@@ -74,10 +74,10 @@ class PrivatedataTest extends \Test\TestCase {
 
 		$_POST = ['value' => 'updated'];
 		$params = ['app' => $this->appKey, 'key' => 'k-10'];
-		$result = OC_OCS_Privatedata::set($params);
+		$result = PrivateData::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
-		$result = OC_OCS_Privatedata::get($params);
+		$result = PrivateData::get($params);
 		$this->assertOcsResult(1, $result);
 		$data = $result->getData();
 		$data = $data[0];
@@ -87,10 +87,10 @@ class PrivatedataTest extends \Test\TestCase {
 	public function testSetSameValue() {
 		$_POST = ['value' => 123456789];
 		$params = ['app' => $this->appKey, 'key' => 'k-10'];
-		$result = OC_OCS_Privatedata::set($params);
+		$result = PrivateData::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
-		$result = OC_OCS_Privatedata::get($params);
+		$result = PrivateData::get($params);
 		$this->assertOcsResult(1, $result);
 		$data = $result->getData();
 		$data = $data[0];
@@ -99,10 +99,10 @@ class PrivatedataTest extends \Test\TestCase {
 		// set the same value again
 		$_POST = ['value' => 123456789];
 		$params = ['app' => $this->appKey, 'key' => 'k-10'];
-		$result = OC_OCS_Privatedata::set($params);
+		$result = PrivateData::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
-		$result = OC_OCS_Privatedata::get($params);
+		$result = PrivateData::get($params);
 		$this->assertOcsResult(1, $result);
 		$data = $result->getData();
 		$data = $data[0];
@@ -114,17 +114,17 @@ class PrivatedataTest extends \Test\TestCase {
 
 		// set key 'k-1'
 		$params = ['app' => $this->appKey, 'key' => 'k-1'];
-		$result = OC_OCS_Privatedata::set($params);
+		$result = PrivateData::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
 		// set key 'k-2'
 		$params = ['app' => $this->appKey, 'key' => 'k-2'];
-		$result = OC_OCS_Privatedata::set($params);
+		$result = PrivateData::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
 		// query for all
 		$params = ['app' => $this->appKey];
-		$result = OC_OCS_Privatedata::get($params);
+		$result = PrivateData::get($params);
 		$this->assertOcsResult(2, $result);
 	}
 
@@ -133,13 +133,13 @@ class PrivatedataTest extends \Test\TestCase {
 
 		// set key 'k-1'
 		$params = ['app' => $this->appKey, 'key' => 'k-3'];
-		$result = OC_OCS_Privatedata::set($params);
+		$result = PrivateData::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
-		$result = OC_OCS_Privatedata::delete($params);
+		$result = PrivateData::delete($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
-		$result = OC_OCS_Privatedata::get($params);
+		$result = PrivateData::get($params);
 		$this->assertOcsResult(0, $result);
 	}
 
@@ -147,7 +147,7 @@ class PrivatedataTest extends \Test\TestCase {
 	 * @dataProvider deleteWithEmptyKeysProvider
 	 */
 	public function testDeleteWithEmptyKeys($params) {
-		$result = OC_OCS_Privatedata::delete($params);
+		$result = PrivateData::delete($params);
 		$this->assertEquals(101, $result->getStatusCode());
 	}
 
