@@ -673,4 +673,12 @@ class EncryptAllTest extends TestCase {
 		$result = $this->invokePrivate($encryptAll, 'getTimeStamp', []);
 		$this->assertGreaterThan(10000, $result);
 	}
+
+	public function testEncryptAlreadyEncryptedFile() {
+		$this->keyManager->method('getVersion')
+			->with('/user1/files/bar.txt', $this->view)
+			->willReturn(1);
+		$result = $this->invokePrivate($this->encryptAll, 'encryptFile', ['/user1/files/bar.txt']);
+		$this->assertFalse($result);
+	}
 }
