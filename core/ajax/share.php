@@ -36,7 +36,6 @@
  */
 
 use OC\Share\Filters\MailNotificationFilter;
-use OCP\IUser;
 
 OC_JSON::checkLoggedIn();
 OCP\JSON::callCheck();
@@ -111,6 +110,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 
 				$sendingUser = \OC::$server->getUserSession()->getUser();
 				$mailNotification = new \OC\Share\MailNotifications(
+					\OC::$server->getShareManager(),
 					$sendingUser,
 					$l10n,
 					\OC::$server->getMailer(),

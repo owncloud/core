@@ -128,12 +128,12 @@ class Share20OcsController extends OCSController {
 	/**
 	 * Convert an IShare to an array for OCS output
 	 *
-	 * @param \OCP\Share\IShare $share
+	 * @param IShare $share
 	 * @param bool $received whether it's formatting received shares
 	 * @return array
 	 * @throws NotFoundException In case the node can't be resolved.
 	 */
-	protected function formatShare(\OCP\Share\IShare $share, $received = false) {
+	protected function formatShare(IShare $share, $received = false) {
 		$sharedBy = $this->userManager->get($share->getSharedBy());
 		$shareOwner = $this->userManager->get($share->getShareOwner());
 
@@ -557,7 +557,7 @@ class Share20OcsController extends OCSController {
 		}
 
 		$nodes = $folder->getDirectoryListing();
-		/** @var \OCP\Share\IShare[] $shares */
+		/** @var IShare[] $shares */
 		$shares = [];
 		foreach ($nodes as $node) {
 			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), Share::SHARE_TYPE_USER, $node, false, -1, 0));
@@ -878,13 +878,13 @@ class Share20OcsController extends OCSController {
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
-	 * @param string $itemType
 	 * @param int $itemSource
+	 * @param int $shareType
+	 * @param string $recipient
+	 *
+	 * @return Result
 	 */
-	public function notifyRecipients($itemType, $itemSource) {
-		$shareType = (int) $this->request->getParam('shareType');
-		$recipient = (string)$this->request->getParam('recipient');
-
+	public function notifyRecipients($itemSource, $shareType, $recipient) {
 		$recipientList = [];
 		if ($shareType === Share::SHARE_TYPE_USER) {
 			$recipientList[] = $this->userManager->get($recipient);
@@ -900,6 +900,7 @@ class Share20OcsController extends OCSController {
 
 		$defaults = new \OCP\Defaults();
 		$mailNotification = new \OC\Share\MailNotifications(
+			$this->shareManager,
 			$this->currentUser,
 			\OC::$server->getL10N('lib'),
 			\OC::$server->getMailer(),
@@ -910,18 +911,25 @@ class Share20OcsController extends OCSController {
 			$this->eventDispatcher
 		);
 
-		$result = $mailNotification->sendInternalShareMail($recipientList, $itemSource, $itemType);
+		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
+		$nodes = $userFolder->getById($itemSource);
+		$node = $nodes[0];
+		$result = $mailNotification->sendInternalShareMail($node, $shareType, $recipientList);
 
 		// if we were able to send to at least one recipient, mark as sent
 		// allowing the user to resend would spam users who already got a notification
 		if (\count($result) < \count($recipientList)) {
-			Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
+			$items = $this->shareManager->getSharedWith($recipient, $shareType, $node);
+			if (\count($items) > 0) {
+				$share = $items[0];
+				$share->setMailSend(true);
+				$this->shareManager->updateShare($share);
+			}
 		}
 
-		$l = \OC::$server->getL10N('core');
 		$message = empty($result)
 			? null
-			: $l->t(
+			: $this->l->t(
 				"Couldn't send mail to following recipient(s): %s ",
 				\implode(', ', $result)
 			);
@@ -934,13 +942,23 @@ class Share20OcsController extends OCSController {
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
-	 * @param string $itemType
 	 * @param int $itemSource
+	 * @param int $shareType
+	 * @param string $recipient
+	 *
+	 * @return Result
 	 */
-	public function notifyRecipientsDisabled($itemType, $itemSource) {
-		$shareType = (int) $this->request->getParam('shareType');
-		$recipient = (string)$this->request->getParam('recipient');
-		Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, false);
+	public function notifyRecipientsDisabled($itemSource, $shareType, $recipient) {
+		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
+		$nodes = $userFolder->getById($itemSource);
+		$node = $nodes[0];
+
+		$items = $this->shareManager->getSharedWith($recipient, $shareType, $node);
+		if (\count($items) > 0) {
+			$share = $items[0];
+			$share->setMailSend(true);
+			$this->shareManager->updateShare($share);
+		}
 		return new Result();
 	}
 
@@ -1066,10 +1084,10 @@ class Share20OcsController extends OCSController {
 	}
 
 	/**
-	 * @param \OCP\Share\IShare $share
+	 * @param IShare $share
 	 * @return bool
 	 */
-	protected function canAccessShare(\OCP\Share\IShare $share) {
+	protected function canAccessShare(IShare $share) {
 		// A file with permissions 0 can't be accessed by us,
 		// unless it's a rejected sub-group share in which case we want it visible to let the user accept it again
 		if ($share->getPermissions() === 0
@@ -1131,7 +1149,7 @@ class Share20OcsController extends OCSController {
 	 * not support this we need to check all backends.
 	 *
 	 * @param string $id
-	 * @return \OCP\Share\IShare
+	 * @return IShare
 	 * @throws ShareNotFound
 	 */
 	private function getShareById($id, $recipient = null) {
