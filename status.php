@@ -38,7 +38,7 @@ try {
 	$values = \OCP\Util::getStatusInfo(
 		null,
 		\OC::$server->getConfig()->getSystemValue('show_server_hostname', false) !== true,
-		\OC::$server->getConfig()->getSystemValue('use_relative_domain_name', false) !== true
+		\OC::$server->getConfig()->getSystemValue('use_relative_domain_name', false) === true
 	);
 
 	if (OC::$CLI) {
