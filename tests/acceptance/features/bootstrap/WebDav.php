@@ -1009,7 +1009,7 @@ trait WebDav {
 	public function asTheFileOrFolderShouldNotExist($user, $entry, $path) {
 		$client = $this->getSabreClient($user);
 		$response = $client->request(
-			'HEAD', $this->makeSabrePath($user, $path)
+			'GET', $this->makeSabrePath($user, $path)
 		);
 		if ($response['statusCode'] !== 404) {
 			throw new \Exception(
