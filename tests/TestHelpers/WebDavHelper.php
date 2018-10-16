@@ -22,7 +22,7 @@
 namespace TestHelpers;
 
 use Exception;
-use GuzzleHttp\Client as GClient;
+use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Stream\StreamInterface;
 use InvalidArgumentException;
@@ -88,8 +88,7 @@ class WebDavHelper {
 	 * @param string $sourceIpAddress to initiate the request from
 	 * @param string $authType basic|bearer
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
-	 * @throws \GuzzleHttp\Exception\BadResponseException
+	 * @return ResponseInterface
 	 */
 	public static function makeDavRequest(
 		$baseUrl,
@@ -111,26 +110,20 @@ class WebDavHelper {
 		$urlSpecialChar = [['#', '?'],['%23', '%3F']];
 		$path = \str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
 		$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);
-		$client = new GClient();
-		
-		$options = [];
+
 		if ($requestBody !== null) {
-			$options['body'] = $requestBody;
-		}
-		
-		if ($authType === 'basic') {
-			$options['auth'] = [$user, $password];
+			$body = $requestBody;
 		}
 		if ($authType === 'bearer') {
 			$headers['Authorization'] = 'Bearer ' . $password;
+			$user = null;
+			$password = null;
 		}
-		
+		$config = null;
 		if ($sourceIpAddress !== null) {
-			$options['config']
-				= [ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
+			$config = [ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
 		}
 
-		$request = $client->createRequest($method, $fullUrl, $options);
 		if ($headers !== null) {
 			foreach ($headers as $key => $value) {
 				//? and # need to be encoded in the Destination URL
@@ -138,18 +131,15 @@ class WebDavHelper {
 					$value = \str_replace(
 						$urlSpecialChar[0], $urlSpecialChar[1], $value
 					);
-				}
-				if ($request->hasHeader($key) === true) {
-					$request->setHeader($key, $value);
-				} else {
-					$request->addHeader($key, $value);
+					$headers[$key] = $value;
+					break;
 				}
 			}
 		}
-		if ($body !== null) {
-			$request->setBody($body);
-		}
-		return $client->send($request);
+
+		return HttpRequestHelper::sendRequest(
+			$fullUrl, $method, $user, $password, $headers, $body, $config
+		);
 	}
 
 	/**
@@ -196,8 +186,9 @@ class WebDavHelper {
 				'password' => $password,
 				'authType' => SClient::AUTH_BASIC
 		];
-		
-		return new SClient($settings);
+		$client = new SClient($settings);
+		$client->addCurlSetting(CURLOPT_SSL_VERIFYPEER, false);
+		return $client;
 	}
 
 	/**

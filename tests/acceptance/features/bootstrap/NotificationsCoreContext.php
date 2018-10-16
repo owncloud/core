@@ -70,6 +70,7 @@ class NotificationsCoreContext implements Context {
 
 	/**
 	 * @param int $deletedNotification
+	 *
 	 * @return void
 	 */
 	public function setDeletedNotification($deletedNotification) {

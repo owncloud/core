@@ -39,6 +39,7 @@ class FileActionsMenu extends OwncloudPage {
 	protected $fileActionXpath = "//a[@data-action='%s']";
 	protected $renameActionLabel = "Rename";
 	protected $deleteActionLabel = "Delete";
+	protected $detailsActionLabel = "Details";
 	protected $declineShareDataAction = "Reject";
 
 	/**
@@ -66,7 +67,7 @@ class FileActionsMenu extends OwncloudPage {
 	 * @return void
 	 */
 	public function rename(
-		$xpathToWaitFor = null, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$xpathToWaitFor = null, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$renameBtn = $this->findButton($this->renameActionLabel);
 		if ($renameBtn === null) {
@@ -98,6 +99,22 @@ class FileActionsMenu extends OwncloudPage {
 		$deleteBtn->click();
 	}
 
+	/**
+	 * clicks the details button
+	 *
+	 * @return void
+	 */
+	public function openDetails() {
+		$detailsBtn = $this->findButton($this->detailsActionLabel);
+		if ($detailsBtn === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" could not find action button with label $this->deleteActionLabel"
+			);
+		}
+		$detailsBtn->focus();
+		$detailsBtn->click();
+	}
 	/**
 	 * clicks the decline share button
 	 *
@@ -137,7 +154,7 @@ class FileActionsMenu extends OwncloudPage {
 			);
 		} else {
 			$this->waitFor(
-				STANDARDUIWAITTIMEOUTMILLISEC / 1000, [$button, 'isVisible']
+				STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$button, 'isVisible']
 			);
 			return $button;
 		}
@@ -159,7 +176,28 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return string
 	 */
+	public function getDetailsActionLabel() {
+		return $this->detailsActionLabel;
+	}
+
+	/**
+	 * just so the label can be reused in other places
+	 * and does not need to be redefined
+	 *
+	 * @return string
+	 */
 	public function getRenameActionLabel() {
 		return $this->renameActionLabel;
+	}
+
+	/**
+	 * the action labels are localized to the user preferred language
+	 *
+	 * @param string $action
+	 *
+	 * @return string
+	 */
+	public function getActionLabelLocalized($action) {
+		return $this->findButton($action)->getText();
 	}
 }

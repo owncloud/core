@@ -218,7 +218,6 @@ OC.L10N.register(
     "{sharee} (federated)" : "{sharee} (i federuar)",
     "User and Groups" : "Përdorues dhe Grupe",
     "Public Links" : "Lidhje Publike",
-    "Resharing is not allowed" : "Nuk lejohen rindarjet",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Ndajeni me persona në ownCloud-e të tjera duke përdorur sintaksën username@example.com/owncloud",
     "Share with users…" : "Ndajeni me përdorues…",
     "Share with users, groups or remote users…" : "Ndajeni me përdorues, grupe ose përdorues të largët…",

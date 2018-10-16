@@ -85,11 +85,12 @@ class UserHelper {
 	 * @param string $value
 	 * @param string $adminUser
 	 * @param string $adminPassword
+	 * @param int $ocsApiVersion
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function editUser(
-		$baseUrl, $user, $key, $value, $adminUser, $adminPassword
+		$baseUrl, $user, $key, $value, $adminUser, $adminPassword, $ocsApiVersion = 2
 	) {
 		return OcsApiHelper::sendRequest(
 			$baseUrl,
@@ -97,7 +98,32 @@ class UserHelper {
 			$adminPassword,
 			"PUT",
 			"/cloud/users/" . $user,
-			["key" => $key, "value" => $value]
+			["key" => $key, "value" => $value],
+			$ocsApiVersion
+		);
+	}
+
+	/**
+	 *
+	 * @param string $baseUrl
+	 * @param string $userName
+	 * @param string $adminUser
+	 * @param string $adminPassword
+	 * @param int $ocsApiVersion
+	 *
+	 * @return ResponseInterface
+	 */
+	public static function getUser(
+		$baseUrl, $userName, $adminUser, $adminPassword, $ocsApiVersion = 2
+	) {
+		return OcsApiHelper::sendRequest(
+			$baseUrl,
+			$adminUser,
+			$adminPassword,
+			"GET",
+			"/cloud/users/" . $userName,
+			[],
+			$ocsApiVersion
 		);
 	}
 
@@ -232,7 +258,7 @@ class UserHelper {
 		$baseUrl, $adminUser, $adminPassword, $search =""
 	) {
 		$result = self::getGroups($baseUrl, $adminUser, $adminPassword, $search);
-		$groups = $result->xml()->xpath(".//groups")[0];
+		$groups = HttpRequestHelper::getResponseXml($result)->xpath(".//groups")[0];
 		$return = [];
 		foreach ($groups as $group) {
 			$return[] = $group->__toString();

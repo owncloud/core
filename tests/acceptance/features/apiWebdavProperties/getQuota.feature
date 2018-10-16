@@ -19,6 +19,7 @@ Feature: get quota
       | old         |
       | new         |
 
+  @smokeTest
   Scenario Outline: Retrieving folder quota when quota is set
     Given using <dav_version> DAV path
     When the administrator sets the quota of user "user0" to "10 MB" using the provisioning API

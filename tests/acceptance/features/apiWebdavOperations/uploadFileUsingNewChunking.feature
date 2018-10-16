@@ -102,6 +102,7 @@ Feature: upload file using new chunking
       | app |
       | dav |
 
+  @smokeTest
   Scenario Outline: Upload files with difficult names using new chunking
     When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
     And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API

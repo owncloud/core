@@ -52,6 +52,19 @@ class RemoteUser implements IUser {
 	/**
 	 * @inheritdoc
 	 */
+	public function getUserName() {
+		return $this->getUID();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function setUserName($userName) {
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function getDisplayName() {
 		return $this->userId;
 	}
@@ -205,5 +218,13 @@ class RemoteUser implements IUser {
 	 * @inheritdoc
 	 */
 	public function setSearchTerms(array $terms) {
+	}
+
+	/**
+	 * @return integer
+	 * @since 11.0.0
+	 */
+	public function getAccountId() {
+		return null;
 	}
 }

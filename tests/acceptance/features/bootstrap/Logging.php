@@ -52,8 +52,10 @@ trait Logging {
 	) {
 		//-1 because getRows gives also the header
 		$linesToRead = \count($expectedLogEntries->getRows()) - 1;
-		$logLines = LoggingHelper::tailFile(
-			LoggingHelper::getLogFilePath(),
+		$logLines = LoggingHelper::getLogFileContent(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
 			$linesToRead
 		);
 		$lineNo = 0;
@@ -62,6 +64,7 @@ trait Logging {
 			if ($logEntry === null) {
 				throw new \Exception("the logline :\n{$logLines[$lineNo]} is not valid JSON");
 			}
+
 			foreach (\array_keys($expectedLogEntry) as $attribute) {
 				$expectedLogEntry[$attribute]
 					= $this->featureContext->substituteInLineCodes(
@@ -111,7 +114,11 @@ trait Logging {
 	public function theLogFileShouldNotContainAnyLogEntriesWithTheseAttributes(
 		$withOrContaining, TableNode $logEntriesExpectedNotToExist
 	) {
-		$logLines = \file(LoggingHelper::getLogFilePath());
+		$logLines = LoggingHelper::getLogFileContent(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword()
+		);
 		foreach ($logLines as $logLine) {
 			$logEntry = \json_decode($logLine, true);
 			if ($logEntry === null) {
@@ -191,7 +198,11 @@ trait Logging {
 	 * @throws \Exception
 	 */
 	public function theOwncloudLogIsCleared() {
-		LoggingHelper::clearLogFile();
+		LoggingHelper::clearLogFile(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword()
+		);
 	}
 
 	/**

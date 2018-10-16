@@ -52,7 +52,7 @@ class SharingDialog extends OwncloudPage {
 	private $permissionsFieldByUserName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s']/..";
 	private $permissionLabelXpath = ".//label[@for='%s']";
 	private $showCrudsXpath = ".//*[@class='showCruds']";
-	private $publicShareTabLinkXpath = ".//li[contains(@class,'subtab-publicshare')]";
+	private $publicLinksShareTabXpath = ".//li[contains(@class,'subtab-publicshare')]";
 
 	private $sharedWithGroupAndSharerName = null;
 
@@ -96,7 +96,7 @@ class SharingDialog extends OwncloudPage {
 	 * @return NodeElement AutocompleteElement
 	 */
 	public function fillShareWithField(
-		$input, Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$input, Session $session, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$shareWithField = $this->findShareWithField();
 		$this->fillFieldAndKeepFocus($shareWithField, $input, $session);
@@ -437,15 +437,15 @@ class SharingDialog extends OwncloudPage {
 	 * @return PublicLinkTab
 	 */
 	public function openPublicShareTab() {
-		$publicShareTabLink = $this->find("xpath", $this->publicShareTabLinkXpath);
-		if ($publicShareTabLink === null) {
+		$publicLinksShareTab = $this->find("xpath", $this->publicLinksShareTabXpath);
+		if ($publicLinksShareTab === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $this->publicShareTabLinkXpath " .
-				"could not find link to open public share tab"
+				" xpath $this->publicLinksShareTabXpath " .
+				"could not find public links share tab"
 			);
 		}
-		$publicShareTabLink->click();
+		$publicLinksShareTab->click();
 		$publicLinkTab = $this->getPage(
 			"FilesPageElement\\SharingDialogElement\\PublicLinkTab"
 		);

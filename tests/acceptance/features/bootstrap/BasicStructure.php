@@ -22,12 +22,11 @@
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
-use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
+use TestHelpers\HttpRequestHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -47,14 +46,19 @@ trait BasicStructure {
 	use CommandLine;
 
 	/**
-	 * @var array
+	 * @var string
 	 */
 	private $adminUsername = '';
 
 	/**
-	 * @var array
+	 * @var string
 	 */
 	private $adminPassword = '';
+
+	/**
+	 * @var string
+	 */
+	private $originalAdminPassword = '';
 
 	/**
 	 * @var string
@@ -64,7 +68,53 @@ trait BasicStructure {
 	/**
 	 * @var string
 	 */
+	private $alt1UserPassword = '';
+
+	/**
+	 * @var string
+	 */
+	private $alt2UserPassword = '';
+
+	/**
+	 * @var string
+	 */
+	private $alt3UserPassword = '';
+
+	/**
+	 * @var string
+	 */
+	private $alt4UserPassword = '';
+
+	/**
+	 * The password to use in tests that create a sub-admin user
+	 *
+	 * @var string
+	 */
+	private $subAdminPassword = '';
+
+	/**
+	 * The password to use in tests that create another admin user
+	 *
+	 * @var string
+	 */
+	private $alternateAdminPassword = '';
+
+	/**
+	 * The password to use in tests that create public link shares
+	 *
+	 * @var string
+	 */
+	private $publicLinkSharePassword = '';
+
+	/**
+	 * @var string
+	 */
 	private $ocPath = '';
+
+	/**
+	 * @var string location of the root folder of ownCloud on the local server under test
+	 */
+	private $localServerRoot = null;
 
 	/**
 	 * @var string
@@ -131,6 +181,21 @@ trait BasicStructure {
 	private $requestToken;
 
 	/**
+	 * @var string
+	 */
+	private $storageId = null;
+
+	/**
+	 * The local source IP address from which to initiate API actions.
+	 * Defaults to system-selected address matching IP address family and scope.
+	 *
+	 * @var string|null
+	 */
+	private $sourceIpAddress = null;
+	
+	private $guzzleClientHeaders = [];
+
+	/**
 	 * BasicStructure constructor.
 	 *
 	 * @param string $baseUrl
@@ -141,9 +206,12 @@ trait BasicStructure {
 	 *
 	 */
 	public function __construct(
-		$baseUrl, $adminUsername, $adminPassword, $regularUserPassword, $ocPath
+		$baseUrl,
+		$adminUsername,
+		$adminPassword,
+		$regularUserPassword,
+		$ocPath
 	) {
-
 		// Initialize your context here
 		$this->baseUrl = \rtrim($baseUrl, '/');
 		$this->adminUsername = $adminUsername;
@@ -153,6 +221,16 @@ trait BasicStructure {
 		$this->currentServer = 'LOCAL';
 		$this->cookieJar = new CookieJar();
 		$this->ocPath = $ocPath;
+
+		// These passwords are referenced in tests and can be overridden by
+		// setting environment variables.
+		$this->alt1UserPassword = "1234";
+		$this->alt2UserPassword = "AaBb2Cc3Dd4";
+		$this->alt3UserPassword = "aVeryLongPassword42TheMeaningOfLife";
+		$this->alt4UserPassword = "ThisIsThe4thAlternatePwd";
+		$this->subAdminPassword = "IamAJuniorAdmin42";
+		$this->alternateAdminPassword = "IHave99LotsOfPriv";
+		$this->publicLinkSharePassword = "publicPwd1";
 
 		// in case of CI deployment we take the server url from the environment
 		$testServerUrl = \getenv('TEST_SERVER_URL');
@@ -182,6 +260,55 @@ trait BasicStructure {
 		if ($adminPasswordFromEnvironment !== false) {
 			$this->adminPassword = $adminPasswordFromEnvironment;
 		}
+
+		// get the regular user password from the environment (if defined)
+		$regularUserPasswordFromEnvironment = $this->getRegularUserPasswordFromEnvironment();
+		if ($regularUserPasswordFromEnvironment !== false) {
+			$this->regularUserPassword = $regularUserPasswordFromEnvironment;
+		}
+
+		// get the alternate(1) user password from the environment (if defined)
+		$alt1UserPasswordFromEnvironment = $this->getAlt1UserPasswordFromEnvironment();
+		if ($alt1UserPasswordFromEnvironment !== false) {
+			$this->alt1UserPassword = $alt1UserPasswordFromEnvironment;
+		}
+
+		// get the alternate(2) user password from the environment (if defined)
+		$alt2UserPasswordFromEnvironment = $this->getAlt2UserPasswordFromEnvironment();
+		if ($alt2UserPasswordFromEnvironment !== false) {
+			$this->alt2UserPassword = $alt2UserPasswordFromEnvironment;
+		}
+
+		// get the alternate(3) user password from the environment (if defined)
+		$alt3UserPasswordFromEnvironment = $this->getAlt3UserPasswordFromEnvironment();
+		if ($alt3UserPasswordFromEnvironment !== false) {
+			$this->alt3UserPassword = $alt3UserPasswordFromEnvironment;
+		}
+
+		// get the alternate(4) user password from the environment (if defined)
+		$alt4UserPasswordFromEnvironment = $this->getAlt4UserPasswordFromEnvironment();
+		if ($alt4UserPasswordFromEnvironment !== false) {
+			$this->alt4UserPassword = $alt4UserPasswordFromEnvironment;
+		}
+
+		// get the sub-admin password from the environment (if defined)
+		$subAdminPasswordFromEnvironment = $this->getSubAdminPasswordFromEnvironment();
+		if ($subAdminPasswordFromEnvironment !== false) {
+			$this->subAdminPassword = $subAdminPasswordFromEnvironment;
+		}
+
+		// get the alternate admin password from the environment (if defined)
+		$alternateAdminPasswordFromEnvironment = $this->getAlternateAdminPasswordFromEnvironment();
+		if ($alternateAdminPasswordFromEnvironment !== false) {
+			$this->alternateAdminPassword = $alternateAdminPasswordFromEnvironment;
+		}
+
+		// get the public link share password from the environment (if defined)
+		$publicLinkSharePasswordFromEnvironment = $this->getPublicLinkSharePasswordFromEnvironment();
+		if ($publicLinkSharePasswordFromEnvironment !== false) {
+			$this->publicLinkSharePassword = $publicLinkSharePasswordFromEnvironment;
+		}
+		$this->originalAdminPassword = $this->adminPassword;
 	}
 
 	/**
@@ -203,6 +330,78 @@ trait BasicStructure {
 	}
 
 	/**
+	 * Get the externally-defined regular user password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getRegularUserPasswordFromEnvironment() {
+		return \getenv('REGULAR_USER_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined alternate(1) user password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getAlt1UserPasswordFromEnvironment() {
+		return \getenv('ALT1_USER_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined alternate(2) user password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getAlt2UserPasswordFromEnvironment() {
+		return \getenv('ALT2_USER_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined alternate(3) user password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getAlt3UserPasswordFromEnvironment() {
+		return \getenv('ALT3_USER_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined alternate(4) user password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getAlt4UserPasswordFromEnvironment() {
+		return \getenv('ALT4_USER_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined sub-admin password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getSubAdminPasswordFromEnvironment() {
+		return \getenv('SUB_ADMIN_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined alternate admin password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getAlternateAdminPasswordFromEnvironment() {
+		return \getenv('ALTERNATE_ADMIN_PASSWORD');
+	}
+
+	/**
+	 * Get the externally-defined public link share password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getPublicLinkSharePasswordFromEnvironment() {
+		return \getenv('PUBLIC_LINK_SHARE_PASSWORD');
+	}
+
+	/**
 	 * removes the scheme "http(s)://" (if any) from the front of a URL
 	 * note: only needs to handle http or https
 	 *
@@ -213,6 +412,17 @@ trait BasicStructure {
 	public function removeSchemeFromUrl($url) {
 		return \preg_replace(
 			"(^https?://)", "", $url
+		);
+	}
+
+	/**
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public function replaceProductName($text) {
+		return \str_replace(
+			"%productname%", $this->getProductNameFromStatus(), $text
 		);
 	}
 
@@ -310,6 +520,49 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @return string|null
+	 */
+	public function getSourceIpAddress() {
+		return $this->sourceIpAddress;
+	}
+	
+	/**
+	 * @param string $sourceIpAddress
+	 *
+	 * @return void
+	 */
+	public function setSourceIpAddress($sourceIpAddress) {
+		$this->sourceIpAddress = $sourceIpAddress;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getGuzzleClientHeaders() {
+		return $this->guzzleClientHeaders;
+	}
+	
+	/**
+	 * @param array $guzzleClientHeaders ['X-Foo' => 'Bar']
+	 *
+	 * @return void
+	 */
+	public function setGuzzleClientHeaders($guzzleClientHeaders) {
+		$this->guzzleClientHeaders = $guzzleClientHeaders;
+	}
+
+	/**
+	 * @param array $guzzleClientHeaders ['X-Foo' => 'Bar']
+	 *
+	 * @return void
+	 */
+	public function addGuzzleClientHeaders($guzzleClientHeaders) {
+		$this->guzzleClientHeaders = \array_merge(
+			$this->guzzleClientHeaders, $guzzleClientHeaders
+		);
+	}
+
+	/**
 	 * @Given /^using OCS API version "([^"]*)"$/
 	 *
 	 * @param string $version
@@ -328,7 +581,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function asUser($user) {
-		$this->currentUser = $user;
+		$this->currentUser = $this->getActualUsername($user);
 	}
 
 	/**
@@ -423,23 +676,12 @@ trait BasicStructure {
 	 * @return string the previous setting of csrf.disabled
 	 */
 	public function setCSRFDotDisabled($setting) {
-		$oldCSRFSetting = SetupHelper::runOcc(
-			['config:system:get', 'csrf.disabled']
-		)['stdOut'];
+		$oldCSRFSetting = $this->getSystemConfigValue('csrf.disabled');
 
 		if ($setting === "") {
-			SetupHelper::runOcc(['config:system:delete', 'csrf.disabled']);
+			$this->deleteSystemConfig('csrf.disabled');
 		} elseif (($setting === 'true') || ($setting === 'false')) {
-			SetupHelper::runOcc(
-				[
-					'config:system:set',
-					'csrf.disabled',
-					'--type',
-					'boolean',
-					'--value',
-					$setting
-				]
-			);
+			$this->setSystemConfig('csrf.disabled', $setting, 'boolean');
 		} else {
 			throw new \http\Exception\InvalidArgumentException(
 				'setting must be "true", "false" or ""'
@@ -489,7 +731,22 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getOCSResponseStatusCode($response) {
-		return (string) $response->xml()->meta[0]->statuscode;
+		return (string) $this->getResponseXml($response)->meta[0]->statuscode;
+	}
+
+	/**
+	 * Parses the response as XML
+	 *
+	 * @param ResponseInterface $response
+	 *
+	 * @return SimpleXMLElement
+	 */
+	public function getResponseXml($response = null) {
+		if ($response === null) {
+			$response = $this->response;
+		}
+
+		return HttpRequestHelper::getResponseXml($response);
 	}
 
 	/**
@@ -501,7 +758,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getOCSResponseStatusMessage($response) {
-		return (string) $response->xml()->meta[0]->message;
+		return (string) $this->getResponseXml($response)->meta[0]->message;
 	}
 
 	/**
@@ -514,7 +771,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getXMLKey1Key2Value($response, $key1, $key2) {
-		return $response->xml()->$key1->$key2;
+		return $this->getResponseXml($response)->$key1->$key2;
 	}
 
 	/**
@@ -528,7 +785,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getXMLKey1Key2Key3Value($response, $key1, $key2, $key3) {
-		return $response->xml()->$key1->$key2->$key3;
+		return $this->getResponseXml($response)->$key1->$key2->$key3;
 	}
 
 	/**
@@ -545,7 +802,7 @@ trait BasicStructure {
 	public function getXMLKey1Key2Key3AttributeValue(
 		$response, $key1, $key2, $key3, $attribute
 	) {
-		return (string) $response->xml()->$key1->$key2->$key3->attributes()->$attribute;
+		return (string) $this->getResponseXml($response)->$key1->$key2->$key3->attributes()->$attribute;
 	}
 
 	/**
@@ -610,6 +867,7 @@ trait BasicStructure {
 		}
 
 		if ($user !== 'UNAUTHORIZED_USER') {
+			$user = $this->getActualUsername($user);
 			$password = $this->getPasswordForUser($user);
 		} else {
 			$user = null;
@@ -637,37 +895,64 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to URL "([^"]*)" with password "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to URL "([^"]*)" with password "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userSendsHTTPMethodToUrlWithPassword($user, $verb, $url, $password) {
+		$this->sendingToWithDirectUrl($user, $verb, $url, null, $password);
+	}
+
+	/**
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
 	 * @param TableNode $body
+	 * @param string $password
 	 *
 	 * @return void
 	 */
-	public function sendingToWithDirectUrl($user, $verb, $url, $body) {
+	public function sendingToWithDirectUrl($user, $verb, $url, $body, $password = null) {
 		$fullUrl = $this->getBaseUrl() . $url;
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($user);
 
+		if ($password === null) {
+			$password = $this->getPasswordForUser($user);
+		}
+		
+		$headers = $this->guzzleClientHeaders;
+
+		$config = null;
+		if ($this->sourceIpAddress !== null) {
+			$config = [
+				'curl' => [
+					CURLOPT_INTERFACE => $this->sourceIpAddress
+				]
+			];
+		}
+		
+		$cookies = null;
 		if (!empty($this->cookieJar->toArray())) {
-			$options['cookies'] = $this->cookieJar;
+			$cookies = $this->cookieJar;
 		}
 
+		$fd = null;
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-			$options['body'] = $fd;
 		}
 
-		try {
-			$request = $client->createRequest($verb, $fullUrl, $options);
-			if (isset($this->requestToken)) {
-				$request->addHeader('requesttoken', $this->requestToken);
-			}
-			$this->response = $client->send($request);
-		} catch (BadResponseException $ex) {
-			$this->response = $ex->getResponse();
+		if (isset($this->requestToken)) {
+			$headers['requesttoken'] = $this->requestToken;
 		}
+
+		$this->response = HttpRequestHelper::sendRequest(
+			$fullUrl, $verb, $user, $password, $headers, $fd, $config, $cookies
+		);
 	}
 
 	/**
@@ -689,6 +974,10 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function theOCSStatusCodeShouldBe($statusCode, $message = "") {
+		if ($message === "") {
+			$message = "OCS status code is not the expected value";
+		}
+
 		if (\is_array($statusCode)) {
 			PHPUnit_Framework_Assert::assertContains(
 				$this->getOCSResponseStatusCode($this->response), $statusCode,
@@ -711,6 +1000,10 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function theHTTPStatusCodeShouldBe($statusCode, $message = "") {
+		if ($message === "") {
+			$message = "HTTP status code is not the expected value";
+		}
+
 		if (\is_array($statusCode)) {
 			PHPUnit_Framework_Assert::assertContains(
 				$this->response->getStatusCode(), $statusCode,
@@ -721,6 +1014,100 @@ trait BasicStructure {
 				$statusCode, $this->response->getStatusCode(), $message
 			);
 		}
+	}
+
+	/**
+	 * Check the text in an HTTP reason phrase
+	 *
+	 * @Then /^the HTTP reason phrase should be "([^"]*)"$/
+	 *
+	 * @param string $reasonPhrase
+	 *
+	 * @return void
+	 */
+	public function theHTTPReasonPhraseShouldBe($reasonPhrase) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$reasonPhrase,
+			$this->getResponse()->getReasonPhrase(),
+			'Unexpected HTTP reason phrase in response'
+		);
+	}
+
+	/**
+	 * Check the text in an HTTP reason phrase
+	 * Use this step form if the expected text contains double quotes,
+	 * single quotes and other content that theHTTPReasonPhraseShouldBe()
+	 * cannot handle.
+	 *
+	 * After the step, write the expected text in PyString form like:
+	 *
+	 * """
+	 * File "abc.txt" can't be shared due to reason "xyz"
+	 * """
+	 *
+	 * @Then /^the HTTP reason phrase should be:$/
+	 *
+	 * @param PyStringNode $reasonPhrase
+	 *
+	 * @return void
+	 */
+	public function theHTTPReasonPhraseShouldBePyString(
+		PyStringNode $reasonPhrase
+	) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$reasonPhrase->getRaw(),
+			$this->getResponse()->getReasonPhrase(),
+			'Unexpected HTTP reason phrase in response'
+		);
+	}
+
+	/**
+	 * Check the text in an OCS status message
+	 *
+	 * @Then /^the OCS status message should be "([^"]*)"$/
+	 *
+	 * @param string $statusMessage
+	 *
+	 * @return void
+	 */
+	public function theOCSStatusMessageShouldBe($statusMessage) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$statusMessage,
+			$this->getOCSResponseStatusMessage(
+				$this->getResponse()
+			),
+			'Unexpected OCS status message in response'
+		);
+	}
+
+	/**
+	 * Check the text in an OCS status message.
+	 * Use this step form if the expected text contains double quotes,
+	 * single quotes and other content that theOCSStatusMessageShouldBe()
+	 * cannot handle.
+	 *
+	 * After the step, write the expected text in PyString form like:
+	 *
+	 * """
+	 * File "abc.txt" can't be shared due to reason "xyz"
+	 * """
+	 *
+	 * @Then /^the OCS status message should be:$/
+	 *
+	 * @param PyStringNode $statusMessage
+	 *
+	 * @return void
+	 */
+	public function theOCSStatusMessageShouldBePyString(
+		PyStringNode $statusMessage
+	) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$statusMessage->getRaw(),
+			$this->getOCSResponseStatusMessage(
+				$this->getResponse()
+			),
+			'Unexpected OCS status message in response'
+		);
 	}
 
 	/**
@@ -806,28 +1193,30 @@ trait BasicStructure {
 	public function userHasLoggedInToAWebStyleSessionUsingTheAPI($user) {
 		$loginUrl = $this->getBaseUrl() . '/login';
 		// Request a new session and extract CSRF token
-		$client = new Client();
-		$response = $client->get(
-			$loginUrl,
-			[
-				'cookies' => $this->cookieJar,
-			]
+		
+		$config = null;
+		if ($this->sourceIpAddress !== null) {
+			$config = [
+				'curl' => [
+					CURLOPT_INTERFACE => $this->sourceIpAddress
+				]
+			];
+		}
+
+		$response = HttpRequestHelper::get(
+			$loginUrl, null, null, $this->guzzleClientHeaders, null, $config, $this->cookieJar
 		);
 		$this->extractRequestTokenFromResponse($response);
 
 		// Login and extract new token
 		$password = $this->getPasswordForUser($user);
-		$client = new Client();
-		$response = $client->post(
-			$loginUrl,
-			[
-				'body' => [
-					'user' => $user,
-					'password' => $password,
-					'requesttoken' => $this->requestToken,
-				],
-				'cookies' => $this->cookieJar,
-			]
+		$body = [
+			'user' => $user,
+			'password' => $password,
+			'requesttoken' => $this->requestToken
+		];
+		$response = HttpRequestHelper::post(
+			$loginUrl, null, null, $this->guzzleClientHeaders, $body, $config, $this->cookieJar
 		);
 		$this->extractRequestTokenFromResponse($response);
 	}
@@ -842,20 +1231,23 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function sendingAToWithRequesttoken($method, $url) {
-		$client = new Client();
-		$request = $client->createRequest(
-			$method,
-			$this->getBaseUrl() . $url,
-			[
-				'cookies' => $this->cookieJar,
-			]
-		);
-		$request->addHeader('requesttoken', $this->requestToken);
-		try {
-			$this->response = $client->send($request);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
+		$headers = $this->guzzleClientHeaders;
+		
+		$config = null;
+		if ($this->sourceIpAddress !== null) {
+			$config = [
+				'curl' => [
+					CURLOPT_INTERFACE => $this->sourceIpAddress
+				]
+			];
 		}
+
+		$headers['requesttoken'] = $this->requestToken;
+
+		$url = $this->getBaseUrl() . $url;
+		$this->response = HttpRequestHelper::sendRequest(
+			$url, $method, null, null, $headers, null, $config, $this->cookieJar
+		);
 	}
 
 	/**
@@ -868,19 +1260,20 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function sendingAToWithoutRequesttoken($method, $url) {
-		$client = new Client();
-		$request = $client->createRequest(
-			$method,
-			$this->getBaseUrl() . $url,
-			[
-				'cookies' => $this->cookieJar,
-			]
-		);
-		try {
-			$this->response = $client->send($request);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
+		$config = null;
+		if ($this->sourceIpAddress !== null) {
+			$config = [
+				'curl' => [
+					CURLOPT_INTERFACE => $this->sourceIpAddress
+				]
+			];
 		}
+
+		$url = $this->getBaseUrl() . $url;
+		$this->response = HttpRequestHelper::sendRequest(
+			$url, $method, null, null, $this->guzzleClientHeaders,
+			null, $config, $this->cookieJar
+		);
 	}
 
 	/**
@@ -896,44 +1289,62 @@ trait BasicStructure {
 	}
 
 	/**
+	 * Creates a file locally in the file system of the test runner
+	 * The file will be available to upload to the server
+	 *
 	 * @param string $name
 	 * @param string $size
 	 *
 	 * @return void
 	 */
-	public function createFileSpecificSize($name, $size) {
-		$file = \fopen("work/$name", 'w');
+	public function createLocalFileOfSpecificSize($name, $size) {
+		$folder = $this->workStorageDirLocation();
+		if (!\is_dir($folder)) {
+			\mkDir($folder);
+		}
+		$file = \fopen($folder . $name, 'w');
 		\fseek($file, $size - 1, SEEK_CUR);
 		\fwrite($file, 'a'); // write a dummy char at SIZE position
 		\fclose($file);
 	}
 
 	/**
-	 * @param string $name
-	 * @param string $text
+	 * Make a directory under the server root on the ownCloud server
+	 *
+	 * @param string $dirPathFromServerRoot e.g. 'apps2/myapp/appinfo'
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function createFileWithText($name, $text) {
-		$file = \fopen("work/$name", 'w');
-		\fwrite($file, $text);
-		\fclose($file);
+	public function mkDirOnServer($dirPathFromServerRoot) {
+		SetupHelper::mkDirOnServer(
+			$dirPathFromServerRoot,
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
 	}
 
 	/**
-	 * @Given file :filename of size :size has been created in local storage
-	 *
-	 * @param string $filename
-	 * @param string $size
+	 * @param string $filePathFromServerRoot
+	 * @param string $content
 	 *
 	 * @return void
 	 */
-	public function fileHasBeenCreatedInLocalStorageWithSize($filename, $size) {
-		$this->createFileSpecificSize("local_storage/$filename", $size);
+	public function createFileOnServerWithContent(
+		$filePathFromServerRoot, $content
+	) {
+		SetupHelper::createFileOnServer(
+			$filePathFromServerRoot,
+			$content,
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
 	}
 
 	/**
-	 * @Given file :filename with text :text has been created in local storage
+	 * @Given file :filename with text :text has been created in local storage on the server
 	 *
 	 * @param string $filename
 	 * @param string $text
@@ -941,18 +1352,25 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function fileHasBeenCreatedInLocalStorageWithText($filename, $text) {
-		$this->createFileWithText("local_storage/$filename", $text);
+		$this->createFileOnServerWithContent(
+			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$filename", $text
+		);
 	}
 
 	/**
-	 * @Given file :filename has been deleted in local storage
+	 * @Given file :filename has been deleted from local storage on the server
 	 *
 	 * @param string $filename
 	 *
 	 * @return void
 	 */
 	public function fileHasBeenDeletedInLocalStorage($filename) {
-		\unlink("work/local_storage/$filename");
+		SetupHelper::deleteFileOnServer(
+			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$filename",
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
 	}
 
 	/**
@@ -970,21 +1388,173 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function rememberNewAdminPassword($password) {
+		$this->adminPassword = (string) $password;
+	}
+
+	/**
 	 * @param string $userName
 	 *
 	 * @return string
 	 */
 	public function getPasswordForUser($userName) {
+		$userName = $this->getActualUsername($userName);
 		if ($userName === $this->getAdminUsername()) {
 			return (string) $this->getAdminPassword();
 		} elseif (\array_key_exists($userName, $this->createdUsers)) {
 			return (string) $this->createdUsers[$userName]['password'];
 		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
 			return (string) $this->createdRemoteUsers[$userName]['password'];
-		} else {
-			// The user has not been created yet, let the caller have the
-			// default password.
+		} elseif ($userName === 'regularuser') {
 			return (string) $this->regularUserPassword;
+		} elseif ($userName === 'user0') {
+			return (string) $this->regularUserPassword;
+		} elseif ($userName === 'user1') {
+			return (string) $this->alt1UserPassword;
+		} elseif ($userName === 'user2') {
+			return (string) $this->alt2UserPassword;
+		} elseif ($userName === 'user3') {
+			return (string) $this->alt3UserPassword;
+		} elseif ($userName === 'user4') {
+			return (string) $this->alt4UserPassword;
+		} elseif ($userName === 'usergrp') {
+			return (string) $this->regularUserPassword;
+		} elseif ($userName === 'sharee1') {
+			return (string) $this->regularUserPassword;
+		} else {
+			// The user has not been created yet and is not one of the pre-known
+			// users. So let the caller have the default password.
+			return (string) $this->regularUserPassword;
+		}
+	}
+
+	/**
+	 * Get the display name of the user.
+	 *
+	 * For users that have already been created, return their display name.
+	 * For special known user names, return the display name that is also used by LDAP tests.
+	 * For other users, return null. They will not be assigned any particular
+	 * display name by this function.
+	 *
+	 * @param string $userName
+	 *
+	 * @return string|null
+	 */
+	public function getDisplayNameForUser($userName) {
+		$userName = $this->getActualUsername($userName);
+		// The hard-coded user names and display names are also in ldap-users.ldif
+		// for testing in an LDAP environment. The mapping must be kept the
+		// same in both places.
+		if (\array_key_exists($userName, $this->createdUsers)) {
+			return (string) $this->createdUsers[$userName]['displayname'];
+		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
+			return (string)$this->createdRemoteUsers[$userName]['displayname'];
+		} elseif ($userName === 'regularuser') {
+			return 'Regular User';
+		} elseif ($userName === 'user0') {
+			return 'User Zero';
+		} elseif ($userName === 'user1') {
+			return 'User One';
+		} elseif ($userName === 'user2') {
+			return 'User Two';
+		} elseif ($userName === 'user3') {
+			return 'User Three';
+		} elseif ($userName === 'user4') {
+			return 'User Four';
+		} elseif ($userName === 'usergrp') {
+			return 'User Grp';
+		} elseif ($userName === 'sharee1') {
+			return 'Sharee One';
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Get the email address of the user.
+	 *
+	 * For users that have already been created, return their email address.
+	 * For special known user names, return the email address that is also used by LDAP tests.
+	 * For other users, return null. They will not be assigned any particular
+	 * email address by this function.
+	 *
+	 * @param string $userName
+	 *
+	 * @return string|null
+	 */
+	public function getEmailAddressForUser($userName) {
+		$userName = $this->getActualUsername($userName);
+		// The hard-coded user names and email addresses are also in ldap-users.ldif
+		// for testing in an LDAP environment. The mapping must be kept the
+		// same in both places.
+		if (\array_key_exists($userName, $this->createdUsers)) {
+			return (string) $this->createdUsers[$userName]['email'];
+		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
+			return (string)$this->createdRemoteUsers[$userName]['email'];
+		} elseif ($userName === 'regularuser') {
+			return 'regularuser@example.org';
+		} elseif ($userName === 'user0') {
+			return 'user0@example.org';
+		} elseif ($userName === 'user1') {
+			return 'user1@example.org';
+		} elseif ($userName === 'user2') {
+			return 'user2@example.org';
+		} elseif ($userName === 'user3') {
+			return 'user3@example.org';
+		} elseif ($userName === 'user4') {
+			return 'user4@example.org';
+		} elseif ($userName === 'usergrp') {
+			return 'usergrp@example.org';
+		} elseif ($userName === 'sharee1') {
+			return 'sharee1@example.org';
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * @param string $functionalUsername
+	 *
+	 * @return string
+	 */
+	public function getActualUsername($functionalUsername) {
+		if ($functionalUsername === "%admin%") {
+			return (string) $this->getAdminUsername();
+		} else {
+			return $functionalUsername;
+		}
+	}
+
+	/**
+	 * @param string $functionalPassword
+	 *
+	 * @return string
+	 */
+	public function getActualPassword($functionalPassword) {
+		if ($functionalPassword === "%regular%") {
+			return (string) $this->regularUserPassword;
+		} elseif ($functionalPassword === "%alt1%") {
+			return (string) $this->alt1UserPassword;
+		} elseif ($functionalPassword === "%alt2%") {
+			return (string) $this->alt2UserPassword;
+		} elseif ($functionalPassword === "%alt3%") {
+			return (string) $this->alt3UserPassword;
+		} elseif ($functionalPassword === "%alt4%") {
+			return (string) $this->alt4UserPassword;
+		} elseif ($functionalPassword === "%subadmin%") {
+			return (string) $this->subAdminPassword;
+		} elseif ($functionalPassword === "%admin%") {
+			return (string) $this->getAdminPassword();
+		} elseif ($functionalPassword === "%altadmin%") {
+			return (string) $this->alternateAdminPassword;
+		} elseif ($functionalPassword === "%public%") {
+			return (string) $this->publicLinkSharePassword;
+		} else {
+			return $functionalPassword;
 		}
 	}
 
@@ -1005,22 +1575,34 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When the admin requests status.php
+	 * @When the administrator requests status.php
 	 *
 	 * @return void
 	 */
+	public function theAdministratorRequestsStatusPhp() {
+		$this->response = $this->getStatusPhp();
+	}
+
+	/**
+	 *
+	 * @return ResponseInterface
+	 */
 	public function getStatusPhp() {
 		$fullUrl = $this->getBaseUrl() . "/status.php";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser('admin');
-		try {
-			$this->response = $client->send(
-				$client->createRequest('GET', $fullUrl, $options)
-			);
-		} catch (BadResponseException $ex) {
-			$this->response = $ex->getResponse();
+
+		$config = null;
+		if ($this->sourceIpAddress !== null) {
+			$config = [
+				'curl' => [
+					CURLOPT_INTERFACE => $this->sourceIpAddress
+				]
+			];
 		}
+
+		return HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(),
+			$this->getAdminPassword(), $this->guzzleClientHeaders, null, $config
+		);
 	}
 
 	/**
@@ -1047,8 +1629,36 @@ trait BasicStructure {
 	 */
 	public function statusPhpRespondedShouldMatch(PyStringNode $jsonExpected) {
 		$jsonExpectedDecoded = \json_decode($jsonExpected->getRaw(), true);
-		$jsonRespondedEncoded
-			= \json_encode(\json_decode($this->response->getBody(), true));
+		$jsonRespondedEncoded = \json_encode($this->getJsonDecodedResponse());
+
+		$this->theAdministratorGetsCapabilitiesCheckResponse();
+		$edition = $this->getParameterValueFromXml(
+			$this->getCapabilitiesXml(),
+			'core',
+			'status@@@edition'
+		);
+
+		if (!\strlen($edition)) {
+			PHPUnit_Framework_Assert::fail(
+				"Cannot get edition from capabilities"
+			);
+		}
+
+		$productName = $this->getParameterValueFromXml(
+			$this->getCapabilitiesXml(),
+			'core',
+			'status@@@productname'
+		);
+
+		if (!\strlen($edition)) {
+			PHPUnit_Framework_Assert::fail(
+				"Cannot get productname from capabilities"
+			);
+		}
+
+		$jsonExpectedDecoded['edition'] = $edition;
+		$jsonExpectedDecoded['productname'] = $productName;
+
 		$runOccStatus = $this->runOcc(['status']);
 		if ($runOccStatus === 0) {
 			$output = \explode("- ", $this->lastStdOut);
@@ -1071,6 +1681,74 @@ trait BasicStructure {
 				"Cannot get version variables from occ - status $runOccStatus"
 			);
 		}
+	}
+
+	/**
+	 * @param ResponseInterface|null $response
+	 *
+	 * @return array
+	 */
+	public function getJsonDecodedResponse($response = null) {
+		if ($response === null) {
+			$response = $this->getResponse();
+		}
+		return \json_decode(
+			$response->getBody(), true
+		);
+	}
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getJsonDecodedStatusPhp() {
+		return $this->getJsonDecodedResponse(
+			$this->getStatusPhp()
+		);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEditionFromStatus() {
+		$decodedResponse = $this->getJsonDecodedStatusPhp();
+		if (isset($decodedResponse['edition'])) {
+			return $decodedResponse['edition'];
+		}
+		return '';
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getProductNameFromStatus() {
+		$decodedResponse = $this->getJsonDecodedStatusPhp();
+		if (isset($decodedResponse['productname'])) {
+			return $decodedResponse['productname'];
+		}
+		return '';
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getVersionFromStatus() {
+		$decodedResponse = $this->getJsonDecodedStatusPhp();
+		if (isset($decodedResponse['version'])) {
+			return $decodedResponse['version'];
+		}
+		return '';
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getVersionStringFromStatus() {
+		$decodedResponse = $this->getJsonDecodedStatusPhp();
+		if (isset($decodedResponse['versionstring'])) {
+			return $decodedResponse['versionstring'];
+		}
+		return '';
 	}
 
 	/**
@@ -1162,20 +1840,93 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function temporaryStorageSubfolderName() {
+		return "work_tmp";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function acceptanceTestsDirLocation() {
+		return \dirname(__FILE__) . "/../../";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function workStorageDirLocation() {
+		return $this->acceptanceTestsDirLocation() . $this->temporaryStorageSubfolderName() . "/";
+	}
+
+	/**
+	 * Get the path of the ownCloud server root directory
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public function getServerRoot() {
+		if ($this->localServerRoot === null) {
+			$this->localServerRoot = SetupHelper::getServerRoot(
+				$this->getBaseUrl(),
+				$this->getAdminUsername(),
+				$this->getAdminPassword()
+			);
+		}
+		return $this->localServerRoot;
+	}
+
+	/**
 	 * @BeforeScenario @local_storage
 	 *
 	 * @return void
 	 */
-	public static function removeFilesFromLocalStorageBefore() {
-		$dir = "./work/local_storage/";
-		$di = new RecursiveDirectoryIterator(
-			$dir, FilesystemIterator::SKIP_DOTS
+	public function setupLocalStorageBefore() {
+		SetupHelper::init(
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			$this->getBaseUrl(),
+			$this->getOcPath()
 		);
-		$ri = new RecursiveIteratorIterator(
-			$di, RecursiveIteratorIterator::CHILD_FIRST
+		SetupHelper::mkDirOnServer(
+			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
 		);
-		foreach ($ri as $file) {
-			$file->isDir() ?  \rmdir($file) : \unlink($file);
+		$result = SetupHelper::runOcc(
+			[
+				'files_external:create',
+				'local_storage',
+				'local',
+				'null::null',
+				'-c',
+				'datadir=' . $this->getServerRoot() . '/' . LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
+			]
+		);
+		// stdOut should have a string like "Storage created with id 65"
+		$storageIdWords = \explode(" ", \trim($result['stdOut']));
+		$this->storageId = $storageIdWords[4];
+		SetupHelper::runOcc(
+			[
+				'files_external:option',
+				$this->storageId,
+				'enable_sharing',
+				'true'
+			]
+		);
+	}
+
+	/**
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function restoreAdminPassword() {
+		if ($this->adminPassword !== $this->originalAdminPassword) {
+			$this->adminResetsPasswordOfUserUsingTheProvisioningApi(
+				$this->getAdminUsername(),
+				$this->originalAdminPassword
+			);
+			$this->adminPassword = $this->originalAdminPassword;
 		}
 	}
 
@@ -1184,17 +1935,22 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public static function removeFilesFromLocalStorageAfter() {
-		$dir = "./work/local_storage/";
-		$di = new RecursiveDirectoryIterator(
-			$dir, FilesystemIterator::SKIP_DOTS
-		);
-		$ri = new RecursiveIteratorIterator(
-			$di, RecursiveIteratorIterator::CHILD_FIRST
-		);
-		foreach ($ri as $file) {
-			$file->isDir() ?  \rmdir($file) : \unlink($file);
+	public function removeLocalStorageAfter() {
+		if ($this->storageId !== null) {
+			SetupHelper::runOcc(
+				[
+					'files_external:delete',
+					'-y',
+					$this->storageId
+				]
+			);
 		}
+		SetupHelper::rmDirOnServer(
+			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
+		);
+		SetupHelper::rmDirOnServer(
+			TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER
+		);
 	}
 
 	/**
@@ -1211,8 +1967,6 @@ trait BasicStructure {
 			$fullUrl .= '/';
 		}
 		$fullUrl .= "ocs/v1.php/apps/testing/api/v1/increasefileid";
-		$client = new Client();
-		$options = [];
 		$suiteSettingsContexts = $scope->getSuite()->getSettings()['contexts'];
 		$adminUsername = null;
 		$adminPassword = null;
@@ -1242,7 +1996,6 @@ trait BasicStructure {
 			);
 		}
 
-		$options['auth'] = [$adminUsername, $adminPassword];
-		$client->send($client->createRequest('POST', $fullUrl, $options));
+		HttpRequestHelper::post($fullUrl, $adminUsername, $adminPassword);
 	}
 }

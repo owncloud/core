@@ -1,15 +1,12 @@
-@webUI @insulated @disablePreviews
+@webUI @insulated @disablePreviews @files_trashbin-app-required
 Feature: files and folders can be deleted from the trashbin
   As a user
   I want to delete files and folders from the trashbin
   So that I can control my trashbin space and which files are kept in that space
 
   Background:
-    Given these users have been created:
-      |username|password|displayname|email       |
-      |user1   |1234    |User One   |u1@oc.com.np|
-    And the user has browsed to the login page
-    And the user has logged in with username "user1" and password "1234" using the webUI
+    Given user "user1" has been created
+    And user "user1" has logged in using the webUI
     And the following files have been deleted
       | name          |
       | data.zip      |
@@ -18,6 +15,7 @@ Feature: files and folders can be deleted from the trashbin
       | simple-folder |
     And the user has browsed to the trashbin page
 
+  @smokeTest
   Scenario: Delete files and check that they are gone
     When the user deletes the file "lorem.txt" using the webUI
     And the user opens the folder "simple-folder" using the webUI

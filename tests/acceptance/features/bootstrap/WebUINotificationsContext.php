@@ -96,6 +96,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When /^the user follows the link of the (first|last) notification on the webUI$/
+	 * @Given /^the user has followed the link of the (first|last) notification on the webUI$/
 	 *
 	 * @param string $firstOrLast first|last
 	 *
@@ -126,6 +127,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When /^the user reacts with "(Accept|Decline)" to all notifications on the webUI$/
+	 * @Given /^the user has reacted with "(Accept|Decline)" to all notifications on the webUI$/
 	 *
 	 * @param string $reaction
 	 *
@@ -143,6 +145,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user accepts all shares displayed in the notifications on the webUI
+	 * @Given the user has accepted all shares displayed in the notifications on the webUI
 	 *
 	 * @return void
 	 */
@@ -152,6 +155,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user declines all shares displayed in the notifications on the webUI
+	 * @Given the user has declined all shares displayed in the notifications on the webUI
 	 *
 	 * @return void
 	 */
@@ -165,7 +169,6 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 */
 	protected function openNotificationsDialog() {
 		$this->getSession()->reload();
-		$this->owncloudPage->waitTillPageIsLoaded($this->getSession());
 		$this->owncloudPage->waitForNotifications();
 		return $this->owncloudPage->openNotifications();
 	}

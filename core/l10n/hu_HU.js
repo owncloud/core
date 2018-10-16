@@ -217,7 +217,6 @@ OC.L10N.register(
     "{sharee} (federated)" : "{sharee} (federated)",
     "User and Groups" : "Felhasználó és Csoportok",
     "Public Links" : "Publikus Hivatkozások",
-    "Resharing is not allowed" : "Ezt az állományt csak a tulajdonosa oszthatja meg másokkal",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Megosztás más ownCloud szerverekkel, a következő formátum használatával felhasználó@példa.hu/owncloud",
     "Share with users…" : "Megosztás felhasználókkal",
     "Share with users, groups or remote users…" : "Megosztás felhasználókkal, csoportokkal vagy távoli felhasználókkal...",

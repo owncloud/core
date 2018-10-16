@@ -115,7 +115,6 @@ OC.L10N.register(
     "delete" : "xóa",
     "access control" : "quản lý truy cập",
     "Public Links" : "Liên kết công khai",
-    "Resharing is not allowed" : "Chia sẻ lại không được cho phép",
     "Delete" : "Xóa",
     "Rename" : "Sửa tên",
     "The object type is not specified." : "Loại đối tượng không được chỉ định.",

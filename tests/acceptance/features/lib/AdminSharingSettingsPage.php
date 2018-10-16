@@ -59,6 +59,10 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	protected $onlyShareWithGroupMembersCheckboxXpath = '//label[@for="onlyShareWithGroupMembers"]';
 	protected $onlyShareWithGroupMembersCheckboxId = 'onlyShareWithGroupMembers';
 
+	protected $groupSharingBlackListFieldXpath = '//div[@id="files_sharing"]//input[contains(@class,"select2-input")]';
+	protected $groupListXpath = '//div[@id="select2-drop"]//li[contains(@class, "select2-result")]';
+	protected $groupListDropDownXpath = "//div[@id='select2-drop']";
+
 	/**
 	 * toggle checkbox
 	 *
@@ -146,7 +150,7 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	}
 
 	/**
-	 * toggle mail notification on public share
+	 * toggle mail notification on public link share
 	 *
 	 * @param string $action "enables|disables"
 	 *
@@ -161,13 +165,13 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	}
 
 	/**
-	 * toggle social share on public share
+	 * toggle social share on public link share
 	 *
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function toggleSocialShareOnPublicShare($action) {
+	public function toggleSocialShareOnPublicLinkShare($action) {
 		$this->toggleCheckbox(
 			$action,
 			$this->shareFileViaSocialMediaOnPublicShareCheckboxXpath,
@@ -266,6 +270,40 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	}
 
 	/**
+	 * add group to group sharing blacklist
+	 *
+	 * @param string $groupName
+	 *
+	 * @return void
+	 */
+	public function addGroupToGroupSharingBlacklist($groupName) {
+		$groupSharingBlackListField = $this->find("xpath", $this->groupSharingBlackListFieldXpath);
+		if ($groupSharingBlackListField === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->groupSharingBlackListFieldXpath " .
+				"could not find input field"
+			);
+		}
+		$groupSharingBlackListField->click();
+		$this->waitTillElementIsNotNull($this->groupListDropDownXpath);
+		$this->waitTillElementIsNotNull($this->groupListXpath);
+		$groupList = $this->findAll("xpath", $this->groupListXpath);
+		if ($groupSharingBlackListField === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->groupListXpath " .
+				"could not find group list"
+			);
+		}
+		foreach ($groupList as $group) {
+			if ($this->getTrimmedText($group) === $groupName) {
+				$group->click();
+			}
+		}
+	}
+
+	/**
 	 * waits till at least one Ajax call is active and
 	 * then waits till all outstanding ajax calls finish
 	 *
@@ -276,13 +314,13 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	 */
 	public function waitForAjaxCallsToStartAndFinish(
 		Session $session,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$start = \microtime(true);
 		$this->waitForAjaxCallsToStart($session);
 		$end = \microtime(true);
 		$timeout_msec = $timeout_msec - (($end - $start) * 1000);
-		$timeout_msec = \max($timeout_msec, MINIMUMUIWAITTIMEOUTMILLISEC);
+		$timeout_msec = \max($timeout_msec, MINIMUM_UI_WAIT_TIMEOUT_MILLISEC);
 		$this->waitForOutstandingAjaxCalls($session, $timeout_msec);
 	}
 }

@@ -25,7 +25,9 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\AdminSharingSettingsPage;
-use Page\LoginPage;
+use TestHelpers\SetupHelper;
+
+require_once 'bootstrap.php';
 
 /**
  * WebUI AdminSharingSettings context.
@@ -52,8 +54,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When the admin browses to the admin sharing settings page
-	 * @Given the admin has browsed to the admin sharing settings page
+	 * @When the administrator browses to the admin sharing settings page
+	 * @Given the administrator has browsed to the admin sharing settings page
 	 *
 	 * @return void
 	 */
@@ -63,7 +65,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When /^the admin (enables|disables) the share API using the webUI$/
+	 * @When /^the administrator (enables|disables) the share API using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -76,7 +79,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When /^the admin (enables|disables) share via link using the webUI$/
+	 * @When /^the administrator (enables|disables) share via link using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -89,7 +93,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When /^the admin (enables|disables) public uploads using the webUI$/
+	 * @When /^the administrator (enables|disables) public uploads using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -102,12 +107,13 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When /^the admin (enables|disables) mail notification on public share using the webUI$/
+	 * @When /^the administrator (enables|disables) mail notification on public link share using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function adminTogglesMailNotificationOnPublicShare($action) {
+	public function adminTogglesMailNotificationOnPublicLinkShare($action) {
 		$this->adminSharingSettingsPage->toggleMailNotification($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
@@ -115,20 +121,22 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When /^the admin (enables|disables) social media share on public share using the webUI$/
+	 * @When /^the administrator (enables|disables) social media share on public link share using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function adminTogglesSocialShareOnPublicShare($action) {
-		$this->adminSharingSettingsPage->toggleSocialShareOnPublicShare($action);
+	public function adminTogglesSocialShareOnPublicLinkShare($action) {
+		$this->adminSharingSettingsPage->toggleSocialShareOnPublicLinkShare($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);
 	}
 
 	/**
-	 * @When /^the admin (enables|disables) enforce password protection for read-only links using the webUI$/
+	 * @When /^the administrator (enables|disables) enforce password protection for read-only links using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -141,7 +149,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When /^the admin (enables|disables) enforce password protection for read and write links using the webUI$/
+	 * @When /^the administrator (enables|disables) enforce password protection for read and write links using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -154,7 +163,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When /^the admin (enables|disables) enforce password protection for upload only links using the webUI$/
+	 * @When /^the administrator (enables|disables) enforce password protection for upload only links using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -167,7 +177,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When /^the admin (enables|disables) resharing using the webUI$/
+	 * @When /^the administrator (enables|disables) resharing using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -180,7 +191,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When /^the admin (enables|disables) sharing with groups using the webUI$/
+	 * @When /^the administrator (enables|disables) sharing with groups using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -193,7 +205,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When /^the admin (enables|disables) restrict users to only share with their group members using the webUI$/
+	 * @When /^the administrator (enables|disables) restrict users to only share with their group members using the webUI$/
+	 *
 	 * @param string $action
 	 *
 	 * @return void
@@ -204,7 +217,21 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 			$this->getSession()
 		);
 	}
-	
+
+	/**
+	 * @When the administrator adds the group :group to the group sharing blacklist using the webUI
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorAddsTheGroupToTheGroupSharingBlacklistUsingTheWebui($group) {
+		$this->adminSharingSettingsPage->addGroupToGroupSharingBlacklist($group);
+		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
+			$this->getSession()
+		);
+	}
+
 	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
@@ -220,5 +247,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+		SetupHelper::runOcc(
+			['config:app:set files_sharing blacklisted_receiver_groups --value=']
+		);
 	}
 }

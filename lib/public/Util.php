@@ -655,6 +655,18 @@ class Util {
 	}
 
 	/**
+	 * Determine if the string is, strictly-speaking, empty or not
+	 *
+	 * @param $value
+	 * @return bool
+	 * @since 10.0.1
+	 */
+	public static function isEmptyString($value) {
+		$value = \trim(\strval($value));
+		return ($value === '' || $value === '0');
+	}
+
+	/**
 	 * Generates a cryptographic secure pseudo-random string
 	 * @param int $length of the random string
 	 * @return string

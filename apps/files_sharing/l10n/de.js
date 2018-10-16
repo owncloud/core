@@ -128,8 +128,8 @@ OC.L10N.register(
     "Download" : "Herunterladen",
     "Download %s" : "Download %s",
     "Direct link" : "Direkter Link",
-    "Files Sharing" : "Dateifreigabe",
-    "Exclude groups from receiving shares." : "Gruppen vom Empfang von Freigaben ausschließen",
-    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Diese Gruppen werden keine Freigaben bekommen. Mitglieder der Gruppe können weiterhin Freigaben außerhalb der Gruppe senden und empfangen."
+    "Group Sharing Blacklist" : "Vom Teilen ausgeschlossene Gruppen",
+    "Exclude groups from receiving shares" : "Gruppen von Teilen ausschliessen",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Diese Gruppen stehen nicht zum Teilen von Daten zur Verfügung. Einzelne Mitglieder können weiterhin Shares für andere Gruppen anlegen oder von ihnen empfangen, in denen sie Mitglied sind."
 },
 "nplurals=2; plural=(n != 1);");

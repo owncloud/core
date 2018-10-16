@@ -128,7 +128,8 @@ class DecryptAll extends Command {
 			'continue',
 			'c',
 			InputOption::VALUE_OPTIONAL,
-			'Provide yes or no. Whether to ask for permission to continue.'
+			'Provide yes or no. Whether to ask for permission to continue.',
+			'no'
 		);
 	}
 

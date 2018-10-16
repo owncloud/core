@@ -2,7 +2,7 @@
 
 /**
  * This configuration file is only provided to document the different
- * configuration options and their usage.
+ * configuration options and their usage for the core system.
  *
  * DO NOT COMPLETELY BASE YOUR CONFIGURATION FILE ON THIS SAMPLE. THIS MAY BREAK
  * YOUR INSTANCE. Instead, manually copy configuration switches that you
@@ -722,16 +722,6 @@ $CONFIG = array(
  * Some of the ownCloud code may be stored in alternate locations.
  */
 
-/**
- * This section is for configuring the download links for ownCloud clients, as
- * seen in the first-run wizard and on Personal pages.
- */
-'customclient_desktop' =>
-	'https://owncloud.org/install/#install-clients',
-'customclient_android' =>
-	'https://play.google.com/store/apps/details?id=com.owncloud.android',
-'customclient_ios' =>
-	'https://itunes.apple.com/us/app/owncloud/id543672169?mt=8',
 
 /**
  * If you want to store apps in a custom directory instead of ownCloud’s default 
@@ -744,7 +734,7 @@ $CONFIG = array(
  *                new apps will only install in a directory where writable is set to true.
  *
  * The configuration example shows how to add a second directory, called ``/apps-external``.
- * Here, new apps and updates are only writen to the ``/apps-external`` directory.
+ * Here, new apps and updates are only written to the ``/apps-external`` directory.
  * This eases upgrade procedures of owncloud where shipped apps are delivered to apps/ by default.
  * ``OC::$SERVERROOT`` points to the web root of your instance.
  * Please see the Apps Management description on how to move custom apps properly.
@@ -986,7 +976,7 @@ $CONFIG = array(
 	'port' => 6379,
 	'timeout' => 0.0,
 	'password' => '', // Optional, if not defined no password will be used.
-	'dbindex' => 0, // Optional, if undefined SELECT will not run and will use Redis Server's default DB Index.
+	'dbindex' => 0,   // Optional, if undefined SELECT will not run and will use Redis Server's default DB Index.
 ],
 
 /**
@@ -998,8 +988,8 @@ $CONFIG = array(
  * Redis Cluster support requires the php module phpredis in version 3.0.0 or higher.
  *
  * Available failover modes:
- *  - \RedisCluster::FAILOVER_NONE - only send commands to master nodes (default)
- *  - \RedisCluster::FAILOVER_ERROR - failover to slaves for read commands if master is unavailable
+ *  - \RedisCluster::FAILOVER_NONE       - only send commands to master nodes (default)
+ *  - \RedisCluster::FAILOVER_ERROR      - failover to slaves for read commands if master is unavailable
  *  - \RedisCluster::FAILOVER_DISTRIBUTE - randomly distribute read commands across master and slaves
  */
 'redis.cluster' => [
@@ -1044,7 +1034,7 @@ $CONFIG = array(
 	// Enable Binary Protocol
 	\Memcached::OPT_BINARY_PROTOCOL =>      true,
 
-	// Binary serializer vill be enabled if the igbinary PECL module is available
+	// Binary serializer will be enabled if the igbinary PECL module is available
 	//\Memcached::OPT_SERIALIZER => \Memcached::SERIALIZER_IGBINARY,
 ),
 
@@ -1245,7 +1235,7 @@ $CONFIG = array(
  * client may not function as expected, and could lead to permanent data loss for
  * clients or other unexpected results.
  */
-'minimum.supported.desktop.version' => '2.2.4',
+'minimum.supported.desktop.version' => '2.3.3',
 
 /**
  * EXPERIMENTAL: option whether to include external storage in quota
@@ -1309,7 +1299,7 @@ $CONFIG = array(
  * If set incorrectly, a client can spoof their IP address as visible to
  * ownCloud, bypassing access controls and making logs useless!
  *
- * Defaults to 'HTTP_X_FORWARED_FOR' if unset
+ * Defaults to 'HTTP_X_FORWARDED_FOR' if unset
  */
 'forwarded_for_headers' => array('HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR'),
 
@@ -1409,4 +1399,9 @@ $CONFIG = array(
  */
 'smb.logging.enable' => false, 
 
+
+/**
+ * Async dav extensions can be enabled or disabled.
+ */
+'dav.enable.async' => false,
 );

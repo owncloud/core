@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
 use Page\FilesPageElement\SharingDialog;
@@ -30,7 +31,12 @@ use Page\PublicLinkFilesPage;
 use Page\SharedWithYouPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
+use TestHelpers\HttpRequestHelper;
+use TestHelpers\EmailHelper;
 use TestHelpers\SetupHelper;
+use OC\Files\External\Auth\Password\Password;
+use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
+use Behat\Mink\Exception\ElementException;
 
 require_once 'bootstrap.php';
 
@@ -85,6 +91,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $oldMinCharactersForAutocomplete = null;
 	private $oldFedSharingFallbackSetting = null;
 
+	private $publicShareTab;
+	/**
+	 *
+	 * @var EditPublicLinkPopup
+	 */
+	private $publicSharingPopup;
+	private $linkName;
+
 	/**
 	 * WebUISharingContext constructor.
 	 *
@@ -127,7 +141,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserSharesTheFileFolderWithTheUserUsingTheWebUI(
-		$folder, $remote, $user, $maxRetries = STANDARDRETRYCOUNT, $quiet = false
+		$folder, $remote, $user, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		try {
@@ -194,6 +208,123 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Given the user has opened the public link share tab
+	 * @When the user opens the public link share tab
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserHasOpenedThePublicLinkShareTab() {
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab();
+	}
+
+	/**
+	 * @Given the user has renamed the public link name from :oldName to :newName
+	 * @When the user renames the public link name from :oldName to :newName
+	 *
+	 * @param string $oldName
+	 * @param string $newName
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserOpensThePublicLinkEditDialogOfThe($oldName, $newName) {
+		$this->publicShareTab->editLink($oldName, $newName);
+
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
+
+		$linkUrl = $this->publicShareTab->getLinkUrl($newName);
+		$this->addToListOfCreatedPublicLinks($newName, $linkUrl);
+	}
+
+	/**
+	 * @Given the user has changed the password of the public link for :name to :newPassword
+	 * @When the user changes the password of the public link for :name to :newPassword
+	 *
+	 * @param string $name
+	 * @param string $newPassword
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserChangesThePasswordOfThePublicLinkForTo($name, $newPassword) {
+		$this->publicShareTab->editLink($name, null, null, $newPassword);
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
+
+		$linkUrl = $this->publicShareTab->getLinkUrl($name);
+		$this->addToListOfCreatedPublicLinks($name, $linkUrl);
+	}
+
+	/**
+	 * @Given the user has changed the permission of the public link for :name to :newPermission
+	 * @When the user changes the permission of the public link for :name to :newPermission
+	 *
+	 * @param string $name
+	 * @param string $newPermission
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserChangesThePermissionOfThePublicLinkForTo($name, $newPermission) {
+		$this->publicShareTab->editLink($name, null, $newPermission);
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
+
+		$linkUrl = $this->publicShareTab->getLinkUrl($name);
+		$this->addToListOfCreatedPublicLinks($name, $linkUrl);
+	}
+
+	/**
+	 * @When the user opens the create public link share popup
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserOpensTheCreatePublicLinkSharePopup() {
+		$this->publicSharingPopup = $this->publicShareTab->openSharingPopup();
+	}
+
+	/**
+	 * @When the user adds the following email addresses using the webUI:
+	 *
+	 * @param TableNode $emails
+	 *
+	 * @return void
+	 */
+	public function theUserAddsTheFollowingEmailAddressesUsingTheWebUI(TableNode $emails) {
+		foreach ($emails as $row) {
+			$this->publicSharingPopup->setLinkEmail($row['email']);
+		}
+	}
+
+	/**
+	 * @When the user removes the following email addresses using the webUI:
+	 *
+	 * @param TableNode $emails
+	 *
+	 * @return void
+	 */
+	public function theUserRemovesTheFollowingEmailAddressesUsingTheWebui(TableNode $emails) {
+		foreach ($emails as $row) {
+			$this->publicSharingPopup->unsetLinkEmail($row['email']);
+		}
+	}
+
+	/**
+	 * @When the user creates the public link using the webUI
+	 *
+	 * @return void
+	 */
+	public function createsThePublicLinkUsingTheWebUI() {
+		$linkName = $this->publicSharingPopup->getLinkName();
+
+		$this->publicSharingPopup->save();
+		$this->publicSharingPopup->waitForAjaxCallsToStartAndFinish($this->getSession());
+
+		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
+		$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+	}
+
+	/**
 	 * @When the user creates a new public link for the file/folder :name using the webUI
 	 * @Given the user has created a new public link for the file/folder :name using the webUI
 	 *
@@ -213,9 +344,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $name
 	 * @param TableNode $settings table with the settings and no header
 	 *                            possible settings: name, permission,
-	 *                            password, expiration, email
+	 *                            password, expiration, email, emailToSelf, personalMessage
 	 *                            the permissions values has to be written exactly
 	 *                            the way its written in the UI
+	 *                            Setting emailToSelf will send a copy of email to the link creator
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -223,56 +355,61 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserCreatesANewPublicLinkForUsingTheWebUIWith(
 		$name, TableNode $settings = null
 	) {
-		$this->filesPage->waitTillPageIsloaded($this->getSession());
-		//close any open sharing dialog
-		//if there is no dialog open and we try to close it
-		//an exception will be thrown, but we do not care
-		try {
-			$this->filesPage->closeDetailsDialog();
-		} catch (Exception $e) {
-		}
-		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$name, $this->getSession()
-		);
-		$publicShareTab = $this->sharingDialog->openPublicShareTab();
-		if ($settings !== null) {
-			$settingsArray = $settings->getRowsHash();
-			if (!isset($settingsArray['name'])) {
-				$settingsArray['name'] = null;
-			}
-			if (!isset($settingsArray['permission'])) {
-				$settingsArray['permission'] = null;
-			}
-			if (!isset($settingsArray['password'])) {
-				$settingsArray['password'] = null;
-			}
-			if (!isset($settingsArray['expiration'])) {
-				$settingsArray['expiration'] = null;
-			}
-			if (!isset($settingsArray['email'])) {
-				$settingsArray['email'] = null;
-			}
-			$linkName = $publicShareTab->createLink(
-				$this->getSession(),
-				$settingsArray ['name'],
-				$settingsArray ['permission'],
-				$settingsArray ['password'],
-				$settingsArray ['expiration'],
-				$settingsArray ['email']
-			);
-			if ($settingsArray['name'] !== null) {
-				PHPUnit_Framework_Assert::assertSame(
-					$settingsArray ['name'], $linkName,
-					"set and retrieved public link names are not the same"
-				);
-			}
-		} else {
-			$linkName = $publicShareTab->createLink($this->getSession());
-		}
-		$linkUrl = $publicShareTab->getLinkUrl($linkName);
+		$linkName = $this->createPublicShareLink($name, $settings);
+		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
 		$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
 	}
-	
+
+	/**
+	 * @When the user tries to create a new public link for the file/folder :name using the webUI with
+	 * @When the user tries to create a new public link for the file/folder :name using the webUI
+	 *
+	 * @param string $name
+	 * @param TableNode $settings table with the settings and no header
+	 *                            possible settings: name, permission,
+	 *                            password, expiration, email
+	 *                            the permissions values has to be written exactly
+	 *                            the way its written in the UI
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserTriesToCreateANewPublicLinkForUsingTheWebUIWith(
+		$name, TableNode $settings = null
+	) {
+		$this->linkName = $this->createPublicShareLink($name, $settings);
+	}
+
+	/**
+	 * @Then the user should see an error message on the public link share dialog saying :expectedWarningMessage
+	 *
+	 * @param string $expectedWarningMessage
+	 *
+	 * @return void
+	 */
+	public function theUserShouldSeeAnErrorMessageOnThePublicLinkShareDialogSaying(
+		$expectedWarningMessage
+	) {
+		$warningMessage = $this->publicShareTab->getWarningMessage();
+		PHPUnit_Framework_Assert::assertEquals($expectedWarningMessage, $warningMessage);
+	}
+
+	/**
+	 * @Then the public link should not have been generated
+	 *
+	 * @return void
+	 */
+	public function thePublicLinkShouldNotHaveBeenGenerated() {
+		try {
+			$this->publicShareTab->getLinkUrl($this->linkName);
+		} catch (Exception $e) {
+			PHPUnit_Framework_Assert::assertContains(
+				"could not find link entry with the given name",
+				$e->getMessage()
+			);
+		}
+	}
+
 	/**
 	 * @When the user closes the share dialog
 	 * @Given the user has closed the share dialog
@@ -286,6 +423,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user types :input in the share-with-field
+	 * @Given the user has typed :input in the share-with-field
 	 *
 	 * @param string $input
 	 *
@@ -344,21 +482,17 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function setMinCharactersForAutocomplete($minCharacters) {
 		if ($this->oldMinCharactersForAutocomplete === null) {
-			$oldMinCharactersForAutocomplete = SetupHelper::runOcc(
-				['config:system:get', 'user.search_min_length']
-			)['stdOut'];
+			$oldMinCharactersForAutocomplete
+				= $this->featureContext->getSystemConfigValue(
+					'user.search_min_length'
+				);
 			$this->oldMinCharactersForAutocomplete = \trim(
 				$oldMinCharactersForAutocomplete
 			);
 		}
 		$minCharacters = (int) $minCharacters;
-		SetupHelper::runOcc(
-			[
-				'config:system:set',
-				'user.search_min_length',
-				'--value',
-				$minCharacters
-			]
+		$this->featureContext->setSystemConfig(
+			'user.search_min_length', $minCharacters
 		);
 	}
 
@@ -370,20 +504,16 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function allowHttpFallbackForFedSharing() {
 		if ($this->oldFedSharingFallbackSetting === null) {
-			$oldFedSharingFallbackSetting = SetupHelper::runOcc(
-				['config:system:get', 'sharing.federation.allowHttpFallback']
-			)['stdOut'];
+			$oldFedSharingFallbackSetting
+				= $this->featureContext->getSystemConfigValue(
+					'sharing.federation.allowHttpFallback'
+				);
 			$this->oldFedSharingFallbackSetting = \trim(
 				$oldFedSharingFallbackSetting
 			);
 		}
-		SetupHelper::runOcc(
-			[
-				'config:system:set',
-				'sharing.federation.allowHttpFallback',
-				'--type boolean',
-				'--value true',
-			]
+		$this->featureContext->setSystemConfig(
+			'sharing.federation.allowHttpFallback', 'true', 'boolean'
 		);
 	}
 
@@ -401,6 +531,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the public accesses the last created public link using the webUI
+	 * @Given the public has accessed the last created public link using the webUI
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -420,6 +551,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the public adds the public link to :server as user :username with the password :password using the webUI
+	 * @Given the public has added the public link to :server as user :username with the password :password using the webUI
 	 *
 	 * @param string $server
 	 * @param string $username
@@ -443,6 +575,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When /^the user (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the webUI$/
+	 * @Given /^the user has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)" using the webUI$/
 	 *
 	 * @param string $action
 	 * @param string $share
@@ -461,7 +594,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$found = false;
 		foreach ($fileRows as $fileRow) {
 			if ($offeredBy === $fileRow->getSharer()) {
-				if ($action === "accepts") {
+				if (\substr($action, 0, 6) === "accept") {
 					$fileRow->acceptShare($this->getSession());
 				} else {
 					$fileRow->declineShare($this->getSession());
@@ -476,6 +609,52 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				" could not find share '$share' offered by '$offeredBy'"
 			);
 		}
+	}
+
+	/**
+	 * @When the public accesses the last created public link with password :password using the webUI
+	 *
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function thePublicAccessesPublicLinkWithPasswordUsingTheWebui($password) {
+		$createdPublicLinks = $this->createdPublicLinks;
+		$baseUrl = $this->featureContext->getBaseUrl();
+		$this->publicLinkFilesPage->openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl);
+		$this->publicLinkFilesPage->enterPublicLinkPassword($password);
+		$this->publicLinkFilesPage->waitTillPageIsLoaded($this->getSession());
+		$this->webUIGeneralContext->setCurrentPageObject($this->publicLinkFilesPage);
+	}
+
+	/**
+	 * @When the public tries to access the last created public link with wrong password :wrongPassword using the webUI
+	 *
+	 * @param string $wrongPassword
+	 *
+	 * @return void
+	 */
+	public function thePublicTriesToAccessPublicLinkWithWrongPasswordUsingTheWebui($wrongPassword) {
+		$createdPublicLinks = $this->createdPublicLinks;
+		$baseUrl = $this->featureContext->getBaseUrl();
+		$this->publicLinkFilesPage->openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl);
+		$this->publicLinkFilesPage->enterPublicLinkPassword($wrongPassword);
+		$this->sharedWithYouPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+	}
+
+	/**
+	 * @Then the public should not get access to the publicly shared file
+	 *
+	 * @return void
+	 */
+	public function thePublicShouldNotGetAccessToPublicShareFile() {
+		$warningMessage = $this->publicLinkFilesPage->getWarningMessage();
+		PHPUnit_Framework_Assert::assertEquals('The password is wrong. Try again.', $warningMessage);
+
+		$lastCreatedLink = \end($this->createdPublicLinks);
+		$lastSharePath = $lastCreatedLink['url'] . '/authenticate';
+		$currentPath = $this->getSession()->getCurrentUrl();
+		PHPUnit_Framework_Assert::assertEquals($lastSharePath, $currentPath);
 	}
 
 	/**
@@ -766,6 +945,129 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * create public share link
+	 *
+	 * @param string $name
+	 * @param TableNode|null $settings table with the settings and no header
+	 *                                 possible settings: name, permission,
+	 *                                 password, expiration, email, personalMessage
+	 *                                 the permissions values have to be written
+	 *                                 exactly the way they are written in the UI
+	 *
+	 * @return string
+	 */
+	public function createPublicShareLink($name, $settings = null) {
+		$this->filesPage->waitTillPageIsloaded($this->getSession());
+		//close any open sharing dialog
+		//if there is no dialog open and we try to close it
+		//an exception will be thrown, but we do not care
+		try {
+			$this->filesPage->closeDetailsDialog();
+		} catch (Exception $e) {
+		}
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
+			$name, $this->getSession()
+		);
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab();
+		if ($settings !== null) {
+			$settingsArray = $settings->getRowsHash();
+			if (!isset($settingsArray['name'])) {
+				$settingsArray['name'] = null;
+			}
+			if (!isset($settingsArray['permission'])) {
+				$settingsArray['permission'] = null;
+			}
+			if (!isset($settingsArray['password'])) {
+				$settingsArray['password'] = null;
+			}
+			if (!isset($settingsArray['expiration'])) {
+				$settingsArray['expiration'] = null;
+			}
+			if (!isset($settingsArray['email'])) {
+				$settingsArray['email'] = null;
+			}
+			if (!isset($settingsArray['emailToSelf'])) {
+				$settingsArray['emailToSelf'] = null;
+			}
+			if (!isset($settingsArray['personalMessage'])) {
+				$settingsArray['personalMessage'] = null;
+			}
+			$linkName = $this->publicShareTab->createLink(
+				$this->getSession(),
+				$settingsArray ['name'],
+				$settingsArray ['permission'],
+				$settingsArray ['password'],
+				$settingsArray ['expiration'],
+				$settingsArray ['email'],
+				$settingsArray ['emailToSelf'],
+				$settingsArray ['personalMessage']
+			);
+			if ($settingsArray['name'] !== null) {
+				PHPUnit_Framework_Assert::assertSame(
+					$settingsArray ['name'], $linkName,
+					"set and retrieved public link names are not the same"
+				);
+			}
+		} else {
+			$linkName = $this->publicShareTab->createLink($this->getSession());
+		}
+		return $linkName;
+	}
+
+	/**
+	 * @Then the text preview of the public link should contain :content
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theTextPreviewOfThePublicLinkShouldContain($content) {
+		$previewText = $this->publicLinkFilesPage->getPreviewText();
+		PHPUnit_Framework_Assert::assertContains(
+			$content, $previewText,
+			__METHOD__ . " file preview does not contain expected content"
+		);
+	}
+
+	/**
+	 * @Then the content of the file shared by last public link should be the same as :originalFile
+	 *
+	 * @param string $originalFile
+	 *
+	 * @return void
+	 */
+	public function theContentOfTheFileSharedByLastPublicLinkShouldBeTheSameAs($originalFile) {
+		$url = $this->publicLinkFilesPage->getDownloadUrl();
+		$response = HttpRequestHelper::get($url);
+		PHPUnit_Framework_Assert::assertEquals(200, $response->getStatusCode());
+		$body = $response->getBody()->getContents();
+
+		$user = $this->featureContext->getCurrentUser();
+		$password = $this->featureContext->getPasswordForUser($user);
+
+		$this->featureContext->downloadFileAsUserUsingPassword($user, $originalFile, $password);
+		$originalContent = $this->featureContext->getResponse()->getBody()->getContents();
+
+		PHPUnit_Framework_Assert::assertSame($originalContent, $body);
+	}
+
+	/**
+	 * @Then the email address :address should have received an email containing last shared public link
+	 *
+	 * @param string $address
+	 *
+	 * @return void
+	 */
+	public function theEmailAddressShouldHaveReceivedAnEmailContainingSharedPublicLink($address) {
+		$content = EmailHelper::getBodyOfLastEmail(
+			EmailHelper::getLocalMailhogUrl(),
+			$address
+		);
+		$lastCreatedPublicLink = \end($this->createdPublicLinks);
+		PHPUnit_Framework_Assert::assertContains($lastCreatedPublicLink["url"], $content);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
@@ -796,31 +1098,23 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function tearDownScenario() {
 		//TODO make a function that can be used for different settings
 		if ($this->oldMinCharactersForAutocomplete === "") {
-			SetupHelper::runOcc(['config:system:delete', 'user.search_min_length']);
+			$this->featureContext->deleteSystemConfig('user.search_min_length');
 		} elseif ($this->oldMinCharactersForAutocomplete !== null) {
-			SetupHelper::runOcc(
-				[
-					'config:system:set',
-					'user.search_min_length',
-					'--value',
-					$this->oldMinCharactersForAutocomplete
-				]
+			$this->featureContext->setSystemConfig(
+				'user.search_min_length',
+				$this->oldMinCharactersForAutocomplete
 			);
 		}
 
 		if ($this->oldFedSharingFallbackSetting === "") {
-			SetupHelper::runOcc(
-				['config:system:delete', 'sharing.federation.allowHttpFallback']
+			$this->featureContext->deleteSystemConfig(
+				'sharing.federation.allowHttpFallback'
 			);
 		} elseif ($this->oldFedSharingFallbackSetting !== null) {
-			SetupHelper::runOcc(
-				[
-					'config:system:set',
-					'sharing.federation.allowHttpFallback',
-					'--type boolean',
-					'--value',
-					$this->oldFedSharingFallbackSetting
-				]
+			$this->featureContext->setSystemConfig(
+				'sharing.federation.allowHttpFallback',
+				$this->oldFedSharingFallbackSetting,
+				'boolean'
 			);
 		}
 	}

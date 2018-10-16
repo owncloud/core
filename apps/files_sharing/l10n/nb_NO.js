@@ -127,9 +127,6 @@ OC.L10N.register(
     "%s is publicly shared" : "%s er offentlig delt",
     "Download" : "Last ned",
     "Download %s" : "Last ned %s",
-    "Direct link" : "Direkte lenke",
-    "Files Sharing" : "Fildeling",
-    "Exclude groups from receiving shares." : "Ekskluder grupper fra å motta delinger.",
-    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Disse gruppene vil ikke motta delinger. Medlemmer av gruppen kan fortsatt sende og motta delinger utenfor gruppen."
+    "Direct link" : "Direkte lenke"
 },
 "nplurals=2; plural=(n != 1);");

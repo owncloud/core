@@ -38,7 +38,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @var string $path
 	 */
 	protected $path = '/index.php/apps/files/';
-
+	private $detailsDialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
 	private $detailsDialogCloseXpath = "//div[@id='app-sidebar']//*[@class='close icon-close']";
 	private $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
 	private $thumbnailFromContainerXpath = "/a";
@@ -47,6 +47,22 @@ class DetailsDialog extends OwncloudPage {
 		'sharing' => "shareTabView",
 		'versions' => "versionsTabView"
 	];
+	private $tagsContainer = "//div[@class='systemTagsInputFieldContainer']";
+
+	private $tagsInputXpath = "//li[@class='select2-search-field']//input";
+
+	private $tagsSuggestDropDownXpath = "//div[contains(@class, 'systemtags-select2-dropdown') and contains(@id, 'select2-drop')]";
+
+	private $tagsResultFromDropdownXpath = "//li[contains(@class, 'select2-result')]";
+	private $tagEditButtonInTagXpath = "//span[@class='systemtags-actions']//a[contains(@class, 'rename')]";
+	private $tagDeleteButtonInTagXpath = "//form[@class='systemtags-rename-form']//a";
+
+	private $commentInputXpath = "//form[@class='newCommentForm']//textarea[@class='message']";
+	private $commentPostXpath = "//form[@class='newCommentForm']//input[@class='submit']";
+	private $commentEditFormXpath = "//ul[@class='comments']//div[@class='newCommentRow comment']";
+	private $commentEditButtonXpath = "//a[@data-original-title='Edit comment']";
+	private $commentDeleteButtonXpath = "//a[@data-original-title='Delete comment']";
+	private $commentListXpath = "//ul[@class='comments']//div[@class='message']";
 
 	/**
 	 * Lookup the id for the requested details tab.
@@ -85,6 +101,129 @@ class DetailsDialog extends OwncloudPage {
 			);
 		}
 		return $tab;
+	}
+
+	/**
+	 * find the xpath of comment with given content
+	 *
+	 * @param string $content
+	 *
+	 * @return string
+	 */
+	private function getCommentXpath($content) {
+		return "//ul[@class='comments']//div[@class='message' and contains(., '" . $content . "')]";
+	}
+
+	/**
+	 * change the active tab of details panel
+	 *
+	 * @param string $tabName e.g. comments, sharing, versions
+	 *
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function changeDetailsTab($tabName) {
+		$tabId = $this->getDetailsTabId($tabName);
+		$tabSwitchXpath = "//li[@data-tabid='" . $tabId . "']";
+		$tabSwitch = $this->find("xpath", $tabSwitchXpath);
+		if ($tabSwitch === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" could not find tab switch with id $tabName"
+			);
+		}
+		$this->waitTillElementIsNotNull($tabSwitchXpath);
+		$tabSwitch->focus();
+		$tabSwitch->click();
+	}
+
+	/**
+	 * checks if the details dialog is visible
+	 *
+	 * @return bool
+	 */
+	public function isDialogVisible() {
+		try {
+			$dialog = $this->find("xpath", $this->detailsDialogXpath);
+			$visible = $dialog !== null;
+		} catch (ElementNotFoundException $e) {
+			$visible = false;
+		}
+		return $visible;
+	}
+
+	/**
+	 * get the list of comments listed in the webUI
+	 *
+	 * @return NodeElement[]
+	 */
+	public function getCommentList() {
+		$this->waitTillElementIsNotNull($this->detailsDialogXpath);
+		$dialog = $this->find("xpath", $this->detailsDialogXpath);
+		$commentList = $dialog->findAll("xpath", $this->commentListXpath);
+		return  $commentList;
+	}
+	/**
+	 * check if a comment with given text is listed in the webUI
+	 *
+	 * @param string $text
+	 *
+	 * @return bool
+	 */
+	public function isCommentOnUI($text) {
+		$commentList = $this->getCommentList();
+		if (\sizeof($commentList) === 0) {
+			return false;
+		}
+		foreach ($commentList as $comment) {
+			$this->waitTillElementIsNotNull($comment->getXpath());
+			if ($comment->getText() === $text) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * add a comment in a file whose details dialog is shown in the webUI
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function addComment($content) {
+		$commentInput = $this->find("xpath", $this->commentInputXpath);
+		$commentInput->setValue($content);
+		$postButton = $this->find("xpath", $this->commentPostXpath);
+		$postButton->focus();
+		$postButton->click();
+		$this->waitTillElementIsNotNull($this->getCommentXpath($content));
+	}
+
+	/**
+	 * delete the comment in a file whose details dialog is shown in the webUI with given content
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 *
+	 */
+	public function deleteComment($content) {
+		$commentList = $this->find("xpath", $this->getCommentXpath($content));
+		$this->waitTillElementIsNotNull($this->commentListXpath);
+
+		$this->waitTillElementIsNotNull($this->commentEditButtonXpath);
+		$commentEditButton = $commentList->getParent()->find("xpath", $this->commentEditButtonXpath);
+		$commentEditButton->focus();
+		$commentEditButton->click();
+
+		$this->waitTillElementIsNotNull($this->commentEditFormXpath);
+		$commentEditForm = $this->find("xpath", $this->commentEditFormXpath);
+		$commentEditForm->focus();
+
+		$commentDeleteButton = $commentEditForm->find("xpath", $this->commentDeleteButtonXpath);
+		$commentDeleteButton->focus();
+		$commentDeleteButton->click();
 	}
 
 	/**
@@ -141,6 +280,106 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
+	 * Insert tag name inside the tag field
+	 *
+	 * @param string $tagName
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function insertTagNameInTheTagsField($tagName) {
+		$inputField = $this->find(
+			"xpath",
+			$this->tagsContainer . $this->tagsInputXpath
+		);
+
+		if ($inputField === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->tagsContainer . $this->tagsInputXpath " .
+				"could not find input field"
+			);
+		}
+		$inputField->focus();
+		$inputField->setValue($tagName);
+
+		$this->waitTillElementIsNotNull($this->tagsSuggestDropDownXpath);
+	}
+
+	/**
+	 * Get tag suggestions result from the dropdown
+	 *
+	 * @return NodeElement[]
+	 */
+	public function getDropDownTagsSuggestionResults() {
+		$this->waitTillElementIsNotNull($this->tagsSuggestDropDownXpath);
+
+		// select2 requires some time to display the results even though the dropdown has appeared.
+		// Until that, select2 shows `Searching...` in the dropdown.
+		// We are waiting here till a single result show up on the dropdown.
+		$this->waitTillElementIsNotNull($this->tagsSuggestDropDownXpath . $this->tagsResultFromDropdownXpath);
+
+		return $this->findAll("xpath", $this->getTagsDropDownResultsXpath());
+	}
+
+	/**
+	 * Add a tag on the files in the details dialog
+	 *
+	 * @param string $tagName
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function addTag($tagName) {
+		$this->insertTagNameInTheTagsField($tagName);
+
+		$this->waitTillElementIsNotNull($this->tagsSuggestDropDownXpath);
+
+		$tagSuggestions = $this->getDropDownTagsSuggestionResults();
+
+		foreach ($tagSuggestions as $tag) {
+			if ($tag->getText() === $tagName) {
+				$tag->click();
+			}
+		}
+	}
+
+	/**
+	 * Delete the tag with the given name
+	 *
+	 * @param string $tagName
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function deleteTag($tagName) {
+		$this->insertTagNameInTheTagsField($tagName);
+		$suggestions = $this->getDropDownTagsSuggestionResults();
+		foreach ($suggestions as $tag) {
+			if ($tag->getText() === $tagName) {
+				$tagContainer = $tag->getParent();
+				$editBtn = $tagContainer->find("xpath", $this->tagEditButtonInTagXpath);
+				$editBtn->focus();
+				$editBtn->click();
+
+				$deleteBtn = $this->find("xpath", $this->tagDeleteButtonInTagXpath);
+				$deleteBtn->focus();
+				$deleteBtn->click();
+			}
+		}
+	}
+	/**
+	 * Returns xpath of the tag results dropdown
+	 *
+	 * @return string
+	 */
+	public function getTagsDropDownResultsXpath() {
+		return "//div[contains(@class, 'systemtags-select2-dropdown')]" .
+			"//ul[@class='select2-results']" .
+			"//span[@class='label']";
+	}
+
+	/**
 	 * closes the details dialog panel
 	 *
 	 * @throws ElementNotFoundException
@@ -187,7 +426,7 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -199,7 +438,7 @@ class DetailsDialog extends OwncloudPage {
 			} catch (ElementNotFoundException $e) {
 				// Just loop and try again if the element was not found yet.
 			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 

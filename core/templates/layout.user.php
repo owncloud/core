@@ -67,8 +67,8 @@
 			} ?>">
 							<?php if ($_['userAvatarSet']): ?>
 								<img alt="" width="32" height="32"
-								src="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 32]));?>"
-								srcset="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 64]));?> 2x, <?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 128]));?> 4x"
+								src="<?php p(\OC::$server->getURLGenerator()->linkTo('', 'remote.php') . '/dav/avatars/' . \rawurlencode($_['user_uid']) . '/32.jpeg');?>"
+								srcset="<?php p(\OC::$server->getURLGenerator()->linkTo('', 'remote.php') . '/dav/avatars/' . \rawurlencode($_['user_uid']) . '/32.jpeg');?> 2x, <?php p(\OC::$server->getURLGenerator()->linkTo('', 'remote.php') . '/dav/avatars/' . \rawurlencode($_['user_uid']) . '/32.jpeg');?> 4x"
 								>
 							<?php endif; ?>
 						</div>

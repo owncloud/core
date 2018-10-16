@@ -22,18 +22,13 @@
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
+use TestHelpers\HttpRequestHelper;
 
 /**
  * CardDav functions
  */
 class CardDavContext implements \Behat\Behat\Context\Context {
-	/**
-	 * @var Client
-	 */
-	private $client;
 	/**
 	 * @var ResponseInterface
 	 */
@@ -60,7 +55,6 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
-		$this->client = new Client();
 		$this->responseXml = '';
 	}
 
@@ -72,15 +66,10 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	public function afterScenario() {
 		$davUrl = $this->featureContext->getBaseUrl()
 			. '/remote.php/dav/addressbooks/users/admin/MyAddressbook';
-		try {
-			$this->client->delete(
-				$davUrl,
-				[
-					'auth' => $this->featureContext->getAuthOptionForAdmin()
-				]
-			);
-		} catch (BadResponseException $e) {
-		}
+		HttpRequestHelper::delete(
+			$davUrl, $this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword()
+		);
 	}
 
 	/**
@@ -93,19 +82,13 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function userRequestsAddressBookUsingTheAPI($user, $addressBook) {
+		$user = $this->featureContext->getActualUsername($user);
 		$davUrl = $this->featureContext->getBaseUrl()
 			. "/remote.php/dav/addressbooks/users/$addressBook";
 
-		try {
-			$this->response = $this->client->get(
-				$davUrl,
-				[
-					'auth' => $this->featureContext->getAuthOptionForUser($user)
-				]
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-		}
+		$this->response = HttpRequestHelper::get(
+			$davUrl, $user, $this->featureContext->getPasswordForUser($user)
+		);
 	}
 
 	/**
@@ -118,14 +101,12 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function userHasCreatedAnAddressBookNamed($user, $addressBook) {
+		$user = $this->featureContext->getActualUsername($user);
 		$davUrl = $this->featureContext->getBaseUrl()
 			. "/remote.php/dav/addressbooks/users/$user/$addressBook";
 
-		$request = $this->client->createRequest(
-			'MKCOL',
-			$davUrl,
-			[
-				'body' => '<d:mkcol xmlns:card="urn:ietf:params:xml:ns:carddav"
+		$headers = ['Content-Type' => 'application/xml;charset=UTF-8'];
+		$body = '<d:mkcol xmlns:card="urn:ietf:params:xml:ns:carddav"
               xmlns:d="DAV:">
     <d:set>
       <d:prop>
@@ -134,15 +115,11 @@ class CardDavContext implements \Behat\Behat\Context\Context {
           </d:resourcetype>,<d:displayname>' . $addressBook . '</d:displayname>
       </d:prop>
     </d:set>
-  </d:mkcol>',
-				'auth' => $this->featureContext->getAuthOptionForUser($user),
-				'headers' => [
-					'Content-Type' => 'application/xml;charset=UTF-8',
-				],
-			]
+  </d:mkcol>';
+		$this->response = HttpRequestHelper::sendRequest(
+			$davUrl, 'MKCOL', $user, $this->featureContext->getPasswordForUser($user),
+			$headers, $body
 		);
-
-		$this->response = $this->client->send($request);
 		$this->theCardDavHttpStatusCodeShouldBe(201);
 	}
 
@@ -182,17 +159,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function theCardDavExceptionShouldBe($message) {
-		$result = $this->responseXml['value'][0]['value'];
-
-		if ($message !== $result) {
-			throw new \Exception(
-				\sprintf(
-					'Expected %s got %s',
-					$message,
-					$result
-				)
-			);
-		}
+		$this->featureContext->theDavExceptionShouldBe($message, $this->responseXml);
 	}
 
 	/**
@@ -204,16 +171,6 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function theCardDavErrorMessageShouldBe($message) {
-		$result = $this->responseXml['value'][1]['value'];
-
-		if ($message !== $result) {
-			throw new \Exception(
-				\sprintf(
-					'Expected %s got %s',
-					$message,
-					$result
-				)
-			);
-		}
+		$this->featureContext->theDavErrorMessageShouldBe($message, $this->responseXml);
 	}
 }

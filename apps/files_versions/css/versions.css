@@ -44,6 +44,9 @@
 
 .versionsTabView img.preview {
 	cursor: default;
+	background-size: 32px;
+	width: 32px;
+	height: 32px;
 }
 
 .versionsTabView .version-container {

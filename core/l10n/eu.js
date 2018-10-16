@@ -164,7 +164,6 @@ OC.L10N.register(
     "delete" : "ezabatu",
     "access control" : "sarrera kontrola",
     "User and Groups" : "Erabiltzaile eta Taldeak",
-    "Resharing is not allowed" : "Berriz elkarbanatzea ez dago baimendua",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Partekatu beste ownClud-en jendearekin sintaxi honekin erabiltzaleizena@adibidea.com/owncloud",
     "Delete" : "Ezabatu",
     "Rename" : "Berrizendatu",

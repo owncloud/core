@@ -42,12 +42,14 @@ use OCP\IUser;
 use OCP\IConfig;
 use OCP\IUserBackend;
 use OCP\IUserSession;
+use OCP\PreConditionNotMetException;
 use OCP\User\IChangePasswordBackend;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class User implements IUser {
 	use EventEmitterTrait;
+
 	/** @var Account */
 	private $account;
 
@@ -120,6 +122,35 @@ class User implements IUser {
 	 */
 	public function getUID() {
 		return $this->account->getUserId();
+	}
+
+	/**
+	 * get the user name
+	 * TODO move username to account table
+	 *
+	 * @return string
+	 */
+	public function getUserName() {
+		$uid = $this->getUID();
+		return $this->config->getUserValue($uid, 'core', 'username', $uid);
+	}
+
+	/**
+	 * set the user name
+	 * TODO move username to account table
+	 *
+	 * @param string $userName
+	 */
+	public function setUserName($userName) {
+		$currentUserName = $this->getUserName();
+		if ($userName !== $currentUserName) {
+			$uid = $this->getUID();
+			try {
+				$this->config->setUserValue($uid, 'core', 'username', $userName);
+			} catch (PreConditionNotMetException $e) {
+				// ignore, because precondition is empty
+			}
+		}
 	}
 
 	/**
@@ -251,13 +282,18 @@ class User implements IUser {
 	}
 
 	/**
-	 * Set the password of the user
+	 * Set the user's password
 	 *
 	 * @param string $password
 	 * @param string $recoveryPassword for the encryption app to reset encryption keys
 	 * @return bool
+	 * @throws \InvalidArgumentException
 	 */
 	public function setPassword($password, $recoveryPassword = null) {
+		if (\OCP\Util::isEmptyString($password)) {
+			throw new \InvalidArgumentException('Password cannot be empty');
+		}
+
 		return $this->emittingCall(function () use (&$password, &$recoveryPassword) {
 			if ($this->emitter) {
 				$this->emitter->emit('\OC\User', 'preSetPassword', [$this, $password, $recoveryPassword]);
@@ -505,5 +541,13 @@ class User implements IUser {
 			return \substr($term, 0, 191);
 		}, $terms);
 		$this->mapper->setTermsForAccount($this->account->getId(), $terms);
+	}
+
+	/**
+	 * @return integer
+	 * @since 11.0.0
+	 */
+	public function getAccountId() {
+		return $this->account->getId();
 	}
 }

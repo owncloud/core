@@ -35,6 +35,7 @@
 namespace OC\Files\Cache;
 
 use OC\Files\Filesystem;
+use OC\Files\Utils\FileUtils;
 use OC\Hooks\BasicEmitter;
 use OCA\Files_Sharing\ISharedStorage;
 use OCP\Files\Cache\IScanner;
@@ -116,9 +117,13 @@ class Scanner extends BasicEmitter implements IScanner {
 		if ($data === null) {
 			\OCP\Util::writeLog(Scanner::class, "!!! Path '$path' is not accessible or present !!!", \OCP\Util::DEBUG);
 			// Last Line of Defence against potential Metadata-loss
-			if ($this->storage->instanceOfStorage(IHomeStorage::class) && !$this->storage->instanceOfStorage(ISharedStorage::class) && ($path === '' || $path === 'files')) {
-				\OCP\Util::writeLog(Scanner::class, 'Missing important folder "' . $path . '" in home storage!!! - ' . $this->storageId, \OCP\Util::ERROR);
-				throw new \OCP\Files\StorageNotAvailableException('Missing important folder "' . $path . '" in home storage - ' . $this->storageId);
+			if ($this->storage->instanceOfStorage(IHomeStorage::class)
+				&& !$this->storage->instanceOfStorage(ISharedStorage::class)
+				&& ($path === '' || $path === 'files')
+			) {
+				$errorMsg = \sprintf('Missing important folder "%s" in home storage - %s', $path, $this->storageId);
+				\OCP\Util::writeLog(Scanner::class, $errorMsg, \OCP\Util::ERROR);
+				throw new \OCP\Files\StorageNotAvailableException($errorMsg);
 			}
 		}
 		return $data;
@@ -141,7 +146,7 @@ class Scanner extends BasicEmitter implements IScanner {
 	public function scanFile($file, $reuseExisting = 0, $parentId = -1, $cacheData = null, $lock = true) {
 
 		// only proceed if $file is not a partial file nor a blacklisted file
-		if (!self::isPartialFile($file) and !Filesystem::isFileBlacklisted($file)) {
+		if (!FileUtils::isPartialFile($file) and !Filesystem::isFileBlacklisted($file)) {
 
 			//acquire a lock
 			if ($lock && $this->storage->instanceOfStorage(ILockingStorage::class)) {
@@ -468,25 +473,6 @@ class Scanner extends BasicEmitter implements IScanner {
 	}
 
 	/**
-	 * check if the file should be ignored when scanning
-	 * NOTE: files with a '.part' extension are ignored as well!
-	 *       prevents unfinished put requests to be scanned
-	 *
-	 * @param string $file
-	 * @return boolean
-	 */
-	public static function isPartialFile($file) {
-		if (\pathinfo($file, PATHINFO_EXTENSION) === 'part') {
-			return true;
-		}
-		if (\strpos($file, '.part/') !== false) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
 	 * walk over any folders that are not fully scanned yet and scan them
 	 */
 	public function backgroundScan() {
@@ -523,5 +509,13 @@ class Scanner extends BasicEmitter implements IScanner {
 		} catch (\OCP\Lock\LockedException $e) {
 			// skip unavailable storages
 		}
+	}
+
+	/**
+	 * @inheritdoc
+	 * @deprecated use FileUtils
+	 */
+	public static function isPartialFile($file) {
+		return FileUtils::isPartialFile($file);
 	}
 }

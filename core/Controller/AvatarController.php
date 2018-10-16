@@ -105,49 +105,6 @@ class AvatarController extends Controller {
 
 	/**
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param string $userId
-	 * @param int $size
-	 * @return DataResponse|DataDisplayResponse
-	 */
-	public function getAvatar($userId, $size) {
-		if ($size > 2048) {
-			$size = 2048;
-		} elseif ($size <= 0) {
-			$size = 64;
-		}
-
-		try {
-			$avatar = $this->avatarManager->getAvatar($userId)->getFile($size);
-			$resp = new DataDisplayResponse($avatar->getContent(),
-				Http::STATUS_OK,
-				['Content-Type' => $avatar->getMimeType()]);
-			$resp->setETag($avatar->getEtag());
-		} catch (NotFoundException $e) {
-			$user = $this->userManager->get($userId);
-			$resp = new DataResponse([
-				'data' => [
-					'displayname' => $user->getDisplayName(),
-				],
-			]);
-		} catch (\Exception $e) {
-			$resp = new DataResponse([
-				'data' => [
-					'displayname' => '',
-				],
-			]);
-		}
-
-		$resp->addHeader('Pragma', 'public');
-		$resp->cacheFor(0);
-		$resp->setLastModified(new \DateTime('now', new \DateTimeZone('GMT')));
-
-		return $resp;
-	}
-
-	/**
-	 * @NoAdminRequired
 	 *
 	 * @param string $path
 	 * @return DataResponse

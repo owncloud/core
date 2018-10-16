@@ -22,7 +22,6 @@
 namespace TestHelpers;
 
 use GuzzleHttp\Message\ResponseInterface;
-use GuzzleHttp\Exception\ServerException;
 use PHPUnit_Framework_Assert;
 
 /**
@@ -69,7 +68,7 @@ class AppConfigHelper {
 		// also changes some sub-settings. So the "interim" state as we set
 		// the config values could be unexpectedly different from the original
 		// saved state.
-		self::modifyServerConfig(
+		self::modifyAppConfig(
 			$baseUrl,
 			$user,
 			$password,
@@ -148,7 +147,7 @@ class AppConfigHelper {
 			}
 		}
 
-		self::modifyServerConfigs(
+		self::modifyAppConfigs(
 			$baseUrl,
 			$user,
 			$password,
@@ -206,7 +205,7 @@ class AppConfigHelper {
 	 * @return string
 	 */
 	public static function getOCSResponse($response) {
-		return $response->xml()->meta[0]->statuscode;
+		return HttpRequestHelper::getResponseXml($response)->meta[0]->statuscode;
 	}
 
 	/**
@@ -237,7 +236,7 @@ class AppConfigHelper {
 	 * @return string retrieved capabilities in XML format
 	 */
 	public static function getCapabilitiesXml($response) {
-		return $response->xml()->data->capabilities;
+		return HttpRequestHelper::getResponseXml($response)->data->capabilities;
 	}
 
 	/**
@@ -251,7 +250,7 @@ class AppConfigHelper {
 	 *
 	 * @return void
 	 */
-	public static function modifyServerConfig(
+	public static function modifyAppConfig(
 		$baseUrl,
 		$user,
 		$password, $app, $parameter, $value, $ocsApiVersion = 2
@@ -283,7 +282,7 @@ class AppConfigHelper {
 	 *
 	 * @return void
 	 */
-	public static function modifyServerConfigs(
+	public static function modifyAppConfigs(
 		$baseUrl,
 		$user,
 		$password, $appParameterValues, $ocsApiVersion = 2
@@ -304,6 +303,133 @@ class AppConfigHelper {
 				"100", self::getOCSResponse($response)
 			);
 		}
-		SetupHelper::resetOpcache($baseUrl, $user, $password);
+	}
+
+	/**
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $app
+	 * @param string $parameter
+	 * @param int $ocsApiVersion (1|2)
+	 *
+	 * @return void
+	 */
+	public static function deleteAppConfig(
+		$baseUrl, $user, $password, $app, $parameter, $ocsApiVersion = 2
+	) {
+		$body = [];
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$user,
+			$password,
+			'delete',
+			"/apps/testing/api/v1/app/{$app}/{$parameter}",
+			$body,
+			$ocsApiVersion
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		if ($ocsApiVersion === 1) {
+			PHPUnit_Framework_Assert::assertEquals(
+				"100", self::getOCSResponse($response)
+			);
+		}
+	}
+
+	/**
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param array $appParameterValues 'appid' and 'configkey' to delete
+	 * @param int $ocsApiVersion (1|2)
+	 *
+	 * @return void
+	 */
+	public static function deleteAppConfigs(
+		$baseUrl, $user, $password, $appParameterValues, $ocsApiVersion = 2
+	) {
+		$body = ['values' => $appParameterValues];
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$user,
+			$password,
+			'delete',
+			"/apps/testing/api/v1/apps",
+			$body,
+			$ocsApiVersion
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		if ($ocsApiVersion === 1) {
+			PHPUnit_Framework_Assert::assertEquals(
+				"100", self::getOCSResponse($response)
+			);
+		}
+	}
+
+	/**
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $app
+	 * @param int $ocsApiVersion (1|2)
+	 *
+	 * @return array with 'configkey', 'value' and 'appid'
+	 */
+	public static function getAppConfigs(
+		$baseUrl, $user, $password, $app, $ocsApiVersion = 2
+	) {
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$user,
+			$password,
+			'get',
+			"/apps/testing/api/v1/app/{$app}",
+			null,
+			$ocsApiVersion
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		if ($ocsApiVersion === 1) {
+			PHPUnit_Framework_Assert::assertEquals(
+				"100", self::getOCSResponse($response)
+			);
+		}
+			
+		$responseXml = HttpRequestHelper::getResponseXml($response)->data[0];
+		$response = \json_decode(\json_encode($responseXml), true)['element'];
+		return $response;
+	}
+
+	/**
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $app
+	 * @param string $parameter
+	 * @param int $ocsApiVersion (1|2)
+	 *
+	 * @return array with 'configkey', 'value' and 'appid'
+	 */
+	public static function getAppConfig(
+		$baseUrl, $user, $password, $app, $parameter, $ocsApiVersion = 2
+	) {
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$user,
+			$password,
+			'get',
+			"/apps/testing/api/v1/app/{$app}/{$parameter}",
+			null,
+			$ocsApiVersion
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		if ($ocsApiVersion === 1) {
+			PHPUnit_Framework_Assert::assertEquals(
+				"100", self::getOCSResponse($response)
+			);
+		}
+
+		$responseXml = HttpRequestHelper::getResponseXml($response)->data[0];
+		$response = \json_decode(\json_encode($responseXml), true)['element'];
+		return $response;
 	}
 }

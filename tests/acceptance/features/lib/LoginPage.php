@@ -40,6 +40,9 @@ class LoginPage extends OwncloudPage {
 	protected $submitLoginId = "submit";
 	protected $lostPasswordId = "lost-password";
 
+	protected $imprintUrlXpath = "//a[contains(text(),'Imprint')]";
+	protected $privacyPolicyXpath = "//a[contains(text(),'Privacy Policy')]";
+
 	/**
 	 * @param string $username
 	 * @param string $password
@@ -77,7 +80,7 @@ class LoginPage extends OwncloudPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -87,7 +90,7 @@ class LoginPage extends OwncloudPage {
 			) {
 				break;
 			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 
@@ -135,10 +138,10 @@ class LoginPage extends OwncloudPage {
 		$passwordRecoveryMessage = $this->lostPasswordField()->getText();
 		return $passwordRecoveryMessage;
 	}
+
 	/**
 	 *
 	 * @param string $newPassword
-	 *
 	 * @param Session $session
 	 *
 	 * @return void
@@ -147,5 +150,34 @@ class LoginPage extends OwncloudPage {
 		$this->fillField($this->passwordInputId, $newPassword);
 		$this->findById($this->submitLoginId)->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 *
+	 * @param string $legalUrlType
+	 *
+	 * @return string imprint url link
+	 * @throws \Exception
+	 */
+	public function getLegalUrl($legalUrlType) {
+		if ($legalUrlType === "Imprint") {
+			$legalUrlLink = $this->find("xpath", $this->imprintUrlXpath);
+		} elseif ($legalUrlType === "Privacy Policy") {
+			$legalUrlLink = $this->find("xpath", $this->privacyPolicyXpath);
+		} else {
+			throw new \Exception(
+				__METHOD__ . " invalid legal url type: $legalUrlType"
+			);
+		}
+
+		if ($legalUrlLink === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $this->imprintUrlXpath " .
+				"could not find link"
+			);
+		}
+
+		return($legalUrlLink->getAttribute("href"));
 	}
 }

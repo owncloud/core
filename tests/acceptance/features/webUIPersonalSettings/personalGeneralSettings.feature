@@ -1,15 +1,33 @@
 @webUI @insulated @disablePreviews
 Feature: personal general settings
-As a user
-I want to change the ownCloud User Interface to my preferred settings
-So that I can personalise the User Interface
+  As a user
+  I want to change the ownCloud User Interface to my preferred settings
+  So that I can personalise the User Interface
 
-	Scenario: change language
-		Given these users have been created:
-			|username|password|displayname|email       |
-			|user1   |1234    |User One   |u1@oc.com.np|
-		And the user has browsed to the login page
-		And the user has logged in with username "user1" and password "1234" using the webUI
-		And the user has browsed to the personal general settings page
-		When the user changes the language to "Русский" using the webUI
-		Then the user should be redirected to a webUI page with the title "Настройки - ownCloud"
+  Background:
+    Given user "user1" has been created
+    And user "user1" has logged in using the webUI
+    And the user has browsed to the personal general settings page
+
+  @smokeTest
+  Scenario: change language
+    When the user changes the language to "Русский" using the webUI
+    Then the user should be redirected to a webUI page with the title "Настройки - %productname%"
+
+  Scenario: change language and check that file actions menu have been translated
+    When the user changes the language to "हिन्दी" using the webUI
+    And the user browses to the files page
+    And the user opens the file action menu of the folder "simple-folder" in the webUI
+    Then the user should see "Details" file action translated to "विवरण" in the webUI
+    And the user should see "Delete" file action translated to "हटाना" in the webUI
+
+  Scenario: user sees displayed version number, groupnames and federated cloud ID on the personal general settings page
+    Given group "new-group" has been created
+    And group "another-group" has been created
+    And user "user1" has been added to group "new-group"
+    And user "user1" has been added to group "another-group"
+    And the user has reloaded the current page of the webUI
+    Then the owncloud version should be displayed on the personal general settings page in the webUI
+    And the federated cloud id for user "user1" should be displayed on the personal general settings page in the webUI
+    And the group "new-group" should be displayed on the personal general settings page in the webUI
+    And the group "another-group" should be displayed on the personal general settings page in the webUI

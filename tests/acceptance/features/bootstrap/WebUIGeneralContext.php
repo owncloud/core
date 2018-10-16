@@ -29,9 +29,11 @@ use Page\LoginPage;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
+use TestHelpers\EmailHelper;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
+use Page\GeneralErrorPage;
 
 require_once 'bootstrap.php';
 
@@ -40,7 +42,25 @@ require_once 'bootstrap.php';
  */
 class WebUIGeneralContext extends RawMinkContext implements Context {
 	private $owncloudPage;
+
+	/**
+	 *
+	 * @var GeneralErrorPage
+	 */
+	private $generalErrorPage;
+
+	/**
+	 *
+	 * @var LoginPage
+	 */
 	private $loginPage;
+
+	/**
+	 *
+	 * @var string
+	 */
+	private $productName;
+
 	private $oldCSRFSetting = null;
 	private $oldPreviewSetting = null;
 	private $createdFiles = [];
@@ -127,10 +147,16 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @param OwncloudPage $owncloudPage
 	 * @param LoginPage $loginPage
+	 * @param GeneralErrorPage $generalErrorPage
 	 */
-	public function __construct(OwncloudPage $owncloudPage, LoginPage $loginPage) {
+	public function __construct(
+		OwncloudPage $owncloudPage,
+		LoginPage $loginPage,
+		GeneralErrorPage $generalErrorPage
+	) {
 		$this->owncloudPage = $owncloudPage;
 		$this->loginPage = $loginPage;
+		$this->generalErrorPage = $generalErrorPage;
 	}
 
 	/**
@@ -168,8 +194,15 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When user admin logs in using the webUI
-	 * @Given user admin has logged in using the webUI
+	 * @return string
+	 */
+	public function getProductName() {
+		return $this->productName;
+	}
+
+	/**
+	 * @When the administrator logs in using the webUI
+	 * @Given the administrator has logged in using the webUI
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -191,6 +224,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function loginAs($username, $password, $target = 'FilesPage') {
+		$username = $this->featureContext->getActualUsername($username);
+		$password = $this->featureContext->getActualPassword($password);
 		$session = $this->getSession();
 		$this->loginPage->waitTillPageIsLoaded($session);
 		$nextPage = $this->loginPage->loginAs(
@@ -217,6 +252,25 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		if ($this->webUIFilesContext !== null) {
 			$this->webUIFilesContext->resetFilesContext();
 		}
+	}
+
+	/**
+	 *
+	 * @param string $emailAddress
+	 * @param string $regexSearch
+	 * @param string $errorMessage
+	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 *
+	 * @return void
+	 */
+	public function followLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
+		$content = EmailHelper::getBodyOfEmail(
+			EmailHelper::getLocalMailhogUrl(), $emailAddress, $numEmails
+		);
+		$matches = [];
+		\preg_match($regexSearch, $content, $matches);
+		PHPUnit_Framework_Assert::assertArrayHasKey(1, $matches, $errorMessage);
+		$this->visitPath($matches[1]);
 	}
 
 	/**
@@ -317,9 +371,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				$count = (int) $count;
 			}
 			$currentTime = \microtime(true);
-			$end = $currentTime + (STANDARDUIWAITTIMEOUTMILLISEC / 1000);
+			$end = $currentTime + (STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000);
 			while ($currentTime <= $end && ($count !== \count($dialogs))) {
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				$currentTime = \microtime(true);
 				$dialogs = $this->owncloudPage->getOcDialogs();
 			}
@@ -356,6 +410,17 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public function replaceProductName($text) {
+		return \str_replace(
+			"%productname%", $this->getProductName(), $text
+		);
+	}
+
+	/**
 	 * @Then the user should be redirected to a webUI page with the title :title
 	 *
 	 * @param string $title
@@ -363,11 +428,43 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserShouldBeRedirectedToAWebUIPageWithTheTitle($title) {
+		$title = $this->replaceProductName($title);
 		$this->owncloudPage->waitForOutstandingAjaxCalls($this->getSession());
-		$actualTitle = $this->getSession()->getPage()->find(
-			'xpath', './/title'
-		)->getHtml();
-		PHPUnit_Framework_Assert::assertEquals($title, \trim($actualTitle));
+		// Just check that the actual title starts with the expected title.
+		// Theming can have other text following.
+		PHPUnit_Framework_Assert::assertStringStartsWith(
+			$title, $this->owncloudPage->getPageTitle()
+		);
+	}
+
+	/**
+	 * @Then the user should be redirected to the general error webUI page with the title :title
+	 *
+	 * @param string $title
+	 *
+	 * @return void
+	 */
+	public function theUserShouldBeRedirectedToGeneralErrorPage($title) {
+		$title = $this->replaceProductName($title);
+		$this->generalErrorPage->waitTillPageIsLoaded($this->getSession());
+		// Just check that the actual title starts with the expected title.
+		// Theming can have other text following.
+		PHPUnit_Framework_Assert::assertStringStartsWith(
+			$title, $this->generalErrorPage->getPageTitle()
+		);
+	}
+	
+	/**
+	 * @Then an error should be displayed on the general error webUI page saying :error
+	 *
+	 * @param string $error
+	 *
+	 * @return void
+	 */
+	public function anErrorShouldBeDisplayedOnTheGeneralErrorPage($error) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$error, $this->generalErrorPage->getErrorMessage()
+		);
 	}
 
 	/**
@@ -506,25 +603,28 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword()
 		);
+
+		$capabilitiesXml = AppConfigHelper::getCapabilitiesXml(
+			$response
+		);
+
 		$this->savedCapabilitiesXml[$this->featureContext->getBaseUrl()]
-			= AppConfigHelper::getCapabilitiesXml(
-				$response
-			);
+			= $capabilitiesXml;
+
+		$this->productName = $this->featureContext->getParameterValueFromXml(
+			$capabilitiesXml, "core", "status@@@productname"
+		);
+
 		if ($this->oldCSRFSetting === null) {
-			$oldCSRFSetting = SetupHelper::runOcc(
-				['config:system:get', 'csrf.disabled']
-			)['stdOut'];
+			$oldCSRFSetting = $this->featureContext->getSystemConfigValue(
+				'csrf.disabled'
+			);
 			$this->oldCSRFSetting = \trim($oldCSRFSetting);
 		}
-		SetupHelper::runOcc(
-			[
-				'config:system:set',
-				'csrf.disabled',
-				'--type',
-				'boolean',
-				'--value',
-				'true'
-			]
+		$this->featureContext->setSystemConfig(
+			'csrf.disabled',
+			'true',
+			'boolean'
 		);
 
 		//TODO make it smarter to be able also to work with other backends
@@ -553,20 +653,37 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function disablePreviewBeforeScenario() {
 		if ($this->oldPreviewSetting === null) {
-			$oldPreviewSetting = SetupHelper::runOcc(
-				['config:system:get', 'enable_previews']
-			)['stdOut'];
+			$oldPreviewSetting = $this->featureContext->getSystemConfigValue(
+				'enable_previews'
+			);
 			$this->oldPreviewSetting = \trim($oldPreviewSetting);
 		}
-		SetupHelper::runOcc(
-			[
-				'config:system:set',
-				'enable_previews',
-				'--type',
-				'boolean',
-				'--value',
-				'false'
-			]
+		$this->featureContext->setSystemConfig(
+			'enable_previews', 'false', 'boolean'
+		);
+	}
+
+	/**
+	 * enable the previews on all tests tagged with '@enablePreviews'
+	 *
+	 * Sometimes when testing locally, or if the `enable_previews` is turned off,
+	 * the tests such as the one testing thumbnails may fail. This enables the preview
+	 * on such tests.
+	 *
+	 * @BeforeScenario @webUI&&@enablePreviews
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function enablePreviewBeforeScenario() {
+		if ($this->oldPreviewSetting === null) {
+			$oldPreviewSetting = $this->featureContext->getSystemConfigValue(
+				'enable_previews'
+			);
+			$this->oldPreviewSetting = \trim($oldPreviewSetting);
+		}
+		$this->featureContext->setSystemConfig(
+			'enable_previews', 'true', 'boolean'
 		);
 	}
 
@@ -589,7 +706,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function tearDownSuite() {
-		AppConfigHelper::modifyServerConfigs(
+		AppConfigHelper::modifyAppConfigs(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
@@ -597,32 +714,18 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		);
 
 		if ($this->oldPreviewSetting === "") {
-			SetupHelper::runOcc(['config:system:delete', 'enable_previews']);
+			$this->featureContext->deleteSystemConfig('enable_previews');
 		} elseif ($this->oldPreviewSetting !== null) {
-			SetupHelper::runOcc(
-				[
-					'config:system:set',
-					'enable_previews',
-					'--type',
-					'boolean',
-					'--value',
-					$this->oldPreviewSetting
-				]
+			$this->featureContext->setSystemConfig(
+				'enable_previews', $this->oldPreviewSetting, 'boolean'
 			);
 		}
 		
 		if ($this->oldCSRFSetting === "") {
-			SetupHelper::runOcc(['config:system:delete', 'csrf.disabled']);
+			$this->featureContext->deleteSystemConfig('csrf.disabled');
 		} elseif ($this->oldCSRFSetting !== null) {
-			SetupHelper::runOcc(
-				[
-					'config:system:set',
-					'csrf.disabled',
-					'--type',
-					'boolean',
-					'--value',
-					$this->oldCSRFSetting
-				]
+			$this->featureContext->setSystemConfig(
+				'csrf.disabled', $this->oldCSRFSetting, 'boolean'
 			);
 		}
 		

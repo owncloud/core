@@ -68,6 +68,17 @@ class SharedWithYouPage extends FilesPageBasic {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
+	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
+	 *
+	 * @return void
+	 */
+	protected function getFilePathInRowXpath() {
+		throw new \Exception("not implemented in SharedWithYouPage");
+	}
+
+	/**
 	 *
 	 * @param string|array $name
 	 * @param Session $session
@@ -80,7 +91,7 @@ class SharedWithYouPage extends FilesPageBasic {
 		$name,
 		Session $session,
 		$expectToDeleteFile = true,
-		$maxRetries = STANDARDRETRYCOUNT
+		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->initAjaxCounters($session);
 		$this->resetSumStartedAjaxRequests($session);
@@ -110,7 +121,7 @@ class SharedWithYouPage extends FilesPageBasic {
 						. "\n-------------------------\n"
 					);
 				}
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			}
 		}
 		if ($expectToDeleteFile && ($counter > 0)) {

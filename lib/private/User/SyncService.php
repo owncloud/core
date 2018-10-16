@@ -24,11 +24,13 @@ namespace OC\User;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\ILogger;
+use OCP\PreConditionNotMetException;
 use OCP\User\IProvidesDisplayNameBackend;
 use OCP\User\IProvidesEMailBackend;
 use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\User\IProvidesHomeBackend;
 use OCP\User\IProvidesQuotaBackend;
+use OCP\User\IProvidesUserNameBackend;
 use OCP\UserInterface;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
@@ -240,7 +242,7 @@ class SyncService {
 	 */
 	private function syncHome(Account $a, UserInterface $backend) {
 		// Fallback for backends that dont yet use the new interfaces
-		$proividesHome = $backend instanceof IProvidesHomeBackend || $backend->implementsActions(\OC_User_Backend::GET_HOME);
+		$proividesHome = $backend instanceof IProvidesHomeBackend || $backend->implementsActions(\OC\User\Backend::GET_HOME);
 		$uid = $a->getUserId();
 		// Log when the backend returns a string that is a different home to the current value
 		if ($proividesHome && \is_string($backend->getHome($uid)) && $a->getHome() !== $backend->getHome($uid)) {
@@ -281,12 +283,36 @@ class SyncService {
 	 */
 	private function syncDisplayName(Account $a, UserInterface $backend) {
 		$uid = $a->getUserId();
-		if ($backend instanceof IProvidesDisplayNameBackend || $backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
+		if ($backend instanceof IProvidesDisplayNameBackend || $backend->implementsActions(\OC\User\Backend::GET_DISPLAYNAME)) {
 			$displayName = $backend->getDisplayName($uid);
 			$a->setDisplayName($displayName);
 			if (\array_key_exists('displayName', $a->getUpdatedFields())) {
 				$this->logger->debug(
 					"Setting displayName for <$uid> to <$displayName>", ['app' => self::class]
+				);
+			}
+		}
+	}
+
+	/**
+	 * TODO store username in account table instead of user preferences
+	 *
+	 * @param Account $a
+	 * @param UserInterface $backend
+	 */
+	private function syncUserName(Account $a, UserInterface $backend) {
+		$uid = $a->getUserId();
+		if ($backend instanceof IProvidesUserNameBackend) {
+			$userName = $backend->getUserName($uid);
+			$currentUserName = $this->config->getUserValue($uid, 'core', 'username', null);
+			if ($userName !== $currentUserName) {
+				try {
+					$this->config->setUserValue($uid, 'core', 'username', $userName);
+				} catch (PreConditionNotMetException $e) {
+					// ignore, because precondition is empty
+				}
+				$this->logger->debug(
+					"Setting userName for <$uid> from <$currentUserName> to <$userName>", ['app' => self::class]
 				);
 			}
 		}
@@ -322,6 +348,7 @@ class SyncService {
 		$this->syncQuota($a, $backend);
 		$this->syncHome($a, $backend);
 		$this->syncDisplayName($a, $backend);
+		$this->syncUserName($a, $backend);
 		$this->syncSearchTerms($a, $backend);
 		return $a;
 	}

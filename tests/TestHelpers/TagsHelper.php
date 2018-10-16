@@ -21,6 +21,8 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\Message\ResponseInterface;
+
 /**
  * Helper to administer Tags
  *
@@ -36,10 +38,12 @@ class TagsHelper {
 	 * @param string $password
 	 * @param string $tagName
 	 * @param string $fileName
-	 * @param string $fileOwner
+	 * @param string|null $fileOwner
+	 * @param string|null $fileOwnerPassword
 	 * @param int $davPathVersionToUse (1|2)
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return ResponseInterface
+	 * @throws \Exception
 	 */
 	public static function tag(
 		$baseUrl,
@@ -47,11 +51,20 @@ class TagsHelper {
 		$password,
 		$tagName,
 		$fileName,
-		$fileOwner,
+		$fileOwner = null,
+		$fileOwnerPassword = null,
 		$davPathVersionToUse = 1
 	) {
+		if ($fileOwner === null) {
+			$fileOwner = $taggingUser;
+		}
+
+		if ($fileOwnerPassword === null) {
+			$fileOwnerPassword = $password;
+		}
+
 		$fileID = WebDavHelper::getFileIdForPath(
-			$baseUrl, $fileOwner, $password, $fileName
+			$baseUrl, $fileOwner, $fileOwnerPassword, $fileName
 		);
 
 		$tag = self::requestTagByDisplayName(
@@ -141,8 +154,7 @@ class TagsHelper {
 	 * @param string $groups separated by "|"
 	 * @param int $davPathVersionToUse (1|2)
 	 *
-	 * @return array ['lastTagId', 'HTTPResponse']
-	 * @throws \GuzzleHttp\Exception\ClientException
+	 * @return ResponseInterface
 	 * @link self::makeDavRequest()
 	 */
 	public static function createTag(
@@ -166,7 +178,7 @@ class TagsHelper {
 			$body['groups'] = $groups;
 		}
 
-		$response = WebDavHelper::makeDavRequest(
+		return WebDavHelper::makeDavRequest(
 			$baseUrl,
 			$user,
 			$password,
@@ -178,10 +190,6 @@ class TagsHelper {
 			$davPathVersionToUse,
 			"systemtags"
 		);
-		$responseHeaders = $response->getHeaders();
-		$tagUrl = $responseHeaders['Content-Location'][0];
-		$lastTagId = \substr($tagUrl, \strrpos($tagUrl, '/') + 1);
-		return ['lastTagId' => $lastTagId, 'HTTPResponse' => $response];
 	}
 
 	/**
@@ -192,8 +200,7 @@ class TagsHelper {
 	 * @param int $tagID
 	 * @param int $davPathVersionToUse (1|2)
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
-	 * @throws \GuzzleHttp\Exception\ClientException
+	 * @return ResponseInterface
 	 */
 	public static function deleteTag(
 		$baseUrl,

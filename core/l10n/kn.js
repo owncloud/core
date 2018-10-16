@@ -86,7 +86,6 @@ OC.L10N.register(
     "change" : "﻿ಬದಲಾವಣೆ",
     "delete" : "﻿ಅಳಿಸಿ",
     "access control" : "﻿ಪ್ರವೇಶ ನಿಯಂತ್ರಣ",
-    "Resharing is not allowed" : "﻿ಮರುಹಂಚಿಕೆ ಅನುಮತಿಸಲಾಗುವುದಿಲ್ಲ",
     "Delete" : "﻿ಅಳಿಸಿ",
     "Rename" : "﻿ಮರುಹೆಸರಿಸು",
     "The object type is not specified." : "﻿ವಸ್ತು ಮಾದರಿ ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ.",

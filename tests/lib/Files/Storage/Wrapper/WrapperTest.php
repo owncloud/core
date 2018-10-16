@@ -8,7 +8,16 @@
 
 namespace Test\Files\Storage\Wrapper;
 
-class WrapperTest extends \Test\Files\Storage\Storage {
+use Test\Files\Storage\Storage;
+use OC\Files\Storage\Wrapper\Wrapper;
+use OC\Files\Storage\Local;
+
+/**
+ * Class WrapperTest
+ *
+ * @package Test\Files\Storage\Wrapper
+ */
+class WrapperTest extends Storage {
 	/**
 	 * @var string tmpDir
 	 */
@@ -18,8 +27,8 @@ class WrapperTest extends \Test\Files\Storage\Storage {
 		parent::setUp();
 
 		$this->tmpDir = \OC::$server->getTempManager()->getTemporaryFolder();
-		$storage = new \OC\Files\Storage\Local(['datadir' => $this->tmpDir]);
-		$this->instance = new \OC\Files\Storage\Wrapper\Wrapper(['storage' => $storage]);
+		$storage = new Local(['datadir' => $this->tmpDir]);
+		$this->instance = new Wrapper(['storage' => $storage]);
 	}
 
 	protected function tearDown() {
@@ -28,7 +37,7 @@ class WrapperTest extends \Test\Files\Storage\Storage {
 	}
 
 	public function testInstanceOfStorageWrapper() {
-		$this->assertTrue($this->instance->instanceOfStorage('\OC\Files\Storage\Local'));
-		$this->assertTrue($this->instance->instanceOfStorage('\OC\Files\Storage\Wrapper\Wrapper'));
+		$this->assertTrue($this->instance->instanceOfStorage(Local::class));
+		$this->assertTrue($this->instance->instanceOfStorage(Wrapper::class));
 	}
 }

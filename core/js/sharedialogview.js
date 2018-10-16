@@ -313,7 +313,7 @@
 			if (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) {
 				text = t('core', '{sharee} (group)', {
 					sharee: text
-				});
+				}, null, {escape: false});
 			} else if (item.value.shareType === OC.Share.SHARE_TYPE_REMOTE) {
 				if (item.value.server) {
 					text = t('core', '{sharee} (at {server})', {
@@ -408,7 +408,7 @@
 				isLinkSharingAllowed: this.configModel.isShareWithLinkAllowed(),
 				localSharesLabel: t('core', 'User and Groups'),
 				publicSharesLabel: t('core', 'Public Links'),
-				noSharingPlaceholder: t('core', 'Resharing is not allowed')
+				noSharingPlaceholder: t('core', 'Sharing is not allowed')
 			}));
 
 			var $shareField = this.$el.find('.shareWithField');

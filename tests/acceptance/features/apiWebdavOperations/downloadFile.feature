@@ -8,6 +8,7 @@ Feature: download file
     Given using OCS API version "1"
     And user "user0" has been created
 
+  @smokeTest
   Scenario Outline: download a file
     Given using <dav_version> DAV path
     When user "user0" downloads the file "/textfile0.txt" using the WebDAV API
@@ -26,11 +27,11 @@ Feature: download file
       | old         |
       | new         |
 
+  @public_link_share-feature-required
   Scenario Outline: download a public shared file with range
     Given using <dav_version> DAV path
-    When user "user0" creates a share using the sharing API with settings
-      | path      | welcome.txt |
-      | shareType | 3           |
+    When user "user0" creates a public link share using the sharing API with settings
+      | path | welcome.txt |
     And the public downloads the last public shared file with range "bytes=51-77" using the old WebDAV API
     Then the downloaded content should be "example file for developers"
     Examples:
@@ -38,11 +39,11 @@ Feature: download file
       | old         |
       | new         |
 
+  @public_link_share-feature-required
   Scenario Outline: download a public shared file inside a folder with range
     Given using <dav_version> DAV path
-    When user "user0" creates a share using the sharing API with settings
-      | path      | PARENT |
-      | shareType | 3      |
+    When user "user0" creates a public link share using the sharing API with settings
+      | path | PARENT |
     And the public downloads file "/parent.txt" from inside the last public shared folder with range "bytes=1-7" using the old WebDAV API
     Then the downloaded content should be "wnCloud"
     Examples:
@@ -50,6 +51,7 @@ Feature: download file
       | old         |
       | new         |
 
+  @smokeTest
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
     When user "user0" downloads the file "/welcome.txt" using the WebDAV API

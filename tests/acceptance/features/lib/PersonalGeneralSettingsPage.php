@@ -24,6 +24,7 @@ namespace Page;
 
 use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use TestHelpers\SetupHelper;
 
 /**
  * Personal General Settings page.
@@ -45,6 +46,10 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	protected $changePasswordButtonID = "passwordbutton";
 	protected $passwordErrorMessageID = "password-error";
 
+	protected $versionSectionXpath = "//div[@id='OC\\Settings\\Panels\\Personal\\Version']";
+	protected $federatedCloudIDXpath = "//*[@id='fileSharingSettings']/p/strong";
+	protected $groupListXpath = "//div[@id='OC\\Settings\\Panels\\Personal\\Profile']/div[@id='groups']";
+
 	/**
 	 * @param string $language
 	 *
@@ -65,7 +70,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -73,7 +78,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 			if ($this->findById($this->personalProfilePanelId) !== null) {
 				break;
 			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 
@@ -157,5 +162,48 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 		}
 		
 		return $this->getTrimmedText($errorMessage);
+	}
+
+	/**
+	 * check if the version number displayed in the UI is correct
+	 *
+	 * @return bool
+	 */
+	public function isVersionDisplayed() {
+		$this->waitTillElementIsNotNull($this->versionSectionXpath);
+		$versionSection = $this->find("xpath", $this->versionSectionXpath);
+		$currentVersion = \trim(SetupHelper::runOcc(['-V'])['stdOut']);
+
+		if (\strpos($versionSection->getText(), $currentVersion) !== false) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * give federated cloud ID displayed in the UI
+	 *
+	 * @return string
+	 */
+	public function getFederatedCloudID() {
+		$this->waitTillElementIsNotNull($this->federatedCloudIDXpath);
+		return $this->find("xpath", $this->federatedCloudIDXpath)->getText();
+	}
+
+	/**
+	 * check if a group with given name is displayed in the UI
+	 *
+	 * @param string $groupName
+	 *
+	 * @return string
+	 */
+	public function isGroupNameDisplayed($groupName) {
+		$this->waitTillElementIsNotNull($this->groupListXpath);
+		$groupList = $this->find("xpath", $this->groupListXpath)->getText();
+
+		if (\strpos($groupList, $groupName) !== false) {
+			return true;
+		}
+		return false;
 	}
 }

@@ -35,7 +35,7 @@ class FileRow extends OwncloudPage {
 	/**
 	 * @var NodeElement of this row
 	 */
-	private $rowElement;
+	protected $rowElement;
 
 	/**
 	 * name of the file
@@ -58,6 +58,8 @@ class FileRow extends OwncloudPage {
 	protected $sharerXpath = "//a[@data-action='Share']";
 	protected $acceptShareBtnXpath = "//span[@class='fileactions']//a[contains(@class,'accept')]";
 	protected $declinePendingShareBtnXpath = "//a[@data-action='Reject']";
+	protected $sharingDialogXpath = ".//div[@class='dialogContainer']";
+	protected $highlightsXpath = "//div[@class='highlights']";
 
 	/**
 	 *
@@ -176,7 +178,18 @@ class FileRow extends OwncloudPage {
 	public function openSharingDialog() {
 		$this->findSharingButton()->click();
 		$this->waitTillElementIsNull($this->loadingIndicatorXpath);
-		return $this->getPage("FilesPageElement\\SharingDialog");
+		$sharingDailog = $this->find('xpath', $this->sharingDialogXpath);
+		if ($sharingDailog === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $xpathLocator could not find button '$action' in action Menu"
+			);
+		} else {
+			$this->waitFor(
+				STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$sharingDailog, 'isVisible']
+			);
+			return $this->getPage("FilesPageElement\\SharingDialog");
+		}
 	}
 
 	/**
@@ -252,6 +265,25 @@ class FileRow extends OwncloudPage {
 	 */
 	public function getTooltip() {
 		return $this->getTrimmedText($this->findTooltipElement());
+	}
+
+	/**
+	 * return the path of the current file
+	 *
+	 * @param string $xpath xpath related to the fileRow element
+	 *
+	 * @throws ElementNotFoundException
+	 * @return string
+	 */
+	public function getFilePath($xpath) {
+		$filePathElement = $this->rowElement->find("xpath", $xpath);
+		if ($filePathElement === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $xpath could not find file path element"
+			);
+		}
+		return \dirname($filePathElement->getText());
 	}
 
 	/**
@@ -445,5 +477,24 @@ class FileRow extends OwncloudPage {
 		}
 		$element->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * returns the element that contains the highlighted content of the file
+	 * when using elastic search
+	 *
+	 * @throws ElementNotFoundException
+	 * @return NodeElement
+	 */
+	public function getHighlightsElement() {
+		$element = $this->rowElement->find("xpath", $this->highlightsXpath);
+		if ($element === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->highlightsXpath " .
+				" highlights element not found"
+			);
+		}
+		return $element;
 	}
 }

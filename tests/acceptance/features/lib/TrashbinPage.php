@@ -43,6 +43,7 @@ class TrashbinPage extends FilesPageBasic {
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-trashbin']//*[@class='delete-selected']";
 	protected $restoreAllSelectedBtnXpath = ".//*[@id='app-content-trashbin']//*[@class='undelete']";
 	protected $selectAllFilesCheckboxXpath = "//label[@for='select_all_trash']";
+	protected $filePathInRowXpath = "//span[@class='nametext extra-data']";
 
 	/**
 	 * @return string
@@ -70,6 +71,17 @@ class TrashbinPage extends FilesPageBasic {
 	 */
 	protected function getEmptyContentXpath() {
 		return $this->emptyContentXpath;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
+	 *
+	 * @return void
+	 */
+	protected function getFilePathInRowXpath() {
+		return $this->filePathInRowXpath;
 	}
 
 	/**
@@ -112,5 +124,25 @@ class TrashbinPage extends FilesPageBasic {
 	public function restore($fname, Session $session) {
 		$row = $this->findFileRowByName($fname, $session);
 		$row->restore();
+	}
+
+	/**
+	 * finds all rows that have the given name
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 *
+	 * @return FileRow[]
+	 * @throws ElementNotFoundException
+	 */
+	public function findAllFileRowsByName($name, Session $session) {
+		$fileRowElements = $this->getFileRowElementsByName($name, $session);
+		foreach ($fileRowElements as $fileRowElement) {
+			$fileRow = $this->getPage('FilesPageElement\\TrashBinFileRow');
+			$fileRow->setElement($fileRowElement);
+			$fileRow->setName($name);
+			$fileRows[] = $fileRow;
+		}
+		return $fileRows;
 	}
 }

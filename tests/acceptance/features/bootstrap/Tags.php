@@ -23,7 +23,6 @@
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\TagsHelper;
 
@@ -49,20 +48,44 @@ trait Tags {
 	private function createTag(
 		$user, $userVisible, $userAssignable, $name, $groups = null
 	) {
-		try {
-			$createdTag = TagsHelper::createTag(
-				$this->getBaseUrl(),
-				$user,
-				$this->getPasswordForUser($user),
-				$name, $userVisible, $userAssignable, $groups,
-				$this->getDavPathVersion('systemtags')
-			);
-			$lastTagId = $createdTag['lastTagId'];
-			$this->response = $createdTag['HTTPResponse'];
-			\array_push($this->createdTags, $lastTagId);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
+		$this->response = TagsHelper::createTag(
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
+			$this->getPasswordForUser($user),
+			$name, $userVisible, $userAssignable, $groups,
+			$this->getDavPathVersion('systemtags')
+		);
+		$responseHeaders = $this->response->getHeaders();
+		if (isset($responseHeaders['Content-Location'][0])) {
+			$tagUrl = $responseHeaders['Content-Location'][0];
+			$lastTagId = \substr($tagUrl, \strrpos($tagUrl, '/') + 1);
+			$this->createdTags[$lastTagId]['name'] = $name;
+			if ($userAssignable) {
+				$this->createdTags[$lastTagId]['userAssignable'] = true;
+			}
 		}
+	}
+
+	/**
+	 * Adds to the list of created tags using display name
+	 *
+	 * @param string $tagDisplayName
+	 *
+	 * @return void
+	 */
+	public function addToTheListOfCreatedTagsByDisplayName($tagDisplayName) {
+		$tagId = $this->findTagIdByName($tagDisplayName);
+		$this->createdTags[$tagId]['name'] = $tagDisplayName;
+		$this->createdTags[$tagId]['userAssignable'] = true;
+	}
+
+	/**
+	 * Return list of created tags
+	 *
+	 * @return array
+	 */
+	public function getListOfCreatedTags() {
+		return $this->createdTags;
 	}
 
 	/**
@@ -87,6 +110,34 @@ trait Tags {
 	}
 
 	/**
+	 * @When the administrator creates a :type tag with name :name using the WebDAV API
+	 * @Given the administrator has created a :type tag with name :name
+	 *
+	 * @param string $type
+	 * @param string $name
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorCreatesATagWithName($type, $name) {
+		$this->createsATagWithName($this->getAdminUsername(), $type, $name);
+	}
+
+	/**
+	 * @When the user creates a :type tag with name :name using the WebDAV API
+	 * @Given the user has created a :type tag with name :name
+	 *
+	 * @param string $type
+	 * @param string $name
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserCreatesATagWithName($type, $name) {
+		$this->createsATagWithName($this->getCurrentUser(), $type, $name);
+	}
+
+	/**
 	 * @When user :user creates a :type tag with name :name using the WebDAV API
 	 * @Given user :user has created a :type tag with name :name
 	 *
@@ -104,6 +155,36 @@ trait Tags {
 			TagsHelper::validateTypeOfTag($type)[1],
 			$name
 		);
+	}
+
+	/**
+	 * @When the user creates a :type tag with name :name and groups :groups using the WebDAV API
+	 * @Given the user has created a :type tag with name :name and groups :groups
+	 *
+	 * @param string $type
+	 * @param string $name
+	 * @param string $groups
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserCreatesATagWithNameAndGroups($type, $name, $groups) {
+		$this->createsATagWithNameAndGroups($this->getCurrentUser(), $type, $name, $groups);
+	}
+
+	/**
+	 * @When the administrator creates a :type tag with name :name and groups :groups using the WebDAV API
+	 * @Given the administrator has created a :type tag with name :name and groups :groups
+	 *
+	 * @param string $type
+	 * @param string $name
+	 * @param string $groups
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorCreatesATagWithNameAndGroups($type, $name, $groups) {
+		$this->createsATagWithNameAndGroups($this->getAdminUsername(), $type, $name, $groups);
 	}
 
 	/**
@@ -137,7 +218,7 @@ trait Tags {
 	public function requestTagsForUser($user, $withGroups = false) {
 		$this->response = TagsHelper:: requestTagsForUser(
 			$this->getBaseUrl(),
-			$user,
+			$this->getActualUsername($user),
 			$this->getPasswordForUser($user),
 			$withGroups
 		);
@@ -166,6 +247,30 @@ trait Tags {
 	}
 
 	/**
+	 * @Then the following tags should exist for the administrator
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingTagsShouldExistForTheAdministrator(TableNode $table) {
+		$this->theFollowingTagsShouldExistFor($this->getAdminUsername(), $table);
+	}
+
+	/**
+	 * @Then the following tags should exist for the user
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingTagsShouldExistForTheUser(TableNode $table) {
+		$this->theFollowingTagsShouldExistFor($this->getCurrentUser(), $table);
+	}
+
+	/**
 	 * @Then the following tags should exist for :user
 	 *
 	 * @param string $user
@@ -175,6 +280,7 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theFollowingTagsShouldExistFor($user, TableNode $table) {
+		$user = $this->getActualUsername($user);
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
 			$tagData = $this->requestTagByDisplayName($user, $rowDisplayName);
 			if ($tagData === null) {
@@ -203,7 +309,47 @@ trait Tags {
 	}
 
 	/**
-	 * @Then /^the user "([^"]*)" (should|should not) be able to assign the "([^"]*)" tag with name "([^"]*)"$/
+	 * @Then tag :tagDisplayName should not exist for the administrator
+	 *
+	 * @param string $tagDisplayName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingTagsShouldNotExistForTheAdministrator($tagDisplayName) {
+		$this->tagShouldNotExistForUser($tagDisplayName, $this->getAdminUsername());
+	}
+
+	/**
+	 * @Then tag :tagDisplayName should not exist for the user
+	 *
+	 * @param string $tagDisplayName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingTagsShouldNotExistForTheUser($tagDisplayName) {
+		$this->tagShouldNotExistForUser($tagDisplayName, $this->getCurrentUser());
+	}
+
+	/**
+	 * @Then /^the user (should|should not) be able to assign the "([^"]*)" tag with name "([^"]*)"$/
+	 *
+	 * @param string $shouldOrNot should or should not
+	 * @param string $type
+	 * @param string $tagDisplayName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserCanAssignTheTag(
+		$shouldOrNot, $type, $tagDisplayName
+	) {
+		$this->userCanAssignTheTag($this->getCurrentUser(), $shouldOrNot, $type, $tagDisplayName);
+	}
+
+	/**
+	 * @Then /^user "([^"]*)" (should|should not) be able to assign the "([^"]*)" tag with name "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $shouldOrNot should or should not
@@ -213,7 +359,7 @@ trait Tags {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserCanAssignTheTag(
+	public function userCanAssignTheTag(
 		$user, $shouldOrNot, $type, $tagDisplayName
 	) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
@@ -313,6 +459,34 @@ trait Tags {
 	}
 
 	/**
+	 * @When the administrator edits the tag with name :oldName and sets its name to :newName using the WebDAV API
+	 * @Given the administrator has edited the tag with name :oldName and set its name to :newName
+	 *
+	 * @param string $oldName
+	 * @param string $newName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorEditsTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI($oldName, $newName) {
+		$this->editTagName($this->getAdminUsername(), $oldName, $newName);
+	}
+
+	/**
+	 * @When the user edits the tag with name :oldName and sets its name to :newName using the WebDAV API
+	 * @Given the user has edited the tag with name :oldName and set its name to :newName
+	 *
+	 * @param string $oldName
+	 * @param string $newName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserEditsTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI($oldName, $newName) {
+		$this->editTagName($this->getCurrentUser(), $oldName, $newName);
+	}
+
+	/**
 	 * @When user :user edits the tag with name :oldName and sets its name to :newName using the WebDAV API
 	 * @Given user :user has edited the tag with name :oldName and set its name to :newName
 	 *
@@ -331,6 +505,34 @@ trait Tags {
 	}
 
 	/**
+	 * @When the administrator edits the tag with name :oldName and sets its groups to :groups using the WebDAV API
+	 * @Given the administrator has edited the tag with name :oldName and set its groups to :groups
+	 *
+	 * @param string $oldName
+	 * @param string $groups
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorEditsTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI($oldName, $groups) {
+		$this->editTagGroups($this->getAdminUsername(), $oldName, $groups);
+	}
+
+	/**
+	 * @When the user edits the tag with name :oldName and sets its groups to :groups using the WebDAV API
+	 * @Given the user has edited the tag with name :oldName and set its groups to :groups
+	 *
+	 * @param string $oldName
+	 * @param string $groups
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserEditsTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI($oldName, $groups) {
+		$this->editTagGroups($this->getCurrentUser(), $oldName, $groups);
+	}
+
+	/**
 	 * @When user :user edits the tag with name :oldName and sets its groups to :groups using the WebDAV API
 	 * @Given user :user has edited the tag with name :oldName and set its groups to :groups
 	 *
@@ -342,6 +544,7 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function editTagGroups($user, $oldName, $groups) {
+		$user = $this->getActualUsername($user);
 		$properties = [
 						'{http://owncloud.org/ns}groups' => $groups
 					  ];
@@ -359,43 +562,67 @@ trait Tags {
 	 */
 	public function userDeletesTag($user, $name) {
 		$tagID = $this->findTagIdByName($name);
-		try {
-			$this->response = TagsHelper::deleteTag(
-				$this->getBaseUrl(),
-				$user,
-				$this->getPasswordForUser($user),
-				$tagID,
-				$this->getDavPathVersion('systemtags')
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
+		$this->response = TagsHelper::deleteTag(
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
+			$this->getPasswordForUser($user),
+			$tagID,
+			$this->getDavPathVersion('systemtags')
+		);
+		if ($this->response->getStatusCode() === 204) {
+			unset($this->createdTags[$tagID]);
 		}
-		
-		unset($this->createdTags[$tagID]);
+	}
+
+	/**
+	 * @When the user deletes the tag with name :name using the WebDAV API
+	 * @Given the user has deleted the tag with name :name
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function theUserDeletesTagWithName($name) {
+		$this->userDeletesTag($this->getCurrentUser(), $name);
+	}
+
+	/**
+	 * @When the administrator deletes the tag with name :name using the WebDAV API
+	 * @Given the administrator has deleted the tag with name :name
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesTagWithName($name) {
+		$this->userDeletesTag($this->getAdminUsername(), $name);
 	}
 
 	/**
 	 * @param string $taggingUser
 	 * @param string $tagName
 	 * @param string $fileName
-	 * @param string $fileOwner
+	 * @param string|null $fileOwner
 	 *
 	 * @return void
 	 */
-	private function tag($taggingUser, $tagName, $fileName, $fileOwner) {
-		try {
-			$this->response = TagsHelper::tag(
-				$this->getBaseUrl(),
-				$taggingUser,
-				$this->getPasswordForUser($taggingUser),
-				$tagName,
-				$fileName,
-				$fileOwner,
-				$this->getDavPathVersion('systemtags')
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
+	private function tag(
+		$taggingUser, $tagName, $fileName, $fileOwner = null
+	) {
+		if ($fileOwner === null) {
+			$fileOwner = $taggingUser;
 		}
+
+		$this->response = TagsHelper::tag(
+			$this->getBaseUrl(),
+			$taggingUser,
+			$this->getPasswordForUser($taggingUser),
+			$tagName,
+			$fileName,
+			$fileOwner,
+			$this->getPasswordForUser($fileOwner),
+			$this->getDavPathVersion('systemtags')
+		);
 	}
 
 	/**
@@ -432,6 +659,43 @@ trait Tags {
 	}
 
 	/**
+	 * @When /^the (administrator|user) adds the tag "([^"]*)" to "([^"]*)" using the WebDAV API$/
+	 * @Given /^the (administrator|user) has added the tag "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $adminOrUser
+	 * @param string $tagName
+	 * @param string $fileName
+	 *
+	 * @return void
+	 */
+	public function theUserOrAdministratorAddsTheTagTo(
+		$adminOrUser, $tagName, $fileName
+	) {
+		if ($adminOrUser === 'administrator') {
+			$taggingUser = $this->getAdminUsername();
+		} else {
+			$taggingUser = $this->getCurrentUser();
+		}
+		$this->addsTheTagTo($taggingUser, $tagName, $fileName);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" adds the tag "([^"]*)" to "([^"]*)" using the WebDAV API$/
+	 * @Given /^user "([^"]*)" has added the tag "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $taggingUser
+	 * @param string $tagName
+	 * @param string $fileName
+	 *
+	 * @return void
+	 */
+	public function addsTheTagTo(
+		$taggingUser, $tagName, $fileName
+	) {
+		$this->tag($taggingUser, $tagName, $fileName);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" adds the tag "([^"]*)" to "([^"]*)" (?:shared|owned) by "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" has added the tag "([^"]*)" to "([^"]*)" (?:shared|owned) by "([^"]*)"$/
 	 *
@@ -449,6 +713,45 @@ trait Tags {
 	}
 
 	/**
+	 * @Then /^the HTTP status when user "([^"]*)" requests tags for (?:file|folder|entry) "([^"]*)" (?:shared|owned) by "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $fileName
+	 * @param string $sharingUser
+	 * @param string $status
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theHttpStatusWhenuserRequestsTagsForEntryOwnedByShouldBe(
+		$user, $fileName, $sharingUser, $status
+	) {
+		$response = $this->requestTagsForFile($user, $fileName, $sharingUser);
+		PHPUnit_Framework_Assert::assertEquals($status, $response->getStatus());
+	}
+
+	/**
+	 * @Then /^(?:file|folder|entry) "([^"]*)" (?:shared|owned) by the (administrator|user) should have the following tags$/
+	 *
+	 * @param string $fileName
+	 * @param string $adminOrUser
+	 * @param TableNode $table
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function sharedByTheUserOrAdminHasTheFollowingTags(
+		$fileName, $adminOrUser, TableNode $table
+	) {
+		if ($adminOrUser === 'user') {
+			$sharingUser = $this->getCurrentUser();
+		} else {
+			$sharingUser = $this->getAdminUsername();
+		}
+		$this->sharedByHasTheFollowingTags($fileName, $sharingUser, $table);
+	}
+
+	/**
 	 * @Then /^(?:file|folder|entry) "([^"]*)" (?:shared|owned) by "([^"]*)" should have the following tags$/
 	 *
 	 * @param string $fileName
@@ -462,13 +765,13 @@ trait Tags {
 		$fileName, $sharingUser, TableNode $table
 	) {
 		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
-		//Check if we are looking for no tags
-		if ((!\is_array($tagList)) && ($table->getRowAsString(0) === '|  |')) {
-			return true;
-		}
+		PHPUnit_Framework_Assert::assertInternalType('array', $tagList);
+		// The array of tags has a single "empty" item at the start.
+		// Remove this entry.
 		\array_shift($tagList);
 		$found = false;
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
+			$found = false;
 			foreach ($tagList as $path => $tagData) {
 				if (!empty($tagData)
 					&& $tagData['{http://owncloud.org/ns}display-name'] === $rowDisplayName
@@ -488,6 +791,27 @@ trait Tags {
 	}
 
 	/**
+	 * @Then /^file "([^"]*)" should have the following tags for the (administrator|user)$/
+	 *
+	 * @param string $fileName
+	 * @param string $adminOrUser
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function fileHasTheFollowingTagsForUserOrAdministrator(
+		$fileName, $adminOrUser, TableNode $table
+	) {
+		if ($adminOrUser === 'administrator') {
+			$user = $this->getAdminUsername();
+		} else {
+			$user = $this->getCurrentUser();
+		}
+		$this->fileHasTheFollowingTagsForUser($fileName, $user, $table);
+	}
+
+	/**
 	 * @Then file :fileName should have the following tags for user :user
 	 *
 	 * @param string $fileName
@@ -504,6 +828,46 @@ trait Tags {
 	}
 
 	/**
+	 * @Then /^(?:file|folder|entry) "([^"]*)" (?:shared|owned) by "([^"]*)" should have no tags$/
+	 *
+	 * @param string $fileName
+	 * @param string $sharingUser
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function sharedByHasNoTags($fileName, $sharingUser) {
+		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
+		PHPUnit_Framework_Assert::assertInternalType('array', $tagList);
+		// The array of tags has a single "empty" item at the start.
+		// If there are no tags, then the array should have just this
+		// one entry.
+		PHPUnit_Framework_Assert::assertCount(1, $tagList);
+	}
+
+	/**
+	 * @Then file :fileName should have no tags for user :user
+	 * @Then /^file "([^"]*)" should have no tags for the (administrator|user)?$/
+	 *
+	 * @param string $fileName
+	 * @param string $adminOrUser
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function fileHasNoTagsForUser($fileName, $adminOrUser=null, $user=null) {
+		if ($user === null) {
+			if ($adminOrUser === 'administrator') {
+				$user = $this->getAdminUsername();
+			} else {
+				$user = $this->getCurrentUser();
+			}
+		}
+		$this->sharedByHasNoTags($fileName, $user);
+	}
+
+	/**
 	 * @param string $untaggingUser
 	 * @param string $tagName
 	 * @param string $fileName
@@ -512,23 +876,21 @@ trait Tags {
 	 * @return void
 	 */
 	private function untag($untaggingUser, $tagName, $fileName, $fileOwner) {
+		$untaggingUser = $this->getActualUsername($untaggingUser);
+		$fileOwner = $this->getActualUsername($fileOwner);
 		$fileID = $this->getFileIdForPath($fileOwner, $fileName);
 		$tagID = $this->findTagIdByName($tagName);
 		$path = "/systemtags-relations/files/$fileID/$tagID";
-		try {
-			$this->response = $this->makeDavRequest(
-				$untaggingUser,
-				"DELETE",
-				$path,
-				null,
-				null,
-				"uploads",
-				null,
-				$this->getDavPathVersion('systemtags')
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-		}
+		$this->response = $this->makeDavRequest(
+			$untaggingUser,
+			"DELETE",
+			$path,
+			null,
+			null,
+			"uploads",
+			null,
+			$this->getDavPathVersion('systemtags')
+		);
 	}
 
 	/**
@@ -556,18 +918,14 @@ trait Tags {
 	 */
 	public function cleanupTags() {
 		$this->deleteTokenAuthEnforcedAfterScenario();
-		foreach ($this->createdTags as $tagID) {
-			try {
-				$this->response = TagsHelper::deleteTag(
-					$this->getBaseUrl(),
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					$tagID,
-					2
-				);
-			} catch (BadResponseException  $e) {
-				$this->response = $e->getResponse();
-			}
+		foreach ($this->createdTags as $tagID => $tag) {
+			$this->response = TagsHelper::deleteTag(
+				$this->getBaseUrl(),
+				$this->getAdminUsername(),
+				$this->getAdminPassword(),
+				$tagID,
+				2
+			);
 		}
 	}
 }

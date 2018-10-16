@@ -23,9 +23,8 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\BadResponseException;
 use TestHelpers\SharingHelper;
+use TestHelpers\HttpRequestHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -87,9 +86,6 @@ trait Sharing {
 	public function userCreatesAShareWithSettings($user, $body) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($user);
 
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
@@ -97,18 +93,14 @@ trait Sharing {
 				$dateModification = $fd['expireDate'];
 				$fd['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
 			}
-			$options['body'] = $fd;
+			if (\array_key_exists('password', $fd)) {
+				$fd['password'] = $this->getActualPassword($fd['password']);
+			}
 		}
-
-		try {
-			$this->response = $client->send(
-				$client->createRequest("POST", $fullUrl, $options)
-			);
-		} catch (BadResponseException $ex) {
-			$this->response = $ex->getResponse();
-		}
-
-		$this->lastShareData = $this->response->xml();
+		$this->response = HttpRequestHelper::post(
+			$fullUrl, $user, $this->getPasswordForUser($user), null, $fd
+		);
+		$this->lastShareData = $this->getResponseXml();
 	}
 
 	/**
@@ -120,6 +112,34 @@ trait Sharing {
 	 */
 	public function theUserCreatesAShareWithSettings($body) {
 		$this->userCreatesAShareWithSettings($this->currentUser, $body);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" creates a public link share using the sharing API with settings$/
+	 * @Given /^user "([^"]*)" has created a public link share with settings$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function userCreatesAPublicLinkShareWithSettings($user, $body) {
+		$rows = $body->getRows();
+		// A public link share is shareType 3
+		$rows[] = ['shareType', '3'];
+		$newBody = new TableNode($rows);
+		$this->userCreatesAShareWithSettings($user, $newBody);
+	}
+
+	/**
+	 * @When /^the user creates a public link share using the sharing API with settings$/
+	 *
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function theUserCreatesAPublicLinkShareWithSettings($body) {
+		$this->userCreatesAPublicLinkShareWithSettings($this->currentUser, $body);
 	}
 
 	/**
@@ -136,11 +156,26 @@ trait Sharing {
 	}
 
 	/**
+	 * @Given /^the user has created a public link share with settings$/
+	 *
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function theUserHasCreatedAPublicLinkShareWithSettings($body) {
+		$this->theUserCreatesAPublicLinkShareWithSettings($body);
+		$this->theOCSStatusCodeShouldBe([100, 200]);
+		$this->theHTTPStatusCodeShouldBe(200);
+	}
+
+	/**
 	 * @param string $user
 	 * @param string $path
 	 * @param boolean $publicUpload
 	 * @param string|null $sharePassword
 	 * @param string|int|string[]|int[]|null $permissions
+	 * @param string $linkName
+	 * @param string $expireDate
 	 *
 	 * @return void
 	 */
@@ -149,59 +184,56 @@ trait Sharing {
 		$path,
 		$publicUpload = false,
 		$sharePassword = null,
-		$permissions = null
+		$permissions = null,
+		$linkName = null,
+		$expireDate = null
 	) {
-		try {
-			$this->response = SharingHelper::createShare(
-				$this->getBaseUrl(),
-				$user,
-				$this->getPasswordForUser($user),
-				$path,
-				'public',
-				null, // shareWith
-				$publicUpload,
-				$sharePassword,
-				$permissions,
-				null, // linkName
-				null, // expireDate
-				$this->ocsApiVersion,
-				$this->sharingApiVersion
-			);
-		} catch (BadResponseException $e) {
-			//in v2.php error HTTP codes are returned
-			//we need to be able to be able to check for them
-			$this->response = $e->getResponse();
-		}
-		$this->lastShareData = $this->response->xml();
+		$this->response = SharingHelper::createShare(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			$path,
+			'public',
+			null, // shareWith
+			$publicUpload,
+			$sharePassword,
+			$permissions,
+			$linkName,
+			$expireDate,
+			$this->ocsApiVersion,
+			$this->sharingApiVersion
+		);
+		$this->lastShareData = $this->getResponseXml();
 	}
 
 	/**
-	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the sharing API$/
-	 * @Given /^user "([^"]*)" has created a public share of (?:file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" creates a public link share of (?:file|folder) "([^"]*)" using the sharing API$/
+	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function userCreatesAPublicShareOf($user, $path) {
+	public function userCreatesAPublicLinkShareOf($user, $path) {
 		$this->createAPublicShare($user, $path);
 	}
 
 	/**
-	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the sharing API$/
-	 * @Given /^the user has created a public share of (?:file|folder) "([^"]*)"$/
+	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API$/
+	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $path
+	 *
 	 * @return void
 	 */
-	public function aPublicShareOfIsCreated($path) {
+	public function aPublicLinkShareOfIsCreated($path) {
 		$this->createAPublicShare($this->currentUser, $path);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|share|all) permission(?:s|)$/
-	 * @Given /^user "([^"]*)" has created a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @When /^user "([^"]*)" creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -209,24 +241,60 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userCreatesAPublicShareOfWithPermission(
+	public function userCreatesAPublicLinkShareOfWithPermission(
 		$user, $path, $permissions
 	) {
 		$this->createAPublicShare($user, $path, true, null, $permissions);
 	}
 
 	/**
-	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|share|all) permission(?:s|)$/
-	 * @Given /^the user has created a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 *
 	 * @param string $path
 	 * @param string|int|string[]|int[]|null $permissions
 	 *
 	 * @return void
 	 */
-	public function aPublicShareOfIsCreatedWithPermission($path, $permissions) {
+	public function aPublicLinkShareOfIsCreatedWithPermission($path, $permissions) {
 		$this->createAPublicShare(
 			$this->currentUser, $path, true, null, $permissions
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)" with expiry "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param string $expiryDate in a valid date format, e.g. "+30 days"
+	 *
+	 * @return void
+	 */
+	public function userCreatesAPublicLinkShareOfWithExpiry(
+		$user, $path, $expiryDate
+	) {
+		$this->createAPublicShare(
+			$user, $path, true, null, null, null, $expiryDate
+		);
+	}
+
+	/**
+	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)$"/
+	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with expiry "([^"]*)$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param string $expiryDate in a valid date format, e.g. "+30 days"
+	 *
+	 * @return void
+	 */
+	public function aPublicLinkShareOfIsCreatedWithExpiry(
+		$user, $path, $expiryDate
+	) {
+		$this->createAPublicShare(
+			$this->currentUser, $path, true, null, null, null, $expiryDate
 		);
 	}
 
@@ -242,22 +310,14 @@ trait Sharing {
 		$fullUrl = $this->getBaseUrl()
 			. "/public.php/webdav/" . \rawurlencode(\ltrim($path, '/'));
 
-		$client = new Client();
-		$options = [];
-		$options['auth'] = [$token, ""];
-		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
-
-		$request = $client->createRequest('GET', $fullUrl, $options);
-
-		try {
-			$this->response = $client->send($request);
-			PHPUnit_Framework_Assert::fail('download must fail');
-		} catch (BadResponseException $e) {
-			// expected
-			PHPUnit_Framework_Assert::assertGreaterThanOrEqual(400, $e->getCode());
-			PHPUnit_Framework_Assert::assertLessThanOrEqual(499, $e->getCode());
-			$this->response = $e->getResponse();
-		}
+		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
+		$this->response = HttpRequestHelper::get($fullUrl, $token, "", $headers);
+		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+			400, $this->response->getStatusCode(), 'download must fail'
+		);
+		PHPUnit_Framework_Assert::assertLessThanOrEqual(
+			499, $this->response->getStatusCode(), '4xx error expected'
+		);
 	}
 
 	/**
@@ -272,7 +332,7 @@ trait Sharing {
 			$url = $this->lastShareData->data->url;
 		}
 		$fullUrl = "$url/download";
-		$this->checkDownload($fullUrl, null, 'text/plain');
+		$this->checkDownload($fullUrl, null, null, 'text/plain');
 	}
 
 	/**
@@ -285,7 +345,26 @@ trait Sharing {
 	public function checkLastPublicSharedFileWithPasswordDownload($password) {
 		$token = $this->getLastShareToken();
 		$fullUrl = $this->getBaseUrl() . "/public.php/webdav";
-		$this->checkDownload($fullUrl, [$token, $password], 'text/plain');
+		$this->checkDownload($fullUrl, $token, $password, 'text/plain');
+	}
+
+	/**
+	 * @Then the last public shared file should not be able to be downloaded with password :password
+	 *
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithPassword($password) {
+		$token = $this->getLastShareToken();
+		$fullUrl = $this->getBaseUrl() . "/public.php/webdav";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $token, $password
+		);
+		PHPUnit_Framework_Assert::assertEquals(
+			401,
+			$this->response->getStatusCode()
+		);
 	}
 
 	/**
@@ -298,23 +377,21 @@ trait Sharing {
 	 */
 	public function theUserShouldBeAbleToDownloadTheFileUsingTheSharingApi($user, $path) {
 		$path = \ltrim($path, "/");
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($user);
-		
 		$fullUrl = $this->getBaseUrl() . "/remote.php/webdav/$path";
-		$this->checkUserDownload($fullUrl, $options, "text/plain");
+		$this->checkUserDownload($fullUrl, $user, "text/plain");
 	}
 
 	/**
 	 * @param string $url
-	 * @param array $options
+	 * @param string $user
 	 * @param string $mimeType
 	 *
 	 * @return void
 	 */
-	private function checkUserDownload($url, $options, $mimeType) {
-		$client = new Client();
-		$this->response = $client->get($url, $options);
+	private function checkUserDownload($url, $user, $mimeType) {
+		$this->response = HttpRequestHelper::get(
+			$url, $user, $this->getPasswordForUser($user)
+		);
 		PHPUnit_Framework_Assert::assertEquals(
 			200,
 			$this->response->getStatusCode()
@@ -337,20 +414,18 @@ trait Sharing {
 
 	/**
 	 * @param string $url
-	 * @param string $auth
+	 * @param string $user
+	 * @param string $password
 	 * @param string $mimeType
 	 *
 	 * @return void
 	 */
-	private function checkDownload($url, $auth = null, $mimeType = null) {
-		if ($auth !== null) {
-			$options['auth'] = $auth;
-		}
-		$options['stream'] = true;
-		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
-
-		$client = new Client();
-		$this->response = $client->get($url, $options);
+	private function checkDownload(
+		$url, $user = null, $password = null, $mimeType = null
+	) {
+		$password = $this->getActualPassword($password);
+		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
+		$this->response = HttpRequestHelper::get($url, $user, $password, $headers);
 		PHPUnit_Framework_Assert::assertEquals(
 			200,
 			$this->response->getStatusCode()
@@ -442,14 +517,14 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should not be able to create a public share of (?:file|folder) "([^"]*)" using the sharing API$/
+	 * @Then /^user "([^"]*)" should not be able to create a public link share of (?:file|folder) "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
 	 *
 	 * @return void
 	 */
-	public function shouldNotBeAbleToCreatePublicShare($sharer, $filepath) {
+	public function shouldNotBeAbleToCreatePublicLinkShare($sharer, $filepath) {
 		$this->createAPublicShare($sharer, $filepath);
 		PHPUnit_Framework_Assert::assertEquals(
 			404,
@@ -489,27 +564,18 @@ trait Sharing {
 		$body = 'test',
 		$autorename = false
 	) {
+		$password = $this->getActualPassword($password);
 		$url = $this->getBaseUrl() . "/public.php/webdav/";
 		$url .= \rawurlencode(\ltrim($filename, '/'));
 		$token = $this->getLastShareToken();
-		$options['auth'] = [$token, $password];
-		$options['stream'] = true;
-		$options['body'] = $body;
-		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
+		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
 
 		if ($autorename) {
-			$options['headers']['OC-Autorename'] = 1;
+			$headers['OC-Autorename'] = 1;
 		}
-
-		$client = new Client();
-		try {
-			$this->response = $client->send(
-				$client->createRequest('PUT', $url, $options)
-			);
-		} catch (BadResponseException $e) {
-			// 4xx and 5xx responses cause an exception
-			$this->response = $e->getResponse();
-		}
+		$this->response = HttpRequestHelper::put(
+			$url, $token, $password, $headers, $body
+		);
 	}
 
 	/**
@@ -522,13 +588,11 @@ trait Sharing {
 		$share_id = (string) $this->lastShareData->data[0]->id;
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($this->currentUser);
 		$date = \date('Y-m-d', \strtotime("+3 days"));
-		$options['body'] = ['expireDate' => $date];
-		$this->response = $client->send(
-			$client->createRequest("PUT", $fullUrl, $options)
+		$body = ['expireDate' => $date];
+		$this->response = HttpRequestHelper::put(
+			$fullUrl, $this->currentUser,
+			$this->getPasswordForUser($this->currentUser), null, $body
 		);
 		PHPUnit_Framework_Assert::assertEquals(
 			200,
@@ -561,9 +625,6 @@ trait Sharing {
 		$share_id = (string) $this->lastShareData->data[0]->id;
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($user);
 
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
@@ -571,16 +632,14 @@ trait Sharing {
 				$dateModification = $fd['expireDate'];
 				$fd['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
 			}
-			$options['body'] = $fd;
+			if (\array_key_exists('password', $fd)) {
+				$fd['password'] = $this->getActualPassword($fd['password']);
+			}
 		}
 
-		try {
-			$this->response = $client->send(
-				$client->createRequest("PUT", $fullUrl, $options)
-			);
-		} catch (BadResponseException $ex) {
-			$this->response = $ex->getResponse();
-		}
+		$this->response = HttpRequestHelper::put(
+			$fullUrl, $user, $this->getPasswordForUser($user), null, $fd
+		);
 	}
 
 	/**
@@ -592,6 +651,7 @@ trait Sharing {
 	 * @param string $password
 	 * @param int $permissions
 	 * @param string $linkName
+	 * @param string $expireDate
 	 *
 	 * @return void
 	 */
@@ -603,28 +663,25 @@ trait Sharing {
 		$publicUpload = null,
 		$password = null,
 		$permissions = null,
-		$linkName = null
+		$linkName = null,
+		$expireDate = null
 	) {
-		try {
-			$this->response = SharingHelper::createShare(
-				$this->getBaseUrl(),
-				$user,
-				$this->getPasswordForUser($user),
-				$path,
-				$shareType,
-				$shareWith,
-				$publicUpload,
-				$password,
-				$permissions,
-				$linkName,
-				null, //expireDate
-				$this->ocsApiVersion,
-				$this->sharingApiVersion
-			);
-			$this->lastShareData = $this->response->xml();
-		} catch (BadResponseException $ex) {
-			$this->response = $ex->getResponse();
-		}
+		$this->response = SharingHelper::createShare(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			$path,
+			$shareType,
+			$shareWith,
+			$publicUpload,
+			$password,
+			$permissions,
+			$linkName,
+			$expireDate,
+			$this->ocsApiVersion,
+			$this->sharingApiVersion
+		);
+		$this->lastShareData = $this->getResponseXml();
 	}
 
 	/**
@@ -634,7 +691,7 @@ trait Sharing {
 	 * @return bool
 	 */
 	public function isFieldInResponse($field, $contentExpected) {
-		$data = $this->response->xml()->data[0];
+		$data = $this->getResponseXml()->data[0];
 		if ((string)$field == 'expiration') {
 			$contentExpected
 				= \date('Y-m-d', \strtotime($contentExpected)) . " 00:00:00";
@@ -764,7 +821,7 @@ trait Sharing {
 	 * @return bool
 	 */
 	public function isUserOrGroupInSharedData($userOrGroup, $permissions = null) {
-		$data = $this->response->xml()->data[0];
+		$data = $this->getResponseXml()->data[0];
 		foreach ($data as $element) {
 			if ($element->share_with == $userOrGroup
 				&& ($permissions === null || $permissions == $element->permissions)
@@ -789,12 +846,14 @@ trait Sharing {
 	public function userSharesFileWithUserUsingTheSharingApi(
 		$user1, $filepath, $user2, $permissions = null
 	) {
+		$user1 = $this->getActualUsername($user1);
+		$user2 = $this->getActualUsername($user2);
+
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($user1);
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user1, $this->getPasswordForUser($user1)
+		);
 		if ($this->isUserOrGroupInSharedData($user2, $permissions)) {
 			return;
 		} else {
@@ -810,10 +869,30 @@ trait Sharing {
 				$user1, $filepath, 0, $user2, null, null, $permissions
 			);
 		}
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user1, $this->getPasswordForUser($user1)
+		);
 		PHPUnit_Framework_Assert::assertTrue(
 			$this->isUserOrGroupInSharedData($user2, $permissions),
 			"User $user1 failed to share $filepath with user $user2"
+		);
+	}
+
+	/**
+	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
+	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))?$/
+	 *
+	 * @param string $filepath
+	 * @param string $user2
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function theUserSharesFileWithUserUsingTheSharingApi(
+		$filepath, $user2, $permissions = null
+	) {
+		$this->userSharesFileWithUserUsingTheSharingApi(
+			$this->getCurrentUser(), $filepath, $user2, $permissions
 		);
 	}
 
@@ -851,10 +930,9 @@ trait Sharing {
 	) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($user);
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user, $this->getPasswordForUser($user)
+		);
 		if ($this->isUserOrGroupInSharedData($group, $permissions)) {
 			return;
 		} else {
@@ -862,11 +940,26 @@ trait Sharing {
 				$user, $filepath, 1, $group, null, null, $permissions
 			);
 		}
-		$this->response = $client->get($fullUrl, $options);
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user, $this->getPasswordForUser($user)
+		);
+
 		PHPUnit_Framework_Assert::assertEquals(
 			true,
 			$this->isUserOrGroupInSharedData($group, $permissions)
 		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" tries to update the last share using the sharing API with$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function userTriesToUpdateTheLastShareUsingTheSharingApiWith($user, TableNode $body) {
+		$this->userUpdatesTheLastShareWith($user, $body);
 	}
 
 	/**
@@ -1018,7 +1111,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkingTheResponseEntriesCount($count) {
-		$actualCount = \count($this->response->xml()->data[0]);
+		$actualCount = \count($this->getResponseXml()->data[0]);
 		PHPUnit_Framework_Assert::assertEquals($count, $actualCount);
 	}
 
@@ -1080,30 +1173,20 @@ trait Sharing {
 	public function userRemovesAllSharesFromTheFileNamed($user, $fileName) {
 		$url = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?format=json";
-		$client = new \GuzzleHttp\Client();
-		$res = $client->get(
-			$url,
-			[
-				'auth' => $this->getAuthOptionForUser($user),
-				'headers' => [
-					'Content-Type' => 'application/json',
-				],
-			]
+
+		$headers = ['Content-Type' => 'application/json'];
+		$res = HttpRequestHelper::get(
+			$url, $user, $this->getPasswordForUser($user), $headers
 		);
 		$json = \json_decode($res->getBody()->getContents(), true);
 		$deleted = false;
 		foreach ($json['ocs']['data'] as $data) {
 			if (\stripslashes($data['path']) === $fileName) {
 				$id = $data['id'];
-				$client->delete(
-					$this->getBaseUrl()
-					. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/{$id}",
-					[
-						'auth' => $this->getAuthOptionForUser($user),
-						'headers' => [
-							'Content-Type' => 'application/json',
-						],
-					]
+				$url = $this->getBaseUrl()
+					. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/{$id}";
+				HttpRequestHelper::delete(
+					$url, $user, $this->getPasswordForUser($user), $headers
 				);
 				$deleted = true;
 			}
@@ -1149,15 +1232,10 @@ trait Sharing {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
 		$fullUrl = "$fullUrl?path=$path";
-
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($user);
-
-		$this->response = $client->send(
-			$client->createRequest("GET", $fullUrl, $options)
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user, $this->getPasswordForUser($user)
 		);
-		return $this->response->xml()->data->element;
+		return $this->getResponseXml()->data->element;
 	}
 
 	/**
@@ -1223,8 +1301,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (?:file|folder) "([^"]*)" using the sharing API$/
-	 * @Given /^user "([^"]*)" has deleted public share named "([^"]*)" in (?:file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" deletes public link share named "([^"]*)" in (?:file|folder) "([^"]*)" using the sharing API$/
+	 * @Given /^user "([^"]*)" has deleted public link share named "([^"]*)" in (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $name
@@ -1232,7 +1310,7 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userDeletesPublicShareNamedUsingTheSharingApi(
+	public function userDeletesPublicLinkShareNamedUsingTheSharingApi(
 		$user, $name, $path
 	) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);

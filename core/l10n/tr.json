@@ -191,7 +191,6 @@
     "{sharee} (at {server})" : "{sharee} ({server} üzerinde)",
     "User and Groups" : "Kullanıcı ve Gruplar",
     "Public Links" : "Herkese açık bağlantılar",
-    "Resharing is not allowed" : "Tekrar paylaşmaya izin verilmiyor",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "kullanıcı@example.com/owncloud şeklinde diğer ownCloud kullanan diğer kullanıcılarla paylaş",
     "Share with users…" : "Kullanıcılarla paylaş...",
     "Share with users, groups or remote users…" : "Kullanıcılar, gruplar veya uzak kullanıcılarla paylaş ...",

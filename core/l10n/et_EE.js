@@ -172,7 +172,6 @@ OC.L10N.register(
     "{sharee} (at {server})" : "{sharee} (serveris {server})",
     "User and Groups" : "Kasutajad ja grupid",
     "Public Links" : "Avalikud lingid",
-    "Resharing is not allowed" : "Edasijagamine pole lubatud",
     "Share with users…" : "Jaga kasutajatega...",
     "Share with users, groups or remote users…" : "Jaga kasutajate, gruppide või kaugkasutajatega...",
     "Share with users or groups…" : "Jaga kasutajate või gruppidega...",

@@ -24,6 +24,7 @@ use OCP\User\IChangePasswordBackend;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
+use Test\Traits\PasswordTrait;
 
 /**
  * Class UserTest
@@ -33,7 +34,6 @@ use Test\TestCase;
  * @package Test\User
  */
 class UserTest extends TestCase {
-
 	/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject */
 	private $accountMapper;
 	/** @var Account */
@@ -86,6 +86,43 @@ class UserTest extends TestCase {
 		$this->assertEquals('foo', $this->user->getDisplayName());
 	}
 
+	public function testGetUserName() {
+		$this->config->expects($this->once())
+			->method('getUserValue')
+			->with('foo', 'core', 'username')
+			->willReturn('fooName');
+		$this->assertEquals('fooName', $this->user->getUserName());
+	}
+
+	public function testGetUserNameFallback() {
+		$this->config->expects($this->once())
+			->method('getUserValue')
+			->with('foo', 'core', 'username')
+			->willReturn('foo');
+		$this->assertEquals('foo', $this->user->getUserName());
+	}
+
+	public function testSetUserName() {
+		$this->config->expects($this->at(0))
+			->method('getUserValue')
+			->with('foo', 'core', 'username', 'foo')
+			->willReturn('foo');
+		$this->config->expects($this->at(1))
+			->method('setUserValue')
+			->with('foo', 'core', 'username', 'fooName');
+		$this->user->setUserName('fooName');
+	}
+
+	public function testSetUserNameSame() {
+		$this->config->expects($this->once())
+			->method('getUserValue')
+			->with('foo', 'core', 'username', 'foo')
+			->willReturn('foo');
+		$this->config->expects($this->never())
+			->method('setUserValue');
+		$this->user->setUserName('foo');
+	}
+
 	public function testSetPassword() {
 		$this->config->expects($this->once())
 			->method('deleteUserValue')
@@ -134,6 +171,21 @@ class UserTest extends TestCase {
 		$this->assertEquals('bar', $calledEvents['user.aftersetpassword']->getArgument('password'));
 		$this->assertEquals('', $calledEvents['user.aftersetpassword']->getArgument('recoveryPassword'));
 	}
+
+	/**
+	 * @param string $password
+	 * @dataProvider getEmptyValues
+	 * @expectedException \InvalidArgumentException
+	 * @expectedExceptionMessage Password cannot be empty
+	 * @throws \InvalidArgumentException
+	 */
+	public function testSetEmptyPasswordNotPermitted($password) {
+		(new User(
+			$this->createMock(Account::class),
+			$this->accountMapper
+		))->setPassword($password, 'bar');
+	}
+
 	public function testSetPasswordNotSupported() {
 		$this->config->expects($this->never())
 			->method('deleteUserValue')

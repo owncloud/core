@@ -22,18 +22,13 @@
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
+use TestHelpers\HttpRequestHelper;
 
 /**
  * CalDav functions
  */
 class CalDavContext implements \Behat\Behat\Context\Context {
-	/**
-	 * @var Client
-	 */
-	private $client;
 	/**
 	 * @var ResponseInterface
 	 */
@@ -60,7 +55,6 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
-		$this->client = new Client();
 		$this->responseXml = '';
 	}
 
@@ -72,15 +66,11 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	public function afterScenario() {
 		$davUrl = $this->featureContext->getBaseUrl()
 			. '/remote.php/dav/calendars/admin/MyCalendar';
-		try {
-			$this->client->delete(
-				$davUrl,
-				[
-					'auth' => $this->featureContext->getAuthOptionForAdmin()
-				]
-			);
-		} catch (BadResponseException $e) {
-		}
+		HttpRequestHelper::delete(
+			$davUrl,
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword()
+		);
 	}
 
 	/**
@@ -92,19 +82,13 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 */
 	public function userRequestsCalendarUsingTheAPI($user, $calendar) {
+		$user = $this->featureContext->getActualUsername($user);
 		$davUrl = $this->featureContext->getBaseUrl()
 			. "/remote.php/dav/calendars/$calendar";
 
-		try {
-			$this->response = $this->client->get(
-				$davUrl,
-				[
-					'auth' => $this->featureContext->getAuthOptionForUser($user)
-				]
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-		}
+		$this->response = HttpRequestHelper::get(
+			$davUrl, $user, $this->featureContext->getPasswordForUser($user)
+		);
 	}
 
 	/**
@@ -143,17 +127,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function theCalDavExceptionShouldBe($message) {
-		$result = $this->responseXml['value'][0]['value'];
-
-		if ($message !== $result) {
-			throw new \Exception(
-				\sprintf(
-					'Expected %s got %s',
-					$message,
-					$result
-				)
-			);
-		}
+		$this->featureContext->theDavExceptionShouldBe($message, $this->responseXml);
 	}
 
 	/**
@@ -165,17 +139,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function theCalDavErrorMessageShouldBe($message) {
-		$result = $this->responseXml['value'][1]['value'];
-
-		if ($message !== $result) {
-			throw new \Exception(
-				\sprintf(
-					'Expected %s got %s',
-					$message,
-					$result
-				)
-			);
-		}
+		$this->featureContext->theDavErrorMessageShouldBe($message, $this->responseXml);
 	}
 
 	/**
@@ -188,19 +152,24 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function userHasCreatedACalendarNamed($user, $name) {
+		$user = $this->featureContext->getActualUsername($user);
 		$davUrl = $this->featureContext->getBaseUrl()
 			. "/remote.php/dav/calendars/$user/$name";
 
-		$request = $this->client->createRequest(
-			'MKCALENDAR',
-			$davUrl,
-			[
-				'body' => '<c:mkcalendar xmlns:c="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:a="http://apple.com/ns/ical/" xmlns:o="http://owncloud.org/ns"><d:set><d:prop><d:displayname>test</d:displayname><o:calendar-enabled>1</o:calendar-enabled><a:calendar-color>#21213D</a:calendar-color><c:supported-calendar-component-set><c:comp name="VEVENT"/></c:supported-calendar-component-set></d:prop></d:set></c:mkcalendar>',
-				'auth' => $this->featureContext->getAuthOptionForUser($user)
-			]
-		);
+		$body
+			= '<c:mkcalendar xmlns:c="urn:ietf:params:xml:ns:caldav" ' .
+			'xmlns:d="DAV:" xmlns:a="http://apple.com/ns/ical/" ' .
+			'xmlns:o="http://owncloud.org/ns"><d:set><d:prop><d:displayname>' .
+			'test</d:displayname><o:calendar-enabled>1</o:calendar-enabled>' .
+			'<a:calendar-color>#21213D</a:calendar-color>' .
+			'<c:supported-calendar-component-set><c:comp name="VEVENT"/>' .
+			'</c:supported-calendar-component-set></d:prop></d:set>' .
+			'</c:mkcalendar>';
 
-		$this->response = $this->client->send($request);
+		$this->response = HttpRequestHelper::sendRequest(
+			$davUrl, "MKCALENDAR", $user,
+			$this->featureContext->getPasswordForUser($user), null, $body
+		);
 		$this->theCalDavHttpStatusCodeShouldBe(201);
 	}
 }

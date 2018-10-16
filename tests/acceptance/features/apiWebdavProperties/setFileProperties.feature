@@ -8,12 +8,25 @@ Feature: set file properties
     Given using OCS API version "1"
     And user "user0" has been created
 
+  @smokeTest
   Scenario Outline: Setting custom DAV property and reading it
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "data/textfile.txt" to "/testcustomprop.txt"
     And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt" to "veryCustomPropValue"
     When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
     Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "veryCustomPropValue"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @skip @issue-32670
+  Scenario Outline: Setting custom complex DAV property and reading it
+    Given using <dav_version> DAV path
+    And user "user0" has uploaded file "data/textfile.txt" to "/testcustomprop.txt"
+    And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt" to complex "<foo xmlns='http://bar'/>"
+    When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
+    Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "<foo xmlns='http://bar'/>"
     Examples:
       | dav_version |
       | old         |

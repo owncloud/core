@@ -174,7 +174,6 @@ OC.L10N.register(
     "access control" : "control d'accés",
     "Could not unshare" : "No es pot descompartir",
     "Public Links" : "Enllaços públics",
-    "Resharing is not allowed" : "No es permet compartir de nou",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Compartir amb la gent en altres ownClouds utilitzant la sintaxi username@example.com/owncloud",
     "invisible" : "invisible",
     "Delete" : "Esborra",

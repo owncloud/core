@@ -12,9 +12,9 @@ default:
             adminPassword: admin
             regularUserPassword: 123456
             ocPath: apps/testing/api/v1/occ
-        - CardDavContext:
-        - CalDavContext:
         - AppManagementContext:
+        - CalDavContext:
+        - CardDavContext:
 
     apiCapabilities:
       paths:
@@ -23,6 +23,12 @@ default:
         - FeatureContext: *common_feature_context_params
         - CapabilitiesContext:
 
+    apiComments:
+      paths:
+        - %paths.base%/../features/apiComments
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
     apiFederation:
       paths:
         - %paths.base%/../features/apiFederation
@@ -30,9 +36,9 @@ default:
         - FeatureContext: *common_feature_context_params
         - FederationContext:
 
-    apiMetadataApps:
+    apiFavorites:
       paths:
-        - %paths.base%/../features/apiMetadataApps
+        - %paths.base%/../features/apiFavorites
       contexts:
         - FeatureContext: *common_feature_context_params
 
@@ -67,12 +73,6 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
 
-    apiTrashbin:
-      paths:
-        - %paths.base%/../features/apiTrashbin
-      contexts:
-        - FeatureContext: *common_feature_context_params
-
     apiSharingNotifications:
       paths:
         - %paths.base%/../features/apiSharingNotifications
@@ -80,12 +80,25 @@ default:
         - FeatureContext: *common_feature_context_params
         - NotificationsCoreContext:
 
+    apiTags:
+      paths:
+        - %paths.base%/../features/apiTags
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
+    apiTrashbin:
+      paths:
+        - %paths.base%/../features/apiTrashbin
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
     apiWebdavOperations:
       paths:
         - %paths.base%/../features/apiWebdavOperations
       contexts:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
+        - SearchContext:
 
     apiWebdavProperties:
       paths:
@@ -94,116 +107,36 @@ default:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
 
-    webUILogin:
+    cliProvisioning:
       paths:
-        - %paths.base%/../features/webUILogin
+        - %paths.base%/../features/cliProvisioning
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
-        - WebUIPersonalGeneralSettingsContext:
-        - EmailContext:
+        - OccContext:
+
+    cliMain:
+      paths:
+        - %paths.base%/../features/cliMain
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
 
     webUIAdminSettings:
       paths:
         - %paths.base%/../features/webUIAdminSettings
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIAdminSharingSettingsContext:
-        - WebUIAdminAppsSettingsContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
+        - EmailContext:
         - CapabilitiesContext:
-
-    webUIFiles:
-      paths:
-        - %paths.base%/../features/webUIFiles
-      contexts:
-        - FeatureContext: *common_feature_context_params
+        - WebUIAdminAppsSettingsContext:
+        - WebUIAdminSharingSettingsContext:
+        - WebUIAdminGeneralSettingsContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIFilesContext:
 
-    webUIMoveFilesFolders:
+    webUIComments:
       paths:
-        - %paths.base%/../features/webUIMoveFilesFolders
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
-
-    webUIRenameFiles:
-      paths:
-        - %paths.base%/../features/webUIRenameFiles
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
-
-    webUIRenameFolders:
-      paths:
-        - %paths.base%/../features/webUIRenameFolders
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
-
-    webUITrashbin:
-      paths:
-        - %paths.base%/../features/webUITrashbin
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
-
-    webUISharingInternalGroups:
-      paths:
-        - %paths.base%/../features/webUISharingInternalGroups
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
-        - WebUISharingContext:
-
-    webUISharingInternalUsers:
-      paths:
-        - %paths.base%/../features/webUISharingInternalUsers
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
-        - WebUISharingContext:
-
-    webUISharingExternal:
-      paths:
-        - %paths.base%/../features/webUISharingExternal
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
-        - WebUISharingContext:
-        - FederationContext:
-
-    webUIUpload:
-      paths:
-        - %paths.base%/../features/webUIUpload
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
-
-    webUIRestrictSharing:
-      paths:
-        - %paths.base%/../features/webUIRestrictSharing
+        - %paths.base%/../features/webUIComments
       contexts:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
@@ -216,21 +149,114 @@ default:
         - %paths.base%/../features/webUIFavorites
       contexts:
         - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+
+    webUIFiles:
+      paths:
+        - %paths.base%/../features/webUIFiles
+      contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISearchContext:
+        - WebUISharingContext:
+
+    webUILogin:
+      paths:
+        - %paths.base%/../features/webUILogin
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - EmailContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIPersonalGeneralSettingsContext:
+
+    webUIMoveFilesFolders:
+      paths:
+        - %paths.base%/../features/webUIMoveFilesFolders
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
 
     webUIPersonalSettings:
       paths:
         - %paths.base%/../features/webUIPersonalSettings
       contexts:
         - FeatureContext: *common_feature_context_params
+        - EmailContext:
+        - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIFilesContext:
-        - WebUIPersonalSecuritySettingsContext:
         - WebUIPersonalGeneralSettingsContext:
+        - WebUIPersonalSecuritySettingsContext:
         - WebUIUserContext:
+
+    webUIRenameFiles:
+      paths:
+        - %paths.base%/../features/webUIRenameFiles
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+
+    webUIRenameFolders:
+      paths:
+        - %paths.base%/../features/webUIRenameFolders
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+
+    webUIRestrictSharing:
+      paths:
+        - %paths.base%/../features/webUIRestrictSharing
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+
+    webUISharingExternal:
+      paths:
+        - %paths.base%/../features/webUISharingExternal
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - EmailContext:
+        - FederationContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+
+    webUISharingInternalGroups:
+      paths:
+        - %paths.base%/../features/webUISharingInternalGroups
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+        - WebUIAdminSharingSettingsContext:
+
+    webUISharingInternalUsers:
+      paths:
+        - %paths.base%/../features/webUISharingInternalUsers
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
 
     webUISharingNotifications:
       paths:
@@ -238,11 +264,39 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - NotificationsCoreContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUINotificationsContext:
+        - WebUISharingContext:
+
+    webUITags:
+      paths:
+        - %paths.base%/../features/webUITags
+      contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFilesContext:
         - WebUISharingContext:
-        - WebUINotificationsContext:
+
+    webUITrashbin:
+      paths:
+        - %paths.base%/../features/webUITrashbin
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+
+    webUIUpload:
+      paths:
+        - %paths.base%/../features/webUIUpload
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
 
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:

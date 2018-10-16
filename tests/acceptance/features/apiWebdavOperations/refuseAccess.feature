@@ -7,13 +7,14 @@ Feature: refuse access
   Background:
     Given using OCS API version "1"
 
+  @smokeTest
   Scenario Outline: Unauthenticated call
     Given using <dav_version> DAV path
     When an unauthenticated client connects to the dav endpoint using the WebDAV API
     Then the HTTP status code should be "401"
     And there should be no duplicate headers
     And the following headers should be set
-      | WWW-Authenticate | Basic realm="ownCloud", charset="UTF-8" |
+      | WWW-Authenticate | Basic realm="%productname%", charset="UTF-8" |
     Examples:
       | dav_version |
       | old         |

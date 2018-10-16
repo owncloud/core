@@ -168,7 +168,6 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Сталася помилка. Спробуйте ще раз",
     "{sharee} (group)" : "{sharee} (група)",
     "{sharee} (at {server})" : "{sharee} (на {server})",
-    "Resharing is not allowed" : "Пере-публікація не дозволяється",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Поширити серед людей інших ownCloud'ів, використовуючи синтаксис ім'я_користувача@файли.укр/owncloud",
     "Share with users…" : "Поділитись з користувачами...",
     "Share with users, groups or remote users…" : "Поділитись з користувачами, групами або віддаленими користувачами...",

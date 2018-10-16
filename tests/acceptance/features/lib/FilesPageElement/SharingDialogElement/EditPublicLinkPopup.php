@@ -40,14 +40,18 @@ class EditPublicLinkPopup extends OwncloudPage {
 	private $passwordInputXpath = ".//input[@type='password']";
 	private $expirationDateLabelXpath = ".//label[contains(text(), 'Expiration')]";
 	private $expirationDateInputXpath = ".//input[contains(@class,'expirationDate')]";
-	private $emailInputXpath = ".//input[@type='email']";
-	private $shareButtonXpath = ".//button[contains(text(), 'Share')]";
+	private $emailInputXpath = "//form[@id='emailPrivateLink']//input[@class='select2-input']";
+	private $emailToSelfCheckboxXpath = "//form[@id='emailPrivateLink']" . "//input[@class='emailPrivateLinkForm--emailToSelf']";
+	private $emailInputCloseXpath = "//a[@class='select2-search-choice-close']";
+	private $personalMessageInputXpath = "//*[@class='public-link-modal--input emailPrivateLinkForm--emailBodyField']";
+	private $shareButtonXpath = ".//button[contains(text(), 'Share') or contains(text(), 'Save')]";
 	private $permissionLabelXpath = [
 		'read' => ".//label[contains(@for, 'sharingDialogAllowPublicRead')]",
 		'read-write' => ".//label[contains(@for, 'sharingDialogAllowPublicReadWrite')]",
 		'upload' => ".//label[contains(@for, 'sharingDialogAllowPublicUpload')]"
 	];
-	
+	private $popupCloseButton = "//a[@class='oc-dialog-close']";
+
 	/**
 	 * sets the NodeElement for the current popup
 	 * a little bit like __construct() but as we access this "sub-page-object"
@@ -106,6 +110,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @param string $permissions
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function setLinkPermissions($permissions) {
 		$permissions = \strtolower($permissions);
@@ -132,6 +137,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function setLinkPassword($password) {
 		$passwordInput = $this->popupElement->find(
@@ -152,6 +158,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @param string $date
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function setLinkExpirationDate($date) {
 		$expirationDateInput = $this->popupElement->find(
@@ -183,6 +190,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @param string $email
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function setLinkEmail($email) {
 		$emailInput = $this->popupElement->find("xpath", $this->emailInputXpath);
@@ -193,12 +201,74 @@ class EditPublicLinkPopup extends OwncloudPage {
 				" could not find input field for the email of the public link"
 			);
 		}
-		$emailInput->setValue($email);
+		$emailInput->setValue($email . "\n");
+	}
+
+	/**
+	 * Remove email from Email Input box
+	 *
+	 * @param string $email
+	 *
+	 * @return void
+	 */
+	public function unsetLinkEmail($email) {
+		$emailRemoveBtns = $this->popupElement->findAll("xpath", $this->emailInputCloseXpath);
+		foreach ($emailRemoveBtns as $emailRemoveBtn) {
+			$precedingSiblingNodeWithEmail = $emailRemoveBtn->getParent()->find('xpath', '/div');
+			$text = $precedingSiblingNodeWithEmail->getText();
+			if ($text === $email) {
+				$emailRemoveBtn->click();
+				return;
+			}
+		}
 	}
 
 	/**
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function setEmailToSelf() {
+		$checkbox = $this->popupElement->find("xpath", $this->emailToSelfCheckboxXpath);
+		$this->waitTillElementIsNotNull($this->emailToSelfCheckboxXpath);
+
+		if ($checkbox === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->emailToSelfCheckboxXpath" .
+				" could not find the checkbox for sending the self copy of email of the public link. " .
+				" Maybe the email isn't filled."
+			);
+		}
+		if (!$checkbox->isChecked()) {
+			$checkbox->check();
+		}
+	}
+
+	/**
+	 * @param string $personalMessage
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function setPersonalMessage($personalMessage) {
+		$personalMessageInput = $this->popupElement->find("xpath", $this->personalMessageInputXpath);
+		if ($personalMessageInput === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->personalMessageInputXpath" .
+				" could not find the input field for sending a personal message in the email."
+			);
+		}
+		$this->waitTillElementIsNotNull($this->personalMessageInputXpath);
+		$personalMessageInput->focus();
+		$personalMessageInput->setValue($personalMessage);
+	}
+
+	/**
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function save() {
 		$saveButton = $this->popupElement->find("xpath", $this->shareButtonXpath);
@@ -210,5 +280,22 @@ class EditPublicLinkPopup extends OwncloudPage {
 			);
 		}
 		$saveButton->click();
+	}
+
+	/**
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function close() {
+		$closeButton = $this->popupElement->find("xpath", $this->popupCloseButton);
+		if ($closeButton === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->popupCloseButton" .
+				" could not find save button of the public link popup"
+			);
+		}
+		$closeButton->click();
 	}
 }

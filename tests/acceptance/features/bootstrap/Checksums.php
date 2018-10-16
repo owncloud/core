@@ -21,7 +21,7 @@
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
-use GuzzleHttp\Client;
+use TestHelpers\HttpRequestHelper;
 
 /**
  * Checksum functions
@@ -42,7 +42,12 @@ trait Checksums {
 	public function userUploadsFileToWithChecksumUsingTheAPI(
 		$user, $source, $destination, $checksum
 	) {
-		$file = \GuzzleHttp\Stream\Stream::factory(\fopen($source, 'r'));
+		$file = \GuzzleHttp\Stream\Stream::factory(
+			\fopen(
+				$this->acceptanceTestsDirLocation() . $source,
+				'r'
+			)
+		);
 		$this->response = $this->makeDavRequest(
 			$user,
 			'PUT',
@@ -78,21 +83,16 @@ trait Checksums {
 	 * @return void
 	 */
 	public function userRequestsTheChecksumOfViaPropfind($user, $path) {
-		$client = new Client();
-		$request = $client->createRequest(
-			'PROPFIND',
-			$this->getBaseUrl() . '/' . $this->getDavFilesPath($user) . $path,
-			[
-				'body' => '<?xml version="1.0"?>
+		$body = '<?xml version="1.0"?>
 <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
   <d:prop>
     <oc:checksums />
   </d:prop>
-</d:propfind>',
-				'auth' => $this->getAuthOptionForUser($user)
-			]
+</d:propfind>';
+		$url = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user) . $path;
+		$this->response = HttpRequestHelper::sendRequest(
+			$url, 'PROPFIND', $user, $this->getPasswordForUser($user), null, $body
 		);
-		$this->response = $client->send($request);
 	}
 
 	/**
@@ -191,20 +191,16 @@ trait Checksums {
 	public function userUploadsChunkFileOfWithToWithChecksum(
 		$user, $num, $total, $data, $destination, $checksum
 	) {
-		try {
-			$num -= 1;
-			$data = \GuzzleHttp\Stream\Stream::factory($data);
-			$file = "$destination-chunking-42-$total-$num";
-			$this->response = $this->makeDavRequest(
-				$user,
-				'PUT',
-				$file,
-				['OC-Checksum' => $checksum, 'OC-Chunked' => '1'],
-				$data,
-				"files"
-			);
-		} catch (\GuzzleHttp\Exception\RequestException $ex) {
-			$this->response = $ex->getResponse();
-		}
+		$num -= 1;
+		$data = \GuzzleHttp\Stream\Stream::factory($data);
+		$file = "$destination-chunking-42-$total-$num";
+		$this->response = $this->makeDavRequest(
+			$user,
+			'PUT',
+			$file,
+			['OC-Checksum' => $checksum, 'OC-Chunked' => '1'],
+			$data,
+			"files"
+		);
 	}
 }

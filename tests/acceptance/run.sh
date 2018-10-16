@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-# composer install
+[[ "${DEBUG}" == "true" ]] && set -x
 
 # from http://stackoverflow.com/a/630387
 SCRIPT_PATH="`dirname \"$0\"`"              # relative
@@ -12,26 +11,76 @@ OC_PATH=${SCRIPT_PATH}/../../
 OCC=${OC_PATH}occ
 BEHAT=${OC_PATH}lib/composer/bin/behat
 
+BEHAT_TAGS_OPTION_FOUND=false
+BEHAT_RERUN_TIMES=1
+
+# The following environment variables can be specified:
+#
+# ACCEPTANCE_TEST_TYPE - see "--type" description
+# BEHAT_FEATURE - see "--feature" description
+# BEHAT_FILTER_TAGS - see "--tags" description
+# BEHAT_SUITE - see "--suite" description
+# BEHAT_YML - see "--config" description
+# BROWSER - see "--browser" description
+# NORERUN - see "--norerun" description
+# RERUN_FAILED_WEBUI_SCENARIOS - opposite of NORERUN
+# RUN_PART and DIVIDE_INTO_NUM_PARTS - see "--part" description
+# SHOW_OC_LOGS - see "--show-oc-logs" description
+# TESTING_REMOTE_SYSTEM - see "--remote" description
+
+# Default to testing a local system
+if [ -z "${TESTING_REMOTE_SYSTEM}" ]
+then
+	TESTING_REMOTE_SYSTEM=false
+fi
+
+# Default to not show ownCloud logs
+if [ -z "${SHOW_OC_LOGS}" ]
+then
+	SHOW_OC_LOGS=false
+fi
+
+# Default to re-run failed webUI scenarios
+if [ -z "${RERUN_FAILED_WEBUI_SCENARIOS}" ]
+then
+	RERUN_FAILED_WEBUI_SCENARIOS=true
+fi
+
+# Allow callers to specify NORERUN=true as an environment variable
+if [ "${NORERUN}" = true ]
+then
+	RERUN_FAILED_WEBUI_SCENARIOS=false
+fi
+
+# Default to API tests
+# Note: if a specific feature or suite is also specified, then the acceptance
+#       test type is deduced from the suite name, and this environment variable
+#       ACCEPTANCE_TEST_TYPE is overridden.
+if [ -z "${ACCEPTANCE_TEST_TYPE}" ]
+then
+	ACCEPTANCE_TEST_TYPE="api"
+fi
+
 # Look for command line options for:
 # -c or --config - specify a behat.yml to use
 # --feature - specify a single feature to run
 # --suite - specify a single suite to run
-# --type - api or webui - if no individual feature or suite is specified, then
+# --type - api, cli or webui - if no individual feature or suite is specified, then
 #          specify the type of acceptance tests to run. Default api.
 # --tags - specify tags for scenarios to run (or not)
+# --browser - for webUI tests, which browser to use. "chrome", "firefox",
+#             "internet explorer" and "MicrosoftEdge" are possible.
 # --remote - the server under test is remote, so we cannot locally enable the
 #            testing app. We have to assume it is already enabled.
 # --show-oc-logs - tail the ownCloud log after the test run
 # --norerun - do not rerun failed webUI scenarios
+# --loop  - loop tests for given number of times. Only use it for debugging purposes
 # --part - run a subset of scenarios, need two numbers.
 #          first number: which part to run
 #          second number: in how many parts to divide the set of scenarios
-BEHAT_TAGS_OPTION_FOUND=false
-REMOTE_ONLY=false
-SHOW_OC_LOGS=false
-RERUN_FAILED_WEBUI_SCENARIOS=true
-ACCEPTANCE_TEST_TYPE="api"
 
+# Command line options processed here will override environment variables that
+# might have been set by the caller, or in the code above.
 while [[ $# -gt 0 ]]
 do
 	key="$1"
@@ -48,8 +97,12 @@ do
 			BEHAT_SUITE="$2"
 			shift
 			;;
+		--loop)
+			BEHAT_RERUN_TIMES="$2"
+			shift
+			;;
 		--type)
-			# Lowercase the parameter value, so the user can provide "API", "webUI" etc
+			# Lowercase the parameter value, so the user can provide "API", "CLI", "webUI" etc
 			ACCEPTANCE_TEST_TYPE="${2,,}"
 			shift
 			;;
@@ -73,7 +126,7 @@ do
 			shift 2
 			;;
 		--remote)
-			REMOTE_ONLY=true
+			TESTING_REMOTE_SYSTEM=true
 			;;
 		--show-oc-logs)
 			SHOW_OC_LOGS=true
@@ -103,7 +156,7 @@ export LANG=C
 # @return occ return code given in the xml data
 function remote_occ() {
 	COMMAND=`echo $3 | xargs`
-	CURL_OCC_RESULT=`curl -s -u $1 $2 -d "command=${COMMAND}"`
+	CURL_OCC_RESULT=`curl -k -s -u $1 $2 -d "command=${COMMAND}"`
 	# xargs is (miss)used to trim the output
 	RETURN=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/code)" - | xargs`
 	# We could not find a proper return of the testing app, so something went wrong
@@ -114,6 +167,33 @@ function remote_occ() {
 	else
 		REMOTE_OCC_STDOUT=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/stdOut)" - | xargs`
 		REMOTE_OCC_STDERR=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/stdErr)" - | xargs`
+	fi
+	return ${RETURN}
+}
+
+# @param $1 admin authentication string username:password
+# @param $2 occ url
+# @param $3 directory to create, relative to the server's root
+# sets $REMOTE_OCC_STDOUT and $REMOTE_OCC_STDERR from returned xml data
+# @return return code given in the xml data
+function remote_dir() {
+	COMMAND=`echo $3 | xargs`
+	CURL_OCC_RESULT=`curl -k -s -u $1 $2 -d "dir=${COMMAND}"`
+	# xargs is (miss)used to trim the output
+	HTTP_STATUS=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/meta/statuscode)" - | xargs`
+	# We could not find a proper return of the testing app, so something went wrong
+	if [ -z "${HTTP_STATUS}" ]
+	then
+		RETURN=1
+		REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
+	else
+		if [ "${HTTP_STATUS}" = 200 ]
+		then
+			RETURN=0
+		else
+			RETURN=1
+			REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
+		fi
 	fi
 	return ${RETURN}
 }
@@ -276,11 +356,6 @@ function run_behat_tests() {
 }
 
 function teardown() {
-	if [ "${RUNNING_API_TESTS}" = true ]
-	then
-		remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:delete -y ${ID_STORAGE}"
-	fi
-	
 	# Enable any apps that were disabled for the test run
 	for i in "${!APPS_TO_REENABLE[@]}"
 	do
@@ -327,13 +402,7 @@ function teardown() {
 	then
 		curl -u ${REPORTING_WEBDAV_USER}:${REPORTING_WEBDAV_PWD} -T ${TEST_LOG_FILE} ${REPORTING_WEBDAV_URL}/"${TRAVIS_JOB_NUMBER}"_`date "+%F_%T"`.log
 	fi
-	
-	if [ "${RUNNING_API_TESTS}" = true ]
-	then
-		# Clear storage folder
-		rm -Rf work/local_storage/*
-	fi
-	
+
 	if [ "${OC_TEST_ALT_HOME}" = "1" ]
 	then
 		env_alt_home_clear
@@ -379,6 +448,7 @@ then
 	# set it already here, so it can be used for remote_occ
 	# we know the TEST_SERVER_URL already
 	OCC_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/occ"
+	DIR_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/dir"
 	if [ -n "${TEST_SERVER_FED_URL}" ]
 	then
 		OCC_FED_URL="${TEST_SERVER_FED_URL}/ocs/v2.php/apps/testing/api/v1/occ"
@@ -421,6 +491,7 @@ else
 
 	# The endpoint to use to do occ commands via the testing app
 	OCC_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/occ"
+	DIR_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/dir"
 
 	# Give time for the PHP dev server to become available
 	# because we want to use it to get and change settings with the testing app
@@ -480,15 +551,24 @@ then
 	TEST_TYPE_TAG="@webUI"
 	TEST_TYPE_TEXT="webUI"
 	RUNNING_API_TESTS=false
+	RUNNING_CLI_TESTS=false
 	RUNNING_WEBUI_TESTS=true
+elif [[ "${BEHAT_SUITE}" == cli* ]] || [ "${ACCEPTANCE_TEST_TYPE}" = "cli" ]
+then
+	TEST_TYPE_TAG="@cli"
+	TEST_TYPE_TEXT="cli"
+	RUNNING_API_TESTS=false
+	RUNNING_CLI_TESTS=true
+	RUNNING_WEBUI_TESTS=false
 else
 	TEST_TYPE_TAG="@api"
 	TEST_TYPE_TEXT="API"
 	RUNNING_API_TESTS=true
+	RUNNING_CLI_TESTS=false
 	RUNNING_WEBUI_TESTS=false
 fi
 
-# Always have one of "@api" or "@webUI" filter tags
+# Always have one of "@api", "@cli" or "@webUI" filter tags
 if [ -z "${BEHAT_FILTER_TAGS}" ]
 then
 	BEHAT_FILTER_TAGS="${TEST_TYPE_TAG}"
@@ -498,12 +578,38 @@ fi
 
 if [ -z "${BEHAT_YML}" ]
 then
+	# Look for a behat.yml somewhere below the current working directory
+	# This saves app acceptance tests being forced to specify BEHAT_YML
 	BEHAT_YML="config/behat.yml"
+	if [ ! -f "${BEHAT_YML}" ]
+	then
+		BEHAT_YML="acceptance/config/behat.yml"
+	fi
+	if [ ! -f "${BEHAT_YML}" ]
+	then
+		BEHAT_YML="tests/acceptance/config/behat.yml"
+	fi
+	# If no luck above, then use the core behat.yml that should live below this script
+	if [ ! -f "${BEHAT_YML}" ]
+	then
+		BEHAT_YML="${SCRIPT_PATH}/config/behat.yml"
+	fi
 fi
 
+# MAILHOG_HOST defines where the system-under-test can find the MailHog server
+# for sending email.
 if [ -z "${MAILHOG_HOST}" ]
 then
 	MAILHOG_HOST="127.0.0.1"
+fi
+
+# LOCAL_MAILHOG_HOST defines where this test script can find the MailHog server
+# for sending email. When testing a remote system, the MailHog server somewhere
+# "in the middle" might have a different host name from the point of view of
+# the test script.
+if [ -z "${LOCAL_MAILHOG_HOST}" ]
+then
+	LOCAL_MAILHOG_HOST="${MAILHOG_HOST}"
 fi
 
 if [ -z "${MAILHOG_SMTP_PORT}" ]
@@ -530,7 +636,7 @@ fi
 # a remote instance (e.g. inside docker).
 # If we have a remote instance we cannot enable the testing app and
 # we have to hope it is enabled already, by other ways
-if [ "${REMOTE_ONLY}" = false ]
+if [ "${TESTING_REMOTE_SYSTEM}" = false ]
 then
 	# Enable testing app
 	PREVIOUS_TESTING_APP_STATUS=$(${OCC} --no-warnings app:list "^testing$")
@@ -550,6 +656,11 @@ fi
 # it is used for file comparisons in various tests
 if [ "${RUNNING_API_TESTS}" = true ]
 then
+	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/apiSkeleton"
+elif [ "${RUNNING_CLI_TESTS}" = true ]
+then
+	# CLI tests use the apiSkeleton so that API-based "then" steps can be used
+	# to check the state of users after CLI commands
 	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/apiSkeleton"
 else
 	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/webUISkeleton"
@@ -646,19 +757,6 @@ for URL in ${OCC_URL} ${OCC_FED_URL}
 	done
 done
 
-# Only make local storage when running API tests.
-# The local storage folder cannot be deleted by an ordinary user.
-# That makes problems for webUI tests that try to select all files in the top
-# folder of a user, and then delete them in a batch.
-if [ "${RUNNING_API_TESTS}" = true ]
-then
-	mkdir -p work/local_storage || { echo "Unable to create work folder" >&2; exit 1; }
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:create local_storage local null::null -c datadir=${SCRIPT_PATH}/work/local_storage"
-	OUTPUT_CREATE_STORAGE=${REMOTE_OCC_STDOUT}
-	ID_STORAGE=`echo ${OUTPUT_CREATE_STORAGE} | awk {'print $5'}`
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:option ${ID_STORAGE} enable_sharing true"
-fi
-
 if [ "${OC_TEST_ALT_HOME}" = "1" ]
 then
 	env_alt_home_enable
@@ -688,7 +786,7 @@ OWNCLOUD_VERSION=`echo ${OWNCLOUD_VERSION} | cut -d"." -f1`
 BEHAT_FILTER_TAGS='~@skipOnOcV'${OWNCLOUD_VERSION}'&&'${BEHAT_FILTER_TAGS}
 
 # If we are running remote only tests add another skip '@skipWhenTestingRemoteSystems'
-if [ "${REMOTE_ONLY}" = true ]
+if [ "${TESTING_REMOTE_SYSTEM}" = true ]
 then
 	BEHAT_FILTER_TAGS='~@skipWhenTestingRemoteSystems&&'${BEHAT_FILTER_TAGS}
 fi
@@ -725,6 +823,10 @@ else
 fi
 
 if [ "${RUNNING_API_TESTS}" = true ]
+then
+	EXTRA_CAPABILITIES=""
+	BROWSER_TEXT=""
+elif [ "${RUNNING_CLI_TESTS}" = true ]
 then
 	EXTRA_CAPABILITIES=""
 	BROWSER_TEXT=""
@@ -808,8 +910,14 @@ for i in "${!BEHAT_SUITES[@]}"
 	do
 	BEHAT_SUITE_OPTION="--suite=${BEHAT_SUITES[$i]}"
 	SUITE_FEATURE_TEXT="${BEHAT_SUITES[$i]}"
-
-	run_behat_tests
+	for rerun_number in $(seq 1 $BEHAT_RERUN_TIMES)
+		do
+		if (($BEHAT_RERUN_TIMES > 1))
+		then
+			echo -e "\nTest repeat $rerun_number of $BEHAT_RERUN_TIMES"
+		fi
+		run_behat_tests
+	done
 
 	if [ "${PASSED}" = false ]
 	then

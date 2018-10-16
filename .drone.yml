@@ -24,7 +24,6 @@ pipeline:
     pull: true
     commands:
       - cd /drone/fed-server
-      - git clone https://github.com/owncloud/testing.git /drone/fed-server/apps/testing
       - php occ a:l
       - php occ a:e testing
       - php occ a:l
@@ -32,7 +31,9 @@ pipeline:
       - php occ config:system:set trusted_domains 2 --value=federated
       - php occ log:manage --level 0
       - php occ config:list
-      - echo "export TEST_SERVER_FED_URL=http://federated" > /drone/saved-settings.sh
+      - echo "export TEST_SERVER_FED_URL=https://federated" > /drone/saved-settings.sh
+      - php occ security:certificates:import /drone/server.crt
+      - php occ security:certificates
     when:
       matrix:
         USE_FEDERATED_SERVER: true
@@ -138,6 +139,8 @@ pipeline:
       - php occ config:system:set trusted_domains 2 --value=federated
       - php occ log:manage --level 0
       - php occ config:list
+      - php occ security:certificates:import /drone/federated.crt
+      - php occ security:certificates
     when:
       matrix:
         INSTALL_SERVER: true
@@ -240,8 +243,8 @@ pipeline:
       - echo 'Sharing a folder ..'
       - OC_PASS=123456 php occ user:add --password-from-env user1
       - chown www-data /drone/src -R
-      - curl -s -u user1:123456 -X MKCOL 'http://server/remote.php/webdav/new_folder'
-      - curl -s -u user1:123456 "http://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data 'path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin'
+      - curl -k -s -u user1:123456 -X MKCOL 'https://server/remote.php/webdav/new_folder'
+      - curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data 'path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin'
     when:
       matrix:
         TEST_SUITE: litmus
@@ -250,7 +253,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-      - LITMUS_URL=http://server/remote.php/webdav
+      - LITMUS_URL=https://server/remote.php/webdav
       - LITMUS_USERNAME=admin
       - LITMUS_PASSWORD=admin
     when:
@@ -261,7 +264,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=http://server/remote.php/dav/files/admin
+    - LITMUS_URL=https://server/remote.php/dav/files/admin
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -272,7 +275,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=http://server/remote.php/dav/files/admin/local_storage/
+    - LITMUS_URL=https://server/remote.php/dav/files/admin/local_storage/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -283,7 +286,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=http://server/remote.php/webdav/local_storage/
+    - LITMUS_URL=https://server/remote.php/webdav/local_storage/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -294,7 +297,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=http://server/remote.php/dav/files/admin/new_folder/
+    - LITMUS_URL=https://server/remote.php/dav/files/admin/new_folder/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -305,7 +308,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=http://server/remote.php/webdav/new_folder/
+    - LITMUS_URL=https://server/remote.php/webdav/new_folder/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -319,6 +322,7 @@ pipeline:
     commands:
       - tail -f /drone/src/data/owncloud.log
     when:
+      status: [ success, failure ]
       matrix:
         OWNCLOUD_LOG: true
 
@@ -337,14 +341,27 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-      - TEST_SERVER_URL=http://server
+      - TEST_SERVER_URL=https://server
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
-      - ./tests/drone/test-acceptance.sh --remote
+      - make test-acceptance-api TESTING_REMOTE_SYSTEM=true
     when:
       matrix:
         TEST_SUITE: api
+
+  cli-acceptance-tests:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    environment:
+      - TEST_SERVER_URL=https://server
+    commands:
+      - touch /drone/saved-settings.sh
+      - . /drone/saved-settings.sh
+      - make test-acceptance-cli TESTING_REMOTE_SYSTEM=true
+    when:
+      matrix:
+        TEST_SUITE: cli
 
   webui-acceptance-tests:
     image: owncloudci/php:${PHP_VERSION}
@@ -353,13 +370,13 @@ pipeline:
       - BROWSER=chrome
       - SELENIUM_HOST=selenium
       - SELENIUM_PORT=4444
-      - TEST_SERVER_URL=http://server
+      - TEST_SERVER_URL=https://server
       - PLATFORM=Linux
       - MAILHOG_HOST=email
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
-      - ./tests/drone/test-acceptance.sh --remote
+      - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
     when:
       matrix:
         TEST_SUITE: selenium
@@ -458,6 +475,10 @@ services:
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/src/
+      - APACHE_CONFIG_TEMPLATE=ssl
+      - APACHE_SSL_CERT_CN=server
+      - APACHE_SSL_CERT=/drone/server.crt
+      - APACHE_SSL_KEY=/drone/server.key
     command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
     when:
       matrix:
@@ -468,6 +489,10 @@ services:
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/fed-server/
+      - APACHE_CONFIG_TEMPLATE=ssl
+      - APACHE_SSL_CERT_CN=federated
+      - APACHE_SSL_CERT=/drone/federated.crt
+      - APACHE_SSL_KEY=/drone/federated.key
     command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
     when:
       matrix:
@@ -549,6 +574,7 @@ matrix:
       USE_SERVER: true
       TEST_SUITE: litmus
       INSTALL_SERVER: true
+      OWNCLOUD_LOG: true
 
   # Unit Tests
     - PHP_VERSION: 7.1
@@ -669,26 +695,16 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
-      BEHAT_SUITE: apiMetadataApps
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: api
-      BEHAT_SUITE: apiSharingNotifications
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_NOTIFICATIONS-APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: api
       BEHAT_SUITE: apiCapabilities
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiComments
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -702,6 +718,15 @@ matrix:
       USE_SERVER: true
       USE_FEDERATED_SERVER: true
       FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiFavorites
+      DB_TYPE: mariadb
+      USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -753,6 +778,25 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
+      BEHAT_SUITE: apiSharingNotifications
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_NOTIFICATIONS-APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiTags
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
       BEHAT_SUITE: apiTrashbin
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -778,17 +822,27 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-  # UI Acceptance tests
+  # CLI Provisioning Acceptance tests
     - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUILogin
+      TEST_SUITE: cli
+      BEHAT_SUITE: cliProvisioning
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-      USE_EMAIL: true
 
+  # CLI Main Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: cli
+      BEHAT_SUITE: cliMain
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+  # UI Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIAdminSettings
@@ -797,30 +851,20 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      USE_EMAIL: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: webUISharingNotifications
+      BEHAT_SUITE: webUIComments
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-      USE_EMAIL: true
-      INSTALL_NOTIFICATIONS-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIFavorites
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUIPersonalSettings
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -838,12 +882,32 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BEHAT_SUITE: webUILogin
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      USE_EMAIL: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
       BEHAT_SUITE: webUIMoveFilesFolders
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIPersonalSettings
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      USE_EMAIL: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -865,12 +929,24 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: webUITrashbin
+      BEHAT_SUITE: webUIRestrictSharing
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingExternal
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      USE_EMAIL: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -892,18 +968,27 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: webUISharingExternal
+      BEHAT_SUITE: webUISharingNotifications
       DB_TYPE: mariadb
       USE_SERVER: true
-      USE_FEDERATED_SERVER: true
-      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      USE_EMAIL: true
+      INSTALL_NOTIFICATIONS-APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUITags
+      DB_TYPE: mariadb
+      USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: webUIRestrictSharing
+      BEHAT_SUITE: webUITrashbin
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true

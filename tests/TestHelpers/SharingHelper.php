@@ -21,7 +21,7 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Client as GClient;
+use GuzzleHttp\Message\ResponseInterface;
 
 /**
  * manage Shares via OCS API
@@ -63,7 +63,8 @@ class SharingHelper {
 	 * @param int $ocsApiVersion
 	 * @param int $sharingApiVersion
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @throws \InvalidArgumentException
+	 * @return ResponseInterface
 	 */
 	public static function createShare(
 		$baseUrl,
@@ -76,12 +77,11 @@ class SharingHelper {
 		$sharePassword = null,
 		$permissions = null,
 		$linkName = null,
-		$expireDate = null, // unused, to be implemented
+		$expireDate = null,
 		$ocsApiVersion = 1,
 		$sharingApiVersion = 1
 	) {
 		$fd = [];
-		$options = [];
 		foreach ([$path, $baseUrl, $user, $password] as $variableToCheck) {
 			if (!\is_string($variableToCheck)) {
 				throw new \InvalidArgumentException(
@@ -155,8 +155,6 @@ class SharingHelper {
 			$fullUrl .= '/';
 		}
 		$fullUrl .= "ocs/v{$ocsApiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
-		$client = new GClient();
-		$options['auth'] = [$user, $password];
 		$fd['path'] = $path;
 		$fd['shareType'] = $shareType;
 
@@ -172,9 +170,10 @@ class SharingHelper {
 		if ($linkName !== null) {
 			$fd['name'] = $linkName;
 		}
+		if ($expireDate !== null) {
+			$fd['expireDate'] = \date('Y-m-d', \strtotime($expireDate));
+		}
 
-		$options['body'] = $fd;
-
-		return $client->send($client->createRequest("POST", $fullUrl, $options));
+		return HttpRequestHelper::post($fullUrl, $user, $password, null, $fd);
 	}
 }

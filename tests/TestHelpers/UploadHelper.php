@@ -21,7 +21,6 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\FutureResponse;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\Stream;
 use PHPUnit_Framework_Assert;
@@ -50,7 +49,7 @@ class UploadHelper {
 	 *                                    if set to null chunking will not be used
 	 * @param int    $noOfChunks          how many chunks do we want to upload
 	 *
-	 * @return FutureResponse|ResponseInterface|NULL
+	 * @return ResponseInterface
 	 */
 	public static function upload(
 		$baseUrl,
@@ -89,7 +88,7 @@ class UploadHelper {
 		if ($chunkingVersion === 1) {
 			$headers['OC-Chunked'] = '1';
 		} elseif ($chunkingVersion === 2) {
-			WebDavHelper::makeDavRequest(
+			$result = WebDavHelper::makeDavRequest(
 				$baseUrl,
 				$user,
 				$password,
@@ -99,6 +98,9 @@ class UploadHelper {
 				$davPathVersionToUse,
 				"uploads"
 			);
+			if ($result->getStatusCode() >= 400) {
+				return $result;
+			}
 		}
 
 		//upload chunks
@@ -124,6 +126,9 @@ class UploadHelper {
 				$davPathVersionToUse,
 				$davRequestType
 			);
+			if ($result->getStatusCode() >= 400) {
+				return $result;
+			}
 		}
 		//finish upload for new chunking
 		if ($chunkingVersion === 2) {
@@ -142,6 +147,9 @@ class UploadHelper {
 				$davPathVersionToUse,
 				"uploads"
 			);
+			if ($result->getStatusCode() >= 400) {
+				return $result;
+			}
 		}
 		return $result;
 	}

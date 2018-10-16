@@ -33,6 +33,7 @@ Feature: upload file using old chunking
     Then as "user0" the file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
+  @smokeTest
   Scenario Outline: Chunked upload files with difficult name
     When user "user0" uploads the following "3" chunks to "/<file-name>" with old chunking and using the WebDAV API
       | 1 | AAAAA |

@@ -24,17 +24,21 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
-use GuzzleHttp\Exception\ClientException;
 use Page\FavoritesPage;
 use Page\FilesPage;
 use Page\FilesPageElement\ConflictDialog;
-use Page\FilesPageElement\FileRow;
 use Page\OwncloudPage;
+use Page\SharedWithOthersPage;
 use Page\SharedWithYouPage;
+use Page\TagsPage;
+use Page\SharedByLinkPage;
 use Page\TrashbinPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\DeleteHelper;
 use TestHelpers\DownloadHelper;
+use Page\FilesPageBasic;
+use Page\FilesPageElement\FileActionsMenu;
+use Behat\Mink\Exception\ElementException;
 
 require_once 'bootstrap.php';
 
@@ -66,12 +70,35 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @var SharedWithYouPage
 	 */
 	private $sharedWithYouPage;
-	
+
+	/**
+	 *
+	 * @var SharedByLinkPage
+	 */
+	private $sharedByLinkPage;
+
+	/**
+	 * @var SharedWithOthersPage
+	 */
+	private $sharedWithOthersPage;
+
+	/**
+	 *
+	 * @var TagsPage
+	 */
+	private $tagsPage;
+
 	/**
 	 *
 	 * @var ConflictDialog
 	 */
 	private $conflictDialog;
+
+	/**
+	 *
+	 * @var FileActionsMenu
+	 */
+	private $openedFileActionMenu;
 
 	/**
 	 * Table of all files and folders that should have been deleted, stored so
@@ -127,6 +154,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param ConflictDialog $conflictDialog
 	 * @param FavoritesPage $favoritesPage
 	 * @param SharedWithYouPage $sharedWithYouPage
+	 * @param TagsPage $tagsPage
+	 * @param SharedByLinkPage $sharedByLinkPage
+	 * @param SharedWithOthersPage $sharedWithOthersPage
 	 *
 	 * @return void
 	 */
@@ -135,13 +165,19 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		TrashbinPage $trashbinPage,
 		ConflictDialog $conflictDialog,
 		FavoritesPage $favoritesPage,
-		SharedWithYouPage $sharedWithYouPage
+		SharedWithYouPage $sharedWithYouPage,
+		TagsPage $tagsPage,
+		SharedByLinkPage $sharedByLinkPage,
+		SharedWithOthersPage $sharedWithOthersPage
 	) {
 		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
 		$this->conflictDialog = $conflictDialog;
 		$this->favoritesPage = $favoritesPage;
 		$this->sharedWithYouPage = $sharedWithYouPage;
+		$this->tagsPage = $tagsPage;
+		$this->sharedByLinkPage = $sharedByLinkPage;
+		$this->sharedWithOthersPage = $sharedWithOthersPage;
 	}
 
 	/**
@@ -201,10 +237,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user browses directly to display the :tabName details of file :fileName in folder :folderName
+	 * @Given the user has browsed directly to display the :tabName details of file :fileName in folder :folderName
 	 *
 	 * @param string $tabName
 	 * @param string $fileName
 	 * @param string $folderName
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -222,6 +260,20 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 		$this->filesPage->getDetailsDialog()->waitTillPageIsLoaded($this->getSession());
+	}
+
+	/**
+	 * @Given the user has browsed directly to display the details of file :fileName in folder :folderName
+	 * @When the user browses directly to display the details of file :fileName in folder :folderName
+	 *
+	 * @param string $fileName
+	 * @param string $folderName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserBrowsesDirectlyToDetailsDefaultTabOfFileInFolder($fileName, $folderName) {
+		$this->theUserBrowsesDirectlyToDetailsTabOfFileInFolder(null, $fileName, $folderName);
 	}
 
 	/**
@@ -332,7 +384,71 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user browses to the shared-by-link page
+	 * @Given the user has browsed to the shared-by-link page
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserBrowsesToTheSharedByLinkPage() {
+		$this->sharedByLinkPage->setPagePath(
+			$this->webUIGeneralContext->getCurrentServer() .
+			$this->sharedByLinkPage->getOriginalPath()
+		);
+		if (!$this->sharedByLinkPage->isOpen()) {
+			$this->sharedByLinkPage->open();
+			$this->sharedByLinkPage->waitTillPageIsLoaded($this->getSession());
+			$this->webUIGeneralContext->setCurrentPageObject(
+				$this->sharedByLinkPage
+			);
+		}
+	}
+
+	/**
+	 * @When the user browses to the shared-with-others page
+	 * @Given the user has browsed to the shared-with-others page
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserBrowsesToTheSharedWithOthersPage() {
+		$this->sharedWithOthersPage->setPagePath(
+			$this->webUIGeneralContext->getCurrentServer() .
+			$this->sharedWithOthersPage->getOriginalPath()
+		);
+		if (!$this->sharedWithOthersPage->isOpen()) {
+			$this->sharedWithOthersPage->open();
+			$this->sharedWithOthersPage->waitTillPageIsLoaded($this->getSession());
+			$this->webUIGeneralContext->setCurrentPageObject(
+				$this->sharedWithOthersPage
+			);
+		}
+	}
+
+	/**
+	 * @When the user browses to the tags page
+	 * @Given the user has browsed to the tags page
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserBrowsesToTheTagsPage() {
+		$this->tagsPage->setPagePath(
+			$this->webUIGeneralContext->getCurrentServer() .
+			$this->tagsPage->getOriginalPath()
+		);
+		if (!$this->tagsPage->isOpen()) {
+			$this->tagsPage->open();
+			$this->tagsPage->waitTillPageIsLoaded($this->getSession());
+			$this->webUIGeneralContext->setCurrentPageObject(
+				$this->tagsPage
+			);
+		}
+	}
+
+	/**
 	 * @When /^the user creates a folder with the (invalid|)\s?name ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
+	 * @Given /^the user has created a folder with the (invalid|)\s?name ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
 	 *
 	 * @param string $invalid contains "invalid"
 	 *                        if the folder creation is expected to fail
@@ -376,6 +492,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user creates a folder with the following name using the webUI
+	 * @Given the user has created a folder with the following name using the webUI
 	 *
 	 * @param TableNode $namePartsTable table of parts of the file name
 	 *                                  table headings: must be: |name-parts |
@@ -414,6 +531,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @Then there should be exactly :count folder/folders listed on the webUI
 	 *
 	 * @param string $count that is numeric
+	 *
 	 * @return void
 	 */
 	public function thereShouldBeCountFilesFoldersListedOnTheWebUI($count) {
@@ -540,7 +658,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			// We do not expect to be able to delete the file,
 			// so do not waste time doing too many retries.
 			$pageObject->deleteFile(
-				$name, $session, $expectToDeleteFile, MINIMUMRETRYCOUNT
+				$name, $session, $expectToDeleteFile, MINIMUM_RETRY_COUNT
 			);
 		}
 	}
@@ -596,28 +714,32 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		foreach ($filesTable as $file) {
 			$username = $this->featureContext->getCurrentUser();
 			$currentTime = \microtime(true);
-			$end = $currentTime + (LONGUIWAITTIMEOUTMILLISEC / 1000);
+			$end = $currentTime + (LONG_UI_WAIT_TIMEOUT_MILLISEC / 1000);
 			//retry deleting in case the file is locked (code 403)
 			while ($currentTime <= $end) {
-				try {
-					DeleteHelper::delete(
-						$this->featureContext->getBaseUrl(),
-						$username,
-						$this->featureContext->getUserPassword($username),
-						$file['name']
-					);
+				$response = DeleteHelper::delete(
+					$this->featureContext->getBaseUrl(),
+					$username,
+					$this->featureContext->getUserPassword($username),
+					$file['name']
+				);
+				
+				if ($response->getStatusCode() >= 200
+					&& $response->getStatusCode() <= 399
+				) {
 					break;
-				} catch (ClientException $e) {
-					if ($e->getResponse()->getStatusCode() === 423) {
-						$message = "INFORMATION: file '" . $file['name'] .
-								   "' is locked";
-						\error_log($message);
-					} else {
-						throw $e;
-					}
+				} elseif ($response->getStatusCode() === 423) {
+					$message = "INFORMATION: file '" . $file['name'] .
+					"' is locked";
+					\error_log($message);
+				} else {
+					throw new \Exception(
+						"could not delete file. Response code: " .
+						$response->getStatusCode()
+					);
 				}
 				
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				$currentTime = \microtime(true);
 			}
 			
@@ -734,7 +856,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$previousNotificationsCount = 0;
 
 		for ($retryCounter = 0;
-			 $retryCounter < STANDARDRETRYCOUNT;
+			 $retryCounter < STANDARD_RETRY_COUNT;
 			 $retryCounter++) {
 			$this->theUserUploadsOverwritingTheFileUsingTheWebUI($name);
 
@@ -755,7 +877,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				echo $message;
 				\error_log($message);
 				$previousNotificationsCount = $currentNotificationsCount;
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			} else {
 				break;
 			}
@@ -839,6 +961,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	/**
 	 * @When the user chooses :label in the upload dialog
 	 * @When I click the :label button
+	 * @Given the user has chosen :label in the upload dialog
+	 * @Given I have clicked the :label button
 	 *
 	 * @param string $label
 	 *
@@ -906,6 +1030,36 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				$file['name'], "", "trashbin"
 			);
 		}
+	}
+
+	/**
+	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with the path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|shared with others page|tags page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
+	 *
+	 * @param string $name enclosed in single or double quotes
+	 * @param string $path
+	 * @param string $shouldOrNot
+	 * @param string $typeOfFilesPage
+	 * @param string $folder
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFileFolderWithThePathShouldBeListedOnTheWebUI(
+		$name, $path, $shouldOrNot, $typeOfFilesPage = "", $folder = ""
+	) {
+		// The capturing groups of the regex include the quotes at each
+		// end of the captured string, so trim them.
+		if ($folder !== "") {
+			$folder = \trim($folder, $folder[0]);
+		}
+		$path = \trim($path, $path[0]);
+		$this->checkIfFileFolderIsListedOnTheWebUI(
+			\trim($name, $name[0]),
+			$shouldOrNot,
+			$typeOfFilesPage,
+			$folder,
+			$path
+		);
 	}
 
 	/**
@@ -1101,12 +1255,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
 	 * @param string $folder
+	 * @param string $path if set, name and path (shown in the webUI) of the file need match
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function checkIfFileFolderIsListedOnTheWebUI(
-		$name, $shouldOrNot, $typeOfFilesPage = "", $folder = ""
+		$name, $shouldOrNot, $typeOfFilesPage = "", $folder = "", $path = ""
 	) {
 		$should = ($shouldOrNot !== "not");
 		$exceptionMessage = null;
@@ -1123,7 +1278,22 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			case "shared-with-you page":
 				$this->theUserBrowsesToTheSharedWithYouPage();
 				break;
+			case "shared-by-link page":
+				$this->theUserBrowsesToTheSharedByLinkPage();
+				break;
+			case "shared with others page":
+				$this->theUserBrowsesToTheSharedWithOthersPage();
+				break;
+			case "tags page":
+				break;
+			case "search results page":
+				//nothing to do here, we cannot navigate to that page, except by performing a search
+				break;
 		}
+		/**
+		 *
+		 * @var FilesPageBasic $pageObject
+		 */
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->waitTillPageIsLoaded($this->getSession());
 		if ($folder !== "") {
@@ -1133,11 +1303,23 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 
 		try {
-			/**
-			 *
-			 * @var FileRow $fileRow
-			 */
-			$fileRow = $pageObject->findFileRowByName($name, $this->getSession());
+			if ($path === "") {
+				/**
+				 *
+				 * @var FileRow $fileRow
+				 */
+				$fileRow = $pageObject->findFileRowByName(
+					$name, $this->getSession()
+				);
+			} else {
+				/**
+				 *
+				 * @var FileRow $fileRow
+				 */
+				$fileRow = $pageObject->findFileRowByNameAndPath(
+					$name, $path, $this->getSession()
+				);
+			}
 			$exceptionMessage = '';
 		} catch (ElementNotFoundException $e) {
 			$exceptionMessage = $e->getMessage();
@@ -1151,6 +1333,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 
 		$fileLocationText = " file '$nameText'";
+
+		if ($path !== "") {
+			$fileLocationText .= " with path '$path'";
+		}
 
 		if ($folder !== "") {
 			$fileLocationText .= " in folder '$folder'";
@@ -1352,7 +1538,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		for ($i = 1; $i <= $this->filesPage->getSizeOfFileFolderList(); $i++) {
 			$actionMenu = $this->filesPage->openFileActionsMenuByNo($i);
 			
-			$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC;
+			$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC;
 			$currentTime = \microtime(true);
 			$end = $currentTime + ($timeout_msec / 1000);
 			while ($currentTime <= $end) {
@@ -1369,7 +1555,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				if ($windowHeight >= $deleteBtnCoordinates ["top"]) {
 					break;
 				}
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				$currentTime = \microtime(true);
 			}
 			
@@ -1533,6 +1719,102 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Given the user has added a tag :tagName to the file using the webUI
+	 * @Given the user has toggled a tag :tagName on the file using the webUI
+	 * @When the user adds a tag :tagName to the file using the webUI
+	 * @When the user toggles a tag :tagName on the file using the webUI
+	 *
+	 * @param string $tagName
+	 *
+	 * @return void
+	 */
+	public function theUserAddsATagToTheFileUsingTheWebUI($tagName) {
+		$this->filesPage->getDetailsDialog()->addTag($tagName);
+
+		// For tags to be created, OC checks (|for the permission) if the tag could be created
+		// and if it can, then only it creates a tag. So, in the webUI, it does two
+		// requests before the tags are created.
+		// If we use a single wait, it returns after it has checked for the permission.
+		// Locally that passes but sometimes fail on the ci. So, we need two waits for each requests.
+		// FIXME: Find a better way to wait for these calls
+		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+
+		$this->featureContext->addToTheListOfCreatedTagsByDisplayName($tagName);
+	}
+
+	/**
+	 * @When the user types :value in the collaborative tags field using the webUI
+	 *
+	 * @param string $value
+	 *
+	 * @return void
+	 */
+	public function theUserTypesAValueInTheCollaborativeTagsFieldUsingTheWebUI($value) {
+		$this->filesPage->getDetailsDialog()->insertTagNameInTheTagsField($value);
+	}
+
+	/**
+	 * @Then all the tags starting with :value in their name should be listed in the dropdown list on the webUI
+	 *
+	 * @param string $value
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function allTheTagsStartingWithInTheirNameShouldBeListedInTheDropdownListOnTheWebUI($value) {
+		$results = $this->filesPage->getDetailsDialog()->getDropDownTagsSuggestionResults();
+		foreach ($results as $tagResult) {
+			PHPUnit_Framework_Assert::assertStringStartsWith($value, $tagResult->getText());
+		}
+
+		// check also that all tags that have been created and starts with $value
+		// are also shown in the dropdown
+		$createdTags = $this->featureContext->getListOfCreatedTags();
+		foreach ($createdTags as $tag) {
+			$tagName = $tag['name'];
+			if (\substr($tagName, 0, \strlen($value)) === $value && !empty($tag['userAssignable'])) {
+				$this->theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName);
+			}
+		}
+	}
+
+	/**
+	 * @Then the tag :tagName should be listed in the dropdown list on the webUI
+	 *
+	 * @param string $tagName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName) {
+		$results = $this->filesPage->getDetailsDialog()->getDropDownTagsSuggestionResults();
+		foreach ($results as $tagResult) {
+			if ($tagResult->getText() === $tagName) {
+				return;
+			}
+		}
+		throw new \Exception("No tags could be found with $tagName.");
+	}
+
+	/**
+	 * @Then the tag :tagName should not be listed in the dropdown list on the webUI
+	 *
+	 * @param string $tagName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theTagShouldNotBeListedInTheDropdownListOnTheWebui($tagName) {
+		try {
+			$this->theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName);
+		} catch (\Exception $e) {
+			return;
+		}
+		throw new \Exception("Tag $tagName should not be on the dropdown.");
+	}
+
+	/**
 	 * Asserts that the content of a remote and a local file is the same
 	 * or is different
 	 * uses the current user to download the remote file
@@ -1597,9 +1879,176 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user enables the setting to view hidden files/folders on the webUI
+	 * @Given the user has enabled the setting to view hidden files/folders on the webUI
 	 * @return void
 	 */
 	public function theUserEnablesTheSettingToViewHiddenFoldersOnTheWebUI() {
 		$this->filesPage->enableShowHiddenFilesSettings();
+	}
+
+	/**
+	 * @When the user opens the file action menu of the file/folder :name in the webUI
+	 *
+	 * @param string $name Name of the file/Folder
+	 *
+	 * @return void
+	 */
+	public function theUserOpensTheFileActionMenuOfTheFolderInTheWebui($name) {
+		$session = $this->getSession();
+		$this->selectedFileRow = $this->getCurrentPageObject()->findFileRowByName($name, $session);
+		$this->openedFileActionMenu = $this->selectedFileRow->openFileActionsMenu($session);
+	}
+
+	/**
+	 * @Then the user should see :action_label file action translated to :translated_label in the webUI
+	 *
+	 * @param string $action_label
+	 * @param string $translated_label
+	 *
+	 * @return void
+	 */
+	public function theUserShouldSeeFileActionTranslatedToInTheWebui($action_label, $translated_label) {
+		PHPUnit_Framework_Assert::assertSame(
+			$translated_label,
+			$this->openedFileActionMenu->getActionLabelLocalized($action_label)
+		);
+	}
+
+	/**
+	 * @When the user clicks the :action_label file action in the webUI
+	 *
+	 * @param string $action_label
+	 *
+	 * @throws \Exception
+	 * @return void
+	 */
+	public function theUserClicksTheFileActionInTheWebui($action_label) {
+		switch ($action_label) {
+			case "details":
+				$this->openedFileActionMenu->openDetails();
+				break;
+			case "rename":
+				$this->openedFileActionMenu->rename();
+				break;
+			case "delete":
+				$this->openedFileActionMenu->delete();
+				break;
+			case "search results page":
+				throw new Exception("Action not available");
+				break;
+		}
+	}
+
+	/**
+	 * @Then the details dialog should be visible in the webUI
+	 *
+	 * @return void
+	 */
+	public function theDetailsDialogShouldBeVisibleInTheWebui() {
+		PHPUnit_Framework_Assert::assertTrue($this->filesPage->getDetailsDialog()->isDialogVisible());
+	}
+
+	/**
+	 * @Then the :tabName tab in details panel should be visible
+	 *
+	 * @param string $tabName
+	 *
+	 * @return void
+	 */
+	public function theTabInDetailsPanelShouldBeVisible($tabName) {
+		PHPUnit_Framework_Assert::assertTrue($this->filesPage->getDetailsDialog()->isVisible($tabName));
+	}
+
+	/**
+	 * @When the user switches to :tabName tab in details panel using the webUI
+	 *
+	 * @param string $tabName
+	 *
+	 * @return void
+	 */
+	public function theUserSwitchesToTabInDetailsPanelUsingTheWebui($tabName) {
+		$this->filesPage->getDetailsDialog()->changeDetailsTab($tabName);
+	}
+
+	/**
+	 * @When the user comments with content :content using the WebUI
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theUserCommentsWithContentUsingTheWebui($content) {
+		$detailsDialog = $this->filesPage->getDetailsDialog();
+		$detailsDialog->addComment($content);
+		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+	}
+
+	/**
+	 * @When the user deletes the comment :content using the webUI
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theUserDeletesTheCommentUsingTheWebui($content) {
+		$detailsDialog = $this->filesPage->getDetailsDialog();
+		$detailsDialog->deleteComment($content);
+		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+	}
+
+	/**
+	 * @Then /^the comment ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the comments tab in details dialog$/
+	 *
+	 * @param string $text enclosed in single or double quotes
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 */
+	public function theCommentShouldBeListedInTheCommentsTabInDetailsDialog($text, $shouldOrNot) {
+		$should = ($shouldOrNot !== "not");
+		$text = \trim($text, $text[0]);
+		$detailsDialog = $this->getCurrentPageObject()->getDetailsDialog();
+		if ($should) {
+			PHPUnit_Framework_Assert::assertTrue(
+				$detailsDialog->isCommentOnUI($text),
+				"Failed to find comment with text $text in the webUI"
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertFalse(
+				$detailsDialog->isCommentOnUI($text),
+				"The comment with text $text exists in the webUI"
+			);
+		}
+	}
+
+	/**
+	 * @When the user searches for tag :tag using the webUI
+	 *
+	 * @param string $tag
+	 *
+	 * @return void
+	 */
+	public function theUserSearchesForTagUsingTheWebui($tag) {
+		$this->tagsPage->searchByTag($tag);
+	}
+
+	/**
+	 * @When the user closes the details dialog
+	 *
+	 * @return void
+	 */
+	public function theUserClosesTheDetailsDialog() {
+		$this->filesPage->closeDetailsDialog();
+	}
+
+	/**
+	 * @When the user deletes tag with name :name using the webUI
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function theUserDeletesTagWithNameUsingTheWebui($name) {
+		$this->filesPage->getDetailsDialog()->deleteTag($name);
 	}
 }

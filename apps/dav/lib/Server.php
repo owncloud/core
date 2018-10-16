@@ -37,7 +37,6 @@ use OCA\DAV\Connector\Sabre\CopyEtagHeaderPlugin;
 use OCA\DAV\Connector\Sabre\CorsPlugin;
 use OCA\DAV\Connector\Sabre\DavAclPlugin;
 use OCA\DAV\Connector\Sabre\DummyGetResponsePlugin;
-use OCA\DAV\Connector\Sabre\FakeLockerPlugin;
 use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCA\DAV\Connector\Sabre\FilesReportPlugin;
 use OCA\DAV\Connector\Sabre\MaintenancePlugin;
@@ -47,11 +46,14 @@ use OCA\DAV\Connector\Sabre\TagsPlugin;
 use OCA\DAV\Connector\Sabre\ValidateRequestPlugin;
 use OCA\DAV\DAV\FileCustomPropertiesBackend;
 use OCA\DAV\DAV\FileCustomPropertiesPlugin;
+use OCA\DAV\DAV\LazyOpsPlugin;
 use OCA\DAV\DAV\MiscCustomPropertiesBackend;
 use OCA\DAV\DAV\PublicAuth;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
+use OCA\DAV\Files\FileLocksBackend;
 use OCA\DAV\Files\PreviewPlugin;
 use OCA\DAV\Files\ZsyncPlugin;
+use OCA\DAV\JobStatus\Entity\JobStatusMapper;
 use OCA\DAV\SystemTag\SystemTagPlugin;
 use OCA\DAV\Upload\ChunkingPlugin;
 use OCA\DAV\Upload\ChunkingPluginZsync;
@@ -75,6 +77,8 @@ class Server {
 	 *
 	 * @param IRequest $request
 	 * @param string $baseUri
+	 * @throws \OCP\AppFramework\QueryException
+	 * @throws \Sabre\DAV\Exception
 	 */
 	public function __construct(IRequest $request, $baseUri) {
 		$this->request = $request;
@@ -85,6 +89,17 @@ class Server {
 		$root = new RootCollection();
 		$tree = new \OCA\DAV\Tree($root);
 		$this->server = new \OCA\DAV\Connector\Sabre\Server($tree);
+
+		$config = \OC::$server->getConfig();
+		if ($config->getSystemValue('dav.enable.async', false)) {
+			$this->server->addPlugin(new LazyOpsPlugin(
+				\OC::$server->getUserSession(),
+				\OC::$server->getURLGenerator(),
+				\OC::$server->getShutdownHandler(),
+				\OC::$server->query(JobStatusMapper::class),
+				\OC::$server->getLogger()
+			));
+		}
 
 		// Backends
 		$authBackend = new Auth(
@@ -99,7 +114,6 @@ class Server {
 		$this->server->httpRequest->setUrl($this->request->getRequestUri());
 		$this->server->setBaseUri($this->baseUri);
 
-		$config = \OC::$server->getConfig();
 		$this->server->addPlugin(new MaintenancePlugin($config));
 		$this->server->addPlugin(new ValidateRequestPlugin('dav'));
 		$this->server->addPlugin(new BlockLegacyClientPlugin($config));
@@ -125,6 +139,7 @@ class Server {
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $logger));
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
+		$this->server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($this->server->tree, false)));
 
 		// ACL plugin not used in files subtree, also it causes issues
 		// with performance and locking issues because it will query
@@ -173,17 +188,6 @@ class Server {
 
 		$this->server->addPlugin(new CopyEtagHeaderPlugin());
 		$this->server->addPlugin(new ChunkingPlugin());
-
-		// Some WebDAV clients do require Class 2 WebDAV support (locking), since
-		// we do not provide locking we emulate it using a fake locking plugin.
-		if ($request->isUserAgent([
-			'/WebDAVFS/',
-			'/OneNote/',
-			'/Microsoft Office OneNote 2013/',
-			'/Microsoft-WebDAV-MiniRedir/',
-		])) {
-			$this->server->addPlugin(new FakeLockerPlugin());
-		}
 
 		if (BrowserErrorPagePlugin::isBrowserRequest($request)) {
 			$this->server->addPlugin(new BrowserErrorPagePlugin());
@@ -296,7 +300,7 @@ class Server {
 	}
 
 	/**
-	 * @param string[] $subTree
+	 * @param string[] $subTrees
 	 * @return bool
 	 */
 	private function isRequestForSubtree(array $subTrees) {

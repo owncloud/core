@@ -71,6 +71,165 @@ trait CommandLine {
 	}
 
 	/**
+	 * Set a system config setting
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param string|null $type e.g. boolean or json
+	 * @param string|null $output e.g. json
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 */
+	public function setSystemConfig(
+		$key,
+		$value,
+		$type = null,
+		$output = null,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		$args = [];
+		$args[] = 'config:system:set';
+		$args[] = $key;
+		$args[] = '--value';
+		$args[] = $value;
+
+		if ($type !== null) {
+			$args[] = '--type';
+			$args[] = $type;
+		}
+
+		if ($output !== null) {
+			$args[] = '--output';
+			$args[] = $output;
+		}
+
+		$args[] = '--no-ansi';
+
+		return SetupHelper::runOcc(
+			$args,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		);
+	}
+
+	/**
+	 * Get a system config setting, including status code, output and standard
+	 * error output.
+	 *
+	 * @param string $key
+	 * @param string|null $output e.g. json
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 */
+	public function getSystemConfig(
+		$key,
+		$output = null,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		$args = [];
+		$args[] = 'config:system:get';
+		$args[] = $key;
+
+		if ($output !== null) {
+			$args[] = '--output';
+			$args[] = $output;
+		}
+
+		$args[] = '--no-ansi';
+
+		return SetupHelper::runOcc(
+			$args,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		);
+	}
+
+	/**
+	 * Get the value of a system config setting
+	 *
+	 * @param string $key
+	 * @param string|null $output e.g. json
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return string
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 */
+	public function getSystemConfigValue(
+		$key,
+		$output = null,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		return $this->getSystemConfig(
+			$key,
+			$output,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		)['stdOut'];
+	}
+
+	/**
+	 * Delete a system config setting
+	 *
+	 * @param string $key
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 */
+	public function deleteSystemConfig(
+		$key,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
+		$args = [];
+		$args[] = 'config:system:delete';
+		$args[] = $key;
+
+		$args[] = '--no-ansi';
+
+		return SetupHelper::runOcc(
+			$args,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		);
+	}
+
+	/**
 	 * Invokes an OCC command
 	 *
 	 * @param array $args of the occ command
@@ -89,8 +248,41 @@ trait CommandLine {
 		$baseUrl = null,
 		$ocPath = null
 	) {
+		return $this->runOccWithEnvVariables(
+			$args,
+			null,
+			$adminUsername,
+			$adminPassword,
+			$baseUrl,
+			$ocPath
+		);
+	}
+
+	/**
+	 * Invokes an OCC command with an optional array of environment variables
+	 *
+	 * @param array $args of the occ command
+	 * @param array|null $envVariables to be defined before the command is run
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
+	 *
+	 * @return int exit code
+	 * @throws Exception if ocPath has not been set yet or the testing app is not enabled
+	 */
+	public function runOccWithEnvVariables(
+		$args = [],
+		$envVariables = null,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
 		$args[] = '--no-ansi';
-		$return = SetupHelper::runOcc($args, $adminUsername, $adminPassword, $baseUrl, $ocPath);
+		$return = SetupHelper::runOcc(
+			$args, $adminUsername, $adminPassword, $baseUrl, $ocPath, $envVariables
+		);
 		$this->lastStdOut = $return['stdOut'];
 		$this->lastStdErr = $return['stdErr'];
 		$this->lastCode = (int) $return['code'];
@@ -106,8 +298,27 @@ trait CommandLine {
 	 * @return void
 	 */
 	public function invokingTheCommand($cmd) {
-		$args = \explode(' ', $cmd);
-		$this->runOcc($args);
+		$this->runOcc([$cmd]);
+	}
+
+	/**
+	 * @When /^the administrator invokes occ command "([^"]*)" with environment variable "([^"]*)" set to "([^"]*)"$/
+	 * @Given /^the administrator has invoked occ command "([^"]*)" with environment variable "([^"]*)" set to "([^"]*)"$/
+	 *
+	 * @param string $cmd
+	 * @param string $envVariableName
+	 * @param string $envVariableValue
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function invokingTheCommandWithEnvVariable(
+		$cmd, $envVariableName, $envVariableValue
+	) {
+		$args = [$cmd];
+		$this->runOccWithEnvVariables(
+			$args, [$envVariableName => $envVariableValue]
+		);
 	}
 
 	/**
@@ -212,7 +423,7 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command output should contain the text "([^"]*)"$/
+	 * @Then /^the command output should contain the text ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
 	 * @param string $text
 	 *
@@ -220,16 +431,21 @@ trait CommandLine {
 	 * @throws \Exception
 	 */
 	public function theCommandOutputContainsTheText($text) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$text = \trim($text, $text[0]);
 		$lines = $this->findLines($this->lastStdOut, $text);
-		if (empty($lines)) {
-			throw new \Exception(
-				"The command did not output the expected text on stdout '$text'"
-			);
-		}
+		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+			1,
+			\count($lines),
+			"The command output did not contain the expected text on stdout '$text'\n" .
+			"The command output on stdout was:\n" .
+			$this->lastStdOut
+		);
 	}
 
 	/**
-	 * @Then /^the command error output should contain the text "([^"]*)"$/
+	 * @Then /^the command error output should contain the text ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
 	 * @param string $text
 	 *
@@ -237,12 +453,27 @@ trait CommandLine {
 	 * @throws \Exception
 	 */
 	public function theCommandErrorOutputContainsTheText($text) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$text = \trim($text, $text[0]);
 		$lines = $this->findLines($this->lastStdErr, $text);
-		if (empty($lines)) {
-			throw new \Exception(
-				"The command did not output the expected text on stderr '$text'"
-			);
-		}
+		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+			1,
+			\count($lines),
+			"The command output did not contain the expected text on stderr '$text'\n" .
+			"The command output on stderr was:\n" .
+			$this->lastStdErr
+		);
+	}
+
+	/**
+	 * @Then the occ command JSON output should be empty
+	 *
+	 * @return void
+	 */
+	public function theOccCommandJsonOutputShouldNotReturnAnyData() {
+		PHPUnit_Framework_Assert::assertEquals(\trim($this->lastStdOut), "[]");
+		PHPUnit_Framework_Assert::assertEmpty($this->lastStdErr);
 	}
 
 	private $lastTransferPath;

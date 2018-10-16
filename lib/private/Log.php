@@ -101,7 +101,20 @@ class Log implements ILogger {
 		'decrypt',
 
 		//LoginController
-		'tryLogin'
+		'tryLogin',
+
+		//User_LDAP\Connection
+		'bind',
+
+		//User_LDAP\LDAP
+		'invokeLDAPMethod',
+
+		//User_LDAP\Access
+		'areCredentialsValid',
+
+		//UserManagement\Controller\UsersController
+		'setPassword'
+
 	];
 
 	/**

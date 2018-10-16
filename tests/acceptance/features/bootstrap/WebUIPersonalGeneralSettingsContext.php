@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\PersonalGeneralSettingsPage;
+use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
 
@@ -77,6 +78,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * if the expected page is not actually reached.
 	 *
 	 * @When /^the user attempts to browse to the personal general settings page$/
+	 * @Given /^the user has attempted to browse to the personal general settings page$/
 	 *
 	 * @return void
 	 */
@@ -90,6 +92,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 
 	/**
 	 * @When the user changes the language to :language using the webUI
+	 * @Given the user has changed the language to :language using the webUI
 	 *
 	 * @param string $language
 	 *
@@ -104,6 +107,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 
 	/**
 	 * @When the user changes the password to :newPassword using the webUI
+	 * @Given the user has changed the password to :newPassword using the webUI
 	 *
 	 * @param string $newPassword
 	 *
@@ -113,29 +117,34 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	public function theUserChangesThePasswordToUsingTheWebUI($newPassword) {
 		$username = $this->featureContext->getCurrentUser();
 		$oldPassword = \trim($this->featureContext->getUserPassword($username));
+		$newPassword = $this->featureContext->getActualPassword($newPassword);
 		$this->personalGeneralSettingsPage->changePassword(
 			$oldPassword, $newPassword, $this->getSession()
 		);
 	}
 	
 	/**
-	 * @When the user changes the password to :newPassword entering the wrong current password using the webUI
+	 * @When the user changes the password to :newPassword entering the wrong current password :wrongPassword using the webUI
+	 * @Given the user has changed the password to :newPassword entering the wrong current password :wrongPassword using the webUI
 	 *
 	 * @param string $newPassword
+	 * @param string $wrongPassword
 	 *
 	 * @return void
 	 */
 	public function theUserChangesThePasswordWrongCurrentPasswordUsingTheWebUI(
-		$newPassword
+		$newPassword, $wrongPassword
 	) {
-		$oldPassword = "thisisawrongpassword";
+		$newPassword = $this->featureContext->getActualPassword($newPassword);
+		$wrongPassword = $this->featureContext->getActualPassword($wrongPassword);
 		$this->personalGeneralSettingsPage->changePassword(
-			$oldPassword, $newPassword, $this->getSession()
+			$wrongPassword, $newPassword, $this->getSession()
 		);
 	}
 
 	/**
 	 * @When the user changes the full name to :newFullname using the webUI
+	 * @Given the user has changed the full name to :newFullname using the webUI
 	 *
 	 * @param string $newFullname
 	 *
@@ -149,6 +158,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 
 	/**
 	 * @When the user changes the email address to :emailAddress using the webUI
+	 * @Given the user has changed the email address to :emailAddress using the webUI
 	 *
 	 * @param string $emailAddress
 	 *
@@ -158,6 +168,63 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 		$this->personalGeneralSettingsPage->changeEmailAddress(
 			$emailAddress, $this->getSession()
 		);
+	}
+
+	/**
+	 * @Then the owncloud version should be displayed on the personal general settings page in the webUI
+	 *
+	 * @return void
+	 */
+	public function theOwncloudVersionShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui() {
+		PHPUnit_Framework_Assert::assertTrue($this->personalGeneralSettingsPage->isVersionDisplayed());
+	}
+
+	/**
+	 * @Then the federated cloud id for user :user should be displayed on the personal general settings page in the webUI
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theFederatedCloudIdForUserShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui($user) {
+		$userFederatedCloudId = $user . "@" . $this->featureContext->getLocalBaseUrlWithoutScheme();
+		PHPUnit_Framework_Assert::assertEquals($this->personalGeneralSettingsPage->getFederatedCloudID(), $userFederatedCloudId);
+	}
+
+	/**
+	 * @Then the group :groupName should be displayed on the personal general settings page in the webUI
+	 *
+	 * @param string $groupName
+	 *
+	 * @return void
+	 */
+	public function theGroupShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui($groupName) {
+		PHPUnit_Framework_Assert::assertTrue($this->personalGeneralSettingsPage->isGroupNameDisplayed($groupName));
+	}
+
+	/**
+	 * @When the user follows the email change confirmation link received by :emailAddress using the webUI
+	 * @Given the user has followed the email change confirmation link received by :emailAddress using the webUI
+	 *
+	 * @param string $emailAddress
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserFollowsTheEmailChangeConfirmationLinkEmail($emailAddress) {
+		$content = EmailHelper::getBodyOfLastEmail(
+			EmailHelper::getLocalMailhogUrl(), $emailAddress
+		);
+		$matches = [];
+		\preg_match(
+			'/Use the following link to confirm your changes to the email address: (http.*)/',
+			$content, $matches
+		);
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			1, $matches,
+			"Couldn't find confirmation link in the email"
+		);
+		$this->visitPath($matches[1]);
 	}
 
 	/**

@@ -133,7 +133,6 @@ OC.L10N.register(
     "change" : "cambio",
     "delete" : "eliminar",
     "access control" : "control de acceso",
-    "Resharing is not allowed" : "Non se permite volver compartir",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Comparta con outra xente ou con outros ownClouds empregando a sintaxe «nomeusuario@exemplo.com/ouwncloud»",
     "Delete" : "Eliminar",
     "Rename" : "Renomear",

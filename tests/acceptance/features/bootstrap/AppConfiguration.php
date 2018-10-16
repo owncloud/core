@@ -93,7 +93,7 @@ trait AppConfiguration {
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
 
-		$this->modifyServerConfig($app, $parameter, $value);
+		$this->modifyAppConfig($app, $parameter, $value);
 
 		$this->currentUser = $user;
 	}
@@ -127,7 +127,7 @@ trait AppConfiguration {
 	public function theCapabilitiesSettingOfAppParameterShouldBe(
 		$capabilitiesApp, $capabilitiesPath, $expectedValue
 	) {
-		$this->getCapabilitiesCheckResponse();
+		$this->theAdministratorGetsCapabilitiesCheckResponse();
 
 		PHPUnit_Framework_Assert::assertEquals(
 			$expectedValue,
@@ -152,22 +152,42 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @When the user retrieves the capabilities using the capabilities API
+	 * @When user :username retrieves the capabilities using the capabilities API
+	 *
+	 * @param string $username
 	 *
 	 * @return void
 	 */
-	public function getCapabilitiesCheckResponse() {
-		$this->theUserSendsToOcsApiEndpoint('GET', '/cloud/capabilities');
+	public function userGetsCapabilitiesCheckResponse($username) {
+		$this->userSendsToOcsApiEndpoint($username, 'GET', '/cloud/capabilities');
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
 	}
 
 	/**
+	 * @When the user retrieves the capabilities using the capabilities API
+	 *
+	 * @return void
+	 */
+	public function getCapabilitiesCheckResponse() {
+		$this->userGetsCapabilitiesCheckResponse($this->getCurrentUser());
+	}
+
+	/**
+	 * @When the administrator retrieves the capabilities using the capabilities API
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsCapabilitiesCheckResponse() {
+		$this->userGetsCapabilitiesCheckResponse($this->getAdminUsername());
+	}
+
+	/**
 	 * @return string latest retrieved capabilities in XML format
 	 */
 	public function getCapabilitiesXml() {
-		return $this->response->xml()->data->capabilities;
+		return $this->getResponseXml()->data->capabilities;
 	}
 
 	/**
@@ -182,7 +202,6 @@ trait AppConfiguration {
 	) {
 		$path_to_element = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
-
 		foreach ($path_to_element as $element) {
 			$nameIndexParts = \explode('[', $element);
 			if (isset($nameIndexParts[1])) {
@@ -193,7 +212,9 @@ trait AppConfiguration {
 				// and use those to construct the reference into the next XML level
 				$answeredValue = $answeredValue->{$name}[$index];
 			} else {
-				$answeredValue = $answeredValue->{$element};
+				if ($element !== "") {
+					$answeredValue = $answeredValue->{$element};
+				}
 			}
 		}
 
@@ -290,8 +311,8 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	protected function modifyServerConfig($app, $parameter, $value) {
-		AppConfigHelper::modifyServerConfig(
+	protected function modifyAppConfig($app, $parameter, $value) {
+		AppConfigHelper::modifyAppConfig(
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
@@ -307,8 +328,8 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	protected function modifyServerConfigs($appParameterValues) {
-		AppConfigHelper::modifyServerConfigs(
+	protected function modifyAppConfigs($appParameterValues) {
+		AppConfigHelper::modifyAppConfigs(
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
@@ -388,7 +409,7 @@ trait AppConfiguration {
 			if (($server === 'LOCAL') || $this->federatedServerExists()) {
 				$this->usingServer($server);
 				if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {
-					$this->modifyServerConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
+					$this->modifyAppConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
 				}
 			}
 		}

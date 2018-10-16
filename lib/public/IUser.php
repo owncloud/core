@@ -34,12 +34,34 @@ namespace OCP;
 interface IUser {
 
 	/**
+	 * @return integer
+	 * @since 11.0.0
+	 */
+	public function getAccountId();
+
+	/**
 	 * get the user id
 	 *
 	 * @return string
 	 * @since 8.0.0
 	 */
 	public function getUID();
+
+	/**
+	 * get the user name
+	 *
+	 * @return string
+	 * @since 10.0.10
+	 */
+	public function getUserName();
+
+	/**
+	 * set the user name
+	 *
+	 * @param string $userName
+	 * @since 10.0.10
+	 */
+	public function setUserName($userName);
 
 	/**
 	 * get the display name for the user, if no specific display name is set it will fallback to the user id
