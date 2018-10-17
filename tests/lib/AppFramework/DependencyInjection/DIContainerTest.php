@@ -29,7 +29,6 @@ use OC\AppFramework\Http\Request;
 
 class DIContainerTest extends \Test\TestCase {
 	private $container;
-	private $api;
 
 	protected function setUp() {
 		parent::setUp();
@@ -37,13 +36,6 @@ class DIContainerTest extends \Test\TestCase {
 			->setMethods(['isAdminUser'])
 			->setConstructorArgs(['name'])
 			->getMock();
-		$this->api = $this->getMockBuilder('OC\AppFramework\Core\API')
-			->setConstructorArgs(['hi'])
-			->getMock();
-	}
-
-	public function testProvidesAPI() {
-		$this->assertTrue(isset($this->container['API']));
 	}
 
 	public function testProvidesRequest() {

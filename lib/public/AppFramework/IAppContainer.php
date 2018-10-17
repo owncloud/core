@@ -44,13 +44,6 @@ interface IAppContainer extends IContainer {
 	public function getAppName();
 
 	/**
-	 * @deprecated 8.0.0 implements only deprecated methods
-	 * @return IApi
-	 * @since 6.0.0
-	 */
-	public function getCoreApi();
-
-	/**
 	 * @return \OCP\IServerContainer
 	 * @since 6.0.0
 	 */
