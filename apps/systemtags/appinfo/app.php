@@ -52,7 +52,7 @@ $activityManager->registerExtension(function () {
 	return $extension;
 });
 
-$managerListener = function (ManagerEvent $event) use ($activityManager) {
+$managerListener = function (ManagerEvent $event) {
 	$application = new \OCP\AppFramework\App('systemtags');
 	/** @var \OCA\SystemTags\Activity\Listener $listener */
 	$listener = $application->getContainer()->query('OCA\SystemTags\Activity\Listener');
@@ -63,7 +63,7 @@ $eventDispatcher->addListener(ManagerEvent::EVENT_CREATE, $managerListener);
 $eventDispatcher->addListener(ManagerEvent::EVENT_DELETE, $managerListener);
 $eventDispatcher->addListener(ManagerEvent::EVENT_UPDATE, $managerListener);
 
-$mapperListener = function (MapperEvent $event) use ($activityManager) {
+$mapperListener = function (MapperEvent $event) {
 	$application = new \OCP\AppFramework\App('systemtags');
 	/** @var \OCA\SystemTags\Activity\Listener $listener */
 	$listener = $application->getContainer()->query('OCA\SystemTags\Activity\Listener');

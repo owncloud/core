@@ -24,7 +24,12 @@
 
 namespace OCA\DAV\Tests\unit\Comments;
 
-use OCA\Comments\Dav\EntityCollection as EntityCollectionImplemantation;
+use OCA\Comments\Dav\EntityCollection as EntityCollectionImplementation;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use OCP\ILogger;
+use OCP\IUserSession;
+use OCP\IUserManager;
+use OCP\Comments\ICommentsManager;
 
 class EntityTypeCollectionTest extends \Test\TestCase {
 
@@ -40,14 +45,17 @@ class EntityTypeCollectionTest extends \Test\TestCase {
 	protected $userSession;
 
 	protected $childMap = [];
+	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	private $dispatcher;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->commentsManager = $this->createMock('\OCP\Comments\ICommentsManager');
-		$this->userManager = $this->createMock('\OCP\IUserManager');
-		$this->userSession = $this->createMock('\OCP\IUserSession');
-		$this->logger = $this->createMock('\OCP\ILogger');
+		$this->commentsManager = $this->createMock(ICommentsManager::class);
+		$this->userManager = $this->createMock(IUserManager::class);
+		$this->userSession = $this->createMock(IUserSession::class);
+		$this->logger = $this->createMock(ILogger::class);
+		$this->dispatcher = $this->createMock(EventDispatcherInterface::class);
 
 		$instance = $this;
 
@@ -56,6 +64,7 @@ class EntityTypeCollectionTest extends \Test\TestCase {
 			$this->commentsManager,
 			$this->userManager,
 			$this->userSession,
+			$this->dispatcher,
 			$this->logger,
 			function ($child) use ($instance) {
 				return !empty($instance->childMap[$child]);
@@ -76,7 +85,7 @@ class EntityTypeCollectionTest extends \Test\TestCase {
 		$this->childMap[17] = true;
 
 		$ec = $this->collection->getChild('17');
-		$this->assertInstanceOf(EntityCollectionImplemantation::class, $ec);
+		$this->assertInstanceOf(EntityCollectionImplementation::class, $ec);
 	}
 
 	/**

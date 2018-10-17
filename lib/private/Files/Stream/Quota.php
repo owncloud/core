@@ -130,7 +130,7 @@ class Quota {
 				\stream_set_timeout($this->source, $arg1, $arg2);
 				break;
 			case STREAM_OPTION_WRITE_BUFFER:
-				\stream_set_write_buffer($this->source, $arg1, $arg2);
+				\stream_set_write_buffer($this->source, $arg1);
 		}
 	}
 

@@ -43,7 +43,7 @@ $activityManager->registerExtension(function () {
 	return $extension;
 });
 
-$managerListener = function (\OCP\Comments\CommentsEvent $event) use ($activityManager) {
+$managerListener = function (\OCP\Comments\CommentsEvent $event) {
 	$application = new \OCP\AppFramework\App('comments');
 	/** @var \OCA\Comments\Activity\Listener $listener */
 	$listener = $application->getContainer()->query('OCA\Comments\Activity\Listener');

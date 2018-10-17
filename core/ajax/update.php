@@ -29,7 +29,7 @@
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 \set_time_limit(0);
-require_once '../../lib/base.php';
+require_once __DIR__ . '/../../lib/base.php';
 
 $l = \OC::$server->getL10N('core');
 
