@@ -120,6 +120,13 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
 
+    cliMain:
+      paths:
+        - %paths.base%/../features/cliMain
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+
     webUIAdminSettings:
       paths:
         - %paths.base%/../features/webUIAdminSettings

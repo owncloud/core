@@ -930,10 +930,20 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-  # CLI Acceptance tests
+  # CLI Provisioning Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: cli
       BEHAT_SUITE: cliProvisioning
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+  # CLI Main Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: cli
+      BEHAT_SUITE: cliMain
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
