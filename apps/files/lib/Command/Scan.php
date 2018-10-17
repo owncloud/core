@@ -218,13 +218,13 @@ class Scan extends Base {
 			});
 		# count only
 		} else {
-			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function () use ($output) {
+			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function () {
 				$this->filesCounter += 1;
 				if ($this->hasBeenInterrupted()) {
 					throw new InterruptedException();
 				}
 			});
-			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function () use ($output) {
+			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function () {
 				$this->foldersCounter += 1;
 				if ($this->hasBeenInterrupted()) {
 					throw new InterruptedException();

@@ -332,7 +332,7 @@ class FilesPlugin extends ServerPlugin {
 		}
 
 		if ($node instanceof \OCA\DAV\Connector\Sabre\Node) {
-			$propFind->handle(self::DATA_FINGERPRINT_PROPERTYNAME, function () use ($node) {
+			$propFind->handle(self::DATA_FINGERPRINT_PROPERTYNAME, function () {
 				return $this->config->getSystemValue('data-fingerprint', '');
 			});
 		}

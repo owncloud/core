@@ -31,21 +31,12 @@ class RepairOrphanedSubshare implements IRepairStep {
 	/** @var IDBConnection  */
 	private $connection;
 
-	/** @var  IQueryBuilder */
-	private $missingParents;
-
-	/** @var IQueryBuilder  */
-	private $deleteOrphanReshares;
-
-	/** @var  int */
-	private $pageLimit;
-
 	/**
 	 * RepairOrphanedSubshare constructor.
 	 *
 	 * @param IDBConnection $connection
 	 */
-	public function __construct(IDBConnection $connection, $pageLimit = 1000) {
+	public function __construct(IDBConnection $connection) {
 		$this->connection = $connection;
 	}
 

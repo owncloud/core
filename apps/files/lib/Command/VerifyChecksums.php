@@ -135,7 +135,7 @@ class VerifyChecksums extends Command {
 			}
 		};
 
-		$scanUserFunction = function (IUser $user) use ($input, $output, $walkFunction) {
+		$scanUserFunction = function (IUser $user) use ($walkFunction) {
 			$userFolder = $this->rootFolder->getUserFolder($user->getUID())->getParent();
 			$this->walkNodes($userFolder->getDirectoryListing(), $walkFunction);
 		};

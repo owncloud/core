@@ -32,6 +32,7 @@ class Close {
 	private $path = '';
 	private $source;
 	private static $open = [];
+	private $meta;
 
 	public function stream_open($path, $mode, $options, &$opened_path) {
 		$path = \substr($path, \strlen('close://'));
@@ -69,7 +70,7 @@ class Close {
 				\stream_set_timeout($this->source, $arg1, $arg2);
 				break;
 			case STREAM_OPTION_WRITE_BUFFER:
-				\stream_set_write_buffer($this->source, $arg1, $arg2);
+				\stream_set_write_buffer($this->source, $arg1);
 		}
 	}
 

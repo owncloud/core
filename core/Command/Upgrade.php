@@ -233,7 +233,7 @@ class Upgrade extends Command {
 			$updater->listen('\OC\Updater', 'appUpgrade', function ($app, $version) use ($output) {
 				$output->writeln("<info>Updated <$app> to $version</info>");
 			});
-			$updater->listen('\OC\Updater', 'failure', function ($message) use ($output, $self) {
+			$updater->listen('\OC\Updater', 'failure', function ($message) use ($output) {
 				$output->writeln("<error>$message</error>");
 			});
 			$updater->listen('\OC\Updater', 'setDebugLogLevel', function ($logLevel, $logLevelName) use ($output) {

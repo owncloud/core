@@ -89,6 +89,10 @@ abstract class Entity {
 
 	/**
 	 * Generic setter for properties
+
+	 * @param string $name
+	 * @param array $args
+	 *
 	 * @since 7.0.0
 	 */
 	protected function setter($name, $args) {

@@ -31,6 +31,7 @@ use OCP\IUserSession;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\IProperties;
 use Sabre\DAV\PropPatch;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class EntityCollection
@@ -46,15 +47,13 @@ class EntityCollection extends RootCollection implements IProperties {
 	/** @var  string */
 	protected $id;
 
-	/** @var  ILogger */
-	protected $logger;
-
 	/**
 	 * @param string $id
 	 * @param string $name
 	 * @param ICommentsManager $commentsManager
 	 * @param IUserManager $userManager
 	 * @param IUserSession $userSession
+	 * @param EventDispatcherInterface $dispatcher
 	 * @param ILogger $logger
 	 */
 	public function __construct(
@@ -63,8 +62,10 @@ class EntityCollection extends RootCollection implements IProperties {
 		ICommentsManager $commentsManager,
 		IUserManager $userManager,
 		IUserSession $userSession,
+		EventDispatcherInterface $dispatcher,
 		ILogger $logger
 	) {
+		parent::__construct($commentsManager, $userManager, $userSession, $dispatcher, $logger);
 		foreach (['id', 'name'] as $property) {
 			$$property = \trim($$property);
 			if (empty($$property) || !\is_string($$property)) {
@@ -73,10 +74,6 @@ class EntityCollection extends RootCollection implements IProperties {
 		}
 		$this->id = $id;
 		$this->name = $name;
-		$this->commentsManager = $commentsManager;
-		$this->logger = $logger;
-		$this->userManager = $userManager;
-		$this->userSession = $userSession;
 	}
 
 	/**

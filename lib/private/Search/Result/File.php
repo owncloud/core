@@ -76,20 +76,20 @@ class File extends \OCP\Search\Result {
 		$path = $this->getRelativePath($data->getPath());
 
 		$info = \pathinfo($path);
-		$this->id = $data->getId();
-		$this->name = $info['basename'];
-		$this->link = \OC::$server->getURLGenerator()->linkToRoute(
+
+		parent::__construct($data->getId(), $info['basename'], \OC::$server->getURLGenerator()->linkToRoute(
 			'files.view.index',
 			[
 				'dir' => $info['dirname'],
 				'scrollto' => $info['basename'],
 			]
-		);
+		));
+
 		$this->permissions = $data->getPermissions();
 		$this->path = $path;
 		$this->size = $data->getSize();
 		$this->modified = $data->getMtime();
-		$this->mime = $data->getMimetype();
+		$this->mime_type = $data->getMimetype();
 	}
 
 	/**

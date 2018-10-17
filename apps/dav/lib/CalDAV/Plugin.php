@@ -33,7 +33,7 @@ class Plugin extends \Sabre\CalDAV\Plugin {
 		parent::propFind($propFind, $node);
 
 		if ($node instanceof Calendar && $node->getName() === BirthdayService::BIRTHDAY_CALENDAR_URI) {
-			$propFind->handle('{DAV:}share-access', function () use ($node) {
+			$propFind->handle('{DAV:}share-access', function () {
 				return new ShareAccess(DAV\Sharing\Plugin::ACCESS_NOACCESS);
 			});
 		}
