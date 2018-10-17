@@ -501,6 +501,31 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator sets the log level to :level using the occ command
+	 *
+	 * @param string $level
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsLogLevelUsingTheOccCommand($level) {
+		$this->featureContext->invokingTheCommand(
+			"log:manage --level $level"
+		);
+	}
+	/**
+	 * @When the administrator sets the timezone to :timezone using the occ command
+	 *
+	 * @param string $timezone
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsTimeZoneUsingTheOccCommand($timezone) {
+		$this->featureContext->invokingTheCommand(
+			"log:manage --timezone $timezone"
+		);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
