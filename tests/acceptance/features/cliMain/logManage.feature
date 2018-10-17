@@ -21,7 +21,7 @@ Feature: manage logging configuration
     Then the command should have failed with exit code 1
     Examples:
         | loglevel |
-        | non-valid |
+        | nonvalid |
 
   Scenario Outline: Admin sets a valid timezone
     Given the administrator sets the timezone to <timezone> using the occ command
@@ -37,7 +37,7 @@ Feature: manage logging configuration
     Then the command should have failed with exit code 1
     Examples:
         | timezone |
-        | non-valid |
+        | nonvalid |
 
   Scenario Outline: Admin sets the backend to a valid backend
     Given the administrator sets the backend to <backend> using the occ command
@@ -54,4 +54,4 @@ Feature: manage logging configuration
     Then the command should have failed with exit code 1
     Examples:
         | backend |
-        | non-valid |
+        | nonvalid |
