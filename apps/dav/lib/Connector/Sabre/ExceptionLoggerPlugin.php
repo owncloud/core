@@ -88,7 +88,7 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 	 * Log exception
 	 *
 	 */
-	public function logException(\Exception $ex) {
+	public function logException(\Throwable $ex) {
 		if ($ex->getPrevious() instanceof FileContentNotAllowedException) {
 			//Don't log because its already been logged may be by different
 			//app or so.

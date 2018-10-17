@@ -289,7 +289,7 @@ class CorsPluginTest extends TestCase {
 		$this->server->httpRequest->setUrl('/owncloud/remote.php/dav/files/user1/target/path');
 
 		$this->server->addPlugin($this->plugin);
-		$this->server->exec();
+		$this->server->start();
 
 		$this->assertEquals($expectedStatus, $this->server->httpResponse->getStatus());
 

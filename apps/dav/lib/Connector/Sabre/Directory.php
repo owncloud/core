@@ -54,7 +54,6 @@ use Sabre\DAV\IFile;
 use Sabre\DAV\IMoveTarget;
 use Sabre\DAV\INode;
 use Sabre\DAV\IQuota;
-use Sabre\HTTP\URLUtil;
 
 class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 
@@ -428,7 +427,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			throw new SabreForbidden('Could not copy directory ' . $sourceNode->getName() . ', target exists');
 		}
 
-		list($sourceDir, ) = URLUtil::splitPath($sourceNode->getPath());
+		list($sourceDir, ) = \Sabre\Uri\split($sourceNode->getPath());
 		$destinationDir = $this->getPath();
 
 		$sourcePath = $sourceNode->getPath();

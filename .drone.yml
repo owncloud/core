@@ -561,6 +561,9 @@ matrix:
     - TEST_SUITE: lint
       PHP_VERSION: 7.2
 
+    - TEST_SUITE: lint
+      PHP_VERSION: 7.3
+
   # php-cs-fixer
     - TEST_SUITE: php-cs-fixer
       PHP_VERSION: 7.2
@@ -646,7 +649,19 @@ matrix:
     #   TEST_SUITE: phpunit
     #   INSTALL_SERVER: true
 
-    # test on objectstore
+  # PHP 7.3
+    - PHP_VERSION: 7.3
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+
+    - PHP_VERSION: 7.3
+      DB_TYPE: mariadb
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+
+
+  # test on objectstore
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
       TEST_SUITE: phpunit

@@ -127,6 +127,10 @@ abstract class TestCase extends BaseTestCase {
 				\call_user_func([$this, $methodName]);
 			}
 		}
+
+		// necessary pre-set for phpbdg 7.3
+		$_SERVER['REQUEST_URI'] = '';
+		$_SERVER['REQUEST_METHOD'] = 'GET';
 	}
 
 	protected function tearDown() {

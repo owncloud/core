@@ -474,7 +474,7 @@ class File extends Node implements IFile, IFileNode {
 	 * @throws ServiceUnavailable
 	 */
 	private function createFileChunked($data) {
-		list($path, $name) = \Sabre\HTTP\URLUtil::splitPath($this->path);
+		list($path, $name) = \Sabre\Uri\split($this->path);
 
 		$info = \OC_FileChunking::decodeName($name);
 		if (empty($info)) {
