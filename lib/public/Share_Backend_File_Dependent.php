@@ -28,6 +28,7 @@ namespace OCP;
  * Interface for share backends that share content that is dependent on files.
  * Extends the Share_Backend interface.
  * @since 5.0.0
+ * @deprecated since 10.0.11 and will be removed in 11.0, please use the share manager instead
  */
 interface Share_Backend_File_Dependent extends Share_Backend {
 	/**
