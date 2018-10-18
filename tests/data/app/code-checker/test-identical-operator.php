@@ -5,9 +5,5 @@
  */
 class GoodClass {
 	public function foo() {
-		if (true === false) {
-		}
-		if (true !== false) {
-		}
 	}
 }
