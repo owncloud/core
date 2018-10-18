@@ -28,6 +28,7 @@ namespace OCP;
  * Interface for collections of of items implemented by another share backend.
  * Extends the Share_Backend interface.
  * @since 5.0.0
+ * @deprecated since 10.0.11 and will be removed in 11.0, please use the share manager instead
  */
 interface Share_Backend_Collection extends Share_Backend {
 	/**
