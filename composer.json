@@ -64,6 +64,7 @@
         "deepdiver/zipstreamer": "^1.1",
         "zendframework/zend-inputfilter": "^2.8",
         "zendframework/zend-servicemanager": "^3.3",
-        "symfony/translation": "^3.4"
+        "symfony/translation": "^3.4",
+        "composer/semver": "^1.4"
     }
 }
