@@ -47,6 +47,7 @@ namespace OCP;
  * It provides the following hooks:
  *  - post_shared
  * @since 5.0.0
+ * @deprecated since 10.0.11 and will be removed in 11.0, please use the share manager instead
  */
 class Share extends \OC\Share\Constants {
 	/**
