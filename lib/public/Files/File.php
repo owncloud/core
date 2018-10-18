@@ -48,9 +48,9 @@ interface File extends Node {
 	public function getContent();
 
 	/**
-	 * Write to the file from string data
+	 * Write to the file from string or resource data
 	 *
-	 * @param string $data
+	 * @param string|resource $data
 	 * @throws \OCP\Files\NotPermittedException
 	 * @return void
 	 * @since 6.0.0
