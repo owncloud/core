@@ -38,6 +38,7 @@ OC.L10N.register(
     "You shared %1$s via link" : "Konpartitu duzu %1$s esteka baten bidez",
     "%2$s shared %1$s with you" : "%2$sk zurekin %1$s elkarbanatu du",
     "Shares" : "Partekatuak",
+    "Couldn't send mail to following recipient(s): %s " : "Ezin izan da ondorengo helbidetara posta mezurik bidali: %s",
     "This share is password-protected" : "Elkarbanatutako hau pasahitzarekin babestuta dago",
     "The password is wrong. Try again." : "Pasahitza ez da egokia. Saiatu berriro.",
     "Password" : "Pasahitza",

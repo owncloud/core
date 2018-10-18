@@ -31,6 +31,7 @@ OC.L10N.register(
     "You shared %1$s via link" : "Heu compartit %1$s via enllaç",
     "%2$s shared %1$s with you" : "%2$s ha compartit %1$s amb tu",
     "Shares" : "Compartits",
+    "Couldn't send mail to following recipient(s): %s " : "No s'ha pugut enviar l'email al(s) destinatari(s): %s",
     "Accept" : "Acceptar",
     "Decline" : "Denegar",
     "This share is password-protected" : "Aquest compartit està protegit amb contrasenya",
