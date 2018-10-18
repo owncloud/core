@@ -526,6 +526,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator sets the backend to :backend using the occ command
+	 *
+	 * @param string $backend
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsBackendUsingTheOccCommand($backend) {
+		$this->featureContext->invokingTheCommand(
+			"log:manage --backend $backend"
+		);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
