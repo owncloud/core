@@ -57,7 +57,9 @@ class File extends Node implements \OCP\Files\File, IPreviewNode {
 	}
 
 	/**
-	 * @param string $data
+	 * Write the contents of data into this file node. It can be a whole
+	 * string or a stream resource
+	 * @param string|resource $data
 	 * @throws \OCP\Files\NotPermittedException
 	 */
 	public function putContent($data) {
