@@ -427,7 +427,6 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 		foreach (\explode('/', $path) as $chunk) {
 			if ($chunk == '..') {
 				\array_pop($output);
-			} elseif ($chunk == '.') {
 			} else {
 				$output[] = $chunk;
 			}
