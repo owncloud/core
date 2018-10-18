@@ -26,6 +26,11 @@ parameters:
     - %currentWorkingDirectory%/apps/files_sharing/ajax/shareinfo.php
     - %currentWorkingDirectory%/settings/templates/*
     - %currentWorkingDirectory%/settings/routes.php
+    # below requires update of phpstan
+    - %currentWorkingDirectory%/core/Command/Maintenance/DataFingerprint.php
+    - %currentWorkingDirectory%/apps/dav/lib/Server.php
+    - %currentWorkingDirectory%/apps/dav/appinfo/v1/carddav.php
+    - %currentWorkingDirectory%/apps/dav/appinfo/v1/caldav.php
     # specific app excludes
     # eventually move into app directories and use neon includes for better separation
     - %currentWorkingDirectory%/apps/dav/bin
@@ -41,4 +46,5 @@ parameters:
     - '#OC\\Files\\ObjectStore\\NoopScanner::__construct\(\) does not call parent constructor from OC\\Files\\Cache\\Scanner.#'
     - '#OC\\Files\\Cache\\Wrapper\\CacheWrapper::__construct\(\) does not call parent constructor from OC\\Files\\Cache\\Cache.#'
     - '#Anonymous function has an unused use \$folder.#'
+    - '#Result of function rewinddir \(void\) is used.#'
 
