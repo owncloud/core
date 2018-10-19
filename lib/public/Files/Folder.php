@@ -45,11 +45,12 @@ interface Folder extends Node {
 	public function getFullPath($path);
 
 	/**
-	 * Get the path of an item in the folder relative to the folder
+	 * Get the path of an item in the folder relative to the folder or null
+	 * if the path is outside of the folder
 	 *
 	 * @param string $path absolute path of an item in the folder
 	 * @throws \OCP\Files\NotFoundException
-	 * @return string
+	 * @return string|null
 	 * @since 6.0.0
 	 */
 	public function getRelativePath($path);
