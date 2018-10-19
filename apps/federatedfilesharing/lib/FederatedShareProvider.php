@@ -184,7 +184,7 @@ class FederatedShareProvider implements IShareProvider {
 				$shareId = $this->createFederatedShare($share);
 			}
 			if ($send) {
-				$this->updateSuccessfulReshare($shareId, $token);
+				$this->updateSuccessfulReShare($shareId, $token);
 				$this->storeRemoteId($shareId, $remoteId);
 			} else {
 				$this->removeShareFromTable($share);

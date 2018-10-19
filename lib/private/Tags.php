@@ -76,15 +76,8 @@ class Tags implements \OCP\ITags {
 	private $user;
 
 	/**
-	 * Are we including tags for shared items?
-	 *
-	 * @var bool
-	 */
-	private $includeShared = false;
-
-	/**
 	 * The current user, plus any owners of the items shared with the current
-	 * user, if $this->includeShared === true.
+	 * user.
 	 *
 	 * @var array
 	 */
@@ -109,13 +102,11 @@ class Tags implements \OCP\ITags {
 	* @param string $user The user whose data the object will operate on.
 	* @param string $type The type of items for which tags will be loaded.
 	* @param array $defaultTags Tags that should be created at construction.
-	* @param boolean $includeShared Whether to include tags for items shared with this user by others.
 	*/
-	public function __construct(TagMapper $mapper, $user, $type, array $defaultTags = [], $includeShared = false) {
+	public function __construct(TagMapper $mapper, $user, $type, array $defaultTags = []) {
 		$this->mapper = $mapper;
 		$this->user = $user;
 		$this->type = $type;
-		$this->includeShared = false; // obsolete
 		$this->owners = [$this->user];
 		$this->tags = $this->mapper->loadTags($this->owners, $this->type);
 

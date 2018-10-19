@@ -356,7 +356,6 @@ class Share extends Constants {
 	 */
 	public static function setSendMailStatus($itemType, $itemSource, $shareType, $recipient, $status) {
 		$status = $status ? 1 : 0;
-
 		$query = \OC_DB::prepare(
 			'UPDATE `*PREFIX*share`
 					SET `mail_send` = ?

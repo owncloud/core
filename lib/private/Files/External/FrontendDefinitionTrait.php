@@ -57,15 +57,6 @@ trait FrontendDefinitionTrait {
 	}
 
 	/**
-	 * @param FrontendDefinitionTrait $a
-	 * @param FrontendDefinitionTrait $b
-	 * @return int
-	 */
-	public static function lexicalCompare(FrontendDefinitionTrait $a, FrontendDefinitionTrait $b) {
-		return \strcmp($a->getText(), $b->getText());
-	}
-
-	/**
 	 * @return DefinitionParameter[]
 	 */
 	public function getParameters() {

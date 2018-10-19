@@ -53,7 +53,6 @@ use OCP\Files\InvalidCharacterInPathException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\ReservedWordException;
 use OCP\Files\Storage\ILockingStorage;
-use OCP\Files\Storage\IStorage;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Files\Storage\IVersionedStorage;
 use OCP\Lock\ILockingProvider;
@@ -81,9 +80,6 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 
 	protected $mountOptions = [];
 	protected $owner = null;
-
-	public function __construct($parameters) {
-	}
 
 	/**
 	 * Remove a file or folder

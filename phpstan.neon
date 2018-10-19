@@ -1,0 +1,50 @@
+parameters:
+  bootstrap: %currentWorkingDirectory%/lib/base.php
+  autoload_directories:
+    - %currentWorkingDirectory%/apps/files_sharing/appinfo/Migrations
+    - %currentWorkingDirectory%/apps/dav/appinfo/Migrations
+    - %currentWorkingDirectory%/apps/federatedfilesharing/appinfo/Migrations
+    - %currentWorkingDirectory%/apps/files_external/appinfo/Migrations
+    - %currentWorkingDirectory%/apps/files_external/lib
+    - %currentWorkingDirectory%/apps/files_external/3rdparty
+    - %currentWorkingDirectory%/apps/files_sharing/appinfo/Migrations
+    - %currentWorkingDirectory%/apps/files_trashbin/appinfo/Migrations
+    - %currentWorkingDirectory%/core/Migrations
+    - %currentWorkingDirectory%/tests/lib/Util/User
+  excludes_analyse:
+    - %currentWorkingDirectory%/core/templates/*
+    - %currentWorkingDirectory%/core/routes.php
+    - %currentWorkingDirectory%/core/register_command.php
+    - %currentWorkingDirectory%/core/ajax/update.php
+    - %currentWorkingDirectory%/core/ajax/share.php
+    - %currentWorkingDirectory%/apps/*/tests*
+    - %currentWorkingDirectory%/apps/*/templates/*
+    - %currentWorkingDirectory%/apps/*/appinfo/routes.php
+    - %currentWorkingDirectory%/apps/*/composer/*
+    - %currentWorkingDirectory%/apps/*/3rdparty/*
+    - %currentWorkingDirectory%/apps/files/appinfo/update.php
+    - %currentWorkingDirectory%/apps/files_sharing/ajax/shareinfo.php
+    - %currentWorkingDirectory%/settings/templates/*
+    - %currentWorkingDirectory%/settings/routes.php
+    # below requires update of phpstan
+    - %currentWorkingDirectory%/core/Command/Maintenance/DataFingerprint.php
+    - %currentWorkingDirectory%/apps/dav/lib/Server.php
+    - %currentWorkingDirectory%/apps/dav/appinfo/v1/carddav.php
+    - %currentWorkingDirectory%/apps/dav/appinfo/v1/caldav.php
+    # specific app excludes
+    # eventually move into app directories and use neon includes for better separation
+    - %currentWorkingDirectory%/apps/dav/bin
+  ignoreErrors:
+    - '#Undefined variable: \$OC_[a-zA-Z0-9\\_]+#'
+    - '#Undefined variable: \$vendor#'
+    - '#Undefined variable: \$baseuri#'
+    - '#Function apc_delete_file not found.#'
+    - '#Function accelerator_reset not found.#'
+    - '#Instantiated class OC_Theme not found.#'
+    # errors below are to be addressed by own pull requests - non trivial changes required
+    - '#OCA\\DAV\\Connector\\Sabre\\ObjectTree::__construct\(\) does not call parent constructor from Sabre\\DAV\\Tree.#'
+    - '#OC\\Files\\ObjectStore\\NoopScanner::__construct\(\) does not call parent constructor from OC\\Files\\Cache\\Scanner.#'
+    - '#OC\\Files\\Cache\\Wrapper\\CacheWrapper::__construct\(\) does not call parent constructor from OC\\Files\\Cache\\Cache.#'
+    - '#Anonymous function has an unused use \$folder.#'
+    - '#Result of function rewinddir \(void\) is used.#'
+

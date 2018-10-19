@@ -190,7 +190,7 @@ class FilesReportPlugin extends ServerPlugin {
 			try {
 				$resultFileIds = $this->processFilterRules($filterRules);
 			} catch (TagNotFoundException $e) {
-				throw new PreconditionFailed('Cannot filter by non-existing tag', 0, $e);
+				throw new PreconditionFailed('Cannot filter by non-existing tag');
 			}
 
 			// pre-slice the results if needed for pagination to not waste

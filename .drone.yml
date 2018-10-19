@@ -117,15 +117,6 @@ pipeline:
       matrix:
         TEST_SUITE: php-cs-fixer
 
-  php-phan:
-    image: owncloudci/php:7.1
-    pull: true
-    commands:
-      - make test-php-phan
-    when:
-      matrix:
-        TEST_SUITE: phan
-
   install-server:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -162,6 +153,24 @@ pipeline:
     when:
       matrix:
         TEST_OBJECTSTORAGE: true
+
+  php-phan:
+    image: owncloudci/php:7.1
+    pull: true
+    commands:
+      - make test-php-phan
+    when:
+      matrix:
+        TEST_SUITE: phan
+
+  phpstan:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - make test-php-phpstan
+    when:
+      matrix:
+        TEST_SUITE: phpstan
 
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
@@ -571,6 +580,11 @@ matrix:
   # phan
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
+
+  # phpstan
+    - TEST_SUITE: phpstan
+      PHP_VERSION: 7.1
+      INSTALL_SERVER: true
 
   # Litmus
     - PHP_VERSION: 7.1
