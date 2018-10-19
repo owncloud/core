@@ -34,13 +34,13 @@
     "@bower_components/snapjs": "jakiestfu/Snap.js#2.0.0-rc1",
     "@bower_components/strengthify": "MorrisJobke/strengthify#0.5.2",
     "@bower_components/underscore": "jashkenas/underscore#1.8.3",
-    "@bower_components/zxcvbn": "dropbox/zxcvbn#4.4.2"
+    "@bower_components/zxcvbn": "dropbox/zxcvbn#4.4.2",
+    "modclean": "^3.0.0-beta.1"
   },
   "devDependencies": {
     "jasmine-core": "^2.99.1",
     "handlebars": "^4.0.12",
     "jasmine-sinon": "^0.4.0",
-    "sinon": "^7.1.1",
     "jsdoc": "~3.5.5",
     "karma": "^3.1.1",
     "karma-coverage": "*",
@@ -48,13 +48,14 @@
     "karma-jasmine-sinon": "^1.0.4",
     "karma-junit-reporter": "*",
     "karma-phantomjs-launcher": "*",
-    "phantomjs-prebuilt": "*"
+    "phantomjs-prebuilt": "*",
+    "sinon": "^7.1.1"
   },
   "engines": {
     "node": ">= 6.9",
     "yarn": ">= 1.0.0"
   },
   "scripts": {
-    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), '../core/vendor', 'junction') } catch (e) { }\""
+    "postinstall": "modclean -r --patterns=\"default:safe\" && node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), '../core/vendor', 'junction') } catch (e) { }\""
   }
 }
