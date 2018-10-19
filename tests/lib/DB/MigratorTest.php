@@ -14,6 +14,7 @@ use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaConfig;
 use OCP\IConfig;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * Class MigratorTest
@@ -304,5 +305,29 @@ class MigratorTest extends \Test\TestCase {
 		$migrator->migrate($startSchema);
 
 		$this->assertTrue($startSchema->getTable($this->tableNameTmp)->hasForeignKey($fkName));
+	}
+
+	public function testChangeTextColumnLength() {
+		$startSchema = new Schema([], [], $this->getSchemaConfig());
+		$table = $startSchema->createTable($this->tableName);
+		// equivalent of "text" for MySQL
+		$table->addColumn('test', 'text', ['length' => 65536]);
+
+		$endSchema = new Schema([], [], $this->getSchemaConfig());
+		$table = $endSchema->createTable($this->tableName);
+		// equivalent of "longtext" for MySQL
+		$table->addColumn('test', 'text', ['length' => 4294967295]);
+
+		$migrator = $this->manager->getMigrator();
+		$migrator->migrate($startSchema);
+		$migrator->migrate($endSchema);
+
+		$schemaManager = $this->connection->getSchemaManager();
+		$actualSchema = $schemaManager->createSchema();
+		$table = $actualSchema->getTable($this->tableName);
+
+		$testColumn = $table->getColumn('test');
+		$this->assertEquals(Type::TEXT, $testColumn->getType()->getName());
+		$this->assertEquals(4294967295, $testColumn->getLength());
 	}
 }

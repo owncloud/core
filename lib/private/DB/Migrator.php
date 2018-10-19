@@ -31,7 +31,6 @@ use \Doctrine\DBAL\DBALException;
 use \Doctrine\DBAL\Schema\Index;
 use \Doctrine\DBAL\Schema\Table;
 use \Doctrine\DBAL\Schema\Schema;
-use \Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
 use OCP\IConfig;
