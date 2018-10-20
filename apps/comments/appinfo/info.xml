@@ -8,7 +8,7 @@
 	<default_enable/>
 	<version>0.3.0</version>
 	<dependencies>
-		<owncloud min-version="10.0" max-version="10.0" />
+		<owncloud min-version="10" max-version="10" />
 	</dependencies>
 	<types>
 		<logging/>
