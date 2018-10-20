@@ -16,7 +16,7 @@
 		<webdav>appinfo/v1/publicwebdav.php</webdav>
 	</public>
 	<dependencies>
-		<owncloud min-version="10.0" max-version="10.0" />
+		<owncloud min-version="10.0" max-version="10.1" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\DAV\CardDAV\SyncJob</job>

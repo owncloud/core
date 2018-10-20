@@ -26,7 +26,7 @@
 	<use-migrations>true</use-migrations>
 	<dependencies>
 		<lib>openssl</lib>
-		<owncloud min-version="10.0" max-version="10.0" />
+		<owncloud min-version="10.0" max-version="10.1" />
 	</dependencies>
 	<commands>
 		<command>OCA\Encryption\Command\SelectEncryptionType</command>
