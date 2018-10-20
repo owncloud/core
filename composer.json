@@ -71,6 +71,13 @@
         "zendframework/zend-inputfilter": "^2.8",
         "zendframework/zend-servicemanager": "^3.3",
         "zendframework/zend-validator": "^2.10",
-        "composer/semver": "^1.4"
+        "composer/semver": "^1.4",
+        "dg/composer-cleaner": "^2.0"
+    },
+    "extra": {
+        "cleaner-ignore": {
+            "behat/behat": true,
+            "behat/gherkin": true
+        }
     }
 }
