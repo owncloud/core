@@ -145,10 +145,11 @@ class OracleMigrator extends Migrator {
 				return $this->quoteColumn($column);
 			}, $tableDiff->addedColumns);
 
-			foreach ($tableDiff->changedColumns as $column) {
-				$column->oldColumnName = $this->connection->quoteIdentifier($column->oldColumnName);
+			foreach ($tableDiff->changedColumns as $columnDiff) {
+				$columnDiff->column = $this->quoteColumn($columnDiff->column);
+				$columnDiff->oldColumnName = $this->connection->quoteIdentifier($columnDiff->oldColumnName);
 				// auto increment is not relevant for oracle and can anyhow not be applied on change
-				$column->changedProperties = \array_diff($column->changedProperties, ['autoincrement', 'unsigned']);
+				$columnDiff->changedProperties = \array_diff($columnDiff->changedProperties, ['autoincrement', 'unsigned']);
 			}
 			// remove columns that no longer have changed (because autoincrement and unsigned are not supported)
 			$tableDiff->changedColumns = \array_filter($tableDiff->changedColumns, function (ColumnDiff $column) {
