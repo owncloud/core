@@ -738,6 +738,13 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
+      DB_TYPE: mariadb
+      MARIADB_IMAGE: mariadb:10.3
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      INSTALL_SERVER: true
+
+    - PHP_VERSION: 7.1
       DB_TYPE: oracle
       TEST_SUITE: phpunit
       COVERAGE: true
