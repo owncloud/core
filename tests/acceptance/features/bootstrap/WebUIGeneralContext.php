@@ -735,25 +735,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * After Scenario. clear file locks
-	 *
-	 * @AfterScenario @webUI
-	 *
-	 * @return void
-	 */
-	public function clearFileLocks() {
-		$response = OcsApiHelper::sendRequest(
-			$this->featureContext->getBaseUrl(),
-			$this->featureContext->getAdminUsername(),
-			$this->featureContext->getAdminPassword(),
-			'delete',
-			"/apps/testing/api/v1/lockprovisioning",
-			["global" => "true"]
-		);
-		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
-	}
-
-	/**
 	 * After Scenario. Report the pass/fail status to SauceLabs.
 	 *
 	 * @AfterScenario @webUI
