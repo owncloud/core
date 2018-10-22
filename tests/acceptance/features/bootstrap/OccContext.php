@@ -257,6 +257,22 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator changes the language of user :username to :language using the occ command
+	 *
+	 * @param string $username
+	 * @param string $language
+	 *
+	 * @return void
+	 */
+	public function theAdministratorChangesTheLanguageOfUserToUsingTheOccCommand(
+		$username, $language
+	) {
+		$this->featureContext->invokingTheCommand(
+			"user:setting $username core lang --value='$language'"
+		);
+	}
+
+	/**
 	 * @When the administrator retrieves the user report using the occ command
 	 *
 	 * @return void
@@ -418,6 +434,22 @@ class OccContext implements Context {
 		$this->featureContext->invokingTheCommand(
 			"user:enable $username"
 		);
+	}
+
+	/**
+	 * @Then the language of the user :username returned by the occ command should be :language
+	 *
+	 * @param string $username
+	 * @param string $language
+	 *
+	 * @return void
+	 */
+	public function theLanguageOfTheUserReturnedByTheOccCommandShouldBe($username, $language) {
+		$this->featureContext->invokingTheCommand(
+			"user:setting $username core lang"
+		);
+		$responseLanguage = $this->featureContext->getStdOutOfOccCommand();
+		PHPUnit_Framework_Assert::assertEquals($language, \trim($responseLanguage));
 	}
 
 	/**
