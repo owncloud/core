@@ -152,11 +152,10 @@ class OwncloudPage extends Page {
 	public function getNotificationText() {
 		$notificationElement = $this->findById($this->notificationId);
 
-		if ($notificationElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ . " could not find element with id $this->notificationId"
-			);
-		}
+		$this->assertElementNotNull(
+			$notificationElement,
+			__METHOD__ . " could not find element with id $this->notificationId"
+		);
 
 		return $this->getTrimmedText($notificationElement);
 	}
@@ -171,11 +170,10 @@ class OwncloudPage extends Page {
 		$notificationsText = [];
 		$notifications = $this->findById($this->notificationId);
 
-		if ($notifications === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ . " could not find element with id $this->notificationId"
-			);
-		}
+		$this->assertElementNotNull(
+			$notifications,
+			__METHOD__ . " could not find element with id $this->notificationId"
+		);
 
 		foreach ($notifications->findAll("xpath", "div") as $notification) {
 			\array_push($notificationsText, $this->getTrimmedText($notification));
@@ -190,11 +188,10 @@ class OwncloudPage extends Page {
 	 */
 	public function getPageTitle() {
 		$title = $this->find('xpath', $this->titleXpath);
-		if ($title === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ . " could not find title element"
-			);
-		}
+		$this->assertElementNotNull(
+			$title,
+			__METHOD__ . " could not find title element"
+		);
 		return \trim($title->getHtml());
 	}
 
@@ -227,11 +224,10 @@ class OwncloudPage extends Page {
 	public function openSettingsMenu() {
 		$userNameDisplayElement = $this->findById($this->userNameDisplayId);
 
-		if ($userNameDisplayElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ . " could not find element with id $this->userNameDisplayId"
-			);
-		}
+		$this->assertElementNotNull(
+			$userNameDisplayElement,
+			__METHOD__ . " could not find element with id $this->userNameDisplayId"
+		);
 
 		$userNameDisplayElement->click();
 
@@ -247,12 +243,11 @@ class OwncloudPage extends Page {
 	protected function findUserDisplayNameElement() {
 		$displayNameElement = $this->findById($this->userNameDisplayId);
 		
-		if ($displayNameElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find element with id $this->userNameDisplayId"
-			);
-		}
+		$this->assertElementNotNull(
+			$displayNameElement,
+			__METHOD__ .
+			" could not find element with id $this->userNameDisplayId"
+		);
 		return $displayNameElement;
 	}
 	
@@ -282,12 +277,11 @@ class OwncloudPage extends Page {
 	protected function findAvatarElement() {
 		$avatarElement = $this->find("xpath", $this->avatarImgXpath);
 		
-		if ($avatarElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find avatar image with xpath $this->avatarImgXpath"
-			);
-		}
+		$this->assertElementNotNull(
+			$avatarElement,
+			__METHOD__ .
+			" could not find avatar image with xpath $this->avatarImgXpath"
+		);
 		return $avatarElement;
 	}
 
@@ -314,13 +308,12 @@ class OwncloudPage extends Page {
 	 */
 	public function search($session, $searchTerm) {
 		$searchbox = $this->findById($this->searchBoxId);
-		if ($searchbox === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id: '$this->searchBoxId' " .
-				"could not find searchbox / button"
-			);
-		}
+		$this->assertElementNotNull(
+			$searchbox,
+			__METHOD__ .
+			" id: '$this->searchBoxId' " .
+			"could not find searchbox / button"
+		);
 		$searchbox->click();
 		$searchbox->setValue($searchTerm);
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -766,6 +759,20 @@ class OwncloudPage extends Page {
 			throw new \InvalidArgumentException(
 				"mixing both single and double quotes is unsupported - '$text'"
 			);
+		}
+	}
+
+	/**
+	 *
+	 * @param NodeElement $element
+	 * @param string $message
+	 *
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function assertElementNotNull($element, $message) {
+		if ($element === null) {
+			throw new ElementNotFoundException($message);
 		}
 	}
 }

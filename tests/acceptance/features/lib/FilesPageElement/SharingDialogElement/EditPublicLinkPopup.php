@@ -75,13 +75,12 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 */
 	private function findNameInput() {
 		$nameInput = $this->popupElement->find("xpath", $this->nameInputXpath);
-		if ($nameInput === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->nameInputXpath" .
-				" could not find input field for the name of the public link"
-			);
-		}
+		$this->assertElementNotNull(
+			$nameInput,
+			__METHOD__ .
+			" xpath $this->nameInputXpath" .
+			" could not find input field for the name of the public link"
+		);
 		return $nameInput;
 	}
 
@@ -118,12 +117,11 @@ class EditPublicLinkPopup extends OwncloudPage {
 			$permissionsCheckbox = $this->popupElement->find(
 				"xpath", $this->permissionLabelXpath[$permissions]
 			);
-			if ($permissionsCheckbox === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" findField($permissions) could not find the permission checkbox"
-				);
-			}
+			$this->assertElementNotNull(
+				$permissionsCheckbox,
+				__METHOD__ .
+				" findField($permissions) could not find the permission checkbox"
+			);
 			$permissionsCheckbox->click();
 		} else {
 			throw new \InvalidArgumentException(
@@ -143,13 +141,12 @@ class EditPublicLinkPopup extends OwncloudPage {
 		$passwordInput = $this->popupElement->find(
 			"xpath", $this->passwordInputXpath
 		);
-		if ($passwordInput === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->passwordInputXpath" .
-				" could not find input field for the password of the public link"
-			);
-		}
+		$this->assertElementNotNull(
+			$passwordInput,
+			__METHOD__ .
+			" xpath $this->passwordInputXpath" .
+			" could not find input field for the password of the public link"
+		);
 		$passwordInput->setValue($password);
 	}
 
@@ -164,13 +161,12 @@ class EditPublicLinkPopup extends OwncloudPage {
 		$expirationDateInput = $this->popupElement->find(
 			"xpath", $this->expirationDateInputXpath
 		);
-		if ($expirationDateInput === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->expirationDateInputXpath" .
-				" could not find input field for the expiration date of the public link"
-			);
-		}
+		$this->assertElementNotNull(
+			$expirationDateInput,
+			__METHOD__ .
+			" xpath $this->expirationDateInputXpath" .
+			" could not find input field for the expiration date of the public link"
+		);
 		$expirationDateInput->setValue($date);
 		
 		//try to close the date picker by clicking the label
@@ -194,13 +190,12 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 */
 	public function setLinkEmail($email) {
 		$emailInput = $this->popupElement->find("xpath", $this->emailInputXpath);
-		if ($emailInput === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->emailInputXpath" .
-				" could not find input field for the email of the public link"
-			);
-		}
+		$this->assertElementNotNull(
+			$emailInput,
+			__METHOD__ .
+			" xpath $this->emailInputXpath" .
+			" could not find input field for the email of the public link"
+		);
 		$emailInput->setValue($email . "\n");
 	}
 
@@ -232,14 +227,13 @@ class EditPublicLinkPopup extends OwncloudPage {
 		$checkbox = $this->popupElement->find("xpath", $this->emailToSelfCheckboxXpath);
 		$this->waitTillElementIsNotNull($this->emailToSelfCheckboxXpath);
 
-		if ($checkbox === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->emailToSelfCheckboxXpath" .
-				" could not find the checkbox for sending the self copy of email of the public link. " .
-				" Maybe the email isn't filled."
-			);
-		}
+		$this->assertElementNotNull(
+			$checkbox,
+			__METHOD__ .
+			" xpath $this->emailToSelfCheckboxXpath" .
+			" could not find the checkbox for sending the self copy of email of the public link. " .
+			" Maybe the email isn't filled."
+		);
 		if (!$checkbox->isChecked()) {
 			$checkbox->check();
 		}
@@ -253,13 +247,13 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 */
 	public function setPersonalMessage($personalMessage) {
 		$personalMessageInput = $this->popupElement->find("xpath", $this->personalMessageInputXpath);
-		if ($personalMessageInput === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->personalMessageInputXpath" .
-				" could not find the input field for sending a personal message in the email."
-			);
-		}
+		$this->assertElementNotNull(
+			$personalMessageInput,
+			__METHOD__ .
+			" xpath $this->personalMessageInputXpath" .
+			" could not find the input field for sending a personal message in the email."
+		);
+
 		$this->waitTillElementIsNotNull($this->personalMessageInputXpath);
 		$personalMessageInput->focus();
 		$personalMessageInput->setValue($personalMessage);
@@ -272,13 +266,13 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 */
 	public function save() {
 		$saveButton = $this->popupElement->find("xpath", $this->shareButtonXpath);
-		if ($saveButton === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->shareButtonXpath" .
-				" could not find save button of the public link popup"
-			);
-		}
+		$this->assertElementNotNull(
+			$saveButton,
+			__METHOD__ .
+			" xpath $this->shareButtonXpath" .
+			" could not find save button of the public link popup"
+		);
+
 		$saveButton->click();
 	}
 
@@ -289,13 +283,12 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 */
 	public function close() {
 		$closeButton = $this->popupElement->find("xpath", $this->popupCloseButton);
-		if ($closeButton === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->popupCloseButton" .
-				" could not find save button of the public link popup"
-			);
-		}
+		$this->assertElementNotNull(
+			$closeButton,
+			__METHOD__ .
+			" xpath $this->popupCloseButton" .
+			" could not find save button of the public link popup"
+		);
 		$closeButton->click();
 	}
 }

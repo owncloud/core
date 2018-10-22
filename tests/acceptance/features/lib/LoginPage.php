@@ -56,12 +56,11 @@ class LoginPage extends OwncloudPage {
 		$this->fillField($this->passwordInputId, $password);
 		$submitElement = $this->findById($this->submitLoginId);
 
-		if ($submitElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->submitLoginId could not find login submit button"
-			);
-		}
+		$this->assertElementNotNull(
+			$submitElement,
+			__METHOD__ .
+			" id $this->submitLoginId could not find login submit button"
+		);
 
 		$submitElement->click();
 
@@ -111,12 +110,11 @@ class LoginPage extends OwncloudPage {
 	 */
 	private function lostPasswordField() {
 		$lostPasswordField = $this->findById($this->lostPasswordId);
-		if ($lostPasswordField === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->lostPasswordId could not find reset password field "
-			);
-		}
+		$this->assertElementNotNull(
+			$lostPasswordField,
+			__METHOD__ .
+			" id $this->lostPasswordId could not find reset password field "
+		);
 		return $lostPasswordField;
 	}
 
@@ -170,13 +168,12 @@ class LoginPage extends OwncloudPage {
 			);
 		}
 
-		if ($legalUrlLink === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->imprintUrlXpath " .
-				"could not find link"
-			);
-		}
+		$this->assertElementNotNull(
+			$legalUrlLink,
+			__METHOD__ .
+			" id $this->imprintUrlXpath " .
+			"could not find link"
+		);
 
 		return($legalUrlLink->getAttribute("href"));
 	}

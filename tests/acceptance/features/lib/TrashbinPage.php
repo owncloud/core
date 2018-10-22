@@ -92,13 +92,12 @@ class TrashbinPage extends FilesPageBasic {
 		$restoreAllSelectedBtn = $this->find(
 			"xpath", $this->restoreAllSelectedBtnXpath
 		);
-		if ($restoreAllSelectedBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->restoreAllSelectedBtnXpath " .
-				"could not find button to restore all selected files"
-			);
-		}
+		$this->assertElementNotNull(
+			$restoreAllSelectedBtn,
+			__METHOD__ .
+			" xpath $this->restoreAllSelectedBtnXpath " .
+			"could not find button to restore all selected files"
+		);
 		return $restoreAllSelectedBtn;
 	}
 

@@ -75,20 +75,18 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	public function toggleCheckbox($action, $checkboxXpath, $checkboxId) {
 		$checkbox = $this->find("xpath", $checkboxXpath);
 		$checkCheckbox = $this->findById($checkboxId);
-		if ($checkbox === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $checkboxXpath " .
-				"could not find label for checkbox"
-			);
-		}
-		if ($checkCheckbox === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $checkCheckbox " .
-				"could not find checkbox"
-			);
-		}
+		$this->assertElementNotNull(
+			$checkbox,
+			__METHOD__ .
+			" xpath $checkboxXpath " .
+			"could not find label for checkbox"
+		);
+		$this->assertElementNotNull(
+			$checkCheckbox,
+			__METHOD__ .
+			" id $checkboxId " .
+			"could not find checkbox"
+		);
 		if ($action === "disables") {
 			if ($checkCheckbox->isChecked()) {
 				$checkbox->click();
@@ -278,24 +276,22 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	 */
 	public function addGroupToGroupSharingBlacklist($groupName) {
 		$groupSharingBlackListField = $this->find("xpath", $this->groupSharingBlackListFieldXpath);
-		if ($groupSharingBlackListField === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->groupSharingBlackListFieldXpath " .
-				"could not find input field"
-			);
-		}
+		$this->assertElementNotNull(
+			$groupSharingBlackListField,
+			__METHOD__ .
+			" xpath $this->groupSharingBlackListFieldXpath " .
+			"could not find input field"
+		);
 		$groupSharingBlackListField->click();
 		$this->waitTillElementIsNotNull($this->groupListDropDownXpath);
 		$this->waitTillElementIsNotNull($this->groupListXpath);
 		$groupList = $this->findAll("xpath", $this->groupListXpath);
-		if ($groupSharingBlackListField === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->groupListXpath " .
-				"could not find group list"
-			);
-		}
+		$this->assertElementNotNull(
+			$groupSharingBlackListField,
+			__METHOD__ .
+			" xpath $this->groupListXpath " .
+			"could not find group list"
+		);
 		foreach ($groupList as $group) {
 			if ($this->getTrimmedText($group) === $groupName) {
 				$group->click();

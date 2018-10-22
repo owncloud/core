@@ -94,12 +94,11 @@ class DetailsDialog extends OwncloudPage {
 		$tab = $this->findById(
 			$this->getDetailsTabId($tabName)
 		);
-		if ($tab === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find details tab with id $tabName"
-			);
-		}
+		$this->assertElementNotNull(
+			$tab,
+			__METHOD__ .
+			" could not find details tab with id $tabName"
+		);
 		return $tab;
 	}
 
@@ -126,12 +125,11 @@ class DetailsDialog extends OwncloudPage {
 		$tabId = $this->getDetailsTabId($tabName);
 		$tabSwitchXpath = "//li[@data-tabid='" . $tabId . "']";
 		$tabSwitch = $this->find("xpath", $tabSwitchXpath);
-		if ($tabSwitch === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find tab switch with id $tabName"
-			);
-		}
+		$this->assertElementNotNull(
+			$tabSwitch,
+			__METHOD__ .
+			" could not find tab switch with id $tabName"
+		);
 		$this->waitTillElementIsNotNull($tabSwitchXpath);
 		$tabSwitch->focus();
 		$tabSwitch->click();
@@ -249,13 +247,12 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function findThumbnailContainer() {
 		$thumbnailContainer = $this->find("xpath", $this->thumbnailContainerXpath);
-		if ($thumbnailContainer === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->thumbnailContainerXpath " .
-				"could not find thumbnailContainer"
-			);
-		}
+		$this->assertElementNotNull(
+			$thumbnailContainer,
+			__METHOD__ .
+			" xpath $this->thumbnailContainerXpath " .
+			"could not find thumbnailContainer"
+		);
 		return $thumbnailContainer;
 	}
 
@@ -269,13 +266,12 @@ class DetailsDialog extends OwncloudPage {
 		$thumbnail = $thumbnailContainer->find(
 			"xpath", $this->thumbnailFromContainerXpath
 		);
-		if ($thumbnail === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->thumbnailFromContainerXpath " .
-				"could not find thumbnail"
-			);
-		}
+		$this->assertElementNotNull(
+			$thumbnail,
+			__METHOD__ .
+			" xpath $this->thumbnailFromContainerXpath " .
+			"could not find thumbnail"
+		);
 		return $thumbnail;
 	}
 
@@ -293,13 +289,12 @@ class DetailsDialog extends OwncloudPage {
 			$this->tagsContainer . $this->tagsInputXpath
 		);
 
-		if ($inputField === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->tagsContainer . $this->tagsInputXpath " .
-				"could not find input field"
-			);
-		}
+		$this->assertElementNotNull(
+			$inputField,
+			__METHOD__ .
+			" xpath $this->tagsContainer . $this->tagsInputXpath " .
+			"could not find input field"
+		);
 		$inputField->focus();
 		$inputField->setValue($tagName);
 
@@ -387,13 +382,12 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function closeDetailsDialog() {
 		$detailsDialogCloseButton = $this->find("xpath", $this->detailsDialogCloseXpath);
-		if ($detailsDialogCloseButton === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->detailsDialogCloseXpath " .
-				"could not find details-dialog-close-button"
-			);
-		}
+		$this->assertElementNotNull(
+			$detailsDialogCloseButton,
+			__METHOD__ .
+			" xpath $this->detailsDialogCloseXpath " .
+			"could not find details-dialog-close-button"
+		);
 
 		try {
 			$detailsDialogCloseButton->click();
