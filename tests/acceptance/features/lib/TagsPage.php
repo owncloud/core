@@ -90,13 +90,12 @@ class TagsPage extends FilesPageBasic {
 		/**
 		 * @return string
 		 */
-		if ($inputField === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->tagsInputXpath " .
-				"could not find input field"
-			);
-		}
+		$this->assertElementNotNull(
+			$inputField,
+			__METHOD__ .
+			" xpath $this->tagsInputXpath " .
+			"could not find input field"
+		);
 		$inputField->focus();
 		$inputField->setValue($tagName);
 		$this->waitTillElementIsNotNull($this->getTagsDropDownResultsXpath());

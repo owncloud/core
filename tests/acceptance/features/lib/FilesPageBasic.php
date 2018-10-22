@@ -120,13 +120,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 				$this->getFileListXpath()
 			);
 
-			if ($fileListElement === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" xpath " . $this->getFileListXpath() .
-					" could not find file list"
-				);
-			}
+			$this->assertElementNotNull(
+				$fileListElement,
+				__METHOD__ .
+				" xpath " . $this->getFileListXpath() .
+				" could not find file list"
+			);
 
 			$fileNameMatch = $fileListElement->findAll(
 				"xpath", \sprintf($this->getFileNameMatchXpath(), $xpathString)
@@ -183,13 +182,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$fileRowElements = [];
 		foreach ($fileNameMatch as $match) {
 			$fileRowElement = $match->find("xpath", $this->fileRowFromNameXpath);
-			if ($fileRowElement === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" xpath $this->fileRowFromNameXpath " .
-					"could not find file row"
-				);
-			}
+			$this->assertElementNotNull(
+				$fileRowElement,
+				__METHOD__ .
+				" xpath $this->fileRowFromNameXpath " .
+				"could not find file row"
+			);
 			$fileRowElements[] = $fileRowElement;
 		}
 		return $fileRowElements;
@@ -306,15 +304,13 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function findFileActionMenuElement() {
 		$actionMenu = $this->waitTillElementIsNotNull($this->fileActionMenuXpath);
-		if ($actionMenu === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->fileActionMenuXpath " .
-				"could not find open fileActionMenu"
-			);
-		} else {
-			return $actionMenu;
-		}
+		$this->assertElementNotNull(
+			$actionMenu,
+			__METHOD__ .
+			" xpath $this->fileActionMenuXpath " .
+			"could not find open fileActionMenu"
+		);
+		return $actionMenu;
 	}
 
 	/**
@@ -417,13 +413,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$deleteAllSelectedBtn = $this->find(
 			"xpath", $this->deleteAllSelectedBtnXpath
 		);
-		if ($deleteAllSelectedBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->deleteAllSelectedBtnXpath " .
-				"could not find button to delete all selected files"
-			);
-		}
+		$this->assertElementNotNull(
+			$deleteAllSelectedBtn,
+			__METHOD__ .
+			" xpath $this->deleteAllSelectedBtnXpath " .
+			"could not find button to delete all selected files"
+		);
 		return $deleteAllSelectedBtn;
 	}
 
@@ -436,12 +431,11 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$selectedAllFilesBtn = $this->find(
 			"xpath", $this->selectAllFilesCheckboxXpath
 		);
-		if ($selectedAllFilesBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				"could not find button $this->selectAllFilesCheckboxXpath to select all files"
-			);
-		}
+		$this->assertElementNotNull(
+			$selectedAllFilesBtn,
+			__METHOD__ .
+			"could not find button $this->selectAllFilesCheckboxXpath to select all files"
+		);
 		return $selectedAllFilesBtn;
 	}
 
@@ -489,13 +483,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 	public function findFileActionsMenuBtnByNo($number) {
 		$xpathLocator = \sprintf($this->fileActionMenuBtnXpathByNo, $number);
 		$actionMenuBtn = $this->find("xpath", $xpathLocator);
-		if ($actionMenuBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $xpathLocator " .
-				"could not find action menu button of file #$number"
-			);
-		}
+		$this->assertElementNotNull(
+			$actionMenuBtn,
+			__METHOD__ .
+			" xpath $xpathLocator " .
+			"could not find action menu button of file #$number"
+		);
 		return $actionMenuBtn;
 	}
 
@@ -669,22 +662,20 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function enableShowHiddenFilesSettings() {
 		$appSettingsButton = $this->find('xpath', $this->appSettingsXpath);
-		if ($appSettingsButton === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->appSettingsXpath " .
-				"could not find the appSettings button"
-			);
-		}
+		$this->assertElementNotNull(
+			$appSettingsButton,
+			__METHOD__ .
+			" xpath $this->appSettingsXpath " .
+			"could not find the appSettings button"
+		);
 		$appSettingsButton->click();
 		$appSettingsDiv = $this->findById($this->appSettingsContentId);
-		if ($appSettingsDiv === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->appSettingsContentId " .
-				"could not find the appSettings section"
-			);
-		}
+		$this->assertElementNotNull(
+			$appSettingsDiv,
+			__METHOD__ .
+			" xpath $this->appSettingsContentId " .
+			"could not find the appSettings section"
+		);
 		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC;
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -702,13 +693,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$showHiddenFilesCheckBox = $this->find(
 			'xpath', $this->showHiddenFilesCheckboxXpath
 		);
-		if ($showHiddenFilesCheckBox === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->showHiddenFilesCheckboxXpath " .
-				"could not find the field for show hidden files checkbox"
-			);
-		}
+		$this->assertElementNotNull(
+			$showHiddenFilesCheckBox,
+			__METHOD__ .
+			" xpath $this->showHiddenFilesCheckboxXpath " .
+			"could not find the field for show hidden files checkbox"
+		);
 		$showHiddenFilesCheckBox->click();
 	}
 }

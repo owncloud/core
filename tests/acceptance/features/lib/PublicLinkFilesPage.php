@@ -95,28 +95,25 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 */
 	public function addToServer($server) {
 		$addToYourOcBtn = $this->findById($this->addToYourOcBtnId);
-		if ($addToYourOcBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->addToYourOcBtnId could not find 'add to your owncloud' button"
-			);
-		}
+		$this->assertElementNotNull(
+			$addToYourOcBtn,
+			__METHOD__ .
+			" id $this->addToYourOcBtnId could not find 'add to your owncloud' button"
+		);
 		$addToYourOcBtn->click();
 		$remoteAddressInput = $this->findById($this->remoteAddressInputId);
-		if ($remoteAddressInput === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->remoteAddressInputId could not find remote address input field"
-			);
-		}
+		$this->assertElementNotNull(
+			$remoteAddressInput,
+			__METHOD__ .
+			" id $this->remoteAddressInputId could not find remote address input field"
+		);
 		$remoteAddressInput->setValue($server);
 		$confirmBtn = $this->findById($this->confirmBtnId);
-		if ($confirmBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->confirmBtnId could not find confirm button"
-			);
-		}
+		$this->assertElementNotNull(
+			$confirmBtn,
+			__METHOD__ .
+			" id $this->confirmBtnId could not find confirm button"
+		);
 		$confirmBtn->click();
 	}
 	
@@ -176,13 +173,12 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 */
 	public function getPreviewText() {
 		$previewContainer = $this->find("xpath", $this->textPreviewContainerXpath);
-		if ($previewContainer === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->textPreviewContainerXpath " .
-				" could not find preview text container"
-			);
-		}
+		$this->assertElementNotNull(
+			$previewContainer,
+			__METHOD__ .
+			" xpath $this->textPreviewContainerXpath " .
+			" could not find preview text container"
+		);
 		return $previewContainer->getText();
 	}
 
@@ -194,12 +190,11 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 */
 	public function getDownloadUrl() {
 		$downloadBtn = $this->find("xpath", $this->singleFileDownloadBtnXpath);
-		if ($downloadBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ . " xpath $this->singleFileDownloadBtnXpath " .
-				" could not find download button"
-			);
-		}
+		$this->assertElementNotNull(
+			$downloadBtn,
+			__METHOD__ . " xpath $this->singleFileDownloadBtnXpath " .
+			" could not find download button"
+		);
 		if ($downloadBtn->hasAttribute("href")) {
 			return $downloadBtn->getAttribute("href");
 		}
@@ -215,22 +210,20 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 */
 	public function enterPublicLinkPassword($password) {
 		$passwordInputField = $this->findById($this->passwordFieldId);
-		if ($passwordInputField === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->passwordFieldId " .
-				"could not find password field"
-			);
-		}
+		$this->assertElementNotNull(
+			$passwordInputField,
+			__METHOD__ .
+			" id $this->passwordFieldId " .
+			"could not find password field"
+		);
 		$passwordInputField->setValue($password);
 		$passwordSubmitButton = $this->findById($this->passwordSubmitButtonId);
-		if ($passwordSubmitButton === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->passwordSubmitButtonId " .
-				"could not find password submit button"
-			);
-		}
+		$this->assertElementNotNull(
+			$passwordSubmitButton,
+			__METHOD__ .
+			" id $this->passwordSubmitButtonId " .
+			"could not find password submit button"
+		);
 		$passwordSubmitButton->click();
 	}
 
@@ -260,13 +253,12 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 */
 	public function getWarningMessage() {
 		$warningMessageBox = $this->find('css', $this->warningMessageCss);
-		if ($warningMessageBox === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" class $this->warningMessageClass " .
-				"could not find warning message field"
-			);
-		}
+		$this->assertElementNotNull(
+			$warningMessageBox,
+			__METHOD__ .
+			" class $this->warningMessageCss " .
+			"could not find warning message field"
+		);
 		$warningMessage = $warningMessageBox->getText();
 		return $warningMessage;
 	}
