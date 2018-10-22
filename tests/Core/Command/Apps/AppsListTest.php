@@ -57,7 +57,7 @@ class AppsListTest extends TestCase {
 
 	public function providesAppIds() {
 		return [
-			[[], '- files: 1.5.2'],
+			[[], '- files: 1.5'],
 			[['--shipped' => 'true'], '- dav: 0.4.0'],
 			[['--shipped' => 'false'], '- testing:'],
 			[['search-pattern' => 'dav'], '- dav: 0.4.0']
