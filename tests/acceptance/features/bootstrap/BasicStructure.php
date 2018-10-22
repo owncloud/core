@@ -1977,6 +1977,26 @@ trait BasicStructure {
 	}
 
 	/**
+	 * After Scenario. clear file locks
+	 *
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function clearFileLocks() {
+		$this->deleteTokenAuthEnforcedAfterScenario();
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'delete',
+			"/apps/testing/api/v1/lockprovisioning",
+			["global" => "true"]
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+	}
+
+	/**
 	 * @BeforeSuite
 	 *
 	 * @param BeforeSuiteScope $scope
