@@ -423,7 +423,7 @@ pipeline:
 
 services:
   mariadb:
-    image: mariadb:10.2
+    image: ${MARIADB_IMAGE=mariadb:10.2}
     environment:
       - MYSQL_USER=owncloud
       - MYSQL_PASSWORD=owncloud
@@ -621,6 +621,13 @@ matrix:
     - PHP_VERSION: 7.1
       DB_TYPE: postgres
       POSTGRES_IMAGE: postgres:10.3
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      INSTALL_SERVER: true
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: mariadb
+      MARIADB_IMAGE: mariadb:10.3
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
