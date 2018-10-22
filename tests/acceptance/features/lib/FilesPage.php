@@ -110,25 +110,23 @@ class FilesPage extends FilesPageBasic {
 
 		$newButtonElement = $this->find("xpath", $this->newFileFolderButtonXpath);
 
-		if ($newButtonElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->newFileFolderButtonXpath " .
-				"could not find new file-folder button"
-			);
-		}
+		$this->assertElementNotNull(
+			$newButtonElement,
+			__METHOD__ .
+			" xpath $this->newFileFolderButtonXpath " .
+			"could not find new file-folder button"
+		);
 
 		$newButtonElement->click();
 
 		$newFolderButtonElement = $this->find("xpath", $this->newFolderButtonXpath);
 
-		if ($newFolderButtonElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->newFolderButtonXpath " .
-				"could not find new folder button"
-			);
-		}
+		$this->assertElementNotNull(
+			$newFolderButtonElement,
+			__METHOD__ .
+			" xpath $this->newFolderButtonXpath " .
+			"could not find new folder button"
+		);
 
 		try {
 			$newFolderButtonElement->click();
@@ -194,13 +192,12 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function getCreateFolderTooltip() {
 		$newFolderTooltip = $this->find("xpath", $this->newFolderTooltipXpath);
-		if ($newFolderTooltip === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->newFolderTooltipXpath " .
-				"could not find tooltip"
-			);
-		}
+		$this->assertElementNotNull(
+			$newFolderTooltip,
+			__METHOD__ .
+			" xpath $this->newFolderTooltipXpath " .
+			"could not find tooltip"
+		);
 		return $newFolderTooltip->getText();
 	}
 
@@ -213,13 +210,12 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function uploadFile(Session $session, $name) {
 		$uploadField = $this->findById($this->fileUploadInputId);
-		if ($uploadField === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->fileUploadInputId " .
-				"could not find file upload input field"
-			);
-		}
+		$this->assertElementNotNull(
+			$uploadField,
+			__METHOD__ .
+			" id $this->fileUploadInputId " .
+			"could not find file upload input field"
+		);
 		$uploadField->attachFile(\getenv("FILES_FOR_UPLOAD") . $name);
 		$this->waitForAjaxCallsToStartAndFinish($session, 20000);
 		$this->waitForUploadProgressbarToFinish();
@@ -443,13 +439,12 @@ class FilesPage extends FilesPageBasic {
 		$uploadProgressbar = $this->find(
 			"xpath", $this->uploadProgressbarLabelXpath
 		);
-		if ($uploadProgressbar === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->uploadProgressbarLabelXpath " .
-				"could not find upload progressbar"
-			);
-		}
+		$this->assertElementNotNull(
+			$uploadProgressbar,
+			__METHOD__ .
+			" xpath $this->uploadProgressbarLabelXpath " .
+			"could not find upload progressbar"
+		);
 		$currentTime = \microtime(true);
 		$end = $currentTime + (STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000);
 		while ($uploadProgressbar->isVisible()) {

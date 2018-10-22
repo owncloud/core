@@ -65,12 +65,11 @@ class PublicLinkTab extends OwncloudPage {
 	 */
 	public function initElement() {
 		$publicLinkTab = $this->findById($this->publicLinkTabId);
-		if ($publicLinkTab === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
+		$this->assertElementNotNull(
+			$publicLinkTab,
+			__METHOD__ .
 				" id $this->publicLinkTabId could not find public link tab"
-			);
-		}
+		);
 		$this->publicLinkTabElement = $publicLinkTab;
 	}
 
@@ -137,13 +136,12 @@ class PublicLinkTab extends OwncloudPage {
 		$createLinkBtn = $this->publicLinkTabElement->find(
 			"xpath", $this->createLinkBtnXpath
 		);
-		if ($createLinkBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->createLinkBtnXpath" .
-				" could not find create public link button"
-			);
-		}
+		$this->assertElementNotNull(
+			$createLinkBtn,
+			__METHOD__ .
+			" xpath $this->createLinkBtnXpath" .
+			" could not find create public link button"
+		);
 		$createLinkBtn->click();
 
 		$popupElement = $this->waitTillElementIsNotNull($this->popupXpath);
@@ -219,13 +217,12 @@ class PublicLinkTab extends OwncloudPage {
 	public function getLinkUrl($name) {
 		$linkEntry = $this->findLinkEntryByName($name);
 		$linkUrlInput = $linkEntry->find("xpath", $this->linkUrlInputXpath);
-		if ($linkUrlInput === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->linkUrlInputXpath" .
-				" could not find input field that contains the link URL"
-			);
-		}
+		$this->assertElementNotNull(
+			$linkUrlInput,
+			__METHOD__ .
+			" xpath $this->linkUrlInputXpath" .
+			" could not find input field that contains the link URL"
+		);
 		return $linkUrlInput->getValue();
 	}
 
@@ -290,13 +287,12 @@ class PublicLinkTab extends OwncloudPage {
 		$linkEntry = $this->publicLinkTabElement->find(
 			"xpath", \sprintf($this->linkEntryByNameXpath, $xpathString)
 		);
-		if ($linkEntry === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->linkEntryByNameXpath" .
-				" could not find link entry with the given name"
-			);
-		}
+		$this->assertElementNotNull(
+			$linkEntry,
+			__METHOD__ .
+			" xpath $this->linkEntryByNameXpath" .
+			" could not find link entry with the given name"
+		);
 		return $linkEntry;
 	}
 }

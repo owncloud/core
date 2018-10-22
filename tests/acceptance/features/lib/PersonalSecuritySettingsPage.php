@@ -60,13 +60,12 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 			$this->createNewAppPasswordButtonId
 		);
 
-		if ($createNewAppPasswordButton === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->createNewAppPasswordButtonId " .
-				"could not find create new app password button (1)"
-			);
-		}
+		$this->assertElementNotNull(
+			$createNewAppPasswordButton,
+			__METHOD__ .
+			" id $this->createNewAppPasswordButtonId " .
+			"could not find create new app password button (1)"
+		);
 
 		$createNewAppPasswordButton->click();
 
@@ -74,13 +73,12 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 			$this->createNewAppPasswordButtonId
 		);
 
-		if ($createNewAppPasswordButton === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->createNewAppPasswordButtonId " .
-				"could not find create new app password button (2)"
-			);
-		}
+		$this->assertElementNotNull(
+			$createNewAppPasswordButton,
+			__METHOD__ .
+			" id $this->createNewAppPasswordButtonId " .
+			"could not find create new app password button (2)"
+		);
 
 		while (\strpos(
 			$createNewAppPasswordButton->getAttribute("class"),
