@@ -151,17 +151,18 @@ class FederatedShareProvider implements IShareProvider {
 		}
 
 		// don't allow federated shares if source and target server are the same
-		list($user, $remote) = $this->addressHandler->splitUserRemote($shareWith);
-		$currentServer = $this->addressHandler->generateRemoteURL();
 		$currentUser = $sharedBy;
-		if ($this->addressHandler->compareAddresses($user, $remote, $currentUser, $currentServer)) {
+		$ownerAddress =  $this->addressHandler->getLocalUserFederatedAddress($currentUser);
+		$shareWithAddress = new Address($shareWith);
+
+		if ($ownerAddress->equalTo($shareWithAddress)) {
 			$message = 'Not allowed to create a federated share with the same user.';
 			$message_t = $this->l->t('Not allowed to create a federated share with the same user');
 			$this->logger->debug($message, ['app' => 'Federated File Sharing']);
 			throw new \Exception($message_t);
 		}
 
-		$share->setSharedWith($user . '@' . $remote);
+		$share->setSharedWith($shareWithAddress->getCloudId());
 
 		try {
 			$remoteShare = $this->getShareFromExternalShareTable($share);
@@ -220,19 +221,24 @@ class FederatedShareProvider implements IShareProvider {
 		);
 
 		try {
-			$sharedByFederatedId = $share->getSharedBy();
-			if ($this->userManager->userExists($sharedByFederatedId)) {
-				$sharedByFederatedId = $sharedByFederatedId . '@' . $this->addressHandler->generateRemoteURL();
+			$sharedBy = $share->getSharedBy();
+			if ($this->userManager->userExists($sharedBy)) {
+				$sharedByAddress = $this->addressHandler->getLocalUserFederatedAddress($sharedBy);
+			} else {
+				$sharedByAddress = new Address($sharedBy);
 			}
+
+			$owner = $share->getShareOwner();
+			$ownerAddress = $this->addressHandler->getLocalUserFederatedAddress($owner);
+			$sharedWith = $share->getSharedWith();
+			$shareWithAddress = new Address($sharedWith);
 			$send = $this->notifications->sendRemoteShare(
+				$shareWithAddress,
+				$ownerAddress,
+				$sharedByAddress,
 				$token,
-				$share->getSharedWith(),
 				$share->getNode()->getName(),
-				$shareId,
-				$share->getShareOwner(),
-				$share->getShareOwner() . '@' . $this->addressHandler->generateRemoteURL(),
-				$share->getSharedBy(),
-				$sharedByFederatedId
+				$shareId
 			);
 
 			if ($send === false) {
@@ -475,8 +481,6 @@ class FederatedShareProvider implements IShareProvider {
 
 		$isOwner = false;
 
-		$this->removeShareFromTable($share);
-
 		// if the local user is the owner we can send the unShare request directly...
 		if ($this->userManager->userExists($share->getShareOwner())) {
 			$this->notifications->sendRemoteUnShare($remote, $share->getId(), $share->getToken());
@@ -498,6 +502,7 @@ class FederatedShareProvider implements IShareProvider {
 			}
 			$this->notifications->sendRevokeShare($remote, $remoteId, $share->getToken());
 		}
+		$this->removeShareFromTable($share);
 	}
 
 	/**

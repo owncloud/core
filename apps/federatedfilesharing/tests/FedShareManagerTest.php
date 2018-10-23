@@ -21,10 +21,12 @@
 
 namespace OCA\FederatedFileSharing\Tests;
 
+use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
 use OCA\FederatedFileSharing\Notifications;
+use OCA\FederatedFileSharing\Ocm\Permissions;
 use OCA\Files_Sharing\Activity;
 use OCP\Activity\IEvent;
 use OCP\Activity\IManager as ActivityManager;
@@ -63,6 +65,9 @@ class FedShareManagerTest extends TestCase {
 	/** @var AddressHandler | \PHPUnit_Framework_MockObject_MockObject */
 	private $addressHandler;
 
+	/** @var Permissions | \PHPUnit_Framework_MockObject_MockObject */
+	private $permissions;
+
 	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
 	private $eventDispatcher;
 
@@ -83,6 +88,8 @@ class FedShareManagerTest extends TestCase {
 		$this->addressHandler = $this->getMockBuilder(AddressHandler::class)
 			->disableOriginalConstructor()->getMock();
 
+		$this->permissions = $this->createMock(Permissions::class);
+
 		$this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
 			->getMock();
 
@@ -95,6 +102,7 @@ class FedShareManagerTest extends TestCase {
 					$this->activityManager,
 					$this->notificationManager,
 					$this->addressHandler,
+					$this->permissions,
 					$this->eventDispatcher
 				]
 			)
@@ -104,13 +112,14 @@ class FedShareManagerTest extends TestCase {
 
 	public function testCreateShare() {
 		$shareWith = 'Bob';
-		$remote = 'server2';
-		$remoteId = 42;
 		$owner = 'Alice';
-		$name = 'McGee';
-		$ownerFederatedId = '17';
-		$sharedByFederatedId = '18';
+		$ownerFederatedId = 'server2';
+		$sharedByFederatedId = 'server3';
 		$sharedBy = 'Steve';
+		$ownerAddress = new Address("$owner@$ownerFederatedId");
+		$sharedByAddress = new Address("$sharedBy@$sharedByFederatedId");
+		$remoteId = 42;
+		$name = 'file.ext';
 		$token = 'idk';
 
 		$event = $this->getMockBuilder(IEvent::class)->getMock();
@@ -137,14 +146,11 @@ class FedShareManagerTest extends TestCase {
 			->willReturn($notification);
 
 		$this->fedShareManager->createShare(
+			$ownerAddress,
+			$sharedByAddress,
 			$shareWith,
-			$remote,
 			$remoteId,
-			$owner,
 			$name,
-			$ownerFederatedId,
-			$sharedByFederatedId,
-			$sharedBy,
 			$token
 		);
 	}
@@ -258,12 +264,12 @@ class FedShareManagerTest extends TestCase {
 		$this->fedShareManager->unshare($shareRow['id'], $shareRow['share_token']);
 	}
 
-	public function testRevoke() {
+	public function testReshareUndo() {
 		$share = $this->getMockBuilder(IShare::class)
 			->disableOriginalConstructor()->getMock();
 		$this->federatedShareProvider->expects($this->once())
 			->method('removeShareFromTable')
 			->with($share);
-		$this->fedShareManager->revoke($share);
+		$this->fedShareManager->undoReshare($share);
 	}
 }

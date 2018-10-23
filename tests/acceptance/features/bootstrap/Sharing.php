@@ -1142,7 +1142,7 @@ trait Sharing {
 				if (\substr($field, 0, 6) === "remote") {
 					$value = \str_replace(
 						"REMOTE",
-						$this->getRemoteBaseUrl() . '/',
+						$this->getRemoteBaseUrl(),
 						$value
 					);
 					$value = \str_replace(
