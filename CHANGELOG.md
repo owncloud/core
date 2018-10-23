@@ -4,18 +4,27 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## [Unreleased]
 ### Added
 - Allow loading JSON files in setups with pretty URLs - [#32835](https://github.com/owncloud/core/issues/32835)
+- Support global CORS domains for public pages - [#33139](https://github.com/owncloud/core/issues/33139)
 ### Changed
 - Disable browser autocomplete for password fields - [#32590](https://github.com/owncloud/core/issues/32590)
 - Bump symfony 3.4.15 to 3.4.17 - [#33001](https://github.com/owncloud/core/issues/33001)
 - Bump jakub-onderka/php-console-highlighter from 0.3.2 to 0.4 - [#32944](https://github.com/owncloud/core/issues/32944)
-- Bump sinon from 6.2.0 to 6.3.4 in /build - [#32825](https://github.com/owncloud/core/issues/32825)
+- Bump handlebars from 4.0.11 to 4.0.12 in /build - [#32661](https://github.com/owncloud/core/issues/32661)
+- Bump sinon from 6.2.0 to 6.3.5 - [#32825](https://github.com/owncloud/core/issues/32825) [#33073](https://github.com/owncloud/core/issues/33073)
+- Bump composer/xdebug-handler to 1.3.0 - [#32977](https://github.com/owncloud/core/issues/32977)
 ### Removed
+- Deprecate Sharing 1.0 APIs which will be removed in ownCloud 11 - [#33220](https://github.com/owncloud/core/issues/33220)
 ### Fixed
+- Warning log about oc_readonly storage wrapper is now logged in debug level - [#33212](https://github.com/owncloud/core/issues/33212)
+- Fix occ encrypt-all command to not attempt re-encrypting already encrypted files - [#33206](https://github.com/owncloud/core/issues/33206)
 - Register areCredentialsValid as a sensitive logging method - [#32713](https://github.com/owncloud/core/issues/32713)
 - Deletion of user now also updates storages applicable fields - [#32906](https://github.com/owncloud/core/issues/32906)
+- Blacklist the method "setPassword" in stack traces - [#33176](https://github.com/owncloud/core/issues/33176)
+- Fix wording in occ command help - [#33179](https://github.com/owncloud/core/issues/33179)
+- Fix preLogin hook parameter inconsistencies - [#33185](https://github.com/owncloud/core/issues/33185)
 
 ## 10.0.10 - 2018-09-18
 ### Added
@@ -784,6 +793,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
+[Unreleased]: https://github.com/owncloud/core/compare/v10.0.10...stable10
 [10.0.10]: https://github.com/owncloud/core/compare/v10.0.9...v10.0.10
 [10.0.9]: https://github.com/owncloud/core/compare/v10.0.8...v10.0.9
 [10.0.8]: https://github.com/owncloud/core/compare/v10.0.7...v10.0.8
