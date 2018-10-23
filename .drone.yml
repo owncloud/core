@@ -871,6 +871,16 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
+  # CLI Background Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: cli
+      BEHAT_SUITE: cliBackground
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
   # UI Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
