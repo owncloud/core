@@ -296,6 +296,11 @@ trait WebDav {
 
 	/**
 	 * @Given /^the administrator has (enabled|disabled) async operations$/
+	 *
+	 * @param string $enabledOrDisabled
+	 *
+	 * @return void
+	 * @throws Exception
 	 */
 	public function triggerAsyncUpload($enabledOrDisabled) {
 		$switch = ($enabledOrDisabled !== "disabled");
@@ -319,12 +324,15 @@ trait WebDav {
 				'--value',
 				$value
 			]
-			);
+		);
 	}
 
 	/**
 	 * @Given the HTTP-Request-timeout is set to :seconds seconds
+	 *
 	 * @param int $timeout
+	 *
+	 * @return void
 	 */
 	public function setHttpTimeout($timeout) {
 		$this->httpRequestTimeout = (int)$timeout;
@@ -332,7 +340,12 @@ trait WebDav {
 
 	/**
 	 * @Given the :method dav requests are slowed down by :seconds seconds
-	 * @param int $timeout
+	 *
+	 * @param string $method
+	 * @param int $seconds
+	 *
+	 * @throws Exception
+	 * @return void
 	 */
 	public function slowdownDavRequests($method, $seconds) {
 		if ($this->oldDavSlowdownSetting === null) {
@@ -407,7 +420,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userMovesFileUsingTheAPI(
-		$user, $fileSource, $type = "", $fileDestination
+		$user, $fileSource, $type, $fileDestination
 	) {
 		$headers['Destination'] = $this->destinationHeaderValue(
 			$user, $fileDestination
@@ -2151,7 +2164,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsTheFollowingChunksUsingNewChunking(
-		$user, $type = "", $file, TableNode $chunkDetails
+		$user, $type, $file, TableNode $chunkDetails
 	) {
 		$async = false;
 		if ($type === "asynchronously") {
@@ -2174,6 +2187,7 @@ trait WebDav {
 	 *                            [1] data content of the chunk
 	 *                            Chunks may be numbered out-of-order if desired.
 	 * @param bool $async use asynchronous MOVE at the end or not
+	 *
 	 * @return void
 	 */
 	public function userUploadsChunksUsingNewChunking(
@@ -2551,7 +2565,7 @@ trait WebDav {
 				$headerValue,
 				"header $headerName should not exist " .
 				"but does and is set to $headerValue"
-				);
+			);
 		}
 	}
 
@@ -2569,13 +2583,13 @@ trait WebDav {
 			$expectedHeaderValue = $header[1];
 			$expectedHeaderValue = $this->substituteInLineCodes(
 				$expectedHeaderValue, ['preg_quote' => ['/'] ]
-				);
+			);
 			
 			$returnedHeader = $this->response->getHeader($headerName);
 			PHPUnit_Framework_Assert::assertNotFalse(
 				(bool)\preg_match($expectedHeaderValue, $returnedHeader),
 				"'$expectedHeaderValue' does not match '$returnedHeader'"
-				);
+			);
 		}
 	}
 
