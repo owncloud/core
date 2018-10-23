@@ -2,7 +2,7 @@
 Feature: get user last seen
   As an admin
   I want to be able get user last seen
-  So that I can see when the user has last logged in the owncloud server
+  So that I can see when the user has last logged in to the owncloud server
 
   Scenario: admin gets last seen of a user
     Given user "brand-new-user" has been created
