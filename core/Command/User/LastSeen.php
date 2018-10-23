@@ -63,7 +63,7 @@ class LastSeen extends Command {
 		$lastLogin = $user->getLastLogin();
 		if ($lastLogin === 0) {
 			$output->writeln('User ' . $user->getUID() .
-				' has never logged in, yet.');
+				' has never logged in.');
 		} else {
 			$date = new \DateTime();
 			$date->setTimestamp($lastLogin);
