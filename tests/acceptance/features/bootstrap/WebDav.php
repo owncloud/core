@@ -918,6 +918,7 @@ trait WebDav {
 			"files",
 			null,
 			null,
+			false,
 			$password
 		);
 	}
