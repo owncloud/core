@@ -2706,16 +2706,18 @@ trait WebDav {
 			$this->parseResponseIntoXml();
 		}
 		$multistatusResults = $this->responseXml["value"];
-		foreach ($multistatusResults as $multistatusResult) {
-			$filePath = $multistatusResult['value'][0]['value'];
-			$fullWebDavPath = \ltrim(
-				$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
-				"/"
-			);
-			$fileName = \str_replace($fullWebDavPath, "", $filePath);
-			$fileName = \rawurldecode($fileName);
-			if ($fileName === $fileNameToSearch) {
-				return $multistatusResult;
+		if ($multistatusResults !== null) {
+			foreach ($multistatusResults as $multistatusResult) {
+				$filePath = $multistatusResult['value'][0]['value'];
+				$fullWebDavPath = \ltrim(
+					$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
+					"/"
+				);
+				$fileName = \str_replace($fullWebDavPath, "", $filePath);
+				$fileName = \rawurldecode($fileName);
+				if ($fileName === $fileNameToSearch) {
+					return $multistatusResult;
+				}
 			}
 		}
 		return false;
