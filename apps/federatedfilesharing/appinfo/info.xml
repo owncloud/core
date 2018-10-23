@@ -13,7 +13,7 @@
         <filesystem/>
     </types>
     <dependencies>
-		<owncloud min-version="10.1" max-version="10.1" />
+		<owncloud min-version="11.0" max-version="11.0" />
     </dependencies>
     <settings>
         <admin>OCA\FederatedFileSharing\AdminPanel</admin>

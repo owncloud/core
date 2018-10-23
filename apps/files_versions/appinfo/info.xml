@@ -15,7 +15,7 @@ In addition to the expiry of versions, ownCloud’s versions app makes certain n
 	</types>
 	<namespace>Files_Versions</namespace>
 	<dependencies>
-		<owncloud min-version="10.1" max-version="10.1" />
+		<owncloud min-version="11.0" max-version="11.0" />
 	</dependencies>
 	<documentation>
 		<user>user-versions</user>
