@@ -127,6 +127,13 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
 
+    cliBackground:
+      paths:
+        - %paths.base%/../features/cliBackground
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+
     webUIAdminSettings:
       paths:
         - %paths.base%/../features/webUIAdminSettings
@@ -139,6 +146,7 @@ default:
         - WebUIAdminGeneralSettingsContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - OccContext:
 
     webUIComments:
       paths:
