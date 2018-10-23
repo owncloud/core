@@ -44,13 +44,12 @@ class ConflictDialog extends OCDialog {
 	 */
 	private function keepFiles($xpath) {
 		$checkBox = $this->dialogElement->find("xpath", $xpath);
-		if ($checkBox === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $xpath " .
-				"could not find checkbox/label"
-			);
-		}
+		$this->assertElementNotNull(
+			$checkBox,
+			__METHOD__ .
+			" xpath $xpath " .
+			"could not find checkbox/label"
+		);
 		$checkBox->click();
 	}
 

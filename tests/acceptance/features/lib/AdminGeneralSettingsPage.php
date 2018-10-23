@@ -106,13 +106,12 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	public function sendTestEmail($session) {
 		$sendTestEmailBtn = $this->findById($this->sendTestEmailBtnId);
 
-		if ($sendTestEmailBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->sendTestEmailBtnId " .
-				"could not find button"
-			);
-		}
+		$this->assertElementNotNull(
+			$sendTestEmailBtn,
+			__METHOD__ .
+			" id $this->sendTestEmailBtnId " .
+			"could not find button"
+		);
 
 		$sendTestEmailBtn->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -130,21 +129,19 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 		$checkbox = $this->find("xpath", $this->authRequiredCheckboxXpath);
 		$checkCheckbox = $this->findById($this->authRequiredCheckboxId);
 		
-		if ($checkbox === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->authRequiredCheckboxXpath " .
-				"could not find label for checkbox"
-			);
-		}
+		$this->assertElementNotNull(
+			$checkbox,
+			__METHOD__ .
+			" xpath $this->authRequiredCheckboxXpath " .
+			"could not find label for checkbox"
+		);
 		
-		if ($checkCheckbox === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->authRequiredCheckboxId " .
-				"could not find checkbox"
-			);
-		}
+		$this->assertElementNotNull(
+			$checkCheckbox,
+			__METHOD__ .
+			" id $this->authRequiredCheckboxId " .
+			"could not find checkbox"
+		);
 		
 		if ($requiredState == 'true') {
 			if (!$checkCheckbox->isChecked()) {
@@ -204,31 +201,28 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	public function setCronJobValue($cronJob) {
 		if ($cronJob == "ajax") {
 			$selectCron = $this->find("xpath", $this->cronJobAjaxXpath);
-			if ($selectCron === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" xpath $this->cronJobAjaxXpath " .
-					"could not find xpath for radio button"
-				);
-			}
+			$this->assertElementNotNull(
+				$selectCron,
+				__METHOD__ .
+				" xpath $this->cronJobAjaxXpath " .
+				"could not find xpath for radio button"
+			);
 		} elseif ($cronJob == "webcron") {
 			$selectCron = $this->find("xpath", $this->cronJobWebCronXpath);
-			if ($selectCron === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" xpath $this->cronJobWebCronXpath " .
-					"could not find xpath for radio button"
-				);
-			}
+			$this->assertElementNotNull(
+				$selectCron,
+				__METHOD__ .
+				" xpath $this->cronJobWebCronXpath " .
+				"could not find xpath for radio button"
+			);
 		} elseif ($cronJob == "cron") {
 			$selectCron = $this->find("xpath", $this->cronJobCronXpath);
-			if ($selectCron === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" xpath $this->cronJobCronXpath " .
-					"could not find xpath for radio button"
-				);
-			}
+			$this->assertElementNotNull(
+				$selectCron,
+				__METHOD__ .
+				" xpath $this->cronJobCronXpath " .
+				"could not find xpath for radio button"
+			);
 		} else {
 			throw new \Exception(
 				__METHOD__ . " invalid cron job type: $cronJob"
@@ -244,13 +238,12 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 */
 	public function getOwncloudVersion() {
 		$actualVersion = $this->find("xpath", $this->ownCloudVersionXpath);
-		if ($actualVersion === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->ownCloudVersionXpath " .
-				"could not find xpath for owncloud version"
-			);
-		}
+		$this->assertElementNotNull(
+			$actualVersion,
+			__METHOD__ .
+			" xpath $this->ownCloudVersionXpath " .
+			"could not find xpath for owncloud version"
+		);
 		return $actualVersion->getText();
 	}
 
@@ -261,13 +254,12 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 */
 	public function getOwncloudVersionString() {
 		$actualVersion = $this->find("xpath", $this->ownCloudVersionStringXpath);
-		if ($actualVersion === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->ownCloudVersionStringXpath " .
-				"could not find xpath for owncloud version string"
-			);
-		}
+		$this->assertElementNotNull(
+			$actualVersion,
+			__METHOD__ .
+			" xpath $this->ownCloudVersionStringXpath " .
+			"could not find xpath for owncloud version string"
+		);
 		return $actualVersion->getText();
 	}
 

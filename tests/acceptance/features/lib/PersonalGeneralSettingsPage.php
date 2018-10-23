@@ -103,12 +103,11 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 		$this->fillField($this->newPasswordInputID, $newPassword);
 		$this->fillField($this->oldPasswordInputID, $oldPassword);
 		$changePasswordButton = $this->findById($this->changePasswordButtonID);
-		if ($changePasswordButton === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find element with id $this->changePasswordButtonID"
-			);
-		}
+		$this->assertElementNotNull(
+			$changePasswordButton,
+			__METHOD__ .
+			" could not find element with id $this->changePasswordButtonID"
+		);
 		$changePasswordButton->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
@@ -135,12 +134,11 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	public function changeEmailAddress($newEmailAddress, Session $session) {
 		$this->fillField($this->emailAddressInputID, $newEmailAddress);
 		$changeEmailButton = $this->findById($this->changeEmailButtonID);
-		if ($changeEmailButton === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find element with id $this->changePasswordButtonID"
-			);
-		}
+		$this->assertElementNotNull(
+			$changeEmailButton,
+			__METHOD__ .
+			" could not find element with id $this->changePasswordButtonID"
+		);
 		$changeEmailButton->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
@@ -154,12 +152,11 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	public function getWrongPasswordMessageText() {
 		$errorMessage = $this->findById($this->passwordErrorMessageID);
 		
-		if ($errorMessage === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find element with id $this->passwordErrorMessageID"
-			);
-		}
+		$this->assertElementNotNull(
+			$errorMessage,
+			__METHOD__ .
+			" could not find element with id $this->passwordErrorMessageID"
+		);
 		
 		return $this->getTrimmedText($errorMessage);
 	}
