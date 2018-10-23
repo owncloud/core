@@ -77,13 +77,12 @@ class OCDialog extends OwncloudPage {
 	 */
 	public function getTitle() {
 		$title = $this->dialogElement->find("xpath", $this->titleClassXpath);
-		if ($title === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->titleClassXpath " .
-				"could not find title"
-			);
-		}
+		$this->assertElementNotNull(
+			$title,
+			__METHOD__ .
+			" xpath $this->titleClassXpath " .
+			"could not find title"
+		);
 		return $this->getTrimmedText($title);
 	}
 
@@ -96,13 +95,12 @@ class OCDialog extends OwncloudPage {
 		$contentElement = $this->dialogElement->find(
 			"xpath", $this->contentClassXpath
 		);
-		if ($contentElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->contentClassXpath " .
-				"could not find content element"
-			);
-		}
+		$this->assertElementNotNull(
+			$contentElement,
+			__METHOD__ .
+			" xpath $this->contentClassXpath " .
+			"could not find content element"
+		);
 		return $this->getTrimmedText($contentElement);
 	}
 
@@ -118,13 +116,12 @@ class OCDialog extends OwncloudPage {
 		$primaryButton = $this->dialogElement->find(
 			"xpath", $this->primaryButtonXpath
 		);
-		if ($primaryButton === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->primaryButtonXpath " .
-				"could not find primary button"
-			);
-		}
+		$this->assertElementNotNull(
+			$primaryButton,
+			__METHOD__ .
+			" xpath $this->primaryButtonXpath " .
+			"could not find primary button"
+		);
 		$primaryButton->click();
 		$this->waitForOutstandingAjaxCalls($session);
 	}
@@ -140,13 +137,12 @@ class OCDialog extends OwncloudPage {
 	public function clickButton(Session $session, $label) {
 		$xpathToFind = \sprintf($this->buttonByLabelXpath, $label);
 		$button = $this->dialogElement->find("xpath", $xpathToFind);
-		if ($button === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $xpathToFind" .
-				" could not find button with the given label"
-			);
-		}
+		$this->assertElementNotNull(
+			$button,
+			__METHOD__ .
+			" xpath $xpathToFind" .
+			" could not find button with the given label"
+		);
 		$button->click();
 		$this->waitForOutstandingAjaxCalls($session);
 	}

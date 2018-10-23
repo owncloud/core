@@ -69,12 +69,11 @@ class Notification extends OwncloudPage {
 		$link = $this->notificationElement->find(
 			"xpath", $this->notificationLinkXpath
 		);
-		if ($link === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find notification link with xpath $this->notificationLinkXpath"
-			);
-		}
+		$this->assertElementNotNull(
+			$link,
+			__METHOD__ .
+			" could not find notification link with xpath $this->notificationLinkXpath"
+		);
 		$destination = $link->getAttribute('href');
 		$link->click();
 		$currentTime = \microtime(true);
@@ -99,12 +98,11 @@ class Notification extends OwncloudPage {
 		$button = $this->notificationElement->find(
 			"xpath", $buttonXpath
 		);
-		if ($button === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $buttonXpath could not find button with the given text"
-			);
-		}
+		$this->assertElementNotNull(
+			$button,
+			__METHOD__ .
+			" xpath $buttonXpath could not find button with the given text"
+		);
 		$button->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
