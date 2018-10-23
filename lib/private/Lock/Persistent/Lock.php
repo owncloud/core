@@ -88,7 +88,7 @@ class Lock extends Entity implements ILock {
 	 * @return string
 	 * @since 11.0.0
 	 */
-	public function getOwner(): ?string {
+	public function getOwner() {
 		return parent::getOwner();
 	}
 
@@ -98,7 +98,7 @@ class Lock extends Entity implements ILock {
 	 * @return int
 	 * @since 11.0.0
 	 */
-	public function getFileId(): int {
+	public function getFileId() {
 		return parent::getFileId();
 	}
 
@@ -108,7 +108,7 @@ class Lock extends Entity implements ILock {
 	 * @return int
 	 * @since 11.0.0
 	 */
-	public function getTimeout(): int {
+	public function getTimeout() {
 		return parent::getTimeout();
 	}
 
@@ -118,7 +118,7 @@ class Lock extends Entity implements ILock {
 	 * @return mixed
 	 * @since 11.0.0
 	 */
-	public function getCreatedAt(): int {
+	public function getCreatedAt() {
 		return parent::getCreatedAt();
 	}
 
@@ -128,7 +128,7 @@ class Lock extends Entity implements ILock {
 	 * @return string
 	 * @since 11.0.0
 	 */
-	public function getToken(): string {
+	public function getToken() {
 		return parent::getToken();
 	}
 
@@ -138,7 +138,7 @@ class Lock extends Entity implements ILock {
 	 * @return int
 	 * @since 11.0.0
 	 */
-	public function getScope(): int {
+	public function getScope() {
 		return parent::getScope();
 	}
 
@@ -148,7 +148,7 @@ class Lock extends Entity implements ILock {
 	 * @return int
 	 * @since 11.0.0
 	 */
-	public function getDepth(): int {
+	public function getDepth() {
 		return parent::getDepth();
 	}
 
@@ -158,7 +158,7 @@ class Lock extends Entity implements ILock {
 	 * @return string
 	 * @since 11.0.0
 	 */
-	public function getAbsoluteDavPath(): string {
+	public function getAbsoluteDavPath() {
 		return parent::getAbsoluteDavPath();
 	}
 
@@ -168,7 +168,7 @@ class Lock extends Entity implements ILock {
 	 * @return string
 	 * @since 11.0.0
 	 */
-	public function getDavUserId(): string {
+	public function getDavUserId() {
 		return parent::getDavUserId();
 	}
 
@@ -179,7 +179,7 @@ class Lock extends Entity implements ILock {
 	 * @return mixed
 	 * @since 11.0.0
 	 */
-	public function setOwner(?string $owner) : void {
+	public function setOwner($owner) {
 		parent::setOwner($owner);
 	}
 }

@@ -458,7 +458,7 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 		return $this->sourceStorage;
 	}
 
-	public function getLocks(string $internalPath, bool $returnChildLocks = false): array {
+	public function getLocks($internalPath, $returnChildLocks = false) {
 		$locks = parent::getLocks($this->getSourcePath($internalPath), $returnChildLocks);
 		return \array_map(function (ILock $lock) {
 			// TODO: if path starts with rootpath
@@ -469,11 +469,11 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 		}, $locks);
 	}
 
-	public function lockNodePersistent(string $internalPath, array $lockInfo) : bool {
+	public function lockNodePersistent($internalPath, array $lockInfo) {
 		return parent::lockNodePersistent($this->getSourcePath($internalPath), $lockInfo);
 	}
 
-	public function unlockNodePersistent(string $internalPath, array $lockInfo) {
+	public function unlockNodePersistent($internalPath, array $lockInfo) {
 		parent::unlockNodePersistent($this->getSourcePath($internalPath), $lockInfo);
 	}
 }

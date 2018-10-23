@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @copyright Copyright (c) 2018, ownCloud GmbH
@@ -28,9 +27,9 @@ namespace OCP\Lock\Persistent;
  */
 interface ILock {
 	// these values are in sync with \Sabre\DAV\Locks\LockInfo
-	public const LOCK_SCOPE_EXCLUSIVE = 1;
-	public const LOCK_SCOPE_SHARED = 2;
-	public const LOCK_DEPTH_INFINITE = -1;
+	const LOCK_SCOPE_EXCLUSIVE = 1;
+	const LOCK_SCOPE_SHARED = 2;
+	const LOCK_DEPTH_INFINITE = -1;
 
 	/**
 	 * Return the owner of the lock - plain text field as transmitted by clients
@@ -38,7 +37,7 @@ interface ILock {
 	 * @return string | null
 	 * @since 11.0.0
 	 */
-	public function getOwner() : ?string;
+	public function getOwner();
 
 	/**
 	 * Foreign key to oc_filecache.fileid
@@ -46,7 +45,7 @@ interface ILock {
 	 * @return int
 	 * @since 11.0.0
 	 */
-	public function getFileId() : int;
+	public function getFileId();
 
 	/**
 	 * Seconds of lock life time
@@ -54,7 +53,7 @@ interface ILock {
 	 * @return int
 	 * @since 11.0.0
 	 */
-	public function getTimeout() : int;
+	public function getTimeout();
 
 	/**
 	 * Unix timestamp when lock was created
@@ -62,7 +61,7 @@ interface ILock {
 	 * @return mixed
 	 * @since 11.0.0
 	 */
-	public function getCreatedAt() : int;
+	public function getCreatedAt();
 
 	/**
 	 * Token to identify the lock - uuid usually
@@ -70,7 +69,7 @@ interface ILock {
 	 * @return string
 	 * @since 11.0.0
 	 */
-	public function getToken() : string;
+	public function getToken();
 
 	/**
 	 * Either shared lock or exclusive lock
@@ -79,7 +78,7 @@ interface ILock {
 	 * @since 11.0.0
 	 */
 
-	public function getScope() : int;
+	public function getScope();
 
 	/**
 	 * Depth as used in WebDAV: 0, 1 or infinite
@@ -87,21 +86,21 @@ interface ILock {
 	 * @return int
 	 * @since 11.0.0
 	 */
-	public function getDepth() : int;
+	public function getDepth();
 
 	/**
 	 * Absolute path to the file/folder on webdav
 	 * @return string
 	 * @since 11.0.0
 	 */
-	public function getAbsoluteDavPath() : string;
+	public function getAbsoluteDavPath();
 
 	/**
 	 * User id on webdav URI
 	 * @return string
 	 * @since 11.0.0
 	 */
-	public function getDavUserId() : string;
+	public function getDavUserId();
 
 	/**
 	 * Set the owner
@@ -110,5 +109,5 @@ interface ILock {
 	 * @return void
 	 * @since 11.0.0
 	 */
-	public function setOwner(?string $owner) : void;
+	public function setOwner($owner);
 }

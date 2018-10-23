@@ -82,6 +82,7 @@ class LockManagerTest extends TestCase {
 	}
 
 	public function testLockInsert() {
+		$this->lockMapper->method('getLocksByPath')->willReturn([]);
 		$this->lockMapper->expects($this->once())
 			->method('insert')
 			->willReturnCallback(function (Lock $lock) {

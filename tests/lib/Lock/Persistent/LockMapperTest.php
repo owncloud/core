@@ -154,7 +154,7 @@ class LockMapperTest extends TestCase {
 	 * @param Lock $expected
 	 * @param Lock $actual
 	 */
-	private function assertLock(Lock $expected, $actual): void {
+	private function assertLock(Lock $expected, $actual) {
 		$this->assertEquals($expected->getId(), $actual->getId());
 		$this->assertEquals($expected->getFileId(), $actual->getFileId());
 		$this->assertEquals($expected->getToken(), $actual->getToken());
@@ -195,7 +195,7 @@ class LockMapperTest extends TestCase {
 	/**
 	 * @return Lock
 	 */
-	private function createLockAnInsert(int $createdAt = 0): Lock {
+	private function createLockAnInsert($createdAt = 0) {
 		$token = \uniqid('tok', true);
 
 		$lock = new Lock();

@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @copyright Copyright (c) 2018, ownCloud GmbH
@@ -41,7 +40,7 @@ class LockManager {
 		$this->timeFactory = $timeFactory;
 	}
 
-	public function lock(int $storageId, string $internalPath, int $fileId, array $lockInfo) : bool {
+	public function lock($storageId, $internalPath, $fileId, array $lockInfo) {
 		if ($fileId <= 0) {
 			throw new \InvalidArgumentException('Invalid file id');
 		}
@@ -54,7 +53,7 @@ class LockManager {
 		if (isset($lockInfo['timeout'])) {
 			$timeout = $lockInfo['timeout'];
 		}
-		$owner = $lockInfo['owner'] ?? null;
+		$owner = isset($lockInfo['owner']) ? $lockInfo['owner'] : null;
 		if ($owner === null && $this->userSession->isLoggedIn()) {
 			$user = $this->userSession->getUser();
 			if ($user !== null) {
@@ -116,7 +115,7 @@ class LockManager {
 	 * @param string $token
 	 * @return bool
 	 */
-	public function unlock(int $fileId, string $token) : bool {
+	public function unlock($fileId, $token) {
 		return $this->lockMapper->deleteByFileIdAndToken($fileId, $token);
 	}
 
@@ -126,7 +125,7 @@ class LockManager {
 	 * @param bool $returnChildLocks
 	 * @return ILock[]
 	 */
-	public function getLocks(int $storageId, string $internalPath, bool $returnChildLocks) : array {
+	public function getLocks($storageId, $internalPath, $returnChildLocks) {
 		return $this->lockMapper->getLocksByPath($storageId, $internalPath, $returnChildLocks);
 	}
 }

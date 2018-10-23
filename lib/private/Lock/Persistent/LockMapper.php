@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @copyright Copyright (c) 2018, ownCloud GmbH
@@ -44,7 +43,7 @@ class LockMapper extends Mapper {
 	 * @param bool $returnChildLocks
 	 * @return Lock[]
 	 */
-	public function getLocksByPath(int $storageId, string $internalPath, bool $returnChildLocks) : array {
+	public function getLocksByPath($storageId, $internalPath, $returnChildLocks) {
 		$query = $this->db->getQueryBuilder();
 		$pathPattern = $this->db->escapeLikeParameter($internalPath) . '%';
 
@@ -89,7 +88,7 @@ class LockMapper extends Mapper {
 	 * @param string $token
 	 * @return bool
 	 */
-	public function deleteByFileIdAndToken(int $fileId, string $token) : bool {
+	public function deleteByFileIdAndToken($fileId, $token) {
 		$query = $this->db->getQueryBuilder();
 
 		$rowCount = $query->delete($this->getTableName())
@@ -106,7 +105,7 @@ class LockMapper extends Mapper {
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
 	 */
-	public function getLockByToken(string $token) : Lock {
+	public function getLockByToken($token) {
 		$query = $this->db->getQueryBuilder();
 
 		$query->select(['id', 'owner', 'timeout', 'created_at', 'token', 'token_hash', 'scope', 'depth', 'file_id', 'owner_account_id'])
