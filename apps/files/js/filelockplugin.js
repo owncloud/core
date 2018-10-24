@@ -9,11 +9,55 @@
  */
 
 (function(OCA) {
+	var NS_DAV = OC.Files.Client.NS_DAV;
 
 	var TEMPLATE_LOCK_STATUS_ACTION =
-		'<a class="action action-comment permanent" title="{{message}}" href="#">' +
+		'<a class="action action-lock-status permanent" title="{{message}}" href="#">' +
 		'<span class="icon icon-lock-open" />' +
 		'</a>';
+
+	/**
+	 * Parses an XML lock node
+	 *
+	 * @param {Node} xmlvalue node to parse
+	 * @return {Object} parsed values in associative array
+	 */
+	function parseLockNode(xmlvalue) {
+		return {
+			lockscope: getChildNodeLocalName(xmlvalue.getElementsByTagNameNS(NS_DAV, 'lockscope')[0]),
+			locktype: getChildNodeLocalName(xmlvalue.getElementsByTagNameNS(NS_DAV, 'locktype')[0]),
+			lockroot: getHrefNodeContents(xmlvalue.getElementsByTagNameNS(NS_DAV, 'lockroot')[0]),
+			// string, as it can also be "infinite"
+			depth: xmlvalue.getElementsByTagNameNS(NS_DAV, 'depth')[0].textContent,
+			timeout: xmlvalue.getElementsByTagNameNS(NS_DAV, 'timeout')[0].textContent,
+			locktoken: getHrefNodeContents(xmlvalue.getElementsByTagNameNS(NS_DAV, 'locktoken')[0]),
+			owner: xmlvalue.getElementsByTagNameNS(NS_DAV, 'owner')[0].textContent
+		};
+	}
+
+	function getHrefNodeContents(node) {
+		var nodes = node.getElementsByTagNameNS(NS_DAV, 'href');
+		if (!nodes.length) {
+			return null;
+		}
+		return nodes[0].textContent;
+	}
+
+	/**
+	 * Filter out text nodes from a list of XML nodes
+	 *
+	 * @param {Array.<Node>} nodes nodes to filter
+	 * @return {Array.<Node>} filtered array of nodes
+	 */
+	function getChildNodeLocalName(node) {
+		for (var i = 0; i < node.childNodes.length; i++) {
+			// skip pure text nodes
+			if (node.childNodes[i].nodeType === 1) {
+				return node.childNodes[i].localName;
+			}
+		}
+		return null;
+	}
 
 	OCA.Files = OCA.Files || {};
 
@@ -32,7 +76,7 @@
 			fileList._createRow = function(fileData) {
 				var $tr = oldCreateRow.apply(this, arguments);
 				if (fileData.activeLocks) {
-					$tr.attr('data-activeLocks', JSON.stringify(fileData.activeLocks));
+					$tr.attr('data-activelocks', JSON.stringify(fileData.activeLocks));
 				}
 				return $tr;
 			};
@@ -63,17 +107,9 @@
 				var activeLocks = props['{DAV:}lockdiscovery'];
 				if (!_.isUndefined(activeLocks) && activeLocks !== '') {
 					data.activeLocks = _.chain(activeLocks).filter(function(xmlvalue) {
-						return (xmlvalue.namespaceURI === OC.Files.Client.NS_DAV && xmlvalue.nodeName.split(':')[1] === 'activelock');
+						return (xmlvalue.namespaceURI === NS_DAV && xmlvalue.nodeName.split(':')[1] === 'activelock');
 					}).map(function(xmlvalue) {
-						return {
-							lockscope: xmlvalue.getElementsByTagName('d:lockscope')[0].children[0].localName,
-							locktype: xmlvalue.getElementsByTagName('d:locktype')[0].children[0].localName,
-							lockroot: xmlvalue.getElementsByTagName('d:lockroot')[0].children[0].innerHTML,
-							depth: parseInt(xmlvalue.getElementsByTagName('d:depth')[0].innerHTML, 10),
-							timeout: xmlvalue.getElementsByTagName('d:timeout')[0].innerHTML,
-							locktoken: xmlvalue.getElementsByTagName('d:locktoken')[0].children[0].innerHTML,
-							owner: xmlvalue.getElementsByTagName('d:owner')[0].innerHTML
-						};
+						return parseLockNode(xmlvalue);
 					}).value();
 
 				}
@@ -98,7 +134,7 @@
 				render: function(actionSpec, isDefault, context) {
 					var $file = context.$file;
 					var isLocked = $file.data('activelocks');
-					if (isLocked) {
+					if (isLocked && isLocked.length > 0) {
 						var $actionLink = $(self.renderLink());
 						context.$file.find('a.name>span.fileactions').append($actionLink);
 						return $actionLink;

@@ -11,18 +11,35 @@
 (function () {
 	var TEMPLATE =
 		'<ul class="locks"></ul>' +
-		'<div class="clear-float mainFileInfoView"></div>' +
+		'<div class="clear-float"></div>' +
 		'{{#each locks}}' +
-		'<div>' +
-		'<div style="display: inline;">{{owner}} has locked this resource via {{lockroot}}</div>' +
+		'<div class="lock-entry" data-index="{{index}}">' +
+		'<div style="display: inline;">{{displayText}}</div>' +
 		// TODO: no inline css
 		'<a href="#" class="unlock" style="float: right" title="{{unlockLabel}}">' +
-		'<span class="icon icon-lock-open" data-lock-token="{{locktoken}}" data-lock-root="{{lockroot}}" style="display: block" /></a>' +
+		'<span class="icon icon-lock-open" style="display: block" /></a>' +
 		'</div>' +
 		'{{else}}' +
 		'<div class="empty">{{emptyResultLabel}}</div>' +
 		'{{/each}}' +
 		'';
+
+	function formatLocks(locks) {
+		var client = OC.Files.getClient();
+
+		return _.map(locks, function(lock, index) {
+			var path = client.getRelativePath(lock.lockroot) || lock.lockroot;
+
+			// TODO: what if user in root doesn't match ?
+
+			return {
+				index: index,
+				displayText: t('files', '{owner} has locked this resource via {path}', {owner: lock.owner, path: path}),
+				locktoken: lock.locktoken,
+				lockroot: lock.lockroot
+			};
+		});
+	}
 
 	/**
 	 * @memberof OCA.Files
@@ -38,24 +55,28 @@
 
 			_onClickUnlock: function (event) {
 				var self = this;
-				var lockToken = event.target.getAttribute('data-lock-token');
-				var lockUrl = event.target.getAttribute('data-lock-root');
+				var $target = $(event.target).closest('.lock-entry');
+				var lockIndex = parseInt($target.attr('data-index'), 10);
 
+				var currentLock = this.model.get('activeLocks')[lockIndex];
+
+				// FIXME: move to FileInfoModel
 				this.model._filesClient.getClient().request('UNLOCK',
-					lockUrl,
+					currentLock.lockroot,
 					{
-						'Lock-Token': lockToken
+						'Lock-Token': currentLock.locktoken
 					}).then(function (result) {
 						if (result.status === 204) {
-							var locks = self.model.get('activeLocks');
-							locks = locks.filter(function(item) {
-								return item.locktoken !== lockToken;
-							});
+							// implicit clone of array else backbone doesn't fire change event
+							var locks = _.without(self.model.get('activeLocks') || [], currentLock);
 							self.model.set('activeLocks', locks);
 							self.render();
+						}
+						else if (result.status === 403) {
+							OC.Notification.show(t('files', 'Could not unlock, please contact the lock owner {owner}', {owner: currentLock.owner}));
 						} else {
 							// TODO: add more information
-							OC.Notification.show('Unlock failed with status: ' + result.status);
+							OC.Notification.show(t('files', 'Unlock failed with status {status}', {status: result.status}));
 						}
 				});
 			},
@@ -76,11 +97,25 @@
 			 * Renders this details view
 			 */
 			render: function () {
+				if (!this.model) {
+					return;
+				}
 				this.$el.html(this.template({
 					emptyResultLabel: t('files', 'Resource is not locked'),
-					locks: this.model.get('activeLocks'),
-					model: this.model
+					locks: formatLocks(this.model.get('activeLocks'))
 				}));
+			},
+
+			/**
+			 * Returns whether the current tab is able to display
+			 * the given file info, for example based on mime type.
+			 *
+			 * @param {OCA.Files.FileInfoModel} fileInfo file info model
+			 * @return {bool} whether to display this tab
+			 */
+			canDisplay: function(fileInfo) {
+				// don't display if no lock is set
+				return fileInfo && fileInfo.get('activeLocks') && fileInfo.get('activeLocks').length > 0;
 			}
 		});
 
