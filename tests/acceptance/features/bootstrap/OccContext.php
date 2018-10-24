@@ -453,6 +453,94 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator sets the log level to :level using the occ command
+	 *
+	 * @param string $level
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsLogLevelUsingTheOccCommand($level) {
+		$this->featureContext->invokingTheCommand(
+			"log:manage --level $level"
+		);
+	}
+	
+	/**
+	 * @When the administrator sets the timezone to :timezone using the occ command
+	 *
+	 * @param string $timezone
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsTimeZoneUsingTheOccCommand($timezone) {
+		$this->featureContext->invokingTheCommand(
+			"log:manage --timezone $timezone"
+		);
+	}
+	
+	/**
+	 * @When the administrator sets the backend to :backend using the occ command
+	 *
+	 * @param string $backend
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsBackendUsingTheOccCommand($backend) {
+		$this->featureContext->invokingTheCommand(
+			"log:manage --backend $backend"
+		);
+	}
+	
+	/**
+	 * @When the administrator enables the ownCloud backend using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorEnablesOwnCloudBackendUsingTheOccCommand() {
+		$this->featureContext->invokingTheCommand(
+			"log:owncloud --enable"
+		);
+	}
+	
+	/**
+	 * @When the administrator sets the log file path to :path using the occ command
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsLogFilePathUsingTheOccCommand($path) {
+		$this->featureContext->invokingTheCommand(
+			"log:owncloud --file $path"
+		);
+	}
+	
+	/**
+	 * @When the administrator sets the file size to :size for using the occ command
+	 *
+	 * @param string $size
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsLogFileSizeUsingTheOccCommand($size) {
+		$this->featureContext->invokingTheCommand(
+			"log:owncloud --rotate-size $size"
+		);
+	}
+
+	/**
+	 * @When the administrator changes the background jobs mode to :mode using the occ command
+	 * @Given the administrator has changed the background jobs mode to :mode
+	 *
+	 * @param string $mode
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasChangedTheBackgroundJobsModeTo($mode) {
+		$this->featureContext->invokingTheCommand("background:$mode");
+	}
+
+	/**
 	 * @Then the app name returned by the occ command should be :appName
 	 *
 	 * @param string $appName
@@ -599,79 +687,18 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator sets the log level to :level using the occ command
+	 * @Then the background jobs mode should be :mode
 	 *
-	 * @param string $level
-	 *
-	 * @return void
-	 */
-	public function theAdministratorSetsLogLevelUsingTheOccCommand($level) {
-		$this->featureContext->invokingTheCommand(
-			"log:manage --level $level"
-		);
-	}
-
-	/**
-	 * @When the administrator sets the timezone to :timezone using the occ command
-	 *
-	 * @param string $timezone
+	 * @param string $mode
 	 *
 	 * @return void
 	 */
-	public function theAdministratorSetsTimeZoneUsingTheOccCommand($timezone) {
+	public function theBackgroundJobsModeShouldBe($mode) {
 		$this->featureContext->invokingTheCommand(
-			"log:manage --timezone $timezone"
+			"config:app:get core backgroundjobs_mode"
 		);
-	}
-
-	/**
-	 * @When the administrator sets the backend to :backend using the occ command
-	 *
-	 * @param string $backend
-	 *
-	 * @return void
-	 */
-	public function theAdministratorSetsBackendUsingTheOccCommand($backend) {
-		$this->featureContext->invokingTheCommand(
-			"log:manage --backend $backend"
-		);
-	}
-
-	/**
-	 * @When the administrator enables the ownCloud backend using the occ command
-	 *
-	 * @return void
-	 */
-	public function theAdministratorEnablesOwnCloudBackendUsingTheOccCommand() {
-		$this->featureContext->invokingTheCommand(
-			"log:owncloud --enable"
-		);
-	}
-
-	/**
-	 * @When the administrator sets the log file path to :path using the occ command
-	 *
-	 * @param string $path
-	 *
-	 * @return void
-	 */
-	public function theAdministratorSetsLogFilePathUsingTheOccCommand($path) {
-		$this->featureContext->invokingTheCommand(
-			"log:owncloud --file $path"
-		);
-	}
-
-	/**
-	 * @When the administrator sets the file size to :size for using the occ command
-	 *
-	 * @param string $size
-	 *
-	 * @return void
-	 */
-	public function theAdministratorSetsLogFileSizeUsingTheOccCommand($size) {
-		$this->featureContext->invokingTheCommand(
-			"log:owncloud --rotate-size $size"
-		);
+		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
+		PHPUnit_Framework_Assert::assertEquals($mode, \trim($lastOutput));
 	}
 
 	/**
