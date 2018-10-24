@@ -71,7 +71,7 @@ class MetaVersionCollection extends AbstractFolder {
 	 */
 	public function getDirectoryListing() {
 		$view = new View();
-		$path = $view->getPath($this->fileId);
+		$path = $view->getPath($this->fileId, false);
 		/** @var Storage $storage */
 		list($storage, $internalPath) = $view->resolvePath($path);
 		if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
