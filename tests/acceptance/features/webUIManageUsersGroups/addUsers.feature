@@ -139,3 +139,14 @@ Feature: add users
     And the user sets the password to "%regular%" using the webUI
     And the user logs in with username "guiusr1" and password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
+
+  Scenario: check if the sender email address is valid
+    When the administrator creates a user with the name "user1" and the email "guiusr1@owncloud" without a password using the webUI
+    And the administrator logs out of the webUI
+    And the user follows the password set link received by "guiusr1@owncloud" using the webUI
+    And the user sets the password to "%regular%" using the webUI
+    Then the email address "guiusr1@owncloud" should have received an email with the body containing
+      """
+      Password changed successfully
+      """
+    And the reset email to "guiusr1@owncloud" should be from "owncloud@foobar.com"

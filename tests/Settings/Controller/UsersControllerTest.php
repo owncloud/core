@@ -3180,6 +3180,8 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('getAppValue')
 			->willReturn(43200);
 
+		$fromMailAddress = $this->invokePrivate($usersController, 'fromMailAddress', []);
+
 		$message = $this->createMock(Message::class);
 		$message->expects($this->once())
 			->method('setTo')
@@ -3189,6 +3191,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->willReturn($message);
 		$message->expects($this->once())
 			->method('setFrom')
+			->with([$fromMailAddress => 'ownCloud'])
 			->willReturn($message);
 
 		$defaults->method('getName')
@@ -3204,6 +3207,8 @@ class UsersControllerTest extends \Test\TestCase {
 
 		$result = $usersController->setPassword('fooBaZ1', 'foo', '123');
 		$this->assertEquals(new Http\JSONResponse(['status' => 'success']), $result);
+		$this->assertNotEquals($fromMailAddress, 'foo@bar.com');
+		$this->assertEquals($fromMailAddress, 'no-reply@foo.com');
 	}
 
 	public function testSetPasswordSendMailFailed() {
