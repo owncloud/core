@@ -257,6 +257,15 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator retrieves the user report using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRetrievesTheUserReportUsingTheOccCommand() {
+		$this->featureContext->invokingTheCommand("user:report");
+	}
+
+	/**
 	 * @When the administrator sends a group creation request for group :group using the occ command
 	 *
 	 * @param string $group
@@ -542,6 +551,19 @@ class OccContext implements Context {
 			"has never logged in.",
 			$lastOutput
 		);
+	}
+
+	/**
+	 * @Then the total users returned by the commmand should be :noOfUsers
+	 *
+	 * @param integer $noOfUsers
+	 *
+	 * @return void
+	 */
+	public function theTotalUsersReturnedByTheCommmandShouldBe($noOfUsers) {
+		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
+		\preg_match("/\|\s+total users\s+\|\s+(\d+)\s+\|/", $lastOutput, $actualUsers);
+		PHPUnit_Framework_Assert::assertEquals($noOfUsers, $actualUsers[1]);
 	}
 
 	/**
