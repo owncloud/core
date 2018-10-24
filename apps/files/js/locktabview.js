@@ -76,6 +76,9 @@
 			 * Renders this details view
 			 */
 			render: function () {
+				if (!this.model) {
+					return;
+				}
 				this.$el.html(this.template({
 					emptyResultLabel: t('files', 'Resource is not locked'),
 					locks: this.model.get('activeLocks'),
