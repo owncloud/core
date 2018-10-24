@@ -539,7 +539,7 @@ class OccContext implements Context {
 	public function theCommandOutputOfUserLastSeenShouldBeNever() {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		PHPUnit_Framework_Assert::assertContains(
-			"has never logged in, yet.",
+			"has never logged in.",
 			$lastOutput
 		);
 	}
