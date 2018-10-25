@@ -145,6 +145,54 @@ Feature: checksums
     And user "user0" should not see the following elements
       | /myChunkedFile.txt |
 
+  Scenario: Upload new dav chunked file using async MOVE where checksum matches
+    Given using new DAV path
+    And the administrator has enabled async operations
+    When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
+    And user "user0" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" with checksum "SHA1:5d84d61b03fdacf813640f5242d309721e0629b1" using the WebDAV API
+    Then the HTTP status code should be "202"
+    And the following headers should match these regular expressions
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the oc job status values of last request for user "user0" should match these regular expressions
+      | status | /^finished$/      |
+      | fileId | /^[0-9a-z]{20,}$/ |
+    And the content of file "/myChunkedFile.txt" for user "user0" should be "BBBBBCCCCC"
+
+  Scenario: Upload new dav chunked file using async MOVE where checksum does not matches
+    Given using new DAV path
+    And the administrator has enabled async operations
+    When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
+    And user "user0" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" with checksum "SHA1:f005ba11" using the WebDAV API
+    Then the HTTP status code should be "202"
+    And the following headers should match these regular expressions
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the oc job status values of last request for user "user0" should match these regular expressions
+      | status       | /^error$/ |
+      | errorCode    | /^400$/   |
+      | errorMessage | /^The computed checksum does not match the one received from the client.$/ |
+    And user "user0" should not see the following elements
+      | /myChunkedFile.txt |
+
+  Scenario: Upload new dav chunked file using async MOVE where checksum does not matches - retry with correct checksum
+    Given using new DAV path
+    And the administrator has enabled async operations
+    When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
+    And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
+    And user "user0" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" with checksum "SHA1:f005ba11" using the WebDAV API
+    And user "user0" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" with checksum "SHA1:5d84d61b03fdacf813640f5242d309721e0629b1" using the WebDAV API
+    Then the HTTP status code should be "202"
+    And the following headers should match these regular expressions
+      | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
+    And the oc job status values of last request for user "user0" should match these regular expressions
+      | status | /^finished$/      |
+      | fileId | /^[0-9a-z]{20,}$/ |
+    And the content of file "/myChunkedFile.txt" for user "user0" should be "BBBBBCCCCC"
+
   @skipOnStorage:ceph @files_primary_s3-issue-128
   Scenario Outline: Upload a file where checksum does not match
     Given using <dav_version> DAV path

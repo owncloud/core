@@ -513,6 +513,21 @@ trait BasicStructure {
 	}
 
 	/**
+	 * returns the base URL without any sub-path e.g. http://localhost:8080
+	 * of the base URL http://localhost:8080/owncloud
+	 *
+	 * @return string
+	 */
+	public function getBaseUrlWithoutPath() {
+		$parts = \parse_url($this->getBaseUrl());
+		$url = $parts ["scheme"] . "://" . $parts["host"];
+		if (isset($parts["port"])) {
+			$url = "$url:" . $parts["port"];
+		}
+		return $url;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getOcsApiVersion() {
@@ -1816,7 +1831,15 @@ trait BasicStructure {
 					"getLocalBaseUrlWithoutScheme"
 				],
 				"parameter" => []
-			]
+			],
+			[
+				"code" => "%base_path%",
+				"function" => [
+					$this,
+					"getBasePath"
+				],
+				"parameter" => []
+			],
 		];
 
 		foreach ($substitutions as $substitution) {
