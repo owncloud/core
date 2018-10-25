@@ -88,9 +88,10 @@
   version "3.5.4"
   resolved "https://codeload.github.com/ivaynberg/select2/tar.gz/95a977f674b6938af55ec5f28b7772df93786c5c"
 
-"@bower_components/showdown@showdownjs/showdown#1.8.5":
-  version "1.8.5"
-  resolved "https://codeload.github.com/showdownjs/showdown/tar.gz/187123fed5e3b2ca3350087b22e8066439c82ca3"
+"@bower_components/showdown@showdownjs/showdown#1.8.7":
+  version "1.8.7"
+  uid e6aeb61dde3720adb1e04f9383423a792e7363b6
+  resolved "https://codeload.github.com/showdownjs/showdown/tar.gz/e6aeb61dde3720adb1e04f9383423a792e7363b6"
   dependencies:
     yargs "^10.0.3"
 
