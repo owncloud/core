@@ -1699,6 +1699,66 @@ trait BasicStructure {
 	}
 
 	/**
+	 * send request to read a server file
+	 *
+	 * @param string $path
+	 *
+	 * @return string
+	 */
+	public function readFileInServerRoot($path) {
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'GET',
+			"/apps/testing/api/v1/file?file={$path}"
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @Then the file :path with content :content should exist in the server root
+	 *
+	 * @param string $path
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theFileWithContentShouldExistInTheServerRoot($path, $content) {
+		$this->readFileInServerRoot($path);
+		PHPUnit_Framework_Assert::assertSame(
+			200,
+			$this->getResponse()->getStatusCode(),
+			"Failed to read the file {$path}"
+		);
+
+		$fileContent = HttpRequestHelper::getResponseXml($this->getResponse());
+		$fileContent = (string)$fileContent->data->element->data;
+
+		PHPUnit_Framework_Assert::assertSame(
+			$content,
+			$fileContent,
+			"The content of the file does not match with '{$content}'"
+		);
+	}
+
+	/**
+	 * @Then the file :path should not exist in the server root
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theFileShouldNotExistInTheServerRoot($path) {
+		$this->readFileInServerRoot($path);
+		PHPUnit_Framework_Assert::assertSame(
+			404,
+			$this->getResponse()->getStatusCode(),
+			"The file '{$path}' exists in the server root"
+		);
+	}
+
+	/**
 	 * @param ResponseInterface|null $response
 	 *
 	 * @return array
