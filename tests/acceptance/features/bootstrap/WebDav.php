@@ -533,7 +533,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^the public downloads the last public shared file with range "([^"]*)" using the old WebDAV API$/
+	 * @When /^the public downloads the last public shared file with range "([^"]*)" using the public WebDAV API$/
 	 *
 	 * @param string $range
 	 *
@@ -550,7 +550,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with range "([^"]*)" using the old WebDAV API$/
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with range "([^"]*)" using the public WebDAV API$/
 	 *
 	 * @param string $path
 	 * @param string $range
@@ -569,7 +569,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with password "([^"]*)" with range "([^"]*)" using the old WebDAV API$/
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with password "([^"]*)" with range "([^"]*)" using the public WebDAV API$/
 	 *
 	 * @param string $path
 	 * @param string $password
