@@ -90,7 +90,6 @@
 
 "@bower_components/showdown@showdownjs/showdown#1.8.7":
   version "1.8.7"
-  uid e6aeb61dde3720adb1e04f9383423a792e7363b6
   resolved "https://codeload.github.com/showdownjs/showdown/tar.gz/e6aeb61dde3720adb1e04f9383423a792e7363b6"
   dependencies:
     yargs "^10.0.3"
@@ -105,7 +104,6 @@
 
 "@bower_components/underscore@jashkenas/underscore#1.9.1":
   version "1.9.1"
-  uid ae037f7c41323807ae6f1533c45512e6d31a1574
   resolved "https://codeload.github.com/jashkenas/underscore/tar.gz/ae037f7c41323807ae6f1533c45512e6d31a1574"
 
 "@bower_components/zxcvbn@dropbox/zxcvbn#4.4.2":
@@ -1862,10 +1860,10 @@ karma-phantomjs-launcher@*:
     lodash "^4.0.1"
     phantomjs-prebuilt "^2.1.7"
 
-karma@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/karma/-/karma-3.0.0.tgz#6da83461a8a28d8224575c3b5b874e271b4730c3"
-  integrity sha512-ZTjyuDXVXhXsvJ1E4CnZzbCjSxD6sEdzEsFYogLuZM0yqvg/mgz+O+R1jb0J7uAQeuzdY8kJgx6hSNXLwFuHIQ==
+karma@^3.1.0:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/karma/-/karma-3.1.1.tgz#94c8edd20fb9597ccde343326da009737fb0423a"
+  integrity sha512-NetT3wPCQMNB36uiL9LLyhrOt8SQwrEKt0xD3+KpTCfm0VxVyUJdPL5oTq2Ic5ouemgL/Iz4wqXEbF3zea9kQQ==
   dependencies:
     bluebird "^3.3.0"
     body-parser "^1.16.1"
