@@ -1,6 +1,8 @@
 OC.L10N.register(
     "settings",
     {
+    "Wrong current password" : "Password corrente errata",
+    "The new password cannot be the same as the previous one" : "La nuova password non può essere identica alla precedente",
     "%s password changed successfully" : "Password di %s modificata correttamente",
     "Couldn't send reset email. Please contact your administrator." : "Impossibile inviare l'email di reimpostazione. Contatta il tuo amministratore.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "Installare o aggiornare apps via market o Federated Cloud Sharing",
@@ -259,6 +261,7 @@ OC.L10N.register(
     "You've linked these apps." : "Hai collegato queste applicazioni.",
     "Name" : "Nome",
     "App name" : "Nome applicazione",
+    "Create new app passcode" : "Crea un nuovo app passcode",
     "Use the credentials below to configure your app or device." : "Usa le credenziali seguenti per configurare l'applicazione o il dispositivo.",
     "Username" : "Nome utente",
     "Done" : "Completato",
