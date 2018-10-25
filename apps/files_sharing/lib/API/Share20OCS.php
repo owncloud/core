@@ -179,12 +179,10 @@ class Share20OCS {
 			$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
 		}
 
-		$nodes = $userFolder->getById($share->getNodeId());
-
+		$nodes = $userFolder->getById($share->getNodeId(), true);
 		if (empty($nodes)) {
 			throw new NotFoundException();
 		}
-
 		$node = $nodes[0];
 
 		$result['path'] = $userFolder->getRelativePath($node->getPath());
