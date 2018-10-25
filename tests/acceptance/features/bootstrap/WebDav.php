@@ -300,6 +300,7 @@ trait WebDav {
 	 * @param string $enabledOrDisabled
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function triggerAsyncUpload($enabledOrDisabled) {
 		$switch = ($enabledOrDisabled !== "disabled");
@@ -343,6 +344,7 @@ trait WebDav {
 	 * @param string $method
 	 * @param int $seconds
 	 *
+	 * @throws Exception
 	 * @return void
 	 */
 	public function slowdownDavRequests($method, $seconds) {
