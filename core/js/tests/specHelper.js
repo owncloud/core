@@ -127,7 +127,7 @@ window.isPhantom = /phantom/i.test(navigator.userAgent);
 		/**
 		 * Returns the image URL set on the given element
 		 * @param $el element
-		 * @return {String} image URL
+		 * @return {String} absolute image URL
 		 */
 		getImageUrl: function($el) {
 			// might be slightly different cross-browser
@@ -136,7 +136,13 @@ window.isPhantom = /phantom/i.test(navigator.userAgent);
 			if (!r) {
 				return url;
 			}
-			return r[1];
+			url = r[1];
+
+			// some browsers return this as relative URL, others as absolute
+			if (!url.startsWith(OC.getProtocol() + '://')) {
+				return this.buildAbsoluteUrl(url);
+			}
+			return url;
 		},
 		buildAbsoluteUrl: function(relativeUrl) {
 			return window.location.protocol + '//' + window.location.host + relativeUrl;

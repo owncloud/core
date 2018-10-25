@@ -100,7 +100,7 @@ describe('OC.Share tests', function() {
 		describe('displaying the folder icon', function() {
 			function checkIcon(expectedImage) {
 				var imageUrl = OC.TestUtil.getImageUrl($file.find('.filename .thumbnail'));
-				expectedIcon = OC.TestUtil.buildAbsoluteUrl(OC.imagePath('core', expectedImage));
+				var expectedIcon = OC.TestUtil.buildAbsoluteUrl(OC.imagePath('core', expectedImage));
 				expect(imageUrl).toEqual(expectedIcon);
 			}
 
