@@ -112,7 +112,7 @@ class AbstractFolder extends AbstractNode implements \OCP\Files\Folder {
 	/**
 	 * @inheritdoc
 	 */
-	public function getById($id) {
+	public function getById($id, $first = false) {
 		throw new NotPermittedException();
 	}
 

@@ -166,13 +166,11 @@ class Share20OcsController extends OCSController {
 			$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
 		}
 
-		$nodes = $userFolder->getById($share->getNodeId());
-
-		if (empty($nodes)) {
+		$nodes = $userFolder->getById($share->getNodeId(), true);
+		$node = $nodes[0] ?? null;
+		if ($node === null) {
 			throw new NotFoundException();
 		}
-
-		$node = $nodes[0];
 
 		$result['path'] = $userFolder->getRelativePath($node->getPath());
 		if ($node instanceof \OCP\Files\Folder) {
@@ -912,8 +910,8 @@ class Share20OcsController extends OCSController {
 		);
 
 		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
-		$nodes = $userFolder->getById($itemSource);
-		$node = $nodes[0];
+		$nodes = $userFolder->getById($itemSource, true);
+		$node = $nodes[0] ?? null;
 		$result = $mailNotification->sendInternalShareMail($node, $shareType, $recipientList);
 
 		// if we were able to send to at least one recipient, mark as sent
@@ -950,8 +948,8 @@ class Share20OcsController extends OCSController {
 	 */
 	public function notifyRecipientsDisabled($itemSource, $shareType, $recipient) {
 		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
-		$nodes = $userFolder->getById($itemSource);
-		$node = $nodes[0];
+		$nodes = $userFolder->getById($itemSource, true);
+		$node = $nodes[0] ?? null;
 
 		$items = $this->shareManager->getSharedWith($recipient, $shareType, $node);
 		if (\count($items) > 0) {

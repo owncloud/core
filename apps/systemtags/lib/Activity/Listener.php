@@ -159,10 +159,9 @@ class Listener {
 		foreach ($mounts as $mount) {
 			$owner = $mount->getUser()->getUID();
 			$ownerFolder = $this->rootFolder->getUserFolder($owner);
-			$nodes = $ownerFolder->getById($event->getObjectId());
-			if (!empty($nodes)) {
-				/** @var Node $node */
-				$node = \array_shift($nodes);
+			$nodes = $ownerFolder->getById($event->getObjectId(), true);
+			$node = $nodes[0] ?? null;
+			if ($node) {
 				$path = $node->getPath();
 				if (\strpos($path, '/' . $owner . '/files/') === 0) {
 					$path = \substr($path, \strlen('/' . $owner . '/files'));

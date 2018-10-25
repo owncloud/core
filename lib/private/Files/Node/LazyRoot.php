@@ -417,7 +417,7 @@ class LazyRoot implements IRootFolder {
 	/**
 	 * @inheritDoc
 	 */
-	public function getById($id) {
+	public function getById($id, $first = false) {
 		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
