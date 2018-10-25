@@ -11,7 +11,7 @@ Feature: get user report
       | brand-new-user-2 |
     When the administrator retrieves the user report using the occ command
     Then the command should have been successful
-    And the total users returned by the commmand should be 3
+    And the total users returned by the command should be 3
 
   Scenario: admin gets the user report when the user is disabled
     Given these users have been created but not initialized:
@@ -21,7 +21,7 @@ Feature: get user report
     And user "brand-new-user-2" has been disabled
     When the administrator retrieves the user report using the occ command
     Then the command should have been successful
-    And the total users returned by the commmand should be 3
+    And the total users returned by the command should be 3
 
   Scenario: admin gets the user report when the user created and deleted
     Given these users have been created but not initialized:
@@ -31,4 +31,4 @@ Feature: get user report
     And user "brand-new-user-2" has been deleted
     When the administrator retrieves the user report using the occ command
     Then the command should have been successful
-    And the total users returned by the commmand should be 2
+    And the total users returned by the command should be 2

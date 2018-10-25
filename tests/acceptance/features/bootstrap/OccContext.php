@@ -674,13 +674,13 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @Then the total users returned by the commmand should be :noOfUsers
+	 * @Then the total users returned by the command should be :noOfUsers
 	 *
 	 * @param integer $noOfUsers
 	 *
 	 * @return void
 	 */
-	public function theTotalUsersReturnedByTheCommmandShouldBe($noOfUsers) {
+	public function theTotalUsersReturnedByTheCommandShouldBe($noOfUsers) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		\preg_match("/\|\s+total users\s+\|\s+(\d+)\s+\|/", $lastOutput, $actualUsers);
 		PHPUnit_Framework_Assert::assertEquals($noOfUsers, $actualUsers[1]);
