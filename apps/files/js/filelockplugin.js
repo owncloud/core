@@ -12,7 +12,7 @@
 	var NS_DAV = OC.Files.Client.NS_DAV;
 
 	var TEMPLATE_LOCK_STATUS_ACTION =
-		'<a class="action action-comment permanent" title="{{message}}" href="#">' +
+		'<a class="action action-lock-status permanent" title="{{message}}" href="#">' +
 		'<span class="icon icon-lock-open" />' +
 		'</a>';
 

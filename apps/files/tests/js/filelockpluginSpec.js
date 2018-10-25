@@ -61,7 +61,7 @@ describe('OCA.Files.LockPlugin tests', function() {
 		currentUserStub.restore();
 	});
 
-	describe('Lock data attribute', function() {
+	describe('FileList extensions', function() {
 		it('sets active locks attribute', function() {
 			var $tr;
 			fileList.setFiles(testFiles);
@@ -84,20 +84,54 @@ describe('OCA.Files.LockPlugin tests', function() {
 			expect(data.activeLocks).toEqual([]);
 		});
 	});
-	describe('parsing lock info from response XML', function() {
+	describe('lock status file action', function() {
+		it('renders file action if lock exists', function() {
+			fileList.setFiles(testFiles);
+			var $tr = fileList.findFileEl('One.txt');
+			expect($tr.find('.action.action-lock-status').length).toEqual(1);
+		});
+		it('does not file action if no lock exists', function() {
+			delete testFiles[0].activeLocks;
+			fileList.setFiles(testFiles);
+			var $tr = fileList.findFileEl('One.txt');
+			expect($tr.find('.action.action-lock-status').length).toEqual(0);
+		});
+		it('opens locks sidebar tab on click', function() {
+			var showDetailsViewStub = sinon.stub(OCA.Files.FileList.prototype, 'showDetailsView');
+			fileList.setFiles(testFiles);
+			var $tr = fileList.findFileEl('One.txt');
+			$tr.find('.action.action-lock-status').click();
+			expect(showDetailsViewStub.calledOnce).toEqual(true);
+			expect(showDetailsViewStub.getCall(0).args[0]).toEqual('One.txt');
+			expect(showDetailsViewStub.getCall(0).args[1]).toEqual('lockTabView');
+			showDetailsViewStub.restore();
+		});
+	});
+	describe('tab view', function() {
+		it('registers lock tab view', function() {
+			var registerTabViewStub = sinon.stub(OCA.Files.FileList.prototype, 'registerTabView');
+
+			fileList.destroy();
+			fileList = new OCA.Files.FileList($('#content'));
+			OCA.Files.LockPlugin.attach(fileList);
+
+			expect(registerTabViewStub.calledOnce).toEqual(true);
+			expect(registerTabViewStub.getCall(0).args[0].id).toEqual('lockTabView');
+
+			registerTabViewStub.restore();
+		});
+	});
+	describe('Webdav requests', function() {
 		var requestDeferred;
 		var requestStub;
 		beforeEach(function() {
 			requestDeferred = new $.Deferred();
-			requestStub = sinon.stub(dav.Client.prototype, 'request').returns(requestDeferred.promise());
+			requestStub = sinon.stub(dav.Client.prototype, 'propFind').returns(requestDeferred.promise());
 		});
 		afterEach(function() { 
 			requestStub.restore(); 
 		});
 		
-		it('sends lock property in PROPFIND', function() {
-			expect('TODO').toEqual(true);
-		});
 		it('parses lock information from response XML to JSON', function(done) {
 			var xml =
 				'<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns">' +
@@ -154,6 +188,13 @@ describe('OCA.Files.LockPlugin tests', function() {
 				expect(data.activeLocks[0]).toEqual(testLockData);
 				done();
 			});
+		});
+
+		it('sends lockdiscovery in PROPFIND request', function() {
+			fileList.reload();
+
+			expect(requestStub.calledOnce).toEqual(true);
+			expect(requestStub.getCall(0).args[1]).toContain('{DAV:}lockdiscovery');
 		});
 	});
 });
