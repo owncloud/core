@@ -11,18 +11,30 @@
 (function () {
 	var TEMPLATE =
 		'<ul class="locks"></ul>' +
-		'<div class="clear-float mainFileInfoView"></div>' +
+		'<div class="clear-float"></div>' +
 		'{{#each locks}}' +
-		'<div>' +
-		'<div style="display: inline;">{{owner}} has locked this resource via {{lockroot}}</div>' +
+		'<div class="lock-entry" data-index="{{index}}">' +
+		'<div style="display: inline;">{{displayText}}</div>' +
 		// TODO: no inline css
 		'<a href="#" class="unlock" style="float: right" title="{{unlockLabel}}">' +
-		'<span class="icon icon-lock-open" data-lock-token="{{locktoken}}" data-lock-root="{{lockroot}}" style="display: block" /></a>' +
+		'<span class="icon icon-lock-open" style="display: block" /></a>' +
 		'</div>' +
 		'{{else}}' +
 		'<div class="empty">{{emptyResultLabel}}</div>' +
 		'{{/each}}' +
 		'';
+
+	function formatLocks(locks) {
+		return _.map(locks, function(lock, index) {
+			return {
+				index: index,
+				displayText: t('files', '{owner} has locked this resource via {root}', {owner: lock.owner, root: lock.lockroot}),
+				unlockLabel: t('files', 'Unlock'),
+				locktoken: lock.locktoken,
+				lockroot: lock.lockroot
+			};
+		});
+	}
 
 	/**
 	 * @memberof OCA.Files
@@ -38,19 +50,20 @@
 
 			_onClickUnlock: function (event) {
 				var self = this;
-				var lockToken = event.target.getAttribute('data-lock-token');
-				var lockUrl = event.target.getAttribute('data-lock-root');
+				var $target = $(event.target).closest('.lock-entry');
+				var lockIndex = parseInt($target.attr('data-index'), 10);
 
+				var currentLock = this.model.get('activeLocks')[lockIndex];
+
+				// FIXME: move to FileInfoModel
 				this.model._filesClient.getClient().request('UNLOCK',
-					lockUrl,
+					currentLock.lockroot,
 					{
-						'Lock-Token': lockToken
+						'Lock-Token': currentLock.locktoken
 					}).then(function (result) {
 						if (result.status === 204) {
 							var locks = self.model.get('activeLocks');
-							locks = locks.filter(function(item) {
-								return item.locktoken !== lockToken;
-							});
+							locks.splice(lockIndex, 1);
 							self.model.set('activeLocks', locks);
 							self.render();
 						} else {
@@ -81,8 +94,7 @@
 				}
 				this.$el.html(this.template({
 					emptyResultLabel: t('files', 'Resource is not locked'),
-					locks: this.model.get('activeLocks'),
-					model: this.model
+					locks: formatLocks(this.model.get('activeLocks'))
 				}));
 			}
 		});
