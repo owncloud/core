@@ -37,7 +37,7 @@ describe('OCA.Files.LockPlugin tests', function() {
 			lockscope: 'exclusive',
 			locktype: 'write',
 			lockroot: '/owncloud/remote.php/dav/files/currentuser/basepath',
-			depth: 1,
+			depth: 'infinite',
 			timeout: '12345',
 			locktoken: 'tehtoken',
 			owner: 'lock owner'
@@ -117,12 +117,16 @@ describe('OCA.Files.LockPlugin tests', function() {
 				'				<oc:permissions>RDNVCK</oc:permissions>' +
 				'				<d:lockdiscovery>' +
 				'					<d:activelock>' +
-				'						<d:lockscope><d:exclusive/></d:lockscope>' +
-				'						<d:locktype><d:write/></d:locktype>' +
+				'						<d:lockscope>' +
+				'							<d:exclusive/>' +
+				'						</d:lockscope>' +
+				'						<d:locktype>' +
+				'							<d:write/>' +
+				'						</d:locktype>' +
 				'						<d:lockroot>' +
 				'							<d:href>/owncloud/remote.php/dav/files/currentuser/basepath</d:href>' +
 				'						</d:lockroot>' +
-				'						<d:depth>1</d:depth>' +
+				'						<d:depth>infinite</d:depth>' +
 				'						<d:timeout>12345</d:timeout>' +
 				'						<d:locktoken>' +
 				'							<d:href>tehtoken</d:href>' +
@@ -146,7 +150,8 @@ describe('OCA.Files.LockPlugin tests', function() {
 			promise.then(function(status, response) {
 				var $tr = fileList.findFileEl('One.txt');
 				var data = fileList.elementToFile($tr);
-				expect(data.activeLocks).toEqual([testLockData]);
+				expect(data.activeLocks.length).toEqual(1);
+				expect(data.activeLocks[0]).toEqual(testLockData);
 				done();
 			});
 		});
