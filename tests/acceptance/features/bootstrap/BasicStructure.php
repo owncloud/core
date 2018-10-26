@@ -1733,7 +1733,8 @@ trait BasicStructure {
 		);
 
 		$fileContent = HttpRequestHelper::getResponseXml($this->getResponse());
-		$fileContent = (string)$fileContent->data->element->data;
+		$fileContent = (string)$fileContent->data->element->contentUrlEncoded;
+		$fileContent = \urldecode($fileContent);
 
 		PHPUnit_Framework_Assert::assertSame(
 			$content,
