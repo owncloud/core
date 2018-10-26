@@ -12,7 +12,6 @@ OCC=${OC_PATH}occ
 BEHAT=${OC_PATH}lib/composer/bin/behat
 
 BEHAT_TAGS_OPTION_FOUND=false
-BEHAT_RERUN_TIMES=1
 
 # The following environment variables can be specified:
 #
@@ -240,6 +239,11 @@ ADMIN_AUTH="${ADMIN_USERNAME}:${ADMIN_PASSWORD}"
 
 export ADMIN_USERNAME
 export ADMIN_PASSWORD
+
+if [ -z "${BEHAT_RERUN_TIMES}" ]
+then
+	BEHAT_RERUN_TIMES=1
+fi
 
 function env_alt_home_enable {
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set testing enable_alt_user_backend --value yes"
