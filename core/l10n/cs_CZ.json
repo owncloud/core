@@ -13,6 +13,7 @@
     "%s password changed successfully" : "%s heslo bylo změněno vpořádku",
     "%s password reset" : "reset hesla %s",
     "Couldn't send reset email. Please contact your administrator." : "Nepodařilo se odeslat email pro změnu hesla. Kontaktujte svého správce systému.",
+    "Couldn't send mail to following recipient(s): %s " : "Email nemohl být odeslán těmto příjemcům: 1%s",
     "Preparing update" : "Příprava na aktualizaci",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Upozornění opravy:",
