@@ -158,6 +158,17 @@ default:
         - WebUIFilesContext:
         - WebUISharingContext:
 
+
+    webUIEncryptionUserKeysType:
+      paths:
+        - %paths.base%/../features/webUIEncryptionUserKeysType
+      contexts:
+        - WebUIAdminEncryptionSettingsContext:
+        - WebUIPersonalEncryptionSettingsContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - FeatureContext: *common_feature_context_params
+
     webUIFavorites:
       paths:
         - %paths.base%/../features/webUIFavorites

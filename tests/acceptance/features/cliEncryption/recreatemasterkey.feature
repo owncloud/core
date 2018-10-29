@@ -12,4 +12,3 @@ Feature: recreate-master-key
     When the administrator successfully recreates the encryption masterkey using the occ command
     And user "user0" uploads chunk file "1" of "1" with "AA" to "/somefile.txt" using the WebDAV API
     Then the downloaded content when downloading file "/somefile.txt" for user "user0" with range "bytes=0-3" should be "AA"
-

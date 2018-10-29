@@ -20,6 +20,7 @@
  */
 
 use TestHelpers\SetupHelper;
+use TestHelpers\HttpRequestHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -582,6 +583,101 @@ trait CommandLine {
 		$davPath = $this->getDavFilesPath($user);
 		$davPath = \rtrim($davPath, '/') . $this->lastTransferPath;
 		$this->usingDavPath($davPath);
+	}
+
+	/**
+	 * @Given encryption has been enabled
+	 *
+	 * @return void
+	 */
+	public function encryptionHasBeenEnabled() {
+		$this->runOcc(['encryption:enable']);
+	}
+
+	/**
+	 * @When the administrator sets the encryption type to :encryptionType using the occ command
+	 * @Given the administrator has set the encryption type to :encryptionType
+	 *
+	 * @param string $encryptionType
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorSetsEncryptionTypeToUsingTheOccCommand($encryptionType) {
+		$this->runOcc(
+			["encryption:select-encryption-type", $encryptionType, "-y"]
+		);
+	}
+
+	/**
+	 * @When the administrator encrypts all data using the occ command
+	 * @Given the administrator has encrypted all the data
+	 *
+	 * @return void
+	 */
+	public function theAdministratorEncryptsAllDataUsingTheOccCommand() {
+		$this->runOcc(["encryption:encrypt-all", "-n"]);
+	}
+
+	/**
+	 * @When the administrator decrypts user keys based encryption with recovery key :recoveryKey using the occ command
+	 *
+	 * @param string $recoveryKey
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDecryptsUserKeysBasedEncryptionWithKey($recoveryKey) {
+		$this->invokingTheCommandWithEnvVariable(
+			"encryption:decrypt-all -m recovery -c yes",
+			'OC_RECOVERY_PASSWORD',
+			$recoveryKey
+		);
+	}
+
+	/**
+	 * @Then the file :fileName of user :username should not be encrypted
+	 *
+	 * @param string $fileName
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theFileOfUserShouldNotBeEncrypted($fileName, $username) {
+		$fileName = \ltrim($fileName, "/");
+		$filePath = "data/$username/files/$fileName";
+		$this->readFileInServerRoot($filePath);
+		$response = $this->getResponse();
+		$parsedResponse = HttpRequestHelper::getResponseXml($response);
+		$encodedFileContent = (string)$parsedResponse->data->element->contentUrlEncoded;
+		$fileContent = \urldecode($encodedFileContent);
+		$this->userDownloadsTheFileUsingTheAPI($username, "/$fileName");
+		$fileContentServer = (string)$this->getResponse()->getBody();
+		PHPUnit_Framework_Assert::assertEquals(
+			\trim($fileContentServer),
+			$fileContent
+		);
+	}
+
+	/**
+	 * @Then the file :fileName of user :username should be encrypted
+	 *
+	 * @param string $fileName
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theFileOfUserShouldBeEncrypted($fileName, $username) {
+		$fileName = \ltrim($fileName, "/");
+		$filePath = "data/$username/files/$fileName";
+		$this->readFileInServerRoot($filePath);
+		$response = $this->getResponse();
+		$parsedResponse = HttpRequestHelper::getResponseXml($this->getResponse());
+		$encodedFileContent = (string)$parsedResponse->data->element->contentUrlEncoded;
+		$fileContent = \urldecode($encodedFileContent);
+		PHPUnit_Framework_Assert::assertStringStartsWith(
+			"HBEGIN:oc_encryption_module:OC_DEFAULT_MODULE:cipher:AES-256-CTR:signed:true",
+			$fileContent
+		);
 	}
 
 	/**
