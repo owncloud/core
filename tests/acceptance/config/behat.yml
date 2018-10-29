@@ -29,9 +29,9 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
 
-    apiEncryption:
+    cliEncryption:
       paths:
-        - %paths.base%/../features/apiEncryption
+        - %paths.base%/../features/cliEncryption
       contexts:
         - FeatureContext: *common_feature_context_params
 

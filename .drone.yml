@@ -1195,8 +1195,8 @@ matrix:
 
     # encryption tests
     - PHP_VERSION: 5.6
-      TEST_SUITE: api
-      BEHAT_SUITE: apiEncryption
+      TEST_SUITE: cli
+      BEHAT_SUITE: cliEncryption
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -1206,8 +1206,8 @@ matrix:
       ENCRYPTION_TYPE: masterkey
 
     - PHP_VERSION: 7.1
-      TEST_SUITE: api
-      BEHAT_SUITE: apiEncryption
+      TEST_SUITE: cli
+      BEHAT_SUITE: cliEncryption
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
