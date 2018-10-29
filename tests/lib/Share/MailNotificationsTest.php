@@ -392,7 +392,7 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	public function testSendInternalShareMail() {
-		$this->setupMailerMock('TestUser shared »&lt;welcome&gt;.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
+		$this->setupMailerMock('TestUser shared »<welcome>.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
 
 		/** @var MailNotifications | \PHPUnit_Framework_MockObject_MockObject $mailNotifications */
 		$mailNotifications = $this->getMockBuilder('OC\Share\MailNotifications')
@@ -441,7 +441,7 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	public function testSendInternalShareMailException() {
-		$this->setupMailerMock('TestUser shared »&lt;welcome&gt;.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
+		$this->setupMailerMock('TestUser shared »<welcome>.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
 
 		/** @var MailNotifications | \PHPUnit_Framework_MockObject_MockObject $mailNotifications */
 		$mailNotifications = $this->getMockBuilder('OC\Share\MailNotifications')
