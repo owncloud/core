@@ -578,8 +578,9 @@ trait WebDav {
 	public function publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
 		$path, $password, $range
 	) {
+		$path = \ltrim($path, "/");
 		$password = $this->getActualPassword($password);
-		$fullUrl = $this->getBaseUrl() . "/public.php/webdav$path";
+		$fullUrl = $this->getBaseUrl() . "/public.php/webdav/$path";
 		$headers = [
 			'X-Requested-With' => 'XMLHttpRequest',
 			'Range' => $range
@@ -1843,6 +1844,34 @@ trait WebDav {
 				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
 			);
 		}
+	}
+
+	/**
+	 * @Then user :user should be able to upload file :source to :destination
+	 *
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userShouldBeAbleToUploadFileTo($user, $source, $destination) {
+		$this->userUploadsAFileTo($user, $source, $destination);
+		$this->asTheFileOrFolderShouldExist($user, null, $destination);
+	}
+
+	/**
+	 * @Then user :user should not be able to upload file :source to :destination
+	 *
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function theUserShouldNotBeAbleToUploadFileTo($user, $source, $destination) {
+		$this->userUploadsAFileTo($user, $source, $destination);
+		$this->asTheFileOrFolderShouldNotExist($user, null, $destination);
 	}
 
 	/**
