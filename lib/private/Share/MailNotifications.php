@@ -176,10 +176,11 @@ class MailNotifications {
 				'file' => $filename,
 			]);
 
+			$unescapedFilename = $filename;
 			$filename = $filter->getFile();
 			$link = $filter->getLink();
 
-			$subject = (string) $this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
+			$subject = (string) $this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $unescapedFilename]);
 			list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, null, 'internal');
 
 			// send it out now
