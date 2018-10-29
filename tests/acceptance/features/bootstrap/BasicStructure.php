@@ -626,6 +626,8 @@ trait BasicStructure {
 	 */
 	public function setResponse($response) {
 		$this->response = $response;
+		//after a new response reset the response xml
+		$this->responseXml = [];
 	}
 
 	/**
