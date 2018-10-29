@@ -551,6 +551,23 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then publicly uploading a file should work
+	 *
+	 * @return void
+	 */
+	public function publiclyUploadingShouldWork() {
+		$path = 'whateverfilefortesting.txt';
+		$content = 'test';
+		$this->publicUploadContent($path, '', $content);
+
+		PHPUnit_Framework_Assert::assertTrue(
+			($this->response->getStatusCode() == 201),
+			"upload should have passed but failed with code " . $this->response->getStatusCode()
+		);
+		$this->shouldBeAbleToDownloadFileInsidePublicSharedFolder("bytes=0-3", $path, $content);
+	}
+
+	/**
 	 * @param string $filename
 	 * @param string $password
 	 * @param string $body
