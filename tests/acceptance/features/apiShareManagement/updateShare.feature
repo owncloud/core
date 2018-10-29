@@ -391,7 +391,6 @@ Feature: sharing
     And group "grp1" has been created
     And user "user2" has been added to group "grp1"
     And user "user1" has been added to group "grp1"
-    And user "user2" has been made a subadmin of group "grp1"
     And as user "user2"
     And the user has shared folder "/FOLDER" with group "grp1"
     And the user has updated the last share with
