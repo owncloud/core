@@ -160,6 +160,7 @@ Feature: checksums
       | fileId | /^[0-9a-z]{20,}$/ |
     And the content of file "/myChunkedFile.txt" for user "user0" should be "BBBBBCCCCC"
 
+  @skipOnStorage:ceph @files_primary_s3-issue-128
   Scenario: Upload new dav chunked file using async MOVE where checksum does not matches
     Given using new DAV path
     And the administrator has enabled async operations
