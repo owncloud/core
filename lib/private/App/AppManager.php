@@ -91,6 +91,8 @@ class AppManager implements IAppManager {
 	 * @var string[][]
 	 */
 	private $appDirs = [];
+	/** @var Platform */
+	private $platform;
 
 	/**
 	 * @param IUserSession $userSession
@@ -99,6 +101,7 @@ class AppManager implements IAppManager {
 	 * @param ICacheFactory $memCacheFactory
 	 * @param EventDispatcherInterface $dispatcher
 	 * @param IConfig $config
+	 * @param Platform $platform
 	 */
 	public function __construct(
 		IUserSession $userSession = null,
@@ -106,7 +109,8 @@ class AppManager implements IAppManager {
 		IGroupManager $groupManager = null,
 		ICacheFactory $memCacheFactory,
 		EventDispatcherInterface $dispatcher,
-		IConfig $config
+		IConfig $config,
+		Platform $platform
 	) {
 		$this->userSession = $userSession;
 		$this->appConfig = $appConfig;
@@ -114,6 +118,7 @@ class AppManager implements IAppManager {
 		$this->memCacheFactory = $memCacheFactory;
 		$this->dispatcher = $dispatcher;
 		$this->config = $config;
+		$this->platform = $platform;
 
 		// TODO we have no public API for this
 		if (\method_exists($this->memCacheFactory, 'createLocal')) {
@@ -360,12 +365,11 @@ class AppManager implements IAppManager {
 	/**
 	 * Returns a list of apps that need upgrade
 	 *
-	 * @param array $ocVersion ownCloud version as array of version components
 	 * @return array list of app info from apps that need an upgrade
 	 *
 	 * @internal
 	 */
-	public function getAppsNeedingUpgrade($ocVersion) {
+	public function getAppsNeedingUpgrade() {
 		$appsToUpgrade = [];
 		$apps = $this->getInstalledApps();
 		foreach ($apps as $appId) {
@@ -374,7 +378,7 @@ class AppManager implements IAppManager {
 			if ($appDbVersion
 				&& isset($appInfo['version'])
 				&& \version_compare($appInfo['version'], $appDbVersion, '>')
-				&& \OC_App::isAppCompatible($ocVersion, $appInfo)
+				&& \OC_App::isAppCompatible($this->platform, $appInfo)
 			) {
 				$appsToUpgrade[] = $appInfo;
 			}
@@ -519,27 +523,6 @@ class AppManager implements IAppManager {
 		$this->appInfo->set($file, $data, 86400);
 
 		return $info;
-	}
-
-	/**
-	 * Returns a list of apps incompatible with the given version
-	 *
-	 * @param array $version ownCloud version as array of version components
-	 *
-	 * @return array list of app info from incompatible apps
-	 *
-	 * @internal
-	 */
-	public function getIncompatibleApps($version) {
-		$apps = $this->getInstalledApps();
-		$incompatibleApps = [];
-		foreach ($apps as $appId) {
-			$info = $this->getAppInfo($appId);
-			if (!\OC_App::isAppCompatible($version, $info)) {
-				$incompatibleApps[] = $info;
-			}
-		}
-		return $incompatibleApps;
 	}
 
 	/**

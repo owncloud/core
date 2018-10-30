@@ -8,6 +8,7 @@
  */
 
 namespace Test;
+use OC\App\Platform;
 use OCP\IAppConfig;
 use Test\Traits\UserTrait;
 
@@ -272,20 +273,10 @@ class AppTest extends \Test\TestCase {
 	 * @dataProvider appVersionsProvider
 	 */
 	public function testIsAppCompatible($ocVersion, $appInfo, $expectedResult) {
-		$this->assertEquals($expectedResult, \OC_App::isAppCompatible($ocVersion, $appInfo));
-	}
-
-	/**
-	 * Test that the isAppCompatible method also supports passing an array
-	 * as $ocVersion
-	 */
-	public function testIsAppCompatibleWithArray() {
-		$ocVersion = [6];
-		$appInfo = [
-			'requiremin' => '6',
-			'requiremax' => '6',
-		];
-		$this->assertTrue(\OC_App::isAppCompatible($ocVersion, $appInfo));
+		$platform = $this->createMock(Platform::class);
+		$platform->method('getOcChannel')->willReturn('production');
+		$platform->method('getOcVersion')->willReturn($ocVersion);
+		$this->assertEquals($expectedResult, \OC_App::isAppCompatible($platform, $appInfo));
 	}
 
 	/**
@@ -513,7 +504,8 @@ class AppTest extends \Test\TestCase {
 				$c->getGroupManager(),
 				$c->getMemCacheFactory(),
 				$c->getEventDispatcher(),
-				$c->getConfig()
+				$c->getConfig(),
+				new Platform($c->getConfig())
 			);
 		});
 	}
@@ -532,7 +524,8 @@ class AppTest extends \Test\TestCase {
 				$c->getGroupManager(),
 				$c->getMemCacheFactory(),
 				$c->getEventDispatcher(),
-				$c->getConfig()
+				$c->getConfig(),
+				new Platform($c->getConfig())
 			);
 		});
 

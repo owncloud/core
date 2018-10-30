@@ -60,6 +60,7 @@ class AppSettingsControllerTest extends TestCase {
 		$this->appManager = $this->getMockBuilder(IAppManager::class)
 			->disableOriginalConstructor()->getMock();
 
+		$this->config->method('getSystemValue')->willReturnArgument(1);
 		$this->appSettingsController = new AppSettingsController(
 			'settings',
 			$this->request,
