@@ -98,4 +98,8 @@ class Platform {
 		$lib = $repo->findLibrary($name);
 		return $lib;
 	}
+
+	public function getOcChannel() {
+		return \OCP\Util::getChannel();
+	}
 }
