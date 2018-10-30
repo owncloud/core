@@ -23,6 +23,7 @@ namespace OC\Repair;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use OC\App\Platform;
 use OC\RepairException;
 use OC_App;
 use OCP\App\AppAlreadyInstalledException;
@@ -265,8 +266,7 @@ class Apps implements IRepairStep {
 				$appsToUpgrade[self::KEY_MISSING][] = $appId;
 				continue;
 			}
-			$version = Util::getVersion();
-			$key = (\OC_App::isAppCompatible($version, $info)) ? self::KEY_COMPATIBLE : self::KEY_INCOMPATIBLE;
+			$key = (\OC_App::isAppCompatible(new Platform($this->config), $info)) ? self::KEY_COMPATIBLE : self::KEY_INCOMPATIBLE;
 			$appsToUpgrade[$key][] = $appId;
 		}
 		return $appsToUpgrade;
