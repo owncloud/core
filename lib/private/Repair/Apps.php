@@ -265,8 +265,7 @@ class Apps implements IRepairStep {
 				$appsToUpgrade[self::KEY_MISSING][] = $appId;
 				continue;
 			}
-			$version = Util::getVersion();
-			$key = (\OC_App::isAppCompatible($version, $info)) ? self::KEY_COMPATIBLE : self::KEY_INCOMPATIBLE;
+			$key = (\OC_App::isAppCompatible($this->config, $info)) ? self::KEY_COMPATIBLE : self::KEY_INCOMPATIBLE;
 			$appsToUpgrade[$key][] = $appId;
 		}
 		return $appsToUpgrade;

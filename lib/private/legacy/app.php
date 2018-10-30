@@ -911,46 +911,21 @@ class OC_App {
 	 * This means that it's possible to specify "requiremin" => 6
 	 * and "requiremax" => 6 and it will still match ownCloud 6.0.3.
 	 *
-	 * @param string|array $ocVersion ownCloud version to check against
+	 * @param \OCP\IConfig $config
 	 * @param array $appInfo app info (from xml)
 	 *
 	 * @return boolean true if compatible, otherwise false
 	 */
-	public static function isAppCompatible($ocVersion, $appInfo) {
-		$requireMin = '';
-		$requireMax = '';
-		if (isset($appInfo['dependencies']['owncloud']['@attributes']['min-version'])) {
-			$requireMin = $appInfo['dependencies']['owncloud']['@attributes']['min-version'];
-		} elseif (isset($appInfo['requiremin'])) {
-			$requireMin = $appInfo['requiremin'];
-		} elseif (isset($appInfo['require'])) {
-			$requireMin = $appInfo['require'];
+	public static function isAppCompatible(\OCP\IConfig $config, $appInfo) {
+
+		$l = \OC::$server->getL10N('core');
+		$dependencyAnalyzer = new DependencyAnalyzer(new Platform($config), $l);
+		$missing = $dependencyAnalyzer->analyze($appInfo);
+		if (empty($missing)) {
+			return true;
 		}
 
-		if (isset($appInfo['dependencies']['owncloud']['@attributes']['max-version'])) {
-			$requireMax = $appInfo['dependencies']['owncloud']['@attributes']['max-version'];
-		} elseif (isset($appInfo['requiremax'])) {
-			$requireMax = $appInfo['requiremax'];
-		}
-
-		if (\is_array($ocVersion)) {
-			$ocVersion = \implode('.', $ocVersion);
-		}
-
-		if (!empty($requireMin)
-			&& \version_compare(self::adjustVersionParts($ocVersion, $requireMin), $requireMin, '<')
-		) {
-			return false;
-		}
-
-		if (!empty($requireMax)
-			&& !\in_array(\OCP\Util::getChannel(), ['git', 'daily'], true)
-			&& \version_compare(self::adjustVersionParts($ocVersion, $requireMax), $requireMax, '>')
-		) {
-			return false;
-		}
-
-		return true;
+		return false;
 	}
 
 	/**

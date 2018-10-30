@@ -22,13 +22,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-// We only can count up. The 4. digit is only for the internal patchlevel to trigger DB upgrades
-// between betas, final and RCs. This is _not_ the public version number. Reset minor/patchlevel
-// when updating major/minor version number.
-$OC_Version = [11, 0, 0, 0];
 
 // The human readable string
-$OC_VersionString = '11.0.0 prealpha';
+$OC_Version = '11.0.0-alpha1';
 
 $OC_VersionCanBeUpgradedFrom = [[8,2,11], [9, 0, 9],[9, 1],[10, 0],[10, 1]];
 

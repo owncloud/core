@@ -72,7 +72,7 @@ class Util {
 	 * @since 4.0.0
 	 */
 	public static function getVersion() {
-		return(\OC_Util::getVersion());
+		return \OC_Util::getVersion();
 	}
 	
 	/**

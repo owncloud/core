@@ -57,12 +57,12 @@ class ManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$config->expects($this->any())
+		$config
 			->method('getValue')
 			->will($this->returnCallback(function ($app, $key, $default) use (&$appConfig) {
 				return (isset($appConfig[$app]) and isset($appConfig[$app][$key])) ? $appConfig[$app][$key] : $default;
 			}));
-		$config->expects($this->any())
+		$config
 			->method('setValue')
 			->will($this->returnCallback(function ($app, $key, $value) use (&$appConfig) {
 				if (!isset($appConfig[$app])) {
@@ -70,7 +70,7 @@ class ManagerTest extends TestCase {
 				}
 				$appConfig[$app][$key] = $value;
 			}));
-		$config->expects($this->any())
+		$config
 			->method('getValues')
 			->will($this->returnCallback(function ($app, $key) use (&$appConfig) {
 				if ($app) {
@@ -99,7 +99,7 @@ class ManagerTest extends TestCase {
 		$this->cacheFactory = $this->createMock(ICacheFactory::class);
 		$this->cache = $this->createMock(ICache::class);
 		$this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-		$this->cacheFactory->expects($this->any())
+		$this->cacheFactory
 			->method('create')
 			->with('settings')
 			->willReturn($this->cache);
@@ -168,7 +168,7 @@ class ManagerTest extends TestCase {
 			->method('getAppInfo')
 			->willReturn(['types'=>['theme']]);
 
-		$manager->expects($this->any())
+		$manager
 			->method('isTheme')
 			->will(
 				$this->returnCallback(
@@ -228,6 +228,7 @@ class ManagerTest extends TestCase {
 	 * @dataProvider dataEnableAppForGroupsAllowedTypes
 	 *
 	 * @param array $appInfo
+	 * @throws \Exception
 	 */
 	public function testEnableAppForGroupsAllowedTypes(array $appInfo) {
 		$groups = [
@@ -237,7 +238,7 @@ class ManagerTest extends TestCase {
 		$this->expectClearCache();
 
 		/** @var AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
-		$manager = $this->getMockBuilder('OC\App\AppManager')
+		$manager = $this->getMockBuilder(AppManager::class)
 			->setConstructorArgs([
 				$this->userSession, $this->appConfig, $this->groupManager,
 				$this->cacheFactory, $this->eventDispatcher, $this->config
@@ -281,7 +282,7 @@ class ManagerTest extends TestCase {
 		];
 
 		/** @var AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
-		$manager = $this->getMockBuilder('OC\App\AppManager')
+		$manager = $this->getMockBuilder(AppManager::class)
 			->setConstructorArgs([
 				$this->userSession, $this->appConfig, $this->groupManager,
 				$this->cacheFactory, $this->eventDispatcher, $this->config
@@ -352,7 +353,7 @@ class ManagerTest extends TestCase {
 
 	public function testIsEnabledForUserLoggedOut() {
 		$this->appConfig->setValue('test', 'enabled', '["foo"]');
-		$this->assertFalse($this->manager->IsEnabledForUser('test'));
+		$this->assertFalse($this->manager->isEnabledForUser('test'));
 	}
 
 	public function testIsEnabledForUserLoggedIn() {
@@ -386,7 +387,7 @@ class ManagerTest extends TestCase {
 
 	public function testGetAppsForUser() {
 		$user = $this->createMock(IUser::class);
-		$this->groupManager->expects($this->any())
+		$this->groupManager
 			->method('getUserGroupIds')
 			->with($user)
 			->will($this->returnValue(['foo', 'bar']));
@@ -406,7 +407,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testGetAppsNeedingUpgrade() {
-		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
+		$this->manager = $this->getMockBuilder(AppManager::class)
 			->setConstructorArgs([$this->userSession, $this->appConfig,
 				$this->groupManager, $this->cacheFactory, $this->eventDispatcher, $this->config])
 			->setMethods(['getAppInfo'])
@@ -424,7 +425,7 @@ class ManagerTest extends TestCase {
 			'testnoversion' => ['id' => 'testnoversion', 'requiremin' => '8.2.0'],
 		];
 
-		$this->manager->expects($this->any())
+		$this->manager
 			->method('getAppInfo')
 			->will($this->returnCallback(
 				function ($appId) use ($appInfos) {
@@ -446,43 +447,6 @@ class ManagerTest extends TestCase {
 		$this->assertCount(2, $apps);
 		$this->assertEquals('test1', $apps[0]['id']);
 		$this->assertEquals('test4', $apps[1]['id']);
-	}
-
-	public function testGetIncompatibleApps() {
-		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
-			->setConstructorArgs([$this->userSession, $this->appConfig,
-				$this->groupManager, $this->cacheFactory, $this->eventDispatcher, $this->config])
-			->setMethods(['getAppInfo'])
-			->getMock();
-
-		$appInfos = [
-			'dav' => ['id' => 'dav'],
-			'files' => ['id' => 'files'],
-			'files_external' => ['id' => 'files_external'],
-			'federatedfilesharing' => ['id' => 'federatedfilesharing'],
-			'test1' => ['id' => 'test1', 'version' => '1.0.1', 'requiremax' => '8.0.0'],
-			'test2' => ['id' => 'test2', 'version' => '1.0.0', 'requiremin' => '8.2.0'],
-			'test3' => ['id' => 'test3', 'version' => '1.2.4', 'requiremin' => '9.0.0'],
-			'testnoversion' => ['id' => 'testnoversion', 'requiremin' => '8.2.0'],
-		];
-
-		$this->manager->expects($this->any())
-			->method('getAppInfo')
-			->will($this->returnCallback(
-				function ($appId) use ($appInfos) {
-					return $appInfos[$appId];
-				}
-		));
-
-		$this->appConfig->setValue('test1', 'enabled', 'yes');
-		$this->appConfig->setValue('test2', 'enabled', 'yes');
-		$this->appConfig->setValue('test3', 'enabled', 'yes');
-
-		$apps = $this->manager->getIncompatibleApps('8.2.0');
-
-		$this->assertCount(2, $apps);
-		$this->assertEquals('test1', $apps[0]['id']);
-		$this->assertEquals('test3', $apps[1]['id']);
 	}
 
 	/**
@@ -522,7 +486,7 @@ class ManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$appManager->expects($this->any())
+		$appManager
 			->method('getAppRoots')
 			->willReturn([
 				[
@@ -535,7 +499,7 @@ class ManagerTest extends TestCase {
 				]
 			]);
 
-		$appManager->expects($this->any())
+		$appManager
 			->method('getAppVersionByPath')
 			->will($this->onConsecutiveCalls($firstDirVersion, $secondDirVersion));
 
@@ -559,7 +523,7 @@ class ManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$appManager->expects($this->any())
+		$appManager
 			->method('getAppRoots')
 			->willReturn([]);
 
@@ -586,11 +550,11 @@ class ManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$appManager->expects($this->any())
+		$appManager
 			->method('getOcWebRoot')
 			->willReturn($ocWebRoot);
 
-		$appManager->expects($this->any())
+		$appManager
 			->method('findAppInDirectories')
 			->with($appId)
 			->willReturn($appData);

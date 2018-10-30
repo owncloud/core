@@ -432,21 +432,33 @@ class OC_Util {
 	/**
 	 * get the current installed version of ownCloud
 	 *
-	 * @return array
+	 * @return string
 	 */
-	public static function getVersion() {
+	public static function getVersionAsSemVer() {
 		OC_Util::loadVersion();
 		return self::$version['OC_Version'];
+	}
+
+
+	/**
+	 * get the current installed version of ownCloud
+	 *
+	 * @return string
+	 */
+	public static function getVersion() {
+		$version = self::getVersionAsSemVer();
+		return \explode('.', \explode('-', $version)[0]);
 	}
 
 	/**
 	 * get the current installed version string of ownCloud
 	 *
+	 * @deprecated returns the same value as getVersion
 	 * @return string
 	 */
 	public static function getVersionString() {
 		OC_Util::loadVersion();
-		return self::$version['OC_VersionString'];
+		return self::$version['OC_Version'];
 	}
 
 	/**
@@ -492,7 +504,6 @@ class OC_Util {
 		/** @var $OC_Channel string */
 		self::$version = [
 			'OC_Version' => $OC_Version,
-			'OC_VersionString' => $OC_VersionString,
 			'OC_Build' => $OC_Build,
 			'OC_Channel' => $OC_Channel,
 		];
