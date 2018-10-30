@@ -1042,11 +1042,11 @@ class OC_Util {
 
 		foreach ($apps as $app) {
 			$appInfo = OC_App::getAppInfo($app);
-			if (isset($appInfo['rememberlogin']) && $appInfo['rememberlogin'] === 'false') {
+			if (isset($appInfo['rememberlogin']) && $appInfo['rememberlogin'] === 'false' && $appInfo['id'] !== 'files_external') {
 				return false;
 			}
 		}
-		return true;
+		return \OC::$server->getAppConfig()->getValue('core', 'enable_external_storage', 'no') === 'no';
 	}
 
 	/**
