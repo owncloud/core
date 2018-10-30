@@ -449,7 +449,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" with content ":body" using the old WebDAV API
+	 * @When the public uploads file ":filename" with content ":body" using the public WebDAV API
 	 * @Given the public has uploaded file ":filename" with content ":body"
 	 *
 	 * @param string $filename target file name
@@ -475,7 +475,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" with password ":password" and content ":body" using the old WebDAV API
+	 * @When the public uploads file ":filename" with password ":password" and content ":body" using the public WebDAV API
 	 * @Given the public has uploaded file ":filename" with password ":password" and content ":body"
 	 *
 	 * @param string $filename target file name
@@ -491,7 +491,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" with content ":body" with autorename mode using the old WebDAV API
+	 * @When the public uploads file ":filename" with content ":body" with autorename mode using the public WebDAV API
 	 * @Given the public has uploaded file ":filename" with content ":body" with autorename mode
 	 *
 	 * @param string $filename target file name
