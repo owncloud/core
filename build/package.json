@@ -49,7 +49,7 @@
     "karma-junit-reporter": "*",
     "karma-phantomjs-launcher": "*",
     "phantomjs-prebuilt": "*",
-    "sinon": "^6.3.5"
+    "sinon": "^7.1.0"
   },
   "engines": {
     "node": ">= 6.9",
