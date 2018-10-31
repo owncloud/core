@@ -66,9 +66,10 @@
   version "0.0.0"
   resolved "https://codeload.github.com/appleboy/jquery-migrate/tar.gz/29077d39689bddad05036a537d49c4cf96488569"
 
-"@bower_components/jquery-ui@components/jqueryui#1.10.0":
-  version "1.10.0"
-  resolved "https://codeload.github.com/components/jqueryui/tar.gz/4c0bac635cc97c8cd5087bb244d497100429fea2"
+"@bower_components/jquery-ui@components/jqueryui#1.12.1":
+  version "1.12.1"
+  uid "44ecf3794cc56b65954cc19737234a3119d036cc"
+  resolved "https://codeload.github.com/components/jqueryui/tar.gz/44ecf3794cc56b65954cc19737234a3119d036cc"
 
 "@bower_components/jquery@jquery/jquery-dist#2.1.4":
   version "2.1.4"
