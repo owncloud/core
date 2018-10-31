@@ -109,7 +109,7 @@ class CorsPlugin extends ServerPlugin {
 		}
 
 		$this->server->on('beforeMethod:*', [$this, 'setCorsHeaders']);
-		$this->server->on('beforeMethod:OPTIONS', [$this, 'setOptionsRequestHeaders']);
+		$this->server->on('beforeMethod:OPTIONS', [$this, 'setOptionsRequestHeaders'], 5);
 	}
 
 	/**
