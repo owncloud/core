@@ -74,12 +74,9 @@
   version "2.1.4"
   resolved "https://codeload.github.com/jquery/jquery-dist/tar.gz/7751e69b615c6eca6f783a81e292a55725af6b85"
 
-"@bower_components/jsTimezoneDetect@HenningM/jstimezonedetect#1.0.5":
-  version "1.0.5"
-  resolved "https://codeload.github.com/HenningM/jstimezonedetect/tar.gz/2efb16c850d8447109eff40d4b1495acd8168812"
-
-"@bower_components/jstzdetect@HenningM/jstimezonedetect#1.0.6":
+"@bower_components/jsTimezoneDetect@HenningM/jstimezonedetect#v1.0.6", "@bower_components/jstzdetect@HenningM/jstimezonedetect#1.0.6":
   version "1.0.6"
+  uid bd595ed253292934991a414979007f3d51a1547d
   resolved "https://codeload.github.com/HenningM/jstimezonedetect/tar.gz/bd595ed253292934991a414979007f3d51a1547d"
 
 "@bower_components/moment@moment/moment#2.19.4":
