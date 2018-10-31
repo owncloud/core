@@ -15,7 +15,7 @@
     "bower": "~1.8.4",
     "handlebars": "^4.0.12",
     "jasmine-sinon": "^0.4.0",
-    "sinon": "^6.3.5",
+    "sinon": "^7.1.0",
     "jsdoc": "~3.5.5",
     "karma": "^3.1.1",
     "karma-coverage": "*",
