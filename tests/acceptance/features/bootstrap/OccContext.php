@@ -96,6 +96,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Given the administrator has set the mail smtpmode to :smtpmode
+	 *
+	 * @param string $smtpmode
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSetTheMailSmtpmodeTo($smtpmode) {
+		$this->featureContext->invokingTheCommand(
+			"config:system:set  --value $smtpmode mail_smtpmode"
+		);
+	}
+
+	/**
 	 * @When the administrator tries to create a user :username using the occ command
 	 *
 	 * @param string $username
@@ -136,19 +149,20 @@ class OccContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
-	 * @throws Exception
 	 */
 	public function resetUserPasswordUsingTheOccCommand($username, $password) {
-		$actualUsername = $this->featureContext->getActualUsername($username);
-		$password = $this->featureContext->getActualPassword($password);
-		$this->featureContext->invokingTheCommandWithEnvVariable(
-			"user:resetpassword $actualUsername  --password-from-env",
-			'OC_PASS',
-			$password
-		);
-		if ($username === "%admin%") {
-			$this->featureContext->rememberNewAdminPassword($password);
-		}
+		$this->featureContext->resetUserPassword($username, $password);
+	}
+
+	/**
+	 * @When the administrator invokes password reset for user :username using the occ command
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theAdministratorInvokesPasswordResetForUserUsingTheOccCommand($username) {
+		$this->featureContext->resetUserPassword($username);
 	}
 
 	/**
