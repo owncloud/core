@@ -19,6 +19,7 @@ Feature: browse directly to details tab
       | /             |
       | simple-folder |
 
+  @comments-app-required
   Scenario Outline: Browse directly to the comments details of a file
     When the user browses directly to display the "comments" details of file "lorem.txt" in folder "<folder>"
     Then the thumbnail should be visible in the details panel
@@ -28,6 +29,7 @@ Feature: browse directly to details tab
       | /             |
       | simple-folder |
 
+  @files_versions-app-required
   Scenario Outline: Browse directly to the versions details of a file
     When the user browses directly to display the "versions" details of file "lorem.txt" in folder "<folder>"
     Then the thumbnail should be visible in the details panel
