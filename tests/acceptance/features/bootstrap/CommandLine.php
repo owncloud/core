@@ -681,6 +681,33 @@ trait CommandLine {
 	}
 
 	/**
+	 * Reset user password
+	 *
+	 * @param string $username
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function resetUserPassword($username, $password = null) {
+		$actualUsername = $this->getActualUsername($username);
+		if ($password === null) {
+			$this->invokingTheCommand(
+				"user:resetpassword $actualUsername --send-email"
+			);
+		} else {
+			$password = $this->getActualPassword($password);
+			$this->invokingTheCommandWithEnvVariable(
+				"user:resetpassword $actualUsername --password-from-env",
+				'OC_PASS',
+				$password
+			);
+			if ($username === "%admin%") {
+				$this->rememberNewAdminPassword($password);
+			}
+		}
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will setup anything needed by methods in this trait.
 	 *

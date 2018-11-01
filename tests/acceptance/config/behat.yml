@@ -118,6 +118,7 @@ default:
         - %paths.base%/../features/cliProvisioning
       contexts:
         - FeatureContext: *common_feature_context_params
+        - EmailContext:
         - OccContext:
 
     cliMain:

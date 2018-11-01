@@ -395,6 +395,7 @@ pipeline:
     pull: true
     environment:
       - TEST_SERVER_URL=https://server
+      - MAILHOG_HOST=email
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
@@ -939,6 +940,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      USE_EMAIL: true
 
   # CLI Main Acceptance tests
     - PHP_VERSION: 7.1
