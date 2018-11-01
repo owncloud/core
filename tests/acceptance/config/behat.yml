@@ -307,6 +307,18 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
 
+    webUIWebdavLocks:
+      paths:
+        - %paths.base%/../features/webUIWebdavLocks
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebDavLockingContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIWebDavLockingContext:
+        - WebUISharingContext:
+
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:
           filename: report.xml
