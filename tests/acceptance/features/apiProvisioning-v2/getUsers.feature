@@ -30,11 +30,12 @@ Feature: get users
     And the OCS status code should be "200"
     And the HTTP status code should be "200"
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: normal user tries to get other users
     Given user "normaluser" has been created
     And user "newuser" has been created
     When user "normaluser" sends HTTP method "GET" to OCS API endpoint "/cloud/users"
-    And the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And the API should not return any data

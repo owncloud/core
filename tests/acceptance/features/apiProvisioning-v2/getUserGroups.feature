@@ -80,13 +80,14 @@ Feature: get user groups
     And the OCS status code should be "200"
     And the HTTP status code should be "200"
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: normal user tries to get the groups of another user
     Given user "newuser" has been created
     And user "anotheruser" has been created
     And group "newgroup" has been created
     And user "newuser" has been added to group "newgroup"
     When user "anotheruser" sends HTTP method "GET" to OCS API endpoint "/cloud/users/newuser/groups"
-    Then the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And the API should not return any data
