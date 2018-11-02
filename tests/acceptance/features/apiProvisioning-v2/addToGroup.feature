@@ -62,12 +62,13 @@ Feature: add users to group
       | var/../etc       | using slash-dot-dot                |
       | priv/subadmins/1 | Subadmins mentioned not at the end |
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: normal user tries to add himself to a group
     Given user "brand-new-user" has been created
     When user "brand-new-user" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | new-group |
-    Then the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And the API should not return any data
 

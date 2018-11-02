@@ -143,7 +143,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 997             |
 
-  @skip @issue-32068
+  @issue-32068
   Scenario: Creating a new share with a disabled user
     Given using OCS API version "2"
     And user "user1" has been created
@@ -152,7 +152,8 @@ Feature: sharing
       | path      | welcome.txt |
       | shareWith | user1       |
       | shareType | 0           |
-    Then the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
 
   @public_link_share-feature-required
