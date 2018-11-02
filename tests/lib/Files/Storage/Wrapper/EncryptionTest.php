@@ -190,7 +190,7 @@ class EncryptionTest extends Storage {
 					$this->encryptionManager, $this->util, $this->logger, $this->file, null, $this->keyStore, $this->update, $this->mountManager, $this->arrayCache
 				]
 			)
-			->setMethods(['getMetaData', 'getCache', 'getEncryptionModule'])
+			->setMethods(['getMetaData', 'getCache', 'getEncryptionModule', 'writeFile'])
 			->getMock();
 
 		$this->instance->expects($this->any())
@@ -725,12 +725,10 @@ class EncryptionTest extends Storage {
 		$sourceInternalPath = $targetInternalPath = 'file.txt';
 		$preserveMtime = $isRename = false;
 
-		$storage2->expects($this->any())
-			->method('fopen')
-			->willReturnCallback(function ($path, $mode) {
-				$temp = \OC::$server->getTempManager();
-				return \fopen($temp->getTemporaryFile(), $mode);
-			});
+		$this->instance
+			->method('writeFile')
+			->willReturn(10);
+
 		$cache = $this->createMock(ICache::class);
 		$cache->expects($this->once())
 			->method('get')
@@ -739,7 +737,7 @@ class EncryptionTest extends Storage {
 		$storage2->expects($this->once())
 			->method('getCache')
 			->willReturn($cache);
-		$this->encryptionManager->expects($this->any())
+		$this->encryptionManager
 			->method('isEnabled')
 			->willReturn(true);
 		global $mockedMountPointEncryptionEnabled;

@@ -42,6 +42,7 @@ use OCP\Files\Mount\IMountPoint;
 use OCP\Files\Storage;
 use OCP\ILogger;
 use OCP\Files\Cache\ICacheEntry;
+use Psr\Http\Message\StreamInterface;
 
 class Encryption extends Wrapper {
 	use LocalTempFileTrait;
@@ -227,6 +228,9 @@ class Encryption extends Wrapper {
 	 * @return bool
 	 */
 	public function file_put_contents($path, $data) {
+		//
+		// TODO: fix it!
+		//
 		return $this->getWrapperStorage()->file_put_contents($path, $data);
 //		// file put content will always be translated to a stream write
 //		$handle = $this->fopen($path, 'w');
@@ -238,6 +242,15 @@ class Encryption extends Wrapper {
 //
 //		return false;
 	}
+
+	public function readFile(string $path, array $options = []): StreamInterface {
+		return $this->getWrapperStorage()->readFile($path, $options);
+	}
+
+	public function writeFile(string $path, StreamInterface $stream): int {
+		return $this->getWrapperStorage()->writeFile($path, $stream);
+	}
+
 
 	/**
 	 * see http://php.net/manual/en/function.unlink.php
