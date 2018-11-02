@@ -1964,6 +1964,134 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Then the config key :key of app :appID must have value :value
+	 *
+	 * @param string $key
+	 * @param string $appID
+	 * @param string $value
+	 *
+	 * @return void
+	 */
+	public function theConfigKeyOfAppMustHaveValue($key, $appID, $value) {
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'GET',
+			"/apps/testing/api/v1/app/{$appID}/{$key}",
+			[],
+			$this->getOcsApiVersion()
+		);
+		$configkeyValue = \json_decode(\json_encode($this->getResponseXml($response)->data[0]->element->value), 1)[0];
+		PHPUnit_Framework_Assert::assertEquals($value, $configkeyValue);
+	}
+
+	/**
+	 * Parse list of config keys from the given XML response
+	 *
+	 * @param SimpleXMLElement $responseXml
+	 *
+	 * @return array
+	 */
+	public function parseConfigListFromResponseXml($responseXml) {
+		$configkeyData = \json_decode(\json_encode($responseXml->data), 1);
+		if (isset($configkeyData['element'])) {
+			$configkeyData = $configkeyData['element'];
+		} else {
+			// There are no keys for the app
+			return [];
+		}
+		if (isset($configkeyData[0])) {
+			$configkeyValues = $configkeyData;
+		} else {
+			// There is just 1 key for the app
+			$configkeyValues[0] = $configkeyData;
+		}
+		return $configkeyValues;
+	}
+
+	/**
+	 * Returns a list of config keys for the given app
+	 *
+	 * @param string $appID
+	 *
+	 * @return array
+	 */
+	public function getConfigKeyList($appID) {
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'GET',
+			"/apps/testing/api/v1/app/{$appID}",
+			[],
+			$this->getOcsApiVersion()
+		);
+		return $this->parseConfigListFromResponseXml($this->getResponseXml($response));
+	}
+
+	/**
+	 * Check if given config key is present for given app
+	 *
+	 * @param string $key
+	 * @param string $appID
+	 *
+	 * @return bool
+	 */
+	public function checkConfigKeyInApp($key, $appID) {
+		$configkeyList = $this->getConfigKeyList($appID);
+		foreach ($configkeyList as $config) {
+			if ($config['configkey'] === $key) {
+				return  true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @Then /^the app ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?have config key ((?:'[^']*')|(?:"[^"]*"))$/
+	 *
+	 * @param string $appID
+	 * @param string $shouldOrNot
+	 * @param string $key
+	 *
+	 * @return void
+	 */
+	public function theAppShouldHaveConfigKey($appID, $shouldOrNot, $key) {
+		$appID = \trim($appID, $appID[0]);
+		$key = \trim($key, $key[0]);
+
+		$should = ($shouldOrNot !== "not");
+
+		if ($should) {
+			PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($key, $appID));
+		} else {
+			PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($key, $appID));
+		}
+	}
+
+	/**
+	 * @Then /^following config keys should (not|)\s?exist$/
+	 *
+	 * @param string $shouldOrNot
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function followingConfigKeysMustExist($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		} else {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		}
+	}
+
+	/**
 	 * @BeforeScenario @local_storage
 	 *
 	 * @return void
