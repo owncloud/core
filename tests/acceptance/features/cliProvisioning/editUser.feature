@@ -1,6 +1,6 @@
 @cli @skipOnLDAP
 Feature: edit users
-  As an admin, subadmin or as myself
+  As an admin
   I want to be able to edit user information
   So that I can keep the user information up-to-date
 
