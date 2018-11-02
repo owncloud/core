@@ -187,15 +187,15 @@ test-js-debug: $(nodejs_deps)
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js
 
 .PHONY: test-acceptance-api
-test-acceptance-api:
+test-acceptance-api: $(composer_dev_deps)
 	./tests/acceptance/run.sh --type api
 
 .PHONY: test-acceptance-cli
-test-acceptance-cli:
+test-acceptance-cli: $(composer_dev_deps)
 	./tests/acceptance/run.sh --type cli
 
 .PHONY: test-acceptance-webui
-test-acceptance-webui:
+test-acceptance-webui: $(composer_dev_deps)
 	./tests/acceptance/run.sh --type webUI
 
 .PHONY: test-php-lint
