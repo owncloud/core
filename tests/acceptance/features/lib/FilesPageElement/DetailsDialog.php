@@ -117,7 +117,7 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
-	 * find the xpath of comment with given content
+	 * find the xpath of version list
 	 *
 	 * @param string $content
 	 *
@@ -134,7 +134,7 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
-	 * find the xpath of comment with given content
+	 * find the xpath of button to revert to last version
 	 *
 	 * @param string $content
 	 *
