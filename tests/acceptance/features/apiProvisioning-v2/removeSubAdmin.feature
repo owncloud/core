@@ -18,7 +18,7 @@ Feature: remove subadmin
     And the HTTP status code should be "200"
     And the user "brand-new-user" should not be the subadmin of the group "new-group"
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: subadmin tries to remove other subadmin in the group
     Given user "subadmin" has been created
     And group "new-group" has been created
@@ -27,11 +27,12 @@ Feature: remove subadmin
     And user "newsubadmin" has been made a subadmin of group "new-group"
     When user "subadmin" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/newsubadmin/subadmins" with body
       | groupid | new-group |
-    Then the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And the user "newsubadmin" should be the subadmin of the group "new-group"
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: normal user tries to remove subadmin in the group
     Given user "subadmin" has been created
     And user "newuser" has been created
@@ -41,5 +42,6 @@ Feature: remove subadmin
     When user "newuser" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/subadmin/subadmins" with body
       | groupid | new-group |
     Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And the user "subadmin" should be the subadmin of the group "new-group"

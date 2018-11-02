@@ -34,7 +34,7 @@ Feature: create a subadmin
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: subadmin of a group tries to make another user subadmin of their group
     Given user "subadmin" has been created
     And user "brand-new-user" has been created
@@ -44,7 +44,8 @@ Feature: create a subadmin
       | groupid | new-group |
     When user "subadmin" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/subadmins" with body
       | groupid | new-group |
-    Then the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And the user "not-user" should not be the subadmin of the group "new-group"
 	

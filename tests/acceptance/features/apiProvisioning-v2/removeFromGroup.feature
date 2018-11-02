@@ -103,7 +103,7 @@ Feature: remove a user from a group
     And the HTTP status code should be "403"
     And user "brand-new-user" should belong to group "new-group"
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: normal user tries to remove the user in his group
     Given user "newuser" has been created
     And user "anotheruser" has been created
@@ -112,6 +112,7 @@ Feature: remove a user from a group
     And user "anotheruser" has been added to group "new-group"
     When user "newuser" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/anotheruser/groups" with body
       | groupid | new-group |
-    Then the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And user "anotheruser" should belong to group "new-group"

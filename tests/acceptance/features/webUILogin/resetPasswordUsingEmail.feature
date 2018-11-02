@@ -26,7 +26,7 @@ Feature: reset the password using an email address
 
   @skipOnEncryption
   @smokeTest
-  @skip @issue-32868
+  @skip @issue-32889
   Scenario: reset password for the ordinary (no encryption) case
     When the user requests the password reset link using the webUI
     And the user follows the password reset link from email address "user1@example.org"

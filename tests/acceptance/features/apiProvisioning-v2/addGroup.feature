@@ -75,12 +75,13 @@ Feature: add groups
     And the HTTP status code should be "400"
     And group "new-group" should exist
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: normal user tries to create a group
     Given user "brand-new-user" has been created
     When user "brand-new-user" sends HTTP method "POST" to OCS API endpoint "/cloud/groups" with body
       | groupid | new-group |
-    Then the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And group "new-group" should not exist
 

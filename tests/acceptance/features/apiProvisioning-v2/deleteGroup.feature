@@ -59,22 +59,24 @@ Feature: delete groups
       | var/../etc       | using slash-dot-dot                |
       | priv/subadmins/1 | Subadmins mentioned not at the end |
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: normal user tries to delete the group
     Given user "brand-new-user" has been created
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     When user "brand-new-user" sends HTTP method "DELETE" to OCS API endpoint "/cloud/groups/new-group"
-    Then the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And group "new-group" should exist
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: subadmin of the group tries to delete the group
     Given user "subadmin" has been created
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "subamin" sends HTTP method "DELETE" to OCS API endpoint "/cloud/groups/new-group"
-    Then the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And group "new-group" should exist
