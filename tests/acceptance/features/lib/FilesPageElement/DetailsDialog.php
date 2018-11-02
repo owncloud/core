@@ -119,10 +119,9 @@ class DetailsDialog extends OwncloudPage {
 	/**
 	 * find the xpath of version list
 	 *
-	 * @param string $content
-	 *
 	 * @return string
-	 */public function getVersionsList() {
+	 */
+	public function getVersionsList() {
 		$versionsList = $this->find("xpath", $this->versionsListXpath);
 		$this->assertElementNotNull(
 			$versionsList,
@@ -136,10 +135,9 @@ class DetailsDialog extends OwncloudPage {
 	/**
 	 * find the xpath of button to revert to last version
 	 *
-	 * @param string $content
-	 *
-	 * @return
-	 */public function getLastVersionRevertButton() {
+	 * @return void
+	 */
+	public function getLastVersionRevertButton() {
 		$btn = $this->find("xpath", $this->lastVersionRevertButton);
 		$this->assertElementNotNull(
 			$btn,
@@ -411,6 +409,9 @@ class DetailsDialog extends OwncloudPage {
 			"//span[@class='label']";
 	}
 
+	/**
+	 * @return void
+	 */
 	public function restoreCurrentFileToLastVersion() {
 		$revertBtn = $this->getLastVersionRevertButton();
 		$revertBtn->click();
