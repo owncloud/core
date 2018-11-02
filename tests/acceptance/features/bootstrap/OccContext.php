@@ -716,6 +716,133 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator adds a config key :key with value :value in app :app using the occ command
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param string $app
+	 *
+	 * @return void
+	 */
+	public function theAdministratorAddsAConfigKeyWithValueInAppUsingTheOccCommand($key, $value, $app) {
+		$this->featureContext->invokingTheCommand(
+			"config:app:set --value ${value} ${app} ${key}"
+		);
+	}
+
+	/**
+	 * @When the administrator deletes the config key :key of app :app using the occ command
+	 *
+	 * @param string $key
+	 * @param string $app
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesTheConfigKeyOfAppUsingTheOccCommand($key, $app) {
+		$this->featureContext->invokingTheCommand(
+			"config:app:delete ${app} ${key}"
+		);
+	}
+
+	/**
+	 * @When the administrator adds a system config key :key with value :value using the occ command
+	 *
+	 * @param string $key
+	 * @param string $value
+	 *
+	 * @return void
+	 */
+	public function theAdministratorAddsASystemConfigKeyWithValueUsingTheOccCommand($key, $value) {
+		$this->featureContext->invokingTheCommand(
+			"config:system:set --value ${value} ${key}"
+		);
+	}
+
+	/**
+	 * @When the administrator deletes a system config key :key using the occ command
+	 *
+	 * @param string $key
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesASystemConfigKeyUsingTheOccCommand($key) {
+		$this->featureContext->invokingTheCommand(
+			"config:system:delete ${key}"
+		);
+	}
+
+	/**
+	 * @Then the system config key :key with value :value should exist
+	 *
+	 * @param string $key
+	 * @param string $value
+	 *
+	 * @return void
+	 */
+	public function theSystemConfigKeyWithValueShouldExist($key, $value) {
+		$config = \trim($this->featureContext->getSystemConfigValue($key));
+		PHPUnit_Framework_Assert::assertSame($value, $config);
+	}
+
+	/**
+	 * @Then the system config key :key should not exist
+	 *
+	 * @param string $key
+	 *
+	 * @return void
+	 */
+	public function theSystemConfigKeyShouldNotExist($key) {
+		PHPUnit_Framework_Assert::assertEmpty($this->featureContext->getSystemConfig($key)['stdOut']);
+	}
+
+	/**
+	 * @When the administrator lists the config keys
+	 *
+	 * @return void
+	 */
+	public function theAdministratorListsTheConfigKeys() {
+		$this->featureContext->invokingTheCommand(
+			"config:list"
+		);
+	}
+
+	/**
+	 * @Then the command output should contain the apps configs
+	 *
+	 * @return void
+	 */
+	public function theCommandOutputShouldContainTheAppsConfigs() {
+		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true);
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			'apps',
+			$config_list,
+			"The occ output doesnot contain apps configs"
+		);
+		PHPUnit_Framework_Assert::assertNotEmpty(
+			$config_list['apps'],
+			"The occ output doesnot contain apps configs"
+		);
+	}
+
+	/**
+	 * @Then the command output should contain the system configs
+	 *
+	 * @return void
+	 */
+	public function theCommandOutputShouldContainTheSystemConfigs() {
+		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true);
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			'system',
+			$config_list,
+			"The occ output doesnot contain system configs"
+		);
+		PHPUnit_Framework_Assert::assertNotEmpty(
+			$config_list['system'],
+			"The occ output doesnot contain system configs"
+		);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
