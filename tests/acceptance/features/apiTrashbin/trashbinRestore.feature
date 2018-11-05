@@ -6,7 +6,7 @@ Feature: Restore deleted files/folders
 
   Background:
     Given using OCS API version "1"
-    And as user "%admin%"
+    And as the administrator
 
   Scenario Outline: deleting a file in a received folder when restored it comes back to the original path
     Given using <dav-path> DAV path

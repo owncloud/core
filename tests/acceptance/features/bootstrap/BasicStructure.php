@@ -600,6 +600,15 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Given as the administrator
+	 *
+	 * @return void
+	 */
+	public function asTheAdministrator() {
+		$this->currentUser = $this->getAdminUsername();
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getCurrentUser() {
@@ -737,6 +746,19 @@ trait BasicStructure {
 			$url,
 			null
 		);
+	}
+
+	/**
+	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url
+	 *
+	 * @param string $verb
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSendsHttpMethodToOcsApiEndpoint($verb, $url) {
+		$admin = $this->getAdminUsername();
+		$this->userSendsToOcsApiEndpoint($admin, $verb, $url);
 	}
 
 	/**
@@ -894,6 +916,25 @@ trait BasicStructure {
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$user, $password, $verb, $url, $bodyArray, $this->ocsApiVersion
+		);
+	}
+
+	/**
+	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url with body
+	 * @Given the administrator has sent HTTP method :verb to OCS API endpoint :url with body
+	 *
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSendsHttpMethodToOcsApiEndpointWithBody(
+		$verb, $url, TableNode $body
+	) {
+		$admin = $this->getAdminUsername();
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$admin, $verb, $url, $body
 		);
 	}
 
@@ -1533,6 +1574,7 @@ trait BasicStructure {
 		}
 	}
 
+	// TODO do similar for other usernames for e.g. %regularuser% or %test-user-1%
 	/**
 	 * @param string $functionalUsername
 	 *

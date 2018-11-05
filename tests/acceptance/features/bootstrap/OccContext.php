@@ -155,6 +155,24 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator resets his own password to :newPassword using the occ command
+	 *
+	 * @param string $newPassword
+	 *
+	 * @return void
+	 */
+	public function theAdministratorResetsHisOwnPasswordToUsingTheOccCommand($newPassword) {
+		$password = $this->featureContext->getActualPassword($newPassword);
+		$admin = $this->featureContext->getAdminUsername();
+		$this->featureContext->invokingTheCommandWithEnvVariable(
+			"user:resetpassword $admin --password-from-env",
+			'OC_PASS',
+			$password
+		);
+		$this->featureContext->rememberNewAdminPassword($password);
+	}
+
+	/**
 	 * @When the administrator invokes password reset for user :username using the occ command
 	 *
 	 * @param string $username

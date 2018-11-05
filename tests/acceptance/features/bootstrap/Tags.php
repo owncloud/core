@@ -914,6 +914,23 @@ trait Tags {
 	}
 
 	/**
+	 * @When the administrator removes the tag :tagName from :fileName shared by :shareUser using the WebDAV API
+	 * Given the administrator has removed the tag :tagName from :fileName shared by :shareUser
+	 *
+	 * @param string $tagName
+	 * @param string $fileName
+	 * @param string $shareUser
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRemovesTheTagFromSharedByUsingTheWebdavApi(
+		$tagName, $fileName, $shareUser
+	) {
+		$admin = $this->getAdminUsername();
+		$this->removesTheTagFromSharedBy($admin, $tagName, $fileName, $shareUser);
+	}
+	
+	/**
 	 * @BeforeScenario
 	 * @AfterScenario
 	 *

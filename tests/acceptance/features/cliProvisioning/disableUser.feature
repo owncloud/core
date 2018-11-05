@@ -23,7 +23,7 @@ Feature: disable user
     Given user "subadmin" has been created
     And group "new-group" has been created
     And user "subadmin" has been added to group "new-group"
-    And user "%admin%" has been added to group "new-group"
+    And the administrator has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
     When the administrator disables the user "subadmin" using the occ command
     Then the command should have been successful

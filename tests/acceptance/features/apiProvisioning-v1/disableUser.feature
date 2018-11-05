@@ -10,7 +10,7 @@ Feature: disable user
   @smokeTest
   Scenario: admin disables an user
     Given user "user1" has been created
-    When user "%admin%" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/user1/disable"
+    When the administrator sends HTTP method "PUT" to OCS API endpoint "/cloud/users/user1/disable"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "user1" should be disabled
@@ -57,7 +57,7 @@ Feature: disable user
   Scenario: Admin can disable another admin user
     Given user "another-admin" has been created
     And user "another-admin" has been added to group "admin"
-    When user "%admin%" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/another-admin/disable"
+    When the administrator sends HTTP method "PUT" to OCS API endpoint "/cloud/users/another-admin/disable"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "another-admin" should be disabled
@@ -66,9 +66,9 @@ Feature: disable user
     Given user "subadmin" has been created
     And group "new-group" has been created
     And user "subadmin" has been added to group "new-group"
-    And user "%admin%" has been added to group "new-group"
+    And the administrator has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
-    When user "%admin%" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/subadmin/disable"
+    When the administrator sends HTTP method "PUT" to OCS API endpoint "/cloud/users/subadmin/disable"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "subadmin" should be disabled
