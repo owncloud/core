@@ -200,15 +200,15 @@ test-js-debug: $(nodejs_deps) $(js_deps) $(core_vendor)
 
 .PHONY: test-acceptance-api
 test-acceptance-api: $(composer_dev_deps)
-	./tests/acceptance/run.sh --type api
+	./tests/acceptance/run.sh --remote --type api
 
 .PHONY: test-acceptance-cli
 test-acceptance-cli: $(composer_dev_deps)
-	./tests/acceptance/run.sh --type cli
+	./tests/acceptance/run.sh --remote --type cli
 
 .PHONY: test-acceptance-webui
 test-acceptance-webui: $(composer_dev_deps)
-	./tests/acceptance/run.sh --type webUI
+	./tests/acceptance/run.sh --remote --type webUI
 
 .PHONY: test-php-lint
 test-php-lint: $(composer_dev_deps)
