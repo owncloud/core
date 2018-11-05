@@ -7,7 +7,7 @@ $(document).ready(function() {
 		oracle:!!$('#hasOracle').val()
 	};
 
-	$('#selectDbType').buttonset();
+	$('#selectDbType').controlgroup();
 	// change links inside an info box back to their default appearance
 	$('#selectDbType p.info a').button('destroy');
 

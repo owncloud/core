@@ -486,17 +486,30 @@ label.infield {
 }
 
 /* Database selector */
-#body-login form #selectDbType { text-align:center; white-space: nowrap; }
-#body-login form #selectDbType .info {
-	white-space: normal;
+#databaseBackend {
+	padding: 0 5px;
 }
-#body-login form #selectDbType label {
-	position:static; margin:0 -3px 5px; padding:.4em;
-	font-size:12px; background:#f8f8f8; color:#888; cursor:pointer;
-	border: 1px solid #ddd;
-}
-#body-login form #selectDbType label.ui-state-hover, #body-login form #selectDbType label.ui-state-active { color:#000; background-color:#e8e8e8; }
 
+#selectDbType .ui-state-active {
+	color:#fff !important;
+	font-weight: normal !important;
+	background:#365378 !important;
+	border: 0 none !important;
+}
+
+#selectDbType {
+	display: flex;
+	justify-content: center;
+}
+
+#selectDbType .ui-checkboxradio-icon {
+	display: none;
+}
+
+#selectDbType .ui-button {
+	padding: 0.4em;
+	flex-grow: 1;
+}
 
 /* Warnings and errors are the same */
 #body-login .warning,
