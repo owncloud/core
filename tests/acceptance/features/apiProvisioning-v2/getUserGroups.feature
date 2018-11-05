@@ -21,7 +21,7 @@ Feature: get user groups
     And user "brand-new-user" has been added to group "Admin & Finance (NP)"
     And user "brand-new-user" has been added to group "admin:Pokhara@Nepal"
     And user "brand-new-user" has been added to group "नेपाली"
-    When user "%admin%" sends HTTP method "GET" to OCS API endpoint "/cloud/users/brand-new-user/groups"
+    When the administrator sends HTTP method "GET" to OCS API endpoint "/cloud/users/brand-new-user/groups"
     Then the groups returned by the API should be
       | new-group            |
       | 0                    |
@@ -52,7 +52,7 @@ Feature: get user groups
     And user "brand-new-user" has been added to group "Mgmt/Sydney"
     And user "brand-new-user" has been added to group "var/../etc"
     And user "brand-new-user" has been added to group "priv/subadmins/1"
-    When user "%admin%" sends HTTP method "GET" to OCS API endpoint "/cloud/users/brand-new-user/groups"
+    When the administrator sends HTTP method "GET" to OCS API endpoint "/cloud/users/brand-new-user/groups"
     Then the groups returned by the API should be
       | new-group            |
       | 0                    |

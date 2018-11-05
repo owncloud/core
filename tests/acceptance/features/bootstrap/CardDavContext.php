@@ -92,6 +92,18 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
+	 * @When the administrator requests address book :addressBook using the new WebDAV API
+	 *
+	 * @param string $addressBook
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRequestsAddressBookUsingTheNewWebdavApi($addressBook) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->userRequestsAddressBookUsingTheAPI($admin, $addressBook);
+	}
+
+	/**
 	 * @Given user :user has successfully created an address book named :addressBook
 	 *
 	 * @param string $user
@@ -121,6 +133,18 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 			$headers, $body
 		);
 		$this->theCardDavHttpStatusCodeShouldBe(201);
+	}
+
+	/**
+	 * @Given the administrator has successfully created an address book named :addressBook
+	 *
+	 * @param string $addressBook
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSuccessfullyCreatedAnAddressBookNamed($addressBook) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->userHasCreatedAnAddressBookNamed($admin, $addressBook);
 	}
 
 	/**

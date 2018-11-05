@@ -6,7 +6,7 @@ Feature: files and folders can be deleted from the trashbin
 
   Background:
     Given using OCS API version "1"
-    And as user "%admin%"
+    And as the administrator
 
   @smokeTest
   Scenario Outline: Trashbin can be emptied

@@ -23,7 +23,7 @@ Feature: sharing
   Scenario Outline: getting all shares of a user using another user
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has shared file "textfile0.txt" with user "user1"
-    When user "%admin%" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
+    When the administrator sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And file "textfile0.txt" should not be included in the response

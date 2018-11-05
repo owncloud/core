@@ -11,7 +11,7 @@ Feature: enable user
   Scenario: admin enables an user
     Given user "user1" has been created
     And user "user1" has been disabled
-    When user "%admin%" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/user1/enable"
+    When the administrator sends HTTP method "PUT" to OCS API endpoint "/cloud/users/user1/enable"
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "user1" should be enabled
@@ -20,7 +20,7 @@ Feature: enable user
     Given user "another-admin" has been created
     And user "another-admin" has been added to group "admin"
     And user "another-admin" has been disabled
-    When user "%admin%" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/another-admin/enable"
+    When the administrator sends HTTP method "PUT" to OCS API endpoint "/cloud/users/another-admin/enable"
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "another-admin" should be enabled
@@ -29,10 +29,10 @@ Feature: enable user
     Given user "subadmin" has been created
     And group "new-group" has been created
     And user "subadmin" has been added to group "new-group"
-    And user "%admin%" has been added to group "new-group"
+    And the administrator has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
     And user "subadmin" has been disabled
-    When user "%admin%" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/subadmin/enable"
+    When the administrator sends HTTP method "PUT" to OCS API endpoint "/cloud/users/subadmin/enable"
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "subadmin" should be enabled

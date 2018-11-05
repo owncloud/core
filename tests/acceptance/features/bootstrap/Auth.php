@@ -178,6 +178,17 @@ trait Auth {
 	}
 
 	/**
+	 * @When the administrator generates a new client token using the token API
+	 * @Given a new client token for the administrator has been generated
+	 *
+	 * @return void
+	 */
+	public function aNewClientTokenForTheAdministratorHasBeenGenerated() {
+		$admin = $this->getAdminUsername();
+		$this->aNewClientTokenHasBeenGenerated($admin);
+	}
+
+	/**
 	 * @When user :user requests :url with :method using basic auth
 	 * @Given user :user has requested :url with :method using basic auth
 	 *
@@ -276,6 +287,16 @@ trait Auth {
 			$loginUrl, null, null, null, $body, null, $this->cookieJar
 		);
 		$this->extractRequestTokenFromResponse($response);
+	}
+
+	/**
+	 * @Given a new browser session for the administrator has been started
+	 *
+	 * @return void
+	 */
+	public function aNewBrowserSessionForTheAdministratorHasBeenStarted() {
+		$admin = $this->getAdminUsername();
+		$this->aNewBrowserSessionForHasBeenStarted($admin);
 	}
 
 	/**

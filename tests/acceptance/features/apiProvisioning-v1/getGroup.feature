@@ -14,7 +14,7 @@ Feature: get group
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "123" has been added to group "new-group"
-    When user "%admin%" sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group"
+    When the administrator sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the users returned by the API should be
@@ -23,7 +23,7 @@ Feature: get group
 
   Scenario: admin tries to get users in the empty group
     Given group "new-group" has been created
-    When user "%admin%" sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group"
+    When the administrator sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the list of users returned by the API should be empty

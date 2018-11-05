@@ -6,14 +6,14 @@ Feature: caldav
 
   @caldav
   Scenario: Accessing a not existing calendar of another user
-    When user "%admin%" requests calendar "user0/MyCalendar" using the new WebDAV API
+    When the administrator requests calendar "user0/MyCalendar" using the new WebDAV API
     Then the CalDAV HTTP status code should be "404"
     And the CalDAV exception should be "Sabre\DAV\Exception\NotFound"
     And the CalDAV error message should be "Node with name 'MyCalendar' could not be found"
 
   @caldav
   Scenario: Accessing a not shared calendar of another user
-    Given user "%admin%" has successfully created a calendar named "MyCalendar"
+    Given the administrator has successfully created a calendar named "MyCalendar"
     When user "user0" requests calendar "admin/MyCalendar" using the new WebDAV API
     Then the CalDAV HTTP status code should be "404"
     And the CalDAV exception should be "Sabre\DAV\Exception\NotFound"

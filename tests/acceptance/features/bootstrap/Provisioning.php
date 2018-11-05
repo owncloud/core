@@ -534,6 +534,18 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Given the administrator has changed his own email address to :email
+	 *
+	 * @param string $email
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasChangedHisOwnEmailAddressTo($email) {
+		$admin = $this->getAdminUsername();
+		$this->adminChangesTheEmailOfTheUserUsingTheProvisioningApi($admin, $email);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" changes the email of user "([^"]*)" to "([^"]*)" using the provisioning API$/
 	 * @Given /^user "([^"]*)" has changed the email of user "([^"]*)" to "([^"]*)"$/
 	 *
@@ -1199,6 +1211,18 @@ trait Provisioning {
 					"Invalid method to add a user to a group"
 				);
 		}
+	}
+
+	/**
+	 * @Given the administrator has been added to group :group
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasBeenAddedToGroup($group) {
+		$admin = $this->getAdminUsername();
+		$this->userHasBeenAddedToGroup($admin, $group);
 	}
 
 	/**
