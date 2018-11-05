@@ -63,4 +63,13 @@ interface ISystemTag {
 	 * @since 9.0.0
 	 */
 	public function isUserAssignable();
+
+	/**
+	 * Returns whether the tag can be assigned to objects by regular users
+	 *
+	 * @return bool true if editable, false otherwise
+	 *
+	 * @since 10.0.11
+	 */
+	public function isUserEditable();
 }
