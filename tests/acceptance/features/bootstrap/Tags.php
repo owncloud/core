@@ -40,19 +40,20 @@ trait Tags {
 	 * @param string $user
 	 * @param bool $userVisible
 	 * @param bool $userAssignable
+	 * @param bool$userEditable
 	 * @param string $name
 	 * @param string $groups
 	 *
 	 * @return void
 	 */
 	private function createTag(
-		$user, $userVisible, $userAssignable, $name, $groups = null
+		$user, $userVisible, $userAssignable, $userEditable, $name, $groups = null
 	) {
 		$this->response = TagsHelper::createTag(
 			$this->getBaseUrl(),
 			$this->getActualUsername($user),
 			$this->getPasswordForUser($user),
-			$name, $userVisible, $userAssignable, $groups,
+			$name, $userVisible, $userAssignable, $userEditable, $groups,
 			$this->getDavPathVersion('systemtags')
 		);
 		$responseHeaders = $this->response->getHeaders();
@@ -153,6 +154,7 @@ trait Tags {
 			$user,
 			TagsHelper::validateTypeOfTag($type)[0],
 			TagsHelper::validateTypeOfTag($type)[1],
+			TagsHelper::validateTypeOfTag($type)[2],
 			$name
 		);
 	}
@@ -204,6 +206,7 @@ trait Tags {
 			$user,
 			TagsHelper::validateTypeOfTag($type)[0],
 			TagsHelper::validateTypeOfTag($type)[1],
+			TagsHelper::validateTypeOfTag($type)[2],
 			$name,
 			$groups
 		);

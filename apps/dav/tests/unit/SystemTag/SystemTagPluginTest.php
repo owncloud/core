@@ -39,6 +39,8 @@ class SystemTagPluginTest extends \Test\TestCase {
 	const USERASSIGNABLE_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::USERASSIGNABLE_PROPERTYNAME;
 	const CANASSIGN_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::CANASSIGN_PROPERTYNAME;
 	const GROUPS_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::GROUPS_PROPERTYNAME;
+	const USEREDITABLE_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::USEREDITABLE_PROPERTYNAME;
+	const WHITELISTEDINGROUP = \OCA\DAV\SystemTag\SystemTagPlugin::WHITELISTEDINGROUP;
 
 	/**
 	 * @var \Sabre\DAV\Server
@@ -114,7 +116,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 					self::DISPLAYNAME_PROPERTYNAME,
 					self::USERVISIBLE_PROPERTYNAME,
 					self::USERASSIGNABLE_PROPERTYNAME,
-					self::CANASSIGN_PROPERTYNAME,
+					self::CANASSIGN_PROPERTYNAME
 				],
 				[
 					self::ID_PROPERTYNAME => '1',
@@ -155,16 +157,20 @@ class SystemTagPluginTest extends \Test\TestCase {
 				]
 			],
 			[
-				new SystemTag(1, 'Test', true, true),
+				new SystemTag(1, 'Test', true, true, true),
 				['group1', 'group2'],
 				[
 					self::ID_PROPERTYNAME,
 					self::GROUPS_PROPERTYNAME,
+					self::USEREDITABLE_PROPERTYNAME,
+					self::WHITELISTEDINGROUP,
 				],
 				[
 					self::ID_PROPERTYNAME => '1',
 					// groups only returned when userAssignable is false
 					self::GROUPS_PROPERTYNAME => '',
+					self::USEREDITABLE_PROPERTYNAME => 'true',
+					self::WHITELISTEDINGROUP => 'false'
 				]
 			],
 		];
@@ -297,6 +303,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 		$propPatch = new \Sabre\DAV\PropPatch([
 			self::DISPLAYNAME_PROPERTYNAME => 'Test changed',
 			self::USERVISIBLE_PROPERTYNAME => 'false',
+			self::USEREDITABLE_PROPERTYNAME => 'true',
 			self::USERASSIGNABLE_PROPERTYNAME => 'true',
 			self::GROUPS_PROPERTYNAME => 'group1|group2',
 		]);
@@ -315,6 +322,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 		$this->assertEquals(200, $result[self::DISPLAYNAME_PROPERTYNAME]);
 		$this->assertEquals(200, $result[self::USERASSIGNABLE_PROPERTYNAME]);
 		$this->assertEquals(200, $result[self::USERVISIBLE_PROPERTYNAME]);
+		$this->assertEquals(200, $result[self::USEREDITABLE_PROPERTYNAME]);
 	}
 
 	/**
