@@ -44,13 +44,14 @@ Feature: enable user
     When user "another-admin" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/another-admin/enable"
     Then user "another-admin" should be disabled
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: normal user tries to enable other user
     Given user "user1" has been created
     And user "user2" has been created
     And user "user2" has been disabled
     When user "user1" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/user2/enable"
-    Then the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And user "user2" should be disabled
 

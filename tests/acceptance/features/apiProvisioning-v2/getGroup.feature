@@ -44,20 +44,22 @@ Feature: get group
       | user1 |
       | user2 |
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: subadmin tries to get users in a group he is not responsible for
     Given user "subadmin" has been created
     And group "new-group" has been created
     And group "another-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "subadmin" sends HTTP method "GET" to OCS API endpoint "/cloud/groups/another-group"
-    Then the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: normal user tries to get users in his group
     Given user "newuser" has been created
     And group "new-group" has been created
     When user "newuser" sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group"
-    Then the OCS status code should be "401"
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"

@@ -22,7 +22,7 @@ Feature: edit users
     And the user attributes returned by the API should include
       | displayname | A New User |
 
-  @skip @issue-33093
+  @skip @issue-23603
   Scenario: the administrator can edit a user quota
     Given user "brand-new-user" has been created
     When the administrator changes the quota of user "brand-new-user" to "12MB" using the occ command

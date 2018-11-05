@@ -15,7 +15,7 @@ Feature: enable an app
     And the HTTP status code should be "200"
     And app "comments" should be enabled
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: subadmin tries to enable an app
     Given user "subadmin" has been created
     And group "newgroup" has been created
@@ -23,14 +23,16 @@ Feature: enable an app
     And the app "comments" has been disabled
     When user "subadmin" enables the app "comments"
     Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And app "comments" should be disabled
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: normal user tries to enable an app
     Given user "newuser" has been created
     And the app "comments" has been disabled
     When user "newuser" enables the app "comments"
     Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And app "comments" should be disabled
