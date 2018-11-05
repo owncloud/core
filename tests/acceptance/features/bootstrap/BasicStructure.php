@@ -1964,7 +1964,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Then the config key :key of app :appID must have value :value
+	 * @Then the config key :key of app :appID should have value :value
 	 *
 	 * @param string $key
 	 * @param string $appID
@@ -1972,7 +1972,7 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public function theConfigKeyOfAppMustHaveValue($key, $appID, $value) {
+	public function theConfigKeyOfAppShouldHaveValue($key, $appID, $value) {
 		$response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
@@ -2078,7 +2078,7 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public function followingConfigKeysMustExist($shouldOrNot, TableNode $table) {
+	public function followingConfigKeysShouldExist($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");
 		if ($should) {
 			foreach ($table as $item) {
