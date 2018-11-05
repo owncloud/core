@@ -8,7 +8,7 @@ Feature: add and delete app configs using occ command
     When the administrator adds a config key "con" with value "conkey" in app "core" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'Config value con for app core set to conkey'
-    And the config key "con" of app "core" must have value "conkey"
+    And the config key "con" of app "core" should have value "conkey"
     When the administrator deletes the config key "con" of app "core" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'Config value con of app core deleted'
@@ -33,3 +33,4 @@ Feature: add and delete app configs using occ command
     When the administrator lists the config keys
     Then the command should have been successful
     And the command output should contain the apps configs
+
