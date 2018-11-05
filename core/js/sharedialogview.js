@@ -349,7 +349,7 @@
 
 		_onSelectRecipient: function(e, s) {
 			e.preventDefault();
-			$(e.target).attr('disabled', true)
+			$(e.target).prop('disabled', true)
 				.val(s.item.label);
 			var $loading = this.$el.find('.shareWithLoading');
 			$loading.removeClass('hidden')
@@ -357,12 +357,12 @@
 
 			this.model.addShare(s.item.value, {success: function() {
 				$(e.target).val('')
-					.attr('disabled', false);
+					.prop('disabled', false);
 				$loading.addClass('hidden')
 					.removeClass('inlineblock');
 			}, error: function(obj, msg) {
 				OC.Notification.showTemporary(msg);
-				$(e.target).attr('disabled', false)
+				$(e.target).prop('disabled', false)
 					.autocomplete('search', $(e.target).val());
 				$loading.addClass('hidden')
 					.removeClass('inlineblock');

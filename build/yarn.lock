@@ -62,17 +62,13 @@
   version "0.0.0"
   resolved "https://codeload.github.com/tapmodo/Jcrop/tar.gz/1902fbc6afa14481dc019a17e0dcb7d62b808a98"
 
-"@bower_components/jquery-migrate@appleboy/jquery-migrate#1.4.0":
-  version "0.0.0"
-  resolved "https://codeload.github.com/appleboy/jquery-migrate/tar.gz/29077d39689bddad05036a537d49c4cf96488569"
+"@bower_components/jquery-ui@components/jqueryui#1.12.1":
+  version "1.12.1"
+  resolved "https://codeload.github.com/components/jqueryui/tar.gz/44ecf3794cc56b65954cc19737234a3119d036cc"
 
-"@bower_components/jquery-ui@components/jqueryui#1.10.0":
-  version "1.10.0"
-  resolved "https://codeload.github.com/components/jqueryui/tar.gz/4c0bac635cc97c8cd5087bb244d497100429fea2"
-
-"@bower_components/jquery@jquery/jquery-dist#2.1.4":
-  version "2.1.4"
-  resolved "https://codeload.github.com/jquery/jquery-dist/tar.gz/7751e69b615c6eca6f783a81e292a55725af6b85"
+"@bower_components/jquery@jquery/jquery-dist#2.2.4":
+  version "2.2.4"
+  resolved "https://codeload.github.com/jquery/jquery-dist/tar.gz/c0185ab7c75aab88762c5aae780b9d83b80eda72"
 
 "@bower_components/jsTimezoneDetect@HenningM/jstimezonedetect#v1.0.6", "@bower_components/jstzdetect@HenningM/jstimezonedetect#1.0.6":
   version "1.0.6"
