@@ -8,16 +8,31 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Added
 - Allow loading JSON files in setups with pretty URLs - [#32835](https://github.com/owncloud/core/issues/32835)
 - Support global CORS domains for public pages - [#33139](https://github.com/owncloud/core/issues/33139)
+- New tag scope "static tags", editable but not assignable - [#33420](https://github.com/owncloud/core/issues/33420)
+
 ### Changed
 - Disable browser autocomplete for password fields - [#32590](https://github.com/owncloud/core/issues/32590)
 - Bump symfony 3.4.15 to 3.4.17 - [#33001](https://github.com/owncloud/core/issues/33001)
+- Bump symfony/polyfill components v1.9.0 => v1.10.0 - [#33377](https://github.com/owncloud/core/issues/33377)
 - Bump jakub-onderka/php-console-highlighter from 0.3.2 to 0.4 - [#32944](https://github.com/owncloud/core/issues/32944)
 - Bump handlebars from 4.0.11 to 4.0.12 in /build - [#32661](https://github.com/owncloud/core/issues/32661)
-- Bump sinon from 6.2.0 to 6.3.5 - [#32825](https://github.com/owncloud/core/issues/32825) [#33073](https://github.com/owncloud/core/issues/33073)
+- Bump sinon from 6.2.0 to 7.1.1 - [#32825](https://github.com/owncloud/core/issues/32825) [#33073](https://github.com/owncloud/core/issues/33073) [#33306](https://github.com/owncloud/core/issues/33306) [#33373](https://github.com/owncloud/core/issues/33373)
+- Bump karma from 3.0.0 to 3.1.1 in /build - [#33256](https://github.com/owncloud/core/issues/33256) [#33343](https://github.com/owncloud/core/issues/33343)
+- Bump league/flysystem from 1.0.46 to 1.0.48 - [#33199](https://github.com/owncloud/core/issues/33199)
 - Bump composer/xdebug-handler to 1.3.0 - [#32977](https://github.com/owncloud/core/issues/32977)
+- Bump sabre/dav from 3.2.2 to 3.2.3 - [#33276](https://github.com/owncloud/core/issues/33276)
+- Bump friendsofphp/php-cs-fixer (v2.13.0 => v2.13.1) - [#33290](https://github.com/owncloud/core/issues/33290)
+
 ### Removed
 - Deprecate Sharing 1.0 APIs which will be removed in ownCloud 11 - [#33220](https://github.com/owncloud/core/issues/33220)
 ### Fixed
+- Fix upload avatar for LDAP users - [#33369](https://github.com/owncloud/core/issues/33369)
+- Fix double escaping in email subject - [#33342](https://github.com/owncloud/core/issues/33342)
+- Add missing type hints in code - [#33314](https://github.com/owncloud/core/issues/33314)
+- Increase versions list performance by ignoring shared storages - [#33291](https://github.com/owncloud/core/issues/33291)
+- Fix PROPFIND with Depth infinity requests through Sabre update - [#28341](https://github.com/owncloud/core/issues/28341)
+- Adjust "has never logged in" text in occ command - [#33275](https://github.com/owncloud/core/issues/33275)
+- Don't remove temporary file on failure when creating office file preview - [#33234](https://github.com/owncloud/core/issues/33234)
 - Warning log about oc_readonly storage wrapper is now logged in debug level - [#33212](https://github.com/owncloud/core/issues/33212)
 - Fix occ encrypt-all command to not attempt re-encrypting already encrypted files - [#33206](https://github.com/owncloud/core/issues/33206)
 - Register areCredentialsValid as a sensitive logging method - [#32713](https://github.com/owncloud/core/issues/32713)
