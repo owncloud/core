@@ -37,9 +37,10 @@
   version "2.0.2"
   resolved "https://codeload.github.com/Graffino/Browser-Update/tar.gz/0edda8c7f53ad2cbe68538c00b8c790513096d60"
 
-"@bower_components/clipboard@zenorocha/clipboard.js#1.7.1":
-  version "1.7.1"
-  resolved "https://codeload.github.com/zenorocha/clipboard.js/tar.gz/b6e6b80ab07eab03ce0d277515b3ed540773a330"
+"@bower_components/clipboard@zenorocha/clipboard.js#v2.0.1":
+  version "2.0.1"
+  uid "3382ea3d14a6c46d274df6147c73a83ef47e41b3"
+  resolved "https://codeload.github.com/zenorocha/clipboard.js/tar.gz/3382ea3d14a6c46d274df6147c73a83ef47e41b3"
   dependencies:
     good-listener "^1.2.2"
     select "^1.1.2"
@@ -70,7 +71,12 @@
   version "2.2.4"
   resolved "https://codeload.github.com/jquery/jquery-dist/tar.gz/c0185ab7c75aab88762c5aae780b9d83b80eda72"
 
-"@bower_components/jsTimezoneDetect@HenningM/jstimezonedetect#v1.0.6", "@bower_components/jstzdetect@HenningM/jstimezonedetect#1.0.6":
+"@bower_components/jsTimezoneDetect@HenningM/jstimezonedetect#1.0.5":
+  version "1.0.5"
+  uid "2efb16c850d8447109eff40d4b1495acd8168812"
+  resolved "https://codeload.github.com/HenningM/jstimezonedetect/tar.gz/2efb16c850d8447109eff40d4b1495acd8168812"
+
+"@bower_components/jstzdetect@HenningM/jstimezonedetect#1.0.6":
   version "1.0.6"
   uid bd595ed253292934991a414979007f3d51a1547d
   resolved "https://codeload.github.com/HenningM/jstimezonedetect/tar.gz/bd595ed253292934991a414979007f3d51a1547d"
