@@ -64,6 +64,9 @@ class DetailsDialog extends OwncloudPage {
 	private $commentDeleteButtonXpath = "//a[@data-original-title='Delete comment']";
 	private $commentListXpath = "//ul[@class='comments']//div[@class='message']";
 
+	private $versionsListXpath = "//div[@id='versionsTabView']//ul[@class='versions']";
+	private $lastVersionRevertButton = "//div[@id='versionsTabView']//ul[@class='versions']//li[1]/div/a";
+
 	/**
 	 * Lookup the id for the requested details tab.
 	 * If the id is not known, then return the passed-in parameter as the id.
@@ -111,6 +114,38 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	private function getCommentXpath($content) {
 		return "//ul[@class='comments']//div[@class='message' and contains(., '" . $content . "')]";
+	}
+
+	/**
+	 * find the xpath of version list
+	 *
+	 * @return string
+	 */
+	public function getVersionsList() {
+		$versionsList = $this->find("xpath", $this->versionsListXpath);
+		$this->assertElementNotNull(
+			$versionsList,
+			__METHOD__ .
+			" could not find versions list for current file"
+		);
+		$this->waitTillElementIsNotNull($this->versionsListXpath);
+		return $versionsList;
+	}
+
+	/**
+	 * find the xpath of button to revert to last version
+	 *
+	 * @return void
+	 */
+	public function getLastVersionRevertButton() {
+		$btn = $this->find("xpath", $this->lastVersionRevertButton);
+		$this->assertElementNotNull(
+			$btn,
+			__METHOD__ .
+			" could not find the button to revert the version"
+		);
+		$this->waitTillElementIsNotNull($this->lastVersionRevertButton);
+		return $btn;
 	}
 
 	/**
@@ -372,6 +407,15 @@ class DetailsDialog extends OwncloudPage {
 		return "//div[contains(@class, 'systemtags-select2-dropdown')]" .
 			"//ul[@class='select2-results']" .
 			"//span[@class='label']";
+	}
+
+	/**
+	 * @return void
+	 */
+	public function restoreCurrentFileToLastVersion() {
+		$revertBtn = $this->getLastVersionRevertButton();
+		$revertBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($this->getSession());
 	}
 
 	/**
