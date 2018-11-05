@@ -41,6 +41,7 @@
 namespace OC;
 
 use bantu\IniGetWrapper\IniGetWrapper;
+use OC\App\Platform;
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\TimeFactory;
@@ -594,7 +595,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$groupManager,
 				$c->getMemCacheFactory(),
 				$c->getEventDispatcher(),
-				$c->getConfig()
+				$c->getConfig(),
+				new Platform($c->getConfig())
 			);
 		});
 		$this->registerService('DateTimeZone', function (Server $c) {
