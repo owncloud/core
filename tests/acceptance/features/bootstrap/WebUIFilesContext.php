@@ -2051,4 +2051,26 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserDeletesTagWithNameUsingTheWebui($name) {
 		$this->filesPage->getDetailsDialog()->deleteTag($name);
 	}
+
+	/**
+	 * @Then the versions list should contain :num entries
+	 *
+	 * @param int $num
+	 *
+	 * @return void
+	 */
+	public function theVersionsListShouldContainEntries($num) {
+		$versionsList = $this->filesPage->getDetailsDialog()->getVersionsList();
+		$versionsCount = \count($versionsList->findAll("xpath", "//li"));
+		PHPUnit_Framework_Assert::assertEquals($num, $versionsCount);
+	}
+
+	/**
+	 * @When the user restores the file to last version using the webUI
+	 *
+	 * @return void
+	 */
+	public function theUserRestoresTheFileToLastVersionUsingTheWebui() {
+		$this->filesPage->getDetailsDialog()->restoreCurrentFileToLastVersion();
+	}
 }
