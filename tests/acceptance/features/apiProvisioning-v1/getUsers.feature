@@ -34,6 +34,6 @@ Feature: get users
     Given user "normaluser" has been created
     And user "newuser" has been created
     When user "normaluser" sends HTTP method "GET" to OCS API endpoint "/cloud/users"
-    And the OCS status code should be "997"
+    Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the API should not return any data

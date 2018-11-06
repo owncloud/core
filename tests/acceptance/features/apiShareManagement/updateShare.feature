@@ -35,7 +35,7 @@ Feature: sharing
     And the user gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -86,7 +86,7 @@ Feature: sharing
     And the user gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -120,7 +120,7 @@ Feature: sharing
     And the user gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -153,7 +153,7 @@ Feature: sharing
     And the user gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -186,7 +186,7 @@ Feature: sharing
     And the user gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -218,10 +218,9 @@ Feature: sharing
     And as user "user0"
     When the user updates the last share using the sharing API with
       | permissions | 1 |
-    And the user gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id                | A_NUMBER       |
       | item_type         | file           |
       | item_source       | A_NUMBER       |
@@ -283,7 +282,6 @@ Feature: sharing
     And user "user0" has shared folder "/folder1" with user "user1" with permissions 31
     And user "user1" has shared folder "/folder1/folder2" with user "user2" with permissions 31
     When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
-    And user "user1" gets the info of the last share using the sharing API
     Then the share fields of the last share should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
@@ -311,7 +309,6 @@ Feature: sharing
     And user "user0" has shared folder "/user0-folder" with user "user1" with permissions 31
     And user "user2" has shared folder "/user2-folder" with user "user1" with permissions 31
     When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2" using the WebDAV API
-    And user "user1" gets the info of the last share using the sharing API
     Then the share fields of the last share should include
       | id                | A_NUMBER             |
       | item_type         | folder               |

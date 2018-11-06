@@ -36,7 +36,7 @@ Feature: access user provisioning API using app password
   Scenario: normal user gets their own information using the app password
     Given user "newuser" has been created
     And a new client token for "newuser" has been generated
-    Given a new browser session for "newuser" has been started
+    And a new browser session for "newuser" has been started
     And the user has generated a new app password named "my-client"
     When the user requests "/ocs/v1.php/cloud/users/newuser" with "GET" using the generated app password
     Then the HTTP status code should be "200"
@@ -60,7 +60,7 @@ Feature: access user provisioning API using app password
     Given user "newuser" has been created
     And user "anotheruser" has been created
     And a new client token for "newuser" has been generated
-    Given a new browser session for "newuser" has been started
+    And a new browser session for "newuser" has been started
     And the user has generated a new app password named "my-client"
     When the user requests "/ocs/v1.php/cloud/users/anotheruser" with "GET" using the generated app password
     Then the OCS status code should be "997"

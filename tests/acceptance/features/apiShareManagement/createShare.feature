@@ -27,10 +27,7 @@ Feature: sharing
   Scenario Outline: Creating a share with a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | welcome.txt |
-      | shareWith | grp1        |
-      | shareType | 1           |
+    When user "user0" shares file "/welcome.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the share fields of the last share should include
@@ -50,10 +47,7 @@ Feature: sharing
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user0" has shared file "welcome.txt" with group "grp1"
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | welcome.txt |
-      | shareWith | user1       |
-      | shareType | 0           |
+    When user "user0" shares file "/welcome.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the share fields of the last share should include
@@ -239,7 +233,7 @@ Feature: sharing
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
-    And user "user0" shares file "/PARENT" with group "grp1" using the sharing API
+    When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
     Then user "user1" should see the following elements
       | /FOLDER/                 |
       | /PARENT/                 |
@@ -303,10 +297,7 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user1" has shared file "welcome.txt" with group "grp1"
     And user "user1" has deleted the last share
-    When user "user1" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | welcome.txt |
-      | shareWith | grp1        |
-      | shareType | 1           |
+    When user "user1" shares file "/welcome.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     Examples:
@@ -321,10 +312,7 @@ Feature: sharing
     And user "user0" has created a folder "/test"
     And user "user0" has created a folder "/test/sub"
     And user "user0" has shared file "/test" with group "grp1"
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | /test/sub |
-      | shareWith | user1     |
-      | shareType | 0         |
+    When user "user0" shares file "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "user1" the folder "/sub" should exist
@@ -341,10 +329,7 @@ Feature: sharing
     And user "user0" has created a folder "/test"
     And user "user0" has created a folder "/test/sub"
     And user "user0" has shared file "/test" with group "grp1"
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | /test/sub |
-      | shareWith | user1     |
-      | shareType | 0         |
+    When user "user0" shares file "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "user1" the folder "/sub" should exist

@@ -39,8 +39,7 @@ Feature: checksums
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     When user "user0" moves file "/myChecksumFile.txt" to "/myMovedChecksumFile.txt" using the WebDAV API
-    And user "user0" requests the checksum of "/myMovedChecksumFile.txt" via propfind
-    Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
+    Then as user "user0" the webdav checksum of "/myMovedChecksumFile.txt" via propfind should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
     Examples:
       | dav_version |
       | old         |
@@ -99,8 +98,7 @@ Feature: checksums
     Given using new DAV path
     And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     When user "user0" copies file "/myChecksumFile.txt" to "/myChecksumFileCopy.txt" using the WebDAV API
-    And user "user0" requests the checksum of "/myChecksumFileCopy.txt" via propfind
-    Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
+    Then as user "user0" the webdav checksum of "/myChecksumFileCopy.txt" via propfind should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
 
   Scenario: Copying file with checksum should return the checksum in the download header using new DAV path
     Given using new DAV path
@@ -123,8 +121,7 @@ Feature: checksums
     And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     When user "user0" shares file "/myChecksumFile.txt" with user "user1" using the sharing API
     And user "user1" uploads file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/myChecksumFile.txt" using the WebDAV API
-    And user "user0" requests the checksum of "/myChecksumFile.txt" via propfind
-    Then the webdav checksum should match "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 MD5:56e57920c3c8c727bfe7a5288cdf61c4 ADLER32:1048035a"
+    Then as user "user0" the webdav checksum of "/myChecksumFile.txt" via propfind should match "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 MD5:56e57920c3c8c727bfe7a5288cdf61c4 ADLER32:1048035a"
 
   Scenario: Upload new dav chunked file where checksum matches
     Given using new DAV path
@@ -256,8 +253,7 @@ Feature: checksums
   Scenario Outline: Uploading a file with MD5 checksum overwriting an existing file
     Given using <dav_version> DAV path
     When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a" using the WebDAV API
-    And user "user0" requests the checksum of "/textfile0.txt" via propfind
-    Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
+    Then as user "user0" the webdav checksum of "/textfile0.txt" via propfind should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
     And the content of file "/textfile0.txt" for user "user0" should be:
       """
       This is a testfile.
@@ -272,8 +268,7 @@ Feature: checksums
   Scenario Outline: Uploading a file with SHA1 checksum overwriting an existing file
     Given using <dav_version> DAV path
     When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" with checksum "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f" using the WebDAV API
-    And user "user0" requests the checksum of "/textfile0.txt" via propfind
-    Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
+    Then as user "user0" the webdav checksum of "/textfile0.txt" via propfind should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
     And the content of file "/textfile0.txt" for user "user0" should be:
       """
       This is a testfile.
@@ -289,8 +284,7 @@ Feature: checksums
   Scenario Outline: Uploading a file with invalid SHA1 checksum overwriting an existing file
     Given using <dav_version> DAV path
     When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" with checksum "SHA1:f005ba11f005ba11f005ba11f005ba11f005ba11" using the WebDAV API
-    And user "user0" requests the checksum of "/textfile0.txt" via propfind
-    Then the webdav checksum should match "SHA1:0c1d334e686d1039c9ead0dbc047f02dbf696be8 MD5:d991cd854c53729d066c6ed5e34bcda3 ADLER32:8685092b"
+    Then as user "user0" the webdav checksum of "/textfile0.txt" via propfind should match "SHA1:0c1d334e686d1039c9ead0dbc047f02dbf696be8 MD5:d991cd854c53729d066c6ed5e34bcda3 ADLER32:8685092b"
     And the content of file "/textfile0.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
     Examples:
       | dav_version |

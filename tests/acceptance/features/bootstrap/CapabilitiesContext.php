@@ -75,6 +75,31 @@ class CapabilitiesContext implements Context {
 	}
 
 	/**
+	 * @Then the :pathToElement capability of files sharing app should be :value
+	 *
+	 * @param string $pathToElement
+	 * @param string $value
+	 *
+	 * @return void
+	 */
+	public function theCapabilityOfFilesSharingAppShouldBe(
+		$pathToElement, $value
+	) {
+		$this->featureContext->userGetsCapabilitiesCheckResponse(
+			$this->featureContext->getCurrentUser()
+		);
+		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
+		PHPUnit_Framework_Assert::assertEquals(
+			$value === "EMPTY" ? '' : $value,
+			$this->featureContext->getParameterValueFromXml(
+				$capabilitiesXML,
+				"files_sharing",
+				$pathToElement
+			)
+		);
+	}
+
+	/**
 	 * @Then the capabilities should not contain
 	 *
 	 * @param TableNode|null $formData
