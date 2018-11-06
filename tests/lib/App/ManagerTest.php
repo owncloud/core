@@ -422,16 +422,18 @@ class ManagerTest extends TestCase {
 			->setMethods(['getAppInfo'])
 			->getMock();
 
+		$dependencies = [ 'owncloud' => [ '@attributes' => [ 'min-version' => '8.2.0', 'max-version' => '100.0.0']]];
+
 		$appInfos = [
 			'dav' => ['id' => 'dav'],
 			'files' => ['id' => 'files'],
 			'files_external' => ['id' => 'files_external'],
 			'federatedfilesharing' => ['id' => 'federatedfilesharing'],
-			'test1' => ['id' => 'test1', 'version' => '1.0.1', 'requiremax' => '9.0.0'],
-			'test2' => ['id' => 'test2', 'version' => '1.0.0', 'requiremin' => '8.2.0'],
-			'test3' => ['id' => 'test3', 'version' => '1.2.4', 'requiremin' => '9.0.0'],
-			'test4' => ['id' => 'test4', 'version' => '3.0.0', 'requiremin' => '8.1.0'],
-			'testnoversion' => ['id' => 'testnoversion', 'requiremin' => '8.2.0'],
+			'test1' => ['id' => 'test1', 'version' => '1.0.1', 'dependencies' => $dependencies],
+			'test2' => ['id' => 'test2', 'version' => '1.0.0', 'dependencies' => $dependencies],
+			'test3' => ['id' => 'test3', 'version' => '1.2.4', 'dependencies' => [ 'owncloud' => [ '@attributes' => [ 'min-version' => '9.0.0', 'max-version' => '100.0.0']]]],
+			'test4' => ['id' => 'test4', 'version' => '3.0.0', 'dependencies' => $dependencies],
+			'testnoversion' => ['id' => 'testnoversion', 'dependencies' =>  $dependencies],
 		];
 
 		$this->manager

@@ -97,8 +97,8 @@ class InfoChecker extends BasicEmitter {
 				'type' => 'missingRequirement',
 				'message' => 'missing minimal ownCloud version',
 			];
-
 		}
+
 		if (!isset($info['dependencies']['owncloud']['@attributes']['max-version'])) {
 			$this->emit('InfoChecker', 'missingRequirement', ['max']);
 			$errors[] = [

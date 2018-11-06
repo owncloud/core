@@ -32,8 +32,14 @@ class AppTest extends \Test\TestCase {
 			[
 				'6.0.0.0',
 				[
-					'requiremin' => '6.0',
-					'requiremax' => '6.0',
+					'dependencies' => [
+						'owncloud' => [
+							'@attributes' => [
+								'min-version' => '6.0',
+								'max-version' => '6.0',
+							],
+						],
+					],
 				],
 				true
 			],
@@ -41,8 +47,14 @@ class AppTest extends \Test\TestCase {
 			[
 				'6.0.0.0',
 				[
-					'requiremin' => '5.0',
-					'requiremax' => '7.0',
+					'dependencies' => [
+						'owncloud' => [
+							'@attributes' => [
+								'min-version' => '5.0',
+								'max-version' => '7.0',
+							],
+						],
+					],
 				],
 				true
 			],
@@ -50,8 +62,14 @@ class AppTest extends \Test\TestCase {
 			[
 				'6.0.0.0',
 				[
-					'requiremin' => '5.0',
-					'requiremax' => '5.0',
+					'dependencies' => [
+						'owncloud' => [
+							'@attributes' => [
+								'min-version' => '5.0',
+								'max-version' => '5.0',
+							],
+						],
+					],
 				],
 				false
 			],
@@ -59,8 +77,14 @@ class AppTest extends \Test\TestCase {
 			[
 				'5.0.0.0',
 				[
-					'requiremin' => '6.0',
-					'requiremax' => '6.0',
+					'dependencies' => [
+						'owncloud' => [
+							'@attributes' => [
+								'min-version' => '6.0',
+								'max-version' => '6.0',
+							],
+						],
+					],
 				],
 				false
 			],
@@ -68,31 +92,27 @@ class AppTest extends \Test\TestCase {
 			[
 				'6.0.0.0',
 				[
-					'requiremin' => '6.0',
+					'dependencies' => [
+						'owncloud' => [
+							'@attributes' => [
+								'min-version' => '6.0',
+							],
+						],
+					],
 				],
-				true
+				false
 			],
 			// only min specified fail
 			[
 				'5.0.0.0',
 				[
-					'requiremin' => '6.0',
-				],
-				false
-			],
-			// only min specified legacy
-			[
-				'6.0.0.0',
-				[
-					'require' => '6.0',
-				],
-				true
-			],
-			// only min specified legacy fail
-			[
-				'4.0.0.0',
-				[
-					'require' => '6.0',
+					'dependencies' => [
+						'owncloud' => [
+							'@attributes' => [
+								'min-version' => '6.0',
+							],
+						],
+					],
 				],
 				false
 			],
@@ -100,104 +120,41 @@ class AppTest extends \Test\TestCase {
 			[
 				'5.0.0.0',
 				[
-					'requiremax' => '6.0',
+					'dependencies' => [
+						'owncloud' => [
+							'@attributes' => [
+								'max-version' => '6.0',
+							],
+						],
+					],
 				],
-				true
+				false
 			],
 			// only max specified fail
 			[
 				'7.0.0.0',
 				[
-					'requiremax' => '6.0',
+					'dependencies' => [
+						'owncloud' => [
+							'@attributes' => [
+								'max-version' => '6.0',
+							],
+						],
+					],
 				],
 				false
 			],
-			// variations of versions
-			// single OC number
-			[
-				'4',
-				[
-					'require' => '4.0',
-				],
-				true
-			],
-			// multiple OC number
-			[
-				'4.3.1',
-				[
-					'require' => '4.3',
-				],
-				true
-			],
-			// single app number
-			[
-				'4',
-				[
-					'require' => '4',
-				],
-				true
-			],
-			// single app number fail
-			[
-				'4.3',
-				[
-					'require' => '5',
-				],
-				false
-			],
-			// complex
-			[
-				'5.0.0',
-				[
-					'require' => '4.5.1',
-				],
-				true
-			],
-			// complex fail
-			[
-				'4.3.1',
-				[
-					'require' => '4.3.2',
-				],
-				false
-			],
-			// two numbers
-			[
-				'4.3.1',
-				[
-					'require' => '4.4',
-				],
-				false
-			],
-			// one number fail
-			[
-				'4.3.1',
-				[
-					'require' => '5',
-				],
-				false
-			],
-			// pre-alpha app
-			[
-				'5.0.3',
-				[
-					'require' => '4.93',
-				],
-				true
-			],
-			// pre-alpha OC
 			[
 				'6.90.0.2',
 				[
-					'require' => '6.90',
-				],
-				true
-			],
-			// pre-alpha OC max
-			[
-				'6.90.0.2',
-				[
-					'requiremax' => '7',
+					'dependencies' => [
+						'owncloud' => [
+							'@attributes' => [
+								'min-version' => '6.0',
+								'max-version' => '7.0',
+							],
+						],
+					],
 				],
 				true
 			],
@@ -205,24 +162,21 @@ class AppTest extends \Test\TestCase {
 			[
 				'5.0.3',
 				[
-					'require' => '5',
+					'dependencies' => [
+						'owncloud' => [
+							'@attributes' => [
+								'min-version' => '5',
+								'max-version' => '5',
+							],
+						],
+					],
 				],
 				true
 			],
-			// expect same major number match
-			[
-				'5.0.3',
-				[
-					'requiremax' => '5',
-				],
-				true
-			],
-			// dependencies versions before require*
+			// dependencies versions before require
 			[
 				'6.0.0.0',
 				[
-					'requiremin' => '5.0',
-					'requiremax' => '7.0',
 					'dependencies' => [
 						'owncloud' => [
 							'@attributes' => [
@@ -237,8 +191,6 @@ class AppTest extends \Test\TestCase {
 			[
 				'6.0.0.0',
 				[
-					'requiremin' => '5.0',
-					'requiremax' => '7.0',
 					'dependencies' => [
 						'owncloud' => [
 							'@attributes' => [
@@ -253,8 +205,6 @@ class AppTest extends \Test\TestCase {
 			[
 				'6.0.0.0',
 				[
-					'requiremin' => '5.0',
-					'requiremax' => '5.0',
 					'dependencies' => [
 						'owncloud' => [
 							'@attributes' => [
