@@ -10,7 +10,7 @@ Feature: sharing
     Given as user "user0"
     And the user has created a public link share with settings
       | path        | FOLDER |
-      | permissions | 4      |
+      | permissions | create |
     When the public uploads file "test.txt" with content "test" using the public WebDAV API
     And the public uploads file "test.txt" with content "test2" with autorename mode using the public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
@@ -21,7 +21,7 @@ Feature: sharing
     Given using <dav-path> DAV path
     And user "user0" has created a public link share with settings
       | path        | FOLDER |
-      | permissions | 4      |
+      | permissions | create |
     When user "user0" deletes file "/FOLDER" using the WebDAV API
     Then publicly uploading a file should not work
     And the HTTP status code should be "404"
@@ -34,7 +34,7 @@ Feature: sharing
   Scenario: Uploading file to a public read-only share folder does not work
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
-      | permissions | 1      |
+      | permissions | read   |
     Then publicly uploading a file should not work
     And the HTTP status code should be "403"
 
@@ -42,8 +42,8 @@ Feature: sharing
     Given user "user1" has been created
     And user "user0" has created a share with settings
       | path        | FOLDER |
-      | shareType   | 0      |
-      | permissions | 1      |
+      | shareType   | user   |
+      | permissions | read   |
       | shareWith   | user1  |
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
@@ -55,8 +55,8 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has created a share with settings
       | path        | FOLDER |
-      | shareType   | 1      |
-      | permissions | 1      |
+      | shareType   | group  |
+      | permissions | read   |
       | shareWith   | grp1   |
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
@@ -70,7 +70,7 @@ Feature: sharing
     Given as user "user0"
     And the user has created a public link share with settings
       | path        | FOLDER |
-      | permissions | 4      |
+      | permissions | create |
     When the public uploads file "test.txt" with content "test" using the public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
@@ -80,7 +80,7 @@ Feature: sharing
     And the user has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
-      | permissions | 4        |
+      | permissions | create   |
     When the public uploads file "test.txt" with password "%public%" and content "test" using the public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
@@ -89,8 +89,8 @@ Feature: sharing
     And user "user1" has been created
     And user "user0" has created a share with settings
       | path        | FOLDER |
-      | shareType   | 0      |
-      | permissions | 4      |
+      | shareType   | user   |
+      | permissions | create |
       | shareWith   | user1  |
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -106,8 +106,8 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has created a share with settings
       | path        | FOLDER |
-      | shareType   | 1      |
-      | permissions | 4      |
+      | shareType   | group  |
+      | permissions | create |
       | shareWith   | grp1   |
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -122,7 +122,7 @@ Feature: sharing
     And the user has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
-      | permissions | 15       |
+      | permissions | change   |
     When the public uploads file "test.txt" with password "%public%" and content "test" using the public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
@@ -132,8 +132,8 @@ Feature: sharing
     And user "user1" has been created
     And user "user0" has created a share with settings
       | path        | FOLDER |
-      | shareType   | 0      |
-      | permissions | 15     |
+      | shareType   | user   |
+      | permissions | change |
       | shareWith   | user1  |
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -149,8 +149,8 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has created a share with settings
       | path        | FOLDER |
-      | shareType   | 1      |
-      | permissions | 15     |
+      | shareType   | group  |
+      | permissions | change |
       | shareWith   | grp1   |
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -179,7 +179,7 @@ Feature: sharing
     And the user has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
-      | permissions | 15       |
+      | permissions | change   |
     When the public uploads file "test.txt" with password "%public%" and content "test" using the public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
@@ -188,8 +188,8 @@ Feature: sharing
     And user "user1" has been created
     And user "user0" has created a share with settings
       | path        | FOLDER |
-      | shareType   | 0      |
-      | permissions | 15     |
+      | shareType   | user   |
+      | permissions | change |
       | shareWith   | user1  |
     And the quota of user "user0" has been set to "0"
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
@@ -206,8 +206,8 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has created a share with settings
       | path        | FOLDER |
-      | shareType   | 1      |
-      | permissions | 15     |
+      | shareType   | group  |
+      | permissions | change |
       | shareWith   | grp1   |
     And the quota of user "user0" has been set to "0"
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
@@ -221,7 +221,7 @@ Feature: sharing
   Scenario: Uploading file to a public shared folder with read/write permission when the sharer has unsufficient quota does not work
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
-      | permissions | 15     |
+      | permissions | change |
     When the quota of user "user0" has been set to "0"
     Then publicly uploading a file should not work
     And the HTTP status code should be "507"
@@ -231,8 +231,8 @@ Feature: sharing
     And user "user1" has been created
     And user "user0" has created a share with settings
       | path        | FOLDER |
-      | shareType   | 0      |
-      | permissions | 4      |
+      | shareType   | user   |
+      | permissions | create |
       | shareWith   | user1  |
     And the quota of user "user0" has been set to "0"
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
@@ -249,8 +249,8 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has created a share with settings
       | path        | FOLDER |
-      | shareType   | 1      |
-      | permissions | 4      |
+      | shareType   | group  |
+      | permissions | create |
       | shareWith   | grp1   |
     And the quota of user "user0" has been set to "0"
     When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
@@ -264,7 +264,7 @@ Feature: sharing
   Scenario: Uploading file to a public shared folder with upload-only permission when the sharer has unsufficient quota does not work
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
-      | permissions | 4      |
+      | permissions | create |
     When the quota of user "user0" has been set to "0"
     Then publicly uploading a file should not work
     And the HTTP status code should be "507"
@@ -273,7 +273,7 @@ Feature: sharing
   Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled after sharing the folder
     Given user "user0" has created a public link share with settings
       | path        | FOLDER |
-      | permissions | 4      |
+      | permissions | create |
     When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "no"
     Then publicly uploading a file should not work
     And the HTTP status code should be "403"
@@ -283,7 +283,7 @@ Feature: sharing
     Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     And user "user0" has created a public link share with settings
       | path        | FOLDER |
-      | permissions | 31     |
+      | permissions | all    |
     When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "yes"
     Then publicly uploading a file should not work
     And the HTTP status code should be "403"
@@ -292,7 +292,7 @@ Feature: sharing
   Scenario: Uploading file to a public shared folder works when allow public uploads has been disabled and again enabled after sharing the folder
     Given user "user0" has created a public link share with settings
       | path        | FOLDER |
-      | permissions | 4      |
+      | permissions | create |
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "yes"
     When the public uploads file "test.txt" with content "test" using the public WebDAV API
