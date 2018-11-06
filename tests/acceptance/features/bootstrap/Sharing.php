@@ -80,25 +80,72 @@ trait Sharing {
 	 *
 	 * @param string $user
 	 * @param TableNode|null $body
+	 *    TableNode $body should not have any heading and can have following rows    |
+	 *       | name            | A (human-readable) name for the share,              |
+	 *       |                 | which can be up to 64 characters in length.         |
+	 *       | publicUpload    | Whether to allow public upload to a public          |
+	 *       |                 | shared folder. Write true for allowing.             |
+	 *       | password        | The password to protect the public link share with. |
+	 *       | expireDate      | An expire date for public link shares.              |
+	 *       |                 | This argument expects a date string.                |
+	 *       |                 | in the format 'YYYY-MM-DD'.                         |
+	 *       | permissions     | The permissions to set on the share.                |
+	 *       |                 |     1 = read; 2 = update; 4 = create;               |
+	 *       |                 |     8 = delete; 16 = share; 31 = all                |
+	 *       |                 |     15 = change                                     |
+	 *       |                 |     (default: 31, for public shares: 1)             |
+	 *       |                 |     Pass either the (total) number,                 |
+	 *       |                 |     or the keyword,                                 |
+	 *       |                 |     or an comma seperated list of keywords          |
+	 *       | shareWith       | The user or group id with which the file should     |
+	 *       |                 | be shared.                                          |
+	 *       | shareType       | The type of the share. This can be one of:          |
+	 *       |                 |    0 = user, 1 = group, 3 = public (link),          |
+	 *       |                 |    6 = federated (cloud share).                     |
+	 *       |                 |    Pass either the number or the keyword.           |
 	 *
 	 * @return void
 	 */
 	public function userCreatesAShareWithSettings($user, $body) {
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
-
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-			if (\array_key_exists('expireDate', $fd)) {
-				$dateModification = $fd['expireDate'];
-				$fd['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
+			$fd['expireDate'] = \array_key_exists('expireDate', $fd) ? $fd['expireDate'] : null;
+			$fd['name'] = \array_key_exists('name', $fd) ? $fd['name'] : null;
+			$fd['shareWith'] = \array_key_exists('shareWith', $fd) ? $fd['shareWith'] : null;
+			$fd['publicUpload'] = \array_key_exists('publicUpload', $fd) ? $fd['publicUpload'] === 'true' : null;
+			$fd['password'] = \array_key_exists('password', $fd) ? $this->getActualPassword($fd['password']) : null;
+
+			if (\array_key_exists('permissions', $fd)) {
+				if (\is_numeric($fd['permissions'])) {
+					$fd['permissions'] = (int)$fd['permissions'];
+				} else {
+					$fd['permissions'] = \array_map('trim', \explode(',', $fd['permissions']));
+				}
+			} else {
+				$fd['permissions'] = null;
 			}
-			if (\array_key_exists('password', $fd)) {
-				$fd['password'] = $this->getActualPassword($fd['password']);
+			if (\array_key_exists('shareType', $fd)) {
+				if (\is_numeric($fd['shareType'])) {
+					$fd['shareType'] = (int)$fd['shareType'];
+				}
+			} else {
+				$fd['shareType'] = null;
 			}
 		}
-		$this->response = HttpRequestHelper::post(
-			$fullUrl, $user, $this->getPasswordForUser($user), null, $fd
+		$this->response = SharingHelper::createShare(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			$fd['path'],
+			$fd['shareType'],
+			$fd['shareWith'],
+			$fd['publicUpload'],
+			$fd['password'],
+			$fd['permissions'],
+			$fd['name'],
+			$fd['expireDate'],
+			$this->ocsApiVersion,
+			$this->sharingApiVersion
 		);
 		$this->lastShareData = $this->getResponseXml();
 	}
