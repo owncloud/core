@@ -189,8 +189,8 @@ Feature: transfer-ownership
     And user "user1" has created a public link share with settings
       | path | /test/somefile.txt |
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
-    And the command should have been successful
-    Then the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
+    Then the command should have been successful
+    And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
   @skipOnEncryptionType:user-keys
   Scenario: transferring ownership of folder shared with third user

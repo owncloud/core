@@ -55,7 +55,7 @@ Feature: federated
     When user "user1" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/remote_shares/pending"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id          | A_NUMBER                                   |
       | remote      | REMOTE                                     |
       | remote_id   | A_NUMBER                                   |
@@ -106,30 +106,26 @@ Feature: federated
     And user "user0" from server "REMOTE" has accepted the last pending share
     And using server "REMOTE"
     When user "user0" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the WebDAV API
-    And using server "LOCAL"
-    Then the content of file "/textfile0.txt" for user "user1" should be "BLABLABLA" plus end-of-line
+    Then the content of file "/textfile0.txt" for user "user1" on server "LOCAL" should be "BLABLABLA" plus end-of-line
 
   Scenario: Overwrite a federated shared file as recipient - remote server shares - local server receives
     Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
     When user "user1" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the WebDAV API
-    And using server "REMOTE"
-    Then the content of file "/textfile0.txt" for user "user0" should be "BLABLABLA" plus end-of-line
+    Then the content of file "/textfile0.txt" for user "user0" on server "REMOTE" should be "BLABLABLA" plus end-of-line
 
   Scenario: Overwrite a file in a federated shared folder as recipient - local server shares - remote server receives
     Given user "user1" from server "LOCAL" has shared "/PARENT" with user "user0" from server "REMOTE"
     And user "user0" from server "REMOTE" has accepted the last pending share
     And using server "REMOTE"
     When user "user0" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the WebDAV API
-    And using server "LOCAL"
-    Then the content of file "/PARENT/textfile0.txt" for user "user1" should be "BLABLABLA" plus end-of-line
+    Then the content of file "/PARENT/textfile0.txt" for user "user1" on server "LOCAL" should be "BLABLABLA" plus end-of-line
 
   Scenario: Overwrite a file in a federated shared folder as recipient - remote server shares - local server receives
     Given user "user0" from server "REMOTE" has shared "/PARENT" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
     When user "user1" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the WebDAV API
-    And using server "REMOTE"
-    Then the content of file "/PARENT/textfile0.txt" for user "user0" should be "BLABLABLA" plus end-of-line
+    Then the content of file "/PARENT/textfile0.txt" for user "user0" on server "REMOTE" should be "BLABLABLA" plus end-of-line
 
   Scenario: Overwrite a federated shared file as recipient using old chunking
     Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
@@ -139,8 +135,7 @@ Feature: federated
       | 2 | BBBBB |
       | 3 | CCCCC |
     Then the content of file "/textfile0 (2).txt" for user "user1" should be "AAAAABBBBBCCCCC"
-    And using server "REMOTE"
-    Then the content of file "/textfile0.txt" for user "user0" should be "AAAAABBBBBCCCCC"
+    Then the content of file "/textfile0.txt" for user "user0" on server "REMOTE" should be "AAAAABBBBBCCCCC"
 
   Scenario: Overwrite a file in a federated shared folder as recipient using old chunking
     Given user "user0" from server "REMOTE" has shared "/PARENT" with user "user1" from server "LOCAL"
@@ -150,8 +145,7 @@ Feature: federated
       | 2 | BBBBB |
       | 3 | CCCCC |
     Then the content of file "/PARENT (2)/textfile0.txt" for user "user1" should be "AAAAABBBBBCCCCC"
-    And using server "REMOTE"
-    And the content of file "/PARENT/textfile0.txt" for user "user0" should be "AAAAABBBBBCCCCC"
+    And the content of file "/PARENT/textfile0.txt" for user "user0" on server "REMOTE" should be "AAAAABBBBBCCCCC"
 
   Scenario: Trusted server handshake does not require authenticated requests - we force 403 by sending an empty body
     Given using server "LOCAL"
@@ -166,8 +160,7 @@ Feature: federated
     And user "user0" has stored etag of element "/PARENT (2)"
     And using server "LOCAL"
     When user "user1" uploads file "data/file_to_overwrite.txt" to "/PARENT/textfile0.txt" using the WebDAV API
-    Then using server "REMOTE"
-    And the etag of element "/PARENT (2)" of user "user0" should have changed
+    Then the etag of element "/PARENT (2)" of user "user0" on server "REMOTE" should have changed
 
   Scenario: Overwrite a federated shared folder as recipient propagates etag for sharer
     Given user "user1" from server "LOCAL" has shared "/PARENT" with user "user0" from server "REMOTE"
@@ -175,8 +168,7 @@ Feature: federated
     And user "user0" from server "REMOTE" has accepted the last pending share
     And using server "REMOTE"
     When user "user0" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the WebDAV API
-    Then using server "LOCAL"
-    And the etag of element "/PARENT" of user "user1" should have changed
+    Then the etag of element "/PARENT" of user "user1" on server "LOCAL" should have changed
 
   Scenario: Upload file to received federated share while quota is set on home storage
     Given user "user0" from server "REMOTE" has shared "/PARENT" with user "user1" from server "LOCAL"
@@ -184,8 +176,7 @@ Feature: federated
     And using server "LOCAL"
     When user "user1" uploads file "data/textfile.txt" to "/PARENT (2)/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
-    And using server "REMOTE"
-    And as "user0" the files uploaded to "/PARENT/testquota.txt" with all mechanisms should exist
+    Then as user "user0" on server "REMOTE" the files uploaded to "/PARENT/testquota.txt" with all mechanisms should exist
 
   Scenario: Upload file to received federated share while quota is set on remote storage - local server shares - remote server receives
     Given using server "LOCAL"

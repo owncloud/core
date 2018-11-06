@@ -137,8 +137,8 @@ Feature: sharing
     And group "group0" has been created
     And user "user1" has been added to group "group0"
     And user "user2" has been added to group "group0"
-    And user "user0" shares file "/PARENT" with group "group0" using the sharing API
-    And the administrator removes user "user2" from group "group0" using the provisioning API
+    And user "user0" has shared folder "/PARENT" with group "group0"
+    When the administrator removes user "user2" from group "group0" using the provisioning API
     Then user "user1" should see the following elements
       | /FOLDER/                 |
       | /PARENT/                 |

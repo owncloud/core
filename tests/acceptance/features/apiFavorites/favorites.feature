@@ -9,9 +9,7 @@ Feature: favorite
   Scenario Outline: Favorite a folder
     Given using <dav_version> DAV path
     When the user favorites element "/FOLDER" using the WebDAV API
-    And the user gets the following properties of folder "/FOLDER" using the WebDAV API
-      | {http://owncloud.org/ns}favorite |
-    Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
+    Then as the user the folder "/FOLDER" should be favorited
     Examples:
       | dav_version |
       | old         |
@@ -21,9 +19,7 @@ Feature: favorite
     Given using <dav_version> DAV path
     When the user favorites element "/FOLDER" using the WebDAV API
     And the user unfavorites element "/FOLDER" using the WebDAV API
-    And the user gets the following properties of folder "/FOLDER" using the WebDAV API
-      | {http://owncloud.org/ns}favorite |
-    Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+    Then as the user the folder "/FOLDER" should not be favorited
     Examples:
       | dav_version |
       | old         |
@@ -33,9 +29,7 @@ Feature: favorite
   Scenario Outline: Favorite a file
     Given using <dav_version> DAV path
     When the user favorites element "/textfile0.txt" using the WebDAV API
-    And the user gets the following properties of file "/textfile0.txt" using the WebDAV API
-      | {http://owncloud.org/ns}favorite |
-    Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
+    Then as the user the file "/textfile0.txt" should be favorited
     Examples:
       | dav_version |
       | old         |
@@ -46,9 +40,7 @@ Feature: favorite
     Given using <dav_version> DAV path
     When the user favorites element "/textfile0.txt" using the WebDAV API
     And the user unfavorites element "/textfile0.txt" using the WebDAV API
-    And the user gets the following properties of file "/textfile0.txt" using the WebDAV API
-      | {http://owncloud.org/ns}favorite |
-    Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+    Then as the user the file "/textfile0.txt" should not be favorited
     Examples:
       | dav_version |
       | old         |
@@ -131,9 +123,7 @@ Feature: favorite
     And the user has moved file "/textfile0.txt" to "/favoriteFile.txt"
     And the user has shared file "/favoriteFile.txt" with user "user1"
     When the user favorites element "/favoriteFile.txt" using the WebDAV API
-    And user "user1" gets the following properties of file "/favoriteFile.txt" using the WebDAV API
-      | {http://owncloud.org/ns}favorite |
-    Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+    Then as user "user1" the file "/favoriteFile.txt" should not be favorited
     Examples:
       | dav_version |
       | old         |
@@ -145,9 +135,7 @@ Feature: favorite
     And the user has moved file "/textfile0.txt" to "/favoriteFile.txt"
     And the user has shared file "/favoriteFile.txt" with user "user1"
     When user "user1" favorites element "/favoriteFile.txt" using the WebDAV API
-    And the user gets the following properties of file "/favoriteFile.txt" using the WebDAV API
-      | {http://owncloud.org/ns}favorite |
-    Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+    Then as the user the file "/favoriteFile.txt" should not be favorited
     Examples:
       | dav_version |
       | old         |
