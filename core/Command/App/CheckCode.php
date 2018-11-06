@@ -141,11 +141,7 @@ class CheckCode extends Command {
 			});
 
 			$infoChecker->listen('InfoChecker', 'missingRequirement', function ($minMax) use ($output) {
-				$output->writeln("<comment>ownCloud $minMax version requirement missing (will be an error in ownCloud 11 and later)</comment>");
-			});
-
-			$infoChecker->listen('InfoChecker', 'duplicateRequirement', function ($minMax) use ($output) {
-				$output->writeln("<error>Duplicate $minMax ownCloud version requirement found</error>");
+				$output->writeln("<error>ownCloud $minMax version requirement missing</error>");
 			});
 
 			$infoChecker->listen('InfoChecker', 'differentVersions', function ($versionFile, $infoXML) use ($output) {
