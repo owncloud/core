@@ -896,6 +896,24 @@ trait Sharing {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with the administrator(?: with permissions ([\d]*))?$/
+	 *
+	 * @param string $sharer
+	 * @param string $filepath
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function userHasSharedFileWithTheAdministrator(
+		$sharer, $filepath, $permissions = null
+	) {
+		$admin = $this->getAdminUsername();
+		$this->userSharesFileWithUserUsingTheSharingApi(
+			$sharer, $filepath, $admin, $permissions = null
+		);
+	}
+
+	/**
 	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
 	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *

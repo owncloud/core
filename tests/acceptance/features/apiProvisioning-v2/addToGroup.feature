@@ -11,7 +11,7 @@ Feature: add users to group
   Scenario Outline: adding a user to a group
     Given user "brand-new-user" has been created
     And group "<group_id>" has been created
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
+    When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | <group_id> |
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
@@ -24,7 +24,7 @@ Feature: add users to group
   Scenario Outline: adding a user to a group
     Given user "brand-new-user" has been created
     And group "<group_id>" has been created
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
+    When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | <group_id> |
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
@@ -51,7 +51,7 @@ Feature: add users to group
   Scenario Outline: adding a user to a group that has a forward-slash in the group name
     Given user "brand-new-user" has been created
     And group "<group_id>" has been created
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
+    When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | <group_id> |
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
@@ -75,7 +75,7 @@ Feature: add users to group
   Scenario: admin tries to add user to a group which does not exist
     Given user "brand-new-user" has been created
     And group "not-group" has been deleted
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
+    When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | not-group |
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
@@ -83,7 +83,7 @@ Feature: add users to group
 
   Scenario: admin tries to add user to a group without sending the group
     Given user "brand-new-user" has been created
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
+    When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid |  |
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
@@ -92,7 +92,7 @@ Feature: add users to group
   Scenario: admin tries to add a user which does not exist to a group
     Given user "not-user" has been deleted
     And group "new-group" has been created
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/not-user/groups" with body
+    When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/not-user/groups" with body
       | groupid | new-group |
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"

@@ -12,7 +12,7 @@ Feature: get groups
     Given group "0" has been created
     And group "new-group" has been created
     And group "España" has been created
-    When user "%admin%" sends HTTP method "GET" to OCS API endpoint "/cloud/groups"
+    When the administrator sends HTTP method "GET" to OCS API endpoint "/cloud/groups"
     Then the groups returned by the API should be
       | España    |
       | admin     |

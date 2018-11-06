@@ -92,6 +92,18 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
+	 * @When the administrator requests calendar :calendar using the new WebDAV API
+	 *
+	 * @param string $calendar
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRequestsCalendarUsingTheNewWebdavApi($calendar) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->userRequestsCalendarUsingTheAPI($admin, $calendar);
+	}
+
+	/**
 	 * @Then the CalDAV HTTP status code should be :code
 	 *
 	 * @param int $code
@@ -171,5 +183,17 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 			$this->featureContext->getPasswordForUser($user), null, $body
 		);
 		$this->theCalDavHttpStatusCodeShouldBe(201);
+	}
+
+	/**
+	 * @Given the administrator has successfully created a calendar named :name
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSuccessfullyCreatedACalendarNamed($name) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->userHasCreatedACalendarNamed($admin, $name);
 	}
 }
