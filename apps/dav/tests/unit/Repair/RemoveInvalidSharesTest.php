@@ -22,6 +22,7 @@
 namespace OCA\DAV\Tests\Unit\Repair;
 
 use OCA\DAV\Connector\Sabre\Principal;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCA\DAV\Repair\RemoveInvalidShares;
 use OCP\Migration\IOutput;
 use Test\TestCase;
@@ -49,12 +50,14 @@ class RemoveInvalidSharesTest extends TestCase {
 		$db = \OC::$server->getDatabaseConnection();
 		/** @var Principal | \PHPUnit_Framework_MockObject_MockObject $principal */
 		$principal = $this->createMock(Principal::class);
+		/** @var GroupPrincipalBackend | \PHPUnit_Framework_MockObject_MockObject $groupPrincipal */
+		$groupPrincipal = $this->createMock(GroupPrincipalBackend::class);
 
 		/** @var IOutput | \PHPUnit_Framework_MockObject_MockObject $output */
 		$output = $this->createMock(IOutput::class);
 
-		$repair = new RemoveInvalidShares($db, $principal);
-		$this->assertEquals("Remove invalid calendar and addressbook shares", $repair->getName());
+		$repair = new RemoveInvalidShares($db, $principal, $groupPrincipal);
+		$this->assertEquals('Remove invalid calendar and addressbook shares', $repair->getName());
 		$repair->run($output);
 
 		$query = $db->getQueryBuilder();
@@ -62,6 +65,6 @@ class RemoveInvalidSharesTest extends TestCase {
 			->where($query->expr()->eq('principaluri', $query->createNamedParameter('principal:unknown')))->execute();
 		$data = $result->fetchAll();
 		$result->closeCursor();
-		$this->assertEquals(0, \count($data));
+		$this->assertCount(0, $data);
 	}
 }
