@@ -499,6 +499,11 @@ class ObjectStoreStorage extends Common {
 			return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 		}
 
+		// living on different buckets?
+		if ($this->getId() !== $sourceStorage->getId()) {
+			return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+		}
+
 		// source and target live on the same object store and we can simply rename
 		// which updates the cache properly
 		$this->getUpdater()->renameFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
