@@ -1,4 +1,4 @@
-@webUI @skipOnEncryptionType:masterkey
+@webUI @skipOnEncryptionType:masterkey @skipOnStorage:ceph
 Feature: encrypt files using user specific keys
   As an admin
   I want to be able to encrypt user files using user specific keys
