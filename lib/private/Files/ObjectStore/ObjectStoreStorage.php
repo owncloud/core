@@ -59,7 +59,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	private $objectPrefix = 'urn:oid:';
 
 	public function __construct($params) {
-		$this->objectStatCache = new ArrayCache();
+		$this->objectStatCache = new \OC\Cache\CappedMemoryCache();
 		if (isset($params['objectstore']) && $params['objectstore'] instanceof IObjectStore) {
 			$this->objectStore = $params['objectstore'];
 		} else {
