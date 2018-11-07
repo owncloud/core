@@ -26,16 +26,17 @@
 namespace OC\Files\ObjectStore;
 
 use Icewind\Streams\IteratorDirectory;
+use OC\Cache\CappedMemoryCache;
 use OC\Files\Cache\CacheEntry;
-use OC\Memcache\ArrayCache;
+use OC\Files\Storage\Common;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
 
-class ObjectStoreStorage extends \OC\Files\Storage\Common {
+class ObjectStoreStorage extends Common {
 
 	/**
-	 * @var ArrayCache
+	 * @var CappedMemoryCache
 	 */
 	private $objectStatCache;
 
@@ -59,7 +60,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	private $objectPrefix = 'urn:oid:';
 
 	public function __construct($params) {
-		$this->objectStatCache = new \OC\Cache\CappedMemoryCache();
+		$this->objectStatCache = new CappedMemoryCache();
 		if (isset($params['objectstore']) && $params['objectstore'] instanceof IObjectStore) {
 			$this->objectStore = $params['objectstore'];
 		} else {
@@ -516,7 +517,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		if (!$storage) {
 			$storage = $this;
 		}
-		if (!isset($this->scanner)) {
+		if ($this->scanner === null) {
 			$this->scanner = new NoopScanner($storage);
 		}
 		return $this->scanner;
@@ -599,7 +600,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$cacheEntry = $this->getCache()->get($path);
 		if ($cacheEntry instanceof CacheEntry) {
 			$stat = $cacheEntry->getData();
-			if ($cacheEntry->getMimeType() != 'httpd/unix-directory') {
+			if ($cacheEntry->getMimeType() !== 'httpd/unix-directory') {
 				// Only set stat cache for objects
 				$this->objectStatCache->set($path, $stat);
 			}
