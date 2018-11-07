@@ -11,6 +11,7 @@ Feature: Versions of a file
       | user0    |
       | user1    |
 
+  @skipOnStorage:ceph @files_primary_s3-issue-67
   Scenario: upload new file with same name to see if different versions are shown
     Given user "user0" has logged in using the webUI
     And the user has browsed to the files page
