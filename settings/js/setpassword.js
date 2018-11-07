@@ -27,11 +27,13 @@
 			var errorMessage;
 			errorMessage = responseObj.message;
 
-			if (errorMessage) {
-				errorObject.text(errorMessage);
-				errorObject.show();
-				$('#submit').prop('disabled', true);
+			if (!errorMessage) {
+				errorMessage = t('core', 'Failed to set password. Please contact your administrator.');
 			}
+
+			errorObject.text(errorMessage);
+			errorObject.show();
+			$('#submit').prop('disabled', false);
 		},
 
 		_resetDone : function(result){

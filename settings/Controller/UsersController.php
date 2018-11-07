@@ -656,12 +656,23 @@ class UsersController extends Controller {
 		try {
 			$this->checkPasswordSetToken($token, $userId);
 
-			if (!$user->setPassword($password)) {
+			try {
+				if (!$user->setPassword($password)) {
+					$this->log->error('The password can not be set for user: '. $userId);
+					return new JSONResponse(
+						[
+							'status' => 'error',
+							'message' => $this->l10n->t('Failed to set password. Please contact your administrator.', [$userId]),
+							'type' => 'passwordsetfailed'
+						], Http::STATUS_FORBIDDEN
+					);
+				}
+			} catch (\Exception $e) {
 				$this->log->error('The password can not be set for user: '. $userId);
 				return new JSONResponse(
 					[
 						'status' => 'error',
-						'message' => $this->l10n->t('Failed to set password. Please contact your administrator.', [$userId]),
+						'message' => $e->getMessage(),
 						'type' => 'passwordsetfailed'
 					], Http::STATUS_FORBIDDEN
 				);
