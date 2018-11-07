@@ -26,13 +26,19 @@
 namespace OC\Files\ObjectStore;
 
 use Icewind\Streams\IteratorDirectory;
+use OC\Cache\CappedMemoryCache;
 use OC\Files\Cache\CacheEntry;
+use OC\Files\Storage\Common;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
-use OCP\Files\Storage\IStorage;
 
-class ObjectStoreStorage extends \OC\Files\Storage\Common {
+class ObjectStoreStorage extends Common {
+
+	/**
+	 * @var CappedMemoryCache
+	 */
+	private $objectStatCache;
 
 	/**
 	 * @var array
@@ -54,6 +60,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	private $objectPrefix = 'urn:oid:';
 
 	public function __construct($params) {
+		$this->objectStatCache = new CappedMemoryCache();
 		if (isset($params['objectstore']) && $params['objectstore'] instanceof IObjectStore) {
 			$this->objectStore = $params['objectstore'];
 		} else {
@@ -73,8 +80,10 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		}
 	}
 
+	/** {@inheritdoc} */
 	public function mkdir($path) {
 		$path = $this->normalizePath($path);
+		$this->clearPathStat($path);
 
 		if ($this->file_exists($path)) {
 			return false;
@@ -116,45 +125,12 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		}
 	}
 
-	/**
-	 * @param string $path
-	 * @return string
-	 */
-	private function normalizePath($path) {
-		$path = \trim($path, '/');
-		//FIXME why do we sometimes get a path like 'files//username'?
-		$path = \str_replace('//', '/', $path);
-
-		// dirname('/folder') returns '.' but internally (in the cache) we store the root as ''
-		if (!$path || $path === '.') {
-			$path = '';
-		}
-
-		return $path;
-	}
-
-	/**
-	 * Object Stores use a NoopScanner because metadata is directly stored in
-	 * the file cache and cannot really scan the filesystem. The storage passed in is not used anywhere.
-	 *
-	 * @param string $path
-	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the scanner
-	 * @return \OC\Files\ObjectStore\NoopScanner
-	 */
-	public function getScanner($path = '', $storage = null) {
-		if (!$storage) {
-			$storage = $this;
-		}
-		if (!isset($this->scanner)) {
-			$this->scanner = new NoopScanner($storage);
-		}
-		return $this->scanner;
-	}
-
+	/** {@inheritdoc} */
 	public function getId() {
 		return $this->id;
 	}
 
+	/** {@inheritdoc} */
 	public function rmdir($path) {
 		$path = $this->normalizePath($path);
 
@@ -162,24 +138,16 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			return false;
 		}
 
-		$this->rmObjects($path);
+		// Clear stat path of all the children objects
+		$this->clearPathStat($path);
 
+		$this->rmObjects($path);
 		$this->getCache()->remove($path);
 
 		return true;
 	}
 
-	private function rmObjects($path) {
-		$children = $this->getCache()->getFolderContents($path);
-		foreach ($children as $child) {
-			if ($child['mimetype'] === 'httpd/unix-directory') {
-				$this->rmObjects($child['path']);
-			} else {
-				$this->unlink($child['path']);
-			}
-		}
-	}
-
+	/** {@inheritdoc} */
 	public function unlink($path) {
 		$path = $this->normalizePath($path);
 		$stat = $this->stat($path);
@@ -188,6 +156,8 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			if ($stat['mimetype'] === 'httpd/unix-directory') {
 				return $this->rmdir($path);
 			}
+
+			$this->removeObjectStat($path);
 			try {
 				$this->objectStore->deleteObject($this->getURN($stat['fileid']));
 			} catch (\Exception $ex) {
@@ -204,33 +174,18 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return false;
 	}
 
+	/** {@inheritdoc} */
 	public function stat($path) {
 		$path = $this->normalizePath($path);
-		$cacheEntry = $this->getCache()->get($path);
-		if ($cacheEntry instanceof CacheEntry) {
-			return $cacheEntry->getData();
-		} else {
-			return false;
-		}
+		return $this->getPathStat($path);
 	}
 
-	/**
-	 * Override this method if you need a different unique resource identifier for your object storage implementation.
-	 * The default implementations just appends the fileId to 'urn:oid:'. Make sure the URN is unique over all users.
-	 * You may need a mapping table to store your URN if it cannot be generated from the fileid.
-	 *
-	 * @param int $fileId the fileid
-	 * @return null|string the unified resource name used to identify the object
-	 */
-	protected function getURN($fileId) {
-		if (\is_numeric($fileId)) {
-			return $this->objectPrefix . $fileId;
-		}
-		return null;
-	}
-
+	/** {@inheritdoc} */
 	public function opendir($path) {
 		$path = $this->normalizePath($path);
+
+		// We cannot use stat cache, so clear before returning folder contents
+		$this->clearPathStat($path);
 
 		try {
 			$files = [];
@@ -246,6 +201,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		}
 	}
 
+	/** {@inheritdoc} */
 	public function filetype($path) {
 		$path = $this->normalizePath($path);
 		$stat = $this->stat($path);
@@ -259,12 +215,14 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		}
 	}
 
+	/** {@inheritdoc} */
 	public function fopen($path, $mode) {
 		$path = $this->normalizePath($path);
 
 		switch ($mode) {
 			case 'r':
 			case 'rb':
+				// Stat cache does not need to be cleared when opening in read mode
 				$stat = $this->stat($path);
 				if (\is_array($stat)) {
 					try {
@@ -289,6 +247,8 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			case 'x+':
 			case 'c':
 			case 'c+':
+				// In write mode, invalidate stat cache
+				$this->removeObjectStat($path);
 				if (\strrpos($path, '.') !== false) {
 					$ext = \substr($path, \strrpos($path, '.'));
 				} else {
@@ -307,37 +267,41 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return false;
 	}
 
+	/** {@inheritdoc} */
 	public function file_exists($path) {
 		$path = $this->normalizePath($path);
 		return (bool)$this->stat($path);
 	}
 
+	/** {@inheritdoc} */
 	public function rename($source, $target) {
 		$source = $this->normalizePath($source);
 		$target = $this->normalizePath($target);
+
+		// Invalidate stat cache for both source and target
+		$this->clearPathStat($source);
+		$this->clearPathStat($target);
+
+		// Rename file/folder
 		$this->remove($target);
 		$this->getCache()->move($source, $target);
 		$this->touch(\dirname($target));
 		return true;
 	}
 
-	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
-		if ($sourceStorage === $this) {
-			return $this->copy($sourceInternalPath, $targetInternalPath);
-		}
-		// cross storage moves need to perform a move operation
-		// TODO: there is some cache updating missing which requires bigger changes and is
-		//       subject to followup PRs
-		if (!$sourceStorage->instanceOfStorage(self::class)) {
-			return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
-		}
+	/** {@inheritdoc} */
+	public function copy($source, $target) {
+		$source = $this->normalizePath($source);
+		$target = $this->normalizePath($target);
 
-		// source and target live on the same object store and we can simply rename
-		// which updates the cache properly
-		$this->getUpdater()->renameFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
-		return true;
+		// Ensure that target stat cache is invalidated
+		$this->clearPathStat($target);
+
+		// Copy file/folder
+		return parent::copy($source, $target);
 	}
 
+	/** {@inheritdoc} */
 	public function getMimeType($path) {
 		$path = $this->normalizePath($path);
 		$stat = $this->stat($path);
@@ -348,29 +312,34 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		}
 	}
 
+	/** {@inheritdoc} */
 	public function touch($path, $mtime = null) {
-		if ($mtime === null) {
-			$mtime = \time();
-		}
-
 		$path = $this->normalizePath($path);
+
 		$dirName = \dirname($path);
 		$parentExists = $this->is_dir($dirName);
 		if (!$parentExists) {
 			return false;
 		}
 
+		// Get new mtime if not specified
+		if ($mtime === null) {
+			$mtime = \time();
+		}
+
 		$stat = $this->stat($path);
 		if (\is_array($stat)) {
+			// Remove stat cache before updating file
+			$this->removeObjectStat($path);
+
 			// update existing mtime in db
 			$stat['mtime'] = $mtime;
 			$this->getCache()->update($stat['fileid'], $stat);
 		} else {
-			$mimeType = \OC::$server->getMimeTypeDetector()->detectPath($path);
 			// create new file
 			$stat = [
 				'etag' => $this->getETag($path),
-				'mimetype' => $mimeType,
+				'mimetype' => \OC::$server->getMimeTypeDetector()->detectPath($path),
 				'size' => 0,
 				'mtime' => $mtime,
 				'storage_mtime' => $mtime,
@@ -389,6 +358,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return true;
 	}
 
+	/** {@inheritdoc} */
 	public function writeBack($tmpFile) {
 		if (!isset(self::$tmpFiles[$tmpFile])) {
 			return;
@@ -410,6 +380,10 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$stat['mimetype'] = \OC::$server->getMimeTypeDetector()->detect($tmpFile);
 		$stat['etag'] = $this->getETag($path);
 
+		// Remove stat cache before writing to file
+		$this->removeObjectStat($path);
+
+		// Write object
 		$fileId = $this->getCache()->put($path, $stat);
 		try {
 			//upload to object storage
@@ -432,6 +406,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return false;
 	}
 
+	/** {@inheritdoc} */
 	public function saveVersion($internalPath) {
 		if ($this->objectStore instanceof IVersionedObjectStorage) {
 			$stat = $this->stat($internalPath);
@@ -447,6 +422,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return parent::saveVersion($internalPath);
 	}
 
+	/** {@inheritdoc} */
 	public function getVersions($internalPath) {
 		if ($this->objectStore instanceof IVersionedObjectStorage) {
 			$stat = $this->stat($internalPath);
@@ -464,6 +440,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return parent::getVersions($internalPath);
 	}
 
+	/** {@inheritdoc} */
 	public function getVersion($internalPath, $versionId) {
 		if ($this->objectStore instanceof IVersionedObjectStorage) {
 			$stat = $this->stat($internalPath);
@@ -481,6 +458,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return parent::getVersion($internalPath, $versionId);
 	}
 
+	/** {@inheritdoc} */
 	public function getContentOfVersion($internalPath, $versionId) {
 		if ($this->objectStore instanceof IVersionedObjectStorage) {
 			$stat = $this->stat($internalPath);
@@ -492,6 +470,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return parent::getContentOfVersion($internalPath, $versionId);
 	}
 
+	/** {@inheritdoc} */
 	public function restoreVersion($internalPath, $versionId) {
 		if ($this->objectStore instanceof IVersionedObjectStorage) {
 			$stat = $this->stat($internalPath);
@@ -501,5 +480,133 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			return $this->objectStore->restoreVersion($this->getURN($stat['fileid']), $versionId);
 		}
 		return parent::restoreVersion($internalPath, $versionId);
+	}
+
+	/** {@inheritdoc} */
+	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
+		return parent::copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime);
+	}
+
+	/** {@inheritdoc} */
+	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+		if ($sourceStorage === $this) {
+			return $this->copy($sourceInternalPath, $targetInternalPath);
+		}
+		// cross storage moves need to perform a move operation
+		// TODO: there is some cache updating missing which requires bigger changes and is
+		//       subject to followup PRs
+		if (!$sourceStorage->instanceOfStorage(self::class)) {
+			return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+		}
+
+		// source and target live on the same object store and we can simply rename
+		// which updates the cache properly
+		$this->getUpdater()->renameFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+		return true;
+	}
+
+	/**
+	 * Object Stores use a NoopScanner because metadata is directly stored in
+	 * the file cache and cannot really scan the filesystem. The storage passed in is not used anywhere.
+	 *
+	 * @param string $path
+	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the scanner
+	 * @return \OC\Files\ObjectStore\NoopScanner
+	 */
+	public function getScanner($path = '', $storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		if ($this->scanner === null) {
+			$this->scanner = new NoopScanner($storage);
+		}
+		return $this->scanner;
+	}
+
+	/**
+	 * Override this method if you need a different unique resource identifier for your object storage implementation.
+	 * The default implementations just appends the fileId to 'urn:oid:'. Make sure the URN is unique over all users.
+	 * You may need a mapping table to store your URN if it cannot be generated from the fileid.
+	 *
+	 * @param int $fileId the fileid
+	 * @return null|string the unified resource name used to identify the object
+	 */
+	protected function getURN($fileId) {
+		if (\is_numeric($fileId)) {
+			return $this->objectPrefix . $fileId;
+		}
+		return null;
+	}
+
+	private function rmObjects($path) {
+		$children = $this->getCache()->getFolderContents($path);
+		foreach ($children as $child) {
+			if ($child['mimetype'] === 'httpd/unix-directory') {
+				$this->rmObjects($child['path']);
+			} else {
+				$this->unlink($child['path']);
+			}
+		}
+	}
+
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	private function normalizePath($path) {
+		$path = \trim($path, '/');
+		//FIXME why do we sometimes get a path like 'files//username'?
+		$path = \str_replace('//', '/', $path);
+
+		// dirname('/folder') returns '.' but internally (in the cache) we store the root as ''
+		if (!$path || $path === '.') {
+			$path = '';
+		}
+
+		return $path;
+	}
+
+	/**
+	 * Clear all object stat cache entries under this path
+	 *
+	 * @param $path
+	 */
+	private function clearPathStat($path) {
+		$this->objectStatCache->clear($path);
+	}
+
+	/**
+	 * Clear single object stat cache
+	 *
+	 * @param $path
+	 */
+	private function removeObjectStat($path) {
+		$this->objectStatCache->remove($path);
+	}
+
+	/**
+	 * Try to get object stat from cache, and return false if
+	 * not existing. Filecache for folders will not be stored in
+	 * the stat cache, and only objects are cached
+	 *
+	 * @param $path
+	 * @return array|false
+	 */
+	private function getPathStat($path) {
+		if ($this->objectStatCache->hasKey($path)) {
+			return $this->objectStatCache->get($path);
+		}
+
+		$cacheEntry = $this->getCache()->get($path);
+		if ($cacheEntry instanceof CacheEntry) {
+			$stat = $cacheEntry->getData();
+			if ($cacheEntry->getMimeType() !== 'httpd/unix-directory') {
+				// Only set stat cache for objects
+				$this->objectStatCache->set($path, $stat);
+			}
+			return $stat;
+		} else {
+			return false;
+		}
 	}
 }

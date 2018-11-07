@@ -89,6 +89,8 @@ interface Storage extends \OCP\Files\Storage {
 	public function getStorageCache();
 
 	/**
+	 * get metadata of the file or folder.
+	 *
 	 * @param string $path
 	 * @return array
 	 */
