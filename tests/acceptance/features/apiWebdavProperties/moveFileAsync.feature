@@ -17,7 +17,7 @@ Feature: move (rename) file
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/       |
       | fileId | /^[0-9a-z]{20,}$/  |
-      | ETag   | /^"[0-9a-f]{32}"$/ |
+      | ETag   | /^"[0-9a-f]{1,32}"$/ |
     And the downloaded content when downloading file "/FOLDER/<destination-file-name>" for user "user0" with range "bytes=0-6" should be "Welcome"
     And user "user0" should not see the following elements
       | /welcome.txt |
@@ -37,7 +37,7 @@ Feature: move (rename) file
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/       |
       | fileId | /^[0-9a-z]{20,}$/  |
-      | ETag   | /^"[0-9a-f]{32}"$/ |
+      | ETag   | /^"[0-9a-f]{1,32}"$/ |
     And the downloaded content when downloading file "/textfile0.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
     And user "user0" should not see the following elements
       | /welcome.txt |
@@ -50,7 +50,7 @@ Feature: move (rename) file
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/       |
       | fileId | /^[0-9a-z]{20,}$/  |
-      | ETag   | /^"[0-9a-f]{32}"$/ |
+      | ETag   | /^"[0-9a-f]{1,32}"$/ |
     And the content of file "/TextFile0.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
     And user "user0" should not see the following elements
       | /textfile0.txt |
@@ -63,7 +63,7 @@ Feature: move (rename) file
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/       |
       | fileId | /^[0-9a-z]{20,}$/  |
-      | ETag   | /^"[0-9a-f]{32}"$/ |
+      | ETag   | /^"[0-9a-f]{1,32}"$/ |
     And the content of file "/textfile0.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
     And the content of file "/TextFile0.txt" for user "user0" should be "ownCloud test text file 1" plus end-of-line
     And user "user0" should not see the following elements
@@ -77,7 +77,7 @@ Feature: move (rename) file
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/       |
       | fileId | /^[0-9a-z]{20,}$/  |
-      | ETag   | /^"[0-9a-f]{32}"$/ |
+      | ETag   | /^"[0-9a-f]{1,32}"$/ |
     And the content of file "/PARENT/parent.txt" for user "user0" should be "ownCloud test text file parent" plus end-of-line
     And the content of file "/PARENT/Parent.txt" for user "user0" should be "ownCloud test text file 1" plus end-of-line
     And user "user0" should not see the following elements
