@@ -228,6 +228,7 @@ OC.L10N.register(
     "Non-existing tag #{tag}" : "Categoría #{tag} no existente",
     "restricted" : "Restringido",
     "invisible" : "invisible",
+    "Static" : "Estático",
     "({scope})" : "({scope})",
     "Delete" : "Eliminar",
     "Rename" : "Renombrar",

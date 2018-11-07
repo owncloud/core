@@ -228,6 +228,7 @@ OC.L10N.register(
     "Non-existing tag #{tag}" : "Несуществующий тег #{tag}",
     "restricted" : "ограниченный",
     "invisible" : "невидимый",
+    "Static" : "Статично",
     "({scope})" : "({scope})",
     "Delete" : "Удалить",
     "Rename" : "Переименовать",
