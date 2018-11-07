@@ -52,8 +52,8 @@ Feature: reset user password
 
   Scenario: admin should be able to reset their own password
     Given user "brand-new-user" has been created
-    When the administrator resets the password of user "%admin%" to "%alt1%" using the occ command
+    When the administrator resets his own password to "%alt1%" using the occ command
     Then the command should have been successful
     And the command output should contain the text "Successfully reset password for admin"
-    When user "%admin%" retrieves the information of user "brand-new-user" using the provisioning API
+    When the administrator retrieves the information of user "brand-new-user" using the provisioning API
     Then the display name returned by the API should be "brand-new-user"

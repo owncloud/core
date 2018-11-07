@@ -14,8 +14,8 @@ Feature: Suggestion for matching tag names
     And user "user1" has created a "normal" tag with name "gham"
     And user "user1" has created a "normal" tag with name "special"
     And user "user1" has created a "normal" tag with name "specification"
-    And user "%admin%" has created a "not user-assignable" tag with name "Violates T&C"
-    And user "%admin%" has created a "not user-assignable" tag with name "sponsored"
+    And the administrator has created a "not user-assignable" tag with name "Violates T&C"
+    And the administrator has created a "not user-assignable" tag with name "sponsored"
     And user "user1" has logged in using the webUI
 
   Scenario: User should get suggestion from already existing tags

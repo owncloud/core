@@ -10,7 +10,7 @@ Feature: get users
   @smokeTest
   Scenario: admin gets all users
     Given user "brand-new-user" has been created
-    When user "%admin%" sends HTTP method "GET" to OCS API endpoint "/cloud/users"
+    When the administrator sends HTTP method "GET" to OCS API endpoint "/cloud/users"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the users returned by the API should be

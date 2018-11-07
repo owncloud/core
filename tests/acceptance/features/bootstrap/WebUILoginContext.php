@@ -277,6 +277,18 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the administrator tries to login with an invalid password :password using the webUI
+	 *
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function theAdministratorTriesToLoginWithAnInvalidPasswordUsingTheWebui($password) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->theUserLogsInWithUsernameAndInvalidPasswordUsingTheWebUI($admin, $password);
+	}
+
+	/**
 	 * @When user :username logs in using the webUI after a redirect from the :page page
 	 * @Given user :username has logged in using the webUI after a redirect from the :page page
 	 *
@@ -295,6 +307,18 @@ class WebUILoginContext extends RawMinkContext implements Context {
 			$this->featureContext->getPasswordForUser($username),
 			$page
 		);
+	}
+
+	/**
+	 * @When the administrator logs in using the webUI after a redirect from the :page page
+	 *
+	 * @param string $page text name of a page that I expect to be taken to
+	 *
+	 * @return void
+	 */
+	public function theAdministratorLogsInUsingTheWebuiAfterARedirectFromThePage($page) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->theUserLogsInAfterRedirectFromThePage($admin, $page);
 	}
 
 	/**

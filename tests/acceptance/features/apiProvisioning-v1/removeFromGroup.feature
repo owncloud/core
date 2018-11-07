@@ -12,7 +12,7 @@ Feature: remove a user from a group
     Given user "brand-new-user" has been created
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
-    When user "%admin%" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
+    When the administrator sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | <group_id> |
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -27,7 +27,7 @@ Feature: remove a user from a group
     Given user "brand-new-user" has been created
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
-    When user "%admin%" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
+    When the administrator sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | <group_id> |
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -56,7 +56,7 @@ Feature: remove a user from a group
     Given user "brand-new-user" has been created
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
-    When user "%admin%" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
+    When the administrator sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | <group_id> |
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -71,7 +71,7 @@ Feature: remove a user from a group
   Scenario: admin tries to remove a user from a group which does not exist
     Given user "brand-new-user" has been created
     And group "not-group" has been deleted
-    When user "%admin%" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
+    When the administrator sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | not-group |
     Then the OCS status code should be "102"
     And the HTTP status code should be "200"
