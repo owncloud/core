@@ -83,8 +83,8 @@ case "${DB_TYPE}" in
     wait-for-it mysql:3306
     DB=mysql
     ;;
-  mysqlmb4)
-    wait-for-it mysqlmb4:3306
+  mysql8)
+    wait-for-it mysql8:3306
     DB=mysql
     ;;
   postgres)
