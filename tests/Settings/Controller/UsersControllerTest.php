@@ -3053,6 +3053,43 @@ class UsersControllerTest extends \Test\TestCase {
 		), $result);
 	}
 
+	public function testSetPasswordPolicyException() {
+		$user = $this->createMock(IUser::class);
+		$user->method('setPassword')
+			->willThrowException(new \Exception('Can not set user password, because password does not comply with policy.'));
+		$this->container['UserManager']->method('get')
+			->with('foo')
+			->willReturn($user);
+
+		$this->container['Config']
+			->expects($this->once())
+			->method('getUserValue')
+			->willReturn('1234:fooBaZ1');
+		$this->container['Config']
+			->expects($this->once())
+			->method('getAppValue')
+			->willReturn('43200');
+
+		$this->container['TimeFactory']
+			->expects($this->once())
+			->method('getTime')
+			->willReturn(44430);
+		$this->container['Logger']
+		->expects($this->once())
+			->method('error')
+			->with('The password can not be set for user: foo');
+
+		$expectedResult = new Http\JSONResponse(
+			[
+				'status' => 'error',
+				'message' => 'Can not set user password, because password does not comply with policy.',
+				'type' => 'passwordsetfailed',
+			], Http::STATUS_FORBIDDEN
+		);
+		$result = $this->container['UsersController']->setPassword('fooBaZ1', 'foo', '123');
+		$this->assertEquals($expectedResult, $result);
+	}
+
 	public function testSetPasswordExpiredTokenException() {
 		$user = $this->createMock(IUser::class);
 
