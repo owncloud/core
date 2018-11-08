@@ -739,6 +739,7 @@ matrix:
 
     - PHP_VERSION: 7.1
       DB_TYPE: mariadb
+      # mb4 support by default
       MARIADB_IMAGE: mariadb:10.3
       TEST_SUITE: phpunit
       COVERAGE: true
