@@ -1967,6 +1967,141 @@ depends_on:
 ---
 kind: pipeline
 type: docker
+name: phpunit-php7.1-mysql8.0
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /drone
+  path: src
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  environment:
+    DB_TYPE: mysql
+
+- name: fix-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown -R www-data /drone/src
+
+- name: owncloud-log-server
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: phpunit-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - su-exec www-data bash tests/drone/test-phpunit.sh
+  environment:
+    COVERAGE: true
+    DB_TYPE: mysql
+
+- name: coverage-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    files:
+    - "*.xml"
+    flags:
+    - phpunit
+    paths:
+    - tests/output/coverage
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+services:
+- name: mysql
+  pull: always
+  image: mysql:8.0
+  command:
+  - --default-authentication-plugin=mysql_native_password
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+trigger:
+  ref:
+  - refs/pull/**
+  - refs/tags/**
+  - refs/heads/master
+
+depends_on:
+- coding-standard-php7.3
+- phpstan-php7.1
+- phan-php7.1
+- phan-php7.2
+- phan-php7.3
+
+---
+kind: pipeline
+type: docker
 name: phpunit-php7.1-postgres9.4
 
 platform:
@@ -14491,6 +14626,7 @@ depends_on:
 - phpunit-php7.1-mariadb10.3
 - phpunit-php7.1-mysql5.5
 - phpunit-php7.1-mysql5.7
+- phpunit-php7.1-mysql8.0
 - phpunit-php7.1-postgres9.4
 - phpunit-php7.1-oracle
 - phpunit-php7.0-sqlite
