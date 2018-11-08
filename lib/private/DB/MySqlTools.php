@@ -23,6 +23,7 @@ namespace OC\DB;
 
 use OCP\IDBConnection;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Platforms\MySQL80Platform;
 
 /**
 * Various MySQL specific helper functions.
@@ -68,6 +69,11 @@ class MySqlTools {
 	 */
 	public function supports4ByteCharset(IDBConnection $connection) {
 		if ($this->detectBarracuda($connection)) {
+			return true;
+		}
+
+		if ($connection->getDatabasePlatform() instanceof MySQL80Platform) {
+			// mb4 supported by default since MySQL 8.0 and innodb_file_format vars were removed
 			return true;
 		}
 
