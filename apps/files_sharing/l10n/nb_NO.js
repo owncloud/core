@@ -128,6 +128,8 @@ OC.L10N.register(
     "%s is publicly shared" : "%s er offentlig delt",
     "Download" : "Last ned",
     "Download %s" : "Last ned %s",
-    "Direct link" : "Direkte lenke"
+    "Direct link" : "Direkte lenke",
+    "Group Sharing Blacklist" : "Gruppedeling Blokkeringsliste",
+    "Exclude groups from receiving shares" : "Ekskluder grupper fra å motta delinger"
 },
 "nplurals=2; plural=(n != 1);");
