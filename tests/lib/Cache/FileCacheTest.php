@@ -88,14 +88,14 @@ class FileCacheTest extends TestCache {
 			$this->instance->remove('hack', 'hack');
 		}
 
+		parent::tearDown();
+
 		\OC_User::setUserId($this->user);
 		\OC::$server->getConfig()->setSystemValue('cachedirectory', $this->datadir);
 
 		// Restore the original mount point
 		\OC\Files\Filesystem::clearMounts();
 		\OC\Files\Filesystem::mount($this->storage, [], '/');
-
-		parent::tearDown();
 	}
 
 	private function setupMockStorage() {

@@ -549,7 +549,8 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	public function runsWithPrimaryObjectstorage() {
-		$objectstoreConfiguration = \OC::$server->getConfig()->getSystemValue('objectstore', null);
+		$objectstoreConfiguration = \OC::$server->getConfig()->getSystemValue('objectstore_multibucket', null);
+		$objectstoreConfiguration = \OC::$server->getConfig()->getSystemValue('objectstore', $objectstoreConfiguration);
 		if ($objectstoreConfiguration !== null) {
 			return true;
 		}

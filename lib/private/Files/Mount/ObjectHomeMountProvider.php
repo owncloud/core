@@ -118,7 +118,12 @@ class ObjectHomeMountProvider implements IHomeMountProvider {
 			if (!isset($config['arguments']['bucket'])) {
 				$config['arguments']['bucket'] = '';
 			}
-			$mapper = new \OC\Files\ObjectStore\Mapper($user);
+			if (isset($config['arguments']['mapper-class'])) {
+				$mapperClass = $config['arguments']['mapper-class'];
+				$mapper = new $mapperClass($user);
+			} else {
+				$mapper = new \OC\Files\ObjectStore\Mapper($user);
+			}
 			$config['arguments']['bucket'] .= $mapper->getBucket();
 
 			$this->config->setUserValue($user->getUID(), 'homeobjectstore', 'bucket', $config['arguments']['bucket']);
