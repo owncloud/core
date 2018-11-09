@@ -243,9 +243,10 @@ class RepairMismatchFileCachePath implements IRepairStep {
 
 		$storageIds = [];
 		foreach ($rows as $row) {
-			$storageIds[] = $row['storage'];
+			$storageIds[$row['storage']] = true;
 		}
 
+		$storageIds = \array_keys($storageIds);
 		if (!empty($storageIds)) {
 			$out->warning('The file cache contains entries with invalid path values for the following storage numeric ids: ' . \implode(' ', $storageIds));
 			$out->warning('Please run `occ files:scan --all --repair` to repair'
@@ -271,9 +272,10 @@ class RepairMismatchFileCachePath implements IRepairStep {
 
 		$storageIds = [];
 		foreach ($rows as $row) {
-			$storageIds[] = $row['storage'];
+			$storageIds[$row['storage']] = true;
 		}
 
+		$storageIds = \array_keys($storageIds);
 		if (!empty($storageIds)) {
 			$out->warning('The file cache contains entries where the parent id does not point to any existing entry for the following storage numeric ids: ' . \implode(' ', $storageIds));
 			$out->warning('Please run `occ files:scan --all --repair` to repair all affected storages');
