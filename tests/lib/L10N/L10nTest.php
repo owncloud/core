@@ -82,20 +82,20 @@ class L10nTest extends TestCase {
 	public function localizationData() {
 		return [
 			// timestamp as string
-			['February 13, 2009 at 11:31:30 PM GMT+0', 'en', 'datetime', '1234567890'],
-			['13. Februar 2009 um 23:31:30 GMT+0', 'de', 'datetime', '1234567890'],
+			['February 13, 2009 at 11:31:30 PM UTC', 'en', 'datetime', '1234567890'],
+			['13. Februar 2009 um 23:31:30 UTC', 'de', 'datetime', '1234567890'],
 			['February 13, 2009', 'en', 'date', '1234567890'],
 			['13. Februar 2009', 'de', 'date', '1234567890'],
-			['11:31:30 PM GMT+0', 'en', 'time', '1234567890'],
-			['23:31:30 GMT+0', 'de', 'time', '1234567890'],
+			['11:31:30 PM UTC', 'en', 'time', '1234567890'],
+			['23:31:30 UTC', 'de', 'time', '1234567890'],
 
 			// timestamp as int
-			['February 13, 2009 at 11:31:30 PM GMT+0', 'en', 'datetime', 1234567890],
-			['13. Februar 2009 um 23:31:30 GMT+0', 'de', 'datetime', 1234567890],
+			['February 13, 2009 at 11:31:30 PM UTC', 'en', 'datetime', 1234567890],
+			['13. Februar 2009 um 23:31:30 UTC', 'de', 'datetime', 1234567890],
 			['February 13, 2009', 'en', 'date', 1234567890],
 			['13. Februar 2009', 'de', 'date', 1234567890],
-			['11:31:30 PM GMT+0', 'en', 'time', 1234567890],
-			['23:31:30 GMT+0', 'de', 'time', 1234567890],
+			['11:31:30 PM UTC', 'en', 'time', 1234567890],
+			['23:31:30 UTC', 'de', 'time', 1234567890],
 
 			// DateTime object
 			['February 13, 2009 at 11:31:30 PM GMT+0', 'en', 'datetime', new DateTime('@1234567890')],

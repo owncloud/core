@@ -44,7 +44,7 @@ class UtilTest extends \Test\TestCase {
 		\date_default_timezone_set("UTC");
 
 		$result = OC_Util::formatDate(1350129205);
-		$expected = 'October 13, 2012 at 11:53:25 AM GMT+0';
+		$expected = 'October 13, 2012 at 11:53:25 AM UTC';
 		$this->assertEquals($expected, $result);
 
 		$result = OC_Util::formatDate(1102831200, true);
@@ -70,11 +70,11 @@ class UtilTest extends \Test\TestCase {
 	public function formatDateWithTZFromSessionData() {
 		return [
 			[3, 'October 13, 2012 at 2:53:25 PM GMT+3', 'Etc/GMT-3'],
-			[15, 'October 13, 2012 at 11:53:25 AM GMT+0', 'UTC'],
-			[-13, 'October 13, 2012 at 11:53:25 AM GMT+0', 'UTC'],
+			[15, 'October 13, 2012 at 11:53:25 AM UTC', 'UTC'],
+			[-13, 'October 13, 2012 at 11:53:25 AM UTC', 'UTC'],
 			[9.5, 'October 13, 2012 at 9:23:25 PM GMT+9:30', 'Australia/Darwin'],
 			[-4.5, 'October 13, 2012 at 7:23:25 AM GMT-4:30', 'America/Caracas'],
-			[15.5, 'October 13, 2012 at 11:53:25 AM GMT+0', 'UTC'],
+			[15.5, 'October 13, 2012 at 11:53:25 AM UTC', 'UTC'],
 		];
 	}
 
