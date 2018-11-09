@@ -16,7 +16,8 @@ Feature: File Upload
     And the file "new-lorem.txt" should be listed on the webUI
     And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 
-  @smokeTest
+  # disabled due to random fails
+  #@smokeTest
   Scenario: chunking upload
     Given a file with the size of "30000000" bytes and the name "big-video.mp4" has been created locally
     When the user uploads the file "big-video.mp4" using the webUI
