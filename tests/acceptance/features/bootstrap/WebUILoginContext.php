@@ -151,6 +151,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$username, $password
 	) {
 		$this->filesPage = $this->webUIGeneralContext->loginAs($username, $password);
+		$this->webUIGeneralContext->setCurrentPageObject($this->filesPage);
 	}
 
 	/**
