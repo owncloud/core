@@ -404,7 +404,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	public function thisMessageShouldBeDisplayed(PyStringNode $string) {
 		$expectedString = $string->getRaw();
 		$passwordRecoveryMessage = $this->loginPage->getLostPasswordMessage();
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedString, $passwordRecoveryMessage
 		);
 	}
@@ -418,7 +418,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 */
 	public function theImprintUrlOnTheLoginPageShouldLinkTo($expectedImprintUrl) {
 		$actualImprintUrl = $this->loginPage->getLegalUrl("Imprint");
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedImprintUrl,
 			$actualImprintUrl
 		);
@@ -433,7 +433,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 */
 	public function thePrivacyPolicyUrlOnTheLoginPageShouldLinkTo($expectedPrivacyPolicyUrl) {
 		$actualPrivacyPolilcyUrl = $this->loginPage->getLegalUrl("Privacy Policy");
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedPrivacyPolicyUrl,
 			$actualPrivacyPolilcyUrl
 		);

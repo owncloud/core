@@ -118,7 +118,7 @@ trait Comments {
 						break;
 					}
 				}
-				PHPUnit_Framework_Assert::assertTrue(
+				PHPUnit\Framework\Assert::assertTrue(
 					$commentFound, "Comment not found"
 				);
 			}
@@ -153,7 +153,7 @@ trait Comments {
 		$elementList = $this->reportElementComments(
 			$user, $commentsPath, $properties
 		);
-		PHPUnit_Framework_Assert::assertCount(
+		PHPUnit\Framework\Assert::assertCount(
 			(int) $numberOfComments, $elementList
 		);
 	}

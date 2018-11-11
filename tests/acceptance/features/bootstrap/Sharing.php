@@ -23,6 +23,7 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
 
@@ -359,10 +360,10 @@ trait Sharing {
 
 		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
 		$this->response = HttpRequestHelper::get($fullUrl, $token, "", $headers);
-		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+		Assert::assertGreaterThanOrEqual(
 			400, $this->response->getStatusCode(), 'download must fail'
 		);
-		PHPUnit_Framework_Assert::assertLessThanOrEqual(
+		Assert::assertLessThanOrEqual(
 			499, $this->response->getStatusCode(), '4xx error expected'
 		);
 	}
@@ -408,7 +409,7 @@ trait Sharing {
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $token, $password
 		);
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			401,
 			$this->response->getStatusCode()
 		);
@@ -439,11 +440,11 @@ trait Sharing {
 		$this->response = HttpRequestHelper::get(
 			$url, $user, $this->getPasswordForUser($user)
 		);
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			200,
 			$this->response->getStatusCode()
 		);
-		
+
 		$buf = '';
 		$body = $this->response->getBody();
 		while (!$body->eof()) {
@@ -452,7 +453,7 @@ trait Sharing {
 		}
 		if ($mimeType !== null) {
 			$finfo = new finfo;
-			PHPUnit_Framework_Assert::assertEquals(
+			Assert::assertEquals(
 				$mimeType,
 				$finfo->buffer($buf, FILEINFO_MIME_TYPE)
 			);
@@ -473,7 +474,7 @@ trait Sharing {
 		$password = $this->getActualPassword($password);
 		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
 		$this->response = HttpRequestHelper::get($url, $user, $password, $headers);
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			200,
 			$this->response->getStatusCode()
 		);
@@ -488,7 +489,7 @@ trait Sharing {
 
 		if ($mimeType !== null) {
 			$finfo = new finfo;
-			PHPUnit_Framework_Assert::assertEquals(
+			Assert::assertEquals(
 				$mimeType,
 				$finfo->buffer($buf, FILEINFO_MIME_TYPE)
 			);
@@ -573,7 +574,7 @@ trait Sharing {
 	 */
 	public function shouldNotBeAbleToCreatePublicLinkShare($sharer, $filepath) {
 		$this->createAPublicShare($sharer, $filepath);
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			404,
 			$this->getOCSResponseStatusCode($this->response)
 		);
@@ -587,7 +588,7 @@ trait Sharing {
 	public function publiclyUploadingShouldNotWork() {
 		$this->publicUploadContent('whateverfilefortesting.txt', '', 'test');
 
-		PHPUnit_Framework_Assert::assertTrue(
+		Assert::assertTrue(
 			($this->response->getStatusCode() == 507)
 			|| (
 				($this->response->getStatusCode() >= 400)
@@ -607,7 +608,7 @@ trait Sharing {
 		$content = 'test';
 		$this->publicUploadContent($path, '', $content);
 
-		PHPUnit_Framework_Assert::assertTrue(
+		Assert::assertTrue(
 			($this->response->getStatusCode() == 201),
 			"upload should have passed but failed with code " . $this->response->getStatusCode()
 		);
@@ -658,7 +659,7 @@ trait Sharing {
 			$fullUrl, $this->currentUser,
 			$this->getPasswordForUser($this->currentUser), null, $body
 		);
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			200,
 			$this->response->getStatusCode()
 		);
@@ -799,7 +800,7 @@ trait Sharing {
 	 */
 	public function checkSharedFileInResponse($filename) {
 		$filename = \ltrim($filename, '/');
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			true,
 			$this->isFieldInResponse('file_target', "/$filename")
 		);
@@ -814,7 +815,7 @@ trait Sharing {
 	 */
 	public function checkSharedFileNotInResponse($filename) {
 		$filename = \ltrim($filename, '/');
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			false,
 			$this->isFieldInResponse('file_target', "/$filename")
 		);
@@ -829,7 +830,7 @@ trait Sharing {
 	 */
 	public function checkSharedFileAsPathInResponse($filename) {
 		$filename = \ltrim($filename, '/');
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			true,
 			$this->isFieldInResponse('path', "/$filename")
 		);
@@ -844,7 +845,7 @@ trait Sharing {
 	 */
 	public function checkSharedFileAsPathNotInResponse($filename) {
 		$filename = \ltrim($filename, '/');
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			false,
 			$this->isFieldInResponse('path', "/$filename")
 		);
@@ -858,7 +859,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedUserInResponse($user) {
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			true,
 			$this->isFieldInResponse('share_with', "$user")
 		);
@@ -872,7 +873,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedUserNotInResponse($user) {
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			false,
 			$this->isFieldInResponse('share_with', "$user")
 		);
@@ -936,7 +937,7 @@ trait Sharing {
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $user1, $this->getPasswordForUser($user1)
 		);
-		PHPUnit_Framework_Assert::assertTrue(
+		Assert::assertTrue(
 			$this->isUserOrGroupInSharedData($user2, $permissions),
 			"User $user1 failed to share $filepath with user $user2"
 		);
@@ -1026,7 +1027,7 @@ trait Sharing {
 			$fullUrl, $user, $this->getPasswordForUser($user)
 		);
 
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			true,
 			$this->isUserOrGroupInSharedData($group, $permissions)
 		);
@@ -1069,7 +1070,7 @@ trait Sharing {
 			$sharer, $filepath, $shareType, $sharee, null, null, $permissions
 		);
 		$statusCode = $this->getOCSResponseStatusCode($this->response);
-		PHPUnit_Framework_Assert::assertTrue(
+		Assert::assertTrue(
 			($statusCode == 404) || ($statusCode == 403),
 			"Sharing should have failed but passed with status code $statusCode"
 		);
@@ -1101,7 +1102,7 @@ trait Sharing {
 		$this->createShare(
 			$sharer, $filepath, $shareType, $sharee, null, null, $permissions
 		);
-		
+
 		//v1.php returns 100 as success code
 		//v2.php returns 200 in the same case
 		$this->theOCSStatusCodeShouldBe([100, 200]);
@@ -1165,7 +1166,7 @@ trait Sharing {
 	public function checkingLastShareIDIsIncluded() {
 		$share_id = $this->lastShareData->data[0]->id;
 		if (!$this->isFieldInResponse('id', $share_id)) {
-			PHPUnit_Framework_Assert::fail(
+			Assert::fail(
 				"Share id $share_id not found in response"
 			);
 		}
@@ -1179,7 +1180,7 @@ trait Sharing {
 	public function checkingLastShareIDIsNotIncluded() {
 		$share_id = $this->lastShareData->data[0]->id;
 		if ($this->isFieldInResponse('id', $share_id)) {
-			PHPUnit_Framework_Assert::fail(
+			Assert::fail(
 				"Share id $share_id has been found in response"
 			);
 		}
@@ -1194,7 +1195,7 @@ trait Sharing {
 	 */
 	public function checkingTheResponseEntriesCount($count) {
 		$actualCount = \count($this->getResponseXml()->data[0]);
-		PHPUnit_Framework_Assert::assertEquals($count, $actualCount);
+		Assert::assertEquals($count, $actualCount);
 	}
 
 	/**
@@ -1234,7 +1235,7 @@ trait Sharing {
 					);
 				}
 				if (!$this->isFieldInResponse($field, $value)) {
-					PHPUnit_Framework_Assert::fail(
+					Assert::fail(
 						"$field doesn't have value $value"
 					);
 				}
@@ -1337,7 +1338,7 @@ trait Sharing {
 
 			if ($elementRows[0][0] === '') {
 				//It shouldn't have public shares
-				PHPUnit_Framework_Assert::assertEquals(\count($dataResponded), 0);
+				Assert::assertEquals(\count($dataResponded), 0);
 				return;
 			}
 			foreach ($elementRows as $expectedElementsArray) {
@@ -1345,11 +1346,11 @@ trait Sharing {
 				$nameFound = false;
 				foreach ($dataResponded as $elementResponded) {
 					if ((string)$elementResponded->name[0] === $expectedElementsArray[2]) {
-						PHPUnit_Framework_Assert::assertEquals(
+						Assert::assertEquals(
 							$expectedElementsArray[0],
 							(string)$elementResponded->path[0]
 						);
-						PHPUnit_Framework_Assert::assertEquals(
+						Assert::assertEquals(
 							$expectedElementsArray[1],
 							(string)$elementResponded->permissions[0]
 						);
@@ -1357,7 +1358,7 @@ trait Sharing {
 						break;
 					}
 				}
-				PHPUnit_Framework_Assert::assertTrue(
+				Assert::assertTrue(
 					$nameFound,
 					"Shared link name {$expectedElementsArray[2]} not found"
 				);
@@ -1435,7 +1436,7 @@ trait Sharing {
 		} elseif (\substr($action, 0, 6) === "accept") {
 			$httpRequestMethod = "POST";
 		}
-		
+
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, $httpRequestMethod, $url, null
 		);
@@ -1466,14 +1467,14 @@ trait Sharing {
 			$row['path'] = \rtrim($row['path'], "/");
 			foreach ($usersShares as $share) {
 				try {
-					PHPUnit_Framework_Assert::assertArraySubset($row, $share);
+					Assert::assertArraySubset($row, $share);
 					$found = true;
 					break;
-				} catch (PHPUnit_Framework_ExpectationFailedException $e) {
+				} catch (PHPUnit\Framework\ExpectationFailedException $e) {
 				}
 			}
 			if (!$found) {
-				PHPUnit_Framework_Assert::fail(
+				Assert::fail(
 					"could not find the share with this attributes " .
 					\print_r($row, true)
 				);
@@ -1490,7 +1491,7 @@ trait Sharing {
 	 */
 	public function assertThatNoSharesAreSharedWithUser($user) {
 		$usersShares = $this->getAllSharesSharedWithUser($user);
-		PHPUnit_Framework_Assert::assertEmpty(
+		Assert::assertEmpty(
 			$usersShares, "user has " . \count($usersShares) . " share(s)"
 		);
 	}
@@ -1526,7 +1527,7 @@ trait Sharing {
 				);
 				break;
 		}
-		
+
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" .
 			   "?format=json&shared_with_me=true&state=$stateCode";
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -1554,7 +1555,7 @@ trait Sharing {
 		if (\count($this->lastShareData->data->element) > 0) {
 			return $this->lastShareData->data[0]->token;
 		}
-		
+
 		return $this->lastShareData->data->token;
 	}
 

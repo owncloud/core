@@ -142,7 +142,7 @@ class BmpToResourceTest extends TestCase {
 
 		$instanceMock->method('readFile')
 			->will(
-				new \PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($values)
+				new \PHPUnit\Framework\MockObject\Stub\ConsecutiveCalls($values)
 			)
 		;
 

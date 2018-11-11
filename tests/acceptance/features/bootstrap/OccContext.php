@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
@@ -481,7 +482,7 @@ class OccContext implements Context {
 			"user:setting $username core lang"
 		);
 		$responseLanguage = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit_Framework_Assert::assertEquals($language, \trim($responseLanguage));
+		Assert::assertEquals($language, \trim($responseLanguage));
 	}
 
 	/**
@@ -496,7 +497,7 @@ class OccContext implements Context {
 			"log:manage --level $level"
 		);
 	}
-	
+
 	/**
 	 * @When the administrator sets the timezone to :timezone using the occ command
 	 *
@@ -509,7 +510,7 @@ class OccContext implements Context {
 			"log:manage --timezone $timezone"
 		);
 	}
-	
+
 	/**
 	 * @When the administrator sets the backend to :backend using the occ command
 	 *
@@ -522,7 +523,7 @@ class OccContext implements Context {
 			"log:manage --backend $backend"
 		);
 	}
-	
+
 	/**
 	 * @When the administrator enables the ownCloud backend using the occ command
 	 *
@@ -533,7 +534,7 @@ class OccContext implements Context {
 			"log:owncloud --enable"
 		);
 	}
-	
+
 	/**
 	 * @When the administrator sets the log file path to :path using the occ command
 	 *
@@ -546,7 +547,7 @@ class OccContext implements Context {
 			"log:owncloud --file $path"
 		);
 	}
-	
+
 	/**
 	 * @When the administrator sets the log rotate file size to :size using the occ command
 	 *
@@ -582,7 +583,7 @@ class OccContext implements Context {
 	public function theAppNameReturnedByTheOccCommandShouldBe($appName) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputArray = \json_decode($lastOutput, true);
-		PHPUnit_Framework_Assert::assertEquals($appName, \key($lastOutputArray['apps']));
+		Assert::assertEquals($appName, \key($lastOutputArray['apps']));
 	}
 
 	/**
@@ -597,7 +598,7 @@ class OccContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputArray = \json_decode($lastOutput, true);
 		$actualAppEnabledStatus = $lastOutputArray['apps'][$appName]['enabled'];
-		PHPUnit_Framework_Assert::assertEquals($appStatus, $actualAppEnabledStatus);
+		Assert::assertEquals($appStatus, $actualAppEnabledStatus);
 	}
 
 	/**
@@ -615,7 +616,7 @@ class OccContext implements Context {
 		$appsSimplified = $this->featureContext->simplifyArray($apps);
 
 		foreach ($appsSimplified as $app) {
-			PHPUnit_Framework_Assert::assertContains($app, $lastOutputApps);
+			Assert::assertContains($app, $lastOutputApps);
 		}
 	}
 
@@ -639,8 +640,8 @@ class OccContext implements Context {
 			$result = $lastOutputUsers;
 		}
 		foreach ($useridTable as $row) {
-			PHPUnit_Framework_Assert::assertArrayHasKey($row['uid'], $result);
-			PHPUnit_Framework_Assert::assertContains($row['display name'], $result);
+			Assert::assertArrayHasKey($row['uid'], $result);
+			Assert::assertContains($row['display name'], $result);
 		}
 	}
 
@@ -656,7 +657,7 @@ class OccContext implements Context {
 		$lastOutputGroups = \json_decode($lastOutput, true);
 
 		foreach ($groupTableNode as $row) {
-			PHPUnit_Framework_Assert::assertContains($row['group'], $lastOutputGroups);
+			Assert::assertContains($row['group'], $lastOutputGroups);
 		}
 	}
 
@@ -671,7 +672,7 @@ class OccContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputUser = \json_decode($lastOutput, true);
 		$lastOutputDisplayName = \array_column($lastOutputUser, 'displayName')[0];
-		PHPUnit_Framework_Assert::assertEquals($displayName, $lastOutputDisplayName);
+		Assert::assertEquals($displayName, $lastOutputDisplayName);
 	}
 
 	/**
@@ -699,7 +700,7 @@ class OccContext implements Context {
 	 */
 	public function theCommandOutputOfUserLastSeenShouldBeNever() {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit_Framework_Assert::assertContains(
+		Assert::assertContains(
 			"has never logged in.",
 			$lastOutput
 		);
@@ -715,7 +716,7 @@ class OccContext implements Context {
 	public function theTotalUsersReturnedByTheCommandShouldBe($noOfUsers) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		\preg_match("/\|\s+total users\s+\|\s+(\d+)\s+\|/", $lastOutput, $actualUsers);
-		PHPUnit_Framework_Assert::assertEquals($noOfUsers, $actualUsers[1]);
+		Assert::assertEquals($noOfUsers, $actualUsers[1]);
 	}
 
 	/**
@@ -730,7 +731,7 @@ class OccContext implements Context {
 			"config:app:get core backgroundjobs_mode"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit_Framework_Assert::assertEquals($mode, \trim($lastOutput));
+		Assert::assertEquals($mode, \trim($lastOutput));
 	}
 
 	/**
@@ -799,7 +800,7 @@ class OccContext implements Context {
 	 */
 	public function systemConfigKeyShouldHaveValue($key, $value) {
 		$config = \trim($this->featureContext->getSystemConfigValue($key));
-		PHPUnit_Framework_Assert::assertSame($value, $config);
+		Assert::assertSame($value, $config);
 	}
 
 	/**
@@ -810,7 +811,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function systemConfigKeyShouldNotExist($key) {
-		PHPUnit_Framework_Assert::assertEmpty($this->featureContext->getSystemConfig($key)['stdOut']);
+		Assert::assertEmpty($this->featureContext->getSystemConfig($key)['stdOut']);
 	}
 
 	/**
@@ -831,12 +832,12 @@ class OccContext implements Context {
 	 */
 	public function theCommandOutputShouldContainTheAppsConfigs() {
 		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true);
-		PHPUnit_Framework_Assert::assertArrayHasKey(
+		Assert::assertArrayHasKey(
 			'apps',
 			$config_list,
 			"The occ output does not contain apps configs"
 		);
-		PHPUnit_Framework_Assert::assertNotEmpty(
+		Assert::assertNotEmpty(
 			$config_list['apps'],
 			"The occ output does not contain apps configs"
 		);
@@ -849,12 +850,12 @@ class OccContext implements Context {
 	 */
 	public function theCommandOutputShouldContainTheSystemConfigs() {
 		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true);
-		PHPUnit_Framework_Assert::assertArrayHasKey(
+		Assert::assertArrayHasKey(
 			'system',
 			$config_list,
 			"The occ output does not contain system configs"
 		);
-		PHPUnit_Framework_Assert::assertNotEmpty(
+		Assert::assertNotEmpty(
 			$config_list['system'],
 			"The occ output does not contain system configs"
 		);

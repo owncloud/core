@@ -435,7 +435,7 @@ trait CommandLine {
 		// end of the captured string, so trim them.
 		$text = \trim($text, $text[0]);
 		$lines = $this->findLines($this->lastStdOut, $text);
-		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+		PHPUnit\Framework\Assert::assertGreaterThanOrEqual(
 			1,
 			\count($lines),
 			"The command output did not contain the expected text on stdout '$text'\n" .
@@ -457,7 +457,7 @@ trait CommandLine {
 		// end of the captured string, so trim them.
 		$text = \trim($text, $text[0]);
 		$lines = $this->findLines($this->lastStdErr, $text);
-		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+		PHPUnit\Framework\Assert::assertGreaterThanOrEqual(
 			1,
 			\count($lines),
 			"The command output did not contain the expected text on stderr '$text'\n" .
@@ -472,8 +472,8 @@ trait CommandLine {
 	 * @return void
 	 */
 	public function theOccCommandJsonOutputShouldNotReturnAnyData() {
-		PHPUnit_Framework_Assert::assertEquals(\trim($this->lastStdOut), "[]");
-		PHPUnit_Framework_Assert::assertEmpty($this->lastStdErr);
+		PHPUnit\Framework\Assert::assertEquals(\trim($this->lastStdOut), "[]");
+		PHPUnit\Framework\Assert::assertEmpty($this->lastStdErr);
 	}
 
 	private $lastTransferPath;

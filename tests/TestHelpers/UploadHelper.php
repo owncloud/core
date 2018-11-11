@@ -23,7 +23,7 @@ namespace TestHelpers;
 
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\Stream;
-use PHPUnit_Framework_Assert;
+use PHPUnit\Framework\Assert;
 
 /**
  * Helper for Uploads
@@ -197,10 +197,10 @@ class UploadHelper {
 			\fwrite($file, 'a'); // write a dummy char at SIZE position
 		}
 		\fclose($file);
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			1, \file_exists($name)
 		);
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			$size, \filesize($name)
 		);
 	}
@@ -217,7 +217,7 @@ class UploadHelper {
 		$file = \fopen($name, 'w');
 		\fwrite($file, $text);
 		\fclose($file);
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			1, \file_exists($name)
 		);
 	}

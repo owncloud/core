@@ -122,7 +122,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 			$oldPassword, $newPassword, $this->getSession()
 		);
 	}
-	
+
 	/**
 	 * @When the user changes the password to :newPassword entering the wrong current password :wrongPassword using the webUI
 	 * @Given the user has changed the password to :newPassword entering the wrong current password :wrongPassword using the webUI
@@ -176,7 +176,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function theOwncloudVersionShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui() {
-		PHPUnit_Framework_Assert::assertTrue($this->personalGeneralSettingsPage->isVersionDisplayed());
+		PHPUnit\Framework\Assert::assertTrue($this->personalGeneralSettingsPage->isVersionDisplayed());
 	}
 
 	/**
@@ -188,7 +188,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function theFederatedCloudIdForUserShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui($user) {
 		$userFederatedCloudId = $user . "@" . $this->featureContext->getLocalBaseUrlWithoutScheme();
-		PHPUnit_Framework_Assert::assertEquals($this->personalGeneralSettingsPage->getFederatedCloudID(), $userFederatedCloudId);
+		PHPUnit\Framework\Assert::assertEquals($this->personalGeneralSettingsPage->getFederatedCloudID(), $userFederatedCloudId);
 	}
 
 	/**
@@ -199,7 +199,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function groupShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui($groupName) {
-		PHPUnit_Framework_Assert::assertTrue($this->personalGeneralSettingsPage->isGroupNameDisplayed($groupName));
+		PHPUnit\Framework\Assert::assertTrue($this->personalGeneralSettingsPage->isGroupNameDisplayed($groupName));
 	}
 
 	/**
@@ -220,7 +220,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 			'/Use the following link to confirm your changes to the email address: (http.*)/',
 			$content, $matches
 		);
-		PHPUnit_Framework_Assert::assertArrayHasKey(
+		PHPUnit\Framework\Assert::assertArrayHasKey(
 			1, $matches,
 			"Couldn't find confirmation link in the email"
 		);
@@ -237,7 +237,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	public function aPasswordErrorMessageShouldBeDisplayedOnTheWebUIWithTheText(
 		$wrongPasswordmessageText
 	) {
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$wrongPasswordmessageText,
 			$this->personalGeneralSettingsPage->getWrongPasswordMessageText()
 		);

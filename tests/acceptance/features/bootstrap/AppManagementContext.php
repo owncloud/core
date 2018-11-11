@@ -144,7 +144,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 */
 	public function appPathIs($appId, $dir) {
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$this->featureContext->getServerRoot() . "/$dir/$appId",
 			\trim($this->cmdOutput)
 		);

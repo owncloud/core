@@ -98,7 +98,7 @@ class SearchContext implements Context {
 		$fileResult = $this->featureContext->findFileFromPropfindResponse(
 			$user, $file
 		);
-		PHPUnit_Framework_Assert::assertNotFalse(
+		PHPUnit\Framework\Assert::assertNotFalse(
 			$fileResult, "could not find file '$file'"
 		);
 		$fileProperties = $fileResult['value'][1]['value'][0]['value'];
@@ -106,14 +106,14 @@ class SearchContext implements Context {
 			$foundProperty = false;
 			foreach ($fileProperties as $fileProperty) {
 				if ($fileProperty['name'] === $property['name']) {
-					PHPUnit_Framework_Assert::assertRegExp(
+					PHPUnit\Framework\Assert::assertRegExp(
 						"/" . $property['value'] . "/", $fileProperty['value']
 					);
 					$foundProperty = true;
 					break;
 				}
 			}
-			PHPUnit_Framework_Assert::assertTrue(
+			PHPUnit\Framework\Assert::assertTrue(
 				$foundProperty, "could not find property '" . $property['name'] . "'"
 			);
 		}

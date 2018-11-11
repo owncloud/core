@@ -22,7 +22,7 @@
 namespace TestHelpers;
 
 use GuzzleHttp\Message\ResponseInterface;
-use PHPUnit_Framework_Assert;
+use PHPUnit\Framework\Assert;
 
 /**
  * Helper to set various configurations through the testing app
@@ -226,7 +226,7 @@ class AppConfigHelper {
 			'/cloud/capabilities',
 			null
 		);
-		PHPUnit_Framework_Assert::assertEquals(200, $response->getStatusCode());
+		Assert::assertEquals(200, $response->getStatusCode());
 		return $response;
 	}
 
@@ -265,9 +265,9 @@ class AppConfigHelper {
 			$body,
 			$ocsApiVersion
 		);
-		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		Assert::assertEquals("200", $response->getStatusCode());
 		if ($ocsApiVersion === 1) {
-			PHPUnit_Framework_Assert::assertEquals(
+			Assert::assertEquals(
 				"100", self::getOCSResponse($response)
 			);
 		}
@@ -297,9 +297,9 @@ class AppConfigHelper {
 			$body,
 			$ocsApiVersion
 		);
-		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		Assert::assertEquals("200", $response->getStatusCode());
 		if ($ocsApiVersion === 1) {
-			PHPUnit_Framework_Assert::assertEquals(
+			Assert::assertEquals(
 				"100", self::getOCSResponse($response)
 			);
 		}
@@ -328,9 +328,9 @@ class AppConfigHelper {
 			$body,
 			$ocsApiVersion
 		);
-		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		Assert::assertEquals("200", $response->getStatusCode());
 		if ($ocsApiVersion === 1) {
-			PHPUnit_Framework_Assert::assertEquals(
+			Assert::assertEquals(
 				"100", self::getOCSResponse($response)
 			);
 		}
@@ -358,9 +358,9 @@ class AppConfigHelper {
 			$body,
 			$ocsApiVersion
 		);
-		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		Assert::assertEquals("200", $response->getStatusCode());
 		if ($ocsApiVersion === 1) {
-			PHPUnit_Framework_Assert::assertEquals(
+			Assert::assertEquals(
 				"100", self::getOCSResponse($response)
 			);
 		}
@@ -387,9 +387,9 @@ class AppConfigHelper {
 			null,
 			$ocsApiVersion
 		);
-		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		Assert::assertEquals("200", $response->getStatusCode());
 		if ($ocsApiVersion === 1) {
-			PHPUnit_Framework_Assert::assertEquals(
+			Assert::assertEquals(
 				"100", self::getOCSResponse($response)
 			);
 		}
@@ -421,9 +421,9 @@ class AppConfigHelper {
 			null,
 			$ocsApiVersion
 		);
-		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		Assert::assertEquals("200", $response->getStatusCode());
 		if ($ocsApiVersion === 1) {
-			PHPUnit_Framework_Assert::assertEquals(
+			Assert::assertEquals(
 				"100", self::getOCSResponse($response)
 			);
 		}

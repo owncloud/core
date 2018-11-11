@@ -70,19 +70,19 @@ trait Logging {
 					= $this->featureContext->substituteInLineCodes(
 						$expectedLogEntry[$attribute]
 					);
-				PHPUnit_Framework_Assert::assertArrayHasKey(
+				PHPUnit\Framework\Assert::assertArrayHasKey(
 					$attribute, $logEntry,
 					"could not find attribute: '$attribute' in log entry: '{$logLines[$lineNo]}'"
 				);
 				if ($expectedLogEntry[$attribute] !== "") {
 					$message = "log entry:\n{$logLines[$lineNo]}\n";
 					if ($withOrContaining === 'with') {
-						PHPUnit_Framework_Assert::assertEquals(
+						PHPUnit\Framework\Assert::assertEquals(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
 					} else {
-						PHPUnit_Framework_Assert::assertContains(
+						PHPUnit\Framework\Assert::assertContains(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
@@ -144,7 +144,7 @@ trait Logging {
 					}
 				}
 			}
-			PHPUnit_Framework_Assert::assertFalse(
+			PHPUnit\Framework\Assert::assertFalse(
 				$match,
 				"found a log entry that should not be there\n$logLine\n"
 			);

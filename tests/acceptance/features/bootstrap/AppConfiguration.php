@@ -23,6 +23,7 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 use TestHelpers\AppConfigHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -41,7 +42,7 @@ trait AppConfiguration {
 	 * @var string the original capabilities in XML format
 	 */
 	private $savedCapabilitiesXml;
-	
+
 	/**
 	 * @var array the changes made to capabilities for the test scenario
 	 */
@@ -129,7 +130,7 @@ trait AppConfiguration {
 	) {
 		$this->theAdministratorGetsCapabilitiesCheckResponse();
 
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			$expectedValue,
 			$this->getAppParameter($capabilitiesApp, $capabilitiesPath)
 		);
@@ -160,7 +161,7 @@ trait AppConfiguration {
 	 */
 	public function userGetsCapabilitiesCheckResponse($username) {
 		$this->userSendsToOcsApiEndpoint($username, 'GET', '/cloud/capabilities');
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
 	}
@@ -356,12 +357,12 @@ trait AppConfiguration {
 		$this->theUserSendsToOcsApiEndpoint('get', '/cloud/apps?filter=enabled');
 		$this->theHTTPStatusCodeShouldBe('200');
 		if ($enabled) {
-			PHPUnit_Framework_Assert::assertContains(
+			Assert::assertContains(
 				'testing',
 				$this->response->getBody()->getContents()
 			);
 		} else {
-			PHPUnit_Framework_Assert::assertNotContains(
+			Assert::assertNotContains(
 				'testing',
 				$this->response->getBody()->getContents()
 			);

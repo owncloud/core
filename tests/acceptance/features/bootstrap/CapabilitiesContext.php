@@ -62,7 +62,7 @@ class CapabilitiesContext implements Context {
 			if ($row['value'] === "%versionstring%") {
 				$row['value'] = $this->featureContext->getVersionStringFromStatus();
 			}
-			PHPUnit_Framework_Assert::assertEquals(
+			PHPUnit\Framework\Assert::assertEquals(
 				$row['value'] === "EMPTY" ? '' : $row['value'],
 				$this->featureContext->getParameterValueFromXml(
 					$capabilitiesXML,
@@ -85,7 +85,7 @@ class CapabilitiesContext implements Context {
 		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
 
 		foreach ($formData->getHash() as $row) {
-			PHPUnit_Framework_Assert::assertFalse(
+			PHPUnit\Framework\Assert::assertFalse(
 				$this->featureContext->parameterValueExistsInXml(
 					$capabilitiesXML,
 					$row['capability'],

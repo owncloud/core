@@ -19,6 +19,8 @@
  *
  */
 
+use PHPUnit\Framework\Assert;
+
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 /**
@@ -44,7 +46,7 @@ trait Trashbin {
 		$this->theHTTPStatusCodeShouldBe('200');
 		$decodedResponse = \json_decode($this->response->getBody(), true);
 		if (isset($decodedResponse['status'])) {
-			PHPUnit_Framework_Assert::assertNotEquals(
+			Assert::assertNotEquals(
 				'error', $decodedResponse['status']
 			);
 		}
@@ -87,7 +89,7 @@ trait Trashbin {
 
 		$firstEntry = $this->findFirstTrashedEntry($user, \trim($sections[0], '/'));
 
-		PHPUnit_Framework_Assert::assertNotNull($firstEntry);
+		Assert::assertNotNull($firstEntry);
 
 		// query was on the main element ?
 		if (\count($sections) === 1) {
@@ -113,7 +115,7 @@ trait Trashbin {
 			}
 		}
 
-		PHPUnit_Framework_Assert::assertTrue($found);
+		Assert::assertTrue($found);
 	}
 
 	/**
@@ -157,7 +159,7 @@ trait Trashbin {
 		$this->theHTTPStatusCodeShouldBe('200');
 		$decodedResponse = \json_decode($this->response->getBody(), true);
 		if (isset($decodedResponse['status'])) {
-			PHPUnit_Framework_Assert::assertNotEquals(
+			Assert::assertNotEquals(
 				'error', $decodedResponse['status']
 			);
 		}
@@ -198,7 +200,7 @@ trait Trashbin {
 	 */
 	public function elementInTrashIsRestored($user, $originalPath) {
 		$this->restoreElement($user, $originalPath);
-		PHPUnit_Framework_Assert::assertFalse(
+		Assert::assertFalse(
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath is still in the trashbin"
 		);
@@ -215,7 +217,7 @@ trait Trashbin {
 	public function elementIsInTrashCheckingOriginalPath(
 		$user, $originalPath
 	) {
-		PHPUnit_Framework_Assert::assertTrue(
+		Assert::assertTrue(
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath wasn't found in the trashbin"
 		);
@@ -232,7 +234,7 @@ trait Trashbin {
 	public function elementIsNotInTrashCheckingOriginalPath(
 		$user, $originalPath
 	) {
-		PHPUnit_Framework_Assert::assertFalse(
+		Assert::assertFalse(
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath was found in the trashbin"
 		);

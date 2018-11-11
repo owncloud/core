@@ -24,6 +24,7 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
+use PHPUnit\Framework\Assert;
 use TestHelpers\TagsHelper;
 
 /**
@@ -104,7 +105,7 @@ trait Tags {
 		if (($tagData['{http://owncloud.org/ns}user-visible'] !== $userVisible)
 			|| ($tagData['{http://owncloud.org/ns}user-assignable'] !== $userAssignable)
 		) {
-			PHPUnit_Framework_Assert::fail(
+			Assert::fail(
 				"tag $tagDisplayName is not of type $type"
 			);
 		}
@@ -287,7 +288,7 @@ trait Tags {
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
 			$tagData = $this->requestTagByDisplayName($user, $rowDisplayName);
 			if ($tagData === null) {
-				PHPUnit_Framework_Assert::fail(
+				Assert::fail(
 					"tag $rowDisplayName is not in propfind answer"
 				);
 			} else {
@@ -306,7 +307,7 @@ trait Tags {
 	 */
 	public function tagShouldNotExistForUser($tagDisplayName, $user) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
-		PHPUnit_Framework_Assert::assertNull(
+		Assert::assertNull(
 			$tagData, "tag $tagDisplayName is in propfind answer"
 		);
 	}
@@ -395,11 +396,11 @@ trait Tags {
 		$tagData = $this->requestTagByDisplayName(
 			$this->getAdminUsername(), $tagName, true
 		);
-		PHPUnit_Framework_Assert::assertNotNull(
+		Assert::assertNotNull(
 			$tagData, "Tag $tagName wasn't found for admin user"
 		);
 		$this->assertTypeOfTag($tagData, $type);
-		PHPUnit_Framework_Assert::assertEquals(
+		Assert::assertEquals(
 			$tagData['{http://owncloud.org/ns}groups'],
 			$groups,
 			"Tag has groups '{$tagData['{http://owncloud.org/ns}groups']}' instead of the expected '$groups'"
@@ -448,7 +449,7 @@ trait Tags {
 		$client->setThrowExceptions(true);
 		$appPath = '/systemtags/';
 		$tagID = $this->findTagIdByName($tagDisplayName);
-		PHPUnit_Framework_Assert::assertNotNull($tagID, "Tag wasn't found");
+		Assert::assertNotNull($tagID, "Tag wasn't found");
 		$fullUrl = $this->getBaseUrl()
 			. '/' . $this->getDavPath('systemtags') . $appPath . $tagID;
 		try {
@@ -730,7 +731,7 @@ trait Tags {
 		$user, $fileName, $sharingUser, $status
 	) {
 		$response = $this->requestTagsForFile($user, $fileName, $sharingUser);
-		PHPUnit_Framework_Assert::assertEquals($status, $response->getStatus());
+		Assert::assertEquals($status, $response->getStatus());
 	}
 
 	/**
@@ -768,7 +769,7 @@ trait Tags {
 		$fileName, $sharingUser, TableNode $table
 	) {
 		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
-		PHPUnit_Framework_Assert::assertInternalType('array', $tagList);
+		Assert::assertInternalType('array', $tagList);
 		// The array of tags has a single "empty" item at the start.
 		// Remove this entry.
 		\array_shift($tagList);
@@ -785,7 +786,7 @@ trait Tags {
 				}
 			}
 			if ($found === false) {
-				PHPUnit_Framework_Assert::fail(
+				Assert::fail(
 					"tag $rowDisplayName is not in propfind answer"
 				);
 			}
@@ -841,11 +842,11 @@ trait Tags {
 	 */
 	public function sharedByHasNoTags($fileName, $sharingUser) {
 		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
-		PHPUnit_Framework_Assert::assertInternalType('array', $tagList);
+		Assert::assertInternalType('array', $tagList);
 		// The array of tags has a single "empty" item at the start.
 		// If there are no tags, then the array should have just this
 		// one entry.
-		PHPUnit_Framework_Assert::assertCount(1, $tagList);
+		Assert::assertCount(1, $tagList);
 	}
 
 	/**
