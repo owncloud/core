@@ -146,7 +146,7 @@ class RepairSubSharesTest extends TestCase {
 		$this->assertCount(3, $results);
 
 		foreach ($results as $id) {
-			$this->assertTrue(\in_array($id, $getAllIdsPerUser[$id['share_with']]));
+			$this->assertContains($id, $getAllIdsPerUser[$id['share_with']]);
 		}
 	}
 
@@ -228,12 +228,12 @@ class RepairSubSharesTest extends TestCase {
 		$this->assertCount(7, $results);
 
 		foreach ($results as $id) {
-			$this->assertTrue(\in_array($id, $getAllIdsPerUser['ids']));
+			$this->assertContains($id, $getAllIdsPerUser['ids']);
 		}
 
 		//Verify that these ids are not there
 		foreach ($results as $id) {
-			$this->assertFalse(\in_array($id['id'], $idsNotPresent, true));
+			$this->assertNotContains($id['id'], $idsNotPresent);
 		}
 	}
 
@@ -295,15 +295,15 @@ class RepairSubSharesTest extends TestCase {
 		$this->assertCount(6, $results);
 
 		foreach ($results as $id) {
-			$this->assertTrue(\in_array($id, $getAllIdsPerUser['ids']));
+			$this->assertContains($id, $getAllIdsPerUser['ids']);
 			if (\array_search($id, $results, true) === 5) {
 				for ($i = $id['id'] + 1; $i < $id['id'] + 486; $i++) {
-					$this->assertFalse(\in_array(['id' => $i], $results));
+					$this->assertNotContains(['id' => $i], $results);
 				}
 			} else {
 				//The next 1000 ids will not be there.
 				for ($i = $id['id'] + 1; $i < $id['id'] + 999; $i++) {
-					$this->assertFalse(\in_array(['id' => $i], $results));
+					$this->assertNotContains(['id' => $i], $results);
 				}
 			}
 		}

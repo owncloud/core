@@ -159,11 +159,11 @@ class GlobalStoragesServiceDeleteUserTest extends TestCase {
 		$newStorageIds = [];
 		foreach ($storages as $storage) {
 			$users = $storage->getApplicableUsers();
-			$this->assertFalse(\in_array($userId, $users, true));
-			$this->assertTrue(\in_array($storage->getId(), $storageIds, true));
+			$this->assertNotContains($userId, $users);
+			$this->assertContains($storage->getId(), $storageIds);
 			$newStorageIds[] = $storage->getId();
 		}
 		$missingStorageId = \array_pop($storageIds);
-		$this->assertFalse(\in_array($missingStorageId, $newStorageIds, true));
+		$this->assertNotContains($missingStorageId, $newStorageIds);
 	}
 }
