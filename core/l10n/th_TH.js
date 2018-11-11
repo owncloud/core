@@ -228,6 +228,7 @@ OC.L10N.register(
     "Non-existing tag #{tag}" : "ไม่มีแท็กนี้อยู่ #{tag}",
     "restricted" : "ถูกจำกัด",
     "invisible" : "จะมองไม่เห็น",
+    "Static" : "คงที่",
     "({scope})" : "({scope})",
     "Delete" : "ลบ",
     "Rename" : "เปลี่ยนชื่อ",
