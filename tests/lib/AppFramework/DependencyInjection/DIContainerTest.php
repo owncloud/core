@@ -39,19 +39,19 @@ class DIContainerTest extends \Test\TestCase {
 	}
 
 	public function testProvidesRequest() {
-		$this->assertTrue(isset($this->container['Request']));
+		$this->assertArrayHasKey('Request', $this->container);
 	}
 
 	public function testProvidesSecurityMiddleware() {
-		$this->assertTrue(isset($this->container['SecurityMiddleware']));
+		$this->assertArrayHasKey('SecurityMiddleware', $this->container);
 	}
 
 	public function testProvidesMiddlewareDispatcher() {
-		$this->assertTrue(isset($this->container['MiddlewareDispatcher']));
+		$this->assertArrayHasKey('MiddlewareDispatcher', $this->container);
 	}
 
 	public function testProvidesAppName() {
-		$this->assertTrue(isset($this->container['AppName']));
+		$this->assertArrayHasKey('AppName', $this->container);
 	}
 
 	public function testAppNameIsSetCorrectly() {

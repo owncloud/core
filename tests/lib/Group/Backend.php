@@ -70,19 +70,19 @@ abstract class Backend extends \Test\TestCase {
 		$this->backend->createGroup($name1);
 		$count = \count($this->backend->getGroups()) - $startCount;
 		$this->assertEquals(1, $count);
-		$this->assertTrue((\array_search($name1, $this->backend->getGroups()) !== false));
-		$this->assertFalse((\array_search($name2, $this->backend->getGroups()) !== false));
+		$this->assertContains($name1, $this->backend->getGroups());
+		$this->assertNotContains($name2, $this->backend->getGroups());
 		$this->backend->createGroup($name2);
 		$count = \count($this->backend->getGroups()) - $startCount;
 		$this->assertEquals(2, $count);
-		$this->assertTrue((\array_search($name1, $this->backend->getGroups()) !== false));
-		$this->assertTrue((\array_search($name2, $this->backend->getGroups()) !== false));
+		$this->assertContains($name1, $this->backend->getGroups());
+		$this->assertContains($name2, $this->backend->getGroups());
 
 		$this->backend->deleteGroup($name2);
 		$count = \count($this->backend->getGroups()) - $startCount;
 		$this->assertEquals(1, $count);
-		$this->assertTrue((\array_search($name1, $this->backend->getGroups()) !== false));
-		$this->assertFalse((\array_search($name2, $this->backend->getGroups()) !== false));
+		$this->assertContains($name1, $this->backend->getGroups());
+		$this->assertNotContains($name2, $this->backend->getGroups());
 	}
 
 	public function testUser() {
