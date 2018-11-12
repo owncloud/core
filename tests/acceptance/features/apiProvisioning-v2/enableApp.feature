@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required
+@api @provisioning_api-app-required @comments-app-required
 Feature: enable an app
   As an admin
   I want to be able to enable a disabled app
