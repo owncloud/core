@@ -1169,7 +1169,7 @@ class SessionTest extends TestCase {
 		$apacheBackend->expects($this->once())->method('isSessionActive')->willReturn(true);
 
 		$failedEvent = new GenericEvent(null, ['user' => 'foo']);
-		$beforeLoginEvent = new GenericEvent(null, ['login' => 'foo', 'password' => '', 'loginType' => 'apache']);
+		$beforeLoginEvent = new GenericEvent(null, ['login' => 'foo', 'uid' => 'foo', 'password' => '', 'loginType' => 'apache']);
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
@@ -1204,7 +1204,7 @@ class SessionTest extends TestCase {
 		$iUser->expects($this->exactly(2))
 			->method('isEnabled')
 			->willReturn(true);
-		$iUser->expects($this->exactly(3))
+		$iUser->expects($this->exactly(4))
 			->method('getUID')
 			->willReturn('foo');
 
@@ -1212,8 +1212,8 @@ class SessionTest extends TestCase {
 			->method('get')
 			->willReturn($iUser);
 
-		$beforeLoginEvent = new GenericEvent(null, ['login' => 'foo', 'password' => '', 'loginType' => 'apache']);
-		$afterLoginEvent = new GenericEvent(null, ['user' => $iUser, 'login' => 'foo', 'password' => '', 'loginType' => 'apache']);
+		$beforeLoginEvent = new GenericEvent(null, ['login' => 'foo', 'uid' => 'foo', 'password' => '', 'loginType' => 'apache']);
+		$afterLoginEvent = new GenericEvent(null, ['user' => $iUser, 'login' => 'foo', 'uid' => 'foo', 'password' => '', 'loginType' => 'apache']);
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
@@ -1327,7 +1327,7 @@ class SessionTest extends TestCase {
 			->method('get')
 			->willReturn(null);
 
-		$event = new GenericEvent(null, ['login' => 'foo', 'password' => 'foobar', 'loginType' => 'token']);
+		$event = new GenericEvent(null, ['login' => 'foo', 'uid' => 'foo', 'password' => 'foobar', 'loginType' => 'token']);
 		$failedEvent = new GenericEvent(null, ['user' => 'foo']);
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
@@ -1378,11 +1378,11 @@ class SessionTest extends TestCase {
 
 		$beforeEvent = new GenericEvent(null,
 			[
-				'login' => 'foo', 'password' => 'foobar', 'loginType' => 'token'
+				'login' => 'foo', 'uid' => 'foo', 'password' => 'foobar', 'loginType' => 'token'
 			]);
 		$afterEvent = new GenericEvent(null,
 			[
-				'user' => $iUser, 'login' => 'foo', 'password' => 'foobar', 'loginType' => 'token'
+				'user' => $iUser, 'login' => 'foo', 'uid' => 'foo', 'password' => 'foobar', 'loginType' => 'token'
 			]);
 
 		$eventDispatcher->expects($this->exactly(2))
