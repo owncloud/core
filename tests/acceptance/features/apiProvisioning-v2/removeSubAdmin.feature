@@ -16,7 +16,7 @@ Feature: remove subadmin
       | groupid | new-group |
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
-    And the user "brand-new-user" should not be the subadmin of the group "new-group"
+    And user "brand-new-user" should not be a subadmin of group "new-group"
 
   @issue-31276
   Scenario: subadmin tries to remove other subadmin in the group
@@ -30,7 +30,7 @@ Feature: remove subadmin
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
-    And the user "newsubadmin" should be the subadmin of the group "new-group"
+    And user "newsubadmin" should be a subadmin of group "new-group"
 
   @issue-31276
   Scenario: normal user tries to remove subadmin in the group
@@ -44,4 +44,4 @@ Feature: remove subadmin
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
-    And the user "subadmin" should be the subadmin of the group "new-group"
+    And user "subadmin" should be a subadmin of group "new-group"

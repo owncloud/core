@@ -42,14 +42,14 @@ Feature: sharing
       | path      | PARENT |
       | shareType | user   |
       | shareWith | user1  |
-    Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
+    Then user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
   Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with default permissions
     Given user "user1" has been created
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     When user "user0" has shared folder "PARENT" with group "grp1"
-    Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
+    Then user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
   @smokeTest @public_link_share-feature-required
   Scenario: Download a file that is in a folder contained in a folder that has been shared with public with default permissions
@@ -65,7 +65,7 @@ Feature: sharing
       | shareType   | user      |
       | shareWith   | user1     |
       | permissions | change    |
-    Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
+    Then user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
   Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read/Write permission
     Given user "user1" has been created
@@ -76,7 +76,7 @@ Feature: sharing
       | shareType   | group  |
       | shareWith   | grp1   |
       | permissions | change |
-    Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
+    Then user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
   @public_link_share-feature-required
   Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read/Write permission
@@ -93,7 +93,7 @@ Feature: sharing
       | shareType   | user   |
       | shareWith   | user1  |
       | permissions | read   |
-    Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
+    Then user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
   Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read only permission
     Given user "user1" has been created
@@ -104,7 +104,7 @@ Feature: sharing
       | shareType   | group  |
       | shareWith   | grp1   |
       | permissions | read   |
-    Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
+    Then user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
   @public_link_share-feature-required
   Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read only permission

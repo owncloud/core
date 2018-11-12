@@ -13,7 +13,7 @@ Feature: add and delete app configs using occ command
     When the administrator deletes config key "con" of app "core" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'Config value con of app core deleted'
-    And the app "core" should not have config key "con"
+    And app "core" should not have config key "con"
 
   Scenario: admin adds and deletes a system config
     When the administrator adds system config key "con" with value "conkey" using the occ command

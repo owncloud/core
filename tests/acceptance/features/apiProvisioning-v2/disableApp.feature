@@ -9,8 +9,8 @@ Feature: disable an app
 
   @smokeTest
   Scenario: Admin disables an app
-    Given the app "comments" has been enabled
-    When the administrator disables the app "comments"
+    Given app "comments" has been enabled
+    When the administrator disables app "comments"
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And app "comments" should be disabled
@@ -20,8 +20,8 @@ Feature: disable an app
     Given user "subadmin" has been created
     And group "newgroup" has been created
     And user "subadmin" has been made a subadmin of group "newgroup"
-    And the app "comments" has been enabled
-    When user "subadmin" disables the app "comments"
+    And app "comments" has been enabled
+    When user "subadmin" disables app "comments"
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
@@ -30,8 +30,8 @@ Feature: disable an app
   @issue-31276
   Scenario: normal user tries to disable an app
     Given user "newuser" has been created
-    And the app "comments" has been enabled
-    When user "newuser" disables the app "comments"
+    And app "comments" has been enabled
+    When user "newuser" disables app "comments"
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"

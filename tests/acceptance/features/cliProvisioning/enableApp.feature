@@ -6,7 +6,7 @@ Feature: enable an app
 
   @comments-app-required
   Scenario: Admin enables an app
-    Given the app "comments" has been disabled
+    Given app "comments" has been disabled
     When the administrator enables app "comments" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'comments enabled'
@@ -14,7 +14,7 @@ Feature: enable an app
 
   @comments-app-required
   Scenario: Admin tries to enable an app which is already enabled
-    Given the app "comments" has been enabled
+    Given app "comments" has been enabled
     When the administrator enables app "comments" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'comments enabled'
@@ -24,4 +24,4 @@ Feature: enable an app
     When the administrator enables app "not-installed-app" using the occ command
     Then the command should have failed with exit code 1
     And the command output should contain the text 'not-installed-app not found'
-    And the app "not-installed-app" should not be on the apps list
+    And app "not-installed-app" should not be in the apps list
