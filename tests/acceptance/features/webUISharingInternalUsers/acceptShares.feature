@@ -150,7 +150,7 @@ Feature: accept/decline shares coming from internal users
     And user "user1" has logged in using the webUI
     When the user accepts the share "simple-folder" offered by user "User Two" using the webUI
     And the user has browsed to the files page
-    And the user shares the folder "simple-folder (2)" with the group "grp1" using the webUI
+    And the user shares the folder "simple-folder (2)" with group "grp1" using the webUI
     And the user declines the share "simple-folder (2)" offered by user "User Two" using the webUI
     And the user reloads the current page of the webUI
     Then the folder "simple-folder (2)" should be in state "Declined" in the shared-with-you page on the webUI

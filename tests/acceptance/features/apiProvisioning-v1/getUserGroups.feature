@@ -66,7 +66,7 @@ Feature: get user groups
     And the HTTP status code should be "200"
 
   @smokeTest
-  Scenario: subadmin tries to get other groups of the user in his group
+  Scenario: subadmin tries to get other groups of a user in their group
     Given user "newuser" has been created
     And user "subadmin" has been created
     And group "newgroup" has been created

@@ -18,7 +18,7 @@ Feature: get users
       | admin          |
 
   @smokeTest
-  Scenario: subadmin gets the users in his group
+  Scenario: subadmin gets the users in their group
     Given user "brand-new-user" has been created
     And user "another-new-user" has been created
     And group "new-group" has been created

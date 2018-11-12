@@ -5,7 +5,7 @@ Feature: Display notifications when receiving a share and follow embedded links
   So that I will be redirected to the most appropriate screen
 
   Background:
-    Given the app "notifications" has been enabled
+    Given app "notifications" has been enabled
     And these users have been created:
       | username |
       | user1    |
