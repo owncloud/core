@@ -16,7 +16,7 @@ Feature: delete users
     And user "brand-new-user" should not exist
 
   @smokeTest
-  Scenario: subadmin deletes a user in his group
+  Scenario: subadmin deletes a user in their group
     Given user "subadmin" has been created
     And user "brand-new-user" has been created
     And group "new-group" has been created
