@@ -220,13 +220,13 @@ class DependencyAnalyzerTest extends TestCase {
 	public function providesOC(): array {
 		return [
 			// no version -> no missing dependency
-			[['missing minimal ownCloud version in appinfo.xml.', 'missing maximal ownCloud version in appinfo.xml.'], null],
+			[['No minimum ownCloud version is defined in appinfo/info.xml.', 'No maximum ownCloud version is defined in appinfo/info.xml.'], null],
 			[[], ['@attributes' => ['min-version' => '8', 'max-version' => '8']]],
 			[[], ['@attributes' => ['min-version' => '8.0', 'max-version' => '8.0']]],
 			[[], ['@attributes' => ['min-version' => '8.0.2', 'max-version' => '8.0.2']]],
-			[['ownCloud 8.0.3 or higher is required.', 'missing maximal ownCloud version in appinfo.xml.'], ['@attributes' => ['min-version' => '8.0.3']]],
-			[['ownCloud 9 or higher is required.', 'missing maximal ownCloud version in appinfo.xml.'], ['@attributes' => ['min-version' => '9']]],
-			[['missing minimal ownCloud version in appinfo.xml.', 'ownCloud 8.0.1 or lower is required.'], ['@attributes' => ['max-version' => '8.0.1']]],
+			[['ownCloud 8.0.3 or higher is required.', 'No maximum ownCloud version is defined in appinfo/info.xml.'], ['@attributes' => ['min-version' => '8.0.3']]],
+			[['ownCloud 9 or higher is required.', 'No maximum ownCloud version is defined in appinfo/info.xml.'], ['@attributes' => ['min-version' => '9']]],
+			[['No minimum ownCloud version is defined in appinfo/info.xml.', 'ownCloud 8.0.1 or lower is required.'], ['@attributes' => ['max-version' => '8.0.1']]],
 		];
 	}
 

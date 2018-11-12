@@ -95,7 +95,7 @@ class InfoChecker extends BasicEmitter {
 			$this->emit('InfoChecker', 'missingRequirement', ['min']);
 			$errors[] = [
 				'type' => 'missingRequirement',
-				'message' => 'missing minimal ownCloud version',
+				'message' => 'No minimum ownCloud version is defined in appinfo/info.xml',
 			];
 		}
 
@@ -103,7 +103,7 @@ class InfoChecker extends BasicEmitter {
 			$this->emit('InfoChecker', 'missingRequirement', ['max']);
 			$errors[] = [
 				'type' => 'missingRequirement',
-				'message' => 'missing maximal ownCloud version',
+				'message' => 'No maximum ownCloud version is defined in appinfo/info.xml',
 			];
 		}
 
