@@ -192,13 +192,13 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
-	 * @Then the group :groupName should be displayed on the personal general settings page in the webUI
+	 * @Then group :groupName should be displayed on the personal general settings page in the webUI
 	 *
 	 * @param string $groupName
 	 *
 	 * @return void
 	 */
-	public function theGroupShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui($groupName) {
+	public function groupShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui($groupName) {
 		PHPUnit_Framework_Assert::assertTrue($this->personalGeneralSettingsPage->isGroupNameDisplayed($groupName));
 	}
 

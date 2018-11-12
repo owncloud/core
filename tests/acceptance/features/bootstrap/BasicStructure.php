@@ -2091,7 +2091,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Then /^the app ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?have config key ((?:'[^']*')|(?:"[^"]*"))$/
+	 * @Then /^app ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?have config key ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
 	 * @param string $appID
 	 * @param string $shouldOrNot
@@ -2099,7 +2099,7 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public function theAppShouldHaveConfigKey($appID, $shouldOrNot, $key) {
+	public function appShouldHaveConfigKey($appID, $shouldOrNot, $key) {
 		$appID = \trim($appID, $appID[0]);
 		$key = \trim($key, $key[0]);
 

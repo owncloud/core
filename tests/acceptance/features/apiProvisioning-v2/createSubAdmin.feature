@@ -15,7 +15,7 @@ Feature: create a subadmin
       | groupid | new-group |
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
-    And the user "brand-new-user" should be the subadmin of the group "new-group"
+    And user "brand-new-user" should be a subadmin of group "new-group"
 
   Scenario: admin tries to create a subadmin using a user which does not exist
     Given user "not-user" has been deleted
@@ -24,7 +24,7 @@ Feature: create a subadmin
       | groupid | new-group |
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
-    And the user "not-user" should not be the subadmin of the group "new-group"
+    And user "not-user" should not be a subadmin of group "new-group"
 
   Scenario: admin tries to create a subadmin using a group which does not exist
     Given user "brand-new-user" has been created
@@ -47,5 +47,5 @@ Feature: create a subadmin
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
-    And the user "not-user" should not be the subadmin of the group "new-group"
+    And user "not-user" should not be a subadmin of group "new-group"
 	

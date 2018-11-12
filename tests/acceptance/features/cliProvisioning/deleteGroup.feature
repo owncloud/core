@@ -4,7 +4,7 @@ Feature: delete groups
   I want to be able to delete groups
   So that I can remove unnecessary groups
 
-Scenario Outline: admin deletes a group
+  Scenario Outline: admin deletes a group
     Given group "<group_id>" has been created
     When the administrator deletes group "<group_id>" using the occ command
     Then the command should have been successful

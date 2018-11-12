@@ -210,7 +210,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator creates the user "([^"]*)" using the provisioning API$/
+	 * @When /^the administrator creates user "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
 	 *
@@ -315,7 +315,7 @@ trait Provisioning {
 		}
 	}
 	/**
-	 * @When /^user "([^"]*)" (enables|disables) the app "([^"]*)"$/
+	 * @When /^user "([^"]*)" (enables|disables) app "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $action enables or disables
@@ -338,7 +338,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator (enables|disables) the app "([^"]*)"$/
+	 * @When /^the administrator (enables|disables) app "([^"]*)"$/
 	 *
 	 * @param string $action enables or disables
 	 * @param string $app
@@ -352,14 +352,14 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^the app "([^"]*)" has been (enabled|disabled)$/
+	 * @Given /^app "([^"]*)" has been (enabled|disabled)$/
 	 *
 	 * @param string $app
 	 * @param string $action enabled or disabled
 	 *
 	 * @return void
 	 */
-	public function theAppHasBeenDisabled($app, $action) {
+	public function appHasBeenDisabled($app, $action) {
 		if ($action === 'enabled') {
 			$action = 'enables';
 		} else {
@@ -534,13 +534,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given the administrator has changed his own email address to :email
+	 * @Given the administrator has changed their own email address to :email
 	 *
 	 * @param string $email
 	 *
 	 * @return void
 	 */
-	public function theAdministratorHasChangedHisOwnEmailAddressTo($email) {
+	public function theAdministratorHasChangedTheirOwnEmailAddressTo($email) {
 		$admin = $this->getAdminUsername();
 		$this->adminChangesTheEmailOfTheUserUsingTheProvisioningApi($admin, $email);
 	}
@@ -1533,27 +1533,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should be a subadmin of group "([^"]*)"$/
-	 *
-	 * @param string $user
-	 * @param string $group
-	 *
-	 * @return void
-	 */
-	public function userShouldBeSubadminOfGroup($user, $group) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
-		);
-		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-		\sort($respondedArray);
-		PHPUnit_Framework_Assert::assertContains($user, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(
-			200, $this->response->getStatusCode()
-		);
-	}
-
-	/**
 	 * @When /^the administrator makes user "([^"]*)" a subadmin of group "([^"]*)" using the provisioning API$/
 	 * @Given /^user "([^"]*)" has been made a subadmin of group "([^"]*)"$/
 	 *
@@ -1726,13 +1705,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^the app "([^"]*)" should not be on the apps list$/
+	 * @Then /^app "([^"]*)" should not be in the apps list$/
 	 *
 	 * @param string $appName
 	 *
 	 * @return void
 	 */
-	public function theAppShouldNotBeOnTheAppsList($appName) {
+	public function appShouldNotBeInTheAppsList($appName) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
@@ -1742,17 +1721,20 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^the user "([^"]*)" should be the subadmin of the group "([^"]*)"$/
+	 * @Then /^user "([^"]*)" should be a subadmin of group "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $group
 	 *
 	 * @return void
 	 */
-	public function theUserIsTheSubadminOfTheGroup($user, $group) {
+	public function userShouldBeASubadminOfGroup($user, $group) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
 		);
 		$listOfSubadmins = $this->getArrayOfSubadminsResponded($this->response);
 		PHPUnit_Framework_Assert::assertContains(
@@ -1762,14 +1744,14 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^the user "([^"]*)" should not be the subadmin of the group "([^"]*)"$/
+	 * @Then /^user "([^"]*)" should not be a subadmin of group "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $group
 	 *
 	 * @return void
 	 */
-	public function theUserIsNotTheSubadminOfTheGroup($user, $group) {
+	public function userShouldNotBeASubadminOfGroup($user, $group) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()

@@ -124,7 +124,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator sends a user creation request for user :username password :password group :group using the occ command
+	 * @When the administrator creates user :username password :password group :group using the occ command
 	 *
 	 * @param string $username
 	 * @param string $password
@@ -132,7 +132,7 @@ class OccContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorSendsAUserCreationRequestForUserPasswordGroupUsingTheOccCommand($username, $password, $group) {
+	public function theAdministratorCreatesUserPasswordGroupUsingTheOccCommand($username, $password, $group) {
 		$cmd = "user:add $username  --password-from-env --group=$group";
 		$this->featureContext->invokingTheCommandWithEnvVariable(
 			$cmd,
@@ -155,13 +155,13 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator resets his own password to :newPassword using the occ command
+	 * @When the administrator resets their own password to :newPassword using the occ command
 	 *
 	 * @param string $newPassword
 	 *
 	 * @return void
 	 */
-	public function theAdministratorResetsHisOwnPasswordToUsingTheOccCommand($newPassword) {
+	public function theAdministratorResetsTheirOwnPasswordToUsingTheOccCommand($newPassword) {
 		$password = $this->featureContext->getActualPassword($newPassword);
 		$admin = $this->featureContext->getAdminUsername();
 		$this->featureContext->invokingTheCommandWithEnvVariable(
@@ -226,13 +226,13 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator sends a user deletion request for user :username using the occ command
+	 * @When the administrator deletes user :username using the occ command
 	 *
 	 * @param string $username
 	 *
 	 * @return void
 	 */
-	public function theAdministratorSendsAUserDeletionRequestForUserUsingTheOccCommand($username) {
+	public function theAdministratorDeletesUserUsingTheOccCommand($username) {
 		$this->featureContext->invokingTheCommand(
 			"user:delete $username"
 		);
@@ -314,13 +314,13 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator sends a group creation request for group :group using the occ command
+	 * @When the administrator creates group :group using the occ command
 	 *
 	 * @param string $group
 	 *
 	 * @return void
 	 */
-	public function theAdministratorSendsAGroupCreationRequestForGroupUsingTheOccCommand($group) {
+	public function theAdministratorCreatesGroupUsingTheOccCommand($group) {
 		$this->featureContext->invokingTheCommand(
 			"group:add $group"
 		);
@@ -328,14 +328,14 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator adds the user :username to the group :group using the occ command
+	 * @When the administrator adds user :username to group :group using the occ command
 	 *
 	 * @param string $username
 	 * @param string $group
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsTheUserToTheGroupUsingTheOccCommand($username, $group) {
+	public function theAdministratorAddsUserToGroupUsingTheOccCommand($username, $group) {
 		$this->featureContext->invokingTheCommand(
 			"group:add-member -m $username $group"
 		);
@@ -355,13 +355,13 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator gets the users in the group :groupName in JSON format using the occ command
+	 * @When the administrator gets the users in group :groupName in JSON format using the occ command
 	 *
 	 * @param string $groupName
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsTheUsersInTheGroupInJsonUsingTheOccCommand($groupName) {
+	public function theAdministratorGetsTheUsersInGroupInJsonUsingTheOccCommand($groupName) {
 		$this->featureContext->invokingTheCommand(
 			"group:list-members $groupName --output=json"
 		);
@@ -393,39 +393,39 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator disables the app :appName using the occ command
+	 * @When the administrator disables app :appName using the occ command
 	 *
 	 * @param string $appName
 	 *
 	 * @return void
 	 */
-	public function theAdministratorDisablesTheAppUsingTheOccCommand($appName) {
+	public function theAdministratorDisablesAppUsingTheOccCommand($appName) {
 		$this->featureContext->invokingTheCommand(
 			"app:disable $appName"
 		);
 	}
 
 	/**
-	 * @When the administrator enables the app :appName using the occ command
+	 * @When the administrator enables app :appName using the occ command
 	 *
 	 * @param string $appName
 	 *
 	 * @return void
 	 */
-	public function theAdministratorEnablesTheAppUsingTheOccCommand($appName) {
+	public function theAdministratorEnablesAppUsingTheOccCommand($appName) {
 		$this->featureContext->invokingTheCommand(
 			"app:enable $appName"
 		);
 	}
 
 	/**
-	 * @When the administrator gets the app info of the app :appName
+	 * @When the administrator gets the app info of app :appName
 	 *
 	 * @param string $appName
 	 *
 	 * @return void
 	 */
-	public function administratorGetsTheAppInfoOfTheApp($appName) {
+	public function administratorGetsTheAppInfoOfApp($appName) {
 		$this->featureContext->invokingTheCommand(
 			"config:list $appName"
 		);
@@ -443,40 +443,40 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator disables the user :username using the occ command
+	 * @When the administrator disables user :username using the occ command
 	 *
 	 * @param string $username
 	 *
 	 * @return void
 	 */
-	public function theAdministratorDisablesTheUserUsingTheOccCommand($username) {
+	public function theAdministratorDisablesUserUsingTheOccCommand($username) {
 		$this->featureContext->invokingTheCommand(
 			"user:disable $username"
 		);
 	}
 
 	/**
-	 * @When administrator enables the user :username using the occ command
+	 * @When administrator enables user :username using the occ command
 	 *
 	 * @param string $username
 	 *
 	 * @return void
 	 */
-	public function administratorEnablesTheUserUsingTheOccCommand($username) {
+	public function administratorEnablesUserUsingTheOccCommand($username) {
 		$this->featureContext->invokingTheCommand(
 			"user:enable $username"
 		);
 	}
 
 	/**
-	 * @Then the language of the user :username returned by the occ command should be :language
+	 * @Then the language of user :username returned by the occ command should be :language
 	 *
 	 * @param string $username
 	 * @param string $language
 	 *
 	 * @return void
 	 */
-	public function theLanguageOfTheUserReturnedByTheOccCommandShouldBe($username, $language) {
+	public function theLanguageOfUserReturnedByTheOccCommandShouldBe($username, $language) {
 		$this->featureContext->invokingTheCommand(
 			"user:setting $username core lang"
 		);
@@ -548,13 +548,13 @@ class OccContext implements Context {
 	}
 	
 	/**
-	 * @When the administrator sets the file size to :size for using the occ command
+	 * @When the administrator sets the log rotate file size to :size using the occ command
 	 *
 	 * @param string $size
 	 *
 	 * @return void
 	 */
-	public function theAdministratorSetsLogFileSizeUsingTheOccCommand($size) {
+	public function theAdministratorSetsLogRotateFileSizeUsingTheOccCommand($size) {
 		$this->featureContext->invokingTheCommand(
 			"log:owncloud --rotate-size $size"
 		);
@@ -734,7 +734,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator adds a config key :key with value :value in app :app using the occ command
+	 * @When the administrator adds config key :key with value :value in app :app using the occ command
 	 *
 	 * @param string $key
 	 * @param string $value
@@ -742,74 +742,74 @@ class OccContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsAConfigKeyWithValueInAppUsingTheOccCommand($key, $value, $app) {
+	public function theAdministratorAddsConfigKeyWithValueInAppUsingTheOccCommand($key, $value, $app) {
 		$this->featureContext->invokingTheCommand(
 			"config:app:set --value ${value} ${app} ${key}"
 		);
 	}
 
 	/**
-	 * @When the administrator deletes the config key :key of app :app using the occ command
+	 * @When the administrator deletes config key :key of app :app using the occ command
 	 *
 	 * @param string $key
 	 * @param string $app
 	 *
 	 * @return void
 	 */
-	public function theAdministratorDeletesTheConfigKeyOfAppUsingTheOccCommand($key, $app) {
+	public function theAdministratorDeletesConfigKeyOfAppUsingTheOccCommand($key, $app) {
 		$this->featureContext->invokingTheCommand(
 			"config:app:delete ${app} ${key}"
 		);
 	}
 
 	/**
-	 * @When the administrator adds a system config key :key with value :value using the occ command
+	 * @When the administrator adds system config key :key with value :value using the occ command
 	 *
 	 * @param string $key
 	 * @param string $value
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsASystemConfigKeyWithValueUsingTheOccCommand($key, $value) {
+	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand($key, $value) {
 		$this->featureContext->invokingTheCommand(
 			"config:system:set --value ${value} ${key}"
 		);
 	}
 
 	/**
-	 * @When the administrator deletes a system config key :key using the occ command
+	 * @When the administrator deletes system config key :key using the occ command
 	 *
 	 * @param string $key
 	 *
 	 * @return void
 	 */
-	public function theAdministratorDeletesASystemConfigKeyUsingTheOccCommand($key) {
+	public function theAdministratorDeletesSystemConfigKeyUsingTheOccCommand($key) {
 		$this->featureContext->invokingTheCommand(
 			"config:system:delete ${key}"
 		);
 	}
 
 	/**
-	 * @Then the system config key :key with value :value should exist
+	 * @Then system config key :key should have value :value
 	 *
 	 * @param string $key
 	 * @param string $value
 	 *
 	 * @return void
 	 */
-	public function theSystemConfigKeyWithValueShouldExist($key, $value) {
+	public function systemConfigKeyShouldHaveValue($key, $value) {
 		$config = \trim($this->featureContext->getSystemConfigValue($key));
 		PHPUnit_Framework_Assert::assertSame($value, $config);
 	}
 
 	/**
-	 * @Then the system config key :key should not exist
+	 * @Then system config key :key should not exist
 	 *
 	 * @param string $key
 	 *
 	 * @return void
 	 */
-	public function theSystemConfigKeyShouldNotExist($key) {
+	public function systemConfigKeyShouldNotExist($key) {
 		PHPUnit_Framework_Assert::assertEmpty($this->featureContext->getSystemConfig($key)['stdOut']);
 	}
 
@@ -834,11 +834,11 @@ class OccContext implements Context {
 		PHPUnit_Framework_Assert::assertArrayHasKey(
 			'apps',
 			$config_list,
-			"The occ output doesnot contain apps configs"
+			"The occ output does not contain apps configs"
 		);
 		PHPUnit_Framework_Assert::assertNotEmpty(
 			$config_list['apps'],
-			"The occ output doesnot contain apps configs"
+			"The occ output does not contain apps configs"
 		);
 	}
 
@@ -852,11 +852,11 @@ class OccContext implements Context {
 		PHPUnit_Framework_Assert::assertArrayHasKey(
 			'system',
 			$config_list,
-			"The occ output doesnot contain system configs"
+			"The occ output does not contain system configs"
 		);
 		PHPUnit_Framework_Assert::assertNotEmpty(
 			$config_list['system'],
-			"The occ output doesnot contain system configs"
+			"The occ output does not contain system configs"
 		);
 	}
 

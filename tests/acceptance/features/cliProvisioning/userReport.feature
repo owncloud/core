@@ -23,7 +23,7 @@ Feature: get user report
     Then the command should have been successful
     And the total users returned by the command should be 3
 
-  Scenario: admin gets the user report when the user created and deleted
+  Scenario: admin gets the user report when a user has been created and deleted
     Given these users have been created but not initialized:
       | username         |
       | brand-new-user-1 |
