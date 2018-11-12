@@ -6,7 +6,7 @@ Feature: disable user
 
   Scenario: admin disables an user
     Given user "user1" has been created
-    When the administrator disables the user "user1" using the occ command
+    When the administrator disables user "user1" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'The specified user is disabled'
     And user "user1" should be disabled
@@ -14,7 +14,7 @@ Feature: disable user
   Scenario: Admin can disable another admin user
     Given user "another-admin" has been created
     And user "another-admin" has been added to group "admin"
-    When the administrator disables the user "another-admin" using the occ command
+    When the administrator disables user "another-admin" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'The specified user is disabled'
     And user "another-admin" should be disabled
@@ -25,7 +25,7 @@ Feature: disable user
     And user "subadmin" has been added to group "new-group"
     And the administrator has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
-    When the administrator disables the user "subadmin" using the occ command
+    When the administrator disables user "subadmin" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'The specified user is disabled'
     And user "subadmin" should be disabled

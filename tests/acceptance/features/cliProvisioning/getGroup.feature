@@ -11,7 +11,7 @@ Feature: get group
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "123" has been added to group "new-group"
-    When the administrator gets the users in the group "new-group" in JSON format using the occ command
+    When the administrator gets the users in group "new-group" in JSON format using the occ command
     Then the command should have been successful
     And the users returned by the occ command should be
       | uid            | display name |
@@ -24,7 +24,7 @@ Feature: get group
     And user "brand-new-user" has been disabled
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
-    When the administrator gets the users in the group "new-group" in JSON format using the occ command
+    When the administrator gets the users in group "new-group" in JSON format using the occ command
     Then the command should have been successful
     And the users returned by the occ command should be
       | uid            | display name |

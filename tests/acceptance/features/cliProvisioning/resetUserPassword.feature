@@ -34,7 +34,7 @@ Feature: reset user password
     Then the command should have failed with exit code 1
     And the command output should contain the text "Email address is not set for the user brand-new-user"
 
-  Scenario: user should not an get email when smtpmode is missing
+  Scenario: user should not get an email when the smtpmode value points to an invalid or missing mail program
     Given these users have been created:
       | username       | password  | displayname | email                    |
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
@@ -52,7 +52,7 @@ Feature: reset user password
 
   Scenario: admin should be able to reset their own password
     Given user "brand-new-user" has been created
-    When the administrator resets his own password to "%alt1%" using the occ command
+    When the administrator resets their own password to "%alt1%" using the occ command
     Then the command should have been successful
     And the command output should contain the text "Successfully reset password for admin"
     When the administrator retrieves the information of user "brand-new-user" using the provisioning API

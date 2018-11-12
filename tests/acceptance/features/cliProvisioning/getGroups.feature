@@ -1,7 +1,7 @@
 @cli @skipOnLDAP
 Feature: get groups
   As an admin
-  I want to be able to get groups
+  I want to be able to get a list of groups
   So that I can see all the groups in my ownCloud
 
   Scenario: admin gets all the groups
