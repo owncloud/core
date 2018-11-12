@@ -48,9 +48,9 @@ class StaticStreamTest extends \Test\TestCase {
 	}
 
 	public function testIsDir() {
-		$this->assertFalse(\is_dir('static://foo'));
+		$this->assertDirectoryNotExists('static://foo');
 		\file_put_contents('static://foo', $this->sourceText);
-		$this->assertFalse(\is_dir('static://foo'));
+		$this->assertDirectoryNotExists('static://foo');
 	}
 
 	public function testFileType() {

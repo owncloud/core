@@ -267,8 +267,8 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 		$this->assertTrue($this->service->deleteAllMountsForUser($user1));
 		$storarge1Result1 = $userMountCache->getMountsForStorageId(10);
 		$storarge1Result2 = $userMountCache->getMountsForStorageId(12);
-		$this->assertEquals(0, \count($storarge1Result1));
-		$this->assertEquals(1, \count($storarge1Result2));
+		$this->assertCount(0, $storarge1Result1);
+		$this->assertCount(1, $storarge1Result2);
 		$this->assertEquals(12, $storarge1Result2[0]->getStorageId());
 		$this->assertEquals('/bar/', $storarge1Result2[0]->getMountPoint());
 		$this->assertNull($dbConfigService->getMountById($id));

@@ -384,7 +384,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 				$row = $checkQuery->select('parent')
 					->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
 					->execute()->fetchAll();
-				$this->assertEquals(0, \count($row));
+				$this->assertCount(0, $row);
 			}
 		}
 
@@ -396,7 +396,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 				$row = $checkQuery->select('parent')
 					->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
 					->execute()->fetchAll();
-				$this->assertEquals(1, \count($row));
+				$this->assertCount(1, $row);
 			}
 		}
 	}
