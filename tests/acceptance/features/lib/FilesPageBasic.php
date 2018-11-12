@@ -43,7 +43,6 @@ abstract class FilesPageBasic extends OwncloudPage {
 	protected $appContentFilesContainerId = "app-content-files";
 	protected $controlsId = "controls";
 	protected $loadingIndicatorXpath = ".//*[@class='loading']";
-	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 	protected $fileRowXpathFromActionMenu = "/../..";
 	protected $appSettingsXpath = "//div[@id='app-settings']";
 	protected $showHiddenFilesCheckboxXpath = "//label[@for='showhiddenfilesToggle']";
@@ -82,7 +81,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @param string|array $name
 	 * @param Session $session
 	 *
-	 * @return FileRowElements[]
+	 * @return NodeElement[]
 	 * @throws ElementNotFoundException
 	 */
 	protected function getFileRowElementsByName($name, Session $session) {
@@ -327,62 +326,6 @@ abstract class FilesPageBasic extends OwncloudPage {
 	}
 
 	/**
-	 *
-	 * @param string|array $name
-	 * @param Session $session
-	 * @param bool $expectToDeleteFile
-	 * @param int $maxRetries
-	 *
-	 * @return void
-	 */
-	public function deleteFile(
-		$name,
-		Session $session,
-		$expectToDeleteFile = true,
-		$maxRetries = STANDARD_RETRY_COUNT
-	) {
-		$this->initAjaxCounters($session);
-		$this->resetSumStartedAjaxRequests($session);
-		
-		for ($counter = 0; $counter < $maxRetries; $counter++) {
-			$row = $this->findFileRowByName($name, $session);
-			try {
-				$row->delete($session);
-				$this->waitForAjaxCallsToStartAndFinish($session);
-				$countXHRRequests = $this->getSumStartedAjaxRequests($session);
-				//if no XHR Request were fired we assume the delete action
-				//did not work and we retry
-				if ($countXHRRequests === 0) {
-					if ($expectToDeleteFile) {
-						\error_log("Error while deleting file");
-					}
-				} else {
-					break;
-				}
-			} catch (\Exception $e) {
-				$this->closeFileActionsMenu();
-				if ($expectToDeleteFile) {
-					\error_log(
-						"Error while deleting file"
-						. "\n-------------------------\n"
-						. $e->getMessage()
-						. "\n-------------------------\n"
-					);
-				}
-				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			}
-		}
-		if ($expectToDeleteFile && ($counter > 0)) {
-			if (\is_array($name)) {
-				$name = \implode($name);
-			}
-			$message = "INFORMATION: retried to delete file '$name' $counter times";
-			echo $message;
-			\error_log($message);
-		}
-	}
-
-	/**
 	 * closes the fileactionsmenu is any is open
 	 *
 	 * @return void
@@ -409,24 +352,6 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 * @return NodeElement
 	 */
-	public function findDeleteAllSelectedFilesBtn() {
-		$deleteAllSelectedBtn = $this->find(
-			"xpath", $this->deleteAllSelectedBtnXpath
-		);
-		$this->assertElementNotNull(
-			$deleteAllSelectedBtn,
-			__METHOD__ .
-			" xpath $this->deleteAllSelectedBtnXpath " .
-			"could not find button to delete all selected files"
-		);
-		return $deleteAllSelectedBtn;
-	}
-
-	/**
-	 *
-	 * @throws ElementNotFoundException
-	 * @return NodeElement
-	 */
 	public function findSelectAllFilesBtn() {
 		$selectedAllFilesBtn = $this->find(
 			"xpath", $this->selectAllFilesCheckboxXpath
@@ -437,18 +362,6 @@ abstract class FilesPageBasic extends OwncloudPage {
 			"could not find button $this->selectAllFilesCheckboxXpath to select all files"
 		);
 		return $selectedAllFilesBtn;
-	}
-
-	/**
-	 *
-	 * @param Session $session
-	 *
-	 * @return void
-	 */
-	public function deleteAllSelectedFiles(Session $session) {
-		$this->findDeleteAllSelectedFilesBtn()->click();
-		$this->waitForAjaxCallsToStartAndFinish($session);
-		$this->waitTillFileRowsAreReady($session);
 	}
 
 	/**

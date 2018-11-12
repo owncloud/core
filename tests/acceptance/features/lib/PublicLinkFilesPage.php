@@ -23,6 +23,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use WebDriver\Exception\NoSuchElement;
 use WebDriver\Exception\StaleElementReference;
@@ -44,6 +45,12 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	protected $passwordFieldId = 'password';
 	protected $passwordSubmitButtonId = 'password-submit';
 	protected $warningMessageCss = '.warning';
+	protected $deleteAllSelectedBtnXpath = "//a[@class='delete-selected']";
+	/**
+	 *
+	 * @var FilesPageCRUD $filesPageCRUDFunctions
+	 */
+	protected $filesPageCRUDFunctions;
 
 	/**
 	 * @return string
@@ -86,6 +93,25 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	}
 
 	/**
+	 * @param Session $session
+	 * @param Factory $factory
+	 * @param array   $parameters
+	 */
+	public function __construct(
+		Session $session, Factory $factory, array $parameters = []
+	) {
+		parent::__construct($session, $factory, $parameters);
+		$this->filesPageCRUDFunctions = $this->getPage("FilesPageCRUD");
+		$this->filesPageCRUDFunctions->setXpath(
+			$this->emptyContentXpath,
+			$this->fileListXpath,
+			$this->fileNameMatchXpath,
+			$this->fileNamesXpath,
+			$this->deleteAllSelectedBtnXpath
+		);
+	}
+
+	/**
 	 * adding public link share to particular server
 	 *
 	 * @param string $server
@@ -121,13 +147,20 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * create a folder with the given name.
 	 * If name is not given a random one is chosen
 	 *
+	 * @param Session $session
 	 * @param string $name
+	 * @param int $timeoutMsec
 	 *
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|\Exception
 	 * @return string name of the created file
 	 */
-	public function createFolder($name = null) {
-		throw new \Exception("not implemented");
+	public function createFolder(
+		Session $session, $name = null,
+		$timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	) {
+		return $this->filesPageCRUDFunctions->createFolder(
+			$session, $name, $timeoutMsec
+		);
 	}
 
 	/**
@@ -146,7 +179,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		Session $session,
 		$maxRetries = STANDARD_RETRY_COUNT
 	) {
-		throw new \Exception("not implemented");
+		$this->filesPageCRUDFunctions->renameFile(
+			$fromFileName, $toFileName, $session, $maxRetries
+		);
 	}
 
 	/**
@@ -162,7 +197,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	public function moveFileTo(
 		$name, $destination, Session $session, $maxRetries = STANDARD_RETRY_COUNT
 	) {
-		throw new \Exception("not implemented");
+		$this->filesPageCRUDFunctions->moveFileTo(
+			$name, $destination, $session, $maxRetries
+		);
 	}
 
 	/**
@@ -358,5 +395,56 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		}
 
 		$this->waitForOutstandingAjaxCalls($session);
+	}
+
+	/**
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 * @param bool $expectToDeleteFile
+	 * @param int $maxRetries
+	 *
+	 * @return void
+	 */
+	public function deleteFile(
+		$name,
+		Session $session,
+		$expectToDeleteFile = true,
+		$maxRetries = STANDARD_RETRY_COUNT
+	) {
+		$this->filesPageCRUDFunctions->deleteFile(
+			$name, $session, $expectToDeleteFile, $maxRetries
+		);
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function deleteAllSelectedFiles(Session $session) {
+		$this->filesPageCRUDFunctions->deleteAllSelectedFiles($session);
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function uploadFile(Session $session, $name) {
+		$this->filesPageCRUDFunctions->uploadFile($session, $name);
+	}
+
+	/**
+	 * waits till the upload progressbar is not visible anymore
+	 *
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function waitForUploadProgressbarToFinish() {
+		$this->filesPageCRUDFunctions->waitForUploadProgressbarToFinish();
 	}
 }

@@ -209,6 +209,7 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - WebUISharingContext:
 
     webUIPersonalSettings:
       paths:
@@ -232,6 +233,7 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - WebUISharingContext:
 
     webUIRenameFolders:
       paths:
@@ -324,6 +326,7 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - WebUISharingContext:
 
     # This suite is part of the user_management app in later core versions
     webUIManageQuota:

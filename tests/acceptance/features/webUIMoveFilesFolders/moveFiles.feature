@@ -82,3 +82,15 @@ Feature: move files
       | "double" quotes | "double" quotes     |
       | question?       | question?           |
       | &and#hash       | &and#hash           |
+
+  @skipOnFIREFOX
+  Scenario: move files on a public share
+    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read-write |
+    And the public accesses the last created public link using the webUI
+    And the user moves the file "data.zip" into the folder "simple-empty-folder" using the webUI
+    Then the file "data.zip" should not be listed on the webUI
+    When the user reloads the current page of the webUI
+    Then the file "data.zip" should not be listed on the webUI
+    And as "user1" the file "simple-folder/simple-empty-folder/data.zip" should exist
+    But as "user1" the file "simple-folder/data.zip" should not exist
