@@ -4,6 +4,7 @@ Feature: enable an app
   I want to be able to enable a disabled app
   So that I can use the app features again
 
+  @comments-app-required
   Scenario: Admin enables an app
     Given app "comments" has been disabled
     When the administrator enables app "comments" using the occ command
@@ -11,6 +12,7 @@ Feature: enable an app
     And the command output should contain the text 'comments enabled'
     And app "comments" should be enabled
 
+  @comments-app-required
   Scenario: Admin tries to enable an app which is already enabled
     Given app "comments" has been enabled
     When the administrator enables app "comments" using the occ command
