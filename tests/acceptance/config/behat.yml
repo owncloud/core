@@ -191,6 +191,7 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - WebUISharingContext:
 
     webUIPersonalSettings:
       paths:
@@ -214,6 +215,7 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - WebUISharingContext:
 
     webUIRenameFolders:
       paths:
@@ -306,6 +308,7 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - WebUISharingContext:
 
     webUIWebdavLocks:
       paths:

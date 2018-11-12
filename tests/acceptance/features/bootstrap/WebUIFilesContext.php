@@ -486,8 +486,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function createAFolder($name) {
 		$session = $this->getSession();
-		$this->filesPage->createFolder($session, $name);
-		$this->filesPage->waitTillPageIsLoaded($session);
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->createFolder($session, $name);
+		$pageObject->waitTillPageIsLoaded($session);
 	}
 
 	/**
@@ -586,8 +587,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserRenamesTheFileFolderToUsingTheWebUI(
 		$fromName, $toName
 	) {
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->filesPage->renameFile($fromName, $toName, $this->getSession());
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->waitTillPageIsLoaded($this->getSession());
+		$pageObject->renameFile($fromName, $toName, $this->getSession());
 	}
 
 	/**
@@ -611,8 +613,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$fromNameParts[] = $namePartsRow['from-name-parts'];
 			$toNameParts[] = $namePartsRow['to-name-parts'];
 		}
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->filesPage->renameFile(
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->waitTillPageIsLoaded($this->getSession());
+		$pageObject->renameFile(
 			$fromNameParts,
 			$toNameParts,
 			$this->getSession()
@@ -632,9 +635,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserRenamesTheFileToOneOfTheseNamesUsingTheWebUI(
 		$fromName, TableNode $table
 	) {
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->waitTillPageIsLoaded($this->getSession());
 		foreach ($table->getRows() as $row) {
-			$this->filesPage->renameFile($fromName, $row[0], $this->getSession());
+			$pageObject->renameFile($fromName, $row[0], $this->getSession());
 		}
 	}
 
@@ -698,8 +702,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		foreach ($namePartsTable as $namePartsRow) {
 			$fileNameParts[] = $namePartsRow['name-parts'];
 		}
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->filesPage->deleteFile($fileNameParts, $this->getSession());
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->waitTillPageIsLoaded($this->getSession());
+		$pageObject->deleteFile($fileNameParts, $this->getSession());
 	}
 
 	/**
@@ -780,7 +785,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserMovesTheFileFolderToUsingTheWebUI($name, $destination) {
-		$this->filesPage->moveFileTo($name, $destination, $this->getSession());
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->moveFileTo($name, $destination, $this->getSession());
 	}
 
 	/**
@@ -861,7 +867,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$this->theUserUploadsOverwritingTheFileUsingTheWebUI($name);
 
 			try {
-				$notifications = $this->filesPage->getNotifications();
+				$notifications = $this->getCurrentPageObject()->getNotifications();
 			} catch (ElementNotFoundException $e) {
 				$notifications = [];
 			}
@@ -916,7 +922,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserUploadsTheFileUsingTheWebUI($name) {
-		$this->filesPage->uploadFile($this->getSession(), $name);
+		$this->getCurrentPageObject()->uploadFile($this->getSession(), $name);
 	}
 
 	/**
@@ -929,7 +935,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function choiceInUploadConflictDialogWebUI($choice) {
-		$dialogs = $this->filesPage->getOcDialogs();
+		$dialogs = $this->getCurrentPageObject()->getOcDialogs();
 		$isConflictDialog = false;
 		foreach ($dialogs as $dialog) {
 			$isConflictDialog = \strstr(
@@ -969,11 +975,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserChoosesToInTheUploadDialog($label) {
-		$dialogs = $this->filesPage->getOcDialogs();
+		$pageObject = $this->getCurrentPageObject();
+		$dialogs = $pageObject->getOcDialogs();
 		$dialog = \end($dialogs);
 		$this->conflictDialog->setElement($dialog->getOwnElement());
 		$this->conflictDialog->clickButton($this->getSession(), $label);
-		$this->filesPage->waitForUploadProgressbarToFinish();
+		$pageObject->waitForUploadProgressbarToFinish();
 	}
 
 	/**
@@ -1389,7 +1396,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$shouldOrNot, $folderName
 	) {
 		$this->theUserOpensTheFolderUsingTheWebUI("", "folder", $folderName);
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->getCurrentPageObject()->waitTillPageIsLoaded($this->getSession());
 		$this->theDeletedMovedElementsShouldBeListedOnTheWebUI($shouldOrNot);
 	}
 
@@ -1413,7 +1420,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$toBeListedTableArray[] = [$namePartsRow['item-name-parts']];
 		}
 		$this->theUserOpensTheFolderUsingTheWebUI("", "folder", $folderNameParts);
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->getCurrentPageObject()->waitTillPageIsLoaded($this->getSession());
 
 		$toBeListedTable = new TableNode($toBeListedTableArray);
 		$this->theFollowingFileFolderShouldBeListedOnTheWebUI(
@@ -1479,7 +1486,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	) {
 		PHPUnit_Framework_Assert::assertEquals(
 			$toolTipText,
-			$this->filesPage->getTooltipOfFile($name, $this->getSession())
+			$this->getCurrentPageObject()->getTooltipOfFile($name, $this->getSession())
 		);
 	}
 	
@@ -1506,7 +1513,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function folderInputFieldTooltipTextShouldBeDisplayedOnTheWebUI(
 		$tooltiptext
 	) {
-		$createFolderTooltip = $this->filesPage->getCreateFolderTooltip();
+		$createFolderTooltip = $this->getCurrentPageObject()->getCreateFolderTooltip();
 		PHPUnit_Framework_Assert::assertSame($tooltiptext, $createFolderTooltip);
 	}
 
