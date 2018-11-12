@@ -149,7 +149,7 @@ Feature: sharing
     Then the HTTP status code should be "403"
     And as "user0" the file "/shared/shared_file.txt" should exist
 
-  Scenario: sharee of a upload-only share folder tries to delete his file in the folder
+  Scenario: sharee of an upload-only shared folder tries to delete their file in the folder
     Given using OCS API version "1"
     And user "user0" has created a folder "/shared"
     And user "user0" has sent HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body

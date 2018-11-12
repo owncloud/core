@@ -5,7 +5,7 @@ Feature: admin general settings
   So that I can configure general settings on the ownCloud server
 
   Background:
-    Given the administrator has changed his own email address to "admin@owncloud.com"
+    Given the administrator has changed their own email address to "admin@owncloud.com"
     And the administrator has browsed to the admin general settings page
 
   @smokeTest

@@ -104,7 +104,7 @@ Feature: remove a user from a group
     And user "brand-new-user" should belong to group "new-group"
 
   @issue-31276
-  Scenario: normal user tries to remove the user in his group
+  Scenario: normal user tries to remove a user in their group
     Given user "newuser" has been created
     And user "anotheruser" has been created
     And group "new-group" has been created

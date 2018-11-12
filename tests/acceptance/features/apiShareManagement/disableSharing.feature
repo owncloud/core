@@ -82,7 +82,7 @@ Feature: sharing
       | 2               | 404              |
 
   @smokeTest
-  Scenario Outline: user tries to share a file with user who is not in his group when sharing outside the group has been restricted
+  Scenario Outline: user tries to share a file with user who is not in their group when sharing outside the group has been restricted
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
@@ -95,7 +95,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 403              |
 
-  Scenario Outline: user shares a file with user who is in his group when sharing outside the group has been restricted
+  Scenario Outline: user shares a file with user who is in their group when sharing outside the group has been restricted
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
     And user "user2" has been created
@@ -110,7 +110,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  Scenario Outline: user shares a file with the group he is not member of when sharing outside the group has been restricted
+  Scenario Outline: user shares a file with the group they are not member of when sharing outside the group has been restricted
     Given using OCS API version "<ocs_api_version>"
     And group "grp2" has been created
     And group "grp1" has been created

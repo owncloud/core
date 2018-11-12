@@ -52,7 +52,7 @@ Feature: get user
     And the API should not return any data
 
   @smokeTest
-  Scenario: normal user gets his own information
+  Scenario: normal user gets their own information
     Given user "newuser" has been created
     When user "newuser" sends HTTP method "GET" to OCS API endpoint "/cloud/users/newuser"
     Then the OCS status code should be "200"

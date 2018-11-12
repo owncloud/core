@@ -534,13 +534,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given the administrator has changed his own email address to :email
+	 * @Given the administrator has changed their own email address to :email
 	 *
 	 * @param string $email
 	 *
 	 * @return void
 	 */
-	public function theAdministratorHasChangedHisOwnEmailAddressTo($email) {
+	public function theAdministratorHasChangedTheirOwnEmailAddressTo($email) {
 		$admin = $this->getAdminUsername();
 		$this->adminChangesTheEmailOfTheUserUsingTheProvisioningApi($admin, $email);
 	}

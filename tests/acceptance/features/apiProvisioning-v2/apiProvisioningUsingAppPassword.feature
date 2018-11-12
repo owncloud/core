@@ -18,7 +18,7 @@ Feature: access user provisioning API using app password
     Then the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
-  Scenario: subadmin gets user of his group
+  Scenario: subadmin gets users in their group
     Given user "brand-new-user" has been created
     And user "another-new-user" has been created
     And group "new-group" has been created
@@ -33,7 +33,7 @@ Feature: access user provisioning API using app password
     And the HTTP status code should be "200"
 
   @smokeTest
-  Scenario: normal user gets his own information using the app password
+  Scenario: normal user gets their own information using the app password
     Given user "newuser" has been created
     And a new client token for "newuser" has been generated
     Given a new browser session for "newuser" has been started

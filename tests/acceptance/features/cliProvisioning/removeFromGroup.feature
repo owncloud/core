@@ -25,7 +25,7 @@ Feature: remove a user from a group
     Then the command should have failed with exit code 1
     And the command output should contain the text 'Group "not-group" does not exist'
 
-  Scenario: admin tries to remove a user from a group which he is not a member of
+  Scenario: admin tries to remove a user from a group which the user is not a member of
     Given user "brand-new-user" has been created
     And group "new-group" has been created
     When the administrator removes user "brand-new-user" from group "new-group" using the occ command
