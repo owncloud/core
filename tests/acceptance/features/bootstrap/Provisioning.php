@@ -1533,27 +1533,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should be a subadmin of group "([^"]*)"$/
-	 *
-	 * @param string $user
-	 * @param string $group
-	 *
-	 * @return void
-	 */
-	public function userShouldBeSubadminOfGroup($user, $group) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
-		);
-		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-		\sort($respondedArray);
-		PHPUnit_Framework_Assert::assertContains($user, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(
-			200, $this->response->getStatusCode()
-		);
-	}
-
-	/**
 	 * @When /^the administrator makes user "([^"]*)" a subadmin of group "([^"]*)" using the provisioning API$/
 	 * @Given /^user "([^"]*)" has been made a subadmin of group "([^"]*)"$/
 	 *
@@ -1753,6 +1732,9 @@ trait Provisioning {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
 		);
 		$listOfSubadmins = $this->getArrayOfSubadminsResponded($this->response);
 		PHPUnit_Framework_Assert::assertContains(
