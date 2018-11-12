@@ -5,7 +5,7 @@ Feature: encrypt files using user specific keys
   So that users can use specific keys for encrypting their files
 
   Background:
-    Given the app "encryption" has been enabled
+    Given app "encryption" has been enabled
     And these users have been created but not initialized:
       | username       |
       | brand-new-user |
