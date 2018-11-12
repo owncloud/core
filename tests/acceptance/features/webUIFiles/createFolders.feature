@@ -22,4 +22,15 @@ Feature: create folders
   Scenario: Create a folder with existing name
     When the user creates a folder with the invalid name "simple-folder" using the webUI
     Then near the folder input field a tooltip with the text 'simple-folder already exists' should be displayed on the webUI
-	
+
+  Scenario: Create a folder in a public share
+    Given the user has created a new public link for the folder "simple-empty-folder" using the webUI with
+      | permission | read-write |
+    And the public accesses the last created public link using the webUI
+    When the user creates a folder with the name "top-folder" using the webUI
+    And the user opens the folder "top-folder" using the webUI
+    Then there should be no files/folders listed on the webUI
+    When the user creates a folder with the name "sub-folder" using the webUI
+    Then the folder "sub-folder" should be listed on the webUI
+    When the user reloads the current page of the webUI
+    Then the folder "sub-folder" should be listed on the webUI

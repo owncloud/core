@@ -122,3 +122,16 @@ Feature: rename files
   Scenario: Rename a file to .part
     When the user renames the file "data.zip" to "data.part" using the webUI
     Then near the file "data.zip" a tooltip with the text '"data.part" has a forbidden file type/extension.' should be displayed on the webUI
+
+  Scenario: rename a file on a public share
+    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read-write |
+    When the public accesses the last created public link using the webUI
+    And the user renames the file "lorem.txt" to "a-renamed-file.txt" using the webUI
+    Then the file "a-renamed-file.txt" should be listed on the webUI
+    But the file "lorem.txt" should not be listed on the webUI
+    When the user reloads the current page of the webUI
+    Then the file "a-renamed-file.txt" should be listed on the webUI
+    But the file "lorem.txt" should not be listed on the webUI
+    And as "user1" the file "simple-folder/a-renamed-file.txt" should exist
+    And as "user1" the file "simple-folder/lorem.txt" should not exist
