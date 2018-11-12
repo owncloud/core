@@ -166,8 +166,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user shares the file/folder :folder with the group :group using the webUI
-	 * @Given the user has shared the file/folder :folder with the group :group using the webUI
+	 * @When the user shares the file/folder :folder with group :group using the webUI
+	 * @Given the user has shared the file/folder :folder with group :group using the webUI
 	 *
 	 * @param string $folder
 	 * @param string $group
@@ -175,7 +175,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserSharesTheFileFolderWithTheGroupUsingTheWebUI(
+	public function theUserSharesTheFileFolderWithGroupUsingTheWebUI(
 		$folder, $group
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());

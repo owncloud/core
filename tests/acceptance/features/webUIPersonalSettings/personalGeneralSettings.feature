@@ -43,5 +43,5 @@ Feature: personal general settings
     And the user has reloaded the current page of the webUI
     Then the owncloud version should be displayed on the personal general settings page in the webUI
     And the federated cloud id for user "user1" should be displayed on the personal general settings page in the webUI
-    And the group "new-group" should be displayed on the personal general settings page in the webUI
-    And the group "another-group" should be displayed on the personal general settings page in the webUI
+    And group "new-group" should be displayed on the personal general settings page in the webUI
+    And group "another-group" should be displayed on the personal general settings page in the webUI

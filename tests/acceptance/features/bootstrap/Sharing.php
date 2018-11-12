@@ -415,14 +415,14 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the user "([^"]*)" should be able to download the file "([^"]*)" using the sharing API$/
+	 * @Then /^user "([^"]*)" should be able to download the file "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $user
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function theUserShouldBeAbleToDownloadTheFileUsingTheSharingApi($user, $path) {
+	public function userShouldBeAbleToDownloadTheFileUsingTheSharingApi($user, $path) {
 		$path = \ltrim($path, "/");
 		$fullUrl = $this->getBaseUrl() . "/remote.php/webdav/$path";
 		$this->checkUserDownload($fullUrl, $user, "text/plain");

@@ -132,7 +132,7 @@ Feature: Autocompletion of share-with names
   Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (folder)
     Given user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
-    And the user shares the folder "simple-folder" with the group "finance1" using the webUI
+    And the user shares the folder "simple-folder" with group "finance1" using the webUI
     And the user has opened the share dialog for the folder "simple-folder"
     When the user types "fi" in the share-with-field
     Then all users and groups that contain the string "fi" in their name should be listed in the autocomplete list on the webUI except group "finance1"
@@ -142,7 +142,7 @@ Feature: Autocompletion of share-with names
   Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (file)
     Given user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
-    And the user shares the file "data.zip" with the group "finance1" using the webUI
+    And the user shares the file "data.zip" with group "finance1" using the webUI
     And the user has opened the share dialog for the file "data.zip"
     When the user types "fi" in the share-with-field
     Then all users and groups that contain the string "fi" in their name should be listed in the autocomplete list on the webUI except group "finance1"
