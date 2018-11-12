@@ -7,6 +7,7 @@ Feature: Search
 
   Background:
     Given user "user1" has been created
+    And user "user0" has been created
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 
@@ -75,3 +76,50 @@ Feature: Search
     Then the file "lorem.txt" should be listed on the webUI
     And the file "lorem.txt" with the path "" should be listed in the tags page on the webUI
     And the file "lorem.txt" with the path "/simple-folder" should be listed in the tags page on the webUI
+
+  Scenario: Search for a shared file
+    When user "user0" shares file "/lorem.txt" with user "user1" using the sharing API
+    And the user reloads the current page of the webUI
+    And the user searches for "lorem" using the webUI
+    Then the file "lorem (2).txt" should be listed on the webUI
+
+  Scenario: Search for a re-shared file
+    Given user "user2" has been created
+    When user "user2" shares file "/lorem.txt" with user "user0" using the sharing API
+    And user "user0" shares file "/lorem (2).txt" with user "user1" using the sharing API
+    And the user reloads the current page of the webUI
+    And the user searches for "lorem" using the webUI
+    Then the file "lorem (2).txt" should be listed on the webUI
+
+  Scenario: Search for a shared folder
+    When user "user0" shares folder "simple-folder" with user "user1" using the sharing API
+    And the user reloads the current page of the webUI
+    And the user searches for "simple" using the webUI
+    Then the folder "simple-folder (2)" should be listed on the webUI
+
+  Scenario: Search for a file after name is changed
+    When the user renames the file "lorem.txt" to "torem.txt" using the webUI
+    And the user searches for "torem" using the webUI
+    Then the file "lorem.txt" should not be listed on the webUI
+    And the file "torem.txt" should be listed on the webUI
+
+  Scenario: Search for a newly uploaded file
+    Given user "user1" has uploaded file with content "does-not-matter" to "torem.txt"
+    And user "user1" has uploaded file with content "does-not-matter" to "simple-folder/another-torem.txt"
+    When the user searches for "torem" using the webUI
+    Then the file "torem.txt" with the path "/" should be listed in the search results in other folders section on the webUI
+    And the file "another-torem.txt" with the path "/simple-folder" should be listed in the search results in other folders section on the webUI
+
+  Scenario: Search for files with difficult names
+    Given user "user1" has uploaded file with content "does-not-matter" to "/strängéनेपालीloremfile.txt"
+    And user "user1" has uploaded file with content "does-not-matter" to "/strängé नेपाली folder/strängéनेपालीloremfile.txt"
+    When the user searches for "lorem" using the webUI
+    Then the file "strängéनेपालीloremfile.txt" with the path "/" should be listed in the search results in other folders section on the webUI
+    And the file "strängéनेपालीloremfile.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
+
+  Scenario: Search for files with difficult names and difficult search phrase
+    Given user "user1" has uploaded file with content "does-not-matter" to "/strängéनेपालीloremfile.txt"
+    And user "user1" has uploaded file with content "does-not-matter" to "/strängé नेपाली folder/strängéनेपालीloremfile.txt"
+    When the user searches for "strängéनेपाली" using the webUI
+    Then the file "strängéनेपालीloremfile.txt" with the path "/" should be listed in the search results in other folders section on the webUI
+    And the file "strängéनेपालीloremfile.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
