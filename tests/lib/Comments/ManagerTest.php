@@ -448,8 +448,8 @@ class ManagerTest extends TestCase {
 
 		$saveSuccessful = $manager->save($comment);
 		$this->assertTrue($saveSuccessful);
-		$this->assertTrue($comment->getId() !== '');
-		$this->assertTrue($comment->getId() !== '0');
+		$this->assertNotSame('', $comment->getId());
+		$this->assertNotSame('0', $comment->getId());
 		$this->assertNotNull($comment->getCreationDateTime());
 		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreateEvent[1]);
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreateEvent[1]);

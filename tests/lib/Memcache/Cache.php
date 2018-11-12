@@ -55,9 +55,9 @@ abstract class Cache extends \Test\Cache\TestCache {
 	}
 
 	public function testArrayAccessExists() {
-		$this->assertFalse(isset($this->instance['foo']));
+		$this->assertArrayNotHasKey('foo', $this->instance);
 		$this->instance->set('foo', 'bar');
-		$this->assertTrue(isset($this->instance['foo']));
+		$this->assertArrayHasKey('foo', $this->instance);
 	}
 
 	public function testArrayAccessUnset() {
