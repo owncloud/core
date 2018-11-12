@@ -11,7 +11,7 @@ Feature: sharing
     Given user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
-      | permissions | 4      |
+      | permissions | create |
     Then the public shared file "test.txt" should not be able to be downloaded
     And the HTTP status code should be "404"
 
@@ -40,7 +40,7 @@ Feature: sharing
     Given user "user1" has been created
     When user "user0" creates a share using the sharing API with settings
       | path      | PARENT |
-      | shareType | 0      |
+      | shareType | user   |
       | shareWith | user1  |
     Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
@@ -61,10 +61,10 @@ Feature: sharing
   Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read/Write permission
     Given user "user1" has been created
     When user "user0" creates a share using the sharing API with settings
-      | path        | PARENT |
-      | shareType   | 0      |
-      | shareWith   | user1  |
-      | permissions | 15     |
+      | path        | PARENT    |
+      | shareType   | user      |
+      | shareWith   | user1     |
+      | permissions | change    |
     Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
   Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read/Write permission
@@ -73,9 +73,9 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     When user "user0" creates a share using the sharing API with settings
       | path        | PARENT |
-      | shareType   | 1      |
+      | shareType   | group  |
       | shareWith   | grp1   |
-      | permissions | 15     |
+      | permissions | change |
     Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
   @public_link_share-feature-required
@@ -83,16 +83,16 @@ Feature: sharing
     When user "user0" creates a public link share using the sharing API with settings
       | path        | PARENT   |
       | password    | %public% |
-      | permissions | 15       |
+      | permissions | change   |
     Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "%public%" and the content should be "wnCloud"
 
   Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read only permission
     Given user "user1" has been created
     When user "user0" creates a share using the sharing API with settings
       | path        | PARENT |
-      | shareType   | 0      |
+      | shareType   | user   |
       | shareWith   | user1  |
-      | permissions | 1      |
+      | permissions | read   |
     Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
   Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read only permission
@@ -101,9 +101,9 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     When user "user0" creates a share using the sharing API with settings
       | path        | PARENT |
-      | shareType   | 1      |
+      | shareType   | group  |
       | shareWith   | grp1   |
-      | permissions | 1      |
+      | permissions | read   |
     Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
   @public_link_share-feature-required
@@ -111,5 +111,5 @@ Feature: sharing
     When user "user0" creates a public link share using the sharing API with settings
       | path        | PARENT   |
       | password    | %public% |
-      | permissions | 1        |
+      | permissions | read     |
     Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "%public%" and the content should be "wnCloud"
