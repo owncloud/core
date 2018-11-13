@@ -1074,6 +1074,15 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIWebdavLocks
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
     # caldav test
     - PHP_VERSION: 7.1
       TEST_SUITE: caldav
