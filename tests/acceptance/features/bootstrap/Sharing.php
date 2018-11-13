@@ -1243,30 +1243,7 @@ trait Sharing {
 			$fd = $body->getRowsHash();
 
 			foreach ($fd as $field => $value) {
-				if (\substr($field, 0, 10) === "share_with") {
-					$value = \str_replace(
-						"REMOTE",
-						$this->getRemoteBaseUrl(),
-						$value
-					);
-					$value = \str_replace(
-						"LOCAL",
-						$this->getLocalBaseUrl(),
-						$value
-					);
-				}
-				if (\substr($field, 0, 6) === "remote") {
-					$value = \str_replace(
-						"REMOTE",
-						$this->getRemoteBaseUrl() . '/',
-						$value
-					);
-					$value = \str_replace(
-						"LOCAL",
-						$this->getLocalBaseUrl() . '/',
-						$value
-					);
-				}
+				$value = $this->replaceValuesFromTable($field, $value);
 				if (!$this->isFieldInShareResponse($field, $value)) {
 					PHPUnit_Framework_Assert::fail(
 						"$field doesn't have value $value"
