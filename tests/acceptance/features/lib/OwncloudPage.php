@@ -775,4 +775,11 @@ class OwncloudPage extends Page {
 			throw new ElementNotFoundException($message);
 		}
 	}
+
+	/**
+	 * @return string the id of search box
+	 */
+	public function getSearchBoxId() {
+		return $this->searchBoxId;
+	}
 }

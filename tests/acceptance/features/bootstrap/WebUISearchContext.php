@@ -118,6 +118,43 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user enters search text :searchTerm in the search box using the webUI
+	 *
+	 * @param string $searchTerm
+	 *
+	 * @return void
+	 */
+	public function theUserEntersSearchTextInTheSearchBoxUsingTheWebui($searchTerm) {
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$searchbox = $this->filesPage->findById($this->filesPage->getSearchBoxId());
+		$this->filesPage->assertElementNotNull(
+			$searchbox,
+			__METHOD__ .
+			"could not find searchbox / button"
+		);
+		$searchbox->click();
+		$searchbox->setValue($searchTerm);
+	}
+
+	/**
+	 * @Then the ajax call should not start immediately
+	 *
+	 * @return void
+	 */
+	public function theAjaxCallShouldNotStartImmediately() {
+		// delay for search box in UI
+		$wait_time_msec = 500;
+
+		$start = \microtime(true);
+		// give 1000ms extra for timeout to make sure that the function terminates only after it finds a ajax call
+		$this->filesPage->waitForAjaxCallsToStart($this->getSession(), $wait_time_msec + 1000);
+
+		$end = \microtime(true);
+		$timeout_msec = (($end - $start) * 1000);
+		PHPUnit_Framework_Assert::assertGreaterThan($wait_time_msec, $timeout_msec);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *

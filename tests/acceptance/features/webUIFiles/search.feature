@@ -123,3 +123,7 @@ Feature: Search
     When the user searches for "strängéनेपाली" using the webUI
     Then the file "strängéनेपालीloremfile.txt" with the path "/" should be listed in the search results in other folders section on the webUI
     And the file "strängéनेपालीloremfile.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
+
+  Scenario: Search file with delay
+    When the user enters search text "lorem" in the search box using the webUI
+    Then the ajax call should not start immediately
