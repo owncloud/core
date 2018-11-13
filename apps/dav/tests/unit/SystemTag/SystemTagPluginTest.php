@@ -372,9 +372,9 @@ class SystemTagPluginTest extends \Test\TestCase {
 
 	public function createTagInsufficientPermissionsProvider() {
 		return [
-			[true, false, ''],
-			[false, true, ''],
-			[true, true, 'group1|group2'],
+			[true, false, false, ''],
+			[false, true, false, ''],
+			[true, true, false, 'group1|group2'],
 		];
 	}
 	/**
@@ -382,7 +382,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 	 * @expectedException \Sabre\DAV\Exception\BadRequest
 	 * @expectedExceptionMessage Not sufficient permissions
 	 */
-	public function testCreateNotAssignableTagAsRegularUser($userVisible, $userAssignable, $groups) {
+	public function testCreateNotAssignableTagAsRegularUser($userVisible, $userAssignable, $userEditable, $groups) {
 		$this->user->expects($this->once())
 			->method('getUID')
 			->willReturn('admin');
@@ -396,6 +396,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 			'name' => 'Test',
 			'userVisible' => $userVisible,
 			'userAssignable' => $userAssignable,
+			'userEditable' => $userEditable
 		];
 		if (!empty($groups)) {
 			$requestData['groups'] = $groups;
@@ -445,6 +446,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 			'name' => 'Test',
 			'userVisible' => true,
 			'userAssignable' => true,
+			'userEditable' => true
 		]);
 
 		$node = $this->getMockBuilder('\OCA\DAV\SystemTag\SystemTagsByIdCollection')
