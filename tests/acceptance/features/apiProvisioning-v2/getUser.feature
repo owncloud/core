@@ -14,6 +14,7 @@ Feature: get user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "brand-new-user"
+    And the quota definition returned by the API should be "default"
 
   Scenario: admin tries to get a not existing user
     When the administrator retrieves the information of user "not-a-user" using the provisioning API
@@ -32,6 +33,7 @@ Feature: get user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "newuser"
+    And the quota definition returned by the API should be "default"
 
   Scenario: a subadmin tries to get information of a user not in their group
     Given user "subadmin" has been created
@@ -52,9 +54,10 @@ Feature: get user
     And the API should not return any data
 
   @smokeTest
-  Scenario: normal user gets their own information
+  Scenario: a normal user gets their own information
     Given user "newuser" has been created
-    When user "newuser" sends HTTP method "GET" to OCS API endpoint "/cloud/users/newuser"
+    When user "newuser" retrieves the information of user "newuser" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "newuser"
+    And the quota definition returned by the API should be "default"

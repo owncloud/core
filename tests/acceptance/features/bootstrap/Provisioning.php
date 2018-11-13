@@ -1766,13 +1766,85 @@ trait Provisioning {
 	/**
 	 * @Then /^the display name returned by the API should be "([^"]*)"$/
 	 *
+	 * @param string $expectedDisplayName
+	 *
+	 * @return void
+	 */
+	public function theDisplayNameReturnedByTheApiShouldBe($expectedDisplayName) {
+		$responseDisplayName = (string) $this->getResponseXml()->data[0]->displayname;
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedDisplayName,
+			$responseDisplayName
+		);
+	}
+
+	/**
+	 * @Then /^the display name of user "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $user
 	 * @param string $displayname
 	 *
 	 * @return void
 	 */
-	public function theDisplayNameReturnedByTheApiShouldBe($displayname) {
-		$responseName = $this->getResponseXml()->data[0]->displayname;
-		PHPUnit_Framework_Assert::assertEquals($displayname, $responseName);
+	public function theDisplayNameOfUserShouldBe($user, $displayname) {
+		$this->adminRetrievesTheInformationOfUserUsingTheProvisioningApi($user);
+		$this->theDisplayNameReturnedByTheApiShouldBe($displayname);
+	}
+
+	/**
+	 * @Then /^the email address returned by the API should be "([^"]*)"$/
+	 *
+	 * @param string $expectedEmailAddress
+	 *
+	 * @return void
+	 */
+	public function theEmailAddressReturnedByTheApiShouldBe($expectedEmailAddress) {
+		$responseEmailAddress = (string) $this->getResponseXml()->data[0]->email;
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedEmailAddress,
+			$responseEmailAddress
+		);
+	}
+
+	/**
+	 * @Then /^the email address of user "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $expectedEmailAddress
+	 *
+	 * @return void
+	 */
+	public function theEmailAddressOfUserShouldBe($user, $expectedEmailAddress) {
+		$this->adminRetrievesTheInformationOfUserUsingTheProvisioningApi($user);
+		$this->theEmailAddressReturnedByTheApiShouldBe($expectedEmailAddress);
+	}
+
+	/**
+	 * @Then /^the quota definition returned by the API should be "([^"]*)"$/
+	 *
+	 * @param string $expectedQuotaDefinition a string that describes the quota
+	 *
+	 * @return void
+	 */
+	public function theQuotaDefinitionReturnedByTheApiShouldBe($expectedQuotaDefinition) {
+		$responseQuotaDefinition = (string) $this->getResponseXml()->data[0]->quota->definition;
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedQuotaDefinition,
+			$responseQuotaDefinition
+		);
+	}
+
+	/**
+	 * @Then /^the quota definition of user "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $expectedQuotaDefinition
+	 *
+	 * @return void
+	 */
+	public function theQuotaDefinitionOfUserShouldBe($user, $expectedQuotaDefinition) {
+		$this->adminRetrievesTheInformationOfUserUsingTheProvisioningApi($user);
+		$this->theQuotaDefinitionReturnedByTheApiShouldBe($expectedQuotaDefinition);
 	}
 
 	/**
