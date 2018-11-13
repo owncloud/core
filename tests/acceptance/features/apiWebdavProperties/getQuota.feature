@@ -11,9 +11,7 @@ Feature: get quota
   Scenario Outline: Retrieving folder quota when no quota is set
     Given using <dav_version> DAV path
     When the administrator gives unlimited quota to user "user0" using the provisioning API
-    And user "user0" gets the following properties of folder "/" using the WebDAV API
-      | {DAV:}quota-available-bytes |
-    Then the single response should contain a property "{DAV:}quota-available-bytes" with value "-3"
+    Then as user "user0" the folder "/" should contain a property "{DAV:}quota-available-bytes" with value "-3"
     Examples:
       | dav_version |
       | old         |
@@ -23,9 +21,7 @@ Feature: get quota
   Scenario Outline: Retrieving folder quota when quota is set
     Given using <dav_version> DAV path
     When the administrator sets the quota of user "user0" to "10 MB" using the provisioning API
-    And user "user0" gets the following properties of folder "/" using the WebDAV API
-      | {DAV:}quota-available-bytes |
-    Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485406"
+    Then as user "user0" the folder "/" should contain a property "{DAV:}quota-available-bytes" with value "10485406"
     Examples:
       | dav_version |
       | old         |

@@ -121,6 +121,20 @@ trait Checksums {
 	}
 
 	/**
+	 * @Then as user :user the webdav checksum of :path via propfind should match :checksum
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param string $checksum
+	 *
+	 * @return void
+	 */
+	public function theWebdavChecksumOfViaPropfindShouldMatch($user, $path, $checksum) {
+		$this->userRequestsTheChecksumOfViaPropfind($user, $path);
+		$this->theWebdavChecksumShouldMatch($checksum);
+	}
+
+	/**
 	 * @Then the header checksum should match :checksum
 	 *
 	 * @param string $checksum

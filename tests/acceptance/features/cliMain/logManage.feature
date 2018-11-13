@@ -5,7 +5,7 @@ Feature: manage logging configuration
   So that I set the logging configuration suitable for each situation
 
   Scenario Outline: Admin sets a valid log level
-    Given the administrator sets the log level to <loglevel> using the occ command
+    When the administrator sets the log level to <loglevel> using the occ command
     Then the command should have been successful
     And the command output should contain the text 'Log level: <loglevel>'
     Examples:
@@ -17,14 +17,14 @@ Feature: manage logging configuration
       | Fatal    |
 
   Scenario Outline: Admin sets a non-valid log level
-    Given the administrator sets the log level to <loglevel> using the occ command
+    When the administrator sets the log level to <loglevel> using the occ command
     Then the command should have failed with exit code 1
     Examples:
       | loglevel |
       | nonvalid |
 
   Scenario Outline: Admin sets a valid timezone
-    Given the administrator sets the timezone to <timezone> using the occ command
+    When the administrator sets the timezone to <timezone> using the occ command
     Then the command should have been successful
     And the command output should contain the text 'Log timezone: <timezone>'
     Examples:
@@ -33,14 +33,14 @@ Feature: manage logging configuration
       | UTC      |
 
   Scenario Outline: Admin sets a non-valid timezone
-    Given the administrator sets the timezone to <timezone> using the occ command
+    When the administrator sets the timezone to <timezone> using the occ command
     Then the command should have failed with exit code 1
     Examples:
       | timezone |
       | nonvalid |
 
   Scenario Outline: Admin sets the backend to a valid backend
-    Given the administrator sets the backend to <backend> using the occ command
+    When the administrator sets the backend to <backend> using the occ command
     Then the command should have been successful
     And the command output should contain the text 'Enabled logging backend: <backend>'
     Examples:
@@ -50,7 +50,7 @@ Feature: manage logging configuration
       | errorlog |
 
   Scenario Outline: Admin sets the backend to a non-valid backend
-    Given the administrator sets the backend to <backend> using the occ command
+    When the administrator sets the backend to <backend> using the occ command
     Then the command should have failed with exit code 1
     Examples:
       | backend  |

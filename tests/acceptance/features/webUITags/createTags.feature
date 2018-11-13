@@ -56,13 +56,13 @@ Feature: Creation of tags for the files and folders
     Then file "coolnewfile.txt" should have the following tags for user "user1"
       | tag1 | normal |
       | tag2 | normal |
-    Then file "coolnewfile.txt" should have the following tags for user "user2"
+    And file "coolnewfile.txt" should have the following tags for user "user2"
       | tag1 | normal |
       | tag2 | normal |
 
   Scenario: Delete a tag in a shared file
     When the user renames the file "lorem.txt" to "coolnewfile.txt" using the webUI
-    When the user browses directly to display the details of file "coolnewfile.txt" in folder ""
+    And the user browses directly to display the details of file "coolnewfile.txt" in folder ""
     And the user adds a tag "tag1" to the file using the webUI
     And the user shares the file "coolnewfile.txt" with the user "User Two" using the webUI
     And the user re-logs in with username "user2" and password "%alt2%" using the webUI

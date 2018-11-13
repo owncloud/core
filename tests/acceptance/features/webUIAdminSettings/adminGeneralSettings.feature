@@ -43,8 +43,7 @@ Feature: admin general settings
     Given the administrator has invoked occ command "config:app:set core OC_Channel --value git"
     When the user reloads the current page of the webUI
     And the administrator sets the value of update channel to "daily" using the webUI
-    And the administrator invokes occ command "config:app:get core OC_Channel"
-    Then the command output should contain the text "daily"
+    Then the update channel should be "daily"
 
   @smokeTest
   Scenario: administrator changes the cron job
@@ -58,8 +57,7 @@ Feature: admin general settings
     Given the administrator has invoked occ command "config:system:set loglevel --value 0"
     When the user reloads the current page of the webUI
     And the administrator sets the value of log level to 1 using the webUI
-    And the administrator invokes occ command "config:system:get loglevel"
-    Then the command output should contain the text "1"
+    Then the log level should be "1"
 
   Scenario: administrator should be able to see system status
     Then the version of the owncloud installation should be displayed on the admin general settings page

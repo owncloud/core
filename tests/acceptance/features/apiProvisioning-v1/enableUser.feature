@@ -60,6 +60,8 @@ Feature: enable user
     And user "subadmin" has been made a subadmin of group "new-group"
     And user "subadmin" has been disabled
     When user "subadmin" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/subadmin/enabled"
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
     And user "subadmin" should be disabled
 
   Scenario: Making a web request with an enabled user

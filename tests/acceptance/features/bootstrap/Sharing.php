@@ -751,11 +751,14 @@ trait Sharing {
 	/**
 	 * @param string $field
 	 * @param string $contentExpected
+	 * @param SimpleXMLElement $data
 	 *
 	 * @return bool
 	 */
-	public function isFieldInResponse($field, $contentExpected) {
-		$data = $this->getResponseXml()->data[0];
+	public function isFieldInResponse($field, $contentExpected, $data = null) {
+		if ($data === null) {
+			$data = $this->getResponseXml()->data[0];
+		}
 		if ((string)$field == 'expiration') {
 			$contentExpected
 				= \date('Y-m-d', \strtotime($contentExpected)) . " 00:00:00";
@@ -768,6 +771,8 @@ trait Sharing {
 					return \is_numeric((string)$element->$field);
 				} elseif ($contentExpected == "AN_URL") {
 					return $this->isAPublicLinkUrl((string)$element->$field);
+				} elseif ($field === 'remote') {
+					return (\rtrim((string)$element->$field, "/") === $contentExpected);
 				} elseif ((string)$element->$field == $contentExpected) {
 					return true;
 				} else {
@@ -788,6 +793,17 @@ trait Sharing {
 			}
 			return false;
 		}
+	}
+
+	/**
+	 * @param string $field
+	 * @param string $contentExpected
+	 *
+	 * @return bool
+	 */
+	public function isFieldInShareResponse($field, $contentExpected) {
+		$data = $this->lastShareData->data[0];
+		return $this->isFieldInResponse($field, $contentExpected, $data);
 	}
 
 	/**
@@ -1186,6 +1202,24 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then user :user should not see share_id of last share
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userShouldNotSeeShareIdOfLastShare($user) {
+		$url = "/apps/files_sharing/api/v1/shares?shared_with_me=true";
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			'GET',
+			$url,
+			null
+		);
+		$this->checkingLastShareIDIsNotIncluded();
+	}
+
+	/**
 	 * @Then /^the response should contain ([0-9]+) entries$/
 	 *
 	 * @param int $count
@@ -1209,30 +1243,29 @@ trait Sharing {
 			$fd = $body->getRowsHash();
 
 			foreach ($fd as $field => $value) {
-				if (\substr($field, 0, 10) === "share_with") {
-					$value = \str_replace(
-						"REMOTE",
-						$this->getRemoteBaseUrl(),
-						$value
-					);
-					$value = \str_replace(
-						"LOCAL",
-						$this->getLocalBaseUrl(),
-						$value
+				$value = $this->replaceValuesFromTable($field, $value);
+				if (!$this->isFieldInShareResponse($field, $value)) {
+					PHPUnit_Framework_Assert::fail(
+						"$field doesn't have value $value"
 					);
 				}
-				if (\substr($field, 0, 6) === "remote") {
-					$value = \str_replace(
-						"REMOTE",
-						$this->getRemoteBaseUrl() . '/',
-						$value
-					);
-					$value = \str_replace(
-						"LOCAL",
-						$this->getLocalBaseUrl() . '/',
-						$value
-					);
-				}
+			}
+		}
+	}
+
+	/**
+	 * @Then the fields of the last response should include
+	 *
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function checkFields($body) {
+		if ($body instanceof TableNode) {
+			$fd = $body->getRowsHash();
+
+			foreach ($fd as $field => $value) {
+				$value = $this->replaceValuesFromTable($field, $value);
 				if (!$this->isFieldInResponse($field, $value)) {
 					PHPUnit_Framework_Assert::fail(
 						"$field doesn't have value $value"
@@ -1556,6 +1589,42 @@ trait Sharing {
 		}
 		
 		return $this->lastShareData->data->token;
+	}
+
+	/**
+	 * replace values from table
+	 *
+	 * @param string $field
+	 * @param string $value
+	 *
+	 * @return string
+	 */
+	public function replaceValuesFromTable($field, $value) {
+		if (\substr($field, 0, 10) === "share_with") {
+			$value = \str_replace(
+				"REMOTE",
+				$this->getRemoteBaseUrl(),
+				$value
+			);
+			$value = \str_replace(
+				"LOCAL",
+				$this->getLocalBaseUrl(),
+				$value
+			);
+		}
+		if (\substr($field, 0, 6) === "remote") {
+			$value = \str_replace(
+				"REMOTE",
+				$this->getRemoteBaseUrl(),
+				$value
+			);
+			$value = \str_replace(
+				"LOCAL",
+				$this->getLocalBaseUrl(),
+				$value
+			);
+		}
+		return $value;
 	}
 
 	/**

@@ -734,6 +734,36 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Then the update channel should be :value
+	 *
+	 * @param string $value
+	 *
+	 * @return void
+	 */
+	public function theUpdateChannelShouldBe($value) {
+		$this->featureContext->invokingTheCommand(
+			"config:app:get core OC_Channel"
+		);
+		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
+		PHPUnit_Framework_Assert::assertEquals($value, \trim($lastOutput));
+	}
+
+	/**
+	 * @Then the log level should be :logLevel
+	 *
+	 * @param string $logLevel
+	 *
+	 * @return void
+	 */
+	public function theLogLevelShouldBe($logLevel) {
+		$this->featureContext->invokingTheCommand(
+			"config:system:get loglevel"
+		);
+		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
+		PHPUnit_Framework_Assert::assertEquals($logLevel, \trim($lastOutput));
+	}
+
+	/**
 	 * @When the administrator adds config key :key with value :value in app :app using the occ command
 	 *
 	 * @param string $key
