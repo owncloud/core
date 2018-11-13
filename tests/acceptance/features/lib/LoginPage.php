@@ -39,6 +39,7 @@ class LoginPage extends OwncloudPage {
 	protected $passwordInputId = "password";
 	protected $submitLoginId = "submit";
 	protected $lostPasswordId = "lost-password";
+	protected $setPasswordErrorMessageId = "error-message";
 
 	protected $imprintUrlXpath = "//a[contains(text(),'Imprint')]";
 	protected $privacyPolicyXpath = "//a[contains(text(),'Privacy Policy')]";
@@ -119,6 +120,22 @@ class LoginPage extends OwncloudPage {
 	}
 
 	/**
+	 *
+	 * @throws ElementNotFoundException
+	 *
+	 * @return Page
+	 */
+	private function getSetPasswordErrorMessageField() {
+		$setPasswordErrorMessageField = $this->findById($this->setPasswordErrorMessageId);
+		$this->assertElementNotNull(
+			$setPasswordErrorMessageField,
+			__METHOD__ .
+			" id $this->setPasswordErrorMessageId could not find set password error message field"
+		);
+		return $setPasswordErrorMessageField;
+	}
+
+	/**
 	 * @param Session $session
 	 *
 	 * @return void
@@ -135,6 +152,15 @@ class LoginPage extends OwncloudPage {
 	public function getLostPasswordMessage() {
 		$passwordRecoveryMessage = $this->lostPasswordField()->getText();
 		return $passwordRecoveryMessage;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getSetPasswordErrorMessage() {
+		$setPasswordErrorMessage = $this->getSetPasswordErrorMessageField()->getText();
+		return $setPasswordErrorMessage;
 	}
 
 	/**
