@@ -8,12 +8,13 @@ Feature: get user
     Given using OCS API version "1"
 
   @smokeTest
-  Scenario: admin gets existing user
+  Scenario: admin gets an existing user
     Given user "brand-new-user" has been created
     When the administrator retrieves the information of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "brand-new-user"
+    And the quota definition returned by the API should be "default"
 
   Scenario: admin tries to get a not existing user
     When the administrator retrieves the information of user "not-a-user" using the provisioning API
@@ -32,6 +33,7 @@ Feature: get user
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "newuser"
+    And the quota definition returned by the API should be "default"
 
   Scenario: a subadmin tries to get information of a user not in their group
     Given user "subadmin" has been created
@@ -58,3 +60,4 @@ Feature: get user
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "newuser"
+    And the quota definition returned by the API should be "default"
