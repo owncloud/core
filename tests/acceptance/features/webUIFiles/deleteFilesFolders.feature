@@ -150,3 +150,63 @@ Feature: deleting files and folders
     And the file "lorem.txt" should not be listed on the webUI
     When the user browses to the files page
     Then the file "lorem.txt" should not be listed on the webUI
+
+  Scenario: delete a file on a public share
+    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read-write |
+    And the public accesses the last created public link using the webUI
+    When the user deletes the following elements using the webUI
+      | name                                  |
+      | simple-empty-folder                   |
+      | lorem.txt                             |
+      | strängé filename (duplicate #2 &).txt |
+    Then as "user1" the file "simple-folder/lorem.txt" should not exist
+    And as "user1" the folder "simple-folder/simple-empty-folder" should not exist
+    And as "user1" the file "simple-folder/strängé filename (duplicate #2 &).txt" should not exist
+    And the deleted elements should not be listed on the webUI
+    And the deleted elements should not be listed on the webUI after a page reload
+
+  Scenario: delete a file on a public share with problematic characters
+    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read-write |
+    And the public accesses the last created public link using the webUI
+    When the user renames the following file using the webUI
+      | from-name-parts | to-name-parts   |
+      | lorem.txt       | 'single'        |
+      |                 | "double" quotes |
+      |                 | question?       |
+      |                 | &and#hash       |
+    And the user deletes the following file using the webUI
+      | name-parts      |
+      | 'single'        |
+      | "double" quotes |
+      | question?       |
+      | &and#hash       |
+    Then the following file should not be listed on the webUI
+      | name-parts      |
+      | 'single'        |
+      | "double" quotes |
+      | question?       |
+      | &and#hash       |
+    When the user reloads the current page of the webUI
+    Then the following file should not be listed on the webUI
+      | name-parts      |
+      | 'single'        |
+      | "double" quotes |
+      | question?       |
+      | &and#hash       |
+
+  Scenario: Delete multiple files at once on a public share
+    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read-write |
+    And the public accesses the last created public link using the webUI
+    When the user batch deletes these files using the webUI
+      | name                |
+      | data.zip            |
+      | lorem.txt           |
+      | simple-empty-folder |
+    Then as "user1" the file "simple-folder/data.zip" should not exist
+    And as "user1" the file "simple-folder/lorem.txt" should not exist
+    And as "user1" the folder "simple-folder/simple-empty-folder" should not exist
+    And the deleted elements should not be listed on the webUI
+    And the deleted elements should not be listed on the webUI after a page reload

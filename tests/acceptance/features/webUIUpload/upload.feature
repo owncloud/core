@@ -86,3 +86,19 @@ Feature: File Upload
     And the content of "lorem.txt" should not have changed
     And the file "lorem (2).txt" should be listed on the webUI
     And the content of "lorem (2).txt" should be the same as the local "lorem.txt"
+
+  Scenario: upload a file into a public share
+    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read-write |
+    And the public accesses the last created public link using the webUI
+    And the user uploads the file "new-lorem.txt" using the webUI
+    Then the file "new-lorem.txt" should be listed on the webUI
+    And the content of "simple-folder/new-lorem.txt" should be the same as the local "new-lorem.txt"
+
+  Scenario: upload overwriting a file into a public share
+    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read-write |
+    And the public accesses the last created public link using the webUI
+    And the user uploads overwriting the file "lorem.txt" using the webUI and retries if the file is locked
+    Then the file "lorem.txt" should be listed on the webUI
+    And the content of "simple-folder/lorem.txt" should be the same as the local "lorem.txt"
