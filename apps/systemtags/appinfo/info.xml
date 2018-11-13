@@ -9,7 +9,7 @@
 	<default_enable/>
 	<version>0.3.0</version>
 	<dependencies>
-		<owncloud min-version="11.0" max-version="11.0" />
+		<owncloud min-version="11" max-version="11" />
 	</dependencies>
 	<namespace>SystemTags</namespace>
 	<types>
