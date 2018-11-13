@@ -410,6 +410,21 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then a set password error message with this text should be displayed on the webUI:
+	 *
+	 * @param PyStringNode $string
+	 *
+	 * @return void
+	 */
+	public function aSetPasswordErrorMessageWithTheTextShouldBeDisplayed(PyStringNode $string) {
+		$expectedString = $string->getRaw();
+		$setPasswordErrorMessage = $this->loginPage->getSetPasswordErrorMessage();
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedString, $setPasswordErrorMessage
+		);
+	}
+
+	/**
 	 * @Then the imprint url on the login page should link to :expectedImprintUrl
 	 *
 	 * @param string $expectedImprintUrl
