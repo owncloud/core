@@ -23,6 +23,9 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Page\FilesPageElement\FileRow;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
  * Shared With Others page.
@@ -39,7 +42,12 @@ class SharedWithOthersPage extends FilesPageBasic {
 	protected $fileListXpath = ".//div[@id='app-content-sharingout']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-sharingout']//div[@id='emptycontent']";
 	protected $filePathInRowXpath = ".//div[@id='app-content-sharingout']//tbody[@id='fileList']//tr";
-
+	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
+	/**
+	 *
+	 * @var FilesPageCRUD $filesPageCRUDFunctions
+	 */
+	protected $filesPageCRUDFunctions;
 	/**
 	 * @return string
 	 */
@@ -80,6 +88,25 @@ class SharedWithOthersPage extends FilesPageBasic {
 	}
 
 	/**
+	 * @param Session $session
+	 * @param Factory $factory
+	 * @param array   $parameters
+	 */
+	public function __construct(
+		Session $session, Factory $factory, array $parameters = []
+	) {
+		parent::__construct($session, $factory, $parameters);
+		$this->filesPageCRUDFunctions = $this->getPage("FilesPageCRUD");
+		$this->filesPageCRUDFunctions->setXpath(
+			$this->emptyContentXpath,
+			$this->fileListXpath,
+			$this->fileNameMatchXpath,
+			$this->fileNamesXpath,
+			$this->deleteAllSelectedBtnXpath
+		);
+	}
+
+	/**
 	 * finds all rows that have the given name
 	 *
 	 * @param string|array $name
@@ -97,5 +124,35 @@ class SharedWithOthersPage extends FilesPageBasic {
 			$fileRows[] = $fileRow;
 		}
 		return $fileRows;
+	}
+
+	/**
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 * @param bool $expectToDeleteFile
+	 * @param int $maxRetries
+	 *
+	 * @return void
+	 */
+	public function deleteFile(
+		$name,
+		Session $session,
+		$expectToDeleteFile = true,
+		$maxRetries = STANDARD_RETRY_COUNT
+	) {
+		$this->filesPageCRUDFunctions->deleteFile(
+			$name, $session, $expectToDeleteFile, $maxRetries
+		);
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function deleteAllSelectedFiles(Session $session) {
+		$this->filesPageCRUDFunctions->deleteAllSelectedFiles($session);
 	}
 }
