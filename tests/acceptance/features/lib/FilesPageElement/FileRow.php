@@ -56,10 +56,12 @@ class FileRow extends OwncloudPage {
 	protected $notMarkedFavoriteXpath = "//span[contains(@class,'icon-star')]";
 	protected $markedFavoriteXpath = "//span[contains(@class,'icon-starred')]";
 	protected $shareStateXpath = "//span[@class='state']";
+	protected $lockStateXpath = "//span[contains(@class,'icon-lock')]";
 	protected $sharerXpath = "//a[@data-action='Share']";
 	protected $acceptShareBtnXpath = "//span[@class='fileactions']//a[contains(@class,'accept')]";
 	protected $declinePendingShareBtnXpath = "//a[@data-action='Reject']";
 	protected $sharingDialogXpath = ".//div[@class='dialogContainer']";
+	protected $lockDialogId = "lockTabView";
 	protected $highlightsXpath = "//div[@class='highlights']";
 
 	/**
@@ -209,6 +211,52 @@ class FileRow extends OwncloudPage {
 			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->sharingDialogXpath
 		);
 		return $sharingDialogPage;
+	}
+
+	/**
+	 * opens the lock dialog that list all locks of the given file row
+	 *
+	 * @throws ElementNotFoundException
+	 * @return LockDialog
+	 */
+	public function openLockDialog() {
+		$element = $this->rowElement->find("xpath", $this->lockStateXpath);
+		$this->assertElementNotNull(
+			$element,
+			__METHOD__ .
+			" xpath $this->lockStateXpath could not find lock button in row"
+		);
+		$element->click();
+		$lockDailogElement = $this->findById($this->lockDialogId);
+		$this->assertElementNotNull(
+			$lockDailogElement,
+			__METHOD__ .
+			" id $this->lockDialogId could not find lock dialog"
+		);
+		$this->waitFor(
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$lockDailogElement, 'isVisible']
+		);
+
+		/**
+		 *
+		 * @var LockDialog $lockDialog
+		 */
+		$lockDialog = $this->getPage("FilesPageElement\\LockDialog");
+		$lockDialog->setElement($lockDailogElement);
+		return $lockDialog;
+	}
+
+	/**
+	 * deletes a lock by its order in the list
+	 *
+	 * @param int $number
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function deleteLockByNumber($number, Session $session) {
+		$lockDialog = $this->openLockDialog();
+		$lockDialog->deleteLockByNumber($number, $session);
 	}
 
 	/**
@@ -417,6 +465,21 @@ class FileRow extends OwncloudPage {
 			" xpath $this->markedFavoriteXpath not found"
 		);
 		$element->click();
+	}
+
+	/**
+	 * returns the lock state
+	 *
+	 * @throws ElementNotFoundException
+	 *
+	 * @return bool
+	 */
+	public function getLockState() {
+		$element = $this->rowElement->find("xpath", $this->lockStateXpath);
+		if ($element === null) {
+			return false;
+		}
+		return $element->isVisible();
 	}
 
 	/**
