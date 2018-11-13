@@ -5,4 +5,7 @@
 	<author>Jane</author>
 	<description>A b c</description>
 	<licence>Abc</licence>
+	<dependencies>
+		<owncloud min-version="11.0" max-version="100.0" />
+	</dependencies>
 </info>

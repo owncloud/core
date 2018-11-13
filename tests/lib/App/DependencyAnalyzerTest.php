@@ -25,6 +25,10 @@ class DependencyAnalyzerTest extends TestCase {
 	/** @var DependencyAnalyzer */
 	private $analyser;
 
+	private $ocRequirements = [
+		'@attributes' => [ 'min-version' => '11.0', 'max-version' => '100.0.0' ]
+	];
+
 	public function setUp() {
 		$this->platformMock = $this->getMockBuilder(Platform::class)
 			->disableOriginalConstructor()
@@ -54,9 +58,6 @@ class DependencyAnalyzerTest extends TestCase {
 				}
 				return null;
 			}));
-		$this->platformMock
-			->method('getOcVersion')
-			->will($this->returnValue('8.0.2'));
 
 		$this->platformMock
 			->method('getOcChannel')
@@ -85,7 +86,8 @@ class DependencyAnalyzerTest extends TestCase {
 	public function testPhpVersion($expectedMissing, $minVersion, $maxVersion, $intSize): void {
 		$app = [
 			'dependencies' => [
-				'php' => []
+				'php' => [],
+				'owncloud' => $this->ocRequirements
 			]
 		];
 		if ($minVersion !== null) {
@@ -97,6 +99,7 @@ class DependencyAnalyzerTest extends TestCase {
 		if ($intSize !== null) {
 			$app['dependencies']['php']['@attributes']['min-int-size'] = $intSize;
 		}
+		$this->platformMock->method('getOcVersion')->willReturn('11.0.0.0');
 		$missing = $this->analyser->analyze($app);
 
 		$this->assertInternalType('array', $missing);
@@ -111,11 +114,13 @@ class DependencyAnalyzerTest extends TestCase {
 	public function testDatabases($expectedMissing, $databases): void {
 		$app = [
 			'dependencies' => [
+				'owncloud' => $this->ocRequirements
 			]
 		];
 		if ($databases !== null) {
 			$app['dependencies']['database'] = $databases;
 		}
+		$this->platformMock->method('getOcVersion')->willReturn('11.0.0.0');
 		$missing = $this->analyser->analyze($app);
 
 		$this->assertInternalType('array', $missing);
@@ -131,11 +136,13 @@ class DependencyAnalyzerTest extends TestCase {
 	public function testCommand($expectedMissing, $commands): void {
 		$app = [
 			'dependencies' => [
+				'owncloud' => $this->ocRequirements
 			]
 		];
 		if ($commands !== null) {
 			$app['dependencies']['command'] = $commands;
 		}
+		$this->platformMock->method('getOcVersion')->willReturn('11.0.0.0');
 		$missing = $this->analyser->analyze($app);
 
 		$this->assertInternalType('array', $missing);
@@ -150,12 +157,14 @@ class DependencyAnalyzerTest extends TestCase {
 	public function testLibs($expectedMissing, $libs): void {
 		$app = [
 			'dependencies' => [
+				'owncloud' => $this->ocRequirements
 			]
 		];
 		if ($libs !== null) {
 			$app['dependencies']['lib'] = $libs;
 		}
 
+		$this->platformMock->method('getOcVersion')->willReturn('11.0.0.0');
 		$missing = $this->analyser->analyze($app);
 
 		$this->assertInternalType('array', $missing);
@@ -169,12 +178,14 @@ class DependencyAnalyzerTest extends TestCase {
 	 */
 	public function testOS($expectedMissing, $oss): void {
 		$app = [
-			'dependencies' => []
+			'dependencies' => [
+				'owncloud' => $this->ocRequirements
+			]
 		];
 		if ($oss !== null) {
 			$app['dependencies']['os'] = $oss;
 		}
-
+		$this->platformMock->method('getOcVersion')->willReturn('11.0.0.0');
 		$missing = $this->analyser->analyze($app);
 
 		$this->assertInternalType('array', $missing);
@@ -194,6 +205,9 @@ class DependencyAnalyzerTest extends TestCase {
 			$app['dependencies']['owncloud'] = $oc;
 		}
 
+		$this->platformMock
+			->method('getOcVersion')
+			->will($this->returnValue('8.0.2'));
 		$missing = $this->analyser->analyze($app);
 
 		$this->assertInternalType('array', $missing);
@@ -206,13 +220,13 @@ class DependencyAnalyzerTest extends TestCase {
 	public function providesOC(): array {
 		return [
 			// no version -> no missing dependency
-			[[], null],
+			[['No minimum ownCloud version is defined in appinfo/info.xml.', 'No maximum ownCloud version is defined in appinfo/info.xml.'], null],
 			[[], ['@attributes' => ['min-version' => '8', 'max-version' => '8']]],
 			[[], ['@attributes' => ['min-version' => '8.0', 'max-version' => '8.0']]],
 			[[], ['@attributes' => ['min-version' => '8.0.2', 'max-version' => '8.0.2']]],
-			[['ownCloud 8.0.3 or higher is required.'], ['@attributes' => ['min-version' => '8.0.3']]],
-			[['ownCloud 9 or higher is required.'], ['@attributes' => ['min-version' => '9']]],
-			[['ownCloud 8.0.1 or lower is required.'], ['@attributes' => ['max-version' => '8.0.1']]],
+			[['ownCloud 8.0.3 or higher is required.', 'No maximum ownCloud version is defined in appinfo/info.xml.'], ['@attributes' => ['min-version' => '8.0.3']]],
+			[['ownCloud 9 or higher is required.', 'No maximum ownCloud version is defined in appinfo/info.xml.'], ['@attributes' => ['min-version' => '9']]],
+			[['No minimum ownCloud version is defined in appinfo/info.xml.', 'ownCloud 8.0.1 or lower is required.'], ['@attributes' => ['max-version' => '8.0.1']]],
 		];
 	}
 

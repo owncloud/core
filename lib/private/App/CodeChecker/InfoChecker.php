@@ -41,12 +41,12 @@ class InfoChecker extends BasicEmitter {
 		'licence',
 		'name',
 		'version',
+		'dependencies',
 	];
 	private $optionalFields = [
 		'bugs',
 		'category',
 		'default_enable',
-		'dependencies', // TODO: Mandatory as of ownCloud 11
 		'documentation',
 		'namespace',
 		'ocsid',
@@ -58,9 +58,6 @@ class InfoChecker extends BasicEmitter {
 	];
 	private $deprecatedFields = [
 		'info',
-		'require',
-		'requiremax',
-		'requiremin',
 		'shipped',
 		'standalone',
 	];
@@ -94,24 +91,20 @@ class InfoChecker extends BasicEmitter {
 			];
 		}
 
-		if (isset($info['dependencies']['owncloud']['@attributes']['min-version']) && ($info['requiremin'] || $info['require'])) {
-			$this->emit('InfoChecker', 'duplicateRequirement', ['min']);
-			$errors[] = [
-				'type' => 'duplicateRequirement',
-				'field' => 'min',
-			];
-		} elseif (!isset($info['dependencies']['owncloud']['@attributes']['min-version'])) {
+		if (!isset($info['dependencies']['owncloud']['@attributes']['min-version'])) {
 			$this->emit('InfoChecker', 'missingRequirement', ['min']);
+			$errors[] = [
+				'type' => 'missingRequirement',
+				'message' => 'No minimum ownCloud version is defined in appinfo/info.xml',
+			];
 		}
 
-		if (isset($info['dependencies']['owncloud']['@attributes']['max-version']) && $info['requiremax']) {
-			$this->emit('InfoChecker', 'duplicateRequirement', ['max']);
-			$errors[] = [
-				'type' => 'duplicateRequirement',
-				'field' => 'max',
-			];
-		} elseif (!isset($info['dependencies']['owncloud']['@attributes']['max-version'])) {
+		if (!isset($info['dependencies']['owncloud']['@attributes']['max-version'])) {
 			$this->emit('InfoChecker', 'missingRequirement', ['max']);
+			$errors[] = [
+				'type' => 'missingRequirement',
+				'message' => 'No maximum ownCloud version is defined in appinfo/info.xml',
+			];
 		}
 
 		foreach ($info as $key => $value) {

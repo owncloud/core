@@ -295,27 +295,27 @@ class DependencyAnalyzer {
 		$minVersion = null;
 		if (isset($dependencies['owncloud']['@attributes']['min-version'])) {
 			$minVersion = $dependencies['owncloud']['@attributes']['min-version'];
-		} elseif (isset($appInfo['requiremin'])) {
-			$minVersion = $appInfo['requiremin'];
-		} elseif (isset($appInfo['require'])) {
-			$minVersion = $appInfo['require'];
 		}
 		$maxVersion = null;
 		if (isset($dependencies['owncloud']['@attributes']['max-version'])) {
 			$maxVersion = $dependencies['owncloud']['@attributes']['max-version'];
-		} elseif (isset($appInfo['requiremax'])) {
-			$maxVersion = $appInfo['requiremax'];
 		}
 
 		if ($minVersion !== null) {
 			if ($this->compareSmaller($this->platform->getOcVersion(), $minVersion)) {
 				$missing[] = (string)$this->l->t('ownCloud %s or higher is required.', $minVersion);
 			}
+		} else {
+			$missing[] = (string)$this->l->t('No minimum ownCloud version is defined in appinfo/info.xml.');
 		}
-		if ($maxVersion !== null && !\in_array($this->platform->getOcChannel(), ['git', 'daily'], true)) {
-			if ($this->compareBigger($this->platform->getOcVersion(), $maxVersion)) {
+		if ($maxVersion !== null) {
+			if (!\in_array($this->platform->getOcChannel(), ['git', 'daily'], true)
+				&& $this->compareBigger($this->platform->getOcVersion(), $maxVersion)
+			) {
 				$missing[] = (string)$this->l->t('ownCloud %s or lower is required.', $maxVersion);
 			}
+		} else {
+			$missing[] = (string)$this->l->t('No maximum ownCloud version is defined in appinfo/info.xml.');
 		}
 		return $missing;
 	}
