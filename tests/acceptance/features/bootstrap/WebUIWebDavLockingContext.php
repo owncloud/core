@@ -21,6 +21,7 @@
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
 use Page\SharedWithYouPage;
@@ -43,11 +44,6 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	 * @var SharedWithYouPage
 	 */
 	private $sharedWithYouPage;
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
 
 	/**
 	 *
@@ -80,14 +76,9 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	 * @param string $file
 	 */
 	public function unlockFileOnTheWebui($lockNumber, $file) {
-		try {
-			$this->filesPage->closeDetailsDialog();
-		} catch (Exception $e) {
-			//ignoge if dialog cannot be closed
-			//most likely there is no dialog open
-		}
-		
-		$fileRow = $this->filesPage->findFileRowByName($file, $this->getSession());
+		$this->closeDetailsDialog();
+		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
+		$fileRow = $pageObject->findFileRowByName($file, $this->getSession());
 		$fileRow->deleteLockByNumber($lockNumber, $this->getSession());
 	}
 
@@ -95,13 +86,9 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	 * @Then the file/folder :file should be marked as locked on the webUI
 	 */
 	public function theFileShouldBeMarkedAsLockedOnTheWebui($file) {
-		try {
-			$this->filesPage->closeDetailsDialog();
-		} catch (Exception $e) {
-			//ignoge if dialog cannot be closed
-			//most likely there is no dialog open
-		}
-		$fileRow = $this->filesPage->findFileRowByName($file, $this->getSession());
+		$this->closeDetailsDialog();
+		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
+		$fileRow = $pageObject->findFileRowByName($file, $this->getSession());
 		PHPUnit_Framework_Assert::assertTrue(
 			$fileRow->getLockState(),
 			"'$file' should be marked as locked, but its not"
@@ -112,13 +99,9 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	 * @Then the file/folder :file should not be marked as locked on the webUI
 	 */
 	public function theFileShouldNotBeMarkedAsLockedOnTheWebui($file) {
-		try {
-			$this->filesPage->closeDetailsDialog();
-		} catch (Exception $e) {
-			//ignoge if dialog cannot be closed
-			//most likely there is no dialog open
-		}
-		$fileRow = $this->filesPage->findFileRowByName($file, $this->getSession());
+		$this->closeDetailsDialog();
+		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
+		$fileRow = $pageObject->findFileRowByName($file, $this->getSession());
 		PHPUnit_Framework_Assert::assertFalse(
 			$fileRow->getLockState(),
 			"'$file' should not be marked as locked, but it is"
@@ -131,13 +114,9 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	public function theFileShouldBeMarkedAsLockedByUserInLocksTab(
 		$file, $lockedBy
 	) {
-		try {
-			$this->filesPage->closeDetailsDialog();
-		} catch (Exception $e) {
-			//ignoge if dialog cannot be closed
-			//most likely there is no dialog open
-		}
-		$fileRow = $this->filesPage->findFileRowByName($file, $this->getSession());
+		$this->closeDetailsDialog();
+		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
+		$fileRow = $pageObject->findFileRowByName($file, $this->getSession());
 		$lockDialog = $fileRow->openLockDialog();
 		$locks = $lockDialog->getAllLocks();
 		foreach ($locks as $lock) {
@@ -147,5 +126,37 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 			}
 		}
 		PHPUnit_Framework_Assert::fail("cannot find a lock set by $lockedBy");
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario @webUI
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+	}
+
+	/**
+	 * closes any open details dialog but ignores any error (e.g. no dialog open)
+	 *
+	 * @return void
+	 */
+	private function closeDetailsDialog() {
+		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
+		try {
+			$pageObject->closeDetailsDialog();
+		} catch (Exception $e) {
+			//ignoge if dialog cannot be closed
+			//most likely there is no dialog open
+		}
 	}
 }

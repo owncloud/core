@@ -24,6 +24,124 @@ Feature: Locks
     And the file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But the file "data.tar.gz" should not be marked as locked on the webUI
 
+  Scenario: setting a lock shows the display name of a user in the locking details
+    Given these users have been created:
+      |username              |displayname  |
+      |user-with-display-name|My fancy name|
+    Given the user "user-with-display-name" has locked the folder "simple-folder" setting following properties
+      | lockscope | shared |
+    And the user "user-with-display-name" has locked the file "data.zip" setting following properties
+      | lockscope | exclusive |
+    When the user re-logs in with username "user-with-display-name" and password "%regular%" using the webUI
+    And the folder "simple-folder" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
+    And the file "data.zip" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
+
+  Scenario: setting a lock shows the display name of a user in the locking details (user has set email address)
+    Given these users have been created:
+      |username              |displayname  |email      |
+      |user-with-display-name|My fancy name|mail@oc.org|
+    Given the user "user-with-display-name" has locked the folder "simple-folder" setting following properties
+      | lockscope | shared |
+    And the user "user-with-display-name" has locked the file "data.zip" setting following properties
+      | lockscope | exclusive |
+    When the user re-logs in with username "user-with-display-name" and password "%regular%" using the webUI
+    And the folder "simple-folder" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
+    And the file "data.zip" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
+
+  Scenario: setting a lock shows the user name of a user in the locking details (user has set email address)
+    Given these users have been created:
+      |username        |email      |
+      |user-with-email |mail@oc.org|
+    Given the user "user-with-email" has locked the folder "simple-folder" setting following properties
+      | lockscope | shared |
+    And the user "user-with-email" has locked the file "data.zip" setting following properties
+      | lockscope | exclusive |
+    When the user re-logs in with username "user-with-email" and password "%regular%" using the webUI
+    And the folder "simple-folder" should be marked as locked by user "user-with-email" in the locks tab of the details panel on the webUI
+    And the file "data.zip" should be marked as locked by user "user-with-email" in the locks tab of the details panel on the webUI
+
+  Scenario: setting a lock shows the lock symbols at the correct files/folders on the favorites page
+    Given the user "brand-new-user" has locked the folder "simple-folder" setting following properties
+      | lockscope | shared |
+    And the user "brand-new-user" has locked the file "data.zip" setting following properties
+      | lockscope | exclusive |
+    When the user marks the folder "simple-folder" as favorite using the webUI
+    And the user marks the folder "simple-empty-folder" as favorite using the webUI
+    And the user marks the file "data.zip" as favorite using the webUI
+    And the user marks the file "data.tar.gz" as favorite using the webUI
+    And the user browses to the favorites page
+    Then the folder "simple-folder" should be marked as locked on the webUI
+    And the folder "simple-folder" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    But the folder "simple-empty-folder" should not be marked as locked on the webUI
+    And the file "data.zip" should be marked as locked on the webUI
+    And the file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    But the file "data.tar.gz" should not be marked as locked on the webUI
+
+  Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-others page
+    Given these users have been created:
+      |username  |
+      |receiver  |
+    And the user "brand-new-user" has locked the folder "simple-folder" setting following properties
+      | lockscope | shared |
+    And the user "brand-new-user" has locked the file "data.zip" setting following properties
+      | lockscope | exclusive |
+    And user "brand-new-user" has shared file "data.zip" with user "receiver"
+    And user "brand-new-user" has shared file "data.tar.gz" with user "receiver"
+    And user "brand-new-user" has shared folder "simple-folder" with user "receiver"
+    And user "brand-new-user" has shared folder "simple-empty-folder" with user "receiver"
+    When the user browses to the shared-with-others page
+    Then the folder "simple-folder" should be marked as locked on the webUI
+    And the folder "simple-folder" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    But the folder "simple-empty-folder" should not be marked as locked on the webUI
+    And the file "data.zip" should be marked as locked on the webUI
+    And the file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    But the file "data.tar.gz" should not be marked as locked on the webUI
+
+  Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-by-link page
+    Given the user "brand-new-user" has locked the folder "simple-folder" setting following properties
+      | lockscope | shared |
+    And the user "brand-new-user" has locked the file "data.zip" setting following properties
+      | lockscope | exclusive |
+    And user "brand-new-user" has created a public link share with settings
+      | path | data.zip |
+    And user "brand-new-user" has created a public link share with settings
+      | path | data.tar.gz |
+    And user "brand-new-user" has created a public link share with settings
+      | path | simple-folder |
+    And user "brand-new-user" has created a public link share with settings
+      | path | simple-empty-folder |
+    When the user browses to the shared-by-link page
+    Then the folder "simple-folder" should be marked as locked on the webUI
+    And the folder "simple-folder" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    But the folder "simple-empty-folder" should not be marked as locked on the webUI
+    And the file "data.zip" should be marked as locked on the webUI
+    And the file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    But the file "data.tar.gz" should not be marked as locked on the webUI
+
+  Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-you page
+    Given these users have been created:
+      |username  |
+      |sharer    |
+    And the user "sharer" has locked the folder "simple-folder" setting following properties
+      | lockscope | shared |
+    And the user "sharer" has locked the file "data.zip" setting following properties
+      | lockscope | exclusive |
+    And user "sharer" has shared file "data.zip" with user "brand-new-user"
+    And user "sharer" has shared file "data.tar.gz" with user "brand-new-user"
+    And user "sharer" has shared folder "simple-folder" with user "brand-new-user"
+    And user "sharer" has shared folder "simple-empty-folder" with user "brand-new-user"
+    When the user browses to the shared-with-you page
+    Then the folder "simple-folder (2)" should be marked as locked on the webUI
+    And the folder "simple-folder (2)" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    But the folder "simple-empty-folder (2)" should not be marked as locked on the webUI
+    And the file "data (2).zip" should be marked as locked on the webUI
+    And the file "data (2).zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    But the file "data (2).tar.gz" should not be marked as locked on the webUI
+
+  Scenario: clicking other tabs does not change the lock symbol
+    When the user opens the share dialog for the folder "simple-folder"
+    Then the folder "simple-folder" should not be marked as locked on the webUI
+
   Scenario: lock set on a shared file shows the lock information for all involved users
     Given these users have been created:
       |username  |
@@ -160,305 +278,433 @@ Feature: Locks
       | shared    |
 
   Scenario: deleting the first one of multiple shared locks on the webUI
-  Given these users have been created:
-      |username  |
-      |receiver1 |
-      |receiver2 |
-  And the user has created a folder "/FOLDER_TO_SHARE"
-  And user "brand-new-user" has shared file "/lorem.txt" with user "receiver1"
-  And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver1"
-  And user "brand-new-user" has shared file "/lorem.txt" with user "receiver2"
-  And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver2"
-  And the user "brand-new-user" has locked the file "lorem.txt" setting following properties
-     | lockscope | shared |
-  And the user "brand-new-user" has locked the folder "FOLDER_TO_SHARE" setting following properties
-     | lockscope | shared |
-  And the user "receiver1" has locked the file "lorem (2).txt" setting following properties
-     | lockscope | shared |
-  And the user "receiver1" has locked the folder "FOLDER_TO_SHARE" setting following properties
-     | lockscope | shared |
-  And the user "receiver2" has locked the file "lorem (2).txt" setting following properties
-     | lockscope | shared |
-  And the user "receiver2" has locked the folder "FOLDER_TO_SHARE" setting following properties
-     | lockscope | shared |
-  And the user has browsed to the files page
-  When the user unlocks the lock no 1 of the file "lorem.txt" on the webUI
-  Then the file "lorem.txt" should be marked as locked on the webUI
-  And the file "lorem.txt" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
-  And the file "lorem.txt" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
-  And 2 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
-  When the user unlocks the lock no 1 of the folder "FOLDER_TO_SHARE" on the webUI
-  Then the folder "FOLDER_TO_SHARE" should be marked as locked on the webUI
-  And the folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
-  And the folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
-  And 2 locks should be reported for the folder "FOLDER_TO_SHARE" of user "brand-new-user" by the WebDAV API
+    Given these users have been created:
+        |username  |
+        |receiver1 |
+        |receiver2 |
+    And the user has created a folder "/FOLDER_TO_SHARE"
+    And user "brand-new-user" has shared file "/lorem.txt" with user "receiver1"
+    And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver1"
+    And user "brand-new-user" has shared file "/lorem.txt" with user "receiver2"
+    And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver2"
+    And the user "brand-new-user" has locked the file "lorem.txt" setting following properties
+       | lockscope | shared |
+    And the user "brand-new-user" has locked the folder "FOLDER_TO_SHARE" setting following properties
+       | lockscope | shared |
+    And the user "receiver1" has locked the file "lorem (2).txt" setting following properties
+       | lockscope | shared |
+    And the user "receiver1" has locked the folder "FOLDER_TO_SHARE" setting following properties
+       | lockscope | shared |
+    And the user "receiver2" has locked the file "lorem (2).txt" setting following properties
+       | lockscope | shared |
+    And the user "receiver2" has locked the folder "FOLDER_TO_SHARE" setting following properties
+       | lockscope | shared |
+    And the user has browsed to the files page
+    When the user unlocks the lock no 1 of the file "lorem.txt" on the webUI
+    Then the file "lorem.txt" should be marked as locked on the webUI
+    And the file "lorem.txt" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
+    And the file "lorem.txt" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
+    And 2 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
+    And 2 locks should be reported for the file "lorem (2).txt" of user "receiver1" by the WebDAV API
+    And 2 locks should be reported for the file "lorem (2).txt" of user "receiver2" by the WebDAV API
+    When the user unlocks the lock no 1 of the folder "FOLDER_TO_SHARE" on the webUI
+    Then the folder "FOLDER_TO_SHARE" should be marked as locked on the webUI
+    And the folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
+    And the folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
+    And 2 locks should be reported for the folder "FOLDER_TO_SHARE" of user "brand-new-user" by the WebDAV API
+    And 2 locks should be reported for the folder "FOLDER_TO_SHARE" of user "receiver1" by the WebDAV API
+    And 2 locks should be reported for the folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
   Scenario: deleting the second one of multiple shared locks on the webUI
-  Given these users have been created:
-      |username  |
-      |receiver1 |
-      |receiver2 |
-  And the user has created a folder "/FOLDER_TO_SHARE"
-  And user "brand-new-user" has shared file "/lorem.txt" with user "receiver1"
-  And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver1"
-  And user "brand-new-user" has shared file "/lorem.txt" with user "receiver2"
-  And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver2"
-  And the user "receiver1" has locked the file "lorem (2).txt" setting following properties
-     | lockscope | shared |
-  And the user "receiver1" has locked the folder "FOLDER_TO_SHARE" setting following properties
-     | lockscope | shared |
-  And the user "brand-new-user" has locked the file "lorem.txt" setting following properties
-     | lockscope | shared |
-  And the user "brand-new-user" has locked the folder "FOLDER_TO_SHARE" setting following properties
-     | lockscope | shared |
-  And the user "receiver2" has locked the file "lorem (2).txt" setting following properties
-     | lockscope | shared |
-  And the user "receiver2" has locked the folder "FOLDER_TO_SHARE" setting following properties
-     | lockscope | shared |
-  And the user has browsed to the files page
-  When the user unlocks the lock no 2 of the file "lorem.txt" on the webUI
-  Then the file "lorem.txt" should be marked as locked on the webUI
-  And the file "lorem.txt" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
-  And the file "lorem.txt" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
-  And 2 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
-  When the user unlocks the lock no 2 of the folder "FOLDER_TO_SHARE" on the webUI
-  Then the folder "FOLDER_TO_SHARE" should be marked as locked on the webUI
-  And the folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
-  And the folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
-  And 2 locks should be reported for the folder "FOLDER_TO_SHARE" of user "brand-new-user" by the WebDAV API
+    Given these users have been created:
+        |username  |
+        |receiver1 |
+        |receiver2 |
+    And the user has created a folder "/FOLDER_TO_SHARE"
+    And user "brand-new-user" has shared file "/lorem.txt" with user "receiver1"
+    And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver1"
+    And user "brand-new-user" has shared file "/lorem.txt" with user "receiver2"
+    And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver2"
+    And the user "receiver1" has locked the file "lorem (2).txt" setting following properties
+       | lockscope | shared |
+    And the user "receiver1" has locked the folder "FOLDER_TO_SHARE" setting following properties
+       | lockscope | shared |
+    And the user "brand-new-user" has locked the file "lorem.txt" setting following properties
+       | lockscope | shared |
+    And the user "brand-new-user" has locked the folder "FOLDER_TO_SHARE" setting following properties
+       | lockscope | shared |
+    And the user "receiver2" has locked the file "lorem (2).txt" setting following properties
+       | lockscope | shared |
+    And the user "receiver2" has locked the folder "FOLDER_TO_SHARE" setting following properties
+       | lockscope | shared |
+    And the user has browsed to the files page
+    When the user unlocks the lock no 2 of the file "lorem.txt" on the webUI
+    Then the file "lorem.txt" should be marked as locked on the webUI
+    And the file "lorem.txt" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
+    And the file "lorem.txt" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
+    And 2 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
+    And 2 locks should be reported for the file "lorem (2).txt" of user "receiver1" by the WebDAV API
+    And 2 locks should be reported for the file "lorem (2).txt" of user "receiver2" by the WebDAV API
+    When the user unlocks the lock no 2 of the folder "FOLDER_TO_SHARE" on the webUI
+    Then the folder "FOLDER_TO_SHARE" should be marked as locked on the webUI
+    And the folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
+    And the folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
+    And 2 locks should be reported for the folder "FOLDER_TO_SHARE" of user "brand-new-user" by the WebDAV API
+    And 2 locks should be reported for the folder "FOLDER_TO_SHARE" of user "receiver1" by the WebDAV API
+    And 2 locks should be reported for the folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
   Scenario: deleting the last one of multiple shared locks on the webUI
-  Given these users have been created:
-      |username  |
-      |receiver1 |
-      |receiver2 |
-  And the user has created a folder "/FOLDER_TO_SHARE"
-  And user "brand-new-user" has shared file "/lorem.txt" with user "receiver1"
-  And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver1"
-  And user "brand-new-user" has shared file "/lorem.txt" with user "receiver2"
-  And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver2"
-  And the user "receiver1" has locked the file "lorem (2).txt" setting following properties
-     | lockscope | shared |
-  And the user "receiver1" has locked the folder "FOLDER_TO_SHARE" setting following properties
-     | lockscope | shared |
-  And the user "receiver2" has locked the file "lorem (2).txt" setting following properties
-     | lockscope | shared |
-  And the user "receiver2" has locked the folder "FOLDER_TO_SHARE" setting following properties
-     | lockscope | shared |
-  And the user "brand-new-user" has locked the file "lorem.txt" setting following properties
-     | lockscope | shared |
-  And the user "brand-new-user" has locked the folder "FOLDER_TO_SHARE" setting following properties
-     | lockscope | shared |
-  And the user has browsed to the files page
-  When the user unlocks the lock no 3 of the file "lorem.txt" on the webUI
-  Then the file "lorem.txt" should be marked as locked on the webUI
-  And the file "lorem.txt" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
-  And the file "lorem.txt" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
-  And 2 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
-  When the user unlocks the lock no 3 of the folder "FOLDER_TO_SHARE" on the webUI
-  Then the folder "FOLDER_TO_SHARE" should be marked as locked on the webUI
-  And the folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
-  And the folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
-  And 2 locks should be reported for the folder "FOLDER_TO_SHARE" of user "brand-new-user" by the WebDAV API
+    Given these users have been created:
+        |username  |
+        |receiver1 |
+        |receiver2 |
+    And the user has created a folder "/FOLDER_TO_SHARE"
+    And user "brand-new-user" has shared file "/lorem.txt" with user "receiver1"
+    And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver1"
+    And user "brand-new-user" has shared file "/lorem.txt" with user "receiver2"
+    And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver2"
+    And the user "receiver1" has locked the file "lorem (2).txt" setting following properties
+       | lockscope | shared |
+    And the user "receiver1" has locked the folder "FOLDER_TO_SHARE" setting following properties
+       | lockscope | shared |
+    And the user "receiver2" has locked the file "lorem (2).txt" setting following properties
+       | lockscope | shared |
+    And the user "receiver2" has locked the folder "FOLDER_TO_SHARE" setting following properties
+       | lockscope | shared |
+    And the user "brand-new-user" has locked the file "lorem.txt" setting following properties
+       | lockscope | shared |
+    And the user "brand-new-user" has locked the folder "FOLDER_TO_SHARE" setting following properties
+       | lockscope | shared |
+    And the user has browsed to the files page
+    When the user unlocks the lock no 3 of the file "lorem.txt" on the webUI
+    Then the file "lorem.txt" should be marked as locked on the webUI
+    And the file "lorem.txt" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
+    And the file "lorem.txt" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
+    And 2 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
+    And 2 locks should be reported for the file "lorem (2).txt" of user "receiver1" by the WebDAV API
+    And 2 locks should be reported for the file "lorem (2).txt" of user "receiver2" by the WebDAV API
+    When the user unlocks the lock no 3 of the folder "FOLDER_TO_SHARE" on the webUI
+    Then the folder "FOLDER_TO_SHARE" should be marked as locked on the webUI
+    And the folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
+    And the folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
+    And 2 locks should be reported for the folder "FOLDER_TO_SHARE" of user "brand-new-user" by the WebDAV API
+    And 2 locks should be reported for the folder "FOLDER_TO_SHARE" of user "receiver1" by the WebDAV API
+    And 2 locks should be reported for the folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
   Scenario Outline: deleting a lock that was created by an other user
-  Given these users have been created:
-      |username  |
-      |receiver1 |
-  And user "brand-new-user" has shared file "/lorem.txt" with user "receiver1"
-  And the user "receiver1" has locked the file "lorem (2).txt" setting following properties
-     | lockscope | <lockscope> |
-  And the user has browsed to the files page
-  When the user unlocks the lock no 1 of the file "lorem.txt" on the webUI
-  Then notifications should be displayed on the webUI with the text
-      | Unlock failed with status: 403 |
-  And the file "lorem.txt" should be marked as locked on the webUI
-  And the file "lorem.txt" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
-  And 1 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
-  Examples:
-    | lockscope |
-    | exclusive |
-    | shared    |
+    Given these users have been created:
+        |username  |
+        |receiver1 |
+    And user "brand-new-user" has shared file "/lorem.txt" with user "receiver1"
+    And the user "receiver1" has locked the file "lorem (2).txt" setting following properties
+       | lockscope | <lockscope> |
+    And the user has browsed to the files page
+    When the user unlocks the lock no 1 of the file "lorem.txt" on the webUI
+    Then notifications should be displayed on the webUI with the text
+        | Unlock failed with status: 403 |
+    And the file "lorem.txt" should be marked as locked on the webUI
+    And the file "lorem.txt" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
+    And 1 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
+    And 1 locks should be reported for the file "lorem (2).txt" of user "receiver1" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
 
   Scenario Outline: deleting a locked file
-  Given the user "brand-new-user" has locked the file "lorem.txt" setting following properties
-     | lockscope | <lockscope> |
-  And the user has browsed to the files page
-  When the user deletes the file "lorem.txt" using the webUI
-  Then notifications should be displayed on the webUI with the text
-      | The file "lorem.txt" is locked and cannot be deleted. |
-  And as "brand-new-user" the file "lorem.txt" should exist
-  And the file "lorem.txt" should be listed on the webUI
-  And the file "lorem.txt" should be marked as locked on the webUI
-  And the file "lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
-  And 1 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
-  Examples:
-    | lockscope |
-    | exclusive |
-    | shared    |
+    Given the user "brand-new-user" has locked the file "lorem.txt" setting following properties
+       | lockscope | <lockscope> |
+    And the user has browsed to the files page
+    When the user deletes the file "lorem.txt" using the webUI
+    Then notifications should be displayed on the webUI with the text
+        | The file "lorem.txt" is locked and cannot be deleted. |
+    And as "brand-new-user" the file "lorem.txt" should exist
+    And the file "lorem.txt" should be listed on the webUI
+    And the file "lorem.txt" should be marked as locked on the webUI
+    And the file "lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    And 1 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
 
   Scenario Outline: moving a locked file
-  Given the user "brand-new-user" has locked the file "lorem.txt" setting following properties
-     | lockscope | <lockscope> |
-  And the user has browsed to the files page
-  When the user moves the file "lorem.txt" into the folder "simple-empty-folder" using the webUI
-  Then notifications should be displayed on the webUI with the text
-      | Could not move "lorem.txt" because either the file or the target are locked. |
-  And as "brand-new-user" the file "lorem.txt" should exist
-  And the file "lorem.txt" should be listed on the webUI
-  And the file "lorem.txt" should be marked as locked on the webUI
-  And the file "lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
-  And 1 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
-  Examples:
-    | lockscope |
-    | exclusive |
-    | shared    |
+    Given the user "brand-new-user" has locked the file "lorem.txt" setting following properties
+       | lockscope | <lockscope> |
+    And the user has browsed to the files page
+    When the user moves the file "lorem.txt" into the folder "simple-empty-folder" using the webUI
+    Then notifications should be displayed on the webUI with the text
+        | Could not move "lorem.txt" because either the file or the target are locked. |
+    And as "brand-new-user" the file "lorem.txt" should exist
+    And the file "lorem.txt" should be listed on the webUI
+    And the file "lorem.txt" should be marked as locked on the webUI
+    And the file "lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    And 1 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
 
   Scenario Outline: moving a file trying to overwrite a locked file
-  Given the user "brand-new-user" has locked the file "/simple-folder/lorem.txt" setting following properties
-     | lockscope | <lockscope> |
-  And the user has browsed to the files page
-  When the user moves the file "lorem.txt" into the folder "simple-folder" using the webUI
-  Then notifications should be displayed on the webUI with the text
-      | Could not move "lorem.txt" because either the file or the target are locked. |
-  And as "brand-new-user" the file "lorem.txt" should exist
-  And the file "lorem.txt" should be listed on the webUI
-  And the file "lorem.txt" should not be marked as locked on the webUI
-  Examples:
-    | lockscope |
-    | exclusive |
-    | shared    |
+    Given the user "brand-new-user" has locked the file "/simple-folder/lorem.txt" setting following properties
+       | lockscope | <lockscope> |
+    And the user has browsed to the files page
+    When the user moves the file "lorem.txt" into the folder "simple-folder" using the webUI
+    Then notifications should be displayed on the webUI with the text
+        | Could not move "lorem.txt" because either the file or the target are locked. |
+    And as "brand-new-user" the file "lorem.txt" should exist
+    And the file "lorem.txt" should be listed on the webUI
+    And the file "lorem.txt" should not be marked as locked on the webUI
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
 
   Scenario Outline: moving a file into a locked folder
-  Given the user "brand-new-user" has locked the file "/simple-empty-folder" setting following properties
-     | lockscope | <lockscope> |
-  And the user has browsed to the files page
-  When the user moves the file "lorem.txt" into the folder "simple-empty-folder" using the webUI
-  And as "brand-new-user" the file "/simple-empty-folder/lorem.txt" should exist
-  And as "brand-new-user" the file "lorem.txt" should not exist
-  And the file "lorem.txt" should not be listed on the webUI
-  And 1 locks should be reported for the file "/simple-empty-folder/lorem.txt" of user "brand-new-user" by the WebDAV API
-  Examples:
-    | lockscope |
-    | exclusive |
-    | shared    |
+    Given the user "brand-new-user" has locked the file "/simple-empty-folder" setting following properties
+       | lockscope | <lockscope> |
+    And the user has browsed to the files page
+    When the user moves the file "lorem.txt" into the folder "simple-empty-folder" using the webUI
+    And as "brand-new-user" the file "/simple-empty-folder/lorem.txt" should exist
+    And as "brand-new-user" the file "lorem.txt" should not exist
+    And the file "lorem.txt" should not be listed on the webUI
+    And 1 locks should be reported for the file "/simple-empty-folder/lorem.txt" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
 
   Scenario Outline: renaming of a locked file
-  Given the user "brand-new-user" has locked the file "lorem.txt" setting following properties
-     | lockscope | <lockscope> |
-  And the user has browsed to the files page
-  When the user renames the file "lorem.txt" to "a-renamed-file.txt" using the webUI
-  Then notifications should be displayed on the webUI with the text
-      | The file "lorem.txt" is locked and can not be renamed. |
-  And as "brand-new-user" the file "lorem.txt" should exist
-  And the file "lorem.txt" should be listed on the webUI
-  And the file "lorem.txt" should be marked as locked on the webUI
-  And the file "lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
-  And 1 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
-  Examples:
-    | lockscope |
-    | exclusive |
-    | shared    |
+    Given the user "brand-new-user" has locked the file "lorem.txt" setting following properties
+       | lockscope | <lockscope> |
+    And the user has browsed to the files page
+    When the user renames the file "lorem.txt" to "a-renamed-file.txt" using the webUI
+    Then notifications should be displayed on the webUI with the text
+        | The file "lorem.txt" is locked and can not be renamed. |
+    And as "brand-new-user" the file "lorem.txt" should exist
+    And the file "lorem.txt" should be listed on the webUI
+    And the file "lorem.txt" should be marked as locked on the webUI
+    And the file "lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    And 1 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
 
   Scenario Outline: uploading a file, trying to overwrite a locked file
-  Given the user "brand-new-user" has locked the file "lorem.txt" setting following properties
-     | lockscope | <lockscope> |
-  And the user has browsed to the files page
-  When the user uploads overwriting the file "lorem.txt" using the webUI
-  Then notifications should be displayed on the webUI with the text
-      | Locked |
-  And the content of "lorem.txt" should not have changed
-  And the file "lorem.txt" should be marked as locked on the webUI
-  And the file "lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
-  And 1 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
-  Examples:
-    | lockscope |
-    | exclusive |
-    | shared    |
+    Given the user "brand-new-user" has locked the file "lorem.txt" setting following properties
+       | lockscope | <lockscope> |
+    And the user has browsed to the files page
+    When the user uploads overwriting the file "lorem.txt" using the webUI
+    Then notifications should be displayed on the webUI with the text
+        | Locked |
+    And the content of "lorem.txt" should not have changed
+    And the file "lorem.txt" should be marked as locked on the webUI
+    And the file "lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    And 1 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
 
   Scenario Outline: uploading a file, trying to overwrite a file in a locked folder
-  Given the user "brand-new-user" has locked the folder "simple-folder" setting following properties
-     | lockscope | <lockscope> |
-  And the user has opened the folder "simple-folder" using the webUI
-  When the user uploads overwriting the file "lorem.txt" using the webUI
-  Then notifications should be displayed on the webUI with the text
-      | Locked |
-  And the content of "lorem.txt" should not have changed
-  And the file "lorem.txt" should be marked as locked on the webUI
-  And the file "lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
-  And 1 locks should be reported for the file "simple-folder/lorem.txt" of user "brand-new-user" by the WebDAV API
-  Examples:
-    | lockscope |
-    | exclusive |
-    | shared    |
+    Given the user "brand-new-user" has locked the folder "simple-folder" setting following properties
+       | lockscope | <lockscope> |
+    And the user has opened the folder "simple-folder" using the webUI
+    When the user uploads overwriting the file "lorem.txt" using the webUI
+    Then notifications should be displayed on the webUI with the text
+        | Locked |
+    And the content of "lorem.txt" should not have changed
+    And the file "lorem.txt" should be marked as locked on the webUI
+    And the file "lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    And 1 locks should be reported for the file "simple-folder/lorem.txt" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
 
   Scenario Outline: uploading a new file into a locked folder
-  Given the user "brand-new-user" has locked the folder "simple-folder" setting following properties
-     | lockscope | <lockscope> |
-  And the user has opened the folder "simple-folder" using the webUI
-  When the user uploads the file "new-lorem.txt" using the webUI
-  Then the file "new-lorem.txt" should be marked as locked on the webUI
-  And the file "new-lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
-  And 1 locks should be reported for the file "simple-folder/new-lorem.txt" of user "brand-new-user" by the WebDAV API
-  Examples:
-    | lockscope |
-    | exclusive |
-    | shared    |
+    Given the user "brand-new-user" has locked the folder "simple-folder" setting following properties
+       | lockscope | <lockscope> |
+    And the user has opened the folder "simple-folder" using the webUI
+    When the user uploads the file "new-lorem.txt" using the webUI
+    Then the file "new-lorem.txt" should be marked as locked on the webUI
+    And the file "new-lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    And 1 locks should be reported for the file "simple-folder/new-lorem.txt" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
 
   Scenario Outline: deleting a file in a public share of a locked folder
-  Given the user "brand-new-user" has locked the folder "simple-folder" setting following properties
-     | lockscope | <lockscope> |
-  And the user has browsed to the files page
-  And the user has created a new public link for the folder "simple-folder" using the webUI with
-    | permission | read-write |
-  When the public accesses the last created public link using the webUI
-  And the user deletes the folder "lorem.txt" using the webUI
-  Then notifications should be displayed on the webUI with the text
-    | The file "lorem.txt" is locked and cannot be deleted. |
-  And as "brand-new-user" the file "simple-folder/lorem.txt" should exist
-  And 1 locks should be reported for the file "simple-folder/lorem.txt" of user "brand-new-user" by the WebDAV API
-  Examples:
-    | lockscope |
-    | exclusive |
-    | shared    |
+    Given the user "brand-new-user" has locked the folder "simple-folder" setting following properties
+       | lockscope | <lockscope> |
+    And the user has browsed to the files page
+    And the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read-write |
+    When the public accesses the last created public link using the webUI
+    And the user deletes the folder "lorem.txt" using the webUI
+    Then notifications should be displayed on the webUI with the text
+      | The file "lorem.txt" is locked and cannot be deleted. |
+    And as "brand-new-user" the file "simple-folder/lorem.txt" should exist
+    And 1 locks should be reported for the file "simple-folder/lorem.txt" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
 
   Scenario Outline: renaming a file in a public share of a locked folder
-  Given the user "brand-new-user" has locked the folder "simple-folder" setting following properties
-     | lockscope | <lockscope> |
-  And the user has browsed to the files page
-  And the user has created a new public link for the folder "simple-folder" using the webUI with
-    | permission | read-write |
-  When the public accesses the last created public link using the webUI
-  And the user renames the file "lorem.txt" to "a-renamed-file.txt" using the webUI
-  Then notifications should be displayed on the webUI with the text
-      | The file "lorem.txt" is locked and can not be renamed. |
-  And as "brand-new-user" the file "simple-folder/lorem.txt" should exist
-  And as "brand-new-user" the file "simple-folder/a-renamed-file.txt" should not exist
-  And 1 locks should be reported for the file "simple-folder/lorem.txt" of user "brand-new-user" by the WebDAV API
-  Examples:
-    | lockscope |
-    | exclusive |
-    | shared    |
+    Given the user "brand-new-user" has locked the folder "simple-folder" setting following properties
+       | lockscope | <lockscope> |
+    And the user has browsed to the files page
+    And the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read-write |
+    When the public accesses the last created public link using the webUI
+    And the user renames the file "lorem.txt" to "a-renamed-file.txt" using the webUI
+    Then notifications should be displayed on the webUI with the text
+        | The file "lorem.txt" is locked and can not be renamed. |
+    And as "brand-new-user" the file "simple-folder/lorem.txt" should exist
+    And as "brand-new-user" the file "simple-folder/a-renamed-file.txt" should not exist
+    And 1 locks should be reported for the file "simple-folder/lorem.txt" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
 
   Scenario Outline: moving a locked file into an other folder in a public share
-  Given the user "brand-new-user" has locked the file "lorem.txt" setting following properties
+    Given the user "brand-new-user" has locked the file "simple-folder/lorem.txt" setting following properties
+       | lockscope | <lockscope> |
+    And the user has browsed to the files page
+    And the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read-write |
+    When the public accesses the last created public link using the webUI
+    And the user moves the file "lorem.txt" into the folder "simple-empty-folder" using the webUI
+    Then notifications should be displayed on the webUI with the text
+        | Could not move "lorem.txt" because either the file or the target are locked. |
+    And as "brand-new-user" the file "simple-folder/lorem.txt" should exist
+    And as "brand-new-user" the file "simple-folder/simple-empty-folder/lorem.txt" should not exist
+    And the file "lorem.txt" should be listed on the webUI
+    And 1 locks should be reported for the file "simple-folder/lorem.txt" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
+
+  Scenario Outline: uploading a file, trying to overwrite a file in a locked folder in a public share
+    Given the user "brand-new-user" has locked the folder "simple-folder" setting following properties
+       | lockscope | <lockscope> |
+    And the user has browsed to the files page
+    And the user has created a new public link for the folder "simple-folder" using the webUI with
+      | permission | read-write |
+    When the public accesses the last created public link using the webUI
+    And the user uploads overwriting the file "lorem.txt" using the webUI
+    Then notifications should be displayed on the webUI with the text
+        | Locked |
+    And the content of "simple-folder/lorem.txt" should not have changed
+    And 1 locks should be reported for the file "simple-folder/lorem.txt" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
+
+  Scenario Outline: decline locked folder
+    Given these users have been created:
+      |username  |
+      |sharer    |
+    And user "sharer" has created a folder "/to-share-folder"
+    And the user "sharer" has locked the folder "to-share-folder" setting following properties
      | lockscope | <lockscope> |
-  And the user has browsed to the files page
-  And the user has created a new public link for the folder "simple-folder" using the webUI with
-    | permission | read-write |
-  When the public accesses the last created public link using the webUI
-  And the user moves the file "lorem.txt" into the folder "simple-empty-folder" using the webUI
-  Then notifications should be displayed on the webUI with the text
-      | Could not move "lorem.txt" because either the file or the target are locked. |
-  And as "brand-new-user" the file "lorem.txt" should exist
-  And the file "lorem.txt" should be listed on the webUI
-  And the file "lorem.txt" should be marked as locked on the webUI
-  And the file "lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
-  And 1 locks should be reported for the file "lorem.txt" of user "brand-new-user" by the WebDAV API
-  Examples:
-    | lockscope |
-    | exclusive |
-    | shared    |
-#  Scenario: unshare locked folder/file
-#  Scenario: decline/accept locked folder/file
-#  Scenario: correct displayname / username is shown in the lock list
+    And user "sharer" has shared folder "to-share-folder" with user "brand-new-user"
+    When the user declines the share "to-share-folder" offered by user "sharer" using the webUI
+    And the user has browsed to the files page
+    Then the folder "to-share-folder" should not be listed on the webUI
+    And 1 locks should be reported for the file "to-share-folder" of user "sharer" by the WebDAV API
+    And 0 locks should be reported for the file "to-share-folder" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
+
+  Scenario Outline: accept previously declined locked folder
+    Given these users have been created:
+      |username  |
+      |sharer    |
+    And user "sharer" has created a folder "/to-share-folder"
+    And the user "sharer" has locked the folder "to-share-folder" setting following properties
+     | lockscope | <lockscope> |
+    And user "sharer" has shared folder "to-share-folder" with user "brand-new-user"
+    When the user declines the share "to-share-folder" offered by user "sharer" using the webUI
+    And the user accepts the share "to-share-folder" offered by user "sharer" using the webUI
+    And the user has browsed to the files page
+    Then the folder "to-share-folder" should be marked as locked on the webUI
+    And the folder "to-share-folder" should be marked as locked by user "sharer" in the locks tab of the details panel on the webUI
+    And 1 locks should be reported for the file "to-share-folder" of user "sharer" by the WebDAV API
+    And 1 locks should be reported for the file "to-share-folder" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
+
+  Scenario Outline: accept previously declined locked folder but create a folder with same name in between
+    Given these users have been created:
+      |username  |
+      |sharer    |
+    And user "sharer" has created a folder "/to-share-folder"
+    And the user "sharer" has locked the folder "to-share-folder" setting following properties
+     | lockscope | <lockscope> |
+    And user "sharer" has shared folder "to-share-folder" with user "brand-new-user"
+    When the user declines the share "to-share-folder" offered by user "sharer" using the webUI
+    And user "brand-new-user" creates a folder "to-share-folder" using the WebDAV API
+    And the user accepts the share "to-share-folder" offered by user "sharer" using the webUI
+    And the user has browsed to the files page
+    Then the folder "to-share-folder (2)" should be marked as locked on the webUI
+    And the folder "to-share-folder (2)" should be marked as locked by user "sharer" in the locks tab of the details panel on the webUI
+    But the folder "to-share-folder" should not be marked as locked on the webUI
+    And 1 locks should be reported for the file "to-share-folder" of user "sharer" by the WebDAV API
+    And 1 locks should be reported for the file "to-share-folder (2)" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
+
+  Scenario Outline: creating a subfolder structure that is the same as the structure of a declined & locked share
+    Given these users have been created:
+      |username  |
+      |sharer    |
+    And user "sharer" has created a folder "/parent"
+    And user "sharer" has created a folder "/parent/subfolder"
+    And the user "sharer" has locked the folder "parent" setting following properties
+     | lockscope | <lockscope> |
+    And user "sharer" has shared folder "parent" with user "brand-new-user"
+    When the user declines the share "parent" offered by user "sharer" using the webUI
+    And user "brand-new-user" creates a folder "parent" using the WebDAV API
+    And user "brand-new-user" creates a folder "parent/subfolder" using the WebDAV API
+    And the user has browsed to the files page
+    Then the folder "parent" should not be marked as locked on the webUI
+    When the user opens the folder "parent" using the webUI
+    Then the folder "subfolder" should not be marked as locked on the webUI
+    And 0 locks should be reported for the file "parent" of user "brand-new-user" by the WebDAV API
+    And 0 locks should be reported for the file "parent/subfolder" of user "brand-new-user" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |
+
+  Scenario Outline: unsharing a locked file/folder
+    Given these users have been created:
+      |username  |
+      |sharer    |
+    And the user "sharer" has locked the file "lorem.txt" setting following properties
+      | lockscope | <lockscope> |
+    And the user "sharer" has locked the folder "lorem.txt" setting following properties
+      | lockscope | <lockscope> |
+    And user "sharer" has shared file "lorem.txt" with user "brand-new-user"
+    And the user has browsed to the files page
+    When the user unshares the file "lorem (2).txt" using the webUI
+    Then as "brand-new-user" the file "lorem (2).txt" should not exist
+    And the file "lorem.txt (2)" should not be listed on the webUI
+    And 1 locks should be reported for the file "lorem.txt" of user "sharer" by the WebDAV API
+    Examples:
+      | lockscope |
+      | exclusive |
+      | shared    |

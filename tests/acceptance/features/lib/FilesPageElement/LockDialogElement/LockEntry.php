@@ -91,7 +91,7 @@ class LockEntry extends OwncloudPage {
 			return $matches [1];
 		}
 		throw new \Exception(
-			"could not extraxt locking user name from lock description '" .
+			"could not extract locking user name from lock description '" .
 			$lockDescriptionElement->getText() . "'"
 		);
 	}
