@@ -647,6 +647,7 @@ trait Tags {
 						'{http://owncloud.org/ns}display-name',
 						'{http://owncloud.org/ns}user-visible',
 						'{http://owncloud.org/ns}user-assignable',
+						'{http://owncloud.org/ns}user-editable',
 						'{http://owncloud.org/ns}can-assign'
 					  ];
 		$appPath = '/systemtags-relations/files/';

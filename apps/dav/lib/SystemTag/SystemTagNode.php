@@ -127,6 +127,12 @@ class SystemTagNode implements \Sabre\DAV\INode {
 
 			// only admin is able to change permissions, regular users can only rename
 			if (!$this->isAdmin) {
+				// renaming is forbidden for static tags for regular users
+				if (($userEditable === $this->tag->isUserEditable() && !$userEditable)
+					&& ($userAssignable === $this->tag->isUserAssignable())
+					&& !$this->tagManager->canUserUseStaticTagInGroup($this->tag, $this->user)) {
+					throw new Forbidden('No permission to update permissions for tag ' . $this->tag->getId());
+				}
 				// only renaming is allowed for regular users
 				if ($userVisible !== $this->tag->isUserVisible()
 					|| $userAssignable !== $this->tag->isUserAssignable()
@@ -161,6 +167,14 @@ class SystemTagNode implements \Sabre\DAV\INode {
 			}
 			if (!$this->tagManager->canUserAssignTag($this->tag, $this->user)) {
 				throw new Forbidden('No permission to delete tag ' . $this->tag->getId());
+			}
+			if (!$this->isAdmin) {
+				// Deleting static tag by regular users is forbidden
+				if (!$this->tag->isUserEditable()
+					&& $this->tag->isUserAssignable()
+					&& !$this->tagManager->canUserUseStaticTagInGroup($this->tag, $this->user)) {
+					throw new Forbidden('No permission to delete tag ' . $this->tag->getId());
+				}
 			}
 
 			$this->tagManager->deleteTags($this->tag->getId());

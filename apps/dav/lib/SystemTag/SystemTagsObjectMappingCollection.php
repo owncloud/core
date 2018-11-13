@@ -97,6 +97,14 @@ class SystemTagsObjectMappingCollection implements ICollection {
 			if (!$this->tagManager->canUserAssignTag($tag, $this->user)) {
 				throw new Forbidden('No permission to assign tag ' . $tagId);
 			}
+			/**
+			 * regular user who do not belong to whitelisted groups of static tags
+			 * can not assign static tags
+			 */
+			if ((!$tag->isUserEditable() && $tag->isUserAssignable())
+				&& !$this->tagManager->canUserUseStaticTagInGroup($tag, $this->user)) {
+				throw new Forbidden('No permission to assign tag ' . $tagId);
+			}
 
 			$this->tagMapper->assignTags($this->objectId, $this->objectType, $tagId);
 		} catch (TagNotFoundException $e) {

@@ -196,7 +196,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 			}
 		}
 
-		if ($userVisible === false || $userAssignable === false || !empty($groups)) {
+		if ($userVisible === false || $userAssignable === false || $userEditable === false || !empty($groups)) {
 			if (!$this->userSession->isLoggedIn() || !$this->groupManager->isAdmin($this->userSession->getUser()->getUID())) {
 				throw new BadRequest('Not sufficient permissions');
 			}
