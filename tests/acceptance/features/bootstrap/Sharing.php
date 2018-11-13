@@ -771,6 +771,8 @@ trait Sharing {
 					return \is_numeric((string)$element->$field);
 				} elseif ($contentExpected == "AN_URL") {
 					return $this->isAPublicLinkUrl((string)$element->$field);
+				} elseif ($field === 'remote') {
+					return (\rtrim((string)$element->$field, "/") === $contentExpected);
 				} elseif ((string)$element->$field == $contentExpected) {
 					return true;
 				} else {
@@ -1618,7 +1620,7 @@ trait Sharing {
 			);
 			$value = \str_replace(
 				"LOCAL",
-				$this->getLocalBaseUrl() . '/',
+				$this->getLocalBaseUrl(),
 				$value
 			);
 		}
