@@ -69,8 +69,7 @@ Feature: Comments
   Scenario: deleting a folder removes existing comments on the folder
     Given the user has created a folder "/FOLDER_TO_DELETE"
     When the user comments with content "This should be deleted" on folder "/FOLDER_TO_DELETE" using the WebDAV API
-    Then the user should have 1 comments on folder "/FOLDER_TO_DELETE"
-    When the user deletes folder "/FOLDER_TO_DELETE" using the WebDAV API
+    And the user deletes folder "/FOLDER_TO_DELETE" using the WebDAV API
     And the user has created a folder "/FOLDER_TO_DELETE"
     Then the user should have 0 comments on folder "/FOLDER_TO_DELETE"
 
@@ -78,9 +77,7 @@ Feature: Comments
     Given the user has created a folder "/FOLDER_TO_COMMENT"
     And the user has shared folder "/FOLDER_TO_COMMENT" with user "user1"
     And user "user1" has commented with content "Comment from sharee" on folder "/FOLDER_TO_COMMENT"
-    Then the user should have the following comments on folder "/FOLDER_TO_COMMENT"
-      | user1 | Comment from sharee |
-    And user "user1" has been deleted
+    When the administrator deletes user "user1" using the provisioning API
     Then the user should have 1 comments on folder "/FOLDER_TO_COMMENT"
     And the user should have the following comments on folder "/FOLDER_TO_COMMENT"
       | deleted_users | Comment from sharee |

@@ -21,9 +21,7 @@ Feature: sharing
     Given user "user0" has created a folder "/merge-test-outside-perms"
     When user "user0" shares folder "/merge-test-outside-perms" with group "grp1" with permissions 1 using the sharing API
     And user "user0" shares folder "/merge-test-outside-perms" with user "user1" with permissions 31 using the sharing API
-    And user "user1" gets the following properties of folder "/merge-test-outside-perms" using the WebDAV API
-      | {http://owncloud.org/ns}permissions |
-    Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+    Then as user "user1" the folder "/merge-test-outside-perms" should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
     And as "user1" the folder "/merge-test-outside-perms (2)" should not exist
 
   Scenario: Merging shares for recipient when shared from outside with two groups
@@ -41,9 +39,7 @@ Feature: sharing
     And user "user0" has created a folder "/merge-test-outside-twogroups-perms"
     When user "user0" shares folder "/merge-test-outside-twogroups-perms" with group "grp1" with permissions 1 using the sharing API
     And user "user0" shares folder "/merge-test-outside-twogroups-perms" with group "grp4" with permissions 31 using the sharing API
-    And user "user1" gets the following properties of folder "/merge-test-outside-twogroups-perms" using the WebDAV API
-      | {http://owncloud.org/ns}permissions |
-    Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+    Then as user "user1" the folder "/merge-test-outside-twogroups-perms" should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
     And as "user1" the folder "/merge-test-outside-twogroups-perms (2)" should not exist
 
   Scenario: Merging shares for recipient when shared from outside with two groups and member
@@ -53,9 +49,7 @@ Feature: sharing
     When user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with group "grp1" with permissions 1 using the sharing API
     And user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with group "grp4" with permissions 31 using the sharing API
     And user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with user "user1" with permissions 1 using the sharing API
-    And user "user1" gets the following properties of folder "/merge-test-outside-twogroups-member-perms" using the WebDAV API
-      | {http://owncloud.org/ns}permissions |
-    Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+    Then as user "user1" the folder "/merge-test-outside-twogroups-member-perms" should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
     And as "user1" the folder "/merge-test-outside-twogroups-member-perms (2)" should not exist
 
   Scenario: Merging shares for recipient when shared from inside with group
@@ -80,9 +74,7 @@ Feature: sharing
     And user "user1" has created a folder "/merge-test-inside-twogroups-perms"
     When user "user1" shares folder "/merge-test-inside-twogroups-perms" with group "grp1" using the sharing API
     And user "user1" shares folder "/merge-test-inside-twogroups-perms" with group "grp4" using the sharing API
-    And user "user1" gets the following properties of folder "/merge-test-inside-twogroups-perms" using the WebDAV API
-      | {http://owncloud.org/ns}permissions |
-    Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "RDNVCK" or with value "RMDNVCK"
+    Then as user "user1" the folder "/merge-test-inside-twogroups-perms" should contain a property "{http://owncloud.org/ns}permissions" with value "RDNVCK" or with value "RMDNVCK"
     And as "user1" the folder "/merge-test-inside-twogroups-perms (2)" should not exist
     And as "user1" the folder "/merge-test-inside-twogroups-perms (3)" should not exist
 
@@ -92,9 +84,7 @@ Feature: sharing
     When user "user0" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with group "grp1" using the sharing API
     And user "user1" moves folder "/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the WebDAV API
     And user "user0" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with user "user1" using the sharing API
-    And user "user1" gets the following properties of folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the WebDAV API
-      | {http://owncloud.org/ns}permissions |
-    Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+    Then as user "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
     And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" should not exist
 
   @skipOnLDAP @user_ldap-issue-274
@@ -103,7 +93,5 @@ Feature: sharing
     When user "user0" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with user "user1" using the sharing API
     And user "user1" moves folder "/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the WebDAV API
     And user "user0" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with group "grp1" using the sharing API
-    And user "user1" gets the following properties of folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the WebDAV API
-      | {http://owncloud.org/ns}permissions |
-    Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+    Then as user "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
     And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" should not exist

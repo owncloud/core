@@ -32,6 +32,7 @@ use TestHelpers\SetupHelper;
 use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
 use Sabre\DAV\Xml\Property\Complex;
+use PhpParser\Node\Stmt\TryCatch;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -742,6 +743,24 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" on server "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $fileName
+	 * @param string $user
+	 * @param string $server
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theContentOfFileForUserOnServerShouldBe(
+		$fileName, $user, $server, $content
+	) {
+		$previousServer = $this->usingServer($server);
+		$this->contentOfFileForUserShouldBe($fileName, $user, $content);
+		$this->usingServer($previousServer);
+	}
+
+	/**
 	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" using password "([^"]*)" should be "([^"]*)"$/
 	 *
 	 * @param string $fileName
@@ -806,6 +825,24 @@ trait WebDav {
 		$this->contentOfFileForUserShouldBe(
 			$fileName, $user, "$content\n"
 		);
+	}
+
+	/**
+	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" on server "([^"]*)" should be "([^"]*)" plus end-of-line$/
+	 *
+	 * @param string $fileName
+	 * @param string $user
+	 * @param string $server
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theContentOfFileForUserOnServerShouldBePlusEndOfLine(
+		$fileName, $user, $server, $content
+	) {
+		$previousServer = $this->usingServer($server);
+		$this->contentOfFileForUserShouldBePlusEndOfLine($fileName, $user, $content);
+		$this->usingServer($previousServer);
 	}
 
 	/**
@@ -1247,6 +1284,97 @@ trait WebDav {
 				"Property \"$key\" found with value \"$value\", expected \"$expectedValue\""
 			);
 		}
+	}
+
+	/**
+	 * @Then /^as user "([^"]*)" the (?:file|folder|entry) "([^"]*)" should contain a property "([^"]*)" with value "([^"]*)" or with value "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param string $property
+	 * @param string $expectedValue
+	 * @param string $altExpectedValue
+	 *
+	 * @return void
+	 */
+	public function asUserTheFolderShouldContainAPropertyWithValueOrWithValue(
+		$user, $path, $property, $expectedValue, $altExpectedValue
+	) {
+		$this->response = $this->listFolder(
+			$user, $path, 0, [$property]
+		);
+		$this->theSingleResponseShouldContainAPropertyWithValueAndAlternative(
+			$property, $expectedValue, $altExpectedValue
+		);
+	}
+
+	/**
+	 * @Then /^as user "([^"]*)" the (?:file|folder|entry) "([^"]*)" should contain a property "([^"]*)" with value "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param string $property
+	 * @param string $value
+	 *
+	 * @return void
+	 */
+	public function asUserTheFolderShouldContainAPropertyWithValue(
+		$user, $path, $property, $value
+	) {
+		$this->asUserTheFolderShouldContainAPropertyWithValueOrWithValue(
+			$user, $path, $property, $value, $value
+		);
+	}
+
+	/**
+	 * @Then /^as user "([^"]*)" the (?:file|folder|entry) "([^"]*)" should be favorited$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param integer $expectedValue 0|1
+	 *
+	 * @return void
+	 */
+	public function asUserTheFileOrFolderShouldBeFavorited($user, $path, $expectedValue = 1) {
+		$property = "{http://owncloud.org/ns}favorite";
+		$this->asUserTheFolderShouldContainAPropertyWithValue(
+			$user, $path, $property, $expectedValue
+		);
+	}
+
+	/**
+	 * @Then /^as user "([^"]*)" the (?:file|folder|entry) "([^"]*)" should not be favorited$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function asUserTheFileShouldNotBeFavorited($user, $path) {
+		$this->asUserTheFileOrFolderShouldBeFavorited($user, $path, 0);
+	}
+
+	/**
+	 * @Then /^as the user the (?:file|folder|entry) "([^"]*)" should be favorited$/
+	 *
+	 * @param string $path
+	 * @param integer $expectedValue 0|1
+	 *
+	 * @return void
+	 */
+	public function theFileOrFolderShouldBeFavorited($path, $expectedValue = 1) {
+		$this->asUserTheFileOrFolderShouldBeFavorited($this->getCurrentUser(), $path, $expectedValue);
+	}
+
+	/**
+	 * @Then /^as the user the (?:file|folder|entry) "([^"]*)" should not be favorited$/
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theFileOrFolderShouldNotBeFavorited($path) {
+		$this->theFileOrFolderShouldBeFavorited($path, 0);
 	}
 
 	/**
@@ -1923,6 +2051,24 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then as user :user on server :server the files uploaded to :destination with all mechanisms should exist
+	 *
+	 * @param string $user
+	 * @param string $server
+	 * @param string $destination
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function asUserOnServerTheFilesUploadedToWithAllMechanismsShouldExit(
+		$user, $server, $destination
+	) {
+		$previousServer = $this->usingServer($server);
+		$this->filesUploadedToWithAllMechanismsShouldExist($user, $destination);
+		$this->usingServer($previousServer);
+	}
+
+	/**
 	 * @Given user :user has added file :destination of :bytes bytes
 	 *
 	 * @param string $user
@@ -2545,6 +2691,23 @@ trait WebDav {
 		PHPUnit_Framework_Assert::assertNotEquals(
 			$this->response['{DAV:}getetag'], $this->storedETAG[$user][$path]
 		);
+	}
+
+	/**
+	 * @Then the etag of element :path of user :user on server :server should have changed
+	 *
+	 * @param string $path
+	 * @param string $user
+	 * @param string $server
+	 *
+	 * @return void
+	 */
+	public function theEtagOfElementOfUserOnServerShouldHaveChanged(
+		$path, $user, $server
+	) {
+		$previousServer = $this->usingServer($server);
+		$this->etagOfElementOfUserShouldHaveChanged($path, $user);
+		$this->usingServer($previousServer);
 	}
 
 	/**
