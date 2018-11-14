@@ -499,6 +499,11 @@ class OwncloudPage extends Page {
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
+		if ($currentTime > $end) {
+			$message = "INFORMATION: timed out waiting for ajax calls to start";
+			echo $message;
+			\error_log($message);
+		}
 	}
 
 	/**
