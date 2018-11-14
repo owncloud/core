@@ -2134,6 +2134,186 @@ trait BasicStructure {
 	}
 
 	/**
+	 *
+	 * @param string $shouldOrNot
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function crud1($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		} else {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param string $shouldOrNot
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function crud2($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		} else {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param string $shouldOrNot
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function crud3($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		} else {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param string $shouldOrNot
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function crud4($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		} else {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param string $shouldOrNot
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function crud5($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		} else {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param string $shouldOrNot
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function crud6($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		} else {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param string $shouldOrNot
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function crud7($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		} else {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param string $shouldOrNot
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function crud8($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		} else {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param string $shouldOrNot
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function crud9($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		} else {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		}
+	}
+
+	/**
 	 * @BeforeScenario @local_storage
 	 *
 	 * @return void

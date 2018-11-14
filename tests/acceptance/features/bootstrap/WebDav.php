@@ -3118,6 +3118,303 @@ trait WebDav {
 	}
 
 	/**
+	 * parses a PROPFIND response from $this->response into xml
+	 * and searches for a given filename in the response list
+	 *
+	 * @param string $user
+	 * @param string $fileNameToSearch
+	 *
+	 * @return string or false if file could not be found
+	 */
+	public function zcrud1($user, $fileNameToSearch) {
+		//if we are using that step the second time in a scenario e.g. 'But ... should not'
+		//then don't parse the result again, because the result in a ResponseInterface
+		if (empty($this->responseXml)) {
+			$this->parseResponseIntoXml();
+		}
+		$multistatusResults = $this->responseXml["value"];
+		if ($multistatusResults !== null) {
+			foreach ($multistatusResults as $multistatusResult) {
+				$filePath = $multistatusResult['value'][0]['value'];
+				$fullWebDavPath = \ltrim(
+					$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
+					"/"
+				);
+				$fileName = \str_replace($fullWebDavPath, "", $filePath);
+				$fileName = \rawurldecode($fileName);
+				if ($fileName === $fileNameToSearch) {
+					return $multistatusResult;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * parses a PROPFIND response from $this->response into xml
+	 * and searches for a given filename in the response list
+	 *
+	 * @param string $user
+	 * @param string $fileNameToSearch
+	 *
+	 * @return string or false if file could not be found
+	 */
+	public function zcrud2($user, $fileNameToSearch) {
+		//if we are using that step the second time in a scenario e.g. 'But ... should not'
+		//then don't parse the result again, because the result in a ResponseInterface
+		if (empty($this->responseXml)) {
+			$this->parseResponseIntoXml();
+		}
+		$multistatusResults = $this->responseXml["value"];
+		if ($multistatusResults !== null) {
+			foreach ($multistatusResults as $multistatusResult) {
+				$filePath = $multistatusResult['value'][0]['value'];
+				$fullWebDavPath = \ltrim(
+					$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
+					"/"
+				);
+				$fileName = \str_replace($fullWebDavPath, "", $filePath);
+				$fileName = \rawurldecode($fileName);
+				if ($fileName === $fileNameToSearch) {
+					return $multistatusResult;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * parses a PROPFIND response from $this->response into xml
+	 * and searches for a given filename in the response list
+	 *
+	 * @param string $user
+	 * @param string $fileNameToSearch
+	 *
+	 * @return string or false if file could not be found
+	 */
+	public function zcrud3($user, $fileNameToSearch) {
+		//if we are using that step the second time in a scenario e.g. 'But ... should not'
+		//then don't parse the result again, because the result in a ResponseInterface
+		if (empty($this->responseXml)) {
+			$this->parseResponseIntoXml();
+		}
+		$multistatusResults = $this->responseXml["value"];
+		if ($multistatusResults !== null) {
+			foreach ($multistatusResults as $multistatusResult) {
+				$filePath = $multistatusResult['value'][0]['value'];
+				$fullWebDavPath = \ltrim(
+					$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
+					"/"
+				);
+				$fileName = \str_replace($fullWebDavPath, "", $filePath);
+				$fileName = \rawurldecode($fileName);
+				if ($fileName === $fileNameToSearch) {
+					return $multistatusResult;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * parses a PROPFIND response from $this->response into xml
+	 * and searches for a given filename in the response list
+	 *
+	 * @param string $user
+	 * @param string $fileNameToSearch
+	 *
+	 * @return string or false if file could not be found
+	 */
+	public function zcrud4($user, $fileNameToSearch) {
+		//if we are using that step the second time in a scenario e.g. 'But ... should not'
+		//then don't parse the result again, because the result in a ResponseInterface
+		if (empty($this->responseXml)) {
+			$this->parseResponseIntoXml();
+		}
+		$multistatusResults = $this->responseXml["value"];
+		if ($multistatusResults !== null) {
+			foreach ($multistatusResults as $multistatusResult) {
+				$filePath = $multistatusResult['value'][0]['value'];
+				$fullWebDavPath = \ltrim(
+					$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
+					"/"
+				);
+				$fileName = \str_replace($fullWebDavPath, "", $filePath);
+				$fileName = \rawurldecode($fileName);
+				if ($fileName === $fileNameToSearch) {
+					return $multistatusResult;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * parses a PROPFIND response from $this->response into xml
+	 * and searches for a given filename in the response list
+	 *
+	 * @param string $user
+	 * @param string $fileNameToSearch
+	 *
+	 * @return string or false if file could not be found
+	 */
+	public function zcrud5($user, $fileNameToSearch) {
+		//if we are using that step the second time in a scenario e.g. 'But ... should not'
+		//then don't parse the result again, because the result in a ResponseInterface
+		if (empty($this->responseXml)) {
+			$this->parseResponseIntoXml();
+		}
+		$multistatusResults = $this->responseXml["value"];
+		if ($multistatusResults !== null) {
+			foreach ($multistatusResults as $multistatusResult) {
+				$filePath = $multistatusResult['value'][0]['value'];
+				$fullWebDavPath = \ltrim(
+					$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
+					"/"
+				);
+				$fileName = \str_replace($fullWebDavPath, "", $filePath);
+				$fileName = \rawurldecode($fileName);
+				if ($fileName === $fileNameToSearch) {
+					return $multistatusResult;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * parses a PROPFIND response from $this->response into xml
+	 * and searches for a given filename in the response list
+	 *
+	 * @param string $user
+	 * @param string $fileNameToSearch
+	 *
+	 * @return string or false if file could not be found
+	 */
+	public function zcrud6($user, $fileNameToSearch) {
+		//if we are using that step the second time in a scenario e.g. 'But ... should not'
+		//then don't parse the result again, because the result in a ResponseInterface
+		if (empty($this->responseXml)) {
+			$this->parseResponseIntoXml();
+		}
+		$multistatusResults = $this->responseXml["value"];
+		if ($multistatusResults !== null) {
+			foreach ($multistatusResults as $multistatusResult) {
+				$filePath = $multistatusResult['value'][0]['value'];
+				$fullWebDavPath = \ltrim(
+					$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
+					"/"
+				);
+				$fileName = \str_replace($fullWebDavPath, "", $filePath);
+				$fileName = \rawurldecode($fileName);
+				if ($fileName === $fileNameToSearch) {
+					return $multistatusResult;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * parses a PROPFIND response from $this->response into xml
+	 * and searches for a given filename in the response list
+	 *
+	 * @param string $user
+	 * @param string $fileNameToSearch
+	 *
+	 * @return string or false if file could not be found
+	 */
+	public function zcrud7($user, $fileNameToSearch) {
+		//if we are using that step the second time in a scenario e.g. 'But ... should not'
+		//then don't parse the result again, because the result in a ResponseInterface
+		if (empty($this->responseXml)) {
+			$this->parseResponseIntoXml();
+		}
+		$multistatusResults = $this->responseXml["value"];
+		if ($multistatusResults !== null) {
+			foreach ($multistatusResults as $multistatusResult) {
+				$filePath = $multistatusResult['value'][0]['value'];
+				$fullWebDavPath = \ltrim(
+					$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
+					"/"
+				);
+				$fileName = \str_replace($fullWebDavPath, "", $filePath);
+				$fileName = \rawurldecode($fileName);
+				if ($fileName === $fileNameToSearch) {
+					return $multistatusResult;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * parses a PROPFIND response from $this->response into xml
+	 * and searches for a given filename in the response list
+	 *
+	 * @param string $user
+	 * @param string $fileNameToSearch
+	 *
+	 * @return string or false if file could not be found
+	 */
+	public function zcrud8($user, $fileNameToSearch) {
+		//if we are using that step the second time in a scenario e.g. 'But ... should not'
+		//then don't parse the result again, because the result in a ResponseInterface
+		if (empty($this->responseXml)) {
+			$this->parseResponseIntoXml();
+		}
+		$multistatusResults = $this->responseXml["value"];
+		if ($multistatusResults !== null) {
+			foreach ($multistatusResults as $multistatusResult) {
+				$filePath = $multistatusResult['value'][0]['value'];
+				$fullWebDavPath = \ltrim(
+					$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
+					"/"
+				);
+				$fileName = \str_replace($fullWebDavPath, "", $filePath);
+				$fileName = \rawurldecode($fileName);
+				if ($fileName === $fileNameToSearch) {
+					return $multistatusResult;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * parses a PROPFIND response from $this->response into xml
+	 * and searches for a given filename in the response list
+	 *
+	 * @param string $user
+	 * @param string $fileNameToSearch
+	 *
+	 * @return string or false if file could not be found
+	 */
+	public function zcrud9($user, $fileNameToSearch) {
+		//if we are using that step the second time in a scenario e.g. 'But ... should not'
+		//then don't parse the result again, because the result in a ResponseInterface
+		if (empty($this->responseXml)) {
+			$this->parseResponseIntoXml();
+		}
+		$multistatusResults = $this->responseXml["value"];
+		if ($multistatusResults !== null) {
+			foreach ($multistatusResults as $multistatusResult) {
+				$filePath = $multistatusResult['value'][0]['value'];
+				$fullWebDavPath = \ltrim(
+					$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
+					"/"
+				);
+				$fileName = \str_replace($fullWebDavPath, "", $filePath);
+				$fileName = \rawurldecode($fileName);
+				if ($fileName === $fileNameToSearch) {
+					return $multistatusResult;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * reset settings if they were set in the scenario
 	 *
 	 * @AfterScenario
