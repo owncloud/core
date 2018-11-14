@@ -437,15 +437,15 @@ $CONFIG = array(
 /**
  * To have clean URLs without `/index.php` this parameter needs to be configured.
  *
- * This parameter will be written as "RewriteBase" on update and installation of
+ * This parameter will be written as `RewriteBase` on update and installation of
  * ownCloud to your `.htaccess` file. While this value is often simply the URL
  * path of the ownCloud installation it cannot be set automatically properly in
  * every scenario and needs thus some manual configuration.
  *
  * In a standard Apache setup this usually equals the folder that ownCloud is
- * accessible at. So if ownCloud is accessible via "https://mycloud.org/owncloud"
- * the correct value would most likely be "/owncloud". If ownCloud is running
- * under "https://mycloud.org/" then it would be "/".
+ * accessible at. So if ownCloud is accessible via `https://mycloud.org/owncloud`
+ * the correct value would most likely be `/owncloud`. If ownCloud is running
+ * under `https://mycloud.org/` then it would be `/`.
  *
  * Note that the above rule is not valid in every case, as there are some rare setup
  * cases where this may not apply. However, to avoid any update problems this
@@ -487,7 +487,7 @@ $CONFIG = array(
  * to be deleted.
  * Both minimum and maximum times can be set together to explicitly define
  * file and folder deletion. For migration purposes, this setting is installed
- * initially set to "auto", which is equivalent to the default setting in
+ * initially set to `auto`, which is equivalent to the default setting in
  * ownCloud 8.1 and before.
  *
  * Available values:
@@ -1122,7 +1122,7 @@ $CONFIG = array(
  * https://dev.mysql.com/doc/refman/5.7/en/charset-unicode-utf8mb4.html
  * https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_large_prefix
  * https://mariadb.com/kb/en/mariadb/xtradbinnodb-server-system-variables/#innodb_large_prefix
- * http://www.tocker.ca/2013/10/31/benchmarking-innodb-page-compression-performance.html
+ * http://www.tocker.ca/benchmarking-innodb-page-compression-performance.html
  * http://mechanics.flite.com/blog/2014/07/29/using-innodb-large-prefix-to-avoid-error-1071/
  */
 'mysql.utf8mb4' => false,
