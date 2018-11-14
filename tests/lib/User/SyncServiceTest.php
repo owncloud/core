@@ -273,10 +273,11 @@ class SyncServiceTest extends TestCase {
 		$account->expects($this->once())->method('getState')->willReturn(false);
 		$account->expects($this->exactly(2))->method('getUserId')->willReturn('test');
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$response = static::invokePrivate($s, 'checkIfAccountReappeared', [$account, $backend, $backendClass]);
-		$this->assertInternalType('array', $response);
-		$this->assertCount(0, $response[0]);
-		$this->assertCount(1, $response[1]);
+		$removed = [];
+		$reappeared = [];
+		static::invokePrivate($s, 'checkIfAccountReappeared', [$account, &$removed, &$reappeared, $backend, $backendClass]);
+		$this->assertCount(0, $removed);
+		$this->assertCount(1, $reappeared);
 	}
 
 	/**
@@ -292,9 +293,10 @@ class SyncServiceTest extends TestCase {
 		$account->expects($this->never())->method('getState')->willReturn(false);
 		$account->expects($this->exactly(2))->method('getUserId')->willReturn('test');
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$response = static::invokePrivate($s, 'checkIfAccountReappeared', [$account, $backend, $backendClass]);
-		$this->assertInternalType('array', $response);
-		$this->assertCount(1, $response[0]);
-		$this->assertCount(0, $response[1]);
+		$removed = [];
+		$reappeared = [];
+		static::invokePrivate($s, 'checkIfAccountReappeared', [$account, &$removed, &$reappeared, $backend, $backendClass]);
+		$this->assertCount(1, $removed);
+		$this->assertCount(0, $reappeared);
 	}
 }
