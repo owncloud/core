@@ -80,8 +80,6 @@
     "Report a bug" : "Hibabejelentés",
     "Show description …" : "Leírás megjelenítése ...",
     "Hide description …" : "Leírás elrejtése ...",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Ennek az alkalmazásnak nincs minimális ownCloud verzió megadva. Ez hibát okoz majd az ownCloud 11-es és későbbi verziókban.",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Ennek az alkalmazásnak nincs maximális ownCloud verzió megadva. Ez hibát okoz majd az ownCloud 11-es és későbbi verziókban.",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Ezt az applikációt nem lehet telepíteni, mert a következő függőségek hiányoznak:",
     "Enable only for specific groups" : "Csak bizonyos csoportok számára tegyük elérhetővé",
     "Uninstall App" : "Alkalmazás eltávolítása",

@@ -78,8 +78,6 @@
     "Report a bug" : "Reportar un fallu",
     "Show description …" : "Amosar descripción ...",
     "Hide description …" : "Anubrir descripción ...",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Esta aplicación nun tien nenguna versión mínima ownCloud asignada. Esti va ser un fallu en ownCloud 11 y posteriores.",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Esta aplicación nun tien nenguna versión másica ownCloud asignada. Esti va ser un fallu en ownCloud 11 y posteriores.",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Esta aplicación non puede instalase por cuenta que les siguientes dependencies nun se cumplen:",
     "Enable only for specific groups" : "Habilitar namái pa grupos específicos",
     "Uninstall App" : "Desinstalar aplicación",

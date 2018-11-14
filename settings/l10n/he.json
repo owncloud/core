@@ -88,8 +88,6 @@
     "Report a bug" : "דיווח על באג",
     "Show description …" : "הצגת תיאור ...",
     "Hide description …" : "הסתרת תיאור ...",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "ליישום זה לא הוקצתה גרסה מינמלית של ownCloud. מצב זה יהיה שגוי בגרסה 11 או מאוחרת יותר של ownCloud.",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "ליישום זה לא הוקצתה גרסה מקסימלית של ownCloud. מצב זה יהיה שגוי בגרסה 11 או מאוחרת יותר של ownCloud.",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "לא ניתן להתקין את יישום זה כיוון שייחסי התלות הבאים לא התקיימו:",
     "Enable only for specific groups" : "אפשר רק לקבוצות מסויימות",
     "Uninstall App" : "הסרת יישום",

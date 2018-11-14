@@ -90,8 +90,6 @@ OC.L10N.register(
     "Report a bug" : "Signaler un bogue",
     "Show description …" : "Afficher la description...",
     "Hide description …" : "Masquer la description",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Cette app ne spécifie pas de version d'ownCloud minimale requise. Cela provoquera une erreur dans ownCloud 11+",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Cette app ne spécifie pas de version d'ownCloud maximale requise. Cela provoquera une erreur dans ownCloud 11+",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Cette application ne peut être installée à cause de ces dépendances non satisfaites :",
     "Enable only for specific groups" : "Activer uniquement pour certains groupes",
     "Uninstall App" : "Désinstaller l'application",

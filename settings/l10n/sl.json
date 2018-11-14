@@ -82,8 +82,6 @@
     "Report a bug" : "Pošlji poročilo o hrošču",
     "Show description …" : "Pokaži opis ...",
     "Hide description …" : "Skrij opis ...",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Program nima določene najstarejše podprte različice oblaka ownCloud. Tovrstne napake javljajo različice ownCloud 11 in novejše.",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Program nima določene najnovejše podprte različice oblaka ownCloud. Tovrstne napake javljajo različice ownCloud 11 in novejše.",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Programa ni mogoče namestiti zaradi nerešenih odvisnosti:",
     "Enable only for specific groups" : "Omogoči le za posamezne skupine",
     "Uninstall App" : "Odstrani program",

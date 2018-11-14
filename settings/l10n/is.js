@@ -92,8 +92,6 @@ OC.L10N.register(
     "Report a bug" : "Tilkynna um villu",
     "Show description …" : "Birta lýsingu …",
     "Hide description …" : "Fela lýsingu …",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Þetta vorrit er ekki með tiltekna neina lágmarksútgáfu ownCloud. Þetta mun gefa villu í ownCloud 11 og nýrri.",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Þetta vorrit er ekki með tiltekna neina hámarksútgáfu ownCloud. Þetta mun gefa villu í ownCloud 11 og nýrri.",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Ekki var hægt að setja upp forritið þar sem eftirfarandi kerfiskröfur eru ekki uppfylltar:",
     "Enable only for specific groups" : "Einungis fyrir sérstaka hópa",
     "Uninstall App" : "Fjarlægja/Henda út forriti",

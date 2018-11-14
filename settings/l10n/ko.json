@@ -88,8 +88,6 @@
     "Report a bug" : "버그 보고",
     "Show description …" : "설명 보기 …",
     "Hide description …" : "설명 숨기기 …",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "이 앱 개발자가 최대 ownCloud 버전을 지정하지 않았습니다. ownCloud 11 이후 버전에서 오류가 발생할 것입니다.",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "이 앱 개발자가 최소 ownCloud 버전을 지정하지 않았습니다. ownCloud 11 이후 버전에서 오류가 발생할 것입니다.",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "다음 의존성을 만족할 수 없기 때문에 이 앱을 설치할 수 없습니다:",
     "Enable only for specific groups" : "특정 그룹에만 허용",
     "Uninstall App" : "앱 삭제",

@@ -91,8 +91,6 @@
     "Report a bug" : "Rapporter en feil",
     "Show description …" : "Vis beskrivelse …",
     "Hide description …" : "Skjul beskrivelse …",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Denne appen har ingen minimumsversjon av ownCloud. Dette vil være en feil i ownCloud 11 og senere.",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Denne appen har ingen maksimumsversjon av ownCloud. Dette vil være en feil i ownCloud 11 og senere.",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Denne appen kan ikke installeres fordi følgende avhengigheter ikke er tilfredsstilt:",
     "Enable only for specific groups" : "Aktiver kun for visse grupper",
     "Uninstall App" : "Avinstaller app",
