@@ -245,6 +245,23 @@ class FilesPageCRUD extends FilesPageBasic {
 	}
 
 	/**
+	 * finds the element of the button to create a new file/folder
+	 *
+	 * @return NodeElement
+	 */
+	public function findNewFileFolderButton() {
+		$newButtonElement = $this->find("xpath", $this->newFileFolderButtonXpath);
+		
+		$this->assertElementNotNull(
+			$newButtonElement,
+			__METHOD__ .
+			" xpath $this->newFileFolderButtonXpath " .
+			"could not find new file-folder button"
+		);
+		return $newButtonElement;
+	}
+
+	/**
 	 * create a folder with the given name.
 	 * If name is not given a random one is chosen
 	 *
@@ -262,16 +279,7 @@ class FilesPageCRUD extends FilesPageBasic {
 		if ($name === null) {
 			$name = \substr(\str_shuffle($this->strForNormalFileName), 0, 8);
 		}
-		
-		$newButtonElement = $this->find("xpath", $this->newFileFolderButtonXpath);
-		
-		$this->assertElementNotNull(
-			$newButtonElement,
-			__METHOD__ .
-			" xpath $this->newFileFolderButtonXpath " .
-			"could not find new file-folder button"
-		);
-		
+		$newButtonElement = $this->findNewFileFolderButton();
 		$newButtonElement->click();
 		
 		$newFolderButtonElement = $this->find("xpath", $this->newFolderButtonXpath);
