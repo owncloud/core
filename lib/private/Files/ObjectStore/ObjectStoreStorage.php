@@ -154,6 +154,11 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return $this->id;
 	}
 
+	public function getBucket() {
+		return $this->objectStore->getStorageId();
+	}
+
+	/** {@inheritdoc} */
 	public function rmdir($path) {
 		$path = $this->normalizePath($path);
 
@@ -332,7 +337,8 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		}
 
 		// living on different buckets?
-		if ($this->getId() !== $sourceStorage->getId()) {
+		/** @var ObjectStoreStorage $sourceStorage */
+		if ($this->getBucket() !== $sourceStorage->getBucket()) {
 			return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 		}
 
