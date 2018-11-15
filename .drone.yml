@@ -883,6 +883,16 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
+  # CLI Trashbin Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: cli
+      BEHAT_SUITE: cliTrashbin
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
   # UI Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium

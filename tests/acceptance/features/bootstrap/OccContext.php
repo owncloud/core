@@ -820,6 +820,28 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator empties the trashbin of user :user using the occ command
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theAdministratorEmptiesTheTrashbinOfUserUsingTheOccCommand($user) {
+		$this->featureContext->invokingTheCommand(
+			"trashbin:cleanup $user"
+		);
+	}
+
+	/**
+	 * @When the administrator empties the trashbin of all users using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorEmptiesTheTrashbinOfAllUsersUsingTheOccCommand() {
+		$this->theAdministratorEmptiesTheTrashbinOfUserUsingTheOccCommand('');
+	}
+
+	/**
 	 * @Then system config key :key should have value :value
 	 *
 	 * @param string $key
