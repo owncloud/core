@@ -23,7 +23,6 @@
 namespace Page;
 
 use Behat\Mink\Session;
-use Page\FilesPageElement\DetailsDialog;
 use Page\FilesPageElement\SharingDialog;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
@@ -153,16 +152,6 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function uploadFile(Session $session, $name) {
 		$this->filesPageCRUDFunctions->uploadFile($session, $name);
-	}
-
-	/**
-	 * gets a details dialog object
-	 *
-	 * @throws ElementNotFoundException
-	 * @return DetailsDialog
-	 */
-	public function getDetailsDialog() {
-		return $this->getPage("FilesPageElement\\DetailsDialog");
 	}
 
 	/**

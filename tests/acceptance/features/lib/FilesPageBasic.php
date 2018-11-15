@@ -24,6 +24,7 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Page\FilesPageElement\DetailsDialog;
 use Page\FilesPageElement\FileActionsMenu;
 use Page\FilesPageElement\FileRow;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -345,6 +346,16 @@ abstract class FilesPageBasic extends OwncloudPage {
 			$fileRow->clickFileActionButton();
 		} catch (\Exception $e) {
 		}
+	}
+
+	/**
+	 * gets a details dialog object
+	 *
+	 * @throws ElementNotFoundException
+	 * @return DetailsDialog
+	 */
+	public function getDetailsDialog() {
+		return $this->getPage("FilesPageElement\\DetailsDialog");
 	}
 
 	/**
