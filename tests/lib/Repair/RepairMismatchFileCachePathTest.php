@@ -216,6 +216,15 @@ class RepairMismatchFileCachePathTest extends TestCase {
 			->method('getSystemValue')
 			->with('version', '0.0.0')
 			->willReturn('10.0.3');
+
+		// test report command first
+		$this->repair->setCountOnly(true);
+		$outputMock->expects($this->at(0))
+			->method('warning')
+			->with($this->logicalAnd($this->stringContains('with invalid path values'), $this->stringContains($sourceStorageId)));
+		$this->repair->run($outputMock);
+		$this->repair->setCountOnly(false);
+
 		if ($repairStoragesOrder === null) {
 			// no storage selected, full repair
 			$this->repair->setStorageNumericId(null);
@@ -552,6 +561,13 @@ class RepairMismatchFileCachePathTest extends TestCase {
 			->method('getSystemValue')
 			->with('version', '0.0.0')
 			->willReturn('10.0.3');
+
+		$this->repair->setCountOnly(true);
+		$outputMock->expects($this->at(0))
+			->method('warning')
+			->with($this->logicalAnd($this->stringContains('parent id does not point'), $this->stringContains($storageId)));
+		$this->repair->run($outputMock);
+		$this->repair->setCountOnly(false);
 		$this->repair->run($outputMock);
 
 		// wrong parent root reparented to actual root
