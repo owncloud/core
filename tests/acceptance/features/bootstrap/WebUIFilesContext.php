@@ -1956,17 +1956,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the :tabName tab in details panel should be visible
-	 *
-	 * @param string $tabName
-	 *
-	 * @return void
-	 */
-	public function theTabInDetailsPanelShouldBeVisible($tabName) {
-		PHPUnit_Framework_Assert::assertTrue($this->filesPage->getDetailsDialog()->isVisible($tabName));
-	}
-
-	/**
 	 * @When the user switches to :tabName tab in details panel using the webUI
 	 *
 	 * @param string $tabName
