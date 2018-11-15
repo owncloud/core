@@ -35,7 +35,7 @@ Feature: add users
    Scenario: administrator should be able to see last login of a user when the user is initialized
     When the administrator enables the setting "Show last log in" in the User Management page using the webUI
     And the administrator logs out of the webUI
-    And the user logs in with username "user1" and password "%regular%" using the webUI
+    And user "user1" logs in using the webUI
     And the user logs out of the webUI
     And the administrator logs in using the webUI
     And the administrator browses to the users page

@@ -17,5 +17,5 @@ Feature: delete users
     And the deleted user "user1" tries to login using the password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user has browsed to the login page
-    And the user logs in with username "user2" and password "%regular%" using the webUI
+    And user "user2" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
