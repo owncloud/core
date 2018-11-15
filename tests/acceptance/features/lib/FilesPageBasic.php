@@ -50,6 +50,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	protected $selectAllFilesCheckboxXpath = "//label[@for='select_all_files']";
 	protected $appSettingsContentId = "app-settings-content";
 	protected $styleOfCheckboxWhenVisible = "display: block;";
+	protected $detailsDialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
 
 	/**
 	 * @return string
@@ -355,7 +356,21 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @return DetailsDialog
 	 */
 	public function getDetailsDialog() {
-		return $this->getPage("FilesPageElement\\DetailsDialog");
+		$detailsDialogElement = $this->find("xpath", $this->detailsDialogXpath);
+		$this->assertElementNotNull(
+			$detailsDialogElement,
+			__METHOD__ .
+			" xpath: $this->detailsDialogXpath " .
+			" could not find Details Dialog"
+		);
+
+		/**
+		 *
+		 * @var DetailsDialog $dialog
+		 */
+		$dialog = $this->getPage("FilesPageElement\\DetailsDialog");
+		$dialog->setElement($detailsDialogElement);
+		return $dialog;
 	}
 
 	/**
