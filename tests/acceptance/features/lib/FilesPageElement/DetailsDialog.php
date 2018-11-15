@@ -27,6 +27,7 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use WebDriver\Exception\StaleElementReference;
 
 /**
  * The Details Dialog
@@ -38,8 +39,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @var string $path
 	 */
 	protected $path = '/index.php/apps/files/';
-	private $detailsDialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
-	private $detailsDialogCloseXpath = "//div[@id='app-sidebar']//*[@class='close icon-close']";
+	private $detailsDialogCloseXpath = "//*[@class='close icon-close']";
 	private $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
 	private $thumbnailFromContainerXpath = "/a";
 	private $detailsTabId = [
@@ -68,6 +68,29 @@ class DetailsDialog extends OwncloudPage {
 	private $lastVersionRevertButton = "//div[@id='versionsTabView']//ul[@class='versions']//li[1]/div/a";
 
 	/**
+	 *
+	 * @var NodeElement
+	 */
+	private $detailsDialogElement;
+
+	/**
+	 * sets the NodeElement for the current dialog
+	 * a little bit like __construct() but as we access this "sub-page-object"
+	 * from an other Page Object or a Context file by
+	 * $this->getPage("FilesPageElement\\SharingDialogElement\\EditPublicLinkPopup")
+	 * there is no real __construct() that can take arguments
+	 * In the rest of the class we can use $this->detailsDialogElement to find
+	 * other elements to make sure that we are searching in the right place
+	 *
+	 * @param NodeElement $detailsDialogElement
+	 *
+	 * @return void
+	 */
+	public function setElement(NodeElement $detailsDialogElement) {
+		$this->detailsDialogElement = $detailsDialogElement;
+	}
+
+	/**
 	 * Lookup the id for the requested details tab.
 	 * If the id is not known, then return the passed-in parameter as the id.
 	 *
@@ -94,7 +117,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return NodeElement
 	 */
 	private function findDetailsTab($tabName) {
-		$tab = $this->findById(
+		$tab = $this->detailsDialogElement->findById(
 			$this->getDetailsTabId($tabName)
 		);
 		$this->assertElementNotNull(
@@ -122,7 +145,9 @@ class DetailsDialog extends OwncloudPage {
 	 * @return string
 	 */
 	public function getVersionsList() {
-		$versionsList = $this->find("xpath", $this->versionsListXpath);
+		$versionsList = $this->detailsDialogElement->find(
+			"xpath", $this->versionsListXpath
+		);
 		$this->assertElementNotNull(
 			$versionsList,
 			__METHOD__ .
@@ -138,7 +163,9 @@ class DetailsDialog extends OwncloudPage {
 	 * @return void
 	 */
 	public function getLastVersionRevertButton() {
-		$btn = $this->find("xpath", $this->lastVersionRevertButton);
+		$btn = $this->detailsDialogElement->find(
+			"xpath", $this->lastVersionRevertButton
+		);
 		$this->assertElementNotNull(
 			$btn,
 			__METHOD__ .
@@ -159,7 +186,7 @@ class DetailsDialog extends OwncloudPage {
 	public function changeDetailsTab($tabName) {
 		$tabId = $this->getDetailsTabId($tabName);
 		$tabSwitchXpath = "//li[@data-tabid='" . $tabId . "']";
-		$tabSwitch = $this->find("xpath", $tabSwitchXpath);
+		$tabSwitch = $this->detailsDialogElement->find("xpath", $tabSwitchXpath);
 		$this->assertElementNotNull(
 			$tabSwitch,
 			__METHOD__ .
@@ -176,13 +203,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return bool
 	 */
 	public function isDialogVisible() {
-		try {
-			$dialog = $this->find("xpath", $this->detailsDialogXpath);
-			$visible = $dialog !== null;
-		} catch (ElementNotFoundException $e) {
-			$visible = false;
-		}
-		return $visible;
+		return $this->detailsDialogElement->isVisible();
 	}
 
 	/**
@@ -191,10 +212,9 @@ class DetailsDialog extends OwncloudPage {
 	 * @return NodeElement[]
 	 */
 	public function getCommentList() {
-		$this->waitTillElementIsNotNull($this->detailsDialogXpath);
-		$dialog = $this->find("xpath", $this->detailsDialogXpath);
-		$commentList = $dialog->findAll("xpath", $this->commentListXpath);
-		return  $commentList;
+		return $this->detailsDialogElement->findAll(
+			"xpath", $this->commentListXpath
+		);
 	}
 	/**
 	 * check if a comment with given text is listed in the webUI
@@ -225,9 +245,25 @@ class DetailsDialog extends OwncloudPage {
 	 * @return void
 	 */
 	public function addComment($content) {
-		$commentInput = $this->find("xpath", $this->commentInputXpath);
+		$commentInput = $this->detailsDialogElement->find(
+			"xpath", $this->commentInputXpath
+		);
+		$this->assertElementNotNull(
+			$commentInput,
+			__METHOD__ .
+			" xpath: $this->commentInputXpath" .
+			"could not find comment input field"
+		);
 		$commentInput->setValue($content);
-		$postButton = $this->find("xpath", $this->commentPostXpath);
+		$postButton = $this->detailsDialogElement->find(
+			"xpath", $this->commentPostXpath
+		);
+		$this->assertElementNotNull(
+			$commentInput,
+			__METHOD__ .
+			" xpath: $this->commentPostXpath" .
+			"could not find comment post button"
+		);
 		$postButton->focus();
 		$postButton->click();
 		$this->waitTillElementIsNotNull($this->getCommentXpath($content));
@@ -242,19 +278,46 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 */
 	public function deleteComment($content) {
-		$commentList = $this->find("xpath", $this->getCommentXpath($content));
+		$commentList = $this->detailsDialogElement->find(
+			"xpath", $this->getCommentXpath($content)
+		);
+		$this->assertElementNotNull(
+			$commentList,
+			__METHOD__ .
+			" could not find comment with content $content"
+		);
 		$this->waitTillElementIsNotNull($this->commentListXpath);
 
 		$this->waitTillElementIsNotNull($this->commentEditButtonXpath);
 		$commentEditButton = $commentList->getParent()->find("xpath", $this->commentEditButtonXpath);
+		$this->assertElementNotNull(
+			$commentEditButton,
+			__METHOD__ .
+			" xpath: $this->commentEditButtonXpath" .
+			"could not find comment edit button"
+		);
 		$commentEditButton->focus();
 		$commentEditButton->click();
 
 		$this->waitTillElementIsNotNull($this->commentEditFormXpath);
-		$commentEditForm = $this->find("xpath", $this->commentEditFormXpath);
+		$commentEditForm = $this->detailsDialogElement->find("xpath", $this->commentEditFormXpath);
+		$this->assertElementNotNull(
+			$commentEditForm,
+			__METHOD__ .
+			" xpath: $this->commentEditFormXpath" .
+			"could not find comment edit form"
+		);
 		$commentEditForm->focus();
 
-		$commentDeleteButton = $commentEditForm->find("xpath", $this->commentDeleteButtonXpath);
+		$commentDeleteButton = $commentEditForm->find(
+			"xpath", $this->commentDeleteButtonXpath
+		);
+		$this->assertElementNotNull(
+			$commentDeleteButton,
+			__METHOD__ .
+			" xpath: $this->commentDeleteButtonXpath" .
+			"could not find comment delete button"
+		);
 		$commentDeleteButton->focus();
 		$commentDeleteButton->click();
 	}
@@ -281,7 +344,9 @@ class DetailsDialog extends OwncloudPage {
 	 * @return NodeElement of the whole container holding the thumbnail
 	 */
 	public function findThumbnailContainer() {
-		$thumbnailContainer = $this->find("xpath", $this->thumbnailContainerXpath);
+		$thumbnailContainer = $this->detailsDialogElement->find(
+			"xpath", $this->thumbnailContainerXpath
+		);
 		$this->assertElementNotNull(
 			$thumbnailContainer,
 			__METHOD__ .
@@ -319,7 +384,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function insertTagNameInTheTagsField($tagName) {
-		$inputField = $this->find(
+		$inputField = $this->detailsDialogElement->find(
 			"xpath",
 			$this->tagsContainer . $this->tagsInputXpath
 		);
@@ -389,10 +454,24 @@ class DetailsDialog extends OwncloudPage {
 			if ($tag->getText() === $tagName) {
 				$tagContainer = $tag->getParent();
 				$editBtn = $tagContainer->find("xpath", $this->tagEditButtonInTagXpath);
+				$this->assertElementNotNull(
+					$editBtn,
+					__METHOD__ .
+					" xpath: $this->tagEditButtonInTagXpath" .
+					"could not find tag edit button"
+				);
 				$editBtn->focus();
 				$editBtn->click();
 
-				$deleteBtn = $this->find("xpath", $this->tagDeleteButtonInTagXpath);
+				$deleteBtn = $this->find(
+					"xpath", $this->tagDeleteButtonInTagXpath
+				);
+				$this->assertElementNotNull(
+					$deleteBtn,
+					__METHOD__ .
+					" xpath: $this->tagDeleteButtonInTagXpath" .
+					" could not find tag delete button"
+				);
 				$deleteBtn->focus();
 				$deleteBtn->click();
 			}
@@ -425,7 +504,9 @@ class DetailsDialog extends OwncloudPage {
 	 * @return void
 	 */
 	public function closeDetailsDialog() {
-		$detailsDialogCloseButton = $this->find("xpath", $this->detailsDialogCloseXpath);
+		$detailsDialogCloseButton = $this->detailsDialogElement->find(
+			"xpath", $this->detailsDialogCloseXpath
+		);
 		$this->assertElementNotNull(
 			$detailsDialogCloseButton,
 			__METHOD__ .
@@ -475,6 +556,8 @@ class DetailsDialog extends OwncloudPage {
 				}
 			} catch (ElementNotFoundException $e) {
 				// Just loop and try again if the element was not found yet.
+			} catch (StaleElementReference $e) {
+				// Just loop and try again if the element is stale.
 			}
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
@@ -482,7 +565,7 @@ class DetailsDialog extends OwncloudPage {
 
 		if ($currentTime > $end) {
 			throw new \Exception(
-				__METHOD__ . " timeout waiting for page to load"
+				__METHOD__ . " timeout waiting for the files dialog to open"
 			);
 		}
 

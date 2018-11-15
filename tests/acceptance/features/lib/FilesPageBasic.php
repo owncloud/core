@@ -24,6 +24,7 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Page\FilesPageElement\DetailsDialog;
 use Page\FilesPageElement\FileActionsMenu;
 use Page\FilesPageElement\FileRow;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -49,6 +50,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	protected $selectAllFilesCheckboxXpath = "//label[@for='select_all_files']";
 	protected $appSettingsContentId = "app-settings-content";
 	protected $styleOfCheckboxWhenVisible = "display: block;";
+	protected $detailsDialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
 
 	/**
 	 * @return string
@@ -345,6 +347,30 @@ abstract class FilesPageBasic extends OwncloudPage {
 			$fileRow->clickFileActionButton();
 		} catch (\Exception $e) {
 		}
+	}
+
+	/**
+	 * gets a details dialog object
+	 *
+	 * @throws ElementNotFoundException
+	 * @return DetailsDialog
+	 */
+	public function getDetailsDialog() {
+		$detailsDialogElement = $this->find("xpath", $this->detailsDialogXpath);
+		$this->assertElementNotNull(
+			$detailsDialogElement,
+			__METHOD__ .
+			" xpath: $this->detailsDialogXpath " .
+			" could not find Details Dialog"
+		);
+
+		/**
+		 *
+		 * @var DetailsDialog $dialog
+		 */
+		$dialog = $this->getPage("FilesPageElement\\DetailsDialog");
+		$dialog->setElement($detailsDialogElement);
+		return $dialog;
 	}
 
 	/**
