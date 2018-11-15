@@ -284,7 +284,7 @@ class DetailsDialog extends OwncloudPage {
 		$this->assertElementNotNull(
 			$commentList,
 			__METHOD__ .
-			" could not find comment with conteht $content"
+			" could not find comment with content $content"
 		);
 		$this->waitTillElementIsNotNull($this->commentListXpath);
 
@@ -316,7 +316,7 @@ class DetailsDialog extends OwncloudPage {
 			$commentDeleteButton,
 			__METHOD__ .
 			" xpath: $this->commentDeleteButtonXpath" .
-			"could not find comment delete button form"
+			"could not find comment delete button"
 		);
 		$commentDeleteButton->focus();
 		$commentDeleteButton->click();
@@ -470,7 +470,7 @@ class DetailsDialog extends OwncloudPage {
 					$deleteBtn,
 					__METHOD__ .
 					" xpath: $this->tagDeleteButtonInTagXpath" .
-					" could not find tag edit button"
+					" could not find tag delete button"
 				);
 				$deleteBtn->focus();
 				$deleteBtn->click();

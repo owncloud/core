@@ -285,7 +285,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theThumbnailShouldBeVisibleInTheDetailsPanel() {
 		$detailsDialog = $this->filesPage->getDetailsDialog();
-		$style = $detailsDialog->findThumbnail()->getAttribute("style");
+		$thumbnail = $detailsDialog->findThumbnail();
+		PHPUnit_Framework_Assert::assertTrue(
+			$thumbnail->isVisible(),
+			"thumbnail is not visible"
+		);
+		$style = $thumbnail->getAttribute("style");
 		PHPUnit_Framework_Assert::assertNotNull(
 			$style,
 			'style attribute of details thumbnail is null'
