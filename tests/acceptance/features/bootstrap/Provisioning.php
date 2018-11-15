@@ -218,12 +218,9 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function adminCreatesUserUsingTheProvisioningApi($user) {
-		if (!$this->userExists($user)) {
-			$this->createUser(
-				$user, null, null, null, true, 'api'
-			);
-		}
-		$this->userShouldExist($user);
+		$this->createUser(
+			$user, null, null, null, true, 'api'
+		);
 	}
 
 	/**
@@ -296,10 +293,10 @@ trait Provisioning {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function adminResetsUserPasswordUsingTheProvisioningApi(
+	public function adminChangesPasswordOfUserToUsingTheProvisioningApi(
 		$user, $password
 	) {
-		$result = UserHelper::editUser(
+		$this->response = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$user,
 			'password',
@@ -307,13 +304,29 @@ trait Provisioning {
 			$this->getAdminUsername(),
 			$this->getAdminPassword()
 		);
-		if ($result->getStatusCode() !== 200) {
-			throw new \Exception(
-				"could not change password of user. "
-				. $result->getStatusCode() . " " . $result->getBody()
-			);
-		}
 	}
+
+	/**
+	 * @Given the administrator has changed the password of user :user to :password
+	 *
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function adminHasChangedPasswordOfUserTo(
+		$user, $password
+	) {
+		$this->adminChangesPasswordOfUserToUsingTheProvisioningApi(
+			$user, $password
+		);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			"could not change password of user $user"
+		);
+	}
+
 	/**
 	 * @When /^user "([^"]*)" (enables|disables) app "([^"]*)"$/
 	 *
@@ -402,6 +415,7 @@ trait Provisioning {
 	public function theAdministratorCreatesUserPasswordGroupUsingTheProvisioningApi(
 		$user, $password, $group
 	) {
+		$password = $this->getActualPassword($password);
 		$bodyTable = new TableNode(
 			[['userid', $user], ['password', $password], ['groups[]', $group]]
 		);
@@ -505,17 +519,16 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator changes the email of user "([^"]*)" to "([^"]*)" using the provisioning API$/
-	 * @Given /^the administrator has changed the email of user "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $email
 	 *
 	 * @return void
 	 */
-	public function adminChangesTheEmailOfTheUserUsingTheProvisioningApi(
+	public function adminChangesTheEmailOfUserToUsingTheProvisioningApi(
 		$user, $email
 	) {
-		$result = UserHelper::editUser(
+		$this->response = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($user),
 			'email',
@@ -524,13 +537,24 @@ trait Provisioning {
 			$this->getAdminPassword(),
 			$this->ocsApiVersion
 		);
-		$this->response = $result;
-		if ($result->getStatusCode() !== 200) {
-			throw new \Exception(
-				"could not change email of user. "
-				. $result->getStatusCode() . " " . $result->getBody()
-			);
-		}
+	}
+
+	/**
+	 * @Given /^the administrator has changed the email of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $email
+	 *
+	 * @return void
+	 */
+	public function adminHasChangedTheEmailOfUserTo($user, $email) {
+		$this->adminChangesTheEmailOfUserToUsingTheProvisioningApi(
+			$user, $email
+		);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			"could not change email of user $user"
+		);
 	}
 
 	/**
@@ -542,7 +566,7 @@ trait Provisioning {
 	 */
 	public function theAdministratorHasChangedTheirOwnEmailAddressTo($email) {
 		$admin = $this->getAdminUsername();
-		$this->adminChangesTheEmailOfTheUserUsingTheProvisioningApi($admin, $email);
+		$this->adminHasChangedTheEmailOfUserTo($admin, $email);
 	}
 
 	/**
@@ -558,7 +582,7 @@ trait Provisioning {
 	public function userChangesTheEmailOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $email
 	) {
-		$result = UserHelper::editUser(
+		$this->response = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($targetUser),
 			'email',
@@ -567,7 +591,6 @@ trait Provisioning {
 			$this->getPasswordForUser($requestingUser),
 			$this->ocsApiVersion
 		);
-		$this->response = $result;
 	}
 
 	/**
@@ -722,14 +745,13 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator changes the quota of user "([^"]*)" to "([^"]*)" using the provisioning API$/
-	 * @Given /^the administrator has changed the quota of user "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $quota
 	 *
 	 * @return void
 	 */
-	public function adminChangesTheQuotaOfTheUserUsingTheProvisioningApi(
+	public function adminChangesTheQuotaOfUserUsingTheProvisioningApi(
 		$user, $quota
 	) {
 		$result = UserHelper::editUser(
@@ -742,12 +764,26 @@ trait Provisioning {
 			$this->ocsApiVersion
 		);
 		$this->response = $result;
-		if ($result->getStatusCode() !== 200) {
-			throw new \Exception(
-				"could not change quota of user. "
-				. $result->getStatusCode() . " " . $result->getBody()
-			);
-		}
+	}
+
+	/**
+	 * @Given /^the administrator has changed the quota of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $quota
+	 *
+	 * @return void
+	 */
+	public function adminHasChangedTheQuotaOfUserTo(
+		$user, $quota
+	) {
+		$this->adminChangesTheQuotaOfUserUsingTheProvisioningApi(
+			$user, $quota
+		);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			"could not change quota of user $user"
+		);
 	}
 
 	/**
@@ -901,7 +937,6 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator deletes user "([^"]*)" using the provisioning API$/
-	 * @Given /^user "([^"]*)" has been deleted$/
 	 *
 	 * @param string $user
 	 *
@@ -909,6 +944,18 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function adminDeletesUserUsingTheProvisioningApi($user) {
+		$this->deleteTheUserUsingTheProvisioningApi($user);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has been deleted$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userHasBeenDeleted($user) {
 		if ($this->userExists($user)) {
 			$this->deleteTheUserUsingTheProvisioningApi($user);
 		}
@@ -1248,11 +1295,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function adminAddsUserToGroupUsingTheProvisioningApi($user, $group) {
-		if (!$this->userBelongsToGroup($user, $group)) {
-			$this->userHasBeenAddedToGroup($user, $group);
-		}
-
-		$this->userShouldBelongToGroup($user, $group);
+		$this->addUserToGroup($user, $group);
 	}
 
 	/**
@@ -1260,12 +1303,24 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 * @param string $group
-	 * @param string $method how to add the user to the group api|occ
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userHasBeenAddedToGroup($user, $group, $method = null) {
+	public function userHasBeenAddedToGroup($user, $group) {
+		$this->addUserToGroup($user, $group, null, true);
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $group
+	 * @param string $method how to add the user to the group api|occ
+	 * @param bool $checkResult if true, then check the status of the operation. default false.
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function addUserToGroup($user, $group, $method = null, $checkResult = false) {
 		$user = $this->getActualUsername($user);
 		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
@@ -1282,7 +1337,7 @@ trait Provisioning {
 					$this->getAdminUsername(),
 					$this->getAdminPassword()
 				);
-				if ($result->getStatusCode() !== 200) {
+				if ($checkResult && ($result->getStatusCode() !== 200)) {
 					throw new Exception(
 						"could not add user to group. "
 						. $result->getStatusCode() . " " . $result->getBody()
@@ -1291,7 +1346,7 @@ trait Provisioning {
 				break;
 			case "occ":
 				$result = SetupHelper::addUserToGroup($group, $user);
-				if ($result["code"] != 0) {
+				if ($checkResult && ($result["code"] != 0)) {
 					throw new Exception(
 						"could not add user to group. {$result['stdOut']} {$result['stdErr']}"
 					);
@@ -1314,10 +1369,11 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theAdministratorHasBeenAddedToGroup($group) {
 		$admin = $this->getAdminUsername();
-		$this->userHasBeenAddedToGroup($admin, $group);
+		$this->addUserToGroup($admin, $group, null, true);
 	}
 
 	/**
@@ -1429,7 +1485,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminTriesToSendGroupCreationRequestUsingTheAPI($group) {
-		$this->adminSendsGroupCreationRequestUsingTheAPI($group);
+		$this->adminSendsGroupCreationRequestUsingTheProvisioningApi($group);
 		$this->rememberThatGroupIsNotExpectedToExist($group);
 	}
 
@@ -1629,7 +1685,6 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator makes user "([^"]*)" a subadmin of group "([^"]*)" using the provisioning API$/
-	 * @Given /^user "([^"]*)" has been made a subadmin of group "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $group
@@ -1645,6 +1700,22 @@ trait Provisioning {
 		$this->response = HttpRequestHelper::post(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword(), null,
 			$body
+		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has been made a subadmin of group "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function userHasBeenMadeSubadminOfGroup(
+		$user, $group
+	) {
+		$this->adminMakesUserSubadminOfGroupUsingTheProvisioningApi(
+			$user, $group
 		);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
@@ -2097,7 +2168,6 @@ trait Provisioning {
 
 	/**
 	 * @When the administrator sets the quota of user :user to :quota using the provisioning API
-	 * @Given the quota of user :user has been set to :quota
 	 *
 	 * @param string $user
 	 * @param string $quota
@@ -2120,15 +2190,23 @@ trait Provisioning {
 			$body,
 			2
 		);
+	}
 
-		PHPUnit_Framework_Assert::assertEquals(
-			200, $this->response->getStatusCode()
-		);
+	/**
+	 * @Given the quota of user :user has been set to :quota
+	 *
+	 * @param string $user
+	 * @param string $quota
+	 *
+	 * @return void
+	 */
+	public function theQuotaOfUserHasBeenSetTo($user, $quota) {
+		$this->adminSetsUserQuotaToUsingTheProvisioningApi($user, $quota);
+		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
 	/**
 	 * @When the administrator gives unlimited quota to user :user using the provisioning API
-	 * @Given user :user has been given unlimited quota
 	 *
 	 * @param string $user
 	 *
@@ -2136,6 +2214,17 @@ trait Provisioning {
 	 */
 	public function adminGivesUnlimitedQuotaToUserUsingTheProvisioningApi($user) {
 		$this->adminSetsUserQuotaToUsingTheProvisioningApi($user, 'none');
+	}
+
+	/**
+	 * @Given user :user has been given unlimited quota
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userHasBeeenGivenUnlimitedQuota($user) {
+		$this->theQuotaOfUserHasBeenSetTo($user, 'none');
 	}
 
 	/**
