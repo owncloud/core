@@ -2069,7 +2069,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given user :user has added file :destination of :bytes bytes
+	 * @Given user :user has uploaded file :destination of :bytes bytes
 	 *
 	 * @param string $user
 	 * @param string $destination
@@ -2077,7 +2077,22 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userAddsAFileTo($user, $destination, $bytes) {
+	public function userHasUploadedFileToOfBytes($user, $destination, $bytes) {
+		$this->userUploadsAFileToOfBytes($user, $destination, $bytes);
+		$expectedElements = new TableNode([["$destination"]]);
+		$this->checkElementList($user, $expectedElements);
+	}
+
+	/**
+	 * @When user :user uploads file :destination of :bytes bytes
+	 *
+	 * @param string $user
+	 * @param string $destination
+	 * @param string $bytes
+	 *
+	 * @return void
+	 */
+	public function userUploadsAFileToOfBytes($user, $destination, $bytes) {
 		$filename = "filespecificSize.txt";
 		$this->createLocalFileOfSpecificSize($filename, $bytes);
 		PHPUnit_Framework_Assert::assertFileExists($this->workStorageDirLocation() . $filename);
@@ -2087,8 +2102,6 @@ trait WebDav {
 			$destination
 		);
 		$this->removeFile($this->workStorageDirLocation(), $filename);
-		$expectedElements = new TableNode([["$destination"]]);
-		$this->checkElementList($user, $expectedElements);
 	}
 
 	/**

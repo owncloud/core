@@ -49,7 +49,7 @@ Feature: get quota
   Scenario Outline: Retrieving folder quota when quota is set and a file was uploaded
     Given using <dav_version> DAV path
     And the quota of user "user0" has been set to "1 KB"
-    And user "user0" has added file "/prueba.txt" of 93 bytes
+    And user "user0" has uploaded file "/prueba.txt" of 93 bytes
     When user "user0" gets the following properties of folder "/" using the WebDAV API
       | {DAV:}quota-available-bytes |
     Then the single response should contain a property "{DAV:}quota-available-bytes" with value "577"
@@ -62,7 +62,7 @@ Feature: get quota
     Given using <dav_version> DAV path
     And user "user1" has been created
     And the quota of user "user1" has been set to "1 KB"
-    And user "user0" has added file "/user0.txt" of 93 bytes
+    And user "user0" has uploaded file "/user0.txt" of 93 bytes
     And user "user0" has shared file "user0.txt" with user "user1"
     When user "user1" gets the following properties of folder "/" using the WebDAV API
       | {DAV:}quota-available-bytes |
