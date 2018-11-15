@@ -571,6 +571,12 @@ trait Provisioning {
 	}
 
 	/**
+	 * Edit the "display name" of a user by sending the key "displayname" to the API end point.
+	 *
+	 * This is the newer and consistent key name.
+	 *
+	 * @see https://github.com/owncloud/core/pull/33040
+	 *
 	 * @When /^the administrator changes the display name of user "([^"]*)" to "([^"]*)" using the provisioning API$/
 	 * @Given /^the administrator has changed the display name of user "([^"]*)" to "([^"]*)"$/
 	 *
@@ -578,14 +584,56 @@ trait Provisioning {
 	 * @param string $displayname
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function adminChangesTheDisplayNameOfTheUserUsingTheProvisioningApi(
+	public function adminChangesTheDisplayNameOfUserUsingTheProvisioningApi(
 		$user, $displayname
+	) {
+		$this->adminChangesTheDisplayNameOfUserUsingKey(
+			$user, 'displayname', $displayname
+		);
+	}
+
+	/**
+	 * As the administrator, edit the "display name" of a user by sending the key "display" to the API end point.
+	 *
+	 * This is the older and inconsistent key name, which remains for backward-compatibility.
+	 *
+	 * @see https://github.com/owncloud/core/pull/33040
+	 *
+	 * @When /^the administrator changes the display of user "([^"]*)" to "([^"]*)" using the provisioning API$/
+	 * @Given /^the administrator has changed the display of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $displayname
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminChangesTheDisplayOfUserUsingTheProvisioningApi(
+		$user, $displayname
+	) {
+		$this->adminChangesTheDisplayNameOfUserUsingKey(
+			$user, 'display', $displayname
+		);
+	}
+
+	/**
+	 *
+	 * @param string $user
+	 * @param string $key
+	 * @param string $displayname
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminChangesTheDisplayNameOfUserUsingKey(
+		$user, $key, $displayname
 	) {
 		$result = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($user),
-			'displayname',
+			$key,
 			$displayname,
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
@@ -594,13 +642,19 @@ trait Provisioning {
 		$this->response = $result;
 		if ($result->getStatusCode() !== 200) {
 			throw new \Exception(
-				"could not change display name of user. "
+				"could not change display name of user using key $key "
 				. $result->getStatusCode() . " " . $result->getBody()
 			);
 		}
 	}
 
 	/**
+	 * As a user, edit the "display name" of a user by sending the key "displayname" to the API end point.
+	 *
+	 * This is the newer and consistent key name.
+	 *
+	 * @see https://github.com/owncloud/core/pull/33040
+	 *
 	 * @When /^user "([^"]*)" changes the display name of user "([^"]*)" to "([^"]*)" using the provisioning API$/
 	 * @Given /^user "([^"]*)" has changed the display name of user "([^"]*)" to "([^"]*)"$/
 	 *
@@ -613,10 +667,51 @@ trait Provisioning {
 	public function userChangesTheDisplayNameOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $displayName
 	) {
+		$this->userChangesTheDisplayNameOfUserUsingKey(
+			$requestingUser, $targetUser, 'displayname', $displayName
+		);
+	}
+
+	/**
+	 * As a user, edit the "display name" of a user by sending the key "display" to the API end point.
+	 *
+	 * This is the older and inconsistent key name.
+	 *
+	 * @see https://github.com/owncloud/core/pull/33040
+	 *
+	 * @When /^user "([^"]*)" changes the display of user "([^"]*)" to "([^"]*)" using the provisioning API$/
+	 * @Given /^user "([^"]*)" has changed the display of user "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 * @param string $displayName
+	 *
+	 * @return void
+	 */
+	public function userChangesTheDisplayOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser, $displayName
+	) {
+		$this->userChangesTheDisplayNameOfUserUsingKey(
+			$requestingUser, $targetUser, 'display', $displayName
+		);
+	}
+
+	/**
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 * @param string $key
+	 * @param string $displayName
+	 *
+	 * @return void
+	 */
+	public function userChangesTheDisplayNameOfUserUsingKey(
+		$requestingUser, $targetUser, $key, $displayName
+	) {
 		$result = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($targetUser),
-			'displayname',
+			$key,
 			$displayName,
 			$this->getActualUsername($requestingUser),
 			$this->getPasswordForUser($requestingUser),

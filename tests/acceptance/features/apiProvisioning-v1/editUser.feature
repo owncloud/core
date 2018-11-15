@@ -16,6 +16,13 @@ Feature: edit users
     And the email address of user "brand-new-user" should be "brand-new-user@example.com"
 
   @smokeTest
+  Scenario: the administrator can edit a user display (the API allows editing the "display name" by using the key word "display")
+    Given user "brand-new-user" has been created
+    When the administrator changes the display of user "brand-new-user" to "A New User" using the provisioning API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "100"
+    And the display name of user "brand-new-user" should be "A New User"
+
   Scenario: the administrator can edit a user display name
     Given user "brand-new-user" has been created
     When the administrator changes the display name of user "brand-new-user" to "A New User" using the provisioning API
@@ -50,7 +57,7 @@ Feature: edit users
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "subadmin" changes the quota of user "brand-new-user" to "12MB" using the provisioning API
     And user "subadmin" changes the email of user "brand-new-user" to "brand-new-user@example.com" using the provisioning API
-    And user "subadmin" changes the display name of user "brand-new-user" to "Anne Brown" using the provisioning API
+    And user "subadmin" changes the display of user "brand-new-user" to "Anne Brown" using the provisioning API
     Then the display name of user "brand-new-user" should be "Anne Brown"
     And the email address of user "brand-new-user" should be "brand-new-user@example.com"
     And the quota definition of user "brand-new-user" should be "12 MB"
