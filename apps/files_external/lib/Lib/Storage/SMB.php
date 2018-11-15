@@ -97,7 +97,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 				$this->root .= '/';
 			}
 		} else {
-			$ex = new \Exception('Invalid configuration');
+			$ex = new \Exception('Invalid configuration: '.\json_encode($loggedParams));
 			$this->leave(__FUNCTION__, $ex);
 			throw $ex;
 		}
