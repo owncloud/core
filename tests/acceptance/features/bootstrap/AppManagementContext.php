@@ -122,8 +122,8 @@ class AppManagementContext implements Context {
 	}
 
 	/**
-	 * @When the administrator gets the path for app :appId using the console
-	 * @Given the administrator has got the path for app :appId using the console
+	 * @When the administrator gets the path for app :appId using the occ command
+	 * @Given the administrator has got the path for app :appId using the occ command
 	 *
 	 * @param string $appId app id
 	 *
