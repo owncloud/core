@@ -330,7 +330,11 @@ class FilesPage extends FilesPageBasic {
 			$detailsTab = "";
 		}
 
-		$detailsDialog = $this->getDetailsDialog();
+		/**
+		 *
+		 * @var DetailsDialog $dialog
+		 */
+		$detailsDialog = $this->getPage("FilesPageElement\\DetailsDialog");
 		$fullUrl = "$fullUrl&details=" . $detailsDialog->getDetailsTabId($detailsTab);
 
 		$this->getDriver()->visit($fullUrl);

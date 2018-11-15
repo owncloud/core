@@ -39,6 +39,7 @@ use TestHelpers\DownloadHelper;
 use Page\FilesPageBasic;
 use Page\FilesPageElement\FileActionsMenu;
 use Behat\Mink\Exception\ElementException;
+use Page\FilesPageElement\DetailsDialog;
 
 require_once 'bootstrap.php';
 
@@ -1933,6 +1934,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		switch ($action_label) {
 			case "details":
 				$this->openedFileActionMenu->openDetails();
+				$this->getCurrentPageObject()
+					->getDetailsDialog()
+					->waitTillPageIsLoaded($this->getSession());
 				break;
 			case "rename":
 				$this->openedFileActionMenu->rename();
@@ -2014,7 +2018,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theCommentShouldBeListedInTheCommentsTabInDetailsDialog($text, $shouldOrNot) {
 		$should = ($shouldOrNot !== "not");
 		$text = \trim($text, $text[0]);
+		/**
+		 *
+		 * @var DetailsDialog $detailsDialog
+		 */
 		$detailsDialog = $this->getCurrentPageObject()->getDetailsDialog();
+		$detailsDialog->waitTillPageIsLoaded($this->getSession());
 		if ($should) {
 			PHPUnit_Framework_Assert::assertTrue(
 				$detailsDialog->isCommentOnUI($text),

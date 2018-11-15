@@ -475,6 +475,8 @@ class DetailsDialog extends OwncloudPage {
 				}
 			} catch (ElementNotFoundException $e) {
 				// Just loop and try again if the element was not found yet.
+			} catch (StaleElementReference $e) {
+				// Just loop and try again if the element is stale.
 			}
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
@@ -482,7 +484,7 @@ class DetailsDialog extends OwncloudPage {
 
 		if ($currentTime > $end) {
 			throw new \Exception(
-				__METHOD__ . " timeout waiting for page to load"
+				__METHOD__ . " timeout waiting for the files dialog to open"
 			);
 		}
 
