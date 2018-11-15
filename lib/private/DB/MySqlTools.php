@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -24,6 +25,7 @@ namespace OC\DB;
 use OCP\IDBConnection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
+use OC\DB\Connection;
 
 /**
 * Various MySQL specific helper functions.
@@ -64,10 +66,12 @@ class MySqlTools {
 	}
 
 	/**
-	 * @param Connection $connection
-	 * @return bool
+	 * Returns whether the database from the given connection supports 4-byte characters.
+	 *
+	 * @param Connection $connection connection to check
+	 * @return bool true if supported, false otherwise
 	 */
-	public function supports4ByteCharset(IDBConnection $connection) {
+	public function supports4ByteCharset(Connection $connection) {
 		if ($this->detectBarracuda($connection)) {
 			return true;
 		}
