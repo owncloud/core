@@ -33,6 +33,7 @@ use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
 use Sabre\DAV\Xml\Property\Complex;
 use PhpParser\Node\Stmt\TryCatch;
+use Behat\Behat\Definition\Call\Given;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -3047,7 +3048,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^the (?:propfind|search) result of "([^"]*)" should (not|)\s?contain these files:$/
+	 * @Then /^the (?:propfind|search) result of "([^"]*)" should (not|)\s?contain these (?:files|entries):$/
 	 *
 	 * @param string $user
 	 * @param string $shouldOrNot (not|)
@@ -3055,39 +3056,39 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function propfindResultShouldContainFiles(
+	public function propfindResultShouldContainEntries(
 		$user, $shouldOrNot, TableNode $expectedFiles
 	) {
 		$elementRows = $expectedFiles->getRows();
 		$should = ($shouldOrNot !== "not");
 		
 		foreach ($elementRows as $expectedFile) {
-			$fileFound = $this->findFileFromPropfindResponse(
+			$fileFound = $this->findEntryFromPropfindResponse(
 				$user, $expectedFile[0]
 			);
 			if ($should) {
 				PHPUnit_Framework_Assert::assertNotEmpty(
 					$fileFound,
-					"response does not contain the file '$expectedFile[0]'"
+					"response does not contain the entry '$expectedFile[0]'"
 				);
 			} else {
 				PHPUnit_Framework_Assert::assertFalse(
 					$fileFound,
-					"response does contain the file '$expectedFile[0]' but should not"
+					"response does contain the entry '$expectedFile[0]' but should not"
 				);
 			}
 		}
 	}
 
 	/**
-	 * @Then the propfind/search result of :user should contain :numFiles files
+	 * @Then the propfind/search result of :user should contain :numFiles files/entries
 	 *
 	 * @param string $user
 	 * @param int $numFiles
 	 *
 	 * @return void
 	 */
-	public function propfindResultShouldContainNumFiles($user, $numFiles) {
+	public function propfindResultShouldContainNumEntries($user, $numFiles) {
 		//if we are using that step the second time in a scenario e.g. 'But ... should not'
 		//then don't parse the result again, because the result in a ResponseInterface
 		if (empty($this->responseXml)) {
@@ -3098,33 +3099,60 @@ trait WebDav {
 	}
 
 	/**
-	 * parses a PROPFIND response from $this->response into xml
-	 * and searches for a given filename in the response list
+	 * @Then the propfind/search result of :user shoud contain any :expectedNumber of these files/entries:
 	 *
 	 * @param string $user
-	 * @param string $fileNameToSearch
+	 * @param integer $expectedNumber
+	 * @param TableNode $expectedFiles
 	 *
-	 * @return string or false if file could not be found
+	 * @return void
 	 */
-	public function findFileFromPropfindResponse($user, $fileNameToSearch) {
+	public function theSearchResultOfShoudContainAnyOfTheseEntries(
+		$user, $expectedNumber, TableNode $expectedFiles
+	) {
+		$this->propfindResultShouldContainNumEntries($user, $expectedNumber);
+		$elementRows = $expectedFiles->getRowsHash();
+		$resultEntrys = $this->findEntryFromPropfindResponse($user);
+		foreach ($resultEntrys as $resultEntry) {
+			PHPUnit_Framework_Assert::arrayHasKey($resultEntry, $elementRows);
+		}
+	}
+
+	/**
+	 * parses a PROPFIND response from $this->response into xml
+	 * and returns found search results if found else returns false
+	 *
+	 * @param string $user
+	 * @param string $entryNameToSearch
+	 *
+	 * @return string if $entryNameToSearch is given and is found
+	 * array if $entryNameToSearch is not given
+	 * boolean false if $entryNameToSearch is given and is not found
+	 */
+	public function findEntryFromPropfindResponse($user, $entryNameToSearch = null) {
 		//if we are using that step the second time in a scenario e.g. 'But ... should not'
 		//then don't parse the result again, because the result in a ResponseInterface
 		if (empty($this->responseXml)) {
 			$this->parseResponseIntoXml();
 		}
 		$multistatusResults = $this->responseXml["value"];
+		$results = [];
 		if ($multistatusResults !== null) {
 			foreach ($multistatusResults as $multistatusResult) {
-				$filePath = $multistatusResult['value'][0]['value'];
+				$entryPath = $multistatusResult['value'][0]['value'];
 				$fullWebDavPath = \ltrim(
 					$this->getBasePath() . "/" . $this->getDavFilesPath($user) . "/",
 					"/"
 				);
-				$fileName = \str_replace($fullWebDavPath, "", $filePath);
-				$fileName = \rawurldecode($fileName);
-				if ($fileName === $fileNameToSearch) {
+				$entryName = \str_replace($fullWebDavPath, "", $entryPath);
+				$entryName = \rawurldecode($entryName);
+				if ($entryNameToSearch === $entryName) {
 					return $multistatusResult;
 				}
+				\array_push($results, $entryName);
+			}
+			if ($entryNameToSearch === null) {
+				return $results;
 			}
 		}
 		return false;
