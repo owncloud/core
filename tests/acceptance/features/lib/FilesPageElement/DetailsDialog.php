@@ -47,6 +47,7 @@ class DetailsDialog extends OwncloudPage {
 		'sharing' => "shareTabView",
 		'versions' => "versionsTabView"
 	];
+	private $tabSwitchBtnXpath = "//li[@data-tabid='%s']";
 	private $tagsContainer = "//div[@class='systemTagsInputFieldContainer']";
 
 	private $tagsInputXpath = "//li[@class='select2-search-field']//input";
@@ -56,7 +57,11 @@ class DetailsDialog extends OwncloudPage {
 	private $tagsResultFromDropdownXpath = "//li[contains(@class, 'select2-result')]";
 	private $tagEditButtonInTagXpath = "//span[@class='systemtags-actions']//a[contains(@class, 'rename')]";
 	private $tagDeleteButtonInTagXpath = "//form[@class='systemtags-rename-form']//a";
+	private $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
+										"//ul[@class='select2-results']" .
+										"//span[@class='label']";
 
+	private $commentXpath = "//ul[@class='comments']//div[@class='message' and contains(., '%s')]";
 	private $commentInputXpath = "//form[@class='newCommentForm']//textarea[@class='message']";
 	private $commentPostXpath = "//form[@class='newCommentForm']//input[@class='submit']";
 	private $commentEditFormXpath = "//ul[@class='comments']//div[@class='newCommentRow comment']";
@@ -136,7 +141,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return string
 	 */
 	private function getCommentXpath($content) {
-		return "//ul[@class='comments']//div[@class='message' and contains(., '" . $content . "')]";
+		return \sprintf($this->commentXpath, $content);
 	}
 
 	/**
@@ -176,6 +181,17 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
+	 * get xpath for button to switch tab
+	 *
+	 * @param string $tabId
+	 *
+	 * @return string
+	 */
+	public function getTabSwitchBtnXpath($tabId) {
+		return \sprintf($this->tabSwitchBtnXpath, $tabId);
+	}
+
+	/**
 	 * change the active tab of details panel
 	 *
 	 * @param string $tabName e.g. comments, sharing, versions
@@ -185,7 +201,7 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function changeDetailsTab($tabName) {
 		$tabId = $this->getDetailsTabId($tabName);
-		$tabSwitchXpath = "//li[@data-tabid='" . $tabId . "']";
+		$tabSwitchXpath = $this->getTabSwitchBtnXpath($tabId);
 		$tabSwitch = $this->detailsDialogElement->find("xpath", $tabSwitchXpath);
 		$this->assertElementNotNull(
 			$tabSwitch,
@@ -483,9 +499,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return string
 	 */
 	public function getTagsDropDownResultsXpath() {
-		return "//div[contains(@class, 'systemtags-select2-dropdown')]" .
-			"//ul[@class='select2-results']" .
-			"//span[@class='label']";
+		return $this->tagsDropDownResultXpath;
 	}
 
 	/**
