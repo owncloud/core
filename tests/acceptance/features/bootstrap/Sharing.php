@@ -1174,6 +1174,25 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then /^the response when user "([^"]*)" gets the info of the last share should include$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function theResponseWhenUserGetsInfoOfLastShareShouldInclude(
+		$user, $body
+	) {
+		$this->userGetsInfoOfLastShareUsingTheSharingApi($user);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			"Error getting info of last share for user $user"
+		);
+		$this->checkFields($body);
+	}
+
+	/**
 	 * @Then /^the last share_id should be included in the response/
 	 *
 	 * @return void
