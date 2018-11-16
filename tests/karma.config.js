@@ -111,11 +111,13 @@ module.exports = function(config) {
 				name: 'settings',
 				srcFiles: [
 					'settings/js/users/deleteHandler.js',
-					'settings/js/admin-apps.js'
+					'settings/js/admin-apps.js',
+					'settings/js/setpassword.js'
 				],
 				testFiles: [
 					'settings/tests/js/users/deleteHandlerSpec.js',
-					'settings/tests/js/apps/appSettingsSpec.js'
+					'settings/tests/js/apps/appSettingsSpec.js',
+					'settings/tests/js/setpasswordSpec.js'
 				]
 			}
 		];
