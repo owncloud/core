@@ -117,10 +117,6 @@ class ConnectionFactory {
 			case 'mysql':
 				$eventManager->addEventSubscriber(
 					new SQLSessionInit("SET SESSION AUTOCOMMIT=1"));
-				$eventManager->addEventListener(
-					Events::onSchemaColumnDefinition,
-					new MySqlSchemaColumnDefinitionListener()
-				);
 				break;
 			case 'oci':
 				$eventManager->addEventSubscriber(new OracleSessionInit);

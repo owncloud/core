@@ -423,7 +423,7 @@ pipeline:
 
 services:
   mariadb:
-    image: mariadb:10.2
+    image: ${MARIADB_IMAGE=mariadb:10.2}
     environment:
       - MYSQL_USER=owncloud
       - MYSQL_PASSWORD=owncloud
@@ -434,7 +434,7 @@ services:
         DB_TYPE: mariadb
 
   mysql:
-    image: mysql:5.5
+    image: ${MYSQL_IMAGE=mysql:5.5}
     environment:
       - MYSQL_USER=owncloud
       - MYSQL_PASSWORD=owncloud
@@ -444,8 +444,10 @@ services:
       matrix:
         DB_TYPE: mysql
 
-  mysqlmb4:
-    image: mysql:5.7
+  mysql8:
+    image: ${MYSQL_IMAGE=mysql:8.0}
+    # see http://php.net/manual/en/mysqli.requirements.php
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_USER=owncloud
       - MYSQL_PASSWORD=owncloud
@@ -453,7 +455,7 @@ services:
       - MYSQL_ROOT_PASSWORD=owncloud
     when:
       matrix:
-        DB_TYPE: mysqlmb4
+        DB_TYPE: mysql8
 
   postgres:
     image: ${POSTGRES_IMAGE=postgres:9.4}
@@ -602,8 +604,17 @@ matrix:
       INSTALL_SERVER: true
 
     - PHP_VERSION: 7.1
-      DB_TYPE: mysqlmb4
+      DB_TYPE: mysql
+      # mb4 support, with innodb_file_format=Barracuda
+      MYSQL_IMAGE: mysql:5.7
       TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+
+    - PHP_VERSION: 7.1
+      # mb4 support by default
+      DB_TYPE: mysql8
+      TEST_SUITE: phpunit
+      COVERAGE: false
       INSTALL_SERVER: true
 
 #    - PHP_VERSION: 7.1
@@ -621,6 +632,14 @@ matrix:
     - PHP_VERSION: 7.1
       DB_TYPE: postgres
       POSTGRES_IMAGE: postgres:10.3
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      INSTALL_SERVER: true
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: mariadb
+      # mb4 support by default
+      MARIADB_IMAGE: mariadb:10.3
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
