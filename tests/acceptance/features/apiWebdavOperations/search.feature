@@ -164,7 +164,7 @@ Feature: Search
     And the folder "/upload folder" in the search result of "user0" should contain these properties:
       | name                                       | value                                                                                             |
       | {http://owncloud.org/ns}fileid             | \d*                                                                                               |
-      | {http://owncloud.org/ns}permissions        | ^(RDNVCK\|RMDNVW)$                                                                                |
+      | {http://owncloud.org/ns}permissions        | ^(RDNVCK\|RMDNVCK)$                                                                                |
       | {DAV:}getlastmodified                      | ^[MTWFS][uedhfriatno]{2},\s(\d){2}\s[JFMAJSOND][anebrpyulgctov]{2}\s\d{4}\s\d{2}:\d{2}:\d{2} GMT$ |
       | {DAV:}getetag                              | ^\"[a-f0-9]{1,32}\"$                                                                              |
       | {http://owncloud.org/ns}size               | 0                                                                                                 |
