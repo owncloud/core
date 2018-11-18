@@ -46,7 +46,7 @@ Feature: Share by public link
     When the user creates a new public link for folder "simple-folder" using the webUI
     And the user logs out of the webUI
     And the public accesses the last created public link using the webUI
-    And the public adds the public link to "%remote_server%" as user "user2" with the password "%alt2%" using the webUI
+    And the public adds the public link to "%remote_server%" as user "user2" with password "%alt2%" using the webUI
     And the user accepts the offered remote shares using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
     When the user opens folder "simple-folder (2)" using the webUI
@@ -62,7 +62,7 @@ Feature: Share by public link
       | permission | read-write |
     And the user logs out of the webUI
     And the public accesses the last created public link using the webUI
-    And the public adds the public link to "%remote_server%" as user "user2" with the password "%alt2%" using the webUI
+    And the public adds the public link to "%remote_server%" as user "user2" with password "%alt2%" using the webUI
     And the user accepts the offered remote shares using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
     When the user opens folder "simple-folder (2)" using the webUI
@@ -130,7 +130,7 @@ Feature: Share by public link
     When the user creates a new public link for file 'lorem.txt' using the webUI
     And the public accesses the last created public link using the webUI
     Then the text preview of the public link should contain "Lorem ipsum dolor sit amet, consectetur"
-    And the content of the file shared by last public link should be the same as "lorem.txt"
+    And the content of the file shared by the last public link should be the same as "lorem.txt"
 
   Scenario: user shares a public link via email
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
@@ -141,7 +141,7 @@ Feature: Share by public link
 			"""
 			User One shared simple-folder with you
 			"""
-    And the email address "foo@bar.co" should have received an email containing last shared public link
+    And the email address "foo@bar.co" should have received an email containing the last shared public link
 
   Scenario: user shares a public link via email and sends a copy to self
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
@@ -157,8 +157,8 @@ Feature: Share by public link
 			"""
 			User One shared simple-folder with you
 			"""
-    And the email address "foo@bar.co" should have received an email containing last shared public link
-    And the email address "user1@example.org" should have received an email containing last shared public link
+    And the email address "foo@bar.co" should have received an email containing the last shared public link
+    And the email address "user1@example.org" should have received an email containing the last shared public link
 
   Scenario: user shares a public link via email with multiple addresses
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
@@ -173,8 +173,8 @@ Feature: Share by public link
 			"""
 			User One shared simple-folder with you
 			"""
-    And the email address "foo@bar.co" should have received an email containing last shared public link
-    And the email address "foo@barr.co" should have received an email containing last shared public link
+    And the email address "foo@bar.co" should have received an email containing the last shared public link
+    And the email address "foo@barr.co" should have received an email containing the last shared public link
 
   Scenario: user shares a public link via email with a personal message
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
@@ -217,8 +217,8 @@ Feature: Share by public link
 			"""
 			User One shared simple-folder with you
 			"""
-    And the email address "foo5678@bar.co" should have received an email containing last shared public link
-    And the email address "foo1234@barr.co" should have received an email containing last shared public link
+    And the email address "foo5678@bar.co" should have received an email containing the last shared public link
+    And the email address "foo1234@barr.co" should have received an email containing the last shared public link
     But the email address "foo1234@bar.co" should not have received an email
     And the email address "foo5678@barr.co" should not have received an email
 
@@ -236,7 +236,7 @@ Feature: Share by public link
 			"""
 			lorem ipsum
 			"""
-    And the email address "foo@bar.co" should have received an email containing last shared public link
+    And the email address "foo@bar.co" should have received an email containing the last shared public link
 
   Scenario: user edits a name of an already existing public link
     Given the user has created a new public link for folder "simple-folder" using the webUI
@@ -255,21 +255,21 @@ Feature: Share by public link
   Scenario: user edits the password of an already existing public link
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | password | pass123 |
-    When the user changes the password of the public link for "simple-folder link" to "pass1234"
+    When the user changes the password of the public link named "simple-folder link" to "pass1234"
     And the public accesses the last created public link with password "pass1234" using the webUI
     Then file "lorem.txt" should be listed on the webUI
 
   Scenario: user edits the password of an already existing public link and tries to access with old password
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | password | pass123 |
-    When the user changes the password of the public link for "simple-folder link" to "pass1234"
+    When the user changes the password of the public link named "simple-folder link" to "pass1234"
     And the public tries to access the last created public link with wrong password "pass123" using the webUI
     Then the public should not get access to the publicly shared file
 
   Scenario: user edits the permission of an already existing public link from read-write to read
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
-    When the user changes the permission of the public link for "simple-folder link" to "read"
+    When the user changes the permission of the public link named "simple-folder link" to "read"
     And the public accesses the last created public link using the webUI
     Then file "lorem.txt" should be listed on the webUI
     And it should not be possible to delete file "lorem.txt" using the webUI
@@ -277,7 +277,7 @@ Feature: Share by public link
   Scenario: user edits the permission of an already existing public link from read to read-write
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read |
-    When the user changes the permission of the public link for "simple-folder link" to "read-write"
+    When the user changes the permission of the public link named "simple-folder link" to "read-write"
     And the public accesses the last created public link using the webUI
     And the user deletes the following elements using the webUI
       | name                                  |
