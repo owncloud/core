@@ -130,7 +130,7 @@ Feature: upload file using new chunking
     And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
     And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
     And user "user0" moves new chunk file with id "chunking-42" to "/<file-name>" using the WebDAV API
-    Then as "user0" the file "/<file-name>" should exist
+    Then as "user0" file "/<file-name>" should exist
     And the content of file "/<file-name>" for user "user0" should be "AAAAABBBBBCCCCC"
     Examples:
       | file-name |

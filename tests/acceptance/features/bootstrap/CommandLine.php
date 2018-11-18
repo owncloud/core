@@ -635,14 +635,14 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then the file :fileName of user :username should not be encrypted
+	 * @Then file :fileName of user :username should not be encrypted
 	 *
 	 * @param string $fileName
 	 * @param string $username
 	 *
 	 * @return void
 	 */
-	public function theFileOfUserShouldNotBeEncrypted($fileName, $username) {
+	public function fileOfUserShouldNotBeEncrypted($fileName, $username) {
 		$fileName = \ltrim($fileName, "/");
 		$filePath = "data/$username/files/$fileName";
 		$this->readFileInServerRoot($filePath);
@@ -650,7 +650,7 @@ trait CommandLine {
 		$parsedResponse = HttpRequestHelper::getResponseXml($response);
 		$encodedFileContent = (string)$parsedResponse->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($encodedFileContent);
-		$this->userDownloadsTheFileUsingTheAPI($username, "/$fileName");
+		$this->userDownloadsFileUsingTheAPI($username, "/$fileName");
 		$fileContentServer = (string)$this->getResponse()->getBody();
 		PHPUnit_Framework_Assert::assertEquals(
 			\trim($fileContentServer),
@@ -659,14 +659,14 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then the file :fileName of user :username should be encrypted
+	 * @Then file :fileName of user :username should be encrypted
 	 *
 	 * @param string $fileName
 	 * @param string $username
 	 *
 	 * @return void
 	 */
-	public function theFileOfUserShouldBeEncrypted($fileName, $username) {
+	public function fileOfUserShouldBeEncrypted($fileName, $username) {
 		$fileName = \ltrim($fileName, "/");
 		$filePath = "data/$username/files/$fileName";
 		$this->readFileInServerRoot($filePath);

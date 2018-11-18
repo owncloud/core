@@ -179,7 +179,7 @@ Feature: Share by public link
   Scenario: user shares a public link via email with a personal message
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And the user has reloaded the current page of the webUI
-    When the user creates a new public link for the folder "simple-folder" using the webUI with
+    When the user creates a new public link for folder "simple-folder" using the webUI with
       | email           | foo@bar.co  |
       | personalMessage | lorem ipsum |
     Then the email address "foo@bar.co" should have received an email with the body containing

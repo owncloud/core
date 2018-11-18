@@ -13,7 +13,7 @@ Feature: disable users
   Scenario: disable a user
     Given the administrator has logged in using the webUI
     And the administrator has browsed to the users page
-    When the administrator disables the user "user1" using the webUI
+    When the administrator disables user "user1" using the webUI
     And the disabled user "user1" tries to login using the password "%regular%" from the webUI
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user has browsed to the login page
@@ -28,7 +28,7 @@ Feature: disable users
     And user "subadmin" has been made a subadmin of group "grp1"
     And user "subadmin" has logged in using the webUI
     And the user has browsed to the users page
-    When the user disables the user "user1" using the webUI
+    When the user disables user "user1" using the webUI
     And the disabled user "user1" tries to login using the password "%regular%" from the webUI
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user has browsed to the login page
