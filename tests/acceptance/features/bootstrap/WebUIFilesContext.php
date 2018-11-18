@@ -1813,14 +1813,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the tag :tagName should not be listed in the dropdown list on the webUI
+	 * @Then tag :tagName should not be listed in the dropdown list on the webUI
 	 *
 	 * @param string $tagName
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theTagShouldNotBeListedInTheDropdownListOnTheWebui($tagName) {
+	public function tagShouldNotBeListedInTheDropdownListOnTheWebui($tagName) {
 		try {
 			$this->theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName);
 		} catch (\Exception $e) {
