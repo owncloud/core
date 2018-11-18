@@ -141,7 +141,7 @@ Feature: deleting files and folders
   @systemtags-app-required
   Scenario: delete files from tags page
     Given user "user1" has created a "normal" tag with name "lorem"
-    And user "user1" has added the tag "lorem" to "/lorem.txt"
+    And user "user1" has added tag "lorem" to file "/lorem.txt"
     When the user browses to the tags page
     And the user searches for tag "lorem" using the webUI
     Then file "lorem.txt" should be listed on the webUI

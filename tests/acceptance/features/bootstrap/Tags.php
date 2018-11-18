@@ -258,7 +258,7 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theFollowingTagsShouldExistForTheAdministrator(TableNode $table) {
-		$this->theFollowingTagsShouldExistFor($this->getAdminUsername(), $table);
+		$this->theFollowingTagsShouldExistForUser($this->getAdminUsername(), $table);
 	}
 
 	/**
@@ -270,11 +270,11 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theFollowingTagsShouldExistForTheUser(TableNode $table) {
-		$this->theFollowingTagsShouldExistFor($this->getCurrentUser(), $table);
+		$this->theFollowingTagsShouldExistForUser($this->getCurrentUser(), $table);
 	}
 
 	/**
-	 * @Then the following tags should exist for :user
+	 * @Then the following tags should exist for user :user
 	 *
 	 * @param string $user
 	 * @param TableNode $table
@@ -282,7 +282,7 @@ trait Tags {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFollowingTagsShouldExistFor($user, TableNode $table) {
+	public function theFollowingTagsShouldExistForUser($user, TableNode $table) {
 		$user = $this->getActualUsername($user);
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
 			$tagData = $this->requestTagByDisplayName($user, $rowDisplayName);
@@ -297,7 +297,7 @@ trait Tags {
 	}
 
 	/**
-	 * @Then tag :tagDisplayName should not exist for :user
+	 * @Then tag :tagDisplayName should not exist for user :user
 	 *
 	 * @param string $tagDisplayName
 	 * @param string $user
@@ -407,7 +407,7 @@ trait Tags {
 	}
 
 	/**
-	 * @Then :count tags should exist for :user
+	 * @Then :count tags should exist for user :user
 	 *
 	 * @param int $count
 	 * @param string $user
@@ -415,7 +415,7 @@ trait Tags {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function tagsShouldExistFor($count, $user) {
+	public function tagsShouldExistForUser($count, $user) {
 		if ((int)$count !== \count($this->requestTagsForUser($user))) {
 			throw new \Exception(
 				"Expected $count tags, got "
@@ -662,8 +662,8 @@ trait Tags {
 	}
 
 	/**
-	 * @When /^the (administrator|user) adds the tag "([^"]*)" to "([^"]*)" using the WebDAV API$/
-	 * @Given /^the (administrator|user) has added the tag "([^"]*)" to "([^"]*)"$/
+	 * @When /^the (administrator|user) adds tag "([^"]*)" to (?:file|folder) "([^"]*)" using the WebDAV API$/
+	 * @Given /^the (administrator|user) has added tag "([^"]*)" to (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $adminOrUser
 	 * @param string $tagName
@@ -671,7 +671,7 @@ trait Tags {
 	 *
 	 * @return void
 	 */
-	public function theUserOrAdministratorAddsTheTagTo(
+	public function theUserOrAdministratorAddsTagToFileFolder(
 		$adminOrUser, $tagName, $fileName
 	) {
 		if ($adminOrUser === 'administrator') {
@@ -679,12 +679,12 @@ trait Tags {
 		} else {
 			$taggingUser = $this->getCurrentUser();
 		}
-		$this->addsTheTagTo($taggingUser, $tagName, $fileName);
+		$this->addsTagToFileFolder($taggingUser, $tagName, $fileName);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" adds the tag "([^"]*)" to "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has added the tag "([^"]*)" to "([^"]*)"$/
+	 * @When /^user "([^"]*)" adds tag "([^"]*)" to (?:file|folder) "([^"]*)" using the WebDAV API$/
+	 * @Given /^user "([^"]*)" has added tag "([^"]*)" to (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $taggingUser
 	 * @param string $tagName
@@ -692,15 +692,15 @@ trait Tags {
 	 *
 	 * @return void
 	 */
-	public function addsTheTagTo(
+	public function addsTagToFileFolder(
 		$taggingUser, $tagName, $fileName
 	) {
 		$this->tag($taggingUser, $tagName, $fileName);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" adds the tag "([^"]*)" to "([^"]*)" (?:shared|owned) by "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has added the tag "([^"]*)" to "([^"]*)" (?:shared|owned) by "([^"]*)"$/
+	 * @When /^user "([^"]*)" adds tag "([^"]*)" to (?:file|folder) "([^"]*)" (?:shared|owned) by "([^"]*)" using the WebDAV API$/
+	 * @Given /^user "([^"]*)" has added tag "([^"]*)" to (?:file|folder) "([^"]*)" (?:shared|owned) by "([^"]*)"$/
 	 *
 	 * @param string $taggingUser
 	 * @param string $tagName
@@ -709,7 +709,7 @@ trait Tags {
 	 *
 	 * @return void
 	 */
-	public function addsTheTagToSharedBy(
+	public function addsTagToSharedBy(
 		$taggingUser, $tagName, $fileName, $sharingUser
 	) {
 		$this->tag($taggingUser, $tagName, $fileName, $sharingUser);
@@ -897,8 +897,8 @@ trait Tags {
 	}
 
 	/**
-	 * @When user :user removes the tag :tagName from :fileName shared by :shareUser using the WebDAV API
-	 * @Given user :user has removed the tag :tagName from :fileName shared by :shareUser
+	 * @When user :user removes tag :tagName from file :fileName shared by :shareUser using the WebDAV API
+	 * @Given user :user has removed tag :tagName from file :fileName shared by :shareUser
 	 *
 	 * @param string $user
 	 * @param string $tagName
@@ -907,15 +907,15 @@ trait Tags {
 	 *
 	 * @return void
 	 */
-	public function removesTheTagFromSharedBy(
+	public function removesTagFromFileSharedBy(
 		$user, $tagName, $fileName, $shareUser
 	) {
 		$this->untag($user, $tagName, $fileName, $shareUser);
 	}
 
 	/**
-	 * @When the administrator removes the tag :tagName from :fileName shared by :shareUser using the WebDAV API
-	 * Given the administrator has removed the tag :tagName from :fileName shared by :shareUser
+	 * @When the administrator removes tag :tagName from file :fileName shared by :shareUser using the WebDAV API
+	 * Given the administrator has removed tag :tagName from file :fileName shared by :shareUser
 	 *
 	 * @param string $tagName
 	 * @param string $fileName
@@ -923,11 +923,11 @@ trait Tags {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorRemovesTheTagFromSharedByUsingTheWebdavApi(
+	public function theAdministratorRemovesTheTagFromFileSharedByUsingTheWebdavApi(
 		$tagName, $fileName, $shareUser
 	) {
 		$admin = $this->getAdminUsername();
-		$this->removesTheTagFromSharedBy($admin, $tagName, $fileName, $shareUser);
+		$this->removesTagFromFileSharedBy($admin, $tagName, $fileName, $shareUser);
 	}
 	
 	/**

@@ -48,7 +48,7 @@ Feature: Search
   @systemtags-app-required
   Scenario: search for a file using a tag
     Given user "user1" has created a "normal" tag with name "ipsum"
-    And user "user1" has added the tag "ipsum" to "/lorem.txt"
+    And user "user1" has added tag "ipsum" to file "/lorem.txt"
     When the user browses to the tags page
     And the user searches for tag "ipsum" using the webUI
     Then file "lorem.txt" should be listed on the webUI
@@ -57,9 +57,9 @@ Feature: Search
   Scenario: search for a file with multiple tags
     Given user "user1" has created a "normal" tag with name "lorem"
     And user "user1" has created a "normal" tag with name "ipsum"
-    And user "user1" has added the tag "lorem" to "/lorem.txt"
-    And user "user1" has added the tag "lorem" to "/testimage.jpg"
-    And user "user1" has added the tag "ipsum" to "/lorem.txt"
+    And user "user1" has added tag "lorem" to file "/lorem.txt"
+    And user "user1" has added tag "lorem" to file "/testimage.jpg"
+    And user "user1" has added tag "ipsum" to file "/lorem.txt"
     When the user browses to the tags page
     And the user searches for tag "lorem" using the webUI
     And the user searches for tag "ipsum" using the webUI
@@ -69,8 +69,8 @@ Feature: Search
   @systemtags-app-required
   Scenario: search for a file with tags
     Given user "user1" has created a "normal" tag with name "lorem"
-    And user "user1" has added the tag "lorem" to "/lorem.txt"
-    And user "user1" has added the tag "lorem" to "/simple-folder/lorem.txt"
+    And user "user1" has added tag "lorem" to file "/lorem.txt"
+    And user "user1" has added tag "lorem" to file "/simple-folder/lorem.txt"
     When the user browses to the tags page
     And the user searches for tag "lorem" using the webUI
     Then file "lorem.txt" should be listed on the webUI

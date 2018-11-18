@@ -86,7 +86,7 @@ Feature: User can open the details panel for any file or folder
   @comments-app-required
   Scenario: View different areas of details panel for the folder with given tag in Tags page
     Given user "user1" has created a "normal" tag with name "simple"
-    And user "user1" has added the tag "simple" to "simple-folder"
+    And user "user1" has added tag "simple" to folder "simple-folder"
     When the user browses to the tags page
     And the user searches for tag "simple" using the webUI
     Then folder "simple-folder" should be listed on the webUI
