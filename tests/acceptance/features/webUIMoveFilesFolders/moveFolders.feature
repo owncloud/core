@@ -10,35 +10,35 @@ Feature: move folders
     And the user has browsed to the files page
 
   Scenario: An attempt to move a folder into a sub-folder using rename is not allowed
-    When the user renames the folder "simple-empty-folder" to "simple-folder/simple-empty-folder" using the webUI
-    Then near the folder "simple-empty-folder" a tooltip with the text 'File name cannot contain "/".' should be displayed on the webUI
+    When the user renames folder "simple-empty-folder" to "simple-folder/simple-empty-folder" using the webUI
+    Then near folder "simple-empty-folder" a tooltip with the text 'File name cannot contain "/".' should be displayed on the webUI
 
   @skipOnFIREFOX
   Scenario: move a folder into another folder
-    When the user moves the folder "simple-folder" into the folder "simple-empty-folder" using the webUI
-    Then the folder "simple-folder" should not be listed on the webUI
-    But the folder "simple-folder" should be listed in the folder "simple-empty-folder" on the webUI
+    When the user moves folder "simple-folder" into folder "simple-empty-folder" using the webUI
+    Then folder "simple-folder" should not be listed on the webUI
+    But folder "simple-folder" should be listed in folder "simple-empty-folder" on the webUI
     When the user browses to the files page
-    And the user moves the folder "strängé नेपाली folder" into the folder "strängé नेपाली folder empty" using the webUI
-    Then the folder "strängé नेपाली folder" should not be listed on the webUI
-    But the folder "strängé नेपाली folder" should be listed in the folder "strängé नेपाली folder empty" on the webUI
+    And the user moves folder "strängé नेपाली folder" into folder "strängé नेपाली folder empty" using the webUI
+    Then folder "strängé नेपाली folder" should not be listed on the webUI
+    But folder "strängé नेपाली folder" should be listed in folder "strängé नेपाली folder empty" on the webUI
 
   @skipOnFIREFOX
   Scenario: move a folder into another folder where a folder with the same name already exists
-    When the user moves the folder "simple-empty-folder" into the folder "simple-folder" using the webUI
+    When the user moves folder "simple-empty-folder" into folder "simple-folder" using the webUI
     Then notifications should be displayed on the webUI with the text
       | Could not move "simple-empty-folder", target exists |
-    And the folder "simple-empty-folder" should be listed on the webUI
+    And folder "simple-empty-folder" should be listed on the webUI
 
   @skipOnFIREFOX
   Scenario: Move multiple folders at once
-    When the user batch moves these folders into the folder "simple-empty-folder" using the webUI
+    When the user batch moves these folders into folder "simple-empty-folder" using the webUI
       | name                  |
       | simple-folder         |
       | strängé नेपाली folder |
     Then the moved elements should not be listed on the webUI
     And the moved elements should not be listed on the webUI after a page reload
-    But the moved elements should be listed in the folder "simple-empty-folder" on the webUI
+    But the moved elements should be listed in folder "simple-empty-folder" on the webUI
 
   @skipOnFIREFOX
   Scenario: move a folder into another folder (problematic characters)

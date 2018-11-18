@@ -11,9 +11,9 @@ Feature: create folder
 
   Scenario Outline: Create a folder using special characters
     When the user creates a folder with the name <folder_name> using the webUI
-    Then the folder <folder_name> should be listed on the webUI
+    Then folder <folder_name> should be listed on the webUI
     When the user reloads the current page of the webUI
-    Then the folder <folder_name> should be listed on the webUI
+    Then folder <folder_name> should be listed on the webUI
     Examples:
       | folder_name              |
       | 'सिमप्ले फोल्देर $%#?&@' |
@@ -26,12 +26,12 @@ Feature: create folder
 	# First try and create a folder with problematic name
 	# Then try and create a sub-folder inside the folder with problematic name
     When the user creates a folder with the name <folder> using the webUI
-    And the user opens the folder <folder> using the webUI
+    And the user opens folder <folder> using the webUI
     Then there should be no files/folders listed on the webUI
     When the user creates a folder with the name "sub-folder" using the webUI
-    Then the folder "sub-folder" should be listed on the webUI
+    Then folder "sub-folder" should be listed on the webUI
     When the user reloads the current page of the webUI
-    Then the folder "sub-folder" should be listed on the webUI
+    Then folder "sub-folder" should be listed on the webUI
     Examples:
       | folder    |
       | "?&%0"    |
@@ -41,11 +41,11 @@ Feature: create folder
   Scenario Outline: Create a sub-folder inside an existing folder with problematic name
 	# Use an existing folder with problematic name to create a sub-folder
 	# Uses the folder created by skeleton
-    When the user opens the folder <folder> using the webUI
+    When the user opens folder <folder> using the webUI
     And the user creates a folder with the name "sub-folder" using the webUI
-    Then the folder "sub-folder" should be listed on the webUI
+    Then folder "sub-folder" should be listed on the webUI
     When the user reloads the current page of the webUI
-    Then the folder "sub-folder" should be listed on the webUI
+    Then folder "sub-folder" should be listed on the webUI
     Examples:
       | folder                  |
       | "0"                     |

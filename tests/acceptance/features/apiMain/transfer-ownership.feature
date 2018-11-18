@@ -69,7 +69,7 @@ Feature: transfer-ownership
     And user "user0" has shared folder "/test" with user "user1" with permissions 31
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
-    And as "user1" the folder "/test" should not exist
+    And as "user1" folder "/test" should not exist
     And using received transfer folder of "user1" as dav path
     And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
 
@@ -98,7 +98,7 @@ Feature: transfer-ownership
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
     And using received transfer folder of "user1" as dav path
-    And as "user1" the folder "/test" should not exist
+    And as "user1" folder "/test" should not exist
 
   @local_storage @skipOnEncryptionType:user-keys
   Scenario: transferring ownership does not transfer external storage
@@ -107,7 +107,7 @@ Feature: transfer-ownership
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
     And using received transfer folder of "user1" as dav path
-    And as "user1" the folder "/local_storage" should not exist
+    And as "user1" folder "/local_storage" should not exist
 
   @skipOnEncryptionType:user-keys
   Scenario: transferring ownership does not fail with shared trashed files
@@ -153,8 +153,8 @@ Feature: transfer-ownership
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
     Then the command should have been successful
     And using received transfer folder of "user1" as dav path
-    And as "user1" the folder "/test" should exist
-    And as "user1" the folder "/test/subfolder" should exist
+    And as "user1" folder "/test" should exist
+    And as "user1" folder "/test/subfolder" should exist
 
   Scenario: transferring ownership of an account containing only an empty folder
     Given user "user0" has been created
@@ -164,7 +164,7 @@ Feature: transfer-ownership
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
     And using received transfer folder of "user1" as dav path
-    And as "user1" the folder "/test" should exist
+    And as "user1" folder "/test" should exist
 
   @skipOnEncryptionType:user-keys
   Scenario: transferring ownership of file shares
@@ -213,7 +213,7 @@ Feature: transfer-ownership
     And user "user0" has shared folder "/test" with user "user1" with permissions 31
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
     Then the command should have been successful
-    And as "user1" the folder "/test" should not exist
+    And as "user1" folder "/test" should not exist
     And using received transfer folder of "user1" as dav path
     And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
 
@@ -243,7 +243,7 @@ Feature: transfer-ownership
     When the administrator transfers ownership of path "sub" from "user0" to "user1" using the occ command
     Then the command should have been successful
     And using received transfer folder of "user1" as dav path
-    And as "user1" the folder "/sub/test" should not exist
+    And as "user1" folder "/sub/test" should not exist
 
   @skipOnEncryptionType:user-keys @public_link_share-feature-required
   Scenario: transferring ownership of folder shared with transfer recipient and public link created of received share works
@@ -259,7 +259,7 @@ Feature: transfer-ownership
       | path | /test |
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
-    And as "user0" the folder "/test" should not exist
+    And as "user0" folder "/test" should not exist
 
   @local_storage
   Scenario: transferring ownership does not transfer external storage
@@ -269,7 +269,7 @@ Feature: transfer-ownership
     When the administrator transfers ownership of path "sub" from "user0" to "user1" using the occ command
     Then the command should have been successful
     And using received transfer folder of "user1" as dav path
-    And as "user1" the folder "/local_storage" should not exist
+    And as "user1" folder "/local_storage" should not exist
 
   Scenario: transferring ownership fails with invalid source user
     Given user "user0" has been created

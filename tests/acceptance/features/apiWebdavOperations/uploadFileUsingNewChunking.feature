@@ -16,7 +16,7 @@ Feature: upload file using new chunking
       | 1 | AAAAA |
       | 2 | BBBBB |
       | 3 | CCCCC |
-    Then as "user0" the file "/myChunkedFile.txt" should exist
+    Then as "user0" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:
       | app |
@@ -27,7 +27,7 @@ Feature: upload file using new chunking
       | 3 | CCCCC |
       | 2 | BBBBB |
       | 1 | AAAAA |
-    Then as "user0" the file "/myChunkedFile.txt" should exist
+    Then as "user0" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:
       | app |
@@ -38,7 +38,7 @@ Feature: upload file using new chunking
       | 2 | BBBBB |
       | 3 | CCCCC |
       | 1 | AAAAA |
-    Then as "user0" the file "/myChunkedFile.txt" should exist
+    Then as "user0" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:
       | app |
@@ -96,7 +96,7 @@ Feature: upload file using new chunking
     And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
     When user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with size 15 using the WebDAV API
     Then the HTTP status code should be "201"
-    And as "user0" the file "/myChunkedFile.txt" should exist
+    And as "user0" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:
       | app |
@@ -111,7 +111,7 @@ Feature: upload file using new chunking
     And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
     And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
     And user "user0" moves new chunk file with id "chunking-42" to "/<file-name>" using the WebDAV API
-    Then as "user0" the file "/<file-name>" should exist
+    Then as "user0" file "/<file-name>" should exist
     And the content of file "/<file-name>" for user "user0" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:
       | app |
@@ -130,7 +130,7 @@ Feature: upload file using new chunking
     And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
     And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
     And user "user0" moves new chunk file with id "chunking-42" to "/<file-name>" using the WebDAV API
-    Then as "user0" the file "/<file-name>" should exist
+    Then as "user0" file "/<file-name>" should exist
     And the content of file "/<file-name>" for user "user0" should be "AAAAABBBBBCCCCC"
     Examples:
       | file-name |
@@ -144,5 +144,5 @@ Feature: upload file using new chunking
     And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
     And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
     And user "user0" moves new chunk file with id "chunking-42" to "/0" using the WebDAV API
-    And as "user0" the file "/0" should exist
+    And as "user0" file "/0" should exist
     And the content of file "/0" for user "user0" should be "AAAAABBBBBCCCCC"

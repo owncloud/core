@@ -14,13 +14,13 @@ Feature: Share by public link
 
   @smokeTest
   Scenario: simple sharing by public link
-    When the user creates a new public link for the folder "simple-folder" using the webUI
+    When the user creates a new public link for folder "simple-folder" using the webUI
     And the public accesses the last created public link using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
 
   @skipOnOcV10.0.3 @feature_was_changed_in_10.0.4
   Scenario: creating a public link with read & write permissions makes it possible to delete files via the link
-    When the user creates a new public link for the folder "simple-folder" using the webUI with
+    When the user creates a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     And the public accesses the last created public link using the webUI
     And the user deletes the following elements using the webUI
@@ -34,52 +34,52 @@ Feature: Share by public link
 
   @skipOnOcV10.0.3 @feature_was_changed_in_10.0.4
   Scenario: creating a public link with read permissions only makes it impossible to delete files via the link
-    When the user creates a new public link for the folder "simple-folder" using the webUI with
+    When the user creates a new public link for folder "simple-folder" using the webUI with
       | permission | read |
     And the public accesses the last created public link using the webUI
-    Then it should not be possible to delete the file "lorem.txt" using the webUI
+    Then it should not be possible to delete file "lorem.txt" using the webUI
 
   @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
   Scenario: mount public link
     Given using server "REMOTE"
     And user "user2" has been created
-    When the user creates a new public link for the folder "simple-folder" using the webUI
+    When the user creates a new public link for folder "simple-folder" using the webUI
     And the user logs out of the webUI
     And the public accesses the last created public link using the webUI
     And the public adds the public link to "%remote_server%" as user "user2" with the password "%alt2%" using the webUI
     And the user accepts the offered remote shares using the webUI
-    Then the folder "simple-folder (2)" should be listed on the webUI
-    When the user opens the folder "simple-folder (2)" using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
+    Then folder "simple-folder (2)" should be listed on the webUI
+    When the user opens folder "simple-folder (2)" using the webUI
+    Then file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" on the remote server should be the same as the original "simple-folder/lorem.txt"
-    And it should not be possible to delete the file "lorem.txt" using the webUI
+    And it should not be possible to delete file "lorem.txt" using the webUI
 
   @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
   Scenario: mount public link and overwrite file
     Given using server "REMOTE"
     And user "user2" has been created
-    When the user creates a new public link for the folder "simple-folder" using the webUI with
+    When the user creates a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     And the user logs out of the webUI
     And the public accesses the last created public link using the webUI
     And the public adds the public link to "%remote_server%" as user "user2" with the password "%alt2%" using the webUI
     And the user accepts the offered remote shares using the webUI
-    Then the folder "simple-folder (2)" should be listed on the webUI
-    When the user opens the folder "simple-folder (2)" using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
+    Then folder "simple-folder (2)" should be listed on the webUI
+    When the user opens folder "simple-folder (2)" using the webUI
+    Then file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" on the remote server should be the same as the original "simple-folder/lorem.txt"
-    When the user uploads overwriting the file "lorem.txt" using the webUI and retries if the file is locked
-    Then the file "lorem.txt" should be listed on the webUI
+    When the user uploads overwriting file "lorem.txt" using the webUI and retries if the file is locked
+    Then file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" on the remote server should be the same as the local "lorem.txt"
 
   Scenario: public should be able to access a public link with correct password
-    When the user creates a new public link for the folder "simple-folder" using the webUI with
+    When the user creates a new public link for folder "simple-folder" using the webUI with
       | password | pass123 |
     And the public accesses the last created public link with password "pass123" using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
 
   Scenario: public should not be able to access a public link with wrong password
-    When the user creates a new public link for the folder "simple-folder" using the webUI with
+    When the user creates a new public link for folder "simple-folder" using the webUI with
       | password | pass123 |
     And the public tries to access the last created public link with wrong password "pass12" using the webUI
     Then the public should not get access to the publicly shared file
@@ -87,47 +87,47 @@ Feature: Share by public link
   Scenario: user tries to create a public link with name longer than 64 chars
     Given user "user1" has moved file "/lorem.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And the user has reloaded the current page of the webUI
-    When the user tries to create a new public link for the file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" using the webUI
+    When the user tries to create a new public link for file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" using the webUI
     Then the user should see an error message on the public link share dialog saying "Share name cannot be more than 64 characters"
     And the public link should not have been generated
 
   Scenario: user shares a public link with folder longer than 64 chars and shorter link name
     Given user "user1" has moved folder "simple-folder" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And the user has reloaded the current page of the webUI
-    When the user creates a new public link for the folder "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" using the webUI with
+    When the user creates a new public link for folder "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" using the webUI with
       | name | short_linkname |
     And the public accesses the last created public link using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
 
   Scenario: user tries to create a public link with read only permission without entering share password while enforce password on read only public share is enforced
     Given parameter "shareapi_enforce_links_password_read_only" of app "core" has been set to "yes"
-    When the user tries to create a new public link for the folder "simple-folder" using the webUI
+    When the user tries to create a new public link for folder "simple-folder" using the webUI
     Then the user should see an error message on the public link share dialog saying "Passwords are enforced for link shares"
     And the public link should not have been generated
 
   Scenario: user tries to create a public link with read-write permission without entering share password while enforce password on read-write public share is enforced
     Given parameter "shareapi_enforce_links_password_read_write" of app "core" has been set to "yes"
-    When the user tries to create a new public link for the folder "simple-folder" using the webUI with
+    When the user tries to create a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     Then the user should see an error message on the public link share dialog saying "Passwords are enforced for link shares"
     And the public link should not have been generated
 
   Scenario: user tries to create a public link with write only permission without entering share password while enforce password on write only public share is enforced
     Given parameter "shareapi_enforce_links_password_write_only" of app "core" has been set to "yes"
-    When the user tries to create a new public link for the folder "simple-folder" using the webUI with
+    When the user tries to create a new public link for folder "simple-folder" using the webUI with
       | permission | upload |
     Then the user should see an error message on the public link share dialog saying "Passwords are enforced for link shares"
     And the public link should not have been generated
 
   Scenario: user creates a public link with read-write permission without entering share password while enforce password on read only public share is enforced
     Given parameter "shareapi_enforce_links_password_read_only" of app "core" has been set to "yes"
-    When the user creates a new public link for the folder "simple-folder" using the webUI with
+    When the user creates a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     And the public accesses the last created public link using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
 
   Scenario: public should be able to access the shared file through public link
-    When the user creates a new public link for the file 'lorem.txt' using the webUI
+    When the user creates a new public link for file 'lorem.txt' using the webUI
     And the public accesses the last created public link using the webUI
     Then the text preview of the public link should contain "Lorem ipsum dolor sit amet, consectetur"
     And the content of the file shared by last public link should be the same as "lorem.txt"
@@ -135,7 +135,7 @@ Feature: Share by public link
   Scenario: user shares a public link via email
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And the user has reloaded the current page of the webUI
-    When the user creates a new public link for the folder "simple-folder" using the webUI with
+    When the user creates a new public link for folder "simple-folder" using the webUI with
       | email | foo@bar.co |
     Then the email address "foo@bar.co" should have received an email with the body containing
 			"""
@@ -146,7 +146,7 @@ Feature: Share by public link
   Scenario: user shares a public link via email and sends a copy to self
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And the user has reloaded the current page of the webUI
-    When the user creates a new public link for the folder "simple-folder" using the webUI with
+    When the user creates a new public link for folder "simple-folder" using the webUI with
       | email       | foo@bar.co |
       | emailToSelf | true       |
     Then the email address "foo@bar.co" should have received an email with the body containing
@@ -163,7 +163,7 @@ Feature: Share by public link
   Scenario: user shares a public link via email with multiple addresses
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And the user has reloaded the current page of the webUI
-    When the user creates a new public link for the folder "simple-folder" using the webUI with
+    When the user creates a new public link for folder "simple-folder" using the webUI with
       | email | foo@bar.co, foo@barr.co |
     Then the email address "foo@bar.co" should have received an email with the body containing
 			"""
@@ -179,7 +179,7 @@ Feature: Share by public link
   Scenario: user shares a public link via email with a personal message
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And the user has reloaded the current page of the webUI
-    When the user creates a new public link for the folder "simple-folder" using the webUI with
+    When the user creates a new public link for folder "simple-folder" using the webUI with
       | email           | foo@bar.co  |
       | personalMessage | lorem ipsum |
     Then the email address "foo@bar.co" should have received an email with the body containing
@@ -195,7 +195,7 @@ Feature: Share by public link
   Scenario: user shares a public link via email adding few addresses before and then removing some addresses afterwards
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And the user has reloaded the current page of the webUI
-    When the user opens the share dialog for the folder "simple-folder"
+    When the user opens the share dialog for folder "simple-folder"
     And the user opens the public link share tab
     And the user opens the create public link share popup
     And the user adds the following email addresses using the webUI:
@@ -225,7 +225,7 @@ Feature: Share by public link
   Scenario: user shares a public link via email with a personal message
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And the user has reloaded the current page of the webUI
-    When the user creates a new public link for the folder "simple-folder" using the webUI with
+    When the user creates a new public link for folder "simple-folder" using the webUI with
       | email           | foo@bar.co  |
       | personalMessage | lorem ipsum |
     Then the email address "foo@bar.co" should have received an email with the body containing
@@ -239,43 +239,43 @@ Feature: Share by public link
     And the email address "foo@bar.co" should have received an email containing last shared public link
 
   Scenario: user edits a name of an already existing public link
-    Given the user has created a new public link for the folder "simple-folder" using the webUI
+    Given the user has created a new public link for folder "simple-folder" using the webUI
     And the user has opened the public link share tab
     When the user renames the public link name from "simple-folder link" to "simple-folder Share"
     And the public accesses the last created public link using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
 
   Scenario: user shares a file through public link and then it appears in a Shared by link page
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And the user has reloaded the current page of the webUI
-    And the user has created a new public link for the folder "simple-folder" using the webUI
+    And the user has created a new public link for folder "simple-folder" using the webUI
     When the user browses to the shared-by-link page
-    Then the folder "simple-folder" should be listed on the webUI
+    Then folder "simple-folder" should be listed on the webUI
 
   Scenario: user edits the password of an already existing public link
-    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
       | password | pass123 |
     When the user changes the password of the public link for "simple-folder link" to "pass1234"
     And the public accesses the last created public link with password "pass1234" using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
 
   Scenario: user edits the password of an already existing public link and tries to access with old password
-    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
       | password | pass123 |
     When the user changes the password of the public link for "simple-folder link" to "pass1234"
     And the public tries to access the last created public link with wrong password "pass123" using the webUI
     Then the public should not get access to the publicly shared file
 
   Scenario: user edits the permission of an already existing public link from read-write to read
-    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     When the user changes the permission of the public link for "simple-folder link" to "read"
     And the public accesses the last created public link using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
-    And it should not be possible to delete the file "lorem.txt" using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And it should not be possible to delete file "lorem.txt" using the webUI
 
   Scenario: user edits the permission of an already existing public link from read to read-write
-    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read |
     When the user changes the permission of the public link for "simple-folder link" to "read-write"
     And the public accesses the last created public link using the webUI
@@ -287,10 +287,10 @@ Feature: Share by public link
     And the deleted elements should not be listed on the webUI after a page reload
 
   Scenario: share two file with same name but different paths by public link
-    When the user creates a new public link for the file "lorem.txt" using the webUI
+    When the user creates a new public link for file "lorem.txt" using the webUI
     And the user closes the details dialog
-    And the user opens the folder "simple-folder" using the webUI
-    And the user creates a new public link for the file "lorem.txt" using the webUI
+    And the user opens folder "simple-folder" using the webUI
+    And the user creates a new public link for file "lorem.txt" using the webUI
     And the user browses to the shared-by-link page
-    Then the file "lorem.txt" with the path "" should be listed in the shared with others page on the webUI
-    And the file "lorem.txt" with the path "/simple-folder" should be listed in the shared with others page on the webUI
+    Then file "lorem.txt" with path "" should be listed in the shared with others page on the webUI
+    And file "lorem.txt" with path "/simple-folder" should be listed in the shared with others page on the webUI

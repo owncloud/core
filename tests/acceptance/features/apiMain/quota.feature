@@ -24,7 +24,7 @@ Feature: quota
     And the quota of user "user0" has been set to "20 B"
     When user "user0" uploads file "data/textfile.txt" to "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
-    And as "user0" the file "/testquota.txt" should not exist
+    And as "user0" file "/testquota.txt" should not exist
     Examples:
       | dav_version |
       | old         |
@@ -49,7 +49,7 @@ Feature: quota
     And user "user0" has uploaded file with content "test" to "/testquota.txt"
     When user "user0" overwrites file "data/textfile.txt" to "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
-    And as "user0" the file "/testquota.txt" should not exist
+    And as "user0" file "/testquota.txt" should not exist
     Examples:
       | dav_version |
       | old         |
@@ -82,7 +82,7 @@ Feature: quota
     And user "user1" has shared folder "/testquota" with user "user0" with permissions 31
     When user "user0" uploads file "data/textfile.txt" to "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
-    And as "user0" the file "/testquota/testquota.txt" should not exist
+    And as "user0" file "/testquota/testquota.txt" should not exist
     Examples:
       | dav_version |
       | old         |
@@ -115,7 +115,7 @@ Feature: quota
     And user "user1" has shared folder "/testquota" with user "user0" with permissions 31
     When user "user0" overwrites file "data/textfile.txt" to "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
-    And as "user0" the file "/testquota/testquota.txt" should not exist
+    And as "user0" file "/testquota/testquota.txt" should not exist
     Examples:
       | dav_version |
       | old         |

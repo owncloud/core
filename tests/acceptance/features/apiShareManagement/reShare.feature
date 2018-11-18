@@ -127,7 +127,7 @@ Feature: sharing
       | permissions | 31                 |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And as "user2" the file "/textfile0 (2).txt" should not exist
+    And as "user2" file "/textfile0 (2).txt" should not exist
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |

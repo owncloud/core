@@ -237,13 +237,13 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the administrator/user disables the user :username using the webUI
+	 * @When the administrator/user disables user :username using the webUI
 	 *
 	 * @param string $username
 	 *
 	 * @return void
 	 */
-	public function theAdminDisablesTheUserUsingTheWebui($username) {
+	public function theAdminDisablesUserUsingTheWebui($username) {
 		$this->usersPage->openSettingsMenu();
 		$this->usersPage->setSetting("Show enabled/disabled option");
 		$this->usersPage->disableUser($username);
@@ -269,7 +269,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the administrator deletes the user :username using the webUI
+	 * @When the administrator deletes user :username using the webUI
 	 *
 	 * @param string $username
 	 *

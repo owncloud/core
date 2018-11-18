@@ -9,7 +9,7 @@ Feature: favorite
   Scenario Outline: Favorite a folder
     Given using <dav_version> DAV path
     When the user favorites element "/FOLDER" using the WebDAV API
-    Then as the user the folder "/FOLDER" should be favorited
+    Then as the user folder "/FOLDER" should be favorited
     Examples:
       | dav_version |
       | old         |
@@ -19,7 +19,7 @@ Feature: favorite
     Given using <dav_version> DAV path
     When the user favorites element "/FOLDER" using the WebDAV API
     And the user unfavorites element "/FOLDER" using the WebDAV API
-    Then as the user the folder "/FOLDER" should not be favorited
+    Then as the user folder "/FOLDER" should not be favorited
     Examples:
       | dav_version |
       | old         |
@@ -29,7 +29,7 @@ Feature: favorite
   Scenario Outline: Favorite a file
     Given using <dav_version> DAV path
     When the user favorites element "/textfile0.txt" using the WebDAV API
-    Then as the user the file "/textfile0.txt" should be favorited
+    Then as the user file "/textfile0.txt" should be favorited
     Examples:
       | dav_version |
       | old         |
@@ -40,7 +40,7 @@ Feature: favorite
     Given using <dav_version> DAV path
     When the user favorites element "/textfile0.txt" using the WebDAV API
     And the user unfavorites element "/textfile0.txt" using the WebDAV API
-    Then as the user the file "/textfile0.txt" should not be favorited
+    Then as the user file "/textfile0.txt" should not be favorited
     Examples:
       | dav_version |
       | old         |
@@ -123,7 +123,7 @@ Feature: favorite
     And the user has moved file "/textfile0.txt" to "/favoriteFile.txt"
     And the user has shared file "/favoriteFile.txt" with user "user1"
     When the user favorites element "/favoriteFile.txt" using the WebDAV API
-    Then as user "user1" the file "/favoriteFile.txt" should not be favorited
+    Then as user "user1" file "/favoriteFile.txt" should not be favorited
     Examples:
       | dav_version |
       | old         |
@@ -135,7 +135,7 @@ Feature: favorite
     And the user has moved file "/textfile0.txt" to "/favoriteFile.txt"
     And the user has shared file "/favoriteFile.txt" with user "user1"
     When user "user1" favorites element "/favoriteFile.txt" using the WebDAV API
-    Then as the user the file "/favoriteFile.txt" should not be favorited
+    Then as the user file "/favoriteFile.txt" should not be favorited
     Examples:
       | dav_version |
       | old         |

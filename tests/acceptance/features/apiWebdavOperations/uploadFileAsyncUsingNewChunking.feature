@@ -111,7 +111,7 @@ Feature: upload file using new chunking
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |
       | fileId | /^[0-9a-z]{20,}$/ |
-    And as "user0" the file "/myChunkedFile.txt" should exist
+    And as "user0" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:
       | app |
@@ -129,7 +129,7 @@ Feature: upload file using new chunking
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status | /^finished$/      |
       | fileId | /^[0-9a-z]{20,}$/ |
-    And as "user0" the file "/<file-name>" should exist
+    And as "user0" file "/<file-name>" should exist
     And the content of file "/<file-name>" for user "user0" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:
       | app |
@@ -158,7 +158,7 @@ Feature: upload file using new chunking
     Then the HTTP status code should be "201"
     And the following headers should not be set
       | OC-JobStatus-Location |
-    And as "user0" the file "/myChunkedFile.txt" should exist
+    And as "user0" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:
       | app |

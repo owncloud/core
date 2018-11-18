@@ -15,12 +15,12 @@ Feature: encrypt files using user specific keys
   Scenario: encrypt using user keys based encryption
     When the administrator sets the encryption type to "user-keys" using the occ command
     And the administrator encrypts all data using the occ command
-    Then the file "textfile0.txt" of user "brand-new-user" should be encrypted
+    Then file "textfile0.txt" of user "brand-new-user" should be encrypted
 
   Scenario: file gets encrypted if the encryption is enabled and administrator has not encrypted all files but the user has logged in
     When the administrator sets the encryption type to "user-keys" using the occ command
     And user "brand-new-user" has logged in using the webUI
-    Then the file "textfile0.txt" of user "brand-new-user" should be encrypted
+    Then file "textfile0.txt" of user "brand-new-user" should be encrypted
 
   Scenario: decrypt user keys based encryption of all users
     Given these users have been created but not initialized:
@@ -40,5 +40,5 @@ Feature: encrypt files using user specific keys
     And the user has browsed to personal encryption settings page
     And the user has enabled password recovery
     When the administrator decrypts user keys based encryption with recovery key "recoverypass" using the occ command
-    Then the file "textfile0.txt" of user "brand-new-user" should not be encrypted
-    And the file "textfile0.txt" of user "another-new-user" should not be encrypted
+    Then file "textfile0.txt" of user "brand-new-user" should not be encrypted
+    And file "textfile0.txt" of user "another-new-user" should not be encrypted
