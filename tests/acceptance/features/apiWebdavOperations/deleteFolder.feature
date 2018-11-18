@@ -12,7 +12,7 @@ Feature: delete folder
     Given using <dav_version> DAV path
     When user "user0" deletes folder "/PARENT" using the WebDAV API
     Then the HTTP status code should be "204"
-    And as "user0" the folder "/PARENT" should not exist
+    And as "user0" folder "/PARENT" should not exist
     Examples:
       | dav_version |
       | old         |
@@ -22,9 +22,9 @@ Feature: delete folder
     Given using <dav_version> DAV path
     When user "user0" deletes folder "/PARENT/CHILD" using the WebDAV API
     Then the HTTP status code should be "204"
-    And as "user0" the folder "/PARENT/CHILD" should not exist
-    But as "user0" the folder "/PARENT" should exist
-    And as "user0" the file "/PARENT/parent.txt" should exist
+    And as "user0" folder "/PARENT/CHILD" should not exist
+    But as "user0" folder "/PARENT" should exist
+    And as "user0" file "/PARENT/parent.txt" should exist
     Examples:
       | dav_version |
       | old         |

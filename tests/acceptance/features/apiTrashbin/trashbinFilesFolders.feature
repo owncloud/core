@@ -13,8 +13,8 @@ Feature: files and folders exist in the trashbin after being deleted
     Given using <dav-path> DAV path
     And user "user0" has been created
     When user "user0" deletes file "/textfile0.txt" using the WebDAV API
-    Then as "user0" the file "/textfile0.txt" should exist in trash
-    But as "user0" the file "/textfile0.txt" should not exist
+    Then as "user0" file "/textfile0.txt" should exist in trash
+    But as "user0" file "/textfile0.txt" should not exist
     Examples:
       | dav-path |
       | old      |
@@ -25,7 +25,7 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "user0" has been created
     And user "user0" has created a folder "/tmp"
     When user "user0" deletes folder "/tmp" using the WebDAV API
-    Then as "user0" the folder "/tmp" should exist in trash
+    Then as "user0" folder "/tmp" should exist in trash
     Examples:
       | dav-path |
       | old      |
@@ -38,8 +38,8 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
     When user "user0" deletes file "/new-folder/new-file.txt" using the WebDAV API
     Then as "user0" the file with original path "/new-folder/new-file.txt" should exist in trash
-    And as "user0" the file "/new-file.txt" should exist in trash
-    But as "user0" the file "/new-folder/new-file.txt" should not exist
+    And as "user0" file "/new-file.txt" should exist in trash
+    But as "user0" file "/new-folder/new-file.txt" should not exist
     Examples:
       | dav-path |
       | old      |
@@ -54,8 +54,8 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "user0" has shared folder "/shared" with user "user1"
     When user "user0" deletes file "/shared/shared_file.txt" using the WebDAV API
     Then as "user0" the file with original path "/shared/shared_file.txt" should exist in trash
-    And as "user0" the file "/shared_file.txt" should exist in trash
-    But as "user0" the file "/shared/shared_file.txt" should not exist
+    And as "user0" file "/shared_file.txt" should exist in trash
+    But as "user0" file "/shared/shared_file.txt" should not exist
     Examples:
       | dav-path |
       | old      |

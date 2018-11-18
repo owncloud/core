@@ -33,7 +33,7 @@ Feature: Restore deleted files/folders
     Given using <dav-path> DAV path
     And user "user0" has been created
     And user "user0" has deleted file "/textfile0.txt"
-    And as "user0" the file "/textfile0.txt" should exist in trash
+    And as "user0" file "/textfile0.txt" should exist in trash
     And user "user0" has logged in to a web-style session
     When user "user0" restores the folder with original path "/textfile0.txt" using the trashbin API
     Then as "user0" the folder with original path "/textfile0.txt" should not exist in trash
@@ -60,7 +60,7 @@ Feature: Restore deleted files/folders
     And user "user0" has logged in to a web-style session
     When user "user0" restores the file with original path "/new-folder/new-file.txt" using the trashbin API
     Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
-    And as "user0" the file "/new-folder/new-file.txt" should exist
+    And as "user0" file "/new-folder/new-file.txt" should exist
     Examples:
       | dav-path |
       | old      |
@@ -76,7 +76,7 @@ Feature: Restore deleted files/folders
     And user "user0" has logged in to a web-style session
     When user "user0" restores the file with original path "/new-folder/new-file.txt" using the trashbin API
     Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
-    And as "user0" the file "/new-file.txt" should exist
+    And as "user0" file "/new-file.txt" should exist
     Examples:
       | dav-path |
       | old      |
@@ -93,7 +93,7 @@ Feature: Restore deleted files/folders
     When user "user0" restores the folder with original path "/new-folder" using the trashbin API
     And user "user0" restores the file with original path "/new-folder/new-file.txt" using the trashbin API
     Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
-    And as "user0" the file "/new-folder/new-file.txt" should exist
+    And as "user0" file "/new-folder/new-file.txt" should exist
     Examples:
       | dav-path |
       | old      |
@@ -110,7 +110,7 @@ Feature: Restore deleted files/folders
     When user "user0" creates a folder "/new-folder" using the WebDAV API
     And user "user0" restores the file with original path "/new-folder/new-file.txt" using the trashbin API
     Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
-    And as "user0" the file "/new-folder/new-file.txt" should exist
+    And as "user0" file "/new-folder/new-file.txt" should exist
     Examples:
       | dav-path |
       | old      |

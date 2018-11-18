@@ -415,7 +415,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should be able to download the file "([^"]*)" using the sharing API$/
+	 * @Then /^user "([^"]*)" should be able to download file "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $user
 	 * @param string $path

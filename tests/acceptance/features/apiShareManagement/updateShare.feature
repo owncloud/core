@@ -297,8 +297,8 @@ Feature: sharing
       | file_parent       | A_NUMBER             |
       | displayname_owner | User One             |
       | mimetype          | httpd/unix-directory |
-    And as "user0" the folder "/folder1/folder2" should not exist
-    And as "user2" the folder "/folder2" should exist
+    And as "user0" folder "/folder1/folder2" should not exist
+    And as "user2" folder "/folder2" should exist
 
   Scenario: Share ownership change after moving a shared file to another share
     Given user "user1" has been created
@@ -324,8 +324,8 @@ Feature: sharing
       | file_parent       | A_NUMBER             |
       | displayname_owner | User Two             |
       | mimetype          | httpd/unix-directory |
-    And as "user0" the folder "/user0-folder/folder2" should not exist
-    And as "user2" the folder "/user2-folder/folder2" should exist
+    And as "user0" folder "/user0-folder/folder2" should not exist
+    And as "user2" folder "/user2-folder/folder2" should exist
 
   @public_link_share-feature-required
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions

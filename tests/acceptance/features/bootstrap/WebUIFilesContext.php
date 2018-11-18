@@ -581,8 +581,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user renames the file/folder :fromName to :toName using the webUI
-	 * @Given the user has renamed the file/folder :fromName to :toName using the webUI
+	 * @When the user renames file/folder :fromName to :toName using the webUI
+	 * @Given the user has renamed file/folder :fromName to :toName using the webUI
 	 *
 	 * @param string $fromName
 	 * @param string $toName
@@ -629,8 +629,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user renames the file/folder :fromName to one of these names using the webUI
-	 * @Given the user has renamed the file/folder :fromName to one of these names using the webUI
+	 * @When the user renames file/folder :fromName to one of these names using the webUI
+	 * @Given the user has renamed file/folder :fromName to one of these names using the webUI
 	 *
 	 * @param string $fromName
 	 * @param TableNode $table
@@ -678,8 +678,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * has an "Unshare" entry in the file actions menu. Clicking it works just
 	 * like delete.
 	 *
-	 * @When the user deletes/unshares the file/folder :name using the webUI
-	 * @Given the user has deleted/unshared the file/folder :name using the webUI
+	 * @When the user deletes/unshares file/folder :name using the webUI
+	 * @Given the user has deleted/unshared file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 *
@@ -782,8 +782,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user moves the file/folder :name into the folder :destination using the webUI
-	 * @Given the user has moved the file/folder :name into the folder :destination using the webUI
+	 * @When the user moves file/folder :name into folder :destination using the webUI
+	 * @Given the user has moved file/folder :name into folder :destination using the webUI
 	 *
 	 * @param string|array $name
 	 * @param string|array $destination
@@ -821,8 +821,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user batch moves these files/folders into the folder :folderName using the webUI
-	 * @Given the user has batch moved these files/folders into the folder :folderName using the webUI
+	 * @When the user batch moves these files/folders into folder :folderName using the webUI
+	 * @Given the user has batch moved these files/folders into folder :folderName using the webUI
 	 *
 	 * @param string $folderName
 	 * @param TableNode $files table of file names
@@ -856,8 +856,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user uploads overwriting the file :name using the webUI and retries if the file is locked
-	 * @Given the user has uploaded overwriting the file :name using the webUI and retries if the file is locked
+	 * @When the user uploads overwriting file :name using the webUI and retries if the file is locked
+	 * @Given the user has uploaded overwriting file :name using the webUI and retries if the file is locked
 	 *
 	 * @param string $name
 	 *
@@ -904,8 +904,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user uploads the file :name keeping both new and existing files using the webUI
-	 * @Given the user has uploaded the file :name keeping both new and existing files using the webUI
+	 * @When the user uploads file :name keeping both new and existing files using the webUI
+	 * @Given the user has uploaded file :name keeping both new and existing files using the webUI
 	 *
 	 * @param string $name
 	 *
@@ -920,8 +920,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user uploads the file :name using the webUI
-	 * @Given the user has uploaded the file :name using the webUI
+	 * @When the user uploads file :name using the webUI
+	 * @Given the user has uploaded file :name using the webUI
 	 *
 	 * @param string $name
 	 *
@@ -1046,7 +1046,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with the path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|shared with others page|tags page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
+	 * @Then /^(?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|shared with others page|tags page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
 	 *
 	 * @param string $name enclosed in single or double quotes
 	 * @param string $path
@@ -1150,8 +1150,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the user opens the (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
-	 * @Given /^the user has opened the (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
+	 * @When /^the user opens (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
+	 * @Given /^the user has opened (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
 	 *
 	 * @param string $typeOfFilesPage
 	 * @param string $fileOrFolder
@@ -1236,7 +1236,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
+	 * @Then /^(?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |in |)(files page|trashbin|favorites page|shared-with-you page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
 	 *
 	 * @param string $name enclosed in single or double quotes
 	 * @param string $shouldOrNot
@@ -1390,7 +1390,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the moved elements should (not|)\s?be listed in the folder ['"](.*)['"] on the webUI$/
+	 * @Then /^the moved elements should (not|)\s?be listed in folder ['"](.*)['"] on the webUI$/
 	 *
 	 * @param string $shouldOrNot
 	 * @param string $folderName
@@ -1479,7 +1479,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then near the file/folder :name a tooltip with the text :toolTipText should be displayed on the webUI
+	 * @Then near file/folder :name a tooltip with the text :toolTipText should be displayed on the webUI
 	 *
 	 * @param string $name
 	 * @param string $toolTipText
@@ -1497,8 +1497,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 	
 	/**
-	 * @When the user restores the file/folder :fname from the trashbin using the webUI
-	 * @Given the user has restored the file/folder :fname from the trashbin using the webUI
+	 * @When the user restores file/folder :fname from the trashbin using the webUI
+	 * @Given the user has restored file/folder :fname from the trashbin using the webUI
 	 *
 	 * @param string $fname
 	 *
@@ -1524,7 +1524,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then it should not be possible to delete the file/folder :name using the webUI
+	 * @Then it should not be possible to delete file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 *
@@ -1657,8 +1657,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user marks the file/folder :fileOrFolderName as favorite using the webUI
-	 * @Given the user has marked the file/folder :fileOrFolderName as favorite using the webUI
+	 * @When the user marks file/folder :fileOrFolderName as favorite using the webUI
+	 * @Given the user has marked file/folder :fileOrFolderName as favorite using the webUI
 	 *
 	 * @param string $fileOrFolderName
 	 *
@@ -1674,7 +1674,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the file/folder :fileOrFolderName should be marked as favorite on the webUI
+	 * @Then file/folder :fileOrFolderName should be marked as favorite on the webUI
 	 *
 	 * @param string $fileOrFolderName
 	 *
@@ -1710,7 +1710,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the file/folder :fileOrFolderName should not be marked as favorite on the webUI
+	 * @Then file/folder :fileOrFolderName should not be marked as favorite on the webUI
 	 *
 	 * @param string $fileOrFolderName
 	 *
@@ -1900,7 +1900,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user opens the file action menu of the file/folder :name in the webUI
+	 * @When the user opens the file action menu of file/folder :name in the webUI
 	 *
 	 * @param string $name Name of the file/Folder
 	 *

@@ -11,7 +11,7 @@ Feature: create folder
   Scenario Outline: create a folder
     Given using <dav_version> DAV path
     When user "user0" creates a folder "<folder_name>" using the WebDAV API
-    Then as "user0" the folder "<folder_name>" should exist
+    Then as "user0" folder "<folder_name>" should exist
     Examples:
       | dav_version | folder_name     |
       | old         | /upload         |

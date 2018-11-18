@@ -14,36 +14,36 @@ Feature: Search
   @smokeTest
   Scenario: Simple search
     When the user searches for "lorem" using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
-    And the file "lorem-big.txt" should be listed on the webUI
-    And the file "lorem.txt" with the path "/simple-folder" should be listed in the search results in other folders section on the webUI
-    And the file "lorem-big.txt" with the path "/simple-folder" should be listed in the search results in other folders section on the webUI
-    And the file "lorem.txt" with the path "/0" should be listed in the search results in other folders section on the webUI
-    And the file "lorem.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
-    And the file "lorem-big.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem-big.txt" should be listed on the webUI
+    And file "lorem.txt" with path "/simple-folder" should be listed in the search results in the other folders section on the webUI
+    And file "lorem-big.txt" with path "/simple-folder" should be listed in the search results in the other folders section on the webUI
+    And file "lorem.txt" with path "/0" should be listed in the search results in the other folders section on the webUI
+    And file "lorem.txt" with path "/strängé नेपाली folder" should be listed in the search results in the other folders section on the webUI
+    And file "lorem-big.txt" with path "/strängé नेपाली folder" should be listed in the search results in the other folders section on the webUI
 
   Scenario: search for folders
     When the user searches for "folder" using the webUI
-    Then the folder "simple-folder" should be listed on the webUI
-    And the folder "strängé नेपाली folder" should be listed on the webUI
-    And the file "zzzz-must-be-last-file-in-folder.txt" should be listed on the webUI
-    And the folder "simple-empty-folder" with the path "/'single'quotes" should be listed in the search results in other folders section on the webUI
-    And the file "zzzz-must-be-last-file-in-folder.txt" with the path "/simple-folder" should be listed in the search results in other folders section on the webUI
-    And the file "zzzz-must-be-last-file-in-folder.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
-    But the file "lorem.txt" should not be listed on the webUI
-    And the file "lorem.txt" should not be listed in the search results in other folders section on the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "strängé नेपाली folder" should be listed on the webUI
+    And file "zzzz-must-be-last-file-in-folder.txt" should be listed on the webUI
+    And folder "simple-empty-folder" with path "/'single'quotes" should be listed in the search results in the other folders section on the webUI
+    And file "zzzz-must-be-last-file-in-folder.txt" with path "/simple-folder" should be listed in the search results in the other folders section on the webUI
+    And file "zzzz-must-be-last-file-in-folder.txt" with path "/strängé नेपाली folder" should be listed in the search results in the other folders section on the webUI
+    But file "lorem.txt" should not be listed on the webUI
+    And file "lorem.txt" should not be listed in the search results in the other folders section on the webUI
 
   Scenario: search in sub folder
-    When the user opens the folder "simple-folder" using the webUI
+    When the user opens folder "simple-folder" using the webUI
     And the user searches for "lorem" using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
-    And the file "lorem-big.txt" should be listed on the webUI
-    And the file "lorem.txt" with the path "/" should be listed in the search results in other folders section on the webUI
-    And the file "lorem-big.txt" with the path "/" should be listed in the search results in other folders section on the webUI
-    And the file "lorem.txt" with the path "/0" should be listed in the search results in other folders section on the webUI
-    And the file "lorem.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
-    And the file "lorem-big.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
-    But the file "lorem.txt" with the path "/simple-folder" should not be listed in the search results in other folders section on the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem-big.txt" should be listed on the webUI
+    And file "lorem.txt" with path "/" should be listed in the search results in the other folders section on the webUI
+    And file "lorem-big.txt" with path "/" should be listed in the search results in the other folders section on the webUI
+    And file "lorem.txt" with path "/0" should be listed in the search results in the other folders section on the webUI
+    And file "lorem.txt" with path "/strängé नेपाली folder" should be listed in the search results in the other folders section on the webUI
+    And file "lorem-big.txt" with path "/strängé नेपाली folder" should be listed in the search results in the other folders section on the webUI
+    But file "lorem.txt" with path "/simple-folder" should not be listed in the search results in the other folders section on the webUI
 
   @systemtags-app-required
   Scenario: search for a file using a tag
@@ -51,7 +51,7 @@ Feature: Search
     And user "user1" has added the tag "ipsum" to "/lorem.txt"
     When the user browses to the tags page
     And the user searches for tag "ipsum" using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
 
   @systemtags-app-required
   Scenario: search for a file with multiple tags
@@ -63,8 +63,8 @@ Feature: Search
     When the user browses to the tags page
     And the user searches for tag "lorem" using the webUI
     And the user searches for tag "ipsum" using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
-    And the file "testimage.jpg" should not be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "testimage.jpg" should not be listed on the webUI
 
   @systemtags-app-required
   Scenario: search for a file with tags
@@ -73,15 +73,15 @@ Feature: Search
     And user "user1" has added the tag "lorem" to "/simple-folder/lorem.txt"
     When the user browses to the tags page
     And the user searches for tag "lorem" using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
-    And the file "lorem.txt" with the path "" should be listed in the tags page on the webUI
-    And the file "lorem.txt" with the path "/simple-folder" should be listed in the tags page on the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem.txt" with path "" should be listed in the tags page on the webUI
+    And file "lorem.txt" with path "/simple-folder" should be listed in the tags page on the webUI
 
   Scenario: Search for a shared file
     When user "user0" shares file "/lorem.txt" with user "user1" using the sharing API
     And the user reloads the current page of the webUI
     And the user searches for "lorem" using the webUI
-    Then the file "lorem (2).txt" should be listed on the webUI
+    Then file "lorem (2).txt" should be listed on the webUI
 
   Scenario: Search for a re-shared file
     Given user "user2" has been created
@@ -89,37 +89,37 @@ Feature: Search
     And user "user0" shares file "/lorem (2).txt" with user "user1" using the sharing API
     And the user reloads the current page of the webUI
     And the user searches for "lorem" using the webUI
-    Then the file "lorem (2).txt" should be listed on the webUI
+    Then file "lorem (2).txt" should be listed on the webUI
 
   Scenario: Search for a shared folder
     When user "user0" shares folder "simple-folder" with user "user1" using the sharing API
     And the user reloads the current page of the webUI
     And the user searches for "simple" using the webUI
-    Then the folder "simple-folder (2)" should be listed on the webUI
+    Then folder "simple-folder (2)" should be listed on the webUI
 
   Scenario: Search for a file after name is changed
-    When the user renames the file "lorem.txt" to "torem.txt" using the webUI
+    When the user renames file "lorem.txt" to "torem.txt" using the webUI
     And the user searches for "torem" using the webUI
-    Then the file "lorem.txt" should not be listed on the webUI
-    And the file "torem.txt" should be listed on the webUI
+    Then file "lorem.txt" should not be listed on the webUI
+    And file "torem.txt" should be listed on the webUI
 
   Scenario: Search for a newly uploaded file
     Given user "user1" has uploaded file with content "does-not-matter" to "torem.txt"
     And user "user1" has uploaded file with content "does-not-matter" to "simple-folder/another-torem.txt"
     When the user searches for "torem" using the webUI
-    Then the file "torem.txt" with the path "/" should be listed in the search results in other folders section on the webUI
-    And the file "another-torem.txt" with the path "/simple-folder" should be listed in the search results in other folders section on the webUI
+    Then file "torem.txt" with path "/" should be listed in the search results in the other folders section on the webUI
+    And file "another-torem.txt" with path "/simple-folder" should be listed in the search results in the other folders section on the webUI
 
   Scenario: Search for files with difficult names
     Given user "user1" has uploaded file with content "does-not-matter" to "/strängéनेपालीloremfile.txt"
     And user "user1" has uploaded file with content "does-not-matter" to "/strängé नेपाली folder/strängéनेपालीloremfile.txt"
     When the user searches for "lorem" using the webUI
-    Then the file "strängéनेपालीloremfile.txt" with the path "/" should be listed in the search results in other folders section on the webUI
-    And the file "strängéनेपालीloremfile.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
+    Then file "strängéनेपालीloremfile.txt" with path "/" should be listed in the search results in the other folders section on the webUI
+    And file "strängéनेपालीloremfile.txt" with path "/strängé नेपाली folder" should be listed in the search results in the other folders section on the webUI
 
   Scenario: Search for files with difficult names and difficult search phrase
     Given user "user1" has uploaded file with content "does-not-matter" to "/strängéनेपालीloremfile.txt"
     And user "user1" has uploaded file with content "does-not-matter" to "/strängé नेपाली folder/strängéनेपालीloremfile.txt"
     When the user searches for "strängéनेपाली" using the webUI
-    Then the file "strängéनेपालीloremfile.txt" with the path "/" should be listed in the search results in other folders section on the webUI
-    And the file "strängéनेपालीloremfile.txt" with the path "/strängé नेपाली folder" should be listed in the search results in other folders section on the webUI
+    Then file "strängéनेपालीloremfile.txt" with path "/" should be listed in the search results in the other folders section on the webUI
+    And file "strängéनेपालीloremfile.txt" with path "/strängé नेपाली folder" should be listed in the search results in the other folders section on the webUI
