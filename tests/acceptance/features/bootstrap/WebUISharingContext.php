@@ -140,7 +140,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserSharesTheFileFolderWithTheUserUsingTheWebUI(
+	public function theUserSharesFileFolderWithUserUsingTheWebUI(
 		$folder, $remote, $user, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
@@ -175,7 +175,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserSharesTheFileFolderWithGroupUsingTheWebUI(
+	public function theUserSharesFileFolderWithGroupUsingTheWebUI(
 		$folder, $group
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
@@ -200,7 +200,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserOpensTheShareDialogForTheFileFolder($name) {
+	public function theUserOpensTheShareDialogForFileFolder($name) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
 			$name, $this->getSession()
@@ -333,8 +333,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserCreatesANewPublicLinkForUsingTheWebUI($name) {
-		$this->theUserCreatesANewPublicLinkForUsingTheWebUIWith($name);
+	public function theUserCreatesANewPublicLinkForFileFolderUsingTheWebUI($name) {
+		$this->theUserCreatesANewPublicLinkForFileFolderUsingTheWebUIWith($name);
 	}
 
 	/**
@@ -352,7 +352,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserCreatesANewPublicLinkForUsingTheWebUIWith(
+	public function theUserCreatesANewPublicLinkForFileFolderUsingTheWebUIWith(
 		$name, TableNode $settings = null
 	) {
 		$linkName = $this->createPublicShareLink($name, $settings);
@@ -374,7 +374,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserTriesToCreateANewPublicLinkForUsingTheWebUIWith(
+	public function theUserTriesToCreateANewPublicLinkForFileFolderUsingTheWebUIWith(
 		$name, TableNode $settings = null
 	) {
 		$this->linkName = $this->createPublicShareLink($name, $settings);
@@ -453,7 +453,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$userName, $fileName, TableNode $permissionsTable
 	) {
 		$userName = $this->featureContext->substituteInLineCodes($userName);
-		$this->theUserOpensTheShareDialogForTheFileFolder($fileName);
+		$this->theUserOpensTheShareDialogForFileFolder($fileName);
 		$this->sharingDialog->setSharingPermissions(
 			$userName, $permissionsTable->getRowsHash()
 		);
@@ -798,7 +798,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFileFolderShouldBeMarkedAsSharedBy(
+	public function fileFolderShouldBeMarkedAsSharedBy(
 		$fileOrFolder, $itemName, $sharedWithGroup, $sharerName
 	) {
 		//close any open sharing dialog
@@ -907,12 +907,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function itShouldNotBePossibleToShareUsingTheWebUI(
+	public function itShouldNotBePossibleToShareFileFolderUsingTheWebUI(
 		$fileName, $shareWith = null
 	) {
 		$sharingWasPossible = false;
 		try {
-			$this->theUserSharesTheFileFolderWithTheUserUsingTheWebUI(
+			$this->theUserSharesFileFolderWithUserUsingTheWebUI(
 				$fileName, null, $shareWith, 2, true
 			);
 			$sharingWasPossible = true;
