@@ -25,7 +25,7 @@ Feature: restrict Sharing
     Given the setting "Restrict users to only share with users in their groups" in the section "Sharing" has been enabled
     When the user browses to the files page
     Then it should not be possible to share the folder "simple-folder" with "User Three" using the webUI
-    When the user shares the folder "simple-folder" with the user "User One" using the webUI
+    When the user shares folder "simple-folder" with user "User One" using the webUI
     And the user re-logs in as "user1" using the webUI
     Then the folder "simple-folder (2)" should be listed on the webUI
 
@@ -54,6 +54,6 @@ Feature: restrict Sharing
     When the user browses to the files page
     Then it should not be possible to share the folder "simple-folder" with "grp1" using the webUI
     And it should not be possible to share the folder "simple-folder" with "grp2" using the webUI
-    When the user shares the folder "simple-folder" with the user "User One" using the webUI
+    When the user shares folder "simple-folder" with user "User One" using the webUI
     And the user re-logs in as "user1" using the webUI
     Then the folder "simple-folder (2)" should be listed on the webUI

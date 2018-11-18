@@ -12,8 +12,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "user1" has logged in using the webUI
 
   Scenario: test the single steps of sharing a folder to a remote server
-    When the user shares the folder "simple-folder" with the remote user "user1@%remote_server_without_scheme%" using the webUI
-    And the user shares the folder "simple-empty-folder" with the remote user "user1@%remote_server_without_scheme%" using the webUI
+    When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
+    And the user shares folder "simple-empty-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
     And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
     And using server "REMOTE"
@@ -55,7 +55,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   @skipOnMICROSOFTEDGE
   Scenario: share a folder with an remote user and prohibit deleting - local server shares - remote server receives
-    When the user shares the folder "simple-folder" with the remote user "user1@%remote_server_without_scheme%" using the webUI
+    When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
     And the user sets the sharing permissions of "user1@%remote_server_without_scheme% (federated)" for "simple-folder" using the webUI to
       | delete | no |
     And user "user1" re-logs in to "%remote_server%" using the webUI
@@ -66,7 +66,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
   @skipOnMICROSOFTEDGE
   Scenario: share a folder with an remote user and prohibit deleting - remote server shares - local server receives
     When user "user1" re-logs in to "%remote_server%" using the webUI
-    And the user shares the folder "simple-folder" with the remote user "user1@%local_server_without_scheme%" using the webUI
+    And the user shares folder "simple-folder" with remote user "user1@%local_server_without_scheme%" using the webUI
     And the user sets the sharing permissions of "user1@%local_server_without_scheme% (federated)" for "simple-folder" using the webUI to
       | delete | no |
     And user "user1" re-logs in to "%local_server%" using the webUI
@@ -188,7 +188,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
   Scenario: test sharing long file names with federation share
     When user "user1" moves file "/lorem.txt" to "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" using the WebDAV API
     And the user has reloaded the current page of the webUI
-    And the user shares the file "averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" with the remote user "user1@%remote_server_without_scheme%" using the webUI
+    And the user shares file "averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" with remote user "user1@%remote_server_without_scheme%" using the webUI
     And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
     And using server "REMOTE"

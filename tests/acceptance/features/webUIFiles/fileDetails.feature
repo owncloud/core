@@ -56,7 +56,7 @@ Feature: User can open the details panel for any file or folder
 
   @comments-app-required
   Scenario: user shares a file and then the details dialog should work in a Shared with others page
-    Given the user has shared the folder "simple-folder" with the user "User Two" using the webUI
+    Given the user has shared folder "simple-folder" with user "User Two" using the webUI
     When the user browses to the shared-with-others page
     Then the folder "simple-folder" should be listed on the webUI
     When the user opens the file action menu of the folder "simple-folder" in the webUI
@@ -70,7 +70,7 @@ Feature: User can open the details panel for any file or folder
 
   @comments-app-required
   Scenario: the recipient user should be able to view different areas of details panel in Shared with you page
-    Given the user has shared the folder "simple-folder" with the user "User Two" using the webUI
+    Given the user has shared folder "simple-folder" with user "User Two" using the webUI
     And the user re-logs in as "user2" using the webUI
     When the user browses to the shared-with-you page
     Then the folder "simple-folder (2)" should be listed on the webUI
