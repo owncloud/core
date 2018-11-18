@@ -916,7 +916,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userDownloadsTheFileUsingTheAPI(
+	public function userDownloadsFileUsingTheAPI(
 		$user, $fileName
 	) {
 		$this->downloadFileAsUserUsingPassword($user, $fileName);
@@ -1172,7 +1172,7 @@ trait WebDav {
 	 * @return array
 	 * @throws \Exception
 	 */
-	public function asTheFileOrFolderShouldNotExist($user, $entry, $path) {
+	public function asFileOrFolderShouldNotExist($user, $entry, $path) {
 		$client = $this->getSabreClient($user);
 		$response = $client->request(
 			'GET', $this->makeSabrePath($user, $path)
@@ -1196,7 +1196,7 @@ trait WebDav {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function asTheFileOrFolderShouldExist($user, $entry, $path) {
+	public function asFileOrFolderShouldExist($user, $entry, $path) {
 		$this->response = $this->listFolder($user, $path, 0);
 		try {
 			$this->thePropertiesResponseShouldContainAnEtag();
@@ -1298,7 +1298,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function asUserTheFolderShouldContainAPropertyWithValueOrWithValue(
+	public function asUserFolderShouldContainAPropertyWithValueOrWithValue(
 		$user, $path, $property, $expectedValue, $altExpectedValue
 	) {
 		$this->response = $this->listFolder(
@@ -1319,10 +1319,10 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function asUserTheFolderShouldContainAPropertyWithValue(
+	public function asUserFolderShouldContainAPropertyWithValue(
 		$user, $path, $property, $value
 	) {
-		$this->asUserTheFolderShouldContainAPropertyWithValueOrWithValue(
+		$this->asUserFolderShouldContainAPropertyWithValueOrWithValue(
 			$user, $path, $property, $value, $value
 		);
 	}
@@ -1338,7 +1338,7 @@ trait WebDav {
 	 */
 	public function asUserTheFileOrFolderShouldBeFavorited($user, $path, $expectedValue = 1) {
 		$property = "{http://owncloud.org/ns}favorite";
-		$this->asUserTheFolderShouldContainAPropertyWithValue(
+		$this->asUserFolderShouldContainAPropertyWithValue(
 			$user, $path, $property, $expectedValue
 		);
 	}
@@ -1351,7 +1351,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function asUserTheFileShouldNotBeFavorited($user, $path) {
+	public function asUserFileShouldNotBeFavorited($user, $path) {
 		$this->asUserTheFileOrFolderShouldBeFavorited($user, $path, 0);
 	}
 
@@ -1363,7 +1363,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function theFileOrFolderShouldBeFavorited($path, $expectedValue = 1) {
+	public function asTheUserFileOrFolderShouldBeFavorited($path, $expectedValue = 1) {
 		$this->asUserTheFileOrFolderShouldBeFavorited($this->getCurrentUser(), $path, $expectedValue);
 	}
 
@@ -1374,8 +1374,8 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function theFileOrFolderShouldNotBeFavorited($path) {
-		$this->theFileOrFolderShouldBeFavorited($path, 0);
+	public function asTheUserFileOrFolderShouldNotBeFavorited($path) {
+		$this->asTheUserFileOrFolderShouldBeFavorited($path, 0);
 	}
 
 	/**
@@ -1986,7 +1986,7 @@ trait WebDav {
 	 */
 	public function userShouldBeAbleToUploadFileTo($user, $source, $destination) {
 		$this->userUploadsAFileTo($user, $source, $destination);
-		$this->asTheFileOrFolderShouldExist($user, null, $destination);
+		$this->asFileOrFolderShouldExist($user, null, $destination);
 	}
 
 	/**
@@ -2000,7 +2000,7 @@ trait WebDav {
 	 */
 	public function theUserShouldNotBeAbleToUploadFileTo($user, $source, $destination) {
 		$this->userUploadsAFileTo($user, $source, $destination);
-		$this->asTheFileOrFolderShouldNotExist($user, null, $destination);
+		$this->asFileOrFolderShouldNotExist($user, null, $destination);
 	}
 
 	/**
@@ -2044,7 +2044,7 @@ trait WebDav {
 	) {
 		foreach (['old', 'new'] as $davVersion) {
 			foreach (["{$davVersion}dav-regular", "{$davVersion}dav-{$davVersion}chunking"] as $suffix) {
-				$this->asTheFileOrFolderShouldExist(
+				$this->asFileOrFolderShouldExist(
 					$user, 'file', "$destination-$suffix"
 				);
 			}

@@ -422,7 +422,7 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userShouldBeAbleToDownloadTheFileUsingTheSharingApi($user, $path) {
+	public function userShouldBeAbleToDownloadFileUsingTheSharingApi($user, $path) {
 		$path = \ltrim($path, "/");
 		$fullUrl = $this->getBaseUrl() . "/remote.php/webdav/$path";
 		$this->checkUserDownload($fullUrl, $user, "text/plain");

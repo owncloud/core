@@ -81,7 +81,7 @@ trait Trashbin {
 	 *
 	 * @return void
 	 */
-	public function asTheFileOrFolderExistsInTrash($user, $path) {
+	public function asFileOrFolderExistsInTrash($user, $path) {
 		$path = \trim($path, '/');
 		$sections = \explode('/', $path, 2);
 

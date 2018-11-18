@@ -590,7 +590,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserRenamesTheFileFolderToUsingTheWebUI(
+	public function theUserRenamesFileFolderToUsingTheWebUI(
 		$fromName, $toName
 	) {
 		$pageObject = $this->getCurrentPageObject();
@@ -638,7 +638,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserRenamesTheFileToOneOfTheseNamesUsingTheWebUI(
+	public function theUserRenamesFileToOneOfTheseNamesUsingTheWebUI(
 		$fromName, TableNode $table
 	) {
 		$pageObject = $this->getCurrentPageObject();
@@ -686,7 +686,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserDeletesTheFileUsingTheWebUI($name) {
+	public function theUserDeletesFileUsingTheWebUI($name) {
 		$this->deleteTheFileUsingTheWebUI($name);
 	}
 
@@ -790,7 +790,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserMovesTheFileFolderToUsingTheWebUI($name, $destination) {
+	public function theUserMovesFileFolderIntoFolderUsingTheWebUI($name, $destination) {
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->moveFileTo($name, $destination, $this->getSession());
 	}
@@ -815,7 +815,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$itemToMoveNameParts[] = $namePartsRow['item-to-move-name-parts'];
 			$destinationNameParts[] = $namePartsRow['destination-name-parts'];
 		}
-		$this->theUserMovesTheFileFolderToUsingTheWebUI(
+		$this->theUserMovesFileFolderIntoFolderUsingTheWebUI(
 			$itemToMoveNameParts, $destinationNameParts
 		);
 	}
@@ -831,26 +831,28 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserBatchMovesTheseFilesIntoTheFolderUsingTheWebUI(
+	public function theUserBatchMovesTheseFilesIntoFolderUsingTheWebUI(
 		$folderName, TableNode $files
 	) {
 		$this->theUserMarksTheseFilesForBatchActionUsingTheWebUI($files);
 		$firstFileName = $files->getRow(1)[0];
-		$this->theUserMovesTheFileFolderToUsingTheWebUI($firstFileName, $folderName);
+		$this->theUserMovesFileFolderIntoFolderUsingTheWebUI(
+			$firstFileName, $folderName
+		);
 		$this->movedElementsTable = $files;
 	}
 
 	/**
-	 * @When the user uploads overwriting the file :name using the webUI
-	 * @Given the user has uploaded overwriting the file :name using the webUI
+	 * @When the user uploads overwriting file :name using the webUI
+	 * @Given the user has uploaded overwriting file :name using the webUI
 	 *
 	 * @param string $name
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserUploadsOverwritingTheFileUsingTheWebUI($name) {
-		$this->theUserUploadsTheFileUsingTheWebUI($name);
+	public function theUserUploadsOverwritingFileUsingTheWebUI($name) {
+		$this->theUserUploadsFileUsingTheWebUI($name);
 		$this->choiceInUploadConflictDialogWebUI("new");
 		$this->theUserChoosesToInTheUploadDialog("Continue");
 	}
@@ -864,13 +866,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserUploadsOverwritingTheFileUsingTheWebUIRetry($name) {
+	public function theUserUploadsOverwritingFileUsingTheWebUIRetry($name) {
 		$previousNotificationsCount = 0;
 
 		for ($retryCounter = 0;
 			 $retryCounter < STANDARD_RETRY_COUNT;
 			 $retryCounter++) {
-			$this->theUserUploadsOverwritingTheFileUsingTheWebUI($name);
+			$this->theUserUploadsOverwritingFileUsingTheWebUI($name);
 
 			try {
 				$notifications = $this->getCurrentPageObject()->getNotifications();
@@ -912,8 +914,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserUploadsTheFileKeepingNewExistingUsingTheWebUI($name) {
-		$this->theUserUploadsTheFileUsingTheWebUI($name);
+	public function theUserUploadsFileKeepingNewExistingUsingTheWebUI($name) {
+		$this->theUserUploadsFileUsingTheWebUI($name);
 		$this->choiceInUploadConflictDialogWebUI("new");
 		$this->choiceInUploadConflictDialogWebUI("existing");
 		$this->theUserChoosesToInTheUploadDialog("Continue");
@@ -927,7 +929,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserUploadsTheFileUsingTheWebUI($name) {
+	public function theUserUploadsFileUsingTheWebUI($name) {
 		$this->getCurrentPageObject()->uploadFile($this->getSession(), $name);
 	}
 
@@ -1057,7 +1059,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFileFolderWithThePathShouldBeListedOnTheWebUI(
+	public function fileFolderWithPathShouldBeListedOnTheWebUI(
 		$name, $path, $shouldOrNot, $typeOfFilesPage = "", $folder = ""
 	) {
 		// The capturing groups of the regex include the quotes at each
@@ -1160,7 +1162,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserOpensTheFolderNamedUsingTheWebUI(
+	public function theUserOpensFolderNamedUsingTheWebUI(
 		$typeOfFilesPage, $fileOrFolder, $name
 	) {
 		// The capturing groups of the regex include the quotes at each
@@ -1246,7 +1248,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFileFolderShouldBeListedOnTheWebUI(
+	public function fileFolderShouldBeListedOnTheWebUI(
 		$name, $shouldOrNot, $typeOfFilesPage = "", $folder = ""
 	) {
 		// The capturing groups of the regex include the quotes at each
@@ -1398,7 +1400,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theMovedElementsShouldBeListedInTheFolderOnTheWebUI(
+	public function theMovedElementsShouldBeListedInFolderOnTheWebUI(
 		$shouldOrNot, $folderName
 	) {
 		$this->theUserOpensTheFolderUsingTheWebUI("", "folder", $folderName);
@@ -1486,7 +1488,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function nearTheFileATooltipWithTheTextShouldBeDisplayedOnTheWebUI(
+	public function nearFileATooltipWithTheTextShouldBeDisplayedOnTheWebUI(
 		$name,
 		$toolTipText
 	) {
@@ -1504,7 +1506,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function restoreFileFolderFromTrashbinUsingTheWebUI($fname) {
+	public function theUserRestoresFileFolderFromTheTrashbinUsingTheWebUI($fname) {
 		$session = $this->getSession();
 		$this->trashbinPage->restore($fname, $session);
 	}
@@ -1531,7 +1533,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function itShouldNotBePossibleToDeleteUsingTheWebUI($name) {
+	public function itShouldNotBePossibleToDeleteFileFolderUsingTheWebUI($name) {
 		try {
 			$this->deleteTheFileUsingTheWebUI($name, false);
 		} catch (ElementNotFoundException $e) {
@@ -1665,7 +1667,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserMarksTheFileAsFavoriteUsingTheWebUI($fileOrFolderName) {
+	public function theUserMarksFileAsFavoriteUsingTheWebUI($fileOrFolderName) {
 		$fileRow = $this->filesPage->findFileRowByName(
 			$fileOrFolderName, $this->getSession()
 		);
@@ -1681,7 +1683,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFileShouldBeMarkedAsFavoriteOnTheWebUI($fileOrFolderName) {
+	public function fileFolderShouldBeMarkedAsFavoriteOnTheWebUI($fileOrFolderName) {
 		$fileRow = $this->filesPage->findFileRowByName(
 			$fileOrFolderName, $this->getSession()
 		);
@@ -1717,7 +1719,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFolderShouldNotBeMarkedAsFavoriteOnTheWebUI(
+	public function fileFolderShouldNotBeMarkedAsFavoriteOnTheWebUI(
 		$fileOrFolderName
 	) {
 		$fileRow = $this->filesPage->findFileRowByName(
@@ -1906,7 +1908,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserOpensTheFileActionMenuOfTheFolderInTheWebui($name) {
+	public function theUserOpensTheFileActionMenuOfFileFolderInTheWebui($name) {
 		$session = $this->getSession();
 		$this->selectedFileRow = $this->getCurrentPageObject()->findFileRowByName($name, $session);
 		$this->openedFileActionMenu = $this->selectedFileRow->openFileActionsMenu($session);

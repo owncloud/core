@@ -91,7 +91,7 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function fileShouldBeListedSearchResultOtherFolders($fileName, $path, $shouldOrNot) {
+	public function fileWithPathShouldBeListedInSearchResultOtherFolders($fileName, $path, $shouldOrNot) {
 		$fileName = \trim($fileName, $fileName[0]);
 		$path = \trim($path, $path[0]);
 		$this->webUIGeneralContext->setCurrentPageObject($this->searchResultInOtherFoldersPage);
@@ -109,7 +109,7 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function fileShouldNotBeListedSearchResultOtherFolders($fileName, $shouldOrNot) {
+	public function fileShouldNotBeListedInSearchResultOtherFolders($fileName, $shouldOrNot) {
 		$fileName = \trim($fileName, $fileName[0]);
 		$this->webUIGeneralContext->setCurrentPageObject($this->searchResultInOtherFoldersPage);
 		$this->webUIFilesContext->checkIfFileFolderIsListedOnTheWebUI(
