@@ -54,7 +54,7 @@ Feature: sharing
     And user "user0" has shared file "tmp.txt" with user "user1"
     When user "user0" updates the last share using the sharing API with
       | permissions | 3 |
-    Then as user "user1" the file "/tmp.txt" should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "3"
+    Then as user "user1" file "/tmp.txt" should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "3"
     Examples:
       | dav-path |
       | old      |
@@ -84,7 +84,7 @@ Feature: sharing
     And user "user0" has shared file "tmp.txt" with user "user1"
     When user "user0" updates the last share using the sharing API with
       | permissions | 17 |
-    Then as user "user1" the file "/tmp.txt" should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "17"
+    Then as user "user1" file "/tmp.txt" should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "17"
     Examples:
       | dav-path |
       | old      |
@@ -154,7 +154,7 @@ Feature: sharing
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user0" updates the last share using the sharing API with
       | permissions | 29 |
-    Then as user "user1" the folder "/tmp" should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "29"
+    Then as user "user1" folder "/tmp" should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "29"
     Examples:
       | dav-path |
       | old      |
@@ -184,7 +184,7 @@ Feature: sharing
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user0" updates the last share using the sharing API with
       | permissions | 27 |
-    Then as user "user1" the folder "/tmp" should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "27"
+    Then as user "user1" folder "/tmp" should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "27"
     Examples:
       | dav-path |
       | old      |
@@ -214,7 +214,7 @@ Feature: sharing
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user0" updates the last share using the sharing API with
       | permissions | 23 |
-    Then as user "user1" the folder "/tmp" should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "23"
+    Then as user "user1" folder "/tmp" should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "23"
     Examples:
       | dav-path |
       | old      |
@@ -244,7 +244,7 @@ Feature: sharing
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user0" updates the last share using the sharing API with
       | permissions | 15 |
-    Then as user "user1" the folder "/tmp" should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "15"
+    Then as user "user1" folder "/tmp" should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "15"
     Examples:
       | dav-path |
       | old      |

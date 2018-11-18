@@ -133,7 +133,7 @@ Feature: Search
       | oc:owner-display-name |
       | oc:size               |
     Then the HTTP status code should be "207"
-    And the file "/upload.txt" in the search result of "user0" should contain these properties:
+    And file "/upload.txt" in the search result of "user0" should contain these properties:
       | name                                       | value                                                                                             |
       | {http://owncloud.org/ns}fileid             | \d*                                                                                               |
       | {http://owncloud.org/ns}permissions        | ^(RDNVW\|RMDNVW)$                                                                                 |
@@ -161,7 +161,7 @@ Feature: Search
       | oc:owner-display-name |
       | oc:size               |
     Then the HTTP status code should be "207"
-    And the folder "/upload folder" in the search result of "user0" should contain these properties:
+    And folder "/upload folder" in the search result of "user0" should contain these properties:
       | name                                       | value                                                                                             |
       | {http://owncloud.org/ns}fileid             | \d*                                                                                               |
       | {http://owncloud.org/ns}permissions        | ^(RDNVCK\|RMDNVCK)$                                                                                |

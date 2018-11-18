@@ -34,7 +34,7 @@ Feature: move (rename) file
     Given using <dav_version> DAV path
     When user "user0" moves file "/textfile0.txt" to "/TextFile0.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And as "user0" the file "/textfile0.txt" should not exist
+    And as "user0" file "/textfile0.txt" should not exist
     And the content of file "/TextFile0.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
     Examples:
       | dav_version |
@@ -75,7 +75,7 @@ Feature: move (rename) file
       | shareWith   | user0     |
     When user "user0" moves file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    When user "user0" downloads the file "/testshare/textfile0.txt" using the WebDAV API
+    When user "user0" downloads file "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "404"
     Examples:
       | dav_version |
@@ -150,12 +150,12 @@ Feature: move (rename) file
     And user "user1" has stored id of file "/folderA/ONE"
     And user "user1" has created a folder "/folderA/ONE/TWO"
     When user "user1" moves folder "/folderA/ONE" to "/folderB/ONE" using the WebDAV API
-    Then as "user1" the folder "/folderA" should exist
-    And as "user1" the folder "/folderA/ONE" should not exist
+    Then as "user1" folder "/folderA" should exist
+    And as "user1" folder "/folderA/ONE" should not exist
 		# yes, a weird bug used to make this one fail
-    And as "user1" the folder "/folderA/ONE/TWO" should not exist
-    And as "user1" the folder "/folderB/ONE" should exist
-    And as "user1" the folder "/folderB/ONE/TWO" should exist
+    And as "user1" folder "/folderA/ONE/TWO" should not exist
+    And as "user1" folder "/folderB/ONE" should exist
+    And as "user1" folder "/folderB/ONE/TWO" should exist
     And user "user1" file "/folderB/ONE" should have the previously stored id
     Examples:
       | dav_version |

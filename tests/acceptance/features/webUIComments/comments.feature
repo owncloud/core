@@ -21,10 +21,10 @@ Feature: Add, delete and edit comments in files and folders
     Then the comment "lorem ipsum" should not be listed in the comments tab in details dialog
 
   Scenario: Add comment on a shared file and check it is shown in other user's UI
-    When the user renames the file "lorem.txt" to "new-lorem.txt" using the webUI
+    When the user renames file "lorem.txt" to "new-lorem.txt" using the webUI
     And the user browses directly to display the "comments" details of file "new-lorem.txt" in folder "/"
     And the user comments with content "lorem ipsum" using the webUI
-    And the user shares the file "new-lorem.txt" with the user "User Two" using the webUI
+    And the user shares file "new-lorem.txt" with user "User Two" using the webUI
     And the user re-logs in as "user2" using the webUI
     And the user browses directly to display the "comments" details of file "new-lorem.txt" in folder "/"
     Then the comment "lorem ipsum" should be listed in the comments tab in details dialog

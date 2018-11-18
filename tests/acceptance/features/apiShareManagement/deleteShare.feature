@@ -42,7 +42,7 @@ Feature: sharing
     And user "user0" has shared folder "/common/sub" with user "user1"
     When user "user0" deletes folder "/common" using the WebDAV API
     Then the HTTP status code should be "204"
-    And as "user1" the folder "/sub" should not exist
+    And as "user1" folder "/sub" should not exist
 
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
@@ -81,10 +81,10 @@ Feature: sharing
     And user "user0" has shared folder "/shared" with user "user1"
     When user "user1" deletes file "/shared/shared_file.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And as "user1" the file "/shared/shared_file.txt" should not exist
-    And as "user0" the file "/shared/shared_file.txt" should not exist
-    And as "user0" the file "/shared_file.txt" should exist in trash
-    And as "user1" the file "/shared_file.txt" should exist in trash
+    And as "user1" file "/shared/shared_file.txt" should not exist
+    And as "user0" file "/shared/shared_file.txt" should not exist
+    And as "user0" file "/shared_file.txt" should exist in trash
+    And as "user1" file "/shared_file.txt" should exist in trash
 
   @files_trashbin-app-required
   Scenario: deleting a folder out of a share as recipient creates a backup for the owner
@@ -95,12 +95,12 @@ Feature: sharing
     And user "user0" has shared folder "/shared" with user "user1"
     When user "user1" deletes folder "/shared/sub" using the WebDAV API
     Then the HTTP status code should be "204"
-    And as "user1" the folder "/shared/sub" should not exist
-    And as "user0" the folder "/shared/sub" should not exist
-    And as "user0" the folder "/sub" should exist in trash
-    And as "user0" the file "/sub/shared_file.txt" should exist in trash
-    And as "user1" the folder "/sub" should exist in trash
-    And as "user1" the file "/sub/shared_file.txt" should exist in trash
+    And as "user1" folder "/shared/sub" should not exist
+    And as "user0" folder "/shared/sub" should not exist
+    And as "user0" folder "/sub" should exist in trash
+    And as "user0" file "/sub/shared_file.txt" should exist in trash
+    And as "user1" folder "/sub" should exist in trash
+    And as "user1" file "/sub/shared_file.txt" should exist in trash
 
   @smokeTest
   Scenario Outline: unshare from self
@@ -133,7 +133,7 @@ Feature: sharing
       | permissions | 1      |
     When user "user1" deletes file "/shared/shared_file.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    And as "user1" the file "/shared/shared_file.txt" should exist
+    And as "user1" file "/shared/shared_file.txt" should exist
 
   Scenario: sharee of a upload-only shared folder tries to delete a file in the shared folder
     Given using OCS API version "1"
@@ -146,7 +146,7 @@ Feature: sharing
       | permissions | 4      |
     When user "user1" deletes file "/shared/shared_file.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    And as "user0" the file "/shared/shared_file.txt" should exist
+    And as "user0" file "/shared/shared_file.txt" should exist
 
   Scenario: sharee of an upload-only shared folder tries to delete their file in the folder
     Given using OCS API version "1"
@@ -159,4 +159,4 @@ Feature: sharing
     When user "user1" uploads file "data/textfile.txt" to "shared/textfile.txt" using the WebDAV API
     And user "user1" deletes file "/shared/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    And as "user0" the file "/shared/textfile.txt" should exist
+    And as "user0" file "/shared/textfile.txt" should exist

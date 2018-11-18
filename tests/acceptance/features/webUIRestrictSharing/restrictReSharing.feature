@@ -23,17 +23,17 @@ Feature: restrict resharing
   Scenario: share a folder with another internal user and prohibit resharing
     Given the setting "Allow resharing" in the section "Sharing" has been enabled
     And the user has browsed to the files page
-    When the user shares the folder "simple-folder" with the user "User One" using the webUI
+    When the user shares folder "simple-folder" with user "User One" using the webUI
     And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
       | share | no |
     And the user re-logs in as "user1" using the webUI
-    Then it should not be possible to share the folder "simple-folder (2)" using the webUI
+    Then it should not be possible to share folder "simple-folder (2)" using the webUI
 
   @TestAlsoOnExternalUserBackend
   @smokeTest
   Scenario: forbid resharing globally
     Given the setting "Allow resharing" in the section "Sharing" has been disabled
     And the user has browsed to the files page
-    When the user shares the folder "simple-folder" with the user "User One" using the webUI
+    When the user shares folder "simple-folder" with user "User One" using the webUI
     And the user re-logs in as "user1" using the webUI
-    Then it should not be possible to share the folder "simple-folder (2)" using the webUI
+    Then it should not be possible to share folder "simple-folder (2)" using the webUI

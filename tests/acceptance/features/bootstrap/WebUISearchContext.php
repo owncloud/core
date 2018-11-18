@@ -83,7 +83,7 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with the path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the search results in other folders section on the webUI$/
+	 * @Then /^(?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the search results in the other folders section on the webUI$/
 	 *
 	 * @param string $fileName
 	 * @param string $path
@@ -91,7 +91,7 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function fileShouldBeListedSearchResultOtherFolders($fileName, $path, $shouldOrNot) {
+	public function fileWithPathShouldBeListedInSearchResultOtherFolders($fileName, $path, $shouldOrNot) {
 		$fileName = \trim($fileName, $fileName[0]);
 		$path = \trim($path, $path[0]);
 		$this->webUIGeneralContext->setCurrentPageObject($this->searchResultInOtherFoldersPage);
@@ -101,7 +101,7 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the search results in other folders section on the webUI$/
+	 * @Then /^(?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the search results in the other folders section on the webUI$/
 	 *
 	 * @param string $fileName
 	 * @param string $shouldOrNot
@@ -109,7 +109,7 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function fileShouldNotBeListedSearchResultOtherFolders($fileName, $shouldOrNot) {
+	public function fileShouldNotBeListedInSearchResultOtherFolders($fileName, $shouldOrNot) {
 		$fileName = \trim($fileName, $fileName[0]);
 		$this->webUIGeneralContext->setCurrentPageObject($this->searchResultInOtherFoldersPage);
 		$this->webUIFilesContext->checkIfFileFolderIsListedOnTheWebUI(

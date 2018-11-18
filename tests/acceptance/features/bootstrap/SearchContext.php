@@ -83,7 +83,7 @@ class SearchContext implements Context {
 	}
 
 	/**
-	 * @Then the file/folder :path in the search result of :user should contain these properties:
+	 * @Then file/folder :path in the search result of :user should contain these properties:
 	 *
 	 * @param string $path
 	 * @param string $user

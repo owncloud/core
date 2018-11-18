@@ -96,7 +96,7 @@ Feature: move (rename) file
     And the oc job status values of last request for user "user0" should match these regular expressions
       | status    | /^error$/ |
       | errorCode | /^403$/   |
-    And user "user0" downloads the file "/testshare/textfile0.txt" using the WebDAV API
+    And user "user0" downloads file "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "404"
     And user "user0" should see the following elements
       | /textfile0.txt |
@@ -198,7 +198,7 @@ Feature: move (rename) file
       | shareWith   | user0     |
     When user "user0" moves file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    When user "user0" downloads the file "/testshare/textfile0.txt" using the WebDAV API
+    When user "user0" downloads file "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "404"
     Examples:
       | dav_version |

@@ -11,20 +11,20 @@ Feature: Restore deleted files/folders
 
   @smokeTest
   Scenario: Restore files
-    When the user deletes the file "data.zip" using the webUI
-    Then the file "data.zip" should be listed in the trashbin on the webUI
-    When the user restores the file "data.zip" from the trashbin using the webUI
-    Then the file "data.zip" should not be listed on the webUI
+    When the user deletes file "data.zip" using the webUI
+    Then file "data.zip" should be listed in the trashbin on the webUI
+    When the user restores file "data.zip" from the trashbin using the webUI
+    Then file "data.zip" should not be listed on the webUI
     When the user browses to the files page
-    Then the file "data.zip" should be listed on the webUI
+    Then file "data.zip" should be listed on the webUI
 
   Scenario: Restore folder
-    When the user deletes the folder "folder with space" using the webUI
-    Then the folder "folder with space" should be listed in the trashbin on the webUI
-    When the user restores the folder "folder with space" from the trashbin using the webUI
-    Then the file "folder with space" should not be listed on the webUI
+    When the user deletes folder "folder with space" using the webUI
+    Then folder "folder with space" should be listed in the trashbin on the webUI
+    When the user restores folder "folder with space" from the trashbin using the webUI
+    Then file "folder with space" should not be listed on the webUI
     When the user browses to the files page
-    Then the folder "folder with space" should be listed on the webUI
+    Then folder "folder with space" should be listed on the webUI
 
   @smokeTest
   Scenario: Select some trashbin files and restore them in a batch
@@ -40,14 +40,14 @@ Feature: Restore deleted files/folders
       | lorem.txt     |
       | lorem-big.txt |
     And the user batch restores the marked files using the webUI
-    Then the file "data.zip" should be listed on the webUI
-    And the folder "simple-folder" should be listed on the webUI
-    But the file "lorem.txt" should not be listed on the webUI
-    And the file "lorem-big.txt" should not be listed on the webUI
-    And the file "lorem.txt" should be listed in the files page on the webUI
-    And the file "lorem-big.txt" should be listed in the files page on the webUI
-    But the file "data.zip" should not be listed in the files page on the webUI
-    And the folder "simple-folder" should not be listed in the files page on the webUI
+    Then file "data.zip" should be listed on the webUI
+    And folder "simple-folder" should be listed on the webUI
+    But file "lorem.txt" should not be listed on the webUI
+    And file "lorem-big.txt" should not be listed on the webUI
+    And file "lorem.txt" should be listed in the files page on the webUI
+    And file "lorem-big.txt" should be listed in the files page on the webUI
+    But file "data.zip" should not be listed in the files page on the webUI
+    And folder "simple-folder" should not be listed in the files page on the webUI
 
   Scenario: Select all except for some trashbin files and restore them in a batch
     Given the following files have been deleted
@@ -63,14 +63,14 @@ Feature: Restore deleted files/folders
       | lorem.txt     |
       | lorem-big.txt |
     And the user batch restores the marked files using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
-    And the file "lorem-big.txt" should be listed on the webUI
-    But the file "data.zip" should not be listed on the webUI
-    And the folder "simple-folder" should not be listed on the webUI
-    And the file "data.zip" should be listed in the files page on the webUI
-    And the folder "simple-folder" should be listed in the files page on the webUI
-    But the file "lorem.txt" should not be listed in the files page on the webUI
-    And the file "lorem-big.txt" should not be listed in the files page on the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem-big.txt" should be listed on the webUI
+    But file "data.zip" should not be listed on the webUI
+    And folder "simple-folder" should not be listed on the webUI
+    And file "data.zip" should be listed in the files page on the webUI
+    And folder "simple-folder" should be listed in the files page on the webUI
+    But file "lorem.txt" should not be listed in the files page on the webUI
+    And file "lorem-big.txt" should not be listed in the files page on the webUI
 
   Scenario: Select all trashbin files and restore them in a batch
     Given the following files have been deleted
@@ -84,7 +84,7 @@ Feature: Restore deleted files/folders
     And the user batch restores the marked files using the webUI
     Then the folder should be empty on the webUI
     When the user browses to the files page
-    Then the file "lorem.txt" should be listed on the webUI
-    And the file "lorem-big.txt" should be listed on the webUI
-    And the file "data.zip" should be listed on the webUI
-    And the folder "simple-folder" should be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem-big.txt" should be listed on the webUI
+    And file "data.zip" should be listed on the webUI
+    And folder "simple-folder" should be listed on the webUI

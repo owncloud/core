@@ -46,10 +46,10 @@ Feature: Creation of tags for the files and folders
     Then file "simple-folder/lorem.txt" should have no tags for user "user1"
 
   Scenario: Create and add tag on a shared file
-    When the user renames the file "lorem.txt" to "coolnewfile.txt" using the webUI
+    When the user renames file "lorem.txt" to "coolnewfile.txt" using the webUI
     And the user browses directly to display the details of file "coolnewfile.txt" in folder ""
     And the user adds a tag "tag1" to the file using the webUI
-    And the user shares the file "coolnewfile.txt" with the user "User Two" using the webUI
+    And the user shares file "coolnewfile.txt" with user "User Two" using the webUI
     And the user re-logs in with username "user2" and password "%alt2%" using the webUI
     And the user browses directly to display the details of file "coolnewfile.txt" in folder ""
     And the user adds a tag "tag2" to the file using the webUI
@@ -61,10 +61,10 @@ Feature: Creation of tags for the files and folders
       | tag2 | normal |
 
   Scenario: Delete a tag in a shared file
-    When the user renames the file "lorem.txt" to "coolnewfile.txt" using the webUI
+    When the user renames file "lorem.txt" to "coolnewfile.txt" using the webUI
     And the user browses directly to display the details of file "coolnewfile.txt" in folder ""
     And the user adds a tag "tag1" to the file using the webUI
-    And the user shares the file "coolnewfile.txt" with the user "User Two" using the webUI
+    And the user shares file "coolnewfile.txt" with user "User Two" using the webUI
     And the user re-logs in with username "user2" and password "%alt2%" using the webUI
     Then file "coolnewfile.txt" should have the following tags for user "user2"
       | tag1 | normal |

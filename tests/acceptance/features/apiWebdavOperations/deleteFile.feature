@@ -13,7 +13,7 @@ Feature: delete file
     Given using <dav_version> DAV path
     When user "user0" deletes file "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And as "user0" the file "/textfile0.txt" should not exist
+    And as "user0" file "/textfile0.txt" should not exist
     Examples:
       | dav_version |
       | old         |
