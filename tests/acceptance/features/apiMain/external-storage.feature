@@ -27,8 +27,8 @@ Feature: external-storage
     And user "user1" has been created
     And user "user0" has created a folder "/local_storage/foo1"
     When user "user0" moves file "/textfile0.txt" to "/local_storage/foo1/textfile0.txt" using the WebDAV API
-    Then as "user1" the file "/local_storage/foo1/textfile0.txt" should exist
-    And as "user0" the file "/local_storage/foo1/textfile0.txt" should exist
+    Then as "user1" file "/local_storage/foo1/textfile0.txt" should exist
+    And as "user0" file "/local_storage/foo1/textfile0.txt" should exist
 
   Scenario: Move a file out of storage
     Given user "user0" has been created
@@ -36,18 +36,18 @@ Feature: external-storage
     And user "user0" has created a folder "/local_storage/foo2"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo2/textfile0.txt"
     When user "user1" moves file "/local_storage/foo2/textfile0.txt" to "/local.txt" using the WebDAV API
-    Then as "user1" the file "/local_storage/foo2/textfile0.txt" should not exist
-    And as "user0" the file "/local_storage/foo2/textfile0.txt" should not exist
-    And as "user1" the file "/local.txt" should exist
+    Then as "user1" file "/local_storage/foo2/textfile0.txt" should not exist
+    And as "user0" file "/local_storage/foo2/textfile0.txt" should not exist
+    And as "user1" file "/local.txt" should exist
 
   Scenario: Download a file that exists in filecache but not storage fails with 404
     Given user "user0" has been created
     And user "user0" has created a folder "/local_storage/foo3"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo3/textfile0.txt"
     And file "foo3/textfile0.txt" has been deleted from local storage on the server
-    When user "user0" downloads the file "local_storage/foo3/textfile0.txt" using the WebDAV API
+    When user "user0" downloads file "local_storage/foo3/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "404"
-    And as "user0" the file "local_storage/foo3/textfile0.txt" should not exist
+    And as "user0" file "local_storage/foo3/textfile0.txt" should not exist
 
   Scenario: Upload a file to external storage while quota is set on home storage
     Given user "user0" has been created

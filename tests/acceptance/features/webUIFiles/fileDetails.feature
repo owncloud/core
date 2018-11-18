@@ -14,7 +14,7 @@ Feature: User can open the details panel for any file or folder
 
   @comments-app-required @files_versions-app-required
   Scenario: View different areas of the details panel in files page
-    When the user opens the file action menu of the file "lorem.txt" in the webUI
+    When the user opens the file action menu of file "lorem.txt" in the webUI
     And the user clicks the details file action in the webUI
     Then the details dialog should be visible in the webUI
     And the thumbnail should be visible in the details panel
@@ -27,9 +27,9 @@ Feature: User can open the details panel for any file or folder
 
   @comments-app-required @files_versions-app-required
   Scenario: View different areas of the details panel in favorites page
-    When the user marks the file "lorem.txt" as favorite using the webUI
+    When the user marks file "lorem.txt" as favorite using the webUI
     And the user browses to the favorites page
-    And the user opens the file action menu of the file "lorem.txt" in the webUI
+    And the user opens the file action menu of file "lorem.txt" in the webUI
     And the user clicks the details file action in the webUI
     Then the details dialog should be visible in the webUI
     And the thumbnail should be visible in the details panel
@@ -42,10 +42,10 @@ Feature: User can open the details panel for any file or folder
 
   @comments-app-required @public_link_share-feature-required
   Scenario: user shares a file through public link and then the details dialog should work in a Shared by link page
-    Given the user has created a new public link for the folder "simple-folder" using the webUI
+    Given the user has created a new public link for folder "simple-folder" using the webUI
     When the user browses to the shared-by-link page
-    Then the folder "simple-folder" should be listed on the webUI
-    When the user opens the file action menu of the folder "simple-folder" in the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    When the user opens the file action menu of folder "simple-folder" in the webUI
     And the user clicks the details file action in the webUI
     Then the details dialog should be visible in the webUI
     And the thumbnail should be visible in the details panel
@@ -58,8 +58,8 @@ Feature: User can open the details panel for any file or folder
   Scenario: user shares a file and then the details dialog should work in a Shared with others page
     Given the user has shared folder "simple-folder" with user "User Two" using the webUI
     When the user browses to the shared-with-others page
-    Then the folder "simple-folder" should be listed on the webUI
-    When the user opens the file action menu of the folder "simple-folder" in the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    When the user opens the file action menu of folder "simple-folder" in the webUI
     And the user clicks the details file action in the webUI
     Then the details dialog should be visible in the webUI
     And the thumbnail should be visible in the details panel
@@ -73,8 +73,8 @@ Feature: User can open the details panel for any file or folder
     Given the user has shared folder "simple-folder" with user "User Two" using the webUI
     And the user re-logs in as "user2" using the webUI
     When the user browses to the shared-with-you page
-    Then the folder "simple-folder (2)" should be listed on the webUI
-    When the user opens the file action menu of the folder "simple-folder (2)" in the webUI
+    Then folder "simple-folder (2)" should be listed on the webUI
+    When the user opens the file action menu of folder "simple-folder (2)" in the webUI
     And the user clicks the details file action in the webUI
     Then the details dialog should be visible in the webUI
     And the thumbnail should be visible in the details panel
@@ -89,8 +89,8 @@ Feature: User can open the details panel for any file or folder
     And user "user1" has added the tag "simple" to "simple-folder"
     When the user browses to the tags page
     And the user searches for tag "simple" using the webUI
-    Then the folder "simple-folder" should be listed on the webUI
-    When the user opens the file action menu of the folder "simple-folder" in the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    When the user opens the file action menu of folder "simple-folder" in the webUI
     And the user clicks the details file action in the webUI
     Then the details dialog should be visible in the webUI
     And the thumbnail should be visible in the details panel

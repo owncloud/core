@@ -11,7 +11,7 @@ Feature: download file
   @smokeTest
   Scenario Outline: download a file
     Given using <dav_version> DAV path
-    When user "user0" downloads the file "/textfile0.txt" using the WebDAV API
+    When user "user0" downloads file "/textfile0.txt" using the WebDAV API
     Then the downloaded content should be "ownCloud test text file 0" plus end-of-line
     Examples:
       | dav_version |
@@ -44,7 +44,7 @@ Feature: download file
   @smokeTest
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
-    When user "user0" downloads the file "/welcome.txt" using the WebDAV API
+    When user "user0" downloads file "/welcome.txt" using the WebDAV API
     Then the following headers should be set
       | Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
       | Content-Security-Policy           | default-src 'none';                                              |

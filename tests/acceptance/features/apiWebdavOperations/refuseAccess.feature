@@ -24,7 +24,7 @@ Feature: refuse access
     Given using <dav_version> DAV path
     And user "user1" has been created
     And user "user1" has been disabled
-    When user "user1" downloads the file "/welcome.txt" using the WebDAV API
+    When user "user1" downloads file "/welcome.txt" using the WebDAV API
     Then the HTTP status code should be "401"
     Examples:
       | dav_version |

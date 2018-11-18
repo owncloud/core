@@ -166,8 +166,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user shares the file/folder :folder with group :group using the webUI
-	 * @Given the user has shared the file/folder :folder with group :group using the webUI
+	 * @When the user shares file/folder :folder with group :group using the webUI
+	 * @Given the user has shared file/folder :folder with group :group using the webUI
 	 *
 	 * @param string $folder
 	 * @param string $group
@@ -192,8 +192,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user opens the share dialog for the file/folder :name
-	 * @Given the user has opened the share dialog for the file/folder :name
+	 * @When the user opens the share dialog for file/folder :name
+	 * @Given the user has opened the share dialog for file/folder :name
 	 *
 	 * @param string $name
 	 *
@@ -325,8 +325,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user creates a new public link for the file/folder :name using the webUI
-	 * @Given the user has created a new public link for the file/folder :name using the webUI
+	 * @When the user creates a new public link for file/folder :name using the webUI
+	 * @Given the user has created a new public link for file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 *
@@ -338,8 +338,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user creates a new public link for the file/folder :name using the webUI with
-	 * @Given the user has created a new public link for the file/folder :name using the webUI with
+	 * @When the user creates a new public link for file/folder :name using the webUI with
+	 * @Given the user has created a new public link for file/folder :name using the webUI with
 	 *
 	 * @param string $name
 	 * @param TableNode $settings table with the settings and no header
@@ -361,8 +361,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user tries to create a new public link for the file/folder :name using the webUI with
-	 * @When the user tries to create a new public link for the file/folder :name using the webUI
+	 * @When the user tries to create a new public link for file/folder :name using the webUI with
+	 * @When the user tries to create a new public link for file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 * @param TableNode $settings table with the settings and no header
@@ -788,7 +788,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (file|folder) "([^"]*)" should be marked as shared(?: with "([^"]*)")? by "([^"]*)" on the webUI$/
+	 * @Then /^(file|folder) "([^"]*)" should be marked as shared(?: with "([^"]*)")? by "([^"]*)" on the webUI$/
 	 *
 	 * @param string $fileOrFolder
 	 * @param string $itemName
@@ -840,7 +840,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the file/folder :item should be in state :state in the shared-with-you page on the webUI
+	 * @Then file/folder :item should be in state :state in the shared-with-you page on the webUI
 	 *
 	 * @param string $item
 	 * @param string $state
@@ -856,7 +856,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the file/folder :item shared by :sharedBy should be in state :state in the shared-with-you page on the webUI
+	 * @Then file/folder :item shared by :sharedBy should be in state :state in the shared-with-you page on the webUI
 	 *
 	 * @param string $item
 	 * @param string $sharedBy
@@ -885,7 +885,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the file/folder :item should be in state :state in the shared-with-you page on the webUI after a page reload
+	 * @Then file/folder :item should be in state :state in the shared-with-you page on the webUI after a page reload
 	 *
 	 * @param string $item
 	 * @param string $state
@@ -899,7 +899,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 	
 	/**
-	 * @Then /^it should not be possible to share the (?:file|folder) "([^"]*)"(?: with "([^"]*)")? using the webUI$/
+	 * @Then /^it should not be possible to share (?:file|folder) "([^"]*)"(?: with "([^"]*)")? using the webUI$/
 	 *
 	 * @param string $fileName
 	 * @param string|null $shareWith

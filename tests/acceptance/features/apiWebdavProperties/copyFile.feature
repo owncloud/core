@@ -41,7 +41,7 @@ Feature: copy file
       | shareWith   | user0     |
     When user "user0" copies file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    And user "user0" downloads the file "/testshare/textfile0.txt" using the WebDAV API
+    And user "user0" downloads file "/testshare/textfile0.txt" using the WebDAV API
     And the HTTP status code should be "404"
     Examples:
       | dav_version |

@@ -911,7 +911,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user downloads the file :fileName using the WebDAV API
+	 * @When user :user downloads file :fileName using the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $fileName
@@ -1165,7 +1165,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" should not exist$/
+	 * @Then /^as "([^"]*)" (file|folder|entry) "([^"]*)" should not exist$/
 	 *
 	 * @param string $user
 	 * @param string $entry
@@ -1189,7 +1189,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" should exist$/
+	 * @Then /^as "([^"]*)" (file|folder|entry) "([^"]*)" should exist$/
 	 *
 	 * @param string $user
 	 * @param string $entry
@@ -1290,7 +1290,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^as user "([^"]*)" the (?:file|folder|entry) "([^"]*)" should contain a property "([^"]*)" with value "([^"]*)" or with value "([^"]*)"$/
+	 * @Then /^as user "([^"]*)" (?:file|folder|entry) "([^"]*)" should contain a property "([^"]*)" with value "([^"]*)" or with value "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -1312,7 +1312,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^as user "([^"]*)" the (?:file|folder|entry) "([^"]*)" should contain a property "([^"]*)" with value "([^"]*)"$/
+	 * @Then /^as user "([^"]*)" (?:file|folder|entry) "([^"]*)" should contain a property "([^"]*)" with value "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -1346,7 +1346,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^as user "([^"]*)" the (?:file|folder|entry) "([^"]*)" should not be favorited$/
+	 * @Then /^as user "([^"]*)" (?:file|folder|entry) "([^"]*)" should not be favorited$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -1358,7 +1358,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^as the user the (?:file|folder|entry) "([^"]*)" should be favorited$/
+	 * @Then /^as the user (?:file|folder|entry) "([^"]*)" should be favorited$/
 	 *
 	 * @param string $path
 	 * @param integer $expectedValue 0|1
@@ -1370,7 +1370,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^as the user the (?:file|folder|entry) "([^"]*)" should not be favorited$/
+	 * @Then /^as the user (?:file|folder|entry) "([^"]*)" should not be favorited$/
 	 *
 	 * @param string $path
 	 *

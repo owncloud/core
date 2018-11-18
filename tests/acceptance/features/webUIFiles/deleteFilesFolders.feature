@@ -20,10 +20,10 @@ Feature: deleting files and folders
       | lorem.txt                             |
       | strängé नेपाली folder                 |
       | strängé filename (duplicate #2 &).txt |
-    Then as "user1" the folder "simple-folder" should not exist
-    And as "user1" the file "lorem.txt" should not exist
-    And as "user1" the folder "strängé नेपाली folder" should not exist
-    And as "user1" the file "strängé filename (duplicate #2 &).txt" should not exist
+    Then as "user1" folder "simple-folder" should not exist
+    And as "user1" file "lorem.txt" should not exist
+    And as "user1" folder "strängé नेपाली folder" should not exist
+    And as "user1" file "strängé filename (duplicate #2 &).txt" should not exist
     And the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 
@@ -68,9 +68,9 @@ Feature: deleting files and folders
       | data.zip      |
       | lorem.txt     |
       | simple-folder |
-    Then as "user1" the file "data.zip" should not exist
-    And as "user1" the file "lorem.txt" should not exist
-    And as "user1" the folder "simple-folder" should not exist
+    Then as "user1" file "data.zip" should not exist
+    And as "user1" file "lorem.txt" should not exist
+    And as "user1" folder "simple-folder" should not exist
     And the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 
@@ -78,9 +78,9 @@ Feature: deleting files and folders
     When the user marks all files for batch action using the webUI
     And the user batch deletes the marked files using the webUI
     # Check just some example files/folders that should not exist any more
-    Then as "user1" the file "data.zip" should not exist
-    And as "user1" the file "lorem.txt" should not exist
-    And as "user1" the folder "simple-folder" should not exist
+    Then as "user1" file "data.zip" should not exist
+    And as "user1" file "lorem.txt" should not exist
+    And as "user1" folder "simple-folder" should not exist
     And the folder should be empty on the webUI
     And the folder should be empty on the webUI after a page reload
 
@@ -91,52 +91,52 @@ Feature: deleting files and folders
       | lorem.txt     |
       | simple-folder |
     And the user batch deletes the marked files using the webUI
-    Then as "user1" the file "lorem.txt" should exist
-    And as "user1" the folder "simple-folder" should exist
-    And the folder "simple-folder" should be listed on the webUI
-    And the file "lorem.txt" should be listed on the webUI
+    Then as "user1" file "lorem.txt" should exist
+    And as "user1" folder "simple-folder" should exist
+    And folder "simple-folder" should be listed on the webUI
+    And file "lorem.txt" should be listed on the webUI
     # Check just an example of a file that should not exist any more
-    But as "user1" the file "data.zip" should not exist
-    And the file "data.zip" should not be listed on the webUI
+    But as "user1" file "data.zip" should not exist
+    And file "data.zip" should not be listed on the webUI
 
   Scenario: Delete an empty folder
     When the user creates a folder with the name "my-empty-folder" using the webUI
     And the user creates a folder with the name "my-other-empty-folder" using the webUI
-    And the user deletes the folder "my-empty-folder" using the webUI
-    Then as "user1" the folder "my-other-empty-folder" should exist
-    And the folder "my-other-empty-folder" should be listed on the webUI
-    But as "user1" the folder "my-empty-folder" should not exist
-    And the folder "my-empty-folder" should not be listed on the webUI
+    And the user deletes folder "my-empty-folder" using the webUI
+    Then as "user1" folder "my-other-empty-folder" should exist
+    And folder "my-other-empty-folder" should be listed on the webUI
+    But as "user1" folder "my-empty-folder" should not exist
+    And folder "my-empty-folder" should not be listed on the webUI
 
   Scenario: Delete the last file in a folder
-    When the user deletes the file "zzzz-must-be-last-file-in-folder.txt" using the webUI
-    Then as "user1" the file "zzzz-must-be-last-file-in-folder.txt" should not exist
-    And the file "zzzz-must-be-last-file-in-folder.txt" should not be listed on the webUI
+    When the user deletes file "zzzz-must-be-last-file-in-folder.txt" using the webUI
+    Then as "user1" file "zzzz-must-be-last-file-in-folder.txt" should not exist
+    And file "zzzz-must-be-last-file-in-folder.txt" should not be listed on the webUI
 
   Scenario: delete files from shared with others page
     Given the user has shared file "lorem.txt" with user "User Two" using the webUI
     And the user has shared folder "simple-folder" with user "User Two" using the webUI
     And the user has browsed to the shared-with-others page
-    When the user deletes the file "lorem.txt" using the webUI
-    And the user deletes the folder "simple-folder" using the webUI
-    Then as "user1" the file "lorem.txt" should not exist
-    And as "user1" the folder "simple-folder" should not exist
-    And the file "lorem.txt" should not be listed on the webUI
-    And the folder "simple-folder" should not be listed on the webUI
+    When the user deletes file "lorem.txt" using the webUI
+    And the user deletes folder "simple-folder" using the webUI
+    Then as "user1" file "lorem.txt" should not exist
+    And as "user1" folder "simple-folder" should not exist
+    And file "lorem.txt" should not be listed on the webUI
+    And folder "simple-folder" should not be listed on the webUI
     When the user browses to the files page
-    Then the file "lorem.txt" should not be listed on the webUI
-    And the folder "simple-folder" should not be listed on the webUI
+    Then file "lorem.txt" should not be listed on the webUI
+    And folder "simple-folder" should not be listed on the webUI
 
   @public_link_share-feature-required
   Scenario: delete files from shared by link page
-    Given the user has created a new public link for the file "lorem.txt" using the webUI
+    Given the user has created a new public link for file "lorem.txt" using the webUI
     And the user has browsed to the shared-by-link page
-    Then the file "lorem.txt" should be listed on the webUI
-    When the user deletes the file "lorem.txt" using the webUI
-    Then as "user1" the file "lorem.txt" should not exist
-    And the file "lorem.txt" should not be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    When the user deletes file "lorem.txt" using the webUI
+    Then as "user1" file "lorem.txt" should not exist
+    And file "lorem.txt" should not be listed on the webUI
     When the user browses to the files page
-    Then the file "lorem.txt" should not be listed on the webUI
+    Then file "lorem.txt" should not be listed on the webUI
 
   @systemtags-app-required
   Scenario: delete files from tags page
@@ -144,15 +144,15 @@ Feature: deleting files and folders
     And user "user1" has added the tag "lorem" to "/lorem.txt"
     When the user browses to the tags page
     And the user searches for tag "lorem" using the webUI
-    Then the file "lorem.txt" should be listed on the webUI
-    When the user deletes the file "lorem.txt" using the webUI
-    Then as "user1" the file "lorem.txt" should not exist
-    And the file "lorem.txt" should not be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    When the user deletes file "lorem.txt" using the webUI
+    Then as "user1" file "lorem.txt" should not exist
+    And file "lorem.txt" should not be listed on the webUI
     When the user browses to the files page
-    Then the file "lorem.txt" should not be listed on the webUI
+    Then file "lorem.txt" should not be listed on the webUI
 
   Scenario: delete a file on a public share
-    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     And the public accesses the last created public link using the webUI
     When the user deletes the following elements using the webUI
@@ -160,14 +160,14 @@ Feature: deleting files and folders
       | simple-empty-folder                   |
       | lorem.txt                             |
       | strängé filename (duplicate #2 &).txt |
-    Then as "user1" the file "simple-folder/lorem.txt" should not exist
-    And as "user1" the folder "simple-folder/simple-empty-folder" should not exist
-    And as "user1" the file "simple-folder/strängé filename (duplicate #2 &).txt" should not exist
+    Then as "user1" file "simple-folder/lorem.txt" should not exist
+    And as "user1" folder "simple-folder/simple-empty-folder" should not exist
+    And as "user1" file "simple-folder/strängé filename (duplicate #2 &).txt" should not exist
     And the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 
   Scenario: delete a file on a public share with problematic characters
-    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     And the public accesses the last created public link using the webUI
     When the user renames the following file using the webUI
@@ -197,7 +197,7 @@ Feature: deleting files and folders
       | &and#hash       |
 
   Scenario: Delete multiple files at once on a public share
-    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     And the public accesses the last created public link using the webUI
     When the user batch deletes these files using the webUI
@@ -205,8 +205,8 @@ Feature: deleting files and folders
       | data.zip            |
       | lorem.txt           |
       | simple-empty-folder |
-    Then as "user1" the file "simple-folder/data.zip" should not exist
-    And as "user1" the file "simple-folder/lorem.txt" should not exist
-    And as "user1" the folder "simple-folder/simple-empty-folder" should not exist
+    Then as "user1" file "simple-folder/data.zip" should not exist
+    And as "user1" file "simple-folder/lorem.txt" should not exist
+    And as "user1" folder "simple-folder/simple-empty-folder" should not exist
     And the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload

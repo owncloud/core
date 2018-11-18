@@ -74,7 +74,7 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (?:file|folder|entry) "([^"]*)" should exist in trash$/
+	 * @Then /^as "([^"]*)" (?:file|folder|entry) "([^"]*)" should exist in trash$/
 	 *
 	 * @param string $user
 	 * @param string $path

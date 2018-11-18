@@ -315,7 +315,7 @@ Feature: sharing
     When user "user0" shares file "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user1" the folder "/sub" should exist
+    And as "user1" folder "/sub" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -332,7 +332,7 @@ Feature: sharing
     When user "user0" shares file "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user1" the folder "/sub" should exist
+    And as "user1" folder "/sub" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -387,7 +387,7 @@ Feature: sharing
     When user "user0" shares file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user1" the file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
+    And as "user1" file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -402,7 +402,7 @@ Feature: sharing
     When user "user0" shares file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user1" the file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
+    And as "user1" file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

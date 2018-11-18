@@ -83,7 +83,7 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with the path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the search results in other folders section on the webUI$/
+	 * @Then /^(?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the search results in the other folders section on the webUI$/
 	 *
 	 * @param string $fileName
 	 * @param string $path
@@ -101,7 +101,7 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the search results in other folders section on the webUI$/
+	 * @Then /^(?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the search results in the other folders section on the webUI$/
 	 *
 	 * @param string $fileName
 	 * @param string $shouldOrNot

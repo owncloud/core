@@ -10,51 +10,51 @@ Feature: move files
     And the user has browsed to the files page
 
   Scenario: An attempt to move a file into a sub-folder using rename is not allowed
-    When the user renames the file "data.zip" to "simple-folder/data.zip" using the webUI
-    Then near the file "data.zip" a tooltip with the text 'File name cannot contain "/".' should be displayed on the webUI
+    When the user renames file "data.zip" to "simple-folder/data.zip" using the webUI
+    Then near file "data.zip" a tooltip with the text 'File name cannot contain "/".' should be displayed on the webUI
 
   @skipOnFIREFOX
   @smokeTest
   Scenario: move a file into a folder
-    When the user moves the file "data.zip" into the folder "simple-empty-folder" using the webUI
-    Then the file "data.zip" should not be listed on the webUI
-    But the file "data.zip" should be listed in the folder "simple-empty-folder" on the webUI
+    When the user moves file "data.zip" into folder "simple-empty-folder" using the webUI
+    Then file "data.zip" should not be listed on the webUI
+    But file "data.zip" should be listed in folder "simple-empty-folder" on the webUI
     When the user browses to the files page
-    And the user moves the file "data.tar.gz" into the folder "strängé नेपाली folder empty" using the webUI
-    Then the file "data.tar.gz" should not be listed on the webUI
-    But the file "data.tar.gz" should be listed in the folder "strängé नेपाली folder empty" on the webUI
+    And the user moves file "data.tar.gz" into folder "strängé नेपाली folder empty" using the webUI
+    Then file "data.tar.gz" should not be listed on the webUI
+    But file "data.tar.gz" should be listed in folder "strängé नेपाली folder empty" on the webUI
     When the user browses to the files page
-    And the user moves the file "strängé filename (duplicate #2 &).txt" into the folder "strängé नेपाली folder empty" using the webUI
-    Then the file "strängé filename (duplicate #2 &).txt" should not be listed on the webUI
-    But the file "strängé filename (duplicate #2 &).txt" should be listed in the folder "strängé नेपाली folder empty" on the webUI
+    And the user moves file "strängé filename (duplicate #2 &).txt" into folder "strängé नेपाली folder empty" using the webUI
+    Then file "strängé filename (duplicate #2 &).txt" should not be listed on the webUI
+    But file "strängé filename (duplicate #2 &).txt" should be listed in folder "strängé नेपाली folder empty" on the webUI
 
   @skipOnFIREFOX
   Scenario: move a file into a folder where a file with the same name already exists
-    When the user moves the file "data.zip" into the folder "simple-folder" using the webUI
-    And the user moves the file "data.zip" into the folder "strängé नेपाली folder" using the webUI
+    When the user moves file "data.zip" into folder "simple-folder" using the webUI
+    And the user moves file "data.zip" into folder "strängé नेपाली folder" using the webUI
     Then notifications should be displayed on the webUI with the text
       | Could not move "data.zip", target exists |
       | Could not move "data.zip", target exists |
-    And the file "data.zip" should be listed on the webUI
+    And file "data.zip" should be listed on the webUI
 
   @skipOnFIREFOX
   Scenario: move a file into a folder where a file with the same name already exists
-    When the user moves the file "strängé filename (duplicate #2 &).txt" into the folder "strängé नेपाली folder" using the webUI
+    When the user moves file "strängé filename (duplicate #2 &).txt" into folder "strängé नेपाली folder" using the webUI
     Then notifications should be displayed on the webUI with the text
       | Could not move "strängé filename (duplicate #2 &).txt", target exists |
-    And the file "strängé filename (duplicate #2 &).txt" should be listed on the webUI
+    And file "strängé filename (duplicate #2 &).txt" should be listed on the webUI
 
   @skipOnFIREFOX
   @smokeTest
   Scenario: Move multiple files at once
-    When the user batch moves these files into the folder "simple-empty-folder" using the webUI
+    When the user batch moves these files into folder "simple-empty-folder" using the webUI
       | name        |
       | data.zip    |
       | lorem.txt   |
       | testapp.zip |
     Then the moved elements should not be listed on the webUI
     And the moved elements should not be listed on the webUI after a page reload
-    But the moved elements should be listed in the folder "simple-empty-folder" on the webUI
+    But the moved elements should be listed in folder "simple-empty-folder" on the webUI
 
   @skipOnFIREFOX
   Scenario: move a file into a folder (problematic characters)
@@ -85,12 +85,12 @@ Feature: move files
 
   @skipOnFIREFOX
   Scenario: move files on a public share
-    Given the user has created a new public link for the folder "simple-folder" using the webUI with
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     And the public accesses the last created public link using the webUI
-    And the user moves the file "data.zip" into the folder "simple-empty-folder" using the webUI
-    Then the file "data.zip" should not be listed on the webUI
+    And the user moves file "data.zip" into folder "simple-empty-folder" using the webUI
+    Then file "data.zip" should not be listed on the webUI
     When the user reloads the current page of the webUI
-    Then the file "data.zip" should not be listed on the webUI
-    And as "user1" the file "simple-folder/simple-empty-folder/data.zip" should exist
-    But as "user1" the file "simple-folder/data.zip" should not exist
+    Then file "data.zip" should not be listed on the webUI
+    And as "user1" file "simple-folder/simple-empty-folder/data.zip" should exist
+    But as "user1" file "simple-folder/data.zip" should not exist

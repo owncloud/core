@@ -27,7 +27,7 @@ Feature: restrict resharing
     And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
       | share | no |
     And the user re-logs in as "user1" using the webUI
-    Then it should not be possible to share the folder "simple-folder (2)" using the webUI
+    Then it should not be possible to share folder "simple-folder (2)" using the webUI
 
   @TestAlsoOnExternalUserBackend
   @smokeTest
@@ -36,4 +36,4 @@ Feature: restrict resharing
     And the user has browsed to the files page
     When the user shares folder "simple-folder" with user "User One" using the webUI
     And the user re-logs in as "user1" using the webUI
-    Then it should not be possible to share the folder "simple-folder (2)" using the webUI
+    Then it should not be possible to share folder "simple-folder (2)" using the webUI
