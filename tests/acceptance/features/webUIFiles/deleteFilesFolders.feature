@@ -114,8 +114,8 @@ Feature: deleting files and folders
     And the file "zzzz-must-be-last-file-in-folder.txt" should not be listed on the webUI
 
   Scenario: delete files from shared with others page
-    Given the user has shared the file "lorem.txt" with the user "User Two" using the webUI
-    And the user has shared the folder "simple-folder" with the user "User Two" using the webUI
+    Given the user has shared file "lorem.txt" with user "User Two" using the webUI
+    And the user has shared folder "simple-folder" with user "User Two" using the webUI
     And the user has browsed to the shared-with-others page
     When the user deletes the file "lorem.txt" using the webUI
     And the user deletes the folder "simple-folder" using the webUI
