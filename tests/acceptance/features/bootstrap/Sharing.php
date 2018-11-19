@@ -644,7 +644,6 @@ trait Sharing {
 
 	/**
 	 * @When /^the user adds an expiration date to the last share using the sharing API$/
-	 * @Given /^the user has added an expiration date to the last share$/
 	 *
 	 * @return void
 	 */
@@ -658,6 +657,15 @@ trait Sharing {
 			$fullUrl, $this->currentUser,
 			$this->getPasswordForUser($this->currentUser), null, $body
 		);
+	}
+
+	/**
+	 * @Given /^the user has added an expiration date to the last share$/
+	 *
+	 * @return void
+	 */
+	public function theUserHasAddedExpirationDateToLastShare() {
+		$this->theUserAddsExpirationDateToLastShare();
 		PHPUnit_Framework_Assert::assertEquals(
 			200,
 			$this->response->getStatusCode()
@@ -914,7 +922,6 @@ trait Sharing {
 
 	/**
 	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
-	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
 	 * @param string $user1
 	 * @param string $filepath
@@ -952,6 +959,24 @@ trait Sharing {
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $user1, $this->getPasswordForUser($user1)
 		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))?$/
+	 *
+	 * @param string $user1
+	 * @param string $filepath
+	 * @param string $user2
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function userHasSharedFileWithUserUsingTheSharingApi(
+		$user1, $filepath, $user2, $permissions = null
+	) {
+		$this->userSharesFileWithUserUsingTheSharingApi(
+			$user1, $filepath, $user2, $permissions
+		);
 		PHPUnit_Framework_Assert::assertTrue(
 			$this->isUserOrGroupInSharedData($user2, $permissions),
 			"User $user1 failed to share $filepath with user $user2"
@@ -971,14 +996,13 @@ trait Sharing {
 		$sharer, $filepath, $permissions = null
 	) {
 		$admin = $this->getAdminUsername();
-		$this->userSharesFileWithUserUsingTheSharingApi(
+		$this->userHasSharedFileWithUserUsingTheSharingApi(
 			$sharer, $filepath, $admin, $permissions = null
 		);
 	}
 
 	/**
 	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
-	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
 	 * @param string $filepath
 	 * @param string $user2
@@ -995,8 +1019,24 @@ trait Sharing {
 	}
 
 	/**
+	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))?$/
+	 *
+	 * @param string $filepath
+	 * @param string $user2
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function theUserHasSharedFileWithUserUsingTheSharingApi(
+		$filepath, $user2, $permissions = null
+	) {
+		$this->userHasSharedFileWithUserUsingTheSharingApi(
+			$this->getCurrentUser(), $filepath, $user2, $permissions
+		);
+	}
+
+	/**
 	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
-	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
 	 * @param string $filepath
 	 * @param string $group
@@ -1013,8 +1053,24 @@ trait Sharing {
 	}
 
 	/**
+	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
+	 *
+	 * @param string $filepath
+	 * @param string $group
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function theUserHasSharedFileWithGroupUsingTheSharingApi(
+		$filepath, $group, $permissions = null
+	) {
+		$this->userHasSharedFileWithGroupUsingTheSharingApi(
+			$this->currentUser, $filepath, $group, $permissions
+		);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
-	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
 	 * @param string $user
 	 * @param string $filepath
@@ -1040,6 +1096,24 @@ trait Sharing {
 		}
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $user, $this->getPasswordForUser($user)
+		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
+	 *
+	 * @param string $user
+	 * @param string $filepath
+	 * @param string $group
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function userHasSharedFileWithGroupUsingTheSharingApi(
+		$user, $filepath, $group, $permissions = null
+	) {
+		$this->userSharesFileWithGroupUsingTheSharingApi(
+			$user, $filepath, $group, $permissions
 		);
 
 		PHPUnit_Framework_Assert::assertEquals(
@@ -1454,7 +1528,6 @@ trait Sharing {
 
 	/**
 	 * @When /^user "([^"]*)" (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the sharing API$/
-	 * @Given /^user "([^"]*)" has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $action
@@ -1462,6 +1535,7 @@ trait Sharing {
 	 * @param string $offeredBy
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function userReactsToShareOfferedBy($user, $action, $share, $offeredBy) {
 		$dataResponded = $this->getAllSharesSharedWithUser($user);
@@ -1491,11 +1565,25 @@ trait Sharing {
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, $httpRequestMethod, $url, null
 		);
-		if ($this->response->getStatusCode() !== 200) {
-			throw new Exception(
-				__METHOD__ . " could not $action share"
-			);
-		}
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $action
+	 * @param string $share
+	 * @param string $offeredBy
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userHasReactedToShareOfferedBy($user, $action, $share, $offeredBy) {
+		$this->userReactsToShareOfferedBy($user, $action, $share, $offeredBy);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			__METHOD__ . " could not $action share to $user by $offeredBy"
+		);
 	}
 
 	/**
