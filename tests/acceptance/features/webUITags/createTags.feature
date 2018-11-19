@@ -70,5 +70,5 @@ Feature: Creation of tags for the files and folders
       | tag1 | normal |
     When the user browses directly to display the details of file "coolnewfile.txt" in folder ""
     And the user deletes tag with name "tag1" using the webUI
-    Then tag "tag1" should not exist for "user1"
-    And tag "tag1" should not exist for "user2"
+    Then tag "tag1" should not exist for user "user1"
+    And tag "tag1" should not exist for user "user2"

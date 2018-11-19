@@ -16,9 +16,9 @@ Feature: Unassigning tags from file/folder
     And the administrator has created a "normal" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
-    And the user has added the tag "MyFirstTag" to "/myFileToTag.txt"
-    And the user has added the tag "MySecondTag" to "/myFileToTag.txt"
-    When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    And the user has added tag "MyFirstTag" to file "/myFileToTag.txt"
+    And the user has added tag "MySecondTag" to file "/myFileToTag.txt"
+    When user "user1" removes tag "MyFirstTag" from file "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "204"
     And file "/myFileToTag.txt" should have the following tags for the user
       | MySecondTag | normal |
@@ -27,9 +27,9 @@ Feature: Unassigning tags from file/folder
     Given the administrator has created a "normal" tag with name "MyFirstTag"
     And the administrator has created a "normal" tag with name "MySecondTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
-    And the user has added the tag "MyFirstTag" to "/myFileToTag.txt"
-    And the user has added the tag "MySecondTag" to "/myFileToTag.txt"
-    When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    And the user has added tag "MyFirstTag" to file "/myFileToTag.txt"
+    And the user has added tag "MySecondTag" to file "/myFileToTag.txt"
+    When user "user1" removes tag "MyFirstTag" from file "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "404"
     And file "/myFileToTag.txt" should have the following tags for the user
       | MyFirstTag  | normal |
@@ -41,9 +41,9 @@ Feature: Unassigning tags from file/folder
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with the administrator
-    And the administrator has added the tag "MyFirstTag" to "/myFileToTag.txt"
-    And the user has added the tag "MySecondTag" to "/myFileToTag.txt"
-    When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    And the administrator has added tag "MyFirstTag" to file "/myFileToTag.txt"
+    And the user has added tag "MySecondTag" to file "/myFileToTag.txt"
+    When user "user1" removes tag "MyFirstTag" from file "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "404"
     And file "/myFileToTag.txt" should have the following tags for the user
       | MySecondTag | normal |
@@ -57,9 +57,9 @@ Feature: Unassigning tags from file/folder
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with the administrator
-    And the administrator has added the tag "MyFirstTag" to "/myFileToTag.txt"
-    And the user has added the tag "MySecondTag" to "/myFileToTag.txt"
-    When the administrator removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    And the administrator has added tag "MyFirstTag" to file "/myFileToTag.txt"
+    And the user has added tag "MySecondTag" to file "/myFileToTag.txt"
+    When the administrator removes tag "MyFirstTag" from file "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "204"
     And file "/myFileToTag.txt" should have the following tags for the user
       | MySecondTag | normal |
@@ -72,10 +72,10 @@ Feature: Unassigning tags from file/folder
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with the administrator
-    And the administrator has added the tag "MyFirstTag" to "/myFileToTag.txt"
-    And the user has added the tag "MySecondTag" to "/myFileToTag.txt"
+    And the administrator has added tag "MyFirstTag" to file "/myFileToTag.txt"
+    And the user has added tag "MySecondTag" to file "/myFileToTag.txt"
     And user "user0" has removed all shares from the file named "/myFileToTag.txt"
-    When the administrator removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    When the administrator removes tag "MyFirstTag" from file "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "404"
 
   Scenario: Unassigning a not user-assignable tag from a file shared by someone else as regular user should fail
@@ -84,9 +84,9 @@ Feature: Unassigning tags from file/folder
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with the administrator
-    And the administrator has added the tag "MyFirstTag" to "/myFileToTag.txt"
-    And the user has added the tag "MySecondTag" to "/myFileToTag.txt"
-    When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    And the administrator has added tag "MyFirstTag" to file "/myFileToTag.txt"
+    And the user has added tag "MySecondTag" to file "/myFileToTag.txt"
+    When user "user1" removes tag "MyFirstTag" from file "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "403"
     And file "/myFileToTag.txt" should have the following tags for the user
       | MyFirstTag  | not user-assignable |
@@ -101,9 +101,9 @@ Feature: Unassigning tags from file/folder
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with the administrator
-    And the administrator has added the tag "MyFirstTag" to "/myFileToTag.txt"
-    And the user has added the tag "MySecondTag" to "/myFileToTag.txt"
-    When the administrator removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    And the administrator has added tag "MyFirstTag" to file "/myFileToTag.txt"
+    And the user has added tag "MySecondTag" to file "/myFileToTag.txt"
+    When the administrator removes tag "MyFirstTag" from file "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "204"
     And file "/myFileToTag.txt" should have the following tags for the user
       | MySecondTag | normal |
@@ -116,8 +116,8 @@ Feature: Unassigning tags from file/folder
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with the administrator
-    And the administrator has added the tag "MyFirstTag" to "/myFileToTag.txt"
-    And the user has added the tag "MySecondTag" to "/myFileToTag.txt"
+    And the administrator has added tag "MyFirstTag" to file "/myFileToTag.txt"
+    And the user has added tag "MySecondTag" to file "/myFileToTag.txt"
     And user "user0" has removed all shares from the file named "/myFileToTag.txt"
-    When the administrator removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the WebDAV API
+    When the administrator removes tag "MyFirstTag" from file "/myFileToTag.txt" shared by "user0" using the WebDAV API
     Then the HTTP status code should be "404"
