@@ -23,7 +23,6 @@
 namespace Page;
 
 use Behat\Mink\Session;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
  * Admin Sharing Settings page.
@@ -66,13 +65,14 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	/**
 	 * toggle checkbox
 	 *
+	 * @param Session $session
 	 * @param string $action "enables|disables"
 	 * @param string $checkboxXpath
 	 * @param string $checkboxId
 	 *
 	 * @return void
 	 */
-	public function toggleCheckbox($action, $checkboxXpath, $checkboxId) {
+	public function toggleCheckbox(Session $session, $action, $checkboxXpath, $checkboxId) {
 		$checkbox = $this->find("xpath", $checkboxXpath);
 		$checkCheckbox = $this->findById($checkboxId);
 		$this->assertElementNotNull(
@@ -100,17 +100,20 @@ class AdminSharingSettingsPage extends OwncloudPage {
 				__METHOD__ . " invalid action: $action"
 			);
 		}
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
 	 * toggle the Share API
 	 *
+	 * @param Session $session
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function toggleShareApi($action) {
+	public function toggleShareApi(Session $session, $action) {
 		$this->toggleCheckbox(
+			$session,
 			$action,
 			$this->shareApiCheckboxXpath,
 			$this->shareApiCheckboxId
@@ -120,12 +123,14 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	/**
 	 * toggle share via link
 	 *
+	 * @param Session $session
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function toggleShareViaLink($action) {
+	public function toggleShareViaLink(Session $session, $action) {
 		$this->toggleCheckbox(
+			$session,
 			$action,
 			$this->publicShareCheckboxXpath,
 			$this->publicShareCheckboxId
@@ -135,12 +140,14 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	/**
 	 * toggle public uploads
 	 *
+	 * @param Session $session
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function togglePublicUpload($action) {
+	public function togglePublicUpload(Session $session, $action) {
 		$this->toggleCheckbox(
+			$session,
 			$action,
 			$this->publicUploadCheckboxXpath,
 			$this->publicUploadCheckboxId
@@ -150,12 +157,14 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	/**
 	 * toggle mail notification on public link share
 	 *
+	 * @param Session $session
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function toggleMailNotification($action) {
+	public function toggleMailNotification(Session $session, $action) {
 		$this->toggleCheckbox(
+			$session,
 			$action,
 			$this->mailNotiticationOnPublicShareCheckboxXpath,
 			$this->mailNotiticationOnPublicShareCheckboxId
@@ -165,12 +174,14 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	/**
 	 * toggle social share on public link share
 	 *
+	 * @param Session $session
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function toggleSocialShareOnPublicLinkShare($action) {
+	public function toggleSocialShareOnPublicLinkShare(Session $session, $action) {
 		$this->toggleCheckbox(
+			$session,
 			$action,
 			$this->shareFileViaSocialMediaOnPublicShareCheckboxXpath,
 			$this->shareFileViaSocialMediaOnPublicShareCheckboxId
@@ -180,12 +191,16 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	/**
 	 * toggle enforce password protection for read-only links
 	 *
+	 * @param Session $session
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function toggleEnforcePasswordProtectionForReadOnlyLinks($action) {
+	public function toggleEnforcePasswordProtectionForReadOnlyLinks(
+		Session $session, $action
+	) {
 		$this->toggleCheckbox(
+			$session,
 			$action,
 			$this->enforceLinkPasswordReadOnlyCheckboxXpath,
 			$this->enforceLinkPasswordReadOnlyCheckboxId
@@ -195,12 +210,16 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	/**
 	 * toggle enforce password protection for read and write links
 	 *
+	 * @param Session $session
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function toggleEnforcePasswordProtectionForReadWriteLinks($action) {
+	public function toggleEnforcePasswordProtectionForReadWriteLinks(
+		Session $session, $action
+	) {
 		$this->toggleCheckbox(
+			$session,
 			$action,
 			$this->enforceLinkPasswordReadWriteCheckboxXpath,
 			$this->enforceLinkPasswordReadWriteCheckboxId
@@ -210,12 +229,16 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	/**
 	 * toggle enforce password protection for upload only links
 	 *
+	 * @param Session $session
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function toggleEnforcePasswordProtectionForWriteOnlyLinks($action) {
+	public function toggleEnforcePasswordProtectionForWriteOnlyLinks(
+		Session $session, $action
+	) {
 		$this->toggleCheckbox(
+			$session,
 			$action,
 			$this->enforceLinkPasswordWriteOnlyCheckboxXpath,
 			$this->enforceLinkPasswordWriteOnlyCheckboxId
@@ -225,12 +248,14 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	/**
 	 * toggle resharing
 	 *
+	 * @param Session $session
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function toggleResharing($action) {
+	public function toggleResharing(Session $session, $action) {
 		$this->toggleCheckbox(
+			$session,
 			$action,
 			$this->allowResharingCheckboxXpath,
 			$this->allowResharingCheckboxId
@@ -240,12 +265,14 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	/**
 	 * toggle group sharing
 	 *
+	 * @param Session $session
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function toggleGroupSharing($action) {
+	public function toggleGroupSharing(Session $session, $action) {
 		$this->toggleCheckbox(
+			$session,
 			$action,
 			$this->allowGroupSharingCheckboxXpath,
 			$this->allowGroupSharingCheckboxId
@@ -255,12 +282,16 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	/**
 	 * toggle restrict users to only share with their group members
 	 *
+	 * @param Session $session
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function toggleRestrictUsersToOnlyShareWithTheirGroupMembers($action) {
+	public function toggleRestrictUsersToOnlyShareWithTheirGroupMembers(
+		Session $session, $action
+	) {
 		$this->toggleCheckbox(
+			$session,
 			$action,
 			$this->onlyShareWithGroupMembersCheckboxXpath,
 			$this->onlyShareWithGroupMembersCheckboxId
@@ -270,11 +301,12 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	/**
 	 * add group to group sharing blacklist
 	 *
+	 * @param Session $session
 	 * @param string $groupName
 	 *
 	 * @return void
 	 */
-	public function addGroupToGroupSharingBlacklist($groupName) {
+	public function addGroupToGroupSharingBlacklist(Session $session, $groupName) {
 		$groupSharingBlackListField = $this->find("xpath", $this->groupSharingBlackListFieldXpath);
 		$this->assertElementNotNull(
 			$groupSharingBlackListField,
@@ -297,26 +329,21 @@ class AdminSharingSettingsPage extends OwncloudPage {
 				$group->click();
 			}
 		}
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
-	 * waits till at least one Ajax call is active and
-	 * then waits till all outstanding ajax calls finish
+	 * waits for the page to appear completely
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
 	 *
 	 * @return void
 	 */
-	public function waitForAjaxCallsToStartAndFinish(
+	public function waitTillPageIsLoaded(
 		Session $session,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$start = \microtime(true);
-		$this->waitForAjaxCallsToStart($session);
-		$end = \microtime(true);
-		$timeout_msec = $timeout_msec - (($end - $start) * 1000);
-		$timeout_msec = \max($timeout_msec, MINIMUM_UI_WAIT_TIMEOUT_MILLISEC);
-		$this->waitForOutstandingAjaxCalls($session, $timeout_msec);
+		$this->waitTillXpathIsVisible($session, $this->shareApiCheckboxXpath);
 	}
 }

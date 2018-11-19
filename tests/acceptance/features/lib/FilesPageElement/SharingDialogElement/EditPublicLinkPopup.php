@@ -23,6 +23,7 @@
 
 namespace Page\FilesPageElement\SharingDialogElement;
 
+use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -290,5 +291,28 @@ class EditPublicLinkPopup extends OwncloudPage {
 			" could not find save button of the public link popup"
 		);
 		$closeButton->click();
+	}
+
+	/**
+	 * waits for the popup to appear and sets the element
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 * @param string $xpath the xpath of the element to wait for
+	 *                      required to be set
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+		$xpath = null
+	) {
+		if ($xpath === null) {
+			throw new \InvalidArgumentException('$xpath need to be set');
+		}
+		$this->waitForOutstandingAjaxCalls($session);
+		$popupElement = $this->waitTillXpathIsVisible($session, $xpath);
+		$this->setElement($popupElement);
 	}
 }

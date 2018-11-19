@@ -23,6 +23,7 @@
 
 namespace Page\FilesPageElement;
 
+use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -56,7 +57,30 @@ class FileActionsMenu extends OwncloudPage {
 	public function setElement(NodeElement $menuElement) {
 		$this->menuElement = $menuElement;
 	}
-	
+
+	/**
+	 * waits for the tab to appear and sets the element
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 * @param string $xpath the xpath of the element to wait for
+	 *                      required to be set
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+		$xpath = null
+	) {
+		if ($xpath === null) {
+			throw new \InvalidArgumentException('$xpath need to be set');
+		}
+		$this->waitForOutstandingAjaxCalls($session);
+		$element = $this->waitTillXpathIsVisible($session, $xpath);
+		$this->setElement($element);
+	}
+
 	/**
 	 * clicks the rename button
 	 *

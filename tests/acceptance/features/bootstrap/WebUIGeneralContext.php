@@ -246,9 +246,10 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserLogsOutOfTheWebUI() {
-		$settingsMenu = $this->owncloudPage->openSettingsMenu();
+		$session = $this->getSession();
+		$settingsMenu = $this->owncloudPage->openSettingsMenu($session);
 		$settingsMenu->logout();
-		$this->loginPage->waitTillPageIsLoaded($this->getSession());
+		$this->loginPage->waitTillPageIsLoaded($session);
 		if ($this->webUIFilesContext !== null) {
 			$this->webUIFilesContext->resetFilesContext();
 		}

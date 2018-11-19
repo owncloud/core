@@ -53,7 +53,8 @@ class SharingDialog extends OwncloudPage {
 	private $permissionLabelXpath = ".//label[@for='%s']";
 	private $showCrudsXpath = ".//*[@class='showCruds']";
 	private $publicLinksShareTabXpath = ".//li[contains(@class,'subtab-publicshare')]";
-
+	private $publicLinksTabContentXpath = "//div[@id='shareDialogLinkList']";
+	
 	private $sharedWithGroupAndSharerName = null;
 
 	/**
@@ -423,11 +424,12 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
+	 * @param Session $session
 	 *
 	 * @throws ElementNotFoundException
 	 * @return PublicLinkTab
 	 */
-	public function openPublicShareTab() {
+	public function openPublicShareTab(Session $session) {
 		$publicLinksShareTab = $this->find("xpath", $this->publicLinksShareTabXpath);
 		$this->assertElementNotNull(
 			$publicLinksShareTab,
@@ -436,10 +438,40 @@ class SharingDialog extends OwncloudPage {
 			"could not find public links share tab"
 		);
 		$publicLinksShareTab->click();
+		/**
+		 *
+		 * @var PublicLinkTab $publicLinkTab
+		 */
 		$publicLinkTab = $this->getPage(
 			"FilesPageElement\\SharingDialogElement\\PublicLinkTab"
 		);
-		$publicLinkTab->initElement();
+		$publicLinkTab->waitTillPageIsLoaded(
+			$session,
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+			$this->publicLinksTabContentXpath
+		);
 		return $publicLinkTab;
+	}
+
+	/**
+	 * waits for the dialog to appear
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 * @param string $xpath the xpath of the element to wait for
+	 *                      required to be set
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+		$xpath = null
+	) {
+		if ($xpath === null) {
+			throw new \InvalidArgumentException('$xpath need to be set');
+		}
+		$this->waitForOutstandingAjaxCalls($session);
+		$this->waitTillXpathIsVisible($session, $xpath);
 	}
 }

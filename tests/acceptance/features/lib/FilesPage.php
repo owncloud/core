@@ -175,7 +175,7 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function openSharingDialog($fileName, Session $session) {
 		$fileRow = $this->findFileRowByName($fileName, $session);
-		return $fileRow->openSharingDialog();
+		return $fileRow->openSharingDialog($session);
 	}
 
 	/**
