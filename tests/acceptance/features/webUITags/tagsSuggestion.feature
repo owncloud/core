@@ -22,7 +22,7 @@ Feature: Suggestion for matching tag names
     When the user browses directly to display the details of file "lorem.txt" in folder "simple-folder"
     And the user types "sp" in the collaborative tags field using the webUI
     Then all the tags starting with "sp" in their name should be listed in the dropdown list on the webUI
-    But the tag "gham" should not be listed in the dropdown list on the webUI
-    But the tag "notspam" should not be listed in the dropdown list on the webUI
-    And the tag "Violates T&C" should not be listed in the dropdown list on the webUI
-    And the tag "sponsored" should not be listed in the dropdown list on the webUI
+    But tag "gham" should not be listed in the dropdown list on the webUI
+    But tag "notspam" should not be listed in the dropdown list on the webUI
+    And tag "Violates T&C" should not be listed in the dropdown list on the webUI
+    And tag "sponsored" should not be listed in the dropdown list on the webUI

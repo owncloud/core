@@ -238,8 +238,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given the user has changed the password of the public link for :name to :newPassword
-	 * @When the user changes the password of the public link for :name to :newPassword
+	 * @Given the user has changed the password of the public link named :name to :newPassword
+	 * @When the user changes the password of the public link named :name to :newPassword
 	 *
 	 * @param string $name
 	 * @param string $newPassword
@@ -247,7 +247,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function theUserChangesThePasswordOfThePublicLinkForTo($name, $newPassword) {
+	public function theUserChangesThePasswordOfThePublicLinkNamedTo($name, $newPassword) {
 		$this->publicShareTab->editLink($name, null, null, $newPassword);
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
 
@@ -256,8 +256,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given the user has changed the permission of the public link for :name to :newPermission
-	 * @When the user changes the permission of the public link for :name to :newPermission
+	 * @Given the user has changed the permission of the public link named :name to :newPermission
+	 * @When the user changes the permission of the public link named :name to :newPermission
 	 *
 	 * @param string $name
 	 * @param string $newPermission
@@ -265,7 +265,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function theUserChangesThePermissionOfThePublicLinkForTo($name, $newPermission) {
+	public function theUserChangesThePermissionOfThePublicLinkNamedTo($name, $newPermission) {
 		$this->publicShareTab->editLink($name, null, $newPermission);
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
 
@@ -550,8 +550,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the public adds the public link to :server as user :username with the password :password using the webUI
-	 * @Given the public has added the public link to :server as user :username with the password :password using the webUI
+	 * @When the public adds the public link to :server as user :username with password :password using the webUI
+	 * @Given the public has added the public link to :server as user :username with password :password using the webUI
 	 *
 	 * @param string $server
 	 * @param string $username
@@ -574,8 +574,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the user (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the webUI$/
-	 * @Given /^the user has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)" using the webUI$/
+	 * @When /^the user (declines|accepts) share "([^"]*)" offered by user "([^"]*)" using the webUI$/
+	 * @Given /^the user has (declined|accepted) share "([^"]*)" offered by user "([^"]*)" using the webUI$/
 	 *
 	 * @param string $action
 	 * @param string $share
@@ -1030,7 +1030,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the content of the file shared by last public link should be the same as :originalFile
+	 * @Then the content of the file shared by the last public link should be the same as :originalFile
 	 *
 	 * @param string $originalFile
 	 *
@@ -1052,7 +1052,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the email address :address should have received an email containing last shared public link
+	 * @Then the email address :address should have received an email containing the last shared public link
 	 *
 	 * @param string $address
 	 *
