@@ -190,7 +190,7 @@ Feature: Share by public link
 			"""
 			lorem ipsum
 			"""
-    And the email address "foo@bar.co" should have received an email containing last shared public link
+    And the email address "foo@bar.co" should have received an email containing the last shared public link
 
   Scenario: user shares a public link via email adding few addresses before and then removing some addresses afterwards
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
