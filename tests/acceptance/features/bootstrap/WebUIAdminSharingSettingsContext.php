@@ -62,6 +62,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	public function theAdminBrowsesToTheAdminSharingSettingsPage() {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->adminSharingSettingsPage->open();
+		$this->adminSharingSettingsPage->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**
@@ -72,9 +73,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function adminTogglesShareApiUsingTheWebui($action) {
-		$this->adminSharingSettingsPage->toggleShareApi($action);
-		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
+		$this->adminSharingSettingsPage->toggleShareApi(
+			$this->getSession(), $action
 		);
 	}
 
@@ -86,9 +86,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function adminTogglesShareViaLink($action) {
-		$this->adminSharingSettingsPage->toggleShareViaLink($action);
-		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
+		$this->adminSharingSettingsPage->toggleShareViaLink(
+			$this->getSession(), $action
 		);
 	}
 
@@ -100,9 +99,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function adminTogglesPublicUpload($action) {
-		$this->adminSharingSettingsPage->togglePublicUpload($action);
-		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
+		$this->adminSharingSettingsPage->togglePublicUpload(
+			$this->getSession(), $action
 		);
 	}
 
@@ -114,9 +112,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function adminTogglesMailNotificationOnPublicLinkShare($action) {
-		$this->adminSharingSettingsPage->toggleMailNotification($action);
-		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
+		$this->adminSharingSettingsPage->toggleMailNotification(
+			$this->getSession(), $action
 		);
 	}
 
@@ -128,9 +125,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function adminTogglesSocialShareOnPublicLinkShare($action) {
-		$this->adminSharingSettingsPage->toggleSocialShareOnPublicLinkShare($action);
-		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
+		$this->adminSharingSettingsPage->toggleSocialShareOnPublicLinkShare(
+			$this->getSession(), $action
 		);
 	}
 
@@ -142,9 +138,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function adminTogglesEnforcePasswordProtectionForReadOnlyLinks($action) {
-		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadOnlyLinks($action);
-		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
+		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadOnlyLinks(
+			$this->getSession(), $action
 		);
 	}
 
@@ -156,9 +151,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function adminTogglesEnforcePasswordProtectionForReadWriteLinks($action) {
-		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadWriteLinks($action);
-		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
+		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadWriteLinks(
+			$this->getSession(), $action
 		);
 	}
 
@@ -170,9 +164,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function adminTogglesEnforcePasswordProtectionForWriteOnlyLinks($action) {
-		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForWriteOnlyLinks($action);
-		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
+		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForWriteOnlyLinks(
+			$this->getSession(), $action
 		);
 	}
 
@@ -184,9 +177,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function adminTogglesDisableResharing($action) {
-		$this->adminSharingSettingsPage->toggleResharing($action);
-		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
+		$this->adminSharingSettingsPage->toggleResharing(
+			$this->getSession(), $action
 		);
 	}
 
@@ -198,9 +190,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function adminTogglesSharingWithGroupUsingTheWebui($action) {
-		$this->adminSharingSettingsPage->toggleGroupSharing($action);
-		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
+		$this->adminSharingSettingsPage->toggleGroupSharing(
+			$this->getSession(), $action
 		);
 	}
 
@@ -212,9 +203,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function theAdminRestrictsUsersToOnlyShareWithTheirGroupMemberUsingTheWebui($action) {
-		$this->adminSharingSettingsPage->toggleRestrictUsersToOnlyShareWithTheirGroupMembers($action);
-		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
+		$this->adminSharingSettingsPage->toggleRestrictUsersToOnlyShareWithTheirGroupMembers(
+			$this->getSession(), $action
 		);
 	}
 
@@ -226,9 +216,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function theAdministratorAddsGroupToTheGroupSharingBlacklistUsingTheWebui($group) {
-		$this->adminSharingSettingsPage->addGroupToGroupSharingBlacklist($group);
-		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
+		$this->adminSharingSettingsPage->addGroupToGroupSharingBlacklist(
+			$this->getSession(), $group
 		);
 	}
 

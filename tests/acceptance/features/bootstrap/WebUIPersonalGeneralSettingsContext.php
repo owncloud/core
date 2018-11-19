@@ -65,7 +65,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function theUserBrowsesToThePersonalGeneralSettingsPage() {
 		$this->personalGeneralSettingsPage->open();
-		$this->personalGeneralSettingsPage->waitForOutstandingAjaxCalls(
+		$this->personalGeneralSettingsPage->waitTillPageIsLoaded(
 			$this->getSession()
 		);
 		$this->webUIGeneralContext->setCurrentPageObject(

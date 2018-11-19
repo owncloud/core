@@ -37,7 +37,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 */
 	protected $path = '/index.php/settings/personal?sectionid=general';
 	protected $languageSelectId = "languageinput";
-	protected $personalProfilePanelId = "OC\Settings\Panels\Personal\Profile";
+	protected $personalProfilePanelXpath = "//div[@id='OC\\Settings\\Panels\\Personal\\Profile']";
 	protected $oldPasswordInputID = "pass1";
 	protected $newPasswordInputID = "pass2";
 	protected $fullNameInputID = "displayName";
@@ -72,22 +72,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 		Session $session,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$currentTime = \microtime(true);
-		$end = $currentTime + ($timeout_msec / 1000);
-		while ($currentTime <= $end) {
-			if ($this->findById($this->personalProfilePanelId) !== null) {
-				break;
-			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
-		}
-
-		if ($currentTime > $end) {
-			throw new \Exception(
-				__METHOD__ . " timeout waiting for page to load"
-			);
-		}
-
+		$this->waitTillXpathIsVisible($session, $this->personalProfilePanelXpath);
 		$this->waitForOutstandingAjaxCalls($session);
 	}
 

@@ -22,6 +22,7 @@
  */
 namespace Page;
 
+use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
@@ -45,6 +46,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	protected $linkedAppNameXpath = '//span[@class="token-name"]';
 	protected $disconnectButtonXpath = '//*[@data-original-title="Disconnect"]';
 	protected $createNewAppPasswordLoadingIndicatorClass = 'icon-loading-small';
+	protected $corsInputfieldXpath = "//input[@id='domain']";
 
 	/**
 	 * create a new app password for the app named $appName
@@ -132,5 +134,22 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 			$this->findField($this->newAppLoginNameId),
 			$this->findField($this->newAppPasswordId)
 		];
+	}
+
+	/**
+	 * there is no reliable loading indicator on the personal security settings page,
+	 * so just wait for the cors input field to be there and all Ajax calls to finish
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	) {
+		$this->waitForOutstandingAjaxCalls($session);
+		$this->waitTillXpathIsVisible($session, $this->corsInputfieldXpath);
 	}
 }

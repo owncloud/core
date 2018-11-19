@@ -215,7 +215,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws ElementNotFoundException
 	 */
 	public function theUserHasOpenedThePublicLinkShareTab() {
-		$this->publicShareTab = $this->sharingDialog->openPublicShareTab();
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab(
+			$this->getSession()
+		);
 	}
 
 	/**
@@ -229,9 +231,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws ElementNotFoundException
 	 */
 	public function theUserOpensThePublicLinkEditDialogOfThe($oldName, $newName) {
-		$this->publicShareTab->editLink($oldName, $newName);
+		$session = $this->getSession();
+		$this->publicShareTab->editLink($session, $oldName, $newName);
 
-		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($newName);
 		$this->addToListOfCreatedPublicLinks($newName, $linkUrl);
@@ -248,8 +251,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws ElementNotFoundException
 	 */
 	public function theUserChangesThePasswordOfThePublicLinkNamedTo($name, $newPassword) {
-		$this->publicShareTab->editLink($name, null, null, $newPassword);
-		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
+		$session = $this->getSession();
+		$this->publicShareTab->editLink($session, $name, null, null, $newPassword);
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($name);
 		$this->addToListOfCreatedPublicLinks($name, $linkUrl);
@@ -266,8 +270,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws ElementNotFoundException
 	 */
 	public function theUserChangesThePermissionOfThePublicLinkNamedTo($name, $newPermission) {
-		$this->publicShareTab->editLink($name, null, $newPermission);
-		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
+		$session = $this->getSession();
+		$this->publicShareTab->editLink($session, $name, null, $newPermission);
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($name);
 		$this->addToListOfCreatedPublicLinks($name, $linkUrl);
@@ -280,7 +285,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws ElementNotFoundException
 	 */
 	public function theUserOpensTheCreatePublicLinkSharePopup() {
-		$this->publicSharingPopup = $this->publicShareTab->openSharingPopup();
+		$this->publicSharingPopup = $this->publicShareTab->openSharingPopup(
+			$this->getSession()
+		);
 	}
 
 	/**
@@ -965,10 +972,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$this->filesPage->closeDetailsDialog();
 		} catch (Exception $e) {
 		}
+		$session = $this->getSession();
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$name, $this->getSession()
+			$name, $session
 		);
-		$this->publicShareTab = $this->sharingDialog->openPublicShareTab();
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
 		if ($settings !== null) {
 			$settingsArray = $settings->getRowsHash();
 			if (!isset($settingsArray['name'])) {

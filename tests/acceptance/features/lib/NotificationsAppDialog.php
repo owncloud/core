@@ -22,7 +22,7 @@
 
 namespace Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use Behat\Mink\Session;
 
 /**
  * PageObject for the Notifications area
@@ -85,5 +85,20 @@ class NotificationsAppDialog extends OwncloudPage {
 			$notificationObjects[] = $notificationObject;
 		}
 		return $notificationObjects;
+	}
+
+	/**
+	 * waits for the page to appear completely
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	) {
+		$this->waitTillXpathIsVisible($session, $this->notificationContainerXpath);
 	}
 }
