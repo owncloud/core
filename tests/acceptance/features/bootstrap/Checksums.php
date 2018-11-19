@@ -59,6 +59,30 @@ trait Checksums {
 	}
 
 	/**
+	 * @When user :user uploads file with content :content and checksum :checksum to :destination using the WebDAV API
+	 * @Given user :user has uploaded file with content :content and checksum :checksum to :destination
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param string $checksum
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userUploadsFileWithContentAndChecksumToUsingTheAPI(
+		$user, $content, $checksum, $destination
+	) {
+		$this->response = $this->makeDavRequest(
+			$user,
+			'PUT',
+			$destination,
+			['OC-Checksum' => $checksum],
+			$content,
+			"files"
+		);
+	}
+
+	/**
 	 * @Then the webdav response should have a status code :statusCode
 	 *
 	 * @param int $statusCode
