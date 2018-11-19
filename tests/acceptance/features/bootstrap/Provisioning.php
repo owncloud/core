@@ -1652,30 +1652,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator makes user "([^"]*)" not a subadmin of group "([^"]*)" using the provisioning API$/
-	 * @Given /^user "([^"]*)" has been made not a subadmin of group "([^"]*)"$/
-	 *
-	 * @param string $user
-	 * @param string $group
-	 *
-	 * @return void
-	 */
-	public function adminMakesUserNotSubadminOfGroupUsingTheProvisioningApi(
-		$user, $group
-	) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
-		);
-		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-		\sort($respondedArray);
-		PHPUnit_Framework_Assert::assertNotContains($user, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(
-			200, $this->response->getStatusCode()
-		);
-	}
-
-	/**
 	 * @Then /^the users returned by the API should be$/
 	 *
 	 * @param TableNode $usersList
