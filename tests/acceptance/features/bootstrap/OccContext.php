@@ -913,6 +913,38 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Given the administrator has cleared the versions for user :user
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasClearedTheVersionsForUser($user) {
+		$this->featureContext->invokingTheCommand(
+			"versions:cleanup $user"
+		);
+		PHPUnit_Framework_Assert::assertSame(
+			"Delete versions of   $user",
+			\trim($this->featureContext->getStdOutOfOccCommand())
+		);
+	}
+
+	/**
+	 * @Given the administrator has cleared the versions for all users
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasClearedTheVersionsForAllUsers() {
+		$this->featureContext->invokingTheCommand(
+			"versions:cleanup"
+		);
+		PHPUnit_Framework_Assert::assertContains(
+			"Delete all versions",
+			\trim($this->featureContext->getStdOutOfOccCommand())
+		);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
