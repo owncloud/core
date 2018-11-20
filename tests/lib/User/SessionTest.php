@@ -1547,6 +1547,8 @@ class SessionTest extends TestCase {
 		$iUser->expects($this->any())
 			->method('isEnabled')
 			->willReturn(true);
+		$iUser->expects($this->atLeastOnce())
+			->method('updateLastLoginTimestamp');
 
 		$result = $this->invokePrivate($userSession, 'loginUser', [$iUser, 'foo']);
 		$this->assertTrue($result);
@@ -1584,6 +1586,8 @@ class SessionTest extends TestCase {
 			->willReturn(false);
 		$iUser->method('getUID')
 			->willReturn('foo');
+		$iUser->expects($this->never())
+			->method('updateLastLoginTimestamp');
 
 		$failedEvent = new GenericEvent(null, ['user' => 'foo']);
 		$eventDispatcher->expects($this->once())
