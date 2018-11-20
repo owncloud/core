@@ -14,7 +14,7 @@ Feature: Unassigning tags from file/folder
   Scenario: Unassigning a normal tag from a file shared by someone else as regular user should work
     Given the administrator has created a "normal" tag with name "MyFirstTag"
     And the administrator has created a "normal" tag with name "MySecondTag"
-    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And the user has added tag "MyFirstTag" to file "/myFileToTag.txt"
     And the user has added tag "MySecondTag" to file "/myFileToTag.txt"
@@ -26,7 +26,7 @@ Feature: Unassigning tags from file/folder
   Scenario: Unassigning a normal tag from a file unshared by someone else as regular user should fail
     Given the administrator has created a "normal" tag with name "MyFirstTag"
     And the administrator has created a "normal" tag with name "MySecondTag"
-    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
     And the user has added tag "MyFirstTag" to file "/myFileToTag.txt"
     And the user has added tag "MySecondTag" to file "/myFileToTag.txt"
     When user "user1" removes tag "MyFirstTag" from file "/myFileToTag.txt" shared by "user0" using the WebDAV API
@@ -38,7 +38,7 @@ Feature: Unassigning tags from file/folder
   Scenario: Unassigning a not user-visible tag from a file shared by someone else as regular user should fail
     Given the administrator has created a "not user-visible" tag with name "MyFirstTag"
     And the administrator has created a "normal" tag with name "MySecondTag"
-    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with the administrator
     And the administrator has added tag "MyFirstTag" to file "/myFileToTag.txt"
@@ -54,7 +54,7 @@ Feature: Unassigning tags from file/folder
   Scenario: Unassigning a not user-visible tag from a file shared by someone else as admin should work
     Given the administrator has created a "not user-visible" tag with name "MyFirstTag"
     And the administrator has created a "normal" tag with name "MySecondTag"
-    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with the administrator
     And the administrator has added tag "MyFirstTag" to file "/myFileToTag.txt"
@@ -69,7 +69,7 @@ Feature: Unassigning tags from file/folder
   Scenario: Unassigning a not user-visible tag from a file unshared by someone else should fail
     Given the administrator has created a "not user-visible" tag with name "MyFirstTag"
     And the administrator has created a "normal" tag with name "MySecondTag"
-    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with the administrator
     And the administrator has added tag "MyFirstTag" to file "/myFileToTag.txt"
@@ -81,7 +81,7 @@ Feature: Unassigning tags from file/folder
   Scenario: Unassigning a not user-assignable tag from a file shared by someone else as regular user should fail
     Given the administrator has created a "not user-assignable" tag with name "MyFirstTag"
     And the administrator has created a "normal" tag with name "MySecondTag"
-    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with the administrator
     And the administrator has added tag "MyFirstTag" to file "/myFileToTag.txt"
@@ -98,7 +98,7 @@ Feature: Unassigning tags from file/folder
   Scenario: Unassigning a not user-assignable tag from a file shared by someone else as admin should work
     Given the administrator has created a "not user-assignable" tag with name "MyFirstTag"
     And the administrator has created a "normal" tag with name "MySecondTag"
-    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with the administrator
     And the administrator has added tag "MyFirstTag" to file "/myFileToTag.txt"
@@ -113,7 +113,7 @@ Feature: Unassigning tags from file/folder
   Scenario: Unassigning a not user-assignable tag from a file unshared by someone else should fail
     Given the administrator has created a "not user-assignable" tag with name "MyFirstTag"
     And the administrator has created a "normal" tag with name "MySecondTag"
-    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     And user "user0" has shared file "/myFileToTag.txt" with the administrator
     And the administrator has added tag "MyFirstTag" to file "/myFileToTag.txt"

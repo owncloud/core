@@ -9,14 +9,14 @@ Feature: Comments
 
   @smokeTest
   Scenario: Deleting my own comments on a file belonging to myself
-    Given the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has commented with content "My first comment" on file "/myFileToComment.txt"
     When the user deletes the last created comment using the WebDAV API
     Then the HTTP status code should be "204"
     And user "user0" should have 0 comments on file "/myFileToComment.txt"
 
   Scenario: Deleting a comment on a file belonging to myself having several comments
-    Given the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has commented with content "My first comment" on file "/myFileToComment.txt"
     And the user has commented with content "My second comment" on file "/myFileToComment.txt"
     And the user has commented with content "My third comment" on file "/myFileToComment.txt"
@@ -26,7 +26,7 @@ Feature: Comments
     And the user should have 3 comments on file "/myFileToComment.txt"
 
   Scenario: Deleting my own comments on a file shared by somebody else
-    Given the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has shared file "/myFileToComment.txt" with user "user1"
     And the user has commented with content "File owner comment" on file "/myFileToComment.txt"
     And user "user1" has commented with content "Sharee comment" on file "/myFileToComment.txt"
