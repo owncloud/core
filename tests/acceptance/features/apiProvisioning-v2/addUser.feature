@@ -17,14 +17,14 @@ Feature: add user
     And user "brand-new-user" should be able to access a skeleton file
 
   Scenario: admin tries to create an existing user
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     When the administrator sends a user creation request for user "brand-new-user" password "%alt1%" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And the API should not return any data
 
   Scenario: admin tries to create an existing disabled user
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And user "brand-new-user" has been disabled
     When the administrator sends a user creation request for user "brand-new-user" password "%alt1%" using the provisioning API
     Then the OCS status code should be "400"

@@ -517,7 +517,7 @@ Feature: capabilities
 
   Scenario: When in a group that is excluded from sharing, can_share is off
     Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
     And group "grp1" has been created
     And group "hash#group" has been created
     And group "group-3" has been created
@@ -546,7 +546,7 @@ Feature: capabilities
 
   Scenario: When not in any group that is excluded from sharing, can_share is on
     Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
     And group "grp1" has been created
     And group "hash#group" has been created
     And group "group-3" has been created
@@ -575,7 +575,7 @@ Feature: capabilities
 
   Scenario: When in a group that is excluded from sharing and in another group, can_share is off
     Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
     And group "grp1" has been created
     And group "hash#group" has been created
     And group "group-3" has been created

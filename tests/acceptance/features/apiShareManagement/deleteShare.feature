@@ -3,8 +3,8 @@ Feature: sharing
 
   Background:
     Given using old DAV path
-    And user "user0" has been created
-    And user "user1" has been created
+    And user "user0" has been created with default attributes
+    And user "user1" has been created with default attributes
 
   Scenario Outline: Delete all group shares
     Given using OCS API version "<ocs_api_version>"
@@ -46,9 +46,9 @@ Feature: sharing
 
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created
-    And user "user3" has been created
-    And user "user4" has been created
+    And user "user2" has been created with default attributes
+    And user "user3" has been created with default attributes
+    And user "user4" has been created with default attributes
     And user "user0" has created a folder "/folder1"
     And user "user0" has shared file "/folder1" with user "user1"
     And user "user0" has shared file "/folder1" with user "user2"
@@ -106,7 +106,7 @@ Feature: sharing
   Scenario Outline: unshare from self
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "user2" has been created
+    And user "user2" has been created with default attributes
     And user "user2" has been added to group "grp1"
     And user "user1" has been added to group "grp1"
     And user "user2" has shared file "/PARENT/parent.txt" with group "grp1"

@@ -3,7 +3,7 @@ Feature: tokenAuth
 
   Background:
     Given using OCS API version "1"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And token auth has been enforced
 
   Scenario: creating a user with basic auth should be blocked when token auth is enforced

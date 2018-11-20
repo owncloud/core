@@ -77,7 +77,7 @@ Feature: add groups
 
   @issue-31276
   Scenario: normal user tries to create a group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     When user "brand-new-user" sends HTTP method "POST" to OCS API endpoint "/cloud/groups" with body
       | groupid | new-group |
     Then the OCS status code should be "997"
@@ -86,7 +86,7 @@ Feature: add groups
     And group "new-group" should not exist
 
   Scenario: subadmin tries to create a group
-    Given user "subadmin" has been created
+    Given user "subadmin" has been created with default attributes
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "subadmin" sends HTTP method "POST" to OCS API endpoint "/cloud/groups" with body

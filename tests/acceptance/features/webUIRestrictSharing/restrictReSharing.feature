@@ -6,7 +6,7 @@ Feature: restrict resharing
   I want to be able to forbid a user that received a share from me to share it further
 
   Background:
-    Given these users have been created:
+    Given these users have been created with default attributes:
       | username |
       | user1    |
       | user2    |

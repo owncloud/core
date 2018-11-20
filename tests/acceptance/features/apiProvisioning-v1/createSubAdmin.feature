@@ -9,7 +9,7 @@ Feature: create a subadmin
 
   @smokeTest
   Scenario: admin creates a subadmin
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/subadmins" with body
       | groupid | new-group |
@@ -27,7 +27,7 @@ Feature: create a subadmin
     And user "not-user" should not be a subadmin of group "new-group"
 
   Scenario: admin tries to create a subadmin using a group which does not exist
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "not-group" has been deleted
     When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/subadmins" with body
       | groupid | not-group |
@@ -36,8 +36,8 @@ Feature: create a subadmin
     And the API should not return any data
 
   Scenario: subadmin of a group tries to make another user subadmin of their group
-    Given user "subadmin" has been created
-    And user "brand-new-user" has been created
+    Given user "subadmin" has been created with default attributes
+    And user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     And the administrator has sent HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body

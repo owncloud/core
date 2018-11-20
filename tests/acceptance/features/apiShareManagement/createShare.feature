@@ -3,13 +3,13 @@ Feature: sharing
 
   Background:
     Given using old DAV path
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
 
   @smokeTest
   @skipOnEncryptionType:user-keys @issue-32322
   Scenario Outline: Creating a new share with user
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     When user "user0" shares file "welcome.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -43,7 +43,7 @@ Feature: sharing
 
   Scenario Outline: Creating a new share with user who already received a share through their group
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user0" has shared file "welcome.txt" with group "grp1"
@@ -125,7 +125,7 @@ Feature: sharing
 
   Scenario Outline: Creating a new share with a disabled user
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has been disabled
     When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
       | path      | welcome.txt |
@@ -140,7 +140,7 @@ Feature: sharing
   @issue-32068
   Scenario: Creating a new share with a disabled user
     Given using OCS API version "2"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has been disabled
     When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
       | path      | welcome.txt |
@@ -205,7 +205,7 @@ Feature: sharing
 
   Scenario Outline: Share of folder and sub-folder to same user - core#20645
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp4" has been created
     And user "user1" has been added to group "grp4"
     When user "user0" shares file "/PARENT" with user "user1" using the sharing API
@@ -228,8 +228,8 @@ Feature: sharing
   @smokeTest
   Scenario Outline: Share of folder to a group
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
-    And user "user2" has been created
+    And user "user1" has been created with default attributes
+    And user "user2" has been created with default attributes
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
@@ -280,8 +280,8 @@ Feature: sharing
   @smokeTest
   Scenario: unique target names for incoming shares
     Given using OCS API version "1"
-    And user "user1" has been created
-    And user "user2" has been created
+    And user "user1" has been created with default attributes
+    And user "user2" has been created with default attributes
     And user "user0" has created a folder "/foo"
     And user "user1" has created a folder "/foo"
     When user "user0" shares file "/foo" with user "user2" using the sharing API
@@ -292,7 +292,7 @@ Feature: sharing
 
   Scenario Outline: sharing again an own file while belonging to a group
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user1" has shared file "welcome.txt" with group "grp1"
@@ -307,7 +307,7 @@ Feature: sharing
 
   Scenario Outline: sharing subfolder when parent already shared
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user0" has created a folder "/test"
     And user "user0" has created a folder "/test/sub"
@@ -323,7 +323,7 @@ Feature: sharing
 
   Scenario Outline: sharing subfolder when parent already shared with group of sharer
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user0" has been added to group "grp1"
     And user "user0" has created a folder "/test"
@@ -340,10 +340,10 @@ Feature: sharing
 
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
-    And user "user2" has been created
-    And user "user3" has been created
-    And user "user4" has been created
+    And user "user1" has been created with default attributes
+    And user "user2" has been created with default attributes
+    And user "user3" has been created with default attributes
+    And user "user4" has been created with default attributes
     And user "user0" has created a folder "/folder1"
     And user "user0" has shared file "/folder1" with user "user1"
     And user "user0" has shared file "/folder1" with user "user2"
@@ -368,7 +368,7 @@ Feature: sharing
 
   Scenario Outline: Cannot create share with zero permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
       | path        | welcome.txt |
       | shareWith   | user1       |
@@ -382,7 +382,7 @@ Feature: sharing
 
   Scenario Outline: user shares a file with file name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
     When user "user0" shares file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -396,7 +396,7 @@ Feature: sharing
   Scenario Outline: user shares a file with file name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user1" has been added to group "grp1"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
     When user "user0" shares file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" with group "grp1" using the sharing API
@@ -410,7 +410,7 @@ Feature: sharing
 
   Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has created a folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
     When user "user0" shares folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" with user "user1" using the sharing API
@@ -425,7 +425,7 @@ Feature: sharing
   Scenario Outline: user shares a folder with folder name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user1" has been added to group "grp1"
     And user "user0" has created a folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"

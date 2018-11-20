@@ -9,7 +9,7 @@ Feature: remove a user from a group
 
   @smokeTest
   Scenario Outline: admin removes a user from a group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
     When the administrator sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
@@ -24,7 +24,7 @@ Feature: remove a user from a group
       | नेपाली      | Unicode group name          |
 
   Scenario Outline: admin removes a user from a group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
     When the administrator sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
@@ -53,7 +53,7 @@ Feature: remove a user from a group
 
   @skip @issue-31015
   Scenario Outline: admin removes a user from a group that has a forward-slash in the group name
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
     When the administrator sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
@@ -69,7 +69,7 @@ Feature: remove a user from a group
       | priv/subadmins/1 | Subadmins mentioned not at the end |
 
   Scenario: admin tries to remove a user from a group which does not exist
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "not-group" has been deleted
     When the administrator sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | not-group |
@@ -79,8 +79,8 @@ Feature: remove a user from a group
 
   @smokeTest
   Scenario: a subadmin can remove users from groups the subadmin is responsible for
-    Given user "subadmin" has been created
-    And user "brand-new-user" has been created
+    Given user "subadmin" has been created with default attributes
+    And user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
@@ -91,8 +91,8 @@ Feature: remove a user from a group
     And user "brand-new-user" should not belong to group "new-group"
 
   Scenario: a subadmin cannot remove users from groups the subadmin is not responsible for
-    Given user "other-subadmin" has been created
-    And user "brand-new-user" has been created
+    Given user "other-subadmin" has been created with default attributes
+    And user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And group "other-group" has been created
     And user "brand-new-user" has been added to group "new-group"
@@ -104,8 +104,8 @@ Feature: remove a user from a group
     And user "brand-new-user" should belong to group "new-group"
 
   Scenario: normal user tries to remove a user in their group
-    Given user "newuser" has been created
-    And user "anotheruser" has been created
+    Given user "newuser" has been created with default attributes
+    And user "anotheruser" has been created with default attributes
     And group "new-group" has been created
     And user "newuser" has been added to group "new-group"
     And user "anotheruser" has been added to group "new-group"

@@ -9,7 +9,7 @@ Feature: get user groups
 
   @smokeTest
   Scenario: admin gets groups of an user
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "unused-group" has been created
     And group "new-group" has been created
     And group "0" has been created
@@ -34,7 +34,7 @@ Feature: get user groups
 	# Note: when the issue is fixed, use this scenario and delete the scenario above.
   @skip @issue-31015
   Scenario: admin gets groups of an user, including groups containing a slash
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "unused-group" has been created
     And group "new-group" has been created
     And group "0" has been created
@@ -67,8 +67,8 @@ Feature: get user groups
 
   @smokeTest
   Scenario: subadmin tries to get other groups of a user in their group
-    Given user "newuser" has been created
-    And user "subadmin" has been created
+    Given user "newuser" has been created with default attributes
+    And user "subadmin" has been created with default attributes
     And group "newgroup" has been created
     And group "anothergroup" has been created
     And user "subadmin" has been made a subadmin of group "newgroup"
@@ -81,8 +81,8 @@ Feature: get user groups
     And the HTTP status code should be "200"
 
   Scenario: normal user tries to get the groups of another user
-    Given user "newuser" has been created
-    And user "anotheruser" has been created
+    Given user "newuser" has been created with default attributes
+    And user "anotheruser" has been created with default attributes
     And group "newgroup" has been created
     And user "newuser" has been added to group "newgroup"
     When user "anotheruser" sends HTTP method "GET" to OCS API endpoint "/cloud/users/newuser/groups"
@@ -91,7 +91,7 @@ Feature: get user groups
     And the API should not return any data
 
   Scenario: admin gets groups of an user who is not in any groups
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "unused-group" has been created
     When the administrator sends HTTP method "GET" to OCS API endpoint "/cloud/users/brand-new-user/groups"
     Then the OCS status code should be "100"

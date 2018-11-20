@@ -5,7 +5,7 @@ Feature: Creation of tags
   So that I could categorize my files
 
   Background:
-    Given these users have been created:
+    Given these users have been created with default attributes:
       | username |
       | user0    |
       | user1    |

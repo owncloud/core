@@ -6,7 +6,7 @@ Feature: Unmark file/folder as favorite
   So that I can remove my favorite file/folder from favorite page
 
   Background:
-    Given user "user1" has been created
+    Given user "user1" has been created with default attributes
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 

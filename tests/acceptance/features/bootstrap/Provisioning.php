@@ -224,17 +224,15 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has been created$/
+	 * @Given /^user "([^"]*)" has been created with default attributes$/
 	 *
 	 * @param string $user
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userHasBeenCreated($user) {
-		$this->createUser(
-			$user, null, null, null, true
-		);
+	public function userHasBeenCreatedWithDefaultAttributes($user) {
+		$this->createUser($user);
 
 		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") !== "true") {
 			$this->userShouldExist($user);
@@ -242,18 +240,19 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^these users have been created\s?(but not initialized|):$/
+	 * @Given /^these users have been created\s?(with default attributes|)\s?(but not initialized|):$/
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
 	 * password, displayname & email are optional
 	 *
+	 * @param string $setDefaultAttributes just set the defaults if it doesn't exist
 	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theseUsersHaveBeenCreated($doNotInitialize, TableNode $table) {
+	public function theseUsersHaveBeenCreated($setDefaultAttributes, $doNotInitialize, TableNode $table) {
 		foreach ($table as $row) {
 			if (isset($row['displayname'])) {
 				$displayName = $row['displayname'];
@@ -279,7 +278,9 @@ trait Provisioning {
 				$password,
 				$displayName,
 				$email,
-				($doNotInitialize === "")
+				($doNotInitialize === ""),
+				null,
+				!($setDefaultAttributes === "")
 			);
 		}
 	}
@@ -1073,6 +1074,7 @@ trait Provisioning {
 	 * @param string|null $email
 	 * @param bool $initialize initialize the user skeleton files etc
 	 * @param string|null $method how to create the user api|occ, default api
+	 * @param bool $setDefault sets the missing values to some default
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -1083,18 +1085,29 @@ trait Provisioning {
 		$displayName = null,
 		$email = null,
 		$initialize = true,
-		$method = null
+		$method = null,
+		$setDefault = true
 	) {
+		$user = $this->getActualUsername($user);
+
 		if ($password === null) {
 			$password = $this->getPasswordForUser($user);
 		}
 
 		if ($displayName === null) {
 			$displayName = $this->getDisplayNameForUser($user);
+
+			if ($displayName === null && $setDefault == true) {
+				$displayName = $this->getDisplayNameForUser('regularuser');
+			}
 		}
 
 		if ($email === null) {
 			$email = $this->getEmailAddressForUser($user);
+
+			if ($email === null && $setDefault == true) {
+				$email = $user . '@owncloud.org';
+			}
 		}
 
 		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
