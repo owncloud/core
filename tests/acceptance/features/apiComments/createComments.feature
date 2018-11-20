@@ -9,7 +9,7 @@ Feature: Comments
 
   @smokeTest
   Scenario Outline: Creating a comment on a file belonging to myself
-    Given the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     When the user comments with content "<comment>" on file "/myFileToComment.txt" using the WebDAV API
     Then the user should have the following comments on file "/myFileToComment.txt"
       | user0 | <comment> |
@@ -20,7 +20,7 @@ Feature: Comments
       | नेपालि           |
 
   Scenario: Creating a comment on a shared file belonging to another user
-    Given the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has shared file "/myFileToComment.txt" with user "user1"
     When user "user1" comments with content "A comment from sharee" on file "/myFileToComment.txt" using the WebDAV API
     And the user comments with content "A comment from sharer" on file "/myFileToComment.txt" using the WebDAV API
@@ -32,7 +32,7 @@ Feature: Comments
   Scenario: sharee comments on a group shared file
     Given group "grp1" has been created
     And user "user1" has been added to group "grp1"
-    And the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    And the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has shared file "/myFileToComment.txt" with group "grp1"
     When user "user1" comments with content "Comment from sharee" on file "/myFileToComment.txt" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -40,7 +40,7 @@ Feature: Comments
       | user1 | Comment from sharee |
 
   Scenario: sharee comments on read-only shared file
-    Given the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has created a share with settings
       | path        | /myFileToComment.txt |
       | shareType   | 0                    |
@@ -52,7 +52,7 @@ Feature: Comments
       | user1 | Comment from sharee |
 
   Scenario: sharee comments on upload-only shared file
-    Given the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has created a share with settings
       | path        | /myFileToComment.txt |
       | shareType   | 0                    |

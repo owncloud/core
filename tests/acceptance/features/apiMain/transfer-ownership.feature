@@ -6,7 +6,7 @@ Feature: transfer-ownership
   Scenario: transferring ownership of a file
     Given user "user0" has been created
     And user "user1" has been created
-    And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
     And using received transfer folder of "user1" as dav path
@@ -16,7 +16,7 @@ Feature: transfer-ownership
   Scenario: transferring ownership of a file after updating the file
     Given user "user0" has been created
     And user "user1" has been created
-    And user "user0" has uploaded file "data/file_to_overwrite.txt" to "/PARENT/textfile0.txt"
+    And user "user0" has uploaded file "filesForUpload/file_to_overwrite.txt" to "/PARENT/textfile0.txt"
     And user "user0" has uploaded the following "3" chunks to "/PARENT/textfile0.txt" with old chunking
       | 1 | AA |
       | 2 | BB |
@@ -31,7 +31,7 @@ Feature: transfer-ownership
     Given user "user0" has been created
     And user "user1" has been created
     And user "user0" has created a folder "/test"
-    And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
     And using received transfer folder of "user1" as dav path
@@ -42,7 +42,7 @@ Feature: transfer-ownership
     Given user "user0" has been created
     And user "user1" has been created
     And user "user2" has been created
-    And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
     And user "user0" has shared file "/somefile.txt" with user "user2" with permissions 19
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
@@ -54,7 +54,7 @@ Feature: transfer-ownership
     And user "user1" has been created
     And user "user2" has been created
     And user "user0" has created a folder "/test"
-    And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
     And user "user0" has shared folder "/test" with user "user2" with permissions 31
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
@@ -65,7 +65,7 @@ Feature: transfer-ownership
     Given user "user0" has been created
     And user "user1" has been created
     And user "user0" has created a folder "/test"
-    And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
     And user "user0" has shared folder "/test" with user "user1" with permissions 31
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
@@ -81,7 +81,7 @@ Feature: transfer-ownership
     And user "user2" has been created
     And user "user2" has been added to group "group1"
     And user "user0" has created a folder "/test"
-    And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
     And user "user0" has shared folder "/test" with group "group1" with permissions 31
     And user "user0" has shared folder "/test" with user "user2" with permissions 31
     When the administrator transfers ownership from "user0" to "user1" using the occ command
@@ -139,7 +139,7 @@ Feature: transfer-ownership
     Given user "user0" has been created
     And user "user1" has been created
     And user "user0" has created a folder "/test"
-    And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
     Then the command should have been successful
     And using received transfer folder of "user1" as dav path
@@ -172,7 +172,7 @@ Feature: transfer-ownership
     And user "user1" has been created
     And user "user2" has been created
     And user "user0" has created a folder "/test"
-    And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
     And user "user0" has shared file "/test/somefile.txt" with user "user2" with permissions 19
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
     Then the command should have been successful
@@ -184,7 +184,7 @@ Feature: transfer-ownership
     And user "user1" has been created
     And user "user2" has been created
     And user "user0" has created a folder "/test"
-    And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
     And user "user0" has shared folder "/test" with user "user2" with permissions 31
     And user "user1" has created a public link share with settings
       | path | /test/somefile.txt |
@@ -198,7 +198,7 @@ Feature: transfer-ownership
     And user "user1" has been created
     And user "user2" has been created
     And user "user0" has created a folder "/test"
-    And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
     And user "user0" has shared folder "/test" with user "user2" with permissions 31
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
     Then the command should have been successful
@@ -209,7 +209,7 @@ Feature: transfer-ownership
     Given user "user0" has been created
     And user "user1" has been created
     And user "user0" has created a folder "/test"
-    And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
     And user "user0" has shared folder "/test" with user "user1" with permissions 31
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
     Then the command should have been successful
@@ -225,7 +225,7 @@ Feature: transfer-ownership
     And user "user2" has been created
     And user "user2" has been added to group "group1"
     And user "user0" has created a folder "/test"
-    And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
     And user "user0" has shared folder "/test" with group "group1" with permissions 31
     And user "user0" has shared folder "/test" with user "user2" with permissions 31
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
@@ -251,7 +251,7 @@ Feature: transfer-ownership
     And user "user1" has been created
     And user "user0" has created a folder "/test"
     And user "user0" has created a folder "/test/foo"
-    And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
     And user "user0" creates a public link share using the sharing API with settings
       | path | /test/somefile.txt |
     And user "user0" has shared file "/test" with user "user1" with permissions 31

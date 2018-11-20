@@ -156,7 +156,7 @@ Feature: sharing
       | shareWith   | user1  |
       | shareType   | 0      |
       | permissions | 4      |
-    When user "user1" uploads file "data/textfile.txt" to "shared/textfile.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/textfile.txt" to "shared/textfile.txt" using the WebDAV API
     And user "user1" deletes file "/shared/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "user0" file "/shared/textfile.txt" should exist

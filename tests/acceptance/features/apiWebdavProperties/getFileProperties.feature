@@ -164,7 +164,7 @@ Feature: get file properties
   @smokeTest
   Scenario Outline: Retrieving private link
     Given using <dav_version> DAV path
-    And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
     When user "user0" gets the following properties of file "/somefile.txt" using the WebDAV API
       | {http://owncloud.org/ns}privatelink |
     Then the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
