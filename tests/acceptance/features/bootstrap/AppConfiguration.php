@@ -38,7 +38,8 @@ trait AppConfiguration {
 	private $webUIGeneralContext;
 
 	/**
-	 * @var string the original capabilities in XML format
+	 * @var array with keys for each baseURL (e.g. of local and remote server)
+	 *            that contain the original capabilities in XML format
 	 */
 	private $savedCapabilitiesXml;
 	
@@ -158,8 +159,19 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	public function userGetsCapabilitiesCheckResponse($username) {
+	public function userGetsCapabilities($username) {
 		$this->userSendsToOcsApiEndpoint($username, 'GET', '/cloud/capabilities');
+	}
+
+	/**
+	 * @Given user :username has retrieved the capabilities
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function userGetsCapabilitiesCheckResponse($username) {
+		$this->userGetsCapabilities($username);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
@@ -170,12 +182,30 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	public function getCapabilitiesCheckResponse() {
+	public function theUserGetsCapabilities() {
+		$this->userGetsCapabilities($this->getCurrentUser());
+	}
+
+	/**
+	 * @Given the user has retrieved the capabilities
+	 *
+	 * @return void
+	 */
+	public function theUserGetsCapabilitiesCheckResponse() {
 		$this->userGetsCapabilitiesCheckResponse($this->getCurrentUser());
 	}
 
 	/**
 	 * @When the administrator retrieves the capabilities using the capabilities API
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsCapabilities() {
+		$this->userGetsCapabilities($this->getAdminUsername());
+	}
+
+	/**
+	 * @Given the administrator has retrieved the capabilities
 	 *
 	 * @return void
 	 */
