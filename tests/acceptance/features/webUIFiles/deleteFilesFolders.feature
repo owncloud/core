@@ -62,6 +62,7 @@ Feature: deleting files and folders
       | &and#hash       |
 
   @smokeTest
+  @skipOnEncryption @encryption-issue-74
   Scenario: Delete multiple files at once
     When the user batch deletes these files using the webUI
       | name          |
@@ -74,6 +75,7 @@ Feature: deleting files and folders
     And the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 
+  @skipOnEncryption @encryption-issue-74
   Scenario: Delete all files at once
     When the user marks all files for batch action using the webUI
     And the user batch deletes the marked files using the webUI
@@ -84,6 +86,7 @@ Feature: deleting files and folders
     And the folder should be empty on the webUI
     And the folder should be empty on the webUI after a page reload
 
+  @skipOnEncryption @encryption-issue-74
   Scenario: Delete all except for a few files at once
     When the user marks all files for batch action using the webUI
     And the user unmarks these files for batch action using the webUI
@@ -196,6 +199,7 @@ Feature: deleting files and folders
       | question?       |
       | &and#hash       |
 
+  @skipOnEncryption @encryption-issue-74
   Scenario: Delete multiple files at once on a public share
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
