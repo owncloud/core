@@ -32,8 +32,6 @@ use TestHelpers\SetupHelper;
 use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
 use Sabre\DAV\Xml\Property\Complex;
-use PhpParser\Node\Stmt\TryCatch;
-use Behat\Behat\Definition\Call\Given;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -1110,10 +1108,9 @@ trait WebDav {
 		$properties = [
 			   $propertyName
 		];
-		$response = $client->propfind(
+		$this->response = $client->propfind(
 			$this->makeSabrePath($user, $path), $properties
 		);
-		$this->response = $response;
 	}
 
 	/**
