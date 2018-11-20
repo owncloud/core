@@ -144,6 +144,41 @@ class OwncloudPage extends Page {
 	}
 
 	/**
+	 * waits for the element located by the xpath to be visible
+	 *
+	 * @param Session $session
+	 * @param string $xpath the xpath of the element to wait for
+	 * @param int $timeout_msec
+	 *
+	 * @return NodeElement
+	 */
+	public function waitTillXpathIsVisible(
+		Session $session,
+		$xpath,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	) {
+		$element = $this->waitTillElementIsNotNull($xpath);
+		$this->assertElementNotNull(
+			$element,
+			__METHOD__ .
+			" xpath: $xpath" .
+			" timeout waiting for element to be availiable"
+		);
+		$visibibity = $this->waitFor(
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000,
+			[$element, 'isVisible']
+		);
+		if ($visibibity !== true) {
+			throw new \Exception(
+				__METHOD__ .
+				" xpath: $xpath" .
+				" timeout waiting for element to be visible"
+			);
+		}
+		return $element;
+	}
+
+	/**
 	 * Get the text of the first notification
 	 *
 	 * @throws ElementNotFoundException
@@ -218,10 +253,12 @@ class OwncloudPage extends Page {
 	/**
 	 * Open the settings menu
 	 *
+	 * @param Session $session
+	 *
 	 * @throws ElementNotFoundException
 	 * @return Page
 	 */
-	public function openSettingsMenu() {
+	public function openSettingsMenu(Session $session) {
 		$userNameDisplayElement = $this->findById($this->userNameDisplayId);
 
 		$this->assertElementNotNull(
@@ -231,7 +268,13 @@ class OwncloudPage extends Page {
 
 		$userNameDisplayElement->click();
 
-		return $this->getPage("OwncloudPageElement\\SettingsMenu");
+		/**
+		 *
+		 * @var SettingsMenu $settingsMenu
+		 */
+		$settingsMenu = $this->getPage("OwncloudPageElement\\SettingsMenu");
+		$settingsMenu->waitTillPageIsLoaded($session);
+		return $settingsMenu;
 	}
 	
 	/**

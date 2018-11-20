@@ -73,9 +73,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	public function theAdministratorHasBrowsedToTheAdminGeneralSettingsPage() {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->adminGeneralSettingsPage->open();
-		$this->adminGeneralSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
-		);
+		$this->adminGeneralSettingsPage->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**

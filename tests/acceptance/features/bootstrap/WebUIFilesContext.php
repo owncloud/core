@@ -1551,7 +1551,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theFilesActionMenuShouldBeCompletelyVisibleAfterOpeningItUsingTheWebUI() {
 		for ($i = 1; $i <= $this->filesPage->getSizeOfFileFolderList(); $i++) {
-			$actionMenu = $this->filesPage->openFileActionsMenuByNo($i);
+			$actionMenu = $this->filesPage->openFileActionsMenuByNo(
+				$i, $this->getSession()
+			);
 			
 			$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC;
 			$currentTime = \microtime(true);
