@@ -128,8 +128,10 @@
 				$inputs = $el.find('.linkPassText, .expirationDate, .permission'), // all input fields combined
 				$errorMessageGlobal = $el.find('.error-message-global'),
 				$loading = $el.find('.loading'),
+				$expirationDate = $el.find('.expirationDate'),
+
 				password = $password.val(),
-				expirationDate = this.expirationView.getValue();
+				expirationDate = $expirationDate.val();
 
 			$el.find('.error-message').addClass('hidden');
 
@@ -174,7 +176,10 @@
 			}
 
 			if (!validates) {
-				deferred.reject(this.model);
+				$loading.addClass('hidden');
+				$formElements.removeAttr('disabled');
+				$select2Elements.removeClass('hidden');
+				return deferred.reject(this.model);
 			}
 
 			if (this.model.isNew()) {
