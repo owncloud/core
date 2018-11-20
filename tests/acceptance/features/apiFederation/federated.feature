@@ -105,26 +105,26 @@ Feature: federated
     Given user "user1" from server "LOCAL" has shared "/textfile0.txt" with user "user0" from server "REMOTE"
     And user "user0" from server "REMOTE" has accepted the last pending share
     And using server "REMOTE"
-    When user "user0" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the WebDAV API
+    When user "user0" uploads file "filesForUpload/file_to_overwrite.txt" to "/textfile0 (2).txt" using the WebDAV API
     Then the content of file "/textfile0.txt" for user "user1" on server "LOCAL" should be "BLABLABLA" plus end-of-line
 
   Scenario: Overwrite a federated shared file as recipient - remote server shares - local server receives
     Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
-    When user "user1" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/file_to_overwrite.txt" to "/textfile0 (2).txt" using the WebDAV API
     Then the content of file "/textfile0.txt" for user "user0" on server "REMOTE" should be "BLABLABLA" plus end-of-line
 
   Scenario: Overwrite a file in a federated shared folder as recipient - local server shares - remote server receives
     Given user "user1" from server "LOCAL" has shared "/PARENT" with user "user0" from server "REMOTE"
     And user "user0" from server "REMOTE" has accepted the last pending share
     And using server "REMOTE"
-    When user "user0" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the WebDAV API
+    When user "user0" uploads file "filesForUpload/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the WebDAV API
     Then the content of file "/PARENT/textfile0.txt" for user "user1" on server "LOCAL" should be "BLABLABLA" plus end-of-line
 
   Scenario: Overwrite a file in a federated shared folder as recipient - remote server shares - local server receives
     Given user "user0" from server "REMOTE" has shared "/PARENT" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
-    When user "user1" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the WebDAV API
     Then the content of file "/PARENT/textfile0.txt" for user "user0" on server "REMOTE" should be "BLABLABLA" plus end-of-line
 
   Scenario: Overwrite a federated shared file as recipient using old chunking
@@ -159,7 +159,7 @@ Feature: federated
     And using server "REMOTE"
     And user "user0" has stored etag of element "/PARENT (2)"
     And using server "LOCAL"
-    When user "user1" uploads file "data/file_to_overwrite.txt" to "/PARENT/textfile0.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/file_to_overwrite.txt" to "/PARENT/textfile0.txt" using the WebDAV API
     Then the etag of element "/PARENT (2)" of user "user0" on server "REMOTE" should have changed
 
   Scenario: Overwrite a federated shared folder as recipient propagates etag for sharer
@@ -167,7 +167,7 @@ Feature: federated
     And user "user1" has stored etag of element "/PARENT"
     And user "user0" from server "REMOTE" has accepted the last pending share
     And using server "REMOTE"
-    When user "user0" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the WebDAV API
+    When user "user0" uploads file "filesForUpload/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the WebDAV API
     Then the etag of element "/PARENT" of user "user1" on server "LOCAL" should have changed
 
   Scenario: Upload file to received federated share while quota is set on home storage

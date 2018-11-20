@@ -52,6 +52,6 @@ Feature: external-storage
   Scenario: Upload a file to external storage while quota is set on home storage
     Given user "user0" has been created with default attributes
     And the quota of user "user0" has been set to "1 B"
-    When user "user0" uploads file "data/textfile.txt" to "/local_storage/testquota.txt" with all mechanisms using the WebDAV API
+    When user "user0" uploads file "filesForUpload/textfile.txt" to "/local_storage/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
     And as "user0" the files uploaded to "/local_storage/testquota.txt" with all mechanisms should exist

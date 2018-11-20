@@ -17,8 +17,8 @@ Feature: sharing
     When user "user1" updates the last share using the sharing API with
       | permissions | 1 |
     Then the OCS status code should be "<ocs_status_code>"
-    And user "user2" should not be able to upload file "data/textfile.txt" to "TMP/textfile.txt"
-    And user "user1" should be able to upload file "data/textfile.txt" to "TMP/textfile.txt"
+    And user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "TMP/textfile.txt"
+    And user "user1" should be able to upload file "filesForUpload/textfile.txt" to "TMP/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -402,7 +402,7 @@ Feature: sharing
       | permissions | 31 |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And user "user1" should be able to upload file "data/textfile.txt" to "FOLDER/textfile.txt"
+    And user "user1" should be able to upload file "filesForUpload/textfile.txt" to "FOLDER/textfile.txt"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
