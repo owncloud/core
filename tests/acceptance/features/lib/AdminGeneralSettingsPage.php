@@ -23,8 +23,7 @@
 namespace Page;
 
 use Behat\Gherkin\Node\TableNode;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-use WebDriver\Session;
+use Behat\Mink\Session;
 use TestHelpers\EmailHelper;
 
 /**
@@ -279,5 +278,21 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 				__METHOD__ . " invalid log level: $logLevel"
 			);
 		}
+	}
+
+	/**
+	 * waits for the page to appear completely
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	) {
+		$this->waitForAjaxCallsToStartAndFinish($session);
+		$this->waitTillXpathIsVisible($session, $this->ownCloudVersionStringXpath);
 	}
 }

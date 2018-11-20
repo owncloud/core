@@ -22,6 +22,7 @@
 
 namespace Page;
 
+use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
@@ -60,10 +61,18 @@ class NotificationsEnabledOwncloudPage extends OwncloudPage {
 	}
 
 	/**
+	 * @param Session $session
+	 *
 	 * @return NotificationsAppDialog
 	 */
-	public function openNotifications() {
+	public function openNotifications(Session $session) {
 		$this->findNotificationsButton()->click();
-		return $this->getPage("NotificationsAppDialog");
+		/**
+		 *
+		 * @var NotificationsAppDialog $notificationsAppDialog
+		 */
+		$notificationsAppDialog = $this->getPage("NotificationsAppDialog");
+		$notificationsAppDialog->waitTillPageIsLoaded($session);
+		return $notificationsAppDialog;
 	}
 }

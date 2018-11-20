@@ -27,6 +27,7 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use OC\IntegrityCheck\Helpers\FileAccessHelper;
 
 /**
  * Object of a row on the FilesPage
@@ -154,10 +155,19 @@ class FileRow extends OwncloudPage {
 	 */
 	public function openFileActionsMenu(Session $session) {
 		$this->clickFileActionButton();
+		/**
+		 *
+		 * @var FilesPage $filesPage
+		 */
 		$filesPage = $this->getPage('FilesPage');
-		$actionMenuElement = $filesPage->findFileActionMenuElement();
+		/**
+		 *
+		 * @var FileActionsMenu $actionMenu
+		 */
 		$actionMenu = $this->getPage('FilesPageElement\\FileActionsMenu');
-		$actionMenu->setElement($actionMenuElement);
+		$actionMenu->waitTillPageIsLoaded(
+			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $filesPage->getFileActionMenuXpath()
+		);
 		$this->waitForScrollingToFinish($session, '#app-content');
 		return $actionMenu;
 	}
@@ -182,22 +192,23 @@ class FileRow extends OwncloudPage {
 	/**
 	 * opens the sharing dialog
 	 *
+	 * @param Session $session
+	 *
 	 * @throws ElementNotFoundException
 	 * @return SharingDialog
 	 */
-	public function openSharingDialog() {
+	public function openSharingDialog(Session $session) {
 		$this->findSharingButton()->click();
 		$this->waitTillElementIsNull($this->loadingIndicatorXpath);
-		$sharingDailog = $this->find('xpath', $this->sharingDialogXpath);
-		$this->assertElementNotNull(
-			$sharingDailog,
-			__METHOD__ .
-			" xpath $this->sharingDialogXpath could not find sharing dialog"
+		/**
+		 *
+		 * @var SharingDialog $sharingDialogPage
+		 */
+		$sharingDialogPage = $this->getPage("FilesPageElement\\SharingDialog");
+		$sharingDialogPage->waitTillPageIsLoaded(
+			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->sharingDialogXpath
 		);
-		$this->waitFor(
-			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$sharingDailog, 'isVisible']
-		);
-		return $this->getPage("FilesPageElement\\SharingDialog");
+		return $sharingDialogPage;
 	}
 
 	/**
