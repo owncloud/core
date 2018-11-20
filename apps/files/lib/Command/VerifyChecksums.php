@@ -90,6 +90,7 @@ class VerifyChecksums extends Command {
 		if ($pathOption && $userName) {
 			$output->writeln('<error>Please use either path or user exclusively</error>');
 			$this->exitStatus = self::EXIT_INVALID_ARGS;
+			return $this->exitStatus;
 		}
 
 		$walkFunction = function (Node $node) use ($input, $output) {
