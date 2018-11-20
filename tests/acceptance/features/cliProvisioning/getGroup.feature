@@ -5,9 +5,11 @@ Feature: get group
   So that I can know which users are in a group
 
   Scenario: admin gets users in the group
-    Given user "brand-new-user" has been created
+    Given these users have been created:
+    | username       |
+    | brand-new-user |
+    | 123            | 
     And the administrator has changed the display name of user "brand-new-user" to "Anne Brown"
-    And user "123" has been created
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "123" has been added to group "new-group"
@@ -19,7 +21,7 @@ Feature: get group
       | 123            | 123          |
 
   Scenario: admin gets user in the group who is disabled
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And the administrator has changed the display name of user "brand-new-user" to "Anne Brown"
     And user "brand-new-user" has been disabled
     And group "new-group" has been created

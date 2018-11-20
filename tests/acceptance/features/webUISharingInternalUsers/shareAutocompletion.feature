@@ -6,7 +6,7 @@ Feature: Autocompletion of share-with names
 
   Background:
     # Users that are in the special known users already
-    Given these users have been created but not initialized:
+    Given these users have been created with default attributes but not initialized:
       | username    |
       | user1       |
       | user3       |

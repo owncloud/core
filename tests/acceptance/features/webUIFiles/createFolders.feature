@@ -5,7 +5,7 @@ Feature: create folders
   So that I can organise my data structure
 
   Background:
-    Given user "user1" has been created
+    Given user "user1" has been created with default attributes
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 

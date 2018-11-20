@@ -6,7 +6,7 @@ Feature: Display notifications when receiving a share and follow embedded links
 
   Background:
     Given app "notifications" has been enabled
-    And these users have been created:
+    And these users have been created with default attributes:
       | username |
       | user1    |
       | user2    |

@@ -4,7 +4,7 @@ Feature: Unassigning tags from file/folder
   I want to be able to remove tags from file/folder
 
   Background:
-    Given these users have been created:
+    Given these users have been created with default attributes:
     | username |
     | user0    |
     | user1    |

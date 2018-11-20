@@ -6,7 +6,7 @@ Feature: upload file using new chunking
 
   Background:
     Given using new DAV path
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
     And the owncloud log level has been set to debug
     And the owncloud log has been cleared
     And the administrator has enabled async operations

@@ -6,7 +6,7 @@ Feature: Hide file/folders
   So that I can choose to see the files that I want.
 
   Background:
-    Given user "user1" has been created
+    Given user "user1" has been created with default attributes
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 

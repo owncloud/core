@@ -9,7 +9,7 @@ Feature: add users to group
 
   @smokeTest
   Scenario Outline: adding a user to a group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "<group_id>" has been created
     When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | <group_id> |
@@ -22,7 +22,7 @@ Feature: add users to group
       | नेपाली      | Unicode group name          |
 
   Scenario Outline: adding a user to a group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "<group_id>" has been created
     When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | <group_id> |
@@ -49,7 +49,7 @@ Feature: add users to group
 
   @skip @issue-31015
   Scenario Outline: adding a user to a group that has a forward-slash in the group name
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "<group_id>" has been created
     When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | <group_id> |
@@ -64,7 +64,7 @@ Feature: add users to group
 
   @issue-31276
   Scenario: normal user tries to add himself to a group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     When user "brand-new-user" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | new-group |
     Then the OCS status code should be "997"
@@ -73,7 +73,7 @@ Feature: add users to group
     And the API should not return any data
 
   Scenario: admin tries to add user to a group which does not exist
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "not-group" has been deleted
     When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid | not-group |
@@ -82,7 +82,7 @@ Feature: add users to group
     And the API should not return any data
 
   Scenario: admin tries to add user to a group without sending the group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     When the administrator sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
       | groupid |  |
     Then the OCS status code should be "400"
@@ -99,8 +99,8 @@ Feature: add users to group
     And the API should not return any data
 
   Scenario: subadmin adds users to groups the subadmin is responsible for
-    Given user "subadmin" has been created
-    And user "brand-new-user" has been created
+    Given user "subadmin" has been created with default attributes
+    And user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "subadmin" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
@@ -110,8 +110,8 @@ Feature: add users to group
     And user "brand-new-user" should not belong to group "new-group"
 
   Scenario: subadmin tries to add user to groups the subadmin is not responsible for
-    Given user "other-subadmin" has been created
-    And user "brand-new-user" has been created
+    Given user "other-subadmin" has been created with default attributes
+    And user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And group "other-group" has been created
     And user "other-subadmin" has been made a subadmin of group "other-group"

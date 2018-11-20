@@ -6,7 +6,7 @@ Feature: download file
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
 
   @smokeTest
   Scenario Outline: download a file

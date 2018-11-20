@@ -16,7 +16,7 @@ Feature: disable an app
     And app "comments" should be disabled
 
   Scenario: subadmin tries to disable an app
-    Given user "subadmin" has been created
+    Given user "subadmin" has been created with default attributes
     And group "newgroup" has been created
     And user "subadmin" has been made a subadmin of group "newgroup"
     And app "comments" has been enabled
@@ -26,7 +26,7 @@ Feature: disable an app
     And app "comments" should be enabled
 
   Scenario: normal user tries to disable an app
-    Given user "newuser" has been created
+    Given user "newuser" has been created with default attributes
     And app "comments" has been enabled
     When user "newuser" disables app "comments"
     Then the OCS status code should be "997"

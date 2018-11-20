@@ -6,7 +6,7 @@ Feature: create folder
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
 
   Scenario Outline: create a folder
     Given using <dav_version> DAV path

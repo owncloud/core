@@ -6,9 +6,9 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Background:
     Given using server "REMOTE"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And using server "LOCAL"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user1" has logged in using the webUI
 
   Scenario: test the single steps of sharing a folder to a remote server
@@ -23,7 +23,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: test the single steps of receiving a federation share
     Given using server "REMOTE"
-    And these users have been created:
+    And these users have been created with default attributes:
       | username |
       | user2    |
       | user3    |
@@ -156,7 +156,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: receive same name federation share from two users
     Given using server "REMOTE"
-    And user "user2" has been created
+    And user "user2" has been created with default attributes
     And user "user1" from server "REMOTE" has shared "/lorem.txt" with user "user1" from server "LOCAL"
     And user "user2" from server "REMOTE" has shared "/lorem.txt" with user "user1" from server "LOCAL"
     And the user has reloaded the current page of the webUI

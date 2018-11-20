@@ -3,7 +3,7 @@ Feature: Title of your feature
   I want to use this template for my feature file
 
   Background:
-    Given user "user0" has been created
+    Given user "user0" has been created with default attributes
     And as user "user0"
 
   Scenario: User can assign tags when in the tag's groups
