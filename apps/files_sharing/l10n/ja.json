@@ -95,6 +95,7 @@
     "Can't change permissions for public share links" : "URLリンク共有のパーミッションを変更できません",
     "Wrong or no update parameter given" : "間違っている、もしくはパラメータが更新されていません",
     "Cannot increase permissions" : "パーミッションを追加できません",
+    "Couldn't send mail to following recipient(s): %s " : "以下の宛先にメールを送信できませんでした: %s",
     "Accept" : "受領",
     "Decline" : "拒否",
     "This share is password-protected" : "この共有はパスワードで保護されています",
