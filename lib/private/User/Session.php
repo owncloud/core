@@ -997,6 +997,7 @@ class Session implements IUserSession, Emitter {
 
 			$this->setUser($user);
 			$this->setLoginName($user->getDisplayName());
+			$user->updateLastLoginTimestamp();
 
 			$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 
