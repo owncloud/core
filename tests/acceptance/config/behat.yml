@@ -179,6 +179,7 @@ default:
         - WebUILoginContext:
         - WebUISearchContext:
         - WebUISharingContext:
+        - OccContext:
 
     webUILogin:
       paths:
