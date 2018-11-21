@@ -46,6 +46,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	private $personalMessageInputXpath = "//*[@class='public-link-modal--input emailPrivateLinkForm--emailBodyField']";
 	private $emailInputCloseXpath = "//a[@class='select2-search-choice-close']";
 	private $shareButtonXpath = ".//button[contains(text(), 'Share') or contains(text(), 'Save')]";
+	private $cancelButtonXpath = ".//button[contains(text(), 'Cancel')]";
 	private $permissionLabelXpath = [
 		'read' => ".//label[contains(@for, 'sharingDialogAllowPublicRead')]",
 		'read-write' => ".//label[contains(@for, 'sharingDialogAllowPublicReadWrite')]",
@@ -275,6 +276,23 @@ class EditPublicLinkPopup extends OwncloudPage {
 		);
 
 		$saveButton->click();
+	}
+
+	/**
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function cancel() {
+		$cancelButton = $this->popupElement->find("xpath", $this->cancelButtonXpath);
+		$this->assertElementNotNull(
+			$cancelButton,
+			__METHOD__ .
+			" xpath $this->cancelButtonXpath" .
+			" could not find cancel button on the public link popup"
+		);
+
+		$cancelButton->click();
 	}
 
 	/**

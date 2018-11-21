@@ -230,7 +230,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function theUserOpensThePublicLinkEditDialogOfThe($oldName, $newName) {
+	public function theUserHasRenamedThePublicLinkNameFromOldNameToNewName($oldName, $newName) {
 		$session = $this->getSession();
 		$this->publicShareTab->editLink($session, $oldName, $newName);
 
@@ -238,6 +238,40 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($newName);
 		$this->addToListOfCreatedPublicLinks($newName, $linkUrl);
+	}
+
+	/**
+	 * @Given the user has opened the edit public link share popup for the link named :linkName
+	 * @When the user opens the edit public link share popup for the link named :linkName
+	 *
+	 * @param string $linkName
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserOpensThePublicLinkEditDialogForTheLinkName($linkName) {
+		$this->publicSharingPopup = $this->publicShareTab->openSharingPopupByLinkName($linkName, $this->getSession());
+	}
+
+	/**
+	 * @When the user does not save any changes in the edit public link share popup
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserDoesNotSaveAnyChangeInEditPublicLinkSharePopup() {
+		$this->publicSharingPopup->cancel();
+	}
+
+	/**
+	 * @When the user enters the password :password on the edit public link share popup for the link
+	 *
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function theUserEntersThePasswordForTheLink($password) {
+		$this->publicSharingPopup->setLinkPassword($password);
 	}
 
 	/**
