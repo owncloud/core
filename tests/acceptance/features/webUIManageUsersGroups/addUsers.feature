@@ -150,3 +150,41 @@ Feature: add users
       Password changed successfully
       """
     And the reset email to "guiusr1@owncloud" should be from "owncloud@foobar.com"
+
+   Scenario Outline: admin creates a user and sets password containing special characters
+    Given user "brand-new-user" has been deleted
+    When the administrator creates a user with the name "brand-new-user" and the password "<password>" using the webUI
+    And the administrator logs out of the webUI
+    And the user logs in with username "brand-new-user" and password "<password>" using the webUI
+    Then user "brand-new-user" should exist
+    And the user should be redirected to a webUI page with the title "Files - %productname%"
+    Examples:
+      | password                     | comment                     |
+      | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters          |
+      | España                       | special European characters |
+      | नेपाली                                                  | Unicode                     |
+      | password with spaces         | password with spaces        |
+
+   Scenario Outline: admin creates a user without setting password and user sets password containing special characters
+    Given user "brand-new-user" has been deleted
+    When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
+    And the administrator logs out of the webUI
+    And the user follows the password set link received by "bnu@owncloud" using the webUI
+    And the user sets the password to "<password>" using the webUI
+    And the user logs in with username "brand-new-user" and password "<password>" using the webUI
+    Then user "brand-new-user" should exist
+    And the user should be redirected to a webUI page with the title "Files - %productname%"
+    Examples:
+      | password                     | comment                     |
+      | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters          |
+      | España                       | special European characters |
+      | नेपाली                                                  | Unicode                     |
+      | password with spaces         | password with spaces        |
+
+   Scenario: admin creates a user without setting password and user sets empty spaces as password
+    Given user "brand-new-user" has been deleted
+    When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
+    And the administrator logs out of the webUI
+    And the user follows the password set link received by "bnu@owncloud" using the webUI
+    And the user sets the password to " " using the webUI
+    Then the user should be redirected to a webUI page with the title "%productname%"
