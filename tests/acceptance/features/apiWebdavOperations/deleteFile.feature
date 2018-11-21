@@ -18,3 +18,15 @@ Feature: delete file
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: delete a file when 2 files exist with different case
+    Given using <dav_version> DAV path
+    And user "user0" has uploaded file with content "uploaded content" to "/textfile1.txt"
+    And user "user0" has uploaded file with content "uploaded content" to "/TextFile1.txt"
+    Then the HTTP status code should be "204"
+    And as "user0" file "/textfile1.txt" should not exist
+    And as "user0" file "/TextFile1.txt" should exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
