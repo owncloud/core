@@ -198,6 +198,7 @@ class PublicLinkTab extends OwncloudPage {
 	 * @param string $password
 	 * @param string $expirationDate
 	 * @param string $email
+	 * @param string $save
 	 *
 	 * @return void
 	 * @throws ElementNotFoundException
@@ -209,14 +210,10 @@ class PublicLinkTab extends OwncloudPage {
 		$permissions = null,
 		$password = null,
 		$expirationDate = null,
-		$email = null
+		$email = null,
+		$save = true
 	) {
-		$linkEntry = $this->findLinkEntryByName($name);
-		$editLinkBtn = $linkEntry->find("xpath", $this->linkEditBtnXpath);
-
-		$editLinkBtn->click();
-
-		$this->updateSharingPopup($session);
+		$this->openSharingPopupByLinkName($name, $session);
 
 		if ($newName !== null) {
 			$this->editPublicLinkPopupPageObject->setLinkName($newName);
@@ -227,7 +224,32 @@ class PublicLinkTab extends OwncloudPage {
 		if ($permissions !== null) {
 			$this->editPublicLinkPopupPageObject->setLinkPermissions($permissions);
 		}
-		$this->editPublicLinkPopupPageObject->save();
+
+		if ($save === true) {
+			$this->editPublicLinkPopupPageObject->save();
+		} else {
+			$this->editPublicLinkPopupPageObject->cancel();
+		}
+	}
+
+	/**
+	 * Open Sharing Popup from given link name
+	 *
+	 * @param string $name
+	 * @param Session $session
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function openSharingPopupByLinkName($name, $session) {
+		$linkEntry = $this->findLinkEntryByName($name);
+		$editLinkBtn = $linkEntry->find("xpath", $this->linkEditBtnXpath);
+
+		$editLinkBtn->click();
+
+		$this->updateSharingPopup($session);
+
+		return $this->editPublicLinkPopupPageObject;
 	}
 
 	/**

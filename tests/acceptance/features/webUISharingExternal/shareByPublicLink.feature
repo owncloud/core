@@ -222,6 +222,18 @@ Feature: Share by public link
     But the email address "foo1234@bar.co" should not have received an email
     And the email address "foo5678@barr.co" should not have received an email
 
+  Scenario: user edits a public link and does not save the changes
+    Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
+    And the user has reloaded the current page of the webUI
+    And the user has created a new public link for folder "simple-folder" using the webUI with
+      | email   | foo1234@bar.co|
+      | password| pass123       |
+    When the user opens the edit public link share popup for the link named "simple-folder link"
+    And the user enters the password "qwertyui" on the edit public link share popup for the link
+    And the user does not save any changes in the edit public link share popup
+    And the public tries to access the last created public link with wrong password "qwertyui" using the webUI
+    Then the public should not get access to the publicly shared file
+
   Scenario: user shares a public link via email with a personal message
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And the user has reloaded the current page of the webUI
