@@ -5,7 +5,7 @@ Feature: accept/decline shares coming from internal users
   So that I can keep my file system clean
 
   Background:
-    Given these users have been created:
+    Given these users have been created with default attributes:
       | username |
       | user1    |
       | user2    |

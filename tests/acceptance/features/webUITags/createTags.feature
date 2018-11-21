@@ -5,7 +5,7 @@ Feature: Creation of tags for the files and folders
   So that I can find them easily
 
   Background:
-    Given these users have been created:
+    Given these users have been created with default attributes:
       | username |
       | user1    |
       | user2    |

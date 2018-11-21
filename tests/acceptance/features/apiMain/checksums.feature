@@ -2,7 +2,7 @@
 Feature: checksums
 
   Background:
-    Given user "user0" has been created
+    Given user "user0" has been created with default attributes
 
   Scenario Outline: Uploading a file with checksum should work
     Given using <dav_version> DAV path
@@ -109,7 +109,7 @@ Feature: checksums
 
   Scenario: Sharing a file with checksum should return the checksum in the propfind using new DAV path
     Given using new DAV path
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     When user "user0" shares file "/myChecksumFile.txt" with user "user1" using the sharing API
     And user "user1" requests the checksum of "/myChecksumFile.txt" via propfind
@@ -117,7 +117,7 @@ Feature: checksums
 
   Scenario: Sharing and modifying a file should return correct checksum in the propfind using new DAV path
     Given using new DAV path
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     When user "user0" shares file "/myChecksumFile.txt" with user "user1" using the sharing API
     And user "user1" uploads file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/myChecksumFile.txt" using the WebDAV API

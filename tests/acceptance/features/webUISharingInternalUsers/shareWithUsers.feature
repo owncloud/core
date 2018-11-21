@@ -5,7 +5,7 @@ Feature: Sharing files and folders with internal users
   So that those users can access the files and folders
 
   Background:
-    Given these users have been created:
+    Given these users have been created with default attributes:
       | username |
       | user1    |
       | user2    |

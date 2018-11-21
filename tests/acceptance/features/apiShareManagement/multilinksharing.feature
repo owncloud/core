@@ -3,7 +3,7 @@ Feature: multilinksharing
 
   Background:
     Given using old DAV path
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
     And as user "user0"
 
   @smokeTest

@@ -5,7 +5,7 @@ Feature: files and folders can be deleted from the trashbin
   So that I can control my trashbin space and which files are kept in that space
 
   Background:
-    Given user "user1" has been created
+    Given user "user1" has been created with default attributes
     And user "user1" has logged in using the webUI
     And the following files have been deleted
       | name          |

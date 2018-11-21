@@ -6,7 +6,7 @@ Feature: Versions of a file
   So that I can have more control over the files
 
   Background:
-    Given these users have been created:
+    Given these users have been created with default attributes:
       | username |
       | user0    |
       | user1    |

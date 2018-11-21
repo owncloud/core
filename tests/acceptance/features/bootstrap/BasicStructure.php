@@ -1486,7 +1486,7 @@ trait BasicStructure {
 		} else {
 			// The user has not been created yet and is not one of the pre-known
 			// users. So let the caller have the default password.
-			return (string) $this->regularUserPassword;
+			return (string) $this->getActualPassword($this->regularUserPassword);
 		}
 	}
 

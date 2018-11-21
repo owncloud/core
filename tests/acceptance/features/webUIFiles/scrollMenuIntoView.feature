@@ -5,7 +5,7 @@ Feature: scroll menu of actions that can be done on a file into view
   So that I can manage and work with my files
 
   Background:
-    Given user "user1" has been created
+    Given user "user1" has been created with default attributes
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 

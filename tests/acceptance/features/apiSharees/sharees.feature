@@ -2,7 +2,7 @@
 Feature: sharees
 
   Background:
-    Given these users have been created:
+    Given these users have been created with default attributes:
       | username |
       | user1    |
       | sharee1  |
@@ -393,7 +393,9 @@ Feature: sharees
   @skipOnLDAP
   Scenario Outline: Enumerate only group members - only show partial results from member groups
     Given using OCS API version "<ocs-api-version>"
-    And user "Another" has been created
+    Given these users have been created with default attributes:
+    | username | displayname |
+    | another  | Another     |
     And user "Another" has been added to group "ShareeGroup2"
     And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
     When user "user1" gets the sharees using the sharing API with parameters
@@ -403,7 +405,7 @@ Feature: sharees
     And the HTTP status code should be "<http-status>"
     And the "exact users" sharees returned should be empty
     And the "users" sharees returned should be
-      | Another | 0 | Another |
+      | Another | 0 | another |
     And the "exact groups" sharees returned should be empty
     And the "groups" sharees returned should be empty
     And the "exact remotes" sharees returned should be empty
