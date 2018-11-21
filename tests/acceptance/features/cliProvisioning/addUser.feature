@@ -49,3 +49,23 @@ Feature: add a user using the using the occ command
     Then the command should have been successful
     And the command output should contain the text 'The user "justauser" was created successfully'
     And user "justauser" should belong to group "newgroup"
+
+  Scenario Outline: Admin creates users having password with special characters
+    Given user "brand-new-user" has been deleted
+    When the administrator creates user "brand-new-user" password "<password>" group "brand-new-group" using the occ command
+    Then the command should have been successful
+    And the command output should contain the text 'The user "brand-new-user" was created successfully'
+    And user "brand-new-user" should exist
+    And user "brand-new-user" should be able to access a skeleton file
+    Examples:
+      | password                     | comment                     |
+      | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters          |
+      | España                       | special European characters |
+      | नेपाली                                                  | Unicode                     |
+      | password with spaces         | password with spaces        |
+
+  Scenario: admin creates a user and specifies an invalid password, containing just space
+    Given user "brand-new-user" has been deleted
+    When the administrator creates user "brand-new-user" password " " group "brand-new-group" using the occ command
+    Then the command should have failed with exit code 1
+    And user "brand-new-user" should not exist
