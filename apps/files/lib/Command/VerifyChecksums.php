@@ -90,39 +90,40 @@ class VerifyChecksums extends Command {
 		if ($pathOption && $userName) {
 			$output->writeln('<error>Please use either path or user exclusively</error>');
 			$this->exitStatus = self::EXIT_INVALID_ARGS;
+			return $this->exitStatus;
 		}
 
 		$walkFunction = function (Node $node) use ($input, $output) {
 			$path = $node->getInternalPath();
 			$currentChecksums = $node->getChecksum();
-			$owner = $node->getOwner()->getUID();
 			$storage = $node->getStorage();
+			$storageId = $storage->getId();
 
 			if ($storage->instanceOfStorage(ISharedStorage::class) || $storage->instanceOfStorage(FailedStorage::class)) {
 				return;
 			}
 
 			if (!self::fileExistsOnDisk($node)) {
-				$output->writeln("Skipping $owner/$path => File is in file-cache but doesn't exist on storage/disk", OutputInterface::VERBOSITY_VERBOSE);
+				$output->writeln("Skipping $storageId/$path => File is in file-cache but doesn't exist on storage/disk", OutputInterface::VERBOSITY_VERBOSE);
 				return;
 			}
 
 			if (!$node->isReadable()) {
-				$output->writeln("Skipping $owner/$path => File not readable", OutputInterface::VERBOSITY_VERBOSE);
+				$output->writeln("Skipping $storageId/$path => File not readable", OutputInterface::VERBOSITY_VERBOSE);
 				return;
 			}
 
 			// Files without calculated checksum can't cause checksum errors
 			if (empty($currentChecksums)) {
-				$output->writeln("Skipping $owner/$path => No Checksum", OutputInterface::VERBOSITY_VERBOSE);
+				$output->writeln("Skipping $storageId/$path => No Checksum", OutputInterface::VERBOSITY_VERBOSE);
 				return;
 			}
 
-			$output->writeln("Checking $owner/$path => $currentChecksums", OutputInterface::VERBOSITY_VERBOSE);
+			$output->writeln("Checking $storageId/$path => $currentChecksums", OutputInterface::VERBOSITY_VERBOSE);
 			$actualChecksums = self::calculateActualChecksums($path, $node->getStorage());
 			if ($actualChecksums !== $currentChecksums) {
 				$output->writeln(
-					"<info>Mismatch for $owner/$path:\n Filecache:\t$currentChecksums\n Actual:\t$actualChecksums</info>"
+					"<info>Mismatch for $storageId/$path:\n Filecache:\t$currentChecksums\n Actual:\t$actualChecksums</info>"
 				);
 
 				$this->exitStatus = self::EXIT_CHECKSUM_ERRORS;
