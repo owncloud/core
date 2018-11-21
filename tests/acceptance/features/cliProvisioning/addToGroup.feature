@@ -6,7 +6,7 @@ Feature: add users to group
 
   @smokeTest
   Scenario Outline: adding a user to a group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "<group_id>" has been created
     When the administrator adds user "brand-new-user" to group "<group_id>" using the occ command
     Then the command should have been successful
@@ -19,7 +19,7 @@ Feature: add users to group
       | नेपाली      | Unicode group name          |
 
   Scenario: admin tries to add user to a group which does not exist
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "not-group" has been deleted
     When the administrator adds user "brand-new-user" to group "not-group" using the occ command
     Then the command should have failed with exit code 1

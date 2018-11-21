@@ -3,7 +3,7 @@ Feature: sharing
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
 
   @smokeTest @public_link_share-feature-required
   Scenario: Uploading same file to a public upload-only share multiple times
@@ -39,7 +39,7 @@ Feature: sharing
     And the HTTP status code should be "403"
 
   Scenario: Uploading file to a user read-only share folder does not work
-    Given user "user1" has been created
+    Given user "user1" has been created with default attributes
     And user "user0" has created a share with settings
       | path        | FOLDER |
       | shareType   | user   |
@@ -50,7 +50,7 @@ Feature: sharing
 
   Scenario Outline: Uploading file to a group read-only share folder does not work
     Given using <dav-path> DAV path
-    Given user "user1" has been created
+    Given user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user0" has created a share with settings
@@ -86,7 +86,7 @@ Feature: sharing
 
   Scenario Outline: Uploading file to a user upload-only share folder works
     Given using <dav-path> DAV path
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has created a share with settings
       | path        | FOLDER |
       | shareType   | user   |
@@ -101,7 +101,7 @@ Feature: sharing
 
   Scenario Outline: Uploading file to a group upload-only share folder works
     Given using <dav-path> DAV path
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user0" has created a share with settings
@@ -129,7 +129,7 @@ Feature: sharing
   @smokeTest
   Scenario Outline: Uploading file to a user read/write share folder works
     Given using <dav-path> DAV path
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has created a share with settings
       | path        | FOLDER |
       | shareType   | user   |
@@ -144,7 +144,7 @@ Feature: sharing
 
   Scenario Outline: Uploading file to a group read/write share folder works
     Given using <dav-path> DAV path
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user0" has created a share with settings
@@ -162,7 +162,7 @@ Feature: sharing
   @smokeTest
   Scenario Outline: Check quota of owners parent directory of a shared file
     Given using <dav-path> DAV path
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And the quota of user "user1" has been set to "0"
     And user "user0" has moved file "/welcome.txt" to "/myfile.txt"
     And user "user0" has shared file "myfile.txt" with user "user1"
@@ -185,7 +185,7 @@ Feature: sharing
 
   Scenario Outline: Uploading to a user shared folder with read/write permission when the sharer has unsufficient quota does not work
     Given using <dav-path> DAV path
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has created a share with settings
       | path        | FOLDER |
       | shareType   | user   |
@@ -201,7 +201,7 @@ Feature: sharing
 
   Scenario Outline: Uploading to a group shared folder with read/write permission when the sharer has unsufficient quota does not work
     Given using <dav-path> DAV path
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user0" has created a share with settings
@@ -228,7 +228,7 @@ Feature: sharing
 
   Scenario Outline: Uploading to a user shared folder with upload-only permission when the sharer has unsufficient quota does not work
     Given using <dav-path> DAV path
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has created a share with settings
       | path        | FOLDER |
       | shareType   | user   |
@@ -244,7 +244,7 @@ Feature: sharing
 
   Scenario Outline: Uploading to a group shared folder with upload-only permission when the sharer has unsufficient quota does not work
     Given using <dav-path> DAV path
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user0" has created a share with settings

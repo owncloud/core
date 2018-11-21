@@ -9,8 +9,8 @@ Feature: get group
 
   @smokeTest
   Scenario: admin gets users in the group
-    Given user "brand-new-user" has been created
-    And user "123" has been created
+    Given user "brand-new-user" has been created with default attributes
+    And user "123" has been created with default attributes
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "123" has been added to group "new-group"
@@ -30,9 +30,9 @@ Feature: get group
 
   @smokeTest
   Scenario: subadmin gets users in a group they are responsible for
-    Given user "user1" has been created
-    And user "user2" has been created
-    And user "subadmin" has been created
+    Given user "user1" has been created with default attributes
+    And user "user2" has been created with default attributes
+    And user "subadmin" has been created with default attributes
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     And user "user1" has been added to group "new-group"
@@ -46,7 +46,7 @@ Feature: get group
 
   @issue-31276
   Scenario: subadmin tries to get users in a group they are not responsible for
-    Given user "subadmin" has been created
+    Given user "subadmin" has been created with default attributes
     And group "new-group" has been created
     And group "another-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
@@ -57,7 +57,7 @@ Feature: get group
 
   @issue-31276
   Scenario: normal user tries to get users in their group
-    Given user "newuser" has been created
+    Given user "newuser" has been created with default attributes
     And group "new-group" has been created
     When user "newuser" sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group"
     Then the OCS status code should be "997"

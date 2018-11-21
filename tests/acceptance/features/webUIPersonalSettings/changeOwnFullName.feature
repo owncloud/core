@@ -5,7 +5,7 @@ Feature: Change own full name on the personal settings page
   So that other users can recognize me by it
 
   Background:
-    Given user "user1" has been created
+    Given user "user1" has been created with default attributes
     And user "user1" has logged in using the webUI
     And the user has browsed to the personal general settings page
 

@@ -5,7 +5,7 @@ Feature: get user report
   So that I can see the total number of users in an ownCloud server
 
   Scenario: admin gets the user report
-    Given these users have been created but not initialized:
+    Given these users have been created with default attributes but not initialized:
       | username         |
       | brand-new-user-1 |
       | brand-new-user-2 |
@@ -14,7 +14,7 @@ Feature: get user report
     And the total users returned by the command should be 3
 
   Scenario: admin gets the user report when the user is disabled
-    Given these users have been created but not initialized:
+    Given these users have been created with default attributes but not initialized:
       | username         |
       | brand-new-user-1 |
       | brand-new-user-2 |
@@ -24,7 +24,7 @@ Feature: get user report
     And the total users returned by the command should be 3
 
   Scenario: admin gets the user report when a user has been created and deleted
-    Given these users have been created but not initialized:
+    Given these users have been created with default attributes but not initialized:
       | username         |
       | brand-new-user-1 |
       | brand-new-user-2 |

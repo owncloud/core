@@ -4,7 +4,7 @@ Feature: Assign tags to file/folder
   So that I can organize the files/folders easily
 
   Background:
-    Given these users have been created:
+    Given these users have been created with default attributes:
       | username |
       | user0    |
       | user1    |

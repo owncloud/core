@@ -5,7 +5,7 @@ Feature: Sharing files and folders with internal groups
   So that those groups can access the files and folders
 
   Scenario Outline: sharing  files and folder with an internal problematic group name
-    Given these users have been created:
+    Given these users have been created with default attributes:
       | username |
       | user1    |
       | user2    |

@@ -22,7 +22,7 @@ Feature: disable users
 
   Scenario: subadmin disables a user
     Given group "grp1" has been created
-    And user "subadmin" has been created
+    And user "subadmin" has been created with default attributes
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
     And user "subadmin" has been made a subadmin of group "grp1"

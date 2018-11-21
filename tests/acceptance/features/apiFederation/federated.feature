@@ -4,9 +4,9 @@ Feature: federated
   Background:
     Given using OCS API version "1"
     And using server "REMOTE"
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
     And using server "LOCAL"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
 
   Scenario: Federate share a file with another server
     When user "user1" from server "LOCAL" shares "/textfile0.txt" with user "user0" from server "REMOTE" using the sharing API
@@ -76,7 +76,7 @@ Feature: federated
     Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
-    And user "user2" has been created
+    And user "user2" has been created with default attributes
     When user "user1" creates a share using the sharing API with settings
       | path        | /textfile0 (2).txt |
       | shareType   | 0                  |

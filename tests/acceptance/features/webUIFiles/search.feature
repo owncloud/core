@@ -6,8 +6,8 @@ Feature: Search
   So that I can find needed files quickly
 
   Background:
-    Given user "user1" has been created
-    And user "user0" has been created
+    Given user "user1" has been created with default attributes
+    And user "user0" has been created with default attributes
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 
@@ -84,7 +84,7 @@ Feature: Search
     Then file "lorem (2).txt" should be listed on the webUI
 
   Scenario: Search for a re-shared file
-    Given user "user2" has been created
+    Given user "user2" has been created with default attributes
     When user "user2" shares file "/lorem.txt" with user "user0" using the sharing API
     And user "user0" shares file "/lorem (2).txt" with user "user1" using the sharing API
     And the user reloads the current page of the webUI

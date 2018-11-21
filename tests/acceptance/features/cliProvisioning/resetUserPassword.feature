@@ -51,9 +51,11 @@ Feature: reset user password
     And the command output should contain the text 'User does not exist'
 
   Scenario: admin should be able to reset their own password
-    Given user "brand-new-user" has been created
+    Given these users have been created with default attributes:
+      | username       | displayname    |
+      | brand-new-user | Brand New User |
     When the administrator resets their own password to "%alt1%" using the occ command
     Then the command should have been successful
     And the command output should contain the text "Successfully reset password for admin"
     When the administrator retrieves the information of user "brand-new-user" using the provisioning API
-    Then the display name returned by the API should be "brand-new-user"
+    Then the display name returned by the API should be "Brand New User"

@@ -6,7 +6,7 @@ Feature: Add, delete and edit comments in files and folders
   So that I can provide more information about the file/folder
 
   Background:
-    Given these users have been created:
+    Given these users have been created with default attributes:
       | username |
       | user1    |
       | user2    |

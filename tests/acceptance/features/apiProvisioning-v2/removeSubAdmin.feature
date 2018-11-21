@@ -9,7 +9,7 @@ Feature: remove subadmin
 
   @smokeTest
   Scenario: admin removes subadmin from a group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And user "brand-new-user" has been made a subadmin of group "new-group"
     When the administrator sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/subadmins" with body
@@ -20,10 +20,10 @@ Feature: remove subadmin
 
   @issue-31276
   Scenario: subadmin tries to remove other subadmin in the group
-    Given user "subadmin" has been created
+    Given user "subadmin" has been created with default attributes
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
-    And user "newsubadmin" has been created
+    And user "newsubadmin" has been created with default attributes
     And user "newsubadmin" has been made a subadmin of group "new-group"
     When user "subadmin" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/newsubadmin/subadmins" with body
       | groupid | new-group |
@@ -34,8 +34,8 @@ Feature: remove subadmin
 
   @issue-31276
   Scenario: normal user tries to remove subadmin in the group
-    Given user "subadmin" has been created
-    And user "newuser" has been created
+    Given user "subadmin" has been created with default attributes
+    And user "newuser" has been created with default attributes
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     And user "newuser" has been added to group "new-group"

@@ -9,7 +9,7 @@ Feature: get users
 
   @smokeTest
   Scenario: admin gets all users
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     When the administrator sends HTTP method "GET" to OCS API endpoint "/cloud/users"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -19,8 +19,8 @@ Feature: get users
 
   @smokeTest
   Scenario: subadmin gets the users in their group
-    Given user "brand-new-user" has been created
-    And user "another-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
+    And user "another-new-user" has been created with default attributes
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "brand-new-user" has been made a subadmin of group "new-group"
@@ -31,8 +31,8 @@ Feature: get users
     And the HTTP status code should be "200"
 
   Scenario: normal user tries to get other users
-    Given user "normaluser" has been created
-    And user "newuser" has been created
+    Given user "normaluser" has been created with default attributes
+    And user "newuser" has been created with default attributes
     When user "normaluser" sends HTTP method "GET" to OCS API endpoint "/cloud/users"
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"

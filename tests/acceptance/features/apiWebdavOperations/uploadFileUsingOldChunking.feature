@@ -7,7 +7,7 @@ Feature: upload file using old chunking
   Background:
     Given using OCS API version "1"
     And using old DAV path
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
 
   Scenario: Upload chunked file asc
     When user "user0" uploads the following "3" chunks to "/myChunkedFile.txt" with old chunking and using the WebDAV API
