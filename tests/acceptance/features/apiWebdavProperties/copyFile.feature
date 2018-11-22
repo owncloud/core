@@ -30,6 +30,18 @@ Feature: copy file
       | old         |
       | new         |
 
+  Scenario Outline: Copying a file when 2 files exist with different case
+    Given using <dav_version> DAV path
+    # "/textfile1.txt" already exists in the skeleton, make another with only case differences in the file name
+    When user "user0" copies file "/textfile0.txt" to "/TextFile1.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/textfile1.txt" for user "user0" should be "ownCloud test text file 1" plus end-of-line
+    And the content of file "/TextFile1.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
   Scenario Outline: Copying a file to a folder with no permissions
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes
