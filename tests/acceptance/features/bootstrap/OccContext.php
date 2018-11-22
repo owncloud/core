@@ -443,6 +443,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator checks the location of the :appName app using the occ command
+	 *
+	 * @param string $appName
+	 *
+	 * @return void
+	 */
+	public function theAdministratorChecksTheLocationOfTheAppUsingTheOccCommand($appName) {
+		$this->featureContext->invokingTheCommand(
+			"app:getpath $appName"
+		);
+	}
+
+	/**
 	 * @When the administrator disables user :username using the occ command
 	 *
 	 * @param string $username
@@ -583,6 +596,41 @@ class OccContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputArray = \json_decode($lastOutput, true);
 		PHPUnit_Framework_Assert::assertEquals($appName, \key($lastOutputArray['apps']));
+	}
+
+	/**
+	 * @Then the path returned by the occ command should be inside one of the apps paths in the config for the :appName app
+	 *
+	 * @param string $appName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function thePathReturnedByTheOccCommandShouldBeInsideOneOfTheAppsPathInTheConfig($appName) {
+		$appPath = $this->featureContext->getStdOutOfOccCommand();
+
+		$this->featureContext->invokingTheCommand("config:list");
+		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
+		$configOutputArray = \json_decode($lastOutput, true);
+
+		// Default apps location is '${INSTALLED_LOCATION}/apps/${appName}
+		if (\substr_compare($appPath, '/apps/${appName}', 0)) {
+			return;
+		}
+
+		// We can also set it in the `apps_paths` in the `config`
+		if (isset($configOutputArray['system']['apps_paths'])) {
+			$appPaths = $configOutputArray['system']['apps_paths'];
+
+			foreach ($appPaths as $path) {
+				if (\substr_compare($appPath, $path['path'], 0)) {
+					return;
+				}
+			}
+		}
+
+		// if it's neither in the default location, nor in `apps_paths`, where it could be?
+		throw new Exception(__METHOD__ . "App path $appPath was not found in the config.");
 	}
 
 	/**
