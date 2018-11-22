@@ -45,7 +45,7 @@ Feature: sharing
       | shareType   | user   |
       | permissions | read   |
       | shareWith   | user1  |
-    When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
 
   Scenario Outline: Uploading file to a group read-only share folder does not work
@@ -58,7 +58,7 @@ Feature: sharing
       | shareType   | group  |
       | permissions | read   |
       | shareWith   | grp1   |
-    When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     Examples:
       | dav-path |
@@ -92,7 +92,7 @@ Feature: sharing
       | shareType   | user   |
       | permissions | create |
       | shareWith   | user1  |
-    When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     Examples:
       | dav-path |
@@ -109,7 +109,7 @@ Feature: sharing
       | shareType   | group  |
       | permissions | create |
       | shareWith   | grp1   |
-    When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     Examples:
       | dav-path |
@@ -135,7 +135,7 @@ Feature: sharing
       | shareType   | user   |
       | permissions | change |
       | shareWith   | user1  |
-    When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     Examples:
       | dav-path |
@@ -152,7 +152,7 @@ Feature: sharing
       | shareType   | group  |
       | permissions | change |
       | shareWith   | grp1   |
-    When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     Examples:
       | dav-path |
@@ -166,7 +166,7 @@ Feature: sharing
     And the quota of user "user1" has been set to "0"
     And user "user0" has moved file "/welcome.txt" to "/myfile.txt"
     And user "user0" has shared file "myfile.txt" with user "user1"
-    When user "user1" uploads file "data/textfile.txt" to "/myfile.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/textfile.txt" to "/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
     Examples:
       | dav-path |
@@ -192,7 +192,7 @@ Feature: sharing
       | permissions | change |
       | shareWith   | user1  |
     And the quota of user "user0" has been set to "0"
-    When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     Examples:
       | dav-path |
@@ -210,7 +210,7 @@ Feature: sharing
       | permissions | change |
       | shareWith   | grp1   |
     And the quota of user "user0" has been set to "0"
-    When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     Examples:
       | dav-path |
@@ -235,7 +235,7 @@ Feature: sharing
       | permissions | create |
       | shareWith   | user1  |
     And the quota of user "user0" has been set to "0"
-    When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     Examples:
       | dav-path |
@@ -253,7 +253,7 @@ Feature: sharing
       | permissions | create |
       | shareWith   | grp1   |
     And the quota of user "user0" has been set to "0"
-    When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
+    When user "user1" uploads file "filesForUpload/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     Examples:
       | dav-path |

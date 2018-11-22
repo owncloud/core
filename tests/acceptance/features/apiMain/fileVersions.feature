@@ -9,23 +9,23 @@ Feature: dav-versions
     And file "/davtest.txt" has been deleted for user "user0"
 
   Scenario: Upload file and no version is available
-    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the WebDAV API
+    When user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "0" elements
 
   @smokeTest
   Scenario: Upload a file twice and versions are available
-    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the WebDAV API
-    And user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the WebDAV API
+    When user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
+    And user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "1" element
     And the content length of file "/davtest.txt" with version index "1" for user "user0" in versions folder should be "8"
 
   @smokeTest
   Scenario: Remove a file
-    Given user "user0" has uploaded file "data/davtest.txt" to "/davtest.txt"
-    And user "user0" has uploaded file "data/davtest.txt" to "/davtest.txt"
+    Given user "user0" has uploaded file "filesForUpload/davtest.txt" to "/davtest.txt"
+    And user "user0" has uploaded file "filesForUpload/davtest.txt" to "/davtest.txt"
     And the version folder of file "/davtest.txt" for user "user0" should contain "1" element
     And user "user0" has deleted file "/davtest.txt"
-    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the WebDAV API
+    When user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "0" elements
 
   @smokeTest
@@ -38,7 +38,7 @@ Feature: dav-versions
 
   Scenario: Restore a file and check, if the content and correct checksum is now in the current file
     Given user "user0" has uploaded file with content "AAAAABBBBBCCCCC" and checksum "MD5:45a72715acdd5019c5be30bdbb75233e" to "/davtest.txt"
-    And user "user0" has uploaded file "data/textfile.txt" to "/davtest.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/davtest.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     And the version folder of file "/davtest.txt" for user "user0" should contain "1" element
     When user "user0" restores version index "1" of file "/davtest.txt" using the WebDAV API
     Then the content of file "/davtest.txt" for user "user0" should be "AAAAABBBBBCCCCC"

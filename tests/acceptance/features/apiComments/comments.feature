@@ -8,7 +8,7 @@ Feature: Comments
   @smokeTest
   Scenario: Getting info of comments using files endpoint
     Given as user "user0"
-    And the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    And the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has commented with content "My first comment" on file "/myFileToComment.txt"
     And the user should have the following comments on file "/myFileToComment.txt"
       | user0 | My first comment |

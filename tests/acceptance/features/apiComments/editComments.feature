@@ -9,7 +9,7 @@ Feature: Comments
 
   @smokeTest
   Scenario: Edit my own comments on a file belonging to myself
-    Given the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has commented with content "File owner comment" on file "/myFileToComment.txt"
     When the user edits the last created comment with content "My edited comment" using the WebDAV API
     Then the HTTP status code should be "207"
@@ -17,7 +17,7 @@ Feature: Comments
       | user0 | My edited comment |
 
   Scenario: Edit my own comments on a file shared by someone with me
-    Given the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has shared file "/myFileToComment.txt" with user "user1"
     And user "user1" has commented with content "Sharee comment" on file "/myFileToComment.txt"
     When user "user1" edits the last created comment with content "My edited comment" using the WebDAV API
@@ -26,7 +26,7 @@ Feature: Comments
       | user1 | My edited comment |
 
   Scenario: Editing comments of other users should not be possible
-    Given the user has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+    Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has shared file "/myFileToComment.txt" with user "user1"
     And user "user1" has commented with content "Sharee comment" on file "/myFileToComment.txt"
     And the user should have the following comments on file "/myFileToComment.txt"
