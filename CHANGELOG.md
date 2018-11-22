@@ -5,15 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
 ### Added
 - Allow loading JSON files in setups with pretty URLs - [#32835](https://github.com/owncloud/core/issues/32835)
 - Support global CORS domains for public pages - [#33139](https://github.com/owncloud/core/issues/33139)
 - New tag scope "static tags", editable but not assignable - [#33420](https://github.com/owncloud/core/issues/33420)
+- Added "getBucket" method to HomeObjectStore to fix S3 issue - [#33513](https://github.com/owncloud/core/issues/33513)
 
 ### Changed
+- Set shipped apps max version to 10 in preparation for Semver switch - [#33496](https://github.com/owncloud/core/issues/33496)
 - Disable browser autocomplete for password fields - [#32590](https://github.com/owncloud/core/issues/32590)
-- Bump symfony 3.4.15 to 3.4.17 - [#33001](https://github.com/owncloud/core/issues/33001)
+- Bump punic 3.1.0 => 3.2.0 - [#33462](https://github.com/owncloud/core/issues/33462)
+- Bump phpseclib/phpseclib from 2.0.11 to 2.0.12 - [#33433](https://github.com/owncloud/core/issues/33433)
+- Bump symfony 3.4.15 to 3.4.18 - [#33001](https://github.com/owncloud/core/issues/33001) [#33460](https://github.com/owncloud/core/issues/33460)
 - Bump symfony/polyfill components v1.9.0 => v1.10.0 - [#33377](https://github.com/owncloud/core/issues/33377)
+- Bump symfony/translation from 3.4.17 to 3.4.18 - [#33429](https://github.com/owncloud/core/issues/33429)
 - Bump jakub-onderka/php-console-highlighter from 0.3.2 to 0.4 - [#32944](https://github.com/owncloud/core/issues/32944)
 - Bump handlebars from 4.0.11 to 4.0.12 in /build - [#32661](https://github.com/owncloud/core/issues/32661)
 - Bump sinon from 6.2.0 to 7.1.1 - [#32825](https://github.com/owncloud/core/issues/32825) [#33073](https://github.com/owncloud/core/issues/33073) [#33306](https://github.com/owncloud/core/issues/33306) [#33373](https://github.com/owncloud/core/issues/33373)
@@ -25,7 +31,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 - Deprecate Sharing 1.0 APIs which will be removed in ownCloud 11 - [#33220](https://github.com/owncloud/core/issues/33220)
+
 ### Fixed
+- Fix for some upgrade path that led to DAV tables missing bigint conversion - [#33603](https://github.com/owncloud/core/issues/33603)
+- Fix checksum verify command verbose mode and path argument handling - [#33610](https://github.com/owncloud/core/issues/33610)
+- Fix form to enter initial password to properly display error message - [#33453](https://github.com/owncloud/core/issues/33453)
+- File cache corruption check now only reports storage id once - [#33539](https://github.com/owncloud/core/issues/33539)
+- Fix escaping of public share names - [#33419](https://github.com/owncloud/core/issues/33419)
+- Update config.sample.php to fix a broken link - [#33518](https://github.com/owncloud/core/issues/33518)
+- Add "uid" argument to Symfony login events for consistency - [#33470](https://github.com/owncloud/core/issues/33470)
+- Prevent deletion of calendar group shares during cleanup - [#33394](https://github.com/owncloud/core/issues/33394)
 - Fix upload avatar for LDAP users - [#33369](https://github.com/owncloud/core/issues/33369)
 - Fix double escaping in email subject - [#33342](https://github.com/owncloud/core/issues/33342)
 - Add missing type hints in code - [#33314](https://github.com/owncloud/core/issues/33314)
