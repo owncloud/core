@@ -32,9 +32,9 @@ Feature: copy file
 
   Scenario Outline: Copying a file when 2 files exist with different case
     Given using <dav_version> DAV path
-    And user "user0" has copied file "/welcome.txt" to "/textfile1.txt" using the WebDAV API
-    And user "user0" has copied file "/welcome.txt" to "/TextFile1.txt" using the WebDAV API
-    Then the HTTP status code should be "204"
+    And user "user0" has copied file "/welcome.txt" to "/textfile1.txt"
+    When user "user0" copies file "/welcome.txt" to "/TextFile1.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
     And the downloaded content when downloading file "/textfile1.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
     And the downloaded content when downloading file "/TextFile1.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
     Examples:
