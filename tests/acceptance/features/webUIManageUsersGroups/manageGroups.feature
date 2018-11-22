@@ -17,7 +17,7 @@ Feature: manage groups
       | false          |
       | do-not-delete2 |
     And the administrator has browsed to the users page
-    When the administrator deletes these groups using the webUI:
+    When the administrator deletes these groups and confirms the deletion using the webUI:
       | groupname |
       | 0         |
       | false     |
@@ -50,7 +50,7 @@ Feature: manage groups
       | q?mark         |
       | do-not-delete2 |
     And the administrator has browsed to the users page
-    When the administrator deletes these groups using the webUI:
+    When the administrator deletes these groups and confirms the deletion using the webUI:
       | groupname |
       | a/slash   |
       | per%cent  |
@@ -88,7 +88,7 @@ Feature: manage groups
       | quotes"        |
       | do-not-delete2 |
     And the administrator has browsed to the users page
-    When the administrator deletes these groups using the webUI:
+    When the administrator deletes these groups and confirms the deletion using the webUI:
       | groupname   |
       | grp1        |
       | space group |
@@ -115,3 +115,45 @@ Feature: manage groups
       | space group |
       | quotes'     |
       | quotes"     |
+
+  Scenario: cancel deletion of a group
+    Given these groups have been created:
+      | groupname      |
+      | do-not-delete  |
+      | grp1           |
+      | space group    |
+      | quotes'        |
+      | quotes"        |
+      | do-not-delete2 |
+    And the administrator has browsed to the users page
+    When the administrator deletes the group named "space group" using the webUI and cancels the deletion using the webUI
+    And the administrator reloads the users page
+    Then group "space group" should exist
+
+  Scenario: cancel deletion of groups
+    Given these groups have been created:
+      | groupname      |
+      | do-not-delete  |
+      | grp1           |
+      | space group    |
+      | quotes'        |
+      | quotes"        |
+      | do-not-delete2 |
+      | a\slash        |
+    And the administrator has browsed to the users page
+    When the administrator deletes these groups and and cancels the deletion using the webUI:
+      | groupname   |
+      | grp1        |
+      | space group |
+      | quotes'     |
+      | a\slash     |
+    And the administrator reloads the users page
+    Then these groups should be listed on the webUI:
+      | groupname      |
+      | do-not-delete  |
+      | grp1           |
+      | space group    |
+      | quotes'        |
+      | quotes"        |
+      | do-not-delete2 |
+      | a\slash        |

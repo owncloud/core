@@ -377,12 +377,16 @@ var UserList = {
 		$userListBody.on('click', '.delete', function () {
 			// Call function for handling delete/undo
 			var uid = UserList.getUID(this);
-			UserDeleteHandler.mark(uid);
-		});
-
-		//delete a marked user when leaving the page
-		$(window).on('beforeunload', function () {
-			UserDeleteHandler.deleteEntry();
+			OC.dialogs.confirm(
+				t('settings', 'You are about to delete a user. This action can\'t be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?', {userName: uid}),
+				t('settings', 'Delete user'),
+				function (confirmation) {
+					if (confirmation) {
+						UserDeleteHandler.mark(uid);
+						UserDeleteHandler.deleteEntry();
+					}
+				}
+			);
 		});
 	},
 	update: function (gid, limit) {
@@ -912,12 +916,7 @@ $(document).ready(function () {
 			}
 		}
 
-		var promise;
-		if (UserDeleteHandler) {
-			promise = UserDeleteHandler.deleteEntry();
-		} else {
-			promise = $.Deferred().resolve().promise();
-		}
+		var promise = $.Deferred().resolve().promise();
 
 		promise.then(function() {
 			var groups = $('#newuser .groups').data('groups') || [];

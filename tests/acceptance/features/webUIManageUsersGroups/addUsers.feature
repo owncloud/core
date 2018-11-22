@@ -112,7 +112,7 @@ Feature: add users
 
   Scenario: recreating a user with same name after deletion sends a new token to new address
     When the administrator creates a user with the name "guiusr1" and the email "mistake@owncloud" without a password using the webUI
-    And the administrator deletes user "guiusr1" using the webUI
+    And the administrator deletes user "guiusr1" using the webUI and confirms the deletion using the webUI
     And the administrator creates a user with the name "guiusr1" and the email "correct@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "correct@owncloud" using the webUI
@@ -122,7 +122,7 @@ Feature: add users
 
   Scenario: recreating a user with same name after deletion makes the first token invalid
     When the administrator creates a user with the name "guiusr1" and the email "mistake@owncloud" without a password using the webUI
-    And the administrator deletes user "guiusr1" using the webUI
+    And the administrator deletes user "guiusr1" using the webUI and confirms the deletion using the webUI
     And the administrator creates a user with the name "guiusr1" and the email "correct@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "mistake@owncloud" using the webUI
@@ -131,7 +131,7 @@ Feature: add users
 
   Scenario: when recreating a user with same second token can be used even if someone tried to use the first one
     When the administrator creates a user with the name "guiusr1" and the email "mistake@owncloud" without a password using the webUI
-    And the administrator deletes user "guiusr1" using the webUI
+    And the administrator deletes user "guiusr1" using the webUI and confirms the deletion using the webUI
     And the administrator creates a user with the name "guiusr1" and the email "correct@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "mistake@owncloud" using the webUI
