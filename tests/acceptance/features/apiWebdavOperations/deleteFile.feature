@@ -23,6 +23,7 @@ Feature: delete file
     Given using <dav_version> DAV path
     And user "user0" has uploaded file with content "uploaded content" to "/textfile1.txt"
     And user "user0" has uploaded file with content "uploaded content" to "/TextFile1.txt"
+    When user "user0" deletes file "/textfile1.txt" using the WebDAV API
     Then the HTTP status code should be "204"
     And as "user0" file "/textfile1.txt" should not exist
     And as "user0" file "/TextFile1.txt" should exist
