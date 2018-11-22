@@ -41,6 +41,7 @@ Feature: Versions of a file
     Then the content of file "lorem-file.txt" for user "user1" should be "new lorem content"
     And the versions list should contain 2 entries
 
+  @skipOnStorage:ceph @files_primary_s3-issue-155
   Scenario: file versions cannot be seen in the webUI after deleting versions
     Given user "user0" has uploaded file with content "lorem content" to "/lorem-file.txt"
     And user "user0" has uploaded file with content "lorem" to "/lorem-file.txt"
@@ -51,7 +52,8 @@ Feature: Versions of a file
     When the user browses directly to display the "versions" details of file "lorem-file.txt" in folder "/"
     And the versions list should contain 0 entries
 
-   Scenario: file versions cannot be seen in the webUI only for user whose versions is deleted
+  @skipOnStorage:ceph @files_primary_s3-issue-155
+  Scenario: file versions cannot be seen in the webUI only for user whose versions is deleted
     Given user "user0" has uploaded file with content "lorem content" to "/lorem-file.txt"
     And user "user0" has uploaded file with content "lorem" to "/lorem-file.txt"
     And user "user1" has uploaded file with content "lorem content" to "/lorem-file.txt"
@@ -67,7 +69,8 @@ Feature: Versions of a file
     And the user browses directly to display the "versions" details of file "lorem-file.txt" in folder "/"
     Then the versions list should contain 1 entries
 
-   Scenario: file versions cannot be seen in the webUI for all users after deleting versions for all users
+  @skipOnStorage:ceph @files_primary_s3-issue-155
+  Scenario: file versions cannot be seen in the webUI for all users after deleting versions for all users
     Given user "user0" has uploaded file with content "lorem content" to "/lorem-file.txt"
     And user "user0" has uploaded file with content "lorem" to "/lorem-file.txt"
     And user "user1" has uploaded file with content "lorem content" to "/lorem-file.txt"
