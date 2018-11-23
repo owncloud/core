@@ -297,3 +297,17 @@ Feature: sharing
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "yes"
     When the public uploads file "test.txt" with content "test" using the public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
+
+  Scenario: Uploading a file in to a shared folder without edit permissions
+    Given using new DAV path
+    And user "user1" has been created with default attributes
+    And user "user0" creates a folder "/READ_ONLY" using the WebDAV API
+    And user "user0" has created a share with settings
+      | path        | /READ_ONLY |
+      | shareType   | user       |
+      | permissions | read       |
+      | shareWith   | user1      |
+    When user "user1" uploads the following chunks to "/READ_ONLY/myfile.txt" with new chunking and using the WebDAV API
+      | 1 | hallo   |
+      | 2 | welt    |
+    Then the HTTP status code should be "403"
