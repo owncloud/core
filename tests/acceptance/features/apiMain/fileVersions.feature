@@ -36,6 +36,7 @@ Feature: dav-versions
     When user "user0" restores version index "1" of file "/davtest.txt" using the WebDAV API
     Then the content of file "/davtest.txt" for user "user0" should be "123"
 
+  @skipOnStorage:ceph @files_primary_s3-issue-156
   Scenario: Restore a file and check, if the content and correct checksum is now in the current file
     Given user "user0" has uploaded file with content "AAAAABBBBBCCCCC" and checksum "MD5:45a72715acdd5019c5be30bdbb75233e" to "/davtest.txt"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/davtest.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
