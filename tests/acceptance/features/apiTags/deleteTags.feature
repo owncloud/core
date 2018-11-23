@@ -37,6 +37,13 @@ Feature: Deletion of tags
     And the following tags should exist for the administrator
       | JustARegularTagName | not user-visible |
 
+  Scenario: Deleting a static tag as regular user should fail
+    Given the administrator has created a "static" tag with name "StaticTagName"
+    When the user deletes the tag with name "StaticTagName" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And the following tags should exist for the administrator
+      | StaticTagName | static |
+
   Scenario: Deleting a not user-assignable tag as admin should work
     Given the administrator has created a "not user-assignable" tag with name "JustARegularTagName"
     When the administrator deletes the tag with name "JustARegularTagName" using the WebDAV API
@@ -48,3 +55,9 @@ Feature: Deletion of tags
     When the administrator deletes the tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "204"
     And tag "JustARegularTagName" should not exist for the administrator
+
+  Scenario: Deleting a static tag as admin should work
+    Given the administrator has created a "static" tag with name "StaticTagName"
+    When the administrator deletes the tag with name "StaticTagName" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And tag "StaticTagName" should not exist for the administrator
