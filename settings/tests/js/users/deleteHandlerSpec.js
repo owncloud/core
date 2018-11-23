@@ -48,77 +48,6 @@ describe('DeleteHandler tests', function() {
 		hideNotificationSpy.restore();
 		clock.restore();
 	});
-	it('shows a notification when marking for delete', function() {
-		var handler = init(markCallback, removeCallback, undoCallback);
-		handler.mark('some_uid');
-
-		expect(showNotificationSpy.calledOnce).toEqual(true);
-		expect(showNotificationSpy.getCall(0).args[0]).toEqual('removed some_uid entry');
-
-		expect(markCallback.calledOnce).toEqual(true);
-		expect(markCallback.getCall(0).args[0]).toEqual('some_uid');
-		expect(removeCallback.notCalled).toEqual(true);
-		expect(undoCallback.notCalled).toEqual(true);
-
-		expect(fakeServer.requests.length).toEqual(0);
-	});
-	it('deletes first entry and reshows notification on second delete', function() {
-		fakeServer.respondWith(/\/index\.php\/dummyendpoint.php\/some_uid/, [
-			204,
-			{ 'Content-Type': 'application/json' },
-			JSON.stringify({status: 'success'})
-		]);
-		fakeServer.respondWith(/\/index\.php\/dummyendpoint.php\/some_other_uid/, [
-			204,
-			{ 'Content-Type': 'application/json' },
-			JSON.stringify({status: 'success'})
-		]);
-
-		var handler = init(markCallback, removeCallback, undoCallback);
-		handler.mark('some_uid');
-
-		expect(showNotificationSpy.calledOnce).toEqual(true);
-		expect(showNotificationSpy.getCall(0).args[0]).toEqual('removed some_uid entry');
-		showNotificationSpy.restore();
-		showNotificationSpy = sinon.spy(OC.Notification, 'showHtml');
-
-		handler.mark('some_other_uid');
-
-		expect(hideNotificationSpy.calledOnce).toEqual(true);
-		expect(showNotificationSpy.calledOnce).toEqual(true);
-		expect(showNotificationSpy.getCall(0).args[0]).toEqual('removed some_other_uid entry');
-
-		expect(markCallback.calledTwice).toEqual(true);
-		expect(markCallback.getCall(0).args[0]).toEqual('some_uid');
-		expect(markCallback.getCall(1).args[0]).toEqual('some_other_uid');
-		// called only once, because it is called once the second user is deleted
-		expect(removeCallback.calledOnce).toEqual(true);
-		expect(undoCallback.notCalled).toEqual(true);
-
-		// previous one was delete
-		expect(fakeServer.requests.length).toEqual(1);
-		var	request = fakeServer.requests[0];
-		expect(request.url).toEqual(OC.webroot + '/index.php/dummyendpoint.php/some_uid');
-	});
-	it('automatically deletes after timeout', function() {
-		fakeServer.respondWith(/\/index\.php\/dummyendpoint.php\/some_uid/, [
-			204,
-			{ 'Content-Type': 'application/json' },
-			JSON.stringify({status: 'success'})
-		]);
-
-		var handler = init(markCallback, removeCallback, undoCallback);
-		handler.mark('some_uid');
-
-		clock.tick(5000);
-		// nothing happens yet
-		expect(fakeServer.requests.length).toEqual(0);
-
-		clock.tick(3000);
-		expect(fakeServer.requests.length).toEqual(1);
-		var	request = fakeServer.requests[0];
-		expect(request.url).toEqual(OC.webroot + '/index.php/dummyendpoint.php/some_uid');
-	});
 	it('deletes when deleteEntry is called', function() {
 		fakeServer.respondWith(/\/index\.php\/dummyendpoint.php\/some_uid/, [
 			200,
@@ -146,31 +75,6 @@ describe('DeleteHandler tests', function() {
 		expect(fakeServer.requests.length).toEqual(1);
 		var	request = fakeServer.requests[0];
 		expect(request.url).toEqual(OC.webroot + '/index.php/dummyendpoint.php/some_uid%3C%3E%2F%22..%5C');
-	});
-	it('cancels deletion when undo is clicked', function() {
-		var handler = init(markCallback, removeCallback, undoCallback);
-		handler.setNotification(OC.Notification, 'dataid', 'removed %oid entry <span class="undo">Undo</span>', undoCallback);
-		handler.mark('some_uid');
-		$('#notification .undo').click();
-
-		expect(undoCallback.calledOnce).toEqual(true);
-
-		// timer was cancelled
-		clock.tick(10000);
-		expect(fakeServer.requests.length).toEqual(0);
-	});
-	it('cancels deletion when cancel method is called', function() {
-		var handler = init(markCallback, removeCallback, undoCallback);
-		handler.setNotification(OC.Notification, 'dataid', 'removed %oid entry <span class="undo">Undo</span>', undoCallback);
-		handler.mark('some_uid');
-		handler.cancel();
-
-		// not sure why, seems to be by design
-		expect(undoCallback.notCalled).toEqual(true);
-
-		// timer was cancelled
-		clock.tick(10000);
-		expect(fakeServer.requests.length).toEqual(0);
 	});
 	it('calls removeCallback after successful server side deletion', function() {
 		fakeServer.respondWith(/\/index\.php\/dummyendpoint.php\/some_uid/, [

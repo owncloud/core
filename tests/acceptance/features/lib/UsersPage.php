@@ -69,6 +69,10 @@ class UsersPage extends OwncloudPage {
 	protected $groupListId = "usergrouplist";
 	protected $disableUserCheckboxXpath = "//input[@type='checkbox']";
 	protected $deleteUserBtnXpath = ".//td[@class='remove']/a[@class='action delete']";
+	protected $deleteConfirmBtnXpath
+		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style,'display: none')])]//button[text()='Yes']";
+	protected $deleteNotConfirmBtnXpath
+		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style,'display: none')])]//button[text()='No']";
 
 	/**
 	 * @param string $username
@@ -483,15 +487,15 @@ class UsersPage extends OwncloudPage {
 	}
 
 	/**
-	 *
 	 * @param string $name
 	 * @param Session $session
+	 * @param bool $confirm  , true is to delete and false is not to delete
 	 *
 	 * @return void
 	 */
-	public function deleteGroup($name, Session $session) {
+	public function deleteGroup($name, Session $session, $confirm = false) {
 		$groupList = $this->getGroupListElement();
-		$groupList->deleteGroup($name);
+		$groupList->deleteGroup($name, $confirm);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
@@ -522,10 +526,11 @@ class UsersPage extends OwncloudPage {
 	/**
 	 *
 	 * @param string $username
+	 * @param bool $confirm
 	 *
 	 * @return void
 	 */
-	public function deleteUser($username) {
+	public function deleteUser($username, $confirm) {
 		$userTr = $this->findUserInTable($username);
 		$deleteBtn = $userTr->find("xpath", $this->deleteUserBtnXpath);
 		if ($deleteBtn === null) {
@@ -536,5 +541,22 @@ class UsersPage extends OwncloudPage {
 			);
 		}
 		$deleteBtn->click();
+
+		if ($confirm) {
+			$confirmBtn = $this->find('xpath', $this->deleteConfirmBtnXpath);
+		} else {
+			$confirmBtn = $this->find('xpath', $this->deleteNotConfirmBtnXpath);
+		}
+
+		if ($confirmBtn === null) {
+			$xpathSelector = ($confirm) ? $this->deleteConfirmBtnXpath : $this->deleteNotConfirmBtnXpath;
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $xpathSelector " .
+				"could not find delete confirm button"
+			);
+		}
+
+		$confirmBtn->click();
 	}
 }

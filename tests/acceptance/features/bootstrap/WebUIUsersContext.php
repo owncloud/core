@@ -149,19 +149,31 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 
 	/**
 	 *
-	 * @When the administrator deletes the group named :name using the webUI
+	 * @When the administrator deletes the group named :name using the webUI and confirms the deletion using the webUI
 	 *
 	 * @param string $name
 	 *
 	 * @return void
 	 */
 	public function theAdminDeletesTheGroupUsingTheWebUI($name) {
-		$this->usersPage->deleteGroup($name, $this->getSession());
+		$this->usersPage->deleteGroup($name, $this->getSession(), true);
 		$this->featureContext->rememberThatGroupIsNotExpectedToExist($name);
 	}
 
 	/**
-	 * @When the administrator deletes these groups using the webUI:
+	 * @When the administrator deletes the group named :name using the webUI and cancels the deletion using the webUI
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function theAdminDeletesDoesNotDeleteGroupUsingWebUI($name) {
+		$this->usersPage->deleteGroup($name, $this->getSession(), false);
+		$this->featureContext->rememberThatGroupIsNotExpectedToExist($name);
+	}
+
+	/**
+	 * @When the administrator deletes these groups and confirms the deletion using the webUI:
 	 * expects a table of groups with the heading "groupname"
 	 *
 	 * @param TableNode $table
@@ -171,6 +183,20 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdminDeletesTheseGroupsUsingTheWebUI(TableNode $table) {
 		foreach ($table as $row) {
 			$this->theAdminDeletesTheGroupUsingTheWebUI($row['groupname']);
+		}
+	}
+
+	/**
+	 * @When the administrator deletes these groups and and cancels the deletion using the webUI:
+	 * expects a table of groups with the heading "groupname"
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdminDeletesDoesNotTheseGroupsUsingTheWebUI(TableNode $table) {
+		foreach ($table as $row) {
+			$this->theAdminDeletesDoesNotDeleteGroupUsingWebUI($row['groupname']);
 		}
 	}
 
@@ -269,14 +295,26 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the administrator deletes user :username using the webUI
+	 * @When the administrator deletes user :username using the webUI and confirms the deletion using the webUI
 	 *
 	 * @param string $username
 	 *
 	 * @return void
 	 */
 	public function theAdministratorDeletesTheUser($username) {
-		$this->usersPage->deleteUser($username);
+		$this->usersPage->deleteUser($username, true);
+		$this->featureContext->rememberThatUserIsNotExpectedToExist($username);
+	}
+
+	/**
+	 * @When the administrator deletes user :username using the webUI and cancels the deletion using the webUI
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDoesNotDeleteTheUser($username) {
+		$this->usersPage->deleteUser($username, false);
 		$this->featureContext->rememberThatUserIsNotExpectedToExist($username);
 	}
 

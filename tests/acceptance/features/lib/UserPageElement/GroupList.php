@@ -43,6 +43,10 @@ class GroupList extends OwncloudPage {
 	protected $addGroupXpath = '//span[text()[normalize-space()="Add Group"]]';
 	protected $addNewGroupInputBoxId = 'newgroupname';
 	protected $addNewGroupButtonXpath = '//input[@class="button icon-add"]';
+	protected $deleteConfirmButtonXpath
+		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style,'display: none')])]//button[text()='Yes']";
+	protected $deleteNotConfirmButtonXpath
+		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style,'display: none')])]//button[text()='No']";
 
 	/**
 	 * sets the NodeElement for the current group list
@@ -86,11 +90,12 @@ class GroupList extends OwncloudPage {
 	 * deletes a group in the UI
 	 *
 	 * @param string $name
+	 * @param bool $confirm
 	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
-	public function deleteGroup($name) {
+	public function deleteGroup($name, $confirm) {
 		$groupLi = $this->selectGroup($name);
 		$deleteButton = $groupLi->find("xpath", $this->deleteBtnXpath);
 		if ($deleteButton === null) {
@@ -101,6 +106,22 @@ class GroupList extends OwncloudPage {
 			);
 		}
 		$deleteButton->click();
+
+		if ($confirm) {
+			$confirmButton = $this->find("xpath", $this->deleteConfirmButtonXpath);
+		} else {
+			$confirmButton = $this->find("xpath", $this->deleteNotConfirmButtonXpath);
+		}
+
+		if ($confirmButton === null) {
+			$xpathSelector = ($confirm) ? $this->deleteConfirmButtonXpath : $this->deleteNotConfirmButtonXpath;
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $xpathSelector " .
+				"could not find delete confirm button"
+			);
+		}
+		$confirmButton->click();
 	}
 
 	/**
