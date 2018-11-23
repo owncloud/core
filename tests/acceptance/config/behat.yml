@@ -152,6 +152,7 @@ default:
         - WebUIAdminAppsSettingsContext:
         - WebUIAdminSharingSettingsContext:
         - WebUIAdminGeneralSettingsContext:
+        - WebUIHelpAndTipsContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - OccContext:
