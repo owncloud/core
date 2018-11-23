@@ -72,7 +72,8 @@ class Config extends Base {
 		}
 
 		$value = $input->getArgument('value');
-		if ($value) {
+
+		if ($value !== null) {
 			$this->setOption($mount, $key, $value, $output);
 		} else {
 			$this->getOption($mount, $key, $output);
