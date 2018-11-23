@@ -239,6 +239,9 @@ class TagsHelper {
 			case 'not user-visible':
 				$userVisible = "0";
 				break;
+			case 'static':
+				$userEditable = "0";
+				break;
 			default:
 				throw new \Exception('Unsupported type');
 		}
