@@ -586,6 +586,42 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Given the administrator has set the external storage to be never scanned automatically
+	 * @When the administrator sets the external storage to be never scanned automatically using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSetTheExternalStorageToBeNeverScannedUsingTheOccCommand() {
+		$command = "files:external:option";
+
+		$mountId = $this->featureContext->getStorageId();
+
+		// $mountId should have been set. If not, @local_storage BeforeScenario never ran
+		\assert($mountId !== null);
+
+		$key = "filesystem_check_changes";
+
+		// "0" is "Never", "1" is "Once every direct access"
+		$value = 0;
+
+		$this->featureContext->invokingTheCommand(
+			"$command $mountId $key $value"
+		);
+	}
+
+	/**
+	 * @When the administrator scans the filesystem for all users using the occ command
+	 * @Given the administrator has scanned the filesystem for all users
+	 *
+	 * @return void
+	 */
+	public function theAdministratorScansTheFilesystemForAllUsersUsingTheOccCommand() {
+		$this->featureContext->invokingTheCommand(
+			"files:scan --all"
+		);
+	}
+
+	/**
 	 * @Then the app name returned by the occ command should be :appName
 	 *
 	 * @param string $appName
