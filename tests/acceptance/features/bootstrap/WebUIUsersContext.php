@@ -88,7 +88,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorSetsTheQuotaOfUserUsingTheWebUI($username, $quota) {
+	public function theAdministratorSetsTheQuotaOfUserUsingTheWebUI(
+		$username, $quota
+	) {
 		$this->usersPage->setQuotaOfUserTo($username, $quota, $this->getSession());
 	}
 
@@ -117,6 +119,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->usersPage->createUser(
 			$this->getSession(), $username, $password, $email, $groups
 		);
+
 		$shouldExist = ($attemptTo === "");
 
 		$this->featureContext->addUserToCreatedUsersList(
@@ -237,7 +240,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theseGroupsShouldBeListedOnTheWebUI($shouldOrNot, TableNode $table) {
+	public function theseGroupsShouldBeListedOnTheWebUI(
+		$shouldOrNot, TableNode $table
+	) {
 		$should = ($shouldOrNot !== "not");
 		$groups = $this->usersPage->getAllGroups();
 		foreach ($table as $row) {
@@ -285,12 +290,14 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theDisabledUserTriesToLogin($username, $password) {
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
+		$password = $this->featureContext->getActualPassword($password);
 		/**
 		 *
 		 * @var DisabledUserPage $disabledPage
 		 */
-		$password = $this->featureContext->getActualPassword($password);
-		$disabledPage = $this->loginPage->loginAs($username, $password, 'DisabledUserPage');
+		$disabledPage = $this->loginPage->loginAs(
+			$username, $password, 'DisabledUserPage'
+		);
 		$disabledPage->waitTillPageIsLoaded($this->getSession());
 	}
 
@@ -319,7 +326,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 *
 	 * @When the deleted user :username tries to login using the password :password using the webUI
 	 *
 	 * @param string $username
@@ -364,26 +370,27 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the administrator should be able to see email of the users in the User Management page as:$/
+	 * @Then /^the administrator should be able to see the email of these users in the User Management page:$/
 	 *
 	 * @param TableNode $table table of usernames and emails with a heading | username | and | email |
 	 *
 	 * @return void
 	 */
-	public function theAdministratorShouldBeAbleToSeeEmailOfTheUsersAs(TableNode $table) {
+	public function theAdministratorShouldBeAbleToSeeEmailOfTheseUsers(TableNode $table) {
 		foreach ($table as $row) {
 			$userEmail = $this->usersPage->getEmailOfUser($row['username']);
 			PHPUnit_Framework_Assert::assertEquals($row['email'], $userEmail);
 		}
 	}
+
 	/**
-	 * @Then /^the administrator should be able to see storage location of the users in the User Management page as:$/
+	 * @Then /^the administrator should be able to see the storage location of these users in the User Management page:$/
 	 *
 	 * @param TableNode $table table of usernames and storage locations with a heading | username | and | storage location |
 	 *
 	 * @return void
 	 */
-	public function theAdministratorShouldBeAbleToSeeStorageLocationOfTheUsersAs(
+	public function theAdministratorShouldBeAbleToSeeStorageLocationOfTheseUsers(
 		TableNode $table
 	) {
 		foreach ($table as $row) {
@@ -393,13 +400,13 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the administrator should be able to see last login of the users in the User Management page as:$/
+	 * @Then /^the administrator should be able to see the last login of these users in the User Management page:$/
 	 *
 	 * @param TableNode $table table of usernames and last logins with a heading | username | and | last logins |
 	 *
 	 * @return void
 	 */
-	public function theAdministratorShouldBeAbleToSeeLastLoginOfTheUsersAs(
+	public function theAdministratorShouldBeAbleToSeeLastLoginOfTheseUsers(
 		TableNode $table
 	) {
 		foreach ($table as $row) {
@@ -435,6 +442,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 			'umgmt_show_last_login' => '',
 			'umgmt_show_storage_location' => ''
 		];
+
 		if ($this->appParameterValues === null) {
 			// Get app config values
 			$appConfigs =  AppConfigHelper::getAppConfigs(
