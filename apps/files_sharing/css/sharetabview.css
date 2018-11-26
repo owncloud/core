@@ -299,3 +299,10 @@
 .minify input {
 	font-size: 1px;
 }
+
+.shareDialogExpirationView .error-message,
+.linkPass .error-message {
+	color: red;
+    padding: 4px;
+    display: block;
+}
