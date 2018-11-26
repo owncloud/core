@@ -76,7 +76,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * - postDelete(\OC\User\User $user)
  * - preCreateUser(string $uid, string $password)
  * - postCreateUser(\OC\User\User $user)
- * - preLogin(string $user, string $password)
+ * - preLogin(string $user, string|null $password)
  * - postLogin(\OC\User\User $user, string $password)
  * - failedLogin(string $user)
  * - preRememberedLogin(string $uid)
