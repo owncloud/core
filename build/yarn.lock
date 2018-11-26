@@ -2,14 +2,6 @@
 # yarn lockfile v1
 
 
-"@bower_components/Jcrop@tapmodo/Jcrop#2.0.4":
-  version "2.0.4"
-  resolved "https://codeload.github.com/tapmodo/Jcrop/tar.gz/80f645b69fc938b3823d92d74e5019036d04a9ca"
-
-"@bower_components/Snap.js@jakiestfu/Snap.js#1.9.3":
-  version "0.0.0"
-  resolved "https://codeload.github.com/jakiestfu/Snap.js/tar.gz/8538051df8e2c82a39d2603b6dfd8219ce8f04e6"
-
 "@bower_components/backbone@jashkenas/backbone#1.3.3":
   version "1.3.3"
   resolved "https://codeload.github.com/jashkenas/backbone/tar.gz/8ec88604732944f197b352a6be22c8216ea9d3a1"
@@ -72,10 +64,6 @@
   version "1.0.5"
   resolved "https://codeload.github.com/HenningM/jstimezonedetect/tar.gz/2efb16c850d8447109eff40d4b1495acd8168812"
 
-"@bower_components/jstzdetect@HenningM/jstimezonedetect#1.0.6":
-  version "1.0.6"
-  resolved "https://codeload.github.com/HenningM/jstimezonedetect/tar.gz/bd595ed253292934991a414979007f3d51a1547d"
-
 "@bower_components/moment@moment/moment#2.24.0":
   version "2.24.0"
   resolved "https://codeload.github.com/moment/moment/tar.gz/96d0d6791ab495859d09a868803d31a55c917de1"
@@ -118,7 +106,7 @@
   dependencies:
     type-detect "4.0.8"
 
-"@sinonjs/formatio@^3.0.0":
+"@sinonjs/formatio@3.0.0", "@sinonjs/formatio@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@sinonjs/formatio/-/formatio-3.0.0.tgz#9d282d81030a03a03fa0c5ce31fd8786a4da311a"
   dependencies:
@@ -129,6 +117,12 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/formatio/-/formatio-3.1.0.tgz#6ac9d1eb1821984d84c4996726e45d1646d8cce5"
   dependencies:
     "@sinonjs/samsam" "^2 || ^3"
+
+"@sinonjs/samsam@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@sinonjs/samsam/-/samsam-2.1.0.tgz#b8b8f5b819605bd63601a6ede459156880f38ea3"
+  dependencies:
+    array-from "^2.1.1"
 
 "@sinonjs/samsam@^2 || ^3", "@sinonjs/samsam@^3.1.1":
   version "3.1.1"
@@ -1131,7 +1125,7 @@ glob@^7.0.5, glob@^7.1.1, glob@^7.1.2:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-good-listener@^1.2.2:
+good-listener@^1.1.6:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/good-listener/-/good-listener-1.2.2.tgz#d53b30cdf9313dffb7dc9a0d477096aa6d145c50"
   dependencies:
@@ -1571,6 +1565,10 @@ jsprim@^1.2.2:
     extsprintf "1.3.0"
     json-schema "0.2.3"
     verror "1.10.0"
+
+just-extend@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/just-extend/-/just-extend-3.0.0.tgz#cee004031eaabf6406da03a7b84e4fe9d78ef288"
 
 just-extend@^4.0.2:
   version "4.0.2"
@@ -2506,7 +2504,7 @@ sax@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
 
-select@^1.1.2:
+select@^1.0.6:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/select/-/select-1.1.2.tgz#0e7350acdec80b1108528786ec1d4418d11b396d"
 
@@ -2848,9 +2846,9 @@ throttleit@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/throttleit/-/throttleit-1.0.0.tgz#9e785836daf46743145a5984b6268d828528ac6c"
 
-tiny-emitter@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
+tiny-emitter@^1.0.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-1.2.0.tgz#6dc845052cb08ebefc1874723b58f24a648c3b6f"
 
 tmp@0.0.33, tmp@0.0.x:
   version "0.0.33"
