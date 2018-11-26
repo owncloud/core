@@ -1,0 +1,9 @@
+{
+  "name": "modclean-patterns-owncloud",
+  "version": "1.0.0",
+  "description": "ownCloud patterns for ModClean",
+  "main": "index.js",
+  "author": "Thomas Müller",
+  "license": "MIT",
+  "private": true
+}
