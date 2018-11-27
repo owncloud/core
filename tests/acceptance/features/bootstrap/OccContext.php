@@ -622,6 +622,48 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator scans the filesystem for user :user using the occ command
+	 * @Given the administrator has scanned the filesystem for user :user
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theAdministratorScansTheFilesystemForUserUsingTheOccCommand($user) {
+		$this->featureContext->invokingTheCommand(
+			"files:scan $user"
+		);
+	}
+
+	/**
+	 * @When the administrator scans the filesystem in path :path using the occ command
+	 * @Given the administrator scans the filesystem in path :path
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theAdministratorScansTheFilesystemInPathUsingTheOccCommand($path) {
+		$this->featureContext->invokingTheCommand(
+			"files:scan --path='$path'"
+		);
+	}
+
+	/**
+	 * @When the administrator scans the filesystem for group :group using the occ command
+	 * @Given the administrator has scanned the filesystem for group :group
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorScansTheFilesystemForGroupUsingTheOccCommand($group) {
+		$this->featureContext->invokingTheCommand(
+			"files:scan --groups=$group"
+		);
+	}
+
+	/**
 	 * @Then the app name returned by the occ command should be :appName
 	 *
 	 * @param string $appName

@@ -100,6 +100,9 @@ trait Auth {
 	public function sendRequest(
 		$url, $method, $authHeader = null, $useCookies = false
 	) {
+		// reset responseXml
+		$this->responseXml = '';
+
 		$fullUrl = $this->getBaseUrl() . $url;
 
 		$cookies = null;
