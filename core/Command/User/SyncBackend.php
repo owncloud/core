@@ -139,7 +139,7 @@ class SyncBackend extends Command {
 		}
 		$backend = $this->getBackend($backendClassName);
 		if ($backend === null) {
-			$output->writeln("<error>The backend <$backendClassName> does not exist. Did you miss to enable the app?</error>");
+			$output->writeln("<error>The backend <$backendClassName> does not exist. Did you forget to enable the app?</error>");
 			return 1;
 		}
 		if (!$backend->hasUserListings()) {
