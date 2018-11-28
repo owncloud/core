@@ -167,14 +167,14 @@ class ListCommand extends Base {
 				}
 			}
 		}
-		
+
 		if ($outputType === self::OUTPUT_FORMAT_JSON || $outputType === self::OUTPUT_FORMAT_JSON_PRETTY) {
 			$keys = \array_map(function ($header) {
 				return \strtolower(\str_replace(' ', '_', $header));
 			}, $headers);
 
 			if ($shortView) {
-				$pairs = \array_map(function (IStorageConfig $config) use ($keys, $userId) {
+				$pairs = \array_map(function (IStorageConfig $config) use ($keys) {
 					$values = [
 							$config->getId(),
 							$config->getMountPoint(),
