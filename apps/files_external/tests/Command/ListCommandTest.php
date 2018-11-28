@@ -90,7 +90,82 @@ class ListCommandTest extends CommandTest {
 		$instance->listMounts('', [$mount1, $mount2], $input, $output);
 		$output = $output->fetch();
 
-		$lines = \explode($output, "\n");
 		$this->assertRegexp('/Number of invalid storages found/', $output);
+	}
+
+	public function providesShortView() {
+		return [
+			[
+				['short' => true, 'output' => 'json'],
+				[
+					['mount_id' => 1, 'mount_point' => '/ownCloud', 'type' => 'admin'],
+					['mount_id' => 2, 'mount_point' => '/SFTP', 'type' => 'personal'],
+				],
+				[
+					['mount_id' => 1, 'mount_point' => '/ownCloud', 'type' => StorageConfig::MOUNT_TYPE_ADMIN],
+					['mount_id' => 2, 'mount_point' => '/SFTP', 'type' => StorageConfig::MOUNT_TYPE_PERSONAl],
+				]
+			],
+			[
+				['short' => true],
+				<<<EOS
++----------+-------------+----------+
+| Mount ID | Mount Point | Type     |
++----------+-------------+----------+
+| 1        | /ownCloud   | Admin    |
+| 2        | /SFTP       | Personal |
++----------+-------------+----------+
+
+EOS
+				,
+				[
+					['mount_id' => 1, 'mount_point' => '/ownCloud', 'type' => StorageConfig::MOUNT_TYPE_ADMIN],
+					['mount_id' => 2, 'mount_point' => '/SFTP', 'type' => StorageConfig::MOUNT_TYPE_PERSONAl],
+				]
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider providesShortView
+	 * @param $options
+	 * @param $expectedResult
+	 * @param $mountOptions
+	 */
+	public function testShortView($options, $expectedResult, $mountOptions) {
+		$l10n = $this->createMock('\OCP\IL10N', null, [], '', false);
+		$session = $this->createMock('\OCP\ISession');
+		$crypto = $this->createMock('\OCP\Security\ICrypto');
+		$instance = $this->getInstance();
+		// FIXME: use mock of IStorageConfig
+		$mount1 = new StorageConfig();
+		$mount1->setId($mountOptions[0]['mount_id']);
+		$mount1->setMountPoint($mountOptions[0]['mount_point']);
+		$mount1->setType($mountOptions[0]['type']);
+		$mount1->setAuthMechanism(new Password());
+		$mount1->setBackend(new Local($l10n, new NullMechanism()));
+		$mount2 = new StorageConfig();
+		$mount2->setId($mountOptions[1]['mount_id']);
+		$mount2->setMountPoint($mountOptions[1]['mount_point']);
+		$mount2->setType($mountOptions[1]['type']);
+		$mount2->setAuthMechanism(new SessionCredentials($session, $crypto));
+		$mount2->setBackend(new Local($l10n, new NullMechanism()));
+		$input = $this->getInput($instance, ['user_id' => 'user1'], $options);
+		$output = new BufferedOutput();
+
+		$instance->listMounts('user1', [$mount1, $mount2], $input, $output);
+		$output = $output->fetch();
+		if (isset($options['output']) && ($options['output'] === 'json')) {
+			$results = \json_decode($output, true);
+			$countResults = \count($results);
+
+			for ($i = 0; $i < $countResults; $i++) {
+				$this->assertEquals($expectedResult[$i]['mount_id'], $results[$i]['mount_id']);
+				$this->assertEquals($expectedResult[$i]['mount_point'], $results[$i]['mount_point']);
+				$this->assertEquals($expectedResult[$i]['type'], $results[$i]['type']);
+			}
+		} else {
+			$this->assertEquals($expectedResult, $output);
+		}
 	}
 }

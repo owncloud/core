@@ -91,6 +91,11 @@ class ListCommand extends Base {
 				'a',
 				InputOption::VALUE_NONE,
 				'show both system wide mounts and all personal mounts'
+			)->addOption(
+				'short',
+				's',
+				InputOption::VALUE_NONE,
+				'show only a reduced mount info'
 			);
 		parent::configure();
 	}
@@ -119,6 +124,8 @@ class ListCommand extends Base {
 	 */
 	public function listMounts($userId, array $mounts, InputInterface $input, OutputInterface $output) {
 		$outputType = $input->getOption('output');
+		$shortView = $input->getOption('short');
+
 		if (\count($mounts) === 0) {
 			if ($outputType === self::OUTPUT_FORMAT_JSON || $outputType === self::OUTPUT_FORMAT_JSON_PRETTY) {
 				$output->writeln('[]');
@@ -134,23 +141,28 @@ class ListCommand extends Base {
 			return;
 		}
 
-		$headers = ['Mount ID', 'Mount Point', 'Storage', 'Authentication Type', 'Configuration', 'Options'];
+		if ($shortView) {
+			$headers = ['Mount ID', 'Mount Point', 'Type'];
+		} else {
+			$headers = ['Mount ID', 'Mount Point', 'Storage', 'Authentication Type', 'Configuration', 'Options'];
 
-		if (!$userId || $userId === self::ALL) {
-			$headers[] = 'Applicable Users';
-			$headers[] = 'Applicable Groups';
-		}
-		if ($userId === self::ALL) {
-			$headers[] = 'Type';
-		}
+			if (!$userId || $userId === self::ALL) {
+				$headers[] = 'Applicable Users';
+				$headers[] = 'Applicable Groups';
+			}
 
-		if (!$input->getOption('show-password')) {
-			$hideKeys = ['password', 'refresh_token', 'token', 'client_secret', 'public_key', 'private_key'];
-			foreach ($mounts as $mount) {
-				$config = $mount->getBackendOptions();
-				foreach ($config as $key => $value) {
-					if (\in_array($key, $hideKeys)) {
-						$mount->setBackendOption($key, '***');
+			if ($userId === self::ALL) {
+				$headers[] = 'Type';
+			}
+
+			if (!$input->getOption('show-password')) {
+				$hideKeys = ['password', 'refresh_token', 'token', 'client_secret', 'public_key', 'private_key'];
+				foreach ($mounts as $mount) {
+					$config = $mount->getBackendOptions();
+					foreach ($config as $key => $value) {
+						if (\in_array($key, $hideKeys)) {
+							$mount->setBackendOption($key, '***');
+						}
 					}
 				}
 			}
@@ -161,31 +173,46 @@ class ListCommand extends Base {
 				return \strtolower(\str_replace(' ', '_', $header));
 			}, $headers);
 
-			$pairs = \array_map(function (IStorageConfig $config) use ($keys, $userId) {
-				$values = [
-					$config->getId(),
-					$config->getMountPoint(),
-					$config->getBackend()->getStorageClass(),
-					$config->getAuthMechanism()->getIdentifier(),
-					$config->getBackendOptions(),
-					$config->getMountOptions()
-				];
-				if (!$userId || $userId === self::ALL) {
-					$values[] = $config->getApplicableUsers();
-					$values[] = $config->getApplicableGroups();
-				}
-				if ($userId === self::ALL) {
-					$values[] = $config->getType() === IStorageConfig::MOUNT_TYPE_ADMIN ? 'admin' : 'personal';
-				}
+			if ($shortView) {
+				$pairs = \array_map(function (IStorageConfig $config) use ($keys) {
+					$values = [
+							$config->getId(),
+							$config->getMountPoint(),
+							$config->getType() === IStorageConfig::MOUNT_TYPE_ADMIN ? 'admin' : 'personal'
+						];
 
-				return \array_combine($keys, $values);
-			}, $mounts);
+					return \array_combine($keys, $values);
+				}, $mounts);
+			} else {
+				$pairs = \array_map(function (IStorageConfig $config) use ($keys, $userId) {
+					$values = [
+							$config->getId(),
+							$config->getMountPoint(),
+							$config->getBackend()->getStorageClass(),
+							$config->getAuthMechanism()->getIdentifier(),
+							$config->getBackendOptions(),
+							$config->getMountOptions()
+						];
+					if (!$userId || $userId === self::ALL) {
+						$values[] = $config->getApplicableUsers();
+						$values[] = $config->getApplicableGroups();
+					}
+					if ($userId === self::ALL) {
+						$values[] = $config->getType() === IStorageConfig::MOUNT_TYPE_ADMIN ? 'admin' : 'personal';
+					}
+
+					return \array_combine($keys, $values);
+				}, $mounts);
+			}
+
 			if ($outputType === self::OUTPUT_FORMAT_JSON) {
 				$output->writeln(\json_encode(\array_values($pairs)));
 			} else {
 				$output->writeln(\json_encode(\array_values($pairs), JSON_PRETTY_PRINT));
 			}
 		} else {
+
+			// default output style
 			$full = $input->getOption('full');
 			$defaultMountOptions = [
 				'encrypt' => true,
@@ -195,7 +222,9 @@ class ListCommand extends Base {
 				'encoding_compatibility' => false
 			];
 			$countInvalid = 0;
-			$rows = \array_map(function (IStorageConfig $config) use ($userId, $defaultMountOptions, $full, &$countInvalid) {
+			// In case adding array elements, add them only after the first two (Mount ID / Mount Point)
+			// and before the last one entry (Type). Necessary for option -s
+			$rows = \array_map(function (IStorageConfig $config) use ($shortView, $userId, $defaultMountOptions, $full, &$countInvalid) {
 				if ($config->getBackend() instanceof InvalidBackend || $config->getAuthMechanism() instanceof InvalidAuth) {
 					$countInvalid++;
 				}
@@ -251,7 +280,8 @@ class ListCommand extends Base {
 					$values[] = $applicableUsers;
 					$values[] = $applicableGroups;
 				}
-				if ($userId === self::ALL) {
+				// This MUST stay the last entry
+				if ($shortView || $userId === self::ALL) {
 					$values[] = $config->getType() === IStorageConfig::MOUNT_TYPE_ADMIN ? 'Admin' : 'Personal';
 				}
 
@@ -260,7 +290,7 @@ class ListCommand extends Base {
 
 			$table = new Table($output);
 			$table->setHeaders($headers);
-			$table->setRows($rows);
+			$table->setRows($this->getColumns($shortView, $rows));
 			$table->render();
 
 			if ($countInvalid > 0) {
@@ -273,6 +303,32 @@ class ListCommand extends Base {
 		}
 	}
 
+	// Removes all unused columns for option -s.
+	// Only the first two (Mount ID / Mount Point) and the last column (Mount Type) is kept.
+	protected function getColumns($shortView, $rows) {
+		if ($shortView) {
+			$newRows = [];
+			// $subArr is a copy of $rows anyways...
+			foreach ($rows as $subArr) {
+				$c = \count($subArr) - 1;
+				$u = false;
+				foreach ($subArr as $key => $val) {
+					if ((int)$key > 1 && (int)$key < $c) {
+						unset($subArr[$key]);
+						$u = true;
+					}
+				}
+				if ($u) {
+					$subArr = \array_values($subArr);
+				}
+				$newRows[] = $subArr;
+			}
+			return $newRows;
+		} else {
+			return $rows;
+		}
+	}
+	
 	protected function getStorageService($userId) {
 		if (!empty($userId)) {
 			$user = $this->userManager->get($userId);
