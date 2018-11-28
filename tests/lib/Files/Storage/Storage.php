@@ -290,10 +290,23 @@ abstract class Storage extends \Test\TestCase {
 
 	public function testStat() {
 		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
-		$ctimeStart = \time();
+
+		// The back-end storage system-under-test will have some (slightly different?)
+		// clock to the script on the local system running this test. So first find out that difference.
+		// The purpose of the time-related tests here is to verify that timestamps
+		// on the back-end storage happen in a consistent manner.
+		// It is expected that timestamps will vary by whatever is the offset between
+		// the back-end storage time and the time on the local system.
+		$this->instance->file_put_contents('/timecheck.txt', \file_get_contents($textFile));
+		$mTime = $this->instance->filemtime('/timecheck.txt');
+		$currentTime = \time();
+		$fileSystemTimeOffset = $mTime - $currentTime;
+		$this->instance->unlink('/timecheck.txt');
+
+		$ctimeStart = \time() + $fileSystemTimeOffset;
 		$this->instance->file_put_contents('/lorem.txt', \file_get_contents($textFile));
 		$this->assertTrue($this->instance->isReadable('/lorem.txt'));
-		$ctimeEnd = \time();
+		$ctimeEnd = \time() + $fileSystemTimeOffset;
 		$mTime = $this->instance->filemtime('/lorem.txt');
 		$this->assertTrue($this->instance->hasUpdated('/lorem.txt', $ctimeStart - 5));
 		$this->assertTrue($this->instance->hasUpdated('/', $ctimeStart - 5));
@@ -313,7 +326,7 @@ abstract class Storage extends \Test\TestCase {
 			$this->assertEquals($mTime, 100);
 		}
 
-		$mtimeStart = \time();
+		$mtimeStart = \time() + $fileSystemTimeOffset;
 
 		$this->instance->unlink('/lorem.txt');
 		$this->assertTrue($this->instance->hasUpdated('/', $mtimeStart - 5));
