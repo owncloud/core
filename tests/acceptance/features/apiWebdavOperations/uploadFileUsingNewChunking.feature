@@ -120,6 +120,7 @@ Feature: upload file using new chunking
       | file-name |
       | &#?       |
       | TIÄFÜ     |
+      | 0         |
 
   #ToDo: delete this test after 10.0.10 is released and we stop testing 10.0.9
   #it is identical to the one above but missing the log file check because of issue #31631
@@ -136,13 +137,4 @@ Feature: upload file using new chunking
       | file-name |
       | &#?       |
       | TIÄFÜ     |
-
-	#this test should be integrated into the previous Scenario after fixing the issue
-  Scenario: Upload a file called "0" using new chunking
-    When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
-    And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
-    And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
-    And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
-    And user "user0" moves new chunk file with id "chunking-42" to "/0" using the WebDAV API
-    And as "user0" file "/0" should exist
-    And the content of file "/0" for user "user0" should be "AAAAABBBBBCCCCC"
+      | 0         |
