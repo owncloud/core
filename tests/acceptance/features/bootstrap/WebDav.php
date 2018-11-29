@@ -24,11 +24,13 @@ use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Ring\Exception\ConnectException;
 use GuzzleHttp\Stream\StreamInterface;
+use Guzzle\Http\Exception\BadResponseException;
 use Sabre\DAV\Client as SClient;
 use Sabre\DAV\Xml\Property\ResourceType;
 use Sabre\Xml\LibXMLException;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
+use TestHelpers\UploadHelper;
 use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
 use Sabre\DAV\Xml\Property\Complex;
@@ -87,6 +89,9 @@ trait WebDav {
 	private $responseXml = [];
 
 	private $httpRequestTimeout = 0;
+
+	private $chunkingToUse = null;
+
 	/**
 	 * @Given /^using dav path "([^"]*)"$/
 	 *
@@ -1799,65 +1804,103 @@ trait WebDav {
 		$this->userUploadsAFileTo($user, $source, $destination);
 		$this->usingServer($previousServer);
 	}
-	
+
 	/**
+	 * @When /^user "([^"]*)" uploads file "([^"]*)" to "([^"]*)" in (\d+) chunks (?:with (new|old|v1|v2) chunking and)?\s?using the WebDAV API$/
 	 * @When user :user uploads file :source to :destination with chunks using the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
-	 * @param string $chunkingVersion null for autodetect, "old" with old style, "new" for new style
+	 * @param int $noOfChunks
+	 * @param string $chunkingVersion old|v1|new|v2 null for autodetect
+	 * @param bool $async use asynchronous move at the end or not
 	 *
 	 * @return void
 	 */
 	public function userUploadsAFileToWithChunks(
-		$user, $source, $destination, $chunkingVersion = null
+		$user, $source, $destination, $noOfChunks = 2, $chunkingVersion = null, $async = false
 	) {
-		$size = \filesize(
-			$this->acceptanceTestsDirLocation() . $source
+		PHPUnit_Framework_Assert::assertGreaterThan(
+			0, $noOfChunks, "What does it mean to have $noOfChunks chunks?"
 		);
-		$contents = \file_get_contents(
-			$this->acceptanceTestsDirLocation() . $source
+		//use the chunking version that works with the set dav version
+		if ($chunkingVersion === null) {
+			if ($this->usingOldDavPath) {
+				$chunkingVersion = "v1";
+			} else {
+				$chunkingVersion = "v2";
+			}
+		}
+		$this->useSpecificChunking($chunkingVersion);
+		PHPUnit_Framework_Assert::assertTrue(
+			WebDavHelper::isValidDavChunkingCombination(
+				($this->usingOldDavPath) ? 1 : 2,
+				$this->chunkingToUse
+			),
+			"invalid chunking/webdav version combination"
 		);
 
-		// use two chunks for the sake of testing
-		$chunks = [];
-		$chunks[] = \substr($contents, 0, $size / 2);
-		$chunks[] = \substr($contents, $size / 2);
-
-		$this->uploadChunks($user, $chunks, $destination, $chunkingVersion);
+		$headers = [];
+		if ($async === true) {
+			$headers = ['OC-LazyOps' => 'true'];
+		}
+		try {
+			$this->responseXml = [];
+			$this->response = UploadHelper::upload(
+				$this->getBaseUrl(),
+				$this->getActualUsername($user),
+				$this->getUserPassword($user),
+				$this->acceptanceTestsDirLocation() . $source,
+				$destination,
+				$headers,
+				($this->usingOldDavPath) ? 1 : 2,
+				$this->chunkingToUse,
+				$noOfChunks
+			);
+		} catch (BadResponseException $e) {
+			// 4xx and 5xx responses cause an exception
+			$this->response = $e->getResponse();
+		}
 	}
 
 	/**
+	 * @When /^user "([^"]*)" uploads file "([^"]*)" asynchronously to "([^"]*)" in (\d+) chunks (?:with (new|old|v1|v2) chunking and)?\s?using the WebDAV API$/
+	 *
 	 * @param string $user
-	 * @param array $chunks
+	 * @param string $source
 	 * @param string $destination
-	 * @param string|null $chunkingVersion null for autodetect, "old" with old style, "new" for new style
+	 * @param int  $noOfChunks
+	 * @param string $chunkingVersion old|v1|new|v2 null for autodetect
 	 *
 	 * @return void
 	 */
-	public function uploadChunks(
-		$user, $chunks, $destination, $chunkingVersion = null
+	public function userUploadsAFileAsyncToWithChunks(
+		$user, $source, $destination, $noOfChunks = 2, $chunkingVersion = null
 	) {
-		if ($chunkingVersion === null) {
-			if ($this->usingOldDavPath) {
-				$chunkingVersion = 'old';
-			} else {
-				$chunkingVersion = 'new';
-			}
-		}
-		if ($chunkingVersion === 'old') {
-			foreach ($chunks as $index => $chunkContent) {
-				$this->userUploadsChunkedFile(
-					$user, $index + 1, \count($chunks), $chunkContent, $destination
-				);
-			}
+		$this->userUploadsAFileToWithChunks(
+			$user, $source, $destination, $noOfChunks, $chunkingVersion, true
+		);
+	}
+	 
+	/**
+	 * sets the chunking version from human readable format
+	 *
+	 * @param string $version (no|v1|v2|new|old)
+	 *
+	 * @return void
+	 */
+	public function useSpecificChunking($version) {
+		if ($version === "v1" || $version === "old") {
+			$this->chunkingToUse = 1;
+		} elseif ($version === "v2" || $version === "new") {
+			$this->chunkingToUse = 2;
+		} elseif ($version === "no") {
+			$this->chunkingToUse = null;
 		} else {
-			$chunkDetails = [];
-			foreach ($chunks as $index => $chunkContent) {
-				$chunkDetails[] = [$index + 1, $chunkContent];
-			}
-			$this->userUploadsChunksUsingNewChunking($user, $destination, 'chunking-43', $chunkDetails);
+			throw new InvalidArgumentException(
+				"cannot set chunking version to $version"
+			);
 		}
 	}
 
@@ -1939,7 +1982,7 @@ trait WebDav {
 				}
 				
 				$this->userUploadsAFileToWithChunks(
-					$user, $source, $destination . $suffix, 'old'
+					$user, $source, $destination . $suffix, 2, 'old'
 				);
 				$responses[] = $this->response;
 			}
@@ -1948,7 +1991,7 @@ trait WebDav {
 					$suffix = "-{$dav}dav-newchunking";
 				}
 				$this->userUploadsAFileToWithChunks(
-					$user, $source, $destination . $suffix, 'new'
+					$user, $source, $destination . $suffix, 2, 'new'
 				);
 				$responses[] = $this->response;
 			}
