@@ -586,6 +586,84 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Given the administrator has set the external storage to be never scanned automatically
+	 * @When the administrator sets the external storage to be never scanned automatically using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSetTheExternalStorageToBeNeverScannedUsingTheOccCommand() {
+		$command = "files:external:option";
+
+		$mountId = $this->featureContext->getStorageId();
+
+		// $mountId should have been set. If not, @local_storage BeforeScenario never ran
+		\assert($mountId !== null);
+
+		$key = "filesystem_check_changes";
+
+		// "0" is "Never", "1" is "Once every direct access"
+		$value = 0;
+
+		$this->featureContext->invokingTheCommand(
+			"$command $mountId $key $value"
+		);
+	}
+
+	/**
+	 * @When the administrator scans the filesystem for all users using the occ command
+	 * @Given the administrator has scanned the filesystem for all users
+	 *
+	 * @return void
+	 */
+	public function theAdministratorScansTheFilesystemForAllUsersUsingTheOccCommand() {
+		$this->featureContext->invokingTheCommand(
+			"files:scan --all"
+		);
+	}
+
+	/**
+	 * @When the administrator scans the filesystem for user :user using the occ command
+	 * @Given the administrator has scanned the filesystem for user :user
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theAdministratorScansTheFilesystemForUserUsingTheOccCommand($user) {
+		$this->featureContext->invokingTheCommand(
+			"files:scan $user"
+		);
+	}
+
+	/**
+	 * @When the administrator scans the filesystem in path :path using the occ command
+	 * @Given the administrator scans the filesystem in path :path
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theAdministratorScansTheFilesystemInPathUsingTheOccCommand($path) {
+		$this->featureContext->invokingTheCommand(
+			"files:scan --path='$path'"
+		);
+	}
+
+	/**
+	 * @When the administrator scans the filesystem for group :group using the occ command
+	 * @Given the administrator has scanned the filesystem for group :group
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorScansTheFilesystemForGroupUsingTheOccCommand($group) {
+		$this->featureContext->invokingTheCommand(
+			"files:scan --groups=$group"
+		);
+	}
+
+	/**
 	 * @Then the app name returned by the occ command should be :appName
 	 *
 	 * @param string $appName
