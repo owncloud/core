@@ -52,7 +52,7 @@ Feature: federated
 
   Scenario: Remote sharee can see the pending share
     Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
-    When user "user1" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/remote_shares/pending"
+    When user "user1" gets the list of pending federated cloud shares using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -150,7 +150,7 @@ Feature: federated
   Scenario: Trusted server handshake does not require authenticated requests - we force 403 by sending an empty body
     Given using server "LOCAL"
     And using OCS API version "2"
-    When user "UNAUTHORIZED_USER" sends HTTP method "POST" to OCS API endpoint "/apps/federation/api/v1/request-shared-secret"
+    When user "UNAUTHORIZED_USER" requests shared secret using the federation API
     Then the HTTP status code should be "403"
 
   Scenario: Overwrite a federated shared folder as recipient propagates etag for recipient
