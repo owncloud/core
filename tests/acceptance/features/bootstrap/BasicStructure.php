@@ -540,6 +540,13 @@ trait BasicStructure {
 	public function getSourceIpAddress() {
 		return $this->sourceIpAddress;
 	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getStorageId() {
+		return $this->storageId;
+	}
 	
 	/**
 	 * @param string $sourceIpAddress
@@ -1640,6 +1647,28 @@ trait BasicStructure {
 	 */
 	public function theAdministratorRequestsStatusPhp() {
 		$this->response = $this->getStatusPhp();
+	}
+
+	/**
+	 * @When the administrator creates file :path with content :content in local storage using the testing API
+	 *
+	 * @param string $path
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theAdministratorCreatesFileUsingTheTestingApi($path, $content) {
+		$user = $this->getAdminUsername();
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getAdminPassword(),
+			'POST',
+			"/apps/testing/api/v1/file",
+			['file' => LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$path", 'content' => $content],
+			$this->getOcsApiVersion()
+		);
+		$this->setResponse($response);
 	}
 
 	/**
