@@ -8,6 +8,8 @@ Feature: upload file using old chunking
     Given using OCS API version "1"
     And using old DAV path
     And user "user0" has been created with default attributes
+    And the owncloud log level has been set to debug
+    And the owncloud log has been cleared
 
   Scenario: Upload chunked file asc
     When user "user0" uploads the following "3" chunks to "/myChunkedFile.txt" with old chunking and using the WebDAV API
@@ -33,16 +35,36 @@ Feature: upload file using old chunking
     Then as "user0" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
+  Scenario: Checking file id after a move overwrite using old chunking endpoint
+    Given user "user0" has copied file "/textfile0.txt" to "/existingFile.txt"
+    And user "user0" has stored id of file "/existingFile.txt"
+    When user "user0" uploads file "filesForUpload/textfile.txt" to "/existingFile.txt" in 3 chunks with old chunking and using the WebDAV API
+    Then user "user0" file "/existingFile.txt" should have the previously stored id
+    And the content of file "/existingFile.txt" for user "user0" should be:
+      """
+      This is a testfile.
+      
+      Cheers.
+      """
+    And the log file should not contain any log-entries containing these attributes:
+      | app |
+      | dav |
+
   @smokeTest
   Scenario Outline: Chunked upload files with difficult name
-    When user "user0" uploads the following "3" chunks to "/<file-name>" with old chunking and using the WebDAV API
-      | 1 | AAAAA |
-      | 2 | BBBBB |
-      | 3 | CCCCC |
+    When user "user0" uploads file "filesForUpload/textfile.txt" to "/<file-name>" in 3 chunks using the WebDAV API
     Then as "user0" file "/<file-name>" should exist
-    And the content of file "/<file-name>" for user "user0" should be "AAAAABBBBBCCCCC"
+    And the content of file "/<file-name>" for user "user0" should be:
+      """
+      This is a testfile.
+      
+      Cheers.
+      """
+    And the log file should not contain any log-entries containing these attributes:
+      | app |
+      | dav |
     Examples:
       | file-name |
-      | 0         |
       | &#?       |
       | TIÄFÜ     |
+      | 0         |
