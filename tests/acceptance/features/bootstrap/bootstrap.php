@@ -60,8 +60,3 @@ const TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER = ACCEPTANCE_TEST_DIR_ON_REMOTE_SER
 // The following directory is created, used, and deleted by tests that need to
 // use some "local external storage" on the server.
 const LOCAL_STORAGE_DIR_ON_REMOTE_SERVER = TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/local_storage";
-
-// Deprecated forms of constants
-// ToDo: remove these after app acceptance tests have been adjusted
-const STANDARDSLEEPTIMEMICROSEC = STANDARD_SLEEP_TIME_MILLISEC * 1000;
-const STANDARDUIWAITTIMEOUTMILLISEC = 10000;
