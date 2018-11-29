@@ -65,7 +65,7 @@ class PersonalEncryptionSettingsPage extends OwncloudPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -73,7 +73,7 @@ class PersonalEncryptionSettingsPage extends OwncloudPage {
 			if ($this->findById($this->userEnableRecoveryCheckboxId) !== null) {
 				break;
 			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 		if ($currentTime > $end) {
