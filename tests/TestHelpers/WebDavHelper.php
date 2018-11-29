@@ -214,4 +214,27 @@ class WebDavHelper {
 		$url = \preg_replace("/([^:]\/)\/+/", '$1', $url);
 		return $url;
 	}
+
+	/**
+	 * decides if the proposed dav version and chunking version are
+	 * a valid combination.
+	 * If no chunkingVersion is specified, then any dav version is valid.
+	 * If a chunkingVersion is specified, then it has to match the dav version.
+	 * Note: in future the dav and chunking versions might or might not
+	 * move together and/or be supported together. So a more complex
+	 * matrix could be needed here.
+	 *
+	 * @param string|int $davPathVersion
+	 * @param string|int|null $chunkingVersion
+	 *
+	 * @return boolean is this a valid combination
+	 */
+	public static function isValidDavChunkingCombination(
+		$davPathVersion, $chunkingVersion
+	) {
+		return (
+			($chunkingVersion === 'no' || $chunkingVersion === null) ||
+			($davPathVersion === $chunkingVersion)
+		);
+	}
 }
