@@ -27,6 +27,19 @@ class AllUsersIterator extends UsersIterator {
 	 * @var UserInterface
 	 */
 	private $backend;
+	/**
+	 * @var int the current data position,
+	 *      we need to track it independently of parent::$position to handle data sets larger thin LIMIT properly
+	 */
+	private $dataPos = 0;
+
+	/**
+	 * @var int to cache the count($this->data) calculations
+	 */
+	private $endPos = 0;
+
+	/** @var bool false if the backend returned less than LIMIT results */
+	private $hasMoreData = false;
 
 	public function __construct(UserInterface $backend) {
 		$this->backend = $backend;
@@ -35,14 +48,25 @@ class AllUsersIterator extends UsersIterator {
 	public function rewind() {
 		parent::rewind();
 		$this->data = $this->backend->getUsers('', self::LIMIT, 0);
+		$this->dataPos = 0;
+		$this->endPos = \count($this->data);
+		$this->hasMoreData = $this->endPos >= self::LIMIT;
 	}
 
 	public function next() {
 		$this->position++;
-		if ($this->currentDataPos() === 0) {
+		$this->dataPos++;
+		if ($this->hasMoreData && $this->dataPos >= $this->endPos) {
 			$this->page++;
 			$offset = $this->page * self::LIMIT;
 			$this->data = $this->backend->getUsers('', self::LIMIT, $offset);
+			$this->dataPos = 0;
+			$this->endPos = \count($this->data);
+			$this->hasMoreData = $this->endPos >= self::LIMIT;
 		}
+	}
+
+	protected function currentDataPos() {
+		return $this->dataPos;
 	}
 }
