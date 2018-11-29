@@ -12,7 +12,7 @@ Feature: get subadmins
     Given user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And user "brand-new-user" has been made a subadmin of group "new-group"
-    When the administrator sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group/subadmins"
+    When the administrator gets all the subadmins of group "new-group" using the provisioning API
     Then the subadmin users returned by the API should be
       | brand-new-user |
     And the OCS status code should be "200"
@@ -21,7 +21,7 @@ Feature: get subadmins
   Scenario: admin tries to get subadmin users of a group which does not exist
     Given user "brand-new-user" has been created with default attributes
     And group "not-group" has been deleted
-    When the administrator sends HTTP method "GET" to OCS API endpoint "/cloud/groups/not-group/subadmins"
+    When the administrator gets all the subadmins of group "not-group" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And the API should not return any data
@@ -33,7 +33,7 @@ Feature: get subadmins
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     And user "newsubadmin" has been made a subadmin of group "new-group"
-    When user "subadmin" sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group/subadmins"
+    When user "subadmin" gets all the subadmins of group "new-group" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
@@ -45,7 +45,7 @@ Feature: get subadmins
     And user "subadmin" has been created with default attributes
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
-    When user "newuser" sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group/subadmins"
+    When user "newuser" gets all the subadmins of group "new-group" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"

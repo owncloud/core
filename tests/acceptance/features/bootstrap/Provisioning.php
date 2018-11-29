@@ -25,6 +25,7 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
+use OC\Group\Group;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -385,6 +386,30 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When the administrator gets the info of app :app
+	 *
+	 * @param string $app
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsTheInfoOfApp($app) {
+		$this->userSendsToOcsApiEndpoint(
+			$this->getAdminUsername(),
+			"GET",
+			"/cloud/apps/$app"
+		);
+	}
+
+	/**
+	 * @When the administrator gets all enabled apps using the provisioning API
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsAllEnabledAppsUsingTheProvisioningApi() {
+		$this->getEnabledApps();
+	}
+
+	/**
 	 * @When /^the administrator sends a user creation request for user "([^"]*)" password "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
@@ -486,36 +511,36 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator sends a user deletion request for user "([^"]*)" using the provisioning API$/
+	 * @When /^the administrator deletes user "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theAdminDeletesTheUserUsingTheProvisioningApi($user) {
+	public function theAdminDeletesUserUsingTheProvisioningApi($user) {
 		$this->deleteTheUserUsingTheProvisioningApi($user);
 		$this->rememberThatUserIsNotExpectedToExist($user);
 	}
 
 	/**
-	 * @When /^the subadmin "([^"]*)" sends a user deletion request for user "([^"]*)" using the provisioning API$/
+	 * @When user :user deletes user :anotheruser using the provisioning API
 	 *
-	 * @param string $subadmin
 	 * @param string $user
+	 * @param string $anotheruser
 	 *
 	 * @return void
-	 * @throws \Exception
 	 */
-	public function theSubAdminDeletesTheUserUsingTheProvisioningApi($subadmin, $user) {
+	public function userDeletesUserUsingTheProvisioningApi(
+		$user, $anotheruser
+	) {
 		$this->response = UserHelper::deleteUser(
 			$this->getBaseUrl(),
+			$anotheruser,
 			$user,
-			$subadmin,
-			$this->getUserPassword($subadmin),
+			$this->getUserPassword($user),
 			$this->ocsApiVersion
 		);
-		$this->rememberThatUserIsNotExpectedToExist($user);
 	}
 
 	/**
@@ -937,18 +962,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator deletes user "([^"]*)" using the provisioning API$/
-	 *
-	 * @param string $user
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function adminDeletesUserUsingTheProvisioningApi($user) {
-		$this->deleteTheUserUsingTheProvisioningApi($user);
-	}
-
-	/**
 	 * @Given /^user "([^"]*)" has been deleted$/
 	 *
 	 * @param string $user
@@ -979,6 +992,95 @@ trait Provisioning {
 				$row ['password']
 			);
 		}
+	}
+
+	/**
+	 * @When the administrator gets all the members of group :group using the provisioning API
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsAllTheMembersOfGroupUsingTheProvisioningApi($group) {
+		$this->userGetsAllTheMembersOfGroupUsingTheProvisioningApi(
+			$this->getAdminUsername(), $group
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets all the members of group "([^"]*)" using the provisioning API$/
+	 *
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function userGetsAllTheMembersOfGroupUsingTheProvisioningApi($user, $group) {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups/$group";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getActualUsername($user), $this->getPasswordForUser($user)
+		);
+	}
+
+	/**
+	 * @When the administrator gets all the groups using the provisioning API
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsAllTheGroupsUsingTheProvisioningApi() {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
+	}
+
+	/**
+	 * @When the administrator gets all the groups of user :user using the provisioning API
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsAllTheGroupsOfUser($user) {
+		$this->userGetsAllTheGroupsOfUser($this->getAdminUsername(), $user);
+	}
+
+	/**
+	 * @When user :user gets all the groups of user :anotheruser using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $anotheruser
+	 *
+	 * @return void
+	 */
+	public function userGetsAllTheGroupsOfUser($user, $anotheruser) {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/groups";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getActualUsername($user), $this->getUserPassword($user)
+		);
+	}
+
+	/**
+	 * @When the administrator gets the list of all users using the provisioning API
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsTheListOfAllUsersUsingTheProvisioningApi() {
+		$this->userGetsTheListOfAllUsersUsingTheProvisioningApi($this->getAdminUsername());
+	}
+
+	/**
+	 * @When user :user gets the list of all users using the provisioning API
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userGetsTheListOfAllUsersUsingTheProvisioningApi($user) {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/users";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getActualUsername($user), $this->getUserPassword($user)
+		);
 	}
 
 	/**
@@ -1229,10 +1331,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userShouldBelongToGroup($user, $group) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user/groups";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
-		);
+		$this->theAdministratorGetsAllTheGroupsOfUser($user);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertContains($group, $respondedArray);
@@ -1312,6 +1411,56 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When user :user tries to add user :anotheruser to group :group using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $anotheruser
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function userTriesToAddUserToGroupUsingTheProvisioningApi($user, $anotheruser, $group) {
+		$result = UserHelper::addUserToGroup(
+			$this->getBaseUrl(),
+			$anotheruser, $group,
+			$this->getActualUsername($user),
+			$this->getUserPassword($user),
+			$this->ocsApiVersion
+		);
+		$this->response = $result;
+	}
+
+	/**
+	 * @When user :user tries to add himself to group :group using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function userTriesToAddHimselfToGroupUsingTheProvisioningApi($user, $group) {
+		$this->userTriesToAddUserToGroupUsingTheProvisioningApi($user, $user, $group);
+	}
+
+	/**
+	 * @When the administrator tries to add user :user to group :group using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorTriesToAddUserToGroupUsingTheProvisioningApi(
+		$user, $group
+	) {
+		$this->userTriesToAddUserToGroupUsingTheProvisioningApi(
+			$this->getAdminUsername(),
+			$user,
+			$group
+		);
+	}
+
+	/**
 	 * @Given /^user "([^"]*)" has been added to group "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -1348,7 +1497,8 @@ trait Provisioning {
 					$this->getBaseUrl(),
 					$user, $group,
 					$this->getAdminUsername(),
-					$this->getAdminPassword()
+					$this->getAdminPassword(),
+					$this->ocsApiVersion
 				);
 				if ($checkResult && ($result->getStatusCode() !== 200)) {
 					throw new Exception(
@@ -1356,6 +1506,7 @@ trait Provisioning {
 						. $result->getStatusCode() . " " . $result->getBody()
 					);
 				}
+				$this->response = $result;
 				break;
 			case "occ":
 				$result = SetupHelper::addUserToGroup($group, $user);
@@ -1476,13 +1627,17 @@ trait Provisioning {
 	 * @When /^the administrator sends a group creation request for group "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $group
+	 * @param string $user
 	 *
 	 * @return void
 	 */
-	public function adminSendsGroupCreationRequestUsingTheProvisioningApi($group) {
+	public function adminSendsGroupCreationRequestUsingTheProvisioningApi(
+		$group, $user = null
+	) {
 		$bodyTable = new TableNode([['groupid', $group]]);
+		$user = $user === null ? $this->getAdminUsername() : $user;
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$this->getAdminUsername(),
+			$user,
 			"POST",
 			"/cloud/groups",
 			$bodyTable
@@ -1503,6 +1658,19 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" tries to send a group creation request for group "([^"]*)" using the provisioning API$/
+	 *
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function userTriesToSendGroupCreationRequestUsingTheAPI($user, $group) {
+		$this->adminSendsGroupCreationRequestUsingTheProvisioningApi($group, $user);
+		$this->rememberThatGroupIsNotExpectedToExist($group);
+	}
+
+	/**
 	 * creates a single group
 	 *
 	 * @param string $group
@@ -1512,8 +1680,8 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	private function createTheGroup($group, $method = null) {
+		//guess yourself
 		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
-			//guess yourself
 			$method = "ldap";
 		} elseif ($method === null) {
 			$method = "api";
@@ -1569,11 +1737,44 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminDisablesUserUsingTheProvisioningApi($user) {
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user/disable";
-		$this->response = HttpRequestHelper::put(
-			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
-		);
+		$this->disableOrEnableUser($this->getAdminUsername(), $user, 'disable');
+	}
+
+	/**
+	 * @When user :user disables user :anotheruser using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $anotheruser
+	 *
+	 * @return void
+	 */
+	public function userDisablesUserUsingTheProvisioningApi($user, $anotheruser) {
+		$this->disableOrEnableUser($user, $anotheruser, 'disable');
+	}
+
+	/**
+	 * @When the administrator enables user :user using the provisioning API
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theAdministratorEnablesUserUsingTheProvisioningApi($user) {
+		$this->disableOrEnableUser($this->getAdminUsername(), $user, 'enable');
+	}
+
+	/**
+	 * @When /^user "([^"]*)" (enables|tries to enable) user "([^"]*)" using the provisioning API$/
+	 *
+	 * @param string $user
+	 * @param string $anotheruser
+	 *
+	 * @return void
+	 */
+	public function userTriesToEnableUserUsingTheProvisioningApi(
+		$user, $anotheruser
+	) {
+		$this->disableOrEnableUser($user, $anotheruser, 'enable');
 	}
 
 	/**
@@ -1654,6 +1855,24 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When user :user tries to delete group :group using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function userTriesToDeleteGroupUsingTheProvisioningApi($user, $group) {
+		$this->response = UserHelper::deleteGroup(
+			$this->getBaseUrl(),
+			$group,
+			$this->getActualUsername($user),
+			$this->getActualPassword($user),
+			$this->ocsApiVersion
+		);
+	}
+
+	/**
 	 * @param string $group
 	 *
 	 * @return bool
@@ -1680,20 +1899,55 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminRemovesUserFromGroupUsingTheProvisioningApi($user, $group) {
-		$this->response = UserHelper::removeUserFromGroup(
-			$this->getBaseUrl(),
-			$user,
-			$group,
-			$this->getAdminUsername(),
-			$this->getAdminPassword()
+		$this->userRemovesUserFromGroupUsingTheProvisioningApi(
+			$this->getAdminUsername(), $user, $group
 		);
-		
+	}
+
+	/**
+	 * @When user :user removes user :anotheruser from group :group using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $anotheruser
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function userRemovesUserFromGroupUsingTheProvisioningApi(
+		$user, $anotheruser, $group
+	) {
+		$this->userTriesToRemoveUserFromGroupUsingTheProvisioningApi(
+			$user, $anotheruser, $group
+		);
+
 		if ($this->response->getStatusCode() !== 200) {
 			\error_log(
 				"INFORMATION: could not remove user '$user' from group '$group'"
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
 			);
 		}
+	}
+
+	/**
+	 * @When user :user tries to remove user :anotheruser from group :group using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $anotheruser
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function userTriesToRemoveUserFromGroupUsingTheProvisioningApi(
+		$user, $anotheruser, $group
+	) {
+		$this->response = UserHelper::removeUserFromGroup(
+			$this->getBaseUrl(),
+			$anotheruser,
+			$group,
+			$this->getActualUsername($user),
+			$this->getUserPassword($user),
+			$this->ocsApiVersion
+		);
 	}
 
 	/**
@@ -1707,15 +1961,50 @@ trait Provisioning {
 	public function adminMakesUserSubadminOfGroupUsingTheProvisioningApi(
 		$user, $group
 	) {
+		$this->userMakesUserASubadminOfGroupUsingTheProvisioningApi(
+			$this->getAdminUsername(), $user, $group
+		);
+	}
+
+	/**
+	 * @When user :user makes user :anotheruser a subadmin of group :group using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $anotheruser
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function userMakesUserASubadminOfGroupUsingTheProvisioningApi(
+		$user, $anotheruser, $group
+	) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user/subadmins";
+		. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/subadmins";
 		$body = ['groupid' => $group];
 		$this->response = HttpRequestHelper::post(
-			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword(), null,
+			$fullUrl,
+			$this->getActualUsername($user),
+			$this->getUserPassword($user),
+			null,
 			$body
 		);
 	}
 
+	/**
+	 * @When the administrator gets all the groups where user :user is subadmin using the provisioning API
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsAllTheGroupsWhereUserIsSubadminUsingTheProvisioningApi($user) {
+		$fullUrl = $this->getBaseUrl()
+		. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user/subadmins";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
+	}
+	
 	/**
 	 * @Given /^user "([^"]*)" has been made a subadmin of group "([^"]*)"$/
 	 *
@@ -1732,6 +2021,74 @@ trait Provisioning {
 		);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
+		);
+	}
+
+	/**
+	 * @When the administrator gets all the subadmins of group :group using the provisioning API
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsAllTheSubadminsOfGroupUsingTheProvisioningApi($group) {
+		$this->userGetsAllTheSubadminsOfGroupUsingTheProvisioningApi(
+			$this->getAdminUsername(), $group
+		);
+	}
+
+	/**
+	 * @When user :user gets all the subadmins of group :group using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function userGetsAllTheSubadminsOfGroupUsingTheProvisioningApi($user, $group) {
+		$fullUrl = $this->getBaseUrl()
+		. "/ocs/v{$this->ocsApiVersion}.php/cloud/groups/$group/subadmins";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getActualUsername($user), $this->getUserPassword($user)
+		);
+	}
+
+	/**
+	 * @When the administrator removes user :user from being a subadmin of group :group using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRemovesUserFromBeingASubadminOfGroupUsingTheProvisioningApi(
+		$user, $group
+	) {
+		$this->userRemovesUserFromBeingASubadminOfGroupUsingTheProvisioningApi(
+			$this->getAdminUsername(), $user, $group
+		);
+	}
+
+	/**
+	 * @When user :user removes user :anotheruser from being a subadmin of group :group using the provisioning API
+	 *
+	 * @param string $user
+	 * @param string $anotheruser
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function userRemovesUserFromBeingASubadminOfGroupUsingTheProvisioningApi(
+		$user, $anotheruser, $group
+	) {
+		$fullUrl = $this->getBaseUrl()
+		. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/subadmins";
+		$this->response = HttpRequestHelper::delete(
+			$fullUrl,
+			$this->getActualUsername($user),
+			$this->getUserPassword($user),
+			null,
+			['groupid' => $group]
 		);
 	}
 
@@ -1884,10 +2241,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userShouldBeASubadminOfGroup($user, $group) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
-		);
+		$this->theAdministratorGetsAllTheSubadminsOfGroupUsingTheProvisioningApi($group);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
@@ -1907,10 +2261,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userShouldNotBeASubadminOfGroup($user, $group) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
-		);
+		$this->theAdministratorGetsAllTheSubadminsOfGroupUsingTheProvisioningApi($group);
 		$listOfSubadmins = $this->getArrayOfSubadminsResponded($this->response);
 		PHPUnit_Framework_Assert::assertNotContains(
 			$user,
@@ -2085,7 +2436,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function appShouldBeDisabled($app) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=disabled";
+		$fullUrl = $this->getBaseUrl()
+		. "/ocs/v2.php/cloud/apps?filter=disabled";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
@@ -2409,12 +2761,32 @@ trait Provisioning {
 	}
 
 	/**
+	 * disable or enable user
+	 *
+	 * @param string $user
+	 * @param string $anotheruser
+	 * @param string $action
+	 *
+	 * @return void
+	 */
+	public function disableOrEnableUser($user, $anotheruser, $action) {
+		$fullUrl = $this->getBaseUrl()
+		. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/$action";
+		$this->response = HttpRequestHelper::put(
+			$fullUrl,
+			$this->getActualUsername($user),
+			$this->getPasswordForUser($user)
+		);
+	}
+
+	/**
 	 * Returns array of enabled apps
 	 *
 	 * @return array
 	 */
 	public function getEnabledApps() {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=enabled";
+		$fullUrl = $this->getBaseUrl()
+		. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps?filter=enabled";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
@@ -2427,7 +2799,8 @@ trait Provisioning {
 	 * @return array
 	 */
 	public function getDisabledApps() {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=disabled";
+		$fullUrl = $this->getBaseUrl()
+		. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps?filter=disabled";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
