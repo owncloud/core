@@ -137,7 +137,7 @@
 			if (email.length === 0)
 				return true
 
-			return email.match(/^[A-Za-z0-9\._%+-]+@(?:[A-Za-z0-9-]+\.)+[a-z]{2,}$/);
+			return OC.validateEmail(email);
 		},
 
 		sendEmails: function() {
