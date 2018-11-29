@@ -35,6 +35,29 @@ describe('Core base tests', function() {
 			expect(OC.appswebroots).toBeDefined();
 		});
 	});
+	describe('validateEmail', function () {
+		it('Returns false for search abc@foo', function () {
+			expect(OC.validateEmail('abc@foo')).toEqual(false);
+		});
+		it('Returns false for search abc@foo.', function () {
+			expect(OC.validateEmail('abc@foo.')).toEqual(false);
+		});
+		it('Returns false for search abc', function () {
+			expect(OC.validateEmail('abc')).toEqual(false);
+		});
+		it('Returns false for search abc@foo.a', function () {
+			expect(OC.validateEmail('abc@foo.a')).toEqual(false);
+		});
+		it('Returns true for search abc@foo.aa', function () {
+			expect(OC.validateEmail('abc@foo.aa')).toEqual(true);
+		});
+		it('Returns true for search abc@f.aaa', function () {
+			expect(OC.validateEmail('abc@f.aaa')).toEqual(true);
+		});
+		it('Returns true for search müller@Émile.诶西艾弗.буки', function () {
+			expect(OC.validateEmail('müller@Émile.诶西艾弗.буки')).toEqual(true);
+		});
+	});
 	describe('basename', function() {
 		it('Returns the nothing if no file name given', function() {
 			expect(OC.basename('')).toEqual('');
