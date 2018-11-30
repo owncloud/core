@@ -384,7 +384,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 				break;
 			}
 
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 
