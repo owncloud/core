@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
 
@@ -594,7 +595,8 @@ class OccContext implements Context {
 	public function theAdministratorHasSetTheExternalStorageToBeNeverScannedUsingTheOccCommand() {
 		$command = "files:external:option";
 
-		$mountId = $this->featureContext->getStorageId();
+		// get the first mount id created in before scenario
+		$mountId = $this->featureContext->getStorageId("local_storage");
 
 		// $mountId should have been set. If not, @local_storage BeforeScenario never ran
 		\assert($mountId !== null);
@@ -660,6 +662,37 @@ class OccContext implements Context {
 	public function theAdministratorScansTheFilesystemForGroupUsingTheOccCommand($group) {
 		$this->featureContext->invokingTheCommand(
 			"files:scan --groups=$group"
+		);
+	}
+
+	/**
+	 * @When the administrator creates the local storage mount :mount using the occ command
+	 *
+	 * @param string $mount
+	 *
+	 * @return void
+	 */
+	public function theAdministratorCreatesTheLocalStorageMountForAUserUsingTheOccCommand($mount) {
+		$storageId = SetupHelper::createLocalStorageMount($mount);
+		$this->featureContext->addStorageId($mount, $storageId);
+	}
+
+	/**
+	 * @When the administrator sets user :user as the applicable for last local storage mount using the occ command
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theadminSetsAsTheApplicableLastLocalMountUsingTheOccCommand($user) {
+		$storageIds = $this->featureContext->getStorageIds();
+		$lastMount = \end($storageIds);
+		$this->featureContext->runOcc(
+			[
+				'files_external:applicable',
+				$lastMount,
+				'--add-user ' . $user
+			]
 		);
 	}
 
