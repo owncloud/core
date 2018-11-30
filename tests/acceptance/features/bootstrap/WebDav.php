@@ -2025,6 +2025,23 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^the HTTP reason phrase of all upload responses should be "([^"]*)"$/
+	 *
+	 * @param string $reasonPhase
+	 *
+	 * @return void
+	 */
+	public function theHTTPReasonPhraseOfAllUploadResponsesShouldBe($reasonPhase) {
+		foreach ($this->uploadResponses as $response) {
+			PHPUnit_Framework_Assert::assertEquals(
+				$reasonPhase,
+				$response->getReasonPhrase(),
+				'Response for ' . $response->getEffectiveUrl() . ' did not return expected reason phrase'
+			);
+		}
+	}
+
+	/**
 	 * @Then user :user should be able to upload file :source to :destination
 	 *
 	 * @param string $user
