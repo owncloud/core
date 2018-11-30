@@ -64,7 +64,7 @@ Feature: delete groups
     Given user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
-    When user "brand-new-user" sends HTTP method "DELETE" to OCS API endpoint "/cloud/groups/new-group"
+    When user "brand-new-user" tries to delete group "new-group" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
@@ -75,7 +75,7 @@ Feature: delete groups
     Given user "subadmin" has been created with default attributes
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
-    When user "subamin" sends HTTP method "DELETE" to OCS API endpoint "/cloud/groups/new-group"
+    When user "subadmin" tries to delete group "new-group" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
