@@ -93,6 +93,15 @@ trait WebDav {
 	private $chunkingToUse = null;
 
 	/**
+	 * @param ResponseInterface[] $uploadResponses
+	 *
+	 * @return void
+	 */
+	public function setUploadResponses($uploadResponses) {
+		$this->uploadResponses = $uploadResponses;
+	}
+
+	/**
 	 * @Given /^using dav path "([^"]*)"$/
 	 *
 	 * @param string $davPath
