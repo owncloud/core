@@ -93,6 +93,15 @@ trait WebDav {
 	private $chunkingToUse = null;
 
 	/**
+	 * @param ResponseInterface[] $uploadResponses
+	 *
+	 * @return void
+	 */
+	public function setUploadResponses($uploadResponses) {
+		$this->uploadResponses = $uploadResponses;
+	}
+
+	/**
 	 * @Given /^using dav path "([^"]*)"$/
 	 *
 	 * @param string $davPath
@@ -2011,6 +2020,23 @@ trait WebDav {
 				$statusCode,
 				$response->getStatusCode(),
 				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+			);
+		}
+	}
+
+	/**
+	 * @Then /^the HTTP reason phrase of all upload responses should be "([^"]*)"$/
+	 *
+	 * @param string $reasonPhase
+	 *
+	 * @return void
+	 */
+	public function theHTTPReasonPhraseOfAllUploadResponsesShouldBe($reasonPhase) {
+		foreach ($this->uploadResponses as $response) {
+			PHPUnit_Framework_Assert::assertEquals(
+				$reasonPhase,
+				$response->getReasonPhrase(),
+				'Response for ' . $response->getEffectiveUrl() . ' did not return expected reason phrase'
 			);
 		}
 	}
