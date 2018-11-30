@@ -133,7 +133,7 @@ class UploadHelper {
 		//finish upload for new chunking
 		if ($chunkingVersion === 2) {
 			$source = $v2ChunksDestination . '/.file';
-			$finalDestination = $baseUrl . "/" .
+			$headers['Destination'] = $baseUrl . "/" .
 				WebDavHelper::getDavPath($user, $davPathVersionToUse) .
 				$destination;
 			$result = WebDavHelper::makeDavRequest(
@@ -142,7 +142,7 @@ class UploadHelper {
 				$password,
 				'MOVE',
 				$source,
-				['Destination' => $finalDestination ],
+				$headers,
 				null, null,
 				$davPathVersionToUse,
 				"uploads"
