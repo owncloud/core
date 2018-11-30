@@ -45,6 +45,7 @@ class HttpRequestHelper {
 	 * @param bool $stream Set to true to stream a response rather
 	 *                     than download it all up-front.
 	 * @param int $timeout
+	 * @param Client|null $client
 	 *
 	 * @throws BadResponseException
 	 * @return ResponseInterface
@@ -59,9 +60,13 @@ class HttpRequestHelper {
 		$config = null,
 		$cookies = null,
 		$stream = false,
-		$timeout = 0
+		$timeout = 0,
+		$client =  null
 	) {
-		$client = new Client();
+		if ($client === null) {
+			$client = new Client();
+		}
+
 		$options = [];
 		if ($user !== null) {
 			$options['auth'] = [$user, $password];
