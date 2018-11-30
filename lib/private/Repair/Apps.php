@@ -184,7 +184,7 @@ class Apps implements IRepairStep {
 
 					// Try to update compatible apps
 					if (!empty($appsToUpgrade[self::KEY_COMPATIBLE])) {
-						$output->info('Attempting to update the following existing compatible apps from market: ' . \implode(', ', $appsToUpgrade[self::KEY_MISSING]));
+						$output->info('Attempting to update the following existing compatible apps from market: ' . \implode(', ', $appsToUpgrade[self::KEY_COMPATIBLE]));
 						$failedCompatibleApps = $this->getAppsFromMarket(
 							$output,
 							$appsToUpgrade[self::KEY_COMPATIBLE],
