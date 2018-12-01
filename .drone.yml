@@ -573,7 +573,7 @@ services:
       - KEYSTONE_ADMIN_TENANT=testtenant
       - KEYSTONE_ENDPOINT_REGION=testregion
       - KEYSTONE_SERVICE=testceph
-      - OSD_SIZE=500
+      - OSD_SIZE=800
     when:
       matrix:
         FILES_EXTERNAL_TYPE: swift
