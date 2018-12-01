@@ -69,7 +69,7 @@ class CleanProperties extends TimedJob {
 	}
 
 	/**
-	 * Gathers the fileid which are orphan in the oc_properties table
+	 * Gathers the fileid which are orphaned in the oc_properties table
 	 * and then deletes them
 	 */
 	private function processProperties() {
@@ -79,7 +79,7 @@ class CleanProperties extends TimedJob {
 		/**
 		 * select prop.fileid from oc_properties prop
 		 * left join oc_filecache fc on fc.fileid = prop.fileid
-		 * where fc.fileid is not null limit 200
+		 * where fc.fileid is not null limit CHUNK_SIZE
 		 */
 		$qb->select('prop.fileid')
 			->from('properties', 'prop')

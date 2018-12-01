@@ -98,7 +98,8 @@ class CleanPropertiesTest extends TestCase {
 		];
 	}
 	/**
-	 * Delete large orphans lets say 300 entries out of 310 entries
+	 * Delete large orphans to confirm that the CHUNK_SIZE processing is working
+	 * in CleanProperties.
 	 *
 	 * @dataProvider providesDeleteLargeOrphans
 	 */
@@ -135,8 +136,8 @@ class CleanPropertiesTest extends TestCase {
 		$results = $qb->execute()->fetchAll();
 
 		/**
-		 * 10 result should be there.
-		 * And the fileid should match with the file which is not deleted.
+		 * The expected number of files should remain.
+		 * And the fileid should match with the files which were not deleted.
 		 */
 		$this->assertCount($expectedResult, $results);
 
