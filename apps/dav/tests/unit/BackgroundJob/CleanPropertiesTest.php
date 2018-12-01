@@ -92,9 +92,9 @@ class CleanPropertiesTest extends TestCase {
 
 	public function providesDeleteLargeOrphans() {
 		return [
-			[450, 100, 350],
-			[650, 220, 430],
-			[890, 300, 590],
+			[45, 10, 35],
+			[65, 22, 43],
+			[89, 30, 59],
 		];
 	}
 	/**
