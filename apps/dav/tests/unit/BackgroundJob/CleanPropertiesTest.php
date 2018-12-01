@@ -48,12 +48,12 @@ class CleanPropertiesTest extends TestCase {
 		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->logger = \OC::$server->getLogger();
 		$this->cleanProperties = new CleanProperties($this->connection, $this->logger);
-		$this->createUser('user1');
-		$this->loginAsUser('user1');
+		$this->createUser('userCleanPropertiesTest');
+		$this->loginAsUser('userCleanPropertiesTest');
 	}
 
 	public function testDeleteOrphanEntries() {
-		$userFolder = \OC::$server->getUserFolder('user1');
+		$userFolder = \OC::$server->getUserFolder('userCleanPropertiesTest');
 		$userFolder->newFile('a.txt');
 		$userFolder->newFile('b.txt');
 		$userFolder->newFile('c.txt');
@@ -103,7 +103,7 @@ class CleanPropertiesTest extends TestCase {
 	 * @dataProvider providesDeleteLargeOrphans
 	 */
 	public function testDeleteLargeOrphans($totalFiles, $deletedFiles, $expectedResult) {
-		$userFolder = \OC::$server->getUserFolder('user1');
+		$userFolder = \OC::$server->getUserFolder('userCleanPropertiesTest');
 
 		for ($i = 1; $i <= $totalFiles; $i++) {
 			$fileName = 'a' . (string) $i . '.txt';
