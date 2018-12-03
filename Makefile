@@ -247,6 +247,7 @@ clean-docs:
 # Build distribution
 #
 $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
+	cd $(NODE_PREFIX) && $(YARN) run clean-modules
 	rm -Rf $@; mkdir -p $@/config
 	cp -RL $(core_all_src) $@
 	cp -R $(core_config_files) $@/config

@@ -54,6 +54,7 @@
     "yarn": ">= 1.0.0"
   },
   "scripts": {
-    "postinstall": "modclean -r --patterns=\"default:safe,owncloud:basic\" && node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), '../core/vendor', 'junction') } catch (e) { }\""
+    "clean-modules": "modclean -r --patterns=\"default:safe,owncloud:basic\"",
+    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), '../core/vendor', 'junction') } catch (e) { }\""
   }
 }
