@@ -257,6 +257,66 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  Scenario Outline: Try to search for users and groups when in a group that is excluded from sharing (could match both users and groups)
+    Given using OCS API version "<ocs-api-version>"
+    And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
+    And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["ShareeGroup2"]'
+    When user "user1" gets the sharees using the sharing API with parameters
+      | search   | sharee |
+      | itemType | file   |
+    Then the OCS status code should be "<ocs-status>"
+    And the HTTP status code should be "<http-status>"
+    And the "exact users" sharees returned should be empty
+    And the "users" sharees returned should be empty
+    And the "exact groups" sharees returned should be empty
+    And the "groups" sharees returned should be empty
+    And the "exact remotes" sharees returned should be empty
+    And the "remotes" sharees returned should be empty
+    Examples:
+      | ocs-api-version | ocs-status | http-status |
+      | 1               | 100        | 200         |
+      | 2               | 200        | 200         |
+
+  Scenario Outline: Try to search for users and groups when in a group that is excluded from sharing (exact match to a user)
+    Given using OCS API version "<ocs-api-version>"
+    And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
+    And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["ShareeGroup2"]'
+    When user "user1" gets the sharees using the sharing API with parameters
+      | search   | sharee1 |
+      | itemType | file    |
+    Then the OCS status code should be "<ocs-status>"
+    And the HTTP status code should be "<http-status>"
+    And the "exact users" sharees returned should be empty
+    And the "users" sharees returned should be empty
+    And the "exact groups" sharees returned should be empty
+    And the "groups" sharees returned should be empty
+    And the "exact remotes" sharees returned should be empty
+    And the "remotes" sharees returned should be empty
+    Examples:
+      | ocs-api-version | ocs-status | http-status |
+      | 1               | 100        | 200         |
+      | 2               | 200        | 200         |
+
+  Scenario Outline: Try to search for users and groups when in a group that is excluded from sharing (exact match to a group)
+    Given using OCS API version "<ocs-api-version>"
+    And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
+    And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["ShareeGroup2"]'
+    When user "user1" gets the sharees using the sharing API with parameters
+      | search   | ShareeGroup |
+      | itemType | file        |
+    Then the OCS status code should be "<ocs-status>"
+    And the HTTP status code should be "<http-status>"
+    And the "exact users" sharees returned should be empty
+    And the "users" sharees returned should be empty
+    And the "exact groups" sharees returned should be empty
+    And the "groups" sharees returned should be empty
+    And the "exact remotes" sharees returned should be empty
+    And the "remotes" sharees returned should be empty
+    Examples:
+      | ocs-api-version | ocs-status | http-status |
+      | 1               | 100        | 200         |
+      | 2               | 200        | 200         |
+
   Scenario Outline: Search with exact match
     Given using OCS API version "<ocs-api-version>"
     When user "user1" gets the sharees using the sharing API with parameters

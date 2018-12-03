@@ -105,7 +105,17 @@ class ShareesContext implements Context {
 		$respondedArray = $this->getArrayOfShareesResponded(
 			$this->featureContext->getResponse(), $shareeType
 		);
-		PHPUnit_Framework_Assert::assertEmpty($respondedArray);
+		if (isset($respondedArray[0])) {
+			// [0] is display name and [2] is user or group id
+			$firstEntry = $respondedArray[0][0] . " (" . $respondedArray[0][2] . ")";
+		} else {
+			$firstEntry = "";
+		}
+
+		PHPUnit_Framework_Assert::assertEmpty(
+			$respondedArray,
+			"'$shareeType' array should be empty, but it starts with $firstEntry"
+		);
 	}
 
 	/**
