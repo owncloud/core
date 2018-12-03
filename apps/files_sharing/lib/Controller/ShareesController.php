@@ -82,6 +82,9 @@ class ShareesController extends OCSController {
 	protected $shareWithMembershipGroupOnly = false;
 
 	/** @var bool */
+	protected $sharingDisabledForUser;
+
+	/** @var bool */
 	protected $shareeEnumeration = true;
 
 	/** @var bool */
@@ -541,6 +544,8 @@ class ShareesController extends OCSController {
 				'message' => 'Invalid page'];
 		}
 
+		$this->sharingDisabledForUser = $this->shareManager->sharingDisabledForUser($this->userSession->getUser()->getUID());
+
 		$shareTypes = [
 			Share::SHARE_TYPE_USER,
 		];
@@ -610,6 +615,11 @@ class ShareesController extends OCSController {
 		if ($itemType === null) {
 			return [ 'statuscode' => Http::STATUS_BAD_REQUEST,
 				'message' => 'Missing itemType'];
+		}
+
+		// Return empty dataset if User is excluded from sharing
+		if ($this->sharingDisabledForUser) {
+			return new DataResponse(['data' => $this->result]);
 		}
 
 		// Get users
