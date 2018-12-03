@@ -121,15 +121,15 @@
 			var deferred = $.Deferred();
 			var $el = this.$el;
 
-			var $dialog = $el,
-				$formElements = $el.find('input, textarea, select, button'),
-				$select2Elements = $el.find('.select2-search-choice-close'),
-				$password = $el.find('.linkPassText'),
-				$inputs = $el.find('.linkPassText, .expirationDate, .permission'), // all input fields combined
+			var $formElements       = $el.find('input, textarea, select, button'),
+				$select2Elements    = $el.find('.select2-search-choice-close'),
+				$password           = $el.find('.linkPassText'),
+				$inputs             = $el.find('.linkPassText, .expirationDate, .permission'), // all input fields combined
 				$errorMessageGlobal = $el.find('.error-message-global'),
-				$loading = $el.find('.loading'),
-				password = $password.val(),
-				expirationDate = this.expirationView.getValue();
+				$loading            = $el.find('.loading'),
+
+				password            = $password.val(),
+				expirationDate      = this.expirationView.getValue();
 
 			$el.find('.error-message').addClass('hidden');
 
@@ -137,9 +137,7 @@
 			$formElements.attr('disabled', true);
 			$select2Elements.addClass('hidden');
 
-			// remove errors (if present)
-			// ***
-
+			// remove errors
 			$inputs.removeClass('error');
 			$errorMessageGlobal.addClass('hidden');
 
@@ -174,7 +172,10 @@
 			}
 
 			if (!validates) {
-				deferred.reject(this.model);
+				$loading.addClass('hidden');
+				$formElements.removeAttr('disabled');
+				$select2Elements.removeClass('hidden');
+				return deferred.reject(this.model);
 			}
 
 			if (this.model.isNew()) {
@@ -291,9 +292,9 @@
 		},
 
 		_onClickReset: function () {
-			var $dialog              = $('.oc-dialog:visible'),
-				$inputPassword       = $dialog.find('.linkPassText'),
-				$buttonReset         = $dialog.find('.removePassword');
+			var $dialog        = $('.oc-dialog:visible'),
+				$inputPassword = $dialog.find('.linkPassText'),
+				$buttonReset   = $dialog.find('.removePassword');
 
 			this.model.set("resetPassword", true);
 
