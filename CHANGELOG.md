@@ -7,17 +7,25 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+
 - Allow loading JSON files in setups with pretty URLs - [#32835](https://github.com/owncloud/core/issues/32835)
 - Support global CORS domains for public pages - [#33139](https://github.com/owncloud/core/issues/33139)
 - New tag scope "static tags", editable but not assignable - [#33420](https://github.com/owncloud/core/issues/33420)
 - Added "getBucket" method to HomeObjectStore to fix S3 issue - [#33513](https://github.com/owncloud/core/issues/33513)
+- Pass an additional parameter on the core update - [#33641](https://github.com/owncloud/core/issues/33641)
+- Added short list argument to occ files_external:list - [#33684](https://github.com/owncloud/core/issues/33684)
+- Public JS utility function for email validation - [#33699](https://github.com/owncloud/core/issues/33699)
 
 ### Changed
+
 - Set shipped apps max version to 10 in preparation for Semver switch - [#33496](https://github.com/owncloud/core/issues/33496)
+- If only the patch level of an app's version changes no migrations will run - [#33218](https://github.com/owncloud/core/issues/33218)
+- User/group deletion in users page now has a confirmation dialog - [#33626](https://github.com/owncloud/core/issues/33626)
 - Disable browser autocomplete for password fields - [#32590](https://github.com/owncloud/core/issues/32590)
+- Minor and patch updates of dependencies as at 20181126 - [#33683](https://github.com/owncloud/core/issues/33683)
 - Bump punic 3.1.0 => 3.2.0 - [#33462](https://github.com/owncloud/core/issues/33462)
 - Bump phpseclib/phpseclib from 2.0.11 to 2.0.12 - [#33433](https://github.com/owncloud/core/issues/33433)
-- Bump symfony 3.4.15 to 3.4.18 - [#33001](https://github.com/owncloud/core/issues/33001) [#33460](https://github.com/owncloud/core/issues/33460)
+- Bump symfony 3.4.15 to 3.4.19 - [#33001](https://github.com/owncloud/core/issues/33001) [#33460](https://github.com/owncloud/core/issues/33460) [#33667](https://github.com/owncloud/core/issues/33667)
 - Bump symfony/polyfill components v1.9.0 => v1.10.0 - [#33377](https://github.com/owncloud/core/issues/33377)
 - Bump symfony/translation from 3.4.17 to 3.4.18 - [#33429](https://github.com/owncloud/core/issues/33429)
 - Bump jakub-onderka/php-console-highlighter from 0.3.2 to 0.4 - [#32944](https://github.com/owncloud/core/issues/32944)
@@ -30,9 +38,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump friendsofphp/php-cs-fixer (v2.13.0 => v2.13.1) - [#33290](https://github.com/owncloud/core/issues/33290)
 
 ### Removed
+
 - Deprecate Sharing 1.0 APIs which will be removed in ownCloud 11 - [#33220](https://github.com/owncloud/core/issues/33220)
 
 ### Fixed
+
+- Fix paginated iteration when syncing users - [#33698](https://github.com/owncloud/core/issues/33698)
+- Cannot set 0 as value for config through OCC command - [#33643](https://github.com/owncloud/core/issues/33643)
 - Fix for some upgrade path that led to DAV tables missing bigint conversion - [#33603](https://github.com/owncloud/core/issues/33603)
 - Fix checksum verify command verbose mode and path argument handling - [#33610](https://github.com/owncloud/core/issues/33610)
 - Fix form to enter initial password to properly display error message - [#33453](https://github.com/owncloud/core/issues/33453)
