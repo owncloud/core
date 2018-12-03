@@ -625,4 +625,36 @@ class SetupHelper {
 				"'opcache.revalidate_freq=0' in the php.ini file\n";
 		}
 	}
+
+	/**
+	 * Create local storage mount
+	 *
+	 * @param string $mount (name of local storage mount)
+	 *
+	 * @return integer
+	 */
+	public static function createLocalStorageMount($mount) {
+		$mountPath = TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$mount";
+		SetupHelper::mkDirOnServer($mountPath);
+		// files_external:create requires absolute path
+		$serverRoot = self::getServerRoot(
+			self::$baseUrl,
+			self::$adminUsername,
+			self::$adminPassword
+		);
+		$result = self::runOcc(
+			[
+				'files_external:create',
+				$mount,
+				'local',
+				'null::null',
+				'-c',
+				'datadir=' . $serverRoot . '/' . $mountPath
+			]
+		);
+		// stdOut should have a string like "Storage created with id 65"
+		$storageIdWords = \explode(" ", \trim($result['stdOut']));
+		$storageId = (int)$storageIdWords[4];
+		return $storageId;
+	}
 }

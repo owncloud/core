@@ -71,3 +71,18 @@ Feature: Files Operations command
     When user "user1" requests "/remote.php/dav/files/user1/folder1" with "PROPFIND" using basic auth
     Then the propfind result of "user1" should contain these entries:
       | /folder1/hello1.txt |
+
+  Scenario: administrator should be able to create a local mount for a specific user
+    Given using new DAV path
+    And these users have been created with default attributes:
+      | username |
+      | user0    |
+      | user1    |
+    When the administrator creates the local storage mount "local_storage2" using the occ command
+    And the administrator sets user "user0" as the applicable for last local storage mount using the occ command
+    And the administrator creates the local storage mount "local_storage3" using the occ command
+    And the administrator sets user "user1" as the applicable for last local storage mount using the occ command
+    Then as "user0" folder "/local_storage2" should exist
+    And as "user0" folder "/local_storage3" should not exist
+    And as "user1" folder "/local_storage3" should exist
+    And as "user1" folder "/local_storage2" should not exist
