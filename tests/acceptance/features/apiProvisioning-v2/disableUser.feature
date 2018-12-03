@@ -10,7 +10,7 @@ Feature: disable user
   @smokeTest
   Scenario: admin disables an user
     Given user "user1" has been created with default attributes
-    When the administrator sends HTTP method "PUT" to OCS API endpoint "/cloud/users/user1/disable"
+    When the administrator disables user "user1" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "user1" should be disabled
@@ -23,7 +23,7 @@ Feature: disable user
     And user "subadmin" has been added to group "new-group"
     And user "user1" has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
-    When user "subadmin" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/user1/disable"
+    When user "subadmin" disables user "user1" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "user1" should be disabled
@@ -37,7 +37,7 @@ Feature: disable user
     And user "subadmin" has been added to group "new-group"
     And user "user1" has been added to group "another-group"
     And user "subadmin" has been made a subadmin of group "new-group"
-    When user "subadmin" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/user1/disable"
+    When user "subadmin" disables user "user1" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
@@ -52,7 +52,7 @@ Feature: disable user
     And user "subadmin" has been added to group "new-group"
     And user "another-admin" has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
-    When user "subadmin" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/another-admin/disable"
+    When user "subadmin" disables user "another-admin" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
@@ -61,7 +61,7 @@ Feature: disable user
   Scenario: Admin can disable another admin user
     Given user "another-admin" has been created with default attributes
     And user "another-admin" has been added to group "admin"
-    When the administrator sends HTTP method "PUT" to OCS API endpoint "/cloud/users/another-admin/disable"
+    When the administrator disables user "another-admin" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "another-admin" should be disabled
@@ -72,7 +72,7 @@ Feature: disable user
     And user "subadmin" has been added to group "new-group"
     And the administrator has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
-    When the administrator sends HTTP method "PUT" to OCS API endpoint "/cloud/users/subadmin/disable"
+    When the administrator disables user "subadmin" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "subadmin" should be disabled
@@ -80,7 +80,7 @@ Feature: disable user
   Scenario: Admin user cannot disable himself
     Given user "another-admin" has been created with default attributes
     And user "another-admin" has been added to group "admin"
-    When user "another-admin" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/another-admin/disable"
+    When user "another-admin" disables user "another-admin" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And user "another-admin" should be enabled
@@ -89,7 +89,7 @@ Feature: disable user
   Scenario: disable an user with a regular user
     Given user "user1" has been created with default attributes
     And user "user2" has been created with default attributes
-    When user "user1" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/user2/disable"
+    When user "user1" disables user "user2" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
@@ -100,7 +100,7 @@ Feature: disable user
     And group "new-group" has been created
     And user "subadmin" has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
-    When user "subadmin" sends HTTP method "PUT" to OCS API endpoint "/cloud/users/subadmin/disable"
+    When user "subadmin" disables user "subadmin" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And user "subadmin" should be enabled

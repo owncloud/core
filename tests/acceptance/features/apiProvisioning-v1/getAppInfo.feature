@@ -9,7 +9,7 @@ Feature: get app info
 
   @smokeTest
   Scenario: admin gets app info
-    When the administrator sends HTTP method "GET" to OCS API endpoint "/cloud/apps/files"
+    When the administrator gets the info of app "files"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the XML "data" "id" value should be "files"

@@ -102,16 +102,9 @@ class FederationContext implements Context {
 	 */
 	public function userFromServerAcceptsLastPendingShareUsingTheSharingAPI($user, $server) {
 		$previous = $this->featureContext->usingServer($server);
-		$url = "/apps/files_sharing/api/v1/remote_shares/pending";
-		$this->featureContext->asUser($user);
-		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
-			'GET',
-			$url,
-			null
-		);
-		$errorMessage = "Error when requesting $url information";
-		$this->featureContext->theHTTPStatusCodeShouldBe('200', $errorMessage);
-		$this->featureContext->theOCSStatusCodeShouldBe('100', $errorMessage);
+		$this->userGetsTheListOfPendingFederatedCloudShares($user);
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe('100');
 		$share_id = $this->featureContext->getResponseXml()->data[0]->element[0]->id;
 		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
 			'POST',
@@ -135,6 +128,40 @@ class FederationContext implements Context {
 		);
 		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 		$this->featureContext->theOCSStatusCodeShouldBe('100');
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets the list of pending federated cloud shares using the sharing API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userGetsTheListOfPendingFederatedCloudShares($user) {
+		$url = "/apps/files_sharing/api/v1/remote_shares/pending";
+		$this->featureContext->asUser($user);
+		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
+			'GET',
+			$url,
+			null
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" requests shared secret using the federation API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userRequestsSharedSecretUsingTheFederationApi($user) {
+		$url  = '/apps/federation/api/v1/request-shared-secret';
+		$this->featureContext->asUser($user);
+		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
+			'POST',
+			$url,
+			null
+		);
 	}
 
 	/**

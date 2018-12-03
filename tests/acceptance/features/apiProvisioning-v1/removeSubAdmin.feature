@@ -12,8 +12,7 @@ Feature: remove subadmin
     Given user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And user "brand-new-user" has been made a subadmin of group "new-group"
-    When the administrator sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/subadmins" with body
-      | groupid | new-group |
+    When the administrator removes user "brand-new-user" from being a subadmin of group "new-group" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "brand-new-user" should not be a subadmin of group "new-group"
@@ -24,8 +23,7 @@ Feature: remove subadmin
     And user "subadmin" has been made a subadmin of group "new-group"
     And user "newsubadmin" has been created with default attributes
     And user "newsubadmin" has been made a subadmin of group "new-group"
-    When user "subadmin" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/newsubadmin/subadmins" with body
-      | groupid | new-group |
+    When user "subadmin" removes user "newsubadmin" from being a subadmin of group "new-group" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "newsubadmin" should be a subadmin of group "new-group"
@@ -36,8 +34,7 @@ Feature: remove subadmin
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     And user "newuser" has been added to group "new-group"
-    When user "newuser" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/subadmin/subadmins" with body
-      | groupid | new-group |
+    When user "newuser" removes user "subadmin" from being a subadmin of group "new-group" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "subadmin" should be a subadmin of group "new-group"

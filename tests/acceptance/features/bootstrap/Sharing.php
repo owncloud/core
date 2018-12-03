@@ -1248,6 +1248,120 @@ trait Sharing {
 	}
 
 	/**
+	 * @When user :user gets all the shares shared with him using the sharing API
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userGetsAllTheSharesSharedWithHimUsingTheSharingApi($user) {
+		$url = "/apps/files_sharing/api/v1/shares?shared_with_me=true";
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			'GET',
+			$url,
+			null
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets all the shares shared with him that are received as (?:file|folder|entry) "([^"]*)" using the provisioning API$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userGetsAllSharesSharedWithHimFromFileOrFolderUsingTheProvisioningApi($user, $path) {
+		$url = "/apps/files_sharing/api/"
+		. "v{$this->sharingApiVersion}/shares?shared_with_me=true&path=$path";
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			'GET',
+			$url,
+			null
+		);
+	}
+
+	/**
+	 * @When user :user gets all shares shared by him using the sharing API
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userGetsAllSharesSharedByHimUsingTheSharingApi($user) {
+		$fullUrl = $this->getBaseUrl()
+		. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
+		. "v{$this->sharingApiVersion}/shares";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user, $this->getPasswordForUser($user)
+		);
+	}
+
+	/**
+	 * @When the administrator gets all shares shared by him using the sharing API
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsAllSharesSharedByHimUsingTheSharingApi() {
+		$this->userGetsAllSharesSharedByHimUsingTheSharingApi($this->getAdminUsername());
+	}
+
+	/**
+	 * @When user :user gets all the shares from the file :path using the sharing API
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userGetsAllTheSharesFromTheFileUsingTheSharingApi($user, $path) {
+		$fullUrl = $this->getBaseUrl()
+		. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
+		. "v{$this->sharingApiVersion}/shares?path=$path";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user, $this->getPasswordForUser($user)
+		);
+	}
+
+	/**
+	 * @When user :user gets all the shares with reshares from the file :path using the sharing API
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userGetsAllTheSharesWithResharesFromTheFileUsingTheSharingApi(
+		$user, $path
+	) {
+		$fullUrl = $this->getBaseUrl()
+		. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
+		. "v{$this->sharingApiVersion}/shares?reshares=true&path=$path";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user, $this->getPasswordForUser($user)
+		);
+	}
+
+	/**
+	 * @When user :user gets all the shares inside the folder :path using the sharing API
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userGetsAllTheSharesInsideTheFolderUsingTheSharingApi($user, $path) {
+		$fullUrl = $this->getBaseUrl()
+		. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
+		. "v{$this->sharingApiVersion}/shares?path=$path&subfiles=true";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user, $this->getPasswordForUser($user)
+		);
+	}
+
+	/**
 	 * @Then /^the response when user "([^"]*)" gets the info of the last share should include$/
 	 *
 	 * @param string $user
@@ -1302,13 +1416,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userShouldNotSeeShareIdOfLastShare($user) {
-		$url = "/apps/files_sharing/api/v1/shares?shared_with_me=true";
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user,
-			'GET',
-			$url,
-			null
-		);
+		$this->userGetsAllTheSharesSharedWithHimUsingTheSharingApi($user);
 		$this->checkingLastShareIDIsNotIncluded();
 	}
 

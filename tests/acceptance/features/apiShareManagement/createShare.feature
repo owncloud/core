@@ -127,10 +127,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes
     And user "user0" has been disabled
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | welcome.txt |
-      | shareWith | user1       |
-      | shareType | 0           |
+    When user "user0" shares file "welcome.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "401"
     Examples:
@@ -142,10 +139,7 @@ Feature: sharing
     Given using OCS API version "2"
     And user "user1" has been created with default attributes
     And user "user0" has been disabled
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | welcome.txt |
-      | shareWith | user1       |
-      | shareType | 0           |
+    When user "user0" shares file "welcome.txt" with user "user1" using the sharing API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
     And the HTTP status code should be "401"
