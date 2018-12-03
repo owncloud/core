@@ -181,9 +181,9 @@ trait BasicStructure {
 	private $requestToken;
 
 	/**
-	 * @var string
+	 * @var array
 	 */
-	private $storageId = null;
+	private $storageIds = [];
 
 	/**
 	 * The local source IP address from which to initiate API actions.
@@ -542,12 +542,37 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @return string|null
+	 * @return array|null
 	 */
-	public function getStorageId() {
-		return $this->storageId;
+	public function getStorageIds() {
+		return $this->storageIds;
 	}
-	
+
+	/**
+	 * @param string $storageName
+	 *
+	 * @throws Exception
+	 * @return integer
+	 */
+	public function getStorageId($storageName) {
+		if (\array_key_exists($storageName, $this->getStorageIds())) {
+			return $this->getStorageIds()[$storageName];
+		}
+		throw new \Exception(
+			"Could not find storageId with storage name $storageName"
+		);
+	}
+
+	/**
+	 * @param string $storageName
+	 * @param integer $storageId
+	 *
+	 * @return void
+	 */
+	public function addStorageId($storageName, $storageId) {
+		$this->storageIds[$storageName] = $storageId;
+	}
+
 	/**
 	 * @param string $sourceIpAddress
 	 *
@@ -2174,26 +2199,13 @@ trait BasicStructure {
 			$this->getBaseUrl(),
 			$this->getOcPath()
 		);
-		SetupHelper::mkDirOnServer(
-			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
-		);
-		$result = SetupHelper::runOcc(
-			[
-				'files_external:create',
-				'local_storage',
-				'local',
-				'null::null',
-				'-c',
-				'datadir=' . $this->getServerRoot() . '/' . LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
-			]
-		);
-		// stdOut should have a string like "Storage created with id 65"
-		$storageIdWords = \explode(" ", \trim($result['stdOut']));
-		$this->storageId = $storageIdWords[4];
+		$storageName = "local_storage";
+		$storageId = SetupHelper::createLocalStorageMount($storageName);
+		$this->addStorageId($storageName, $storageId);
 		SetupHelper::runOcc(
 			[
 				'files_external:option',
-				$this->storageId,
+				$storageId,
 				'enable_sharing',
 				'true'
 			]
@@ -2221,18 +2233,17 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function removeLocalStorageAfter() {
-		if ($this->storageId !== null) {
-			SetupHelper::runOcc(
-				[
-					'files_external:delete',
-					'-y',
-					$this->storageId
-				]
-			);
+		if ($this->getStorageIds() !== null) {
+			foreach ($this->getStorageIds() as $key => $value) {
+				SetupHelper::runOcc(
+					[
+						'files_external:delete',
+						'-y',
+						$value
+					]
+				);
+			}
 		}
-		SetupHelper::rmDirOnServer(
-			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
-		);
 		SetupHelper::rmDirOnServer(
 			TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER
 		);
