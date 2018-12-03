@@ -1188,9 +1188,10 @@ trait WebDav {
 		$response = $client->request(
 			'GET', $this->makeSabrePath($user, $path)
 		);
-		if ($response['statusCode'] !== 404) {
+		if ($response['statusCode'] < 401 && $response['statusCode'] > 404) {
 			throw new \Exception(
-				"$entry '$path' expected to not exist (status code {$response['statusCode']}, expected 404)"
+				"$entry '$path' expected to not exist " .
+				"(status code {$response['statusCode']}, expected 401 - 404)"
 			);
 		}
 
