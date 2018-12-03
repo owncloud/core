@@ -534,6 +534,14 @@ class ShareesController extends OCSController {
 				'message' => 'Invalid page'];
 		}
 
+		$sharingDisabledForUser = $this->shareManager->sharingDisabledForUser(
+			$this->userSession->getUser()->getUID()
+		);
+		// Return empty dataset if User is excluded from sharing
+		if ($sharingDisabledForUser) {
+			return new DataResponse(['data' => $this->result]);
+		}
+
 		$shareTypes = [
 			Share::SHARE_TYPE_USER,
 		];
