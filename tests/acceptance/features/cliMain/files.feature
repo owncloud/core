@@ -86,3 +86,21 @@ Feature: Files Operations command
     And as "user0" folder "/local_storage3" should not exist
     And as "user1" folder "/local_storage3" should exist
     And as "user1" folder "/local_storage2" should not exist
+
+  Scenario: Files cleanup
+    Given using new DAV path
+    And user "user0" has been created with default attributes
+    And the administrator has set the external storage to be never scanned automatically
+    And the administrator has created file "hello1.txt" with content "<? php :)" in local storage using the testing API
+    And the administrator has scanned the filesystem for all users
+    When user "user0" requests "/remote.php/dav/files/user0/local_storage" with "PROPFIND" using basic auth
+    Then the propfind result of "user0" should contain these entries:
+      | /local_storage/hello1.txt |
+    When the administrator deletes file "hello1.txt" in local storage using the testing API
+    And user "user0" requests "/remote.php/dav/files/user0/local_storage" with "PROPFIND" using basic auth
+    Then the propfind result of "user0" should contain these entries:
+      | /local_storage/hello1.txt |
+    When the administrator cleanups the filesystem for all users using the occ command
+    And user "user0" requests "/remote.php/dav/files/user0/local_storage" with "PROPFIND" using basic auth
+    Then the propfind result of "user0" should not contain these entries:
+      | /local_storage/hello1.txt |

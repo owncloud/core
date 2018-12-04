@@ -666,6 +666,17 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator cleanups the filesystem for all users using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorCleanupsTheFilesystemForAllUsersUsingTheOccCommand() {
+		$this->featureContext->invokingTheCommand(
+			"files:cleanup"
+		);
+	}
+
+	/**
 	 * @When the administrator creates the local storage mount :mount using the occ command
 	 *
 	 * @param string $mount

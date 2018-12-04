@@ -1676,6 +1676,7 @@ trait BasicStructure {
 
 	/**
 	 * @When the administrator creates file :path with content :content in local storage using the testing API
+	 * @Given the administrator has created file :path with content :content in local storage using the testing API
 	 *
 	 * @param string $path
 	 * @param string $content
@@ -1691,6 +1692,27 @@ trait BasicStructure {
 			'POST',
 			"/apps/testing/api/v1/file",
 			['file' => LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$path", 'content' => $content],
+			$this->getOcsApiVersion()
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @When the administrator deletes file :path in local storage using the testing API
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesFileInLocalStorageUsingTheTestingApi($path) {
+		$user = $this->getAdminUsername();
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getAdminPassword(),
+			'DELETE',
+			"/apps/testing/api/v1/file",
+			['file' => LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$path"],
 			$this->getOcsApiVersion()
 		);
 		$this->setResponse($response);
