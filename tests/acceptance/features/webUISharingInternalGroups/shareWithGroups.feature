@@ -119,3 +119,26 @@ Feature: Sharing files and folders with internal groups
     When the administrator enables exclude groups from sharing using the webUI
     And the administrator adds group "grp1" to the group sharing blacklist using the webUI
     Then user "user1" should not be able to share folder "simple-folder" with user "user3" using the sharing API
+
+  Scenario: user tries to share a file in a group which is excluded from receiving share
+    Given group "system-group" has been created
+    And the administrator has browsed to the admin sharing settings page
+    When the administrator excludes group "system-group" from receiving shares using the webUI
+    Then user "user1" should not be able to share file "lorem.txt" with group "system-group" using the sharing API
+
+  Scenario: user tries to share a folder in a group which is excluded from receiving share
+    Given group "system-group" has been created
+    And the administrator has browsed to the admin sharing settings page
+    When the administrator excludes group "system-group" from receiving shares using the webUI
+    Then user "user1" should not be able to share folder "simple-folder" with group "system-group" using the sharing API
+
+  Scenario: autocompletion for a group that is excluded from receiving shares
+    Given group "system-group" has been created
+    And the administrator has browsed to the admin sharing settings page
+    When the administrator excludes group "system-group" from receiving shares using the webUI
+    And the user re-logs in as "user1" using the webUI
+    And the user browses to the files page
+    And the user opens the share dialog for folder "simple-folder"
+    And the user types "system-group" in the share-with-field
+    Then a tooltip with the text "No users or groups found for system-group" should be shown near the share-with-field on the webUI
+    And the autocomplete list should not be displayed on the webUI
