@@ -355,6 +355,7 @@ pipeline:
     commands:
       - tail -f /drone/src/data/owncloud.log
     when:
+      status: [ success, failure ]
       matrix:
         OWNCLOUD_LOG: true
 
@@ -641,6 +642,7 @@ matrix:
       USE_SERVER: true
       TEST_SUITE: litmus
       INSTALL_SERVER: true
+      OWNCLOUD_LOG: true
 
   # Unit Tests
     - PHP_VERSION: 7.1

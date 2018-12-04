@@ -131,30 +131,19 @@ Feature: move (rename) file
 
   Scenario: rename a file into an invalid filename
     When user "user0" moves file "/welcome.txt" asynchronously to "/a\\a" using the WebDAV API
-    Then the HTTP status code should be "202"
-    And the oc job status values of last request for user "user0" should match these regular expressions
-      | status       | /^error$/                                             |
-      | errorCode    | /^400$/                                               |
-      | errorMessage | /^File name contains at least one invalid character$/ |
+    Then the HTTP status code should be "400"
     And user "user0" should see the following elements
       | /welcome.txt |
 
   Scenario: rename a file into a banned filename
     When user "user0" moves file "/welcome.txt" asynchronously to "/.htaccess" using the WebDAV API
-    Then the HTTP status code should be "202"
-    And the oc job status values of last request for user "user0" should match these regular expressions
-      | status    | /^error$/ |
-      | errorCode | /^403$/   |
+    Then the HTTP status code should be "403"
     And user "user0" should see the following elements
       | /welcome.txt |
 
   Scenario: Renaming a file to a path with extension .part should not be possible
     When user "user0" moves file "/welcome.txt" asynchronously to "/welcome.part" using the WebDAV API
-    Then the HTTP status code should be "202"
-    And the oc job status values of last request for user "user0" should match these regular expressions
-      | status       | /^error$/                                                                                           |
-      | errorCode    | /^400$/                                                                                             |
-      | errorMessage | /^Can`t upload files with extension .part because these extensions are reserved for internal use.$/ |
+    Then the HTTP status code should be "400"
     And user "user0" should see the following elements
       | /welcome.txt |
     But user "user0" should not see the following elements
