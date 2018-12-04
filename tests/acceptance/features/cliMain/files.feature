@@ -79,10 +79,141 @@ Feature: Files Operations command
       | user0    |
       | user1    |
     When the administrator creates the local storage mount "local_storage2" using the occ command
-    And the administrator sets user "user0" as the applicable for last local storage mount using the occ command
+    And the administrator adds user "user0" as the applicable user for the last local storage mount using the occ command
     And the administrator creates the local storage mount "local_storage3" using the occ command
-    And the administrator sets user "user1" as the applicable for last local storage mount using the occ command
+    And the administrator adds user "user1" as the applicable user for the last local storage mount using the occ command
     Then as "user0" folder "/local_storage2" should exist
     And as "user0" folder "/local_storage3" should not exist
     And as "user1" folder "/local_storage3" should exist
     And as "user1" folder "/local_storage2" should not exist
+
+  Scenario: administrator should be able to add more than one user as the applicable user for a local mount
+    Given using new DAV path
+    And these users have been created with default attributes:
+      | username |
+      | user0    |
+      | user1    |
+      | user2    |
+    And the administrator has created the local storage mount "local_storage2"
+    And the administrator has added user "user0" as the applicable user for the last local storage mount
+    When the administrator adds user "user1" as the applicable user for the last local storage mount using the occ command
+    And as "user0" folder "/local_storage2" should exist
+    And as "user1" folder "/local_storage2" should exist
+    And as "user2" folder "/local_storage2" should not exist
+
+  Scenario: user should get access if the user is removed from the applicable user and the user was the only applicable user
+    Given using new DAV path
+    And these users have been created with default attributes:
+      | username |
+      | user0    |
+      | user1    |
+    And the administrator has created the local storage mount "local_storage2"
+    And the administrator has added user "user0" as the applicable user for the last local storage mount
+    When the administrator removes user "user0" from the applicable user for the last local storage mount using the occ command
+    Then as "user0" folder "/local_storage2" should exist
+    And as "user1" folder "/local_storage2" should exist
+
+  Scenario: user should not get access if the user is removed from the applicable user and the user was not the only applicable user
+    Given using new DAV path
+    And these users have been created with default attributes:
+      | username |
+      | user0    |
+      | user1    |
+    And the administrator has created the local storage mount "local_storage2"
+    And the administrator has added user "user0" as the applicable user for the last local storage mount
+    And the administrator has added user "user1" as the applicable user for the last local storage mount
+    When the administrator removes user "user0" from the applicable user for the last local storage mount using the occ command
+    Then as "user0" folder "/local_storage2" should not exist
+    And as "user1" folder "/local_storage2" should exist
+
+  Scenario: administrator should be able to create a local mount for a specific group
+    Given using new DAV path
+    And these users have been created with default attributes:
+      | username |
+      | user0    |
+      | user1    |
+    And group "newgroup" has been created
+    And user "user0" has been added to group "newgroup"
+    And the administrator has created the local storage mount "local_storage2"
+    When the administrator adds group "newgroup" as the applicable group for the last local storage mount using the occ command
+    Then as "user0" folder "/local_storage2" should exist
+    And as "user1" folder "/local_storage2" should not exist
+
+  Scenario: administrator should be able to create a local mount for more than one group
+    Given using new DAV path
+    And these users have been created with default attributes:
+      | username |
+      | user0    |
+      | user1    |
+      | user2    |
+    And group "newgroup" has been created
+    And group "newgroup2" has been created
+    And user "user0" has been added to group "newgroup"
+    And user "user1" has been added to group "newgroup2"
+    And the administrator has created the local storage mount "local_storage2"
+    When the administrator adds group "newgroup" as the applicable group for the last local storage mount using the occ command
+    And the administrator adds group "newgroup2" as the applicable group for the last local storage mount using the occ command
+    Then as "user0" folder "/local_storage2" should exist
+    And as "user1" folder "/local_storage2" should exist
+    And as "user2" folder "/local_storage2" should not exist
+
+  Scenario: administrator should be able to create a local mount for a specific group and user
+    Given using new DAV path
+    And these users have been created with default attributes:
+      | username |
+      | user0    |
+      | user1    |
+    And group "newgroup" has been created
+    And user "user0" has been added to group "newgroup"
+    And the administrator has created the local storage mount "local_storage2"
+    When the administrator adds group "newgroup" as the applicable group for the last local storage mount using the occ command
+    And the administrator adds user "user1" as the applicable user for the last local storage mount using the occ command
+    Then as "user0" folder "/local_storage2" should exist
+    And as "user1" folder "/local_storage2" should exist
+
+  Scenario: removing group from applicable group of a local mount
+    Given using new DAV path
+    And these users have been created with default attributes:
+      | username |
+      | user0    |
+      | user1    |
+    And group "newgroup" has been created
+    And user "user0" has been added to group "newgroup"
+    And the administrator has created the local storage mount "local_storage2"
+    And the administrator has added group "newgroup" as the applicable group for the last local storage mount
+    When the administrator removes group "newgroup" from the applicable group for the last local storage mount using the occ command
+    Then as "user0" folder "/local_storage2" should exist
+    And as "user1" folder "/local_storage2" should exist
+
+  Scenario: user should get access if the group of the user is removed from the applicable group and that group was the only applicable group
+    Given using new DAV path
+    And these users have been created with default attributes:
+      | username |
+      | user0    |
+      | user1    |
+    And group "newgroup" has been created
+    And user "user0" has been added to group "newgroup"
+    And the administrator has created the local storage mount "local_storage2"
+    And the administrator has added group "newgroup" as the applicable group for the last local storage mount
+    When the administrator removes group "newgroup" from the applicable group for the last local storage mount using the occ command
+    Then as "user0" folder "/local_storage2" should exist
+    And as "user1" folder "/local_storage2" should exist
+
+  Scenario: user should not get access if the group of the user is removed from the applicable group and that group was not the only applicable group
+    Given using new DAV path
+    And these users have been created with default attributes:
+      | username |
+      | user0    |
+      | user1    |
+      | user2    |
+    And group "newgroup" has been created
+    And group "newgroup2" has been created
+    And user "user0" has been added to group "newgroup"
+    And user "user1" has been added to group "newgroup2"
+    And the administrator has created the local storage mount "local_storage2"
+    And the administrator has added group "newgroup" as the applicable group for the last local storage mount
+    And the administrator has added group "newgroup2" as the applicable group for the last local storage mount
+    When the administrator removes group "newgroup" from the applicable group for the last local storage mount using the occ command
+    Then as "user0" folder "/local_storage2" should not exist
+    And as "user1" folder "/local_storage2" should exist
+    And as "user2" folder "/local_storage2" should not exist
