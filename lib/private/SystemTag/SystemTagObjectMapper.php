@@ -34,6 +34,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SystemTagObjectMapper implements ISystemTagObjectMapper {
 	const RELATION_TABLE = 'systemtag_object_mapping';
+	const CHUNK_SIZE = 200;
 
 	/** @var ISystemTagManager */
 	protected $tagManager;
@@ -68,24 +69,29 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 		}
 
 		$query = $this->connection->getQueryBuilder();
-		$query->select(['systemtagid', 'objectid'])
-			->from(self::RELATION_TABLE)
-			->where($query->expr()->in('objectid', $query->createParameter('objectids')))
-			->andWhere($query->expr()->eq('objecttype', $query->createParameter('objecttype')))
-			->setParameter('objectids', $objIds, IQueryBuilder::PARAM_INT_ARRAY)
-			->setParameter('objecttype', $objectType)
-			->addOrderBy('objectid', 'ASC')
-			->addOrderBy('systemtagid', 'ASC');
 
+		$objectIdChunks = \array_chunk($objIds, self::CHUNK_SIZE);
 		$mapping = [];
+		//Initialize mapping array
 		foreach ($objIds as $objId) {
 			$mapping[$objId] = [];
 		}
 
-		$result = $query->execute();
-		while ($row = $result->fetch()) {
-			$objectId = $row['objectid'];
-			$mapping[$objectId][] = $row['systemtagid'];
+		foreach ($objectIdChunks as $objectIdChunk) {
+			$query->select(['systemtagid', 'objectid'])
+				->from(self::RELATION_TABLE)
+				->where($query->expr()->in('objectid', $query->createParameter('objectids')))
+				->andWhere($query->expr()->eq('objecttype', $query->createParameter('objecttype')))
+				->setParameter('objectids', $objectIdChunk, IQueryBuilder::PARAM_INT_ARRAY)
+				->setParameter('objecttype', $objectType)
+				->addOrderBy('objectid', 'ASC')
+				->addOrderBy('systemtagid', 'ASC');
+
+			$result = $query->execute();
+			while ($row = $result->fetch()) {
+				$objectId = $row['objectid'];
+				$mapping[$objectId][] = $row['systemtagid'];
+			}
 		}
 
 		$result->closeCursor();
