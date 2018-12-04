@@ -11,7 +11,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes
     And user "user2" has been created with default attributes
-    And user "user0" has created a folder "/TMP"
+    And user "user0" has created folder "/TMP"
     And user "user0" has shared folder "TMP" with user "user1"
     And user "user1" has shared folder "TMP" with user "user2"
     When user "user1" updates the last share using the sharing API with
@@ -244,7 +244,7 @@ Feature: sharing
   Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions 17
     And as user "user1"
     And the user has created a public link share with settings
@@ -276,9 +276,9 @@ Feature: sharing
   Scenario: Share ownership change after moving a shared file outside of an outer share
     Given user "user1" has been created with default attributes
     And user "user2" has been created with default attributes
-    And user "user0" has created a folder "/folder1"
-    And user "user0" has created a folder "/folder1/folder2"
-    And user "user1" has created a folder "/moved-out"
+    And user "user0" has created folder "/folder1"
+    And user "user0" has created folder "/folder1/folder2"
+    And user "user1" has created folder "/moved-out"
     And user "user0" has shared folder "/folder1" with user "user1" with permissions 31
     And user "user1" has shared folder "/folder1/folder2" with user "user2" with permissions 31
     When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
@@ -303,9 +303,9 @@ Feature: sharing
   Scenario: Share ownership change after moving a shared file to another share
     Given user "user1" has been created with default attributes
     And user "user2" has been created with default attributes
-    And user "user0" has created a folder "/user0-folder"
-    And user "user0" has created a folder "/user0-folder/folder2"
-    And user "user2" has created a folder "/user2-folder"
+    And user "user0" has created folder "/user0-folder"
+    And user "user0" has created folder "/user0-folder/folder2"
+    And user "user2" has created folder "/user2-folder"
     And user "user0" has shared folder "/user0-folder" with user "user1" with permissions 31
     And user "user2" has shared folder "/user2-folder" with user "user1" with permissions 31
     When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2" using the WebDAV API
@@ -331,7 +331,7 @@ Feature: sharing
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions 31
     And as user "user1"
     And the user has created a public link share with settings
@@ -351,7 +351,7 @@ Feature: sharing
   Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions 17
     And as user "user1"
     And the user has created a public link share with settings
@@ -371,7 +371,7 @@ Feature: sharing
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions 31
     And as user "user1"
     And the user has created a public link share with settings

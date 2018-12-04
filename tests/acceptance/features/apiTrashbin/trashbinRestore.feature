@@ -12,7 +12,7 @@ Feature: Restore deleted files/folders
     Given using <dav-path> DAV path
     And user "user0" has been created with default attributes
     And user "user1" has been created with default attributes
-    And user "user0" has created a folder "/shared"
+    And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared folder "/shared" with user "user1"
     And user "user1" has moved file "/shared" to "/renamed_shared"
@@ -54,7 +54,7 @@ Feature: Restore deleted files/folders
   Scenario Outline: A file deleted from a folder can be restored to the original folder
     Given using <dav-path> DAV path
     And user "user0" has been created with default attributes
-    And user "user0" has created a folder "/new-folder"
+    And user "user0" has created folder "/new-folder"
     And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
     And user "user0" has deleted file "/new-folder/new-file.txt"
     And user "user0" has logged in to a web-style session
@@ -69,7 +69,7 @@ Feature: Restore deleted files/folders
   Scenario Outline: A file deleted from a folder is restored to root if the original folder does not exist
     Given using <dav-path> DAV path
     And user "user0" has been created with default attributes
-    And user "user0" has created a folder "/new-folder"
+    And user "user0" has created folder "/new-folder"
     And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
     And user "user0" has deleted file "/new-folder/new-file.txt"
     And user "user0" has deleted folder "/new-folder"
@@ -85,7 +85,7 @@ Feature: Restore deleted files/folders
   Scenario Outline: A file deleted from a folder is restored to the original folder if the original folder was deleted and restored
     Given using <dav-path> DAV path
     And user "user0" has been created with default attributes
-    And user "user0" has created a folder "/new-folder"
+    And user "user0" has created folder "/new-folder"
     And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
     And user "user0" has deleted file "/new-folder/new-file.txt"
     And user "user0" has deleted folder "/new-folder"
@@ -102,12 +102,12 @@ Feature: Restore deleted files/folders
   Scenario Outline: A file deleted from a folder is restored to the original folder if the original folder was deleted and recreated
     Given using <dav-path> DAV path
     And user "user0" has been created with default attributes
-    And user "user0" has created a folder "/new-folder"
+    And user "user0" has created folder "/new-folder"
     And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
     And user "user0" has deleted file "/new-folder/new-file.txt"
     And user "user0" has deleted folder "/new-folder"
     And user "user0" has logged in to a web-style session
-    When user "user0" creates a folder "/new-folder" using the WebDAV API
+    When user "user0" creates folder "/new-folder" using the WebDAV API
     And user "user0" restores the file with original path "/new-folder/new-file.txt" using the trashbin API
     Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
     And as "user0" file "/new-folder/new-file.txt" should exist
@@ -123,7 +123,7 @@ Feature: Restore deleted files/folders
     Given using <dav-path> DAV path
     And the administrator has invoked occ command "files:scan --all"
     And user "user0" has been created with default attributes
-    And user "user0" has created a folder "/local_storage/tmp"
+    And user "user0" has created folder "/local_storage/tmp"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
     And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
     And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in trash
@@ -146,7 +146,7 @@ Feature: Restore deleted files/folders
     Given using old DAV path
     And the administrator has invoked occ command "files:scan --all"
     And user "user0" has been created with default attributes
-    And user "user0" has created a folder "/local_storage/tmp"
+    And user "user0" has created folder "/local_storage/tmp"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
     And user "user0" has uploaded chunk file "1" of "1" with "AA" to "/local_storage/tmp/textfile0.txt"
     And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
@@ -163,7 +163,7 @@ Feature: Restore deleted files/folders
     Given using new DAV path
     And the administrator has invoked occ command "files:scan --all"
     And user "user0" has been created with default attributes
-    And user "user0" has created a folder "/local_storage/tmp"
+    And user "user0" has created folder "/local_storage/tmp"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
     And user "user0" has uploaded the following chunks to "/local_storage/tmp/textfile0.txt" with new chunking
       | 1 | AA |

@@ -23,8 +23,8 @@ Feature: Files Operations command
     Given using new DAV path
     And user "user0" has been created with default attributes
     And the administrator has set the external storage to be never scanned automatically
-    And user "user0" has created a folder "/local_storage/folder1"
-    And user "user0" has created a folder "/local_storage/folder2"
+    And user "user0" has created folder "/local_storage/folder1"
+    And user "user0" has created folder "/local_storage/folder2"
     # issue-33670: Need to re-scan. Config change doesn't come into effect until once scanned
     And the administrator has scanned the filesystem for all users
     When the administrator creates file "folder1/hello1.txt" with content "<? php :)" in local storage using the testing API
@@ -52,7 +52,7 @@ Feature: Files Operations command
     And group "newgroup" has been created
     And user "user0" has been added to group "newgroup"
     And user "user1" has been added to group "newgroup"
-    And user "user0" has created a folder "/local_storage/folder1"
+    And user "user0" has created folder "/local_storage/folder1"
     And the administrator has set the external storage to be never scanned automatically
     And user "user0" has shared folder "/local_storage/folder1" with group "newgroup"
     And the administrator has scanned the filesystem for all users

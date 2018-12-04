@@ -37,8 +37,8 @@ Feature: sharing
   Scenario: orphaned shares
     Given using OCS API version "1"
     And a new browser session for "user0" has been started
-    And user "user0" has created a folder "/common"
-    And user "user0" has created a folder "/common/sub"
+    And user "user0" has created folder "/common"
+    And user "user0" has created folder "/common/sub"
     And user "user0" has shared folder "/common/sub" with user "user1"
     When user "user0" deletes folder "/common" using the WebDAV API
     Then the HTTP status code should be "204"
@@ -49,10 +49,10 @@ Feature: sharing
     And user "user2" has been created with default attributes
     And user "user3" has been created with default attributes
     And user "user4" has been created with default attributes
-    And user "user0" has created a folder "/folder1"
+    And user "user0" has created folder "/folder1"
     And user "user0" has shared file "/folder1" with user "user1"
     And user "user0" has shared file "/folder1" with user "user2"
-    And user "user0" has created a folder "/folder1/folder2"
+    And user "user0" has created folder "/folder1/folder2"
     And user "user0" has shared file "/folder1/folder2" with user "user3"
     And user "user0" has shared file "/folder1/folder2" with user "user4"
     And as user "user0"
@@ -76,7 +76,7 @@ Feature: sharing
   @smokeTest @files_trashbin-app-required
   Scenario: deleting a file out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
-    And user "user0" has created a folder "/shared"
+    And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared folder "/shared" with user "user1"
     When user "user1" deletes file "/shared/shared_file.txt" using the WebDAV API
@@ -89,8 +89,8 @@ Feature: sharing
   @files_trashbin-app-required
   Scenario: deleting a folder out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
-    And user "user0" has created a folder "/shared"
-    And user "user0" has created a folder "/shared/sub"
+    And user "user0" has created folder "/shared"
+    And user "user0" has created folder "/shared/sub"
     And user "user0" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
     And user "user0" has shared folder "/shared" with user "user1"
     When user "user1" deletes folder "/shared/sub" using the WebDAV API
@@ -124,7 +124,7 @@ Feature: sharing
 
   Scenario: sharee of a read-only share folder tries to delete the shared folder
     Given using OCS API version "1"
-    And user "user0" has created a folder "/shared"
+    And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared folder "shared" with user "user1" with permissions 1
     When user "user1" deletes file "/shared/shared_file.txt" using the WebDAV API
@@ -133,7 +133,7 @@ Feature: sharing
 
   Scenario: sharee of a upload-only shared folder tries to delete a file in the shared folder
     Given using OCS API version "1"
-    And user "user0" has created a folder "/shared"
+    And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared folder "shared" with user "user1" with permissions 4
     When user "user1" deletes file "/shared/shared_file.txt" using the WebDAV API
@@ -142,7 +142,7 @@ Feature: sharing
 
   Scenario: sharee of an upload-only shared folder tries to delete their file in the folder
     Given using OCS API version "1"
-    And user "user0" has created a folder "/shared"
+    And user "user0" has created folder "/shared"
     And user "user0" has shared folder "shared" with user "user1" with permissions 4
     When user "user1" uploads file "filesForUpload/textfile.txt" to "shared/textfile.txt" using the WebDAV API
     And user "user1" deletes file "/shared/textfile.txt" using the WebDAV API

@@ -2298,15 +2298,15 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user creates a folder :destination using the WebDAV API
-	 * @Given user :user has created a folder :destination
+	 * @When user :user creates folder :destination using the WebDAV API
+	 * @Given user :user has created folder :destination
 	 *
 	 * @param string $user
 	 * @param string $destination
 	 *
 	 * @return void
 	 */
-	public function userCreatesAFolder($user, $destination) {
+	public function userCreatesFolder($user, $destination) {
 		$destination = '/' . \ltrim($destination, '/');
 		$this->response = $this->makeDavRequest(
 			$user, "MKCOL", $destination, []
@@ -2315,15 +2315,15 @@ trait WebDav {
 	}
 
 	/**
-	 * @When the user creates a folder :destination using the WebDAV API
-	 * @Given the user has created a folder :destination
+	 * @When the user creates folder :destination using the WebDAV API
+	 * @Given the user has created folder :destination
 	 *
 	 * @param string $destination
 	 *
 	 * @return void
 	 */
-	public function theUserCreatesAFolder($destination) {
-		$this->userCreatesAFolder($this->getCurrentUser(), $destination);
+	public function theUserCreatesFolder($destination) {
+		$this->userCreatesFolder($this->getCurrentUser(), $destination);
 	}
 
 	/**

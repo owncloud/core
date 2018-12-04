@@ -37,7 +37,7 @@ Feature: Comments
       | user1 | Sharee comment |
 
   Scenario: Edit my own comments on a folder belonging to myself
-    Given the user has created a folder "/FOLDER_TO_COMMENT"
+    Given the user has created folder "/FOLDER_TO_COMMENT"
     And the user has commented with content "Folder owner comment" on folder "/FOLDER_TO_COMMENT"
     When the user edits the last created comment with content "My edited comment" using the WebDAV API
     Then the HTTP status code should be "207"
