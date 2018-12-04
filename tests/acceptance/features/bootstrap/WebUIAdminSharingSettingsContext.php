@@ -233,6 +233,19 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When the administrator excludes group :group from receiving shares using the webUI
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theAdministratorExcludesGroupFromReceivingSharesUsingTheWebui($group) {
+		$this->adminSharingSettingsPage->addGroupToExcludedFromReceivingShares(
+			$this->getSession(), $group
+		);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
