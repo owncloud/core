@@ -446,4 +446,15 @@ class DirectoryTest extends \Test\TestCase {
 		$dir = $this->getDir();
 		$dir->createFile('foobar.txt', 'hello foo bar');
 	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\Forbidden
+	 */
+	public function testCreateFileForbidden() {
+		$this->view->expects($this->any())
+			->method('isCreatable')
+			->willThrowException(new \Sabre\DAV\Exception\Forbidden());
+		$dir = $this->getDir();
+		$dir->createFile('foobar.txt', 'hello foo bar');
+	}
 }
