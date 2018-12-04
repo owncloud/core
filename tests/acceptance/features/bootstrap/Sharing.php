@@ -1905,6 +1905,13 @@ trait Sharing {
 			],
 			[
 				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'exclude_groups_from_sharing_list',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_exclude_groups_list',
+				'testingState' => null
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' =>
 					'user_enumeration@@@enabled',
 				'testingApp' => 'core',

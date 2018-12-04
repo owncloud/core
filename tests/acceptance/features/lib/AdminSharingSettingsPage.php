@@ -57,8 +57,10 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	protected $allowGroupSharingCheckboxId = 'allowGroupSharing';
 	protected $onlyShareWithGroupMembersCheckboxXpath = '//label[@for="onlyShareWithGroupMembers"]';
 	protected $onlyShareWithGroupMembersCheckboxId = 'onlyShareWithGroupMembers';
+	protected $excludeGroupFromSharingCheckboxXpath = '//label[@for="shareapiExcludeGroups"]';
+	protected $excludeGroupFromSharingCheckboxId = 'shareapiExcludeGroups';
 
-	protected $groupSharingBlackListFieldXpath = '//div[@id="files_sharing"]//input[contains(@class,"select2-input")]';
+	protected $groupSharingBlackListFieldXpath = '//p[@id="selectExcludedGroups"]//input[contains(@class,"select2-input")]';
 	protected $groupListXpath = '//div[@id="select2-drop"]//li[contains(@class, "select2-result")]';
 	protected $groupListDropDownXpath = "//div[@id='select2-drop']";
 
@@ -295,6 +297,22 @@ class AdminSharingSettingsPage extends OwncloudPage {
 			$action,
 			$this->onlyShareWithGroupMembersCheckboxXpath,
 			$this->onlyShareWithGroupMembersCheckboxId
+		);
+	}
+
+	/**
+	 * enable exclude group from sharing
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function enableExcludeGroupFromSharing(Session $session) {
+		$this->toggleCheckbox(
+			$session,
+			"enables",
+			$this->excludeGroupFromSharingCheckboxXpath,
+			$this->excludeGroupFromSharingCheckboxId
 		);
 	}
 
