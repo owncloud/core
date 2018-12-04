@@ -209,7 +209,10 @@ trait WebDav {
 			// systemtags only exists since dav v2
 			return 2;
 		}
-
+		if ($for === 'file_versions') {
+			// file_versions only exists since dav v2
+			return 2;
+		}
 		if ($this->usingOldDavPath === true) {
 			return 1;
 		} else {
@@ -1533,10 +1536,10 @@ trait WebDav {
 				'{DAV:}getetag'
 			];
 		}
-
 		try {
 			$response = $client->propfind(
-				$this->makeSabrePathNotForFiles($path), $properties, $folderDepth
+				$this->makeSabrePathNotForFiles($path, 'file_versions'),
+				$properties, $folderDepth
 			);
 		} catch (Sabre\HTTP\ClientHttpException $e) {
 			$response = $e->getResponse();
@@ -1557,6 +1560,7 @@ trait WebDav {
 		$path, $user, $count
 	) {
 		$fileId = $this->getFileIdForPath($user, $path);
+		PHPUnit_Framework_Assert::assertNotNull($fileId, "file $path not found");
 		$elements = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
 		PHPUnit_Framework_Assert::assertEquals($count, \count($elements) - 1);
 	}
@@ -1690,11 +1694,12 @@ trait WebDav {
 
 	/**
 	 * @param string $path
+	 * @param string $for the category of endpoint that the dav path will be used for
 	 *
 	 * @return string
 	 */
-	public function makeSabrePathNotForFiles($path) {
-		return $this->encodePath($this->getDavPath() . $path);
+	public function makeSabrePathNotForFiles($path, $for = null) {
+		return $this->encodePath($this->getDavPath($for) . $path);
 	}
 
 	/**
@@ -3103,15 +3108,15 @@ trait WebDav {
 	 */
 	public function userRestoresVersionIndexOfFile($user, $versionIndex, $path) {
 		$fileId = $this->getFileIdForPath($user, $path);
-		$client = $this->getSabreClient($user);
 		$versions = \array_keys(
 			$this->listVersionFolder($user, "/meta/$fileId/v", 1)
 		);
-		$client->request(
-			'COPY',
-			$versions[$versionIndex],
-			null,
-			['Destination' => $this->makeSabrePath($user, $path)]
+		//restoring the version only works with dav path v2
+		$destinationUrl = $this->getBaseUrl() . "/" .
+						  WebDavHelper::getDavPath($user, 2) . \trim($path, "/");
+		HttpRequestHelper::sendRequest(
+			$this->getBaseUrlWithoutPath() . $versions[$versionIndex],
+			'COPY', $user, $this->getPasswordForUser($user), ['Destination' => $destinationUrl]
 		);
 	}
 
