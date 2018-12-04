@@ -18,7 +18,7 @@ Feature: Help and tips page
       | Theming                           |
       | Hardening and security guidance   |
 
-  @skipOnOcV11 @issue-33634
+  @skip @issue-33639 @skipOnOcV11 @issue-33634
   Scenario Outline: Admin can open links in help and tips page
     When the administrator opens the link for "<linkName>"
     Then the user should be redirected to a webUI page with the title "<pageTitle>"
