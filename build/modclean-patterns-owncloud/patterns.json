@@ -1,0 +1,37 @@
+{
+    "$default": "basic",
+    
+    "basic": {
+        "patterns": [
+            "*.coffee",
+            "*.ico",
+            "*.html",
+            "*.rb",
+            ".babelrc",
+            ".banner",
+            ".bowerrc",
+            ".github",
+            ".jscs.json",
+            ".mailmap",
+            ".spmignore",
+            "AUTHORS*",
+            "benchmarks",
+            "data",
+            "data-scripts",
+            "docs",
+            "Gruntfile.js",
+            "karma.*.js",
+            "make",
+            "meteor",
+            "nuget",
+            "node_modules",
+            "scripts",
+            "tasks",
+            "test-infra",
+            "vendor"
+        ],
+        
+        "ignore": []
+    }
+    
+}

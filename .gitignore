@@ -7,6 +7,7 @@
 /apps/inc.php
 /assets
 /build/composer.phar
+/build/dist
 /build/phan.phar
 /core/vendor
 
@@ -99,6 +100,7 @@ nbproject
 /tests/phpunit.xml
 
 # Node Modules
+/build/yarn-error.log
 /build/node_modules/
 
 # nodejs
