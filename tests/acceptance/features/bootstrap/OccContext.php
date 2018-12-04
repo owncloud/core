@@ -680,6 +680,7 @@ class OccContext implements Context {
 
 	/**
 	 * @When the administrator creates the local storage mount :mount using the occ command
+	 * @Given the administrator has created the local storage mount :mount
 	 *
 	 * @param string $mount
 	 *
@@ -691,20 +692,35 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator sets user :user as the applicable for last local storage mount using the occ command
+	 * @When /^the administrator (adds|removes) (user|group) "([^"]*)" (?:as|from) the applicable (?:user|group) for the last local storage mount using the occ command$/
+	 * @Given /^the administrator has (added|removed) (user|group) "([^"]*)" (?:as|from) the applicable (?:user|group) for the last local storage mount$/
 	 *
+	 * @param string $action
+	 * @param string $userOrGroup
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
-	public function theadminSetsAsTheApplicableLastLocalMountUsingTheOccCommand($user) {
+	public function theadminAddsRemovesAsTheApplicableUserLastLocalMountUsingTheOccCommand($action, $userOrGroup, $user) {
+		if ($action === "adds" || $action === "added") {
+			$action = "--add";
+		} else {
+			$action = "--remove";
+		}
+		if ($userOrGroup === "user") {
+			$action = "$action-user";
+		} else {
+			$action = "$action-group";
+		}
 		$storageIds = $this->featureContext->getStorageIds();
 		$lastMount = \end($storageIds);
 		$this->featureContext->runOcc(
 			[
 				'files_external:applicable',
 				$lastMount,
-				'--add-user ' . $user
+				"$action ",
+				"$user"
 			]
 		);
 	}
