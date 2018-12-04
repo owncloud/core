@@ -108,14 +108,14 @@ Feature: Sharing files and folders with internal groups
     Then file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
 
-  @skip @issue-33030
   Scenario: user tries to share a file in a group which is blacklisted from sharing
     Given the administrator has browsed to the admin sharing settings page
-    When the administrator adds group "grp1" to the group sharing blacklist using the webUI
-    Then user "user3" should not be able to share folder "lorem.txt" with group "grp1" using the sharing API
+    When the administrator enables exclude groups from sharing using the webUI
+    And the administrator adds group "grp1" to the group sharing blacklist using the webUI
+    Then user "user1" should not be able to share file "lorem.txt" with user "user3" using the sharing API
 
-  @skip @issue-33030
   Scenario: user tries to share a folder in a group which is blacklisted from sharing
     Given the administrator has browsed to the admin sharing settings page
-    When the administrator adds group "grp1" to the group sharing blacklist using the webUI
-    Then user "user3" should not be able to share folder "simple-folder" with group "grp1" using the sharing API
+    When the administrator enables exclude groups from sharing using the webUI
+    And the administrator adds group "grp1" to the group sharing blacklist using the webUI
+    Then user "user1" should not be able to share folder "simple-folder" with user "user3" using the sharing API
