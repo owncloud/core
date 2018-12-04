@@ -12,9 +12,9 @@ Feature: sharing
     Given group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
-    And user "user0" has created a folder "/TMP"
+    And user "user0" has created folder "/TMP"
     When user "user0" shares folder "TMP" with group "grp1" using the sharing API
-    And user "user1" creates a folder "/myFOLDER" using the WebDAV API
+    And user "user1" creates folder "/myFOLDER" using the WebDAV API
     And user "user1" moves folder "/TMP" to "/myFOLDER/myTMP" using the WebDAV API
     And the administrator deletes user "user2" using the provisioning API
     Then user "user1" should see the following elements
@@ -33,7 +33,7 @@ Feature: sharing
     Given user "user0" has uploaded file with content "foo" to "/sharefile.txt"
     And user "user0" has shared file "/sharefile.txt" with user "user1"
     And user "user0" has shared file "/sharefile.txt" with user "user2"
-    And user "user2" has created a folder "newfolder"
+    And user "user2" has created folder "newfolder"
     When user "user2" moves file "/sharefile.txt" to "/newfolder/sharefile.txt" using the WebDAV API
     Then as "user2" file "/newfolder/sharefile.txt" should exist
     And as "user0" file "/sharefile.txt" should exist

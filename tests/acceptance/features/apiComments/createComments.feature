@@ -68,7 +68,7 @@ Feature: Comments
       | user0 | My first comment |
 
   Scenario: Creating a comment on a shared folder belonging to another user
-    Given the user has created a folder "/FOLDER_TO_SHARE"
+    Given the user has created folder "/FOLDER_TO_SHARE"
     And the user has shared folder "/FOLDER_TO_SHARE" with user "user1"
     When user "user1" comments with content "A comment from sharee" on folder "/FOLDER_TO_SHARE" using the WebDAV API
     And the user comments with content "A comment from sharer" on folder "/FOLDER_TO_SHARE" using the WebDAV API
@@ -80,7 +80,7 @@ Feature: Comments
   Scenario: sharee comments on a group shared folder
     Given group "grp1" has been created
     And user "user1" has been added to group "grp1"
-    And the user has created a folder "/FOLDER_TO_COMMENT"
+    And the user has created folder "/FOLDER_TO_COMMENT"
     And the user has shared folder "/FOLDER_TO_COMMENT" with group "grp1"
     When user "user1" comments with content "Comment from sharee" on folder "/FOLDER_TO_COMMENT" using the WebDAV API
     Then the HTTP status code should be "201"

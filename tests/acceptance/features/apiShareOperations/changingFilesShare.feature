@@ -9,7 +9,7 @@ Feature: sharing
 
   @smokeTest
   Scenario: moving a file into a share as recipient
-    Given user "user0" has created a folder "/shared"
+    Given user "user0" has created folder "/shared"
     And user "user0" has shared folder "/shared" with user "user1"
     When user "user1" moves file "/textfile0.txt" to "/shared/shared_file.txt" using the WebDAV API
     Then as "user1" file "/shared/shared_file.txt" should exist
@@ -17,7 +17,7 @@ Feature: sharing
 
   @smokeTest @files_trashbin-app-required
   Scenario: moving a file out of a share as recipient creates a backup for the owner
-    Given user "user0" has created a folder "/shared"
+    Given user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared file "/shared" with user "user1"
     And user "user1" has moved folder "/shared" to "/shared_renamed"
@@ -28,8 +28,8 @@ Feature: sharing
 
   @files_trashbin-app-required
   Scenario: moving a folder out of a share as recipient creates a backup for the owner
-    Given user "user0" has created a folder "/shared"
-    And user "user0" has created a folder "/shared/sub"
+    Given user "user0" has created folder "/shared"
+    And user "user0" has created folder "/shared/sub"
     And user "user0" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
     And user "user0" has shared file "/shared" with user "user1"
     And user "user1" has moved folder "/shared" to "/shared_renamed"

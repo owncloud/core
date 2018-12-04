@@ -39,9 +39,9 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: receive shares with same name from different users, accept one by one
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
-    And user "user2" has created a folder "/simple-folder/from_user2"
+    And user "user2" has created folder "/simple-folder/from_user2"
     And user "user2" has shared folder "/simple-folder" with user "user3"
-    And user "user1" has created a folder "/simple-folder/from_user1"
+    And user "user1" has created folder "/simple-folder/from_user1"
     And user "user1" has shared folder "/simple-folder" with user "user3"
     And user "user3" has logged in using the webUI
     When the user accepts share "simple-folder" offered by user "User One" using the webUI

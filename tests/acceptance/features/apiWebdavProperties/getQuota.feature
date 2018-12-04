@@ -32,7 +32,7 @@ Feature: get quota
     And user "user1" has been created with default attributes
     And user "user0" has been given unlimited quota
     And the quota of user "user1" has been set to "10 MB"
-    And user "user1" has created a folder "/testquota"
+    And user "user1" has created folder "/testquota"
     And user "user1" has created a share with settings
       | path        | testquota |
       | shareType   | 0         |

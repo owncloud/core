@@ -84,7 +84,7 @@ Feature: dav-versions
 
   Scenario: sharer can restore a file inside a shared folder modified by sharee
     Given user "user1" has been created with default attributes
-    And user "user0" has created a folder "/sharingfolder"
+    And user "user0" has created folder "/sharingfolder"
     And user "user0" has shared folder "/sharingfolder" with user "user1"
     And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
     And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
@@ -95,7 +95,7 @@ Feature: dav-versions
 
   Scenario: sharee can restore a file inside a shared folder modified by sharee
     Given user "user1" has been created with default attributes
-    And user "user0" has created a folder "/sharingfolder"
+    And user "user0" has created folder "/sharingfolder"
     And user "user0" has shared folder "/sharingfolder" with user "user1"
     And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
     And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
@@ -106,7 +106,7 @@ Feature: dav-versions
 
   Scenario: sharer can restore a file inside a shared folder created by sharee and modified by sharer
     Given user "user1" has been created with default attributes
-    And user "user0" has created a folder "/sharingfolder"
+    And user "user0" has created folder "/sharingfolder"
     And user "user0" has shared folder "/sharingfolder" with user "user1"
     And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
     And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
@@ -117,7 +117,7 @@ Feature: dav-versions
 
   Scenario: sharee can restore a file inside a shared folder created by sharee and modified by sharer
     Given user "user1" has been created with default attributes
-    And user "user0" has created a folder "/sharingfolder"
+    And user "user0" has created folder "/sharingfolder"
     And user "user0" has shared folder "/sharingfolder" with user "user1"
     And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
     And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
@@ -128,7 +128,7 @@ Feature: dav-versions
 
   Scenario: sharer can restore a file inside a shared folder created by sharee and modified by sharee
     Given user "user1" has been created with default attributes
-    And user "user0" has created a folder "/sharingfolder"
+    And user "user0" has created folder "/sharingfolder"
     And user "user0" has shared folder "/sharingfolder" with user "user1"
     And user "user1" has uploaded file with content "old content" to "/sharingfolder/sharefile.txt"
     And user "user1" has uploaded file with content "new content" to "/sharingfolder/sharefile.txt"
@@ -139,7 +139,7 @@ Feature: dav-versions
 
   Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer
     Given user "user1" has been created with default attributes
-    And user "user0" has created a folder "/sharingfolder"
+    And user "user0" has created folder "/sharingfolder"
     And user "user0" has shared folder "/sharingfolder" with user "user1"
     And user "user0" has uploaded file with content "old content" to "/sharingfolder/sharefile.txt"
     And user "user0" has uploaded file with content "new content" to "/sharingfolder/sharefile.txt"
@@ -150,11 +150,11 @@ Feature: dav-versions
 
   Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer, when the folder has been moved by the sharee
     Given user "user1" has been created with default attributes
-    And user "user0" has created a folder "/sharingfolder"
+    And user "user0" has created folder "/sharingfolder"
     And user "user0" has shared folder "/sharingfolder" with user "user1"
     And user "user0" has uploaded file with content "old content" to "/sharingfolder/sharefile.txt"
     And user "user0" has uploaded file with content "new content" to "/sharingfolder/sharefile.txt"
-    And user "user1" has created a folder "/received"
+    And user "user1" has created folder "/received"
     And user "user1" has moved folder "/sharingfolder" to "/received/sharingfolder"
     When user "user1" restores version index "1" of file "/received/sharingfolder/sharefile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -166,7 +166,7 @@ Feature: dav-versions
     And user "user0" has uploaded file with content "old content" to "/sharefile.txt"
     And user "user0" has uploaded file with content "new content" to "/sharefile.txt"
     And user "user0" has shared file "/sharefile.txt" with user "user1"
-    And user "user1" has created a folder "/received"
+    And user "user1" has created folder "/received"
     And user "user1" has moved file "/sharefile.txt" to "/received/sharefile.txt"
     When user "user1" restores version index "1" of file "/received/sharefile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -175,11 +175,11 @@ Feature: dav-versions
 
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is inside a folder of the sharer)
     Given user "user1" has been created with default attributes
-    And user "user0" has created a folder "/sharingfolder"
+    And user "user0" has created folder "/sharingfolder"
     And user "user0" has uploaded file with content "old content" to "/sharingfolder/sharefile.txt"
     And user "user0" has uploaded file with content "new content" to "/sharingfolder/sharefile.txt"
     And user "user0" has shared file "/sharingfolder/sharefile.txt" with user "user1"
-    And user "user1" has created a folder "/received"
+    And user "user1" has created folder "/received"
     And user "user1" has moved file "/sharefile.txt" to "/received/sharefile.txt"
     When user "user1" restores version index "1" of file "/received/sharefile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -192,7 +192,7 @@ Feature: dav-versions
     And group "newgroup" has been created
     And user "user1" has been added to group "newgroup"
     And user "user2" has been added to group "newgroup"
-    And user "user0" has created a folder "/sharingfolder"
+    And user "user0" has created folder "/sharingfolder"
     And user "user0" has shared folder "/sharingfolder" with group "newgroup"
     And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
     And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"

@@ -6,9 +6,9 @@ Feature: Search
 
   Background:
     Given user "user0" has been created with default attributes
-    And user "user0" has created a folder "/just-a-folder"
-    And user "user0" has created a folder "/फनी näme"
-    And user "user0" has created a folder "/upload folder"
+    And user "user0" has created folder "/just-a-folder"
+    And user "user0" has created folder "/फनी näme"
+    And user "user0" has created folder "/upload folder"
     And user "user0" has uploaded file with content "does-not-matter" to "/upload.txt"
     And user "user0" has uploaded file with content "does-not-matter" to "/a-image.png"
     And user "user0" has uploaded file with content "does-not-matter" to "/just-a-folder/upload.txt"

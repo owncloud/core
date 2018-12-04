@@ -49,7 +49,7 @@ Feature: sharing
   Scenario Outline: Do not allow reshare to exceed permissions
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes
-    And user "user0" has created a folder "/TMP"
+    And user "user0" has created folder "/TMP"
     And user "user0" has created a share with settings
       | path        | /TMP  |
       | shareType   | 0     |
@@ -84,7 +84,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: resharing using a public link with read only permissions is not allowed
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions 1
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test |
@@ -99,7 +99,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: resharing using a public link with read and write permissions only is not allowed
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions 15
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test |
