@@ -587,16 +587,18 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @Given the administrator has set the external storage to be never scanned automatically
-	 * @When the administrator sets the external storage to be never scanned automatically using the occ command
+	 * @Given the administrator has set the external storage :mountPoint to be never scanned automatically
+	 * @When the administrator sets the external storage :mountPoint to be never scanned automatically using the occ command
+	 *
+	 * @param string $mountPoint
 	 *
 	 * @return void
 	 */
-	public function theAdministratorHasSetTheExternalStorageToBeNeverScannedUsingTheOccCommand() {
+	public function theAdministratorHasSetTheExtStorageWithMountPoint($mountPoint) {
 		$command = "files:external:option";
 
 		// get the first mount id created in before scenario
-		$mountId = $this->featureContext->getStorageId("local_storage");
+		$mountId = $this->featureContext->getStorageId($mountPoint);
 
 		// $mountId should have been set. If not, @local_storage BeforeScenario never ran
 		\assert($mountId !== null);
@@ -662,6 +664,17 @@ class OccContext implements Context {
 	public function theAdministratorScansTheFilesystemForGroupUsingTheOccCommand($group) {
 		$this->featureContext->invokingTheCommand(
 			"files:scan --groups=$group"
+		);
+	}
+
+	/**
+	 * @When the administrator cleanups the filesystem for all users using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorCleanupsTheFilesystemForAllUsersUsingTheOccCommand() {
+		$this->featureContext->invokingTheCommand(
+			"files:cleanup"
 		);
 	}
 
