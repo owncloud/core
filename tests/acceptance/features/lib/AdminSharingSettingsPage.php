@@ -61,6 +61,7 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	protected $excludeGroupFromSharingCheckboxId = 'shareapiExcludeGroups';
 
 	protected $groupSharingBlackListFieldXpath = '//p[@id="selectExcludedGroups"]//input[contains(@class,"select2-input")]';
+	protected $excludeGroupFromSharesFieldXpath = '//div[@id="files_sharing"]//input[contains(@class,"select2-input")]';
 	protected $groupListXpath = '//div[@id="select2-drop"]//li[contains(@class, "select2-result")]';
 	protected $groupListDropDownXpath = "//div[@id='select2-drop']";
 
@@ -325,19 +326,45 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	 * @return void
 	 */
 	public function addGroupToGroupSharingBlacklist(Session $session, $groupName) {
-		$groupSharingBlackListField = $this->find("xpath", $this->groupSharingBlackListFieldXpath);
+		$this->addGroupToInputField($groupName, $this->groupSharingBlackListFieldXpath);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * add group to excluded from receiving shares
+	 *
+	 * @param Session $session
+	 * @param string $groupName
+	 *
+	 * @return void
+	 */
+	public function addGroupToExcludedFromReceivingShares(Session $session, $groupName) {
+		$this->addGroupToInputField($groupName, $this->excludeGroupFromSharesFieldXpath);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * add group to the list
+	 *
+	 * @param string $groupName
+	 * @param string $fieldXpath
+	 *
+	 * @return void
+	 */
+	public function addGroupToInputField($groupName, $fieldXpath) {
+		$inputField = $this->find("xpath", $fieldXpath);
 		$this->assertElementNotNull(
-			$groupSharingBlackListField,
+			$inputField,
 			__METHOD__ .
-			" xpath $this->groupSharingBlackListFieldXpath " .
+			" xpath $fieldXpath " .
 			"could not find input field"
 		);
-		$groupSharingBlackListField->click();
+		$inputField->click();
 		$this->waitTillElementIsNotNull($this->groupListDropDownXpath);
 		$this->waitTillElementIsNotNull($this->groupListXpath);
 		$groupList = $this->findAll("xpath", $this->groupListXpath);
 		$this->assertElementNotNull(
-			$groupSharingBlackListField,
+			$groupList,
 			__METHOD__ .
 			" xpath $this->groupListXpath " .
 			"could not find group list"
@@ -347,7 +374,6 @@ class AdminSharingSettingsPage extends OwncloudPage {
 				$group->click();
 			}
 		}
-		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
