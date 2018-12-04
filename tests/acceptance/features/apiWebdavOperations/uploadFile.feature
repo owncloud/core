@@ -37,7 +37,7 @@ Feature: upload file
 
   Scenario Outline: upload a file into a folder and check download content
     Given using <dav_version> DAV path
-    And user "user0" has created a folder "<folder_name>"
+    And user "user0" has created folder "<folder_name>"
     When user "user0" uploads file with content "uploaded content" to "<folder_name>/<file_name>" using the WebDAV API
     Then the content of file "<folder_name>/<file_name>" for user "user0" should be "uploaded content"
     Examples:

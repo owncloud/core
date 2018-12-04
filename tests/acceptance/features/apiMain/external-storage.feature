@@ -9,7 +9,7 @@ Feature: external-storage
   Scenario: Share by public link a file inside a local external storage
     Given user "user0" has been created with default attributes
     And user "user1" has been created with default attributes
-    And user "user0" has created a folder "/local_storage/foo"
+    And user "user0" has created folder "/local_storage/foo"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo/textfile0.txt"
     And user "user0" has shared folder "/local_storage/foo" with user "user1"
     When user "user1" creates a public link share using the sharing API with settings
@@ -25,7 +25,7 @@ Feature: external-storage
   Scenario: Move a file into storage
     Given user "user0" has been created with default attributes
     And user "user1" has been created with default attributes
-    And user "user0" has created a folder "/local_storage/foo1"
+    And user "user0" has created folder "/local_storage/foo1"
     When user "user0" moves file "/textfile0.txt" to "/local_storage/foo1/textfile0.txt" using the WebDAV API
     Then as "user1" file "/local_storage/foo1/textfile0.txt" should exist
     And as "user0" file "/local_storage/foo1/textfile0.txt" should exist
@@ -33,7 +33,7 @@ Feature: external-storage
   Scenario: Move a file out of storage
     Given user "user0" has been created with default attributes
     And user "user1" has been created with default attributes
-    And user "user0" has created a folder "/local_storage/foo2"
+    And user "user0" has created folder "/local_storage/foo2"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo2/textfile0.txt"
     When user "user1" moves file "/local_storage/foo2/textfile0.txt" to "/local.txt" using the WebDAV API
     Then as "user1" file "/local_storage/foo2/textfile0.txt" should not exist
@@ -42,7 +42,7 @@ Feature: external-storage
 
   Scenario: Download a file that exists in filecache but not storage fails with 404
     Given user "user0" has been created with default attributes
-    And user "user0" has created a folder "/local_storage/foo3"
+    And user "user0" has created folder "/local_storage/foo3"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo3/textfile0.txt"
     And file "foo3/textfile0.txt" has been deleted from local storage on the server
     When user "user0" downloads file "local_storage/foo3/textfile0.txt" using the WebDAV API

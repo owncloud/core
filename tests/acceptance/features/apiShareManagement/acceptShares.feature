@@ -156,7 +156,7 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: move accepted share, decline it, accept again
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
-    And user "user0" has created a folder "/shared"
+    And user "user0" has created folder "/shared"
     And user "user0" has shared folder "/shared" with user "user1"
     And user "user1" has moved folder "/shared" to "/PARENT/shared"
     When user "user1" declines the share "/PARENT/shared" offered by user "user0" using the sharing API
@@ -171,7 +171,7 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: move accepted share, decline it, delete parent folder, accept again
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
-    And user "user0" has created a folder "/shared"
+    And user "user0" has created folder "/shared"
     And user "user0" has shared folder "/shared" with user "user1"
     And user "user1" has moved folder "/shared" to "/PARENT/shared"
     When user "user1" declines the share "/PARENT/shared" offered by user "user0" using the sharing API
@@ -187,10 +187,10 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: receive two shares with identical names from different users
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
-    And user "user0" has created a folder "/shared"
-    And user "user0" has created a folder "/shared/user0"
-    And user "user1" has created a folder "/shared"
-    And user "user1" has created a folder "/shared/user1"
+    And user "user0" has created folder "/shared"
+    And user "user0" has created folder "/shared/user0"
+    And user "user1" has created folder "/shared"
+    And user "user1" has created folder "/shared/user1"
     When user "user0" shares folder "/shared" with user "user2" using the sharing API
     And user "user1" shares folder "/shared" with user "user2" using the sharing API
     Then user "user2" should see the following elements
@@ -269,7 +269,7 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: accept an accepted share
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
-    And user "user0" has created a folder "/shared"
+    And user "user0" has created folder "/shared"
     And user "user0" has shared folder "/shared" with user "user1"
     When user "user1" accepts the share "/shared" offered by user "user0" using the sharing API
     And user "user1" accepts the share "/shared" offered by user "user0" using the sharing API
@@ -350,10 +350,10 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: receive two shares with identical names from different users, accept one by one
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
-    And user "user0" has created a folder "/shared"
-    And user "user0" has created a folder "/shared/user0"
-    And user "user1" has created a folder "/shared"
-    And user "user1" has created a folder "/shared/user1"
+    And user "user0" has created folder "/shared"
+    And user "user0" has created folder "/shared/user0"
+    And user "user1" has created folder "/shared"
+    And user "user1" has created folder "/shared/user1"
     And user "user0" has shared folder "/shared" with user "user2"
     And user "user1" has shared folder "/shared" with user "user2"
     When user "user2" accepts the share "/shared" offered by user "user1" using the sharing API

@@ -147,7 +147,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: Creating a link share with no specified permissions defaults to read permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created a folder "/afolder"
+    And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
       | path | /afolder |
     Then the OCS status code should be "<ocs_status_code>"
@@ -165,7 +165,7 @@ Feature: sharing
   Scenario Outline: Creating a link share with no specified permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
-    And user "user0" has created a folder "/afolder"
+    And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
       | path | /afolder |
     Then the OCS status code should be "<ocs_status_code>"
@@ -182,7 +182,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: Creating a link share with edit permissions keeps it
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created a folder "/afolder"
+    And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | /afolder |
       | permissions | 15       |
@@ -276,8 +276,8 @@ Feature: sharing
     Given using OCS API version "1"
     And user "user1" has been created with default attributes
     And user "user2" has been created with default attributes
-    And user "user0" has created a folder "/foo"
-    And user "user1" has created a folder "/foo"
+    And user "user0" has created folder "/foo"
+    And user "user1" has created folder "/foo"
     When user "user0" shares file "/foo" with user "user2" using the sharing API
     And user "user1" shares file "/foo" with user "user2" using the sharing API
     Then user "user2" should see the following elements
@@ -303,8 +303,8 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes
     And group "grp1" has been created
-    And user "user0" has created a folder "/test"
-    And user "user0" has created a folder "/test/sub"
+    And user "user0" has created folder "/test"
+    And user "user0" has created folder "/test/sub"
     And user "user0" has shared file "/test" with group "grp1"
     When user "user0" shares file "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -320,8 +320,8 @@ Feature: sharing
     And user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user0" has been added to group "grp1"
-    And user "user0" has created a folder "/test"
-    And user "user0" has created a folder "/test/sub"
+    And user "user0" has created folder "/test"
+    And user "user0" has created folder "/test/sub"
     And user "user0" has shared file "/test" with group "grp1"
     When user "user0" shares file "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -338,10 +338,10 @@ Feature: sharing
     And user "user2" has been created with default attributes
     And user "user3" has been created with default attributes
     And user "user4" has been created with default attributes
-    And user "user0" has created a folder "/folder1"
+    And user "user0" has created folder "/folder1"
     And user "user0" has shared file "/folder1" with user "user1"
     And user "user0" has shared file "/folder1" with user "user2"
-    And user "user0" has created a folder "/folder1/folder2"
+    And user "user0" has created folder "/folder1/folder2"
     And user "user0" has shared file "/folder1/folder2" with user "user3"
     And user "user0" has shared file "/folder1/folder2" with user "user4"
     And as user "user0"
@@ -405,7 +405,7 @@ Feature: sharing
   Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes
-    And user "user0" has created a folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+    And user "user0" has created folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
     When user "user0" shares folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -421,7 +421,7 @@ Feature: sharing
     And group "grp1" has been created
     And user "user1" has been created with default attributes
     And user "user1" has been added to group "grp1"
-    And user "user0" has created a folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+    And user "user0" has created folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
     When user "user0" shares folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -449,7 +449,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: user creates a public link share of a folder with folder name longer than 64 chars
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created a folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+    And user "user0" has created folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path | /aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog |

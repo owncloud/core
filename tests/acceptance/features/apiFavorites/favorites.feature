@@ -63,7 +63,7 @@ Feature: favorite
 
   Scenario Outline: Get favorited elements of a subfolder
     Given using <dav_version> DAV path
-    And the user has created a folder "/subfolder"
+    And the user has created folder "/subfolder"
     And the user has moved file "/textfile0.txt" to "/subfolder/textfile0.txt"
     And the user has moved file "/textfile1.txt" to "/subfolder/textfile1.txt"
     And the user has moved file "/textfile2.txt" to "/subfolder/textfile2.txt"
@@ -82,7 +82,7 @@ Feature: favorite
   Scenario Outline: moving a favorite file out of a share keeps favorite state
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes
-    And the user has created a folder "/shared"
+    And the user has created folder "/shared"
     And the user has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And the user has shared folder "/shared" with user "user1"
     And user "user1" has favorited element "/shared/shared_file.txt"
@@ -96,7 +96,7 @@ Feature: favorite
 
   Scenario Outline: Get favorited elements paginated
     Given using <dav_version> DAV path
-    And the user has created a folder "/subfolder"
+    And the user has created folder "/subfolder"
     And the user has copied file "/textfile0.txt" to "/subfolder/textfile0.txt"
     And the user has copied file "/textfile0.txt" to "/subfolder/textfile1.txt"
     And the user has copied file "/textfile0.txt" to "/subfolder/textfile2.txt"

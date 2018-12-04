@@ -67,7 +67,7 @@ Feature: move (rename) file
   Scenario Outline: Moving a file to a folder with no permissions
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes
-    And user "user1" has created a folder "/testshare"
+    And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
       | shareType   | 0         |
@@ -85,7 +85,7 @@ Feature: move (rename) file
   Scenario Outline: Moving a file to overwrite a file in a folder with no permissions
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes
-    And user "user1" has created a folder "/testshare"
+    And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
       | shareType   | 0         |
@@ -142,13 +142,13 @@ Feature: move (rename) file
   Scenario Outline: Checking file id after a move between received shares
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes
-    And user "user0" has created a folder "/folderA"
-    And user "user0" has created a folder "/folderB"
+    And user "user0" has created folder "/folderA"
+    And user "user0" has created folder "/folderB"
     And user "user0" has shared folder "/folderA" with user "user1"
     And user "user0" has shared folder "/folderB" with user "user1"
-    And user "user1" has created a folder "/folderA/ONE"
+    And user "user1" has created folder "/folderA/ONE"
     And user "user1" has stored id of file "/folderA/ONE"
-    And user "user1" has created a folder "/folderA/ONE/TWO"
+    And user "user1" has created folder "/folderA/ONE/TWO"
     When user "user1" moves folder "/folderA/ONE" to "/folderB/ONE" using the WebDAV API
     Then as "user1" folder "/folderA" should exist
     And as "user1" folder "/folderA/ONE" should not exist

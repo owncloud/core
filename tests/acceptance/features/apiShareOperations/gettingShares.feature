@@ -74,7 +74,7 @@ Feature: sharing
     And group "grp1" has been created
     And user "user2" has been created with default attributes
     And user "user2" has been added to group "grp1"
-    And user "user2" has created a folder "/shared"
+    And user "user2" has created folder "/shared"
     And user "user2" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user2" has shared folder "/shared" with user "user1"
     And user "user1" has shared folder "/shared" with group "grp1"

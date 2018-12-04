@@ -21,8 +21,8 @@ Feature: sharing
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
-    And user "user0" has created a folder "/common"
-    And user "user0" has created a folder "/common/sub"
+    And user "user0" has created folder "/common"
+    And user "user0" has created folder "/common/sub"
     And user "user0" has shared folder "common" with group "grp1"
     And user "user1" has shared file "textfile0.txt" with user "user2"
     And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
