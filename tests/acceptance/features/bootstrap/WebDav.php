@@ -958,18 +958,19 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $fileName
 	 * @param string|null $password
+	 * @param array|null $headers
 	 *
 	 * @return void
 	 */
 	public function downloadFileAsUserUsingPassword(
-		$user, $fileName, $password = null
+		$user, $fileName, $password = null, $headers = []
 	) {
 		$password = $this->getActualPassword($password);
 		$this->response = $this->makeDavRequest(
 			$user,
 			'GET',
 			$fileName,
-			[],
+			$headers,
 			null,
 			"files",
 			null,
