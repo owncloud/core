@@ -15,6 +15,7 @@
     "Library %s with a version lower than %s is required - available version %s." : "Biblioteca %s con una versión inferior que %s la requerida - versión disponible %s.",
     "Following platforms are supported: %s" : "Las siguientes plataformas están soportadas: %s",
     "ownCloud %s or higher is required." : "Se requiere ownCloud %s o superior.",
+    "No minimum ownCloud version is defined in appinfo/info.xml." : "No está definida una versión mínima de ownCloud en appinfo/info.xml.",
     "ownCloud %s or lower is required." : "Se requiere ownCloud %s o una versión inferior.",
     "No maximum ownCloud version is defined in appinfo/info.xml." : "No está especificada una versión máxima de ownCloud en appinfo/info.xml.",
     "Unknown filetype" : "Tipo de archivo desconocido",
