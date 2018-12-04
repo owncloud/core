@@ -94,8 +94,8 @@ class CheckSetupController extends Controller {
 
 		try {
 			$client = $this->clientService->newClient();
-			$client->get('https://www.owncloud.org/');
-			$client->get('http://www.owncloud.org/');
+			$client->get('https://owncloud.org/');
+			$client->get('http://owncloud.org/');
 			return true;
 		} catch (\Exception $e) {
 			return false;
