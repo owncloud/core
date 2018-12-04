@@ -85,7 +85,7 @@ Feature: move (rename) file
 
   Scenario: Moving a file to a folder with no permissions
     Given user "user1" has been created with default attributes
-    And user "user1" has created a folder "/testshare"
+    And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
       | shareType   | 0         |
@@ -103,7 +103,7 @@ Feature: move (rename) file
 
   Scenario: Moving a file to overwrite a file in a folder with no permissions
     Given user "user1" has been created with default attributes
-    And user "user1" has created a folder "/testshare"
+    And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
       | shareType   | 0         |
@@ -201,7 +201,7 @@ Feature: move (rename) file
     Given the administrator has enabled async operations
     And using <dav_version> DAV path
     And user "user1" has been created with default attributes
-    And user "user1" has created a folder "/testshare"
+    And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
       | shareType   | 0         |

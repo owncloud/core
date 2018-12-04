@@ -110,7 +110,7 @@ Feature: sharing
 
   Scenario Outline: Correct webdav share-permissions for owned folder
     Given using <dav-path> DAV path
-    And user "user0" has created a folder "/tmp"
+    And user "user0" has created folder "/tmp"
     When user "user0" gets the following properties of folder "/" using the WebDAV API
       | {http://open-collaboration-services.org/ns}share-permissions |
     Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "31"
@@ -121,7 +121,7 @@ Feature: sharing
 
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions
     Given using <dav-path> DAV path
-    And user "user0" has created a folder "/tmp"
+    And user "user0" has created folder "/tmp"
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
       | {http://open-collaboration-services.org/ns}share-permissions |
@@ -135,7 +135,7 @@ Feature: sharing
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
-    And user "user0" has created a folder "/tmp"
+    And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
       | path      | tmp  |
       | shareType | 1    |
@@ -150,7 +150,7 @@ Feature: sharing
 
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but edit
     Given using <dav-path> DAV path
-    And user "user0" has created a folder "/tmp"
+    And user "user0" has created folder "/tmp"
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user0" updates the last share using the sharing API with
       | permissions | 29 |
@@ -164,7 +164,7 @@ Feature: sharing
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
-    And user "user0" has created a folder "/tmp"
+    And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
       | path        | tmp  |
       | shareType   | 1    |
@@ -180,7 +180,7 @@ Feature: sharing
 
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but create
     Given using <dav-path> DAV path
-    And user "user0" has created a folder "/tmp"
+    And user "user0" has created folder "/tmp"
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user0" updates the last share using the sharing API with
       | permissions | 27 |
@@ -194,7 +194,7 @@ Feature: sharing
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
-    And user "user0" has created a folder "/tmp"
+    And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
       | path        | tmp  |
       | shareType   | 1    |
@@ -210,7 +210,7 @@ Feature: sharing
 
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but delete
     Given using <dav-path> DAV path
-    And user "user0" has created a folder "/tmp"
+    And user "user0" has created folder "/tmp"
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user0" updates the last share using the sharing API with
       | permissions | 23 |
@@ -224,7 +224,7 @@ Feature: sharing
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
-    And user "user0" has created a folder "/tmp"
+    And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
       | path        | tmp  |
       | shareType   | 1    |
@@ -240,7 +240,7 @@ Feature: sharing
 
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but share
     Given using <dav-path> DAV path
-    And user "user0" has created a folder "/tmp"
+    And user "user0" has created folder "/tmp"
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user0" updates the last share using the sharing API with
       | permissions | 15 |
@@ -254,7 +254,7 @@ Feature: sharing
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
-    And user "user0" has created a folder "/tmp"
+    And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
       | path        | tmp  |
       | shareType   | 1    |

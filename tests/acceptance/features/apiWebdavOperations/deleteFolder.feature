@@ -20,8 +20,8 @@ Feature: delete folder
 
   Scenario Outline: delete a folder when 2 folder exist with different case
     Given using <dav_version> DAV path
-    And user "user0" creates a folder "/PARENT" using the WebDAV API
-    And user "user0" creates a folder "/parent" using the WebDAV API
+    And user "user0" creates folder "/PARENT" using the WebDAV API
+    And user "user0" creates folder "/parent" using the WebDAV API
     When user "user0" deletes folder "/PARENT" using the WebDAV API
     Then the HTTP status code should be "204"
     And as "user0" folder "/PARENT" should not exist

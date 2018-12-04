@@ -39,7 +39,7 @@ Feature: get file properties
 
   Scenario Outline: Do a PROPFIND of various folder/file names
     Given using <dav_version> DAV path
-    And user "user0" has created a folder "<folder_name>"
+    And user "user0" has created folder "<folder_name>"
     And user "user0" has uploaded file with content "uploaded content" to "<folder_name>/<file_name>"
     When user "user0" gets the properties of file "<folder_name>/<file_name>" using the WebDAV API
     Then the properties response should contain an etag
@@ -60,7 +60,7 @@ Feature: get file properties
 
   Scenario Outline: A file that is not shared does not have a share-types property
     Given using <dav_version> DAV path
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
       | {http://owncloud.org/ns}share-types |
     Then the response should contain an empty property "{http://owncloud.org/ns}share-types"
@@ -72,7 +72,7 @@ Feature: get file properties
   Scenario Outline: A file that is shared to a user has a share-types property
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has created a share with settings
       | path        | test  |
       | shareType   | 0     |
@@ -90,7 +90,7 @@ Feature: get file properties
   Scenario Outline: A file that is shared to a group has a share-types property
     Given using <dav_version> DAV path
     And group "grp1" has been created
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has created a share with settings
       | path        | test |
       | shareType   | 1    |
@@ -108,7 +108,7 @@ Feature: get file properties
   @public_link_share-feature-required
   Scenario Outline: A file that is shared by link has a share-types property
     Given using <dav_version> DAV path
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has created a public link share with settings
       | path        | test |
       | permissions | 31   |
@@ -126,7 +126,7 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "user1" has been created with default attributes
     And group "grp2" has been created
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has created a share with settings
       | path        | test  |
       | shareType   | 0     |
