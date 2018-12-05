@@ -32,7 +32,7 @@ OCP\JSON::checkAppEnabled('files_sharing');
 
 $l = \OC::$server->getL10N('files_sharing');
 
-$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application('federatedfilesharing');
+$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application();
 $federatedShareProvider = $federatedSharingApp->getFederatedShareProvider();
 
 // check if server admin allows to mount public links from other servers
@@ -61,10 +61,6 @@ if (\OC\Share\Helper::isSameUserOnSameServer($owner, $remote, $currentUser, $cur
 	exit();
 }
 
-$discoveryManager = new \OCA\FederatedFileSharing\DiscoveryManager(
-	\OC::$server->getMemCacheFactory(),
-	\OC::$server->getHTTPClientService()
-);
 $externalManager = new \OCA\Files_Sharing\External\Manager(
 		\OC::$server->getDatabaseConnection(),
 		\OC\Files\Filesystem::getMountManager(),

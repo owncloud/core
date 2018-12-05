@@ -78,7 +78,17 @@ class DiscoveryManagerTest extends \Test\TestCase {
 			->method('getBody')
 			->willReturn('CertainlyNotJson');
 		$this->client
-			->expects($this->once())
+			->expects($this->at(0))
+			->method('get')
+			->with('https://myhost.com/ocm-provider/', [
+				'timeout' => 10,
+				'connect_timeout' => 10,
+			])
+			->willReturn(
+				$this->createMock('\OCP\Http\Client\IResponse')
+			);
+		$this->client
+			->expects($this->at(1))
 			->method('get')
 			->with('https://myhost.com/ocs-provider/', [
 				'timeout' => 10,
@@ -86,16 +96,16 @@ class DiscoveryManagerTest extends \Test\TestCase {
 			])
 			->willReturn($response);
 		$this->cache
-			->expects($this->at(0))
+			->expects($this->at(1))
 			->method('get')
 			->with('https://myhost.com')
 			->willReturn(null);
 		$this->cache
-			->expects($this->at(1))
+			->expects($this->at(2))
 			->method('set')
 			->with('https://myhost.com', '{"webdav":"\/public.php\/webdav","share":"\/ocs\/v1.php\/cloud\/shares"}');
 		$this->cache
-			->expects($this->at(2))
+			->expects($this->at(3))
 			->method('get')
 			->with('https://myhost.com')
 			->willReturn('{"webdav":"\/public.php\/webdav","share":"\/ocs\/v1.php\/cloud\/shares"}');
@@ -115,7 +125,17 @@ class DiscoveryManagerTest extends \Test\TestCase {
 			->method('getBody')
 			->willReturn('{"version":2,"services":{"PRIVATE_DATA":{"version":1,"endpoints":{"store":"\/ocs\/v2.php\/privatedata\/setattribute","read":"\/ocs\/v2.php\/privatedata\/getattribute","delete":"\/ocs\/v2.php\/privatedata\/deleteattribute"}},"SHARING":{"version":1,"endpoints":{"share":"\/ocs\/v2.php\/apps\/files_sharing\/api\/v1\/shares"}},"FEDERATED_SHARING":{"version":1,"endpoints":{"share":"\/ocs\/v2.php\/cloud\/shares","webdav":"\/public.php\/MyCustomEndpoint\/"}},"ACTIVITY":{"version":1,"endpoints":{"list":"\/ocs\/v2.php\/cloud\/activity"}},"PROVISIONING":{"version":1,"endpoints":{"user":"\/ocs\/v2.php\/cloud\/users","groups":"\/ocs\/v2.php\/cloud\/groups","apps":"\/ocs\/v2.php\/cloud\/apps"}}}}');
 		$this->client
-			->expects($this->once())
+			->expects($this->at(0))
+			->method('get')
+			->with('https://myhost.com/ocm-provider/', [
+				'timeout' => 10,
+				'connect_timeout' => 10,
+			])
+			->willReturn(
+				$this->createMock('\OCP\Http\Client\IResponse')
+			);
+		$this->client
+			->expects($this->at(1))
 			->method('get')
 			->with('https://myhost.com/ocs-provider/', [
 				'timeout' => 10,
@@ -133,12 +153,22 @@ class DiscoveryManagerTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getStatusCode')
 			->willReturn(200);
+		$this->client
+			->expects($this->at(0))
+			->method('get')
+			->with('https://myhost.com/ocm-provider/', [
+				'timeout' => 10,
+				'connect_timeout' => 10,
+			])
+			->willReturn(
+				$this->createMock('\OCP\Http\Client\IResponse')
+			);
 		$response
 			->expects($this->once())
 			->method('getBody')
 			->willReturn('{"version":2,"PRIVATE_DATA":{"version":1,"endpoints":{"store":"\/ocs\/v2.php\/privatedata\/setattribute","read":"\/ocs\/v2.php\/privatedata\/getattribute","delete":"\/ocs\/v2.php\/privatedata\/deleteattribute"}},"SHARING":{"version":1,"endpoints":{"share":"\/ocs\/v2.php\/apps\/files_sharing\/api\/v1\/shares"}},"FEDERATED_SHARING":{"version":1,"endpoints":{"share":"\/ocs\/v2.php\/cloud\/shares","webdav":"\/public.php\/MyCustomEndpoint\/"}},"ACTIVITY":{"version":1,"endpoints":{"list":"\/ocs\/v2.php\/cloud\/activity"}},"PROVISIONING":{"version":1,"endpoints":{"user":"\/ocs\/v2.php\/cloud\/users","groups":"\/ocs\/v2.php\/cloud\/groups","apps":"\/ocs\/v2.php\/cloud\/apps"}}}');
 		$this->client
-			->expects($this->once())
+			->expects($this->at(1))
 			->method('get')
 			->with('https://myhost.com/ocs-provider/', [
 				'timeout' => 10,
@@ -184,7 +214,17 @@ class DiscoveryManagerTest extends \Test\TestCase {
 			->method('getBody')
 			->willReturn('{"version":2,"services":{"PRIVATE_DATA":{"version":1,"endpoints":{"store":"\/ocs\/v2.php\/privatedata\/setattribute","read":"\/ocs\/v2.php\/privatedata\/getattribute","delete":"\/ocs\/v2.php\/privatedata\/deleteattribute"}},"SHARING":{"version":1,"endpoints":{"share":"\/ocs\/v2.php\/apps\/files_sharing\/api\/v1\/shares"}},"FEDERATED_SHARING":{"version":1,"endpoints":{"share":"\/ocs\/v2.php\/cl@oud\/MyCustomShareEndpoint","webdav":"\/public.php\/MyC:ustomEndpoint\/"}},"ACTIVITY":{"version":1,"endpoints":{"list":"\/ocs\/v2.php\/cloud\/activity"}},"PROVISIONING":{"version":1,"endpoints":{"user":"\/ocs\/v2.php\/cloud\/users","groups":"\/ocs\/v2.php\/cloud\/groups","apps":"\/ocs\/v2.php\/cloud\/apps"}}}}');
 		$this->client
-			->expects($this->once())
+			->expects($this->at(0))
+			->method('get')
+			->with('https://myhost.com/ocm-provider/', [
+				'timeout' => 10,
+				'connect_timeout' => 10,
+			])
+			->willReturn(
+				$this->createMock('\OCP\Http\Client\IResponse')
+			);
+		$this->client
+			->expects($this->at(1))
 			->method('get')
 			->with('https://myhost.com/ocs-provider/', [
 				'timeout' => 10,
@@ -192,16 +232,16 @@ class DiscoveryManagerTest extends \Test\TestCase {
 			])
 			->willReturn($response);
 		$this->cache
-			->expects($this->at(0))
+			->expects($this->at(1))
 			->method('get')
 			->with('https://myhost.com')
 			->willReturn(null);
 		$this->cache
-			->expects($this->at(1))
+			->expects($this->at(2))
 			->method('set')
 			->with('https://myhost.com', '{"webdav":"\/public.php\/webdav","share":"\/ocs\/v1.php\/cloud\/shares"}');
 		$this->cache
-			->expects($this->at(2))
+			->expects($this->at(3))
 			->method('get')
 			->with('https://myhost.com')
 			->willReturn('{"webdav":"\/public.php\/webdav","share":"\/ocs\/v1.php\/cloud\/shares"}');

@@ -53,8 +53,8 @@ $application->registerRoutes($this, [
 		['name' => 'TwoFactorChallenge#solveChallenge', 'url' => '/login/challenge/{challengeProviderId}', 'verb' => 'POST'],
 	],
 	'ocs' => [
-		['name' => 'Cloud#getCapabilities', 'url' => '/cloud/capabilities', 'verb' => 'GET'],
-		['name' => 'Cloud#getCurrentUser', 'url' => '/cloud/user', 'verb' => 'GET'],
+		['root' => '/cloud', 'name' => 'Cloud#getCapabilities', 'url' => '/capabilities', 'verb' => 'GET'],
+		['root' => '/cloud', 'name' => 'Cloud#getCurrentUser', 'url' => '/user', 'verb' => 'GET'],
 	]
 ]);
 

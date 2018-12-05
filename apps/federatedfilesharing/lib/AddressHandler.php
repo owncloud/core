@@ -101,6 +101,16 @@ class AddressHandler {
 	}
 
 	/**
+	 * @param string $uid
+	 *
+	 * @return Address
+	 */
+	public function getLocalUserFederatedAddress($uid) {
+		$host = $this->generateRemoteURL();
+		return new Address("{$uid}@{$host}");
+	}
+
+	/**
 	 * generate remote URL part of federated ID
 	 *
 	 * @return string url of the current server
@@ -111,53 +121,14 @@ class AddressHandler {
 	}
 
 	/**
-	 * check if two federated cloud IDs refer to the same user
-	 *
-	 * @param string $user1
-	 * @param string $server1
-	 * @param string $user2
-	 * @param string $server2
-	 * @return bool true if both users and servers are the same
-	 */
-	public function compareAddresses($user1, $server1, $user2, $server2) {
-		$normalizedServer1 = \strtolower($this->removeProtocolFromUrl($server1));
-		$normalizedServer2 = \strtolower($this->removeProtocolFromUrl($server2));
-
-		if (\rtrim($normalizedServer1, '/') === \rtrim($normalizedServer2, '/')) {
-			// FIXME this should be a method in the user management instead
-			\OCP\Util::emitHook(
-				'\OCA\Files_Sharing\API\Server2Server',
-				'preLoginNameUsedAsUserName',
-				['uid' => &$user1]
-			);
-			\OCP\Util::emitHook(
-				'\OCA\Files_Sharing\API\Server2Server',
-				'preLoginNameUsedAsUserName',
-				['uid' => &$user2]
-			);
-
-			if ($user1 === $user2) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * remove protocol from URL
 	 *
 	 * @param string $url
 	 * @return string
 	 */
 	public function removeProtocolFromUrl($url) {
-		if (\strpos($url, 'https://') === 0) {
-			return \substr($url, \strlen('https://'));
-		} elseif (\strpos($url, 'http://') === 0) {
-			return \substr($url, \strlen('http://'));
-		}
-
-		return $url;
+		// replace all characters before :// and :// itself
+		return \preg_replace('|^(.*?://)|', '', $url);
 	}
 
 	/**

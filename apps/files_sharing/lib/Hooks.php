@@ -26,7 +26,6 @@
 namespace OCA\Files_Sharing;
 
 use OC\Files\Filesystem;
-use OCA\FederatedFileSharing\DiscoveryManager;
 use OCP\IURLGenerator;
 use OCP\Files\IRootFolder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -76,10 +75,6 @@ class Hooks {
 	}
 
 	public static function deleteUser($params) {
-		$discoveryManager = new DiscoveryManager(
-			\OC::$server->getMemCacheFactory(),
-			\OC::$server->getHTTPClientService()
-		);
 		$manager = new External\Manager(
 			\OC::$server->getDatabaseConnection(),
 			\OC\Files\Filesystem::getMountManager(),
