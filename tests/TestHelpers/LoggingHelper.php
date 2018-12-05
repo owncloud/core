@@ -213,6 +213,7 @@ class LoggingHelper {
 	 * @param string $baseUrl
 	 * @param string $adminUsername
 	 * @param string $adminPassword
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */
