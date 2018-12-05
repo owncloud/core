@@ -279,8 +279,7 @@ class SetupHelper {
 	 * @return string
 	 * @throws Exception
 	 */
-	private static function checkAdminUsername(
-		$adminUsername, $callerName) {
+	private static function checkAdminUsername($adminUsername, $callerName) {
 		if (self::$adminUsername === null
 			&& $adminUsername === null
 		) {
@@ -301,8 +300,7 @@ class SetupHelper {
 	 * @return string
 	 * @throws Exception
 	 */
-	private static function checkAdminPassword(
-		$adminPassword, $callerName) {
+	private static function checkAdminPassword($adminPassword, $callerName) {
 		if (self::$adminPassword === null
 			&& $adminPassword === null
 		) {
@@ -323,8 +321,7 @@ class SetupHelper {
 	 * @return string
 	 * @throws Exception
 	 */
-	private static function checkBaseUrl(
-		$baseUrl, $callerName) {
+	private static function checkBaseUrl($baseUrl, $callerName) {
 		if (self::$baseUrl === null
 			&& $baseUrl === null
 		) {
