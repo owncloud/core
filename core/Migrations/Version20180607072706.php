@@ -66,8 +66,17 @@ class Version20180607072706 implements ISchemaMigration {
 
 		$table->setPrimaryKey(['id']);
 		$table->addUniqueIndex(['token_hash']);
-		$table->addForeignKeyConstraint("{$prefix}filecache", ['file_id'], ['fileid']);
-		$table->addForeignKeyConstraint("{$prefix}accounts", ['owner_account_id'], ['id']);
-		// TODO: cascade delete
+		$table->addForeignKeyConstraint(
+			"{$prefix}filecache",
+			['file_id'],
+			['fileid'],
+			['onDelete' => 'CASCADE']
+		);
+		$table->addForeignKeyConstraint(
+			"{$prefix}accounts",
+			['owner_account_id'],
+			['id'],
+			['onDelete' => 'CASCADE']
+		);
 	}
 }

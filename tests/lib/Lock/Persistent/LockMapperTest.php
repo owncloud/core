@@ -28,6 +28,7 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
 use OCP\Lock\Persistent\ILock;
 use Test\TestCase;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 
 /**
  * Class LockMapperTest
@@ -120,6 +121,7 @@ class LockMapperTest extends TestCase {
 		$lock->setCreatedAt(\time());
 		$lock->setTimeout(1880);
 		$lock->setScope(ILock::LOCK_SCOPE_EXCLUSIVE);
+		$lock->setOwnerAccountId($this->account->getId());
 		$lock->setDepth(0);
 		$this->mapper->insert($lock);
 
@@ -210,5 +212,31 @@ class LockMapperTest extends TestCase {
 		$this->locks[]= $lock;
 
 		return $lock;
+	}
+
+	/**
+	 * @expectedException \OCP\AppFramework\Db\DoesNotExistException
+	 */
+	public function testDeleteUserDeletesLock() {
+		if ($this->db->getDatabasePlatform() instanceof SqlitePlatform) {
+			// remove when https://github.com/doctrine/dbal/issues/1204 and https://github.com/doctrine/dbal/issues/2833 are fixed
+			$this->markTestSkipped("No cascade delete possible on Sqlite with Doctrine DBAL");
+		}
+
+		$lock = new Lock();
+		$token = \uniqid('tok', true);
+		$lock->setFileId($this->fileCacheId);
+		$lock->setToken($token);
+		$lock->setCreatedAt(\time());
+		$lock->setTimeout(1880);
+		$lock->setOwnerAccountId($this->account->getId());
+		$lock->setScope(ILock::LOCK_SCOPE_EXCLUSIVE);
+		$lock->setDepth(0);
+		$this->mapper->insert($lock);
+
+		\OC::$server->getAccountMapper()
+			->delete($this->account);
+
+		$this->mapper->getLockByToken($token);
 	}
 }
