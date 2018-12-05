@@ -51,7 +51,6 @@ class EmailHelper {
 	/**
 	 *
 	 * @param string $localMailhogUrl
-	 *
 	 * @param string $address
 	 * @param int $waitTimeSec Time to wait for the email
 	 *

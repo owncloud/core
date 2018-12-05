@@ -151,6 +151,7 @@ class TagsHelper {
 	 * @param string $name
 	 * @param bool $userVisible
 	 * @param bool $userAssignable
+	 * @param bool $userEditable
 	 * @param string $groups separated by "|"
 	 * @param int $davPathVersionToUse (1|2)
 	 *
