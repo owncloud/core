@@ -969,7 +969,14 @@ class OC_App {
 		}
 		$appData = self::getAppInfo($appId);
 		self::executeRepairSteps($appId, $appData['repair-steps']['pre-migration']);
+		$dispatcher = \OC::$server->getEventDispatcher();
+		$appEvent = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['appid' => $appId]);
 		if (isset($appData['use-migrations']) && $appData['use-migrations'] === 'true') {
+			$dispatcher->dispatch('before.app.migration', $appEvent);
+			$appEvent->stopPropagation();
+			if ($appEvent->hasArgument('discontinue') && ($appEvent->getArgument('discontinue') === 'true')) {
+				return true;
+			}
 			$ms = new \OC\DB\MigrationService($appId, \OC::$server->getDatabaseConnection());
 			$ms->migrate();
 		} else {

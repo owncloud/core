@@ -26,7 +26,14 @@ use OC\IntegrityCheck\Checker;
 use OC\Updater;
 use OCP\IConfig;
 use OCP\ILogger;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
+/**
+ * Class UpdaterTest
+ *
+ * @group DB
+ * @package Test
+ */
 class UpdaterTest extends TestCase {
 	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
 	private $config;
@@ -54,6 +61,19 @@ class UpdaterTest extends TestCase {
 			$this->checker,
 			$this->logger
 		);
+	}
+
+	public function testdoCoreUpgradeForMigrationAlertEvents() {
+		$calledEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('before.app.migration',
+			function (GenericEvent $event) use (&$calledEvent) {
+				$calledEvent[] = 'before.app.migration';
+				$calledEvent[] = $event;
+			});
+		$this->invokePrivate($this->updater, 'doCoreUpgrade', ['10.0.0', '10.0.10']);
+		$this->assertEquals($calledEvent[0], 'before.app.migration');
+		$this->assertEquals('core', $calledEvent[1]->getArgument('appid'));
+		$this->assertCount(1, $calledEvent[1]->getArguments());
 	}
 
 	/**

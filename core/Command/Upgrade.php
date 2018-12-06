@@ -35,9 +35,11 @@ use OCP\IConfig;
 use OCP\ILogger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Upgrade extends Command {
@@ -54,14 +56,19 @@ class Upgrade extends Command {
 	/** @var ILogger */
 	private $logger;
 
+	/** @var QuestionHelper  */
+	private $questionHelper;
+
 	/**
 	 * @param IConfig $config
 	 * @param ILogger $logger
 	 */
-	public function __construct(IConfig $config, ILogger $logger) {
+	public function __construct(IConfig $config, ILogger $logger,
+								QuestionHelper $questionHelper) {
 		parent::__construct();
 		$this->config = $config;
 		$this->logger = $logger;
+		$this->questionHelper = $questionHelper;
 	}
 
 	protected function configure() {
@@ -79,7 +86,13 @@ class Upgrade extends Command {
 				null,
 				InputOption::VALUE_NONE,
 				'Automatically update apps to new major versions during minor updates of ownCloud Server'
-				);
+			)
+			->addOption(
+				'--alert-migration',
+				null,
+				InputOption::VALUE_NONE,
+				'Alert user about the database migration. If alert is required then provide yes else no'
+			);
 	}
 
 	/**
@@ -89,6 +102,7 @@ class Upgrade extends Command {
 	 * @param OutputInterface $output output interface
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
+		$alertDBMigration = $input->getOption('alert-migration');
 		if ($output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL
 			&& !$input->hasParameterOption('--verbose=0', true)) {
 			// set to more verbose on upgrade if no explicit verbosity was set
@@ -180,6 +194,20 @@ class Upgrade extends Command {
 						break;
 				}
 			};
+			$appMigrationListener = function ($event) use ($input, $output, $alertDBMigration) {
+				if (!$event instanceof GenericEvent) {
+					return null;
+				}
+				$question = new ConfirmationQuestion(
+					"Warning: Database migration is going to apply for app: {$event->getArgument('appid')}."
+					. " Do you want to continue? (y/n)", false
+				);
+				if ($alertDBMigration) {
+					if (!$this->questionHelper->ask($input, $output, $question)) {
+						$event->setArgument('discontinue', 'true');
+					}
+				}
+			};
 
 			$dispatcher->addListener('\OC\DB\Migrator::executeSql', $listener);
 			$dispatcher->addListener('\OC\DB\Migrator::checkTable', $listener);
@@ -190,6 +218,7 @@ class Upgrade extends Command {
 			$dispatcher->addListener('\OC\Repair::info', $repairListener);
 			$dispatcher->addListener('\OC\Repair::warning', $repairListener);
 			$dispatcher->addListener('\OC\Repair::error', $repairListener);
+			$dispatcher->addListener('before.app.migration', $appMigrationListener);
 			
 			$updater->listen('\OC\Updater', 'maintenanceEnabled', function () use ($output) {
 				$output->writeln('<info>Turned on maintenance mode</info>');

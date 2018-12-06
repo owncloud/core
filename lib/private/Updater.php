@@ -295,8 +295,12 @@ class Updater extends BasicEmitter {
 	protected function doCoreUpgrade() {
 		$this->emit('\OC\Updater', 'dbUpgradeBefore');
 
+		$dispatcher = \OC::$server->getEventDispatcher();
+		$appEvent = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['appid' => 'core']);
+		$dispatcher->dispatch('before.app.migration', $appEvent);
+		$appEvent->stopPropagation();
 		// execute core migrations
-		if (\is_dir(\OC::$SERVERROOT."/core/Migrations")) {
+		if (\is_dir(\OC::$SERVERROOT."/core/Migrations") && !$appEvent->hasArgument('discontinue')) {
 			$ms = new \OC\DB\MigrationService('core', \OC::$server->getDatabaseConnection());
 			$ms->migrate();
 		}
