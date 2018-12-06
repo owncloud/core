@@ -15,6 +15,7 @@ default:
         - AppManagementContext:
         - CalDavContext:
         - CardDavContext:
+        - FilesVersionsContext:
 
     apiCapabilities:
       paths:

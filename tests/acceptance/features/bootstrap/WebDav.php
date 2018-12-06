@@ -1522,91 +1522,6 @@ trait WebDav {
 	}
 
 	/**
-	 * @param string $user
-	 * @param string $path
-	 * @param int $folderDepth
-	 * @param array|null $properties
-	 *
-	 * @return array|\Sabre\HTTP\ResponseInterface
-	 */
-	public function listVersionFolder(
-		$user, $path, $folderDepth, $properties = null
-	) {
-		$client = $this->getSabreClient($user);
-		if (!$properties) {
-			$properties = [
-				'{DAV:}getetag'
-			];
-		}
-		try {
-			$response = $client->propfind(
-				$this->makeSabrePathNotForFiles($path, 'file_versions'),
-				$properties, $folderDepth
-			);
-		} catch (Sabre\HTTP\ClientHttpException $e) {
-			$response = $e->getResponse();
-		}
-		return $response;
-	}
-
-	/**
-	 * @Then the version folder of file :path for user :user should contain :count element(s)
-	 *
-	 * @param string $path
-	 * @param string $user
-	 * @param int $count
-	 *
-	 * @return void
-	 */
-	public function theVersionFolderOfFileShouldContainElements(
-		$path, $user, $count
-	) {
-		$fileId = $this->getFileIdForPath($user, $path);
-		PHPUnit_Framework_Assert::assertNotNull($fileId, "file $path not found");
-		$elements = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
-		PHPUnit_Framework_Assert::assertEquals($count, \count($elements) - 1);
-	}
-
-	/**
-	 * @Then the version folder of fileId :fileId for user :user should contain :count element(s)
-	 *
-	 * @param int $fileId
-	 * @param string $user
-	 * @param int $count
-	 *
-	 * @return void
-	 */
-	public function theVersionFolderOfFileIdShouldContainElements(
-		$fileId, $user, $count
-	) {
-		$elements = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
-		PHPUnit_Framework_Assert::assertEquals($count, \count($elements) - 1);
-	}
-
-	/**
-	 * @Then the content length of file :path with version index :index for user :user in versions folder should be :length
-	 *
-	 * @param string $path
-	 * @param int $index
-	 * @param string $user
-	 * @param int $length
-	 *
-	 * @return void
-	 */
-	public function theContentLengthOfFileForUserInVersionsFolderIs(
-		$path, $index, $user, $length
-	) {
-		$fileId = $this->getFileIdForPath($user, $path);
-		$elements = $this->listVersionFolder(
-			$user, "/meta/$fileId/v", 1, ['{DAV:}getcontentlength']
-		);
-		$elements = \array_values($elements);
-		PHPUnit_Framework_Assert::assertEquals(
-			$length, $elements[$index]['{DAV:}getcontentlength']
-		);
-	}
-
-	/**
 	 * Returns the elements of a report command
 	 *
 	 * @param string $user
@@ -3069,30 +2984,6 @@ trait WebDav {
 				)
 			);
 		}
-	}
-
-	/**
-	 * @When user :user restores version index :versionIndex of file :path using the WebDAV API
-	 * @Given user :user has restored version index :versionIndex of file :path
-	 *
-	 * @param string $user
-	 * @param int $versionIndex
-	 * @param string $path
-	 *
-	 * @return void
-	 */
-	public function userRestoresVersionIndexOfFile($user, $versionIndex, $path) {
-		$fileId = $this->getFileIdForPath($user, $path);
-		$versions = \array_keys(
-			$this->listVersionFolder($user, "/meta/$fileId/v", 1)
-		);
-		//restoring the version only works with dav path v2
-		$destinationUrl = $this->getBaseUrl() . "/" .
-						  WebDavHelper::getDavPath($user, 2) . \trim($path, "/");
-		HttpRequestHelper::sendRequest(
-			$this->getBaseUrlWithoutPath() . $versions[$versionIndex],
-			'COPY', $user, $this->getPasswordForUser($user), ['Destination' => $destinationUrl]
-		);
 	}
 
 	/**
