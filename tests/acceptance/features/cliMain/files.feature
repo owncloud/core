@@ -110,10 +110,10 @@ Feature: Files Operations command
       | username |
       | user0    |
       | user1    |
-    When the administrator creates the local storage mount "local_storage1" using the occ command
-    And the administrator adds user "user0" as the applicable user for the last local storage mount using the occ command
-    And the administrator creates the local storage mount "local_storage2" using the occ command
-    And the administrator adds user "user1" as the applicable user for the last local storage mount using the occ command
+    And the administrator has created the local storage mount "local_storage1"
+    And the administrator has added user "user0" as the applicable user for the last local storage mount
+    And the administrator has created the local storage mount "local_storage2"
+    And the administrator has added user "user1" as the applicable user for the last local storage mount
     And the administrator has set the external storage "local_storage1" to be never scanned automatically
     And the administrator has set the external storage "local_storage2" to be never scanned automatically
     And the administrator has scanned the filesystem for all users
@@ -131,6 +131,47 @@ Feature: Files Operations command
       | /local_storage1/hello1.txt |
     When user "user1" requests "/remote.php/dav/files/user1/local_storage2" with "PROPFIND" using basic auth
     Then the propfind result of "user1" should not contain these entries:
+      | /local_storage2/hello1.txt |
+
+  Scenario: Adding a file on local storage and running file scan for a specific group should add file for only the users of that group
+    Given using new DAV path
+    And these users have been created with default attributes:
+      | username |
+      | user0    |
+      | user1    |
+      | user2    |
+    And group "newgroup" has been created
+    And group "newgroup2" has been created
+    And user "user0" has been added to group "newgroup"
+    And user "user1" has been added to group "newgroup"
+    And user "user2" has been added to group "newgroup2"
+    And the administrator has created the local storage mount "local_storage1"
+    And the administrator has added group "newgroup" as the applicable group for the last local storage mount
+    And the administrator has created the local storage mount "local_storage2"
+    And the administrator has added group "newgroup2" as the applicable group for the last local storage mount
+    And the administrator has set the external storage "local_storage1" to be never scanned automatically
+    And the administrator has set the external storage "local_storage2" to be never scanned automatically
+    And the administrator has scanned the filesystem for all users
+    When the administrator creates file "hello1.txt" with content "<? php :)" in local storage "local_storage1" using the testing API
+    And the administrator creates file "hello1.txt" with content "<? php :)" in local storage "local_storage2" using the testing API
+    And user "user0" requests "/remote.php/dav/files/user0/local_storage1" with "PROPFIND" using basic auth
+    Then the propfind result of "user0" should not contain these entries:
+      | /local_storage1/hello1.txt |
+    When user "user1" requests "/remote.php/dav/files/user1/local_storage1" with "PROPFIND" using basic auth
+    Then the propfind result of "user1" should not contain these entries:
+      | /local_storage1/hello1.txt |
+    When user "user2" requests "/remote.php/dav/files/user2/local_storage2" with "PROPFIND" using basic auth
+    Then the propfind result of "user2" should not contain these entries:
+      | /local_storage2/hello1.txt |
+    When the administrator scans the filesystem for group "newgroup" using the occ command
+    And user "user0" requests "/remote.php/dav/files/user0/local_storage1" with "PROPFIND" using basic auth
+    Then the propfind result of "user0" should contain these entries:
+      | /local_storage1/hello1.txt |
+    When user "user1" requests "/remote.php/dav/files/user1/local_storage1" with "PROPFIND" using basic auth
+    Then the propfind result of "user1" should contain these entries:
+      | /local_storage1/hello1.txt |
+    When user "user2" requests "/remote.php/dav/files/user2/local_storage2" with "PROPFIND" using basic auth
+    Then the propfind result of "user2" should not contain these entries:
       | /local_storage2/hello1.txt |
 
   Scenario: administrator should be able to add more than one user as the applicable user for a local mount
