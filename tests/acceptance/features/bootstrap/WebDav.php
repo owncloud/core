@@ -34,6 +34,7 @@ use TestHelpers\UploadHelper;
 use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
 use Sabre\DAV\Xml\Property\Complex;
+use TestHelpers\Asserts\WebDav as WebDavAssert;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -3025,75 +3026,18 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the DAV exception should be :message
-	 *
-	 * @param string $message
-	 * @param array|null $responseXml
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theDavExceptionShouldBe($message, $responseXml = null) {
-		$this->theDavResponseElementShouldBe("exception", $message, $responseXml);
-	}
-
-	/**
-	 * @Then the DAV message should be :message
-	 *
-	 * @param string $message
-	 * @param array|null $responseXml
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theDavErrorMessageShouldBe($message, $responseXml = null) {
-		$this->theDavResponseElementShouldBe("message", $message, $responseXml);
-	}
-
-	/**
-	 * @Then the DAV reason should be :message
-	 *
-	 * @param string $message
-	 * @param array|null $responseXml
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function theDavReasonShouldBe($message, $responseXml = null) {
-		$this->theDavResponseElementShouldBe("reason", $message, $responseXml);
-	}
-
-	/**
+	 * @Then /^the (?:Cal|Card)?DAV (exception|message|reason) should be "([^"]*)"$/
 	 *
 	 * @param string $element exception|message|reason
-	 * @param string $expectedValue
-	 * @param array|null $responseXml
+	 * @param string $message
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theDavResponseElementShouldBe($element, $expectedValue, $responseXml = null) {
-		if ($responseXml == null) {
-			$responseXml = $this->responseXml;
-		}
-		
-		if ($element === "exception") {
-			$result = $responseXml['value'][0]['value'];
-		} elseif ($element === "message") {
-			$result = $responseXml['value'][1]['value'];
-		} elseif ($element === "reason") {
-			$result = $responseXml['value'][3]['value'];
-		}
-		
-		if ($expectedValue !== $result) {
-			throw new \Exception(
-				\sprintf(
-					'Expected %s got %s',
-					$expectedValue,
-					$result
-				)
-			);
-		}
+	public function theDavElementShouldBe($element, $message) {
+		WebDavAssert::assertDavResponseElementIs(
+			$element, $message, $this->responseXml
+		);
 	}
 
 	/**
