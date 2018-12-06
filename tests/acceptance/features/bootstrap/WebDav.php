@@ -1570,33 +1570,6 @@ trait WebDav {
 	}
 
 	/**
-	 * Returns the elements of a report command special for comments
-	 *
-	 * @param string $user
-	 * @param string $path
-	 * @param string $properties properties which needs to be included in the report
-	 *
-	 * @return array
-	 *
-	 * @throws Sabre\HTTP\ClientException, - in case a curl error occurred.
-	 */
-	public function reportElementComments($user, $path, $properties) {
-		$client = $this->getSabreClient($user);
-
-		$body = '<?xml version="1.0" encoding="utf-8" ?>
-							 <oc:filter-comments xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns" >
-									' . $properties . '
-							 </oc:filter-comments>';
-
-		$response = $client->request(
-			'REPORT', $this->makeSabrePathNotForFiles($path), $body
-		);
-
-		$parsedResponse = $client->parseMultistatus($response['body']);
-		return $parsedResponse;
-	}
-
-	/**
 	 * @param string $user
 	 * @param string $path
 	 *
