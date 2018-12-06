@@ -62,7 +62,7 @@ Feature: dav-versions
     When user "user0" restores version index "1" of file "/davtest.txt" using the WebDAV API
     Then the content of file "/davtest.txt" for user "user0" should be "123"
 
-  @smokeTest
+  @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-161
   Scenario Outline: Uploading a chunked file does create the correct version that can be restored
     Given using <dav-path> DAV path
     When user "user0" uploads file "filesForUpload/davtest.txt" to "/textfile0.txt" in 2 chunks using the WebDAV API
@@ -75,6 +75,7 @@ Feature: dav-versions
       | new      |
       | old      |
 
+  @skipOnStorage:ceph @files_primary_s3-issue-161
   Scenario: Uploading a file asynchronously does create the correct version that can be restored
     Given the administrator has enabled async operations
     When user "user0" uploads file "filesForUpload/davtest.txt" asynchronously to "textfile0.txt" in 2 chunks using the WebDAV API
