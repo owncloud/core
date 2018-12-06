@@ -33,10 +33,6 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @var ResponseInterface
 	 */
 	private $response;
-	/**
-	 * @var array
-	 */
-	private $responseXml = '';
 
 	/**
 	 * @var FeatureContext
@@ -55,7 +51,6 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
-		$this->responseXml = '';
 	}
 
 	/**
@@ -89,6 +84,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		$this->response = HttpRequestHelper::get(
 			$davUrl, $user, $this->featureContext->getPasswordForUser($user)
 		);
+		$this->featureContext->parseResponseIntoXml($this->response);
 	}
 
 	/**
@@ -121,37 +117,6 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 				)
 			);
 		}
-
-		$body = $this->response->getBody()->getContents();
-		if ($body && \substr($body, 0, 1) === '<') {
-			$reader = new Sabre\Xml\Reader();
-			$reader->xml($body);
-			$this->responseXml = $reader->parse();
-		}
-	}
-
-	/**
-	 * @Then the CalDAV exception should be :message
-	 *
-	 * @param string $message
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCalDavExceptionShouldBe($message) {
-		$this->featureContext->theDavExceptionShouldBe($message, $this->responseXml);
-	}
-
-	/**
-	 * @Then the CalDAV error message should be :message
-	 *
-	 * @param string $message
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCalDavErrorMessageShouldBe($message) {
-		$this->featureContext->theDavErrorMessageShouldBe($message, $this->responseXml);
 	}
 
 	/**
@@ -183,6 +148,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 			$this->featureContext->getPasswordForUser($user), null, $body
 		);
 		$this->theCalDavHttpStatusCodeShouldBe(201);
+		$this->featureContext->parseResponseIntoXml($this->response);
 	}
 
 	/**
