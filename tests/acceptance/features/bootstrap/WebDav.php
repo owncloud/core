@@ -3049,7 +3049,7 @@ trait WebDav {
 	public function pauseUpload() {
 		$time = \time();
 		if ($this->lastUploadTime !== null && $time - $this->lastUploadTime < 1) {
-			\sleep(1);
+			\sleep(5);
 		}
 	}
 
