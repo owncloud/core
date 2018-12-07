@@ -55,12 +55,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	private $loginPage;
 
-	/**
-	 *
-	 * @var string
-	 */
-	private $productName;
-
 	private $oldCSRFSetting = null;
 	private $oldPreviewSetting = null;
 	private $createdFiles = [];
@@ -191,13 +185,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function setCurrentServer($currentServer) {
 		$this->currentServer = $currentServer;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getProductName() {
-		return $this->productName;
 	}
 
 	/**
@@ -411,17 +398,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @param string $text
-	 *
-	 * @return string
-	 */
-	public function replaceProductName($text) {
-		return \str_replace(
-			"%productname%", $this->getProductName(), $text
-		);
-	}
-
-	/**
 	 * @Then the user should be redirected to a webUI page with the title :title
 	 *
 	 * @param string $title
@@ -429,7 +405,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserShouldBeRedirectedToAWebUIPageWithTheTitle($title) {
-		$title = $this->replaceProductName($title);
+		$title = $this->featureContext->substituteInLineCodes($title);
 		$this->owncloudPage->waitForOutstandingAjaxCalls($this->getSession());
 		// Just check that the actual title starts with the expected title.
 		// Theming can have other text following.
@@ -446,7 +422,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserShouldBeRedirectedToGeneralErrorPage($title) {
-		$title = $this->replaceProductName($title);
+		$title = $this->featureContext->substituteInLineCodes($title);
 		$this->generalErrorPage->waitTillPageIsLoaded($this->getSession());
 		// Just check that the actual title starts with the expected title.
 		// Theming can have other text following.
@@ -611,10 +587,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 		$this->savedCapabilitiesXml[$this->featureContext->getBaseUrl()]
 			= $capabilitiesXml;
-
-		$this->productName = $this->featureContext->getParameterValueFromXml(
-			$capabilitiesXml, "core", "status@@@productname"
-		);
 
 		if ($this->oldCSRFSetting === null) {
 			$oldCSRFSetting = $this->featureContext->getSystemConfigValue(

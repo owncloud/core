@@ -416,17 +416,6 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @param string $text
-	 *
-	 * @return string
-	 */
-	public function replaceProductName($text) {
-		return \str_replace(
-			"%productname%", $this->getProductNameFromStatus(), $text
-		);
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getOcPath() {
@@ -2041,6 +2030,38 @@ trait BasicStructure {
 				"function" => [
 					$this,
 					"getBasePath"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%productname%",
+				"function" => [
+					$this,
+					"getProductNameFromStatus"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%edition%",
+				"function" => [
+					$this,
+					"getEditionFromStatus"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%version%",
+				"function" => [
+					$this,
+					"getVersionFromStatus"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%versionstring%",
+				"function" => [
+					$this,
+					"getVersionStringFromStatus"
 				],
 				"parameter" => []
 			],
