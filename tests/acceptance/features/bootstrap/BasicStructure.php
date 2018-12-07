@@ -1665,6 +1665,7 @@ trait BasicStructure {
 
 	/**
 	 * @When the administrator creates file :path with content :content in local storage using the testing API
+	 * @Given the administrator has created file :path with content :content in local storage using the testing API
 	 *
 	 * @param string $path
 	 * @param string $content
@@ -1672,6 +1673,26 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function theAdministratorCreatesFileUsingTheTestingApi($path, $content) {
+		$this->theAdministratorCreatesFileWithContentInLocalStorageUsingTheTestingApi(
+			$path,
+			$content,
+			'local_storage'
+		);
+	}
+
+	/**
+	 * @When the administrator creates file :path with content :content in local storage :mountPoint using the testing API
+	 * @Given the administrator has created file :path with content :content in local storage :mountPount
+	 *
+	 * @param string $path
+	 * @param string $content
+	 * @param string $mountPoint
+	 *
+	 * @return void
+	 */
+	public function theAdministratorCreatesFileWithContentInLocalStorageUsingTheTestingApi(
+		$path, $content, $mountPoint
+	) {
 		$user = $this->getAdminUsername();
 		$response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
@@ -1679,7 +1700,31 @@ trait BasicStructure {
 			$this->getAdminPassword(),
 			'POST',
 			"/apps/testing/api/v1/file",
-			['file' => LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$path", 'content' => $content],
+			[
+				'file' => TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$mountPoint/$path",
+				'content' => $content
+			],
+			$this->getOcsApiVersion()
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @When the administrator deletes file :path in local storage using the testing API
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesFileInLocalStorageUsingTheTestingApi($path) {
+		$user = $this->getAdminUsername();
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getAdminPassword(),
+			'DELETE',
+			"/apps/testing/api/v1/file",
+			['file' => LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$path"],
 			$this->getOcsApiVersion()
 		);
 		$this->setResponse($response);
