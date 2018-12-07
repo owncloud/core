@@ -1734,6 +1734,7 @@ trait WebDav {
 		}
 		try {
 			$this->responseXml = [];
+			$this->pauseUpload();
 			$this->response = UploadHelper::upload(
 				$this->getBaseUrl(),
 				$this->getActualUsername($user),
@@ -1745,6 +1746,7 @@ trait WebDav {
 				$chunkingVersion,
 				$noOfChunks
 			);
+			$this->lastUploadTime = \time();
 		} catch (BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
@@ -1795,7 +1797,8 @@ trait WebDav {
 			$user,
 			$this->acceptanceTestsDirLocation() . $source,
 			$destination,
-			$headers
+			$headers,
+			$noOfChunks
 		);
 	}
 
