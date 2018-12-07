@@ -1529,6 +1529,8 @@ trait WebDav {
 	 * @param int|null $limit
 	 *
 	 * @return array
+	 *
+	 * TODO: move into Helper
 	 */
 	public function reportFolder(
 		$user, $path, $properties, $filterRules, $offset = null, $limit = null
@@ -2770,13 +2772,13 @@ trait WebDav {
 	 *
 	 * @param string $user
 	 * @param string $folder
-	 * @param TableNode|null $expectedElements
+	 * @param TableNode $expectedElements
 	 *
 	 * @return void
 	 */
 	public function checkFavoritedElements($user, $folder, $expectedElements) {
 		$this->checkFavoritedElementsPaginated(
-			$user, $folder, $expectedElements, null, null
+			$user, $folder, null, null, $expectedElements
 		);
 	}
 
@@ -2784,13 +2786,13 @@ trait WebDav {
 	 * @Then /^the user in folder "([^"]*)" should have favorited the following elements$/
 	 *
 	 * @param string $folder
-	 * @param TableNode|null $expectedElements
+	 * @param TableNode $expectedElements
 	 *
 	 * @return void
 	 */
 	public function checkFavoritedElementsForCurrentUser($folder, $expectedElements) {
 		$this->checkFavoritedElementsPaginated(
-			$this->getCurrentUser(), $folder, $expectedElements, null, null
+			$this->getCurrentUser(), $folder, null, null, $expectedElements
 		);
 	}
 
@@ -2799,14 +2801,14 @@ trait WebDav {
 	 *
 	 * @param string $user
 	 * @param string $folder
-	 * @param TableNode|null $expectedElements
 	 * @param int $offset unused
 	 * @param int $limit unused
+	 * @param TableNode $expectedElements
 	 *
 	 * @return void
 	 */
 	public function checkFavoritedElementsPaginated(
-		$user, $folder, $expectedElements, $offset, $limit
+		$user, $folder, $offset, $limit, $expectedElements
 	) {
 		$elementList = $this->reportFolder(
 			$user,
@@ -2832,17 +2834,17 @@ trait WebDav {
 	 * @Then /^the user in folder "([^"]*)" should have favorited the following elements from offset ([\d*]) and limit ([\d*])$/
 	 *
 	 * @param string $folder
-	 * @param TableNode|null $expectedElements
 	 * @param int $offset unused
 	 * @param int $limit unused
+	 * @param TableNode $expectedElements
 	 *
 	 * @return void
 	 */
 	public function checkFavoritedElementsPaginatedForCurrentUser(
-		$folder, $expectedElements, $offset, $limit
+		$folder, $offset, $limit, $expectedElements
 	) {
 		$this->checkFavoritedElementsPaginated(
-			$this->getCurrentUser(), $folder, $expectedElements, $offset, $limit
+			$this->getCurrentUser(), $folder, $offset, $limit, $expectedElements
 		);
 	}
 
