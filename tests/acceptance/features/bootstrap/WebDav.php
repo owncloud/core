@@ -1675,9 +1675,11 @@ trait WebDav {
 				'r'
 			)
 		);
+		$this->pauseUpload();
 		$this->response = $this->makeDavRequest(
 			$user, "PUT", $destination, [], $file
 		);
+		$this->lastUploadTime = \time();
 		$this->parseResponseIntoXml();
 	}
 
@@ -1752,6 +1754,7 @@ trait WebDav {
 		}
 		try {
 			$this->responseXml = [];
+			$this->pauseUpload();
 			$this->response = UploadHelper::upload(
 				$this->getBaseUrl(),
 				$this->getActualUsername($user),
@@ -1763,6 +1766,7 @@ trait WebDav {
 				$this->chunkingToUse,
 				$noOfChunks
 			);
+			$this->lastUploadTime = \time();
 		} catch (BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
@@ -2083,12 +2087,7 @@ trait WebDav {
 		$user, $content, $destination
 	) {
 		$file = \GuzzleHttp\Stream\Stream::factory($content);
-		$time = \time();
-		if ($this->lastUploadTime !== null && $time - $this->lastUploadTime < 1) {
-			// prevent creating two uploads with the same "stime" which is
-			// based on seconds, this prevents creation of uploads with same etag
-			\sleep(1);
-		}
+		$this->pauseUpload();
 		$this->response = $this->makeDavRequest(
 			$user, "PUT", $destination, [], $file
 		);
@@ -2111,6 +2110,7 @@ trait WebDav {
 		$user, $checksum, $content, $destination
 	) {
 		$file = \GuzzleHttp\Stream\Stream::factory($content);
+		$this->pauseUpload();
 		$this->response = $this->makeDavRequest(
 			$user,
 			"PUT",
@@ -2118,6 +2118,7 @@ trait WebDav {
 			['OC-Checksum' => $checksum],
 			$file
 		);
+		$this->lastUploadTime = \time();
 	}
 
 	/**
@@ -2295,9 +2296,11 @@ trait WebDav {
 		$num -= 1;
 		$data = \GuzzleHttp\Stream\Stream::factory($data);
 		$file = "$destination-chunking-42-$total-$num";
+		$this->pauseUpload();
 		$this->response = $this->makeDavRequest(
 			$user, 'PUT', $file, ['OC-Chunked' => '1'], $data, "uploads"
 		);
+		$this->lastUploadTime = \time();
 	}
 
 	/**
@@ -2347,6 +2350,7 @@ trait WebDav {
 	public function userUploadsChunksUsingNewChunking(
 		$user, $file, $chunkingId, $chunkDetails, $async = false
 	) {
+		$this->pauseUpload();
 		$this->userCreatesANewChunkingUploadWithId($user, $chunkingId);
 		foreach ($chunkDetails as $chunkDetail) {
 			$chunkNumber = $chunkDetail[0];
@@ -2358,6 +2362,7 @@ trait WebDav {
 			$headers = ['OC-LazyOps' => 'true'];
 		}
 		$this->moveNewDavChunkToFinalFile($user, $chunkingId, $file, $headers);
+		$this->lastUploadTime = \time();
 	}
 
 	/**
@@ -3039,6 +3044,19 @@ trait WebDav {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * prevent creating two uploads with the same "stime" which is
+	 * based on seconds, this prevents creation of uploads with same etag
+	 *
+	 * @return void
+	 */
+	public function pauseUpload() {
+		$time = \time();
+		if ($this->lastUploadTime !== null && $time - $this->lastUploadTime < 1) {
+			\sleep(1);
+		}
 	}
 
 	/**
