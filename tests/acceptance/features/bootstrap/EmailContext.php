@@ -57,7 +57,7 @@ class EmailContext implements Context {
 	 */
 	public function assertThatEmailContains($address, PyStringNode $content) {
 		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
-		$expectedContent = $this->featureContext->replaceProductName(
+		$expectedContent = $this->featureContext->substituteInLineCodes(
 			$expectedContent
 		);
 		PHPUnit_Framework_Assert::assertContains(

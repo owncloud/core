@@ -50,18 +50,7 @@ class CapabilitiesContext implements Context {
 		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
 
 		foreach ($formData->getHash() as $row) {
-			if ($row['value'] === "%edition%") {
-				$row['value'] = $this->featureContext->getEditionFromStatus();
-			}
-			if ($row['value'] === "%productname%") {
-				$row['value'] = $this->featureContext->getProductNameFromStatus();
-			}
-			if ($row['value'] === "%version%") {
-				$row['value'] = $this->featureContext->getVersionFromStatus();
-			}
-			if ($row['value'] === "%versionstring%") {
-				$row['value'] = $this->featureContext->getVersionStringFromStatus();
-			}
+			$row['value'] = $this->featureContext->substituteInLineCodes($row['value']);
 			PHPUnit_Framework_Assert::assertEquals(
 				$row['value'] === "EMPTY" ? '' : $row['value'],
 				$this->featureContext->getParameterValueFromXml(
