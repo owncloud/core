@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Pass an additional parameter on the core update - [#33641](https://github.com/owncloud/core/issues/33641)
 - Added short list argument to occ files_external:list - [#33684](https://github.com/owncloud/core/issues/33684)
 - Public JS utility function for email validation - [#33699](https://github.com/owncloud/core/issues/33699)
+- Introduce persistent and explicit locking of file and folders - [#33266](https://github.com/owncloud/core/issues/33266)
+- Federated sharing new spec OCM 1.0-proposal1 - [#33027](https://github.com/owncloud/core/issues/33027)
 
 ### Changed
 
@@ -31,11 +33,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump jakub-onderka/php-console-highlighter from 0.3.2 to 0.4 - [#32944](https://github.com/owncloud/core/issues/32944)
 - Bump handlebars from 4.0.11 to 4.0.12 in /build - [#32661](https://github.com/owncloud/core/issues/32661)
 - Bump sinon from 6.2.0 to 7.1.1 - [#32825](https://github.com/owncloud/core/issues/32825) [#33073](https://github.com/owncloud/core/issues/33073) [#33306](https://github.com/owncloud/core/issues/33306) [#33373](https://github.com/owncloud/core/issues/33373)
-- Bump karma from 3.0.0 to 3.1.1 in /build - [#33256](https://github.com/owncloud/core/issues/33256) [#33343](https://github.com/owncloud/core/issues/33343)
+- Bump karma from 3.0.0 to 3.1.3 in /build - [#33256](https://github.com/owncloud/core/issues/33256) [#33343](https://github.com/owncloud/core/issues/33343) [#33737](https://github.com/owncloud/core/issues/33737)
 - Bump league/flysystem from 1.0.46 to 1.0.48 - [#33199](https://github.com/owncloud/core/issues/33199)
 - Bump composer/xdebug-handler to 1.3.0 - [#32977](https://github.com/owncloud/core/issues/32977)
 - Bump sabre/dav from 3.2.2 to 3.2.3 - [#33276](https://github.com/owncloud/core/issues/33276)
 - Bump friendsofphp/php-cs-fixer (v2.13.0 => v2.13.1) - [#33290](https://github.com/owncloud/core/issues/33290)
+- Bump hoek from 4.2.0 to 4.2.1 in /build - [#33574](https://github.com/owncloud/core/issues/33574)
+- Bump stringstream from 0.0.5 to 0.0.6 in /build - [#33755](https://github.com/owncloud/core/issues/33755)
+- Update moment JS to 2.22.2 - [#33650](https://github.com/owncloud/core/issues/33650)
 
 ### Removed
 
@@ -43,6 +48,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- Fix system tags object mapper for Oracle - [#33772](https://github.com/owncloud/core/issues/33772)
+- Adjust last login time when using auth modules - [#33752](https://github.com/owncloud/core/issues/33752)
+- Disable share autocomplete endpoint for members of groups excluded from sharing - [#33736](https://github.com/owncloud/core/issues/33736)
+- Fix issues with expiration date validation in public link dialog - [#33735](https://github.com/owncloud/core/issues/33735)
+- List compatible apps instead of missing ones in occ upgrade process - [#33730](https://github.com/owncloud/core/issues/33730)
+- Add background job to clean up orphaned DAV properties - [#33722](https://github.com/owncloud/core/issues/33722)
 - Fix paginated iteration when syncing users - [#33698](https://github.com/owncloud/core/issues/33698)
 - Cannot set 0 as value for config through OCC command - [#33643](https://github.com/owncloud/core/issues/33643)
 - Fix for some upgrade path that led to DAV tables missing bigint conversion - [#33603](https://github.com/owncloud/core/issues/33603)
