@@ -570,12 +570,6 @@ matrix:
     - TEST_SUITE: lint
       PHP_VERSION: 7.1
 
-    - TEST_SUITE: lint
-      PHP_VERSION: 7.2
-
-    - TEST_SUITE: lint
-      PHP_VERSION: 7.3
-
   # php-cs-fixer
     - TEST_SUITE: php-cs-fixer
       PHP_VERSION: 7.2
