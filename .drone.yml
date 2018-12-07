@@ -589,13 +589,6 @@ matrix:
       PHP_VERSION: 7.1
       INSTALL_SERVER: true
 
-  # Litmus
-    - PHP_VERSION: 7.1
-      USE_SERVER: true
-      TEST_SUITE: litmus
-      INSTALL_SERVER: true
-      OWNCLOUD_LOG: true
-
   # API Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: api
