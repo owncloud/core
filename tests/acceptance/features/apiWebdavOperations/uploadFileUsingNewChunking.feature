@@ -122,7 +122,9 @@ Feature: upload file using new chunking
       | &#?       |
       | TIÄFÜ     |
 
-	#this test should be integrated into the previous Scenario after fixing the issue
+  # The bug for this scenario was fixed by https://github.com/owncloud/core/pull/33276
+  # The fix is released in 10.1 - all 10.0.* versions will fail this scenario
+  @skipOnOcV10.0
   Scenario: Upload a file called "0" using new chunking
     When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
     And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
