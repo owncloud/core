@@ -79,6 +79,8 @@ class FilesVersionsContext implements Context {
 	public function theVersionFolderOfFileShouldContainElements(
 		$path, $user, $count
 	) {
+		// wait a bit so the version files are there???
+		\sleep(1);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		PHPUnit_Framework_Assert::assertNotNull($fileId, "file $path not found");
 		$elements = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
