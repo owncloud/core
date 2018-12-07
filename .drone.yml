@@ -596,13 +596,6 @@ matrix:
       INSTALL_SERVER: true
       OWNCLOUD_LOG: true
 
-  # Unit Tests
-    - PHP_VERSION: 7.1
-      DB_TYPE: mysql
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      INSTALL_SERVER: true
-
   # API Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: api
