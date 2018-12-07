@@ -154,6 +154,8 @@ default:
         - WebUIAdminAppsSettingsContext:
         - WebUIAdminSharingSettingsContext:
         - WebUIAdminGeneralSettingsContext:
+        - WebUIAdminStorageSettingsContext:
+        - WebUIFilesContext:
         - WebUIHelpAndTipsContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
