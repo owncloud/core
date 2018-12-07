@@ -1707,6 +1707,47 @@ trait WebDav {
 	}
 
 	/**
+	 * Upload file as a user with different headers
+	 *
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 * @param array $headers
+	 * @param int $noOfChunks Only use for chunked upload when $this->chunkingToUse is not null
+	 *
+	 * @return void
+	 */
+	public function uploadFileWithHeaders(
+		$user,
+		$source,
+		$destination,
+		$headers=[],
+		$noOfChunks = 0
+	) {
+		$chunkingVersion = $this->chunkingToUse;
+		if ($noOfChunks <= 0) {
+			$chunkingVersion = null;
+		}
+		try {
+			$this->responseXml = [];
+			$this->response = UploadHelper::upload(
+				$this->getBaseUrl(),
+				$this->getActualUsername($user),
+				$this->getUserPassword($user),
+				$source,
+				$destination,
+				$headers,
+				($this->usingOldDavPath) ? 1 : 2,
+				$chunkingVersion,
+				$noOfChunks
+			);
+		} catch (BadResponseException $e) {
+			// 4xx and 5xx responses cause an exception
+			$this->response = $e->getResponse();
+		}
+	}
+
+	/**
 	 * @When /^user "([^"]*)" uploads file "([^"]*)" to "([^"]*)" in (\d+) chunks (?:with (new|old|v1|v2) chunking and)?\s?using the WebDAV API$/
 	 * @When user :user uploads file :source to :destination with chunks using the WebDAV API
 	 *
@@ -1746,25 +1787,12 @@ trait WebDav {
 		if ($async === true) {
 			$headers = ['OC-LazyOps' => 'true'];
 		}
-		try {
-			$this->responseXml = [];
-			$this->pauseUpload();
-			$this->response = UploadHelper::upload(
-				$this->getBaseUrl(),
-				$this->getActualUsername($user),
-				$this->getUserPassword($user),
-				$this->acceptanceTestsDirLocation() . $source,
-				$destination,
-				$headers,
-				($this->usingOldDavPath) ? 1 : 2,
-				$this->chunkingToUse,
-				$noOfChunks
-			);
-			$this->lastUploadTime = \time();
-		} catch (BadResponseException $e) {
-			// 4xx and 5xx responses cause an exception
-			$this->response = $e->getResponse();
-		}
+		$this->uploadFileWithHeaders(
+			$user,
+			$this->acceptanceTestsDirLocation() . $source,
+			$destination,
+			$headers
+		);
 	}
 
 	/**
