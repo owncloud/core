@@ -587,6 +587,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
+      BEHAT_FEATURE: /drone/src/tests/acceptance/features/apiMain/fileVersions.feature:66
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -597,6 +598,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
+      BEHAT_FEATURE: /drone/src/tests/acceptance/features/apiMain/fileVersions.feature:66
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -607,6 +609,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
+      BEHAT_FEATURE: /drone/src/tests/acceptance/features/apiMain/fileVersions.feature:66
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -617,6 +620,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
+      BEHAT_FEATURE: /drone/src/tests/acceptance/features/apiMain/fileVersions.feature:66
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -627,6 +631,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
+      BEHAT_FEATURE: /drone/src/tests/acceptance/features/apiMain/fileVersions.feature:66
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -637,6 +642,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
+      BEHAT_FEATURE: /drone/src/tests/acceptance/features/apiMain/fileVersions.feature:66
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -647,6 +653,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
+      BEHAT_FEATURE: /drone/src/tests/acceptance/features/apiMain/fileVersions.feature:66
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -657,6 +664,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
+      BEHAT_FEATURE: /drone/src/tests/acceptance/features/apiMain/fileVersions.feature:66
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -667,6 +675,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
+      BEHAT_FEATURE: /drone/src/tests/acceptance/features/apiMain/fileVersions.feature:66
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -677,6 +686,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
+      BEHAT_FEATURE: /drone/src/tests/acceptance/features/apiMain/fileVersions.feature:66
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true

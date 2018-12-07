@@ -84,6 +84,7 @@ class FilesVersionsContext implements Context {
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		PHPUnit_Framework_Assert::assertNotNull($fileId, "file $path not found");
 		$elements = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
+		var_dump($elements);
 		PHPUnit_Framework_Assert::assertEquals($count, \count($elements) - 1);
 	}
 
