@@ -85,22 +85,13 @@ class WebDav {
 				);
 			}
 
-			$foundTypes[] = $item['value'];
+			//make the multi dimensional array so it looks like TableNode::getRows()
+			$foundTypes[] = [$item['value']];
 		}
-		foreach ($expectedShareTypes->getRows() as $row) {
-			$key = \array_search($row[0], $foundTypes);
-			if ($key === false) {
-				throw new \Exception("Expected type {$row[0]} not found");
-			}
-
-			unset($foundTypes[$key]);
-		}
-
-		if ($foundTypes !== []) {
-			throw new \Exception(
-				"Found more share types than specified: $foundTypes"
-			);
-		}
+		PHPUnit_Framework_Assert::assertSame(
+			$expectedShareTypes->getRows(), $foundTypes,
+			"expected share types do not match the received share types"
+		);
 		return true;
 	}
 }
