@@ -1436,39 +1436,9 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function theResponseShouldContainAShareTypesPropertyWith($table) {
-		$keys = $this->response;
-		if (!\array_key_exists('{http://owncloud.org/ns}share-types', $keys)) {
-			throw new \Exception(
-				"Cannot find property \"{http://owncloud.org/ns}share-types\""
-			);
-		}
-
-		$foundTypes = [];
-		$data = $keys['{http://owncloud.org/ns}share-types'];
-		foreach ($data as $item) {
-			if ($item['name'] !== '{http://owncloud.org/ns}share-type') {
-				throw new \Exception(
-					"Invalid property found: '{$item['name']}'"
-				);
-			}
-
-			$foundTypes[] = $item['value'];
-		}
-
-		foreach ($table->getRows() as $row) {
-			$key = \array_search($row[0], $foundTypes);
-			if ($key === false) {
-				throw new \Exception("Expected type {$row[0]} not found");
-			}
-
-			unset($foundTypes[$key]);
-		}
-
-		if ($foundTypes !== []) {
-			throw new \Exception(
-				"Found more share types than specified: $foundTypes"
-			);
-		}
+		WebDavAssert::assertSabreResponseContainsShareTypes(
+			$this->response, $table
+		);
 	}
 
 	/**
