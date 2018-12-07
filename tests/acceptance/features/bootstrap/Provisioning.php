@@ -1095,6 +1095,7 @@ trait Provisioning {
 	public function initializeUser($user, $password) {
 		$url = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
+		$this->lastUploadTime = \time();
 		HttpRequestHelper::get($url, $user, $password);
 	}
 
