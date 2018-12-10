@@ -74,6 +74,8 @@ Feature: favorite
     Then the user in folder "/subfolder" should have favorited the following elements
       | /subfolder/textfile0.txt |
       | /subfolder/textfile2.txt |
+    And the user in folder "/subfolder" should not have favorited the following elements
+      | /subfolder/textfile1.txt |
     Examples:
       | dav_version |
       | old         |
@@ -94,7 +96,26 @@ Feature: favorite
       | old         |
       | new         |
 
-  Scenario Outline: Get favorited elements paginated
+  Scenario Outline: Get favorited elements and limit count of entries
+    Given using <dav_version> DAV path
+    And the user has favorited element "/textfile0.txt"
+    And the user has favorited element "/textfile1.txt"
+    And the user has favorited element "/textfile2.txt"
+    And the user has favorited element "/textfile3.txt"
+    And the user has favorited element "/textfile4.txt"
+    When the user lists the favorites of folder "/" and limits the result to 3 elements using the WebDAV API
+    And the search result of "user0" shoud contain any "3" of these entries:
+      | /textfile0.txt |
+      | /textfile1.txt |
+      | /textfile2.txt |
+      | /textfile3.txt |
+      | /textfile4.txt |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Get favorited elements paginated in subfolder
     Given using <dav_version> DAV path
     And the user has created folder "/subfolder"
     And the user has copied file "/textfile0.txt" to "/subfolder/textfile0.txt"
@@ -103,15 +124,19 @@ Feature: favorite
     And the user has copied file "/textfile0.txt" to "/subfolder/textfile3.txt"
     And the user has copied file "/textfile0.txt" to "/subfolder/textfile4.txt"
     And the user has copied file "/textfile0.txt" to "/subfolder/textfile5.txt"
-    When the user favorites element "/subfolder/textfile0.txt" using the WebDAV API
-    And the user favorites element "/subfolder/textfile1.txt" using the WebDAV API
-    And the user favorites element "/subfolder/textfile2.txt" using the WebDAV API
-    And the user favorites element "/subfolder/textfile3.txt" using the WebDAV API
-    And the user favorites element "/subfolder/textfile4.txt" using the WebDAV API
-    And the user favorites element "/subfolder/textfile5.txt" using the WebDAV API
-    Then the user in folder "/subfolder" should have favorited the following elements from offset 3 and limit 2
+    And the user has favorited element "/subfolder/textfile0.txt"
+    And the user has favorited element "/subfolder/textfile1.txt"
+    And the user has favorited element "/subfolder/textfile2.txt"
+    And the user has favorited element "/subfolder/textfile3.txt"
+    And the user has favorited element "/subfolder/textfile4.txt"
+    And the user has favorited element "/subfolder/textfile5.txt"
+    When the user lists the favorites of folder "/" and limits the result to 3 elements using the WebDAV API
+    And the search result of "user0" shoud contain any "3" of these entries:
+      | /subfolder/textfile0.txt |
+      | /subfolder/textfile1.txt |
       | /subfolder/textfile2.txt |
       | /subfolder/textfile3.txt |
+      | /subfolder/textfile4.txt |
     Examples:
       | dav_version |
       | old         |
