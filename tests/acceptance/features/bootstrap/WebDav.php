@@ -1733,11 +1733,12 @@ trait WebDav {
 	 * @param int $noOfChunks
 	 * @param string $chunkingVersion old|v1|new|v2 null for autodetect
 	 * @param bool $async use asynchronous move at the end or not
+	 * @param array $headers
 	 *
 	 * @return void
 	 */
 	public function userUploadsAFileToWithChunks(
-		$user, $source, $destination, $noOfChunks = 2, $chunkingVersion = null, $async = false
+		$user, $source, $destination, $noOfChunks = 2, $chunkingVersion = null, $async = false, $headers = []
 	) {
 		PHPUnit_Framework_Assert::assertGreaterThan(
 			0, $noOfChunks, "What does it mean to have $noOfChunks chunks?"
@@ -1759,9 +1760,8 @@ trait WebDav {
 			"invalid chunking/webdav version combination"
 		);
 
-		$headers = [];
 		if ($async === true) {
-			$headers = ['OC-LazyOps' => 'true'];
+			$headers['OC-LazyOps'] = 'true';
 		}
 		$this->uploadFileWithHeaders(
 			$user,
