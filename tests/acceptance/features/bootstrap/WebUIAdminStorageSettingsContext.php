@@ -68,6 +68,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->adminStorageSettingsPage->open();
 		$this->adminStorageSettingsPage->waitTillPageIsLoaded($this->getSession());
+		$this->webUIGeneralContext->setCurrentPageObject($this->adminStorageSettingsPage);
 	}
 
 	/**
@@ -146,6 +147,40 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 			$this->adminStorageSettingsPage->removeApplicableFromLastMount(
 				$this->getSession(),
 				$user
+			);
+		}
+	}
+
+	/**
+	 * @When the administrator deletes the last created local storage mount using the webUI
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesTheLastCreatedLocalStorageMountUsingTheWebui() {
+		$this->adminStorageSettingsPage->deleteLastCreatedLocalMount($this->getSession());
+	}
+
+	/**
+	 * @Then /^the last created local storage mount should (not|)\s?be listed on the webUI$/
+	 *
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 */
+	public function theLastCreatedLocalStorageMountShouldOrNotBeListedOnTheWebui($shouldOrNot) {
+		$mountNameList = \array_keys($this->featureContext->getStorageIds());
+		$lastCreatedMountName = \end($mountNameList);
+		$result = $this->adminStorageSettingsPage->checkIfLastCreatedMountIsPresent(
+			$lastCreatedMountName
+		);
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			PHPUnit_Framework_Assert::assertTrue(
+				$result, "Last created mount was expected to be present but was not"
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertFalse(
+				$result, "Last created mount was not expected to be present but was"
 			);
 		}
 	}
