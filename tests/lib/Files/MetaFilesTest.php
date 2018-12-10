@@ -43,9 +43,34 @@ use Test\Traits\UserTrait;
 class MetaFilesTest extends TestCase {
 	use UserTrait;
 
+	/**
+	 * @var string
+	 */
+	private $userId;
+
+	protected function setUp() {
+		parent::setUp();
+
+		// workaround: re-setup versions hooks
+		Hooks::connectHooks();
+
+		$this->userId = $this->getUniqueID('meta-data-user-');
+		$this->createUser($this->userId);
+		$this->loginAsUser($this->userId);
+	}
+
 	protected function tearDown() {
 		self::logout();
 		parent::tearDown();
+	}
+
+	private function createFile() {
+		// create file
+		$file = $this->getUniqueID('file') . '.txt';
+		$fileName = "{$this->userId}/files/$file";
+		$view = new View();
+		$view->file_put_contents($fileName, '1234');
+		return $view->getFileInfo($fileName);
 	}
 
 	/**
@@ -55,17 +80,11 @@ class MetaFilesTest extends TestCase {
 	 * @throws \OCP\Files\NotPermittedException
 	 */
 	public function testMetaInNodeAPI() {
-		// workaround: re-setup versions hooks
-		Hooks::connectHooks();
-
-		// create user
-		$userId = 'meta-data-user';
-		$this->createUser($userId);
-		$this->loginAsUser($userId);
+		$userId = $this->userId;
 
 		// create file
 		$file = $this->getUniqueID('file') . '.txt';
-		$fileName = "$userId/files/$file";
+		$fileName = "{$this->userId}/files/$file";
 		$view = new View();
 		$view->file_put_contents($fileName, '1234');
 		$info = $view->getFileInfo($fileName);
@@ -123,5 +142,26 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals('1234567890', $target->getContent());
 		$metaNodeOfFile->copy($fileName);
 		$this->assertEquals('1234', $target->getContent());
+	}
+
+	public function testMetaRootGetById() {
+		$info = $this->createFile();
+
+		$metaRoot = \OC::$server->getRootFolder();
+		$info2 = $metaRoot->getById($info->getId());
+
+		$this->assertEquals($info->getId(), $info2[0]->getId());
+		$this->assertEquals($info->getPath(), $info2[0]->getPath());
+	}
+
+	/**
+	 * @expectedException OCP\Files\NotFoundException
+	 */
+	public function testMetaRootGetNotFound() {
+		$info = $this->createFile();
+
+		$metaRoot = \OC::$server->getRootFolder();
+		// get non-existing
+		$metaRoot->get($info->getId() + 100);
 	}
 }

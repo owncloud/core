@@ -167,7 +167,7 @@ class Listener {
 					$path = \substr($path, \strlen('/' . $owner . '/files'));
 				}
 				// Get all users that have access to the mount point
-				$users = \array_merge($users, Share::getUsersSharingFile($path, $owner, true, true));
+				$users = \array_merge($users, $this->getUsersSharingFile($path, $owner));
 			}
 		}
 
@@ -225,5 +225,9 @@ class Listener {
 		} else {
 			return '{{{' . $tag->getName() . '|||assignable}}}';
 		}
+	}
+
+	public function getUsersSharingFile($path, $owner) {
+		return Share::getUsersSharingFile($path, $owner, true, true);
 	}
 }
