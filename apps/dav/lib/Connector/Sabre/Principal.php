@@ -3,6 +3,7 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Julian Müller <julimueller1998@gmail.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
@@ -145,7 +146,7 @@ class Principal implements BackendInterface {
 			}
 
 			if ($this->hasGroups || $needGroups) {
-				$groups = $this->groupManager->getUserGroups($user);
+				$groups = $this->groupManager->getUserGroups($user, 'sharing');
 				$groups = \array_map(function ($group) {
 					/** @var IGroup $group */
 					return 'principals/groups/' . $group->getGID();
