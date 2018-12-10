@@ -59,7 +59,7 @@ class LockManager {
 			if ($user !== null) {
 				$owner = $user->getDisplayName();
 				if ($user->getEMailAddress() !== null) {
-					$owner .= " <{$user->getEMailAddress()}>";
+					$owner .= " ({$user->getEMailAddress()})";
 				}
 			}
 		}
