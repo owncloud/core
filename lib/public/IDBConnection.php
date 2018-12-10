@@ -301,4 +301,12 @@ interface IDBConnection {
 	 * @since 10.0
 	 */
 	public function allows4ByteCharacters();
+
+	/**
+	 * Gets the SchemaManager that can be used to inspect or change the
+	 * database schema through the connection.
+	 *
+	 * @return \Doctrine\DBAL\Schema\AbstractSchemaManager
+	 */
+	public function getOCSchemaManager();
 }

@@ -471,4 +471,11 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 		// Unable to detect platform version.
 		return null;
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getOCSchemaManager() {
+		return $this->getSchemaManager();
+	}
 }
