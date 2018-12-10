@@ -1487,57 +1487,6 @@ trait WebDav {
 	}
 
 	/**
-	 * Returns the elements of a report command
-	 *
-	 * @param string $user
-	 * @param string $path
-	 * @param string $properties properties which needs to be included in the report
-	 * @param string $filterRules filter-rules to choose what needs to appear in the report
-	 * @param int|null $offset
-	 * @param int|null $limit
-	 *
-	 * @return array
-	 *
-	 * TODO: move into Helper
-	 */
-	public function reportFolder(
-		$user, $path, $properties, $filterRules, $offset = null, $limit = null
-	) {
-		$client = $this->getSabreClient($user);
-
-		$body = '<?xml version="1.0" encoding="utf-8" ?>
-					<oc:filter-files xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns" >
-						<a:prop>
-							' . $properties . '
-						</a:prop>
-						<oc:filter-rules>
-							' . $filterRules . '
-						</oc:filter-rules>';
-		if (\is_int($offset) || \is_int($limit)) {
-			$body .=	'
-						<oc:search>';
-			if (\is_int($offset)) {
-				$body .= "
-							<oc:offset>${offset}</oc:offset>";
-			}
-			if (\is_int($limit)) {
-				$body .= "
-							<oc:limit>${limit}</oc:limit>";
-			}
-			$body .=	'
-						</oc:search>';
-		}
-		$body .= '
-					</oc:filter-files>';
-
-		$response = $client->request(
-			'REPORT', $this->makeSabrePath($user, $path), $body
-		);
-		$parsedResponse = $client->parseMultistatus($response['body']);
-		return $parsedResponse;
-	}
-
-	/**
 	 * @param string $user
 	 * @param string $path
 	 *
@@ -2767,84 +2716,83 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" in folder "([^"]*)" should have favorited the following elements$/
+	 * @Then /^user "([^"]*)" in folder "([^"]*)" should (not|)\s?have favorited the following elements$/
 	 *
 	 * @param string $user
 	 * @param string $folder
+	 * @param string $shouldOrNot (not|)
 	 * @param TableNode $expectedElements
 	 *
 	 * @return void
 	 */
-	public function checkFavoritedElements($user, $folder, $expectedElements) {
-		$this->checkFavoritedElementsPaginated(
-			$user, $folder, null, null, $expectedElements
-		);
-	}
-
-	/**
-	 * @Then /^the user in folder "([^"]*)" should have favorited the following elements$/
-	 *
-	 * @param string $folder
-	 * @param TableNode $expectedElements
-	 *
-	 * @return void
-	 */
-	public function checkFavoritedElementsForCurrentUser($folder, $expectedElements) {
-		$this->checkFavoritedElementsPaginated(
-			$this->getCurrentUser(), $folder, null, null, $expectedElements
-		);
-	}
-
-	/**
-	 * @Then /^user "([^"]*)" in folder "([^"]*)" should have favorited the following elements from offset ([\d*]) and limit ([\d*])$/
-	 *
-	 * @param string $user
-	 * @param string $folder
-	 * @param int $offset unused
-	 * @param int $limit unused
-	 * @param TableNode $expectedElements
-	 *
-	 * @return void
-	 */
-	public function checkFavoritedElementsPaginated(
-		$user, $folder, $offset, $limit, $expectedElements
+	public function checkFavoritedElements(
+		$user, $folder, $shouldOrNot, $expectedElements
 	) {
-		$elementList = $this->reportFolder(
-			$user,
-			$folder,
-			'<oc:favorite/>',
-			'<oc:favorite>1</oc:favorite>'
+		$this->userListsFavoriteOfFolder($user, $folder, null);
+		$this->propfindResultShouldContainEntries(
+			$user, $shouldOrNot, $expectedElements
 		);
-		if ($expectedElements instanceof TableNode) {
-			$elementRows = $expectedElements->getRows();
-			$elementsSimplified = $this->simplifyArray($elementRows);
-			foreach ($elementsSimplified as $expectedElement) {
-				$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
-				if (!\array_key_exists($webdavPath, $elementList)) {
-					PHPUnit_Framework_Assert::fail(
-						"$webdavPath is not in report answer"
-					);
-				}
-			}
+	}
+
+	/**
+	 * @Then /^the user in folder "([^"]*)" should (not|)\s?have favorited the following elements$/
+	 *
+	 * @param string $folder
+	 * @param string $shouldOrNot (not|)
+	 * @param TableNode $expectedElements
+	 *
+	 * @return void
+	 */
+	public function checkFavoritedElementsForCurrentUser(
+		$folder, $shouldOrNot, $expectedElements
+	) {
+		$this->checkFavoritedElements(
+			$this->getCurrentUser(), $folder, $shouldOrNot, $expectedElements
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" lists the favorites of folder "([^"]*)" and limits the result to ([\d*]) elements using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param string $folder
+	 * @param int $limit
+	 *
+	 * @return void
+	 */
+	public function userListsFavoriteOfFolder($user, $folder, $limit = null) {
+		$baseUrl = $this->getBaseUrl();
+		$password = $this->getPasswordForUser($user);
+		$body
+			= "<?xml version='1.0' encoding='utf-8' ?>\n" .
+			"	<oc:filter-files xmlns:a='DAV:' xmlns:oc='http://owncloud.org/ns' >\n" .
+			"		<a:prop><oc:favorite/></a:prop>\n" .
+			"		<oc:filter-rules><oc:favorite>1</oc:favorite></oc:filter-rules>\n";
+		
+		if ($limit !== null) {
+			$body .= "		<oc:search>\n" .
+					 "			<oc:limit>$limit</oc:limit>\n" .
+					 "		</oc:search>\n";
 		}
-	}
 
+		$body .= "	</oc:filter-files>";
+		$response = WebDavHelper::makeDavRequest(
+			$baseUrl, $user, $password, "REPORT", "/", null, $body, null,
+			$this->getDavPathVersion()
+		);
+		$this->setResponse($response);
+	}
+	
 	/**
-	 * @Then /^the user in folder "([^"]*)" should have favorited the following elements from offset ([\d*]) and limit ([\d*])$/
+	 * @When /^the user lists the favorites of folder "([^"]*)" and limits the result to ([\d*]) elements using the WebDAV API$/
 	 *
 	 * @param string $folder
-	 * @param int $offset unused
-	 * @param int $limit unused
-	 * @param TableNode $expectedElements
+	 * @param int $limit
 	 *
 	 * @return void
 	 */
-	public function checkFavoritedElementsPaginatedForCurrentUser(
-		$folder, $offset, $limit, $expectedElements
-	) {
-		$this->checkFavoritedElementsPaginated(
-			$this->getCurrentUser(), $folder, $offset, $limit, $expectedElements
-		);
+	public function listFavoriteOfFolder($folder, $limit = null) {
+		$this->userListsFavoriteOfFolder($this->getCurrentUser(), $folder, $limit);
 	}
 
 	/**
