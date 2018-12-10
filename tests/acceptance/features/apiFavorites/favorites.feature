@@ -105,7 +105,7 @@ Feature: favorite
     And the user has favorited element "/textfile3.txt"
     And the user has favorited element "/textfile4.txt"
     When the user lists the favorites of folder "/" and limits the result to 3 elements using the WebDAV API
-    And the search result of "user0" shoud contain any "3" of these entries:
+    Then the search result of "user0" shoud contain any "3" of these entries:
       | /textfile0.txt |
       | /textfile1.txt |
       | /textfile2.txt |
@@ -133,7 +133,7 @@ Feature: favorite
     And the user has favorited element "/subfolder/textfile4.txt"
     And the user has favorited element "/subfolder/textfile5.txt"
     When the user lists the favorites of folder "/" and limits the result to 3 elements using the WebDAV API
-    And the search result of "user0" shoud contain any "3" of these entries:
+    Then the search result of "user0" shoud contain any "3" of these entries:
       | /subfolder/textfile0.txt |
       | /subfolder/textfile1.txt |
       | /subfolder/textfile2.txt |
