@@ -42,6 +42,7 @@ default:
         - %paths.base%/../features/apiFavorites
       contexts:
         - FeatureContext: *common_feature_context_params
+        - FavoritesContext:
 
     apiProvisioning-v1:
       paths:
