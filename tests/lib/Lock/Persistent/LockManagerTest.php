@@ -93,7 +93,7 @@ class LockManagerTest extends TestCase {
 				$this->assertNull($lock->getPath());
 				$this->assertEquals(0, $lock->getDepth());
 				$this->assertEquals(ILock::LOCK_SCOPE_EXCLUSIVE, $lock->getScope());
-				$this->assertEquals('Alice <alice@example.net>', $lock->getOwner());
+				$this->assertEquals('Alice (alice@example.net)', $lock->getOwner());
 				$this->assertEquals(999, $lock->getOwnerAccountId());
 				$this->assertEquals(123456, $lock->getCreatedAt());
 			});
