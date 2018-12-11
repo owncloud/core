@@ -501,8 +501,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 *
-	 * @When the user reloads the current page of the webUI
-	 * @Given the user has reloaded the current page of the webUI
+	 * @When the user/administrator reloads the current page of the webUI
+	 * @Given the user/administrator has reloaded the current page of the webUI
 	 *
 	 * @return void
 	 * @throws \Exception
