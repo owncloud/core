@@ -1724,8 +1724,10 @@ trait WebDav {
 	public function userUploadsAFileToWithAllMechanisms(
 		$user, $source, $destination
 	) {
-		$this->uploadResponses = $this->uploadWithAllMechanisms(
-			$user, $source, $destination, false
+		$this->uploadResponses = UploadHelper::uploadWithAllMechanisms(
+			$this->getBaseUrl(), $this->getActualUsername($user),
+			$this->getUserPassword($user),
+			$this->acceptanceTestsDirLocation() . $source, $destination
 		);
 	}
 
@@ -1743,67 +1745,11 @@ trait WebDav {
 	public function userOverwritesAFileToWithAllMechanisms(
 		$user, $source, $destination
 	) {
-		$this->uploadResponses = $this->uploadWithAllMechanisms(
-			$user, $source, $destination, true
+		$this->uploadResponses = UploadHelper::uploadWithAllMechanisms(
+			$this->getBaseUrl(), $this->getActualUsername($user),
+			$this->getUserPassword($user),
+			$this->acceptanceTestsDirLocation() . $source, $destination, true
 		);
-	}
-
-	/**
-	 * Upload the same file multiple times with different mechanisms.
-	 *
-	 * @param string $user user who uploads
-	 * @param string $source source file path
-	 * @param string $destination destination path on the server
-	 * @param bool $overwriteMode when false creates separate files to test uploading brand new files,
-	 *                            when true it just overwrites the same file over and over again with the same name
-	 *
-	 * @return array of ResponseInterface
-	 */
-	public function uploadWithAllMechanisms(
-		$user, $source, $destination, $overwriteMode = false
-	) {
-		$responses = [];
-		foreach (['old', 'new'] as $dav) {
-			if ($dav === 'old') {
-				$this->usingOldDavPath();
-			} else {
-				$this->usingNewDavPath();
-			}
-
-			$suffix = '';
-
-			// regular upload
-			if (!$overwriteMode) {
-				$suffix = "-{$dav}dav-regular";
-			}
-			$this->userUploadsAFileTo(
-				$user, $source, $destination . $suffix
-			);
-			$responses[] = $this->response;
-
-			// old chunking upload
-			if ($dav === 'old') {
-				if (!$overwriteMode) {
-					$suffix = "-{$dav}dav-oldchunking";
-				}
-				
-				$this->userUploadsAFileToWithChunks(
-					$user, $source, $destination . $suffix, 2, 'old'
-				);
-				$responses[] = $this->response;
-			}
-			if ($dav === 'new') {
-				if (!$overwriteMode) {
-					$suffix = "-{$dav}dav-newchunking";
-				}
-				$this->userUploadsAFileToWithChunks(
-					$user, $source, $destination . $suffix, 2, 'new'
-				);
-				$responses[] = $this->response;
-			}
-		}
-
-		return $responses;
 	}
 
 	/**

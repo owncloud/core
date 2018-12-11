@@ -155,6 +155,59 @@ class UploadHelper {
 	}
 
 	/**
+	 * Upload the same file multiple times with different mechanisms.
+	 *
+	 * @param string $baseUrl URL of owncloud
+	 * @param string $user user who uploads
+	 * @param string $password
+	 * @param string $source source file path
+	 * @param string $destination destination path on the server
+	 * @param bool $overwriteMode when false creates separate files to test uploading brand new files,
+	 *                            when true it just overwrites the same file over and over again with the same name
+	 *
+	 * @return array of ResponseInterface
+	 */
+	public static function uploadWithAllMechanisms(
+		$baseUrl, $user, $password, $source, $destination, $overwriteMode = false
+	) {
+		$responses = [];
+		foreach ([1, 2] as $davPathVersion) {
+			if ($davPathVersion === 1) {
+				$davHuman = 'old';
+			} else {
+				$davHuman = 'new';
+			}
+	
+			foreach ([null, 1, 2] as $chunkingVersion) {
+				$valid = WebDavHelper::isValidDavChunkingCombination(
+					$davPathVersion,
+					$chunkingVersion
+				);
+				if ($valid === false) {
+					continue;
+				}
+				$finalDestination = $destination;
+				if (!$overwriteMode && $chunkingVersion !== null) {
+					$finalDestination .= "-{$davHuman}dav-{$davHuman}chunking";
+				} elseif (!$overwriteMode && $chunkingVersion === null) {
+					$finalDestination .= "-{$davHuman}dav-regular";
+				}
+				$responses[] = self::upload(
+					$baseUrl,
+					$user,
+					$password,
+					$source,
+					$finalDestination,
+					[],
+					$davPathVersion,
+					$chunkingVersion,
+					2
+				);
+			}
+		}
+		return $responses;
+	}
+	/**
 	 * cut the file in multiple chunks
 	 * returns an array of chunks with the content of the file
 	 *
