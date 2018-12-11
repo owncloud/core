@@ -40,6 +40,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	protected $externalStorageCheckboxXpath = "//label[@for='enableExternalStorageCheckbox']";
 	protected $externalStorageFormId = "externalStorage";
 
+	protected $lastCreatedMountListXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr";
 	protected $newFolderNameXpath = "//tr[@id='addMountPoint']//input[@placeholder='Folder name']";
 	protected $newBackendTypeXpath = "//tr[@id='addMountPoint']//select[@id='selectBackend']";
 	protected $newLocationXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]//input[@placeholder='Location']";
@@ -53,6 +54,8 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	protected $applicableUsersListXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]//li[@class='select2-search-choice']";
 	protected $applicableUserXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]//li[@class='select2-search-choice'][%s]//span";
 	protected $applicableUserDeleteXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]//li[@class='select2-search-choice'][%s]//a";
+	protected $lastCreatedMountDeleteButtonXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]/td[@class='remove']";
+	protected $mountPointNameXpath = "//tr[@class='local'][%s]//input[@placeholder='Folder name']";
 
 	/**
 	 * enable external storage
@@ -200,6 +203,51 @@ class AdminStorageSettingsPage extends OwncloudPage {
 		throw new \Exception(
 			__METHOD__ . " could not find $user to remove from applicable list"
 		);
+	}
+
+	/**
+	 * delete last created local storage mount
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function deleteLastCreatedLocalMount($session) {
+		$lastCreatedMountDeleteButton = $this->find(
+			"xpath", $this->lastCreatedMountDeleteButtonXpath
+		);
+		$this->assertElementNotNull(
+			$lastCreatedMountDeleteButton,
+			__METHOD__ .
+			" xpath $this->lastCreatedMountDeleteButtonXpath " .
+			"could not find delete button for last created mount"
+		);
+		$lastCreatedMountDeleteButton->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * check if last created mount is present
+	 *
+	 * @param string $lastCreatedMountName
+	 *
+	 * @return boolean
+	 */
+	public function checkIfLastCreatedMountIsPresent($lastCreatedMountName) {
+		$lastCreatedMountList = $this->findAll(
+			"xpath", $this->lastCreatedMountListXpath
+		);
+		$i = 1;
+		foreach ($lastCreatedMountList as $mount) {
+			$mountPointName = $this->find(
+				"xpath", \sprintf($this->mountPointNameXpath, $i)
+			);
+			if ($mountPointName->getValue() === $lastCreatedMountName) {
+				return true;
+			}
+			$i++;
+		}
+		return false;
 	}
 
 	/**
