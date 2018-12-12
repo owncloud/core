@@ -205,7 +205,7 @@ class Apps implements IRepairStep {
 		}
 
 		$hasBlockingMissingApps = \count($failedMissingApps);
-		$hasBlockingIncompatibleApps = \count($failedIncompatibleApps);
+		$hasBlockingIncompatibleApps = $this->hasBlockingIncompatibleApps($failedIncompatibleApps);
 
 		if ($hasBlockingIncompatibleApps || $hasBlockingMissingApps) {
 			// fail
@@ -310,6 +310,17 @@ class Apps implements IRepairStep {
 			$appList
 		);
 		return "\n" . \implode("\n", $appList);
+	}
+
+	/**
+	 * @param string[] $failedIncompatibleApps
+	 *
+	 * @return bool
+	 */
+	protected function hasBlockingIncompatibleApps($failedIncompatibleApps) {
+		$skipBlockingAppsCheck = \in_array(Util::getChannel(), ['git', 'daily'], true);
+		$hasBlockingIncompatibleApps = $skipBlockingAppsCheck === false && \count($failedIncompatibleApps);
+		return $hasBlockingIncompatibleApps;
 	}
 
 	/**
