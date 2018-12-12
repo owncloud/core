@@ -43,6 +43,7 @@ class DeleteHelper {
 	 * @param array  $headers
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
+	 * @param Client|null $client
 	 *
 	 * @return ResponseInterface
 	 */
@@ -53,7 +54,8 @@ class DeleteHelper {
 		$fileName,
 		$headers = [],
 		$davPathVersionToUse = 1,
-		$sourceIpAddress = null
+		$sourceIpAddress = null,
+		$client = null
 	) {
 		return WebDavHelper::makeDavRequest(
 			$baseUrl,
@@ -66,7 +68,11 @@ class DeleteHelper {
 			null,
 			$davPathVersionToUse,
 			"files",
-			$sourceIpAddress
+			$sourceIpAddress,
+			"basic",
+			false,
+			0,
+			$client
 		);
 	}
 }
