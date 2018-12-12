@@ -54,6 +54,7 @@ class SharingDialog extends OwncloudPage {
 	private $showCrudsXpath = ".//*[@class='showCruds']";
 	private $publicLinksShareTabXpath = ".//li[contains(@class,'subtab-publicshare')]";
 	private $publicLinksTabContentXpath = "//div[@id='shareDialogLinkList']";
+	private $noSharingMessageXpath = "//div[@class='noSharingPlaceholder']";
 	
 	private $sharedWithGroupAndSharerName = null;
 
@@ -102,6 +103,24 @@ class SharingDialog extends OwncloudPage {
 		$this->fillFieldAndKeepFocus($shareWithField, $input, $session);
 		$this->waitForAjaxCallsToStartAndFinish($session, $timeout_msec);
 		return $this->getAutocompleteNodeElement();
+	}
+
+	/**
+	 * get no sharing message
+	 *
+	 * @param Session $session
+	 *
+	 * @return string
+	 */
+	public function getNoSharingMessage(Session $session) {
+		$noSharingMessage = $this->find("xpath", $this->noSharingMessageXpath);
+		$this->assertElementNotNull(
+			$noSharingMessage,
+			__METHOD__ .
+			" xpath $this->noSharingMessageXpath " .
+			"could not find no sharing message"
+		);
+		return $this->getTrimmedText($noSharingMessage);
 	}
 
 	/**
