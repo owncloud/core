@@ -6,7 +6,7 @@
  *
  * DO NOT COMPLETELY BASE YOUR CONFIGURATION FILE ON THESE SAMPLES. THIS MAY BREAK
  * YOUR INSTANCE. Instead, manually copy configuration switches that you
- * consider important for your instance to your working ``config.php``, and
+ * consider important for your instance to your working `config.php`, and
  * apply configuration options that are pertinent for your instance.
  *
  * All keys are only valid if the corresponding app is installed and enabled.
@@ -28,7 +28,7 @@ $CONFIG = array(
 /**
  * App: Activity
  * 
- * Possible values: ``activity_expire_days`` days
+ * Possible values: `activity_expire_days` days
  */
  
 /**
@@ -40,12 +40,13 @@ $CONFIG = array(
 /**
  * App: LDAP
  * 
- * Possible values: ``ldapIgnoreNamingRules`` 'doSet' or false
+ * Possible values: `ldapIgnoreNamingRules` 'doSet' or false
  * 
- * Possible values: ``user_ldap.enable_medial_search`` true or false
+ * Possible values: `user_ldap.enable_medial_search` true or false
  */
  
-/** 
+/**
+ * Configuring the LDAP app
  */
 
 'ldapIgnoreNamingRules' => false,
@@ -54,7 +55,7 @@ $CONFIG = array(
 /**
  * App: Market
  * 
- * Possible values: ``appstoreurl`` URL
+ * Possible values: `appstoreurl` URL
  */
 
 /**
@@ -66,14 +67,15 @@ $CONFIG = array(
 /**
  * App: Firstrunwizard
  * 
- * Possible values: ``customclient_desktop`` URL
+ * Possible values: `customclient_desktop` URL
  * 
- * Possible values: ``customclient_android`` URL
+ * Possible values: `customclient_android` URL
  * 
- * Possible values: ``customclient_ios`` URL
+ * Possible values: `customclient_ios` URL
  */
 
-/** Configuring the download links for ownCloud clients, 
+/**
+ * Configuring the download links for ownCloud clients, 
  * as seen in the first-run wizard and on Personal pages
  */
  
@@ -87,10 +89,11 @@ $CONFIG = array(
 /**
  * App: Richdocuments
  * 
- * Possible values: ``collabora_group`` string
+ * Possible values: `collabora_group` string
  */
 
-/** Configuring the group name for users allowed to use collabora
+/**
+ * Configuring the group name for users allowed to use collabora
  */
 
 'collabora_group' => '',
