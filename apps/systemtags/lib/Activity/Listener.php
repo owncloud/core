@@ -221,6 +221,8 @@ class Listener {
 			return '{{{' . $tag->getName() . '|||invisible}}}';
 		} elseif (!$tag->isUserAssignable()) {
 			return '{{{' . $tag->getName() . '|||not-assignable}}}';
+		} elseif (!$tag->isUserEditable() && $tag->isUserAssignable()) {
+			return '{{{' . $tag->getName() . '|||not-editable}}}';
 		} else {
 			return '{{{' . $tag->getName() . '|||assignable}}}';
 		}
