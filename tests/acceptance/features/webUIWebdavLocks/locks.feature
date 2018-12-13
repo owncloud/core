@@ -671,7 +671,6 @@ Feature: Locks
       | exclusive |
       | shared    |
 
-  @skip @issue-33885
   Scenario Outline: creating a subfolder structure that is the same as the structure of a declined & locked share
     Given these users have been created:
       |username  |
