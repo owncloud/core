@@ -84,13 +84,6 @@ Feature: Share by public link
     And the public tries to access the last created public link with wrong password "pass12" using the webUI
     Then the public should not get access to the publicly shared file
 
-  Scenario: user tries to create a public link with name longer than 64 chars
-    Given user "user1" has moved file "/lorem.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
-    And the user has reloaded the current page of the webUI
-    When the user tries to create a new public link for file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" using the webUI
-    Then the user should see an error message on the public link share dialog saying "Share name cannot be more than 64 characters"
-    And the public link should not have been generated
-
   Scenario: user shares a public link with folder longer than 64 chars and shorter link name
     Given user "user1" has moved folder "simple-folder" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And the user has reloaded the current page of the webUI
@@ -212,7 +205,7 @@ Feature: Share by public link
     And the user has created a new public link for folder "simple-folder" using the webUI with
       | email   | foo1234@bar.co|
       | password| pass123       |
-    When the user opens the edit public link share popup for the link named "simple-folder link"
+    When the user opens the edit public link share popup for the link named "Public link"
     And the user enters the password "qwertyui" on the edit public link share popup for the link
     And the user does not save any changes in the edit public link share popup
     And the public tries to access the last created public link with wrong password "qwertyui" using the webUI
@@ -237,7 +230,7 @@ Feature: Share by public link
   Scenario: user edits a name of an already existing public link
     Given the user has created a new public link for folder "simple-folder" using the webUI
     And the user has opened the public link share tab
-    When the user renames the public link name from "simple-folder link" to "simple-folder Share"
+    When the user renames the public link name from "Public link" to "simple-folder Share"
     And the public accesses the last created public link using the webUI
     Then file "lorem.txt" should be listed on the webUI
 
@@ -251,21 +244,21 @@ Feature: Share by public link
   Scenario: user edits the password of an already existing public link
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | password | pass123 |
-    When the user changes the password of the public link named "simple-folder link" to "pass1234"
+    When the user changes the password of the public link named "Public link" to "pass1234"
     And the public accesses the last created public link with password "pass1234" using the webUI
     Then file "lorem.txt" should be listed on the webUI
 
   Scenario: user edits the password of an already existing public link and tries to access with old password
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | password | pass123 |
-    When the user changes the password of the public link named "simple-folder link" to "pass1234"
+    When the user changes the password of the public link named "Public link" to "pass1234"
     And the public tries to access the last created public link with wrong password "pass123" using the webUI
     Then the public should not get access to the publicly shared file
 
   Scenario: user edits the permission of an already existing public link from read-write to read
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
-    When the user changes the permission of the public link named "simple-folder link" to "read"
+    When the user changes the permission of the public link named "Public link" to "read"
     And the public accesses the last created public link using the webUI
     Then file "lorem.txt" should be listed on the webUI
     And it should not be possible to delete file "lorem.txt" using the webUI
@@ -273,7 +266,7 @@ Feature: Share by public link
   Scenario: user edits the permission of an already existing public link from read to read-write
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read |
-    When the user changes the permission of the public link named "simple-folder link" to "read-write"
+    When the user changes the permission of the public link named "Public link" to "read-write"
     And the public accesses the last created public link using the webUI
     And the user deletes the following elements using the webUI
       | name                                  |
