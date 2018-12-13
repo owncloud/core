@@ -190,6 +190,7 @@ class File extends Node implements IFile, IFileNode {
 				}
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 			}
+
 			$target = $partStorage->fopen($internalPartPath, 'wb');
 			if (!\is_resource($target)) {
 				\OCP\Util::writeLog('webdav', '\OC\Files\Filesystem::fopen() failed', \OCP\Util::ERROR);
