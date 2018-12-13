@@ -151,11 +151,10 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			} elseif (FutureFile::isFutureFile() or FutureFileZsync::isFutureFile()) {
 				// Future file (chunked upload) requires fileinfo
 				$info = $this->fileView->getFileInfo($this->path . '/' . $name);
-			} else {
-				// For non-chunked upload it is enough to check if we can create a new file
-				if (!$this->fileView->isCreatable($this->path)) {
-					throw new SabreForbidden();
-				}
+			}
+
+			if (!$this->fileView->isCreatable($this->path)) {
+				throw new SabreForbidden();
 			}
 
 			$this->fileView->verifyPath($this->path, $name);
