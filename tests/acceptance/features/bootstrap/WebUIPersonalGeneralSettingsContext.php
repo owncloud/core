@@ -244,6 +244,71 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
+	 * @When the user sets profile picture to :filename from their cloud files using the webUI
+	 *
+	 * @param string $filename
+	 *
+	 * @return void
+	 */
+	public function theUserSetsProfilePictureToFromTheirCloudFiles($filename) {
+		$this->personalGeneralSettingsPage->setProfilePicture($filename, $this->getSession());
+	}
+
+	/**
+	 * @Given the user has set profile picture to :filename from their cloud files
+	 *
+	 * @param string $filename
+	 *
+	 * @return void
+	 */
+	public function theUserHasSetProfilePictureToFromTheirCloudFiles($filename) {
+		$this->theUserSetsProfilePictureToFromTheirCloudFiles($filename);
+		$this->thePreviewOfTheProfilePictureShouldBeShownInTheWebui("");
+	}
+
+	/**
+	 * @Then /^the preview of the profile picture should (not|)\s?be shown in the webUI$/
+	 *
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 */
+	public function thePreviewOfTheProfilePictureShouldBeShownInTheWebui($shouldOrNot) {
+		if ($shouldOrNot !== "not") {
+			PHPUnit_Framework_Assert::assertTrue(
+				$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertFalse(
+				$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
+			);
+		}
+	}
+
+	/**
+	 * @When the user deletes the existing profile picture
+	 *
+	 * @return void
+	 */
+	public function theUserDeletesTheExistingProfilePicture() {
+		if ($this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()) {
+			$this->personalGeneralSettingsPage->deleteProfilePicture($this->getSession());
+		}
+	}
+
+	/**
+	 * @Given the user has deleted any existing profile picture
+	 *
+	 * @return void
+	 */
+	public function theUserHasDeletedAnyExistingProfilePicture() {
+		$this->theUserDeletesTheExistingProfilePicture();
+		PHPUnit_Framework_Assert::assertFalse(
+			$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
+		);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
