@@ -79,6 +79,33 @@ class AppsTest extends TestCase {
 		$this->assertFalse($this->invokePrivate($this->repair, 'requiresMarketEnable'));
 	}
 
+	public function dataTestHasBlockingIncompatibleApps() {
+		return [
+			['git', [], false],
+			['daily', [], false],
+			['stable', [], false],
+			['git', ['someapp'], false],
+			['daily', ['someapp'], false],
+			['stable', ['someapp'], true],
+		];
+	}
+
+	/**
+	 * @dataProvider dataTestHasBlockingIncompatibleApps
+	 * @param string $channel
+	 * @param string[] $blockingApps
+	 * @param bool $expectedResult
+	 */
+	public function testHasBlockingIncompatibleApps($channel, $blockingApps, $expectedResult) {
+		$oldChannel = \OCP\Util::getChannel();
+		\OCP\Util::setChannel($channel);
+		$this->assertEquals(
+			$expectedResult,
+			$this->invokePrivate($this->repair, 'hasBlockingIncompatibleApps', [$blockingApps])
+		);
+		\OCP\Util::setChannel($oldChannel);
+	}
+
 	public function dataTestUpdateEvent() {
 		return [
 			['10.1.0.0', [10, 1, 3, 7], false, false], // same major version
