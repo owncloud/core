@@ -301,7 +301,7 @@ Feature: sharing
   Scenario: Uploading a file in to a shared folder without edit permissions
     Given using new DAV path
     And user "user1" has been created with default attributes
-    And user "user0" creates a folder "/READ_ONLY" using the WebDAV API
+    And user "user0" creates folder "/READ_ONLY" using the WebDAV API
     And user "user0" has created a share with settings
       | path        | /READ_ONLY |
       | shareType   | user       |
