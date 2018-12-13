@@ -145,10 +145,11 @@ interface Folder extends Node {
 	 * get a file or folder inside the folder by it's internal id
 	 *
 	 * @param int $id
+	 * @param boolean $first only return the first node that is found
 	 * @return \OCP\Files\Node[]
 	 * @since 6.0.0
 	 */
-	public function getById($id);
+	public function getById($id, $first = false);
 
 	/**
 	 * Get the amount of free space inside the folder

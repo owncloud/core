@@ -360,9 +360,9 @@ class FilesReportPlugin extends ServerPlugin {
 
 		$results = [];
 		foreach ($fileIds as $fileId) {
-			$entry = $folder->getById($fileId);
-			if ($entry) {
-				$entry = \current($entry);
+			$entries = $folder->getById($fileId, true);
+			if (!empty($entries)) {
+				$entry = $entries[0];
 				$node = $this->makeSabreNode($entry);
 				if ($node) {
 					$results[] = $node;
