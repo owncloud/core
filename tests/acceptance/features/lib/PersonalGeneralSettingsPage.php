@@ -50,6 +50,14 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	protected $federatedCloudIDXpath = "//*[@id='fileSharingSettings']/p/strong";
 	protected $groupListXpath = "//div[@id='OC\\Settings\\Panels\\Personal\\Profile']/div[@id='groups']";
 
+	protected $setProfilePicFromFilesBtnXpath = "//*[@id='selectavatar']";
+	protected $setProfilePicFileListXpath = "//*[@id='oc-dialog-filepicker-content']//ul[@class='filelist']";
+	protected $fileListElementMatchXpath = "//li[@data-entryname='%s']";
+	protected $setProfilePicChooseFileBtnXpath = "//*[@class='oc-dialog-buttonrow onebutton']//button";
+	protected $setProfilePicBtnXpath = "//*[@id='sendcropperbutton']";
+	protected $profilePicPreviewXpath = "//*[@id='displayavatar']/div[@class='avatardiv']/img";
+	protected $profilePicDeleteBtnXpath = "//*[@id='removeavatar']";
+
 	/**
 	 * @param string $language
 	 *
@@ -187,5 +195,93 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Set profile Pic from uploaded images using the webUI
+	 *
+	 * @param string $fileName
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function setProfilePicture($fileName, Session $session) {
+		$this->waitTillElementIsNotNull($this->setProfilePicFromFilesBtnXpath);
+		$profilePicBtn = $this->find('xpath', $this->setProfilePicFromFilesBtnXpath);
+		$this->assertElementNotNull(
+			$profilePicBtn,
+			__METHOD__ . " Profile Picture Button not found"
+		);
+		$profilePicBtn->focus();
+		$profilePicBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+
+		$this->waitTillElementIsNotNull(
+			$this->setProfilePicFileListXpath .
+			\sprintf(
+				$this->fileListElementMatchXpath,
+				$fileName
+			)
+		);
+		$file = $this->find(
+			'xpath',
+			$this->setProfilePicFileListXpath .
+			\sprintf($this->fileListElementMatchXpath, $fileName)
+		);
+		$this->assertElementNotNull(
+			$file,
+			__METHOD__ . " the file with name $fileName not found"
+		);
+		$file->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+
+		$chooseBtn = $this->find('xpath', $this->setProfilePicChooseFileBtnXpath);
+		$this->assertElementNotNull(
+			$chooseBtn,
+			__METHOD__ . " The button to choose profile picture was not found"
+		);
+		$chooseBtn->focus();
+		$chooseBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+
+		$setBtn = $this->find('xpath', $this->setProfilePicBtnXpath);
+		$this->assertElementNotNull(
+			$setBtn,
+			__METHOD__ . " The button to set profile picture was not found"
+		);
+		$setBtn->focus();
+		$setBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * Check if the preview of the profile pic is shown in the webui
+	 *
+	 * @return void
+	 */
+	public function isProfilePicturePreviewDisplayed() {
+		$profilePicPreview = $this->find('xpath', $this->profilePicPreviewXpath);
+		if ($profilePicPreview === null) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Delete the current profile pic
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function deleteProfilePicture(Session $session) {
+		$deleteBtn = $this->find('xpath', $this->profilePicDeleteBtnXpath);
+		$this->assertElementNotNull(
+			$deleteBtn,
+			__METHOD__ . " Profile Picture delete Button not found"
+		);
+		$deleteBtn->focus();
+		$deleteBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 }
