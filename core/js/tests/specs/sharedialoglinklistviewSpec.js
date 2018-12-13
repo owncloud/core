@@ -138,7 +138,7 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 			defaultDateStub.returns('2017-03-03');
 			var popup = showPopup();
 			expect(popup.model.toJSON()).toEqual({
-				name: 'shared_file_name.txt link',
+				name: 'Public link',
 				password: '',
 				permissions: OC.PERMISSION_READ,
 				expireDate: '2017-03-03',
@@ -153,13 +153,13 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 		it('deduplicates default link name', function() {
 			view.collection.set([{
 				id: 1,
-				name: 'shared_file_name.txt link'
+				name: 'Public link'
 			}, {
 				id: 2,
-				name: 'shared_file_name.txt link (2)'
+				name: 'Public link (2)'
 			}]);
 			var popup = showPopup();
-			expect(popup.model.get('name')).toEqual('shared_file_name.txt link (3)');
+			expect(popup.model.get('name')).toEqual('Public link (3)');
 		});
 		it('adds model to collection and rerender after saving', function() {
 			var popup = showPopup();

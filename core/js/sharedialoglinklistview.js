@@ -131,9 +131,7 @@
 
 		_generateName: function() {
 			var index = 1;
-			var baseName = t('core', '{fileName} link', {
-				fileName: this.fileInfoModel.get('name')
-			}, null, {escape: false});
+			var baseName = t('core', 'Public link', null, {escape: false});
 			var name = baseName;
 
 			while (this.collection.findWhere({name: name})) {
