@@ -63,7 +63,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 */
 	private function getLoginSuccessPageTitle() {
 		// When the login succeeds, we end up on the Files page
-		return "Files - " . $this->webUIGeneralContext->getProductName();
+		return "Files - " . $this->featureContext->getProductNameFromStatus();
 	}
 
 	/**
@@ -72,7 +72,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	private function getLoginFailedPageTitle() {
 		// When the login fails, we end up at a page with a title that is the
 		// themed product name, e.g. "ownCloud"
-		return $this->webUIGeneralContext->getProductName();
+		return $this->featureContext->getProductNameFromStatus();
 	}
 
 	/**
