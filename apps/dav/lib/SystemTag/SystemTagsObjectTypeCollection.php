@@ -139,7 +139,7 @@ class SystemTagsObjectTypeCollection implements ICollection {
 		if ($this->objectType === 'files') {
 			// make sure the object is reachable for the current user
 			$userId = $this->userSession->getUser()->getUID();
-			$nodes = $this->fileRoot->getUserFolder($userId)->getById(\intval($name));
+			$nodes = $this->fileRoot->getUserFolder($userId)->getById((int)$name, true);
 			return !empty($nodes);
 		}
 		return true;

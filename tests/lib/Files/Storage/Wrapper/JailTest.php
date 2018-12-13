@@ -8,6 +8,9 @@
 
 namespace Test\Files\Storage\Wrapper;
 
+use OCP\Files\Storage\IStorage;
+use OCP\Files\Storage\IVersionedStorage;
+
 class JailTest extends \Test\Files\Storage\Storage {
 
 	/**
@@ -47,5 +50,38 @@ class JailTest extends \Test\Files\Storage\Storage {
 	public function testFilePutContentsRooted() {
 		$this->instance->file_put_contents('bar', 'asd');
 		$this->assertEquals('asd', $this->sourceStorage->file_get_contents('foo/bar'));
+	}
+
+	public function providesVersionMethods() {
+		return [
+			['getContentOfVersion', 1014],
+			['restoreVersion', 1014],
+			['saveVersion'],
+			['getVersions'],
+			['getVersion', 1014],
+		];
+	}
+
+	/**
+	 * @dataProvider providesVersionMethods
+	 */
+	public function testCallsSourceVersionMethods($method, $extraArg = null) {
+		$sourceStorage = $this->createMock([IStorage::class, IVersionedStorage::class]);
+		$instance = new \OC\Files\Storage\Wrapper\Jail([
+			'storage' => $sourceStorage,
+			'root' => 'foo'
+		]);
+
+		$matcher = $sourceStorage->expects($this->once())
+			->method($method);
+		// FIXME: normalize path...
+		if ($extraArg !== null) {
+			$matcher = $matcher->with('foo//bar', $extraArg);
+		} else {
+			$matcher = $matcher->with('foo//bar');
+		}
+		$matcher->willReturn('returnValue');
+
+		$this->assertEquals('returnValue', $instance->$method('/bar', $extraArg));
 	}
 }

@@ -37,6 +37,8 @@ use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
+use OCP\Files\Folder;
+use OCP\IUser;
 
 /**
  * Class FederatedShareProviderTest
@@ -182,6 +184,90 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->assertEquals('user@server.com', $share->getSharedWith());
 		$this->assertEquals('sharedBy', $share->getSharedBy());
 		$this->assertEquals('shareOwner', $share->getShareOwner());
+		$this->assertEquals('file', $share->getNodeType());
+		$this->assertEquals(42, $share->getNodeId());
+		$this->assertEquals(19, $share->getPermissions());
+		$this->assertEquals('token', $share->getToken());
+	}
+
+	public function testCreateLegacy() {
+		$share = $this->shareManager->newShare();
+
+		$node = $this->createMock('\OCP\Files\File');
+		$node->method('getId')->willReturn(42);
+		$node->method('getName')->willReturn('myFile');
+
+		$share->setSharedWith('user@server.com')
+			->setShareOwner('shareOwner')
+			->setPermissions(19)
+			->setNode($node);
+
+		$this->tokenHandler->method('generateToken')->willReturn('token');
+
+		$shareWithAddress = new Address('user@server.com');
+		$ownerAddress = new Address('shareOwner@http://localhost/');
+		$sharedByAddress = new Address('sharedBy@http://localhost/');
+		$this->addressHandler->expects($this->any())->method('getLocalUserFederatedAddress')
+			->will($this->onConsecutiveCalls($ownerAddress, $sharedByAddress, $ownerAddress));
+
+		$this->addressHandler->expects($this->any())->method('splitUserRemote')
+			->willReturn(['user', 'server.com']);
+
+		$this->notifications->expects($this->once())
+			->method('sendRemoteShare')
+			->with(
+				$this->equalTo($shareWithAddress),
+				$this->equalTo($ownerAddress),
+				$this->equalTo($sharedByAddress),
+				$this->equalTo('token'),
+				$this->equalTo('myFile'),
+				$this->anything()
+			)->willReturn(true);
+
+		$folderOwner = $this->createMock(IUser::class);
+		$folderOwner->method('getUID')->willReturn('folderOwner');
+		$node = $this->createMock(Folder::class);
+		$node->method('getOwner')->willReturn($folderOwner);
+
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getById')
+			->with(42, true)
+			->willReturn([$node]);
+		$this->rootFolder->expects($this->once())
+			->method('getUserFolder')
+			->with('shareOwner')
+			->willReturn($userFolder);
+
+		$share = $this->provider->create($share);
+
+		$qb = $this->connection->getQueryBuilder();
+		$stmt = $qb->select('*')
+			->from('share')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
+			->execute();
+
+		$data = $stmt->fetch();
+		$stmt->closeCursor();
+
+		$expected = [
+			'share_type' => \OCP\Share::SHARE_TYPE_REMOTE,
+			'share_with' => 'user@server.com',
+			'uid_owner' => 'shareOwner',
+			'uid_initiator' => null,
+			'item_type' => 'file',
+			'item_source' => 42,
+			'file_source' => 42,
+			'permissions' => 19,
+			'accepted' => 0,
+			'token' => 'token',
+		];
+		$this->assertArraySubset($expected, $data);
+
+		$this->assertEquals($data['id'], $share->getId());
+		$this->assertEquals(\OCP\Share::SHARE_TYPE_REMOTE, $share->getShareType());
+		$this->assertEquals('user@server.com', $share->getSharedWith());
+		$this->assertEquals('shareOwner', $share->getSharedBy());
+		$this->assertEquals('folderOwner', $share->getShareOwner());
 		$this->assertEquals('file', $share->getNodeType());
 		$this->assertEquals(42, $share->getNodeId());
 		$this->assertEquals(19, $share->getPermissions());

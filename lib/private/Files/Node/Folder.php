@@ -269,9 +269,11 @@ class Folder extends Node implements \OCP\Files\Folder {
 
 	/**
 	 * @param int $id
+	 * @param boolean $first only return the first node that is found
 	 * @return \OC\Files\Node\Node[]
+	 * @throws NotFoundException
 	 */
-	public function getById($id) {
+	public function getById($id, $first = false) {
 		$mounts = $this->root->getMountsIn($this->path);
 		$mounts[] = $this->root->getMount($this->path);
 		// reverse the array so we start with the storage this view is in
@@ -290,6 +292,9 @@ class Folder extends Node implements \OCP\Files\Folder {
 					$fullPath = $mount->getMountPoint() . $internalPath;
 					if (($path = $this->getRelativePath($fullPath)) !== null) {
 						$nodes[] = $this->get($path);
+						if ($first) {
+							break;
+						}
 					}
 				}
 			}

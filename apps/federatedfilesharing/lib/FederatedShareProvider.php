@@ -886,7 +886,7 @@ class FederatedShareProvider implements IShareProvider {
 			throw new InvalidShare();
 		}
 
-		$nodes = $userFolder->getById($id);
+		$nodes = $userFolder->getById($id, true);
 
 		if (empty($nodes)) {
 			throw new InvalidShare();

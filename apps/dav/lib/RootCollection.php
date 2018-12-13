@@ -74,7 +74,7 @@ class RootCollection extends SimpleCollection {
 			\OC::$server->getSystemTagObjectMapper(),
 			\OC::$server->getUserSession(),
 			\OC::$server->getGroupManager(),
-			\OC::$server->getRootFolder()
+			\OC::$server->getLazyRootFolder()
 		);
 
 		$usersCardDavBackend = new CardDavBackend($db, $userPrincipalBackend, $groupPrincipalBackend, $dispatcher);
@@ -109,7 +109,7 @@ class RootCollection extends SimpleCollection {
 				$systemTagRelationsCollection,
 				$uploadCollection,
 				$avatarCollection,
-				new \OCA\DAV\Meta\RootCollection(\OC::$server->getRootFolder()),
+				new \OCA\DAV\Meta\RootCollection(\OC::$server->getLazyRootFolder()),
 				$queueCollection
 		];
 
