@@ -299,6 +299,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - WebUIAdminSharingSettingsContext:
 
     webUISharingNotifications:
       paths:

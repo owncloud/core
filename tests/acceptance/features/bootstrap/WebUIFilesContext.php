@@ -331,6 +331,20 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the share-with field should not be visible in the details panel
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theShareWithFieldShouldNotBeVisibleInTheDetailsPanel() {
+		$sharingDialog = $this->filesPage->getSharingDialog();
+		PHPUnit_Framework_Assert::assertFalse(
+			$sharingDialog->isShareWithFieldVisible(),
+			'the share-with field is visible in the details panel'
+		);
+	}
+
+	/**
 	 * @When the user browses to the trashbin page
 	 * @Given the user has browsed to the trashbin page
 	 *
@@ -1029,6 +1043,20 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	) {
 		$this->webUIGeneralContext->theUserReloadsTheCurrentPageOfTheWebUI();
 		$this->theDeletedMovedElementsShouldBeListedOnTheWebUI($shouldOrNot);
+	}
+
+	/**
+	 * @When the user opens the sharing tab from the file action menu of file/folder :entryName using the webUI
+	 *
+	 * @param string $entryName
+	 *
+	 * @return void
+	 */
+	public function theUserOpensTheSharingTabFromTheActionMenuOfFileUsingTheWebui($entryName) {
+		$this->theUserOpensTheFileActionMenuOfFileFolderInTheWebui($entryName);
+		$this->theUserClicksTheFileActionInTheWebui("details");
+		$this->theUserSwitchesToTabInDetailsPanelUsingTheWebui("sharing");
+		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
 	}
 
 	/**
