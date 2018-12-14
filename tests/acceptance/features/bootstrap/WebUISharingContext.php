@@ -1110,6 +1110,21 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the user should see an error message on the share dialog saying :message
+	 *
+	 * @param string $message
+	 *
+	 * @return void
+	 */
+	public function theUserShouldSeeAnErrorMessageOnTheShareDialogSaying($message) {
+		$sharingDialog = $this->filesPage->getSharingDialog();
+		$actualMessage = $sharingDialog->getNoSharingMessage(
+			$this->getSession()
+		);
+		PHPUnit_Framework_Assert::assertEquals($message, $actualMessage);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
