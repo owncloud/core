@@ -78,7 +78,14 @@ class DetectionTest extends \Test\TestCase {
 		$this->assertEquals('image/png', $this->detection->detectPath('.hidden/foo.png'));
 		$this->assertEquals('image/png', $this->detection->detectPath('test.jpg/foo.png'));
 		$this->assertEquals('application/octet-stream', $this->detection->detectPath('.png'));
+		$this->assertEquals('application/x-sharedlib', $this->detection->detectPath('test.so'));
+		$this->assertEquals('application/x-sharedlib', $this->detection->detectPath('test.so.0.0.1'));
+		$this->assertEquals('application/x-sharedlib', $this->detection->detectPath('test.1.2.so.0.0.1'));
+		$this->assertEquals('application/x-sharedlib', $this->detection->detectPath('test.1.2.so.1'));
+		$this->assertEquals('application/x-sharedlib', $this->detection->detectPath('foo.so.'));
 		$this->assertEquals('application/octet-stream', $this->detection->detectPath('foo'));
+		$this->assertEquals('application/octet-stream', $this->detection->detectPath('foo.somany'));
+		$this->assertEquals('application/octet-stream', $this->detection->detectPath('foo.so*'));
 		$this->assertEquals('application/octet-stream', $this->detection->detectPath(''));
 	}
 
