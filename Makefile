@@ -116,7 +116,7 @@ $(COMPOSER_BIN):
 	cd build && ./getcomposer.sh
 
 $(PHAN_BIN):
-	cd build && curl -s -L https://github.com/phan/phan/releases/download/0.12.10/phan.phar -o phan.phar;
+	cd build && curl -s -L https://github.com/phan/phan/releases/download/0.12.15/phan.phar -o phan.phar;
 
 $(PHPSTAN_BIN):
 	cd build && curl -s -L https://github.com/phpstan/phpstan/releases/download/0.10.6/phpstan.phar -o phpstan.phar;
