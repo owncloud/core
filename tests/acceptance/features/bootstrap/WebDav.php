@@ -1713,7 +1713,7 @@ trait WebDav {
 	/**
 	 * Uploading with old/new dav and chunked/non-chunked.
 	 *
-	 * @When user :user uploads file :source to :destination with all mechanisms using the WebDAV API
+	 * @When user :user uploads file :source to filenames based on :destination with all mechanisms using the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $source
@@ -1734,7 +1734,7 @@ trait WebDav {
 	/**
 	 * Overwriting with old/new dav and chunked/non-chunked.
 	 *
-	 * @When user :user overwrites file :source to :destination with all mechanisms using the WebDAV API
+	 * @When user :user overwrites file :source to filenames based on :destination with all mechanisms using the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $source
@@ -1842,41 +1842,53 @@ trait WebDav {
 	/**
 	 * Check that all the files uploaded with old/new dav and chunked/non-chunked exist.
 	 *
-	 * @Then as :user the files uploaded to :destination with all mechanisms should exist
+	 * @Then /^as "([^"]*)" the files uploaded to "([^"]*)" with all mechanisms should (not|)\s?exist$/
 	 *
 	 * @param string $user
 	 * @param string $destination
+	 * @param string $shouldOrNot
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function filesUploadedToWithAllMechanismsShouldExist(
-		$user, $destination
+		$user, $destination, $shouldOrNot
 	) {
-		foreach (['old', 'new'] as $davVersion) {
-			foreach (["{$davVersion}dav-regular", "{$davVersion}dav-{$davVersion}chunking"] as $suffix) {
-				$this->asFileOrFolderShouldExist(
-					$user, 'file', "$destination-$suffix"
-				);
+		if ($shouldOrNot !== "not") {
+			foreach (['old', 'new'] as $davVersion) {
+				foreach (["{$davVersion}dav-regular", "{$davVersion}dav-{$davVersion}chunking"] as $suffix) {
+					$this->asFileOrFolderShouldExist(
+						$user, 'file', "$destination-$suffix"
+					);
+				}
+			}
+		} else {
+			foreach (['old', 'new'] as $davVersion) {
+				foreach (["{$davVersion}dav-regular", "{$davVersion}dav-{$davVersion}chunking"] as $suffix) {
+					$this->asFileOrFolderShouldNotExist(
+						$user, 'file', "$destination-$suffix"
+					);
+				}
 			}
 		}
 	}
 
 	/**
-	 * @Then as user :user on server :server the files uploaded to :destination with all mechanisms should exist
+	 * @Then /^as user "([^"]*)" on server "([^"]*)" the files uploaded to "([^"]*)" with all mechanisms should (not|)\s?exist$/
 	 *
 	 * @param string $user
 	 * @param string $server
 	 * @param string $destination
+	 * @param string $shouldOrNot
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function asUserOnServerTheFilesUploadedToWithAllMechanismsShouldExit(
-		$user, $server, $destination
+		$user, $server, $destination, $shouldOrNot
 	) {
 		$previousServer = $this->usingServer($server);
-		$this->filesUploadedToWithAllMechanismsShouldExist($user, $destination);
+		$this->filesUploadedToWithAllMechanismsShouldExist($user, $destination, $shouldOrNot);
 		$this->usingServer($previousServer);
 	}
 
