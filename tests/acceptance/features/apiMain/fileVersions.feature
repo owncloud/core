@@ -13,7 +13,7 @@ Feature: dav-versions
     Then the version folder of file "/davtest.txt" for user "user0" should contain "0" elements
 
   Scenario: Upload file and no version is available using various chunking methods
-    When user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" with all mechanisms using the WebDAV API
+    When user "user0" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms using the WebDAV API
     Then the version folder of file "/davtest.txt-olddav-regular" for user "user0" should contain "0" elements
     Then the version folder of file "/davtest.txt-newdav-regular" for user "user0" should contain "0" elements
     Then the version folder of file "/davtest.txt-olddav-oldchunking" for user "user0" should contain "0" elements
@@ -32,8 +32,8 @@ Feature: dav-versions
     And the content length of file "/davtest.txt" with version index "1" for user "user0" in versions folder should be "8"
 
   Scenario: Upload a file twice and versions are available using various chunking methods
-    When user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" with all mechanisms using the WebDAV API
-    And user "user0" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" with all mechanisms using the WebDAV API
+    When user "user0" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms using the WebDAV API
+    And user "user0" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms using the WebDAV API
     Then the version folder of file "/davtest.txt-olddav-regular" for user "user0" should contain "1" element
     Then the version folder of file "/davtest.txt-newdav-regular" for user "user0" should contain "1" element
     Then the version folder of file "/davtest.txt-olddav-oldchunking" for user "user0" should contain "1" element
