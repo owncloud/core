@@ -1,0 +1,11 @@
+{
+    "config" : {
+      "platform": {
+        "php": "5.6.37"
+      }
+    },
+    "require": {
+      "owncloud/coding-standard": "^1.0"
+    }
+  }
+  
