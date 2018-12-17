@@ -452,9 +452,9 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	private function IsDatabaseAccessAllowed() {
-		// on travis-ci.org we allow database access in any case - otherwise
+		// on travis-ci.org and drone, we allow database access in any case - otherwise
 		// this will break all apps right away
-		if (\getenv('TRAVIS') == true) {
+		if (\getenv('TRAVIS') == true || \getenv('DRONE') == true) {
 			return true;
 		}
 		$annotations = $this->getAnnotations();
