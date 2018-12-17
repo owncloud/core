@@ -630,12 +630,6 @@ matrix:
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
 
-    - TEST_SUITE: phan
-      PHP_VERSION: 7.2
-
-    - TEST_SUITE: phan
-      PHP_VERSION: 7.3
-
   # Litmus
     - PHP_VERSION: 7.1
       USE_SERVER: true
