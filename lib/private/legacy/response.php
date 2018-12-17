@@ -53,7 +53,7 @@ class OC_Response {
 				\header('Cache-Control: max-age='.$cache_time.', must-revalidate');
 			} else {
 				self::setExpiresHeader(0);
-				\header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+				\header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 			}
 		} else {
 			\header('Cache-Control: cache');
@@ -114,11 +114,13 @@ class OC_Response {
 	}
 
 	/**
-	* Set response expire time
-	* @param string|DateTime $expires date-time when the response expires
-	*  string for DateInterval from now
-	*  DateTime object when to expire response
-	*/
+	 * Set response expire time
+	 *
+	 * @param string|DateTime $expires date-time when the response expires
+	 *  string for DateInterval from now
+	 *  DateTime object when to expire response
+	 * @throws Exception
+	 */
 	public static function setExpiresHeader($expires) {
 		if (\is_string($expires) && $expires[0] == 'P') {
 			$interval = $expires;
@@ -288,17 +290,17 @@ class OC_Response {
 		}
 		// first check if any of the global CORS domains matches
 		$globalAllowedDomains = $config->getSystemValue('cors.allowed-domains', []);
-		$isCorsRequest = (\is_array($globalAllowedDomains) && \in_array($domain, $globalAllowedDomains));
+		$isCorsRequest = (\is_array($globalAllowedDomains) && \in_array($domain, $globalAllowedDomains, true));
 		if (!$isCorsRequest && $userId !== null) {
 			// check if any of the user specific CORS domains matches
 			$allowedDomains = \json_decode($config->getUserValue($userId, 'core', 'domains'));
-			$isCorsRequest = (\is_array($allowedDomains) && \in_array($domain, $allowedDomains));
+			$isCorsRequest = (\is_array($allowedDomains) && \in_array($domain, $allowedDomains, true));
 		}
 		if ($isCorsRequest) {
 			// TODO: infer allowed verbs from existing known routes
-			$allHeaders['Access-Control-Allow-Headers'] = ["authorization", "OCS-APIREQUEST", "Origin", "X-Requested-With", "Content-Type", "Access-Control-Allow-Origin"];
+			$allHeaders['Access-Control-Allow-Headers'] = ['authorization', 'OCS-APIREQUEST', 'Origin', 'X-Requested-With', 'Content-Type', 'Access-Control-Allow-Origin', 'X-Request-ID'];
 			$allHeaders['Access-Control-Allow-Origin'] = [$domain];
-			$allHeaders['Access-Control-Allow-Methods'] =["GET", "OPTIONS", "POST", "PUT", "DELETE", "MKCOL", "PROPFIND", "PATCH", "PROPPATCH", "REPORT"];
+			$allHeaders['Access-Control-Allow-Methods'] =['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE', 'MKCOL', 'PROPFIND', 'PATCH', 'PROPPATCH', 'REPORT'];
 
 			foreach ($headers as $key => $value) {
 				if (\array_key_exists($key, $allHeaders)) {
@@ -315,7 +317,7 @@ class OC_Response {
 	 * This function adds the CORS headers for all domains
 	 *
 	 * @param Sabre\HTTP\ResponseInterface $response
-	 * @param Array $headers
+	 * @param array $headers
 	 *
 	 * Format of $headers:
 	 * Array [
@@ -328,9 +330,9 @@ class OC_Response {
 	 */
 	public static function setOptionsRequestHeaders($response, $headers = []) {
 		// TODO: infer allowed verbs from existing known routes
-		$allHeaders['Access-Control-Allow-Headers'] = ["authorization", "OCS-APIREQUEST", "Origin", "X-Requested-With", "Content-Type", "Access-Control-Allow-Origin"];
+		$allHeaders['Access-Control-Allow-Headers'] = ['authorization', 'OCS-APIREQUEST', 'Origin', 'X-Requested-With', 'Content-Type', 'Access-Control-Allow-Origin', 'X-Request-ID'];
 		$allHeaders['Access-Control-Allow-Origin'] = ['*'];
-		$allHeaders['Access-Control-Allow-Methods'] =["GET", "OPTIONS", "POST", "PUT", "DELETE", "MKCOL", "PROPFIND", "PATCH", "PROPPATCH", "REPORT"];
+		$allHeaders['Access-Control-Allow-Methods'] =['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE', 'MKCOL', 'PROPFIND', 'PATCH', 'PROPPATCH', 'REPORT'];
 
 		foreach ($headers as $key => $value) {
 			if (\array_key_exists($key, $allHeaders)) {
