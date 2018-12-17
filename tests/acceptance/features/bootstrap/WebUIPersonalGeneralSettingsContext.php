@@ -309,6 +309,47 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
+	 * @When the user uploads :fileName as a new profile picture using the webUI
+	 *
+	 * @param string $fileName
+	 *
+	 * @return void
+	 */
+	public function theUserUploadsAsANewProfilePicture($fileName) {
+		$this->personalGeneralSettingsPage->uploadProfilePicture($this->getSession(), $fileName);
+	}
+
+	/**
+	 * @When the user selects :fileName for uploading as a profile picture using the WebUI
+	 *
+	 * @param string $fileName
+	 *
+	 * @return void
+	 */
+	public function theUserSelectsForUploadingAsAProfilePicture($fileName) {
+		$this->personalGeneralSettingsPage->selectFileForUploadAsProfilePicture($this->getSession(), $fileName);
+	}
+
+	/**
+	 * @Then /^the user should (not|)\s?be able to upload the selected file as the profile picture$/
+	 *
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 */
+	public function theUserShouldBeAbleToUploadTheFileAsTheProfilePicture($shouldOrNot) {
+		if ($shouldOrNot !== "not") {
+			PHPUnit_Framework_Assert::assertFalse(
+				$this->personalGeneralSettingsPage->isFileUploadErrorMsgVisible()
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertTrue(
+				$this->personalGeneralSettingsPage->isFileUploadErrorMsgVisible()
+			);
+		}
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *

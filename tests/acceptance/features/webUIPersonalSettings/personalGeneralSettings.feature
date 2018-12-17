@@ -55,3 +55,22 @@ Feature: personal general settings
     Given the user has set profile picture to "testimage.jpg" from their cloud files
     When the user deletes the existing profile picture
     Then the preview of the profile picture should not be shown in the webUI
+
+  Scenario: User uploads new profile picture
+    Given the user has deleted any existing profile picture
+    When the user uploads "testavatar.png" as a new profile picture using the webUI
+    Then the preview of the profile picture should be shown in the webUI
+
+  Scenario Outline: User tries to upload different files as profile picture
+    Given the user has deleted any existing profile picture
+    When the user selects "<file_to_upload>" for uploading as a profile picture using the WebUI
+    Then the user <should_or_not> be able to upload the selected file as the profile picture
+    Examples:
+      | file_to_upload          | should_or_not |
+      | testavatar.png          | should        |
+      | testavatar.jpg          | should        |
+      | data.zip                | should not    |
+      | new-lorem.txt           | should not    |
+      | simple.pdf              | should not    |
+      | simple.odt              | should not    |
+      | data.tar.gz             | should not    |
