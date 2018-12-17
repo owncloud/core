@@ -505,10 +505,14 @@ class SessionTest extends TestCase {
 		$session = $this->createMock(ISession::class);
 		/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject $request */
 		$request = $this->createMock(IRequest::class);
+		$request->method('getRemoteAddress')->willReturn('12.34.56.78');
+
+		/** @var EventDispatcher | \PHPUnit_Framework_MockObject_MockObject $eventDispatcher */
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
 
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService, $this->eventDispatcher])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService, $eventDispatcher])
 			->setMethods(['login', 'isTwoFactorEnforced'])
 			->getMock();
 
@@ -525,6 +529,8 @@ class SessionTest extends TestCase {
 			->method('isTwoFactorEnforced')
 			->with('john')
 			->will($this->returnValue(true));
+		$this->logger->expects($this->once())->method('warning')->with("Login failed: 'john' (Remote IP: '12.34.56.78')");
+		$eventDispatcher->expects($this->once())->method('dispatch')->with('user.loginfailed', new GenericEvent(null, ['user' => 'john']));
 
 		$userSession->logClientIn('john', 'doe', $request);
 	}
