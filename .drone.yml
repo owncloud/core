@@ -99,23 +99,14 @@ pipeline:
       matrix:
         TEST_SUITE: javascript
 
-  phplint:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      - make test-php-lint
-    when:
-      matrix:
-        TEST_SUITE: lint
-
-  php-cs-fixer:
+  owncloud-coding-standard:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
       - make test-php-style
     when:
       matrix:
-        TEST_SUITE: php-cs-fixer
+        TEST_SUITE: owncloud-coding-standard
 
   install-server:
     image: owncloudci/php:${PHP_VERSION}
@@ -575,23 +566,16 @@ matrix:
       PHP_VERSION: 7.1
       COVERAGE: true
 
-  # linting
-    - TEST_SUITE: lint
-      PHP_VERSION: 7.1
-
-    - TEST_SUITE: lint
-      PHP_VERSION: 7.2
-
-    - TEST_SUITE: lint
-      PHP_VERSION: 7.3
-
-  # php-cs-fixer
-    - TEST_SUITE: php-cs-fixer
-      PHP_VERSION: 7.2
+  # owncloud-coding-standard
+    - PHP_VERSION: 7.1
+      TEST_SUITE: owncloud-coding-standard
 
   # phan
     - TEST_SUITE: phan
-      PHP_VERSION: 7.1
+      PHP_VERSION: 7.2
+
+    - TEST_SUITE: phan
+      PHP_VERSION: 7.3
 
   # phpstan
     - TEST_SUITE: phpstan

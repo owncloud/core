@@ -114,6 +114,10 @@ puphpet
 .vagrant
 Vagrantfile
 
+# Composer
+vendor-bin/**/vendor
+vendor-bin/**/composer.lock
+
 # Tests - auto-generated files
 /data-autotest
 /tests/coverage*
