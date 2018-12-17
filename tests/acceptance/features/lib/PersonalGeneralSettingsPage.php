@@ -25,6 +25,7 @@ namespace Page;
 use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\SetupHelper;
+use TestHelpers\UploadHelper;
 
 /**
  * Personal General Settings page.
@@ -57,6 +58,8 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	protected $setProfilePicBtnXpath = "//*[@id='sendcropperbutton']";
 	protected $profilePicPreviewXpath = "//*[@id='displayavatar']/div[@class='avatardiv']/img";
 	protected $profilePicDeleteBtnXpath = "//*[@id='removeavatar']";
+	protected $profilePicUploadInputId = "uploadavatar";
+	protected $invalidImageErrorMsgXpath = "//*[@id='displayavatar']/div[@class='warning hidden' and contains(.,'Invalid image')]";
 
 	/**
 	 * @param string $language
@@ -244,14 +247,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 		$chooseBtn->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 
-		$setBtn = $this->find('xpath', $this->setProfilePicBtnXpath);
-		$this->assertElementNotNull(
-			$setBtn,
-			__METHOD__ . " The button to set profile picture was not found"
-		);
-		$setBtn->focus();
-		$setBtn->click();
-		$this->waitForAjaxCallsToStartAndFinish($session);
+		$this->selectDefaultCropForProfilePicture($session);
 	}
 
 	/**
@@ -283,5 +279,66 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 		$deleteBtn->focus();
 		$deleteBtn->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * Select default crop for selected profile picture
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function selectDefaultCropForProfilePicture(Session $session) {
+		$setBtn = $this->find('xpath', $this->setProfilePicBtnXpath);
+		$this->assertElementNotNull(
+			$setBtn,
+			__METHOD__ . " The button to set profile picture was not found"
+		);
+		$setBtn->focus();
+		$setBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * Select File for upload as profile picture
+	 *
+	 * @param Session $session
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function selectFileForUploadAsProfilePicture(Session $session, $name) {
+		$uploadField = $this->findById($this->profilePicUploadInputId);
+		$this->assertElementNotNull(
+			$uploadField,
+			__METHOD__ .
+			" id $this->profilePicUploadInputId " .
+			"could not find file upload input field"
+		);
+		$uploadField->attachFile(UploadHelper::getUploadFilesDir($name));
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * Upload a profile picture
+	 *
+	 * @param Session $session
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function uploadProfilePicture(Session $session, $name) {
+		$this->selectFileForUploadAsProfilePicture($session, $name);
+		$this->selectDefaultCropForProfilePicture($session);
+	}
+
+	/**
+	 * return if the "invalid image" message is visible
+	 *
+	 * @return void
+	 */
+	public function isFileUploadErrorMsgVisible() {
+		$errorMsg = $this->waitTillElementIsNotNull($this->invalidImageErrorMsgXpath);
+		return $errorMsg !== null;
 	}
 }
