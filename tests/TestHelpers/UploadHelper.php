@@ -274,4 +274,15 @@ class UploadHelper {
 			1, \file_exists($name)
 		);
 	}
+
+	/**
+	 * get the path of a file from FilesForUpload directory
+	 *
+	 * @param string $name name of the file to upload
+	 *
+	 * @return string
+	 */
+	public static function getUploadFilesDir($name) {
+		return \getenv("FILES_FOR_UPLOAD") . $name;
+	}
 }
