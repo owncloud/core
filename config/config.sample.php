@@ -713,7 +713,7 @@ $CONFIG = array(
 
 /**
  * If you want to store apps in a custom directory instead of ownCloud’s default 
- * `/app`, you need to modify the `apps_paths` key. There, you need to add a 
+ * `/apps`, you need to modify the `apps_paths` key. There, you need to add a 
  * new associative array that contains three elements. These are:
  *
  * - `path`      The absolute file system path to the custom app folder.
