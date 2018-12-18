@@ -1282,6 +1282,7 @@ matrix:
       OWNCLOUD_LOG: true
       CONFIGURE_ENCRYPTION: true
       ENCRYPTION_TYPE: masterkey
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: cli
@@ -1293,3 +1294,4 @@ matrix:
       OWNCLOUD_LOG: true
       CONFIGURE_ENCRYPTION: true
       ENCRYPTION_TYPE: masterkey
+      INSTALL_TESTING-APP: true
