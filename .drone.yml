@@ -122,9 +122,6 @@ pipeline:
     pull: true
     commands:
       - ./tests/drone/install-server.sh
-      - git clone https://github.com/owncloud/testing.git $$DRONE_WORKSPACE/apps/testing
-      - php occ a:l
-      - php occ a:e testing
       - php occ a:l
       - php occ config:system:set trusted_domains 1 --value=server
       - php occ config:system:set trusted_domains 2 --value=federated
@@ -135,6 +132,18 @@ pipeline:
     when:
       matrix:
         INSTALL_SERVER: true
+
+  install-testing-app:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - git clone https://github.com/owncloud/testing.git $$DRONE_WORKSPACE/apps/testing
+      - php occ a:l
+      - php occ a:e testing
+      - php occ a:l
+    when:
+      matrix:
+        INSTALL_TESTING-APP: true
 
   prepare-objectstore:
     image: owncloudci/php:${PHP_VERSION}
@@ -741,6 +750,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -750,6 +760,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -759,6 +770,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -770,6 +782,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -779,6 +792,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -788,6 +802,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -797,6 +812,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -806,6 +822,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -815,6 +832,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -824,6 +842,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -833,6 +852,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
       INSTALL_NOTIFICATIONS-APP: true
 
     - PHP_VERSION: 7.1
@@ -843,6 +863,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -852,6 +873,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -861,6 +883,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -870,6 +893,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
   # CLI Provisioning Acceptance tests
     - PHP_VERSION: 7.1
@@ -880,6 +904,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
       USE_EMAIL: true
 
   # CLI Main Acceptance tests
@@ -891,6 +916,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
   # CLI Background Acceptance tests
     - PHP_VERSION: 7.1
@@ -901,6 +927,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
   # CLI Trashbin Acceptance tests
     - PHP_VERSION: 7.1
@@ -911,6 +938,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
   # UI Acceptance tests
     - PHP_VERSION: 7.1
@@ -921,6 +949,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -931,6 +960,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -940,6 +970,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -949,6 +980,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -958,6 +990,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -968,6 +1001,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -977,6 +1011,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -987,6 +1022,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -996,6 +1032,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1005,6 +1042,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1016,6 +1054,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -1026,6 +1065,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1035,6 +1075,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1044,6 +1085,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
       USE_EMAIL: true
       INSTALL_NOTIFICATIONS-APP: true
 
@@ -1055,6 +1097,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1064,6 +1107,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1073,6 +1117,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     # caldav test
     - PHP_VERSION: 7.1
