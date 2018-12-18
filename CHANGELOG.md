@@ -8,18 +8,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- Added mime types for sharedlib and executable - [#33893](https://github.com/owncloud/core/issues/33893)
 - Allow loading JSON files in setups with pretty URLs - [#32835](https://github.com/owncloud/core/issues/32835)
 - Support global CORS domains for public pages - [#33139](https://github.com/owncloud/core/issues/33139)
-- New tag scope "static tags", editable but not assignable - [#33420](https://github.com/owncloud/core/issues/33420)
+- New tag scope "static tags", editable but not assignable - [#33420](https://github.com/owncloud/core/issues/33420) [#33864](https://github.com/owncloud/core/issues/33864)
 - Added "getBucket" method to HomeObjectStore to fix S3 issue - [#33513](https://github.com/owncloud/core/issues/33513)
 - Pass an additional parameter on the core update - [#33641](https://github.com/owncloud/core/issues/33641)
 - Added short list argument to occ files_external:list - [#33684](https://github.com/owncloud/core/issues/33684)
 - Public JS utility function for email validation - [#33699](https://github.com/owncloud/core/issues/33699)
-- Introduce persistent and explicit locking of file and folders - [#33266](https://github.com/owncloud/core/issues/33266)
+- Introduce persistent and explicit locking of file and folders - [#33266](https://github.com/owncloud/core/issues/33266) [#33785](https://github.com/owncloud/core/issues/33785) [#33843](https://github.com/owncloud/core/issues/33843)
 - Federated sharing new spec OCM 1.0-proposal1 - [#33027](https://github.com/owncloud/core/issues/33027)
+- Add sharing scope to enable addressbook sharing with custom groups - [#33849](https://github.com/owncloud/core/issues/33849)
 
 ### Changed
 
+- Bypass apps max-version check for daily/git release channels - [#33861](https://github.com/owncloud/core/issues/33861)
+- Changed default link share name to be "Public link" - [#33879](https://github.com/owncloud/core/issues/33879)
 - Set shipped apps max version to 10 in preparation for Semver switch - [#33496](https://github.com/owncloud/core/issues/33496)
 - If only the patch level of an app's version changes no migrations will run - [#33218](https://github.com/owncloud/core/issues/33218)
 - User/group deletion in users page now has a confirmation dialog - [#33626](https://github.com/owncloud/core/issues/33626)
@@ -27,7 +31,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Minor and patch updates of dependencies as at 20181126 - [#33683](https://github.com/owncloud/core/issues/33683)
 - Bump punic 3.1.0 => 3.2.0 - [#33462](https://github.com/owncloud/core/issues/33462)
 - Bump phpseclib/phpseclib from 2.0.11 to 2.0.12 - [#33433](https://github.com/owncloud/core/issues/33433)
-- Bump symfony 3.4.15 to 3.4.19 - [#33001](https://github.com/owncloud/core/issues/33001) [#33460](https://github.com/owncloud/core/issues/33460) [#33667](https://github.com/owncloud/core/issues/33667)
+- Bump symfony 3.4.15 to 3.4.20 - [#33001](https://github.com/owncloud/core/issues/33001) [#33460](https://github.com/owncloud/core/issues/33460) [#33667](https://github.com/owncloud/core/issues/33667) [#33821](https://github.com/owncloud/core/issues/33821)
 - Bump symfony/polyfill components v1.9.0 => v1.10.0 - [#33377](https://github.com/owncloud/core/issues/33377)
 - Bump symfony/translation from 3.4.17 to 3.4.18 - [#33429](https://github.com/owncloud/core/issues/33429)
 - Bump jakub-onderka/php-console-highlighter from 0.3.2 to 0.4 - [#32944](https://github.com/owncloud/core/issues/32944)
@@ -40,6 +44,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump friendsofphp/php-cs-fixer (v2.13.0 => v2.13.1) - [#33290](https://github.com/owncloud/core/issues/33290)
 - Bump hoek from 4.2.0 to 4.2.1 in /build - [#33574](https://github.com/owncloud/core/issues/33574)
 - Bump stringstream from 0.0.5 to 0.0.6 in /build - [#33755](https://github.com/owncloud/core/issues/33755)
+- Patch bumps punic pear-core-minimal xdebug-handler - [#33830](https://github.com/owncloud/core/issues/33830)
 - Update moment JS to 2.22.2 - [#33650](https://github.com/owncloud/core/issues/33650)
 
 ### Removed
@@ -48,6 +53,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- Return 403 instead of 500 status when uploading into share without write permissions - [#33640](https://github.com/owncloud/core/issues/33640)
+- Fix performance issue when fetching versions: do not iterate over all storages when only first is needed - [#33859](https://github.com/owncloud/core/issues/33859)
+- Config sample asciidoc fixes - [#33870](https://github.com/owncloud/core/issues/33870)
+- Correction to default apps folder in config.sample.php - [#33912](https://github.com/owncloud/core/issues/33912)
 - Fix system tags object mapper for Oracle - [#33772](https://github.com/owncloud/core/issues/33772)
 - Adjust last login time when using auth modules - [#33752](https://github.com/owncloud/core/issues/33752)
 - Disable share autocomplete endpoint for members of groups excluded from sharing - [#33736](https://github.com/owncloud/core/issues/33736)
