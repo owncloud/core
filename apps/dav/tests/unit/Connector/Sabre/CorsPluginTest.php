@@ -91,6 +91,7 @@ class CorsPluginTest extends TestCase {
 			'X-Requested-With',
 			'Content-Type',
 			'Access-Control-Allow-Origin',
+			'X-Request-ID',
 			'X-OC-Mtime',
 			'OC-Checksum',
 			'OC-Total-Length',
