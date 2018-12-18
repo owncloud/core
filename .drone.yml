@@ -631,6 +631,7 @@ matrix:
       DB_TYPE: postgres
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
     # - PHP_VERSION: 5.6
     #   DB_TYPE: oracle
@@ -659,11 +660,13 @@ matrix:
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: mysqlmb4
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
 #    - PHP_VERSION: 7.1
 #      DB_TYPE: mariadb
@@ -675,25 +678,28 @@ matrix:
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: oracle
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
-
+      INSTALL_TESTING-APP: true
 
     # PHP 7.2
     - PHP_VERSION: 7.2
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
     #- PHP_VERSION: 7.2
     #  DB_TYPE: mariadb
     #  TEST_SUITE: phpunit
@@ -724,6 +730,7 @@ matrix:
       DB_TYPE: mariadb
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
     #- PHP_VERSION: 7.2
     #  DB_TYPE: mysql
@@ -747,6 +754,7 @@ matrix:
       DB_TYPE: sqlite
       FILES_EXTERNAL_TYPE: webdav_apache
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: phpunit
@@ -754,6 +762,7 @@ matrix:
       DB_TYPE: sqlite
       FILES_EXTERNAL_TYPE: smb_samba
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: phpunit
@@ -761,6 +770,7 @@ matrix:
       DB_TYPE: sqlite
       FILES_EXTERNAL_TYPE: smb_windows
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: phpunit
@@ -768,6 +778,7 @@ matrix:
       DB_TYPE: sqlite
       FILES_EXTERNAL_TYPE: swift
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
   # Primary Objectstorage
     - PHP_VERSION: 5.6
@@ -776,6 +787,7 @@ matrix:
       OBJECTSTORE: swift
       PRIMARY_OBJECTSTORE: swift
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: phpunit
@@ -784,6 +796,7 @@ matrix:
       OBJECTSTORE: swift
       PRIMARY_OBJECTSTORE: swift
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
   # files_primary_s3
 
@@ -794,6 +807,7 @@ matrix:
       OBJECTSTORE: scality
       PRIMARY_OBJECTSTORE: files_primary_s3
       INSTALL_SERVER: true
+      INSTALL_TESTING-APP: true
 
   # API Acceptance tests
     - PHP_VERSION: 7.1
