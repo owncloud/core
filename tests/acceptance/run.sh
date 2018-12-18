@@ -509,6 +509,30 @@ then
 	BEHAT_SUITE=`basename ${FEATURE_PATH}`
 fi
 
+if [ -z "${BEHAT_YML}" ]
+then
+	# Look for a behat.yml somewhere below the current working directory
+	# This saves app acceptance tests being forced to specify BEHAT_YML
+	BEHAT_YML="config/behat.yml"
+	if [ ! -f "${BEHAT_YML}" ]
+	then
+		BEHAT_YML="acceptance/config/behat.yml"
+	fi
+	if [ ! -f "${BEHAT_YML}" ]
+	then
+		BEHAT_YML="tests/acceptance/config/behat.yml"
+	fi
+	# If no luck above, then use the core behat.yml that should live below this script
+	if [ ! -f "${BEHAT_YML}" ]
+	then
+		BEHAT_YML="${SCRIPT_PATH}/config/behat.yml"
+	fi
+fi
+
+BEHAT_CONFIG_DIR=$(dirname "${BEHAT_YML}")
+ACCEPTANCE_DIR=$(dirname "${BEHAT_CONFIG_DIR}")
+BEHAT_FEATURES_DIR="${ACCEPTANCE_DIR}/features"
+
 declare -a BEHAT_SUITES
 if [ -n "${BEHAT_SUITE}" ]
 then
@@ -516,7 +540,7 @@ then
 else
 	if [ -n "${RUN_PART}" ]
 	then
-		ALL_SUITES=`find features/ -type d -iname ${ACCEPTANCE_TEST_TYPE}* | sort | cut -d"/" -f2`
+		ALL_SUITES=`find ${BEHAT_FEATURES_DIR}/ -type d -iname ${ACCEPTANCE_TEST_TYPE}* | sort | rev | cut -d"/" -f1 | rev`
 		COUNT_ALL_SUITES=`echo "${ALL_SUITES}" | wc -l`
 		#divide the suites letting it round down (could be zero)
 		MIN_SUITES_PER_RUN=$((${COUNT_ALL_SUITES} / ${DIVIDE_INTO_NUM_PARTS}))
@@ -578,26 +602,6 @@ then
 	BEHAT_FILTER_TAGS="${TEST_TYPE_TAG}"
 else
 	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&${TEST_TYPE_TAG}"
-fi
-
-if [ -z "${BEHAT_YML}" ]
-then
-	# Look for a behat.yml somewhere below the current working directory
-	# This saves app acceptance tests being forced to specify BEHAT_YML
-	BEHAT_YML="config/behat.yml"
-	if [ ! -f "${BEHAT_YML}" ]
-	then
-		BEHAT_YML="acceptance/config/behat.yml"
-	fi
-	if [ ! -f "${BEHAT_YML}" ]
-	then
-		BEHAT_YML="tests/acceptance/config/behat.yml"
-	fi
-	# If no luck above, then use the core behat.yml that should live below this script
-	if [ ! -f "${BEHAT_YML}" ]
-	then
-		BEHAT_YML="${SCRIPT_PATH}/config/behat.yml"
-	fi
 fi
 
 # MAILHOG_HOST defines where the system-under-test can find the MailHog server
