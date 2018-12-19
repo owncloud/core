@@ -801,7 +801,7 @@ class OC_App {
 					$info['level'] = self::officialApp;
 					$info['removable'] = false;
 				} else {
-					$result = \OC::$server->getIntegrityCodeChecker()->verifyAppSignature($app, '', true);
+					$result = \OC::$server->getIntegrityCodeChecker()->getVerifiedAppsFromCache($app, '', true);
 					if (empty($result)) {
 						$info['level'] = self::approvedApp;
 						$info['removable'] = false;
