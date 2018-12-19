@@ -66,6 +66,7 @@
 				this,
 				'_onUploadBeforeAdd',
 				'_onUploadDone',
+				'_onUploadStop',
 				'_getUploadUrl'
 			);
 		},
@@ -81,6 +82,10 @@
 			this.$('.public-upload-view--completed ul').append(this.itemTemplate({
 				fileName: fileName
 			}));
+		},
+
+		_onUploadStop: function (e, data) {
+			this.$('#uploadprogresswrapper .stop, #uploadprogressbar .label').hide();
 		},
 
 		_getUploadUrl: function(fileName) {
@@ -127,6 +132,7 @@
 			});
 			this._uploader.on('beforeadd', this._onUploadBeforeAdd);
 			this._uploader.on('done', this._onUploadDone);
+			this._uploader.on('stop', this._onUploadStop);
 
 			return this;
 		},
