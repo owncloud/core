@@ -36,6 +36,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	protected $fileNamesXpath = "//span[@class='nametext']";
 	protected $fileNameMatchXpath = "//span[@class='nametext' and .=%s]";
 	protected $fileListXpath = ".//tbody[@id='fileList']";
+	protected $uploadFormXpath = "//div[@class='uploadForm']";
 	protected $emptyContentXpath = ".//div[@id='emptycontent']";
 	protected $addToYourOcBtnId = "save-button";
 	protected $singleFileDownloadBtnXpath = "//a[@id='downloadFile']";
@@ -335,6 +336,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 			$downloadButton = $this->find(
 				"xpath", $this->singleFileDownloadBtnXpath
 			);
+			$uploadForm = $this->find(
+				"xpath", $this->uploadFormXpath
+			);
 			if ($fileList !== null) {
 				try {
 					$fileListIsVisible = $fileList->isVisible();
@@ -381,6 +385,8 @@ class PublicLinkFilesPage extends FilesPageBasic {
 					}
 				}
 			} elseif ($downloadButton !== null) {
+				break;
+			} elseif ($uploadForm !== null) {
 				break;
 			}
 
