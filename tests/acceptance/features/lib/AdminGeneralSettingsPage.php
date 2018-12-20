@@ -293,6 +293,8 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->waitForAjaxCallsToStartAndFinish($session);
-		$this->waitTillXpathIsVisible($session, $this->ownCloudVersionStringXpath);
+		$this->waitTillXpathIsVisible(
+			$this->ownCloudVersionStringXpath, $timeout_msec
+		);
 	}
 }

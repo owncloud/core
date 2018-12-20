@@ -388,6 +388,8 @@ class AdminSharingSettingsPage extends OwncloudPage {
 		Session $session,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$this->waitTillXpathIsVisible($session, $this->shareApiCheckboxXpath);
+		$this->waitTillXpathIsVisible(
+			$this->shareApiCheckboxXpath, $timeout_msec
+		);
 	}
 }
