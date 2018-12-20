@@ -18,9 +18,12 @@
  *    own line
  *  * add a `@see CONFIG_INDEX` to copy a previously described config option
  *    also to this line
- *  * everything between the ` *\/` and the next `/**` will be treated as the
+ *  * everything between the `*\/` and the next `/**` will be treated as the
  *    config option
  *  * use RST syntax
+ * If you have multiple possible values in the comment section, seperate them with a
+ * blank line, which is necessary for the documentation generation process.
+ * See examples below.
  */
 
 $CONFIG = array(
