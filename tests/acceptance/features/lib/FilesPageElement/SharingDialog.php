@@ -488,9 +488,9 @@ class SharingDialog extends OwncloudPage {
 		$xpath = null
 	) {
 		if ($xpath === null) {
-			throw new \InvalidArgumentException('$xpath need to be set');
+			throw new \InvalidArgumentException('$xpath needs to be set');
 		}
 		$this->waitForOutstandingAjaxCalls($session);
-		$this->waitTillXpathIsVisible($session, $xpath);
+		$this->waitTillXpathIsVisible($xpath, $timeout_msec);
 	}
 }

@@ -61,6 +61,6 @@ class SettingsMenu extends OwncloudPage {
 		Session $session,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$this->waitTillXpathIsVisible($session, $this->logoutButtonXpath);
+		$this->waitTillXpathIsVisible($this->logoutButtonXpath, $timeout_msec);
 	}
 }

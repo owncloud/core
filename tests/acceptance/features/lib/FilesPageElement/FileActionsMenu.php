@@ -74,10 +74,10 @@ class FileActionsMenu extends OwncloudPage {
 		$xpath = null
 	) {
 		if ($xpath === null) {
-			throw new \InvalidArgumentException('$xpath need to be set');
+			throw new \InvalidArgumentException('$xpath needs to be set');
 		}
 		$this->waitForOutstandingAjaxCalls($session);
-		$element = $this->waitTillXpathIsVisible($session, $xpath);
+		$element = $this->waitTillXpathIsVisible($xpath, $timeout_msec);
 		$this->setElement($element);
 	}
 

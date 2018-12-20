@@ -335,6 +335,8 @@ class AdminStorageSettingsPage extends OwncloudPage {
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->waitForAjaxCallsToStartAndFinish($session);
-		$this->waitTillXpathIsVisible($session, $this->filesExternalFormXpath);
+		$this->waitTillXpathIsVisible(
+			$this->filesExternalFormXpath, $timeout_msec
+		);
 	}
 }
