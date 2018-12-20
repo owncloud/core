@@ -1143,6 +1143,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING-APP: true
 
     # caldav test
     - PHP_VERSION: 7.1
