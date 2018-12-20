@@ -150,6 +150,8 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->waitForOutstandingAjaxCalls($session);
-		$this->waitTillXpathIsVisible($session, $this->corsInputfieldXpath);
+		$this->waitTillXpathIsVisible(
+			$this->corsInputfieldXpath, $timeout_msec
+		);
 	}
 }

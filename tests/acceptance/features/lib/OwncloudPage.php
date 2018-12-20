@@ -146,14 +146,12 @@ class OwncloudPage extends Page {
 	/**
 	 * waits for the element located by the xpath to be visible
 	 *
-	 * @param Session $session
 	 * @param string $xpath the xpath of the element to wait for
 	 * @param int $timeout_msec
 	 *
 	 * @return NodeElement
 	 */
 	public function waitTillXpathIsVisible(
-		Session $session,
 		$xpath,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
@@ -162,13 +160,13 @@ class OwncloudPage extends Page {
 			$element,
 			__METHOD__ .
 			" xpath: $xpath" .
-			" timeout waiting for element to be availiable"
+			" timeout waiting for element to be available"
 		);
-		$visibibity = $this->waitFor(
-			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000,
+		$visibility = $this->waitFor(
+			$timeout_msec / 1000,
 			[$element, 'isVisible']
 		);
-		if ($visibibity !== true) {
+		if ($visibility !== true) {
 			throw new \Exception(
 				__METHOD__ .
 				" xpath: $xpath" .
