@@ -62,9 +62,10 @@
         "lukasreschke/id3parser": "^0.0.3",
         "sabre/dav": "^3.2",
         "deepdiver/zipstreamer": "^1.1",
+        "symfony/translation": "^3.4",
         "zendframework/zend-inputfilter": "^2.8",
         "zendframework/zend-servicemanager": "^3.3",
-        "symfony/translation": "^3.4",
+        "zendframework/zend-validator": "^2.10",
         "composer/semver": "^1.4",
         "ext-json": "*"
     }

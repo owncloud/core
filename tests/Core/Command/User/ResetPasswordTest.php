@@ -178,7 +178,36 @@ class ResetPasswordTest extends TestCase {
 		$this->assertEquals(0, $this->invokePrivate($this->resetPassword, 'execute', [$input, $output]));
 	}
 
-	public function testEmailLinkFailure() {
+	public function emailLinkFailureDataProvider() {
+		return [
+			[null],
+			[''],
+			[0],
+			['plainaddress'],
+			['#@%^%#$@#$@#.com'],
+			['@example.com'],
+			['Joe Smith <email@example.com>'],
+			['email.example.com'],
+			['email@example@example.com'],
+			['.email@example.com'],
+			['email.@example.com'],
+			['email..email@example.com'],
+			['email@example.com (Joe Smith)'],
+			['email@example'],
+			['email@-example.com'],
+			['email@example.web'],
+			['email@111.222.333.44444'],
+			['email@example..com'],
+			['Abc..123@example.com'],
+			['”(),:;<>[\]@example.com'],
+			['this\ is"really"not\allowed@example.com'],
+		];
+	}
+
+	/**
+	 * @dataProvider emailLinkFailureDataProvider
+	 */
+	public function testEmailLinkFailure($emailAddress) {
 		$input = $this->createMock(InputInterface::class);
 		$output = $this->createMock(OutputInterface::class);
 
@@ -198,7 +227,7 @@ class ResetPasswordTest extends TestCase {
 
 		$user->expects($this->once())
 			->method('getEMailAddress')
-			->willReturn(null);
+			->willReturn($emailAddress);
 		$user->method('getUID')
 			->willReturn('foo');
 
