@@ -224,3 +224,4 @@ Feature: Sharing files and folders with internal users
     #Then the user should see an error message on the share dialog saying "Sharing is not allowed"
     #And the share-with field should not be visible in the details panel
     Then the share-with field should be visible in the details panel
+    And user "user1" should not be able to share file "testimage (2).jpg" with user "User Three" using the sharing API
