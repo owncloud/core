@@ -567,6 +567,8 @@ describe('OCA.Files.FileList tests', function() {
 			expect(fileList.$fileList.find('tr').length).toEqual(4);
 
 			expect(notificationStub.calledTwice).toEqual(true);
+			expect(notificationStub.getCall(0).args[0]).toEqual('Error deleting file "One.txt".');
+			expect(notificationStub.getCall(1).args[0]).toEqual('Error deleting file "Two.jpg".');
 		});
 		it('remove file from list if delete call returned 404 not found', function() {
 			fileList.setFiles(testFiles);
@@ -574,12 +576,27 @@ describe('OCA.Files.FileList tests', function() {
 
 			deferredDelete.reject(404);
 
-			// files are still in the list
+			// files are removed from the list
 			expect(fileList.findFileEl('One.txt').length).toEqual(0);
 			expect(fileList.findFileEl('Two.jpg').length).toEqual(0);
 			expect(fileList.$fileList.find('tr').length).toEqual(2);
 
 			expect(notificationStub.notCalled).toEqual(true);
+		});
+		it('shows notification about lock when file is locked', function() {
+			fileList.setFiles(testFiles);
+			doDelete();
+
+			deferredDelete.reject(423, {message: 'locked'});
+
+			// files are still in the list
+			expect(fileList.findFileEl('One.txt').length).toEqual(1);
+			expect(fileList.findFileEl('Two.jpg').length).toEqual(1);
+			expect(fileList.$fileList.find('tr').length).toEqual(4);
+
+			expect(notificationStub.calledTwice).toEqual(true);
+			expect(notificationStub.getCall(0).args[0]).toEqual('The file "One.txt" is locked and cannot be deleted.');
+			expect(notificationStub.getCall(1).args[0]).toEqual('The file "Two.jpg" is locked and cannot be deleted.');
 		});
 	});
 	describe('Renaming files', function() {
@@ -653,6 +670,20 @@ describe('OCA.Files.FileList tests', function() {
 			expect(fileList.findFileEl('Tu_after_three.txt').length).toEqual(0);
 
 			expect(notificationStub.calledOnce).toEqual(true);
+			expect(notificationStub.getCall(0).args[0]).toEqual('Could not rename "One.txt"');
+		});
+		it('Shows notification in case file is locked', function() {
+			doRename();
+
+			deferredRename.reject(423, {message: 'locked'});
+
+			// element was reverted
+			expect(fileList.findFileEl('One.txt').length).toEqual(1);
+			expect(fileList.findFileEl('One.txt').index()).toEqual(1); // after somedir
+			expect(fileList.findFileEl('Tu_after_three.txt').length).toEqual(0);
+
+			expect(notificationStub.calledOnce).toEqual(true);
+			expect(notificationStub.getCall(0).args[0]).toEqual('The file "One.txt" is locked and can not be renamed.');
 		});
 		it('Correctly updates file link after rename', function() {
 			var $tr;
@@ -835,6 +866,18 @@ describe('OCA.Files.FileList tests', function() {
 
 			expect(notificationStub.calledOnce).toEqual(true);
 			expect(notificationStub.getCall(0).args[0]).toEqual('Could not move "One.txt"');
+		});
+		it('Shows notification about lock if a file could not be moved due to lock', function() {
+			fileList.move('One.txt', '/somedir');
+
+			expect(moveStub.calledOnce).toEqual(true);
+
+			deferredMove.reject(423, {message: 'locked'});
+
+			expect(fileList.findFileEl('One.txt').length).toEqual(1);
+
+			expect(notificationStub.calledOnce).toEqual(true);
+			expect(notificationStub.getCall(0).args[0]).toEqual('Could not move "One.txt" because either the file or the target are locked.');
 		});
 		it('Restores thumbnail if a file could not be moved', function() {
 			fileList.move('One.txt', '/somedir');
