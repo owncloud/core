@@ -131,7 +131,7 @@
 
 		_generateName: function() {
 			var index = 1;
-			var baseName = t('core', 'Public link', null, {escape: false});
+			var baseName = OC.getCapabilities()['files_sharing']["public"]["defaultPublicLinkShareName"];
 			var name = baseName;
 
 			while (this.collection.findWhere({name: name})) {
