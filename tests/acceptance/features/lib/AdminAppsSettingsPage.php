@@ -97,6 +97,8 @@ class AdminAppsSettingsPage extends OwncloudPage {
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->waitForAjaxCallsToStartAndFinish($session);
-		$this->waitTillXpathIsVisible($session, $this->appEnableDisableButtonXpath);
+		$this->waitTillXpathIsVisible(
+			$this->appEnableDisableButtonXpath, $timeout_msec
+		);
 	}
 }
