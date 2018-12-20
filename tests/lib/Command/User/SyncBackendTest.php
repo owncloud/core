@@ -141,7 +141,7 @@ class SyncBackendTest extends TestCase {
 		$outputInterface
 			->expects($this->at(0))
 			->method('writeln')
-			->with("<error>The backend <$backendClassName> does not exist. Did you miss to enable the app?</error>");
+			->with("<error>The backend <$backendClassName> does not exist. Did you forget to enable the app?</error>");
 
 		$this->assertEquals(1, static::invokePrivate($this->command, 'execute', [$inputInterface, $outputInterface]));
 	}
