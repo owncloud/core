@@ -23,6 +23,8 @@ use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\Mapper;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
+use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\Lock\Persistent\ILock;
 
 class LockMapper extends Mapper {
 	/** @var ITimeFactory */
@@ -34,36 +36,22 @@ class LockMapper extends Mapper {
 	}
 
 	/**
-	 * Selects all locks from the database for the given storage and path.
-	 * Also parent folders are returned and in case $returnChildLocks is true all
-	 * children locks as well.
+	 * Returns an array of all paths to each of
+	 * the parents from the given path.
 	 *
-	 * @param int $storageId
-	 * @param string $internalPath
-	 * @param bool $returnChildLocks
-	 * @return Lock[]
+	 * Ex: if "/a/b/c" is given, returns ["/a", "/a/b"]
+	 *
+	 * @param string $path
+	 * @return string[] array of parent paths
 	 */
-	public function getLocksByPath($storageId, $internalPath, $returnChildLocks) {
-		$query = $this->db->getQueryBuilder();
-		$pathPattern = $this->db->escapeLikeParameter($internalPath) . '%';
-
-		$query->select(['id', 'owner', 'timeout', 'created_at', 'token', 'token', 'scope', 'depth', 'file_id', 'path', 'owner_account_id'])
-			->from($this->getTableName(), 'l')
-			->join('l', 'filecache', 'f', $query->expr()->eq('l.file_id', 'f.fileid'))
-			->where($query->expr()->eq('storage', $query->createPositionalParameter($storageId)))
-			->andWhere($query->expr()->gt('created_at', $query->createFunction('(' . $query->createPositionalParameter($this->timeFactory->getTime()) . ' - `timeout`)')));
-
-		if ($returnChildLocks) {
-			$query->andWhere($query->expr()->like('f.path', $query->createPositionalParameter($pathPattern)));
-		} else {
-			$query->andWhere($query->expr()->eq('f.path', $query->createPositionalParameter($internalPath)));
-		}
-
+	private function getParentPaths($path) {
 		// We need to check locks for every part in the uri.
-		$uriParts = \explode('/', $internalPath);
+		$uriParts = \explode('/', $path);
 
-		// We already covered the last part of the uri
+		// only return parents, not the current one
 		\array_pop($uriParts);
+
+		$parentPaths = [];
 
 		$currentPath = '';
 		foreach ($uriParts as $part) {
@@ -71,16 +59,93 @@ class LockMapper extends Mapper {
 				$currentPath .= '/';
 			}
 			$currentPath .= $part;
-			$query->orWhere(
+			$parentPaths[] = $currentPath;
+		}
+
+		return $parentPaths;
+	}
+
+	/**
+	 * Selects all locks from the database for the given storage and path.
+	 * Locks for parent folders are returned as well as long as they have a non-zero depth,
+	 * as these would mean the target $internalPath is indirectly locked through these.
+	 * In case $returnChildLocks is true, locks for all children paths will be return as well,
+	 * regardless of depth..
+	 *
+	 * Examples:
+	 *
+	 * When function called with "foo/bar" the returned array will have lock
+	 * entries for the following, given the conditions are met:
+	 * - "foo" if the latter has a lock set with non-zero Depth
+	 * - "foo/bar" if the latter has a lock set (current target)
+	 * - "foo/bar/sub" if the latter has a lock set, and given $returnChildLocks is true
+	 *
+	 * @param int $storageId numeric id of the storage for which to retrieve lock entries
+	 * @param string $internalPath target internal path
+	 * @param bool $returnChildLocks whether to return any lock for any child
+	 * @return Lock[]
+	 */
+	public function getLocksByPath($storageId, $internalPath, $returnChildLocks) {
+		$query = $this->db->getQueryBuilder();
+		$internalPath = \rtrim($internalPath, '/');
+
+		/*
+		 * SELECT `id`, `owner`, `timeout`, `created_at`, `token`, `token`, `scope`, `depth`, `file_id`, `path`, `owner_account_id`
+		 * FROM `oc_persistent_locks` l
+		 * INNER JOIN `oc_filecache` f ON l.`file_id` = f.`fileid`
+		 * WHERE (
+		 * 	(`storage` = 4)
+		 * 	AND (`created_at` > (1544710587 - `timeout`))
+		 * 	AND (
+		 * 		(f.`path` = 'files/test/target')
+		 * 		OR ((`depth` <> 0) AND (`path` in ('files', 'files/test')))
+		 * 	)
+		 * );
+		 */
+		$query->select(['id', 'owner', 'timeout', 'created_at', 'token', 'token', 'scope', 'depth', 'file_id', 'path', 'owner_account_id'])
+			->from($this->getTableName(), 'l')
+			->join('l', 'filecache', 'f', $query->expr()->eq('l.file_id', 'f.fileid'))
+			// WHERE (`storage` = 4)
+			->where($query->expr()->eq('storage', $query->createPositionalParameter($storageId)))
+			// AND (`created_at` > (1544710587 - `timeout`))
+			->andWhere($query->expr()->gt('created_at', $query->createFunction('(' . $query->createPositionalParameter($this->timeFactory->getTime()) . ' - `timeout`)')));
+
+		$pathMatchClauses = $query->expr()->orX(
+			// direct match
+			// (f.`path` = 'files/test/target')
+			$query->expr()->eq('f.path', $query->createPositionalParameter($internalPath))
+		);
+
+		if ($returnChildLocks) {
+			$pathMatchClauses->add(
+				// match all children paths from the current path
+				// (f.`path` LIKE 'files/test/target/%')
+				$query->expr()->like('f.path', $query->createPositionalParameter($this->db->escapeLikeParameter($internalPath) . '/%'))
+			);
+		}
+
+		$parentPaths = $this->getParentPaths($internalPath);
+		if (!empty($parentPaths)) {
+			// match any parents with the condition that there is a lock with non-zero Depth
+			$pathMatchClauses->add(
 				$query->expr()->andX(
-					// TODO: think about parent locks for depth 1
 					$query->expr()->neq('depth', $query->createPositionalParameter(0)),
-					$query->expr()->eq('path', $query->createPositionalParameter($currentPath))
+					// here we are assuming that the number of path sections will be less than 1000
+					$query->expr()->in('path', $query->createPositionalParameter($parentPaths, IQueryBuilder::PARAM_STR_ARRAY))
 				)
 			);
 		}
 
-		return $this->findEntities($query->getSQL(), $query->getParameters());
+		$query->andWhere($pathMatchClauses);
+
+		$stmt = $query->execute();
+		$entities = [];
+		while ($row = $stmt->fetch()) {
+			$entities[] = $this->mapRowToEntity($row);
+		}
+		$stmt->closeCursor();
+
+		return $entities;
 	}
 
 	/**
@@ -115,23 +180,25 @@ class LockMapper extends Mapper {
 		return $this->findEntity($query->getSQL(), $query->getParameters());
 	}
 
-	public function insert(Entity $entity) {
+	private function validateEntity($entity) {
 		if (!$entity instanceof Lock) {
 			throw new \InvalidArgumentException('Wrong entity type used');
 		}
 		if (\md5($entity->getToken()) !== $entity->getTokenHash()) {
 			throw new \InvalidArgumentException('token_hash does not match the token of the lock');
 		}
+		if ($entity->getDepth() !== ILock::LOCK_DEPTH_ZERO && $entity->getDepth() !== ILock::LOCK_DEPTH_INFINITE) {
+			throw new \InvalidArgumentException('Only -1 (infinity) and 0 are supported for lock depth, ' . $entity->getDepth() . ' given');
+		}
+	}
+
+	public function insert(Entity $entity) {
+		$this->validateEntity($entity);
 		return parent::insert($entity);
 	}
 
 	public function update(Entity $entity) {
-		if (!$entity instanceof Lock) {
-			throw new \InvalidArgumentException('Wrong entity type used');
-		}
-		if (\md5($entity->getToken()) !== $entity->getTokenHash()) {
-			throw new \InvalidArgumentException('token_hash does not match the token of the lock');
-		}
+		$this->validateEntity($entity);
 		return parent::update($entity);
 	}
 
