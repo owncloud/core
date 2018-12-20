@@ -28,6 +28,7 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 	var view;
 	var tooltipStub;
 	var showPopupStub;
+	var publicLinkStub;
 
 	beforeEach(function() {
 		configModel = new OC.Share.ShareConfigModel();
@@ -48,6 +49,14 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 			fileInfoModel: fileInfoModel
 		});
 
+		publicLinkStub = sinon.stub(OC, 'getCapabilities');
+		publicLinkStub.returns({
+			'files_sharing': {
+				'public': {
+					'defaultPublicLinkShareName': 'Public link'
+				}
+			}
+		});
 		tooltipStub = sinon.stub($.fn, 'tooltip');
 		/* jshint camelcase: false */
 		collection = new OC.Share.SharesCollection([{
@@ -83,6 +92,7 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 	afterEach(function() { 
 		tooltipStub.restore(); 
 		showPopupStub.restore();
+		publicLinkStub.restore();
 	});
 
 	describe('rendering', function() {
