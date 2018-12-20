@@ -1203,6 +1203,9 @@ OC.Uploader.prototype = _.extend({
 							OC.Notification.show(t('files', 'Target folder does not exist any more'), {type: 'error'});
 						}
 						self.cancelUploads();
+					} else if (status === 423) {
+						// not enough space
+						OC.Notification.show(t('files', 'The file {file} is currently locked, please try again later', {file: upload.getFileName()}), {type: 'error'});
 					} else if (status === 507) {
 						// not enough space
 						OC.Notification.show(t('files', 'Not enough free space'), {type: 'error'});

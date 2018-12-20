@@ -1985,6 +1985,10 @@
 							OC.Notification.show(t('files', 'Could not move "{file}", target exists',
 								{file: fileName}, null, {escape: false}), {type: 'error'}
 							);
+						} else if (status === 423) {
+							OC.Notification.show(t('files', 'Could not move "{file}" because either the file or the target are locked.',
+								{file: fileName, message: result.message}), {type: 'error'}
+							);
 						} else if (result != null && typeof result.message !== "undefined") {
 							OC.Notification.show(t('files', 'Could not move "{file}": {message}',
 								{file: fileName, message: result.message}), {type: 'error'}
@@ -2131,6 +2135,11 @@
 										{	
 											type: 'error'
 										}
+									);
+								} else if (status === 423) {
+									// restore the item to its previous state
+									OC.Notification.show(t('files', 'The file "{fileName}" is locked and can not be renamed.',
+										{fileName: oldName}), {type: 'error'}
 									);
 								} else {
 									// restore the item to its previous state
@@ -2461,9 +2470,15 @@
 							removeFromList(file);
 						} else {
 							// only reset the spinner for that one file
-							OC.Notification.show(t('files', 'Error deleting file "{fileName}".',
-								{fileName: file}), {type: 'error'}
-							);
+							if (status === 423) {
+								OC.Notification.show(t('files', 'The file "{fileName}" is locked and cannot be deleted.',
+									{fileName: file}), {type: 'error'}
+								);
+							} else {
+								OC.Notification.show(t('files', 'Error deleting file "{fileName}".',
+									{fileName: file}), {type: 'error'}
+								);
+							}
 							var deleteAction = self.findFileEl(file).find('.action.delete');
 							deleteAction.removeClass('icon-loading-small').addClass('icon-delete');
 							self.showFileBusyState(files, false);
