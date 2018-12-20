@@ -23,6 +23,7 @@
 namespace OCA\Files_Sharing\Tests;
 
 use OCA\Files_Sharing\Capabilities;
+use OCP\IL10N;
 
 /**
  * Class CapabilitiesTest
@@ -36,6 +37,9 @@ class CapabilitiesTest extends \Test\TestCase {
 	 */
 	protected $userSearch;
 
+	/** @var IL10N | \PHPUnit_Framework_MockObject_MockObject */
+	private $l10n;
+
 	/**
 	 *
 	 */
@@ -48,6 +52,10 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->userSearch->expects($this->any())
 			->method('getSearchMinLength')
 			->willReturn(1);
+
+		$this->l10n = $this->createMock(IL10N::class);
+		$this->l10n->method('t')
+			->willReturn('Public link');
 	}
 
 	/**
@@ -73,7 +81,7 @@ class CapabilitiesTest extends \Test\TestCase {
 	private function getResults(array $map) {
 		$stub = $this->getMockBuilder('\OCP\IConfig')->disableOriginalConstructor()->getMock();
 		$stub->method('getAppValue')->will($this->returnValueMap($map));
-		$cap = new Capabilities($stub, $this->userSearch);
+		$cap = new Capabilities($stub, $this->userSearch, $this->l10n);
 		$result = $this->getFilesSharingPart($cap->getCapabilities());
 		return $result;
 	}
@@ -446,5 +454,6 @@ class CapabilitiesTest extends \Test\TestCase {
 		$result = $this->getResults($map);
 		$this->assertArrayHasKey('public', $result);
 		$this->assertTrue($result['public']['multiple']);
+		$this->assertEquals('Public link', $result['public']['defaultPublicLinkShareName']);
 	}
 }
