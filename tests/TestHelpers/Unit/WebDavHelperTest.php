@@ -20,7 +20,6 @@
  *
  */
 
-use InvalidArgumentException;
 use TestHelpers\WebDavHelper;
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Mock;
