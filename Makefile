@@ -257,7 +257,8 @@ $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 	rm -Rf $@/core/js/tests
 	rm -Rf $@/settings/tests
 	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,testem.json}
-	find $@/{core/,l10n/} -iname \*.sh -delete
+	rm -Rf $@/l10n/
+	find $@/core/ -iname \*.sh -delete
 	find $@/{apps/,lib/composer/,core/vendor/} \( \
 		-name bin -o \
 		-name test -o \
@@ -307,7 +308,8 @@ $(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(c
 	find $@ -name .gitignore -delete
 	find $@ -name no-php -delete
 	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,testem.json}
-	find $@/{core/,l10n/} -iname \*.sh -delete
+	rm -Rf $@/l10n/
+	find $@/core/ -iname \*.sh -delete
 	find $@/{apps/,lib/composer/,core/vendor/} \( \
 		-name test -o \
 		-name examples -o \
