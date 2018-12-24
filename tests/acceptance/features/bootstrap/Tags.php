@@ -429,7 +429,7 @@ trait Tags {
 	 *
 	 * @return int
 	 */
-	private function findTagIdByName($name) {
+	public function findTagIdByName($name) {
 		$tagData = $this->requestTagByDisplayName($this->getAdminUsername(), $name);
 		return (int)$tagData['{http://owncloud.org/ns}id'];
 	}
