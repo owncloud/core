@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e485f3a4e69253bac6da335c7eb1c6e",
+    "content-hash": "9bc00844595bc7112ccf3ba0b1995af1",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -1410,16 +1410,16 @@
         },
         {
             "name": "pear/archive_tar",
-            "version": "1.4.3",
+            "version": "1.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Archive_Tar.git",
-                "reference": "43455c960da70e655c6bdf8ea2bc8cc1a6034afb"
+                "reference": "b005152d4ed8f23bcc93637611fa94f39ef5b904"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/43455c960da70e655c6bdf8ea2bc8cc1a6034afb",
-                "reference": "43455c960da70e655c6bdf8ea2bc8cc1a6034afb",
+                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/b005152d4ed8f23bcc93637611fa94f39ef5b904",
+                "reference": "b005152d4ed8f23bcc93637611fa94f39ef5b904",
                 "shasum": ""
             },
             "require": {
@@ -1430,8 +1430,8 @@
                 "phpunit/phpunit": "*"
             },
             "suggest": {
-                "ext-bz2": "bz2 compression support.",
-                "ext-xz": "lzma2 compression support.",
+                "ext-bz2": "Bz2 compression support.",
+                "ext-xz": "Lzma2 compression support.",
                 "ext-zlib": "Gzip compression support."
             },
             "type": "library",
@@ -1466,13 +1466,13 @@
                     "email": "mrook@php.net"
                 }
             ],
-            "description": "Tar file management class",
+            "description": "Tar file management class with compression support (gzip, bzip2, lzma2)",
             "homepage": "https://github.com/pear/Archive_Tar",
             "keywords": [
                 "archive",
                 "tar"
             ],
-            "time": "2017-06-11T17:28:11+00:00"
+            "time": "2018-12-20T20:47:24+00:00"
         },
         {
             "name": "pear/console_getopt",
@@ -5375,12 +5375,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "3557820049b07ea0fd088e4151ec200f474b58de"
+                "reference": "f370ac042dba652a93b6b1f330b33d86f3778b57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/3557820049b07ea0fd088e4151ec200f474b58de",
-                "reference": "3557820049b07ea0fd088e4151ec200f474b58de",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/f370ac042dba652a93b6b1f330b33d86f3778b57",
+                "reference": "f370ac042dba652a93b6b1f330b33d86f3778b57",
                 "shasum": ""
             },
             "conflict": {
@@ -5477,7 +5477,7 @@
                 "silverstripe/userforms": "<3",
                 "simple-updates/phpwhois": "<=1",
                 "simplesamlphp/saml2": "<1.10.6|>=2,<2.3.8|>=3,<3.1.4",
-                "simplesamlphp/simplesamlphp": "<1.15.2",
+                "simplesamlphp/simplesamlphp": "<1.16.3",
                 "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
                 "slim/slim": "<2.6",
                 "smarty/smarty": "<3.1.33",
@@ -5569,7 +5569,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-12-14T13:12:19+00:00"
+            "time": "2018-12-23T19:42:44+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
