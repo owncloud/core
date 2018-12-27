@@ -157,7 +157,7 @@ trait Sharing {
 			}
 		}
 
-		$this->response = $this->createShare(
+		$this->createShare(
 			$user,
 			$fd['path'],
 			$fd['shareType'],
@@ -255,7 +255,7 @@ trait Sharing {
 		$linkName = null,
 		$expireDate = null
 	) {
-		$this->response = $this->createShare(
+		$this->createShare(
 			$user,
 			$path,
 			'public',
