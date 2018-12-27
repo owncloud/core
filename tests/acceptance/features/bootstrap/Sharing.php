@@ -75,6 +75,13 @@ trait Sharing {
 	}
 
 	/**
+	 * @return int
+	 */
+	public function getServerLastShareTime() {
+		return (int) $this->lastShareData->data->stime;
+	}
+
+	/**
 	 * @return void
 	 */
 	private function waitToCreateShare() {
@@ -785,9 +792,15 @@ trait Sharing {
 		if ($data === null) {
 			$data = $this->getResponseXml()->data[0];
 		}
-		if ((string)$field == 'expiration') {
+		if ((string) $field === 'expiration') {
 			$contentExpected
-				= \date('Y-m-d', \strtotime($contentExpected)) . " 00:00:00";
+				= \date(
+					'Y-m-d',
+					\strtotime(
+						$contentExpected,
+						$this->getServerLastShareTime()
+					)
+				) . " 00:00:00";
 		}
 		if (\count($data->element) > 0) {
 			foreach ($data as $element) {
