@@ -38,6 +38,8 @@ use OCP\IUserManager;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IShare;
 use OCP\Share\IShareProvider;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class FederatedShareProvider
@@ -49,6 +51,9 @@ class FederatedShareProvider implements IShareProvider {
 
 	/** @var IDBConnection */
 	private $dbConnection;
+
+	/** @var EventDispatcherInterface */
+	private $eventDispatcher;
 
 	/** @var AddressHandler */
 	private $addressHandler;
@@ -84,6 +89,7 @@ class FederatedShareProvider implements IShareProvider {
 	 * DefaultShareProvider constructor.
 	 *
 	 * @param IDBConnection $connection
+	 * @param EventDispatcherInterface $eventDispatcher
 	 * @param AddressHandler $addressHandler
 	 * @param Notifications $notifications
 	 * @param TokenHandler $tokenHandler
@@ -95,6 +101,7 @@ class FederatedShareProvider implements IShareProvider {
 	 */
 	public function __construct(
 			IDBConnection $connection,
+			EventDispatcherInterface $eventDispatcher,
 			AddressHandler $addressHandler,
 			Notifications $notifications,
 			TokenHandler $tokenHandler,
@@ -105,6 +112,7 @@ class FederatedShareProvider implements IShareProvider {
 			IUserManager $userManager
 	) {
 		$this->dbConnection = $connection;
+		$this->eventDispatcher = $eventDispatcher;
 		$this->addressHandler = $addressHandler;
 		$this->notifications = $notifications;
 		$this->tokenHandler = $tokenHandler;
@@ -1026,8 +1034,40 @@ class FederatedShareProvider implements IShareProvider {
 			$shareWith
 		);
 		$externalManager->addShare(
-			$remote, $token, '', $name, $owner, false, $shareWith, $remoteId
+			$remote,
+			$token,
+			'',
+			$name,
+			$owner,
+			$this->getAccepted($remote),
+			$shareWith,
+			$remoteId
 		);
 		return $this->dbConnection->lastInsertId("*PREFIX*{$this->externalShareTable}");
+	}
+
+	/**
+	 * @param string $remote
+	 *
+	 * @return bool
+	 */
+	protected function getAccepted($remote) {
+		$event = $this->eventDispatcher->dispatch(
+			'remoteshare.received',
+			new GenericEvent('', ['remote' => $remote])
+		);
+		if ($event->getArgument('autoAddServers')) {
+			return false;
+		}
+		$autoAccept = $this->config->getAppValue(
+			'federatedfilesharing',
+			'auto_accept_trusted',
+			'no'
+		);
+		if ($autoAccept !== 'yes') {
+			return false;
+		}
+
+		return $event->getArgument('isRemoteTrusted') === true;
 	}
 }

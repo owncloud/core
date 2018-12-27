@@ -120,6 +120,16 @@ class Application extends \OCP\AppFramework\App {
 				}
 			}
 		});
+
+		$dispatcher->addListener(
+			'remoteshare.received',
+			function ($event) use ($container) {
+				$remote = $event->getArgument('remote');
+				$trustedServers = $container->query('TrustedServers');
+				$event->setArgument('autoAddServers', $trustedServers->getAutoAddServers());
+				$event->setArgument('isRemoteTrusted', $trustedServers->isTrustedServer($remote));
+			}
+		);
 	}
 
 	/**
