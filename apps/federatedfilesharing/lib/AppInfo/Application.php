@@ -200,6 +200,7 @@ class Application extends App {
 
 		$this->federatedShareProvider = new FederatedShareProvider(
 			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getEventDispatcher(),
 			$addressHandler,
 			$notifications,
 			$tokenHandler,

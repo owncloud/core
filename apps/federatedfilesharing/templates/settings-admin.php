@@ -29,4 +29,14 @@ script('federatedfilesharing', 'settings-admin');
 			<?php p($l->t('Allow users on this server to receive shares from other servers'));?>
 		</label><br/>
 	</p>
+
+	<p>
+		<input type="checkbox" name="auto_accept_trusted" id="autoAcceptTrusted" class="checkbox"
+			   value="1" <?php if ($_['autoAcceptTrusted']) {
+	print_unescaped('checked="checked"');
+} ?> />
+		<label for="autoAcceptTrusted">
+			<?php p($l->t('Automatically accept remote shares from trusted servers'));?>
+		</label><br/>
+	</p>
 </div>
