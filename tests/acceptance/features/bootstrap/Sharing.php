@@ -104,6 +104,7 @@ trait Sharing {
 	 * @param string $user
 	 * @param TableNode|null $body
 	 *    TableNode $body should not have any heading and can have following rows    |
+	 *       | path            | The folder or file path to be shared                |
 	 *       | name            | A (human-readable) name for the share,              |
 	 *       |                 | which can be up to 64 characters in length.         |
 	 *       | publicUpload    | Whether to allow public upload to a public          |
@@ -156,10 +157,8 @@ trait Sharing {
 			}
 		}
 
-		$this->response = SharingHelper::createShare(
-			$this->getBaseUrl(),
+		$this->response = $this->createShare(
 			$user,
-			$this->getPasswordForUser($user),
 			$fd['path'],
 			$fd['shareType'],
 			$fd['shareWith'],
@@ -167,11 +166,8 @@ trait Sharing {
 			$fd['password'],
 			$fd['permissions'],
 			$fd['name'],
-			$fd['expireDate'],
-			$this->ocsApiVersion,
-			$this->sharingApiVersion
+			$fd['expireDate']
 		);
-		$this->lastShareData = $this->getResponseXml();
 	}
 
 	/**
@@ -259,10 +255,8 @@ trait Sharing {
 		$linkName = null,
 		$expireDate = null
 	) {
-		$this->response = SharingHelper::createShare(
-			$this->getBaseUrl(),
+		$this->response = $this->createShare(
 			$user,
-			$this->getPasswordForUser($user),
 			$path,
 			'public',
 			null, // shareWith
@@ -270,11 +264,8 @@ trait Sharing {
 			$sharePassword,
 			$permissions,
 			$linkName,
-			$expireDate,
-			$this->ocsApiVersion,
-			$this->sharingApiVersion
+			$expireDate
 		);
-		$this->lastShareData = $this->getResponseXml();
 	}
 
 	/**
@@ -744,7 +735,7 @@ trait Sharing {
 	 * @param string $shareType
 	 * @param string $shareWith
 	 * @param string $publicUpload
-	 * @param string $password
+	 * @param string $sharePassword
 	 * @param int $permissions
 	 * @param string $linkName
 	 * @param string $expireDate
@@ -757,7 +748,7 @@ trait Sharing {
 		$shareType = null,
 		$shareWith = null,
 		$publicUpload = null,
-		$password = null,
+		$sharePassword = null,
 		$permissions = null,
 		$linkName = null,
 		$expireDate = null
@@ -771,7 +762,7 @@ trait Sharing {
 			$shareType,
 			$shareWith,
 			$publicUpload,
-			$password,
+			$sharePassword,
 			$permissions,
 			$linkName,
 			$expireDate,
