@@ -51,7 +51,7 @@ trait Sharing {
 	/**
 	 * @var int
 	 */
-	private $lastShareTime = null;
+	private $localLastShareTime = null;
 
 	/**
 	 * @return SimpleXMLElement
@@ -68,10 +68,26 @@ trait Sharing {
 	}
 
 	/**
-	 * @return number
+	 * @return int
 	 */
-	public function getLastShareTime() {
-		return $this->lastShareTime;
+	public function getLocalLastShareTime() {
+		return $this->localLastShareTime;
+	}
+
+	/**
+	 * @return void
+	 */
+	private function waitToCreateShare() {
+		$time = \time();
+		if (($this->localLastShareTime !== null)
+			&& (($time - $this->localLastShareTime) < 1)
+		) {
+			// prevent creating two shares with the same "stime" which is
+			// based on seconds, this affects share merging order and could
+			// affect expected test result order
+			\sleep(1);
+		}
+		$this->localLastShareTime = $time;
 	}
 
 	/**
@@ -132,6 +148,7 @@ trait Sharing {
 				$fd['shareType'] = null;
 			}
 		}
+
 		$this->response = SharingHelper::createShare(
 			$this->getBaseUrl(),
 			$user,
@@ -738,6 +755,7 @@ trait Sharing {
 		$linkName = null,
 		$expireDate = null
 	) {
+		$this->waitToCreateShare();
 		$this->response = SharingHelper::createShare(
 			$this->getBaseUrl(),
 			$user,
@@ -944,14 +962,6 @@ trait Sharing {
 		if ($this->isUserOrGroupInSharedData($user2, $permissions)) {
 			return;
 		} else {
-			$time = \time();
-			if ($this->lastShareTime !== null && $time - $this->lastShareTime < 1) {
-				// prevent creating two shares with the same "stime" which is
-				// based on seconds, this affects share merging order and could
-				// affect expected test result order
-				\sleep(1);
-			}
-			$this->lastShareTime = $time;
 			$this->createShare(
 				$user1, $filepath, 0, $user2, null, null, $permissions
 			);
@@ -1147,14 +1157,6 @@ trait Sharing {
 	 */
 	public function userTriesToShareFileUsingTheSharingApi($sharer, $filepath, $userOrGroup, $sharee, $permissions = null) {
 		$shareType = ($userOrGroup === "user" ? 0 : 1);
-		$time = \time();
-		if ($this->lastShareTime !== null && $time - $this->lastShareTime < 1) {
-			// prevent creating two shares with the same "stime" which is
-			// based on seconds, this affects share merging order and could
-			// affect expected test result order
-			\sleep(1);
-		}
-		$this->lastShareTime = $time;
 		$this->createShare(
 			$sharer, $filepath, $shareType, $sharee, null, null, $permissions
 		);
@@ -1180,14 +1182,6 @@ trait Sharing {
 		$sharer, $filepath, $userOrGroup, $sharee, $permissions = null
 	) {
 		$shareType = ($userOrGroup === "user" ? 0 : 1);
-		$time = \time();
-		if ($this->lastShareTime !== null && $time - $this->lastShareTime < 1) {
-			// prevent creating two shares with the same "stime" which is
-			// based on seconds, this affects share merging order and could
-			// affect expected test result order
-			\sleep(1);
-		}
-		$this->lastShareTime = $time;
 		$this->createShare(
 			$sharer, $filepath, $shareType, $sharee, null, null, $permissions
 		);
