@@ -150,6 +150,7 @@ update-composer: $(COMPOSER_BIN)
 clean-composer-deps:
 	rm -f $(COMPOSER_BIN)
 	rm -Rf lib/composer
+	git clean -ffdx vendor-bin
 
 #
 # Node JS dependencies for tools
