@@ -9,7 +9,7 @@ echo 'Script path: '${SCRIPT_PATH}
 
 OC_PATH=${SCRIPT_PATH}/../../
 OCC=${OC_PATH}occ
-BEHAT=${OC_PATH}lib/composer/bin/behat
+BEHAT=${OC_PATH}vendor-bin/behat/vendor/bin/behat
 
 BEHAT_TAGS_OPTION_FOUND=false
 
