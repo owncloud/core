@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a9ad8aa2e03a441ab71d48cba70da89",
+    "content-hash": "f08ea889ff22cd04f42ac0f9d6f8e094",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -3468,84 +3468,6 @@
             "time": "2017-09-11T13:13:58+00:00"
         },
         {
-            "name": "behat/behat",
-            "version": "v3.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Behat/Behat.git",
-                "reference": "e4bce688be0c2029dc1700e46058d86428c63cab"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/e4bce688be0c2029dc1700e46058d86428c63cab",
-                "reference": "e4bce688be0c2029dc1700e46058d86428c63cab",
-                "shasum": ""
-            },
-            "require": {
-                "behat/gherkin": "^4.5.1",
-                "behat/transliterator": "^1.2",
-                "container-interop/container-interop": "^1.2",
-                "ext-mbstring": "*",
-                "php": ">=5.3.3",
-                "psr/container": "^1.0",
-                "symfony/class-loader": "~2.1||~3.0",
-                "symfony/config": "~2.3||~3.0||~4.0",
-                "symfony/console": "~2.7.40||^2.8.33||~3.3.15||^3.4.3||^4.0.3",
-                "symfony/dependency-injection": "~2.1||~3.0||~4.0",
-                "symfony/event-dispatcher": "~2.1||~3.0||~4.0",
-                "symfony/translation": "~2.3||~3.0||~4.0",
-                "symfony/yaml": "~2.1||~3.0||~4.0"
-            },
-            "require-dev": {
-                "herrera-io/box": "~1.6.1",
-                "phpunit/phpunit": "^4.8.36|^6.3",
-                "symfony/process": "~2.5|~3.0|~4.0"
-            },
-            "bin": [
-                "bin/behat"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Behat\\Behat": "src/",
-                    "Behat\\Testwork": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Konstantin Kudryashov",
-                    "email": "ever.zet@gmail.com",
-                    "homepage": "http://everzet.com"
-                }
-            ],
-            "description": "Scenario-oriented BDD framework for PHP 5.3",
-            "homepage": "http://behat.org/",
-            "keywords": [
-                "Agile",
-                "BDD",
-                "ScenarioBDD",
-                "Scrum",
-                "StoryBDD",
-                "User story",
-                "business",
-                "development",
-                "documentation",
-                "examples",
-                "symfony",
-                "testing"
-            ],
-            "time": "2018-08-10T18:56:51+00:00"
-        },
-        {
             "name": "behat/gherkin",
             "version": "v4.6.0",
             "source": {
@@ -3717,181 +3639,6 @@
                 "testing"
             ],
             "time": "2018-05-02T09:25:31+00:00"
-        },
-        {
-            "name": "behat/mink-extension",
-            "version": "2.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Behat/MinkExtension.git",
-                "reference": "80f7849ba53867181b7e412df9210e12fba50177"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/80f7849ba53867181b7e412df9210e12fba50177",
-                "reference": "80f7849ba53867181b7e412df9210e12fba50177",
-                "shasum": ""
-            },
-            "require": {
-                "behat/behat": "^3.0.5",
-                "behat/mink": "^1.5",
-                "php": ">=5.3.2",
-                "symfony/config": "^2.7|^3.0|^4.0"
-            },
-            "require-dev": {
-                "behat/mink-goutte-driver": "^1.1",
-                "phpspec/phpspec": "^2.0"
-            },
-            "type": "behat-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Behat\\MinkExtension": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christophe Coevoet",
-                    "email": "stof@notk.org"
-                },
-                {
-                    "name": "Konstantin Kudryashov",
-                    "email": "ever.zet@gmail.com"
-                }
-            ],
-            "description": "Mink extension for Behat",
-            "homepage": "http://extensions.behat.org/mink",
-            "keywords": [
-                "browser",
-                "gui",
-                "test",
-                "web"
-            ],
-            "time": "2018-02-06T15:36:30+00:00"
-        },
-        {
-            "name": "behat/mink-goutte-driver",
-            "version": "v1.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/minkphp/MinkGoutteDriver.git",
-                "reference": "8b9ad6d2d95bc70b840d15323365f52fcdaea6ca"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/minkphp/MinkGoutteDriver/zipball/8b9ad6d2d95bc70b840d15323365f52fcdaea6ca",
-                "reference": "8b9ad6d2d95bc70b840d15323365f52fcdaea6ca",
-                "shasum": ""
-            },
-            "require": {
-                "behat/mink": "~1.6@dev",
-                "behat/mink-browserkit-driver": "~1.2@dev",
-                "fabpot/goutte": "~1.0.4|~2.0|~3.1",
-                "php": ">=5.3.1"
-            },
-            "require-dev": {
-                "symfony/phpunit-bridge": "~2.7|~3.0"
-            },
-            "type": "mink-driver",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Behat\\Mink\\Driver\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Konstantin Kudryashov",
-                    "email": "ever.zet@gmail.com",
-                    "homepage": "http://everzet.com"
-                }
-            ],
-            "description": "Goutte driver for Mink framework",
-            "homepage": "http://mink.behat.org/",
-            "keywords": [
-                "browser",
-                "goutte",
-                "headless",
-                "testing"
-            ],
-            "time": "2016-03-05T09:04:22+00:00"
-        },
-        {
-            "name": "behat/mink-selenium2-driver",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/minkphp/MinkSelenium2Driver.git",
-                "reference": "8684ee4e634db7abda9039ea53545f86fc1e105a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/8684ee4e634db7abda9039ea53545f86fc1e105a",
-                "reference": "8684ee4e634db7abda9039ea53545f86fc1e105a",
-                "shasum": ""
-            },
-            "require": {
-                "behat/mink": "~1.7@dev",
-                "instaclick/php-webdriver": "~1.1",
-                "php": ">=5.3.1"
-            },
-            "require-dev": {
-                "mink/driver-testsuite": "dev-master"
-            },
-            "type": "mink-driver",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Behat\\Mink\\Driver\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Konstantin Kudryashov",
-                    "email": "ever.zet@gmail.com",
-                    "homepage": "http://everzet.com"
-                },
-                {
-                    "name": "Pete Otaqui",
-                    "email": "pete@otaqui.com",
-                    "homepage": "https://github.com/pete-otaqui"
-                }
-            ],
-            "description": "Selenium2 (WebDriver) driver for Mink framework",
-            "homepage": "http://mink.behat.org/",
-            "keywords": [
-                "ajax",
-                "browser",
-                "javascript",
-                "selenium",
-                "testing",
-                "webdriver"
-            ],
-            "time": "2018-10-10T12:39:06+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -4326,45 +4073,6 @@
             ],
             "description": "Highlight PHP code in terminal",
             "time": "2018-09-29T18:48:56+00:00"
-        },
-        {
-            "name": "jarnaiz/behat-junit-formatter",
-            "version": "v1.3.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/j-arnaiz/behat-junit-formatter.git",
-                "reference": "2f80b3881e04d3cf43e05ab821c0e80675a9846d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/j-arnaiz/behat-junit-formatter/zipball/2f80b3881e04d3cf43e05ab821c0e80675a9846d",
-                "reference": "2f80b3881e04d3cf43e05ab821c0e80675a9846d",
-                "shasum": ""
-            },
-            "require": {
-                "behat/behat": "~3.0",
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "v1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "jarnaiz\\JUnitFormatter\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Jesús Arnaiz",
-                    "email": "j.arnaiz@gmail.com"
-                }
-            ],
-            "description": "Behat 3 JUnit xml formatter",
-            "time": "2016-01-26T17:05:07+00:00"
         },
         {
             "name": "mikey179/vfsStream",
@@ -5171,45 +4879,6 @@
             "time": "2017-06-30T09:13:00+00:00"
         },
         {
-            "name": "rdx/behat-variables",
-            "version": "1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rudiedirkx/behat-variables.git",
-                "reference": "3729c7aec18cf4a4ce1a0faacc8da3fc0dc9354a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rudiedirkx/behat-variables/zipball/3729c7aec18cf4a4ce1a0faacc8da3fc0dc9354a",
-                "reference": "3729c7aec18cf4a4ce1a0faacc8da3fc0dc9354a",
-                "shasum": ""
-            },
-            "require": {
-                "behat/behat": "^3.0"
-            },
-            "require-dev": {
-                "symfony/process": "^2.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "rdx\\behatvars\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rudie Dirkx",
-                    "email": "github@hotblocks.nl"
-                }
-            ],
-            "description": "Store variables across Scenarios during Behat testing",
-            "time": "2017-11-16T11:58:21+00:00"
-        },
-        {
             "name": "roave/security-advisories",
             "version": "dev-master",
             "source": {
@@ -5923,73 +5592,6 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
-        },
-        {
-            "name": "sensiolabs/behat-page-object-extension",
-            "version": "v2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sensiolabs/BehatPageObjectExtension.git",
-                "reference": "bd2a34221ba65ea8c86d8e693992d718de03dbae"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/BehatPageObjectExtension/zipball/bd2a34221ba65ea8c86d8e693992d718de03dbae",
-                "reference": "bd2a34221ba65ea8c86d8e693992d718de03dbae",
-                "shasum": ""
-            },
-            "require": {
-                "behat/behat": "^3.0.6",
-                "behat/mink": "^1.6",
-                "behat/mink-extension": "^2.0",
-                "ocramius/proxy-manager": "^1.0||^2.0",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "behat/mink-goutte-driver": "^1.0",
-                "bossa/phpspec2-expect": "^1.0.3||^2.0",
-                "fabpot/goutte": "^1.0.4||^2.0||^3.0",
-                "phpspec/phpspec": "^2.5||^3.0",
-                "symfony/filesystem": "^2.8||^3.0",
-                "symfony/process": "^2.8||^3.0",
-                "symfony/yaml": "^2.8||^3.0"
-            },
-            "suggest": {
-                "bossa/phpspec2-expect": "Allows to use PHPSpec2 matchers in Behat context files"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marcello Duarte",
-                    "email": "mduarte@inviqa.com"
-                },
-                {
-                    "name": "Jakub Zalas",
-                    "email": "jakub@zalas.pl"
-                }
-            ],
-            "description": "Page object extension for Behat",
-            "homepage": "https://github.com/sensiolabs/BehatPageObjectExtension",
-            "keywords": [
-                "BDD",
-                "Behat",
-                "page"
-            ],
-            "time": "2017-05-22T14:16:06+00:00"
         },
         {
             "name": "symfony/browser-kit",
@@ -6884,7 +6486,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "behat/mink-selenium2-driver": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
