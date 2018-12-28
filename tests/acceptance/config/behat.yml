@@ -32,7 +32,7 @@ default:
 
     cliEncryption:
       paths:
-        - %paths.base%/../features/cliEncryption
+        - '%paths.base%/../features/cliEncryption'
       contexts:
         - FeatureContext: *common_feature_context_params
 
@@ -174,7 +174,7 @@ default:
 
     webUIEncryptionUserKeysType:
       paths:
-        - %paths.base%/../features/webUIEncryptionUserKeysType
+        - '%paths.base%/../features/webUIEncryptionUserKeysType'
       contexts:
         - WebUIAdminEncryptionSettingsContext:
         - WebUIPersonalEncryptionSettingsContext:
@@ -345,7 +345,7 @@ default:
     # This suite is part of the user_management app in later core versions
     webUIManageQuota:
       paths:
-        - %paths.base%/../features/webUIManageQuota
+        - '%paths.base%/../features/webUIManageQuota'
       contexts:
         - FeatureContext: *common_feature_context_params
         - WebUIFilesContext:
@@ -356,7 +356,7 @@ default:
     # This suite is part of the user_management app in later core versions
     webUIManageUsersGroups:
       paths:
-        - %paths.base%/../features/webUIManageUsersGroups
+        - '%paths.base%/../features/webUIManageUsersGroups'
       contexts:
         - FeatureContext: *common_feature_context_params
         - EmailContext:
@@ -369,7 +369,7 @@ default:
     # This suite is part of the user_management app in later core versions
     webUISettingsMenu:
       paths:
-        - %paths.base%/../features/webUISettingsMenu
+        - '%paths.base%/../features/webUISettingsMenu'
       contexts:
         - FeatureContext: *common_feature_context_params
         - EmailContext:
