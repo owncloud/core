@@ -59,6 +59,7 @@ RELEASE_CHANNEL=git
 # internal aliases
 composer_deps=lib/composer
 composer_dev_deps=lib/composer/phpunit
+acceptance_test_deps=vendor-bin/behat/vendor
 nodejs_deps=build/node_modules
 core_vendor=core/vendor
 
@@ -190,15 +191,15 @@ test-js-debug: $(nodejs_deps)
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js
 
 .PHONY: test-acceptance-api
-test-acceptance-api: $(composer_dev_deps)
+test-acceptance-api: $(acceptance_test_deps)
 	./tests/acceptance/run.sh --remote --type api
 
 .PHONY: test-acceptance-cli
-test-acceptance-cli: $(composer_dev_deps)
+test-acceptance-cli: $(acceptance_test_deps)
 	./tests/acceptance/run.sh --remote --type cli
 
 .PHONY: test-acceptance-webui
-test-acceptance-webui: $(composer_dev_deps)
+test-acceptance-webui: $(acceptance_test_deps)
 	./tests/acceptance/run.sh --remote --type webUI
 
 .PHONY: test-php-style
@@ -384,3 +385,9 @@ vendor-bin/phpstan/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/phpstan
 
 vendor-bin/phpstan/composer.lock: vendor-bin/phpstan/composer.json
 	@echo phpstan composer.lock is not up to date.
+
+vendor-bin/behat/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/behat/composer.lock
+	composer bin behat install --no-progress
+
+vendor-bin/behat/composer.lock: vendor-bin/behat/composer.json
+	@echo behat composer.lock is not up to date.
