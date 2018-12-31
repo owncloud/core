@@ -83,7 +83,7 @@ class EmailHelper {
 		$numEmails = 1,
 		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
 	) {
-		$currentTime = \time(true);
+		$currentTime = \time();
 		$end = $currentTime + $waitTimeSec;
 
 		while ($currentTime <= $end) {
@@ -104,7 +104,7 @@ class EmailHelper {
 				}
 			}
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
-			$currentTime = \time(true);
+			$currentTime = \time();
 		}
 		throw new \Exception("Could not find the email to the address: " . $address);
 	}
@@ -126,7 +126,7 @@ class EmailHelper {
 		$numEmails = 1,
 		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
 	) {
-		$currentTime = \time(true);
+		$currentTime = \time();
 		$end = $currentTime + $waitTimeSec;
 
 		while ($currentTime <= $end) {
@@ -142,7 +142,7 @@ class EmailHelper {
 				}
 			}
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
-			$currentTime = \time(true);
+			$currentTime = \time();
 		}
 		throw new \Exception("Could not find the email to the address: " . $address);
 	}
