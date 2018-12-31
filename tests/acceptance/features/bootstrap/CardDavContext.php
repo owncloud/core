@@ -84,7 +84,9 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		$this->response = HttpRequestHelper::get(
 			$davUrl, $user, $this->featureContext->getPasswordForUser($user)
 		);
-		$this->featureContext->parseResponseIntoXml($this->response);
+		$this->featureContext->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
 	}
 
 	/**
@@ -129,7 +131,9 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 			$headers, $body
 		);
 		$this->theCardDavHttpStatusCodeShouldBe(201);
-		$this->featureContext->parseResponseIntoXml($this->response);
+		$this->featureContext->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
 	}
 
 	/**

@@ -27,7 +27,6 @@ use GuzzleHttp\Stream\StreamInterface;
 use Guzzle\Http\Exception\BadResponseException;
 use Sabre\DAV\Client as SClient;
 use Sabre\DAV\Xml\Property\ResourceType;
-use Sabre\Xml\LibXMLException;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
@@ -92,6 +91,15 @@ trait WebDav {
 	private $httpRequestTimeout = 0;
 
 	private $chunkingToUse = null;
+
+	/**
+	 * @param array $responseXml
+	 *
+	 * @return void
+	 */
+	public function setResponseXml($responseXml) {
+		$this->responseXml = $responseXml;
+	}
 
 	/**
 	 * @param ResponseInterface[] $uploadResponses
@@ -237,33 +245,6 @@ trait WebDav {
 		}
 
 		return $this->getNewDavPath();
-	}
-
-	/**
-	 * parses the body content of $response and sets $this->responseXml
-	 *
-	 * @param ResponseInterface|null $response if null $this->response will be used
-	 *
-	 * @return void
-	 */
-	public function parseResponseIntoXml($response = null) {
-		if ($response === null) {
-			$response = $this->response;
-		}
-		$body = $response->getBody()->getContents();
-		if ($body && \substr($body, 0, 1) === '<') {
-			try {
-				$reader = new Sabre\Xml\Reader();
-				$reader->xml($body);
-				$this->responseXml = $reader->parse();
-			} catch (LibXMLException $e) {
-				// Sometimes the body can be a real page of HTML and text.
-				// So it may not be a complete ordinary piece of XML.
-				// The XML parse might fail with an exception message like:
-				// Opening and ending tag mismatch: link line 31 and head.
-				$this->responseXml = [];
-			}
-		}
 	}
 
 	/**
@@ -462,7 +443,9 @@ trait WebDav {
 			$this->response = $this->makeDavRequest(
 				$user, "MOVE", $fileSource, $headers, null, "files", null, null, $stream
 			);
-			$this->parseResponseIntoXml();
+			$this->setResponseXml(
+				HttpRequestHelper::parseResponseAsXml($this->response)
+			);
 		} catch (ConnectException $e) {
 		}
 	}
@@ -504,7 +487,9 @@ trait WebDav {
 		$this->response = $this->makeDavRequest(
 			$user, "COPY", $fileSource, $headers
 		);
-		$this->parseResponseIntoXml();
+		$this->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
 	}
 
 	/**
@@ -1546,7 +1531,9 @@ trait WebDav {
 			$user, "PUT", $destination, [], $file
 		);
 		$this->lastUploadTime = \time();
-		$this->parseResponseIntoXml();
+		$this->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
 	}
 
 	/**
@@ -2064,7 +2051,9 @@ trait WebDav {
 		$this->response = $this->makeDavRequest(
 			$user, "MKCOL", $destination, []
 		);
-		$this->parseResponseIntoXml();
+		$this->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
 	}
 
 	/**
@@ -2665,7 +2654,9 @@ trait WebDav {
 		//if we are using that step the second time in a scenario e.g. 'But ... should not'
 		//then don't parse the result again, because the result in a ResponseInterface
 		if (empty($this->responseXml)) {
-			$this->parseResponseIntoXml();
+			$this->setResponseXml(
+				HttpRequestHelper::parseResponseAsXml($this->response)
+			);
 		}
 		$multistatusResults = $this->responseXml["value"];
 		PHPUnit_Framework_Assert::assertEquals((int)$numFiles, \count($multistatusResults));
@@ -2706,7 +2697,9 @@ trait WebDav {
 		//if we are using that step the second time in a scenario e.g. 'But ... should not'
 		//then don't parse the result again, because the result in a ResponseInterface
 		if (empty($this->responseXml)) {
-			$this->parseResponseIntoXml();
+			$this->setResponseXml(
+				HttpRequestHelper::parseResponseAsXml($this->response)
+			);
 		}
 		$multistatusResults = $this->responseXml["value"];
 		$results = [];
