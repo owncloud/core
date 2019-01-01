@@ -68,12 +68,14 @@ default:
         - '%paths.base%/../features/apiShareManagement'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - PublicWebDavContext:
 
     apiShareOperations:
       paths:
         - '%paths.base%/../features/apiShareOperations'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - PublicWebDavContext:
 
     apiSharingNotifications:
       paths:
@@ -101,6 +103,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
         - SearchContext:
+        - PublicWebDavContext:
 
     apiWebdavProperties:
       paths:
@@ -185,6 +188,7 @@ default:
         - WebUISearchContext:
         - WebUISharingContext:
         - OccContext:
+        - PublicWebDavContext:
 
     webUILogin:
       paths:
@@ -206,6 +210,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - PublicWebDavContext:
 
     webUIPersonalSettings:
       paths:
@@ -230,6 +235,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - PublicWebDavContext:
 
     webUIRenameFolders:
       paths:
@@ -261,6 +267,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - PublicWebDavContext:
 
     webUISharingInternalGroups:
       paths:
@@ -324,6 +331,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - PublicWebDavContext:
 
     webUIWebdavLocks:
       paths:
@@ -336,6 +344,7 @@ default:
         - WebUILoginContext:
         - WebUIWebDavLockingContext:
         - WebUISharingContext:
+        - PublicWebDavContext:
 
   extensions:
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
