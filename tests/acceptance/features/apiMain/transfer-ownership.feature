@@ -106,8 +106,7 @@ Feature: transfer-ownership
     And user "user1" has been created with default attributes
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
-    And using received transfer folder of "user1" as dav path
-    And as "user1" folder "/local_storage" should not exist
+    And as "user1" folder "/%last_transfer_path%/local_storage" should not exist
 
   @skipOnEncryptionType:user-keys
   Scenario: transferring ownership does not fail with shared trashed files
@@ -268,8 +267,7 @@ Feature: transfer-ownership
     And user "user0" has created folder "/sub"
     When the administrator transfers ownership of path "sub" from "user0" to "user1" using the occ command
     Then the command should have been successful
-    And using received transfer folder of "user1" as dav path
-    And as "user1" folder "/local_storage" should not exist
+    And as "user1" folder "/%last_transfer_path%/local_storage" should not exist
 
   Scenario: transferring ownership fails with invalid source user
     Given user "user0" has been created with default attributes
