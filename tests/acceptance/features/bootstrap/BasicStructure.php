@@ -2324,6 +2324,24 @@ trait BasicStructure {
 	}
 
 	/**
+	 *
+	 * @param string $serverUrl
+	 *
+	 * @return void
+	 */
+	public function clearFileLocksForServer($serverUrl) {
+		$response = OcsApiHelper::sendRequest(
+			$serverUrl,
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'delete',
+			"/apps/testing/api/v1/lockprovisioning",
+			["global" => "true"]
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+	}
+
+	/**
 	 * After Scenario. clear file locks
 	 *
 	 * @AfterScenario
@@ -2332,15 +2350,10 @@ trait BasicStructure {
 	 */
 	public function clearFileLocks() {
 		$this->deleteTokenAuthEnforcedAfterScenario();
-		$response = OcsApiHelper::sendRequest(
-			$this->getBaseUrl(),
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
-			'delete',
-			"/apps/testing/api/v1/lockprovisioning",
-			["global" => "true"]
-		);
-		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		$this->clearFileLocksForServer($this->getBaseUrl());
+		if ($this->remoteBaseUrl !== $this->localBaseUrl) {
+			$this->clearFileLocksForServer($this->getRemoteBaseUrl());
+		}
 	}
 
 	/**
