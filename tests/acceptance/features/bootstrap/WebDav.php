@@ -1075,14 +1075,15 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function asFileOrFolderShouldNotExist($user, $entry, $path) {
-		$client = $this->getSabreClient($user);
-		$response = $client->request(
-			'HEAD', $this->makeSabrePath($user, $path)
+		$path = $this->substituteInLineCodes($path);
+		$response = WebDavHelper::makeDavRequest(
+			$this->baseUrl, $this->getActualUsername($user),
+			$this->getPasswordForUser($user), 'GET', $path, []
 		);
-		if ($response['statusCode'] < 401 || $response['statusCode'] > 404) {
+		if ($response->getStatusCode() < 401 || $response->getStatusCode() > 404) {
 			throw new \Exception(
 				"$entry '$path' expected to not exist " .
-				"(status code {$response['statusCode']}, expected 401 - 404)"
+				"(status code {$response->getStatusCode()}, expected 401 - 404)"
 			);
 		}
 
@@ -1100,6 +1101,7 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function asFileOrFolderShouldExist($user, $entry, $path) {
+		$path = $this->substituteInLineCodes($path);
 		$this->response = $this->listFolder($user, $path, 0);
 		try {
 			$this->thePropertiesResponseShouldContainAnEtag();
