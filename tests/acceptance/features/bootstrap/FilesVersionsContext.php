@@ -22,10 +22,9 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\WebDavHelper;
-use Sabre\HTTP\ResponseInterface;
-use Sabre\HTTP\ClientHttpException;
 
 require_once 'bootstrap.php';
 
@@ -52,14 +51,13 @@ class FilesVersionsContext implements Context {
 	 */
 	public function userRestoresVersionIndexOfFile($user, $versionIndex, $path) {
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
-		$versions = \array_keys(
-			$this->listVersionFolder($user, "/meta/$fileId/v", 1)
-		);
+		$responseXml = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
+		$xmlPart = $responseXml->xpath("//d:response/d:href");
 		//restoring the version only works with dav path v2
 		$destinationUrl = $this->featureContext->getBaseUrl() . "/" .
 			WebDavHelper::getDavPath($user, 2) . \trim($path, "/");
 		$fullUrl = $this->featureContext->getBaseUrlWithoutPath() .
-			$versions[$versionIndex];
+			$xmlPart[$versionIndex];
 		HttpRequestHelper::sendRequest(
 			$fullUrl,
 			'COPY', $user, $this->featureContext->getPasswordForUser($user),
@@ -81,8 +79,7 @@ class FilesVersionsContext implements Context {
 	) {
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		PHPUnit_Framework_Assert::assertNotNull($fileId, "file $path not found");
-		$elements = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
-		PHPUnit_Framework_Assert::assertEquals($count, \count($elements) - 1);
+		$this->theVersionFolderOfFileIdShouldContainElements($fileId, $user, $count);
 	}
 
 	/**
@@ -97,8 +94,12 @@ class FilesVersionsContext implements Context {
 	public function theVersionFolderOfFileIdShouldContainElements(
 		$fileId, $user, $count
 	) {
-		$elements = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
-		PHPUnit_Framework_Assert::assertEquals($count, \count($elements) - 1);
+		$responseXml = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
+		$xmlPart = $responseXml->xpath("//d:prop/d:getetag");
+		PHPUnit_Framework_Assert::assertEquals(
+			$count, \count($xmlPart) - 1,
+			"could not find $count version element(s) in \n" . $responseXml->asXML()
+		);
 	}
 
 	/**
@@ -115,43 +116,43 @@ class FilesVersionsContext implements Context {
 		$path, $index, $user, $length
 	) {
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
-		$elements = $this->listVersionFolder(
-			$user, "/meta/$fileId/v", 1, ['{DAV:}getcontentlength']
+		$responseXml = $this->listVersionFolder(
+			$user, "/meta/$fileId/v", 1, ['getcontentlength']
 		);
-		$elements = \array_values($elements);
+		$xmlPart = $responseXml->xpath("//d:prop/d:getcontentlength");
 		PHPUnit_Framework_Assert::assertEquals(
-			$length, $elements[$index]['{DAV:}getcontentlength']
+			$length, (int)$xmlPart[$index]
 		);
 	}
 
 	/**
+	 * returns the result parsed into an SimpleXMLElement
+	 * with an registered namespace with 'd' as prefix and 'DAV:' as namespace
+	 *
 	 * @param string $user
 	 * @param string $path
 	 * @param int $folderDepth
-	 * @param array|null $properties
+	 * @param string[] $properties
 	 *
-	 * @return array|ResponseInterface
+	 * @return SimpleXMLElement
 	 */
 	public function listVersionFolder(
 		$user, $path, $folderDepth, $properties = null
 	) {
-		$client = $this->featureContext->getSabreClient($user);
 		if (!$properties) {
 			$properties = [
-				'{DAV:}getetag'
+				'getetag'
 			];
 		}
-		try {
-			$response = $client->propfind(
-				$this->featureContext->makeSabrePathNotForFiles(
-					$path, 'file_versions'
-				),
-				$properties, $folderDepth
-			);
-		} catch (ClientHttpException $e) {
-			$response = $e->getResponse();
-		}
-		return $response;
+		$user = $this->featureContext->getActualUsername($user);
+		$password = $this->featureContext->getPasswordForUser($user);
+		$response = WebDavHelper::propfind(
+			$this->featureContext->getBaseUrl(),
+			$user, $password, $path, $properties, $folderDepth, "versions"
+		);
+		$responseXml = HttpRequestHelper::getResponseXml($response);
+		$responseXml->registerXPathNamespace('d', 'DAV:');
+		return $responseXml;
 	}
 
 	/**
