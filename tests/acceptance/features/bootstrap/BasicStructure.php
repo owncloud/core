@@ -2065,6 +2065,14 @@ trait BasicStructure {
 				],
 				"parameter" => []
 			],
+			[
+				"code" => "%last_transfer_path%",
+				"function" => [
+					$this,
+					"getLastTransferPath"
+				],
+				"parameter" => []
+			],
 		];
 
 		foreach ($substitutions as $substitution) {
