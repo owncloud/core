@@ -73,6 +73,48 @@ class WebDavHelper {
 	/**
 	 *
 	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $path
+	 * @param string[] $properties
+	 * @param int $folderDepth
+	 * @param string $type
+	 * @param int $davPathVersionToUse
+	 *
+	 * @throws Exception
+	 *
+	 * @return ResponseInterface
+	 */
+	public static function propfind(
+		$baseUrl,
+		$user,
+		$password,
+		$path,
+		$properties,
+		$folderDepth = 0,
+		$type = "files",
+		$davPathVersionToUse = 2
+	) {
+		$headers = ['Depth' => $folderDepth];
+		$body = '<?xml version="1.0"?>
+				<d:propfind xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+					<d:prop>';
+		foreach ($properties as $property) {
+			$body .= "<d:$property/>";
+		}
+
+		$body .= '</d:prop></d:propfind>';
+
+		$response = self::makeDavRequest(
+			$baseUrl, $user, $password, "PROPFIND", $path, $headers, $body,
+			null, $davPathVersionToUse, $type
+		);
+		return $response;
+	}
+
+	/**
+	 *
+	 * @param string $baseUrl
 	 * URL of owncloud e.g. http://localhost:8080
 	 * should include the subfolder if owncloud runs in a subfolder
 	 * e.g. http://localhost:8080/owncloud-core
