@@ -40,6 +40,24 @@ trait CommandLine {
 	 */
 	private $lastStdErr;
 
+	private $lastTransferPath;
+
+	/**
+	 * @return string
+	 */
+	public function getLastTransferPath() {
+		return $this->lastTransferPath;
+	}
+
+	/**
+	 * @param string $lastTransferPath
+	 *
+	 * @return void
+	 */
+	public function setLastTransferPath($lastTransferPath) {
+		$this->lastTransferPath = $lastTransferPath;
+	}
+
 	/**
 	 * get the exit status of the last occ command
 	 * app acceptance tests that have their own step code may need to process this
@@ -475,8 +493,6 @@ trait CommandLine {
 		PHPUnit_Framework_Assert::assertEquals(\trim($this->lastStdOut), "[]");
 		PHPUnit_Framework_Assert::assertEmpty($this->lastStdErr);
 	}
-
-	private $lastTransferPath;
 
 	/**
 	 * @param string $sourceUser
