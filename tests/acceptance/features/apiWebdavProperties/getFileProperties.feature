@@ -62,8 +62,8 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "user0" has created folder "/test"
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
-      | {http://owncloud.org/ns}share-types |
-    Then the response should contain an empty property "{http://owncloud.org/ns}share-types"
+      | oc:share-types |
+    Then the response should contain an empty property "oc:share-types"
     Examples:
       | dav_version |
       | old         |
@@ -79,7 +79,7 @@ Feature: get file properties
       | permissions | 31    |
       | shareWith   | user1 |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
-      | {http://owncloud.org/ns}share-types |
+      | oc:share-types |
     Then the response should contain a share-types property with
       | 0 |
     Examples:
@@ -97,7 +97,7 @@ Feature: get file properties
       | permissions | 31   |
       | shareWith   | grp1 |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
-      | {http://owncloud.org/ns}share-types |
+      | oc:share-types |
     Then the response should contain a share-types property with
       | 1 |
     Examples:
@@ -113,7 +113,7 @@ Feature: get file properties
       | path        | test |
       | permissions | 31   |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
-      | {http://owncloud.org/ns}share-types |
+      | oc:share-types |
     Then the response should contain a share-types property with
       | 3 |
     Examples:
@@ -141,7 +141,7 @@ Feature: get file properties
       | path        | test |
       | permissions | 31   |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
-      | {http://owncloud.org/ns}share-types |
+      | oc:share-types |
     Then the response should contain a share-types property with
       | 0 |
       | 1 |
@@ -166,8 +166,8 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
     When user "user0" gets the following properties of file "/somefile.txt" using the WebDAV API
-      | {http://owncloud.org/ns}privatelink |
-    Then the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
+      | oc:privatelink |
+    Then the single response should contain a property "oc:privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
     Examples:
       | dav_version |
       | old         |

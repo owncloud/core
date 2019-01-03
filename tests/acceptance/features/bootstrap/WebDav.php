@@ -87,6 +87,13 @@ trait WebDav {
 	 * @var array
 	 */
 	private $responseXml = [];
+	
+	/**
+	 * response content parsed into a SimpleXMLElement
+	 *
+	 * @var SimpleXMLElement
+	 */
+	private $responseXmlObject;
 
 	private $httpRequestTimeout = 0;
 
@@ -957,9 +964,7 @@ trait WebDav {
 	public function userGetsThePropertiesOfFolder(
 		$user, $path
 	) {
-		$this->response = $this->listFolder(
-			$user, $path, 0, []
-		);
+		$this->responseXmlObject = $this->listFolder($user, $path, 0);
 	}
 
 	/**
@@ -980,9 +985,7 @@ trait WebDav {
 				$properties[] = $row[0];
 			}
 		}
-		$this->response = $this->listFolder(
-			$user, $path, 0, $properties
-		);
+		$this->responseXmlObject = $this->listFolder($user, $path, 0, $properties);
 	}
 
 	/**
@@ -1102,7 +1105,7 @@ trait WebDav {
 	 */
 	public function asFileOrFolderShouldExist($user, $entry, $path) {
 		$path = $this->substituteInLineCodes($path);
-		$this->response = $this->listFolder($user, $path, 0);
+		$this->responseXmlObject = $this->listFolder($user, $path, 0);
 		try {
 			$this->thePropertiesResponseShouldContainAnEtag();
 		} catch (\Exception $e) {
@@ -1119,7 +1122,10 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function thePropertiesResponseShouldContainAnEtag() {
-		if (!\is_array($this->response) || !isset($this->response['{DAV:}getetag'])) {
+		$xmlPart = $this->responseXmlObject->xpath("//d:prop/d:getetag");
+		if (!\is_array($xmlPart)
+			|| !\preg_match("/^\"[a-f0-9]{1,32}\"$/", $xmlPart[0]->__toString())
+		) {
 			throw new \Exception(
 				"getetag not found in response"
 			);
@@ -1156,40 +1162,45 @@ trait WebDav {
 	public function theSingleResponseShouldContainAPropertyWithValueAndAlternative(
 		$key, $expectedValue, $altExpectedValue
 	) {
-		$keys = $this->response;
-		if (!\array_key_exists($key, $keys)) {
-			throw new \Exception(
-				"Cannot find property \"$key\" with \"$expectedValue\""
-			);
-		}
-
-		$value = $keys[$key];
-		if ($value instanceof ResourceType) {
-			$value = $value->getValue();
-			if (empty($value)) {
-				$value = '';
-			} else {
-				$value = $value[0];
-			}
-		}
+		$xmlPart = $this->responseXmlObject->xpath("//d:prop/$key");
+		PHPUnit_Framework_Assert::assertTrue(
+			isset($xmlPart[0]), "Cannot find property \"$key\""
+		);
+		$value = $xmlPart[0]->__toString();
 
 		if ($expectedValue === "a_comment_url") {
 			$basePath = \ltrim($this->getBasePath() . "/", "/");
 			$expected = "#^/{$basePath}remote.php/dav/comments/files/([0-9]+)$#";
-			if (\preg_match($expected, $value)) {
-				return;
-			} else {
-				throw new \Exception(
-					"Property \"$key\" found with value \"$value\", expected \"$expectedValue\""
-				);
-			}
-		}
-
-		if ($value != $expectedValue && $value != $altExpectedValue) {
+			PHPUnit_Framework_Assert::assertRegExp(
+				$expected, $value,
+				"Property \"$key\" found with value \"$value\", expected \"$expectedValue\""
+			);
+		} elseif ($value != $expectedValue && $value != $altExpectedValue) {
 			throw new \Exception(
 				"Property \"$key\" found with value \"$value\", expected \"$expectedValue\""
 			);
 		}
+	}
+	
+	/**
+	 * @Then the single response should contain a property :property with a child property :childProperty
+	 *
+	 * @param string $property
+	 * @param string $childProperty
+	 *
+	 * @return void
+	 *
+	 * @throws \Exception
+	 */
+	public function theSingleResponseShouldContainAPropertyWithChildProperty(
+		$property, $childProperty
+	) {
+		$xmlPart = $this->responseXmlObject->xpath(
+			"//d:prop/$property/$childProperty"
+		);
+		PHPUnit_Framework_Assert::assertTrue(
+			isset($xmlPart[0]), "Cannot find property \"$property/$childProperty\""
+		);
 	}
 
 	/**
@@ -1206,9 +1217,7 @@ trait WebDav {
 	public function asUserFolderShouldContainAPropertyWithValueOrWithValue(
 		$user, $path, $property, $expectedValue, $altExpectedValue
 	) {
-		$this->response = $this->listFolder(
-			$user, $path, 0, [$property]
-		);
+		$this->responseXmlObject = $this->listFolder($user, $path, 0, [$property]);
 		$this->theSingleResponseShouldContainAPropertyWithValueAndAlternative(
 			$property, $expectedValue, $altExpectedValue
 		);
@@ -1244,26 +1253,15 @@ trait WebDav {
 	public function theSingleResponseShouldContainAPropertyWithValueLike(
 		$key, $regex
 	) {
-		$keys = $this->response;
-		if (!\array_key_exists($key, $keys)) {
-			throw new \Exception("Cannot find property \"$key\" with \"$regex\"");
-		}
-
-		$value = $keys[$key];
-		if ($value instanceof ResourceType) {
-			$value = $value->getValue();
-			if (empty($value)) {
-				$value = '';
-			} else {
-				$value = $value[0];
-			}
-		}
-
-		if (!\preg_match($regex, $value)) {
-			throw new \Exception(
-				"Property \"$key\" found with value \"$value\", expected \"$regex\""
-			);
-		}
+		$xmlPart = $this->responseXmlObject->xpath("//d:prop/$key");
+		PHPUnit_Framework_Assert::assertTrue(
+			isset($xmlPart[0]), "Cannot find property \"$key\""
+		);
+		$value = $xmlPart[0]->__toString();
+		PHPUnit_Framework_Assert::assertRegExp(
+			$regex, $value,
+			"Property \"$key\" found with value \"$value\", expected \"$regex\""
+		);
 	}
 
 	/**
@@ -1275,8 +1273,8 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function theResponseShouldContainAShareTypesPropertyWith($table) {
-		WebDavAssert::assertSabreResponseContainsShareTypes(
-			$this->response, $table
+		WebDavAssert::assertResponseContainsShareTypes(
+			$this->responseXmlObject, $table
 		);
 	}
 
@@ -1289,42 +1287,36 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function theResponseShouldContainAnEmptyProperty($property) {
-		$properties = $this->response;
-		if (!\array_key_exists($property, $properties)) {
-			throw new \Exception("Cannot find property \"$property\"");
-		}
-
-		if ($properties[$property] !== null) {
-			throw new \Exception("Property \"$property\" is not empty");
-		}
+		$xmlPart = $this->responseXmlObject->xpath("//d:prop/$property");
+		PHPUnit_Framework_Assert::assertCount(
+			1, $xmlPart, "Cannot find property \"$property\""
+		);
+		PHPUnit_Framework_Assert::assertEmpty(
+			$xmlPart[0], "Property \"$property\" is not empty"
+		);
 	}
 
 	/**
-	 * Returns the elements of a propfind
 	 *
 	 * @param string $user
 	 * @param string $path
 	 * @param int $folderDepth requires 1 to see elements without children
 	 * @param array|null $properties
 	 *
-	 * @return array|\Sabre\HTTP\ResponseInterface
+	 * @return SimpleXMLElement
 	 */
 	public function listFolder($user, $path, $folderDepth, $properties = null) {
-		$client = $this->getSabreClient($user);
-		if (!$properties) {
-			$properties = [
-				'{DAV:}getetag'
-			];
+		if ($this->customDavPath !== null) {
+			$path = $this->customDavPath . $path;
 		}
-
-		try {
-			$response = $client->propfind(
-				$this->makeSabrePath($user, $path), $properties, $folderDepth
-			);
-		} catch (Sabre\HTTP\ClientHttpException $e) {
-			$response = $e->getResponse();
-		}
-		return $response;
+		
+		return WebDavHelper::listFolder(
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
+			$this->getPasswordForUser($user),
+			$path, $folderDepth, $properties,
+			"files", ($this->usingOldDavPath) ? 1 : 2
+		);
 	}
 
 	/**
@@ -1397,16 +1389,22 @@ trait WebDav {
 				'$expectedElements has to be an instance of TableNode'
 			);
 		}
-		$elementList = $this->listFolder($user, '/', 3);
+		$responseXmlObject = $this->listFolder($user, "/", 3);
 		$elementRows = $elements->getRows();
 		$elementsSimplified = $this->simplifyArray($elementRows);
 		foreach ($elementsSimplified as $expectedElement) {
 			$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
-			if (!\array_key_exists($webdavPath, $elementList) && $expectedToBeListed) {
+			$element = $responseXmlObject->xpath(
+				"//d:response/d:href[text() = \"$webdavPath\"]"
+			);
+			if ($expectedToBeListed
+				&& (!isset($element[0]) || $element[0]->__toString() !== $webdavPath)
+			) {
 				PHPUnit_Framework_Assert::fail(
 					"$webdavPath is not in propfind answer but should"
 				);
-			} elseif (\array_key_exists($webdavPath, $elementList) && !$expectedToBeListed) {
+			} elseif (!$expectedToBeListed && isset($element[0])
+			) {
 				PHPUnit_Framework_Assert::fail(
 					"$webdavPath is in propfind answer but should not be"
 				);
@@ -2292,12 +2290,12 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userStoresEtagOfElement($user, $path) {
-		$propertiesTable = new TableNode([['{DAV:}getetag']]);
+		$propertiesTable = new TableNode([['getetag']]);
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable
 		);
-		$pathETAG[$path] = $this->response['{DAV:}getetag'];
-		$this->storedETAG[$user] = $pathETAG;
+		$xmlPart = $this->responseXmlObject->xpath("//d:prop/d:getetag");
+		$this->storedETAG[$user][$path] = $xmlPart[0]->__toString();
 	}
 
 	/**
@@ -2309,12 +2307,13 @@ trait WebDav {
 	 * @return void
 	 */
 	public function etagOfElementOfUserShouldNotHaveChanged($path, $user) {
-		$propertiesTable = new TableNode([['{DAV:}getetag']]);
+		$propertiesTable = new TableNode([['getetag']]);
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable
 		);
+		$xmlPart = $this->responseXmlObject->xpath("//d:prop/d:getetag");
 		PHPUnit_Framework_Assert::assertEquals(
-			$this->response['{DAV:}getetag'], $this->storedETAG[$user][$path]
+			$xmlPart[0]->__toString(), $this->storedETAG[$user][$path]
 		);
 	}
 
@@ -2327,12 +2326,13 @@ trait WebDav {
 	 * @return void
 	 */
 	public function etagOfElementOfUserShouldHaveChanged($path, $user) {
-		$propertiesTable = new TableNode([['{DAV:}getetag']]);
+		$propertiesTable = new TableNode([['getetag']]);
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable
 		);
+		$xmlPart = $this->responseXmlObject->xpath("//d:prop/d:getetag");
 		PHPUnit_Framework_Assert::assertNotEquals(
-			$this->response['{DAV:}getetag'], $this->storedETAG[$user][$path]
+			$xmlPart[0]->__toString(), $this->storedETAG[$user][$path]
 		);
 	}
 
@@ -2439,15 +2439,13 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userDeletesEverythingInFolder($user, $folder) {
-		$elementList = $this->listFolder($user, $folder, 1);
+		$responseXmlObject = $this->listFolder($user, $folder, 1);
+		$elementList = $responseXmlObject->xpath("//d:response/d:href");
 		if (\is_array($elementList) && \count($elementList)) {
-			$elementListKeys = \array_keys($elementList);
-			\array_shift($elementListKeys);
+			\array_shift($elementList); //don't delete the folder itself
 			$davPrefix = "/" . $this->getFullDavFilesPath($user);
-			foreach ($elementListKeys as $element) {
-				if (\substr($element, 0, \strlen($davPrefix)) == $davPrefix) {
-					$element = \substr($element, \strlen($davPrefix));
-				}
+			foreach ($elementList as $element) {
+				$element = \substr($element, \strlen($davPrefix));
 				$this->userDeletesFile($user, $element);
 			}
 		}

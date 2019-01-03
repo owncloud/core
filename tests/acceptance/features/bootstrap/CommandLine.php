@@ -503,22 +503,19 @@ trait CommandLine {
 	 */
 	public function findLastTransferFolderForUser($sourceUser, $targetUser) {
 		$foundPaths = [];
-		$results = $this->listFolder($targetUser, '', 1);
-		foreach ($results as $path => $data) {
-			$path = \rawurldecode($path);
+		$responseXmlObject = $this->listFolder($targetUser, '', 1);
+		$transferredElements = $responseXmlObject->xpath(
+			"//d:response/d:href[contains(., '/transferred%20from%20$sourceUser%20on%')]"
+		);
+		foreach ($transferredElements as $transferredElement) {
+			$path = \rawurldecode($transferredElement);
 			$parts = \explode(' ', $path);
-			if (\basename($parts[0]) !== 'transferred') {
-				continue;
-			}
-			if (isset($parts[2]) && $parts[2] === $sourceUser) {
-				// store timestamp as key
-				$foundPaths[] = [
-					'date' => \strtotime(\trim($parts[4], '/')),
-					'path' => $path,
-				];
-			}
+			// store timestamp as key
+			$foundPaths[] = [
+				'date' => \strtotime(\trim($parts[4], '/')),
+				'path' => $path,
+			];
 		}
-
 		if (empty($foundPaths)) {
 			return null;
 		}
