@@ -4045,16 +4045,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.13.1",
+            "version": "v2.13.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "54814c62d5beef3ba55297b9b3186ed8b8a1b161"
+                "reference": "ce6c4bbc24302f535c7bbf9ad35fbb0be4f5a4b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/54814c62d5beef3ba55297b9b3186ed8b8a1b161",
-                "reference": "54814c62d5beef3ba55297b9b3186ed8b8a1b161",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/ce6c4bbc24302f535c7bbf9ad35fbb0be4f5a4b2",
+                "reference": "ce6c4bbc24302f535c7bbf9ad35fbb0be4f5a4b2",
                 "shasum": ""
             },
             "require": {
@@ -4081,7 +4081,7 @@
             "require-dev": {
                 "johnkary/phpunit-speedtrap": "^1.1 || ^2.0 || ^3.0",
                 "justinrainbow/json-schema": "^5.0",
-                "keradus/cli-executor": "^1.1",
+                "keradus/cli-executor": "^1.2",
                 "mikey179/vfsstream": "^1.6",
                 "php-coveralls/php-coveralls": "^2.1",
                 "php-cs-fixer/accessible-object": "^1.0",
@@ -4132,7 +4132,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2018-10-21T00:32:10+00:00"
+            "time": "2019-01-01T20:26:47+00:00"
         },
         {
             "name": "instaclick/php-webdriver",
