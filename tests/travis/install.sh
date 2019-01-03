@@ -20,6 +20,14 @@ PHPUNIT=$(which phpunit)
 TRAVIS_ORACLE_HOME="/usr/lib/oracle/xe/app/oracle/product/10.2.0/server"
 [ -z "$ORACLE_HOME" ] && ORACLE_HOME=$TRAVIS_ORACLE_HOME
 
+# if SRV_HOST_NAME is not set then set it from TEST_SERVER_URL
+# TEST_SERVER_URL should look something like http://owncloud:8889
+if [ -z "$SRV_HOST_NAME" ] && [ ! -z "$TEST_SERVER_URL" ]
+then
+	SRV_HOST_NAME_PORT=$(echo $TEST_SERVER_URL | cut -d "/" -f 3)
+	SRV_HOST_NAME=$(echo $SRV_HOST_NAME_PORT | cut -d ":" -f 1)
+fi
+
 if [ $1 ]; then
 	FOUND=0
 	for DBCONFIG in $DBCONFIGS; do

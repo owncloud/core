@@ -6,7 +6,7 @@
 # @copyright Copyright (c) 2017 Artur Neumann info@individual-it.net
 #
 
-# $1 hostname[:port] on which server will listen
+# $1 URL on which server will listen, e.g. http://owncloud:8889
 # $2 instance type being started (e.g. primary or IPv4 or IPv6)
 
 # After return, the following global vars are available:
@@ -14,7 +14,8 @@
 # ERROR_STARTING_SERVER set to true if there was an error
 
 function start_php_dev_server {
-	php -S $1 > /dev/null 2>&1 &
+	HOST_AND_PORT=$(echo $1 | cut -d "/" -f 3)
+	php -S $HOST_AND_PORT > /dev/null 2>&1 &
 	serverPID=$!
 	sleep 1
 
@@ -31,15 +32,9 @@ function start_php_dev_server {
 ENV_PARAM_MISSING=false
 ERROR_STARTING_SERVER=false
 
-if [ -z "$SRV_HOST_NAME" ]
+if [ -z "$TEST_SERVER_URL" ]
 then
-	echo "environment variable SRV_HOST_NAME is not defined"
-	ENV_PARAM_MISSING=true
-fi
-
-if [ -z "$SRV_HOST_PORT" ]
-then
-	echo "environment variable SRV_HOST_PORT is not defined"
+	echo "environment variable TEST_SERVER_URL is not defined"
 	ENV_PARAM_MISSING=true
 fi
 
@@ -49,21 +44,11 @@ then
 	exit 1
 fi
 
-start_php_dev_server $SRV_HOST_NAME:$SRV_HOST_PORT primary
+start_php_dev_server $TEST_SERVER_URL primary
 
-if [ ! -z "$REMOTE_FED_SRV_HOST_NAME" ] && [ ! -z "$REMOTE_FED_SRV_HOST_PORT" ]
+if [ ! -z "$TEST_SERVER_FED_URL" ]
 then
-	start_php_dev_server $REMOTE_FED_SRV_HOST_NAME:$REMOTE_FED_SRV_HOST_PORT REMOTE_FEDERATION
-fi
-
-if [ ! -z "$IPV4_HOST_NAME" ] && [ "$SRV_HOST_NAME" != "$IPV4_HOST_NAME" ]
-then
-	start_php_dev_server $IPV4_HOST_NAME:$SRV_HOST_PORT IPv4
-fi
-
-if [ ! -z "$IPV6_HOST_NAME" ] && [ "$SRV_HOST_NAME" != "$IPV6_HOST_NAME" ]
-then
-	start_php_dev_server $IPV6_HOST_NAME:$SRV_HOST_PORT IPv6
+	start_php_dev_server $TEST_SERVER_FED_URL REMOTE_FEDERATION
 fi
 
 if [ "$ERROR_STARTING_SERVER" = true ]
