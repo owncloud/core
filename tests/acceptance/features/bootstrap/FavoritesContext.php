@@ -199,7 +199,7 @@ class FavoritesContext implements Context {
 	 * @return void
 	 */
 	public function asUserTheFileOrFolderShouldBeFavorited($user, $path, $expectedValue = 1) {
-		$property = "{http://owncloud.org/ns}favorite";
+		$property = "oc:favorite";
 		$this->featureContext->asUserFolderShouldContainAPropertyWithValue(
 			$user, $path, $property, $expectedValue
 		);

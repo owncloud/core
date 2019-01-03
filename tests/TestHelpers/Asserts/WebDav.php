@@ -22,8 +22,8 @@
 namespace TestHelpers\Asserts;
 
 use PHPUnit_Framework_Assert;
+use SimpleXMLElement;
 use Behat\Gherkin\Node\TableNode;
-use \Sabre\HTTP\ResponseInterface as SabreResponseInterface;
 
 /**
  * WebDAV related asserts
@@ -60,38 +60,21 @@ class WebDav {
 
 	/**
 	 *
-	 * @param SabreResponseInterface $response
+	 * @param SimpleXMLElement $responseXmlObject
 	 * @param TableNode $expectedShareTypes
 	 *
-	 * @return bool
-	 *
-	 * @throws \Exception
+	 * @return void
 	 */
-	public static function assertSabreResponseContainsShareTypes(
-		$response, $expectedShareTypes
+	public static function assertResponseContainsShareTypes(
+		$responseXmlObject, $expectedShareTypes
 	) {
-		if (!\array_key_exists('{http://owncloud.org/ns}share-types', $response)) {
-			throw new \Exception(
-				"Cannot find property \"{http://owncloud.org/ns}share-types\""
+		foreach ($expectedShareTypes->getRows() as $row) {
+			$xmlPart = $responseXmlObject->xpath(
+				"//d:prop/oc:share-types/oc:share-type[.=" . $row[0] . "]"
+			);
+			PHPUnit_Framework_Assert::assertNotEmpty(
+				$xmlPart, "cannot find share-type '" . $row[0] . "'"
 			);
 		}
-
-		$foundTypes = [];
-		$data = $response['{http://owncloud.org/ns}share-types'];
-		foreach ($data as $item) {
-			if ($item['name'] !== '{http://owncloud.org/ns}share-type') {
-				throw new \Exception(
-					"Invalid property found: '{$item['name']}'"
-				);
-			}
-
-			//make the multi dimensional array so it looks like TableNode::getRows()
-			$foundTypes[] = [$item['value']];
-		}
-		PHPUnit_Framework_Assert::assertSame(
-			$expectedShareTypes->getRows(), $foundTypes,
-			"expected share types do not match the received share types"
-		);
-		return true;
 	}
 }
