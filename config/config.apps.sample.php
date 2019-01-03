@@ -21,7 +21,7 @@
  *  * everything between the `*\/` and the next `/**` will be treated as the
  *    config option
  *  * use RST syntax
- * If you have multiple possible values in the comment section, seperate them with a
+ * If you have multiple possible values in the comment section, separate them with a
  * blank line, which is necessary for the documentation generation process.
  * See examples below.
  */
