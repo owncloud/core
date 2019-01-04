@@ -94,6 +94,7 @@ class Streamer {
 	 */
 	public function addFileFromStream($stream, $internalName, $size) {
 		if ($this->streamerInstance instanceof ZipStreamer) {
+			/* @phan-suppress-next-line PhanParamTooFew */
 			return $this->streamerInstance->addFileFromStream($stream, $internalName);
 		} else {
 			return $this->streamerInstance->addFileFromStream($stream, $internalName, $size);
