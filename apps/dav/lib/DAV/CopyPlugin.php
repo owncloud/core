@@ -84,6 +84,7 @@ class CopyPlugin extends ServerPlugin {
 				return false;
 			}
 
+			\assert($sourceNode instanceof ICopySource);
 			$sourceNode->copy($destinationNode->getFileInfo()->getPath());
 
 			$this->server->emit('afterBind', [$copyInfo['destination']]);

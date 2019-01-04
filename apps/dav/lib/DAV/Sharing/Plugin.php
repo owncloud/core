@@ -158,6 +158,7 @@ class Plugin extends ServerPlugin {
 				// If there's no ACL support, we allow everything
 				if ($acl) {
 					/** @var \Sabre\DAVACL\Plugin $acl */
+					\assert($acl instanceof \Sabre\DAVACL\Plugin);
 					$acl->checkPrivileges($path, '{DAV:}write');
 				}
 

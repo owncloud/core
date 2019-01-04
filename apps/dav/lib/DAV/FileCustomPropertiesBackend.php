@@ -71,11 +71,15 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	public function beforeDelete($path) {
 		try {
 			$node = $this->getNodeForPath($path);
-			if ($node !== null && $node->getId()) {
-				if ($this->deletedItemsCache === null) {
-					$this->deletedItemsCache = new CappedMemoryCache();
+			if ($node !== null) {
+				\assert($node instanceof Node);
+				$nodeId = $node->getId();
+				if ($nodeId) {
+					if ($this->deletedItemsCache === null) {
+						$this->deletedItemsCache = new CappedMemoryCache();
+					}
+					$this->deletedItemsCache->set($path, $nodeId);
 				}
-				$this->deletedItemsCache->set($path, $node->getId());
 			}
 		} catch (\Exception $e) {
 			// do nothing, delete will throw the same exception anyway
@@ -129,6 +133,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 * @inheritdoc
 	 */
 	protected function getProperties($path, INode $node, array $requestedProperties) {
+		\assert($node instanceof Node);
 		$fileId = $node->getId();
 		if ($this->offsetGet($fileId) === null) {
 			// TODO: chunking if more than 1000 properties
@@ -154,6 +159,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 */
 	protected function updateProperties($path, INode $node, $changedProperties) {
 		$existingProperties = $this->getProperties($path, $node, []);
+		\assert($node instanceof Node);
 		$fileId = $node->getId();
 		$deleteStatement = self::DELETE_BY_ID_AND_NAME_STMT;
 		$insertStatement = self::INSERT_BY_ID_STMT;
@@ -224,6 +230,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 		$childrenIds = [];
 		// pre-fill cache
 		foreach ($childNodes as $childNode) {
+			\assert($childNode instanceof Node);
 			$childId = $childNode->getId();
 			if ($childId) {
 				$childrenIds[] = $childId;

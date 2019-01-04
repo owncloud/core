@@ -38,6 +38,7 @@ use OC\Files\Mount\MoveableMount;
 use OC\Lock\Persistent\Lock;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
+use OCA\Files_Sharing\SharedStorage;
 use OCP\Files\ForbiddenException;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Share\Exceptions\ShareNotFound;
@@ -283,7 +284,8 @@ abstract class Node implements \Sabre\DAV\INode {
 		$path = $this->info->getInternalPath();
 
 		if ($storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
-			/** @var \OCA\Files_Sharing\SharedStorage $storage */
+			/** @var SharedStorage $storage */
+			\assert($storage instanceof SharedStorage);
 			$permissions = (int)$storage->getShare()->getPermissions();
 		} else {
 			$permissions = $storage->getPermissions($path);

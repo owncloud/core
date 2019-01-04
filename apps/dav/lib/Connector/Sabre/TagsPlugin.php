@@ -206,7 +206,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 		PropFind $propFind,
 		\Sabre\DAV\INode $node
 	) {
-		if (!($node instanceof \OCA\DAV\Connector\Sabre\Node)) {
+		if (!($node instanceof Node)) {
 			return;
 		}
 
@@ -220,6 +220,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 			$folderContent = $node->getChildren();
 			$fileIds[] = (int)$node->getId();
 			foreach ($folderContent as $info) {
+				\assert($info instanceof Node);
 				$fileIds[] = (int)$info->getId();
 			}
 			$tags = $this->getTagger()->getTagsForObjects($fileIds);
@@ -266,7 +267,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	public function handleUpdateProperties($path, PropPatch $propPatch) {
 		$node = $this->tree->getNodeForPath($path);
-		if (!($node instanceof \OCA\DAV\Connector\Sabre\Node)) {
+		if (!($node instanceof Node)) {
 			return;
 		}
 

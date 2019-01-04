@@ -56,6 +56,8 @@ class FileCustomPropertiesPlugin extends Plugin {
 		if ($pathFilter && !$pathFilter($path)) {
 			return;
 		}
-		$this->backend->beforeDelete($path);
+		$backend = $this->backend;
+		\assert($backend instanceof FileCustomPropertiesBackend);
+		$backend->beforeDelete($path);
 	}
 }

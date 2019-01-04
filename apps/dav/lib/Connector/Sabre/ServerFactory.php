@@ -137,6 +137,8 @@ class ServerFactory {
 			$view = $viewCallBack($server);
 			if ($userFolder !== null) {
 				// User folder exists and user is active and not anonymous
+				/** @var \OC\Files\Node\Node $userFolder */
+				\assert($userFolder instanceof \OC\Files\Node\Node);
 				$rootInfo = $userFolder->getFileInfo();
 			} else {
 				// User is anonymous or inactive, we need to get root info
