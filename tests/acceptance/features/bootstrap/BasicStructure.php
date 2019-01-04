@@ -41,7 +41,6 @@ trait BasicStructure {
 	use Provisioning;
 	use Sharing;
 	use Tags;
-	use Trashbin;
 	use WebDav;
 	use CommandLine;
 
