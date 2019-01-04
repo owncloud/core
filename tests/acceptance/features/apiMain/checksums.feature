@@ -7,7 +7,7 @@ Feature: checksums
   Scenario Outline: Uploading a file with checksum should work
     Given using <dav_version> DAV path
     When user "user0" uploads file "filesForUpload/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a" using the WebDAV API
-    Then the webdav response should have a status code "201"
+    Then the HTTP status code should be "201"
     Examples:
       | dav_version |
       | old         |

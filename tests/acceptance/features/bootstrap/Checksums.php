@@ -83,22 +83,6 @@ trait Checksums {
 	}
 
 	/**
-	 * @Then the webdav response should have a status code :statusCode
-	 *
-	 * @param int $statusCode
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theWebdavResponseShouldHaveAStatusCode($statusCode) {
-		if ((int)$statusCode !== $this->response->getStatusCode()) {
-			throw new \Exception(
-				"Expected $statusCode, got " . $this->response->getStatusCode()
-			);
-		}
-	}
-
-	/**
 	 * @When user :user requests the checksum of :path via propfind
 	 *
 	 * @param string $user
