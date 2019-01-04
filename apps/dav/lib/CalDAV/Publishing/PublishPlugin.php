@@ -31,6 +31,7 @@ use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
+use Sabre\DAVACL\Plugin;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
@@ -181,6 +182,7 @@ class PublishPlugin extends ServerPlugin {
 
 			// If there's no ACL support, we allow everything
 			if ($acl) {
+				\assert($acl instanceof Plugin);
 				$acl->checkPrivileges($path, '{DAV:}write');
 			}
 
@@ -209,6 +211,7 @@ class PublishPlugin extends ServerPlugin {
 
 			// If there's no ACL support, we allow everything
 			if ($acl) {
+				\assert($acl instanceof Plugin);
 				$acl->checkPrivileges($path, '{DAV:}write');
 			}
 

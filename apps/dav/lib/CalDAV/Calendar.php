@@ -60,6 +60,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	public function updateShares(array $add, array $remove) {
 		/** @var CalDavBackend $calDavBackend */
 		$calDavBackend = $this->caldavBackend;
+		\assert($calDavBackend instanceof CalDavBackend);
 		$calDavBackend->updateShares($this, $add, $remove);
 	}
 
@@ -78,6 +79,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	public function getShares() {
 		/** @var CalDavBackend $calDavBackend */
 		$calDavBackend = $this->caldavBackend;
+		\assert($calDavBackend instanceof CalDavBackend);
 		return $calDavBackend->getShares($this->getResourceId());
 	}
 
@@ -139,6 +141,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 
 		/** @var CalDavBackend $calDavBackend */
 		$calDavBackend = $this->caldavBackend;
+		\assert($calDavBackend instanceof CalDavBackend);
 		return $calDavBackend->applyShareAcl($this->getResourceId(), $acl);
 	}
 
@@ -166,6 +169,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 
 			/** @var CalDavBackend $calDavBackend */
 			$calDavBackend = $this->caldavBackend;
+			\assert($calDavBackend instanceof CalDavBackend);
 			$calDavBackend->updateShares($this, [], [
 				$principal
 			]);
@@ -253,7 +257,10 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	 * @return string|null
 	 */
 	public function setPublishStatus($value) {
-		$publicUri = $this->caldavBackend->setPublishStatus($value, $this);
+		/** @var CalDavBackend $calDavBackend */
+		$calDavBackend = $this->caldavBackend;
+		\assert($calDavBackend instanceof CalDavBackend);
+		$publicUri = $calDavBackend->setPublishStatus($value, $this);
 		$this->calendarInfo['publicuri'] = $publicUri;
 		return $publicUri;
 	}
@@ -262,7 +269,10 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	 * @return mixed $value
 	 */
 	public function getPublishStatus() {
-		return $this->caldavBackend->getPublishStatus($this);
+		/** @var CalDavBackend $calDavBackend */
+		$calDavBackend = $this->caldavBackend;
+		\assert($calDavBackend instanceof CalDavBackend);
+		return $calDavBackend->getPublishStatus($this);
 	}
 
 	private function canWrite() {

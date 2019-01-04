@@ -26,6 +26,7 @@ use OCP\ILogger;
 use Sabre\CardDAV\Card;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
+use Sabre\DAVACL\Plugin;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Sabre\VObject\Parameter;
@@ -78,8 +79,11 @@ class ImageExportPlugin extends ServerPlugin {
 		$this->server->transactionType = 'carddav-image-export';
 
 		// Checking ACL, if available.
-		if ($aclPlugin = $this->server->getPlugin('acl')) {
-			/** @var \Sabre\DAVACL\Plugin $aclPlugin */
+		/** @var Plugin $aclPlugin */
+		$aclPlugin = $this->server->getPlugin('acl');
+
+		if ($aclPlugin) {
+			\assert($aclPlugin instanceof Plugin);
 			$aclPlugin->checkPrivileges($path, '{DAV:}read');
 		}
 

@@ -62,8 +62,11 @@ class CalendarHome extends \Sabre\CalDAV\CalendarHome {
 
 		// If the backend supports subscriptions, we'll add those as well,
 		if ($this->caldavBackend instanceof SubscriptionSupport) {
-			foreach ($this->caldavBackend->getSubscriptionsForUser($this->principalInfo['uri']) as $subscription) {
-				$objects[] = new Subscription($this->caldavBackend, $subscription);
+			/** @var SubscriptionSupport $calDavBackend */
+			$calDavBackend = $this->caldavBackend;
+			\assert($calDavBackend instanceof SubscriptionSupport);
+			foreach ($calDavBackend->getSubscriptionsForUser($this->principalInfo['uri']) as $subscription) {
+				$objects[] = new Subscription($calDavBackend, $subscription);
 			}
 		}
 
@@ -93,9 +96,12 @@ class CalendarHome extends \Sabre\CalDAV\CalendarHome {
 		}
 
 		if ($this->caldavBackend instanceof SubscriptionSupport) {
-			foreach ($this->caldavBackend->getSubscriptionsForUser($this->principalInfo['uri']) as $subscription) {
+			/** @var SubscriptionSupport $calDavBackend */
+			$calDavBackend = $this->caldavBackend;
+			\assert($calDavBackend instanceof SubscriptionSupport);
+			foreach ($calDavBackend->getSubscriptionsForUser($this->principalInfo['uri']) as $subscription) {
 				if ($subscription['uri'] === $name) {
-					return new Subscription($this->caldavBackend, $subscription);
+					return new Subscription($calDavBackend, $subscription);
 				}
 			}
 		}

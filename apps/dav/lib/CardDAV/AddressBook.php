@@ -48,8 +48,9 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 	 */
 	public function updateShares(array $add, array $remove) {
 		/** @var CardDavBackend $carddavBackend */
-		$carddavBackend = $this->carddavBackend;
-		$carddavBackend->updateShares($this, $add, $remove);
+		$cardDavBackend = $this->carddavBackend;
+		\assert($cardDavBackend instanceof CardDavBackend);
+		$cardDavBackend->updateShares($this, $add, $remove);
 	}
 
 	/**
@@ -66,8 +67,9 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 	 */
 	public function getShares() {
 		/** @var CardDavBackend $carddavBackend */
-		$carddavBackend = $this->carddavBackend;
-		return $carddavBackend->getShares($this->getResourceId());
+		$cardDavBackend = $this->carddavBackend;
+		\assert($cardDavBackend instanceof CardDavBackend);
+		return $cardDavBackend->getShares($this->getResourceId());
 	}
 
 	public function getACL() {
@@ -105,8 +107,9 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 		}
 
 		/** @var CardDavBackend $carddavBackend */
-		$carddavBackend = $this->carddavBackend;
-		return $carddavBackend->applyShareAcl($this->getResourceId(), $acl);
+		$cardDavBackend = $this->carddavBackend;
+		\assert($cardDavBackend instanceof CardDavBackend);
+		return $cardDavBackend->applyShareAcl($this->getResourceId(), $acl);
 	}
 
 	public function getChildACL() {
@@ -149,6 +152,7 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 
 			/** @var CardDavBackend $cardDavBackend */
 			$cardDavBackend = $this->carddavBackend;
+			\assert($cardDavBackend instanceof CardDavBackend);
 			$cardDavBackend->updateShares($this, [], [
 				$principal
 			]);
@@ -167,6 +171,7 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 	public function getContactsGroups() {
 		/** @var CardDavBackend $cardDavBackend */
 		$cardDavBackend = $this->carddavBackend;
+		\assert($cardDavBackend instanceof CardDavBackend);
 
 		return $cardDavBackend->collectCardProperties($this->getResourceId(), 'CATEGORIES');
 	}
