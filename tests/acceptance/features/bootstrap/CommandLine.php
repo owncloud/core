@@ -586,19 +586,6 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Given /^using received transfer folder of "([^"]+)" as dav path$/
-	 *
-	 * @param string $user
-	 *
-	 * @return void
-	 */
-	public function usingTransferFolderAsDavPath($user) {
-		$davPath = $this->getDavFilesPath($user);
-		$davPath = \rtrim($davPath, '/') . $this->lastTransferPath;
-		$this->usingDavPath($davPath);
-	}
-
-	/**
 	 * @Given encryption has been enabled
 	 *
 	 * @return void
