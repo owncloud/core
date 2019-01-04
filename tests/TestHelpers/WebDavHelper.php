@@ -27,6 +27,7 @@ use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Stream\StreamInterface;
 use InvalidArgumentException;
 use Sabre\DAV\Client as SClient;
+use SimpleXMLElement;
 
 /**
  * Helper to make WebDav Requests
@@ -71,12 +72,20 @@ class WebDavHelper {
 	}
 
 	/**
+	 * sends a PROPFIND request
+	 * with these registered namespaces:
+	 *  | prefix | namespace                                 |
+	 *  | d      | DAV:                                      |
+	 *  | oc     | http://owncloud.org/ns                    |
+	 *  | ocs    | http://open-collaboration-services.org/ns |
 	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
 	 * @param string $path
 	 * @param string[] $properties
+	 *        string can contain namespace prefix,
+	 *        if no prefix is given 'd:' is used as prefix
 	 * @param int $folderDepth
 	 * @param string $type
 	 * @param int $davPathVersionToUse
@@ -97,10 +106,17 @@ class WebDavHelper {
 	) {
 		$headers = ['Depth' => $folderDepth];
 		$body = '<?xml version="1.0"?>
-				<d:propfind xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+				<d:propfind
+				   xmlns:d="DAV:"
+				   xmlns:oc="http://owncloud.org/ns"
+				   xmlns:ocs="http://open-collaboration-services.org/ns">
 					<d:prop>';
 		foreach ($properties as $property) {
-			$body .= "<d:$property/>";
+			//if no namespace is given in the property add the default one
+			if (\strpos($property, ":") === false) {
+				$property = "d:$property";
+			}
+			$body .= "<$property/>";
 		}
 
 		$body .= '</d:prop></d:propfind>';
@@ -110,6 +126,53 @@ class WebDavHelper {
 			null, $davPathVersionToUse, $type
 		);
 		return $response;
+	}
+
+	/**
+	 * returns the result parsed into a SimpleXMLElement
+	 * with these registered namespaces:
+	 *  | prefix | namespace                                 |
+	 *  | d      | DAV:                                      |
+	 *  | oc     | http://owncloud.org/ns                    |
+	 *  | ocs    | http://open-collaboration-services.org/ns |
+	 *
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $path
+	 * @param int $folderDepth
+	 * @param string[] $properties
+	 * @param string $type
+	 * @param int $davPathVersionToUse
+	 *
+	 * @return SimpleXMLElement
+	 */
+	public static function listFolder(
+		$baseUrl,
+		$user,
+		$password,
+		$path,
+		$folderDepth,
+		$properties = null,
+		$type = "files",
+		$davPathVersionToUse = 2
+	) {
+		if (!$properties) {
+			$properties = [
+				'getetag'
+			];
+		}
+		$response = self::propfind(
+			$baseUrl, $user, $password, $path, $properties,
+			$folderDepth, $type, $davPathVersionToUse
+		);
+		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		$responseXmlObject->registerXPathNamespace('d', 'DAV:');
+		$responseXmlObject->registerXPathNamespace('oc', 'http://owncloud.org/ns');
+		$responseXmlObject->registerXPathNamespace(
+			'ocs', 'http://open-collaboration-services.org/ns'
+		);
+		return $responseXmlObject;
 	}
 
 	/**
