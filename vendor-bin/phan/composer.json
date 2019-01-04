@@ -1,5 +1,5 @@
 {
     "require": {
-        "phan/phan": "0.12.11"
+        "phan/phan": "1.3.5"
     }
 }
