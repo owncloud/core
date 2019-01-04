@@ -16,6 +16,7 @@ default:
         - CalDavContext:
         - CardDavContext:
         - FilesVersionsContext:
+        - TransferOwnershipContext:
 
     apiCapabilities:
       paths:
