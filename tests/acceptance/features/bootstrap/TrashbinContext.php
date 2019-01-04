@@ -19,12 +19,21 @@
  *
  */
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+
+require_once 'bootstrap.php';
 
 /**
- * Trashbin functions
+ * Trashbin context
  */
-trait Trashbin {
+class TrashbinContext implements Context {
+
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
 
 	/**
 	 * @When user :user empties the trashbin using the trashbin API
@@ -38,11 +47,13 @@ trait Trashbin {
 		$body = new \Behat\Gherkin\Node\TableNode(
 			[['allfiles', 'true'], ['dir', '/']]
 		);
-		$this->sendingToWithDirectUrl(
+		$this->featureContext->sendingToWithDirectUrl(
 			$user, 'POST', "/index.php/apps/files_trashbin/ajax/delete.php", $body
 		);
-		$this->theHTTPStatusCodeShouldBe('200');
-		$decodedResponse = \json_decode($this->response->getBody(), true);
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$decodedResponse = \json_decode(
+			$this->featureContext->getResponse()->getBody(), true
+		);
 		if (isset($decodedResponse['status'])) {
 			PHPUnit_Framework_Assert::assertNotEquals(
 				'error', $decodedResponse['status']
@@ -60,15 +71,17 @@ trait Trashbin {
 	 */
 	public function listTrashbinFolder($user, $path) {
 		$params = '?dir=' . \rawurlencode('/' . \trim($path, '/'));
-		$this->sendingToWithDirectUrl(
+		$this->featureContext->sendingToWithDirectUrl(
 			$user,
 			'GET',
 			"/index.php/apps/files_trashbin/ajax/list.php$params",
 			null
 		);
-		$this->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 
-		$decodedResponse = \json_decode($this->response->getBody(), true);
+		$decodedResponse = \json_decode(
+			$this->featureContext->getResponse()->getBody(), true
+		);
 
 		return $decodedResponse['data']['files'];
 	}
@@ -151,11 +164,13 @@ trait Trashbin {
 		$body = new \Behat\Gherkin\Node\TableNode(
 			[['files',  "[\"$elementTrashID\"]"], ['dir', '/']]
 		);
-		$this->sendingToWithDirectUrl(
+		$this->featureContext->sendingToWithDirectUrl(
 			$user, 'POST', "/index.php/apps/files_trashbin/ajax/undelete.php", $body
 		);
-		$this->theHTTPStatusCodeShouldBe('200');
-		$decodedResponse = \json_decode($this->response->getBody(), true);
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$decodedResponse = \json_decode(
+			$this->featureContext->getResponse()->getBody(), true
+		);
 		if (isset($decodedResponse['status'])) {
 			PHPUnit_Framework_Assert::assertNotEquals(
 				'error', $decodedResponse['status']
@@ -256,5 +271,22 @@ trait Trashbin {
 		}
 
 		return null;
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }

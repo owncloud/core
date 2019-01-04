@@ -70,6 +70,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - PublicWebDavContext:
+        - TrashbinContext:
 
     apiShareOperations:
       paths:
@@ -77,6 +78,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - PublicWebDavContext:
+        - TrashbinContext:
 
     apiSharingNotifications:
       paths:
@@ -96,6 +98,7 @@ default:
         - '%paths.base%/../features/apiTrashbin'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - TrashbinContext:
 
     apiWebdavOperations:
       paths:
@@ -141,6 +144,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - TrashbinContext:
 
     webUIAdminSettings:
       paths:
@@ -319,6 +323,7 @@ default:
         - '%paths.base%/../features/webUITrashbin'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - TrashbinContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
