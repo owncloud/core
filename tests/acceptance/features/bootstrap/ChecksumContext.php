@@ -19,14 +19,22 @@
  *
  */
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
-
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use TestHelpers\HttpRequestHelper;
+
+require_once 'bootstrap.php';
 
 /**
  * Checksum functions
  */
-trait Checksums {
+class ChecksumContext implements Context {
+
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
 
 	/**
 	 * @When user :user uploads file :source to :destination with checksum :checksum using the WebDAV API
@@ -44,11 +52,11 @@ trait Checksums {
 	) {
 		$file = \GuzzleHttp\Stream\Stream::factory(
 			\fopen(
-				$this->acceptanceTestsDirLocation() . $source,
+				$this->featureContext->acceptanceTestsDirLocation() . $source,
 				'r'
 			)
 		);
-		$this->response = $this->makeDavRequest(
+		$response = $this->featureContext->makeDavRequest(
 			$user,
 			'PUT',
 			$destination,
@@ -56,6 +64,7 @@ trait Checksums {
 			$file,
 			"files"
 		);
+		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -72,7 +81,7 @@ trait Checksums {
 	public function userUploadsFileWithContentAndChecksumToUsingTheAPI(
 		$user, $content, $checksum, $destination
 	) {
-		$this->response = $this->makeDavRequest(
+		$response = $this->featureContext->makeDavRequest(
 			$user,
 			'PUT',
 			$destination,
@@ -80,6 +89,7 @@ trait Checksums {
 			$content,
 			"files"
 		);
+		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -97,10 +107,16 @@ trait Checksums {
     <oc:checksums />
   </d:prop>
 </d:propfind>';
-		$url = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user) . $path;
-		$this->response = HttpRequestHelper::sendRequest(
-			$url, 'PROPFIND', $user, $this->getPasswordForUser($user), null, $body
+		$url = $this->featureContext->getBaseUrl() . '/' . $this->featureContext->getDavFilesPath($user) . $path;
+		$response = HttpRequestHelper::sendRequest(
+			$url,
+			'PROPFIND',
+			$user,
+			$this->featureContext->getPasswordForUser($user),
+			null,
+			$body
 		);
+		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -113,7 +129,9 @@ trait Checksums {
 	 */
 	public function theWebdavChecksumShouldMatch($checksum) {
 		$service = new Sabre\Xml\Service();
-		$parsed = $service->parse($this->response->getBody()->getContents());
+		$parsed = $service->parse(
+			$this->featureContext->getResponse()->getBody()->getContents()
+		);
 
 		/*
 		 * Fetch the checksum array
@@ -151,10 +169,12 @@ trait Checksums {
 	 * @throws \Exception
 	 */
 	public function theHeaderChecksumShouldMatch($checksum) {
-		if ($this->response->getHeader('OC-Checksum') !== $checksum) {
+		$headerChecksum
+			= $this->featureContext->getResponse()->getHeader('OC-Checksum');
+		if ($headerChecksum !== $checksum) {
 			throw new \Exception(
 				"Expected $checksum, got "
-				. $this->response->getHeader('OC-Checksum')
+				. $headerChecksum
 			);
 		}
 	}
@@ -167,7 +187,9 @@ trait Checksums {
 	 */
 	public function theWebdavChecksumShouldBeEmpty() {
 		$service = new Sabre\Xml\Service();
-		$parsed = $service->parse($this->response->getBody()->getContents());
+		$parsed = $service->parse(
+			$this->featureContext->getResponse()->getBody()->getContents()
+		);
 
 		/*
 		 * Fetch the checksum array
@@ -189,10 +211,10 @@ trait Checksums {
 	 * @throws \Exception
 	 */
 	public function theOcChecksumHeaderShouldNotBeThere() {
-		if ($this->response->hasHeader('OC-Checksum')) {
+		if ($this->featureContext->getResponse()->hasHeader('OC-Checksum')) {
 			throw new \Exception(
 				"Expected no checksum header but got "
-				. $this->response->getHeader('OC-Checksum')
+				. $this->featureContext->getResponse()->getHeader('OC-Checksum')
 			);
 		}
 	}
@@ -216,7 +238,7 @@ trait Checksums {
 		$num -= 1;
 		$data = \GuzzleHttp\Stream\Stream::factory($data);
 		$file = "$destination-chunking-42-$total-$num";
-		$this->response = $this->makeDavRequest(
+		$response = $this->featureContext->makeDavRequest(
 			$user,
 			'PUT',
 			$file,
@@ -224,5 +246,23 @@ trait Checksums {
 			$data,
 			"files"
 		);
+		$this->featureContext->setResponse($response);
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }
