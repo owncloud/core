@@ -32,8 +32,8 @@ Feature: create folder
     Given using <dav_version> DAV path
     And user "user0" has created folder "/test_folder"
     When user "user0" gets the following properties of folder "/test_folder" using the WebDAV API
-      | {DAV:}resourcetype |
-    Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
+      | d:resourcetype |
+    Then the single response should contain a property "d:resourcetype" with a child property "d:collection"
     Examples:
       | dav_version |
       | old         |
@@ -43,8 +43,8 @@ Feature: create folder
     Given using <dav_version> DAV path
     And user "user0" has created folder "/test_folder:5"
     When user "user0" gets the following properties of folder "/test_folder:5" using the WebDAV API
-      | {DAV:}resourcetype |
-    Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
+      | d:resourcetype |
+    Then the single response should contain a property "d:resourcetype" with a child property "d:collection"
     Examples:
       | dav_version |
       | old         |
