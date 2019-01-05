@@ -94,6 +94,7 @@ default:
         - '%paths.base%/../features/apiTags'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - TagsContext:
 
     apiTrashbin:
       paths:
@@ -189,6 +190,7 @@ default:
         - '%paths.base%/../features/webUIFiles'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - TagsContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
@@ -315,10 +317,12 @@ default:
         - '%paths.base%/../features/webUITags'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - TagsContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFilesContext:
         - WebUISharingContext:
+        - WebUITagsContext:
 
     webUITrashbin:
       paths:

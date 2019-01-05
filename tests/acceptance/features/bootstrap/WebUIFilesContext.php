@@ -1764,102 +1764,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given the user has added a tag :tagName to the file using the webUI
-	 * @Given the user has toggled a tag :tagName on the file using the webUI
-	 * @When the user adds a tag :tagName to the file using the webUI
-	 * @When the user toggles a tag :tagName on the file using the webUI
-	 *
-	 * @param string $tagName
-	 *
-	 * @return void
-	 */
-	public function theUserAddsATagToTheFileUsingTheWebUI($tagName) {
-		$this->filesPage->getDetailsDialog()->addTag($tagName);
-
-		// For tags to be created, OC checks (|for the permission) if the tag could be created
-		// and if it can, then only it creates a tag. So, in the webUI, it does two
-		// requests before the tags are created.
-		// If we use a single wait, it returns after it has checked for the permission.
-		// Locally that passes but sometimes fail on the ci. So, we need two waits for each requests.
-		// FIXME: Find a better way to wait for these calls
-		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
-		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
-
-		$this->featureContext->addToTheListOfCreatedTagsByDisplayName($tagName);
-	}
-
-	/**
-	 * @When the user types :value in the collaborative tags field using the webUI
-	 *
-	 * @param string $value
-	 *
-	 * @return void
-	 */
-	public function theUserTypesAValueInTheCollaborativeTagsFieldUsingTheWebUI($value) {
-		$this->filesPage->getDetailsDialog()->insertTagNameInTheTagsField($value);
-	}
-
-	/**
-	 * @Then all the tags starting with :value in their name should be listed in the dropdown list on the webUI
-	 *
-	 * @param string $value
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function allTheTagsStartingWithInTheirNameShouldBeListedInTheDropdownListOnTheWebUI($value) {
-		$results = $this->filesPage->getDetailsDialog()->getDropDownTagsSuggestionResults();
-		foreach ($results as $tagResult) {
-			PHPUnit_Framework_Assert::assertStringStartsWith($value, $tagResult->getText());
-		}
-
-		// check also that all tags that have been created and starts with $value
-		// are also shown in the dropdown
-		$createdTags = $this->featureContext->getListOfCreatedTags();
-		foreach ($createdTags as $tag) {
-			$tagName = $tag['name'];
-			if (\substr($tagName, 0, \strlen($value)) === $value && !empty($tag['userAssignable'])) {
-				$this->theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName);
-			}
-		}
-	}
-
-	/**
-	 * @Then the tag :tagName should be listed in the dropdown list on the webUI
-	 *
-	 * @param string $tagName
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName) {
-		$results = $this->filesPage->getDetailsDialog()->getDropDownTagsSuggestionResults();
-		foreach ($results as $tagResult) {
-			if ($tagResult->getText() === $tagName) {
-				return;
-			}
-		}
-		throw new \Exception("No tags could be found with $tagName.");
-	}
-
-	/**
-	 * @Then tag :tagName should not be listed in the dropdown list on the webUI
-	 *
-	 * @param string $tagName
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function tagShouldNotBeListedInTheDropdownListOnTheWebui($tagName) {
-		try {
-			$this->theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName);
-		} catch (\Exception $e) {
-			return;
-		}
-		throw new \Exception("Tag $tagName should not be on the dropdown.");
-	}
-
-	/**
 	 * Asserts that the content of a remote and a local file is the same
 	 * or is different
 	 * uses the current user to download the remote file
@@ -2081,17 +1985,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theUserClosesTheDetailsDialog() {
 		$this->filesPage->closeDetailsDialog();
-	}
-
-	/**
-	 * @When the user deletes tag with name :name using the webUI
-	 *
-	 * @param string $name
-	 *
-	 * @return void
-	 */
-	public function theUserDeletesTagWithNameUsingTheWebui($name) {
-		$this->filesPage->getDetailsDialog()->deleteTag($name);
 	}
 
 	/**
