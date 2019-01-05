@@ -20,14 +20,22 @@
  *
  */
 
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
+require_once 'bootstrap.php';
 
 /**
  * Comments functions
  */
-trait Comments {
+class CommentsContext implements Context {
+
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
 
 	/**
 	 * @var int
@@ -49,10 +57,10 @@ trait Comments {
 	 * @return void
 	 */
 	public function userCommentsWithContentOnEntry($user, $content, $path) {
-		$fileId = $this->getFileIdForPath($user, $path);
+		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$this->lastFileId = $fileId;
 		$commentsPath = "/comments/files/$fileId/";
-		$this->response = $this->makeDavRequest(
+		$response = $this->featureContext->makeDavRequest(
 			$user,
 			"POST",
 			$commentsPath,
@@ -67,7 +75,8 @@ trait Comments {
 			"creationDateTime":"Thu, 18 Feb 2016 17:04:18 GMT",
 			"objectType":"files"}'
 		);
-		$responseHeaders =  $this->response->getHeaders();
+		$this->featureContext->setResponse($response);
+		$responseHeaders =  $response->getHeaders();
 		if (isset($responseHeaders['Content-Location'][0])) {
 			$commentUrl = $responseHeaders['Content-Location'][0];
 			$this->lastCommentId = \substr(
@@ -86,7 +95,9 @@ trait Comments {
 	 * @return void
 	 */
 	public function theUserCommentsWithContentOnEntry($content, $path) {
-		$this->userCommentsWithContentOnEntry($this->getCurrentUser(), $content, $path);
+		$this->userCommentsWithContentOnEntry(
+			$this->featureContext->getCurrentUser(), $content, $path
+		);
 	}
 
 	/**
@@ -99,7 +110,7 @@ trait Comments {
 	 * @return void
 	 */
 	public function checkComments($user, $path, $expectedElements) {
-		$fileId = $this->getFileIdForPath($user, $path);
+		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		$elementList = $this->reportElementComments(
@@ -134,7 +145,9 @@ trait Comments {
 	 * @return void
 	 */
 	public function checkCommentForCurrentUser($path, $expectedElements) {
-		$this->checkComments($this->getCurrentUser(), $path, $expectedElements);
+		$this->checkComments(
+			$this->featureContext->getCurrentUser(), $path, $expectedElements
+		);
 	}
 
 	/**
@@ -147,7 +160,7 @@ trait Comments {
 	 * @return void
 	 */
 	public function checkNumberOfComments($user, $numberOfComments, $path) {
-		$fileId = $this->getFileIdForPath($user, $path);
+		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		$elementList = $this->reportElementComments(
@@ -167,7 +180,9 @@ trait Comments {
 	 * @return void
 	 */
 	public function checkNumberOfCommentsForCurrentUser($numberOfComments, $path) {
-		$this->checkNumberOfComments($this->getCurrentUser(), $numberOfComments, $path);
+		$this->checkNumberOfComments(
+			$this->featureContext->getCurrentUser(), $numberOfComments, $path
+		);
 	}
 
 	/**
@@ -179,7 +194,7 @@ trait Comments {
 	 */
 	public function deleteComment($user, $fileId, $commentId) {
 		$commentsPath = "/comments/files/$fileId/$commentId";
-		$this->response = $this->makeDavRequest(
+		$response = $this->featureContext->makeDavRequest(
 			$user,
 			"DELETE",
 			$commentsPath,
@@ -188,6 +203,7 @@ trait Comments {
 			"uploads",
 			null
 		);
+		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -203,7 +219,7 @@ trait Comments {
 	 */
 	public function userDeletesLastComment($user=null) {
 		if ($user === null) {
-			$user = $this->getCurrentUser();
+			$user = $this->featureContext->getCurrentUser();
 		}
 		$this->deleteComment($user, $this->lastFileId, $this->lastCommentId);
 	}
@@ -218,7 +234,8 @@ trait Comments {
 	 * @throws \Exception
 	 */
 	public function theResponseShouldContainAPropertyWithValue($key, $value) {
-		$keys = $this->response[0]['value'][2]['value'][0]['value'];
+		$response = $this->featureContext->getResponse();
+		$keys = $response[0]['value'][2]['value'][0]['value'];
 		$found = false;
 		foreach ($keys as $singleKey) {
 			if ($singleKey['name'] === '{http://owncloud.org/ns}' . \substr($key, 3)) {
@@ -241,9 +258,10 @@ trait Comments {
 	 * @throws \Exception
 	 */
 	public function theResponseShouldContainOnlyComments($number) {
-		if (\count($this->response) !== (int)$number) {
+		$response = $this->featureContext->getResponse();
+		if (\count($response) !== (int)$number) {
 			throw new \Exception(
-				"Found more comments than $number (" . \count($this->response) . ")"
+				"Found more comments than $number (" . \count($response) . ")"
 			);
 		}
 	}
@@ -258,7 +276,7 @@ trait Comments {
 	 */
 	public function editAComment($user, $content, $fileId, $commentId) {
 		$commentsPath = "/comments/files/$fileId/$commentId";
-		$this->response = $this->makeDavRequest(
+		$response = $this->featureContext->makeDavRequest(
 			$user,
 			"PROPPATCH",
 			$commentsPath,
@@ -274,6 +292,7 @@ trait Comments {
 					</d:set>
 				</d:propertyupdate>'
 		);
+		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -303,7 +322,10 @@ trait Comments {
 	 */
 	public function theUserEditsLastCreatedComment($content) {
 		$this->editAComment(
-			$this->getCurrentUser(), $content, $this->lastFileId, $this->lastCommentId
+			$this->featureContext->getCurrentUser(),
+			$content,
+			$this->lastFileId,
+			$this->lastCommentId
 		);
 	}
 
@@ -319,7 +341,7 @@ trait Comments {
 	 * @throws Sabre\HTTP\ClientException, - in case a curl error occurred.
 	 */
 	public function reportElementComments($user, $path, $properties) {
-		$client = $this->getSabreClient($user);
+		$client = $this->featureContext->getSabreClient($user);
 		
 		$body = '<?xml version="1.0" encoding="utf-8" ?>
 							 <oc:filter-comments xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns" >
@@ -327,9 +349,28 @@ trait Comments {
 							 </oc:filter-comments>';
 		
 		$response = $client->request(
-			'REPORT', $this->makeSabrePathNotForFiles($path), $body
+			'REPORT',
+			$this->featureContext->makeSabrePathNotForFiles($path),
+			$body
 		);
 		$parsedResponse = $client->parseMultistatus($response['body']);
 		return $parsedResponse;
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }
