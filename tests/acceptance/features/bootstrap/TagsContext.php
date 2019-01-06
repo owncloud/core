@@ -20,16 +20,24 @@
  *
  */
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
-
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\TagsHelper;
 
+require_once 'bootstrap.php';
+
 /**
- * Tags functions
+ * Acceptance test steps related to testing tags features
  */
-trait Tags {
+class TagsContext implements Context {
+
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
 
 	/**
 	 * @var array
@@ -49,14 +57,15 @@ trait Tags {
 	private function createTag(
 		$user, $userVisible, $userAssignable, $userEditable, $name, $groups = null
 	) {
-		$this->response = TagsHelper::createTag(
-			$this->getBaseUrl(),
-			$this->getActualUsername($user),
-			$this->getPasswordForUser($user),
+		$response = TagsHelper::createTag(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getActualUsername($user),
+			$this->featureContext->getPasswordForUser($user),
 			$name, $userVisible, $userAssignable, $userEditable, $groups,
-			$this->getDavPathVersion('systemtags')
+			$this->featureContext->getDavPathVersion('systemtags')
 		);
-		$responseHeaders = $this->response->getHeaders();
+		$this->featureContext->setResponse($response);
+		$responseHeaders = $response->getHeaders();
 		if (isset($responseHeaders['Content-Location'][0])) {
 			$tagUrl = $responseHeaders['Content-Location'][0];
 			$lastTagId = \substr($tagUrl, \strrpos($tagUrl, '/') + 1);
@@ -121,7 +130,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theAdministratorCreatesATagWithName($type, $name) {
-		$this->createsATagWithName($this->getAdminUsername(), $type, $name);
+		$this->createsATagWithName(
+			$this->featureContext->getAdminUsername(), $type, $name
+		);
 	}
 
 	/**
@@ -135,7 +146,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theUserCreatesATagWithName($type, $name) {
-		$this->createsATagWithName($this->getCurrentUser(), $type, $name);
+		$this->createsATagWithName(
+			$this->featureContext->getCurrentUser(), $type, $name
+		);
 	}
 
 	/**
@@ -171,7 +184,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theUserCreatesATagWithNameAndGroups($type, $name, $groups) {
-		$this->createsATagWithNameAndGroups($this->getCurrentUser(), $type, $name, $groups);
+		$this->createsATagWithNameAndGroups(
+			$this->featureContext->getCurrentUser(), $type, $name, $groups
+		);
 	}
 
 	/**
@@ -186,7 +201,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theAdministratorCreatesATagWithNameAndGroups($type, $name, $groups) {
-		$this->createsATagWithNameAndGroups($this->getAdminUsername(), $type, $name, $groups);
+		$this->createsATagWithNameAndGroups(
+			$this->featureContext->getAdminUsername(), $type, $name, $groups
+		);
 	}
 
 	/**
@@ -219,13 +236,14 @@ trait Tags {
 	 * @return array
 	 */
 	public function requestTagsForUser($user, $withGroups = false) {
-		$this->response = TagsHelper:: requestTagsForUser(
-			$this->getBaseUrl(),
-			$this->getActualUsername($user),
-			$this->getPasswordForUser($user),
+		$response = TagsHelper:: requestTagsForUser(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getActualUsername($user),
+			$this->featureContext->getPasswordForUser($user),
 			$withGroups
 		);
-		return $this->response;
+		$this->featureContext->setResponse($response);
+		return $response;
 	}
 
 	/**
@@ -258,7 +276,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theFollowingTagsShouldExistForTheAdministrator(TableNode $table) {
-		$this->theFollowingTagsShouldExistForUser($this->getAdminUsername(), $table);
+		$this->theFollowingTagsShouldExistForUser(
+			$this->featureContext->getAdminUsername(), $table
+		);
 	}
 
 	/**
@@ -270,7 +290,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theFollowingTagsShouldExistForTheUser(TableNode $table) {
-		$this->theFollowingTagsShouldExistForUser($this->getCurrentUser(), $table);
+		$this->theFollowingTagsShouldExistForUser(
+			$this->featureContext->getCurrentUser(), $table
+		);
 	}
 
 	/**
@@ -283,7 +305,7 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theFollowingTagsShouldExistForUser($user, TableNode $table) {
-		$user = $this->getActualUsername($user);
+		$user = $this->featureContext->getActualUsername($user);
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
 			$tagData = $this->requestTagByDisplayName($user, $rowDisplayName);
 			if ($tagData === null) {
@@ -320,7 +342,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theFollowingTagsShouldNotExistForTheAdministrator($tagDisplayName) {
-		$this->tagShouldNotExistForUser($tagDisplayName, $this->getAdminUsername());
+		$this->tagShouldNotExistForUser(
+			$tagDisplayName, $this->featureContext->getAdminUsername()
+		);
 	}
 
 	/**
@@ -332,7 +356,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theFollowingTagsShouldNotExistForTheUser($tagDisplayName) {
-		$this->tagShouldNotExistForUser($tagDisplayName, $this->getCurrentUser());
+		$this->tagShouldNotExistForUser(
+			$tagDisplayName, $this->featureContext->getCurrentUser()
+		);
 	}
 
 	/**
@@ -348,7 +374,9 @@ trait Tags {
 	public function theUserCanAssignTheTag(
 		$shouldOrNot, $type, $tagDisplayName
 	) {
-		$this->userCanAssignTheTag($this->getCurrentUser(), $shouldOrNot, $type, $tagDisplayName);
+		$this->userCanAssignTheTag(
+			$this->featureContext->getCurrentUser(), $shouldOrNot, $type, $tagDisplayName
+		);
 	}
 
 	/**
@@ -393,7 +421,7 @@ trait Tags {
 	 */
 	public function theTagHasGroup($type, $tagName, $groups) {
 		$tagData = $this->requestTagByDisplayName(
-			$this->getAdminUsername(), $tagName, true
+			$this->featureContext->getAdminUsername(), $tagName, true
 		);
 		PHPUnit_Framework_Assert::assertNotNull(
 			$tagData, "Tag $tagName wasn't found for admin user"
@@ -430,7 +458,9 @@ trait Tags {
 	 * @return int
 	 */
 	public function findTagIdByName($name) {
-		$tagData = $this->requestTagByDisplayName($this->getAdminUsername(), $name);
+		$tagData = $this->requestTagByDisplayName(
+			$this->featureContext->getAdminUsername(), $name
+		);
 		return (int)$tagData['{http://owncloud.org/ns}id'];
 	}
 
@@ -444,21 +474,20 @@ trait Tags {
 	private function sendProppatchToSystemtags(
 		$user, $tagDisplayName, $properties = null
 	) {
-		$client = $this->getSabreClient($user);
+		$client = $this->featureContext->getSabreClient($user);
 		$client->setThrowExceptions(true);
 		$appPath = '/systemtags/';
 		$tagID = $this->findTagIdByName($tagDisplayName);
 		PHPUnit_Framework_Assert::assertNotNull($tagID, "Tag wasn't found");
-		$fullUrl = $this->getBaseUrl()
-			. '/' . $this->getDavPath('systemtags') . $appPath . $tagID;
+		$fullUrl = $this->featureContext->getBaseUrl()
+			. '/' . $this->featureContext->getDavPath('systemtags') . $appPath . $tagID;
 		try {
 			$response = $client->proppatch($fullUrl, $properties, 1);
-			$this->response = $response;
-			return $response;
 		} catch (\Sabre\HTTP\ClientHttpException $e) {
-			$this->response = null;
-			return null;
+			$response = null;
 		}
+		$this->featureContext->setResponse($response);
+		return $response;
 	}
 
 	/**
@@ -472,7 +501,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theAdministratorEditsTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI($oldName, $newName) {
-		$this->editTagName($this->getAdminUsername(), $oldName, $newName);
+		$this->editTagName(
+			$this->featureContext->getAdminUsername(), $oldName, $newName
+		);
 	}
 
 	/**
@@ -486,7 +517,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theUserEditsTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI($oldName, $newName) {
-		$this->editTagName($this->getCurrentUser(), $oldName, $newName);
+		$this->editTagName(
+			$this->featureContext->getCurrentUser(), $oldName, $newName
+		);
 	}
 
 	/**
@@ -518,7 +551,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theAdministratorEditsTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI($oldName, $groups) {
-		$this->editTagGroups($this->getAdminUsername(), $oldName, $groups);
+		$this->editTagGroups(
+			$this->featureContext->getAdminUsername(), $oldName, $groups
+		);
 	}
 
 	/**
@@ -532,7 +567,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theUserEditsTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI($oldName, $groups) {
-		$this->editTagGroups($this->getCurrentUser(), $oldName, $groups);
+		$this->editTagGroups(
+			$this->featureContext->getCurrentUser(), $oldName, $groups
+		);
 	}
 
 	/**
@@ -547,7 +584,7 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function editTagGroups($user, $oldName, $groups) {
-		$user = $this->getActualUsername($user);
+		$user = $this->featureContext->getActualUsername($user);
 		$properties = [
 						'{http://owncloud.org/ns}groups' => $groups
 					  ];
@@ -565,14 +602,15 @@ trait Tags {
 	 */
 	public function userDeletesTag($user, $name) {
 		$tagID = $this->findTagIdByName($name);
-		$this->response = TagsHelper::deleteTag(
-			$this->getBaseUrl(),
-			$this->getActualUsername($user),
-			$this->getPasswordForUser($user),
+		$response = TagsHelper::deleteTag(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getActualUsername($user),
+			$this->featureContext->getPasswordForUser($user),
 			$tagID,
-			$this->getDavPathVersion('systemtags')
+			$this->featureContext->getDavPathVersion('systemtags')
 		);
-		if ($this->response->getStatusCode() === 204) {
+		$this->featureContext->setResponse($response);
+		if ($response->getStatusCode() === 204) {
 			unset($this->createdTags[$tagID]);
 		}
 	}
@@ -586,7 +624,9 @@ trait Tags {
 	 * @return void
 	 */
 	public function theUserDeletesTagWithName($name) {
-		$this->userDeletesTag($this->getCurrentUser(), $name);
+		$this->userDeletesTag(
+			$this->featureContext->getCurrentUser(), $name
+		);
 	}
 
 	/**
@@ -598,7 +638,9 @@ trait Tags {
 	 * @return void
 	 */
 	public function theAdministratorDeletesTagWithName($name) {
-		$this->userDeletesTag($this->getAdminUsername(), $name);
+		$this->userDeletesTag(
+			$this->featureContext->getAdminUsername(), $name
+		);
 	}
 
 	/**
@@ -616,16 +658,17 @@ trait Tags {
 			$fileOwner = $taggingUser;
 		}
 
-		$this->response = TagsHelper::tag(
-			$this->getBaseUrl(),
+		$response = TagsHelper::tag(
+			$this->featureContext->getBaseUrl(),
 			$taggingUser,
-			$this->getPasswordForUser($taggingUser),
+			$this->featureContext->getPasswordForUser($taggingUser),
 			$tagName,
 			$fileName,
 			$fileOwner,
-			$this->getPasswordForUser($fileOwner),
-			$this->getDavPathVersion('systemtags')
+			$this->featureContext->getPasswordForUser($fileOwner),
+			$this->featureContext->getDavPathVersion('systemtags')
 		);
+		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -637,11 +680,11 @@ trait Tags {
 	 */
 	private function requestTagsForFile($user, $fileName, $sharingUser = null) {
 		if ($sharingUser !== null) {
-			$fileID = $this->getFileIdForPath($sharingUser, $fileName);
+			$fileID = $this->featureContext->getFileIdForPath($sharingUser, $fileName);
 		} else {
-			$fileID = $this->getFileIdForPath($user, $fileName);
+			$fileID = $this->featureContext->getFileIdForPath($user, $fileName);
 		}
-		$client = $this->getSabreClient($user);
+		$client = $this->featureContext->getSabreClient($user);
 		$properties = [
 						'{http://owncloud.org/ns}id',
 						'{http://owncloud.org/ns}display-name',
@@ -651,14 +694,14 @@ trait Tags {
 						'{http://owncloud.org/ns}can-assign'
 					  ];
 		$appPath = '/systemtags-relations/files/';
-		$fullUrl = $this->getBaseUrl()
-			. '/' . $this->getDavPath('systemtags') . $appPath . $fileID;
+		$fullUrl = $this->featureContext->getBaseUrl()
+			. '/' . $this->featureContext->getDavPath('systemtags') . $appPath . $fileID;
 		try {
 			$response = $client->propfind($fullUrl, $properties, 1);
 		} catch (Sabre\HTTP\ClientHttpException $e) {
 			$response = $e->getResponse();
 		}
-		$this->response = $response;
+		$this->featureContext->setResponse($response);
 		return $response;
 	}
 
@@ -676,9 +719,9 @@ trait Tags {
 		$adminOrUser, $tagName, $fileName
 	) {
 		if ($adminOrUser === 'administrator') {
-			$taggingUser = $this->getAdminUsername();
+			$taggingUser = $this->featureContext->getAdminUsername();
 		} else {
-			$taggingUser = $this->getCurrentUser();
+			$taggingUser = $this->featureContext->getCurrentUser();
 		}
 		$this->addsTagToFileFolder($taggingUser, $tagName, $fileName);
 	}
@@ -748,9 +791,9 @@ trait Tags {
 		$fileName, $adminOrUser, TableNode $table
 	) {
 		if ($adminOrUser === 'user') {
-			$sharingUser = $this->getCurrentUser();
+			$sharingUser = $this->featureContext->getCurrentUser();
 		} else {
-			$sharingUser = $this->getAdminUsername();
+			$sharingUser = $this->featureContext->getAdminUsername();
 		}
 		$this->sharedByHasTheFollowingTags($fileName, $sharingUser, $table);
 	}
@@ -808,9 +851,9 @@ trait Tags {
 		$fileName, $adminOrUser, TableNode $table
 	) {
 		if ($adminOrUser === 'administrator') {
-			$user = $this->getAdminUsername();
+			$user = $this->featureContext->getAdminUsername();
 		} else {
-			$user = $this->getCurrentUser();
+			$user = $this->featureContext->getCurrentUser();
 		}
 		$this->fileHasTheFollowingTagsForUser($fileName, $user, $table);
 	}
@@ -863,9 +906,9 @@ trait Tags {
 	public function fileHasNoTagsForUser($fileName, $adminOrUser=null, $user=null) {
 		if ($user === null) {
 			if ($adminOrUser === 'administrator') {
-				$user = $this->getAdminUsername();
+				$user = $this->featureContext->getAdminUsername();
 			} else {
-				$user = $this->getCurrentUser();
+				$user = $this->featureContext->getCurrentUser();
 			}
 		}
 		$this->sharedByHasNoTags($fileName, $user);
@@ -880,12 +923,12 @@ trait Tags {
 	 * @return void
 	 */
 	private function untag($untaggingUser, $tagName, $fileName, $fileOwner) {
-		$untaggingUser = $this->getActualUsername($untaggingUser);
-		$fileOwner = $this->getActualUsername($fileOwner);
-		$fileID = $this->getFileIdForPath($fileOwner, $fileName);
+		$untaggingUser = $this->featureContext->getActualUsername($untaggingUser);
+		$fileOwner = $this->featureContext->getActualUsername($fileOwner);
+		$fileID = $this->featureContext->getFileIdForPath($fileOwner, $fileName);
 		$tagID = $this->findTagIdByName($tagName);
 		$path = "/systemtags-relations/files/$fileID/$tagID";
-		$this->response = $this->makeDavRequest(
+		$response = $this->featureContext->makeDavRequest(
 			$untaggingUser,
 			"DELETE",
 			$path,
@@ -893,8 +936,9 @@ trait Tags {
 			null,
 			"uploads",
 			null,
-			$this->getDavPathVersion('systemtags')
+			$this->featureContext->getDavPathVersion('systemtags')
 		);
+		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -927,26 +971,42 @@ trait Tags {
 	public function theAdministratorRemovesTheTagFromFileSharedByUsingTheWebdavApi(
 		$tagName, $fileName, $shareUser
 	) {
-		$admin = $this->getAdminUsername();
+		$admin = $this->featureContext->getAdminUsername();
 		$this->removesTagFromFileSharedBy($admin, $tagName, $fileName, $shareUser);
 	}
 	
 	/**
-	 * @BeforeScenario
 	 * @AfterScenario
 	 *
 	 * @return void
 	 */
 	public function cleanupTags() {
-		$this->deleteTokenAuthEnforcedAfterScenario();
+		$this->featureContext->deleteTokenAuthEnforcedAfterScenario();
 		foreach ($this->createdTags as $tagID => $tag) {
-			$this->response = TagsHelper::deleteTag(
-				$this->getBaseUrl(),
-				$this->getAdminUsername(),
-				$this->getAdminPassword(),
+			TagsHelper::deleteTag(
+				$this->featureContext->getBaseUrl(),
+				$this->featureContext->getAdminUsername(),
+				$this->featureContext->getAdminPassword(),
 				$tagID,
 				2
 			);
 		}
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }

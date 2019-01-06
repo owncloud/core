@@ -38,7 +38,6 @@ trait BasicStructure {
 	use Auth;
 	use Provisioning;
 	use Sharing;
-	use Tags;
 	use WebDav;
 	use CommandLine;
 
