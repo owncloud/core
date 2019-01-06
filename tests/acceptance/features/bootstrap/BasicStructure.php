@@ -36,7 +36,6 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 trait BasicStructure {
 	use AppConfiguration;
 	use Auth;
-	use Checksums;
 	use Comments;
 	use Provisioning;
 	use Sharing;
