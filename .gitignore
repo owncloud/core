@@ -10,6 +10,7 @@
 /build/phan.phar
 /build/phpstan.phar*
 /core/vendor
+/build/OCPSinceChecker/vendor
 
 # ignore all apps except core ones
 /apps*/*

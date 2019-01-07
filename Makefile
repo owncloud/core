@@ -202,7 +202,7 @@ test-acceptance-webui: $(composer_dev_deps)
 test-php-style: $(composer_dev_deps)
 	$(composer_deps)/bin/php-cs-fixer fix -v --diff --diff-format udiff --dry-run --allow-risky yes
 	$(composer_deps)/bin/phpcs --runtime-set ignore_warnings_on_exit --standard=phpcs.xml tests/acceptance tests/TestHelpers
-	php build/OCPSinceChecker.php
+	composer check-since-tag --working-dir=build/OCPSinceChecker
 
 .PHONY: test-php-style-fix
 test-php-style-fix: $(composer_dev_deps)

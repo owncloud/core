@@ -1,0 +1,19 @@
+{
+    "name": "owncloud/ocp-since-checker",
+    "require": {
+        "nikic/php-parser": "^4.1"
+    },
+    "license": "AGPL",
+    "authors": [
+        {
+            "name": "Thomas Müller",
+            "email": "thomas.mueller@tmit.eu"
+        }
+    ],
+    "scripts": {
+        "check-since-tag": [
+            "@composer install",
+            "@php OCPSinceChecker.php"
+        ]
+    }
+}

@@ -118,7 +118,7 @@ else
 fi
 
 # check for the presence of @since in all OCP methods
-$PHP build/OCPSinceChecker.php
+composer check-since-tag --working-dir=build/OCPSinceChecker
 
 # Back up existing (dev) config if one exists and backup not already there
 if [ -f config/config.php ] && [ ! -f config/config-autotest-backup.php ]; then

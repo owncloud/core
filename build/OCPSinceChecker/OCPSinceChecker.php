@@ -20,7 +20,7 @@
  */
 
 
-require_once __DIR__ . '/../lib/composer/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 /**
  * Class SinceTagCheckVisitor
@@ -130,7 +130,7 @@ echo 'Parsing all files in lib/public for the presence of @since or @deprecated 
 $parser = (new \PhpParser\ParserFactory())->create(\PhpParser\ParserFactory::PREFER_PHP7);
 
 /* iterate over all .php files in lib/public */
-$Directory = new RecursiveDirectoryIterator(\dirname(__DIR__) . '/lib/public');
+$Directory = new RecursiveDirectoryIterator(\dirname(__DIR__) . '/../lib/public');
 $Iterator = new RecursiveIteratorIterator($Directory);
 $Regex = new RegexIterator($Iterator, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
 
