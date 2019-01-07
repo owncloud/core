@@ -23,6 +23,8 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use TestHelpers\WebDavHelper;
+use TestHelpers\HttpRequestHelper;
 
 require_once 'bootstrap.php';
 
@@ -105,7 +107,7 @@ class CommentsContext implements Context {
 	 *
 	 * @param string $user
 	 * @param string $path
-	 * @param TableNode|null $expectedElements
+	 * @param TableNode $expectedElements
 	 *
 	 * @return void
 	 */
@@ -117,22 +119,26 @@ class CommentsContext implements Context {
 			$user, $commentsPath, $properties
 		);
 
-		if ($expectedElements instanceof TableNode) {
-			$elementRows = $expectedElements->getRows();
-			foreach ($elementRows as $expectedElement) {
-				$commentFound = false;
-				foreach ($elementList as $id => $answer) {
-					if (($expectedElement[0] === $answer[200]['{http://owncloud.org/ns}actorId'])
-						and ($expectedElement[1] === $answer[200]['{http://owncloud.org/ns}message'])
-					) {
-						$commentFound = true;
-						break;
-					}
+		$elementRows = $expectedElements->getRows();
+		foreach ($elementRows as $expectedElement) {
+			$commentFound = false;
+			$properties = $elementList->xpath(
+				"//d:prop"
+			);
+			foreach ($properties as $property) {
+				$actorIdXml = $property->xpath("//oc:actorId[text() = '$expectedElement[0]']");
+				$messageXml = $property->xpath("//oc:message[text() = '$expectedElement[1]']");
+				
+				if (isset($actorIdXml[0], $messageXml[0])) {
+					$commentFound = true;
+					break;
 				}
-				PHPUnit_Framework_Assert::assertTrue(
-					$commentFound, "Comment not found"
-				);
 			}
+			PHPUnit_Framework_Assert::assertTrue(
+				$commentFound,
+				"Comment with actorId = '$expectedElement[0]' " .
+				"and message = '$expectedElement[1]' not found"
+			);
 		}
 	}
 
@@ -140,7 +146,7 @@ class CommentsContext implements Context {
 	 * @Then /^the user should have the following comments on (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $path
-	 * @param TableNode|null $expectedElements
+	 * @param TableNode $expectedElements
 	 *
 	 * @return void
 	 */
@@ -166,8 +172,9 @@ class CommentsContext implements Context {
 		$elementList = $this->reportElementComments(
 			$user, $commentsPath, $properties
 		);
+		$messages = $elementList->xpath("//d:prop/oc:message");
 		PHPUnit_Framework_Assert::assertCount(
-			(int) $numberOfComments, $elementList
+			(int) $numberOfComments, $messages
 		);
 	}
 
@@ -336,25 +343,21 @@ class CommentsContext implements Context {
 	 * @param string $path
 	 * @param string $properties properties which needs to be included in the report
 	 *
-	 * @return array
+	 * @return SimpleXMLElement
 	 *
-	 * @throws Sabre\HTTP\ClientException, - in case a curl error occurred.
 	 */
 	public function reportElementComments($user, $path, $properties) {
-		$client = $this->featureContext->getSabreClient($user);
-		
 		$body = '<?xml version="1.0" encoding="utf-8" ?>
 							 <oc:filter-comments xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns" >
 									' . $properties . '
 							 </oc:filter-comments>';
-		
-		$response = $client->request(
-			'REPORT',
-			$this->featureContext->makeSabrePathNotForFiles($path),
-			$body
+		$user = $this->featureContext->getActualUsername($user);
+		$response = WebDavHelper::makeDavRequest(
+			$this->featureContext->getBaseUrl(), $user,
+			$this->featureContext->getPasswordForUser($user), 'REPORT', $path, [],
+			$body, null, $this->featureContext->getDavPathVersion(), "comments"
 		);
-		$parsedResponse = $client->parseMultistatus($response['body']);
-		return $parsedResponse;
+		return HttpRequestHelper::getResponseXml($response);
 	}
 
 	/**
