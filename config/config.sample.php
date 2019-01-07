@@ -556,13 +556,6 @@ $CONFIG = array(
  */
 
 /**
- * Checks an app before install whether it uses private APIs instead of the
- * proper public APIs. If this is set to true it will only allow to install or
- * enable apps that pass this check.
- */
-'appcodechecker' => true,
-
-/**
  * Check if ownCloud is up-to-date and shows a notification if a new version is
  * available. This option is only applicable to ownCloud core. It is not
  * applicable to app updates.
@@ -695,12 +688,6 @@ $CONFIG = array(
 'logtimezone' => 'Europe/Berlin',
 
 /**
- * Append all database queries and parameters to the log file. Use this only for
- * debugging, as your logfile will become huge.
- */
-'log_query' => false,
-
-/**
  * Log successful cron runs.
  */
 'cron_log' => true,
@@ -755,10 +742,6 @@ $CONFIG = array(
         'writable' => true,
       ),
     ),
-
-/**
- * @see appcodechecker
- */
 
 
 /**
