@@ -45,6 +45,5 @@ parameters:
     - '#OCA\\DAV\\Connector\\Sabre\\ObjectTree::__construct\(\) does not call parent constructor from Sabre\\DAV\\Tree.#'
     - '#OC\\Files\\ObjectStore\\NoopScanner::__construct\(\) does not call parent constructor from OC\\Files\\Cache\\Scanner.#'
     - '#OC\\Files\\Cache\\Wrapper\\CacheWrapper::__construct\(\) does not call parent constructor from OC\\Files\\Cache\\Cache.#'
-    - '#Anonymous function has an unused use \$folder.#'
     - '#Result of function rewinddir \(void\) is used.#'
 
