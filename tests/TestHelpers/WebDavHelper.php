@@ -86,6 +86,7 @@ class WebDavHelper {
 	 * @param string[] $properties
 	 *        string can contain namespace prefix,
 	 *        if no prefix is given 'd:' is used as prefix
+	 *        if associated array is used then the key will be used as namespace
 	 * @param int $folderDepth
 	 * @param string $type
 	 * @param int $davPathVersionToUse
@@ -104,28 +105,88 @@ class WebDavHelper {
 		$type = "files",
 		$davPathVersionToUse = 2
 	) {
-		$headers = ['Depth' => $folderDepth];
-		$body = '<?xml version="1.0"?>
-				<d:propfind
-				   xmlns:d="DAV:"
-				   xmlns:oc="http://owncloud.org/ns"
-				   xmlns:ocs="http://open-collaboration-services.org/ns">
-					<d:prop>';
-		foreach ($properties as $property) {
-			//if no namespace is given in the property add the default one
-			if (\strpos($property, ":") === false) {
-				$property = "d:$property";
+		$propertyBody = "";
+		$extraNamespaces = "";
+		foreach ($properties as $namespaceString => $property) {
+			if (\is_int($namespaceString)) {
+				//default namespace prefix if the property has no array key
+				//also used if no prefix is given in the property value
+				$namespacePrefix = "d";
+			} else {
+				//calculate the namespace prefix and namespace from the array key
+				$matches = [];
+				\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
+				$nameSpace = $matches[2];
+				$namespacePrefix = $matches[1];
+				$extraNamespaces .= " xmlns:$namespacePrefix=\"$nameSpace\" ";
 			}
-			$body .= "<$property/>";
+			//if a namespace prefix is given in the property value use that
+			if (\strpos($property, ":") !== false) {
+				$propertyParts = \explode(":", $property);
+				$namespacePrefix = $propertyParts[0];
+				$property = $propertyParts[1];
+			}
+			$propertyBody .= "<$namespacePrefix:$property/>";
 		}
-
-		$body .= '</d:prop></d:propfind>';
-
-		$response = self::makeDavRequest(
+		$headers = ['Depth' => $folderDepth];
+		$body = "<?xml version=\"1.0\"?>
+				<d:propfind
+				   xmlns:d=\"DAV:\"
+				   xmlns:oc=\"http://owncloud.org/ns\"
+				   xmlns:ocs=\"http://open-collaboration-services.org/ns\"
+				   $extraNamespaces>
+				    <d:prop>$propertyBody</d:prop>
+				</d:propfind>";
+		return self::makeDavRequest(
 			$baseUrl, $user, $password, "PROPFIND", $path, $headers, $body,
 			null, $davPathVersionToUse, $type
 		);
-		return $response;
+	}
+
+	/**
+	 *
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $path
+	 * @param string $propertyName
+	 * @param string $propertyValue
+	 * @param string $namespaceString string containing prefix and namespace
+	 *                                e.g "x1='http://whatever.org/ns'"
+	 * @param number $davPathVersionToUse
+	 *
+	 * @return ResponseInterface
+	 */
+	public static function proppatch(
+		$baseUrl,
+		$user,
+		$password,
+		$path,
+		$propertyName,
+		$propertyValue,
+		$namespaceString,
+		$davPathVersionToUse = 2
+	) {
+		$matches = [];
+		\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
+		$namespace = $matches[2];
+		$namespacePrefix = $matches[1];
+		$propertyBody = "<$namespacePrefix:$propertyName" .
+						  " xmlns:$namespacePrefix=\"$namespace\">" .
+							"$propertyValue" .
+						 "</$namespacePrefix:$propertyName>";
+		$body = "<?xml version=\"1.0\"?>
+				<d:propertyupdate xmlns:d=\"DAV:\"
+				   xmlns:oc=\"http://owncloud.org/ns\">
+				 <d:set>
+				  <d:prop>$propertyBody</d:prop>
+				 </d:set>
+				</d:propertyupdate>";
+
+		return self::makeDavRequest(
+			$baseUrl, $user, $password, "PROPPATCH", $path, [], $body,
+			null, $davPathVersionToUse
+		);
 	}
 
 	/**
