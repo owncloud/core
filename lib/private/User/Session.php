@@ -351,12 +351,11 @@ class Session implements IUserSession, Emitter {
 		if ($user === null || \trim($user) === '') {
 			throw new \InvalidArgumentException('$user cannot be empty');
 		}
-		if (!$isTokenPassword && $this->isTokenAuthEnforced()) {
+		if (!$isTokenPassword
+			&& ($this->isTokenAuthEnforced() || $this->isTwoFactorEnforced($user))
+		) {
 			$this->logger->warning("Login failed: '$user' (Remote IP: '{$request->getRemoteAddress()}')", ['app' => 'core']);
 			$this->emitFailedLogin($user);
-			throw new PasswordLoginForbiddenException();
-		}
-		if (!$isTokenPassword && $this->isTwoFactorEnforced($user)) {
 			throw new PasswordLoginForbiddenException();
 		}
 		if (!$this->login($user, $password)) {
