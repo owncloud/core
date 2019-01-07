@@ -369,12 +369,6 @@ class Installer {
 			}
 		}
 
-		// check the code for not allowed calls
-		if (!$isShipped && !Installer::checkCode($extractDir)) {
-			OC_Helper::rmdirr($extractDir);
-			throw new \Exception($l->t("App can't be installed because of not allowed code in the App"));
-		}
-
 		// check if the app is compatible with this version of ownCloud
 		if (!OC_App::isAppCompatible(\OCP\Util::getVersion(), $info)) {
 			OC_Helper::rmdirr($extractDir);
@@ -573,24 +567,7 @@ class Installer {
 	}
 
 	/**
-	 * check the code of an app with some static code checks
-	 * @param string $folder the folder of the app to check
-	 * @return boolean true for app is o.k. and false for app is not o.k.
-	 */
-	public static function checkCode($folder) {
-		// is the code checker enabled?
-		if (!\OC::$server->getConfig()->getSystemValue('appcodechecker', false)) {
-			return true;
-		}
-
-		$codeChecker = new CodeChecker(new PrivateCheck(new EmptyCheck()));
-		$errors = $codeChecker->analyseFolder($folder);
-
-		return empty($errors);
-	}
-
-	/**
-	 * @param $basedir
+	 * @param $script
 	 */
 	private static function includeAppScript($script) {
 		if (\file_exists($script)) {
