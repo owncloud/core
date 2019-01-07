@@ -26,13 +26,11 @@ use GuzzleHttp\Ring\Exception\ConnectException;
 use GuzzleHttp\Stream\StreamInterface;
 use Guzzle\Http\Exception\BadResponseException;
 use Sabre\DAV\Client as SClient;
-use Sabre\DAV\Xml\Property\ResourceType;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
 use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
-use Sabre\DAV\Xml\Property\Complex;
 use TestHelpers\Asserts\WebDav as WebDavAssert;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -999,70 +997,86 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user gets a custom property :propertyName of file :path
+	 * @When user :user gets a custom property :propertyName with namespace :namespace of file :path
 	 *
 	 * @param string $user
 	 * @param string $propertyName
+	 * @param string $namespace namespace in form of "x1='http://whatever.org/ns'"
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function userGetsPropertiesOfFile($user, $propertyName, $path) {
-		$client = $this->getSabreClient($user);
+	public function userGetsPropertiesOfFile($user, $propertyName, $namespace, $path) {
 		$properties = [
-			   $propertyName
+			$namespace => $propertyName
 		];
-		$this->response = $client->propfind(
-			$this->makeSabrePath($user, $path), $properties
+		$this->response = WebDavHelper::propfind(
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
+			$this->getUserPassword($user), $path,
+			$properties
 		);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" sets property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to\s?(complex|) "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has set property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to\s?(complex|) "([^"]*)"$/
+	 * @When /^user "([^"]*)" sets property "([^"]*)"  with namespace "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the WebDAV API$/
+	 * @Given /^user "([^"]*)" has set property "([^"]*)" with namespace "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user user id who sets the property
 	 * @param string $propertyName name of property in Clark notation
+	 * @param string $namespace namespace in form of "x1='http://whatever.org/ns'"
 	 * @param string $path path on which to set properties to
-	 * @param string $complex if set to "complex", will parse the property value with the Complex type
 	 * @param string $propertyValue property value
 	 *
 	 * @return void
 	 */
-	public function userHasSetPropertyOfEntryTo(
-		$user, $propertyName, $path, $complex, $propertyValue
+	public function userHasSetPropertyWithNamespaceOfEntryTo(
+		$user, $propertyName, $namespace, $path, $propertyValue
 	) {
-		$client = $this->getSabreClient($user);
-		if ($complex === 'complex') {
-			$propertyValue = new Complex($propertyValue);
-		}
-		$properties = [
-				$propertyName => $propertyValue
-		];
-		$client->proppatch($this->makeSabrePath($user, $path), $properties);
+		WebDavHelper::proppatch(
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
+			$this->getUserPassword($user), $path,
+			$propertyName, $propertyValue, $namespace,
+			$this->getDavPathVersion()
+		);
 	}
 
 	/**
-	 * @Then /^the response should contain a custom "([^"]*)" property with "([^"]*)"$/
+	 * @Then /^the response should contain a custom "([^"]*)" property with namespace "([^"]*)" and value "([^"]*)"$/
 	 *
 	 * @param string $propertyName
+	 * @param string $namespaceString
 	 * @param string $propertyValue
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theResponseShouldContainACustomPropertyWithValue(
-		$propertyName, $propertyValue
+		$propertyName, $namespaceString, $propertyValue
 	) {
-		$keys = $this->response;
-		if (!\array_key_exists($propertyName, $keys)) {
-			throw new \Exception("Cannot find property \"$propertyName\"");
-		}
-		if ($keys[$propertyName] !== $propertyValue) {
-			throw new \Exception(
-				"\"$propertyName\" has a value \"${keys[$propertyName]}\" but \"$propertyValue\" expected"
-			);
-		}
+		$this->responseXmlObject = HttpRequestHelper::getResponseXml(
+			$this->response
+		);
+		//calculate the namespace prefix and namespace
+		$matches = [];
+		\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
+		$nameSpace = $matches[2];
+		$nameSpacePrefix = $matches[1];
+		$this->responseXmlObject->registerXPathNamespace(
+			$nameSpacePrefix, $nameSpace
+		);
+		$xmlPart = $this->responseXmlObject->xpath(
+			"//d:prop/" . "$nameSpacePrefix:$propertyName"
+		);
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			0, $xmlPart, "Cannot find property \"$propertyName\""
+		);
+		PHPUnit_Framework_Assert::assertEquals(
+			$propertyValue, $xmlPart[0]->__toString(),
+			"\"$propertyName\" has a value \"" .
+			$xmlPart[0]->__toString() . "\" but \"$propertyValue\" expected"
+		);
 	}
 
 	/**
