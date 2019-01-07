@@ -100,9 +100,10 @@
   version "2.0.0-rc1"
   resolved "https://codeload.github.com/jakiestfu/Snap.js/tar.gz/15c77da330d9e8ca580a922bc748d88553838a73"
 
-"@bower_components/strengthify@MorrisJobke/strengthify#0.5.2":
+"@bower_components/strengthify@MorrisJobke/strengthify#0.5.6":
   version "0.0.0"
-  resolved "https://codeload.github.com/MorrisJobke/strengthify/tar.gz/82d63c39de1b7b60ae38d24d0f866cba325904b5"
+  uid "3903a5d9e1cbc53481678d181ccba0c78858141b"
+  resolved "https://codeload.github.com/MorrisJobke/strengthify/tar.gz/3903a5d9e1cbc53481678d181ccba0c78858141b"
 
 "@bower_components/underscore@jashkenas/underscore#1.9.1":
   version "1.9.1"
