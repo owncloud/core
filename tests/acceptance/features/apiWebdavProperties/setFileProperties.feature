@@ -12,21 +12,22 @@ Feature: set file properties
   Scenario Outline: Setting custom DAV property and reading it
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/testcustomprop.txt"
-    And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt" to "veryCustomPropValue"
-    When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
-    Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "veryCustomPropValue"
+    And user "user0" has set property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testcustomprop.txt" to "veryCustomPropValue"
+    When user "user0" gets a custom property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testcustomprop.txt"
+    Then the response should contain a custom "very-custom-prop" property with namespace "x1='http://whatever.org/ns'" and value "veryCustomPropValue"
     Examples:
       | dav_version |
       | old         |
       | new         |
 
-  @skip @issue-32670
+  @issue-32670
   Scenario Outline: Setting custom complex DAV property and reading it
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/testcustomprop.txt"
-    And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt" to complex "<foo xmlns='http://bar'/>"
-    When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
-    Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "<foo xmlns='http://bar'/>"
+    And user "user0" has set property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testcustomprop.txt" to "<foo xmlns='http://bar'/>"
+    When user "user0" gets a custom property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testcustomprop.txt"
+    Then the response should contain a custom "very-custom-prop" property with namespace "x1='http://whatever.org/ns'" and value "Object"
+    #Then the response should contain a custom "very-custom-prop" property with namespace "x1='http://whatever.org/ns'" and value "<foo xmlns='http://bar'/>"
     Examples:
       | dav_version |
       | old         |
@@ -35,10 +36,10 @@ Feature: set file properties
   Scenario Outline: Setting custom DAV property and reading it after the file is renamed
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/testcustompropwithmove.txt"
-    And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropwithmove.txt" to "valueForMovetest"
+    And user "user0" has set property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testcustompropwithmove.txt" to "valueForMovetest"
     And user "user0" has moved file "/testcustompropwithmove.txt" to "/catchmeifyoucan.txt"
-    When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/catchmeifyoucan.txt"
-    Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForMovetest"
+    When user "user0" gets a custom property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/catchmeifyoucan.txt"
+    Then the response should contain a custom "very-custom-prop" property with namespace "x1='http://whatever.org/ns'" and value "valueForMovetest"
     Examples:
       | dav_version |
       | old         |
@@ -53,9 +54,9 @@ Feature: set file properties
       | shareType   | 0                        |
       | permissions | 31                       |
       | shareWith   | user1                    |
-    And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt" to "valueForSharetest"
-    When user "user1" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt"
-    Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForSharetest"
+    And user "user0" has set property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testcustompropshared.txt" to "valueForSharetest"
+    When user "user1" gets a custom property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testcustompropshared.txt"
+    Then the response should contain a custom "very-custom-prop" property with namespace "x1='http://whatever.org/ns'" and value "valueForSharetest"
     Examples:
       | dav_version |
       | old         |
@@ -64,10 +65,10 @@ Feature: set file properties
   Scenario Outline: Setting custom DAV property using one endpoint and reading it with other endpoint
     Given using <action_dav_version> DAV path
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/testnewold.txt"
-    And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt" to "lucky"
+    And user "user0" has set property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testnewold.txt" to "lucky"
     And using <other_dav_version> DAV path
-    When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt"
-    Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "lucky"
+    When user "user0" gets a custom property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testnewold.txt"
+    Then the response should contain a custom "very-custom-prop" property with namespace "x1='http://whatever.org/ns'" and value "lucky"
     Examples:
       | action_dav_version | other_dav_version |
       | old                | new               |
@@ -76,7 +77,7 @@ Feature: set file properties
   Scenario: Setting custom DAV property using an old endpoint and reading it using a new endpoint
     Given using old DAV path
     Given user "user0" has uploaded file "filesForUpload/textfile.txt" to "/testoldnew.txt"
-    And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt" to "constant"
+    And user "user0" has set property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testoldnew.txt" to "constant"
     And using new DAV path
-    When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt"
-    Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "constant"
+    When user "user0" gets a custom property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testoldnew.txt"
+    Then the response should contain a custom "very-custom-prop" property with namespace "x1='http://whatever.org/ns'" and value "constant"
