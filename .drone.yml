@@ -108,6 +108,15 @@ pipeline:
       matrix:
         TEST_SUITE: lint
 
+  php-cs-fixer:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - make test-php-style
+    when:
+      matrix:
+        TEST_SUITE: php-cs-fixer
+
   php-phan-70:
     image: owncloudci/php:7.0
     pull: true
@@ -196,15 +205,6 @@ pipeline:
     when:
       matrix:
         PRIMARY_OBJECTSTORE: files_primary_s3
-
-  php-cs-fixer:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      - make test-php-style
-    when:
-      matrix:
-        TEST_SUITE: php-cs-fixer
 
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
