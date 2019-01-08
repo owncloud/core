@@ -596,15 +596,15 @@ matrix:
     - TEST_SUITE: lint
       PHP_VERSION: 7.3
 
-  # php-cs-fixer (note: php-cs-fixer does not support PHP 7.3 yet, phpcs runs OK)
+  # php-cs-fixer
     - TEST_SUITE: php-cs-fixer
       PHP_VERSION: 7.3
 
-  # phan (Error: Call to undefined function ast\parse_code() in phar:///drone/src/build/phan.phar/src/Phan/CLI.php:1084 ...)
+  # phan
     - TEST_SUITE: phan
       PHP_VERSION: 7.3
 
-  # phpstan (errors like Function apcu_fetch not found)
+  # phpstan
     - TEST_SUITE: phpstan
       PHP_VERSION: 7.3
       INSTALL_SERVER: true
@@ -1070,7 +1070,6 @@ matrix:
       OWNCLOUD_LOG: true
       INSTALL_TESTING-APP: true
 
-    # fails because stable10 is not marked with PHP 7.3 support
     - PHP_VERSION: 7.3
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingExternal
