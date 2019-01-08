@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';
@@ -46,8 +47,6 @@ class FavoritesContext implements Context {
 	 * @param string $path
 	 *
 	 * @return void
-	 * @throws \Sabre\HTTP\ClientException
-	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function userFavoritesElement($user, $path) {
 		$response = $this->changeFavStateOfAnElement($user, $path, 1);
@@ -61,8 +60,6 @@ class FavoritesContext implements Context {
 	 * @param string $path
 	 *
 	 * @return void
-	 * @throws \Sabre\HTTP\ClientException
-	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function theUserFavoritesElement($path) {
 		$response = $this->changeFavStateOfAnElement(
@@ -79,8 +76,6 @@ class FavoritesContext implements Context {
 	 * @param string $path
 	 *
 	 * @return void
-	 * @throws \Sabre\HTTP\ClientException
-	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function userUnfavoritesElement($user, $path) {
 		$response = $this->changeFavStateOfAnElement(
@@ -179,8 +174,6 @@ class FavoritesContext implements Context {
 	 * @param string $path
 	 *
 	 * @return void
-	 * @throws \Sabre\HTTP\ClientException
-	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function theUserUnfavoritesElement($path) {
 		$response = $this->changeFavStateOfAnElement(
@@ -249,20 +242,19 @@ class FavoritesContext implements Context {
 	 * @param string $path
 	 * @param int $favOrUnfav 1 = favorite, 0 = unfavorite
 	 *
-	 * @return bool
+	 * @return ResponseInterface
 	 */
 	public function changeFavStateOfAnElement(
 		$user, $path, $favOrUnfav
 	) {
-		$client = $this->featureContext->getSabreClient($user);
-		$properties = [
-			'{http://owncloud.org/ns}favorite' => $favOrUnfav
-		];
-		
-		$response = $client->proppatch(
-			$this->featureContext->getDavFilesPath($user) . $path, $properties
+		$user = $this->featureContext->getActualUsername($user);
+		return WebDavHelper::proppatch(
+			$this->featureContext->getBaseUrl(),
+			$user,
+			$this->featureContext->getPasswordForUser($user),
+			$path, 'favorite', $favOrUnfav, "oc='http://owncloud.org/ns'",
+			$this->featureContext->getDavPathVersion()
 		);
-		return $response;
 	}
 
 	/**
