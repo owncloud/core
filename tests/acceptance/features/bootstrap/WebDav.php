@@ -1333,28 +1333,6 @@ trait WebDav {
 
 	/**
 	 * @param string $user
-	 * @param string $path
-	 *
-	 * @return string
-	 */
-	public function makeSabrePath($user, $path) {
-		return $this->encodePath(
-			$this->getDavFilesPath($user) . '/' . \ltrim($path, '/')
-		);
-	}
-
-	/**
-	 * @param string $path
-	 * @param string $for the category of endpoint that the dav path will be used for
-	 *
-	 * @return string
-	 */
-	public function makeSabrePathNotForFiles($path, $for = null) {
-		return $this->encodePath($this->getDavPath($for) . $path);
-	}
-
-	/**
-	 * @param string $user
 	 *
 	 * @return SClient
 	 */
