@@ -37,9 +37,10 @@
   version "2.0.2"
   resolved "https://codeload.github.com/Graffino/Browser-Update/tar.gz/0edda8c7f53ad2cbe68538c00b8c790513096d60"
 
-"@bower_components/clipboard@zenorocha/clipboard.js#1.7.1":
-  version "1.7.1"
-  resolved "https://codeload.github.com/zenorocha/clipboard.js/tar.gz/b6e6b80ab07eab03ce0d277515b3ed540773a330"
+"@bower_components/clipboard@zenorocha/clipboard.js#v2.0.4":
+  version "2.0.4"
+  uid d17eca050e705ae4932fd1be3e96abe38bd3397c
+  resolved "https://codeload.github.com/zenorocha/clipboard.js/tar.gz/d17eca050e705ae4932fd1be3e96abe38bd3397c"
   dependencies:
     good-listener "^1.2.2"
     select "^1.1.2"
