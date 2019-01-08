@@ -167,7 +167,7 @@ class Detection implements IMimeTypeDetector {
 		 * No extension after '.so' is considered to be shared object file
 		 */
 		return (\count($match) === 4) && ($match[2] === '.so')
-			&& ($match[3] === '' || ($match[3] !== '' && strpos($match[3], '.') === 0));
+			&& ($match[3] === '' || ($match[3] !== '' && \strpos($match[3], '.') === 0));
 	}
 
 	/**
