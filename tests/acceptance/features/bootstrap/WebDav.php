@@ -65,7 +65,7 @@ trait WebDav {
 	/**
 	 * @var int
 	 */
-	private $lastUploadTime = null;
+	private $lastUploadDeleteTime = null;
 
 	/**
 	 * a variable that contains the dav path without "remote.php/(web)dav"
@@ -1441,11 +1441,11 @@ trait WebDav {
 				'r'
 			)
 		);
-		$this->pauseUpload();
+		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
 			$user, "PUT", $destination, [], $file
 		);
-		$this->lastUploadTime = \time();
+		$this->lastUploadDeleteTime = \time();
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
 		);
@@ -1504,7 +1504,7 @@ trait WebDav {
 		}
 		try {
 			$this->responseXml = [];
-			$this->pauseUpload();
+			$this->pauseUploadDelete();
 			$this->response = UploadHelper::upload(
 				$this->getBaseUrl(),
 				$this->getActualUsername($user),
@@ -1516,7 +1516,7 @@ trait WebDav {
 				$chunkingVersion,
 				$noOfChunks
 			);
-			$this->lastUploadTime = \time();
+			$this->lastUploadDeleteTime = \time();
 		} catch (BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
@@ -1844,11 +1844,11 @@ trait WebDav {
 		$user, $content, $destination
 	) {
 		$file = \GuzzleHttp\Stream\Stream::factory($content);
-		$this->pauseUpload();
+		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
 			$user, "PUT", $destination, [], $file
 		);
-		$this->lastUploadTime = \time();
+		$this->lastUploadDeleteTime = \time();
 		return $this->response->getHeader('oc-fileid');
 	}
 
@@ -1867,7 +1867,7 @@ trait WebDav {
 		$user, $checksum, $content, $destination
 	) {
 		$file = \GuzzleHttp\Stream\Stream::factory($content);
-		$this->pauseUpload();
+		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
 			$user,
 			"PUT",
@@ -1875,7 +1875,7 @@ trait WebDav {
 			['OC-Checksum' => $checksum],
 			$file
 		);
-		$this->lastUploadTime = \time();
+		$this->lastUploadDeleteTime = \time();
 	}
 
 	/**
@@ -1891,27 +1891,6 @@ trait WebDav {
 	}
 
 	/**
-	 * Wait for 1 second then delete a file/folder to avoid creating trashbin
-	 * entries with the same timestamp. Only use this step to avoid the problem
-	 * in core issue 23151 when wanting to demonstrate other correct behavior
-	 *
-	 * @When /^user "([^"]*)" waits and deletes (?:file|folder) "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has waited and deleted (?:file|folder) "([^"]*)"$/
-	 *
-	 * @param string $user
-	 * @param string $file
-	 *
-	 * @return void
-	 */
-	public function userWaitsAndDeletesFile($user, $file) {
-		// prevent creating two files in the trashbin with the same timestamp
-		// which is based on seconds. e.g. deleting a/file.txt and b/file.txt
-		// might result in a name clash file.txt.d1456657282 in the trashbin
-		\sleep(1);
-		$this->userDeletesFile($user, $file);
-	}
-
-	/**
 	 * @When /^user "([^"]*)" (?:deletes|unshares) (?:file|folder) "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
 	 *
@@ -1921,7 +1900,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userDeletesFile($user, $file) {
+		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
+		$this->lastUploadDeleteTime = \time();
 	}
 
 	/**
@@ -1933,7 +1914,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function theUserDeletesFile($file) {
-		$this->response = $this->makeDavRequest($this->getCurrentUser(), 'DELETE', $file, []);
+		$this->userDeletesFile($this->getCurrentUser(), $file);
 	}
 
 	/**
@@ -2055,11 +2036,11 @@ trait WebDav {
 		$num -= 1;
 		$data = \GuzzleHttp\Stream\Stream::factory($data);
 		$file = "$destination-chunking-42-$total-$num";
-		$this->pauseUpload();
+		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
 			$user, 'PUT', $file, ['OC-Chunked' => '1'], $data, "uploads"
 		);
-		$this->lastUploadTime = \time();
+		$this->lastUploadDeleteTime = \time();
 	}
 
 	/**
@@ -2109,7 +2090,7 @@ trait WebDav {
 	public function userUploadsChunksUsingNewChunking(
 		$user, $file, $chunkingId, $chunkDetails, $async = false
 	) {
-		$this->pauseUpload();
+		$this->pauseUploadDelete();
 		$this->userCreatesANewChunkingUploadWithId($user, $chunkingId);
 		foreach ($chunkDetails as $chunkDetail) {
 			$chunkNumber = $chunkDetail[0];
@@ -2121,7 +2102,7 @@ trait WebDav {
 			$headers = ['OC-LazyOps' => 'true'];
 		}
 		$this->moveNewDavChunkToFinalFile($user, $chunkingId, $file, $headers);
-		$this->lastUploadTime = \time();
+		$this->lastUploadDeleteTime = \time();
 	}
 
 	/**
@@ -2645,9 +2626,9 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function pauseUpload() {
+	public function pauseUploadDelete() {
 		$time = \time();
-		if ($this->lastUploadTime !== null && $time - $this->lastUploadTime < 1) {
+		if ($this->lastUploadDeleteTime !== null && $time - $this->lastUploadDeleteTime < 1) {
 			\sleep(1);
 		}
 	}
