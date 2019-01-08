@@ -131,9 +131,9 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "user0" has created folder "/folderB"
     And user "user0" has copied file "/textfile0.txt" to "/folderA/textfile0.txt"
     And user "user0" has copied file "/textfile0.txt" to "/folderB/textfile0.txt"
-    When user "user0" waits and deletes file "/folderA/textfile0.txt" using the WebDAV API
-    And user "user0" waits and deletes file "/folderB/textfile0.txt" using the WebDAV API
-    And user "user0" waits and deletes file "/textfile0.txt" using the WebDAV API
+    When user "user0" deletes file "/folderA/textfile0.txt" using the WebDAV API
+    And user "user0" deletes file "/folderB/textfile0.txt" using the WebDAV API
+    And user "user0" deletes file "/textfile0.txt" using the WebDAV API
     Then as "user0" the folder with original path "/folderA/textfile0.txt" should exist in trash
     And as "user0" the folder with original path "/folderB/textfile0.txt" should exist in trash
     And as "user0" the folder with original path "/textfile0.txt" should exist in trash
