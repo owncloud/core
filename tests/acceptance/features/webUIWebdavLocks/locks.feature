@@ -698,7 +698,6 @@ Feature: Locks
       | exclusive |
       | shared    |
 
-  @skip @issue-33847
   Scenario Outline: unsharing a locked file/folder
     Given these users have been created:
       |username  |
