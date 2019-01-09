@@ -67,15 +67,13 @@ class ClientTest extends \Test\TestCase {
 
 	public function testGetProxyUriProxyHostWithPassword() {
 		$this->config
-			->expects($this->at(0))
 			->method('getSystemValue')
-			->with('proxy', null)
-			->willReturn('foo');
-		$this->config
-			->expects($this->at(1))
-			->method('getSystemValue')
-			->with('proxyuserpwd', null)
-			->willReturn('username:password');
+			->willReturnMap(
+				[
+					['proxy', null, 'foo'],
+					['proxyuserpwd', null, 'username:password']
+				]
+			);
 		$this->assertSame('username:password@foo', self::invokePrivate($this->client, 'getProxyUri'));
 	}
 
@@ -83,6 +81,32 @@ class ClientTest extends \Test\TestCase {
 		$this->guzzleClient->method('get')
 			->willReturn(new Response(1337));
 		$this->assertEquals(1337, $this->client->get('http://localhost/', [])->getStatusCode());
+	}
+
+	public function testGetStream() {
+		$this->config
+			->method('getSystemValue')
+			->willReturnMap(
+				[
+					['proxy', null, 'foo'],
+					['proxyuserpwd', null, 'username:password']
+				]
+			);
+		$this->guzzleClient->method('get')
+			->willReturn(new Response(1337));
+		$this->assertEquals(1337, $this->client->get(
+			'http://localhost/',
+			[
+				'stream' => true,
+				'config' => [
+					'stream_context' => [
+						'http' => [
+							'request_fulluri' => true
+						]
+					],
+				],
+			]
+		)->getStatusCode());
 	}
 
 	public function testPost() {

@@ -526,7 +526,14 @@ class DavTest extends TestCase {
 			->with(
 				'https://davhost/davroot/some%25dir/file%25.txt', [
 					'auth' => ['davuser', 'davpassword'],
-					'stream' => true
+					'stream' => true,
+					'config' => [
+						'stream_context' => [
+							'http' => [
+								'request_fulluri' => true
+							]
+						],
+					],
 				]
 			)
 			->willReturn($response);
@@ -544,7 +551,14 @@ class DavTest extends TestCase {
 			->with(
 				'https://davhost/davroot/some%25dir/file%25.txt', [
 					'auth' => ['davuser', 'davpassword'],
-					'stream' => true
+					'stream' => true,
+					'config' => [
+						'stream_context' => [
+							'http' => [
+								'request_fulluri' => true
+							]
+						],
+					],
 				]
 			)
 			->willThrowException($this->createGuzzleClientException(Http::STATUS_NOT_FOUND));
@@ -561,7 +575,14 @@ class DavTest extends TestCase {
 			->with(
 				'https://davhost/davroot/some%25dir/file%25.txt', [
 					'auth' => ['davuser', 'davpassword'],
-					'stream' => true
+					'stream' => true,
+					'config' => [
+						'stream_context' => [
+							'http' => [
+								'request_fulluri' => true
+							]
+						],
+					],
 				]
 			)
 			->willThrowException($this->createGuzzleClientException(Http::STATUS_FORBIDDEN));
@@ -582,7 +603,14 @@ class DavTest extends TestCase {
 			->with(
 				'https://davhost/davroot/some%25dir/file%25.txt', [
 					'auth' => ['davuser', 'davpassword'],
-					'stream' => true
+					'stream' => true,
+					'config' => [
+						'stream_context' => [
+							'http' => [
+								'request_fulluri' => true
+							]
+						],
+					],
 				]
 			)
 			->willReturn($response);
