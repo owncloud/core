@@ -198,10 +198,6 @@ test-acceptance-cli: $(composer_dev_deps)
 test-acceptance-webui: $(composer_dev_deps)
 	./tests/acceptance/run.sh --remote --type webUI
 
-.PHONY: test-php-lint
-test-php-lint: $(composer_dev_deps)
-	$(composer_deps)/bin/parallel-lint --exclude lib/composer --exclude build .
-
 .PHONY: test-php-style
 test-php-style: $(composer_dev_deps)
 	$(composer_deps)/bin/php-cs-fixer fix -v --diff --diff-format udiff --dry-run --allow-risky yes
@@ -221,7 +217,7 @@ test-php-phpstan: $(PHPSTAN_BIN)
 	php $(PHPSTAN_BIN) analyse --memory-limit=2G --configuration=./phpstan.neon --level=0 apps core settings lib/private lib/public ocs ocs-provider
 
 .PHONY: test
-test: test-php-lint test-php-style test-php test-js test-acceptance-api test-acceptance-cli test-acceptance-webui
+test: test-php-style test-php test-js test-acceptance-api test-acceptance-cli test-acceptance-webui
 
 .PHONY: clean-test-acceptance
 clean-test-acceptance:

@@ -30,7 +30,6 @@
         "behat/mink-goutte-driver": "^1.2",
         "behat/mink-selenium2-driver": "dev-master",
         "jakub-onderka/php-console-highlighter": "^0.4",
-        "jakub-onderka/php-parallel-lint": "^1.0.0",
         "jarnaiz/behat-junit-formatter": "^1.3",
         "mikey179/vfsStream": "^1.6",
         "owncloud/coding-standard": "^1.0",
