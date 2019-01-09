@@ -78,9 +78,11 @@ class LockingTests extends TestCase {
 		self::assertEquals([], $locks);
 
 		// locking the file
-		self::assertEquals(true, $this->storage->lockNodePersistent('files/foo/bar.txt', [
+		$lock = $this->storage->lockNodePersistent('files/foo/bar.txt', [
 			'token' => '123-456-789'
-		]));
+		]);
+		self::assertNotNull($lock);
+		self::assertEquals('123-456-789', $lock->getToken());
 
 		// lock shall exist
 		$locks = $this->storage->getLocks('files/foo/bar.txt');
