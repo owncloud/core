@@ -41,7 +41,7 @@ class LockManager {
 		$this->timeFactory = $timeFactory;
 	}
 
-	public function lock(int $storageId, string $internalPath, int $fileId, array $lockInfo) : bool {
+	public function lock(int $storageId, string $internalPath, int $fileId, array $lockInfo) : ILock {
 		if ($fileId <= 0) {
 			throw new \InvalidArgumentException('Invalid file id');
 		}
@@ -49,10 +49,14 @@ class LockManager {
 			throw new \InvalidArgumentException('No token provided in $lockInfo');
 		}
 
-		// We're making the lock timeout 30 minutes
+		// default to 30 minutes if nothing is specified
 		$timeout = 30*60;
 		if (isset($lockInfo['timeout'])) {
 			$timeout = $lockInfo['timeout'];
+			// max one day, not infinie
+			if ($timeout < 0 || $timeout > 60*60*24) {
+				$timeout = 60*60*24;
+			}
 		}
 		$owner = $lockInfo['owner'] ?? null;
 		if ($owner === null && $this->userSession->isLoggedIn()) {
@@ -66,21 +70,18 @@ class LockManager {
 		}
 
 		$locks = $this->lockMapper->getLocksByPath($storageId, $internalPath, false);
-		$exists = false;
+
+		// check if lock exists for refreshing
 		foreach ($locks as $lock) {
 			if ($lock->getToken() === $lockInfo['token']) {
-				$exists = true;
 				$lock->setCreatedAt($this->timeFactory->getTime());
 				$lock->setTimeout($timeout);
 				if ($lock->getOwner() === '' || $lock->getOwner() === null) {
 					$lock->setOwner($owner);
 				}
 				$this->lockMapper->update($lock);
+				return $lock;
 			}
-		}
-
-		if ($exists) {
-			return true;
 		}
 
 		$depth = 0;
@@ -108,7 +109,7 @@ class LockManager {
 			}
 		}
 		$this->lockMapper->insert($lock);
-		return true;
+		return $lock;
 	}
 
 	/**

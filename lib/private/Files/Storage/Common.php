@@ -56,6 +56,7 @@ use OCP\Files\Storage\ILockingStorage;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Files\Storage\IVersionedStorage;
 use OCP\Lock\ILockingProvider;
+use OCP\Lock\Persistent\ILock;
 
 /**
  * Storage backend class for providing common filesystem operation methods
@@ -757,7 +758,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 		return false;
 	}
 
-	public function lockNodePersistent(string $internalPath, array $lockInfo) : bool {
+	public function lockNodePersistent(string $internalPath, array $lockInfo) : ILock {
 		/** @var LockManager $locksManager */
 		$locksManager = \OC::$server->query(LockManager::class);
 		$storageId = $this->getCache()->getNumericStorageId();
