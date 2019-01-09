@@ -383,6 +383,15 @@ trait Sharing {
 	}
 
 	/**
+	 * Give the mimetype of the last shared file
+	 *
+	 * @return string
+	 */
+	public function getMimeTypeOfLastSharedFile() {
+		return \json_decode(\json_encode($this->lastShareData->data->mimetype), 1)[0];
+	}
+
+	/**
 	 * @Then /^the last public shared file should be able to be downloaded without a password$/
 	 *
 	 * @return void
@@ -394,7 +403,7 @@ trait Sharing {
 			$url = $this->lastShareData->data->url;
 		}
 		$fullUrl = "$url/download";
-		$this->checkDownload($fullUrl, null, null, 'text/plain');
+		$this->checkDownload($fullUrl, null, null, $this->getMimeTypeOfLastSharedFile());
 	}
 
 	/**
@@ -407,7 +416,7 @@ trait Sharing {
 	public function checkLastPublicSharedFileWithPasswordDownload($password) {
 		$token = $this->getLastShareToken();
 		$fullUrl = $this->getBaseUrl() . "/public.php/webdav";
-		$this->checkDownload($fullUrl, $token, $password, 'text/plain');
+		$this->checkDownload($fullUrl, $token, $password, $this->getMimeTypeOfLastSharedFile());
 	}
 
 	/**
@@ -430,17 +439,35 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should be able to download file "([^"]*)" using the sharing API$/
+	 * @Then user :user should be able to download the range :range of file :path using the sharing API and the content should be :content
 	 *
 	 * @param string $user
+	 * @param string $range
 	 * @param string $path
+	 * @param string $content
 	 *
 	 * @return void
 	 */
-	public function userShouldBeAbleToDownloadFileUsingTheSharingApi($user, $path) {
+	public function userShouldBeAbleToDownloadTheRangeOfFileAndTheContentShouldBe($user, $range, $path, $content) {
 		$path = \ltrim($path, "/");
-		$fullUrl = $this->getBaseUrl() . "/remote.php/webdav/$path";
-		$this->checkUserDownload($fullUrl, $user, "text/plain");
+		$url = $this->getBaseUrl() . "/remote.php/webdav/$path";
+		$headers = [
+			'Range' => $range
+		];
+		$this->response = HttpRequestHelper::get(
+			$url, $user, $this->getPasswordForUser($user), $headers
+		);
+		PHPUnit_Framework_Assert::assertEquals(
+			206,
+			$this->response->getStatusCode()
+		);
+		$buf = '';
+		$body = $this->response->getBody();
+		while (!$body->eof()) {
+			// read everything
+			$buf .= $body->read(8192);
+		}
+		PHPUnit_Framework_Assert::assertSame($content, $buf);
 	}
 
 	/**
