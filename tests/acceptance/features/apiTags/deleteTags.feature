@@ -17,7 +17,7 @@ Feature: Deletion of tags
   Scenario: Deleting a normal tag that has already been assigned to a file should work
     Given the user has created a "normal" tag with name "JustARegularTagName"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
-    And the user has added tag "MyFirstTag" to file "/myFileToTag.txt"
+    And the user has added tag "JustARegularTagName" to file "/myFileToTag.txt"
     When the user deletes the tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "204"
     And tag "JustARegularTagName" should not exist for the administrator

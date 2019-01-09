@@ -25,6 +25,8 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\TagsHelper;
+use TestHelpers\WebDavHelper;
+use TestHelpers\HttpRequestHelper;
 
 require_once 'bootstrap.php';
 
@@ -99,7 +101,7 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @param array $tagData
+	 * @param SimpleXMLElement $tagData
 	 * @param string $type
 	 *
 	 * @return void
@@ -107,11 +109,28 @@ class TagsContext implements Context {
 	 */
 	private function assertTypeOfTag($tagData, $type) {
 		$userAttributes = TagsHelper::validateTypeOfTag($type);
-		$tagDisplayName = $tagData['{http://owncloud.org/ns}display-name'];
 		$userVisible = ($userAttributes[0]) ? 'true' : 'false';
 		$userAssignable = ($userAttributes[1]) ? 'true' : 'false';
-		if (($tagData['{http://owncloud.org/ns}user-visible'] !== $userVisible)
-			|| ($tagData['{http://owncloud.org/ns}user-assignable'] !== $userAssignable)
+		
+		$tagDisplayName = $tagData->xpath(".//oc:display-name");
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			0, $tagDisplayName, "cannot find 'oc:display-name' property"
+		);
+		$tagDisplayName = $tagDisplayName[0]->__toString();
+		
+		$tagUserVisible = $tagData->xpath(".//oc:user-visible");
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			0, $tagUserVisible, "cannot find 'oc:user-visible' property"
+		);
+		$tagUserVisible = $tagUserVisible[0]->__toString();
+		
+		$tagUserAssignable = $tagData->xpath(".//oc:user-assignable");
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			0, $tagUserAssignable, "cannot find 'oc:user-assignable' property"
+		);
+		$tagUserAssignable = $tagUserAssignable[0]->__toString();
+		if (($tagUserVisible !== $userVisible)
+			|| ($tagUserAssignable !== $userAssignable)
 		) {
 			PHPUnit_Framework_Assert::fail(
 				"tag $tagDisplayName is not of type $type"
@@ -233,17 +252,15 @@ class TagsContext implements Context {
 	 * @param string $user
 	 * @param bool $withGroups
 	 *
-	 * @return array
+	 * @return SimpleXMLElement
 	 */
 	public function requestTagsForUser($user, $withGroups = false) {
-		$response = TagsHelper:: requestTagsForUser(
+		return TagsHelper:: requestTagsForUser(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getActualUsername($user),
 			$this->featureContext->getPasswordForUser($user),
 			$withGroups
 		);
-		$this->featureContext->setResponse($response);
-		return $response;
 	}
 
 	/**
@@ -251,19 +268,20 @@ class TagsContext implements Context {
 	 * @param string $tagDisplayName
 	 * @param bool $withGroups
 	 *
-	 * @return array|null
+	 * @return SimpleXMLElement|null
 	 */
 	public function requestTagByDisplayName(
 		$user, $tagDisplayName, $withGroups = false
 	) {
 		$tagList = $this->requestTagsForUser($user, $withGroups);
-		foreach ($tagList as $path => $tagData) {
-			if (!empty($tagData)
-				&& $tagData['{http://owncloud.org/ns}display-name'] === $tagDisplayName
-			) {
-				return $tagData;
-			}
+		
+		$tagData = $tagList->xpath(
+			"//d:prop//oc:display-name[text() = '$tagDisplayName']/.."
+		);
+		if (isset($tagData[0])) {
+			return $tagData[0];
 		}
+
 		return null;
 	}
 
@@ -397,16 +415,17 @@ class TagsContext implements Context {
 		$this->assertTypeOfTag($tagData, $type);
 		if ($shouldOrNot === 'should') {
 			$expected = 'true';
+			$errorMessage = 'Tag cannot be assigned by user but should';
 		} elseif ($shouldOrNot === 'should not') {
 			$expected = 'false';
+			$errorMessage = 'Tag can be assigned by user but should not';
 		} else {
 			throw new \Exception(
 				'Invalid condition, must be "should" or "should not"'
 			);
 		}
-		if ($tagData['{http://owncloud.org/ns}can-assign'] !== $expected) {
-			throw new \Exception('Tag cannot be assigned by user');
-		}
+		$canAssign = $tagData->xpath(".//oc:can-assign[text() = '$expected']");
+		PHPUnit_Framework_Assert::assertArrayHasKey(0, $canAssign, $errorMessage);
 	}
 
 	/**
@@ -427,10 +446,14 @@ class TagsContext implements Context {
 			$tagData, "Tag $tagName wasn't found for admin user"
 		);
 		$this->assertTypeOfTag($tagData, $type);
+		$groupsOfTag = $tagData->xpath(".//oc:groups");
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			0, $groupsOfTag, "cannot find oc:groups element"
+		);
 		PHPUnit_Framework_Assert::assertEquals(
-			$tagData['{http://owncloud.org/ns}groups'],
+			$groupsOfTag[0],
 			$groups,
-			"Tag has groups '{$tagData['{http://owncloud.org/ns}groups']}' instead of the expected '$groups'"
+			"Tag has groups '{$groupsOfTag[0]}' instead of the expected '$groups'"
 		);
 	}
 
@@ -461,31 +484,28 @@ class TagsContext implements Context {
 		$tagData = $this->requestTagByDisplayName(
 			$this->featureContext->getAdminUsername(), $name
 		);
-		return (int)$tagData['{http://owncloud.org/ns}id'];
+		return TagsHelper::getTagIdFromTagData($tagData);
 	}
 
 	/**
 	 * @param string $user
 	 * @param string $tagDisplayName
-	 * @param string $properties optional
+	 * @param string $propertyName
+	 * @param string $propertyValue
 	 *
-	 * @return ResponseInterface|null
+	 * @return ResponseInterface
 	 */
 	private function sendProppatchToSystemtags(
-		$user, $tagDisplayName, $properties = null
+		$user, $tagDisplayName, $propertyName, $propertyValue
 	) {
-		$client = $this->featureContext->getSabreClient($user);
-		$client->setThrowExceptions(true);
-		$appPath = '/systemtags/';
 		$tagID = $this->findTagIdByName($tagDisplayName);
-		PHPUnit_Framework_Assert::assertNotNull($tagID, "Tag wasn't found");
-		$fullUrl = $this->featureContext->getBaseUrl()
-			. '/' . $this->featureContext->getDavPath('systemtags') . $appPath . $tagID;
-		try {
-			$response = $client->proppatch($fullUrl, $properties, 1);
-		} catch (\Sabre\HTTP\ClientHttpException $e) {
-			$response = null;
-		}
+		$response = WebDavHelper::proppatch(
+			$this->featureContext->getBaseUrl(), $user,
+			$this->featureContext->getPasswordForUser($user),
+			"/systemtags/$tagID", $propertyName, $propertyValue,
+			"oc='http://owncloud.org/ns'",
+			$this->featureContext->getDavPathVersion("systemtags"), "systemtags"
+		);
 		$this->featureContext->setResponse($response);
 		return $response;
 	}
@@ -534,10 +554,7 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function editTagName($user, $oldName, $newName) {
-		$properties = [
-						'{http://owncloud.org/ns}display-name' => $newName
-					  ];
-		$this->sendProppatchToSystemtags($user, $oldName, $properties);
+		$this->sendProppatchToSystemtags($user, $oldName, 'display-name', $newName);
 	}
 
 	/**
@@ -585,10 +602,7 @@ class TagsContext implements Context {
 	 */
 	public function editTagGroups($user, $oldName, $groups) {
 		$user = $this->featureContext->getActualUsername($user);
-		$properties = [
-						'{http://owncloud.org/ns}groups' => $groups
-					  ];
-		$this->sendProppatchToSystemtags($user, $oldName, $properties);
+		$this->sendProppatchToSystemtags($user, $oldName, 'groups', $groups);
 	}
 
 	/**
@@ -666,7 +680,9 @@ class TagsContext implements Context {
 			$fileName,
 			$fileOwner,
 			$this->featureContext->getPasswordForUser($fileOwner),
-			$this->featureContext->getDavPathVersion('systemtags')
+			$this->featureContext->getDavPathVersion('systemtags'),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword()
 		);
 		$this->featureContext->setResponse($response);
 	}
@@ -676,33 +692,36 @@ class TagsContext implements Context {
 	 * @param string $fileName
 	 * @param string|null $sharingUser
 	 *
-	 * @return \Sabre\HTTP\ResponseInterface
+	 * @return SimpleXMLElement
 	 */
 	private function requestTagsForFile($user, $fileName, $sharingUser = null) {
+		$user = $this->featureContext->getActualUsername($user);
 		if ($sharingUser !== null) {
+			$sharingUser = $this->featureContext->getActualUsername($sharingUser);
 			$fileID = $this->featureContext->getFileIdForPath($sharingUser, $fileName);
 		} else {
 			$fileID = $this->featureContext->getFileIdForPath($user, $fileName);
 		}
-		$client = $this->featureContext->getSabreClient($user);
 		$properties = [
-						'{http://owncloud.org/ns}id',
-						'{http://owncloud.org/ns}display-name',
-						'{http://owncloud.org/ns}user-visible',
-						'{http://owncloud.org/ns}user-assignable',
-						'{http://owncloud.org/ns}user-editable',
-						'{http://owncloud.org/ns}can-assign'
+						'oc:id',
+						'oc:display-name',
+						'oc:user-visible',
+						'oc:user-assignable',
+						'oc:user-editable',
+						'oc:can-assign'
 					  ];
 		$appPath = '/systemtags-relations/files/';
-		$fullUrl = $this->featureContext->getBaseUrl()
-			. '/' . $this->featureContext->getDavPath('systemtags') . $appPath . $fileID;
-		try {
-			$response = $client->propfind($fullUrl, $properties, 1);
-		} catch (Sabre\HTTP\ClientHttpException $e) {
-			$response = $e->getResponse();
-		}
+		$fullPath = $appPath . $fileID;
+		$response = WebDavHelper::propfind(
+			$this->featureContext->getBaseUrl(),
+			$user,
+			$this->featureContext->getPasswordForUser($user),
+			$fullPath, $properties, 'systemtags',
+			$this->featureContext->getDavPathVersion('systemtags')
+		);
 		$this->featureContext->setResponse($response);
-		return $response;
+		$responseXmlObject = HttpRequestHelper::getResponseXml($response);
+		return $responseXmlObject;
 	}
 
 	/**
@@ -773,8 +792,10 @@ class TagsContext implements Context {
 	public function theHttpStatusWhenuserRequestsTagsForEntryOwnedByShouldBe(
 		$user, $fileName, $sharingUser, $status
 	) {
-		$response = $this->requestTagsForFile($user, $fileName, $sharingUser);
-		PHPUnit_Framework_Assert::assertEquals($status, $response->getStatus());
+		$this->requestTagsForFile($user, $fileName, $sharingUser);
+		PHPUnit_Framework_Assert::assertEquals(
+			$status, $this->featureContext->getResponse()->getStatusCode()
+		);
 	}
 
 	/**
@@ -811,18 +832,17 @@ class TagsContext implements Context {
 	public function sharedByHasTheFollowingTags(
 		$fileName, $sharingUser, TableNode $table
 	) {
-		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
-		PHPUnit_Framework_Assert::assertInternalType('array', $tagList);
-		// The array of tags has a single "empty" item at the start.
-		// Remove this entry.
-		\array_shift($tagList);
+		$xml = $this->requestTagsForFile($sharingUser, $fileName);
+		$tagList = $xml->xpath("//d:prop");
 		$found = false;
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
 			$found = false;
-			foreach ($tagList as $path => $tagData) {
-				if (!empty($tagData)
-					&& $tagData['{http://owncloud.org/ns}display-name'] === $rowDisplayName
-				) {
+			foreach ($tagList as $tagData) {
+				$displayName = $tagData->xpath(".//oc:display-name");
+				PHPUnit_Framework_Assert::assertArrayHasKey(
+					0, $displayName, "cannot find 'oc:display-name' property"
+				);
+				if ($displayName[0]->__toString() === $rowDisplayName) {
 					$found = true;
 					$this->assertTypeOfTag($tagData, $rowType);
 					break;
@@ -884,8 +904,8 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function sharedByHasNoTags($fileName, $sharingUser) {
-		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
-		PHPUnit_Framework_Assert::assertInternalType('array', $tagList);
+		$responseXml = $this->requestTagsForFile($sharingUser, $fileName);
+		$tagList = $responseXml->xpath("//d:prop");
 		// The array of tags has a single "empty" item at the start.
 		// If there are no tags, then the array should have just this
 		// one entry.
