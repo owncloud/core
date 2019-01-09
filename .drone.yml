@@ -99,23 +99,14 @@ pipeline:
       matrix:
         TEST_SUITE: javascript
 
-  phplint:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      - make test-php-lint
-    when:
-      matrix:
-        TEST_SUITE: lint
-
-  php-cs-fixer:
+  owncloud-coding-standard:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
       - make test-php-style
     when:
       matrix:
-        TEST_SUITE: php-cs-fixer
+        TEST_SUITE: owncloud-coding-standard
 
   php-phan-70:
     image: owncloudci/php:7.0
@@ -137,6 +128,15 @@ pipeline:
 
   php-phan-72:
     image: owncloudci/php:7.2
+    pull: true
+    commands:
+      - make test-php-phan
+    when:
+      matrix:
+        TEST_SUITE: phan
+
+  php-phan-73:
+    image: owncloudci/php:7.3
     pull: true
     commands:
       - make test-php-phan
@@ -589,46 +589,19 @@ matrix:
       PHP_VERSION: 7.1
       COVERAGE: true
 
-    # linting
-    - TEST_SUITE: lint
-      PHP_VERSION: 5.6
-
-    - TEST_SUITE: lint
-      PHP_VERSION: 7.0
-
-    # PHP 5.6
-    #- PHP_VERSION: 5.6
-    #  DB_TYPE: sqlite
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    #- PHP_VERSION: 5.6
-    #  DB_TYPE: mariadb
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    #- PHP_VERSION: 5.6
-    #  DB_TYPE: mysql
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-
     - PHP_VERSION: 5.6
       DB_TYPE: postgres
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING-APP: true
 
-    # - PHP_VERSION: 5.6
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
-    #   INSTALL_SERVER: true
+  # owncloud-coding-standard
+  # Run with PHP 5.6 because that is not supported by phan.
+  # This gives us a syntax check for PHP 5.6
+    - PHP_VERSION: 5.6
+      TEST_SUITE: owncloud-coding-standard
 
-
-  # php-cs-fixer
-    - TEST_SUITE: php-cs-fixer
-      PHP_VERSION: 7.2
-
-  # phan
+  # phan (runs multiple PHP v7.* to provide syntax checks of each PHP version)
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
 
@@ -652,11 +625,6 @@ matrix:
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING-APP: true
-
-#    - PHP_VERSION: 7.1
-#      DB_TYPE: mariadb
-#      TEST_SUITE: phpunit
-#      INSTALL_SERVER: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: postgres
@@ -685,52 +653,12 @@ matrix:
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING-APP: true
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: mariadb
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: mysql
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: postgres
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    # - PHP_VERSION: 7.2
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
-    #   INSTALL_SERVER: true
-#
-#    # Integration
-#    - PHP_VERSION: 7.1
-#      DB_TYPE: sqlite
-#      TEST_SUITE: integration
-#      INSTALL_SERVER: true
 
     - PHP_VERSION: 7.2
       DB_TYPE: mariadb
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING-APP: true
-
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: mysql
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: postgres
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    # - PHP_VERSION: 7.2
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
-    #   INSTALL_SERVER: true
 
   # Files External
     - PHP_VERSION: 7.1
