@@ -55,7 +55,7 @@ class Version20190109104110 implements ISimpleMigration {
 			} catch (\Exception $exception) {
 				$out->warning(
 					'There has been an error migrating an external storage from mount.json to the database. The affected mount point is "' .
-					$legacyStorage->getMountPoint() . '" and the type is "' . $legacyStorage->getBackend()->getIdentifier() . '"'
+					$legacyStorage->getMountPoint() . '" and is of type "' . $legacyStorage->getBackend()->getIdentifier() . '"'
 				);
 			}
 		}
