@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "25b3fc0c4066430b685d8b658917791a",
@@ -2379,16 +2379,16 @@
         },
         {
             "name": "sabre/xml",
-            "version": "2.1.1",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/xml.git",
-                "reference": "c5f510f8d0fa8135de9495145e2758f56037aa1e"
+                "reference": "e15454e68805e3713271ea58c0b2d6a82dac56b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/xml/zipball/c5f510f8d0fa8135de9495145e2758f56037aa1e",
-                "reference": "c5f510f8d0fa8135de9495145e2758f56037aa1e",
+                "url": "https://api.github.com/repos/sabre-io/xml/zipball/e15454e68805e3713271ea58c0b2d6a82dac56b7",
+                "reference": "e15454e68805e3713271ea58c0b2d6a82dac56b7",
                 "shasum": ""
             },
             "require": {
@@ -2437,7 +2437,7 @@
                 "dom",
                 "xml"
             ],
-            "time": "2018-10-09T11:41:10+00:00"
+            "time": "2019-01-09T13:50:52+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
