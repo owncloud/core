@@ -154,6 +154,7 @@ class WebDavHelper {
 	 * @param string $namespaceString string containing prefix and namespace
 	 *                                e.g "x1='http://whatever.org/ns'"
 	 * @param number $davPathVersionToUse
+	 * @param string $type
 	 *
 	 * @return ResponseInterface
 	 */
@@ -164,8 +165,9 @@ class WebDavHelper {
 		$path,
 		$propertyName,
 		$propertyValue,
-		$namespaceString,
-		$davPathVersionToUse = 2
+		$namespaceString = "oc='http://owncloud.org/ns'",
+		$davPathVersionToUse = 2,
+		$type="files"
 	) {
 		$matches = [];
 		\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
@@ -185,7 +187,7 @@ class WebDavHelper {
 
 		return self::makeDavRequest(
 			$baseUrl, $user, $password, "PROPPATCH", $path, [], $body,
-			null, $davPathVersionToUse
+			null, $davPathVersionToUse, $type
 		);
 	}
 
