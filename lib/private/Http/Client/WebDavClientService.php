@@ -71,7 +71,7 @@ class WebDavClientService implements IWebDavClientService {
 	 */
 	public function newClient($settings) {
 		if (!isset($settings['proxy'])) {
-			$proxy = $this->config->getSystemValue('proxy', '');
+			$proxy = $this->getProxyUri();
 			if ($proxy !== '') {
 				$settings['proxy'] = $proxy;
 			}
@@ -92,5 +92,23 @@ class WebDavClientService implements IWebDavClientService {
 			$client->addCurlSetting(CURLOPT_CAINFO, $certPath);
 		}
 		return $client;
+	}
+
+	/**
+	 * Get the proxy URI
+	 *
+	 * @return string
+	 */
+	private function getProxyUri() {
+		$proxyHost = $this->config->getSystemValue('proxy', null);
+		$proxyUserPwd = $this->config->getSystemValue('proxyuserpwd', null);
+		$proxyUri = '';
+		if ($proxyUserPwd !== null) {
+			$proxyUri .= $proxyUserPwd . '@';
+		}
+		if ($proxyHost !== null) {
+			$proxyUri .= $proxyHost;
+		}
+		return $proxyUri;
 	}
 }
