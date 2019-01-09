@@ -57,7 +57,7 @@ class Client implements IClient {
 	/**
 	 * Sets the default options to the client
 	 */
-	private function setDefaultOptions() {
+	private function setDefaultOptions($stream = false) {
 		if ($this->configured) {
 			return;
 		}
@@ -77,8 +77,24 @@ class Client implements IClient {
 		}
 
 		$this->client->setDefaultOption('headers/User-Agent', 'ownCloud Server Crawler');
-		if ($this->getProxyUri() !== '') {
-			$this->client->setDefaultOption('proxy', $this->getProxyUri());
+		if ($stream) {
+			$proxyHost = $this->config->getSystemValue('proxy', null);
+			if (!empty($proxyHost)) {
+				$this->client->setDefaultOption(
+					'proxy',
+					'tcp://' . $proxyHost
+				);
+			}
+
+			$proxyUserPwd = $this->config->getSystemValue('proxyuserpwd', null);
+			if (!empty($proxyUserPwd)) {
+				$auth = \base64_encode(\urldecode($proxyUserPwd));
+				$this->client->setDefaultOption('headers/Proxy-Authorization', "Basic $auth");
+			}
+		} else {
+			if ($this->getProxyUri() !== '') {
+				$this->client->setDefaultOption('proxy', $this->getProxyUri());
+			}
 		}
 	}
 
@@ -132,9 +148,9 @@ class Client implements IClient {
 	 * @throws \Exception If the request could not get completed
 	 */
 	public function get($uri, array $options = []) {
-		$this->setDefaultOptions();
-		$response = $this->client->get($uri, $options);
 		$isStream = isset($options['stream']) && $options['stream'];
+		$this->setDefaultOptions($isStream);
+		$response = $this->client->get($uri, $options);
 		return new Response($response, $isStream);
 	}
 
@@ -198,7 +214,8 @@ class Client implements IClient {
 	 * @throws \Exception If the request could not get completed
 	 */
 	public function post($uri, array $options = []) {
-		$this->setDefaultOptions();
+		$isStream = isset($options['stream']) && $options['stream'];
+		$this->setDefaultOptions($isStream);
 		$response = $this->client->post($uri, $options);
 		return new Response($response);
 	}
@@ -233,7 +250,8 @@ class Client implements IClient {
 	 * @throws \Exception If the request could not get completed
 	 */
 	public function put($uri, array $options = []) {
-		$this->setDefaultOptions();
+		$isStream = isset($options['stream']) && $options['stream'];
+		$this->setDefaultOptions($isStream);
 		$response = $this->client->put($uri, $options);
 		return new Response($response);
 	}
