@@ -400,7 +400,7 @@ class OcmController extends Controller {
 			);
 		} catch (\Exception $e) {
 			$this->logger->error(
-				"server can not process notification, {$e->getMessage()}",
+				"server can not process notification, {$e->getTraceAsString()()}",
 				['app' => 'federatefilesharing']
 			);
 			return new JSONResponse(
