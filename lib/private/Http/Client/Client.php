@@ -64,7 +64,10 @@ class Client implements IClient {
 		$this->configured = true;
 		// Either use user bundle or the system bundle if nothing is specified
 		if ($this->certificateManager->listCertificates() !== []) {
-			\OC::$server->getLogger()->critical('listCertificates is empty array', ['app' => 'cert-manager']);
+			\OC::$server->getLogger()->critical('listCertificates is not empty array', ['app' => 'cert-manager']);
+			foreach ($this->certificateManager->listCertificates() as $cert) {
+				\OC::$server->getLogger()->critical("CommonName:" . $cert->getCommonName(). "Name:" . $cert->getName(), ['app' => 'cert-manager']);
+			}
 			$this->client->setDefaultOption('verify', $this->certificateManager->getAbsoluteBundlePath());
 		} else {
 			// If the instance is not yet setup we need to use the static path as
