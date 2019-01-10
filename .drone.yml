@@ -163,7 +163,7 @@ pipeline:
       - php occ a:l
     when:
       matrix:
-        INSTALL_TESTING-APP: true
+        INSTALL_TESTING_APP: true
 
   prepare-objectstore:
     image: owncloudci/php:${PHP_VERSION}
@@ -596,5 +596,5 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-      INSTALL_TESTING-APP: true
+      INSTALL_TESTING_APP: true
       USE_EMAIL: true
