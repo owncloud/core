@@ -64,15 +64,19 @@ class Client implements IClient {
 		$this->configured = true;
 		// Either use user bundle or the system bundle if nothing is specified
 		if ($this->certificateManager->listCertificates() !== []) {
+			\OC::$server->getLogger()->critical('listCertificates is empty array', ['app' => 'cert-manager']);
 			$this->client->setDefaultOption('verify', $this->certificateManager->getAbsoluteBundlePath());
 		} else {
 			// If the instance is not yet setup we need to use the static path as
 			// $this->certificateManager->getAbsoluteBundlePath() tries to instantiiate
 			// a view
+			\OC::$server->getLogger()->critical('Certificates is not set up', ['app' => 'cert-manager']);
 			if ($this->config->getSystemValue('installed', false) && !\OCP\Util::needUpgrade()) {
 				$this->client->setDefaultOption('verify', $this->certificateManager->getAbsoluteBundlePath(null));
+				\OC::$server->getLogger()->critical($this->certificateManager->getAbsoluteBundlePath(null), ['app' => 'cert-manager']);
 			} else {
 				$this->client->setDefaultOption('verify', \OC::$SERVERROOT . '/resources/config/ca-bundle.crt');
+				\OC::$server->getLogger()->critical(\OC::$SERVERROOT . '/resources/config/ca-bundle.crt', ['app' => 'cert-manager']);
 			}
 		}
 

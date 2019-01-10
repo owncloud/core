@@ -207,6 +207,9 @@ class CertificateManager implements ICertificateManager {
 				$this->createCertificateBundle();
 			}
 		}
+		$certBundle = $this->getCertificateBundle($uid);
+		$localFile = $this->view->getLocalFile($this->getCertificateBundle($uid));
+		\OC::$server->getLogger()->critical('LocalFile ' . $localFile, ['app' => 'cert-manager']);
 		return $this->view->getLocalFile($this->getCertificateBundle($uid));
 	}
 
