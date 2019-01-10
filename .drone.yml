@@ -31,10 +31,7 @@ pipeline:
       - php occ config:system:set trusted_domains 2 --value=federated
       - php occ log:manage --level 2
       - php occ config:list
-      - echo "export TEST_SERVER_FED_URL=https://federated" > /drone/saved-settings.sh
-      - php occ security:certificates:import /drone/server.crt
-      - php occ security:certificates
-      - openssl x509 -in /drone/fed-server/data/files_external/rootcerts.crt -text
+      - echo "export TEST_SERVER_FED_URL=http://federated" > /drone/saved-settings.sh
     when:
       matrix:
         USE_FEDERATED_SERVER: true
@@ -146,9 +143,6 @@ pipeline:
       - php occ config:system:set trusted_domains 2 --value=federated
       - php occ log:manage --level 2
       - php occ config:list
-      - php occ security:certificates:import /drone/federated.crt
-      - php occ security:certificates
-      - openssl x509 -in /drone/src/data/files_external/rootcerts.crt -text
     when:
       matrix:
         INSTALL_SERVER: true
@@ -370,7 +364,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-      - TEST_SERVER_URL=https://server
+      - TEST_SERVER_URL=http://server
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
@@ -383,7 +377,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-      - TEST_SERVER_URL=https://server
+      - TEST_SERVER_URL=http://server
       - MAILHOG_HOST=email
     commands:
       - touch /drone/saved-settings.sh
@@ -400,7 +394,7 @@ pipeline:
       - BROWSER=chrome
       - SELENIUM_HOST=selenium
       - SELENIUM_PORT=4444
-      - TEST_SERVER_URL=https://server
+      - TEST_SERVER_URL=http://server
       - PLATFORM=Linux
       - MAILHOG_HOST=email
     commands:
@@ -509,10 +503,6 @@ services:
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/src/
-      - APACHE_CONFIG_TEMPLATE=ssl
-      - APACHE_SSL_CERT_CN=server
-      - APACHE_SSL_CERT=/drone/server.crt
-      - APACHE_SSL_KEY=/drone/server.key
     command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
     when:
       matrix:
@@ -523,10 +513,6 @@ services:
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/fed-server/
-      - APACHE_CONFIG_TEMPLATE=ssl
-      - APACHE_SSL_CERT_CN=federated
-      - APACHE_SSL_CERT=/drone/federated.crt
-      - APACHE_SSL_KEY=/drone/federated.key
     command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
     when:
       matrix:
