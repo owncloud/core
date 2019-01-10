@@ -34,6 +34,7 @@ pipeline:
       - echo "export TEST_SERVER_FED_URL=https://federated" > /drone/saved-settings.sh
       - php occ security:certificates:import /drone/server.crt
       - php occ security:certificates
+      - openssl x509 -in /drone/fed-server/data/files_external/rootcerts.crt -text
     when:
       matrix:
         USE_FEDERATED_SERVER: true
@@ -147,6 +148,7 @@ pipeline:
       - php occ config:list
       - php occ security:certificates:import /drone/federated.crt
       - php occ security:certificates
+      - openssl x509 -in /drone/src/data/files_external/rootcerts.crt -text
     when:
       matrix:
         INSTALL_SERVER: true
@@ -405,6 +407,8 @@ pipeline:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
       - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
+      - openssl x509 -in /drone/fed-server/data/files_external/rootcerts.crt -text
+      - openssl x509 -in /drone/src/data/files_external/rootcerts.crt -text
     when:
       matrix:
         TEST_SUITE: selenium
