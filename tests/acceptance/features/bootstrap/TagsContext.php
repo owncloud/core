@@ -50,7 +50,7 @@ class TagsContext implements Context {
 	 * @param string $user
 	 * @param bool $userVisible
 	 * @param bool $userAssignable
-	 * @param bool$userEditable
+	 * @param bool $userEditable
 	 * @param string $name
 	 * @param string $groups
 	 *
