@@ -25,7 +25,6 @@ use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Ring\Exception\ConnectException;
 use GuzzleHttp\Stream\StreamInterface;
 use Guzzle\Http\Exception\BadResponseException;
-use Sabre\DAV\Client as SClient;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
@@ -1328,19 +1327,6 @@ trait WebDav {
 			$this->getPasswordForUser($user),
 			$path, $folderDepth, $properties,
 			"files", ($this->usingOldDavPath) ? 1 : 2
-		);
-	}
-
-	/**
-	 * @param string $user
-	 *
-	 * @return SClient
-	 */
-	public function getSabreClient($user) {
-		return WebDavHelper::getSabreClient(
-			$this->getBaseUrl(),
-			$user,
-			$this->getPasswordForUser($user)
 		);
 	}
 
