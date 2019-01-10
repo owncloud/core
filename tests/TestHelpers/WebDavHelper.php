@@ -26,7 +26,6 @@ use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Stream\StreamInterface;
 use InvalidArgumentException;
-use Sabre\DAV\Client as SClient;
 use SimpleXMLElement;
 
 /**
@@ -344,27 +343,6 @@ class WebDavHelper {
 				"DAV path version $davPathVersionToUse is unknown"
 			);
 		}
-	}
-
-	/**
-	 * returns a Sabre client
-	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 *
-	 * @return \Sabre\DAV\Client
-	 */
-	public static function getSabreClient($baseUrl, $user, $password) {
-		$settings = [
-				'baseUri' => $baseUrl . "/",
-				'userName' => $user,
-				'password' => $password,
-				'authType' => SClient::AUTH_BASIC
-		];
-		$client = new SClient($settings);
-		$client->addCurlSetting(CURLOPT_SSL_VERIFYPEER, false);
-		return $client;
 	}
 
 	/**
