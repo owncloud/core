@@ -13,7 +13,7 @@ pipeline:
   install-fed-server:
     image: owncloudci/core
     pull: true
-    version: ${FEDERATION_OC_VERSION}
+    git_reference: master
     core_path: /drone/fed-server
     when:
       matrix:
