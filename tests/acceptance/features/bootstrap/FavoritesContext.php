@@ -40,6 +40,12 @@ class FavoritesContext implements Context {
 	private $featureContext;
 
 	/**
+	 *
+	 * @var WebDavPropertiesContext
+	 */
+	private $webDavPropertiesContext;
+
+	/**
 	 * @When user :user favorites element :path using the WebDAV API
 	 * @Given user :user has favorited element :path
 	 *
@@ -193,7 +199,7 @@ class FavoritesContext implements Context {
 	 */
 	public function asUserTheFileOrFolderShouldBeFavorited($user, $path, $expectedValue = 1) {
 		$property = "oc:favorite";
-		$this->featureContext->asUserFolderShouldContainAPropertyWithValue(
+		$this->webDavPropertiesContext->asUserFolderShouldContainAPropertyWithValue(
 			$user, $path, $property, $expectedValue
 		);
 	}
@@ -272,5 +278,8 @@ class FavoritesContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->webDavPropertiesContext = $environment->getContext(
+			'WebDavPropertiesContext'
+		);
 	}
 }
