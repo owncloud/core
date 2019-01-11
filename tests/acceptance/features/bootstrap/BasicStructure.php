@@ -1956,6 +1956,17 @@ trait BasicStructure {
 	}
 
 	/**
+	 * returns a string that can be used to check a url of comments with
+	 * regular expression (without delimiter)
+	 *
+	 * @return string
+	 */
+	public function getCommentUrlReqExp() {
+		$basePath = \ltrim($this->getBasePath() . "/", "/");
+		return "/{$basePath}remote.php/dav/comments/files/([0-9]+)";
+	}
+
+	/**
 	 * substitutes codes like %base_url% with the value
 	 * if the given value does not have anything to be substituted
 	 * then it is returned unmodified
@@ -2058,6 +2069,14 @@ trait BasicStructure {
 				"function" => [
 					$this,
 					"getVersionStringFromStatus"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%a_comment_url%",
+				"function" => [
+					$this,
+					"getCommentUrlReqExp"
 				],
 				"parameter" => []
 			]

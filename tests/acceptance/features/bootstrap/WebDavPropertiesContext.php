@@ -238,19 +238,17 @@ class WebDavPropertiesContext implements Context {
 			isset($xmlPart[0]), "Cannot find property \"$key\""
 		);
 		$value = $xmlPart[0]->__toString();
-		
-		if ($expectedValue === "a_comment_url") {
-			$basePath = \ltrim($this->featureContext->getBasePath() . "/", "/");
-			$expected = "#^/{$basePath}remote.php/dav/comments/files/([0-9]+)$#";
-			PHPUnit_Framework_Assert::assertRegExp(
-				$expected, $value,
+		$expectedValue = $this->featureContext->substituteInLineCodes(
+			$expectedValue
+		);
+		$expectedValue = "#^$expectedValue$#";
+		$altExpectedValue = "#^$altExpectedValue$#";
+		if (\preg_match($expectedValue, $value) !== 1
+			&& \preg_match($altExpectedValue, $value) !== 1
+		) {
+			PHPUnit_Framework_Assert::fail(
 				"Property \"$key\" found with value \"$value\", " .
-				"expected \"$expectedValue\""
-			);
-		} elseif ($value != $expectedValue && $value != $altExpectedValue) {
-			throw new \Exception(
-				"Property \"$key\" found with value \"$value\", " .
-				"expected \"$expectedValue\""
+				"expected \"$expectedValue\" or \"$altExpectedValue\""
 			);
 		}
 	}
