@@ -85,6 +85,13 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 	$fileInfo = $ownerView->getFileInfo($path);
 	$linkCheckPlugin->setFileInfo($fileInfo);
 
+	\OC::$server->getEventDispatcher()->addListener(
+		'public.user.resolve',
+		function ($event) use ($share) {
+			$event->setArgument('user', $share->getSharedWith());
+		}
+	);
+
 	return new \OC\Files\View($ownerView->getAbsolutePath($path));
 });
 
