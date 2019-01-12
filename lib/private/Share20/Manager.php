@@ -45,6 +45,7 @@ use OCP\Security\ISecureRandom;
 use OCP\Share\Exceptions\GenericShareException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\Exceptions\TransferSharesException;
+use OCP\Share\IAttributes;
 use OCP\Share\IManager;
 use OCP\Share\IProviderFactory;
 use OCP\Share\IShare;
@@ -640,6 +641,7 @@ class Manager implements IManager {
 			'shareType' => $share->getShareType(),
 			'uidOwner' => $share->getSharedBy(),
 			'permissions' => $share->getPermissions(),
+			'attributes' => $share->getAttributes(),
 			'fileSource' => $share->getNode()->getId(),
 			'expiration' => $share->getExpirationDate(),
 			'token' => $share->getToken(),
@@ -667,6 +669,7 @@ class Manager implements IManager {
 			'shareType' => $share->getShareType(),
 			'uidOwner' => $share->getSharedBy(),
 			'permissions' => $share->getPermissions(),
+			'attributes' => $share->getAttributes(),
 			'fileSource' => $share->getNode()->getId(),
 			'expiration' => $share->getExpirationDate(),
 			'token' => $share->getToken(),
@@ -908,6 +911,11 @@ class Manager implements IManager {
 			$shareAfterUpdateEvent->setArgument('permissionupdate', true);
 			$shareAfterUpdateEvent->setArgument('oldpermissions', $originalShare->getPermissions());
 			$shareAfterUpdateEvent->setArgument('path', $userFolder->getRelativePath($share->getNode()->getPath()));
+			$update = true;
+		}
+
+		if ($this->hashAttributes($share->getAttributes()) !== $this->hashAttributes($originalShare->getAttributes())) {
+			$shareAfterUpdateEvent->setArgument('attributesupdate', true);
 			$update = true;
 		}
 
@@ -1381,7 +1389,7 @@ class Manager implements IManager {
 	 * @return \OCP\Share\IShare;
 	 */
 	public function newShare() {
-		return new \OC\Share20\Share($this->rootFolder, $this->userManager);
+		return new Share($this->rootFolder, $this->userManager);
 	}
 
 	/**
@@ -1541,5 +1549,17 @@ class Manager implements IManager {
 	 */
 	public function outgoingServer2ServerSharesAllowed() {
 		return $this->config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') === 'yes';
+	}
+
+	/**
+	 * @param IAttributes|null $perms
+	 * @return string
+	 */
+	private function hashAttributes($perms) {
+		if ($perms === null || empty($perms->toArray())) {
+			return "";
+		}
+
+		return \md5(\json_encode($perms->toArray()));
 	}
 }

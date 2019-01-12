@@ -30,6 +30,7 @@ use OCP\Files\Storage\IStorageFactory;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
+use OCP\Share\IAttributes;
 use OCP\Share\IManager;
 
 class MountProvider implements IMountProvider {
@@ -157,20 +158,36 @@ class MountProvider implements IMountProvider {
 				continue;
 			}
 
-			$superShare = $this->shareManager->newShare();
-
 			// compute super share based on first entry of the group
+			$superShare = $this->shareManager->newShare();
 			$superShare->setId($shares[0]->getId())
 				->setShareOwner($shares[0]->getShareOwner())
 				->setNodeId($shares[0]->getNodeId())
 				->setTarget($shares[0]->getTarget());
 
 			// use most permissive permissions
-			$permissions = 0;
+			// this covers the case where there are multiple shares for the same
+			// file e.g. from different groups and different permissions
+			$superPermissions = 0;
+			$superAttributes = $this->shareManager->newShare()->newAttributes();
 			foreach ($shares as $share) {
-				$permissions |= $share->getPermissions();
+				// update permissions
+				$superPermissions |= $share->getPermissions();
+
+				// update share permission attributes
+				if ($share->getAttributes() !== null) {
+					foreach ($share->getAttributes()->toArray() as $attribute) {
+						if ($superAttributes->getAttribute($attribute['scope'], $attribute['key']) === true) {
+							// if super share attribute is already enabled, it is most permissive
+							continue;
+						}
+						// update supershare attributes with subshare attribute
+						$superAttributes->setAttribute($attribute['scope'], $attribute['key'], $attribute['enabled']);
+					}
+				}
+
+				// adjust target, for database consistency if needed
 				if ($share->getTarget() !== $superShare->getTarget()) {
-					// adjust target, for database consistency
 					$share->setTarget($superShare->getTarget());
 					try {
 						$this->shareManager->moveShare($share, $user->getUID());
@@ -191,8 +208,8 @@ class MountProvider implements IMountProvider {
 					}
 				}
 			}
-
-			$superShare->setPermissions($permissions);
+			$superShare->setPermissions($superPermissions);
+			$superShare->setAttributes($superAttributes);
 
 			$result[] = [$superShare, $shares];
 		}

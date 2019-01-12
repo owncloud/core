@@ -66,10 +66,18 @@
 			'</span>' +
 			'{{/if}}' +
 			'</div>' +
+			'<div class="shareAttributes"">' +
+			'{{#each shareAttributes}}' +
+			'<span class="shareOption">' +
+			'<input id="can-{{name}}-{{cid}}-{{shareWith}}" type="checkbox" name="{{name}}" class="attributes checkbox" {{#if enabled}}checked="checked"{{/if}} data-scope="{{scope}}" data-enabled="{{enabled}}""/>' +
+			'<label for="can-{{name}}-{{cid}}-{{shareWith}}">{{label}}</label>' +
+			'</span>' +
+			'{{/each}}' +
+			'</div>' +
 			'</li>' +
 			'{{/each}}' +
 			'</ul>'
-		;
+	;
 
 	/**
 	 * @class OCA.Share.ShareDialogShareeListView
@@ -94,6 +102,7 @@
 		events: {
 			'click .unshare': 'onUnshare',
 			'click .permissions': 'onPermissionChange',
+			'click .attributes': 'onPermissionChange',
 			'click .showCruds': 'onCrudsToggle',
 			'click .mailNotification': 'onSendMailNotification'
 		},
@@ -112,8 +121,50 @@
 		},
 
 		/**
-		 *
-		 * @param {OC.Share.Types.ShareInfo} shareInfo
+		 * @param shareIndex
+		 * @returns {object}
+		 */
+		getAttributesObject: function(shareIndex) {
+			var model = this.model;
+			var cid = this.cid;
+			var shareWith = model.getShareWith(shareIndex);
+
+			// Returns OC.Share.Types.ShareAttribute[] which were set for this
+			// share (and stored in DB)
+			var attributes = model.getShareAttributes(shareIndex);
+
+			var list = [];
+			attributes.map(function(attribute) {
+				// Check if the share attribute set for this file is still in
+				// registered share attributes and get its label
+				var label = model.getRegisteredShareAttributeLabel(
+					attribute.scope,
+					attribute.key
+				);
+
+				if (label) {
+					list.push({
+						cid: cid,
+						shareWith: shareWith,
+						enabled: attribute.enabled,
+						scope: attribute.scope,
+						name: attribute.key,
+						label: label
+					});
+				} else {
+					OC.Notification.showTemporary(t('core', 'Share with ' +
+						'user {shareWith} has attribute {name} which is ' +
+						'no longer available. Please recreate the share!',
+						{ name: attribute.key, shareWith: shareWith })
+					);
+				}
+			});
+
+			return list;
+		},
+
+		/**
+		 * @param shareIndex
 		 * @returns {object}
 		 */
 		getShareeObject: function(shareIndex) {
@@ -136,6 +187,7 @@
 				hasCreatePermission: this.model.hasCreatePermission(shareIndex),
 				hasUpdatePermission: this.model.hasUpdatePermission(shareIndex),
 				hasDeletePermission: this.model.hasDeletePermission(shareIndex),
+				shareAttributes: this.getAttributesObject(shareIndex),
 				wasMailSent: this.model.notificationMailWasSent(shareIndex),
 				shareWith: shareWith,
 				shareWithDisplayName: shareWithDisplayName,
@@ -205,6 +257,7 @@
 				});
 			}
 
+			var element = this.$el.find('.has-tooltip');
 			this.$el.find('.has-tooltip').tooltip({
 				placement: 'bottom'
 			});
@@ -261,7 +314,7 @@
 			var shareType = $li.data('share-type');
 			var shareWith = $li.attr('data-share-with');
 
-			// adjust checkbox states
+			// adjust share permissions and their required checkbox states
 			var $checkboxes = $('.permissions', $li).not('input[name="edit"]').not('input[name="share"]');
 			var checked;
 			if ($element.attr('name') === 'edit') {
@@ -279,7 +332,19 @@
 				permissions |= $(checkbox).data('permissions');
 			});
 
-			this.model.updateShare(shareId, {permissions: permissions});
+			// Check extra share permissions
+			var attributes = [];
+			$('.attributes', $li).each(function(index, checkbox) {
+				var checked = $(checkbox).is(':checked');
+				$(checkbox).prop('enabled', checked);
+				attributes.push({
+					scope : $(checkbox).data('scope'),
+					key: $(checkbox).attr('name'),
+					enabled: checked
+				});
+			});
+
+			this.model.updateShare(shareId, {permissions: permissions, attributes: attributes});
 		},
 
 		onCrudsToggle: function(event) {

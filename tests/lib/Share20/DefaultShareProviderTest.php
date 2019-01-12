@@ -23,6 +23,8 @@ namespace Test\Share20;
 
 use OC\Authentication\Token\DefaultTokenMapper;
 use OC\Share20\DefaultShareProvider;
+use OC\Share20\ShareAttributes;
+use OCP\Share\IAttributes as IShareAttributes;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\File;
 use OCP\Files\Folder;
@@ -689,6 +691,11 @@ class DefaultShareProviderTest extends TestCase {
 		$share->setShareOwner('shareOwner');
 		$share->setNode($path);
 		$share->setPermissions(1);
+
+		$attrs = new ShareAttributes();
+		$attrs->setAttribute("permissions", "download", true);
+		$share->setAttributes($attrs);
+
 		$share->setTarget('/target');
 
 		$share2 = $this->provider->create($share);
@@ -703,6 +710,16 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame('/target', $share2->getTarget());
 		$this->assertLessThanOrEqual(new \DateTime(), $share2->getShareTime());
 		$this->assertSame($path, $share2->getNode());
+		$this->assertSame(
+			[
+				[
+					"scope" => "permissions",
+					"key" => "download",
+					"enabled" => true
+				]
+			],
+			$share->getAttributes()->toArray()
+		);
 	}
 
 	public function testCreateGroupShare() {
@@ -737,6 +754,11 @@ class DefaultShareProviderTest extends TestCase {
 		$share->setShareOwner('shareOwner');
 		$share->setNode($path);
 		$share->setPermissions(1);
+
+		$attrs = new ShareAttributes();
+		$attrs->setAttribute("permissions", "download", true);
+		$share->setAttributes($attrs);
+
 		$share->setTarget('/target');
 
 		$share2 = $this->provider->create($share);
@@ -751,6 +773,16 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame('/target', $share2->getTarget());
 		$this->assertLessThanOrEqual(new \DateTime(), $share2->getShareTime());
 		$this->assertSame($path, $share2->getNode());
+		$this->assertSame(
+			[
+				[
+					"scope" => "permissions",
+					"key" => "download",
+					"enabled" => true
+				]
+			],
+			$share->getAttributes()->toArray()
+		);
 	}
 
 	public function testCreateLinkShare() {

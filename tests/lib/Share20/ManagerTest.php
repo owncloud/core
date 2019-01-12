@@ -704,8 +704,8 @@ class ManagerTest extends \Test\TestCase {
 	}
 
 	public function createShare($id, $type, $path, $sharedWith, $sharedBy, $shareOwner,
-		$permissions, $expireDate = null, $password = null) {
-		$share = $this->createMock('\OCP\Share\IShare');
+		$permissions, $expireDate = null, $password = null, $attributes = null) {
+		$share = $this->createMock(IShare::class);
 
 		$share->method('getShareType')->willReturn($type);
 		$share->method('getSharedWith')->willReturn($sharedWith);
@@ -713,6 +713,7 @@ class ManagerTest extends \Test\TestCase {
 		$share->method('getShareOwner')->willReturn($shareOwner);
 		$share->method('getNode')->willReturn($path);
 		$share->method('getPermissions')->willReturn($permissions);
+		$share->method('getAttributes')->willReturn($attributes);
 		$share->method('getExpirationDate')->willReturn($expireDate);
 		$share->method('getPassword')->willReturn($password);
 
@@ -2361,6 +2362,7 @@ class ManagerTest extends \Test\TestCase {
 			'error' => '',
 			'itemTarget' => '/target',
 			'shareWith' => null,
+			'attributes' => null,
 		];
 
 		$hookListnerExpectsPost = [
@@ -2376,6 +2378,7 @@ class ManagerTest extends \Test\TestCase {
 			'itemTarget' => '/target',
 			'fileTarget' => '/target',
 			'shareWith' => null,
+			'attributes' => null,
 			'passwordEnabled' => true,
 		];
 
@@ -3148,6 +3151,8 @@ class ManagerTest extends \Test\TestCase {
 		$manager->expects($this->once())->method('getShareById')->with('foo:42')->willReturn($originalShare);
 
 		$share = $this->manager->newShare();
+		$attrs = $this->manager->newShare()->newAttributes();
+		$attrs->setAttribute('app1', 'perm1', true);
 		$share->setProviderId('foo')
 			->setId('42')
 			->setShareType(\OCP\Share::SHARE_TYPE_USER)
@@ -3155,6 +3160,7 @@ class ManagerTest extends \Test\TestCase {
 			->setShareOwner('newUser')
 			->setSharedBy('sharer')
 			->setPermissions(31)
+			->setAttributes($attrs)
 			->setNode($node);
 
 		$this->defaultProvider->expects($this->once())
@@ -3192,6 +3198,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdate[1]);
 		$this->assertEquals('share.afterupdate', $calledAfterUpdate[0]);
 		$this->assertArrayHasKey('permissionupdate', $calledAfterUpdate[1]);
+		$this->assertArrayHasKey('attributesupdate', $calledAfterUpdate[1]);
 		$this->assertTrue($calledAfterUpdate[1]->getArgument('permissionupdate'));
 		$this->assertArrayHasKey('oldpermissions', $calledAfterUpdate[1]);
 		$this->assertEquals(1, $calledAfterUpdate[1]->getArgument('oldpermissions'));

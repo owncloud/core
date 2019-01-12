@@ -222,6 +222,11 @@ class Share20OcsController extends OCSController {
 
 		$result['mail_send'] = $share->getMailSend() ? 1 : 0;
 
+		$result['attributes'] = null;
+		if ($attributes = $share->getAttributes()) {
+			$result['attributes'] =  \json_encode($attributes->toArray());
+		}
+
 		return $result;
 	}
 
@@ -498,6 +503,8 @@ class Share20OcsController extends OCSController {
 
 		$share->setShareType($shareType);
 		$share->setSharedBy($this->userSession->getUser()->getUID());
+
+		$share = $this->setShareAttributes($share, $this->request->getParam('attributes', null));
 
 		try {
 			$share = $this->shareManager->createShare($share);
@@ -869,6 +876,8 @@ class Share20OcsController extends OCSController {
 			return new Result(null, 400, $this->l->t('Cannot remove all permissions'));
 		}
 
+		$share = $this->setShareAttributes($share, $this->request->getParam('attributes', null));
+
 		try {
 			$share = $this->shareManager->updateShare($share);
 		} catch (\Exception $e) {
@@ -1196,6 +1205,27 @@ class Share20OcsController extends OCSController {
 
 			$share = $this->shareManager->getShareById('ocFederatedSharing:' . $id, $recipient);
 		}
+
+		return $share;
+	}
+
+	/**
+	 * @param IShare $share
+	 * @param string[][]|null $formattedShareAttributes
+	 * @return IShare modified share
+	 */
+	private function setShareAttributes(IShare $share, $formattedShareAttributes) {
+		$newShareAttributes = $this->shareManager->newShare()->newAttributes();
+		if ($formattedShareAttributes !== null) {
+			foreach ($formattedShareAttributes as $formattedAttr) {
+				$newShareAttributes->setAttribute(
+					$formattedAttr['scope'],
+					$formattedAttr['key'],
+					(bool) \json_decode($formattedAttr['enabled'])
+				);
+			}
+		}
+		$share->setAttributes($newShareAttributes);
 
 		return $share;
 	}
