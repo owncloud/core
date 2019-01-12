@@ -39,6 +39,13 @@ class WebDavPropertiesContext implements Context {
 	 * @var FeatureContext
 	 */
 	private $featureContext;
+
+	/**
+	 * @var array map with user as key and another map as value,
+	 *            which has path as key and etag as value
+	 */
+	private $storedETAG = null;
+
 	/**
 	 * @When /^user "([^"]*)" gets the properties of (?:file|folder|entry) "([^"]*)" using the WebDAV API$/
 	 *
@@ -353,22 +360,90 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
+	 * @When user :user stores etag of element :path using the WebDAV API
+	 * @Given user :user has stored etag of element :path
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userStoresEtagOfElement($user, $path) {
+		$propertiesTable = new TableNode([['getetag']]);
+		$this->userGetsPropertiesOfFolder(
+			$user, $path, $propertiesTable
+		);
+		$this->storedETAG[$user][$path]
+			= $this->featureContext->getEtagFromResponseXmlObject();
+	}
+
+	/**
 	 * @Then /^the properties response should contain an etag$/
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function thePropertiesResponseShouldContainAnEtag() {
-		$xmlPart = $this->featureContext->getResponseXmlObject()->xpath(
-			"//d:prop/d:getetag"
-		);
-		if (!\is_array($xmlPart)
-			|| !\preg_match("/^\"[a-f0-9]{1,32}\"$/", $xmlPart[0]->__toString())
-		) {
+		if (!$this->featureContext->isEtagValid()) {
 			throw new \Exception(
 				"getetag not found in response"
 			);
 		}
+	}
+
+	/**
+	 * @Then the etag of element :path of user :user should not have changed
+	 *
+	 * @param string $path
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function etagOfElementOfUserShouldNotHaveChanged($path, $user) {
+		$propertiesTable = new TableNode([['getetag']]);
+		$this->userGetsPropertiesOfFolder(
+			$user, $path, $propertiesTable
+		);
+		PHPUnit_Framework_Assert::assertEquals(
+			$this->storedETAG[$user][$path],
+			$this->featureContext->getEtagFromResponseXmlObject()
+		);
+	}
+
+	/**
+	 * @Then the etag of element :path of user :user should have changed
+	 *
+	 * @param string $path
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function etagOfElementOfUserShouldHaveChanged($path, $user) {
+		$propertiesTable = new TableNode([['getetag']]);
+		$this->userGetsPropertiesOfFolder(
+			$user, $path, $propertiesTable
+		);
+		PHPUnit_Framework_Assert::assertNotEquals(
+			$this->storedETAG[$user][$path],
+			$this->featureContext->getEtagFromResponseXmlObject()
+		);
+	}
+
+	/**
+	 * @Then the etag of element :path of user :user on server :server should have changed
+	 *
+	 * @param string $path
+	 * @param string $user
+	 * @param string $server
+	 *
+	 * @return void
+	 */
+	public function theEtagOfElementOfUserOnServerShouldHaveChanged(
+		$path, $user, $server
+	) {
+		$previousServer = $this->featureContext->usingServer($server);
+		$this->etagOfElementOfUserShouldHaveChanged($path, $user);
+		$this->featureContext->usingServer($previousServer);
 	}
 
 	/**
