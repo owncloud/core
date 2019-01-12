@@ -9,6 +9,8 @@ A personal cloud which runs on your own server.**
 
 ![](https://github.com/owncloud/screenshots/blob/master/files/sidebar_1.png)
 
+Trigger CI
+
 ## Why is this so awesome?
 * :file_folder: **Access your Data** You can store your files, contacts, calendars and more on a server of your choosing.
 * :package: **Sync your Data** You keep your files, contacts, calendars and more synchronized amongst your devices.
