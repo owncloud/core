@@ -41,6 +41,7 @@ default:
         - '%paths.base%/../features/cliEncryption'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - WebDavPropertiesContext:
 
     apiFederation:
       paths:
@@ -213,6 +214,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - FeatureContext: *common_feature_context_params
+        - WebDavPropertiesContext:
 
     webUIFavorites:
       paths:
@@ -404,6 +406,7 @@ default:
         - '%paths.base%/../features/webUIManageQuota'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - WebDavPropertiesContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
@@ -416,6 +419,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - EmailContext:
+        - WebDavPropertiesContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
@@ -428,6 +432,7 @@ default:
         - '%paths.base%/../features/webUISettingsMenu'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - WebDavPropertiesContext:
         - EmailContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
