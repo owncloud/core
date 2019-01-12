@@ -170,7 +170,7 @@ interface IShare {
 	 * See \OCP\Constants::PERMISSION_*
 	 *
 	 * @param int $permissions
-	 * @return \OCP\Share\IShare The modified object
+	 * @return IShare The modified object
 	 * @since 9.0.0
 	 */
 	public function setPermissions($permissions);
@@ -183,6 +183,31 @@ interface IShare {
 	 * @since 9.0.0
 	 */
 	public function getPermissions();
+
+	/**
+	 * Create share attributes object
+	 *
+	 * @since 10.2.0
+	 * @return IAttributes;
+	 */
+	public function newAttributes();
+
+	/**
+	 * Set share attributes
+	 *
+	 * @param IAttributes $attributes
+	 * @since 10.2.0
+	 * @return IShare The modified object
+	 */
+	public function setAttributes(IAttributes $attributes);
+
+	/**
+	 * Get share attributes
+	 *
+	 * @since 10.2.0
+	 * @return IAttributes
+	 */
+	public function getAttributes();
 
 	/**
 	 * Set the expiration date

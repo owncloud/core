@@ -26,6 +26,7 @@
 namespace OC\Share20;
 
 use OCP\Files\File;
+use OCP\Share\IAttributes;
 use OCP\Share\IShare;
 use OCP\Share\IShareProvider;
 use OC\Share20\Exception\InvalidShare;
@@ -153,6 +154,12 @@ class DefaultShareProvider implements IShareProvider {
 		// set the permissions
 		$qb->setValue('permissions', $qb->createNamedParameter($share->getPermissions()));
 
+		// set share attributes
+		$shareAttributes = $this->formatShareAttributes(
+			$share->getAttributes()
+		);
+		$qb->setValue('attributes', $qb->createNamedParameter($shareAttributes));
+
 		// Set who created this share
 		$qb->setValue('uid_initiator', $qb->createNamedParameter($share->getSharedBy()));
 
@@ -198,6 +205,11 @@ class DefaultShareProvider implements IShareProvider {
 	 */
 	public function update(\OCP\Share\IShare $share) {
 		$this->validate($share);
+
+		$shareAttributes = $this->formatShareAttributes(
+			$share->getAttributes()
+		);
+
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			/*
 			 * We allow updating the recipient on user shares.
@@ -209,6 +221,7 @@ class DefaultShareProvider implements IShareProvider {
 				->set('uid_owner', $qb->createNamedParameter($share->getShareOwner()))
 				->set('uid_initiator', $qb->createNamedParameter($share->getSharedBy()))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
+				->set('attributes', $qb->createNamedParameter($shareAttributes))
 				->set('item_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('accepted', $qb->createNamedParameter($share->getState()))
@@ -221,6 +234,7 @@ class DefaultShareProvider implements IShareProvider {
 				->set('uid_owner', $qb->createNamedParameter($share->getShareOwner()))
 				->set('uid_initiator', $qb->createNamedParameter($share->getSharedBy()))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
+				->set('attributes', $qb->createNamedParameter($shareAttributes))
 				->set('item_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('accepted', $qb->createNamedParameter($share->getState()))
@@ -246,6 +260,7 @@ class DefaultShareProvider implements IShareProvider {
 			$qb->update('share')
 				->where($qb->expr()->eq('parent', $qb->createNamedParameter($share->getId())))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
+				->set('attributes', $qb->createNamedParameter($shareAttributes))
 				->execute();
 		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
 			$qb = $this->dbConn->getQueryBuilder();
@@ -255,6 +270,7 @@ class DefaultShareProvider implements IShareProvider {
 				->set('uid_owner', $qb->createNamedParameter($share->getShareOwner()))
 				->set('uid_initiator', $qb->createNamedParameter($share->getSharedBy()))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
+				->set('attributes', $qb->createNamedParameter($shareAttributes))
 				->set('item_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('token', $qb->createNamedParameter($share->getToken()))
@@ -396,6 +412,10 @@ class DefaultShareProvider implements IShareProvider {
 			$data = $stmt->fetch();
 			$stmt->closeCursor();
 
+			$shareAttributes = $this->formatShareAttributes(
+				$share->getAttributes()
+			);
+
 			if ($data === false) {
 				// No usergroup share yet. Create one.
 				$qb = $this->dbConn->getQueryBuilder();
@@ -411,6 +431,7 @@ class DefaultShareProvider implements IShareProvider {
 						'file_source' => $qb->createNamedParameter($share->getNode()->getId()),
 						'file_target' => $qb->createNamedParameter($share->getTarget()),
 						'permissions' => $qb->createNamedParameter($share->getPermissions()),
+						'attributes' => $qb->createNamedParameter($shareAttributes),
 						'stime' => $qb->createNamedParameter($share->getShareTime()->getTimestamp()),
 						'accepted' => $qb->createNamedParameter($share->getState()),
 					])->execute();
@@ -423,6 +444,7 @@ class DefaultShareProvider implements IShareProvider {
 					// make sure to reset the permissions to the one of the parent share,
 					// as legacy entries with zero permissions might still exist
 					->set('permissions', $qb->createNamedParameter($share->getPermissions()))
+					->set('attributes', $qb->createNamedParameter($shareAttributes))
 					->where($qb->expr()->eq('id', $qb->createNamedParameter($data['id'])))
 					->execute();
 			}
@@ -964,6 +986,8 @@ class DefaultShareProvider implements IShareProvider {
 			$share->setToken($data['token']);
 		}
 
+		$share = $this->updateShareAttributes($share, $data['attributes']);
+
 		$share->setSharedBy($data['uid_initiator']);
 		$share->setShareOwner($data['uid_owner']);
 
@@ -1238,5 +1262,51 @@ class DefaultShareProvider implements IShareProvider {
 		}
 
 		// TODO: add more early validation for fields instead of relying on the DB
+	}
+
+	/**
+	 * Load from database format (JSON string) to IAttributes
+	 *
+	 * @param IShare $share
+	 * @param string|null $data
+	 * @return IShare modified share
+	 */
+	private function updateShareAttributes(IShare $share, $data) {
+		if ($data !== null) {
+			$attributes = new ShareAttributes();
+			$compressedAttributes = \json_decode($data, true);
+			foreach ($compressedAttributes as $compressedAttribute) {
+				$attributes->setAttribute(
+					$compressedAttribute[0],
+					$compressedAttribute[1],
+					$compressedAttribute[2]
+				);
+			}
+			$share->setAttributes($attributes);
+		}
+
+		return $share;
+	}
+
+	/**
+	 * Format IAttributes to database format (JSON string)
+	 *
+	 * @param IAttributes|null $attributes
+	 * @return string|null
+	 */
+	private function formatShareAttributes($attributes) {
+		if ($attributes === null || empty($attributes->toArray())) {
+			return null;
+		}
+
+		$compressedAttributes = [];
+		foreach ($attributes->toArray() as $attribute) {
+			$compressedAttributes[] = [
+				0 => $attribute['scope'],
+				1 => $attribute['key'],
+				2 => $attribute['enabled']
+			];
+		}
+		return \json_encode($compressedAttributes);
 	}
 }
