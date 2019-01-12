@@ -44,19 +44,17 @@ trait WebDav {
 	 * @var string
 	 */
 	private $davPath = "remote.php/webdav";
+
 	/**
 	 * @var boolean
 	 */
 	private $usingOldDavPath = true;
+
 	/**
 	 * @var ResponseInterface[]
 	 */
 	private $uploadResponses;
-	/**
-	 * @var array map with user as key and another map as value,
-	 *            which has path as key and etag as value
-	 */
-	private $storedETAG = null;
+
 	/**
 	 * @var integer
 	 */
@@ -98,12 +96,6 @@ trait WebDav {
 	private $chunkingToUse = null;
 
 	/**
-	 *
-	 * @var WebDavPropertiesContext
-	 */
-	private $webDavPropertiesContext;
-
-	/**
 	 * @return SimpleXMLElement
 	 */
 	public function getResponseXmlObject() {
@@ -117,6 +109,37 @@ trait WebDav {
 	 */
 	public function setResponseXmlObject($responseXmlObject) {
 		$this->responseXmlObject = $responseXmlObject;
+	}
+
+	/**
+	 *
+	 * @return string the etag or an empty string if the getetag property does not exist
+	 */
+	public function getEtagFromResponseXmlObject() {
+		$xmlObject = $this->getResponseXmlObject();
+		$xmlPart = $xmlObject->xpath("//d:prop/d:getetag");
+		if (!\is_array($xmlPart) || (\count($xmlPart) === 0)) {
+			return '';
+		}
+		return $xmlPart[0]->__toString();
+	}
+
+	/**
+	 *
+	 * @param string|null $eTag if null then get eTag from response XML object
+	 *
+	 * @return boolean
+	 */
+	public function isEtagValid($eTag = null) {
+		if ($eTag === null) {
+			$eTag = $this->getEtagFromResponseXmlObject();
+		}
+		if (\preg_match("/^\"[a-f0-9]{1,32}\"$/", $eTag)
+		) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -1010,13 +1033,10 @@ trait WebDav {
 	public function asFileOrFolderShouldExist($user, $entry, $path) {
 		$path = $this->substituteInLineCodes($path);
 		$this->responseXmlObject = $this->listFolder($user, $path, 0);
-		try {
-			$this->webDavPropertiesContext->thePropertiesResponseShouldContainAnEtag();
-		} catch (\Exception $e) {
-			throw new \Exception(
-				"$entry '$path' expected to exist but not found"
-			);
-		}
+		PHPUnit_Framework_Assert::assertTrue(
+			$this->isEtagValid(),
+			"$entry '$path' expected to exist but not found"
+		);
 	}
 
 	/**
@@ -1950,79 +1970,6 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user stores etag of element :path using the WebDAV API
-	 * @Given user :user has stored etag of element :path
-	 *
-	 * @param string $user
-	 * @param string $path
-	 *
-	 * @return void
-	 */
-	public function userStoresEtagOfElement($user, $path) {
-		$propertiesTable = new TableNode([['getetag']]);
-		$this->webDavPropertiesContext->userGetsPropertiesOfFolder(
-			$user, $path, $propertiesTable
-		);
-		$xmlPart = $this->responseXmlObject->xpath("//d:prop/d:getetag");
-		$this->storedETAG[$user][$path] = $xmlPart[0]->__toString();
-	}
-
-	/**
-	 * @Then the etag of element :path of user :user should not have changed
-	 *
-	 * @param string $path
-	 * @param string $user
-	 *
-	 * @return void
-	 */
-	public function etagOfElementOfUserShouldNotHaveChanged($path, $user) {
-		$propertiesTable = new TableNode([['getetag']]);
-		$this->webDavPropertiesContext->userGetsPropertiesOfFolder(
-			$user, $path, $propertiesTable
-		);
-		$xmlPart = $this->responseXmlObject->xpath("//d:prop/d:getetag");
-		PHPUnit_Framework_Assert::assertEquals(
-			$xmlPart[0]->__toString(), $this->storedETAG[$user][$path]
-		);
-	}
-
-	/**
-	 * @Then the etag of element :path of user :user should have changed
-	 *
-	 * @param string $path
-	 * @param string $user
-	 *
-	 * @return void
-	 */
-	public function etagOfElementOfUserShouldHaveChanged($path, $user) {
-		$propertiesTable = new TableNode([['getetag']]);
-		$this->webDavPropertiesContext->userGetsPropertiesOfFolder(
-			$user, $path, $propertiesTable
-		);
-		$xmlPart = $this->responseXmlObject->xpath("//d:prop/d:getetag");
-		PHPUnit_Framework_Assert::assertNotEquals(
-			$xmlPart[0]->__toString(), $this->storedETAG[$user][$path]
-		);
-	}
-
-	/**
-	 * @Then the etag of element :path of user :user on server :server should have changed
-	 *
-	 * @param string $path
-	 * @param string $user
-	 * @param string $server
-	 *
-	 * @return void
-	 */
-	public function theEtagOfElementOfUserOnServerShouldHaveChanged(
-		$path, $user, $server
-	) {
-		$previousServer = $this->usingServer($server);
-		$this->etagOfElementOfUserShouldHaveChanged($path, $user);
-		$this->usingServer($previousServer);
-	}
-
-	/**
 	 * @When an unauthenticated client connects to the dav endpoint using the WebDAV API
 	 * @Given an unauthenticated client has connected to the dav endpoint
 	 *
@@ -2307,25 +2254,6 @@ trait WebDav {
 		if ($this->lastUploadDeleteTime !== null && $time - $this->lastUploadDeleteTime < 1) {
 			\sleep(1);
 		}
-	}
-
-	/**
-	 * This will run before EVERY scenario.
-	 * It will set the properties for this object.
-	 *
-	 * @BeforeScenario
-	 *
-	 * @param BeforeScenarioScope $scope
-	 *
-	 * @return void
-	 */
-	public function before(BeforeScenarioScope $scope) {
-		// Get the environment
-		$environment = $scope->getEnvironment();
-		// Get all the contexts you need in this context
-		$this->webDavPropertiesContext = $environment->getContext(
-			'WebDavPropertiesContext'
-		);
 	}
 
 	/**
