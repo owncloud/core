@@ -18,6 +18,7 @@ default:
         - ChecksumContext:
         - FilesVersionsContext:
         - TransferOwnershipContext:
+        - WebDavPropertiesContext:
 
     apiCapabilities:
       paths:
@@ -25,6 +26,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - CapabilitiesContext:
+        - WebDavPropertiesContext:
 
     apiComments:
       paths:
@@ -32,12 +34,14 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - CommentsContext:
+        - WebDavPropertiesContext:
 
     cliEncryption:
       paths:
         - '%paths.base%/../features/cliEncryption'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - WebDavPropertiesContext:
 
     apiFederation:
       paths:
@@ -45,6 +49,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - FederationContext:
+        - WebDavPropertiesContext:
 
     apiFavorites:
       paths:
@@ -52,18 +57,21 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - FavoritesContext:
+        - WebDavPropertiesContext:
 
     apiProvisioning-v1:
       paths:
         - '%paths.base%/../features/apiProvisioning-v1'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - WebDavPropertiesContext:
 
     apiProvisioning-v2:
       paths:
         - '%paths.base%/../features/apiProvisioning-v2'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - WebDavPropertiesContext:
 
     apiSharees:
       paths:
@@ -71,6 +79,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - ShareesContext:
+        - WebDavPropertiesContext:
 
     apiShareManagement:
       paths:
@@ -79,6 +88,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - PublicWebDavContext:
         - TrashbinContext:
+        - WebDavPropertiesContext:
 
     apiShareOperations:
       paths:
@@ -87,6 +97,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - PublicWebDavContext:
         - TrashbinContext:
+        - WebDavPropertiesContext:
 
     apiSharingNotifications:
       paths:
@@ -94,6 +105,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - NotificationsCoreContext:
+        - WebDavPropertiesContext:
 
     apiTags:
       paths:
@@ -101,6 +113,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - TagsContext:
+        - WebDavPropertiesContext:
 
     apiTrashbin:
       paths:
@@ -108,6 +121,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - TrashbinContext:
+        - WebDavPropertiesContext:
 
     apiWebdavOperations:
       paths:
@@ -117,6 +131,7 @@ default:
         - LoggingContext:
         - SearchContext:
         - PublicWebDavContext:
+        - WebDavPropertiesContext:
 
     apiWebdavProperties:
       paths:
@@ -124,6 +139,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
+        - WebDavPropertiesContext:
 
     cliProvisioning:
       paths:
@@ -132,6 +148,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - EmailContext:
         - OccContext:
+        - WebDavPropertiesContext:
 
     cliMain:
       paths:
@@ -139,6 +156,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - WebDavPropertiesContext:
 
     cliBackground:
       paths:
@@ -146,6 +164,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - WebDavPropertiesContext:
 
     cliTrashbin:
       paths:
@@ -154,6 +173,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
         - TrashbinContext:
+        - WebDavPropertiesContext:
 
     webUIAdminSettings:
       paths:
@@ -171,6 +191,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - OccContext:
+        - WebDavPropertiesContext:
 
     webUIComments:
       paths:
@@ -181,6 +202,7 @@ default:
         - WebUILoginContext:
         - WebUIFilesContext:
         - WebUISharingContext:
+        - WebDavPropertiesContext:
 
 
     webUIEncryptionUserKeysType:
@@ -192,6 +214,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - FeatureContext: *common_feature_context_params
+        - WebDavPropertiesContext:
 
     webUIFavorites:
       paths:
@@ -201,6 +224,7 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - WebDavPropertiesContext:
 
     webUIFiles:
       paths:
@@ -215,6 +239,7 @@ default:
         - WebUISharingContext:
         - OccContext:
         - PublicWebDavContext:
+        - WebDavPropertiesContext:
 
     webUILogin:
       paths:
@@ -226,6 +251,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIPersonalGeneralSettingsContext:
+        - WebDavPropertiesContext:
 
     webUIMoveFilesFolders:
       paths:
@@ -237,6 +263,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - PublicWebDavContext:
+        - WebDavPropertiesContext:
 
     webUIPersonalSettings:
       paths:
@@ -251,6 +278,7 @@ default:
         - WebUIPersonalSecuritySettingsContext:
         - WebUIUserContext:
         - OccContext:
+        - WebDavPropertiesContext:
 
     webUIRenameFiles:
       paths:
@@ -262,6 +290,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - PublicWebDavContext:
+        - WebDavPropertiesContext:
 
     webUIRenameFolders:
       paths:
@@ -271,6 +300,7 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - WebDavPropertiesContext:
 
     webUIRestrictSharing:
       paths:
@@ -281,6 +311,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - WebDavPropertiesContext:
 
     webUISharingExternal:
       paths:
@@ -294,6 +325,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - PublicWebDavContext:
+        - WebDavPropertiesContext:
 
     webUISharingInternalGroups:
       paths:
@@ -305,6 +337,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - WebUIAdminSharingSettingsContext:
+        - WebDavPropertiesContext:
 
     webUISharingInternalUsers:
       paths:
@@ -316,6 +349,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - WebUIAdminSharingSettingsContext:
+        - WebDavPropertiesContext:
 
     webUISharingNotifications:
       paths:
@@ -328,6 +362,7 @@ default:
         - WebUILoginContext:
         - WebUINotificationsContext:
         - WebUISharingContext:
+        - WebDavPropertiesContext:
 
     webUITags:
       paths:
@@ -340,6 +375,7 @@ default:
         - WebUIFilesContext:
         - WebUISharingContext:
         - WebUITagsContext:
+        - WebDavPropertiesContext:
 
     webUITrashbin:
       paths:
@@ -350,6 +386,7 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - WebDavPropertiesContext:
 
     webUIUpload:
       paths:
@@ -361,6 +398,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - PublicWebDavContext:
+        - WebDavPropertiesContext:
 
     # This suite is part of the user_management app in later core versions
     webUIManageQuota:
@@ -368,6 +406,7 @@ default:
         - '%paths.base%/../features/webUIManageQuota'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - WebDavPropertiesContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
@@ -380,6 +419,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - EmailContext:
+        - WebDavPropertiesContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
@@ -392,6 +432,7 @@ default:
         - '%paths.base%/../features/webUISettingsMenu'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - WebDavPropertiesContext:
         - EmailContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
@@ -411,6 +452,7 @@ default:
         - WebUIWebDavLockingContext:
         - WebUISharingContext:
         - PublicWebDavContext:
+        - WebDavPropertiesContext:
 
   extensions:
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
