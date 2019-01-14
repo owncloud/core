@@ -164,8 +164,16 @@ class MailNotifications {
 			$filename = $filter->getFile();
 			$link = $filter->getLink();
 
-			$subject = (string) $this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $unescapedFilename]);
-			list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, null, 'internal');
+			$recipientLanguageCode = $this->config->getUserValue($recipient->getUID(), 'core', 'lang', 'en');
+			$recipientL10N = \OC::$server->getL10N('core');
+			if ($this->l->getLanguageCode() !== $recipientLanguageCode) {
+				$recipientL10N = \OC::$server->getL10N('core', $recipientLanguageCode);
+				$subject = (string)$recipientL10N->t('%s shared »%s« with you', [$this->senderDisplayName, $unescapedFilename]);
+			} else {
+				$subject = (string)$this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $unescapedFilename]);
+			}
+
+			list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, null, 'internal', $recipientL10N);
 
 			// send it out now
 			try {
