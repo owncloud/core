@@ -96,7 +96,7 @@ class EmailContext implements Context {
 			PHPUnit_Framework_Assert::assertTrue(true);
 			return;
 		}
-		throw \Exception("Email exists with email address: {$address}.");
+		throw new \Exception("Email exists with email address: {$address}.");
 	}
 
 	/**
