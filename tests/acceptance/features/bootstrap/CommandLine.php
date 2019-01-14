@@ -41,24 +41,6 @@ trait CommandLine {
 	 */
 	private $lastStdErr;
 
-	private $lastTransferPath;
-
-	/**
-	 * @return string
-	 */
-	public function getLastTransferPath() {
-		return $this->lastTransferPath;
-	}
-
-	/**
-	 * @param string $lastTransferPath
-	 *
-	 * @return void
-	 */
-	public function setLastTransferPath($lastTransferPath) {
-		$this->lastTransferPath = $lastTransferPath;
-	}
-
 	/**
 	 * get the exit status of the last occ command
 	 * app acceptance tests that have their own step code may need to process this
@@ -309,38 +291,6 @@ trait CommandLine {
 	}
 
 	/**
-	 * @When /^the administrator invokes occ command "([^"]*)"$/
-	 * @Given /^the administrator has invoked occ command "([^"]*)"$/
-	 *
-	 * @param string $cmd
-	 *
-	 * @return void
-	 */
-	public function invokingTheCommand($cmd) {
-		$this->runOcc([$cmd]);
-	}
-
-	/**
-	 * @When /^the administrator invokes occ command "([^"]*)" with environment variable "([^"]*)" set to "([^"]*)"$/
-	 * @Given /^the administrator has invoked occ command "([^"]*)" with environment variable "([^"]*)" set to "([^"]*)"$/
-	 *
-	 * @param string $cmd
-	 * @param string $envVariableName
-	 * @param string $envVariableValue
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function invokingTheCommandWithEnvVariable(
-		$cmd, $envVariableName, $envVariableValue
-	) {
-		$args = [$cmd];
-		$this->runOccWithEnvVariables(
-			$args, [$envVariableName => $envVariableValue]
-		);
-	}
-
-	/**
 	 * Find exception texts in stderr
 	 *
 	 * @return array of exception texts
@@ -383,119 +333,6 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command should have been successful$/
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCommandShouldHaveBeenSuccessful() {
-		$exceptions = $this->findExceptions();
-		if ($this->lastCode !== 0) {
-			$msg = "The command was not successful, exit code was $this->lastCode.";
-			if (!empty($exceptions)) {
-				$msg .= ' Exceptions: ' . \implode(', ', $exceptions);
-			}
-			throw new \Exception($msg);
-		} elseif (!empty($exceptions)) {
-			$msg = 'The command was successful but triggered exceptions: '
-				. \implode(', ', $exceptions);
-			throw new \Exception($msg);
-		}
-	}
-
-	/**
-	 * @Then /^the command should have failed with exit code ([0-9]+)$/
-	 *
-	 * @param int $exitCode
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCommandFailedWithExitCode($exitCode) {
-		if ($this->lastCode !== (int)$exitCode) {
-			throw new \Exception(
-				"The command was expected to fail with exit code $exitCode but got "
-				. $this->lastCode
-			);
-		}
-	}
-
-	/**
-	 * @Then /^the command should have failed with exception text "([^"]*)"$/
-	 *
-	 * @param string $exceptionText
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCommandFailedWithExceptionText($exceptionText) {
-		$exceptions = $this->findExceptions();
-		if (empty($exceptions)) {
-			throw new \Exception('The command did not throw any exceptions');
-		}
-
-		if (!\in_array($exceptionText, $exceptions)) {
-			throw new \Exception(
-				"The command did not throw any exception with the text '$exceptionText'"
-			);
-		}
-	}
-
-	/**
-	 * @Then /^the command output should contain the text ((?:'[^']*')|(?:"[^"]*"))$/
-	 *
-	 * @param string $text
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCommandOutputContainsTheText($text) {
-		// The capturing group of the regex always includes the quotes at each
-		// end of the captured string, so trim them.
-		$text = \trim($text, $text[0]);
-		$lines = $this->findLines($this->lastStdOut, $text);
-		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
-			1,
-			\count($lines),
-			"The command output did not contain the expected text on stdout '$text'\n" .
-			"The command output on stdout was:\n" .
-			$this->lastStdOut
-		);
-	}
-
-	/**
-	 * @Then /^the command error output should contain the text ((?:'[^']*')|(?:"[^"]*"))$/
-	 *
-	 * @param string $text
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCommandErrorOutputContainsTheText($text) {
-		// The capturing group of the regex always includes the quotes at each
-		// end of the captured string, so trim them.
-		$text = \trim($text, $text[0]);
-		$lines = $this->findLines($this->lastStdErr, $text);
-		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
-			1,
-			\count($lines),
-			"The command output did not contain the expected text on stderr '$text'\n" .
-			"The command output on stderr was:\n" .
-			$this->lastStdErr
-		);
-	}
-
-	/**
-	 * @Then the occ command JSON output should be empty
-	 *
-	 * @return void
-	 */
-	public function theOccCommandJsonOutputShouldNotReturnAnyData() {
-		PHPUnit_Framework_Assert::assertEquals(\trim($this->lastStdOut), "[]");
-		PHPUnit_Framework_Assert::assertEmpty($this->lastStdErr);
-	}
-
-	/**
 	 * @param string $sourceUser
 	 * @param string $targetUser
 	 *
@@ -534,153 +371,6 @@ trait CommandLine {
 	}
 
 	/**
-	 * @When /^the administrator transfers ownership from "([^"]+)" to "([^"]+)" using the occ command$/
-	 * @Given /^the administrator has transferred ownership from "([^"]+)" to "([^"]+)"$/
-	 *
-	 * @param string $user1
-	 * @param string $user2
-	 *
-	 * @return void
-	 */
-	public function transferringOwnership($user1, $user2) {
-		if ($this->runOcc(['files:transfer-ownership', $user1, $user2]) === 0) {
-			$this->lastTransferPath
-				= $this->findLastTransferFolderForUser($user1, $user2);
-		} else {
-			// failure
-			$this->lastTransferPath = null;
-		}
-	}
-
-	/**
-	 * @When /^the administrator successfully recreates the encryption masterkey using the occ command$/
-	 * @Given /^the administrator has successfully recreated the encryption masterkey$/
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function recreateMasterKeyUsingOccCommand() {
-		$this->runOcc(['encryption:recreate-master-key', '-y']);
-		$this->theCommandShouldHaveBeenSuccessful();
-	}
-
-	/**
-	 * @When /^the administrator transfers ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)" using the occ command$/
-	 * @Given /^the administrator has transferred ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"$/
-	 *
-	 * @param string $path
-	 * @param string $user1
-	 * @param string $user2
-	 *
-	 * @return void
-	 */
-	public function transferringOwnershipPath($path, $user1, $user2) {
-		$path = "--path=$path";
-		if ($this->runOcc(['files:transfer-ownership', $path, $user1, $user2]) === 0) {
-			$this->lastTransferPath
-				= $this->findLastTransferFolderForUser($user1, $user2);
-		} else {
-			// failure
-			$this->lastTransferPath = null;
-		}
-	}
-
-	/**
-	 * @Given encryption has been enabled
-	 *
-	 * @return void
-	 */
-	public function encryptionHasBeenEnabled() {
-		$this->runOcc(['encryption:enable']);
-	}
-
-	/**
-	 * @When the administrator sets the encryption type to :encryptionType using the occ command
-	 * @Given the administrator has set the encryption type to :encryptionType
-	 *
-	 * @param string $encryptionType
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theAdministratorSetsEncryptionTypeToUsingTheOccCommand($encryptionType) {
-		$this->runOcc(
-			["encryption:select-encryption-type", $encryptionType, "-y"]
-		);
-	}
-
-	/**
-	 * @When the administrator encrypts all data using the occ command
-	 * @Given the administrator has encrypted all the data
-	 *
-	 * @return void
-	 */
-	public function theAdministratorEncryptsAllDataUsingTheOccCommand() {
-		$this->runOcc(["encryption:encrypt-all", "-n"]);
-	}
-
-	/**
-	 * @When the administrator decrypts user keys based encryption with recovery key :recoveryKey using the occ command
-	 *
-	 * @param string $recoveryKey
-	 *
-	 * @return void
-	 */
-	public function theAdministratorDecryptsUserKeysBasedEncryptionWithKey($recoveryKey) {
-		$this->invokingTheCommandWithEnvVariable(
-			"encryption:decrypt-all -m recovery -c yes",
-			'OC_RECOVERY_PASSWORD',
-			$recoveryKey
-		);
-	}
-
-	/**
-	 * @Then file :fileName of user :username should not be encrypted
-	 *
-	 * @param string $fileName
-	 * @param string $username
-	 *
-	 * @return void
-	 */
-	public function fileOfUserShouldNotBeEncrypted($fileName, $username) {
-		$fileName = \ltrim($fileName, "/");
-		$filePath = "data/$username/files/$fileName";
-		$this->readFileInServerRoot($filePath);
-		$response = $this->getResponse();
-		$parsedResponse = HttpRequestHelper::getResponseXml($response);
-		$encodedFileContent = (string)$parsedResponse->data->element->contentUrlEncoded;
-		$fileContent = \urldecode($encodedFileContent);
-		$this->userDownloadsFileUsingTheAPI($username, "/$fileName");
-		$fileContentServer = (string)$this->getResponse()->getBody();
-		PHPUnit_Framework_Assert::assertEquals(
-			\trim($fileContentServer),
-			$fileContent
-		);
-	}
-
-	/**
-	 * @Then file :fileName of user :username should be encrypted
-	 *
-	 * @param string $fileName
-	 * @param string $username
-	 *
-	 * @return void
-	 */
-	public function fileOfUserShouldBeEncrypted($fileName, $username) {
-		$fileName = \ltrim($fileName, "/");
-		$filePath = "data/$username/files/$fileName";
-		$this->readFileInServerRoot($filePath);
-		$response = $this->getResponse();
-		$parsedResponse = HttpRequestHelper::getResponseXml($this->getResponse());
-		$encodedFileContent = (string)$parsedResponse->data->element->contentUrlEncoded;
-		$fileContent = \urldecode($encodedFileContent);
-		PHPUnit_Framework_Assert::assertStringStartsWith(
-			"HBEGIN:oc_encryption_module:OC_DEFAULT_MODULE:cipher:AES-256-CTR:signed:true",
-			$fileContent
-		);
-	}
-
-	/**
 	 * Reset user password
 	 *
 	 * @param string $username
@@ -691,15 +381,14 @@ trait CommandLine {
 	public function resetUserPassword($username, $password = null) {
 		$actualUsername = $this->getActualUsername($username);
 		if ($password === null) {
-			$this->invokingTheCommand(
-				"user:resetpassword $actualUsername --send-email"
+			$this->runOcc(
+				["user:resetpassword $actualUsername --send-email"]
 			);
 		} else {
 			$password = $this->getActualPassword($password);
-			$this->invokingTheCommandWithEnvVariable(
-				"user:resetpassword $actualUsername --password-from-env",
-				'OC_PASS',
-				$password
+			$this->runOccWithEnvVariables(
+				["user:resetpassword $actualUsername --password-from-env"],
+				['OC_PASS' => $password]
 			);
 			if ($username === "%admin%") {
 				$this->rememberNewAdminPassword($password);

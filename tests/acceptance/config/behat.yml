@@ -17,6 +17,7 @@ default:
         - CardDavContext:
         - ChecksumContext:
         - FilesVersionsContext:
+        - OccContext:
         - TransferOwnershipContext:
 
     apiCapabilities:
@@ -39,6 +40,7 @@ default:
         - '%paths.base%/../features/cliEncryption'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - WebDavPropertiesContext:
 
     apiFederation:
@@ -113,6 +115,7 @@ default:
         - '%paths.base%/../features/apiTrashbin'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - TrashbinContext:
 
     apiWebdavOperations:
@@ -199,6 +202,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - WebDavPropertiesContext:
 
     webUIFavorites:

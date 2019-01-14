@@ -35,6 +35,64 @@ class TransferOwnershipContext implements Context {
 	 */
 	private $featureContext;
 
+	private $lastTransferPath;
+
+	/**
+	 * @return string
+	 */
+	public function getLastTransferPath() {
+		return $this->lastTransferPath;
+	}
+
+	/**
+	 * @param string $lastTransferPath
+	 *
+	 * @return void
+	 */
+	public function setLastTransferPath($lastTransferPath) {
+		$this->lastTransferPath = $lastTransferPath;
+	}
+
+	/**
+	 * @When /^the administrator transfers ownership from "([^"]+)" to "([^"]+)" using the occ command$/
+	 * @Given /^the administrator has transferred ownership from "([^"]+)" to "([^"]+)"$/
+	 *
+	 * @param string $user1
+	 * @param string $user2
+	 *
+	 * @return void
+	 */
+	public function transferringOwnership($user1, $user2) {
+		if ($this->featureContext->runOcc(['files:transfer-ownership', $user1, $user2]) === 0) {
+			$this->lastTransferPath
+				= $this->featureContext->findLastTransferFolderForUser($user1, $user2);
+		} else {
+			// failure
+			$this->lastTransferPath = null;
+		}
+	}
+
+	/**
+	 * @When /^the administrator transfers ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)" using the occ command$/
+	 * @Given /^the administrator has transferred ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"$/
+	 *
+	 * @param string $path
+	 * @param string $user1
+	 * @param string $user2
+	 *
+	 * @return void
+	 */
+	public function transferringOwnershipPath($path, $user1, $user2) {
+		$path = "--path=$path";
+		if ($this->featureContext->runOcc(['files:transfer-ownership', $path, $user1, $user2]) === 0) {
+			$this->lastTransferPath
+				= $this->featureContext->findLastTransferFolderForUser($user1, $user2);
+		} else {
+			// failure
+			$this->lastTransferPath = null;
+		}
+	}
+
 	/**
 	 * @Then /^the downloaded content when downloading file "([^"]*)" for user "([^"]*)" with range "([^"]*)" from the last received transfer folder should be "([^"]*)"$/
 	 *
@@ -48,7 +106,7 @@ class TransferOwnershipContext implements Context {
 	public function downloadedContentWhenDownloadingForUserWithRangeShouldBe(
 		$fileSource, $user, $range, $content
 	) {
-		$fileSource = $this->featureContext->getLastTransferPath() . $fileSource;
+		$fileSource = $this->getLastTransferPath() . $fileSource;
 		$this->featureContext->downloadedContentWhenDownloadingForUserWithRangeShouldBe(
 			$fileSource, $user, $range, $content
 		);
@@ -69,9 +127,9 @@ class TransferOwnershipContext implements Context {
 		//but the last received transfer folder itself should exist
 		//that would help against snakeoil tests if testing a non-existing folder
 		$this->featureContext->asFileOrFolderShouldExist(
-			$user, $entry, $this->featureContext->getLastTransferPath()
+			$user, $entry, $this->getLastTransferPath()
 		);
-		$path = $this->featureContext->getLastTransferPath() . $path;
+		$path = $this->getLastTransferPath() . $path;
 		return $this->featureContext->asFileOrFolderShouldNotExist(
 			$user, $entry, $path
 		);
@@ -84,12 +142,12 @@ class TransferOwnershipContext implements Context {
 	 * @param string $entry
 	 * @param string $path
 	 *
-	 * @return array
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function asFileOrFolderShouldExist($user, $entry, $path) {
-		$path = $this->featureContext->getLastTransferPath() . $path;
-		return $this->featureContext->asFileOrFolderShouldExist(
+		$path = $this->getLastTransferPath() . $path;
+		$this->featureContext->asFileOrFolderShouldExist(
 			$user, $entry, $path
 		);
 	}
