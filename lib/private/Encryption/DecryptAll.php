@@ -213,7 +213,6 @@ class DecryptAll {
 	 * @param string $userCount
 	 */
 	protected function decryptUsersFiles($uid, ProgressBar $progress, $userCount) {
-		$this->setupUserFS($uid);
 		$directories = [];
 		$directories[] = '/' . $uid . '/files';
 
@@ -294,15 +293,5 @@ class DecryptAll {
 	 */
 	protected function getTimestamp() {
 		return \time();
-	}
-
-	/**
-	 * setup user file system
-	 *
-	 * @param string $uid
-	 */
-	protected function setupUserFS($uid) {
-		\OC_Util::tearDownFS();
-		\OC_Util::setupFS($uid);
 	}
 }

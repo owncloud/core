@@ -82,6 +82,7 @@ class LoginController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 * @NoCSRFRequired TODO double check why we need this.
 	 * @UseSession
 	 *
 	 * @return RedirectResponse

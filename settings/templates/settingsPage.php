@@ -10,7 +10,7 @@
 
 script('settings', 'settings');
 script('settings', $_['type']);
-script('files', 'jquery.fileupload');
+script('settings', 'jquery.fileupload');
 vendor_script('select2/select2');
 vendor_style('select2/select2');
 script('core', 'multiselect');

@@ -126,7 +126,7 @@ class Folder extends Node implements FilesFolder {
 	/**
 	 * @inheritdoc
 	 */
-	public function getById($id) {
+	public function getById($id, $first = false) {
 		throw new NotPermittedException();
 	}
 

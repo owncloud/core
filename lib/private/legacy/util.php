@@ -128,6 +128,7 @@ class OC_Util {
 	 * @description configure the initial filesystem based on the configuration
 	 */
 	public static function setupFS($user = '') {
+		throw new Exception('kill me');
 		//setting up the filesystem twice can only lead to trouble
 		if (self::$fsSetup) {
 			return false;
@@ -1083,27 +1084,14 @@ class OC_Util {
 		if (isset($_REQUEST['redirect_url']) && \strpos($_REQUEST['redirect_url'], '@') === false) {
 			$location = $urlGenerator->getAbsoluteURL(\urldecode($_REQUEST['redirect_url']));
 		} else {
-			$defaultPage = \OC::$server->getAppConfig()->getValue('core', 'defaultpage');
-			if ($defaultPage) {
+			$defaultPage = \OC::$server->getConfig()->getAppValue('core', 'defaultpage', 'settings/personal');
+
+			if (\getenv('front_controller_active') === 'true') {
 				$location = $urlGenerator->getAbsoluteURL($defaultPage);
 			} else {
-				$appId = 'files';
-				$defaultApps = \explode(',', \OC::$server->getConfig()->getSystemValue('defaultapp', 'files'));
-				// find the first app that is enabled for the current user
-				foreach ($defaultApps as $defaultApp) {
-					$defaultApp = OC_App::cleanAppId(\strip_tags($defaultApp));
-					if (static::getAppManager()->isEnabledForUser($defaultApp)) {
-						$appId = $defaultApp;
-						break;
-					}
-				}
-
-				if (\getenv('front_controller_active') === 'true') {
-					$location = $urlGenerator->getAbsoluteURL('/apps/' . $appId . '/');
-				} else {
-					$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . '/');
-				}
+				$location = $urlGenerator->getAbsoluteURL('index.php/' . $defaultPage);
 			}
+			// TODO Migration: defaultapp is deprecated because we cannot check if these apps really exist. Use
 		}
 		return $location;
 	}

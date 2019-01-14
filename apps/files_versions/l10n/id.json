@@ -1,7 +1,0 @@
-{ "translations": {
-    "Versions" : "Versi",
-    "Failed to revert {file} to revision {timestamp}." : "Gagal mengembalikan {file} ke revisi {timestamp}.",
-    "Restore" : "Pulihkan",
-    "No other versions available" : "Tidak ada versi lain yang tersedia"
-},"pluralForm" :"nplurals=1; plural=0;"
-}

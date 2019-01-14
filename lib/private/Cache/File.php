@@ -26,39 +26,44 @@
 namespace OC\Cache;
 
 use OC\Files\Filesystem;
+use OC\Files\Storage\Local;
 use OC\Files\View;
+use OCP\Files\Storage\IStorage;
 use OCP\ICache;
 use OCP\Security\ISecureRandom;
 
 class File implements ICache {
 
-	/** @var View */
+	/** @var IStorage */
 	protected $storage;
 
 	/**
 	 * Returns the cache storage for the logged in user
 	 *
-	 * @return \OC\Files\View cache storage
+	 * @return IStorage cache storage
 	 * @throws \OC\ForbiddenException
-	 * @throws \OC\User\NoUserException
 	 */
 	protected function getStorage() {
-		if (isset($this->storage)) {
+		if ($this->storage !== null) {
 			return $this->storage;
 		}
-		if (\OC_User::isLoggedIn()) {
-			$rootView = new View();
-			$user = \OC::$server->getUserSession()->getUser();
-			Filesystem::initMountPoints($user->getUID());
-			if (!$rootView->file_exists('/' . $user->getUID() . '/cache')) {
-				$rootView->mkdir('/' . $user->getUID() . '/cache');
+		$session = \OC::$server->getUserSession();
+		if ($session && $session->isLoggedIn()) {
+			$config = \OC::$server->getConfig();
+			$datadir = $config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data');
+			$path = $config->getSystemValue('cache.path', $datadir.'/cache');
+
+			$user = $session->getUser();
+			$path = \rtrim($path, '/').'/'.$user->getUID();
+
+			$this->storage = new Local(['datadir' => $path]);
+			if (!$this->storage->file_exists('/')) {
+				$this->storage->mkdir('/');
 			}
-			$this->storage = new View('/' . $user->getUID() . '/cache');
 			return $this->storage;
-		} else {
-			\OCP\Util::writeLog('core', 'Can\'t get cache storage, user not logged in', \OCP\Util::ERROR);
-			throw new \OC\ForbiddenException('Can\t get cache storage, user not logged in');
 		}
+		\OCP\Util::writeLog('core', 'Can\'t get cache storage, user not logged in', \OCP\Util::ERROR);
+		throw new \OC\ForbiddenException('Can\'t get cache storage, user not logged in');
 	}
 
 	/**

@@ -344,9 +344,6 @@ class OC_API {
 			if ($userSession->verifyAuthHeaders($request)) {
 				$ocsApiRequest = isset($_SERVER['HTTP_OCS_APIREQUEST']) ? $_SERVER['HTTP_OCS_APIREQUEST'] === 'true' : false;
 				if ($ocsApiRequest) {
-
-					// initialize the user's filesystem
-					\OC_Util::setupFS(\OC_User::getUser());
 					self::$isLoggedIn = true;
 
 					return OC_User::getUser();
@@ -374,8 +371,6 @@ class OC_API {
 				// Deny login if any IAuthModule check fails
 				return false;
 			}
-			// initialize the user's filesystem
-			\OC_Util::setupFS(\OC_User::getUser());
 			self::$isLoggedIn = true;
 
 			return \OC_User::getUser();

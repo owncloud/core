@@ -28,12 +28,10 @@
 
 namespace OC;
 
-use OCP\Files\NotFoundException;
 use OCP\Files\Storage\IStorage;
 use OCP\IAvatarManager;
 use OCP\ILogger;
 use OCP\IUserManager;
-use OCP\Files\IRootFolder;
 use OCP\IL10N;
 
 /**
@@ -43,9 +41,6 @@ class AvatarManager implements IAvatarManager {
 
 	/** @var  IUserManager */
 	private $userManager;
-
-	/** @var  IRootFolder */
-	private $rootFolder;
 
 	/** @var IStorage */
 	private $storage;
@@ -60,17 +55,17 @@ class AvatarManager implements IAvatarManager {
 	 * AvatarManager constructor.
 	 *
 	 * @param IUserManager $userManager
-	 * @param IRootFolder $rootFolder
+	 * @param IStorage $storage
 	 * @param IL10N $l
 	 * @param ILogger $logger
 	 */
 	public function __construct(
 			IUserManager $userManager,
-			IRootFolder $rootFolder,
+			IStorage $storage,
 			IL10N $l,
 			ILogger $logger) {
 		$this->userManager = $userManager;
-		$this->rootFolder = $rootFolder;
+		$this->storage = $storage;
 		$this->l = $l;
 		$this->logger = $logger;
 	}
@@ -84,7 +79,6 @@ class AvatarManager implements IAvatarManager {
 	 * @return \OCP\IAvatar
 	 *
 	 * @throws \Exception In case the username is potentially dangerous
-	 * @throws NotFoundException In case there is no user folder yet
 	 */
 	public function getAvatar($userId) {
 		$user = $this->userManager->get($userId);
@@ -92,8 +86,7 @@ class AvatarManager implements IAvatarManager {
 			throw new \Exception('user does not exist');
 		}
 
-		$avatarsStorage = $this->getAvatarStorage();
-		return new Avatar($avatarsStorage, $this->l, $user, $this->logger);
+		return new Avatar($this->storage, $this->l, $user, $this->logger);
 	}
 
 	/**
@@ -101,17 +94,8 @@ class AvatarManager implements IAvatarManager {
 	 *
 	 * @return \OCP\Files\Storage\IStorage
 	 *
-	 * @throws NotFoundException
-	 * @throws \OCP\Files\NotPermittedException
 	 */
 	public function getAvatarStorage() {
-		if (!$this->storage) {
-			try {
-				$this->storage = $this->rootFolder->get('avatars')->getStorage();
-			} catch (NotFoundException $e) {
-				$this->storage = $this->rootFolder->newFolder('avatars')->getStorage();
-			}
-		}
 		return $this->storage;
 	}
 }

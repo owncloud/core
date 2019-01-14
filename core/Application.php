@@ -92,7 +92,6 @@ class Application extends App {
 		});
 		$container->registerService('AvatarController', function (SimpleContainer $c) {
 			/** @var IServerContainer $server */
-			$server = $c->query('ServerContainer');
 			return new AvatarController(
 				$c->query('AppName'),
 				$c->query('Request'),
@@ -101,7 +100,6 @@ class Application extends App {
 				$c->query('L10N'),
 				$c->query('UserManager'),
 				$c->query('UserSession'),
-				$server->getRootFolder(),
 				$c->query('Logger')
 			);
 		});

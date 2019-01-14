@@ -35,8 +35,6 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\DataDisplayResponse;
-use OCP\Files\IRootFolder;
-use OCP\Files\NotFoundException;
 use OCP\IAvatarManager;
 use OCP\ILogger;
 use OCP\IL10N;
@@ -66,9 +64,6 @@ class AvatarController extends Controller {
 	/** @var IUserSession */
 	protected $userSession;
 
-	/** @var IRootFolder */
-	protected $rootFolder;
-
 	/** @var ILogger */
 	protected $logger;
 
@@ -80,7 +75,6 @@ class AvatarController extends Controller {
 	 * @param IL10N $l10n
 	 * @param IUserManager $userManager
 	 * @param IUserSession $userSession
-	 * @param IRootFolder $rootFolder
 	 * @param ILogger $logger
 	 */
 	public function __construct($appName,
@@ -90,7 +84,6 @@ class AvatarController extends Controller {
 								IL10N $l10n,
 								IUserManager $userManager,
 								IUserSession $userSession,
-								IRootFolder $rootFolder,
 								ILogger $logger) {
 		parent::__construct($appName, $request);
 
@@ -99,18 +92,15 @@ class AvatarController extends Controller {
 		$this->l = $l10n;
 		$this->userManager = $userManager;
 		$this->userSession = $userSession;
-		$this->rootFolder = $rootFolder;
 		$this->logger = $logger;
 	}
 
 	/**
 	 * @NoAdminRequired
 	 *
-	 * @param string $path
 	 * @return DataResponse
 	 */
-	public function postAvatar($path) {
-		$userId = $this->userSession->getUser()->getUID();
+	public function postAvatar() {
 		$files = $this->request->getUploadedFile('files');
 
 		$headers = [];
@@ -119,21 +109,7 @@ class AvatarController extends Controller {
 			$headers['Content-Type'] = 'text/plain';
 		}
 
-		if (isset($path)) {
-			$path = \stripslashes($path);
-			$node = $this->rootFolder->getUserFolder($userId)->get($path);
-			if (!($node instanceof \OCP\Files\File)) {
-				return new DataResponse(['data' => ['message' => $this->l->t('Please select a file.')]], Http::STATUS_OK, $headers);
-			}
-			if ($node->getSize() > 20*1024*1024) {
-				return new DataResponse(
-					['data' => ['message' => $this->l->t('File is too big')]],
-					Http::STATUS_BAD_REQUEST,
-					$headers
-				);
-			}
-			$content = $node->getContent();
-		} elseif ($files !== null) {
+		if ($files !== null) {
 			if (
 				$files['error'][0] === 0 &&
 				$this->isUploadFile($files['tmp_name'][0]) &&
@@ -186,13 +162,12 @@ class AvatarController extends Controller {
 					Http::STATUS_OK,
 					$headers
 				);
-			} else {
-				return new DataResponse(
-					['data' => ['message' => $this->l->t('Invalid image')]],
-					Http::STATUS_OK,
-					$headers
-				);
 			}
+			return new DataResponse(
+				['data' => ['message' => $this->l->t('Invalid image')]],
+				Http::STATUS_OK,
+				$headers
+			);
 		} catch (\Exception $e) {
 			$this->logger->logException($e, ['app' => 'core']);
 			return new DataResponse(['data' => ['message' => $this->l->t('An error occurred. Please contact your admin.')]], Http::STATUS_OK, $headers);
@@ -226,16 +201,41 @@ class AvatarController extends Controller {
 		$tmpAvatar = $this->cache->get('tmpAvatar');
 		if ($tmpAvatar === null) {
 			return new DataResponse(['data' => [
-										'message' => $this->l->t("No temporary profile picture available, try again")
-									]],
-									Http::STATUS_NOT_FOUND);
+				'message' => $this->l->t("No temporary profile picture available, try again")
+			]],
+				Http::STATUS_NOT_FOUND);
 		}
 
 		$image = new \OC_Image($tmpAvatar);
 
 		$resp = new DataDisplayResponse($image->data(),
-				Http::STATUS_OK,
-				['Content-Type' => $image->mimeType()]);
+			Http::STATUS_OK,
+			['Content-Type' => $image->mimeType()]);
+
+		$resp->setETag(\crc32($image->data()));
+		$resp->cacheFor(0);
+		$resp->setLastModified(new \DateTime('now', new \DateTimeZone('GMT')));
+		return $resp;
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param string $userId
+	 * @param int $size
+	 * @param string $ext
+	 *
+	 * @return DataResponse|DataDisplayResponse
+	 */
+	public function getAvatar($userId, $size = 64, $ext = null) {
+		$avatar = $this->avatarManager->getAvatar($userId);
+
+		$image = $avatar->get($size);
+
+		$resp = new DataDisplayResponse($image->data(),
+			Http::STATUS_OK,
+			['Content-Type' => $image->mimeType()]);
 
 		$resp->setETag(\crc32($image->data()));
 		$resp->cacheFor(0);

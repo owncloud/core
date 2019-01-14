@@ -563,12 +563,6 @@ class OC {
 			OC\Log\ErrorHandler::register($debug);
 		}
 
-		// register the stream wrappers
-		\stream_wrapper_register('fakedir', 'OC\Files\Stream\Dir');
-		\stream_wrapper_register('static', 'OC\Files\Stream\StaticStream');
-		\stream_wrapper_register('close', 'OC\Files\Stream\Close');
-		\stream_wrapper_register('quota', 'OC\Files\Stream\Quota');
-
 		\OC::$server->getEventLogger()->start('init_session', 'Initialize session');
 		OC_App::loadApps(['session', 'theme']);
 		if (!self::$CLI) {
@@ -650,17 +644,7 @@ class OC {
 			OC_User::setIncognitoMode(true);
 		}
 
-		self::registerCacheHooks();
-		self::registerFilesystemHooks();
-		if ($systemConfig->getValue('enable_previews', true)) {
-			self::registerPreviewHooks();
-		}
-		self::registerShareHooks();
 		self::registerLogRotate();
-		if ($systemConfig->getValue("installed", false)) {
-			self::registerEncryptionWrapper();
-			self::registerEncryptionHooks();
-		}
 
 		//make sure temporary files are cleaned up
 		\OC::$server->getShutdownHandler()->register(function () {
@@ -721,46 +705,6 @@ class OC {
 	/**
 	 * register hooks for the cache
 	 */
-	public static function registerCacheHooks() {
-		//don't try to do this before we are properly setup
-		if (\OC::$server->getSystemConfig()->getValue('installed', false) && !self::checkUpgrade(false)) {
-
-			// NOTE: This will be replaced to use OCP
-			$userSession = self::$server->getUserSession();
-			$userSession->listen('\OC\User', 'postLogin', function () {
-				try {
-					$cache = new \OC\Cache\File();
-					$cache->gc();
-				} catch (\OC\ServerNotAvailableException $e) {
-					// not a GC exception, pass it on
-					throw $e;
-				} catch (\Exception $e) {
-					// a GC exception should not prevent users from using OC,
-					// so log the exception
-					\OC::$server->getLogger()->warning('Exception when running cache gc: ' . $e->getMessage(), ['app' => 'core']);
-				}
-			});
-		}
-	}
-
-	private static function registerEncryptionWrapper() {
-		$manager = self::$server->getEncryptionManager();
-		\OCP\Util::connectHook('OC_Filesystem', 'preSetup', $manager, 'setupStorage');
-	}
-
-	private static function registerEncryptionHooks() {
-		$enabled = self::$server->getEncryptionManager()->isEnabled();
-		if ($enabled) {
-			\OCP\Util::connectHook('OCP\Share', 'post_shared', 'OC\Encryption\HookManager', 'postShared');
-			\OCP\Util::connectHook('OCP\Share', 'post_unshare', 'OC\Encryption\HookManager', 'postUnshared');
-			\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OC\Encryption\HookManager', 'postRename');
-			\OCP\Util::connectHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', 'OC\Encryption\HookManager', 'postRestore');
-		}
-	}
-
-	/**
-	 * register hooks for the cache
-	 */
 	public static function registerLogRotate() {
 		$systemConfig = \OC::$server->getSystemConfig();
 		if ($systemConfig->getValue('installed', false) && $systemConfig->getValue('log_rotate_size', false) && !self::checkUpgrade(false)) {
@@ -768,40 +712,6 @@ class OC {
 			//use custom logfile path if defined, otherwise use default of owncloud.log in data directory
 			$jobList = \OC::$server->getJobList();
 			$jobList->add('OC\Log\Rotate', $systemConfig->getValue('logfile', $systemConfig->getValue('datadirectory', OC::$SERVERROOT . '/data') . '/owncloud.log'));
-		}
-	}
-
-	/**
-	 * register hooks for the filesystem
-	 */
-	public static function registerFilesystemHooks() {
-		// Check for blacklisted files
-		OC_Hook::connect('OC_Filesystem', 'write', 'OC\Files\Filesystem', 'isForbiddenFileOrDir_Hook');
-		OC_Hook::connect('OC_Filesystem', 'rename', 'OC\Files\Filesystem', 'isForbiddenFileOrDir_Hook');
-	}
-
-	/**
-	 * register hooks for previews
-	 */
-	public static function registerPreviewHooks() {
-		OC_Hook::connect('OC_Filesystem', 'post_write', 'OC\Preview', 'post_write');
-		OC_Hook::connect('OC_Filesystem', 'delete', 'OC\Preview', 'prepare_delete_files');
-		OC_Hook::connect('\OCP\Versions', 'preDelete', 'OC\Preview', 'prepare_delete');
-		OC_Hook::connect('\OCP\Trashbin', 'preDelete', 'OC\Preview', 'prepare_delete');
-		OC_Hook::connect('OC_Filesystem', 'post_delete', 'OC\Preview', 'post_delete_files');
-		OC_Hook::connect('\OCP\Versions', 'delete', 'OC\Preview', 'post_delete_versions');
-		OC_Hook::connect('\OCP\Trashbin', 'delete', 'OC\Preview', 'post_delete');
-		OC_Hook::connect('\OCP\Versions', 'rollback', 'OC\Preview', 'post_delete_versions');
-	}
-
-	/**
-	 * register hooks for sharing
-	 */
-	public static function registerShareHooks() {
-		if (\OC::$server->getSystemConfig()->getValue('installed')) {
-			OC_Hook::connect('OC_User', 'post_deleteUser', 'OC\Share20\Hooks', 'post_deleteUser');
-			OC_Hook::connect('OC_User', 'post_removeFromGroup', 'OC\Share20\Hooks', 'post_removeFromGroup');
-			OC_Hook::connect('OC_User', 'post_deleteGroup', 'OC\Share20\Hooks', 'post_deleteGroup');
 		}
 	}
 
@@ -890,19 +800,18 @@ class OC {
 			if ($userSession->isLoggedIn() && $userSession->verifyAuthHeaders($request)) {
 				OC_App::loadApps();
 			} else {
-				// For guests: Load only filesystem and logging
-				OC_App::loadApps(['filesystem', 'logging']);
+				// For guests: Load only logging
+				OC_App::loadApps(['logging']);
 			}
 		}
 
 		if (!self::$CLI) {
 			try {
 				if (!$systemConfig->getValue('maintenance', false) && !self::checkUpgrade(false)) {
-					OC_App::loadApps(['filesystem', 'logging']);
+					OC_App::loadApps(['logging']);
 					OC_App::loadApps();
 				}
 				self::checkSingleUserMode();
-				OC_Util::setupFS();
 				OC::$server->getRouter()->match(\OC::$server->getRequest()->getRawPathInfo());
 				return;
 			} catch (\OC\NeedsUpdateException $e) {
@@ -938,8 +847,6 @@ class OC {
 		if ($userSession->isLoggedIn() && $userSession->verifyAuthHeaders($request)) {
 			OC_App::loadApps();
 			OC_User::setupBackends();
-			OC_Util::setupFS();
-			// FIXME
 			// Redirect to default application
 			OC_Util::redirectToDefaultPage();
 		} else {

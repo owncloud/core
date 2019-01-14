@@ -234,7 +234,6 @@ class SettingsManager implements ISettingsManager {
 				SecurityWarning::class,
 				Mail::class,
 				FileSharing::class,
-				Encryption::class,
 				Certificates::class,
 				Apps::class,
 				Legal::class,
@@ -248,7 +247,6 @@ class SettingsManager implements ISettingsManager {
 				Version::class,
 				Tokens::class,
 				Cors::class,
-				Quota::class
 			];
 		}
 	}
@@ -276,14 +274,12 @@ class SettingsManager implements ISettingsManager {
 				$this->userSession,
 				$this->urlGenerator,
 				$this->config),
-			Quota::class => new Quota($this->helper),
 			// Admin
 			BackgroundJobs::class => new BackgroundJobs($this->config),
 			Certificates::class => new Certificates(
 				$this->config,
 				$this->urlGenerator,
 				$this->certificateManager),
-			Encryption::class => new Encryption(),
 			FileSharing::class => new FileSharing($this->config, $this->helper, $this->l),
 			Logging::class => new Logging($this->config, $this->urlGenerator, $this->helper),
 			Mail::class => new Mail($this->config, $this->helper),

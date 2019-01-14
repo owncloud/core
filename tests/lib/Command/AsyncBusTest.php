@@ -9,7 +9,6 @@
 
 namespace Test\Command;
 
-use OC\Command\FileAccess;
 use OCP\Command\IBus;
 use OCP\Command\ICommand;
 use Test\BackgroundJob\DummyJobList;
@@ -30,14 +29,6 @@ class StateFullCommand implements ICommand {
 
 	public function handle() {
 		AsyncBusTest::$lastCommand = $this->state;
-	}
-}
-
-class FilesystemCommand implements ICommand {
-	use FileAccess;
-
-	public function handle() {
-		AsyncBusTest::$lastCommand = 'FileAccess';
 	}
 }
 
@@ -142,22 +133,6 @@ class AsyncBusTest extends TestCase {
 		});
 		$this->runJobs();
 		$this->assertEquals('closure-bar', self::$lastCommand);
-	}
-
-	public function testFileFileAccessCommand() {
-		$this->bus->push(new FilesystemCommand());
-		$this->assertEquals('', self::$lastCommand);
-		$this->runJobs();
-		$this->assertEquals('FileAccess', self::$lastCommand);
-	}
-
-	public function testFileFileAccessCommandSync() {
-		$this->bus->requireSync('\OC\Command\FileAccess');
-		$this->bus->push(new FilesystemCommand());
-		$this->assertEquals('FileAccess', self::$lastCommand);
-		self::$lastCommand = '';
-		$this->runJobs();
-		$this->assertEquals('', self::$lastCommand);
 	}
 
 	private function runJobs() {

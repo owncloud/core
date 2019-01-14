@@ -74,12 +74,10 @@
 		user = String(user).replace(/\//g,'');
 
 		var $div = this;
-
-		var url = OC.getRootPath() +
-			'/remote.php/dav/avatars' +
-			'/' + encodeURIComponent(user) +
-			'/' + encodeURIComponent(Math.ceil(size * window.devicePixelRatio).toString()) +
-			'.jpeg';
+		var url = OC.generateUrl('/avatar/{userId}/{size}.jpeg', {
+			userId: user,
+			size: Math.ceil(size * window.devicePixelRatio).toString(),
+		});
 
 		// If the displayname is not defined we use the old code path
 		if (typeof(displayname) === 'undefined') {

@@ -72,15 +72,15 @@ function updateAvatar (hidedefault) {
 		$('#header .avatardiv').removeClass('avatardiv-shown');
 	} else {
 		$headerdiv.css({'background-color': ''});
-		$headerdiv.avatar(OC.currentUser, 32, true);
+		$headerdiv.avatar(OC.getCurrentUser().uid, 32, true);
 		$('#header .avatardiv').addClass('avatardiv-shown');
 	}
 	$displaydiv.css({'background-color': ''});
-	$displaydiv.avatar(OC.currentUser, 145, true);
-	var url = OC.getRootPath() +
-		'/remote.php/dav/avatars' +
-		'/' + encodeURIComponent(OC.getCurrentUser().uid) +
-		'/96.jpeg';
+	$displaydiv.avatar(OC.getCurrentUser().uid, 145, true);
+	var url = OC.generateUrl('/avatar/{userId}/{size}.jpeg', {
+		userId: OC.getCurrentUser().uid,
+		size: 96,
+	});
 
 	$.get(url, function (result) {
 		if (typeof(result) === 'string') {
@@ -336,10 +336,10 @@ $(document).ready(function () {
 	});
 
 	// does the user have a custom avatar? if he does show #removeavatar
-	var url = OC.getRootPath() +
-		'/remote.php/dav/avatars' +
-		'/' + encodeURIComponent(OC.getCurrentUser().uid) +
-		'/1.jpeg';
+	var url = OC.generateUrl('/avatar/{userId}/{size}.jpeg', {
+		userId: OC.getCurrentUser().uid,
+		size: 1,
+	});
 	$.get(url, function (result) {
 		if (typeof(result) === 'string') {
 			// Show the delete button when the avatar is custom
@@ -349,6 +349,6 @@ $(document).ready(function () {
 
 	// Load the big avatar
 	if (oc_config.enable_avatars) {
-		$('#avatar .avatardiv').avatar(OC.currentUser, 145);
+		$('#avatar .avatardiv').avatar(OC.getCurrentUser().uid, 145);
 	}
 });

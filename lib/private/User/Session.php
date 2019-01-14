@@ -433,33 +433,8 @@ class Session implements IUserSession, Emitter {
 		// TODO: mock/inject/use non-static
 		// Refresh the token
 		\OC::$server->getCsrfTokenManager()->refreshToken();
-		//we need to pass the user name, which may differ from login name
-		$user = $this->getUser()->getUID();
-		OC_Util::setupFS($user);
 
 		if ($firstTimeLogin) {
-			// TODO: lock necessary?
-			//trigger creation of user home and /files folder
-			$userFolder = \OC::$server->getUserFolder($user);
-
-			try {
-				// copy skeleton
-				\OC_Util::copySkeleton($user, $userFolder);
-			} catch (NotPermittedException $ex) {
-				// possible if files directory is in an readonly jail
-				$this->logger->warning(
-					'Skeleton not created due to missing write permission'
-				);
-			} catch (NoReadAccessException $ex) {
-				// possible if the skeleton directory does not have read access
-				$this->logger->warning(
-					'Skeleton not created due to missing read permission in skeleton directory'
-				);
-			} catch (HintException $hintEx) {
-				// only if Skeleton no existing Dir
-				$this->logger->error($hintEx->getMessage());
-			}
-
 			// trigger any other initialization
 			$this->eventDispatcher->dispatch(IUser::class . '::firstLogin', new GenericEvent($this->getUser()));
 			$this->eventDispatcher->dispatch('user.firstlogin', new GenericEvent($this->getUser()));
@@ -677,8 +652,6 @@ class Session implements IUserSession, Emitter {
 			$request = OC::$server->getRequest();
 			$this->createSessionToken($request, $uid, $uid);
 
-			// setup the filesystem
-			OC_Util::setupFS($uid);
 			// first call the post_login hooks, the login-process needs to be
 			// completed before we can safely create the users folder.
 			// For example encryption needs to initialize the users keys first

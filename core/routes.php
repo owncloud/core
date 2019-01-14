@@ -41,6 +41,7 @@ $application->registerRoutes($this, [
 		['name' => 'avatar#deleteAvatar', 'url' => '/avatar/', 'verb' => 'DELETE'],
 		['name' => 'avatar#postCroppedAvatar', 'url' => '/avatar/cropped', 'verb' => 'POST'],
 		['name' => 'avatar#getTmpAvatar', 'url' => '/avatar/tmp', 'verb' => 'GET'],
+		['name' => 'avatar#getAvatar', 'url' => '/avatar/{userId}/{size}.{ext}', 'verb' => 'GET'],
 		['name' => 'avatar#postAvatar', 'url' => '/avatar/', 'verb' => 'POST'],
 		['name' => 'login#tryLogin', 'url' => '/login', 'verb' => 'POST'],
 		['name' => 'login#showLoginForm', 'url' => '/login', 'verb' => 'GET'],

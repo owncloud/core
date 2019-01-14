@@ -57,6 +57,7 @@ use OC\Files\Mount\ObjectHomeMountProvider;
 use OC\Files\Node\HookConnector;
 use OC\Files\Node\LazyRoot;
 use OC\Files\Node\Root;
+use OC\Files\Storage\Folder;
 use OC\Files\View;
 use OC\Http\Client\ClientService;
 use OC\IntegrityCheck\Checker;
@@ -466,9 +467,13 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			);
 		});
 		$this->registerService('AvatarManager', function (Server $c) {
+			$config = $c->getConfig();
+			$datadir = $config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data');
+			$path = $config->getSystemValue('avatars.path', $datadir.'/avatars');
+			$storage = new Files\Storage\Local(['datadir' => $path]);
 			return new AvatarManager(
 				$c->getUserManager(),
-				$c->getLazyRootFolder(),  // initialize the root folder lazily
+				$storage,
 				$c->getL10N('lib'),
 				$c->getLogger()
 			);
