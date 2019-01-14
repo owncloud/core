@@ -22,7 +22,6 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Gherkin\Node\TableNode;
 use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
@@ -208,69 +207,6 @@ class OccContext implements Context {
 	public function theAdministratorHasSetTheMailSmtpmodeTo($smtpmode) {
 		$this->invokingTheCommand(
 			"config:system:set  --value $smtpmode mail_smtpmode"
-		);
-	}
-
-	/**
-	 * @When the administrator disables app :appName using the occ command
-	 *
-	 * @param string $appName
-	 *
-	 * @return void
-	 */
-	public function theAdministratorDisablesAppUsingTheOccCommand($appName) {
-		$this->invokingTheCommand(
-			"app:disable $appName"
-		);
-	}
-
-	/**
-	 * @When the administrator enables app :appName using the occ command
-	 *
-	 * @param string $appName
-	 *
-	 * @return void
-	 */
-	public function theAdministratorEnablesAppUsingTheOccCommand($appName) {
-		$this->invokingTheCommand(
-			"app:enable $appName"
-		);
-	}
-
-	/**
-	 * @When the administrator gets the app info of app :appName
-	 *
-	 * @param string $appName
-	 *
-	 * @return void
-	 */
-	public function administratorGetsTheAppInfoOfApp($appName) {
-		$this->invokingTheCommand(
-			"config:list $appName"
-		);
-	}
-
-	/**
-	 * @When the administrator gets the list of apps using the occ command
-	 *
-	 * @return void
-	 */
-	public function theAdministratorGetsTheListOfAppsUsingTheOccCommand() {
-		$this->invokingTheCommand(
-			"config:list"
-		);
-	}
-
-	/**
-	 * @When the administrator checks the location of the :appName app using the occ command
-	 *
-	 * @param string $appName
-	 *
-	 * @return void
-	 */
-	public function theAdministratorChecksTheLocationOfTheAppUsingTheOccCommand($appName) {
-		$this->invokingTheCommand(
-			"app:getpath $appName"
 		);
 	}
 
@@ -499,88 +435,6 @@ class OccContext implements Context {
 				"$user"
 			]
 		);
-	}
-
-	/**
-	 * @Then the app name returned by the occ command should be :appName
-	 *
-	 * @param string $appName
-	 *
-	 * @return void
-	 */
-	public function theAppNameReturnedByTheOccCommandShouldBe($appName) {
-		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputArray = \json_decode($lastOutput, true);
-		PHPUnit_Framework_Assert::assertEquals($appName, \key($lastOutputArray['apps']));
-	}
-
-	/**
-	 * @Then the path returned by the occ command should be inside one of the apps paths in the config for the :appName app
-	 *
-	 * @param string $appName
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function thePathReturnedByTheOccCommandShouldBeInsideOneOfTheAppsPathInTheConfig($appName) {
-		$appPath = $this->featureContext->getStdOutOfOccCommand();
-
-		$this->invokingTheCommand("config:list");
-		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$configOutputArray = \json_decode($lastOutput, true);
-
-		// Default apps location is '${INSTALLED_LOCATION}/apps/${appName}
-		if (\substr_compare($appPath, '/apps/${appName}', 0)) {
-			return;
-		}
-
-		// We can also set it in the `apps_paths` in the `config`
-		if (isset($configOutputArray['system']['apps_paths'])) {
-			$appPaths = $configOutputArray['system']['apps_paths'];
-
-			foreach ($appPaths as $path) {
-				if (\substr_compare($appPath, $path['path'], 0)) {
-					return;
-				}
-			}
-		}
-
-		// if it's neither in the default location, nor in `apps_paths`, where it could be?
-		throw new Exception(__METHOD__ . "App path $appPath was not found in the config.");
-	}
-
-	/**
-	 * @Then the app enabled status of app :appName should be :appStatus
-	 *
-	 * @param string $appName
-	 * @param string $appStatus
-	 *
-	 * @return void
-	 */
-	public function theAppEnabledStatusShouldBe($appName, $appStatus) {
-		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputArray = \json_decode($lastOutput, true);
-		$actualAppEnabledStatus = $lastOutputArray['apps'][$appName]['enabled'];
-		PHPUnit_Framework_Assert::assertEquals($appStatus, $actualAppEnabledStatus);
-	}
-
-	/**
-	 * @Then the apps returned by the occ command should include
-	 *
-	 * @param TableNode $appListTable table with apps name with no header
-	 *
-	 * @return void
-	 */
-	public function theAppsReturnedByTheOccCommandShouldInclude(TableNode $appListTable) {
-		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputApps = \array_keys(\json_decode($lastOutput, true)['apps']);
-
-		$apps = $appListTable->getRows();
-		$appsSimplified = $this->featureContext->simplifyArray($apps);
-
-		foreach ($appsSimplified as $app) {
-			PHPUnit_Framework_Assert::assertContains($app, $lastOutputApps);
-		}
 	}
 
 	/**
