@@ -39,6 +39,166 @@ class OccContext implements Context {
 	private $featureContext;
 
 	/**
+	 * @When /^the administrator invokes occ command "([^"]*)"$/
+	 * @Given /^the administrator has invoked occ command "([^"]*)"$/
+	 *
+	 * @param string $cmd
+	 *
+	 * @return void
+	 */
+	public function invokingTheCommand($cmd) {
+		$this->featureContext->runOcc([$cmd]);
+	}
+
+	/**
+	 * @When /^the administrator invokes occ command "([^"]*)" with environment variable "([^"]*)" set to "([^"]*)"$/
+	 * @Given /^the administrator has invoked occ command "([^"]*)" with environment variable "([^"]*)" set to "([^"]*)"$/
+	 *
+	 * @param string $cmd
+	 * @param string $envVariableName
+	 * @param string $envVariableValue
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function invokingTheCommandWithEnvVariable(
+		$cmd, $envVariableName, $envVariableValue
+	) {
+		$args = [$cmd];
+		$this->featureContext->runOccWithEnvVariables(
+			$args, [$envVariableName => $envVariableValue]
+		);
+	}
+
+	/**
+	 * @Then /^the command should have been successful$/
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theCommandShouldHaveBeenSuccessful() {
+		$exceptions = $this->featureContext->findExceptions();
+		$exitStatusCode = $this->featureContext->getExitStatusCodeOfOccCommand();
+		if ($exitStatusCode !== 0) {
+			$msg = "The command was not successful, exit code was $exitStatusCode.";
+			if (!empty($exceptions)) {
+				$msg .= ' Exceptions: ' . \implode(', ', $exceptions);
+			}
+			throw new \Exception($msg);
+		} elseif (!empty($exceptions)) {
+			$msg = 'The command was successful but triggered exceptions: '
+				. \implode(', ', $exceptions);
+			throw new \Exception($msg);
+		}
+	}
+
+	/**
+	 * @Then /^the command should have failed with exit code ([0-9]+)$/
+	 *
+	 * @param int $exitCode
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theCommandFailedWithExitCode($exitCode) {
+		$exitStatusCode = $this->featureContext->getExitStatusCodeOfOccCommand();
+		if ($exitStatusCode !== (int)$exitCode) {
+			throw new \Exception(
+				"The command was expected to fail with exit code $exitCode but got "
+				. $exitStatusCode
+			);
+		}
+	}
+
+	/**
+	 * @Then /^the command should have failed with exception text "([^"]*)"$/
+	 *
+	 * @param string $exceptionText
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theCommandFailedWithExceptionText($exceptionText) {
+		$exceptions = $this->featureContext->findExceptions();
+		if (empty($exceptions)) {
+			throw new \Exception('The command did not throw any exceptions');
+		}
+
+		if (!\in_array($exceptionText, $exceptions)) {
+			throw new \Exception(
+				"The command did not throw any exception with the text '$exceptionText'"
+			);
+		}
+	}
+
+	/**
+	 * @Then /^the command output should contain the text ((?:'[^']*')|(?:"[^"]*"))$/
+	 *
+	 * @param string $text
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theCommandOutputContainsTheText($text) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$text = \trim($text, $text[0]);
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$lines = $this->featureContext->findLines(
+			$commandOutput,
+			$text
+		);
+		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+			1,
+			\count($lines),
+			"The command output did not contain the expected text on stdout '$text'\n" .
+			"The command output on stdout was:\n" .
+			$commandOutput
+		);
+	}
+
+	/**
+	 * @Then /^the command error output should contain the text ((?:'[^']*')|(?:"[^"]*"))$/
+	 *
+	 * @param string $text
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theCommandErrorOutputContainsTheText($text) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$text = \trim($text, $text[0]);
+		$commandOutput = $this->featureContext->getStdErrOfOccCommand();
+		$lines = $this->featureContext->findLines(
+			$commandOutput,
+			$text
+		);
+		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+			1,
+			\count($lines),
+			"The command output did not contain the expected text on stderr '$text'\n" .
+			"The command output on stderr was:\n" .
+			$commandOutput
+		);
+	}
+
+	/**
+	 * @Then the occ command JSON output should be empty
+	 *
+	 * @return void
+	 */
+	public function theOccCommandJsonOutputShouldNotReturnAnyData() {
+		PHPUnit_Framework_Assert::assertEquals(
+			\trim($this->featureContext->getStdOutOfOccCommand()),
+			"[]"
+		);
+		PHPUnit_Framework_Assert::assertEmpty(
+			$this->featureContext->getStdErrOfOccCommand()
+		);
+	}
+
+	/**
 	 * @When /^the administrator creates (?:these users|this user) using the occ command:$/
 	 * @Given /^(?:these users have|this user has) been created using the occ command:$/
 	 * expects a table of users with the heading
@@ -81,7 +241,7 @@ class OccContext implements Context {
 				$password = $this->featureContext->getPasswordForUser($row ['username']);
 			}
 
-			$this->featureContext->invokingTheCommandWithEnvVariable(
+			$this->invokingTheCommandWithEnvVariable(
 				$cmd,
 				'OC_PASS',
 				$password
@@ -104,7 +264,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorHasSetTheMailSmtpmodeTo($smtpmode) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"config:system:set  --value $smtpmode mail_smtpmode"
 		);
 	}
@@ -117,7 +277,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorTriesToCreateAUserUsingTheOccCommand($username) {
-		$this->featureContext->invokingTheCommandWithEnvVariable(
+		$this->invokingTheCommandWithEnvVariable(
 			"user:add $username  --password-from-env",
 			'OC_PASS',
 			$this->featureContext->getPasswordForUser($username)
@@ -135,7 +295,7 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorCreatesUserPasswordGroupUsingTheOccCommand($username, $password, $group) {
 		$cmd = "user:add $username  --password-from-env --group=$group";
-		$this->featureContext->invokingTheCommandWithEnvVariable(
+		$this->invokingTheCommandWithEnvVariable(
 			$cmd,
 			'OC_PASS',
 			$this->featureContext->getActualPassword($password)
@@ -165,7 +325,7 @@ class OccContext implements Context {
 	public function theAdministratorResetsTheirOwnPasswordToUsingTheOccCommand($newPassword) {
 		$password = $this->featureContext->getActualPassword($newPassword);
 		$admin = $this->featureContext->getAdminUsername();
-		$this->featureContext->invokingTheCommandWithEnvVariable(
+		$this->invokingTheCommandWithEnvVariable(
 			"user:resetpassword $admin --password-from-env",
 			'OC_PASS',
 			$password
@@ -193,7 +353,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorChangesTheEmailOfUserToUsingTheOccCommand($username, $newEmail) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"user:modify $username email $newEmail"
 		);
 	}
@@ -207,7 +367,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheOccCommand($username, $newDisplayname) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"user:modify $username displayname '$newDisplayname'"
 		);
 	}
@@ -221,7 +381,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorChangesTheQuotaOfUserToUsingTheOccCommand($username, $newQuota) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"user:modify $username quota $newQuota"
 		);
 	}
@@ -234,7 +394,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorDeletesUserUsingTheOccCommand($username) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"user:delete $username"
 		);
 	}
@@ -245,7 +405,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorRetrievesAllTheUsersInJsonUsingTheOccCommand() {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"user:list --output=json"
 		);
 	}
@@ -258,7 +418,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorRetrievesTheInformationOfUserInJsonUsingTheOccCommand($username) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"user:list $username --output=json"
 		);
 	}
@@ -271,7 +431,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorGetsTheGroupsOfUserInJsonUsingTheOccCommand($username) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"user:list-group $username --output=json"
 		);
 	}
@@ -284,7 +444,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorRetrievesTheTimeWhenUserWasLastSeenUsingTheOccCommand($username) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"user:lastseen $username"
 		);
 	}
@@ -300,7 +460,7 @@ class OccContext implements Context {
 	public function theAdministratorChangesTheLanguageOfUserToUsingTheOccCommand(
 		$username, $language
 	) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"user:setting $username core lang --value='$language'"
 		);
 	}
@@ -311,7 +471,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorRetrievesTheUserReportUsingTheOccCommand() {
-		$this->featureContext->invokingTheCommand("user:report");
+		$this->invokingTheCommand("user:report");
 	}
 
 	/**
@@ -322,7 +482,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorCreatesGroupUsingTheOccCommand($group) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"group:add $group"
 		);
 		$this->featureContext->addGroupToCreatedGroupsList($group);
@@ -337,7 +497,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorAddsUserToGroupUsingTheOccCommand($username, $group) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"group:add-member -m $username $group"
 		);
 	}
@@ -350,7 +510,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorDeletesGroupUsingTheOccCommand($group) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"group:delete $group"
 		);
 	}
@@ -363,7 +523,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorGetsTheUsersInGroupInJsonUsingTheOccCommand($groupName) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"group:list-members $groupName --output=json"
 		);
 	}
@@ -374,7 +534,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorGetsTheGroupsInJsonUsingTheOccCommand() {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"group:list --output=json"
 		);
 	}
@@ -388,7 +548,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorRemovesUserFromGroupUsingTheOccCommand($username, $group) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"group:remove-member -m $username $group"
 		);
 	}
@@ -401,7 +561,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorDisablesAppUsingTheOccCommand($appName) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"app:disable $appName"
 		);
 	}
@@ -414,7 +574,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorEnablesAppUsingTheOccCommand($appName) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"app:enable $appName"
 		);
 	}
@@ -427,7 +587,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function administratorGetsTheAppInfoOfApp($appName) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"config:list $appName"
 		);
 	}
@@ -438,7 +598,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorGetsTheListOfAppsUsingTheOccCommand() {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"config:list"
 		);
 	}
@@ -451,7 +611,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorChecksTheLocationOfTheAppUsingTheOccCommand($appName) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"app:getpath $appName"
 		);
 	}
@@ -464,7 +624,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorDisablesUserUsingTheOccCommand($username) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"user:disable $username"
 		);
 	}
@@ -477,7 +637,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function administratorEnablesUserUsingTheOccCommand($username) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"user:enable $username"
 		);
 	}
@@ -491,7 +651,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theLanguageOfUserReturnedByTheOccCommandShouldBe($username, $language) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"user:setting $username core lang"
 		);
 		$responseLanguage = $this->featureContext->getStdOutOfOccCommand();
@@ -506,7 +666,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorSetsLogLevelUsingTheOccCommand($level) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"log:manage --level $level"
 		);
 	}
@@ -519,7 +679,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorSetsTimeZoneUsingTheOccCommand($timezone) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"log:manage --timezone $timezone"
 		);
 	}
@@ -532,7 +692,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorSetsBackendUsingTheOccCommand($backend) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"log:manage --backend $backend"
 		);
 	}
@@ -543,7 +703,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorEnablesOwnCloudBackendUsingTheOccCommand() {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"log:owncloud --enable"
 		);
 	}
@@ -556,7 +716,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorSetsLogFilePathUsingTheOccCommand($path) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"log:owncloud --file $path"
 		);
 	}
@@ -569,7 +729,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorSetsLogRotateFileSizeUsingTheOccCommand($size) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"log:owncloud --rotate-size $size"
 		);
 	}
@@ -583,7 +743,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorHasChangedTheBackgroundJobsModeTo($mode) {
-		$this->featureContext->invokingTheCommand("background:$mode");
+		$this->invokingTheCommand("background:$mode");
 	}
 
 	/**
@@ -608,7 +768,7 @@ class OccContext implements Context {
 		// "0" is "Never", "1" is "Once every direct access"
 		$value = 0;
 
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"$command $mountId $key $value"
 		);
 	}
@@ -620,7 +780,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorScansTheFilesystemForAllUsersUsingTheOccCommand() {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"files:scan --all"
 		);
 	}
@@ -634,7 +794,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorScansTheFilesystemForUserUsingTheOccCommand($user) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"files:scan $user"
 		);
 	}
@@ -648,7 +808,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorScansTheFilesystemInPathUsingTheOccCommand($path) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"files:scan --path='$path'"
 		);
 	}
@@ -662,7 +822,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorScansTheFilesystemForGroupUsingTheOccCommand($group) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"files:scan --group=$group"
 		);
 	}
@@ -673,7 +833,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorCleanupsTheFilesystemForAllUsersUsingTheOccCommand() {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"files:cleanup"
 		);
 	}
@@ -749,7 +909,7 @@ class OccContext implements Context {
 	public function thePathReturnedByTheOccCommandShouldBeInsideOneOfTheAppsPathInTheConfig($appName) {
 		$appPath = $this->featureContext->getStdOutOfOccCommand();
 
-		$this->featureContext->invokingTheCommand("config:list");
+		$this->invokingTheCommand("config:list");
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$configOutputArray = \json_decode($lastOutput, true);
 
@@ -914,7 +1074,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theBackgroundJobsModeShouldBe($mode) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"config:app:get core backgroundjobs_mode"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
@@ -929,7 +1089,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theUpdateChannelShouldBe($value) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"config:app:get core OC_Channel"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
@@ -944,7 +1104,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theLogLevelShouldBe($logLevel) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"config:system:get loglevel"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
@@ -961,7 +1121,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorAddsConfigKeyWithValueInAppUsingTheOccCommand($key, $value, $app) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"config:app:set --value ${value} ${app} ${key}"
 		);
 	}
@@ -975,7 +1135,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorDeletesConfigKeyOfAppUsingTheOccCommand($key, $app) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"config:app:delete ${app} ${key}"
 		);
 	}
@@ -989,7 +1149,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand($key, $value) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"config:system:set --value ${value} ${key}"
 		);
 	}
@@ -1002,7 +1162,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorDeletesSystemConfigKeyUsingTheOccCommand($key) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"config:system:delete ${key}"
 		);
 	}
@@ -1015,7 +1175,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorEmptiesTheTrashbinOfUserUsingTheOccCommand($user) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"trashbin:cleanup $user"
 		);
 	}
@@ -1059,7 +1219,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorListsTheConfigKeys() {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"config:list"
 		);
 	}
@@ -1108,7 +1268,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorHasClearedTheVersionsForUser($user) {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"versions:cleanup $user"
 		);
 		PHPUnit_Framework_Assert::assertSame(
@@ -1123,7 +1283,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorHasClearedTheVersionsForAllUsers() {
-		$this->featureContext->invokingTheCommand(
+		$this->invokingTheCommand(
 			"versions:cleanup"
 		);
 		PHPUnit_Framework_Assert::assertContains(
