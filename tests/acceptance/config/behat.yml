@@ -142,6 +142,8 @@ default:
         - FeatureContext: *common_feature_context_params
         - EmailContext:
         - OccContext:
+        - OccAppManagementContext:
+        - OccUsersGroupsContext:
 
     cliMain:
       paths:
@@ -263,6 +265,7 @@ default:
         - WebUIPersonalSecuritySettingsContext:
         - WebUIUserContext:
         - OccContext:
+        - OccUsersGroupsContext:
 
     webUIRenameFiles:
       paths:
