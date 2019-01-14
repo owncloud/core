@@ -553,18 +553,6 @@ trait CommandLine {
 	}
 
 	/**
-	 * @When /^the administrator successfully recreates the encryption masterkey using the occ command$/
-	 * @Given /^the administrator has successfully recreated the encryption masterkey$/
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function recreateMasterKeyUsingOccCommand() {
-		$this->runOcc(['encryption:recreate-master-key', '-y']);
-		$this->theCommandShouldHaveBeenSuccessful();
-	}
-
-	/**
 	 * @When /^the administrator transfers ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)" using the occ command$/
 	 * @Given /^the administrator has transferred ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"$/
 	 *
@@ -583,101 +571,6 @@ trait CommandLine {
 			// failure
 			$this->lastTransferPath = null;
 		}
-	}
-
-	/**
-	 * @Given encryption has been enabled
-	 *
-	 * @return void
-	 */
-	public function encryptionHasBeenEnabled() {
-		$this->runOcc(['encryption:enable']);
-	}
-
-	/**
-	 * @When the administrator sets the encryption type to :encryptionType using the occ command
-	 * @Given the administrator has set the encryption type to :encryptionType
-	 *
-	 * @param string $encryptionType
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theAdministratorSetsEncryptionTypeToUsingTheOccCommand($encryptionType) {
-		$this->runOcc(
-			["encryption:select-encryption-type", $encryptionType, "-y"]
-		);
-	}
-
-	/**
-	 * @When the administrator encrypts all data using the occ command
-	 * @Given the administrator has encrypted all the data
-	 *
-	 * @return void
-	 */
-	public function theAdministratorEncryptsAllDataUsingTheOccCommand() {
-		$this->runOcc(["encryption:encrypt-all", "-n"]);
-	}
-
-	/**
-	 * @When the administrator decrypts user keys based encryption with recovery key :recoveryKey using the occ command
-	 *
-	 * @param string $recoveryKey
-	 *
-	 * @return void
-	 */
-	public function theAdministratorDecryptsUserKeysBasedEncryptionWithKey($recoveryKey) {
-		$this->invokingTheCommandWithEnvVariable(
-			"encryption:decrypt-all -m recovery -c yes",
-			'OC_RECOVERY_PASSWORD',
-			$recoveryKey
-		);
-	}
-
-	/**
-	 * @Then file :fileName of user :username should not be encrypted
-	 *
-	 * @param string $fileName
-	 * @param string $username
-	 *
-	 * @return void
-	 */
-	public function fileOfUserShouldNotBeEncrypted($fileName, $username) {
-		$fileName = \ltrim($fileName, "/");
-		$filePath = "data/$username/files/$fileName";
-		$this->readFileInServerRoot($filePath);
-		$response = $this->getResponse();
-		$parsedResponse = HttpRequestHelper::getResponseXml($response);
-		$encodedFileContent = (string)$parsedResponse->data->element->contentUrlEncoded;
-		$fileContent = \urldecode($encodedFileContent);
-		$this->userDownloadsFileUsingTheAPI($username, "/$fileName");
-		$fileContentServer = (string)$this->getResponse()->getBody();
-		PHPUnit_Framework_Assert::assertEquals(
-			\trim($fileContentServer),
-			$fileContent
-		);
-	}
-
-	/**
-	 * @Then file :fileName of user :username should be encrypted
-	 *
-	 * @param string $fileName
-	 * @param string $username
-	 *
-	 * @return void
-	 */
-	public function fileOfUserShouldBeEncrypted($fileName, $username) {
-		$fileName = \ltrim($fileName, "/");
-		$filePath = "data/$username/files/$fileName";
-		$this->readFileInServerRoot($filePath);
-		$response = $this->getResponse();
-		$parsedResponse = HttpRequestHelper::getResponseXml($this->getResponse());
-		$encodedFileContent = (string)$parsedResponse->data->element->contentUrlEncoded;
-		$fileContent = \urldecode($encodedFileContent);
-		PHPUnit_Framework_Assert::assertStringStartsWith(
-			"HBEGIN:oc_encryption_module:OC_DEFAULT_MODULE:cipher:AES-256-CTR:signed:true",
-			$fileContent
-		);
 	}
 
 	/**

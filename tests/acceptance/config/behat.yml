@@ -39,6 +39,7 @@ default:
         - '%paths.base%/../features/cliEncryption'
       contexts:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - WebDavPropertiesContext:
 
     apiFederation:
@@ -199,6 +200,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
         - WebDavPropertiesContext:
 
     webUIFavorites:
