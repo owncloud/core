@@ -906,7 +906,15 @@ class OC_App {
 		$versions = self::getAppVersions();
 		$currentVersion = self::getAppVersion($app);
 		if ($currentVersion && isset($versions[$app])) {
-			return self::atLeastMinorVersionLevelChanged($currentVersion, $versions[$app]);
+			if ($currentVersion === $versions[$app]) {
+				return false;
+			}
+
+			if (self::atLeastMinorVersionLevelChanged($currentVersion, $versions[$app])) {
+				return true;
+			}
+			// update app version in db
+			\OC::$server->getConfig()->setAppValue($app, 'installed_version', $versions[$app]);
 		}
 		return false;
 	}
@@ -1044,8 +1052,8 @@ class OC_App {
 
 		self::setAppTypes($appId);
 
-		$version = \OC_App::getAppVersion($appId);
-		\OC::$server->getAppConfig()->setValue($appId, 'installed_version', $version);
+		$version = self::getAppVersion($appId);
+		\OC::$server->getConfig()->setAppValue($appId, 'installed_version', $version);
 
 		return true;
 	}
