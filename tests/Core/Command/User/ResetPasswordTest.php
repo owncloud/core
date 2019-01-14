@@ -281,19 +281,22 @@ class ResetPasswordTest extends TestCase {
 			->method('getEnvVar')
 			->willReturn('fooPass');
 
-		$this->lostController->method('generateTokenAndLink')
+		$this->lostController->expects($this->once())
+			->method('generateTokenAndLink')
 			->with('foo')
 			->willReturn(['http://localhost/foo/bar/123AbcFooBar/foo', '123AbcFooBar']);
 
 		if ($expectedResult === true) {
-			$this->lostController->method('setPassword')
+			$this->lostController->expects($this->once())
+				->method('setPassword')
 				->willReturn(['status' => 'success']);
 
 			$output->expects($this->once())
 				->method('writeln')
 				->with("<info>Successfully reset password for foo.</info>");
 		} else {
-			$this->lostController->method('setPassword')
+			$this->lostController->expects($this->once())
+				->method('setPassword')
 				->willReturn("failed");
 
 			$output->expects($this->once())

@@ -26,7 +26,6 @@ Feature: reset user password
       Use the following link to reset your password: <a href=
       """
 
-  @issue-33384
   Scenario: user should get email when the administrator changes their password and specifies to also send email
     Given these users have been created:
       | username       | password  | displayname | email                    |
@@ -34,11 +33,10 @@ Feature: reset user password
     When the administrator resets the password of user "brand-new-user" to "%alt1%" sending email using the occ command
     Then the command should have been successful
     And the command output should contain the text "Successfully reset password for brand-new-user"
-    And the email address "brand.new.user@oc.com.np" should not have received an email
-    #And the email address "brand.new.user@oc.com.np" should have received an email with the body containing
-      #"""
-      #Password changed successfully
-      #"""
+    And the email address "brand.new.user@oc.com.np" should have received an email with the body containing
+      """
+      Password changed successfully
+      """
     And the content of file "textfile0.txt" for user "brand-new-user" using password "%alt1%" should be "ownCloud test text file 0" plus end-of-line
     But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
 
