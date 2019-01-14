@@ -14,7 +14,7 @@ Feature: reset user password
     And the content of file "textfile0.txt" for user "brand-new-user" using password "%alt1%" should be "ownCloud test text file 0" plus end-of-line
     But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
 
-  Scenario: user should get email when admin resets their password and sends email
+  Scenario: user should get email when admin does a "send email" password reset without specifying a password
     Given these users have been created:
       | username       | password  | displayname | email                    |
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
@@ -27,11 +27,11 @@ Feature: reset user password
       """
 
   @issue-33384
-  Scenario: user should not get email message when the administrator changes their email directly through occ command
+  Scenario: user should get email when the administrator changes their password and specifies to also send email
     Given these users have been created:
       | username       | password  | displayname | email                    |
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
-    When the administrator resets the password of user "brand-new-user" to "%alt1%" using the occ command
+    When the administrator resets the password of user "brand-new-user" to "%alt1%" sending email using the occ command
     Then the command should have been successful
     And the command output should contain the text "Successfully reset password for brand-new-user"
     And the email address "brand.new.user@oc.com.np" should not have received an email

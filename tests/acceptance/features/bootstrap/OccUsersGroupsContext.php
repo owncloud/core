@@ -148,6 +148,18 @@ class OccUsersGroupsContext implements Context {
 	}
 
 	/**
+	 * @When the administrator resets the password of user :username to :password sending email using the occ command
+	 *
+	 * @param string $username
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function resetUserPasswordAndSendEmailUsingTheOccCommand($username, $password) {
+		$this->featureContext->resetUserPassword($username, $password, true);
+	}
+
+	/**
 	 * @When the administrator resets their own password to :newPassword using the occ command
 	 *
 	 * @param string $newPassword
