@@ -373,12 +373,19 @@ trait CommandLine {
 	/**
 	 * Reset user password
 	 *
+	 * If password is not supplied, then always send email.
+	 * If password is supplied, then only send email if sendEmail param is true
+	 *
 	 * @param string $username
 	 * @param string $password
+	 * @param bool $sendEmail
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function resetUserPassword($username, $password = null) {
+	public function resetUserPassword(
+		$username, $password = null, $sendEmail = false
+	) {
 		$actualUsername = $this->getActualUsername($username);
 		if ($password === null) {
 			$this->runOcc(
@@ -386,8 +393,13 @@ trait CommandLine {
 			);
 		} else {
 			$password = $this->getActualPassword($password);
+			if ($sendEmail) {
+				$sendEmailParam = "--send-email";
+			} else {
+				$sendEmailParam = "";
+			}
 			$this->runOccWithEnvVariables(
-				["user:resetpassword $actualUsername --password-from-env"],
+				["user:resetpassword $actualUsername $sendEmailParam --password-from-env"],
 				['OC_PASS' => $password]
 			);
 			if ($username === "%admin%") {
