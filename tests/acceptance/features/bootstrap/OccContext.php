@@ -79,9 +79,12 @@ class OccContext implements Context {
 		$exceptions = $this->featureContext->findExceptions();
 		$exitStatusCode = $this->featureContext->getExitStatusCodeOfOccCommand();
 		if ($exitStatusCode !== 0) {
-			$msg = "The command was not successful, exit code was $this->lastCode.\n";
-			$msg .= "stdOut was: '$this->lastStdOut'\n";
-			$msg .= "stdErr was: '$this->lastStdErr'\n";
+			$msg = "The command was not successful, exit code was " .
+				   $exitStatusCode . ".\n" .
+				   "stdOut was: '" .
+				   $this->featureContext->getStdOutOfOccCommand() . "'\n" .
+				   "stdErr was: '" .
+				   $this->featureContext->getStdErrOfOccCommand() . "'\n";
 			if (!empty($exceptions)) {
 				$msg .= ' Exceptions: ' . \implode(', ', $exceptions);
 			}
