@@ -33,47 +33,47 @@ use Test\TestCase;
 class AppsEnableTest extends TestCase
 {
 
-    /** @var CommandTester */
-    private $commandTester;
+	/** @var CommandTester */
+	private $commandTester;
 
-    public function setUp()
-    {
-        parent::setUp();
+	public function setUp()
+	{
+		parent::setUp();
 
-        $command = new Enable(\OC::$server->getAppManager());
-        $this->commandTester = new CommandTester($command);
+		$command = new Enable(\OC::$server->getAppManager());
+		$this->commandTester = new CommandTester($command);
 
-    }
+	}
 
-    /**
-     * @dataProvider providesAppIds
-     * @param $appId
-     * @param $expectedOutput
-     * @param string|null $group
-     */
-    public function testCommandInput($appId, $expectedOutput, $group = null)
-    {
-        $input = ['app-id' => $appId];
-        if ($group !== null) {
-            $input['--groups'] = [$group];
-        }
-        $this->commandTester->execute($input);
-        $output = $this->commandTester->getDisplay();
+	/**
+	 * @dataProvider providesAppIds
+	 * @param $appId
+	 * @param $expectedOutput
+	 * @param string|null $group
+	 */
+	public function testCommandInput($appId, $expectedOutput, $group = null)
+	{
+		$input = ['app-id' => $appId];
+		if ($group !== null) {
+			$input['--groups'] = [$group];
+		}
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
 
-        $this->assertContains($expectedOutput, $output);
-    }
+		$this->assertContains($expectedOutput, $output);
+	}
 
-    public function providesAppIds()
-    {
-        return [
-            [["comments", "files"], "comments enabled\nfiles enabled"],
-            [["comments", "kukki"], "comments enabled\nkukki not found"],
-            [["hui-buh"], "hui-buh not found"],
-            [['updatenotification'], "updatenotification enabled for groups: admin", "admin"],
-            [
-                ["hui-buh", "hebele-hubele", "updatenotification"],
-                "hui-buh not found\nhebele-hubele not found\nupdatenotification enabled",
-            ],
-        ];
-    }
+	public function providesAppIds()
+	{
+		return [
+			[["comments", "files"], "comments enabled\nfiles enabled"],
+			[["comments", "kukki"], "comments enabled\nkukki not found"],
+			[["hui-buh"], "hui-buh not found"],
+			[['updatenotification'], "updatenotification enabled for groups: admin", "admin"],
+			[
+				["hui-buh", "hebele-hubele", "updatenotification"],
+				"hui-buh not found\nhebele-hubele not found\nupdatenotification enabled",
+			],
+		];
+	}
 }

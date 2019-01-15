@@ -34,73 +34,72 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Enable extends Command
 {
 
-    /** @var IAppManager */
-    protected $manager;
+	/** @var IAppManager */
+	protected $manager;
 
-    /**
-     * @param IAppManager $manager
-     */
-    public function __construct(IAppManager $manager)
-    {
-        parent::__construct();
-        $this->manager = $manager;
-    }
+	/**
+	 * @param IAppManager $manager
+	 */
+	public function __construct(IAppManager $manager)
+	{
+		parent::__construct();
+		$this->manager = $manager;
+	}
 
-    protected function configure()
-    {
-        $this
-            ->setName('app:enable')
-            ->setDescription('Enable an app.')
-            ->addArgument(
-                'app-id',
-                InputArgument::REQUIRED | InputArgument::IS_ARRAY,
-                'Enable the specified app.'
-            )
-            ->addOption(
-                'groups',
-                'g',
-                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Enable the app only for a specific list of groups.'
-            );
-    }
+	protected function configure()
+	{
+		$this
+			->setName('app:enable')
+			->setDescription('Enable an app.')
+			->addArgument(
+				'app-id',
+				InputArgument::REQUIRED | InputArgument::IS_ARRAY,
+				'Enable the specified app.'
+			)
+			->addOption(
+				'groups',
+				'g',
+				InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+				'Enable the app only for a specific list of groups.'
+			);
+	}
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $appIds = $input->getArgument('app-id');
-        $groups = $input->getOption('groups');
+	protected function execute(InputInterface $input, OutputInterface $output)
+	{
+		$appIds = $input->getArgument('app-id');
+		$groups = $input->getOption('groups');
 
-        return $this->enableApps($appIds, $groups, $output);
-    }
+		return $this->enableApps($appIds, $groups, $output);
+	}
 
-    /**
-     * Enable a list of apps
-     * @param array $appIds
-     * @param array $groups
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @return int 1 when one or more apps not found, 0 when everything went successfully
-     * @throws \Exception
-     */
-    private function enableApps(array $appIds, array $groups, OutputInterface $output): int
-    {
-        $errorFlag = 0;
-        foreach ($appIds as $appId) {
-            if (!\OC_App::getAppPath($appId)) {
-                $output->writeln($appId . ' not found');
-                $errorFlag = 1;
-                continue;
-            }
+	/**
+	 * Enable a list of apps
+	 * @param array $appIds
+	 * @param array $groups
+	 * @param \Symfony\Component\Console\Output\OutputInterface $output
+	 * @return int 1 when one or more apps not found, 0 when everything went successfully
+	 * @throws \Exception
+	 */
+	private function enableApps(array $appIds, array $groups, OutputInterface $output): int
+	{
+		$errorFlag = 0;
+		foreach ($appIds as $appId) {
+			if (!\OC_App::getAppPath($appId)) {
+				$output->writeln($appId . ' not found');
+				$errorFlag = 1;
+				continue;
+			}
 
-            if (empty($groups)) {
-                \OC_App::enable($appId);
-                $output->writeln($appId . ' enabled');
-            } else {
-                \OC_App::enable($appId, $groups);
-                $output->writeln($appId . ' enabled for groups: ' . \implode(', ', $groups));
-            }
+			if (empty($groups)) {
+				\OC_App::enable($appId);
+				$output->writeln($appId . ' enabled');
+			} else {
+				\OC_App::enable($appId, $groups);
+				$output->writeln($appId . ' enabled for groups: ' . \implode(', ', $groups));
+			}
+		}
 
-        }
-
-        return $errorFlag;
-    }
+		return $errorFlag;
+	}
 
 }
