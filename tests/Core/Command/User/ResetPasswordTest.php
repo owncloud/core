@@ -237,4 +237,72 @@ class ResetPasswordTest extends TestCase {
 			->with('<error>Email address is not set for the user foo</error>');
 		$this->invokePrivate($this->resetPassword, 'execute', [$input, $output]);
 	}
+
+	public function providesStatusOfPasswordFromEnvWithEmailConfirmation() {
+		return [
+			[true],
+			[false]
+		];
+	}
+
+	/**
+	 * @dataProvider providesStatusOfPasswordFromEnvWithEmailConfirmation
+	 * @param $expectedResult
+	 */
+	public function testPasswordFromEnvAndPasswordConfirmationEmail($expectedResult) {
+		$input = $this->createMock(InputInterface::class);
+		$output = $this->createMock(OutputInterface::class);
+
+		$input->expects($this->once())
+			->method('getArgument')
+			->willReturn('foo');
+
+		$input->expects($this->exactly(3))
+			->method('getOption')
+			->willReturnMap([
+				['send-email', true],
+				['output-link', false],
+				['password-from-env', true]
+			]);
+
+		$user = $this->createMock(IUser::class);
+
+		$user->method('getUID')
+			->willReturn('foo');
+
+		$this->userManager->expects($this->once())
+			->method('get')
+			->willReturn($user);
+
+		$this->environmentHelper->expects($this->once())
+			->method('getEnvVar')
+			->willReturn('fooPass');
+
+		$this->lostController->method('generateTokenAndLink')
+			->with('foo')
+			->willReturn(['http://localhost/foo/bar/123AbcFooBar/foo', '123AbcFooBar']);
+
+		if ($expectedResult === true) {
+			$this->lostController->method('setPassword')
+				->willReturn(['status' => 'success']);
+
+			$output->expects($this->once())
+				->method('writeln')
+				->with("<info>Successfully reset password for foo.</info>");
+		} else {
+			$this->lostController->method('setPassword')
+				->willReturn("failed");
+
+			$output->expects($this->once())
+				->method('writeln')
+				->with("<error>Error while resetting password!</error>");
+		}
+
+		$result = $this->invokePrivate($this->resetPassword, 'execute', [$input, $output]);
+		if ($expectedResult === true) {
+			$this->assertEquals(0, $result);
+		} else {
+			$this->assertEquals(1, $result);
+		}
+	}
 }
