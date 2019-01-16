@@ -23,6 +23,7 @@ OC.L10N.register(
     "%1$s unassigned system tag %3$s from %2$s" : "%1$s 取消分配系统标签 %3$s 从 %2$s",
     "%s (restricted)" : "%s（受限）",
     "%s (invisible)" : "%s (不可见)",
+    "%s (static)" : "%s （静态）",
     "No files in here" : "无文件",
     "No entries found in this folder" : "此文件夹中无项目",
     "Name" : "名称",

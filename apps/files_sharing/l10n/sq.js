@@ -82,6 +82,7 @@ OC.L10N.register(
     "Shared by %2$s" : "U nda nga %2$s",
     "Shares" : "Ndarje",
     "File sharing" : "Ndarje kartelash me të tjerët",
+    "Public link" : "Lidhje publike",
     "Share API is disabled" : "API i ndarjeve është çaktivizuar",
     "Wrong share ID, share doesn't exist" : "ID e gabuar ndarjeje, ndarja s’ekziston",
     "Could not delete share" : "Ndarja s’u fshi dot",

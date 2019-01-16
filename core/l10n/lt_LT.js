@@ -118,7 +118,6 @@ OC.L10N.register(
     "Expiration" : "Galiojimo laikas",
     "Delete {link}" : "Trinti (link)",
     "Remove link" : "Pašalinti nuorodą",
-    "{fileName} link" : "{fileName} nuoroda",
     "Link" : "Nuoroda",
     "Create public link" : "Sukurti viešą nuorodą",
     "Edit" : "Redaguoti",

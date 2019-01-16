@@ -78,6 +78,7 @@ OC.L10N.register(
     "Public link of %2$s expired" : "Tidsgräns för publik länk för %2$s har löpt ut",
     "Shared by %2$s" : "Delad av %2$s",
     "Shares" : "Delningar",
+    "Public link" : "Publik länk",
     "Share API is disabled" : "Dela-API är inaktiverat",
     "Wrong share ID, share doesn't exist" : "Fel delningsid, delning existerar inte",
     "Could not delete share" : "Kunde ej ta bort delning",

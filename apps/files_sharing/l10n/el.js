@@ -78,6 +78,7 @@ OC.L10N.register(
     "Public link of %2$s expired" : "Έληξε ο δημόσιος σύνδεσμος του %2$s",
     "Shared by %2$s" : "Διαμοιράστηκε από %2$s",
     "Shares" : "Κοινόχρηστοι φάκελοι",
+    "Public link" : "Δημόσιος σύνδεσμος",
     "Share API is disabled" : "Ο διαμοιρασμός ΑΡΙ είναι απενεργοποιημένος",
     "Wrong share ID, share doesn't exist" : "Εσφαλμένη διαδρομή, το αρχείο/ο φάκελος δεν υπάρχει",
     "Could not delete share" : "Αδυναμία διαγραφής διαμοιρασμένου",

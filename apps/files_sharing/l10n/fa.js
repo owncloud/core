@@ -74,6 +74,7 @@ OC.L10N.register(
     "Public link of %2$s expired" : "لینک عمومی %2$s منقضی شده است",
     "Shared by %2$s" : "به اشتراک گذاشته شده توسط %2$s",
     "Shares" : "موارد به اشتراک گذاشته",
+    "Public link" : "پیوند عمومی",
     "Share API is disabled" : "API اشتراک گذاری غیر فعال است.",
     "Wrong share ID, share doesn't exist" : "شناسه اشتراک گذاری اشتباه است، اشتراک گذاری وجود ندارد.",
     "Could not delete share" : "امکان حذف اشتراک گذاری وجود ندارد.",

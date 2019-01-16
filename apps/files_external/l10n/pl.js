@@ -46,6 +46,7 @@ OC.L10N.register(
     "SFTP with secret key login" : "Logowanie tajnym kluczem do SFTP",
     "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Udostępnij",
+    "Domain" : "Domena",
     "SMB / CIFS using OC login" : "SMB / CIFS przy użyciu loginu OC",
     "Username as share" : "Użytkownik jako zasób",
     "OpenStack Object Storage" : "Magazyn obiektów OpenStack",

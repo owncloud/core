@@ -23,6 +23,7 @@ OC.L10N.register(
     "%1$s unassigned system tag %3$s from %2$s" : "%1$s ไม่ได้ถูกกำหนดแท็กระบบ %3$s เป็น %2$s",
     "%s (restricted)" : "%s (ถูกจำกัด)",
     "%s (invisible)" : "%s (มองไม่เห็น)",
+    "%s (static)" : "%s(คงที่) ",
     "No files in here" : "ไม่มีไฟล์ที่นี่",
     "No entries found in this folder" : "ไม่พบรายการในโฟลเดอร์นี้",
     "Name" : "ชื่อ",

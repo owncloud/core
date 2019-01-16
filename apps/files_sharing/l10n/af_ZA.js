@@ -6,6 +6,7 @@ OC.L10N.register(
     "Share" : "Deel",
     "Pending" : "Hangend",
     "Sharing" : "Deling",
+    "Public link" : "Openbare skakel",
     "Accept" : "Aanvaar",
     "Decline" : "Verwerp",
     "This share is password-protected" : "Hierdie deling word met ’n wagwoord beskerm",

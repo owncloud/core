@@ -150,7 +150,6 @@ OC.L10N.register(
     "Expiration date is required" : "Dagsetning gildistíma er nauðsynleg",
     "Delete {link}" : "Eyða {link}",
     "Remove link" : "Fjarlægja tengil",
-    "{fileName} link" : "{fileName} tengill",
     "Link" : "Tengill",
     "Create public link" : "Búa til opinberan tengil",
     "Edit" : "Breyta",

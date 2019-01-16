@@ -79,6 +79,7 @@
     "Shared by %2$s" : "Deilt af %2$s",
     "Shares" : "Sameignir",
     "File sharing" : "Skráadeiling",
+    "Public link" : "Opinber tengill",
     "Share API is disabled" : "Deilingar-API er óvirkt",
     "Wrong share ID, share doesn't exist" : "Rangt auðkenni sameignar, sameign er ekki til",
     "Could not delete share" : "Tókst ekki að eyða sameign",

@@ -80,6 +80,7 @@ OC.L10N.register(
     "Public link of %2$s expired" : "Openbare link van %2$s is verlopen",
     "Shared by %2$s" : "Gedeeld door %2$s",
     "Shares" : "Gedeeld",
+    "Public link" : "Openbare Link",
     "Share API is disabled" : "Delen API is uitgeschakeld",
     "Wrong share ID, share doesn't exist" : "Onjuist deel-ID, de share bestaat niet",
     "Could not delete share" : "Kon share niet verwijderen",

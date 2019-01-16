@@ -82,6 +82,7 @@ OC.L10N.register(
     "Shared by %2$s" : "แชร์โดย %2$s",
     "Shares" : "แชร์",
     "File sharing" : "กำลังแชร์ไฟล์",
+    "Public link" : "ลิงก์สาธารณะ",
     "Share API is disabled" : "แชร์ API ถูกปิดใช้งาน",
     "Wrong share ID, share doesn't exist" : "แชร์ไอดีผิด หรือ ไม่มีแชร์นั้นอยู่",
     "Could not delete share" : "ไม่สามารถลบแชร์",

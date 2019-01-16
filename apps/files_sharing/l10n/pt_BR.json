@@ -80,6 +80,7 @@
     "Shared by %2$s" : "Compartilhado por %2$s",
     "Shares" : "Compartilhamentos",
     "File sharing" : "Compartilhamento de arquivo",
+    "Public link" : "Linque público",
     "Share API is disabled" : "O compartilhamento de API está desabilitado.",
     "Wrong share ID, share doesn't exist" : "ID de compartilhamento errado, o compartilhamento não existe",
     "Could not delete share" : "Não foi possível eliminar o compartilhamento",

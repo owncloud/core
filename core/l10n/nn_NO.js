@@ -146,7 +146,6 @@ OC.L10N.register(
     "Expiration date is required" : "Utløp dato er krevd",
     "Delete {link}" : "Fjern {link}",
     "Remove link" : "Fjern lenke",
-    "{fileName} link" : "{fileName} lenke",
     "Link" : "Lenkje",
     "Create public link" : "Opprett offentleg lenke",
     "Edit" : "Endra",

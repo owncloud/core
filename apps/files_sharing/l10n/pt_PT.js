@@ -78,6 +78,7 @@ OC.L10N.register(
     "Public link of %2$s expired" : "A  hiperligação pública de %2$s expirou",
     "Shared by %2$s" : "Partilhado por %2$s",
     "Shares" : "Partilhas",
+    "Public link" : "Hiperligação Pública",
     "Share API is disabled" : "A partilha de API está desativada",
     "Wrong share ID, share doesn't exist" : "Id. de partilha errada, a partilha não existe",
     "Could not delete share" : "Não foi possível eliminar a partilha",

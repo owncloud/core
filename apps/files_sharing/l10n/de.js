@@ -82,6 +82,7 @@ OC.L10N.register(
     "Shared by %2$s" : "Geteilt von %2$s",
     "Shares" : "Freigaben",
     "File sharing" : "Dateifreigabe",
+    "Public link" : "Öffentlicher Link",
     "Share API is disabled" : "Teilen-API ist deaktivert",
     "Wrong share ID, share doesn't exist" : "Fehlerhafte Freigabe-ID, Freigabe existiert nicht",
     "Could not delete share" : "Freigabe konnte nicht gelöscht werden",

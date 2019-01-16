@@ -80,6 +80,7 @@
     "Shared by %2$s" : "%2$s sdílel(a)",
     "Shares" : "Sdílení",
     "File sharing" : "Sdílení souboru",
+    "Public link" : "Veřejný odkaz",
     "Share API is disabled" : "Sdílení API je zakázané",
     "Wrong share ID, share doesn't exist" : "Špatné ID sdílení, sdílení neexistuje",
     "Could not delete share" : "Nelze smazat sdílení",

@@ -36,6 +36,7 @@ OC.L10N.register(
     "Name" : "Naziv",
     "Storage type" : "Vrsta spremišta",
     "Scope" : "Opseg",
+    "Never" : "Nikada",
     "External Storage" : "Vanjsko spremište",
     "Folder name" : "Naziv mape",
     "Configuration" : "Konfiguracija",

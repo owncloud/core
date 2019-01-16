@@ -75,6 +75,7 @@
     "Public link of %2$s expired" : "קישור ציבורי של %2$s פג תוקף",
     "Shared by %2$s" : "שיתף/שיתפה על ידי %2$s",
     "Shares" : "שיתופים",
+    "Public link" : "קישור ציבורי",
     "Share API is disabled" : "שיתוף API מנוטרל",
     "Wrong share ID, share doesn't exist" : "מספר זיהוי שיתוף שגוי, שיתוף אינו קיים",
     "Could not delete share" : "לא ניתן היה למחוק את השיתוף",

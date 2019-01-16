@@ -150,7 +150,6 @@ OC.L10N.register(
     "Expiration date is required" : "Датумот на истекување е потребен",
     "Delete {link}" : "Избриши {link}",
     "Remove link" : "Избриши го линкот",
-    "{fileName} link" : "{fileName} линк",
     "Link" : "Линк",
     "Create public link" : "Креирај јавен линк",
     "Edit" : "Уреди",

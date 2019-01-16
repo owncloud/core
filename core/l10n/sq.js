@@ -150,7 +150,6 @@ OC.L10N.register(
     "Expiration date is required" : "Data e skadimit është e domosdoshme",
     "Delete {link}" : "Fshije {link}",
     "Remove link" : "Hiqe lidhjen",
-    "{fileName} link" : "lidhje {fileName}",
     "Link" : "Lidhje",
     "Create public link" : "Krijoni lidhje publike",
     "Edit" : "Përpunoni",

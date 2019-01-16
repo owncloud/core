@@ -150,7 +150,6 @@ OC.L10N.register(
     "Expiration date is required" : "到期日期为必填",
     "Delete {link}" : "删除 {link}",
     "Remove link" : "移除链接",
-    "{fileName} link" : "{fileName} 链接",
     "Link" : "链接",
     "Create public link" : "创建公共链接",
     "Edit" : "编辑",

@@ -146,7 +146,6 @@ OC.L10N.register(
     "Expiration date is required" : "A data de expiração é necessária",
     "Delete {link}" : "Apagar {link}",
     "Remove link" : "Remover hiperligação",
-    "{fileName} link" : "Hiperligação de {fileName}",
     "Link" : "Hiperligação",
     "Create public link" : "Criar ligação pública",
     "Edit" : "Editar",

@@ -74,6 +74,7 @@
     "Public link of %2$s expired" : "Публичната връзка %2$s изтече",
     "Shared by %2$s" : "Споделено от %2$s",
     "Shares" : "Споделени Папки",
+    "Public link" : "Публичнa връзкa",
     "Share API is disabled" : "API-то за споделяне е деактивирано",
     "Wrong share ID, share doesn't exist" : "Грешно ID за споделяне, папката не съществува",
     "Could not delete share" : "Неуспешно изтриване на споделена папка",

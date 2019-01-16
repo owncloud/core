@@ -82,6 +82,7 @@ OC.L10N.register(
     "Shared by %2$s" : "Geteilt von %2$s",
     "Shares" : "Geteiltes",
     "File sharing" : "Dateifreigabe",
+    "Public link" : "Öffentlicher Link",
     "Share API is disabled" : "Teilen-API ist deaktivert",
     "Wrong share ID, share doesn't exist" : "Fehlerhafte Freigabe-ID, Freigabe existiert nicht",
     "Could not delete share" : "Freigabe konnte nicht gelöscht werden",
@@ -128,6 +129,8 @@ OC.L10N.register(
     "%s is publicly shared" : "%s wird öffentlich geteilt",
     "Download" : "Herunterladen",
     "Download %s" : "Download %s",
-    "Direct link" : "Direkte Verlinkung"
+    "Direct link" : "Direkte Verlinkung",
+    "Exclude groups from receiving shares" : "Gruppen vom Empfang von Freigaben ausschließen",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Diese Gruppen werden keine Freigaben bekommen. Mitglieder der Gruppe können weiterhin Freigaben außerhalb der Gruppe senden und empfangen."
 },
 "nplurals=2; plural=(n != 1);");

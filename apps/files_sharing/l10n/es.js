@@ -82,6 +82,7 @@ OC.L10N.register(
     "Shared by %2$s" : "Compartido por %2$s",
     "Shares" : "Compartidos",
     "File sharing" : "Compartir Archivos",
+    "Public link" : "Enlace Publico",
     "Share API is disabled" : "El API de compartir está deshabilitado",
     "Wrong share ID, share doesn't exist" : "El ID del recurso compartido no es correcto, el recurso compartido no existe",
     "Could not delete share" : "No se ha podido eliminar el recurso compartido",

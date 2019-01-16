@@ -145,7 +145,6 @@ OC.L10N.register(
     "Expiration date is required" : "تاریخ انقضا مورد نیاز است",
     "Delete {link}" : "حذف {پیوند}",
     "Remove link" : "حذف لینک",
-    "{fileName} link" : "{نام پرونده} پیوند",
     "Link" : "لینک",
     "Create public link" : "ساخت لینک عمومی",
     "Edit" : "ویرایش",

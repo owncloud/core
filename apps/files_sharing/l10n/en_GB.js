@@ -82,6 +82,7 @@ OC.L10N.register(
     "Shared by %2$s" : "Shared by %2$s",
     "Shares" : "Shares",
     "File sharing" : "File sharing",
+    "Public link" : "Public link",
     "Share API is disabled" : "Share API is disabled",
     "Wrong share ID, share doesn't exist" : "Wrong share ID, share doesn't exist",
     "Could not delete share" : "Could not delete share",

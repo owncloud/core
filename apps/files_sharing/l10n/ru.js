@@ -82,6 +82,7 @@ OC.L10N.register(
     "Shared by %2$s" : "Поделился %2$s",
     "Shares" : "События обмена файлами",
     "File sharing" : "Совместный доступ к файлам",
+    "Public link" : "Общедоступная ссылка",
     "Share API is disabled" : "API общего доступа отключён",
     "Wrong share ID, share doesn't exist" : "Неверный идентификатор публикации, публикация не существует",
     "Could not delete share" : "Не удалось удалить публикацию",

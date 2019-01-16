@@ -63,6 +63,7 @@ OC.L10N.register(
     "Public link of %2$s expired" : "Kohteen %2$s julkinen linkki vanhentui",
     "Shared by %2$s" : "Jakanut %2$s",
     "Shares" : "Jaot",
+    "Public link" : "Julkinen linkki",
     "Share API is disabled" : "Jakamisrajapinta on poistettu käytöstä",
     "Wrong share ID, share doesn't exist" : "Väärä jakotunniste, jakoa ei ole olemassa",
     "Could not delete share" : "Jaon poistaminen ei onnistunut",

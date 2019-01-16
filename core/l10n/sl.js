@@ -146,7 +146,6 @@ OC.L10N.register(
     "Expiration date is required" : "Zahtevan je datum preteka veljavnosti",
     "Delete {link}" : "Izbriši povezavo {link}",
     "Remove link" : "Odstrani povezavo",
-    "{fileName} link" : "Povezava do {fileName}",
     "Link" : "Povezava",
     "Create public link" : "Ustvari javno povezavo",
     "Edit" : "Uredi",

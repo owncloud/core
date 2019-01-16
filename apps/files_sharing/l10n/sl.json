@@ -76,6 +76,7 @@
     "Public link of %2$s expired" : "Javna povezava %2$s je potekla",
     "Shared by %2$s" : "Souporabo je omogočil uporabnik %2$s",
     "Shares" : "Souporaba",
+    "Public link" : "Javna povezava",
     "Share API is disabled" : "API souporabe je onemogočen",
     "Wrong share ID, share doesn't exist" : "Napačen ID mesta uporabe; mesto ne obstaja!",
     "Could not delete share" : "Tega predmeta v souporabi ni mogoče izbrisati.",

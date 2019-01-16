@@ -119,7 +119,6 @@ OC.L10N.register(
     "Expiration date is required" : "Vervaldatum word benodig",
     "Delete {link}" : "Skrap {link}",
     "Remove link" : "Verwyder skakel",
-    "{fileName} link" : "{fileName} skakel",
     "Link" : "Skakel",
     "Create public link" : "Skep openbare skakel",
     "Edit" : "Wysig",

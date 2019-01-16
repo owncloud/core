@@ -150,7 +150,6 @@ OC.L10N.register(
     "Expiration date is required" : "A lejárat dátuma szükséges",
     "Delete {link}" : "Törlés {link}",
     "Remove link" : "Hivatkozás eltávolítása",
-    "{fileName} link" : "{fileName} hivatkozás",
     "Link" : "Hivatkozás",
     "Create public link" : "Publikus hivatkozás létrehozása",
     "Edit" : "Szerkesztés",

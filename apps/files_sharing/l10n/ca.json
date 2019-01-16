@@ -29,6 +29,7 @@
     "You shared %1$s via link" : "Heu compartit %1$s via enllaç",
     "%2$s shared %1$s with you" : "%2$s ha compartit %1$s amb tu",
     "Shares" : "Compartits",
+    "Public link" : "Enllaç públic",
     "Couldn't send mail to following recipient(s): %s " : "No s'ha pugut enviar l'email al(s) destinatari(s): %s",
     "Accept" : "Acceptar",
     "Decline" : "Denegar",

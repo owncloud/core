@@ -53,6 +53,7 @@ OC.L10N.register(
     "Public link of %2$s expired" : "Odnośnik publiczny do %2$s wygasł",
     "Shared by %2$s" : "Udostępnione przez %2$s",
     "Shares" : "Udziały",
+    "Public link" : "Link publiczny",
     "Share API is disabled" : "API udostępniania jest wyłączone",
     "Wrong share ID, share doesn't exist" : "Nieprawidłowe ID zasobu, zasób nie istnieje",
     "Could not delete share" : "Nie można usunąć zasobu",

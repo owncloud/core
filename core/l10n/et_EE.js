@@ -127,7 +127,6 @@ OC.L10N.register(
     "Expiration date is required" : "Aegumise kuupäev on nõutud",
     "Delete {link}" : "Kustuta {link}",
     "Remove link" : "Eemalda link",
-    "{fileName} link" : "{fileName} link",
     "Link" : "Link",
     "Create public link" : "Loo avalik link",
     "Edit" : "Muuda",

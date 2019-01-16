@@ -76,6 +76,7 @@
     "Public link of %2$s expired" : "il collegamento pubblico di %2$s è scaduto",
     "Shared by %2$s" : "Condivisa da %2$s",
     "Shares" : "Condivisioni",
+    "Public link" : "Collegamento pubblico",
     "Share API is disabled" : "API di condivisione disabilitate",
     "Wrong share ID, share doesn't exist" : "ID di condivisione errato, la condivisione non esiste",
     "Could not delete share" : "impossibile eliminare la condivisione",

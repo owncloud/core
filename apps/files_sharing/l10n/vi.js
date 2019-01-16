@@ -19,6 +19,7 @@ OC.L10N.register(
     "Shared by" : "Chia sẻ bởi",
     "Sharing" : "Chia sẻ",
     "Shares" : "Chia sẻ",
+    "Public link" : "Liên kết công khai",
     "Accept" : "Đồng ý",
     "Decline" : "Từ chối",
     "The password is wrong. Try again." : "Mật khẩu sai. Xin hãy thử lại.",

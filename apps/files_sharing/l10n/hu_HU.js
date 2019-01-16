@@ -57,6 +57,7 @@ OC.L10N.register(
     "Shared via public link" : "Megosztva publikus hivatkozással",
     "Shared by %2$s" : "Megosztó: %2$s",
     "Shares" : "Megosztások",
+    "Public link" : "Nyilvános link",
     "Couldn't send mail to following recipient(s): %s " : "Email küldese sikertelen a következő(k)nek: %s",
     "Accept" : "Elfogadás",
     "Decline" : "Elutasítás",

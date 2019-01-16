@@ -148,7 +148,6 @@
     "Expiration date is required" : "Срок действия обязателен",
     "Delete {link}" : "Удалить {link}",
     "Remove link" : "Удалить ссылку",
-    "{fileName} link" : "Ссылка {fileName}",
     "Link" : "Ссылка",
     "Create public link" : "Создать общедоступную ссылку",
     "Edit" : "Редактировать",

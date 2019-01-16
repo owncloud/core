@@ -143,7 +143,6 @@ OC.L10N.register(
     "Expiration date is required" : "Απαιτείται ημερομηνία λήξης",
     "Delete {link}" : "Διαγραφή {link}",
     "Remove link" : "Αφαίρεση συνδέσμου",
-    "{fileName} link" : "{fileName} σύνδεσμος",
     "Link" : "Σύνδεσμος",
     "Create public link" : "Δημιουργία δημόσιου συνδέσμου",
     "Edit" : "Επεξεργασία",

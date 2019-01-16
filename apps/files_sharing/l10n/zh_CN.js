@@ -82,6 +82,7 @@ OC.L10N.register(
     "Shared by %2$s" : "由 %2$s 共享",
     "Shares" : "共享",
     "File sharing" : "文件分享",
+    "Public link" : "公开链接",
     "Share API is disabled" : "共享 API 已被禁用",
     "Wrong share ID, share doesn't exist" : "错误的共享 ID，共享不存在",
     "Could not delete share" : "不能删除共享",

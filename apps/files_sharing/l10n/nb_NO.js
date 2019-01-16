@@ -82,6 +82,7 @@ OC.L10N.register(
     "Shared by %2$s" : "Delt av %2$s",
     "Shares" : "Delinger",
     "File sharing" : "Fildeling",
+    "Public link" : "Offentlig lenke",
     "Share API is disabled" : "Delings-API er deaktivert",
     "Wrong share ID, share doesn't exist" : "Feil delings-ID, delingen finnes ikke",
     "Could not delete share" : "Klarte ikke å slette deling",

@@ -150,7 +150,6 @@ OC.L10N.register(
     "Expiration date is required" : "有効期限を設定してください",
     "Delete {link}" : "{link} を削除",
     "Remove link" : "リンクを削除",
-    "{fileName} link" : "{fileName} のリンク",
     "Link" : "リンク",
     "Create public link" : "公開リンクを作成",
     "Edit" : "編集",
