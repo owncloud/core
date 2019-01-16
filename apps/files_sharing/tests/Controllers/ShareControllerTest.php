@@ -223,9 +223,24 @@ class ShareControllerTest extends \Test\TestCase {
 			->with('files_sharing.sharecontroller.showShare', ['token'=>'token'])
 			->willReturn('redirect');
 
+		$beforeLinkAuthCalled = false;
+		$this->eventDispatcher->addListener(
+			'share.beforelinkauth', function () use (&$beforeLinkAuthCalled) {
+				$beforeLinkAuthCalled = true;
+			}
+		);
+		$afterLinkAuthCalled = false;
+		$this->eventDispatcher->addListener(
+			'share.afterlinkauth', function () use (&$afterLinkAuthCalled) {
+				$afterLinkAuthCalled = true;
+			}
+		);
+
 		$response = $this->shareController->authenticate('token', 'validpassword');
 		$expectedResponse =  new RedirectResponse('redirect');
 		$this->assertEquals($expectedResponse, $response);
+		$this->assertEquals(true, $beforeLinkAuthCalled);
+		$this->assertEquals(true, $afterLinkAuthCalled);
 	}
 
 	public function testAuthenticateInvalidPassword() {
@@ -262,6 +277,19 @@ class ShareControllerTest extends \Test\TestCase {
 				$calledShareLinkAccess[] = $event;
 			});
 
+		$beforeLinkAuthCalled = false;
+		$this->eventDispatcher->addListener(
+			'share.beforelinkauth', function () use (&$beforeLinkAuthCalled) {
+				$beforeLinkAuthCalled = true;
+			}
+		);
+		$afterLinkAuthCalled = false;
+		$this->eventDispatcher->addListener(
+			'share.afterlinkauth', function () use (&$afterLinkAuthCalled) {
+				$afterLinkAuthCalled = true;
+			}
+		);
+
 		$hookListner->expects($this->once())
 			->method('access')
 			->with($this->callback(function (array $data) {
@@ -286,6 +314,8 @@ class ShareControllerTest extends \Test\TestCase {
 		$this->assertEquals('token', $calledShareLinkAccess[1]->getArgument('shareObject')->getToken());
 		$this->assertEquals(403, $calledShareLinkAccess[1]->getArgument('errorCode'));
 		$this->assertEquals('Wrong password', $calledShareLinkAccess[1]->getArgument('errorMessage'));
+		$this->assertEquals(true, $beforeLinkAuthCalled);
+		$this->assertEquals(false, $afterLinkAuthCalled);
 	}
 
 	public function testShowShareInvalidToken() {
