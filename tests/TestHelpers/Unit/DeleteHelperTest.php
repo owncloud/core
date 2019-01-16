@@ -22,14 +22,17 @@
 
 use TestHelpers\DeleteHelper;
 use GuzzleHttp\Client;
-use GuzzleHttp\Subscriber\Mock;
-use GuzzleHttp\Message\Response;
-use GuzzleHttp\Subscriber\History;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Request;
 
 /**
  * Unit tests for TestHelpers\DeleteHelper;
  */
 class DeleteHelperTest extends PHPUnit\Framework\TestCase {
+	private $container = [];
 
 	/**
 	 * Setup http client, mock requests, and attach history
@@ -37,16 +40,14 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$mock = new Mock(
+		$mock = new MockHandler(
 			[ new Response(204, [])]
 		);
+		$handler = HandlerStack::create($mock);
+		$history = Middleware::history($this->container);
+		$handler->push($history);
 
-		$this->client = new Client();
-
-		$this->history = new History();
-
-		$this->client->getEmitter()->attach($mock);
-		$this->client->getEmitter()->attach($this->history);
+		$this->client = new Client(['handler' => $handler]);
 	}
 
 	/**
@@ -66,13 +67,16 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 			$this->client
 		);
 
-		$lastRequest = $this->history->getLastRequest();
+		/**
+		 * @var Request $lastRequest
+		 */
+		$lastRequest = $this->container[0]['request'];
 		$this->assertEquals(
 			'http://localhost/remote.php/webdav/secret/file.txt',
-			$lastRequest->getUrl()
+			$lastRequest->getUri()
 		);
 		$this->assertEquals('DELETE', $lastRequest->getMethod());
-		$this->assertNull($lastRequest->getBody());
+		$this->assertEquals('', $lastRequest->getBody()->getContents());
 
 		$this->assertEquals(
 			['Basic ' . \base64_encode('user:password')],
@@ -97,13 +101,16 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 			$this->client
 		);
 
-		$lastRequest = $this->history->getLastRequest();
+		/**
+		 * @var Request $lastRequest
+		 */
+		$lastRequest = $this->container[0]['request'];
 		$this->assertEquals(
 			'http://localhost/remote.php/dav/files/user/secret/file.txt',
-			$lastRequest->getUrl()
+			$lastRequest->getUri()
 		);
 		$this->assertEquals('DELETE', $lastRequest->getMethod());
-		$this->assertNull($lastRequest->getBody());
+		$this->assertEquals('', $lastRequest->getBody()->getContents());
 
 		$this->assertEquals(
 			['Basic ' . \base64_encode('user:password')],
@@ -129,7 +136,10 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 			$this->client
 		);
 
-		$lastRequest = $this->history->getLastRequest();
+		/**
+		 * @var Request $lastRequest
+		 */
+		$lastRequest = $this->container[0]['request'];
 
 		$this->assertArrayHasKey("Cache-Control", $lastRequest->getHeaders());
 		// Guzzle adds it to the array

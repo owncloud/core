@@ -22,14 +22,18 @@
 
 use TestHelpers\WebDavHelper;
 use GuzzleHttp\Client;
-use GuzzleHttp\Subscriber\Mock;
-use GuzzleHttp\Message\Response;
-use GuzzleHttp\Subscriber\History;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Request;
 
 /**
  * Test for WebDavHelper
  */
 class WebDavHelperTest extends PHPUnit\Framework\TestCase {
+	private $container = [];
+
 	/**
 	 * Setup mock response, client and listen for all requests
 	 * through history.
@@ -39,15 +43,14 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	public function setUp() {
 		// mocks is not used, but is required. Else it will try to
 		// contact original server and will fail our tests.
-		$mock = new Mock(
+		$mock = new MockHandler(
 			[new Response(200, []),]
 		);
+		$handler = HandlerStack::create($mock);
+		$history = Middleware::history($this->container);
+		$handler->push($history);
 
-		$this->client = new Client();
-		$this->history = new History();
-
-		$this->client->getEmitter()->attach($mock);
-		$this->client->getEmitter()->attach($this->history);
+		$this->client = new Client(['handler' => $handler]);
 	}
 
 	/**
@@ -75,11 +78,14 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 			$this->client
 		);
 
-		$lastRequest = $this->history->getLastRequest();
+		/**
+		 * @var Request $lastRequest
+		 */
+		$lastRequest = $this->container[0]['request'];
 
 		$this->assertEquals(
 			'http://own.cloud/core/remote.php/webdav/folder/file.txt',
-			$lastRequest->getUrl()
+			$lastRequest->getUri()
 		);
 		$this->assertEquals('GET', $lastRequest->getMethod());
 		$this->assertEquals(
@@ -113,11 +119,14 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 			$this->client
 		);
 
-		$lastRequest = $this->history->getLastRequest();
+		/**
+		 * @var Request $lastRequest
+		 */
+		$lastRequest = $this->container[0]['request'];
 
 		$this->assertEquals(
 			'http://own.cloud/core/remote.php/dav/files/user1/folder/file.txt',
-			$lastRequest->getUrl()
+			$lastRequest->getUri()
 		);
 		$this->assertEquals('GET', $lastRequest->getMethod());
 	}
@@ -147,11 +156,14 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 			$this->client
 		);
 
-		$lastRequest = $this->history->getLastRequest();
+		/**
+		 * @var Request $lastRequest
+		 */
+		$lastRequest = $this->container[0]['request'];
 
 		$this->assertEquals(
 			'http://own.cloud/core/remote.php/dav/files/user1/folder/file%3Fq=hello%23newfile',
-			$lastRequest->getUrl()
+			$lastRequest->getUri()
 		);
 
 		// not just the link, but `Destination` header should have also been replaced
@@ -186,7 +198,10 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 			$this->client
 		);
 
-		$lastRequest = $this->history->getLastRequest();
+		/**
+		 * @var Request $lastRequest
+		 */
+		$lastRequest = $this->container[0]['request'];
 
 		// no way to know that $user and $password is set to null, except confirming that
 		// the Authorization is `Bearer`. If it would have gotten username and password,
