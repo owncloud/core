@@ -162,10 +162,7 @@
 			var validates = true;
 			validates &= this.expirationView.validate();
 
-			if (!password
-				&& this._shouldRequirePassword()
-				&& (this.model.isNew() || !this.model.get('encryptedPassword'))
-			) {
+			if (!(password || this.model.get('encryptedPassword')) && this._shouldRequirePassword()) {
 				$password.addClass('error');
 				$password.next('.error-message').removeClass('hidden').text(t('core', 'Password required'));
 				validates = false;
@@ -292,6 +289,10 @@
 		},
 
 		_onClickReset: function () {
+			if (this._shouldRequirePassword()) {
+				this.$el.find('.linkPassText').addClass('error').next('.error-message').removeClass('hidden').text(t('core', 'Can not remove required password'));
+				return false;
+			}
 			var $dialog        = $('.oc-dialog:visible'),
 				$inputPassword = $dialog.find('.linkPassText'),
 				$buttonReset   = $dialog.find('.removePassword');
