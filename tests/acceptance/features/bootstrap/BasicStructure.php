@@ -1979,10 +1979,24 @@ trait BasicStructure {
 	 *                         own array
 	 *                         the replacement itself will be used as first parameter
 	 *                         e.g. substituteInLineCodes($value, ['preg_quote' => ['/']])
+	 * @param array $additionalSubstitutions
+	 *                         array of additional substitution configurations
+	 *                           [
+	 *                             [
+	 *                               "code" => "%my_code%",
+	 *                               "function" => [
+	 *                                                $myClass,
+	 *                                                "myFunction"
+	 *                               ],
+	 *                               "parameter" => []
+	 *                             ],
+	 *                           ]
 	 *
 	 * @return string
 	 */
-	public function substituteInLineCodes($value, $functions = []) {
+	public function substituteInLineCodes(
+		$value, $functions = [], $additionalSubstitutions = []
+	) {
 		$substitutions = [
 			[
 				"code" => "%base_url%",
@@ -2081,6 +2095,10 @@ trait BasicStructure {
 				"parameter" => []
 			]
 		];
+
+		if (!empty($additionalSubstitutions)) {
+			$substitutions = \array_merge($substitutions, $additionalSubstitutions);
+		}
 
 		foreach ($substitutions as $substitution) {
 			$replacement = \call_user_func_array(
