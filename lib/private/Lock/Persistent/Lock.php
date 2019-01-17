@@ -86,7 +86,7 @@ class Lock extends Entity implements ILock {
 	 * Return the owner of the lock - plain text field as transmitted by clients
 	 *
 	 * @return string
-	 * @since 11.0.0
+	 * @since 10.1.0
 	 */
 	public function getOwner(): ?string {
 		return $this->owner;
@@ -96,7 +96,7 @@ class Lock extends Entity implements ILock {
 	 * Foreign key to oc_filecache.fileid
 	 *
 	 * @return int
-	 * @since 11.0.0
+	 * @since 10.1.0
 	 */
 	public function getFileId(): int {
 		return $this->fileId;
@@ -106,7 +106,7 @@ class Lock extends Entity implements ILock {
 	 * Seconds of lock life time
 	 *
 	 * @return int
-	 * @since 11.0.0
+	 * @since 10.1.0
 	 */
 	public function getTimeout(): int {
 		return $this->timeout;
@@ -116,7 +116,7 @@ class Lock extends Entity implements ILock {
 	 * Unix timestamp when lock was created
 	 *
 	 * @return mixed
-	 * @since 11.0.0
+	 * @since 10.1.0
 	 */
 	public function getCreatedAt(): int {
 		return $this->createdAt;
@@ -126,7 +126,7 @@ class Lock extends Entity implements ILock {
 	 * Token to identify the lock - uuid usually
 	 *
 	 * @return string
-	 * @since 11.0.0
+	 * @since 10.1.0
 	 */
 	public function getToken(): string {
 		return $this->token;
@@ -136,7 +136,7 @@ class Lock extends Entity implements ILock {
 	 * Either shared lock or exclusive lock
 	 *
 	 * @return int
-	 * @since 11.0.0
+	 * @since 10.1.0
 	 */
 	public function getScope(): int {
 		return $this->scope;
@@ -146,7 +146,7 @@ class Lock extends Entity implements ILock {
 	 * Depth as used in WebDAV: 0, 1 or infinite
 	 *
 	 * @return int
-	 * @since 11.0.0
+	 * @since 10.1.0
 	 */
 	public function getDepth(): int {
 		return $this->depth;
@@ -156,7 +156,7 @@ class Lock extends Entity implements ILock {
 	 * Absolute path to the file/folder on webdav
 	 *
 	 * @return string
-	 * @since 11.0.0
+	 * @since 10.1.0
 	 */
 	public function getAbsoluteDavPath(): string {
 		return $this->absoluteDavPath;
@@ -166,7 +166,7 @@ class Lock extends Entity implements ILock {
 	 * User id on webdav URI
 	 *
 	 * @return string
-	 * @since 11.0.0
+	 * @since 10.1.0
 	 */
 	public function getDavUserId(): string {
 		return $this->davUserId;
@@ -177,7 +177,7 @@ class Lock extends Entity implements ILock {
 	 *
 	 * @param string $owner
 	 * @return mixed
-	 * @since 11.0.0
+	 * @since 10.1.0
 	 */
 	public function setOwner(?string $owner) : void {
 		$this->setter('owner', [$owner]);

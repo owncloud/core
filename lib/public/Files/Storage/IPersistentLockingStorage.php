@@ -26,30 +26,41 @@ use OCP\Lock\Persistent\ILock;
  * Interface IPersistentLockingStorage
  *
  * @package OCP\Files\Storage
- * @since 11.0.0
+ * @since 10.1.0
  */
 interface IPersistentLockingStorage {
 	/**
+	 * Acquire or refresh a persistent lock on the given internal path.
+	 *
+	 * If lockinfo is passed with an existing token, the matching lock will be refreshed.
+	 *
+	 * Note: it is the responsibility of the caller to enforce lock uniqueness in case
+	 * of exclusive locks.
+	 *
 	 * @param string $internalPath
 	 * @param array $lockInfo
-	 * @return mixed
-	 * @since 11.0.0
+	 * @return ILock newly created lock
+	 * @since 10.1.0
 	 */
 	public function lockNodePersistent(string $internalPath, array $lockInfo);
 
 	/**
-	 * @param string $internalPath
+	 * @param string $internalPath storage internal path to query
 	 * @param array $lockInfo
-	 * @return mixed
-	 * @since 11.0.0
+	 * @return bool true if the lock was deleted, false if no such lock existed
+	 * @since 10.1.0
 	 */
 	public function unlockNodePersistent(string $internalPath, array $lockInfo);
 
 	/**
-	 * @param string $internalPath
-	 * @param bool $returnChildLocks
+	 * Returns the direct locks from the given internal path and also indirect locks
+	 * that exist on any parents.
+	 *
+	 * @param string $internalPath storage internal path to query
+	 * @param bool $returnChildLocks whether to also return locks that exist on any
+	 * child paths
 	 * @return ILock[]
-	 * @since 11.0.0
+	 * @since 10.1.0
 	 */
 	public function getLocks(string $internalPath, bool $returnChildLocks = false) : array;
 }
