@@ -1372,14 +1372,14 @@ trait WebDav {
 	/**
 	 * @Then /^the HTTP reason phrase of all upload responses should be "([^"]*)"$/
 	 *
-	 * @param string $reasonPhase
+	 * @param string $reasonPhrase
 	 *
 	 * @return void
 	 */
-	public function theHTTPReasonPhraseOfAllUploadResponsesShouldBe($reasonPhase) {
+	public function theHTTPReasonPhraseOfAllUploadResponsesShouldBe($reasonPhrase) {
 		foreach ($this->uploadResponses as $response) {
 			PHPUnit_Framework_Assert::assertEquals(
-				$reasonPhase,
+				$reasonPhrase,
 				$response->getReasonPhrase(),
 				'Response for ' . $response->getEffectiveUrl() . ' did not return expected reason phrase'
 			);
