@@ -225,6 +225,19 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has been created with default attributes in the database user backend$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userHasBeenCreatedOnDatabaseBackend($user) {
+		$this->adminCreatesUserUsingTheProvisioningApi($user);
+		$this->userShouldExist($user);
+	}
+
+	/**
 	 * @Given /^user "([^"]*)" has been created with default attributes$/
 	 *
 	 * @param string $user
