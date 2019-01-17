@@ -33,6 +33,7 @@ pipeline:
       - php occ config:list
       - echo "export TEST_SERVER_FED_URL=https://federated" > /drone/saved-settings.sh
       - php occ security:certificates:import /drone/server.crt
+      - php occ security:certificates:import /drone/federated.crt
       - php occ security:certificates
     when:
       matrix:
@@ -145,6 +146,7 @@ pipeline:
       - php occ config:system:set trusted_domains 2 --value=federated
       - php occ log:manage --level 0
       - php occ config:list
+      - php occ security:certificates:import /drone/server.crt
       - php occ security:certificates:import /drone/federated.crt
       - php occ security:certificates
     when:
