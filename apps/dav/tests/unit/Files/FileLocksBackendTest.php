@@ -36,7 +36,6 @@ use Sabre\DAV\Tree;
 use Test\TestCase;
 
 class FileLocksBackendTest extends TestCase {
-
 	const CREATION_TIME = 164419200;
 	const CURRENT_TIME = 164419800;
 
