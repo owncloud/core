@@ -1961,7 +1961,7 @@ trait BasicStructure {
 	 *
 	 * @return string
 	 */
-	public function getCommentUrlReqExp() {
+	public function getCommentUrlRegExp() {
 		$basePath = \ltrim($this->getBasePath() . "/", "/");
 		return "/{$basePath}remote.php/dav/comments/files/([0-9]+)";
 	}
@@ -2076,7 +2076,7 @@ trait BasicStructure {
 				"code" => "%a_comment_url%",
 				"function" => [
 					$this,
-					"getCommentUrlReqExp"
+					"getCommentUrlRegExp"
 				],
 				"parameter" => []
 			]

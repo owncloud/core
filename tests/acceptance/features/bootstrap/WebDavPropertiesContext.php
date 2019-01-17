@@ -30,7 +30,7 @@ use TestHelpers\WebDavHelper;
 require_once 'bootstrap.php';
 
 /**
- * Steps that relate to files_versions app
+ * Steps that relate to managing file/folder properties via WebDav
  */
 class WebDavPropertiesContext implements Context {
 
