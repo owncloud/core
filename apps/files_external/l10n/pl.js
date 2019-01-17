@@ -62,6 +62,7 @@ OC.L10N.register(
     "Scope" : "Zakres",
     "Enable encryption" : "Włącz szyfrowanie",
     "Enable previews" : "Włącz podgląd",
+    "Enable sharing" : "Włącz współdzielenie",
     "Check for changes" : "Sprawdź zmiany",
     "Never" : "Nigdy",
     "Once every direct access" : "Jeden raz przy każdym dostępie",

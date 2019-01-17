@@ -227,6 +227,7 @@ OC.L10N.register(
     "New password" : "Nowe hasło",
     "Change password" : "Zmień hasło",
     "Help translate" : "Pomóż w tłumaczeniu",
+    "You are using %s" : "Używasz %s",
     "You are using %s of %s (%s %%)" : "Używasz %s z %s (%s %%)",
     "Sessions" : "Sesje",
     "Browser" : "Przeglądarka",
