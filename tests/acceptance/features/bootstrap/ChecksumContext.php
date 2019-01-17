@@ -50,7 +50,9 @@ class ChecksumContext implements Context {
 	public function userUploadsFileToWithChecksumUsingTheAPI(
 		$user, $source, $destination, $checksum
 	) {
-		$file = \file_get_contents($this->acceptanceTestsDirLocation() . $source);
+		$file = \file_get_contents(
+			$this->featureContext->acceptanceTestsDirLocation() . $source
+		);
 		$response = $this->featureContext->makeDavRequest(
 			$user,
 			'PUT',
