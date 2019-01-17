@@ -175,7 +175,7 @@
 			<?php endforeach; ?>
 			<br/>
 			<input type="checkbox" name="allowUserMountSharing" id="allowUserMountSharing" class="checkbox"
-				value="1" <?php if ($_['allowUserMountSharing'] === 'yes') {
+				value="1" <?php if ($_['allowUserMountSharing']) {
 				print_unescaped(' checked="checked"');
 			} ?> />
 			<label for="allowUserMountSharing"><?php p($l->t('Allow sharing on user-mounted external storages')); ?></label> <span id="userMountSharingMsg" class="msg"></span>
