@@ -100,42 +100,7 @@ class SharingHelper {
 			throw new \InvalidArgumentException("invalid share type");
 		}
 		if ($permissions !== null) {
-			if (\is_numeric($permissions)) {
-				$permissionSum = (int) $permissions;
-			} else {
-				if (!\is_array($permissions)) {
-					$permissions = [$permissions];
-				}
-				$validPermissionTypes
-					= [
-						'read' => 1,
-						'update' => 2,
-						'create' => 4,
-						'delete' => 8,
-						'change' => 15,
-						'share' => 16,
-						'all' => 31
-					];
-				$permissionSum = 0;
-				foreach ($permissions as $permission) {
-					if (isset($validPermissionTypes[$permission])) {
-						$permissionSum += $validPermissionTypes[$permission];
-					} elseif (\in_array($permission, $validPermissionTypes)) {
-						$permissionSum += (int) $permission;
-					} else {
-						throw new \InvalidArgumentException(
-							"invalid permission type ($permission)"
-						);
-					}
-				}
-			}
-
-			if ($permissionSum < 1 || $permissionSum > 31) {
-				throw new \InvalidArgumentException(
-					"invalid permission total ($permissionSum)"
-				);
-			}
-			$fd['permissions'] = $permissionSum;
+			$fd['permissions'] = self::getPermissionSum($permissions);
 		}
 
 		if (!\in_array($ocsApiVersion, [1, 2], true)) {
@@ -143,7 +108,6 @@ class SharingHelper {
 				"invalid ocsApiVersion ($ocsApiVersion)"
 			);
 		}
-
 		if (!\in_array($sharingApiVersion, [1, 2], true)) {
 			throw new \InvalidArgumentException(
 				"invalid sharingApiVersion ($sharingApiVersion)"
@@ -175,5 +139,60 @@ class SharingHelper {
 		}
 
 		return HttpRequestHelper::post($fullUrl, $user, $password, null, $fd);
+	}
+	
+	/**
+	 * calculates the permission sum (int) from given permissions
+	 * permissions can be passed in as int, string or array of int or string
+	 * 'read' => 1
+	 * 'update' => 2
+	 * 'create' => 4
+	 * 'delete' => 8
+	 * 'change' => 15
+	 * 'share' => 16
+	 * 'all' => 31
+	 *
+	 * @param string[]|string|int|int[] $permissions
+	 *
+	 * @throws \InvalidArgumentException
+	 *
+	 * @return int
+	 */
+	public static function getPermissionSum($permissions) {
+		if (\is_numeric($permissions)) {
+			$permissionSum = (int) $permissions;
+		} else {
+			if (!\is_array($permissions)) {
+				$permissions = [$permissions];
+			}
+			$validPermissionTypes
+				= [
+					'read' => 1,
+					'update' => 2,
+					'create' => 4,
+					'delete' => 8,
+					'change' => 15,
+					'share' => 16,
+					'all' => 31
+				];
+			$permissionSum = 0;
+			foreach ($permissions as $permission) {
+				if (isset($validPermissionTypes[$permission])) {
+					$permissionSum += $validPermissionTypes[$permission];
+				} elseif (\in_array($permission, $validPermissionTypes)) {
+					$permissionSum += (int) $permission;
+				} else {
+					throw new \InvalidArgumentException(
+						"invalid permission type ($permission)"
+					);
+				}
+			}
+		}
+		if ($permissionSum < 1 || $permissionSum > 31) {
+			throw new \InvalidArgumentException(
+				"invalid permission total ($permissionSum)"
+			);
+		}
+		return $permissionSum;
 	}
 }
