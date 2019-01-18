@@ -38,8 +38,6 @@ parameters:
     - '#Undefined variable: \$OC_[a-zA-Z0-9\\_]+#'
     - '#Undefined variable: \$vendor#'
     - '#Undefined variable: \$baseuri#'
-    - '#Function apc_delete_file not found.#'
-    - '#Function accelerator_reset not found.#'
     - '#Instantiated class OC_Theme not found.#'
     # errors below are to be addressed by own pull requests - non trivial changes required
     - '#OCA\\DAV\\Connector\\Sabre\\ObjectTree::__construct\(\) does not call parent constructor from Sabre\\DAV\\Tree.#'
