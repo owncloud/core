@@ -22,15 +22,9 @@ parameters:
     - %currentWorkingDirectory%/apps/*/appinfo/routes.php
     - %currentWorkingDirectory%/apps/*/composer/*
     - %currentWorkingDirectory%/apps/*/3rdparty/*
-    - %currentWorkingDirectory%/apps/files/appinfo/update.php
     - %currentWorkingDirectory%/apps/files_sharing/ajax/shareinfo.php
     - %currentWorkingDirectory%/settings/templates/*
     - %currentWorkingDirectory%/settings/routes.php
-    # below requires update of phpstan
-    - %currentWorkingDirectory%/core/Command/Maintenance/DataFingerprint.php
-    - %currentWorkingDirectory%/apps/dav/lib/Server.php
-    - %currentWorkingDirectory%/apps/dav/appinfo/v1/carddav.php
-    - %currentWorkingDirectory%/apps/dav/appinfo/v1/caldav.php
     # specific app excludes
     # eventually move into app directories and use neon includes for better separation
     - %currentWorkingDirectory%/apps/dav/bin
@@ -38,8 +32,6 @@ parameters:
     - '#Undefined variable: \$OC_[a-zA-Z0-9\\_]+#'
     - '#Undefined variable: \$vendor#'
     - '#Undefined variable: \$baseuri#'
-    - '#Function apc_delete_file not found.#'
-    - '#Function accelerator_reset not found.#'
     - '#Instantiated class OC_Theme not found.#'
     # errors below are to be addressed by own pull requests - non trivial changes required
     - '#OCA\\DAV\\Connector\\Sabre\\ObjectTree::__construct\(\) does not call parent constructor from Sabre\\DAV\\Tree.#'
