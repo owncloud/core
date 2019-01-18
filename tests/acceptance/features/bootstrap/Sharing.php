@@ -822,15 +822,20 @@ trait Sharing {
 
 	/**
 	 * @param string $userOrGroup
-	 * @param int $permissions
+	 * @param int|int[]|string|string[] $permissions
 	 *
 	 * @return bool
 	 */
 	public function isUserOrGroupInSharedData($userOrGroup, $permissions = null) {
+		if ($permissions !== null) {
+			$permissionSum = SharingHelper::getPermissionSum($permissions);
+		}
+		
 		$data = $this->getResponseXml()->data[0];
 		foreach ($data as $element) {
-			if ($element->share_with == $userOrGroup
-				&& ($permissions === null || $permissions == $element->permissions)
+			if ($element->share_with->__toString() === $userOrGroup
+				&& ($permissions === null
+				|| $permissionSum === (int)$element->permissions->__toString())
 			) {
 				return true;
 			}
@@ -839,7 +844,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))? using the sharing API$/
 	 *
 	 * @param string $user1
 	 * @param string $filepath
@@ -872,7 +877,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))?$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))?$/
 	 *
 	 * @param string $user1
 	 * @param string $filepath
@@ -894,7 +899,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with the administrator(?: with permissions ([\d]*))?$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with the administrator(?: with permissions (.*))?$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
@@ -912,7 +917,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
+	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))? using the sharing API$/
 	 *
 	 * @param string $filepath
 	 * @param string $user2
@@ -929,7 +934,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))?$/
+	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))?$/
 	 *
 	 * @param string $filepath
 	 * @param string $user2
@@ -946,7 +951,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
+	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (.*))? using the sharing API$/
 	 *
 	 * @param string $filepath
 	 * @param string $group
@@ -963,7 +968,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
+	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (.*))?$/
 	 *
 	 * @param string $filepath
 	 * @param string $group
@@ -980,7 +985,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (.*))? using the sharing API$/
 	 *
 	 * @param string $user
 	 * @param string $filepath
@@ -1010,7 +1015,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (.*))?$/
 	 *
 	 * @param string $user
 	 * @param string $filepath
@@ -1045,7 +1050,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
+	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions (.*))? using the sharing API$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
@@ -1068,7 +1073,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
+	 * @Then /^user "([^"]*)" should be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions (.*))? using the sharing API$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
