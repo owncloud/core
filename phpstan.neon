@@ -22,15 +22,9 @@ parameters:
     - %currentWorkingDirectory%/apps/*/appinfo/routes.php
     - %currentWorkingDirectory%/apps/*/composer/*
     - %currentWorkingDirectory%/apps/*/3rdparty/*
-    - %currentWorkingDirectory%/apps/files/appinfo/update.php
     - %currentWorkingDirectory%/apps/files_sharing/ajax/shareinfo.php
     - %currentWorkingDirectory%/settings/templates/*
     - %currentWorkingDirectory%/settings/routes.php
-    # below requires update of phpstan
-    - %currentWorkingDirectory%/core/Command/Maintenance/DataFingerprint.php
-    - %currentWorkingDirectory%/apps/dav/lib/Server.php
-    - %currentWorkingDirectory%/apps/dav/appinfo/v1/carddav.php
-    - %currentWorkingDirectory%/apps/dav/appinfo/v1/caldav.php
     # specific app excludes
     # eventually move into app directories and use neon includes for better separation
     - %currentWorkingDirectory%/apps/dav/bin
