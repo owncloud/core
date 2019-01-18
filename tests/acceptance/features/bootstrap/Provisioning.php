@@ -1623,6 +1623,19 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Given /^group "([^"]*)" has been created in the database user backend$/
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function groupHasBeenCreatedOnDatabaseBackend($group) {
+		$this->adminCreatesGroupUsingTheProvisioningApi($group);
+		$this->groupShouldExist($group);
+	}
+
+	/**
 	 * @Given these groups have been created:
 	 * expects a table of groups with the heading "groupname"
 	 *
