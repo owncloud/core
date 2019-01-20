@@ -7,6 +7,8 @@
 **[ownCloud](http://ownCloud.org) gives you freedom and control over your own data.
 A personal cloud which runs on your own server.**
 
+Triggr CI
+
 ![](https://github.com/owncloud/screenshots/blob/master/files/sidebar_1.png)
 
 ## Why is this so awesome?
