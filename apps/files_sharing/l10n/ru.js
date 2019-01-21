@@ -128,6 +128,11 @@ OC.L10N.register(
     "The group is blacklisted for sharing" : "Группа в чёрном списке для предоставления доступа",
     "Files Sharing" : "Предоставление доступа к файлам",
     "Exclude groups from receiving shares." : "Исключить группы из получения доступа.",
-    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Эти группы не  будут получать доступ. Члены группы всё-таки смогут предоставлять и получать доступ вне данной группы."
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Эти группы не  будут получать доступ. Члены группы всё-таки смогут предоставлять и получать доступ вне данной группы.",
+    "Public link" : "Общедоступная ссылка",
+    "Couldn't send mail to following recipient(s): %s " : "Не удалось отправить почту следующим получателям: %s ",
+    "Group Sharing Blacklist" : "Чёрный список групп для общего доступа",
+    "Exclude groups from receiving shares" : "Не давать группам получать общий доступ",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Для этих групп не будет возможности предоставить им общий доступ к чему-либо. Членам группы не ограничивается право предоставлять общий доступ от себя, и они могут получать общий доступ через другие группы, если являются их членами, в обычном порядке."
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

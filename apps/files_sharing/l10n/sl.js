@@ -117,6 +117,7 @@ OC.L10N.register(
     "Pending" : "V čakanju ...",
     "Accept" : "Sprejmi",
     "Decline" : "Zavrni",
-    "Declined" : "Zavrnjeno"
+    "Declined" : "Zavrnjeno",
+    "Public link" : "Javna povezava"
 },
 "nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);");

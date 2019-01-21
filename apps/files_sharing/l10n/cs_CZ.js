@@ -117,6 +117,15 @@ OC.L10N.register(
     "Pending" : "Nevyřízené",
     "Accept" : "Přijmout",
     "Decline" : "Zamítnout",
-    "Declined" : "Zamítnuto"
+    "Declined" : "Zamítnuto",
+    "Public link" : "Veřejný odkaz",
+    "Couldn't send mail to following recipient(s): %s " : "Email nemohl být odeslán těmto příjemcům: %s",
+    "An error occurred while updating share state: {message}" : "Došlo k chybě při pokusu o aktualizaci sdílení: {message}",
+    "Accept Share" : "Přijmout sdílení",
+    "Decline Share" : "Odmítnout sdílení",
+    "File sharing" : "Sdílení souboru",
+    "The group is blacklisted for sharing" : "Skupina bez povolení sdílet",
+    "Only recipient can change accepted state" : "Stav přijetí může změnit pouze příjemce",
+    "State" : "Stav"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

@@ -1,4 +1,11 @@
 { "translations": {
-    "Add" : "Dodajte"
+    "Add" : "Dodajte",
+    "Server is already in the list of trusted servers." : "Server već je na popisu povjerljivih servera.",
+    "+ Add ownCloud server" : "+ Dodajte ownCloud server",
+    "Server added to the list of trusted ownClouds" : "Server je dodan na popis povjerljivih ownCloud servera",
+    "No ownCloud server found" : "Nije pronađen ownCloud server",
+    "Could not add server" : "Ne može se dodati server",
+    "Trusted ownCloud Servers" : "Povjerljivi ownCloud Serveri",
+    "ownCloud Server" : "ownCloud Server"
 },"pluralForm" :"nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;"
 }

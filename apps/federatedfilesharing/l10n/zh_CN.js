@@ -19,6 +19,8 @@ OC.L10N.register(
     "Share with me via ownCloud" : "通过联合云与我共享",
     "HTML Code:" : "HTML 代码:",
     "Add to your ownCloud" : "添加到您的云空间",
-    "File is already shared with %s" : "已经于 %s 共享文件"
+    "File is already shared with %s" : "已经于 %s 共享文件",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "通过我的 #ownCloud 联合云 ID 与我共享，见 %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "通过我的 #ownCloud 联合云 ID 与我共享"
 },
 "nplurals=1; plural=0;");

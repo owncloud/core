@@ -118,6 +118,14 @@ OC.L10N.register(
     "Processing files..." : "Обработка файлов...",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Ограничить уведомления о создании и изменений только вашими <strong>избранными файлами</strong>",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "У вас нет разрешения на доступ к этому файлу или папке. Пожалуйста обратитесь к владельцу, чтобы он предоставил вам доступ.",
-    "Error when assembling chunks, status code {status}" : "Ошибка при сборке блоков, код состояния {status}"
+    "Error when assembling chunks, status code {status}" : "Ошибка при сборке блоков, код состояния {status}",
+    "The file {file} is currently locked, please try again later" : "В настоящий момент файл {file} заблокирован, попробуйте ещё раз позже",
+    "Lock status" : "Состояние блокировки",
+    "This resource is locked. Click to see more details." : "Ресурс заблокирован. Нажмите, чтобы посмотреть подробности.",
+    "{owner} has locked this resource via {path}" : "{owner} заблокировал(а) данный ресурс через {path}",
+    "Could not unlock, please contact the lock owner {owner}" : "Не удалось разблокировать, пожалуйста свяжитесь с владельцем блокировки {owner}",
+    "Unlock failed with status {status}" : "Разблокировать не удалось, статус {status}",
+    "Locks" : "Блокировки",
+    "Resource is not locked" : "Ресурс не заблокирован"
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

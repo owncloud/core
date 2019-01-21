@@ -113,6 +113,7 @@ OC.L10N.register(
     "No favorites" : "Δεν υπάρχουν αγαπημένα",
     "Files and folders you mark as favorite will show up here" : "Τα αρχεία και οι φάκελοι που σημειώνονται ως αγαπημένα  θα εμφανιστούν εδώ ",
     "Text file" : "Αρχείο κειμένου",
-    "New text file.txt" : "Νέο αρχείο κειμένου.txt"
+    "New text file.txt" : "Νέο αρχείο κειμένου.txt",
+    "Processing files..." : "Γίνεται επεξεργασία των αρχείων..."
 },
 "nplurals=2; plural=(n != 1);");

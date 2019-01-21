@@ -116,6 +116,14 @@
     "Processing files..." : "Processando arquivos...",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Limite as notificações sobre a criação e as alterações nos seus <strong>arquivos favoritos</strong>",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Você não tem permissões para acessar este arquivo/pasta - Entre em contato com o proprietário para compartilhá-lo com você.",
-    "Error when assembling chunks, status code {status}" : "Erro ao montar partes do todo, código de status {status}"
+    "Error when assembling chunks, status code {status}" : "Erro ao montar partes do todo, código de status {status}",
+    "The file {file} is currently locked, please try again later" : "O arquivo {file} está bloqueado, por favor tente novamente mais tarde",
+    "Lock status" : "Status de bloqueio",
+    "This resource is locked. Click to see more details." : "Este recurso está bloqueado. Clique para ver mais detalhes.",
+    "{owner} has locked this resource via {path}" : "{owner} bloqueou este recurso via {path}",
+    "Could not unlock, please contact the lock owner {owner}" : "Não foi possível desbloquear, entre em contato com o proprietário do bloqueio {owner}",
+    "Unlock failed with status {status}" : "Desbloqueio falhou com o status {status}",
+    "Locks" : "Bloqueios",
+    "Resource is not locked" : "O recurso não está bloqueado"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

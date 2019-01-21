@@ -117,6 +117,7 @@ OC.L10N.register(
     "Pending" : "Pendente",
     "Accept" : "Aceitar",
     "Decline" : "Recusar",
-    "Declined" : "Negado"
+    "Declined" : "Negado",
+    "Public link" : "Hiperligação Pública"
 },
 "nplurals=2; plural=(n != 1);");

@@ -373,6 +373,10 @@ OC.L10N.register(
     "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "App-Passwörter oder Token sind passcodes, die einer App oder einem Gerät Zugriff auf dein %s Konto geben.",
     "Use them as a security measure to hide your actual password which you may only want to use for web interface login." : "Benutze diese als Sicherheitsmaßnahme, um dein richtiges Passwort nur für den Webzugriff zu verwenden.",
     "Create new app passcode" : "Neuen App-Passcode erstellen",
-    "Password / Token" : "Passwort / Token"
+    "Password / Token" : "Passwort / Token",
+    "Wrong current password" : "Das aktuelle Passwort ist falsch.",
+    "The new password cannot be the same as the previous one" : "Das neue Passwort kann nicht identisch zum alten Passwort sein.",
+    "Owner language" : "Sprache des Anwenders",
+    "Language used for public mail notifications for shared files" : "Sprache für die Benachrichtigungs-Mail für geteilte Dateien."
 },
 "nplurals=2; plural=(n != 1);");

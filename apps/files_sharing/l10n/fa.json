@@ -109,6 +109,7 @@
     "Download %s" : "دانلود %s",
     "Direct link" : "پیوند مستقیم",
     "Pending" : "در انتظار",
-    "Accept" : "قبول"
+    "Accept" : "قبول",
+    "Public link" : "پیوند عمومی"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

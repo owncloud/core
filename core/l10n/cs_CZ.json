@@ -340,6 +340,21 @@
     "Link name" : "Jméno odkazu",
     "You are trying to access a private link. Please log in first." : "Pokoušíte se získat přístup k soukromému odkazu. Prosím nejdříve se přihlaste.",
     "Imprint" : "Imprint",
-    "Privacy Policy" : "Ochrana soukromí"
+    "Privacy Policy" : "Ochrana soukromí",
+    "Owner: {owner}" : "Vlastník: {owner}",
+    "Email notification was sent!" : "Emailové upozornění odesláno!",
+    "Email notification not sent" : "Emailové upozornění neodesláno",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Pokud se tato chyba objeví víckrát, kontaktujte prosím správce systému a přiložte do zprávy technické detaily zobrazené níže.",
+    "You took too long to login, please try again now" : "Přihlášení trvalo příliš dlouho, zkuste to prosím znovu",
+    "Couldn't send mail to following recipient(s): %s " : "Email nemohl být odeslán těmto příjemcům: 1%s",
+    "Choose an expiration date" : "Zvolte si datum expirace",
+    "Choose a password" : "Zvolte si heslo",
+    "Download / View" : "Stáhnout / zobrazit",
+    "Download / View / Upload" : "Stáhnout / zobrazit / nahrát",
+    "Send copy to self" : "Poslat kopii sobě",
+    "Add personal message" : "Přidat vlastní zprávu",
+    "An error occured while sending email" : "Při posílání emailu došlo k chybě",
+    "E-Mail sent" : "E-mail odeslán",
+    "Sharing is not allowed" : "Sdílení není povoleno"
 },"pluralForm" :"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;"
 }

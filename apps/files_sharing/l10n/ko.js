@@ -118,6 +118,7 @@ OC.L10N.register(
     "Pending" : "대기 중",
     "Accept" : "수락",
     "Decline" : "거절",
-    "Declined" : "거절됨"
+    "Declined" : "거절됨",
+    "Public link" : "공개 링크"
 },
 "nplurals=1; plural=0;");

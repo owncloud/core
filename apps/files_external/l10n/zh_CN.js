@@ -79,6 +79,12 @@ OC.L10N.register(
     "Disable external storage" : "停用外部存储",
     "Enable external storage" : "启用外部存储",
     "OAuth2" : "OAuth2",
-    "Credentials required" : "需要凭据"
+    "Credentials required" : "需要凭据",
+    "All users. Type to select user or group." : "所有用户。输入以选择用户或组。",
+    "(group)" : "(组)",
+    "External storage has been disabled by the administrator" : "外部储存已被管理员停用",
+    "Empty response from the server" : "服务器未返回数据",
+    "Couldn't get the information from the ownCloud server: {code} {type}" : "无法从 ownCloud 服务器获取信息：{code} {type}",
+    "Allow sharing on user-mounted external storages" : "允许用户挂载的外部储存共享"
 },
 "nplurals=1; plural=0;");

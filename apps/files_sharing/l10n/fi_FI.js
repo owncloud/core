@@ -98,6 +98,8 @@ OC.L10N.register(
     "Pending" : "Odottaa",
     "Accept" : "Hyväksy",
     "Decline" : "Kieltäydy",
-    "Declined" : "Torjuttu"
+    "Declined" : "Torjuttu",
+    "Public link" : "Julkinen linkki",
+    "Couldn't send mail to following recipient(s): %s " : "Ei voitu lähettää sähköpostia seuraaville vastaanottajille: %s"
 },
 "nplurals=2; plural=(n != 1);");

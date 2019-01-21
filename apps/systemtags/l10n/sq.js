@@ -27,6 +27,7 @@ OC.L10N.register(
     "No entries found in this folder" : "S’u gjetën zëra në këtë dosje",
     "Name" : "Emër",
     "Size" : "Madhësi",
-    "Modified" : "Ndryshuar më"
+    "Modified" : "Ndryshuar më",
+    "%s (static)" : "%s (statike)"
 },
 "nplurals=2; plural=(n != 1);");

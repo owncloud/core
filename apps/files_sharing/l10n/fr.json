@@ -116,6 +116,9 @@
     "Pending" : "En attente",
     "Accept" : "Accepter",
     "Decline" : "Refuser",
-    "Declined" : "Refusé"
+    "Declined" : "Refusé",
+    "Public link" : "Lien public",
+    "Couldn't send mail to following recipient(s): %s " : "Impossible d'envoyer de mail au(x) destinataire(s) suivant(s) : %s",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Ces groupes ne seront pas disponibles pour le partage. Les membres du groupe ne sont pas exclus du partage et peuvent recevoir le partage en tant que membres d'autres groupes."
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

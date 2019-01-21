@@ -116,6 +116,7 @@ OC.L10N.register(
     "Pending" : "中断",
     "Accept" : "受領",
     "Decline" : "拒否",
-    "Declined" : "拒否されました"
+    "Declined" : "拒否されました",
+    "Couldn't send mail to following recipient(s): %s " : "以下の宛先にメールを送信できませんでした: %s"
 },
 "nplurals=1; plural=0;");

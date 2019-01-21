@@ -47,6 +47,8 @@
     "Pending" : "Pendent",
     "Accept" : "Acceptar",
     "Decline" : "Denegar",
-    "Declined" : "Denegat"
+    "Declined" : "Denegat",
+    "Public link" : "Enllaç públic",
+    "Couldn't send mail to following recipient(s): %s " : "No s'ha pugut enviar l'email al(s) destinatari(s): %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

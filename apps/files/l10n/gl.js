@@ -81,6 +81,15 @@ OC.L10N.register(
     "The files you are trying to upload exceed the maximum size for file uploads on this server." : "Os ficheiros que tenta enviar exceden do tamaño máximo permitido neste servidor",
     "No favorites" : "Non hai favoritos",
     "Files and folders you mark as favorite will show up here" : "Os ficheiros e cartafoles que marque como favoritos amosaranse aquí",
-    "Text file" : "Ficheiro de texto"
+    "Text file" : "Ficheiro de texto",
+    "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} de {totalSize} ({bitrate})",
+    "{newName} already exists" : "Xa existe {newName}",
+    "New text file.txt" : "Novo ficheiro de texto.txt",
+    "Target folder does not exist any more" : "O cartafol de destino xa non existe",
+    "Error when assembling chunks, status code {status}" : "Produciuse un erro ao ensamblar os bloques, código de estado {status}",
+    "Storage is temporarily not available" : "O almacenamento non está dispoñíbel temporalmente",
+    "File could not be found" : "Non foi posíbel atopar o ficheiro",
+    "Not enough free space" : "Non hai espazo libre abondo",
+    "Show hidden files" : "Amosar os ficheiros agachados"
 },
 "nplurals=2; plural=(n != 1);");

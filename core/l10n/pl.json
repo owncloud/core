@@ -354,6 +354,11 @@
     "An error occured while sending email" : "Wystąpił błąd przy wysyłaniu wiadomości email",
     "E-Mail sent" : "Wiadomość e-mail została wysłana",
     "federated" : "stowarzyszona",
-    "Personal note from the sender: %s." : "Własna informacja od nadawcy: %s."
+    "Personal note from the sender: %s." : "Własna informacja od nadawcy: %s.",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Jeśli ten błąd się powtarza, skontaktuj się z administratorem serwera i podaj szczegóły techniczne z raportu poniżej.",
+    "You took too long to login, please try again now" : "Twoje logowanie trwało zbyt długo, spróbuj ponownie teraz",
+    "Sharing is not allowed" : "Współdzielenie nie jest możliwe",
+    "Privacy Policy" : "Polityka prywatności",
+    "Personal note from the sender: <br> %s." : "Własna informacja od nadawcy:<br> %s."
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }

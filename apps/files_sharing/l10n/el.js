@@ -117,6 +117,7 @@ OC.L10N.register(
     "Pending" : "Εκκρεμεί",
     "Accept" : "Αποδοχή",
     "Decline" : "Απόρριψη",
-    "Declined" : "Απορρίφθηκε"
+    "Declined" : "Απορρίφθηκε",
+    "Public link" : "Δημόσιος σύνδεσμος"
 },
 "nplurals=2; plural=(n != 1);");

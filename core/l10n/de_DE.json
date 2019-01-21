@@ -369,6 +369,9 @@
     "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatische Aktualisierung ist in der config.php deaktiviert. Zur Hochrüstung der Instanz, bitte den Kommandozeilenupdater (occ upgrade) verwenden.",
     "Imprint" : "Impressum",
     "E-Mail sent" : "E-Mail gesendet",
-    "Privacy Policy" : "Datenschutzerklärung"
+    "Privacy Policy" : "Datenschutzerklärung",
+    "Sharing is not allowed" : "Teilen ist nicht erlaubt",
+    "Static" : "Statisch",
+    "Personal note from the sender: <br> %s." : "Persöhnliche Notiz vom Absender: <br> %s."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

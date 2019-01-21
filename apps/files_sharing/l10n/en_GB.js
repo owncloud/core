@@ -117,6 +117,18 @@ OC.L10N.register(
     "Pending" : "Pending",
     "Accept" : "Accept",
     "Decline" : "Decline",
-    "Declined" : "Declined"
+    "Declined" : "Declined",
+    "Public link" : "Public link",
+    "Couldn't send mail to following recipient(s): %s " : "Couldn't send mail to following recipient(s): %s ",
+    "An error occurred while updating share state: {message}" : "An error occurred while updating share state: {message}",
+    "Accept Share" : "Accept Share",
+    "Decline Share" : "Decline Share",
+    "File sharing" : "File sharing",
+    "The group is blacklisted for sharing" : "The group is blacklisted for sharing",
+    "Only recipient can change accepted state" : "Only recipient can change accepted state",
+    "State" : "State",
+    "Group Sharing Blacklist" : "Group Sharing Blacklist",
+    "Exclude groups from receiving shares" : "Exclude groups from receiving shares",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual."
 },
 "nplurals=2; plural=(n != 1);");

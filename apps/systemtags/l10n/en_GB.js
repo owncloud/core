@@ -27,6 +27,7 @@ OC.L10N.register(
     "No entries found in this folder" : "No entries found in this folder",
     "Name" : "Name",
     "Size" : "Size",
-    "Modified" : "Modified"
+    "Modified" : "Modified",
+    "%s (static)" : "%s (static)"
 },
 "nplurals=2; plural=(n != 1);");

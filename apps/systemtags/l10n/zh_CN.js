@@ -27,6 +27,7 @@ OC.L10N.register(
     "You updated system tag %3$s to %2$s" : "你将系统标签%3$s修改为%2$s",
     "You assigned system tag %3$s to %2$s" : "你将系统标签%3$s分配给%2$s",
     "You unassigned system tag %3$s from %2$s" : "你将系统标签%3$s从%2$s移除",
-    "%s (restricted)" : "%s（受限）"
+    "%s (restricted)" : "%s（受限）",
+    "%s (static)" : "%s （静态）"
 },
 "nplurals=1; plural=0;");

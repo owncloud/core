@@ -183,6 +183,10 @@
     "%s is not supported and %s will not work properly on this platform. Use it at your own risk! " : "%s is not supported and %s will not work properly on this platform. Use it at your own risk! ",
     "Sharing %s failed, could not find %s, check spelling and server availability." : "Sharing %s failed, could not find %s, check spelling and server availability.",
     "Imprint" : "Imprint",
-    "__language_name__" : "English (British English)"
+    "__language_name__" : "English (British English)",
+    "Privacy Policy" : "Privacy Policy",
+    "The username can not be longer than 64 characters" : "The username can not be longer than 64 characters",
+    "No minimum ownCloud version is defined in appinfo/info.xml." : "No minimum ownCloud version is defined in appinfo/info.xml.",
+    "No maximum ownCloud version is defined in appinfo/info.xml." : "No maximum ownCloud version is defined in appinfo/info.xml."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -69,6 +69,7 @@ OC.L10N.register(
     "Pending" : "Ootel",
     "Accept" : "Nõustu",
     "Decline" : "Lükka tagasi",
-    "Declined" : "Tagasi lükatud"
+    "Declined" : "Tagasi lükatud",
+    "Public link" : "Avalik link"
 },
 "nplurals=2; plural=(n != 1);");

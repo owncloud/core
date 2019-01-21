@@ -32,6 +32,7 @@
     "Pending" : "Đang chờ",
     "Accept" : "Đồng ý",
     "Decline" : "Từ chối",
-    "Declined" : "Từ chối"
+    "Declined" : "Từ chối",
+    "Public link" : "Liên kết công khai"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

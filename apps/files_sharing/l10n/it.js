@@ -118,6 +118,7 @@ OC.L10N.register(
     "Pending" : "In corso",
     "Accept" : "Accetta",
     "Decline" : "Rifiuta",
-    "Declined" : "Rifiutato"
+    "Declined" : "Rifiutato",
+    "Public link" : "Collegamento pubblico"
 },
 "nplurals=2; plural=(n != 1);");

@@ -363,6 +363,10 @@
     "Recipients can view, download, edit, delete and upload contents." : "接收者可查看、下载、编辑、删除以及上传内容。",
     "An error occured while sending email" : "发送电子邮件时发生错误",
     "E-Mail sent" : "邮件已发送",
-    "Sharing is not allowed" : "禁止分享"
+    "Sharing is not allowed" : "禁止分享",
+    "federated" : "联合",
+    "{sharee} (federated)" : "{sharee} (federated)",
+    "Static" : "静态的",
+    "Personal note from the sender: <br> %s." : "来自发送者的个人留言：<br> %s."
 },"pluralForm" :"nplurals=1; plural=0;"
 }

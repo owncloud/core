@@ -82,6 +82,17 @@
     "An error occurred while updating share state: {message}" : "Błąd podczas aktualizacji stanu udziału: {message}",
     "Accept Share" : "Akceptuj współdzielenie",
     "Decline Share" : "Odrzuć współdzielenie",
-    "The group is blacklisted for sharing" : "Grupa jest na czarnej liście współdzielenia"
+    "The group is blacklisted for sharing" : "Grupa jest na czarnej liście współdzielenia",
+    "Public link" : "Link publiczny",
+    "Anonymous upload" : "Wgrywanie anonimowe",
+    "Couldn't send mail to following recipient(s): %s " : "Nie udało się wysłać wiadomości do odbiorcy(ów): %s ",
+    "Click to select files or use drag & drop to upload" : "Naciśnij aby wybrać pliki lub przeciągnij tutaj aby wgrać",
+    "State" : "Stan",
+    "Shared by %2$s" : "Udostępnione przez %2$s",
+    "%2$s removed share of group %3$s" : "%2$susunął udział grupy %3$s",
+    "%2$s removed public link" : "%2$susunął odnośnik publiczny",
+    "Public link of %2$s expired" : "Odnośnik publiczny do %2$s wygasł",
+    "%s is publicly shared" : "%sjest publicznie udostępniony",
+    "Shared via link by %2$s" : "Udostępnione za pomocą odnośnika przez %2$s"
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }
