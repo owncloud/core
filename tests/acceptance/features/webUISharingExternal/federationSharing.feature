@@ -11,6 +11,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "user1" has been created with default attributes
     And user "user1" has logged in using the webUI
 
+  @skip @issue-34186
   Scenario: test the single steps of sharing a folder to a remote server
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
     And the user shares folder "simple-empty-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
@@ -21,6 +22,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And as "user1" file "/simple-folder (2)/lorem.txt" should exist
     And as "user1" folder "/simple-empty-folder (2)" should exist
 
+  @skip @issue-34186
   Scenario: test the single steps of receiving a federation share
     Given using server "REMOTE"
     And these users have been created with default attributes:
@@ -46,6 +48,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And folder "simple-folder (2)" should be listed in the shared-with-you page on the webUI
     And folder "simple-empty-folder (2)" should be listed in the shared-with-you page on the webUI
 
+  @skip @issue-34186
   Scenario: declining a federation share on the webUI
     Given user "user1" from server "REMOTE" has shared "/lorem.txt" with user "user1" from server "LOCAL"
     And the user has reloaded the current page of the webUI
@@ -53,6 +56,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then file "lorem (2).txt" should not be listed on the webUI
     And file "lorem (2).txt" should not be listed in the shared-with-you page on the webUI
 
+  @skip @issue-34186
   @skipOnMICROSOFTEDGE
   Scenario: share a folder with an remote user and prohibit deleting - local server shares - remote server receives
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
@@ -63,6 +67,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
 
+  @skip @issue-34186
   @skipOnMICROSOFTEDGE
   Scenario: share a folder with an remote user and prohibit deleting - remote server shares - local server receives
     When user "user1" re-logs in to "%remote_server%" using the webUI
@@ -74,6 +79,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
 
+  @skip @issue-34186
   Scenario: overwrite a file in a received share - local server shares - remote server receives
     Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
@@ -83,6 +89,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" on the local server should be the same as the local "lorem.txt"
 
+  @skip @issue-34186
   Scenario: overwrite a file in a received share - remote server shares - local server receives
     Given user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
     And the user has reloaded the current page of the webUI
@@ -94,6 +101,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" on the remote server should be the same as the local "lorem.txt"
 
+  @skip @issue-34186
   Scenario: upload a new file in a received share - local server shares - remote server receives
     Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
@@ -103,6 +111,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then file "new-lorem.txt" should be listed on the webUI
     And the content of "new-lorem.txt" on the local server should be the same as the local "new-lorem.txt"
 
+  @skip @issue-34186
   Scenario: upload a new file in a received share - remote server shares - local server receives
     Given user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
     And the user has reloaded the current page of the webUI
@@ -114,6 +123,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then file "new-lorem.txt" should be listed on the webUI
     And the content of "new-lorem.txt" on the remote server should be the same as the local "new-lorem.txt"
 
+  @skip @issue-34186
   Scenario: rename a file in a received share - local server shares - remote server receives
     Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
@@ -124,6 +134,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     But file "lorem-big.txt" should not be listed on the webUI
     And the content of "renamed file.txt" on the local server should be the same as the original "simple-folder/lorem-big.txt"
 
+  @skip @issue-34186
   Scenario: rename a file in a received share - remote server shares - local server receives
     Given user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
     And the user has reloaded the current page of the webUI
@@ -136,6 +147,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the content of "renamed file.txt" on the remote server should be the same as the original "simple-folder/lorem-big.txt"
     But file "lorem-big.txt" should not be listed on the webUI
 
+  @skip @issue-34186
   Scenario: delete a file in a received share - local server shares - remote server receives
     Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
@@ -144,6 +156,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user opens folder "simple-folder" using the webUI
     Then file "data.zip" should not be listed on the webUI
 
+  @skip @issue-34186
   Scenario: delete a file in a received share - remote server shares - local server receives
     Given user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
     And the user has reloaded the current page of the webUI
@@ -154,6 +167,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user opens folder "simple-folder" using the webUI
     Then file "data.zip" should not be listed on the webUI
 
+  @skip @issue-34186
   Scenario: receive same name federation share from two users
     Given using server "REMOTE"
     And user "user2" has been created with default attributes
@@ -166,6 +180,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And file "lorem (2).txt" should be listed in the shared-with-you page on the webUI
     And file "lorem (3).txt" should be listed in the shared-with-you page on the webUI
 
+  @skip @issue-34186
   Scenario: unshare a federation share
     Given user "user1" from server "REMOTE" has shared "/lorem.txt" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
@@ -176,6 +191,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then file "lorem (2).txt" should not be listed on the webUI
     And file "lorem (2).txt" should not be listed in the shared-with-you page on the webUI
 
+  @skip @issue-34186
   Scenario: unshare a federation share from "share-with-you" page
     Given user "user1" from server "REMOTE" has shared "/lorem.txt" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
@@ -184,6 +200,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then file "lorem (2).txt" should not be listed on the webUI
     And file "lorem (2).txt" should not be listed in the files page on the webUI
 
+  @skip @issue-34186
   Scenario: test sharing folder to a remote server and resharing it back to the local
     Given using server "LOCAL"
     And these users have been created:
