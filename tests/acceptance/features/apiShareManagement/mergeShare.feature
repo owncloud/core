@@ -78,7 +78,7 @@ Feature: sharing
     And as "user1" folder "/merge-test-inside-twogroups-perms (2)" should not exist
     And as "user1" folder "/merge-test-inside-twogroups-perms (3)" should not exist
 
-  @skip @issue-29016 @skipOnLDAP
+  @skipOnLDAP
   Scenario: Merging shares for recipient when shared from outside with group then user and recipient renames in between
     Given user "user0" has created folder "/merge-test-outside-groups-renamebeforesecondshare"
     When user "user0" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with group "grp1" using the sharing API
