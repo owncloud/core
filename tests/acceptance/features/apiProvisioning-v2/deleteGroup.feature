@@ -52,7 +52,6 @@ Feature: delete groups
     #Given group "<group_id>" has been created
     When the administrator deletes group "<group_id>" using the provisioning API
     # After fixing issue-31015, change the expected status to "200"
-    Then the OCS status code should be "500"
     #Then the OCS status code should be "200"
     And the HTTP status code should be "500"
     #And the HTTP status code should be "200"
