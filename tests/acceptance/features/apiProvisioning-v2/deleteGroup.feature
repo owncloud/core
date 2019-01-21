@@ -53,7 +53,7 @@ Feature: delete groups
     When the administrator deletes group "<group_id>" using the provisioning API
     # After fixing issue-31015, change the expected status to "200"
     #Then the OCS status code should be "200"
-    And the HTTP status code should be "500"
+    And the HTTP status code should be "404"
     #And the HTTP status code should be "200"
     And group "<group_id>" should not exist
     # The following step is needed so that the group does get cleaned up.
