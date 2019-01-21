@@ -662,16 +662,24 @@ fi
 # calculate the correct skeleton folder
 # $SRC_SKELETON_DIR is the path to the skeleton folder on the machine where the tests are executed
 # it is used for file comparisons in various tests
+
+# The testing app could be in the apps folder, or maybe another apps folder like
+# apps2 or apps-external, so be flexible about looking for the local skeleton folder.
+API_SKELETON_DIR=`find ${SCRIPT_PATH}/../../ -path "*/testing/data/apiSkeleton"`
+API_SKELETON_DIR="`( cd \"${API_SKELETON_DIR}\" && pwd )`"  # absolutized and normalized
+
 if [ "${RUNNING_API_TESTS}" = true ]
 then
-	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/apiSkeleton"
+	export SRC_SKELETON_DIR="${API_SKELETON_DIR}"
 elif [ "${RUNNING_CLI_TESTS}" = true ]
 then
 	# CLI tests use the apiSkeleton so that API-based "then" steps can be used
 	# to check the state of users after CLI commands
-	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/apiSkeleton"
+	export SRC_SKELETON_DIR="${API_SKELETON_DIR}"
 else
-	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/webUISkeleton"
+	WEBUI_SKELETON_DIR=`find ${SCRIPT_PATH}/../../ -path "*/testing/data/webUISkeleton"`
+	WEBUI_SKELETON_DIR="`( cd \"${WEBUI_SKELETON_DIR}\" && pwd )`"  # absolutized and normalized
+	export SRC_SKELETON_DIR="${WEBUI_SKELETON_DIR}"
 fi
 
 # $SKELETON_DIR is the path to the skeleton folder on the machine where oC runs (system under test)
