@@ -406,7 +406,7 @@ pipeline:
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
-      - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
+      - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true RERUN_FAILED_WEBUI_SCENARIOS=false
     when:
       matrix:
         TEST_SUITE: selenium
