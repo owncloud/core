@@ -32,7 +32,7 @@ Feature: get user groups
     And the HTTP status code should be "200"
 
 	# Note: when the issue is fixed, use this scenario and delete the scenario above.
-  @skip @issue-31015
+  @issue-31015
   Scenario: admin gets groups of an user, including groups containing a slash
     Given user "brand-new-user" has been created with default attributes
     And group "unused-group" has been created
@@ -41,9 +41,13 @@ Feature: get user groups
     And group "Admin & Finance (NP)" has been created
     And group "admin:Pokhara@Nepal" has been created
     And group "नेपाली" has been created
-    And group "Mgmt/Sydney" has been created
-    And group "var/../etc" has been created
-    And group "priv/subadmins/1" has been created
+    # After fixing issue-31015, change the following steps to "has been created"
+    And the administrator sends a group creation request for group "Mgmt/Sydney" using the provisioning API
+    And the administrator sends a group creation request for group "var/../etc" using the provisioning API
+    And the administrator sends a group creation request for group "priv/subadmins/1" using the provisioning API
+    #And group "Mgmt/Sydney" has been created
+    #And group "var/../etc" has been created
+    #And group "priv/subadmins/1" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "brand-new-user" has been added to group "0"
     And user "brand-new-user" has been added to group "Admin & Finance (NP)"
@@ -64,6 +68,11 @@ Feature: get user groups
       | priv/subadmins/1     |
     And the OCS status code should be "100"
     And the HTTP status code should be "200"
+    # The following steps are needed so that the groups do get cleaned up.
+    # After fixing issue-31015, remove the following steps:
+    And the administrator deletes group "Mgmt/Sydney" using the occ command
+    And the administrator deletes group "var/../etc" using the occ command
+    And the administrator deletes group "priv/subadmins/1" using the occ command
 
   @smokeTest
   Scenario: subadmin tries to get other groups of a user in their group
