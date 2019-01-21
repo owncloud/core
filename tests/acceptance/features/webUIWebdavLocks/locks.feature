@@ -469,10 +469,13 @@ Feature: Locks
        | lockscope | <lockscope> |
     And the user has browsed to the files page
     When the user moves file "lorem.txt" into folder "simple-empty-folder" using the webUI
-    And as "brand-new-user" file "/simple-empty-folder/lorem.txt" should exist
-    And as "brand-new-user" file "lorem.txt" should not exist
-    And file "lorem.txt" should not be listed on the webUI
-    And 1 locks should be reported for file "/simple-empty-folder/lorem.txt" of user "brand-new-user" by the WebDAV API
+    Then notifications should be displayed on the webUI with the text
+        | Could not move "lorem.txt" because either the file or the target are locked. |
+    And as "brand-new-user" file "/simple-empty-folder/lorem.txt" should not exist
+    And as "brand-new-user" file "lorem.txt" should exist
+    And file "lorem.txt" should be listed on the webUI
+    And 0 locks should be reported for file "/simple-empty-folder/lorem.txt" of user "brand-new-user" by the WebDAV API
+    And 0 locks should be reported for file "/lorem.txt" of user "brand-new-user" by the WebDAV API
     Examples:
       | lockscope |
       | exclusive |
@@ -532,9 +535,10 @@ Feature: Locks
        | lockscope | <lockscope> |
     And the user has opened folder "simple-folder" using the webUI
     When the user uploads file "new-lorem.txt" using the webUI
-    Then file "new-lorem.txt" should be marked as locked on the webUI
-    And file "new-lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
-    And 1 locks should be reported for file "simple-folder/new-lorem.txt" of user "brand-new-user" by the WebDAV API
+    Then notifications should be displayed on the webUI with the text
+      | The file new-lorem.txt is currently locked, please try again later |
+    And file "new-lorem.txt" should not be listed on the webUI
+    And 0 locks should be reported for file "simple-folder/new-lorem.txt" of user "brand-new-user" by the WebDAV API
     Examples:
       | lockscope |
       | exclusive |

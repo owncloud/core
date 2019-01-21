@@ -57,20 +57,44 @@ class FileLocksBackend implements BackendInterface {
 	public function getLocks($uri, $returnChildLocks) {
 		try {
 			$node = $this->tree->getNodeForPath($uri);
+
+			if (!$node instanceof Node) {
+				return [];
+			}
+
+			$storage = $node->getFileInfo()->getStorage();
+			if (!$storage->instanceOfStorage(IPersistentLockingStorage::class)) {
+				return [];
+			}
+
+			/** @var IPersistentLockingStorage $storage */
+			$locks = $storage->getLocks($node->getFileInfo()->getInternalPath(), $returnChildLocks);
 		} catch (NotFound $e) {
-			return [];
-		}
-		if (!$node instanceof Node) {
-			return [];
-		}
+			// get parent storage and check for locks on the target path
+			list($parentPath, $childPath) = \Sabre\Uri\split($uri);
+			if ($parentPath === '') {
+				return [];
+			}
 
-		$storage = $node->getFileInfo()->getStorage();
-		if (!$storage->instanceOfStorage(IPersistentLockingStorage::class)) {
-			return [];
-		}
+			try {
+				$node = $this->tree->getNodeForPath($parentPath);
+			} catch (NotFound $e) {
+				return [];
+			}
 
-		/** @var IPersistentLockingStorage $storage */
-		$locks = $storage->getLocks($node->getFileInfo()->getInternalPath(), $returnChildLocks);
+			if (!$node instanceof Node) {
+				return [];
+			}
+
+			// use storage of parent
+			$storage = $node->getFileInfo()->getStorage();
+			if (!$storage->instanceOfStorage(IPersistentLockingStorage::class)) {
+				return [];
+			}
+
+			/** @var IPersistentLockingStorage $storage */
+			$locks = $storage->getLocks($node->getFileInfo()->getInternalPath() . '/' . $childPath, $returnChildLocks);
+		}
 
 		$davLocks = [];
 		foreach ($locks as $lock) {
