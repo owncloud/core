@@ -2197,7 +2197,7 @@ trait WebDav {
 		$elementRows = $expectedFiles->getRowsHash();
 		$resultEntrys = $this->findEntryFromPropfindResponse($user);
 		foreach ($resultEntrys as $resultEntry) {
-			PHPUnit_Framework_Assert::arrayHasKey($resultEntry, $elementRows);
+			PHPUnit_Framework_Assert::assertArrayHasKey($resultEntry, $elementRows);
 		}
 	}
 
@@ -2208,7 +2208,8 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $entryNameToSearch
 	 *
-	 * @return string if $entryNameToSearch is given and is found
+	 * @return string|array|boolean
+	 * string if $entryNameToSearch is given and is found
 	 * array if $entryNameToSearch is not given
 	 * boolean false if $entryNameToSearch is given and is not found
 	 */
@@ -2236,9 +2237,9 @@ trait WebDav {
 				}
 				\array_push($results, $entryName);
 			}
-			if ($entryNameToSearch === null) {
-				return $results;
-			}
+		}
+		if ($entryNameToSearch === null) {
+			return $results;
 		}
 		return false;
 	}
