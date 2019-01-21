@@ -357,6 +357,7 @@ class OccUsersGroupsContext implements Context {
 		$this->occContext->invokingTheCommand(
 			"group:delete $group"
 		);
+		$this->featureContext->rememberThatGroupIsNotExpectedToExist($group);
 	}
 
 	/**
