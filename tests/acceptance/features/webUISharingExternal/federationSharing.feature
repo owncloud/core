@@ -1,6 +1,6 @@
 @webUI @insulated @disablePreviews @TestAlsoOnExternalUserBackend
 Feature: Federation Sharing - sharing with users on other cloud storages
-  As a user 4
+  As a user 5
   I want to share files with any users on other cloud storages
   So that other users have access to these files
 
