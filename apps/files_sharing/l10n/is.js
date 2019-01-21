@@ -124,6 +124,8 @@ OC.L10N.register(
     "File sharing" : "Skráadeiling",
     "State" : "Staða",
     "Files Sharing" : "Deiling skráa",
-    "Exclude groups from receiving shares." : "Undanskilja hópa frá því að taka á móti sameignum."
+    "Exclude groups from receiving shares." : "Undanskilja hópa frá því að taka á móti sameignum.",
+    "Public link" : "Opinber tengill",
+    "Couldn't send mail to following recipient(s): %s " : "Gat ekki sent póst á eftirfarandi notendur: %s "
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

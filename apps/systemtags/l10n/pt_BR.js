@@ -27,6 +27,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Nenhuma entrada foi encontrada nesta pasta",
     "Name" : "Nome",
     "Size" : "Tamanho",
-    "Modified" : "Modificado"
+    "Modified" : "Modificado",
+    "%s (static)" : "%s (estático)"
 },
 "nplurals=2; plural=(n > 1);");

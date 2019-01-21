@@ -344,6 +344,8 @@ OC.L10N.register(
     "E-Mail sent" : "EMail испратен",
     "Set log level to debug" : "Поставете го нивото на логот на дебагирање",
     "Reset log level" : "Ресетирај го нивото на логот",
-    "Privacy Policy" : "Политика за приватност"
+    "Privacy Policy" : "Политика за приватност",
+    "Sharing is not allowed" : "Не е дозволено споделување",
+    "Personal note from the sender: <br> %s." : "Персонална белешка од испраќачот: <br> %s."
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

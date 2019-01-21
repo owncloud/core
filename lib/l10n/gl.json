@@ -140,6 +140,7 @@
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Comprobe que o directorio de datos conten un ficheiro «.ocdata» na súa raíz.",
     "Could not obtain lock type %d on \"%s\"." : "Non foi posíbel obter un bloqueo do tipo %d en «%s».",
     "Imprint" : "Impresión",
-    "__language_name__" : "Galego"
+    "__language_name__" : "Galego",
+    "Storage is temporarily not available" : "O almacenamento non está dispoñíbel temporalmente"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -354,6 +354,16 @@ OC.L10N.register(
     "Email changed successfully for {user}." : "<br><div>{用户}电子邮件修改成功<br data-mce-bogus=\"1\"></div>",
     "You are not a member of any groups." : "你现在不是任何组的成员",
     "In a clustered setup please make sure to sync the config.php file across all nodes." : "在群集设置中，请确保所有节点都同步config.php文件",
-    "Wrong current password" : "密码错误"
+    "Wrong current password" : "密码错误",
+    "User ID" : "用户 ID",
+    "The new password cannot be the same as the previous one" : "新密码不能和之前的密码相同",
+    "Legal" : "法律",
+    "Imprint URL:" : "版本说明链接：",
+    "Imprint URL" : "版本说明链接",
+    "Privacy Policy URL:" : "隐私政策链接：",
+    "Privacy Policy URL" : "隐私政策链接",
+    "App passwords / tokens" : "应用密码 / 令牌",
+    "Create new app passcode" : "创建新的应用密码",
+    "Password / Token" : "密码 / 令牌"
 },
 "nplurals=1; plural=0;");

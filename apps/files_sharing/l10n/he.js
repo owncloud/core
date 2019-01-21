@@ -117,6 +117,8 @@ OC.L10N.register(
     "No permission to create share" : "אין הרשאה ליצירת שיתוף",
     "Pending" : "ממתין",
     "Accept" : "אישור",
-    "Decline" : "סירוב"
+    "Decline" : "סירוב",
+    "Public link" : "קישור ציבורי",
+    "Couldn't send mail to following recipient(s): %s " : "נא ניתן לשלוח דוא״ל לנמענים הבאים: %s"
 },
 "nplurals=2; plural=(n != 1);");

@@ -375,6 +375,8 @@ OC.L10N.register(
     "Create new app passcode" : "Neuen App-Passcode erstellen",
     "Password / Token" : "Passwort / Token",
     "Owner language" : "Sprache des Eigentümers",
-    "Language used for public mail notifications for shared files" : "Sprache, die für öffentliche Mail-Benachrichtigungen für geteilte Daten benutzt wird "
+    "Language used for public mail notifications for shared files" : "Sprache, die für öffentliche Mail-Benachrichtigungen für geteilte Daten benutzt wird ",
+    "Wrong current password" : "Falsches aktuelles Passwort",
+    "The new password cannot be the same as the previous one" : "Das neue Passwort kann nicht das gleiche sein wie das alte"
 },
 "nplurals=2; plural=(n != 1);");

@@ -335,6 +335,10 @@ OC.L10N.register(
     "Share to Diaspora. Opens in a new window." : "Diaspora ile paylaş. Yeni bir pencerede açılır.",
     "Share to Google+. Opens in a new window." : "Google+ ile paylaş. Yeni bir pencerede açılır.",
     "Share via email. Opens your mail client." : "Eposta ile paylaş. Eposta istemcisinde açılır.",
-    "Imprint" : "İzlenim"
+    "Imprint" : "İzlenim",
+    "Download / View" : "İndir / Görüntüle",
+    "Download / View / Upload" : "İndir / Görüntüle / Karşı tarafa yükle",
+    "Recipients can view or download contents." : "İzleyiciler içeriği görüntüleyebilir ve indirebilir",
+    "Recipients can view, download, edit, delete and upload contents." : "Alıcılar içerik görüntüleyebilir, düzenleyebilir, silebilir ve karşı tarafa yükleyebilir."
 },
 "nplurals=2; plural=(n > 1);");

@@ -18,6 +18,7 @@ OC.L10N.register(
     "Reasons might be:" : "Moontlike redes is:",
     "Pending" : "Hangend",
     "Accept" : "Aanvaar",
-    "Decline" : "Verwerp"
+    "Decline" : "Verwerp",
+    "Public link" : "Openbare skakel"
 },
 "nplurals=2; plural=(n != 1);");

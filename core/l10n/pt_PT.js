@@ -346,6 +346,7 @@ OC.L10N.register(
     "Imprint" : "Marca",
     "Could not reset password because the token expired" : "Não foi possível redefinir a palavra-passe porque o código expirou",
     "Could not reset password because the token does not match" : "Não foi possível redefinir a palavra-passe porque o código não corresponde",
-    "Privacy Policy" : "Política de Privacidade"
+    "Privacy Policy" : "Política de Privacidade",
+    "Download / View" : "Transferir / Ver\n"
 },
 "nplurals=2; plural=(n != 1);");

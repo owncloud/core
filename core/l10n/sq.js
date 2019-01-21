@@ -372,6 +372,8 @@ OC.L10N.register(
     "Imprint" : "Imprint",
     "E-Mail sent" : "Email-i u dërgua",
     "Privacy Policy" : "Rregulla Privatësie",
-    "Personal note from the sender: <br> %s." : "Shënim personal nga dërguesi: <br> %s."
+    "Personal note from the sender: <br> %s." : "Shënim personal nga dërguesi: <br> %s.",
+    "Sharing is not allowed" : "Nuk lejohet ndarja me të tjerët",
+    "Static" : "Statike"
 },
 "nplurals=2; plural=(n != 1);");

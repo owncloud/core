@@ -34,6 +34,7 @@ OC.L10N.register(
     "Pending" : "Đang chờ",
     "Accept" : "Đồng ý",
     "Decline" : "Từ chối",
-    "Declined" : "Từ chối"
+    "Declined" : "Từ chối",
+    "Public link" : "Liên kết công khai"
 },
 "nplurals=1; plural=0;");

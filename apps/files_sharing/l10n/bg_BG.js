@@ -114,6 +114,7 @@ OC.L10N.register(
     "Uploaded files" : "Качени файлове",
     "Pending" : "Чакащо",
     "Accept" : "Приемам",
-    "Decline" : "Отказвам"
+    "Decline" : "Отказвам",
+    "Public link" : "Публичнa връзкa"
 },
 "nplurals=2; plural=(n != 1);");

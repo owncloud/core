@@ -373,6 +373,7 @@ OC.L10N.register(
     "E-Mail sent" : "E-Mail enviado",
     "Privacy Policy" : "Política de privacidad",
     "Sharing is not allowed" : "No se permite compartir",
-    "Personal note from the sender: <br> %s." : "Nota personal del remitente: <br> %s."
+    "Personal note from the sender: <br> %s." : "Nota personal del remitente: <br> %s.",
+    "Static" : "Estático"
 },
 "nplurals=2; plural=(n != 1);");

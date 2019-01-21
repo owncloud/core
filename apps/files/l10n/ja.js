@@ -113,6 +113,7 @@ OC.L10N.register(
     "Files and folders you mark as favorite will show up here" : "お気に入りに登録されたファイルやフォルダーは、ここに表示されます。",
     "Text file" : "テキストファイル",
     "New text file.txt" : "新規のテキストファイル作成",
-    "Processing files..." : "処理中…"
+    "Processing files..." : "処理中…",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "このファイル/フォルダーにアクセスする権限がありません。所有者にそれを共有してもらうよう連絡してください。"
 },
 "nplurals=1; plural=0;");

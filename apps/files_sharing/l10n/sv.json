@@ -115,6 +115,7 @@
     "Pending" : "Väntar",
     "Accept" : "Acceptera",
     "Decline" : "Neka",
-    "Declined" : "Nekad"
+    "Declined" : "Nekad",
+    "Public link" : "Publik länk"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

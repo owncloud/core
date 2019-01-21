@@ -128,6 +128,11 @@ OC.L10N.register(
     "The group is blacklisted for sharing" : "กลุ่มถูกขึ้นบัญชีดำสำหรับการแชร์",
     "Files Sharing" : "กำลังแชร์ไฟล์",
     "Exclude groups from receiving shares." : "ยกเว้นกลุ่มที่ได้รับการแชร์",
-    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "กลุ่มเหล่านี้จะไม่ได้รับการแชร์ สมาชิกของกลุ่มยังสามารถส่งและรับการแชร์ที่อยู่นอกกลุ่มได้"
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "กลุ่มเหล่านี้จะไม่ได้รับการแชร์ สมาชิกของกลุ่มยังสามารถส่งและรับการแชร์ที่อยู่นอกกลุ่มได้",
+    "Public link" : "ลิงก์สาธารณะ",
+    "Couldn't send mail to following recipient(s): %s " : "ไม่สามารถส่งจดหมายไปยังผู้รับต่อไปนี้: %s",
+    "Group Sharing Blacklist" : "แชร์กลุ่มบัญชีดำ",
+    "Exclude groups from receiving shares" : "ยกเว้นกลุ่มจากการแชร์",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "กลุ่มเหล่านี้จะไม่สามารถแชร์กับสมาชิกของกลุ่มที่ถูกจำกัดไว้ แต่สามารถแชร์กับกลุ่มอื่นๆที่เป็นสมาชิกได้ตามปกติ"
 },
 "nplurals=1; plural=0;");

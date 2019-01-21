@@ -115,6 +115,7 @@
     "Pending" : "Εκκρεμεί",
     "Accept" : "Αποδοχή",
     "Decline" : "Απόρριψη",
-    "Declined" : "Απορρίφθηκε"
+    "Declined" : "Απορρίφθηκε",
+    "Public link" : "Δημόσιος σύνδεσμος"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

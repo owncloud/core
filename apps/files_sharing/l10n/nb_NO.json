@@ -126,6 +126,10 @@
     "State" : "Status",
     "Files Sharing" : "Fildeling",
     "Exclude groups from receiving shares." : "Ekskluder grupper fra å motta delinger.",
-    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Disse gruppene vil ikke motta delinger. Medlemmer av gruppen kan fortsatt sende og motta delinger utenfor gruppen."
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Disse gruppene vil ikke motta delinger. Medlemmer av gruppen kan fortsatt sende og motta delinger utenfor gruppen.",
+    "Public link" : "Offentlig lenke",
+    "Couldn't send mail to following recipient(s): %s " : "Kunne ikke sende e-post til følgende mottaker (e): %s",
+    "Group Sharing Blacklist" : "Gruppedeling Blokkeringsliste",
+    "Exclude groups from receiving shares" : "Ekskluder grupper fra å motta delinger"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

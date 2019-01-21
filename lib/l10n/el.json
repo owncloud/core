@@ -176,6 +176,7 @@
     "Storage connection timeout. %s" : "Λήξη χρόνου αναμονής σύνδεσης αποθηκευτικού χώρου. %s",
     "A safe home for all your data" : "Ένα ασφαλές μέρος για τα δεδομένα σας.",
     "Imprint" : "Αποτύπωμα",
-    "__language_name__" : "__όνομα_γλώσσας__"
+    "__language_name__" : "__όνομα_γλώσσας__",
+    "File cannot be read" : "Αδυναμία ανάγνωσης αρχείου"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

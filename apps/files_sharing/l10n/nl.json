@@ -122,6 +122,8 @@
     "Only recipient can change accepted state" : "Alleen de ontvanger kan de geaccepteerde status wijzigen",
     "State" : "Status",
     "Exclude groups from receiving shares." : "Groepen uitsluiten van het ontvangen van shares.",
-    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Deze groepen zullen geen shares meer ontvangen. Leden van deze groep kunnen nog wel shares verzenden en ontvangen buiten deze groep om."
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Deze groepen zullen geen shares meer ontvangen. Leden van deze groep kunnen nog wel shares verzenden en ontvangen buiten deze groep om.",
+    "Public link" : "Openbare Link",
+    "Couldn't send mail to following recipient(s): %s " : "Kon geen e-mail versturen naar de volgende ontvanger(s): %s "
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

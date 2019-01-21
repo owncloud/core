@@ -355,6 +355,22 @@ OC.L10N.register(
     "Download / View" : "ダウンロード / 表示",
     "Download / View / Upload" : "ダウンロード / 表示 / アップロード",
     "An error occured while sending email" : "メール送信時にエラーが発生しました",
-    "E-Mail sent" : "メールを送信"
+    "E-Mail sent" : "メールを送信",
+    "Email notification not sent" : "通知メールは送信されませんでした",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "エラーが複数回繰り返される場合は、以下の技術的な詳細を含めてサーバーの管理者に問い合わせてください。",
+    "You took too long to login, please try again now" : "ログインに時間がかかりすぎました。もう一度やり直してください。",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "サーバーに保持されているファイルおよび/またはユーザーが多すぎるようです。アップグレード処理をスムーズに行うためには、コマンドラインアップデータ (occ upgrade) を使用してください。",
+    "Couldn't send mail to following recipient(s): %s " : "以下の宛先にメールを送信できませんでした: %s",
+    "Send copy to self" : "コピーを自分自身に送信",
+    "Add personal message" : "個人的なメッセージを追加",
+    "Sharing is not allowed" : "共有は許可されていません",
+    "Privacy Policy" : "プライバシーポリシー",
+    "Receive files from multiple recipients without revealing the contents of the folder." : "フォルダーの内容を見せないで、複数の相手からファイルを受け取ります。",
+    "Recipients can view or download contents." : "受信者はコンテンツを表示またはダウンロードできます。",
+    "Recipients can view, download, edit, delete and upload contents." : "受信者はコンテンツを表示、ダウンロード、編集、削除、およびアップロードできます。",
+    "federated" : "連携先",
+    "{sharee} (federated)" : "{sharee} (連携先)",
+    "Static" : "固定",
+    "Personal note from the sender: <br> %s." : "送信者からの個人的なお知らせ: <br>%s"
 },
 "nplurals=1; plural=0;");

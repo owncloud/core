@@ -62,6 +62,7 @@ OC.L10N.register(
     "Direct link" : "Ligazón directa",
     "Pending" : "Pendentes",
     "Accept" : "Aceptar",
-    "Declined" : "Rexeitado"
+    "Declined" : "Rexeitado",
+    "Public link" : "Ligazón pública"
 },
 "nplurals=2; plural=(n != 1);");

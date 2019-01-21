@@ -54,6 +54,7 @@ OC.L10N.register(
     "Download %s" : "Deskargatu %s",
     "Direct link" : "Lotura zuzena",
     "Pending" : "Zain",
-    "Declined" : "Ez onartua"
+    "Declined" : "Ez onartua",
+    "Couldn't send mail to following recipient(s): %s " : "Ezin izan da ondorengo helbidetara posta mezurik bidali: %s"
 },
 "nplurals=2; plural=(n != 1);");

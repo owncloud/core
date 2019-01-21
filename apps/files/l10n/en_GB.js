@@ -108,6 +108,13 @@ OC.L10N.register(
     "No favorites" : "No favourites",
     "Files and folders you mark as favorite will show up here" : "Files and folders you mark as favourite will show up here",
     "Text file" : "Text file",
-    "New text file.txt" : "New text file.txt"
+    "New text file.txt" : "New text file.txt",
+    "Processing files..." : "Processing files...",
+    "Target folder does not exist any more" : "Target folder does not exist any more",
+    "Error when assembling chunks, status code {status}" : "Error when assembling chunks, status code {status}",
+    "No entries in this folder match {filter}" : "No entries in this folder match {filter}",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Limit notifications about creation and changes to your <strong>favorite files</strong>",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "You don't have permissions to access this file/folder - Please contact the owner to share it with you.",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares"
 },
 "nplurals=2; plural=(n != 1);");

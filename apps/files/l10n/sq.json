@@ -115,6 +115,14 @@
     "No entries in this folder match {filter}" : "Në këtë dosje s’ka zëra me përputhje me {filter} ",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Kufizojini njoftimet rreth krijimit dhe ndryshimeve vetëm për <strong>kartelat tuaja të parapëlqyera</strong>",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "S’keni leje të hyni të përdorni këtë kartelë/dosje - Ju lutemi, lidhuni me të zotin e saj që ta ndajë me ju.",
-    "Error when assembling chunks, status code {status}" : "Gabim gjatë montimit të copave, kod gjendjeje {status}"
+    "Error when assembling chunks, status code {status}" : "Gabim gjatë montimit të copave, kod gjendjeje {status}",
+    "The file {file} is currently locked, please try again later" : "Kartela {file} hëpërhë është e kyçur, ju lutemi, riprovoni më vonë",
+    "Lock status" : "Gjendje kyçjeje",
+    "This resource is locked. Click to see more details." : "Ky burim është i kyçur. Klikoni për të parë më tepër hollësi.",
+    "{owner} has locked this resource via {path}" : "{owner} e ka kyçur këtë burim përmes {path}",
+    "Could not unlock, please contact the lock owner {owner}" : "S’u shkyç dot, ju lutemi, lidhuni me të zotin e kyçjes {owner}",
+    "Unlock failed with status {status}" : "Shkyçja dështoi, me gjendjen {status}",
+    "Locks" : "Kyçje",
+    "Resource is not locked" : "Burimi s’është i kyçur"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

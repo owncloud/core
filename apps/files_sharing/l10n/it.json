@@ -116,6 +116,7 @@
     "Pending" : "In corso",
     "Accept" : "Accetta",
     "Decline" : "Rifiuta",
-    "Declined" : "Rifiutato"
+    "Declined" : "Rifiutato",
+    "Public link" : "Collegamento pubblico"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

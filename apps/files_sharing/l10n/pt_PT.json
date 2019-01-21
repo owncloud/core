@@ -115,6 +115,7 @@
     "Pending" : "Pendente",
     "Accept" : "Aceitar",
     "Decline" : "Recusar",
-    "Declined" : "Negado"
+    "Declined" : "Negado",
+    "Public link" : "Hiperligação Pública"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

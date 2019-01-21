@@ -113,6 +113,15 @@ OC.L10N.register(
     "Advanced settings" : "Advanced settings",
     "Delete" : "Delete",
     "Allow users to mount external storage" : "Allow users to mount external storage",
-    "Allow users to mount the following external storage" : "Allow users to mount the following external storage"
+    "Allow users to mount the following external storage" : "Allow users to mount the following external storage",
+    "Disabling external storage will unmount all storages for all users, are you sure ?" : "Disabling external storage will unmount all storages for all users, are you sure ?",
+    "Disable external storage" : "Disable external storage",
+    "No URL provided by backend " : "No URL provided by backend ",
+    "Error getting OAuth2 URL for " : "Error getting OAuth2 URL for ",
+    "You can add external storages in the storage settings" : "You can add external storages in the storage settings",
+    "Enable external storage" : "Enable external storage",
+    "External storage has been disabled by the administrator" : "External storage has been disabled by the administrator",
+    "Please make sure that the app that provides this backend is installed and enabled" : "Please make sure that the app that provides this backend is installed and enabled",
+    "Allow sharing on user-mounted external storages" : "Allow sharing on user-mounted external storages"
 },
 "nplurals=2; plural=(n != 1);");

@@ -117,6 +117,7 @@ OC.L10N.register(
     "Pending" : "Väntar",
     "Accept" : "Acceptera",
     "Decline" : "Neka",
-    "Declined" : "Nekad"
+    "Declined" : "Nekad",
+    "Public link" : "Publik länk"
 },
 "nplurals=2; plural=(n != 1);");

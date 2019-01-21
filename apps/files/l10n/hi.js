@@ -8,6 +8,7 @@ OC.L10N.register(
     "Upload" : "अपलोड ",
     "Save" : "सहेजें",
     "Settings" : "सेटिंग्स",
-    "Delete" : "हटाना"
+    "Delete" : "हटाना",
+    "All files" : "सभी फाइल्स"
 },
 "nplurals=2; plural=(n != 1);");

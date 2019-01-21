@@ -345,6 +345,9 @@
     "Default user and group share permissions" : "Permessi normali per condivisioni utenti e gruppi",
     "In a clustered setup please make sure to sync the config.php file across all nodes." : "In una configurazione a cluser, assicurarsi di sincronizzare il file config.php tra tutti i nodi.",
     "You are using %s" : "Sta usando %s",
-    "These are the web, desktop and mobile clients currently logged in to your %s." : "Questi sono gli accessi web, da desktop e da mobile connessi attualmente al tuo %s."
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Questi sono gli accessi web, da desktop e da mobile connessi attualmente al tuo %s.",
+    "Wrong current password" : "Password corrente errata",
+    "The new password cannot be the same as the previous one" : "La nuova password non può essere identica alla precedente",
+    "Create new app passcode" : "Crea un nuovo app passcode"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

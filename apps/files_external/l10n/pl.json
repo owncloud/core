@@ -84,6 +84,8 @@
     "Credentials saving failed" : "Nie udało się zapisać danych logowania",
     "Credentials saved" : "Dane logowania zapisane",
     "Allow users to mount external storage" : "Zezwól użytkownikom na montowanie pamięci zewnętrznych",
-    "There was an error with message: " : "Wystąpił błąd o treści:"
+    "There was an error with message: " : "Wystąpił błąd o treści:",
+    "Domain" : "Domena",
+    "Enable sharing" : "Włącz współdzielenie"
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }

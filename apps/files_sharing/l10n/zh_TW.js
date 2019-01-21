@@ -96,6 +96,7 @@ OC.L10N.register(
     "Pending" : "等候中",
     "Accept" : "接受",
     "Decline" : "拒絕",
-    "Declined" : "已拒絕"
+    "Declined" : "已拒絕",
+    "Couldn't send mail to following recipient(s): %s " : "無法發送郵件給以下人員：%s"
 },
 "nplurals=1; plural=0;");

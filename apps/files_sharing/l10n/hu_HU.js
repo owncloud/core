@@ -75,6 +75,8 @@ OC.L10N.register(
     "Pending" : "Folyamatban",
     "Accept" : "Elfogadás",
     "Decline" : "Elutasítás",
-    "Declined" : "Elutasított"
+    "Declined" : "Elutasított",
+    "Public link" : "Nyilvános link",
+    "Couldn't send mail to following recipient(s): %s " : "Email küldese sikertelen a következő(k)nek: %s"
 },
 "nplurals=2; plural=(n != 1);");

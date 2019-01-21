@@ -46,6 +46,11 @@
     "Additional" : "Дополнителни",
     "Username and password" : "Корисничко име и лозинка",
     "__language_name__" : "__language_name__",
-    "Privacy Policy" : "Политика за приватност"
+    "Privacy Policy" : "Политика за приватност",
+    "See %s" : "Види %s",
+    "A safe home for all your data" : "Безбеден дом за сите ваши податоци",
+    "Builtin" : "Вградено",
+    "File name contains at least one invalid character" : "Името на датотеката содржи невалиден карактер",
+    "File name is too long" : "Името на датотеката е премногу долго"
 },"pluralForm" :"nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;"
 }

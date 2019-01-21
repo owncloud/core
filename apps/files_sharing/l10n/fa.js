@@ -111,6 +111,7 @@ OC.L10N.register(
     "Download %s" : "دانلود %s",
     "Direct link" : "پیوند مستقیم",
     "Pending" : "در انتظار",
-    "Accept" : "قبول"
+    "Accept" : "قبول",
+    "Public link" : "پیوند عمومی"
 },
 "nplurals=1; plural=0;");
