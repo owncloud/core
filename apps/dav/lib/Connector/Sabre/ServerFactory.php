@@ -40,6 +40,7 @@ use OCP\IRequest;
 use OCP\ITagManager;
 use OCP\IUserSession;
 use Sabre\DAV\Auth\Backend\BackendInterface;
+use OCP\AppFramework\Utility\ITimeFactory;
 
 class ServerFactory {
 	/** @var IConfig */
@@ -56,6 +57,8 @@ class ServerFactory {
 	private $tagManager;
 	/** @var IRequest */
 	private $request;
+	/** @var ITimeFactory */
+	private $timeFactory;
 
 	/**
 	 * @param IConfig $config
@@ -65,6 +68,7 @@ class ServerFactory {
 	 * @param IMountManager $mountManager
 	 * @param ITagManager $tagManager
 	 * @param IRequest $request
+	 * @param ITimeFactory $timeFactory
 	 */
 	public function __construct(
 		IConfig $config,
@@ -73,7 +77,8 @@ class ServerFactory {
 		IUserSession $userSession,
 		IMountManager $mountManager,
 		ITagManager $tagManager,
-		IRequest $request
+		IRequest $request,
+		ITimeFactory $timeFactory
 	) {
 		$this->config = $config;
 		$this->logger = $logger;
@@ -82,6 +87,7 @@ class ServerFactory {
 		$this->mountManager = $mountManager;
 		$this->tagManager = $tagManager;
 		$this->request = $request;
+		$this->timeFactory = $timeFactory;
 	}
 
 	/**
@@ -112,7 +118,7 @@ class ServerFactory {
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\DummyGetResponsePlugin());
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $this->logger));
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
-		$server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($server->tree, true)));
+		$server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($server->tree, true, $this->timeFactory)));
 
 		if (BrowserErrorPagePlugin::isBrowserRequest($this->request)) {
 			$server->addPlugin(new BrowserErrorPagePlugin());
