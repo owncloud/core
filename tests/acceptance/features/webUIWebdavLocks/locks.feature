@@ -707,10 +707,13 @@ Feature: Locks
     And the user has browsed to the files page
     When the user unshares file "lorem (2).txt" using the webUI
     And the user unshares folder "simple-folder (2)" using the webUI
-    Then as "brand-new-user" file "lorem (2).txt" should not exist
-    And as "brand-new-user" folder "simple-folder (2)" should not exist
-    And file "lorem (2).txt" should not be listed on the webUI
-    And folder "simple-folder (2)" should not be listed on the webUI
+    Then notifications should be displayed on the webUI with the text
+      | The file "lorem (2).txt" is locked and cannot be deleted. |
+      | The file "simple-folder (2)" is locked and cannot be deleted. |
+    Then as "brand-new-user" file "lorem (2).txt" should exist
+    And as "brand-new-user" folder "simple-folder (2)" should exist
+    And file "lorem (2).txt" should be listed on the webUI
+    And folder "simple-folder (2)" should be listed on the webUI
     And 1 locks should be reported for file "lorem.txt" of user "sharer" by the WebDAV API
     And 1 locks should be reported for file "simple-folder/lorem.txt" of user "sharer" by the WebDAV API
     Examples:
