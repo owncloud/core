@@ -1,4 +1,15 @@
 $(document).ready(function(){
+	function hsmConfigChanges() {
+		var jwtSecret = $('#jwt_secret');
+		var hsmUrl = $('#hsm_url');
+		if (jwtSecret.val().length > 0) {
+			OC.AppConfig.setValue('encryption', 'hsm.jwt.secret', jwtSecret.val());
+		}
+		if (hsmUrl.val().length > 0) {
+			OC.AppConfig.setValue('encryption', 'hsm.url', hsmUrl.val());
+		}
+	}
+
 	var params = OC.Util.History.parseUrlQuery();
 
 	$('#excludedGroups').each(function (index, element) {
@@ -26,8 +37,28 @@ $(document).ready(function(){
 	$('#reallyEnableEncryption').click(function() {
 		$('#encryptionAPI div#EncryptionWarning').toggleClass('hidden');
 		$('#encryptionAPI div#EncryptionSettingsArea').toggleClass('hidden');
+		if ($('#hsmEnabled').is(":checked")) {
+			hsmConfigChanges();
+		}
 		OC.AppConfig.setValue('core', 'encryption_enabled', 'yes');
 		$('#enableEncryption').attr('disabled', 'disabled');
+	});
+
+	$('#hsmEnabled').click(function () {
+		var jwtSecret = $('#jwt_secret');
+		var hsmUrl = $('#hsm_url');
+		if ($('#hsmEnabled').is(":checked")) {
+			OC.AppConfig.setValue('encryption', 'hsmEnabled', '1');
+
+		} else {
+			OC.AppConfig.setValue('encryption', 'hsmEnabled', '0');
+		}
+		jwtSecret.toggleClass('hidden');
+		hsmUrl.toggleClass('hidden');
+	});
+
+	$('#hsmConfigSubmit').click(function () {
+		hsmConfigChanges();
 	});
 
 	$('#startmigration').click(function(event){

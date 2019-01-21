@@ -33,6 +33,9 @@ class Encryption implements ISettings {
 		$tmpl = new Template('settings', 'panels/admin/encryption');
 		$tmpl->assign('encryptionEnabled', \OC::$server->getEncryptionManager()->isEnabled());
 		$tmpl->assign('encryptionReady', \OC::$server->getEncryptionManager()->isReady());
+		$tmpl->assign('hsmEnabled', \OC::$server->getConfig()->getAppValue('encryption', 'hsmEnabled', '0'));
+		$tmpl->assign('hsmURL', \OC::$server->getConfig()->getAppValue('encryption', 'hsm.url', '0'));
+		$tmpl->assign('hsmJWTSecret', \OC::$server->getConfig()->getAppValue('encryption', 'hsm.jwt.secret', '0'));
 		$encryptionModules = \OC::$server->getEncryptionManager()->getEncryptionModules();
 		$defaultEncryptionModuleId = \OC::$server->getEncryptionManager()->getDefaultEncryptionModuleId();
 		$encModules = [];

@@ -4,12 +4,44 @@
 		title="<?php p($l->t('Open documentation'));?>"
 		href="<?php p(link_to_docs('admin-encryption')); ?>"></a>
 
+	<p id="enableHSM" <?php if ($_['encryptionEnabled'] && ($_['hsmEnabled'] === '0')) {
+	print_unescaped('disabled="disabled" class="hidden"');
+} ?> >
+		<input type="checkbox" id="hsmEnabled" class="checkbox"
+			   value="1" <?php if ($_['hsmEnabled'] === '1') {
+	print_unescaped('checked="checked" disabled="disabled"');
+}
+		?>/>
+		<label
+				for="hsmEnabled"><?php p($l->t('Enable HSM')); ?></label><br/>
+		<input type="password" name="jwt_secret" id="jwt_secret" <?php if ($_['hsmEnabled'] === '0') {
+			$attributes = 'class="hidden"';
+		} else {
+			$attributes = "value=${_['hsmJWTSecret']}";
+		}
+		print_unescaped("placeholder='JWT Secret' $attributes");
+		?>>
+		<input type="text" name="hsm_url" id="hsm_url" <?php if ($_['hsmEnabled'] === '0') {
+			$attributes = 'class="hidden"';
+		} else {
+			$attributes = "value=${_['hsmURL']}";
+		}
+		print_unescaped("placeholder='HSM Url' $attributes");
+		?>>
+		<input type="submit" name="hsmConfigSubmit" id="hsmConfigSubmit"
+			<?php
+			if (($_['hsmEnabled'] === '0') && ($_['encryptionEnabled'] === false)) {
+				print_unescaped('class="hidden"');
+			}
+			?>
+			value="<?php p($l->t('Submit changes')); ?>"/>
+	</p>
 	<p id="enable">
 		<input type="checkbox"
 			   id="enableEncryption" class="checkbox"
 			   value="1" <?php if ($_['encryptionEnabled']) {
-	print_unescaped('checked="checked" disabled="disabled"');
-} ?> />
+				print_unescaped('checked="checked" disabled="disabled"');
+			} ?> />
 		<label
 			for="enableEncryption"><?php p($l->t('Enable server-side encryption')); ?> <span id="startmigration_msg" class="msg"></span> </label><br/>
 	</p>
@@ -29,11 +61,11 @@
 	</div>
 
 	<div id="EncryptionSettingsArea" class="<?php if (!$_['encryptionEnabled']) {
-	p('hidden');
-} ?>">
+				p('hidden');
+			} ?>">
 		<div id='selectEncryptionModules' class="<?php if (!$_['encryptionReady']) {
-	p('hidden');
-} ?>">
+				p('hidden');
+			} ?>">
 			<?php
 			if (empty($_['encryptionModules'])) {
 				p($l->t('No encryption module loaded, please enable an encryption module in the app menu.'));
