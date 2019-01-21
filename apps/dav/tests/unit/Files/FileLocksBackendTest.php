@@ -99,6 +99,34 @@ class FileLocksBackendTest extends TestCase {
 				$file->method('getFileInfo')->willReturn($fileInfo);
 				return $file;
 			}
+
+			if ($uri === 'locked-collection-infinite') {
+				$storage = $this->createMock([IPersistentLockingStorage::class, IStorage::class]);
+				$storage->method('instanceOfStorage')->willReturn(true);
+				$storage->method('getLocks')->willReturnCallback(function () {
+					$lock = new Lock();
+					$lock->setToken('123-456-789A');
+					$lock->setScope(ILock::LOCK_SCOPE_EXCLUSIVE);
+					$lock->setDepth(-1);
+					$lock->setAbsoluteDavPath('locked-collection-infinite');
+					$lock->setDavUserId('alice');
+					$lock->setOwner('Alice Wonder');
+					$lock->setTimeout(1234);
+					$lock->setCreatedAt(164419200);
+					return [
+						$lock
+					];
+				});
+				$fileInfo = $this->createMock(FileInfo::class);
+				$fileInfo->method('getStorage')->willReturn($storage);
+				$fileInfo->method('getInternalPath')->willReturn('locked-collection-infinite');
+				$file = $this->createMock(File::class);
+				$file->method('getFileInfo')->willReturn($fileInfo);
+				return $file;
+			}
+			if ($uri === 'locked-collection-infinite/new-file.txt') {
+				throw new NotFound();
+			}
 			return $this->createMock(File::class);
 		});
 
@@ -123,6 +151,22 @@ class FileLocksBackendTest extends TestCase {
 		$this->assertEquals([
 			$lockInfo
 		], $locks);
+	}
+
+	public function testGetLocksCollectionInfinite() {
+		$lockInfo = new LockInfo();
+		$lockInfo->token = '123-456-789A';
+		$lockInfo->scope = LockInfo::EXCLUSIVE;
+		$lockInfo->uri = 'files/alice/locked-collection-infinite';
+		$lockInfo->owner = 'Alice Wonder';
+		$lockInfo->timeout = 1234;
+		$lockInfo->created = 164419200;
+		$lockInfo->depth = -1;
+		$locks = $this->plugin->getLocks('locked-collection-infinite', false);
+		$this->assertEquals([$lockInfo], $locks);
+
+		$locks = $this->plugin->getLocks('locked-collection-infinite/new-file.txt', false);
+		$this->assertEquals([$lockInfo], $locks);
 	}
 
 	public function testLock() {
