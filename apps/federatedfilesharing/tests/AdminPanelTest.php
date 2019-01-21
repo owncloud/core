@@ -23,6 +23,7 @@ namespace OCA\FederatedFileSharing\Tests;
 
 use OCA\FederatedFileSharing\AdminPanel;
 use OCA\FederatedFileSharing\FederatedShareProvider;
+use OCP\IConfig;
 
 /**
  * @package OCA\FederatedFileSharing\Tests
@@ -33,13 +34,16 @@ class AdminPanelTest extends \Test\TestCase {
 	private $panel;
 	/** @var  FederatedShareProvider */
 	private $shareProvider;
+	/** @var IConfig */
+	private $config;
 
 	public function setUp() {
 		parent::setUp();
 		$this->shareProvider = $this->getMockBuilder(FederatedShareProvider::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->panel = new AdminPanel($this->shareProvider);
+		$this->config = $this->createMock(IConfig::class);
+		$this->panel = new AdminPanel($this->shareProvider, $this->config);
 	}
 
 	public function testGetSection() {

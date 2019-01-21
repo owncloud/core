@@ -10,6 +10,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And using server "LOCAL"
     And user "user1" has been created with default attributes
     And user "user1" has logged in using the webUI
+    And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
 
   Scenario: test the single steps of sharing a folder to a remote server
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
@@ -52,6 +53,17 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user declines the offered remote shares using the webUI
     Then file "lorem (2).txt" should not be listed on the webUI
     And file "lorem (2).txt" should not be listed in the shared-with-you page on the webUI
+
+    Scenario: automatically accept a federation share when it is allowed by the config
+      Given parameter "autoAddServers" of app "federation" has been set to "1"
+      And user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
+      And user "user1" from server "LOCAL" has accepted the last pending share
+      And the user has reloaded the current page of the webUI
+      And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
+      And parameter "autoAddServers" of app "federation" has been set to "0"
+      When user "user1" from server "REMOTE" shares "/lorem.txt" with user "user1" from server "LOCAL" using the sharing API
+      And the user has reloaded the current page of the webUI
+      Then file "lorem (2).txt" should be listed on the webUI
 
   @skipOnMICROSOFTEDGE
   Scenario: share a folder with an remote user and prohibit deleting - local server shares - remote server receives
