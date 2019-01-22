@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -21,115 +21,81 @@
 
 namespace OC\User;
 
-use OC\Authentication\Exceptions\InvalidTokenException;
-use OC\Authentication\Exceptions\PasswordlessTokenException;
-use OC\Authentication\Token\IProvider;
-use OC\Authentication\Token\IToken;
+use Jumbojett\OpenIDConnectClientException;
 use OCP\Authentication\IAuthModule;
+use OCP\IConfig;
+use OCP\ILogger;
 use OCP\IRequest;
-use OCP\ISession;
-use OCP\IUser;
 use OCP\IUserManager;
-use OCP\Session\Exceptions\SessionNotAvailableException;
 
-class TokenAuthModule implements IAuthModule {
-
-	/** @var ISession */
-	private $session;
-
-	/** @var IProvider */
-	private $tokenProvider;
+class OpenIdConnectAuthModule implements IAuthModule {
 
 	/** @var IUserManager */
 	private $manager;
 
-	/** @var string */
-	private $password = '';
+	/** @var IConfig */
+	private $config;
+	/** @var ILogger */
+	private $logger;
 
-	public function __construct(ISession $session, IProvider $tokenProvider, IUserManager $manager) {
-		$this->session = $session;
-		$this->tokenProvider = $tokenProvider;
+	public function __construct(IUserManager $manager, IConfig $config, ILogger $logger) {
 		$this->manager = $manager;
+		$this->config = $config;
+		$this->logger = $logger;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function auth(IRequest $request) {
-		$dbToken = $this->getTokenForAppPassword($request, $token);
-		if ($dbToken === null) {
-			$dbToken = $this->getToken($request, $token);
-		}
-		if ($dbToken === null) {
+		$authHeader = $request->getHeader('Authorization');
+		if (\strpos($authHeader, 'Bearer ') === false) {
 			return null;
 		}
-
-		// When logging in with token, the password must be decrypted first before passing to login hook
-		try {
-			$this->password = $this->tokenProvider->getPassword($dbToken, $token);
-		} catch (PasswordlessTokenException $ex) {
-			// Ignore and use empty string instead
+		$bearerToken = \substr($authHeader, 7);
+		$openIdConfig = $this->config->getSystemValue('openid-connect', null);
+		if ($openIdConfig === null) {
+			return null;
 		}
+		try {
+			// openid connect route
+			$openId = new \Jumbojett\OpenIDConnectClient(
+				$openIdConfig['provider-url'],
+				$openIdConfig['client-id'],
+				$openIdConfig['client-secret']
+			);
+			if ($this->config->getSystemValue('debug', false)) {
+				$openId->setVerifyHost(false);
+				$openId->setVerifyPeer(false);
+			}
+			// TODO: find a way to cache jwks_uri and not over an over again download the keys
+			$openId->verifyJWTsignature($bearerToken);
+			$openId->setAccessToken($bearerToken);
+			$payload = $openId->getAccessTokenPayload();
 
-		$uid = $dbToken->getUID();
-		return $this->manager->get($uid);
+			// kopano special integration
+			if ($payload->{'kc.identity'}->{'kc.i.un'}) {
+				return $this->manager->get($payload->{'kc.identity'}->{'kc.i.un'});
+			}
+
+			// TODO: cache token->userInfo
+			$userInfo = $openId->requestUserInfo();
+			if ($userInfo === null) {
+				return null;
+			}
+
+			// for now use 'preferred_username'
+			return $this->manager->get('preferred_username');
+		} catch (OpenIDConnectClientException $ex) {
+			$this->logger->logException($ex, ['app' => __CLASS__]);
+			return null;
+		}
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function getUserPassword(IRequest $request) {
-		return $this->password;
-	}
-
-	/**
-	 * @param IRequest $request
-	 * @return null|IToken
-	 */
-	private function getTokenForAppPassword(IRequest $request, &$token) {
-		if (!isset($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
-			return null;
-		}
-
-		try {
-			$token = $request->server['PHP_AUTH_PW'];
-			$dbToken = $this->tokenProvider->getToken($token);
-			if ($dbToken->getUID() !== $request->server['PHP_AUTH_USER']) {
-				throw new \Exception('Invalid credentials');
-			}
-
-			return $dbToken;
-		} catch (InvalidTokenException $ex) {
-			// invalid app passwords do NOT throw an exception because basic
-			// auth headers can be evaluated properly in the basic auth module
-			$token = null;
-			return null;
-		}
-	}
-
-	/**
-	 * @param IRequest $request
-	 * @return null|IToken
-	 * @throws \Exception
-	 */
-	private function getToken(IRequest $request, &$token) {
-		$authHeader = $request->getHeader('Authorization');
-		if ($authHeader === null || \strpos($authHeader, 'token ') === false) {
-			// No auth header, let's try session id
-			try {
-				$token = $this->session->getId();
-			} catch (SessionNotAvailableException $ex) {
-				return null;
-			}
-		} else {
-			$token = \substr($authHeader, 6);
-		}
-
-		try {
-			return $this->tokenProvider->getToken($token);
-		} catch (InvalidTokenException $ex) {
-			$token = null;
-			return null;
-		}
+		return '';
 	}
 }

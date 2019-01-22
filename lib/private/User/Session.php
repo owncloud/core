@@ -1175,6 +1175,7 @@ class Session implements IUserSession, Emitter {
 		if ($includeBuiltIn) {
 			yield new TokenAuthModule($this->session, $this->tokenProvider, $this->manager);
 		}
+		yield new OpenIdConnectAuthModule($this->manager, $this->config, $this->logger);
 
 		$modules = $this->serviceLoader->load(['auth-modules']);
 		foreach ($modules as $module) {
