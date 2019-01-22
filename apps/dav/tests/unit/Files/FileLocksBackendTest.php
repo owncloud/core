@@ -34,6 +34,7 @@ use Sabre\DAV\IFile;
 use Sabre\DAV\Locks\LockInfo;
 use Sabre\DAV\Tree;
 use Test\TestCase;
+use OCA\DAV\Connector\Sabre\Directory;
 
 class FileLocksBackendTest extends TestCase {
 	const CREATION_TIME = 164419200;
@@ -56,6 +57,17 @@ class FileLocksBackendTest extends TestCase {
 
 		$this->tree = $this->createMock(Tree::class);
 		$this->tree->method('getNodeForPath')->willReturnCallback(function ($uri) {
+			// root node
+			if ($uri === '') {
+				$storage = $this->createMock([IPersistentLockingStorage::class, IStorage::class]);
+				$storage->method('instanceOfStorage')->willReturn(true);
+				$storage->method('getLocks')->willReturn([]);
+				$fileInfo = $this->createMock(FileInfo::class);
+				$fileInfo->method('getStorage')->willReturn($storage);
+				$file = $this->createMock(Directory::class);
+				$file->method('getFileInfo')->willReturn($fileInfo);
+				return $file;
+			}
 			if ($uri === 'unknown-file.txt') {
 				throw new NotFound();
 			}

@@ -74,11 +74,13 @@ class FileLocksBackend implements BackendInterface {
 			/** @var IPersistentLockingStorage $storage */
 			$locks = $storage->getLocks($node->getFileInfo()->getInternalPath(), $returnChildLocks);
 		} catch (NotFound $e) {
-			// get parent storage and check for locks on the target path
-			list($parentPath, $childPath) = \Sabre\Uri\split($uri);
-			if ($parentPath === '') {
+			if ($uri === '') {
+				// no more parents
 				return [];
 			}
+
+			// get parent storage and check for locks on the target path
+			list($parentPath, $childPath) = \Sabre\Uri\split($uri);
 
 			try {
 				$node = $this->tree->getNodeForPath($parentPath);
