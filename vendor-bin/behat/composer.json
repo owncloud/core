@@ -1,4 +1,9 @@
 {
+    "config" : {
+        "platform": {
+            "php": "5.6.33"
+        }
+    },
     "require": {
         "behat/behat": "^3.0",
         "behat/mink-extension": "^2.2",
