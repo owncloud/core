@@ -165,6 +165,7 @@ class LockManagerTest extends TestCase {
 	 * @dataProvider lockTimeoutProvider
 	 */
 	public function testLockTimeout($givenTimeout, $expectedTimeout) {
+		$this->lockMapper->method('getLocksByPath')->willReturn([]);
 		$lockInfo = [
 			'token' => 'qwertzuiopü',
 			'scope' => ILock::LOCK_SCOPE_EXCLUSIVE,
