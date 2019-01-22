@@ -1214,19 +1214,24 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		if ($typeOfFilesPage === "trashbin") {
 			$this->theUserBrowsesToTheTrashbinPage();
 		}
+		$pageObject = $this->getCurrentPageObject();
 		if ($fileOrFolder === "folder") {
 			if (\is_array($name)) {
 				$this->currentFolder .= "/" . \implode($name);
+				$pageObject->openFile($name, $this->getSession());
+				$pageObject->waitTillPageIsLoaded($this->getSession());
 			} else {
+				$name = \ltrim($name, '/');
 				$this->currentFolder .= "/$name";
+				$folderBreadCrumbs = \explode('/', $name);
+				foreach ($folderBreadCrumbs as $folder) {
+					$pageObject->openFile($folder, $this->getSession());
+					$pageObject->waitTillPageIsLoaded($this->getSession());
+				}
 			}
 		}
-		$pageObject = $this->getCurrentPageObject();
-		$pageObject->waitTillPageIsLoaded($this->getSession());
-		$pageObject->openFile($name, $this->getSession());
-		$pageObject->waitTillPageIsLoaded($this->getSession());
 	}
-	
+
 	/**
 	 * @Then /^the folder should (not|)\s?be empty on the webUI$/
 	 *
