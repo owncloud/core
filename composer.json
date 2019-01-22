@@ -64,7 +64,8 @@
         "zendframework/zend-validator": "^2.10",
         "composer/semver": "^1.4",
         "dg/composer-cleaner": "^2.0",
-        "ext-json": "*"
+        "ext-json": "*",
+        "jumbojett/openid-connect-php": "^0.8.0"
     },
     "extra": {
         "bamarni-bin": {

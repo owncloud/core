@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b041b5b6468cfca32fa06d116a89862",
+    "content-hash": "cd6f5222b26da14dbef511fe0b1d0b58",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -1131,6 +1131,39 @@
                 "tokenizer"
             ],
             "time": "2018-03-21T22:21:57+00:00"
+        },
+        {
+            "name": "jumbojett/openid-connect-php",
+            "version": "v0.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jumbojett/OpenID-Connect-PHP.git",
+                "reference": "08c29b063803538f345183b66ac05cff7ed6eb9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jumbojett/OpenID-Connect-PHP/zipball/08c29b063803538f345183b66ac05cff7ed6eb9b",
+                "reference": "08c29b063803538f345183b66ac05cff7ed6eb9b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.4",
+                "phpseclib/phpseclib": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Bare-bones OpenID Connect client",
+            "time": "2019-01-02T19:05:13+00:00"
         },
         {
             "name": "league/flysystem",
@@ -4238,23 +4271,11 @@
                 "mock",
                 "xunit"
             ],
-            "abandoned": true,
             "time": "2017-06-30T09:13:00+00:00"
         },
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "4e04718428742618a4bf24dafca45b8645c9320d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4e04718428742618a4bf24dafca45b8645c9320d",
-                "reference": "4e04718428742618a4bf24dafca45b8645c9320d",
-                "shasum": ""
-            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
@@ -5003,7 +5024,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
