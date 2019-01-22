@@ -2719,7 +2719,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @BeforeScenario
 	 * @AfterScenario
 	 *
 	 * @return void
@@ -2740,7 +2739,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @BeforeScenario
 	 * @AfterScenario
 	 *
 	 * @return void
