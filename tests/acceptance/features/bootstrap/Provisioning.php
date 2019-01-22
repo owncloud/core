@@ -1000,9 +1000,14 @@ trait Provisioning {
 	 */
 	public function theseUsersHaveBeenInitialized(TableNode $table) {
 		foreach ($table as $row) {
+			if (!isset($row ['password'])) {
+				$password = $this->getPasswordForUser($row ['username']);
+			} else {
+				$password = $row ['password'];
+			}
 			$this->initializeUser(
 				$row ['username'],
-				$row ['password']
+				$password
 			);
 		}
 	}
