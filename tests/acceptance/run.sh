@@ -9,7 +9,15 @@ echo 'Script path: '${SCRIPT_PATH}
 
 OC_PATH=${SCRIPT_PATH}/../../
 OCC=${OC_PATH}occ
-BEHAT=${OC_PATH}lib/composer/bin/behat
+
+# Allow optionally passing in the path to the behat program.
+# This gives flexibility for callers that have installed their own behat
+if [ -z "${BEHAT_BIN}" ]
+then
+    BEHAT=${OC_PATH}vendor-bin/behat/vendor/bin/behat
+else
+    BEHAT=${BEHAT_BIN}
+fi
 
 BEHAT_TAGS_OPTION_FOUND=false
 
