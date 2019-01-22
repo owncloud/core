@@ -23,16 +23,24 @@
 	 * @return {Object} parsed values in associative array
 	 */
 	function parseLockNode(xmlvalue) {
-		return {
+		var lockInfo = {
 			lockscope: getChildNodeLocalName(xmlvalue.getElementsByTagNameNS(NS_DAV, 'lockscope')[0]),
 			locktype: getChildNodeLocalName(xmlvalue.getElementsByTagNameNS(NS_DAV, 'locktype')[0]),
 			lockroot: getHrefNodeContents(xmlvalue.getElementsByTagNameNS(NS_DAV, 'lockroot')[0]),
 			// string, as it can also be "infinite"
 			depth: xmlvalue.getElementsByTagNameNS(NS_DAV, 'depth')[0].textContent,
 			timeout: xmlvalue.getElementsByTagNameNS(NS_DAV, 'timeout')[0].textContent,
-			locktoken: getHrefNodeContents(xmlvalue.getElementsByTagNameNS(NS_DAV, 'locktoken')[0]),
-			owner: xmlvalue.getElementsByTagNameNS(NS_DAV, 'owner')[0].textContent
+			locktoken: getHrefNodeContents(xmlvalue.getElementsByTagNameNS(NS_DAV, 'locktoken')[0])
 		};
+
+		var owner = null;
+		var ownerEl = xmlvalue.getElementsByTagNameNS(NS_DAV, 'owner');
+		if (ownerEl && ownerEl.length) {
+			owner = ownerEl[0].textContent;
+		}
+
+		lockInfo.owner = owner || t('files', 'Unknown user');
+		return lockInfo;
 	}
 
 	function getHrefNodeContents(node) {
