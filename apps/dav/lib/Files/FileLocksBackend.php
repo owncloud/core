@@ -28,6 +28,7 @@ use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Locks;
 use Sabre\DAV\Locks\Backend\BackendInterface;
 use Sabre\DAV\Tree;
+use OCP\AppFramework\Utility\ITimeFactory;
 
 class FileLocksBackend implements BackendInterface {
 
@@ -35,10 +36,13 @@ class FileLocksBackend implements BackendInterface {
 	private $tree;
 	/** @var bool */
 	private $useV1;
+	/** @var ITimeFactory */
+	private $timeFactory;
 
-	public function __construct($tree, $useV1) {
+	public function __construct($tree, $useV1, $timeFactory) {
 		$this->tree = $tree;
 		$this->useV1 = $useV1;
+		$this->timeFactory = $timeFactory;
 	}
 
 	/**
@@ -116,7 +120,7 @@ class FileLocksBackend implements BackendInterface {
 			} else {
 				$lockInfo->scope = Locks\LockInfo::SHARED;
 			}
-			$lockInfo->timeout = $lock->getTimeout();
+			$lockInfo->timeout = $lock->getTimeout() - ($this->timeFactory->getTime() - $lock->getCreatedAt());
 
 			$davLocks[] = $lockInfo;
 		}
@@ -146,12 +150,18 @@ class FileLocksBackend implements BackendInterface {
 		}
 
 		/** @var IPersistentLockingStorage $storage */
-		return $storage->lockNodePersistent($node->getFileInfo()->getInternalPath(), [
+		$lock = $storage->lockNodePersistent($node->getFileInfo()->getInternalPath(), [
 			'token' => $lockInfo->token,
 			'scope' => $lockInfo->scope === Locks\LockInfo::EXCLUSIVE ? ILock::LOCK_SCOPE_EXCLUSIVE : ILock::LOCK_SCOPE_SHARED,
 			'depth' => $lockInfo->depth,
-			'owner' => $lockInfo->owner
+			'owner' => $lockInfo->owner,
+			'timeout' => $lockInfo->timeout
 		]);
+
+		// in case the timeout has not been accepted, adjust in lock info
+		$lockInfo->timeout = $lock->getTimeout();
+
+		return !empty($lock);
 	}
 
 	/**
