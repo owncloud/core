@@ -28,6 +28,7 @@ use Page\UserPageElement\GroupList;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use WebDriver\Exception\NoSuchElement;
 use WebDriver\Exception\ElementNotVisible;
+use WebDriver\Exception\StaleElementReference;
 
 /**
  * Users page.
@@ -73,6 +74,16 @@ class UsersPage extends OwncloudPage {
 		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style,'display: none')])]//button[text()='Yes']";
 	protected $deleteNotConfirmBtnXpath
 		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style,'display: none')])]//button[text()='No']";
+
+	protected $editUserDisplayNameBtnXpath = ".//td[@class='displayName']/img";
+	protected $editUserDisplayNameFieldXpath = "/td[@class='displayName']/input";
+
+	protected $editPasswordBtnXpath = ".//td[@class='password']/img";
+	protected $editPasswordInputXpath = "/td[@class='password']/input";
+
+	protected $groupsFieldXpath = ".//td[@class='groups']";
+	protected $userGroupsInputXpath = "./div[@class='groupsListContainer multiselect button']";
+	protected $userGroupInInputXpath = ".//ul[@class='multiselectoptions down']/li/label[@title='%s']";
 
 	/**
 	 * @param string $username
@@ -558,5 +569,106 @@ class UsersPage extends OwncloudPage {
 		}
 
 		$confirmBtn->click();
+	}
+
+	/**
+	 * @param Session $session
+	 * @param string $username
+	 * @param string $displayName
+	 *
+	 * @return void
+	 */
+	public function setDisplayNameofUserTo(Session $session, $username, $displayName) {
+		$userTr = $this->findUserInTable($username);
+		$editDisplayNameBtn = $userTr->find("xpath", $this->editUserDisplayNameBtnXpath);
+		if ($editDisplayNameBtn === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->editDisplayNameBtn " .
+				"could not find edit button "
+			);
+		}
+		$editDisplayNameBtn->focus();
+		$editDisplayNameBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+		$editDisplayNameInput = $userTr->find("xpath", $this->editUserDisplayNameFieldXpath);
+		if ($editDisplayNameInput === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->editDisplayNameInput " .
+				"could not find display name field "
+			);
+		}
+		try {
+			$editDisplayNameInput->focus();
+			$editDisplayNameInput->setValue($displayName . "\n");
+			$this->waitForAjaxCallsToStartAndFinish($session);
+		} catch (StaleElementReference $e) {
+		}
+	}
+
+	/**
+	 * @param Session $session
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function changeUserPassword(Session $session, $user, $password) {
+		$userTr = $this->findUserInTable($user);
+		$editPasswordBtn = $userTr->find("xpath", $this->editPasswordBtnXpath);
+		if ($editPasswordBtn === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->editPasswordBtnXpath " .
+				"could not find edit button "
+			);
+		}
+		$editPasswordBtn->focus();
+		$editPasswordBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+		$editPasswordInput = $userTr->find("xpath", $this->editPasswordInputXpath);
+		if ($editPasswordInput === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->editPasswordInputXpath " .
+				"could not find password field "
+			);
+		}
+		try {
+			$editPasswordInput->focus();
+			$editPasswordInput->setValue($password . "\n");
+			$this->waitForAjaxCallsToStartAndFinish($session);
+		} catch (StaleElementReference $e) {
+		}
+	}
+
+	/**
+	 * @param Session $session
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function addUserToGroup(Session $session, $user, $group) {
+		$userTr = $this->findUserInTable($user);
+		$groupsField = $userTr->find('xpath', $this->groupsFieldXpath);
+		$userGroupsInput = $groupsField->find("xpath", $this->userGroupsInputXpath);
+		if ($userGroupsInput !== null) {
+			$userGroupsInput->focus();
+			$userGroupsInput->click();
+		}
+		$this->waitForAjaxCallsToStartAndFinish($session);
+		$groupLabel = $groupsField->find('xpath', \sprintf($this->userGroupInInputXpath, $group));
+		if ($groupLabel === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->userGroupInInputXpath " .
+				"could not find groups input"
+			);
+		}
+		$groupLabel->focus();
+		$groupLabel->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 }

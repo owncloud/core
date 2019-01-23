@@ -406,6 +406,7 @@ default:
         - WebUILoginContext:
         - WebUIPersonalGeneralSettingsContext:
         - WebUIUsersContext:
+        - WebUIUserContext:
 
     # This suite is part of the user_management app in later core versions
     webUISettingsMenu:

@@ -491,4 +491,40 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdminAddsGroupUsingTheWebUI($groupName) {
 		$this->usersPage->addGroup($groupName, $this->getSession());
 	}
+
+	/**
+	 * @When the administrator changes the display name of user :user to :displayName using the webUI
+	 *
+	 * @param string $user
+	 * @param string $displayName
+	 *
+	 * @return void
+	 */
+	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheWebui($user, $displayName) {
+		$this->usersPage->setDisplayNameofUserTo($this->getSession(), $user, $displayName);
+	}
+
+	/**
+	 * @When the administrator changes the password of user :user to :password using the webUI
+	 *
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function theAdministratorChangesThePasswordOfUserToUsingTheWebui($user, $password) {
+		$this->usersPage->changeUserPassword($this->getSession(), $user, $password);
+	}
+
+	/**
+	 * @When the administrator adds user :user to group :group using the webUI
+	 *
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function addsUserToGroupUsingTheWebui($user, $group) {
+		$this->usersPage->addUserToGroup($this->getSession(), $user, $group);
+	}
 }
