@@ -301,7 +301,7 @@ class SharingDialog extends OwncloudPage {
 		$xpathLocator = \sprintf(
 			$this->permissionsFieldByUserName, $shareReceiverName
 		);
-		$permissionsField = $this->find("xpath", $xpathLocator);
+		$permissionsField = $this->waitTillElementIsNotNull($xpathLocator);
 		$this->assertElementNotNull(
 			$permissionsField,
 			__METHOD__
