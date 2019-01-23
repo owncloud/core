@@ -23,7 +23,7 @@
     "@bower_components/es6-promise": "components/es6-promise#v4.2.4",
     "@bower_components/handlebars": "components/handlebars.js#v4.0.12",
     "@bower_components/jcrop": "tapmodo/Jcrop#0.9.12",
-    "@bower_components/jquery": "jquery/jquery-dist#2.2.4",
+    "@bower_components/jquery": "jquery/jquery-dist#3.3.1",
     "@bower_components/jquery-ui": "components/jqueryui#1.12.1",
     "@bower_components/jsTimezoneDetect": "HenningM/jstimezonedetect#1.0.5",
     "@bower_components/jstzdetect": "HenningM/jstimezonedetect#1.0.6",
