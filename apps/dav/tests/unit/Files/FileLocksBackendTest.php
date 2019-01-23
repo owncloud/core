@@ -35,6 +35,8 @@ use Sabre\DAV\Locks\LockInfo;
 use Sabre\DAV\Tree;
 use Test\TestCase;
 use OCA\DAV\Connector\Sabre\Directory;
+use OCA\DAV\Connector\Sabre\ObjectTree;
+use OC\Files\View;
 
 class FileLocksBackendTest extends TestCase {
 	const CREATION_TIME = 164419200;
@@ -165,6 +167,105 @@ class FileLocksBackendTest extends TestCase {
 		$lockInfo->uri = 'files/alice/locked-file.txt';
 		$lockInfo->owner = 'Alice Wonder';
 		$lockInfo->timeout = 400;
+		$lockInfo->created = self::CREATION_TIME;
+		$this->assertEquals([
+			$lockInfo
+		], $locks);
+	}
+
+	public function providesGetLocksPublic() {
+		// note: the link share is "/public/share"
+		return [
+			// "public" is locked and is a parent of the link share path
+			// so the lock path "/alice/files/public" has no matching path
+			// relative to the link share "/alice/files/public/share", which
+			// results in a null path, which is converted to the response lock root ""
+			['public', 'public/share/sub', '/sub', '/alice/files/public', null, ''],
+
+			// "public/share" is locked and is the link share itself
+			// so the lock path "/alice/files/public" matches the
+			// link share root and resolves to ""
+			['public', 'public/share/sub', '/sub', '/alice/files/public', '/', ''],
+
+			// "public/share/sub" is locked and is the link share itself
+			// so the lock path "/alice/files/public/sub" is inside the link
+			// share so its relative path resolves to "/sub"
+			// the link share root is then "/sub"
+			['public', 'public/share/sub', '/sub', '/alice/files/public', '/sub', 'sub'],
+		];
+	}
+
+	/**
+	 * For this test we cover the case where Webdav path "public.php/webdav/sub" is inside
+	 * a public link share on the internal VFS "/alice/files/public/share/sub".
+	 * The public link is "/alice/files/public/share".
+	 *
+	 * When querying the node, it's on Webdav level, so the path is relative to "public.php/webdav/sub".
+	 * The node resolves itself to the original storage path, so the path becomes "/alice/files/public/share/sub"
+	 * on which the internal locks will be queried.
+	 *
+	 * @dataProvider providesGetLocksPublic
+	 *
+	 * @param $storageLockPath locked path relative to storage
+	 * @param $storageGetLocksPath path on which the locks is queried on storage level
+	 * @param $lockPluginGetLockPath public webdav path used in the DAV lock plugin
+	 * @param $pathInView public webdav path converted to view path
+	 * @param $pathRelativeToView resolved $pathInView relative to view root "/alice/files/public/share", or null if no match
+	 * @param $responseLockRoot lock root path in the response
+	 */
+	public function testGetLocksPublic($storageLockPath, $storageGetLocksPath, $lockPluginGetLockPath, $pathInView, $pathRelativeToView, $responseLockRoot) {
+		$lock = new Lock();
+		$lock->setToken('123-456-7890');
+		$lock->setScope(ILock::LOCK_SCOPE_EXCLUSIVE);
+		$lock->setDepth(-1);
+		$lock->setAbsoluteDavPath($storageLockPath);
+		$lock->setDavUserId('alice');
+		$lock->setOwner('Alice Wonder');
+		$lock->setTimeout(1000);
+		$lock->setCreatedAt(self::CREATION_TIME);
+
+		$storage = $this->createMock([IPersistentLockingStorage::class, IStorage::class]);
+		$storage->method('instanceOfStorage')->willReturn(true);
+		$storage->method('getLocks')
+			->with($storageGetLocksPath)
+			->willReturn([$lock]);
+
+		$fileInfo = $this->createMock(FileInfo::class);
+		$fileInfo->method('getStorage')->willReturn($storage);
+		$fileInfo->method('getInternalPath')->willReturn($storageGetLocksPath);
+		$file = $this->createMock(File::class);
+		$file->method('getFileInfo')->willReturn($fileInfo);
+
+		$this->tree = $this->createMock(ObjectTree::class);
+		$this->tree->method('getNodeForPath')
+			->with($lockPluginGetLockPath)
+			->willReturn($file);
+
+		$view = $this->createMock(View::class);
+		$view->expects($this->once())
+			->method('getRelativePath')
+			// this is the public link share root
+			->with($pathInView)
+			->willReturn($pathRelativeToView);
+
+		$this->tree->method('getView')->willReturn($view);
+
+		$timeFactory = $this->createMock(ITimeFactory::class);
+		$timeFactory->method('getTime')->willReturn(self::CURRENT_TIME);
+
+		$this->plugin = new FileLocksBackend($this->tree, true, $timeFactory);
+
+		// "/public/share" is a public share
+		// "/public" has the locks
+		// we query "public.php/webdav/sub" inside that share
+		$locks = $this->plugin->getLocks($lockPluginGetLockPath, true);
+		$lockInfo = new LockInfo();
+		$lockInfo->token = '123-456-7890';
+		$lockInfo->scope = LockInfo::EXCLUSIVE;
+		$lockInfo->uri = $responseLockRoot;
+		$lockInfo->owner = 'Alice Wonder';
+		$lockInfo->timeout = 400;
+		$lockInfo->depth = -1;
 		$lockInfo->created = self::CREATION_TIME;
 		$this->assertEquals([
 			$lockInfo
