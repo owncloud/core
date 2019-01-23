@@ -81,10 +81,10 @@
   uid bd595ed253292934991a414979007f3d51a1547d
   resolved "https://codeload.github.com/HenningM/jstimezonedetect/tar.gz/bd595ed253292934991a414979007f3d51a1547d"
 
-"@bower_components/moment@moment/moment#2.23.0":
-  version "2.23.0"
-  uid b8f4fe2bf5bb9022655505d59b62aef12bc540d6
-  resolved "https://codeload.github.com/moment/moment/tar.gz/b8f4fe2bf5bb9022655505d59b62aef12bc540d6"
+"@bower_components/moment@moment/moment#2.24.0":
+  version "2.24.0"
+  uid "96d0d6791ab495859d09a868803d31a55c917de1"
+  resolved "https://codeload.github.com/moment/moment/tar.gz/96d0d6791ab495859d09a868803d31a55c917de1"
 
 "@bower_components/select2@ivaynberg/select2#3.5.4":
   version "3.5.4"
