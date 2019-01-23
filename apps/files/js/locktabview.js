@@ -28,7 +28,12 @@
 		var client = OC.Files.getClient();
 
 		return _.map(locks, function(lock, index) {
-			var path = client.getRelativePath(lock.lockroot) || lock.lockroot;
+			var path = client.getRelativePath(lock.lockroot);
+			if (path === null) {
+				path = lock.lockroot;
+			} else if (path === '') {
+				path = '/';
+			}
 
 			// TODO: what if user in root doesn't match ?
 
