@@ -60,6 +60,40 @@ Feature: Locks
     And folder "simple-folder" should be marked as locked by user "user-with-email (mail@oc.org)" in the locks tab of the details panel on the webUI
     And file "data.zip" should be marked as locked by user "user-with-email (mail@oc.org)" in the locks tab of the details panel on the webUI
 
+  Scenario: setting a lock on a publicly shared file shows the lock symbols at the correct file
+    Given user "brand-new-user" has created a public link share of file "data.zip"
+    When the public locks the last public shared file using the WebDAV API setting following properties
+      | lockscope | shared |
+    And the user browses to the files page
+    Then file "data.zip" should be marked as locked on the webUI
+    And file "data.zip" should be marked as locked by user "Unknown user" in the locks tab of the details panel on the webUI
+    But file "data.tar.gz" should not be marked as locked on the webUI
+
+  Scenario: setting a lock on a publicly shared folder shows the lock symbols at the correct files/folder
+    Given user "brand-new-user" has created a public link share of folder "simple-folder"
+    When the public locks the last public shared folder using the WebDAV API setting following properties
+      | lockscope | shared |
+    And the user browses to the files page
+    Then folder "simple-folder" should be marked as locked on the webUI
+    And folder "simple-folder" should be marked as locked by user "Unknown user" in the locks tab of the details panel on the webUI
+    But folder "simple-empty-folder" should not be marked as locked on the webUI
+    When the user opens folder "simple-folder" using the webUI
+    Then file "data.zip" should be marked as locked on the webUI
+    And file "data.zip" should be marked as locked by user "Unknown user" in the locks tab of the details panel on the webUI
+    And file "data.tar.gz" should be marked as locked on the webUI
+
+  Scenario: setting a lock on a file in a publicly shared folder shows the lock symbols at the correct files
+    Given user "brand-new-user" has created a public link share of folder "simple-folder"
+    When the public locks "data.zip" in the last public shared folder using the WebDAV API setting following properties
+      | lockscope | shared |
+    And the user browses to the files page
+    Then folder "simple-folder" should not be marked as locked on the webUI
+    And folder "simple-empty-folder" should not be marked as locked on the webUI
+    When the user opens folder "simple-folder" using the webUI
+    Then file "data.zip" should be marked as locked on the webUI
+    And file "data.zip" should be marked as locked by user "Unknown user" in the locks tab of the details panel on the webUI
+    And file "data.tar.gz" should not be marked as locked on the webUI
+
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the favorites page
     Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
       | lockscope | shared |
