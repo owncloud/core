@@ -355,6 +355,10 @@
     "The config file is read only. Please adjust your setup by editing the config file manually." : "קובץ ה- config הנו לקריאה בלבד. יש להסדיר את ההתקנה על ידי עריכת קובץ ה- config באופן ידני.",
     "Email changed successfully for {user}." : "כתובת הדוא״ל של {user} הוחלפה בהצלחה.",
     "You are not a member of any groups." : "אין לך חברות באף קבוצה שהיא.",
-    "In a clustered setup please make sure to sync the config.php file across all nodes." : "בהתקנת clustered יש לוודא סנכרון קובץ config.php בין כל הנקודות."
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "בהתקנת clustered יש לוודא סנכרון קובץ config.php בין כל הנקודות.",
+    "Delete group" : "מחק קבוצה",
+    "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "נשלחה הודעת דוא״ל לכתובת הזו לטובת אימות. עד לאימות הדוא״ל הכתובת הזאת לא תוגדר.",
+    "Users" : "משתמשים",
+    "New Password" : "סיסמא חדשה"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

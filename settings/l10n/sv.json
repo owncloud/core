@@ -73,7 +73,7 @@
     "Migration started …" : "Migrering påbörjad ...",
     "An error occurred. Please upload an ASCII-encoded PEM certificate." : "Ett fel uppstod. Var god ladda upp ett ASCII-kodad PEM certifikat.",
     "Valid until {date}" : "Giltig t.o.m. {date}",
-    "Delete" : "Radera",
+    "Delete" : "Ta bort",
     "Disconnect" : "Koppla från",
     "Error while loading browser sessions and device tokens" : "Fel vid inläsning av webbläsarsessioner och enhetstoken.",
     "Error while creating device token" : "Fel vid skapande av enhetstoken",
@@ -316,6 +316,14 @@
     "Show disabled apps" : "Visa avaktiverade appar",
     "%s password changed successfully" : "%s lösenord ändrades",
     "No panels for this section." : "Inga paneler för den här sektionen.",
-    "Failed to change the email address." : "Kunde inte ändra e-postadress."
+    "Failed to change the email address." : "Kunde inte ändra e-postadress.",
+    "Delete group" : "Radera grupp",
+    "User {uid} has been {state}!" : "Användaren {uid} hart blivit {state}!",
+    "%s email address confirm" : "%s e-postadress att bekräfta",
+    "%s email address changed successfully" : "%s e-postadress ändrades",
+    "Unable to enable/disable user." : "Kunde inte aktivera/avaktivera användaren.",
+    "Users" : "Användare",
+    "Show enabled/disabled option" : "Visa alternativ för aktiverad/avaktiverad",
+    "New Password" : "Nytt lösenord"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

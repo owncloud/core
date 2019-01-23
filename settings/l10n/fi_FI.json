@@ -101,7 +101,7 @@
     "A valid password must be provided" : "Anna kelvollinen salasana",
     "A valid email must be provided" : "Tarvitaan kelvollinen sähköpostiosoite",
     "Hey there,<br><br>just letting you know that you now have an %s account.<br><br>Your username: %s<br>Access it: <a href=\"%s\">%s</a><br><br>" : "Hei<br><br>Sinulla on nyt %s-tili.<br><br>Käyttäjätunnus: %s<br>Aloita käyttö: <a href=\"%s\">%s</a><br><br>",
-    "Cheers!" : "Kippis!",
+    "Cheers!" : "Kiitos!",
     "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Hei\n\nSinulla on nyt %s-tili.\n\nKäyttäjätunnuksesi: %s\nAloita käyttö: %s\n\n",
     "User documentation" : "Käyttäjädokumentaatio",
     "Administrator documentation" : "Ylläpidon dokumentaatio",
@@ -298,6 +298,21 @@
     "Share" : "Jaa",
     "Add" : "Lisää",
     "%s password changed successfully" : "%s salasana vaihdettiin onnistuneesti",
-    "Email has been changed successfully." : "Sähköpostiosoite vaihdettiin onnistuneesti."
+    "Email has been changed successfully." : "Sähköpostiosoite vaihdettiin onnistuneesti.",
+    "Delete group" : "Poista ryhmä",
+    "Error while setting quota." : "Virhe asetettaessa käyttäjän tallennustilaa",
+    "User {uid} has been {state}!" : "Käyttäjä {uid} on asetettu {state}!",
+    "no group" : "ei ryhmää",
+    "%s email address confirm" : "%s sähköpostiosoite vahvistus",
+    "Couldn't send email address change confirmation mail. Please contact your administrator." : "Ei voitu lähettää sähköpostiosoitteen vaihtamisen vahvistusta. Ole hyvä ja ota yhteyttä järjestelmänvalvojaan.",
+    "%s email address changed successfully" : "%s sähköpostiosoite vaihdettu onnistuneesti",
+    "Couldn't send email address change notification mail. Please contact your administrator." : "Ei voitu lähettää sähköpostiosoitteen vaihtamisen ilmoitusta. Ole hyvä ja ota yhteyttä järjestelmänvalvojaan.",
+    "Unable to enable/disable user." : "Ei voitu ottaa käyttöön tai poistaa käytöstä käyttäjää",
+    "Use the following link to confirm your changes to the email address: {link}" : "Käytä oheistä linkkiä vahvistaaksesi muutoksesi sähköpostiosoitteseen: {link}",
+    "Email address changed to {mailAddress} successfully." : "Uusi sähköpostiosoite {mailAddress} vaihdettiin onnistuneesti.",
+    "Users" : "Käyttäjät",
+    "Show enabled/disabled option" : "Näytä käytössä/ei käytössä vaihtoehto",
+    "New Password" : "Uusi salasana",
+    "Group Admin for" : "Ryhmäylläpitäjä kohteille"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

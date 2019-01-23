@@ -85,7 +85,7 @@
     "Migration started …" : "Migratie gestart...",
     "An error occurred. Please upload an ASCII-encoded PEM certificate." : "Er trad een fout op. Upload als een ASCII-gecodeerd PEM certificaat.",
     "Valid until {date}" : "Geldig tot {date}",
-    "Delete" : "Verwijder",
+    "Delete" : "Verwijderen",
     "Disconnect" : "Verbreek verbinding",
     "Error while loading browser sessions and device tokens" : "Fout bij laden browser sessies en apparaat-tokens",
     "Error while creating device token" : "Fout bij creëren apparaat-token",
@@ -271,7 +271,7 @@
     "Choose as profile picture" : "Kies als profielafbeelding",
     "Full name" : "Volledige naam",
     "No display name set" : "Nog geen weergavenaam ingesteld",
-    "Email" : "E-mailadres",
+    "Email" : "mailadres",
     "Your email address" : "Uw e-mailadres",
     "Change email" : "Wijzigen e-mailadres",
     "Set email" : "Instellen e-mailadres",
@@ -281,7 +281,7 @@
     "Password" : "Wachtwoord",
     "Unable to change your password" : "Niet in staat om uw wachtwoord te wijzigen",
     "Current password" : "Huidig wachtwoord",
-    "New password" : "Nieuw",
+    "New password" : "Nieuw wachtwoord",
     "Change password" : "Wijzig wachtwoord",
     "Language" : "Taal",
     "Help translate" : "Help met vertalen",
@@ -323,7 +323,7 @@
     "Admins" : "Beheerders",
     "Default Quota" : "Standaard limiet",
     "Please enter storage quota (ex: \"512 MB\" or \"12 GB\")" : "Geef de opslagquotering op (bijv. \"512 MB\" of \"12 GB\")",
-    "Other" : "Anders",
+    "Other" : "Overig",
     "Full Name" : "Volledige naam",
     "Group Admin for" : "Groepsbeheerder voor",
     "Quota" : "Limieten",
@@ -345,6 +345,9 @@
     "Restrict enumeration to group members" : "Beperk enumeratie tot groepsleden",
     "No Domains." : "Geen domainen.",
     "Add" : "Toevoegen",
-    "The config file is read only. Please adjust your setup by editing the config file manually." : "Het configuratiebestand is alleen-lezen. Wijzig uw setup door door het configuratiebestand handmatig te wijzigen."
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "Het configuratiebestand is alleen-lezen. Wijzig uw setup door door het configuratiebestand handmatig te wijzigen.",
+    "Delete group" : "Verwijder groep",
+    "Users" : "Gebruikers",
+    "New Password" : "Nieuw wachtwoord"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -238,6 +238,19 @@
     "Empty app name is not allowed." : "نام برنامه نمی تواند خالی باشد.",
     "You need to set your user email before being able to send test emails." : "شما باید ایمیل کاربری خود را قبل از امکان ارسال ایمیل آزمایشی تنظیم نمایید.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "به ویژه هنگام استفاده از مشتری دسکتاپ برای همگام سازی پرونده، استفاده از SQLite دلسرد کننده است.",
-    "Email has been changed successfully." : "ایمیل با موفقیت تغییر کرد."
+    "Email has been changed successfully." : "ایمیل با موفقیت تغییر کرد.",
+    "Error creating group: {message}" : "خطا در ساخت گروه: {message}",
+    "Please provide an admin recovery password; otherwise, all user data will be lost." : "لطفاً یک رمز مدیریتی برای بازیابی کردن تعریف نمایید. در غیر اینصورت اطلاعات تمامی کاربران از دست خواهند رفت.",
+    "Backend doesn't support password change, but the user's encryption key was successfully updated." : "سیستم مدیریتی امکان تغییر رمز را پشتیبانی نمی‌کند. ولی کلید رمزنگاری کاربران با موفقیت به روز شد.",
+    "Couldn't change the email address because the user does not exist" : "آدرس ایمیل تغییر نمی کند زیرا کاربر موجود نیست",
+    "Couldn't change the email address because the token is invalid" : "آدرس ایمیل تغییر نمی کند زیرا نشانه معتبر نیست",
+    "No email was sent because you already sent one recently. Please try again later." : "هیچ ایمیلی ارسال نشد زیرا شما اخیرا ایمیلی ارسال کردید. لطفا بعدا تلاش کنید.",
+    "%s email address confirm" : "%s تایید آدرس ایمیل",
+    "Couldn't send email address change confirmation mail. Please contact your administrator." : "تاییدیه تغییر آدرس ایمیل ازسال نمی شود. لطفا با مدیر خود تماس بگیرید.",
+    "%s email address changed successfully" : "%s آدرس ایمیل با موفقیت تغییر کرد",
+    "Couldn't send email address change notification mail. Please contact your administrator." : "ایمیل اعلان تغییر آدرس ایمیل ارسال نمی شود. لطفا با مدیر خود تماس بگیرید.",
+    "Unable to enable/disable user." : "فعال سازی/غیر فعال سازی کاربر ممکن نیست.",
+    "Users" : "کاربران",
+    "New Password" : "رمزعبور جدید"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

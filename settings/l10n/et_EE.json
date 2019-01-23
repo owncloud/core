@@ -225,6 +225,7 @@
     "Default" : "Vaikeväärtus",
     "Share" : "Jaga",
     "Domain" : "Domeen",
-    "Add" : "Lisa"
+    "Add" : "Lisa",
+    "Users" : "Kasutajad"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

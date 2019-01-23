@@ -261,6 +261,7 @@ OC.L10N.register(
     "Invalid email address" : "Хибна адреса ел. пошти",
     "Owner language" : "Мова власника",
     "Wrong current password" : "Хибний поточний пароль",
-    "The new password cannot be the same as the previous one" : "Новий пароль не може бути таким самим як і попередній"
+    "The new password cannot be the same as the previous one" : "Новий пароль не може бути таким самим як і попередній",
+    "Users" : "Користувачі"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

@@ -211,6 +211,7 @@ OC.L10N.register(
     "change email address" : "email ünvanını dəyiş",
     "Default" : "Susmaya görə",
     "Share" : "Paylaş",
-    "Add" : "Əlavə etmək"
+    "Add" : "Əlavə etmək",
+    "Users" : "İstifadəçilər"
 },
 "nplurals=2; plural=(n != 1);");
