@@ -240,6 +240,7 @@ OC.L10N.register(
     "Default" : "Predvolené",
     "Share" : "Zdieľať",
     "Domain" : "Doména",
-    "Add" : "Pridať"
+    "Add" : "Pridať",
+    "Users" : "Používatelia"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

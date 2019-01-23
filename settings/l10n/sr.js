@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Wrong password" : "Погрешна лозинка",
     "No user supplied" : "Није наведен корисник",
-    "Authentication error" : "Грешка при провери идентитета",
+    "Authentication error" : "Грешка аутентификације",
     "Wrong admin recovery password. Please check the password and try again." : "Погрешна администраторска лозинка опоравка. Проверите лозинку и покушајте поново.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Позадина не подржава измеу лозинке али кориснички шифрарски кључеви су успешно ажурирани.",
     "Unable to change password" : "Не могу да променим лозинку",
@@ -236,7 +236,7 @@ OC.L10N.register(
     "Admins" : "Администратори",
     "Default Quota" : "Подразумевана квота",
     "Please enter storage quota (ex: \"512 MB\" or \"12 GB\")" : "Унесите квоту складиштења (нпр. 512 MB или 12 GB)",
-    "Other" : "Друго",
+    "Other" : "Остало",
     "Full Name" : "Пуно име",
     "Group Admin for" : "Администратор група",
     "Quota" : "Квота",
@@ -249,6 +249,7 @@ OC.L10N.register(
     "Default" : "Подразумевано",
     "Share" : "Дељење",
     "Domain" : "Домен",
-    "Add" : "Додај"
+    "Add" : "Додај",
+    "Users" : "Корисници"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

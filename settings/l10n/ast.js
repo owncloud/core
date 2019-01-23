@@ -304,6 +304,7 @@ OC.L10N.register(
     "Default" : "Predetermináu",
     "Share" : "Compartir",
     "Domain" : "Dominiu",
-    "Add" : "Amestar"
+    "Add" : "Amestar",
+    "Users" : "Usuarios"
 },
 "nplurals=2; plural=(n != 1);");

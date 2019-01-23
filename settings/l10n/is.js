@@ -359,6 +359,9 @@ OC.L10N.register(
     "You are not a member of any groups." : "Þú ert ekki meðlimur í neinum hópi.",
     "In a clustered setup please make sure to sync the config.php file across all nodes." : "Ef um klasauppsetningu er að ræða, gakktu úr skugga um að config.php sé samstillt yfir alla hnútana.",
     "Wrong current password" : "Rangt núverandi lykilorð",
-    "The new password cannot be the same as the previous one" : "Nýja lykilorðið má ekki vera eins og það fyrra"
+    "The new password cannot be the same as the previous one" : "Nýja lykilorðið má ekki vera eins og það fyrra",
+    "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Póstur var sendur á þetta tölvupóstfang til staðfestingar. Tölvupóstfangið verður ekki sett fyrr en það hefur verið staðfest.",
+    "Users" : "Notendur",
+    "New Password" : "Nýtt lykilorð"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

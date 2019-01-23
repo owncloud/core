@@ -4,12 +4,12 @@ OC.L10N.register(
     "Wrong password" : "Napačno geslo",
     "The new password can not be the same as the previous one" : "Novo geslo ne sme biti enako prejšnjemu.",
     "No user supplied" : "Ni navedenega uporabnika",
-    "Authentication error" : "Napaka med overjanjem",
+    "Authentication error" : "Napaka overjanja",
     "Please provide an admin recovery password; otherwise, all user data will be lost." : "Podati je treba skrbniško obnovitveno geslo, sicer bodo vsi uporabniški podatki izgubljeni.",
     "Wrong admin recovery password. Please check the password and try again." : "Napačno navedeno skrbniško obnovitveno geslo. Preverite geslo in poskusite znova.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Ozadnji program ne podpira spreminjanja gesla, je pa uspešno posodobljeno uporabniško šifriranje.",
     "Unable to change password" : "Ni mogoče spremeniti gesla",
-    "%s password changed successfully" : "Geslo (%s) je uspešno spremenjeno",
+    "%s password changed successfully" : "Geslo %s je uspešno spremenjeno",
     "Couldn't send reset email. Please contact your administrator." : "Ni mogoče poslati elektronskega naslova za ponastavitev. Stopite v stik s skrbnikom sistema.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "nameščanje in posodabljanje programov prek programske zbirke ali zveznega oblaka",
     "Federated Cloud Sharing" : "Souporaba zveznega oblaka",
@@ -328,6 +328,9 @@ OC.L10N.register(
     "Default" : "Privzeto",
     "Share" : "Souporaba",
     "Domain" : "Domena",
-    "Add" : "Dodaj"
+    "Add" : "Dodaj",
+    "Delete group" : "Izbriši skupino",
+    "Users" : "Uporabniki",
+    "New Password" : "Novo geslo"
 },
 "nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);");

@@ -323,6 +323,22 @@ OC.L10N.register(
     "No panels for this section." : "Intet panel for denne sektion.",
     "Failed to change the email address." : "Fejlede i at ændre emailadressen.",
     "We recommend to enable system cron as any other cron method has possible performance and reliability implications." : "Vi anbefaler at aktivere stystem-cron eftersom andre cron-metoder muligvis kan påvirke performance og pålidelighed.",
-    "Email has been changed successfully." : "Email er succesfuldt blevet opdateret."
+    "Email has been changed successfully." : "Email er succesfuldt blevet opdateret.",
+    "Delete group" : "Slet gruppe",
+    "User {uid} has been {state}!" : "Bruger {uid} er blevet {state}!",
+    "Please provide an admin recovery password; otherwise, all user data will be lost." : "Angiv venligst en admininstrator gendannelseskode, ellers vil alt brugerdata gå tabt",
+    "Couldn't change the email address because the user does not exist" : "Kunne ikke ændre emailadressen fordi brugeren ikke eksisterer",
+    "Couldn't change the email address because the token is invalid" : "Kunne ikke ændre emailadresse da symboludtrykket er ugyldigt",
+    "No email was sent because you already sent one recently. Please try again later." : "Igen email blev sendt fordi allerede har sendt en for nyligt. Prøv igen senere",
+    "%s email address confirm" : "%s emailadresse bekræftet",
+    "Couldn't send email address change confirmation mail. Please contact your administrator." : "Kunne ikke sende emailændringsbekræftelsesmail. Kontakt venligst din administrator.",
+    "%s email address changed successfully" : "%s emailadresse succesfuldt ændret",
+    "Couldn't send email address change notification mail. Please contact your administrator." : "Kunne ikke sende emailændringsbekræftelsesmail. Kontakt venligst din administrator.",
+    "Unable to enable/disable user." : "Kan ikke aktivere/deaktiverer bruger.",
+    "Use the following link to confirm your changes to the email address: {link}" : "Brug det følgende link for at bekræfte ændringerne af din emailadresse: {link}",
+    "Email address changed to {mailAddress} successfully." : "Emailadresse succesfuldt ændret til {mailAddress}",
+    "Users" : "Brugere",
+    "Show enabled/disabled option" : "Vis aktiverede/deaktiverede muligheder",
+    "New Password" : "Ny adgangskode"
 },
 "nplurals=2; plural=(n != 1);");

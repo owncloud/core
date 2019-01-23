@@ -246,6 +246,7 @@ OC.L10N.register(
     "change email address" : "Emails Adress wiesselen",
     "Default" : "Standard",
     "Share" : "Deelen",
-    "Add" : "Dobäisetzen"
+    "Add" : "Dobäisetzen",
+    "Users" : "Benotzer"
 },
 "nplurals=2; plural=(n != 1);");

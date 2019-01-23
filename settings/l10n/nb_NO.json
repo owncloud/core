@@ -309,7 +309,7 @@
     "No panels for this section." : "Ingen paneler for denne seksjonen.",
     "Show enabled/disabled option" : "Vis valg for aktiv/inaktiv",
     "Show storage location" : "Vis lagringssted",
-    "Show last log in" : "Vis site innlogging",
+    "Show last log in" : "Vis siste innlogging",
     "Show user backend" : "Vis bruker-server",
     "Send email to new user" : "Send e-post til ny bruker",
     "Show email address" : "Vis e-postadresse",
@@ -373,6 +373,19 @@
     "Owner language" : "Eierspråk",
     "Language used for public mail notifications for shared files" : "Språk som brukes til offentlig postvarsling for delte filer",
     "Wrong current password" : "Feil nåværende passord",
-    "The new password cannot be the same as the previous one" : "Det nye passordet kan ikke være det samme som det forrige"
+    "The new password cannot be the same as the previous one" : "Det nye passordet kan ikke være det samme som det forrige",
+    "Delete group" : "Slett gruppe",
+    "Failed to set password. Please contact your administrator." : "Kunne ikke angi passord. Ta kontakt med administratoren.",
+    "Error while setting quota." : "Feil skjedde under endring av kvote. ",
+    "The token provided is invalid." : "Token er ugyldig",
+    "The token provided had expired." : "Token har utgått",
+    "Failed to create activation link. Please contact your administrator." : "Kunne ikke opprette aktiveringslenke. Ta kontakt med administratoren din.",
+    "Can't send email to the user. Contact your administrator." : "Kan ikke sende e-post til brukeren. Kontakt administratoren din.",
+    "Failed to set password. Please contact the administrator." : "Kunne ikke angi passord. Ta kontakt med administratoren.",
+    "Failed to send email. Please contact your administrator." : "Kunne ikke sende e-post. Ta kontakt med administratoren din.",
+    "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "En e-post er sendt til denne adressen for bekreftelse. Inntil e-posten er bekreftet, vil denne adressen ikke bli angitt.",
+    "Users" : "Brukere",
+    "Set password for new users" : "Angi passord for nye brukere",
+    "New Password" : "Nytt passord"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
