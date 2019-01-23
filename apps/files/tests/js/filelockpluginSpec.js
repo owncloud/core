@@ -137,8 +137,8 @@ describe('OCA.Files.LockPlugin tests', function() {
 		afterEach(function() { 
 			requestStub.restore(); 
 		});
-		
-		it('parses lock information from response XML to JSON', function(done) {
+
+		function makeLockXml(owner) {
 			var xml =
 				'<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns">' +
 				'	<d:response>' +
@@ -170,8 +170,12 @@ describe('OCA.Files.LockPlugin tests', function() {
 				'						<d:timeout>Second-12345</d:timeout>' +
 				'						<d:locktoken>' +
 				'							<d:href>tehtoken</d:href>' +
-				'						</d:locktoken>' +
-				'						<d:owner>lock owner</d:owner>' +
+				'						</d:locktoken>';
+			if (owner !== null) {
+				xml += '						<d:owner>' + owner + '</d:owner>';
+			}
+
+			xml +=
 				'					</d:activelock>' +
 				'				</d:lockdiscovery>' +
 				'			</d:prop>' +
@@ -180,7 +184,30 @@ describe('OCA.Files.LockPlugin tests', function() {
 				'	</d:response>' +
 				'</d:multistatus>';
 
-			xml = dav.Client.prototype.parseMultiStatus(xml);
+			return xml;
+		}
+		
+		it('parses lock information from response XML to JSON', function(done) {
+			var xml = dav.Client.prototype.parseMultiStatus(makeLockXml('lock owner'));
+			var promise = fileList.reload();
+			requestDeferred.resolve({
+				status: 207,
+				body: xml
+			});
+
+			promise.then(function(status, response) {
+				var $tr = fileList.findFileEl('One.txt');
+				var data = fileList.elementToFile($tr);
+				expect(data.activeLocks.length).toEqual(1);
+				expect(data.activeLocks[0]).toEqual(testLockData);
+				done();
+			});
+		});
+
+		it('defaults to unknown user if owner info is not found in lock information', function(done) {
+			testLockData.owner = 'Unknown user';
+
+			var xml = dav.Client.prototype.parseMultiStatus(makeLockXml(null));
 			var promise = fileList.reload();
 			requestDeferred.resolve({
 				status: 207,
