@@ -257,3 +257,45 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user accepts the offered remote shares using the webUI
     And using server "REMOTE"
     Then as "user1" file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should exist
+
+  Scenario: sharee should be able to access the files/folders inside other folder
+    Given user "user1" has created folder "simple-folder/simple-empty-folder/finalfolder"
+    And user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/simple-empty-folder/textfile.txt"
+    And user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
+    And user "user1" from server "REMOTE" has accepted the last pending share
+    And user "user1" re-logs in to "%remote_server%" using the webUI
+    When the user opens folder "simple-folder (2)" using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    When the user opens folder "simple-empty-folder" using the webUI
+    Then file "textfile.txt" should be listed on the webUI
+    And folder "finalfolder" should be listed on the webUI
+
+  Scenario: sharee uploads a file inside a folder of a folder
+    Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
+    And user "user1" from server "REMOTE" has accepted the last pending share
+    When user "user1" re-logs in to "%remote_server%" using the webUI
+    And the user opens folder "simple-folder (2)/simple-empty-folder" using the webUI
+    And the user uploads file "lorem.txt" using the webUI
+    And using server "LOCAL"
+    Then as "user1" file "simple-folder/simple-empty-folder/lorem.txt" should exist
+
+  Scenario: rename a file in a folder inside a shared folder
+    Given user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/simple-empty-folder/textfile.txt"
+    And user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
+    And user "user1" from server "REMOTE" has accepted the last pending share
+    And user "user1" re-logs in to "%remote_server%" using the webUI
+    And the user opens folder "simple-folder (2)/simple-empty-folder" using the webUI
+    When the user renames file "textfile.txt" to "new-lorem.txt" using the webUI
+    And using server "LOCAL"
+    Then as "user1" file "simple-folder/simple-empty-folder/new-lorem.txt" should exist
+    But as "user1" file "simple-folder/simple-empty-folder/textfile.txt" should not exist
+
+  Scenario: delete a file in a folder inside a shared folder
+    Given user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/simple-empty-folder/textfile.txt"
+    And user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
+    And user "user1" from server "REMOTE" has accepted the last pending share
+    And user "user1" re-logs in to "%remote_server%" using the webUI
+    And the user opens folder "/simple-folder (2)/simple-empty-folder" using the webUI
+    When the user deletes file "textfile.txt" using the webUI
+    And using server "LOCAL"
+    Then as "user1" file "/simple-folder/simple-empty-folder/textfile.txt" should not exist
