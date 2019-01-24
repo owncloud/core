@@ -44,8 +44,8 @@ class WebDavLockingContext implements Context {
 	private $tokenOfLastLock = [];
 
 	/**
-	 * @When the user :user locks file/folder :file using the WebDAV API setting following properties
-	 * @Given the user :user has locked file/folder :file setting following properties
+	 * @When user :user locks file/folder :file using the WebDAV API setting following properties
+	 * @Given user :user has locked file/folder :file setting following properties
 	 *
 	 * @param string $user
 	 * @param string $file
@@ -120,7 +120,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @When the user :user unlocks the last created lock of file/folder :file using the WebDAV API
+	 * @When user :user unlocks the last created lock of file/folder :file using the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $file

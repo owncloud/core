@@ -12,9 +12,9 @@ Feature: Locks
     And user "brand-new-user" has logged in using the webUI
 
   Scenario: setting a lock shows the lock symbols at the correct files/folders
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
       | lockscope | shared |
-    And the user "brand-new-user" has locked file "data.zip" setting following properties
+    And user "brand-new-user" has locked file "data.zip" setting following properties
       | lockscope | exclusive |
     When the user browses to the files page
     Then folder "simple-folder" should be marked as locked on the webUI
@@ -28,9 +28,9 @@ Feature: Locks
     Given these users have been created:
       |username              |displayname  |
       |user-with-display-name|My fancy name|
-    Given the user "user-with-display-name" has locked folder "simple-folder" setting following properties
+    Given user "user-with-display-name" has locked folder "simple-folder" setting following properties
       | lockscope | shared |
-    And the user "user-with-display-name" has locked file "data.zip" setting following properties
+    And user "user-with-display-name" has locked file "data.zip" setting following properties
       | lockscope | exclusive |
     When the user re-logs in with username "user-with-display-name" and password "%regular%" using the webUI
     And folder "simple-folder" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
@@ -40,9 +40,9 @@ Feature: Locks
     Given these users have been created:
       |username              |displayname  |email      |
       |user-with-display-name|My fancy name|mail@oc.org|
-    Given the user "user-with-display-name" has locked folder "simple-folder" setting following properties
+    Given user "user-with-display-name" has locked folder "simple-folder" setting following properties
       | lockscope | shared |
-    And the user "user-with-display-name" has locked file "data.zip" setting following properties
+    And user "user-with-display-name" has locked file "data.zip" setting following properties
       | lockscope | exclusive |
     When the user re-logs in with username "user-with-display-name" and password "%regular%" using the webUI
     And folder "simple-folder" should be marked as locked by user "My fancy name (mail@oc.org)" in the locks tab of the details panel on the webUI
@@ -52,9 +52,9 @@ Feature: Locks
     Given these users have been created:
       |username        |email      |
       |user-with-email |mail@oc.org|
-    Given the user "user-with-email" has locked folder "simple-folder" setting following properties
+    Given user "user-with-email" has locked folder "simple-folder" setting following properties
       | lockscope | shared |
-    And the user "user-with-email" has locked file "data.zip" setting following properties
+    And user "user-with-email" has locked file "data.zip" setting following properties
       | lockscope | exclusive |
     When the user re-logs in with username "user-with-email" and password "%regular%" using the webUI
     And folder "simple-folder" should be marked as locked by user "user-with-email (mail@oc.org)" in the locks tab of the details panel on the webUI
@@ -95,9 +95,9 @@ Feature: Locks
     And file "data.tar.gz" should not be marked as locked on the webUI
 
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the favorites page
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
       | lockscope | shared |
-    And the user "brand-new-user" has locked file "data.zip" setting following properties
+    And user "brand-new-user" has locked file "data.zip" setting following properties
       | lockscope | exclusive |
     When the user marks folder "simple-folder" as favorite using the webUI
     And the user marks folder "simple-empty-folder" as favorite using the webUI
@@ -116,9 +116,9 @@ Feature: Locks
     Given these users have been created:
       |username  |
       |receiver  |
-    And the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    And user "brand-new-user" has locked folder "simple-folder" setting following properties
       | lockscope | shared |
-    And the user "brand-new-user" has locked file "data.zip" setting following properties
+    And user "brand-new-user" has locked file "data.zip" setting following properties
       | lockscope | exclusive |
     And user "brand-new-user" has shared file "data.zip" with user "receiver"
     And user "brand-new-user" has shared file "data.tar.gz" with user "receiver"
@@ -134,9 +134,9 @@ Feature: Locks
 
   @skip @issue-33867
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-by-link page
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
       | lockscope | shared |
-    And the user "brand-new-user" has locked file "data.zip" setting following properties
+    And user "brand-new-user" has locked file "data.zip" setting following properties
       | lockscope | exclusive |
     And user "brand-new-user" has created a public link share with settings
       | path | data.zip |
@@ -159,9 +159,9 @@ Feature: Locks
     Given these users have been created:
       |username  |
       |sharer    |
-    And the user "sharer" has locked folder "simple-folder" setting following properties
+    And user "sharer" has locked folder "simple-folder" setting following properties
       | lockscope | shared |
-    And the user "sharer" has locked file "data.zip" setting following properties
+    And user "sharer" has locked file "data.zip" setting following properties
       | lockscope | exclusive |
     And user "sharer" has shared file "data.zip" with user "brand-new-user"
     And user "sharer" has shared file "data.tar.gz" with user "brand-new-user"
@@ -190,13 +190,13 @@ Feature: Locks
     And user "sharer" has shared file "data.zip" with user "receiver"
     And user "sharer" has shared file "data.tar.gz" with group "receiver-group"
     And user "receiver" has shared file "data (2).zip" with user "brand-new-user"
-    And the user "sharer" has locked file "data.zip" setting following properties
+    And user "sharer" has locked file "data.zip" setting following properties
       | lockscope | shared |
-    And the user "receiver" has locked file "data (2).zip" setting following properties
+    And user "receiver" has locked file "data (2).zip" setting following properties
       | lockscope | shared |
-    And the user "brand-new-user" has locked file "data (2).zip" setting following properties
+    And user "brand-new-user" has locked file "data (2).zip" setting following properties
       | lockscope | shared |
-    And the user "receiver2" has locked file "data.tar (2).gz" setting following properties
+    And user "receiver2" has locked file "data.tar (2).gz" setting following properties
       | lockscope | shared |
     When the user browses to the files page
     Then file "data (2).zip" should be marked as locked on the webUI
@@ -216,7 +216,7 @@ Feature: Locks
     And file "data.tar (2).gz" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
 
   Scenario: setting a lock on a folder shows the symbols at the sub-elements
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
      | lockscope | shared |
     When the user opens folder "simple-folder" using the webUI
     Then folder "simple-empty-folder" should be marked as locked on the webUI
@@ -225,7 +225,7 @@ Feature: Locks
     And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
 
   Scenario: setting a depth:0 lock on a folder does not shows the symbols at the sub-elements
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
      | depth | 0 |
     When the user browses to the files page
     Then folder "simple-folder" should be marked as locked on the webUI
@@ -234,16 +234,16 @@ Feature: Locks
     And file "data.zip" should not be marked as locked on the webUI
 
   Scenario: unlocking by webDAV deletes the lock symbols at the correct files/folders
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
      | lockscope | shared |
-    When the user "brand-new-user" unlocks the last created lock of folder "simple-folder" using the WebDAV API
+    When user "brand-new-user" unlocks the last created lock of folder "simple-folder" using the WebDAV API
     And the user browses to the files page
     Then folder "simple-folder" should not be marked as locked on the webUI
 
   Scenario Outline: deleting the only remaining lock of a file/folder
-    Given the user "brand-new-user" has locked file "lorem.txt" setting following properties
+    Given user "brand-new-user" has locked file "lorem.txt" setting following properties
      | lockscope | <lockscope> |
-    And the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    And user "brand-new-user" has locked folder "simple-folder" setting following properties
      | lockscope | <lockscope> |
     And the user has browsed to the files page
     When the user unlocks the lock no 1 of file "lorem.txt" on the webUI
@@ -259,9 +259,9 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: deleting the only remaining lock of a file/folder and reloading the page
-    Given the user "brand-new-user" has locked file "lorem.txt" setting following properties
+    Given user "brand-new-user" has locked file "lorem.txt" setting following properties
      | lockscope | exclusive |
-    And the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    And user "brand-new-user" has locked folder "simple-folder" setting following properties
      | lockscope | exclusive |
     And the user has browsed to the files page
     When the user unlocks the lock no 1 of file "lorem.txt" on the webUI
@@ -278,7 +278,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: deleting the only remaining lock of a folder by deleting it from a file in folder
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
      | lockscope | <lockscope> |
     And the user has browsed to the files page
     And the user has opened folder "simple-folder" using the webUI
@@ -297,7 +297,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: deleting the only remaining lock of a folder by deleting it from a file in folder and reloading the page
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
      | lockscope | <lockscope> |
     And the user has browsed to the files page
     And the user has opened folder "simple-folder" using the webUI
@@ -325,17 +325,17 @@ Feature: Locks
     And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver1"
     And user "brand-new-user" has shared file "/lorem.txt" with user "receiver2"
     And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver2"
-    And the user "brand-new-user" has locked file "lorem.txt" setting following properties
+    And user "brand-new-user" has locked file "lorem.txt" setting following properties
        | lockscope | shared |
-    And the user "brand-new-user" has locked folder "FOLDER_TO_SHARE" setting following properties
+    And user "brand-new-user" has locked folder "FOLDER_TO_SHARE" setting following properties
        | lockscope | shared |
-    And the user "receiver1" has locked file "lorem (2).txt" setting following properties
+    And user "receiver1" has locked file "lorem (2).txt" setting following properties
        | lockscope | shared |
-    And the user "receiver1" has locked folder "FOLDER_TO_SHARE" setting following properties
+    And user "receiver1" has locked folder "FOLDER_TO_SHARE" setting following properties
        | lockscope | shared |
-    And the user "receiver2" has locked file "lorem (2).txt" setting following properties
+    And user "receiver2" has locked file "lorem (2).txt" setting following properties
        | lockscope | shared |
-    And the user "receiver2" has locked folder "FOLDER_TO_SHARE" setting following properties
+    And user "receiver2" has locked folder "FOLDER_TO_SHARE" setting following properties
        | lockscope | shared |
     And the user has browsed to the files page
     When the user unlocks the lock no 1 of file "lorem.txt" on the webUI
@@ -363,17 +363,17 @@ Feature: Locks
     And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver1"
     And user "brand-new-user" has shared file "/lorem.txt" with user "receiver2"
     And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver2"
-    And the user "receiver1" has locked file "lorem (2).txt" setting following properties
+    And user "receiver1" has locked file "lorem (2).txt" setting following properties
        | lockscope | shared |
-    And the user "receiver1" has locked folder "FOLDER_TO_SHARE" setting following properties
+    And user "receiver1" has locked folder "FOLDER_TO_SHARE" setting following properties
        | lockscope | shared |
-    And the user "brand-new-user" has locked file "lorem.txt" setting following properties
+    And user "brand-new-user" has locked file "lorem.txt" setting following properties
        | lockscope | shared |
-    And the user "brand-new-user" has locked folder "FOLDER_TO_SHARE" setting following properties
+    And user "brand-new-user" has locked folder "FOLDER_TO_SHARE" setting following properties
        | lockscope | shared |
-    And the user "receiver2" has locked file "lorem (2).txt" setting following properties
+    And user "receiver2" has locked file "lorem (2).txt" setting following properties
        | lockscope | shared |
-    And the user "receiver2" has locked folder "FOLDER_TO_SHARE" setting following properties
+    And user "receiver2" has locked folder "FOLDER_TO_SHARE" setting following properties
        | lockscope | shared |
     And the user has browsed to the files page
     When the user unlocks the lock no 2 of file "lorem.txt" on the webUI
@@ -401,17 +401,17 @@ Feature: Locks
     And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver1"
     And user "brand-new-user" has shared file "/lorem.txt" with user "receiver2"
     And user "brand-new-user" has shared folder "/FOLDER_TO_SHARE" with user "receiver2"
-    And the user "receiver1" has locked file "lorem (2).txt" setting following properties
+    And user "receiver1" has locked file "lorem (2).txt" setting following properties
        | lockscope | shared |
-    And the user "receiver1" has locked folder "FOLDER_TO_SHARE" setting following properties
+    And user "receiver1" has locked folder "FOLDER_TO_SHARE" setting following properties
        | lockscope | shared |
-    And the user "receiver2" has locked file "lorem (2).txt" setting following properties
+    And user "receiver2" has locked file "lorem (2).txt" setting following properties
        | lockscope | shared |
-    And the user "receiver2" has locked folder "FOLDER_TO_SHARE" setting following properties
+    And user "receiver2" has locked folder "FOLDER_TO_SHARE" setting following properties
        | lockscope | shared |
-    And the user "brand-new-user" has locked file "lorem.txt" setting following properties
+    And user "brand-new-user" has locked file "lorem.txt" setting following properties
        | lockscope | shared |
-    And the user "brand-new-user" has locked folder "FOLDER_TO_SHARE" setting following properties
+    And user "brand-new-user" has locked folder "FOLDER_TO_SHARE" setting following properties
        | lockscope | shared |
     And the user has browsed to the files page
     When the user unlocks the lock no 3 of file "lorem.txt" on the webUI
@@ -434,7 +434,7 @@ Feature: Locks
         |username  |
         |receiver1 |
     And user "brand-new-user" has shared file "/lorem.txt" with user "receiver1"
-    And the user "receiver1" has locked file "lorem (2).txt" setting following properties
+    And user "receiver1" has locked file "lorem (2).txt" setting following properties
        | lockscope | <lockscope> |
     And the user has browsed to the files page
     When the user unlocks the lock no 1 of file "lorem.txt" on the webUI
@@ -450,7 +450,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: deleting a locked file
-    Given the user "brand-new-user" has locked file "lorem.txt" setting following properties
+    Given user "brand-new-user" has locked file "lorem.txt" setting following properties
        | lockscope | <lockscope> |
     And the user has browsed to the files page
     When the user deletes file "lorem.txt" using the webUI
@@ -467,7 +467,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: moving a locked file
-    Given the user "brand-new-user" has locked file "lorem.txt" setting following properties
+    Given user "brand-new-user" has locked file "lorem.txt" setting following properties
        | lockscope | <lockscope> |
     And the user has browsed to the files page
     When the user moves file "lorem.txt" into folder "simple-empty-folder" using the webUI
@@ -484,7 +484,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: moving a file trying to overwrite a locked file
-    Given the user "brand-new-user" has locked file "/simple-folder/lorem.txt" setting following properties
+    Given user "brand-new-user" has locked file "/simple-folder/lorem.txt" setting following properties
        | lockscope | <lockscope> |
     And the user has browsed to the files page
     When the user moves file "lorem.txt" into folder "simple-folder" using the webUI
@@ -499,7 +499,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: moving a file into a locked folder
-    Given the user "brand-new-user" has locked file "/simple-empty-folder" setting following properties
+    Given user "brand-new-user" has locked file "/simple-empty-folder" setting following properties
        | lockscope | <lockscope> |
     And the user has browsed to the files page
     When the user moves file "lorem.txt" into folder "simple-empty-folder" using the webUI
@@ -516,7 +516,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: renaming of a locked file
-    Given the user "brand-new-user" has locked file "lorem.txt" setting following properties
+    Given user "brand-new-user" has locked file "lorem.txt" setting following properties
        | lockscope | <lockscope> |
     And the user has browsed to the files page
     When the user renames file "lorem.txt" to "a-renamed-file.txt" using the webUI
@@ -533,7 +533,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: uploading a file, trying to overwrite a locked file
-    Given the user "brand-new-user" has locked file "lorem.txt" setting following properties
+    Given user "brand-new-user" has locked file "lorem.txt" setting following properties
        | lockscope | <lockscope> |
     And the user has browsed to the files page
     When the user uploads overwriting file "lorem.txt" using the webUI
@@ -549,7 +549,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: uploading a file, trying to overwrite a file in a locked folder
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
        | lockscope | <lockscope> |
     And the user has opened folder "simple-folder" using the webUI
     When the user uploads overwriting file "lorem.txt" using the webUI
@@ -565,7 +565,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: uploading a new file into a locked folder
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
        | lockscope | <lockscope> |
     And the user has opened folder "simple-folder" using the webUI
     When the user uploads file "new-lorem.txt" using the webUI
@@ -579,7 +579,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: deleting a file in a public share of a locked folder
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
        | lockscope | <lockscope> |
     And the user has browsed to the files page
     And the user has created a new public link for folder "simple-folder" using the webUI with
@@ -596,7 +596,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: renaming a file in a public share of a locked folder
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
        | lockscope | <lockscope> |
     And the user has browsed to the files page
     And the user has created a new public link for folder "simple-folder" using the webUI with
@@ -614,7 +614,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: moving a locked file into an other folder in a public share
-    Given the user "brand-new-user" has locked file "simple-folder/lorem.txt" setting following properties
+    Given user "brand-new-user" has locked file "simple-folder/lorem.txt" setting following properties
        | lockscope | <lockscope> |
     And the user has browsed to the files page
     And the user has created a new public link for folder "simple-folder" using the webUI with
@@ -633,7 +633,7 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: uploading a file, trying to overwrite a file in a locked folder in a public share
-    Given the user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
        | lockscope | <lockscope> |
     And the user has browsed to the files page
     And the user has created a new public link for folder "simple-folder" using the webUI with
@@ -654,7 +654,7 @@ Feature: Locks
       |username  |
       |sharer    |
     And user "sharer" has created folder "/to-share-folder"
-    And the user "sharer" has locked folder "to-share-folder" setting following properties
+    And user "sharer" has locked folder "to-share-folder" setting following properties
      | lockscope | <lockscope> |
     And user "sharer" has shared folder "to-share-folder" with user "brand-new-user"
     When the user declines share "to-share-folder" offered by user "sharer" using the webUI
@@ -672,7 +672,7 @@ Feature: Locks
       |username  |
       |sharer    |
     And user "sharer" has created folder "/to-share-folder"
-    And the user "sharer" has locked folder "to-share-folder" setting following properties
+    And user "sharer" has locked folder "to-share-folder" setting following properties
      | lockscope | <lockscope> |
     And user "sharer" has shared folder "to-share-folder" with user "brand-new-user"
     When the user declines share "to-share-folder" offered by user "sharer" using the webUI
@@ -692,7 +692,7 @@ Feature: Locks
       |username  |
       |sharer    |
     And user "sharer" has created folder "/to-share-folder"
-    And the user "sharer" has locked folder "to-share-folder" setting following properties
+    And user "sharer" has locked folder "to-share-folder" setting following properties
      | lockscope | <lockscope> |
     And user "sharer" has shared folder "to-share-folder" with user "brand-new-user"
     When the user declines share "to-share-folder" offered by user "sharer" using the webUI
@@ -715,7 +715,7 @@ Feature: Locks
       |sharer    |
     And user "sharer" has created folder "/parent"
     And user "sharer" has created folder "/parent/subfolder"
-    And the user "sharer" has locked folder "parent" setting following properties
+    And user "sharer" has locked folder "parent" setting following properties
      | lockscope | <lockscope> |
     And user "sharer" has shared folder "parent" with user "brand-new-user"
     When the user declines share "parent" offered by user "sharer" using the webUI
@@ -736,9 +736,9 @@ Feature: Locks
     Given these users have been created:
       |username  |
       |sharer    |
-    And the user "sharer" has locked file "lorem.txt" setting following properties
+    And user "sharer" has locked file "lorem.txt" setting following properties
       | lockscope | <lockscope> |
-    And the user "sharer" has locked folder "simple-folder" setting following properties
+    And user "sharer" has locked folder "simple-folder" setting following properties
       | lockscope | <lockscope> |
     And user "sharer" has shared file "lorem.txt" with user "brand-new-user"
     And user "sharer" has shared folder "simple-folder" with user "brand-new-user"
