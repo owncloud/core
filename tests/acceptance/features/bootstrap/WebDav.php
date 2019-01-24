@@ -1042,6 +1042,32 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^as "([^"]*)" exactly one of these (files|folders|entries) should exist$/
+	 *
+	 * @param string $user
+	 * @param string $entries
+	 * @param TableNode $table of file, folder or entry paths
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function asExactlyOneOfTheseFilesOrFoldersShouldExist($user, $entries, $table) {
+		$numEntriesThatExist = 0;
+		foreach ($table->getTable() as $row) {
+			$path = $this->substituteInLineCodes($row[0]);
+			$this->responseXmlObject = $this->listFolder($user, $path, 0);
+			if ($this->isEtagValid()) {
+				$numEntriesThatExist = $numEntriesThatExist + 1;
+			}
+		}
+		PHPUnit_Framework_Assert::assertEquals(
+			1,
+			$numEntriesThatExist,
+			"exactly one of these $entries should exist but found $numEntriesThatExist $entries"
+		);
+	}
+
+	/**
 	 *
 	 * @param string $user
 	 * @param string $path
