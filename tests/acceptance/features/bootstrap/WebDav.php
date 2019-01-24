@@ -134,6 +134,7 @@ trait WebDav {
 		if ($eTag === null) {
 			$eTag = $this->getEtagFromResponseXmlObject();
 		}
+		echo "eTag is $eTag\n";
 		if (\preg_match("/^\"[a-f0-9]{1,32}\"$/", $eTag)
 		) {
 			return true;
@@ -1033,10 +1034,40 @@ trait WebDav {
 	public function asFileOrFolderShouldExist($user, $entry, $path) {
 		$path = $this->substituteInLineCodes($path);
 		$this->responseXmlObject = $this->listFolder($user, $path, 0);
+		if (!$this->isEtagValid()) {
+			echo "listFolder has invalid eTag - sleep 1\n";
+			\sleep(1);
+			$this->responseXmlObject = $this->listFolder($user, $path, 0);
+		}
+		if (!$this->isEtagValid()) {
+			echo "listFolder has invalid eTag - sleep 5\n";
+			\sleep(5);
+			$this->responseXmlObject = $this->listFolder($user, $path, 0);
+		}
 		PHPUnit_Framework_Assert::assertTrue(
 			$this->isEtagValid(),
 			"$entry '$path' expected to exist but not found"
 		);
+	}
+
+	/**
+	 * @Then /^as "([^"]*)" report existence of (file|folder|entry) "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $entry
+	 * @param string $path
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function asReportExistenceOfFileOrFolder($user, $entry, $path) {
+		$path = $this->substituteInLineCodes($path);
+		$this->responseXmlObject = $this->listFolder($user, $path, 0);
+		if ($this->isEtagValid()) {
+			echo "asReportExistenceOfFileOrFolder: $entry $path for $user exists\n";
+		} else {
+			echo "asReportExistenceOfFileOrFolder: $entry $path for $user DOES NOT exist\n";
+		}
 	}
 
 	/**
