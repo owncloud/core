@@ -65,7 +65,7 @@ core_vendor=core/vendor
 
 core_doc_files=AUTHORS COPYING README.md CHANGELOG.md
 core_src_files=$(wildcard *.php) index.html db_structure.xml .htaccess .user.ini robots.txt
-core_src_dirs=apps core l10n lib occ ocs ocs-provider resources settings
+core_src_dirs=apps core l10n lib occ ocs ocs-provider ocm-provider resources settings
 core_test_dirs=tests
 core_all_src=$(core_src_files) $(core_src_dirs) $(core_doc_files)
 core_config_files=config/config.sample.php config/config.apps.sample.php
