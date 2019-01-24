@@ -911,6 +911,16 @@ matrix:
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
 
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavLocks
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
   # CLI Provisioning Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: cli
