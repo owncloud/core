@@ -59,6 +59,7 @@
     "You don’t have permission to upload or create files here" : "您在这没有上传和创建文件的权限",
     "_Uploading %n file_::_Uploading %n files_" : ["上传 %n 个文件"],
     "New" : "新建",
+    "Unknown user" : "未知用户",
     "\"{name}\" is an invalid file name." : "“{name}”是一个无效的文件名。",
     "File name cannot be empty." : "文件名不能为空。",
     "File name cannot contain \"/\"." : "文件名不得包含“/”。",

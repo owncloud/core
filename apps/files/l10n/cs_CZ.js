@@ -56,6 +56,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "Nemáte oprávnění sem nahrávat nebo vytvářet soubory",
     "_Uploading %n file_::_Uploading %n files_" : ["Nahrávám %n soubor","Nahrávám %n soubory","Nahrávám %n souborů","Nahrávám %n souborů"],
     "New" : "Nový",
+    "Unknown user" : "Neznámý uživatel",
     "\"{name}\" is an invalid file name." : "\"{name}\" je neplatným názvem souboru.",
     "File name cannot be empty." : "Název souboru nemůže být prázdný řetězec.",
     "\"{name}\" has a forbidden file type/extension." : "\"{name}\" má zakázaný typ souboru/příponu",

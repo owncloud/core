@@ -61,6 +61,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "لا تملك الصلاحية لرفع او انشاء ملف هنا ",
     "_Uploading %n file_::_Uploading %n files_" : ["لا يوجد ملفات %n لتحميلها","تحميل 1 ملف %n","تحميل 2 ملف %n","يتم تحميل عدد قليل من ملفات %n","يتم تحميل عدد كبير من ملفات %n","يتم تحميل ملفات %n"],
     "New" : "جديد",
+    "Unknown user" : "المستخدم غير معروف",
     "\"{name}\" is an invalid file name." : "\"{name}\" اسم ملف غير صالح للاستخدام .",
     "File name cannot be empty." : "اسم الملف لا يجوز أن يكون فارغا",
     "File name cannot contain \"/\"." : "لا يمكن أن يحتوي اسم الملف على \"/\".",

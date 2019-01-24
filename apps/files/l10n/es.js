@@ -61,6 +61,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "No tiene permisos para subir o crear archivos aquí.",
     "_Uploading %n file_::_Uploading %n files_" : ["Subiendo %n archivo","Subiendo %n archivos"],
     "New" : "Nuevo",
+    "Unknown user" : "Usuario desconocido",
     "\"{name}\" is an invalid file name." : "«{name}» es un nombre de archivo no válido.",
     "File name cannot be empty." : "El nombre de archivo no puede estar vacío.",
     "File name cannot contain \"/\"." : "El nombre del archivo no puede contener el caracter : \"/\".",

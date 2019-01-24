@@ -59,6 +59,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "ここにファイルをアップロードもしくは作成する権限がありません",
     "_Uploading %n file_::_Uploading %n files_" : ["%n 個のファイルをアップロード中"],
     "New" : "新規作成",
+    "Unknown user" : "不明なユーザー",
     "\"{name}\" is an invalid file name." : "\"{name}\" は無効なファイル名です。",
     "File name cannot be empty." : "ファイル名を空にすることはできません。",
     "File name cannot contain \"/\"." : "ファイル名に\"/\"を含めることはできません。",

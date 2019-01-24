@@ -82,6 +82,7 @@ OC.L10N.register(
     "Shared by %2$s" : "Споделено од %2$s",
     "Shares" : "Споделувања",
     "File sharing" : "Споделување на податоци",
+    "Public link" : "Јавен линк",
     "Share API is disabled" : "АПИ за споделување е оневозможено",
     "Wrong share ID, share doesn't exist" : "Погрешено споделен ИД, споделувањето не постои",
     "Could not delete share" : "Не можеше да се избрише акцијата",

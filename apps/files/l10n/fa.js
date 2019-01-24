@@ -60,6 +60,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "شما دسترسی مجاز برای آپلود یا ایجاد فایل در اینجا را ندارید",
     "_Uploading %n file_::_Uploading %n files_" : ["در حال بارگذاری %n فایل","در حال بارگذاری %n فایل"],
     "New" : "جدید",
+    "Unknown user" : "کاربر نامعلوم",
     "\"{name}\" is an invalid file name." : "\"{name}\" نامی نامعتبر برای فایل است.",
     "File name cannot be empty." : "نام پرونده نمی تواند خالی باشد.",
     "File name cannot contain \"/\"." : "نام پرونده نمی تواند شامل \"/\" باشد.",

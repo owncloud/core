@@ -55,6 +55,7 @@
     "You don’t have permission to upload or create files here" : "Du har ikke tilladelse til at uploade eller oprette filer her",
     "_Uploading %n file_::_Uploading %n files_" : ["Uploader %n fil","Uploader %n filer"],
     "New" : "Ny",
+    "Unknown user" : "Ukendt bruger",
     "\"{name}\" is an invalid file name." : "'{name}' er et ugyldigt filnavn.",
     "File name cannot be empty." : "Filnavnet kan ikke stå tomt.",
     "File name cannot contain \"/\"." : "Filnavn må ikke indeholde \"/\".",

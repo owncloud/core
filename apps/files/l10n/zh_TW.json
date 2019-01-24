@@ -45,6 +45,7 @@
     "You don’t have permission to upload or create files here" : "您沒有權限在這裡上傳或建立檔案",
     "_Uploading %n file_::_Uploading %n files_" : ["正在上傳 %n 個檔案"],
     "New" : "新增",
+    "Unknown user" : "未知的使用者",
     "\"{name}\" is an invalid file name." : "{name} 是無效的檔名",
     "File name cannot be empty." : "檔名不能為空",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "{owner} 的儲存空間已滿，沒有辦法再更新或是同步檔案！",

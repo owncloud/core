@@ -65,6 +65,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "Você não tem permissão para enviar ou criar arquivos aqui",
     "_Uploading %n file_::_Uploading %n files_" : ["Enviando %n arquivo","Enviando %n arquivos"],
     "New" : "Novo",
+    "Unknown user" : "Usuário desconhecido",
     "Lock status" : "Status de bloqueio",
     "This resource is locked. Click to see more details." : "Este recurso está bloqueado. Clique para ver mais detalhes.",
     "\"{name}\" is an invalid file name." : "\"{name}\" é um nome de arquivo inválido.",

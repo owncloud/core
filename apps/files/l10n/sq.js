@@ -65,6 +65,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "S’keni leje për të ngarkuar apo krijuar kartela këtu",
     "_Uploading %n file_::_Uploading %n files_" : ["Po ngarkohet %n kartelë","Po ngarkohen %n kartela"],
     "New" : "E re",
+    "Unknown user" : "Përdorues i panjohur",
     "Lock status" : "Gjendje kyçjeje",
     "This resource is locked. Click to see more details." : "Ky burim është i kyçur. Klikoni për të parë më tepër hollësi.",
     "\"{name}\" is an invalid file name." : "\"{name}\" është emër i pavlefshëm kartele.",

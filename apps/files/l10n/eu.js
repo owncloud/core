@@ -37,6 +37,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "Ez duzu fitxategiak hona igotzeko edo hemen sortzeko baimenik",
     "_Uploading %n file_::_Uploading %n files_" : ["Fitxategi %n igotzen","%n fitxategi igotzen"],
     "New" : "Berria",
+    "Unknown user" : "Erabiltzaile ezezaguna",
     "\"{name}\" is an invalid file name." : "\"{name}\" ez da fitxategi izen baliogarria.",
     "File name cannot be empty." : "Fitxategi izena ezin da hutsa izan.",
     "Your storage is full, files can not be updated or synced anymore!" : "Zure biltegiratzea beterik dago, ezingo duzu aurrerantzean fitxategirik igo edo sinkronizatu!",

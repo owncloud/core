@@ -24,6 +24,7 @@ OC.L10N.register(
     "Modified" : "পরিবর্তিত",
     "_Uploading %n file_::_Uploading %n files_" : ["%n ফাইল আপলোড হচ্ছে","%n ফাইল আপলোড হচ্ছে"],
     "New" : "নতুন",
+    "Unknown user" : "অপরিচিত ব্যবহারকারী",
     "\"{name}\" is an invalid file name." : "\"{name}\" টি একটি অননুমোদিত ফাইল নাম।",
     "File name cannot be empty." : "ফাইলের নামটি ফাঁকা রাখা যাবে না।",
     "Your storage is almost full ({usedSpacePercent}%)" : "আপনার সংরক্ষণাধার প্রায় পরিপূর্ণ ({usedSpacePercent}%) ",

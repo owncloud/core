@@ -227,6 +227,7 @@ OC.L10N.register(
     "Non-existing tag #{tag}" : "Не постоечка ознака #{tag}",
     "restricted" : "ограничено",
     "invisible" : "невидлив",
+    "Static" : "Статични",
     "({scope})" : "({scope})",
     "Delete" : "Избриши",
     "Rename" : "Преименувај",

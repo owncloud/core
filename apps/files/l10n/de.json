@@ -59,6 +59,7 @@
     "You don’t have permission to upload or create files here" : "Du hast keine Berechtigung, hier Dateien hochzuladen oder zu erstellen",
     "_Uploading %n file_::_Uploading %n files_" : ["%n Datei wird hochgeladen","%n Dateien werden hochgeladen"],
     "New" : "Neu",
+    "Unknown user" : "Unbekannter Benutzer",
     "\"{name}\" is an invalid file name." : "»{name}« ist kein gültiger Dateiname.",
     "File name cannot be empty." : "Der Dateiname darf nicht leer sein.",
     "File name cannot contain \"/\"." : "Der Dateiname darf kein \"/\" enthalten.",

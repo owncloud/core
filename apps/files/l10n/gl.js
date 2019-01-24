@@ -56,6 +56,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "Non ten permisos para enviar ou crear ficheiros aquí.",
     "_Uploading %n file_::_Uploading %n files_" : ["Cargando %n ficheiro","Cargando %n ficheiros"],
     "New" : "Novo",
+    "Unknown user" : "Usuario descoñecido",
     "\"{name}\" is an invalid file name." : "«{name}» é un nome incorrecto de ficheiro.",
     "File name cannot be empty." : "O nome de ficheiro non pode estar baleiro",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "O espazo de almacenamento de {owner} está cheo, non é posíbel actualizar ou sincronizar máis os ficheiros!",

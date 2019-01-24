@@ -60,6 +60,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "Þú hefur ekki heimild til að hlaða inn eða búa til skjöl hér",
     "_Uploading %n file_::_Uploading %n files_" : ["Sendi inn %n skrá","Sendi inn %n skrár"],
     "New" : "Nýtt",
+    "Unknown user" : "Óþekktur notandi",
     "\"{name}\" is an invalid file name." : "\"{name}\" er ógilt skráarheiti.",
     "File name cannot be empty." : "Heiti skráar má ekki vera tómt",
     "File name cannot contain \"/\"." : "Skráarheiti má ekki innihalda '/\".",

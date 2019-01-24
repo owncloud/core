@@ -50,6 +50,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "Nun tienes permisu pa xubir o crear ficheros equí",
     "_Uploading %n file_::_Uploading %n files_" : ["Xubiendo %n ficheru","Xubiendo %n ficheros"],
     "New" : "Nuevu",
+    "Unknown user" : "Usuariu desconocíu",
     "\"{name}\" is an invalid file name." : "\"{name}\" ye un nome de ficheru inválidu.",
     "File name cannot be empty." : "El nome de ficheru nun pue quedar baleru.",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "L'almacenamientu de {owner} ta completu, ¡yá nun se pueden anovar o sincronizar ficheros!",

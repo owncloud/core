@@ -65,6 +65,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "У вас нет прав для загрузки или создания файлов здесь.",
     "_Uploading %n file_::_Uploading %n files_" : ["Закачка %n файла","Закачка %n файлов","Закачка %n файлов","Закачка %n файлов"],
     "New" : "Новый",
+    "Unknown user" : "Неизвестный пользователь",
     "Lock status" : "Состояние блокировки",
     "This resource is locked. Click to see more details." : "Ресурс заблокирован. Нажмите, чтобы посмотреть подробности.",
     "\"{name}\" is an invalid file name." : "\"{name}\" это неправильное имя файла.",

@@ -52,6 +52,7 @@
     "You don’t have permission to upload or create files here" : "Avètz pas la permission d'apondre de fichièrs aicí",
     "_Uploading %n file_::_Uploading %n files_" : ["Mandadís de %n fichièr","Mandadís de %n fichièrs"],
     "New" : "Novèl",
+    "Unknown user" : "Utilizaire desconegut",
     "\"{name}\" is an invalid file name." : "\"{name}\" es pas un nom de fichièr valid.",
     "File name cannot be empty." : "Lo nom de fichièr pòt pas èsser void.",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "L'espaci d'emmagazinatge de {owner} es plen. Los fichièrs pòdon pas mai èsser meses a jorn o sincronizats !",

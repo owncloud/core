@@ -1,12 +1,19 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
+    "Federated sharing" : "Compartición federada",
     "Add to your ownCloud" : "Engadir ao seu ownCloud",
     "Invalid Federated Cloud ID" : "ID de nube federada incorrecto",
     "Sharing %s failed, because this item is already shared with %s" : "Fallou a compartición de %s, este elemento xa está compartido con %s",
     "Not allowed to create a federated share with the same user" : "Non está permitido crear unha compartición federada co mesmo usuario",
+    "File is already shared with %s" : "O ficheiro xa está a ser compartido con %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Fallou a compartición de %s, non foi posíbel atopar %s,é probábel que o servidor non estea accesíbel.",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "%1$s compartiu «%2$s» con vostede (en nome de «%2$s»)",
+    "\"%1$s\" shared \"%3$s\" with you" : "%1$s compartiu «%2$s» con vostede",
+    "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "«%1$s» convidouno a ver «%3$s» (en nome de «%2$s»)",
+    "\"%1$s\" invited you to view \"%3$s\"" : "«%1$s» convidouno a ver «%3$s»",
     "Accept" : "Aceptar",
+    "Decline" : "Declinar",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Comparte comigo a través do meu ID da nube federada do #ownCloud , vexa %s",
     "Share with me through my #ownCloud Federated Cloud ID" : "Comparte comigo a través do meu ID da nube federada do #ownCloud",
     "Federated Cloud Sharing" : "Nube federada compartida",
@@ -16,6 +23,7 @@ OC.L10N.register(
     "Federated Cloud" : "Nube federada",
     "Your Federated Cloud ID:" : "ID da súa nube federada:",
     "Share it:" : "Compártao:",
+    "Add to your website" : "Engadir ao seu sitio web",
     "Share with me via ownCloud" : "Comparte comigo a través do ownCloud",
     "HTML Code:" : "Código HTML:"
 },

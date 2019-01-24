@@ -61,6 +61,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "Du har ikke tillatelse til å laste opp eller opprette filer her",
     "_Uploading %n file_::_Uploading %n files_" : ["Laster opp %n fil","Laster opp %n filer"],
     "New" : "Ny",
+    "Unknown user" : "Ukjent bruker",
     "\"{name}\" is an invalid file name." : "\"{name}\" er et uglydig filnavn.",
     "File name cannot be empty." : "Filnavn kan ikke være tomt.",
     "File name cannot contain \"/\"." : "Filnavnet kan ikke inneholde \"/\".",

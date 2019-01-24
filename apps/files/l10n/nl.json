@@ -56,6 +56,7 @@
     "You don’t have permission to upload or create files here" : "U hebt geen toestemming om hier te uploaden of bestanden te maken",
     "_Uploading %n file_::_Uploading %n files_" : ["%n bestand aan het uploaden","%n bestanden aan het uploaden"],
     "New" : "Nieuw",
+    "Unknown user" : "Onbekende gebruiker",
     "\"{name}\" is an invalid file name." : "\"{name}\" is een ongeldige bestandsnaam.",
     "File name cannot be empty." : "Bestandsnaam kan niet leeg zijn.",
     "\"{name}\" has a forbidden file type/extension." : "\"{name}\" heeft een verboden bestandstype/-extensie.",

@@ -17,7 +17,7 @@ OC.L10N.register(
     "Invalid mount point" : "Punto de montaxe incorrecto",
     "Invalid storage backend \"%s\"" : "Infraestrutura de almacenamento «%s» incorrecta",
     "App key" : "Clave da API",
-    "App secret" : "Secreto da aplicación",
+    "App secret" : "Secreto do aplicativo",
     "Client ID" : "ID do cliente",
     "Client secret" : "Secreto do cliente",
     "API key" : "Chave da API",
