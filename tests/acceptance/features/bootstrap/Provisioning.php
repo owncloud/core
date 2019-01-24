@@ -1493,6 +1493,19 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has been added to database backend group "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userHasBeenAddedToDatabaseBackendGroup($user, $group) {
+		$this->addUserToGroup($user, $group, 'api', true);
+	}
+
+	/**
 	 * @param string $user
 	 * @param string $group
 	 * @param string $method how to add the user to the group api|occ
