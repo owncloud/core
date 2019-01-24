@@ -264,7 +264,10 @@ class PublicWebDavContext implements Context {
 	) {
 		$password = $this->featureContext->getActualPassword($password);
 		$url = $this->featureContext->getBaseUrl() . "/public.php/webdav/";
-		$url .= \rawurlencode(\ltrim($filename, '/'));
+		$filename = \implode(
+			'/', \array_map('rawurlencode', \explode('/', $filename))
+		);
+		$url .= \ltrim($filename, '/');
 		$token = $this->featureContext->getLastShareToken();
 		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
 		
