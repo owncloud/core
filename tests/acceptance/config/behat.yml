@@ -131,6 +131,15 @@ default:
         - LoggingContext:
         - WebDavPropertiesContext:
 
+    apiWebdavLocks:
+      paths:
+        - '%paths.base%/../features/apiWebdavLocks'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - PublicWebDavContext:
+        - WebDavLockingContext:
+        - WebDavPropertiesContext:
+
     cliProvisioning:
       paths:
         - '%paths.base%/../features/cliProvisioning'

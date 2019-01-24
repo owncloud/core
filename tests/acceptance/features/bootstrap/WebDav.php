@@ -1048,7 +1048,7 @@ trait WebDav {
 	 *
 	 * @return SimpleXMLElement
 	 */
-	public function listFolder($user, $path, $folderDepth, $properties = null) {
+	public function listFolder($user, $path, $folderDepth, $properties = null, $type = "files") {
 		if ($this->customDavPath !== null) {
 			$path = $this->customDavPath . $path;
 		}
@@ -1058,7 +1058,7 @@ trait WebDav {
 			$this->getActualUsername($user),
 			$this->getPasswordForUser($user),
 			$path, $folderDepth, $properties,
-			"files", ($this->usingOldDavPath) ? 1 : 2
+			$type, ($this->usingOldDavPath) ? 1 : 2
 		);
 	}
 

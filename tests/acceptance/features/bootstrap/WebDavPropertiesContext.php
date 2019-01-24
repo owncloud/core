@@ -124,7 +124,27 @@ class WebDavPropertiesContext implements Context {
 			)
 		);
 	}
-	
+
+	/**
+	 * @When /^the public gets the following properties of (?:file|folder|entry) "([^"]*)" in the last created public link using the WebDAV API$/
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function publicGetsThePropertiesOfFolder($path, TableNode $propertiesTable) {
+		$user = (string)$this->featureContext->getLastShareData()->data->token;
+		$properties = null;
+		if ($propertiesTable instanceof TableNode) {
+			foreach ($propertiesTable->getRows() as $row) {
+				$properties[] = $row[0];
+			}
+		}
+		$this->featureContext->setResponseXmlObject(
+			$this->featureContext->listFolder($user, $path, 0, $properties, "public-files")
+		);
+	}
+
 	/**
 	 * @When /^user "([^"]*)" sets property "([^"]*)"  with namespace "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" has set property "([^"]*)" with namespace "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)"$/
@@ -258,6 +278,32 @@ class WebDavPropertiesContext implements Context {
 				"expected \"$expectedValue\" or \"$altExpectedValue\""
 			);
 		}
+	}
+
+	/**
+	 * @Then the value of the item :xpath in the response should be :value
+	 *
+	 * @param string $key
+	 * @param string $expectedValue
+	 * @param string $altExpectedValue
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function assertValueOfItemInResponseIs($xpath, $expectedValue) {
+		$xmlPart = $this->featureContext->getResponseXmlObject()->xpath($xpath);
+		PHPUnit_Framework_Assert::assertTrue(
+			isset($xmlPart[0]), "Cannot find item with xpath \"$xpath\""
+		);
+		$value = $xmlPart[0]->__toString();
+		$expectedValue = $this->featureContext->substituteInLineCodes(
+			$expectedValue
+		);
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedValue, $value, 
+			"item \"$xpath\" found with value \"$value\", " .
+			"expected \"$expectedValue\""
+		);
 	}
 
 	/**
