@@ -535,4 +535,58 @@ class MailNotificationsTest extends TestCase {
 			->willReturn($expiration);
 		return $share;
 	}
+
+	public function providesLanguages() {
+		return [
+			['es', 'en'],
+			['en', 'en']
+		];
+	}
+
+	/**
+	 * @dataProvider providesLanguages
+	 * @param string $recipientLanguage
+	 * @param string $senderLanguage
+	 */
+	public function testSendInternalShareWithRecipientLanguageCode($recipientLanguage, $senderLanguage) {
+		$this->setupMailerMock('TestUser shared »<welcome>.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
+
+		$shareMock = $this->getShareMock(
+			['file_target' => '/<welcome>.txt', 'item_source' => 123, 'expiration' => '2017-01-01T15:03:01.012345Z']
+		);
+		$this->shareManager->method('getSharedWith')
+			->withAnyParameters()
+			->willReturn([$shareMock]);
+
+		$recipient = $this->createMock(IUser::class);
+		$recipient->expects($this->once())
+			->method('getEMailAddress')
+			->willReturn('recipient@owncloud.com');
+		$recipient->expects($this->once())
+			->method('getDisplayName')
+			->willReturn('Recipient');
+		$recipient->method('getUID')
+			->willReturn('Recipient');
+
+		$this->config->expects($this->once())
+			->method('getUserValue')
+			->with('Recipient', 'core', 'lang', 'en')
+			->willReturn($recipientLanguage);
+
+		$this->l10n->method('getLanguageCode')
+			->willReturn($senderLanguage);
+
+		$this->urlGenerator->expects($this->once())
+			->method('linkToRouteAbsolute')
+			->with(
+				$this->equalTo('files.viewcontroller.showFile'),
+				$this->equalTo([
+					'fileId' => 123,
+				])
+			);
+
+		$recipientList = [$recipient];
+		$result = $this->mailNotifications->sendInternalShareMail('3', 'file', $recipientList);
+		$this->assertSame([], $result);
+	}
 }
