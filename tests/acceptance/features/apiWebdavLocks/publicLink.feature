@@ -7,7 +7,7 @@ Feature: persistent-locking in case of a public link
   Scenario Outline: Uploading a file into a locked public folder
     Given using <dav-path> DAV path
     And user "user0" has created a public link share of folder "FOLDER" with change permission
-    When the user "user0" locks folder "FOLDER" using the WebDAV API setting following properties
+    When user "user0" locks folder "FOLDER" using the WebDAV API setting following properties
       | lockscope | <lock-scope> |
     Then publicly uploading a file should not work
     And the HTTP status code should be "423"
@@ -21,7 +21,7 @@ Feature: persistent-locking in case of a public link
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
     Given using <dav-path> DAV path
     And user "user0" has created a public link share of folder "PARENT" with change permission
-    And the user "user0" has locked folder "PARENT/CHILD" setting following properties
+    And user "user0" has locked folder "PARENT/CHILD" setting following properties
       | lockscope | <lock-scope> |
     When the public uploads file "test.txt" with content "test" using the public WebDAV API
     And the public uploads file "CHILD/test.txt" with content "test" using the public WebDAV API
@@ -38,7 +38,7 @@ Feature: persistent-locking in case of a public link
   Scenario Outline: Overwrite a file inside a locked public folder
     Given using <dav-path> DAV path
     And user "user0" has created a public link share of folder "PARENT" with change permission
-    And the user "user0" has locked folder "PARENT" setting following properties
+    And user "user0" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
     When the public uploads file "parent.txt" with content "test" using the public WebDAV API
     Then the HTTP status code should be "423"
@@ -53,7 +53,7 @@ Feature: persistent-locking in case of a public link
   Scenario Outline: Overwrite a file inside a locked subfolder of a public folder
     Given using <dav-path> DAV path
     And user "user0" has created a public link share of folder "PARENT" with change permission
-    And the user "user0" has locked folder "PARENT/CHILD" setting following properties
+    And user "user0" has locked folder "PARENT/CHILD" setting following properties
       | lockscope | <lock-scope> |
     When the public uploads file "parent.txt" with content "changed text" using the public WebDAV API
     And the public uploads file "CHILD/child.txt" with content "test" using the public WebDAV API
