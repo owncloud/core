@@ -28,6 +28,7 @@ use Behat\Mink\Session;
 use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use Page\OwncloudPageElement\OCDialog;
 
 /**
  * The Sharing Dialog
@@ -55,8 +56,10 @@ class SharingDialog extends OwncloudPage {
 	private $publicLinksShareTabXpath = ".//li[contains(@class,'subtab-publicshare')]";
 	private $publicLinksTabContentXpath = "//div[@id='shareDialogLinkList']";
 	private $noSharingMessageXpath = "//div[@class='noSharingPlaceholder']";
+	private $publicLinkRemoveBtnXpath = "//div[contains(@class, 'removeLink')]";
 	
 	private $sharedWithGroupAndSharerName = null;
+	private $publicLinkRemoveDeclineMsg = "No";
 
 	/**
 	 *
@@ -470,6 +473,56 @@ class SharingDialog extends OwncloudPage {
 			$this->publicLinksTabContentXpath
 		);
 		return $publicLinkTab;
+	}
+
+	/**
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function removePublicLink(Session $session) {
+		$this->clickRemoveBtn($session);
+		$ocDialog = $this->getLastOcDialog($session);
+		$ocDialog->accept($session);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function cancelRemovePublicLinkOperation(Session $session) {
+		$this->clickRemoveBtn($session);
+		$ocDialog = $this->getLastOcDialog($session);
+		$ocDialog->clickButton($session, $this->publicLinkRemoveDeclineMsg);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	private function clickRemoveBtn(Session $session) {
+		$publicLinkRemoveBtn = $this->find("xpath", $this->publicLinkRemoveBtnXpath);
+		$this->assertElementNotNull(
+			$publicLinkRemoveBtn,
+			__METHOD__ .
+			" xpath $this->publicLinkRemoveBtnXpath " .
+			"could not find public link remove button"
+		);
+		$publicLinkRemoveBtn->click();
+	}
+
+	/**
+	 * @param Session $session
+	 *
+	 * @return OCDialog
+	 */
+	private function getLastOcDialog(Session $session) {
+		$ocDialogs = $this->getOcDialogs();
+		return \end($ocDialogs);
 	}
 
 	/**

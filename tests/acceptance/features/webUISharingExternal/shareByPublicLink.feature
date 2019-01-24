@@ -283,3 +283,14 @@ Feature: Share by public link
     And the user browses to the shared-by-link page
     Then file "lorem.txt" with path "" should be listed in the shared with others page on the webUI
     And file "lorem.txt" with path "/simple-folder" should be listed in the shared with others page on the webUI
+
+  Scenario: user removes the public link of a file
+    Given the user has created a new public link for file "lorem.txt" using the webUI
+    When the user removes the public link of file "lorem.txt" using the webUI
+    Then the public should see an error message "File not found" while accessing last created public link using the webUI
+
+  Scenario: user cancel removes operation for the public link of a file
+    Given the user has created a new public link for file "lorem.txt" using the webUI
+    When the user tries to remove the public link of file "lorem.txt" but later cancels the remove dialog using webUI
+    And the public accesses the last created public link using the webUI
+    Then the content of the file shared by the last public link should be the same as "lorem.txt"

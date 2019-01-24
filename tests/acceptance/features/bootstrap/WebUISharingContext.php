@@ -37,6 +37,7 @@ use TestHelpers\SetupHelper;
 use OC\Files\External\Auth\Password\Password;
 use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
 use Behat\Mink\Exception\ElementException;
+use Page\GeneralErrorPage;
 
 require_once 'bootstrap.php';
 
@@ -62,6 +63,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @var SharedWithYouPage
 	 */
 	private $sharedWithYouPage;
+
+	/**
+	 *
+	 * @var GeneralErrorPage
+	 */
+	private $generalErrorPage;
 
 	/**
 	 *
@@ -105,15 +112,18 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param FilesPage $filesPage
 	 * @param PublicLinkFilesPage $publicLinkFilesPage
 	 * @param SharedWithYouPage $sharedWithYouPage
+	 * @param GeneralErrorPage $generalErrorPage
 	 */
 	public function __construct(
 		FilesPage $filesPage,
 		PublicLinkFilesPage $publicLinkFilesPage,
-		SharedWithYouPage $sharedWithYouPage
+		SharedWithYouPage $sharedWithYouPage,
+		GeneralErrorPage $generalErrorPage
 	) {
 		$this->filesPage = $filesPage;
 		$this->publicLinkFilesPage = $publicLinkFilesPage;
 		$this->sharedWithYouPage = $sharedWithYouPage;
+		$this->generalErrorPage = $generalErrorPage;
 	}
 
 	/**
@@ -684,6 +694,38 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user removes the public link of file/folder :entryName using the webUI
+	 *
+	 * @param string $entryName
+	 *
+	 * @return void
+	 */
+	public function theUserRemovesThePublicLinkOfFileUsingTheWebui($entryName) {
+		$session = $this->getSession();
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
+			$entryName, $session
+		);
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
+		$this->sharingDialog->removePublicLink($session);
+	}
+
+	/**
+	 * @When the user tries to remove the public link of file :entryName but later cancels the remove dialog using webUI
+	 *
+	 * @param string $entryName
+	 *
+	 * @return void
+	 */
+	public function theUserCancelsTheRemoveOperationOfFileUsingWebui($entryName) {
+		$session = $this->getSession();
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
+			$entryName, $session
+		);
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
+		$this->sharingDialog->cancelRemovePublicLinkOperation($session);
+	}
+
+	/**
 	 * @Then the public should not get access to the publicly shared file
 	 *
 	 * @return void
@@ -983,6 +1025,26 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		if ($sharingWasPossible === true) {
 			throw new Exception("It was possible to share the file");
 		}
+	}
+
+	/**
+	 * @Then the public should see an error message :errorMsg while accessing last created public link using the webUI
+	 *
+	 * @param string $errorMsg
+	 *
+	 * @return void
+	 */
+	public function thePublicShouldSeeAnErrorMessageWhileAccessingLastCreatedPublicLinkUsingTheWebui($errorMsg) {
+		$lastCreatedLink = \end($this->createdPublicLinks);
+		$path = \str_replace(
+			$this->featureContext->getBaseUrl(),
+			"",
+			$lastCreatedLink['url']
+		);
+		$this->generalErrorPage->setPagePath($path);
+		$this->generalErrorPage->open();
+		$actualErrorMsg = $this->generalErrorPage->getErrorMessage();
+		PHPUnit_Framework_Assert::assertContains($errorMsg, $actualErrorMsg);
 	}
 
 	/**
