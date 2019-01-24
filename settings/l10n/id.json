@@ -216,7 +216,7 @@
     "Your email address" : "Alamat email Anda",
     "No email address set" : "Alamat email tidak diatur",
     "You are member of the following groups:" : "Anda adalah anggota dari grup berikut:",
-    "Password" : "Sandi",
+    "Password" : "Kata Sandi",
     "Unable to change your password" : "Gagal mengubah sandi Anda",
     "Current password" : "Sandi saat ini",
     "New password" : "Sandi baru",
@@ -262,6 +262,9 @@
     "What to log" : "Yang akan dicatat",
     "Domain" : "Domain",
     "Add" : "Tambah",
-    "Download logfile (%s)" : "Unduh berkas catatan (%s)"
+    "Download logfile (%s)" : "Unduh berkas catatan (%s)",
+    "Error creating group: {message}" : "Error membuat grup : {pesan}",
+    "Invalid quota value \"{val}\"" : "Quota tidak sesuai \"{val}\"",
+    "Users" : "Pengguna"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

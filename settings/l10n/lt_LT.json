@@ -207,6 +207,13 @@
     "Failed to change the email address." : "Nepavyko pakeisti el. pašto adreso",
     "Email has been changed successfully." : "El. pašto adresas sėkmingai pakeistas.",
     "The app will be downloaded from the app store" : "Applikacija bus atsiųsta iš parduotuvės",
-    "Invalid email address" : "Neteisingas el.pašto adresas"
+    "Invalid email address" : "Neteisingas el.pašto adresas",
+    "Unknown user" : "Neatpažintas naudotojas",
+    "Please provide an admin recovery password; otherwise, all user data will be lost." : "Prašome pateikti administratoriaus atstatymo slaptažodį; kitu atveju visi vartotojų duomenys bus prarasti.",
+    "Couldn't change the email address because the user does not exist" : "Negalima pakeisti El. pašto adreso, kadangi naudotojas neegzistuoja",
+    "Couldn't change the email address because the token is invalid" : "Nepavyko pakeisti el. pašto adreso nes tokenas negalioja",
+    "No email was sent because you already sent one recently. Please try again later." : "Paštas neišsiųstas nes jau buvo siųstas. Bandykite vėliau.",
+    "%s email address confirm" : "%sel. pašto adresas patvirtinimui",
+    "Users" : "Vartotojai"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);"
 }

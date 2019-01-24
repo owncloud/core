@@ -213,7 +213,7 @@ OC.L10N.register(
     "Show user backend" : "Mostrar backend d'usuari",
     "Send email to new user" : "Enviar correu electrònic al nou usuari",
     "Show email address" : "Mostrar l'adreça de correu electrònic",
-    "E-Mail" : "E-mail",
+    "E-Mail" : "Correu",
     "Create" : "Crea",
     "Admin Recovery Password" : "Recuperació de contrasenya d'administrador",
     "Enter the recovery password in order to recover the users files during password change" : "Escriviu la contrasenya de recuperació per a poder recuperar els fitxers dels usuaris en canviar la contrasenya",
@@ -236,6 +236,7 @@ OC.L10N.register(
     "Default" : "Per defecte",
     "Share" : "Compartir",
     "Add" : "Afegeix",
-    "%s password changed successfully" : "%scontrassenya actualitzada correctament"
+    "%s password changed successfully" : "%scontrassenya actualitzada correctament",
+    "Users" : "Usuaris"
 },
 "nplurals=2; plural=(n != 1);");

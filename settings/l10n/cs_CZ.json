@@ -348,6 +348,10 @@
     "Add" : "Přidat",
     "Empty app name is not allowed." : "Prázdné jméno aplikace není dovoleno.",
     "Email changed successfully for {user}." : "Email pro {user} byl změněn.",
-    "You are not a member of any groups." : "Nejste členem žádné skupiny."
+    "You are not a member of any groups." : "Nejste členem žádné skupiny.",
+    "Delete group" : "Smazat skupinu",
+    "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Na tuto adresu byl odeslán email s potvrzením. Až do ověření emailu nebude tato adresa nastavena.",
+    "Users" : "Uživatelé",
+    "New Password" : "Nové heslo"
 },"pluralForm" :"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;"
 }

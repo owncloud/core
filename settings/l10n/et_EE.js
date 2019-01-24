@@ -227,6 +227,7 @@ OC.L10N.register(
     "Default" : "Vaikeväärtus",
     "Share" : "Jaga",
     "Domain" : "Domeen",
-    "Add" : "Lisa"
+    "Add" : "Lisa",
+    "Users" : "Kasutajad"
 },
 "nplurals=2; plural=(n != 1);");

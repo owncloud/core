@@ -272,7 +272,7 @@ OC.L10N.register(
     "App name" : "Uygulama adı",
     "Create new app password" : "Yeni uygulama parolası oluştur",
     "Use the credentials below to configure your app or device." : "Uygulama veya aygıtı yapılandırmak için aşağıdaki kimlik bilgilerini kullan.",
-    "Username" : "Kullanıcı Adı",
+    "Username" : "Kullanıcı adı",
     "Done" : "Bitti",
     "Version" : "Sürüm",
     "Personal" : "Kişisel",
@@ -308,6 +308,7 @@ OC.L10N.register(
     "Share" : "Paylaş",
     "Domain" : "Alan adı",
     "Add" : "Ekle",
-    "%s password changed successfully" : "%s parola başarıyla değiştirildi"
+    "%s password changed successfully" : "%s parola başarıyla değiştirildi",
+    "Users" : "Kullanıcılar"
 },
 "nplurals=2; plural=(n > 1);");
