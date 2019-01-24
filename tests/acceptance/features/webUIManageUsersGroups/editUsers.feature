@@ -58,3 +58,28 @@ Feature: edit users
     And user "user0" should belong to group "grp2"
     And user "user0" should belong to group "grp3"
     And user "user0" should not belong to group "grp1"
+
+  Scenario: Admin removes a user from a group
+    Given user "user0" has been created with default attributes
+    And group "grp1" has been created
+    And user "user0" has been added to group "grp1"
+    And the administrator has browsed to the users page
+    When the administrator removes user "user0" from group "grp1" using the webUI
+    Then user "user0" should exist
+    And user "user0" should not belong to group "grp1"
+
+  Scenario: Admin removes user from multiple groups
+    Given user "user0" has been created with default attributes
+    And group "grp1" has been created
+    And group "grp2" has been created
+    And group "grp3" has been created
+    And user "user0" has been added to group "grp1"
+    And user "user0" has been added to group "grp2"
+    And user "user0" has been added to group "grp3"
+    And the administrator has browsed to the users page
+    When the administrator removes user "user0" from group "grp1" using the webUI
+    And the administrator removes user "user0" from group "grp2" using the webUI
+    Then user "user0" should exist
+    And user "user0" should not belong to group "grp1"
+    And user "user0" should not belong to group "grp2"
+    And user "user0" should belong to group "grp3"

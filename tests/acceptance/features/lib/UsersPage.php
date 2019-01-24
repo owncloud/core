@@ -83,7 +83,8 @@ class UsersPage extends OwncloudPage {
 
 	protected $groupsFieldXpath = ".//td[@class='groups']";
 	protected $userGroupsInputXpath = "./div[@class='groupsListContainer multiselect button']";
-	protected $userGroupInInputXpath = ".//ul[@class='multiselectoptions down']/li/label[@title='%s']";
+	protected $groupLabelInInputXpath = ".//ul[@class='multiselectoptions down']/li/label[@title='%s']";
+	protected $groupInputXpath = ".//ul[@class='multiselectoptions down']/li/input[@id='%s']";
 
 	/**
 	 * @param string $username
@@ -647,10 +648,11 @@ class UsersPage extends OwncloudPage {
 	 * @param Session $session
 	 * @param string $user
 	 * @param string $group
+	 * @param boolean $add Boolean value to specify wether to add or remove user from the group
 	 *
 	 * @return void
 	 */
-	public function addUserToGroup(Session $session, $user, $group) {
+	public function addOrRemoveUserToGroup(Session $session, $user, $group, $add=true) {
 		$userTr = $this->findUserInTable($user);
 		$groupsField = $userTr->find('xpath', $this->groupsFieldXpath);
 		$userGroupsInput = $groupsField->find("xpath", $this->userGroupsInputXpath);
@@ -659,16 +661,32 @@ class UsersPage extends OwncloudPage {
 			$userGroupsInput->click();
 		}
 		$this->waitForAjaxCallsToStartAndFinish($session);
-		$groupLabel = $groupsField->find('xpath', \sprintf($this->userGroupInInputXpath, $group));
+		$groupLabel = $groupsField->find('xpath', \sprintf($this->groupLabelInInputXpath, $group));
 		if ($groupLabel === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $this->userGroupInInputXpath " .
+				" xpath $this->groupLabelInInputXpath " .
 				"could not find groups input"
 			);
 		}
-		$groupLabel->focus();
-		$groupLabel->click();
-		$this->waitForAjaxCallsToStartAndFinish($session);
+		$groupInput = $groupsField->find(
+			'xpath',
+			\sprintf($this->groupInputXpath, $groupLabel->getAttribute('for'))
+		);
+		if ($groupInput === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->groupInputXpath " .
+				"could not find input for group $group"
+			);
+		}
+		$status = $groupInput->getValue() === "on";
+		// while adding to group only click if the checkbox is not already selected
+		// while removing from group only click if the checkbox is already selected
+		if ($status xor $add) {
+			$groupLabel->focus();
+			$groupLabel->click();
+			$this->waitForAjaxCallsToStartAndFinish($session);
+		}
 	}
 }
