@@ -30,7 +30,7 @@ OC.L10N.register(
     "Invalid mail address" : "Ungültige E-Mail-Adresse",
     "A user with that name already exists." : "Ein Benutzer mit diesem Namen existiert bereits.",
     "Unable to create user." : "Benutzer konnte nicht erstellt werden.",
-    "Your %s account was created" : "Ihr %s-Konto wurde erstellt",
+    "Your %s account was created" : "Dein %s-Konto wurde erstellt",
     "Unable to delete user." : "Benutzer konnte nicht gelöscht werden.",
     "Forbidden" : "Verboten",
     "Invalid user" : "Ungültiger Benutzer",
