@@ -48,7 +48,7 @@
     "__language_name__" : "Deutsch (Förmlich: Sie)",
     "Language changed" : "Sprache geändert",
     "Invalid request" : "Ungültige Anforderung",
-    "Admins can't remove themself from the admin group" : "Administratoren können sich nicht selbst aus der admin-Gruppe löschen",
+    "Admins can't remove themself from the admin group" : "Administratoren können sich nicht selbst aus der Admin-Gruppe löschen",
     "Unknown user" : "Unbekannter Benutzer",
     "Couldn't remove app." : "Die App konnte nicht entfernt werden.",
     "Official" : "Offiziell",
@@ -395,7 +395,7 @@
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Der Aktivierungslink ist abgelaufen. Klicken Sie den Knopf unten um einen neuen anzufordern und die Registrierung abzuschliessen. ",
     "Resend activation link" : "Aktivierungslink erneut versenden.",
     "New Password" : "Neues Passwort",
-    "Please set your password" : "Bitte setze dein Passwort",
+    "Please set your password" : "Bitte setzen Sie Ihr Passwort",
     "Activation link was sent to an email address, if one was configured." : "Der Aktivierungs Link wurde an eine E-Mail-Adresse versandt, falls eine angelegt konfiguriert wurde. "
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
