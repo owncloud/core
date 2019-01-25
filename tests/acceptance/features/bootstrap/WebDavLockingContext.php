@@ -51,11 +51,13 @@ class WebDavLockingContext implements Context {
 	 * @param string $file
 	 * @param TableNode $properties table with no heading with | property | value |
 	 * @param boolean $public if the file is in a public share or not
+	 * @param boolean $expectToSucceed
 	 *
 	 * @return void
 	 */
 	public function lockFileUsingWebDavAPI(
-		$user, $file, TableNode $properties, $public = false
+		$user, $file, TableNode $properties, $public = false,
+		$expectToSucceed = true
 	) {
 		$baseUrl = $this->featureContext->getBaseUrl();
 		if ($public === true) {
@@ -84,10 +86,32 @@ class WebDavLockingContext implements Context {
 			$this->featureContext->getDavPathVersion(), $type
 		);
 		
-		$responseXml = $this->featureContext->getResponseXml($response);
+		$this->featureContext->setResponse($response);
+		$responseXml = $this->featureContext->getResponseXml();
+		$this->featureContext->setResponseXmlObject($responseXml);
 		$responseXml->registerXPathNamespace('d', 'DAV:');
 		$xmlPart = $responseXml->xpath("//d:locktoken/d:href");
-		$this->tokenOfLastLock[$user][$file] = (string)$xmlPart[0];
+		if (isset($xmlPart[0])) {
+			$this->tokenOfLastLock[$user][$file] = (string)$xmlPart[0];
+		} else {
+			if ($expectToSucceed === true) {
+				PHPUnit_Framework_Assert::fail("could not find lock tocken");
+			}
+		}
+	}
+
+	/**
+	 * @Given the public has locked the last public shared file/folder setting following properties
+	 *
+	 * @param TableNode $properties
+	 *
+	 * @return void
+	 */
+	public function publicHasLockedLastSharedFile(TableNode $properties) {
+		$this->lockFileUsingWebDavAPI(
+			(string)$this->featureContext->getLastShareData()->data->token,
+			"/", $properties, true
+		);
 	}
 
 	/**
@@ -100,7 +124,24 @@ class WebDavLockingContext implements Context {
 	public function publicLocksLastSharedFile(TableNode $properties) {
 		$this->lockFileUsingWebDavAPI(
 			(string)$this->featureContext->getLastShareData()->data->token,
-			"/", $properties, true
+			"/", $properties, true, false
+		);
+	}
+
+	/**
+	 * @Given the public has locked :file in the last public shared folder setting following properties
+	 *
+	 * @param string $file
+	 * @param TableNode $properties
+	 *
+	 * @return void
+	 */
+	public function publicHasLockedFileLastSharedFolder(
+		$file, TableNode $properties
+	) {
+		$this->lockFileUsingWebDavAPI(
+			(string)$this->featureContext->getLastShareData()->data->token,
+			$file, $properties, true
 		);
 	}
 
@@ -115,7 +156,7 @@ class WebDavLockingContext implements Context {
 	public function publicLocksFileLastSharedFolder($file, TableNode $properties) {
 		$this->lockFileUsingWebDavAPI(
 			(string)$this->featureContext->getLastShareData()->data->token,
-			$file, $properties, true
+			$file, $properties, true, false
 		);
 	}
 

@@ -66,3 +66,232 @@ Feature: persistent-locking in case of a public link
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
+  Scenario: public tries to lock a folder inside an exclusively locked folder
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | exclusive |
+    When the public locks "/CHILD" in the last public shared folder using the WebDAV API setting following properties
+      | lockscope | shared |
+    Then the HTTP status code should be "423"
+    And the value of the item "//d:no-conflicting-lock/d:href" in the response should be ""
+
+  Scenario Outline: lockdiscovery root of public link when root is locked
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | <lock-scope> |
+    When the public gets the following properties of entry "/" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
+    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    Examples:
+      | lock-scope |
+      | shared     |
+      | exclusive  |
+
+  Scenario Outline: lockdiscovery subfolder of a locked public link when root is locked
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | <lock-scope> |
+    When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
+    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    Examples:
+      | lock-scope |
+      | shared     |
+      | exclusive  |
+
+  Scenario Outline: lockdiscovery subfolder of a public link when subfolder is locked
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And user "user0" has locked folder "PARENT/CHILD" setting following properties
+      | lockscope | <lock-scope> |
+    When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
+    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
+    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    Examples:
+      | lock-scope |
+      | shared     |
+      | exclusive  |
+
+  Scenario Outline: lockdiscovery file in a subfolder of a public link when subfolder is locked
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And user "user0" has locked folder "PARENT/CHILD" setting following properties
+      | lockscope | <lock-scope> |
+    When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
+    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
+    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    Examples:
+      | lock-scope |
+      | shared     |
+      | exclusive  |
+
+  Scenario Outline: lockdiscovery file in a subfolder of a public link when root is locked
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | <lock-scope> |
+    When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
+    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    Examples:
+      | lock-scope |
+      | shared     |
+      | exclusive  |
+
+  Scenario Outline: lockdiscovery file in a subfolder of a public link when the file is locked
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And user "user0" has locked folder "PARENT/CHILD/child.txt" setting following properties
+      | lockscope | <lock-scope> |
+    When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD\/child.txt$/"
+    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
+    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    Examples:
+      | lock-scope |
+      | shared     |
+      | exclusive  |
+
+  Scenario Outline: lockdiscovery file in a subfolder of a public link when the folder above the public link is locked
+    Given user "user0" has created a public link share of folder "PARENT/CHILD" with change permission
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | <lock-scope> |
+    When the public gets the following properties of entry "/child.txt" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
+    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    Examples:
+      | lock-scope |
+      | shared     |
+      | exclusive  |
+
+  Scenario Outline: lockdiscovery root of public link when root is locked by public
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And the public has locked the last public shared folder setting following properties
+      | lockscope | <lock-scope> |
+    When the public gets the following properties of entry "/" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    Examples:
+      | lock-scope |
+      | shared     |
+      | exclusive  |
+
+  Scenario Outline: lockdiscovery subfolder of public link when root is locked by public
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And the public has locked the last public shared folder setting following properties
+      | lockscope | <lock-scope> |
+    When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    Examples:
+      | lock-scope |
+      | shared     |
+      | exclusive  |
+
+  Scenario Outline: lockdiscovery subfolder of public link when subfolder is locked by public
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And the public has locked "CHILD" in the last public shared folder setting following properties
+      | lockscope | <lock-scope> |
+    When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
+    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    Examples:
+      | lock-scope |
+      | shared     |
+      | exclusive  |
+
+  Scenario: lockdiscovery root of public link when root is locked by public and user
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | shared |
+    And the public has locked the last public shared folder setting following properties
+      | lockscope | shared |
+    When the public gets the following properties of entry "/" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:activelock[1]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:activelock[2]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
+    #And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be ""
+    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+
+  Scenario: lockdiscovery subfolder of public link when root is locked by user and subfolder is locked by public
+    Given user "user0" has created a public link share of folder "PARENT" with change permission
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | shared |
+    And the public has locked "CHILD" in the last public shared folder setting following properties
+      | lockscope | shared |
+    When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:activelock[1]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:activelock[2]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
+    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
+    #And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be ""
+    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+
+  Scenario: lockdiscovery root of public link when user has locked folder above public link and public has locked root of public link
+    Given user "user0" has created a public link share of folder "PARENT/CHILD" with change permission
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | shared |
+    And the public has locked "/" in the last public shared folder setting following properties
+      | lockscope | shared |
+    When the public gets the following properties of entry "/" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:activelock[1]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:activelock[2]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
+    #And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be ""
+    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+
+  Scenario: lockdiscovery subfolder of public link when user has locked folder above public link and public has locked subfolder of public link
+    Given user "user0" has created a public link share of folder "PARENT/CHILD" with change permission
+    And user "user0" has created folder "PARENT/CHILD/GRANDCHILD"
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | shared |
+    And the public has locked "/GRANDCHILD" in the last public shared folder setting following properties
+      | lockscope | shared |
+    When the public gets the following properties of entry "/GRANDCHILD" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:activelock[1]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:activelock[2]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/GRANDCHILD$/"
+    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
+    #And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be ""
+    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+
+  Scenario: lockdiscovery file in public link when user has locked folder above public link and public has locked file inside of public link
+    Given user "user0" has created a public link share of folder "PARENT/CHILD" with change permission
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | shared |
+    And the public has locked "/child.txt" in the last public shared folder setting following properties
+      | lockscope | shared |
+    When the public gets the following properties of entry "/child.txt" in the last created public link using the WebDAV API
+      | d:lockdiscovery |
+    Then the value of the item "//d:activelock[1]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    And the value of the item "//d:activelock[2]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/child.txt$/"
+    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
+    #And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be ""
+    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
