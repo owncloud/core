@@ -568,15 +568,18 @@ class FederatedShareProvider implements IShareProvider {
 	 */
 	public function getAllSharesBy($userId, $shareTypes, $nodeIDs, $reshares) {
 		$shares = [];
-		$qb = $this->dbConnection->getQueryBuilder();
 
 		$nodeIdsChunks = \array_chunk($nodeIDs, 100);
 		foreach ($nodeIdsChunks as $nodeIdsChunk) {
-			// In federates sharing currently we have only one share_type_remote
+			$qb = $this->dbConnection->getQueryBuilder();
 			$qb->select('*')
 				->from($this->shareTable);
 
+			// In federated sharing currently we have only one share_type_remote
 			$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)));
+
+			$qb->andWhere($qb->expr()->in('file_source', $qb->createParameter('file_source_ids')));
+			$qb->setParameter('file_source_ids', $nodeIdsChunk, IQueryBuilder::PARAM_INT_ARRAY);
 
 			/**
 			 * Reshares for this user are shares where they are the owner.
@@ -602,9 +605,6 @@ class FederatedShareProvider implements IShareProvider {
 					)
 				);
 			}
-
-			$qb->andWhere($qb->expr()->in('file_source', $qb->createParameter('file_source_ids')));
-			$qb->setParameter('file_source_ids', $nodeIdsChunk, IQueryBuilder::PARAM_INT_ARRAY);
 
 			$qb->orderBy('id');
 
