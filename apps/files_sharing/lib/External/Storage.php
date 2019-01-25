@@ -96,8 +96,25 @@ class Storage extends DAV implements ISharedStorage {
 			$this->memcacheFactory,
 			\OC::$server->getHTTPClientService()
 		);
+		$webDavEndpoint = $discoveryManager->getWebDavEndpoint($this->remote);
+		// OCM endpoint is absolute, OC legacy is relative
+		$isOcmWebDavEndpoint = \preg_match('#https?://#', $webDavEndpoint) === 1;
+		if ($isOcmWebDavEndpoint) {
+			// proto is anything before ://
+			// host starts just after a proto and ends before the first slash
+			// root starts from the first slash until the end and could be empty
+			\preg_match_all(
+				'#^(?<proto>https?)://(?<host>[^/]*)(?<root>.*)$#',
+				$webDavEndpoint,
+				$matches
+			);
+			$this->secure = $matches['proto'][0] === 'https';
+			$this->host = $matches['host'][0];
+			$this->root = isset($matches['root'][0]) ? $matches['root'][0] : '/';
+		} else {
+			$this->root = \rtrim($this->root, '/') . $webDavEndpoint;
+		}
 
-		$this->root = \rtrim($this->root, '/') . $discoveryManager->getWebDavEndpoint($this->remote);
 		if (!$this->root || $this->root[0] !== '/') {
 			$this->root = '/' . $this->root;
 		}
