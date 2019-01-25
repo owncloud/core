@@ -1224,18 +1224,28 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$pageObject = $this->getCurrentPageObject();
 
 		if (\is_array($relativePath)) {
-			$relativePath = \implode($relativePath);
+			// Store the single full concatenated file or folder name.
+			$breadCrumbs[] = \implode($relativePath);
+			// The passed-in path is itself an array of pieces of a single file
+			// or folder name. That is done when the file or folder name contains
+			// both single and double quotes. The pieces of the file or folder
+			// name need to be passed through to openFile still in array form.
+			$breadCrumbsForOpenFile[] = $relativePath;
+		} else {
+			// The passed-in path is a single string representing the path to
+			// the item to be opened. Each folder along the way is delimited
+			// by "/". Explode it into an array of items to be opened.
+			$breadCrumbs = \explode('/', \ltrim($relativePath, '/'));
+			$breadCrumbsForOpenFile = $breadCrumbs;
 		}
 
-		$breadCrumbs = \explode('/', \ltrim($relativePath, '/'));
-
-		foreach ($breadCrumbs as $breadCrumb) {
+		foreach ($breadCrumbsForOpenFile as $breadCrumb) {
 			$pageObject->openFile($breadCrumb, $this->getSession());
 			$pageObject->waitTillPageIsLoaded($this->getSession());
 		}
 
 		if ($fileOrFolder !== "folder") {
-			// Pop the file name off the end of the breadcrumbs
+			// Pop the file name off the end of the array of breadcrumbs
 			\array_pop($breadCrumbs);
 		}
 
