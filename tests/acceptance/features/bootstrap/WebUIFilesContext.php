@@ -1195,40 +1195,52 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	) {
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
-		$this->theUserOpensTheFolderUsingTheWebUI(
+		$this->theUserOpensTheFileOrFolderUsingTheWebUI(
 			$typeOfFilesPage, $fileOrFolder, \trim($name, $name[0])
 		);
 	}
 
 	/**
+	 * Open a file or folder in the current folder, or in a path down from the
+	 * current folder.
+	 *
 	 * @param string $typeOfFilesPage
-	 * @param string $fileOrFolder
-	 * @param string|array $name
+	 * @param string $fileOrFolder "file" or "folder" - the type of the final item
+	 *                             to open
+	 * @param string|array $relativePath the path from the currently open folder
+	 *                                   down to and including the file or folder
+	 *                                   to open
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserOpensTheFolderUsingTheWebUI(
-		$typeOfFilesPage, $fileOrFolder, $name
+	public function theUserOpensTheFileOrFolderUsingTheWebUI(
+		$typeOfFilesPage, $fileOrFolder, $relativePath
 	) {
 		if ($typeOfFilesPage === "trashbin") {
 			$this->theUserBrowsesToTheTrashbinPage();
 		}
+
 		$pageObject = $this->getCurrentPageObject();
-		if ($fileOrFolder === "folder") {
-			if (\is_array($name)) {
-				$this->currentFolder .= "/" . \implode($name);
-				$pageObject->openFile($name, $this->getSession());
-				$pageObject->waitTillPageIsLoaded($this->getSession());
-			} else {
-				$name = \ltrim($name, '/');
-				$this->currentFolder .= "/$name";
-				$folderBreadCrumbs = \explode('/', $name);
-				foreach ($folderBreadCrumbs as $folder) {
-					$pageObject->openFile($folder, $this->getSession());
-					$pageObject->waitTillPageIsLoaded($this->getSession());
-				}
-			}
+
+		if (\is_array($relativePath)) {
+			$relativePath = \implode($relativePath);
+		}
+
+		$breadCrumbs = \explode('/', \ltrim($relativePath, '/'));
+
+		foreach ($breadCrumbs as $breadCrumb) {
+			$pageObject->openFile($breadCrumb, $this->getSession());
+			$pageObject->waitTillPageIsLoaded($this->getSession());
+		}
+
+		if ($fileOrFolder !== "folder") {
+			// Pop the file name off the end of the breadcrumbs
+			\array_pop($breadCrumbs);
+		}
+
+		if (\count($breadCrumbs)) {
+			$this->currentFolder .= "/" . \implode('/', $breadCrumbs);
 		}
 	}
 
@@ -1345,7 +1357,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->waitTillPageIsLoaded($this->getSession());
 		if ($folder !== "") {
-			$this->theUserOpensTheFolderUsingTheWebUI(
+			$this->theUserOpensTheFileOrFolderUsingTheWebUI(
 				$typeOfFilesPage, "folder", $folder
 			);
 		}
@@ -1436,7 +1448,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theMovedElementsShouldBeListedInFolderOnTheWebUI(
 		$shouldOrNot, $folderName
 	) {
-		$this->theUserOpensTheFolderUsingTheWebUI("", "folder", $folderName);
+		$this->theUserOpensTheFileOrFolderUsingTheWebUI("", "folder", $folderName);
 		$this->getCurrentPageObject()->waitTillPageIsLoaded($this->getSession());
 		$this->theDeletedMovedElementsShouldBeListedOnTheWebUI($shouldOrNot);
 	}
@@ -1460,7 +1472,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$folderNameParts[] = $namePartsRow['folder-name-parts'];
 			$toBeListedTableArray[] = [$namePartsRow['item-name-parts']];
 		}
-		$this->theUserOpensTheFolderUsingTheWebUI("", "folder", $folderNameParts);
+		$this->theUserOpensTheFileOrFolderUsingTheWebUI("", "folder", $folderNameParts);
 		$this->getCurrentPageObject()->waitTillPageIsLoaded($this->getSession());
 
 		$toBeListedTable = new TableNode($toBeListedTableArray);
