@@ -310,3 +310,36 @@ Feature: Share by public link
     When the user tries to remove the public link of file "lorem.txt" but later cancels the remove dialog using webUI
     And the public accesses the last created public link using the webUI
     Then the content of the file shared by the last public link should be the same as "lorem.txt"
+
+  Scenario: user creates a multiple public link of a file and delete the first link
+    Given the user has created a new public link for file "lorem.txt" using the webUI with
+      | name | first-link |
+    And the user has created a new public link for file "lorem.txt" using the webUI with
+      | name | second-link |
+    And the user has created a new public link for file "lorem.txt" using the webUI with
+      | name | third-link |
+    When the user removes the public link at position 1 of file "lorem.txt" using the webUI
+    Then the public link with name "first-link" should not be in the public links list
+    And the number of public links should be 2
+
+  Scenario: user creates a multiple public link of a file and delete the second link
+    Given the user has created a new public link for file "lorem.txt" using the webUI with
+      | name | first-link |
+    And the user has created a new public link for file "lorem.txt" using the webUI with
+      | name | second-link |
+    And the user has created a new public link for file "lorem.txt" using the webUI with
+      | name | third-link |
+    When the user removes the public link at position 2 of file "lorem.txt" using the webUI
+    Then the public link with name "second-link" should not be in the public links list
+    And the number of public links should be 2
+
+  Scenario: user creates a multiple public link of a file and delete the third link
+    Given the user has created a new public link for file "lorem.txt" using the webUI with
+      | name | first-link |
+    And the user has created a new public link for file "lorem.txt" using the webUI with
+      | name | second-link |
+    And the user has created a new public link for file "lorem.txt" using the webUI with
+      | name | third-link |
+    When the user removes the public link at position 3 of file "lorem.txt" using the webUI
+    Then the public link with name "third-link" should not be in the public links list
+    And the number of public links should be 2

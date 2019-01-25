@@ -57,7 +57,8 @@ class SharingDialog extends OwncloudPage {
 	private $publicLinksTabContentXpath = "//div[@id='shareDialogLinkList']";
 	private $noSharingMessageXpath = "//div[@class='noSharingPlaceholder']";
 	private $publicLinkRemoveBtnXpath = "//div[contains(@class, 'removeLink')]";
-	
+	private $publicLinkTitleXpath = "//span[@class='link-entry--title']";
+
 	private $sharedWithGroupAndSharerName = null;
 	private $publicLinkRemoveDeclineMsg = "No";
 
@@ -477,11 +478,12 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 * @param Session $session
+	 * @param integer $number
 	 *
 	 * @return void
 	 */
-	public function removePublicLink(Session $session) {
-		$this->clickRemoveBtn($session);
+	public function removePublicLink(Session $session, $number = 1) {
+		$this->clickRemoveBtn($session, $number);
 		$ocDialog = $this->getLastOcDialog($session);
 		$ocDialog->accept($session);
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -501,11 +503,22 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 * @param Session $session
+	 * @param integer $number
 	 *
 	 * @return void
 	 */
-	private function clickRemoveBtn(Session $session) {
-		$publicLinkRemoveBtn = $this->find("xpath", $this->publicLinkRemoveBtnXpath);
+	private function clickRemoveBtn(Session $session, $number = 1) {
+		$publicLinkRemoveBtns = $this->findAll("xpath", $this->publicLinkRemoveBtnXpath);
+		$this->assertElementNotNull(
+			$publicLinkRemoveBtns,
+			__METHOD__ .
+			" xpath $this->publicLinkRemoveBtnXpath " .
+			"could not find public link remove buttons"
+		);
+		if ($number < 1) {
+			throw new \Exception("Position cannot be less than 1");
+		}
+		$publicLinkRemoveBtn = $publicLinkRemoveBtns[$number - 1];
 		$this->assertElementNotNull(
 			$publicLinkRemoveBtn,
 			__METHOD__ .
@@ -525,6 +538,39 @@ class SharingDialog extends OwncloudPage {
 		return \end($ocDialogs);
 	}
 
+	/**
+	 *
+	 * @param Session $session
+	 * @param string $entryName
+	 *
+	 * @throws \Exception
+	 *
+	 * @return void
+	 */
+	public function checkThatNameIsNotInPublicLinkList(Session $session, $entryName) {
+		$publicLinkTitles = $this->findAll("xpath", $this->publicLinkTitleXpath);
+		foreach ($publicLinkTitles as $publicLinkTitle) {
+			if ($entryName === $publicLinkTitle->getText()) {
+				throw new \Exception("Public link with title" . $entryName . "is present");
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 * @param integer $count
+	 *
+	 * @throws \Exception
+	 *
+	 * @return void
+	 */
+	public function checkPublicLinkCount(Session $session, $count) {
+		$publicLinkTitles = $this->findAll("xpath", $this->publicLinkTitleXpath);
+		if (\count($publicLinkTitles) != $count) {
+			throw new \Exception("Found $publicLinkTitlesCount public link entries but expected $count");
+		}
+	}
 	/**
 	 * waits for the dialog to appear
 	 *
