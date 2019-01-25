@@ -726,6 +726,23 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user removes the public link at position :number of file :entryName using the webUI
+	 *
+	 * @param integer $number
+	 * @param string $entryName
+	 *
+	 * @return void
+	 */
+	public function removesPublicLinkAtCertainPosition($number, $entryName) {
+		$session = $this->getSession();
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
+			$entryName, $session
+		);
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
+		$this->sharingDialog->removePublicLink($session, $number);
+	}
+
+	/**
 	 * @Then the public should not get access to the publicly shared file
 	 *
 	 * @return void
@@ -980,7 +997,29 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->sharedWithYouPage->waitForAjaxCallsToStartAndFinish($this->getSession());
 		$this->assertShareIsInStateOnWebUI($item, $state);
 	}
-	
+
+	/**
+	 * @Then the public link with name :entryName should not be in the public links list
+	 *
+	 * @param string $entryName
+	 *
+	 * @return void
+	 */
+	public function thePublicLinkWithNameShouldNotBeInPublicLinksList($entryName) {
+		$this->sharingDialog->checkThatNameIsNotInPublicLinkList($this->getSession(), $entryName);
+	}
+
+	/**
+	 * @Then the number of public links should be :count
+	 *
+	 * @param integer $count
+	 *
+	 * @return void
+	 */
+	public function theNumberOfPublicLinksShouldBe($count) {
+		$this->sharingDialog->checkPublicLinkCount($this->getSession(), $count);
+	}
+
 	/**
 	 * @Then /^it should not be possible to share (?:file|folder) "([^"]*)"(?: with "([^"]*)")? using the webUI$/
 	 *
