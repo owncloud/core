@@ -30,19 +30,16 @@ use Test\TestCase;
  *
  * @group DB
  */
-class AppsEnableTest extends TestCase
-{
+class AppsEnableTest extends TestCase {
 
 	/** @var CommandTester */
 	private $commandTester;
 
-	public function setUp()
-	{
+	public function setUp() {
 		parent::setUp();
 
 		$command = new Enable(\OC::$server->getAppManager());
 		$this->commandTester = new CommandTester($command);
-
 	}
 
 	/**
@@ -51,8 +48,7 @@ class AppsEnableTest extends TestCase
 	 * @param $expectedOutput
 	 * @param string|null $group
 	 */
-	public function testCommandInput($appId, $expectedOutput, $group = null)
-	{
+	public function testCommandInput($appId, $expectedOutput, $group = null) {
 		$input = ['app-id' => $appId];
 		if ($group !== null) {
 			$input['--groups'] = [$group];
@@ -63,8 +59,7 @@ class AppsEnableTest extends TestCase
 		$this->assertContains($expectedOutput, $output);
 	}
 
-	public function providesAppIds()
-	{
+	public function providesAppIds() {
 		return [
 			[["comments", "files"], "comments enabled\nfiles enabled"],
 			[["comments", "kukki"], "comments enabled\nkukki not found"],

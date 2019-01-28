@@ -31,8 +31,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Enable extends Command
-{
+class Enable extends Command {
 
 	/** @var IAppManager */
 	protected $manager;
@@ -40,14 +39,12 @@ class Enable extends Command
 	/**
 	 * @param IAppManager $manager
 	 */
-	public function __construct(IAppManager $manager)
-	{
+	public function __construct(IAppManager $manager) {
 		parent::__construct();
 		$this->manager = $manager;
 	}
 
-	protected function configure()
-	{
+	protected function configure() {
 		$this
 			->setName('app:enable')
 			->setDescription('Enable an app.')
@@ -64,8 +61,7 @@ class Enable extends Command
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$appIds = $input->getArgument('app-id');
 		$groups = $input->getOption('groups');
 
@@ -80,8 +76,7 @@ class Enable extends Command
 	 * @return int 1 when one or more apps not found, 0 when everything went successfully
 	 * @throws \Exception
 	 */
-	private function enableApps(array $appIds, array $groups, OutputInterface $output): int
-	{
+	private function enableApps(array $appIds, array $groups, OutputInterface $output): int {
 		$errorFlag = 0;
 		foreach ($appIds as $appId) {
 			if (!\OC_App::getAppPath($appId)) {
@@ -98,8 +93,6 @@ class Enable extends Command
 				$output->writeln($appId . ' enabled for groups: ' . \implode(', ', $groups));
 			}
 		}
-
 		return $errorFlag;
 	}
-
 }
