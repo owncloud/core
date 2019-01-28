@@ -397,8 +397,10 @@ class Preview {
 
 	/**
 	 * Deletes all previews of a file
+	 *
+	 * @param int|null $versionId (optional) - delete all previews of the specified versionId
 	 */
-	public function deleteAllPreviews() {
+	public function deleteAllPreviews($versionId = null) {
 		$thumbnailMount = $this->userView->getMount($this->getThumbnailsFolder());
 		$propagator = $thumbnailMount->getStorage()->getPropagator();
 		$propagator->beginBatch();
@@ -415,6 +417,10 @@ class Preview {
 				// .ocTransferId*.part file from chunked file upload.
 				if (!empty($fileId)) {
 					$previewPath = $this->getPreviewPath($fileId);
+					if ($versionId !== null) {
+						$versionId = (int) $versionId;
+						$previewPath = "$previewPath/$versionId";
+					}
 					$this->userView->rmdir($previewPath);
 				}
 			}
@@ -1300,7 +1306,19 @@ class Preview {
 	 * @param array $args
 	 */
 	public static function post_delete_versions($args) {
-		self::post_delete($args, 'files/');
+		$versionArgs = $args;
+		// Are we doing a rollback?
+		if (isset($args['revision'])) {
+			self::post_delete($args, 'files/');
+		} else {
+			// split path and timestamp
+			\preg_match_all('#(?<path>.*)\.v(?<timestamp>\d+)$#', $versionArgs['path'], $versionInfo);
+			if (isset($versionInfo['path'][0], $versionInfo['timestamp'][0])) {
+				$versionArgs['path'] = $versionInfo['path'][0];
+				$versionArgs['timestamp'] = $versionInfo['timestamp'][0];
+				self::post_delete($versionArgs, 'files/');
+			}
+		}
 	}
 
 	/**
@@ -1331,6 +1349,7 @@ class Preview {
 		}
 
 		$preview = new Preview($node->getOwner()->getUID(), $prefix, $node);
-		$preview->deleteAllPreviews();
+		$versionId = isset($args['timestamp']) ? $args['timestamp'] : null;
+		$preview->deleteAllPreviews($versionId);
 	}
 }

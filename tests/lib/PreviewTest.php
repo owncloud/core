@@ -190,6 +190,65 @@ class PreviewTest extends TestCase {
 		$this->assertFalse($this->rootView->is_dir($thumbCacheFolder));
 	}
 
+	public function testVersionPreviewsDeleted() {
+		$x = 50;
+		$y = 50;
+		$sampleFile = '/' . self::TEST_PREVIEW_USER1 . '/files/test.txt';
+		$versionPath = '/' . self::TEST_PREVIEW_USER1 . '/files_versions/test.txt';
+		$timestamp1 = 12345678;
+		$timestamp2 = 22222222;
+		$timestamp3 = 45678901;
+
+		$this->rootView->file_put_contents($sampleFile, "dummy data");
+		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('test.txt');
+		$preview = new Preview(
+			self::TEST_PREVIEW_USER1, 'files/', $file, $x, $y, null
+		);
+		$preview->getPreview();
+		$this->rootView->mkdir(self::TEST_PREVIEW_USER1 . '/files_versions');
+		foreach ([$timestamp1, $timestamp2, $timestamp3] as $versionId) {
+			$this->rootView->file_put_contents("$versionPath.v$versionId", "file data $versionId");
+			$versionPreview = new Preview(
+				self::TEST_PREVIEW_USER1, 'files/', $file, $x,
+				$y,
+				null,
+				$versionId
+			);
+			$versionPreview->getPreview();
+		}
+
+		$thumbCacheFolder = '/' . self::TEST_PREVIEW_USER1 . '/' . Preview::THUMBNAILS_FOLDER .
+			'/' . $file->getId() . '/';
+
+		foreach ([$timestamp1, $timestamp2, $timestamp3] as $versionId) {
+			$this->assertTrue(
+				$this->rootView->is_dir("$thumbCacheFolder/$versionId"),
+				"version preview $versionId was not created \n"
+			);
+		}
+
+		// Delete  preview for one version and check that others still exist
+		Preview::post_delete_versions(
+			[
+				'user' => self::TEST_PREVIEW_USER1,
+				'path' => '/test.txt.v' . $timestamp2,
+			]
+		);
+
+		$this->assertFalse(
+			$this->rootView->is_dir("$thumbCacheFolder/$timestamp2"),
+			"version preview $timestamp2 still exists \n"
+		);
+		foreach ([$timestamp1, $timestamp3] as $versionId) {
+			$this->assertTrue(
+				$this->rootView->is_dir("$thumbCacheFolder/$versionId"),
+				"version preview $versionId was deleted \n"
+			);
+		}
+
+		$preview->deleteAllPreviews();
+	}
+
 	public function txtBlacklist() {
 		$txt = 'random text file';
 
