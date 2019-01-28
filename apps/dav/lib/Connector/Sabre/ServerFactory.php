@@ -95,12 +95,14 @@ class ServerFactory {
 	 * @param string $requestUri
 	 * @param BackendInterface $authBackend
 	 * @param callable $viewCallBack callback that should return the view for the dav endpoint
+	 * @param bool $isPublicAccess whether DAV is accessed through a public link
 	 * @return Server
 	 */
 	public function createServer($baseUri,
 								 $requestUri,
 								 BackendInterface $authBackend,
-								 callable $viewCallBack) {
+								 callable $viewCallBack,
+								 $isPublicAccess = false) {
 		// Fire up server
 		$objectTree = new \OCA\DAV\Connector\Sabre\ObjectTree();
 		$server = new \OCA\DAV\Connector\Sabre\Server($objectTree);
@@ -118,7 +120,7 @@ class ServerFactory {
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\DummyGetResponsePlugin());
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $this->logger));
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
-		$server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($server->tree, true, $this->timeFactory)));
+		$server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($server->tree, true, $this->timeFactory, $isPublicAccess)));
 
 		if (BrowserErrorPagePlugin::isBrowserRequest($this->request)) {
 			$server->addPlugin(new BrowserErrorPagePlugin());
