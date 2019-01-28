@@ -358,6 +358,8 @@
     "Users" : "Utilisateurs",
     "Show enabled/disabled option" : "Afficher l'option Activé/Désactivé",
     "Hey there,<br><br>just letting you know that you now have an %s account.<br><br>Your username: %s<br>Please set the password by accessing it: <a href=\"%s\">Here</a><br><br>" : "Bonjour,<br><br>Votre compte %s a été créé.<br><br>Votre nom d'utilisateur : %s<br>Veuillez définir un mot de passe en <a href=\"%s\">cliquant ici.</a><br><br>",
-    "New Password" : "Nouveau mot de passe"
+    "New Password" : "Nouveau mot de passe",
+    "Set password for new users" : "Définir un mot de passe pour les nouveaux utilisateurs",
+    "Please set your password" : "Veuillez entrer votre mot de passe"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }
