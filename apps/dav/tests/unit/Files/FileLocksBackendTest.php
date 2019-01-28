@@ -253,14 +253,14 @@ class FileLocksBackendTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		$timeFactory->method('getTime')->willReturn(self::CURRENT_TIME);
 
-		$this->plugin = new FileLocksBackend($this->tree, true, $timeFactory);
+		$this->plugin = new FileLocksBackend($this->tree, true, $timeFactory, true);
 
 		// "/public/share" is a public share
 		// "/public" has the locks
 		// we query "public.php/webdav/sub" inside that share
 		$locks = $this->plugin->getLocks($lockPluginGetLockPath, true);
 		$lockInfo = new LockInfo();
-		$lockInfo->token = '123-456-7890';
+		$lockInfo->token = null; // hidden in public endpoint
 		$lockInfo->scope = LockInfo::EXCLUSIVE;
 		$lockInfo->uri = $responseLockRoot;
 		$lockInfo->owner = 'Alice Wonder';
