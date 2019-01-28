@@ -1426,7 +1426,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function adminAddsUserToGroupUsingTheProvisioningApi($user, $group) {
-		$this->addUserToGroup($user, $group);
+		$this->addUserToGroup($user, $group, "api");
 	}
 
 	/**
