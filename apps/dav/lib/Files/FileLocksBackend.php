@@ -39,11 +39,14 @@ class FileLocksBackend implements BackendInterface {
 	private $useV1;
 	/** @var ITimeFactory */
 	private $timeFactory;
+	/** @var bool */
+	private $hideLockTokenInList;
 
-	public function __construct($tree, $useV1, $timeFactory) {
+	public function __construct($tree, $useV1, $timeFactory, $hideLockTokenInList = false) {
 		$this->tree = $tree;
 		$this->useV1 = $useV1;
 		$this->timeFactory = $timeFactory;
+		$this->hideLockTokenInList = $hideLockTokenInList;
 	}
 
 	/**
@@ -130,7 +133,10 @@ class FileLocksBackend implements BackendInterface {
 					$lockInfo->uri = "files/$uid/$fileName";
 				}
 			}
-			$lockInfo->token = $lock->getToken();
+
+			if (!$this->hideLockTokenInList) {
+				$lockInfo->token = $lock->getToken();
+			}
 			$lockInfo->created = $lock->getCreatedAt();
 			$lockInfo->depth = $lock->getDepth();
 			$lockInfo->owner = $lock->getOwner();
