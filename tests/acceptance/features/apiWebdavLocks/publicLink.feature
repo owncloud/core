@@ -83,9 +83,7 @@ Feature: persistent-locking in case of a public link
     When the public gets the following properties of entry "/" in the last created public link using the WebDAV API
       | d:lockdiscovery |
     Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
-    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
-    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
-    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    And the value of the item "//d:locktoken/d:href" in the response should be "opaquelocktoken:"
     Examples:
       | lock-scope |
       | shared     |
@@ -98,9 +96,7 @@ Feature: persistent-locking in case of a public link
     When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
       | d:lockdiscovery |
     Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
-    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
-    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
-    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    And the value of the item "//d:locktoken/d:href" in the response should be "opaquelocktoken:"
     Examples:
       | lock-scope |
       | shared     |
@@ -113,9 +109,7 @@ Feature: persistent-locking in case of a public link
     When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
       | d:lockdiscovery |
     Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
-    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
-    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
-    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    And the value of the item "//d:locktoken/d:href" in the response should be "opaquelocktoken:"
     Examples:
       | lock-scope |
       | shared     |
@@ -128,9 +122,7 @@ Feature: persistent-locking in case of a public link
     When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
       | d:lockdiscovery |
     Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
-    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
-    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
-    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    And the value of the item "//d:locktoken/d:href" in the response should be "opaquelocktoken:"
     Examples:
       | lock-scope |
       | shared     |
@@ -143,9 +135,7 @@ Feature: persistent-locking in case of a public link
     When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
       | d:lockdiscovery |
     Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
-    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
-    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
-    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    And the value of the item "//d:locktoken/d:href" in the response should be "opaquelocktoken:"
     Examples:
       | lock-scope |
       | shared     |
@@ -158,9 +148,7 @@ Feature: persistent-locking in case of a public link
     When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
       | d:lockdiscovery |
     Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD\/child.txt$/"
-    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
-    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
-    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    And the value of the item "//d:locktoken/d:href" in the response should be "opaquelocktoken:"
     Examples:
       | lock-scope |
       | shared     |
@@ -173,9 +161,8 @@ Feature: persistent-locking in case of a public link
     When the public gets the following properties of entry "/child.txt" in the last created public link using the WebDAV API
       | d:lockdiscovery |
     Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
-    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
-    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
-    #And the value of the item "//d:lockroot/d:href" in the response should be ""
+    And the value of the item "//d:locktoken/d:href" in the response should be "opaquelocktoken:"
+
     Examples:
       | lock-scope |
       | shared     |
@@ -188,7 +175,7 @@ Feature: persistent-locking in case of a public link
     When the public gets the following properties of entry "/" in the last created public link using the WebDAV API
       | d:lockdiscovery |
     Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
-    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    And the value of the item "//d:locktoken/d:href" in the response should be "opaquelocktoken:"
     Examples:
       | lock-scope |
       | shared     |
@@ -201,7 +188,7 @@ Feature: persistent-locking in case of a public link
     When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
       | d:lockdiscovery |
     Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
-    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    And the value of the item "//d:locktoken/d:href" in the response should be "opaquelocktoken:"
     Examples:
       | lock-scope |
       | shared     |
@@ -214,7 +201,7 @@ Feature: persistent-locking in case of a public link
     When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
       | d:lockdiscovery |
     Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
-    And the value of the item "//d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    And the value of the item "//d:locktoken/d:href" in the response should be "opaquelocktoken:"
     Examples:
       | lock-scope |
       | shared     |
@@ -230,10 +217,8 @@ Feature: persistent-locking in case of a public link
       | d:lockdiscovery |
     Then the value of the item "//d:activelock[1]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
     And the value of the item "//d:activelock[2]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
-    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
-    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
-    #And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be ""
-    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be "opaquelocktoken:"
+    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should be "opaquelocktoken:"
 
   Scenario: lockdiscovery subfolder of public link when root is locked by user and subfolder is locked by public
     Given user "user0" has created a public link share of folder "PARENT" with change permission
@@ -245,10 +230,8 @@ Feature: persistent-locking in case of a public link
       | d:lockdiscovery |
     Then the value of the item "//d:activelock[1]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
     And the value of the item "//d:activelock[2]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
-    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
-    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
-    #And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be ""
-    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be "opaquelocktoken:"
+    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should be "opaquelocktoken:"
 
   Scenario: lockdiscovery root of public link when user has locked folder above public link and public has locked root of public link
     Given user "user0" has created a public link share of folder "PARENT/CHILD" with change permission
@@ -260,10 +243,8 @@ Feature: persistent-locking in case of a public link
       | d:lockdiscovery |
     Then the value of the item "//d:activelock[1]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
     And the value of the item "//d:activelock[2]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
-    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
-    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
-    #And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be ""
-    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be "opaquelocktoken:"
+    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should be "opaquelocktoken:"
 
   Scenario: lockdiscovery subfolder of public link when user has locked folder above public link and public has locked subfolder of public link
     Given user "user0" has created a public link share of folder "PARENT/CHILD" with change permission
@@ -276,10 +257,8 @@ Feature: persistent-locking in case of a public link
       | d:lockdiscovery |
     Then the value of the item "//d:activelock[1]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
     And the value of the item "//d:activelock[2]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/GRANDCHILD$/"
-    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
-    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
-    #And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be ""
-    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be "opaquelocktoken:"
+    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should be "opaquelocktoken:"
 
   Scenario: lockdiscovery file in public link when user has locked folder above public link and public has locked file inside of public link
     Given user "user0" has created a public link share of folder "PARENT/CHILD" with change permission
@@ -291,7 +270,5 @@ Feature: persistent-locking in case of a public link
       | d:lockdiscovery |
     Then the value of the item "//d:activelock[1]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
     And the value of the item "//d:activelock[2]/d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/child.txt$/"
-    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
-    #see https://github.com/owncloud/core/pull/34229#issuecomment-457186641
-    #And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be ""
-    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should match "/^opaquelocktoken:/"
+    And the value of the item "//d:activelock[1]/d:locktoken/d:href" in the response should be "opaquelocktoken:"
+    And the value of the item "//d:activelock[2]/d:locktoken/d:href" in the response should be "opaquelocktoken:"
