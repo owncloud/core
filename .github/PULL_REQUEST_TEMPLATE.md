@@ -48,9 +48,10 @@ Please set the following labels:
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
+- [ ] Database schema changes (next release will require increase of minor version instead of patch)
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
 - [ ] Technical debt
-- [ ] Tests
+- [ ] Tests only (no source changes)
 
 ## Checklist:
 <!-- Tick the checkboxes when done. -->
