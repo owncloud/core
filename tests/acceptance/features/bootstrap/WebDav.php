@@ -1645,6 +1645,33 @@ trait WebDav {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" (?:deletes|unshares) these (?:files|folders|entries) without delays using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param TableNode $table of files or folders to delete
+	 *
+	 * @return void
+	 */
+	public function userDeletesFilesFoldersWithoutDelays($user, $table) {
+		foreach ($table->getTable() as $entry) {
+			$entryName = $entry[0];
+			$this->response = $this->makeDavRequest($user, 'DELETE', $entryName, []);
+		}
+		$this->lastUploadDeleteTime = \time();
+	}
+
+	/**
+	 * @When /^the user (?:deletes|unshares) these (?:files|folders|entries) without delays using the WebDAV API$/
+	 *
+	 * @param TableNode $table of files or folders to delete
+	 *
+	 * @return void
+	 */
+	public function theUserDeletesFilesFoldersWithoutDelays($table) {
+		$this->userDeletesFilesFoldersWithoutDelays($this->getCurrentUser(), $table);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" on "(LOCAL|REMOTE)" (?:deletes|unshares) (?:file|folder) "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" on "(LOCAL|REMOTE)" has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
 	 *
