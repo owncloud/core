@@ -248,9 +248,25 @@ class Storage {
 			$versions = self::getVersions($uid, $filename);
 			if (!empty($versions)) {
 				foreach ($versions as $v) {
-					\OC_Hook::emit('\OCP\Versions', 'preDelete', ['path' => $path . $v['version'], 'trigger' => self::DELETE_TRIGGER_MASTER_REMOVED]);
+					\OC_Hook::emit(
+						'\OCP\Versions',
+						'preDelete',
+						[
+							'user' => $uid,
+							'path' => $path . $v['version'],
+							'trigger' => self::DELETE_TRIGGER_MASTER_REMOVED
+						]
+					);
 					self::deleteVersion($view, $filename . '.v' . $v['version']);
-					\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $path . $v['version'], 'trigger' => self::DELETE_TRIGGER_MASTER_REMOVED]);
+					\OC_Hook::emit(
+						'\OCP\Versions',
+						'delete',
+						[
+							'user' => $uid,
+							'path' => $path . $v['version'],
+							'trigger' => self::DELETE_TRIGGER_MASTER_REMOVED
+						]
+					);
 				}
 			}
 		}
@@ -492,9 +508,25 @@ class Storage {
 		$view = new View('/' . $uid . '/files_versions');
 		if (!empty($toDelete)) {
 			foreach ($toDelete as $version) {
-				\OC_Hook::emit('\OCP\Versions', 'preDelete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_RETENTION_CONSTRAINT]);
+				\OC_Hook::emit(
+					'\OCP\Versions',
+					'preDelete',
+					[
+						'user' => $uid,
+						'path' => $version['path'].'.v'.$version['version'],
+						'trigger' => self::DELETE_TRIGGER_RETENTION_CONSTRAINT
+					]
+				);
 				self::deleteVersion($view, $version['path'] . '.v' . $version['version']);
-				\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_RETENTION_CONSTRAINT]);
+				\OC_Hook::emit(
+					'\OCP\Versions',
+					'delete',
+					[
+						'user' => $uid,
+						'path' => $version['path'].'.v'.$version['version'],
+						'trigger' => self::DELETE_TRIGGER_RETENTION_CONSTRAINT
+					]
+				);
 			}
 		}
 	}
@@ -762,9 +794,25 @@ class Storage {
 			}
 
 			foreach ($toDelete as $key => $path) {
-				\OC_Hook::emit('\OCP\Versions', 'preDelete', ['path' => $path, 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
+				\OC_Hook::emit(
+					'\OCP\Versions',
+					'preDelete',
+					[
+						'user' => $uid,
+						'path' => $path,
+						'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED
+					]
+				);
 				self::deleteVersion($versionsFileview, $path);
-				\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $path, 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
+				\OC_Hook::emit(
+					'\OCP\Versions',
+					'delete',
+					[
+						'user' => $uid,
+						'path' => $path,
+						'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED
+					]
+				);
 				unset($allVersions[$key]); // update array with the versions we keep
 				\OCP\Util::writeLog('files_versions', "Expire: " . $path, \OCP\Util::INFO);
 			}
@@ -779,9 +827,25 @@ class Storage {
 			\reset($allVersions);
 			while ($availableSpace < 0 && $i < $numOfVersions) {
 				$version = \current($allVersions);
-				\OC_Hook::emit('\OCP\Versions', 'preDelete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
+				\OC_Hook::emit(
+					'\OCP\Versions',
+					'preDelete',
+					[
+						'user' => $uid,
+						'path' => $version['path'].'.v'.$version['version'],
+						'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED
+					]
+				);
 				self::deleteVersion($versionsFileview, $version['path'] . '.v' . $version['version']);
-				\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
+				\OC_Hook::emit(
+					'\OCP\Versions',
+					'delete',
+					[
+						'user' => $uid,
+						'path' => $version['path'].'.v'.$version['version'],
+						'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED
+					]
+				);
 				\OCP\Util::writeLog('files_versions', 'running out of space! Delete oldest version: ' . $version['path'].'.v'.$version['version'], \OCP\Util::INFO);
 				$versionsSize -= $version['size'];
 				$availableSpace += $version['size'];
