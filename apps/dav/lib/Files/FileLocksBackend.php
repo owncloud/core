@@ -29,6 +29,7 @@ use Sabre\DAV\Locks;
 use Sabre\DAV\Locks\Backend\BackendInterface;
 use Sabre\DAV\Tree;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCA\DAV\Connector\Sabre\ObjectTree;
 
 class FileLocksBackend implements BackendInterface {
 
@@ -106,12 +107,28 @@ class FileLocksBackend implements BackendInterface {
 		foreach ($locks as $lock) {
 			$lockInfo = new Locks\LockInfo();
 			$fileName = $lock->getAbsoluteDavPath();
+			$uid = $lock->getDavUserId();
 
-			if ($this->useV1) {
-				$lockInfo->uri = $fileName;
+			$pathInView = "/$uid/files/$fileName";
+
+			// v1 object tree, also used by public link
+			if ($this->tree instanceof ObjectTree) {
+				// get path relative to the view root, which can
+				// either be the user's home or a public link share's root
+				$subPath = $this->tree->getView()->getRelativePath($pathInView);
+				if ($subPath === null) {
+					// path is above the current view, just tell that the lock is on the root then
+					$lockInfo->uri = '';
+				} else {
+					$subPath = \ltrim($subPath, '/');
+					$lockInfo->uri = $subPath;
+				}
 			} else {
-				$uid = $lock->getDavUserId();
-				$lockInfo->uri = "files/$uid/$fileName";
+				if ($this->useV1) {
+					$lockInfo->uri = $fileName;
+				} else {
+					$lockInfo->uri = "files/$uid/$fileName";
+				}
 			}
 			$lockInfo->token = $lock->getToken();
 			$lockInfo->created = $lock->getCreatedAt();
