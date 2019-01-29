@@ -22,6 +22,7 @@
 
 namespace Page;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -41,6 +42,7 @@ class LoginPage extends OwncloudPage {
 	protected $lostPasswordId = "lost-password";
 	protected $setPasswordErrorMessageId = "error-message";
 
+	protected $lostPasswordResetErrorXpath = "//li[contains(@class,'error')]";
 	protected $imprintUrlXpath = "//a[contains(text(),'Imprint')]";
 	protected $privacyPolicyXpath = "//a[contains(text(),'Privacy Policy')]";
 
@@ -123,7 +125,7 @@ class LoginPage extends OwncloudPage {
 	 *
 	 * @throws ElementNotFoundException
 	 *
-	 * @return Page
+	 * @return NodeElement
 	 */
 	private function getSetPasswordErrorMessageField() {
 		$setPasswordErrorMessageField = $this->findById($this->setPasswordErrorMessageId);
@@ -133,6 +135,25 @@ class LoginPage extends OwncloudPage {
 			" id $this->setPasswordErrorMessageId could not find set password error message field"
 		);
 		return $setPasswordErrorMessageField;
+	}
+
+	/**
+	 *
+	 * @throws ElementNotFoundException
+	 *
+	 * @return NodeElement
+	 */
+	private function getLostPasswordResetErrorMessageField() {
+		$lostPasswordResetErrorMessageField = $this->find(
+			"xpath", $this->lostPasswordResetErrorXpath
+		);
+		$this->assertElementNotNull(
+			$lostPasswordResetErrorMessageField,
+			__METHOD__ .
+			" id $this->lostPasswordResetErrorXpath" .
+			" could not find lost password reset error message field"
+		);
+		return $lostPasswordResetErrorMessageField;
 	}
 
 	/**
@@ -161,6 +182,15 @@ class LoginPage extends OwncloudPage {
 	public function getSetPasswordErrorMessage() {
 		$setPasswordErrorMessage = $this->getSetPasswordErrorMessageField()->getText();
 		return $setPasswordErrorMessage;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getLostPasswordResetErrorMessage() {
+		$generalErrorMessage = $this->getLostPasswordResetErrorMessageField()->getText();
+		return $generalErrorMessage;
 	}
 
 	/**
