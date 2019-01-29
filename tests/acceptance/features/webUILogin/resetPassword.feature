@@ -49,3 +49,23 @@ Feature: reset the password
       Password changed successfully
       """
     And the reset email to "user1@example.org" should be from "owncloud@foobar.com"
+
+  @skipOnEncryption
+  Scenario: using the password reset token plus invalid username does not work
+    When the user requests the password reset link using the webUI
+    And the user follows the password reset link from email address "user1@example.org" but supplying invalid user name "qwerty"
+    Then the user should be redirected to a webUI page with the title "%productname%"
+    And a lost password reset error message with this text should be displayed on the webUI:
+      """
+      Could not reset password because the token is invalid
+      """
+
+  @skipOnEncryption
+  Scenario: using an invalid password reset token with valid username does not work
+    When the user requests the password reset link using the webUI
+    And the user follows the password reset link from email address "user1@example.org" but supplying an invalid token
+    Then the user should be redirected to a webUI page with the title "%productname%"
+    And a lost password reset error message with this text should be displayed on the webUI:
+      """
+      Could not reset password because the token does not match
+      """

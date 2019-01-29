@@ -491,6 +491,60 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user follows the password reset link from email address :emailAddress but supplying invalid user name :username
+	 *
+	 * @param string $emailAddress
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theUserFollowsThePasswordResetLinkFromTheirEmailUsingInvalidUsername(
+		$emailAddress, $username
+	) {
+		$link = $this->webUIGeneralContext->getLinkFromEmail(
+			$emailAddress,
+			"/Use the following link to reset your password: (http.*)/",
+			"Couldn't find password reset link in the email"
+		);
+		// The link has a form like:
+		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/user1
+		// pop off the last part and replace it with the invalid username
+		$linkParts = \explode('/', $link);
+		\array_pop($linkParts);
+		\array_push($linkParts, $username);
+		$adjustedLink = \implode('/', $linkParts);
+		$this->visitPath($adjustedLink);
+	}
+
+	/**
+	 * @When the user follows the password reset link from email address :emailAddress but supplying an invalid token
+	 *
+	 * @param string $emailAddress
+	 *
+	 * @return void
+	 */
+	public function theUserFollowsThePasswordResetLinkFromTheirEmailUsingInvalidToken(
+		$emailAddress
+	) {
+		$link = $this->webUIGeneralContext->getLinkFromEmail(
+			$emailAddress,
+			"/Use the following link to reset your password: (http.*)/",
+			"Couldn't find password reset link in the email"
+		);
+		// The link has a form like:
+		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/user1
+		$linkParts = \explode('/', $link);
+		$username = \array_pop($linkParts);
+		$goodToken = \array_pop($linkParts);
+		// reverse the token string, an easy way to make the token invalid
+		$invalidToken = \strrev($goodToken);
+		\array_push($linkParts, $invalidToken);
+		\array_push($linkParts, $username);
+		$adjustedLink = \implode('/', $linkParts);
+		$this->visitPath($adjustedLink);
+	}
+
+	/**
 	 * @When the user resets/sets the password to :newPassword using the webUI
 	 * @Given the user has reset/set the password to :newPassword using the webUI
 	 *

@@ -249,16 +249,32 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $errorMessage
 	 * @param int $numEmails which number of multiple emails to read (first email is 1)
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function followLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
+	public function getLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
 		$content = EmailHelper::getBodyOfEmail(
 			EmailHelper::getLocalMailhogUrl(), $emailAddress, $numEmails
 		);
 		$matches = [];
 		\preg_match($regexSearch, $content, $matches);
 		PHPUnit_Framework_Assert::assertArrayHasKey(1, $matches, $errorMessage);
-		$this->visitPath($matches[1]);
+		return $matches[1];
+	}
+
+	/**
+	 *
+	 * @param string $emailAddress
+	 * @param string $regexSearch
+	 * @param string $errorMessage
+	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 *
+	 * @return void
+	 */
+	public function followLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
+		$link = $this->getLinkFromEmail(
+			$emailAddress, $regexSearch, $errorMessage, $numEmails
+		);
+		$this->visitPath($link);
 	}
 
 	/**
