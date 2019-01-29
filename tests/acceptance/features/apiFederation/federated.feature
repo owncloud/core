@@ -1,4 +1,4 @@
-@api @federation-app-required
+@api @federation-app-required @TestAlsoOnExternalUserBackend
 Feature: federated
 
   Background:
@@ -170,6 +170,7 @@ Feature: federated
     When user "user0" uploads file "filesForUpload/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the WebDAV API
     Then the etag of element "/PARENT" of user "user1" on server "LOCAL" should have changed
 
+  @skipOnLDAP
   Scenario: Upload file to received federated share while quota is set on home storage
     Given user "user0" from server "REMOTE" has shared "/PARENT" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
@@ -178,6 +179,7 @@ Feature: federated
     Then the HTTP status code of all upload responses should be "201"
     Then as user "user0" on server "REMOTE" the files uploaded to "/PARENT/testquota.txt" with all mechanisms should exist
 
+  @skipOnLDAP
   Scenario: Upload file to received federated share while quota is set on remote storage - local server shares - remote server receives
     Given using server "LOCAL"
     And the quota of user "user1" has been set to "20 B"
@@ -187,6 +189,7 @@ Feature: federated
     When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/PARENT (2)/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
 
+  @skipOnLDAP
   Scenario: Upload file to received federated share while quota is set on remote storage - remote server shares - local server receives
     Given using server "REMOTE"
     And the quota of user "user0" has been set to "20 B"

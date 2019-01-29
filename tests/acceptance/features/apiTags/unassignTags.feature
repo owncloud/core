@@ -1,4 +1,4 @@
-@api @systemtags-app-required
+@api @systemtags-app-required @TestAlsoOnExternalUserBackend
 Feature: Unassigning tags from file/folder
   As a user
   I want to be able to remove tags from file/folder

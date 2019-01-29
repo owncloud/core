@@ -1,4 +1,4 @@
-@cli
+@cli @TestAlsoOnExternalUserBackend
 Feature: add and delete app configs using occ command
 
   As an administrator

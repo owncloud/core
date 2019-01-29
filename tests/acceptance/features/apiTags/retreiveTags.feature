@@ -1,4 +1,4 @@
-@api @systemtags-app-required
+@api @systemtags-app-required @TestAlsoOnExternalUserBackend
 Feature: tags
 
   Background:

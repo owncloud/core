@@ -1,4 +1,4 @@
-@api @systemtags-app-required
+@api @systemtags-app-required @TestAlsoOnExternalUserBackend
 Feature: Deletion of tags
   As a user
   I want to delete the tags that are already created

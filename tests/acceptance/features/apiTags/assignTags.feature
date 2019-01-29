@@ -1,4 +1,4 @@
-@api @systemtags-app-required
+@api @systemtags-app-required @TestAlsoOnExternalUserBackend
 Feature: Assign tags to file/folder
   I want to assign tags to the file/folder
   So that I can organize the files/folders easily
@@ -42,9 +42,9 @@ Feature: Assign tags to file/folder
       | MyFirstTag | normal |
 
   Scenario: Assigning a not user-assignable tag to a file shared by someone else as regular user belongs to tag's groups should work
-    Given group "group1" has been created
-    And user "user1" has been added to group "group1"
-    And the administrator has created a "not user-assignable" tag with name "JustARegularTagName" and groups "group1"
+    Given group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    And the administrator has created a "not user-assignable" tag with name "JustARegularTagName" and groups "grp1"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     When user "user1" adds tag "JustARegularTagName" to file "/myFileToTag.txt" using the WebDAV API
@@ -53,9 +53,9 @@ Feature: Assign tags to file/folder
       | JustARegularTagName | not user-assignable |
 
   Scenario: Assigning a static tag to a file shared by someone else as regular user belongs to tag's groups should work
-    Given group "group1" has been created
-    And user "user1" has been added to group "group1"
-    And the administrator has created a "static" tag with name "StaticTagName" and groups "group1"
+    Given group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    And the administrator has created a "static" tag with name "StaticTagName" and groups "grp1"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     When user "user1" adds tag "StaticTagName" to file "/myFileToTag.txt" using the WebDAV API
@@ -75,10 +75,10 @@ Feature: Assign tags to file/folder
       | MyFirstTag | normal |
 
   Scenario: Assigning a static tag to a file shared by someone else as regular user does not belong to tag's group should fail
-    Given group "group1" has been created
-    And user "user0" has been added to group "group1"
+    Given group "hash#group" has been created
+    And user "user0" has been added to group "hash#group"
     And the administrator has created a "normal" tag with name "NormalTag"
-    And the administrator has created a "static" tag with name "StaticTag" and groups "group1"
+    And the administrator has created a "static" tag with name "StaticTag" and groups "hash#group"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
     And user "user0" has shared file "/myFileToTag.txt" with user "user1"
     When the user adds tag "NormalTag" to file "/myFileToTag.txt" using the WebDAV API
