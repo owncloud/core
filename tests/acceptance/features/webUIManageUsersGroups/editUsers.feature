@@ -83,3 +83,10 @@ Feature: edit users
     And user "user0" should not belong to group "grp1"
     And user "user0" should not belong to group "grp2"
     And user "user0" should belong to group "grp3"
+
+  Scenario: Admin changes the email of the user
+    Given user "user0" has been created with default attributes
+    And the administrator has browsed to the users page
+    When the administrator changes the email of user "user0" to "new_email@oc.com" using the webUI
+    Then user "user0" should exist
+    And the email address of user "user0" should be "new_email@oc.com"

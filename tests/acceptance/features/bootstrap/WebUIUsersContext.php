@@ -539,4 +539,18 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdministratorRemovesUserFromGroupUsingTheWebui($user, $group) {
 		$this->usersPage->addOrRemoveUserToGroup($this->getSession(), $user, $group, false);
 	}
+
+	/**
+	 * @When the administrator changes the email of user :username to :email using the webUI
+	 *
+	 * @param string $username
+	 * @param string $email
+	 *
+	 * @return void
+	 */
+	public function theAdministratorChangesTheEmailOfUserToUsingTheWebui($username, $email) {
+		$this->usersPage->openSettingsMenu();
+		$this->usersPage->setSetting('Show email address');
+		$this->usersPage->changeUserEmail($this->getSession(), $username, $email);
+	}
 }
