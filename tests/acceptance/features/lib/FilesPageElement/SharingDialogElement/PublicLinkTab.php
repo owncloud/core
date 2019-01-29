@@ -224,6 +224,9 @@ class PublicLinkTab extends OwncloudPage {
 		if ($permissions !== null) {
 			$this->editPublicLinkPopupPageObject->setLinkPermissions($permissions);
 		}
+		if ($expirationDate !== null) {
+			$this->editPublicLinkPopupPageObject->setLinkExpirationDate($expirationDate);
+		}
 
 		if ($save === true) {
 			$this->editPublicLinkPopupPageObject->save();
@@ -312,7 +315,7 @@ class PublicLinkTab extends OwncloudPage {
 	}
 
 	/**
-	 * @return void
+	 * @return string
 	 */
 	public function getWarningMessage() {
 		$warningMessageField = $this->find("xpath", $this->publicLinkWarningMessageXpath);
