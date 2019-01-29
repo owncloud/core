@@ -17,15 +17,3 @@ Feature: Help and tips page
       | Improving the config.php          |
       | Theming                           |
       | Hardening and security guidance   |
-
-  @skip @issue-33639 @skipOnOcV11 @issue-33634
-  Scenario Outline: Admin can open links in help and tips page
-    When the administrator opens the link for "<linkName>"
-    Then the user should be redirected to a webUI page with the title "<pageTitle>"
-    Examples:
-      | linkName                          | pageTitle                       |
-      | How to do backups                 | Backing up ownCloud             |
-      | Performance tuning                | ownCloud Server Tuning          |
-      | Improving the config.php          | Core Config.php Parameters      |
-      | Theming                           | Theming ownCloud                |
-      | Hardening and security guidance   | Hardening and Security Guidance |
