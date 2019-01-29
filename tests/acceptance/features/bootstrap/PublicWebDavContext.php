@@ -64,7 +64,8 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function downloadPublicFileInsideAFolderWithRange($path, $range) {
-		$fullUrl = $this->featureContext->getBaseUrl() . "/public.php/webdav$path";
+		$path = \ltrim($path, "/");
+		$fullUrl = $this->featureContext->getBaseUrl() . "/public.php/webdav/$path";
 		$headers = [
 			'X-Requested-With' => 'XMLHttpRequest',
 			'Range' => $range

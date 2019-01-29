@@ -38,7 +38,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	protected $fileListXpath = ".//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='emptycontent']";
 	protected $addToYourOcBtnId = "save-button";
-	protected $singleFileDownloadBtnXpath = "//a[@id='downloadFile']";
+	protected $singleFileDownloadBtnXpath = "//a[@id='download']";
 	protected $textPreviewContainerXpath = "//div[@class='text-preview']";
 	protected $remoteAddressInputId = "remote_address";
 	protected $confirmBtnId = "save-button-confirm";
