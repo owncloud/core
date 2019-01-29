@@ -81,6 +81,9 @@ class UsersPage extends OwncloudPage {
 	protected $editPasswordBtnXpath = ".//td[@class='password']/img";
 	protected $editPasswordInputXpath = "/td[@class='password']/input";
 
+	protected $editEmailBtnXpath = ".//td[@class='mailAddress']/img";
+	protected $editEmailInputXpath = "/td[@class='mailAddress']/input";
+
 	protected $groupsFieldXpath = ".//td[@class='groups']";
 	protected $userGroupsInputXpath = "./div[@class='groupsListContainer multiselect button']";
 	protected $groupLabelInInputXpath = ".//ul[@class='multiselectoptions down']/li/label[@title='%s']";
@@ -639,6 +642,42 @@ class UsersPage extends OwncloudPage {
 		try {
 			$editPasswordInput->focus();
 			$editPasswordInput->setValue($password . "\n");
+			$this->waitForAjaxCallsToStartAndFinish($session);
+		} catch (StaleElementReference $e) {
+		}
+	}
+
+	/**
+	 * @param Session $session
+	 * @param string $user
+	 * @param string $email
+	 *
+	 * @return void
+	 */
+	public function changeUserEmail(Session $session, $user, $email) {
+		$userTr = $this->findUserInTable($user);
+		$editEmailBtn = $userTr->find("xpath", $this->editEmailBtnXpath);
+		$this->assertElementNotNull(
+			$editEmailBtn,
+			__METHOD__ .
+			" xpath $this->editEmailBtnXpath " .
+			"could not find edit button "
+		);
+		$editEmailBtn->focus();
+		$editEmailBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+		$editEmailInput = $userTr->find("xpath", $this->editEmailInputXpath);
+		$this->assertElementNotNull(
+			$editEmailInput,
+			__METHOD__ .
+			" xpath $this->editEmailInputXpath " .
+			"could not find email field "
+		);
+		// editing email throws StaleElementReference
+		// Because the input element disappears as soon as the value is set
+		try {
+			$editEmailInput->focus();
+			$editEmailInput->setValue($email . "\n");
 			$this->waitForAjaxCallsToStartAndFinish($session);
 		} catch (StaleElementReference $e) {
 		}
