@@ -150,7 +150,8 @@ class LoginPage extends OwncloudPage {
 		$this->assertElementNotNull(
 			$lostPasswordResetErrorMessageField,
 			__METHOD__ .
-			" id $this->lostPasswordResetErrorXpath could not find lost password reset error message field"
+			" id $this->lostPasswordResetErrorXpath" .
+			" could not find lost password reset error message field"
 		);
 		return $lostPasswordResetErrorMessageField;
 	}
