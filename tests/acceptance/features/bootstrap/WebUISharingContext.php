@@ -37,6 +37,7 @@ use TestHelpers\SetupHelper;
 use OC\Files\External\Auth\Password\Password;
 use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
 use Behat\Mink\Exception\ElementException;
+use GuzzleHttp\Message\ResponseInterface;
 use Page\GeneralErrorPage;
 
 require_once 'bootstrap.php';
@@ -1180,8 +1181,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theContentOfTheFileSharedByLastPublicLinkShouldBeTheSameAs($originalFile) {
-		$url = $this->publicLinkFilesPage->getDownloadUrl();
-		$response = HttpRequestHelper::get($url);
+		$response = $this->thePublicDownloadsTheLastCreatedFileUsingTheWebui();
 		PHPUnit_Framework_Assert::assertEquals(200, $response->getStatusCode());
 		$body = $response->getBody()->getContents();
 
@@ -1192,6 +1192,16 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$originalContent = $this->featureContext->getResponse()->getBody()->getContents();
 
 		PHPUnit_Framework_Assert::assertSame($originalContent, $body);
+	}
+
+	/**
+	 * @When the public downloads the last created file/folder using the webUI
+	 *
+	 * @return ResponseInterface
+	 */
+	public function thePublicDownloadsTheLastCreatedFileUsingTheWebui() {
+		$url = $this->publicLinkFilesPage->getDownloadUrl();
+		return HttpRequestHelper::get($url);
 	}
 
 	/**
