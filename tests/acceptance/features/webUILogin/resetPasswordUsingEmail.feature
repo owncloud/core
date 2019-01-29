@@ -25,16 +25,21 @@ Feature: reset the password using an email address
 			"""
 
   @skipOnEncryption
-  @smokeTest
-  @skip @issue-32889
+  # consider adding this to the smoke tests when the issue is fixed @smokeTest
+  @issue-32889
   Scenario: reset password for the ordinary (no encryption) case
     When the user requests the password reset link using the webUI
     And the user follows the password reset link from email address "user1@example.org"
     Then the user should be redirected to a webUI page with the title "%productname%"
-    When the user resets the password to "%alt3%" using the webUI
-    Then the email address "user1@example.org" should have received an email with the body containing
+    # The issue is that the system thinks the link token is invalid
+    And a lost password reset error message with this text should be displayed on the webUI:
 			"""
-			Password changed successfully
+			Could not reset password because the token is invalid
 			"""
-    When the user logs in with username "user1" and password "%alt3%" using the webUI
-    Then the user should be redirected to a webUI page with the title "Files - %productname%"
+    #When the user resets the password to "%alt3%" using the webUI
+    #Then the email address "user1@example.org" should have received an email with the body containing
+	#		"""
+	#		Password changed successfully
+	#		"""
+    #When the user logs in with username "user1" and password "%alt3%" using the webUI
+    #Then the user should be redirected to a webUI page with the title "Files - %productname%"

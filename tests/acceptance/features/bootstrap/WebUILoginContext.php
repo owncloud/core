@@ -416,11 +416,30 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function aSetPasswordErrorMessageWithTheTextShouldBeDisplayed(PyStringNode $string) {
+	public function aSetPasswordErrorMessageWithTheTextShouldBeDisplayed(
+		PyStringNode $string
+	) {
 		$expectedString = $string->getRaw();
 		$setPasswordErrorMessage = $this->loginPage->getSetPasswordErrorMessage();
 		PHPUnit_Framework_Assert::assertEquals(
 			$expectedString, $setPasswordErrorMessage
+		);
+	}
+
+	/**
+	 * @Then a lost password reset error message with this text should be displayed on the webUI:
+	 *
+	 * @param PyStringNode $string
+	 *
+	 * @return void
+	 */
+	public function aLostPasswordResetErrorMessageWithTheTextShouldBeDisplayed(
+		PyStringNode $string
+	) {
+		$expectedString = $string->getRaw();
+		$resetPasswordErrorMessage = $this->loginPage->getLostPasswordResetErrorMessage();
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedString, $resetPasswordErrorMessage
 		);
 	}
 
