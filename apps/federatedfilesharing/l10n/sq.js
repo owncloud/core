@@ -20,6 +20,7 @@ OC.L10N.register(
     "Open documentation" : "Hap dokumentimin",
     "Allow users on this server to send shares to other servers" : "Lejoju përdoruesve në këtë shërbyes të dërgojnë ndarje në shërbyes të tjerë",
     "Allow users on this server to receive shares from other servers" : "Lejoju përdoruesve në këtë shërbyes të marrin ndarje nga shërbyes të tjerë",
+    "Automatically accept remote shares from trusted servers" : "Prano vetvetiu ndarje të largëta prej shërbyesish të besuar",
     "Federated Cloud" : "Re e Federuar",
     "Your Federated Cloud ID:" : "ID-ja juaj për Re të Federuar:",
     "Share it:" : "Ndajeni:",

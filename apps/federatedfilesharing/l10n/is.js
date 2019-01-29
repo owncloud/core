@@ -20,6 +20,7 @@ OC.L10N.register(
     "Open documentation" : "Opna hjálparskjöl",
     "Allow users on this server to send shares to other servers" : "Leyfa notendum á þessum þjóni að senda sameignir til annarra þjóna",
     "Allow users on this server to receive shares from other servers" : "Leyfa notendum á þessum þjóni að taka á móti sameignum frá öðrum þjónum",
+    "Automatically accept remote shares from trusted servers" : "Samþykkja sjálfkrafa fjartengdar sameignir af treystum þjónum",
     "Federated Cloud" : "Skýjasamband (federated)",
     "Your Federated Cloud ID:" : "Skýjasambandsauðkennið þitt (Federated Cloud ID):",
     "Share it:" : "Deila því:",

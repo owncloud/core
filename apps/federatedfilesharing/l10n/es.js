@@ -20,6 +20,7 @@ OC.L10N.register(
     "Open documentation" : "Documentación abierta",
     "Allow users on this server to send shares to other servers" : "Permitir a usuarios de este servidor compartir con usuarios de otros servidores",
     "Allow users on this server to receive shares from other servers" : "Permitir a usuarios de este servidor recibir archivos de usuarios de otros servidores",
+    "Automatically accept remote shares from trusted servers" : "Aceptar automáticamente compartidos remotos desde servidores confiables",
     "Federated Cloud" : "Nube Federada",
     "Your Federated Cloud ID:" : "Su ID Nube Federada:",
     "Share it:" : "Compartir:",

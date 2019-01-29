@@ -23,6 +23,7 @@ OC.L10N.register(
     "%1$s unassigned system tag %3$s from %2$s" : "%1$s tók kerfismerki %3$s af %2$s",
     "%s (restricted)" : "%s (takmarkaður aðgangur)",
     "%s (invisible)" : "%s (ósýnilegt)",
+    "%s (static)" : "%s (fast)",
     "No files in here" : "Engar skrár hér",
     "No entries found in this folder" : "Engar skrár fundust í þessari möppu",
     "Name" : "Heiti",
