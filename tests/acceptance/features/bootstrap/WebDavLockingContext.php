@@ -170,12 +170,108 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function unlockLastLockUsingWebDavAPI($user, $file) {
+		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
+			$user, $file, $user, $file
+		);
+	}
+
+	/**
+	 * @When user :user unlocks file/folder :itemToUnlock with the last created lock of file/folder :itemToUseLockOf using the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $itemToUnlock
+	 * @param string $itemToUseLockOf
+	 *
+	 * @return void
+	 */
+	public function unlockItemWithLastLockOfOtherItemUsingWebDavAPI(
+		$user, $itemToUnlock, $itemToUseLockOf
+	) {
+		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
+			$user, $itemToUnlock, $user, $itemToUseLockOf
+		);
+	}
+	
+	/**
+	 * @When user :user unlocks file/folder :itemToUnlock with the last created public lock of file/folder :itemToUseLockOf using the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $itemToUnlock
+	 * @param string $itemToUseLockOf
+	 *
+	 * @return void
+	 */
+	public function unlockItemWithLastPublicLockOfOtherItemUsingWebDavAPI(
+		$user, $itemToUnlock, $itemToUseLockOf
+	) {
+		$lockOwner = (string)$this->featureContext->getLastShareData()->data->token;
+		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
+			$user, $itemToUnlock, $lockOwner, $itemToUseLockOf
+		);
+	}
+
+	/**
+	 * @When user :user unlocks file/folder :itemToUnlock with the last created lock of file/folder :itemToUseLockOf of user :lockOwner using the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $itemToUnlock
+	 * @param string $lockOwner
+	 * @param string $itemToUseLockOf
+	 * @param boolean $public
+	 *
+	 * @return void
+	 */
+	public function unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
+		$user, $itemToUnlock, $lockOwner, $itemToUseLockOf, $public = false
+	) {
+		if ($public === true) {
+			$type = "public-files";
+			$password = null;
+		} else {
+			$type = "files";
+			$password = $this->featureContext->getPasswordForUser($user);
+		}
 		$baseUrl = $this->featureContext->getBaseUrl();
-		$password = $this->featureContext->getPasswordForUser($user);
-		$headers = ["Lock-Token" => $this->tokenOfLastLock[$user][$file]];
-		WebDavHelper::makeDavRequest(
-			$baseUrl, $user, $password, "UNLOCK", $file, $headers, null, null,
-			$this->featureContext->getDavPathVersion()
+		$headers = [
+			"Lock-Token" => $this->tokenOfLastLock[$lockOwner][$itemToUseLockOf]
+		];
+		$this->featureContext->setResponse(
+			WebDavHelper::makeDavRequest(
+				$baseUrl, $user, $password, "UNLOCK", $itemToUnlock, $headers,
+				null, null, $this->featureContext->getDavPathVersion(), $type
+			)
+		);
+	}
+
+	/**
+	 * @When the public unlocks file/folder :itemToUnlock with the last created lock of file/folder :itemToUseLockOf of user :lockOwner using the WebDAV API
+	 *
+	 * @param string $itemToUnlock
+	 * @param string $lockOwner
+	 * @param string $itemToUseLockOf
+	 *
+	 * @return void
+	 */
+	public function unlockItemAsPublicWithLastLockOfUserAndItemUsingWebDavAPI(
+		$itemToUnlock, $lockOwner, $itemToUseLockOf
+	) {
+		$user = (string)$this->featureContext->getLastShareData()->data->token;
+		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
+			$user, $itemToUnlock, $lockOwner, $itemToUseLockOf, true
+		);
+	}
+
+	/**
+	 * @When the public unlocks file/folder :itemToUnlock using the WebDAV API
+	 *
+	 * @param string $itemToUnlock
+	 *
+	 * @return void
+	 */
+	public function unlockItemAsPublicUsingWebDavAPI($itemToUnlock) {
+		$user = (string)$this->featureContext->getLastShareData()->data->token;
+		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
+			$user, $itemToUnlock, $user, $itemToUnlock, true
 		);
 	}
 
