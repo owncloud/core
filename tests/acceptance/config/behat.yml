@@ -231,6 +231,16 @@ default:
         - WebUIFilesContext:
         - WebUISharingContext:
 
+    webUICreateDelete:
+      paths:
+        - '%paths.base%/../features/webUICreateDelete'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - TagsContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
 
     webUIEncryptionUserKeysType:
       paths:
