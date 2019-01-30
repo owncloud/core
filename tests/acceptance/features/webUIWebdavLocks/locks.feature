@@ -36,6 +36,22 @@ Feature: Locks
     And folder "simple-folder" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
     And file "data.zip" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
 
+  @issue-34315
+  Scenario: setting a lock shows the current display name of a user in the locking details
+    Given these users have been created:
+      |username              |displayname  |
+      |user-with-display-name|My fancy name|
+    Given user "user-with-display-name" has locked folder "simple-folder" setting following properties
+      | lockscope | shared |
+    And user "user-with-display-name" has locked file "data.zip" setting following properties
+      | lockscope | exclusive |
+    And the administrator has changed the display name of user "user-with-display-name" to "An ordinary name"
+    When the user re-logs in with username "user-with-display-name" and password "%regular%" using the webUI
+    And folder "simple-folder" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
+    And file "data.zip" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
+    #And folder "simple-folder" should be marked as locked by user "An ordinary name" in the locks tab of the details panel on the webUI
+    #And file "data.zip" should be marked as locked by user "An ordinary name" in the locks tab of the details panel on the webUI
+
   Scenario: setting a lock shows the display name of a user in the locking details (user has set email address)
     Given these users have been created:
       |username              |displayname  |email      |
@@ -237,6 +253,19 @@ Feature: Locks
     Given user "brand-new-user" has locked folder "simple-folder" setting following properties
      | lockscope | shared |
     When user "brand-new-user" unlocks the last created lock of folder "simple-folder" using the WebDAV API
+    And the user browses to the files page
+    Then folder "simple-folder" should not be marked as locked on the webUI
+
+  Scenario: unlocking by webDAV after the display name has been changed deletes the lock symbols at the correct files/folders
+    Given these users have been created:
+      |username              |displayname  |
+      |user-with-display-name|My fancy name|
+    Given user "user-with-display-name" has locked folder "simple-folder" setting following properties
+      | lockscope | shared |
+    And user "user-with-display-name" has locked file "data.zip" setting following properties
+      | lockscope | exclusive |
+    And the administrator has changed the display name of user "user-with-display-name" to "An ordinary name"
+    When user "user-with-display-name" unlocks the last created lock of folder "simple-folder" using the WebDAV API
     And the user browses to the files page
     Then folder "simple-folder" should not be marked as locked on the webUI
 
