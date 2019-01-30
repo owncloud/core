@@ -35,20 +35,20 @@ default:
         - CommentsContext:
         - WebDavPropertiesContext:
 
-    apiFederation:
-      paths:
-        - '%paths.base%/../features/apiFederation'
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - FederationContext:
-        - WebDavPropertiesContext:
-
     apiFavorites:
       paths:
         - '%paths.base%/../features/apiFavorites'
       contexts:
         - FeatureContext: *common_feature_context_params
         - FavoritesContext:
+        - WebDavPropertiesContext:
+
+    apiFederation:
+      paths:
+        - '%paths.base%/../features/apiFederation'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - FederationContext:
         - WebDavPropertiesContext:
 
     apiProvisioning-v1:
@@ -114,6 +114,23 @@ default:
         - OccContext:
         - TrashbinContext:
 
+    apiVersions:
+      paths:
+        - '%paths.base%/../features/apiVersions'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - ChecksumContext:
+        - FilesVersionsContext:
+
+    apiWebdavLocks:
+      paths:
+        - '%paths.base%/../features/apiWebdavLocks'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - PublicWebDavContext:
+        - WebDavLockingContext:
+        - WebDavPropertiesContext:
+
     apiWebdavOperations:
       paths:
         - '%paths.base%/../features/apiWebdavOperations'
@@ -131,14 +148,19 @@ default:
         - LoggingContext:
         - WebDavPropertiesContext:
 
-    apiWebdavLocks:
+    cliBackground:
       paths:
-        - '%paths.base%/../features/apiWebdavLocks'
+        - '%paths.base%/../features/cliBackground'
       contexts:
         - FeatureContext: *common_feature_context_params
-        - PublicWebDavContext:
-        - WebDavLockingContext:
-        - WebDavPropertiesContext:
+        - OccContext:
+
+    cliMain:
+      paths:
+        - '%paths.base%/../features/cliMain'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
 
     cliProvisioning:
       paths:
@@ -149,20 +171,6 @@ default:
         - OccContext:
         - OccAppManagementContext:
         - OccUsersGroupsContext:
-
-    cliMain:
-      paths:
-        - '%paths.base%/../features/cliMain'
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - OccContext:
-
-    cliBackground:
-      paths:
-        - '%paths.base%/../features/cliBackground'
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - OccContext:
 
     cliTrashbin:
       paths:
