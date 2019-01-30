@@ -344,6 +344,17 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
 
+    webUISharingAcceptShares:
+      paths:
+        - '%paths.base%/../features/webUISharingAcceptShares'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+        - WebUIAdminSharingSettingsContext:
+
     webUISharingExternal:
       paths:
         - '%paths.base%/../features/webUISharingExternal'
