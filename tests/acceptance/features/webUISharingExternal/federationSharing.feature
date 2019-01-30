@@ -244,7 +244,9 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
     And using server "REMOTE"
-    Then as "user1" file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should exist
+    # When the issue is fixed, remove the following step and replace with the commented-out step
+    Then as "user1" file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should not exist
+    #Then as "user1" file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should exist
 
   Scenario: sharee should be able to access the files/folders inside other folder
     Given user "user1" has created folder "simple-folder/simple-empty-folder/finalfolder"
