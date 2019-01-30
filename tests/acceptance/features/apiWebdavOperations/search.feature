@@ -81,7 +81,7 @@ Feature: Search
     Given using <dav_version> DAV path
     When user "user0" searches for "upload" and limits the results to "3" items using the WebDAV API
     Then the HTTP status code should be "207"
-    And the search result of "user0" shoud contain any "3" of these entries:
+    And the search result of "user0" should contain any "3" of these entries:
       | /just-a-folder/upload.txt    |
       | /just-a-folder/uploadÜठिF.txt |
       | /upload folder               |
