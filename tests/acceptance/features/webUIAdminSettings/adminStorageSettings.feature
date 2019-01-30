@@ -4,7 +4,7 @@ Feature: admin storage settings
   I want to be able to manage external storages on the ownCloud server
   So that owncloud users can link external storages into the owncloud server
 
-  Scenario: administrator enables the external storage 
+  Scenario: administrator enables the external storage
     Given the administrator has browsed to the admin storage settings page
     When the administrator enables the external storage using the webUI
     Then the external storage form should be displayed on the storage settings page

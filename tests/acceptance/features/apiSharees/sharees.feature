@@ -454,8 +454,8 @@ Feature: sharees
   Scenario Outline: Enumerate only group members - only show partial results from member groups
     Given using OCS API version "<ocs-api-version>"
     Given these users have been created with default attributes:
-    | username | displayname |
-    | another  | Another     |
+      | username | displayname |
+      | another  | Another     |
     And user "Another" has been added to group "ShareeGroup2"
     And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
     When user "user1" gets the sharees using the sharing API with parameters

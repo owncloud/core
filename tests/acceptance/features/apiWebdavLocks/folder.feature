@@ -31,7 +31,7 @@ Feature: lock folders
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
-      
+
   Scenario Outline: create folder in a locked folder
     Given using <dav-path> DAV path
     And user "user0" has locked folder "FOLDER" setting following properties

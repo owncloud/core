@@ -35,8 +35,8 @@ Feature: access user provisioning API using app password
   @smokeTest
   Scenario: normal user gets their own information using the app password
     Given these users have been created with default attributes:
-    | username | displayname |
-    | newuser  | New User    |
+      | username | displayname |
+      | newuser  | New User    |
     And a new client token for "newuser" has been generated
     And a new browser session for "newuser" has been started
     And the user has generated a new app password named "my-client"
