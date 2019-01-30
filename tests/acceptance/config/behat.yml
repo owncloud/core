@@ -371,6 +371,18 @@ default:
         - WebUINotificationsContext:
         - WebUISharingContext:
 
+    webUISharingPublic:
+      paths:
+        - '%paths.base%/../features/webUISharingPublic'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - EmailContext:
+        - PublicWebDavContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+
     webUITags:
       paths:
         - '%paths.base%/../features/webUITags'
