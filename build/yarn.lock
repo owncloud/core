@@ -24,9 +24,10 @@
   version "1.6.0"
   resolved "https://codeload.github.com/ded/bowser/tar.gz/5bf35ac340c3a5e6dcb142febdb3eb947c1139cb"
 
-"@bower_components/browser-update@Graffino/Browser-Update#2.0.1":
-  version "2.0.1"
-  resolved "https://codeload.github.com/Graffino/Browser-Update/tar.gz/8d5e314baed23ee63f811528968e62414c7587c0"
+"@bower_components/browser-update@Graffino/Browser-Update#v2.0.2":
+  version "2.0.2"
+  uid "0edda8c7f53ad2cbe68538c00b8c790513096d60"
+  resolved "https://codeload.github.com/Graffino/Browser-Update/tar.gz/0edda8c7f53ad2cbe68538c00b8c790513096d60"
 
 "@bower_components/clipboard@zenorocha/clipboard.js#1.5.12":
   version "1.5.12"
