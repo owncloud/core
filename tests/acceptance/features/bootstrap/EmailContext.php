@@ -90,13 +90,12 @@ class EmailContext implements Context {
 	 * @throws \Exception
 	 */
 	public function assertThatEmailDoesntExistWithTheAddress($address) {
-		try {
-			EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address, 3);
-		} catch (\Exception $err) {
-			PHPUnit_Framework_Assert::assertTrue(true);
-			return;
-		}
-		throw new \Exception("Email exists with email address: {$address}.");
+		PHPUnit_Framework_Assert::assertFalse(
+			EmailHelper::emailReceived(
+				EmailHelper::getLocalMailhogUrl(), $address
+			),
+			"Email exists with email address: {$address}."
+		);
 	}
 
 	/**
