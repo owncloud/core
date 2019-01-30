@@ -2234,6 +2234,9 @@ trait WebDav {
 			);
 		}
 		$multistatusResults = $this->responseXml["value"];
+		if ($multistatusResults === null) {
+			$multistatusResults = [];
+		}
 		PHPUnit_Framework_Assert::assertEquals((int)$numFiles, \count($multistatusResults));
 	}
 
