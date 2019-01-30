@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "handlebars": "^4.0.12",
-    "jasmine-core": "^2.99.1",
+    "jasmine-core": "^3.3.0",
     "jasmine-sinon": "^0.4.0",
     "jsdoc": "~3.5.5",
     "karma": "^4.0.0",
