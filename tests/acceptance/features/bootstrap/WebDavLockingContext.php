@@ -73,8 +73,9 @@ class WebDavLockingContext implements Context {
 		$headers = [];
 		$propertiesRows = $properties->getRows();
 		foreach ($propertiesRows as $property) {
-			if ($property[0] === "depth") { //depth is set in the header not in the xml
-				$headers["Depth"] = $property[1];
+			if ($property[0] === "depth" || $property[0] === "timeout") {
+				//properties that are set in the header not in the xml
+				$headers[$property[0]] = $property[1];
 			} else {
 				$body .= "<d:$property[0]><d:$property[1]/></d:$property[0]>";
 			}
