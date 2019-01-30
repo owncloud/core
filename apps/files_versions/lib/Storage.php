@@ -410,10 +410,10 @@ class Storage {
 	 * get a list of all available versions of a file in descending chronological order
 	 * @param string $uid user id from the owner of the file
 	 * @param string $filename file to find versions of, relative to the user files dir
-	 * @param string $userFullPath
+	 *
 	 * @return array versions newest version first
 	 */
-	public static function getVersions($uid, $filename, $userFullPath = '') {
+	public static function getVersions($uid, $filename) {
 		$versions = [];
 		if (empty($filename)) {
 			return $versions;
@@ -447,11 +447,7 @@ class Storage {
 						$key = $timestamp . '#' . $filename;
 						$versions[$key]['version'] = $timestamp;
 						$versions[$key]['humanReadableTimestamp'] = self::getHumanReadableTimestamp($timestamp);
-						if (empty($userFullPath)) {
-							$versions[$key]['preview'] = '';
-						} else {
-							$versions[$key]['preview'] = \OCP\Util::linkToRoute('core_ajax_versions_preview', ['file' => $userFullPath, 'version' => $timestamp]);
-						}
+						$versions[$key]['preview'] = '';
 						$versions[$key]['path'] = Filesystem::normalizePath($pathinfo['dirname'] . '/' . $filename);
 						$versions[$key]['name'] = $versionedFile;
 						$versions[$key]['size'] = $view->filesize($dir . '/' . $entryName);
