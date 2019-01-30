@@ -2240,7 +2240,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the propfind/search result of :user shoud contain any :expectedNumber of these files/entries:
+	 * @Then the propfind/search result of :user should contain any :expectedNumber of these files/entries:
 	 *
 	 * @param string $user
 	 * @param integer $expectedNumber
@@ -2248,7 +2248,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function theSearchResultOfShoudContainAnyOfTheseEntries(
+	public function theSearchResultOfShouldContainAnyOfTheseEntries(
 		$user, $expectedNumber, TableNode $expectedFiles
 	) {
 		$this->propfindResultShouldContainNumEntries($user, $expectedNumber);
