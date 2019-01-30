@@ -32,10 +32,10 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "user3" from server "REMOTE" has shared "lorem.txt" with user "user1" from server "LOCAL"
     And the user has reloaded the current page of the webUI
     Then dialogs should be displayed on the webUI
-      | title        | content                                                                                              |
-      | Remote share | Do you want to add the remote share /simple-folder from user1@%remote_server_without_scheme%?        |
-      | Remote share | Do you want to add the remote share /simple-empty-folder from user2@%remote_server_without_scheme%?  |
-      | Remote share | Do you want to add the remote share /lorem.txt from user3@%remote_server_without_scheme%?            |
+      | title        | content                                                                                             |
+      | Remote share | Do you want to add the remote share /simple-folder from user1@%remote_server_without_scheme%?       |
+      | Remote share | Do you want to add the remote share /simple-empty-folder from user2@%remote_server_without_scheme%? |
+      | Remote share | Do you want to add the remote share /lorem.txt from user3@%remote_server_without_scheme%?           |
     When the user accepts the offered remote shares using the webUI
     Then file "lorem (2).txt" should be listed on the webUI
     And the content of "lorem (2).txt" on the local server should be the same as the original "lorem.txt"
@@ -188,7 +188,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given using server "LOCAL"
     And these users have been created:
       | username |
-      | user2 |
+      | user2    |
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
     And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
@@ -202,7 +202,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given using server "LOCAL"
     And these users have been created:
       | username |
-      | user2 |
+      | user2    |
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
     And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
@@ -215,12 +215,12 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And as "user2" file "/simple-folder (2)/lorem.txt" should exist
     When the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
-    
+
   Scenario: test resharing folder and set it as readonly by owner
     Given using server "LOCAL"
     And these users have been created:
       | username |
-      | user2 |
+      | user2    |
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
     And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
