@@ -29,7 +29,9 @@ use OCA\FederatedFileSharing\Notifications;
 use OCA\FederatedFileSharing\Ocm\NotificationManager;
 use OCA\FederatedFileSharing\Ocm\Permissions;
 use OCP\BackgroundJob\IJobList;
+use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
+use OCP\Http\Client\IResponse;
 use OCP\IConfig;
 use OCA\FederatedFileSharing\BackgroundJob\RetryJob;
 
@@ -168,5 +170,34 @@ class NotificationsTest extends \Test\TestCase {
 			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], false],
 			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
 		];
+	}
+
+	public function testOcmRequestsAreJson() {
+		$notifications = $this->getInstance();
+		$responseMock = $this->createMock(IResponse::class);
+		$clientMock = $this->createMock(IClient::class);
+		$clientMock->expects($this->once())
+			->method('post')
+			->with(
+				$this->anything(),
+				$this->callback(
+					function ($options) {
+						return isset($options['json'])
+						  && !isset($options['body']);
+					}
+				)
+			)
+			->willReturn($responseMock);
+		$this->httpClientService->method('newClient')->willReturn($clientMock);
+		$this->invokePrivate(
+			$notifications,
+			'tryHttpPostToShareEndpoint',
+			[
+				'domain',
+				'/notifications',
+				['key' => 'value'],
+				true
+			]
+		);
 	}
 }
