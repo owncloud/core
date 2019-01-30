@@ -440,6 +440,19 @@ default:
         - WebUISharingContext:
         - PublicWebDavContext:
 
+    webUIWebdavLockProtection:
+      paths:
+        - '%paths.base%/../features/webUIWebdavLockProtection'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebDavLockingContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIWebDavLockingContext:
+        - WebUISharingContext:
+        - PublicWebDavContext:
+
   extensions:
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
       filename: report.xml
