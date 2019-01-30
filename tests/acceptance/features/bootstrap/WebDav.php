@@ -19,7 +19,6 @@
  *
  */
 
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
@@ -1001,13 +1000,13 @@ trait WebDav {
 	 * @param string $entry
 	 * @param string $path
 	 *
-	 * @return array
+	 * @return ResponseInterface
 	 * @throws \Exception
 	 */
 	public function asFileOrFolderShouldNotExist($user, $entry, $path) {
 		$path = $this->substituteInLineCodes($path);
 		$response = WebDavHelper::makeDavRequest(
-			$this->baseUrl, $this->getActualUsername($user),
+			$this->getBaseUrl(), $this->getActualUsername($user),
 			$this->getPasswordForUser($user), 'GET', $path, []
 		);
 		if ($response->getStatusCode() < 401 || $response->getStatusCode() > 404) {
@@ -2254,8 +2253,8 @@ trait WebDav {
 	) {
 		$this->propfindResultShouldContainNumEntries($user, $expectedNumber);
 		$elementRows = $expectedFiles->getRowsHash();
-		$resultEntrys = $this->findEntryFromPropfindResponse($user);
-		foreach ($resultEntrys as $resultEntry) {
+		$resultEntries = $this->findEntryFromPropfindResponse($user);
+		foreach ($resultEntries as $resultEntry) {
 			PHPUnit_Framework_Assert::assertArrayHasKey($resultEntry, $elementRows);
 		}
 	}
