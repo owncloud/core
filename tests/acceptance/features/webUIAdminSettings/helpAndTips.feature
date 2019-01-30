@@ -11,9 +11,9 @@ Feature: Help and tips page
     Then the link for "<linkName>" should be shown in the webUI
     And the link for "<linkName>" should be valid
     Examples:
-      | linkName                          |
-      | How to do backups                 |
-      | Performance tuning                |
-      | Improving the config.php          |
-      | Theming                           |
-      | Hardening and security guidance   |
+      | linkName                        |
+      | How to do backups               |
+      | Performance tuning              |
+      | Improving the config.php        |
+      | Theming                         |
+      | Hardening and security guidance |

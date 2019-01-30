@@ -3,9 +3,9 @@ Feature: tags
 
   Background:
     Given these users have been created with default attributes:
-    | username |
-    | user0    |
-    | user1    |
+      | username |
+      | user0    |
+      | user1    |
     And as user "user0"
 
   Scenario: Getting tags only works with access to the file

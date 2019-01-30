@@ -10,8 +10,8 @@ Feature: get user
   @smokeTest
   Scenario: admin gets an existing user
     Given these users have been created with default attributes:
-    | username       | displayname    |
-    | brand-new-user | Brand New User |
+      | username       | displayname    |
+      | brand-new-user | Brand New User |
     When the administrator retrieves the information of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -27,9 +27,9 @@ Feature: get user
   @smokeTest
   Scenario: a subadmin gets information of a user in their group
     Given these users have been created with default attributes:
-    | username | displayname |
-    | subadmin | Sub Admin   |
-    | newuser  | New User    |
+      | username | displayname |
+      | subadmin | Sub Admin   |
+      | newuser  | New User    |
     And group "newgroup" has been created
     And user "newuser" has been added to group "newgroup"
     And user "subadmin" has been made a subadmin of group "newgroup"
@@ -60,8 +60,8 @@ Feature: get user
   @smokeTest
   Scenario: a normal user gets their own information
     Given these users have been created with default attributes:
-    | username | displayname |
-    | newuser  | New User    |
+      | username | displayname |
+      | newuser  | New User    |
     When user "newuser" retrieves the information of user "newuser" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
