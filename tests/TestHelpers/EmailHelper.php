@@ -51,7 +51,7 @@ class EmailHelper {
 	/**
 	 *
 	 * @param string $localMailhogUrl
-	 * @param string $address
+	 * @param string $emailAddress
 	 * @param int $waitTimeSec Time to wait for the email
 	 *
 	 * @throws \Exception
@@ -59,18 +59,18 @@ class EmailHelper {
 	 * @return mixed
 	 */
 	public static function getBodyOfLastEmail(
-		$localMailhogUrl, $address, $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+		$localMailhogUrl, $emailAddress, $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
 	) {
 		return self::getBodyOfEmail(
-			$localMailhogUrl, $address, 0, $waitTimeSec
+			$localMailhogUrl, $emailAddress, 1, $waitTimeSec
 		);
 	}
 
 	/**
 	 *
 	 * @param string $localMailhogUrl
-	 * @param string $address
-	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 * @param string $emailAddress
+	 * @param int $emailNumber which number of multiple emails to read (first email is 1)
 	 * @param int $waitTimeSec Time to wait for the email
 	 *
 	 * @throws \Exception
@@ -79,19 +79,20 @@ class EmailHelper {
 	 */
 	public static function getBodyOfEmail(
 		$localMailhogUrl,
-		$address,
-		$numEmails = 1,
+		$emailAddress,
+		$emailNumber = 1,
 		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
 	) {
 		$currentTime = \time();
-		$end = $currentTime + $waitTimeSec;
+		$endTime = $currentTime + $waitTimeSec;
 
-		while ($currentTime <= $end) {
+		while ($currentTime <= $endTime) {
 			$skip = 1;
 			foreach (self::getEmails($localMailhogUrl)->items as $item) {
-				$expectedEmail = $item->To[0]->Mailbox . "@" . $item->To[0]->Domain;
-				if ($expectedEmail === $address) {
-					if ($skip < $numEmails) {
+				$thisEmailAddress
+					= $item->To[0]->Mailbox . "@" . $item->To[0]->Domain;
+				if ($thisEmailAddress === $emailAddress) {
+					if ($skip < $emailNumber) {
 						$skip++;
 						continue;
 					}
@@ -106,14 +107,41 @@ class EmailHelper {
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
 			$currentTime = \time();
 		}
-		throw new \Exception("Could not find the email to the address: " . $address);
+
+		throw new \Exception("Could not find the email to the address: " . $emailAddress);
 	}
 
 	/**
 	 *
 	 * @param string $localMailhogUrl
-	 * @param string $address
-	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 * @param string $emailAddress
+	 * @param int $waitTimeSec Time to wait for the email
+	 *
+	 * @throws \Exception
+	 *
+	 * @return boolean
+	 */
+	public static function emailReceived(
+		$localMailhogUrl,
+		$emailAddress,
+		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+	) {
+		try {
+			self::getBodyOfLastEmail(
+				$localMailhogUrl, $emailAddress, $waitTimeSec
+			);
+		} catch (\Exception $err) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 *
+	 * @param string $localMailhogUrl
+	 * @param string $emailAddress
+	 * @param int $emailNumber which number of multiple emails to read (first email is 1)
 	 * @param int $waitTimeSec Time to wait for the email
 	 *
 	 * @throws \Exception
@@ -122,19 +150,20 @@ class EmailHelper {
 	 */
 	public static function getSenderOfEmail(
 		$localMailhogUrl,
-		$address,
-		$numEmails = 1,
+		$emailAddress,
+		$emailNumber = 1,
 		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
 	) {
 		$currentTime = \time();
-		$end = $currentTime + $waitTimeSec;
+		$endTime = $currentTime + $waitTimeSec;
 
-		while ($currentTime <= $end) {
+		while ($currentTime <= $endTime) {
 			$skip = 1;
 			foreach (self::getEmails($localMailhogUrl)->items as $item) {
-				$expectedEmail = $item->To[0]->Mailbox . "@" . $item->To[0]->Domain;
-				if ($expectedEmail === $address) {
-					if ($skip < $numEmails) {
+				$thisEmailAddress
+					= $item->To[0]->Mailbox . "@" . $item->To[0]->Domain;
+				if ($thisEmailAddress === $emailAddress) {
+					if ($skip < $emailNumber) {
 						$skip++;
 						continue;
 					}
@@ -144,7 +173,7 @@ class EmailHelper {
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
 			$currentTime = \time();
 		}
-		throw new \Exception("Could not find the email to the address: " . $address);
+		throw new \Exception("Could not find the email to the address: " . $emailAddress);
 	}
 
 	/**
