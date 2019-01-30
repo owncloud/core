@@ -139,6 +139,14 @@ default:
         - WebDavLockingContext:
         - WebDavPropertiesContext:
 
+    apiWebdavMove:
+      paths:
+        - '%paths.base%/../features/apiWebdavMove'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
+        - WebDavPropertiesContext:
+
     apiWebdavOperations:
       paths:
         - '%paths.base%/../features/apiWebdavOperations'
@@ -155,6 +163,14 @@ default:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
         - WebDavPropertiesContext:
+
+    apiWebdavUpload:
+      paths:
+        - '%paths.base%/../features/apiWebdavUpload'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
+        - PublicWebDavContext:
 
     cliBackground:
       paths:
