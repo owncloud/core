@@ -106,23 +106,3 @@ Feature: lock should propagate correctly if a share is reshared
       | new      | shared     |
       | new      | exclusive  |
 
-  Scenario Outline: upload to a reshared share that was locked by the public
-    Given using <dav-path> DAV path
-    And user "user0" has shared folder "PARENT" with user "user1"
-    And user "user1" has shared folder "PARENT (2)" with user "user2"
-    And user "user2" has created a public link share of folder "PARENT (2)" with change permission
-    And the public locks "/CHILD" in the last public shared folder using the WebDAV API setting following properties
-      | lockscope | shared |
-    When user "user2" uploads file "filesForUpload/textfile.txt" to "/PARENT (2)/CHILD/textfile.txt" using the WebDAV API
-    Then the HTTP status code should be "423"
-    When user "user1" uploads file "filesForUpload/textfile.txt" to "/PARENT (2)/CHILD/textfile.txt" using the WebDAV API
-    Then the HTTP status code should be "423"
-    When user "user0" uploads file "filesForUpload/textfile.txt" to "/PARENT/CHILD/textfile.txt" using the WebDAV API
-    Then the HTTP status code should be "423"
-    And as "user0" file "/PARENT/textfile.txt" should not exist
-    Examples:
-      | dav-path | lock-scope |
-      | old      | shared     |
-      | old      | exclusive  |
-      | new      | shared     |
-      | new      | exclusive  |
