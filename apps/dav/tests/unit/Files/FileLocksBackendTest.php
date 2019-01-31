@@ -37,6 +37,7 @@ use Test\TestCase;
 use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\ObjectTree;
 use OC\Files\View;
+use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 
 class FileLocksBackendTest extends TestCase {
 	const CREATION_TIME = 164419200;
@@ -300,6 +301,7 @@ class FileLocksBackendTest extends TestCase {
 		$this->assertFalse($this->plugin->lock('not-a-owncloud-file.txt', $lockInfo));
 		$this->assertFalse($this->plugin->lock('not-on-locking-storage.txt', $lockInfo));
 
+		$this->storageOfFileToBeLocked->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_ALL);
 		$this->storageOfFileToBeLocked
 			->expects($this->once())
 			->method('lockNodePersistent')
@@ -326,6 +328,7 @@ class FileLocksBackendTest extends TestCase {
 		$this->assertFalse($this->plugin->unlock('not-a-owncloud-file.txt', $lockInfo));
 		$this->assertFalse($this->plugin->unlock('not-on-locking-storage.txt', $lockInfo));
 
+		$this->storageOfFileToBeLocked->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_ALL);
 		$this->storageOfFileToBeLocked
 			->expects($this->once())
 			->method('unlockNodePersistent')
@@ -334,5 +337,81 @@ class FileLocksBackendTest extends TestCase {
 			])
 			->willReturn(true);
 		$this->assertTrue($this->plugin->unlock('file-to-be-locked.txt', $lockInfo));
+	}
+
+	public function providesLockPermissions() {
+		return [
+			[\OCP\Constants::PERMISSION_READ, false],
+			[\OCP\Constants::PERMISSION_CREATE, false],
+			[\OCP\Constants::PERMISSION_UPDATE, false],
+			[\OCP\Constants::PERMISSION_DELETE, false],
+			[\OCP\Constants::PERMISSION_SHARE, false],
+			[\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE, true],
+			[\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE, true],
+			[\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_DELETE, true],
+			[\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_SHARE, false],
+			[\OCP\Constants::PERMISSION_ALL, true],
+		];
+	}
+
+	/**
+	 * @dataProvider providesLockPermissions
+	 */
+	public function testLockPermissions($perms, $canLock) {
+		$lockInfo = new LockInfo();
+		$lockInfo->token = '123-456-7890';
+		$lockInfo->scope = LockInfo::SHARED;
+		$lockInfo->owner = 'Alice Wonder';
+		$lockInfo->timeout = 800;
+		$lockInfo->created = self::CREATION_TIME;
+
+		$this->storageOfFileToBeLocked->method('getPermissions')->willReturn($perms);
+
+		if ($canLock) {
+			$this->storageOfFileToBeLocked
+				->expects($this->once())
+				->method('lockNodePersistent')
+				->with('locked-file.txt', [
+					'token' => '123-456-7890',
+					'scope' => ILock::LOCK_SCOPE_SHARED,
+					'depth' => 0,
+					'owner' => 'Alice Wonder',
+					'timeout' => 800,
+				])
+				->willReturn($this->createMock(ILock::class));
+			$this->storageOfFileToBeLocked
+				->expects($this->once())
+				->method('unlockNodePersistent')
+				->with('locked-file.txt', [
+					'token' => '123-456-7890'
+				])
+				->willReturn(true);
+			$this->assertTrue($this->plugin->lock('file-to-be-locked.txt', $lockInfo));
+			$this->assertTrue($this->plugin->unlock('file-to-be-locked.txt', $lockInfo));
+		} else {
+			$this->storageOfFileToBeLocked
+				->expects($this->never())
+				->method('lockNodePersistent');
+			$this->storageOfFileToBeLocked
+				->expects($this->never())
+				->method('unlockNodePersistent');
+
+			$exceptions = [];
+			try {
+				$this->assertTrue($this->plugin->lock('file-to-be-locked.txt', $lockInfo));
+			} catch (\Exception $e) {
+				$exceptions[] = $e;
+			}
+
+			try {
+				$this->assertTrue($this->plugin->unlock('file-to-be-locked.txt', $lockInfo));
+			} catch (\Exception $e) {
+				$exceptions[] = $e;
+			}
+
+			$this->assertCount(2, $exceptions);
+			$this->assertInstanceOf(Forbidden::class, $exceptions[0]);
+			$this->assertInstanceOf(Forbidden::class, $exceptions[1]);
+		}
 	}
 }

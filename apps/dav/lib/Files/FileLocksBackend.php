@@ -30,6 +30,8 @@ use Sabre\DAV\Locks\Backend\BackendInterface;
 use Sabre\DAV\Tree;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCA\DAV\Connector\Sabre\ObjectTree;
+use OCA\DAV\Connector\Sabre\Exception\Forbidden;
+use OCP\Files\Storage\IStorage;
 
 class FileLocksBackend implements BackendInterface {
 
@@ -174,8 +176,13 @@ class FileLocksBackend implements BackendInterface {
 			return false;
 		}
 
+		$internalPath = $node->getFileInfo()->getInternalPath();
+		if (!$this->checkCanLock($storage, $internalPath)) {
+			throw new Forbidden('Not enough permissions for locking this path');
+		}
+
 		/** @var IPersistentLockingStorage $storage */
-		$lock = $storage->lockNodePersistent($node->getFileInfo()->getInternalPath(), [
+		$lock = $storage->lockNodePersistent($internalPath, [
 			'token' => $lockInfo->token,
 			'scope' => $lockInfo->scope === Locks\LockInfo::EXCLUSIVE ? ILock::LOCK_SCOPE_EXCLUSIVE : ILock::LOCK_SCOPE_SHARED,
 			'depth' => $lockInfo->depth,
@@ -211,9 +218,37 @@ class FileLocksBackend implements BackendInterface {
 			return false;
 		}
 
+		$internalPath = $node->getFileInfo()->getInternalPath();
+		if (!$this->checkCanLock($storage, $internalPath)) {
+			throw new Forbidden('Not enough permissions for unlocking this path');
+		}
+
 		/** @var IPersistentLockingStorage $storage */
-		return $storage->unlockNodePersistent($node->getFileInfo()->getInternalPath(), [
+		return $storage->unlockNodePersistent($internalPath, [
 			'token' => $lockInfo->token
 		]);
+	}
+
+	/**
+	 * Check whether the current user is allowed to lock or unlock the given path.
+	 *
+	 * @param IStorage $storage storage on which to lock/unlock
+	 * @param string $internalPath internal path to check
+	 * @return bool true if the user can perform the action, false otherwise
+	 */
+	private function checkCanLock(IStorage $storage, $internalPath) {
+		$perms = $storage->getPermissions($internalPath);
+
+		// no read permissions at all disallows locking
+		if (!($perms & \OCP\Constants::PERMISSION_READ)) {
+			return false;
+		}
+
+		// at least one of "create", "update" and "delete" permission required for locking
+		if (!($perms & (\OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE))) {
+			return false;
+		}
+
+		return true;
 	}
 }
