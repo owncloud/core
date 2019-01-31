@@ -105,7 +105,7 @@ class FavoritesContext implements Context {
 	) {
 		$this->userListsFavoriteOfFolder($user, $folder, null);
 		$this->featureContext->propfindResultShouldContainEntries(
-			$user, $shouldOrNot, $expectedElements
+			$shouldOrNot, $expectedElements
 		);
 	}
 	
