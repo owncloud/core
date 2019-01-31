@@ -83,20 +83,19 @@ class SearchContext implements Context {
 	}
 
 	/**
-	 * @Then file/folder :path in the search result of :user should contain these properties:
+	 * @Then file/folder :path in the search result should contain these properties:
 	 *
 	 * @param string $path
-	 * @param string $user
 	 * @param TableNode $properties
 	 *
 	 * @return void
 	 */
 	public function fileOrFolderInTheSearchResultShouldContainProperties(
-		$path, $user, TableNode $properties
+		$path, TableNode $properties
 	) {
 		$properties = $properties->getHash();
 		$fileResult = $this->featureContext->findEntryFromPropfindResponse(
-			$user, $path
+			$path
 		);
 		PHPUnit_Framework_Assert::assertNotFalse(
 			$fileResult, "could not find file/folder '$path'"
