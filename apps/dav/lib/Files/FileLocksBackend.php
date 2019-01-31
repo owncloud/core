@@ -136,10 +136,10 @@ class FileLocksBackend implements BackendInterface {
 
 			if (!$this->hideLockTokenInList) {
 				$lockInfo->token = $lock->getToken();
+				$lockInfo->owner = $lock->getOwner();
 			}
 			$lockInfo->created = $lock->getCreatedAt();
 			$lockInfo->depth = $lock->getDepth();
-			$lockInfo->owner = $lock->getOwner();
 			if ($lock->getScope() === ILock::LOCK_SCOPE_EXCLUSIVE) {
 				$lockInfo->scope = Locks\LockInfo::EXCLUSIVE;
 			} else {
