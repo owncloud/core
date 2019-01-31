@@ -261,9 +261,9 @@ class FileLocksBackendTest extends TestCase {
 		$locks = $this->plugin->getLocks($lockPluginGetLockPath, true);
 		$lockInfo = new LockInfo();
 		$lockInfo->token = null; // hidden in public endpoint
+		$lockInfo->owner = null; // hidden in public endpoint
 		$lockInfo->scope = LockInfo::EXCLUSIVE;
 		$lockInfo->uri = $responseLockRoot;
-		$lockInfo->owner = 'Alice Wonder';
 		$lockInfo->timeout = 400;
 		$lockInfo->depth = -1;
 		$lockInfo->created = self::CREATION_TIME;
