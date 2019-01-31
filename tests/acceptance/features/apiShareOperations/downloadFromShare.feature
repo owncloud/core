@@ -61,10 +61,10 @@ Feature: sharing
   Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read/Write permission
     Given user "user1" has been created with default attributes
     When user "user0" creates a share using the sharing API with settings
-      | path        | PARENT    |
-      | shareType   | user      |
-      | shareWith   | user1     |
-      | permissions | change    |
+      | path        | PARENT |
+      | shareType   | user   |
+      | shareWith   | user1  |
+      | permissions | change |
     Then user "user1" should be able to download the range "bytes=1-7" of file "/PARENT (2)/CHILD/child.txt" using the sharing API and the content should be "wnCloud"
 
   Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read/Write permission

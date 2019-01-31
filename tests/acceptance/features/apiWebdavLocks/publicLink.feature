@@ -17,7 +17,7 @@ Feature: persistent-locking in case of a public link
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
-      
+
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
     Given using <dav-path> DAV path
     And user "user0" has created a public link share of folder "PARENT" with change permission

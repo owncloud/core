@@ -203,8 +203,8 @@ Feature: Share by public link
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And the user has reloaded the current page of the webUI
     And the user has created a new public link for folder "simple-folder" using the webUI with
-      | email   | foo1234@bar.co|
-      | password| pass123       |
+      | email    | foo1234@bar.co |
+      | password | pass123        |
     When the user opens the edit public link share popup for the link named "Public link"
     And the user enters the password "qwertyui" on the edit public link share popup for the link
     And the user does not save any changes in the edit public link share popup
@@ -269,9 +269,9 @@ Feature: Share by public link
     When the user changes the permission of the public link named "Public link" to "read-write"
     And the public accesses the last created public link using the webUI
     And the user deletes the following elements using the webUI
-      | name                                  |
-      | simple-empty-folder                   |
-      | lorem.txt                             |
+      | name                |
+      | simple-empty-folder |
+      | lorem.txt           |
     Then the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 
@@ -284,7 +284,7 @@ Feature: Share by public link
     When the user changes the expiration of the public link named "Public link" of file "lorem.txt" to "21-07-2038"
     And the user gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | expiration        | 21-07-2038              |
+      | expiration | 21-07-2038 |
 
   Scenario: user tries to change the expiration date of the public link to past date using webUI
     Given user "user1" has created a share with settings
@@ -296,7 +296,7 @@ Feature: Share by public link
     And the user gets the info of the last share using the sharing API
     Then the user should see an error message on the public link share dialog saying "Expiration date is in the past"
     And the fields of the last response should include
-      | expiration        | 14-10-2038              |
+      | expiration | 14-10-2038 |
 
   Scenario: share two file with same name but different paths by public link
     When the user creates a new public link for file "lorem.txt" using the webUI

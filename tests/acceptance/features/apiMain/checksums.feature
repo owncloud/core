@@ -169,8 +169,8 @@ Feature: checksums
     And the following headers should match these regular expressions
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
-      | status       | /^error$/ |
-      | errorCode    | /^400$/   |
+      | status       | /^error$/                                                                  |
+      | errorCode    | /^400$/                                                                    |
       | errorMessage | /^The computed checksum does not match the one received from the client.$/ |
     And user "user0" should not see the following elements
       | /myChunkedFile.txt |

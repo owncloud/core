@@ -60,13 +60,13 @@ Feature: capabilities
   Scenario: getting trashbin app capability with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
-      | files         | undelete                              | 1                 |
+      | files | undelete | 1 |
 
   @files_versions-app-required
   Scenario: getting versions app capability with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
-      | files         | versioning                            | 1                 |
+      | files | versioning | 1 |
 
 	#feature added in #32414 will be released in 10.0.10
   @skipOnOcV10.0.9
