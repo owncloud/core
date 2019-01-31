@@ -19,7 +19,7 @@ Feature: set timeouts of LOCKS
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     Examples:
-      | dav-path | timeout         | result |
+      | dav-path | timeout         | result          |
       | old      | second-999      | /Second-\d{3}$/ |
       | old      | second-99999999 | /Second-\d{5}$/ |
       | old      | infinite        | /Second-\d{5}$/ |
@@ -48,7 +48,7 @@ Feature: set timeouts of LOCKS
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     Examples:
-      | dav-path | timeout         | result |
+      | dav-path | timeout         | result          |
       | old      | second-999      | /Second-\d{3}$/ |
       | old      | second-99999999 | /Second-\d{5}$/ |
       | old      | infinite        | /Second-\d{5}$/ |
@@ -77,7 +77,7 @@ Feature: set timeouts of LOCKS
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     Examples:
-      | dav-path | timeout         | result |
+      | dav-path | timeout         | result          |
       | old      | second-999      | /Second-\d{3}$/ |
       | old      | second-99999999 | /Second-\d{5}$/ |
       | old      | infinite        | /Second-\d{5}$/ |
@@ -105,7 +105,7 @@ Feature: set timeouts of LOCKS
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     Examples:
-      | dav-path | timeout         | result |
+      | dav-path | timeout         | result          |
       | old      | second-999      | /Second-\d{3}$/ |
       | old      | second-99999999 | /Second-\d{5}$/ |
       | old      | infinite        | /Second-\d{5}$/ |
@@ -133,7 +133,7 @@ Feature: set timeouts of LOCKS
       | d:lockdiscovery |
     Then the value of the item "//d:timeout" in the response should match "<result>"
     Examples:
-      | dav-path | timeout         | result |
+      | dav-path | timeout         | result          |
       | old      | second-999      | /Second-\d{3}$/ |
       | old      | second-99999999 | /Second-\d{5}$/ |
       | old      | infinite        | /Second-\d{5}$/ |

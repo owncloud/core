@@ -6,9 +6,9 @@ Feature: get group
 
   Scenario: admin gets users in the group
     Given these users have been created:
-    | username       |
-    | brand-new-user |
-    | 123            | 
+      | username       |
+      | brand-new-user |
+      | 123            |
     And the administrator has changed the display name of user "brand-new-user" to "Anne Brown"
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"

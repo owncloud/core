@@ -82,11 +82,11 @@ Feature: Search
     When user "user0" searches for "upload" and limits the results to "3" items using the WebDAV API
     Then the HTTP status code should be "207"
     And the search result of "user0" should contain any "3" of these entries:
-      | /just-a-folder/upload.txt    |
+      | /just-a-folder/upload.txt     |
       | /just-a-folder/uploadÜठिF.txt |
-      | /upload folder               |
+      | /upload folder                |
       | /upload.txt                   |
-      | /फनी näme/upload.txt     |
+      | /फनी näme/upload.txt          |
     Examples:
       | dav_version |
       | old         |
@@ -164,7 +164,7 @@ Feature: Search
     And folder "/upload folder" in the search result of "user0" should contain these properties:
       | name                                       | value                                                                                             |
       | {http://owncloud.org/ns}fileid             | \d*                                                                                               |
-      | {http://owncloud.org/ns}permissions        | ^(RDNVCK\|RMDNVCK)$                                                                                |
+      | {http://owncloud.org/ns}permissions        | ^(RDNVCK\|RMDNVCK)$                                                                               |
       | {DAV:}getlastmodified                      | ^[MTWFS][uedhfriatno]{2},\s(\d){2}\s[JFMAJSOND][anebrpyulgctov]{2}\s\d{4}\s\d{2}:\d{2}:\d{2} GMT$ |
       | {DAV:}getetag                              | ^\"[a-f0-9]{1,32}\"$                                                                              |
       | {http://owncloud.org/ns}size               | 0                                                                                                 |

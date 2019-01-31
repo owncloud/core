@@ -759,11 +759,9 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
-      BEHAT_SUITE: apiFederation
+      BEHAT_SUITE: apiFavorites
       DB_TYPE: mariadb
       USE_SERVER: true
-      USE_FEDERATED_SERVER: true
-      FEDERATION_OC_VERSION: daily-stable10-qa
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -771,9 +769,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
-      BEHAT_SUITE: apiFavorites
+      BEHAT_SUITE: apiFederation
       DB_TYPE: mariadb
       USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -862,6 +862,36 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
+      BEHAT_SUITE: apiVersions
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavLocks
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavMove
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
       BEHAT_SUITE: apiWebdavOperations
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -882,7 +912,7 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
-      BEHAT_SUITE: apiWebdavLocks
+      BEHAT_SUITE: apiWebdavUpload
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -890,7 +920,7 @@ matrix:
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
 
-  # CLI Provisioning Acceptance tests
+    # CLI Provisioning Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: cli
       BEHAT_SUITE: cliProvisioning
@@ -950,6 +980,16 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIComments
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUICreateDelete
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -1051,6 +1091,16 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingAcceptShares
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingExternal
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -1093,6 +1143,17 @@ matrix:
       INSTALL_TESTING_APP: true
       USE_EMAIL: true
       INSTALL_NOTIFICATIONS_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingPublic
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+      USE_EMAIL: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1161,6 +1222,16 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIWebdavLocks
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIWebdavLockProtection
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true

@@ -6,8 +6,8 @@ Feature: delete users
 
   Scenario: admin deletes a user
     Given these users have been created:
-    | username       |
-    | brand-new-user |
+      | username       |
+      | brand-new-user |
     When the administrator deletes user "brand-new-user" using the occ command
     Then the command should have been successful
     And the command output should contain the text "User with uid 'brand-new-user', display name 'brand-new-user', email '' was deleted"

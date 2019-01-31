@@ -23,7 +23,7 @@ Feature: Creation of tags
       | tag_name            |
       | JustARegularTagName |
       | 😀                  |
-      | सिमप्ले                |
+      | सिमप्ले             |
 
   Scenario: Creating a not user-assignable tag as regular user should fail
     When the user creates a "not user-assignable" tag with name "JustARegularTagName" using the WebDAV API

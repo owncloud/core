@@ -49,7 +49,7 @@ Feature: edit users
       | password                     | comment                     |
       | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters          |
       | España                       | special European characters |
-      | नेपाली                                                  | Unicode                     |
+      | नेपाली                       | Unicode                     |
       | password with spaces         | password with spaces        |
 
   Scenario: admin creates a user and specifies an invalid password, containing just space
