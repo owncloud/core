@@ -25,6 +25,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
 use Page\SharedWithYouPage;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 require_once 'bootstrap.php';
 
@@ -119,28 +120,52 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	}
 	
 	/**
-	 * @Then file/folder :file should be marked as locked by user :lockedBy in the locks tab of the details panel on the webUI
+	 * @Then /^(?:file|folder) "([^"]*)" should (not|)\s?be marked as locked by user "([^"]*)" in the locks tab of the details panel on the webUI$/
 	 *
 	 * @param string $file
+	 * @param string $shouldOrNot
 	 * @param string $lockedBy
 	 *
-	 * @return boolean
+	 * @return boolean true if the requested check was successful
 	 */
 	public function theFileShouldBeMarkedAsLockedByUserInLocksTab(
-		$file, $lockedBy
+		$file, $shouldOrNot, $lockedBy
 	) {
+		$should = ($shouldOrNot !== "not");
 		$this->closeDetailsDialog();
 		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
 		$fileRow = $pageObject->findFileRowByName($file, $this->getSession());
-		$lockDialog = $fileRow->openLockDialog();
+		try {
+			$lockDialog = $fileRow->openLockDialog();
+		} catch (ElementNotFoundException $e) {
+			if ($should) {
+				PHPUnit_Framework_Assert::fail(
+					"looking for a lock set by $lockedBy but no lock dialog exists"
+				);
+			} else {
+				// There is no lock dialog element,
+				// so the item is definitely not marked as locked
+				return true;
+			}
+		}
 		$locks = $lockDialog->getAllLocks();
 		foreach ($locks as $lock) {
 			$locker = $lock->getLockingUser();
 			if ($lockedBy === $locker) {
-				return true;
+				if ($should) {
+					return true;
+				} else {
+					PHPUnit_Framework_Assert::fail(
+						"found a lock set by $lockedBy that should not be listed"
+					);
+				}
 			}
 		}
-		PHPUnit_Framework_Assert::fail("cannot find a lock set by $lockedBy");
+		if ($should) {
+			PHPUnit_Framework_Assert::fail("cannot find a lock set by $lockedBy");
+		} else {
+			return true;
+		}
 	}
 
 	/**

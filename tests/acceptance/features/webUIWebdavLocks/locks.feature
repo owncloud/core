@@ -127,7 +127,7 @@ Feature: Locks
     And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But file "data.tar.gz" should not be marked as locked on the webUI
 
-  @skip @issue-33867
+  @issue-33867
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-others page
     Given these users have been created:
       | username |
@@ -141,14 +141,18 @@ Feature: Locks
     And user "brand-new-user" has shared folder "simple-folder" with user "receiver"
     And user "brand-new-user" has shared folder "simple-empty-folder" with user "receiver"
     When the user browses to the shared-with-others page
-    Then folder "simple-folder" should be marked as locked on the webUI
-    And folder "simple-folder" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    Then folder "simple-folder" should not be marked as locked on the webUI
+    #Then folder "simple-folder" should be marked as locked on the webUI
+    And folder "simple-folder" should not be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    #And folder "simple-folder" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But folder "simple-empty-folder" should not be marked as locked on the webUI
-    And file "data.zip" should be marked as locked on the webUI
-    And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    And file "data.zip" should not be marked as locked on the webUI
+    #And file "data.zip" should be marked as locked on the webUI
+    And file "data.zip" should not be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    #And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But file "data.tar.gz" should not be marked as locked on the webUI
 
-  @skip @issue-33867
+  @issue-33867
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-by-link page
     Given user "brand-new-user" has locked folder "simple-folder" setting following properties
       | lockscope | shared |
@@ -163,14 +167,18 @@ Feature: Locks
     And user "brand-new-user" has created a public link share with settings
       | path | simple-empty-folder |
     When the user browses to the shared-by-link page
-    Then folder "simple-folder" should be marked as locked on the webUI
-    And folder "simple-folder" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    Then folder "simple-folder" should not be marked as locked on the webUI
+    #Then folder "simple-folder" should be marked as locked on the webUI
+    And folder "simple-folder" should not be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    #And folder "simple-folder" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But folder "simple-empty-folder" should not be marked as locked on the webUI
-    And file "data.zip" should be marked as locked on the webUI
-    And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    And file "data.zip" should not be marked as locked on the webUI
+    #And file "data.zip" should be marked as locked on the webUI
+    And file "data.zip" should not be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    #And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But file "data.tar.gz" should not be marked as locked on the webUI
 
-  @skip @issue-33867
+  @issue-33867
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-you page
     Given these users have been created:
       | username |
@@ -184,12 +192,16 @@ Feature: Locks
     And user "sharer" has shared folder "simple-folder" with user "brand-new-user"
     And user "sharer" has shared folder "simple-empty-folder" with user "brand-new-user"
     When the user browses to the shared-with-you page
-    Then folder "simple-folder (2)" should be marked as locked on the webUI
-    And folder "simple-folder (2)" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    Then folder "simple-folder (2)" should not be marked as locked on the webUI
+    #Then folder "simple-folder (2)" should be marked as locked on the webUI
+    And folder "simple-folder (2)" should not be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    #And folder "simple-folder (2)" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But folder "simple-empty-folder (2)" should not be marked as locked on the webUI
-    And file "data (2).zip" should be marked as locked on the webUI
-    And file "data (2).zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
-    But file "data (2).tar.gz" should not be marked as locked on the webUI
+    And file "data (2).zip" should not be marked as locked on the webUI
+    #And file "data (2).zip" should be marked as locked on the webUI
+    And file "data (2).zip" should not be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    #And file "data (2).zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    But file "data.tar (2).gz" should not be marked as locked on the webUI
 
   Scenario: clicking other tabs does not change the lock symbol
     When the user opens the share dialog for folder "simple-folder"
