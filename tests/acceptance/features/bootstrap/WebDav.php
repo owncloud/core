@@ -417,7 +417,7 @@ trait WebDav {
 	 *
 	 * @return string
 	 */
-	private function destinationHeaderValue($user, $fileDestination) {
+	public function destinationHeaderValue($user, $fileDestination) {
 		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
 		return $fullUrl . '/' . \ltrim($fileDestination, '/');
 	}

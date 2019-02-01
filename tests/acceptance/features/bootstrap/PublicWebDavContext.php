@@ -254,6 +254,7 @@ class PublicWebDavContext implements Context {
 	 * @param string $password
 	 * @param string $body
 	 * @param bool $autorename
+	 * @param array $additionalHeaders
 	 *
 	 * @return void
 	 */
@@ -261,7 +262,8 @@ class PublicWebDavContext implements Context {
 		$filename,
 		$password = '',
 		$body = 'test',
-		$autorename = false
+		$autorename = false,
+		$additionalHeaders = []
 	) {
 		$password = $this->featureContext->getActualPassword($password);
 		$url = $this->featureContext->getBaseUrl() . "/public.php/webdav/";
@@ -275,6 +277,7 @@ class PublicWebDavContext implements Context {
 		if ($autorename) {
 			$headers['OC-Autorename'] = 1;
 		}
+		$headers = \array_merge($headers, $additionalHeaders);
 		$response = HttpRequestHelper::put(
 			$url, $token, $password, $headers, $body
 		);
