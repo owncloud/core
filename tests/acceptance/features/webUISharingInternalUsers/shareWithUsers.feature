@@ -225,3 +225,12 @@ Feature: Sharing files and folders with internal users
     #And the share-with field should not be visible in the details panel
     Then the share-with field should be visible in the details panel
     And user "user1" should not be able to share file "testimage (2).jpg" with user "User Three" using the sharing API
+
+  Scenario: user shares the file/folder with another internal user and delete the share with user
+    Given user "user1" has logged in using the webUI
+    And user "user1" has shared file "lorem.txt" with user "user2"
+    When the user opens the share dialog for file "lorem.txt"
+    And the user deletes share with user "User Two" for the current file
+    Then the user "User Two" should not be in share with user list
+    And file "lorem.txt" should not be listed in shared-with-others page on the webUI
+    And as "user2" file "lorem (2).txt" should not exist
