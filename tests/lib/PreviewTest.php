@@ -232,6 +232,8 @@ class PreviewTest extends TestCase {
 			[
 				'user' => self::TEST_PREVIEW_USER1,
 				'path' => '/test.txt.v' . $timestamp2,
+				'original_path' => '/test.txt',
+				'deleted_revision' => $timestamp2
 			]
 		);
 

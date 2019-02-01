@@ -418,7 +418,7 @@ class Preview {
 				if (!empty($fileId)) {
 					$previewPath = $this->getPreviewPath($fileId);
 					if ($versionId !== null) {
-						$versionId = (int) $versionId;
+						$versionId = \intval($versionId);
 						$previewPath = "$previewPath/$versionId";
 					}
 					$this->userView->rmdir($previewPath);
@@ -1241,21 +1241,15 @@ class Preview {
 	 * @param string $prefix
 	 */
 	public static function prepare_delete(array $args, $prefix = '') {
-		$path = Files\Filesystem::normalizePath($args['path']);
-		$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
-		if ($user === false) {
-			try {
-				$user = Filesystem::getOwner($path);
-			} catch (NotFoundException $e) {
-				return;
-			}
+		// override path for versions
+		if (isset($args['original_path'])) {
+			$args['path'] = $args['original_path'];
 		}
-
-		$userFolder = \OC::$server->getUserFolder($user);
-		if ($userFolder === null) {
+		$path = Files\Filesystem::normalizePath($args['path']);
+		$userFolder = self::getUserFolder($args);
+		if ($userFolder === false) {
 			return;
 		}
-
 		$node = $userFolder->get($path);
 		self::addPathToDeleteFileMapper($path, $node);
 		if ($node->getType() === FileInfo::TYPE_FOLDER) {
@@ -1306,19 +1300,10 @@ class Preview {
 	 * @param array $args
 	 */
 	public static function post_delete_versions($args) {
-		$versionArgs = $args;
-		// Are we doing a rollback?
-		if (isset($args['revision'])) {
-			self::post_delete($args, 'files/');
-		} else {
-			// split path and timestamp
-			\preg_match_all('#(?<path>.*)\.v(?<timestamp>\d+)$#', $versionArgs['path'], $versionInfo);
-			if (isset($versionInfo['path'][0], $versionInfo['timestamp'][0])) {
-				$versionArgs['path'] = $versionInfo['path'][0];
-				$versionArgs['timestamp'] = $versionInfo['timestamp'][0];
-				self::post_delete($versionArgs, 'files/');
-			}
+		if (isset($args['original_path'])) {
+			$args['path'] = $args['original_path'];
 		}
+		self::post_delete($args, 'files/');
 	}
 
 	/**
@@ -1327,21 +1312,12 @@ class Preview {
 	 */
 	public static function post_delete($args, $prefix = '') {
 		$path = Files\Filesystem::normalizePath($args['path']);
-		if (!isset(self::$deleteFileMapper[$path])) {
-			$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
-			if ($user === false) {
-				try {
-					$user = Filesystem::getOwner($path);
-				} catch (NotFoundException $e) {
-					return;
-				}
-			}
 
-			$userFolder = \OC::$server->getUserFolder($user);
-			if ($userFolder === null) {
+		if (!isset(self::$deleteFileMapper[$path])) {
+			$userFolder = self::getUserFolder($args);
+			if ($userFolder === false) {
 				return;
 			}
-
 			$node = $userFolder->get($path);
 		} else {
 			/** @var FileInfo $node */
@@ -1349,7 +1325,25 @@ class Preview {
 		}
 
 		$preview = new Preview($node->getOwner()->getUID(), $prefix, $node);
-		$versionId = isset($args['timestamp']) ? $args['timestamp'] : null;
+		$versionId = isset($args['deleted_revision']) ? $args['deleted_revision'] : null;
 		$preview->deleteAllPreviews($versionId);
+	}
+
+	/**
+	 * @param string[] $args
+	 * @return Folder|bool
+	 */
+	private static function getUserFolder($args) {
+		$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
+		if ($user === false) {
+			try {
+				$path = Files\Filesystem::normalizePath($args['path']);
+				$user = Filesystem::getOwner($path);
+			} catch (NotFoundException $e) {
+				return false;
+			}
+		}
+		$userFolder = \OC::$server->getUserFolder($user);
+		return $userFolder === null ? false : $userFolder;
 	}
 }
