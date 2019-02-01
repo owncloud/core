@@ -39,6 +39,7 @@ use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
 use Behat\Mink\Exception\ElementException;
 use GuzzleHttp\Message\ResponseInterface;
 use Page\GeneralErrorPage;
+use Page\SharedWithOthersPage;
 
 require_once 'bootstrap.php';
 
@@ -64,6 +65,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @var SharedWithYouPage
 	 */
 	private $sharedWithYouPage;
+
+	/**
+	 * @var SharedWithOthersPage
+	 */
+	private $sharedWithOthersPage;
 
 	/**
 	 *
@@ -114,17 +120,20 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param PublicLinkFilesPage $publicLinkFilesPage
 	 * @param SharedWithYouPage $sharedWithYouPage
 	 * @param GeneralErrorPage $generalErrorPage
+	 * @param SharedWithOthersPage $sharedWithOthersPage
 	 */
 	public function __construct(
 		FilesPage $filesPage,
 		PublicLinkFilesPage $publicLinkFilesPage,
 		SharedWithYouPage $sharedWithYouPage,
-		GeneralErrorPage $generalErrorPage
+		GeneralErrorPage $generalErrorPage,
+		SharedWithOthersPage $sharedWithOthersPage
 	) {
 		$this->filesPage = $filesPage;
 		$this->publicLinkFilesPage = $publicLinkFilesPage;
 		$this->sharedWithYouPage = $sharedWithYouPage;
 		$this->generalErrorPage = $generalErrorPage;
+		$this->sharedWithOthersPage = $sharedWithOthersPage;
 	}
 
 	/**
@@ -229,6 +238,17 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicShareTab = $this->sharingDialog->openPublicShareTab(
 			$this->getSession()
 		);
+	}
+
+	/**
+	 * @When the user deletes share with user :username for the current file
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theUserDeleteShareWithUser($username) {
+		$this->sharingDialog->deleteShareWithUser($this->getSession(), $username);
 	}
 
 	/**
@@ -902,6 +922,20 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theAutocompleteListShouldNotBeDisplayed() {
 		PHPUnit_Framework_Assert::assertEmpty(
 			$this->sharingDialog->getAutocompleteItemsList()
+		);
+	}
+
+	/**
+	 * @Then the user :username should not be in share with user list
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theUserShouldNotBeInShareWithUserList($username) {
+		PHPUnit_Framework_Assert::assertFalse(
+			$this->sharingDialog->isUserPresentInShareWithList($username),
+			"user $username is present in the list"
 		);
 	}
 

@@ -29,6 +29,7 @@ use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Page\OwncloudPageElement\OCDialog;
+use Behat\Mink\Exception\Exception;
 
 /**
  * The Sharing Dialog
@@ -59,6 +60,9 @@ class SharingDialog extends OwncloudPage {
 	private $publicLinkRemoveBtnXpath = "//div[contains(@class, 'removeLink')]";
 	private $publicLinkTitleXpath = "//span[@class='link-entry--title']";
 
+	private $shareWithListXpath = "//ul[@id='shareWithList']/li";
+	private $userNameSpanXpath = "//span[contains(@class,'username')]";
+	private $unShareTabXpath = "//a[contains(@class,'unshare')]";
 	private $sharedWithGroupAndSharerName = null;
 	private $publicLinkRemoveDeclineMsg = "No";
 
@@ -557,6 +561,33 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
+	 * get the list of shared with users
+	 *
+	 * @return NodeElement
+	 */
+	public function getShareWithList() {
+		return $this->findAll('xpath', $this->shareWithListXpath);
+	}
+
+	/**
+	 * delete user from shared with list
+	 *
+	 * @param Session $session
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function deleteShareWithUser(Session $session, $username) {
+		$shareWithList = $this->getShareWithList();
+		foreach ($shareWithList as $userOrGroup) {
+			if ($userOrGroup->find('xpath', $this->userNameSpanXpath)->getHtml() === $username) {
+				$userOrGroup->find('xpath', $this->unShareTabXpath)->click();
+				$this->waitForAjaxCallsToStartAndFinish($session);
+			}
+		}
+	}
+
+	/**
 	 *
 	 * @param Session $session
 	 * @param integer $count
@@ -571,6 +602,24 @@ class SharingDialog extends OwncloudPage {
 			throw new \Exception("Found $publicLinkTitlesCount public link entries but expected $count");
 		}
 	}
+
+	/**
+	 * check if user with the given username is present in the shared with list
+	 *
+	 * @param string $username
+	 *
+	 * @return bool
+	 */
+	public function isUserPresentInShareWithList($username) {
+		$shareWithList = $this->getShareWithList();
+		foreach ($shareWithList as $userOrGroup) {
+			if ($userOrGroup->find('xpath', $this->userNameSpanXpath)->getHtml() === $username) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * waits for the dialog to appear
 	 *

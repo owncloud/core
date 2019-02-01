@@ -1293,7 +1293,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^(?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |in |)(files page|trashbin|favorites page|shared-with-you page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
+	 * @Then /^(?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |in |)(files page|trashbin|favorites page|shared-with-you page|shared-with-others page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
 	 *
 	 * @param string $name enclosed in single or double quotes
 	 * @param string $shouldOrNot
@@ -1352,6 +1352,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				$this->theUserBrowsesToTheSharedByLinkPage();
 				break;
 			case "shared with others page":
+			case "shared-with-others page":
 				$this->theUserBrowsesToTheSharedWithOthersPage();
 				break;
 			case "tags page":
