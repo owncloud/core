@@ -84,3 +84,32 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | lock-scope |
       | shared     |
       | exclusive  |
+
+  @issue-34360
+  Scenario Outline: two users having both a shared lock can use the resource
+    Given using <dav-path> DAV path
+    And user "user1" has been created with default attributes
+    And user "user0" has shared file "textfile0.txt" with user "user1"
+    And user "user0" has locked file "textfile0.txt" setting following properties
+      | lockscope | shared |
+    And user "user1" has locked file "textfile0 (2).txt" setting following properties
+      | lockscope | shared |
+    When user "user0" uploads file with content "from user 0" to "textfile0.txt" sending the locktoken of file "textfile0.txt" using the WebDAV API
+    Then the HTTP status code should be "423"
+    And the content of file "textfile0.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
+    And the content of file "textfile0 (2).txt" for user "user1" should be "ownCloud test text file 0" plus end-of-line
+    When user "user1" uploads file with content "from user 1" to "textfile0 (2).txt" sending the locktoken of file "textfile0 (2).txt" using the WebDAV API
+    Then the HTTP status code should be "423"
+    And the content of file "textfile0.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
+    And the content of file "textfile0 (2).txt" for user "user1" should be "ownCloud test text file 0" plus end-of-line
+    #Then the HTTP status code should be "200"
+    #And the content of file "textfile0.txt" for user "user0" should be "from user 0"
+    #And the content of file "textfile0 (2).txt" for user "user1" should be "from user 0"
+    #When user "user1" uploads file with content "from user 1" to "textfile0 (2).txt" sending the locktoken of file "textfile0 (2).txt" using the WebDAV API
+    #Then the HTTP status code should be "200"
+    #And the content of file "textfile0.txt" for user "user0" should be "from user 1"
+    #And the content of file "textfile0 (2).txt" for user "user1" should be "from user 1"
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
