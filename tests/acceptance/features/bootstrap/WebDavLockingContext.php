@@ -52,8 +52,6 @@ class WebDavLockingContext implements Context {
 	private $tokenOfLastLock = [];
 
 	/**
-	 * @When user :user locks file/folder :file using the WebDAV API setting following properties
-	 * @Given user :user has locked file/folder :file setting following properties
 	 *
 	 * @param string $user
 	 * @param string $file
@@ -63,7 +61,7 @@ class WebDavLockingContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function lockFileUsingWebDavAPI(
+	private function lockFile(
 		$user, $file, TableNode $properties, $public = false,
 		$expectToSucceed = true
 	) {
@@ -110,6 +108,31 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
+	 * @When user :user locks file/folder :file using the WebDAV API setting following properties
+	 *
+	 * @param string $user
+	 * @param string $file
+	 * @param TableNode $properties table with no heading with | property | value |
+	 *
+	 * @return void
+	 */
+	public function lockFileUsingWebDavAPI($user, $file, TableNode $properties) {
+		$this->lockFile($user, $file, $properties, false, false);
+	}
+
+	/**
+	 * @Given user :user has locked file/folder :file setting following properties
+	 *
+	 * @param string $user
+	 * @param string $file
+	 * @param TableNode $properties table with no heading with | property | value |
+	 *
+	 * @return void
+	 */
+	public function userHasLockedFile($user, $file, TableNode $properties) {
+		$this->lockFile($user, $file, $properties, false, true);
+	}
+	/**
 	 * @Given the public has locked the last public shared file/folder setting following properties
 	 *
 	 * @param TableNode $properties
@@ -117,7 +140,7 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function publicHasLockedLastSharedFile(TableNode $properties) {
-		$this->lockFileUsingWebDavAPI(
+		$this->lockFile(
 			(string)$this->featureContext->getLastShareData()->data->token,
 			"/", $properties, true
 		);
@@ -131,7 +154,7 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function publicLocksLastSharedFile(TableNode $properties) {
-		$this->lockFileUsingWebDavAPI(
+		$this->lockFile(
 			(string)$this->featureContext->getLastShareData()->data->token,
 			"/", $properties, true, false
 		);
@@ -148,7 +171,7 @@ class WebDavLockingContext implements Context {
 	public function publicHasLockedFileLastSharedFolder(
 		$file, TableNode $properties
 	) {
-		$this->lockFileUsingWebDavAPI(
+		$this->lockFile(
 			(string)$this->featureContext->getLastShareData()->data->token,
 			$file, $properties, true
 		);
@@ -163,7 +186,7 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function publicLocksFileLastSharedFolder($file, TableNode $properties) {
-		$this->lockFileUsingWebDavAPI(
+		$this->lockFile(
 			(string)$this->featureContext->getLastShareData()->data->token,
 			$file, $properties, true, false
 		);
