@@ -1,4 +1,4 @@
-@api @systemtags-app-required
+@api @systemtags-app-required @TestAlsoOnExternalUserBackend
 Feature: Editing the tags
   As a user
   I want to be able to change the tags I have created
