@@ -95,6 +95,15 @@ trait WebDav {
 	private $chunkingToUse = null;
 
 	/**
+	 * @param number $lastUploadDeleteTime
+	 *
+	 * @return void
+	 */
+	public function setLastUploadDeleteTime($lastUploadDeleteTime) {
+		$this->lastUploadDeleteTime = $lastUploadDeleteTime;
+	}
+
+	/**
 	 * @return SimpleXMLElement
 	 */
 	public function getResponseXmlObject() {
