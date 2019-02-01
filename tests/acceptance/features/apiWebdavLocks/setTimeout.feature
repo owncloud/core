@@ -117,30 +117,3 @@ Feature: set timeouts of LOCKS
       | new      | second--1       | /Second-\d{5}$/ |
       | new      | second-0        | /Second-\d{4}$/ |
 
-  Scenario Outline: as public set timeout on folder as owner check it
-    Given using <dav-path> DAV path
-    And user "user0" has created a public link share of folder "PARENT"
-    When the public locks the last public shared folder using the WebDAV API setting following properties
-      | lockscope | shared    |
-      | timeout   | <timeout> |
-    And user "user0" gets the following properties of folder "PARENT" using the WebDAV API
-      | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response should match "<result>"
-    When user "user0" gets the following properties of folder "PARENT/CHILD" using the WebDAV API
-      | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response should match "<result>"
-    When user "user0" gets the following properties of folder "PARENT/parent.txt" using the WebDAV API
-      | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response should match "<result>"
-    Examples:
-      | dav-path | timeout         | result          |
-      | old      | second-999      | /Second-\d{3}$/ |
-      | old      | second-99999999 | /Second-\d{5}$/ |
-      | old      | infinite        | /Second-\d{5}$/ |
-      | old      | second--1       | /Second-\d{5}$/ |
-      | old      | second-0        | /Second-\d{4}$/ |
-      | new      | second-999      | /Second-\d{3}$/ |
-      | new      | second-99999999 | /Second-\d{5}$/ |
-      | new      | infinite        | /Second-\d{5}$/ |
-      | new      | second--1       | /Second-\d{5}$/ |
-      | new      | second-0        | /Second-\d{4}$/ |

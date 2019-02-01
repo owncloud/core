@@ -314,6 +314,50 @@ class FileLocksBackendTest extends TestCase {
 		$this->assertTrue($this->plugin->lock('file-to-be-locked.txt', $lockInfo));
 	}
 
+	/**
+	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
+	 */
+	public function testLockPublic() {
+		$lockInfo = new LockInfo();
+		$lockInfo->token = '123-456-7890';
+		$lockInfo->scope = LockInfo::SHARED;
+		$lockInfo->owner = 'Alice Wonder';
+		$lockInfo->timeout = 800;
+		$lockInfo->created = self::CREATION_TIME;
+
+		$this->storageOfFileToBeLocked
+			->expects($this->never())
+			->method('lockNodePersistent');
+
+		$timeFactory = $this->createMock(ITimeFactory::class);
+		$timeFactory->method('getTime')->willReturn(self::CURRENT_TIME);
+
+		$this->plugin = new FileLocksBackend($this->tree, true, $timeFactory, true);
+		$this->plugin->lock('file-to-be-locked.txt', $lockInfo);
+	}
+
+	/**
+	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
+	 */
+	public function testUnlockPublic() {
+		$lockInfo = new LockInfo();
+		$lockInfo->token = '123-456-7890';
+		$lockInfo->scope = LockInfo::SHARED;
+		$lockInfo->owner = 'Alice Wonder';
+		$lockInfo->timeout = 800;
+		$lockInfo->created = self::CREATION_TIME;
+
+		$this->storageOfFileToBeLocked
+			->expects($this->never())
+			->method('lockNodePersistent');
+
+		$timeFactory = $this->createMock(ITimeFactory::class);
+		$timeFactory->method('getTime')->willReturn(self::CURRENT_TIME);
+
+		$this->plugin = new FileLocksBackend($this->tree, true, $timeFactory, true);
+		$this->plugin->unlock('file-to-be-locked.txt', $lockInfo);
+	}
+
 	public function testUnlock() {
 		$lockInfo = new LockInfo();
 		$lockInfo->token = '123-456-7890';
