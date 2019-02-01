@@ -67,11 +67,9 @@ Feature: persistent-locking in case of a public link
       | new      | shared     |
       | new      | exclusive  |
 
-  Scenario: public tries to lock a folder inside an exclusively locked folder
+  Scenario: Public locking is forbidden
     Given user "user0" has created a public link share of folder "PARENT" with change permission
-    And user "user0" has locked folder "PARENT" setting following properties
-      | lockscope | exclusive |
     When the public locks "/CHILD" in the last public shared folder using the WebDAV API setting following properties
-      | lockscope | shared |
-    Then the HTTP status code should be "423"
-    And the value of the item "//d:no-conflicting-lock/d:href" in the response should be ""
+      | lockscope | exclusive |
+    Then the HTTP status code should be "403"
+    And the value of the item "//s:message" in the response should be "Forbidden to lock from public endpoint"

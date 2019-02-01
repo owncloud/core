@@ -30,6 +30,7 @@ use Sabre\DAV\Locks\Backend\BackendInterface;
 use Sabre\DAV\Tree;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCA\DAV\Connector\Sabre\ObjectTree;
+use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 
 class FileLocksBackend implements BackendInterface {
 
@@ -40,13 +41,13 @@ class FileLocksBackend implements BackendInterface {
 	/** @var ITimeFactory */
 	private $timeFactory;
 	/** @var bool */
-	private $hideLockTokenInList;
+	private $isPublicEndpoint;
 
-	public function __construct($tree, $useV1, $timeFactory, $hideLockTokenInList = false) {
+	public function __construct($tree, $useV1, $timeFactory, $isPublicEndpoint = false) {
 		$this->tree = $tree;
 		$this->useV1 = $useV1;
 		$this->timeFactory = $timeFactory;
-		$this->hideLockTokenInList = $hideLockTokenInList;
+		$this->isPublicEndpoint = $isPublicEndpoint;
 	}
 
 	/**
@@ -134,7 +135,7 @@ class FileLocksBackend implements BackendInterface {
 				}
 			}
 
-			if (!$this->hideLockTokenInList) {
+			if (!$this->isPublicEndpoint) {
 				$lockInfo->token = $lock->getToken();
 				$lockInfo->owner = $lock->getOwner();
 			}
@@ -160,6 +161,9 @@ class FileLocksBackend implements BackendInterface {
 	 * @return bool
 	 */
 	public function lock($uri, Locks\LockInfo $lockInfo) {
+		if ($this->isPublicEndpoint) {
+			throw new Forbidden('Forbidden to lock from public endpoint');
+		}
 		try {
 			$node = $this->tree->getNodeForPath($uri);
 		} catch (NotFound $e) {
@@ -197,6 +201,9 @@ class FileLocksBackend implements BackendInterface {
 	 * @return bool
 	 */
 	public function unlock($uri, Locks\LockInfo $lockInfo) {
+		if ($this->isPublicEndpoint) {
+			throw new Forbidden('Forbidden to unlock from public endpoint');
+		}
 		try {
 			$node = $this->tree->getNodeForPath($uri);
 		} catch (NotFound $e) {
