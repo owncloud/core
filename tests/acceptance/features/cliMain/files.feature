@@ -1,4 +1,4 @@
-@cli @local_storage
+@cli @local_storage @TestAlsoOnExternalUserBackend
 Feature: Files Operations command
 
   Scenario: Adding a file to local storage and running scan should add files.
@@ -48,28 +48,28 @@ Feature: Files Operations command
     Given using new DAV path
     And these users have been created with default attributes:
       | username |
-      | user0    |
       | user1    |
-    And group "newgroup" has been created
-    And user "user0" has been added to group "newgroup"
-    And user "user1" has been added to group "newgroup"
-    And user "user0" has created folder "/local_storage/folder1"
+      | user2    |
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    And user "user2" has been added to group "grp1"
+    And user "user1" has created folder "/local_storage/folder1"
     And the administrator has set the external storage "local_storage" to be never scanned automatically
-    And user "user0" has shared folder "/local_storage/folder1" with group "newgroup"
+    And user "user1" has shared folder "/local_storage/folder1" with group "grp1"
     And the administrator has scanned the filesystem for all users
-    And the administrator has scanned the filesystem for group "newgroup"
+    And the administrator has scanned the filesystem for group "grp1"
     When the administrator creates file "folder1/hello1.txt" with content "<? php :)" in local storage using the testing API
-    And user "user0" requests "/remote.php/dav/files/user0/local_storage/folder1" with "PROPFIND" using basic auth
+    And user "user1" requests "/remote.php/dav/files/user1/local_storage/folder1" with "PROPFIND" using basic auth
     Then the propfind result should not contain these entries:
       | /hello1.txt |
-    When user "user1" requests "/remote.php/dav/files/user1/local_storage/folder1" with "PROPFIND" using basic auth
+    When user "user2" requests "/remote.php/dav/files/user2/local_storage/folder1" with "PROPFIND" using basic auth
     Then the propfind result should not contain these entries:
       | /hello1.txt |
-    When the administrator scans the filesystem for group "newgroup" using the occ command
-    And user "user0" requests "/remote.php/dav/files/user0/local_storage/folder1" with "PROPFIND" using basic auth
+    When the administrator scans the filesystem for group "grp1" using the occ command
+    And user "user1" requests "/remote.php/dav/files/user1/local_storage/folder1" with "PROPFIND" using basic auth
     Then the propfind result should contain these entries:
       | /hello1.txt |
-    When user "user1" requests "/remote.php/dav/files/user1/folder1" with "PROPFIND" using basic auth
+    When user "user2" requests "/remote.php/dav/files/user2/folder1" with "PROPFIND" using basic auth
     Then the propfind result should contain these entries:
       | /hello1.txt |
 
@@ -137,40 +137,40 @@ Feature: Files Operations command
     Given using new DAV path
     And these users have been created with default attributes:
       | username |
-      | user0    |
       | user1    |
       | user2    |
-    And group "newgroup" has been created
-    And group "newgroup2" has been created
-    And user "user0" has been added to group "newgroup"
-    And user "user1" has been added to group "newgroup"
-    And user "user2" has been added to group "newgroup2"
+      | user3    |
+    And group "grp1" has been created
+    And group "grp2" has been created
+    And user "user1" has been added to group "grp1"
+    And user "user2" has been added to group "grp1"
+    And user "user3" has been added to group "grp2"
     And the administrator has created the local storage mount "local_storage1"
-    And the administrator has added group "newgroup" as the applicable group for the last local storage mount
+    And the administrator has added group "grp1" as the applicable group for the last local storage mount
     And the administrator has created the local storage mount "local_storage2"
-    And the administrator has added group "newgroup2" as the applicable group for the last local storage mount
+    And the administrator has added group "grp2" as the applicable group for the last local storage mount
     And the administrator has set the external storage "local_storage1" to be never scanned automatically
     And the administrator has set the external storage "local_storage2" to be never scanned automatically
     And the administrator has scanned the filesystem for all users
     When the administrator creates file "hello1.txt" with content "<? php :)" in local storage "local_storage1" using the testing API
     And the administrator creates file "hello1.txt" with content "<? php :)" in local storage "local_storage2" using the testing API
-    And user "user0" requests "/remote.php/dav/files/user0/local_storage1" with "PROPFIND" using basic auth
+    And user "user1" requests "/remote.php/dav/files/user1/local_storage1" with "PROPFIND" using basic auth
     Then the propfind result should not contain these entries:
       | /hello1.txt |
-    When user "user1" requests "/remote.php/dav/files/user1/local_storage1" with "PROPFIND" using basic auth
+    When user "user2" requests "/remote.php/dav/files/user2/local_storage1" with "PROPFIND" using basic auth
     Then the propfind result should not contain these entries:
       | /hello1.txt |
-    When user "user2" requests "/remote.php/dav/files/user2/local_storage2" with "PROPFIND" using basic auth
+    When user "user3" requests "/remote.php/dav/files/user3/local_storage2" with "PROPFIND" using basic auth
     Then the propfind result should not contain these entries:
       | /hello1.txt |
-    When the administrator scans the filesystem for group "newgroup" using the occ command
-    And user "user0" requests "/remote.php/dav/files/user0/local_storage1" with "PROPFIND" using basic auth
+    When the administrator scans the filesystem for group "grp1" using the occ command
+    And user "user1" requests "/remote.php/dav/files/user1/local_storage1" with "PROPFIND" using basic auth
     Then the propfind result should contain these entries:
       | /hello1.txt |
-    When user "user1" requests "/remote.php/dav/files/user1/local_storage1" with "PROPFIND" using basic auth
+    When user "user2" requests "/remote.php/dav/files/user2/local_storage1" with "PROPFIND" using basic auth
     Then the propfind result should contain these entries:
       | /hello1.txt |
-    When user "user2" requests "/remote.php/dav/files/user2/local_storage2" with "PROPFIND" using basic auth
+    When user "user3" requests "/remote.php/dav/files/user3/local_storage2" with "PROPFIND" using basic auth
     Then the propfind result should not contain these entries:
       | /hello1.txt |
 
@@ -217,46 +217,46 @@ Feature: Files Operations command
     Given using new DAV path
     And these users have been created with default attributes:
       | username |
-      | user0    |
       | user1    |
-    And group "newgroup" has been created
-    And user "user0" has been added to group "newgroup"
+      | user2    |
+    And group "grp4" has been created
+    And user "user1" has been added to group "grp4"
     And the administrator has created the local storage mount "local_storage2"
-    When the administrator adds group "newgroup" as the applicable group for the last local storage mount using the occ command
-    Then as "user0" folder "/local_storage2" should exist
-    And as "user1" folder "/local_storage2" should not exist
+    When the administrator adds group "grp4" as the applicable group for the last local storage mount using the occ command
+    Then as "user1" folder "/local_storage2" should exist
+    And as "user2" folder "/local_storage2" should not exist
 
   Scenario: administrator should be able to create a local mount for more than one group
     Given using new DAV path
     And these users have been created with default attributes:
       | username |
-      | user0    |
       | user1    |
       | user2    |
-    And group "newgroup" has been created
-    And group "newgroup2" has been created
-    And user "user0" has been added to group "newgroup"
-    And user "user1" has been added to group "newgroup2"
+      | user3    |
+    And group "grp1" has been created
+    And group "grp4" has been created
+    And user "user1" has been added to group "grp4"
+    And user "user2" has been added to group "grp1"
     And the administrator has created the local storage mount "local_storage2"
-    When the administrator adds group "newgroup" as the applicable group for the last local storage mount using the occ command
-    And the administrator adds group "newgroup2" as the applicable group for the last local storage mount using the occ command
-    Then as "user0" folder "/local_storage2" should exist
-    And as "user1" folder "/local_storage2" should exist
-    And as "user2" folder "/local_storage2" should not exist
+    When the administrator adds group "grp1" as the applicable group for the last local storage mount using the occ command
+    And the administrator adds group "grp4" as the applicable group for the last local storage mount using the occ command
+    Then as "user1" folder "/local_storage2" should exist
+    And as "user2" folder "/local_storage2" should exist
+    And as "user3" folder "/local_storage2" should not exist
 
   Scenario: administrator should be able to create a local mount for a specific group and user
     Given using new DAV path
     And these users have been created with default attributes:
       | username |
-      | user0    |
       | user1    |
-    And group "newgroup" has been created
-    And user "user0" has been added to group "newgroup"
+      | user3    |
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
     And the administrator has created the local storage mount "local_storage2"
-    When the administrator adds group "newgroup" as the applicable group for the last local storage mount using the occ command
-    And the administrator adds user "user1" as the applicable user for the last local storage mount using the occ command
-    Then as "user0" folder "/local_storage2" should exist
-    And as "user1" folder "/local_storage2" should exist
+    When the administrator adds group "grp1" as the applicable group for the last local storage mount using the occ command
+    And the administrator adds user "user3" as the applicable user for the last local storage mount using the occ command
+    Then as "user1" folder "/local_storage2" should exist
+    And as "user3" folder "/local_storage2" should exist
 
   Scenario: removing group from applicable group of a local mount
     Given using new DAV path
@@ -290,17 +290,17 @@ Feature: Files Operations command
     Given using new DAV path
     And these users have been created with default attributes:
       | username |
-      | user0    |
       | user1    |
-      | user2    |
-    And group "newgroup" has been created
-    And group "newgroup2" has been created
-    And user "user0" has been added to group "newgroup"
-    And user "user1" has been added to group "newgroup2"
+      | user3    |
+      | user4    |
+    And group "grp1" has been created
+    And group "grp2" has been created
+    And user "user1" has been added to group "grp1"
+    And user "user3" has been added to group "grp2"
     And the administrator has created the local storage mount "local_storage2"
-    And the administrator has added group "newgroup" as the applicable group for the last local storage mount
-    And the administrator has added group "newgroup2" as the applicable group for the last local storage mount
-    When the administrator removes group "newgroup" from the applicable group for the last local storage mount using the occ command
-    Then as "user0" folder "/local_storage2" should not exist
-    And as "user1" folder "/local_storage2" should exist
-    And as "user2" folder "/local_storage2" should not exist
+    And the administrator has added group "grp1" as the applicable group for the last local storage mount
+    And the administrator has added group "grp2" as the applicable group for the last local storage mount
+    When the administrator removes group "grp1" from the applicable group for the last local storage mount using the occ command
+    Then as "user1" folder "/local_storage2" should not exist
+    And as "user3" folder "/local_storage2" should exist
+    And as "user4" folder "/local_storage2" should not exist

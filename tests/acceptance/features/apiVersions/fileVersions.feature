@@ -1,4 +1,4 @@
-@api @files_versions-app-required
+@api @files_versions-app-required @TestAlsoOnExternalUserBackend
 
 Feature: dav-versions
 
@@ -237,11 +237,11 @@ Feature: dav-versions
   Scenario: sharer can restore a file inside a group shared folder modified by sharee
     Given user "user1" has been created with default attributes
     And user "user2" has been created with default attributes
-    And group "newgroup" has been created
-    And user "user1" has been added to group "newgroup"
-    And user "user2" has been added to group "newgroup"
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    And user "user2" has been added to group "grp1"
     And user "user0" has created folder "/sharingfolder"
-    And user "user0" has shared folder "/sharingfolder" with group "newgroup"
+    And user "user0" has shared folder "/sharingfolder" with group "grp1"
     And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
     And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
     And user "user2" has uploaded file with content "user2 content" to "/sharingfolder/sharefile.txt"
