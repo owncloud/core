@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use GuzzleHttp\Exception\ConnectException;
 use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';
@@ -37,6 +38,13 @@ class WebDavLockingContext implements Context {
 	 * @var FeatureContext
 	 */
 	private $featureContext;
+
+	/**
+	 *
+	 * @var PublicWebDavContext
+	 */
+	private $publicWebDavContext;
+
 	/**
 	 *
 	 * @var string[][]
@@ -276,6 +284,94 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" moves (?:file|folder|entry) "([^"]*)" to "([^"]*)" sending the locktoken of (?:file|folder|entry) "([^"]*)" using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param string $fileSource
+	 * @param string $fileDestination
+	 * @param string $itemToUseLockOf
+	 *
+	 * @return void
+	 */
+	public function moveItemSendingLockToken(
+		$user, $fileSource, $fileDestination, $itemToUseLockOf
+	) {
+		$this->moveItemSendingLockTokenOfUser(
+			$user, $fileSource, $fileDestination, $itemToUseLockOf, $user
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" moves (?:file|folder|entry) "([^"]*)" to "([^"]*)" sending the locktoken of (?:file|folder|entry) "([^"]*)" of user "([^"]*)" using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param string $fileSource
+	 * @param string $fileDestination
+	 * @param string $itemToUseLockOf
+	 * @param string $lockOwner
+	 *
+	 * @return void
+	 */
+	public function moveItemSendingLockTokenOfUser(
+		$user, $fileSource, $fileDestination, $itemToUseLockOf, $lockOwner
+	) {
+		$destination = $this->featureContext->destinationHeaderValue(
+			$user, $fileDestination
+		);
+		$token = $this->tokenOfLastLock[$lockOwner][$itemToUseLockOf];
+		$headers = [
+			"Destination" => $destination,
+			"If" => "(<$token>)"
+		];
+		try {
+			$response = $this->featureContext->makeDavRequest(
+				$user, "MOVE", $fileSource, $headers
+			);
+			$this->featureContext->setResponse($response);
+		} catch (ConnectException $e) {
+		}
+	}
+
+	/**
+	 * @When the public uploads file :filename with content :content sending the locktoken of file :itemToUseLockOf of user :lockOwner using the public WebDAV API
+	 *
+	 * @param string $filename
+	 * @param string $content
+	 * @param string $itemToUseLockOf
+	 * @param string $lockOwner
+	 *
+	 * @return void
+	 *
+	 */
+	public function publicUploadFileSendingLockTokenOfUser(
+		$filename, $content, $itemToUseLockOf, $lockOwner
+	) {
+		$headers = [
+			"If" => "(<" . $this->tokenOfLastLock[$lockOwner][$itemToUseLockOf] . ">)"
+		];
+		$this->publicWebDavContext->publicUploadContent(
+			$filename, '', $content, false, $headers
+		);
+	}
+
+	/**
+	 * @When the public uploads file :filename with content :content sending the locktoken of :itemToUseLockOf of the public using the public WebDAV API
+	 *
+	 * @param string $filename
+	 * @param string $content
+	 * @param string $itemToUseLockOf
+	 *
+	 * @return void
+	 */
+	public function publicUploadFileSendingLockTokenOfPublic(
+		$filename, $content, $itemToUseLockOf
+	) {
+		$lockOwner = (string)$this->featureContext->getLastShareData()->data->token;
+		$this->publicUploadFileSendingLockTokenOfUser(
+			$filename, $content, $itemToUseLockOf, $lockOwner
+		);
+	}
+	/**
 	 * @Then :count locks should be reported for file/folder :file of user :user by the WebDAV API
 	 *
 	 * @param int $count
@@ -320,5 +416,6 @@ class WebDavLockingContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->publicWebDavContext = $environment->getContext('PublicWebDavContext');
 	}
 }
