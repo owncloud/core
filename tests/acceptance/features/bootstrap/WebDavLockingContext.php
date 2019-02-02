@@ -356,6 +356,28 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" uploads file with content "([^"]*)" to "([^"]*)" sending the locktoken of (?:file|folder|entry) "([^"]*)" using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param string $destination
+	 * @param string $itemToUseLockOf
+	 *
+	 * @return string
+	 */
+	public function userUploadsAFileWithContentTo(
+		$user, $content, $destination, $itemToUseLockOf
+	) {
+		$token = $this->tokenOfLastLock[$user][$itemToUseLockOf];
+		$this->featureContext->pauseUploadDelete();
+		$response = $this->featureContext->makeDavRequest(
+			$user, "PUT", $destination, ["If" => "(<$token>)"], $content
+		);
+		$this->featureContext->setResponse($response);
+		$this->featureContext->setLastUploadDeleteTime(\time());
+	}
+
+	/**
 	 * @When the public uploads file :filename with content :content sending the locktoken of file :itemToUseLockOf of user :lockOwner using the public WebDAV API
 	 *
 	 * @param string $filename
