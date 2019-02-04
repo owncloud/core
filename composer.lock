@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "0d3f0741f6676cc6761d0e0477fa10d2",
@@ -3285,22 +3285,22 @@
         },
         {
             "name": "zendframework/zend-validator",
-            "version": "2.11.0",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-validator.git",
-                "reference": "f0789b4c4c099afdd2ecc58cc209a26c64bd4f17"
+                "reference": "64c33668e5fa2d39c6289a878f927ea2b0850c30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/f0789b4c4c099afdd2ecc58cc209a26c64bd4f17",
-                "reference": "f0789b4c4c099afdd2ecc58cc209a26c64bd4f17",
+                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/64c33668e5fa2d39c6289a878f927ea2b0850c30",
+                "reference": "64c33668e5fa2d39c6289a878f927ea2b0850c30",
                 "shasum": ""
             },
             "require": {
                 "container-interop/container-interop": "^1.1",
                 "php": "^5.6 || ^7.0",
-                "zendframework/zend-stdlib": "^2.7.6 || ^3.1"
+                "zendframework/zend-stdlib": "^3.2.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "^6.0.8 || ^5.7.15",
@@ -3331,8 +3331,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.11.x-dev",
-                    "dev-develop": "2.12.x-dev"
+                    "dev-master": "2.12.x-dev",
+                    "dev-develop": "2.13.x-dev"
                 },
                 "zf": {
                     "component": "Zend\\Validator",
@@ -3354,7 +3354,7 @@
                 "validator",
                 "zf2"
             ],
-            "time": "2018-12-13T21:23:15+00:00"
+            "time": "2019-01-30T14:26:10+00:00"
         }
     ],
     "packages-dev": [
@@ -4244,12 +4244,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "d155baccb43ba2542941fbcba258b85ce7786419"
+                "reference": "e1b9176e35e8a4521c8b9720f4b5601d5caa68c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/d155baccb43ba2542941fbcba258b85ce7786419",
-                "reference": "d155baccb43ba2542941fbcba258b85ce7786419",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/e1b9176e35e8a4521c8b9720f4b5601d5caa68c5",
+                "reference": "e1b9176e35e8a4521c8b9720f4b5601d5caa68c5",
                 "shasum": ""
             },
             "conflict": {
@@ -4284,8 +4284,8 @@
                 "doctrine/mongodb-odm-bundle": ">=2,<3.0.1",
                 "doctrine/orm": ">=2,<2.4.8|>=2.5,<2.5.1",
                 "dompdf/dompdf": ">=0.6,<0.6.2",
-                "drupal/core": ">=7,<7.60|>=8,<8.5.8|>=8.6,<8.6.2",
-                "drupal/drupal": ">=7,<7.60|>=8,<8.5.8|>=8.6,<8.6.2",
+                "drupal/core": ">=7,<7.62|>=8,<8.6.6",
+                "drupal/drupal": ">=7,<7.62|>=8,<8.6.6",
                 "erusev/parsedown": "<1.7",
                 "ezsystems/ezpublish-kernel": ">=5.3,<5.3.12.1|>=5.4,<5.4.13.1|>=6,<6.7.9.1|>=6.8,<6.13.5.1|>=7,<7.2.4.1|>=7.3,<7.3.2.1",
                 "ezsystems/ezpublish-legacy": ">=5.3,<5.3.12.6|>=5.4,<5.4.12.3|>=2011,<2017.12.4.3|>=2018.6,<2018.6.1.4|>=2018.9,<2018.9.1.3",
@@ -4382,13 +4382,13 @@
                 "symfony/yaml": ">=2,<2.0.22|>=2.1,<2.1.7",
                 "tecnickcom/tcpdf": "<6.2.22",
                 "thelia/backoffice-default-template": ">=2.1,<2.1.2",
-                "thelia/thelia": ">=2.1.0-beta1,<2.1.3|>=2.1,<2.1.2",
+                "thelia/thelia": ">=2.1,<2.1.2|>=2.1.0-beta1,<2.1.3",
                 "theonedemon/phpwhois": "<=4.2.5",
                 "titon/framework": ">=0,<9.9.99",
                 "truckersmp/phpwhois": "<=4.3.1",
                 "twig/twig": "<1.20",
-                "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.32|>=8,<8.7.21|>=9,<9.5.2",
-                "typo3/cms-core": ">=8,<8.7.21|>=9,<9.5.2",
+                "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.32|>=8,<8.7.23|>=9,<9.5.4",
+                "typo3/cms-core": ">=8,<8.7.23|>=9,<9.5.4",
                 "typo3/flow": ">=1,<1.0.4|>=1.1,<1.1.1|>=2,<2.0.1|>=2.3,<2.3.16|>=3,<3.0.10|>=3.1,<3.1.7|>=3.2,<3.2.7|>=3.3,<3.3.5",
                 "typo3/neos": ">=1.1,<1.1.3|>=1.2,<1.2.13|>=2,<2.0.4",
                 "ua-parser/uap-php": "<3.8",
@@ -4440,7 +4440,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-01-15T19:39:37+00:00"
+            "time": "2019-02-03T13:48:05+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -5000,7 +5000,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
