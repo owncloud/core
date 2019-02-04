@@ -308,6 +308,39 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @param string $appTestCodeFullPath
+	 *
+	 * @return string the relative path from the core tests/acceptance dir
+	 *                to the equivalent dir in the app
+	 */
+	public function getPathFromCoreToAppAcceptanceTests(
+		$appTestCodeFullPath
+	) {
+		// $appTestCodeFullPath is something like:
+		// '/somedir/anotherdir/core/apps/guests/tests/acceptance/features/bootstrap'
+		// and we want to know the 'apps/guests/tests/acceptance' part
+
+		// Sadly we have to support PHP 5.6 still.
+		// From PHP 7.0 we can go up 2 levels more directly:
+		// $path = dirname(__DIR__, 2);
+		$path = \dirname(\dirname($appTestCodeFullPath));
+		$acceptanceDir = \basename($path);
+		$path = \dirname($path);
+		$testsDir = \basename($path);
+		$path = \dirname($path);
+		$appNameDir = \basename($path);
+		$path = \dirname($path);
+		// We specially are not sure about the name of the directory 'apps'
+		// Sometimes the app could be installed in some alternate apps directory
+		// like, for example, `apps-external`. So this really does need to be
+		// resolved here at run-time.
+		$appsDir = \basename($path);
+		// To get from core tests/acceptance we go up 2 levels then down through
+		// the above app dirs.
+		return "../../$appsDir/$appNameDir/$testsDir/$acceptanceDir";
+	}
+
+	/**
 	 * Get the externally-defined admin username, if any
 	 *
 	 * @return string|false
