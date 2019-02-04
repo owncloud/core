@@ -60,6 +60,36 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
+  Scenario Outline: Move file out of a locked folder
+    Given using <dav-path> DAV path
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | <lock-scope> |
+    When user "user0" moves file "/PARENT/parent.txt" to "/parent.txt" using the WebDAV API
+    Then the HTTP status code should be "423"
+    And as "user0" folder "/parent.txt" should not exist
+    But as "user0" folder "/PARENT/parent.txt" should exist
+    Examples:
+      | dav-path | lock-scope |
+      | old      | shared     |
+      | old      | exclusive  |
+      | new      | shared     |
+      | new      | exclusive  |
+
+  Scenario Outline: Move file out of a locked sub folder one level higher into locked parent folder
+    Given using <dav-path> DAV path
+    And user "user0" has locked folder "PARENT" setting following properties
+      | lockscope | <lock-scope> |
+    When user "user0" moves file "/PARENT/CHILD/child.txt" to "/PARENT/child.txt" using the WebDAV API
+    Then the HTTP status code should be "423"
+    And as "user0" folder "/PARENT/child.txt" should not exist
+    But as "user0" folder "/PARENT/CHILD/child.txt" should exist
+    Examples:
+      | dav-path | lock-scope |
+      | old      | shared     |
+      | old      | exclusive  |
+      | new      | shared     |
+      | new      | exclusive  |
+
   Scenario Outline: lockdiscovery of a locked folder
     Given using <dav-path> DAV path
     And user "user0" has created a public link share of folder "PARENT" with change permission
