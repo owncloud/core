@@ -26,6 +26,8 @@ use OCP\IUser;
 use OCP\IConfig;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
+use Sabre\HTTP\Request;
+use Sabre\HTTP\Response;
 use Test\TestCase;
 
 class CorsPluginTest extends TestCase {
@@ -85,19 +87,15 @@ class CorsPluginTest extends TestCase {
 		$allowedDomains = '["https://requesterdomain.tld", "http://anotherdomain.tld"]';
 
 		$allowedHeaders = [
-			'authorization',
-			'OCS-APIREQUEST',
-			'Origin',
-			'X-Requested-With',
-			'Content-Type',
-			'Access-Control-Allow-Origin',
-			'X-Request-ID',
-			'X-OC-Mtime',
-			'OC-Checksum',
-			'OC-Total-Length',
-			'Depth',
-			'Destination',
-			'Overwrite',
+			'X-OC-Mtime', 'OC-Checksum', 'OC-Total-Length', 'OCS-APIREQUEST', 'Accept',
+			'Authorization', 'Brief', 'Content-Length', 'Content-Range', 'Content-type',
+			'Content-Type', 'Date', 'Depth', 'Destination', 'Host', 'If', 'If-Match',
+			'If-Modified-Since', 'If-None-Match', 'If-Range', 'If-Unmodified-Since',
+			'Location', 'Lock-Token', 'Overwrite', 'Prefer', 'Range', 'Schedule-Reply',
+			'Timeout', 'User-Agent', 'X-Expected-Entity-Length', 'Accept-Language',
+			'Access-Control-Request-Method', 'Access-Control-Allow-Origin', 'ETag',
+			'OC-Autorename', 'OC-CalDav-Import', 'OC-Chunked', 'OC-Etag', 'OC-FileId',
+			'OC-LazyOps', 'OC-Total-File-Length', 'Origin', 'X-Request-ID', 'X-Requested-With'
 		];
 		$allowedMethods = [
 			'GET',
@@ -280,6 +278,7 @@ class CorsPluginTest extends TestCase {
 			$this->userSession->method('getUser')->willReturn(null);
 		}
 
+		$this->config->method('getSystemValue')->willReturn([]);
 		$this->config->method('getUserValue')
 			->with('someuser', 'core', 'domains')
 			->willReturn($allowedDomains);
@@ -325,5 +324,29 @@ class CorsPluginTest extends TestCase {
 			'Null Origin' => [true, null],
 			'plain http' => [false, 'http://example.net/'],
 		];
+	}
+
+	public function testAdditionalAllowedHeaders() {
+		$user = $this->createMock(IUser::class);
+		$user->method('getUID')->willReturn('someuser');
+
+		$this->userSession->method('getUser')->willReturn($user);
+		$this->server->httpRequest->setHeader('Origin', 'https://requesterdomain.tld');
+
+		$this->config->method('getSystemValue')->withConsecutive(
+			['cors.allowed-domains', []],
+			['cors.allowed-headers', []]
+		)
+			->willReturnMap([
+				['cors.allowed-domains', [], []],
+				['cors.allowed-headers', [], ['X-Additional-Configured-Header', 'authorization']]
+			]);
+		$this->config->method('getUserValue')->willReturn('["https://requesterdomain.tld"]');
+
+		$this->server->addPlugin($this->plugin);
+
+		$this->plugin->setCorsHeaders($this->server->httpRequest, $this->server->httpResponse);
+		self::assertEquals('X-Additional-Configured-Header,authorization,X-OC-Mtime,OC-Checksum,OC-Total-Length,OCS-APIREQUEST,Accept,Authorization,Brief,Content-Length,Content-Range,Content-type,Content-Type,Date,Depth,Destination,Host,If,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Location,Lock-Token,Overwrite,Prefer,Range,Schedule-Reply,Timeout,User-Agent,X-Expected-Entity-Length,Accept-Language,Access-Control-Request-Method,Access-Control-Allow-Origin,ETag,OC-Autorename,OC-CalDav-Import,OC-Chunked,OC-Etag,OC-FileId,OC-LazyOps,OC-Total-File-Length,Origin,X-Request-ID,X-Requested-With',
+			$this->server->httpResponse->getHeader('Access-Control-Allow-Headers'));
 	}
 }
