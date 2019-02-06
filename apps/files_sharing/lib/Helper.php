@@ -281,13 +281,23 @@ class Helper {
 		$shareFolder = Filesystem::normalizePath($shareFolder);
 
 		if (!$view->file_exists($shareFolder)) {
-			$dir = '';
-			$subdirs = \explode('/', $shareFolder);
-			foreach ($subdirs as $subdir) {
-				$dir = $dir . '/' . $subdir;
-				if (!$view->is_dir($dir)) {
-					$view->mkdir($dir);
+			$currentDir = $shareFolder;
+			$dirsToCreate = [$shareFolder];
+			while (($currentDir = \dirname($currentDir)) !== '/') {
+				// FIXME: check if there is such file as well?
+				if ($view->is_dir($currentDir)) {
+					break;
 				}
+				$dirsToCreate[] = $currentDir;
+			}
+
+			$dirsToCreate = \array_reverse($dirsToCreate);
+			$shareFolder = '/';
+			foreach ($dirsToCreate as $dirToCreate) {
+				if ($view->mkdir($dirToCreate) === false) {
+					break;
+				}
+				$shareFolder = $dirToCreate;
 			}
 		}
 
