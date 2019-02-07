@@ -102,3 +102,9 @@ Feature: File Upload
     And the user uploads overwriting file "lorem.txt" using the webUI and retries if the file is locked
     Then file "lorem.txt" should be listed on the webUI
     And the content of "simple-folder/lorem.txt" should be the same as the local "lorem.txt"
+
+  Scenario: upload a file into files_drop share
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
+      | permission | upload |
+    And the public accesses the last created public link using the webUI
+    Then the user uploads file "lorem.txt" using the webUI
