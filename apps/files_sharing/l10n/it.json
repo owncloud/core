@@ -19,6 +19,9 @@
     "Files and folders you share will show up here" : "I file e le cartelle che condividi saranno mostrati qui",
     "No shared links" : "Nessun collegamento condiviso",
     "Files and folders you share by link will show up here" : "I file e le cartelle che condividi tramite collegamento saranno mostrati qui",
+    "An error occurred while updating share state: {message}" : "Si è verificato un errore aggiornando lo stato di condivisione: {message}",
+    "Accept Share" : "Accetta condivisione",
+    "Decline Share" : "Rifiuta condivisione",
     "Do you want to add the remote share {name} from {owner}@{remote}?" : "Vuoi aggiungere la condivisione remota {name} da {owner}@{remote}?",
     "Remote share" : "Condivisione remota",
     "Remote share password" : "Password della condivisione remota",
@@ -76,6 +79,7 @@
     "Public link of %2$s expired" : "il collegamento pubblico di %2$s è scaduto",
     "Shared by %2$s" : "Condivisa da %2$s",
     "Shares" : "Condivisioni",
+    "File sharing" : "Condivisione file",
     "Public link" : "Collegamento pubblico",
     "Share API is disabled" : "API di condivisione disabilitate",
     "Wrong share ID, share doesn't exist" : "ID di condivisione errato, la condivisione non esiste",
@@ -86,6 +90,7 @@
     "Please specify a valid user" : "Specifica un utente valido",
     "Group sharing is disabled by the administrator" : "La condivisione di gruppo è disabilitata dall'amministratore",
     "Please specify a valid group" : "Specifica un gruppo valido",
+    "The group is blacklisted for sharing" : "Al gruppo non è permesso condividere",
     "Public link sharing is disabled by the administrator" : "La condivisione pubblica di collegamenti è disabilitata dall'amministratore",
     "Public upload disabled by the administrator" : "Caricamento pubblico disabilitato dall'amministratore",
     "Public upload is only possible for publicly shared folders" : "Il caricamento pubblico è possibile solo per cartelle condivise pubblicamente",
@@ -97,6 +102,8 @@
     "Can't change permissions for public share links" : "Impossibile cambiare i permessi per i collegamenti di condivisione pubblici",
     "Wrong or no update parameter given" : "Parametro fornito non valido o non di aggiornamento",
     "Cannot increase permissions" : "Impossibile aumentare i permessi",
+    "Couldn't send mail to following recipient(s): %s " : "Invio dell'email fallito al/ai seguente/i destinatario/i: %s ",
+    "Only recipient can change accepted state" : "Solo il destinatario può cambiare lo stato di accettazione",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" ha condiviso \"%3$s\" con te (per conto di \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" ha condiviso \"%3$s\" con te",
     "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" ti ha invitato a visualizzare \"%3$s\" (per conto di \"%2$s\")",
@@ -108,6 +115,7 @@
     "Password" : "Password",
     "No entries found in this folder" : "Nessuna voce trovata in questa cartella",
     "Name" : "Nome",
+    "State" : "Stato",
     "Share time" : "Tempo di condivisione",
     "Expiration date" : "Data di scadenza",
     "Sorry, this link doesn’t seem to work anymore." : "Spiacenti, questo collegamento sembra non essere più attivo.",
@@ -119,6 +127,9 @@
     "%s is publicly shared" : "%s è condiviso pubblicamente",
     "Download" : "Scarica",
     "Download %s" : "Scarica %s",
-    "Direct link" : "Collegamento diretto"
+    "Direct link" : "Collegamento diretto",
+    "Group Sharing Blacklist" : "Lista nera condivisione gruppi",
+    "Exclude groups from receiving shares" : "Escludi gruppi dalla ricezione di condivisioni",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Questi gruppi non saranno disponibili per la condivisione. Ai membri del gruppo non è vietato iniziare condivisioni e possono ricevere condivisioni con altri gruppi di cui sono membri come di consueto."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

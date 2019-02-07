@@ -16,6 +16,7 @@ OC.L10N.register(
     "Open documentation" : "Otwórz dokumentację",
     "Allow users on this server to send shares to other servers" : "Zezwalaj użytkownikom tego serwera na wysyłanie udziałów do innych serwerów",
     "Allow users on this server to receive shares from other servers" : "Zezwalaj użytkownikom tego serwera na przyjmowanie udziałów z innych serwerów",
+    "Automatically accept remote shares from trusted servers" : "Automatycznie akceptuj zdalne udziały z zaufanych serwerów",
     "Federated Cloud" : "Chmura stowarzyszona",
     "Your Federated Cloud ID:" : "ID Twojej stowarzyszonej chmury:",
     "Share it:" : "Współdziel to:",

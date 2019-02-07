@@ -46,6 +46,7 @@ OC.L10N.register(
     "Storage type" : "Тип сховища",
     "Scope" : "Область",
     "Enable encryption" : "Увімкнути шифрування",
+    "Never" : "Ніколи",
     "External Storage" : "Зовнішні сховища",
     "Folder name" : "Ім'я теки",
     "Configuration" : "Налаштування",

@@ -232,6 +232,7 @@ OC.L10N.register(
     "Sessions" : "Sesje",
     "Browser" : "Przeglądarka",
     "Most recent activity" : "Ostatnia aktywność",
+    "App passwords / tokens" : "Hasła / tokeny aplikacji",
     "Name" : "Nazwa",
     "App name" : "Nazwa aplikacji",
     "Username" : "Nazwa użytkownika",
