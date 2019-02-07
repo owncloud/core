@@ -133,6 +133,7 @@ class OccUsersGroupsContext implements Context {
 			$this->featureContext->getActualPassword($password)
 		);
 		$this->featureContext->addUserToCreatedUsersList($username, $password);
+		$this->featureContext->addGroupToCreatedGroupsList($group);
 	}
 
 	/**
