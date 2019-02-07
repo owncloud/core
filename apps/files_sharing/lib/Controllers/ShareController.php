@@ -180,6 +180,8 @@ class ShareController extends Controller {
 	 * @return bool
 	 */
 	private function linkShareAuth(\OCP\Share\IShare $share, $password = null) {
+		$beforeEvent = new GenericEvent(null, ['shareObject' => $share]);
+		$this->eventDispatcher->dispatch('share.beforelinkauth', $beforeEvent);
 		if ($password !== null) {
 			if ($this->shareManager->checkPassword($share, $password)) {
 				$this->session->set('public_link_authenticated', (string)$share->getId());
@@ -194,6 +196,8 @@ class ShareController extends Controller {
 				return false;
 			}
 		}
+		$afterEvent = new GenericEvent(null, ['shareObject' => $share]);
+		$this->eventDispatcher->dispatch('share.afterlinkauth', $afterEvent);
 		return true;
 	}
 
