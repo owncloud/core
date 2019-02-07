@@ -299,6 +299,7 @@ class OC_Response {
 		if ($isCorsRequest) {
 			// TODO: infer allowed verbs from existing known routes
 			$allHeaders['Access-Control-Allow-Headers'] = self::getAllowedCorsHeaders($config);
+			$allHeaders['Access-Control-Expose-Headers'] = self::getExposeCorsHeaders();
 			$allHeaders['Access-Control-Allow-Origin'] = [$domain];
 			$allHeaders['Access-Control-Allow-Methods'] =['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE', 'MKCOL', 'PROPFIND', 'PATCH', 'PROPPATCH', 'REPORT'];
 
@@ -346,6 +347,19 @@ class OC_Response {
 		}
 
 		return $response;
+	}
+
+	private static function getExposeCorsHeaders() {
+		return [
+			'X-Sabre-Status',
+			'ETag',
+			'OC-ETag',
+			'OC-FileId',
+			'OC-JobStatus-Location',
+			'Vary',
+			'DAV',
+			'Lock-Token'
+		];
 	}
 
 	/**
