@@ -18,6 +18,7 @@ Feature: edit users
     And the user attributes returned by the API should include
     | displayname | New User |
 
+  @skipOnEncryptionType:user-keys
   Scenario: Admin changes the password of the user
     Given user "user0" has been created with default attributes
     And the administrator has browsed to the users page
