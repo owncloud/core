@@ -20,6 +20,7 @@
  */
 namespace OCA\FederatedFileSharing;
 
+use OCP\IConfig;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
@@ -28,13 +29,17 @@ class AdminPanel implements ISettings {
 	/** @var FederatedShareProvider */
 	protected $shareProvider;
 
+	/** @var IConfig */
+	protected $config;
+
 	/**
 	 * AdminPanel constructor.
 	 *
 	 * @param FederatedShareProvider $shareProvider
 	 */
-	public function __construct(FederatedShareProvider $shareProvider) {
+	public function __construct(FederatedShareProvider $shareProvider, IConfig $config) {
 		$this->shareProvider = $shareProvider;
+		$this->config = $config;
 	}
 
 	public function getPriority() {
@@ -49,6 +54,10 @@ class AdminPanel implements ISettings {
 		$tmpl = new Template('federatedfilesharing', 'settings-admin');
 		$tmpl->assign('outgoingServer2serverShareEnabled', $this->shareProvider->isOutgoingServer2serverShareEnabled());
 		$tmpl->assign('incomingServer2serverShareEnabled', $this->shareProvider->isIncomingServer2serverShareEnabled());
+		$tmpl->assign(
+			'autoAcceptTrusted',
+			$this->config->getAppValue('federatedfilesharing', 'auto_accept_trusted', 'no')
+		);
 		return $tmpl;
 	}
 }
