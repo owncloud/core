@@ -256,11 +256,12 @@ class DetailsDialog extends OwncloudPage {
 	/**
 	 * add a comment in a file whose details dialog is shown in the webUI
 	 *
+	 * @param Session $session
 	 * @param string $content
 	 *
 	 * @return void
 	 */
-	public function addComment($content) {
+	public function addComment(Session $session, $content) {
 		$commentInput = $this->detailsDialogElement->find(
 			"xpath", $this->commentInputXpath
 		);
@@ -270,7 +271,10 @@ class DetailsDialog extends OwncloudPage {
 			" xpath: $this->commentInputXpath" .
 			"could not find comment input field"
 		);
-		$commentInput->setValue($content);
+		$this->fillFieldWithCharacters(
+			$session, $this->commentInputXpath, $content
+		);
+
 		$postButton = $this->detailsDialogElement->find(
 			"xpath", $this->commentPostXpath
 		);
