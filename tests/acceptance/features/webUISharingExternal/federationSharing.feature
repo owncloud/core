@@ -289,6 +289,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then as "user1" file "simple-folder/simple-empty-folder/new-lorem.txt" should exist
     But as "user1" file "simple-folder/simple-empty-folder/textfile.txt" should not exist
 
+  @skipOnEncryption
   Scenario: delete a file in a folder inside a shared folder
     Given user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/simple-empty-folder/textfile.txt"
     And user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
