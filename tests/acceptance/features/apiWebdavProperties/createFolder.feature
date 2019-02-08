@@ -20,12 +20,15 @@ Feature: create folder
       | old         | /नेपाली         |
       | old         | /folder #2      |
       | old         | /folder ?2      |
+      | old         | /😀 🤖          |
       | new         | /upload         |
       | new         | /strängé folder |
       | new         | /C++ folder.cpp |
       | new         | /नेपाली         |
       | new         | /folder #2      |
       | new         | /folder ?2      |
+      | new         | /folder ?2      |
+      | new         | /😀 🤖          |
 
   @smokeTest
   Scenario Outline: Creating a folder
