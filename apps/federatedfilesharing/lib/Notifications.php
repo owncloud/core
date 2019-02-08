@@ -337,11 +337,13 @@ class Notifications {
 			}
 
 			try {
-				$response = $client->post($endpoint, [
-					'body' => $fields,
+				$options = [
 					'timeout' => 10,
 					'connect_timeout' => 10,
-				]);
+				];
+				$sendAs = $useOcm === true ? 'json' : 'body';
+				$options[$sendAs] = $fields;
+				$response = $client->post($endpoint, $options);
 				$result['result'] = $response->getBody();
 				$result['statusCode'] = $response->getStatusCode();
 				$result['success'] = true;
