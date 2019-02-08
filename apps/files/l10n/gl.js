@@ -79,7 +79,7 @@ OC.L10N.register(
     "_matches '{filter}'_::_match '{filter}'_" : ["coincidente con «{filter}»","coincidentes con «{filter}»"],
     "{owner} has locked this resource via {path}" : "{owner} bloqueou este recurso mediante {path}",
     "Could not unlock, please contact the lock owner {owner}" : "Non se puido desbloquear, contacte co propietario do bloqueo {owner}",
-    "Unlock failed with status {status}" : "produciuse un fallo no desbloqueo co estado {status}",
+    "Unlock failed with status {status}" : "Produciuse un fallo no desbloqueo co estado {status}",
     "Locks" : "Bloqueos",
     "Resource is not locked" : "O recurso non está bloqueado",
     "Path" : "Ruta",
