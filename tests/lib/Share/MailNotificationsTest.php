@@ -29,6 +29,7 @@ use OCP\ILogger;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\Mail\IMailer;
+use OCP\Share\IShare;
 use OCP\Util;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -650,5 +651,72 @@ class MailNotificationsTest extends TestCase {
 					->with($message)
 					->will($this->throwException(new \Exception('Some Exception Message')));
 		}
+	}
+
+	public function providesLanguages() {
+		return [
+			['es', 'en'],
+			['en', 'en']
+		];
+	}
+
+	/**
+	 * @dataProvider providesLanguages
+	 * @param string $recipientLanguage
+	 * @param string $senderLanguage
+	 */
+	public function testSendInternalShareWithRecipientLanguageCode($recipientLanguage, $senderLanguage) {
+		$this->setupMailerMock('TestUser shared »<welcome>.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
+		$mailNotifications = $this->getMockBuilder('OC\Share\MailNotifications')
+			->setMethods(['getItemSharedWithUser'])
+			->setConstructorArgs([
+				$this->user,
+				$this->l10n,
+				$this->mailer,
+				$this->config,
+				$this->logger,
+				$this->defaults,
+				$this->urlGenerator,
+				$this->eventDispatcher
+			])
+			->getMock();
+
+		$mailNotifications->method('getItemSharedWithUser')
+			->withAnyParameters()
+			->willReturn([
+				['file_target' => '/<welcome>.txt', 'item_source' => 123, 'expiration' => '2017-01-01T15:03:01.012345Z'],
+			]);
+
+		$recipient = $this->createMock(IUser::class);
+		$recipient->expects($this->once())
+			->method('getEMailAddress')
+			->willReturn('recipient@owncloud.com');
+		$recipient->expects($this->once())
+			->method('getDisplayName')
+			->willReturn('Recipient');
+		$recipient->method('getUID')
+			->willReturn('Recipient');
+
+		$this->config->expects($this->once())
+			->method('getUserValue')
+			->with('Recipient', 'core', 'lang', 'en')
+			->willReturn($recipientLanguage);
+
+		$this->l10n->method('getLanguageCode')
+			->willReturn($senderLanguage);
+
+		$this->urlGenerator->expects($this->once())
+			->method('linkToRouteAbsolute')
+			->with(
+				$this->equalTo('files.viewcontroller.showFile'),
+				$this->equalTo([
+					'fileId' => 123,
+				])
+			);
+
+		$recipientList = [$recipient];
+
+		$result = $mailNotifications->sendInternalShareMail($recipientList, '3', 'file');
+		$this->assertSame([], $result);
 	}
 }
