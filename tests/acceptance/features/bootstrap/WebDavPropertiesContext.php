@@ -518,6 +518,23 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
+	 * @Then the etag of element :path of user :user on server :server should not have changed
+	 *
+	 * @param string $path
+	 * @param string $user
+	 * @param string $server
+	 *
+	 * @return void
+	 */
+	public function theEtagOfElementOfUserOnServerShouldNotHaveChanged(
+		$path, $user, $server
+	) {
+		$previousServer = $this->featureContext->usingServer($server);
+		$this->etagOfElementOfUserShouldNotHaveChanged($path, $user);
+		$this->featureContext->usingServer($previousServer);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
