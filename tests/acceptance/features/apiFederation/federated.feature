@@ -153,7 +153,7 @@ Feature: federated
     When user "UNAUTHORIZED_USER" requests shared secret using the federation API
     Then the HTTP status code should be "403"
 
-  Scenario: Overwrite a federated shared folder as recipient propagates etag for recipient
+  Scenario: Overwrite a federated shared folder as sharer propagates etag for recipient
     Given user "user1" from server "LOCAL" has shared "/PARENT" with user "user0" from server "REMOTE"
     And user "user0" from server "REMOTE" has accepted the last pending share
     And using server "REMOTE"
