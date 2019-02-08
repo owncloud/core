@@ -21,7 +21,6 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\FutureResponse;
 use GuzzleHttp\Message\ResponseInterface;
 
 /**
@@ -45,14 +44,14 @@ class DownloadHelper {
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
 	 *
-	 * @return FutureResponse|ResponseInterface|NULL
+	 * @return ResponseInterface
 	 */
 	public static function download(
 		$baseUrl,
 		$user,
 		$password,
 		$fileName,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {

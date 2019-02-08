@@ -19,16 +19,13 @@
  *
  */
 
-
 namespace Test\Files\Node;
-
 
 use OC\Files\Node\AbstractFile;
 use OCP\Files\FileInfo;
 use Test\TestCase;
 
 class AbstractFileTest extends TestCase {
-
 	public function testMime() {
 		/** @var AbstractFile | \PHPUnit_Framework_MockObject_MockObject $node */
 		$node = new AbstractFile();

@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Avatars;
-
 
 use OCP\IAvatar;
 use Sabre\DAV\File;
@@ -51,11 +49,11 @@ class AvatarNode extends File {
 	 *
 	 * @return string
 	 */
-	function getName() {
+	public function getName() {
 		return "$this->size.$this->ext";
 	}
 
-	function get() {
+	public function get() {
 		$image = $this->avatar->get($this->size);
 		$res = $image->resource();
 
@@ -76,23 +74,22 @@ class AvatarNode extends File {
 	 *
 	 * @return string|null
 	 */
-	function getContentType() {
+	public function getContentType() {
 		if ($this->ext === 'png') {
 			return 'image/png';
 		}
 		return 'image/jpeg';
 	}
 
-	function getETag() {
+	public function getETag() {
 		return $this->avatar->getFile($this->size)->getEtag();
 	}
 
-	function getLastModified() {
+	public function getLastModified() {
 		$timestamp = $this->avatar->getFile($this->size)->getMTime();
 		if (!empty($timestamp)) {
 			return (int)$timestamp;
 		}
 		return $timestamp;
-
 	}
 }

@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace Test\User;
-
 
 use OC\User\BasicAuthModule;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -81,7 +79,6 @@ class BasicAuthModuleTest extends TestCase {
 
 		// make config return default last_check_timeout
 		$this->config->method('getAppValue')->with('core', 'last_check_timeout', 5)->willReturn(5);
-
 	}
 
 	/**
@@ -90,7 +87,6 @@ class BasicAuthModuleTest extends TestCase {
 	 * @param string $userId
 	 */
 	public function testAuth($expectedResult, $userId) {
-
 		$this->session->method('exists')->will($this->returnValueMap([
 			['app_password', false],
 			['last_check_timeout', true]
@@ -117,7 +113,6 @@ class BasicAuthModuleTest extends TestCase {
 	}
 
 	public function testAppPassword() {
-
 		$this->session->method('exists')->will($this->returnValueMap([
 			['app_password', true],
 			['last_check_timeout', true]
@@ -156,7 +151,6 @@ class BasicAuthModuleTest extends TestCase {
 	}
 
 	public function providesCredentials() {
-
 		return [
 			'no user is' => [false, ''],
 			'user1 can login' => [true, 'user1'],
@@ -167,9 +161,7 @@ class BasicAuthModuleTest extends TestCase {
 		];
 	}
 
-
 	public function testTimeout() {
-
 		$this->session->method('exists')->will($this->returnValueMap([
 			['app_password', false],
 			['last_check_timeout', true]
@@ -200,7 +192,7 @@ class BasicAuthModuleTest extends TestCase {
 		$this->assertEquals($this->user, $module->auth($this->request));
 	}
 
-	public function invalidUserIdProvider () {
+	public function invalidUserIdProvider() {
 		return [
 			[''], [null],
 		];
@@ -211,7 +203,6 @@ class BasicAuthModuleTest extends TestCase {
 	 * @expectedException \UnexpectedValueException
 	 */
 	public function testInvalidUserId($userId) {
-
 		$this->session->method('exists')->will($this->returnValueMap([
 			['app_password', false],
 			['last_check_timeout', true]

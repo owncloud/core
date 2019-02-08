@@ -194,9 +194,9 @@ interface IShare {
 	public function setExpirationDate($expireDate);
 
 	/**
-	 * Get the expiration date
+	 * Get the expiration date or null if no expiration date has been set
 	 *
-	 * @return \DateTime
+	 * @return \DateTime|null
 	 * @since 9.0.0
 	 */
 	public function getExpirationDate();
@@ -247,11 +247,11 @@ interface IShare {
 	public function setPassword($password);
 
 	/**
-	 * Get the password of this share.
+	 * Get the password of this share or null if no password has been set.
 	 * If this share is obtained via a shareprovider the password is
 	 * hashed.
 	 *
-	 * @return string
+	 * @return string|null
 	 * @since 9.0.0
 	 */
 	public function getPassword();
@@ -339,4 +339,33 @@ interface IShare {
 	 * @since 10.0.0
 	 */
 	public function getName();
+
+	/**
+	 * Set share accepted state
+	 *
+	 * @param int $state
+	 * @since 10.0.9
+	 */
+	public function setState($state);
+
+	/**
+	 * Get share accepted state
+	 *
+	 * @return int state
+	 * @since 10.0.9
+	 */
+	public function getState();
+
+	/**
+	 * @return bool shouldHashPassword
+	 * @since 10.0.10
+	 */
+	public function getShouldHashPassword();
+
+	/**
+	 * @param $status
+	 * @return null
+	 * @since 10.0.10
+	 */
+	public function setShouldHashPassword($status);
 }

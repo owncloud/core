@@ -98,7 +98,7 @@ class SecurityWarning implements ISettings {
 		$template->assign('databaseOverload', $databaseOverload);
 		if ($this->lockingProvider instanceof NoopLockingProvider) {
 			$template->assign('fileLockingType', 'none');
-		} else if ($this->lockingProvider instanceof \OC\Lock\DBLockingProvider) {
+		} elseif ($this->lockingProvider instanceof \OC\Lock\DBLockingProvider) {
 			$template->assign('fileLockingType', 'db');
 		} else {
 			$template->assign('fileLockingType', 'cache');
@@ -121,5 +121,4 @@ class SecurityWarning implements ISettings {
 	public function getSectionID() {
 		return 'general';
 	}
-
 }

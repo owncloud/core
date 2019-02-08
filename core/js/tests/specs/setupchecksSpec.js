@@ -26,7 +26,7 @@ describe('OC.SetupChecks tests', function() {
 		it('should fail with another response status code than 201 or 207', function(done) {
 			var async = OC.SetupChecks.checkWebDAV();
 
-			suite.server.requests[0].respond(200);
+			suite.server.requests[0].respond(200, {}, '');
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([{
@@ -40,7 +40,7 @@ describe('OC.SetupChecks tests', function() {
 		it('should return no error with a response status code of 207', function(done) {
 			var async = OC.SetupChecks.checkWebDAV();
 
-			suite.server.requests[0].respond(207);
+			suite.server.requests[0].respond(207, {}, '');
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([]);
@@ -51,7 +51,7 @@ describe('OC.SetupChecks tests', function() {
 		it('should return no error with a response status code of 401', function(done) {
 			var async = OC.SetupChecks.checkWebDAV();
 
-			suite.server.requests[0].respond(401);
+			suite.server.requests[0].respond(401, {}, '');
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([]);
@@ -64,7 +64,7 @@ describe('OC.SetupChecks tests', function() {
 		it('should fail with another response status code than 207', function(done) {
 			var async = OC.SetupChecks.checkWellKnownUrl('/.well-known/caldav/', 'http://example.org/PLACEHOLDER', true);
 
-			suite.server.requests[0].respond(200);
+			suite.server.requests[0].respond(200, {}, '');
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([{
@@ -78,7 +78,7 @@ describe('OC.SetupChecks tests', function() {
 		it('should return no error with a response status code of 207', function(done) {
 			var async = OC.SetupChecks.checkWellKnownUrl('/.well-known/caldav/', 'http://example.org/PLACEHOLDER', true);
 
-			suite.server.requests[0].respond(207);
+			suite.server.requests[0].respond(207, {}, '');
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([]);
@@ -118,7 +118,7 @@ describe('OC.SetupChecks tests', function() {
 		it('should not return an error if data directory is protected', function(done) {
 			var async = OC.SetupChecks.checkDataProtected();
 
-			suite.server.requests[0].respond(403);
+			suite.server.requests[0].respond(403, {}, '');
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([]);
@@ -385,8 +385,9 @@ describe('OC.SetupChecks tests', function() {
 			suite.server.requests[0].respond(
 				500,
 				{
-					'Content-Type': 'application/json'
-				}
+					'Content-Type': 'text/plain'
+				},
+				''
 			);
 
 			async.done(function( data, s, x ){
@@ -410,7 +411,8 @@ describe('OC.SetupChecks tests', function() {
 				{
 					'Content-Type': 'application/json',
 					'Strict-Transport-Security': 'max-age=15768000'
-				}
+				},
+				''
 			);
 
 			async.done(function( data, s, x ){
@@ -452,7 +454,9 @@ describe('OC.SetupChecks tests', function() {
 					'Strict-Transport-Security': 'max-age=15768000;preload',
 					'X-Download-Options': 'noopen',
 					'X-Permitted-Cross-Domain-Policies': 'none',
-				}
+					'Content-Type': 'text/plain'
+				},
+				''
 			);
 
 			async.done(function( data, s, x ){
@@ -481,7 +485,9 @@ describe('OC.SetupChecks tests', function() {
 					'Strict-Transport-Security': 'max-age=15768000',
 					'X-Download-Options': 'noopen',
 					'X-Permitted-Cross-Domain-Policies': 'none',
-				}
+					'Content-Type': 'text/plain'
+				},
+				''
 			);
 
 			async.done(function( data, s, x ){
@@ -503,7 +509,9 @@ describe('OC.SetupChecks tests', function() {
 				'X-Frame-Options': 'SAMEORIGIN',
 				'X-Download-Options': 'noopen',
 				'X-Permitted-Cross-Domain-Policies': 'none',
-			}
+				'Content-Type': 'text/plain'
+			},
+			''
 		);
 
 		async.done(function( data, s, x ){
@@ -549,7 +557,9 @@ describe('OC.SetupChecks tests', function() {
 				'X-Frame-Options': 'SAMEORIGIN',
 				'X-Download-Options': 'noopen',
 				'X-Permitted-Cross-Domain-Policies': 'none',
-			}
+				'Content-Type': 'text/plain'
+			},
+			''
 		);
 
 		async.done(function( data, s, x ){
@@ -574,7 +584,9 @@ describe('OC.SetupChecks tests', function() {
 				'X-Frame-Options': 'SAMEORIGIN',
 				'X-Download-Options': 'noopen',
 				'X-Permitted-Cross-Domain-Policies': 'none',
-			}
+				'Content-Type': 'text/plain'
+			},
+			''
 		);
 
 		async.done(function( data, s, x ){
@@ -599,7 +611,9 @@ describe('OC.SetupChecks tests', function() {
 				'X-Frame-Options': 'SAMEORIGIN',
 				'X-Download-Options': 'noopen',
 				'X-Permitted-Cross-Domain-Policies': 'none',
-			}
+				'Content-Type': 'text/plain'
+			},
+			''
 		);
 
 		async.done(function( data, s, x ){
@@ -615,15 +629,19 @@ describe('OC.SetupChecks tests', function() {
 		protocolStub.returns('https');
 		var async = OC.SetupChecks.checkGeneric();
 
-		suite.server.requests[0].respond(200, {
-			'Strict-Transport-Security': 'max-age=15768000',
-			'X-XSS-Protection': '1; mode=block',
-			'X-Content-Type-Options': 'nosniff',
-			'X-Robots-Tag': 'none',
-			'X-Frame-Options': 'SAMEORIGIN',
-			'X-Download-Options': 'noopen',
-			'X-Permitted-Cross-Domain-Policies': 'none',
-		});
+		suite.server.requests[0].respond(
+			200, {
+				'Strict-Transport-Security': 'max-age=15768000',
+				'X-XSS-Protection': '1; mode=block',
+				'X-Content-Type-Options': 'nosniff',
+				'X-Robots-Tag': 'none',
+				'X-Frame-Options': 'SAMEORIGIN',
+				'X-Download-Options': 'noopen',
+				'X-Permitted-Cross-Domain-Policies': 'none',
+				'Content-Type': 'text/plain'
+			},
+			''
+		);
 
 		async.done(function( data, s, x ){
 			expect(data).toEqual([]);
@@ -635,15 +653,19 @@ describe('OC.SetupChecks tests', function() {
 		protocolStub.returns('https');
 		var async = OC.SetupChecks.checkGeneric();
 
-		suite.server.requests[0].respond(200, {
-			'Strict-Transport-Security': 'max-age=99999999',
-			'X-XSS-Protection': '1; mode=block',
-			'X-Content-Type-Options': 'nosniff',
-			'X-Robots-Tag': 'none',
-			'X-Frame-Options': 'SAMEORIGIN',
-			'X-Download-Options': 'noopen',
-			'X-Permitted-Cross-Domain-Policies': 'none',
-		});
+		suite.server.requests[0].respond(
+			200, {
+				'Strict-Transport-Security': 'max-age=99999999',
+				'X-XSS-Protection': '1; mode=block',
+				'X-Content-Type-Options': 'nosniff',
+				'X-Robots-Tag': 'none',
+				'X-Frame-Options': 'SAMEORIGIN',
+				'X-Download-Options': 'noopen',
+				'X-Permitted-Cross-Domain-Policies': 'none',
+				'Content-Type': 'text/plain'
+			},
+			''
+		);
 
 		async.done(function( data, s, x ){
 			expect(data).toEqual([]);
@@ -655,15 +677,19 @@ describe('OC.SetupChecks tests', function() {
 		protocolStub.returns('https');
 		var async = OC.SetupChecks.checkGeneric();
 
-		suite.server.requests[0].respond(200, {
-			'Strict-Transport-Security': 'max-age=99999999; includeSubDomains',
-			'X-XSS-Protection': '1; mode=block',
-			'X-Content-Type-Options': 'nosniff',
-			'X-Robots-Tag': 'none',
-			'X-Frame-Options': 'SAMEORIGIN',
-			'X-Download-Options': 'noopen',
-			'X-Permitted-Cross-Domain-Policies': 'none',
-		});
+		suite.server.requests[0].respond(
+			200, {
+				'Strict-Transport-Security': 'max-age=99999999; includeSubDomains',
+				'X-XSS-Protection': '1; mode=block',
+				'X-Content-Type-Options': 'nosniff',
+				'X-Robots-Tag': 'none',
+				'X-Frame-Options': 'SAMEORIGIN',
+				'X-Download-Options': 'noopen',
+				'X-Permitted-Cross-Domain-Policies': 'none',
+				'Content-Type': 'text/plain'
+			},
+			''
+		);
 
 		async.done(function( data, s, x ){
 			expect(data).toEqual([]);
@@ -675,15 +701,18 @@ describe('OC.SetupChecks tests', function() {
 		protocolStub.returns('https');
 		var async = OC.SetupChecks.checkGeneric();
 
-		suite.server.requests[0].respond(200, {
-			'Strict-Transport-Security': 'max-age=99999999; preload; includeSubDomains',
-			'X-XSS-Protection': '1; mode=block',
-			'X-Content-Type-Options': 'nosniff',
-			'X-Robots-Tag': 'none',
-			'X-Frame-Options': 'SAMEORIGIN',
-			'X-Download-Options': 'noopen',
-			'X-Permitted-Cross-Domain-Policies': 'none',
-		});
+		suite.server.requests[0].respond(
+			200, {
+				'Strict-Transport-Security': 'max-age=99999999; preload; includeSubDomains',
+				'X-XSS-Protection': '1; mode=block',
+				'X-Content-Type-Options': 'nosniff',
+				'X-Robots-Tag': 'none',
+				'X-Frame-Options': 'SAMEORIGIN',
+				'X-Download-Options': 'noopen',
+				'X-Permitted-Cross-Domain-Policies': 'none',
+				'Content-Type': 'text/plain'
+			}, ''
+		);
 
 		async.done(function( data, s, x ){
 			expect(data).toEqual([]);

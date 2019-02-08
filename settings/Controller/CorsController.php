@@ -46,6 +46,9 @@ class CorsController extends Controller {
 	/** @var IConfig */
 	private $config;
 
+	/** @var string  */
+	private $AppName;
+
 	/**
 	 * CorsController constructor.
 	 *
@@ -160,5 +163,4 @@ class CorsController extends Controller {
 	private static function isValidUrl($url) {
 		return (\filter_var($url, FILTER_VALIDATE_URL) !== false);
 	}
-
 }

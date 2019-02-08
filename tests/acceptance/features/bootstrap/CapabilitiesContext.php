@@ -23,7 +23,7 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 
 require_once 'bootstrap.php';
@@ -31,9 +31,13 @@ require_once 'bootstrap.php';
 /**
  * Capabilities context.
  */
-class CapabilitiesContext implements Context, SnippetAcceptingContext {
+class CapabilitiesContext implements Context {
 
-	use BasicStructure;
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
 
 	/**
 	 * @Then the capabilities should contain
@@ -43,82 +47,83 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 	 * @return void
 	 */
 	public function checkCapabilitiesResponse(TableNode $formData) {
-		$capabilitiesXML = $this->getCapabilitiesXml();
+		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
 
 		foreach ($formData->getHash() as $row) {
+			$row['value'] = $this->featureContext->substituteInLineCodes($row['value']);
 			PHPUnit_Framework_Assert::assertEquals(
 				$row['value'] === "EMPTY" ? '' : $row['value'],
-				$this->getParameterValueFromXml(
+				$this->featureContext->getParameterValueFromXml(
 					$capabilitiesXML,
 					$row['capability'],
 					$row['path_to_element']
 				),
-				"Failed field " . $row['capability'] . " " . $row['path_to_element']
+				"Failed field {$row['capability']} {$row['path_to_element']}"
 			);
-
 		}
 	}
 
 	/**
+	 * @Then the :pathToElement capability of files sharing app should be :value
+	 *
+	 * @param string $pathToElement
+	 * @param string $value
+	 *
 	 * @return void
 	 */
-	protected function resetAppConfigs() {
-		// Remember the current capabilities
-		$this->getCapabilitiesCheckResponse();
-		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
-		// Set the required starting values for testing
-		$capabilitiesArray = $this->getCommonSharingConfigs();
-		$capabilitiesArray = \array_merge(
-			$capabilitiesArray, $this->getCommonFederationConfigs()
+	public function theCapabilityOfFilesSharingAppShouldBe(
+		$pathToElement, $value
+	) {
+		$this->featureContext->userGetsCapabilitiesCheckResponse(
+			$this->featureContext->getCurrentUser()
 		);
-		$capabilitiesArray = \array_merge(
-			$capabilitiesArray,
-			[
-				[
-					'capabilitiesApp' => 'files_sharing',
-					'capabilitiesParameter' => 'resharing',
-					'testingApp' => 'core',
-					'testingParameter' => 'shareapi_allow_resharing',
-					'testingState' => true
-				],
-				[
-					'capabilitiesApp' => 'files_sharing',
-					'capabilitiesParameter' => 'public@@@password@@@enforced',
-					'testingApp' => 'core',
-					'testingParameter' => 'shareapi_enforce_links_password',
-					'testingState' => false
-				],
-				[
-					'capabilitiesApp' => 'files_sharing',
-					'capabilitiesParameter' => 'public@@@send_mail',
-					'testingApp' => 'core',
-					'testingParameter' => 'shareapi_allow_public_notification',
-					'testingState' => false
-				],
-				[
-					'capabilitiesApp' => 'files_sharing',
-					'capabilitiesParameter' => 'public@@@social_share',
-					'testingApp' => 'core',
-					'testingParameter' => 'shareapi_allow_social_share',
-					'testingState' => true
-				],
-				[
-					'capabilitiesApp' => 'files_sharing',
-					'capabilitiesParameter' => 'public@@@expire_date@@@enabled',
-					'testingApp' => 'core',
-					'testingParameter' => 'shareapi_default_expire_date',
-					'testingState' => false
-				],
-				[
-					'capabilitiesApp' => 'files_sharing',
-					'capabilitiesParameter' => 'public@@@expire_date@@@enforced',
-					'testingApp' => 'core',
-					'testingParameter' => 'shareapi_enforce_expire_date',
-					'testingState' => false
-				]
-			]
+		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
+		PHPUnit_Framework_Assert::assertEquals(
+			$value === "EMPTY" ? '' : $value,
+			$this->featureContext->getParameterValueFromXml(
+				$capabilitiesXML,
+				"files_sharing",
+				$pathToElement
+			)
 		);
+	}
 
-		$this->setCapabilities($capabilitiesArray);
+	/**
+	 * @Then the capabilities should not contain
+	 *
+	 * @param TableNode|null $formData
+	 *
+	 * @return void
+	 */
+	public function theCapabilitiesShouldNotContain(TableNode $formData) {
+		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
+
+		foreach ($formData->getHash() as $row) {
+			PHPUnit_Framework_Assert::assertFalse(
+				$this->featureContext->parameterValueExistsInXml(
+					$capabilitiesXML,
+					$row['capability'],
+					$row['path_to_element']
+				),
+				"Capability {$row['capability']} {$row['path_to_element']} exists but it should not exist"
+			);
+		}
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }

@@ -63,7 +63,7 @@ class MySQL extends AbstractDatabase {
 	 * @param \OC\DB\Connection $connection
 	 */
 	private function createDatabase($connection) {
-		try{
+		try {
 			$name = $this->dbName;
 			$user = $this->dbUser;
 			//we can't use OC_DB functions here because we need to connect as the administrative user.
@@ -110,7 +110,6 @@ class MySQL extends AbstractDatabase {
 	 * @throws \OC\DatabaseSetupException
 	 */
 	private function connect() {
-
 		$connectionParams = [
 				'host' => $this->dbHost,
 				'user' => $this->dbUser,

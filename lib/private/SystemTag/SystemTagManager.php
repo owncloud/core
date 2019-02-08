@@ -38,7 +38,6 @@ use OCP\IUser;
  * Manager class for system tags
  */
 class SystemTagManager implements ISystemTagManager {
-
 	const TAG_TABLE = 'systemtag';
 	const TAG_GROUP_TABLE = 'systemtag_group';
 
@@ -78,7 +77,8 @@ class SystemTagManager implements ISystemTagManager {
 			->from(self::TAG_TABLE)
 			->where($query->expr()->eq('name', $query->createParameter('name')))
 			->andWhere($query->expr()->eq('visibility', $query->createParameter('visibility')))
-			->andWhere($query->expr()->eq('editable', $query->createParameter('editable')));
+			->andWhere($query->expr()->eq('editable', $query->createParameter('editable')))
+			->andWhere($query->expr()->eq('assignable', $query->createParameter('assignable')));
 	}
 
 	/**
@@ -105,6 +105,7 @@ class SystemTagManager implements ISystemTagManager {
 			->addOrderBy('name', 'ASC')
 			->addOrderBy('visibility', 'ASC')
 			->addOrderBy('editable', 'ASC')
+			->addOrderBy('assignable', 'ASC')
 			->setParameter('tagids', $tagIds, IQueryBuilder::PARAM_INT_ARRAY);
 
 		$result = $query->execute();
@@ -133,15 +134,15 @@ class SystemTagManager implements ISystemTagManager {
 		$query->select('*')
 			->from(self::TAG_TABLE);
 
-		if (!\is_null($visibilityFilter)) {
-			$query->andWhere($query->expr()->eq('visibility', $query->createNamedParameter((int)$visibilityFilter)));
+		if ($visibilityFilter !== null) {
+			$query->andWhere($query->expr()->eq('visibility', $query->createPositionalParameter((int)$visibilityFilter)));
 		}
 
 		if (!empty($nameSearchPattern)) {
 			$query->andWhere(
 				$query->expr()->like(
 					'name',
-					$query->createNamedParameter('%' . $this->connection->escapeLikeParameter($nameSearchPattern). '%')
+					$query->createPositionalParameter('%' . $this->connection->escapeLikeParameter($nameSearchPattern). '%')
 				)
 			);
 		}
@@ -149,7 +150,8 @@ class SystemTagManager implements ISystemTagManager {
 		$query
 			->addOrderBy('name', 'ASC')
 			->addOrderBy('visibility', 'ASC')
-			->addOrderBy('editable', 'ASC');
+			->addOrderBy('editable', 'ASC')
+			->addOrderBy('assignable', 'ASC');
 
 		$result = $query->execute();
 		while ($row = $result->fetch()) {
@@ -164,14 +166,16 @@ class SystemTagManager implements ISystemTagManager {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getTag($tagName, $userVisible, $userAssignable) {
+	public function getTag($tagName, $userVisible, $userAssignable, $userEditable = false) {
 		$userVisible = (int)$userVisible;
 		$userAssignable = (int)$userAssignable;
+		$userEditable = (int)$userEditable;
 
 		$result = $this->selectTagQuery
 			->setParameter('name', $tagName)
 			->setParameter('visibility', $userVisible)
 			->setParameter('editable', $userAssignable)
+			->setParameter('assignable', $userEditable)
 			->execute();
 
 		$row = $result->fetch();
@@ -188,16 +192,25 @@ class SystemTagManager implements ISystemTagManager {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function createTag($tagName, $userVisible, $userAssignable) {
+	public function createTag($tagName, $userVisible, $userAssignable, $userEditable = false) {
 		$userVisible = (int)$userVisible;
 		$userAssignable = (int)$userAssignable;
+		$userEditable = (int)$userEditable;
+
+		if ($userEditable === 1) {
+			$editable = $userAssignable;
+		} else {
+			$editable = 0;
+			$userAssignable = 1;
+		}
 
 		$query = $this->connection->getQueryBuilder();
 		$query->insert(self::TAG_TABLE)
 			->values([
 				'name' => $query->createNamedParameter($tagName),
 				'visibility' => $query->createNamedParameter($userVisible),
-				'editable' => $query->createNamedParameter($userAssignable),
+				'editable' => $query->createNamedParameter($editable),
+				'assignable' => $query->createNamedParameter($userAssignable)
 			]);
 
 		try {
@@ -216,7 +229,8 @@ class SystemTagManager implements ISystemTagManager {
 			(int)$tagId,
 			$tagName,
 			(bool)$userVisible,
-			(bool)$userAssignable
+			(bool)$userAssignable,
+			(bool)$editable
 		);
 
 		$this->dispatcher->dispatch(ManagerEvent::EVENT_CREATE, new ManagerEvent(
@@ -229,9 +243,10 @@ class SystemTagManager implements ISystemTagManager {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function updateTag($tagId, $tagName, $userVisible, $userAssignable) {
+	public function updateTag($tagId, $tagName, $userVisible, $userAssignable, $userEditable = false) {
 		$userVisible = (int)$userVisible;
 		$userAssignable = (int)$userAssignable;
+		$userEditable = (int)$userEditable;
 
 		try {
 			$tags = $this->getTagsByIds($tagId);
@@ -246,7 +261,8 @@ class SystemTagManager implements ISystemTagManager {
 			(int) $tagId,
 			$tagName,
 			(bool) $userVisible,
-			(bool) $userAssignable
+			(bool) $userAssignable,
+			(bool) $userEditable
 		);
 
 		$query = $this->connection->getQueryBuilder();
@@ -254,10 +270,12 @@ class SystemTagManager implements ISystemTagManager {
 			->set('name', $query->createParameter('name'))
 			->set('visibility', $query->createParameter('visibility'))
 			->set('editable', $query->createParameter('editable'))
+			->set('assignable', $query->createParameter('assignable'))
 			->where($query->expr()->eq('id', $query->createParameter('tagid')))
 			->setParameter('name', $tagName)
 			->setParameter('visibility', $userVisible)
-			->setParameter('editable', $userAssignable)
+			->setParameter('editable', $userEditable)
+			->setParameter('assignable', $userAssignable)
 			->setParameter('tagid', $tagId);
 
 		try {
@@ -375,7 +393,7 @@ class SystemTagManager implements ISystemTagManager {
 	}
 
 	private function createSystemTagFromRow($row) {
-		return new SystemTag((int)$row['id'], $row['name'], (bool)$row['visibility'], (bool)$row['editable']);
+		return new SystemTag((int)$row['id'], $row['name'], (bool)$row['visibility'], (bool)$row['assignable'], (bool)$row['editable']);
 	}
 
 	/**
@@ -431,5 +449,24 @@ class SystemTagManager implements ISystemTagManager {
 		$result->closeCursor();
 
 		return $groupIds;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function canUserUseStaticTagInGroup(ISystemTag $tag, IUser $user) {
+		if ($this->groupManager->isAdmin($user->getUID())) {
+			return true;
+		}
+		if ($tag->isUserEditable() === false) {
+			$groupIds = $this->groupManager->getUserGroupIds($user);
+			if (!empty($groupIds)) {
+				$matchingGroups = \array_intersect($groupIds, $this->getTagGroups($tag));
+				if (!empty($matchingGroups)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

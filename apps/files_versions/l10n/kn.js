@@ -6,4 +6,4 @@ OC.L10N.register(
     "Restore" : "ಮರುಸ್ಥಾಪಿಸು",
     "No other versions available" : "ಇನ್ನಿತರೆ ಯಾವುದೇ ಆವೃತ್ತಿಗಳು ಲಭ್ಯವಿಲ್ಲ"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

@@ -79,4 +79,4 @@ OC.L10N.register(
     "Delete" : "Zmazať",
     "Allow users to mount the following external storage" : "Povoliť používateľom pripojiť tieto externé úložiská"
 },
-"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");
+"nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");

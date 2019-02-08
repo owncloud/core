@@ -19,6 +19,7 @@
     "Username" : "Benotzernumm",
     "Password" : "Passwuert",
     "File name contains at least one invalid character" : "Den Numm vum Fichier entält min. een ongültegz Zeechen",
+    "__language_name__" : "__language_name__",
     "Apps" : "Applikatiounen",
     "General" : "Allgemeng",
     "Security" : "Sécherheet",
@@ -30,6 +31,7 @@
     "A valid password must be provided" : "Et muss e gültegt Passwuert ugi ginn",
     "Help" : "Hëllef",
     "Settings" : "Astellungen",
+    "Imprint" : "Impressum",
     "Authentication error" : "Authentifikatioun's Fehler"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

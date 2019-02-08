@@ -26,6 +26,7 @@
 namespace OC\Preview;
 
 use OCP\Files\File;
+use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
 
 class Movie implements IProvider2 {
@@ -37,7 +38,7 @@ class Movie implements IProvider2 {
 	 * Keep track of movies without artwork to avoid retries in same request
 	 * @var array
 	 */
-	private $noArtworkIndex = array();
+	private $noArtworkIndex = [];
 
 	/**
 	 * {@inheritDoc}
@@ -93,7 +94,7 @@ class Movie implements IProvider2 {
 
 		if (self::$atomicParsleyBinary) {
 			$suffix = \substr($absPath, -4);
-			if ('.mp4' === \strtolower($suffix)) {
+			if (\strtolower($suffix) === '.mp4') {
 				$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
 				$tmpBase = $tmpFolder.'/Cover';
 				$cmd = self::$atomicParsleyBinary . ' ' .
@@ -104,7 +105,7 @@ class Movie implements IProvider2 {
 				\exec($cmd, $output, $returnCode);
 
 				if ($returnCode === 0) {
-					$endings = array('.jpg', '.png');
+					$endings = ['.jpg', '.png'];
 					foreach ($endings as $ending) {
 						$extractedFile = $tmpBase.'_artwork_1'.$ending;
 						if (\is_file($extractedFile) &&
@@ -157,9 +158,8 @@ class Movie implements IProvider2 {
 	 * @return bool|\OCP\IImage
 	 */
 	private function generateThumbNail($maxX, $maxY, $absPath, $second) {
-
 		$extractedCover = $this->extractMp4CoverArtwork($absPath);
-		if (false !== $extractedCover) {
+		if ($extractedCover !== false) {
 			$tmpPath = $extractedCover;
 		} else {
 			$tmpPath = $this->generateFromMovie($absPath, $second);
@@ -178,13 +178,9 @@ class Movie implements IProvider2 {
 	}
 
 	/**
-	 * Check if a preview can be generated for $path
-	 *
-	 * @param File $file
-	 * @return bool
-	 * @since 10.1.0
+	 * @inheritdoc
 	 */
-	public function isAvailable(File $file) {
+	public function isAvailable(FileInfo $file) {
 		return true;
 	}
 }

@@ -21,8 +21,7 @@
 
 namespace OC\Settings\Panels;
 
-class Helper  {
-
+class Helper {
 	public function getStorageInfo($path) {
 		return \OC_Helper::getStorageInfo($path);
 	}
@@ -36,7 +35,8 @@ class Helper  {
 	}
 
 	public function shareWithGroupMembersOnly() {
-		return \OC\Share\Share::shareWithGroupMembersOnly();
+		$value = \OC::$server->getAppConfig()->getValue('core', 'shareapi_only_share_with_group_members', 'no');
+		return ($value === 'yes') ? true : false;
 	}
 
 	public function findBinaryPath($path) {
@@ -62,5 +62,4 @@ class Helper  {
 	public function getMountDepMessage($backends) {
 		return \OC_Mount_Config::dependencyMessage($backends);
 	}
-
 }

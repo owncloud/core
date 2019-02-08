@@ -33,52 +33,13 @@ use OC\HintException;
 class Helper extends \OC\Share\Constants {
 
 	/**
-	 * Generate a unique target for the item
-	 * @param string $itemType
-	 * @param string $itemSource
-	 * @param int $shareType SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
-	 * @param string $shareWith User or group the item is being shared with
-	 * @param string $uidOwner User that is the owner of shared item
-	 * @param string $suggestedTarget The suggested target originating from a reshare (optional)
-	 * @param int $groupParent The id of the parent group share (optional)
-	 * @throws \Exception
-	 * @return string Item target
-	 */
-	public static function generateTarget($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $suggestedTarget = null, $groupParent = null) {
-		// FIXME: $uidOwner and $groupParent seems to be unused
-		$backend = \OC\Share\Share::getBackend($itemType);
-		if ($shareType === self::SHARE_TYPE_LINK || $shareType === self::SHARE_TYPE_REMOTE) {
-			if (isset($suggestedTarget)) {
-				return $suggestedTarget;
-			}
-			return $backend->generateTarget($itemSource, false);
-		} else {
-			if ($shareType == self::SHARE_TYPE_USER) {
-				// Share with is a user, so set share type to user and groups
-				$shareType = self::$shareTypeUserAndGroups;
-			}
-
-			// Check if suggested target exists first
-			if (!isset($suggestedTarget)) {
-				$suggestedTarget = $itemSource;
-			}
-			if ($shareType == self::SHARE_TYPE_GROUP) {
-				$target = $backend->generateTarget($suggestedTarget, false);
-			} else {
-				$target = $backend->generateTarget($suggestedTarget, $shareWith);
-			}
-
-			return $target;
-		}
-	}
-
-	/**
 	 * Delete all reshares and group share children of an item
 	 * @param int $parent Id of item to delete
 	 * @param bool $excludeParent If true, exclude the parent from the delete (optional)
 	 * @param string $uidOwner The user that the parent was shared with (optional)
 	 * @param int $newParent new parent for the childrens
 	 * @param bool $excludeGroupChildren exclude group children elements
+	 * @return array of deleted items
 	 */
 	public static function delete($parent, $excludeParent = false, $uidOwner = null, $newParent = null, $excludeGroupChildren = false) {
 		$ids = [$parent];
@@ -157,7 +118,6 @@ class Helper extends \OC\Share\Constants {
 	 * @return array contains 'defaultExpireDateSet', 'enforceExpireDate', 'expireAfterDays'
 	 */
 	public static function getDefaultExpireSetting() {
-
 		$config = \OC::$server->getConfig();
 
 		$defaultExpireSettings = ['defaultExpireDateSet' => false];
@@ -174,18 +134,6 @@ class Helper extends \OC\Share\Constants {
 		return $defaultExpireSettings;
 	}
 
-	public static function calcExpireDate() {
-		$expireAfter = \OC\Share\Share::getExpireInterval() * 24 * 60 * 60;
-		$expireAt = \time() + $expireAfter;
-		$date = new \DateTime();
-		$date->setTimestamp($expireAt);
-		$date->setTime(0, 0, 0);
-		//$dateString = $date->format('Y-m-d') . ' 00:00:00';
-
-		return $date;
-
-	}
-
 	/**
 	 * calculate expire date
 	 * @param array $defaultExpireSettings contains 'defaultExpireDateSet', 'enforceExpireDate', 'expireAfterDays'
@@ -194,14 +142,12 @@ class Helper extends \OC\Share\Constants {
 	 * @return mixed integer timestamp or False
 	 */
 	public static function calculateExpireDate($defaultExpireSettings, $creationTime, $userExpireDate = null) {
-
 		$expires = false;
 		$defaultExpires = null;
 
 		if (!empty($defaultExpireSettings['defaultExpireDateSet'])) {
 			$defaultExpires = $creationTime + $defaultExpireSettings['expireAfterDays'] * 86400;
 		}
-
 
 		if (isset($userExpireDate)) {
 			// if the admin decided to enforce the default expire date then we only take
@@ -211,7 +157,7 @@ class Helper extends \OC\Share\Constants {
 			} else {
 				$expires = $userExpireDate;
 			}
-		} else if ($defaultExpires && !empty($defaultExpireSettings['enforceExpireDate'])) {
+		} elseif ($defaultExpires && !empty($defaultExpireSettings['enforceExpireDate'])) {
 			$expires = $defaultExpires;
 		}
 
@@ -261,9 +207,9 @@ class Helper extends \OC\Share\Constants {
 
 		if ($posSlash === false && $posColon === false) {
 			$invalidPos = \strlen($id);
-		} else if ($posSlash === false) {
+		} elseif ($posSlash === false) {
 			$invalidPos = $posColon;
-		} else if ($posColon === false) {
+		} elseif ($posColon === false) {
 			$invalidPos = $posSlash;
 		} else {
 			$invalidPos = \min($posSlash, $posColon);

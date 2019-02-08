@@ -23,6 +23,7 @@
 
 namespace Page\FilesPageElement;
 
+use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -39,7 +40,9 @@ class FileActionsMenu extends OwncloudPage {
 	protected $fileActionXpath = "//a[@data-action='%s']";
 	protected $renameActionLabel = "Rename";
 	protected $deleteActionLabel = "Delete";
-	
+	protected $detailsActionLabel = "Details";
+	protected $declineShareDataAction = "Reject";
+
 	/**
 	 * sets the NodeElement for the current action menu
 	 * a little bit like __construct() but as we access this "sub-page-object"
@@ -47,17 +50,40 @@ class FileActionsMenu extends OwncloudPage {
 	 * $this->getPage("FilesPageElement\\FileActionsMenu")
 	 * there is no real __construct() that can take arguments
 	 *
-	 * @param \Behat\Mink\Element\NodeElement $menuElement
+	 * @param NodeElement $menuElement
 	 *
 	 * @return void
 	 */
 	public function setElement(NodeElement $menuElement) {
 		$this->menuElement = $menuElement;
 	}
-	
+
+	/**
+	 * waits for the tab to appear and sets the element
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 * @param string $xpath the xpath of the element to wait for
+	 *                      required to be set
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+		$xpath = null
+	) {
+		if ($xpath === null) {
+			throw new \InvalidArgumentException('$xpath needs to be set');
+		}
+		$this->waitForOutstandingAjaxCalls($session);
+		$element = $this->waitTillXpathIsVisible($xpath, $timeout_msec);
+		$this->setElement($element);
+	}
+
 	/**
 	 * clicks the rename button
-	 * 
+	 *
 	 * @param string $xpathToWaitFor wait for this element to appear before returning
 	 * @param int $timeout_msec
 	 *
@@ -65,44 +91,73 @@ class FileActionsMenu extends OwncloudPage {
 	 * @return void
 	 */
 	public function rename(
-		$xpathToWaitFor = null, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$xpathToWaitFor = null, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$renameBtn = $this->findButton($this->renameActionLabel);
-		if (\is_null($renameBtn)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find action button with label " . $this->renameActionLabel
-			);
-		}
+		$this->assertElementNotNull(
+			$renameBtn,
+			__METHOD__ .
+			" could not find action button with label $this->renameActionLabel"
+		);
 		$renameBtn->click();
-		if (!\is_null($xpathToWaitFor)) {
+		if ($xpathToWaitFor !== null) {
 			$this->waitTillElementIsNotNull($xpathToWaitFor, $timeout_msec);
 		}
 	}
 
 	/**
 	 * clicks the delete button
-	 * 
+	 *
 	 * @return void
 	 */
 	public function delete() {
 		$deleteBtn = $this->findButton($this->deleteActionLabel);
-		if (\is_null($deleteBtn)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find action button with label " . $this->deleteActionLabel
-			);
-		}
+		$this->assertElementNotNull(
+			$deleteBtn,
+			__METHOD__ .
+			" could not find action button with label $this->deleteActionLabel"
+		);
 		$deleteBtn->focus();
 		$deleteBtn->click();
 	}
-	
+
+	/**
+	 * clicks the details button
+	 *
+	 * @return void
+	 */
+	public function openDetails() {
+		$detailsBtn = $this->findButton($this->detailsActionLabel);
+		$this->assertElementNotNull(
+			$detailsBtn,
+			__METHOD__ .
+			" could not find action button with label $this->deleteActionLabel"
+		);
+		$detailsBtn->focus();
+		$detailsBtn->click();
+	}
+	/**
+	 * clicks the decline share button
+	 *
+	 * @return void
+	 */
+	public function declineShare() {
+		$declineBtn = $this->findButton($this->declineShareDataAction);
+		$this->assertElementNotNull(
+			$declineBtn,
+			__METHOD__ .
+			" could not find action button with label $this->declineShareDataAction"
+		);
+		$declineBtn->focus();
+		$declineBtn->click();
+	}
+
 	/**
 	 * finds the actual action link in the action menu
-	 * 
+	 *
 	 * @param string $action
 	 *
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
 	public function findButton($action) {
@@ -112,23 +167,21 @@ class FileActionsMenu extends OwncloudPage {
 			"xpath",
 			$xpathLocator
 		);
-		if (\is_null($button)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $xpathLocator could not find button '$action' in action Menu"
-			);
-		} else {
-			$this->waitFor(
-				STANDARDUIWAITTIMEOUTMILLISEC / 1000, array($button, 'isVisible')
-			);
-			return $button;
-		}
+		$this->assertElementNotNull(
+			$button,
+			__METHOD__ .
+			" xpath $xpathLocator could not find button '$action' in action Menu"
+		);
+		$this->waitFor(
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$button, 'isVisible']
+		);
+		return $button;
 	}
 
 	/**
 	 * just so the label can be reused in other places
 	 * and does not need to be redefined
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getDeleteActionLabel() {
@@ -141,7 +194,28 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return string
 	 */
+	public function getDetailsActionLabel() {
+		return $this->detailsActionLabel;
+	}
+
+	/**
+	 * just so the label can be reused in other places
+	 * and does not need to be redefined
+	 *
+	 * @return string
+	 */
 	public function getRenameActionLabel() {
 		return $this->renameActionLabel;
+	}
+
+	/**
+	 * the action labels are localized to the user preferred language
+	 *
+	 * @param string $action
+	 *
+	 * @return string
+	 */
+	public function getActionLabelLocalized($action) {
+		return $this->findButton($action)->getText();
 	}
 }

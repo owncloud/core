@@ -26,22 +26,43 @@
 namespace OCA\Files_Sharing;
 
 use OC\Files\ObjectStore\NoopScanner;
+use OC\Files\Cache\Scanner as CacheScanner;
 
 /**
  * Scanner for SharedStorage
  */
-class Scanner extends \OC\Files\Cache\Scanner {
+class Scanner extends CacheScanner {
+
+	/**
+	 * @var null|CacheScanner
+	 */
 	private $sourceScanner;
+
+	/**
+	 * Scan a single file and use source scanner if needed
+	 *
+	 * @inheritdoc
+	 */
+	public function scanFile($file, $reuseExisting = 0, $parentId = -1, $cacheData = null, $lock = true) {
+		$sourceScanner = $this->getSourceScanner();
+		if ($sourceScanner instanceof NoopScanner) {
+			// No Operation Scanner will not update share permission (scanFile won't call getData)
+			list(, $internalPath) = $this->storage->resolvePath($file);
+			return $sourceScanner->scanFile($internalPath, $reuseExisting, $parentId, $cacheData, $lock);
+		} else {
+			return parent::scanFile($file, $reuseExisting, $parentId, $cacheData, $lock);
+		}
+	}
 
 	/**
 	 * Returns metadata from the shared storage, but
 	 * with permissions from the source storage.
 	 *
-	 * @param string $path path of the file for which to retrieve metadata
+	 * NOTE: This function gets called from within scanFile parent function
 	 *
-	 * @return array an array of metadata of the file
+	 * @inheritdoc
 	 */
-	public function getData($path) {
+	protected function getData($path) {
 		$data = parent::getData($path);
 		if ($data === null) {
 			return null;
@@ -64,14 +85,4 @@ class Scanner extends \OC\Files\Cache\Scanner {
 			return null;
 		}
 	}
-
-	public function scanFile($file, $reuseExisting = 0, $parentId = -1, $cacheData = null, $lock = true) {
-		$sourceScanner = $this->getSourceScanner();
-		if ($sourceScanner instanceof NoopScanner) {
-			return [];
-		} else {
-			return parent::scanFile($file, $reuseExisting, $parentId, $cacheData, $lock);
-		}
-	}
 }
-

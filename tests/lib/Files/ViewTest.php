@@ -15,6 +15,7 @@ use OC\Files\Storage\Common;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OCP\Files\FileInfo;
+use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 use OCP\Util;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -110,7 +111,6 @@ class ViewTest extends TestCase {
 		\OC_User::setUserId($this->user);
 		foreach ($this->storages as $storage) {
 			$cache = $storage->getCache();
-			$ids = $cache->getAll();
 			$cache->clear();
 		}
 
@@ -462,12 +462,16 @@ class ViewTest extends TestCase {
 
 		$rootView = new View('');
 		$rootView->mkdir('substorage/emptyfolder');
-		$rootView->copy('substorage', 'anotherfolder');
+		// paths should not start or end in /
+		$rootView->copy('substorage/', '/anotherfolder');
 		$this->assertArrayHasKey('path', $calledEvent[1]);
 		$this->assertEquals('file.aftercreate', $calledEvent[0]);
 		$this->assertArrayHasKey('oldpath', $calledCopyEvent[1]);
 		$this->assertArrayHasKey('newpath', $calledCopyEvent[1]);
+		// mak sure paths in events have been normalized
 		$this->assertEquals('file.aftercopy', $calledCopyEvent[0]);
+		$this->assertSame('/substorage', $calledCopyEvent[1]['oldpath']);
+		$this->assertSame('/anotherfolder', $calledCopyEvent[1]['newpath']);
 		$this->assertTrue($rootView->is_dir('/anotherfolder'));
 		$this->assertTrue($rootView->is_dir('/substorage'));
 		$this->assertTrue($rootView->is_dir('/anotherfolder/emptyfolder'));
@@ -833,7 +837,6 @@ class ViewTest extends TestCase {
 	}
 
 	public function xtestLongPath() {
-
 		$storage = new Temporary([]);
 		Filesystem::mount($storage, [], '/');
 
@@ -1075,7 +1078,6 @@ class ViewTest extends TestCase {
 	 * @expectedException \OCP\Files\InvalidPathException
 	 */
 	public function testTooLongPath($operation, $param0 = null) {
-
 		$longPath = '';
 		// 4000 is the maximum path length in file_cache.path
 		$folderName = 'abcdefghijklmnopqrstuvwxyz012345678901234567890123456789';
@@ -1243,7 +1245,6 @@ class ViewTest extends TestCase {
 		// second file not moved/copied
 		$this->assertFalse($storage2->file_exists('dirtomove/indir2.txt'));
 		$this->assertFalse($storage2->getCache()->get('dirtomove/indir2.txt'));
-
 	}
 
 	public function testDeleteFailKeepCache() {
@@ -1296,7 +1297,9 @@ class ViewTest extends TestCase {
 		$scanner->scan('');
 		Filesystem::mount($storage, [], '/test/');
 		$view = new View('');
+		\OC::$server->getConfig()->setAppValue('core', 'ignorepartfile', 'true');
 		$this->assertTrue($view->rename('/test/foo.txt', '/test/foo/bar.txt'));
+		\OC::$server->getConfig()->deleteAppValue('core', 'ignorepartfile');
 	}
 
 	public function testSetMountOptionsInStorage() {
@@ -1570,7 +1573,6 @@ class ViewTest extends TestCase {
 
 		$this->assertFalse($this->isFileLocked($view, '/test//sub', ILockingProvider::LOCK_SHARED));
 		$this->assertFalse($this->isFileLocked($view, '/test//sub', ILockingProvider::LOCK_EXCLUSIVE));
-
 	}
 
 	public function hookPathProvider() {
@@ -2063,13 +2065,12 @@ class ViewTest extends TestCase {
 		$this->shallThrow = false;
 		$storage
 			->method($operation)
-			->willReturnCallback(function ($path){
+			->willReturnCallback(function ($path) {
 				if ($this->shallThrow) {
 					throw new \Exception('Simulated exception');
 				}
 				return $path === 'files/test.txt';
 			});
-
 
 		$storage->getScanner()->scan('files');
 
@@ -2511,7 +2512,6 @@ class ViewTest extends TestCase {
 		}
 		return null;
 	}
-
 
 	public function testRemoveMoveableMountPoint() {
 		$mountPoint = '/' . $this->user . '/files/mount/';

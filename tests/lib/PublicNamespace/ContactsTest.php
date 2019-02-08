@@ -115,6 +115,5 @@ class ContactsTest extends \Test\TestCase {
 
 		// we expect 4 hits
 		$this->assertCount(4, $result);
-
 	}
 }

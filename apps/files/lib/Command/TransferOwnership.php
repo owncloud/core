@@ -27,6 +27,7 @@ namespace OCA\Files\Command;
 use OC\Encryption\Manager;
 use OC\Files\Filesystem;
 use OC\Files\View;
+use OC\Share20\ProviderFactory;
 use OCP\Files\FileInfo;
 use OCP\Files\Mount\IMountManager;
 use OCP\ILogger;
@@ -55,7 +56,10 @@ class TransferOwnership extends Command {
 	private $encryptionManager;
 
 	/** @var ILogger  */
-	private  $logger;
+	private $logger;
+
+	/** @var ProviderFactory  */
+	private $shareProviderFactory;
 
 	/** @var bool */
 	private $filesExist = false;
@@ -81,12 +85,13 @@ class TransferOwnership extends Command {
 	/** @var string */
 	private $finalTarget;
 
-	public function __construct(IUserManager $userManager, IManager $shareManager, IMountManager $mountManager, Manager $encryptionManager, ILogger $logger) {
+	public function __construct(IUserManager $userManager, IManager $shareManager, IMountManager $mountManager, Manager $encryptionManager, ILogger $logger, ProviderFactory $shareProviderFactory) {
 		$this->userManager = $userManager;
 		$this->shareManager = $shareManager;
 		$this->mountManager = $mountManager;
 		$this->encryptionManager = $encryptionManager;
 		$this->logger = $logger;
+		$this->shareProviderFactory = $shareProviderFactory;
 		parent::__construct();
 	}
 
@@ -115,11 +120,11 @@ class TransferOwnership extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$sourceUserObject = $this->userManager->get($input->getArgument('source-user'));
 		$destinationUserObject = $this->userManager->get($input->getArgument('destination-user'));
-		if (\is_null($sourceUserObject)) {
+		if ($sourceUserObject === null) {
 			$output->writeln("<error>Unknown source user $this->sourceUser</error>");
 			return 1;
 		}
-		if (\is_null($destinationUserObject)) {
+		if ($destinationUserObject === null) {
 			$output->writeln("<error>Unknown destination user $this->destinationUser</error>");
 			return 1;
 		}
@@ -168,7 +173,7 @@ class TransferOwnership extends Command {
 		$this->transfer($output);
 
 		// restore the shares
-		$this->restoreShares($output);
+		return $this->restoreShares($output);
 	}
 
 	private function walkFiles(View $view, $path, \Closure $callBack) {
@@ -193,7 +198,7 @@ class TransferOwnership extends Command {
 		$progress->start();
 		$self = $this;
 		$walkPath = "$this->sourceUser/files";
-		if ( \strlen($this->inputPath) > 0) {
+		if (\strlen($this->inputPath) > 0) {
 			if ($this->inputPath !== "$this->sourceUser/files") {
 				$walkPath = $this->inputPath;
 				$this->foldersExist = true;
@@ -201,7 +206,7 @@ class TransferOwnership extends Command {
 		}
 
 		$this->walkFiles($view, $walkPath,
-				function (FileInfo $fileInfo) use ($progress, $self) {
+				function (FileInfo $fileInfo) use ($progress) {
 					if ($fileInfo->getType() === FileInfo::TYPE_FOLDER) {
 						// only analyze into folders from main storage,
 						// sub-storages have an empty internal path
@@ -233,13 +238,12 @@ class TransferOwnership extends Command {
 		// no file is allowed to be encrypted
 		if (!empty($this->encryptedFiles)) {
 			$output->writeln("<error>Some files are encrypted - please decrypt them first</error>");
-			foreach($this->encryptedFiles as $encryptedFile) {
+			foreach ($this->encryptedFiles as $encryptedFile) {
 				/** @var FileInfo $encryptedFile */
 				$output->writeln("  " . $encryptedFile->getPath());
 			}
 			throw new \Exception('Execution terminated.');
 		}
-
 	}
 
 	/**
@@ -249,14 +253,15 @@ class TransferOwnership extends Command {
 		$output->writeln("Collecting all share information for files and folder of $this->sourceUser ...");
 
 		$progress = new ProgressBar($output, \count($this->shares));
-		foreach([\OCP\Share::SHARE_TYPE_GROUP, \OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_LINK, \OCP\Share::SHARE_TYPE_REMOTE] as $shareType) {
-		$offset = 0;
+		foreach ([\OCP\Share::SHARE_TYPE_GROUP, \OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_LINK, \OCP\Share::SHARE_TYPE_REMOTE] as $shareType) {
+			$offset = 0;
 			while (true) {
 				$sharePage = $this->shareManager->getSharesBy($this->sourceUser, $shareType, null, true, 50, $offset);
 				$progress->advance(\count($sharePage));
 				if (empty($sharePage)) {
 					break;
 				}
+
 				$this->shares = \array_merge($this->shares, $sharePage);
 				$offset += 50;
 			}
@@ -276,7 +281,7 @@ class TransferOwnership extends Command {
 		// This change will help user to transfer the folder specified using --path option.
 		// Else only the content inside folder is transferred which is not correct.
 		if (\strlen($this->inputPath) > 0) {
-			if($this->inputPath !== \ltrim("$this->sourceUser/files", '/')) {
+			if ($this->inputPath !== \ltrim("$this->sourceUser/files", '/')) {
 				$view->mkdir($this->finalTarget);
 				$this->finalTarget = $this->finalTarget . '/' . \basename($sourcePath);
 			}
@@ -296,46 +301,47 @@ class TransferOwnership extends Command {
 	private function restoreShares(OutputInterface $output) {
 		$output->writeln("Restoring shares ...");
 		$progress = new ProgressBar($output, \count($this->shares));
+		$status = 0;
 
-		foreach($this->shares as $share) {
+		$childShares = [];
+		foreach ($this->shares as $share) {
 			try {
+				/**
+				 * Do not process children which are already processed.
+				 * This piece of code populates the childShare array
+				 * with the child shares which will be processed. And
+				 * hence will avoid further processing of same share
+				 * again.
+				 */
 				if ($share->getSharedWith() === $this->destinationUser) {
-					// Unmount the shares before deleting, so we don't try to get the storage later on.
-					$shareMountPoint = $this->mountManager->find('/' . $this->destinationUser . '/files' . $share->getTarget());
-					if ($shareMountPoint) {
-						$this->mountManager->removeMount($shareMountPoint->getMountPoint());
+					$provider = $this->shareProviderFactory->getProviderForType($share->getShareType());
+					foreach ($provider->getChildren($share) as $child) {
+						$childShares[] = $child->getId();
 					}
-					$this->shareManager->deleteShare($share);
 				} else {
-					if ($share->getShareOwner() === $this->sourceUser) {
-						$share->setShareOwner($this->destinationUser);
-					}
-					if ($share->getSharedBy() === $this->sourceUser) {
-						$share->setSharedBy($this->destinationUser);
-					}
-					/*
-					 * If the share is already moved then updateShare would cause exception
-					 * This can happen if the folder is shared and file(s) inside the folder
-					 * has shares, for example public link
+					/**
+					 * Before doing handover to transferShare, check if the share
+					 * id is present in the childShares. If so then just ignore
+					 * this share and continue. If not ignored, the child shares
+					 * would be processed again, if their parent share was shared
+					 * with destination user. And hence we can safely avoid the
+					 * duplicate processing of shares here.
 					 */
-					if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
-						$sharePath = \ltrim($share->getNode()->getPath(), '/');
-						if (\strpos($sharePath, $this->finalTarget) !== false) {
-							//The share is already moved
-							continue;
-						}
+					if (\in_array($share->getId(), $childShares, true)) {
+						continue;
 					}
-
-					$this->shareManager->updateShare($share);
 				}
+				$this->shareManager->transferShare($share, $this->sourceUser, $this->destinationUser, $this->finalTarget);
 			} catch (\OCP\Files\NotFoundException $e) {
 				$output->writeln('<error>Share with id ' . $share->getId() . ' points at deleted file, skipping</error>');
 			} catch (\Exception $e) {
 				$output->writeln('<error>Could not restore share with id ' . $share->getId() . ':' . $e->getTraceAsString() . '</error>');
+				$status = 1;
 			}
 			$progress->advance();
 		}
 		$progress->finish();
 		$output->writeln('');
+		return $status;
 	}
 }

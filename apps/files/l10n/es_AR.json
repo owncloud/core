@@ -32,6 +32,7 @@
     "You don’t have permission to upload or create files here" : "No tienes permisos para subir o crear archivos aquí",
     "_Uploading %n file_::_Uploading %n files_" : ["Subiendo %n archivo","Subiendo %n archivos"],
     "New" : "Nuevo",
+    "Unknown user" : "Usuario desconocido",
     "File name cannot be empty." : "El nombre del archivo no puede quedar vacío.",
     "Your storage is full, files can not be updated or synced anymore!" : "El almacenamiento está lleno, los archivos no se pueden seguir actualizando ni sincronizando",
     "Your storage is almost full ({usedSpacePercent}%)" : "El almacenamiento está casi lleno ({usedSpacePercent}%)",

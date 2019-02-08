@@ -22,6 +22,7 @@ namespace OCA\Files_Sharing;
 
 use OCP\Capabilities\ICapability;
 use OCP\IConfig;
+use OCP\IL10N;
 use OCP\Util\UserSearch;
 
 /**
@@ -39,15 +40,19 @@ class Capabilities implements ICapability {
 	 */
 	private $userSearch;
 
+	/** @var IL10N */
+	private $l10n;
+
 	/**
 	 * Capabilities constructor.
 	 *
 	 * @param IConfig $config
 	 * @param UserSearch $userSearch
 	 */
-	public function __construct(IConfig $config, UserSearch $userSearch) {
+	public function __construct(IConfig $config, UserSearch $userSearch, IL10N $l10n) {
 		$this->config = $config;
 		$this->userSearch = $userSearch;
+		$this->l10n = $l10n;
 	}
 
 	/**
@@ -63,6 +68,7 @@ class Capabilities implements ICapability {
 			$res['public'] = ['enabled' => false];
 			$res['user'] = ['send_mail' => false];
 			$res['resharing'] = false;
+			$res['can_share'] = false;
 		} else {
 			$res['api_enabled'] = true;
 
@@ -70,7 +76,14 @@ class Capabilities implements ICapability {
 			$public['enabled'] = $this->config->getAppValue('core', 'shareapi_allow_links', 'yes') === 'yes';
 			if ($public['enabled']) {
 				$public['password'] = [];
-				$public['password']['enforced'] = ($this->config->getAppValue('core', 'shareapi_enforce_links_password', 'no') === 'yes');
+				$public['password']['enforced_for'] = [];
+				$roPasswordEnforced = $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_only', 'no') === 'yes';
+				$rwPasswordEnforced = $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_write', 'no') === 'yes';
+				$woPasswordEnforced = $this->config->getAppValue('core', 'shareapi_enforce_links_password_write_only', 'no') === 'yes';
+				$public['password']['enforced_for']['read_only'] = $roPasswordEnforced;
+				$public['password']['enforced_for']['read_write'] = $rwPasswordEnforced;
+				$public['password']['enforced_for']['upload_only'] = $woPasswordEnforced;
+				$public['password']['enforced'] = $roPasswordEnforced || $rwPasswordEnforced || $woPasswordEnforced;
 
 				$public['expire_date'] = [];
 				$public['expire_date']['enabled'] = $this->config->getAppValue('core', 'shareapi_default_expire_date', 'no') === 'yes';
@@ -84,6 +97,7 @@ class Capabilities implements ICapability {
 				$public['upload'] = $this->config->getAppValue('core', 'shareapi_allow_public_upload', 'yes') === 'yes';
 				$public['multiple'] = true;
 				$public['supports_upload_only'] = true;
+				$public['defaultPublicLinkShareName'] = $this->l10n->t('Public link');
 			}
 			$res["public"] = $public;
 
@@ -93,8 +107,16 @@ class Capabilities implements ICapability {
 
 			$res['group_sharing'] = $this->config->getAppValue('core', 'shareapi_allow_group_sharing', 'yes') === 'yes';
 
+			$res['auto_accept_share'] = $this->config->getAppValue('core', 'shareapi_auto_accept_share', 'yes') === 'yes';
+
 			$res['share_with_group_members_only'] = $this->config->getAppValue('core', 'shareapi_only_share_with_group_members', 'yes') === 'yes';
 			$res['share_with_membership_groups_only'] = $this->config->getAppValue('core', 'shareapi_only_share_with_membership_groups', 'yes') === 'yes';
+
+			if (\OCP\Util::isSharingDisabledForUser()) {
+				$res['can_share'] = false;
+			} else {
+				$res['can_share'] = true;
+			}
 
 			$user_enumeration = [];
 			$user_enumeration['enabled'] = $this->config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes') === 'yes';

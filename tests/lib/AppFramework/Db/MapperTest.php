@@ -21,7 +21,6 @@
  *
  */
 
-
 namespace Test\AppFramework\Db;
 
 use OCP\AppFramework\Db\Entity;
@@ -41,16 +40,26 @@ class Example extends Entity {
 	protected $email;
 };
 
-
 class ExampleMapper extends Mapper {
-	public function __construct(IDBConnection $db){ parent::__construct($db, 'table'); }
-	public function find($table, $id){ return $this->findOneQuery($table, $id); }
-	public function findOneEntity($table, $id){ return $this->findEntity($table, $id); }
-	public function findAllEntities($table){ return $this->findEntities($table); }
-	public function mapRow($row){ return $this->mapRowToEntity($row); }
-	public function execSql($sql, $params){ return $this->execute($sql, $params); }
+	public function __construct(IDBConnection $db) {
+		parent::__construct($db, 'table');
+	}
+	public function find($table, $id) {
+		return $this->findOneQuery($table, $id);
+	}
+	public function findOneEntity($table, $id) {
+		return $this->findEntity($table, $id);
+	}
+	public function findAllEntities($table) {
+		return $this->findEntities($table);
+	}
+	public function mapRow($row) {
+		return $this->mapRowToEntity($row);
+	}
+	public function execSql($sql, $params) {
+		return $this->execute($sql, $params);
+	}
 }
-
 
 class MapperTest extends MapperTestUtility {
 
@@ -59,18 +68,16 @@ class MapperTest extends MapperTestUtility {
 	 */
 	private $mapper;
 
-	protected function setUp(){
+	protected function setUp() {
 		parent::setUp();
 		$this->mapper = new ExampleMapper($this->db);
 	}
 
-
-	public function testMapperShouldSetTableName(){
+	public function testMapperShouldSetTableName() {
 		$this->assertEquals('*PREFIX*table', $this->mapper->getTableName());
 	}
 
-
-	public function testFindQuery(){
+	public function testFindQuery() {
 		$sql = 'hi';
 		$params = ['jo'];
 		$rows = [
@@ -80,7 +87,7 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->find($sql, $params);
 	}
 
-	public function testFindEntity(){
+	public function testFindEntity() {
 		$sql = 'hi';
 		$params = ['jo'];
 		$rows = [
@@ -90,7 +97,7 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->findOneEntity($sql, $params);
 	}
 
-	public function testFindNotFound(){
+	public function testFindNotFound() {
 		$sql = 'hi';
 		$params = ['jo'];
 		$rows = [];
@@ -100,7 +107,7 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->find($sql, $params);
 	}
 
-	public function testFindEntityNotFound(){
+	public function testFindEntityNotFound() {
 		$sql = 'hi';
 		$params = ['jo'];
 		$rows = [];
@@ -110,7 +117,7 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->findOneEntity($sql, $params);
 	}
 
-	public function testFindMultiple(){
+	public function testFindMultiple() {
 		$sql = 'hi';
 		$params = ['jo'];
 		$rows = [
@@ -122,7 +129,7 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->find($sql, $params);
 	}
 
-	public function testFindEntityMultiple(){
+	public function testFindEntityMultiple() {
 		$sql = 'hi';
 		$params = ['jo'];
 		$rows = [
@@ -134,8 +141,7 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->findOneEntity($sql, $params);
 	}
 
-
-	public function testDelete(){
+	public function testDelete() {
 		$sql = 'DELETE FROM `*PREFIX*table` WHERE `id` = ?';
 		$params = [2];
 
@@ -146,8 +152,7 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->delete($entity);
 	}
 
-
-	public function testCreate(){
+	public function testCreate() {
 		$this->db->expects($this->once())
 			->method('lastInsertId')
 			->with($this->equalTo('*PREFIX*table'))
@@ -166,8 +171,7 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->insert($entity);
 	}
 
-
-	public function testCreateShouldReturnItemWithCorrectInsertId(){
+	public function testCreateShouldReturnItemWithCorrectInsertId() {
 		$this->db->expects($this->once())
 			->method('lastInsertId')
 			->with($this->equalTo('*PREFIX*table'))
@@ -188,7 +192,6 @@ class MapperTest extends MapperTestUtility {
 		$this->assertEquals(3, $result->getId());
 	}
 
-
 	public function testAssocParameters() {
 		$sql = 'test';
 		$params = [':test' => 1, ':a' => 2];
@@ -197,8 +200,7 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->execSql($sql, $params);
 	}
 
-
-	public function testUpdate(){
+	public function testUpdate() {
 		$sql = 'UPDATE `*PREFIX*table` ' .
 				'SET ' .
 				'`pre_name` = ?,'.
@@ -216,8 +218,7 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->update($entity);
 	}
 
-
-	public function testUpdateNoId(){
+	public function testUpdateNoId() {
 		$params = ['john', 'my@email'];
 		$entity = new Example();
 		$entity->setPreName($params[0]);
@@ -228,8 +229,7 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->update($entity);
 	}
 
-
-	public function testUpdateNothingChangedNoQuery(){
+	public function testUpdateNothingChangedNoQuery() {
 		$params = ['john', 'my@email'];
 		$entity = new Example();
 		$entity->setId(3);
@@ -242,8 +242,7 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->update($entity);
 	}
 
-
-	public function testMapRowToEntity(){
+	public function testMapRowToEntity() {
 		$entity1 = $this->mapper->mapRow(['pre_name' => 'test1', 'email' => 'test2']);
 		$entity2 = new Example();
 		$entity2->setPreName('test1');
@@ -252,7 +251,7 @@ class MapperTest extends MapperTestUtility {
 		$this->assertEquals($entity2, $entity1);
 	}
 
-	public function testFindEntities(){
+	public function testFindEntities() {
 		$sql = 'hi';
 		$rows = [
 			['pre_name' => 'hi']
@@ -265,7 +264,7 @@ class MapperTest extends MapperTestUtility {
 		$this->assertEquals([$entity], $result);
 	}
 
-	public function testFindEntitiesNotFound(){
+	public function testFindEntitiesNotFound() {
 		$sql = 'hi';
 		$rows = [];
 		$this->setMapperResult($sql, [], $rows);
@@ -273,7 +272,7 @@ class MapperTest extends MapperTestUtility {
 		$this->assertEquals([], $result);
 	}
 
-	public function testFindEntitiesMultiple(){
+	public function testFindEntitiesMultiple() {
 		$sql = 'hi';
 		$rows = [
 			['pre_name' => 'jo'], ['email' => 'ho']

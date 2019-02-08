@@ -42,7 +42,7 @@ class SyncBirthdayCalendar extends Command {
 	 * @param IUserManager $userManager
 	 * @param BirthdayService $birthdayService
 	 */
-	function __construct(IUserManager $userManager, BirthdayService $birthdayService) {
+	public function __construct(IUserManager $userManager, BirthdayService $birthdayService) {
 		parent::__construct();
 		$this->birthdayService = $birthdayService;
 		$this->userManager = $userManager;
@@ -63,7 +63,7 @@ class SyncBirthdayCalendar extends Command {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$user = $input->getArgument('user');
-		if (!\is_null($user)) {
+		if ($user !== null) {
 			if (!$this->userManager->userExists($user)) {
 				throw new \InvalidArgumentException("User <$user> in unknown.");
 			}
@@ -74,7 +74,7 @@ class SyncBirthdayCalendar extends Command {
 		$output->writeln("Start birthday calendar sync for all users ...");
 		$p = new ProgressBar($output);
 		$p->start();
-		$this->userManager->callForAllUsers(function($user) use ($p)  {
+		$this->userManager->callForAllUsers(function ($user) use ($p) {
 			$p->advance();
 			/** @var IUser $user */
 			$this->birthdayService->syncUser($user->getUID());

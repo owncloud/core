@@ -21,12 +21,14 @@
  *
  */
 
+use rdx\behatvars\BehatVariablesContext;
+
 require_once 'bootstrap.php';
 
 /**
  * Features context.
  */
-class FeatureContext extends \rdx\behatvars\BehatVariablesContext {
+class FeatureContext extends BehatVariablesContext {
 	use BasicStructure;
 
 	/**
@@ -34,8 +36,8 @@ class FeatureContext extends \rdx\behatvars\BehatVariablesContext {
 	 */
 	protected function resetAppConfigs() {
 		// Remember the current capabilities
-		$this->getCapabilitiesCheckResponse();
-		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
+		$this->theAdministratorGetsCapabilitiesCheckResponse();
+		$this->savedCapabilitiesXml[$this->getBaseUrl()] = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
 		$this->setCapabilities($this->getCommonSharingConfigs());
 	}

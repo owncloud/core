@@ -110,7 +110,7 @@ class SyncService {
 	 */
 	public function ensureSystemAddressBookExists($principal, $id, $properties) {
 		$book = $this->backend->getAddressBooksByUri($principal, $id);
-		if (!\is_null($book)) {
+		if ($book !== null) {
 			return $book;
 		}
 		$this->backend->createAddressBook($principal, $id, $properties);
@@ -170,7 +170,6 @@ class SyncService {
 	 * @return string
 	 */
 	private function buildSyncCollectionRequestBody($syncToken) {
-
 		$dom = new \DOMDocument('1.0', 'UTF-8');
 		$dom->formatOutput = true;
 		$root = $dom->createElementNS('DAV:', 'd:sync-collection');
@@ -201,10 +200,12 @@ class SyncService {
 		$multiStatus = $xml->expect('{DAV:}multistatus', $body);
 
 		$result = [];
+		/** @phan-suppress-next-line PhanNonClassMethodCall */
 		foreach ($multiStatus->getResponses() as $response) {
 			$result[$response->getHref()] = $response->getResponseProperties();
 		}
 
+		/** @phan-suppress-next-line PhanNonClassMethodCall */
 		return ['response' => $result, 'token' => $multiStatus->getSyncToken()];
 	}
 
@@ -236,7 +237,7 @@ class SyncService {
 	 */
 	public function deleteUser($userOrCardId) {
 		$systemAddressBook = $this->getLocalSystemAddressBook();
-		if ($userOrCardId instanceof IUser){
+		if ($userOrCardId instanceof IUser) {
 			$name = $userOrCardId->getBackendClassName();
 			$userId = $userOrCardId->getUID();
 
@@ -249,7 +250,7 @@ class SyncService {
 	 * @return array|null
 	 */
 	public function getLocalSystemAddressBook() {
-		if (\is_null($this->localSystemAddressBook)) {
+		if ($this->localSystemAddressBook === null) {
 			$systemPrincipal = "principals/system/system";
 			$this->localSystemAddressBook = $this->ensureSystemAddressBookExists($systemPrincipal, 'system', [
 				'{' . Plugin::NS_CARDDAV . '}addressbook-description' => 'System addressbook which holds all users of this instance'
@@ -261,16 +262,16 @@ class SyncService {
 
 	public function syncInstance(\Closure $progressCallback = null) {
 		$systemAddressBook = $this->getLocalSystemAddressBook();
-		$this->userManager->callForAllUsers(function($user) use ($systemAddressBook, $progressCallback) {
+		$this->userManager->callForAllUsers(function ($user) use ($progressCallback) {
 			$this->updateUser($user);
-			if (!\is_null($progressCallback)) {
+			if ($progressCallback !== null) {
 				$progressCallback();
 			}
 		});
 
 		// remove no longer existing
 		$allCards = $this->backend->getCards($systemAddressBook['id']);
-		foreach($allCards as $card) {
+		foreach ($allCards as $card) {
 			$vCard = Reader::read($card['carddata']);
 			$uid = $vCard->UID->getValue();
 			// load backend and see if user exists
@@ -279,6 +280,4 @@ class SyncService {
 			}
 		}
 	}
-
-
 }

@@ -12,7 +12,7 @@ class ContactsManagerTest extends \Test\TestCase {
 		$this->cm = new \OC\ContactsManager();
 	}
 
-	public function searchProvider(){
+	public function searchProvider() {
 		$search1 = [
 			0 => [
 				'N' => [0 => '', 1 => 'Jan', 2 => 'Jansen', 3 => '', 4 => '',],
@@ -60,7 +60,7 @@ class ContactsManagerTest extends \Test\TestCase {
 	/**
 	 * @dataProvider searchProvider
 	 */
-	public function testSearch($search1, $search2, $expectedResult ){
+	public function testSearch($search1, $search2, $expectedResult) {
 		$addressbook1 = $this->getMockBuilder('\OCP\IAddressBook')
 			->disableOriginalConstructor()
 			->getMock();
@@ -85,15 +85,13 @@ class ContactsManagerTest extends \Test\TestCase {
 			->method('getKey')
 			->willReturn('simple:2');
 
-
 		$this->cm->registerAddressBook($addressbook1);
 		$this->cm->registerAddressBook($addressbook2);
 		$result =  $this->cm->search('');
 		$this->assertEquals($expectedResult, $result);
 	}
 
-
-	public function testDeleteHavePermission(){
+	public function testDeleteHavePermission() {
 		$addressbook = $this->getMockBuilder('\OCP\IAddressBook')
 			->disableOriginalConstructor()
 			->getMock();
@@ -106,13 +104,12 @@ class ContactsManagerTest extends \Test\TestCase {
 			->method('delete')
 			->willReturn('returnMe');
 
-
 		$this->cm->registerAddressBook($addressbook);
 		$result = $this->cm->delete(1, $addressbook->getKey());
 		$this->assertEquals($result, 'returnMe');
 	}
 
-	public function testDeleteNoPermission(){
+	public function testDeleteNoPermission() {
 		$addressbook = $this->getMockBuilder('\OCP\IAddressBook')
 			->disableOriginalConstructor()
 			->getMock();
@@ -129,7 +126,7 @@ class ContactsManagerTest extends \Test\TestCase {
 		$this->assertNull($result);
 	}
 
-	public function testDeleteNoAddressbook(){
+	public function testDeleteNoAddressbook() {
 		$addressbook = $this->getMockBuilder('\OCP\IAddressBook')
 			->disableOriginalConstructor()
 			->getMock();
@@ -140,10 +137,9 @@ class ContactsManagerTest extends \Test\TestCase {
 		$this->cm->registerAddressBook($addressbook);
 		$result = $this->cm->delete(1, 'noaddressbook');
 		$this->assertNull($result);
-
 	}
 
-	public function testCreateOrUpdateHavePermission(){
+	public function testCreateOrUpdateHavePermission() {
 		$addressbook = $this->getMockBuilder('\OCP\IAddressBook')
 			->disableOriginalConstructor()
 			->getMock();
@@ -161,7 +157,7 @@ class ContactsManagerTest extends \Test\TestCase {
 		$this->assertEquals($result, 'returnMe');
 	}
 
-	public function testCreateOrUpdateNoPermission(){
+	public function testCreateOrUpdateNoPermission() {
 		$addressbook = $this->getMockBuilder('\OCP\IAddressBook')
 			->disableOriginalConstructor()
 			->getMock();
@@ -176,10 +172,9 @@ class ContactsManagerTest extends \Test\TestCase {
 		$this->cm->registerAddressBook($addressbook);
 		$result = $this->cm->createOrUpdate([], $addressbook->getKey());
 		$this->assertNull($result);
-
 	}
 
-	public function testCreateOrUpdateNOAdressbook(){
+	public function testCreateOrUpdateNOAdressbook() {
 		$addressbook = $this->getMockBuilder('\OCP\IAddressBook')
 			->disableOriginalConstructor()
 			->getMock();
@@ -192,12 +187,12 @@ class ContactsManagerTest extends \Test\TestCase {
 		$this->assertNull($result);
 	}
 
-	public function testIsEnabledIfNot(){
+	public function testIsEnabledIfNot() {
 		$result = $this->cm->isEnabled();
 		$this->assertFalse($result);
 	}
 
-	public function testIsEnabledIfSo(){
+	public function testIsEnabledIfSo() {
 		$addressbook = $this->getMockBuilder('\OCP\IAddressBook')
 			->disableOriginalConstructor()
 			->getMock();
@@ -206,5 +201,4 @@ class ContactsManagerTest extends \Test\TestCase {
 		$result = $this->cm->isEnabled();
 		$this->assertTrue($result);
 	}
-
 }

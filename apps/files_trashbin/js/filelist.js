@@ -156,6 +156,29 @@
 			this.enableActions();
 		},
 
+		/**
+		 * Event handler for when selecting/deselecting all files
+		 */
+		_onClickSelectAll: function(e) {
+			/*
+			trashbinFiles is a variable which is a clone of this.files.
+			Any change to trashbinFiles will not have any change to this.files
+			 */
+			var trashbinFiles = [];
+			for (var i = 0, len = this.files.length; i < len; i++) {
+				trashbinFiles[i] = {};
+				for (var prop in this.files[i]) {
+					trashbinFiles[i][prop] = this.files[i][prop];
+				}
+			}
+
+			for (var i = 0; i < trashbinFiles.length; i++) {
+				trashbinFiles[i].name = trashbinFiles[i].name + '.d' +
+					Math.floor(trashbinFiles[i].mtime/1000);
+			}
+			OCA.Files.FileList.prototype._onClickSelectAll.call(this, e, trashbinFiles);
+		},
+
 		_onClickRestoreSelected: function(event) {
 			event.preventDefault();
 			var self = this;
@@ -249,14 +272,6 @@
 						}
 					}
 			);
-		},
-
-		_onClickFile: function(event) {
-			var mime = $(this).parent().parent().data('mime');
-			if (mime !== 'httpd/unix-directory') {
-				event.preventDefault();
-			}
-			return OCA.Files.FileList.prototype._onClickFile.apply(this, arguments);
 		},
 
 		generatePreviewUrl: function(urlSpec) {

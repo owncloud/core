@@ -105,10 +105,10 @@ class Scan extends Base {
 				'Limit rescan to this path, e.g., --path="/alice/files/Music", the user_id is determined by the path and the user_id parameter and --all are ignored.'
 			)
 			->addOption(
-				'groups',
+				'group',
 				'g',
-				InputArgument::OPTIONAL,
-				'Scan user(s) under the group(s). This option can be used as --groups=foo,bar to scan groups foo and bar'
+				InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED,
+				'Scan user(s) under the group(s). This option can be used as --group=foo --group=bar to scan groups foo and bar'
 			)
 			->addOption(
 				'quiet',
@@ -160,11 +160,12 @@ class Scan extends Base {
 		$repairStep = new RepairMismatchFileCachePath(
 			$connection,
 			$this->mimeTypeLoader,
-			$this->logger
+			$this->logger,
+			$this->config
 		);
 		$repairStep->setStorageNumericId(null);
 		$repairStep->setCountOnly(false);
-		$repairStep->run(new ConsoleOutput($output));
+		$repairStep->doRepair(new ConsoleOutput($output));
 	}
 
 	protected function scanFiles($user, $path, $verbose, OutputInterface $output, $backgroundScan = false, $shouldRepair = false) {
@@ -183,7 +184,8 @@ class Scan extends Base {
 					$repairStep = new RepairMismatchFileCachePath(
 						$connection,
 						$this->mimeTypeLoader,
-						$this->logger
+						$this->logger,
+						$this->config
 					);
 					$repairStep->setStorageNumericId($storage->getCache()->getNumericStorageId());
 					$repairStep->setCountOnly(false);
@@ -216,37 +218,37 @@ class Scan extends Base {
 			});
 		# count only
 		} else {
-			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function () use ($output) {
+			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function () {
 				$this->filesCounter += 1;
 				if ($this->hasBeenInterrupted()) {
 					throw new InterruptedException();
 				}
 			});
-			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function () use ($output) {
+			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function () {
 				$this->foldersCounter += 1;
 				if ($this->hasBeenInterrupted()) {
 					throw new InterruptedException();
 				}
 			});
 		}
-		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function($path) use ($output) {
+		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function ($path) use ($output) {
 			$this->checkScanWarning($path, $output);
 		});
-		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function($path) use ($output) {
+		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) use ($output) {
 			$this->checkScanWarning($path, $output);
 		});
 
 		try {
 			if ($backgroundScan) {
 				$scanner->backgroundScan($path);
-			}else {
+			} else {
 				$scanner->scan($path, $shouldRepair);
 			}
 		} catch (ForbiddenException $e) {
 			$output->writeln("<error>Home storage for user $user not writable</error>");
 			$output->writeln("Make sure you're running the scan command only as the user the web server runs as");
 		} catch (InterruptedException $e) {
-			# exit the function if ctrl-c has been pressed 
+			# exit the function if ctrl-c has been pressed
 			$output->writeln('Interrupted by user');
 			return;
 		} catch (\Exception $e) {
@@ -274,7 +276,7 @@ class Scan extends Base {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$inputPath = $input->getOption('path');
-		$groups = $input->getOption('groups') ? \explode(',', $input->getOption('groups')) : [];
+		$groups = $input->getOption('group');
 		$shouldRepairStoragesIndividually = (bool) $input->getOption('repair');
 
 		if (\count($groups) >= 1) {
@@ -291,11 +293,11 @@ class Scan extends Base {
 					}
 				}
 			}
-		} else if ($inputPath) {
+		} elseif ($inputPath) {
 			$inputPath = '/' . \trim($inputPath, '/');
-			list (, $user,) = \explode('/', $inputPath, 3);
+			list(, $user, ) = \explode('/', $inputPath, 3);
 			$users = [$user];
-		} else if ($input->getOption('all')) {
+		} elseif ($input->getOption('all')) {
 			// we can only repair all storages in bulk (more efficient) if singleuser or maintenance mode
 			// is enabled to prevent concurrent user access
 			if ($input->getOption('repair')) {
@@ -348,7 +350,6 @@ class Scan extends Base {
 			if ($group !== null) {
 				$output->writeln("Scanning group $group");
 				$this->userScan($users[$group], $inputPath, $shouldRepairStoragesIndividually, $input, $output, $verbose);
-
 			} elseif ($users_total >= 1) {
 				$output->writeln("\nScanning files for $users_total users");
 				$this->userScan($users, $inputPath, $shouldRepairStoragesIndividually, $input, $output, $verbose);
@@ -382,7 +383,9 @@ class Scan extends Base {
 			$user_count += 1;
 			if ($this->userManager->userExists($user)) {
 				# add an extra line when verbose is set to optical separate users
-				if ($verbose) {$output->writeln(""); }
+				if ($verbose) {
+					$output->writeln("");
+				}
 				$r = $shouldRepairStoragesIndividually ? ' (and repair)' : '';
 				$output->writeln("Starting scan$r for user $user_count out of $users_total ($user)");
 				# full: printout data if $verbose was set
@@ -426,7 +429,7 @@ class Scan extends Base {
 		$output->writeln("");
 
 		$headers = [
-			'Folders', 'Files', 'Elapsed time'
+			'Folders', 'Files', 'Elapsed time', 'Items per second'
 		];
 
 		$this->showSummary($headers, null, $output);
@@ -441,11 +444,13 @@ class Scan extends Base {
 	 */
 	protected function showSummary($headers, $rows, OutputInterface $output) {
 		$niceDate = $this->formatExecTime();
+		$itemsPerSecond = $this->getItemsPerSecond();
 		if (!$rows) {
 			$rows = [
 				$this->foldersCounter,
 				$this->filesCounter,
 				$niceDate,
+				$itemsPerSecond
 			];
 		}
 		$table = new Table($output);
@@ -455,6 +460,21 @@ class Scan extends Base {
 		$table->render();
 	}
 
+	/**
+	 * Get items per second processed, no fractions
+	 *
+	 * @return string
+	 */
+	protected function getItemsPerSecond() {
+		$items = $this->foldersCounter + $this->filesCounter;
+		if ($this->execTime === 0) {
+			// catch div by 0
+			$itemsPerSecond = 0;
+		} else {
+			$itemsPerSecond = $items / $this->execTime;
+		}
+		return \sprintf("%.0f", $itemsPerSecond);
+	}
 
 	/**
 	 * Formats microtime into a human readable format
@@ -489,5 +509,4 @@ class Scan extends Base {
 		}
 		return $connection;
 	}
-
 }

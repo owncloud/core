@@ -28,7 +28,6 @@ use OCP\Migration\ISchemaMigration;
  * Initial DB creation for external storages
  */
 class Version20170111103310 implements ISchemaMigration {
-
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		if (!$schema->hasTable("${prefix}external_mounts")) {

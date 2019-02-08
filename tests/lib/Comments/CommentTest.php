@@ -6,7 +6,6 @@ use OCP\Comments\IComment;
 use Test\TestCase;
 
 class CommentTest extends TestCase {
-
 	public function testSettersValidInput() {
 		$comment = new \OC\Comments\Comment();
 
@@ -101,7 +100,7 @@ class CommentTest extends TestCase {
 	 * @dataProvider roleSetterProvider
 	 * @expectedException \InvalidArgumentException
 	 */
-	public function testSetRoleInvalidInput($role, $type, $id){
+	public function testSetRoleInvalidInput($role, $type, $id) {
 		$comment = new \OC\Comments\Comment();
 		$setter = 'set' . $role;
 		$comment->$setter($type, $id);
@@ -115,7 +114,4 @@ class CommentTest extends TestCase {
 		$msg = \str_pad('', IComment::MAX_MESSAGE_LENGTH + 1, 'x');
 		$comment->setMessage($msg);
 	}
-
-
-
 }

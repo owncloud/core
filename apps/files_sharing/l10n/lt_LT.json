@@ -25,6 +25,8 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "Nerastas ownCloud (7 ar aukštesnė versiją) {remote} serveryje.",
     "Invalid ownCloud url" : "Neteisinga ownCloud nuoroda",
     "Share" : "Dalintis",
+    "Declined" : "Atmesta",
+    "Pending" : "Laukiantis",
     "Shared by" : "Dalinasi",
     "Sharing" : "Dalijimasis",
     "A file or folder has been <strong>shared</strong>" : "Failas ar aplankas buvo <strong>pasidalintas</strong>",
@@ -53,6 +55,9 @@
     "Shared via public link" : "Pasidalinta vieša nuoroda",
     "Shared by %2$s" : "Pasidalino %2$s",
     "Shares" : "Dalijimaisi",
+    "Public link" : "Vieša nuoroda",
+    "Accept" : "Priimti",
+    "Decline" : "Atmesti",
     "This share is password-protected" : "Turinys apsaugotas slaptažodžiu",
     "The password is wrong. Try again." : "Netinka slaptažodis: Bandykite dar kartą.",
     "Password" : "Slaptažodis",
@@ -69,5 +74,5 @@
     "Download" : "Atsisiųsti",
     "Download %s" : "Atsiųsti %s",
     "Direct link" : "Tiesioginė nuoroda"
-},"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);"
+},"pluralForm" :"nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);"
 }

@@ -83,8 +83,8 @@ class Preview {
 
 	// filemapper used for deleting previews
 	// index is path, value is fileinfo
-	static public $deleteFileMapper = [];
-	static public $deleteChildrenMapper = [];
+	public static $deleteFileMapper = [];
+	public static $deleteChildrenMapper = [];
 
 	/**
 	 * preview images object
@@ -436,7 +436,7 @@ class Preview {
 	 */
 	public function isCached() {
 		$fileId = $this->getFileInfo()->getId();
-		if (\is_null($fileId)) {
+		if ($fileId === null) {
 			return false;
 		}
 
@@ -449,7 +449,7 @@ class Preview {
 		list($maxPreviewWidth, $maxPreviewHeight) = $this->getMaxPreviewSize($allThumbnails);
 
 		// Only use the cache if we have a max preview
-		if (!\is_null($maxPreviewWidth) && !\is_null($maxPreviewHeight)) {
+		if ($maxPreviewWidth !== null && $maxPreviewHeight !== null) {
 
 			/**
 			 * Phase 2: Calculating the size of the preview we need to send back
@@ -526,7 +526,6 @@ class Preview {
 	 * @return bool
 	 */
 	private function thumbnailSizeExists(array $allThumbnails, $name) {
-
 		foreach ($allThumbnails as $thumbnail) {
 			if ($name === $thumbnail->getName()) {
 				return true;
@@ -714,7 +713,6 @@ class Preview {
 	 * @return bool
 	 */
 	private function unscalable($x, $y) {
-
 		$maxX = $this->getMaxX();
 		$maxY = $this->getMaxY();
 		$scalingUp = $this->getScalingUp();
@@ -743,7 +741,7 @@ class Preview {
 	 * @return IImage
 	 */
 	public function getPreview() {
-		if (!\is_null($this->preview) && $this->preview->valid()) {
+		if ($this->preview !== null && $this->preview->valid()) {
 			return $this->preview;
 		}
 
@@ -758,12 +756,12 @@ class Preview {
 			$this->getCachedPreview($cached);
 		}
 
-		if (\is_null($this->preview)) {
+		if ($this->preview === null) {
 			$this->generatePreview();
 		}
 
 		// We still don't have a preview, so we send back an empty object
-		if (\is_null($this->preview)) {
+		if ($this->preview === null) {
 			$this->preview = new \OC_Image();
 		}
 
@@ -783,7 +781,7 @@ class Preview {
 			throw new NotFoundException('File not found.');
 		}
 
-		if (\is_null($this->preview)) {
+		if ($this->preview === null) {
 			$this->getPreview();
 		}
 		if ($this->preview instanceof IImage) {
@@ -810,7 +808,7 @@ class Preview {
 
 			$this->preview = $image->valid() ? $image : null;
 
-			if (!\is_null($this->preview)) {
+			if ($this->preview !== null) {
 				// Size of the preview we calculated
 				$maxX = $this->previewWidth;
 				$maxY = $this->previewHeight;
@@ -933,7 +931,7 @@ class Preview {
 		}
 
 		// We cap when upscaling
-		if (!\is_null($maxScaleFactor)) {
+		if ($maxScaleFactor !== null) {
 			if ($factor > $maxScaleFactor) {
 				Util::writeLog(
 					'core', 'scale factor reduced from ' . $factor . ' to ' . $maxScaleFactor,
@@ -1030,7 +1028,6 @@ class Preview {
 				'core', 'Cannot save preview of dimension ' . $previewWidth . 'x' . $previewHeight,
 				Util::DEBUG
 			);
-
 		} else {
 			$cachePath = $this->buildCachePath($previewWidth, $previewHeight);
 			$this->userView->file_put_contents($cachePath, $this->preview->data());
@@ -1046,10 +1043,10 @@ class Preview {
 	 * @return string
 	 */
 	private function buildCachePath($maxX = null, $maxY = null) {
-		if (\is_null($maxX)) {
+		if ($maxX === null) {
 			$maxX = $this->getMaxX();
 		}
-		if (\is_null($maxY)) {
+		if ($maxY === null) {
 			$maxY = $this->getMaxY();
 		}
 
@@ -1207,7 +1204,7 @@ class Preview {
 	 * @return integer
 	 */
 	private function limitMaxDim($dim, $maxDim, $dimName) {
-		if (!\is_null($maxDim)) {
+		if ($maxDim !== null) {
 			if ($dim > $maxDim) {
 				Util::writeLog(
 					'core', $dimName . ' reduced from ' . $dim . ' to ' . $maxDim, Util::DEBUG
@@ -1241,7 +1238,11 @@ class Preview {
 		$path = Files\Filesystem::normalizePath($args['path']);
 		$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
 		if ($user === false) {
-			$user = Filesystem::getOwner($path);
+			try {
+				$user = Filesystem::getOwner($path);
+			} catch (NotFoundException $e) {
+				return;
+			}
 		}
 
 		$userFolder = \OC::$server->getUserFolder($user);
@@ -1275,7 +1276,6 @@ class Preview {
 		$childrenFiles = [];
 
 		foreach ($children as $child) {
-
 			if ($child->getType() === FileInfo::TYPE_FOLDER) {
 				$childrenFiles = \array_merge(
 					$childrenFiles,
@@ -1310,13 +1310,27 @@ class Preview {
 	public static function post_delete($args, $prefix = '') {
 		$path = Files\Filesystem::normalizePath($args['path']);
 		if (!isset(self::$deleteFileMapper[$path])) {
-			return;
+			$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
+			if ($user === false) {
+				try {
+					$user = Filesystem::getOwner($path);
+				} catch (NotFoundException $e) {
+					return;
+				}
+			}
+
+			$userFolder = \OC::$server->getUserFolder($user);
+			if ($userFolder === null) {
+				return;
+			}
+
+			$node = $userFolder->get($path);
+		} else {
+			/** @var FileInfo $node */
+			$node = self::$deleteFileMapper[$path];
 		}
 
-		/** @var FileInfo $node */
-		$node = self::$deleteFileMapper[$path];
 		$preview = new Preview($node->getOwner()->getUID(), $prefix, $node);
 		$preview->deleteAllPreviews();
 	}
-
 }

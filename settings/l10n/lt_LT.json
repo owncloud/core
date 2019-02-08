@@ -1,12 +1,11 @@
 { "translations": {
-    "Wrong password" : "Neteisingas slaptažodis",
-    "The new password can not be the same as the previous one" : "Naujas slaptažodis negali būti toks pats kaip ir ankstesnis",
     "%s password changed successfully" : "%sslaptažodis pakeistas",
     "Couldn't send reset email. Please contact your administrator." : "Nepavyko išsiųsti atkūrimo laiško, susisiekite su administratoriumi.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "diegiama ar atnaujinama aplikacijas per turgų arba Federated Cloud Sharing",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL naudoja pasenusią %s versiją (%s). Pašome atnaujinti serverio operacinę sistemą arba serverio tarnybas, nes %s gali veikti netinkamai",
-    "log-level out of allowed range" : "žurnalo lygis už rėžių",
     "Saved" : "Išsaugoti",
+    "log-level out of allowed range" : "žurnalo lygis už rėžių",
+    "Invalid email address" : "Neteisingas el.pašto adresas",
     "test email settings" : "bandomojo laiško nustatymai",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Iškilo problema siunčiant bandomąjį laišką. Prašome peržiūrėti nustatymus. (Klaida: %s)",
     "Email sent" : "Laiškas išsiųstas",
@@ -17,7 +16,6 @@
     "Share" : "Dalintis",
     "APCu" : "APCu",
     "Redis" : "Redis",
-    "__language_name__" : "Lietuvių",
     "Language changed" : "Kalba pakeista",
     "Invalid request" : "Klaidinga užklausa",
     "Couldn't remove app." : "Nepavyko pašalinti programėlės.",
@@ -27,6 +25,7 @@
     "Enabled" : "Įjungta",
     "Not enabled" : "Neįjungta",
     "No apps found for your version" : "Jūsų versijai programų nėra",
+    "The app will be downloaded from the app store" : "Applikacija bus atsiųsta iš parduotuvės",
     "Please wait...." : "Prašome palaukti...",
     "Error while disabling app" : "Klaida išjungiant programą",
     "Disable" : "Išjungti",
@@ -44,6 +43,9 @@
     "Valid until {date}" : "Galioja iki {date}",
     "Disconnect" : "Atsijungti",
     "Sending..." : "Siunčiama...",
+    "Email has been changed successfully." : "El. pašto adresas sėkmingai pakeistas.",
+    "Unable to change mail address" : "Nepavyko pakeisti el. pašto adreso",
+    "Your full name has been changed." : "Pilnas vardas pakeistas.",
     "Failed to change the email address." : "Nepavyko pakeisti el. pašto adreso",
     "An error occurred: {message}" : "Įvyko klaida: {message}",
     "Select a profile picture" : "Pažymėkite profilio paveikslėlį",
@@ -55,6 +57,7 @@
     "Groups" : "Grupės",
     "User documentation" : "Naudotojo dokumentacija",
     "Forum" : "Forumas",
+    "Language" : "Kalba",
     "by %s" : "%s",
     "Documentation:" : "Dokumentacija:",
     "Admin documentation" : "Administratoriaus dokumentacija",
@@ -127,7 +130,6 @@
     "Current password" : "Dabartinis slaptažodis",
     "New password" : "Naujas slaptažodis",
     "Change password" : "Pakeisti slaptažodį",
-    "Language" : "Kalba",
     "Help translate" : "Padėkite išversti",
     "Browser" : "Naršyklė",
     "Most recent activity" : "Vėliausia veikla",
@@ -139,5 +141,5 @@
     "Personal" : "Asmeniniai",
     "Admin" : "Administravimas",
     "Error" : "Klaida"
-},"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);"
+},"pluralForm" :"nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);"
 }

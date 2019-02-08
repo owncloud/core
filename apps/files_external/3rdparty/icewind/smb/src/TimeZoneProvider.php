@@ -27,7 +27,7 @@ class TimeZoneProvider {
 	 * @param string $host
 	 * @param System $system
 	 */
-	function __construct($host, System $system) {
+	public function __construct($host, System $system) {
 		$this->host = $host;
 		$this->system = $system;
 	}
@@ -36,13 +36,13 @@ class TimeZoneProvider {
 		if (!$this->timeZone) {
 			$net = $this->system->getNetPath();
 			if ($net) {
-				$command = \sprintf('%s time zone -S %s',
+				$command = sprintf('%s time zone -S %s',
 					$net,
-					\escapeshellarg($this->host)
+					escapeshellarg($this->host)
 				);
-				$this->timeZone = \exec($command);
+				$this->timeZone = exec($command);
 			} else { // fallback to server timezone
-				$this->timeZone = \date_default_timezone_get();
+				$this->timeZone = date_default_timezone_get();
 			}
 		}
 		return $this->timeZone;

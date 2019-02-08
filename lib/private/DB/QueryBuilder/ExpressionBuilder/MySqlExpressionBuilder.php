@@ -21,7 +21,6 @@
 
 namespace OC\DB\QueryBuilder\ExpressionBuilder;
 
-
 use OC\DB\QueryBuilder\QueryFunction;
 
 class MySqlExpressionBuilder extends ExpressionBuilder {
@@ -45,5 +44,4 @@ class MySqlExpressionBuilder extends ExpressionBuilder {
 		$column = $this->helper->quoteColumnName($column);
 		return new QueryFunction("CHAR_LENGTH({$column})");
 	}
-
 }

@@ -59,7 +59,6 @@ class MountProvider implements IMountProvider {
 		$this->logger = $logger;
 	}
 
-
 	/**
 	 * Get all mountpoints applicable for the user and check for shares where we need to update the etags
 	 *
@@ -73,7 +72,9 @@ class MountProvider implements IMountProvider {
 		
 		// filter out excluded shares and group shares that includes self
 		$shares = \array_filter($shares, function (\OCP\Share\IShare $share) use ($user) {
-			return $share->getPermissions() > 0 && $share->getShareOwner() !== $user->getUID();
+			return $share->getPermissions() > 0
+				&& $share->getShareOwner() !== $user->getUID()
+				&& $share->getState() === \OCP\Share::STATE_ACCEPTED;
 		});
 
 		$superShares = $this->buildSuperShares($shares, $user);
@@ -123,7 +124,7 @@ class MountProvider implements IMountProvider {
 		$result = [];
 		// sort by stime, the super share will be based on the least recent share
 		foreach ($tmp as &$tmp2) {
-			@\usort($tmp2, function($a, $b) {
+			@\usort($tmp2, function ($a, $b) {
 				if ($a->getShareTime() <= $b->getShareTime()) {
 					return -1;
 				}

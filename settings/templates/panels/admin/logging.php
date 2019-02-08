@@ -5,11 +5,11 @@
  * @var OC_Defaults $theme
  */
 $levelLabels = [
-	$l->t( 'Everything (fatal issues, errors, warnings, info, debug)' ),
-	$l->t( 'Info, warnings, errors and fatal issues' ),
-	$l->t( 'Warnings, errors and fatal issues' ),
-	$l->t( 'Errors and fatal issues' ),
-	$l->t( 'Fatal issues only' ),
+	$l->t('Everything (fatal issues, errors, warnings, info, debug)'),
+	$l->t('Info, warnings, errors and fatal issues'),
+	$l->t('Warnings, errors and fatal issues'),
+	$l->t('Errors and fatal issues'),
+	$l->t('Fatal issues only'),
 ];
 ?>
 <?php if ($_['showLog'] && $_['doesLogFileExist']): ?>

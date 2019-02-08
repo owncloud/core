@@ -22,6 +22,10 @@
 namespace OCA\Files_Sharing;
 
 use OC\BackgroundJob\TimedJob;
+use OCP\Share\IManager;
+use OCP\IDBConnection;
+use OCP\Share\Exceptions\ShareNotFound;
+use OCP\ILogger;
 
 /**
  * Delete all shares that are expired
@@ -29,9 +33,35 @@ use OC\BackgroundJob\TimedJob;
 class ExpireSharesJob extends TimedJob {
 
 	/**
-	 * sets the correct interval for this timed job
+	 * Database connection
+	 *
+	 * @var IDBConnection
 	 */
-	public function __construct() {
+	private $connection;
+
+	/**
+	 * Share manager
+	 *
+	 * @var IManager
+	 */
+	private $shareManager;
+
+	/**
+	 * Logger
+	 *
+	 * @var ILogger
+	 */
+	private $logger;
+
+	/**
+	 * Constructor
+	 *
+	 * @param IDBConnection $connection connection
+	 */
+	public function __construct(IDBConnection $connection, IManager $shareManager, ILogger $logger) {
+		$this->connection = $connection;
+		$this->shareManager = $shareManager;
+		$this->logger = $logger;
 		// Run once a day
 		$this->setInterval(24 * 60 * 60);
 	}
@@ -42,17 +72,12 @@ class ExpireSharesJob extends TimedJob {
 	 * @param array $argument unused argument
 	 */
 	public function run($argument) {
-		$connection = \OC::$server->getDatabaseConnection();
-		$logger = \OC::$server->getLogger();
-
-		//Current time
+		// Current time
 		$now = new \DateTime();
 		$now = $now->format('Y-m-d H:i:s');
 
-		/*
-		 * Expire file link shares only (for now)
-		 */
-		$qb = $connection->getQueryBuilder();
+		// Expire file link shares only (for now)
+		$qb = $this->connection->getQueryBuilder();
 		$qb->select('id', 'file_source', 'uid_owner', 'item_type')
 			->from('share')
 			->where(
@@ -67,10 +92,15 @@ class ExpireSharesJob extends TimedJob {
 			);
 
 		$shares = $qb->execute();
-		while($share = $shares->fetch()) {
-			\OCP\Share::unshare($share['item_type'], $share['file_source'], \OCP\Share::SHARE_TYPE_LINK, null, $share['uid_owner']);
+		while ($share = $shares->fetch()) {
+			try {
+				// the getShareById already deletes those automatically
+				$this->shareManager->getShareById('ocinternal:' . $share['id']);
+			} catch (ShareNotFound $e) {
+				// ignore, already deleted
+				$this->logger->debug('ExpireSharesJob: Share with id "' . $share['id'] . '" was already deleted', ['app' => 'files_sharing']);
+			}
 		}
 		$shares->closeCursor();
 	}
-
 }

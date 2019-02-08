@@ -37,7 +37,8 @@ $serverFactory = new \OCA\DAV\Connector\Sabre\ServerFactory(
 	\OC::$server->getUserSession(),
 	\OC::$server->getMountManager(),
 	\OC::$server->getTagManager(),
-	\OC::$server->getRequest()
+	\OC::$server->getRequest(),
+	\OC::$server->getTimeFactory()
 );
 
 // Backends
@@ -46,11 +47,12 @@ $authBackend = new \OCA\DAV\Connector\Sabre\Auth(
 	\OC::$server->getUserSession(),
 	\OC::$server->getRequest(),
 	\OC::$server->getTwoFactorAuthManager(),
+	\OC::$server->getAccountModuleManager(),
 	'principals/'
 );
 $requestUri = \OC::$server->getRequest()->getRequestUri();
 
-$server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, function() {
+$server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, function () {
 	// use the view for the logged in user
 	return \OC\Files\Filesystem::getView();
 });

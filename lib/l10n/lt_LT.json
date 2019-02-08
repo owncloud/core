@@ -10,10 +10,10 @@
     "today" : "šiandien",
     "yesterday" : "vakar",
     "last month" : "praeitą mėnesį",
-    "_%n month ago_::_%n months ago_" : ["Prieš %n mėnesį","Prieš %n mėnesius","Prieš %n mėnesių"],
+    "_%n month ago_::_%n months ago_" : ["Prieš %n mėnesį","Prieš %n mėnesius","Prieš %n mėnesių","Prieš %n mėnesių"],
     "last year" : "praeitais metais",
-    "_%n hour ago_::_%n hours ago_" : ["Prieš %n valandą","Prieš %n valandas","Prieš %n valandų"],
-    "_%n minute ago_::_%n minutes ago_" : ["prieš %n min.","Prieš % minutes","Prieš %n minučių"],
+    "_%n hour ago_::_%n hours ago_" : ["Prieš %n valandą","Prieš %n valandas","Prieš %n valandų","Prieš %n valandų"],
+    "_%n minute ago_::_%n minutes ago_" : ["prieš %n min.","Prieš % minutes","Prieš %n minučių","Prieš %n minučių"],
     "seconds ago" : "prieš sekundę",
     "None" : "Nieko",
     "Username" : "Prisijungimo vardas",
@@ -21,6 +21,7 @@
     "Empty filename is not allowed" : "Tuščias failo pavadinimas neleidžiamas",
     "File name is a reserved word" : "Failo pavadinimas negalimas, žodis rezervuotas",
     "File name contains at least one invalid character" : "Failo vardas sudarytas iš neleistinų simbolių",
+    "__language_name__" : "Lietuvių",
     "App directory already exists" : "Programos aplankas jau egzistuoja",
     "Can't create app folder. Please fix permissions. %s" : "Nepavyksta sukurti aplanko. Prašome pataisyti leidimus. %s",
     "No source specified when installing app" : "Nenurodytas šaltinis diegiant programą",
@@ -58,11 +59,12 @@
     "Help" : "Pagalba",
     "Settings" : "Parinktys",
     "A safe home for all your data" : "Saugus namai jūsų visiems duomenims",
+    "Imprint" : "Imprint",
     "Application is not enabled" : "Programa neįjungta",
     "Authentication error" : "Autentikacijos klaida",
     "Token expired. Please reload page." : "Sesija baigėsi. Prašome perkrauti puslapį.",
     "Unknown user" : "Neatpažintas naudotojas",
     "PostgreSQL >= 9 required" : "Reikalinga PostgreSQL >= 9 versija",
     "Storage is temporarily not available" : "Saugykla yra laikinai neprieinama"
-},"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);"
+},"pluralForm" :"nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);"
 }

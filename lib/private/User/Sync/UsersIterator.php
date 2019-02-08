@@ -27,7 +27,6 @@ abstract class UsersIterator implements \Iterator {
 
 	const LIMIT = 500;
 
-
 	public function rewind() {
 		$this->position = 0;
 		$this->page = 0;
@@ -41,7 +40,7 @@ abstract class UsersIterator implements \Iterator {
 		return $this->position;
 	}
 
-	public abstract function next();
+	abstract public function next();
 
 	public function valid() {
 		return isset($this->data[$this->currentDataPos()]);

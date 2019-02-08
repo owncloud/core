@@ -29,7 +29,6 @@ use Sabre\DAV\PropFind;
  * Sabre Plugin to provide share-related properties
  */
 class SharesPlugin extends \Sabre\DAV\ServerPlugin {
-
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 	const SHARETYPES_PROPERTYNAME = '{http://owncloud.org/ns}share-types';
 
@@ -164,7 +163,7 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 		// need prefetch ?
 		if ($sabreNode instanceof \OCA\DAV\Connector\Sabre\Directory
 			&& $propFind->getDepth() !== 0
-			&& !\is_null($propFind->getStatus(self::SHARETYPES_PROPERTYNAME))
+			&& $propFind->getStatus(self::SHARETYPES_PROPERTYNAME) !== null
 		) {
 			$children = $sabreNode->getChildren();
 
@@ -198,7 +197,7 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 			$this->cachedShareTypes = $this->convertToHashMap($returnedShares, $initShareTypes);
 		}
 
-		$propFind->handle(self::SHARETYPES_PROPERTYNAME, function() use ($sabreNode) {
+		$propFind->handle(self::SHARETYPES_PROPERTYNAME, function () use ($sabreNode) {
 			if (isset($this->cachedShareTypes[$sabreNode->getId()])) {
 				// Share types in cache for this node
 				$shareTypesHash = $this->cachedShareTypes[$sabreNode->getId()];

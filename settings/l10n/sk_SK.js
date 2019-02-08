@@ -1,10 +1,9 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Nesprávne heslo",
     "Couldn't send reset email. Please contact your administrator." : "Nemožno poslať email pre obnovu. Kontaktujte prosím vášho administrátora.",
-    "log-level out of allowed range" : "úroveň logovania z povoleného rozpätia",
     "Saved" : "Uložené",
+    "log-level out of allowed range" : "úroveň logovania z povoleného rozpätia",
     "test email settings" : "nastavenia testovacieho emailu",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Vyskytol sa problém pri odosielaní emailu. Prosím, znovu skontrolujte svoje nastavenia. (Chyba: %s)",
     "Email sent" : "Email odoslaný",
@@ -14,7 +13,6 @@ OC.L10N.register(
     "Share" : "Zdieľať",
     "APCu" : "APCu",
     "Redis" : "Redis",
-    "__language_name__" : "Slovensky",
     "Language changed" : "Jazyk zmenený",
     "Invalid request" : "Neplatná požiadavka",
     "Couldn't remove app." : "Nemožno odstrániť aplikáciu.",
@@ -40,6 +38,8 @@ OC.L10N.register(
     "Migration started …" : "Migrácia spustená ...",
     "Valid until {date}" : "Platný do {date}",
     "Sending..." : "Odosielam...",
+    "Unable to change mail address" : "Nemožno zmeniť emailovú adresu",
+    "Your full name has been changed." : "Vaše meno a priezvisko bolo zmenené.",
     "Select a profile picture" : "Vybrať avatara",
     "Very weak password" : "Veľmi slabé heslo",
     "Weak password" : "Slabé heslo",
@@ -53,6 +53,7 @@ OC.L10N.register(
     "Forum" : "Fórum",
     "Issue tracker" : "Zoznam chýb",
     "Commercial support" : "Komerčná podpora",
+    "Language" : "Jazyk",
     "Developer documentation" : "Dokumentácia vývojára",
     "Documentation:" : "Dokumentácia:",
     "Admin documentation" : "Príručka administrátora",
@@ -161,7 +162,6 @@ OC.L10N.register(
     "Current password" : "Aktuálne heslo",
     "New password" : "Nové heslo",
     "Change password" : "Zmeniť heslo",
-    "Language" : "Jazyk",
     "Help translate" : "Pomôcť s prekladom",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Vyvinula {communityopen}komunita ownCloud{linkclose}. {githubopen}Zdrojový kód{linkclose} je dostupný za podmienok licencie {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Name" : "Názov",
@@ -172,4 +172,4 @@ OC.L10N.register(
     "Admin" : "Administrácia",
     "Error" : "Chyba"
 },
-"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");
+"nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");

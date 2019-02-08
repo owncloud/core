@@ -3,7 +3,6 @@
     "Create" : "შექმნა",
     "Delete" : "წაშლა",
     "Share" : "გაზიარება",
-    "__language_name__" : "__language_name__",
     "Language changed" : "ენა შეცვლილია",
     "Invalid request" : "არასწორი მოთხოვნა",
     "All" : "ყველა",
@@ -15,6 +14,7 @@
     "Updated" : "განახლებულია",
     "Groups" : "ჯგუფები",
     "Forum" : "ფორუმი",
+    "Language" : "ენა",
     "Cron" : "Cron–ი",
     "Execute one task with each page loaded" : "გაუშვი თითო მოქმედება ყველა ჩატვირთულ გვერდზე",
     "Sharing" : "გაზიარება",
@@ -39,7 +39,6 @@
     "Current password" : "მიმდინარე პაროლი",
     "New password" : "ახალი პაროლი",
     "Change password" : "პაროლის შეცვლა",
-    "Language" : "ენა",
     "Help translate" : "თარგმნის დახმარება",
     "Name" : "სახელი",
     "Username" : "მომხმარებლის სახელი",
@@ -47,5 +46,5 @@
     "Personal" : "პირადი",
     "Admin" : "ადმინისტრატორი",
     "Error" : "შეცდომა"
-},"pluralForm" :"nplurals=1; plural=0;"
+},"pluralForm" :"nplurals=2; plural=(n!=1);"
 }

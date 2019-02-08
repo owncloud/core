@@ -78,5 +78,4 @@ class TrustedDomainHelperTest extends \Test\TestCase {
 			[[1], '1', false],
 		];
 	}
-
 }

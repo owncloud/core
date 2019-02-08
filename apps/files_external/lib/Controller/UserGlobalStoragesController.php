@@ -183,7 +183,6 @@ class UserGlobalStoragesController extends StoragesController {
 			$storage,
 			Http::STATUS_OK
 		);
-
 	}
 
 	/**
@@ -203,5 +202,4 @@ class UserGlobalStoragesController extends StoragesController {
 			}
 		}
 	}
-
 }

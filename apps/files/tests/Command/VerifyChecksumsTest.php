@@ -6,6 +6,7 @@ use OC\Files\Node\File;
 use OC\Files\Storage\Wrapper\Checksum;
 use OCA\Files\Command\VerifyChecksums;
 use OCP\IUser;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
@@ -16,7 +17,6 @@ use Test\TestCase;
  */
 class VerifyChecksumsTest extends TestCase {
 	use \Test\Traits\UserTrait;
-
 
 	const BROKEN_CHECKSUM_STRING = '_BROKEN_';
 
@@ -43,8 +43,6 @@ class VerifyChecksumsTest extends TestCase {
 	 */
 	private $testFiles;
 
-
-
 	public function setUp() {
 		parent::setUp();
 
@@ -52,7 +50,6 @@ class VerifyChecksumsTest extends TestCase {
 
 		$this->user1 = $this->createRandomUser(1);
 		$this->user2 = $this->createRandomUser(2);
-
 
 		$this->testFiles =  [
 			$this->createFileForUser($this->user1, 'dir/nested/somefile.txt', 'Hello World!'),
@@ -83,7 +80,6 @@ class VerifyChecksumsTest extends TestCase {
 	 * @throws \OCP\Files\NotPermittedException
 	 */
 	private function createFileForUser($uid, $path, $content) {
-
 		$userFolder = \OC::$server->getUserFolder($uid);
 
 		$parts = \explode('/', \ltrim($path, '/'));
@@ -95,7 +91,7 @@ class VerifyChecksumsTest extends TestCase {
 			if (!empty($subDir)) {
 				$currentDir = "$currentDir/$subDir";
 				if (!$userFolder->nodeExists($currentDir)) {
-					$userFolder->newFolder("$currentDir");
+					$userFolder->newFolder($currentDir);
 				}
 			}
 		}
@@ -103,11 +99,9 @@ class VerifyChecksumsTest extends TestCase {
 		$f = $userFolder->newFile("$currentDir/$fileName");
 		$f->putContent($content);
 
-
-
 		return [
 			'file' => $f,
-			'expectedChecksums' => function() use ($content) {
+			'expectedChecksums' => function () use ($content) {
 				return \sprintf(
 					Checksum::CHECKSUMS_DB_FORMAT,
 					\hash('sha1', $content),
@@ -118,19 +112,17 @@ class VerifyChecksumsTest extends TestCase {
 		];
 	}
 
-
 	/**
 	 * @param int $number
 	 * @return bool|IUser
 	 */
-	private function createRandomUser($number)  {
+	private function createRandomUser($number) {
 		$userName = $this->getUniqueID("$number-verifycheksums");
 		$user = $this->createUser($userName);
 		$this->loginAsUser($userName);
 
 		return $user->getUID();
 	}
-
 
 	private function breakChecksum(File &$f) {
 		$cache = $f->getStorage()->getCache();
@@ -144,17 +136,16 @@ class VerifyChecksumsTest extends TestCase {
 
 	private function assertChecksumsAreCorrect(array $files) {
 		foreach ($files as $key => $file) {
-			/** @var File $f */
-			$f = $files[$key]['file'];
 			$expectedChecksums = $files[$key]['expectedChecksums'];
 			$this->refreshFileInfo($files[$key]['file']);
+			/** @var File $f */
+			$f = $files[$key]['file'];
 			$this->assertSame(
 				$expectedChecksums(),
 				$f->getChecksum()
 			);
 		}
 	}
-
 
 	public function testNoBrokenChecksums() {
 		$this->cmd->execute([]);
@@ -176,10 +167,8 @@ class VerifyChecksumsTest extends TestCase {
 		$this->cmd->execute([]);
 		$this->cmd->execute([]);
 
-
 		$exitCode = $this->cmd->getStatusCode();
 		$this->assertEquals(VerifyChecksums::EXIT_CHECKSUM_ERRORS, $exitCode, 'Wrong exit code');
-
 
 		$this->assertEquals(self::BROKEN_CHECKSUM_STRING, $file1->getChecksum());
 		$this->assertEquals(self::BROKEN_CHECKSUM_STRING, $file2->getChecksum());
@@ -201,8 +190,8 @@ class VerifyChecksumsTest extends TestCase {
 
 		$output = $this->cmd->getDisplay();
 
-		$this->assertContains("Mismatch for {$file1->getInternalPath()}", $output);
-		$this->assertContains("Mismatch for {$file2->getInternalPath()}", $output);
+		$this->assertContains($file1->getInternalPath(), $output);
+		$this->assertContains($file2->getInternalPath(), $output);
 		$this->assertContains(self::BROKEN_CHECKSUM_STRING, $output);
 		$this->assertContains($this->testFiles[4]['expectedChecksums'](), $output);
 		$this->assertContains($this->testFiles[7]['expectedChecksums'](), $output);
@@ -223,7 +212,6 @@ class VerifyChecksumsTest extends TestCase {
 
 		$exitCode = $this->cmd->getStatusCode();
 		$this->assertEquals(VerifyChecksums::EXIT_CHECKSUM_ERRORS, $exitCode, 'Wrong exit code');
-
 	}
 
 	/**
@@ -283,6 +271,7 @@ class VerifyChecksumsTest extends TestCase {
 	}
 
 	public function testOnlyFilesOfAGivenUserAreRepaired() {
+
 		/** @var File $file1 */
 		$file1 = $this->testFiles[0]['file'];
 		/** @var File $file2 */
@@ -311,5 +300,63 @@ class VerifyChecksumsTest extends TestCase {
 		$this->cmd->execute(['-r' => null]);
 
 		$this->assertChecksumsAreCorrect($this->testFiles);
+	}
+
+	public function testFileWithoutChecksumIsIgnored() {
+		/** @var File $file */
+		$file = $this->testFiles[0]['file'];
+		$file->getStorage()->getCache()->update(
+			$file->getId(),
+			['checksum' => '']
+		);
+
+		$this->cmd->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
+		$output = $this->cmd->getDisplay();
+
+		$this->assertContains('somefile.txt => No Checksum', $output);
+		$this->assertContains('Skipping', $output);
+	}
+
+	public function testFileInCacheButNotOnDiskIsIgnored() {
+		/** @var File $file */
+		$file = $this->testFiles[0]['file'];
+		$file->getStorage()->getCache()->update(
+			$file->getId(),
+			['path' => '/does/not/exist', 'name' => 'x-file.txt']
+		);
+
+		$this->cmd->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
+		$output = $this->cmd->getDisplay();
+
+		$this->assertContains('x-file.txt => File is in file-cache but doesn\'t exist on storage/disk', $output);
+	}
+
+	public function testInvalidArgs() {
+		$this->cmd->execute(['-p' => '/does/not/exist']);
+
+		$this->assertEquals(
+			VerifyChecksums::EXIT_INVALID_ARGS,
+			$this->cmd->getStatusCode(),
+			'Not existing path must return invalid args status code'
+		);
+
+		$this->cmd->execute(['-u' => 'doesnotexist@example.com']);
+
+		$this->assertEquals(
+			VerifyChecksums::EXIT_INVALID_ARGS,
+			$this->cmd->getStatusCode(),
+			'Not existing user must return invalid args status code'
+		);
+
+		$this->cmd->execute([
+			'-u' => 'foo@example.com',
+			'-p' => '/some/path'
+		]);
+
+		$this->assertEquals(
+			VerifyChecksums::EXIT_INVALID_ARGS,
+			$this->cmd->getStatusCode(),
+			'User and path must return invalid args status code when combined'
+		);
 	}
 }

@@ -21,7 +21,6 @@
 
 namespace Test\Files\ObjectStore;
 
-
 /**
  * Class ObjectStoreStorageTest
  *
@@ -30,9 +29,7 @@ namespace Test\Files\ObjectStore;
  * @package Test\Files\Cache\ObjectStore
  */
 abstract class ObjectStoreStorageTest extends \Test\Files\Storage\Storage {
-
 	public function testStat() {
-
 		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
 		$ctimeStart = \time();
 		$this->instance->file_put_contents('/lorem.txt', \file_get_contents($textFile));
@@ -65,7 +62,7 @@ abstract class ObjectStoreStorageTest extends \Test\Files\Storage\Storage {
 	 */
 	public function testMove($source, $target) {
 		$this->initSourceAndTarget($source);
-		$sourceId = $this->instance->getCache()->getId(\ltrim('/',$source));
+		$sourceId = $this->instance->getCache()->getId(\ltrim('/', $source));
 		$this->assertNotEquals(-1, $sourceId);
 
 		$this->instance->rename($source, $target);
@@ -74,7 +71,7 @@ abstract class ObjectStoreStorageTest extends \Test\Files\Storage\Storage {
 		$this->assertFalse($this->instance->file_exists($source), $source.' still exists');
 		$this->assertSameAsLorem($target);
 
-		$targetId = $this->instance->getCache()->getId(\ltrim('/',$target));
+		$targetId = $this->instance->getCache()->getId(\ltrim('/', $target));
 		$this->assertSame($sourceId, $targetId, 'fileid must be stable on move or shares will break');
 	}
 

@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\Unit\Avatars;
-
 
 use OCA\DAV\Avatars\AvatarHome;
 use OCA\DAV\Avatars\AvatarNode;
@@ -121,5 +119,4 @@ class AvatarHomeTest extends TestCase {
 	public function testGetLastModified() {
 		self::assertNull($this->home->getLastModified());
 	}
-
 }

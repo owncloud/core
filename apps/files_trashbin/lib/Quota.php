@@ -27,7 +27,7 @@ use OCP\IConfig;
 use OCP\IUserManager;
 use OCP\IUser;
 
-class Quota  {
+class Quota {
 
 	// percent of free disk space/quota that triggers trashbin cleanup by default
 	const DEFAULTMAXSIZE = 50;
@@ -38,7 +38,7 @@ class Quota  {
 	/** @var IConfig */
 	protected $config;
 
-	public function __construct(IUserManager $userManager, IConfig $config){
+	public function __construct(IUserManager $userManager, IConfig $config) {
 		$this->userManager = $userManager;
 		$this->config = $config;
 	}
@@ -52,13 +52,13 @@ class Quota  {
 	 */
 	public function calculateFreeSpace($trashbinSize, $user) {
 		$userObject = $this->userManager->get($user);
-		if(\is_null($userObject)) {
+		if ($userObject === null) {
 			return 0;
 		}
 		$quota = $this->getUserQuota($userObject);
 
 		$userFolder = \OC::$server->getUserFolder($user);
-		if(\is_null($userFolder)) {
+		if ($userFolder === null) {
 			return 0;
 		}
 
@@ -79,10 +79,9 @@ class Quota  {
 	 *
 	 * @return int
 	 */
-	public function getPurgeLimit(){
+	public function getPurgeLimit() {
 		return $this->config->getSystemValue('trashbin_purge_limit', self::DEFAULTMAXSIZE);
 	}
-
 
 	/**
 	 * Get user quota or free space when there is no quota set

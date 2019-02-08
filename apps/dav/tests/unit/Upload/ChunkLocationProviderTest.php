@@ -56,7 +56,6 @@ class ChunkLocationProviderTest extends TestCase {
 	}
 
 	public function testProviderIfConfigured() {
-
 		$root = vfsStream::setup('chunk-dir-root');
 
 		$this->config->expects($this->once())

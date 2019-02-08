@@ -32,7 +32,6 @@ namespace OCA\Files_Sharing\Tests;
  * @group DB
  */
 class ShareTest extends TestCase {
-
 	const TEST_FOLDER_NAME = '/folder_share_api_test';
 
 	private static $tempStorage;
@@ -70,7 +69,6 @@ class ShareTest extends TestCase {
 	}
 
 	public function testUnshareFromSelf() {
-
 		$g = \OC::$server->getGroupManager()->createGroup('testGroup');
 		$g->addUser(\OC::$server->getUserManager()->get(self::TEST_FILES_SHARING_API_USER2));
 		$g->addUser(\OC::$server->getUserManager()->get(self::TEST_FILES_SHARING_API_USER3));
@@ -124,7 +122,6 @@ class ShareTest extends TestCase {
 	}
 
 	public function testShareWithDifferentShareFolder() {
-
 		$fileinfo = $this->view->getFileInfo($this->filename);
 		$folderinfo = $this->view->getFileInfo($this->folder);
 
@@ -171,14 +168,14 @@ class ShareTest extends TestCase {
 
 		$shares = $this->shareManager->getSharedWith(self::TEST_FILES_SHARING_API_USER2, \OCP\Share::SHARE_TYPE_GROUP);
 		$share = $shares[0];
-		$this->assertSame('/test.txt' ,$share->getTarget());
+		$this->assertSame('/test.txt', $share->getTarget());
 		$this->assertSame(19, $share->getPermissions());
 		
 		\OC\Files\Filesystem::rename('test.txt', 'new test.txt');
 
 		$shares = $this->shareManager->getSharedWith(self::TEST_FILES_SHARING_API_USER2, \OCP\Share::SHARE_TYPE_GROUP);
 		$share = $shares[0];
-		$this->assertSame('/new test.txt' ,$share->getTarget());
+		$this->assertSame('/new test.txt', $share->getTarget());
 		$this->assertSame(19, $share->getPermissions());
 		
 		$share->setPermissions(\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE);
@@ -188,7 +185,7 @@ class ShareTest extends TestCase {
 		$shares = $this->shareManager->getSharedWith(self::TEST_FILES_SHARING_API_USER2, \OCP\Share::SHARE_TYPE_GROUP);
 		$share = $shares[0];
 
-		$this->assertSame('/new test.txt' ,$share->getTarget());
+		$this->assertSame('/new test.txt', $share->getTarget());
 		$this->assertSame(3, $share->getPermissions());
 	}
 
@@ -197,7 +194,6 @@ class ShareTest extends TestCase {
 	 * @dataProvider dataProviderTestFileSharePermissions
 	 */
 	public function testFileSharePermissions($permission, $expectedvalid) {
-
 		$pass = true;
 		try {
 			$this->share(
@@ -231,7 +227,6 @@ class ShareTest extends TestCase {
 	}
 
 	public function testFileOwner() {
-
 		$this->share(
 			\OCP\Share::SHARE_TYPE_USER,
 			$this->filename,

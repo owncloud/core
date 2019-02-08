@@ -33,7 +33,7 @@ $appId = (string)$_POST['appid'];
 $appId = OC_App::cleanAppId($appId);
 
 $result = OC_App::removeApp($appId);
-if($result !== false) {
+if ($result !== false) {
 	// FIXME: Clear the cache - move that into some sane helper method
 	\OC::$server->getMemCacheFactory()->create('settings')->remove('listApps-0');
 	\OC::$server->getMemCacheFactory()->create('settings')->remove('listApps-1');

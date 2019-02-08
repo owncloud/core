@@ -74,7 +74,9 @@ class UpdaterLegacyTest extends \Test\TestCase {
 
 		$result = false;
 		$user = \OC::$server->getUserManager()->get(self::$user);
-		if ($user !== null) { $result = $user->delete(); }
+		if ($user !== null) {
+			$result = $user->delete();
+		}
 		$this->assertTrue($result);
 
 		$this->logout();
@@ -299,5 +301,4 @@ class UpdaterLegacyTest extends \Test\TestCase {
 		$this->assertNotSame($rootCachedData['etag'], $cachedData['etag']);
 		$this->assertEquals($time, $cachedData['mtime']);
 	}
-
 }

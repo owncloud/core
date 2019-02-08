@@ -66,7 +66,7 @@ class Setup {
 	 * @param ILogger $logger
 	 * @param ISecureRandom $random
 	 */
-	function __construct(IConfig $config,
+	public function __construct(IConfig $config,
 						 IniGetWrapper $iniWrapper,
 						 IL10N $l10n,
 						 \OC_Defaults $defaults,
@@ -81,7 +81,7 @@ class Setup {
 		$this->random = $random;
 	}
 
-	static $dbSetupClasses = [
+	public static $dbSetupClasses = [
 		'mysql' => \OC\Setup\MySQL::class,
 		'pgsql' => \OC\Setup\PostgreSQL::class,
 		'oci'   => \OC\Setup\OCI::class,
@@ -152,26 +152,26 @@ class Setup {
 			$configuredDatabases = $this->config->getSystemValue('supportedDatabases',
 				['sqlite', 'mysql', 'pgsql']);
 		}
-		if(!\is_array($configuredDatabases)) {
+		if (!\is_array($configuredDatabases)) {
 			throw new Exception('Supported databases are not properly configured.');
 		}
 
 		$supportedDatabases = [];
 
-		foreach($configuredDatabases as $database) {
-			if(\array_key_exists($database, $availableDatabases)) {
+		foreach ($configuredDatabases as $database) {
+			if (\array_key_exists($database, $availableDatabases)) {
 				$working = false;
 				$type = $availableDatabases[$database]['type'];
 				$call = $availableDatabases[$database]['call'];
 
-				if($type === 'class') {
+				if ($type === 'class') {
 					$working = $this->IsClassExisting($call);
 				} elseif ($type === 'function') {
 					$working = $this->is_callable($call);
-				} elseif($type === 'pdo') {
-					$working = \in_array($call, $this->getAvailableDbDriversForPdo(), TRUE);
+				} elseif ($type === 'pdo') {
+					$working = \in_array($call, $this->getAvailableDbDriversForPdo(), true);
 				}
-				if($working) {
+				if ($working) {
 					$supportedDatabases[$database] = $availableDatabases[$database]['name'];
 				}
 			}
@@ -197,7 +197,7 @@ class Setup {
 		// Create data directory to test whether the .htaccess works
 		// Notice that this is not necessarily the same data directory as the one
 		// that will effectively be used.
-		if(!\file_exists($dataDir)) {
+		if (!\file_exists($dataDir)) {
 			@\mkdir($dataDir);
 		}
 		if (\is_dir($dataDir) && \is_writable($dataDir)) {
@@ -222,7 +222,7 @@ class Setup {
 			];
 		}
 
-		if($this->iniWrapper->getString('open_basedir') !== '' && PHP_INT_SIZE === 4) {
+		if ($this->iniWrapper->getString('open_basedir') !== '' && PHP_INT_SIZE === 4) {
 			$errors[] = [
 				'error' => $this->l10n->t(
 					'It seems that this %s instance is running on a 32-bit PHP environment and the open_basedir has been configured in php.ini. ' .
@@ -254,13 +254,13 @@ class Setup {
 		$error = [];
 		$dbType = $options['dbtype'];
 
-		if(empty($options['adminlogin'])) {
+		if (empty($options['adminlogin'])) {
 			$error[] = $l->t('Set an admin username.');
 		}
-		if(empty($options['adminpass'])) {
+		if (empty($options['adminpass'])) {
 			$error[] = $l->t('Set an admin password.');
 		}
-		if(empty($options['directory'])) {
+		if (empty($options['directory'])) {
 			$options['directory'] = \OC::$SERVERROOT."/data";
 		}
 
@@ -286,22 +286,22 @@ class Setup {
 			$error[] = $l->t("Can't create or write into the data directory %s", [$dataDir]);
 		}
 
-		if(\count($error) != 0) {
+		if (\count($error) != 0) {
 			return $error;
 		}
 
 		$request = \OC::$server->getRequest();
 
 		//no errors, good
-		if(isset($options['trusted_domains'])
-		    && \is_array($options['trusted_domains'])) {
+		if (isset($options['trusted_domains'])
+			&& \is_array($options['trusted_domains'])) {
 			$trustedDomains = $options['trusted_domains'];
 		} else {
 			$trustedDomains = [$request->getInsecureServerHost()];
 		}
 
 		//use sqlite3 when available, otherwise sqlite2 will be used.
-		if($dbType=='sqlite' and $this->IsClassExisting('SQLite3')) {
+		if ($dbType=='sqlite' and $this->IsClassExisting('SQLite3')) {
 			$dbType='sqlite3';
 		}
 
@@ -348,11 +348,11 @@ class Setup {
 			if (!$user) {
 				$error[] = "User <$username> could not be created.";
 			}
-		} catch(Exception $exception) {
+		} catch (Exception $exception) {
 			$error[] = $exception->getMessage();
 		}
 
-		if(\count($error) == 0) {
+		if (\count($error) == 0) {
 			$config = \OC::$server->getConfig();
 			$config->setAppValue('core', 'installedat', \microtime(true));
 			$config->setAppValue('core', 'lastupdatedat', \microtime(true));
@@ -380,6 +380,9 @@ class Setup {
 
 			self::installBackgroundJobs();
 
+			// save the origin version that we installed at
+			$config->setAppValue('core', 'first_install_version', \implode('.', \OCP\Util::getVersion()));
+
 			//and we are done
 			$config->setSystemValue('installed', true);
 		}
@@ -405,9 +408,9 @@ class Setup {
 		$config = \OC::$server->getConfig();
 
 		// For CLI read the value from overwrite.cli.url
-		if(\OC::$CLI) {
+		if (\OC::$CLI) {
 			$webRoot = $config->getSystemValue('overwrite.cli.url', '');
-			if($webRoot === '') {
+			if ($webRoot === '') {
 				return;
 			}
 			$webRoot = \parse_url($webRoot, PHP_URL_PATH);
@@ -432,12 +435,12 @@ class Setup {
 
 		// Add rewrite rules if the RewriteBase is configured
 		$rewriteBase = $config->getSystemValue('htaccess.RewriteBase', '');
-		if($rewriteBase !== '') {
+		if ($rewriteBase !== '') {
 			$content .= "\n<IfModule mod_rewrite.c>";
 			$content .= "\n  Options -MultiViews";
 			$content .= "\n  RewriteRule ^core/js/oc.js$ index.php [PT,E=PATH_INFO:$1]";
 			$content .= "\n  RewriteRule ^core/preview.png$ index.php [PT,E=PATH_INFO:$1]";
-			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !\\.(css|js|svg|gif|png|html|ttf|woff|ico|jpg|jpeg)$";
+			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !\\.(css|js|svg|gif|png|html|ttf|woff|ico|jpg|jpeg|json)$";
 			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !core/img/favicon.ico$";
 			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !/robots.txt";
 			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !/remote.php";
@@ -449,7 +452,8 @@ class Setup {
 			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !/ocs/v2.php";
 			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !/updater/";
 			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !/ocs-provider/";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge/.*";
+			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !/ocm-provider/";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^/.well-known/(acme-challenge|pki-validation)/.*";
 			$content .= "\n  RewriteRule . index.php [PT,E=PATH_INFO:$1]";
 			$content .= "\n  RewriteBase " . $rewriteBase;
 			$content .= "\n  <IfModule mod_env.c>";
@@ -465,7 +469,6 @@ class Setup {
 			//suppress errors in case we don't have permissions for it
 			@\file_put_contents($setupHelper->pathToHtaccess(), $htaccessContent.$content . "\n");
 		}
-
 	}
 
 	public static function protectDataDirectory() {

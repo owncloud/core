@@ -85,7 +85,7 @@ class OC_User {
 			\OC::$server->getUserManager()->registerBackend($backend);
 		} else {
 			// You'll never know what happens
-			if (null === $backend OR !\is_string($backend)) {
+			if ($backend === null or !\is_string($backend)) {
 				$backend = 'database';
 			}
 
@@ -99,6 +99,7 @@ class OC_User {
 					\OC::$server->getUserManager()->registerBackend(self::$_usedBackends[$backend]);
 					break;
 				case 'dummy':
+					/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 					self::$_usedBackends[$backend] = new \Test\Util\User\Dummy();
 					\OC::$server->getUserManager()->registerBackend(self::$_usedBackends[$backend]);
 					break;
@@ -204,7 +205,6 @@ class OC_User {
 		return null;
 	}
 
-
 	/**
 	 * Sets user id for session and triggers emit
 	 *
@@ -228,7 +228,7 @@ class OC_User {
 	 * @return bool Whether the display name could get set
 	 */
 	public static function setDisplayName($uid, $displayName = null) {
-		if (\is_null($displayName)) {
+		if ($displayName === null) {
 			$displayName = $uid;
 		}
 		$user = \OC::$server->getUserManager()->get($uid);
@@ -303,7 +303,6 @@ class OC_User {
 		return false;
 	}
 
-
 	/**
 	 * get the user id of the user currently logged in.
 	 *
@@ -311,7 +310,7 @@ class OC_User {
 	 */
 	public static function getUser() {
 		$uid = \OC::$server->getSession() ? \OC::$server->getSession()->get('user_id') : null;
-		if (!\is_null($uid) && self::$incognitoMode === false) {
+		if ($uid !== null && self::$incognitoMode === false) {
 			return $uid;
 		} else {
 			return false;

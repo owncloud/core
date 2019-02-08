@@ -35,6 +35,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "No teniu permisos per a pujar o crear els fitxers aquí",
     "_Uploading %n file_::_Uploading %n files_" : ["Pujant %n fitxer","Pujant %n fitxers"],
     "New" : "Nou",
+    "Unknown user" : "Usuari desconegut",
     "\"{name}\" is an invalid file name." : "\"{name}\" no es un fitxer vàlid.",
     "File name cannot be empty." : "El nom del fitxer no pot ser buit.",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "L'emmagatzematge de {owner} està ple, els arxius no es poden actualitzar o sincronitzar més!",

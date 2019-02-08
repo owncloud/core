@@ -20,11 +20,9 @@
  */
 namespace Test\Files\ObjectStore;
 
-
 use OC\Files\ObjectStore\Mapper;
 
 class MapperTest extends \Test\TestCase {
-
 	public function dataGetBucket() {
 		return [
 			['user', \substr(\md5('user'), 0, 3)],

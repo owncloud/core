@@ -25,7 +25,6 @@
 
 namespace OCA\Files_Sharing\Tests;
 
-
 use OCA\Files_Sharing\Migration;
 
 /**
@@ -275,7 +274,7 @@ class MigrationTest extends TestCase {
 		$this->assertEmpty($result[5]['uid_initiator']);
 		$this->assertNull($result[5]['parent']);
 		// flatted re-shares
-		for($i = 6; $i < 9; $i++) {
+		for ($i = 6; $i < 9; $i++) {
 			$this->assertSame('owner2', $result[$i]['uid_owner']);
 			$user = 'user' . ($i - 5);
 			$this->assertSame($user, $result[$i]['uid_initiator']);
@@ -340,7 +339,7 @@ class MigrationTest extends TestCase {
 			->execute();
 
 		$i = 0;
-		while($share = $stmt->fetch()) {
+		while ($share = $stmt->fetch()) {
 			$this->assertEquals('user'.($i+1), $share['share_with']);
 			$this->assertEquals('user' . ($i), $share['uid_initiator']);
 			$this->assertEquals('user0', $share['uid_owner']);

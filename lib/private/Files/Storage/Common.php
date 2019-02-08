@@ -44,6 +44,8 @@ use OC\Files\Cache\Scanner;
 use OC\Files\Cache\Updater;
 use OC\Files\Filesystem;
 use OC\Files\Cache\Watcher;
+use OC\Lock\Persistent\Lock;
+use OC\Lock\Persistent\LockManager;
 use OCP\Constants;
 use OCP\Files\FileInfo;
 use OCP\Files\FileNameTooLongException;
@@ -51,8 +53,10 @@ use OCP\Files\InvalidCharacterInPathException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\ReservedWordException;
 use OCP\Files\Storage\ILockingStorage;
+use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Files\Storage\IVersionedStorage;
 use OCP\Lock\ILockingProvider;
+use OCP\Lock\Persistent\ILock;
 
 /**
  * Storage backend class for providing common filesystem operation methods
@@ -65,8 +69,7 @@ use OCP\Lock\ILockingProvider;
  * Some \OC\Files\Storage\Common methods call functions which are first defined
  * in classes which extend it, e.g. $this->stat() .
  */
-abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
-
+abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IPersistentLockingStorage {
 	use LocalTempFileTrait;
 
 	protected $cache;
@@ -79,9 +82,6 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 	protected $mountOptions = [];
 	protected $owner = null;
 
-	public function __construct($parameters) {
-	}
-
 	/**
 	 * Remove a file or folder
 	 *
@@ -91,7 +91,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 	protected function remove($path) {
 		if ($this->is_dir($path)) {
 			return $this->rmdir($path);
-		} else if ($this->is_file($path)) {
+		} elseif ($this->is_file($path)) {
 			return $this->unlink($path);
 		} else {
 			return false;
@@ -285,7 +285,9 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 		$dh = $this->opendir($dir);
 		if (\is_resource($dh)) {
 			while (($item = \readdir($dh)) !== false) {
-				if (Filesystem::isIgnoredDir($item)) continue;
+				if (Filesystem::isIgnoredDir($item)) {
+					continue;
+				}
 				if (\strstr(\strtolower($item), \strtolower($query)) !== false) {
 					$files[] = $dir . '/' . $item;
 				}
@@ -422,7 +424,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 		foreach (\explode('/', $path) as $chunk) {
 			if ($chunk == '..') {
 				\array_pop($output);
-			} else if ($chunk == '.') {
+			} elseif ($chunk == '.') {
 			} else {
 				$output[] = $chunk;
 			}
@@ -551,6 +553,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 	 * @param string $targetInternalPath
 	 * @param bool $preserveMtime
 	 * @return bool
+	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
 	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
 		if ($sourceStorage === $this) {
@@ -597,6 +600,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
+	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
 	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
@@ -693,7 +697,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 		if (!\OC_App::isEnabled('files_versions')) {
 			return [];
 		}
-		list ($uid, $filename) =  $this->convertInternalPathToGlobalPath($internalPath);
+		list($uid, $filename) =  $this->convertInternalPathToGlobalPath($internalPath);
 
 		return \array_map(function ($version) use ($internalPath) {
 			$version['mimetype'] = $this->getMimeType($internalPath);
@@ -706,21 +710,30 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 	 * @param $internalPath
 	 * @return array
 	 */
-	private function convertInternalPathToGlobalPath($internalPath) {
+	public function convertInternalPathToGlobalPath($internalPath) {
 		$mounts = \OC::$server->getMountManager()->findByStorageId($this->getId());
-		$mount = \end($mounts);
-		$p = $mount->getMountPoint() . $internalPath;
+
+		$selectedMount = \end($mounts);
+		foreach ($mounts as $mount) {
+			$o = \explode('/', $mount->getMountPoint());
+			if ($o[1] === $this->owner) {
+				$selectedMount = $mount;
+				break;
+			}
+		}
+
+		$o = \explode('/', $mount->getMountPoint());
+		$p = $selectedMount->getMountPoint() . $internalPath;
 		$p = \explode('/', \ltrim($p, '/'));
 		\array_shift($p);
 		\array_shift($p);
 		$p = \implode('/', $p);
-		$o = \explode('/', $mount->getMountPoint());
 		return [$o[1], $p];
 	}
 
 	public function getVersion($internalPath, $versionId) {
 		$versions = $this->getVersions($internalPath);
-		$versions = \array_filter($versions, function ($version) use($versionId){
+		$versions = \array_filter($versions, function ($version) use ($versionId) {
 			return $version['version'] === $versionId;
 		});
 		return \array_shift($versions);
@@ -743,5 +756,35 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 	public function saveVersion($internalPath) {
 		// returning false here will trigger the fallback implementation
 		return false;
+	}
+
+	public function lockNodePersistent(string $internalPath, array $lockInfo) : ILock {
+		/** @var LockManager $locksManager */
+		$locksManager = \OC::$server->query(LockManager::class);
+		$storageId = $this->getCache()->getNumericStorageId();
+		$fileId = $this->getCache()->getId($internalPath);
+		return $locksManager->lock($storageId, $internalPath, $fileId, $lockInfo);
+	}
+
+	public function unlockNodePersistent(string $internalPath, array $lockInfo) {
+		/** @var LockManager $locksManager */
+		$locksManager = \OC::$server->query(LockManager::class);
+		$fileId = $this->getCache()->getId($internalPath);
+		return $locksManager->unlock($fileId, $lockInfo['token']);
+	}
+
+	public function getLocks(string $internalPath, bool $returnChildLocks = false) : array {
+
+		/** @var LockManager $locksManager */
+		$locksManager = \OC::$server->query(LockManager::class);
+		$storageId = $this->getCache()->getNumericStorageId();
+		$locks = $locksManager->getLocks($storageId, $internalPath, $returnChildLocks);
+
+		return \array_map(function (Lock $lock) {
+			list($uid, $fileName) = $this->convertInternalPathToGlobalPath($lock->getPath());
+			$lock->setDavUserId($uid);
+			$lock->setAbsoluteDavPath($fileName);
+			return $lock;
+		}, $locks);
 	}
 }

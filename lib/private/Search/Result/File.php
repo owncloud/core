@@ -33,7 +33,7 @@ class File extends \OCP\Search\Result {
 
 	/**
 	 * Type name; translated in templates
-	 * @var string 
+	 * @var string
 	 */
 	public $type = 'file';
 
@@ -45,7 +45,7 @@ class File extends \OCP\Search\Result {
 
 	/**
 	 * Size, in bytes
-	 * @var int 
+	 * @var int
 	 */
 	public $size;
 
@@ -63,7 +63,7 @@ class File extends \OCP\Search\Result {
 
 	/**
 	 * File permissions:
-	 * 
+	 *
 	 * @var string
 	 */
 	public $permissions;
@@ -73,30 +73,29 @@ class File extends \OCP\Search\Result {
 	 * @param FileInfo $data file data given by provider
 	 */
 	public function __construct(FileInfo $data) {
-
 		$path = $this->getRelativePath($data->getPath());
 
 		$info = \pathinfo($path);
-		$this->id = $data->getId();
-		$this->name = $info['basename'];
-		$this->link = \OC::$server->getURLGenerator()->linkToRoute(
+
+		parent::__construct($data->getId(), $info['basename'], \OC::$server->getURLGenerator()->linkToRoute(
 			'files.view.index',
 			[
 				'dir' => $info['dirname'],
 				'scrollto' => $info['basename'],
 			]
-		);
+		));
+
 		$this->permissions = $data->getPermissions();
 		$this->path = $path;
 		$this->size = $data->getSize();
 		$this->modified = $data->getMtime();
-		$this->mime = $data->getMimetype();
+		$this->mime_type = $data->getMimetype();
 	}
 
 	/**
 	 * @var Folder $userFolderCache
 	 */
-	static protected $userFolderCache = null;
+	protected static $userFolderCache = null;
 
 	/**
 	 * converts a path relative to the users files folder
@@ -104,12 +103,11 @@ class File extends \OCP\Search\Result {
 	 * @param string $path
 	 * @return string relative path
 	 */
-	protected function getRelativePath ($path) {
+	protected function getRelativePath($path) {
 		if (!isset(self::$userFolderCache)) {
 			$user = \OC::$server->getUserSession()->getUser()->getUID();
 			self::$userFolderCache = \OC::$server->getUserFolder($user);
 		}
 		return self::$userFolderCache->getRelativePath($path);
 	}
-
 }

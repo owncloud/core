@@ -22,7 +22,9 @@
 			target="_blank" rel="noreferrer">spread the word</a>!'));?>
 		</p>
 	<?php endif; ?>
-	<?php if(OC_APP::isEnabled('firstrunwizard')) {?>
-		<p><a class="button" href="#" id="showWizard"><?php p($l->t('Show First Run Wizard again'));?></a></p>
-	<?php }?>
+	<?php if (OC_APP::isEnabled('firstrunwizard')) {
+	?>
+		<p><a class="button" href="#" id="showWizard"><?php p($l->t('Show First Run Wizard again')); ?></a></p>
+	<?php
+}?>
 </div>

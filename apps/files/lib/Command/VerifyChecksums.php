@@ -21,9 +21,10 @@
 
 namespace OCA\Files\Command;
 
-
 use OC\Files\FileInfo;
+use OC\Files\Storage\FailedStorage;
 use OC\Files\Storage\Wrapper\Checksum;
+use OCA\Files_Sharing\ISharedStorage;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use OCP\Files\NotFoundException;
@@ -35,7 +36,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 /**
  * Recomputes checksums for all files and compares them to filecache
  * entries. Provides repair option on mismatch.
@@ -43,8 +43,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @package OCA\Files\Command
  */
 class VerifyChecksums extends Command {
-
-
 	const EXIT_NO_ERRORS = 0;
 	const EXIT_CHECKSUM_ERRORS = 1;
 	const EXIT_INVALID_ARGS = 2;
@@ -53,7 +51,6 @@ class VerifyChecksums extends Command {
 	 * @var IRootFolder
 	 */
 	private $rootFolder;
-
 	/**
 	 * @var IUserManager
 	 */
@@ -87,31 +84,46 @@ class VerifyChecksums extends Command {
 		$userName = $input->getOption('user');
 
 		if (!$pathOption && !$userName) {
-			$output->writeln('<info>This operation might take very long.</info>');
+			$output->writeln('<info>This operation might take quite some time.</info>');
 		}
 
 		if ($pathOption && $userName) {
 			$output->writeln('<error>Please use either path or user exclusively</error>');
 			$this->exitStatus = self::EXIT_INVALID_ARGS;
-
+			return $this->exitStatus;
 		}
 
 		$walkFunction = function (Node $node) use ($input, $output) {
 			$path = $node->getInternalPath();
 			$currentChecksums = $node->getChecksum();
+			$storage = $node->getStorage();
+			$storageId = $storage->getId();
 
-			// Files without calculated checksum can't cause checksum errors
-			if (empty($currentChecksums)) {
-				$output->writeln("Skipping $path => No Checksum", OutputInterface::VERBOSITY_VERBOSE);
+			if ($storage->instanceOfStorage(ISharedStorage::class) || $storage->instanceOfStorage(FailedStorage::class)) {
 				return;
 			}
 
-			$output->writeln("Checking $path => $currentChecksums", OutputInterface::VERBOSITY_VERBOSE);
-			$actualChecksums = self::calculateActualChecksums($path, $node->getStorage());
+			if (!self::fileExistsOnDisk($node)) {
+				$output->writeln("Skipping $storageId/$path => File is in file-cache but doesn't exist on storage/disk", OutputInterface::VERBOSITY_VERBOSE);
+				return;
+			}
 
+			if (!$node->isReadable()) {
+				$output->writeln("Skipping $storageId/$path => File not readable", OutputInterface::VERBOSITY_VERBOSE);
+				return;
+			}
+
+			// Files without calculated checksum can't cause checksum errors
+			if (empty($currentChecksums)) {
+				$output->writeln("Skipping $storageId/$path => No Checksum", OutputInterface::VERBOSITY_VERBOSE);
+				return;
+			}
+
+			$output->writeln("Checking $storageId/$path => $currentChecksums", OutputInterface::VERBOSITY_VERBOSE);
+			$actualChecksums = self::calculateActualChecksums($path, $node->getStorage());
 			if ($actualChecksums !== $currentChecksums) {
 				$output->writeln(
-					"<info>Mismatch for $path:\n Filecache:\t$currentChecksums\n Actual:\t$actualChecksums</info>"
+					"<info>Mismatch for $storageId/$path:\n Filecache:\t$currentChecksums\n Actual:\t$actualChecksums</info>"
 				);
 
 				$this->exitStatus = self::EXIT_CHECKSUM_ERRORS;
@@ -124,18 +136,17 @@ class VerifyChecksums extends Command {
 			}
 		};
 
-		$scanUserFunction = function(IUser $user) use ($input, $output, $walkFunction) {
+		$scanUserFunction = function (IUser $user) use ($walkFunction) {
 			$userFolder = $this->rootFolder->getUserFolder($user->getUID())->getParent();
 			$this->walkNodes($userFolder->getDirectoryListing(), $walkFunction);
 		};
 
 		if ($userName && $this->userManager->userExists($userName)) {
 			$scanUserFunction($this->userManager->get($userName));
-		} else if ($userName && !$this->userManager->userExists($userName)) {
+		} elseif ($userName && !$this->userManager->userExists($userName)) {
 			$output->writeln("<error>User \"$userName\" does not exist</error>");
 			$this->exitStatus = self::EXIT_INVALID_ARGS;
-		} else if ($input->getOption('path')) {
-
+		} elseif ($input->getOption('path')) {
 			try {
 				$node = $this->rootFolder->get($input->getOption('path'));
 			} catch (NotFoundException $ex) {
@@ -145,15 +156,12 @@ class VerifyChecksums extends Command {
 			}
 
 			$this->walkNodes([$node], $walkFunction);
-
 		} else {
 			$this->userManager->callForAllUsers($scanUserFunction);
 		}
 
-
 		return $this->exitStatus;
 	}
-
 
 	/**
 	 * Recursive walk nodes
@@ -188,6 +196,16 @@ class VerifyChecksums extends Command {
 	}
 
 	/**
+	 *
+	 * @param Node $node
+	 * @return bool
+	 */
+	private static function fileExistsOnDisk(Node $node) {
+		$statResult = @$node->stat();
+		return \is_array($statResult) && isset($statResult['size']) && $statResult['size'] !== false;
+	}
+
+	/**
 	 * @param $path
 	 * @param IStorage $storage
 	 * @return string
@@ -202,4 +220,3 @@ class VerifyChecksums extends Command {
 		);
 	}
 }
-

@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace Tests\Core\Command\Config;
 
 use OC\Core\Command\App\GetPath;

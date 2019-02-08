@@ -255,5 +255,4 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 			->execute();
 		$this->cleanMapping('comments_read_markers');
 	}
-
 }

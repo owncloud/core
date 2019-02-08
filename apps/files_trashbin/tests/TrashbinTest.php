@@ -35,6 +35,7 @@ use OC\Files\View;
 use OCA\Files_Sharing\AppInfo\Application;
 use OCA\Files_Trashbin\Expiration;
 use OCA\Files_Trashbin\Helper;
+use OCA\Files_Trashbin\Storage;
 use OCA\Files_Trashbin\Trashbin;
 use OCP\Constants;
 use OCP\Files\File;
@@ -50,7 +51,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @group DB
  */
 class TrashbinTest extends TestCase {
-
 	const TEST_TRASHBIN_USER1 = "test-trashbin-user1";
 	const TEST_TRASHBIN_USER2 = "test-trashbin-user2";
 
@@ -96,7 +96,6 @@ class TrashbinTest extends TestCase {
 		self::loginHelper(self::TEST_TRASHBIN_USER2, true);
 		self::loginHelper(self::TEST_TRASHBIN_USER1, true);
 	}
-
 
 	public static function tearDownAfterClass() {
 		// cleanup test user
@@ -162,7 +161,6 @@ class TrashbinTest extends TestCase {
 		parent::tearDown();
 	}
 
-
 	/**
 	 * test expiration of files older then the max storage time defined for the trash
 	 * in this test we delete a shared file and check if both trash bins, the one from
@@ -170,7 +168,6 @@ class TrashbinTest extends TestCase {
 	 * correctly
 	 */
 	public function testExpireOldFilesShared() {
-
 		$currentTime = \time();
 		$folder = "trashTest-" . $currentTime . '/';
 		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
@@ -243,7 +240,6 @@ class TrashbinTest extends TestCase {
 	 * test expiration of files older then the max storage time defined for the trash
 	 */
 	public function testExpireOldFiles() {
-
 		$currentTime = \time();
 		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
 
@@ -281,7 +277,6 @@ class TrashbinTest extends TestCase {
 		$element = \reset($newTrashContent);
 		$this->assertSame('file2.txt', $element['name']);
 	}
-
 
 	/**
 	 * verify that the array contains the expected results
@@ -326,7 +321,6 @@ class TrashbinTest extends TestCase {
 		}
 		return \OCA\Files\Helper::sortFiles($files, 'mtime');
 	}
-
 
 	/**
 	 * test expiration of old files in the trash bin until the max size
@@ -739,6 +733,20 @@ class TrashbinTest extends TestCase {
 		$this->assertNull($event->getArgument('resolvedDavLink'));
 	}
 
+	public function testDeleteKeys() {
+		$sourceStorage = $this->getMockBuilder(Storage::class)
+			->setConstructorArgs([['mountPoint' => 'test', 'storage' => 'Encryption']])
+			->setMethods(['retainKeys', 'deleteAllFileKeys'])->getMock();
+
+		$sourceStorage->expects($this->once())
+			->method('retainKeys')
+			->willReturn(true);
+		$sourceStorage->expects($this->once())
+			->method('deleteAllFileKeys')
+			->with('//files/file1.txt');
+		$this->invokePrivate(Trashbin::class, 'retainVersions', ['file1.txt', 'test-trashbin-user1', 'file1.txt', 1529567106, $sourceStorage]);
+	}
+
 	/**
 	 * @param string $user
 	 * @param bool $create
@@ -748,7 +756,6 @@ class TrashbinTest extends TestCase {
 			try {
 				\OC::$server->getUserManager()->createUser($user, $user);
 			} catch (\Exception $e) { // catch username is already being used from previous aborted runs
-
 			}
 		}
 
@@ -760,4 +767,3 @@ class TrashbinTest extends TestCase {
 		\OC::$server->getUserFolder($user);
 	}
 }
-

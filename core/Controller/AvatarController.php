@@ -105,49 +105,6 @@ class AvatarController extends Controller {
 
 	/**
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param string $userId
-	 * @param int $size
-	 * @return DataResponse|DataDisplayResponse
-	 */
-	public function getAvatar($userId, $size) {
-		if ($size > 2048) {
-			$size = 2048;
-		} elseif ($size <= 0) {
-			$size = 64;
-		}
-
-		try {
-			$avatar = $this->avatarManager->getAvatar($userId)->getFile($size);
-			$resp = new DataDisplayResponse($avatar->getContent(),
-				Http::STATUS_OK,
-				['Content-Type' => $avatar->getMimeType()]);
-			$resp->setETag($avatar->getEtag());
-		} catch (NotFoundException $e) {
-			$user = $this->userManager->get($userId);
-			$resp = new DataResponse([
-				'data' => [
-					'displayname' => $user->getDisplayName(),
-				],
-			]);
-		} catch (\Exception $e) {
-			$resp = new DataResponse([
-				'data' => [
-					'displayname' => '',
-				],
-			]);
-		}
-
-		$resp->addHeader('Pragma', 'public');
-		$resp->cacheFor(0);
-		$resp->setLastModified(new \DateTime('now', new \DateTimeZone('GMT')));
-
-		return $resp;
-	}
-
-	/**
-	 * @NoAdminRequired
 	 *
 	 * @param string $path
 	 * @return DataResponse
@@ -176,7 +133,7 @@ class AvatarController extends Controller {
 				);
 			}
 			$content = $node->getContent();
-		} elseif (!\is_null($files)) {
+		} elseif ($files !== null) {
 			if (
 				$files['error'][0] === 0 &&
 				$this->isUploadFile($files['tmp_name'][0]) &&
@@ -244,7 +201,7 @@ class AvatarController extends Controller {
 
 	/**
 	 * @NoAdminRequired
-     *
+	 *
 	 * @return DataResponse
 	 */
 	public function deleteAvatar() {
@@ -267,7 +224,7 @@ class AvatarController extends Controller {
 	 */
 	public function getTmpAvatar() {
 		$tmpAvatar = $this->cache->get('tmpAvatar');
-		if (\is_null($tmpAvatar)) {
+		if ($tmpAvatar === null) {
 			return new DataResponse(['data' => [
 										'message' => $this->l->t("No temporary profile picture available, try again")
 									]],
@@ -295,7 +252,7 @@ class AvatarController extends Controller {
 	public function postCroppedAvatar($crop) {
 		$userId = $this->userSession->getUser()->getUID();
 
-		if (\is_null($crop)) {
+		if ($crop === null) {
 			return new DataResponse(['data' => ['message' => $this->l->t("No crop data provided")]],
 									Http::STATUS_BAD_REQUEST);
 		}
@@ -306,7 +263,7 @@ class AvatarController extends Controller {
 		}
 
 		$tmpAvatar = $this->cache->get('tmpAvatar');
-		if (\is_null($tmpAvatar)) {
+		if ($tmpAvatar === null) {
 			return new DataResponse(['data' => [
 										'message' => $this->l->t("No temporary profile picture available, try again")
 									]],

@@ -31,32 +31,32 @@ use Test\TestCase;
  * @group DB
  */
 class ListGroupsTest extends TestCase {
-    /** @var CommandTester */
-    private $commandTester;
+	/** @var CommandTester */
+	private $commandTester;
 
-    protected function setUp() {
-        parent::setUp();
+	protected function setUp() {
+		parent::setUp();
 
-        $command = new ListGroups(\OC::$server->getGroupManager());
-        $this->commandTester = new CommandTester($command);
+		$command = new ListGroups(\OC::$server->getGroupManager());
+		$this->commandTester = new CommandTester($command);
 
-        \OC::$server->getGroupManager()->createGroup('group1');
-    }
+		\OC::$server->getGroupManager()->createGroup('group1');
+	}
 
-    /**
-     * @dataProvider inputProvider
-     * @param array $input
-     * @param string $expectedOutput
-     */
-    public function testCommandInput($input, $expectedOutput) {
-        $this->commandTester->execute($input);
-        $output = $this->commandTester->getDisplay();
-        $this->assertContains($expectedOutput, $output);
-    }
+	/**
+	 * @dataProvider inputProvider
+	 * @param array $input
+	 * @param string $expectedOutput
+	 */
+	public function testCommandInput($input, $expectedOutput) {
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
+	}
 
-    public function inputProvider() {
-        return [
-            [['search-pattern' => 'group'], 'group1'],
-        ];
-    }
+	public function inputProvider() {
+		return [
+			[['search-pattern' => 'group'], 'group1'],
+		];
+	}
 }

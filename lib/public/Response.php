@@ -51,8 +51,8 @@ class Response {
 	 *  null		cache indefinitely
 	 * @since 4.0.0
 	 */
-	static public function enableCaching( $cache_time = null ) {
-		\OC_Response::enableCaching( $cache_time );
+	public static function enableCaching($cache_time = null) {
+		\OC_Response::enableCaching($cache_time);
 	}
 
 	/**
@@ -61,8 +61,8 @@ class Response {
 	 * @param string $lastModified time when the response was last modified
 	 * @since 4.0.0
 	 */
-	static public function setLastModifiedHeader( $lastModified ) {
-		\OC_Response::setLastModifiedHeader( $lastModified );
+	public static function setLastModifiedHeader($lastModified) {
+		\OC_Response::setLastModifiedHeader($lastModified);
 	}
 
 	/**
@@ -71,8 +71,8 @@ class Response {
 	 * @param string $type disposition type, either 'attachment' or 'inline'
 	 * @since 7.0.0
 	 */
-	static public function setContentDispositionHeader( $filename, $type = 'attachment' ) {
-		\OC_Response::setContentDispositionHeader( $filename, $type );
+	public static function setContentDispositionHeader($filename, $type = 'attachment') {
+		\OC_Response::setContentDispositionHeader($filename, $type);
 	}
 
 	/**
@@ -80,7 +80,7 @@ class Response {
 	 * @param string|int|float $length Length to be sent
 	 * @since 8.1.0
 	 */
-	static public function setContentLengthHeader($length) {
+	public static function setContentLengthHeader($length) {
 		\OC_Response::setContentLengthHeader($length);
 	}
 
@@ -89,7 +89,7 @@ class Response {
 	 * @see enableCaching with cache_time = 0
 	 * @since 4.0.0
 	 */
-	static public function disableCaching() {
+	public static function disableCaching() {
 		\OC_Response::disableCaching();
 	}
 
@@ -99,8 +99,8 @@ class Response {
 	 * @param string $etag token to use for modification check
 	 * @since 4.0.0
 	 */
-	static public function setETagHeader( $etag ) {
-		\OC_Response::setETagHeader( $etag );
+	public static function setETagHeader($etag) {
+		\OC_Response::setETagHeader($etag);
 	}
 
 	/**
@@ -109,8 +109,8 @@ class Response {
 	 * @since 4.0.0
 	 * @deprecated 8.1.0 - Use \OCP\AppFramework\Http\StreamResponse or another AppFramework controller instead
 	 */
-	static public function sendFile( $filepath ) {
-		\OC_Response::sendFile( $filepath );
+	public static function sendFile($filepath) {
+		\OC_Response::sendFile($filepath);
 	}
 
 	/**
@@ -120,8 +120,8 @@ class Response {
 	 *  DateTime object when to expire response
 	 * @since 4.0.0
 	 */
-	static public function setExpiresHeader( $expires ) {
-		\OC_Response::setExpiresHeader( $expires );
+	public static function setExpiresHeader($expires) {
+		\OC_Response::setExpiresHeader($expires);
 	}
 
 	/**
@@ -129,7 +129,7 @@ class Response {
 	 * @param string $location to redirect to
 	 * @since 4.0.0
 	 */
-	static public function redirect( $location ) {
-		\OC_Response::redirect( $location );
+	public static function redirect($location) {
+		\OC_Response::redirect($location);
 	}
 }

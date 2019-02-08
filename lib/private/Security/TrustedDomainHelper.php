@@ -36,7 +36,7 @@ class TrustedDomainHelper {
 	/**
 	 * @param IConfig $config
 	 */
-	function __construct(IConfig $config) {
+	public function __construct(IConfig $config) {
 		$this->config = $config;
 	}
 
@@ -70,7 +70,7 @@ class TrustedDomainHelper {
 
 		// Read trusted domains from config
 		$trustedList = $this->config->getSystemValue('trusted_domains', []);
-		if(!\is_array($trustedList)) {
+		if (!\is_array($trustedList)) {
 			return false;
 		}
 
@@ -80,11 +80,10 @@ class TrustedDomainHelper {
 		}
 
 		// Compare with port appended
-		if(\in_array($domainWithPort, $trustedList, true)) {
+		if (\in_array($domainWithPort, $trustedList, true)) {
 			return true;
 		}
 
 		return \in_array($domain, $trustedList, true);
 	}
-
 }

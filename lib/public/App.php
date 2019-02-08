@@ -81,7 +81,7 @@ class App {
 	 * @deprecated 8.1.0 Use \OC::$server->getNavigationManager()->setActiveEntry() instead
 	 * @since 4.0.0
 	 */
-	public static function setActiveNavigationEntry( $id ) {
+	public static function setActiveNavigationEntry($id) {
 		\OC::$server->getNavigationManager()->setActiveEntry($id);
 		return true;
 	}
@@ -93,8 +93,8 @@ class App {
 	 * @return void
 	 * @since 4.0.0
 	*/
-	public static function registerPersonal( $app, $page ) {
-		\OC_App::registerPersonal( $app, $page );
+	public static function registerPersonal($app, $page) {
+		\OC_App::registerPersonal($app, $page);
 	}
 
 	/**
@@ -104,8 +104,8 @@ class App {
 	 * @return void
 	 * @since 4.0.0
 	 */
-	public static function registerAdmin( $app, $page ) {
-		\OC_App::registerAdmin( $app, $page );
+	public static function registerAdmin($app, $page) {
+		\OC_App::registerAdmin($app, $page);
 	}
 
 	/**
@@ -115,8 +115,8 @@ class App {
 	 * @return array|null
 	 * @since 4.0.0
 	*/
-	public static function getAppInfo( $app, $path=false ) {
-		return \OC_App::getAppInfo( $app, $path);
+	public static function getAppInfo($app, $path=false) {
+		return \OC_App::getAppInfo($app, $path);
 	}
 
 	/**
@@ -127,8 +127,8 @@ class App {
 	 * This function checks whether or not an app is enabled.
 	 * @since 4.0.0
 	 */
-	public static function isEnabled( $app ) {
-		return \OC_App::isEnabled( $app );
+	public static function isEnabled($app) {
+		return \OC_App::isEnabled($app);
 	}
 
 	/**
@@ -138,7 +138,7 @@ class App {
 	 * @since 4.0.0
 	 * @deprecated 9.0.0 ownCloud core will handle disabled apps and redirects to valid URLs
 	*/
-	public static function checkAppEnabled( $app ) {
+	public static function checkAppEnabled($app) {
 	}
 
 	/**
@@ -147,7 +147,7 @@ class App {
 	 * @return string
 	 * @since 4.0.0
 	 */
-	public static function getAppVersion( $app ) {
-		return \OC_App::getAppVersion( $app );
+	public static function getAppVersion($app) {
+		return \OC_App::getAppVersion($app);
 	}
 }

@@ -38,7 +38,6 @@ $application->registerRoutes($this, [
 		['name' => 'lost#resetform', 'url' => '/lostpassword/reset/form/{token}/{userId}', 'verb' => 'GET'],
 		['name' => 'lost#setPassword', 'url' => '/lostpassword/set/{token}/{userId}', 'verb' => 'POST'],
 		['name' => 'user#getDisplayNames', 'url' => '/displaynames', 'verb' => 'POST'],
-		['name' => 'avatar#getAvatar', 'url' => '/avatar/{userId}/{size}', 'verb' => 'GET'],
 		['name' => 'avatar#deleteAvatar', 'url' => '/avatar/', 'verb' => 'DELETE'],
 		['name' => 'avatar#postCroppedAvatar', 'url' => '/avatar/cropped', 'verb' => 'POST'],
 		['name' => 'avatar#getTmpAvatar', 'url' => '/avatar/tmp', 'verb' => 'GET'],
@@ -51,10 +50,11 @@ $application->registerRoutes($this, [
 		['name' => 'TwoFactorChallenge#selectChallenge', 'url' => '/login/selectchallenge', 'verb' => 'GET'],
 		['name' => 'TwoFactorChallenge#showChallenge', 'url' => '/login/challenge/{challengeProviderId}', 'verb' => 'GET'],
 		['name' => 'TwoFactorChallenge#solveChallenge', 'url' => '/login/challenge/{challengeProviderId}', 'verb' => 'POST'],
+		['name' => 'Cron#run', 'url' => '/cron', 'verb' => 'GET'],
 	],
 	'ocs' => [
-		['name' => 'Cloud#getCapabilities', 'url' => '/cloud/capabilities', 'verb' => 'GET'],
-		['name' => 'Cloud#getCurrentUser', 'url' => '/cloud/user', 'verb' => 'GET'],
+		['root' => '/cloud', 'name' => 'Cloud#getCapabilities', 'url' => '/capabilities', 'verb' => 'GET'],
+		['root' => '/cloud', 'name' => 'Cloud#getCurrentUser', 'url' => '/user', 'verb' => 'GET'],
 	]
 ]);
 
@@ -79,30 +79,30 @@ $this->create('core_ajax_update', '/core/ajax/update.php')
 	->actionInclude('core/ajax/update.php');
 
 // File routes
-$this->create('files.viewcontroller.showFile', '/f/{fileId}')->action(function($urlParams) {
+$this->create('files.viewcontroller.showFile', '/f/{fileId}')->action(function ($urlParams) {
 	$app = new \OCA\Files\AppInfo\Application($urlParams);
 	$app->dispatch('ViewController', 'showFile');
 });
 
 // Sharing routes
-$this->create('files_sharing.sharecontroller.showShare', '/s/{token}')->action(function($urlParams) {
+$this->create('files_sharing.sharecontroller.showShare', '/s/{token}')->action(function ($urlParams) {
 	$app = new \OCA\Files_Sharing\AppInfo\Application($urlParams);
 	$app->dispatch('ShareController', 'showShare');
 });
-$this->create('files_sharing.sharecontroller.authenticate', '/s/{token}/authenticate')->post()->action(function($urlParams) {
+$this->create('files_sharing.sharecontroller.authenticate', '/s/{token}/authenticate')->post()->action(function ($urlParams) {
 	$app = new \OCA\Files_Sharing\AppInfo\Application($urlParams);
 	$app->dispatch('ShareController', 'authenticate');
 });
-$this->create('files_sharing.sharecontroller.showAuthenticate', '/s/{token}/authenticate')->get()->action(function($urlParams) {
+$this->create('files_sharing.sharecontroller.showAuthenticate', '/s/{token}/authenticate')->get()->action(function ($urlParams) {
 	$app = new \OCA\Files_Sharing\AppInfo\Application($urlParams);
 	$app->dispatch('ShareController', 'showAuthenticate');
 });
-$this->create('files_sharing.sharecontroller.downloadShare', '/s/{token}/download')->get()->action(function($urlParams) {
+$this->create('files_sharing.sharecontroller.downloadShare', '/s/{token}/download')->get()->action(function ($urlParams) {
 	$app = new \OCA\Files_Sharing\AppInfo\Application($urlParams);
 	$app->dispatch('ShareController', 'downloadShare');
 });
 
 // used for heartbeat
-$this->create('heartbeat', '/heartbeat')->action(function(){
+$this->create('heartbeat', '/heartbeat')->action(function () {
 	// do nothing
 });

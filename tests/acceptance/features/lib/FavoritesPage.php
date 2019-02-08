@@ -22,6 +22,10 @@
 
 namespace Page;
 
+use Behat\Mink\Session;
+use Page\FilesPageElement\DetailsDialog;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+
 /**
  * Favorites page.
  */
@@ -32,10 +36,11 @@ class FavoritesPage extends FilesPageBasic {
 	 * @var string $path
 	 */
 	protected $path = '/index.php/apps/files/?view=favorites';
-	protected $fileNamesXpath = "//span[contains(@class,'nametext')]";
-	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and .=%s]";
+	protected $fileNamesXpath = "//span[@class='nametext']";
+	protected $fileNameMatchXpath = "//span[@class='nametext' and .=%s]";
 	protected $fileListXpath = ".//div[@id='app-content-favorites']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-favorites']//div[@id='emptycontent']";
+	protected $filePathInRowXpath = "//*[@data-tags='_\$!<Favorite>!\$_']";
 	
 	/**
 	 * @return string
@@ -63,5 +68,36 @@ class FavoritesPage extends FilesPageBasic {
 	 */
 	protected function getEmptyContentXpath() {
 		return $this->emptyContentXpath;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
+	 *
+	 * @return void
+	 */
+	protected function getFilePathInRowXpath() {
+		return $this->filePathInRowXpath;
+	}
+
+	/**
+	 * finds all rows that have the given name
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 *
+	 * @return FileRow[]
+	 * @throws ElementNotFoundException
+	 */
+	public function findAllFileRowsByName($name, Session $session) {
+		$fileRowElements = $this->getFileRowElementsByName($name, $session);
+		foreach ($fileRowElements as $fileRowElement) {
+			$fileRow = $this->getPage('FilesPageElement\\FavoritesFileRow');
+			$fileRow->setElement($fileRowElement);
+			$fileRow->setName($name);
+			$fileRows[] = $fileRow;
+		}
+		return $fileRows;
 	}
 }

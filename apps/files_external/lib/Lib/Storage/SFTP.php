@@ -65,9 +65,9 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 		}
 
 		$parsed = \parse_url($host);
-		if(\is_array($parsed) && isset($parsed['port'])) {
+		if (\is_array($parsed) && isset($parsed['port'])) {
 			return [$parsed['host'], $parsed['port']];
-		} else if (\is_array($parsed)) {
+		} elseif (\is_array($parsed)) {
 			return [$parsed['host'], 22];
 		} else {
 			return [$input, 22];
@@ -78,6 +78,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	 * {@inheritdoc}
 	 */
 	public function __construct($params) {
+
 		// Register sftp://
 		Stream::register();
 
@@ -103,7 +104,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 			= isset($params['root']) ? $this->cleanPath($params['root']) : '/';
 
 		if ($this->root[0] != '/') {
-			 $this->root = '/' . $this->root;
+			$this->root = '/' . $this->root;
 		}
 
 		if (\substr($this->root, -1, 1) != '/') {
@@ -118,7 +119,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	 * @throws \Exception when the connection failed
 	 */
 	public function getConnection() {
-		if (!\is_null($this->client)) {
+		if ($this->client !== null) {
 			return $this->client;
 		}
 
@@ -158,7 +159,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getId(){
+	public function getId() {
 		$id = 'sftp::' . $this->user . '@' . $this->host;
 		if ($this->port !== 22) {
 			$id .= ':' . $this->port;
@@ -299,13 +300,13 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 
 			$id = \md5('sftp:' . $path);
 			$dirStream = [];
-			foreach($list as $file) {
+			foreach ($list as $file) {
 				if ($file != '.' && $file != '..') {
 					$dirStream[] = $file;
 				}
 			}
 			return IteratorDirectory::wrap($dirStream);
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			return false;
 		}
 	}
@@ -324,7 +325,6 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 				return 'dir';
 			}
 		} catch (\Exception $e) {
-
 		}
 		return false;
 	}
@@ -357,12 +357,13 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	public function fopen($path, $mode) {
 		try {
 			$absPath = $this->absPath($path);
-			switch($mode) {
+			switch ($mode) {
 				case 'r':
 				case 'rb':
-					if ( !$this->file_exists($path)) {
+					if (!$this->file_exists($path)) {
 						return false;
 					}
+					// no break
 				case 'w':
 				case 'wb':
 				case 'a':
@@ -389,7 +390,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	public function touch($path, $mtime=null) {
 		try {
-			if (!\is_null($mtime)) {
+			if ($mtime !== null) {
 				return false;
 			}
 			if (!$this->file_exists($path)) {

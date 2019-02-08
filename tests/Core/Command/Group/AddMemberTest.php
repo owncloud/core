@@ -32,40 +32,40 @@ use Test\Traits\UserTrait;
  * @group DB
  */
 class AddMemberTest extends TestCase {
-    use UserTrait;
+	use UserTrait;
 
-    /** @var CommandTester */
-    private $commandTester;
+	/** @var CommandTester */
+	private $commandTester;
 
-    protected function setUp() {
-        parent::setUp();
+	protected function setUp() {
+		parent::setUp();
 
-        $command = new AddMember(\OC::$server->getGroupManager(), \OC::$server->getUserManager());
-        $this->commandTester = new CommandTester($command);
-        $user1 = $this->createUser('user1');
-        $this->createUser('user2');
-        \OC::$server->getGroupManager()->createGroup('group1');
-        \OC::$server->getGroupManager()->get('group1')->addUser($user1);
-    }
+		$command = new AddMember(\OC::$server->getGroupManager(), \OC::$server->getUserManager());
+		$this->commandTester = new CommandTester($command);
+		$user1 = $this->createUser('user1');
+		$this->createUser('user2');
+		\OC::$server->getGroupManager()->createGroup('group1');
+		\OC::$server->getGroupManager()->get('group1')->addUser($user1);
+	}
 
-    /**
-     * @dataProvider inputProvider
-     * @param array $input
-     * @param string $expectedOutput
-     */
-    public function testCommandInput($input, $expectedOutput) {
-        $this->commandTester->execute($input);
-        $output = $this->commandTester->getDisplay();
-        $this->assertContains($expectedOutput, $output);
-    }
+	/**
+	 * @dataProvider inputProvider
+	 * @param array $input
+	 * @param string $expectedOutput
+	 */
+	public function testCommandInput($input, $expectedOutput) {
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
+	}
 
-    public function inputProvider() {
-        return [
-            [['group' => 'groupUnknown', '--member' => ['user2']], 'does not exist'],
-            [['group' => 'group1', '--member' => []], 'No members specified'],
-            [['group' => 'group1', '--member' => ['user1']], 'is already a member of group'],
-            [['group' => 'group1', '--member' => ['user2']], 'added to group'],
-            [['group' => 'group1', '--member' => ['userUnknown']], 'added to group'],
-        ];
-    }
+	public function inputProvider() {
+		return [
+			[['group' => 'groupUnknown', '--member' => ['user2']], 'does not exist'],
+			[['group' => 'group1', '--member' => []], 'No members specified'],
+			[['group' => 'group1', '--member' => ['user1']], 'is already a member of group'],
+			[['group' => 'group1', '--member' => ['user2']], 'added to group'],
+			[['group' => 'group1', '--member' => ['userUnknown']], 'added to group'],
+		];
+	}
 }

@@ -70,7 +70,6 @@ OC.L10N.register(
     "create" : "შექმნა",
     "delete" : "წაშლა",
     "access control" : "დაშვების კონტროლი",
-    "Resharing is not allowed" : "მეორეჯერ გაზიარება არ არის დაშვებული",
     "Delete" : "წაშლა",
     "Rename" : "გადარქმევა",
     "The object type is not specified." : "ობიექტის ტიპი არ არის მითითებული.",
@@ -82,6 +81,7 @@ OC.L10N.register(
     "Admin" : "ადმინისტრატორი",
     "Help" : "დახმარება",
     "Access forbidden" : "წვდომა აკრძალულია",
+    "Imprint" : "ბეჭედი",
     "Create an <strong>admin account</strong>" : "შექმენი <strong>ადმინ ექაუნტი</strong>",
     "Username" : "მომხმარებლის სახელი",
     "Data folder" : "მონაცემთა საქაღალდე",
@@ -100,4 +100,4 @@ OC.L10N.register(
     "New password" : "ახალი პაროლი",
     "Reset password" : "პაროლის შეცვლა"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n!=1);");

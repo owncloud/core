@@ -21,7 +21,6 @@
 
 namespace OCP;
 
-
 /**
  * Sub admin manager
  *
@@ -35,7 +34,7 @@ interface ISubAdminManager {
 	 * @param IUser $user user to be SubAdmin
 	 * @param IGroup $group group $user becomes subadmin of
 	 * @return bool true if success, false otherwise
- 	 * @since 10.1.0
+	 * @since 10.1.0
 	 */
 	public function createSubAdmin(IUser $user, IGroup $group);
 
@@ -45,7 +44,7 @@ interface ISubAdminManager {
 	 * @param IUser $user the user that is the SubAdmin
 	 * @param IGroup $group the group
 	 * @return bool true if success, false otherwise
- 	 * @since 10.1.0
+	 * @since 10.1.0
 	 */
 	public function deleteSubAdmin(IUser $user, IGroup $group);
 
@@ -53,7 +52,7 @@ interface ISubAdminManager {
 	 * Returns groups managed by the given subadmin
 	 * @param IUser $user the SubAdmin
 	 * @return IGroup[] list of groups
- 	 * @since 10.1.0
+	 * @since 10.1.0
 	 */
 	public function getSubAdminsGroups(IUser $user);
 
@@ -62,7 +61,7 @@ interface ISubAdminManager {
 	 *
 	 * @param IGroup $group the group
 	 * @return IUser[] list of users who are subadmin
- 	 * @since 10.1.0
+	 * @since 10.1.0
 	 */
 	public function getGroupsSubAdmins(IGroup $group);
 
@@ -70,7 +69,7 @@ interface ISubAdminManager {
 	 * Returns all SubAdmins
 	 *
 	 * @return array list of subadmin users
- 	 * @since 10.1.0
+	 * @since 10.1.0
 	 */
 	public function getAllSubAdmins();
 
@@ -80,16 +79,16 @@ interface ISubAdminManager {
 	 * @param IUser $user user to check
 	 * @param IGroup $group group to check
 	 * @return bool true if the given user is a subadmin of the group, false otherwise
- 	 * @since 10.1.0
+	 * @since 10.1.0
 	 */
 	public function isSubAdminofGroup(IUser $user, IGroup $group);
 
 	/**
 	 * Checks whether a user is a of at least one group
 	 *
-	 * @param IUser $user 
+	 * @param IUser $user
 	 * @return bool true if the given user is subadmin of at least one group, false otherwise
- 	 * @since 10.1.0
+	 * @since 10.1.0
 	 */
 	public function isSubAdmin(IUser $user);
 
@@ -99,7 +98,7 @@ interface ISubAdminManager {
 	 * @param IUser $subadmin subadmin user
 	 * @param IUser $user user to check
 	 * @return bool true if accessible, false otherwise
- 	 * @since 10.1.0
+	 * @since 10.1.0
 	 */
 	public function isUserAccessible($subadmin, $user);
 }

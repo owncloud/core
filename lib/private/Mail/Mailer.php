@@ -21,6 +21,8 @@
 
 namespace OC\Mail;
 
+use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\RFCValidation;
 use OCP\IConfig;
 use OCP\Mail\IMailer;
 use OCP\ILogger;
@@ -44,7 +46,7 @@ use OCP\ILogger;
  * @package OC\Mail
  */
 class Mailer implements IMailer {
-	/** @var \Swift_SmtpTransport|\Swift_SendmailTransport|\Swift_MailTransport Cached transport */
+	/** @var \Swift_SmtpTransport|\Swift_SendmailTransport Cached transport */
 	private $instance = null;
 	/** @var IConfig */
 	private $config;
@@ -58,7 +60,7 @@ class Mailer implements IMailer {
 	 * @param ILogger $logger
 	 * @param \OC_Defaults $defaults
 	 */
-	function __construct(IConfig $config,
+	public function __construct(IConfig $config,
 						 ILogger $logger,
 						 \OC_Defaults $defaults) {
 		$this->config = $config;
@@ -98,12 +100,25 @@ class Mailer implements IMailer {
 
 		$mailer->send($message->getSwiftMessage(), $failedRecipients);
 
-		// Debugging logging
-		$logMessage = \sprintf('Sent mail to "%s" with subject "%s"', \print_r($message->getTo(), true), $message->getSubject());
-		$this->logger->debug($logMessage, ['app' => 'core']);
-		if($debugMode && isset($mailLogger)) {
-			$this->logger->debug($mailLogger->dump(), ['app' => 'core']);
+		$allRecipients = [];
+		if (!empty($message->getTo())) {
+			$allRecipients = \array_merge($allRecipients, $message->getTo());
 		}
+		if (!empty($message->getCc())) {
+			$allRecipients = \array_merge($allRecipients, $message->getCc());
+		}
+		if (!empty($message->getBcc())) {
+			$allRecipients = \array_merge($allRecipients, $message->getBcc());
+		}
+
+		// Debugging logging
+		$logMessage = 'Sent mail from "{from}" to "{recipients}" with subject "{subject}"';
+		$this->logger->debug($logMessage, [
+			'app' => 'core',
+			'from' => \json_encode($message->getFrom()),
+			'recipients' => \json_encode($allRecipients),
+			'subject' => $message->getSubject()
+		]);
 
 		return $failedRecipients;
 	}
@@ -115,7 +130,8 @@ class Mailer implements IMailer {
 	 * @return bool True if the mail address is valid, false otherwise
 	 */
 	public function validateMailAddress($email) {
-		return \Swift_Validate::email($this->convertEmail($email));
+		$validator = new EmailValidator();
+		return $validator->isValid($this->convertEmail($email), new RFCValidation());
 	}
 
 	/**
@@ -132,39 +148,38 @@ class Mailer implements IMailer {
 		}
 
 		list($name, $domain) = \explode('@', $email, 2);
-		$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
+		if (\defined('INTL_IDNA_VARIANT_UTS46')) {
+			$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
+		} else {
+			$domain = \idn_to_ascii($domain);
+		}
 		return $name.'@'.$domain;
 	}
 
 	/**
 	 * Returns whatever transport is configured within the config
 	 *
-	 * @return \Swift_SmtpTransport|\Swift_SendmailTransport|\Swift_MailTransport
+	 * @return \Swift_SmtpTransport|\Swift_SendmailTransport
 	 */
 	protected function getInstance() {
-		if (!\is_null($this->instance)) {
+		if ($this->instance !== null) {
 			return $this->instance;
 		}
 
-		switch ($this->config->getSystemValue('mail_smtpmode', 'php')) {
-			case 'smtp':
-				$instance = $this->getSMTPInstance();
-				break;
-			case 'sendmail':
-				// FIXME: Move into the return statement but requires proper testing
-				//       for SMTP and mail as well. Thus not really doable for a
-				//       minor release.
-				$instance = \Swift_Mailer::newInstance($this->getSendMailInstance());
-				break;
-			default:
-				$instance = $this->getMailInstance();
-				break;
+		$mailMode = $this->config->getSystemValue('mail_smtpmode', 'php');
+		if ($mailMode === 'smtp') {
+			$instance = $this->getSmtpInstance();
+		} else {
+			// FIXME: Move into the return statement but requires proper testing
+			//       for SMTP and mail as well. Thus not really doable for a
+			//       minor release.
+			$instance = new \Swift_Mailer($this->getSendMailInstance());
 		}
 
 		// Register plugins
 
 		// Enable logger if debug mode is enabled
-		if($this->config->getSystemValue('mail_smtpdebug', false)) {
+		if ($this->config->getSystemValue('mail_smtpdebug', false)) {
 			$mailLogger = new \Swift_Plugins_Loggers_ArrayLogger();
 			$instance->registerPlugin(new \Swift_Plugins_LoggerPlugin($mailLogger));
 		}
@@ -183,7 +198,7 @@ class Mailer implements IMailer {
 	 * @return \Swift_SmtpTransport
 	 */
 	protected function getSmtpInstance() {
-		$transport = \Swift_SmtpTransport::newInstance();
+		$transport = new \Swift_SmtpTransport();
 		$transport->setTimeout($this->config->getSystemValue('mail_smtptimeout', 10));
 		$transport->setHost($this->config->getSystemValue('mail_smtphost', '127.0.0.1'));
 		$transport->setPort($this->config->getSystemValue('mail_smtpport', 25));
@@ -215,16 +230,6 @@ class Mailer implements IMailer {
 				break;
 		}
 
-		return \Swift_SendmailTransport::newInstance($binaryPath . ' -bs');
+		return new \Swift_SendmailTransport($binaryPath . ' -bs');
 	}
-
-	/**
-	 * Returns the mail transport
-	 *
-	 * @return \Swift_MailTransport
-	 */
-	protected function getMailInstance() {
-		return \Swift_MailTransport::newInstance();
-	}
-
 }

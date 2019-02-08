@@ -15,7 +15,7 @@
 		<?php foreach ($_['cssfiles'] as $cssfile): ?>
 			<link rel="stylesheet" href="<?php print_unescaped($cssfile); ?>">
 		<?php endforeach; ?>
-		<?php foreach($_['printcssfiles'] as $cssfile): ?>
+		<?php foreach ($_['printcssfiles'] as $cssfile): ?>
 			<link rel="stylesheet" href="<?php print_unescaped($cssfile); ?>" media="print">
 		<?php endforeach; ?>
 		<?php foreach ($_['jsfiles'] as $jsfile): ?>

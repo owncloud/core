@@ -7,6 +7,7 @@
  */
 
 namespace Test;
+use OC\Helper\EnvironmentHelper;
 use OC\URLGenerator;
 use OCP\ICacheFactory;
 use OCP\IConfig;
@@ -23,12 +24,21 @@ class UrlGeneratorTest extends TestCase {
 	/** @var IRouter | \PHPUnit_Framework_MockObject_MockObject */
 	private $router;
 
+	/** @var EnvironmentHelper | \PHPUnit_Framework_MockObject_MockObject */
+	private $environmentHelper;
+
 	public function setUp() {
 		parent::setUp();
 		$config = $this->createMock(IConfig::class);
 		$cacheFactory = $this->createMock(ICacheFactory::class);
 		$this->router = $this->createMock(IRouter::class);
-		$this->urlGenerator = new URLGenerator($config, $cacheFactory, $this->router);
+		$this->environmentHelper = $this->createMock(EnvironmentHelper::class);
+		$this->urlGenerator = new URLGenerator(
+			$config,
+			$cacheFactory,
+			$this->router,
+			$this->environmentHelper
+		);
 	}
 
 	/**
@@ -37,9 +47,11 @@ class UrlGeneratorTest extends TestCase {
 	 * @dataProvider provideDocRootAppUrlParts
 	 */
 	public function testLinkToDocRoot($app, $file, $args, $expectedResult) {
-		\OC::$WEBROOT = '';
-		$result = $this->urlGenerator->linkTo($app, $file, $args);
+		$this->environmentHelper->expects($this->any())
+			->method('getWebRoot')
+			->willReturn('');
 
+		$result = $this->urlGenerator->linkTo($app, $file, $args);
 		$this->assertEquals($expectedResult, $result);
 	}
 
@@ -49,21 +61,24 @@ class UrlGeneratorTest extends TestCase {
 	 * @dataProvider provideSubDirAppUrlParts
 	 */
 	public function testLinkToSubDir($app, $file, $args, $expectedResult) {
-		\OC::$WEBROOT = '/owncloud';
-		$result = $this->urlGenerator->linkTo($app, $file, $args);
+		$this->environmentHelper->expects($this->any())
+			->method('getWebRoot')
+			->willReturn('/owncloud');
 
+		$result = $this->urlGenerator->linkTo($app, $file, $args);
 		$this->assertEquals($expectedResult, $result);
 	}
 
 	public function testLinkToRouteAbsolute() {
 		$route = 'files_ajax_list';
-		\OC::$WEBROOT = '/owncloud';
+		$this->environmentHelper->expects($this->any())
+			->method('getWebRoot')
+			->willReturn('/owncloud');
 		$this->router->expects($this->once())->method('generate')
 			->with($route)->willReturn('index.php/apps/files/ajax/list.php');
 
 		$result = $this->urlGenerator->linkToRouteAbsolute($route);
 		$this->assertEquals('http://localhost/owncloud/index.php/apps/files/ajax/list.php', $result);
-
 	}
 
 	public function provideDocRootAppUrlParts() {
@@ -87,11 +102,12 @@ class UrlGeneratorTest extends TestCase {
 	 * test absolute URL construction
 	 * @dataProvider provideDocRootURLs
 	 */
-	function testGetAbsoluteURLDocRoot($url, $expectedResult) {
+	public function testGetAbsoluteURLDocRoot($url, $expectedResult) {
+		$this->environmentHelper->expects($this->any())
+			->method('getWebRoot')
+			->willReturn('');
 
-		\OC::$WEBROOT = '';
 		$result = $this->urlGenerator->getAbsoluteURL($url);
-
 		$this->assertEquals($expectedResult, $result);
 	}
 
@@ -100,11 +116,12 @@ class UrlGeneratorTest extends TestCase {
 	 * test absolute URL construction
 	 * @dataProvider provideSubDirURLs
 	 */
-	function testGetAbsoluteURLSubDir($url, $expectedResult) {
+	public function testGetAbsoluteURLSubDir($url, $expectedResult) {
+		$this->environmentHelper->expects($this->any())
+			->method('getWebRoot')
+			->willReturn('/owncloud');
 
-		\OC::$WEBROOT = '/owncloud';
 		$result = $this->urlGenerator->getAbsoluteURL($url);
-
 		$this->assertEquals($expectedResult, $result);
 	}
 
@@ -126,4 +143,3 @@ class UrlGeneratorTest extends TestCase {
 		];
 	}
 }
-

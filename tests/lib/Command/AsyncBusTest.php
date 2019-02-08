@@ -24,7 +24,7 @@ class SimpleCommand implements ICommand {
 class StateFullCommand implements ICommand {
 	private $state;
 
-	function __construct($state) {
+	public function __construct($state) {
 		$this->state = $state;
 	}
 
@@ -127,15 +127,6 @@ class AsyncBusTest extends TestCase {
 		$this->assertEquals('closure', self::$lastCommand);
 	}
 
-	public function testClosureSelf() {
-		$this->bus->push(function () {
-			self::$lastCommand = 'closure-self';
-		});
-		$this->runJobs();
-		$this->assertEquals('closure-self', self::$lastCommand);
-	}
-
-
 	public function testClosureThis() {
 		// clean class to prevent phpunit putting closure in $this
 		$test = new ThisClosureTest();
@@ -147,7 +138,7 @@ class AsyncBusTest extends TestCase {
 	public function testClosureBind() {
 		$state = 'bar';
 		$this->bus->push(function () use ($state) {
-			self::$lastCommand = 'closure-' . $state;
+			AsyncBusTest::$lastCommand = 'closure-' . $state;
 		});
 		$this->runJobs();
 		$this->assertEquals('closure-bar', self::$lastCommand);
@@ -168,7 +159,6 @@ class AsyncBusTest extends TestCase {
 		$this->runJobs();
 		$this->assertEquals('', self::$lastCommand);
 	}
-
 
 	private function runJobs() {
 		$jobs = $this->jobList->getAll();

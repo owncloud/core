@@ -4,4 +4,4 @@ OC.L10N.register(
     "Versions" : "ვერსიები",
     "Restore" : "აღდგენა"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n!=1);");

@@ -64,7 +64,6 @@ class SystemTagsObjectMappingCollection implements ICollection {
 	 */
 	private $user;
 
-
 	/**
 	 * Constructor
 	 *
@@ -88,7 +87,7 @@ class SystemTagsObjectMappingCollection implements ICollection {
 		$this->user = $user;
 	}
 
-	function createFile($tagId, $data = null) {
+	public function createFile($tagId, $data = null) {
 		try {
 			$tags = $this->tagManager->getTagsByIds([$tagId]);
 			$tag = \current($tags);
@@ -98,6 +97,14 @@ class SystemTagsObjectMappingCollection implements ICollection {
 			if (!$this->tagManager->canUserAssignTag($tag, $this->user)) {
 				throw new Forbidden('No permission to assign tag ' . $tagId);
 			}
+			/**
+			 * regular user who do not belong to whitelisted groups of static tags
+			 * can not assign static tags
+			 */
+			if ((!$tag->isUserEditable() && $tag->isUserAssignable())
+				&& !$this->tagManager->canUserUseStaticTagInGroup($tag, $this->user)) {
+				throw new Forbidden('No permission to assign tag ' . $tagId);
+			}
 
 			$this->tagMapper->assignTags($this->objectId, $this->objectType, $tagId);
 		} catch (TagNotFoundException $e) {
@@ -105,11 +112,11 @@ class SystemTagsObjectMappingCollection implements ICollection {
 		}
 	}
 
-	function createDirectory($name) {
+	public function createDirectory($name) {
 		throw new Forbidden('Permission denied to create collections');
 	}
 
-	function getChild($tagId) {
+	public function getChild($tagId) {
 		try {
 			if ($this->tagMapper->haveTag([$this->objectId], $this->objectType, $tagId, true)) {
 				$tag = $this->tagManager->getTagsByIds([$tagId]);
@@ -126,7 +133,7 @@ class SystemTagsObjectMappingCollection implements ICollection {
 		}
 	}
 
-	function getChildren() {
+	public function getChildren() {
 		$tagIds = \current($this->tagMapper->getTagIdsForObjects([$this->objectId], $this->objectType));
 		if (empty($tagIds)) {
 			return [];
@@ -134,16 +141,16 @@ class SystemTagsObjectMappingCollection implements ICollection {
 		$tags = $this->tagManager->getTagsByIds($tagIds);
 
 		// filter out non-visible tags
-		$tags = \array_filter($tags, function($tag) {
+		$tags = \array_filter($tags, function ($tag) {
 			return $this->tagManager->canUserSeeTag($tag, $this->user);
 		});
 
-		return \array_values(\array_map(function($tag) {
+		return \array_values(\array_map(function ($tag) {
 			return $this->makeNode($tag);
 		}, $tags));
 	}
 
-	function childExists($tagId) {
+	public function childExists($tagId) {
 		try {
 			$result = ($this->tagMapper->haveTag([$this->objectId], $this->objectType, $tagId, true));
 
@@ -163,15 +170,15 @@ class SystemTagsObjectMappingCollection implements ICollection {
 		}
 	}
 
-	function delete() {
+	public function delete() {
 		throw new Forbidden('Permission denied to delete this collection');
 	}
 
-	function getName() {
+	public function getName() {
 		return $this->objectId;
 	}
 
-	function setName($name) {
+	public function setName($name) {
 		throw new Forbidden('Permission denied to rename this collection');
 	}
 
@@ -180,12 +187,12 @@ class SystemTagsObjectMappingCollection implements ICollection {
 	 *
 	 * @return int
 	 */
-	function getLastModified() {
+	public function getLastModified() {
 		return null;
 	}
 
 	/**
-	 * Create a sabre node for the mapping of the 
+	 * Create a sabre node for the mapping of the
 	 * given system tag to the collection's object
 	 *
 	 * @param ISystemTag $tag

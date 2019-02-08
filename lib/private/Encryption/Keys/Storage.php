@@ -72,7 +72,7 @@ class Storage implements IStorage {
 		$this->keys_base_dir = $this->encryption_base_dir .'/keys';
 		$this->root_dir = $this->util->getKeyStorageRoot();
 
-		if (!\is_null($session) && !\is_null($session->getUser())) {
+		if ($session !== null && $session->getUser() !== null) {
 			$this->currentUser = $session->getUser()->getUID();
 		}
 	}
@@ -211,7 +211,6 @@ class Storage implements IStorage {
 	 * @return string
 	 */
 	protected function constructUserKeyPath($encryptionModuleId, $keyId, $uid) {
-
 		if ($uid === null) {
 			$path = $this->root_dir . '/' . $this->encryption_base_dir . '/' . $encryptionModuleId . '/' . $keyId;
 		} else {
@@ -230,7 +229,6 @@ class Storage implements IStorage {
 	 * @return string
 	 */
 	private function getKey($path) {
-
 		$key = '';
 
 		if ($this->view->file_exists($path)) {
@@ -274,7 +272,6 @@ class Storage implements IStorage {
 	 * @return string
 	 */
 	private function getFileKeyDir($encryptionModuleId, $path) {
-
 		list($owner, $filename) = $this->util->getUidAndFilename($path);
 
 		// in case of system wide mount points the keys are stored directly in the data directory
@@ -296,7 +293,6 @@ class Storage implements IStorage {
 	 * @return boolean
 	 */
 	public function renameKeys($source, $target) {
-
 		$sourcePath = $this->getPathToKeys($source);
 		$targetPath = $this->getPathToKeys($target);
 
@@ -310,7 +306,6 @@ class Storage implements IStorage {
 		return false;
 	}
 
-
 	/**
 	 * copy keys if a file was renamed
 	 *
@@ -319,7 +314,6 @@ class Storage implements IStorage {
 	 * @return boolean
 	 */
 	public function copyKeys($source, $target) {
-
 		$sourcePath = $this->getPathToKeys($source);
 		$targetPath = $this->getPathToKeys($target);
 
@@ -386,9 +380,8 @@ class Storage implements IStorage {
 			// so we don't need to mount anything
 			return;
 		}
-		if (!\is_null($uid) && $uid !== '' && $uid !== $this->currentUser) {
+		if ($uid !== null && $uid !== '' && $uid !== $this->currentUser) {
 			\OC\Files\Filesystem::initMountPoints($uid);
 		}
 	}
-
 }

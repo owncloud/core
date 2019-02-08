@@ -80,6 +80,9 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	private $objectCache;
 
+	/** @var string  */
+	private $id;
+
 	/**
 	 * @param string $path
 	 */
@@ -111,7 +114,7 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 	 * that one will be returned.
 	 *
 	 * @param string $path
-	 * @return \OpenCloud\OpenStack\ObjectStorage\Resource\DataObject|bool object
+	 * @return DataObject | bool object
 	 * or false if the object did not exist
 	 */
 	private function fetchObject($path) {
@@ -279,7 +282,6 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
-
 	}
 
 	public function stat($path) {
@@ -287,7 +289,7 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 
 		if ($path === '.') {
 			$path = '';
-		} else if ($this->is_dir($path)) {
+		} elseif ($this->is_dir($path)) {
 			$path .= '/';
 		}
 
@@ -376,8 +378,8 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 							->get($c->getUrl($path)));
 					$streamInterface->rewind();
 					$stream = $streamInterface->getStream();
-					\stream_context_set_option($stream, 'swift','content', $streamInterface);
-					if(!\strrpos($streamInterface
+					\stream_context_set_option($stream, 'swift', 'content', $streamInterface);
+					if (!\strrpos($streamInterface
 						->getMetaData('wrapper_data')[0], '404 Not Found')) {
 						return $stream;
 					}
@@ -426,7 +428,7 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 
 	public function touch($path, $mtime = null) {
 		$path = $this->normalizePath($path);
-		if (\is_null($mtime)) {
+		if ($mtime === null) {
 			$mtime = \time();
 		}
 		$metadata = ['timestamp' => $mtime];
@@ -473,8 +475,7 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 				\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 				return false;
 			}
-
-		} else if ($fileType === 'dir') {
+		} elseif ($fileType === 'dir') {
 
 			// make way
 			$this->unlink($path2);
@@ -500,7 +501,6 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 				$target = $path2 . '/' . $file;
 				$this->copy($source, $target);
 			}
-
 		} else {
 			//file does not exist
 			return false;
@@ -544,7 +544,7 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 	 * @throws \Exception if connection could not be made
 	 */
 	public function getConnection() {
-		if (!\is_null($this->connection)) {
+		if ($this->connection !== null) {
 			return $this->connection;
 		}
 
@@ -554,7 +554,7 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 
 		if (!empty($this->params['password'])) {
 			$settings['password'] = $this->params['password'];
-		} else if (!empty($this->params['key'])) {
+		} elseif (!empty($this->params['key'])) {
 			$settings['apiKey'] = $this->params['key'];
 		}
 
@@ -592,7 +592,7 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 	 * @return OpenCloud\ObjectStore\Resource\Container
 	 */
 	public function getContainer() {
-		if (!\is_null($this->container)) {
+		if ($this->container !== null) {
 			return $this->container;
 		}
 
@@ -648,5 +648,4 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 	public static function checkDependencies() {
 		return true;
 	}
-
 }

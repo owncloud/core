@@ -42,6 +42,13 @@
 				// invisible also implicitly means not assignable
 				scope = t('core', 'invisible');
 			}
+			if (tag.userVisible === true && tag.userEditable === false && tag.userAssignable === true) {
+				/**
+				 * Users can edit the tag, if they are admin or belong to whitelisted
+				 * group by the edit tag.
+				 */
+				scope = t('core', 'Static')
+			}
 			if (scope) {
 				var $tag = $('<em>').text(' ' +
 					t('core', '({scope})', {

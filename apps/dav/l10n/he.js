@@ -8,4 +8,4 @@ OC.L10N.register(
     "Remote Address: %s" : "כתובת מרוחקת: %s",
     "Request ID: %s" : "מספר זיהוי מבוקש: %s"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");

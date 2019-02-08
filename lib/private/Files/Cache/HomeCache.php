@@ -46,7 +46,7 @@ class HomeCache extends Cache {
 		}
 
 		$totalSize = 0;
-		if (\is_null($entry)) {
+		if ($entry === null) {
 			$entry = $this->get($path);
 		}
 		if ($entry && $entry['mimetype'] === 'httpd/unix-directory') {

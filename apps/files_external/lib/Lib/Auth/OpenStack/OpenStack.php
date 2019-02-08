@@ -30,7 +30,6 @@ use OCP\IL10N;
  * OpenStack Keystone authentication
  */
 class OpenStack extends AuthMechanism {
-
 	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('openstack::openstack')
@@ -45,5 +44,4 @@ class OpenStack extends AuthMechanism {
 			])
 		;
 	}
-
 }

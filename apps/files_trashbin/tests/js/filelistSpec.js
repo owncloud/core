@@ -311,6 +311,35 @@ describe('OCA.Trashbin.FileList tests', function() {
 				expect(fileList.findFileEl('somedir.d99999').length).toEqual(0);
 				expect(fileList.findFileEl('Two.jpg.d22222').length).toEqual(1);
 			});
+			it('Deletes selected files when all files selected, some unselected, and "Delete" clicked', function() {
+				var request;
+				$('.select-all').click();
+				fileList.findFileEl('Two.jpg.d22222').find('input:checkbox').click();
+				fileList.findFileEl('Three.pdf.d33333').find('input:checkbox').click();
+				$('.selectedActions .delete-selected').click();
+				expect(fakeServer.requests.length).toEqual(1);
+				request = fakeServer.requests[0];
+				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/delete.php');
+				expect(OC.parseQueryString(request.requestBody))
+					.toEqual({'dir': '/', files: '["One.txt.d11111","somedir.d99999"]'});
+				fakeServer.requests[0].respond(
+					200,
+					{ 'Content-Type': 'application/json' },
+					JSON.stringify({
+						status: 'success',
+						data: {
+							success: [
+								{filename: 'One.txt.d11111'},
+								{filename: 'somedir.d99999'}
+							]
+						}
+					})
+				);
+				expect(fileList.findFileEl('One.txt.d11111').length).toEqual(0);
+				expect(fileList.findFileEl('somedir.d99999').length).toEqual(0);
+				expect(fileList.findFileEl('Two.jpg.d22222').length).toEqual(1);
+				expect(fileList.findFileEl('Three.pdf.d33333').length).toEqual(1);
+			});
 			it('Deletes all files when all selected when "Delete" clicked', function() {
 				var request;
 				$('.select-all').click();
@@ -355,6 +384,35 @@ describe('OCA.Trashbin.FileList tests', function() {
 				expect(fileList.findFileEl('Three.pdf.d33333').length).toEqual(0);
 				expect(fileList.findFileEl('somedir.d99999').length).toEqual(0);
 				expect(fileList.findFileEl('Two.jpg.d22222').length).toEqual(1);
+			});
+			it('Restores selected files when all files selected, some unselected, and "Restore" clicked', function() {
+				var request;
+				$('.select-all').click();
+				fileList.findFileEl('Two.jpg.d22222').find('input:checkbox').click();
+				fileList.findFileEl('Three.pdf.d33333').find('input:checkbox').click();
+				$('.selectedActions .undelete').click();
+				expect(fakeServer.requests.length).toEqual(1);
+				request = fakeServer.requests[0];
+				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/undelete.php');
+				expect(OC.parseQueryString(request.requestBody))
+					.toEqual({'dir': '/', files: '["One.txt.d11111","somedir.d99999"]'});
+				fakeServer.requests[0].respond(
+					200,
+					{ 'Content-Type': 'application/json' },
+					JSON.stringify({
+						status: 'success',
+						data: {
+							success: [
+								{filename: 'One.txt.d11111'},
+								{filename: 'somedir.d99999'}
+							]
+						}
+					})
+				);
+				expect(fileList.findFileEl('One.txt.d11111').length).toEqual(0);
+				expect(fileList.findFileEl('somedir.d99999').length).toEqual(0);
+				expect(fileList.findFileEl('Two.jpg.d22222').length).toEqual(1);
+				expect(fileList.findFileEl('Three.pdf.d33333').length).toEqual(1);
 			});
 			it('Restores all files when all selected when "Restore" clicked', function() {
 				var request;

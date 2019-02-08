@@ -21,7 +21,6 @@
 
 namespace Tests\Core\Command\Config;
 
-
 use OC\Core\Command\Config\ListConfigs;
 use OCP\IConfig;
 use Test\TestCase;
@@ -311,7 +310,7 @@ class ListConfigsTest extends TestCase {
 		$output = '';
 		$this->consoleOutput->expects($this->any())
 			->method('writeln')
-			->willReturnCallback(function($value) {
+			->willReturnCallback(function ($value) {
 				global $output;
 				$output .= $value . "\n";
 				return $output;

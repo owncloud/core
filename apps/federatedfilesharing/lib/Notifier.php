@@ -22,7 +22,6 @@
 
 namespace OCA\FederatedFileSharing;
 
-
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 
@@ -51,17 +50,28 @@ class Notifier implements INotifier {
 		// Read the language from the notification
 		$l = $this->factory->get('files_sharing', $languageCode);
 
-		switch ($notification->getSubject()) {
+		switch ($notification->getObjectType()) {
 			// Deal with known subjects
 			case 'remote_share':
 				$params = $notification->getSubjectParameters();
 				if ($params[0] !== $params[1] && $params[1] !== null) {
 					$notification->setParsedSubject(
-						(string) $l->t('You received "/%3$s" as a remote share from %1$s (on behalf of %2$s)', $params)
+						(string) $l->t('"%1$s" shared "%3$s" with you (on behalf of "%2$s")', $params)
 					);
 				} else {
 					$notification->setParsedSubject(
-						(string)$l->t('You received "/%3$s" as a remote share from %1$s', $params)
+						(string) $l->t('"%1$s" shared "%3$s" with you', $params)
+					);
+				}
+
+				$messageParams = $notification->getMessageParameters();
+				if ($messageParams[0] !== $messageParams[1] && $messageParams[1] !== null) {
+					$notification->setParsedMessage(
+						(string) $l->t('"%1$s" invited you to view "%3$s" (on behalf of "%2$s")', $messageParams)
+					);
+				} else {
+					$notification->setParsedMessage(
+						(string) $l->t('"%1$s" invited you to view "%3$s"', $messageParams)
 					);
 				}
 

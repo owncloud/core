@@ -69,7 +69,7 @@ class LoginController extends Controller {
 	 * @param IURLGenerator $urlGenerator
 	 * @param Manager $twoFactorManager
 	 */
-	function __construct($appName, IRequest $request, IUserManager $userManager, IConfig $config, ISession $session,
+	public function __construct($appName, IRequest $request, IUserManager $userManager, IConfig $config, ISession $session,
 		Session $userSession, IURLGenerator $urlGenerator, Manager $twoFactorManager) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
@@ -88,7 +88,7 @@ class LoginController extends Controller {
 	 */
 	public function logout() {
 		$loginToken = $this->request->getCookie('oc_token');
-		if (!\is_null($loginToken)) {
+		if ($loginToken !== null) {
 			$this->config->deleteUserValue($this->userSession->getUser()->getUID(), 'login_token', $loginToken);
 		}
 		$this->userSession->logout();
@@ -125,7 +125,7 @@ class LoginController extends Controller {
 		}
 
 		$parameters['messages'] = $messages;
-		if (!\is_null($user) && $user !== '') {
+		if ($user !== null && $user !== '') {
 			$parameters['loginName'] = $user;
 			$parameters['user_autofocus'] = false;
 		} else {
@@ -139,7 +139,7 @@ class LoginController extends Controller {
 		$parameters['canResetPassword'] = true;
 		$parameters['resetPasswordLink'] = $this->config->getSystemValue('lost_password_link', '');
 		if (!$parameters['resetPasswordLink']) {
-			if (!\is_null($user) && $user !== '') {
+			if ($user !== null && $user !== '') {
 				$userObj = $this->userManager->get($user);
 				if ($userObj instanceof IUser) {
 					$parameters['canResetPassword'] = $userObj->canChangePassword();
@@ -158,7 +158,7 @@ class LoginController extends Controller {
 		$parameters['rememberLoginAllowed'] = OC_Util::rememberLoginAllowed();
 		$parameters['rememberLoginState'] = !empty($remember_login) ? $remember_login : 0;
 
-		if (!\is_null($user) && $user !== '') {
+		if ($user !== null && $user !== '') {
 			$parameters['loginName'] = $user;
 			$parameters['user_autofocus'] = false;
 		} else {
@@ -173,11 +173,10 @@ class LoginController extends Controller {
 		 * user is trying to access files for which he needs to login.
 		 */
 
-		if ((!empty($redirect_url)) and ($remember_login === null) and
-			($this->userSession->isLoggedIn() === false) and
+		if (!empty($redirect_url) && ($remember_login === null) &&
+			($this->userSession->isLoggedIn() === false) &&
 			(\strpos($this->urlGenerator->getAbsoluteURL(\urldecode($redirect_url)),
 				$this->urlGenerator->getAbsoluteURL('/index.php/f/')) !== false)) {
-
 			$parameters['accessLink'] = true;
 		}
 
@@ -193,9 +192,12 @@ class LoginController extends Controller {
 	 * @param string $user
 	 * @param string $password
 	 * @param string $redirect_url
+	 * @param string $timezone
 	 * @return RedirectResponse
+	 * @throws \OCP\PreConditionNotMetException
+	 * @throws \OC\User\LoginException
 	 */
-	public function tryLogin($user, $password, $redirect_url) {
+	public function tryLogin($user, $password, $redirect_url, $timezone = null) {
 		$originalUser = $user;
 		// TODO: Add all the insane error handling
 		$loginResult = $this->userSession->login($user, $password);
@@ -213,7 +215,7 @@ class LoginController extends Controller {
 			]);
 			$args = [];
 			// Read current user and append if possible - we need to return the unmodified user otherwise we will leak the login name
-			if (!\is_null($user)) {
+			if ($user !== null) {
 				$args['user'] = $originalUser;
 			}
 			// keep the redirect url
@@ -231,9 +233,14 @@ class LoginController extends Controller {
 		// User has successfully logged in, now remove the password reset link, when it is available
 		$this->config->deleteUserValue($userObject->getUID(), 'owncloud', 'lostpassword');
 
+		// Save the timezone
+		if ($timezone !== null) {
+			$this->config->setUserValue($userObject->getUID(), 'core', 'timezone', $timezone);
+		}
+
 		if ($this->twoFactorManager->isTwoFactorAuthenticated($userObject)) {
 			$this->twoFactorManager->prepareTwoFactorLogin($userObject);
-			if (!\is_null($redirect_url)) {
+			if ($redirect_url !== null) {
 				return new RedirectResponse($this->urlGenerator->linkToRoute('core.TwoFactorChallenge.selectChallenge', [
 					'redirect_url' => $redirect_url
 				]));
@@ -241,7 +248,7 @@ class LoginController extends Controller {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('core.TwoFactorChallenge.selectChallenge'));
 		}
 
-		if (!\is_null($redirect_url) && $this->userSession->isLoggedIn()) {
+		if ($redirect_url !== null && $this->userSession->isLoggedIn()) {
 			$location = $this->urlGenerator->getAbsoluteURL(\urldecode($redirect_url));
 			// Deny the redirect if the URL contains a @
 			// This prevents unvalidated redirects like ?redirect_url=:user@domain.com
@@ -266,5 +273,4 @@ class LoginController extends Controller {
 	public function getSession() {
 		return $this->session;
 	}
-
 }

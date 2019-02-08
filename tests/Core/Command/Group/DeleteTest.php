@@ -48,7 +48,6 @@ class DeleteTest extends TestCase {
 		$this->command = new Delete($groupManager);
 	}
 
-
 	public function validGroupLastSeen() {
 		return [
 			[true, 'The specified group was deleted'],

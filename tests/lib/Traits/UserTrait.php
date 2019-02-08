@@ -27,7 +27,7 @@ trait UserTrait {
 	private $previousUserManagerInternals;
 
 	protected function createUser($name, $password = null) {
-		if (\is_null($password)) {
+		if ($password === null) {
 			$password = $name;
 		}
 		$userManager = \OC::$server->getUserManager();
@@ -55,7 +55,7 @@ trait UserTrait {
 	}
 
 	protected function tearDownUserTrait() {
-		foreach($this->users as $user) {
+		foreach ($this->users as $user) {
 			$user->delete();
 		}
 		\OC::$server->getUserManager()

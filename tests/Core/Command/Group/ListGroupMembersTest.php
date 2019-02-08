@@ -32,37 +32,37 @@ use Test\Traits\UserTrait;
  * @group DB
  */
 class ListGroupMembersTest extends TestCase {
-    use UserTrait;
+	use UserTrait;
 
-    /** @var CommandTester */
-    private $commandTester;
+	/** @var CommandTester */
+	private $commandTester;
 
-    protected function setUp() {
-        parent::setUp();
+	protected function setUp() {
+		parent::setUp();
 
-        $command = new ListGroupMembers(\OC::$server->getGroupManager());
-        $this->commandTester = new CommandTester($command);
+		$command = new ListGroupMembers(\OC::$server->getGroupManager());
+		$this->commandTester = new CommandTester($command);
 
-        $user1 = $this->createUser('user1');
-        \OC::$server->getGroupManager()->createGroup('group1');
-        \OC::$server->getGroupManager()->get('group1')->addUser($user1);
-    }
+		$user1 = $this->createUser('user1');
+		\OC::$server->getGroupManager()->createGroup('group1');
+		\OC::$server->getGroupManager()->get('group1')->addUser($user1);
+	}
 
-    /**
-     * @dataProvider inputProvider
-     * @param array $input
-     * @param string $expectedOutput
-     */
-    public function testCommandInput($input, $expectedOutput) {
-        $this->commandTester->execute($input);
-        $output = $this->commandTester->getDisplay();
-        $this->assertContains($expectedOutput, $output);
-    }
+	/**
+	 * @dataProvider inputProvider
+	 * @param array $input
+	 * @param string $expectedOutput
+	 */
+	public function testCommandInput($input, $expectedOutput) {
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
+	}
 
-    public function inputProvider() {
-        return [
-            [['group' => 'groupUnknown'], 'does not exist'],
-            [['group' => 'group1'], 'user1'],
-        ];
-    }
+	public function inputProvider() {
+		return [
+			[['group' => 'groupUnknown'], 'does not exist'],
+			[['group' => 'group1'], 'user1'],
+		];
+	}
 }

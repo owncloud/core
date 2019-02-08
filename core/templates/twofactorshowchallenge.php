@@ -16,11 +16,15 @@ $template = $_['template'];
 		<p><?php p($l->t('Please authenticate using the selected factor.')) ?></p>
 </fieldset>
 <?php if ($error): ?>
-	<?php if ($error_message){ ?>
+	<?php if ($error_message) {
+	?>
 		<span class="warning"><?php p($l->t($error_message)); ?></span>
-	<?php } else {?>
+	<?php
+} else {
+		?>
 		<span class="warning"><?php p($l->t('An error occurred while verifying the token')); ?></span>
-	<?php }; ?>
+	<?php
+	}; ?>
 <?php endif; ?>
 <?php print_unescaped($template); ?>
 <a class="two-factor-cancel" <?php print_unescaped($_['logout_attribute']); ?>><?php p($l->t('Cancel login')) ?></a>

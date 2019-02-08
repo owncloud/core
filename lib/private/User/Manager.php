@@ -36,14 +36,12 @@ namespace OC\User;
 use OC\Cache\CappedMemoryCache;
 use OC\Hooks\PublicEmitter;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\Events\EventEmitterTrait;
 use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IConfig;
-use OCP\User\IProvidesExtendedSearchBackend;
-use OCP\User\IProvidesEMailBackend;
-use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
 use OCP\Util\UserSearch;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -177,20 +175,29 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OC\User\User|null Either the user or null if the specified user does not exist
 	 */
 	public function get($uid) {
-		if (\is_null($uid) || (!\is_string($uid) && !\is_numeric($uid))) {
+		// fix numeric uid that was cast by storing it in an array key
+		if (\is_numeric($uid)) {
+			$uid = (string)$uid;
+		}
+		if (!\is_string($uid)) {
 			return null;
 		}
-		if ($this->cachedUsers->hasKey($uid)) { //check the cache first to prevent having to loop over the backends
+		//check the cache first to prevent having to loop over the backends
+		if ($this->cachedUsers->hasKey($uid)) {
 			return $this->cachedUsers->get($uid);
 		}
 		try {
 			$account = $this->accountMapper->getByUid($uid);
-			if (\is_null($account)) {
-				$this->cachedUsers->set($uid, null);
-				return null;
-			}
 			return $this->getUserObject($account);
 		} catch (DoesNotExistException $ex) {
+			$this->cachedUsers->set($uid, null);
+			return null;
+		} catch (MultipleObjectsReturnedException $ex) {
+			$this->logger->error(
+				"More than one user found for $uid, treating as not existing.",
+				['app' => __CLASS__]
+			);
+			$this->cachedUsers->set($uid, null);
 			return null;
 		}
 	}
@@ -207,7 +214,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			return $this->cachedUsers->get($account->getUserId());
 		}
 
-		$user = new User($account, $this->accountMapper, $this, $this->config, null, \OC::$server->getEventDispatcher() );
+		$user = new User($account, $this->accountMapper, $this, $this->config, null, \OC::$server->getEventDispatcher());
 		if ($cacheUser) {
 			$this->cachedUsers->set($account->getUserId(), $user);
 		}
@@ -306,10 +313,9 @@ class Manager extends PublicEmitter implements IUserManager {
 	public function searchDisplayName($pattern, $limit = null, $offset = null) {
 		if ($this->userSearch->isSearchable($pattern)) {
 			$accounts = $this->accountMapper->search('display_name', $pattern, $limit, $offset);
-			return \array_map(function(Account $account) {
+			return \array_map(function (Account $account) {
 				return $this->getUserObject($account);
 			}, $accounts);
-
 		}
 		return [];
 	}
@@ -340,8 +346,13 @@ class Manager extends PublicEmitter implements IUserManager {
 			}
 
 			// Username must be at least 3 characters long
-			if(\strlen($uid) < 3) {
+			if (\strlen($uid) < 3) {
 				throw new \Exception($l->t('The username must be at least 3 characters long'));
+			}
+
+			// Username can only be a maximum of 64 characters long
+			if (\strlen($uid) > 64) {
+				throw new \Exception($l->t('The username can not be longer than 64 characters'));
 			}
 
 			// No empty password
@@ -371,7 +382,6 @@ class Manager extends PublicEmitter implements IUserManager {
 					return $user === null ? false : $user;
 				}
 			}
-
 
 			return false;
 		}, ['before' => ['uid' => $uid], 'after' => ['uid' => $uid, 'password' => $password]], 'user', 'create');
@@ -443,7 +453,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param \Closure $callback
 	 * @since 10.0
 	 */
-	public function callForSeenUsers (\Closure $callback) {
+	public function callForSeenUsers(\Closure $callback) {
 		$this->callForAllUsers($callback, '', true);
 	}
 
@@ -457,7 +467,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			throw new \InvalidArgumentException('$email cannot be empty');
 		}
 		$accounts = $this->accountMapper->getByEmail($email);
-		return \array_map(function(Account $account) {
+		return \array_map(function (Account $account) {
 			return $this->getUserObject($account);
 		}, $accounts);
 	}
@@ -468,5 +478,4 @@ class Manager extends PublicEmitter implements IUserManager {
 		}
 		return null;
 	}
-
 }

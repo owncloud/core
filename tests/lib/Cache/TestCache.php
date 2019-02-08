@@ -15,14 +15,14 @@ abstract class TestCache extends \Test\TestCase {
 	protected $instance;
 
 	protected function tearDown() {
-		if($this->instance) {
+		if ($this->instance) {
 			$this->instance->clear();
 		}
 
 		parent::tearDown();
 	}
 
-	function testSimple() {
+	public function testSimple() {
 		$this->assertNull($this->instance->get('value1'));
 		$this->assertFalse($this->instance->hasKey('value1'));
 		
@@ -51,7 +51,7 @@ abstract class TestCache extends \Test\TestCase {
 		$this->assertFalse($this->instance->hasKey('value1'));
 	}
 
-	function testClear() {
+	public function testClear() {
 		$value='ipsum lorum';
 		$this->instance->set('1_value1', $value);
 		$this->instance->set('1_value2', $value);

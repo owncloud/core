@@ -116,9 +116,9 @@ class CheckSetupController extends Controller {
 	 * @return bool
 	 */
 	private function isUrandomAvailable() {
-		if(@\file_exists('/dev/urandom')) {
+		if (@\file_exists('/dev/urandom')) {
 			$file = \fopen('/dev/urandom', 'rb');
-			if($file) {
+			if ($file) {
 				\fclose($file);
 				return true;
 			}
@@ -149,15 +149,15 @@ class CheckSetupController extends Controller {
 		// Don't run check when:
 		// 1. Server has `has_internet_connection` set to false
 		// 2. AppStore AND S2S is disabled
-		if(!$this->config->getSystemValue('has_internet_connection', true)) {
+		if (!$this->config->getSystemValue('has_internet_connection', true)) {
 			return '';
 		}
-		if($this->config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') === 'no'
+		if ($this->config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') === 'no'
 			&& $this->config->getAppValue('files_sharing', 'incoming_server2server_share_enabled', 'yes') === 'no') {
 			return '';
 		}
 		$versionString = $this->getCurlVersion();
-		if(isset($versionString['ssl_version'])) {
+		if (isset($versionString['ssl_version'])) {
 			$versionString = $versionString['ssl_version'];
 		} else {
 			return '';
@@ -166,18 +166,18 @@ class CheckSetupController extends Controller {
 		$features = (string)$this->l10n->t('installing and updating apps via the market or Federated Cloud Sharing');
 
 		// Check if at least OpenSSL after 1.01d or 1.0.2b
-		if(\strpos($versionString, 'OpenSSL/') === 0) {
+		if (\strpos($versionString, 'OpenSSL/') === 0) {
 			$majorVersion = \substr($versionString, 8, 5);
 			$patchRelease = \substr($versionString, 13, 6);
 
-			if(($majorVersion === '1.0.1' && \ord($patchRelease) < \ord('d')) ||
+			if (($majorVersion === '1.0.1' && \ord($patchRelease) < \ord('d')) ||
 				($majorVersion === '1.0.2' && \ord($patchRelease) < \ord('b'))) {
 				return (string) $this->l10n->t('cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably.', ['OpenSSL', $versionString, $features]);
 			}
 		}
 
 		// Check if NSS and perform heuristic check
-		if(\strpos($versionString, 'NSS/') === 0) {
+		if (\strpos($versionString, 'NSS/') === 0) {
 			try {
 				$firstClient = $this->clientService->newClient();
 				$firstClient->get('https://www.owncloud.org/');
@@ -185,7 +185,7 @@ class CheckSetupController extends Controller {
 				$secondClient = $this->clientService->newClient();
 				$secondClient->get('https://owncloud.org/');
 			} catch (ClientException $e) {
-				if($e->getResponse()->getStatusCode() === 400) {
+				if ($e->getResponse()->getStatusCode() === 400) {
 					return (string) $this->l10n->t('cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably.', ['NSS', $versionString, $features]);
 				}
 			}
@@ -255,13 +255,13 @@ class CheckSetupController extends Controller {
 	 * @return DataResponse | DataDisplayResponse
 	 */
 	public function getFailedIntegrityCheckFiles() {
-		if(!$this->checker->isCodeCheckEnforced()) {
+		if (!$this->checker->isCodeCheckEnforced()) {
 			return new DataDisplayResponse('Integrity checker has been disabled. Integrity cannot be verified.');
 		}
 
 		$completeResults = $this->checker->getResults();
 
-		if(!empty($completeResults)) {
+		if (!empty($completeResults)) {
 			$formattedTextResponse = 'Technical information
 =====================
 The following list covers which files have failed the integrity check. Please read
@@ -271,12 +271,12 @@ them.
 Results
 =======
 ';
-			foreach($completeResults as $context => $contextResult) {
+			foreach ($completeResults as $context => $contextResult) {
 				$formattedTextResponse .= "- $context\n";
 
-				foreach($contextResult as $category => $result) {
+				foreach ($contextResult as $category => $result) {
 					$formattedTextResponse .= "\t- $category\n";
-					if($category !== 'EXCEPTION') {
+					if ($category !== 'EXCEPTION') {
 						foreach ($result as $key => $results) {
 							$formattedTextResponse .= "\t\t- $key\n";
 						}
@@ -285,7 +285,6 @@ Results
 							$formattedTextResponse .= "\t\t- $results\n";
 						}
 					}
-
 				}
 			}
 
@@ -297,7 +296,6 @@ Raw output
 		} else {
 			$formattedTextResponse = 'No errors have been found.';
 		}
-
 
 		$response = new DataDisplayResponse(
 			$formattedTextResponse,

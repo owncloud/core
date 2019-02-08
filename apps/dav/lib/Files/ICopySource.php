@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Files;
-
 
 /**
  * Interface ICopySource

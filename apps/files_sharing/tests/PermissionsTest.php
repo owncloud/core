@@ -24,7 +24,6 @@
  *
  */
 
-
 namespace OCA\Files_Sharing\Tests;
 
 use OC\Files\Cache\Cache;
@@ -134,7 +133,7 @@ class PermissionsTest extends TestCase {
 	/**
 	 * Test that the permissions of shared directory are returned correctly
 	 */
-	function testGetPermissions() {
+	public function testGetPermissions() {
 		$sharedDirPerms = $this->sharedStorage->getPermissions('shareddir');
 		$this->assertEquals(31, $sharedDirPerms);
 		$sharedDirPerms = $this->sharedStorage->getPermissions('shareddir/textfile.txt');
@@ -148,7 +147,7 @@ class PermissionsTest extends TestCase {
 	/**
 	 * Test that the permissions of shared directory are returned correctly
 	 */
-	function testGetDirectoryPermissions() {
+	public function testGetDirectoryPermissions() {
 		$contents = $this->secondView->getDirectoryContent('files/shareddir');
 		$this->assertEquals('subdir', $contents[0]['name']);
 		$this->assertEquals(31, $contents[0]['permissions']);

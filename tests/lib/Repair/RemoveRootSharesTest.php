@@ -104,6 +104,7 @@ class RemoveRootSharesTest extends \Test\TestCase {
 	public function testRootSharesDontExist() {
 		//Add test user
 		$user = $this->createUser('test', 'test');
+		$this->loginAsUser('test');
 		$userFolder = $this->rootFolder->getUserFolder('test');
 		$fileId = $userFolder->getId();
 		$user->updateLastLoginTimestamp();

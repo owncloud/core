@@ -76,7 +76,7 @@ class ConnectionFactory {
 	 */
 	public function __construct(SystemConfig $systemConfig) {
 		$this->config = $systemConfig;
-		if($this->config->getValue('mysql.utf8mb4', false)) {
+		if ($this->config->getValue('mysql.utf8mb4', false)) {
 			$this->defaultConnectionParams['mysql']['charset'] = 'utf8mb4';
 		}
 	}
@@ -117,10 +117,6 @@ class ConnectionFactory {
 			case 'mysql':
 				$eventManager->addEventSubscriber(
 					new SQLSessionInit("SET SESSION AUTOCOMMIT=1"));
-				$eventManager->addEventListener(
-					Events::onSchemaColumnDefinition,
-					new MySqlSchemaColumnDefinitionListener()
-				);
 				break;
 			case 'oci':
 				$eventManager->addEventSubscriber(new OracleSessionInit);
@@ -131,7 +127,6 @@ class ConnectionFactory {
 				break;
 			case 'sqlite3':
 				$journalMode = $additionalConnectionParams['sqlite.journal_mode'];
-				$additionalConnectionParams['platform'] = new OCSqlitePlatform();
 				$eventManager->addEventSubscriber(new SQLiteSessionInit(true, $journalMode));
 				break;
 		}
@@ -211,7 +206,7 @@ class ConnectionFactory {
 			'tablePrefix' => $connectionParams['tablePrefix']
 		];
 
-		if($this->config->getValue('mysql.utf8mb4', false)) {
+		if ($this->config->getValue('mysql.utf8mb4', false)) {
 			$connectionParams['defaultTableOptions'] = [
 				'collate' => 'utf8mb4_bin',
 				'charset' => 'utf8mb4',

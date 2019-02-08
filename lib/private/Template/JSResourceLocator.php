@@ -52,7 +52,7 @@ class JSResourceLocator extends ResourceLocator {
 			if ($found) {
 				return;
 			}
-		} else if ($this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot)
+		} elseif ($this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot)
 			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$fullScript, $webRoot)
 			|| $this->appendOnceIfExist($this->serverroot, $fullScript)
 			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$fullScript, $webRoot)
@@ -64,7 +64,9 @@ class JSResourceLocator extends ResourceLocator {
 		$app = \substr($fullScript, 0, \strpos($fullScript, '/'));
 		$fullScript = \substr($fullScript, \strpos($fullScript, '/')+1);
 		$app_path = $this->appManager->getAppPath($app);
-		if( $app_path === false ) { return; }
+		if ($app_path === false) {
+			return;
+		}
 		$app_url = $this->appManager->getAppWebPath($app);
 		$app_url = ($app_url !== false) ? $app_url : null;
 

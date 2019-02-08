@@ -72,9 +72,9 @@ interface IURLGenerator {
 	 * @param string $file the name of the file
 	 * @return string the url
 	 * @since 6.0.0
+	 * @throws \RuntimeException
 	 */
 	public function imagePath($appName, $file);
-
 
 	/**
 	 * Makes an URL absolute

@@ -32,10 +32,12 @@ use OCP\Files\External\Service\IUserGlobalStoragesService;
 use OCP\Files\External\Service\IUserStoragesService;
 use OCP\IConfig;
 use OCP\IUser;
+use OCP\ISession;
+use OC\Files\External\StorageConfig;
 
 class ConfigAdapterTest extends \Test\TestCase {
 
-	/** @var \OCP\IConfig */
+	/** @var \OCP\IConfig | \PHPUnit_Framework_MockObject_MockObject */
 	private $config;
 
 	/** @var IUserStoragesService */
@@ -44,42 +46,38 @@ class ConfigAdapterTest extends \Test\TestCase {
 	/** @var IUserGlobalStoragesService */
 	private $userGlobalStoragesService;
 
-	/** @var IUser **/
+	/** @var IUser | \PHPUnit_Framework_MockObject_MockObject **/
 	private $user;
+
+	/** @var ISession | \PHPUnit_Framework_MockObject_MockObject **/
+	private $session;
+
+	/** @var int */
+	private $configId;
 
 	protected function setUp() {
 		$this->config = $this->createMock(IConfig::class);
 		$this->userStoragesService = $this->createMock(UserStoragesService::class);
 		$this->userGlobalStoragesService = $this->createMock(UserGlobalStoragesService::class);
+		$this->session = $this->createMock(ISession::class);
 		$this->user = $this->createMock(IUser::class);
 		$this->user->expects($this->any())
 			->method('getUID')
 			->willReturn('user1');
+		$this->configId = 0;
 	}
 
-	private function createStorageConfig($mountPoint, $mountOptions) {
+	private function createStorageConfig($mountPoint, $mountOptions, $storageOptions) {
 		$auth = $this->createMock(AuthMechanism::class);
 		$backend = $this->createMock(Backend::class);
-		$config = $this->createMock(IStorageConfig::class);
+		$this->configId++;
+		$config = new StorageConfig($this->configId);
 
-		$config->expects($this->any())
-			->method('getBackendOptions')
-			->willReturn([]);
-		$config->expects($this->any())
-			->method('getBackendOption')
-			->willReturn(null);
-		$config->expects($this->any())
-			->method('getAuthMechanism')
-			->willReturn($auth);
-		$config->expects($this->any())
-			->method('getBackend')
-			->willReturn($backend);
-		$config->expects($this->any())
-			->method('getMountPoint')
-			->willReturn($mountPoint);
-		$config->expects($this->any())
-			->method('getMountOptions')
-			->willReturn($mountOptions);
+		$config->setMountPoint($mountPoint);
+		$config->setMountOptions($mountOptions);
+		$config->setBackendOptions($storageOptions);
+		$config->setAuthMechanism($auth);
+		$config->setBackend($backend);
 
 		$auth->expects($this->once())
 			->method('manipulateStorageConfig')
@@ -130,15 +128,16 @@ class ConfigAdapterTest extends \Test\TestCase {
 		$configAdapter = new ConfigAdapter(
 			$this->config,
 			$this->userStoragesService,
-			$this->userGlobalStoragesService
+			$this->userGlobalStoragesService,
+			$this->session
 		);
 
 		return $configAdapter->getMountsForUser($this->user, $storageFactory);
 	}
 
 	public function testGetPersonalMounts() {
-		$storage1 = $this->createStorageConfig('/mount1', ['test_value' => true]);
-		$storage2 = $this->createStorageConfig('/globalmount1', ['test_value2' => 'abc']);
+		$storage1 = $this->createStorageConfig('/mount1', ['test_value' => true], ['backend_option' => 'abc']);
+		$storage2 = $this->createStorageConfig('/globalmount1', ['test_value2' => 'abc'], ['backend_option' => 'def']);
 
 		$result = $this->getMountsForUser([$storage2], [$storage1]);
 
@@ -173,8 +172,8 @@ class ConfigAdapterTest extends \Test\TestCase {
 				['core', 'allow_user_mount_sharing', 'yes', $isSharingAllowed ? 'yes' : 'no']
 			]));
 
-		$storage1 = $this->createStorageConfig('/mount1', ['enable_sharing' => true]);
-		$storage2 = $this->createStorageConfig('/globalmount1', ['enable_sharing' => true]);
+		$storage1 = $this->createStorageConfig('/mount1', ['enable_sharing' => true], ['backend_option' => 'abc']);
+		$storage2 = $this->createStorageConfig('/globalmount1', ['enable_sharing' => true], ['backend_option' => 'abc']);
 
 		$result = $this->getMountsForUser([$storage2], [$storage1]);
 
@@ -188,5 +187,36 @@ class ConfigAdapterTest extends \Test\TestCase {
 		$options = $mount->getOptions();
 		$this->assertTrue($options['enable_sharing']);
 	}
-}
 
+	public function testGetPersonalMountsUserPlaceholder() {
+		$this->user->expects($this->any())
+			->method('getUserName')
+			->willReturn('user1');
+		
+		$storage1 = $this->createStorageConfig('/mount1', [], ['backend_option' => '$user']);
+		$storage2 = $this->createStorageConfig('/globalmount1', [], ['backend_option' => '$user']);
+
+		$result = $this->getMountsForUser([$storage2], [$storage1]);
+
+		$this->assertCount(2, $result);
+
+		$this->assertEquals('user1', $storage1->getBackendOption('backend_option'));
+		$this->assertEquals('user1', $storage2->getBackendOption('backend_option'));
+	}
+
+	public function testGetPersonalMountsUserPlaceholderAltLogin() {
+		$this->user->expects($this->any())
+			->method('getUserName')
+			->willReturn('altlogin1');
+
+		$storage1 = $this->createStorageConfig('/mount1', [], ['backend_option' => '$user']);
+		$storage2 = $this->createStorageConfig('/globalmount1', [], ['backend_option' => '$user']);
+
+		$result = $this->getMountsForUser([$storage2], [$storage1]);
+
+		$this->assertCount(2, $result);
+
+		$this->assertEquals('altlogin1', $storage1->getBackendOption('backend_option'));
+		$this->assertEquals('altlogin1', $storage2->getBackendOption('backend_option'));
+	}
+}

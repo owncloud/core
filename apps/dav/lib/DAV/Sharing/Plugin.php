@@ -33,7 +33,6 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
 class Plugin extends ServerPlugin {
-
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	/** @var Auth */
@@ -68,7 +67,7 @@ class Plugin extends ServerPlugin {
 	 *
 	 * @return string[]
 	 */
-	function getFeatures() {
+	public function getFeatures() {
 		return ['oc-resource-sharing'];
 	}
 
@@ -80,7 +79,7 @@ class Plugin extends ServerPlugin {
 	 *
 	 * @return string
 	 */
-	function getPluginName() {
+	public function getPluginName() {
 		return 'oc-resource-sharing';
 	}
 
@@ -95,13 +94,13 @@ class Plugin extends ServerPlugin {
 	 * @param Server $server
 	 * @return void
 	 */
-	function initialize(Server $server) {
+	public function initialize(Server $server) {
 		$this->server = $server;
 		$this->server->xml->elementMap['{' . Plugin::NS_OWNCLOUD . '}share'] = 'OCA\\DAV\\DAV\\Sharing\\Xml\\ShareRequest';
 		$this->server->xml->elementMap['{' . Plugin::NS_OWNCLOUD . '}invite'] = 'OCA\\DAV\\DAV\\Sharing\\Xml\\Invite';
 
 		$this->server->on('method:POST', [$this, 'httpPost']);
-		$this->server->on('propFind',    [$this, 'propFind']);
+		$this->server->on('propFind', [$this, 'propFind']);
 	}
 
 	/**
@@ -111,14 +110,14 @@ class Plugin extends ServerPlugin {
 	 * @param ResponseInterface $response
 	 * @return null|false
 	 */
-	function httpPost(RequestInterface $request, ResponseInterface $response) {
-
+	public function httpPost(RequestInterface $request, ResponseInterface $response) {
 		$path = $request->getPath();
 
 		// Only handling xml
 		$contentType = $request->getHeader('Content-Type');
-		if (\strpos($contentType, 'application/xml') === false && \strpos($contentType, 'text/xml') === false)
+		if (\strpos($contentType, 'application/xml') === false && \strpos($contentType, 'text/xml') === false) {
 			return;
+		}
 
 		// Making sure the node exists
 		try {
@@ -144,7 +143,7 @@ class Plugin extends ServerPlugin {
 
 			// Dealing with the 'share' document, which modified invitees on a
 			// calendar.
-			case '{' . self::NS_OWNCLOUD . '}share' :
+			case '{' . self::NS_OWNCLOUD . '}share':
 
 				// We can only deal with IShareableCalendar objects
 				if (!$node instanceof IShareable) {
@@ -184,16 +183,13 @@ class Plugin extends ServerPlugin {
 	 * @param INode $node
 	 * @return void
 	 */
-	function propFind(PropFind $propFind, INode $node) {
+	public function propFind(PropFind $propFind, INode $node) {
 		if ($node instanceof IShareable) {
-
-			$propFind->handle('{' . Plugin::NS_OWNCLOUD . '}invite', function() use ($node) {
+			$propFind->handle('{' . Plugin::NS_OWNCLOUD . '}invite', function () use ($node) {
 				return new Invite(
 					$node->getShares()
 				);
 			});
-
 		}
 	}
-
 }

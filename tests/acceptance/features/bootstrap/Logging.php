@@ -27,7 +27,6 @@ use TestHelpers\LoggingHelper;
  * Logging trait
  */
 trait Logging {
-
 	private $oldLogLevel = null;
 	private $oldLogBackend = null;
 	private $oldLogTimezone = null;
@@ -37,42 +36,57 @@ trait Logging {
 	 * order of the table has to be the same as in the log file
 	 * empty cells in the table will not be checked!
 	 *
-	 * @Then the last lines of the log file should contain log-entries with these attributes:
+	 * @Then /^the last lines of the log file should contain log-entries (with|containing) these attributes:$/
 	 *
+	 * @param string $withOrContaining
 	 * @param TableNode $expectedLogEntries table with headings that correspond
 	 *                                      to the json keys in the log entry
 	 *                                      e.g.
 	 *                                      |user|app|method|message|
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
-		TableNode $expectedLogEntries
+		$withOrContaining, TableNode $expectedLogEntries
 	) {
 		//-1 because getRows gives also the header
 		$linesToRead = \count($expectedLogEntries->getRows()) - 1;
-		$logLines = LoggingHelper::tailFile(
-			LoggingHelper::getLogFilePath(),
+		$logLines = LoggingHelper::getLogFileContent(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
 			$linesToRead
 		);
 		$lineNo = 0;
 		foreach ($expectedLogEntries as $expectedLogEntry) {
 			$logEntry = \json_decode($logLines[$lineNo], true);
+			if ($logEntry === null) {
+				throw new \Exception("the logline :\n{$logLines[$lineNo]} is not valid JSON");
+			}
+
 			foreach (\array_keys($expectedLogEntry) as $attribute) {
-				$expectedLogEntry [$attribute]
+				$expectedLogEntry[$attribute]
 					= $this->featureContext->substituteInLineCodes(
-						$expectedLogEntry [$attribute]
+						$expectedLogEntry[$attribute]
 					);
 				PHPUnit_Framework_Assert::assertArrayHasKey(
 					$attribute, $logEntry,
-					"could not find attribute: '" . $attribute .
-					"' in log entry: '" . $logLines [$lineNo] . "'"
+					"could not find attribute: '$attribute' in log entry: '{$logLines[$lineNo]}'"
 				);
-				if ($expectedLogEntry [$attribute] !== "") {
-					PHPUnit_Framework_Assert::assertEquals(
-						$expectedLogEntry [$attribute], $logEntry [$attribute],
-						"log entry:\n" . $logLines[$lineNo] . "\n"
-					);
+				if ($expectedLogEntry[$attribute] !== "") {
+					$message = "log entry:\n{$logLines[$lineNo]}\n";
+					if ($withOrContaining === 'with') {
+						PHPUnit_Framework_Assert::assertEquals(
+							$expectedLogEntry[$attribute], $logEntry[$attribute],
+							$message
+						);
+					} else {
+						PHPUnit_Framework_Assert::assertContains(
+							$expectedLogEntry[$attribute], $logEntry[$attribute],
+							$message
+						);
+					}
 				}
 			}
 			$lineNo++;
@@ -85,8 +99,9 @@ trait Logging {
 	 * attributes in the table that are empty will match any value in the
 	 * corresponding attribute in the log file
 	 *
-	 * @Then the log file should not contain any log-entries with these attributes:
+	 * @Then /^the log file should not contain any log-entries (with|containing) these attributes:$/
 	 *
+	 * @param string $withOrContaining
 	 * @param TableNode $logEntriesExpectedNotToExist table with headings that
 	 *                                                correspond to the json
 	 *                                                keys in the log entry
@@ -94,33 +109,44 @@ trait Logging {
 	 *                                                |user|app|method|message|
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theLogFileShouldNotContainAnyLogEntriesWithTheseAttributes(
-		TableNode $logEntriesExpectedNotToExist
+		$withOrContaining, TableNode $logEntriesExpectedNotToExist
 	) {
-		$logLines = \file(LoggingHelper::getLogFilePath());
+		$logLines = LoggingHelper::getLogFileContent(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword()
+		);
 		foreach ($logLines as $logLine) {
-			$logEntries = \json_decode($logLine, true);
+			$logEntry = \json_decode($logLine, true);
+			if ($logEntry === null) {
+				throw new \Exception("the logline :\n$logLine is not valid JSON");
+			}
 			foreach ($logEntriesExpectedNotToExist as $logEntryExpectedNotToExist) {
+				$match = true; // start by assuming the worst, we match the unwanted log entry
 				foreach (\array_keys($logEntryExpectedNotToExist) as $attribute) {
-					$logEntryExpectedNotToExist [$attribute]
+					$logEntryExpectedNotToExist[$attribute]
 						= $this->featureContext->substituteInLineCodes(
-							$logEntryExpectedNotToExist [$attribute]
+							$logEntryExpectedNotToExist[$attribute]
 						);
-					if (isset($logEntries [$attribute])
-						&& ($logEntryExpectedNotToExist [$attribute] === ""
-						|| $logEntryExpectedNotToExist [$attribute] === $logEntries [$attribute])
-					) {
-						$match = true;
-					} else {
-						$match = false;
-						break;
+
+					if (isset($logEntry[$attribute]) && ($logEntryExpectedNotToExist[$attribute] !== "")) {
+						if ($withOrContaining === 'with') {
+							$match = ($logEntryExpectedNotToExist[$attribute] === $logEntry[$attribute]);
+						} else {
+							$match = (\strpos($logEntry[$attribute], $logEntryExpectedNotToExist[$attribute]) !== false);
+						}
+						if (!$match) {
+							break;
+						}
 					}
 				}
 			}
 			PHPUnit_Framework_Assert::assertFalse(
 				$match,
-				"found a log entry that should not be there\n" . $logLine . "\n"
+				"found a log entry that should not be there\n$logLine\n"
 			);
 		}
 	}
@@ -132,6 +158,7 @@ trait Logging {
 	 * @param string $logLevel (debug|info|warning|error)
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function owncloudLogLevelIsSetTo($logLevel) {
 		LoggingHelper::setLogLevel($logLevel);
@@ -144,6 +171,7 @@ trait Logging {
 	 * @param string $backend (owncloud|syslog|errorlog)
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function owncloudLogBackendIsSetTo($backend) {
 		LoggingHelper::setLogBackend($backend);
@@ -156,6 +184,7 @@ trait Logging {
 	 * @param string $timezone
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function owncloudLogTimezoneIsSetTo($timezone) {
 		LoggingHelper::setLogTimezone($timezone);
@@ -166,9 +195,14 @@ trait Logging {
 	 * @Given the owncloud log has been cleared
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theOwncloudLogIsCleared() {
-		LoggingHelper::clearLogFile();
+		LoggingHelper::clearLogFile(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword()
+		);
 	}
 
 	/**
@@ -177,6 +211,7 @@ trait Logging {
 	 * @BeforeScenario
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function setUpScenarioLogging() {
 		$this->oldLogLevel = LoggingHelper::getLogLevel();
@@ -190,19 +225,20 @@ trait Logging {
 	 * @AfterScenario
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function tearDownScenarioLogging() {
-		if (!\is_null($this->oldLogLevel)
+		if ($this->oldLogLevel !== null
 			&& $this->oldLogLevel !== LoggingHelper::getLogLevel()
 		) {
 			LoggingHelper::setLogLevel($this->oldLogLevel);
 		}
-		if (!\is_null($this->oldLogBackend)
+		if ($this->oldLogBackend !== null
 			&& $this->oldLogBackend !== LoggingHelper::getLogBackend()
 		) {
 			LoggingHelper::setLogBackend($this->oldLogBackend);
 		}
-		if (!\is_null($this->oldLogTimezone)
+		if ($this->oldLogTimezone !== null
 			&& $this->oldLogTimezone !== LoggingHelper::getLogTimezone()
 		) {
 			LoggingHelper::setLogTimezone($this->oldLogTimezone);

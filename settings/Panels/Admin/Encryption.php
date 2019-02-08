@@ -25,7 +25,6 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class Encryption implements ISettings {
-
 	public function getPriority() {
 		return 30;
 	}
@@ -54,5 +53,4 @@ class Encryption implements ISettings {
 	public function getSectionID() {
 		return 'encryption';
 	}
-
 }

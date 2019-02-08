@@ -147,5 +147,4 @@ class SyncServiceTest extends TestCase {
 		]);
 		return $ss;
 	}
-
 }

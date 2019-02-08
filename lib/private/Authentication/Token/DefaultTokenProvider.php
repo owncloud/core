@@ -75,10 +75,21 @@ class DefaultTokenProvider implements IProvider {
 	 * @return IToken
 	 */
 	public function generateToken($token, $uid, $loginName, $password, $name, $type = IToken::TEMPORARY_TOKEN) {
+		$this->logger->debug('generating token {token}, uid {uid}, loginName {loginName}, pwd {pwd}, name {name}, type {type}',
+			[
+				'app' => __METHOD__,
+				'token' => $this->hashToken($token),
+				'uid' => $uid,
+				'loginName' => $loginName,
+				'pwd' => $password !== null ? 'set' : 'empty',
+				'name' => $name,
+				'type' => $type === IToken::TEMPORARY_TOKEN ? 'temporary' : 'permanent'
+			]
+		);
 		$dbToken = new DefaultToken();
 		$dbToken->setUid($uid);
 		$dbToken->setLoginName($loginName);
-		if (!\is_null($password)) {
+		if ($password !== null) {
 			$dbToken->setPassword($this->encryptPassword($password, $token));
 		}
 		$dbToken->setName($name);
@@ -101,6 +112,10 @@ class DefaultTokenProvider implements IProvider {
 		if (!($token instanceof DefaultToken)) {
 			throw new InvalidTokenException();
 		}
+		$this->logger->debug(
+			'updating token {tokenId}, last check is now {now}',
+			['app' => __METHOD__, 'tokenId' => $token->getId(), 'now' => $token->getLastCheck()]
+		);
 		$this->mapper->update($token);
 	}
 
@@ -119,6 +134,10 @@ class DefaultTokenProvider implements IProvider {
 		if ($token->getLastActivity() < ($now - 60)) {
 			// Update token only once per minute
 			$token->setLastActivity($now);
+			$this->logger->debug(
+				'updating activity of token {tokenId} to {now}',
+				['app' => __METHOD__, 'tokenId' => $token->getId(), 'now' => $now]
+			);
 			$this->mapper->update($token);
 		}
 	}
@@ -147,6 +166,10 @@ class DefaultTokenProvider implements IProvider {
 		try {
 			return $this->mapper->getToken($this->hashToken($tokenId));
 		} catch (DoesNotExistException $ex) {
+			$this->logger->debug(
+				'token {token} does not exist',
+				['app'=>__METHOD__, 'token' => $this->hashToken($tokenId) ]
+			);
 			throw new InvalidTokenException();
 		}
 	}
@@ -160,7 +183,7 @@ class DefaultTokenProvider implements IProvider {
 	 */
 	public function getPassword(IToken $savedToken, $tokenId) {
 		$password = $savedToken->getPassword();
-		if (\is_null($password)) {
+		if ($password === null) {
 			throw new PasswordlessTokenException();
 		}
 		return $this->decryptPassword($password, $tokenId);
@@ -189,6 +212,10 @@ class DefaultTokenProvider implements IProvider {
 	 * @param string $token
 	 */
 	public function invalidateToken($token) {
+		$this->logger->debug(
+			'invalidating token {token}',
+			['app' => __METHOD__, 'token' => $this->hashToken($token)]
+		);
 		$this->mapper->invalidate($this->hashToken($token));
 	}
 
@@ -199,6 +226,10 @@ class DefaultTokenProvider implements IProvider {
 	 * @param int $id
 	 */
 	public function invalidateTokenById(IUser $user, $id) {
+		$this->logger->debug(
+			'invalidating token for uid {uid} by id {token}',
+			['app' => __METHOD__, 'uid' => $user->getUID(), 'id' => $id]
+		);
 		$this->mapper->deleteById($user, $id);
 	}
 
@@ -206,6 +237,10 @@ class DefaultTokenProvider implements IProvider {
 	 * Invalidate (delete) old session tokens
 	 */
 	public function invalidateOldTokens() {
+		$this->logger->debug(
+			'invalidating old tokens',
+			['app' => __METHOD__]
+		);
 		$olderThan = $this->time->getTime() - (int) $this->config->getSystemValue('session_lifetime', 60 * 60 * 24);
 		$this->logger->info('Invalidating tokens older than ' . \date('c', $olderThan), ['app' => 'cron']);
 		$this->mapper->invalidateOld($olderThan);
@@ -254,5 +289,4 @@ class DefaultTokenProvider implements IProvider {
 			throw new InvalidTokenException();
 		}
 	}
-
 }

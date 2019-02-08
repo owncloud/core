@@ -27,7 +27,7 @@ use OCA\Files_Versions\Expiration;
 class ExpirationTest extends \Test\TestCase {
 	const SECONDS_PER_DAY = 86400; //60*60*24
 
-	public function expirationData(){
+	public function expirationData() {
 		$today = 100*self::SECONDS_PER_DAY;
 		$back10Days = (100-10)*self::SECONDS_PER_DAY;
 		$back20Days = (100-20)*self::SECONDS_PER_DAY;
@@ -100,7 +100,7 @@ class ExpirationTest extends \Test\TestCase {
 	 * @param bool $quotaExceeded
 	 * @param string $expectedResult
 	 */
-	public function testExpiration($retentionObligation, $timeNow, $timestamp, $quotaExceeded, $expectedResult){
+	public function testExpiration($retentionObligation, $timeNow, $timestamp, $quotaExceeded, $expectedResult) {
 		$mockedConfig = $this->getMockedConfig($retentionObligation);
 		$mockedTimeFactory = $this->getMockedTimeFactory($timeNow);
 
@@ -110,8 +110,7 @@ class ExpirationTest extends \Test\TestCase {
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
-
-	public function configData(){
+	public function configData() {
 		return [
 			[ 'disabled', null, null, null],
 			[ 'auto', Expiration::NO_OBLIGATION, Expiration::NO_OBLIGATION, true ],
@@ -126,7 +125,6 @@ class ExpirationTest extends \Test\TestCase {
 		];
 	}
 
-
 	/**
 	 * @dataProvider configData
 	 *
@@ -135,7 +133,7 @@ class ExpirationTest extends \Test\TestCase {
 	 * @param int $expectedMaxAge
 	 * @param bool $expectedCanPurgeToSaveSpace
 	 */
-	public function testParseRetentionObligation($configValue, $expectedMinAge, $expectedMaxAge, $expectedCanPurgeToSaveSpace){
+	public function testParseRetentionObligation($configValue, $expectedMinAge, $expectedMaxAge, $expectedCanPurgeToSaveSpace) {
 		$mockedConfig = $this->getMockedConfig($configValue);
 		$mockedTimeFactory = $this->getMockedTimeFactory(
 				\time()
@@ -152,7 +150,7 @@ class ExpirationTest extends \Test\TestCase {
 	 * @param int $time
 	 * @return \OCP\AppFramework\Utility\ITimeFactory
 	 */
-	private function getMockedTimeFactory($time){
+	private function getMockedTimeFactory($time) {
 		$mockedTimeFactory = $this->getMockBuilder('\OCP\AppFramework\Utility\ITimeFactory')
 				->disableOriginalConstructor()
 				->setMethods(['getTime'])
@@ -170,7 +168,7 @@ class ExpirationTest extends \Test\TestCase {
 	 * @param string $returnValue
 	 * @return \OCP\IConfig
 	 */
-	private function getMockedConfig($returnValue){
+	private function getMockedConfig($returnValue) {
 		$mockedConfig = $this->getMockBuilder('\OCP\IConfig')
 				->disableOriginalConstructor()
 				->setMethods(

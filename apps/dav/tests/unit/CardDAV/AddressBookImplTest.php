@@ -22,9 +22,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\unit\CardDAV;
-
 
 use OCA\DAV\CardDAV\AddressBook;
 use OCA\DAV\CardDAV\AddressBookImpl;
@@ -132,7 +130,6 @@ class AddressBookImplTest extends TestCase {
 	 * @param array $properties
 	 */
 	public function testCreate($properties) {
-
 		$uid = 'uid';
 
 		/** @var \PHPUnit_Framework_MockObject_MockObject | AddressBookImpl $addressBookImpl */
@@ -171,7 +168,6 @@ class AddressBookImplTest extends TestCase {
 	}
 
 	public function testUpdate() {
-
 		$uid = 'uid';
 		$uri = 'bla.vcf';
 		$properties = ['URI' => $uri, 'UID' => $uid, 'FN' => 'John Doe'];
@@ -278,7 +274,7 @@ class AddressBookImplTest extends TestCase {
 		// simulate that 'uid0' already exists, so the second uid will be returned
 		$this->backend->expects($this->exactly(2))->method('getContact')
 			->willReturnCallback(
-				function($id, $uid) {
+				function ($id, $uid) {
 					return ($uid === 'uid0.vcf');
 				}
 			);
@@ -286,7 +282,6 @@ class AddressBookImplTest extends TestCase {
 		$this->assertSame('uid1',
 			$this->invokePrivate($addressBookImpl, 'createUid', [])
 		);
-
 	}
 
 	public function testCreateEmptyVCard() {
@@ -300,5 +295,4 @@ class AddressBookImplTest extends TestCase {
 
 		$this->assertSame($expectedVCardSerialized, $resultSerialized);
 	}
-
 }

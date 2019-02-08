@@ -26,6 +26,7 @@ use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IGroupManager;
 use PHPUnit_Framework_MockObject_MockObject;
 use Sabre\DAV\PropPatch;
+use OC\Group\Group;
 
 class GroupPrincipalTest extends \Test\TestCase {
 
@@ -36,7 +37,7 @@ class GroupPrincipalTest extends \Test\TestCase {
 	private $connector;
 
 	public function setUp() {
-		$this->groupManager = $this->getMockBuilder('\OCP\IGroupManager')
+		$this->groupManager = $this->getMockBuilder(IGroupManager::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->connector = new GroupPrincipalBackend($this->groupManager);
@@ -151,11 +152,30 @@ class GroupPrincipalTest extends \Test\TestCase {
 		$this->assertSame([], $this->connector->searchPrincipals('principals/groups', []));
 	}
 
+	public function testFindByUriWithEmptyUrl() {
+		$this->assertEquals('', $this->connector->findByUri('', ''));
+	}
+
+	public function testFindByUriWithUnknownGroup() {
+		$this->assertEquals('', $this->connector->findByUri('principal:principals/groups/group1', ''));
+	}
+
+	public function testFindByUriWithKnownGroup() {
+		$group1 = $this->mockGroup('group1');
+		$this->groupManager
+			->expects($this->once())
+			->method('get')
+			->with('group1')
+			->will($this->returnValue($group1));
+		$this->assertEquals('principals/groups/group1', $this->connector->findByUri('principal:principals/groups/group1', ''));
+	}
+
 	/**
+	 * @param $gid
 	 * @return PHPUnit_Framework_MockObject_MockObject
 	 */
 	private function mockGroup($gid) {
-		$fooUser = $this->getMockBuilder('\OC\Group\Group')
+		$fooUser = $this->getMockBuilder(Group::class)
 			->disableOriginalConstructor()->getMock();
 		$fooUser
 			->expects($this->exactly(1))

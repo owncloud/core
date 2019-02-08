@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "密碼錯誤",
     "Saved" : "已儲存",
     "test email settings" : "測試電子郵件設定",
     "Email sent" : "郵件已傳",
@@ -21,6 +20,7 @@ OC.L10N.register(
     "Sending..." : "發送中...",
     "Groups" : "群組",
     "Forum" : "討論區",
+    "Language" : "語言",
     "Sharing" : "分享",
     "days" : "天",
     "None" : "空",
@@ -41,7 +41,6 @@ OC.L10N.register(
     "Password" : "密碼",
     "New password" : "新密碼",
     "Change password" : "更改密碼",
-    "Language" : "語言",
     "Help translate" : "幫忙翻譯",
     "Name" : "名稱",
     "Username" : "用戶名稱",

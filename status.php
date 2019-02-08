@@ -31,10 +31,9 @@
  */
 
 try {
-
 	require_once __DIR__ . '/lib/base.php';
 
-	# show the version details based on config.php parameter, 
+	# show the version details based on config.php parameter,
 	# but do not expose the servername in the public via url
 	$values = \OCP\Util::getStatusInfo(
 		null,
@@ -47,7 +46,6 @@ try {
 		\header('Content-Type: application/json');
 		echo \json_encode($values);
 	}
-
 } catch (Exception $ex) {
 	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	\OCP\Util::writeLog('remote', $ex->getMessage(), \OCP\Util::FATAL);

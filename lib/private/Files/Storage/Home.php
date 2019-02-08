@@ -86,7 +86,6 @@ class Home extends Local implements \OCP\Files\IHomeStorage {
 		return $this->propagator;
 	}
 
-
 	/**
 	 * Returns the owner of this home storage
 	 * @return \OC\User\User owner of this home storage

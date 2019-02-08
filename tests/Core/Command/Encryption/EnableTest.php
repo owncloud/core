@@ -21,7 +21,6 @@
 
 namespace Tests\Core\Command\Encryption;
 
-
 use OC\Core\Command\Encryption\Enable;
 use Test\TestCase;
 
@@ -54,7 +53,6 @@ class EnableTest extends TestCase {
 		/** @var \OCP\Encryption\IManager $manager */
 		$this->command = new Enable($config, $manager);
 	}
-
 
 	public function dataEnable() {
 		return [

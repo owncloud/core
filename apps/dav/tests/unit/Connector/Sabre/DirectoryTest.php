@@ -30,7 +30,6 @@ use OCP\Files\FileContentNotAllowedException;
 use OCP\Files\ForbiddenException;
 
 class TestDoubleFileView extends \OC\Files\View {
-
 	private $updatables;
 	private $deletables;
 	private $canRename;
@@ -61,7 +60,6 @@ class TestDoubleFileView extends \OC\Files\View {
 		return $path;
 	}
 }
-
 
 /**
  * @group DB
@@ -359,13 +357,13 @@ class DirectoryTest extends \Test\TestCase {
 		$this->moveTest($source, $destination, $updatables, $deletables);
 	}
 
-	function moveFailedInvalidCharsProvider() {
+	public function moveFailedInvalidCharsProvider() {
 		return [
 			['a/b', 'a/*', ['a' => true, 'a/b' => true, 'a/c*' => false], []],
 		];
 	}
 
-	function moveFailedProvider() {
+	public function moveFailedProvider() {
 		return [
 			['a/b', 'a/c', ['a' => false, 'a/b' => false, 'a/c' => false], []],
 			['a/b', 'b/b', ['a' => false, 'a/b' => false, 'b' => false, 'b/b' => false], []],
@@ -376,7 +374,7 @@ class DirectoryTest extends \Test\TestCase {
 		];
 	}
 
-	function moveSuccessProvider() {
+	public function moveSuccessProvider() {
 		return [
 			['a/b', 'b/b', ['a' => true, 'a/b' => true, 'b' => true, 'b/b' => false], ['a/b' => true]],
 			// older files with special chars can still be renamed to valid names
@@ -445,6 +443,17 @@ class DirectoryTest extends \Test\TestCase {
 		$this->view->expects($this->any())
 			->method('isCreatable')
 			->willThrowException(new FileContentNotAllowedException('The message already logged', false, $previous));
+		$dir = $this->getDir();
+		$dir->createFile('foobar.txt', 'hello foo bar');
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\Forbidden
+	 */
+	public function testCreateFileForbidden() {
+		$this->view->expects($this->any())
+			->method('isCreatable')
+			->willThrowException(new \Sabre\DAV\Exception\Forbidden());
 		$dir = $this->getDir();
 		$dir->createFile('foobar.txt', 'hello foo bar');
 	}

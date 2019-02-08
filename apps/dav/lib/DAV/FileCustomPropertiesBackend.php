@@ -28,6 +28,7 @@ use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\Node;
+use OC\Cache\CappedMemoryCache;
 use Sabre\DAV\INode;
 
 /**
@@ -39,7 +40,6 @@ use Sabre\DAV\INode;
  * @package OCA\DAV\DAV
  */
 class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
-
 	const SELECT_BY_ID_STMT = 'SELECT * FROM `*PREFIX*properties` WHERE `fileid` = ?';
 	const INSERT_BY_ID_STMT = 'INSERT INTO `*PREFIX*properties`'
 	. ' (`fileid`,`propertyname`,`propertyvalue`) VALUES(?,?,?)';
@@ -50,6 +50,11 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	. ' WHERE `fileid` = ? AND `propertyname` = ?';
 
 	/**
+	 * @var CappedMemoryCache
+	 */
+	protected $deletedItemsCache;
+
+	/**
 	 * @var string the source path of a move action.
 	 * This is set during a move so the delete action can know if a move has been called before
 	 * in order to not fetch the source node again (which would cause an error)
@@ -57,30 +62,54 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	private $moveSource = null;
 
 	/**
+	 * Store fileId before deletion
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function beforeDelete($path) {
+		try {
+			$node = $this->getNodeForPath($path);
+			if ($node !== null && $node->getId()) {
+				if ($this->deletedItemsCache === null) {
+					$this->deletedItemsCache = new CappedMemoryCache();
+				}
+				$this->deletedItemsCache->set($path, $node->getId());
+			}
+		} catch (\Exception $e) {
+			// do nothing, delete will throw the same exception anyway
+		}
+	}
+
+	/**
 	 * This method is called after a node is deleted.
 	 *
 	 * @param string $path path of node for which to delete properties
+	 *
+	 * @return void
 	 */
 	public function delete($path) {
 		$moveSource = $this->moveSource;
 		$this->moveSource = null;
 
 		if ($moveSource === $path) {
-			// trying to delete a file that has been moved -> ignoring because the file
-			// exists in another path
+			// trying to delete a file that has been moved -> ignoring because
+			// the file exists in another path
 			return;
 		}
 
-		$node = $this->getNodeForPath($path);
-		if (\is_null($node)) {
+		if ($this->deletedItemsCache === null) {
 			return;
 		}
 
-		$fileId = $node->getId();
-		$statement = $this->connection->prepare(self::DELETE_BY_ID_STMT);
-		$statement->execute([$fileId]);
-		$this->offsetUnset($fileId);
-		$statement->closeCursor();
+		$fileId = $this->deletedItemsCache->get($path);
+		if ($fileId !== null) {
+			$statement = $this->connection->prepare(self::DELETE_BY_ID_STMT);
+			$statement->execute([$fileId]);
+			$this->offsetUnset($fileId);
+			$statement->closeCursor();
+		}
 	}
 
 	/**
@@ -101,7 +130,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 */
 	protected function getProperties($path, INode $node, array $requestedProperties) {
 		$fileId = $node->getId();
-		if (\is_null($this->offsetGet($fileId))) {
+		if ($this->offsetGet($fileId) === null) {
 			// TODO: chunking if more than 1000 properties
 			$sql = self::SELECT_BY_ID_STMT;
 			$whereValues = [$fileId];
@@ -135,7 +164,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 		foreach ($changedProperties as $propertyName => $propertyValue) {
 			$propertyExists = \array_key_exists($propertyName, $existingProperties);
 			// If it was null, we need to delete the property
-			if (\is_null($propertyValue)) {
+			if ($propertyValue === null) {
 				if ($propertyExists) {
 					$this->connection->executeUpdate($deleteStatement,
 						[
@@ -181,12 +210,12 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 */
 	protected function loadChildrenProperties(INode $node, $requestedProperties) {
 		// note: pre-fetching only supported for depth <= 1
-		if (!($node instanceof Directory)){
+		if (!($node instanceof Directory)) {
 			return;
 		}
 
 		$fileId = $node->getId();
-		if (!\is_null($this->offsetGet($fileId))) {
+		if ($this->offsetGet($fileId) !== null) {
 			// we already loaded them at some point
 			return;
 		}
@@ -226,7 +255,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 * @param string $path
 	 * @return INode|null
 	 */
-	protected function getNodeForPath($path){
+	protected function getNodeForPath($path) {
 		$node = parent::getNodeForPath($path);
 		if (!$node instanceof Node) {
 			return null;
@@ -254,5 +283,4 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 		}
 		return $slices;
 	}
-
 }

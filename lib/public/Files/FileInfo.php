@@ -130,7 +130,7 @@ interface FileInfo {
 	/**
 	 * Get the storage the file or folder is storage on
 	 *
-	 * @return \OCP\Files\Storage
+	 * @return \OCP\Files\Storage\IStorage
 	 * @since 7.0.0
 	 */
 	public function getStorage();

@@ -26,7 +26,7 @@
 \OC_Util::checkLoggedIn();
 \OC::$server->getSession()->close();
 
-if(!\OC_App::isEnabled('files_trashbin')){
+if (!\OC_App::isEnabled('files_trashbin')) {
 	exit;
 }
 
@@ -35,13 +35,13 @@ $maxX = \array_key_exists('x', $_GET) ? (int) $_GET['x'] : '44';
 $maxY = \array_key_exists('y', $_GET) ? (int) $_GET['y'] : '44';
 $scalingUp = \array_key_exists('scalingup', $_GET) ? (bool) $_GET['scalingup'] : true;
 
-if($file === '') {
+if ($file === '') {
 	\OC_Response::setStatus(400); //400 Bad Request
 	\OCP\Util::writeLog('core-preview', 'No file parameter was passed', \OCP\Util::DEBUG);
 	exit;
 }
 
-if($maxX === 0 || $maxY === 0) {
+if ($maxX === 0 || $maxY === 0) {
 	\OC_Response::setStatus(400); //400 Bad Request
 	\OCP\Util::writeLog('core-preview', 'x and/or y set to 0', \OCP\Util::DEBUG);
 	exit;
@@ -78,8 +78,7 @@ try {
 	]);
 
 	$image->show();
-
-} catch(\Exception $e) {
+} catch (\Exception $e) {
 	\OC_Response::setStatus(500);
 	\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::DEBUG);
 }

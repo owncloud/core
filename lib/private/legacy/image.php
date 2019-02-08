@@ -63,7 +63,7 @@ class OC_Image implements \OCP\IImage {
 	 * @param string|null $filePath The path to a local image file.
 	 * @return string The mime type if the it could be determined, otherwise an empty string.
 	 */
-	static public function getMimeTypeForFile($filePath) {
+	public static function getMimeTypeForFile($filePath) {
 		// exif_imagetype throws "read error!" if file is less than 12 byte
 		if ($filePath !== null && \filesize($filePath) > 11) {
 			$imageType = \exif_imagetype($filePath);
@@ -82,7 +82,7 @@ class OC_Image implements \OCP\IImage {
 	 */
 	public function __construct($imageRef = null, $logger = null) {
 		$this->logger = $logger;
-		if (\is_null($logger)) {
+		if ($logger === null) {
 			$this->logger = \OC::$server->getLogger();
 		}
 
@@ -90,7 +90,7 @@ class OC_Image implements \OCP\IImage {
 			$this->fileInfo = new finfo(FILEINFO_MIME_TYPE);
 		}
 
-		if (!\is_null($imageRef)) {
+		if ($imageRef !== null) {
 			$this->load($imageRef);
 		}
 	}
@@ -224,8 +224,9 @@ class OC_Image implements \OCP\IImage {
 	 */
 	private function _output($filePath = null, $mimeType = null) {
 		if ($filePath) {
-			if (!\file_exists(\dirname($filePath)))
+			if (!\file_exists(\dirname($filePath))) {
 				\mkdir(\dirname($filePath), 0777, true);
+			}
 			if (!\is_writable(\dirname($filePath))) {
 				$this->logger->error(__METHOD__ . '(): Directory \'' . \dirname($filePath) . '\' is not writable.', ['app' => 'core']);
 				return false;
@@ -338,7 +339,7 @@ class OC_Image implements \OCP\IImage {
 	/**
 	 * @return string - base64 encoded, which is suitable for embedding in a VCard.
 	 */
-	function __toString() {
+	public function __toString() {
 		return \base64_encode($this->data());
 	}
 
@@ -361,7 +362,7 @@ class OC_Image implements \OCP\IImage {
 			$this->logger->debug('OC_Image->fixOrientation() No image loaded.', ['app' => 'core']);
 			return -1;
 		}
-		if (\is_null($this->filePath) || !\is_readable($this->filePath)) {
+		if ($this->filePath === null || !\is_readable($this->filePath)) {
 			$this->logger->debug('OC_Image->fixOrientation() No readable file path set.', ['app' => 'core']);
 			return -1;
 		}
@@ -418,7 +419,7 @@ class OC_Image implements \OCP\IImage {
 				$rotate = 90;
 				break;
 		}
-		if($flip && \function_exists('imageflip')) {
+		if ($flip && \function_exists('imageflip')) {
 			\imageflip($this->resource, IMG_FLIP_HORIZONTAL);
 		}
 		if ($rotate) {
@@ -646,7 +647,7 @@ class OC_Image implements \OCP\IImage {
 			$imageHandle = $bmp->toResource();
 			$imageDetails = $bmp->getHeader();
 			$this->bitDepth = $imageDetails['bits']; //remember the bit depth for the imagebmp call
-		} catch (\Exception $e){
+		} catch (\Exception $e) {
 			$this->logger->warning($e->getMessage(), ['app' => 'core']);
 			return false;
 		}
@@ -896,7 +897,7 @@ if (!\function_exists('imagebmp')) {
 	function imagebmp($im, $fileName = '', $bit = 24, $compression = 0) {
 		if (!\in_array($bit, [1, 4, 8, 16, 24, 32])) {
 			$bit = 24;
-		} else if ($bit == 32) {
+		} elseif ($bit == 32) {
 			$bit = 24;
 		}
 		$bits = \pow(2, $bit);
@@ -933,7 +934,7 @@ if (!\function_exists('imagebmp')) {
 					$bmpData .= $extra;
 				}
 			} // RLE8
-			else if ($compression == 1 && $bit == 8) {
+			elseif ($compression == 1 && $bit == 8) {
 				for ($j = $height - 1; $j >= 0; $j--) {
 					$lastIndex = "\0";
 					$sameNum = 0;

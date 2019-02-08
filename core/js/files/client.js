@@ -244,6 +244,19 @@
 		},
 
 		/**
+		 * Returns the relative path from the given absolute path based
+		 * on this client's base URL.
+		 *
+		 * @param {String} path href path
+		 * @return {String} sub-path section or null if base path mismatches
+		 *
+		 * @since 10.1.0
+		 */
+		getRelativePath: function(path) {
+			return this._extractPath(path);
+		},
+
+		/**
 		 * Parse sub-path from href
 		 *
 		 * @param {String} path href path
@@ -672,7 +685,7 @@
 			).then(
 				function(result) {
 					if (self._isSuccessStatus(result.status)) {
-						deferred.resolve(result.status);
+						deferred.resolve(result.status, result);
 					} else {
 						result = _.extend(result, self._getSabreException(result));
 						deferred.reject(result.status, result);
@@ -697,7 +710,7 @@
 			).then(
 				function(result) {
 					if (self._isSuccessStatus(result.status)) {
-						deferred.resolve(result.status);
+						deferred.resolve(result.status, result);
 					} else {
 						result = _.extend(result, self._getSabreException(result));
 						deferred.reject(result.status, result);
@@ -740,7 +753,7 @@
 			).then(
 				function(result) {
 					if (self._isSuccessStatus(result.status)) {
-						deferred.resolve(result.status);
+						deferred.resolve(result.status, result);
 					} else {
 						result = _.extend(result, self._getSabreException(result));
 						deferred.reject(result.status, result);

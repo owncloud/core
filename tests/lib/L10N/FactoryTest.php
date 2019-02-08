@@ -271,7 +271,6 @@ class FactoryTest extends TestCase {
 				->method('setUserValue')
 				->with('MyUserUid', 'core', 'lang', 'en');
 
-
 		$this->assertSame('en', $factory->findLanguage('MyApp'));
 	}
 

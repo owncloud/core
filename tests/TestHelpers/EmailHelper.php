@@ -21,7 +21,6 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Message\ResponseInterface;
 
 /**
@@ -33,73 +32,203 @@ class EmailHelper {
 	/**
 	 * retrieving emails sent from mailhog
 	 *
-	 * @param string $mailhogUrl
-	 * 
+	 * @param string $localMailhogUrl
+	 *
 	 * @return mixed JSON encoded contents
 	 */
-	public static function getEmails($mailhogUrl) {
-		$client = new Client();
-		$options = ['headers' => ['Content-Type' => 'application/json']];
-		$request = $client->createRequest(
-			'GET', $mailhogUrl . "/api/v2/messages", $options
+	public static function getEmails($localMailhogUrl) {
+		$response = HttpRequestHelper::get(
+			$localMailhogUrl . "/api/v2/messages",
+			null,
+			null,
+			['Content-Type' => 'application/json']
 		);
-		$response = $client->send($request);
 
 		$json = \json_decode($response->getBody()->getContents());
 		return $json;
 	}
+
 	/**
-	 * 
-	 * @param string $mailhogUrl
-	 * 
-	 * @param string $address
-	 * 
+	 *
+	 * @param string $localMailhogUrl
+	 * @param string $emailAddress
+	 * @param int $waitTimeSec Time to wait for the email
+	 *
 	 * @throws \Exception
-	 * 
+	 *
 	 * @return mixed
 	 */
-	public static function getBodyOfLastEmail($mailhogUrl, $address) {
-		foreach (self::getEmails($mailhogUrl)->items as $item) {
-			$expectedEmail = $item->To[0]->Mailbox . "@" . $item->To[0]->Domain;
-			if ($expectedEmail === $address) {
-				$body = \str_replace(
-					"\r\n", "\n",
-					\quoted_printable_decode($item->Content->Body)
-				);
-				return $body;
-			}
-		}
-		throw new \Exception("Could not find the email to the address: " . $address);
+	public static function getBodyOfLastEmail(
+		$localMailhogUrl, $emailAddress, $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+	) {
+		return self::getBodyOfEmail(
+			$localMailhogUrl, $emailAddress, 1, $waitTimeSec
+		);
 	}
 
 	/**
-	 * 
-	 * @param string $mailhogUrl
-	 * 
+	 *
+	 * @param string $localMailhogUrl
+	 * @param string $emailAddress
+	 * @param int $emailNumber which number of multiple emails to read (first email is 1)
+	 * @param int $waitTimeSec Time to wait for the email
+	 *
+	 * @throws \Exception
+	 *
+	 * @return mixed
+	 */
+	public static function getBodyOfEmail(
+		$localMailhogUrl,
+		$emailAddress,
+		$emailNumber = 1,
+		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+	) {
+		$currentTime = \time();
+		$endTime = $currentTime + $waitTimeSec;
+
+		while ($currentTime <= $endTime) {
+			$skip = 1;
+			foreach (self::getEmails($localMailhogUrl)->items as $item) {
+				$thisEmailAddress
+					= $item->To[0]->Mailbox . "@" . $item->To[0]->Domain;
+				if ($thisEmailAddress === $emailAddress) {
+					if ($skip < $emailNumber) {
+						$skip++;
+						continue;
+					}
+
+					$body = \str_replace(
+						"\r\n", "\n",
+						\quoted_printable_decode($item->Content->Body)
+					);
+					return $body;
+				}
+			}
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
+			$currentTime = \time();
+		}
+
+		throw new \Exception("Could not find the email to the address: " . $emailAddress);
+	}
+
+	/**
+	 *
+	 * @param string $localMailhogUrl
+	 * @param string $emailAddress
+	 * @param int $waitTimeSec Time to wait for the email
+	 *
+	 * @throws \Exception
+	 *
+	 * @return boolean
+	 */
+	public static function emailReceived(
+		$localMailhogUrl,
+		$emailAddress,
+		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+	) {
+		try {
+			self::getBodyOfLastEmail(
+				$localMailhogUrl, $emailAddress, $waitTimeSec
+			);
+		} catch (\Exception $err) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 *
+	 * @param string $localMailhogUrl
+	 * @param string $emailAddress
+	 * @param int $emailNumber which number of multiple emails to read (first email is 1)
+	 * @param int $waitTimeSec Time to wait for the email
+	 *
+	 * @throws \Exception
+	 *
+	 * @return mixed
+	 */
+	public static function getSenderOfEmail(
+		$localMailhogUrl,
+		$emailAddress,
+		$emailNumber = 1,
+		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+	) {
+		$currentTime = \time();
+		$endTime = $currentTime + $waitTimeSec;
+
+		while ($currentTime <= $endTime) {
+			$skip = 1;
+			foreach (self::getEmails($localMailhogUrl)->items as $item) {
+				$thisEmailAddress
+					= $item->To[0]->Mailbox . "@" . $item->To[0]->Domain;
+				if ($thisEmailAddress === $emailAddress) {
+					if ($skip < $emailNumber) {
+						$skip++;
+						continue;
+					}
+					return $item->From->Mailbox . '@' . $item->From->Domain;
+				}
+			}
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
+			$currentTime = \time();
+		}
+		throw new \Exception("Could not find the email to the address: " . $emailAddress);
+	}
+
+	/**
+	 *
+	 * @param string $localMailhogUrl
+	 *
 	 * @return ResponseInterface
 	 */
-	public static function deleteAllMessages($mailhogUrl) {
-		$client = new Client();
-		$request = $client->createRequest(
-			'DELETE', $mailhogUrl . "/api/v1/messages"
+	public static function deleteAllMessages($localMailhogUrl) {
+		return HttpRequestHelper::delete(
+			$localMailhogUrl . "/api/v1/messages"
 		);
-		$response = $client->send($request);
-		return $response;
 	}
 
 	/**
-	 * 
+	 * Returns the host name or address of the Mailhog server as seen from the
+	 * point of view of the system-under-test.
+	 *
 	 * @return string
 	 */
-	public static function getMailhogUrl() {
+	public static function getMailhogHost() {
 		$mailhogHost = \getenv('MAILHOG_HOST');
 		if ($mailhogHost === false) {
 			$mailhogHost = "127.0.0.1";
 		}
+		return $mailhogHost;
+	}
+
+	/**
+	 * Returns the host name or address of the Mailhog server as seen from the
+	 * point of view of the test runner.
+	 *
+	 * @return string
+	 */
+	public static function getLocalMailhogHost() {
+		$localMailhogHost = \getenv('LOCAL_MAILHOG_HOST');
+		if ($localMailhogHost === false) {
+			$localMailhogHost = self::getMailhogHost();
+		}
+		return $localMailhogHost;
+	}
+
+	/**
+	 * Returns the host and port where Mailhog messages can be read and deleted
+	 * by the test runner.
+	 *
+	 * @return string
+	 */
+	public static function getLocalMailhogUrl() {
+		$localMailhogHost = self::getLocalMailhogHost();
+
 		$mailhogPort = \getenv('MAILHOG_PORT');
 		if ($mailhogPort === false) {
 			$mailhogPort = "8025";
 		}
-		return "http://$mailhogHost:$mailhogPort";
+		return "http://$localMailhogHost:$mailhogPort";
 	}
 }

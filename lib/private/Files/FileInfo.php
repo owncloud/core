@@ -100,7 +100,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	public function offsetGet($offset) {
 		if ($offset === 'type') {
 			return $this->getType();
-		} else if ($offset === 'etag') {
+		} elseif ($offset === 'etag') {
 			return $this->getEtag();
 		} elseif ($offset === 'permissions') {
 			return $this->getPermissions();
@@ -119,7 +119,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	}
 
 	/**
-	 * @return \OCP\Files\Storage
+	 * @return \OCP\Files\Storage\IStorage
 	 */
 	public function getStorage() {
 		return $this->storage;
@@ -279,7 +279,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 */
 	public function isShared() {
 		$sid = $this->getStorage()->getId();
-		if (!\is_null($sid)) {
+		if ($sid !== null) {
 			$sid = \explode(':', $sid);
 			return ($sid[0] === 'shared');
 		}
@@ -289,7 +289,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 
 	public function isMounted() {
 		$sid = $this->getStorage()->getId();
-		if (!\is_null($sid)) {
+		if ($sid !== null) {
 			$sid = \explode(':', $sid);
 			return ($sid[0] !== 'home' and $sid[0] !== 'shared');
 		}

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "ខុស​ពាក្យ​សម្ងាត់",
     "Saved" : "បាន​រក្សាទុក",
     "test email settings" : "សាក​ល្បង​ការ​កំណត់​អ៊ីមែល",
     "Email sent" : "បាន​ផ្ញើ​អ៊ីមែល",
@@ -9,7 +8,6 @@ OC.L10N.register(
     "Create" : "បង្កើត",
     "Delete" : "លុប",
     "Share" : "ចែក​រំលែក",
-    "__language_name__" : "__language_name__",
     "Language changed" : "បាន​ប្ដូរ​ភាសា",
     "Invalid request" : "សំណើ​មិន​ត្រឹម​ត្រូវ",
     "All" : "ទាំងអស់",
@@ -30,6 +28,7 @@ OC.L10N.register(
     "Strong password" : "ពាក្យ​សម្ងាត់​ខ្លាំង",
     "Groups" : "ក្រុ",
     "Forum" : "វេទិកាពិភាក្សា",
+    "Language" : "ភាសា",
     "Sharing" : "ការ​ចែក​រំលែក",
     "Allow apps to use the Share API" : "អនុញ្ញាត​ឲ្យ​កម្មវិធី​ប្រើ API ចែក​រំលែក",
     "Allow public uploads" : "អនុញ្ញាត​ការ​ផ្ទុក​ឡើង​ជា​សាធារណៈ",
@@ -57,7 +56,6 @@ OC.L10N.register(
     "Current password" : "ពាក្យសម្ងាត់​បច្ចុប្បន្ន",
     "New password" : "ពាក្យ​សម្ងាត់​ថ្មី",
     "Change password" : "ប្តូរ​ពាក្យសម្ងាត់",
-    "Language" : "ភាសា",
     "Help translate" : "ជួយ​បក​ប្រែ",
     "Name" : "ឈ្មោះ",
     "Username" : "ឈ្មោះ​អ្នកប្រើ",

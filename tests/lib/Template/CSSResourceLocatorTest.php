@@ -23,7 +23,6 @@ class CSSResourceLocatorTest extends TestCase {
 	protected $appRoot = '/var/www/apps';
 	protected $themeAppDir = 'theme-best';
 
-
 	protected function setUp() {
 		parent::setUp();
 		$this->logger = $this->createMock(ILogger::class);
@@ -102,5 +101,4 @@ class CSSResourceLocatorTest extends TestCase {
 
 		$locator->find(['randomapp/css/style']);
 	}
-
 }

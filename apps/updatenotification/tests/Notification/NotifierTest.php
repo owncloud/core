@@ -22,7 +22,6 @@
 
 namespace OCA\UpdateNotification\Tests\Notification;
 
-
 use OCA\UpdateNotification\Notification\Notifier;
 use OCP\L10N\IFactory;
 use OCP\Notification\IManager;
@@ -52,7 +51,8 @@ class NotifierTest extends TestCase {
 				$this->notificationManager,
 				$this->l10nFactory
 			);
-		} {
+		}
+		{
 			return $this->getMockBuilder('OCA\UpdateNotification\Notification\Notifier')
 				->setConstructorArgs([
 					$this->notificationManager,

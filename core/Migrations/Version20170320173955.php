@@ -27,7 +27,6 @@ use OCP\Migration\ISchemaMigration;
  * Add "name" column to the oc_share table
  */
 class Version20170320173955 implements ISchemaMigration {
-
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		$table = $schema->getTable("${prefix}share");

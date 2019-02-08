@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\CalDAV;
-
 
 use Sabre\VObject\Component;
 use Sabre\VObject\Property;
@@ -32,7 +30,7 @@ class CalendarObject extends \Sabre\CalDAV\CalendarObject {
 	/**
 	 * @inheritdoc
 	 */
-	function get() {
+	public function get() {
 		$data = parent::get();
 		if ($this->isShared() && $this->objectData['classification'] === CalDavBackend::CLASSIFICATION_CONFIDENTIAL) {
 			return $this->createConfidentialObject($data);
@@ -49,24 +47,23 @@ class CalendarObject extends \Sabre\CalDAV\CalendarObject {
 	 * @return string
 	 */
 	private static function createConfidentialObject($calData) {
-
 		$vObject = Reader::read($calData);
 
 		/** @var Component $vElement */
 		$vElement = null;
-		if(isset($vObject->VEVENT)) {
+		if (isset($vObject->VEVENT)) {
 			$vElement = $vObject->VEVENT;
 		}
-		if(isset($vObject->VJOURNAL)) {
+		if (isset($vObject->VJOURNAL)) {
 			$vElement = $vObject->VJOURNAL;
 		}
-		if(isset($vObject->VTODO)) {
+		if (isset($vObject->VTODO)) {
 			$vElement = $vObject->VTODO;
 		}
-		if(!\is_null($vElement)) {
+		if ($vElement !== null) {
 			foreach ($vElement->children() as &$property) {
 				/** @var Property $property */
-				switch($property->name) {
+				switch ($property->name) {
 					case 'CREATED':
 					case 'DTSTART':
 					case 'RRULE':
@@ -88,5 +85,4 @@ class CalendarObject extends \Sabre\CalDAV\CalendarObject {
 		
 		return $vObject->serialize();
 	}
-
 }

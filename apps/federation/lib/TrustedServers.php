@@ -22,7 +22,6 @@
  *
  */
 
-
 namespace OCA\Federation;
 
 use OC\HintException;
@@ -46,10 +45,10 @@ class TrustedServers {
 	/** remote server revoked access */
 	const STATUS_ACCESS_REVOKED = 4;
 
-	/** @var  dbHandler */
+	/** @var DbHandler dbHandler */
 	private $dbHandler;
 
-	/** @var  IClientService */
+	/** @var IClientService */
 	private $httpClientService;
 
 	/** @var ILogger */
@@ -261,9 +260,7 @@ class TrustedServers {
 			\strpos($url, 'https://') === 0
 			|| \strpos($url, 'http://') === 0
 		) {
-
 			return $url;
-
 		}
 
 		return 'https://' . $url;

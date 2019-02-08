@@ -27,6 +27,7 @@
 
 namespace OC\Session;
 
+use OC\AppFramework\Http\Request;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 
 /**
@@ -45,12 +46,12 @@ class Internal extends Session {
 		\session_name($name);
 		\set_error_handler([$this, 'trapError']);
 		try {
-			\session_start();
+			$this->start();
 		} catch (\Exception $e) {
 			\setcookie(\session_name(), null, -1, \OC::$WEBROOT ? : '/');
 		}
 		\restore_error_handler();
-		if (!isset($_SESSION)) {
+		if ($_SESSION === null) {
 			throw new \Exception('Failed to start session');
 		}
 	}
@@ -58,6 +59,7 @@ class Internal extends Session {
 	/**
 	 * @param string $key
 	 * @param integer $value
+	 * @throws \Exception
 	 */
 	public function set($key, $value) {
 		$this->validateSession();
@@ -153,5 +155,41 @@ class Internal extends Session {
 		if ($this->sessionClosed) {
 			throw new SessionNotAvailableException('Session has been closed - no further changes to the session are allowed');
 		}
+	}
+
+	private function start(): void {
+		if (@\session_id() === '') {
+			// prevents javascript from accessing php session cookies
+			\ini_set('session.cookie_httponly', true);
+
+			// set the cookie path to the ownCloud directory
+			$cookie_path = \OC::$WEBROOT ? : '/';
+			\ini_set('session.cookie_path', $cookie_path);
+
+			if ($this->getServerProtocol() === 'https') {
+				\ini_set('session.cookie_secure', true);
+			}
+		}
+		\session_start();
+	}
+
+	private function getServerProtocol() {
+		$req = new Request(
+			[
+				'get' => $_GET,
+				'post' => $_POST,
+				'files' => $_FILES,
+				'server' => $_SERVER,
+				'env' => $_ENV,
+				'cookies' => $_COOKIE,
+				'method' => $_SERVER['REQUEST_METHOD'] ?? null,
+				'urlParams' => [],
+			],
+			null,
+			\OC::$server->getConfig(),
+			null
+		);
+
+		return $req->getServerProtocol();
 	}
 }

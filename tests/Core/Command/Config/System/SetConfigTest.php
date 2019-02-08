@@ -21,7 +21,6 @@
 
 namespace Tests\Core\Command\Config\System;
 
-
 use OC\Core\Command\Config\System\SetConfig;
 use Test\TestCase;
 
@@ -49,7 +48,6 @@ class SetConfigTest extends TestCase {
 		/** @var \OC\SystemConfig $systemConfig */
 		$this->command = new SetConfig($systemConfig);
 	}
-
 
 	public function setData() {
 		return [
@@ -124,6 +122,44 @@ class SetConfigTest extends TestCase {
 		$this->invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
+	public function setJsonData() {
+		return [
+			[['name'], '{"sub-key":"value"}', null, ['sub-key' => 'value']],
+			[['name'], '{"sub-key":"value"}', 'something', ['sub-key' => 'value']],
+			[['name'], '{"sub-key":"value"}', ['sub-key' => 'old-value', 'other-key' => 'will disappear'], ['sub-key' => 'value']],
+			[['name'], '[{"key1":"value1","key2":"value2"}]', null, [['key1' => 'value1', 'key2' => 'value2']]],
+		];
+	}
+
+	/**
+	 * @dataProvider setJsonData
+	 *
+	 * @param array $configNames
+	 * @param string $newValue
+	 * @param mixed $existingData
+	 * @param mixed $expectedValue
+	 */
+	public function testSetJson($configNames, $newValue, $existingData, $expectedValue) {
+		$this->systemConfig->expects($this->once())
+			->method('setValue')
+			->with($configNames[0], $expectedValue);
+		$this->systemConfig->method('getValue')
+			->with($configNames[0])
+			->willReturn($existingData);
+
+		$this->consoleInput->expects($this->once())
+			->method('getArgument')
+			->with('name')
+			->willReturn($configNames);
+		$this->consoleInput->method('getOption')
+			->will($this->returnValueMap([
+				['value', $newValue],
+				['type', 'json'],
+			]));
+
+		$this->invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+	}
+
 	public function castValueProvider() {
 		return [
 			[null, 'string', ['value' => '', 'readable-value' => 'empty string']],
@@ -140,6 +176,9 @@ class SetConfigTest extends TestCase {
 
 			['true', 'boolean', ['value' => true, 'readable-value' => 'boolean true']],
 			['false', 'bool', ['value' => false, 'readable-value' => 'boolean false']],
+
+			['{"config_key":"the-value"}', 'json', ['value' => ['config_key' => 'the-value'], 'readable-value' => 'json {"config_key":"the-value"}']],
+			['[{"key1":"value1","key2":"value2"}]', 'json', ['value' => [['key1' => 'value1', 'key2' => 'value2']], 'readable-value' => 'json [{"key1":"value1","key2":"value2"}]']],
 		];
 	}
 
@@ -161,6 +200,8 @@ class SetConfigTest extends TestCase {
 			['76ggg', 'double'],
 			['true', 'float'],
 			['foobar', 'boolean'],
+			['invalid-json', 'json'],
+			['', 'json'],
 		];
 	}
 
@@ -171,5 +212,4 @@ class SetConfigTest extends TestCase {
 	public function testCastValueInvalid($value, $type) {
 		$this->invokePrivate($this->command, 'castValue', [$value, $type]);
 	}
-
 }

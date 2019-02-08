@@ -20,10 +20,10 @@ OC.L10N.register(
     "Name" : "﻿ಹೆಸರು",
     "Size" : "﻿ ಪ್ರಮಾಣ",
     "Modified" : "﻿ಬದಲಾಯಿಸಿದ",
-    "_%n folder_::_%n folders_" : ["%n ಕೋಶ(ಗಳು)"],
-    "_%n file_::_%n files_" : ["%n ಕಡತ"],
+    "_%n folder_::_%n folders_" : ["%n ಕೋಶ(ಗಳು)","%n ಕೋಶ(ಗಳು)"],
+    "_%n file_::_%n files_" : ["%n ಕಡತ","%n ಕಡತ"],
     "You don’t have permission to upload or create files here" : "﻿ನಿಮಗೆ ಇಲ್ಲಿ ಅಪ್ಲೋಡ್ ಅಥವಾ ಕಡತಗಳನ್ನು ರಚಿಸವ ಅನುಮತಿ ಇಲ್ಲ",
-    "_Uploading %n file_::_Uploading %n files_" : ["%n 'ನೆ ಕಡತವನ್ನು ವರ್ಗಾಯಿಸಲಾಗುತ್ತಿದೆ"],
+    "_Uploading %n file_::_Uploading %n files_" : ["%n 'ನೆ ಕಡತವನ್ನು ವರ್ಗಾಯಿಸಲಾಗುತ್ತಿದೆ","%n 'ನೆ ಕಡತವನ್ನು ವರ್ಗಾಯಿಸಲಾಗುತ್ತಿದೆ"],
     "New" : "﻿ಹೊಸ",
     "File name cannot be empty." : "ಕಡತ ಹೆಸರು ಖಾಲಿ ಇರುವಂತಿಲ್ಲ.",
     "Favorited" : "ಅಚ್ಚುಮೆಚ್ಚಿನವು",
@@ -41,4 +41,4 @@ OC.L10N.register(
     "Files and folders you mark as favorite will show up here" : "ನೀವು ಗುರುತು ಮಾಡಿರುವ ನೆಚ್ಚಿನ ಕಡತ ಮತ್ತು ಕಡತಕೋಶಗಳನ್ನು ಇಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತಿದೆ",
     "Text file" : "ಸರಳಾಕ್ಷರದ ಕಡತ"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

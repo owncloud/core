@@ -51,5 +51,4 @@ class Apps implements ISettings {
 	public function getSectionID() {
 		return 'apps';
 	}
-
 }

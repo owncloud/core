@@ -93,7 +93,7 @@ OC.L10N.register(
     "Ok" : "Gerai",
     "Error loading message template: {error}" : "Klaida įkeliant žinutės ruošinį: {error}",
     "read-only" : "tik skaitymui",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} failas konfliktuoja","{count} failai konfliktuoja","{count} failų konfliktų"],
+    "_{count} file conflict_::_{count} file conflicts_" : ["{count} failas konfliktuoja","{count} failai konfliktuoja","{count} failų konfliktų","{count} failų konfliktų"],
     "One file conflict" : "Vienas failo konfliktas",
     "New Files" : "Naujas failas",
     "Already existing files" : "Egzistuojantys failai",
@@ -118,7 +118,6 @@ OC.L10N.register(
     "Expiration" : "Galiojimo laikas",
     "Delete {link}" : "Trinti (link)",
     "Remove link" : "Pašalinti nuorodą",
-    "{fileName} link" : "{fileName} nuoroda",
     "Link" : "Nuoroda",
     "Create public link" : "Sukurti viešą nuorodą",
     "Edit" : "Redaguoti",
@@ -132,6 +131,8 @@ OC.L10N.register(
     "Name" : "Pavadinimas",
     "Filename" : "Failo pavadinimas",
     "Password" : "Slaptažodis",
+    "Download / View" : "Atsisiųsti / Peržiūrėti",
+    "Download / View / Upload" : "Atsisiųsti / Peržiūrėti / Įkelti",
     "Share" : "Dalintis",
     "Save" : "Išsaugoti",
     "Email link to person" : "Nusiųsti nuorodą paštu",
@@ -148,7 +149,6 @@ OC.L10N.register(
     "delete" : "ištrinti",
     "access control" : "priėjimo kontrolė",
     "Public Links" : "Viešos nuorodos",
-    "Resharing is not allowed" : "Dalijinasis išnaujo negalimas",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Dalintis su vartotoju kitame ownCloud debesyje, sintaksė vartotojas@example.com/owncloud",
     "Share with users…" : "Dalintis su vartotojais...",
     "Share with users, groups or remote users…" : "Dalintis su vartotojais, grupėmis, ar nutolusiais vartotojais...",
@@ -193,6 +193,7 @@ OC.L10N.register(
     "File: %s" : "Failas: %s",
     "Line: %s" : "Eilutė: %s",
     "Trace" : "Sekti",
+    "Imprint" : "Imprint",
     "Create an <strong>admin account</strong>" : "Sukurti <strong>administratoriaus paskyrą</strong>",
     "Username" : "Prisijungimo vardas",
     "Storage & database" : "Saugykla ir duomenų bazė",
@@ -230,4 +231,4 @@ OC.L10N.register(
     "Cancel login" : "Atšaukti prisijungimą",
     "Update needed" : "Reikalingas atnaujinimas"
 },
-"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);");
+"nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);");

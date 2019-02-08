@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OC\Files\Node;
 
 use OCP\Files\NotPermittedException;

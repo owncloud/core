@@ -42,7 +42,6 @@ class File implements \OCP\Encryption\IFile {
 		$this->cache = new CappedMemoryCache();
 	}
 
-
 	/**
 	 * get list of users with access to the file
 	 *
@@ -64,7 +63,6 @@ class File implements \OCP\Encryption\IFile {
 		$ownerPath = \substr($ownerPath, \strlen('/files'));
 		$ownerPath = $this->util->stripPartialFileExtension($ownerPath);
 
-
 		// first get the shares for the parent and cache the result so that we don't
 		// need to check all parents for every file
 		$parent = \dirname($ownerPath);
@@ -76,7 +74,6 @@ class File implements \OCP\Encryption\IFile {
 		}
 		$userIds = \array_merge($userIds, $resultForParents['users']);
 		$public = $resultForParents['public'] || $resultForParents['remote'];
-
 
 		// Find out who, if anyone, is sharing the file
 		$resultForFile = \OCP\Share::getUsersSharingFile($ownerPath, $owner, false, false, false);
@@ -99,5 +96,4 @@ class File implements \OCP\Encryption\IFile {
 
 		return ['users' => $uniqueUserIds, 'public' => $public];
 	}
-
 }

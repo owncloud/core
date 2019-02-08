@@ -73,7 +73,7 @@ class Install extends Command {
 			$this->printErrors($output, $errors);
 
 			// ignore the OS X setup warning
-			if(\count($errors) !== 1 ||
+			if (\count($errors) !== 1 ||
 				(string)($errors[0]['error']) !== 'Mac OS X is not supported and ownCloud will not work properly on this platform. Use it at your own risk! ') {
 				return 1;
 			}
@@ -127,13 +127,13 @@ class Install extends Command {
 		$dataDir = $input->getOption('data-dir');
 
 		if ($db !== 'sqlite') {
-			if (\is_null($dbUser)) {
+			if ($dbUser === null) {
 				throw new InvalidArgumentException("Database user not provided.");
 			}
-			if (\is_null($dbName)) {
+			if ($dbName === null) {
 				throw new InvalidArgumentException("Database name not provided.");
 			}
-			if (\is_null($dbPass)) {
+			if ($dbPass === null) {
 				/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 				$dialog = $this->getHelperSet()->get('question');
 				$q = new Question("<question>What is the password to access the database with user <$dbUser>?</question>", false);
@@ -142,7 +142,7 @@ class Install extends Command {
 			}
 		}
 
-		if (\is_null($adminPassword)) {
+		if ($adminPassword === null) {
 			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 			$dialog = $this->getHelperSet()->get('question');
 			$q = new Question("<question>What is the password you like to use for the admin account <$adminLogin>?</question>", false);

@@ -56,12 +56,10 @@ class Migration {
 	 * upgrade from oC 8.2 to 9.0 with the new sharing
 	 */
 	public function removeReShares() {
-
 		$stmt = $this->getReShares();
 
 		$owners = [];
-		while($share = $stmt->fetch()) {
-
+		while ($share = $stmt->fetch()) {
 			$this->shareCache[$share['id']] = $share;
 
 			$owners[$share['id']] = [
@@ -115,7 +113,7 @@ class Migration {
 	 */
 	private function findOwner($share) {
 		$currentShare = $share;
-		while(!\is_null($currentShare['parent'])) {
+		while ($currentShare['parent'] !== null) {
 			if (isset($this->shareCache[$currentShare['parent']])) {
 				$currentShare = $this->shareCache[$currentShare['parent']];
 			} else {
@@ -159,17 +157,6 @@ class Migration {
 			->andWhere($query->expr()->isNotNull('parent'))
 			->orderBy('id', 'asc');
 		return $query->execute();
-
-
-		$shares = $result->fetchAll();
-		$result->closeCursor();
-
-		$ordered = [];
-		foreach ($shares as $share) {
-			$ordered[(int)$share['id']] = $share;
-		}
-
-		return $ordered;
 	}
 
 	/**
@@ -241,17 +228,14 @@ class Migration {
 	 * @throws \Exception
 	 */
 	private function updateOwners($owners) {
-
 		$this->connection->beginTransaction();
 
 		try {
-
 			foreach ($owners as $id => $owner) {
 				$query = $this->connection->getQueryBuilder();
 				$query->update($this->table)
 					->set('uid_owner', $query->createNamedParameter($owner['owner']))
 					->set('uid_initiator', $query->createNamedParameter($owner['initiator']));
-
 
 				if ((int)$owner['type'] !== \OCP\Share::SHARE_TYPE_LINK) {
 					$query->set('parent', $query->createNamedParameter(null));
@@ -263,12 +247,9 @@ class Migration {
 			}
 
 			$this->connection->commit();
-
 		} catch (\Exception $e) {
 			$this->connection->rollBack();
 			throw $e;
 		}
-
 	}
-
 }

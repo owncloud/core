@@ -21,7 +21,6 @@
 
 namespace OCP\Share\Events;
 
-
 use Symfony\Component\EventDispatcher\Event;
 
 /**

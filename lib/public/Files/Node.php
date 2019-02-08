@@ -32,6 +32,8 @@
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP\Files;
 
+use OCP\Files\Storage\IStorage;
+
 /**
  * Interface Node
  *
@@ -79,7 +81,7 @@ interface Node extends FileInfo {
 	/**
 	 * Get the storage backend the file or folder is stored on
 	 *
-	 * @return \OCP\Files\Storage
+	 * @return IStorage
 	 * @throws \OCP\Files\NotFoundException
 	 * @since 6.0.0
 	 */
@@ -153,7 +155,6 @@ interface Node extends FileInfo {
 	 * @since 6.0.0
 	 */
 	public function getEtag();
-
 
 	/**
 	 * Get the permissions of the file or folder as a combination of one or more of the following constants:

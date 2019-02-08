@@ -87,8 +87,7 @@ class NaturalSort {
 			// German umlauts, so using en_US instead
 			if (\class_exists('Collator')) {
 				$this->collator = new \Collator('en_US');
-			}
-			else {
+			} else {
 				$this->collator = new \OC\NaturalSort_DefaultCollator();
 			}
 		}
@@ -110,7 +109,7 @@ class NaturalSort {
 		$aa = self::naturalSortChunkify($a);
 		$bb = self::naturalSortChunkify($b);
 
-		for ($x = 0; isset($aa[$x]) && isset($bb[$x]); $x++) {
+		for ($x = 0; isset($aa[$x], $bb[$x]); $x++) {
 			$aChunk = $aa[$x];
 			$bChunk = $bb[$x];
 			if ($aChunk !== $bChunk) {

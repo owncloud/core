@@ -65,7 +65,6 @@ class Db implements IDb {
 		return new \OC_DB_StatementWrapper($statement, $isManipulation);
 	}
 
-
 	/**
 	 * @inheritdoc
 	 */

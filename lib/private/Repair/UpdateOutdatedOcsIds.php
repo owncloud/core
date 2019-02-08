@@ -61,7 +61,7 @@ class UpdateOutdatedOcsIds implements IRepairStep {
 	public function fixOcsId($appName, $oldId, $newId) {
 		$existingId = $this->config->getAppValue($appName, 'ocsid');
 
-		if($existingId === $oldId) {
+		if ($existingId === $oldId) {
 			$this->config->setAppValue($appName, 'ocsid', $newId);
 			return true;
 		}
@@ -96,7 +96,7 @@ class UpdateOutdatedOcsIds implements IRepairStep {
 			]
 		];
 
-		foreach($appsToUpdate as $appName => $ids) {
+		foreach ($appsToUpdate as $appName => $ids) {
 			if ($this->fixOcsId($appName, $ids['old'], $ids['new'])) {
 				$output->info("Fixed invalid $appName OCS id");
 			}

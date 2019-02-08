@@ -22,7 +22,6 @@
 
 namespace OCA\Comments\Dav;
 
-
 use OCP\Comments\IComment;
 use OCP\Comments\ICommentsManager;
 use OCP\Comments\MessageTooLongException;
@@ -80,10 +79,10 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 		$this->logger = $logger;
 
 		$methods = \get_class_methods($this->comment);
-		$methods = \array_filter($methods, function($name){
+		$methods = \array_filter($methods, function ($name) {
 			return \strpos($name, 'get') === 0;
 		});
-		foreach($methods as $getter) {
+		foreach ($methods as $getter) {
 			$name = '{'.self::NS_OWNCLOUD.'}' . \lcfirst(\substr($getter, 3));
 			$this->properties[$name] = $getter;
 		}
@@ -96,7 +95,7 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	 *
 	 * @return array
 	 */
-	static public function getPropertyNames() {
+	public static function getPropertyNames() {
 		return [
 			'{http://owncloud.org/ns}id',
 			'{http://owncloud.org/ns}parentId',
@@ -118,8 +117,8 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 
 	protected function checkWriteAccessOnComment() {
 		$user = $this->userSession->getUser();
-		if(    $this->comment->getActorType() !== 'users'
-			|| \is_null($user)
+		if ($this->comment->getActorType() !== 'users'
+			|| $user === null
 			|| $this->comment->getActorId() !== $user->getUID()
 		) {
 			throw new Forbidden('Only authors are allowed to edit their comment.');
@@ -131,7 +130,7 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	 *
 	 * @return void
 	 */
-	function delete() {
+	public function delete() {
 		$this->checkWriteAccessOnComment();
 		$this->commentsManager->delete($this->comment->getId());
 	}
@@ -143,7 +142,7 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	 *
 	 * @return string
 	 */
-	function getName() {
+	public function getName() {
 		return $this->comment->getId();
 	}
 
@@ -153,7 +152,7 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	 * @param string $name The new name
 	 * @throws MethodNotAllowed
 	 */
-	function setName($name) {
+	public function setName($name) {
 		throw new MethodNotAllowed();
 	}
 
@@ -162,7 +161,7 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	 *
 	 * @return int
 	 */
-	function getLastModified() {
+	public function getLastModified() {
 		return null;
 	}
 
@@ -182,7 +181,7 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 			return true;
 		} catch (\Exception $e) {
 			$this->logger->logException($e, ['app' => 'dav/comments']);
-			if($e instanceof MessageTooLongException) {
+			if ($e instanceof MessageTooLongException) {
 				$msg = 'Message exceeds allowed character limit of ';
 				throw new BadRequest($msg . IComment::MAX_MESSAGE_LENGTH, 0, $e);
 			}
@@ -202,7 +201,7 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	 * @param PropPatch $propPatch
 	 * @return void
 	 */
-	function propPatch(PropPatch $propPatch) {
+	public function propPatch(PropPatch $propPatch) {
 		// other properties than 'message' are read only
 		$propPatch->handle(self::PROPERTY_NAME_MESSAGE, [$this, 'updateComment']);
 	}
@@ -222,32 +221,32 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	 * @param array $properties
 	 * @return array
 	 */
-	function getProperties($properties) {
+	public function getProperties($properties) {
 		$properties = \array_keys($this->properties);
 
 		$result = [];
-		foreach($properties as $property) {
+		foreach ($properties as $property) {
 			$getter = $this->properties[$property];
-			if(\method_exists($this->comment, $getter)) {
+			if (\method_exists($this->comment, $getter)) {
 				$result[$property] = $this->comment->$getter();
 			}
 		}
 
-		if($this->comment->getActorType() === 'users') {
+		if ($this->comment->getActorType() === 'users') {
 			$user = $this->userManager->get($this->comment->getActorId());
-			$displayName = \is_null($user) ? null : $user->getDisplayName();
+			$displayName = $user === null ? null : $user->getDisplayName();
 			$result[self::PROPERTY_NAME_ACTOR_DISPLAYNAME] = $displayName;
 		}
 
 		$unread = null;
 		$user =  $this->userSession->getUser();
-		if(!\is_null($user)) {
+		if ($user !== null) {
 			$readUntil = $this->commentsManager->getReadMark(
 				$this->comment->getObjectType(),
 				$this->comment->getObjectId(),
 				$user
 			);
-			if(\is_null($readUntil)) {
+			if ($readUntil === null) {
 				$unread = 'true';
 			} else {
 				$unread = $this->comment->getCreationDateTime() > $readUntil;

@@ -21,7 +21,6 @@
 
 namespace Test\User;
 
-
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
@@ -55,7 +54,6 @@ class AccountMapperTest extends TestCase {
 
 		// create test users
 		for ($i = 1; $i <= 4; $i++) {
-
 			$accounts = $mapper->find("TestFind$i");
 			if (isset($accounts[0])) {
 				$mapper->delete($accounts[0]);
@@ -71,7 +69,6 @@ class AccountMapperTest extends TestCase {
 			$mapper->insert($account);
 
 			$mapper->setTermsForAccount($account->getId(), ["Term $i A","Term $i B","Term $i C"]);
-
 		}
 	}
 
@@ -89,7 +86,7 @@ class AccountMapperTest extends TestCase {
 		);
 	}
 
-	public static function tearDownAfterClass () {
+	public static function tearDownAfterClass() {
 		\OC::$server->getDatabaseConnection()->rollBack();
 		parent::tearDownAfterClass();
 	}
@@ -170,7 +167,6 @@ class AccountMapperTest extends TestCase {
 		$this->assertEquals("TestFind4", \array_shift($result)->getUserId());
 	}
 
-
 	public function findUserIdsDataProvider() {
 		return [
 			[self::class, null, null, ['TestFind1','TestFind2','TestFind3','TestFind4']],
@@ -206,7 +202,6 @@ class AccountMapperTest extends TestCase {
 	 * @dataProvider findUserIdsLoggedInDataProvider
 	 */
 	public function testFindUserIdsLoggedIn($backend, $limit, $offset, $expected) {
-
 		$accounts = $this->mapper->find("TestFind2");
 		$accounts[0]->setLastLogin(\time());
 		$this->mapper->update($accounts[0]);

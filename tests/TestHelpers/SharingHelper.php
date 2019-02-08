@@ -21,7 +21,7 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Client as GClient;
+use GuzzleHttp\Message\ResponseInterface;
 
 /**
  * manage Shares via OCS API
@@ -60,10 +60,11 @@ class SharingHelper {
 	 *                                An expire date for public link shares.
 	 *                                This argument expects a date string
 	 *                                in the format 'YYYY-MM-DD'.
-	 * @param int $apiVersion
+	 * @param int $ocsApiVersion
 	 * @param int $sharingApiVersion
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @throws \InvalidArgumentException
+	 * @return ResponseInterface
 	 */
 	public static function createShare(
 		$baseUrl,
@@ -77,12 +78,10 @@ class SharingHelper {
 		$permissions = null,
 		$linkName = null,
 		$expireDate = null,
-		$apiVersion = 1,
+		$ocsApiVersion = 1,
 		$sharingApiVersion = 1
 	) {
-
 		$fd = [];
-		$options = [];
 		foreach ([$path, $baseUrl, $user, $password] as $variableToCheck) {
 			if (!\is_string($variableToCheck)) {
 				throw new \InvalidArgumentException(
@@ -100,49 +99,18 @@ class SharingHelper {
 		if (!\in_array($shareType, $validShareTypes, true)) {
 			throw new \InvalidArgumentException("invalid share type");
 		}
-		if (!\is_null($permissions)) {
-			if (\is_numeric($permissions)) {
-				$permissionSum = (int) $permissions;
-			} else {
-				if (!\is_array($permissions)) {
-					$permissions = [$permissions];
-				}
-				$validPermissionTypes
-					= [
-						'read' => 1,
-						'update' => 2,
-						'create' => 4,
-						'delete' => 8,
-						'change' => 15,
-						'share' => 16,
-						'all' => 31
-					];
-				$permissionSum = 0;
-				foreach ($permissions as $permission) {
-					if (isset($validPermissionTypes[$permission])) {
-						$permissionSum += $validPermissionTypes[$permission];
-					} elseif (\in_array($permission, $validPermissionTypes)) {
-						$permissionSum += (int) $permission;
-					} else {
-						throw new \InvalidArgumentException(
-							"invalid permission type ($permission)"
-						);
-					}
-				}
-			}
-
-			if ($permissionSum < 1 || $permissionSum > 31) {
-				throw new \InvalidArgumentException(
-					"invalid permission total ($permissionSum)"
-				);
-			}
-			$fd['permissions'] = $permissionSum;
+		if ($permissions !== null) {
+			$fd['permissions'] = self::getPermissionSum($permissions);
 		}
-		if (!\in_array($apiVersion, [1, 2], true)
-			|| !\in_array($sharingApiVersion, [1,2], true)
-		) {
+
+		if (!\in_array($ocsApiVersion, [1, 2], true)) {
 			throw new \InvalidArgumentException(
-				"invalid apiVersion/sharingApiVersion"
+				"invalid ocsApiVersion ($ocsApiVersion)"
+			);
+		}
+		if (!\in_array($sharingApiVersion, [1, 2], true)) {
+			throw new \InvalidArgumentException(
+				"invalid sharingApiVersion ($sharingApiVersion)"
 			);
 		}
 
@@ -150,27 +118,81 @@ class SharingHelper {
 		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
-		$fullUrl .= "ocs/v{$apiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
-		$client = new GClient();
-		$options['auth'] = [$user, $password];
+		$fullUrl .= "ocs/v{$ocsApiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
 		$fd['path'] = $path;
 		$fd['shareType'] = $shareType;
 
-		if (!\is_null($shareWith)) {
+		if ($shareWith !== null) {
 			$fd['shareWith'] = $shareWith;
 		}
-		if (!\is_null($publicUpload)) {
+		if ($publicUpload !== null) {
 			$fd['publicUpload'] = (bool) $publicUpload;
 		}
-		if (!\is_null($sharePassword)) {
+		if ($sharePassword !== null) {
 			$fd['password'] = $sharePassword;
 		}
-		if (!\is_null($linkName)) {
+		if ($linkName !== null) {
 			$fd['name'] = $linkName;
 		}
+		if ($expireDate !== null) {
+			$fd['expireDate'] = \date('Y-m-d', \strtotime($expireDate));
+		}
 
-		$options['body'] = $fd;
-
-		return $client->send($client->createRequest("POST", $fullUrl, $options));
+		return HttpRequestHelper::post($fullUrl, $user, $password, null, $fd);
+	}
+	
+	/**
+	 * calculates the permission sum (int) from given permissions
+	 * permissions can be passed in as int, string or array of int or string
+	 * 'read' => 1
+	 * 'update' => 2
+	 * 'create' => 4
+	 * 'delete' => 8
+	 * 'change' => 15
+	 * 'share' => 16
+	 * 'all' => 31
+	 *
+	 * @param string[]|string|int|int[] $permissions
+	 *
+	 * @throws \InvalidArgumentException
+	 *
+	 * @return int
+	 */
+	public static function getPermissionSum($permissions) {
+		if (\is_numeric($permissions)) {
+			$permissionSum = (int) $permissions;
+		} else {
+			if (!\is_array($permissions)) {
+				$permissions = [$permissions];
+			}
+			$validPermissionTypes
+				= [
+					'read' => 1,
+					'update' => 2,
+					'create' => 4,
+					'delete' => 8,
+					'change' => 15,
+					'share' => 16,
+					'all' => 31
+				];
+			$permissionSum = 0;
+			foreach ($permissions as $permission) {
+				if (isset($validPermissionTypes[$permission])) {
+					$permissionSum += $validPermissionTypes[$permission];
+				} elseif (\in_array($permission, $validPermissionTypes)) {
+					$permissionSum += (int) $permission;
+				} else {
+					throw new \InvalidArgumentException(
+						"invalid permission type ($permission)"
+					);
+				}
+			}
+		}
+		if ($permissionSum < 1 || $permissionSum > 31) {
+			throw new \InvalidArgumentException(
+				"invalid permission total ($permissionSum)"
+			);
+		}
+		return $permissionSum;
 	}
 }

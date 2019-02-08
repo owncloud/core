@@ -101,7 +101,7 @@ OC.L10N.register(
     "Ok" : "Ok",
     "Error loading message template: {error}" : "Chyba pri nahrávaní šablóny správy: {error}",
     "read-only" : "iba na čítanie",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} konflikt súboru","{count} konflikty súboru","{count} konfliktov súboru"],
+    "_{count} file conflict_::_{count} file conflicts_" : ["{count} konflikt súboru","{count} konflikty súboru","{count} konfliktov súboru","{count} konfliktov súboru"],
     "One file conflict" : "Jeden konflikt súboru",
     "New Files" : "Nové súbory",
     "Already existing files" : "Už existujúce súbory",
@@ -172,7 +172,6 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Nastala chyba. Prosím, skúste to znovu.",
     "{sharee} (group)" : "{sharee} (skupina)",
     "{sharee} (at {server})" : "{sharee} (na {server})",
-    "Resharing is not allowed" : "Zdieľanie už zdieľanej položky nie je povolené",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Zdieľať s ľuďmi na iných serveroch ownClouds pomocou syntaxe používateľ@doména.com/owncloud",
     "Share with users…" : "Sprístupniť používateľom...",
     "Share with users, groups or remote users…" : "Sprístupniť používateľom, skupinám alebo vzdialeným používateľom...",
@@ -198,7 +197,7 @@ OC.L10N.register(
     "Hello {name}, the weather is {weather}" : "Dobrý deň {name}, počasie je {weather}",
     "Hello {name}" : "Vitaj {name}",
     "new" : "nový",
-    "_download %n file_::_download %n files_" : ["stiahnuť %n súbor","stiahnuť %n súbory","stiahnuť %n súborov"],
+    "_download %n file_::_download %n files_" : ["stiahnuť %n súbor","stiahnuť %n súbory","stiahnuť %n súborov","stiahnuť %n súborov"],
     "The upgrade is in progress, leaving this page might interrupt the process in some environments." : "Aktualizácie prebieha. V niektorých prostrediach môže opustenie tejto stránky spôsobiť prerušenie aktualizácie.",
     "Updating to {version}" : "Aktualizuje sa na {version}",
     "An error occurred." : "Vyskytla sa chyba.",
@@ -209,7 +208,7 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "Aktualizácia bola úspešná. Presmerovávam vás na prihlasovaciu stránku.",
     "Searching other places" : "Prehľadanie ostatných umiestnení",
     "No search results in other folders" : "Žiadne výsledky vyhľadávania v ostatných priečinkoch",
-    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} výsledok vyhľadávania v ostatných priečinkoch","{count} výsledky vyhľadávania v ostatných priečinkoch","{count} výsledkov vyhľadávania v ostatných priečinkoch"],
+    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} výsledok vyhľadávania v ostatných priečinkoch","{count} výsledky vyhľadávania v ostatných priečinkoch","{count} výsledkov vyhľadávania v ostatných priečinkoch","{count} výsledkov vyhľadávania v ostatných priečinkoch"],
     "Personal" : "Osobné",
     "Apps" : "Aplikácie",
     "Admin" : "Administrácia",
@@ -232,6 +231,7 @@ OC.L10N.register(
     "File: %s" : "Súbor: %s",
     "Line: %s" : "Riadok: %s",
     "Trace" : "Trasa",
+    "Imprint" : "Podmienky používania",
     "Create an <strong>admin account</strong>" : "Vytvoriť <strong>administrátorský účet</strong>",
     "Username" : "Meno používateľa",
     "Storage & database" : "Úložislo & databáza",
@@ -294,4 +294,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "Táto %s inštancia je v súčasnej dobe v režime údržby. Počkajte prosím.",
     "This page will refresh itself when the %s instance is available again." : "Táto stránka sa obnoví sama hneď ako bude %s inštancia znovu dostupná."
 },
-"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");
+"nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");

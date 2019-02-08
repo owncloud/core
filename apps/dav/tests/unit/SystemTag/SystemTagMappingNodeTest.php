@@ -85,6 +85,8 @@ class SystemTagMappingNodeTest extends \Test\TestCase {
 			->method('canUserAssignTag')
 			->with($node->getSystemTag())
 			->will($this->returnValue(true));
+		$this->tagManager->method('canUserUseStaticTagInGroup')
+			->willReturn(true);
 		$this->tagManager->expects($this->never())
 			->method('deleteTags');
 		$this->tagMapper->expects($this->once())
@@ -151,10 +153,27 @@ class SystemTagMappingNodeTest extends \Test\TestCase {
 			->method('canUserAssignTag')
 			->with($tag)
 			->will($this->returnValue($tag->isUserAssignable()));
+		$this->tagManager->method('canUserUseStaticTagInGroup')
+			->willReturn(true);
 		$this->tagMapper->expects($this->once())
 			->method('unassignTags')
 			->with(123, 'files', 1)
 			->will($this->throwException(new TagNotFoundException()));
+
+		$this->getMappingNode($tag)->delete();
+	}
+
+	/**
+	 * @expectedException  \Sabre\DAV\Exception\Forbidden
+	 */
+	public function testeDeteteTagNotAllowedStaticTag() {
+		$tag = new SystemTag(1, 'Test', true, true, false);
+		$this->tagManager->method('canUserSeeTag')
+			->willReturn(true);
+		$this->tagManager->method('canUserAssignTag')
+			->willReturn(true);
+		$this->tagManager->method('canUserUseStaticTagInGroup')
+			->willReturn(false);
 
 		$this->getMappingNode($tag)->delete();
 	}

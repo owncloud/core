@@ -35,7 +35,6 @@ use OCP\Share\Exceptions\ShareNotFound;
  * @group DB
  */
 class UpdaterTest extends TestCase {
-
 	const TEST_FOLDER_NAME = '/folder_share_updater_test';
 
 	public static function setUpBeforeClass() {
@@ -109,15 +108,9 @@ class UpdaterTest extends TestCase {
 
 		$this->loginHelper(self::TEST_FILES_SHARING_API_USER2);
 
-		// shared folder should be unshared
-		$caught = null;
-		try {
-			$this->shareManager->getShareById($share->getFullId());
-		} catch (ShareNotFound $e) {
-			$caught = $e;
-		}
-
-		$this->assertNotNull($caught);
+		// shared folder should be rejected
+		$rejectedShare = $this->shareManager->getShareById($share->getFullId());
+		$this->assertEquals(\OCP\Share::STATE_REJECTED, $rejectedShare->getState(), 'after the parent directory was deleted the share should be rejected');
 
 		// trashbin should contain the local file but not the mount point
 		$rootView = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2);
@@ -202,8 +195,7 @@ class UpdaterTest extends TestCase {
 	/**
 	 * if a folder gets renamed all children mount points should be renamed too
 	 */
-	function testRename() {
-
+	public function testRename() {
 		$fileinfo = \OC\Files\Filesystem::getFileInfo($this->folder);
 
 		$share = $this->share(
@@ -238,5 +230,4 @@ class UpdaterTest extends TestCase {
 		// cleanup
 		$this->shareManager->deleteShare($share);
 	}
-
 }

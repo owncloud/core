@@ -25,20 +25,38 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 $classLoader = new \Composer\Autoload\ClassLoader();
 $classLoader->addPsr4("Page\\", __DIR__ . "/../lib", true);
 $classLoader->addPsr4("TestHelpers\\", __DIR__ . "/../../../TestHelpers", true);
-
 $classLoader->register();
 
 // Sleep for 10 milliseconds
-const STANDARDSLEEPTIMEMILLISEC = 10;
-const STANDARDSLEEPTIMEMICROSEC = STANDARDSLEEPTIMEMILLISEC * 1000;
+const STANDARD_SLEEP_TIME_MILLISEC = 10;
+const STANDARD_SLEEP_TIME_MICROSEC = STANDARD_SLEEP_TIME_MILLISEC * 1000;
 
 // Long timeout for use in code that needs to wait for known slow UI
-const LONGUIWAITTIMEOUTMILLISEC = 60000;
+const LONG_UI_WAIT_TIMEOUT_MILLISEC = 60000;
 // Default timeout for use in code that needs to wait for the UI
-const STANDARDUIWAITTIMEOUTMILLISEC = 10000;
+const STANDARD_UI_WAIT_TIMEOUT_MILLISEC = 10000;
 // Minimum timeout for use in code that needs to wait for the UI
-const MINIMUMUIWAITTIMEOUTMILLISEC = 500;
+const MINIMUM_UI_WAIT_TIMEOUT_MILLISEC = 500;
+const MINIMUM_UI_WAIT_TIMEOUT_MICROSEC = MINIMUM_UI_WAIT_TIMEOUT_MILLISEC * 1000;
+
+// Minimum timeout for emails
+const EMAIL_WAIT_TIMEOUT_SEC = 10;
+const EMAIL_WAIT_TIMEOUT_MILLISEC = EMAIL_WAIT_TIMEOUT_SEC * 1000;
+
 // Default number of times to retry where retries are useful
-const STANDARDRETRYCOUNT = 5;
+const STANDARD_RETRY_COUNT = 5;
 // Minimum number of times to retry where retries are useful
-const MINIMUMRETRYCOUNT = 2;
+const MINIMUM_RETRY_COUNT = 2;
+
+// The remote server-under-test might or might not happen to have this directory.
+// If it does not exist, then the tests may end up creating it.
+const ACCEPTANCE_TEST_DIR_ON_REMOTE_SERVER = "tests/acceptance";
+
+// The following directory should NOT already exist on the remote server-under-test.
+// Acceptance tests are free to do anything needed in this directory, and to
+// delete it during or at the end of testing.
+const TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER = ACCEPTANCE_TEST_DIR_ON_REMOTE_SERVER . "/server_tmp";
+
+// The following directory is created, used, and deleted by tests that need to
+// use some "local external storage" on the server.
+const LOCAL_STORAGE_DIR_ON_REMOTE_SERVER = TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/local_storage";

@@ -21,7 +21,6 @@
 
 namespace Tests\Core\Command\Config\System;
 
-
 use OC\Core\Command\Config\System\GetConfig;
 use OC\SystemConfig;
 use Symfony\Component\Console\Input\InputInterface;
@@ -50,7 +49,6 @@ class GetConfigTest extends TestCase {
 		/** @var \OC\SystemConfig $systemConfig */
 		$this->command = new GetConfig($systemConfig);
 	}
-
 
 	public function getData() {
 		return [
@@ -155,7 +153,7 @@ class GetConfigTest extends TestCase {
 			$output = '';
 			$this->consoleOutput->expects($this->any())
 				->method('writeln')
-				->willReturnCallback(function($value) {
+				->willReturnCallback(function ($value) {
 					global $output;
 					$output .= $value . "\n";
 					return $output;

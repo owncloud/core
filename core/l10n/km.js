@@ -80,7 +80,6 @@ OC.L10N.register(
     "create" : "បង្កើត",
     "delete" : "លុប",
     "access control" : "សិទ្ធិ​បញ្ជា",
-    "Resharing is not allowed" : "មិន​អនុញ្ញាត​ឲ្យ​មាន​ការ​ចែក​រំលែក​ឡើង​វិញ",
     "Delete" : "លុប",
     "Rename" : "ប្ដូរ​ឈ្មោះ",
     "The object type is not specified." : "មិន​បាន​កំណត់​ប្រភេទ​វត្ថុ។",

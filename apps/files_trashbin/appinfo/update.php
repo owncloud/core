@@ -29,7 +29,7 @@ if (\version_compare($installedVersion, '0.6.4', '<')) {
 
 	$newObligation = 'auto';
 	if ($isExpirationEnabled) {
-		if (!\is_null($oldObligation)) {
+		if ($oldObligation !== null) {
 			$newObligation = \strval($oldObligation) . ', auto';
 		}
 	} else {

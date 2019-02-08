@@ -37,7 +37,6 @@ use OCA\DAV\Connector\Sabre\CopyEtagHeaderPlugin;
 use OCA\DAV\Connector\Sabre\CorsPlugin;
 use OCA\DAV\Connector\Sabre\DavAclPlugin;
 use OCA\DAV\Connector\Sabre\DummyGetResponsePlugin;
-use OCA\DAV\Connector\Sabre\FakeLockerPlugin;
 use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCA\DAV\Connector\Sabre\FilesReportPlugin;
 use OCA\DAV\Connector\Sabre\MaintenancePlugin;
@@ -46,11 +45,15 @@ use OCA\DAV\Connector\Sabre\SharesPlugin;
 use OCA\DAV\Connector\Sabre\TagsPlugin;
 use OCA\DAV\Connector\Sabre\ValidateRequestPlugin;
 use OCA\DAV\DAV\FileCustomPropertiesBackend;
+use OCA\DAV\DAV\FileCustomPropertiesPlugin;
+use OCA\DAV\DAV\LazyOpsPlugin;
 use OCA\DAV\DAV\MiscCustomPropertiesBackend;
 use OCA\DAV\DAV\PublicAuth;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
+use OCA\DAV\Files\FileLocksBackend;
 use OCA\DAV\Files\PreviewPlugin;
 use OCA\DAV\Files\ZsyncPlugin;
+use OCA\DAV\JobStatus\Entity\JobStatusMapper;
 use OCA\DAV\SystemTag\SystemTagPlugin;
 use OCA\DAV\Upload\ChunkingPlugin;
 use OCA\DAV\Upload\ChunkingPluginZsync;
@@ -74,6 +77,8 @@ class Server {
 	 *
 	 * @param IRequest $request
 	 * @param string $baseUri
+	 * @throws \OCP\AppFramework\QueryException
+	 * @throws \Sabre\DAV\Exception
 	 */
 	public function __construct(IRequest $request, $baseUri) {
 		$this->request = $request;
@@ -85,19 +90,30 @@ class Server {
 		$tree = new \OCA\DAV\Tree($root);
 		$this->server = new \OCA\DAV\Connector\Sabre\Server($tree);
 
+		$config = \OC::$server->getConfig();
+		if ($config->getSystemValue('dav.enable.async', false)) {
+			$this->server->addPlugin(new LazyOpsPlugin(
+				\OC::$server->getUserSession(),
+				\OC::$server->getURLGenerator(),
+				\OC::$server->getShutdownHandler(),
+				\OC::$server->query(JobStatusMapper::class),
+				\OC::$server->getLogger()
+			));
+		}
+
 		// Backends
 		$authBackend = new Auth(
 			\OC::$server->getSession(),
 			\OC::$server->getUserSession(),
 			\OC::$server->getRequest(),
-			\OC::$server->getTwoFactorAuthManager()
+			\OC::$server->getTwoFactorAuthManager(),
+			\OC::$server->getAccountModuleManager()
 		);
 
 		// Set URL explicitly due to reverse-proxy situations
 		$this->server->httpRequest->setUrl($this->request->getRequestUri());
 		$this->server->setBaseUri($this->baseUri);
 
-		$config = \OC::$server->getConfig();
 		$this->server->addPlugin(new MaintenancePlugin($config));
 		$this->server->addPlugin(new ValidateRequestPlugin('dav'));
 		$this->server->addPlugin(new BlockLegacyClientPlugin($config));
@@ -114,7 +130,7 @@ class Server {
 		$authPlugin->addBackend($authBackend);
 
 		// debugging
-		if(\OC::$server->getConfig()->getSystemValue('debug', false)) {
+		if (\OC::$server->getConfig()->getSystemValue('debug', false)) {
 			$this->server->addPlugin(new \Sabre\DAV\Browser\Plugin());
 		} else {
 			$this->server->addPlugin(new DummyGetResponsePlugin());
@@ -123,6 +139,7 @@ class Server {
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $logger));
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
+		$this->server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($this->server->tree, false, \OC::$server->getTimeFactory())));
 
 		// ACL plugin not used in files subtree, also it causes issues
 		// with performance and locking issues because it will query
@@ -172,28 +189,17 @@ class Server {
 		$this->server->addPlugin(new CopyEtagHeaderPlugin());
 		$this->server->addPlugin(new ChunkingPlugin());
 
-		// Some WebDAV clients do require Class 2 WebDAV support (locking), since
-		// we do not provide locking we emulate it using a fake locking plugin.
-		if($request->isUserAgent([
-			'/WebDAVFS/',
-			'/OneNote/',
-			'/Microsoft Office OneNote 2013/',
-			'/Microsoft-WebDAV-MiniRedir/',
-		])) {
-			$this->server->addPlugin(new FakeLockerPlugin());
-		}
-
 		if (BrowserErrorPagePlugin::isBrowserRequest($request)) {
 			$this->server->addPlugin(new BrowserErrorPagePlugin());
 		}
 
-		$this->server->addPlugin(new PreviewPlugin($logger));
+		$this->server->addPlugin(new PreviewPlugin(\OC::$server->getTimeFactory(), \OC::$server->getPreviewManager()));
 		// wait with registering these until auth is handled and the filesystem is setup
-		$this->server->on('beforeMethod', function () use ($root) {
+		$this->server->on('beforeMethod:*', function () use ($root) {
 			// custom properties plugin must be the last one
 			$userSession = \OC::$server->getUserSession();
 			$user = $userSession->getUser();
-			if (!\is_null($user)) {
+			if ($user !== null) {
 				$userHomeView = new \OC\Files\View('/'.$user->getUID());
 				$this->server->addPlugin(
 					new ChunkingPluginZsync($userHomeView)
@@ -214,32 +220,28 @@ class Server {
 					)
 				);
 
-				$filePropertiesPlugin = new \Sabre\DAV\PropertyStorage\Plugin(
-					new FileCustomPropertiesBackend(
-						$this->server->tree,
-						\OC::$server->getDatabaseConnection(),
-						\OC::$server->getUserSession()->getUser()
-					)
-				);
-				$filePropertiesPlugin->pathFilter = function($path) {
-					// oh yes, we could set custom properties on the user's storage root
-					return \strpos($path, 'files/') === 0;
-				};
-				$this->server->addPlugin($filePropertiesPlugin);
+				if ($this->isRequestForSubtree(['files', 'uploads'])) {
+					//For files only
+					$filePropertiesPlugin = new FileCustomPropertiesPlugin(
+						new FileCustomPropertiesBackend(
+							$this->server->tree,
+							\OC::$server->getDatabaseConnection(),
+							\OC::$server->getUserSession()->getUser()
+						)
+					);
+					$this->server->addPlugin($filePropertiesPlugin);
+				} else {
+					$miscPropertiesPlugin = new \Sabre\DAV\PropertyStorage\Plugin(
+						new MiscCustomPropertiesBackend(
+							$this->server->tree,
+							\OC::$server->getDatabaseConnection(),
+							\OC::$server->getUserSession()->getUser()
+						)
+					);
+					$this->server->addPlugin($miscPropertiesPlugin);
+				}
 
-				$miscPropertiesPlugin = new \Sabre\DAV\PropertyStorage\Plugin(
-					new MiscCustomPropertiesBackend(
-						$this->server->tree,
-						\OC::$server->getDatabaseConnection(),
-						\OC::$server->getUserSession()->getUser()
-					)
-				);
-				$miscPropertiesPlugin->pathFilter = function($path) {
-					return \strpos($path, 'files/') !== 0;
-				};
-				$this->server->addPlugin($miscPropertiesPlugin);
-
-				if (!\is_null($view)) {
+				if ($view !== null) {
 					$this->server->addPlugin(
 						new QuotaPlugin($view));
 				}
@@ -259,7 +261,8 @@ class Server {
 					\OC::$server->getCommentsManager(),
 					$userSession
 				));
-				if (!\is_null($view)) {
+
+				if ($view !== null) {
 					$this->server->addPlugin(new FilesReportPlugin(
 						$this->server->tree,
 						$view,
@@ -271,6 +274,11 @@ class Server {
 						$userFolder
 					));
 				}
+				$this->server->addPlugin(
+					new \OCA\DAV\Connector\Sabre\FilesSearchReportPlugin(
+						\OC::$server->getSearch()
+					)
+				);
 			}
 
 			// register plugins from apps
@@ -292,12 +300,12 @@ class Server {
 	}
 
 	/**
-	 * @param string[] $subTree
+	 * @param string[] $subTrees
 	 * @return bool
 	 */
 	private function isRequestForSubtree(array $subTrees) {
 		foreach ($subTrees as $subTree) {
-		$subTree = \trim($subTree, " /");
+			$subTree = \trim($subTree, " /");
 			if (\strpos($this->server->getRequestUri(), "$subTree/") === 0) {
 				return true;
 			}

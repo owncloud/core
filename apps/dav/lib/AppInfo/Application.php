@@ -39,7 +39,7 @@ class Application extends App {
 	 *
 	 * @param array $urlParams
 	 */
-	public function __construct (array $urlParams= []) {
+	public function __construct(array $urlParams= []) {
 		parent::__construct('dav', $urlParams);
 
 		/*
@@ -74,7 +74,7 @@ class Application extends App {
 		});
 
 		// carddav/caldav sync event setup
-		$listener = function($event) {
+		$listener = function ($event) {
 			if ($event instanceof GenericEvent) {
 				/** @var BirthdayService $b */
 				$b = $this->getContainer()->query(BirthdayService::class);
@@ -88,7 +88,7 @@ class Application extends App {
 
 		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::createCard', $listener);
 		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::updateCard', $listener);
-		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::deleteCard', function($event) {
+		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::deleteCard', function ($event) {
 			if ($event instanceof GenericEvent) {
 				/** @var BirthdayService $b */
 				$b = $this->getContainer()->query(BirthdayService::class);
@@ -103,5 +103,4 @@ class Application extends App {
 	public function getSyncService() {
 		return $this->getContainer()->query(SyncService::class);
 	}
-
 }

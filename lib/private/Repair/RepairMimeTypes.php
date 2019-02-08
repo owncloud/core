@@ -114,7 +114,7 @@ class RepairMimeTypes implements IRepairStep {
 				$result = \OC_DB::executeAudited(self::existsStmt(), [$correct]);
 				$exists = $result->fetchOne();
 
-				if (!\is_null($correct)) {
+				if ($correct !== null) {
 					if (!$exists) {
 						// insert mimetype
 						\OC_DB::executeAudited(self::insertStmt(), [$correct]);
@@ -126,7 +126,6 @@ class RepairMimeTypes implements IRepairStep {
 
 				// delete wrong mimetype
 				\OC_DB::executeAudited(self::deleteStmt(), [$wrongId]);
-
 			}
 		}
 	}
@@ -170,10 +169,8 @@ class RepairMimeTypes implements IRepairStep {
 			'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
 		];
 
-
 		// separate doc from docx etc
 		self::updateMimetypes($updatedMimetypes);
-
 	}
 
 	private function fixApkMimeType() {
@@ -311,7 +308,6 @@ class RepairMimeTypes implements IRepairStep {
 	 * Fix mime types
 	 */
 	public function run(IOutput $out) {
-
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
 
 		// NOTE TO DEVELOPERS: when adding new mime types, please make sure to

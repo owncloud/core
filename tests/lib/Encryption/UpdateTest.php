@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Test\Encryption;
-
 
 use OC\Encryption\Update;
 use Test\TestCase;
@@ -88,7 +86,6 @@ class UpdateTest extends TestCase {
 	 * @param integer $numberOfFiles
 	 */
 	public function testUpdate($path, $isDir, $allFiles, $numberOfFiles) {
-
 		$this->encryptionManager->expects($this->once())
 			->method('getEncryptionModule')
 			->willReturn($this->encryptionModule);
@@ -97,7 +94,7 @@ class UpdateTest extends TestCase {
 			->method('is_dir')
 			->willReturn($isDir);
 
-		if($isDir) {
+		if ($isDir) {
 			$this->util->expects($this->once())
 				->method('getAllFiles')
 				->willReturn($allFiles);
@@ -134,7 +131,6 @@ class UpdateTest extends TestCase {
 	 * @param boolean $encryptionEnabled
 	 */
 	public function testPostRename($source, $target, $encryptionEnabled) {
-
 		$updateMock = $this->getUpdateMock(['update', 'getOwnerPath']);
 
 		$this->encryptionManager->expects($this->once())
@@ -147,13 +143,12 @@ class UpdateTest extends TestCase {
 		} else {
 			$updateMock->expects($this->once())
 				->method('getOwnerPath')
-				->willReturnCallback(function($path) use ($target) {
+				->willReturnCallback(function ($path) use ($target) {
 					$this->assertSame(
 						$target,
 						$path,
 						'update needs to be executed for the target destination');
 					return ['owner', $path];
-
 				});
 			$updateMock->expects($this->once())->method('update');
 		}
@@ -177,14 +172,12 @@ class UpdateTest extends TestCase {
 		];
 	}
 
-
 	/**
 	 * @dataProvider dataTestPostRestore
 	 *
 	 * @param boolean $encryptionEnabled
 	 */
 	public function testPostRestore($encryptionEnabled) {
-
 		$updateMock = $this->getUpdateMock(['update']);
 
 		$this->encryptionManager->expects($this->once())
@@ -193,7 +186,6 @@ class UpdateTest extends TestCase {
 
 		if ($encryptionEnabled) {
 			$updateMock->expects($this->once())->method('update');
-
 		} else {
 			$updateMock->expects($this->never())->method('update');
 		}
@@ -232,5 +224,4 @@ class UpdateTest extends TestCase {
 				]
 			)->setMethods($methods)->getMock();
 	}
-
 }

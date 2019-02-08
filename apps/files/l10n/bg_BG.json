@@ -57,6 +57,7 @@
     "You don’t have permission to upload or create files here" : "Нямаш разрешение да създаваш или качваш файлове тук.",
     "_Uploading %n file_::_Uploading %n files_" : ["Качване на %n файл","Качване на %n файла."],
     "New" : "Създай",
+    "Unknown user" : "Непознат потребител",
     "\"{name}\" is an invalid file name." : "\"{name}\" е непозволено име за файл.",
     "File name cannot be empty." : "Името на файла не може да бъде оставено празно.",
     "File name cannot contain \"/\"." : "Името на файла не може да съдържа \"/\".",

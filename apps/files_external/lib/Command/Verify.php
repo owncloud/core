@@ -41,7 +41,7 @@ class Verify extends Base {
 	 */
 	protected $globalService;
 
-	function __construct(IGlobalStoragesService $globalService) {
+	public function __construct(IGlobalStoragesService $globalService) {
 		parent::__construct();
 		$this->globalService = $globalService;
 	}

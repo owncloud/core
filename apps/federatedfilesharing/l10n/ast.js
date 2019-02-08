@@ -8,8 +8,6 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "Nun s'almite crear un recursu compartíu federáu col mesmu usuariu",
     "File is already shared with %s" : "El ficheru yá ta compartíu con %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Compartir %s falló, nun pudo atopase %s, pue qu'el servidor nun seya anguaño algamable.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "Recibisti \"/%3$s\" como compartición remota dende %1$s (en nome de %2$s)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "Recibisti \"/%3$s\" como compatición remota dende %1$s",
     "Accept" : "Aceptar",
     "Decline" : "Declinar",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Comparte conmigo a través del mio ID Nube Federada #ownCloud, consulta %s",

@@ -51,7 +51,6 @@ use OCP\Lock\ILockingProvider;
 use OCP\User;
 
 class Storage {
-
 	const DEFAULTENABLED=true;
 	const DEFAULTMAXSIZE=50; // unit: percentage; 50% of available disk space/quota
 	const VERSIONS_ROOT = 'files_versions/';
@@ -101,7 +100,7 @@ class Storage {
 			$uid = User::getUser();
 		}
 		Filesystem::initMountPoints($uid);
-		if ( $uid != User::getUser() ) {
+		if ($uid != User::getUser()) {
 			$info = Filesystem::getFileInfo($filename);
 			$ownerView = new View('/'.$uid.'/files');
 			try {
@@ -133,7 +132,6 @@ class Storage {
 	 * @return array with user id and path
 	 */
 	public static function getSourcePathAndUser($source) {
-
 		if (isset(self::$sourcePathAndUser[$source])) {
 			$uid = self::$sourcePathAndUser[$source]['uid'];
 			$path = self::$sourcePathAndUser[$source]['path'];
@@ -160,7 +158,7 @@ class Storage {
 	 * store a new version of a file.
 	 */
 	public static function store($filename) {
-		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
+		if (\OC::$server->getConfig()->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
 
 			// if the file gets streamed we need to remove the .part extension
 			// to get the right target
@@ -198,6 +196,8 @@ class Storage {
 
 			self::scheduleExpire($uid, $filename);
 
+			$filename = \ltrim($filename, '/');
+
 			// store a new version of a file
 			$mtime = $users_view->filemtime('files/' . $filename);
 			$users_view->copy('files/' . $filename, 'files_versions/' . $filename . '.v' . $mtime);
@@ -205,7 +205,6 @@ class Storage {
 			$users_view->getFileInfo('files_versions/' . $filename . '.v' . $mtime);
 		}
 	}
-
 
 	/**
 	 * mark file as deleted so that we can remove the versions if the file is gone
@@ -239,13 +238,11 @@ class Storage {
 	 * Delete versions of a file
 	 */
 	public static function delete($path) {
-
 		$deletedFile = self::$deletedFiles[$path];
 		$uid = $deletedFile['uid'];
 		$filename = $deletedFile['filename'];
 
 		if (!Filesystem::file_exists($path)) {
-
 			$view = new View('/' . $uid . '/files_versions');
 
 			$versions = self::getVersions($uid, $filename);
@@ -299,7 +296,7 @@ class Storage {
 					'/' . $targetOwner . '/files_versions/' . $targetPath
 				);
 			}
-		} else if ($versions = Storage::getVersions($sourceOwner, '/' . $sourcePath)) {
+		} elseif ($versions = Storage::getVersions($sourceOwner, '/' . $sourcePath)) {
 			// create missing dirs if necessary
 			self::createMissingDirectories($targetPath, new View('/'. $targetOwner));
 
@@ -316,12 +313,10 @@ class Storage {
 		if (!$rootView->is_dir('/' . $targetOwner . '/files/' . $targetPath)) {
 			self::scheduleExpire($targetOwner, $targetPath);
 		}
-
 	}
 
-
 	public static function restoreVersion($uid, $filename, $fileToRestore, $revision) {
-		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED) !== true) {
+		if (\OC::$server->getConfig()->getSystemValue('files_versions', Storage::DEFAULTENABLED) !== true) {
 			return false;
 		}
 		$users_view = new View('/'.$uid);
@@ -362,7 +357,7 @@ class Storage {
 				'revision' => $revision,
 			]);
 			return true;
-		} else if ($versionCreated) {
+		} elseif ($versionCreated) {
 			self::deleteVersion($users_view, $version);
 		}
 		return true;
@@ -476,7 +471,7 @@ class Storage {
 	 * Expire versions that older than max version retention time
 	 * @param string $uid
 	 */
-	public static function expireOlderThanMaxForUser($uid){
+	public static function expireOlderThanMaxForUser($uid) {
 		$expiration = self::getExpiration();
 		$threshold = $expiration->getMaxAgeAsTimestamp();
 		$versions = self::getAllVersions($uid);
@@ -510,7 +505,6 @@ class Storage {
 	 * @return string for example "5 days ago"
 	 */
 	private static function getHumanReadableTimestamp($timestamp) {
-
 		$diff = \time() - $timestamp;
 
 		if ($diff < 60) { // first minute
@@ -528,7 +522,6 @@ class Storage {
 		} else {
 			return \round($diff / 29030400) . " years ago";
 		}
-
 	}
 
 	/**
@@ -693,7 +686,7 @@ class Storage {
 		$config = \OC::$server->getConfig();
 		$expiration = self::getExpiration();
 
-		if($config->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true' && $expiration->isEnabled()) {
+		if ($config->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true' && $expiration->isEnabled()) {
 			// get available disk space for user
 			$user = \OC::$server->getUserManager()->get($uid);
 
@@ -768,7 +761,7 @@ class Storage {
 				$versionsSize = $versionsSize - $sizeOfDeletedVersions;
 			}
 
-			foreach($toDelete as $key => $path) {
+			foreach ($toDelete as $key => $path) {
 				\OC_Hook::emit('\OCP\Versions', 'preDelete', ['path' => $path, 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
 				self::deleteVersion($versionsFileview, $path);
 				\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $path, 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
@@ -789,7 +782,7 @@ class Storage {
 				\OC_Hook::emit('\OCP\Versions', 'preDelete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
 				self::deleteVersion($versionsFileview, $version['path'] . '.v' . $version['version']);
 				\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
-				\OCP\Util::writeLog('files_versions', 'running out of space! Delete oldest version: ' . $version['path'].'.v'.$version['version'] , \OCP\Util::INFO);
+				\OCP\Util::writeLog('files_versions', 'running out of space! Delete oldest version: ' . $version['path'].'.v'.$version['version'], \OCP\Util::INFO);
 				$versionsSize -= $version['size'];
 				$availableSpace += $version['size'];
 				\next($allVersions);
@@ -826,8 +819,8 @@ class Storage {
 	 * Static workaround
 	 * @return Expiration
 	 */
-	protected static function getExpiration(){
-		if (\is_null(self::$application)) {
+	protected static function getExpiration() {
+		if (self::$application === null) {
 			self::$application = new Application();
 		}
 		return self::$application->getContainer()->query('Expiration');
@@ -837,5 +830,4 @@ class Storage {
 		$users_view = new View('/'.$uid);
 		return $users_view->fopen($storage_location, 'r');
 	}
-
 }

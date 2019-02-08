@@ -21,7 +21,6 @@
 
 namespace Test\Notification;
 
-
 use OC\Notification\Notification;
 use OCP\Notification\INotification;
 use Test\TestCase;

@@ -23,7 +23,6 @@ class JSResourceLocatorTest extends TestCase {
 	protected $appRoot = '/var/www/apps';
 	protected $themeAppDir = 'theme-best';
 
-
 	protected function setUp() {
 		parent::setUp();
 		$this->logger = $this->createMock(ILogger::class);
@@ -102,7 +101,6 @@ class JSResourceLocatorTest extends TestCase {
 		$locator->find(['randomapp/js/script']);
 	}
 
-
 	public function testFindL10nScript() {
 		/** @var \OC\Template\JSResourceLocator $locator */
 		$locator = $this->getResourceLocator(
@@ -128,5 +126,4 @@ class JSResourceLocatorTest extends TestCase {
 
 		$locator->find(['randomapp/l10n/en_GB']);
 	}
-
 }

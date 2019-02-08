@@ -10,8 +10,14 @@
     "All users. Type to select user or group." : "All users. Type to select user or group.",
     "(group)" : "(group)",
     "Compatibility with Mac NFD encoding (slow)" : "Compatibility with Mac NFD encoding (slow)",
+    "Unknown auth backend \"{b}\"" : "Unknown auth backend \"{b}\"",
+    "Please make sure that the app that provides this backend is installed and enabled" : "Please make sure that the app that provides this backend is installed and enabled",
     "Admin defined" : "Admin defined",
     "Saved" : "Saved",
+    "Disabling external storage will unmount all storages for all users, are you sure ?" : "Disabling external storage will unmount all storages for all users, are you sure ?",
+    "Disable external storage" : "Disable external storage",
+    "No URL provided by backend " : "No URL provided by backend ",
+    "Error getting OAuth2 URL for " : "Error getting OAuth2 URL for ",
     "Empty response from the server" : "Empty response from the server",
     "Couldn't access. Please logout and login to activate this mount point" : "Couldn't access. Please logout and login to activate this mount point",
     "Couldn't get the information from the ownCloud server: {code} {type}" : "Couldn't get the information from the ownCloud server: {code} {type}",
@@ -77,6 +83,7 @@
     "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.",
     "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it.",
     "No external storage configured" : "No external storage configured",
+    "You can add external storages in the storage settings" : "You can add external storages in the storage settings",
     "Name" : "Name",
     "Storage type" : "Storage type",
     "Scope" : "Scope",
@@ -87,6 +94,8 @@
     "Never" : "Never",
     "Once every direct access" : "Once every direct access",
     "External Storage" : "External Storage",
+    "Enable external storage" : "Enable external storage",
+    "External storage has been disabled by the administrator" : "External storage has been disabled by the administrator",
     "Folder name" : "Folder name",
     "Authentication" : "Authentication",
     "Configuration" : "Configuration",
@@ -95,6 +104,7 @@
     "Advanced settings" : "Advanced settings",
     "Delete" : "Delete",
     "Allow users to mount external storage" : "Allow users to mount external storage",
-    "Allow users to mount the following external storage" : "Allow users to mount the following external storage"
+    "Allow users to mount the following external storage" : "Allow users to mount the following external storage",
+    "Allow sharing on user-mounted external storages" : "Allow sharing on user-mounted external storages"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

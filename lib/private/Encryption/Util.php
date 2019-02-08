@@ -36,12 +36,13 @@ use OCP\IConfig;
 use OCP\IUser;
 
 class Util {
-
 	const HEADER_START = 'HBEGIN';
 	const HEADER_END = 'HEND';
 	const HEADER_PADDING_CHAR = '-';
 
 	const HEADER_ENCRYPTION_MODULE_KEY = 'oc_encryption_module';
+
+	const ID = 'OC_DEFAULT_MODULE';
 
 	/**
 	 * block size will always be 8192 for a PHP stream
@@ -87,7 +88,6 @@ class Util {
 		\OC\User\Manager $userManager,
 		\OC\Group\Manager $groupManager,
 		IConfig $config) {
-
 		$this->ocHeaderKeys = [
 			self::HEADER_ENCRYPTION_MODULE_KEY
 		];
@@ -122,7 +122,7 @@ class Util {
 			if (\class_exists('\OCA\Encryption\Crypto\Encryption')) {
 				// fall back to default encryption if the user migrated from
 				// ownCloud <= 8.0 with the old encryption
-				$id = \OCA\Encryption\Crypto\Encryption::ID;
+				$id = self::ID;
 			} else {
 				throw new ModuleDoesNotExistsException('Default encryption module missing');
 			}
@@ -180,7 +180,6 @@ class Util {
 					$result[] =  $c->getPath();
 				}
 			}
-
 		}
 
 		return $result;
@@ -227,7 +226,6 @@ class Util {
 	 * @throws \BadMethodCallException
 	 */
 	public function getUidAndFilename($path) {
-
 		$parts = \explode('/', $path);
 		$uid = '';
 		if (\count($parts) > 2) {
@@ -242,7 +240,6 @@ class Util {
 		$ownerPath = \implode('/', \array_slice($parts, 2));
 
 		return [$uid, Filesystem::normalizePath($ownerPath)];
-
 	}
 
 	/**
@@ -254,19 +251,17 @@ class Util {
 	public function stripPartialFileExtension($path) {
 		$extension = \pathinfo($path, PATHINFO_EXTENSION);
 
-		if ( $extension === 'part') {
-
+		if ($extension === 'part') {
 			$newLength = \strlen($path) - 5; // 5 = strlen(".part")
 			$fPath = \substr($path, 0, $newLength);
 
 			// if path also contains a transaction id, we remove it too
 			$extension = \pathinfo($fPath, PATHINFO_EXTENSION);
-			if(\substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
+			if (\substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
 				$newLength = \strlen($fPath) - \strlen($extension) -1;
 				$fPath = \substr($fPath, 0, $newLength);
 			}
 			return $fPath;
-
 		} else {
 			return $path;
 		}
@@ -280,8 +275,8 @@ class Util {
 			$result = \array_merge($result, $users);
 			foreach ($groups as $group) {
 				$g = \OC::$server->getGroupManager()->get($group);
-				if (!\is_null($g)) {
-					$users = \array_values(\array_map(function(IUser $u){
+				if ($g !== null) {
+					$users = \array_values(\array_map(function (IUser $u) {
 						return $u->getUID();
 					}, $g->getUsers()));
 					$result = \array_merge($result, $users);
@@ -349,14 +344,13 @@ class Util {
 			// detect alternative key storage root
 			$rootDir = $this->getKeyStorageRoot();
 			if ($rootDir !== '' &&
-				0 === \strpos(
+				\strpos(
 					Filesystem::normalizePath($path),
 					Filesystem::normalizePath($rootDir)
-				)
+				) === 0
 			) {
 				return true;
 			}
-
 
 			//detect system wide folders
 			if (\in_array($root[1], $this->excludedPaths)) {
@@ -366,7 +360,6 @@ class Util {
 			// detect user specific folders
 			if ($this->userManager->userExists($root[1])
 				&& \in_array($root[2], $this->excludedPaths)) {
-
 				return true;
 			}
 		}
@@ -402,5 +395,4 @@ class Util {
 	public function getKeyStorageRoot() {
 		return $this->config->getAppValue('core', 'encryption_key_storage_root', '');
 	}
-
 }

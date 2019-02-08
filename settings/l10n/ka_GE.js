@@ -5,7 +5,6 @@ OC.L10N.register(
     "Create" : "შექმნა",
     "Delete" : "წაშლა",
     "Share" : "გაზიარება",
-    "__language_name__" : "__language_name__",
     "Language changed" : "ენა შეცვლილია",
     "Invalid request" : "არასწორი მოთხოვნა",
     "All" : "ყველა",
@@ -17,6 +16,7 @@ OC.L10N.register(
     "Updated" : "განახლებულია",
     "Groups" : "ჯგუფები",
     "Forum" : "ფორუმი",
+    "Language" : "ენა",
     "Cron" : "Cron–ი",
     "Execute one task with each page loaded" : "გაუშვი თითო მოქმედება ყველა ჩატვირთულ გვერდზე",
     "Sharing" : "გაზიარება",
@@ -41,7 +41,6 @@ OC.L10N.register(
     "Current password" : "მიმდინარე პაროლი",
     "New password" : "ახალი პაროლი",
     "Change password" : "პაროლის შეცვლა",
-    "Language" : "ენა",
     "Help translate" : "თარგმნის დახმარება",
     "Name" : "სახელი",
     "Username" : "მომხმარებლის სახელი",
@@ -50,4 +49,4 @@ OC.L10N.register(
     "Admin" : "ადმინისტრატორი",
     "Error" : "შეცდომა"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n!=1);");

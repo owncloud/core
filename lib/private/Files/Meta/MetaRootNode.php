@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OC\Files\Meta;
-
 
 use OC\Files\Node\AbstractFolder;
 use OCP\Constants;
@@ -78,13 +76,13 @@ class MetaRootNode extends AbstractFolder {
 		$pieces = \explode('/', $path);
 		$fileId = (int)$pieces[0];
 
-		// check if file exists
-		if (empty($this->rootFolder->getById($fileId))) {
+		$nodes = $this->rootFolder->getById($fileId, true);
+		if (empty($nodes)) {
 			throw new NotFoundException();
 		}
 
 		\array_shift($pieces);
-		$node = new MetaFileIdNode($this, $this->rootFolder, $fileId);
+		$node = new MetaFileIdNode($this, $this->rootFolder, $nodes[0]);
 		if (empty($pieces)) {
 			return $node;
 		}
@@ -94,7 +92,7 @@ class MetaRootNode extends AbstractFolder {
 	/**
 	 * @inheritdoc
 	 */
-	public function getById($id) {
+	public function getById($id, $first = false) {
 		return [
 			$this->get("$id")
 			];

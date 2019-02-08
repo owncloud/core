@@ -23,9 +23,7 @@
  *
  */
 
-
 namespace Test\AppFramework\Http;
-
 
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
@@ -42,12 +40,10 @@ class JSONResponseTest extends \Test\TestCase {
 		$this->json = new JSONResponse();
 	}
 
-
 	public function testHeader() {
 		$headers = $this->json->getHeaders();
 		$this->assertEquals('application/json; charset=utf-8', $headers['Content-Type']);
 	}
-
 
 	public function testSetData() {
 		$params = ['hi', 'yo'];
@@ -55,7 +51,6 @@ class JSONResponseTest extends \Test\TestCase {
 
 		$this->assertEquals(['hi', 'yo'], $this->json->getData());
 	}
-
 
 	public function testSetRender() {
 		$params = ['test' => 'hi'];
@@ -119,5 +114,4 @@ class JSONResponseTest extends \Test\TestCase {
 		$this->assertEquals(Http::STATUS_NOT_FOUND, $this->json->getStatus());
 		$this->assertEquals(['hi', 'yo'], $this->json->getData());
 	}
-
 }

@@ -67,7 +67,7 @@ class ListApps extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$appNameSubString = $input->getArgument('search-pattern');
 
-		if ($input->getOption('shipped') === 'true' || $input->getOption('shipped') === 'false'){
+		if ($input->getOption('shipped') === 'true' || $input->getOption('shipped') === 'false') {
 			$shippedFilter = $input->getOption('shipped') === 'true';
 		} else {
 			$shippedFilter = null;
@@ -79,7 +79,7 @@ class ListApps extends Base {
 
 		//sort enabled apps above disabled apps
 		foreach ($apps as $app) {
-			if ($shippedFilter !== null && \OC_App::isShipped($app) !== $shippedFilter){
+			if ($shippedFilter !== null && \OC_App::isShipped($app) !== $shippedFilter) {
 				continue;
 			}
 

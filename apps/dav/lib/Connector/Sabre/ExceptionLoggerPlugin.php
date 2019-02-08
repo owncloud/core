@@ -50,6 +50,8 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 		// not available
 		'Sabre\DAV\Exception\StorageNotAvailableException' => true,
 		'OCP\Files\StorageNotAvailableException' => true,
+		//If the exception is InsufficientStorage, then log a debug message
+		'Sabre\DAV\Exception\InsufficientStorage' => true
 	];
 
 	/** @var string */
@@ -79,7 +81,6 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @return void
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
-
 		$server->on('exception', [$this, 'logException'], 10);
 	}
 
@@ -87,7 +88,7 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 	 * Log exception
 	 *
 	 */
-	public function logException(\Exception $ex) {
+	public function logException(\Throwable $ex) {
 		if ($ex->getPrevious() instanceof FileContentNotAllowedException) {
 			//Don't log because its already been logged may be by different
 			//app or so.
@@ -106,7 +107,6 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 				$level = \OCP\Util::DEBUG;
 			}
 		}
-
 		$message = $ex->getMessage();
 		if ($ex instanceof Exception) {
 			if (empty($message)) {
@@ -116,17 +116,13 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 			$message = "HTTP/1.1 {$ex->getHTTPCode()} $message";
 		}
 
-		$user = \OC_User::getUser();
-
-		$exception = [
-			'Message' => $message,
-			'Exception' => $exceptionClass,
-			'Code' => $ex->getCode(),
-			'Trace' => $ex->getTraceAsString(),
-			'File' => $ex->getFile(),
-			'Line' => $ex->getLine(),
-			'User' => $user,
-		];
-		$this->logger->log($level, 'Exception: ' . \json_encode($exception), ['app' => $this->appName]);
+		$this->logger->logException(
+			$ex,
+			[
+				'app' 		=> $this->appName,
+				'message' 	=> 'Exception: '.$message,
+				'level' 	=> $level
+			]
+		);
 	}
 }

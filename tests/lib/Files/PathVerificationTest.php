@@ -39,7 +39,6 @@ class PathVerificationTest extends \Test\TestCase {
 		$this->view->verifyPath('', $fileName);
 	}
 
-
 	/**
 	 * @dataProvider providesEmptyFiles
 	 * @expectedException \OCP\Files\InvalidPathException

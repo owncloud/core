@@ -42,7 +42,9 @@ class CSSResourceLocator extends ResourceLocator {
 		$fullStyle = \substr($fullStyle, \strpos($fullStyle, '/')+1);
 
 		$app_path = $this->appManager->getAppPath($app);
-		if( $app_path === false ) { return; }
+		if ($app_path === false) {
+			return;
+		}
 		$app_url = $this->appManager->getAppWebPath($app);
 		$app_url = ($app_url !== false) ? $app_url : null;
 		$this->appendOnceIfExist($app_path, $fullStyle, $app_url);

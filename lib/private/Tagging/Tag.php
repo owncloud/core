@@ -35,7 +35,6 @@ use \OCP\AppFramework\Db\Entity;
  * @method void setName(string $name)
  */
 class Tag extends Entity {
-
 	protected $owner;
 	protected $type;
 	protected $name;
@@ -61,13 +60,13 @@ class Tag extends Entity {
 	 * @todo migrate existing database columns to the correct names
 	 * to be able to drop this direct mapping
 	 */
-	public function columnToProperty($columnName){
+	public function columnToProperty($columnName) {
 		if ($columnName === 'category') {
-		    return 'name';
+			return 'name';
 		} elseif ($columnName === 'uid') {
-		    return 'owner';
+			return 'owner';
 		} else {
-		    return parent::columnToProperty($columnName);
+			return parent::columnToProperty($columnName);
 		}
 	}
 
@@ -77,13 +76,13 @@ class Tag extends Entity {
 	 * @param string $property the name of the property
 	 * @return string the column name
 	 */
-	public function propertyToColumn($property){
+	public function propertyToColumn($property) {
 		if ($property === 'name') {
-		    return 'category';
+			return 'category';
 		} elseif ($property === 'owner') {
-		    return 'uid';
+			return 'uid';
 		} else {
-		    return parent::propertyToColumn($property);
+			return parent::propertyToColumn($property);
 		}
 	}
 }

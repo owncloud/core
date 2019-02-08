@@ -38,6 +38,7 @@ OC.L10N.register(
     "Delete" : "ਹਟਾਓ",
     "Rename" : "ਨਾਂ ਬਦਲੋ",
     "Help" : "ਮਦਦ",
+    "Imprint" : "ਛਾਪ",
     "Username" : "ਯੂਜ਼ਰ-ਨਾਂ",
     "Search" : "ਖੋਜ"
 },

@@ -79,7 +79,7 @@ class ManagerTest extends TestCase {
 			$eventDispatcher,
 			$this->uid
 		);
-		$this->mountProvider = new MountProvider(\OC::$server->getDatabaseConnection(), function() {
+		$this->mountProvider = new MountProvider(\OC::$server->getDatabaseConnection(), function () {
 			return $this->manager;
 		});
 	}
@@ -92,7 +92,6 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testAddShare() {
-
 		$shareData1 = [
 			'remote' => 'http://localhost',
 			'token' => 'token1',
@@ -132,8 +131,9 @@ class ManagerTest extends TestCase {
 
 		$this->eventDispatcher->expects($this->at(0))
 			->method('dispatch')
-			->with(AcceptShare::class, $this->callback(function($event) use ($openShares) {
-				return $this->verifyShareEvent($event, $openShares[0], AcceptShare::class); }
+			->with(AcceptShare::class, $this->callback(function ($event) use ($openShares) {
+				return $this->verifyShareEvent($event, $openShares[0], AcceptShare::class);
+			}
 				));
 
 		// Accept the first share
@@ -169,8 +169,9 @@ class ManagerTest extends TestCase {
 
 		$this->eventDispatcher->expects($this->at(0))
 			->method('dispatch')
-			->with(DeclineShare::class, $this->callback(function($event) use ($openShares) {
-				return $this->verifyShareEvent($event, $openShares[1], DeclineShare::class); }
+			->with(DeclineShare::class, $this->callback(function ($event) use ($openShares) {
+				return $this->verifyShareEvent($event, $openShares[1], DeclineShare::class);
+			}
 			));
 
 		// Decline the third share
@@ -198,13 +199,15 @@ class ManagerTest extends TestCase {
 
 		$this->eventDispatcher->expects($this->at(0))
 			->method('dispatch')
-			->with(DeclineShare::class, $this->callback(function($event) use ($openShares) {
-				return $this->verifyShareEvent($event, $openShares[0], DeclineShare::class); }
+			->with(DeclineShare::class, $this->callback(function ($event) use ($openShares) {
+				return $this->verifyShareEvent($event, $openShares[0], DeclineShare::class);
+			}
 			));
 		$this->eventDispatcher->expects($this->at(1))
 			->method('dispatch')
-			->with(DeclineShare::class, $this->callback(function($event) use ($acceptedShares) {
-				return $this->verifyShareEvent($event, $acceptedShares[0], DeclineShare::class); }
+			->with(DeclineShare::class, $this->callback(function ($event) use ($acceptedShares) {
+				return $this->verifyShareEvent($event, $acceptedShares[0], DeclineShare::class);
+			}
 			));
 
 		$this->manager->removeUserShares($this->uid);
@@ -291,7 +294,6 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('SharedFolder');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');*/
 
-
 		$this->mountManager = $this->createMock(\OC\Files\Mount\Manager::class);
 		$idbConnection = $this->createMock(\OCP\IDBConnection::class);
 		$prepare = $this->createMock(\Doctrine\DBAL\Driver\Statement::class);
@@ -334,8 +336,8 @@ class ManagerTest extends TestCase {
 		$idbConnection->method('getQueryBuilder')
 			->willReturn($iqueryBuilder);
 
-		$called = array();
-		\OC::$server->getEventDispatcher()->addListener('\OCA\Files_Sharing::unshareEvent', function($event) use (&$called) {
+		$called = [];
+		\OC::$server->getEventDispatcher()->addListener('\OCA\Files_Sharing::unshareEvent', function ($event) use (&$called) {
 			$called[] = '\OCA\Files_Sharing::unshareEvent';
 			\array_push($called, $event);
 		});

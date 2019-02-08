@@ -117,7 +117,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 			];
 		}
 		if ($node instanceof Node\Stmt\Class_) {
-			if (!\is_null($node->extends)) {
+			if ($node->extends !== null) {
 				$this->checkBlackList($node->extends->toString(), CodeChecker::CLASS_EXTENDS_NOT_ALLOWED, $node);
 			}
 			foreach ($node->implements as $implements) {
@@ -125,7 +125,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 			}
 		}
 		if ($node instanceof Node\Expr\StaticCall) {
-			if (!\is_null($node->class)) {
+			if ($node->class !== null) {
 				if ($node->class instanceof Name) {
 					$this->checkBlackList($node->class->toString(), CodeChecker::STATIC_CALL_NOT_ALLOWED, $node);
 
@@ -144,7 +144,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 			}
 		}
 		if ($node instanceof Node\Expr\MethodCall) {
-			if (!\is_null($node->var)) {
+			if ($node->var !== null) {
 				if ($node->var instanceof Node\Expr\Variable) {
 					/**
 					 * TODO: find a way to detect something like this:
@@ -157,7 +157,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 			}
 		}
 		if ($node instanceof Node\Expr\ClassConstFetch) {
-			if (!\is_null($node->class)) {
+			if ($node->class !== null) {
 				if ($node->class instanceof Name) {
 					$this->checkBlackList($node->class->toString(), CodeChecker::CLASS_CONST_FETCH_NOT_ALLOWED, $node);
 				}
@@ -173,7 +173,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 			}
 		}
 		if ($node instanceof Node\Expr\New_) {
-			if (!\is_null($node->class)) {
+			if ($node->class !== null) {
 				if ($node->class instanceof Name) {
 					$this->checkBlackList($node->class->toString(), CodeChecker::CLASS_NEW_NOT_ALLOWED, $node);
 				}

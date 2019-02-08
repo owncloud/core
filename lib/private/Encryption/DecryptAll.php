@@ -23,7 +23,6 @@
  *
  */
 
-
 namespace OC\Encryption;
 
 use OC\Encryption\Exceptions\DecryptionFailedException;
@@ -60,6 +59,8 @@ class DecryptAll {
 	protected $logger;
 
 	/**
+	 * DecryptAll constructor.
+	 *
 	 * @param Manager $encryptionManager
 	 * @param IUserManager $userManager
 	 * @param View $rootView
@@ -88,7 +89,6 @@ class DecryptAll {
 	 * @throws \Exception
 	 */
 	public function decryptAll(InputInterface $input, OutputInterface $output, $user = '') {
-
 		$this->input = $input;
 		$this->output = $output;
 
@@ -112,8 +112,13 @@ class DecryptAll {
 		} else {
 			$this->output->writeln('Files for following users couldn\'t be decrypted, ');
 			$this->output->writeln('maybe the user is not set up in a way that supports this operation: ');
-			foreach ($this->failed as $uid => $paths) {
+			foreach ($this->failed as $uid => $data) {
 				$this->output->writeln('    ' . $uid);
+				foreach ($data as $failure) {
+					$path = $failure['path'];
+					$message = $failure['exception']->getMessage();
+					$this->output->writeLn("           $path - $message");
+				}
 			}
 			$this->output->writeln('');
 		}
@@ -152,7 +157,6 @@ class DecryptAll {
 	 * @return bool
 	 */
 	protected function decryptAllUsersFiles($user = '') {
-
 		$this->output->writeln("\n");
 
 		$progress = new ProgressBar($this->output);
@@ -167,7 +171,12 @@ class DecryptAll {
 			if ($numberOfUsers === 0) {
 				return false;
 			}
-			$this->userManager->callForSeenUsers(function(IUser $user) use ($progress, &$userNo, $numberOfUsers) {
+			$this->userManager->callForSeenUsers(function (IUser $user) use ($progress, &$userNo, $numberOfUsers) {
+				if (\OC::$server->getAppConfig()->getValue('encryption', 'userSpecificKey', '0') !== '0') {
+					if ($this->prepareEncryptionModules($user->getUID()) === false) {
+						return false;
+					}
+				}
 				$this->decryptUsersFiles(
 					$user->getUID(),
 					$progress,
@@ -176,6 +185,14 @@ class DecryptAll {
 				$userNo++;
 			});
 		} else {
+			if (\OC::$server->getConfig()->getAppValue('encryption', 'userSpecificKey', '0') !== '0') {
+				$userObject = $this->userManager->get($user);
+				if ($userObject !== null) {
+					if ($this->prepareEncryptionModules($userObject->getUID()) === false) {
+						return false;
+					}
+				}
+			}
 			$this->decryptUsersFiles($user, $progress, "$user (1 of 1)");
 		}
 
@@ -196,7 +213,6 @@ class DecryptAll {
 	 * @param string $userCount
 	 */
 	protected function decryptUsersFiles($uid, ProgressBar $progress, $userCount) {
-
 		$this->setupUserFS($uid);
 		$directories = [];
 		$directories[] = '/' . $uid . '/files';
@@ -206,7 +222,7 @@ class DecryptAll {
 			foreach ($content as $file) {
 				// only decrypt files owned by the user, exclude incoming local shares, and incoming federated shares
 				if ($file->getStorage()->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
-						continue;
+					continue;
 				}
 				$path = $root . '/' . $file['name'];
 				if ($this->rootView->is_dir($path)) {
@@ -231,9 +247,9 @@ class DecryptAll {
 							'app' => __CLASS__
 						]);
 						if (isset($this->failed[$uid])) {
-							$this->failed[$uid][] = $path;
+							$this->failed[$uid][] = ['path' => $path, 'exception' => $e];
 						} else {
-							$this->failed[$uid] = [$path];
+							$this->failed[$uid] = [['path' => $path, 'exception' => $e]];
 						}
 					}
 				}
@@ -248,15 +264,19 @@ class DecryptAll {
 	 * @return bool
 	 */
 	protected function decryptFile($path) {
-
 		$source = $path;
-		$target = $path . '.decrypted.' . $this->getTimestamp();
+		$target = $path . '.decrypted.' . $this->getTimestamp() . '.part';
 
 		try {
 			\OC\Files\Storage\Wrapper\Encryption::setDisableWriteEncryption(true);
 			$this->rootView->copy($source, $target);
 			\OC\Files\Storage\Wrapper\Encryption::setDisableWriteEncryption(false);
+			View::setIgnorePartFile(true);
 			$this->rootView->rename($target, $source);
+			View::setIgnorePartFile(false);
+			list($storage, $internalPath) = $this->rootView->resolvePath($source);
+			//Update the encrypted column in file cache to zero, as the file is decrypted
+			$storage->getCache()->put($internalPath, ['encrypted' => 0]);
 		} catch (DecryptionFailedException $e) {
 			if ($this->rootView->file_exists($target)) {
 				$this->rootView->unlink($target);
@@ -276,7 +296,6 @@ class DecryptAll {
 		return \time();
 	}
 
-
 	/**
 	 * setup user file system
 	 *
@@ -286,5 +305,4 @@ class DecryptAll {
 		\OC_Util::tearDownFS();
 		\OC_Util::setupFS($uid);
 	}
-
 }

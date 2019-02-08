@@ -21,8 +21,8 @@
 		'  <input class="emailPrivateLinkForm--emailField full-width" id="emailPrivateLinkField-{{cid}}" />' +
 		'  <div class="emailPrivateLinkForm--elements hidden">' +
 		'    {{#if userHasEmail}}' +
-		'    <label class="public-link-modal--bccSelf">' +
-		'      <input class="emailPrivateLinkForm--emailBccSelf" type="checkbox"> {{bccSelf}}' +
+		'    <label class="public-link-modal--toSelf">' +
+		'      <input class="emailPrivateLinkForm--emailToSelf" type="checkbox"> {{toSelf}}' +
 		'    </label>' +
 		'    {{/if}}' +
 		'    <label class="public-link-modal--label" for="emailBodyPrivateLinkField-{{cid}}">{{mailMessageLabel}}</label>' +
@@ -104,7 +104,7 @@
 				action      : 'email',
 				toAddress   : this._addresses.join(','),
 				emailBody   : mail.body,
-				bccSelf     : mail.bccSelf,
+				toSelf     : mail.toSelf,
 				link        : this.model.getLink(),
 				itemType    : itemType,
 				itemSource  : itemSource,
@@ -137,7 +137,7 @@
 			if (email.length === 0)
 				return true
 
-			return email.match(/([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}$/);
+			return OC.validateEmail(email);
 		},
 
 		sendEmails: function() {
@@ -145,7 +145,7 @@
 			var $formSendIndicator = this.$el.find('.emailPrivateLinkForm--sending-indicator');
 			var  mail = {
 				 to      : this._addresses.join(','),
-				 bccSelf : this.$el.find('.emailPrivateLinkForm--emailBccSelf').is(':checked'),
+				 toSelf : this.$el.find('.emailPrivateLinkForm--emailToSelf').is(':checked'),
 				 body    : this.$el.find('.emailPrivateLinkForm--emailBodyField').val()
 			};
 
@@ -179,7 +179,7 @@
 				cid                 : this.cid,
 				userHasEmail        : !!OC.getCurrentUser().email,
 				mailPlaceholder     : t('core', 'Email link to person'),
-				bccSelf             : t('core', 'Send copy to self'),
+				toSelf             : t('core', 'Send copy to self'),
 				mailLabel           : t('core', 'Send link via email'),
 				mailBodyPlaceholder : t('core', 'Add personal message'),
 				sending             : t('core', 'Sending') + ' ...',

@@ -385,7 +385,7 @@ OCA.External.StatusManager = {
 		'<div>{{credentials_text}}</div>' +
 		'<form>' +
 		'<input type="text" name="username" placeholder="{{placeholder_username}}"/>' +
-		'<input type="password" name="password" placeholder="{{placeholder_password}}"/>' +
+		'<input type="password" name="password" placeholder="{{placeholder_password}}" autocomplete="off"/>' +
 		'</form>' +
 		'</div></div>',
 

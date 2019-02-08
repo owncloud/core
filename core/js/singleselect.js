@@ -52,15 +52,15 @@
 			input.on('change', function () {
 				var value = $(this).val();
 				if (value) {
-					select.children().attr('selected', null);
+					select.children().prop('selected', false);
 					var existingOption = select.children().filter(function (i, option) {
 						return ($(option).val() == value);
 					});
 					if (existingOption.length) {
-						existingOption.attr('selected', 'selected');
+						existingOption.prop('selected', true);
 					} else {
 						var option = $('<option/>');
-						option.attr('selected', 'selected').attr('value', value).text(value);
+						option.prop('selected', true).attr('value', value).text(value);
 						select.children().last().before(option);
 					}
 					select.val(value);
@@ -70,10 +70,10 @@
 					select.change();
 				} else {
 					var previous = select.data('previous');
-					select.children().attr('selected', null);
+					select.children().prop('selected', false);
 					select.children().each(function (i, option) {
 						if ($(option).val() == previous) {
-							$(option).attr('selected', 'selected');
+							$(option).prop('selected', true);
 						}
 					});
 					select.removeClass('active');

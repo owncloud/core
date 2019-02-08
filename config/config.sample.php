@@ -2,11 +2,11 @@
 
 /**
  * This configuration file is only provided to document the different
- * configuration options and their usage.
+ * configuration options and their usage for the core system.
  *
  * DO NOT COMPLETELY BASE YOUR CONFIGURATION FILE ON THIS SAMPLE. THIS MAY BREAK
  * YOUR INSTANCE. Instead, manually copy configuration switches that you
- * consider important for your instance to your working ``config.php``, and
+ * consider important for your instance to your working `config.php`, and
  * apply configuration options that are pertinent for your instance.
  *
  * This file is used to generate the configuration documentation.
@@ -15,7 +15,7 @@
  *    own line
  *  * add a `@see CONFIG_INDEX` to copy a previously described config option
  *    also to this line
- *  * everything between the ` *\/` and the next `/**` will be treated as the
+ *  * everything between the `*\/` and the next `/**` will be treated as the
  *    config option
  *  * use RST syntax
  */
@@ -34,7 +34,7 @@ $CONFIG = array(
 /**
  * This is a unique identifier for your ownCloud installation, created
  * automatically by the installer. This example is for documentation only,
- * and you should never use it because it will not work. A valid ``instanceid``
+ * and you should never use it because it will not work. A valid `instanceid`
  * is created when you install ownCloud. Needs to start with a letter.
  *
  * 'instanceid' => 'd3c944a9a',
@@ -58,7 +58,7 @@ $CONFIG = array(
  * Your list of trusted domains that users can log into. Specifying trusted
  * domains prevents host header poisoning. Do not remove this, as it performs
  * necessary security checks. Please consider that for backend processes like 
- * background jobs or occ commands, the url parameter in key ``overwrite.cli.url``
+ * background jobs or occ commands, the url parameter in key `overwrite.cli.url`
  * is used. For more details please see that key.
  */
 'trusted_domains' =>
@@ -76,7 +76,7 @@ $CONFIG = array(
 ],
 
 /**
- * Where user files are stored; this defaults to ``data/`` in the ownCloud
+ * Where user files are stored; this defaults to `data/` in the ownCloud
  * directory. The SQLite database is also stored here, when you use SQLite.
  * (SQLite is not available in ownCloud Enterprise Edition)
  */
@@ -101,7 +101,7 @@ $CONFIG = array(
 
 /**
  * Identifies the database used with this installation. See also config option
- * ``supportedDatabases``
+ * `supportedDatabases`
  *
  * Available:
  * 	- sqlite (SQLite3 - Not in Enterprise Edition)
@@ -112,10 +112,10 @@ $CONFIG = array(
 'dbtype' => 'sqlite',
 
 /**
- * Your host server name, for example ``localhost``, ``hostname``,
- * ``hostname.example.com``, or the IP address. To specify a port use
- * ``hostname:####``; to specify a Unix socket use
- * ``localhost:/path/to/socket``.
+ * Your host server name, for example `localhost`, `hostname`,
+ * `hostname.example.com`, or the IP address. To specify a port use
+ * `hostname:####`; to specify a Unix socket use
+ * `localhost:/path/to/socket`.
  */
 'dbhost' => '',
 
@@ -145,8 +145,8 @@ $CONFIG = array(
 
 
 /**
- * Indicates whether the ownCloud instance was installed successfully; ``true``
- * indicates a successful installation, and ``false`` indicates an unsuccessful
+ * Indicates whether the ownCloud instance was installed successfully; `true`
+ * indicates a successful installation, and `false` indicates an unsuccessful
  * installation.
  */
 'installed' => false,
@@ -161,12 +161,12 @@ $CONFIG = array(
 
 /**
  * This sets the default language on your ownCloud server, using ISO_639-1
- * language codes such as ``en`` for English, ``de`` for German, and ``fr`` for
+ * language codes such as `en` for English, `de` for German, and `fr` for
  * French. It overrides automatic language detection on public pages like login
  * or shared items. User's language preferences configured under "personal ->
  * language" override this setting after they have logged in.
  */
-'default_language' => 'en',
+'default_language' => 'en_GB',
 
 /**
  * Set the default app to open on login. Use the app names as they appear in the
@@ -178,27 +178,27 @@ $CONFIG = array(
 'defaultapp' => 'files',
 
 /**
- * ``true`` enables the Help menu item in the user menu (top right of the
- * ownCloud Web interface). ``false`` removes the Help item.
+ * `true` enables the Help menu item in the user menu (top right of the
+ * ownCloud Web interface). `false` removes the help item.
  */
 'knowledgebaseenabled' => true,
 
 /**
- * ``true`` enables avatars, or user profile photos. These appear on the User
+ * `true` enables avatars, or user profile photos. These appear on the User
  * page, on user's Personal pages and are used by some apps (contacts, mail,
- * etc). ``false`` disables them.
+ * etc). `false` disables them.
  */
 'enable_avatars' => true,
 
 /**
- * ``true`` allows users to change their display names (on their Personal
- * pages), and ``false`` prevents them from changing their display names.
+ * `true` allows users to change their display names (on their Personal
+ * pages), and `false` prevents them from changing their display names.
  */
 'allow_user_to_change_display_name' => true,
 
 /**
  * Lifetime of the remember login cookie, which is set when the user clicks the
- * ``remember`` checkbox on the login screen. The default is 15 days, expressed
+ * `remember` checkbox on the login screen. The default is 15 days, expressed
  * in seconds.
  */
 'remember_login_cookie_lifetime' => 60*60*24*15,
@@ -251,7 +251,7 @@ $CONFIG = array(
 'skeletondirectory' => '/path/to/owncloud/core/skeleton',
 
 /**
- * The ``user_backends`` app (which needs to be enabled first) allows you to
+ * The `user_backends` app (which needs to be enabled first) allows you to
  * configure alternate authentication backends. Supported backends are:
  * IMAP (OC_User_IMAP), SMB (OC_User_SMB), and FTP (OC_User_FTP).
  */
@@ -263,10 +263,9 @@ $CONFIG = array(
 ),
 
 /**
- * If your user backend does not allow password resets (e.g. when it's a
- * read-only user backend like LDAP), you can specify a custom link, where the
- * user is redirected to, when clicking the "reset password" link after a failed
- * login-attempt.
+ * If your user backend does not allow password resets (e.g. when it's a read-only
+ * user backend like LDAP), you can specify a custom link, where the user is
+ * redirected to, when clicking the "reset password" link after a failed login-attempt.
  * In case you do not want to provide any link, replace the url with 'disabled'
  */
 'lost_password_link' => 'https://example.org/link/to/password/reset',
@@ -287,25 +286,23 @@ $CONFIG = array(
  * the minimum characters have been entered. The search is case insensitive.
  * e.g. entering "tom" will always return "Tom" if there is an exact match.
  */
-'user.search_min_length' => 4,
+'user.search_min_length' => 2,
 
 /**
  * Mail Parameters
  *
- * These configure the email settings for ownCloud notifications and password
- * resets.
+ * These configure the email settings for ownCloud notifications and password resets.
  */
 
 /**
- * The return address that you want to appear on emails sent by the ownCloud
- * server, for example ``oc-admin@example.com``, substituting your own domain,
- * of course.
+ * The return address that you want to appear on emails sent by the ownCloud server,
+ * for example `oc-admin@example.com`, substituting your own domain, of course.
  */
 'mail_domain' => 'example.com',
 
 /**
- * FROM address that overrides the built-in ``sharing-noreply`` and
- * ``lostpassword-noreply`` FROM addresses.
+ * FROM address that overrides the built-in `sharing-noreply` and
+ * `lostpassword-noreply` FROM addresses.
  */
 'mail_from_address' => 'owncloud',
 
@@ -315,69 +312,66 @@ $CONFIG = array(
 'mail_smtpdebug' => false,
 
 /**
- * Which mode to use for sending mail: ``sendmail``, ``smtp``, ``qmail`` or
- * ``php``.
+ * Which mode to use for sending mail: `sendmail`, `smtp`, `qmail` or `php`.
  *
- * If you are using local or remote SMTP, set this to ``smtp``.
+ * If you are using local or remote SMTP, set this to `smtp`.
  *
  * If you are using PHP mail you must have an installed and working email system
- * on the server. The program used to send email is defined in the ``php.ini``
- * file.
+ * on the server. The program used to send email is defined in the `php.ini` file.
  *
- * For the ``sendmail`` option you need an installed and working email system on
- * the server, with ``/usr/sbin/sendmail`` installed on your Unix system.
+ * For the `sendmail` option you need an installed and working email system on
+ * the server, with `/usr/sbin/sendmail` installed on your Unix system.
  *
- * For ``qmail`` the binary is /var/qmail/bin/sendmail, and it must be installed
+ * For `qmail` the binary is /var/qmail/bin/sendmail, and it must be installed
  * on your Unix system.
  */
 'mail_smtpmode' => 'sendmail',
 
 /**
- * This depends on ``mail_smtpmode``. Specify the IP address of your mail
+ * This depends on `mail_smtpmode`. Specify the IP address of your mail
  * server host. This may contain multiple hosts separated by a semi-colon. If
  * you need to specify the port number append it to the IP address separated by
- * a colon, like this: ``127.0.0.1:24``.
+ * a colon, like this: `127.0.0.1:24`.
  */
 'mail_smtphost' => '127.0.0.1',
 
 /**
- * This depends on ``mail_smtpmode``. Specify the port for sending mail.
+ * This depends on `mail_smtpmode`. Specify the port for sending mail.
  */
 'mail_smtpport' => 25,
 
 /**
- * This depends on ``mail_smtpmode``. This sets the SMTP server timeout, in
- * seconds. You may need to increase this if you are running an anti-malware or
- * spam scanner.
+ * This depends on `mail_smtpmode`. This sets the SMTP server timeout, in seconds. 
+ * You may need to increase this if you are running an anti-malware or spam scanner.
  */
 'mail_smtptimeout' => 10,
 
 /**
- * This depends on ``mail_smtpmode``. Specify when you are using ``ssl`` or
- * ``tls``, or leave empty for no encryption.
+ * This depends on `mail_smtpmode`. Specify when you are using `ssl` or
+ * `tls`, or leave empty for no encryption.
  */
 'mail_smtpsecure' => '',
 
 /**
- * This depends on ``mail_smtpmode``. Change this to ``true`` if your mail
+ * This depends on `mail_smtpmode`. Change this to `true` if your mail
  * server requires authentication.
  */
 'mail_smtpauth' => false,
 
 /**
- * This depends on ``mail_smtpmode``. If SMTP authentication is required, choose
- * the authentication type as ``LOGIN`` (default) or ``PLAIN``.
+ * This depends on `mail_smtpmode`. If SMTP authentication is required, choose
+ * the authentication type as `LOGIN` (default) or `PLAIN`.
  */
 'mail_smtpauthtype' => 'LOGIN',
 
 /**
- * This depends on ``mail_smtpauth``. Specify the username for authenticating to
+ * This depends on `mail_smtpauth`. Specify the username for authenticating to
  * the SMTP server.
  */
 'mail_smtpname' => '',
 
 /**
- * This depends on ``mail_smtpauth``. Specify the password for authenticating to
+ * This depends on `mail_smtpauth`. Specify the password for authenticating to
  * the SMTP server.
  */
 'mail_smtppassword' => '',
@@ -390,24 +384,24 @@ $CONFIG = array(
 /**
  * The automatic hostname detection of ownCloud can fail in certain reverse
  * proxy and CLI/cron situations. This option allows you to manually override
- * the automatic detection; for example ``www.example.com``, or specify the port
- * ``www.example.com:8080``.
+ * the automatic detection; for example `www.example.com`, or specify the port
+ * `www.example.com:8080`.
  */
 'overwritehost' => '',
 
 /**
  * When generating URLs, ownCloud attempts to detect whether the server is
- * accessed via ``https`` or ``http``. However, if ownCloud is behind a proxy
- * and the proxy handles the ``https`` calls, ownCloud would not know that
- * ``ssl`` is in use, which would result in incorrect URLs being generated.
- * Valid values are ``http`` and ``https``.
+ * accessed via `https` or `http`. However, if ownCloud is behind a proxy
+ * and the proxy handles the `https` calls, ownCloud would not know that
+ * `ssl` is in use, which would result in incorrect URLs being generated.
+ * Valid values are `http` and `https`.
  */
 'overwriteprotocol' => '',
 
 /**
  * ownCloud attempts to detect the webroot for generating URLs automatically.
- * For example, if ``www.example.com/owncloud`` is the URL pointing to the
- * ownCloud instance, the webroot is ``/owncloud``. When proxies are in use, it
+ * For example, if `www.example.com/owncloud` is the URL pointing to the
+ * ownCloud instance, the webroot is `/owncloud`. When proxies are in use, it
  * may be difficult for ownCloud to detect this parameter, resulting in invalid
  * URLs.
  */
@@ -415,9 +409,10 @@ $CONFIG = array(
 
 /**
  * This option allows you to define a manual override condition as a regular
- * expression for the remote IP address. For example, defining a range of IP
- * addresses starting with ``10.0.0.`` and ending with 1 to 3:
- * ``^10\.0\.0\.[1-3]$``
+ * expression for the remote IP address. The keys `overwritewebroot`,
+ * `overwriteprotocol`, and `overwritehost` are subject to this condition.
+ * For example, defining a range of IP  addresses starting with `10.0.0.`
+ * and ending with 1 to 3: * `^10\.0\.0\.[1-3]$`
  */
 'overwritecondaddr' => '',
 
@@ -425,10 +420,10 @@ $CONFIG = array(
  * Use this configuration parameter to specify the base URL for any URLs which
  * are generated within ownCloud using any kind of command line tools (cron or
  * occ). The value should contain the full base URL:
- * ``https://www.example.com/owncloud``
+ * `https://www.example.com/owncloud`
  * As an example, alerts shown in the browser to upgrade an app are triggered by
  * a cron background process and therefore uses the url of this key, even if the user
- * has logged on via a different domain defined in key ``trusted_domains``. When the 
+ * has logged on via a different domain defined in key `trusted_domains`. When the 
  * user clicks an alert like this, he will be redirected to that URL and must logon again.
  */
 'overwrite.cli.url' => '',
@@ -436,15 +431,15 @@ $CONFIG = array(
 /**
  * To have clean URLs without `/index.php` this parameter needs to be configured.
  *
- * This parameter will be written as "RewriteBase" on update and installation of
+ * This parameter will be written as `RewriteBase` on update and installation of
  * ownCloud to your `.htaccess` file. While this value is often simply the URL
  * path of the ownCloud installation it cannot be set automatically properly in
  * every scenario and needs thus some manual configuration.
  *
  * In a standard Apache setup this usually equals the folder that ownCloud is
- * accessible at. So if ownCloud is accessible via "https://mycloud.org/owncloud"
- * the correct value would most likely be "/owncloud". If ownCloud is running
- * under "https://mycloud.org/" then it would be "/".
+ * accessible at. So if ownCloud is accessible via `https://mycloud.org/owncloud`
+ * the correct value would most likely be `/owncloud`. If ownCloud is running
+ * under `https://mycloud.org/` then it would be `/`.
  *
  * Note that the above rule is not valid in every case, as there are some rare setup
  * cases where this may not apply. However, to avoid any update problems this
@@ -459,13 +454,13 @@ $CONFIG = array(
 'htaccess.RewriteBase' => '/',
 
 /**
- * The URL of your proxy server, for example ``proxy.example.com:8081``.
+ * The URL of your proxy server, for example `proxy.example.com:8081`.
  */
 'proxy' => '',
 
 /**
  * The optional authentication for the proxy to use to connect to the internet.
- * The format is: ``username:password``.
+ * The format is: `username:password`.
  */
 'proxyuserpwd' => '',
 
@@ -486,25 +481,25 @@ $CONFIG = array(
  * to be deleted.
  * Both minimum and maximum times can be set together to explicitly define
  * file and folder deletion. For migration purposes, this setting is installed
- * initially set to "auto", which is equivalent to the default setting in
+ * initially set to `auto`, which is equivalent to the default setting in
  * ownCloud 8.1 and before.
  *
  * Available values:
  *
- * * ``auto``
- *     default setting. keeps files and folders in the trash bin for 30 days
- *     and automatically deletes anytime after that if space is needed (note:
- *     files may not be deleted if space is not needed).
- * * ``D, auto``
+ * * `auto`
+ *     default setting. Keeps files and folders in the deleted files for up to
+ *     30 days, automatically deleting them (at any time) if space is needed.
+ *     Note: files may not be removed if space is not required.
+ * * `D, auto`
  *     keeps files and folders in the trash bin for D+ days, delete anytime if
  *     space needed (note: files may not be deleted if space is not needed)
- * * ``auto, D``
+ * * `auto, D`
  *     delete all files in the trash bin that are older than D days
  *     automatically, delete other files anytime if space needed
- * * ``D1, D2``
+ * * `D1, D2`
  *     keep files and folders in the trash bin for at least D1 days and
  *     delete when exceeds D2 days
- * * ``disabled``
+ * * `disabled`
  *     trash bin auto clean disabled, files and folders will be kept forever
  */
 'trashbin_retention_obligation' => 'auto',
@@ -536,19 +531,19 @@ $CONFIG = array(
  *
  * Available values:
  *
- * * ``auto``
+ * * `auto`
  *     default setting. Automatically expire versions according to expire
  *     rules. Please refer to :doc:`../configuration/files/file_versioning` for
  *     more information.
- * * ``D, auto``
+ * * `D, auto`
  *     keep versions at least for D days, apply expire rules to all versions
  *     that are older than D days
- * * ``auto, D``
+ * * `auto, D`
  *     delete all versions that are older than D days automatically, delete
  *     other versions according to expire rules
- * * ``D1, D2``
+ * * `D1, D2`
  *     keep versions for at least D1 days and delete when exceeds D2 days
- * * ``disabled``
+ * * `disabled`
  *     versions auto clean disabled, versions will be kept forever
  */
 'versions_retention_obligation' => 'auto',
@@ -557,7 +552,7 @@ $CONFIG = array(
  * ownCloud Verifications
  *
  * ownCloud performs several verification checks. There are two options,
- * ``true`` and ``false``.
+ * `true` and `false`.
  */
 
 /**
@@ -586,7 +581,7 @@ $CONFIG = array(
 
 /**
  * In certain environments it is desired to have a read-only configuration file.
- * When this switch is set to ``true`` ownCloud will not verify whether the
+ * When this switch is set to `true` ownCloud will not verify whether the
  * configuration is writable. However, it will not be possible to configure
  * all options via the Web interface. Furthermore, when updating ownCloud
  * it is required to make the configuration file writable again for the update
@@ -605,20 +600,25 @@ $CONFIG = array(
 
 /**
  * Logging
+ * 
+ * These parameters configure the logging options.
+ * For additional information or advanced configuration, please see the logging 
+ * section in the documentation.
+ * 
  */
 
 /**
- * By default the ownCloud logs are sent to the ``owncloud.log`` file in the
+ * By default the ownCloud logs are sent to the `owncloud.log` file in the
  * default ownCloud data directory.
- * If syslogging is desired, set this parameter to ``syslog``.
- * Setting this parameter to ``errorlog`` will use the PHP error_log function
+ * If syslogging is desired, set this parameter to `syslog`.
+ * Setting this parameter to `errorlog` will use the PHP error_log function
  * for logging.
  */
 'log_type' => 'owncloud',
 
 /**
  * Log file path for the ownCloud logging type.
- * Defaults to ``[datadirectory]/owncloud.log``
+ * Defaults to `[datadirectory]/owncloud.log`
  */
 'logfile' => '/var/log/owncloud.log',
 
@@ -630,9 +630,9 @@ $CONFIG = array(
 
 /**
  * If you maintain different instances and aggregate the logs, you may want
- * to distinguish between them. ``syslog_tag`` can be set per instance
- * with a unique id. Only available if ``log_type`` is set to ``syslog``.
- * The default value is ``ownCloud``.
+ * to distinguish between them. `syslog_tag` can be set per instance
+ * with a unique id. Only available if `log_type` is set to `syslog`.
+ * The default value is `ownCloud`.
  */
 'syslog_tag' => 'ownCloud',
 
@@ -649,15 +649,15 @@ $CONFIG = array(
  * debug specific requests, users or apps
  *
  * Supported conditions:
- *  - ``shared_secret``: if a request parameter with the name `log_secret` is set to
- *                this value the condition is met
- *  - ``users``:  if the current request is done by one of the specified users,
- *                this condition is met
- *  - ``apps``:   if the log message is invoked by one of the specified apps,
- *                this condition is met
- *  - ``logfile``: the log message invoked by the specified apps get redirected to
- *		   this logfile, this condition is met
- *		   Note: Not applicable when using syslog.
+ *  - `shared_secret`: If a request parameter with the name `log_secret` is set to
+ *                     this value the condition is met
+ *  - `users`:         If the current request is done by one of the specified users,
+ *                     this condition is met
+ *  - `apps`:          If the log message is invoked by one of the specified apps,
+ *                     this condition is met
+ *  - `logfile`:       The log message invoked by the specified apps get redirected to
+ *		               this logfile, this condition is met
+ *		               Note: Not applicable when using syslog.
  *
  * Defaults to an empty array.
  */
@@ -693,11 +693,13 @@ $CONFIG = array(
 'cron_log' => true,
 
 /**
- * Enables log rotation and limits the total size of logfiles. The default is 0,
- * or no rotation. Specify a size in bytes, for example 104857600 (100 megabytes
- * = 100 * 1024 * 1024 bytes). A new logfile is created with a new name when the
- * old logfile reaches your limit. If a rotated log file is already present, it
- * will be overwritten.
+ * Enables log rotation and limits the total size of the logfiles. 
+ * The default is 0 or false which disables log rotation. 
+ * Specify a size in bytes, for example 104857600 
+ * (100 megabytes = 100 * 1024 * 1024 bytes). 
+ * A new logfile is created with a new name when the old logfile reaches the defined limit. 
+ * If a rotated log file is already present, it will be overwritten.
+ * If enabled, only the active log file and one rotated file are stored.
  */
 'log_rotate_size' => false,
 
@@ -708,31 +710,21 @@ $CONFIG = array(
  * Some of the ownCloud code may be stored in alternate locations.
  */
 
-/**
- * This section is for configuring the download links for ownCloud clients, as
- * seen in the first-run wizard and on Personal pages.
- */
-'customclient_desktop' =>
-	'https://owncloud.org/install/#install-clients',
-'customclient_android' =>
-	'https://play.google.com/store/apps/details?id=com.owncloud.android',
-'customclient_ios' =>
-	'https://itunes.apple.com/us/app/owncloud/id543672169?mt=8',
 
 /**
  * If you want to store apps in a custom directory instead of ownCloud’s default 
- * ``/app``, you need to modify the ``apps_paths`` key. There, you need to add a 
+ * `/apps`, you need to modify the `apps_paths` key. There, you need to add a 
  * new associative array that contains three elements. These are:
  *
- * - ``path``     The absolute file system path to the custom app folder.
- * - ``url``      The request path to that folder relative to the ownCloud web root, prefixed with /.
- * - ``writable`` Whether users can install apps in that folder. After the configuration is added, 
- *                new apps will only install in a directory where writable is set to true.
+ * - `path`      The absolute file system path to the custom app folder.
+ * - `url`       The request path to that folder relative to the ownCloud web root, prefixed with /.
+ * - `writable`  Whether users can install apps in that folder. After the configuration is added, 
+ *               new apps will only install in a directory where writable is set to true.
  *
- * The configuration example shows how to add a second directory, called ``/apps-external``.
- * Here, new apps and updates are only writen to the ``/apps-external`` directory.
+ * The configuration example shows how to add a second directory, called `/apps-external`.
+ * Here, new apps and updates are only written to the `/apps-external` directory.
  * This eases upgrade procedures of owncloud where shipped apps are delivered to apps/ by default.
- * ``OC::$SERVERROOT`` points to the web root of your instance.
+ * `OC::$SERVERROOT` points to the web root of your instance.
  * Please see the Apps Management description on how to move custom apps properly.
  */
 'apps_paths' =>
@@ -766,25 +758,27 @@ $CONFIG = array(
  * - Covers of MP3 files
  * - Text documents
  *
- * Valid values are ``true``, to enable previews, or
- * ``false``, to disable previews
+ * Valid values are `true`, to enable previews, or `false`, to disable previews
  */
 'enable_previews' => true,
+
 /**
- * The maximum width, in pixels, of a preview. A value of ``null`` means there
+ * The maximum width, in pixels, of a preview. A value of `null` means there
  * is no limit.
  */
 'preview_max_x' => 2048,
+
 /**
- * The maximum height, in pixels, of a preview. A value of ``null`` means there
- * is no limit.
+ * The maximum height, in pixels, of a preview.
+ * A value of `null` means there is no limit.
  */
 'preview_max_y' => 2048,
+
 /**
  * If a lot of small pictures are stored on the ownCloud instance and the
  * preview system generates blurry previews, you might want to consider setting
  * a maximum scale factor. By default, pictures are upscaled to 10 times the
- * original size. A value of ``1`` or ``null`` disables scaling.
+ * original size. A value of `1` or `null` disables scaling.
  */
 'preview_max_scale_factor' => 10,
 
@@ -803,6 +797,7 @@ $CONFIG = array(
  * custom path for LibreOffice/OpenOffice binary
  */
 'preview_libreoffice_path' => '/usr/bin/libreoffice',
+
 /**
  * Use this if LibreOffice/OpenOffice requires additional arguments.
  */
@@ -903,8 +898,8 @@ $CONFIG = array(
 'maintenance' => false,
 
 /**
- * When set to ``true``, the ownCloud instance will be unavailable for all users
- * who are not in the ``admin`` group.
+ * When set to `true`, the ownCloud instance will be unavailable for all users
+ * who are not in the `admin` group.
  */
 'singleuser' => false,
 
@@ -930,12 +925,10 @@ $CONFIG = array(
  *
  * Available cache backends:
  *
- * * ``\OC\Memcache\APC``        Alternative PHP Cache backend
- * * ``\OC\Memcache\APCu``       APC user backend
- * * ``\OC\Memcache\ArrayCache`` In-memory array-based backend (not recommended)
- * * ``\OC\Memcache\Memcached``  Memcached backend
- * * ``\OC\Memcache\Redis``      Redis backend
- * * ``\OC\Memcache\XCache``     XCache backend
+ * * `\OC\Memcache\APCu`       APC user backend
+ * * `\OC\Memcache\ArrayCache` In-memory array-based backend (not recommended)
+ * * `\OC\Memcache\Memcached`  Memcached backend
+ * * `\OC\Memcache\Redis`      Redis backend
  *
  * Advice on choosing between the various backends:
  *
@@ -963,16 +956,15 @@ $CONFIG = array(
 /**
  * Connection details for redis to use for memory caching in a single server configuration.
  *
- * For enhanced security it is recommended to configure Redis
- * to require a password. See http://redis.io/topics/security
- * for more information.
+ * For enhanced security it is recommended to configure Redis to require a password.
+ * See http://redis.io/topics/security for more information.
  */
 'redis' => [
 	'host' => 'localhost', // can also be a unix domain socket: '/tmp/redis.sock'
 	'port' => 6379,
 	'timeout' => 0.0,
 	'password' => '', // Optional, if not defined no password will be used.
-	'dbindex' => 0, // Optional, if undefined SELECT will not run and will use Redis Server's default DB Index.
+	'dbindex' => 0,   // Optional, if undefined SELECT will not run and will use Redis Server's default DB Index.
 ],
 
 /**
@@ -984,8 +976,8 @@ $CONFIG = array(
  * Redis Cluster support requires the php module phpredis in version 3.0.0 or higher.
  *
  * Available failover modes:
- *  - \RedisCluster::FAILOVER_NONE - only send commands to master nodes (default)
- *  - \RedisCluster::FAILOVER_ERROR - failover to slaves for read commands if master is unavailable
+ *  - \RedisCluster::FAILOVER_NONE       - only send commands to master nodes (default)
+ *  - \RedisCluster::FAILOVER_ERROR      - failover to slaves for read commands if master is unavailable
  *  - \RedisCluster::FAILOVER_DISTRIBUTE - randomly distribute read commands across master and slaves
  */
 'redis.cluster' => [
@@ -1030,16 +1022,16 @@ $CONFIG = array(
 	// Enable Binary Protocol
 	\Memcached::OPT_BINARY_PROTOCOL =>      true,
 
-	// Binary serializer vill be enabled if the igbinary PECL module is available
+	// Binary serializer will be enabled if the igbinary PECL module is available
 	//\Memcached::OPT_SERIALIZER => \Memcached::SERIALIZER_IGBINARY,
 ),
 
 
 /**
- * Location of the cache folder, defaults to ``data/$user/cache`` where
- * ``$user`` is the current user. When specified, the format will change to
- * ``$cache_path/$user`` where ``$cache_path`` is the configured cache directory
- * and ``$user`` is the user.
+ * Location of the cache folder, defaults to `data/$user/cache` where
+ * `$user` is the current user. When specified, the format will change to
+ * `$cache_path/$user` where `$cache_path` is the configured cache directory
+ * and `$user` is the user.
  */
 'cache_path' => '',
 
@@ -1052,10 +1044,10 @@ $CONFIG = array(
 'cache_chunk_gc_ttl' => 86400, // 60*60*24 = 1 day
 
 /**
- * Location of the chunk folder, defaults to ``data/$user/uploads`` where
- * ``$user`` is the current user. When specified, the format will change to
- * ``$dav.chunk_base_dir/$user`` where ``$dav.chunk_base_dir`` is the configured
- * cache directory and ``$user`` is the user.
+ * Location of the chunk folder, defaults to `data/$user/uploads` where
+ * `$user` is the current user. When specified, the format will change to
+ * `$dav.chunk_base_dir/$user` where `$dav.chunk_base_dir` is the configured
+ * cache directory and `$user` is the user.
  */
 'dav.chunk_base_dir' => '',
 
@@ -1104,18 +1096,20 @@ $CONFIG = array(
  *
  * If you want to convert an existing 3-byte setup into a 4-byte setup please 
  * set the parameters in MySQL as mentioned below and run the migration command:
- *  ./occ db:convert-mysql-charset
+ * `sudo -u www-data php occ db:convert-mysql-charset`
  * The config setting will be set automatically after a successful run.
  * 
  * Consult the documentation for more details.
  * 
- * MySQL requires a special setup for longer indexes (> 767 bytes) which are
- * needed:
+ * MySQL requires a special setup for longer indexes (> 767 bytes) which are needed:
  *
+ * [source,console]
+ * ....
  * [mysqld]
  * innodb_large_prefix=ON
  * innodb_file_format=Barracuda
  * innodb_file_per_table=ON
+ * ....
  *
  * Tables will be created with
  *  * character set: utf8mb4
@@ -1126,7 +1120,7 @@ $CONFIG = array(
  * https://dev.mysql.com/doc/refman/5.7/en/charset-unicode-utf8mb4.html
  * https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_large_prefix
  * https://mariadb.com/kb/en/mariadb/xtradbinnodb-server-system-variables/#innodb_large_prefix
- * http://www.tocker.ca/2013/10/31/benchmarking-innodb-page-compression-performance.html
+ * http://www.tocker.ca/benchmarking-innodb-page-compression-performance.html
  * http://mechanics.flite.com/blog/2014/07/29/using-innodb-large-prefix-to-avoid-error-1071/
  */
 'mysql.utf8mb4' => false,
@@ -1150,8 +1144,7 @@ $CONFIG = array(
 /**
  * Override where ownCloud stores temporary files. Useful in situations where
  * the system temporary directory is on a limited space ramdisk or is otherwise
- * restricted, or if external storages which do not support streaming are in
- * use.
+ * restricted, or if external storages which do not support streaming are in use.
  *
  * The Web server user must have write access to this directory.
  */
@@ -1167,7 +1160,7 @@ $CONFIG = array(
 
 /**
  * Blacklist a specific file or files and disallow the upload of files
- * with this name. ``.htaccess`` is blocked by default.
+ * with this name. `.htaccess` is blocked by default.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
 'blacklisted_files' => array('.htaccess'),
@@ -1231,7 +1224,7 @@ $CONFIG = array(
  * client may not function as expected, and could lead to permanent data loss for
  * clients or other unexpected results.
  */
-'minimum.supported.desktop.version' => '2.2.4',
+'minimum.supported.desktop.version' => '2.3.3',
 
 /**
  * EXPERIMENTAL: option whether to include external storage in quota
@@ -1262,13 +1255,13 @@ $CONFIG = array(
 'part_file_in_storage' => true,
 
 /**
- * Where ``mount.json`` file should be stored, defaults to ``data/mount.json``
+ * Where `mount.json` file should be stored, defaults to `data/mount.json`
  * in the ownCloud directory.
  */
 'mount_file' => '/var/www/owncloud/data/mount.json',
 
 /**
- * When ``true``, prevent ownCloud from changing the cache due to changes in the
+ * When `true`, prevent ownCloud from changing the cache due to changes in the
  * filesystem for all storage.
  */
 'filesystem_cache_readonly' => false,
@@ -1295,7 +1288,7 @@ $CONFIG = array(
  * If set incorrectly, a client can spoof their IP address as visible to
  * ownCloud, bypassing access controls and making logs useless!
  *
- * Defaults to 'HTTP_X_FORWARED_FOR' if unset
+ * Defaults to 'HTTP_X_FORWARDED_FOR' if unset
  */
 'forwarded_for_headers' => array('HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR'),
 
@@ -1303,8 +1296,8 @@ $CONFIG = array(
  * max file size for animating gifs on public-sharing-site.
  * If the gif is bigger, it'll show a static preview
  *
- * Value represents the maximum filesize in megabytes. Default is ``10``. Set to
- * ``-1`` for no limit.
+ * Value represents the maximum filesize in megabytes.
+ * Default is `10`. Set to `-1` for no limit.
  */
 'max_filesize_animated_gifs_public_sharing' => 10,
 
@@ -1325,7 +1318,6 @@ $CONFIG = array(
  * Set the lock's time-to-live in seconds.
  *
  * Any lock older than this will be automatically cleaned up.
- *
  * If not set this defaults to either 1 hour or the php max_execution_time, whichever is higher.
  */
 'filelocking.ttl' => 3600,
@@ -1353,6 +1345,11 @@ $CONFIG = array(
  *
  * Only enable this for local development and not in production environments
  * This will disable the minifier and outputs some additional debug information
+ *
+ * WARNING::
+ *    Be warned that, if you set this to `true`, exceptions display
+ *    stack traces on the web interface, *including passwords*, — **in plain text!**.
+ *    We strongly encourage you never to use it in production.
  */
 'debug' => false,
 
@@ -1380,7 +1377,7 @@ $CONFIG = array(
 
 /**
  * Set this property to true if you want to enable the files_external local mount Option.
- * Default: false
+ * Default: `false`
  *
  */
 'files_external_allow_create_new_local' => false,
@@ -1390,4 +1387,9 @@ $CONFIG = array(
  */
 'smb.logging.enable' => false, 
 
+
+/**
+ * Async dav extensions can be enabled or disabled.
+ */
+'dav.enable.async' => false,
 );

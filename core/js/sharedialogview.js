@@ -274,6 +274,16 @@
 							if (!view.configModel.get('allowGroupSharing')) {
 								title = t('core', 'No users found for {search}', {search: $('.shareWithField').val()});
 							}
+							var suggestStarts = OC.getCapabilities().files_sharing.search_min_length;
+							if (suggestStarts > $('.shareWithField').val().length) {
+								title = title + '. ' + n(
+									'core',
+									'Please enter at least {chars} character for suggestions',
+									'Please enter at least {chars} characters for suggestions',
+									suggestStarts,
+									{chars: suggestStarts}
+								);
+							}
 							$('.shareWithField').addClass('error')
 								.attr('data-original-title', title)
 								.tooltip('hide')
@@ -303,7 +313,7 @@
 			if (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) {
 				text = t('core', '{sharee} (group)', {
 					sharee: text
-				});
+				}, null, {escape: false});
 			} else if (item.value.shareType === OC.Share.SHARE_TYPE_REMOTE) {
 				if (item.value.server) {
 					text = t('core', '{sharee} (at {server})', {
@@ -339,7 +349,7 @@
 
 		_onSelectRecipient: function(e, s) {
 			e.preventDefault();
-			$(e.target).attr('disabled', true)
+			$(e.target).prop('disabled', true)
 				.val(s.item.label);
 			var $loading = this.$el.find('.shareWithLoading');
 			$loading.removeClass('hidden')
@@ -347,12 +357,12 @@
 
 			this.model.addShare(s.item.value, {success: function() {
 				$(e.target).val('')
-					.attr('disabled', false);
+					.prop('disabled', false);
 				$loading.addClass('hidden')
 					.removeClass('inlineblock');
 			}, error: function(obj, msg) {
 				OC.Notification.showTemporary(msg);
-				$(e.target).attr('disabled', false)
+				$(e.target).prop('disabled', false)
 					.autocomplete('search', $(e.target).val());
 				$loading.addClass('hidden')
 					.removeClass('inlineblock');
@@ -398,7 +408,7 @@
 				isLinkSharingAllowed: this.configModel.isShareWithLinkAllowed(),
 				localSharesLabel: t('core', 'User and Groups'),
 				publicSharesLabel: t('core', 'Public Links'),
-				noSharingPlaceholder: t('core', 'Resharing is not allowed')
+				noSharingPlaceholder: t('core', 'Sharing is not allowed')
 			}));
 
 			var $shareField = this.$el.find('.shareWithField');

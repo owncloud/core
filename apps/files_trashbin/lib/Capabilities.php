@@ -44,5 +44,4 @@ class Capabilities implements ICapability {
 			]
 		];
 	}
-	
 }

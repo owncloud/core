@@ -19,6 +19,10 @@
 		<exclude name="Generic.WhiteSpace.DisallowTabIndent.NonIndentTabsUsed" />
 	</rule>
 
+	<rule ref="Generic.Files.LineLength">
+		<exclude name="Generic.Files.LineLength.TooLong" />
+	</rule>
+
 	<rule ref="PEAR">
 		<exclude name="Generic.Commenting.DocComment.ShortNotCapital" />
 		<exclude name="Generic.Commenting.DocComment.SpacingAfter" />

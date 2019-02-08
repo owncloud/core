@@ -51,13 +51,14 @@
     "Name" : "نام",
     "Size" : "اندازه",
     "Modified" : "تاریخ",
-    "_%n folder_::_%n folders_" : ["%n پوشه"],
-    "_%n file_::_%n files_" : ["%n فایل"],
+    "_%n folder_::_%n folders_" : ["%n پوشه","%n پوشه"],
+    "_%n file_::_%n files_" : ["%n فایل","%n فایل"],
     "{dirs} and {files}" : "{dirs} و {files}",
-    "_including %n hidden_::_including %n hidden_" : ["شامل %n مخفی"],
+    "_including %n hidden_::_including %n hidden_" : ["شامل %n مخفی","شامل %n مخفی"],
     "You don’t have permission to upload or create files here" : "شما دسترسی مجاز برای آپلود یا ایجاد فایل در اینجا را ندارید",
-    "_Uploading %n file_::_Uploading %n files_" : ["در حال بارگذاری %n فایل"],
+    "_Uploading %n file_::_Uploading %n files_" : ["در حال بارگذاری %n فایل","در حال بارگذاری %n فایل"],
     "New" : "جدید",
+    "Unknown user" : "کاربر نامعلوم",
     "\"{name}\" is an invalid file name." : "\"{name}\" نامی نامعتبر برای فایل است.",
     "File name cannot be empty." : "نام پرونده نمی تواند خالی باشد.",
     "File name cannot contain \"/\"." : "نام پرونده نمی تواند شامل \"/\" باشد.",
@@ -66,9 +67,9 @@
     "Your storage is full, files can not be updated or synced anymore!" : "فضای ذخیره ی شما کاملا پر است، بیش از این فایلها بهنگام یا همگام سازی نمی توانند بشوند!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "فضای  {owner} تقریبا پر شده است ({usedSpacePercent}%)",
     "Your storage is almost full ({usedSpacePercent}%)" : "فضای ذخیره ی شما تقریبا پر است ({usedSpacePercent}%)",
-    "_matches '{filter}'_::_match '{filter}'_" : ["تطبیق '{filter}'"],
+    "_matches '{filter}'_::_match '{filter}'_" : ["تطبیق '{filter}'","تطبیق '{filter}'"],
     "Path" : "مسیر",
-    "_%n byte_::_%n bytes_" : ["%n بایت"],
+    "_%n byte_::_%n bytes_" : ["%n بایت","%n بایت"],
     "Favorited" : "برگزیده شده",
     "Favorite" : "برگزیده",
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "لینک خصوصی: تنها کسانی که به پرونده/پوشه ها دسترسی دارند می توانند از آن استفاده کنند. از آن به عنوان یک لینک دائمی برای خود یا برای اشاره دیگران به پرونده های مشترک استفاده نمایید",
@@ -110,5 +111,5 @@
     "Files and folders you mark as favorite will show up here" : "فایل‌ها و پوشه‌های انتخاب شده به عنوان برگزیده توسط شما، در اینجا نمایش داده می‌شود",
     "Text file" : "فایل متنی",
     "New text file.txt" : "متن جدید file.txt"
-},"pluralForm" :"nplurals=1; plural=0;"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

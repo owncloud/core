@@ -128,7 +128,7 @@ class Modify extends Base {
 		}
 
 		if (($key === 'displayname') && ($value !== null) && ($value !== '')) {
-			if ($user->setDisplayName($value) === true ) {
+			if ($user->setDisplayName($value) === true) {
 				$output->writeln('The displayname of ' . $uid . ' updated to ' . $value);
 				return 0;
 			}

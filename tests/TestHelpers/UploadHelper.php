@@ -21,7 +21,6 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\FutureResponse;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\Stream;
 use PHPUnit_Framework_Assert;
@@ -50,7 +49,7 @@ class UploadHelper {
 	 *                                    if set to null chunking will not be used
 	 * @param int    $noOfChunks          how many chunks do we want to upload
 	 *
-	 * @return FutureResponse|ResponseInterface|NULL
+	 * @return ResponseInterface
 	 */
 	public static function upload(
 		$baseUrl,
@@ -58,14 +57,14 @@ class UploadHelper {
 		$password,
 		$source,
 		$destination,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$chunkingVersion = null,
 		$noOfChunks = 1
 	) {
 
 		//simple upload with no chunking
-		if (\is_null($chunkingVersion)) {
+		if ($chunkingVersion === null) {
 			$data = Stream::factory(\fopen($source, 'r'));
 			return WebDavHelper::makeDavRequest(
 				$baseUrl,
@@ -89,7 +88,7 @@ class UploadHelper {
 		if ($chunkingVersion === 1) {
 			$headers['OC-Chunked'] = '1';
 		} elseif ($chunkingVersion === 2) {
-			WebDavHelper::makeDavRequest(
+			$result = WebDavHelper::makeDavRequest(
 				$baseUrl,
 				$user,
 				$password,
@@ -99,6 +98,9 @@ class UploadHelper {
 				$davPathVersionToUse,
 				"uploads"
 			);
+			if ($result->getStatusCode() >= 400) {
+				return $result;
+			}
 		}
 
 		//upload chunks
@@ -124,11 +126,14 @@ class UploadHelper {
 				$davPathVersionToUse,
 				$davRequestType
 			);
+			if ($result->getStatusCode() >= 400) {
+				return $result;
+			}
 		}
 		//finish upload for new chunking
 		if ($chunkingVersion === 2) {
 			$source = $v2ChunksDestination . '/.file';
-			$finalDestination = $baseUrl . "/" .
+			$headers['Destination'] = $baseUrl . "/" .
 				WebDavHelper::getDavPath($user, $davPathVersionToUse) .
 				$destination;
 			$result = WebDavHelper::makeDavRequest(
@@ -137,15 +142,71 @@ class UploadHelper {
 				$password,
 				'MOVE',
 				$source,
-				['Destination' => $finalDestination ],
+				$headers,
 				null, null,
 				$davPathVersionToUse,
 				"uploads"
 			);
+			if ($result->getStatusCode() >= 400) {
+				return $result;
+			}
 		}
 		return $result;
 	}
 
+	/**
+	 * Upload the same file multiple times with different mechanisms.
+	 *
+	 * @param string $baseUrl URL of owncloud
+	 * @param string $user user who uploads
+	 * @param string $password
+	 * @param string $source source file path
+	 * @param string $destination destination path on the server
+	 * @param bool $overwriteMode when false creates separate files to test uploading brand new files,
+	 *                            when true it just overwrites the same file over and over again with the same name
+	 *
+	 * @return array of ResponseInterface
+	 */
+	public static function uploadWithAllMechanisms(
+		$baseUrl, $user, $password, $source, $destination, $overwriteMode = false
+	) {
+		$responses = [];
+		foreach ([1, 2] as $davPathVersion) {
+			if ($davPathVersion === 1) {
+				$davHuman = 'old';
+			} else {
+				$davHuman = 'new';
+			}
+	
+			foreach ([null, 1, 2] as $chunkingVersion) {
+				$valid = WebDavHelper::isValidDavChunkingCombination(
+					$davPathVersion,
+					$chunkingVersion
+				);
+				if ($valid === false) {
+					continue;
+				}
+				$finalDestination = $destination;
+				if (!$overwriteMode && $chunkingVersion !== null) {
+					$finalDestination .= "-{$davHuman}dav-{$davHuman}chunking";
+				} elseif (!$overwriteMode && $chunkingVersion === null) {
+					$finalDestination .= "-{$davHuman}dav-regular";
+				}
+				$responses[] = self::upload(
+					$baseUrl,
+					$user,
+					$password,
+					$source,
+					$finalDestination,
+					[],
+					$davPathVersion,
+					$chunkingVersion,
+					2
+				);
+			}
+		}
+		return $responses;
+	}
 	/**
 	 * cut the file in multiple chunks
 	 * returns an array of chunks with the content of the file
@@ -212,5 +273,16 @@ class UploadHelper {
 		PHPUnit_Framework_Assert::assertEquals(
 			1, \file_exists($name)
 		);
+	}
+
+	/**
+	 * get the path of a file from FilesForUpload directory
+	 *
+	 * @param string $name name of the file to upload
+	 *
+	 * @return string
+	 */
+	public static function getUploadFilesDir($name) {
+		return \getenv("FILES_FOR_UPLOAD") . $name;
 	}
 }

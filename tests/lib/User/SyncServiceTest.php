@@ -33,6 +33,8 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\User\IProvidesHomeBackend;
+use OCP\User\IProvidesQuotaBackend;
+use OCP\User\IProvidesUserNameBackend;
 use OCP\UserInterface;
 use Test\TestCase;
 
@@ -99,14 +101,15 @@ class SyncServiceTest extends TestCase {
 		$account->expects($this->any())->method('getUpdatedFields')->willReturn([]);
 
 		// Then we should try to setup a new account and insert
-		$this->mapper->expects($this->once())->method('insert')->with($this->callback(function($arg) use ($backendUids) {
+		$this->mapper->expects($this->once())->method('insert')->with($this->callback(function ($arg) use ($backendUids) {
 			return $arg instanceof Account && $arg->getUserId() === $backendUids[0];
 		}));
 
 		// Ignore state flag
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend), function($uid) {});
+		$s->run($backend, new AllUsersIterator($backend), function ($uid) {
+		});
 
 		static::invokePrivate($s, 'syncHome', [$account, $backend]);
 	}
@@ -129,8 +132,8 @@ class SyncServiceTest extends TestCase {
 		$this->logger->expects($this->at(1))->method('logException');
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend), function($uid) {});
-
+		$s->run($backend, new AllUsersIterator($backend), function ($uid) {
+		});
 	}
 
 	public function testSyncHomeLogsWhenBackendDiffersFromExisting() {
@@ -139,7 +142,7 @@ class SyncServiceTest extends TestCase {
 		$backend = $this->createMock([UserInterface::class, IProvidesHomeBackend::class]);
 		$a = $this->getMockBuilder(Account::class)->setMethods(['getHome'])->getMock();
 
-		// Accoutn returns existing home
+		// Account returns existing home
 		$a->expects($this->exactly(3))->method('getHome')->willReturn('existing');
 
 		// Backend returns a new home
@@ -169,5 +172,129 @@ class SyncServiceTest extends TestCase {
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 
 		$s->createOrSyncAccount($uid, $wrongBackend);
+	}
+
+	public function providesSyncQuota() {
+		return [
+			[true, null, null, null],
+			[true, '1', null, '1'],
+			[true, null, '2', '2'],
+			[false, null, null, null],
+			[false, null, '3', '3'],
+		];
+	}
+
+	/**
+	 * @dataProvider providesSyncQuota
+	 * @param $backendProvidesQuota
+	 * @param $backendQuota
+	 * @param $preferencesQuota
+	 * @param $expectedQuota
+	 */
+	public function testSyncQuota($backendProvidesQuota, $backendQuota, $preferencesQuota, $expectedQuota) {
+
+		/** @var UserInterface | \PHPUnit_Framework_MockObject_MockObject $backend */
+		$a = $this->getMockBuilder(Account::class)->setMethods(['setQuota'])->getMock();
+
+		if ($backendProvidesQuota) {
+			/** @var UserInterface | IProvidesQuotaBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+			$backend = $this->createMock([UserInterface::class, IProvidesQuotaBackend::class]);
+			$backend->expects($this->exactly(1))->method('getQuota')->willReturn($backendQuota);
+		} else {
+			$backend = $this->createMock(UserInterface::class);
+		}
+
+		// legacy preferences has a quota value
+		if ($preferencesQuota) {
+			$this->config->method('getUserKeys')->willReturn(['quota']);
+			$this->config->method('getUserValue')->willReturn($preferencesQuota);
+		} else {
+			$this->config->method('getUserKeys')->willReturn([]);
+		}
+
+		// Account gets the existing quota
+		if ($expectedQuota) {
+			$a->expects($this->exactly(1))->method('setQuota')->with($expectedQuota);
+		} else {
+			$a->expects($this->never())->method('setQuota');
+		}
+
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		static::invokePrivate($s, 'syncQuota', [$a, $backend]);
+	}
+
+	public function testSyncUserName() {
+		$a = $this->createMock(Account::class);
+		$a->method('__call')->with('getUserId')->willReturn('user1');
+
+		/** @var UserInterface | IProvidesUserNameBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+		$backend = $this->createMock([UserInterface::class, IProvidesUserNameBackend::class]);
+		$backend->expects($this->once())
+			->method('getUserName')
+			->willReturn('userName1');
+
+		$this->config->expects($this->once())
+			->method('getUserValue')
+			->with('user1', 'core', 'username', null)
+			->willReturn(null);
+		
+		$this->config->expects($this->once())
+			->method('setUserValue')
+			->with('user1', 'core', 'username', 'userName1');
+
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		static::invokePrivate($s, 'syncUserName', [$a, $backend]);
+	}
+
+	public function testAnalyseExistingUsers() {
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		$this->mapper->expects($this->once())
+			->method('callForAllUsers')
+			->with($this->callback(function ($param) {
+				return \is_callable($param);
+			}));
+		$backend = $this->createMock(UserInterface::class);
+		$result = $s->analyzeExistingUsers($backend, function () {
+		});
+		$this->assertInternalType('array', $result);
+		$this->assertCount(2, $result);
+	}
+
+	/**
+	 * Check accounts are detected if the reappear on the backend
+	 */
+	public function testReAppearingAccountsAreDetected() {
+		$account = $this->getMockBuilder(Account::class)->setMethods(['getBackend', 'getState', 'getUserId'])->getMock();
+		$backendClass = 'BackendClass';
+		$account->expects($this->once())->method('getBackend')->willReturn($backendClass);
+		$backend = $this->createMock(UserInterface::class);
+		// The user appears on the backend
+		$backend->expects($this->once())->method('userExists')->willReturn(true);
+		$account->expects($this->once())->method('getState')->willReturn(false);
+		$account->expects($this->exactly(2))->method('getUserId')->willReturn('test');
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		$response = static::invokePrivate($s, 'checkIfAccountReappeared', [$account, $backend, $backendClass]);
+		$this->assertInternalType('array', $response);
+		$this->assertCount(0, $response[0]);
+		$this->assertCount(1, $response[1]);
+	}
+
+	/**
+	 * Check accounts are detected if the disappear from the backend
+	 */
+	public function testRemovedAccountsAreDetected() {
+		$account = $this->getMockBuilder(Account::class)->setMethods(['getBackend', 'getState', 'getUserId'])->getMock();
+		$backendClass = 'BackendClass';
+		$account->expects($this->once())->method('getBackend')->willReturn($backendClass);
+		$backend = $this->createMock(UserInterface::class);
+		// The user has been removed
+		$backend->expects($this->once())->method('userExists')->willReturn(false);
+		$account->expects($this->never())->method('getState')->willReturn(false);
+		$account->expects($this->exactly(2))->method('getUserId')->willReturn('test');
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		$response = static::invokePrivate($s, 'checkIfAccountReappeared', [$account, $backend, $backendClass]);
+		$this->assertInternalType('array', $response);
+		$this->assertCount(1, $response[0]);
+		$this->assertCount(0, $response[1]);
 	}
 }

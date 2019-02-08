@@ -202,5 +202,4 @@ class TwoFactorMiddlewareTest extends TestCase {
 
 		$this->assertEquals($expected, $this->middleware->afterException(null, 'index', $ex));
 	}
-
 }

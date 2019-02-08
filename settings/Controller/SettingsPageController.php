@@ -139,8 +139,7 @@ class SettingsPageController extends Controller {
 	protected function getNavigation($sections, $currentSectionID, $type) {
 		$nav = [];
 		// Iterate through sections and get id, name and see if currently active
-		foreach($sections as $section) {
-
+		foreach ($sections as $section) {
 			$icon = $this->getIconForSettingsPanel($section);
 
 			$nav[] = [
@@ -164,9 +163,9 @@ class SettingsPageController extends Controller {
 	 */
 	protected function getPanelsData($panels) {
 		$data = [];
-		foreach($panels as $panel) {
+		foreach ($panels as $panel) {
 			$template = $panel->getPanel();
-			if($template instanceof Template || $template instanceof TemplateResponse) {
+			if ($template instanceof Template || $template instanceof TemplateResponse) {
 				$data[] = [
 					'id' => \get_class($panel),
 					'content' => ($template instanceof Template) ? $template->fetchPage() : $template->render()
@@ -175,5 +174,4 @@ class SettingsPageController extends Controller {
 		}
 		return $data;
 	}
-
 }

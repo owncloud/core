@@ -232,7 +232,6 @@ abstract class StoragesServiceTest extends TestCase {
 		return $storage;
 	}
 
-
 	/**
 	 * @expectedException \OCP\Files\External\NotFoundException
 	 */
@@ -369,7 +368,6 @@ abstract class StoragesServiceTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(InvalidBackend::class, $storageConfig->getBackend());
-
 	}
 
 	/**

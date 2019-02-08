@@ -228,7 +228,7 @@ describe('OC.Files.Client tests', function() {
 			expect(requestStub.calledOnce).toEqual(true);
 			expect(requestStub.lastCall.args[0]).toEqual('PROPFIND');
 			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20sp%40ce/%E6%96%87%E4%BB%B6%E5%A4%B9');
-			expect(requestStub.lastCall.args[2].Depth).toEqual(1);
+			expect(requestStub.lastCall.args[2].Depth).toEqual('1');
 
 			var props = getRequestedProperties(requestStub.lastCall.args[3]);
 			expect(props).toContain('{DAV:}getlastmodified');
@@ -514,7 +514,7 @@ describe('OC.Files.Client tests', function() {
 			expect(requestStub.calledOnce).toEqual(true);
 			expect(requestStub.lastCall.args[0]).toEqual('PROPFIND');
 			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20sp%40ce/%E6%96%87%E4%BB%B6%E5%A4%B9');
-			expect(requestStub.lastCall.args[2].Depth).toEqual(0);
+			expect(requestStub.lastCall.args[2].Depth).toEqual('0');
 
 			var props = getRequestedProperties(requestStub.lastCall.args[3]);
 			expect(props).toContain('{DAV:}getlastmodified');
@@ -867,6 +867,21 @@ describe('OC.Files.Client tests', function() {
 		});
 		it('throws exception if arguments are missing', function() {
 			// TODO
+		});
+	});
+
+	describe('getRelativePath', function() {
+		it('returns relative path when given path applies', function() {
+			expect(client.getRelativePath('/owncloud/remote.php/webdav/abc/def'))
+				.toEqual('/abc/def');
+		});
+		it('returns empty string when given path is equal to the root', function() {
+			expect(client.getRelativePath('/owncloud/remote.php/webdav/'))
+				.toEqual('');
+		});
+		it('returns null if given path is not relative to root', function() {
+			expect(client.getRelativePath('/other/remote.php/webdav/abc/def'))
+				.toEqual(null);
 		});
 	});
 

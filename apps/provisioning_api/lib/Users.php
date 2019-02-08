@@ -65,7 +65,7 @@ class Users {
 								IGroupManager $groupManager,
 								IUserSession $userSession,
 								ILogger $logger,
-								\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager ) {
+								\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
@@ -92,15 +92,15 @@ class Users {
 		// Admin? Or SubAdmin?
 		$uid = $user->getUID();
 		$subAdminManager = $this->groupManager->getSubAdmin();
-		if($this->groupManager->isAdmin($uid)){
+		if ($this->groupManager->isAdmin($uid)) {
 			$users = $this->userManager->search($search, $limit, $offset);
-		} else if ($subAdminManager->isSubAdmin($user)) {
+		} elseif ($subAdminManager->isSubAdmin($user)) {
 			$subAdminOfGroups = $subAdminManager->getSubAdminsGroups($user);
 			foreach ($subAdminOfGroups as $key => $group) {
 				$subAdminOfGroups[$key] = $group->getGID();
 			}
 
-			if($offset === null) {
+			if ($offset === null) {
 				$offset = 0;
 			}
 
@@ -135,22 +135,22 @@ class Users {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
-		if($this->userManager->userExists($userId)) {
+		if ($this->userManager->userExists($userId)) {
 			$this->logger->error('Failed addUser attempt: User already exists.', ['app' => 'ocs_api']);
 			return new Result(null, 102, 'User already exists');
 		}
 
-		if(\is_array($groups)) {
+		if (\is_array($groups)) {
 			foreach ($groups as $group) {
-				if(!$this->groupManager->groupExists($group)){
+				if (!$this->groupManager->groupExists($group)) {
 					return new Result(null, 104, 'group '.$group.' does not exist');
 				}
-				if(!$isAdmin && !$subAdminManager->isSubAdminofGroup($user, $this->groupManager->get($group))) {
+				if (!$isAdmin && !$subAdminManager->isSubAdminofGroup($user, $this->groupManager->get($group))) {
 					return new Result(null, 105, 'insufficient privileges for group '. $group);
 				}
 			}
 		} else {
-			if(!$isAdmin) {
+			if (!$isAdmin) {
 				return new Result(null, 106, 'no group specified (required for subadmins)');
 			}
 		}
@@ -195,17 +195,17 @@ class Users {
 
 		// Check if the target user exists
 		$targetUserObject = $this->userManager->get($userId);
-		if($targetUserObject === null) {
+		if ($targetUserObject === null) {
 			return new Result(null, API::RESPOND_NOT_FOUND, 'The requested user could not be found');
 		}
 
 		// Admin? Or SubAdmin?
-		if($this->groupManager->isAdmin($currentLoggedInUser->getUID())
+		if ($this->groupManager->isAdmin($currentLoggedInUser->getUID())
 			|| $this->groupManager->getSubAdmin()->isUserAccessible($currentLoggedInUser, $targetUserObject)) {
 			$data['enabled'] = $targetUserObject->isEnabled() ? 'true' : 'false';
 		} else {
 			// Check they are looking up themselves
-			if($currentLoggedInUser->getUID() !== $userId) {
+			if ($currentLoggedInUser->getUID() !== $userId) {
 				return new Result(null, API::RESPOND_UNAUTHORISED);
 			}
 		}
@@ -238,27 +238,29 @@ class Users {
 		}
 
 		$targetUser = $this->userManager->get($targetUserId);
-		if($targetUser === null) {
+		if ($targetUser === null) {
 			return new Result(null, 997);
 		}
 
-		if($targetUserId === $currentLoggedInUser->getUID()) {
+		if ($targetUserId === $currentLoggedInUser->getUID()) {
 			// Editing self (display, email)
 			$permittedFields[] = 'display';
+			$permittedFields[] = 'displayname';
 			$permittedFields[] = 'email';
 			$permittedFields[] = 'password';
 			$permittedFields[] = 'two_factor_auth_enabled';
 			// If admin they can edit their own quota
-			if($this->groupManager->isAdmin($currentLoggedInUser->getUID())) {
+			if ($this->groupManager->isAdmin($currentLoggedInUser->getUID())) {
 				$permittedFields[] = 'quota';
 			}
 		} else {
 			// Check if admin / subadmin
 			$subAdminManager = $this->groupManager->getSubAdmin();
-			if($subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser)
+			if ($subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser)
 			|| $this->groupManager->isAdmin($currentLoggedInUser->getUID())) {
 				// They have permissions over the user
 				$permittedFields[] = 'display';
+				$permittedFields[] = 'displayname';
 				$permittedFields[] = 'quota';
 				$permittedFields[] = 'password';
 				$permittedFields[] = 'email';
@@ -269,17 +271,18 @@ class Users {
 			}
 		}
 		// Check if permitted to edit this field
-		if(!\in_array($parameters['_put']['key'], $permittedFields)) {
+		if (!\in_array($parameters['_put']['key'], $permittedFields)) {
 			return new Result(null, 997);
 		}
 		// Process the edit
-		switch($parameters['_put']['key']) {
+		switch ($parameters['_put']['key']) {
 			case 'display':
+			case 'displayname':
 				$targetUser->setDisplayName($parameters['_put']['value']);
 				break;
 			case 'quota':
 				$quota = $parameters['_put']['value'];
-				if($quota !== 'none' && $quota !== 'default') {
+				if ($quota !== 'none' && $quota !== 'default') {
 					if (\is_numeric($quota)) {
 						$quota = \floatval($quota);
 					} else {
@@ -307,7 +310,7 @@ class Users {
 				}
 				break;
 			case 'email':
-				if(\filter_var($parameters['_put']['value'], FILTER_VALIDATE_EMAIL)) {
+				if (\filter_var($parameters['_put']['value'], FILTER_VALIDATE_EMAIL)) {
 					$targetUser->setEMailAddress($parameters['_put']['value']);
 				} else {
 					return new Result(null, 102);
@@ -333,18 +336,18 @@ class Users {
 
 		$targetUser = $this->userManager->get($parameters['userid']);
 
-		if($targetUser === null || $targetUser->getUID() === $currentLoggedInUser->getUID()) {
+		if ($targetUser === null || $targetUser->getUID() === $currentLoggedInUser->getUID()) {
 			return new Result(null, 101);
 		}
 
 		// If not permitted
 		$subAdminManager = $this->groupManager->getSubAdmin();
-		if(!$this->groupManager->isAdmin($currentLoggedInUser->getUID()) && !$subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser)) {
+		if (!$this->groupManager->isAdmin($currentLoggedInUser->getUID()) && !$subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser)) {
 			return new Result(null, 997);
 		}
 
 		// Go ahead with the delete
-		if($targetUser->delete()) {
+		if ($targetUser->delete()) {
 			return new Result(null, 100);
 		} else {
 			return new Result(null, 101);
@@ -380,13 +383,13 @@ class Users {
 		}
 
 		$targetUser = $this->userManager->get($parameters['userid']);
-		if($targetUser === null || $targetUser->getUID() === $currentLoggedInUser->getUID()) {
+		if ($targetUser === null || $targetUser->getUID() === $currentLoggedInUser->getUID()) {
 			return new Result(null, 101);
 		}
 
 		// If not permitted
 		$subAdminManager = $this->groupManager->getSubAdmin();
-		if(!$this->groupManager->isAdmin($currentLoggedInUser->getUID()) && !$subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser)) {
+		if (!$this->groupManager->isAdmin($currentLoggedInUser->getUID()) && !$subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser)) {
 			return new Result(null, 997);
 		}
 
@@ -407,11 +410,11 @@ class Users {
 		}
 
 		$targetUser = $this->userManager->get($parameters['userid']);
-		if($targetUser === null) {
+		if ($targetUser === null) {
 			return new Result(null, API::RESPOND_NOT_FOUND);
 		}
 
-		if($targetUser->getUID() === $loggedInUser->getUID() || $this->groupManager->isAdmin($loggedInUser->getUID())) {
+		if ($targetUser->getUID() === $loggedInUser->getUID() || $this->groupManager->isAdmin($loggedInUser->getUID())) {
 			// Self lookup or admin lookup
 			return new Result([
 				'groups' => $this->groupManager->getUserGroupIds($targetUser, 'management')
@@ -420,7 +423,7 @@ class Users {
 			$subAdminManager = $this->groupManager->getSubAdmin();
 
 			// Looking up someone else
-			if($subAdminManager->isUserAccessible($loggedInUser, $targetUser)) {
+			if ($subAdminManager->isUserAccessible($loggedInUser, $targetUser)) {
 				// Return the group that the method caller is subadmin of for the user in question
 				$getSubAdminsGroups = $subAdminManager->getSubAdminsGroups($loggedInUser);
 				foreach ($getSubAdminsGroups as $key => $group) {
@@ -436,7 +439,6 @@ class Users {
 				return new Result(null, 997);
 			}
 		}
-
 	}
 
 	/**
@@ -481,13 +483,12 @@ class Users {
 			return new Result(null, 102);
 		}
 
-		// Check they're an admin or subadmin of the group
-		if(!$this->canUserManageGroup($user, $group)) {
+		if (!$this->groupManager->isAdmin($user->getUID())) {
 			return new Result(null, 104);
 		}
 
 		$targetUser = $this->userManager->get($parameters['userid']);
-		if($targetUser === null) {
+		if ($targetUser === null) {
 			return new Result(null, 103);
 		}
 
@@ -513,22 +514,22 @@ class Users {
 		}
 
 		$group = $this->groupManager->get($group);
-		if($group === null) {
+		if ($group === null) {
 			return new Result(null, 102);
 		}
 
-		if(!$this->canUserManageGroup($loggedInUser, $group)) {
+		if (!$this->canUserManageGroup($loggedInUser, $group)) {
 			return new Result(null, 104);
 		}
 
 		$targetUser = $this->userManager->get($parameters['userid']);
-		if($targetUser === null) {
+		if ($targetUser === null) {
 			return new Result(null, 103);
 		}
 		// Check they aren't removing themselves from 'admin' or their 'subadmin; group
-		if($parameters['userid'] === $loggedInUser->getUID()) {
-			if($this->groupManager->isAdmin($loggedInUser->getUID())) {
-				if($group->getGID() === 'admin') {
+		if ($parameters['userid'] === $loggedInUser->getUID()) {
+			if ($this->groupManager->isAdmin($loggedInUser->getUID())) {
+				if ($group->getGID() === 'admin') {
 					return new Result(null, 105, 'Cannot remove yourself from the admin group');
 				}
 			} else {
@@ -539,7 +540,7 @@ class Users {
 					$subAdminGroups[$key] = $group->getGID();
 				}
 
-				if(\in_array($group->getGID(), $subAdminGroups, true)) {
+				if (\in_array($group->getGID(), $subAdminGroups, true)) {
 					return new Result(null, 105, 'Cannot remove yourself from this group as you are a SubAdmin');
 				}
 			}
@@ -561,15 +562,15 @@ class Users {
 		$user = $this->userManager->get($parameters['userid']);
 
 		// Check if the user exists
-		if($user === null) {
+		if ($user === null) {
 			return new Result(null, 101, 'User does not exist');
 		}
 		// Check if group exists
-		if($group === null) {
+		if ($group === null) {
 			return new Result(null, 102, 'Group:'.$_POST['groupid'].' does not exist');
 		}
 		// Check if trying to make subadmin of admin group
-		if(\strtolower($_POST['groupid']) === 'admin') {
+		if (\strtolower($_POST['groupid']) === 'admin') {
 			return new Result(null, 103, 'Cannot create subadmins for admin group');
 		}
 
@@ -580,7 +581,7 @@ class Users {
 			return new Result(null, 100);
 		}
 		// Go
-		if($subAdminManager->createSubAdmin($user, $group)) {
+		if ($subAdminManager->createSubAdmin($user, $group)) {
 			return new Result(null, 100);
 		} else {
 			return new Result(null, 103, 'Unknown error occurred');
@@ -599,20 +600,20 @@ class Users {
 		$subAdminManager = $this->groupManager->getSubAdmin();
 
 		// Check if the user exists
-		if($user === null) {
+		if ($user === null) {
 			return new Result(null, 101, 'User does not exist');
 		}
 		// Check if the group exists
-		if($group === null) {
+		if ($group === null) {
 			return new Result(null, 101, 'Group does not exist');
 		}
 		// Check if they are a subadmin of this said group
-		if(!$subAdminManager->isSubAdminofGroup($user, $group)) {
+		if (!$subAdminManager->isSubAdminofGroup($user, $group)) {
 			return new Result(null, 102, 'User is not a subadmin of this group');
 		}
 
 		// Go
-		if($subAdminManager->deleteSubAdmin($user, $group)) {
+		if ($subAdminManager->deleteSubAdmin($user, $group)) {
 			return new Result(null, 100);
 		} else {
 			return new Result(null, 103, 'Unknown error occurred');
@@ -628,7 +629,7 @@ class Users {
 	public function getUserSubAdminGroups($parameters) {
 		$user = $this->userManager->get($parameters['userid']);
 		// Check if the user exists
-		if($user === null) {
+		if ($user === null) {
 			return new Result(null, 101, 'User does not exist');
 		}
 
@@ -638,7 +639,7 @@ class Users {
 			$groups[$key] = $group->getGID();
 		}
 
-		if(!$groups) {
+		if (!$groups) {
 			return new Result(null, 102, 'Unknown error occurred');
 		} else {
 			return new Result($groups);

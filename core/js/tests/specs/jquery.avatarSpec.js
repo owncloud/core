@@ -126,7 +126,7 @@ describe('jquery.avatar tests', function() {
 			$div.avatar('foo', 32);
 
 			expect(fakeServer.requests[0].method).toEqual('GET');
-			expect(fakeServer.requests[0].url).toEqual('/owncloud/index.php/avatar/foo/32');
+			expect(fakeServer.requests[0].url).toEqual('/owncloud/remote.php/dav/avatars/foo/32.jpeg');
 		});
 
 		it('high DPI icon', function() {
@@ -134,7 +134,7 @@ describe('jquery.avatar tests', function() {
 			$div.avatar('foo', 32);
 
 			expect(fakeServer.requests[0].method).toEqual('GET');
-			expect(fakeServer.requests[0].url).toEqual('/owncloud/index.php/avatar/foo/128');
+			expect(fakeServer.requests[0].url).toEqual('/owncloud/remote.php/dav/avatars/foo/128.jpeg');
 		});
 
 		it('high DPI icon round up size', function() {
@@ -142,7 +142,7 @@ describe('jquery.avatar tests', function() {
 			$div.avatar('foo', 32);
 
 			expect(fakeServer.requests[0].method).toEqual('GET');
-			expect(fakeServer.requests[0].url).toEqual('/owncloud/index.php/avatar/foo/61');
+			expect(fakeServer.requests[0].url).toEqual('/owncloud/remote.php/dav/avatars/foo/61.jpeg');
 		});
 	});
 
@@ -164,7 +164,7 @@ describe('jquery.avatar tests', function() {
 
 			expect(img.height).toEqual(32);
 			expect(img.width).toEqual(32);
-			expect(img.src).toEqual(OC.TestUtil.buildAbsoluteUrl('/owncloud/index.php/avatar/foo/32'));
+			expect(img.src).toEqual(OC.TestUtil.buildAbsoluteUrl('/owncloud/remote.php/dav/avatars/foo/32.jpeg'));
 		});
 
 		it('default high DPI icon', function() {
@@ -182,7 +182,7 @@ describe('jquery.avatar tests', function() {
 
 			expect(img.height).toEqual(32);
 			expect(img.width).toEqual(32);
-			expect(img.src).toEqual(OC.TestUtil.buildAbsoluteUrl('/owncloud/index.php/avatar/foo/61'));
+			expect(img.src).toEqual(OC.TestUtil.buildAbsoluteUrl('/owncloud/remote.php/dav/avatars/foo/61.jpeg'));
 		});
 
 		it('with ie8 fix', function() {
@@ -202,7 +202,7 @@ describe('jquery.avatar tests', function() {
 
 			expect(img.height).toEqual(32);
 			expect(img.width).toEqual(32);
-			expect(img.src).toEqual(OC.TestUtil.buildAbsoluteUrl('/owncloud/index.php/avatar/foo/32#500'));
+			expect(img.src).toEqual(OC.TestUtil.buildAbsoluteUrl('/owncloud/remote.php/dav/avatars/foo/32.jpeg#500'));
 		});
 
 		it('unhide div', function() {

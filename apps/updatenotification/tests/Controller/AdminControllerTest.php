@@ -94,7 +94,7 @@ class AdminControllerTest extends TestCase {
 		$currentChannel = \OCP\Util::getChannel();
 
 		// Remove the currently used channel from the channels list
-		if(($key = \array_search($currentChannel, $channels)) !== false) {
+		if (($key = \array_search($currentChannel, $channels)) !== false) {
 			unset($channels[$key]);
 		}
 
@@ -139,7 +139,7 @@ class AdminControllerTest extends TestCase {
 		$currentChannel = \OCP\Util::getChannel();
 
 		// Remove the currently used channel from the channels list
-		if(($key = \array_search($currentChannel, $channels)) !== false) {
+		if (($key = \array_search($currentChannel, $channels)) !== false) {
 			unset($channels[$key]);
 		}
 
@@ -173,7 +173,6 @@ class AdminControllerTest extends TestCase {
 		$expected = new TemplateResponse('updatenotification', 'admin', $params, '');
 		$this->assertEquals($expected, $this->adminController->displayPanel());
 	}
-
 
 	public function testCreateCredentials() {
 		$this->jobList
@@ -209,5 +208,4 @@ class AdminControllerTest extends TestCase {
 	public function testGetSectionID() {
 		$this->assertEquals('general', $this->adminController->getSectionID());
 	}
-
 }

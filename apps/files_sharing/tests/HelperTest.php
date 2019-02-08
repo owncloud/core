@@ -24,6 +24,8 @@
 
 namespace OCA\Files_Sharing\Tests;
 
+use OC\Files\View;
+
 /**
  * Class HelperTest
  *
@@ -34,7 +36,7 @@ class HelperTest extends TestCase {
 	/**
 	 * test set and get share folder
 	 */
-	function testSetGetShareFolder() {
+	public function testSetGetShareFolder() {
 		$this->assertSame('/', \OCA\Files_Sharing\Helper::getShareFolder());
 
 		\OCA\Files_Sharing\Helper::setShareFolder('/Shared/Folder');
@@ -45,7 +47,24 @@ class HelperTest extends TestCase {
 
 		// cleanup
 		\OC::$server->getConfig()->deleteSystemValue('share_folder');
-
 	}
 
+	/**
+	 * test get share folder on a read only storage
+	 */
+	public function testGetShareFolderOnReadOnlyStorage() {
+		\OCA\Files_Sharing\Helper::setShareFolder('/Share/Folder');
+
+		// Simulate when it is possible to create path /Share but not /Share/Folder
+		$viewMock = $this->createMock(View::class);
+		$viewMock->method('is_dir')
+			->willReturnOnConsecutiveCalls(false, false);
+		$viewMock->method('mkdir')
+			->willReturnOnConsecutiveCalls(true, false);
+		$sharedFolder = \OCA\Files_Sharing\Helper::getShareFolder($viewMock);
+		$this->assertSame('/Share', $sharedFolder);
+
+		// cleanup
+		\OC::$server->getConfig()->deleteSystemValue('share_folder');
+	}
 }

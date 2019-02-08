@@ -55,9 +55,9 @@ abstract class Cache extends \Test\Cache\TestCache {
 	}
 
 	public function testArrayAccessExists() {
-		$this->assertFalse(isset($this->instance['foo']));
+		$this->assertArrayNotHasKey('foo', $this->instance);
 		$this->instance->set('foo', 'bar');
-		$this->assertTrue(isset($this->instance['foo']));
+		$this->assertArrayHasKey('foo', $this->instance);
 	}
 
 	public function testArrayAccessUnset() {
@@ -121,7 +121,6 @@ abstract class Cache extends \Test\Cache\TestCache {
 		$this->assertFalse($this->instance->cad('foo', 'bar'));
 		$this->assertTrue($this->instance->hasKey('foo'));
 	}
-
 
 	protected function tearDown() {
 		if ($this->instance) {

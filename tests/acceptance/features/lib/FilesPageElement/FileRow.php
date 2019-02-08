@@ -23,10 +23,11 @@
 
 namespace Page\FilesPageElement;
 
-use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Session;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use OC\IntegrityCheck\Helpers\FileAccessHelper;
 
 /**
  * Object of a row on the FilesPage
@@ -54,12 +55,20 @@ class FileRow extends OwncloudPage {
 	protected $restoreLinkXpath = '//a[@data-action="Restore"]';
 	protected $notMarkedFavoriteXpath = "//span[contains(@class,'icon-star')]";
 	protected $markedFavoriteXpath = "//span[contains(@class,'icon-starred')]";
+	protected $shareStateXpath = "//span[@class='state']";
+	protected $lockStateXpath = "//span[contains(@class,'icon-lock')]";
+	protected $sharerXpath = "//a[@data-action='Share']";
+	protected $acceptShareBtnXpath = "//span[@class='fileactions']//a[contains(@class,'accept')]";
+	protected $declinePendingShareBtnXpath = "//a[@data-action='Reject']";
+	protected $sharingDialogXpath = ".//div[@class='dialogContainer']";
+	protected $lockDialogId = "lockTabView";
+	protected $highlightsXpath = "//div[@class='highlights']";
 
 	/**
-	 * 
+	 *
 	 * @return boolean
 	 */
-	public function isVisible() { 
+	public function isVisible() {
 		return $this->rowElement->isVisible();
 	}
 
@@ -69,7 +78,7 @@ class FileRow extends OwncloudPage {
 	 * from an other Page Object by $this->getPage("FilesPageElement\\FileRow")
 	 * there is no real __construct() that can take arguments
 	 *
-	 * @param \Behat\Mink\Element\NodeElement $rowElement
+	 * @param NodeElement $rowElement
 	 *
 	 * @return void
 	 */
@@ -88,6 +97,18 @@ class FileRow extends OwncloudPage {
 	}
 
 	/**
+	 * returns the current file name as string, even if it was an array
+	 *
+	 * @return string
+	 */
+	public function getNameAsString() {
+		if (\is_array($this->name)) {
+			return \implode($this->name);
+		}
+		return $this->name;
+	}
+
+	/**
 	 * checks if the file row is busy,
 	 * for example waiting for a rename to be finished
 	 *
@@ -100,19 +121,18 @@ class FileRow extends OwncloudPage {
 	/**
 	 * finds the Action Button
 	 *
-	 * @return \Behat\Mink\Element\NodeElement
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @return NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	public function findFileActionButton() {
 		$actionButton = $this->rowElement->find(
 			"xpath", $this->fileActionMenuBtnXpath
 		);
-		if (\is_null($actionButton)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->fileActionMenuBtnXpath could not find actionButton in fileRow"
-			);
-		}
+		$this->assertElementNotNull(
+			$actionButton,
+			__METHOD__ .
+			" xpath $this->fileActionMenuBtnXpath could not find actionButton in fileRow"
+		);
 		$actionButton->focus();
 		return $actionButton;
 	}
@@ -120,7 +140,7 @@ class FileRow extends OwncloudPage {
 	/**
 	 * finds and clicks the file actions button
 	 *
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 * @return void
 	 */
 	public function clickFileActionButton() {
@@ -132,15 +152,24 @@ class FileRow extends OwncloudPage {
 	 *
 	 * @param Session $session
 	 *
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 * @return FileActionsMenu
 	 */
 	public function openFileActionsMenu(Session $session) {
 		$this->clickFileActionButton();
+		/**
+		 *
+		 * @var FilesPage $filesPage
+		 */
 		$filesPage = $this->getPage('FilesPage');
-		$actionMenuElement = $filesPage->findFileActionMenuElement();
+		/**
+		 *
+		 * @var FileActionsMenu $actionMenu
+		 */
 		$actionMenu = $this->getPage('FilesPageElement\\FileActionsMenu');
-		$actionMenu->setElement($actionMenuElement);
+		$actionMenu->waitTillPageIsLoaded(
+			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $filesPage->getFileActionMenuXpath()
+		);
 		$this->waitForScrollingToFinish($session, '#app-content');
 		return $actionMenu;
 	}
@@ -149,16 +178,15 @@ class FileRow extends OwncloudPage {
 	 * finds and returns the share button element
 	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findSharingButton() {
 		$shareBtn = $this->rowElement->find("xpath", $this->shareBtnXpath);
-		if (\is_null($shareBtn)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->shareBtnXpath could not find sharing button in fileRow"
-			);
-		}
+		$this->assertElementNotNull(
+			$shareBtn,
+			__METHOD__ .
+			" xpath $this->shareBtnXpath could not find sharing button in fileRow"
+		);
 		$shareBtn->focus();
 		return $shareBtn;
 	}
@@ -166,31 +194,86 @@ class FileRow extends OwncloudPage {
 	/**
 	 * opens the sharing dialog
 	 *
+	 * @param Session $session
+	 *
 	 * @throws ElementNotFoundException
 	 * @return SharingDialog
 	 */
-	public function openSharingDialog() {
+	public function openSharingDialog(Session $session) {
 		$this->findSharingButton()->click();
 		$this->waitTillElementIsNull($this->loadingIndicatorXpath);
-		return $this->getPage("FilesPageElement\\SharingDialog");
+		/**
+		 *
+		 * @var SharingDialog $sharingDialogPage
+		 */
+		$sharingDialogPage = $this->getPage("FilesPageElement\\SharingDialog");
+		$sharingDialogPage->waitTillPageIsLoaded(
+			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->sharingDialogXpath
+		);
+		return $sharingDialogPage;
+	}
+
+	/**
+	 * opens the lock dialog that list all locks of the given file row
+	 *
+	 * @throws ElementNotFoundException
+	 * @return LockDialog
+	 */
+	public function openLockDialog() {
+		$element = $this->rowElement->find("xpath", $this->lockStateXpath);
+		$this->assertElementNotNull(
+			$element,
+			__METHOD__ .
+			" xpath $this->lockStateXpath could not find lock button in row"
+		);
+		$element->click();
+		$lockDailogElement = $this->findById($this->lockDialogId);
+		$this->assertElementNotNull(
+			$lockDailogElement,
+			__METHOD__ .
+			" id $this->lockDialogId could not find lock dialog"
+		);
+		$this->waitFor(
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$lockDailogElement, 'isVisible']
+		);
+
+		/**
+		 *
+		 * @var LockDialog $lockDialog
+		 */
+		$lockDialog = $this->getPage("FilesPageElement\\LockDialog");
+		$lockDialog->setElement($lockDailogElement);
+		return $lockDialog;
+	}
+
+	/**
+	 * deletes a lock by its order in the list
+	 *
+	 * @param int $number
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function deleteLockByNumber($number, Session $session) {
+		$lockDialog = $this->openLockDialog();
+		$lockDialog->deleteLockByNumber($number, $session);
 	}
 
 	/**
 	 * finds the input field to rename the file/folder
 	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findRenameInputField() {
 		$inputField = $this->rowElement->find(
 			"xpath", $this->fileRenameInputXpath
 		);
-		if (\is_null($inputField)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->fileRenameInputXpath could not find rename input field in fileRow"
-			);
-		}
+		$this->assertElementNotNull(
+			$inputField,
+			__METHOD__ .
+			" xpath $this->fileRenameInputXpath could not find rename input field in fileRow"
+		);
 		return $inputField;
 	}
 
@@ -207,8 +290,7 @@ class FileRow extends OwncloudPage {
 		$actionMenu->rename();
 		$this->waitTillElementIsNotNull($this->fileRenameInputXpath);
 		$inputField = $this->findRenameInputField();
-		$this->cleanInputAndSetValue($inputField, $toName);
-		$inputField->blur();
+		$inputField->setValue($toName);
 		$this->waitTillElementIsNull($this->fileBusyIndicatorXpath);
 	}
 
@@ -229,17 +311,16 @@ class FileRow extends OwncloudPage {
 	 * finds and returns the tooltip element
 	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findTooltipElement() {
 		$element = $this->rowElement->find("xpath", $this->fileTooltipXpath);
-		if (\is_null($element)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->fileTooltipXpath could not find tooltip element of file " .
-				$this->name
-			);
-		}
+		$this->assertElementNotNull(
+			$element,
+			__METHOD__ .
+			" xpath $this->fileTooltipXpath" .
+			" could not find tooltip element of file '" . $this->getNameAsString() . "'"
+		);
 		return $element;
 	}
 
@@ -253,20 +334,37 @@ class FileRow extends OwncloudPage {
 	}
 
 	/**
+	 * return the path of the current file
+	 *
+	 * @param string $xpath xpath related to the fileRow element
+	 *
+	 * @throws ElementNotFoundException
+	 * @return string
+	 */
+	public function getFilePath($xpath) {
+		$filePathElement = $this->rowElement->find("xpath", $xpath);
+		$this->assertElementNotNull(
+			$filePathElement,
+			__METHOD__ .
+			" xpath $xpath could not find file path element"
+		);
+		return \dirname($filePathElement->getText());
+	}
+
+	/**
 	 * finds and returns the thumbnail of the file
 	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findThumbnail() {
 		$thumbnail = $this->rowElement->find("xpath", $this->thumbnailXpath);
-		if (\is_null($thumbnail)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->thumbnailXpath could not find thumbnail of file " .
-				$this->name
-			);
-		}
+		$this->assertElementNotNull(
+			$thumbnail,
+			__METHOD__ .
+			" xpath $this->thumbnailXpath" .
+			" could not find thumbnail of file '" . $this->getNameAsString() . "'"
+		);
 		return $thumbnail;
 	}
 
@@ -284,17 +382,16 @@ class FileRow extends OwncloudPage {
 	 * find and return the link to the file/folder
 	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findFileLink() {
 		$linkElement = $this->rowElement->find("xpath", $this->fileLinkXpath);
-		if (\is_null($linkElement)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->fileLinkXpath could not find link to " .
-				$this->name
-			);
-		}
+		$this->assertElementNotNull(
+			$linkElement,
+			__METHOD__ .
+			" xpath $this->fileLinkXpath" .
+			" could not find link to '" . $this->getNameAsString() . "'"
+		);
 		return $linkElement;
 	}
 
@@ -314,13 +411,12 @@ class FileRow extends OwncloudPage {
 	 */
 	public function restore() {
 		$rowElement = $this->rowElement->find('xpath', $this->restoreLinkXpath);
-		if (\is_null($rowElement)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->restoreLinkXpath could not find restore link to '" .
-				$this->name . "'"
-			);
-		}
+		$this->assertElementNotNull(
+			$rowElement,
+			__METHOD__ .
+			" xpath $this->restoreLinkXpath" .
+			" could not find restore link to '" . $this->getNameAsString() . "'"
+		);
 		$rowElement->click();
 	}
 
@@ -331,12 +427,11 @@ class FileRow extends OwncloudPage {
 	 */
 	public function markAsFavorite() {
 		$element = $this->rowElement->find("xpath", $this->notMarkedFavoriteXpath);
-		if (\is_null($element)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->notMarkedFavoriteXpath not found"
-			);
-		}
+		$this->assertElementNotNull(
+			$element,
+			__METHOD__ .
+			" xpath $this->notMarkedFavoriteXpath not found"
+		);
 		$element->click();
 	}
 
@@ -346,9 +441,11 @@ class FileRow extends OwncloudPage {
 	 * @return bool
 	 */
 	public function isMarkedAsFavorite() {
-		$checkFavorite = $this->rowElement->find("xpath", $this->markedFavoriteXpath);
+		$checkFavorite = $this->rowElement->find(
+			"xpath", $this->markedFavoriteXpath
+		);
 		
-		if (\is_null($checkFavorite)) {
+		if ($checkFavorite === null) {
 			return false;
 		} else {
 			return true;
@@ -362,12 +459,115 @@ class FileRow extends OwncloudPage {
 	 */
 	public function unmarkFavorite() {
 		$element = $this->rowElement->find("xpath", $this->markedFavoriteXpath);
-		if (\is_null($element)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->markedFavoriteXpath not found"
-			);
-		}
+		$this->assertElementNotNull(
+			$element,
+			__METHOD__ .
+			" xpath $this->markedFavoriteXpath not found"
+		);
 		$element->click();
+	}
+
+	/**
+	 * returns the lock state
+	 *
+	 * @throws ElementNotFoundException
+	 *
+	 * @return bool
+	 */
+	public function getLockState() {
+		$element = $this->rowElement->find("xpath", $this->lockStateXpath);
+		if ($element === null) {
+			return false;
+		}
+		return $element->isVisible();
+	}
+
+	/**
+	 * returns the share state (only works on the "Shared with you" page)
+	 *
+	 * @throws ElementNotFoundException
+	 *
+	 * @return string
+	 */
+	public function getShareState() {
+		$element = $this->rowElement->find("xpath", $this->shareStateXpath);
+		$this->assertElementNotNull(
+			$element,
+			__METHOD__ .
+			" sharing state element with xpath $this->shareStateXpath not found"
+		);
+		return $element->getText();
+	}
+
+	/**
+	 *
+	 * @throws ElementNotFoundException
+	 *
+	 * @return string
+	 */
+	public function getSharer() {
+		$element = $this->rowElement->find("xpath", $this->sharerXpath);
+		$this->assertElementNotNull(
+			$element,
+			__METHOD__ .
+			" sharer element with xpath $this->sharerXpath not found"
+		);
+		return \trim($element->getText());
+	}
+	/**
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function acceptShare($session) {
+		$element = $this->rowElement->find("xpath", $this->acceptShareBtnXpath);
+		$this->assertElementNotNull(
+			$element,
+			__METHOD__ .
+			" accept share button with xpath $this->acceptShareBtnXpath not found"
+		);
+		$element->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function declineShare($session) {
+		//TODO decline already accepted share
+		$element = $this->rowElement->find("xpath", $this->declinePendingShareBtnXpath);
+		if ($element === null) {
+			$this->openFileActionsMenu($session);
+			$element = $this->rowElement->find("xpath", $this->declinePendingShareBtnXpath);
+		}
+		$this->assertElementNotNull(
+			$element,
+			__METHOD__ .
+			" decline share button with xpath $this->declinePendingShareBtnXpath not found"
+		);
+		$element->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * returns the element that contains the highlighted content of the file
+	 * when using elastic search
+	 *
+	 * @throws ElementNotFoundException
+	 * @return NodeElement
+	 */
+	public function getHighlightsElement() {
+		$element = $this->rowElement->find("xpath", $this->highlightsXpath);
+		$this->assertElementNotNull(
+			$element,
+			__METHOD__ .
+			" xpath $this->highlightsXpath " .
+			" highlights element not found"
+		);
+		return $element;
 	}
 }

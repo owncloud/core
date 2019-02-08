@@ -8,51 +8,35 @@
 
 namespace Test;
 
+use OC\AutoLoader;
+
 class AutoLoaderTest extends TestCase {
 	/**
-	 * @var \OC\Autoloader $loader
+	 * @var Autoloader $loader
 	 */
 	private $loader;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->loader = new \OC\AutoLoader([]);
+		$this->loader = new AutoLoader();
 	}
 
-	public function testLegacyPath() {
-		$this->assertEquals([
-			\OC::$SERVERROOT . '/lib/private/legacy/files.php', 
-		], $this->loader->findClass('OC_Files'));
-	}
-
-	public function testLoadTestTestCase() {
-		$this->assertEquals([
-			\OC::$SERVERROOT . '/tests/lib/TestCase.php'
-		], $this->loader->findClass('Test\TestCase'));
-	}
-
-	public function testLoadCore() {
-		$this->assertEquals([
-			\OC::$SERVERROOT . '/lib/private/legacy/foo/bar.php', 
-		], $this->loader->findClass('OC_Foo_Bar'));
-	}
-
-	public function testLoadPublicNamespace() {
+	public function testLoadPublicNamespace(): void {
 		$this->assertEquals([], $this->loader->findClass('OCP\Foo\Bar'));
 	}
 
-	public function testLoadAppNamespace() {
+	public function testLoadAppNamespace(): void {
 		$result = $this->loader->findClass('OCA\Files\Foobar');
 		$this->assertCount(2, $result);
 		$this->assertStringEndsWith('apps/files/foobar.php', $result[0]);
 		$this->assertStringEndsWith('apps/files/lib/foobar.php', $result[1]);
 	}
 
-	public function testLoadCoreNamespaceCore() {
+	public function testLoadCoreNamespaceCore(): void {
 		$this->assertEquals([], $this->loader->findClass('OC\Core\Foo\Bar'));
 	}
 
-	public function testLoadCoreNamespaceSettings() {
+	public function testLoadCoreNamespaceSettings(): void {
 		$this->assertEquals([], $this->loader->findClass('OC\Settings\Foo\Bar'));
 	}
 }

@@ -27,7 +27,6 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class Version implements ISettings {
-
 	public function getPriority() {
 		return 0;
 	}
@@ -40,5 +39,4 @@ class Version implements ISettings {
 	public function getSectionID() {
 		return 'general';
 	}
-
 }

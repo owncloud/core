@@ -102,14 +102,13 @@ class Result {
 		$meta['status'] = $this->succeeded() ? 'ok' : 'failure';
 		$meta['statuscode'] = $this->statusCode;
 		$meta['message'] = $this->message;
-		if(isset($this->items)) {
+		if (isset($this->items)) {
 			$meta['totalitems'] = $this->items;
 		}
-		if(isset($this->perPage)) {
+		if (isset($this->perPage)) {
 			$meta['itemsperpage'] = $this->perPage;
 		}
 		return $meta;
-
 	}
 
 	/**
@@ -139,7 +138,7 @@ class Result {
 		// to be able to reliably check for security
 		// headers
 
-		if(\is_null($value)) {
+		if ($value === null) {
 			unset($this->headers[$name]);
 		} else {
 			$this->headers[$name] = $value;
@@ -155,5 +154,4 @@ class Result {
 	public function getHeaders() {
 		return $this->headers;
 	}
-
 }

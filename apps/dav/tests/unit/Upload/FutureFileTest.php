@@ -23,7 +23,6 @@
 namespace OCA\DAV\Tests\unit\Upload;
 
 class FutureFileTest extends \Test\TestCase {
-
 	public function testGetContentType() {
 		$f = $this->mockFutureFile();
 		$this->assertEquals('application/octet-stream', $f->getContentType());

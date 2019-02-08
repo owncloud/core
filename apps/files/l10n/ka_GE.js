@@ -33,4 +33,4 @@ OC.L10N.register(
     "The files you are trying to upload exceed the maximum size for file uploads on this server." : "ფაილის ზომა რომლის ატვირთვასაც თქვენ აპირებთ, აჭარბებს სერვერზე დაშვებულ მაქსიმუმს.",
     "Text file" : "ტექსტური ფაილი"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n!=1);");

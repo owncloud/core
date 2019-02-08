@@ -28,7 +28,7 @@ namespace OCP;
  * @package OCP
  * @since 7.0.0
  */
-interface ICacheFactory{
+interface ICacheFactory {
 	/**
 	 * Get a memory cache instance
 	 *

@@ -143,11 +143,11 @@ class ViewController extends Controller {
 	 * @param string $fileid
 	 * @return TemplateResponse
 	 */
-	public function index($dir = '', $view = '', $fileid = null) {
+	public function index($dir = '', $view = '', $fileid = null, $details = null) {
 		$fileNotFound = false;
 		if ($fileid !== null) {
 			try {
-				return $this->showFile($fileid);
+				return $this->showFile($fileid, $details);
 			} catch (NotFoundException $e) {
 				$fileNotFound = true;
 			}
@@ -173,12 +173,14 @@ class ViewController extends Controller {
 		\OCP\Util::addScript('files', 'favoritesfilelist');
 		\OCP\Util::addScript('files', 'tagsplugin');
 		\OCP\Util::addScript('files', 'favoritesplugin');
+		\OCP\Util::addScript('files', 'filelockplugin');
 
 		\OCP\Util::addScript('files', 'detailfileinfoview');
 		\OCP\Util::addScript('files', 'detailtabview');
 		\OCP\Util::addScript('files', 'mainfileinfodetailview');
 		\OCP\Util::addScript('files', 'detailsview');
 		\OCP\Util::addStyle('files', 'detailsView');
+		\OCP\Util::addScript('files', 'locktabview');
 
 		\OC_Util::addVendorScript('core', 'handlebars/handlebars');
 
@@ -217,7 +219,7 @@ class ViewController extends Controller {
 		$user = $this->userSession->getUser()->getUID();
 
 		$navItems = \OCA\Files\App::getNavigationManager()->getAll();
-		\usort($navItems, function($item1, $item2) {
+		\usort($navItems, function ($item1, $item2) {
 			return $item1['order'] - $item2['order'];
 		});
 		$nav->assign('navigationItems', $navItems);
@@ -278,7 +280,7 @@ class ViewController extends Controller {
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 */
-	public function showFile($fileId) {
+	public function showFile($fileId, $details = null) {
 		$uid = $this->userSession->getUser()->getUID();
 		$baseFolder = $this->rootFolder->get($uid . '/files/');
 		$files = $baseFolder->getById($fileId);
@@ -307,6 +309,9 @@ class ViewController extends Controller {
 				$params['dir'] = $baseFolder->getRelativePath($file->getParent()->getPath());
 				// and scroll to the entry
 				$params['scrollto'] = $file->getName();
+			}
+			if ($details !== null) {
+				$params['details'] = $details;
 			}
 			$webUrl = $this->urlGenerator->linkToRoute('files.view.index', $params);
 

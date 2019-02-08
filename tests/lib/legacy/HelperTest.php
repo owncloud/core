@@ -34,7 +34,7 @@ class HelperTest extends TestCase {
 				"/usr/local/bin /usr/bin /opt/bin /bin",
 			],
 			[
-				FALSE,
+				false,
 				"/usr/local/bin /usr/bin /opt/bin /bin",
 			],
 			[

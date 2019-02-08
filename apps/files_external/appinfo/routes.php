@@ -52,7 +52,6 @@ $this->create('files_external_oauth1', 'ajax/oauth1.php')
 $this->create('files_external_oauth2', 'ajax/oauth2.php')
 	->actionInclude('files_external/ajax/oauth2.php');
 
-
 $this->create('files_external_list_applicable', '/applicable')
 	->actionInclude('files_external/ajax/applicable.php');
 
@@ -60,4 +59,3 @@ $this->create('files_external_list_applicable', '/applicable')
 		'/apps/files_external/api/v1/mounts',
 		['\OCA\Files_External\Lib\Api', 'getUserMounts'],
 		'files_external');
-

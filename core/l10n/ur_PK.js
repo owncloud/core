@@ -68,7 +68,6 @@ OC.L10N.register(
     "create" : "نیا بنائیں",
     "delete" : "ختم کریں",
     "access control" : "اسیس کنٹرول",
-    "Resharing is not allowed" : "دوبارہ اشتراک کی اجازت نہیں",
     "Delete" : "حذف کریں",
     "Rename" : "نام بدلیں",
     "The object type is not specified." : "اس چیز کی قسم کی وضاحت نہیں",

@@ -49,5 +49,4 @@ class QuotaTest extends \Test\TestCase {
 		$neededSpace = $quota->calculateFreeSpace(100, 'anyuser');
 		$this->assertEquals(0, $neededSpace);
 	}
-
 }

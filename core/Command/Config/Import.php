@@ -168,7 +168,7 @@ class Import extends Command {
 	 * @param string $configName
 	 */
 	protected function checkTypeRecursively($configValue, $configName) {
-		if (!\is_array($configValue) && !\is_bool($configValue) && !\is_int($configValue) && !\is_string($configValue) && !\is_null($configValue)) {
+		if (!\is_array($configValue) && !\is_bool($configValue) && !\is_int($configValue) && !\is_string($configValue) && $configValue !== null) {
 			throw new \UnexpectedValueException('Invalid system config value for "' . $configName . '". Only arrays, bools, integers, strings and null (delete) are allowed.');
 		}
 		if (\is_array($configValue)) {
@@ -186,7 +186,7 @@ class Import extends Command {
 	protected function validateAppsArray($array) {
 		foreach ($array as $app => $configs) {
 			foreach ($configs as $name => $value) {
-				if (!\is_int($value) && !\is_string($value) && !\is_null($value)) {
+				if (!\is_int($value) && !\is_string($value) && $value !== null) {
 					throw new \UnexpectedValueException('Invalid app config value for "' . $app . '":"' . $name . '". Only integers, strings and null (delete) are allowed.');
 				}
 			}

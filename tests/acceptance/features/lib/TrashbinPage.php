@@ -24,6 +24,8 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Page\FilesPageElement\FileRow;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
@@ -36,14 +38,19 @@ class TrashbinPage extends FilesPageBasic {
 	 * @var string $path
 	 */
 	protected $path = '/index.php/apps/files/?view=trashbin';
-	protected $fileNamesXpath = "//span[contains(@class,'nametext')]";
-	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and .=%s]";
+	protected $fileNamesXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext'))]";
+	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext')) and .=%s]";
 	protected $fileListXpath = ".//div[@id='app-content-trashbin']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-trashbin']//div[@id='emptycontent']";
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-trashbin']//*[@class='delete-selected']";
 	protected $restoreAllSelectedBtnXpath = ".//*[@id='app-content-trashbin']//*[@class='undelete']";
 	protected $selectAllFilesCheckboxXpath = "//label[@for='select_all_trash']";
-
+	protected $filePathInRowXpath = "//span[@class='nametext extra-data']";
+	/**
+	 *
+	 * @var FilesPageCRUD $filesPageCRUDFunctions
+	 */
+	protected $filesPageCRUDFunctions;
 	/**
 	 * @return string
 	 */
@@ -73,6 +80,36 @@ class TrashbinPage extends FilesPageBasic {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
+	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
+	 *
+	 * @return void
+	 */
+	protected function getFilePathInRowXpath() {
+		return $this->filePathInRowXpath;
+	}
+
+	/**
+	 * @param Session $session
+	 * @param Factory $factory
+	 * @param array   $parameters
+	 */
+	public function __construct(
+		Session $session, Factory $factory, array $parameters = []
+	) {
+		parent::__construct($session, $factory, $parameters);
+		$this->filesPageCRUDFunctions = $this->getPage("FilesPageCRUD");
+		$this->filesPageCRUDFunctions->setXpath(
+			$this->emptyContentXpath,
+			$this->fileListXpath,
+			$this->fileNameMatchXpath,
+			$this->fileNamesXpath,
+			$this->deleteAllSelectedBtnXpath
+		);
+	}
+
+	/**
 	 * @throws ElementNotFoundException
 	 * @return NodeElement
 	 */
@@ -80,13 +117,12 @@ class TrashbinPage extends FilesPageBasic {
 		$restoreAllSelectedBtn = $this->find(
 			"xpath", $this->restoreAllSelectedBtnXpath
 		);
-		if (\is_null($restoreAllSelectedBtn)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->restoreAllSelectedBtnXpath " .
-				"could not find button to restore all selected files"
-			);
-		}
+		$this->assertElementNotNull(
+			$restoreAllSelectedBtn,
+			__METHOD__ .
+			" xpath $this->restoreAllSelectedBtnXpath " .
+			"could not find button to restore all selected files"
+		);
 		return $restoreAllSelectedBtn;
 	}
 
@@ -103,7 +139,7 @@ class TrashbinPage extends FilesPageBasic {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $fname
 	 * @param Session $session
 	 *
@@ -112,5 +148,55 @@ class TrashbinPage extends FilesPageBasic {
 	public function restore($fname, Session $session) {
 		$row = $this->findFileRowByName($fname, $session);
 		$row->restore();
+	}
+
+	/**
+	 * finds all rows that have the given name
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 *
+	 * @return FileRow[]
+	 * @throws ElementNotFoundException
+	 */
+	public function findAllFileRowsByName($name, Session $session) {
+		$fileRowElements = $this->getFileRowElementsByName($name, $session);
+		foreach ($fileRowElements as $fileRowElement) {
+			$fileRow = $this->getPage('FilesPageElement\\TrashBinFileRow');
+			$fileRow->setElement($fileRowElement);
+			$fileRow->setName($name);
+			$fileRows[] = $fileRow;
+		}
+		return $fileRows;
+	}
+
+	/**
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 * @param bool $expectToDeleteFile
+	 * @param int $maxRetries
+	 *
+	 * @return void
+	 */
+	public function deleteFile(
+		$name,
+		Session $session,
+		$expectToDeleteFile = true,
+		$maxRetries = STANDARD_RETRY_COUNT
+	) {
+		$this->filesPageCRUDFunctions->deleteFile(
+			$name, $session, $expectToDeleteFile, $maxRetries
+		);
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function deleteAllSelectedFiles(Session $session) {
+		$this->filesPageCRUDFunctions->deleteAllSelectedFiles($session);
 	}
 }

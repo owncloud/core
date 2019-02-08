@@ -208,7 +208,7 @@ class ConvertType extends Command {
 		$schemaManager = new \OC\DB\MDB2SchemaManager($toDB);
 		$schemaManager->createDbFromStructure(\OC::$SERVERROOT.'/db_structure.xml');
 		$apps = $input->getOption('all-apps') ? \OC_App::getAllApps() : \OC_App::getEnabledApps();
-		foreach($apps as $app) {
+		foreach ($apps as $app) {
 			if (\file_exists(\OC_App::getAppPath($app).'/appinfo/database.xml')) {
 				$schemaManager->createDbFromStructure(\OC_App::getAppPath($app).'/appinfo/database.xml');
 			}
@@ -235,7 +235,7 @@ class ConvertType extends Command {
 		if (!empty($toTables)) {
 			$output->writeln('<info>Clearing schema in new database</info>');
 		}
-		foreach($toTables as $table) {
+		foreach ($toTables as $table) {
 			$db->getSchemaManager()->dropTable($table);
 		}
 	}
@@ -268,7 +268,6 @@ class ConvertType extends Command {
 		$progress->start($count);
 		$redraw = $count > $chunkSize ? 100 : ($count > 100 ? 5 : 1);
 		$progress->setRedrawFrequency($redraw);
-
 
 		$query = $fromDB->getQueryBuilder();
 		$query->automaticTablePrefix(false);
@@ -309,7 +308,7 @@ class ConvertType extends Command {
 		$this->config->setSystemValue('maintenance', true);
 		try {
 			// copy table rows
-			foreach($tables as $table) {
+			foreach ($tables as $table) {
 				$output->writeln($table);
 				$this->copyTable($fromDB, $toDB, $table, $input, $output);
 			}
@@ -319,7 +318,7 @@ class ConvertType extends Command {
 			}
 			// save new database config
 			$this->saveDBInfo($input);
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			$this->config->setSystemValue('maintenance', false);
 			throw $e;
 		}

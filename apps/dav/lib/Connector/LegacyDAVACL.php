@@ -27,7 +27,6 @@ use OCA\DAV\Connector\Sabre\DavAclPlugin;
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 use Sabre\DAVACL\Xml\Property\Principal;
-use Sabre\HTTP\URLUtil;
 
 class LegacyDAVACL extends DavAclPlugin {
 
@@ -37,7 +36,9 @@ class LegacyDAVACL extends DavAclPlugin {
 	public function getCurrentUserPrincipals() {
 		$principalV2 = $this->getCurrentUserPrincipal();
 
-		if (\is_null($principalV2)) return [];
+		if ($principalV2 === null) {
+			return [];
+		}
 
 		$principalV1 = $this->convertPrincipal($principalV2, false);
 		return \array_merge(
@@ -50,7 +51,7 @@ class LegacyDAVACL extends DavAclPlugin {
 	}
 
 	private function convertPrincipal($principal, $toV2) {
-		list(, $name) = URLUtil::splitPath($principal);
+		list(, $name) = \Sabre\Uri\split($principal);
 		if ($toV2) {
 			return "principals/users/$name";
 		}

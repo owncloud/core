@@ -32,41 +32,41 @@ use Test\Traits\UserTrait;
  * @group DB
  */
 class RemoveMemberTest extends TestCase {
-    use UserTrait;
+	use UserTrait;
 
-    /** @var CommandTester */
-    private $commandTester;
+	/** @var CommandTester */
+	private $commandTester;
 
-    protected function setUp() {
-        parent::setUp();
+	protected function setUp() {
+		parent::setUp();
 
-        $command = new RemoveMember(\OC::$server->getGroupManager(), \OC::$server->getUserManager());
-        $this->commandTester = new CommandTester($command);
+		$command = new RemoveMember(\OC::$server->getGroupManager(), \OC::$server->getUserManager());
+		$this->commandTester = new CommandTester($command);
 
-        $user1 = $this->createUser('user1');
-        $this->createUser('user2');
-        \OC::$server->getGroupManager()->createGroup('group1');
-        \OC::$server->getGroupManager()->get('group1')->addUser($user1);
-    }
+		$user1 = $this->createUser('user1');
+		$this->createUser('user2');
+		\OC::$server->getGroupManager()->createGroup('group1');
+		\OC::$server->getGroupManager()->get('group1')->addUser($user1);
+	}
 
-    /**
-     * @dataProvider inputProvider
-     * @param array $input
-     * @param string $expectedOutput
-     */
-    public function testCommandInput($input, $expectedOutput) {
-        $this->commandTester->execute($input);
-        $output = $this->commandTester->getDisplay();
-        $this->assertContains($expectedOutput, $output);
-    }
+	/**
+	 * @dataProvider inputProvider
+	 * @param array $input
+	 * @param string $expectedOutput
+	 */
+	public function testCommandInput($input, $expectedOutput) {
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
+	}
 
-    public function inputProvider() {
-        return [
-            [['group' => 'groupUnknown', '--member' => ['user2']], 'does not exist'],
-            [['group' => 'group1', '--member' => []], 'No members specified'],
-            [['group' => 'group1', '--member' => ['user1']], 'removed from group'],
-            [['group' => 'group1', '--member' => ['user2']], 'could not be found in group'],
-            [['group' => 'group1', '--member' => ['userUnknown']], 'does not exist - not removed from group'],
-        ];
-    }
+	public function inputProvider() {
+		return [
+			[['group' => 'groupUnknown', '--member' => ['user2']], 'does not exist'],
+			[['group' => 'group1', '--member' => []], 'No members specified'],
+			[['group' => 'group1', '--member' => ['user1']], 'removed from group'],
+			[['group' => 'group1', '--member' => ['user2']], 'could not be found in group'],
+			[['group' => 'group1', '--member' => ['userUnknown']], 'does not exist - not removed from group'],
+		];
+	}
 }

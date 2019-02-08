@@ -21,6 +21,8 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\Message\ResponseInterface;
+
 /**
  * Helper for move and copy files
  *
@@ -44,7 +46,7 @@ class MoveCopyHelper {
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return ResponseInterface
 	 */
 	public static function copy(
 		$baseUrl,
@@ -52,7 +54,7 @@ class MoveCopyHelper {
 		$password,
 		$fromFileName,
 		$toFileName,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {
@@ -77,7 +79,7 @@ class MoveCopyHelper {
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return ResponseInterface
 	 */
 	public static function move(
 		$baseUrl,
@@ -85,7 +87,7 @@ class MoveCopyHelper {
 		$password,
 		$fromFileName,
 		$toFileName,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {
@@ -96,7 +98,7 @@ class MoveCopyHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl URL of owncloud
 	 *                        e.g. http://localhost:8080
 	 *                        should include the subfolder
@@ -111,7 +113,7 @@ class MoveCopyHelper {
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return ResponseInterface
 	 */
 	private static function copyOrMove(
 		$baseUrl,
@@ -120,7 +122,7 @@ class MoveCopyHelper {
 		$password,
 		$fromFileName,
 		$toFileName,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {

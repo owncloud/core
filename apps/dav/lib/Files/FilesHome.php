@@ -23,7 +23,6 @@ namespace OCA\DAV\Files;
 
 use OCA\DAV\Connector\Sabre\ObjectTree;
 use Sabre\DAV\Exception\Forbidden;
-use Sabre\HTTP\URLUtil;
 use Sabre\DAV\ICollection;
 
 class FilesHome extends ObjectTree implements ICollection {
@@ -41,30 +40,30 @@ class FilesHome extends ObjectTree implements ICollection {
 		$this->principalInfo = $principalInfo;
 	}
 
-	function createFile($name, $data = null) {
+	public function createFile($name, $data = null) {
 		return $this->rootNode->createFile($name, $data);
 	}
 
-	function createDirectory($name) {
+	public function createDirectory($name) {
 		$this->rootNode->createDirectory($name);
 	}
 
-	function getChild($name) {
+	public function getChild($name) {
 		return $this->rootNode->getChild($name);
 	}
 
-	function getChildren($path = null) {
+	public function getChildren($path = null) {
 		if ($path === null) {
 			return $this->rootNode->getChildren();
 		}
 		return parent::getChildren($path);
 	}
 
-	function childExists($name) {
+	public function childExists($name) {
 		return $this->rootNode->childExists($name);
 	}
 
-	function getLastModified() {
+	public function getLastModified() {
 		return $this->rootNode->getLastModified();
 	}
 
@@ -72,15 +71,15 @@ class FilesHome extends ObjectTree implements ICollection {
 	 * @param string $path
 	 * @throws Forbidden
 	 */
-	function delete($path = null) {
+	public function delete($path = null) {
 		if ($path === null) {
 			throw new Forbidden('Permission denied to delete home folder');
 		}
 		parent::delete($path);
 	}
 
-	function getName() {
-		list(,$name) = URLUtil::splitPath($this->principalInfo['uri']);
+	public function getName() {
+		list(, $name) = \Sabre\Uri\split($this->principalInfo['uri']);
 		return $name;
 	}
 
@@ -88,7 +87,7 @@ class FilesHome extends ObjectTree implements ICollection {
 	 * @param string $name
 	 * @throws Forbidden
 	 */
-	function setName($name) {
+	public function setName($name) {
 		throw new Forbidden('Permission denied to rename this folder');
 	}
 }

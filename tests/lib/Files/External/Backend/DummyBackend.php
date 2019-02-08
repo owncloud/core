@@ -26,7 +26,6 @@ use OCP\Files\External\Backend\Backend;
 use OCP\Files\External\DefinitionParameter;
 
 class DummyBackend extends Backend {
-
 	public function __construct() {
 		$this
 			->setIdentifier('dummy')

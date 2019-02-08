@@ -27,7 +27,7 @@ class ExpirationTest extends \Test\TestCase {
 
 	const FAKE_TIME_NOW = 1000000;
 
-	public function expirationData(){
+	public function expirationData() {
 		$today = 100*self::SECONDS_PER_DAY;
 		$back10Days = (100-10)*self::SECONDS_PER_DAY;
 		$back20Days = (100-20)*self::SECONDS_PER_DAY;
@@ -100,7 +100,7 @@ class ExpirationTest extends \Test\TestCase {
 	 * @param bool $quotaExceeded
 	 * @param string $expectedResult
 	 */
-	public function testExpiration($retentionObligation, $timeNow, $timestamp, $quotaExceeded, $expectedResult){
+	public function testExpiration($retentionObligation, $timeNow, $timestamp, $quotaExceeded, $expectedResult) {
 		$mockedConfig = $this->getMockedConfig($retentionObligation);
 		$mockedTimeFactory = $this->getMockedTimeFactory($timeNow);
 
@@ -110,8 +110,7 @@ class ExpirationTest extends \Test\TestCase {
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
-
-	public function configData(){
+	public function configData() {
 		return [
 			[ 'disabled', null, null, null],
 			[ 'auto', Expiration::DEFAULT_RETENTION_OBLIGATION, Expiration::NO_OBLIGATION, true ],
@@ -124,7 +123,6 @@ class ExpirationTest extends \Test\TestCase {
 		];
 	}
 
-
 	/**
 	 * @dataProvider configData
 	 *
@@ -133,7 +131,7 @@ class ExpirationTest extends \Test\TestCase {
 	 * @param int $expectedMaxAge
 	 * @param bool $expectedCanPurgeToSaveSpace
 	 */
-	public function testParseRetentionObligation($configValue, $expectedMinAge, $expectedMaxAge, $expectedCanPurgeToSaveSpace){
+	public function testParseRetentionObligation($configValue, $expectedMinAge, $expectedMaxAge, $expectedCanPurgeToSaveSpace) {
 		$mockedConfig = $this->getMockedConfig($configValue);
 		$mockedTimeFactory = $this->getMockedTimeFactory(
 				\time()
@@ -145,8 +143,7 @@ class ExpirationTest extends \Test\TestCase {
 		$this->assertAttributeEquals($expectedCanPurgeToSaveSpace, 'canPurgeToSaveSpace', $expiration);
 	}
 
-
-	public function timestampTestData(){
+	public function timestampTestData() {
 		return [
 			[ 'disabled', false],
 			[ 'auto', false ],
@@ -159,14 +156,13 @@ class ExpirationTest extends \Test\TestCase {
 		];
 	}
 
-
 	/**
 	 * @dataProvider timestampTestData
 	 *
 	 * @param string $configValue
 	 * @param int $expectedMaxAgeTimestamp
 	 */
-	public function testGetMaxAgeAsTimestamp($configValue, $expectedMaxAgeTimestamp){
+	public function testGetMaxAgeAsTimestamp($configValue, $expectedMaxAgeTimestamp) {
 		$mockedConfig = $this->getMockedConfig($configValue);
 		$mockedTimeFactory = $this->getMockedTimeFactory(
 				self::FAKE_TIME_NOW
@@ -182,7 +178,7 @@ class ExpirationTest extends \Test\TestCase {
 	 * @param int $time
 	 * @return \OCP\AppFramework\Utility\ITimeFactory
 	 */
-	private function getMockedTimeFactory($time){
+	private function getMockedTimeFactory($time) {
 		$mockedTimeFactory = $this->getMockBuilder('\OCP\AppFramework\Utility\ITimeFactory')
 				->disableOriginalConstructor()
 				->setMethods(['getTime'])
@@ -200,7 +196,7 @@ class ExpirationTest extends \Test\TestCase {
 	 * @param string $returnValue
 	 * @return \OCP\IConfig
 	 */
-	private function getMockedConfig($returnValue){
+	private function getMockedConfig($returnValue) {
 		$mockedConfig = $this->getMockBuilder('\OCP\IConfig')
 				->disableOriginalConstructor()
 				->setMethods(

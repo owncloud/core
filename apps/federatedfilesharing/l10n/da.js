@@ -8,8 +8,6 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "Det er ikke tilladt at danne et datafællesskab med samme bruger",
     "File is already shared with %s" : "Filen er allerede delt med %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Deling af %s mislykkedes - kunne ikke finde %s. Måske er serveren ikke tilgængelig i øjeblikket.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "Du modtog \"/%3$s\" som en ekstern deling fra %1$s (på vejne af %2$s)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "Du modtog \"/%3$s\" som en ekstern deling fra %1$s",
     "Accept" : "Acceptér",
     "Decline" : "Afvis",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Del med mig gennem min #ownCloud Federated Cloud ID, se %s",

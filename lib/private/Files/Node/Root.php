@@ -371,7 +371,6 @@ class Root extends Folder implements IRootFolder {
 		}
 
 		return $folder;
-
 	}
 
 	private function resolveVirtualNode($fullPath) {

@@ -39,7 +39,6 @@ use Test\Traits\UserTrait;
  * @package Test\Encryption\Keys
  */
 class StorageTest extends TestCase {
-
 	use UserTrait;
 
 	/** @var Storage */
@@ -322,7 +321,7 @@ class StorageTest extends TestCase {
 		// verify that user2's FS got mounted when retrieving the key
 		$mountManager = \OC::$server->getMountManager();
 		$mounts = $mountManager->getAll();
-		$mounts = \array_filter($mounts, function($mount) use ($userId) {
+		$mounts = \array_filter($mounts, function ($mount) use ($userId) {
 			return ($mount->getMountPoint() === "/$userId/");
 		});
 
@@ -428,8 +427,8 @@ class StorageTest extends TestCase {
 			->will($this->returnCallback([$this, 'getUidAndFilenameCallback']));
 		$this->util->expects($this->any())
 			->method('isSystemWideMountPoint')
-			->willReturnCallback(function($path, $owner) use ($systemWideMountSource, $systemWideMountTarget) {
-				if(\strpos($path, 'source.txt') !== false) {
+			->willReturnCallback(function ($path, $owner) use ($systemWideMountSource, $systemWideMountTarget) {
+				if (\strpos($path, 'source.txt') !== false) {
 					return $systemWideMountSource;
 				}
 				return $systemWideMountTarget;
@@ -441,7 +440,7 @@ class StorageTest extends TestCase {
 	/**
 	 * @dataProvider dataProviderCopyRename
 	 */
-	public function testCopyKeys($source, $target, $systemWideMountSource, $systemWideMountTarget , $expectedSource, $expectedTarget) {
+	public function testCopyKeys($source, $target, $systemWideMountSource, $systemWideMountTarget, $expectedSource, $expectedTarget) {
 		$this->view->expects($this->any())
 			->method('file_exists')
 			->willReturn(true);
@@ -459,8 +458,8 @@ class StorageTest extends TestCase {
 			->will($this->returnCallback([$this, 'getUidAndFilenameCallback']));
 		$this->util->expects($this->any())
 			->method('isSystemWideMountPoint')
-			->willReturnCallback(function($path, $owner) use ($systemWideMountSource, $systemWideMountTarget) {
-				if(\strpos($path, 'source.txt') !== false) {
+			->willReturnCallback(function ($path, $owner) use ($systemWideMountSource, $systemWideMountTarget) {
+				if (\strpos($path, 'source.txt') !== false) {
 					return $systemWideMountSource;
 				}
 				return $systemWideMountTarget;
@@ -517,7 +516,6 @@ class StorageTest extends TestCase {
 	 * @param string $expected
 	 */
 	public function testGetPathToKeys($path, $systemWideMountPoint, $storageRoot, $expected) {
-
 		$this->invokePrivate($this->storage, 'root_dir', [$storageRoot]);
 
 		$this->util->expects($this->any())
@@ -575,7 +573,6 @@ class StorageTest extends TestCase {
 	 * @param string $expected
 	 */
 	public function testGetFileKeyDir($isSystemWideMountPoint, $storageRoot, $expected) {
-
 		$path = '/user1/files/foo/bar.txt';
 		$owner = 'user1';
 		$relativePath = '/foo/bar.txt';
@@ -590,7 +587,6 @@ class StorageTest extends TestCase {
 		$this->assertSame($expected,
 			$this->invokePrivate($this->storage, 'getFileKeyDir', ['OC_DEFAULT_MODULE', $path])
 		);
-
 	}
 
 	public function dataTestGetFileKeyDir() {
@@ -601,5 +597,4 @@ class StorageTest extends TestCase {
 			[true, 'newStorageRoot', '/newStorageRoot/files_encryption/keys/foo/bar.txt/OC_DEFAULT_MODULE/'],
 		];
 	}
-
 }

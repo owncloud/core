@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OC\Files\Node;
-
 
 use OC\Files\FileInfo;
 use OCP\Files\NotFoundException;
@@ -114,7 +112,7 @@ class AbstractFolder extends AbstractNode implements \OCP\Files\Folder {
 	/**
 	 * @inheritdoc
 	 */
-	public function getById($id) {
+	public function getById($id, $first = false) {
 		throw new NotPermittedException();
 	}
 
@@ -138,5 +136,4 @@ class AbstractFolder extends AbstractNode implements \OCP\Files\Folder {
 	public function getRelativePath($path) {
 		throw new NotPermittedException();
 	}
-
 }

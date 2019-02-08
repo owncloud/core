@@ -29,7 +29,6 @@ use OCP\Settings\ISection;
  * @since 10.0
  */
 class Section implements ISection {
-
 	protected $id;
 	protected $name;
 	/** @var int */
@@ -58,5 +57,4 @@ class Section implements ISection {
 	public function getIconName() {
 		return $this->icon;
 	}
-
 }

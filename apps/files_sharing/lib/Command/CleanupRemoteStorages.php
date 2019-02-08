@@ -58,7 +58,6 @@ class CleanupRemoteStorages extends Command {
 	}
 
 	public function execute(InputInterface $input, OutputInterface $output) {
-
 		$remoteStorages = $this->getRemoteStorages();
 
 		$output->writeln(\count($remoteStorages) . " remote storage(s) need(s) to be checked");
@@ -91,7 +90,7 @@ class CleanupRemoteStorages extends Command {
 		}
 	}
 
-	public function countFiles ($numericId, OutputInterface $output) {
+	public function countFiles($numericId, OutputInterface $output) {
 		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->select($queryBuilder->createFunction('count(fileid)'))
 			->from('filecache')
@@ -105,7 +104,7 @@ class CleanupRemoteStorages extends Command {
 		$output->writeln("$count files can be deleted for storage $numericId");
 	}
 
-	public function deleteStorage ($id, $numericId, OutputInterface $output) {
+	public function deleteStorage($id, $numericId, OutputInterface $output) {
 		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->delete('storages')
 			->where($queryBuilder->expr()->eq(
@@ -119,7 +118,7 @@ class CleanupRemoteStorages extends Command {
 		$this->deleteFiles($numericId, $output);
 	}
 
-	public function deleteFiles ($numericId, OutputInterface $output) {
+	public function deleteFiles($numericId, OutputInterface $output) {
 		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->delete('filecache')
 			->where($queryBuilder->expr()->eq(
@@ -133,20 +132,19 @@ class CleanupRemoteStorages extends Command {
 	}
 
 	public function getRemoteStorages() {
-
 		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->select(['id', 'numeric_id'])
 			->from('storages')
 			->where($queryBuilder->expr()->like(
 				'id',
 				// match all 'shared::' + 32 characters storages
-				$queryBuilder->createNamedParameter('shared::________________________________', IQueryBuilder::PARAM_STR),
+				$queryBuilder->createPositionalParameter('shared::________________________________', IQueryBuilder::PARAM_STR),
 				IQueryBuilder::PARAM_STR)
 			)
 			->andWhere($queryBuilder->expr()->notLike(
 				'id',
 				// but not the ones starting with a '/', they are for normal shares
-				$queryBuilder->createNamedParameter('shared::/%', IQueryBuilder::PARAM_STR),
+				$queryBuilder->createPositionalParameter('shared::/%', IQueryBuilder::PARAM_STR),
 				IQueryBuilder::PARAM_STR)
 			)->orderBy('numeric_id');
 		$query = $queryBuilder->execute();
@@ -161,7 +159,6 @@ class CleanupRemoteStorages extends Command {
 	}
 
 	public function getRemoteShareIds() {
-
 		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->select(['id', 'share_token', 'remote'])
 			->from('share_external');

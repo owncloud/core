@@ -21,7 +21,6 @@
 
 namespace Tests\Core\Command\User;
 
-
 use OC\Core\Command\User\Setting;
 use Test\TestCase;
 
@@ -71,7 +70,6 @@ class SettingTest extends TestCase {
 				->getMock();
 			return $mock;
 		}
-
 	}
 
 	public function dataCheckInput() {
@@ -287,7 +285,6 @@ class SettingTest extends TestCase {
 			$this->config->expects($this->once())
 				->method('deleteUserValue')
 				->with('username', 'appname', 'configkey');
-
 		} else {
 			$this->consoleOutput->expects($this->once())
 				->method('writeln')
@@ -458,7 +455,6 @@ class SettingTest extends TestCase {
 		$command->expects($this->once())
 			->method('writeArrayInOutputFormat')
 			->with($this->consoleInput, $this->consoleOutput, ['settings']);
-
 
 		$this->assertEquals(0, $this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]));
 	}

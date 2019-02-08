@@ -27,7 +27,6 @@
  *
  */
 try {
-
 	require_once __DIR__ . '/lib/base.php';
 	if (\OCP\Util::needUpgrade()) {
 		// since the behavior of apps or remotes are unpredictable during
@@ -56,8 +55,8 @@ try {
 		$pathInfo = \trim($pathInfo, '/');
 		list($service) = \explode('/', $pathInfo);
 	}
-	$file = OCP\Config::getAppValue('core', 'public_' . \strip_tags($service));
-	if (\is_null($file)) {
+	$file = \OC::$server->getConfig()->getAppValue('core', 'public_' . \strip_tags($service));
+	if ($file === null) {
 		\header('HTTP/1.0 404 Not Found');
 		$dispatcher = \OC::$server->getEventDispatcher();
 		$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
@@ -84,7 +83,6 @@ try {
 	$baseuri = OC::$WEBROOT . '/public.php/' . $service . '/';
 
 	require_once OC_App::getAppPath($app) . '/' . $parts[1];
-
 } catch (Exception $ex) {
 	if ($ex instanceof \OC\ServiceUnavailableException) {
 		OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);

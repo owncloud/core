@@ -80,7 +80,7 @@ describe('OC.Share.ShareDialogMailView', function() {
 	describe('renders', function() {
 		it('bcc checkbox field if usermail is present', function() {
 			// mail set in initial currentUserStub
-			expect(view.$('.emailPrivateLinkForm--emailBccSelf').length).toEqual(1);
+			expect(view.$('.emailPrivateLinkForm--emailToSelf').length).toEqual(1);
 		});
 	});
 
@@ -97,6 +97,18 @@ describe('OC.Share.ShareDialogMailView', function() {
 			view._removeAddress('Albert.Wesker@umbrella.com');
 			expect(view._addresses.length).toEqual(2);
 			expect(view._addresses[1]).toEqual('jill.valentine@umbrella.com');
+		});
+	});
+
+	describe('validating addresses', function() {
+		it('works as expected', function() {
+			expect(view.validateEmail('Ada.Wong@umbrella.com')).toEqual(true);
+			expect(view.validateEmail('Albert.Wesker@umbrella.sub-domain.com')).toEqual(true);
+			expect(view.validateEmail('Albert_Wesker@umbrella.sub-domain.com')).toEqual(true);
+			expect(view.validateEmail('Albert-Wesker@umbrella-new.sub-domain.com')).toEqual(true);
+			expect(view.validateEmail('Jill.Valentine@um#rella.com')).toEqual(true);
+
+			expect(view.validateEmail('Jill.Valentine@umbrella..c')).toEqual(false);
 		});
 	});
 
@@ -130,7 +142,7 @@ describe('OC.Share.ShareDialogMailView', function() {
 				file: 'shared_folder',
 				expiration: '2017-10-12',
 				emailBody: '',
-				bccSelf: 'false'
+				toSelf: 'false'
 			});
 
 			fakeServer.requests[0].respond(
@@ -156,7 +168,7 @@ describe('OC.Share.ShareDialogMailView', function() {
 		it('sends mail to self if BCC is checked', function() {
 			var callback = sinon.stub();
 			view._addAddress('GlaDOS@aperture.com');
-			view.$('.emailPrivateLinkForm--emailBccSelf').prop('checked', 'checked');
+			view.$('.emailPrivateLinkForm--emailToSelf').prop('checked', 'checked');
 			view.$('.emailPrivateLinkForm--emailBodyField').val('The Cake Is A Lie!');
 			view.sendEmails().then(callback);
 
@@ -173,7 +185,7 @@ describe('OC.Share.ShareDialogMailView', function() {
 				file: 'shared_folder',
 				expiration: '2017-10-12',
 				emailBody: 'The Cake Is A Lie!',
-				bccSelf: 'true'
+				toSelf: 'true'
 			});
 
 			fakeServer.requests[0].respond(

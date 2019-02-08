@@ -8,15 +8,33 @@
 }
 
 /* FILE MENU */
-.actions { padding:5px; height:32px; display: inline-block; float: left; }
-.actions input, .actions button, .actions .button { margin:0; float:left; }
-.actions .button a { color: #555; }
-.actions .button a:hover,
+.actions {
+	padding: 5px;
+	height: 32px;
+	display: inline-block;
+	float: left;
+}
+
+.actions .button,
+.actions button,
+.actions input {
+	margin: 0;
+	float: left;
+}
+
+.actions .button a {
+	color: #555;
+}
+
+.actions .button a:active,
 .actions .button a:focus,
-.actions .button a:active {
+.actions .button a:hover {
 	color: #333;
 }
-.actions.hidden { display: none; }
+
+.actions.hidden {
+	display: none;
+}
 
 .actions.creatable {
 	position: relative;
@@ -31,7 +49,8 @@
 	font-weight: normal;
 }
 
-.newFileMenu .error, #fileList .error {
+#fileList .error,
+.newFileMenu .error {
 	color: #e9322d;
 	border-color: #e9322d;
 	-webkit-box-shadow: 0 0 6px #f8b9b7;
@@ -51,10 +70,13 @@
 
 /* make sure there's enough room for the file actions */
 #body-user #filestable {
-	min-width: 688px; /* 768 (mobile break) - 80 (nav width) */
+	min-width: 688px;
+	/* 768 (mobile break) - 80 (nav width) */
 }
+
 #body-user #controls {
-	min-width: 688px; /* 768 (mobile break) - 80 (nav width) */
+	min-width: 688px;
+	/* 768 (mobile break) - 80 (nav width) */
 }
 
 #filestable tbody tr {
@@ -63,8 +85,8 @@
 }
 
 /* fit app list view heights */
-.app-files #app-content>.viewcontainer {
-	min-height: 0%;
+.app-files #app-content > .viewcontainer {
+	min-height: 0;
 }
 
 .app-files #app-content {
@@ -73,23 +95,28 @@
 
 /* icons for sidebar */
 .nav-icon-files {
-	background-image: url('../img/folder.svg');
+	background-image: url("../img/folder.svg");
 }
+
 .nav-icon-favorites {
-	background-image: url('../img/star.svg');
+	background-image: url("../img/star.svg");
 }
+
 .nav-icon-sharingin,
 .nav-icon-sharingout {
-	background-image: url('../img/share.svg');
+	background-image: url("../img/share.svg");
 }
+
 .nav-icon-sharinglinks {
-	background-image: url('../img/public.svg');
+	background-image: url("../img/public.svg");
 }
+
 .nav-icon-extstoragemounts {
-	background-image: url('../img/external.svg');
+	background-image: url("../img/external.svg");
 }
+
 .nav-icon-trashbin {
-	background-image: url('../img/delete.svg');
+	background-image: url("../img/delete.svg");
 }
 
 #app-navigation .nav-files a.nav-icon-files {
@@ -116,45 +143,54 @@
 	background-color: #fff;
 	height: 40px;
 }
-#filestable tbody tr:hover,
-#filestable tbody tr:focus,
-#filestable tbody tr:active,
+
 #filestable tbody tr.highlighted,
 #filestable tbody tr.highlighted .name:focus,
-#filestable tbody tr.selected,
 #filestable tbody tr.searchresult,
+#filestable tbody tr.selected,
+#filestable tbody tr:active,
+#filestable tbody tr:focus,
+#filestable tbody tr:hover,
 table tr.mouseOver td {
 	background-color: #f8f8f8;
 }
-tbody a { color:#000; }
 
-span.extension, span.uploading, td.date {
+tbody a {
+	color: #000;
+}
+
+span.extension,
+span.uploading,
+td.date {
 	color: #999;
 }
+
 span.extension {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
 	filter: alpha(opacity=70);
-	opacity: .7;
+	opacity: 0.7;
 	-webkit-transition: opacity 300ms;
 	-moz-transition: opacity 300ms;
 	-o-transition: opacity 300ms;
 	transition: opacity 300ms;
 	vertical-align: top;
 }
-tr:hover span.extension,
-tr:focus span.extension {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+
+tr:focus span.extension,
+tr:hover span.extension {
 	filter: alpha(opacity=100);
 	opacity: 1;
 	color: #777;
 }
 
-table th, table th a {
+table th,
+table th a {
 	color: #999;
 }
+
 table.multiselect th a {
 	color: #000;
 }
+
 table th .columntitle {
 	display: block;
 	padding: 15px;
@@ -163,6 +199,7 @@ table th .columntitle {
 	-moz-box-sizing: border-box;
 	vertical-align: middle;
 }
+
 table th .columntitle.name {
 	padding-left: 5px;
 	padding-right: 80px;
@@ -175,39 +212,45 @@ table th .sort-indicator {
 	margin-left: 5px;
 	display: inline-block;
 	vertical-align: text-bottom;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
 	filter: alpha(opacity=30);
-	opacity: .3;
+	opacity: 0.3;
 }
-.sort-indicator.hidden,
+
 .multiselect .sort-indicator,
-table.multiselect th:hover .sort-indicator.hidden,
-table.multiselect th:focus .sort-indicator.hidden {
+.sort-indicator.hidden,
+table.multiselect th:focus .sort-indicator.hidden,
+table.multiselect th:hover .sort-indicator.hidden {
 	visibility: hidden;
 }
-.multiselect .sort, .multiselect .sort span {
+
+.multiselect .sort,
+.multiselect .sort span {
 	cursor: default;
 }
-table th:hover .sort-indicator.hidden,
-table th:focus .sort-indicator.hidden {
+
+table th:focus .sort-indicator.hidden,
+table th:hover .sort-indicator.hidden {
 	visibility: visible;
 }
 
-table th,
-table td {
+table td,
+table th {
 	border-bottom: 1px solid #eee;
 	text-align: left;
 	font-weight: normal;
 }
+
 table td {
 	padding: 0 15px;
 	font-style: normal;
 	background-position: 8px center;
 	background-repeat: no-repeat;
 }
+
 table th#headerName {
 	position: relative;
-	width: 9999px; /* not really sure why this works better than 100% … table styling */
+	width: 9999px;
+	/* not really sure why this works better than 100% … table styling */
 	padding: 0;
 }
 
@@ -215,15 +258,20 @@ table th#headerName {
 	position: relative;
 	height: 50px;
 }
+
 .has-favorites #headerName-container {
 	padding-left: 50px;
 }
 
-table th#headerSize, table td.filesize {
+table td.filesize,
+table th#headerSize {
 	text-align: right;
 }
-table th#headerDate, table td.date,
-table th.column-last, table td.column-last {
+
+table td.column-last,
+table td.date,
+table th#headerDate,
+table th.column-last {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	position: relative;
@@ -236,45 +284,53 @@ table th.column-last, table td.column-last {
 #filestable.multiselect {
 	top: 95px;
 }
+
 table.multiselect thead {
 	position: fixed;
 	top: 89px;
 	z-index: 10;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	left: 250px; /* sidebar */
+	left: 250px;
+	/* sidebar */
 }
 
 table thead th {
 	background-color: #fff;
 }
+
 table.multiselect thead th {
-	background-color: rgba(255, 255, 255, 0.95); /* like controls bar */
+	background-color: rgba(255, 255, 255, 0.95);
+	/* like controls bar */
 	color: #000;
 	font-weight: bold;
 	border-bottom: 0;
 }
 
-#app-content.with-app-sidebar table.multiselect thead{
+#app-content.with-app-sidebar table.multiselect thead {
 	margin-right: 27%;
 }
 
 table.multiselect #headerName {
 	position: relative;
-	width: 9999px; /* when we use 100%, the styling breaks on mobile … table styling */
+	width: 9999px;
+	/* when we use 100%, the styling breaks on mobile … table styling */
 }
+
 table.multiselect #modified {
 	display: none;
 }
 
+table td.fileaction,
 table td.selection,
-table th.selection,
-table td.fileaction {
+table th.selection {
 	width: 32px;
 	text-align: center;
 }
+
 table td.filename a.name {
-	position:relative; /* Firefox needs to explicitly have this default set … */
+	position: relative;
+	/* Firefox needs to explicitly have this default set … */
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	display: block;
@@ -282,6 +338,7 @@ table td.filename a.name {
 	line-height: 50px;
 	padding: 0;
 }
+
 table td.filename .thumbnail {
 	display: inline-block;
 	width: 32px;
@@ -293,20 +350,49 @@ table td.filename .thumbnail {
 	position: absolute;
 	z-index: 4;
 }
+
 table td.filename input.filename {
 	width: 70%;
 	margin-top: 9px;
 	margin-left: 48px;
 	cursor: text;
 }
+/* hack to disable cursor on non-clickable links as removing the anchor tag would break more */
+#filestable td.filename a.name.disable-click,
+#filestable td.filename a.name.disable-click span,
+#filestable tr.share-state-pending td.filename .action-share,
+#filestable tr.share-state-pending td.filename .action-share span,
+#filestable tr.share-state-pending td.filename .innernametext,
+#filestable tr.share-state-pending td.filename .thumbnail,
+#filestable tr.share-state-rejected td.filename .innernametext,
+#filestable tr.share-state-rejected td.filename .thumbnail {
+	cursor: default;
+}
+
 .has-favorites table td.filename input.filename {
 	margin-left: 52px;
 }
 
-table td.filename a, table td.login, table td.logout, table td.download, table td.upload, table td.create, table td.delete { padding:3px 8px 8px 3px; }
-table td.filename .nametext, .uploadtext, .modified, .column-last>span:first-child { float:left; padding:15px 0; }
+table td.create,
+table td.delete,
+table td.download,
+table td.filename a,
+table td.login,
+table td.logout,
+table td.upload {
+	padding: 3px 8px 8px 3px;
+}
 
-.modified, .column-last>span:first-child {
+.column-last > span:first-child,
+.modified,
+.uploadtext,
+table td.filename .nametext {
+	float: left;
+	padding: 15px 0;
+}
+
+.column-last > span:first-child,
+.modified {
 	position: relative;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -323,6 +409,7 @@ table td.filename .nametext {
 	max-width: 800px;
 	height: 100%;
 }
+
 .has-favorites #fileList td.filename a.name {
 	left: 50px;
 	margin-right: 50px;
@@ -334,11 +421,12 @@ table td.filename .nametext {
 }
 
 #fileList tr.animate-opacity {
-	-webkit-transition:opacity 250ms;
-	-moz-transition:opacity 250ms;
-	-o-transition:opacity 250ms;
-	transition:opacity 250ms;
+	-webkit-transition: opacity 250ms;
+	-moz-transition: opacity 250ms;
+	-o-transition: opacity 250ms;
+	transition: opacity 250ms;
 }
+
 #fileList tr.dragging {
 	opacity: 0.2;
 }
@@ -355,6 +443,7 @@ table td.filename .nametext .innernametext {
 	table td.filename .nametext .innernametext {
 		max-width: 790px;
 	}
+
 	.with-app-sidebar table td.filename .nametext .innernametext {
 		max-width: 390px;
 	}
@@ -363,6 +452,7 @@ table td.filename .nametext .innernametext {
 	table td.filename .nametext .innernametext {
 		max-width: 660px;
 	}
+
 	.with-app-sidebar table td.filename .nametext .innernametext {
 		max-width: 290px;
 	}
@@ -371,6 +461,7 @@ table td.filename .nametext .innernametext {
 	table td.filename .nametext .innernametext {
 		max-width: 500px;
 	}
+
 	.with-app-sidebar table td.filename .nametext .innernametext {
 		max-width: 230px;
 	}
@@ -379,6 +470,7 @@ table td.filename .nametext .innernametext {
 	table td.filename .nametext .innernametext {
 		max-width: 400px;
 	}
+
 	.with-app-sidebar table td.filename .nametext .innernametext {
 		max-width: 230px;
 	}
@@ -387,6 +479,7 @@ table td.filename .nametext .innernametext {
 	table td.filename .nametext .innernametext {
 		max-width: 310px;
 	}
+
 	.with-app-sidebar table td.filename .nametext .innernametext {
 		max-width: 230px;
 	}
@@ -395,6 +488,7 @@ table td.filename .nametext .innernametext {
 	table td.filename .nametext .innernametext {
 		max-width: 240px;
 	}
+
 	.with-app-sidebar table td.filename .nametext .innernametext {
 		max-width: 230px;
 	}
@@ -409,53 +503,53 @@ table td.filename .uploadtext {
 	height: 20px;
 	padding: 10px 0;
 	font-size: 11px;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 	filter: alpha(opacity=50);
-	opacity: .5;
+	opacity: 0.5;
 }
 
-.ie8 input[type="checkbox"]{
+.ie8 input[type="checkbox"] {
 	padding: 0;
 }
 
 /* File checkboxes */
-html:not(.ie8) #fileList tr td.filename>.selectCheckBox + label:before {
+html:not(.ie8) #fileList tr td.filename > .selectCheckBox + label:before {
 	opacity: 0;
 	position: absolute;
 	bottom: 4px;
 	right: 0;
 	z-index: 10;
 }
-html.ie8 #fileList tr td.filename>.selectCheckBox {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+
+html.ie8 #fileList tr td.filename > .selectCheckBox {
 	filter: alpha(opacity=0);
 	opacity: 0;
 	float: left;
 	top: 0;
-	margin: 32px 0 4px 32px; /* bigger clickable area doesn’t work in FF width:2.8em; height:2.4em;*/
+	margin: 32px 0 4px 32px;
+	/* bigger clickable area doesn’t work in FF width:2.8em; height:2.4em;*/
 }
 
 /* Show checkbox when hovering, checked, or selected */
-html.ie8 #fileList tr:hover td.filename>.selectCheckBox,
-html.ie8 #fileList tr:focus td.filename>.selectCheckBox,
-html.ie8 #fileList tr td.filename>.selectCheckBox:checked,
-html.ie8 #fileList tr.selected td.filename>.selectCheckBox,
-html:not(.ie8) #fileList tr:hover td.filename>.selectCheckBox + label:before,
-html:not(.ie8) #fileList tr:focus td.filename>.selectCheckBox + label:before,
-html:not(.ie8) #fileList tr td.filename>.selectCheckBox:checked + label:before,
-html:not(.ie8) #fileList tr.selected td.filename>.selectCheckBox + label:before {
+html.ie8 #fileList tr td.filename > .selectCheckBox:checked,
+html.ie8 #fileList tr.selected td.filename > .selectCheckBox,
+html.ie8 #fileList tr:focus td.filename > .selectCheckBox,
+html.ie8 #fileList tr:hover td.filename > .selectCheckBox,
+html:not(.ie8) #fileList tr td.filename > .selectCheckBox:checked + label:before,
+html:not(.ie8) #fileList tr.selected td.filename > .selectCheckBox + label:before,
+html:not(.ie8) #fileList tr:focus td.filename > .selectCheckBox + label:before,
+html:not(.ie8) #fileList tr:hover td.filename > .selectCheckBox + label:before {
 	opacity: 1;
 }
-html.ie8 #fileList tr:hover td.filename>.selectCheckBox,
-html.ie8 #fileList tr:focus td.filename>.selectCheckBox,
-html.ie8 #fileList tr td.filename>.selectCheckBox[checked=checked],
-html.ie8 #fileList tr.selected td.filename>.selectCheckBox {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+
+html.ie8 #fileList tr td.filename > .selectCheckBox[checked=checked],
+html.ie8 #fileList tr.selected td.filename > .selectCheckBox,
+html.ie8 #fileList tr:focus td.filename > .selectCheckBox,
+html.ie8 #fileList tr:hover td.filename > .selectCheckBox {
 	filter: alpha(opacity=100);
 }
 
 /* Use label to have bigger clickable size for checkbox */
-#fileList tr td.filename>.selectCheckBox + label,
+#fileList tr td.filename > .selectCheckBox + label,
 .select-all + label {
 	background-position: 30px 30px;
 	height: 50px;
@@ -463,15 +557,18 @@ html.ie8 #fileList tr.selected td.filename>.selectCheckBox {
 	width: 50px;
 	z-index: 5;
 }
-#fileList tr td.filename>.selectCheckBox {
+
+#fileList tr td.filename > .selectCheckBox {
 	/* sometimes checkbox height is bigger (KDE/Qt), so setting to absolute
 	 * to prevent it to increase the height */
 	position: absolute;
 	z-index: 10;
 }
+
 .select-all + label {
 	top: 0;
 }
+
 .ie8 .select-all,
 .select-all + label:before {
 	position: absolute;
@@ -479,6 +576,7 @@ html.ie8 #fileList tr.selected td.filename>.selectCheckBox {
 	left: 18px;
 	z-index: 10;
 }
+
 .has-favorites .select-all {
 	left: 68px;
 }
@@ -487,8 +585,11 @@ html.ie8 #fileList tr.selected td.filename>.selectCheckBox {
 	position: relative;
 	width: 100%;
 	padding-left: 0;
-	padding-right:0;
-	-webkit-transition:background-image 500ms; -moz-transition:background-image 500ms; -o-transition:background-image 500ms; transition:background-image 500ms;
+	padding-right: 0;
+	-webkit-transition: background-image 500ms;
+	-moz-transition: background-image 500ms;
+	-o-transition: background-image 500ms;
+	transition: background-image 500ms;
 }
 
 #fileList tr td.filename a.name label {
@@ -501,6 +602,7 @@ html.ie8 #fileList tr.selected td.filename>.selectCheckBox {
 	display: inline-block;
 	float: left;
 }
+
 #fileList tr td.filename .action-favorite {
 	display: block;
 	float: left;
@@ -509,7 +611,10 @@ html.ie8 #fileList tr.selected td.filename>.selectCheckBox {
 	text-align: center;
 }
 
-#uploadsize-message,#delete-confirm { display:none; }
+#delete-confirm,
+#uploadsize-message {
+	display: none;
+}
 
 /* File actions */
 .fileactions {
@@ -517,35 +622,43 @@ html.ie8 #fileList tr.selected td.filename>.selectCheckBox {
 	right: 0;
 }
 
-.busy .fileactions, .busy .action {
+.busy .action,
+.busy .fileactions {
 	visibility: hidden;
 }
 
 /* fix position of bubble pointer for Files app */
-.bubble,
-#app-navigation .app-navigation-entry-menu {
+#app-navigation .app-navigation-entry-menu,
+.bubble {
 	border-top-right-radius: 3px;
 }
-.bubble:after,
-#app-navigation .app-navigation-entry-menu:after {
+
+#app-navigation .app-navigation-entry-menu:after,
+.bubble:after {
 	right: 6px;
 }
-.bubble:before,
-#app-navigation .app-navigation-entry-menu:before {
+
+#app-navigation .app-navigation-entry-menu:before,
+.bubble:before {
 	right: 6px;
 }
 
 /* force show the loading icon, not only on hover */
 #fileList .icon-loading-small {
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter:alpha(opacity=100);
 	opacity: 1 !important;
 	display: inline !important;
 }
 
-#fileList img.move2trash { display:inline; margin:-8px 0; padding:16px 8px 16px 8px !important; float:right; }
+#fileList img.move2trash {
+	display: inline;
+	margin: -8px 0;
+	padding: 16px 8px 16px 8px !important;
+	float: right;
+}
 
-#fileList .action.action-share-notification span, #fileList a.name {
+#fileList .action.action-share-notification span,
+#fileList a.name {
 	cursor: default !important;
 }
 
@@ -561,20 +674,24 @@ a.action > img {
 	top: 0;
 	right: 0;
 }
+
 .selectedActions a {
 	display: inline;
 	font-size: 11px;
 	line-height: 50px;
 	padding: 18px 5px;
 }
+
 .selectedActions a.delete-selected {
 	padding-right: 15px;
 }
+
 .selectedActions a.hidden {
 	display: none;
 }
+
 .selectedActions a img {
-	position:relative;
+	position: relative;
 	vertical-align: text-bottom;
 	margin-bottom: -1px;
 }
@@ -587,102 +704,87 @@ html.ie8 .column-mtime .selectedActions {
 	display: inline;
 	padding: 17px 8px;
 	line-height: 50px;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 	filter: alpha(opacity=0);
 	opacity: 0;
-	display:none;
+	display: none;
 }
+
 #fileList a.action.action-share {
 	padding: 17px 14px;
 }
 
 #fileList a.action.action-menu {
-	padding-top: 17px;
-	padding-bottom: 17px;
-	padding-left:14px;
-	padding-right:0px;
+	padding: 17px 0 17px 14px;
 }
 
 #fileList .filesize {
-	padding-top:0px;
-	padding-bottom:0px;
-	padding-left:60px;
-	padding-right:15px;
+	padding: 0 15px 0 60px;
 }
 
 #fileList .popovermenu {
 	margin-right: -5px;
 }
+
 .ie8 #fileList .popovermenu {
 	margin-top: -10px;
 }
 
-.ie8 #fileList a.action img,
-#fileList tr:hover a.action,
-#fileList a.action.permanent,
-#fileList tr:focus a.action,
-#fileList a.action.permanent,
-#fileList tr:hover a.action.no-permission:hover,
-#fileList tr:focus a.action.no-permission:focus,
+.ie8 #fileList a.action img, #fileList tr:hover a.action, #fileList a.action.permanent, #fileList tr:focus a.action, #fileList a.action.permanent, #fileList tr:hover a.action.no-permission:hover, #fileList tr:focus a.action.no-permission:focus,
 /*#fileList .name:focus .action,*/
 /* also enforce the low opacity for disabled links that are hovered/focused */
-.ie8 #fileList a.action.disabled:hover img,
-#fileList tr:hover a.action.disabled:hover,
-#fileList tr:focus a.action.disabled:focus,
 #fileList .name:focus a.action.disabled:focus,
-#fileList a.action.disabled img {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+#fileList a.action.disabled img,
+#fileList tr:focus a.action.disabled:focus,
+#fileList tr:hover a.action.disabled:hover,
+.ie8 #fileList a.action.disabled:hover img {
 	filter: alpha(opacity=30);
-	opacity: .3;
-	display:inline;
+	opacity: 0.3;
+	display: inline;
 }
-.ie8 #fileList a.action:hover img,
+
+#fileList .name:focus a.action:focus,
 #fileList tr a.action.disabled.action-download,
-#fileList tr:hover a.action.disabled.action-download:hover,
 #fileList tr:focus a.action.disabled.action-download:focus,
-#fileList tr:hover a.action:hover,
 #fileList tr:focus a.action:focus,
-#fileList .name:focus a.action:focus {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+#fileList tr:hover a.action.disabled.action-download:hover,
+#fileList tr:hover a.action:hover,
+.ie8 #fileList a.action:hover img {
 	filter: alpha(opacity=70);
 	opacity: 7;
-	display:inline;
+	display: inline;
 }
+
 #fileList tr a.action.disabled {
 	background: none;
 }
 
 /* show share action of shared items darker to distinguish from non-shared */
-#fileList a.action.permanent.shared-style,
-#fileList a.action.action-favorite.permanent {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)" !important;
+#fileList a.action.action-favorite.permanent,
+#fileList a.action.permanent.shared-style {
 	filter: alpha(opacity=70) !important;
-	opacity: .7 !important;
+	opacity: 0.7 !important;
 }
 /* always show actions on mobile, not only on hover */
 #fileList a.action.action-menu.permanent {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)" !important;
 	filter: alpha(opacity=30) !important;
-	opacity: .3 !important;
+	opacity: 0.3 !important;
 	display: inline !important;
 }
 
 /* properly display actions in the popover menu */
 #fileList .popovermenu .action {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)" !important;
 	filter: alpha(opacity=50) !important;
-	opacity: .5 !important;
+	opacity: 0.5 !important;
 }
-#fileList .popovermenu .action:hover,
-#fileList .popovermenu .action:focus {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)" !important;
+
+#fileList .popovermenu .action:focus,
+#fileList .popovermenu .action:hover {
 	filter: alpha(opacity=100) !important;
 	opacity: 1 !important;
 }
 
-
-#selectedActionsList a.download.disabled,
-#fileList tr a.action.action-download.disabled {
+#fileList tr a.action.action-download.disabled,
+#selectedActionsList a.download.disabled {
 	color: #000000;
 }
 
@@ -691,41 +793,47 @@ html.ie8 .column-mtime .selectedActions {
 }
 
 .summary {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
 	filter: alpha(opacity=30);
-	opacity: .3;
+	opacity: 0.3;
 	/* add whitespace to bottom of files list to correctly show dropdowns */
 	height: 300px;
 }
-.summary:hover,
-.summary:focus,
+
 .summary,
+.summary:focus,
+.summary:hover,
 table tr.summary td {
 	background-color: transparent;
 }
+
 .summary td {
 	border-bottom: none;
 	vertical-align: top;
 	padding-top: 20px;
 }
+
 .summary .info {
 	margin-left: 40px;
 }
+
 .has-favorites .summary .info {
 	margin-left: 90px;
 }
 
 table.dragshadow {
-	width:auto;
+	width: auto;
 }
+
 table.dragshadow td.filename {
-	padding-left:60px;
-	padding-right:16px;
+	padding-left: 60px;
+	padding-right: 16px;
 	height: 36px;
 }
+
 table.dragshadow td.size {
-	padding-right:8px;
+	padding-right: 8px;
 }
+
 #upgrade {
 	width: 400px;
 	position: absolute;
@@ -734,6 +842,7 @@ table.dragshadow td.size {
 	text-align: center;
 	margin-left: -200px;
 }
+
 .mask {
 	z-index: 50;
 	position: absolute;
@@ -752,7 +861,8 @@ table.dragshadow td.size {
 	-ms-transition: opacity 100ms;
 	-webkit-transition: opacity 100ms;
 }
-.mask.transparent{
+
+.mask.transparent {
 	opacity: 0;
 }
 
@@ -780,16 +890,16 @@ html.ie8 #controls .button.new {
 	white-space: nowrap;
 	overflow: hidden;
 }
+
+.newFileMenu.popovermenu .menuitem,
 .newFileMenu.popovermenu a.menuitem,
-.newFileMenu.popovermenu label.menuitem,
-.newFileMenu.popovermenu .menuitem {
+.newFileMenu.popovermenu label.menuitem {
 	padding: 0;
 	margin: 0;
 }
 
 .newFileMenu.popovermenu a.menuitem.active {
 	opacity: 1;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);
 }
 
@@ -797,6 +907,7 @@ html.ie8 #controls .button.new {
 	left: 75px;
 	right: auto;
 }
+
 .newFileMenu.bubble:before {
 	left: 75px;
 	right: auto;
@@ -818,23 +929,23 @@ html.ie8 #controls .button.new {
 	padding: 0;
 }
 
+#controls .actions .button .icon,
 #filestable .filename .action .icon,
-#filestable .selectedActions a .icon,
-#controls .actions .button .icon {
+#filestable .selectedActions a .icon {
 	display: inline-block;
 	vertical-align: middle;
 	background-size: 16px 16px;
 }
 
+#controls .actions .button .icon.hidden,
 #filestable .filename .action .icon.hidden,
-#filestable .selectedActions a .icon.hidden,
-#controls .actions .button .icon.hidden {
+#filestable .selectedActions a .icon.hidden {
 	display: none;
 }
 
+#controls .actions .button .icon.loading,
 #filestable .filename .action .icon.loading,
-#filestable .selectedActions a .icon.loading,
-#controls .actions .button .icon.loading {
+#filestable .selectedActions a .icon.loading {
 	width: 15px;
 	height: 15px;
 }
@@ -843,9 +954,9 @@ html.ie8 #controls .button.new {
 	margin-bottom: 2px;
 }
 
-.canDrop,
-#filestable tbody tr.canDrop {
-  background-color: rgba(255, 255, 140, 1);
+#filestable tbody tr.canDrop,
+.canDrop {
+	background-color: rgba(255, 255, 140, 1);
 }
 
 /* Default files-list incl. sharing */

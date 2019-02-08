@@ -22,26 +22,17 @@
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
+use TestHelpers\HttpRequestHelper;
 
 /**
  * CalDav functions
  */
 class CalDavContext implements \Behat\Behat\Context\Context {
 	/**
-	 * @var Client 
-	 */
-	private $client;
-	/**
-	 * @var ResponseInterface 
+	 * @var ResponseInterface
 	 */
 	private $response;
-	/**
-	 * @var array 
-	 */
-	private $responseXml = '';
 
 	/**
 	 * @var FeatureContext
@@ -60,8 +51,6 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
-		$this->client = new Client();
-		$this->responseXml = '';
 	}
 
 	/**
@@ -70,20 +59,17 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 */
 	public function afterScenario() {
-		$davUrl = $this->featureContext->getBaseUrl() . '/remote.php/dav/calendars/admin/MyCalendar';
-		try {
-			$this->client->delete(
-				$davUrl,
-				[
-					'auth' => $this->featureContext->getAuthOptionForAdmin()
-				]
-			);
-		} catch (BadResponseException $e) {
-		}
+		$davUrl = $this->featureContext->getBaseUrl()
+			. '/remote.php/dav/calendars/admin/MyCalendar';
+		HttpRequestHelper::delete(
+			$davUrl,
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword()
+		);
 	}
 
 	/**
-	 * @When user :user requests calendar :calendar using the API
+	 * @When user :user requests calendar :calendar using the new WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $calendar
@@ -91,18 +77,28 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 */
 	public function userRequestsCalendarUsingTheAPI($user, $calendar) {
-		$davUrl = $this->featureContext->getBaseUrl() . '/remote.php/dav/calendars/' . $calendar;
+		$user = $this->featureContext->getActualUsername($user);
+		$davUrl = $this->featureContext->getBaseUrl()
+			. "/remote.php/dav/calendars/$calendar";
 
-		try {
-			$this->response = $this->client->get(
-				$davUrl,
-				[
-					'auth' => $this->featureContext->getAuthOptionForUser($user)
-				]
-			);
-		} catch (BadResponseException $e) {
-			$this->response = $e->getResponse();
-		}
+		$this->response = HttpRequestHelper::get(
+			$davUrl, $user, $this->featureContext->getPasswordForUser($user)
+		);
+		$this->featureContext->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
+	}
+
+	/**
+	 * @When the administrator requests calendar :calendar using the new WebDAV API
+	 *
+	 * @param string $calendar
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRequestsCalendarUsingTheNewWebdavApi($calendar) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->userRequestsCalendarUsingTheAPI($admin, $calendar);
 	}
 
 	/**
@@ -123,57 +119,6 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 				)
 			);
 		}
-
-		$body = $this->response->getBody()->getContents();
-		if ($body && \substr($body, 0, 1) === '<') {
-			$reader = new Sabre\Xml\Reader();
-			$reader->xml($body);
-			$this->responseXml = $reader->parse();
-		}
-	}
-
-	/**
-	 * @Then the CalDAV exception should be :message
-	 *
-	 * @param string $message
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCalDavExceptionShouldBe($message) {
-		$result = $this->responseXml['value'][0]['value'];
-
-		if ($message !== $result) {
-			throw new \Exception(
-				\sprintf(
-					'Expected %s got %s',
-					$message,
-					$result
-				)
-			);
-		}
-	}
-
-	/**
-	 * @Then the CalDAV error message should be :message
-	 *
-	 * @param string $message
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCalDavErrorMessageShouldBe($message) {
-		$result = $this->responseXml['value'][1]['value'];
-
-		if ($message !== $result) {
-			throw new \Exception(
-				\sprintf(
-					'Expected %s got %s',
-					$message,
-					$result
-				)
-			);
-		}
 	}
 
 	/**
@@ -183,21 +128,42 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @param string $name
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function userHasCreatedACalendarNamed($user, $name) {
-		$davUrl = $this->featureContext->getBaseUrl() . '/remote.php/dav/calendars/' . $user . '/' . $name;
+		$user = $this->featureContext->getActualUsername($user);
+		$davUrl = $this->featureContext->getBaseUrl()
+			. "/remote.php/dav/calendars/$user/$name";
 
-		$request = $this->client->createRequest(
-			'MKCALENDAR',
-			$davUrl,
-			[
-				'body' => '<c:mkcalendar xmlns:c="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:a="http://apple.com/ns/ical/" xmlns:o="http://owncloud.org/ns"><d:set><d:prop><d:displayname>test</d:displayname><o:calendar-enabled>1</o:calendar-enabled><a:calendar-color>#21213D</a:calendar-color><c:supported-calendar-component-set><c:comp name="VEVENT"/></c:supported-calendar-component-set></d:prop></d:set></c:mkcalendar>',
-				'auth' => $this->featureContext->getAuthOptionForUser($user)
-			]
+		$body
+			= '<c:mkcalendar xmlns:c="urn:ietf:params:xml:ns:caldav" ' .
+			'xmlns:d="DAV:" xmlns:a="http://apple.com/ns/ical/" ' .
+			'xmlns:o="http://owncloud.org/ns"><d:set><d:prop><d:displayname>' .
+			'test</d:displayname><o:calendar-enabled>1</o:calendar-enabled>' .
+			'<a:calendar-color>#21213D</a:calendar-color>' .
+			'<c:supported-calendar-component-set><c:comp name="VEVENT"/>' .
+			'</c:supported-calendar-component-set></d:prop></d:set>' .
+			'</c:mkcalendar>';
+
+		$this->response = HttpRequestHelper::sendRequest(
+			$davUrl, "MKCALENDAR", $user,
+			$this->featureContext->getPasswordForUser($user), null, $body
 		);
-
-		$this->response = $this->client->send($request);
 		$this->theCalDavHttpStatusCodeShouldBe(201);
+		$this->featureContext->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
 	}
 
+	/**
+	 * @Given the administrator has successfully created a calendar named :name
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSuccessfullyCreatedACalendarNamed($name) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->userHasCreatedACalendarNamed($admin, $name);
+	}
 }

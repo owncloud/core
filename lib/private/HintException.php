@@ -26,7 +26,6 @@
 namespace OC;
 
 class HintException extends \Exception {
-
 	private $hint;
 
 	public function __construct($message, $hint = '', $code = 0, \Exception $previous = null) {

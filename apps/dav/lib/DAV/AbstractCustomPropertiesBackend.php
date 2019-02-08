@@ -23,7 +23,7 @@ namespace OCA\DAV\DAV;
 
 use OCP\IDBConnection;
 use OCP\IUser;
-use Sabre\Dav\Exception\Forbidden;
+use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\INode;
@@ -131,8 +131,8 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 	 * @param string|int $key
 	 * @return array|null
 	 */
-	protected function offsetGet($key){
-		if (!isset($this->cache[$key])){
+	protected function offsetGet($key) {
+		if (!isset($this->cache[$key])) {
 			return null;
 		}
 		return $this->cache[$key];
@@ -142,14 +142,14 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 	 * @param string|int $key
 	 * @param array $value
 	 */
-	protected function offsetSet($key, $value){
+	protected function offsetSet($key, $value) {
 		$this->cache[$key] = $value;
 	}
 
 	/**
 	 * @param string|int $key
 	 */
-	protected function offsetUnset($key){
+	protected function offsetUnset($key) {
 		unset($this->cache[$key]);
 	}
 
@@ -162,7 +162,7 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 	 */
 	public function propFind($path, PropFind $propFind) {
 		$node = $this->getNodeForPath($path);
-		if (\is_null($node)) {
+		if ($node === null) {
 			return;
 		}
 
@@ -198,11 +198,11 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 	 */
 	public function propPatch($path, PropPatch $propPatch) {
 		$node = $this->getNodeForPath($path);
-		if (\is_null($node)) {
+		if ($node === null) {
 			return;
 		}
 
-		$propPatch->handleRemaining(function($changedProps) use ($path, $node) {
+		$propPatch->handleRemaining(function ($changedProps) use ($path, $node) {
 			return $this->updateProperties($path, $node, $changedProps);
 		});
 	}
@@ -233,7 +233,7 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 	 * @param string $path
 	 * @return INode|null
 	 */
-	protected function getNodeForPath($path){
+	protected function getNodeForPath($path) {
 		try {
 			$node = $this->tree->getNodeForPath($path);
 			return $node;
@@ -256,5 +256,4 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 		}
 		return null;
 	}
-
 }

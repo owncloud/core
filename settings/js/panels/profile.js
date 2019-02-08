@@ -8,20 +8,23 @@ function changeEmailAddress () {
 	}
 	emailInfo.defaultValue = emailInfo.val();
 	OC.msg.startSaving('#lostpassword .msg');
-	var post = $("#lostpassword").serializeArray();
 	$.ajax({
 		type: 'PUT',
-		url: OC.generateUrl('/settings/users/{id}/mailAddress', {id: OC.currentUser}),
-		data: {
-			mailAddress: post[0].value
-		}
+		url: OC.linkToOCS('cloud/users', 2) + encodeURIComponent(OC.currentUser) +
+			 "?format=json",
+		data: "key=email&value=" + encodeURIComponent(emailInfo.val()),
 	}).done(function(result){
-		// I know the following 4 lines look weird, but that is how it works
 		// in jQuery -  for success the first parameter is the result
 		//              for failure the first parameter is the result object
+		result.status = result.ocs.meta.status;
+		result.data = new Object();
+		result.data.message = t('settings', 'Email has been changed successfully.');
 		OC.msg.finishedSaving('#lostpassword .msg', result);
 	}).fail(function(result){
-		OC.msg.finishedSaving('#lostpassword .msg', result.responseJSON);
+		result.status = result.responseJSON.ocs.meta.status;
+		result.data = new Object();
+		result.data.message = t('settings', 'Unable to change mail address');
+		OC.msg.finishedSaving('#lostpassword .msg', result);
 	});
 }
 
@@ -31,23 +34,31 @@ function changeEmailAddress () {
 function changeDisplayName () {
 	if ($('#displayName').val() !== '') {
 		OC.msg.startSaving('#displaynameform .msg');
-		// Serialize the data
-		var post = $("#displaynameform").serialize();
 		// Ajax foo
-		$.post(OC.generateUrl('/settings/users/{id}/displayName', {id: OC.currentUser}), post, function (data) {
-			if (data.status === "success") {
-				$('#oldDisplayName').val($('#displayName').val());
-				// update displayName on the top right expand button
-				$('#expandDisplayName').text($('#displayName').val());
-				// update avatar if avatar is available
-				if(!$('#removeavatar').hasClass('hidden')) {
-					updateAvatar();
-				}
+		$.ajax({
+			type: 'PUT',
+			url: OC.linkToOCS('cloud/users', 2) +
+				 encodeURIComponent(OC.currentUser) +
+				 "?format=json",
+			data: "key=display&value=" + encodeURIComponent($('#displayName').val())
+		}).done(function(result){
+			$('#oldDisplayName').val($('#displayName').val());
+			// update displayName on the top right expand button
+			$('#expandDisplayName').text($('#displayName').val());
+			// update avatar if avatar is available
+			if(!$('#removeavatar').hasClass('hidden')) {
+				updateAvatar();
 			}
-			else {
-				$('#newdisplayname').val(data.data.displayName);
-			}
-			OC.msg.finishedSaving('#displaynameform .msg', data);
+			result.status = result.ocs.meta.status;
+			result.data = new Object();
+			result.data.message = t('settings', 'Your full name has been changed.');
+			OC.msg.finishedSaving('#displaynameform .msg', result);
+		}).fail(function(result){
+			$('#displayName').val($('#oldDisplayName').val());
+			result.status = result.responseJSON.ocs.meta.status;
+			result.data = new Object();
+			result.data.message = result.responseJSON.ocs.meta.message;
+			OC.msg.finishedSaving('#displaynameform .msg', result);
 		});
 	}
 }
@@ -66,10 +77,12 @@ function updateAvatar (hidedefault) {
 	}
 	$displaydiv.css({'background-color': ''});
 	$displaydiv.avatar(OC.currentUser, 145, true);
-	$.get(OC.generateUrl(
-		'/avatar/{user}/{size}',
-		{user: OC.currentUser, size: 1}
-	), function (result) {
+	var url = OC.getRootPath() +
+		'/remote.php/dav/avatars' +
+		'/' + encodeURIComponent(OC.getCurrentUser().uid) +
+		'/96.jpeg';
+
+	$.get(url, function (result) {
 		if (typeof(result) === 'string') {
 			// Show the delete button when the avatar is custom
 			$('#removeavatar').removeClass('hidden').addClass('inlineblock');
@@ -323,10 +336,11 @@ $(document).ready(function () {
 	});
 
 	// does the user have a custom avatar? if he does show #removeavatar
-	$.get(OC.generateUrl(
-		'/avatar/{user}/{size}',
-		{user: OC.currentUser, size: 1}
-	), function (result) {
+	var url = OC.getRootPath() +
+		'/remote.php/dav/avatars' +
+		'/' + encodeURIComponent(OC.getCurrentUser().uid) +
+		'/1.jpeg';
+	$.get(url, function (result) {
 		if (typeof(result) === 'string') {
 			// Show the delete button when the avatar is custom
 			$('#removeavatar').removeClass('hidden').addClass('inlineblock');

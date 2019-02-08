@@ -31,14 +31,14 @@ use Sabre\DAV\IFile;
  */
 class AssemblyStreamZsync extends AssemblyStream {
 
-	/** @var array */
+	/** @var IFile */
 	private $backingFile = null;
 
 	/** @var array */
 	private $backingNode = null;
 
 	/** @var array */
-	private $currentNode = null;
+	protected $currentNode = null;
 
 	/** @var int */
 	private $next = 0;
@@ -56,21 +56,23 @@ class AssemblyStreamZsync extends AssemblyStream {
 		// sort the nodes
 		$nodes = $this->nodes;
 		// http://stackoverflow.com/a/10985500
-		@\usort($nodes, function(IFile $a, IFile $b) {
+		@\usort($nodes, function (IFile $a, IFile $b) {
 			return \strnatcmp($a->getName(), $b->getName());
 		});
 		$this->nodes = $nodes;
 
 		// build additional information
 		$this->sortedNodes = [];
-		foreach($this->nodes as $node) {
+		foreach ($this->nodes as $node) {
 			$size = $node->getSize();
 			$name = $node->getName();
 			// ignore .zsync metadata file
-			if (!\strcmp($name,".zsync"))
+			if (!\strcmp($name, ".zsync")) {
 				continue;
-			if ($size == 0)
+			}
+			if ($size == 0) {
 				continue;
+			}
 			$this->sortedNodes[$name] = ['node' => $node, 'start' => (int)$name, 'end' => (int)$name + $size];
 		}
 
@@ -85,8 +87,9 @@ class AssemblyStreamZsync extends AssemblyStream {
 	 */
 	public function stream_read($count) {
 		// we're done if we've reached the end of where we need to be
-		if ($this->pos >= $this->size)
+		if ($this->pos >= $this->size) {
 			return;
+		}
 
 		// change the node/stream when we've reached the point we need to be at
 		if ($this->currentStream === null || $this->pos == $this->next) {
@@ -97,8 +100,9 @@ class AssemblyStreamZsync extends AssemblyStream {
 		}
 
 		// get the next byte offset when we need to change node/stream again
-		if ($this->pos == $this->next)
+		if ($this->pos == $this->next) {
 			$this->next = $this->getNextNodeStart($this->pos);
+		}
 
 		// catch case when client doesn't send enough data
 		if ($this->next <= $this->pos) {
@@ -108,12 +112,14 @@ class AssemblyStreamZsync extends AssemblyStream {
 		}
 
 		// don't read beyond the expected file size
-		if ($count + $this->pos >= $this->size)
+		if ($count + $this->pos >= $this->size) {
 			$count = $this->size - $this->pos;
+		}
 
 		// don't read beyond the next marker
-		if ($count + $this->pos >= $this->next)
+		if ($count + $this->pos >= $this->next) {
 			$count = $this->next - $this->pos;
+		}
 
 		// read the data
 		$data = \fread($this->currentStream, $count);
@@ -202,11 +208,13 @@ class AssemblyStreamZsync extends AssemblyStream {
 	}
 
 	protected function getNextNodeStart($current) {
-		foreach($this->sortedNodes as $node) {
-			if ($current >= $node['start'] && $current < $node['end'])
+		foreach ($this->sortedNodes as $node) {
+			if ($current >= $node['start'] && $current < $node['end']) {
 				return $node['end'];
-			if ($current < $node['start'])
+			}
+			if ($current < $node['start']) {
 				return $node['start'];
+			}
 		}
 		return $this->currentNode['end'];
 	}
@@ -215,7 +223,7 @@ class AssemblyStreamZsync extends AssemblyStream {
 	 * @param $pos
 	 */
 	protected function getNodeForPosition($pos) {
-		foreach($this->sortedNodes as $node) {
+		foreach ($this->sortedNodes as $node) {
 			if ($pos >= $node['start'] && $pos < $node['end']) {
 				return [$node, 0];
 			}

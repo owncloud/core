@@ -69,7 +69,7 @@ class Admin implements ISettings {
 	}
 
 	public function getPriority() {
-		return 98;
+		return 90;
 	}
 
 	public function getSectionID() {
@@ -95,5 +95,4 @@ class Admin implements ISettings {
 		$template->assign('autoAddServers', $trustedServers->getAutoAddServers());
 		return $template;
 	}
-
 }

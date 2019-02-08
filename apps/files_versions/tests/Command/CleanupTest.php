@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\Files_Versions\Tests\Command;
-
 
 use OC\User\Manager;
 use OCA\Files_Versions\Command\CleanUp;
@@ -55,7 +53,6 @@ class CleanupTest extends TestCase {
 		$this->userManager = $this->getMockBuilder('OC\User\Manager')
 			->disableOriginalConstructor()->getMock();
 
-
 		$this->cleanup = new CleanUp($this->rootFolder, $this->userManager);
 	}
 
@@ -64,14 +61,12 @@ class CleanupTest extends TestCase {
 	 * @param boolean $nodeExists
 	 */
 	public function testDeleteVersions($nodeExists) {
-
 		$this->rootFolder->expects($this->once())
 			->method('nodeExists')
 			->with('/testUser/files_versions')
 			->willReturn($nodeExists);
 
-
-		if($nodeExists) {
+		if ($nodeExists) {
 			$this->rootFolder->expects($this->once())
 				->method('get')
 				->with('/testUser/files_versions')
@@ -94,7 +89,6 @@ class CleanupTest extends TestCase {
 			[false]
 		];
 	}
-
 
 	/**
 	 * test delete versions from users given as parameter
@@ -139,7 +133,7 @@ class CleanupTest extends TestCase {
 			->setConstructorArgs([$this->rootFolder, $this->userManager])
 			->getMock();
 
-		$backend = $this->getMockBuilder('OC_User_Interface')
+		$backend = $this->getMockBuilder(\OCP\UserInterface::class)
 			->disableOriginalConstructor()->getMock();
 		$backend->expects($this->once())->method('getUsers')
 			->with('', 500, 0)
@@ -166,5 +160,4 @@ class CleanupTest extends TestCase {
 
 		$this->invokePrivate($instance, 'execute', [$inputInterface, $outputInterface]);
 	}
-
 }

@@ -30,6 +30,7 @@ use OCA\Provisioning_API\Groups;
 use OCP\API;
 use OCP\IGroupManager;
 use OCP\IRequest;
+use OCP\IUser;
 use OCP\IUserSession;
 
 class GroupsTest extends \Test\TestCase {
@@ -118,7 +119,7 @@ class GroupsTest extends \Test\TestCase {
 
 		$this->subAdminManager
 			->method('isSubAdminOfGroup')
-			->will($this->returnCallback(function($_user, $_group) use ($user, $group) {
+			->will($this->returnCallback(function ($_user, $_group) use ($user, $group) {
 				if ($_user === $user && $_group === $group) {
 					return true;
 				}
@@ -175,7 +176,6 @@ class GroupsTest extends \Test\TestCase {
 		$this->assertInstanceOf('OC_OCS_Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(API::RESPOND_UNAUTHORISED, $result->getStatusCode());
-
 	}
 
 	public function testGetGroupAsSubadmin() {
@@ -365,6 +365,58 @@ class GroupsTest extends \Test\TestCase {
 		$this->assertEquals(102, $result->getStatusCode());
 	}
 
+	public function testAddGroupUserDoesNotExist() {
+		$this->request
+			->method('getParam')
+			->with('groupid')
+			->willReturn('NewGroup');
+
+		$this->groupManager
+			->method('groupExists')
+			->with('NewGroup')
+			->willReturn(false);
+
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->willReturn(null);
+
+		$result = $this->api->addGroup([]);
+		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertFalse($result->succeeded());
+		$this->assertEquals(102, $result->getStatusCode());
+	}
+
+	public function testAddGroupUserNotAdmin() {
+		$this->request
+			->method('getParam')
+			->with('groupid')
+			->willReturn('NewGroup');
+
+		$this->groupManager
+			->method('groupExists')
+			->with('NewGroup')
+			->willReturn(false);
+
+		$this->groupManager->expects($this->once())
+			->method('isAdmin')
+			->willReturn(false);
+
+		$iUser = $this->createMock(IUser::class);
+		$iUser->expects($this->once())
+			->method('getUID')
+			->willReturn('user1');
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($iUser);
+
+		$result = $this->api->addGroup([]);
+		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertFalse($result->succeeded());
+		$this->assertEquals(997, $result->getStatusCode());
+	}
+
 	public function testAddGroup() {
 		$this->request
 			->method('getParam')
@@ -380,6 +432,19 @@ class GroupsTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('createGroup')
 			->with('NewGroup');
+
+		$this->groupManager->expects($this->once())
+			->method('isAdmin')
+			->willReturn(true);
+
+		$iUser = $this->createMock(IUser::class);
+		$iUser->expects($this->once())
+			->method('getUID')
+			->willReturn('user1');
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($iUser);
 
 		$result = $this->api->addGroup([]);
 		$this->assertInstanceOf('OC_OCS_Result', $result);
@@ -401,6 +466,19 @@ class GroupsTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('createGroup')
 			->with('Iñtërnâtiônàlizætiøn');
+
+		$this->groupManager->expects($this->once())
+			->method('isAdmin')
+			->willReturn(true);
+
+		$iUser = $this->createMock(IUser::class);
+		$iUser->expects($this->once())
+			->method('getUID')
+			->willReturn('user1');
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($iUser);
 
 		$result = $this->api->addGroup([]);
 		$this->assertInstanceOf('OC_OCS_Result', $result);
@@ -451,5 +529,6 @@ class GroupsTest extends \Test\TestCase {
 		]);
 		$this->assertInstanceOf('OC_OCS_Result', $result);
 		$this->assertTrue($result->succeeded());
+		$this->assertEquals(100, $result->getStatusCode());
 	}
 }

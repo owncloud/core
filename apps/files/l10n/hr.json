@@ -32,6 +32,7 @@
     "You don’t have permission to upload or create files here" : "Ovdje vam nije dopušteno učitavati ili kreirati datoteke",
     "_Uploading %n file_::_Uploading %n files_" : ["Prenosim %n datoteku","Prenosim %n datoteke","Prenosim %n datoteka"],
     "New" : "Novo",
+    "Unknown user" : "Korisnik nepoznat",
     "\"{name}\" is an invalid file name." : "\"{name}\" je neispravno ime datoteke.",
     "File name cannot be empty." : "Naziv datoteke ne može biti prazan.",
     "Your storage is full, files can not be updated or synced anymore!" : "Vaša je pohrana puna, datoteke više nije moguće ažurirati niti sinkronizirati!",

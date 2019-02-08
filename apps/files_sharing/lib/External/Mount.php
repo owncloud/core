@@ -71,7 +71,7 @@ class Mount extends MountPoint implements MoveableMount {
 
 	/**
 	 * Returns true
-	 * 
+	 *
 	 * @param string $target unused
 	 * @return bool true
 	 */

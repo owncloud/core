@@ -96,21 +96,21 @@ class ListRoutes extends Base {
 							'methods' => $route->getMethods()
 						];
 					}
-					\sort ($rows[$path]['methods']);
+					\sort($rows[$path]['methods']);
 				}
 			}
 		}
 		\usort($rows, function ($a, $b) {
 			return \strcmp($a['path'], $b['path']);
 		});
-		$rows = \array_map(function($row) {
+		$rows = \array_map(function ($row) {
 			$row['methods'] = \implode(',', $row['methods']);
 			return $row;
 		}, $rows);
 
-		if ($outputType === self::OUTPUT_FORMAT_JSON ) {
+		if ($outputType === self::OUTPUT_FORMAT_JSON) {
 			$output->write(\json_encode($rows));
-		} else if ($outputType === self::OUTPUT_FORMAT_JSON_PRETTY) {
+		} elseif ($outputType === self::OUTPUT_FORMAT_JSON_PRETTY) {
 			$output->writeln(\json_encode($rows, JSON_PRETTY_PRINT));
 		} else {
 			$table = new Table($output);
@@ -202,11 +202,10 @@ class ListRoutes extends Base {
 		yield $method;
 		yield \implode('', \explode('_', $method));
 		foreach (['post', 'put'] as $verb) {
-			if (\substr( $method, -\strlen($verb)) == $verb) {
+			if (\substr($method, -\strlen($verb)) == $verb) {
 				yield \substr($method, 0, -\strlen($verb));
 				yield \implode('', \explode('_', \substr($method, 0, -\strlen($verb))));
 			}
 		}
 	}
-
 }

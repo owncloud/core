@@ -54,6 +54,9 @@ class AssemblyStream implements \Icewind\Streams\File {
 	/** @var resource */
 	protected $currentStream = null;
 
+	/** @var IFile */
+	protected $currentNode;
+
 	/**
 	 * @param string $path
 	 * @param string $mode
@@ -67,7 +70,7 @@ class AssemblyStream implements \Icewind\Streams\File {
 		// sort the nodes
 		$nodes = $this->nodes;
 		// http://stackoverflow.com/a/10985500
-		@\usort($nodes, function(IFile $a, IFile $b) {
+		@\usort($nodes, function (IFile $a, IFile $b) {
 			return \strnatcmp($a->getName(), $b->getName());
 		});
 		$this->nodes = $nodes;
@@ -75,12 +78,13 @@ class AssemblyStream implements \Icewind\Streams\File {
 		// build additional information
 		$this->sortedNodes = [];
 		$start = 0;
-		foreach($this->nodes as $node) {
+		foreach ($this->nodes as $node) {
 			$size = $node->getSize();
 			$name = $node->getName();
 			// ignore .zsync metadata file
-			if (!\strcmp($name,".zsync"))
+			if (!\strcmp($name, ".zsync")) {
 				continue;
+			}
 			$this->sortedNodes[$name] = ['node' => $node, 'start' => $start, 'end' => $start + $size];
 			$start += $size;
 			$this->size = $start;
@@ -112,7 +116,7 @@ class AssemblyStream implements \Icewind\Streams\File {
 		do {
 			if ($this->currentStream === null) {
 				list($node, $posInNode) = $this->getNodeForPosition($this->pos);
-				if (\is_null($node)) {
+				if ($node === null) {
 					// reached last node, no more data
 					return '';
 				}
@@ -207,7 +211,6 @@ class AssemblyStream implements \Icewind\Streams\File {
 		return true;
 	}
 
-
 	/**
 	 * Load the source from the stream context and return the context options
 	 *
@@ -257,7 +260,7 @@ class AssemblyStream implements \Icewind\Streams\File {
 	 * @return IFile | null
 	 */
 	protected function getNodeForPosition($pos) {
-		foreach($this->sortedNodes as $node) {
+		foreach ($this->sortedNodes as $node) {
 			if ($pos >= $node['start'] && $pos < $node['end']) {
 				return [$node['node'], $pos - $node['start']];
 			}
@@ -275,7 +278,6 @@ class AssemblyStream implements \Icewind\Streams\File {
 			return $data;
 		}
 
-		return \fopen('data://text/plain,' . $data,'r');
+		return \fopen('data://text/plain,' . $data, 'r');
 	}
-
 }

@@ -223,7 +223,7 @@ class Activity implements IExtension {
 	 * @param string $text
 	 * @return array|false
 	 */
-	function getSpecialParameterList($app, $text) {
+	public function getSpecialParameterList($app, $text) {
 		if ($app === self::APP_FILES) {
 			switch ($text) {
 				case 'created_self':

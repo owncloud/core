@@ -34,7 +34,6 @@ use OCP\L10N\IFactory;
 use OCP\Theme\ITheme;
 use OCP\Theme\IThemeService;
 
-
 /**
  * A factory that generates language instances
  */
@@ -137,9 +136,9 @@ class Factory implements IFactory {
 		 *
 		 * @link https://github.com/owncloud/core/issues/21955
 		 */
-		if(!\is_null($this->userSession) && $this->config->getSystemValue('installed', false)) {
-			$userId = !\is_null($this->userSession->getUser()) ? $this->userSession->getUser()->getUID() :  null;
-			if(!\is_null($userId)) {
+		if ($this->userSession !== null && $this->config->getSystemValue('installed', false)) {
+			$userId = $this->userSession->getUser() !== null ? $this->userSession->getUser()->getUID() :  null;
+			if ($userId !== null) {
 				$userLang = $this->config->getUserValue($userId, 'core', 'lang', null);
 			} else {
 				$userLang = null;
@@ -310,7 +309,7 @@ class Factory implements IFactory {
 			if (\file_exists($this->serverRoot . '/' . $app . '/l10n/')) {
 				return $this->serverRoot . '/' . $app . '/l10n/';
 			}
-		} else if ($app && \OC_App::getAppPath($app) !== false) {
+		} elseif ($app && \OC_App::getAppPath($app) !== false) {
 			// Check if the app is in the app folder
 			return \OC_App::getAppPath($app) . '/l10n/';
 		}
@@ -371,7 +370,7 @@ class Factory implements IFactory {
 	 */
 	protected function getActiveAppThemeDirectory() {
 		$theme = $this->themeService->getTheme();
-		if ($theme instanceof ITheme && $theme->getDirectory() !== '' ) {
+		if ($theme instanceof ITheme && $theme->getDirectory() !== '') {
 			return $theme->getBaseDirectory(). '/' . $theme->getDirectory();
 		}
 		return '';

@@ -26,6 +26,7 @@ namespace OC\Preview;
 
 use Imagick;
 use OCP\Files\File;
+use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
 use OCP\Util;
 
@@ -40,7 +41,6 @@ abstract class Bitmap implements IProvider2 {
 	 * {@inheritDoc}
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
-
 		$stream = $file->fopen('r');
 
 		// Creates \Imagick object from bitmap or vector file
@@ -53,7 +53,6 @@ abstract class Bitmap implements IProvider2 {
 			\fclose($stream);
 		}
 
-
 		//new bitmap image object
 		$image = new \OC_Image();
 		$image->loadFromData($bp);
@@ -64,7 +63,7 @@ abstract class Bitmap implements IProvider2 {
 	/**
 	 * @inheritdoc
 	 */
-	public function isAvailable(File $file) {
+	public function isAvailable(FileInfo $file) {
 		return true;
 	}
 
@@ -117,5 +116,4 @@ abstract class Bitmap implements IProvider2 {
 
 		return $bp;
 	}
-
 }

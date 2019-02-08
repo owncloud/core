@@ -40,7 +40,7 @@ $dir = isset($_GET['dir']) ? $_GET['dir']: '';
 if (!\is_array($files_list)) {
 	$files_list = [$files_list];
 } else {
-	$files_list = \array_map(function($file) {
+	$files_list = \array_map(function ($file) {
 		return $file;
 	}, $files_list);
 }
@@ -50,7 +50,7 @@ if (!\is_array($files_list)) {
  * the content must not be longer than 32 characters and must only contain
  * alphanumeric characters
  */
-if(isset($_GET['downloadStartSecret'])
+if (isset($_GET['downloadStartSecret'])
 	&& !isset($_GET['downloadStartSecret'][32])
 	&& \preg_match('!^[a-zA-Z0-9]+$!', $_GET['downloadStartSecret']) === 1) {
 	\setcookie('ocDownloadStarted', $_GET['downloadStartSecret'], \time() + 20, '/');

@@ -25,13 +25,19 @@
 namespace OC\Share;
 
 class Constants {
-
 	const SHARE_TYPE_USER = 0;
 	const SHARE_TYPE_GROUP = 1;
 	const SHARE_TYPE_LINK = 3;
 	const SHARE_TYPE_GUEST = 4;
 	const SHARE_TYPE_CONTACT = 5; // ToDo Check if it is still in use otherwise remove it
 	const SHARE_TYPE_REMOTE = 6;  // ToDo Check if it is still in use otherwise remove it
+
+	/**
+	 * Values for the "accepted" field of a share.
+	 */
+	const STATE_ACCEPTED = 0;
+	const STATE_PENDING = 1;
+	const STATE_REJECTED = 2;
 
 	const FORMAT_NONE = -1;
 	const FORMAT_STATUSES = -2;

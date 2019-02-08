@@ -24,6 +24,7 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Page\FilesPageElement\DetailsDialog;
 use Page\FilesPageElement\FileActionsMenu;
 use Page\FilesPageElement\FileRow;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -34,7 +35,6 @@ use WebDriver\Exception\StaleElementReference;
  * Common elements/methods for all Files Pages
  */
 abstract class FilesPageBasic extends OwncloudPage {
-
 	protected $fileActionMenuBtnXpathByNo = ".//*[@id='fileList']/tr[%d]//a[@data-action='menu']";
 	protected $fileActionMenuBtnXpath = "//a[@data-action='menu']";
 	protected $fileActionMenuXpath = "//div[contains(@class,'fileActionsMenu')]";
@@ -44,13 +44,13 @@ abstract class FilesPageBasic extends OwncloudPage {
 	protected $appContentFilesContainerId = "app-content-files";
 	protected $controlsId = "controls";
 	protected $loadingIndicatorXpath = ".//*[@class='loading']";
-	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 	protected $fileRowXpathFromActionMenu = "/../..";
 	protected $appSettingsXpath = "//div[@id='app-settings']";
 	protected $showHiddenFilesCheckboxXpath = "//label[@for='showhiddenfilesToggle']";
 	protected $selectAllFilesCheckboxXpath = "//label[@for='select_all_files']";
 	protected $appSettingsContentId = "app-settings-content";
 	protected $styleOfCheckboxWhenVisible = "display: block;";
+	protected $detailsDialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
 
 	/**
 	 * @return string
@@ -73,12 +73,141 @@ abstract class FilesPageBasic extends OwncloudPage {
 	abstract protected function getEmptyContentXpath();
 
 	/**
+	 * @return string
+	 */
+	abstract protected function getFilePathInRowXpath();
+
+	/**
+	 * finds all row elements that have the given name
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 *
+	 * @return NodeElement[]
+	 * @throws ElementNotFoundException
+	 */
+	protected function getFileRowElementsByName($name, Session $session) {
+		$previousFileCount = 0;
+		$currentFileCount = null;
+		$spaceLeftTillBottom = 0;
+		$this->scrollToPosition("#$this->appContentId", 0, $session);
+
+		if (\is_array($name)) {
+			if (\count($name) === 1) {
+				$xpathString = $this->quotedText($name[0]);
+			} else {
+				// Concatenating separate parts of the file name allows
+				// some parts to contain single quotes and the others to contain
+				// double quotes.
+				$comma = '';
+				$xpathString = "concat(";
+
+				foreach ($name as $nameComponent) {
+					$xpathString .= $comma . $this->quotedText($nameComponent);
+					$comma = ',';
+				}
+				$xpathString .= ")";
+			}
+
+			$name = \implode($name);
+		} else {
+			$xpathString = $this->quotedText($name);
+		}
+
+		//loop to keep on scrolling down to load not viewed files
+		//when the scroll does not retrieve any new files, the file is not there
+		do {
+			$fileListElement = $this->waitTillElementIsNotNull(
+				$this->getFileListXpath()
+			);
+
+			$this->assertElementNotNull(
+				$fileListElement,
+				__METHOD__ .
+				" xpath " . $this->getFileListXpath() .
+				" could not find file list"
+			);
+
+			$fileNameMatch = $fileListElement->findAll(
+				"xpath", \sprintf($this->getFileNameMatchXpath(), $xpathString)
+			);
+			if (\count($fileNameMatch) === 0) {
+				$fileNameMatchIsVisible = false;
+			} else {
+				try {
+					$fileNameMatchIsVisible = $fileNameMatch[0]->isVisible();
+				} catch (NoSuchElement $e) {
+					// Somehow on Edge this can throw NoSuchElement even though
+					// we just found the file name.
+					// TODO: Edge - if it keeps happening then find out why.
+					\error_log(
+						__METHOD__
+						. " NoSuchElement while doing fileNameMatch[0]->isVisible()"
+						. "\n-------------------------\n"
+						. $e->getMessage()
+						. "\n-------------------------\n"
+					);
+					$fileNameMatchIsVisible = false;
+				}
+			}
+
+			if ($fileNameMatchIsVisible) {
+				$fileNameMatch[0]->focus();
+			} else {
+				if ($currentFileCount === null) {
+					$currentFileCount = $this->getSizeOfFileFolderList();
+				}
+				$previousFileCount = $currentFileCount;
+				$this->scrollDownAppContent($session);
+				$currentFileCount = $this->getSizeOfFileFolderList();
+				$spaceLeftTillBottom = (int) $session->evaluateScript(
+					'$("#' . $this->appContentFilesContainerId . '").height() ' .
+					'- (' .
+					'    $("#' . $this->appContentId . '").height() ' .
+					'    +$("#' . $this->appContentId . '").scrollTop()' .
+					'  )'
+				);
+			}
+		} while (
+			!$fileNameMatchIsVisible
+			&& ($currentFileCount > $previousFileCount || $spaceLeftTillBottom > 0)
+		);
+
+		if (\count($fileNameMatch) === 0) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" could not find file with the name '$name'"
+			);
+		}
+
+		$fileRowElements = [];
+		foreach ($fileNameMatch as $match) {
+			$fileRowElement = $match->find("xpath", $this->fileRowFromNameXpath);
+			$this->assertElementNotNull(
+				$fileRowElement,
+				__METHOD__ .
+				" xpath $this->fileRowFromNameXpath " .
+				"could not find file row"
+			);
+			$fileRowElements[] = $fileRowElement;
+		}
+		return $fileRowElements;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFileActionMenuXpath() {
+		return $this->fileActionMenuXpath;
+	}
+
+	/**
 	 * @return int the number of files and folders listed on the page
 	 */
 	public function getSizeOfFileFolderList() {
 		$fileListElement = $this->find("xpath", $this->getFileListXpath());
 
-		if (\is_null($fileListElement)) {
+		if ($fileListElement === null) {
 			return 0;
 		}
 
@@ -107,112 +236,53 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function findFileRowByName($name, Session $session) {
-		$previousFileCount = 0;
-		$currentFileCount = null;
-		$spaceLeftTillBottom = 0;
-		$this->scrollToPosition('#' . $this->appContentId, 0, $session);
+		return $this->findAllFileRowsByName($name, $session)[0];
+	}
 
-		if (\is_array($name)) {
-			if (\count($name) === 1) {
-				$xpathString = $this->quotedText($name[0]);
-			} else {
-				// Concatenating separate parts of the file name allows
-				// some parts to contain single quotes and the others to contain
-				// double quotes.
-				$comma = '';
-				$xpathString = "concat(";
-
-				foreach ($name as $nameComponent) {
-					$xpathString .= $comma . $this->quotedText($nameComponent);
-					$comma = ',';
-				}
-				$xpathString .= ")";
+	/**
+	 * finds the complete row of a file with a given name and path
+	 * useful for pages where multiple files with the same name can be displayed
+	 *
+	 * @param string|array $name
+	 * @param string $path
+	 * @param Session $session
+	 *
+	 * @return FileRow
+	 * @throws ElementNotFoundException
+	 */
+	public function findFileRowByNameAndPath($name, $path, Session $session) {
+		$fileRows = $this->findAllFileRowsByName($name, $session);
+		foreach ($fileRows as $fileRow) {
+			$filePath = $fileRow->getFilePath($this->getFilePathInRowXpath());
+			if ($filePath === $path) {
+				return $fileRow;
 			}
-
-			$name = \implode($name);
-		} else {
-			$xpathString = $this->quotedText($name);
 		}
-
-		//loop to keep on scrolling down to load not viewed files
-		//when the scroll does not retrieve any new files, the file is not there
-		do {
-			$fileListElement = $this->waitTillElementIsNotNull($this->getFileListXpath());
-
-			if (\is_null($fileListElement)) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" xpath " . $this->getFileListXpath() .
-					" could not find file list"
-				);
-			}
-
-			$fileNameMatch = $fileListElement->find(
-				"xpath", \sprintf($this->getFileNameMatchXpath(), $xpathString)
-			);
-
-			if (\is_null($fileNameMatch)) {
-				$fileNameMatchIsVisible = false;
-			} else {
-				try {
-					$fileNameMatchIsVisible = $fileNameMatch->isVisible();
-				} catch (NoSuchElement $e) {
-					// Somehow on Edge this can throw NoSuchElement even though
-					// we just found the file name.
-					// TODO: Edge - if it keeps happening then find out why.
-					\error_log(
-						__METHOD__
-						. " NoSuchElement while doing fileNameMatch->isVisible()"
-						. "\n-------------------------\n"
-						. $e->getMessage()
-						. "\n-------------------------\n"
-					);
-					$fileNameMatchIsVisible = false;
-				}
-			}
-
-			if ($fileNameMatchIsVisible) {
-				$fileNameMatch->focus();
-			} else {
-				if (\is_null($currentFileCount)) {
-					$currentFileCount = $this->getSizeOfFileFolderList();
-				}
-				$previousFileCount = $currentFileCount;
-				$this->scrollDownAppContent($session);
-				$currentFileCount = $this->getSizeOfFileFolderList();
-				$spaceLeftTillBottom = (int) $session->evaluateScript(
-					'$("#' . $this->appContentFilesContainerId . '").height() ' .
-					'- (' .
-					'    $("#' . $this->appContentId . '").height() ' .
-					'    +$("#' . $this->appContentId . '").scrollTop()' .
-					'  )'
-				);
-			}
-		} while (
-			!$fileNameMatchIsVisible
-			&& ($currentFileCount > $previousFileCount || $spaceLeftTillBottom > 0)
+		throw new ElementNotFoundException(
+			__METHOD__ .
+			" could not find file with the name '$name' and path '$path'"
 		);
+	}
 
-		if (\is_null($fileNameMatch)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find file with the name '" . $name . "'"
-			);
+	/**
+	 * finds all rows that have the given name
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 *
+	 * @return FileRow[]
+	 * @throws ElementNotFoundException
+	 */
+	public function findAllFileRowsByName($name, Session $session) {
+		$fileRowElements = $this->getFileRowElementsByName($name, $session);
+		$fileRows = [];
+		foreach ($fileRowElements as $fileRowElement) {
+			$fileRow = $this->getPage('FilesPageElement\\FileRow');
+			$fileRow->setElement($fileRowElement);
+			$fileRow->setName($name);
+			$fileRows[] = $fileRow;
 		}
-
-		$fileRowElement = $fileNameMatch->find("xpath", $this->fileRowFromNameXpath);
-
-		if (\is_null($fileRowElement)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->fileRowFromNameXpath " .
-				"could not find file row"
-			);
-		}
-		$fileRow = $this->getPage('FilesPageElement\\FileRow');
-		$fileRow->setElement($fileRowElement);
-		$fileRow->setName($name);
-		return $fileRow;
+		return $fileRows;
 	}
 
 	/**
@@ -224,7 +294,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function scrollDownAppContent(Session $session) {
 		$this->scrollToPosition(
-			'#' . $this->appContentId,
+			"#$this->appContentId",
 			'$("#' . $this->appContentId . '").scrollTop() + $("#' .
 			$this->appContentId . '").height() - $("#' .
 			$this->controlsId . '").height()',
@@ -242,15 +312,13 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function findFileActionMenuElement() {
 		$actionMenu = $this->waitTillElementIsNotNull($this->fileActionMenuXpath);
-		if (\is_null($actionMenu)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->fileActionMenuXpath " .
-				"could not find open fileActionMenu"
-			);
-		} else {
-			return $actionMenu;
-		}
+		$this->assertElementNotNull(
+			$actionMenu,
+			__METHOD__ .
+			" xpath $this->fileActionMenuXpath " .
+			"could not find open fileActionMenu"
+		);
+		return $actionMenu;
 	}
 
 	/**
@@ -267,65 +335,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 	}
 
 	/**
-	 *
-	 * @param string|array $name
-	 * @param Session $session
-	 * @param bool $expectToDeleteFile
-	 * @param int $maxRetries
-	 *
-	 * @return void
-	 */
-	public function deleteFile(
-		$name,
-		Session $session,
-		$expectToDeleteFile = true,
-		$maxRetries = STANDARDRETRYCOUNT
-	) {
-		$this->initAjaxCounters($session);
-		$this->resetSumStartedAjaxRequests($session);
-		
-		for ($counter = 0; $counter < $maxRetries; $counter++) {
-			$row = $this->findFileRowByName($name, $session);
-			try {
-				$row->delete($session);
-				$this->waitForAjaxCallsToStartAndFinish($session);
-				$countXHRRequests = $this->getSumStartedAjaxRequests($session);
-				//if no XHR Request were fired we assume the delete action
-				//did not work and we retry
-				if ($countXHRRequests === 0) {
-					if ($expectToDeleteFile) {
-						\error_log("Error while deleting file");
-					}
-				} else {
-					break;
-				}
-			} catch (\Exception $e) {
-				$this->closeFileActionsMenu();
-				if ($expectToDeleteFile) {
-					\error_log(
-						"Error while deleting file"
-						. "\n-------------------------\n"
-						. $e->getMessage()
-						. "\n-------------------------\n"
-					);
-				}
-				\usleep(STANDARDSLEEPTIMEMICROSEC);
-			}
-		}
-		if ($expectToDeleteFile && ($counter > 0)) {
-			if (\is_array($name)) {
-				$name = \implode($name);
-			}
-			$message = "INFORMATION: retried to delete file '" . $name . "' " .
-					   $counter . " times";
-			echo $message;
-			\error_log($message);
-		}
-	}
-
-	/**
 	 * closes the fileactionsmenu is any is open
-	 * 
+	 *
 	 * @return void
 	 */
 	public function closeFileActionsMenu() {
@@ -335,7 +346,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 				"xpath", $this->fileRowXpathFromActionMenu
 			);
 			/**
-			 * 
+			 *
 			 * @var FileRow $fileRow
 			 */
 			$fileRow = $this->getPage('FilesPageElement\\FileRow');
@@ -346,22 +357,27 @@ abstract class FilesPageBasic extends OwncloudPage {
 	}
 
 	/**
+	 * gets a details dialog object
 	 *
 	 * @throws ElementNotFoundException
-	 * @return NodeElement
+	 * @return DetailsDialog
 	 */
-	public function findDeleteAllSelectedFilesBtn() {
-		$deleteAllSelectedBtn = $this->find(
-			"xpath", $this->deleteAllSelectedBtnXpath
+	public function getDetailsDialog() {
+		$detailsDialogElement = $this->find("xpath", $this->detailsDialogXpath);
+		$this->assertElementNotNull(
+			$detailsDialogElement,
+			__METHOD__ .
+			" xpath: $this->detailsDialogXpath " .
+			" could not find Details Dialog"
 		);
-		if (\is_null($deleteAllSelectedBtn)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->deleteAllSelectedBtnXpath " .
-				"could not find button to delete all selected files"
-			);
-		}
-		return $deleteAllSelectedBtn;
+
+		/**
+		 *
+		 * @var DetailsDialog $dialog
+		 */
+		$dialog = $this->getPage("FilesPageElement\\DetailsDialog");
+		$dialog->setElement($detailsDialogElement);
+		return $dialog;
 	}
 
 	/**
@@ -373,25 +389,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$selectedAllFilesBtn = $this->find(
 			"xpath", $this->selectAllFilesCheckboxXpath
 		);
-		if (\is_null($selectedAllFilesBtn)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				"could not find button $this->selectAllFilesCheckboxXpath to select all files"
-			);
-		}
+		$this->assertElementNotNull(
+			$selectedAllFilesBtn,
+			__METHOD__ .
+			"could not find button $this->selectAllFilesCheckboxXpath to select all files"
+		);
 		return $selectedAllFilesBtn;
-	}
-
-	/**
-	 *
-	 * @param Session $session
-	 *
-	 * @return void
-	 */
-	public function deleteAllSelectedFiles(Session $session) {
-		$this->findDeleteAllSelectedFilesBtn()->click();
-		$this->waitForAjaxCallsToStartAndFinish($session);
-		$this->waitTillFileRowsAreReady($session);
 	}
 
 	/**
@@ -426,13 +429,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 	public function findFileActionsMenuBtnByNo($number) {
 		$xpathLocator = \sprintf($this->fileActionMenuBtnXpathByNo, $number);
 		$actionMenuBtn = $this->find("xpath", $xpathLocator);
-		if (\is_null($actionMenuBtn)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $xpathLocator " .
-				"could not find action menu button of file #$number"
-			);
-		}
+		$this->assertElementNotNull(
+			$actionMenuBtn,
+			__METHOD__ .
+			" xpath $xpathLocator " .
+			"could not find action menu button of file #$number"
+		);
 		return $actionMenuBtn;
 	}
 
@@ -449,14 +451,16 @@ abstract class FilesPageBasic extends OwncloudPage {
 	/**
 	 *
 	 * @param int $number
+	 * @param Session $session
 	 *
 	 * @return FileActionsMenu
 	 */
-	public function openFileActionsMenuByNo($number) {
+	public function openFileActionsMenuByNo($number, Session $session) {
 		$this->clickFileActionsMenuBtnByNo($number);
-		$actionMenuElement = $this->findFileActionMenuElement();
 		$actionMenu = $this->getPage('FilesPageElement\\FileActionsMenu');
-		$actionMenu->setElement($actionMenuElement);
+		$actionMenu->waitTillPageIsLoaded(
+			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->getFileActionMenuXpath()
+		);
 		return $actionMenu;
 	}
 
@@ -474,7 +478,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 			$this->getEmptyContentXpath()
 		);
 
-		if (!\is_null($emptyContentElement)) {
+		if ($emptyContentElement !== null) {
 			return $emptyContentElement->isVisible();
 		}
 
@@ -492,7 +496,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = LONGUIWAITTIMEOUTMILLISEC
+		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->initAjaxCounters($session);
 		$currentTime = \microtime(true);
@@ -500,7 +504,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 		while ($currentTime <= $end) {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
 
-			if (!\is_null($fileList)) {
+			if ($fileList !== null) {
 				try {
 					$fileListIsVisible = $fileList->isVisible();
 				} catch (NoSuchElement $e) {
@@ -516,8 +520,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 					);
 					$fileListIsVisible = false;
 				} catch (StaleElementReference $e) {
-					// Somehow on Edge this can throw StaleElementReference even though
-					// we just found the file list.
+					// Somehow on Edge this can throw StaleElementReference
+					// even though we just found the file list.
 					// TODO: Edge - if it keeps happening then find out why.
 					\error_log(
 						__METHOD__
@@ -540,14 +544,14 @@ abstract class FilesPageBasic extends OwncloudPage {
 					$this->getEmptyContentXpath()
 				);
 
-				if (!\is_null($emptyContentElement)) {
+				if ($emptyContentElement !== null) {
 					if (!$emptyContentElement->hasClass("hidden")) {
 						break;
 					}
 				}
 			}
 
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 
@@ -572,22 +576,24 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function waitTillFileRowsAreReady(
 		Session $session,
-		$timeout_msec = LONGUIWAITTIMEOUTMILLISEC
+		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
 
-			if (!\is_null($fileList)) {
-				$busyFileRows = $fileList->findAll('xpath', $this->fileRowsBusyXpath);
+			if ($fileList !== null) {
+				$busyFileRows = $fileList->findAll(
+					'xpath', $this->fileRowsBusyXpath
+				);
 
 				if (\count($busyFileRows) === 0) {
 					break;
 				}
 			}
 
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 
@@ -604,23 +610,21 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function enableShowHiddenFilesSettings() {
 		$appSettingsButton = $this->find('xpath', $this->appSettingsXpath);
-		if (\is_null($appSettingsButton)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->appSettingsXpath " .
-				"could not find the appSettings button"
-			);
-		}
+		$this->assertElementNotNull(
+			$appSettingsButton,
+			__METHOD__ .
+			" xpath $this->appSettingsXpath " .
+			"could not find the appSettings button"
+		);
 		$appSettingsButton->click();
 		$appSettingsDiv = $this->findById($this->appSettingsContentId);
-		if (\is_null($appSettingsDiv)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->appSettingsContentId " .
-				"could not find the appSettings section"
-			);
-		}
-		$timeout_msec = LONGUIWAITTIMEOUTMILLISEC;
+		$this->assertElementNotNull(
+			$appSettingsDiv,
+			__METHOD__ .
+			" xpath $this->appSettingsContentId " .
+			"could not find the appSettings section"
+		);
+		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC;
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($appSettingsDiv->getAttribute('style') !== $this->styleOfCheckboxWhenVisible) {
@@ -630,20 +634,19 @@ abstract class FilesPageBasic extends OwncloudPage {
 					" timed out waiting for show hidden files checkbox to appear"
 				);
 			}
-			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
 		
 		$showHiddenFilesCheckBox = $this->find(
 			'xpath', $this->showHiddenFilesCheckboxXpath
 		);
-		if (\is_null($showHiddenFilesCheckBox)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->showHiddenFilesCheckboxXpath " .
-				"could not find the field for show hidden files checkbox"
-			);
-		}
+		$this->assertElementNotNull(
+			$showHiddenFilesCheckBox,
+			__METHOD__ .
+			" xpath $this->showHiddenFilesCheckboxXpath " .
+			"could not find the field for show hidden files checkbox"
+		);
 		$showHiddenFilesCheckBox->click();
 	}
 }

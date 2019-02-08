@@ -25,6 +25,7 @@
     "Could not find category \"%s\"" : "Methu canfod categori \"%s\"",
     "Help" : "Cymorth",
     "Settings" : "Gosodiadau",
+    "Imprint" : "Imprint",
     "Application is not enabled" : "Nid yw'r pecyn wedi'i alluogi",
     "Authentication error" : "Gwall dilysu",
     "Token expired. Please reload page." : "Tocyn wedi dod i ben. Ail-lwythwch y dudalen."

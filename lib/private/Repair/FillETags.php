@@ -53,4 +53,3 @@ class FillETags implements IRepairStep {
 		$output->info("ETags have been fixed for $result files/folders.");
 	}
 }
-

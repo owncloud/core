@@ -10,19 +10,23 @@ Turning the feature off removes shared files and folders on the server for all s
 	<licence>AGPL</licence>
 	<author>Michael Gapczynski, Bjoern Schiessle</author>
 	<default_enable/>
-	<version>0.10.1</version>
+	<version>0.11.0</version>
 	<types>
 		<filesystem/>
 	</types>
 	<use-migrations>true</use-migrations>
 	<dependencies>
-		<owncloud min-version="10.1" max-version="10.1" />
+		<owncloud min-version="11" max-version="11" />
 	</dependencies>
 	<public>
 		<files>public.php</files>
 	</public>
 
 	<namespace>Files_Sharing</namespace>
+
+	<settings>
+		<admin>OCA\Files_Sharing\Panels\Admin\SettingsPanel</admin>
+	</settings>
 
 	<background-jobs>
 		<job>OCA\Files_Sharing\DeleteOrphanedSharesJob</job>

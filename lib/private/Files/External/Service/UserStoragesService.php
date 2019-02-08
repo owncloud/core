@@ -27,6 +27,7 @@ namespace OC\Files\External\Service;
 use OC\Files\Filesystem;
 
 use OCP\Files\Config\IUserMountCache;
+use OCP\IUser;
 use OCP\IUserSession;
 
 use OCP\Files\External\IStorageConfig;
@@ -56,6 +57,7 @@ class UserStoragesService extends StoragesService implements IUserStoragesServic
 		IUserMountCache $userMountCache
 	) {
 		$this->userSession = $userSession;
+		$this->userMountCache = $userMountCache;
 		parent::__construct($backendService, $dbConfig, $userMountCache);
 	}
 
@@ -139,5 +141,39 @@ class UserStoragesService extends StoragesService implements IUserStoragesServic
 
 	protected function isApplicable(IStorageConfig $config) {
 		return ($config->getApplicableUsers() === [$this->getUser()->getUID()]) && $config->getType() === IStorageConfig::MOUNT_TYPE_PERSONAl;
+	}
+
+	/**
+	 * Deletes the storages mounted to a user
+	 * @param IUser $user
+	 * @return bool
+	 */
+	public function deleteAllMountsForUser(IUser $user) {
+		$getUserMounts = $this->userMountCache->getMountsForUser($user);
+		$allMounts = $this->dbConfig->getAllMounts();
+		$result = false;
+		if (\count($getUserMounts) > 0) {
+			foreach ($getUserMounts as $userMount) {
+				$id = $userMount->getStorageId();
+				$this->userMountCache->removeUserStorageMount($id, $user->getUID());
+				$result = true;
+			}
+		}
+		if (\count($allMounts)) {
+			foreach ($allMounts as $userMount) {
+				/**
+				 * Remove any mounts which are applicable to only this user
+				 * Specifically targeted to, mounts created by the user.
+				 */
+				if (\count($userMount['applicable']) === 1) {
+					foreach ($userMount['applicable'] as $applicableUser) {
+						if ($applicableUser['value'] === $user->getUID()) {
+							$this->dbConfig->removeMount($applicableUser['mount_id']);
+						}
+					}
+				}
+			}
+		}
+		return $result;
 	}
 }

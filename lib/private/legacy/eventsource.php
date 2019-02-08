@@ -98,7 +98,7 @@ class OC_EventSource implements \OCP\IEventSource {
 			throw new BadMethodCallException('Type needs to be alphanumeric ('. $type .')');
 		}
 		$this->init();
-		if (\is_null($data)) {
+		if ($data === null) {
 			$data = $type;
 			$type = null;
 		}

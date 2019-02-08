@@ -31,7 +31,6 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre\RequestTest;
  * @package OCA\DAV\Tests\unit\Connector\Sabre\RequestTest
  */
 class PartFileInRootUploadTest extends UploadTest {
-
 	protected $original;
 
 	protected function setUp() {
@@ -42,7 +41,7 @@ class PartFileInRootUploadTest extends UploadTest {
 	}
 
 	protected function tearDown() {
-		if($this->original !== null) {
+		if ($this->original !== null) {
 			$config = \OC::$server->getConfig();
 			$this->original = $config->setSystemValue('part_file_in_storage', $this->original);
 		}

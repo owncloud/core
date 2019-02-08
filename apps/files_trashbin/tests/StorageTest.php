@@ -44,7 +44,6 @@ use Test\Traits\UserTrait;
  * @package OCA\Files_Trashbin\Tests
  */
 class StorageTest extends TestCase {
-
 	use UserTrait;
 
 	/**
@@ -75,7 +74,6 @@ class StorageTest extends TestCase {
 		$this->user = $this->getUniqueId('user');
 		$this->createUser($this->user, $this->user);
 
-
 		// this will setup the FS
 		$this->loginAsUser($this->user);
 
@@ -103,7 +101,7 @@ class StorageTest extends TestCase {
 	public function testSingleStorageDeleteFile() {
 		$this->assertTrue($this->userView->file_exists('test.txt'));
 		$this->userView->unlink('test.txt');
-		list($storage,) = $this->userView->resolvePath('test.txt');
+		list($storage, ) = $this->userView->resolvePath('test.txt');
 		$storage->getScanner()->scan(''); // make sure we check the storage
 		$this->assertFalse($this->userView->getFileInfo('test.txt'));
 
@@ -120,7 +118,7 @@ class StorageTest extends TestCase {
 	public function testSingleStorageDeleteFolder() {
 		$this->assertTrue($this->userView->file_exists('folder/inside.txt'));
 		$this->userView->rmdir('folder');
-		list($storage,) = $this->userView->resolvePath('folder/inside.txt');
+		list($storage, ) = $this->userView->resolvePath('folder/inside.txt');
 		$storage->getScanner()->scan(''); // make sure we check the storage
 		$this->assertFalse($this->userView->getFileInfo('folder'));
 
@@ -313,7 +311,7 @@ class StorageTest extends TestCase {
 		$this->userView->unlink('test.txt');
 
 		// rescan trash storage
-		list($rootStorage,) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin
@@ -343,7 +341,7 @@ class StorageTest extends TestCase {
 		$this->userView->rmdir('folder');
 
 		// rescan trash storage
-		list($rootStorage,) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin
@@ -397,7 +395,7 @@ class StorageTest extends TestCase {
 		$recipientView->unlink('share/test.txt');
 
 		// rescan trash storage for both users
-		list($rootStorage,) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin for both users
@@ -451,7 +449,7 @@ class StorageTest extends TestCase {
 		$recipientView->rmdir('share/folder');
 
 		// rescan trash storage
-		list($rootStorage,) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin for owner
@@ -509,7 +507,7 @@ class StorageTest extends TestCase {
 		$this->assertTrue($this->userView->file_exists('substorage/test.txt'));
 
 		// rescan trash storage
-		list($rootStorage,) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// versions were moved too
@@ -551,7 +549,7 @@ class StorageTest extends TestCase {
 		$this->assertTrue($this->userView->file_exists('substorage/folder/inside.txt'));
 
 		// rescan trash storage
-		list($rootStorage,) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// versions were moved too
@@ -731,7 +729,6 @@ class StorageTest extends TestCase {
 		$this->assertSame($expected,
 			$this->invokePrivate($storage, 'shouldMoveToTrash', [$path])
 		);
-
 	}
 
 	public function dataTestShouldMoveToTrash() {

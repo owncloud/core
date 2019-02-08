@@ -20,52 +20,43 @@
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use TestHelpers\SetupHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 /**
- * App Management context.
+ * Context for steps that test apps_paths.
  */
-class AppManagementContext implements  Context {
-	
-	private $oldAppPath;
-	
+class AppManagementContext implements Context {
 	/**
-	 * @var string stdout of last command 
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
+
+	private $oldAppsPaths;
+
+	/**
+	 * @var string stdout of last command
 	 */
 	private $cmdOutput;
-	
+
 	/**
-	 * @BeforeScenario
 	 *
-	 * Remember the config values before each scenario
+	 * @param array $appsPaths of apps_paths entries
 	 *
-	 * @return void
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception
 	 */
-	public function prepareParameters() {
-		include_once __DIR__ . '/../../../../lib/base.php';
-		$this->oldAppPath = \OC::$server->getConfig()->getSystemValue(
-			'apps_paths', null
+	public function setAppsPaths($appsPaths) {
+		return $this->featureContext->setSystemConfig(
+			'apps_paths',
+			\json_encode($appsPaths),
+			'json'
 		);
 	}
-	
-	/**
-	 * @AfterScenario
-	 *
-	 * Reset the config values after each scenario
-	 *
-	 * @return void
-	 */
-	public function undoChangingParameters() {
-		if (!\is_null($this->oldAppPath)) {
-			\OC::$server->getConfig()->setSystemValue(
-				'apps_paths', $this->oldAppPath
-			);
-		} else {
-			\OC::$server->getConfig()->deleteSystemValue('apps_paths');
-		}
-	}
-	
+
 	/**
 	 * @Given apps have been put in two directories :dir1 and :dir2
 	 *
@@ -73,19 +64,22 @@ class AppManagementContext implements  Context {
 	 * @param string $dir2
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function setAppDirectories($dir1, $dir2) {
-		$fullpath1 = \OC::$SERVERROOT . '/' . $dir1;
-		$fullpath2 = \OC::$SERVERROOT . '/' . $dir2;
-		\OC::$server->getConfig()->setSystemValue(
-			'apps_paths',
+		$fullpath1 = $this->featureContext->getServerRoot() . "/$dir1";
+		$fullpath2 = $this->featureContext->getServerRoot() . "/$dir2";
+
+		$this->featureContext->mkDirOnServer($dir1);
+		$this->featureContext->mkDirOnServer($dir2);
+		$this->setAppsPaths(
 			[
-				['path' => $fullpath1, 'url' => $dir1, 'writable' => true], 
+				['path' => $fullpath1, 'url' => $dir1, 'writable' => true],
 				['path' => $fullpath2, 'url' => $dir2, 'writable' => true]
 			]
 		);
 	}
-	
+
 	/**
 	 * @Given app :appId with version :version has been put in dir :dir
 	 *
@@ -94,9 +88,10 @@ class AppManagementContext implements  Context {
 	 * @param string $dir app directory
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function appHasBeenPutInDir($appId, $version, $dir) {
-		$ocVersion = \OC::$server->getConfig()->getSystemValue('version', '0.0.0');
+		$ocVersion = $this->featureContext->getSystemConfigValue('version');
 		$appInfo = \sprintf(
 			'<?xml version="1.0"?>
 			<info>
@@ -121,56 +116,25 @@ class AppManagementContext implements  Context {
 			$ocVersion,
 			$ocVersion
 		);
-		$appsDir = \OC::$SERVERROOT . '/' . $dir;
-		if (!\file_exists($appsDir)) {
-			\mkdir($appsDir);
-		}
-		if (!\file_exists($appsDir . '/' . $appId)) {
-			\mkdir($appsDir . '/' . $appId);
-		}
-		
-		$fullpath = $appsDir . '/' . $appId;
-		
-		if (!\file_exists($fullpath . '/appinfo')) {
-			\mkdir($fullpath . '/appinfo');
-		}
-		
-		\file_put_contents($fullpath . '/appinfo/info.xml', $appInfo);
+		$targetDir = "$dir/$appId/appinfo";
+		$this->featureContext->mkDirOnServer($targetDir);
+		$this->featureContext->createFileOnServerWithContent("$targetDir/info.xml", $appInfo);
 	}
-	
+
 	/**
-	 * @When the administrator loads app :appId using the console
-	 * @Given the administrator has loaded app :appId using the console
+	 * @When the administrator gets the path for app :appId using the occ command
+	 * @Given the administrator has got the path for app :appId using the occ command
 	 *
 	 * @param string $appId app id
 	 *
 	 * @return void
 	 */
-	public function loadApp($appId) {
-		$args = \explode(' ', "app:getpath $appId");
-		$args = \array_map(
-			function ($arg) {
-				return \escapeshellarg($arg);
-			}, $args
-		);
-		$args[] = '--no-ansi';
-		$args = \implode(' ', $args);
-
-		$descriptor = [
-			0 => ['pipe', 'r'],
-			1 => ['pipe', 'w'],
-			2 => ['pipe', 'w'],
-		];
-		$process = \proc_open(
-			'php console.php ' . $args,
-			$descriptor,
-			$pipes,
-			\OC::$SERVERROOT
-		);
-		$this->cmdOutput = \stream_get_contents($pipes[1]);
-		\proc_close($process);
+	public function adminGetsPathForApp($appId) {
+		$this->cmdOutput = SetupHelper::runOcc(
+			['app:getpath', $appId, '--no-ansi']
+		)['stdOut'];
 	}
-	
+
 	/**
 	 * @Then the path to :appId should be :dir
 	 *
@@ -179,10 +143,53 @@ class AppManagementContext implements  Context {
 	 *
 	 * @return void
 	 */
-	public function appVersionIs($appId, $dir) {
+	public function appPathIs($appId, $dir) {
 		PHPUnit_Framework_Assert::assertEquals(
-			\OC::$SERVERROOT . '/' . $dir . '/' . $appId,
+			$this->featureContext->getServerRoot() . "/$dir/$appId",
 			\trim($this->cmdOutput)
 		);
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function prepareParameters(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
+
+		$value = $this->featureContext->getSystemConfigValue(
+			'apps_paths', 'json'
+		);
+
+		if ($value === '') {
+			$this->oldAppsPaths = null;
+		} else {
+			$this->oldAppsPaths = \json_decode($value, true);
+		}
+	}
+
+	/**
+	 * @AfterScenario
+	 *
+	 * Reset the config values after each scenario
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function undoChangingParameters() {
+		if ($this->oldAppsPaths === null) {
+			$this->featureContext->deleteSystemConfig('apps_paths');
+		} else {
+			$this->setAppsPaths($this->oldAppsPaths);
+		}
 	}
 }

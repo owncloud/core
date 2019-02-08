@@ -6,8 +6,6 @@
     "Not allowed to create a federated share with the same user" : "Nu este permisă crearea unei partajări federalizate cu acelaşi utilizator",
     "File is already shared with %s" : "Fişierul este deja partajat cu %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Partajarea %s a eşuat, nu pot găsi %s, poate serverul nu poate fi contactat.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "Ai primit \"/%3$s\" ca partajare remote de la %1$s (în numele %2$s)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "Ai primit \"/%3$s\" ca partajare remote de la %1$s",
     "Accept" : "Accept",
     "Decline" : "Refuză",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Partajează cu mine prin #ownCloud Federated Cloud ID, vezi %s",

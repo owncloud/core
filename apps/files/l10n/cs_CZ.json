@@ -47,13 +47,14 @@
     "Name" : "Název",
     "Size" : "Velikost",
     "Modified" : "Upraveno",
-    "_%n folder_::_%n folders_" : ["%n adresář","%n adresáře","%n adresářů"],
-    "_%n file_::_%n files_" : ["%n soubor","%n soubory","%n souborů"],
+    "_%n folder_::_%n folders_" : ["%n adresář","%n adresáře","%n adresářů","%n adresářů"],
+    "_%n file_::_%n files_" : ["%n soubor","%n soubory","%n souborů","%n souborů"],
     "{dirs} and {files}" : "{dirs} a {files}",
-    "_including %n hidden_::_including %n hidden_" : ["včetně %n skrytého","včetně %n skrytých","včetně %n skrytých"],
+    "_including %n hidden_::_including %n hidden_" : ["včetně %n skrytého","včetně %n skrytých","včetně %n skrytých","včetně %n skrytých"],
     "You don’t have permission to upload or create files here" : "Nemáte oprávnění sem nahrávat nebo vytvářet soubory",
-    "_Uploading %n file_::_Uploading %n files_" : ["Nahrávám %n soubor","Nahrávám %n soubory","Nahrávám %n souborů"],
+    "_Uploading %n file_::_Uploading %n files_" : ["Nahrávám %n soubor","Nahrávám %n soubory","Nahrávám %n souborů","Nahrávám %n souborů"],
     "New" : "Nový",
+    "Unknown user" : "Neznámý uživatel",
     "\"{name}\" is an invalid file name." : "\"{name}\" je neplatným názvem souboru.",
     "File name cannot be empty." : "Název souboru nemůže být prázdný řetězec.",
     "\"{name}\" has a forbidden file type/extension." : "\"{name}\" má zakázaný typ souboru/příponu",
@@ -61,9 +62,9 @@
     "Your storage is full, files can not be updated or synced anymore!" : "Vaše úložiště je plné, nelze aktualizovat ani synchronizovat soubory.",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Úložiště uživatele {owner} je téměř plné ({usedSpacePercent}%)",
     "Your storage is almost full ({usedSpacePercent}%)" : "Vaše úložiště je téměř plné ({usedSpacePercent}%)",
-    "_matches '{filter}'_::_match '{filter}'_" : ["odpovídá '{filter}'","odpovídá '{filter}'","odpovídá '{filter}'"],
+    "_matches '{filter}'_::_match '{filter}'_" : ["odpovídá '{filter}'","odpovídá '{filter}'","odpovídá '{filter}'","odpovídá '{filter}'"],
     "Path" : "Cesta",
-    "_%n byte_::_%n bytes_" : ["%n bajt","%n bajty","%n bajtů"],
+    "_%n byte_::_%n bytes_" : ["%n bajt","%n bajty","%n bajtů","%n bajtů"],
     "Favorited" : "Přidáno k oblíbeným",
     "Favorite" : "Oblíbené",
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privátní odkaz: Mohou použít jen osoby, které mají přístup k souboru/složce. Používejte jako trvalý odkaz pro sebe nebo ostatní v rámci sdílení",
@@ -103,5 +104,5 @@
     "Files and folders you mark as favorite will show up here" : "Soubory a adresáře označené jako oblíbené budou zobrazeny zde",
     "Text file" : "Textový soubor",
     "New text file.txt" : "Nový textový soubor.txt"
-},"pluralForm" :"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;"
+},"pluralForm" :"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;"
 }

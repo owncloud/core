@@ -78,7 +78,14 @@ class DetectionTest extends \Test\TestCase {
 		$this->assertEquals('image/png', $this->detection->detectPath('.hidden/foo.png'));
 		$this->assertEquals('image/png', $this->detection->detectPath('test.jpg/foo.png'));
 		$this->assertEquals('application/octet-stream', $this->detection->detectPath('.png'));
+		$this->assertEquals('application/x-sharedlib', $this->detection->detectPath('test.so'));
+		$this->assertEquals('application/x-sharedlib', $this->detection->detectPath('test.so.0.0.1'));
+		$this->assertEquals('application/x-sharedlib', $this->detection->detectPath('test.1.2.so.0.0.1'));
+		$this->assertEquals('application/x-sharedlib', $this->detection->detectPath('test.1.2.so.1'));
+		$this->assertEquals('application/x-sharedlib', $this->detection->detectPath('foo.so.'));
 		$this->assertEquals('application/octet-stream', $this->detection->detectPath('foo'));
+		$this->assertEquals('application/octet-stream', $this->detection->detectPath('foo.somany'));
+		$this->assertEquals('application/octet-stream', $this->detection->detectPath('foo.so*'));
 		$this->assertEquals('application/octet-stream', $this->detection->detectPath(''));
 	}
 
@@ -110,7 +117,6 @@ class DetectionTest extends \Test\TestCase {
 		$mimeType = $detection->mimeTypeIcon('dir');
 		$this->assertEquals('folder.svg', $mimeType);
 
-
 		/*
 		 * Test dir-shareed mimetype
 		 */
@@ -128,7 +134,6 @@ class DetectionTest extends \Test\TestCase {
 		$detection = new Detection($urlGenerator, $confDir->url(), $confDir->url());
 		$mimeType = $detection->mimeTypeIcon('dir-shared');
 		$this->assertEquals('folder-shared.svg', $mimeType);
-
 
 		/*
 		 * Test dir external
@@ -149,7 +154,6 @@ class DetectionTest extends \Test\TestCase {
 		$mimeType = $detection->mimeTypeIcon('dir-external');
 		$this->assertEquals('folder-external.svg', $mimeType);
 
-
 		/*
 		 * Test complete mimetype
 		 */
@@ -169,7 +173,6 @@ class DetectionTest extends \Test\TestCase {
 		$mimeType = $detection->mimeTypeIcon('my-type');
 		$this->assertEquals('my-type.svg', $mimeType);
 
-
 		/*
 		 * Test subtype
 		 */
@@ -187,7 +190,7 @@ class DetectionTest extends \Test\TestCase {
 				[$this->equalTo('core'), $this->equalTo('filetypes/my.svg')]
 			)
 			->will($this->returnCallback(
-				function($appName, $file) {
+				function ($appName, $file) {
 					if ($file === 'filetypes/my.svg') {
 						return 'my.svg';
 					}
@@ -198,7 +201,6 @@ class DetectionTest extends \Test\TestCase {
 		$detection = new Detection($urlGenerator, $confDir->url(), $confDir->url());
 		$mimeType = $detection->mimeTypeIcon('my-type');
 		$this->assertEquals('my.svg', $mimeType);
-
 
 		/*
 		 * Test default mimetype
@@ -218,7 +220,7 @@ class DetectionTest extends \Test\TestCase {
 				[$this->equalTo('core'), $this->equalTo('filetypes/file.svg')]
 			)
 			->will($this->returnCallback(
-				function($appName, $file) {
+				function ($appName, $file) {
 					if ($file === 'filetypes/file.svg') {
 						return 'file.svg';
 					}
@@ -250,8 +252,6 @@ class DetectionTest extends \Test\TestCase {
 		$this->assertEquals('foo-bar.svg', $mimeType);
 		$mimeType = $detection->mimeTypeIcon('foo-bar');
 		$this->assertEquals('foo-bar.svg', $mimeType);
-
-
 
 		/*
 		 * Test aliases

@@ -19,16 +19,13 @@
  *
  */
 
-
 namespace OCA\DAV\Avatars;
-
 
 use OCP\IAvatarManager;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ICollection;
-use Sabre\HTTP\URLUtil;
 
 class AvatarHome implements ICollection {
 
@@ -47,15 +44,15 @@ class AvatarHome implements ICollection {
 		$this->avatarManager = $avatarManager;
 	}
 
-	function createFile($name, $data = null) {
+	public function createFile($name, $data = null) {
 		throw new Forbidden('Permission denied to create a file');
 	}
 
-	function createDirectory($name) {
+	public function createDirectory($name) {
 		throw new Forbidden('Permission denied to create a folder');
 	}
 
-	function getChild($name) {
+	public function getChild($name) {
 		$elements = \pathinfo($name);
 		$ext = isset($elements['extension']) ? $elements['extension'] : '';
 		$size = \intval(isset($elements['filename']) ? $elements['filename'] : '64');
@@ -72,20 +69,20 @@ class AvatarHome implements ICollection {
 		return new AvatarNode($size, $ext, $avatar);
 	}
 
-	function getChildren() {
+	public function getChildren() {
 		try {
 			return [
 				$this->getChild('96.jpeg')
 			];
-		} catch(NotFound $exception) {
+		} catch (NotFound $exception) {
 			return [];
 		}
 	}
 
-	function childExists($name) {
+	public function childExists($name) {
 		try {
 			$ret = $this->getChild($name);
-			return !\is_null($ret);
+			return $ret !== null;
 		} catch (NotFound $ex) {
 			return false;
 		} catch (MethodNotAllowed $ex) {
@@ -93,16 +90,16 @@ class AvatarHome implements ICollection {
 		}
 	}
 
-	function delete() {
+	public function delete() {
 		throw new Forbidden('Permission denied to delete this folder');
 	}
 
-	function getName() {
-		list(,$name) = URLUtil::splitPath($this->principalInfo['uri']);
+	public function getName() {
+		list(, $name) = \Sabre\Uri\split($this->principalInfo['uri']);
 		return $name;
 	}
 
-	function setName($name) {
+	public function setName($name) {
 		throw new Forbidden('Permission denied to rename this folder');
 	}
 
@@ -111,9 +108,7 @@ class AvatarHome implements ICollection {
 	 *
 	 * @return int
 	 */
-	function getLastModified() {
+	public function getLastModified() {
 		return null;
 	}
-
-
 }

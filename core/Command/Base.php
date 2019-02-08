@@ -47,7 +47,7 @@ class Base extends Command {
 				'output',
 				null,
 				InputOption::VALUE_OPTIONAL,
-				'The output format to use (plain, json or json_pretty, default is plain).',
+				'The output format to use (plain, json or json_pretty).',
 				$this->defaultOutputFormat
 			)
 		;
@@ -76,7 +76,7 @@ class Base extends Command {
 					}
 					if ($showIntKeys || !\is_int($key)) {
 						$value = $this->valueToString($item);
-						if (!\is_null($value)) {
+						if ($value !== null) {
 							$output->writeln($prefix . $key . ': ' . $value);
 						} else {
 							$output->writeln($prefix . $key);
@@ -116,9 +116,9 @@ class Base extends Command {
 	protected function valueToString($value, $returnNull = true) {
 		if ($value === false) {
 			return 'false';
-		} else if ($value === true) {
+		} elseif ($value === true) {
 			return 'true';
-		} else if ($value === null) {
+		} elseif ($value === null) {
 			return ($returnNull) ? null : 'null';
 		} else {
 			return $value;
@@ -159,4 +159,3 @@ class Base extends Command {
 		return parent::run($input, $output);
 	}
 }
-

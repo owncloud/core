@@ -22,7 +22,7 @@
  *
  */
  
-namespace OCA\Files_Versions; 
+namespace OCA\Files_Versions;
 
 use OCP\Capabilities\ICapability;
 

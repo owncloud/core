@@ -81,6 +81,25 @@ class PropagatorTest extends TestCase {
 		}
 	}
 
+	public function getParentsProvider() {
+		return [
+			['', []],
+			['foo', ['']],
+			['foo/bar', ['', 'foo']],
+			['foo/bar/baz.txt', ['', 'foo', 'foo/bar']]
+		];
+	}
+
+	/**
+	 * @dataProvider getParentsProvider
+	 * @param $path
+	 * @throws \OCP\Files\StorageNotAvailableException
+	 */
+	public function testGetParents($path, $expected) {
+		$propagator = $this->storage->getPropagator();
+		self::assertSame($expected, self::invokePrivate($propagator, 'getParents', [$path]));
+	}
+
 	public function testBatchedPropagation() {
 		$this->storage->mkdir('foo/baz');
 		$this->storage->mkdir('asd');

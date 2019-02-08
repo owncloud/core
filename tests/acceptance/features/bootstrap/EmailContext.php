@@ -21,7 +21,6 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use TestHelpers\EmailHelper;
@@ -31,41 +30,87 @@ require_once 'bootstrap.php';
 /**
  * context file for email related steps.
  */
-class EmailContext implements Context, SnippetAcceptingContext {
-	private $mailhogUrl = null;
-	
+class EmailContext implements Context {
+	private $localMailhogUrl = null;
+
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
+
 	/**
 	 * @return string
 	 */
-	public function getMailhogUrl() {
-		return $this->mailhogUrl;
+	public function getLocalMailhogUrl() {
+		return $this->localMailhogUrl;
 	}
 
 	/**
 	 * @Then the email address :address should have received an email with the body containing
-	 * 
+	 *
 	 * @param string $address
 	 * @param PyStringNode $content
-	 * 
+	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function assertThatEmailContains($address, PyStringNode $content) {
 		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
+		$expectedContent = $this->featureContext->substituteInLineCodes(
+			$expectedContent
+		);
 		PHPUnit_Framework_Assert::assertContains(
 			$expectedContent,
-			EmailHelper::getBodyOfLastEmail($this->mailhogUrl, $address)
+			EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address)
 		);
 	}
 
 	/**
-	 * @BeforeScenario
+	 * @Then the reset email to :receiverAddress should be from :senderAddress
+	 *
+	 * @param string $receiverAddress
+	 * @param string $senderAddress
+	 *
+	 * @return void
+	 */
+	public function theResetEmailSenderEmailAddressShouldBe($receiverAddress, $senderAddress) {
+		PHPUnit_Framework_Assert::assertContains(
+			$senderAddress,
+			EmailHelper::getSenderOfEmail($this->localMailhogUrl, $receiverAddress)
+		);
+	}
+
+	/**
+	 * @Then the email address :address should not have received an email
+	 *
+	 * @param string $address
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function assertThatEmailDoesntExistWithTheAddress($address) {
+		PHPUnit_Framework_Assert::assertFalse(
+			EmailHelper::emailReceived(
+				EmailHelper::getLocalMailhogUrl(), $address
+			),
+			"Email exists with email address: {$address}."
+		);
+	}
+
+	/**
+	 * @BeforeScenario @mailhog
 	 *
 	 * @param BeforeScenarioScope $scope
 	 *
 	 * @return void
 	 */
 	public function setUpScenario(BeforeScenarioScope $scope) {
-		$this->mailhogUrl = EmailHelper::getMailhogUrl();
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->localMailhogUrl = EmailHelper::getLocalMailhogUrl();
 		$this->clearMailHogMessages();
 	}
 
@@ -75,7 +120,7 @@ class EmailContext implements Context, SnippetAcceptingContext {
 	 */
 	protected function clearMailHogMessages() {
 		try {
-			EmailHelper::deleteAllMessages($this->getMailhogUrl());
+			EmailHelper::deleteAllMessages($this->getLocalMailhogUrl());
 		} catch (Exception $e) {
 			echo __METHOD__ .
 			" could not delete mailhog messages, is mailhog set up?\n" .

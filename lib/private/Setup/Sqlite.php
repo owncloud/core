@@ -36,7 +36,7 @@ class Sqlite extends AbstractDatabase {
 		$datadir = \OC::$server->getSystemConfig()->getValue('datadirectory');
 
 		//delete the old sqlite database first, might cause infinte loops otherwise
-		if(\file_exists("$datadir/owncloud.db")) {
+		if (\file_exists("$datadir/owncloud.db")) {
 			\unlink("$datadir/owncloud.db");
 		}
 		//in case of sqlite, we can always fill the database

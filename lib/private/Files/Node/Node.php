@@ -131,7 +131,7 @@ class Node implements \OCP\Files\Node {
 			$this->view->touch($this->path, $mtime);
 			$this->sendHooks(['postTouch']);
 			if ($this->fileInfo) {
-				if (\is_null($mtime)) {
+				if ($mtime === null) {
 					$mtime = \time();
 				}
 				$this->fileInfo['mtime'] = $mtime;
@@ -146,7 +146,7 @@ class Node implements \OCP\Files\Node {
 	 * @throws \OCP\Files\NotFoundException
 	 */
 	public function getStorage() {
-		list($storage,) = $this->view->resolvePath($this->path);
+		list($storage, ) = $this->view->resolvePath($this->path);
 		return $storage;
 	}
 
@@ -424,5 +424,4 @@ class Node implements \OCP\Files\Node {
 			throw new NotPermittedException('No permission to move to path ' . $targetPath);
 		}
 	}
-
 }

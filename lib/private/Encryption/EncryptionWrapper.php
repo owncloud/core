@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OC\Encryption;
-
 
 use OC\Memcache\ArrayCache;
 use OC\Files\Filesystem;
@@ -70,11 +68,11 @@ class EncryptionWrapper {
 	 * Wraps the given storage when it is not a shared storage
 	 *
 	 * @param string $mountPoint
-	 * @param Storage $storage
+	 * @param Storage\IStorage $storage
 	 * @param IMountPoint $mount
 	 * @return Encryption|Storage
 	 */
-	public function wrapStorage($mountPoint, Storage $storage, IMountPoint $mount) {
+	public function wrapStorage($mountPoint, Storage\IStorage $storage, IMountPoint $mount) {
 		$parameters = [
 			'storage' => $storage,
 			'mountPoint' => $mountPoint,
@@ -84,7 +82,6 @@ class EncryptionWrapper {
 		if (!$storage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')
 			&& !$storage->instanceOfStorage('OCA\Files_Sharing\External\Storage')
 			&& !$storage->instanceOfStorage('OC\Files\Storage\OwnCloud')) {
-
 			$user = \OC::$server->getUserSession()->getUser();
 			$mountManager = Filesystem::getMountManager();
 			$uid = $user ? $user->getUID() : null;
@@ -121,5 +118,4 @@ class EncryptionWrapper {
 			return $storage;
 		}
 	}
-
 }

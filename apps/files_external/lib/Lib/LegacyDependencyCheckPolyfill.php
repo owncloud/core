@@ -57,7 +57,7 @@ trait LegacyDependencyCheckPolyfill {
 						$module = $key;
 						$message = $value;
 					}
-					$value = new MissingDependency($module, $this);
+					$value = new MissingDependency($module);
 					$value->setMessage($message);
 				}
 				$ret[] = $value;
@@ -66,6 +66,4 @@ trait LegacyDependencyCheckPolyfill {
 
 		return $ret;
 	}
-
 }
-

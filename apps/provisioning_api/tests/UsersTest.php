@@ -479,7 +479,7 @@ class UsersTest extends OriginalTest {
 			->willReturn($subAdminManager);
 
 		$expected = new Result(null, API::RESPOND_UNAUTHORISED);
-		$this->assertEquals($expected, $this->api->addUser());	
+		$this->assertEquals($expected, $this->api->addUser());
 	}
 
 	public function testAddUserAsSubAdminNoGroup() {
@@ -513,7 +513,7 @@ class UsersTest extends OriginalTest {
 			->willReturn($subAdminManager);
 
 		$expected = new Result(null, 106, 'no group specified (required for subadmins)');
-		$this->assertEquals($expected, $this->api->addUser());	
+		$this->assertEquals($expected, $this->api->addUser());
 	}
 
 	public function testAddUserAsSubAdminValidGroupNotSubAdmin() {
@@ -564,7 +564,7 @@ class UsersTest extends OriginalTest {
 			->willReturn(true);
 
 		$expected = new Result(null, 105, 'insufficient privileges for group ExistingGroup');
-		$this->assertEquals($expected, $this->api->addUser());	
+		$this->assertEquals($expected, $this->api->addUser());
 	}
 
 	public function testAddUserAsSubAdminExistingGroups() {
@@ -655,11 +655,9 @@ class UsersTest extends OriginalTest {
 			)
 			->willReturn(true);
 
-
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->addUser());
 	}
-
 
 	public function testGetUserNotLoggedIn() {
 		$this->userSession
@@ -916,7 +914,7 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit']));
 	}
 
-	public function testEditUserRegularUserSelfEditChangeDisplayName() {
+	public function testEditUserRegularUserSelfEditChangeDisplay() {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->any())
@@ -939,6 +937,31 @@ class UsersTest extends OriginalTest {
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'display', 'value' => 'NewDisplayName']]));
+	}
+
+	public function testEditUserRegularUserSelfEditChangeDisplayName() {
+		$loggedInUser = $this->createMock(IUser::class);
+		$loggedInUser
+			->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('UserToEdit'));
+		$targetUser = $this->createMock(IUser::class);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($loggedInUser));
+		$this->userManager
+			->expects($this->once())
+			->method('get')
+			->with('UserToEdit')
+			->will($this->returnValue($targetUser));
+		$targetUser
+			->expects($this->once())
+			->method('setDisplayName')
+			->with('NewDisplayName');
+
+		$expected = new Result(null, 100);
+		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'displayname', 'value' => 'NewDisplayName']]));
 	}
 
 	public function testEditUserRegularUserSelfEditChangeEmailValid() {
@@ -1120,7 +1143,6 @@ class UsersTest extends OriginalTest {
 			'0' => [ '0 B', '0'],
 		];
 	}
-
 
 	/**
 	 * @dataProvider providesQuota
@@ -1635,7 +1657,6 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
 	}
 
-
 	public function testGetUsersGroupsForSubAdminUserAndUserIsInaccessible() {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
@@ -1726,12 +1747,10 @@ class UsersTest extends OriginalTest {
 
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
-			->expects($this->once())
 			->method('getUser')
 			->will($this->returnValue($loggedInUser));
 		$this->groupManager
@@ -1754,27 +1773,22 @@ class UsersTest extends OriginalTest {
 
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('unauthorizedUser'));
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
-			->expects($this->once())
 			->method('getUser')
 			->will($this->returnValue($loggedInUser));
 		$this->groupManager
-			->expects($this->once())
 			->method('get')
 			->with('GroupToAddTo')
 			->will($this->returnValue($targetGroup));
 		$subAdminManager = $this->getMockBuilder('\OC\Subadmin')
 			->disableOriginalConstructor()->getMock();
 		$this->groupManager
-			->expects($this->once())
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
 		$this->groupManager
-			->expects($this->once())
 			->method('isAdmin')
 			->with('unauthorizedUser')
 			->will($this->returnValue(false));
@@ -1815,12 +1829,10 @@ class UsersTest extends OriginalTest {
 		$subAdminManager = $this->getMockBuilder('\OC\Subadmin')
 			->disableOriginalConstructor()->getMock();
 		$subAdminManager
-			->expects($this->once())
 			->method('isSubAdminofGroup')
 			->with($loggedInUser, $targetGroup)
 			->will($this->returnValue(false));
 		$this->groupManager
-			->expects($this->once())
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
 		$this->groupManager
@@ -1880,16 +1892,13 @@ class UsersTest extends OriginalTest {
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
-			->expects($this->once())
 			->method('getUser')
 			->will($this->returnValue($loggedInUser));
 		$this->groupManager
-			->expects($this->once())
 			->method('get')
 			->with('group1')
 			->will($this->returnValue($targetGroup));
 		$this->userManager
-			->expects($this->once())
 			->method('get')
 			->with('AnotherUser')
 			->will($this->returnValue($targetUser));
@@ -1899,22 +1908,19 @@ class UsersTest extends OriginalTest {
 			->with('subadmin')
 			->will($this->returnValue(false));
 		$targetGroup
-			->expects($this->once())
 			->method('addUser')
 			->with($targetUser);
 		$subAdminManager = $this->getMockBuilder('\OC\Subadmin')
 			->disableOriginalConstructor()->getMock();
 		$subAdminManager
-			->expects($this->once())
 			->method('isSubAdminOfGroup')
 			->with($loggedInUser, $targetGroup)
 			->will($this->returnValue(true));
 		$this->groupManager
-			->expects($this->once())
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
 
-		$expected = new Result(null, 100);
+		$expected = new Result(null, 104);
 		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'AnotherUser']));
 	}
 	public function testRemoveFromGroupWithoutLogIn() {
@@ -1940,11 +1946,9 @@ class UsersTest extends OriginalTest {
 	public function testRemoveFromGroupWithNotExistingTargetGroup() {
 		$loggedInUser = $this->createMock(IUser::class);
 		$this->userSession
-			->expects($this->once())
 			->method('getUser')
 			->will($this->returnValue($loggedInUser));
 		$this->groupManager
-			->expects($this->once())
 			->method('get')
 			->with('TargetGroup')
 			->will($this->returnValue(null));

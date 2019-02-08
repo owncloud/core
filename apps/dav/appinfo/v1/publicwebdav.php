@@ -48,7 +48,8 @@ $serverFactory = new OCA\DAV\Connector\Sabre\ServerFactory(
 	\OC::$server->getUserSession(),
 	\OC::$server->getMountManager(),
 	\OC::$server->getTagManager(),
-	\OC::$server->getRequest()
+	\OC::$server->getRequest(),
+	\OC::$server->getTimeFactory()
 );
 
 $requestUri = \OC::$server->getRequest()->getRequestUri();
@@ -57,7 +58,7 @@ $linkCheckPlugin = new \OCA\DAV\Files\Sharing\PublicLinkCheckPlugin();
 
 $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, function (\Sabre\DAV\Server $server) use ($authBackend, $linkCheckPlugin) {
 	$isAjax = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest');
-	$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application('federatedfilesharing');
+	$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application();
 	$federatedShareProvider = $federatedSharingApp->getFederatedShareProvider();
 	if ($federatedShareProvider->isOutgoingServer2serverShareEnabled() === false && !$isAjax) {
 		// this is what is thrown when trying to access a non-existing share
@@ -85,8 +86,15 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 	$fileInfo = $ownerView->getFileInfo($path);
 	$linkCheckPlugin->setFileInfo($fileInfo);
 
+	\OC::$server->getEventDispatcher()->addListener(
+		'public.user.resolve',
+		function ($event) use ($share) {
+			$event->setArgument('user', $share->getSharedWith());
+		}
+	);
+
 	return new \OC\Files\View($ownerView->getAbsolutePath($path));
-});
+}, true);
 
 $server->addPlugin(new \OCA\DAV\Connector\Sabre\AutorenamePlugin());
 $server->addPlugin($linkCheckPlugin);

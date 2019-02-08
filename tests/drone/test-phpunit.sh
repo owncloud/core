@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 set -xeo pipefail
 
+# Note this is a fix for issues with php7.2 where having php-memcached present
+# leads to encountering segmentation faults
+#
+# Ref: https://github.com/owncloud-ci/php/issues/33
+
+export ZEND_DONT_UNLOAD_MODULES=1
+
 if [[ "$(pwd)" == "$(cd "$(dirname "$0")"; pwd -P)" ]]; then
   echo "Can only be executed from project root!"
   exit 1
 fi
+
+export ZEND_DONT_UNLOAD_MODULES=1
 
 set_up_external_storage() {
     php occ app:enable files_external

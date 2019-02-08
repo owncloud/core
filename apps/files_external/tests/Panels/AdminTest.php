@@ -74,5 +74,4 @@ class AdminTest extends \Test\TestCase {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertContains('<h2 class="app-name">External Storage</h2>', $templateHtml);
 	}
-
 }

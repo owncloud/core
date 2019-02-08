@@ -35,7 +35,6 @@ namespace OCP;
 use Closure;
 use OCP\AppFramework\QueryException;
 
-
 /**
  * Class IContainer
  *

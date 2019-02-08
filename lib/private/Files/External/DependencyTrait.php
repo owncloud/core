@@ -22,7 +22,6 @@
 
 namespace OC\Files\External;
 
-
 /**
  * Trait for objects that have dependencies for use
  */
@@ -36,6 +35,4 @@ trait DependencyTrait {
 	public function checkDependencies() {
 		return []; // no dependencies by default
 	}
-
 }
-

@@ -75,7 +75,6 @@ interface IPreview {
 	 */
 	public function createPreview($file, $maxX = 100, $maxY = 75, $scaleUp = false);
 
-
 	/**
 	 * Returns true if the passed mime type is supported
 	 * @param string $mimeType

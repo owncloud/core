@@ -50,7 +50,9 @@ class StaticStream {
 	public function stream_open($path, $mode, $options, &$opened_path) {
 		switch ($mode[0]) {
 			case 'r':
-				if (!isset(self::$data[$path])) return false;
+				if (!isset(self::$data[$path])) {
+					return false;
+				}
 				$this->path = $path;
 				$this->writable = isset($mode[1]) && $mode[1] == '+';
 				break;
@@ -60,18 +62,24 @@ class StaticStream {
 				$this->writable = true;
 				break;
 			case 'a':
-				if (!isset(self::$data[$path])) self::$data[$path] = '';
+				if (!isset(self::$data[$path])) {
+					self::$data[$path] = '';
+				}
 				$this->path = $path;
 				$this->writable = true;
 				$this->pointer = \strlen(self::$data[$path]);
 				break;
 			case 'x':
-				if (isset(self::$data[$path])) return false;
+				if (isset(self::$data[$path])) {
+					return false;
+				}
 				$this->path = $path;
 				$this->writable = true;
 				break;
 			case 'c':
-				if (!isset(self::$data[$path])) self::$data[$path] = '';
+				if (!isset(self::$data[$path])) {
+					self::$data[$path] = '';
+				}
 				$this->path = $path;
 				$this->writable = true;
 				break;
@@ -123,7 +131,9 @@ class StaticStream {
 	}
 
 	public function stream_write($data) {
-		if (!$this->writable) return 0;
+		if (!$this->writable) {
+			return 0;
+		}
 		$size = \strlen($data);
 		if ($this->stream_eof()) {
 			self::$data[$this->path] .= $data;

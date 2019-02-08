@@ -151,6 +151,26 @@ class Detection implements IMimeTypeDetector {
 	}
 
 	/**
+	 * Detect if the file is a shared object file. We detect this file
+	 * with a regex.
+	 *
+	 * @param string $fileName
+	 * @return bool true if file is a shared object else false
+	 */
+	private function detectSharedObjFileName($fileName) {
+		\preg_match("/(.*?)(\.so)([\.]*?.*)/i", $fileName, $match);
+		/**
+		 * 1. Exactly 4 indexes to match ( check the regex grouping above preg_match )
+		 * 2. Check if the filename has '.so'
+		 * 3. Check if the filname has extension after '.so', say .so.1. or .so.
+		 * That is anything like '.so.*'. This match is made in the 4th index.
+		 * No extension after '.so' is considered to be shared object file
+		 */
+		return (\count($match) === 4) && ($match[2] === '.so')
+			&& ($match[3] === '' || ($match[3] !== '' && \strpos($match[3], '.') === 0));
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getAllMappings() {
@@ -171,9 +191,13 @@ class Detection implements IMimeTypeDetector {
 		// note: leading dot doesn't qualify as extension
 		if (\strpos($fileName, '.') > 0) {
 			//try to guess the type by the file extension
-			$extension = \strtolower(\strrchr($fileName, '.'));
-			$extension = \substr($extension, 1); //remove leading .
-			return (isset($this->mimetypes[$extension]) && isset($this->mimetypes[$extension][0]))
+			if ($this->detectSharedObjFileName($fileName)) {
+				$extension = 'so';
+			} else {
+				$extension = \strtolower(\strrchr($fileName, '.'));
+				$extension = \substr($extension, 1); //remove leading .
+			}
+			return (isset($this->mimetypes[$extension], $this->mimetypes[$extension][0]))
 				? $this->mimetypes[$extension][0]
 				: 'application/octet-stream';
 		} else {
@@ -206,7 +230,6 @@ class Detection implements IMimeTypeDetector {
 				$mimeType = \substr($info, 0, \strpos($info, ';'));
 				return empty($mimeType) ? 'application/octet-stream' : $mimeType;
 			}
-
 		}
 		$isWrapped = (\strpos($path, '://') !== false) and (\substr($path, 0, 7) === 'file://');
 		if (!$isWrapped and $mimeType === 'application/octet-stream' && \function_exists("mime_content_type")) {
@@ -227,7 +250,6 @@ class Detection implements IMimeTypeDetector {
 			if (empty($mimeType)) {
 				$mimeType = 'application/octet-stream';
 			}
-
 		}
 		return $mimeType;
 	}

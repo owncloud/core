@@ -25,7 +25,6 @@
 
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
-
 use OC\Files\FileInfo;
 use OC\Files\Filesystem;
 use OC\Files\Storage\Temporary;
@@ -42,7 +41,6 @@ use Test\TestCase;
  * @package OCA\DAV\Tests\Unit\Connector\Sabre
  */
 class ObjectTreeTest extends TestCase {
-
 	public function copyDataProvider() {
 		return [
 			// copy into same dir
@@ -137,7 +135,6 @@ class ObjectTreeTest extends TestCase {
 		$type,
 		$enableChunkingHeader
 	) {
-
 		if ($enableChunkingHeader) {
 			$_SERVER['HTTP_OC_CHUNKED'] = true;
 		}
@@ -177,7 +174,7 @@ class ObjectTreeTest extends TestCase {
 		unset($_SERVER['HTTP_OC_CHUNKED']);
 	}
 
-	function nodeForPathProvider() {
+	public function nodeForPathProvider() {
 		return [
 			// regular file
 			[
@@ -252,7 +249,6 @@ class ObjectTreeTest extends TestCase {
 	public function testGetNodeForPathInvalidPath() {
 		$path = '/foo\bar';
 
-
 		$storage = new Temporary([]);
 
 		$view = $this->getMockBuilder(View::class)
@@ -260,9 +256,9 @@ class ObjectTreeTest extends TestCase {
 			->getMock();
 		$view->expects($this->once())
 			->method('resolvePath')
-			->will($this->returnCallback(function($path) use ($storage){
-			return [$storage, \ltrim($path, '/')];
-		}));
+			->will($this->returnCallback(function ($path) use ($storage) {
+				return [$storage, \ltrim($path, '/')];
+			}));
 
 		$rootNode = $this->getMockBuilder(Directory::class)
 			->disableOriginalConstructor()
@@ -277,7 +273,6 @@ class ObjectTreeTest extends TestCase {
 
 	public function testGetNodeForPathRoot() {
 		$path = '/';
-
 
 		$storage = new Temporary([]);
 
@@ -298,5 +293,4 @@ class ObjectTreeTest extends TestCase {
 
 		$this->assertInstanceOf('\Sabre\DAV\INode', $tree->getNodeForPath($path));
 	}
-
 }

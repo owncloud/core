@@ -37,7 +37,7 @@
 namespace OC\Files\Storage;
 
 use OCP\Files\ForbiddenException;
-
+use OCP\Files\Storage\IStorage;
 
 /**
  * for local filestore, we only have to map the paths
@@ -189,7 +189,7 @@ class Local extends Common {
 				$returnVar = 0;
 				if (\OC_Util::runningOn('linux')) {
 					$result = (int)\exec('stat -c %Y ' . \escapeshellarg($fullPath), $output, $returnVar);
-				} else if (\OC_Util::runningOn('bsd') || \OC_Util::runningOn('mac')) {
+				} elseif (\OC_Util::runningOn('bsd') || \OC_Util::runningOn('mac')) {
 					$result = (int)\exec('stat -f %m ' . \escapeshellarg($fullPath), $output, $returnVar);
 				}
 
@@ -212,7 +212,7 @@ class Local extends Common {
 		if ($this->file_exists($path) and !$this->isUpdatable($path)) {
 			return false;
 		}
-		if (!\is_null($mtime)) {
+		if ($mtime !== null) {
 			$result = \touch($this->getSourcePath($path), $mtime);
 		} else {
 			$result = \touch($this->getSourcePath($path));
@@ -235,12 +235,11 @@ class Local extends Common {
 	public function unlink($path) {
 		if ($this->is_dir($path)) {
 			return $this->rmdir($path);
-		} else if ($this->is_file($path)) {
+		} elseif ($this->is_file($path)) {
 			return \unlink($this->getSourcePath($path));
 		} else {
 			return false;
 		}
-
 	}
 
 	public function rename($path1, $path2) {
@@ -264,11 +263,13 @@ class Local extends Common {
 
 		if ($this->is_dir($path2)) {
 			$this->rmdir($path2);
-		} else if ($this->is_file($path2)) {
-			$this->unlink($path2);
 		}
 
 		if ($this->is_dir($path1)) {
+			if ($this->is_file($path2)) {
+				// existing file must be deleted to replace it with a folder
+				$this->unlink($path2);
+			}
 			// we can't move folders across devices, use copy instead
 			$stat1 = \stat(\dirname($this->getSourcePath($path1)));
 			$stat2 = \stat(\dirname($this->getSourcePath($path2)));
@@ -310,14 +311,10 @@ class Local extends Common {
 			$sourcePath = \dirname($sourcePath);
 		}
 		$space = @\disk_free_space($sourcePath);
-		if ($space === false || \is_null($space)) {
+		if ($space === false || $space === null) {
 			return \OCP\Files\FileInfo::SPACE_UNKNOWN;
 		}
 		return $space;
-	}
-
-	public function search($query) {
-		return $this->searchInDir($query);
 	}
 
 	public function getLocalFile($path) {
@@ -338,8 +335,9 @@ class Local extends Common {
 		$files = [];
 		$physicalDir = $this->getSourcePath($dir);
 		foreach (\scandir($physicalDir) as $item) {
-			if (\OC\Files\Filesystem::isIgnoredDir($item))
+			if (\OC\Files\Filesystem::isIgnoredDir($item)) {
 				continue;
+			}
 			$physicalItem = $physicalDir . '/' . $item;
 
 			if (\strstr(\strtolower($item), \strtolower($query)) !== false) {
@@ -358,6 +356,7 @@ class Local extends Common {
 	 * @param string $path
 	 * @param int $time
 	 * @return bool
+	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
 	public function hasUpdated($path, $time) {
 		if ($this->file_exists($path)) {
@@ -413,6 +412,7 @@ class Local extends Common {
 	 *
 	 * @param string $path
 	 * @return string
+	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
 	public function getETag($path) {
 		if ($this->is_file($path)) {
@@ -435,6 +435,7 @@ class Local extends Common {
 	 * @param bool $preserveMtime
 	 * @return bool
 	 * @throws ForbiddenException
+	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
 	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
 		if ($sourceStorage->instanceOfStorage(__CLASS__)) {
@@ -453,7 +454,7 @@ class Local extends Common {
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
-	 * @throws \InvalidArgumentException
+	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
 	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage->instanceOfStorage(__CLASS__)) {

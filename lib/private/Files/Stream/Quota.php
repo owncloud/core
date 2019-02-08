@@ -65,7 +65,7 @@ class Quota {
 	 * @param int $limit
 	 * @return resource
 	 */
-	static public function wrap($stream, $limit) {
+	public static function wrap($stream, $limit) {
 		$id = \uniqid();
 		self::register($id, $stream, $limit);
 		$meta = \stream_get_meta_data($stream);
@@ -83,17 +83,16 @@ class Quota {
 	}
 
 	public function stream_seek($offset, $whence = SEEK_SET) {
-		if ($whence === SEEK_END){
+		if ($whence === SEEK_END) {
 			// go to the end to find out last position's offset
 			$oldOffset = $this->stream_tell();
-			if (\fseek($this->source, 0, $whence) !== 0){
+			if (\fseek($this->source, 0, $whence) !== 0) {
 				return false;
 			}
 			$whence = SEEK_SET;
 			$offset = $this->stream_tell() + $offset;
 			$this->limit += $oldOffset - $offset;
-		}
-		else if ($whence === SEEK_SET) {
+		} elseif ($whence === SEEK_SET) {
 			$this->limit += $this->stream_tell() - $offset;
 		} else {
 			$this->limit -= $offset;
@@ -131,7 +130,7 @@ class Quota {
 				\stream_set_timeout($this->source, $arg1, $arg2);
 				break;
 			case STREAM_OPTION_WRITE_BUFFER:
-				\stream_set_write_buffer($this->source, $arg1, $arg2);
+				\stream_set_write_buffer($this->source, $arg1);
 		}
 	}
 

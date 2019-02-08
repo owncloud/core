@@ -26,7 +26,6 @@ use OCP\Template;
 use OCP\IConfig;
 
 class BackgroundJobs implements ISettings {
-
 	protected $config;
 
 	public function __construct(IConfig $config) {

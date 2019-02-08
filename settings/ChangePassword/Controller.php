@@ -44,16 +44,16 @@ class Controller {
 
 		if (!\OC_User::checkPassword($username, $oldPassword)) {
 			$l = \OC::$server->getL10NFactory()->get('settings');
-			\OC_JSON::error(["data" => ["message" => $l->t("Wrong password")]]);
+			\OC_JSON::error(["data" => ["message" => $l->t("Wrong current password")]]);
 			exit();
 		}
 		if ($oldPassword === $password) {
 			$l = \OC::$server->getL10NFactory()->get('settings');
-			\OC_JSON::error(["data" => ["message" => $l->t("The new password can not be the same as the previous one")]]);
+			\OC_JSON::error(["data" => ["message" => $l->t("The new password cannot be the same as the previous one")]]);
 			exit();
-	        }
+		}
 		try {
-			if (!\is_null($password) && \OC_User::setPassword($username, $password)) {
+			if ($password !== null && \OC_User::setPassword($username, $password)) {
 				\OC::$server->getUserSession()->updateSessionTokenPassword($password);
 
 				self::sendNotificationMail($username);
@@ -73,7 +73,7 @@ class Controller {
 		$defaults = new \OC_Defaults();
 		$from = \OCP\Util::getDefaultEmailAddress('lostpassword-noreply');
 		$mailer = \OC::$server->getMailer();
-		$lion = \OC::$server->getL10N('lib');
+		$l10n = \OC::$server->getL10N('settings');
 
 		if ($email !== null && $email !== '') {
 			$tmpl = new \OC_Template('core', 'lostpassword/notify');
@@ -82,12 +82,12 @@ class Controller {
 			try {
 				$message = $mailer->createMessage();
 				$message->setTo([$email => $username]);
-				$message->setSubject($lion->t('%s password changed successfully', [$defaults->getName()]));
+				$message->setSubject($l10n->t('%s password changed successfully', [$defaults->getName()]));
 				$message->setPlainBody($msg);
 				$message->setFrom([$from => $defaults->getName()]);
 				$mailer->send($message);
 			} catch (\Exception $e) {
-				throw new \Exception($lion->t(
+				throw new \Exception($l10n->t(
 					'Couldn\'t send reset email. Please contact your administrator.'
 				));
 			}

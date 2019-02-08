@@ -32,7 +32,7 @@ OCP\JSON::checkAppEnabled('files_sharing');
 
 $l = \OC::$server->getL10N('files_sharing');
 
-$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application('federatedfilesharing');
+$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application();
 $federatedShareProvider = $federatedSharingApp->getFederatedShareProvider();
 
 // check if server admin allows to mount public links from other servers
@@ -49,22 +49,18 @@ $name = $_POST['name'];
 $password = $_POST['password'];
 
 // Check for invalid name
-if(!\OCP\Util::isValidFileName($name)) {
+if (!\OCP\Util::isValidFileName($name)) {
 	\OCP\JSON::error(['data' => ['message' => $l->t('The mountpoint name contains invalid characters.')]]);
 	exit();
 }
 
 $currentUser = \OC::$server->getUserSession()->getUser()->getUID();
 $currentServer = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
-if (\OC\Share\Helper::isSameUserOnSameServer($owner, $remote, $currentUser, $currentServer )) {
+if (\OC\Share\Helper::isSameUserOnSameServer($owner, $remote, $currentUser, $currentServer)) {
 	\OCP\JSON::error(['data' => ['message' => $l->t('Not allowed to create a federated share with the same user server')]]);
 	exit();
 }
 
-$discoveryManager = new \OCA\FederatedFileSharing\DiscoveryManager(
-	\OC::$server->getMemCacheFactory(),
-	\OC::$server->getHTTPClientService()
-);
 $externalManager = new \OCA\Files_Sharing\External\Manager(
 		\OC::$server->getDatabaseConnection(),
 		\OC\Files\Filesystem::getMountManager(),
@@ -147,4 +143,3 @@ try {
 	);
 	\OCP\JSON::error(['data' => ['message' => $l->t('Couldn\'t add remote share')]]);
 }
-

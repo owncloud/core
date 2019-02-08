@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OC\User;
-
 
 use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Exceptions\PasswordlessTokenException;

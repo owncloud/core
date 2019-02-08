@@ -41,7 +41,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Upgrade extends Command {
-
 	const ERROR_SUCCESS = 0;
 	const ERROR_NOT_INSTALLED = 1;
 	const ERROR_MAINTENANCE_MODE = 2;
@@ -74,7 +73,13 @@ class Upgrade extends Command {
 				null,
 				InputOption::VALUE_NONE,
 				'Skip disabling of third party apps.'
-			);
+			)
+			->addOption(
+				'--major',
+				null,
+				InputOption::VALUE_NONE,
+				'Automatically update apps to new major versions during minor updates of ownCloud Server'
+				);
 	}
 
 	/**
@@ -90,24 +95,27 @@ class Upgrade extends Command {
 			$output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
 		}
 
-		if(\OC::checkUpgrade(false)) {
+		if (\OC::checkUpgrade(false)) {
 			if (OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
 				// Prepend each line with a little timestamp
 				$timestampFormatter = new TimestampFormatter($this->config, $output->getFormatter());
 				$output->setFormatter($timestampFormatter);
 			}
 
-			$self = $this;
 			$updater = new Updater(
 					$this->config,
 					\OC::$server->getIntegrityCodeChecker(),
 					$this->logger
 			);
 
+			if ($input->getOption('major')) {
+				$updater->setForceMajorUpgrade(true);
+			}
+
 			$dispatcher = \OC::$server->getEventDispatcher();
 			$progress = new ProgressBar($output);
 			$progress->setFormat(" %message%\n %current%/%max% [%bar%] %percent:3s%%");
-			$listener = function($event) use ($progress, $output) {
+			$listener = function ($event) use ($progress, $output) {
 				if ($event instanceof GenericEvent) {
 					$message = $event->getSubject();
 					if (OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
@@ -130,7 +138,7 @@ class Upgrade extends Command {
 					}
 				}
 			};
-			$repairListener = function($event) use ($progress, $output) {
+			$repairListener = function ($event) use ($progress, $output) {
 				if (!$event instanceof GenericEvent) {
 					return;
 				}
@@ -155,12 +163,12 @@ class Upgrade extends Command {
 						$output->writeln('');
 						break;
 					case '\OC\Repair::step':
-						if(OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
+						if (OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
 							$output->writeln('<info>Repair step: ' . $event->getArgument(0) . '</info>');
 						}
 						break;
 					case '\OC\Repair::info':
-						if(OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
+						if (OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
 							$output->writeln('<info>Repair info: ' . $event->getArgument(0) . '</info>');
 						}
 						break;
@@ -183,18 +191,17 @@ class Upgrade extends Command {
 			$dispatcher->addListener('\OC\Repair::warning', $repairListener);
 			$dispatcher->addListener('\OC\Repair::error', $repairListener);
 			
-
-			$updater->listen('\OC\Updater', 'maintenanceEnabled', function () use($output) {
+			$updater->listen('\OC\Updater', 'maintenanceEnabled', function () use ($output) {
 				$output->writeln('<info>Turned on maintenance mode</info>');
 			});
-			$updater->listen('\OC\Updater', 'maintenanceDisabled', function () use($output) {
+			$updater->listen('\OC\Updater', 'maintenanceDisabled', function () use ($output) {
 				$output->writeln('<info>Turned off maintenance mode</info>');
 			});
-			$updater->listen('\OC\Updater', 'maintenanceActive', function () use($output) {
+			$updater->listen('\OC\Updater', 'maintenanceActive', function () use ($output) {
 				$output->writeln('<info>Maintenance mode is kept active</info>');
 			});
 			$updater->listen('\OC\Updater', 'updateEnd',
-				function ($success) use($output) {
+				function ($success) use ($output) {
 					if ($success) {
 						$message = "<info>Update successful</info>";
 					} else {
@@ -202,22 +209,22 @@ class Upgrade extends Command {
 					}
 					$output->writeln($message);
 				});
-			$updater->listen('\OC\Updater', 'dbUpgradeBefore', function () use($output) {
+			$updater->listen('\OC\Updater', 'dbUpgradeBefore', function () use ($output) {
 				$output->writeln('<info>Updating database schema</info>');
 			});
-			$updater->listen('\OC\Updater', 'dbUpgrade', function () use($output) {
+			$updater->listen('\OC\Updater', 'dbUpgrade', function () use ($output) {
 				$output->writeln('<info>Updated database</info>');
 			});
-			$updater->listen('\OC\Updater', 'dbSimulateUpgradeBefore', function () use($output) {
+			$updater->listen('\OC\Updater', 'dbSimulateUpgradeBefore', function () use ($output) {
 				$output->writeln('<info>Checking whether the database schema can be updated (this can take a long time depending on the database size)</info>');
 			});
-			$updater->listen('\OC\Updater', 'dbSimulateUpgrade', function () use($output) {
+			$updater->listen('\OC\Updater', 'dbSimulateUpgrade', function () use ($output) {
 				$output->writeln('<info>Checked database schema update</info>');
 			});
-			$updater->listen('\OC\Updater', 'incompatibleAppDisabled', function ($app) use($output) {
+			$updater->listen('\OC\Updater', 'incompatibleAppDisabled', function ($app) use ($output) {
 				$output->writeln('<info>Disabled incompatible app: ' . $app . '</info>');
 			});
-			$updater->listen('\OC\Updater', 'upgradeAppStoreApp', function ($app) use($output) {
+			$updater->listen('\OC\Updater', 'upgradeAppStoreApp', function ($app) use ($output) {
 				$output->writeln('<info>Update 3rd-party app: ' . $app . '</info>');
 			});
 			$updater->listen('\OC\Updater', 'appUpgradeCheckBefore', function () use ($output) {
@@ -235,19 +242,19 @@ class Upgrade extends Command {
 			$updater->listen('\OC\Updater', 'appUpgrade', function ($app, $version) use ($output) {
 				$output->writeln("<info>Updated <$app> to $version</info>");
 			});
-			$updater->listen('\OC\Updater', 'failure', function ($message) use($output, $self) {
+			$updater->listen('\OC\Updater', 'failure', function ($message) use ($output) {
 				$output->writeln("<error>$message</error>");
 			});
-			$updater->listen('\OC\Updater', 'setDebugLogLevel', function ($logLevel, $logLevelName) use($output) {
+			$updater->listen('\OC\Updater', 'setDebugLogLevel', function ($logLevel, $logLevelName) use ($output) {
 				$output->writeln("<info>Set log level to debug</info>");
 			});
-			$updater->listen('\OC\Updater', 'resetLogLevel', function ($logLevel, $logLevelName) use($output) {
+			$updater->listen('\OC\Updater', 'resetLogLevel', function ($logLevel, $logLevelName) use ($output) {
 				$output->writeln("<info>Reset log level</info>");
 			});
-			$updater->listen('\OC\Updater', 'startCheckCodeIntegrity', function () use($output) {
+			$updater->listen('\OC\Updater', 'startCheckCodeIntegrity', function () use ($output) {
 				$output->writeln("<info>Starting code integrity check...</info>");
 			});
-			$updater->listen('\OC\Updater', 'finishedCheckCodeIntegrity', function () use($output) {
+			$updater->listen('\OC\Updater', 'finishedCheckCodeIntegrity', function () use ($output) {
 				$output->writeln("<info>Finished code integrity check</info>");
 			});
 
@@ -255,19 +262,18 @@ class Upgrade extends Command {
 
 			$this->postUpgradeCheck($input, $output);
 
-			if(!$success) {
+			if (!$success) {
 				return self::ERROR_FAILURE;
 			}
 
 			return self::ERROR_SUCCESS;
-		} else if($this->config->getSystemValue('maintenance', false)) {
+		} elseif ($this->config->getSystemValue('maintenance', false)) {
 			//Possible scenario: ownCloud core is updated but an app failed
 			$output->writeln('<warning>ownCloud is in maintenance mode</warning>');
 			$output->write('<comment>Maybe an upgrade is already in process. Please check the '
 				. 'logfile (data/owncloud.log). If you want to re-run the '
 				. 'upgrade procedure, remove the "maintenance mode" from '
-				. 'config.php and call this script again.</comment>'
-				, true);
+				. 'config.php and call this script again.</comment>', true);
 			return self::ERROR_MAINTENANCE_MODE;
 		} else {
 			$output->writeln('<info>ownCloud is already latest version</info>');

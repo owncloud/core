@@ -97,12 +97,19 @@ class CorsPlugin extends ServerPlugin {
 		$this->server = $server;
 
 		$request = $this->server->httpRequest;
-		if (!$request->hasHeader('Origin') || Util::isSameDomain($request->getHeader('Origin'), $request->getAbsoluteUrl())) {
-			return false;
+		if (!$request->hasHeader('Origin')) {
+			return;
+		}
+		$originHeader = $request->getHeader('Origin');
+		if ($this->ignoreOriginHeader($originHeader)) {
+			return;
+		}
+		if (Util::isSameDomain($originHeader, $request->getAbsoluteUrl())) {
+			return;
 		}
 
-		$this->server->on('beforeMethod', [$this, 'setCorsHeaders']);
-		$this->server->on('beforeMethod:OPTIONS', [$this, 'setOptionsRequestHeaders']);
+		$this->server->on('beforeMethod:*', [$this, 'setCorsHeaders']);
+		$this->server->on('beforeMethod:OPTIONS', [$this, 'setOptionsRequestHeaders'], 5);
 	}
 
 	/**
@@ -146,5 +153,22 @@ class CorsPlugin extends ServerPlugin {
 			$this->server->sapi->sendResponse($response);
 			return false;
 		}
+	}
+
+	/**
+	 * in addition to schemas used by extensions we ignore empty origin header
+	 * values as well as 'null' which is not valid by the specification but used
+	 * by some clients.
+	 * @link https://github.com/owncloud/core/pull/32120#issuecomment-407008243
+	 *
+	 * @param string $originHeader
+	 * @return bool
+	 */
+	public function ignoreOriginHeader($originHeader) {
+		if (\in_array($originHeader, ['', null, 'null'], true)) {
+			return true;
+		}
+		$schema = \parse_url($originHeader, PHP_URL_SCHEME);
+		return \in_array(\strtolower($schema), ['moz-extension', 'chrome-extension']);
 	}
 }

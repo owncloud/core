@@ -112,7 +112,7 @@ class AdminController extends Controller implements ISettings {
 		$currentChannel = \OCP\Util::getChannel();
 
 		// Remove the currently used channel from the channels list
-		if(($key = \array_search($currentChannel, $channels)) !== false) {
+		if (($key = \array_search($currentChannel, $channels)) !== false) {
 			unset($channels[$key]);
 		}
 		$updateState = $this->updateChecker->getUpdateState();
@@ -123,9 +123,9 @@ class AdminController extends Controller implements ISettings {
 		$newVersionString = ($updateState === []) ? '' : $updateState['updateVersion'];
 		
 		$changeLogUrl = null;
-		if( $isNewVersionAvailable === true ){
+		if ($isNewVersionAvailable === true) {
 			$varsionParts = \explode(' ', $newVersionString);
-			if( \count($varsionParts) >= 2){
+			if (\count($varsionParts) >= 2) {
 				$versionParts = \explode('.', $varsionParts[1]); // remove the 'ownCloud' prefix
 				\array_splice($versionParts, 2); // remove minor version info from parts
 				$changeLogUrl = 'https://owncloud.org/changelog/#latest' . \implode('.', $versionParts);

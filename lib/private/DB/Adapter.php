@@ -104,7 +104,7 @@ class Adapter {
 		$inserts = \array_values($input);
 		foreach ($compare as $key) {
 			$query .= '`' . $key . '`';
-			if (\is_null($input[$key])) {
+			if ($input[$key] === null) {
 				$query .= ' IS NULL AND ';
 			} else {
 				$inserts[] = $input[$key];
@@ -125,7 +125,6 @@ class Adapter {
 	 * @throws DriverException|\RuntimeException
 	 */
 	public function upsert($table, $input, $compare) {
-
 		$this->conn->beginTransaction();
 		$done = false;
 
@@ -136,15 +135,15 @@ class Adapter {
 		// Construct the update query
 		$qbu = $this->conn->getQueryBuilder();
 		$qbu->update($table);
-		foreach($input as $col => $val) {
+		foreach ($input as $col => $val) {
 			$qbu->set($col, $qbu->createParameter($col))
 			->setParameter($col, $val);
 		}
-		foreach($compare as $key) {
-			if (\is_null($input[$key]) || ($input[$key] === '' && $this->conn->getDatabasePlatform() instanceof OraclePlatform)) {
+		foreach ($compare as $key) {
+			if ($input[$key] === null || ($input[$key] === '' && $this->conn->getDatabasePlatform() instanceof OraclePlatform)) {
 				$qbu->andWhere($qbu->expr()->isNull($key));
 			} else {
-				if($this->conn->getDatabasePlatform() instanceof OraclePlatform) {
+				if ($this->conn->getDatabasePlatform() instanceof OraclePlatform) {
 					$qbu->andWhere(
 						$qbu->expr()->eq(
 							// needs to cast to char in order to compare with char
@@ -162,7 +161,7 @@ class Adapter {
 		// Construct the insert query
 		$qbi = $this->conn->getQueryBuilder();
 		$qbi->insert($table);
-		foreach($input as $c => $v) {
+		foreach ($input as $c => $v) {
 			$qbi->setValue($c, $qbi->createParameter($c))
 				->setParameter($c, $v);
 		}
@@ -172,14 +171,14 @@ class Adapter {
 		// Attempt 5 times before failing the upsert
 		$maxTry = 5;
 
-		while(!$done && $count < $maxTry) {
+		while (!$done && $count < $maxTry) {
 			try {
 				// Try to update
 				$rows = $qbu->execute();
 			} catch (DriverException $e) {
 				// Skip deadlock and retry
 				// @TODO when we update to DBAL 2.6 we can use DeadlockExceptions here
-				if($e->getErrorCode() == 1213) {
+				if ($e->getErrorCode() == 1213) {
 					$count++;
 					continue;
 				} else {
@@ -188,7 +187,7 @@ class Adapter {
 					throw $e;
 				}
 			}
-			if($rows > 0) {
+			if ($rows > 0) {
 				// We altered some rows, return
 				$done = true;
 			} else {
@@ -208,7 +207,7 @@ class Adapter {
 		}
 
 		// Pass through failures correctly
-		if($count === $maxTry) {
+		if ($count === $maxTry) {
 			$params = \implode(',', $input);
 			$updateQuery = $qbu->getSQL();
 			$insertQuery = $qbi->getSQL();
@@ -217,6 +216,5 @@ class Adapter {
 
 		$this->conn->commit();
 		return $rows;
-
 	}
 }

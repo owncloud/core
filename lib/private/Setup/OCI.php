@@ -51,11 +51,11 @@ class OCI extends AbstractDatabase {
 
 	public function validate($config) {
 		$errors = [];
-		if(empty($config['dbuser']) && empty($config['dbname'])) {
+		if (empty($config['dbuser']) && empty($config['dbname'])) {
 			$errors[] = $this->trans->t("%s enter the database username and name.", [$this->dbprettyname]);
-		} else if(empty($config['dbuser'])) {
+		} elseif (empty($config['dbuser'])) {
 			$errors[] = $this->trans->t("%s enter the database username.", [$this->dbprettyname]);
-		} else if(empty($config['dbname'])) {
+		} elseif (empty($config['dbname'])) {
 			$errors[] = $this->trans->t("%s enter the database name.", [$this->dbprettyname]);
 		}
 		return $errors;
@@ -72,7 +72,7 @@ class OCI extends AbstractDatabase {
 		}
 		$this->logger->debug('connect string: ' . $easy_connect_string, ['app' => 'setup.oci']);
 		$connection = @\oci_connect($this->dbUser, $this->dbPassword, $easy_connect_string);
-		if(!$connection) {
+		if (!$connection) {
 			$errorMessage = $this->getLastError();
 			if ($errorMessage) {
 				throw new \OC\DatabaseSetupException($this->trans->t('Oracle connection could not be established'),
@@ -99,7 +99,7 @@ class OCI extends AbstractDatabase {
 		                'CREATE SESSION',
 		                'CREATE TABLE',
 		                'CREATE SEQUENCE',
-		                'CREATE TRIGGER',
+		                'CREATE TRIGGER'
 		                ) AND a2.admin_option = 'YES')";
 		$stmt = \oci_parse($connection, $query);
 		if (!$stmt) {
@@ -108,7 +108,7 @@ class OCI extends AbstractDatabase {
 			$this->logger->warning($entry, ['app' => 'setup.oci']);
 		}
 		$result = \oci_execute($stmt);
-		if($result) {
+		if ($result) {
 			$row = \oci_fetch_row($stmt);
 
 			if ($row[0] > 0) {
@@ -156,7 +156,7 @@ class OCI extends AbstractDatabase {
 			$easy_connect_string = '//'.$e_host.'/'.$e_dbname;
 		}
 		$connection = @\oci_connect($this->dbUser, $this->dbPassword, $easy_connect_string);
-		if(!$connection) {
+		if (!$connection) {
 			throw new \OC\DatabaseSetupException($this->trans->t('Oracle username and/or password not valid'),
 					$this->trans->t('You need to enter either an existing account or the administrator.'));
 		}
@@ -167,14 +167,14 @@ class OCI extends AbstractDatabase {
 		if (!$stmt) {
 			$entry = $this->trans->t('DB Error: "%s"', [$this->getLastError($connection)]) . '<br />';
 			$entry .= $this->trans->t('Offending command was: "%s"', [$query]) . '<br />';
-			$this->logger->warning( $entry, ['app' => 'setup.oci']);
+			$this->logger->warning($entry, ['app' => 'setup.oci']);
 		}
 		$result = \oci_execute($stmt);
 
-		if($result) {
+		if ($result) {
 			$row = \oci_fetch_row($stmt);
 		}
-		if(!$result or $row[0]==0) {
+		if (!$result or $row[0]==0) {
 			\OC_DB::createDbFromStructure($this->dbDefinitionFile);
 		}
 	}
@@ -194,13 +194,13 @@ class OCI extends AbstractDatabase {
 		}
 		\oci_bind_by_name($stmt, ':un', $name);
 		$result = \oci_execute($stmt);
-		if(!$result) {
+		if (!$result) {
 			$entry = $this->trans->t('DB Error: "%s"', [$this->getLastError($connection)]) . '<br />';
 			$entry .= $this->trans->t('Offending command was: "%s"', [$query]) . '<br />';
 			$this->logger->warning($entry, ['app' => 'setup.oci']);
 		}
 
-		if(! \oci_fetch_row($stmt)) {
+		if (! \oci_fetch_row($stmt)) {
 			//user does not exist, so let's create them :)
 			//password must start with alphabetic character in oracle
 			$query = 'CREATE USER '.$name.' IDENTIFIED BY "'.$password.'" DEFAULT TABLESPACE '.$this->dbtablespace;
@@ -209,16 +209,14 @@ class OCI extends AbstractDatabase {
 				$entry = $this->trans->t('DB Error: "%s"', [$this->getLastError($connection)]) . '<br />';
 				$entry .= $this->trans->t('Offending command was: "%s"', [$query]) . '<br />';
 				$this->logger->warning($entry, ['app' => 'setup.oci']);
-
 			}
 			//oci_bind_by_name($stmt, ':un', $name);
 			$result = \oci_execute($stmt);
-			if(!$result) {
+			if (!$result) {
 				$entry = $this->trans->t('DB Error: "%s"', [$this->getLastError($connection)]) . '<br />';
 				$entry .= $this->trans->t('Offending command was: "%s", name: %s, password: %s',
 					[$query, $name, $password]) . '<br />';
 				$this->logger->warning($entry, ['app' => 'setup.oci']);
-
 			}
 		} else { // change password of the existing role
 			$query = "ALTER USER :un IDENTIFIED BY :pw";
@@ -231,7 +229,7 @@ class OCI extends AbstractDatabase {
 			\oci_bind_by_name($stmt, ':un', $name);
 			\oci_bind_by_name($stmt, ':pw', $password);
 			$result = \oci_execute($stmt);
-			if(!$result) {
+			if (!$result) {
 				$entry = $this->trans->t('DB Error: "%s"', [$this->getLastError($connection)]) . '<br />';
 				$entry .= $this->trans->t('Offending command was: "%s"', [$query]) . '<br />';
 				$this->logger->warning($entry, ['app' => 'setup.oci']);
@@ -246,7 +244,7 @@ class OCI extends AbstractDatabase {
 			$this->logger->warning($entry, ['app' => 'setup.oci']);
 		}
 		$result = \oci_execute($stmt);
-		if(!$result) {
+		if (!$result) {
 			$entry = $this->trans->t('DB Error: "%s"', [$this->getLastError($connection)]) . '<br />';
 			$entry .= $this->trans->t('Offending command was: "%s", name: %s, password: %s',
 				[$query, $name, $password]) . '<br />';

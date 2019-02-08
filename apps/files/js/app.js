@@ -87,6 +87,7 @@
 					fileActions: fileActions,
 					allowLegacyActions: true,
 					scrollTo: urlParams.scrollto,
+					detailTabId: urlParams.details,
 					filesClient: OC.Files.getClient(),
 					sorting: {
 						mode: $('#defaultFileSorting').val(),

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Սխալ գաղտնաբառ",
     "Saved" : "Պահված",
     "Email sent" : "Էլ. նամակը ուղարկվեց",
     "Create" : "Ստեղծել",
@@ -18,6 +17,7 @@ OC.L10N.register(
     "Experimental" : "Փորձարարական",
     "Valid until {date}" : "Վավեր մինչ {date}",
     "Disconnect" : "Անջատել",
+    "Unable to change mail address" : "Չկարողացա փոխել էլ. հասցեն",
     "Very weak password" : "Շատ թույլ գաղտնաբառ",
     "Weak password" : "Թույլ գաղտնաբառ",
     "So-so password" : "Միջինոտ գաղտնաբառ",
@@ -25,6 +25,7 @@ OC.L10N.register(
     "Strong password" : "Ուժեղ գաղտնաբառ",
     "Groups" : "Խմբեր",
     "Forum" : "Ֆորում",
+    "Language" : "Լեզու",
     "by %s" : "%s կողմից",
     "days" : "օր",
     "Log" : "Լոգ",
@@ -41,7 +42,6 @@ OC.L10N.register(
     "Current password" : "Ընթացիկ գաղտնաբառ",
     "New password" : "Նոր գաղտնաբառ",
     "Change password" : "Փոխել գաղտնաբառը",
-    "Language" : "Լեզու",
     "Help translate" : "Օգնել թարգմանել",
     "Browser" : "Զննիչ",
     "Name" : "Անուն",

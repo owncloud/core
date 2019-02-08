@@ -22,7 +22,7 @@
  *
  */
 
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use TestHelpers\AppConfigHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -38,7 +38,8 @@ trait AppConfiguration {
 	private $webUIGeneralContext;
 
 	/**
-	 * @var string the original capabilities in XML format
+	 * @var array with keys for each baseURL (e.g. of local and remote server)
+	 *            that contain the original capabilities in XML format
 	 */
 	private $savedCapabilitiesXml;
 	
@@ -53,16 +54,16 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	abstract public function sendingTo($verb, $url);
+	abstract public function theUserSendsToOcsApiEndpoint($verb, $url);
 
 	/**
 	 * @param string $verb
 	 * @param string $url
-	 * @param \Behat\Gherkin\Node\TableNode $body
+	 * @param TableNode $body
 	 *
 	 * @return void
 	 */
-	abstract public function sendingToWith($verb, $url, $body);
+	abstract public function theUserSendsToOcsApiEndpointWithBody($verb, $url, $body);
 
 	/**
 	 * @param mixed $statusCode
@@ -79,7 +80,7 @@ trait AppConfiguration {
 	abstract public function theHTTPStatusCodeShouldBe($statusCode);
 
 	/**
-	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to "([^"]*)" using the API$/
+	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $parameter
 	 * @param string $app
@@ -87,17 +88,19 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	public function adminSetsServerParameterToUsingAPI($parameter, $app, $value) {
+	public function adminSetsServerParameterToUsingAPI(
+		$parameter, $app, $value
+	) {
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
 
-		$this->modifyServerConfig($app, $parameter, $value);
+		$this->modifyAppConfig($app, $parameter, $value);
 
 		$this->currentUser = $user;
 	}
 
 	/**
-	 * @Given /^parameter "([^"]*)" of app "([^"]*)" has been set to "([^"]*)"$/
+	 * @Given /^parameter "([^"]*)" of app "([^"]*)" has been set to ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
 	 * @param string $parameter
 	 * @param string $app
@@ -106,6 +109,9 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function serverParameterHasBeenSetTo($parameter, $app, $value) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$value = \trim($value, $value[0]);
 		$this->adminSetsServerParameterToUsingAPI($parameter, $app, $value);
 	}
 
@@ -122,7 +128,7 @@ trait AppConfiguration {
 	public function theCapabilitiesSettingOfAppParameterShouldBe(
 		$capabilitiesApp, $capabilitiesPath, $expectedValue
 	) {
-		$this->getCapabilitiesCheckResponse();
+		$this->theAdministratorGetsCapabilitiesCheckResponse();
 
 		PHPUnit_Framework_Assert::assertEquals(
 			$expectedValue,
@@ -147,22 +153,71 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @When the user retrieves the capabilities using the API
+	 * @When user :username retrieves the capabilities using the capabilities API
+	 *
+	 * @param string $username
 	 *
 	 * @return void
 	 */
-	public function getCapabilitiesCheckResponse() {
-		$this->sendingTo('GET', '/cloud/capabilities');
+	public function userGetsCapabilities($username) {
+		$this->userSendsToOcsApiEndpoint($username, 'GET', '/cloud/capabilities');
+	}
+
+	/**
+	 * @Given user :username has retrieved the capabilities
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function userGetsCapabilitiesCheckResponse($username) {
+		$this->userGetsCapabilities($username);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
 	}
 
 	/**
+	 * @When the user retrieves the capabilities using the capabilities API
+	 *
+	 * @return void
+	 */
+	public function theUserGetsCapabilities() {
+		$this->userGetsCapabilities($this->getCurrentUser());
+	}
+
+	/**
+	 * @Given the user has retrieved the capabilities
+	 *
+	 * @return void
+	 */
+	public function theUserGetsCapabilitiesCheckResponse() {
+		$this->userGetsCapabilitiesCheckResponse($this->getCurrentUser());
+	}
+
+	/**
+	 * @When the administrator retrieves the capabilities using the capabilities API
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsCapabilities() {
+		$this->userGetsCapabilities($this->getAdminUsername());
+	}
+
+	/**
+	 * @Given the administrator has retrieved the capabilities
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsCapabilitiesCheckResponse() {
+		$this->userGetsCapabilitiesCheckResponse($this->getAdminUsername());
+	}
+
+	/**
 	 * @return string latest retrieved capabilities in XML format
 	 */
 	public function getCapabilitiesXml() {
-		return $this->response->xml()->data->capabilities;
+		return $this->getResponseXml()->data->capabilities;
 	}
 
 	/**
@@ -177,12 +232,63 @@ trait AppConfiguration {
 	) {
 		$path_to_element = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
-
-		for ($i = 0; $i < \count($path_to_element); $i++) {
-			$answeredValue = $answeredValue->{$path_to_element[$i]};
+		foreach ($path_to_element as $element) {
+			$nameIndexParts = \explode('[', $element);
+			if (isset($nameIndexParts[1])) {
+				// This part of the path should be something like "some_element[1]"
+				// Separately extract the name and the index
+				$name = $nameIndexParts[0];
+				$index = (int) \explode(']', $nameIndexParts[1])[0];
+				// and use those to construct the reference into the next XML level
+				$answeredValue = $answeredValue->{$name}[$index];
+			} else {
+				if ($element !== "") {
+					$answeredValue = $answeredValue->{$element};
+				}
+			}
 		}
 
 		return (string)$answeredValue;
+	}
+
+	/**
+	 * @param string $xml of the capabilities
+	 * @param string $capabilitiesApp the "app" name in the capabilities response
+	 * @param string $capabilitiesPath the path to the element
+	 *
+	 * @return boolean
+	 */
+	public function parameterValueExistsInXml(
+		$xml, $capabilitiesApp, $capabilitiesPath
+	) {
+		$path_to_element = \explode('@@@', $capabilitiesPath);
+		$answeredValue = $xml->{$capabilitiesApp};
+
+		foreach ($path_to_element as $element) {
+			$nameIndexParts = \explode('[', $element);
+			if (isset($nameIndexParts[1])) {
+				// This part of the path should be something like "some_element[1]"
+				// Separately extract the name and the index
+				$name = $nameIndexParts[0];
+				$index = (int) \explode(']', $nameIndexParts[1])[0];
+				// and use those to construct the reference into the next XML level
+				if (isset($answeredValue->{$name}[$index])) {
+					$answeredValue = $answeredValue->{$name}[$index];
+				} else {
+					// The path ends at this level
+					return false;
+				}
+			} else {
+				if (isset($answeredValue->{$element})) {
+					$answeredValue = $answeredValue->{$element};
+				} else {
+					// The path ends at this level
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -194,7 +300,7 @@ trait AppConfiguration {
 	 */
 	public function wasCapabilitySet($capabilitiesApp, $capabilitiesParameter) {
 		return (bool) $this->getParameterValueFromXml(
-			$this->savedCapabilitiesXml,
+			$this->savedCapabilitiesXml[$this->getBaseUrl()],
 			$capabilitiesApp,
 			$capabilitiesParameter
 		);
@@ -216,11 +322,14 @@ trait AppConfiguration {
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$capabilitiesArray,
-			$this->savedCapabilitiesXml
+			$this->savedCapabilitiesXml[$this->getBaseUrl()]
 		);
 
-		$this->savedCapabilitiesChanges = \array_merge(
-			$this->savedCapabilitiesChanges,
+		if (!isset($this->savedCapabilitiesChanges[$this->getBaseUrl()])) {
+			$this->savedCapabilitiesChanges[$this->getBaseUrl()] = [];
+		}
+		$this->savedCapabilitiesChanges[$this->getBaseUrl()] = \array_merge(
+			$this->savedCapabilitiesChanges[$this->getBaseUrl()],
 			$savedCapabilitiesChanges
 		);
 	}
@@ -232,30 +341,30 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	protected function modifyServerConfig($app, $parameter, $value) {
-		AppConfigHelper::modifyServerConfig(
+	protected function modifyAppConfig($app, $parameter, $value) {
+		AppConfigHelper::modifyAppConfig(
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$app,
 			$parameter,
 			$value,
-			$this->apiVersion
+			$this->ocsApiVersion
 		);
 	}
 
 	/**
-	 * @param string $appParameterValues
+	 * @param array $appParameterValues
 	 *
 	 * @return void
 	 */
-	protected function modifyServerConfigs($appParameterValues) {
-		AppConfigHelper::modifyServerConfigs(
+	protected function modifyAppConfigs($appParameterValues) {
+		AppConfigHelper::modifyAppConfigs(
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$appParameterValues,
-			$this->apiVersion
+			$this->ocsApiVersion
 		);
 	}
 
@@ -266,13 +375,15 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	protected function setStatusTestingApp($enabled) {
-		$this->sendingTo(($enabled ? 'post' : 'delete'), '/cloud/apps/testing');
+		$this->theUserSendsToOcsApiEndpoint(
+			($enabled ? 'post' : 'delete'), '/cloud/apps/testing'
+		);
 		$this->theHTTPStatusCodeShouldBe('200');
-		if ($this->apiVersion == 1) {
+		if ($this->ocsApiVersion == 1) {
 			$this->theOCSStatusCodeShouldBe('100');
 		}
 
-		$this->sendingTo('get', '/cloud/apps?filter=enabled');
+		$this->theUserSendsToOcsApiEndpoint('get', '/cloud/apps?filter=enabled');
 		$this->theHTTPStatusCodeShouldBe('200');
 		if ($enabled) {
 			PHPUnit_Framework_Assert::assertContains(
@@ -298,13 +409,19 @@ trait AppConfiguration {
 	/**
 	 * @BeforeScenario
 	 *
-	 * @param BeforeScenarioScope $scope
 	 * @return void
 	 */
-	public function prepareParametersBeforeScenario(BeforeScenarioScope $scope) {
+	public function prepareParametersBeforeScenario() {
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
-		$this->resetAppConfigs();
+		$previousServer = $this->currentServer;
+		foreach (['LOCAL','REMOTE'] as $server) {
+			if (($server === 'LOCAL') || $this->federatedServerExists()) {
+				$this->usingServer($server);
+				$this->resetAppConfigs();
+			}
+		}
+		$this->usingServer($previousServer);
 		$this->currentUser = $user;
 	}
 
@@ -314,9 +431,19 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function restoreParametersAfterScenario() {
+		$this->deleteTokenAuthEnforcedAfterScenario();
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
-		$this->modifyServerConfigs($this->savedCapabilitiesChanges);
+		$previousServer = $this->currentServer;
+		foreach (['LOCAL','REMOTE'] as $server) {
+			if (($server === 'LOCAL') || $this->federatedServerExists()) {
+				$this->usingServer($server);
+				if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {
+					$this->modifyAppConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
+				}
+			}
+		}
+		$this->usingServer($previousServer);
 		$this->currentUser = $user;
 	}
 }

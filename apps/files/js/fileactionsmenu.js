@@ -104,6 +104,8 @@
 				fileActions.getCurrentPermissions()
 			);
 
+			actions = fileActions._advancedFilter(actions, this._context);
+
 			var items = _.filter(actions, function(actionSpec) {
 				return (
 					actionSpec.type === OCA.Files.FileActions.TYPE_DROPDOWN &&

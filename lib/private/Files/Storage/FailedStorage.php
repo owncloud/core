@@ -24,6 +24,7 @@
 namespace OC\Files\Storage;
 
 use OC\Files\Cache\FailedCache;
+use OCP\Files\Storage\IStorage;
 use \OCP\Lock\ILockingProvider;
 use \OCP\Files\StorageNotAvailableException;
 

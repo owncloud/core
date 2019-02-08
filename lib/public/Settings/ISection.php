@@ -52,5 +52,4 @@ interface ISection {
 	 * @return string
 	 */
 	public function getIconName();
-
 }

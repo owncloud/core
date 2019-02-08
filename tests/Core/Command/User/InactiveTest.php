@@ -117,19 +117,18 @@ class InactiveTest extends TestCase {
 
 		$this->userManager->expects($this->once())
 			->method('callForSeenUsers')
-			->willReturnCallback(function($callback) use ($users, $expectedCount) {
-				foreach($users as $user) {
+			->willReturnCallback(function ($callback) use ($users, $expectedCount) {
+				foreach ($users as $user) {
 					$callback($user);
 				}
 			});
 
 		$this->consoleOutput->expects($this->once())
 			->method('writeLn')
-			->with($this->callback(function($output) use ($expectedCount) {
+			->with($this->callback(function ($output) use ($expectedCount) {
 				return self::isJson($output) && \count(\json_decode($output)) === $expectedCount;
 			}));
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
-
 }

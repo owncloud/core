@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Delete" : "తొలగించు",
+    "Language" : "భాష",
     "Server address" : "సేవకి చిరునామా",
     "Add" : "చేర్చు",
     "Cancel" : "రద్దుచేయి",
@@ -9,7 +10,6 @@ OC.L10N.register(
     "Your email address" : "మీ ఈమెయిలు చిరునామా",
     "Password" : "సంకేతపదం",
     "New password" : "కొత్త సంకేతపదం",
-    "Language" : "భాష",
     "Name" : "పేరు",
     "Username" : "వాడుకరి పేరు",
     "Personal" : "వ్యక్తిగతం",

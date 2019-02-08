@@ -69,5 +69,4 @@ class ValidateRequestPluginTest extends TestCase {
 
 		$this->plugin->checkValidityPut();
 	}
-
 }

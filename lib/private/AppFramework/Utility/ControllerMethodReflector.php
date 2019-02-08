@@ -23,17 +23,14 @@
  *
  */
 
-
 namespace OC\AppFramework\Utility;
 
 use \OCP\AppFramework\Utility\IControllerMethodReflector;
 
-
 /**
  * Reads and parses annotations from doc comments
  */
-class ControllerMethodReflector implements IControllerMethodReflector{
-
+class ControllerMethodReflector implements IControllerMethodReflector {
 	private $annotations;
 	private $types;
 	private $parameters;
@@ -44,13 +41,12 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 		$this->annotations = [];
 	}
 
-
 	/**
 	 * @param object|string $object an object or classname
 	 * @param string $method the method which we want to inspect
 	 * @throws \ReflectionException
 	 */
-	public function reflect($object, $method){
+	public function reflect($object, $method) {
 		$reflection = new \ReflectionMethod($object, $method);
 		$docs = $reflection->getDocComment();
 
@@ -72,7 +68,7 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 				}
 			}
 
-			if($param->isOptional()) {
+			if ($param->isOptional()) {
 				$default = $param->getDefaultValue();
 			} else {
 				$default = null;
@@ -80,7 +76,6 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 			$this->parameters[$param->name] = $default;
 		}
 	}
-
 
 	/**
 	 * Inspects the PHPDoc parameters for types
@@ -90,13 +85,12 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 	 * would return int or null if not existing
 	 */
 	public function getType($parameter) {
-		if(\array_key_exists($parameter, $this->types)) {
+		if (\array_key_exists($parameter, $this->types)) {
 			return $this->types[$parameter];
 		} else {
 			return null;
 		}
 	}
-
 
 	/**
 	 * @return array the arguments of the method with key => default value
@@ -105,15 +99,12 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 		return $this->parameters;
 	}
 
-
 	/**
 	 * Check if a method contains an annotation
 	 * @param string $name the name of the annotation
 	 * @return bool true if the annotation is found
 	 */
-	public function hasAnnotation($name){
+	public function hasAnnotation($name) {
 		return \in_array($name, $this->annotations);
 	}
-
-
 }

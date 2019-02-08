@@ -109,7 +109,7 @@ class DBConfigService {
 			->innerJoin('m', 'external_applicable', 'a', $builder->expr()->eq('m.mount_id', 'a.mount_id'))
 			->where($builder->expr()->eq('a.type', $builder->createNamedParameter($type, IQueryBuilder::PARAM_INT)));
 
-		if (\is_null($value)) {
+		if ($value === null) {
 			$query = $query->andWhere($builder->expr()->isNull('a.value'));
 		} else {
 			$query = $query->andWhere($builder->expr()->eq('a.value', $builder->createNamedParameter($value)));
@@ -294,7 +294,6 @@ class DBConfigService {
 	 * @param string $value
 	 */
 	public function setOption($mountId, $key, $value) {
-
 		$count = $this->connection->insertIfNotExist('*PREFIX*external_options', [
 			'mount_id' => $mountId,
 			'key' => $key,
@@ -324,7 +323,7 @@ class DBConfigService {
 			->where($builder->expr()->eq('mount_id', $builder->createNamedParameter($mountId, IQueryBuilder::PARAM_INT)))
 			->andWhere($builder->expr()->eq('type', $builder->createNamedParameter($type, IQueryBuilder::PARAM_INT)));
 
-		if (\is_null($value)) {
+		if ($value === null) {
 			$query = $query->andWhere($builder->expr()->isNull('value'));
 		} else {
 			$query = $query->andWhere($builder->expr()->eq('value', $builder->createNamedParameter($value, IQueryBuilder::PARAM_STR)));

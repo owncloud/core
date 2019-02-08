@@ -56,7 +56,8 @@ class Folder extends Node implements \OCP\Files\Folder {
 
 	/**
 	 * @param string $path
-	 * @return string
+	 * @return string|null the relative path from this folder to $path or
+	 * null if $path is outside of this folder
 	 */
 	public function getRelativePath($path) {
 		if ($this->path === '' or $this->path === '/') {
@@ -64,7 +65,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 		}
 		if ($path === $this->path) {
 			return '/';
-		} else if (\strpos($path, $this->path . '/') !== 0) {
+		} elseif (\strpos($path, $this->path . '/') !== 0) {
 			return null;
 		} else {
 			$path = \substr($path, \strlen($this->path));
@@ -91,7 +92,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	public function getDirectoryListing() {
 		$folderContent = $this->view->getDirectoryContent($this->path);
 
-		return \array_map(function(FileInfo $info) {
+		return \array_map(function (FileInfo $info) {
 			if ($info->getMimetype() === 'httpd/unix-directory') {
 				return new Folder($this->root, $this->view, $info->getPath(), $info);
 			} else {
@@ -106,7 +107,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @return File|Folder
 	 */
 	protected function createNode($path, FileInfo $info = null) {
-		if (\is_null($info)) {
+		if ($info === null) {
 			$isDir = $this->view->is_dir($path);
 		} else {
 			$isDir = $info->getType() === FileInfo::TYPE_FOLDER;
@@ -261,16 +262,18 @@ class Folder extends Node implements \OCP\Files\Folder {
 			}
 		}
 
-		return \array_map(function(FileInfo $file) {
+		return \array_map(function (FileInfo $file) {
 			return $this->createNode($file->getPath(), $file);
 		}, $files);
 	}
 
 	/**
 	 * @param int $id
+	 * @param boolean $first only return the first node that is found
 	 * @return \OC\Files\Node\Node[]
+	 * @throws NotFoundException
 	 */
-	public function getById($id) {
+	public function getById($id, $first = false) {
 		$mounts = $this->root->getMountsIn($this->path);
 		$mounts[] = $this->root->getMount($this->path);
 		// reverse the array so we start with the storage this view is in
@@ -287,8 +290,11 @@ class Folder extends Node implements \OCP\Files\Folder {
 				$internalPath = $cache->getPathById($id);
 				if (\is_string($internalPath)) {
 					$fullPath = $mount->getMountPoint() . $internalPath;
-					if (!\is_null($path = $this->getRelativePath($fullPath))) {
+					if (($path = $this->getRelativePath($fullPath)) !== null) {
 						$nodes[] = $this->get($path);
+						if ($first) {
+							break;
+						}
 					}
 				}
 			}
@@ -307,7 +313,6 @@ class Folder extends Node implements \OCP\Files\Folder {
 			$this->view->rmdir($this->path);
 			$nonExisting = new NonExistingFolder($this->root, $this->view, $this->path, $fileInfo);
 			$this->root->emit('\OC\Files', 'postDelete', [$nonExisting]);
-			$this->exists = false;
 		} else {
 			throw new NotPermittedException('No delete permission for path ' . $this->getFullPath($this->path));
 		}

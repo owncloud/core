@@ -23,16 +23,14 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use GuzzleHttp\Message\ResponseInterface;
 
 require_once 'bootstrap.php';
 
 /**
  * Federation context.
  */
-class FederationContext implements Context, SnippetAcceptingContext {
+class FederationContext implements Context {
 
 	/**
 	 *
@@ -41,7 +39,34 @@ class FederationContext implements Context, SnippetAcceptingContext {
 	private $featureContext;
 
 	/**
-	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" using the API$/
+	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" using the sharing API$/
+	 *
+	 * @param string $sharerUser
+	 * @param string $sharerServer "LOCAL" or "REMOTE"
+	 * @param string $sharerPath
+	 * @param string $shareeUser
+	 * @param string $shareeServer "LOCAL" or "REMOTE"
+	 *
+	 * @return void
+	 */
+	public function userFromServerSharesWithUserFromServerUsingTheSharingAPI(
+		$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
+	) {
+		if ($shareeServer == "REMOTE") {
+			$shareWith
+				= "$shareeUser@" . $this->featureContext->getRemoteBaseUrl() . '/';
+		} else {
+			$shareWith
+				= "$shareeUser@" . $this->featureContext->getLocalBaseUrl() . '/';
+		}
+		$previous = $this->featureContext->usingServer($sharerServer);
+		$this->featureContext->createShare(
+			$sharerUser, $sharerPath, 6, $shareWith, null, null, null
+		);
+		$this->featureContext->usingServer($previous);
+	}
+	
+	/**
 	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)"$/
 	 *
 	 * @param string $sharerUser
@@ -52,30 +77,44 @@ class FederationContext implements Context, SnippetAcceptingContext {
 	 *
 	 * @return void
 	 */
-	public function federateSharing(
+	public function userFromServerHasSharedWithUserFromServer(
 		$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
 	) {
-		if ($shareeServer == "REMOTE") {
-			$shareWith = "$shareeUser@" . $this->featureContext->getRemoteBaseUrl() . '/';
-		} else {
-			$shareWith = "$shareeUser@" . $this->featureContext->getLocalBaseUrl() . '/';
-		}
-			$previous = $this->featureContext->usingServer($sharerServer);
-			$this->featureContext->createShare(
-				$sharerUser, $sharerPath, 6, $shareWith, null, null, null
-			);
-			$this->featureContext->theHTTPStatusCodeShouldBe('200');
-			$this->featureContext->theOCSStatusCodeShouldBe(
-				'100', 'Could not share file/folder! message: "' . 
+		$this->userFromServerSharesWithUserFromServerUsingTheSharingAPI(
+			$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe(
+			'100', 'Could not share file/folder! message: "' .
 				$this->featureContext->getOCSResponseStatusMessage(
 					$this->featureContext->getResponse()
 				) . '"'
-			);
-			$this->featureContext->usingServer($previous);
+		);
 	}
-	
+
 	/**
-	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" accepts the last pending share using the API$/
+	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" accepts the last pending share using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $server
+	 *
+	 * @return void
+	 */
+	public function userFromServerAcceptsLastPendingShareUsingTheSharingAPI($user, $server) {
+		$previous = $this->featureContext->usingServer($server);
+		$this->userGetsTheListOfPendingFederatedCloudShares($user);
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe('100');
+		$share_id = $this->featureContext->getResponseXml()->data[0]->element[0]->id;
+		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
+			'POST',
+			"/apps/files_sharing/api/v1/remote_shares/pending/{$share_id}",
+			null
+		);
+		$this->featureContext->usingServer($previous);
+	}
+
+	/**
 	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has accepted the last pending share$/
 	 *
 	 * @param string $user
@@ -83,30 +122,46 @@ class FederationContext implements Context, SnippetAcceptingContext {
 	 *
 	 * @return void
 	 */
-	public function acceptLastPendingShare($user, $server) {
-		$previous = $this->featureContext->usingServer($server);
+	public function userFromServerHasAcceptedLastPendingShare($user, $server) {
+		$this->userFromServerAcceptsLastPendingShareUsingTheSharingAPI(
+			$user, $server
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe('100');
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets the list of pending federated cloud shares using the sharing API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userGetsTheListOfPendingFederatedCloudShares($user) {
+		$url = "/apps/files_sharing/api/v1/remote_shares/pending";
 		$this->featureContext->asUser($user);
-		$this->featureContext->sendingToWith(
+		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
 			'GET',
-			"/apps/files_sharing/api/v1/remote_shares/pending",
+			$url,
 			null
 		);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->featureContext->theOCSStatusCodeShouldBe('100');
-		/**
-		 * 
-		 * @var ResponseInterface $response
-		 */
-		$response = $this->featureContext->getResponse();
-		$share_id = $response->xml()->data[0]->element[0]->id;
-		$this->featureContext->sendingToWith(
+	}
+
+	/**
+	 * @When /^user "([^"]*)" requests shared secret using the federation API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userRequestsSharedSecretUsingTheFederationApi($user) {
+		$url  = '/apps/federation/api/v1/request-shared-secret';
+		$this->featureContext->asUser($user);
+		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
 			'POST',
-			"/apps/files_sharing/api/v1/remote_shares/pending/{$share_id}",
+			$url,
 			null
 		);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->featureContext->theOCSStatusCodeShouldBe('100');
-		$this->featureContext->usingServer($previous);
 	}
 
 	/**

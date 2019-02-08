@@ -136,7 +136,6 @@ class PreviewTest extends TestCase {
 	 * Tests if a preview can be deleted
 	 */
 	public function testIsPreviewDeleted() {
-
 		$sampleFile = '/' . self::TEST_PREVIEW_USER1 . '/files/test.txt';
 
 		$this->rootView->file_put_contents($sampleFile, 'dummy file data');
@@ -166,7 +165,6 @@ class PreviewTest extends TestCase {
 	 * We test this first to make sure we'll be able to cleanup after each preview generating test
 	 */
 	public function testAreAllPreviewsDeleted() {
-
 		$sampleFile = '/' . self::TEST_PREVIEW_USER1 . '/files/test.txt';
 
 		$this->rootView->file_put_contents($sampleFile, 'dummy file data');
@@ -208,7 +206,6 @@ class PreviewTest extends TestCase {
 	 * @param $expectedResult
 	 */
 	public function testIsTransparent($extension, $data, $expectedResult) {
-
 		$x = 32;
 		$y = 32;
 

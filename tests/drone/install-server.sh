@@ -30,6 +30,40 @@ declare -x DB_PASSWORD
 declare -x DB_NAME
 [[ -z "${DB_NAME}" ]] && DB_NAME="owncloud"
 
+PLUGIN_DB_TIMEOUT=45
+plugin_wait_for_oracle() {
+    local sqlplus=/usr/lib/oracle/12.2/client64/bin/sqlplus
+    local result
+    local host_name="${DB_TYPE}"
+    if ! grep -q ":" <<< "${host_name}"
+    then
+        host_name="${host_name}:1521"
+    fi
+
+
+    echo "wait-for-oracle: waiting ${PLUGIN_DB_TIMEOUT} seconds for ${host_name}"
+    for i in $(seq "${PLUGIN_DB_TIMEOUT}"); do
+        # disabled to not abort testing the connection
+        set +eo pipefail
+
+        echo "QUIT" | $sqlplus -L "${DB_USERNAME}/${DB_PASSWORD}@${host_name}/${DB_NAME}" | grep "Connected to:" > /dev/null 2>&1
+        result=$?
+
+        # reenable pipefail
+        set -eo pipefail
+
+        if [ ${result} -eq 0 ] ; then
+            echo "wait-for-oracle: ${host_name} available after ${i} seconds"
+            break
+        fi
+        sleep 1
+    done
+    if [ ! ${result} -eq 0 ] ; then
+        echo "wait-for-oracle: timeout - ${host_name} still not available after ${PLUGIN_DB_TIMEOUT} seconds"
+        exit 1
+    fi
+
+}
 
 # Backup any existing config.php
 if [[ -f config/config.php ]]; then
@@ -49,8 +83,8 @@ case "${DB_TYPE}" in
     wait-for-it mysql:3306
     DB=mysql
     ;;
-  mysqlmb4)
-    wait-for-it mysqlmb4:3306
+  mysql8)
+    wait-for-it mysql8:3306
     DB=mysql
     ;;
   postgres)
@@ -62,6 +96,7 @@ case "${DB_TYPE}" in
     DB=oci
     DB_USERNAME=autotest
     DB_NAME='XE'
+    plugin_wait_for_oracle
     ;;
   sqlite)
     DB=sqlite

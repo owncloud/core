@@ -61,7 +61,7 @@ class Avatar implements IAvatar {
 	 * @param User $user
 	 * @param ILogger $logger
 	 */
-	public function __construct (Folder $folder, IL10N $l, $user, ILogger $logger) {
+	public function __construct(Folder $folder, IL10N $l, $user, ILogger $logger) {
 		$this->folder = $folder;
 		$this->l = $l;
 		$this->user = $user;
@@ -71,7 +71,7 @@ class Avatar implements IAvatar {
 	/**
 	 * @inheritdoc
 	 */
-	public function get ($size = 64) {
+	public function get($size = 64) {
 		try {
 			$file = $this->getFile($size);
 		} catch (NotFoundException $e) {
@@ -100,9 +100,8 @@ class Avatar implements IAvatar {
 	 * @throws NotSquareException if the image is not square
 	 * @return void
 	*/
-	public function set ($data) {
-
-		if($data instanceOf IImage) {
+	public function set($data) {
+		if ($data instanceof IImage) {
 			$img = $data;
 			$data = $img->data();
 		} else {
@@ -133,7 +132,7 @@ class Avatar implements IAvatar {
 	 * remove the users avatar
 	 * @return void
 	*/
-	public function remove () {
+	public function remove() {
 		$regex = '/^avatar\.([0-9]+\.)?(jpg|png)$/';
 		$avatars = $this->folder->getDirectoryListing();
 

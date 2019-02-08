@@ -21,7 +21,6 @@
  */
 namespace OC;
 
-
 use OCP\Capabilities\ICapability;
 
 class CapabilitiesManager {
@@ -33,13 +32,13 @@ class CapabilitiesManager {
 
 	/**
 	 * Get an array of al the capabilities that are registered at this manager
-     *
+	 *
 	 * @throws \InvalidArgumentException
 	 * @return array
 	 */
 	public function getCapabilities() {
 		$capabilities = [];
-		foreach($this->capabilities as $capability) {
+		foreach ($this->capabilities as $capability) {
 			$c = $capability();
 			if ($c instanceof ICapability) {
 				$capabilities = \array_replace_recursive($capabilities, $c->getCapabilities());

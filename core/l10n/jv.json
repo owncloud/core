@@ -16,5 +16,5 @@
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair error: " : "Kesalahan ndandhani:",
     "Edit" : "Ngganti"
-},"pluralForm" :"nplurals=2; plural=(n != 1);"
+},"pluralForm" :"nplurals=1; plural=0;"
 }

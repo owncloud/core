@@ -27,5 +27,4 @@ class MarkDown extends TXT {
 	public function getMimeType() {
 		return '/text\/(x-)?markdown/';
 	}
-
 }

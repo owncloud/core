@@ -43,7 +43,7 @@ class InfoCheckerTest extends TestCase {
 			->method('getAppPath')
 			->will(
 				$this->returnCallback(
-					function ($appId){
+					function ($appId) {
 						return \OC::$SERVERROOT . '/tests/apps/' . $appId;
 					}
 				)
@@ -58,6 +58,8 @@ class InfoCheckerTest extends TestCase {
 			['testapp-infoxml-version-different', [['type' => 'differentVersions', 'message' => 'appinfo/version: 1.2.4 - appinfo/info.xml: 1.2.3']]],
 			['testapp-version-missing', [['type' => 'mandatoryFieldMissing', 'field' => 'version']]],
 			['testapp-name-missing', [['type' => 'mandatoryFieldMissing', 'field' => 'name']]],
+			['testapp-nomin', [['type' => 'missingRequirement', 'message' => 'No minimum ownCloud version is defined in appinfo/info.xml']]],
+			['testapp-nomax', [['type' => 'missingRequirement', 'message' => 'No maximum ownCloud version is defined in appinfo/info.xml']]],
 		];
 	}
 

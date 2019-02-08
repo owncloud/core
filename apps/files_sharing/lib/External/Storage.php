@@ -154,7 +154,7 @@ class Storage extends DAV implements ISharedStorage {
 	}
 
 	public function getCache($path = '', $storage = null) {
-		if (\is_null($this->cache)) {
+		if ($this->cache === null) {
 			$this->cache = new Cache($this, $this->remote, $this->remoteUser);
 		}
 		return $this->cache;
@@ -213,7 +213,7 @@ class Storage extends DAV implements ISharedStorage {
 	public function checkStorageAvailability() {
 		// see if we can find out why the share is unavailable
 		try {
-			if ( ! $this->propfind('') ) {
+			if (! $this->propfind('')) {
 				// a 404 can either mean that the share no longer exists or there is no ownCloud on the remote
 				if ($this->testRemote()) {
 					// valid ownCloud instance means that the public share no longer exists
@@ -266,7 +266,7 @@ class Storage extends DAV implements ISharedStorage {
 	 */
 	private function testRemoteUrl($url) {
 		$cache = $this->memcacheFactory->create('files_sharing_remote_url');
-		if($cache->hasKey($url)) {
+		if ($cache->hasKey($url)) {
 			return (bool)$cache->get($url);
 		}
 
@@ -315,5 +315,4 @@ class Storage extends DAV implements ISharedStorage {
 
 		return $permissions;
 	}
-
 }

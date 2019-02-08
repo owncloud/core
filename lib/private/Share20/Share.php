@@ -27,6 +27,7 @@ use OCP\Files\Node;
 use OCP\Files\NotFoundException;
 use OCP\IUserManager;
 use OCP\Share\Exceptions\IllegalIDChangeException;
+use OC\Share\Constants;
 
 class Share implements \OCP\Share\IShare {
 
@@ -66,6 +67,10 @@ class Share implements \OCP\Share\IShare {
 	private $mailSend;
 	/** @var string */
 	private $name;
+	/** @var int */
+	private $state;
+	/** @var bool */
+	private $shouldHashPassword = true;
 
 	/** @var IRootFolder */
 	private $rootFolder;
@@ -76,6 +81,7 @@ class Share implements \OCP\Share\IShare {
 	public function __construct(IRootFolder $rootFolder, IUserManager $userManager) {
 		$this->rootFolder = $rootFolder;
 		$this->userManager = $userManager;
+		$this->state = Constants::STATE_ACCEPTED;
 	}
 
 	/**
@@ -86,7 +92,7 @@ class Share implements \OCP\Share\IShare {
 			$id = (string)$id;
 		}
 
-		if(!\is_string($id)) {
+		if (!\is_string($id)) {
 			throw new \InvalidArgumentException('String expected.');
 		}
 
@@ -119,7 +125,7 @@ class Share implements \OCP\Share\IShare {
 	 * @inheritdoc
 	 */
 	public function setProviderId($id) {
-		if(!\is_string($id)) {
+		if (!\is_string($id)) {
 			throw new \InvalidArgumentException('String expected.');
 		}
 
@@ -146,20 +152,19 @@ class Share implements \OCP\Share\IShare {
 	 */
 	public function getNode() {
 		if ($this->node === null) {
-
 			if ($this->shareOwner === null || $this->fileId === null) {
 				throw new NotFoundException();
 			}
 
 			// for federated shares the owner can be a remote user, in this
 			// case we use the initiator
-			if($this->userManager->userExists($this->shareOwner)) {
+			if ($this->userManager->userExists($this->shareOwner)) {
 				$userFolder = $this->rootFolder->getUserFolder($this->shareOwner);
 			} else {
 				$userFolder = $this->rootFolder->getUserFolder($this->sharedBy);
 			}
 
-			$nodes = $userFolder->getById($this->fileId);
+			$nodes = $userFolder->getById($this->fileId, true);
 			if (empty($nodes)) {
 				throw new NotFoundException();
 			}
@@ -433,5 +438,34 @@ class Share implements \OCP\Share\IShare {
 	 */
 	public function getName() {
 		return $this->name;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function setState($state) {
+		$this->state = $state;
+		return $this;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getState() {
+		return $this->state;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getShouldHashPassword() {
+		return $this->shouldHashPassword;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function setShouldHashPassword($status) {
+		$this->shouldHashPassword = $status;
 	}
 }

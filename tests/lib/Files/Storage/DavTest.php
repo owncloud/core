@@ -609,7 +609,7 @@ class DavTest extends TestCase {
 		$uploadOptions = null;
 		$this->httpClient->expects($this->once())
 			->method('put')
-			->will($this->returnCallback(function($url, $options) use (&$uploadUrl, &$uploadOptions) {
+			->will($this->returnCallback(function ($url, $options) use (&$uploadUrl, &$uploadOptions) {
 				$uploadUrl = $url;
 				$uploadOptions = $options;
 			}));
@@ -657,7 +657,7 @@ class DavTest extends TestCase {
 		$uploadOptions = null;
 		$this->httpClient->expects($this->once())
 			->method('put')
-			->will($this->returnCallback(function($url, $options) use (&$uploadUrl, &$uploadOptions) {
+			->will($this->returnCallback(function ($url, $options) use (&$uploadUrl, &$uploadOptions) {
 				$uploadUrl = $url;
 				$uploadOptions = $options;
 			}));
@@ -818,7 +818,7 @@ class DavTest extends TestCase {
 		$uploadOptions = null;
 		$this->httpClient->expects($this->once())
 			->method('put')
-			->will($this->returnCallback(function($url, $options) use (&$uploadUrl, &$uploadOptions) {
+			->will($this->returnCallback(function ($url, $options) use (&$uploadUrl, &$uploadOptions) {
 				$uploadUrl = $url;
 				$uploadOptions = $options;
 			}));
@@ -896,7 +896,7 @@ class DavTest extends TestCase {
 		$mock = $this->davClient->expects($this->once())
 			->method('propfind')
 			->with('new%25path/new%25file.txt', $this->contains('{DAV:}resourcetype'));
-			$mock->willReturn([
+		$mock->willReturn([
 				'{DAV:}resourcetype' => $this->getResourceTypeResponse($isDir)
 			]);
 
@@ -1008,7 +1008,7 @@ class DavTest extends TestCase {
 			->method('propfind')
 			->willThrowException($this->createClientHttpException(Http::STATUS_FORBIDDEN));
 
-		 $this->instance->getMimeType('/some%dir/file%type');
+		$this->instance->getMimeType('/some%dir/file%type');
 	}
 
 	public function permissionsDataProvider() {
@@ -1051,7 +1051,6 @@ class DavTest extends TestCase {
 		$this->assertTrue($this->instance->isUpdatable($path));
 		$this->assertTrue($this->instance->isDeletable($path));
 		$this->assertTrue($this->instance->isSharable($path));
-
 	}
 
 	public function testNoPermissionsFile() {
@@ -1066,7 +1065,6 @@ class DavTest extends TestCase {
 		$this->assertTrue($this->instance->isUpdatable($path));
 		$this->assertTrue($this->instance->isDeletable($path));
 		$this->assertTrue($this->instance->isSharable($path));
-
 	}
 
 	public function testGetPermissionsUnexist() {
@@ -1241,7 +1239,7 @@ class DavTest extends TestCase {
 	public function testHasUpdated($davResponse, $cacheResponse, $expectedResult) {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir', 
+			->with('some%25dir',
 				$this->logicalAnd(
 					$this->contains('{DAV:}getetag'),
 					$this->contains('{DAV:}getlastmodified'),
@@ -1316,4 +1314,3 @@ class DavTest extends TestCase {
 		$this->instance->hasUpdated('some%dir', 1508496363);
 	}
 }
-

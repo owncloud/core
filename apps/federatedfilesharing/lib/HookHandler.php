@@ -23,15 +23,13 @@ namespace OCA\FederatedFileSharing;
 
 /**
  * Class HookHandler
- * 
+ *
  * handles hooks
  *
  * @package OCA\FederatedFileSharing
  */
 class HookHandler {
-
-	public static function loadPublicJS () {
+	public static function loadPublicJS() {
 		\OCP\Util::addScript('federatedfilesharing', 'public');
 	}
-
 }

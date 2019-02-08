@@ -29,6 +29,7 @@ use OCP\IUserManager;
 use OCP\IUserSession;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class EntityTypeCollection
@@ -57,6 +58,7 @@ class EntityTypeCollection extends RootCollection {
 	 * @param ICommentsManager $commentsManager
 	 * @param IUserManager $userManager
 	 * @param IUserSession $userSession
+	 * @param EventDispatcherInterface $dispatcher
 	 * @param ILogger $logger
 	 * @param \Closure $childExistsFunction
 	 */
@@ -65,18 +67,16 @@ class EntityTypeCollection extends RootCollection {
 		ICommentsManager $commentsManager,
 		IUserManager $userManager,
 		IUserSession $userSession,
+		EventDispatcherInterface $dispatcher,
 		ILogger $logger,
 		\Closure $childExistsFunction
 	) {
 		$name = \trim($name);
-		if(empty($name) || !\is_string($name)) {
+		if (empty($name) || !\is_string($name)) {
 			throw new \InvalidArgumentException('"name" parameter must be non-empty string');
 		}
+		parent::__construct($commentsManager, $userManager, $userSession, $dispatcher, $logger);
 		$this->name = $name;
-		$this->commentsManager = $commentsManager;
-		$this->logger = $logger;
-		$this->userManager = $userManager;
-		$this->userSession = $userSession;
 		$this->childExistsFunction = $childExistsFunction;
 	}
 
@@ -90,8 +90,8 @@ class EntityTypeCollection extends RootCollection {
 	 * @return \Sabre\DAV\INode
 	 * @throws NotFound
 	 */
-	function getChild($name) {
-		if(!$this->childExists($name)) {
+	public function getChild($name) {
+		if (!$this->childExists($name)) {
 			throw new NotFound('Entity does not exist or is not available');
 		}
 		return new EntityCollection(
@@ -100,6 +100,7 @@ class EntityTypeCollection extends RootCollection {
 			$this->commentsManager,
 			$this->userManager,
 			$this->userSession,
+			$this->dispatcher,
 			$this->logger
 		);
 	}
@@ -110,7 +111,7 @@ class EntityTypeCollection extends RootCollection {
 	 * @return \Sabre\DAV\INode[]
 	 * @throws MethodNotAllowed
 	 */
-	function getChildren() {
+	public function getChildren() {
 		throw new MethodNotAllowed('No permission to list folder contents');
 	}
 
@@ -120,8 +121,7 @@ class EntityTypeCollection extends RootCollection {
 	 * @param string $name
 	 * @return bool
 	 */
-	function childExists($name) {
+	public function childExists($name) {
 		return \call_user_func($this->childExistsFunction, $name);
 	}
-
 }

@@ -86,6 +86,8 @@ class AppManager implements IAppManager {
 	 * @var string[][]
 	 */
 	private $appDirs = [];
+	/** @var Platform */
+	private $platform;
 
 	/**
 	 * @param IUserSession $userSession
@@ -94,19 +96,22 @@ class AppManager implements IAppManager {
 	 * @param ICacheFactory $memCacheFactory
 	 * @param EventDispatcherInterface $dispatcher
 	 * @param IConfig $config
+	 * @param Platform $platform
 	 */
 	public function __construct(IUserSession $userSession = null,
 								IAppConfig $appConfig = null,
 								IGroupManager $groupManager = null,
 								ICacheFactory $memCacheFactory,
 								EventDispatcherInterface $dispatcher,
-								IConfig $config) {
+								IConfig $config,
+								Platform $platform) {
 		$this->userSession = $userSession;
 		$this->appConfig = $appConfig;
 		$this->groupManager = $groupManager;
 		$this->memCacheFactory = $memCacheFactory;
 		$this->dispatcher = $dispatcher;
 		$this->config = $config;
+		$this->platform = $platform;
 	}
 
 	/**
@@ -117,7 +122,7 @@ class AppManager implements IAppManager {
 			$values = $this->appConfig->getValues(false, 'enabled');
 
 			$alwaysEnabledApps = $this->getAlwaysEnabledApps();
-			foreach($alwaysEnabledApps as $appId) {
+			foreach ($alwaysEnabledApps as $appId) {
 				$values[$appId] = 'yes';
 			}
 
@@ -163,7 +168,7 @@ class AppManager implements IAppManager {
 		if ($this->isAlwaysEnabled($appId)) {
 			return true;
 		}
-		if (\is_null($user) && !\is_null($this->userSession)) {
+		if ($user === null && $this->userSession !== null) {
 			$user = $this->userSession->getUser();
 		}
 		$installedApps = $this->getInstalledAppsValues();
@@ -182,10 +187,10 @@ class AppManager implements IAppManager {
 	private function checkAppForUser($enabled, $user) {
 		if ($enabled === 'yes') {
 			return true;
-		} elseif (\is_null($user)) {
+		} elseif ($user === null) {
 			return false;
 		} else {
-			if(empty($enabled)){
+			if (empty($enabled)) {
 				return false;
 			}
 
@@ -193,7 +198,7 @@ class AppManager implements IAppManager {
 
 			if (!\is_array($groupIds)) {
 				$jsonError = \json_last_error();
-				\OC::$server->getLogger()->warning('AppManger::checkAppForUser - can\'t decode group IDs: ' . \print_r($enabled, true) . ' - json error code: ' . $jsonError, ['app' => 'lib']);
+				\OC::$server->getLogger()->warning('AppManager::checkAppForUser - can\'t decode group IDs: ' . \print_r($enabled, true) . ' - json error code: ' . $jsonError, ['app' => 'lib']);
 				return false;
 			}
 
@@ -225,9 +230,14 @@ class AppManager implements IAppManager {
 	 * @throws \Exception
 	 */
 	public function enableApp($appId) {
-		if($this->getAppPath($appId) === false) {
+		if ($this->getAppPath($appId) === false) {
 			throw new \Exception("$appId can't be enabled since it is not installed.");
 		}
+
+		if (!Installer::isInstalled($appId)) {
+			Installer::installShippedApp($appId);
+		}
+
 		$this->canEnableTheme($appId);
 
 		$this->installedAppsCache[$appId] = 'yes';
@@ -253,6 +263,9 @@ class AppManager implements IAppManager {
 		) {
 			$apps = $this->getInstalledApps();
 			foreach ($apps as $installedAppId) {
+				if ($installedAppId === $appId) {
+					continue;
+				}
 				if ($this->isTheme($installedAppId)) {
 					throw new AppManagerException("$appId can't be enabled until $installedAppId is disabled.");
 				}
@@ -267,7 +280,7 @@ class AppManager implements IAppManager {
 	 * @return bool
 	 */
 	protected function isTheme($appId) {
-		return \OC_App::isType($appId,'theme');
+		return \OC_App::isType($appId, 'theme');
 	}
 
 	/**
@@ -284,6 +297,10 @@ class AppManager implements IAppManager {
 			if (!empty($protectedTypes)) {
 				throw new \Exception("$appId can't be enabled for groups.");
 			}
+		}
+
+		if (!Installer::isInstalled($appId)) {
+			Installer::installShippedApp($appId);
 		}
 
 		$groupIds = \array_map(function ($group) {
@@ -327,12 +344,11 @@ class AppManager implements IAppManager {
 	/**
 	 * Returns a list of apps that need upgrade
 	 *
-	 * @param array $ocVersion ownCloud version as array of version components
 	 * @return array list of app info from apps that need an upgrade
 	 *
 	 * @internal
 	 */
-	public function getAppsNeedingUpgrade($ocVersion) {
+	public function getAppsNeedingUpgrade() {
 		$appsToUpgrade = [];
 		$apps = $this->getInstalledApps();
 		foreach ($apps as $appId) {
@@ -341,7 +357,7 @@ class AppManager implements IAppManager {
 			if ($appDbVersion
 				&& isset($appInfo['version'])
 				&& \version_compare($appInfo['version'], $appDbVersion, '>')
-				&& \OC_App::isAppCompatible($ocVersion, $appInfo)
+				&& \OC_App::isAppCompatible($this->platform, $appInfo)
 			) {
 				$appsToUpgrade[] = $appInfo;
 			}
@@ -372,27 +388,6 @@ class AppManager implements IAppManager {
 	}
 
 	/**
-	 * Returns a list of apps incompatible with the given version
-	 *
-	 * @param array $version ownCloud version as array of version components
-	 *
-	 * @return array list of app info from incompatible apps
-	 *
-	 * @internal
-	 */
-	public function getIncompatibleApps($version) {
-		$apps = $this->getInstalledApps();
-		$incompatibleApps = [];
-		foreach ($apps as $appId) {
-			$info = $this->getAppInfo($appId);
-			if (!\OC_App::isAppCompatible($version, $info)) {
-				$incompatibleApps[] = $info;
-			}
-		}
-		return $incompatibleApps;
-	}
-
-	/**
 	 * @inheritdoc
 	 */
 	public function isShipped($appId) {
@@ -406,7 +401,7 @@ class AppManager implements IAppManager {
 	}
 
 	private function loadShippedJson() {
-		if (\is_null($this->shippedApps)) {
+		if ($this->shippedApps === null) {
 			$shippedJson = \OC::$SERVERROOT . '/core/shipped.json';
 			if (!\file_exists($shippedJson)) {
 				throw new \Exception("File not found: $shippedJson");
@@ -607,7 +602,7 @@ class AppManager implements IAppManager {
 	 * Wrapper for easy mocking
 	 * @return string[][]
 	 */
-	protected function getAppRoots(){
+	protected function getAppRoots() {
 		return \OC::$APPSROOTS;
 	}
 

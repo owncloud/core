@@ -40,7 +40,7 @@ class Expire implements ICommand {
 	/**
 	 * @param string $user
 	 */
-	function __construct($user) {
+	public function __construct($user) {
 		$this->user = $user;
 	}
 

@@ -23,6 +23,7 @@
     "File name is a reserved word" : "Lêernaam is ’n gereserveerde woord",
     "File name contains at least one invalid character" : "Lêernaam bevat ten minste een ongeldige karakter",
     "File name is too long" : "Lêernaam is te lank",
+    "__language_name__" : "__taalnaam__",
     "App directory already exists" : "Toepgids bestaan reeds",
     "Apps" : "Toepassings",
     "General" : "Algemeen",
@@ -43,6 +44,7 @@
     "Help" : "Hulp",
     "Settings" : "Instellings",
     "A safe home for all your data" : "’n Veilige tuiste vir al u data",
+    "Imprint" : "Afdruk",
     "Unknown user" : "Onbekende gebruiker"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

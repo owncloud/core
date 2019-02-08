@@ -29,7 +29,6 @@ use Sabre\DAV\PropFind;
 use Sabre\DAV\ServerPlugin;
 
 class CommentPropertiesPlugin extends ServerPlugin {
-
 	const PROPERTY_NAME_HREF   = '{http://owncloud.org/ns}comments-href';
 	const PROPERTY_NAME_COUNT  = '{http://owncloud.org/ns}comments-count';
 	const PROPERTY_NAME_UNREAD = '{http://owncloud.org/ns}comments-unread';
@@ -64,7 +63,7 @@ class CommentPropertiesPlugin extends ServerPlugin {
 	 * @param \Sabre\DAV\Server $server
 	 * @return void
 	 */
-	function initialize(\Sabre\DAV\Server $server) {
+	public function initialize(\Sabre\DAV\Server $server) {
 		$this->server = $server;
 		$this->server->on('propFind', [$this, 'handleGetProperties']);
 	}
@@ -88,7 +87,7 @@ class CommentPropertiesPlugin extends ServerPlugin {
 		// Prefetch required data if we know that it is parent node
 		if ($node instanceof \OCA\DAV\Connector\Sabre\Directory
 			&& $propFind->getDepth() !== 0
-			&& !\is_null($propFind->getStatus(self::PROPERTY_NAME_UNREAD))) {
+			&& $propFind->getStatus(self::PROPERTY_NAME_UNREAD) !== null) {
 			// Get ID of parent folder
 			$folderNodeID = $node->getId();
 			$nodeIdsArray = [$folderNodeID];
@@ -109,32 +108,31 @@ class CommentPropertiesPlugin extends ServerPlugin {
 
 			// Get user session
 			$user = $this->userSession->getUser();
-			if(!\is_null($user)){
+			if ($user !== null) {
 				// Fetch all unread comments with their nodeIDs
 				$numberOfCommentsForNodes = $this->commentsManager->getNumberOfUnreadCommentsForNodes(
 					'files',
 					$nodeIdsArray,
 					$user);
 
-				if (!\is_null($numberOfCommentsForNodes)){
+				if ($numberOfCommentsForNodes !== null) {
 					// Map them to cached hash table
-					foreach($numberOfCommentsForNodes as $nodeID => $numberOfCommentsForNode) {
+					foreach ($numberOfCommentsForNodes as $nodeID => $numberOfCommentsForNode) {
 						$this->numberOfCommentsForNodes[$nodeID] = $numberOfCommentsForNode;
 					}
 				}
 			}
-
 		}
 
-		$propFind->handle(self::PROPERTY_NAME_COUNT, function() use ($node) {
+		$propFind->handle(self::PROPERTY_NAME_COUNT, function () use ($node) {
 			return $this->commentsManager->getNumberOfCommentsForObject('files', \strval($node->getId()));
 		});
 
-		$propFind->handle(self::PROPERTY_NAME_HREF, function() use ($node) {
+		$propFind->handle(self::PROPERTY_NAME_HREF, function () use ($node) {
 			return $this->getCommentsLink($node);
 		});
 
-		$propFind->handle(self::PROPERTY_NAME_UNREAD, function() use ($node) {
+		$propFind->handle(self::PROPERTY_NAME_UNREAD, function () use ($node) {
 			return $this->getUnreadCount($node);
 		});
 	}
@@ -148,7 +146,7 @@ class CommentPropertiesPlugin extends ServerPlugin {
 	public function getCommentsLink(Node $node) {
 		$href =  $this->server->getBaseUri();
 		$entryPoint = \strpos($href, '/remote.php/');
-		if($entryPoint === false) {
+		if ($entryPoint === false) {
 			// in case we end up somewhere else, unexpectedly.
 			return null;
 		}
@@ -172,7 +170,7 @@ class CommentPropertiesPlugin extends ServerPlugin {
 		// Check if it is cached
 		if (isset($this->numberOfCommentsForNodes[$node->getId()])) {
 			$numberOfCommentsForNode = $this->numberOfCommentsForNodes[$node->getId()];
-		} else if(!\is_null($user)) {
+		} elseif ($user !== null) {
 			// Fetch all unread comments for this specific NodeID
 			$numberOfCommentsForNodes = $this->commentsManager->getNumberOfUnreadCommentsForNodes(
 				'files',

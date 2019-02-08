@@ -7,6 +7,8 @@
  */
 
 namespace Test;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class AllConfigTest
@@ -20,19 +22,24 @@ class AllConfigTest extends \Test\TestCase {
 	/** @var  \OCP\IDBConnection */
 	protected $connection;
 
+	/** @var  EventDispatcher */
+	protected $eventDispatcher;
+
 	protected function getConfig($systemConfig = null, $connection = null) {
-		if($this->connection === null) {
+		$this->eventDispatcher = $this->createMock(EventDispatcher::class);
+
+		if ($this->connection === null) {
 			$this->connection = \OC::$server->getDatabaseConnection();
 		}
-		if($connection === null) {
+		if ($connection === null) {
 			$connection = $this->connection;
 		}
-		if($systemConfig === null) {
+		if ($systemConfig === null) {
 			$systemConfig = $this->getMockBuilder('\OC\SystemConfig')
 				->disableOriginalConstructor()
 				->getMock();
 		}
-		return new \OC\AllConfig($systemConfig, $connection);
+		return new \OC\AllConfig($systemConfig, $this->eventDispatcher, $connection);
 	}
 
 	public function testDeleteUserValue() {
@@ -59,6 +66,31 @@ class AllConfigTest extends \Test\TestCase {
 	public function testSetUserValue() {
 		$selectAllSQL = 'SELECT `userid`, `appid`, `configkey`, `configvalue` FROM `*PREFIX*preferences` WHERE `userid` = ?';
 		$config = $this->getConfig();
+
+		$event = new GenericEvent(null,
+			[
+				'uid' => 'userSet', 'key' => 'keySet', 'value' => 'valueSet',
+				'app' => 'appSet', 'precondition' => null
+			]);
+		$event2 = new GenericEvent(null,
+			[
+				'uid' => 'userSet', 'key' => 'keySet', 'value' => 'valueSet2',
+				'app' => 'appSet', 'precondition' => null
+			]);
+		$event3 = new GenericEvent(null, [
+			'uid' => 'userSet', 'key' => 'keySet', 'app' => 'appSet'
+		]);
+
+		$this->eventDispatcher->expects($this->exactly(6))
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('userpreferences.beforeSetValue'), $this->equalTo($event)],
+				[$this->equalTo('userpreferences.afterSetValue'), $this->equalTo($event)],
+				[$this->equalTo('userpreferences.beforeSetValue'), $this->equalTo($event2)],
+				[$this->equalTo('userpreferences.afterSetValue'), $this->equalTo($event2)],
+				[$this->equalTo('userpreferences.beforeDeleteValue'), $this->equalTo($event3)],
+				[$this->equalTo('userpreferences.afterDeleteValue'), $this->equalTo($event3)]
+			);
 
 		$config->setUserValue('userSet', 'appSet', 'keySet', 'valueSet');
 
@@ -343,6 +375,14 @@ class AllConfigTest extends \Test\TestCase {
 			);
 		}
 
+		$event = new GenericEvent(null, ['uid' => 'userFetch3']);
+		$this->eventDispatcher->expects($this->exactly(2))
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('userpreferences.beforeDeleteUser'), $this->equalTo($event)],
+				[$this->equalTo('userpreferences.afterDeleteUser'), $this->equalTo($event)]
+			);
+
 		$config->deleteAllUserValues('userFetch3');
 
 		$result = $this->connection->executeQuery(
@@ -376,6 +416,15 @@ class AllConfigTest extends \Test\TestCase {
 				$entry
 			);
 		}
+
+		$this->eventDispatcher->expects($this->exactly(4))
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('userpreferences.beforeDeleteApp'), $this->equalTo(new GenericEvent(null, ['app' => 'appFetch1']))],
+				[$this->equalTo('userpreferences.afterDeleteApp'), $this->equalTo(new GenericEvent(null, ['app' => 'appFetch1']))],
+				[$this->equalTo('userpreferences.beforeDeleteApp'), $this->equalTo(new GenericEvent(null, ['app' => 'appFetch2']))],
+				[$this->equalTo('userpreferences.afterDeleteApp'), $this->equalTo(new GenericEvent(null, ['app' => 'appFetch2']))]
+			);
 
 		$config->deleteAppFromAllUsers('appFetch1');
 
@@ -429,5 +478,4 @@ class AllConfigTest extends \Test\TestCase {
 		// cleanup
 		$this->connection->executeUpdate('DELETE FROM `*PREFIX*preferences`');
 	}
-
 }

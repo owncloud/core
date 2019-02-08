@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Upload;
-
 
 use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\Local;

@@ -52,7 +52,6 @@ class Propagator implements IPropagator {
 		$this->connection = $connection;
 	}
 
-
 	/**
 	 * @param string $internalPath
 	 * @param int $time
@@ -62,6 +61,10 @@ class Propagator implements IPropagator {
 		$storageId = (int)$this->storage->getStorageCache()->getNumericId();
 
 		$parents = $this->getParents($internalPath);
+
+		if (\count($parents) === 0) {
+			return;
+		}
 
 		if ($this->inBatch) {
 			foreach ($parents as $parent) {
@@ -80,26 +83,28 @@ class Propagator implements IPropagator {
 
 		$builder->update('filecache')
 			->set('mtime', $builder->createFunction('GREATEST(`mtime`, ' . $builder->createNamedParameter($time, IQueryBuilder::PARAM_INT) . ')'))
-			->set('etag', $builder->createNamedParameter($etag, IQueryBuilder::PARAM_STR))
-			->where($builder->expr()->eq('storage', $builder->createNamedParameter($storageId, IQueryBuilder::PARAM_INT)))
-			->andWhere($builder->expr()->in('path_hash', $hashParams));
-
-		$builder->execute();
+			->set('etag', $builder->createNamedParameter($etag, IQueryBuilder::PARAM_STR));
 
 		if ($sizeDifference !== 0) {
-			// we need to do size separably so we can ignore entries with uncalculated size
-			$builder = $this->connection->getQueryBuilder();
-			$builder->update('filecache')
-				->set('size', $builder->createFunction('`size` + ' . $builder->createNamedParameter($sizeDifference)))
-				->where($builder->expr()->eq('storage', $builder->createNamedParameter($storageId, IQueryBuilder::PARAM_INT)))
-				->andWhere($builder->expr()->in('path_hash', $hashParams))
-				->andWhere($builder->expr()->gt('size', $builder->expr()->literal(-1, IQueryBuilder::PARAM_INT)));
+			// if we need to update size, only update the records with calculated size (>-1)
+			$builder->set('size', $builder->createFunction('CASE' .
+					' WHEN ' . $builder->expr()->gt('size', $builder->expr()->literal(-1, IQueryBuilder::PARAM_INT)) .
+						' THEN  `size` + ' . $builder->createNamedParameter($sizeDifference) .
+					' ELSE `size`' .
+				' END'
+			));
 		}
+
+		$builder->where($builder->expr()->eq('storage', $builder->createNamedParameter($storageId, IQueryBuilder::PARAM_INT)));
+		$builder->andWhere($builder->expr()->in('path_hash', $hashParams));
 
 		$builder->execute();
 	}
 
 	protected function getParents($path) {
+		if ($path === '') {
+			return [];
+		}
 		$parts = \explode('/', $path);
 		$parent = '';
 		$parents = [];
@@ -182,6 +187,4 @@ class Propagator implements IPropagator {
 
 		$this->connection->commit();
 	}
-
-
 }

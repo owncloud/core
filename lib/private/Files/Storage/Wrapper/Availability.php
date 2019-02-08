@@ -20,6 +20,7 @@
  *
  */
 namespace OC\Files\Storage\Wrapper;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Availability checker for storages

@@ -55,7 +55,7 @@ abstract class RegisterNotifierEvent extends Event {
 	 *
 	 * @since 10.0.8
 	 */
-	public function stopPropagation(){
+	public function stopPropagation() {
 	}
 
 	/**

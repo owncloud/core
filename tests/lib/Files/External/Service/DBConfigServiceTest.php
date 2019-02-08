@@ -22,7 +22,6 @@
 
 namespace Test\Files\External\Service;
 
-
 use OC\Files\External\Service\DBConfigService;
 use OCP\IDBConnection;
 use Test\TestCase;
@@ -89,7 +88,7 @@ class DBConfigServiceTest extends TestCase {
 		$this->dbConfig->addApplicable($id, DBConfigService::APPLICABLE_TYPE_GLOBAL, null);
 
 		$mount = $this->dbConfig->getMountById($id);
-		\usort($mount['applicable'], function($m1, $m2) {
+		\usort($mount['applicable'], function ($m1, $m2) {
 			return $m1['type'] - $m2['type'];
 		});
 

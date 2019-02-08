@@ -428,6 +428,21 @@ var OC = {
 	},
 
 	/**
+	 * Returns true if the email regexp matches the email address else false returned
+	 * For example if email is "abc@foo.com", it will return true.
+	 * If email address is "abc@foo.c", then false will be returned.
+	 *
+	 * @param emailAddress
+	 * @returns {boolean}
+	 *
+	 * @since 10.1.0
+	 */
+	validateEmail: function(emailAddress) {
+		var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@\.]{2,}$/;
+		return (emailRegex.exec(emailAddress) !== null);
+	},
+
+	/**
 	 * Returns the dir name of the given path.
 	 * For example for "/abc/somefile.txt" it will return "/abc"
 	 *
@@ -760,7 +775,7 @@ var OC = {
 	 * @return {String} locale string
 	 */
 	getLocale: function () {
-		return $('html').prop('lang');
+		return $('html').attr('lang');
 	},
 
 	/**
@@ -992,7 +1007,7 @@ OC.msg = {
 	 * is displayed as an error/success
 	 */
 	finishedAction: function (selector, response) {
-		if (response.status === "success") {
+		if (response.status === "success" || response.status === "ok") {
 			this.finishedSuccess(selector, response.data.message);
 		} else {
 			this.finishedError(selector, response.data.message);
@@ -1662,6 +1677,15 @@ function initCore() {
 
 	}
 }
+
+/**
+ * Disable the use of globalEval in jQuery 2.1.4.
+ * This is required for API compatibility, yet should not be available all the
+ * same.
+ *
+ * @see https://github.com/jquery/jquery/issues/2432 for further details.
+ */
+$.fn.globalEval = function(){};
 
 $(document).ready(initCore);
 

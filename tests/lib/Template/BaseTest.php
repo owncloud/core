@@ -11,7 +11,6 @@ namespace Test\Template;
 use OC\Template\Base;
 use OCP\Theme\ITheme;
 
-
 class BaseTest extends \Test\TestCase {
 
 	/** @var ITheme|\PHPUnit_Framework_MockObject_MockObject */
@@ -27,7 +26,6 @@ class BaseTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 	}
-
 
 	public function testTemplateIsLocatedWhenThemeIsActive() {
 		$base = $this->getMockBuilder(Base::class)

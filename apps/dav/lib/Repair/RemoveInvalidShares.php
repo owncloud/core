@@ -22,6 +22,7 @@
 namespace OCA\DAV\Repair;
 
 use OCA\DAV\Connector\Sabre\Principal;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IDBConnection;
 use OCP\ILogger;
 use OCP\Migration\IOutput;
@@ -39,17 +40,22 @@ class RemoveInvalidShares implements IRepairStep {
 	private $connection;
 	/** @var Principal */
 	private $principalBackend;
+	/** @var GroupPrincipalBackend */
+	private $groupPrincipalBackend;
 
 	/**
 	 * RemoveInvalidShares constructor.
 	 *
 	 * @param IDBConnection $connection
 	 * @param Principal $principalBackend
+	 * @param GroupPrincipalBackend $groupPrincipalBackend
 	 */
 	public function __construct(IDBConnection $connection,
-								Principal $principalBackend) {
+								Principal $principalBackend,
+								GroupPrincipalBackend $groupPrincipalBackend) {
 		$this->connection = $connection;
 		$this->principalBackend = $principalBackend;
+		$this->groupPrincipalBackend = $groupPrincipalBackend;
 	}
 
 	/**
@@ -76,12 +82,15 @@ class RemoveInvalidShares implements IRepairStep {
 			->from('dav_shares')
 			->execute();
 
-		while($row = $result->fetch()) {
+		while ($row = $result->fetch()) {
 			$principaluri = $row['principaluri'];
 			$p = $this->principalBackend->getPrincipalByPath($principaluri);
 			if ($p === null) {
-				$output->info(" ... for principal '$principaluri'");
-				$this->deleteSharesForPrincipal($principaluri);
+				$p = $this->groupPrincipalBackend->getPrincipalByPath($principaluri);
+				if ($p === null) {
+					$output->info(" ... for principal '$principaluri'");
+					$this->deleteSharesForPrincipal($principaluri);
+				}
 			}
 		}
 

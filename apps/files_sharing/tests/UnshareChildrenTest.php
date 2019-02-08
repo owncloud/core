@@ -34,7 +34,6 @@ namespace OCA\Files_Sharing\Tests;
  * @package OCA\Files_Sharing\Tests
  */
 class UnshareChildrenTest extends TestCase {
-
 	protected $subsubfolder;
 
 	const TEST_FOLDER_NAME = '/folder_share_api_test';
@@ -73,8 +72,7 @@ class UnshareChildrenTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testUnshareChildren() {
-
+	public function testUnshareChildren() {
 		$fileInfo2 = \OC\Files\Filesystem::getFileInfo($this->folder);
 
 		$this->share(
@@ -100,9 +98,10 @@ class UnshareChildrenTest extends TestCase {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 
-		// after the parent directory was deleted the share should be unshared
+		// after the parent directory was deleted the share should be rejected
 		$shares = $this->shareManager->getSharedWith(self::TEST_FILES_SHARING_API_USER2, \OCP\Share::SHARE_TYPE_USER);
-		$this->assertEmpty($shares);
+		$this->assertCount(1, $shares);
+		$this->assertEquals(\OCP\Share::STATE_REJECTED, $shares[0]->getState(), 'after the parent directory was deleted the share should be rejected');
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 

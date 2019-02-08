@@ -60,6 +60,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "Du har ej tillåtelse att ladda upp eller skapa filer här",
     "_Uploading %n file_::_Uploading %n files_" : ["Laddar upp %n fil","Laddar upp %n filer"],
     "New" : "Ny",
+    "Unknown user" : "Okänd användare",
     "\"{name}\" is an invalid file name." : "\"{name}\" är ett ogiltligt filnamn.",
     "File name cannot be empty." : "Filnamn kan inte vara tomt.",
     "File name cannot contain \"/\"." : "Filnamnet får inte innehålla \"/\".",

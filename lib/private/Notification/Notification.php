@@ -22,7 +22,6 @@
 
 namespace OC\Notification;
 
-
 use OCP\Notification\IAction;
 use OCP\Notification\INotification;
 

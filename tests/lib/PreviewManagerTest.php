@@ -25,13 +25,15 @@ use OC\Files\Filesystem;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OC\PreviewManager;
-use OCP\Files\IRootFolder;
+use OCP\Files\FileInfo;
 use OCP\IConfig;
 use OCP\IImage;
 use OCP\IUser;
 use OCP\IUserSession;
 use Test\Traits\MountProviderTrait;
 use Test\Traits\UserTrait;
+use OCP\IPreview;
+use OCP\Files\Mount\IMountPoint;
 
 /**
  * Class PreviewManagerTest
@@ -50,6 +52,10 @@ class PreviewManagerTest extends TestCase {
 	private $user;
 	/** @var View */
 	private $rootView;
+	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	private $config;
+	/** @var IPreview */
+	private $previewManager;
 
 	protected function setUp() {
 		parent::setUp();
@@ -67,20 +73,67 @@ class PreviewManagerTest extends TestCase {
 		$imgData = \file_get_contents(\OC::$SERVERROOT . '/tests/data/testimage.jpg');
 		$imgPath = '/' . self::TEST_PREVIEW_USER1 . '/files/testimage.jpg';
 		$this->rootView->file_put_contents($imgPath, $imgData);
-	}
+		$this->config = $this->createMock(IConfig::class);
 
-	public function testCreatePreview() {
-		/** @var IConfig $config */
-		$config = $this->createMock(IConfig::class);
 		/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->createMock(IUserSession::class);
 		$userSession->method('getUser')->willReturn($this->user);
 
 		$rootFolder = \OC::$server->getLazyRootFolder();
-		$previewManager = new PreviewManager($config, $rootFolder, $userSession);
 
-		$image = $previewManager->createPreview('files/testimage.jpg');
+		$this->previewManager = new PreviewManager($this->config, $rootFolder, $userSession);
+	}
+
+	public function testCreatePreview() {
+		$image = $this->previewManager->createPreview('files/testimage.jpg');
 		$this->assertInstanceOf(IImage::class, $image);
 		$this->assertTrue($image->valid());
+	}
+
+	public function testIsAvailable() {
+		// return defaults
+		$this->config->method('getSystemValue')->will($this->returnArgument(1));
+
+		/** @var FileInfo | \PHPUnit_Framework_MockObject_MockObject $file */
+		$file = $this->createMock(FileInfo::class);
+		$file->expects($this->atLeastOnce())
+			->method('getMimetype')
+			->willReturn('image/jpeg');
+
+		$this->assertTrue($this->previewManager->isAvailable($file));
+	}
+
+	public function testIsAvailableGloballyDisabled() {
+		// return defaults
+		$this->config->method('getSystemValue')->with('enable_previews', true)->willReturn(false);
+
+		/** @var FileInfo | \PHPUnit_Framework_MockObject_MockObject $file */
+		$file = $this->createMock(FileInfo::class);
+		$file->expects($this->never())->method('getMimetype');
+
+		$this->assertFalse($this->previewManager->isAvailable($file));
+	}
+
+	public function testIsAvailableDisabledOnMountPoint() {
+		// return defaults
+		$this->config->method('getSystemValue')->will($this->returnArgument(1));
+
+		/** @var FileInfo | \PHPUnit_Framework_MockObject_MockObject $file */
+		$file = $this->createMock(FileInfo::class);
+		$file->expects($this->atLeastOnce())
+			->method('getMimetype')
+			->willReturn('image/jpeg');
+
+		$mountPoint = $this->createMock(IMountPoint::class);
+		$mountPoint->expects($this->once())
+			->method('getOption')
+			->with('previews', true)
+			->willReturn(false);
+
+		$file->expects($this->once())
+			->method('getMountPoint')
+			->willReturn($mountPoint);
+
+		$this->assertFalse($this->previewManager->isAvailable($file));
 	}
 }

@@ -14,6 +14,7 @@ OC.L10N.register(
     "Add remote share" : "Dodajte udaljeni zajednički resurs",
     "Invalid ownCloud url" : "Neispravan ownCloud URL",
     "Share" : "Dijeljenje",
+    "Pending" : "Na čekanju",
     "Shared by" : "Podijeljeno od strane",
     "Sharing" : "Dijeljenje zajedničkih resursa",
     "A file or folder has been <strong>shared</strong>" : "Datoteka ili mapa su <strong>podijeljeni</strong>",

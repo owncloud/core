@@ -21,7 +21,6 @@
 
 namespace OC\Core\Command\Encryption;
 
-
 use OCP\Encryption\IManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -59,7 +58,7 @@ class SetDefaultModule extends Command {
 
 		if ($moduleId === $this->encryptionManager->getDefaultEncryptionModuleId()) {
 			$output->writeln('"' . $moduleId . '"" is already the default module');
-		} else if ($this->encryptionManager->setDefaultEncryptionModule($moduleId)) {
+		} elseif ($this->encryptionManager->setDefaultEncryptionModule($moduleId)) {
 			$output->writeln('<info>Set default module to "' . $moduleId . '"</info>');
 		} else {
 			$output->writeln('<error>The specified module "' . $moduleId . '" does not exist</error>');

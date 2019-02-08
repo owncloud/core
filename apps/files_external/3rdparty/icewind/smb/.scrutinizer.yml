@@ -1,0 +1,10 @@
+tools:
+    php_sim: true
+    php_pdepend: true
+    php_analyzer: true
+    external_code_coverage:
+        timeout: 600
+        runs: 4
+filter:
+    excluded_paths:
+        - 'tests/*'

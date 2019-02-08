@@ -82,7 +82,6 @@ class Manager implements IManager {
 	 * @return bool true if enabled, false if not
 	 */
 	public function isEnabled() {
-
 		$installed = $this->config->getSystemValue('installed', false);
 		if (!$installed) {
 			return false;
@@ -119,6 +118,7 @@ class Manager implements IManager {
 
 	/**
 	 * @param string $user
+	 * @return bool
 	 */
 	public function isReadyForUser($user) {
 		if (!$this->isReady()) {
@@ -136,7 +136,7 @@ class Manager implements IManager {
 		return true;
 	}
 
-		/**
+	/**
 	 * Registers an callback function which must return an encryption module instance
 	 *
 	 * @param string $id
@@ -145,7 +145,6 @@ class Manager implements IManager {
 	 * @throws Exceptions\ModuleAlreadyExistsException
 	 */
 	public function registerEncryptionModule($id, $displayName, callable $callback) {
-
 		if (isset($this->encryptionModules[$id])) {
 			throw new Exceptions\ModuleAlreadyExistsException($id, $displayName);
 		}
@@ -221,7 +220,6 @@ class Manager implements IManager {
 			$message = 'No default encryption module defined';
 			throw new Exceptions\ModuleDoesNotExistsException($message);
 		}
-
 	}
 
 	/**
@@ -258,14 +256,12 @@ class Manager implements IManager {
 		Filesystem::addStorageWrapper('oc_encryption', [$encryptionWrapper, 'wrapStorage'], 2);
 	}
 
-
 	/**
 	 * check if key storage is ready
 	 *
 	 * @return bool
 	 */
 	protected function isKeyStorageReady() {
-
 		$rootDir = $this->util->getKeyStorageRoot();
 
 		// the default root is always valid
@@ -280,6 +276,4 @@ class Manager implements IManager {
 
 		return false;
 	}
-
-
 }

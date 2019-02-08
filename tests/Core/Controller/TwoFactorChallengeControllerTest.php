@@ -277,5 +277,4 @@ class TwoFactorChallengeControllerTest extends TestCase {
 		$expected = new RedirectResponse('files/index/url');
 		$this->assertEquals($expected, $this->controller->solveChallenge('myprovider', 'token', '/url'));
 	}
-
 }

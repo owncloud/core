@@ -57,7 +57,7 @@ class EventEmitterTraitTest extends TestCase {
 			$this->assertArrayHasKey('item1', $calledBeforeEvent[1]);
 			$this->assertInstanceOf(GenericEvent::class, $calledBeforeEvent[1]);
 		} else {
-			$this->assertEquals(array(), $calledBeforeEvent);
+			$this->assertEquals([], $calledBeforeEvent);
 		}
 
 		if (isset($data['after']) and (\count($data['after']))) {
@@ -65,7 +65,7 @@ class EventEmitterTraitTest extends TestCase {
 			$this->assertArrayHasKey('item1', $calledAfterEvent[1]);
 			$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
 		} else {
-			$this->assertEquals(array(), $calledAfterEvent);
+			$this->assertEquals([], $calledAfterEvent);
 		}
 	}
 

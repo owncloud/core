@@ -31,8 +31,7 @@ namespace OCA\Files_Sharing\Tests;
  * @group DB
  */
 class ExternalStorageTest extends \Test\TestCase {
-
-	function optionsProvider() {
+	public function optionsProvider() {
 		return [
 			[
 				'http://remoteserver:8080/owncloud',
@@ -99,7 +98,6 @@ class ExternalStorageTest extends \Test\TestCase {
  * Dummy subclass to make it possible to access private members
  */
 class TestSharingExternalStorage extends \OCA\Files_Sharing\External\Storage {
-
 	public function getBaseUri() {
 		return $this->createBaseUri();
 	}

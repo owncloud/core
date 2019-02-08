@@ -36,6 +36,8 @@ use OCP\Files\External\IStorageConfig;
 use OC\Files\Storage\FailedStorage;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
+use OCP\Files\ObjectStore\IObjectStore;
+use OCP\ISession;
 
 /**
  * Make the old files_external config work with the new public mount config api
@@ -51,18 +53,24 @@ class ConfigAdapter implements IMountProvider {
 	/** @var IUserGlobalStoragesService */
 	private $userGlobalStoragesService;
 
+	/** @var ISession */
+	private $session;
+
 	/**
+	 * @param IConfig $config
 	 * @param IUserStoragesService $userStoragesService
 	 * @param IUserGlobalStoragesService $userGlobalStoragesService
 	 */
 	public function __construct(
 		IConfig $config,
 		IUserStoragesService $userStoragesService,
-		IUserGlobalStoragesService $userGlobalStoragesService
+		IUserGlobalStoragesService $userGlobalStoragesService,
+		ISession $session
 	) {
 		$this->config = $config;
 		$this->userStoragesService = $userStoragesService;
 		$this->userGlobalStoragesService = $userGlobalStoragesService;
+		$this->session = $session;
 	}
 
 	/**
@@ -70,18 +78,20 @@ class ConfigAdapter implements IMountProvider {
 	 *
 	 * @param IStorageConfig $storage
 	 * @param IUser $user
+	 * @throws StorageNotAvailableException
+	 * @throws \OCP\Files\External\InsufficientDataForMeaningfulAnswerException
 	 */
 	private function prepareStorageConfig(IStorageConfig &$storage, IUser $user) {
 		foreach ($storage->getBackendOptions() as $option => $value) {
 			$storage->setBackendOption($option, $this->setUserVars(
-				$user->getUID(), $value
+				$user->getUserName(), $value
 			));
 		}
 
 		$objectStore = $storage->getBackendOption('objectstore');
 		if ($objectStore) {
 			$objectClass = $objectStore['class'];
-			if (!\is_subclass_of($objectClass, '\OCP\Files\ObjectStore\IObjectStore')) {
+			if (!\is_subclass_of($objectClass, IObjectStore::class)) {
 				throw new \InvalidArgumentException('Invalid object store');
 			}
 			$storage->setBackendOption('objectstore', new $objectClass($objectStore));
@@ -95,7 +105,9 @@ class ConfigAdapter implements IMountProvider {
 	 * Construct the storage implementation
 	 *
 	 * @param IStorageConfig $storageConfig
-	 * @return Storage
+	 * @return Storage\IStorage
+	 * @throws StorageNotAvailableException
+	 * @throws \OCP\Files\External\InsufficientDataForMeaningfulAnswerException
 	 */
 	private function constructStorage(IStorageConfig $storageConfig) {
 		$class = $storageConfig->getBackend()->getStorageClass();

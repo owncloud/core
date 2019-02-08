@@ -22,7 +22,6 @@
 
 namespace OCA\UpdateNotification\Tests\Notification;
 
-
 use OCA\UpdateNotification\Notification\BackgroundJob;
 use OCP\App\IAppManager;
 use OCP\Http\Client\IClientService;
@@ -73,7 +72,8 @@ class BackgroundJobTest extends TestCase {
 				$this->client,
 				$this->urlGenerator
 			);
-		} {
+		}
+		{
 			return $this->getMockBuilder('OCA\UpdateNotification\Notification\BackgroundJob')
 				->setConstructorArgs([
 					$this->config,

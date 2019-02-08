@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace Test\AppFramework\Http;
-
 
 use DateTime;
 use DateTimeZone;
@@ -32,7 +30,6 @@ use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\Response;
 use Test\TestCase;
 
-
 class ResponseTest extends TestCase {
 
 	/**
@@ -40,18 +37,16 @@ class ResponseTest extends TestCase {
 	 */
 	private $childResponse;
 
-	protected function setUp(){
+	protected function setUp() {
 		parent::setUp();
 		$this->childResponse = new Response();
 	}
 
-
-	public function testAddHeader(){
+	public function testAddHeader() {
 		$this->childResponse->addHeader(' hello ', 'world');
 		$headers = $this->childResponse->getHeaders();
 		$this->assertEquals('world', $headers['hello']);
 	}
-
 
 	public function testSetHeaders() {
 		$expected = [
@@ -92,18 +87,16 @@ class ResponseTest extends TestCase {
 		$this->assertNull($this->childResponse->getContentSecurityPolicy());
 	}
 
-	public function testAddHeaderValueNullDeletesIt(){
+	public function testAddHeaderValueNullDeletesIt() {
 		$this->childResponse->addHeader('hello', 'world');
 		$this->childResponse->addHeader('hello', null);
 		$this->assertCount(2, $this->childResponse->getHeaders());
 	}
 
-
-	public function testCacheHeadersAreDisabledByDefault(){
+	public function testCacheHeadersAreDisabledByDefault() {
 		$headers = $this->childResponse->getHeaders();
 		$this->assertEquals('no-cache, must-revalidate', $headers['Cache-Control']);
 	}
-
 
 	public function testAddCookie() {
 		$this->childResponse->addCookie('foo', 'bar');
@@ -122,8 +115,7 @@ class ResponseTest extends TestCase {
 		$this->assertEquals($expectedResponse, $this->childResponse->getCookies());
 	}
 
-
-	function testSetCookies() {
+	public function testSetCookies() {
 		$expected = [
 			'foo' => [
 				'value' => 'bar',
@@ -141,8 +133,7 @@ class ResponseTest extends TestCase {
 		$this->assertEquals($expected, $cookies);
 	}
 
-
-	function testInvalidateCookie() {
+	public function testInvalidateCookie() {
 		$this->childResponse->addCookie('foo', 'bar');
 		$this->childResponse->invalidateCookie('foo');
 		$expected = [
@@ -157,8 +148,7 @@ class ResponseTest extends TestCase {
 		$this->assertEquals($expected, $cookies);
 	}
 
-
-	function testInvalidateCookies() {
+	public function testInvalidateCookies() {
 		$this->childResponse->addCookie('foo', 'bar');
 		$this->childResponse->addCookie('bar', 'foo');
 		$expected = [
@@ -190,11 +180,9 @@ class ResponseTest extends TestCase {
 		$this->assertEquals($expected, $cookies);
 	}
 
-
-	public function testRenderReturnNullByDefault(){
+	public function testRenderReturnNullByDefault() {
 		$this->assertNull($this->childResponse->render());
 	}
-
 
 	public function testGetStatus() {
 		$default = $this->childResponse->getStatus();
@@ -205,12 +193,10 @@ class ResponseTest extends TestCase {
 		$this->assertEquals(Http::STATUS_NOT_FOUND, $this->childResponse->getStatus());
 	}
 
-
 	public function testGetEtag() {
 		$this->childResponse->setETag('hi');
 		$this->assertSame('hi', $this->childResponse->getETag());
 	}
-
 
 	public function testGetLastModified() {
 		$lastModified = new DateTime(null, new DateTimeZone('GMT'));
@@ -219,15 +205,12 @@ class ResponseTest extends TestCase {
 		$this->assertEquals($lastModified, $this->childResponse->getLastModified());
 	}
 
-
-
 	public function testCacheSecondsZero() {
 		$this->childResponse->cacheFor(0);
 
 		$headers = $this->childResponse->getHeaders();
 		$this->assertEquals('no-cache, no-store, must-revalidate', $headers['Cache-Control']);
 	}
-
 
 	public function testCacheSeconds() {
 		$this->childResponse->cacheFor(33);
@@ -236,8 +219,6 @@ class ResponseTest extends TestCase {
 		$this->assertEquals('max-age=33, must-revalidate',
 			$headers['Cache-Control']);
 	}
-
-
 
 	public function testEtagLastModifiedHeaders() {
 		$lastModified = new DateTime(null, new DateTimeZone('GMT'));
@@ -265,7 +246,5 @@ class ResponseTest extends TestCase {
 		$this->assertEquals('Thu, 01 Jan 1970 00:00:01 +0000', $headers['Last-Modified']);
 		$this->assertEquals('max-age=33, must-revalidate',
 			$headers['Cache-Control']);
-
 	}
-
 }

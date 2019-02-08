@@ -22,6 +22,7 @@
  */
 namespace OCP\Comments;
 use \OCP\IUser;
+
 /**
  * Interface ICommentsManager
  *
@@ -116,7 +117,7 @@ interface ICommentsManager {
 
 	/**
 	 * Returns number of unread messages for specified nodeIDs, if there are any unread comments
-	 * 
+	 *
 	 * Example query:
 	 * SELECT object_id, COUNT(object_id) FROM oc_comments C
 	 * 	WHERE object_id IN('79', '80', '34', '36', '38', '33')
@@ -256,5 +257,4 @@ interface ICommentsManager {
 	 * @since 9.0.0
 	 */
 	public function deleteReadMarksOnObject($objectType, $objectId);
-
 }

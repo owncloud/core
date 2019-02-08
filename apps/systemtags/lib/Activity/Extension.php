@@ -140,7 +140,6 @@ class Extension implements IExtension {
 	 * @return bool|string
 	 */
 	protected function translateShort($text, IL10N $l, array $params) {
-
 		switch ($text) {
 			case self::ASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
@@ -166,7 +165,6 @@ class Extension implements IExtension {
 	 * @return bool|string
 	 */
 	protected function translateLong($text, IL10N $l, array $params) {
-
 		switch ($text) {
 			case self::CREATE_TAG:
 				$params[1] = $this->convertParameterToTag($params[1], $l);
@@ -329,6 +327,8 @@ class Extension implements IExtension {
 					return '<parameter>' . $l->t('%s (restricted)', $matches[1]) . '</parameter>';
 				case 'invisible':
 					return '<parameter>' . $l->t('%s (invisible)', $matches[1]) . '</parameter>';
+				case 'not-editable':
+					return '<parameter>' . $l->t('%s (static)', $matches[1]) . '</parameter>';
 			}
 		}
 

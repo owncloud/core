@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "ದುರ್ಬಲ ಗುಪ್ತಪದ",
     "Couldn't send reset email. Please contact your administrator." : "﻿ರೀಸೆಟ್ ಇಮೇಲ್ ಕಳುಹಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನಿಮ್ಮ ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ.",
     "Saved" : "﻿ಉಳಿಸಿದ",
     "test email settings" : "ಪರೀರ್ಕ್ಷಾತ ﻿ಇ-ಅಂಚೆಯ ಆಯ್ಕೇ",
@@ -10,7 +9,6 @@ OC.L10N.register(
     "Create" : "ಸೃಷ್ಟಿಸಿ",
     "Delete" : "﻿ಅಳಿಸಿ",
     "Share" : "﻿ಹಂಚಿಕೊಳ್ಳಿ",
-    "__language_name__" : "ಕನ್ನಡ",
     "Language changed" : "﻿ಭಾಷೆಯನ್ನು ಬದಲಾಯಿಸಲಾಗಿದೆ",
     "Invalid request" : "﻿ಅಮಾನ್ಯ ಕೋರಿಕೆ",
     "Couldn't remove app." : "ಅಳಿಸುವಾಗ ಏನೊ ಲೋಪವಾಗಿದೆ",
@@ -30,6 +28,8 @@ OC.L10N.register(
     "Uninstall" : "ಅಳಿಸಿ",
     "Valid until {date}" : "﻿{date} ವರೆಗೆ ಚಾಲ್ತಿಯಲ್ಲಿರುತ್ತದೆ",
     "Sending..." : "﻿ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ ...",
+    "Unable to change mail address" : "﻿ಇ-ಅಂಚೆ ವಿಳಾಸ ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ",
+    "Your full name has been changed." : "﻿ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ಬದಲಾಯಿಸಲಾಗಿದೆ.",
     "Select a profile picture" : "ಸಂಕ್ಷಿಪ್ತ ವ್ಯಕ್ತಿಚಿತ್ರ ಒಂದನ್ನು ಆಯ್ಕೆ ಮಾಡಿ",
     "Very weak password" : "ಅತೀ ದುರ್ಬಲ ಗುಪ್ತಪದ",
     "Weak password" : "ದುರ್ಬಲ ಗುಪ್ತಪದ",
@@ -38,6 +38,7 @@ OC.L10N.register(
     "Strong password" : "﻿ಪ್ರಬಲ ಗುಪ್ತಪದ",
     "Groups" : "﻿ಗುಂಪುಗಳು",
     "Forum" : "﻿ವೇದಿಕೆ",
+    "Language" : "﻿ಭಾಷೆ",
     "Documentation:" : "﻿ದಾಖಲೆ:",
     "Enable only for specific groups" : "﻿ಕೇವಲ ನಿರ್ದಿಷ್ಟ ಗುಂಪುಗಳಿಗೆ ಸಕ್ರಿಯಗೊಳಿಸಿ",
     "Uninstall App" : "ಅಳಿಸಿ",
@@ -75,7 +76,6 @@ OC.L10N.register(
     "Current password" : "ಪ್ರಸ್ತುತ ಗುಪ್ತಪದ",
     "New password" : "﻿ಹೊಸ ಗುಪ್ತಪದ",
     "Change password" : "ಗುಪ್ತ ಪದವನ್ನು ಬದಲಾಯಿಸಿ",
-    "Language" : "﻿ಭಾಷೆ",
     "Help translate" : "﻿ಭಾಷಾಂತರಿಸಲು ಸಹಾಯ ಮಾಡಿ",
     "Name" : "﻿ಹೆಸರು",
     "Username" : "﻿ಬಳಕೆಯ ಹೆಸರು",
@@ -84,4 +84,4 @@ OC.L10N.register(
     "Admin" : "﻿ನಿರ್ವಹಕ",
     "Error" : "﻿ತಪ್ಪಾಗಿದೆ"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

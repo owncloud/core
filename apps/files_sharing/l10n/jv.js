@@ -3,4 +3,4 @@ OC.L10N.register(
     {
     "Download" : "Njipuk"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=1; plural=0;");

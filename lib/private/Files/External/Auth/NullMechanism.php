@@ -22,14 +22,12 @@
 
 namespace OC\Files\External\Auth;
 
-
 use \OCP\Files\External\Auth\AuthMechanism;
 
 /**
  * Null authentication mechanism
  */
 class NullMechanism extends AuthMechanism {
-
 	public function __construct() {
 		$l = \OC::$server->getL10N('lib');
 		$this
@@ -38,5 +36,4 @@ class NullMechanism extends AuthMechanism {
 			->setText($l->t('None'))
 		;
 	}
-
 }

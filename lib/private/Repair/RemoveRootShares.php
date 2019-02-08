@@ -79,7 +79,7 @@ class RemoveRootShares implements IRepairStep {
 	 * @param IOutput $output
 	 */
 	private function removeRootShares(IOutput $output) {
-		$function = function(IUser $user) use ($output) {
+		$function = function (IUser $user) use ($output) {
 			$userFolder = $this->rootFolder->getUserFolder($user->getUID());
 			$fileId = $userFolder->getId();
 
@@ -138,4 +138,3 @@ class RemoveRootShares implements IRepairStep {
 		return true;
 	}
 }
-

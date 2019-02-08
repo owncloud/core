@@ -6,11 +6,8 @@ use OC\AppFramework\DependencyInjection\DIContainer;
 use OC\AppFramework\Routing\RouteActionHandler;
 use OC\AppFramework\Routing\RouteConfig;
 
-class RoutingTest extends \Test\TestCase
-{
-
-	public function testSimpleRoute()
-	{
+class RoutingTest extends \Test\TestCase {
+	public function testSimpleRoute() {
 		$routes = ['routes' => [
 			['name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'GET']
 		]];
@@ -18,8 +15,7 @@ class RoutingTest extends \Test\TestCase
 		$this->assertSimpleRoute($routes, 'folders.open', 'GET', '/folders/{folderId}/open', 'FoldersController', 'open');
 	}
 
-	public function testSimpleRouteWithMissingVerb()
-	{
+	public function testSimpleRouteWithMissingVerb() {
 		$routes = ['routes' => [
 			['name' => 'folders#open', 'url' => '/folders/{folderId}/open']
 		]];
@@ -27,8 +23,7 @@ class RoutingTest extends \Test\TestCase
 		$this->assertSimpleRoute($routes, 'folders.open', 'GET', '/folders/{folderId}/open', 'FoldersController', 'open');
 	}
 
-	public function testSimpleRouteWithLowercaseVerb()
-	{
+	public function testSimpleRouteWithLowercaseVerb() {
 		$routes = ['routes' => [
 			['name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete']
 		]];
@@ -36,8 +31,7 @@ class RoutingTest extends \Test\TestCase
 		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open');
 	}
 
-	public function testSimpleRouteWithRequirements()
-	{
+	public function testSimpleRouteWithRequirements() {
 		$routes = ['routes' => [
 			['name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete', 'requirements' => ['something']]
 		]];
@@ -45,8 +39,7 @@ class RoutingTest extends \Test\TestCase
 		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', ['something']);
 	}
 
-	public function testSimpleRouteWithDefaults()
-	{
+	public function testSimpleRouteWithDefaults() {
 		$routes = ['routes' => [
 			['name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete', [], 'defaults' => ['param' => 'foobar']]
 		]];
@@ -54,8 +47,7 @@ class RoutingTest extends \Test\TestCase
 		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', [], ['param' => 'foobar']);
 	}
 
-	public function testSimpleRouteWithPostfix()
-	{
+	public function testSimpleRouteWithPostfix() {
 		$routes = ['routes' => [
 			['name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete', 'postfix' => '_something']
 		]];
@@ -63,12 +55,10 @@ class RoutingTest extends \Test\TestCase
 		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', [], [], '_something');
 	}
 
-
 	/**
 	 * @expectedException \UnexpectedValueException
 	 */
-	public function testSimpleRouteWithBrokenName()
-	{
+	public function testSimpleRouteWithBrokenName() {
 		$routes = ['routes' => [
 			['name' => 'folders_open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete']
 		]];
@@ -83,8 +73,7 @@ class RoutingTest extends \Test\TestCase
 		$config->register();
 	}
 
-	public function testSimpleRouteWithUnderScoreNames()
-	{
+	public function testSimpleRouteWithUnderScoreNames() {
 		$routes = ['routes' => [
 			['name' => 'admin_folders#open_current', 'url' => '/folders/{folderId}/open', 'verb' => 'delete']
 		]];
@@ -92,15 +81,13 @@ class RoutingTest extends \Test\TestCase
 		$this->assertSimpleRoute($routes, 'admin_folders.open_current', 'DELETE', '/folders/{folderId}/open', 'AdminFoldersController', 'openCurrent');
 	}
 
-	public function testResource()
-	{
+	public function testResource() {
 		$routes = ['resources' => ['account' => ['url' => '/accounts']]];
 
 		$this->assertResource($routes, 'account', '/accounts', 'AccountController', 'id');
 	}
 
-	public function testResourceWithUnderScoreName()
-	{
+	public function testResourceWithUnderScoreName() {
 		$routes = ['resources' => ['admin_accounts' => ['url' => '/admin/accounts']]];
 
 		$this->assertResource($routes, 'admin_accounts', '/admin/accounts', 'AdminAccountsController', 'id');
@@ -113,8 +100,7 @@ class RoutingTest extends \Test\TestCase
 	 * @param string $controllerName
 	 * @param string $actionName
 	 */
-	private function assertSimpleRoute($routes, $name, $verb, $url, $controllerName, $actionName, array $requirements= [], array $defaults= [], $postfix='')
-	{
+	private function assertSimpleRoute($routes, $name, $verb, $url, $controllerName, $actionName, array $requirements= [], array $defaults= [], $postfix='') {
 		if ($postfix) {
 			$name .= $postfix;
 		}
@@ -145,8 +131,7 @@ class RoutingTest extends \Test\TestCase
 	 * @param string $controllerName
 	 * @param string $paramName
 	 */
-	private function assertResource($yaml, $resourceName, $url, $controllerName, $paramName)
-	{
+	private function assertResource($yaml, $resourceName, $url, $controllerName, $paramName) {
 		// router mock
 		$router = $this->createMock("\OC\Route\Router", ['create'], [\OC::$server->getLogger()]);
 
@@ -227,7 +212,7 @@ class RoutingTest extends \Test\TestCase
 			->with($this->equalTo(new RouteActionHandler($container, $controllerName, $actionName)))
 			->will($this->returnValue($route));
 
-		if(\count($requirements) > 0) {
+		if (\count($requirements) > 0) {
 			$route
 				->expects($this->exactly(1))
 				->method('requirements')
@@ -245,7 +230,6 @@ class RoutingTest extends \Test\TestCase
 
 		return $route;
 	}
-
 }
 
 /*
@@ -255,11 +239,11 @@ class RoutingTest extends \Test\TestCase
 # the section simple describes one route
 
 routes:
-        - name: folders#open
-          url: /folders/{folderId}/open
-          verb: GET
-          # controller: name.split()[0]
-          # action: name.split()[1]
+		- name: folders#open
+		  url: /folders/{folderId}/open
+		  verb: GET
+		  # controller: name.split()[0]
+		  # action: name.split()[1]
 
 # for a resource following actions will be generated:
 # - index
@@ -269,15 +253,15 @@ routes:
 # - destroy
 # - new
 resources:
-    accounts:
-        url: /accounts
+	accounts:
+		url: /accounts
 
-    folders:
-        url: /accounts/{accountId}/folders
-        # actions can be used to define additional actions on the resource
-        actions:
-            - name: validate
-              verb: GET
-              on-collection: false
+	folders:
+		url: /accounts/{accountId}/folders
+		# actions can be used to define additional actions on the resource
+		actions:
+			- name: validate
+			  verb: GET
+			  on-collection: false
 
  * */

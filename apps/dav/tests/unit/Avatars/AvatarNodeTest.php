@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\Unit\Avatars;
-
 
 use OCA\DAV\Avatars\AvatarNode;
 use OCP\IAvatar;
@@ -29,7 +27,6 @@ use OCP\IImage;
 use Test\TestCase;
 
 class AvatarNodeTest extends TestCase {
-
 	public function testGetName() {
 		/** @var IAvatar | \PHPUnit_Framework_MockObject_MockObject $a */
 		$a = $this->createMock(IAvatar::class);

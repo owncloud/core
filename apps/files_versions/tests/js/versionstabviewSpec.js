@@ -24,14 +24,16 @@ describe('OCA.Versions.VersionsTabView', function() {
 			timestamp: time1,
 			name: 'some file.txt',
 			size: 140,
-			fullPath: '/subdir/some file.txt'
+			fullPath: '/subdir/some file.txt',
+			mimetype: 'text/plain'
 		});
 		var version2 = new VersionModel({
 			id: time2,
 			timestamp: time2,
 			name: 'some file.txt',
 			size: 150,
-			fullPath: '/subdir/some file.txt'
+			fullPath: '/subdir/some file.txt',
+			mimetype: 'text/plain'
 		});
 
 		testVersions = [version1, version2];
@@ -80,14 +82,12 @@ describe('OCA.Versions.VersionsTabView', function() {
 			expect($item.find('.versiondate').text()).toEqual('seconds ago');
 			expect($item.find('.size').text()).toEqual('< 1 KB');
 			expect($item.find('.revertVersion').length).toEqual(1);
-			expect($item.find('.preview').attr('src')).toEqual(version1.getPreviewUrl());
 
 			$item = $versions.eq(1);
 			expect($item.find('.downloadVersion').attr('href')).toEqual(version2.getDownloadUrl());
 			expect($item.find('.versiondate').text()).toEqual('2 days ago');
 			expect($item.find('.size').text()).toEqual('< 1 KB');
 			expect($item.find('.revertVersion').length).toEqual(1);
-			expect($item.find('.preview').attr('src')).toEqual(version2.getPreviewUrl());
 		});
 
 		it('does not render revert button when no update permissions', function() {
@@ -104,13 +104,66 @@ describe('OCA.Versions.VersionsTabView', function() {
 			expect($item.find('.downloadVersion').attr('href')).toEqual(version1.getDownloadUrl());
 			expect($item.find('.versiondate').text()).toEqual('seconds ago');
 			expect($item.find('.revertVersion').length).toEqual(0);
-			expect($item.find('.preview').attr('src')).toEqual(version1.getPreviewUrl());
 
 			$item = $versions.eq(1);
 			expect($item.find('.downloadVersion').attr('href')).toEqual(version2.getDownloadUrl());
 			expect($item.find('.versiondate').text()).toEqual('2 days ago');
 			expect($item.find('.revertVersion').length).toEqual(0);
-			expect($item.find('.preview').attr('src')).toEqual(version2.getPreviewUrl());
+		});
+
+		describe('version file previews', function() {
+			var oldCoreConfig;
+			var getIconUrlStub;
+			var textIconUrl;
+
+			beforeEach(function() {
+				// backup core config
+				oldCoreConfig = OC.appConfig.core;
+				OC.appConfig.core = _.extend({}, OC.appConfig.core)
+
+				textIconUrl = OC.TestUtil.buildAbsoluteUrl(OC.imagePath('core', 'filetypes/text.svg'))
+				getIconUrlStub = sinon.stub(OC.MimeType, 'getIconUrl').returns(textIconUrl);
+			});
+			afterEach(function() { 
+				OC.appConfig.core = oldCoreConfig;
+				getIconUrlStub.restore();
+			});
+			
+			it('renders actual file preview when preview mime type is supported', function() {
+				OC.appConfig.core.previewsEnabled = true; 
+				OC.appConfig.core.enabledPreviewProviders = ['text/plain']; 
+
+				tabView.setFileInfo(fileInfoModel);
+				tabView.collection.set([testVersions[0]]);
+
+				expect(getIconUrlStub.notCalled).toEqual(true);
+
+				expect(tabView.$el.find('.versions>li:eq(0) .preview').attr('src')).toEqual(testVersions[0].getPreviewUrl());
+			});
+			it('renders mime type icon as preview when preview mime type is not supported', function() {
+				OC.appConfig.core.previewsEnabled = true; 
+				OC.appConfig.core.enabledPreviewProviders = ['something/else']; 
+
+				tabView.setFileInfo(fileInfoModel);
+				tabView.collection.set([testVersions[0]]);
+
+				expect(getIconUrlStub.calledOnce).toEqual(true);
+				expect(getIconUrlStub.getCall(0).args[0]).toEqual('text/plain');
+
+				expect(tabView.$el.find('.versions>li:eq(0) .preview').attr('src')).toEqual(textIconUrl);
+			});
+			it('renders mime type icon as preview when previews are disabled', function() {
+				OC.appConfig.core.previewsEnabled = false; 
+				OC.appConfig.core.enabledPreviewProviders = ['text/plain']; 
+
+				tabView.setFileInfo(fileInfoModel);
+				tabView.collection.set([testVersions[0]]);
+
+				expect(getIconUrlStub.calledOnce).toEqual(true);
+				expect(getIconUrlStub.getCall(0).args[0]).toEqual('text/plain');
+
+				expect(tabView.$el.find('.versions>li:eq(0) .preview').attr('src')).toEqual(textIconUrl);
+			});
 		});
 	});
 	describe('Reverting', function() {

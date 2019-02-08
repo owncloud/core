@@ -4,6 +4,7 @@ OC.L10N.register(
     "Uploading..." : "កំពុងដាក់បញ្ចូល...",
     "Cancel" : "បោះបង់",
     "Share" : "ចែក​រំលែក",
+    "Pending" : "កំពុង​រង់ចាំ",
     "Shared by" : "បាន​ចែក​រំលែក​ដោយ",
     "Sharing" : "ការ​ចែក​រំលែក",
     "A file or folder has been <strong>shared</strong>" : "<strong>បាន​ចែករំលែក</strong> ឯកសារ​ឬ​ថត",

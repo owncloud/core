@@ -55,15 +55,15 @@ class LastSeen extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$user = $this->userManager->get($input->getArgument('uid'));
-		if(\is_null($user)) {
+		if ($user === null) {
 			$output->writeln('<error>User does not exist</error>');
 			return;
 		}
 
 		$lastLogin = $user->getLastLogin();
-		if($lastLogin === 0) {
+		if ($lastLogin === 0) {
 			$output->writeln('User ' . $user->getUID() .
-				' has never logged in, yet.');
+				' has never logged in.');
 		} else {
 			$date = new \DateTime();
 			$date->setTimestamp($lastLogin);

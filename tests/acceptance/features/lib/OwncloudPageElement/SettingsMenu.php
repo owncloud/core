@@ -23,15 +23,15 @@
 
 namespace Page\OwncloudPageElement;
 
+use Behat\Mink\Session;
 use Page\OwncloudPage;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
  * The Settings Menu
  *
  */
 class SettingsMenu extends OwncloudPage {
-	protected $logoutButtonId = 'logout';
+	private $logoutButtonXpath = "//*[@id='logout']";
 
 	/**
 	 * Logout with the logout button
@@ -39,15 +39,28 @@ class SettingsMenu extends OwncloudPage {
 	 * @return void
 	 */
 	public function logout() {
-		$logoutButton = $this->findById($this->logoutButtonId);
-		if (\is_null($logoutButton)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->logoutButtonId " .
-				"could not find logout button"
-			);
-		}
+		$logoutButton = $this->find("xpath", $this->logoutButtonXpath);
+		$this->assertElementNotNull(
+			$logoutButton,
+			__METHOD__ .
+			" xpath $this->logoutButtonXpath " .
+			"could not find logout button"
+		);
 		$logoutButton->click();
 	}
+
+	/**
+	 * waits for the menu to appear
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	) {
+		$this->waitTillXpathIsVisible($this->logoutButtonXpath, $timeout_msec);
+	}
 }
-	

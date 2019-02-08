@@ -29,7 +29,6 @@ use OCP\ICache;
  * Uses a simple FIFO expiry mechanism
  */
 class CappedMemoryCache implements ICache, \ArrayAccess {
-
 	private $capacity;
 	private $cache = [];
 
@@ -75,7 +74,6 @@ class CappedMemoryCache implements ICache, \ArrayAccess {
 	public function offsetUnset($offset) {
 		$this->remove($offset);
 	}
-
 
 	private function garbageCollect() {
 		while (\count($this->cache) > $this->capacity) {

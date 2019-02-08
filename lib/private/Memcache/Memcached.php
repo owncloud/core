@@ -44,7 +44,7 @@ class Memcached extends Cache implements IMemcache {
 
 	public function __construct($prefix = '') {
 		parent::__construct($prefix);
-		if (\is_null(self::$cache)) {
+		if (self::$cache === null) {
 			self::$cache = new \Memcached();
 
 			$defaultOptions = [
@@ -92,7 +92,7 @@ class Memcached extends Cache implements IMemcache {
 	/**
 	 * entries in XCache gets namespaced to prevent collisions between owncloud instances and users
 	 */
-	protected function getNameSpace() {
+	protected function getNamespace() {
 		return $this->prefix;
 	}
 
@@ -207,7 +207,7 @@ class Memcached extends Cache implements IMemcache {
 		return $result;
 	}
 
-	static public function isAvailable() {
+	public static function isAvailable() {
 		return \extension_loaded('memcached');
 	}
 

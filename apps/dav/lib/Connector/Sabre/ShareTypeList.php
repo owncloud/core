@@ -62,7 +62,7 @@ class ShareTypeList implements Element {
 	 * @param Reader $reader
 	 * @return mixed
 	 */
-	static function xmlDeserialize(Reader $reader) {
+	public static function xmlDeserialize(Reader $reader) {
 		$shareTypes = [];
 
 		$tree = $reader->parseInnerTree();
@@ -83,7 +83,7 @@ class ShareTypeList implements Element {
 	 * @param Writer $writer
 	 * @return void
 	 */
-	function xmlSerialize(Writer $writer) {
+	public function xmlSerialize(Writer $writer) {
 		foreach ($this->shareTypes as $shareType) {
 			$writer->writeElement('{' . self::NS_OWNCLOUD . '}share-type', $shareType);
 		}

@@ -46,6 +46,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "Vi ne permesatas alŝuti aŭ krei dosierojn ĉi tie",
     "_Uploading %n file_::_Uploading %n files_" : ["Alŝutatas %n dosiero","Alŝutatas %n dosieroj"],
     "New" : "Nova",
+    "Unknown user" : "Nekonata uzanto",
     "\"{name}\" is an invalid file name." : "“{name}” estas nevalida dosiernomo.",
     "File name cannot be empty." : "Dosiernomo devas ne malpleni.",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "Memoro de {owner} plenas; dosieroj ne povas alŝutiĝi aŭ sinkroniĝi plu!",

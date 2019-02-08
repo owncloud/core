@@ -160,4 +160,3 @@ interface IGroupManager {
 	 */
 	public function getSubAdmin();
 }
-

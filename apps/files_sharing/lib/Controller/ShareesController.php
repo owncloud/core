@@ -40,8 +40,10 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Share;
+use OCA\Files_Sharing\SharingBlacklist;
+use OCA\FederatedFileSharing\FederatedShareProvider;
 
-class ShareesController extends OCSController  {
+class ShareesController extends OCSController {
 
 	/** @var IGroupManager */
 	protected $groupManager;
@@ -69,6 +71,9 @@ class ShareesController extends OCSController  {
 
 	/** @var \OCP\Share\IManager */
 	protected $shareManager;
+
+	/** @var FederatedShareProvider */
+	protected $federatedShareProvider;
 
 	/** @var bool */
 	protected $shareWithGroupOnly = false;
@@ -107,6 +112,9 @@ class ShareesController extends OCSController  {
 	 */
 	protected $additionalInfoField;
 
+	/** @var SharingBlacklist */
+	protected $sharingBlacklist;
+
 	/**
 	 * @param IGroupManager $groupManager
 	 * @param IUserManager $userManager
@@ -127,7 +135,10 @@ class ShareesController extends OCSController  {
 			IUserSession $userSession,
 			IURLGenerator $urlGenerator,
 			ILogger $logger,
-			\OCP\Share\IManager $shareManager) {
+			\OCP\Share\IManager $shareManager,
+			SharingBlacklist $sharingBlacklist,
+			FederatedShareProvider $federatedShareProvider
+		) {
 		parent::__construct($appName, $request);
 
 		$this->groupManager = $groupManager;
@@ -139,7 +150,9 @@ class ShareesController extends OCSController  {
 		$this->request = $request;
 		$this->logger = $logger;
 		$this->shareManager = $shareManager;
+		$this->sharingBlacklist = $sharingBlacklist;
 		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
+		$this->federatedShareProvider = $federatedShareProvider;
 	}
 
 	/**
@@ -249,7 +262,7 @@ class ShareesController extends OCSController  {
 	protected function getAdditionalUserInfo(IUser $user) {
 		if ($this->additionalInfoField === 'email') {
 			return $user->getEMailAddress();
-		} else if ($this->additionalInfoField === 'id') {
+		} elseif ($this->additionalInfoField === 'id') {
 			return $user->getUID();
 		}
 		return null;
@@ -262,7 +275,9 @@ class ShareesController extends OCSController  {
 		$this->result['groups'] = $this->result['exact']['groups'] = [];
 
 		$groups = $this->groupManager->search($search, $this->limit, $this->offset, 'sharing');
-		$groupIds = \array_map(function (IGroup $group) { return $group->getGID(); }, $groups);
+		$groupIds = \array_map(function (IGroup $group) {
+			return $group->getGID();
+		}, $groups);
 
 		if (!$this->shareeEnumeration || \sizeof($groups) < $this->limit) {
 			$this->reachedEndFor[] = 'groups';
@@ -272,7 +287,9 @@ class ShareesController extends OCSController  {
 		if (!empty($groups) && ($this->shareWithMembershipGroupOnly || $this->shareeEnumerationGroupMembers)) {
 			// Intersect all the groups that match with the groups this user is a member of
 			$userGroups = $this->groupManager->getUserGroups($this->userSession->getUser(), 'sharing');
-			$userGroups = \array_map(function (IGroup $group) { return $group->getGID(); }, $userGroups);
+			$userGroups = \array_map(function (IGroup $group) {
+				return $group->getGID();
+			}, $userGroups);
 			$groupIds = \array_intersect($groupIds, $userGroups);
 		}
 
@@ -280,7 +297,7 @@ class ShareesController extends OCSController  {
 		foreach ($groups as $group) {
 			// FIXME: use a more efficient approach
 			$gid = $group->getGID();
-			if (!\in_array($gid, $groupIds)) {
+			if (!\in_array($gid, $groupIds) || $this->sharingBlacklist->isGroupBlacklisted($group)) {
 				continue;
 			}
 			if (\strtolower($gid) === $lowerSearch || \strtolower($group->getDisplayName()) === $lowerSearch) {
@@ -306,7 +323,8 @@ class ShareesController extends OCSController  {
 			// On page one we try if the search result has a direct hit on the
 			// user id and if so, we add that to the exact match list
 			$group = $this->groupManager->get($search);
-			if ($group instanceof IGroup && (!$this->shareWithMembershipGroupOnly || \in_array($group->getGID(), $userGroups))) {
+			if ($group instanceof IGroup && !$this->sharingBlacklist->isGroupBlacklisted($group) &&
+					(!$this->shareWithMembershipGroupOnly || \in_array($group->getGID(), $userGroups))) {
 				\array_push($this->result['exact']['groups'], [
 					'label' => $group->getDisplayName(),
 					'value' => [
@@ -334,7 +352,6 @@ class ShareesController extends OCSController  {
 		$addressBookContacts = $this->contactsManager->search($search, $searchProperties, [], $this->limit, $this->offset);
 		$foundRemoteById = false;
 		foreach ($addressBookContacts as $contact) {
-
 			if (isset($contact['isLocalSystemBook'])) {
 				// We only want remote users
 				continue;
@@ -354,7 +371,6 @@ class ShareesController extends OCSController  {
 			foreach ($cloudIds as $cloudId) {
 				list(, $serverUrl) = $this->splitUserRemote($cloudId);
 
-
 				if (\strtolower($cloudId) === $lowerSearch) {
 					$foundRemoteById = true;
 					// Save this as an exact match and continue with next CLOUD
@@ -371,20 +387,20 @@ class ShareesController extends OCSController  {
 
 				// CLOUD matching is done above
 				unset($searchProperties['CLOUD']);
-				foreach($searchProperties as $property) {
+				foreach ($searchProperties as $property) {
 					// do we even have this property for this contact/
-					if(!isset($contact[$property])) {
+					if (!isset($contact[$property])) {
 						// Skip this property since our contact doesnt have it
 						continue;
 					}
 					// check if we have a match
 					$values = $contact[$property];
-					if(!\is_array($values)) {
+					if (!\is_array($values)) {
 						$values = [$values];
 					}
-					foreach($values as $value) {
+					foreach ($values as $value) {
 						// check if we have an exact match
-						if(\strtolower($value) === $lowerSearch) {
+						if (\strtolower($value) === $lowerSearch) {
 							$this->result['exact']['remotes'][] = [
 								'label' => $contact['FN'],
 								'value' => [
@@ -409,7 +425,6 @@ class ShareesController extends OCSController  {
 						'server' => $serverUrl,
 					],
 				];
-
 			}
 		}
 
@@ -417,7 +432,6 @@ class ShareesController extends OCSController  {
 		if (!$this->shareeEnumeration) {
 			$this->result['remotes'] = [];
 		}
-
 
 		if (!$foundRemoteById && \substr_count($search, '@') >= 1 && $this->offset === 0
 			// if an exact local user is found, only keep the remote entry if
@@ -458,9 +472,9 @@ class ShareesController extends OCSController  {
 
 		if ($posSlash === false && $posColon === false) {
 			$invalidPos = \strlen($id);
-		} else if ($posSlash === false) {
+		} elseif ($posSlash === false) {
 			$invalidPos = $posColon;
-		} else if ($posColon === false) {
+		} elseif ($posColon === false) {
 			$invalidPos = $posSlash;
 		} else {
 			$invalidPos = \min($posSlash, $posColon);
@@ -518,7 +532,6 @@ class ShareesController extends OCSController  {
 	 * @return array|DataResponse
 	 */
 	public function search($search = '', $itemType = null, $page = 1, $perPage = 200) {
-
 		if ($perPage <= 0) {
 			return [ 'statuscode' => Http::STATUS_BAD_REQUEST,
 				'message' => 'Invalid perPage argument'];
@@ -526,6 +539,14 @@ class ShareesController extends OCSController  {
 		if ($page <= 0) {
 			return [ 'statuscode' => Http::STATUS_BAD_REQUEST,
 				'message' => 'Invalid page'];
+		}
+
+		$sharingDisabledForUser = $this->shareManager->sharingDisabledForUser(
+			$this->userSession->getUser()->getUID()
+		);
+		// Return empty dataset if User is excluded from sharing
+		if ($sharingDisabledForUser) {
+			return new DataResponse(['data' => $this->result]);
 		}
 
 		$shareTypes = [
@@ -541,8 +562,7 @@ class ShareesController extends OCSController  {
 		if (isset($_GET['shareType']) && \is_array($_GET['shareType'])) {
 			$shareTypes = \array_intersect($shareTypes, $_GET['shareType']);
 			\sort($shareTypes);
-
-		} else if (isset($_GET['shareType']) && \is_numeric($_GET['shareType'])) {
+		} elseif (isset($_GET['shareType']) && \is_numeric($_GET['shareType'])) {
 			$shareTypes = \array_intersect($shareTypes, [(int) $_GET['shareType']]);
 			\sort($shareTypes);
 		}
@@ -574,8 +594,10 @@ class ShareesController extends OCSController  {
 	 */
 	protected function isRemoteSharingAllowed($itemType) {
 		try {
-			$backend = Share::getBackend($itemType);
-			return $backend->isShareTypeAllowed(Share::SHARE_TYPE_REMOTE);
+			if ($itemType === 'file' || $itemType === 'folder') {
+				return $this->federatedShareProvider->isOutgoingServer2serverShareEnabled();
+			}
+			return false;
 		} catch (\Exception $e) {
 			return false;
 		}

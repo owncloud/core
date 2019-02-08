@@ -26,6 +26,7 @@
 namespace OC\Preview;
 
 use OCP\Files\File;
+use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
 
 class TXT implements IProvider2 {
@@ -41,11 +42,11 @@ class TXT implements IProvider2 {
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
 		$stream = $file->fopen('r');
-		$content = \stream_get_contents($stream,3000);
+		$content = \stream_get_contents($stream, 3000);
 		\fclose($stream);
 
 		//don't create previews of empty text files
-		if(\trim($content) === '') {
+		if (\trim($content) === '') {
 			return false;
 		}
 
@@ -64,7 +65,7 @@ class TXT implements IProvider2 {
 
 		$canUseTTF = \function_exists('imagettftext');
 
-		foreach($lines as $index => $line) {
+		foreach ($lines as $index => $line) {
 			$index = $index + 1;
 
 			$x = (int) 1;
@@ -77,7 +78,7 @@ class TXT implements IProvider2 {
 				\imagestring($image, 1, $x, $y, $line, $textColor);
 			}
 
-			if(($index * $lineSize) >= $maxY) {
+			if (($index * $lineSize) >= $maxY) {
 				break;
 			}
 		}
@@ -88,13 +89,9 @@ class TXT implements IProvider2 {
 	}
 
 	/**
-	 * Check if a preview can be generated for $path
-	 *
-	 * @param File $file
-	 * @return bool
-	 * @since 10.1.0
+	 * @inheritdoc
 	 */
-	public function isAvailable(File $file) {
+	public function isAvailable(FileInfo $file) {
 		return $file->getSize() > 0;
 	}
 }

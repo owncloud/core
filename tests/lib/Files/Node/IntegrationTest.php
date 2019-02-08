@@ -104,7 +104,6 @@ class IntegrationTest extends TestCase {
 		$this->assertEquals($file->getId(), $listing[0]->getId());
 		$this->assertEquals($file->getStorage(), $listing[0]->getStorage());
 
-
 		$rootListing = $this->root->getDirectoryListing();
 		$this->assertCount(3, $rootListing);
 

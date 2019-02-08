@@ -103,7 +103,7 @@
     "Ok" : "قبول",
     "Error loading message template: {error}" : "خطا در بارگذاری قالب پیام : {error}",
     "read-only" : "فقط-خواندنی",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{شمارش} پرونده های ناسازگار"],
+    "_{count} file conflict_::_{count} file conflicts_" : ["{شمارش} پرونده های ناسازگار","{شمارش} پرونده های ناسازگار"],
     "One file conflict" : "یک فایل متضاد",
     "New Files" : "فایل های جدید",
     "Already existing files" : "فایل های موجود در حال حاضر ",
@@ -143,7 +143,6 @@
     "Expiration date is required" : "تاریخ انقضا مورد نیاز است",
     "Delete {link}" : "حذف {پیوند}",
     "Remove link" : "حذف لینک",
-    "{fileName} link" : "{نام پرونده} پیوند",
     "Link" : "لینک",
     "Create public link" : "ساخت لینک عمومی",
     "Edit" : "ویرایش",
@@ -196,7 +195,6 @@
     "{sharee} (at {server})" : "{به اشتراک گذاری} (در {سرور})",
     "User and Groups" : "کاربر و گروه ها",
     "Public Links" : "پیوندهای عمومی",
-    "Resharing is not allowed" : "اشتراک گذاری مجدد مجاز نمی باشد",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "اشتراک‌گذاری با دیگر افراد بر روی ownClouds بصورت username@example.com/owncloud",
     "Share with users…" : "به اشتراک گذاری با کاربران...",
     "Share with users, groups or remote users…" : "به اشتراک گذاری با کاربران، گروه ها یا کاربران از راه دور...",
@@ -222,7 +220,7 @@
     "Hello {name}, the weather is {weather}" : "سلام {name}, هوا  {weather} است",
     "Hello {name}" : "سلام {name}",
     "new" : "جدید",
-    "_download %n file_::_download %n files_" : ["دانلود %n فایل"],
+    "_download %n file_::_download %n files_" : ["دانلود %n فایل","دانلود %n فایل"],
     "The upgrade is in progress, leaving this page might interrupt the process in some environments." : "ارتقا در حال پیشرفت است، ترک این صفحه ممکن است در برخی محیط ها پردازش را متوقف کند.",
     "Updating to {version}" : "به روز رسانی در {نسخه}",
     "An error occurred." : "یک خطا رخ‌داده است.",
@@ -233,7 +231,7 @@
     "The update was successful. Redirecting you to ownCloud now." : "به روزرسانی موفقیت آمیز بود. در حال انتقال شما به OwnCloud.",
     "Searching other places" : "جستجو در مکان‌های دیگر",
     "No search results in other folders" : "نتایج جستجو در سایر پوشه‌ها موجود نیست",
-    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{شمارش} نتایج جستجو در سایر پوشه‌هاست"],
+    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{شمارش} نتایج جستجو در سایر پوشه‌هاست","{شمارش} نتایج جستجو در سایر پوشه‌هاست"],
     "Personal" : "شخصی",
     "Apps" : "  برنامه ها",
     "Admin" : "مدیر",
@@ -257,6 +255,7 @@
     "File: %s" : "فایل : %s",
     "Line: %s" : "خط: %s",
     "Trace" : "ردیابی",
+    "Imprint" : "مهر زدن",
     "Create an <strong>admin account</strong>" : "لطفا یک <strong> شناسه برای مدیر</strong> بسازید",
     "Username" : "نام کاربری",
     "Storage & database" : "انبارش و پایگاه داده",
@@ -325,5 +324,5 @@
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "برای کمک، <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a> را مشاهده کنید.",
     "This %s instance is currently in maintenance mode, which may take a while." : "این نمونه %s اکنون در حالت تعمیر است، که ممکن است زمانی طول بکشد.",
     "This page will refresh itself when the %s instance is available again." : "این صفحه زمانی که نمونه %s مجددا موجود باشد خود را refresh می کند."
-},"pluralForm" :"nplurals=1; plural=0;"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

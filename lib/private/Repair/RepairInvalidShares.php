@@ -32,7 +32,6 @@ use Doctrine\DBAL\Platforms\OraclePlatform;
  * Repairs shares with invalid data
  */
 class RepairInvalidShares implements IRepairStep {
-
 	const CHUNK_SIZE = 200;
 
 	/** @var \OCP\IConfig */
@@ -97,7 +96,6 @@ class RepairInvalidShares implements IRepairStep {
 	private function adjustFileSharePermissions(IOutput $out) {
 		$mask = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_SHARE;
 		$builder = $this->connection->getQueryBuilder();
-
 
 		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$permsFunc = $builder->createFunction(

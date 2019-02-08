@@ -28,7 +28,6 @@ use OCP\Migration\ISimpleMigration;
  * Fix the calendar components of the system contact birthday calendar
  */
 class Version20170526100342 implements ISimpleMigration {
-
 	public function run(IOutput $out) {
 		$query = \OC::$server->getDatabaseConnection()->getQueryBuilder();
 		$updated = $query->update('calendars')

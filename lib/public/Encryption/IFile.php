@@ -39,5 +39,4 @@ interface IFile {
 	 * @since 8.1.0
 	 */
 	public function getAccessList($path);
-
 }

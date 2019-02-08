@@ -37,6 +37,8 @@ use InterfaSys\LogNormalizer\Normalizer;
 use \OCP\ILogger;
 use OCP\IUserSession;
 use OCP\Util;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * logging utilities
@@ -56,11 +58,21 @@ class Log implements ILogger {
 	/** @var SystemConfig */
 	private $config;
 
+	/** @var EventDispatcherInterface */
+	private $eventDispatcher;
+
 	/** @var boolean|null cache the result of the log condition check for the request */
 	private $logConditionSatisfied = null;
 
 	/** @var Normalizer */
 	private $normalizer;
+
+	/**
+	 * Flag whether we are within the event block
+	 *
+	 * @var bool
+	 */
+	private $inEvent = false;
 
 	protected $methodsWithSensitiveParameters = [
 		// Session/User
@@ -89,24 +101,43 @@ class Log implements ILogger {
 		'decrypt',
 
 		//LoginController
-		'tryLogin'
+		'tryLogin',
+
+		//User_LDAP\Connection
+		'bind',
+
+		//User_LDAP\LDAP
+		'invokeLDAPMethod',
+
+		//User_LDAP\Access
+		'areCredentialsValid',
+
+		//UserManagement\Controller\UsersController
+		'setPassword'
+
 	];
 
 	/**
 	 * @param string $logger The logger that should be used
 	 * @param SystemConfig $config the system config object
 	 * @param null $normalizer
+	 * @param EventDispatcherInterface $eventDispatcher event dispatcher
 	 */
-	public function __construct($logger = null, SystemConfig $config = null, $normalizer = null) {
+	public function __construct(
+		$logger = null,
+		SystemConfig $config = null,
+		$normalizer = null,
+		EventDispatcherInterface $eventDispatcher = null
+	) {
 		// FIXME: Add this for backwards compatibility, should be fixed at some point probably
-		if($config === null) {
+		if ($config === null) {
 			$config = \OC::$server->getSystemConfig();
 		}
 
 		$this->config = $config;
 
 		// FIXME: Add this for backwards compatibility, should be fixed at some point probably
-		if($logger === null) {
+		if ($logger === null) {
 			$this->logger = 'OC\\Log\\'.\ucfirst($this->config->getValue('log_type', 'owncloud'));
 			\call_user_func([$this->logger, 'init']);
 		} else {
@@ -118,6 +149,11 @@ class Log implements ILogger {
 			$this->normalizer = $normalizer;
 		}
 
+		if ($eventDispatcher === null) {
+			$this->eventDispatcher = \OC::$server->getEventDispatcher();
+		} else {
+			$this->eventDispatcher = $eventDispatcher;
+		}
 	}
 
 	/**
@@ -219,7 +255,6 @@ class Log implements ILogger {
 		$this->log(Util::DEBUG, $message, $context);
 	}
 
-
 	/**
 	 * Logs with an arbitrary level.
 	 *
@@ -236,6 +271,18 @@ class Log implements ILogger {
 		}
 		$logConditionFile = null;
 
+		$extraFields = [];
+		if (isset($context['extraFields'])) {
+			$extraFields = $context['extraFields'];
+			unset($context['extraFields']);
+		}
+
+		$exception = null;
+		if (isset($context['exception'])) {
+			$exception = $context['exception'];
+			unset($context['exception']);
+		}
+
 		if (isset($context['app'])) {
 			$app = $context['app'];
 
@@ -243,9 +290,9 @@ class Log implements ILogger {
 			 * check log condition based on the context of each log message
 			 * once this is met -> change the required log level to debug
 			 */
-			if(!empty($logConditions)) {
+			if (!empty($logConditions)) {
 				foreach ($logConditions as $logCondition) {
-					if(!empty($logCondition['apps'])
+					if (!empty($logCondition['apps'])
 					   && \in_array($app, $logCondition['apps'], true)) {
 						$minLevel = Util::DEBUG;
 						if (!empty($logCondition['logfile'])) {
@@ -255,7 +302,6 @@ class Log implements ILogger {
 					}
 				}
 			}
-
 		} else {
 			$app = 'no app in context';
 		}
@@ -264,10 +310,10 @@ class Log implements ILogger {
 		 * check for a special log condition - this enables an increased log on
 		 * a per request/user base
 		 */
-		if($this->logConditionSatisfied === null) {
+		if ($this->logConditionSatisfied === null) {
 			// default to false to just process this once per request
 			$this->logConditionSatisfied = false;
-			if(!empty($logConditions)) {
+			if (!empty($logConditions)) {
 				foreach ($logConditions as $logCondition) {
 
 					// check for secret token in the request
@@ -305,17 +351,52 @@ class Log implements ILogger {
 		}
 
 		// if log condition is satisfied change the required log level to DEBUG
-		if($this->logConditionSatisfied) {
+		if ($this->logConditionSatisfied) {
 			$minLevel = Util::DEBUG;
 		}
 
-		if ($level >= $minLevel) {
-
-			$message = $this->interpolate($message, $context);
-
-			$logger = $this->logger;
-			\call_user_func([$logger, 'write'], $app, $message, $level, $logConditionFile);
+		$skipEvents = false;
+		// avoid infinite loop in case an event handler logs something
+		if ($this->inEvent) {
+			$skipEvents = true;
 		}
+
+		$formattedMessage = $this->interpolate($message, $context);
+
+		$eventArgs = [
+			'app' => $app,
+			'loglevel' => $level,
+			'message' => $message,
+			'formattedMessage' => $formattedMessage,
+			'context' => $context,
+			'extraFields' => $extraFields,
+			'exception' => $exception
+		];
+
+		// note: regardless of log level we let listeners receive messages
+		$this->inEvent = true;
+		if (!$skipEvents) {
+			$event = new GenericEvent(null);
+			$event->setArguments($eventArgs);
+			$this->eventDispatcher->dispatch('log.beforewrite', $event);
+		}
+
+		if ($level >= $minLevel) {
+			$logger = $this->logger;
+			// check if logger supports extra fields
+			if (!empty($extraFields) && \is_callable($logger, 'writeExtra')) {
+				\call_user_func([$logger, 'writeExtra'], $app, $formattedMessage, $level, $logConditionFile, $extraFields);
+			} else {
+				\call_user_func([$logger, 'write'], $app, $formattedMessage, $level, $logConditionFile);
+			}
+		}
+
+		if (!$skipEvents) {
+			$event = new GenericEvent(null);
+			$event->setArguments($eventArgs);
+			$this->eventDispatcher->dispatch('log.afterwrite', $event);
+		}
+		$this->inEvent = false;
 	}
 
 	/**
@@ -324,8 +405,7 @@ class Log implements ILogger {
 	 * @param array $context
 	 * @return string
 	 */
-	protected function interpolate ($message, array $context) {
-
+	protected function interpolate($message, array $context) {
 		$replace = [];
 		foreach ($context as $key => $val) {
 			$replace['{' . $key . '}'] = $this->normalizer->format($val);
@@ -333,7 +413,6 @@ class Log implements ILogger {
 
 		// interpolate replacement values into the message and return
 		return \strtr($message, $replace);
-
 	}
 
 	/**
@@ -345,6 +424,12 @@ class Log implements ILogger {
 	 * @since 8.2.0
 	 */
 	public function logException($exception, array $context = []) {
+		$context['exception'] =  $exception;
+		$level = Util::ERROR;
+		if (isset($context['level'])) {
+			$level = $context['level'];
+			unset($context['level']);
+		}
 		$exception = [
 			'Exception' => \get_class($exception),
 			'Message' => $exception->getMessage(),
@@ -359,6 +444,6 @@ class Log implements ILogger {
 		}
 		$msg = isset($context['message']) ? $context['message'] : 'Exception';
 		$msg .= ': ' . \json_encode($exception);
-		$this->error($msg, $context);
+		$this->log($level, $msg, $context);
 	}
 }

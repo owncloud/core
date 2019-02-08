@@ -126,7 +126,6 @@ class RepairUnmergedShares implements IRepairStep {
 			->where($query->expr()->eq('id', $query->createParameter('shareid')));
 
 		$this->queryUpdateSharePermissionsAndTarget = $query;
-
 	}
 
 	private function getSharesWithUser($shareType, $shareWiths) {
@@ -173,7 +172,7 @@ class RepairUnmergedShares implements IRepairStep {
 	private function findBestTargetName($groupShares, $subShares) {
 		$pickedShare = null;
 		// sort by stime, this also properly sorts the direct user share if any
-		@\usort($subShares, function($a, $b) {
+		@\usort($subShares, function ($a, $b) {
 			return ((int)$a['stime'] - (int)$b['stime']);
 		});
 
@@ -343,7 +342,7 @@ class RepairUnmergedShares implements IRepairStep {
 			\version_compare($ocVersionFromBeforeUpdate, '9.1.0', '>=')
 			&& \version_compare($ocVersionFromBeforeUpdate, '9.1.0.16', '<')
 			) {
-			$function = function(IUser $user) use ($output) {
+			$function = function (IUser $user) use ($output) {
 				$this->fixUnmergedShares($output, $user);
 				$output->advance();
 			};

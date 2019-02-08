@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\Federation\Tests\API;
-
 
 use OC\BackgroundJob\JobList;
 use OCA\Federation\Controller\OCSAuthAPIController;
@@ -81,7 +79,6 @@ class OCSAuthAPITest extends TestCase {
 			$this->dbHandler,
 			$this->logger
 		);
-
 	}
 
 	/**
@@ -93,7 +90,6 @@ class OCSAuthAPITest extends TestCase {
 	 * @param int $expected
 	 */
 	public function testRequestSharedSecret($token, $localToken, $isTrustedServer, $expected) {
-
 		$url = 'url';
 
 		$this->trustedServers
@@ -132,7 +128,6 @@ class OCSAuthAPITest extends TestCase {
 	 * @param int $expected
 	 */
 	public function testGetSharedSecret($isTrustedServer, $isValidToken, $expected) {
-
 		$url = 'url';
 		$token = 'token';
 
@@ -156,7 +151,7 @@ class OCSAuthAPITest extends TestCase {
 		$ocsAuthApi->expects($this->any())
 			->method('isValidToken')->with($url, $token)->willReturn($isValidToken);
 
-		if($expected === Http::STATUS_OK) {
+		if ($expected === Http::STATUS_OK) {
 			$this->secureRandom->expects($this->once())->method('generate')->with(32)
 				->willReturn('secret');
 			$this->trustedServers->expects($this->once())
@@ -188,5 +183,4 @@ class OCSAuthAPITest extends TestCase {
 			[false, false, Http::STATUS_FORBIDDEN],
 		];
 	}
-
 }

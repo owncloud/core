@@ -44,7 +44,6 @@ class VersionCheck {
 		$this->config = $config;
 	}
 
-
 	/**
 	 * Check if a new version is available
 	 *
@@ -113,4 +112,3 @@ class VersionCheck {
 		}
 	}
 }
-

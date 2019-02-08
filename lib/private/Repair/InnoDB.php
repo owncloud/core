@@ -28,7 +28,6 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class InnoDB implements IRepairStep {
-
 	public function getName() {
 		return 'Repair MySQL database engine';
 	}
@@ -69,4 +68,3 @@ class InnoDB implements IRepairStep {
 		return $result;
 	}
 }
-

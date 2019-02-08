@@ -22,6 +22,7 @@
  */
 
 namespace OC\Files\Storage;
+use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -48,7 +49,6 @@ interface Storage extends \OCP\Files\Storage {
 	 * @return \OC\Files\Cache\Scanner
 	 */
 	public function getScanner($path = '', $storage = null);
-
 
 	/**
 	 * get the user id of the owner of a file or folder
@@ -89,6 +89,8 @@ interface Storage extends \OCP\Files\Storage {
 	public function getStorageCache();
 
 	/**
+	 * get metadata of the file or folder.
+	 *
 	 * @param string $path
 	 * @return array
 	 */

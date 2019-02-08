@@ -2,7 +2,7 @@
 * ownCloud
 *
 * @author Vincent Petry
-* @copyright Copyright (c) 2015 Vincent Petry <pvince81@owncloud.com>
+* @copyright Copyright (c) 2018 Vincent Petry <pvince81@owncloud.com>
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -108,7 +108,7 @@ describe('OC.Share.ShareDialogView', function() {
 		capsSpec = sinon.stub(OC, 'getCapabilities');
 		capsSpec.returns({
 			'files_sharing': {
-				'search_min_length': 4
+				'search_min_length': 2
 			}
 		});
 	});
@@ -773,6 +773,87 @@ describe('OC.Share.ShareDialogView', function() {
 			expect($shareWith.attr('disabled')).toEqual(undefined);
 
 			addShareStub.restore();
+		});
+
+		it('displays message when not enough characters were typed in and the server returned no matches', function() {
+			dialog.render();
+			var $shareWithField = $('.shareWithField');
+			$shareWithField.val('b');
+			var response = sinon.stub();
+			dialog.autocompleteHandler({term: 'b'}, response);
+
+			var jsonData = JSON.stringify({
+				'ocs': {
+					'data': {
+						'exact': {
+							'users': [],
+							'groups': [],
+							'remotes': [],
+						},
+						'users': [],
+						'groups': [],
+						'remotes': []
+					},
+					'meta': {
+						'status': 'success',
+						'statuscode': 100
+					}
+				}
+			});
+			expect(fakeServer.requests.length).toEqual(1);
+			fakeServer.requests[0].respond(
+					200,
+					{'Content-Type': 'application/json'},
+					jsonData
+			);
+			expect(response.calledOnce).toEqual(true);
+			expect(response.getCall(0).args[0]).toBeUndefined();
+
+			expect($shareWithField.attr('data-original-title'))
+				.toEqual('No users found for b. Please enter at least 2 characters for suggestions');
+		});
+
+		it('does not display a message when not enough characters were typed in but the server returned an exact match', function() {
+			dialog.render();
+			var $shareWithField = $('.shareWithField');
+			var response = sinon.stub();
+			dialog.autocompleteHandler({term: '成'}, response);
+
+			var jsonData = JSON.stringify({
+				'ocs': {
+					'data': {
+						'exact' : {
+							'users'  : [{
+								'label': '成 龙',
+								'value': {
+									'shareType': 0,
+									'shareWith': 'jackie_chan'
+								}
+							}],
+							'groups' : [],
+							'remotes': []
+						},
+						'users': [],
+						'groups': [],
+						'remotes': []
+					},
+					'meta': {
+						'status': 'success',
+						'statuscode': 100
+					}
+				}
+			});
+			expect(fakeServer.requests.length).toEqual(1);
+			fakeServer.requests[0].respond(
+					200,
+					{'Content-Type': 'application/json'},
+					jsonData
+			);
+			expect(response.calledOnce).toEqual(true);
+			expect(response.getCall(0).args[0]).toBeDefined();
+
+			expect($shareWithField.attr('data-original-title'))
+				.not.toContain('for suggestions');
 		});
 	});
 	describe('reshare permissions', function() {

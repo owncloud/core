@@ -41,14 +41,14 @@ class DependencyAnalyzer {
 	 * @param Platform $platform
 	 * @param \OCP\IL10N $l
 	 */
-	function __construct(Platform $platform, IL10N $l) {
+	public function __construct(Platform $platform, IL10N $l) {
 		$this->platform = $platform;
 		$this->l = $l;
 	}
 
 	/**
 	 * @param array $app
-	 * @returns array of missing dependencies
+	 * @return array of missing dependencies
 	 */
 	public function analyze(array $app) {
 		$this->appInfo = $app;
@@ -176,8 +176,8 @@ class DependencyAnalyzer {
 			return $this->getValue($db);
 		}, $supportedDatabases);
 		$currentDatabase = $this->platform->getDatabase();
-		if (!\in_array($currentDatabase, $supportedDatabases)) {
-			$missing[] = (string)$this->l->t('Following databases are supported: %s', \join(', ', $supportedDatabases));
+		if (!\in_array($currentDatabase, $supportedDatabases, true)) {
+			$missing[] = (string)$this->l->t('Following databases are supported: %s', \implode(', ', $supportedDatabases));
 		}
 		return $missing;
 	}
@@ -201,7 +201,7 @@ class DependencyAnalyzer {
 		}
 		$os = $this->platform->getOS();
 		foreach ($commands as $command) {
-			if (isset($command['@attributes']['os']) && $command['@attributes']['os'] !== $os) {
+			if (isset($command['@attributes']['os']) && $os !== $command['@attributes']['os']) {
 				continue;
 			}
 			$commandName = $this->getValue($command);
@@ -232,7 +232,7 @@ class DependencyAnalyzer {
 		foreach ($libs as $lib) {
 			$libName = $this->getValue($lib);
 			$libVersion = $this->platform->getLibraryVersion($libName);
-			if (\is_null($libVersion)) {
+			if ($libVersion === null) {
 				$missing[] = (string)$this->l->t('The library %s is not available.', $libName);
 				continue;
 			}
@@ -279,8 +279,8 @@ class DependencyAnalyzer {
 			$oss = [$oss];
 		}
 		$currentOS = $this->platform->getOS();
-		if (!\in_array($currentOS, $oss)) {
-			$missing[] = (string)$this->l->t('Following platforms are supported: %s', \join(', ', $oss));
+		if (!\in_array($currentOS, $oss, true)) {
+			$missing[] = (string)$this->l->t('Following platforms are supported: %s', \implode(', ', $oss));
 		}
 		return $missing;
 	}
@@ -295,27 +295,27 @@ class DependencyAnalyzer {
 		$minVersion = null;
 		if (isset($dependencies['owncloud']['@attributes']['min-version'])) {
 			$minVersion = $dependencies['owncloud']['@attributes']['min-version'];
-		} elseif (isset($appInfo['requiremin'])) {
-			$minVersion = $appInfo['requiremin'];
-		} elseif (isset($appInfo['require'])) {
-			$minVersion = $appInfo['require'];
 		}
 		$maxVersion = null;
 		if (isset($dependencies['owncloud']['@attributes']['max-version'])) {
 			$maxVersion = $dependencies['owncloud']['@attributes']['max-version'];
-		} elseif (isset($appInfo['requiremax'])) {
-			$maxVersion = $appInfo['requiremax'];
 		}
 
-		if (!\is_null($minVersion)) {
+		if ($minVersion !== null) {
 			if ($this->compareSmaller($this->platform->getOcVersion(), $minVersion)) {
 				$missing[] = (string)$this->l->t('ownCloud %s or higher is required.', $minVersion);
 			}
+		} else {
+			$missing[] = (string)$this->l->t('No minimum ownCloud version is defined in appinfo/info.xml.');
 		}
-		if (!\is_null($maxVersion)) {
-			if ($this->compareBigger($this->platform->getOcVersion(), $maxVersion)) {
+		if ($maxVersion !== null) {
+			if (!\in_array($this->platform->getOcChannel(), ['git', 'daily'], true)
+				&& $this->compareBigger($this->platform->getOcVersion(), $maxVersion)
+			) {
 				$missing[] = (string)$this->l->t('ownCloud %s or lower is required.', $maxVersion);
 			}
+		} else {
+			$missing[] = (string)$this->l->t('No maximum ownCloud version is defined in appinfo/info.xml.');
 		}
 		return $missing;
 	}
@@ -325,8 +325,9 @@ class DependencyAnalyzer {
 	 * @return mixed
 	 */
 	private function getValue($element) {
-		if (isset($element['@value']))
+		if (isset($element['@value'])) {
 			return $element['@value'];
+		}
 		return (string)$element;
 	}
 }

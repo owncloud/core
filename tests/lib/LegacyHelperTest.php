@@ -15,14 +15,12 @@ class LegacyHelperTest extends \Test\TestCase {
 	/**
 	 * @dataProvider humanFileSizeProvider
 	 */
-	public function testHumanFileSize($expected, $input)
-	{
+	public function testHumanFileSize($expected, $input) {
 		$result = OC_Helper::humanFileSize($input);
 		$this->assertEquals($expected, $result);
 	}
 
-	public function humanFileSizeProvider()
-	{
+	public function humanFileSizeProvider() {
 		return [
 			['0 B', 0],
 			['1 KB', 1024],
@@ -37,14 +35,12 @@ class LegacyHelperTest extends \Test\TestCase {
 	/**
 	 * @dataProvider phpFileSizeProvider
 	 */
-	public function testPhpFileSize($expected, $input)
-	{
+	public function testPhpFileSize($expected, $input) {
 		$result = OC_Helper::phpFileSize($input);
 		$this->assertEquals($expected, $result);
 	}
 
-	public function phpFileSizeProvider()
-	{
+	public function phpFileSizeProvider() {
 		return [
 			['0B', 0],
 			['1K', 1024],
@@ -59,12 +55,12 @@ class LegacyHelperTest extends \Test\TestCase {
 	/**
 	 * @dataProvider providesComputerFileSize
 	 */
-	function testComputerFileSize($expected, $input) {
+	public function testComputerFileSize($expected, $input) {
 		$result = OC_Helper::computerFileSize($input);
 		$this->assertEquals($expected, $result);
 	}
 
-	function providesComputerFileSize(){
+	public function providesComputerFileSize() {
 		return [
 			[0.0, "0 B"],
 			[1024.0, "1 KB"],
@@ -75,7 +71,7 @@ class LegacyHelperTest extends \Test\TestCase {
 		];
 	}
 
-	function testIsSubDirectory() {
+	public function testIsSubDirectory() {
 		$result = OC_Helper::isSubDirectory("./data/", "/anotherDirectory/");
 		$this->assertFalse($result);
 
@@ -88,7 +84,7 @@ class LegacyHelperTest extends \Test\TestCase {
 		$this->assertTrue($result);
 	}
 
-	function testMb_array_change_key_case() {
+	public function testMb_array_change_key_case() {
 		$arrayStart = [
 			"Foo" => "bar",
 			"Bar" => "foo",
@@ -114,7 +110,7 @@ class LegacyHelperTest extends \Test\TestCase {
 		$this->assertEquals($result, $expected);
 	}
 
-	function testRecursiveArraySearch() {
+	public function testRecursiveArraySearch() {
 		$haystack = [
 			"Foo" => "own",
 			"Bar" => "Cloud",
@@ -128,7 +124,7 @@ class LegacyHelperTest extends \Test\TestCase {
 		$this->assertFalse($result);
 	}
 
-	function testBuildNotExistingFileNameForView() {
+	public function testBuildNotExistingFileNameForView() {
 		$viewMock = $this->createMock('\OC\Files\View', [], [], '', false);
 		$this->assertEquals('/filename', OC_Helper::buildNotExistingFileNameForView('/', 'filename', $viewMock));
 		$this->assertEquals('dir/filename.ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename.ext', $viewMock));
@@ -192,7 +188,6 @@ class LegacyHelperTest extends \Test\TestCase {
 	 * @dataProvider streamCopyDataProvider
 	 */
 	public function testStreamCopy($expectedCount, $expectedResult, $source, $target) {
-
 		if (\is_string($source)) {
 			$source = \fopen($source, 'r');
 		}
@@ -213,8 +208,7 @@ class LegacyHelperTest extends \Test\TestCase {
 		$this->assertSame($expectedResult, $result);
 	}
 
-
-	function streamCopyDataProvider() {
+	public function streamCopyDataProvider() {
 		return [
 			[0, false, false, false],
 			[0, false, \OC::$SERVERROOT . '/tests/data/lorem.txt', false],

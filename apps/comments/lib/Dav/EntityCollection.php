@@ -31,6 +31,7 @@ use OCP\IUserSession;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\IProperties;
 use Sabre\DAV\PropPatch;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class EntityCollection
@@ -46,15 +47,13 @@ class EntityCollection extends RootCollection implements IProperties {
 	/** @var  string */
 	protected $id;
 
-	/** @var  ILogger */
-	protected $logger;
-
 	/**
 	 * @param string $id
 	 * @param string $name
 	 * @param ICommentsManager $commentsManager
 	 * @param IUserManager $userManager
 	 * @param IUserSession $userSession
+	 * @param EventDispatcherInterface $dispatcher
 	 * @param ILogger $logger
 	 */
 	public function __construct(
@@ -63,20 +62,18 @@ class EntityCollection extends RootCollection implements IProperties {
 		ICommentsManager $commentsManager,
 		IUserManager $userManager,
 		IUserSession $userSession,
+		EventDispatcherInterface $dispatcher,
 		ILogger $logger
 	) {
-		foreach(['id', 'name'] as $property) {
+		parent::__construct($commentsManager, $userManager, $userSession, $dispatcher, $logger);
+		foreach (['id', 'name'] as $property) {
 			$$property = \trim($$property);
-			if(empty($$property) || !\is_string($$property)) {
+			if (empty($$property) || !\is_string($$property)) {
 				throw new \InvalidArgumentException('"' . $property . '" parameter must be non-empty string');
 			}
 		}
 		$this->id = $id;
 		$this->name = $name;
-		$this->commentsManager = $commentsManager;
-		$this->logger = $logger;
-		$this->userManager = $userManager;
-		$this->userSession = $userSession;
 	}
 
 	/**
@@ -98,7 +95,7 @@ class EntityCollection extends RootCollection implements IProperties {
 	 * @return \Sabre\DAV\INode
 	 * @throws NotFound
 	 */
-	function getChild($name) {
+	public function getChild($name) {
 		try {
 			$comment = $this->commentsManager->get($name);
 			return new CommentNode(
@@ -118,7 +115,7 @@ class EntityCollection extends RootCollection implements IProperties {
 	 *
 	 * @return \Sabre\DAV\INode[]
 	 */
-	function getChildren() {
+	public function getChildren() {
 		return $this->findChildren();
 	}
 
@@ -131,10 +128,10 @@ class EntityCollection extends RootCollection implements IProperties {
 	 * @param \DateTime|null $datetime
 	 * @return CommentNode[]
 	 */
-	function findChildren($limit = 0, $offset = 0, \DateTime $datetime = null) {
+	public function findChildren($limit = 0, $offset = 0, \DateTime $datetime = null) {
 		$comments = $this->commentsManager->getForObject($this->name, $this->id, $limit, $offset, $datetime);
 		$result = [];
-		foreach($comments as $comment) {
+		foreach ($comments as $comment) {
 			$result[] = new CommentNode(
 				$this->commentsManager,
 				$comment,
@@ -152,7 +149,7 @@ class EntityCollection extends RootCollection implements IProperties {
 	 * @param string $name
 	 * @return bool
 	 */
-	function childExists($name) {
+	public function childExists($name) {
 		try {
 			$this->commentsManager->get($name);
 			return true;
@@ -177,20 +174,19 @@ class EntityCollection extends RootCollection implements IProperties {
 	/**
 	 * @inheritdoc
 	 */
-	function propPatch(PropPatch $propPatch) {
+	public function propPatch(PropPatch $propPatch) {
 		$propPatch->handle(self::PROPERTY_NAME_READ_MARKER, [$this, 'setReadMarker']);
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	function getProperties($properties) {
+	public function getProperties($properties) {
 		$marker = null;
 		$user = $this->userSession->getUser();
-		if(!\is_null($user)) {
+		if ($user !== null) {
 			$marker = $this->commentsManager->getReadMark($this->name, $this->id, $user);
 		}
 		return [self::PROPERTY_NAME_READ_MARKER => $marker];
 	}
 }
-

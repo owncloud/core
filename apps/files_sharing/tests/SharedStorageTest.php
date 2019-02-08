@@ -39,14 +39,12 @@ use OCP\Share\IShare;
  * @group DB
  */
 class SharedStorageTest extends TestCase {
-
 	protected function setUp() {
 		parent::setUp();
 		\OCA\Files_Trashbin\Trashbin::registerHooks();
 		$this->folder = '/folder_share_storage_test';
 
 		$this->filename = '/share-api-storage.txt';
-
 
 		$this->view->mkdir($this->folder);
 
@@ -131,7 +129,6 @@ class SharedStorageTest extends TestCase {
 			\OCP\Constants::PERMISSION_ALL
 		);
 
-
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 		$user2View = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2 . '/files');
 
@@ -179,7 +176,6 @@ class SharedStorageTest extends TestCase {
 			\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_SHARE
 		);
 
-
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 
 		// compare file size between user1 and user2, should always be the same
@@ -201,7 +197,6 @@ class SharedStorageTest extends TestCase {
 			\OCP\Constants::PERMISSION_READ
 		);
 
-
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 
 		$this->assertTrue(\OC\Files\Filesystem::is_dir($this->folder));
@@ -216,7 +211,6 @@ class SharedStorageTest extends TestCase {
 		// the shared permissions (1)
 		$subfileInfo = \OC\Files\Filesystem::getFileInfo($this->folder . $this->filename);
 		$this->assertSame(1, $subfileInfo->getPermissions());
-
 
 		//cleanup
 		$this->shareManager->deleteShare($share);
@@ -297,10 +291,7 @@ class SharedStorageTest extends TestCase {
 		$this->assertFalse($user2View->unlink($this->folder . '/existing.txt'));
 
 		//cleanup
-		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
-		$result = \OCP\Share::unshare('folder', $fileinfoFolder['fileid'], \OCP\Share::SHARE_TYPE_USER,
-			self::TEST_FILES_SHARING_API_USER2);
-		$this->assertTrue($result);
+		$this->shareManager->deleteShare($share);
 	}
 
 	public function testFopenWithUpdateOnlyPermission() {
@@ -438,9 +429,9 @@ class SharedStorageTest extends TestCase {
 		$this->assertTrue($view->file_exists($this->folder));
 
 		/**
-		 * @var \OCP\Files\Storage $sharedStorage
+		 * @var \OCP\Files\Storage\IStorage $sharedStorage
 		 */
-		list($sharedStorage,) = $view->resolvePath($this->folder);
+		list($sharedStorage, ) = $view->resolvePath($this->folder);
 		$this->assertTrue($sharedStorage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage'));
 
 		$sourceStorage = new \OC\Files\Storage\Temporary([]);
@@ -471,9 +462,9 @@ class SharedStorageTest extends TestCase {
 		$this->assertTrue($view->file_exists($this->folder));
 
 		/**
-		 * @var \OCP\Files\Storage $sharedStorage
+		 * @var \OCP\Files\Storage\IStorage $sharedStorage
 		 */
-		list($sharedStorage,) = $view->resolvePath($this->folder);
+		list($sharedStorage, ) = $view->resolvePath($this->folder);
 		$this->assertTrue($sharedStorage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage'));
 
 		$sourceStorage = new \OC\Files\Storage\Temporary([]);
@@ -536,7 +527,6 @@ class SharedStorageTest extends TestCase {
 		$this->shareManager->deleteShare($share1);
 		$this->shareManager->deleteShare($share2);
 	}
-
 
 	public function testLongLock() {
 		// https://github.com/owncloud/core/issues/25376

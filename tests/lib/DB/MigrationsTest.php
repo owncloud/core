@@ -7,7 +7,6 @@
  * See the COPYING-README file.
  */
 
-
 namespace Test\DB;
 
 use Doctrine\DBAL\Schema\Schema;
@@ -85,7 +84,6 @@ class MigrationsTest extends \Test\TestCase {
 	}
 
 	public function testExecuteStepWithSchemaMigrationStep() {
-
 		$schema = $this->createMock(Schema::class);
 		$this->db->expects($this->any())->method('createSchema')->willReturn($schema);
 
@@ -100,7 +98,6 @@ class MigrationsTest extends \Test\TestCase {
 	}
 
 	public function testExecuteStepWithSqlMigrationStep() {
-
 		$this->db->expects($this->exactly(3))->method('executeQuery')->withConsecutive(['1'], ['2'], ['3']);
 
 		$step = $this->createMock(ISqlMigration::class);

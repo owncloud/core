@@ -1,14 +1,12 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "رمز عبور اشتباه است",
-    "The new password can not be the same as the previous one" : "رمز عبور جدید نمی تواند مانند قبلی باشد",
     "%s password changed successfully" : "%s رمز عبور با موفقیت تغییر کرد",
     "Couldn't send reset email. Please contact your administrator." : "ارسال ایمیل مجدد با مشکل مواجه شد . لطفا با مدیر سیستم تماس بگیرید .",
     "installing and updating apps via the market or Federated Cloud Sharing" : "نصب و به روز رسانی برنامه از طریق بازار یا Federated Cloud Sharing",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL از یک %sنسخه (%s) منسوخ شده استفاده می کند. لطفا سیستم عامل خود را به روز رسانی کنید یا ویژگی‌هایی مانند %s به درستی کار نخواهند کرد.",
-    "log-level out of allowed range" : "log-level خارج از محدوده مجاز است",
     "Saved" : "ذخیره شد",
+    "log-level out of allowed range" : "log-level خارج از محدوده مجاز است",
     "test email settings" : "تنظیمات ایمیل آزمایشی",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "خطایی در ارسال ایمیل رخ داده است. لطفا تنظیمات خود را اصلاح کنید. (خطا: %s)",
     "Email sent" : "ایمیل ارسال شد",
@@ -19,7 +17,6 @@ OC.L10N.register(
     "Share" : "اشتراک گذاری",
     "APCu" : "APCu",
     "Redis" : "Redis",
-    "__language_name__" : "__language_name__",
     "Language changed" : "زبان تغییر کرد",
     "Invalid request" : "درخواست نامعتبر",
     "Couldn't remove app." : "امکان حذف برنامه وجود ندارد.",
@@ -62,6 +59,9 @@ OC.L10N.register(
     "Error while deleting the token" : "خطا در حذف نشانه",
     "CORS" : "CORS",
     "Sending..." : "در حال ارسال...",
+    "Email has been changed successfully." : "ایمیل با موفقیت تغییر کرد.",
+    "Unable to change mail address" : "تغییر آدرس ایمیل امکان‌پذیر نیست",
+    "Your full name has been changed." : "نام کامل شما تغییر یافت",
     "An error occurred: {message}" : "یک خطا رخ‌داده است: {message}",
     "Select a profile picture" : "انتخاب تصویر پروفایل",
     "Very weak password" : "رمز عبور بسیار ضعیف",
@@ -75,6 +75,7 @@ OC.L10N.register(
     "Online documentation" : "مستندات آنلاین",
     "Forum" : "انجمن",
     "Commercial support" : "پشتیبانی تجاری",
+    "Language" : "زبان",
     "Developer documentation" : "مستندات توسعه‌دهندگان",
     "Documentation:" : "مستند سازی:",
     "Admin documentation" : "مستندات مدیر",
@@ -171,7 +172,6 @@ OC.L10N.register(
     "Current password" : "گذرواژه کنونی",
     "New password" : "گذرواژه جدید",
     "Change password" : "تغییر گذر واژه",
-    "Language" : "زبان",
     "Help translate" : "به ترجمه آن کمک کنید",
     "Name" : "نام",
     "Username" : "نام کاربری",
@@ -180,4 +180,4 @@ OC.L10N.register(
     "Admin" : "مدیر",
     "Error" : "خطا"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

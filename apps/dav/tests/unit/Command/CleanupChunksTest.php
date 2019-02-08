@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\Unit\Command;
-
 
 use OC\Files\View;
 use OCA\DAV\Command\CleanupChunks;

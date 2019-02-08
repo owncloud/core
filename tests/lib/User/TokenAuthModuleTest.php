@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Test\User;
-
 
 use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Token\IProvider;

@@ -52,7 +52,6 @@ class EncryptionTest extends TestCase {
 			->method('getUidAndFilename')
 			->willReturn(['user1', $internalPath]);
 
-
 		return $wrapper::wrap($source, $internalPath,
 			$fullPath, $header, $uid, $this->encryptionModule, $storage, $encStorage,
 			$util, $file, $mode, $size, $unencryptedSize, 8192, $wrapper);
@@ -84,7 +83,7 @@ class EncryptionTest extends TestCase {
 		$fileMock = $this->getMockBuilder('\OC\Encryption\File')
 			->disableOriginalConstructor()->getMock();
 		$fileMock->expects($this->once())->method('getAccessList')
-			->will($this->returnCallback(function($sharePath) use ($expectedSharePath) {
+			->will($this->returnCallback(function ($sharePath) use ($expectedSharePath) {
 				$this->assertSame($expectedSharePath, $sharePath);
 				return [];
 			}));
@@ -198,7 +197,7 @@ class EncryptionTest extends TestCase {
 		\fclose($stream);
 
 		\unlink($fileName);
-}
+	}
 
 	public function testSeek() {
 		$fileName = \tempnam("/tmp", "FOO");
@@ -221,7 +220,7 @@ class EncryptionTest extends TestCase {
 		\unlink($fileName);
 	}
 
-	function dataFilesProvider() {
+	public function dataFilesProvider() {
 		return [
 			['lorem-big.txt'],
 			['block-aligned.txt'],
@@ -233,7 +232,6 @@ class EncryptionTest extends TestCase {
 	 * @dataProvider dataFilesProvider
 	 */
 	public function testWriteReadBigFile($testFile) {
-
 		$expectedData = \file_get_contents(\OC::$SERVERROOT . '/tests/data/' . $testFile);
 		// write it
 		$fileName = \tempnam("/tmp", "FOO");
@@ -271,7 +269,6 @@ class EncryptionTest extends TestCase {
 	 * @dataProvider dataFilesProvider
 	 */
 	public function testWriteToNonSeekableStorage($testFile) {
-
 		$wrapper = $this->getMockBuilder('\OC\Files\Stream\Encryption')
 			->setMethods(['parentSeekStream'])->getMock();
 		$wrapper->expects($this->any())->method('parentSeekStream')->willReturn(false);
@@ -305,7 +302,6 @@ class EncryptionTest extends TestCase {
 		$this->assertEquals($expectedData, $data);
 
 		\unlink($fileName);
-
 	}
 
 	/**
@@ -322,7 +318,7 @@ class EncryptionTest extends TestCase {
 		$encryptionModule->expects($this->any())->method('begin')->willReturn([]);
 		$encryptionModule->expects($this->any())->method('end')->willReturn('');
 		$encryptionModule->expects($this->any())->method('isReadable')->willReturn(true);
-		$encryptionModule->expects($this->any())->method('encrypt')->willReturnCallback(function($data) {
+		$encryptionModule->expects($this->any())->method('encrypt')->willReturnCallback(function ($data) {
 			// simulate different block size by adding some padding to the data
 			if (isset($data[6125])) {
 				return \str_pad($data, 8192, 'X');
@@ -330,7 +326,7 @@ class EncryptionTest extends TestCase {
 			// last block
 			return $data;
 		});
-		$encryptionModule->expects($this->any())->method('decrypt')->willReturnCallback(function($data) {
+		$encryptionModule->expects($this->any())->method('decrypt')->willReturnCallback(function ($data) {
 			if (isset($data[8191])) {
 				return \substr($data, 0, 6126);
 			}

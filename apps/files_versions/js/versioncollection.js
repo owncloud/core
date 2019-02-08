@@ -8,6 +8,8 @@
  *
  */
 
+/* global moment */
+
 (function() {
 	/**
 	 * @memberof OCA.Versions
@@ -46,6 +48,7 @@
 					fullPath: fullPath,
 					timestamp: moment(new Date(version['{DAV:}getlastmodified'])).format('X'),
 					size: version['{DAV:}getcontentlength'],
+					mimetype: version['{DAV:}getcontenttype'],
 					fileId: fileId
 				};
 			});

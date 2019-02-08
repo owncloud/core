@@ -76,7 +76,7 @@ describe('OC.Upload tests', function() {
 				originalFiles: files,
 				files: [file],
 				jqXHR: jqXHR,
-				response: sinon.stub.returns(jqXHR),
+				response: sinon.stub().returns(jqXHR),
 				submit: sinon.stub(),
 				abort: sinon.stub()
 			};
@@ -285,7 +285,7 @@ describe('OC.Upload tests', function() {
 		});
 	});
 	describe('Chunked upload', function() {
-		it('rewires data url when uploading chunks', function() {
+		it('rewires data url when uploading chunks', function () {
 			var result = addFiles(uploader, [testFile]);
 			var upload = uploader.getUpload(result[0]);
 			expect(result[0]).not.toEqual(null);
@@ -304,7 +304,7 @@ describe('OC.Upload tests', function() {
 			expect(result[0].retries).toEqual(0);
 		});
 
-		it('retries stalled chunk on failure', function() {
+		it('retries stalled chunk on failure', function () {
 			var clock = sinon.useFakeTimers();
 
 			uploader = new OC.Uploader($dummyUploader, {
@@ -364,6 +364,7 @@ describe('OC.Upload tests', function() {
 			// uploaded bytes was set to the sum of all chunk sizes
 			expect(result[0].uploadedBytes).toEqual(300);
 			expect(result[0].data).toBeFalsy();
+			expect(upload.data.stalled).toEqual(false);
 
 			// header was cleared for overwriting
 			expect(result[0].headers['If-None-Match']).not.toBeDefined();
@@ -373,7 +374,7 @@ describe('OC.Upload tests', function() {
 			clock.restore();
 		});
 
-		it('stalled progress will set stalled flag after a while', function() {
+		it('stalled progress will set stalled flag after a while', function () {
 			var clock = sinon.useFakeTimers();
 
 			uploader = new OC.Uploader($dummyUploader, {
@@ -389,14 +390,20 @@ describe('OC.Upload tests', function() {
 
 			expect(upload.data.stalled).toBeFalsy();
 
-			$dummyUploader.trigger('fileuploadprogressall', {loaded: 300, total: 5000});
+			$dummyUploader.trigger('fileuploadprogressall', {
+				loaded: 300,
+				total: 5000
+			});
 			clock.tick(5000);
 
 			expect(upload.data.stalled).toBeFalsy();
 
 			result[0].uploadedBytes = 400; // some progress, no stall
 
-			$dummyUploader.trigger('fileuploadprogressall', {loaded: 400, total: 5000});
+			$dummyUploader.trigger('fileuploadprogressall', {
+				loaded: 400,
+				total: 5000
+			});
 			clock.tick(10000);
 
 			expect(upload.data.stalled).toBeFalsy();
@@ -404,7 +411,10 @@ describe('OC.Upload tests', function() {
 			expect(result[0].abort.notCalled).toEqual(true);
 
 			// no progress, stalled
-			$dummyUploader.trigger('fileuploadprogressall', {loaded: 400, total: 5000});
+			$dummyUploader.trigger('fileuploadprogressall', {
+				loaded: 400,
+				total: 5000
+			});
 
 			clock.tick(10000);
 
@@ -413,6 +423,44 @@ describe('OC.Upload tests', function() {
 			expect(result[0].abort.calledOnce).toEqual(true);
 
 			clock.restore();
+		});
+	});
+
+	describe('submitting uploads', function() {
+		describe('headers', function() {
+			function testHeaders(fileData) {
+				var uploadData = addFiles(uploader, [
+					fileData
+				]);
+
+				return uploadData[0].headers;
+			}
+			it('sets request token', function() {
+				var oldToken = OC.requestToken;
+				OC.requestToken = 'abcd';
+				var headers = testHeaders({
+					name: 'headerstest.txt'
+				});
+
+				expect(headers['requesttoken']).toEqual('abcd');
+				OC.requestToken = oldToken;
+			});
+			it('sets the mtime header when lastModifiedDate is set', function() {
+				var headers = testHeaders({
+					name: 'mtimetest.txt',
+					lastModifiedDate: new Date(Date.UTC(2018, 7, 26, 14, 55, 22, 500))
+				});
+
+				expect(headers['X-OC-Mtime']).toEqual('1535295322.5');
+			});
+			it('sets the mtime header when lastModified is set', function() {
+				var headers = testHeaders({
+					name: 'mtimetest.txt',
+					lastModified: 1535295322500
+				});
+
+				expect(headers['X-OC-Mtime']).toEqual('1535295322.5');
+			});
 		});
 	});
 });

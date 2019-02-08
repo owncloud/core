@@ -21,7 +21,6 @@
 
 namespace OC\Files\Storage\Wrapper;
 
-
 /**
  * While PermissionMask can mask a whole storage this  can
  * mask a certain directory inside a storage

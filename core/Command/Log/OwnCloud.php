@@ -119,5 +119,4 @@ class OwnCloud extends Command {
 			throw new \InvalidArgumentException('Log rotation file size must be non-negative');
 		}
 	}
-
 }

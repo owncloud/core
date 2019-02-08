@@ -25,7 +25,6 @@
 namespace OC\OCS;
 
 class Config {
-
 	public static function apiConfig() {
 		$xml['version'] = '1.7';
 		$xml['website'] = 'ownCloud';
@@ -34,5 +33,4 @@ class Config {
 		$xml['ssl'] = 'false';
 		return new Result($xml);
 	}
-
 }

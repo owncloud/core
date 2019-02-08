@@ -22,7 +22,6 @@
 
 namespace OC\Files\External;
 
-use \OCP\Files\Storage;
 use \OC\Files\Storage\Wrapper\PermissionsMask;
 use \OCP\Constants;
 
@@ -39,6 +38,4 @@ class SessionStorageWrapper extends PermissionsMask {
 		$arguments['mask'] = Constants::PERMISSION_ALL & ~Constants::PERMISSION_SHARE;
 		parent::__construct($arguments);
 	}
-
 }
-

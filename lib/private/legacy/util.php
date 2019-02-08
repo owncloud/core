@@ -56,9 +56,9 @@
  *
  */
 
+use OCP\Authentication\Exceptions\AccountCheckException;
 use OCP\Files\NoReadAccessException;
-use OCP\IConfig;
-use OCP\IGroupManager;
+use OCP\Files\Storage\IStorage;
 use OCP\IUser;
 
 class OC_Util {
@@ -138,7 +138,7 @@ class OC_Util {
 		// If we are not forced to load a specific user we load the one that is logged in
 		if ($user === null) {
 			$user = '';
-		} else if ($user == "" && OC_User::isLoggedIn()) {
+		} elseif ($user == "" && OC_User::isLoggedIn()) {
 			$user = OC_User::getUser();
 		}
 
@@ -155,7 +155,7 @@ class OC_Util {
 		\OC\Files\Filesystem::initMountManager();
 
 		\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper(false);
-		\OC\Files\Filesystem::addStorageWrapper('mount_options', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+		\OC\Files\Filesystem::addStorageWrapper('mount_options', function ($mountPoint, IStorage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if ($storage->instanceOfStorage('\OC\Files\Storage\Common')) {
 				/** @var \OC\Files\Storage\Common $storage */
 				$storage->setMountOptions($mount->getOptions());
@@ -163,7 +163,7 @@ class OC_Util {
 			return $storage;
 		});
 
-		\OC\Files\Filesystem::addStorageWrapper('enable_sharing', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+		\OC\Files\Filesystem::addStorageWrapper('enable_sharing', function ($mountPoint, IStorage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if (!$mount->getOption('enable_sharing', true)) {
 				return new \OC\Files\Storage\Wrapper\PermissionsMask([
 					'storage' => $storage,
@@ -182,17 +182,15 @@ class OC_Util {
 		});
 
 		// install storage checksum wrapper
-		\OC\Files\Filesystem::addStorageWrapper('oc_checksum', function ($mountPoint, \OCP\Files\Storage\IStorage $storage) {
+		\OC\Files\Filesystem::addStorageWrapper('oc_checksum', function ($mountPoint, IStorage $storage) {
 			if (!$storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
 				return new \OC\Files\Storage\Wrapper\Checksum(['storage' => $storage]);
 			}
 
 			return $storage;
-
 		}, 1);
 
-
-		\OC\Files\Filesystem::addStorageWrapper('oc_encoding', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+		\OC\Files\Filesystem::addStorageWrapper('oc_encoding', function ($mountPoint, IStorage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if ($mount->getOption('encoding_compatibility', false) && !$storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage') && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Encoding(['storage' => $storage]);
 			}
@@ -245,7 +243,6 @@ class OC_Util {
 				$readOnlyGroups = [];
 			}
 
-
 			$userGroups = \array_keys(
 				\OC::$server->getGroupManager()->getUserIdGroups($user)
 			);
@@ -255,7 +252,6 @@ class OC_Util {
 				$userGroups
 			);
 		}
-
 
 		if ($isGuest === '1' || !empty($readOnlyGroupMemberships)) {
 			\OC\Files\Filesystem::addStorageWrapper(
@@ -291,7 +287,6 @@ class OC_Util {
 
 		//if we aren't logged in, there is no use to set up the filesystem
 		if ($user != "") {
-
 			$userDir = '/' . $user . '/files';
 
 			//jail the user into his "home" directory
@@ -319,44 +314,15 @@ class OC_Util {
 	}
 
 	/**
-	 * check if sharing is disabled for the current user
-	 * @param IConfig $config
-	 * @param IGroupManager $groupManager
-	 * @param IUser|null $user
-	 * @return bool
-	 */
-	public static function isSharingDisabledForUser(IConfig $config, IGroupManager $groupManager, $user) {
-		if ($config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
-			$groupsList = $config->getAppValue('core', 'shareapi_exclude_groups_list', '');
-			$excludedGroups = \json_decode($groupsList);
-			if (\is_null($excludedGroups)) {
-				$excludedGroups = \explode(',', $groupsList);
-				$newValue = \json_encode($excludedGroups);
-				$config->setAppValue('core', 'shareapi_exclude_groups_list', $newValue);
-			}
-			$usersGroups = $groupManager->getUserGroupIds($user);
-			if (!empty($usersGroups)) {
-				$remainingGroups = \array_diff($usersGroups, $excludedGroups);
-				// if the user is only in groups which are disabled for sharing then
-				// sharing is also disabled for the user
-				if (empty($remainingGroups)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * check if share API enforces a default expire date
 	 *
 	 * @return boolean
 	 */
 	public static function isDefaultExpireDateEnforced() {
-		$isDefaultExpireDateEnabled = \OCP\Config::getAppValue('core', 'shareapi_default_expire_date', 'no');
+		$isDefaultExpireDateEnabled = \OC::$server->getConfig()->getAppValue('core', 'shareapi_default_expire_date', 'no');
 		$enforceDefaultExpireDate = false;
 		if ($isDefaultExpireDateEnabled === 'yes') {
-			$value = \OCP\Config::getAppValue('core', 'shareapi_enforce_expire_date', 'no');
+			$value = \OC::$server->getConfig()->getAppValue('core', 'shareapi_enforce_expire_date', 'no');
 			$enforceDefaultExpireDate = ($value === 'yes') ? true : false;
 		}
 
@@ -375,7 +341,7 @@ class OC_Util {
 		} else {
 			$user = \OC::$server->getUserManager()->get($userId);
 		}
-		if (\is_null($user)) {
+		if ($user === null) {
 			return \OCP\Files\FileInfo::SPACE_UNLIMITED;
 		}
 		$userQuota = $user->getQuota();
@@ -396,10 +362,9 @@ class OC_Util {
 	 * @throws \OC\HintException
 	 */
 	public static function copySkeleton($userId, \OCP\Files\Folder $userDirectory) {
+		$skeletonDirectory = \OC::$server->getConfig()->getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
 
-		$skeletonDirectory = \OCP\Config::getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
-
-		if (!\is_dir($skeletonDirectory))  {
+		if (!\is_dir($skeletonDirectory)) {
 			throw new \OC\HintException('The skeleton folder '.$skeletonDirectory.' is not accessible');
 		}
 
@@ -425,21 +390,30 @@ class OC_Util {
 	 */
 	public static function copyr($source, \OCP\Files\Folder $target) {
 		$dir = @\opendir($source);
-		if (false === $dir) {
+		if ($dir === false) {
 			throw new NoReadAccessException('No read permission for folder ' . $source);
 		}
-		while (false !== ($file = \readdir($dir))) {
+		while (($file = \readdir($dir)) !== false) {
 			if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
 				if (\is_dir($source . '/' . $file)) {
 					$child = $target->newFolder($file);
 					self::copyr($source . '/' . $file, $child);
 				} else {
-					$sourceFileHandle = @\fopen($source . '/' . $file,'r');
-					if (false === $sourceFileHandle) {
+					$sourceFileHandle = @\fopen($source . '/' . $file, 'r');
+					if ($sourceFileHandle === false) {
 						throw new NoReadAccessException('No read permission for file ' . $file);
 					}
 					$child = $target->newFile($file);
-					\stream_copy_to_stream($sourceFileHandle, $child->fopen('w'));
+					$targetFileHandle = $child->fopen('w');
+					\stream_copy_to_stream($sourceFileHandle, $targetFileHandle);
+					\fclose($targetFileHandle);
+					\fclose($sourceFileHandle);
+
+					// update cache sizes
+					$cache = $target->getStorage()->getCache();
+					if ($cache instanceof \OC\Files\Cache\Cache) {
+						$cache->correctFolderSize($child->getInternalPath());
+					}
 				}
 			}
 		}
@@ -483,10 +457,10 @@ class OC_Util {
 	 */
 	public static function getEditionString() {
 		if (OC_App::isEnabled('enterprise_key')) {
- 			return OC_Util::EDITION_ENTERPRISE;
- 		} else {
-			return OC_Util::EDITION_COMMUNITY;		}
-
+			return OC_Util::EDITION_ENTERPRISE;
+		} else {
+			return OC_Util::EDITION_COMMUNITY;
+		}
 	}
 
 	/**
@@ -540,7 +514,7 @@ class OC_Util {
 	 * @return string the path
 	 */
 	private static function generatePath($application, $directory, $file) {
-		if (\is_null($file)) {
+		if ($file === null) {
 			$file = $application;
 			$application = "";
 		}
@@ -564,7 +538,7 @@ class OC_Util {
 
 		// core js files need separate handling
 		if ($application !== 'core' && $file !== null) {
-			self::addTranslations ( $application );
+			self::addTranslations($application);
 		}
 		self::addExternalResource($application, $prepend, $path, "script");
 	}
@@ -590,7 +564,7 @@ class OC_Util {
 	 * @param bool $prepend prepend the Script to the beginning of the list
 	 */
 	public static function addTranslations($application, $languageCode = null, $prepend = false) {
-		if (\is_null($languageCode)) {
+		if ($languageCode === null) {
 			$languageCode = \OC::$server->getL10NFactory()->findLanguage($application);
 		}
 		if (!empty($application)) {
@@ -637,11 +611,10 @@ class OC_Util {
 	 * @return void
 	 */
 	private static function addExternalResource($application, $prepend, $path, $type = "script") {
-
 		if ($type === "style") {
 			if (!\in_array($path, self::$styles)) {
 				if ($prepend === true) {
-					\array_unshift ( self::$styles, $path );
+					\array_unshift(self::$styles, $path);
 				} else {
 					self::$styles[] = $path;
 				}
@@ -649,7 +622,7 @@ class OC_Util {
 		} elseif ($type === "script") {
 			if (!\in_array($path, self::$scripts)) {
 				if ($prepend === true) {
-					\array_unshift ( self::$scripts, $path );
+					\array_unshift(self::$scripts, $path);
 				} else {
 					self::$scripts [] = $path;
 				}
@@ -733,7 +706,7 @@ class OC_Util {
 		}
 
 		// Check if config folder is writable.
-		if(!\OC::$server->getConfig()->isSystemConfigReadOnly()) {
+		if (!\OC::$server->getConfig()->isSystemConfigReadOnly()) {
 			if (!\is_writable(OC::$configDir) or !\is_readable(OC::$configDir)) {
 				$errors[] = [
 					'error' => $l->t('Cannot write into "config" directory'),
@@ -758,7 +731,7 @@ class OC_Util {
 							[$urlGenerator->linkToDocs('admin-dir_permissions')])
 					];
 				}
-			} else if (!\is_writable($CONFIG_DATADIRECTORY) or !\is_readable($CONFIG_DATADIRECTORY)) {
+			} elseif (!\is_writable($CONFIG_DATADIRECTORY) or !\is_readable($CONFIG_DATADIRECTORY)) {
 				//common hint for all file permissions error messages
 				$permissionsHint = $l->t('Permissions can usually be fixed by '
 					. '%sgiving the webserver write access to the root directory%s.',
@@ -862,15 +835,15 @@ class OC_Util {
 			}
 		}
 
-		foreach($missingDependencies as $missingDependency) {
+		foreach ($missingDependencies as $missingDependency) {
 			$errors[] = [
 				'error' => $l->t('PHP module %s not installed.', [$missingDependency]),
 				'hint' => $moduleHint
 			];
 			$webServerRestart = true;
 		}
-		foreach($invalidIniSettings as $setting) {
-			if(\is_bool($setting[1])) {
+		foreach ($invalidIniSettings as $setting) {
+			if (\is_bool($setting[1])) {
 				$setting[1] = ($setting[1]) ? 'on' : 'off';
 			}
 			$errors[] = [
@@ -888,7 +861,7 @@ class OC_Util {
 		 * TODO: Should probably be implemented in the above generic dependency
 		 *       check somehow in the long-term.
 		 */
-		if($iniWrapper->getBool('mbstring.func_overload') !== null &&
+		if ($iniWrapper->getBool('mbstring.func_overload') !== null &&
 			$iniWrapper->getBool('mbstring.func_overload') === true) {
 			$errors[] = [
 				'error' => $l->t('mbstring.func_overload is set to "%s" instead of the expected value "0"', [$iniWrapper->getString('mbstring.func_overload')]),
@@ -896,7 +869,7 @@ class OC_Util {
 			];
 		}
 
-		if(\function_exists('xml_parser_create') &&
+		if (\function_exists('xml_parser_create') &&
 			\version_compare('2.7.0', LIBXML_DOTTED_VERSION) === 1) {
 			$errors[] = [
 				'error' => $l->t('libxml2 2.7.0 is at least required. Currently %s is installed.', [LIBXML_DOTTED_VERSION]),
@@ -1018,7 +991,8 @@ class OC_Util {
 	 */
 	public static function checkLoggedIn() {
 		// Check if we are a user
-		if (!OC_User::isLoggedIn()) {
+		$userSession = \OC::$server->getUserSession();
+		if (!$userSession->isLoggedIn()) {
 			\header('Location: ' . \OC::$server->getURLGenerator()->linkToRoute(
 						'core.login.showLoginForm',
 						[
@@ -1030,6 +1004,13 @@ class OC_Util {
 		}
 		// Redirect to index page if 2FA challenge was not solved yet
 		if (\OC::$server->getTwoFactorAuthManager()->needsSecondFactor()) {
+			\header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
+			exit();
+		}
+		// Redirect to index page if any IAuthModule check fails
+		try {
+			\OC::$server->getAccountModuleManager()->check($userSession->getUser());
+		} catch (AccountCheckException $ex) {
 			\header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
 			exit();
 		}
@@ -1056,7 +1037,6 @@ class OC_Util {
 	 * @return bool
 	 */
 	public static function rememberLoginAllowed() {
-
 		$apps = OC_App::getEnabledApps();
 
 		foreach ($apps as $app) {
@@ -1064,7 +1044,6 @@ class OC_Util {
 			if (isset($appInfo['rememberlogin']) && $appInfo['rememberlogin'] === 'false') {
 				return false;
 			}
-
 		}
 		return true;
 	}
@@ -1078,7 +1057,7 @@ class OC_Util {
 		OC_Util::checkLoggedIn();
 		$hasUserManagementPrivileges = false;
 		$userObject = \OC::$server->getUserSession()->getUser();
-		if($userObject !== null) {
+		if ($userObject !== null) {
 			//Admin and SubAdmins are allowed to access user management
 			$hasUserManagementPrivileges = \OC::$server->getGroupManager()->isAdmin($userObject->getUID())
 				|| \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
@@ -1109,7 +1088,7 @@ class OC_Util {
 				$location = $urlGenerator->getAbsoluteURL($defaultPage);
 			} else {
 				$appId = 'files';
-				$defaultApps = \explode(',', \OCP\Config::getSystemValue('defaultapp', 'files'));
+				$defaultApps = \explode(',', \OC::$server->getConfig()->getSystemValue('defaultapp', 'files'));
 				// find the first app that is enabled for the current user
 				foreach ($defaultApps as $defaultApp) {
 					$defaultApp = OC_App::cleanAppId(\strip_tags($defaultApp));
@@ -1119,7 +1098,7 @@ class OC_Util {
 					}
 				}
 
-				if(\getenv('front_controller_active') === 'true') {
+				if (\getenv('front_controller_active') === 'true') {
 					$location = $urlGenerator->getAbsoluteURL('/apps/' . $appId . '/');
 				} else {
 					$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . '/');
@@ -1150,7 +1129,7 @@ class OC_Util {
 	 */
 	public static function getInstanceId() {
 		$id = \OC::$server->getSystemConfig()->getValue('instanceid', null);
-		if (\is_null($id)) {
+		if ($id === null) {
 			// We need to guarantee at least one letter in instanceid so it can be used as the session_name
 			$id = 'oc' . \OC::$server->getSecureRandom()->generate(10, \OCP\Security\ISecureRandom::CHAR_LOWER.\OCP\Security\ISecureRandom::CHAR_DIGITS);
 			\OC::$server->getSystemConfig()->setValue('instanceid', $id);
@@ -1169,7 +1148,7 @@ class OC_Util {
 	 */
 	public static function sanitizeHTML($value) {
 		if (\is_array($value)) {
-			$value = \array_map(function($value) {
+			$value = \array_map(function ($value) {
 				return self::sanitizeHTML($value);
 			}, $value);
 		} else {
@@ -1194,7 +1173,6 @@ class OC_Util {
 		$encoded = \str_replace('%2F', '/', $encoded);
 		return $encoded;
 	}
-
 
 	public function createHtaccessTestFile(\OCP\IConfig $config) {
 		// php dev server does not support htaccess
@@ -1234,7 +1212,7 @@ class OC_Util {
 	 */
 	public static function isSetLocaleWorking() {
 		\Patchwork\Utf8\Bootup::initLocale();
-		if ('' === \basename('§')) {
+		if (\basename('§') === '') {
 			return false;
 		}
 		return true;
@@ -1351,14 +1329,6 @@ class OC_Util {
 		if (\function_exists('accelerator_reset')) {
 			\accelerator_reset();
 		}
-		// XCache
-		if (\function_exists('xcache_clear_cache')) {
-			if (\OC::$server->getIniWrapper()->getBool('xcache.admin.enable_auth')) {
-				\OCP\Util::writeLog('core', 'XCache opcode cache will not be cleared because "xcache.admin.enable_auth" is enabled.', \OCP\Util::WARN);
-			} else {
-				@\xcache_clear_cache(XC_TYPE_PHP, 0);
-			}
-		}
 		// Opcache (PHP >= 5.5)
 		if (\function_exists('opcache_reset')) {
 			\opcache_reset();
@@ -1372,7 +1342,7 @@ class OC_Util {
 	 * @return bool|string
 	 */
 	public static function normalizeUnicode($value) {
-		if(Normalizer::isNormalized($value)) {
+		if (Normalizer::isNormalized($value)) {
 			return $value;
 		}
 
@@ -1454,7 +1424,7 @@ class OC_Util {
 			$versionDiff = \version_compare($currentVersion, $installedVersion);
 			if ($versionDiff > 0) {
 				return true;
-			} else if ($config->getSystemValue('debug', false) && $versionDiff < 0) {
+			} elseif ($config->getSystemValue('debug', false) && $versionDiff < 0) {
 				// downgrade with debug
 				$installedMajor = \explode('.', $installedVersion);
 				$installedMajor = $installedMajor[0] . '.' . $installedMajor[1];
@@ -1467,7 +1437,7 @@ class OC_Util {
 					// downgrade attempt, throw exception
 					throw new \OC\HintException('Downgrading is not supported and is likely to cause unpredictable issues (from ' . $installedVersion . ' to ' . $currentVersion . ')');
 				}
-			} else if ($versionDiff < 0) {
+			} elseif ($versionDiff < 0) {
 				// downgrade attempt, throw exception
 				throw new \OC\HintException('Downgrading is not supported and is likely to cause unpredictable issues (from ' . $installedVersion . ' to ' . $currentVersion . ')');
 			}
@@ -1486,5 +1456,4 @@ class OC_Util {
 			return false;
 		}
 	}
-
 }

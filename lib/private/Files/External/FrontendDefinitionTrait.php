@@ -57,15 +57,6 @@ trait FrontendDefinitionTrait {
 	}
 
 	/**
-	 * @param FrontendDefinitionTrait $a
-	 * @param FrontendDefinitionTrait $b
-	 * @return int
-	 */
-	public static function lexicalCompare(FrontendDefinitionTrait $a, FrontendDefinitionTrait $b) {
-		return \strcmp($a->getText(), $b->getText());
-	}
-
-	/**
 	 * @return DefinitionParameter[]
 	 */
 	public function getParameters() {
@@ -146,7 +137,7 @@ trait FrontendDefinitionTrait {
 	public function validateStorageDefinition(IStorageConfig $storage) {
 		foreach ($this->getParameters() as $name => $parameter) {
 			$value = $storage->getBackendOption($name);
-			if (!\is_null($value) || !$parameter->isOptional()) {
+			if ($value !== null || !$parameter->isOptional()) {
 				if (!$parameter->validateValue($value)) {
 					return false;
 				}
@@ -159,5 +150,4 @@ trait FrontendDefinitionTrait {
 		}
 		return true;
 	}
-
 }

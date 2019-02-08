@@ -46,7 +46,7 @@ class HTTPHelperTest extends \Test\TestCase {
 	 * @dataProvider isHttpTestData
 	 */
 	public function testIsHTTP($url, $expected) {
-			$this->assertSame($expected, $this->httpHelperMock->isHTTPURL($url));
+		$this->assertSame($expected, $this->httpHelperMock->isHTTPURL($url));
 	}
 
 	public function testPostSuccess() {
@@ -76,7 +76,6 @@ class HTTPHelperTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getBody')
 			->will($this->returnValue('Body of the requested page'));
-
 
 		$response = $this->httpHelperMock->post('https://owncloud.org', ['Foo' => 'Bar']);
 		$expected = [
@@ -108,7 +107,6 @@ class HTTPHelperTest extends \Test\TestCase {
 			)
 			->will($this->throwException(new \Exception('Something failed')));
 
-
 		$response = $this->httpHelperMock->post('https://owncloud.org', ['Foo' => 'Bar']);
 		$expected = [
 			'success' => false,
@@ -116,5 +114,4 @@ class HTTPHelperTest extends \Test\TestCase {
 		];
 		$this->assertSame($expected, $response);
 	}
-
 }

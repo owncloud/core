@@ -6,4 +6,4 @@ OC.L10N.register(
     "A new version is available: %s" : "Je dostupná nová verzia: %s",
     "Update channel:" : "Aktualizačný kanál:"
 },
-"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");
+"nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");

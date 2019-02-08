@@ -191,7 +191,7 @@ class AppConfig implements IAppConfig {
 					->setParameter('configvalue', $value);
 			}
 
-			if (isset($this->cache[$app]) && isset($this->cache[$app][$key])) {
+			if (isset($this->cache[$app], $this->cache[$app][$key])) {
 				$afterArray['update'] = true;
 				$afterArray['oldvalue'] = $this->cache[$app][$key];
 			}
@@ -201,7 +201,7 @@ class AppConfig implements IAppConfig {
 			$this->cache[$app][$key] = $value;
 
 			return $changedRow;
-		},[
+		}, [
 			'before' => ['key' => $key, 'value' => $value, 'app' => $app],
 			'after' => ['key' => $key, 'value' => $value, 'app' => $app, 'update' => false, 'oldvalue' => null]
 		], 'appconfig', 'setvalue');
@@ -276,7 +276,7 @@ class AppConfig implements IAppConfig {
 			return $this->getAppValues($app);
 		} else {
 			$appIds = $this->getApps();
-			$values = \array_map(function($appId) use ($key) {
+			$values = \array_map(function ($appId) use ($key) {
 				return isset($this->cache[$appId][$key]) ? $this->cache[$appId][$key] : null;
 			}, $appIds);
 			$result = \array_combine($appIds, $values);

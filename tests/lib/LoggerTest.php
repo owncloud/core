@@ -12,14 +12,20 @@ use OC\Log;
 use OCP\IConfig;
 use OCP\IUserSession;
 use OCP\Util;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class LoggerTest extends TestCase {
 	/** @var \OCP\ILogger */
 	private $logger;
-	static private $logs = [];
+	private static $logs = [];
 
 	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
 	private $config;
+
+	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	private $eventDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -29,7 +35,8 @@ class LoggerTest extends TestCase {
 			'\OC\SystemConfig')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->logger = new Log('Test\LoggerTest', $this->config);
+		$this->eventDispatcher = new EventDispatcher();
+		$this->logger = new Log('Test\LoggerTest', $this->config, null, $this->eventDispatcher);
 	}
 
 	public function testInterpolation() {
@@ -107,6 +114,11 @@ class LoggerTest extends TestCase {
 		self::$logs[]= "$level $message";
 	}
 
+	public static function writeExtra($app, $message, $level, $logConditionFile, $extraFields) {
+		$encodedFields = \json_encode($extraFields);
+		self::$logs[]= "$level $message fields=$encodedFields";
+	}
+
 	public function userAndPasswordData() {
 		return [
 			['abc', 'def'],
@@ -129,7 +141,7 @@ class LoggerTest extends TestCase {
 		$this->logger->logException($e);
 
 		$logLines = $this->getLogs();
-		foreach($logLines as $logLine) {
+		foreach ($logLines as $logLine) {
 			$this->assertNotContains($user, $logLine);
 			$this->assertNotContains($password, $logLine);
 			$this->assertContains('login(*** sensitive parameters replaced ***)', $logLine);
@@ -144,7 +156,7 @@ class LoggerTest extends TestCase {
 		$this->logger->logException($e);
 		$logLines = $this->getLogs();
 
-		foreach($logLines as $logLine) {
+		foreach ($logLines as $logLine) {
 			$this->assertNotContains($user, $logLine);
 			$this->assertNotContains($password, $logLine);
 			$this->assertContains('checkPassword(*** sensitive parameters replaced ***)', $logLine);
@@ -159,7 +171,7 @@ class LoggerTest extends TestCase {
 		$this->logger->logException($e);
 		$logLines = $this->getLogs();
 
-		foreach($logLines as $logLine) {
+		foreach ($logLines as $logLine) {
 			$this->assertNotContains($user, $logLine);
 			$this->assertNotContains($password, $logLine);
 			$this->assertContains('validateUserPass(*** sensitive parameters replaced ***)', $logLine);
@@ -174,7 +186,7 @@ class LoggerTest extends TestCase {
 		$this->logger->logException($e);
 		$logLines = $this->getLogs();
 
-		foreach($logLines as $logLine) {
+		foreach ($logLines as $logLine) {
 			$this->assertNotContains($user, $logLine);
 			$this->assertNotContains($password, $logLine);
 			$this->assertContains('tryLogin(*** sensitive parameters replaced ***)', $logLine);
@@ -190,11 +202,99 @@ class LoggerTest extends TestCase {
 		$this->logger->logException($e);
 		$logLines = $this->getLogs();
 
-		foreach($logLines as $logLine) {
+		foreach ($logLines as $logLine) {
 			$this->assertNotContains($user, $logLine);
 			$this->assertNotContains($password, $logLine);
 			$this->assertContains('loginWithPassword(*** sensitive parameters replaced ***)', $logLine);
 		}
 	}
 
+	public function testExtraFields() {
+		$extraFields = [
+			'one' => 'un',
+			'two' => 'deux',
+			'three' => 'trois',
+		];
+
+		// with fields calls "writeExtra"
+		$this->logger->info(
+			'extra fields test', [
+				'extraFields' => $extraFields
+			]
+		);
+
+		// without fields calls "write"
+		$this->logger->info('no fields');
+
+		$logLines = $this->getLogs();
+
+		$this->assertEquals('1 extra fields test fields={"one":"un","two":"deux","three":"trois"}', $logLines[0]);
+		$this->assertEquals('1 no fields', $logLines[1]);
+	}
+
+	public function testEvents() {
+		$this->config->expects($this->any())
+			->method('getValue')
+			->will(($this->returnValueMap([
+				['loglevel', Util::WARN, Util::WARN],
+			])));
+
+		$beforeWriteEvent = null;
+		$this->eventDispatcher->addListener(
+			'log.beforewrite',
+			function (GenericEvent $event) use (&$beforeWriteEvent) {
+				$beforeWriteEvent = $event;
+			}
+		);
+		$afterWriteEvent = null;
+		$this->eventDispatcher->addListener(
+			'log.afterwrite',
+			function (GenericEvent $event) use (&$afterWriteEvent) {
+				$afterWriteEvent = $event;
+			}
+		);
+
+		$this->logger->debug(
+			'some {test} message', [
+				'app' => 'testapp',
+				'test' => 'replaced',
+				'extraFields' => ['extra' => 'one'],
+			]
+		);
+
+		$this->assertNotNull($beforeWriteEvent, 'before event was triggered');
+		$this->assertNotNull($afterWriteEvent, 'before event was triggered');
+
+		$expectedArgs = [
+			'app' => 'testapp',
+			'loglevel' => Util::DEBUG,
+			'message' => 'some {test} message',
+			'formattedMessage' => 'some replaced message',
+			'context' => [
+				'app' => 'testapp',
+				'test' => 'replaced',
+			],
+			'extraFields' => ['extra' => 'one'],
+			'exception' => null
+		];
+
+		$this->assertEquals($expectedArgs, $beforeWriteEvent->getArguments(), 'before event arguments match');
+		$this->assertEquals($expectedArgs, $afterWriteEvent->getArguments(), 'after event arguments match');
+	}
+
+	public function testOriginalExceptionIsProvidedAsExtraField() {
+		$e = new \Exception('test');
+
+		$beforeWriteEvent = null;
+		$this->eventDispatcher->addListener(
+			'log.beforewrite',
+			function (GenericEvent $event) use (&$beforeWriteEvent) {
+				$beforeWriteEvent = $event;
+			}
+		);
+		$this->logger->logException($e);
+		$eventArguments = $beforeWriteEvent->getArguments();
+		$this->assertArrayHasKey('exception', $eventArguments, 'exception field is set');
+		$this->assertSame($e, $eventArguments['exception'], 'the original exception is passed');
+	}
 }

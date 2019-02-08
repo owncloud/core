@@ -41,6 +41,7 @@ use OCP\Files\Cache\ICacheEntry;
 use OCP\Files\NotFoundException;
 use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
+use OCP\Lock\Persistent\ILock;
 
 /**
  * Convert target path to source path and pass the function call to the correct storage provider
@@ -323,7 +324,7 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 
 	public function getCache($path = '', $storage = null) {
 		$this->init();
-		if (\is_null($this->sourceStorage) || $this->sourceStorage instanceof FailedStorage) {
+		if ($this->sourceStorage === null || $this->sourceStorage instanceof FailedStorage) {
 			return new FailedCache(false);
 		}
 		if (!$storage) {
@@ -374,7 +375,7 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function acquireLock($path, $type, ILockingProvider $provider) {
-		/** @var \OCP\Files\Storage $targetStorage */
+		/** @var \OCP\Files\Storage\IStorage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
 		$targetStorage->acquireLock($targetInternalPath, $type, $provider);
 		// lock the parent folders of the owner when locking the share as recipient
@@ -390,7 +391,7 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 	 * @param \OCP\Lock\ILockingProvider $provider
 	 */
 	public function releaseLock($path, $type, ILockingProvider $provider) {
-		/** @var \OCP\Files\Storage $targetStorage */
+		/** @var \OCP\Files\Storage\IStorage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
 		$targetStorage->releaseLock($targetInternalPath, $type, $provider);
 		// unlock the parent folders of the owner when unlocking the share as recipient
@@ -406,7 +407,7 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 	 * @param \OCP\Lock\ILockingProvider $provider
 	 */
 	public function changeLock($path, $type, ILockingProvider $provider) {
-		/** @var \OCP\Files\Storage $targetStorage */
+		/** @var \OCP\Files\Storage\IStorage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
 		$targetStorage->changeLock($targetInternalPath, $type, $provider);
 	}
@@ -455,5 +456,24 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 		$this->init();
 
 		return $this->sourceStorage;
+	}
+
+	public function getLocks(string $internalPath, bool $returnChildLocks = false): array {
+		$locks = parent::getLocks($this->getSourcePath($internalPath), $returnChildLocks);
+		return \array_map(function (ILock $lock) {
+			// TODO: if path starts with rootpath
+			$mountedPath = \substr($lock->getPath(), \strlen($this->rootPath)+1);
+			$lock->setDavUserId($this->user);
+			$lock->setAbsoluteDavPath($this->getMountPoint() . '/' .$mountedPath);
+			return $lock;
+		}, $locks);
+	}
+
+	public function lockNodePersistent(string $internalPath, array $lockInfo) : ILock {
+		return parent::lockNodePersistent($this->getSourcePath($internalPath), $lockInfo);
+	}
+
+	public function unlockNodePersistent(string $internalPath, array $lockInfo) {
+		parent::unlockNodePersistent($this->getSourcePath($internalPath), $lockInfo);
 	}
 }

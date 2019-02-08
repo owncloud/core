@@ -33,6 +33,7 @@ use OCP\Migration\ISqlMigration;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
+use OCP\ILogger;
 
 class MigrationService {
 
@@ -46,32 +47,44 @@ class MigrationService {
 	private $connection;
 	/** @var string */
 	private $appName;
+	/** @var ILogger */
+	private $logger;
+	/** @var string  */
+	private $migrationsPath;
+	/** @var string  */
+	private $migrationsNamespace;
 
 	/**
 	 * MigrationService constructor.
 	 *
 	 * @param $appName
 	 * @param IDBConnection $connection
-	 * @param AppLocator $appLocator
 	 * @param IOutput|null $output
-	 * @throws \Exception
+	 * @param AppLocator $appLocator
+	 * @param ILogger|null $logger
+	 * @throws \OC\NeedsUpdateException
 	 */
-	function __construct($appName,
-						 IDBConnection $connection,
-						 IOutput $output = null,
-						 AppLocator $appLocator = null) {
+	public function __construct($appName,
+						IDBConnection $connection,
+						IOutput $output = null,
+						AppLocator $appLocator = null,
+						ILogger $logger = null) {
 		$this->appName = $appName;
 		$this->connection = $connection;
 		$this->output = $output;
-		if (\is_null($this->output)) {
+		if ($this->output === null) {
 			$this->output = new SimpleOutput(\OC::$server->getLogger(), $appName);
+		}
+		$this->logger = $logger;
+		if ($this->logger === null) {
+			$this->logger = \OC::$server->getLogger();
 		}
 
 		if ($appName === 'core') {
 			$this->migrationsPath = \OC::$SERVERROOT . '/core/Migrations';
 			$this->migrationsNamespace = 'OC\\Migrations';
 		} else {
-			if (\is_null($appLocator)) {
+			if ($appLocator === null) {
 				$appLocator = new AppLocator();
 			}
 			$appPath = $appLocator->getAppPath($appName);
@@ -82,7 +95,7 @@ class MigrationService {
 		if (!\is_dir($this->migrationsPath)) {
 			if (!\mkdir($this->migrationsPath)) {
 				throw new \Exception("Could not create migration folder \"{$this->migrationsPath}\"");
-			};
+			}
 		}
 
 		// load the app so that app code can be used during migrations
@@ -278,7 +291,7 @@ class MigrationService {
 	 * @return mixed|null|string
 	 */
 	public function getMigration($alias) {
-		switch($alias) {
+		switch ($alias) {
 			case 'current':
 				return $this->getCurrentVersion();
 			case 'next':
@@ -385,15 +398,17 @@ class MigrationService {
 	 * @param string $version
 	 */
 	public function executeStep($version) {
-
+		$this->logger->debug("Migrations: starting $version from app {$this->appName}", ['app' => 'core']);
 		$instance = $this->createInstance($version);
 		if ($instance instanceof ISimpleMigration) {
 			$instance->run($this->output);
 		}
 		if ($instance instanceof ISqlMigration) {
 			$sqls = $instance->sql($this->connection);
-			foreach ($sqls as $s) {
-				$this->connection->executeQuery($s);
+			if (\is_array($sqls)) {
+				foreach ($sqls as $s) {
+					$this->connection->executeQuery($s);
+				}
 			}
 		}
 		if ($instance instanceof ISchemaMigration) {
@@ -402,6 +417,7 @@ class MigrationService {
 			$this->connection->migrateToSchema($toSchema);
 		}
 		$this->markAsExecuted($version);
+		$this->logger->debug("Migrations: completed $version from app {$this->appName}", ['app' => 'core']);
 	}
 
 	private function ensureMigrationsAreLoaded() {

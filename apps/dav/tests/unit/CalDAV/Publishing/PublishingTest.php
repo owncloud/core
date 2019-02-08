@@ -73,11 +73,10 @@ class PluginTest extends TestCase {
 	}
 
 	public function testPublishing() {
-
 		$this->book->expects($this->once())->method('setPublishStatus')->with(true);
 
 		// setup request
-		$request = new Request();
+		$request = new Request('POST', '');
 		$request->addHeader('Content-Type', 'application/xml');
 		$request->setUrl('cal1');
 		$request->setBody('<o:publish-calendar xmlns:o="http://calendarserver.org/ns/"/>');
@@ -86,11 +85,10 @@ class PluginTest extends TestCase {
 	}
 
 	public function testUnPublishing() {
-
 		$this->book->expects($this->once())->method('setPublishStatus')->with(false);
 
 		// setup request
-		$request = new Request();
+		$request = new Request('POST', '');
 		$request->addHeader('Content-Type', 'application/xml');
 		$request->setUrl('cal1');
 		$request->setBody('<o:unpublish-calendar xmlns:o="http://calendarserver.org/ns/"/>');

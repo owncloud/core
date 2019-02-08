@@ -60,7 +60,7 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		]);
 	}
 
-	function storageDataProvider() {
+	public function storageDataProvider() {
 		return [
 			// all users
 			[
@@ -136,7 +136,6 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		$this->assertEquals($expected, $actual);
 	}
 
-
 	/**
 	 * @dataProvider storageDataProvider
 	 */
@@ -196,7 +195,7 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		$this->assertEquals(0, $newStorage->getStatus());
 	}
 
-	function hooksAddStorageDataProvider() {
+	public function hooksAddStorageDataProvider() {
 		return [
 			// applicable all
 			[
@@ -272,7 +271,7 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 					],
 				],
 			],
-			// mixed groups and users 
+			// mixed groups and users
 			[
 				['user1', 'user2'],
 				['group1', 'group2'],
@@ -325,7 +324,7 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		}
 	}
 
-	function hooksUpdateStorageDataProvider() {
+	public function hooksUpdateStorageDataProvider() {
 		return [
 			[
 				// nothing to multiple users and groups
@@ -450,7 +449,6 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		$updatedApplicableUsers,
 		$updatedApplicableGroups,
 		$expectedCalls) {
-
 		$storage = $this->makeTestStorageData();
 		$storage->setApplicableUsers($sourceApplicableUsers);
 		$storage->setApplicableGroups($sourceApplicableGroups);
@@ -558,7 +556,7 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		}
 	}
 
-	function hooksDeleteStorageDataProvider() {
+	public function hooksDeleteStorageDataProvider() {
 		return [
 			[
 				['user1', 'user2'],
@@ -609,7 +607,6 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		$sourceApplicableUsers,
 		$sourceApplicableGroups,
 		$expectedCalls) {
-
 		$storage = $this->makeTestStorageData();
 		$storage->setApplicableUsers($sourceApplicableUsers);
 		$storage->setApplicableGroups($sourceApplicableGroups);
@@ -632,5 +629,4 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 			);
 		}
 	}
-
 }

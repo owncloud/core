@@ -32,6 +32,7 @@ OC.L10N.register(
     "_%n file_::_%n files_" : ["%n ֆայլ","%n ֆայլ"],
     "{dirs} and {files}" : "{dirs} և {files}",
     "New" : "Նոր",
+    "Unknown user" : "Անհայտ օգտատեր",
     "File name cannot be empty." : "Ֆայլի անունը դատարկ լինել չի կարող",
     "_%n byte_::_%n bytes_" : ["%n բայտ","%n բայտ"],
     "Folder" : "Պանակ",

@@ -23,6 +23,7 @@ namespace OCA\DAV\Command;
 
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IDBConnection;
 use OCP\IGroupManager;
 use OCP\IUserManager;
@@ -47,7 +48,7 @@ class CreateCalendar extends Command {
 	 * @param IGroupManager $groupManager
 	 * @param IDBConnection $dbConnection
 	 */
-	function __construct(IUserManager $userManager, IGroupManager $groupManager, IDBConnection $dbConnection) {
+	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IDBConnection $dbConnection) {
 		parent::__construct();
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
@@ -75,11 +76,14 @@ class CreateCalendar extends Command {
 			$this->userManager,
 			$this->groupManager
 		);
+		$groupPrincipalBackend = new GroupPrincipalBackend(
+			$this->groupManager
+		);
 		$config = \OC::$server->getConfig();
 		$random = \OC::$server->getSecureRandom();
 
 		$name = $input->getArgument('name');
-		$caldav = new CalDavBackend($this->dbConnection, $principalBackend, $config, $random);
+		$caldav = new CalDavBackend($this->dbConnection, $principalBackend, $groupPrincipalBackend, $random);
 		$caldav->createCalendar("principals/users/$user", $name, []);
 	}
 }

@@ -84,21 +84,21 @@ class SystemTagsByIdCollection implements ICollection {
 	 * @param resource|string $data Initial payload
 	 * @throws Forbidden
 	 */
-	function createFile($name, $data = null) {
+	public function createFile($name, $data = null) {
 		throw new Forbidden('Cannot create tags by id');
 	}
 
 	/**
 	 * @param string $name
 	 */
-	function createDirectory($name) {
+	public function createDirectory($name) {
 		throw new Forbidden('Permission denied to create collections');
 	}
 
 	/**
 	 * @param string $name
 	 */
-	function getChild($name) {
+	public function getChild($name) {
 		try {
 			$tag = $this->tagManager->getTagsByIds([$name]);
 			$tag = \current($tag);
@@ -113,14 +113,14 @@ class SystemTagsByIdCollection implements ICollection {
 		}
 	}
 
-	function getChildren() {
+	public function getChildren() {
 		$visibilityFilter = true;
 		if ($this->isAdmin()) {
 			$visibilityFilter = null;
 		}
 
-		$tags = $this->tagManager->getAllTags($visibilityFilter);
-		return \array_map(function($tag) {
+		$tags = $this->tagManager->getAllTags($visibilityFilter, null);
+		return \array_map(function ($tag) {
 			return $this->makeNode($tag);
 		}, $tags);
 	}
@@ -128,7 +128,7 @@ class SystemTagsByIdCollection implements ICollection {
 	/**
 	 * @param string $name
 	 */
-	function childExists($name) {
+	public function childExists($name) {
 		try {
 			$tag = $this->tagManager->getTagsByIds([$name]);
 			$tag = \current($tag);
@@ -143,15 +143,15 @@ class SystemTagsByIdCollection implements ICollection {
 		}
 	}
 
-	function delete() {
+	public function delete() {
 		throw new Forbidden('Permission denied to delete this collection');
 	}
 
-	function getName() {
+	public function getName() {
 		return 'systemtags';
 	}
 
-	function setName($name) {
+	public function setName($name) {
 		throw new Forbidden('Permission denied to rename this collection');
 	}
 
@@ -160,7 +160,7 @@ class SystemTagsByIdCollection implements ICollection {
 	 *
 	 * @return int
 	 */
-	function getLastModified() {
+	public function getLastModified() {
 		return null;
 	}
 

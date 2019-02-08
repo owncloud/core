@@ -184,7 +184,7 @@ class UserMountCache implements IUserMountCache {
 		$mountInfos = [];
 		foreach ($rows as $row) {
 			$mountInfo = $this->dbRowToMountInfo($row);
-			if (!\is_null($mountInfo)) {
+			if ($mountInfo !== null) {
 				$mountInfos[] = $mountInfo;
 			}
 		}
@@ -291,7 +291,6 @@ class UserMountCache implements IUserMountCache {
 
 			return $internalMountPath === '' || \substr($internalPath, 0, \strlen($internalMountPath) + 1) === $internalMountPath . '/';
 		});
-
 	}
 
 	/**

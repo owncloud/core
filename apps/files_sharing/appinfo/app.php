@@ -29,16 +29,16 @@
 
 \OCA\Files_Sharing\Helper::registerHooks();
 
-\OCP\Share::registerBackend('file', 'OCA\Files_Sharing\ShareBackend\File');
-\OCP\Share::registerBackend('folder', 'OCA\Files_Sharing\ShareBackend\Folder', 'file');
-
 $application = new \OCA\Files_Sharing\AppInfo\Application();
 $application->registerMountProviders();
+$application->registerNotifier();
+$application->registerEvents();
 
+// TODO: move to "Hooks" class
 $eventDispatcher = \OC::$server->getEventDispatcher();
 $eventDispatcher->addListener(
 	'OCA\Files::loadAdditionalScripts',
-	function() {
+	function () {
 		\OCP\Util::addScript('files_sharing', 'share');
 		\OCP\Util::addScript('files_sharing', 'sharetabview');
 		if (\OC::$server->getConfig()->getAppValue('files_sharing', 'incoming_server2server_share_enabled', 'yes') === 'yes') {
@@ -50,8 +50,8 @@ $eventDispatcher->addListener(
 
 // \OCP\Util::addStyle('files_sharing', 'sharetabview');
 
-\OC::$server->getActivityManager()->registerExtension(function() {
-		return new \OCA\Files_Sharing\Activity(
+\OC::$server->getActivityManager()->registerExtension(function () {
+	return new \OCA\Files_Sharing\Activity(
 			\OC::$server->query('L10NFactory'),
 			\OC::$server->getURLGenerator(),
 			\OC::$server->getActivityManager()
@@ -60,7 +60,6 @@ $eventDispatcher->addListener(
 
 $config = \OC::$server->getConfig();
 if (\class_exists('OCA\Files\App') && $config->getAppValue('core', 'shareapi_enabled', 'yes') === 'yes') {
-
 	\OCA\Files\App::getNavigationManager()->add(function () {
 		$l = \OC::$server->getL10N('files_sharing');
 		return [
@@ -73,7 +72,6 @@ if (\class_exists('OCA\Files\App') && $config->getAppValue('core', 'shareapi_ena
 	});
 
 	if (\OCP\Util::isSharingDisabledForUser() === false) {
-
 		\OCA\Files\App::getNavigationManager()->add(function () {
 			$l = \OC::$server->getL10N('files_sharing');
 			return [

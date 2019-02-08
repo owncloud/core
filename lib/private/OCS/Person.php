@@ -25,12 +25,11 @@
 namespace OC\OCS;
 
 class Person {
-
 	public static function check() {
 		$login = isset($_POST['login']) ? $_POST['login'] : false;
 		$password = isset($_POST['password']) ? $_POST['password'] : false;
-		if($login && $password) {
-			if(\OC_User::checkPassword($login, $password)) {
+		if ($login && $password) {
+			if (\OC_User::checkPassword($login, $password)) {
 				$xml['person']['personid'] = $login;
 				return new Result($xml);
 			} else {
@@ -40,5 +39,4 @@ class Person {
 			return new Result(null, 101);
 		}
 	}
-
 }

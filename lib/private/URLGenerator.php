@@ -30,6 +30,8 @@
  */
 
 namespace OC;
+
+use OC\Helper\EnvironmentHelper;
 use OCP\Theme\ITheme;
 use OC_Defaults;
 use OCP\ICacheFactory;
@@ -50,18 +52,25 @@ class URLGenerator implements IURLGenerator {
 	private $router;
 	/** @var ITheme */
 	private $theme;
+	
+	/** @var EnvironmentHelper */
+	private $environmentHelper;
 
 	/**
 	 * @param IConfig $config
 	 * @param ICacheFactory $cacheFactory
 	 * @param IRouter $router
+	 * @param EnvironmentHelper $environmentHelper
 	 */
 	public function __construct(IConfig $config,
 								ICacheFactory $cacheFactory,
-								IRouter $router) {
+								IRouter $router,
+								EnvironmentHelper $environmentHelper
+	) {
 		$this->config = $config;
 		$this->cacheFactory = $cacheFactory;
 		$this->router = $router;
+		$this->environmentHelper = $environmentHelper;
 		$this->theme = \OC_Util::getTheme();
 	}
 
@@ -100,34 +109,34 @@ class URLGenerator implements IURLGenerator {
 	 *
 	 * Returns a url to the given app and file.
 	 */
-	public function linkTo( $app, $file, $args = []) {
+	public function linkTo($app, $file, $args = []) {
 		$frontControllerActive = (\getenv('front_controller_active') === 'true');
+		$webRoot = $this->environmentHelper->getWebRoot();
 
-		if( $app != '' ) {
+		if ($app != '') {
 			$app_path = \OC_App::getAppPath($app);
 			// Check if the app is in the app folder
 			if ($app_path && \file_exists($app_path . '/' . $file)) {
 				if (\substr($file, -3) == 'php') {
-
-					$urlLinkTo = \OC::$WEBROOT . '/index.php/apps/' . $app;
+					$urlLinkTo = $webRoot . '/index.php/apps/' . $app;
 					if ($frontControllerActive) {
-						$urlLinkTo = \OC::$WEBROOT . '/apps/' . $app;
+						$urlLinkTo = $webRoot . '/apps/' . $app;
 					}
 					$urlLinkTo .= ($file != 'index.php') ? '/' . $file : '';
 				} else {
 					$urlLinkTo = \OC_App::getAppWebPath($app) . '/' . $file;
 				}
 			} else {
-				$urlLinkTo = \OC::$WEBROOT . '/' . $app . '/' . $file;
+				$urlLinkTo = $webRoot . '/' . $app . '/' . $file;
 			}
 		} else {
-			if (\file_exists(\OC::$SERVERROOT . '/core/' . $file)) {
-				$urlLinkTo = \OC::$WEBROOT . '/core/' . $file;
+			if (\file_exists($this->environmentHelper->getServerRoot() . '/core/' . $file)) {
+				$urlLinkTo = $webRoot . '/core/' . $file;
 			} else {
 				if ($frontControllerActive && $file === 'index.php') {
-					$urlLinkTo = \OC::$WEBROOT . '/';
+					$urlLinkTo = $webRoot . '/';
 				} else {
-					$urlLinkTo = \OC::$WEBROOT . '/' . $file;
+					$urlLinkTo = $webRoot . '/' . $file;
 				}
 			}
 		}
@@ -151,17 +160,21 @@ class URLGenerator implements IURLGenerator {
 	public function imagePath($app, $image) {
 		$cache = $this->cacheFactory->create('imagePath');
 		$cacheKey = $this->theme->getName().'-'.$app.'-'.$image;
-		if($key = $cache->get($cacheKey)) {
+		if ($key = $cache->get($cacheKey)) {
 			return $key;
 		}
 
 		$path = $this->getImagePath($app, $image);
 
-		if($path !== '' && !\is_null($path)) {
+		if ($path !== '' && $path !== null) {
 			$cache->set($cacheKey, $path);
 			return $path;
 		} else {
-			throw new RuntimeException('image not found: image:' . $image . ' webroot:' . \OC::$WEBROOT . ' serverroot:' . \OC::$SERVERROOT);
+			throw new RuntimeException(
+				'image not found: image:' . $image
+				. ' webroot:' . $this->environmentHelper->getWebRoot()
+				. ' serverroot:' . $this->environmentHelper->getServerRoot()
+			);
 		}
 	}
 
@@ -171,12 +184,13 @@ class URLGenerator implements IURLGenerator {
 	 * @return string
 	 */
 	private function getImagePath($app, $imageName) {
+		$webRoot = $this->environmentHelper->getWebRoot();
 		if ($app !== '') {
 			$appWebPath = \OC_App::getAppWebPath($app);
 		} else {
-			$appWebPath = \OC::$WEBROOT;
+			$appWebPath = $webRoot;
 		}
-		$appPath = \substr($appWebPath, \strlen(\OC::$WEBROOT));
+		$appPath = \substr($appWebPath, \strlen($webRoot));
 
 		$directories = ["/core", ""];
 
@@ -185,18 +199,18 @@ class URLGenerator implements IURLGenerator {
 		}
 
 		$themeDirectory = $this->theme->getDirectory();
-		foreach($directories as $directory) {
+		foreach ($directories as $directory) {
 			$directory = $directory . "/img/";
 			$file = $directory . $imageName;
 
 			if ($themeDirectory !== ''
-				&& $imagePath = $this->getImagePathOrFallback( $this->theme->getBaseDirectory() . '/' . $themeDirectory . $file)
+				&& $imagePath = $this->getImagePathOrFallback($this->theme->getBaseDirectory() . '/' . $themeDirectory . $file)
 			) {
 				return $this->theme->getWebPath() . $file;
 			}
 
-			if ($imagePath = $this->getImagePathOrFallback(\OC::$SERVERROOT . $file)) {
-				return \OC::$WEBROOT . $file;
+			if ($imagePath = $this->getImagePathOrFallback($this->environmentHelper->getServerRoot() . $file)) {
+				return $webRoot . $file;
 			}
 		}
 	}
@@ -221,6 +235,7 @@ class URLGenerator implements IURLGenerator {
 	 * @return string the absolute version of the url
 	 */
 	public function getAbsoluteURL($url) {
+		$webRoot = $this->environmentHelper->getWebRoot();
 		$separator = $url[0] === '/' ? '' : '/';
 
 		if (\OC::$CLI && !\defined('PHPUNIT_RUN')) {
@@ -228,9 +243,9 @@ class URLGenerator implements IURLGenerator {
 		}
 
 		// The ownCloud web root can already be prepended.
-		$webRoot = \substr($url, 0, \strlen(\OC::$WEBROOT)) === \OC::$WEBROOT
+		$webRoot = \substr($url, 0, \strlen($webRoot)) === $webRoot
 			? ''
-			: \OC::$WEBROOT;
+			: $webRoot;
 
 		$request = \OC::$server->getRequest();
 		return $request->getServerProtocol() . '://' . $request->getServerHost() . $webRoot . $separator . $url;

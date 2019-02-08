@@ -28,7 +28,6 @@ use \OC\Files\Cache\Scanner;
 use \OC\Files\Storage\Storage;
 
 class NoopScanner extends Scanner {
-
 	public function __construct(Storage $storage) {
 		$this->storage = $storage;
 		//we don't need the storage, so do nothing here
@@ -44,6 +43,7 @@ class NoopScanner extends Scanner {
 	 * @return array an array of metadata of the scanned file
 	 */
 	public function scanFile($file, $reuseExisting = 0, $parentId = -1, $cacheData = null, $lock = true) {
+		$this->updateChecksums($file);
 		return [];
 	}
 
@@ -57,15 +57,15 @@ class NoopScanner extends Scanner {
 	 */
 	public function scan($path, $recursive = self::SCAN_RECURSIVE, $reuse = -1, $lock = true) {
 		// we only update the checksums - still returning no data
-		$meta = $this->storage->getMetaData($path);
-		if (isset($meta['checksum'])) {
-			$this->storage->getCache()->put(
-				$path,
-				['checksum' => $meta['checksum']]
-			);
-		}
-
+		$this->updateChecksums($path);
 		return [];
+	}
+
+	/**
+	 * walk over any folders that are not fully scanned yet and scan them
+	 */
+	public function backgroundScan() {
+		//noop
 	}
 
 	/**
@@ -82,9 +82,17 @@ class NoopScanner extends Scanner {
 	}
 
 	/**
-	 * walk over any folders that are not fully scanned yet and scan them
+	 * Update file checksums
+	 *
+	 * @param string $path
 	 */
-	public function backgroundScan() {
-		//noop
+	private function updateChecksums($path) {
+		$meta = $this->storage->getMetaData($path);
+		if (!empty($meta['checksum'])) {
+			$this->storage->getCache()->put(
+				$path,
+				['checksum' => $meta['checksum']]
+			);
+		}
 	}
 }

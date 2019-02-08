@@ -30,8 +30,7 @@ class Folder extends File {
 
 	/**
 	 * Type name; translated in templates
-	 * @var string 
+	 * @var string
 	 */
 	public $type = 'folder';
-	
 }

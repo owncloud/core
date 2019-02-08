@@ -57,11 +57,11 @@ abstract class Session extends \Test\TestCase {
 	}
 
 	public function testArrayInterface() {
-		$this->assertFalse(isset($this->instance['foo']));
+		$this->assertArrayNotHasKey('foo', $this->instance);
 		$this->instance['foo'] = 'bar';
-		$this->assertTrue(isset($this->instance['foo']));
+		$this->assertArrayHasKey('foo', $this->instance);
 		$this->assertEquals('bar', $this->instance['foo']);
 		unset($this->instance['foo']);
-		$this->assertFalse(isset($this->instance['foo']));
+		$this->assertArrayNotHasKey('foo', $this->instance);
 	}
 }

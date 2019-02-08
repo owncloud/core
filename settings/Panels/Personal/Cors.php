@@ -43,7 +43,6 @@ class Cors implements ISettings {
 		IUserSession $userSession,
 		IURLGenerator $urlGenerator,
 		IConfig $config) {
-
 		$this->config = $config;
 		$this->userSession = $userSession;
 		$this->urlGenerator = $urlGenerator;
@@ -67,9 +66,7 @@ class Cors implements ISettings {
 		return $t;
 	}
 
-
 	public function getPriority() {
 		return 20;
 	}
-
 }

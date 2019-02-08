@@ -25,7 +25,6 @@
 
 namespace OCA\Provisioning_API\Tests;
 
-
 use OCA\Provisioning_API\Apps;
 use OCP\API;
 use OCP\App\IAppManager;
@@ -95,7 +94,7 @@ class AppsTest extends TestCase {
 		$data = $result->getData();
 		$apps = \OC_App::listAllApps(false, true);
 		$list =  [];
-		foreach($apps as $app) {
+		foreach ($apps as $app) {
 			$list[] = $app['id'];
 		}
 		$disabled = \array_diff($list, \OC_App::getEnabledApps());

@@ -1,8 +1,7 @@
 { "translations": {
-    "Wrong password" : "Nesprávne heslo",
     "Couldn't send reset email. Please contact your administrator." : "Nemožno poslať email pre obnovu. Kontaktujte prosím vášho administrátora.",
-    "log-level out of allowed range" : "úroveň logovania z povoleného rozpätia",
     "Saved" : "Uložené",
+    "log-level out of allowed range" : "úroveň logovania z povoleného rozpätia",
     "test email settings" : "nastavenia testovacieho emailu",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Vyskytol sa problém pri odosielaní emailu. Prosím, znovu skontrolujte svoje nastavenia. (Chyba: %s)",
     "Email sent" : "Email odoslaný",
@@ -12,7 +11,6 @@
     "Share" : "Zdieľať",
     "APCu" : "APCu",
     "Redis" : "Redis",
-    "__language_name__" : "Slovensky",
     "Language changed" : "Jazyk zmenený",
     "Invalid request" : "Neplatná požiadavka",
     "Couldn't remove app." : "Nemožno odstrániť aplikáciu.",
@@ -38,6 +36,8 @@
     "Migration started …" : "Migrácia spustená ...",
     "Valid until {date}" : "Platný do {date}",
     "Sending..." : "Odosielam...",
+    "Unable to change mail address" : "Nemožno zmeniť emailovú adresu",
+    "Your full name has been changed." : "Vaše meno a priezvisko bolo zmenené.",
     "Select a profile picture" : "Vybrať avatara",
     "Very weak password" : "Veľmi slabé heslo",
     "Weak password" : "Slabé heslo",
@@ -51,6 +51,7 @@
     "Forum" : "Fórum",
     "Issue tracker" : "Zoznam chýb",
     "Commercial support" : "Komerčná podpora",
+    "Language" : "Jazyk",
     "Developer documentation" : "Dokumentácia vývojára",
     "Documentation:" : "Dokumentácia:",
     "Admin documentation" : "Príručka administrátora",
@@ -159,7 +160,6 @@
     "Current password" : "Aktuálne heslo",
     "New password" : "Nové heslo",
     "Change password" : "Zmeniť heslo",
-    "Language" : "Jazyk",
     "Help translate" : "Pomôcť s prekladom",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Vyvinula {communityopen}komunita ownCloud{linkclose}. {githubopen}Zdrojový kód{linkclose} je dostupný za podmienok licencie {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Name" : "Názov",
@@ -169,5 +169,5 @@
     "Personal" : "Osobné",
     "Admin" : "Administrácia",
     "Error" : "Chyba"
-},"pluralForm" :"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;"
+},"pluralForm" :"nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);"
 }

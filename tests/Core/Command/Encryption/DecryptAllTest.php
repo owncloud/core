@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Tests\Core\Command\Encryption;
-
 
 use OC\Core\Command\Encryption\DecryptAll;
 use Test\TestCase;
@@ -76,7 +74,6 @@ class DecryptAllTest extends TestCase {
 		$this->appManager->expects($this->any())
 			->method('isEnabledForUser')
 			->with('files_trashbin')->willReturn(true);
-
 	}
 
 	public function testSingleUserAndTrashbin() {
@@ -120,7 +117,6 @@ class DecryptAllTest extends TestCase {
 	 * @dataProvider dataTestExecute
 	 */
 	public function testExecute($encryptionEnabled, $continue) {
-
 		$instance = new DecryptAll(
 			$this->encryptionManager,
 			$this->appManager,
@@ -128,6 +124,11 @@ class DecryptAllTest extends TestCase {
 			$this->decryptAll,
 			$this->questionHelper
 		);
+
+		$this->consoleInput->expects($this->once())
+			->method('getOption')
+			->with('continue')
+			->willReturn('no');
 
 		$this->encryptionManager->expects($this->once())
 			->method('isEnabled')
@@ -185,6 +186,11 @@ class DecryptAllTest extends TestCase {
 			$this->questionHelper
 		);
 
+		$this->consoleInput->expects($this->once())
+			->method('getOption')
+			->with('continue')
+			->willReturn('no');
+
 		$this->config->expects($this->at(0))
 			->method('setAppValue')
 			->with('core', 'encryption_enabled', 'no');
@@ -210,9 +216,44 @@ class DecryptAllTest extends TestCase {
 		$this->decryptAll->expects($this->once())
 			->method('decryptAll')
 			->with($this->consoleInput, $this->consoleOutput, 'user1')
-			->willReturnCallback(function() { throw new \Exception(); });
+			->willReturnCallback(function () {
+				throw new \Exception();
+			});
 
 		$this->invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
+	public function providesConfirmVal() {
+		return [
+			['yes'],
+			['no'],
+			['foo']
+		];
+	}
+
+	/**
+	 * @dataProvider providesConfirmVal
+	 * @param $confirmVal
+	 */
+
+	public function testExecuteConfirm($confirmVal) {
+		$instance = new DecryptAll(
+			$this->encryptionManager,
+			$this->appManager,
+			$this->config,
+			$this->decryptAll,
+			$this->questionHelper
+		);
+
+		$this->consoleInput->expects($this->once())
+			->method('getOption')
+			->with('continue')
+			->willReturn($confirmVal);
+
+		$this->encryptionManager->expects($this->any())
+			->method('isEnabled')
+			->willReturn(true);
+
+		$this->assertNull($this->invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput]));
+	}
 }

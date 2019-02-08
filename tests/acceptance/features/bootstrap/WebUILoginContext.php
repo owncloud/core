@@ -33,15 +33,12 @@ require_once 'bootstrap.php';
  * WebUI Login context.
  */
 class WebUILoginContext extends RawMinkContext implements Context {
-
-	private $loginFailedPageTitle = "ownCloud";
-	private $loginSuccessPageTitle = "Files - ownCloud";
 	private $loginPage;
 	private $filesPage;
 	private $expectedPage;
 	
 	/**
-	 * 
+	 *
 	 * @var FeatureContext
 	 */
 	private $featureContext;
@@ -62,6 +59,23 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @return string
+	 */
+	private function getLoginSuccessPageTitle() {
+		// When the login succeeds, we end up on the Files page
+		return "Files - " . $this->featureContext->getProductNameFromStatus();
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getLoginFailedPageTitle() {
+		// When the login fails, we end up at a page with a title that is the
+		// themed product name, e.g. "ownCloud"
+		return $this->featureContext->getProductNameFromStatus();
+	}
+
+	/**
 	 * @When the user browses to the login page
 	 * @Given the user has browsed to the login page
 	 *
@@ -72,18 +86,55 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user re-logs in as :username using the webUI
+	 * @Given the user has re-logged in as :username using the webUI
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserRelogsInUsingTheWebUI($username) {
+		$this->theUserRelogsInWithUsernameAndPasswordUsingTheWebUI(
+			$username,
+			$this->featureContext->getPasswordForUser($username)
+		);
+	}
+
+	/**
 	 * @When the user re-logs in with username :username and password :password using the webUI
+	 * @Given the user has re-logged in with username :username and password :password using the webUI
 	 *
 	 * @param string $username
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserRelogsInWithUsernameAndPasswordUsingTheWebUI(
 		$username, $password
 	) {
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
-		$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI($username, $password);
+		$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI(
+			$username, $password
+		);
+	}
+
+	/**
+	 * @When user :username logs in using the webUI
+	 * @Given user :username has logged in using the webUI
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserLogsInUsingTheWebUI($username) {
+		$this->theUserBrowsesToTheLoginPage();
+		$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI(
+			$username,
+			$this->featureContext->getPasswordForUser($username)
+		);
 	}
 
 	/**
@@ -94,19 +145,60 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
-	public function theUserLogsInWithUsernameAndPasswordUsingTheWebUI($username, $password) {
+	public function theUserLogsInWithUsernameAndPasswordUsingTheWebUI(
+		$username, $password
+	) {
 		$this->filesPage = $this->webUIGeneralContext->loginAs($username, $password);
+		$this->webUIGeneralContext->setCurrentPageObject($this->filesPage);
+	}
+
+	/**
+	 * @Given the user logs in with email :email and invalid password :password using the webUI
+	 *
+	 * @param string $email
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function theUserLogsInWithEmailAndInvalidPasswordUsingTheWebui(
+		$email, $password
+	) {
+		$this->loginPage->loginAs($email, $password, 'LoginPage');
+		$this->loginPage->waitTillPageIsLoaded($this->getSession());
+	}
+
+	/**
+	 * @When user :username re-logs in to :server using the webUI
+	 * @Given user :username has re-logged in to :server using the webUI
+	 *
+	 * @param string $username
+	 * @param string $server
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserRelogsInToUsingTheWebUI(
+		$username, $server
+	) {
+		$this->theUserRelogsInWithUsernameAndPasswordToUsingTheWebUI(
+			$username,
+			$this->featureContext->getPasswordForUser($username),
+			$server
+		);
 	}
 
 	/**
 	 * @When the user re-logs in with username :username and password :password to :server using the webUI
+	 * @Given the user has re-logged in with username :username and password :password to :server using the webUI
 	 *
 	 * @param string $username
 	 * @param string $password
 	 * @param string $server
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserRelogsInWithUsernameAndPasswordToUsingTheWebUI(
 		$username, $password, $server
@@ -118,13 +210,35 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When user :username logs in to :server using the webUI
+	 * @Given user :username has logged in to :server using the webUI
+	 *
+	 * @param string $username
+	 * @param string $server
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserLogsInToUsingTheWebUI(
+		$username, $server
+	) {
+		$this->theUserLogsInWithUsernameAndPasswordToUsingTheWebUI(
+			$username,
+			$this->featureContext->getPasswordForUser($username),
+			$server
+		);
+	}
+
+	/**
 	 * @When the user logs in with username :username and password :password to :server using the webUI
+	 * @Given the user has logged in with username :username and password :password to :server using the webUI
 	 *
 	 * @param string $username
 	 * @param string $password
 	 * @param string $server
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserLogsInWithUsernameAndPasswordToUsingTheWebUI(
 		$username, $password, $server
@@ -135,34 +249,89 @@ class WebUILoginContext extends RawMinkContext implements Context {
 			$server . $this->loginPage->getOriginalPath()
 		);
 		$this->loginPage->open();
-		$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI($username, $password);
+		$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI(
+			$username, $password
+		);
 	}
 
 	/**
 	 * @When the user logs in with username :username and invalid password :password using the webUI
-	 * @When the user logs with invalid username :username and password :password using the webUI
-	 * @When the user logs with invalid username :username and invalid password :password using the webUI
+	 * @When the user logs in with invalid username :username and password :password using the webUI
+	 * @When the user logs in with invalid username :username and invalid password :password using the webUI
+	 * @Given the user has logged in with username :username and invalid password :password using the webUI
+	 * @Given the user has logged in with invalid username :username and password :password using the webUI
+	 * @Given the user has logged in with invalid username :username and invalid password :password using the webUI
 	 *
 	 * @param string $username
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserLogsInWithUsernameAndInvalidPasswordUsingTheWebUI(
 		$username, $password
 	) {
+		$username = $this->featureContext->getActualUsername($username);
+		$password = $this->featureContext->getActualPassword($password);
 		$this->loginPage->loginAs($username, $password, 'LoginPage');
 		$this->loginPage->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**
+	 * @When the administrator tries to login with an invalid password :password using the webUI
+	 *
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function theAdministratorTriesToLoginWithAnInvalidPasswordUsingTheWebui($password) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->theUserLogsInWithUsernameAndInvalidPasswordUsingTheWebUI($admin, $password);
+	}
+
+	/**
+	 * @When user :username logs in using the webUI after a redirect from the :page page
+	 * @Given user :username has logged in using the webUI after a redirect from the :page page
+	 *
+	 * @param string $username
+	 * @param string $page text name of a page that I expect to be taken to
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserLogsInAfterRedirectFromThePage(
+		$username,
+		$page
+	) {
+		$this->theUserLogsInWithUsernameAndPasswordAfterRedirectFromThePage(
+			$username,
+			$this->featureContext->getPasswordForUser($username),
+			$page
+		);
+	}
+
+	/**
+	 * @When the administrator logs in using the webUI after a redirect from the :page page
+	 *
+	 * @param string $page text name of a page that I expect to be taken to
+	 *
+	 * @return void
+	 */
+	public function theAdministratorLogsInUsingTheWebuiAfterARedirectFromThePage($page) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->theUserLogsInAfterRedirectFromThePage($admin, $page);
+	}
+
+	/**
 	 * @When the user logs in with username :username and password :password using the webUI after a redirect from the :page page
+	 * @Given the user has logged in with username :username and password :password using the webUI after a redirect from the :page page
 	 *
 	 * @param string $username
 	 * @param string $password
 	 * @param string $page text name of a page that I expect to be taken to
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserLogsInWithUsernameAndPasswordAfterRedirectFromThePage(
 		$username,
@@ -178,12 +347,13 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then /^it should (not|)\s?be possible to login with the username ((?:'[^']*')|(?:"[^"]*")) and password ((?:'[^']*')|(?:"[^"]*")) using the WebUI$/
-	 * 
+	 *
 	 * @param string $shouldOrNot
 	 * @param string $username
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function itShouldBePossibleToLogin($shouldOrNot, $username, $password) {
 		$should = ($shouldOrNot !== "not");
@@ -198,22 +368,26 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		}
 		$this->theUserBrowsesToTheLoginPage();
 		if ($should) {
-			$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI($username, $password);
+			$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI(
+				$username, $password
+			);
 			$this->webUIGeneralContext->theUserShouldBeRedirectedToAWebUIPageWithTheTitle(
-				$this->loginSuccessPageTitle
+				$this->getLoginSuccessPageTitle()
 			);
 		} else {
-			$this->theUserLogsInWithUsernameAndInvalidPasswordUsingTheWebUI($username, $password);
+			$this->theUserLogsInWithUsernameAndInvalidPasswordUsingTheWebUI(
+				$username, $password
+			);
 			$this->webUIGeneralContext->theUserShouldBeRedirectedToAWebUIPageWithTheTitle(
-				$this->loginFailedPageTitle
+				$this->getLoginFailedPageTitle()
 			);
 		}
-		
 	}
 
 	/**
 	 * @When the user requests the password reset link using the webUI
-	 * 
+	 * @Given the user has requested the password reset link using the webUI
+	 *
 	 * @return void
 	 */
 	public function theUserRequestsThePasswordResetLinkUsingTheWebui() {
@@ -222,9 +396,9 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then a message with this text should be displayed on the webUI:
-	 * 
+	 *
 	 * @param PyStringNode $string
-	 * 
+	 *
 	 * @return void
 	 */
 	public function thisMessageShouldBeDisplayed(PyStringNode $string) {
@@ -236,39 +410,170 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user follows the password reset link from email address :emailAddress
-	 * 
-	 * @param string $emailAddress
-	 * 
+	 * @Then a set password error message with this text should be displayed on the webUI:
+	 *
+	 * @param PyStringNode $string
+	 *
 	 * @return void
 	 */
-	public function theUserFollowsThePasswordResetLinkFromTheirEmail($emailAddress) {
-		$content = EmailHelper::getBodyOfLastEmail(
-			EmailHelper::getMailhogUrl(), $emailAddress
+	public function aSetPasswordErrorMessageWithTheTextShouldBeDisplayed(
+		PyStringNode $string
+	) {
+		$expectedString = $string->getRaw();
+		$setPasswordErrorMessage = $this->loginPage->getSetPasswordErrorMessage();
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedString, $setPasswordErrorMessage
 		);
-		\preg_match(
-			'/Use the following link to reset your password: (http.*)/',
-			$content, $matches
-		);
-		PHPUnit_Framework_Assert::assertArrayHasKey(
-			1, $matches, 
-			"Couldn't find password reset link in the email"
-		);
-		$this->visitPath($matches[1]);
 	}
 
 	/**
-	 * @When the user resets the password to :newPassword using the webUI
-	 * 
+	 * @Then a lost password reset error message with this text should be displayed on the webUI:
+	 *
+	 * @param PyStringNode $string
+	 *
+	 * @return void
+	 */
+	public function aLostPasswordResetErrorMessageWithTheTextShouldBeDisplayed(
+		PyStringNode $string
+	) {
+		$expectedString = $string->getRaw();
+		$resetPasswordErrorMessage = $this->loginPage->getLostPasswordResetErrorMessage();
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedString, $resetPasswordErrorMessage
+		);
+	}
+
+	/**
+	 * @Then the imprint url on the login page should link to :expectedImprintUrl
+	 *
+	 * @param string $expectedImprintUrl
+	 *
+	 * @return void
+	 */
+	public function theImprintUrlOnTheLoginPageShouldLinkTo($expectedImprintUrl) {
+		$actualImprintUrl = $this->loginPage->getLegalUrl("Imprint");
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedImprintUrl,
+			$actualImprintUrl
+		);
+	}
+
+	/**
+	 * @Then the privacy policy url on the login page should link to :expectedPrivacyPolicyUrl
+	 *
+	 * @param string $expectedPrivacyPolicyUrl
+	 *
+	 * @return void
+	 */
+	public function thePrivacyPolicyUrlOnTheLoginPageShouldLinkTo($expectedPrivacyPolicyUrl) {
+		$actualPrivacyPolilcyUrl = $this->loginPage->getLegalUrl("Privacy Policy");
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedPrivacyPolicyUrl,
+			$actualPrivacyPolilcyUrl
+		);
+	}
+
+	/**
+	 * @When the user follows the password reset link from email address :emailAddress
+	 * @Given the user has followed the password reset link from email address :emailAddress
+	 *
+	 * @param string $emailAddress
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserFollowsThePasswordResetLinkFromTheirEmail($emailAddress) {
+		$this->webUIGeneralContext->followLinkFromEmail(
+			$emailAddress,
+			"/Use the following link to reset your password: (http.*)/",
+			"Couldn't find password reset link in the email"
+		);
+	}
+
+	/**
+	 * @When the user follows the password reset link from email address :emailAddress but supplying invalid user name :username
+	 *
+	 * @param string $emailAddress
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theUserFollowsThePasswordResetLinkFromTheirEmailUsingInvalidUsername(
+		$emailAddress, $username
+	) {
+		$link = $this->webUIGeneralContext->getLinkFromEmail(
+			$emailAddress,
+			"/Use the following link to reset your password: (http.*)/",
+			"Couldn't find password reset link in the email"
+		);
+		// The link has a form like:
+		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/user1
+		// pop off the last part and replace it with the invalid username
+		$linkParts = \explode('/', $link);
+		\array_pop($linkParts);
+		\array_push($linkParts, $username);
+		$adjustedLink = \implode('/', $linkParts);
+		$this->visitPath($adjustedLink);
+	}
+
+	/**
+	 * @When the user follows the password reset link from email address :emailAddress but supplying an invalid token
+	 *
+	 * @param string $emailAddress
+	 *
+	 * @return void
+	 */
+	public function theUserFollowsThePasswordResetLinkFromTheirEmailUsingInvalidToken(
+		$emailAddress
+	) {
+		$link = $this->webUIGeneralContext->getLinkFromEmail(
+			$emailAddress,
+			"/Use the following link to reset your password: (http.*)/",
+			"Couldn't find password reset link in the email"
+		);
+		// The link has a form like:
+		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/user1
+		$linkParts = \explode('/', $link);
+		$username = \array_pop($linkParts);
+		$goodToken = \array_pop($linkParts);
+		// reverse the token string, an easy way to make the token invalid
+		$invalidToken = \strrev($goodToken);
+		\array_push($linkParts, $invalidToken);
+		\array_push($linkParts, $username);
+		$adjustedLink = \implode('/', $linkParts);
+		$this->visitPath($adjustedLink);
+	}
+
+	/**
+	 * @When the user resets/sets the password to :newPassword using the webUI
+	 * @Given the user has reset/set the password to :newPassword using the webUI
+	 *
 	 * @param string $newPassword
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserResetsThePasswordToUsingTheWebui($newPassword) {
+		$newPassword = $this->featureContext->getActualPassword($newPassword);
 		$this->loginPage->resetThePassword($newPassword, $this->getSession());
 	}
 	
-	
+	/**
+	 * @When /^the user follows the password set link received by "([^"]*)"(?: in Email number (\d+))? using the webUI$/
+	 *
+	 * @param string $emailAddress
+	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserFollowsThePasswordSetLinkReceivedByEmail($emailAddress, $numEmails = 1) {
+		$this->webUIGeneralContext->followLinkFromEmail(
+			$emailAddress,
+			"/Access it: (http.*)/",
+			"Couldn't find password set link in the email",
+			$numEmails
+		);
+	}
 
 	/**
 	 * This will run before EVERY scenario.

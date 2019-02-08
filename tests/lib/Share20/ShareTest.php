@@ -53,7 +53,6 @@ class ShareTest extends \Test\TestCase {
 		$this->assertEquals('42', $this->share->getId());
 	}
 
-
 	public function testSetIdString() {
 		$this->share->setId('foo');
 		$this->assertEquals('foo', $this->share->getId());
@@ -76,7 +75,6 @@ class ShareTest extends \Test\TestCase {
 		$this->share->setProviderId(42);
 	}
 
-
 	public function testSetProviderIdString() {
 		$this->share->setProviderId('foo');
 		$this->share->setId('bar');
@@ -90,5 +88,12 @@ class ShareTest extends \Test\TestCase {
 	public function testSetProviderIdOnce() {
 		$this->share->setProviderId('foo');
 		$this->share->setProviderId('bar');
+	}
+
+	public function testSetShouldHashPassword() {
+		$this->share->setShouldHashPassword(false);
+		$this->assertFalse($this->share->getShouldHashPassword());
+		$this->share->setShouldHashPassword(true);
+		$this->assertTrue($this->share->getShouldHashPassword());
 	}
 }

@@ -25,6 +25,8 @@
 namespace OC\Files\Storage\Wrapper;
 
 use OC\Files\Cache\Wrapper\CacheJail;
+use OCP\Files\Storage\IStorage;
+use OCP\Files\Storage\IVersionedStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -32,7 +34,8 @@ use OCP\Lock\ILockingProvider;
  *
  * This restricts access to a subfolder of the wrapped storage with the subfolder becoming the root folder new storage
  */
-class Jail extends Wrapper {
+class Jail extends Wrapper /* implements IVersionedStorage */
+{
 	/**
 	 * @var string
 	 */
@@ -495,5 +498,63 @@ class Jail extends Wrapper {
 			return $this->rename($sourceInternalPath, $targetInternalPath);
 		}
 		return $this->getWrapperStorage()->moveFromStorage($sourceStorage, $sourceInternalPath, $this->getSourcePath($targetInternalPath));
+	}
+
+	/**
+	 * Get the content of a given version of a given file as stream resource
+	 *
+	 * @param string $internalPath
+	 * @param string $versionId
+	 * @return resource
+	 * @since 10.0.9
+	 */
+	public function getContentOfVersion($internalPath, $versionId) {
+		return $this->getWrapperStorage()->getContentOfVersion($this->getSourcePath($internalPath), $versionId);
+	}
+
+	/**
+	 * Restore the given version of a given file
+	 *
+	 * @param string $internalPath
+	 * @param string $versionId
+	 * @return boolean
+	 * @since 10.0.9
+	 */
+	public function restoreVersion($internalPath, $versionId) {
+		return $this->getWrapperStorage()->restoreVersion($this->getSourcePath($internalPath), $versionId);
+	}
+
+	/**
+	 * Tells the storage to explicitly create a version of a given file
+	 *
+	 * @param string $internalPath
+	 * @return bool
+	 * @since 10.0.9
+	 */
+	public function saveVersion($internalPath) {
+		return $this->getWrapperStorage()->saveVersion($this->getSourcePath($internalPath));
+	}
+
+	/**
+	 * List all versions for the given file
+	 *
+	 * @param string $internalPath
+	 * @return array
+	 * @since 10.0.9
+	 */
+	public function getVersions($internalPath) {
+		return $this->getWrapperStorage()->getVersions($this->getSourcePath($internalPath));
+	}
+
+	/**
+	 * Get one explicit version for the given file
+	 *
+	 * @param string $internalPath
+	 * @param string $versionId
+	 * @return array
+	 * @since 10.0.9
+	 */
+	public function getVersion($internalPath, $versionId) {
+		return $this->getWrapperStorage()->getVersion($this->getSourcePath($internalPath), $versionId);
 	}
 }

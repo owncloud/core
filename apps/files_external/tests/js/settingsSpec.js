@@ -50,7 +50,7 @@ describe('OCA.External.Settings tests', function() {
 			'</tr>' +
 			'</tbody>' +
 			'</table>'
-		);
+		).append('<div id="body-settings"></div>');
 		// these are usually appended into the data attribute
 		// within the DOM by the server template
 		$('#externalStorage .selectBackend:first').data('configurations', {
@@ -152,6 +152,7 @@ describe('OCA.External.Settings tests', function() {
 		beforeEach(function() {
 			var $el = $('#externalStorage');
 			view = new OCA.External.Settings.MountConfigListView($el, {encryptionEnabled: false});
+			view._initEvents();
 		});
 		afterEach(function() {
 			view = null;
@@ -417,5 +418,144 @@ describe('OCA.External.Settings tests', function() {
 	});
 	describe('allow user mounts section', function() {
 		// TODO: test allowUserMounting section
+	});
+
+	describe('mountConfigLoaded event is triggered', function() {
+		var view;
+		var $bodySettings;
+
+		beforeEach(function() {
+			var $el = $('#externalStorage');
+			view = new OCA.External.Settings.MountConfigListView($el, {encryptionEnabled: false});
+			$bodySettings = $('#body-settings');
+		});
+
+		afterEach(function() {
+			view = null;
+			$bodySettings.off('mountConfigLoaded');
+			$bodySettings.remove();
+		});
+
+		it('only for not personal mounts', function() {
+			view._isPersonal = false;
+			var callbackStub = sinon.stub();
+
+			view.loadStorages();
+
+			expect(fakeServer.requests.length).toEqual(1);
+			var request = fakeServer.requests[0];
+
+			$bodySettings.on('mountConfigLoaded', callbackStub);
+
+			expect(callbackStub.called).toEqual(false);
+			request.respond(200, {'Content-Type': 'application/json'}, JSON.stringify({}));
+
+			expect(callbackStub.called).toEqual(true);
+		});
+
+		it('only for not personal mounts including failure', function() {
+			view._isPersonal = false;
+			var callbackStub = sinon.stub();
+
+			view.loadStorages();
+
+			expect(fakeServer.requests.length).toEqual(1);
+			var request = fakeServer.requests[0];
+
+			$bodySettings.on('mountConfigLoaded', callbackStub);
+
+			expect(callbackStub.called).toEqual(false);
+			request.respond(403, {'Content-Type': 'application/json'}, JSON.stringify({}));
+
+			expect(callbackStub.called).toEqual(true);
+		});
+
+		it('all kind of mounts included', function() {
+			view._isPersonal = true;
+			var callbackStub = sinon.stub();
+
+			view.loadStorages();
+
+			expect(fakeServer.requests.length).toEqual(2);
+			var request1 = fakeServer.requests[0];
+			var request2 = fakeServer.requests[1];
+
+			$bodySettings.on('mountConfigLoaded', callbackStub);
+
+			expect(callbackStub.called).toEqual(false);
+			request1.respond(200, {'Content-Type': 'application/json'}, JSON.stringify({}));
+
+			// mountConfigLoaded event shouldn't have been triggered yet
+			expect(callbackStub.called).toEqual(false);
+			request2.respond(200, {'Content-Type': 'application/json'}, JSON.stringify({}));
+
+			expect(callbackStub.called).toEqual(true);
+		});
+
+		it('all kind of mounts included, but non-userglobal failed', function() {
+			view._isPersonal = true;
+			var callbackStub = sinon.stub();
+
+			view.loadStorages();
+
+			expect(fakeServer.requests.length).toEqual(2);
+			var request1 = fakeServer.requests[0];
+			var request2 = fakeServer.requests[1];
+
+			$bodySettings.on('mountConfigLoaded', callbackStub);
+
+			expect(callbackStub.called).toEqual(false);
+			request1.respond(200, {'Content-Type': 'application/json'}, JSON.stringify({}));
+
+			// mountConfigLoaded event shouldn't have been triggered yet
+			expect(callbackStub.called).toEqual(false);
+			request2.respond(403, {'Content-Type': 'application/json'}, JSON.stringify({}));
+
+			expect(callbackStub.called).toEqual(true);
+		});
+
+		it('all kind of mounts included, but userglobal failed', function() {
+			view._isPersonal = true;
+			var callbackStub = sinon.stub();
+
+			view.loadStorages();
+
+			expect(fakeServer.requests.length).toEqual(2);
+			var request1 = fakeServer.requests[0];
+			var request2 = fakeServer.requests[1];
+
+			$bodySettings.on('mountConfigLoaded', callbackStub);
+
+			expect(callbackStub.called).toEqual(false);
+			request1.respond(403, {'Content-Type': 'application/json'}, JSON.stringify({}));
+
+			// mountConfigLoaded event shouldn't have been triggered yet
+			expect(callbackStub.called).toEqual(false);
+			request2.respond(200, {'Content-Type': 'application/json'}, JSON.stringify({}));
+
+			expect(callbackStub.called).toEqual(true);
+		});
+
+		it('all kind of mounts included, but all failing', function() {
+			view._isPersonal = true;
+			var callbackStub = sinon.stub();
+
+			view.loadStorages();
+
+			expect(fakeServer.requests.length).toEqual(2);
+			var request1 = fakeServer.requests[0];
+			var request2 = fakeServer.requests[1];
+
+			$bodySettings.on('mountConfigLoaded', callbackStub);
+
+			expect(callbackStub.called).toEqual(false);
+			request1.respond(403, {'Content-Type': 'application/json'}, JSON.stringify({}));
+
+			// mountConfigLoaded event shouldn't have been triggered yet
+			expect(callbackStub.called).toEqual(false);
+			request2.respond(403, {'Content-Type': 'application/json'}, JSON.stringify({}));
+
+			expect(callbackStub.called).toEqual(true);
+		});
 	});
 });

@@ -23,7 +23,6 @@
 namespace Test\Files\External;
 
 class FrontendDefinitionTraitTest extends \Test\TestCase {
-
 	public function testJsonSerialization() {
 		$param = $this->getMockBuilder('\OCP\Files\External\DefinitionParameter')
 			->disableOriginalConstructor()
@@ -96,7 +95,7 @@ class FrontendDefinitionTraitTest extends \Test\TestCase {
 			->willReturn('param');
 		$param->expects($this->once())
 			->method('validateValue')
-			->will($this->returnCallback(function(&$value) {
+			->will($this->returnCallback(function (&$value) {
 				$value = 'foobar';
 				return true;
 			}));

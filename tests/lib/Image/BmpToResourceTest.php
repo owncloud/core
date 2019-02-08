@@ -6,8 +6,7 @@ use OC\Image\BmpToResource;
 use Test\TestCase;
 
 class BmpToResourceTest extends TestCase {
-
-	public function test24bitBitmap(){
+	public function test24bitBitmap() {
 		$instance = new BmpToResource(__DIR__ . '/../../data/image/24bit2x2.bmp');
 
 		$instance->toResource();
@@ -20,7 +19,7 @@ class BmpToResourceTest extends TestCase {
 		$this->assertEquals(16, $header['imagesize']);
 	}
 
-	public function test4bitBitmap(){
+	public function test4bitBitmap() {
 		$instance = new BmpToResource(__DIR__ . '/../../data/image/4bit2x2.bmp');
 
 		$instance->toResource();
@@ -33,7 +32,7 @@ class BmpToResourceTest extends TestCase {
 		$this->assertEquals(8, $header['imagesize']);
 	}
 
-	public function testReadBitmapHeader(){
+	public function testReadBitmapHeader() {
 		$headerHex = '42 4D 9A 00 00 00 00 00 00 00 7A 00 00 00';
 		$headerBin = \hex2bin(\str_replace(' ', '', $headerHex));
 		$stub = $this->getReadFileStub([$headerBin]);
@@ -45,14 +44,14 @@ class BmpToResourceTest extends TestCase {
 	/**
 	 * @expectedException \DomainException
 	 */
-	public function testReadWrongBitmapSignature(){
+	public function testReadWrongBitmapSignature() {
 		$headerHex = '99 4D 9A 00 00 00 00 00 00 00 7A 00 00 00';
 		$headerBin = \hex2bin(\str_replace(' ', '', $headerHex));
 		$stub = $this->getReadFileStub([$headerBin]);
 		self::invokePrivate($stub, 'readBitmapHeader');
 	}
 
-	public function testReadDibHeader(){
+	public function testReadDibHeader() {
 		$headerLengthHex = '6C 00 00 00 ';
 		$headerHex = '20 00 00 00 12 00 00 00 01 00 20 00 03 00 00 00 20 00 00 00 14 0B 00 00 13 0B 00 00 00 00 00 00 00 00 00 00';
 		$headerLengthBin = \hex2bin(\str_replace(' ', '', $headerLengthHex));
@@ -74,7 +73,7 @@ class BmpToResourceTest extends TestCase {
 	/**
 	 * @expectedException  \UnexpectedValueException
 	 */
-	public function testReadUnsupportedDibHeaderBitDepth(){
+	public function testReadUnsupportedDibHeaderBitDepth() {
 		$headerLengthHex = '6C 00 00 00 ';
 		$headerHex = '20 00 00 00 12 00 00 00 01 00 07 00 03 00 00 00 20 00 00 00 14 0B 00 00 13 0B 00 00 00 00 00 00 00 00 00 00';
 		$headerLengthBin = \hex2bin(\str_replace(' ', '', $headerLengthHex));
@@ -86,14 +85,14 @@ class BmpToResourceTest extends TestCase {
 	/**
 	 * @expectedException  \UnexpectedValueException
 	 */
-	public function testReadWrongDibHeaderLength(){
+	public function testReadWrongDibHeaderLength() {
 		$headerHex = '10 00 00 00 00 00 00 00 00 00 7A 00 00 00';
 		$headerBin = \hex2bin(\str_replace(' ', '', $headerHex));
 		$stub = $this->getReadFileStub([$headerBin]);
 		self::invokePrivate($stub, 'readDibHeader');
 	}
 
-	public function testReadBitMasks(){
+	public function testReadBitMasks() {
 		$bitMasksHex = '00 00 FF 00 00 FF 00 00 FF 00 00 00';
 		$bitMasksBin = \hex2bin(\str_replace(' ', '', $bitMasksHex));
 		$stub = $this->getReadFileStub([$bitMasksBin]);
@@ -104,7 +103,7 @@ class BmpToResourceTest extends TestCase {
 		$this->assertEquals(0x0000FF, $bitMasks['bMask']);
 	}
 
-	public function testReadColorTable(){
+	public function testReadColorTable() {
 		$colors = 2;
 		// Little Endian: B  G  R  00 B  G  R  00
 		$colorTableHex = '0A FF 32 00 34 56 EF 00';
@@ -121,20 +120,20 @@ class BmpToResourceTest extends TestCase {
 	 * @param $bitsPerPart
 	 * @param $expectedArray
 	 */
-	public function testSplitByteIntoArray($char, $bitsPerPart, $expectedArray){
+	public function testSplitByteIntoArray($char, $bitsPerPart, $expectedArray) {
 		$stub = $this->getReadFileStub([]);
 		$resultArray = self::invokePrivate($stub, 'splitByteIntoArray', [\chr($char), $bitsPerPart]);
 		$this->assertEquals($expectedArray, $resultArray);
 	}
 
-	public function bytesProvider(){
+	public function bytesProvider() {
 		return [
 			[ 0b1110001, 2, [ '01', '11', '00', '01' ] ],
 			[ 0b01101101, 4, [ '0110', '1101' ] ],
 		];
 	}
 
-	protected function getReadFileStub($values){
+	protected function getReadFileStub($values) {
 		$instanceMock = $this->getMockBuilder(BmpToResource::class)
 			->disableOriginalConstructor()
 			->setMethods(['readFile', 'getFilename'])
@@ -155,5 +154,4 @@ class BmpToResourceTest extends TestCase {
 
 		return $instanceMock;
 	}
-
 }

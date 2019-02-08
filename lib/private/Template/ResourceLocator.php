@@ -119,7 +119,7 @@ abstract class ResourceLocator {
 		$file = \ltrim($file, '/');
 		$path = $this->buildPath([$root, $file]);
 		
-		if (!isset( $this->resources[$path] ) && \is_file($path)) {
+		if (!isset($this->resources[$path]) && \is_file($path)) {
 			$this->append($root, $file, $webRoot, false);
 			return true;
 		}
@@ -143,7 +143,7 @@ abstract class ResourceLocator {
 		$path = $this->buildPath([$root, $file]);
 		$this->resources[$path] = [$root, $webRoot, $file];
 
-		if ($throw && !\is_file($path) ) {
+		if ($throw && !\is_file($path)) {
 			throw new ResourceNotFoundException($file, $webRoot);
 		}
 	}
@@ -154,9 +154,9 @@ abstract class ResourceLocator {
 	 * @param string[] $parts path parts to concatenate
 	 * @return string $parts concatenated
 	 */
-	protected function buildPath($parts){
+	protected function buildPath($parts) {
 		$trimmedParts = \array_map(
-			function($part){
+			function ($part) {
 				return \rtrim($part, '/');
 			},
 			$parts

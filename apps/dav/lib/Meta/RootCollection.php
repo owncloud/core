@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Meta;
-
 
 use OC\Files\Meta\MetaFileIdNode;
 use OCP\Files\IRootFolder;
@@ -62,14 +60,14 @@ class RootCollection extends Collection {
 	/**
 	 * @inheritdoc
 	 */
-	function getChildren() {
+	public function getChildren() {
 		throw new MethodNotAllowed('Listing members of this collection is disabled');
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	function getName() {
+	public function getName() {
 		return 'meta';
 	}
 }

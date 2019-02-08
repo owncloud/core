@@ -34,7 +34,6 @@ use Test\Traits\UserTrait;
  * Base class for sharing tests.
  */
 abstract class TestCase extends \Test\TestCase {
-
 	use UserTrait;
 
 	const TEST_FILES_SHARING_API_USER1 = "test-share-user1";
@@ -77,7 +76,7 @@ abstract class TestCase extends \Test\TestCase {
 		\OC_User::clearBackends();
 		\OC_User::useBackend('database');
 		\OC::$server->getGroupManager()->clearBackends();
-		\OC::$server->getGroupManager()->addBackend(new \OC_Group_Database());
+		\OC::$server->getGroupManager()->addBackend(new \OC\Group\Database());
 
 		parent::tearDownAfterClass();
 	}
@@ -86,7 +85,6 @@ abstract class TestCase extends \Test\TestCase {
 	 * @param string $user
 	 */
 	protected static function loginHelper($user) {
-
 		self::resetStorage();
 
 		\OC_Util::tearDownFS();
@@ -108,5 +106,4 @@ abstract class TestCase extends \Test\TestCase {
 		$isInitialized->setValue($storage, false);
 		$isInitialized->setAccessible(false);
 	}
-
 }

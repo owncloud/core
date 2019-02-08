@@ -22,12 +22,10 @@
 
 namespace OC\User;
 
-
 use OCP\AppFramework\Db\Mapper;
 use OCP\IDBConnection;
 
 class AccountTermMapper extends Mapper {
-
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'account_terms', AccountTerm::class);
 	}

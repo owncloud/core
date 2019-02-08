@@ -186,5 +186,4 @@ class AuthSettingsControllerTest extends TestCase {
 
 		$this->assertEquals([], $this->controller->destroy($id));
 	}
-
 }

@@ -6,12 +6,12 @@
 	<licence>AGPL</licence>
 	<author>Robin Appelman, Vincent Petry</author>
 	<default_enable/>
-	<version>1.5.1</version>
+	<version>1.5.2</version>
 	<types>
 		<filesystem/>
 	</types>
 	<dependencies>
-		<owncloud min-version="10.1" max-version="10.1" />
+		<owncloud min-version="11" max-version="11" />
 	</dependencies>
 	<documentation>
 		<user>user-files</user>
@@ -21,6 +21,7 @@
 		<job>OCA\Files\BackgroundJob\ScanFiles</job>
 		<job>OCA\Files\BackgroundJob\DeleteOrphanedItems</job>
 		<job>OCA\Files\BackgroundJob\CleanupFileLocks</job>
+		<job>OCA\Files\BackgroundJob\CleanupPersistentFileLocks</job>
 	</background-jobs>
 
 	<commands>

@@ -138,5 +138,4 @@ interface IStoragesService {
 	 * @since 10.0
 	 */
 	public function removeStorage($id);
-
 }

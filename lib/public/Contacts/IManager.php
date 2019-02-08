@@ -97,7 +97,7 @@ namespace OCP\Contacts {
 		 * @return array an array of contacts which are arrays of key-value-pairs
 		 * @since 6.0.0
 		 */
-		function search($pattern, $searchProperties = [], $options = [], $limit = null, $offset = null);
+		public function search($pattern, $searchProperties = [], $options = [], $limit = null, $offset = null);
 
 		/**
 		 * This function can be used to delete the contact identified by the given id
@@ -107,7 +107,7 @@ namespace OCP\Contacts {
 		 * @return bool successful or not
 		 * @since 6.0.0
 		 */
-		function delete($id, $address_book_key);
+		public function delete($id, $address_book_key);
 
 		/**
 		 * This function is used to create a new contact if 'id' is not given or not present.
@@ -118,7 +118,7 @@ namespace OCP\Contacts {
 		 * @return array an array representing the contact just created or updated
 		 * @since 6.0.0
 		 */
-		function createOrUpdate($properties, $address_book_key);
+		public function createOrUpdate($properties, $address_book_key);
 
 		/**
 		 * Check if contacts are available (e.g. contacts app enabled)
@@ -126,7 +126,7 @@ namespace OCP\Contacts {
 		 * @return bool true if enabled, false if not
 		 * @since 6.0.0
 		 */
-		function isEnabled();
+		public function isEnabled();
 
 		/**
 		 * Registers an address book
@@ -135,7 +135,7 @@ namespace OCP\Contacts {
 		 * @return void
 		 * @since 6.0.0
 		 */
-		function registerAddressBook(\OCP\IAddressBook $address_book);
+		public function registerAddressBook(\OCP\IAddressBook $address_book);
 
 		/**
 		 * Unregisters an address book
@@ -144,7 +144,7 @@ namespace OCP\Contacts {
 		 * @return void
 		 * @since 6.0.0
 		 */
-		function unregisterAddressBook(\OCP\IAddressBook $address_book);
+		public function unregisterAddressBook(\OCP\IAddressBook $address_book);
 
 		/**
 		 * In order to improve lazy loading a closure can be registered which will be called in case
@@ -154,19 +154,19 @@ namespace OCP\Contacts {
 		 * @return void
 		 * @since 6.0.0
 		 */
-		function register(\Closure $callable);
+		public function register(\Closure $callable);
 
 		/**
 		 * @return array
 		 * @since 6.0.0
 		 */
-		function getAddressBooks();
+		public function getAddressBooks();
 
 		/**
 		 * removes all registered address book instances
 		 * @return void
 		 * @since 6.0.0
 		 */
-		function clear();
+		public function clear();
 	}
 }

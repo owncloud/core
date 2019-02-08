@@ -36,7 +36,6 @@ use OCP\Files\NotFoundException;
 use OCP\User;
 
 class Helper {
-
 	public static function registerHooks() {
 		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', '\OCA\Files_Sharing\Updater', 'renameHook');
 		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', '\OCA\Files_Sharing\Hooks', 'unshareChildren');
@@ -55,13 +54,13 @@ class Helper {
 		\OC_User::setIncognitoMode(true);
 
 		$linkItem = \OCP\Share::getShareByToken($token, !$password);
-		if($linkItem === false || ($linkItem['item_type'] !== 'file' && $linkItem['item_type'] !== 'folder')) {
+		if ($linkItem === false || ($linkItem['item_type'] !== 'file' && $linkItem['item_type'] !== 'folder')) {
 			\OC_Response::setStatus(404);
 			\OCP\Util::writeLog('core-preview', 'Passed token parameter is not valid', \OCP\Util::DEBUG);
 			exit;
 		}
 
-		if(!isset($linkItem['uid_owner']) || !isset($linkItem['file_source'])) {
+		if (!isset($linkItem['uid_owner']) || !isset($linkItem['file_source'])) {
 			\OC_Response::setStatus(500);
 			\OCP\Util::writeLog('core-preview', 'Passed token seems to be valid, but it does not contain all necessary information . ("' . $token . '")', \OCP\Util::WARN);
 			exit;
@@ -125,25 +124,22 @@ class Helper {
 			if ($linkItem['share_type'] == \OCP\Share::SHARE_TYPE_LINK) {
 				// Check Password
 				$newHash = '';
-				if(\OC::$server->getHasher()->verify($password, $linkItem['share_with'], $newHash)) {
+				if (\OC::$server->getHasher()->verify($password, $linkItem['share_with'], $newHash)) {
 					// Save item id in session for future requests
 					\OC::$server->getSession()->set('public_link_authenticated', (string) $linkItem['id']);
 
-					/**
-					 * FIXME: Migrate old hashes to new hash format
-					 * Due to the fact that there is no reasonable functionality to update the password
-					 * of an existing share no migration is yet performed there.
-					 * The only possibility is to update the existing share which will result in a new
-					 * share ID and is a major hack.
-					 *
-					 * In the future the migration should be performed once there is a proper method
-					 * to update the share's password. (for example `$share->updatePassword($password)`
-					 *
-					 * @link https://github.com/owncloud/core/issues/10671
-					 */
-					if(!empty($newHash)) {
-
-					}
+				/**
+				 * FIXME: Migrate old hashes to new hash format
+				 * Due to the fact that there is no reasonable functionality to update the password
+				 * of an existing share no migration is yet performed there.
+				 * The only possibility is to update the existing share which will result in a new
+				 * share ID and is a major hack.
+				 *
+				 * In the future the migration should be performed once there is a proper method
+				 * to update the share's password. (for example `$share->updatePassword($password)`
+				 *
+				 * @link https://github.com/owncloud/core/issues/10671
+				 */
 				} else {
 					return false;
 				}
@@ -152,11 +148,9 @@ class Helper {
 					.' for share id '.$linkItem['id'], \OCP\Util::ERROR);
 				return false;
 			}
-
-		}
-		else {
+		} else {
 			// not authenticated ?
-			if ( ! \OC::$server->getSession()->exists('public_link_authenticated')
+			if (! \OC::$server->getSession()->exists('public_link_authenticated')
 				|| \OC::$server->getSession()->get('public_link_authenticated') !== (string)$linkItem['id']) {
 				return false;
 			}
@@ -170,12 +164,11 @@ class Helper {
 		Filesystem::initMountPoints($owner);
 		$info = Filesystem::getFileInfo($target);
 		$ownerView = new View('/'.$owner.'/files');
-		if ( $owner != User::getUser() ) {
+		if ($owner != User::getUser()) {
 			$path = $ownerView->getPath($info['fileid']);
 		} else {
 			$path = $target;
 		}
-
 
 		$ids = [];
 		while ($path !== \dirname($path)) {
@@ -189,7 +182,6 @@ class Helper {
 		}
 
 		if (!empty($ids)) {
-
 			$idList = \array_chunk($ids, 99, true);
 
 			foreach ($idList as $subList) {
@@ -221,7 +213,7 @@ class Helper {
 			$uid = User::getUser();
 		}
 		Filesystem::initMountPoints($uid);
-		if ( $uid != User::getUser() ) {
+		if ($uid != User::getUser()) {
 			$info = Filesystem::getFileInfo($filename);
 			$ownerView = new View('/'.$uid.'/files');
 			try {
@@ -289,18 +281,27 @@ class Helper {
 		$shareFolder = Filesystem::normalizePath($shareFolder);
 
 		if (!$view->file_exists($shareFolder)) {
-			$dir = '';
-			$subdirs = \explode('/', $shareFolder);
-			foreach ($subdirs as $subdir) {
-				$dir = $dir . '/' . $subdir;
-				if (!$view->is_dir($dir)) {
-					$view->mkdir($dir);
+			$currentDir = $shareFolder;
+			$dirsToCreate = [$shareFolder];
+			while (($currentDir = \dirname($currentDir)) !== '/') {
+				// FIXME: check if there is such file as well?
+				if ($view->is_dir($currentDir)) {
+					break;
 				}
+				$dirsToCreate[] = $currentDir;
+			}
+
+			$dirsToCreate = \array_reverse($dirsToCreate);
+			$shareFolder = '/';
+			foreach ($dirsToCreate as $dirToCreate) {
+				if ($view->mkdir($dirToCreate) === false) {
+					break;
+				}
+				$shareFolder = $dirToCreate;
 			}
 		}
 
 		return $shareFolder;
-
 	}
 
 	/**
@@ -311,5 +312,4 @@ class Helper {
 	public static function setShareFolder($shareFolder) {
 		\OC::$server->getConfig()->setSystemValue('share_folder', $shareFolder);
 	}
-
 }

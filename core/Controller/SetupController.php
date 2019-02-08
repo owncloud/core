@@ -38,7 +38,7 @@ class SetupController {
 	/**
 	 * @param Setup $setupHelper
 	 */
-	function __construct(Setup $setupHelper) {
+	public function __construct(Setup $setupHelper) {
 		$this->autoConfigFile = \OC::$SERVERROOT.'/config/autoconfig.php';
 		$this->setupHelper = $setupHelper;
 	}
@@ -59,12 +59,12 @@ class SetupController {
 			$post['dbpass'] = $post['dbpassword'];
 		}
 
-		if(isset($post['install']) AND $post['install']=='true') {
+		if (isset($post['install']) and $post['install']=='true') {
 			// We have to launch the installation process :
 			$e = $this->setupHelper->install($post);
 			$errors = ['errors' => $e];
 
-			if(\count($e) > 0) {
+			if (\count($e) > 0) {
 				$options = \array_merge($opts, $post, $errors);
 				$this->display($options);
 			} else {
@@ -96,7 +96,7 @@ class SetupController {
 	}
 
 	public function finishSetup() {
-		if( \file_exists( $this->autoConfigFile )) {
+		if (\file_exists($this->autoConfigFile)) {
 			\unlink($this->autoConfigFile);
 		}
 		\OC::$server->getIntegrityCodeChecker()->runInstanceVerification();
@@ -104,18 +104,18 @@ class SetupController {
 	}
 
 	public function loadAutoConfig($post) {
-		if( \file_exists($this->autoConfigFile)) {
+		if (\file_exists($this->autoConfigFile)) {
 			\OCP\Util::writeLog('core', 'Autoconfig file found, setting up ownCloud…', \OCP\Util::INFO);
 			$AUTOCONFIG = [];
 			include $this->autoConfigFile;
-			$post = \array_merge ($post, $AUTOCONFIG);
+			$post = \array_merge($post, $AUTOCONFIG);
 		}
 
 		$dbIsSet = isset($post['dbtype']);
 		$directoryIsSet = isset($post['directory']);
 		$adminAccountIsSet = isset($post['adminlogin']);
 
-		if ($dbIsSet AND $directoryIsSet AND $adminAccountIsSet) {
+		if ($dbIsSet and $directoryIsSet and $adminAccountIsSet) {
 			$post['install'] = 'true';
 		}
 		$post['dbIsSet'] = $dbIsSet;

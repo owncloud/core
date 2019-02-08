@@ -60,6 +60,13 @@ interface IScanner {
 	 * @since 9.0.0
 	 */
 	public function scan($path, $recursive = self::SCAN_RECURSIVE, $reuse = -1, $lock = true);
+	
+	/**
+	 * walk over any folders that are not fully scanned yet and scan them
+	 *
+	 * @since 9.0.0
+	 */
+	public function backgroundScan();
 
 	/**
 	 * check if the file should be ignored when scanning
@@ -69,14 +76,7 @@ interface IScanner {
 	 * @param string $file
 	 * @return boolean
 	 * @since 9.0.0
+	 * @deprecated
 	 */
 	public static function isPartialFile($file);
-
-	/**
-	 * walk over any folders that are not fully scanned yet and scan them
-	 *
-	 * @since 9.0.0
-	 */
-	public function backgroundScan();
 }
-

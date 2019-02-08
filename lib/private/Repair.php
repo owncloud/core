@@ -57,7 +57,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use OC\Repair\MoveAvatarOutsideHome;
 use OC\Repair\RepairMismatchFileCachePath;
 
-class Repair implements IOutput{
+class Repair implements IOutput {
 	/* @var IRepairStep[] */
 	private $repairSteps;
 	/** @var EventDispatcher */
@@ -132,7 +132,8 @@ class Repair implements IOutput{
 			new RepairMismatchFileCachePath(
 				\OC::$server->getDatabaseConnection(),
 				\OC::$server->getMimeTypeLoader(),
-				\OC::$server->getLogger()),
+				\OC::$server->getLogger(),
+				\OC::$server->getConfig()),
 			new FillETags(\OC::$server->getDatabaseConnection()),
 			new CleanTags(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager()),
 			new DropOldTables(\OC::$server->getDatabaseConnection()),
@@ -194,7 +195,6 @@ class Repair implements IOutput{
 			new SqliteAutoincrement($connection),
 			new RepairOrphanedSubshare($connection),
 			new SearchLuceneTables(),
-			new Apps(\OC::$server->getAppManager(), \OC::$server->getEventDispatcher(), \OC::$server->getConfig(), new \OC_Defaults()),
 		];
 
 		//There is no need to delete all previews on every single update
@@ -214,7 +214,7 @@ class Repair implements IOutput{
 	 * @param array $arguments
 	 */
 	public function emit($scope, $method, array $arguments = []) {
-		if (!\is_null($this->dispatcher)) {
+		if ($this->dispatcher !== null) {
 			$this->dispatcher->dispatch("$scope::$method",
 				new GenericEvent("$scope::$method", $arguments));
 		}

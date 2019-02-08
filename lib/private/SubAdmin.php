@@ -36,7 +36,6 @@ use OCP\IDBConnection;
 use OCP\ISubAdminManager;
 
 class SubAdmin extends PublicEmitter implements ISubAdminManager {
-
 	use EventEmitterTrait;
 	/** @var IUserManager */
 	private $userManager;
@@ -53,17 +52,17 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 	 * @param IDBConnection $dbConn
 	 */
 	public function __construct(IUserManager $userManager,
-	                            IGroupManager $groupManager,
+								IGroupManager $groupManager,
 								IDBConnection $dbConn) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->dbConn = $dbConn;
 
-		$this->userManager->listen('\OC\User', 'postDelete', function($user) {
+		$this->userManager->listen('\OC\User', 'postDelete', function ($user) {
 			$this->post_deleteUser($user);
 		});
-		$this->groupManager->listen('\OC\Group', 'postDelete', function($group) {
-			$this->post_deleteGroup($group);	
+		$this->groupManager->listen('\OC\Group', 'postDelete', function ($group) {
+			$this->post_deleteGroup($group);
 		});
 	}
 
@@ -131,9 +130,9 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 			->execute();
 
 		$groups = [];
-		while($row = $result->fetch()) {
+		while ($row = $result->fetch()) {
 			$group = $this->groupManager->get($row['gid']);
-			if(!\is_null($group)) {
+			if ($group !== null) {
 				$groups[] = $group;
 			}
 		}
@@ -156,9 +155,9 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 			->execute();
 
 		$users = [];
-		while($row = $result->fetch()) {
+		while ($row = $result->fetch()) {
 			$user = $this->userManager->get($row['uid']);
-			if(!\is_null($user)) {
+			if ($user !== null) {
 				$users[] = $user;
 			}
 		}
@@ -179,10 +178,10 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 			->execute();
 
 		$subadmins = [];
-		while($row = $result->fetch()) {
+		while ($row = $result->fetch()) {
 			$user = $this->userManager->get($row['uid']);
 			$group = $this->groupManager->get($row['gid']);
-			if(!\is_null($user) && !\is_null($group)) {
+			if ($user !== null && $group !== null) {
 				$subadmins[] = [
 					'user'  => $user,
 					'group' => $group
@@ -196,7 +195,7 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 
 	/**
 	 * checks if a user is a SubAdmin of a group
-	 * @param IUser $user 
+	 * @param IUser $user
 	 * @param IGroup $group
 	 * @return bool
 	 */
@@ -221,7 +220,7 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 
 	/**
 	 * checks if a user is a SubAdmin
-	 * @param IUser $user 
+	 * @param IUser $user
 	 * @return bool
 	 */
 	public function isSubAdmin(IUser $user) {
@@ -248,15 +247,15 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 	 * @return bool
 	 */
 	public function isUserAccessible($subadmin, $user) {
-		if(!$this->isSubAdmin($subadmin)) {
+		if (!$this->isSubAdmin($subadmin)) {
 			return false;
 		}
-		if($this->groupManager->isAdmin($user->getUID())) {
+		if ($this->groupManager->isAdmin($user->getUID())) {
 			return false;
 		}
 		$accessibleGroups = $this->getSubAdminsGroups($subadmin);
-		foreach($accessibleGroups as $accessibleGroup) {
-			if($accessibleGroup->inGroup($user)) {
+		foreach ($accessibleGroups as $accessibleGroup) {
+			if ($accessibleGroup->inGroup($user)) {
 				return true;
 			}
 		}

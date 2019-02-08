@@ -33,6 +33,7 @@ use OCP\IImage;
 use OCP\IPreview;
 use OCP\IUserSession;
 use OCP\Preview\IProvider;
+use OCP\Preview\IProvider2;
 
 class PreviewManager implements IPreview {
 	/** @var IConfig */
@@ -176,12 +177,12 @@ class PreviewManager implements IPreview {
 	 *
 	 * @return string[]
 	 */
-	public function getSupportedMimes(){
+	public function getSupportedMimes() {
 		$supportedMimes = [];
 		$this->registerCoreProviders();
 		$mimeRegexArray = \array_keys($this->providers);
 		// Now trim start/stop regexp delimiters
-		foreach ($mimeRegexArray as $mimeRegex){
+		foreach ($mimeRegexArray as $mimeRegex) {
 			$supportedMimes[] = \trim($mimeRegex, '/');
 		}
 		return $supportedMimes;
@@ -204,7 +205,7 @@ class PreviewManager implements IPreview {
 		}
 
 		$mount = $file->getMountPoint();
-		if ($mount and !$mount->getOption('previews', true)){
+		if ($mount and !$mount->getOption('previews', true)) {
 			return false;
 		}
 
@@ -212,7 +213,7 @@ class PreviewManager implements IPreview {
 			if (\preg_match($supportedMimeType, $file->getMimetype())) {
 				foreach ($providers as $closure) {
 					$provider = $closure();
-					if (!($provider instanceof IProvider)) {
+					if (!($provider instanceof IProvider) && !($provider instanceof IProvider2)) {
 						continue;
 					}
 
@@ -370,26 +371,26 @@ class PreviewManager implements IPreview {
 		// Video requires avconv or ffmpeg and is therefor
 		// currently not supported on Windows.
 		if (\in_array('OC\Preview\Movie', $this->getEnabledDefaultProvider())) {
-		// AtomicParsley would actually work under Windows.
+			// AtomicParsley would actually work under Windows.
 			$avconvBinary = \OC_Helper::findBinaryPath('avconv');
 			$ffmpegBinary = ($avconvBinary) ? null : \OC_Helper::findBinaryPath('ffmpeg');
 			$atomicParsleyBinary = \OC_Helper::findBinaryPath('AtomicParsley');
 
 			// FIXME // a bit hacky but didn't want to use subclasses
 			$registerProvider = false;
-			if (null !== $avconvBinary) {
+			if ($avconvBinary !== null) {
 				\OC\Preview\Movie::$avconvBinary = $avconvBinary;
 				$registerProvider = true;
 			}
-			if (null !== $ffmpegBinary) {
+			if ($ffmpegBinary !== null) {
 				\OC\Preview\Movie::$ffmpegBinary = $ffmpegBinary;
 				$registerProvider = true;
 			}
-			if (null !== $atomicParsleyBinary) {
+			if ($atomicParsleyBinary !== null) {
 				\OC\Preview\Movie::$atomicParsleyBinary = $atomicParsleyBinary;
 				$registerProvider = true;
 			}
-			if (true === $registerProvider) {
+			if ($registerProvider === true) {
 				$this->registerCoreProvider('\OC\Preview\Movie', '/video\/.*/');
 			}
 		}

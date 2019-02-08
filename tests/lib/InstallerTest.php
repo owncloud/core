@@ -8,11 +8,9 @@
 
 namespace Test;
 
-
 use OC\Installer;
 
 class InstallerTest extends TestCase {
-
 	private static $appid = 'testapp';
 
 	protected function setUp() {

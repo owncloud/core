@@ -25,7 +25,7 @@
 namespace OC\Log;
 
 class Syslog {
-	static protected $levels = [
+	protected static $levels = [
 		\OCP\Util::DEBUG => LOG_DEBUG,
 		\OCP\Util::INFO => LOG_INFO,
 		\OCP\Util::WARN => LOG_WARNING,
@@ -41,7 +41,9 @@ class Syslog {
 	public static function init() {
 		\openlog(\OC::$server->getSystemConfig()->getValue("syslog_tag", "ownCloud"), LOG_PID | LOG_CONS, LOG_USER);
 		// Close at shutdown
-		\register_shutdown_function('closelog');
+		\OC::$server->getShutdownHandler()->register(function () {
+			\closelog();
+		});
 	}
 
 	/**
@@ -54,7 +56,7 @@ class Syslog {
 		$syslogLevel = self::$levels[$level];
 
 		$request = \OC::$server->getRequest();
-		if(\OC::$server->getConfig()->getSystemValue('installed', false)) {
+		if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 			$user = (\OC_User::getUser()) ? \OC_User::getUser() : '--';
 		} else {
 			$user = '--';

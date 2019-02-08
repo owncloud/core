@@ -70,9 +70,8 @@ class AppEnabledPlugin extends ServerPlugin {
 	 * @return void
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
-
 		$this->server = $server;
-		$this->server->on('beforeMethod', [$this, 'checkAppEnabled'], 30);
+		$this->server->on('beforeMethod:*', [$this, 'checkAppEnabled'], 30);
 	}
 
 	/**

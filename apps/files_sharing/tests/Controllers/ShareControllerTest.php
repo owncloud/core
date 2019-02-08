@@ -40,6 +40,8 @@ use OCP\IURLGenerator;
 use OCP\IUserManager;
 use OCP\Security\ISecureRandom;
 use OCP\Share\Exceptions\ShareNotFound;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * @group DB
@@ -69,8 +71,8 @@ class ShareControllerTest extends \Test\TestCase {
 	private $shareManager;
 	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $userManager;
-	/** @var  FederatedShareProvider | \PHPUnit_Framework_MockObject_MockObject */
-	private $federatedShareProvider;
+	/** @var EventDispatcher | \PHPUnit_Framework_MockObject_MockObject */
+	private $eventDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -82,12 +84,7 @@ class ShareControllerTest extends \Test\TestCase {
 		$this->previewManager = $this->createMock('\OCP\IPreview');
 		$this->config = $this->createMock('\OCP\IConfig');
 		$this->userManager = $this->createMock('\OCP\IUserManager');
-		$this->federatedShareProvider = $this->getMockBuilder('OCA\FederatedFileSharing\FederatedShareProvider')
-			->disableOriginalConstructor()->getMock();
-		$this->federatedShareProvider->expects($this->any())
-			->method('isOutgoingServer2serverShareEnabled')->willReturn(true);
-		$this->federatedShareProvider->expects($this->any())
-			->method('isIncomingServer2serverShareEnabled')->willReturn(true);
+		$this->eventDispatcher = new EventDispatcher();
 
 		$this->shareController = new \OCA\Files_Sharing\Controllers\ShareController(
 			$this->appName,
@@ -101,9 +98,8 @@ class ShareControllerTest extends \Test\TestCase {
 			$this->session,
 			$this->previewManager,
 			$this->createMock('\OCP\Files\IRootFolder'),
-			$this->federatedShareProvider
+			$this->eventDispatcher
 		);
-
 
 		// Store current user
 		$this->oldUser = \OC_User::getUser();
@@ -121,7 +117,9 @@ class ShareControllerTest extends \Test\TestCase {
 		\OC_User::setUserId('');
 		Filesystem::tearDown();
 		$user = \OC::$server->getUserManager()->get($this->user);
-		if ($user !== null) { $user->delete(); }
+		if ($user !== null) {
+			$user->delete();
+		}
 		\OC_User::setIncognitoMode(false);
 
 		\OC::$server->getSession()->set('public_link_authenticated', '');
@@ -225,9 +223,24 @@ class ShareControllerTest extends \Test\TestCase {
 			->with('files_sharing.sharecontroller.showShare', ['token'=>'token'])
 			->willReturn('redirect');
 
+		$beforeLinkAuthCalled = false;
+		$this->eventDispatcher->addListener(
+			'share.beforelinkauth', function () use (&$beforeLinkAuthCalled) {
+				$beforeLinkAuthCalled = true;
+			}
+		);
+		$afterLinkAuthCalled = false;
+		$this->eventDispatcher->addListener(
+			'share.afterlinkauth', function () use (&$afterLinkAuthCalled) {
+				$afterLinkAuthCalled = true;
+			}
+		);
+
 		$response = $this->shareController->authenticate('token', 'validpassword');
 		$expectedResponse =  new RedirectResponse('redirect');
 		$this->assertEquals($expectedResponse, $response);
+		$this->assertEquals(true, $beforeLinkAuthCalled);
+		$this->assertEquals(true, $afterLinkAuthCalled);
 	}
 
 	public function testAuthenticateInvalidPassword() {
@@ -255,11 +268,31 @@ class ShareControllerTest extends \Test\TestCase {
 			->method('set');
 
 		$hookListner = $this->getMockBuilder('Dummy')->setMethods(['access'])->getMock();
-		\OCP\Util::connectHook('OCP\Share', 'share_link_access',  $hookListner, 'access');
+		\OCP\Util::connectHook('OCP\Share', 'share_link_access', $hookListner, 'access');
+
+		$calledShareLinkAccess = [];
+		$this->eventDispatcher->addListener('share.linkaccess',
+			function (GenericEvent $event) use (&$calledShareLinkAccess) {
+				$calledShareLinkAccess[] = 'share.linkaccess';
+				$calledShareLinkAccess[] = $event;
+			});
+
+		$beforeLinkAuthCalled = false;
+		$this->eventDispatcher->addListener(
+			'share.beforelinkauth', function () use (&$beforeLinkAuthCalled) {
+				$beforeLinkAuthCalled = true;
+			}
+		);
+		$afterLinkAuthCalled = false;
+		$this->eventDispatcher->addListener(
+			'share.afterlinkauth', function () use (&$afterLinkAuthCalled) {
+				$afterLinkAuthCalled = true;
+			}
+		);
 
 		$hookListner->expects($this->once())
 			->method('access')
-			->with($this->callback(function(array $data) {
+			->with($this->callback(function (array $data) {
 				return $data['itemType'] === 'file' &&
 					$data['itemSource'] === 100 &&
 					$data['uidOwner'] === 'initiator' &&
@@ -271,6 +304,18 @@ class ShareControllerTest extends \Test\TestCase {
 		$response = $this->shareController->authenticate('token', 'invalidpassword');
 		$expectedResponse =  new TemplateResponse($this->appName, 'authenticate', ['wrongpw' => true], 'guest');
 		$this->assertEquals($expectedResponse, $response);
+
+		$this->assertEquals('share.linkaccess', $calledShareLinkAccess[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledShareLinkAccess[1]);
+		$this->assertArrayHasKey('shareObject', $calledShareLinkAccess[1]);
+		$this->assertEquals('42', $calledShareLinkAccess[1]->getArgument('shareObject')->getId());
+		$this->assertEquals('file', $calledShareLinkAccess[1]->getArgument('shareObject')->getNodeType());
+		$this->assertEquals('initiator', $calledShareLinkAccess[1]->getArgument('shareObject')->getSharedBy());
+		$this->assertEquals('token', $calledShareLinkAccess[1]->getArgument('shareObject')->getToken());
+		$this->assertEquals(403, $calledShareLinkAccess[1]->getArgument('errorCode'));
+		$this->assertEquals('Wrong password', $calledShareLinkAccess[1]->getArgument('errorMessage'));
+		$this->assertEquals(true, $beforeLinkAuthCalled);
+		$this->assertEquals(false, $afterLinkAuthCalled);
 	}
 
 	public function testShowShareInvalidToken() {
@@ -306,7 +351,6 @@ class ShareControllerTest extends \Test\TestCase {
 		$expectedResponse = new RedirectResponse('redirect');
 		$this->assertEquals($expectedResponse, $response);
 	}
-
 
 	public function testShowShare() {
 		$owner = $this->createMock('OCP\IUser');
@@ -353,6 +397,11 @@ class ShareControllerTest extends \Test\TestCase {
 
 		$this->userManager->method('get')->with('ownerUID')->willReturn($owner);
 
+		$loadAdditionalScriptsCalled = false;
+		$this->eventDispatcher->addListener('OCA\Files_Sharing::loadAdditionalScripts', function () use (&$loadAdditionalScriptsCalled) {
+			$loadAdditionalScriptsCalled = true;
+		});
+
 		$response = $this->shareController->showShare('token');
 		$sharedTmplParams = [
 			'displayName' => 'ownerDisplay',
@@ -383,6 +432,8 @@ class ShareControllerTest extends \Test\TestCase {
 		$expectedResponse->setContentSecurityPolicy($csp);
 
 		$this->assertEquals($expectedResponse, $response);
+
+		$this->assertTrue($loadAdditionalScriptsCalled, 'Hook for loading additional scripts was called');
 	}
 
 	/**
@@ -432,7 +483,6 @@ class ShareControllerTest extends \Test\TestCase {
 
 		$this->shareController->showShare('token');
 	}
-
 
 	public function testDownloadShare() {
 		$share = $this->createMock('\OCP\Share\IShare');

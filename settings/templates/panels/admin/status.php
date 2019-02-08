@@ -13,7 +13,7 @@
 			// show system status
 			// do not translate, keep original keywords = same output as via status.php
 			foreach ($_['showStatus'] as $statusKey => $statusValue) {
-			?>
+				?>
 				<td style="padding: 0 15px;"><?php p($statusKey); ?></td>
 				<td style="padding: 0 15px;"><?php p($statusValue); ?></td>
 		</tr>

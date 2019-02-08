@@ -23,7 +23,6 @@
 
 namespace OC\User;
 
-
 use OC\DB\QueryBuilder\Literal;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
@@ -158,7 +157,6 @@ class AccountMapper extends Mapper {
 	 * @return Account[]
 	 */
 	public function find($pattern, $limit = null, $offset = null) {
-
 		$allowMedialSearches = $this->config->getSystemValue('accounts.enable_medial_search', true);
 		if ($allowMedialSearches) {
 			$parameter = '%' . $this->db->escapeLikeParameter($pattern) . '%';
@@ -174,10 +172,10 @@ class AccountMapper extends Mapper {
 			->from($this->getTableName(), 'a')
 			->leftJoin('a', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
 			->orderBy('display_name')
-			->where($qb->expr()->like('lower_user_id', $qb->createNamedParameter($loweredParameter)))
-			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter($parameter)))
-			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter($parameter)))
-			->orWhere($qb->expr()->like('t.term', $qb->createNamedParameter($loweredParameter)));
+			->where($qb->expr()->like('lower_user_id', $qb->createPositionalParameter($loweredParameter)))
+			->orWhere($qb->expr()->iLike('display_name', $qb->createPositionalParameter($parameter)))
+			->orWhere($qb->expr()->iLike('email', $qb->createPositionalParameter($parameter)))
+			->orWhere($qb->expr()->like('t.term', $qb->createPositionalParameter($loweredParameter)));
 
 		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
 	}
@@ -261,7 +259,7 @@ class AccountMapper extends Mapper {
 		}
 		if ($hasLoggedIn === true) {
 			$qb->andWhere($qb->expr()->gt('last_login', new Literal(0)));
-		} else if ($hasLoggedIn === false) {
+		} elseif ($hasLoggedIn === false) {
 			$qb->andWhere($qb->expr()->eq('last_login', new Literal(0)));
 		}
 		if ($limit !== null) {
@@ -276,5 +274,4 @@ class AccountMapper extends Mapper {
 		$stmt->closeCursor();
 		return $rows;
 	}
-
 }

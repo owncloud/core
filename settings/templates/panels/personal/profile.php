@@ -31,11 +31,11 @@ if ($_['enableAvatars']) {
 </form>
 <?php endif;
 
-if($_['displayNameChangeSupported']) {
-?>
+if ($_['displayNameChangeSupported']) {
+	?>
 <form id="displaynameform" class="section">
 	<h2>
-		<label for="displayName"><?php echo $l->t('Full name');?></label>
+		<label for="displayName"><?php echo $l->t('Full name'); ?></label>
 	</h2>
 	<input type="text" id="displayName" name="displayName"
 		value="<?php p($_['displayName'])?>"
@@ -45,102 +45,101 @@ if($_['displayNameChangeSupported']) {
 </form>
 <?php
 } else {
-?>
+		?>
 <div id="displaynameform" class="section">
-	<h2><?php echo $l->t('Full name');?></h2>
-	<span><?php if(isset($_['displayName'][0])) { p($_['displayName']); } else { p($l->t('No display name set')); } ?></span>
+	<h2><?php echo $l->t('Full name'); ?></h2>
+	<span><?php if (isset($_['displayName'][0])) {
+			p($_['displayName']);
+		} else {
+			p($l->t('No display name set'));
+		} ?></span>
 </div>
 <?php
-}
+	}
 ?>
 
 <?php
-if($_['displayNameChangeSupported']) {
-?>
+if ($_['displayNameChangeSupported']) {
+	?>
 <form id="lostpassword" class="section">
 	<h2>
-		<label for="email"><?php p($l->t('Email'));?></label>
+		<label for="email"><?php p($l->t('Email')); ?></label>
 	</h2>
 	<input type="email" name="email" id="email" value="<?php p($_['email']); ?>"
-		placeholder="<?php p($l->t('Your email address'));?>"
+		placeholder="<?php p($l->t('Your email address')); ?>"
 		autocomplete="on" autocapitalize="off" autocorrect="off" />
-	<input id="emailbutton" type="button" value="<?php if(isset($_['email'][0])) { echo $l->t('Change email'); } else { echo $l->t('Set email'); }?>" />
+	<input id="emailbutton" type="button" value="<?php if (isset($_['email'][0])) {
+		echo $l->t('Change email');
+	} else {
+		echo $l->t('Set email');
+	} ?>" />
 	<span class="msg"></span><br />
-	<em><?php p($l->t('For password recovery and notifications'));?></em>
+	<em><?php p($l->t('For password recovery and notifications')); ?></em>
 </form>
 <?php
 } else {
-?>
+		?>
 <div id="lostpassword" class="section">
 	<h2><?php echo $l->t('Email'); ?></h2>
-	<span><?php if(isset($_['email'][0])) { p($_['email']); } else { p($l->t('No email address set')); }?></span>
+	<span><?php if (isset($_['email'][0])) {
+			p($_['email']);
+		} else {
+			p($l->t('No email address set'));
+		} ?></span>
 </div>
 <?php
-}
+	}
 ?>
 
 <div id="groups" class="section">
 	<h2><?php p($l->t('Groups')); ?></h2>
-	<?php if (\count($_['groups']) > 0) { ?>
+	<?php if (\count($_['groups']) > 0) {
+	?>
 		<p><?php p($l->t('You are member of the following groups:')); ?></p>
 		<p>
 			<?php p(\implode(', ', $_['groups'])); ?>
 		</p>
-	<?php } else { ?>
+	<?php
+} else {
+		?>
 		<p><?php p($l->t('You are not a member of any groups.')); ?></p>
-	<?php } ?>
+	<?php
+	} ?>
 
 </div>
 
 <?php
-if($_['passwordChangeSupported']) {
-	script('jquery-showpassword');
-?>
+if ($_['passwordChangeSupported']) {
+		script('jquery-showpassword'); ?>
 <form id="passwordform" class="section">
-	<h2 class="inlineblock"><?php p($l->t('Password'));?></h2>
+	<h2 class="inlineblock"><?php p($l->t('Password')); ?></h2>
 	<div class="hidden icon-checkmark" id="password-changed"></div>
-	<div class="hidden msg error" id="password-error"><?php p($l->t('Unable to change your password'));?></div>
+	<div class="hidden msg error" id="password-error"><?php p($l->t('Unable to change your password')); ?></div>
 	<br>
-	<label for="pass1" class="hidden-visually"><?php echo $l->t('Current password');?>: </label>
+	<label for="pass1" class="hidden-visually"><?php echo $l->t('Current password'); ?>: </label>
 	<input type="password" id="pass1" name="oldpassword"
-		placeholder="<?php echo $l->t('Current password');?>"
+		placeholder="<?php echo $l->t('Current password'); ?>"
 		autocomplete="off" autocapitalize="off" autocorrect="off" />
-	<label for="pass2" class="hidden-visually"><?php echo $l->t('New password');?>: </label>
+	<label for="pass2" class="hidden-visually"><?php echo $l->t('New password'); ?>: </label>
 	<input type="password" id="pass2" name="personal-password"
-		placeholder="<?php echo $l->t('New password');?>"
+		placeholder="<?php echo $l->t('New password'); ?>"
 		data-typetoggle="#personal-show"
 		autocomplete="off" autocapitalize="off" autocorrect="off" />
 	<input type="checkbox" id="personal-show" name="show" /><label for="personal-show"></label>
-	<input id="passwordbutton" type="submit" value="<?php echo $l->t('Change password');?>" />
+	<input id="passwordbutton" type="submit" value="<?php echo $l->t('Change password'); ?>" />
 </form>
 <?php
-}
+	}
 ?>
-
 <form id="language" class="section">
 	<h2>
-		<label for="languageinput"><?php p($l->t('Language'));?></label>
+		<label><?php p($l->t('Language'));?></label>
 	</h2>
-	<select id="languageinput" name="lang" data-placeholder="<?php p($l->t('Language'));?>">
-		<option value="<?php p($_['activelanguage']['code']);?>">
-			<?php p($_['activelanguage']['name']);?>
-		</option>
-		<?php foreach($_['commonlanguages'] as $language):?>
-			<option value="<?php p($language['code']);?>">
-				<?php p($language['name']);?>
-			</option>
-		<?php endforeach;?>
-		<optgroup label="––––––––––"></optgroup>
-		<?php foreach($_['languages'] as $language):?>
-			<option value="<?php p($language['code']);?>">
-				<?php p($language['name']);?>
-			</option>
-		<?php endforeach;?>
-	</select>
+	<?php print_unescaped($_['languageSelector']); ?>
 	<?php if (OC_Util::getEditionString() === OC_Util::EDITION_COMMUNITY): ?>
-	<a href="https://www.transifex.com/projects/p/owncloud/"
-		target="_blank" rel="noreferrer">
-		<em><?php p($l->t('Help translate'));?></em>
-	</a>
+		<a href="https://www.transifex.com/projects/p/owncloud/"
+		   target="_blank" rel="noreferrer">
+			<em><?php p($l->t('Help translate'));?></em>
+		</a>
 	<?php endif; ?>
 </form>

@@ -31,34 +31,34 @@ use Test\TestCase;
  * @group DB
  */
 class AddTest extends TestCase {
-    /** @var CommandTester */
-    private $commandTester;
+	/** @var CommandTester */
+	private $commandTester;
 
-    protected function setUp() {
-        parent::setUp();
+	protected function setUp() {
+		parent::setUp();
 
-        $command = new Add(\OC::$server->getGroupManager());
-        $this->commandTester = new CommandTester($command);
+		$command = new Add(\OC::$server->getGroupManager());
+		$this->commandTester = new CommandTester($command);
 
-        \OC::$server->getGroupManager()->createGroup('group1');
-    }
+		\OC::$server->getGroupManager()->createGroup('group1');
+	}
 
-    /**
-     * @dataProvider inputProvider
-     * @param array $input
-     * @param string $expectedOutput
-     */
-    public function testCommandInput($input, $expectedOutput) {
-        $this->commandTester->execute($input);
-        $output = $this->commandTester->getDisplay();
-        $this->assertContains($expectedOutput, $output);
-    }
+	/**
+	 * @dataProvider inputProvider
+	 * @param array $input
+	 * @param string $expectedOutput
+	 */
+	public function testCommandInput($input, $expectedOutput) {
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
+	}
 
-    public function inputProvider() {
-        return [
-            [['group' => 'group1'], 'already exist'],
-            [['group' => 'group2'], 'Created group'],
-            [['group' => ''], 'could not be created'],
-        ];
-    }
+	public function inputProvider() {
+		return [
+			[['group' => 'group1'], 'already exist'],
+			[['group' => 'group2'], 'Created group'],
+			[['group' => ''], 'could not be created'],
+		];
+	}
 }

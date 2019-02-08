@@ -4,6 +4,7 @@
     "None" : "﻿ಯಾವುದೂ ಇಲ್ಲ",
     "Username" : "﻿ಬಳಕೆಯ ಹೆಸರು",
     "Password" : "ಗುಪ್ತಪದ",
+    "__language_name__" : "ಕನ್ನಡ",
     "Apps" : "ಕಾರ್ಯಕ್ರಮಗಳು",
     "Security" : "﻿ಭದ್ರತೆ",
     "Encryption" : "ರಹಸ್ಯ ಸಂಕೇತೀಕರಿಸು",
@@ -13,6 +14,7 @@
     "A valid password must be provided" : "ಸರಿಯಾದ ಬಳಕೆದಾರ ಗುಪ್ತಪದ ಒದಗಿಸಬೇಕಾಗಿದೆ",
     "Help" : "﻿ಸಹಾಯ",
     "Settings" : "ಆಯ್ಕೆಗಳು",
+    "Imprint" : "ಮುದ್ರೆ",
     "Authentication error" : "ದೃಢೀಕರಣ ದೋಷ"
-},"pluralForm" :"nplurals=1; plural=0;"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

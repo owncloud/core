@@ -38,7 +38,7 @@ class CleanupChunks extends Command {
 	/**
 	 * @param IUserManager $userManager
 	 */
-	function __construct(IUserManager $userManager) {
+	public function __construct(IUserManager $userManager) {
 		parent::__construct();
 		$this->userManager = $userManager;
 	}
@@ -77,7 +77,6 @@ class CleanupChunks extends Command {
 
 			$p->finish();
 			$output->writeln('');
-
 		});
 	}
 }

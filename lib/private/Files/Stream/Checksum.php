@@ -22,7 +22,6 @@
 
 namespace OC\Files\Stream;
 
-
 use Icewind\Streams\Wrapper;
 use OC\Cache\CappedMemoryCache;
 
@@ -45,14 +44,12 @@ class Checksum extends Wrapper {
 	 *
 	 * @var  resource[]
 	 */
- 	private $hashingContexts;
+	private $hashingContexts;
 
 	/** @var CappedMemoryCache Key is path, value is array of checksums */
 	private static $checksums;
 
-
 	public function __construct(array $algos = ['sha1', 'md5', 'adler32']) {
-
 		foreach ($algos as $algo) {
 			$this->hashingContexts[$algo] = \hash_init($algo);
 		}
@@ -61,7 +58,6 @@ class Checksum extends Wrapper {
 			self::$checksums = new CappedMemoryCache();
 		}
 	}
-
 
 	/**
 	 * @param $source
@@ -80,7 +76,6 @@ class Checksum extends Wrapper {
 			$source, $context, 'occhecksum', self::class
 		);
 	}
-
 
 	/**
 	 * @param string $path
@@ -140,19 +135,17 @@ class Checksum extends Wrapper {
 	private function stripPartialFileExtension($path) {
 		$extension = \pathinfo($path, PATHINFO_EXTENSION);
 
-		if ( $extension === 'part') {
-
+		if ($extension === 'part') {
 			$newLength = \strlen($path) - 5; // 5 = strlen(".part")
 			$fPath = \substr($path, 0, $newLength);
 
 			// if path also contains a transaction id, we remove it too
 			$extension = \pathinfo($fPath, PATHINFO_EXTENSION);
-			if(\substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
+			if (\substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
 				$newLength = \strlen($fPath) - \strlen($extension) -1;
 				$fPath = \substr($fPath, 0, $newLength);
 			}
 			return $fPath;
-
 		} else {
 			return $path;
 		}
@@ -171,7 +164,7 @@ class Checksum extends Wrapper {
 		// As a result, call to getChecksums for original file (of this part file) will
 		// fetch checksum from cache
 		$originalFilePath = $this->stripPartialFileExtension($currentPath);
-		if ($originalFilePath !== $currentPath){
+		if ($originalFilePath !== $currentPath) {
 			self::$checksums[$originalFilePath] = $checksum;
 		}
 

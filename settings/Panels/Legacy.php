@@ -27,7 +27,6 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class Legacy implements ISettings {
-
 	protected $type;
 
 	public function __construct($type) {
@@ -48,5 +47,4 @@ class Legacy implements ISettings {
 	public function getSectionID() {
 		return 'additional';
 	}
-
 }

@@ -22,7 +22,6 @@
 namespace Test\Files\External\Backend;
 
 class BackendTest extends \Test\TestCase {
-
 	public function testJsonSerialization() {
 		$backend = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
 			->setMethods(['jsonSerializeDefinition'])

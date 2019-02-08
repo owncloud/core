@@ -32,5 +32,4 @@ interface IAuthModule {
 	 * @since 10.0.0
 	 */
 	public function getUserPassword(IRequest $request);
-
 }

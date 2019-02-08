@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OC\Files\Node;
-
 
 use OCP\Files\FileInfo;
 use OCP\Files\NotPermittedException;

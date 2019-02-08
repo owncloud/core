@@ -35,12 +35,13 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OC\Files\Mount\MoveableMount;
+use OC\Lock\Persistent\Lock;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
 use OCP\Files\ForbiddenException;
+use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
-
 
 abstract class Node implements \Sabre\DAV\INode {
 
@@ -131,8 +132,8 @@ abstract class Node implements \Sabre\DAV\INode {
 		// verify path of the source
 		$this->verifyPath();
 
-		list($parentPath,) = \Sabre\HTTP\URLUtil::splitPath($this->path);
-		list(, $newName) = \Sabre\HTTP\URLUtil::splitPath($name);
+		list($parentPath, ) = \Sabre\Uri\split($this->path);
+		list(, $newName) = \Sabre\Uri\split($name);
 
 		// verify path of target
 		if (\OC\Files\Filesystem::isForbiddenFileOrDir($parentPath . '/' . $newName)) {
@@ -149,9 +150,9 @@ abstract class Node implements \Sabre\DAV\INode {
 
 		try {
 			$this->fileView->rename($this->path, $newPath);
-		} catch (ForbiddenException $ex) { 
+		} catch (ForbiddenException $ex) {
 			throw new Forbidden($ex->getMessage(), $ex->getRetry());
-		} 
+		}
 
 		$this->path = $newPath;
 
@@ -379,6 +380,8 @@ abstract class Node implements \Sabre\DAV\INode {
 
 	/**
 	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
+	 *
+	 * @throws \OCP\Lock\LockedException
 	 */
 	public function changeLock($type) {
 		$this->fileView->changeLock($this->path, $type);
@@ -391,7 +394,7 @@ abstract class Node implements \Sabre\DAV\INode {
 		return $this->info;
 	}
 
-	protected function sanitizeMtime ($mtimeFromRequest) {
+	protected function sanitizeMtime($mtimeFromRequest) {
 		$mtime = (float) $mtimeFromRequest;
 		if ($mtime >= PHP_INT_MAX) {
 			$mtime = PHP_INT_MAX;

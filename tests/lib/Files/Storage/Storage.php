@@ -23,6 +23,7 @@
 namespace Test\Files\Storage;
 
 use OC\Files\Cache\Watcher;
+use OCP\Files\Storage\IStorage;
 
 abstract class Storage extends \Test\TestCase {
 	/**
@@ -127,7 +128,7 @@ abstract class Storage extends \Test\TestCase {
 		];
 	}
 
-	function loremFileProvider() {
+	public function loremFileProvider() {
 		$root = \OC::$SERVERROOT . '/tests/data/';
 		return [
 			// small file
@@ -174,7 +175,6 @@ abstract class Storage extends \Test\TestCase {
 		$this->instance->file_put_contents('/desktopapp.svg', \file_get_contents($svgFile, 'r'));
 		$this->assertEquals('image/svg+xml', $this->instance->getMimeType('/desktopapp.svg'));
 	}
-
 
 	public function copyAndMoveProvider() {
 		return [
@@ -290,17 +290,30 @@ abstract class Storage extends \Test\TestCase {
 
 	public function testStat() {
 		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
-		$ctimeStart = \time();
+
+		// The back-end storage system-under-test will have some (slightly different?)
+		// clock to the script on the local system running this test. So first find out that difference.
+		// The purpose of the time-related tests here is to verify that timestamps
+		// on the back-end storage happen in a consistent manner.
+		// It is expected that timestamps will vary by whatever is the offset between
+		// the back-end storage time and the time on the local system.
+		$this->instance->file_put_contents('/timecheck.txt', \file_get_contents($textFile));
+		$mTime = $this->instance->filemtime('/timecheck.txt');
+		$currentTime = \time();
+		$fileSystemTimeOffset = $mTime - $currentTime;
+		$this->instance->unlink('/timecheck.txt');
+
+		$ctimeStart = \time() + $fileSystemTimeOffset;
 		$this->instance->file_put_contents('/lorem.txt', \file_get_contents($textFile));
 		$this->assertTrue($this->instance->isReadable('/lorem.txt'));
-		$ctimeEnd = \time();
+		$ctimeEnd = \time() + $fileSystemTimeOffset;
 		$mTime = $this->instance->filemtime('/lorem.txt');
 		$this->assertTrue($this->instance->hasUpdated('/lorem.txt', $ctimeStart - 5));
 		$this->assertTrue($this->instance->hasUpdated('/', $ctimeStart - 5));
 
-		// check that ($ctimeStart - 5) <= $mTime <= ($ctimeEnd + 1)
+		// check that ($ctimeStart - 5) <= $mTime <= ($ctimeEnd + 5)
 		$this->assertGreaterThanOrEqual(($ctimeStart - 5), $mTime);
-		$this->assertLessThanOrEqual(($ctimeEnd + 1), $mTime);
+		$this->assertLessThanOrEqual(($ctimeEnd + 5), $mTime);
 		$this->assertEquals(\filesize($textFile), $this->instance->filesize('/lorem.txt'));
 
 		$stat = $this->instance->stat('/lorem.txt');
@@ -313,7 +326,7 @@ abstract class Storage extends \Test\TestCase {
 			$this->assertEquals($mTime, 100);
 		}
 
-		$mtimeStart = \time();
+		$mtimeStart = \time() + $fileSystemTimeOffset;
 
 		$this->instance->unlink('/lorem.txt');
 		$this->assertTrue($this->instance->hasUpdated('/', $mtimeStart - 5));
@@ -567,7 +580,7 @@ abstract class Storage extends \Test\TestCase {
 	}
 
 	public function testInstanceOfStorage() {
-		$this->assertTrue($this->instance->instanceOfStorage('\OCP\Files\Storage'));
+		$this->assertTrue($this->instance->instanceOfStorage(IStorage::class));
 		$this->assertTrue($this->instance->instanceOfStorage(\get_class($this->instance)));
 		$this->assertFalse($this->instance->instanceOfStorage('\OC'));
 	}

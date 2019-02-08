@@ -35,27 +35,25 @@ if (\version_compare(PHP_VERSION, '7.1.0') === -1) {
 	return;
 }
 
-// Show warning if PHP 7.3 is used as ownCloud is not compatible with PHP 7.3
-if (\version_compare(PHP_VERSION, '7.3.0alpha1') !== -1) {
-	echo 'This version of ownCloud is not compatible with PHP 7.3<br/>';
+// Show warning if PHP 8 is used as ownCloud is not compatible with PHP 7.4
+if (\version_compare(PHP_VERSION, '7.4.0alpha1') !== -1) {
+	echo 'This version of ownCloud is not compatible with PHP 7.4<br/>';
 	echo 'You are currently running PHP ' . PHP_VERSION . '.';
 	return;
 }
 
 // running oC on Windows is unsupported since 8.1, this has to happen here because
 // is seems that the autoloader on Windows fails later and just throws an exception.
-if (\strtoupper(\substr(PHP_OS, 0, 3)) === 'WIN') {
+if (\stripos(PHP_OS, 'WIN') === 0) {
 	echo 'ownCloud Server does not support Microsoft Windows.';
 	return;
 }
 
 try {
-
 	require_once __DIR__ . '/lib/base.php';
 	OC::handleRequest();
-
-} catch(\OC\ServiceUnavailableException $ex) {
-	\OC::$server->getLogger()->logException($ex, array('app' => 'index'));
+} catch (\OC\ServiceUnavailableException $ex) {
+	\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
 
 	//show the user a detailed error page
 	OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
@@ -71,7 +69,7 @@ try {
 	OC_Template::printErrorPage($ex->getMessage());
 } catch (Exception $ex) {
 	try {
-		\OC::$server->getLogger()->logException($ex, array('app' => 'index'));
+		\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
 
 		//show the user a detailed error page
 		OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
@@ -85,7 +83,7 @@ try {
 		echo('</body></html>');
 	}
 } catch (Error $ex) {
-	\OC::$server->getLogger()->logException($ex, array('app' => 'index'));
+	\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
 	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	OC_Template::printExceptionErrorPage($ex);
 }

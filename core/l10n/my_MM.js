@@ -24,7 +24,6 @@ OC.L10N.register(
     "can edit" : "ပြင်ဆင်နိုင်",
     "create" : "ဖန်တီးမည်",
     "delete" : "ဖျက်မည်",
-    "Resharing is not allowed" : "ပြန်လည်ဝေမျှခြင်းခွင့်မပြုပါ",
     "Add" : "ပေါင်းထည့်",
     "Apps" : "Apps",
     "Admin" : "အက်ဒမင်",

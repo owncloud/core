@@ -8,8 +8,6 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "אסור ליצור שיתוף מאוגד עם אותו משתמש",
     "File is already shared with %s" : "הקובץ כבר משותף עם %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "שיתוף %s נכשל, לא ניתן לאתר %s, ייתכן שהשרת לא ניתן להשגה כרגע.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "קבלת \"/%3$s\" כשיתוף מרוחק מ- %1$s (בשם %2$s)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "קבלת \"/%3$s\" כשיתוף מרוחק מ- %1$s",
     "Accept" : "אישור",
     "Decline" : "סירוב",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "שיתוף איתי באמצעות מספר זהות שרת ה- #ownCloud המאוגד שלי, ניתן לראות %s",
@@ -25,4 +23,4 @@ OC.L10N.register(
     "Share with me via ownCloud" : "שיתוף איתי באמצעות ownCloud",
     "HTML Code:" : "קוד HTML:"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");

@@ -45,4 +45,3 @@ $data['directory'] = $dir;
 $data['files'] = \OCA\Files_Trashbin\Helper::formatFileInfos($files);
 
 OCP\JSON::success(['data' => $data]);
-

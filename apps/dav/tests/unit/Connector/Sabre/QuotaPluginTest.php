@@ -29,6 +29,7 @@ use OCA\DAV\Connector\Sabre\QuotaPlugin;
 use OCA\DAV\Upload\FutureFile;
 use Sabre\DAV\Tree;
 use Test\TestCase;
+use OC\Files\View;
 
 /**
  * Copyright (c) 2013 Thomas Müller <thomas.mueller@tmit.eu>
@@ -47,7 +48,7 @@ class QuotaPluginTest extends TestCase {
 	private function init($quota, $checkedPath = '') {
 		$view = $this->buildFileViewMock($quota, $checkedPath);
 		$this->server = new \Sabre\DAV\Server();
-		$this->plugin = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\QuotaPlugin')
+		$this->plugin = $this->getMockBuilder(QuotaPlugin::class)
 			->setConstructorArgs([$view])
 			->setMethods(['getFileChunking'])
 			->getMock();
@@ -61,7 +62,7 @@ class QuotaPluginTest extends TestCase {
 		$this->init(0);
 		$this->plugin->expects($this->never())
 			->method('getFileChunking');
-		$this->server->httpRequest = new \Sabre\HTTP\Request(null, null, $headers);
+		$this->server->httpRequest = new \Sabre\HTTP\Request('', '', $headers);
 		$length = $this->plugin->getLength();
 		$this->assertEquals($expected, $length);
 	}
@@ -74,7 +75,7 @@ class QuotaPluginTest extends TestCase {
 		$this->plugin->expects($this->never())
 			->method('getFileChunking');
 
-		$this->server->httpRequest = new \Sabre\HTTP\Request(null, null, $headers);
+		$this->server->httpRequest = new \Sabre\HTTP\Request('', '', $headers);
 		$result = $this->plugin->checkQuota('');
 		$this->assertTrue($result);
 	}
@@ -88,7 +89,7 @@ class QuotaPluginTest extends TestCase {
 		$this->plugin->expects($this->never())
 			->method('getFileChunking');
 
-		$this->server->httpRequest = new \Sabre\HTTP\Request(null, null, $headers);
+		$this->server->httpRequest = new \Sabre\HTTP\Request('', '', $headers);
 		$this->plugin->checkQuota('');
 	}
 
@@ -100,7 +101,7 @@ class QuotaPluginTest extends TestCase {
 		$this->plugin->expects($this->never())
 			->method('getFileChunking');
 
-		$this->server->httpRequest = new \Sabre\HTTP\Request(null, null, $headers);
+		$this->server->httpRequest = new \Sabre\HTTP\Request('', '', $headers);
 		$result = $this->plugin->checkQuota('/sub/test.txt');
 		$this->assertTrue($result);
 	}
@@ -180,7 +181,7 @@ class QuotaPluginTest extends TestCase {
 	public function testCheckQuotaChunkedOk($quota, $chunkTotalSize, $headers) {
 		$this->init($quota, 'sub/test.txt');
 
-		$mockChunking = $this->getMockBuilder('\OC_FileChunking')
+		$mockChunking = $this->getMockBuilder(\OC_FileChunking::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$mockChunking->expects($this->once())
@@ -192,7 +193,7 @@ class QuotaPluginTest extends TestCase {
 			->will($this->returnValue($mockChunking));
 
 		$headers['OC-CHUNKED'] = 1;
-		$this->server->httpRequest = new \Sabre\HTTP\Request(null, null, $headers);
+		$this->server->httpRequest = new \Sabre\HTTP\Request('', '', $headers);
 		$result = $this->plugin->checkQuota('/sub/test.txt-chunking-12345-3-1');
 		$this->assertTrue($result);
 	}
@@ -216,7 +217,7 @@ class QuotaPluginTest extends TestCase {
 	public function testCheckQuotaChunkedFail($quota, $chunkTotalSize, $headers) {
 		$this->init($quota, 'sub/test.txt');
 
-		$mockChunking = $this->getMockBuilder('\OC_FileChunking')
+		$mockChunking = $this->getMockBuilder(\OC_FileChunking::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$mockChunking->expects($this->once())
@@ -228,13 +229,13 @@ class QuotaPluginTest extends TestCase {
 			->will($this->returnValue($mockChunking));
 
 		$headers['OC-CHUNKED'] = 1;
-		$this->server->httpRequest = new \Sabre\HTTP\Request(null, null, $headers);
+		$this->server->httpRequest = new \Sabre\HTTP\Request('', '', $headers);
 		$this->plugin->checkQuota('/sub/test.txt-chunking-12345-3-1');
 	}
 
 	private function buildFileViewMock($quota, $checkedPath) {
 		// mock file systen
-		$view = $this->getMockBuilder('\OC\Files\View')
+		$view = $this->getMockBuilder(View::class)
 			->setMethods(['free_space'])
 			->setConstructorArgs([])
 			->getMock();
@@ -276,7 +277,6 @@ class QuotaPluginTest extends TestCase {
 			->with($expectedPath);
 
 		$server->emit($event, $eventArgs);
-
 	}
 
 	public function testPathBeforeModeTargetExists() {
@@ -312,7 +312,6 @@ class QuotaPluginTest extends TestCase {
 			->with('/test/sub/test.txt', 12345);
 
 		$server->emit('beforeMove', [$source, $destination]);
-
 	}
 
 	public function testPathBeforeModeTargetDoesNotExists() {
@@ -348,6 +347,5 @@ class QuotaPluginTest extends TestCase {
 			->with('/test/sub', 12345);
 
 		$server->emit('beforeMove', [$source, $destination]);
-
 	}
 }

@@ -42,7 +42,6 @@ class GenerateChangeScript extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-
 		$file = $input->getArgument('schema-xml');
 
 		$schemaManager = new \OC\DB\MDB2SchemaManager(\OC::$server->getDatabaseConnection());
@@ -53,6 +52,5 @@ class GenerateChangeScript extends Command {
 		} catch (\Exception $e) {
 			$output->writeln('Failed to update database structure ('.$e.')');
 		}
-
 	}
 }

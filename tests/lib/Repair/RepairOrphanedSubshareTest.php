@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace Test\Repair;
 
 use OC\Repair\RepairOrphanedSubshare;
@@ -58,7 +57,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		parent::tearDown();
 	}
 
-	public function deleteAllShares()  {
+	public function deleteAllShares() {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->delete('share')->execute();
 	}
@@ -70,7 +69,6 @@ class RepairOrphanedSubshareTest extends TestCase {
 	 * the repair step to see if its working properly
 	 */
 	public function testPopulateDBAndRemoveOrphanShares() {
-
 		$qb = $this->connection->getQueryBuilder();
 		//Create 3 users. admin, user1 and user2
 		$user1 = 'user1';
@@ -81,7 +79,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$grabIds = null;
 		//Lets create 10 entries in oc_share to share
 		$parentReshareCount = 1;
-		for($i=1; $i <= 10; $i++) {
+		for ($i=1; $i <= 10; $i++) {
 			$time = 1522762088 + $i * 60;
 			if ($i <= 5) {
 				$shareWithUser = $user1;
@@ -138,7 +136,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		//necessarily starts with 1. Observed in drone that they do start with
 		//21.
 		$initial_id = $grabIds[0]['id'];
-		foreach (array(1,3,5) as $id) {
+		foreach ([1,3,5] as $id) {
 			$id = $initial_id + ($id - 1);
 			$qb = $this->connection->getQueryBuilder();
 			$qb->delete('share')
@@ -170,7 +168,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$totalUsers[] = 'admin';
 		//Create 29 users. admin, user1, user2 ... user29
 		$user = 'user';
-		for($i=1; $i <= 30; $i++) {
+		for ($i=1; $i <= 30; $i++) {
 			$this->createUser($user.$i);
 			$totalUsers[] = $user.$i;
 		}
@@ -184,7 +182,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$rowCount = 1;
 		$firstIdSet = false;
 		foreach ($totalUsers as $user) {
-			for($i=1; $i <= 100; $i++) {
+			for ($i=1; $i <= 100; $i++) {
 				$time = 1522762088 + $i * 60;
 				$userIndex = \array_search($user, $totalUsers, true);
 				if (($userIndex+1) === \count($totalUsers)) {
@@ -252,7 +250,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 			22, 33, 44, 29, 46,
 			60, 71, 81, 88, 51,
 			91, 90, 65, 75, 95];
-		foreach($rowIds as $rowId) {
+		foreach ($rowIds as $rowId) {
 			$qb = $this->connection->getQueryBuilder();
 			//Check if the row is there before deleting
 			$result = $qb->select('id')
@@ -280,10 +278,10 @@ class RepairOrphanedSubshareTest extends TestCase {
 			$statement = $qb->select('parent')
 				->from('share')
 				->groupBy('parent')->orderBy('parent')->setMaxResults($pageLimit)->setFirstResult($offset)->execute();
-				$results = $statement->fetchAll();
+			$results = $statement->fetchAll();
 			$offset += $pageLimit;
 			$result += \count($results);
-		} while(\count($results) > 0);
+		} while (\count($results) > 0);
 		$this->assertEquals($totalParents - 20, $result);
 	}
 
@@ -311,7 +309,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$totalParents = 1;
 		foreach ($totalUsers as $user) {
 			$userIndex = \array_search($user, $totalUsers, true);
-			for($i=1; $i <= 3000; $i++) {
+			for ($i=1; $i <= 3000; $i++) {
 				if (($userIndex+1) === \count($totalUsers)) {
 					break;
 				}
@@ -336,7 +334,6 @@ class RepairOrphanedSubshareTest extends TestCase {
 					$getAllIdsPerUser[$user][$i] = $this->getLastSharedId();
 					$totalParents++;
 				} else {
-
 					$qb->insert('share')
 						->values([
 							'share_type' => $qb->expr()->literal('0'),
@@ -377,7 +374,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$checkQuery = $this->connection->getQueryBuilder();
 		//From 10 to 2509 are the entries missing. So lets validate that.
 		//Lets take some snippets
-		$missingEntries[] = \range(10,20);
+		$missingEntries[] = \range(10, 20);
 		$missingEntries[] = \range(190, 200);
 		$missingEntries[] = \range(1500, 1510);
 		$missingEntries[] = \range(2000, 2010);
@@ -387,7 +384,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 				$row = $checkQuery->select('parent')
 					->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
 					->execute()->fetchAll();
-				$this->assertEquals(0, \count($row));
+				$this->assertCount(0, $row);
 			}
 		}
 
@@ -399,7 +396,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 				$row = $checkQuery->select('parent')
 					->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
 					->execute()->fetchAll();
-				$this->assertEquals(1, \count($row));
+				$this->assertCount(1, $row);
 			}
 		}
 	}

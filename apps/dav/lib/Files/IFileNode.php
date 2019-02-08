@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Files;
-
 
 use OCP\Files\Node;
 
@@ -31,5 +29,4 @@ interface IFileNode {
 	 * @return Node
 	 */
 	public function getNode();
-
 }

@@ -36,7 +36,6 @@ use OCP\IUserManager;
  * @group DB
  */
 class HookManagerZsyncTest extends TestCase {
-
 	const TEST_ZSYNC_HOOKS_USER = 'test-files-user';
 	const USERS_ZSYNC_ROOT = '/test-files-user/files_zsync';
 
@@ -58,7 +57,9 @@ class HookManagerZsyncTest extends TestCase {
 	public static function tearDownAfterClass() {
 		// cleanup test user
 		$user = \OC::$server->getUserManager()->get(self::TEST_ZSYNC_HOOKS_USER);
-		if ($user !== null) { $user->delete(); }
+		if ($user !== null) {
+			$user->delete();
+		}
 
 		parent::tearDownAfterClass();
 	}
@@ -138,7 +139,6 @@ class HookManagerZsyncTest extends TestCase {
 	 * @param bool $create
 	 */
 	public static function loginHelper($user, $create = false) {
-
 		if ($create) {
 			\OC::$server->getUserManager()->createUser($user, $user);
 		}

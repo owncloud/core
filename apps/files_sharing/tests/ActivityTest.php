@@ -67,7 +67,6 @@ class ActivityTest extends TestCase {
 		} else {
 			$this->assertSame($expectedResult, $result);
 		}
-
 	}
 
 	public function dataTestGetDefaultType() {
@@ -76,5 +75,4 @@ class ActivityTest extends TestCase {
 			['stream', [\OCA\Files_Sharing\Activity::TYPE_SHARED, \OCA\Files_Sharing\Activity::TYPE_REMOTE_SHARE, \OCA\Files_Sharing\Activity::TYPE_PUBLIC_LINKS]],
 		];
 	}
-
 }

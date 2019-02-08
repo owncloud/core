@@ -21,6 +21,7 @@
 
 namespace OC\Files\Storage\Wrapper;
 
+use OCP\Files\Storage\IStorage;
 use OCP\ICache;
 use OC\Cache\CappedMemoryCache;
 
@@ -41,7 +42,7 @@ class Encoding extends Wrapper {
 	 * @param array $parameters
 	 */
 	public function __construct($parameters) {
-		$this->storage = $parameters['storage'];
+		parent::__construct($parameters);
 		$this->namesCache = new CappedMemoryCache();
 	}
 
@@ -509,16 +510,14 @@ class Encoding extends Wrapper {
 		if ($sourceStorage === $this) {
 			$result = $this->rename($sourceInternalPath, $this->findPathToUse($targetInternalPath));
 			if ($result) {
-				unset($this->namesCache[$sourceInternalPath]);
-				unset($this->namesCache[$targetInternalPath]);
+				unset($this->namesCache[$sourceInternalPath], $this->namesCache[$targetInternalPath]);
 			}
 			return $result;
 		}
 
 		$result = $this->storage->moveFromStorage($sourceStorage, $sourceInternalPath, $this->findPathToUse($targetInternalPath));
 		if ($result) {
-			unset($this->namesCache[$sourceInternalPath]);
-			unset($this->namesCache[$targetInternalPath]);
+			unset($this->namesCache[$sourceInternalPath], $this->namesCache[$targetInternalPath]);
 		}
 		return $result;
 	}

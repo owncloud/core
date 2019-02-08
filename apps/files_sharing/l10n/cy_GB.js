@@ -4,6 +4,7 @@ OC.L10N.register(
     "Uploading..." : "Yn llwytho i fyny...",
     "Cancel" : "Diddymu",
     "Share" : "Rhannu",
+    "Pending" : "I ddod",
     "Shared by" : "Rhannwyd gan",
     "Password" : "Cyfrinair",
     "Name" : "Enw",

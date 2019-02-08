@@ -27,7 +27,6 @@
  *
  */
 
-
 class OC_FileChunking {
 	protected $info;
 	protected $cache;
@@ -39,14 +38,14 @@ class OC_FileChunking {
 	 */
 	protected $ttl;
 
-	static public function isWebdavChunk() {
+	public static function isWebdavChunk() {
 		if (isset($_SERVER['HTTP_OC_CHUNKED'])) {
 			return true;
 		}
 		return false;
 	}
 
-	static public function decodeName($name) {
+	public static function decodeName($name) {
 		\preg_match('/(?P<name>.*)-chunking-(?P<transferid>\d+)-(?P<chunkcount>\d+)-(?P<index>\d+)/', $name, $matches);
 		return $matches;
 	}
@@ -93,7 +92,7 @@ class OC_FileChunking {
 		$cache = $this->getCache();
 		$chunkcount = (int)$this->info['chunkcount'];
 
-		for($i=($chunkcount-1); $i >= 0; $i--) {
+		for ($i=($chunkcount-1); $i >= 0; $i--) {
 			if (!$cache->hasKey($prefix.$i)) {
 				return false;
 			}
@@ -149,7 +148,7 @@ class OC_FileChunking {
 	public function cleanup() {
 		$cache = $this->getCache();
 		$prefix = $this->getPrefix();
-		for($i=0; $i < $this->info['chunkcount']; $i++) {
+		for ($i=0; $i < $this->info['chunkcount']; $i++) {
 			$cache->remove($prefix.$i);
 		}
 	}

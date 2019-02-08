@@ -22,7 +22,6 @@
 
 namespace OCA\DAV\Tests\unit\DAV\Sharing;
 
-
 use OCA\DAV\Connector\Sabre\Auth;
 use OCA\DAV\DAV\Sharing\IShareable;
 use OCA\DAV\DAV\Sharing\Plugin;
@@ -65,7 +64,6 @@ class PluginTest extends TestCase {
 	}
 
 	public function testSharing() {
-
 		$this->book->expects($this->once())->method('updateShares')->with([[
 				'href' => 'principal:principals/admin',
 				'commonName' => null,
@@ -74,7 +72,7 @@ class PluginTest extends TestCase {
 		]], ['mailto:wilfredo@example.com']);
 
 		// setup request
-		$request = new Request();
+		$request = new Request('', '');
 		$request->addHeader('Content-Type', 'application/xml');
 		$request->setUrl('addressbook1.vcf');
 		$request->setBody('<?xml version="1.0" encoding="utf-8" ?><CS:share xmlns:D="DAV:" xmlns:CS="http://owncloud.org/ns"><CS:set><D:href>principal:principals/admin</D:href><CS:read-write/></CS:set> <CS:remove><D:href>mailto:wilfredo@example.com</D:href></CS:remove></CS:share>');

@@ -25,7 +25,6 @@
 
 namespace OC;
 
-
 use OCP\IConfig;
 
 /**
@@ -51,7 +50,14 @@ class SystemConfig {
 		'proxyuserpwd' => true,
 		'marketplace.key' => true,
 		'log.condition' => [
+			[
 			'shared_secret' => true,
+			]
+		],
+		'log.conditions' => [
+			[
+			'shared_secret' => true,
+			]
 		],
 		'license-key' => true,
 		'redis' => [
@@ -153,8 +159,21 @@ class SystemConfig {
 
 		if (\is_array($value)) {
 			foreach ($keysToRemove as $keyToRemove => $valueToRemove) {
-				if (isset($value[$keyToRemove])) {
-					$value[$keyToRemove] = $this->removeSensitiveValue($valueToRemove, $value[$keyToRemove]);
+				if ($keyToRemove === 0) {
+					/*
+					 * The 0 key in keysToRemove indicates a possibly repeating
+					 * array of actual entries 0,1,2,3...
+					 * Remove any sensitive values from all actual entries.
+					 */
+					foreach ($value as $valueKey => $valueData) {
+						if (\is_int($valueKey) && ($valueKey >= 0)) {
+							$value[$valueKey] = $this->removeSensitiveValue($valueToRemove, $value[$valueKey]);
+						}
+					}
+				} else {
+					if (isset($value[$keyToRemove])) {
+						$value[$keyToRemove] = $this->removeSensitiveValue($valueToRemove, $value[$keyToRemove]);
+					}
 				}
 			}
 		}

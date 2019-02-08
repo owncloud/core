@@ -30,41 +30,48 @@ use Test\TestCase;
  *
  * @group DB
  */
-class ListUsersTest extends TestCase
-{
-    /** @var CommandTester */
-    private $commandTester;
+class ListUsersTest extends TestCase {
+	/** @var CommandTester */
+	private $commandTester;
 
-    protected function setUp() {
-        parent::setUp();
+	protected function setUp() {
+		parent::setUp();
 
-        \OC::$server->getUserManager()->createUser('testlistuser','password');
-        $command = new ListUsers(\OC::$server->getUserManager());
-        $this->commandTester = new CommandTester($command);
-    }
+		\OC::$server->getUserManager()->createUser('testlistuser', 'password');
+		$command = new ListUsers(\OC::$server->getUserManager());
+		$this->commandTester = new CommandTester($command);
+	}
 
-    protected function tearDown() {
-        parent::tearDown();
-        \OC::$server->getUserManager()->get('testlistuser')->delete();
-    }
+	protected function tearDown() {
+		parent::tearDown();
+		\OC::$server->getUserManager()->get('testlistuser')->delete();
+	}
 
+	/**
+	 * @dataProvider inputProvider
+	 * @param array $input
+	 * @param string $expectedOutput
+	 */
+	public function testCommandInput($input, $expectedOutputs) {
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		foreach ($expectedOutputs as $expectedOutput) {
+			$this->assertContains($expectedOutput, $output);
+		}
+	}
 
-    /**
-     * @dataProvider inputProvider
-     * @param array $input
-     * @param string $expectedOutput
-     */
-    public function testCommandInput($input, $expectedOutput) {
-        $this->commandTester->execute($input);
-        $output = $this->commandTester->getDisplay();
-        $this->assertContains($expectedOutput, $output);
-    }
-
-    public function inputProvider() {
-        return [
-            [[], 'testlistuser'],
-            [['search-pattern' => 'testlist'], 'testlistuser']
-        ];
-    }
-
+	public function inputProvider() {
+		return [
+			[[], ['testlistuser']],
+			[['search-pattern' => 'testlist'], ['testlistuser']],
+			[['--attributes' => [
+				'uid', 'displayname', 'email', 'quota', 'enabled', 'lastlogin',
+				'home', 'backend', 'cloudid', 'searchterms'
+			]], [
+				'uid', 'displayName', 'email', 'quota', 'enabled', 'lastLogin',
+				'home', 'backend', 'cloudId', 'searchTerms'
+				]
+			]
+		];
+	}
 }

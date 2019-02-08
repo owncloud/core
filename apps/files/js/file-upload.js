@@ -114,6 +114,17 @@ OC.FileUpload.prototype = {
 		return this.getFile().name;
 	},
 
+	getLastModified: function() {
+		var file = this.getFile();
+		if (file.lastModifiedDate) {
+			return file.lastModifiedDate.getTime() / 1000;
+		}
+		if (file.lastModified) {
+			return file.lastModified / 1000;
+		}
+		return null;
+	},
+
 	setTargetFolder: function(targetFolder) {
 		this._targetFolder = targetFolder;
 	},
@@ -238,9 +249,10 @@ OC.FileUpload.prototype = {
 			this.data.headers['OC-Autorename'] = '1';
 		}
 
-		if (file.lastModified) {
+		var lastModified = this.getLastModified();
+		if (lastModified) {
 			// preserve timestamp
-			this.data.headers['X-OC-Mtime'] = file.lastModified / 1000;
+			this.data.headers['X-OC-Mtime'] = '' + lastModified;
 		}
 
 		var userName = this.uploader.davClient.getUserName();
@@ -287,23 +299,56 @@ OC.FileUpload.prototype = {
 		}
 
 		var uid = OC.getCurrentUser().uid;
-		var mtime = this.getFile().lastModified;
+		var mtime = this.getLastModified();
 		var size = this.getFile().size;
 		var headers = {};
 		if (mtime) {
-			headers['X-OC-Mtime'] = mtime / 1000;
+			headers['X-OC-Mtime'] = mtime;
 		}
 		if (size) {
 			headers['OC-Total-Length'] = size;
-
 		}
+		headers['OC-LazyOps'] = 1;
 
-		return this.uploader.davClient.move(
+		var doneDeferred = $.Deferred();
+
+		this.uploader.davClient.move(
 			'uploads/' + uid + '/' + this.getId() + '/.file',
 			'files/' + uid + '/' + OC.joinPaths(this.getFullPath(), this.getFileName()),
 			true,
 			headers
-		);
+		).then(function (status, response) {
+			// a 202 response means the server is performing the final MOVE in an async manner,
+			// so we need to poll its status
+			if (status === 202) {
+				var poll = function() {
+					$.ajax(response.xhr.getResponseHeader('oc-jobstatus-location')).then(function(data) {
+						var obj = JSON.parse(data);
+						if (obj.status === 'finished') {
+							doneDeferred.resolve(status, response);
+						}
+						if (obj.status === 'error') {
+							OC.Notification.show(obj.errorMessage);
+							doneDeferred.reject(status, response);
+						}
+						if (obj.status === 'started' || obj.status === 'initial') {
+							// call it again after some short delay
+							setTimeout(poll, 1000);
+						}
+					});
+				};
+
+				// start the polling
+				poll();
+			} else {
+				doneDeferred.resolve(status, response);
+			}
+
+		}).fail( function(status, response) {
+			doneDeferred.reject(status, response);
+		});
+
+		return doneDeferred.promise();
 	},
 
 	_deleteChunkFolder: function() {
@@ -842,7 +887,8 @@ OC.Uploader.prototype = _.extend({
 			if (progress >= total) {
 				// change message if we stalled at 100%
 				this.$uploadprogressbar.find('.label .desktop').text(t('core', 'Processing files...'));
-			} else if (new Date().getTime() - this._lastProgressTime >= this._uploadStallTimeout * 1000 ) {
+			}
+			if (new Date().getTime() - this._lastProgressTime >= this._uploadStallTimeout * 1000 ) {
 				// TODO: move to "fileuploadprogress" event instead and use data.uploadedBytes
 				// stalling needs to be checked here because the file upload no longer triggers events
 				// restart upload
@@ -1112,6 +1158,7 @@ OC.Uploader.prototype = _.extend({
 									});
 
 									// clear the previous data:
+									upload.data.stalled = false;
 									data.data = null;
 									// overwrite chunk
 									delete data.headers['If-None-Match'];
@@ -1156,6 +1203,9 @@ OC.Uploader.prototype = _.extend({
 							OC.Notification.show(t('files', 'Target folder does not exist any more'), {type: 'error'});
 						}
 						self.cancelUploads();
+					} else if (status === 423) {
+						// not enough space
+						OC.Notification.show(t('files', 'The file {file} is currently locked, please try again later', {file: upload.getFileName()}), {type: 'error'});
 					} else if (status === 507) {
 						// not enough space
 						OC.Notification.show(t('files', 'Not enough free space'), {type: 'error'});
@@ -1309,6 +1359,9 @@ OC.Uploader.prototype = _.extend({
 
 					// reset retries
 					upload.data.retries = 0;
+				});
+				fileupload.on('fileuploadchunkdone', function(e, data) {
+					$(data.xhr().upload).unbind('progress');
 				});
 				fileupload.on('fileuploaddone', function(e, data) {
 					var upload = self.getUpload(data);

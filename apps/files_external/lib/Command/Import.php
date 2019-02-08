@@ -60,7 +60,7 @@ class Import extends Base {
 	/** @var IStoragesBackendService */
 	private $backendService;
 
-	function __construct(IGlobalStoragesService $globalService,
+	public function __construct(IGlobalStoragesService $globalService,
 						 IUserStoragesService $userService,
 						 IUserSession $userSession,
 						 IUserManager $userManager,
@@ -130,7 +130,7 @@ class Import extends Base {
 			if (!isset($data[0])) { //normalize to an array of mounts
 				$data = [$data];
 			}
-			$mounts = \array_map(function($entry) use ($storageService) {
+			$mounts = \array_map(function ($entry) use ($storageService) {
 				return $this->parseData($entry, $storageService);
 			}, $data);
 		}
@@ -204,7 +204,7 @@ class Import extends Base {
 	protected function getStorageService($userId) {
 		if (!empty($userId)) {
 			$user = $this->userManager->get($userId);
-			if (\is_null($user)) {
+			if ($user === null) {
 				throw new NoUserException("user $userId not found");
 			}
 			$this->userSession->setUser($user);

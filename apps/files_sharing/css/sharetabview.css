@@ -147,8 +147,11 @@
 }
 
 .link-entry--title {
-	flex-grow  : 1;
-	font-weight: bold;
+	flex-grow    : 1;
+	font-weight  : bold;
+	overflow-x   : hidden;
+	text-overflow: ellipsis;
+	white-space  : nowrap;
 }
 
 .link-entry--icon-button {
@@ -237,10 +240,9 @@
 }
 
 .user-share--permission-preview {
-	white-space      : nowrap;
-	overflow         : hidden;
-	-ms-text-overflow: ellipsis;
-	text-overflow    : ellipsis;
+	white-space  : nowrap;
+	overflow     : hidden;
+	text-overflow: ellipsis;
 }
 
 .user-share--permission-preview li {
@@ -296,4 +298,11 @@
 
 .minify input {
 	font-size: 1px;
+}
+
+.shareDialogExpirationView .error-message,
+.linkPass .error-message {
+	color: red;
+    padding: 4px;
+    display: block;
 }

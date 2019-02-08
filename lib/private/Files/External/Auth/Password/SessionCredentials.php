@@ -75,12 +75,15 @@ class SessionCredentials extends AuthMechanism {
 		}
 
 		$credentials = \json_decode($this->crypto->decrypt($encrypted), true);
-		$storage->setBackendOption('user', $this->session->get('loginname'));
+		if ($user !== null) {
+			$storage->setBackendOption('user', $user->getUserName());
+		} else {
+			$storage->setBackendOption('user', $this->session->get('loginname'));
+		}
 		$storage->setBackendOption('password', $credentials['password']);
 	}
 
-	public function wrapStorage(Storage $storage) {
+	public function wrapStorage(Storage\IStorage $storage) {
 		return new SessionStorageWrapper(['storage' => $storage]);
 	}
-
 }

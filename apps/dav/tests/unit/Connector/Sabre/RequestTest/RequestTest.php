@@ -31,6 +31,8 @@ use Sabre\HTTP\Request;
 use Test\TestCase;
 use Test\Traits\MountProviderTrait;
 use Test\Traits\UserTrait;
+use OC\Files\Storage\Local;
+use OCP\IRequest;
 
 abstract class RequestTest extends TestCase {
 	use UserTrait;
@@ -60,14 +62,15 @@ abstract class RequestTest extends TestCase {
 			\OC::$server->getUserSession(),
 			\OC::$server->getMountManager(),
 			\OC::$server->getTagManager(),
-			$this->createMock('\OCP\IRequest')
+			$this->createMock(IRequest::class),
+			\OC::$server->getTimeFactory()
 		);
 	}
 
 	protected function setupUser($name, $password) {
 		$this->createUser($name, $password);
 		$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
-		$this->registerMount($name, '\OC\Files\Storage\Local', '/' . $name, ['datadir' => $tmpFolder]);
+		$this->registerMount($name, Local::class, '/' . $name, ['datadir' => $tmpFolder]);
 		$this->loginAsUser($name);
 		return new View('/' . $name . '/files');
 	}
@@ -83,7 +86,7 @@ abstract class RequestTest extends TestCase {
 	 * @return \Sabre\HTTP\Response
 	 * @throws \Exception
 	 */
-	protected function request($view, $user, $password, $method, $url, $body = null, $headers = null) {
+	protected function request($view, $user, $password, $method, $url, $body = null, $headers = []) {
 		if (\is_string($body)) {
 			$body = $this->getStream($body);
 		}

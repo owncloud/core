@@ -1,3 +1,0 @@
-This must be the last skeleton file in this folder, when sorted alphabetically.
-Tests for performing actions on the last file in the folder try to find and use
-this file name.

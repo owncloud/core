@@ -25,6 +25,7 @@ use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CalDAV\Calendar;
 use OCA\DAV\CalDAV\PublicCalendarRoot;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IL10N;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
@@ -37,7 +38,6 @@ use Test\TestCase;
  * @package OCA\DAV\Tests\unit\CalDAV
  */
 class PublicCalendarRootTest extends TestCase {
-
 	const UNIT_TEST_USER = 'principals/users/caldav-unit-test';
 
 	/** @var CalDavBackend */
@@ -55,6 +55,9 @@ class PublicCalendarRootTest extends TestCase {
 	/** @var Principal */
 	private $principal;
 
+	/** @var GroupPrincipalBackend */
+	private $groupPrincipal;
+
 	/** @var ISecureRandom */
 	private $random;
 
@@ -68,7 +71,9 @@ class PublicCalendarRootTest extends TestCase {
 		$this->config = \OC::$server->getConfig();
 		$this->random = \OC::$server->getSecureRandom();
 
-		$this->backend = new CalDavBackend($db, $this->principal, $this->config, $this->random);
+		$this->groupPrincipal = $this->createMock(GroupPrincipalBackend::class);
+
+		$this->backend = new CalDavBackend($db, $this->principal, $this->groupPrincipal, $this->random);
 
 		$this->publicCalendarRoot = new PublicCalendarRoot($this->backend);
 
@@ -79,7 +84,7 @@ class PublicCalendarRootTest extends TestCase {
 	public function tearDown() {
 		parent::tearDown();
 
-		if (\is_null($this->backend)) {
+		if ($this->backend === null) {
 			return;
 		}
 		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
@@ -94,7 +99,6 @@ class PublicCalendarRootTest extends TestCase {
 	}
 
 	public function testGetChild() {
-
 		$calendar = $this->createPublicCalendar();
 
 		$publicCalendars = $this->backend->getPublicCalendars();
@@ -144,6 +148,4 @@ class PublicCalendarRootTest extends TestCase {
 
 		return $calendar;
 	}
-
-
 }

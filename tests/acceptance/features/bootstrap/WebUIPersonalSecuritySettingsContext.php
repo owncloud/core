@@ -32,7 +32,6 @@ require_once 'bootstrap.php';
  * WebUI PersonalSecuritySettings context.
  */
 class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Context {
-
 	private $personalSecuritySettingsPage;
 	private $appName;
 	private $strForAppName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -46,9 +45,11 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 * WebUIPersonalSecuritySettingsContext constructor.
 	 *
 	 * @param PersonalSecuritySettingsPage $personalSecuritySettingsPage
+	 * @param LoginPage $loginPage
 	 */
 	public function __construct(
-		PersonalSecuritySettingsPage $personalSecuritySettingsPage, LoginPage $loginPage
+		PersonalSecuritySettingsPage $personalSecuritySettingsPage,
+		LoginPage $loginPage
 	) {
 		$this->personalSecuritySettingsPage = $personalSecuritySettingsPage;
 		$this->appName = \substr(\str_shuffle($this->strForAppName), 0, 8);
@@ -63,7 +64,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 */
 	public function theUserBrowsesToThePersonalSecuritySettingsPage() {
 		$this->personalSecuritySettingsPage->open();
-		$this->personalSecuritySettingsPage->waitForAjaxCallsToStartAndFinish(
+		$this->personalSecuritySettingsPage->waitTillPageIsLoaded(
 			$this->getSession()
 		);
 	}
@@ -78,13 +79,13 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 		$this->personalSecuritySettingsPage->createNewAppPassword($this->appName);
 		$this->newAppPassword = $this->personalSecuritySettingsPage
 			->getAppPasswordResult()[1]->getValue();
-		
 	}
 
 	/**
 	 * @Then the new app should be listed in the App passwords list on the webUI
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theAppShouldBeListedInTheAppPasswordsListOnTheWebUI() {
 		$appTr = $this->personalSecuritySettingsPage->getLinkedAppByName(
@@ -117,9 +118,10 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 
 	/**
 	 * @When the user re-logs in with username :username and generated app password using the webUI
-	 * 
+	 * @Given the user has re-logged in with username :username and generated app password using the webUI
+	 *
 	 * @param string $username
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserLogsInWithNewAppPassword($username) {
@@ -130,14 +132,16 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 
 	/**
 	 * @When the user deletes the app password
-	 * 
+	 * @Given the user has deleted the app password
+	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserDeletesTheAppPassword() {
 		$appTr = $this->personalSecuritySettingsPage->getLinkedAppByName(
 			$this->appName
 		);
-		$deleteButton 
+		$deleteButton
 			= $this->personalSecuritySettingsPage->getDisconnectButton(
 				$appTr
 			);
@@ -146,12 +150,14 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 
 	/**
 	 * @When the user re-logs in with username :username and deleted app password using the webUI
-	 * 
+	 * @Given the user has re-logged in with username :username and deleted app password using the webUI
+	 *
 	 * @param string $username
-	 * 
+	 *
 	 * @return void
+	 * @throws \Exception
 	 */
-	public function reLogInWithDeletedAppPassword($username) {	
+	public function reLogInWithDeletedAppPassword($username) {
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
 		$this->loginPage->loginAs($username, $this->newAppPassword);
 		$this->loginPage->waitTillPageIsLoaded($this->getSession());

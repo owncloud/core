@@ -23,4 +23,3 @@ class Version20171026130750 implements ISimpleMigration {
 		}
 	}
 }
-

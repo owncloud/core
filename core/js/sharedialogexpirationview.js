@@ -73,19 +73,12 @@
 			var state = $checkbox.prop('checked');
 			// TODO: slide animation
 			this.$el.find('.expirationDateContainer').toggleClass('hidden', !state);
-			if (!state) {
-				// discard expiration date
-				this.model.unset('expireDate');
-			}
 		},
 
 		_onChangeExpirationDate: function(event) {
 			var $target = $(event.target);
 			$target.tooltip('hide');
 			$target.removeClass('error');
-
-			var expiration = moment($target.val(), 'DD-MM-YYYY').format('YYYY-MM-DD');
-			this.model.set('expireDate', expiration);
 		},
 
 		render: function() {

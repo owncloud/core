@@ -86,7 +86,6 @@ OC.L10N.register(
     "change" : "﻿ಬದಲಾವಣೆ",
     "delete" : "﻿ಅಳಿಸಿ",
     "access control" : "﻿ಪ್ರವೇಶ ನಿಯಂತ್ರಣ",
-    "Resharing is not allowed" : "﻿ಮರುಹಂಚಿಕೆ ಅನುಮತಿಸಲಾಗುವುದಿಲ್ಲ",
     "Delete" : "﻿ಅಳಿಸಿ",
     "Rename" : "﻿ಮರುಹೆಸರಿಸು",
     "The object type is not specified." : "﻿ವಸ್ತು ಮಾದರಿ ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ.",
@@ -98,7 +97,7 @@ OC.L10N.register(
     "Hello world!" : "ಹೇ ಲೋಕವೇ ನಿನಗೆ ನಮಸ್ಕಾರ!",
     "sunny" : "ಬಿಸಿಲಿನ",
     "Hello {name}, the weather is {weather}" : "ನಮಸ್ಕಾರ {name}, ಸದ್ಯ {weather} ಹವಾಮಾನವಿದೆ",
-    "_download %n file_::_download %n files_" : ["%n ಕಡತಗಳನ್ನು ಸ್ಥಳೀಯ ಪ್ರತಿಯಾಗಿಸಿ"],
+    "_download %n file_::_download %n files_" : ["%n ಕಡತಗಳನ್ನು ಸ್ಥಳೀಯ ಪ್ರತಿಯಾಗಿಸಿ","%n ಕಡತಗಳನ್ನು ಸ್ಥಳೀಯ ಪ್ರತಿಯಾಗಿಸಿ"],
     "Please reload the page." : "﻿ಪುಟವನ್ನು ಪುನಃ ನವೀಕರಿಸಿ.",
     "Personal" : "﻿ವೈಯಕ್ತಿಕ",
     "Apps" : "ಕಾರ್ಯಕ್ರಮಗಳು",
@@ -117,6 +116,7 @@ OC.L10N.register(
     "File: %s" : "ಕಡತ: %s",
     "Line: %s" : "ಕೋಂಡಿ: %s",
     "Trace" : "ಕುರುಹು",
+    "Imprint" : "ಮುದ್ರೆ",
     "Username" : "﻿ಬಳಕೆಯ ಹೆಸರು",
     "Storage & database" : "ಶೇಖರಣಾ ಮತ್ತು ದತ್ತಸಂಚಯ",
     "Data folder" : "﻿ಮಾಹಿತಿ ಕೋಶ",
@@ -141,4 +141,4 @@ OC.L10N.register(
     "Thank you for your patience." : "﻿ನಿಮ್ಮ ತಾಳ್ಮೆಗೆ ಧನ್ಯವಾದಗಳು.",
     "Start update" : "ನವೀಕರಿಣವನ್ನು ಆರಂಭಿಸಿ"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

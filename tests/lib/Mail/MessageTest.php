@@ -30,7 +30,7 @@ class MessageTest extends TestCase {
 		];
 	}
 
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		$this->swiftMessage = $this->getMockBuilder('\Swift_Message')
@@ -179,5 +179,4 @@ class MessageTest extends TestCase {
 
 		$this->message->setHtmlBody('<blink>Fancy Body</blink>');
 	}
-
 }

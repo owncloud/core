@@ -75,7 +75,6 @@ class ZsyncPluginTest extends TestCase {
 		];
 	}
 
-
 	public function testShowRouteWithExistsFile() {
 		$this->view->expects($this->any())->method('file_exists')->willReturn(true);
 
@@ -94,7 +93,6 @@ class ZsyncPluginTest extends TestCase {
 		$this->assertFalse($this->plugin->httpGet($this->request, $this->response));
 		$this->assertFalse($this->plugin->httpDelete($this->request, $this->response));
 	}
-
 
 	public function testShowRouteWithMissingBaseFile() {
 		$this->view->expects($this->any())->method('file_exists')->willReturn(false);
@@ -149,5 +147,4 @@ class ZsyncPluginTest extends TestCase {
 
 		$this->assertNull($this->plugin->handleGetProperties($propFind, $node));
 	}
-
 }

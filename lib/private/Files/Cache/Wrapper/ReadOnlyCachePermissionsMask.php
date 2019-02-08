@@ -38,6 +38,16 @@ class ReadOnlyCachePermissionsMask extends CacheWrapper {
 	protected $mask;
 
 	/**
+	 * System internal paths which should not be protected
+	 * @var array
+	 */
+	private $whitelist = [
+		'uploads',
+		'cache',
+		'files_zsync'
+	];
+
+	/**
 	 * @param \OCP\Files\Cache\ICache $cache
 	 * @param int $mask
 	 */
@@ -53,13 +63,33 @@ class ReadOnlyCachePermissionsMask extends CacheWrapper {
 	protected function formatCacheEntry($entry) {
 		$storageId = $entry->getStorageId();
 
-		if (\substr($storageId, 0, \strlen('home::')) === 'home::' && $entry->getPath() === "") {
+		// Give all permissions to whitelisted "internal" paths and their
+		// subdirectories
+		if ($this->isHomeStorage($storageId)) {
+			foreach ($this->whitelist as $path) {
+				if ($this->startsWith($entry->getPath(), $path)) {
+					$entry['permissions'] = Constants::PERMISSION_ALL;
+					return $entry;
+				}
+			}
+		}
+
+		// Allow creation of skeleton files
+		if ($this->isHomeStorage($storageId) && $entry->getPath() === '') {
 			$entry['permissions'] = Constants::PERMISSION_CREATE;
 			$this->mask = Constants::PERMISSION_CREATE;
 		}
 
 		$entry['permissions'] &= $this->mask;
-
 		return $entry;
+	}
+
+	private function isHomeStorage($storageId) {
+		return $this->startsWith($storageId, 'home::') ||
+			$this->startsWith($storageId, 'object::');
+	}
+
+	private function startsWith($haystack, $needle) {
+		return (\strpos($haystack, $needle) === 0);
 	}
 }

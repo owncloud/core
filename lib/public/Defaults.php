@@ -50,7 +50,7 @@ class Defaults {
 	 * actual defaults
 	 * @since 6.0.0
 	 */
-	function __construct() {
+	public function __construct() {
 		$this->defaults = new \OC_Defaults();
 	}
 

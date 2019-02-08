@@ -58,7 +58,6 @@ class DataFingerprintTest extends TestCase {
 
 		$this->command = new DataFingerprint($this->config, $this->timeFactory, $this->logger);
 		$this->commandTester = new CommandTester($this->command);
-
 	}
 
 	/**
@@ -86,7 +85,5 @@ class DataFingerprintTest extends TestCase {
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$this->assertContains("Do you want to set the data fingerprint?", $output);
-
-
 	}
 }

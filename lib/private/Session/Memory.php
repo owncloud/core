@@ -39,7 +39,7 @@ use OCP\Session\Exceptions\SessionNotAvailableException;
 class Memory extends Session {
 	protected $data;
 
-	public function __construct($name) {
+	public function __construct() {
 		//no need to use $name since all data is already scoped to this instance
 		$this->data = [];
 	}
@@ -89,7 +89,8 @@ class Memory extends Session {
 	 *
 	 * @param bool $deleteOldSession
 	 */
-	public function regenerateId($deleteOldSession = true) {}
+	public function regenerateId($deleteOldSession = true) {
+	}
 
 	/**
 	 * Wrapper around session_id

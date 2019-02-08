@@ -56,7 +56,7 @@ class SetConfig extends Base {
 				'type',
 				null,
 				InputOption::VALUE_REQUIRED,
-				'Value type [string, integer, double, boolean].',
+				'Value type [string, integer, double, boolean, json].',
 				'string'
 			)
 			->addOption(
@@ -148,6 +148,7 @@ class SetConfig extends Base {
 						throw new \InvalidArgumentException('Unable to parse value as boolean');
 				}
 
+				// no break
 			case 'null':
 				return [
 					'value' => null,
@@ -159,6 +160,16 @@ class SetConfig extends Base {
 				return [
 					'value' => $value,
 					'readable-value' => ($value === '') ? 'empty string' : 'string ' . $value,
+				];
+
+			case 'json':
+				$decodedJson = \json_decode($value, true);
+				if ($decodedJson === null) {
+					throw new \InvalidArgumentException('Unable to parse value as json');
+				}
+				return [
+					'value' => $decodedJson,
+					'readable-value' => 'json ' . $value,
 				];
 
 			default:
@@ -194,5 +205,4 @@ class SetConfig extends Base {
 		}
 		return $existingValues;
 	}
-
 }

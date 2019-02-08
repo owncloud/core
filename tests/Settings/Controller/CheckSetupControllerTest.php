@@ -79,7 +79,7 @@ class CheckSetupControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->l10n->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function($message, array $replace) {
+			->will($this->returnCallback(function ($message, array $replace) {
 				return \vsprintf($message, $replace);
 			}));
 		$this->checker = $this->getMockBuilder('\OC\IntegrityCheck\Checker')
@@ -130,7 +130,6 @@ class CheckSetupControllerTest extends TestCase {
 		$this->clientService->expects($this->once())
 			->method('newClient')
 			->will($this->returnValue($client));
-
 
 		$this->assertTrue(
 			self::invokePrivate(
@@ -222,7 +221,6 @@ class CheckSetupControllerTest extends TestCase {
 	}
 
 	public function testIsPhpSupportedFalse() {
-
 		$this->checkSetupController
 			->expects($this->once())
 			->method('isEndOfLive')
@@ -235,7 +233,6 @@ class CheckSetupControllerTest extends TestCase {
 	}
 
 	public function testIsPhpSupportedTrue() {
-
 		$this->checkSetupController
 			->expects($this->exactly(2))
 			->method('isEndOfLive')
@@ -430,7 +427,7 @@ class CheckSetupControllerTest extends TestCase {
 			->expects($this->once())
 			->method('getCurlVersion')
 			->will($this->returnValue(['ssl_version' => 'OpenSSL/1.0.1d']));
-			$this->assertSame('', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
+		$this->assertSame('', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
 	public function testIsUsedTlsLibOutdatedWithMatchingOpenSslVersion1() {
@@ -478,7 +475,6 @@ class CheckSetupControllerTest extends TestCase {
 		$this->assertSame('cURL is using an outdated NSS version (NSS/1.0.2b). Please update your operating system or features such as installing and updating apps via the market or Federated Cloud Sharing will not work reliably.', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
-
 	public function testIsBuggyNss200() {
 		$this->config->expects($this->any())
 			->method('getSystemValue')
@@ -523,7 +519,6 @@ class CheckSetupControllerTest extends TestCase {
 	}
 
 	public function testIsUsedTlsLibOutdatedWithAppstoreDisabledAndServerToServerSharingEnabled() {
-
 		$this->config
 			->expects($this->at(0))
 			->method('getSystemValue')
@@ -548,7 +543,6 @@ class CheckSetupControllerTest extends TestCase {
 	}
 
 	public function testIsUsedTlsLibOutdatedWithAppstoreDisabledAndServerToServerSharingDisabled() {
-
 		$this->config
 			->expects($this->at(0))
 			->method('getSystemValue')
@@ -595,7 +589,6 @@ class CheckSetupControllerTest extends TestCase {
 		$expected = new DataDisplayResponse('Integrity checker has been disabled. Integrity cannot be verified.');
 		$this->assertEquals($expected, $this->checkSetupController->getFailedIntegrityCheckFiles());
 	}
-
 
 	public function testGetFailedIntegrityCheckFilesWithNoErrorsFound() {
 		$this->checker

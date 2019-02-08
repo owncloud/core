@@ -23,6 +23,7 @@ namespace OC\Files\Storage\Wrapper;
 use Icewind\Streams\CallbackWrapper;
 use OC\Files\Stream\Checksum as ChecksumStream;
 use OCP\Files\IHomeStorage;
+use OC\Files\Utils\FileUtils;
 
 /**
  * Class Checksum
@@ -56,8 +57,8 @@ class Checksum extends Wrapper {
 	 */
 	public function fopen($path, $mode) {
 		$stream = $this->getWrapperStorage()->fopen($path, $mode);
-		if (!\is_resource($stream)) {
-			// don't wrap on error
+		if (!\is_resource($stream) || $this->isReadWriteStream($mode)) {
+			// don't wrap on error or mixed mode streams (could cause checksum corruption)
 			return $stream;
 		}
 
@@ -119,6 +120,14 @@ class Checksum extends Wrapper {
 	}
 
 	/**
+	 * @param $mode
+	 * @return bool
+	 */
+	private function isReadWriteStream($mode) {
+		return \strpos($mode, '+') !== false;
+	}
+
+	/**
 	 * Callback registered in fopen
 	 */
 	public function onClose() {
@@ -153,22 +162,6 @@ class Checksum extends Wrapper {
 	}
 
 	/**
-	 * check if the file metadata should not be fetched
-	 * NOTE: files with a '.part' extension are ignored as well!
-	 *       prevents unfinished put requests to fetch metadata which does not exists
-	 *
-	 * @param string $file
-	 * @return boolean
-	 */
-	public static function isPartialFile($file) {
-		if (\pathinfo($file, PATHINFO_EXTENSION) === 'part') {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
 	 * @param string $path
 	 * @param string $data
 	 * @return bool
@@ -190,10 +183,10 @@ class Checksum extends Wrapper {
 	public function getMetaData($path) {
 		// Check if it is partial file. Partial file metadata are only checksums
 		$parentMetaData = [];
-		if(!self::isPartialFile($path)) {
+		if (!FileUtils::isPartialFile($path)) {
 			$parentMetaData = $this->getWrapperStorage()->getMetaData($path);
 			// can be null if entry does not exist
-			if (\is_null($parentMetaData)) {
+			if ($parentMetaData === null) {
 				return null;
 			}
 		}

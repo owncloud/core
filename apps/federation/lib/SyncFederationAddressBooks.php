@@ -37,7 +37,7 @@ class SyncFederationAddressBooks {
 	 * @param DbHandler $dbHandler
 	 * @param SyncService $syncService
 	 */
-	function __construct(DbHandler $dbHandler, SyncService $syncService) {
+	public function __construct(DbHandler $dbHandler, SyncService $syncService) {
 		$this->syncService = $syncService;
 		$this->dbHandler = $dbHandler;
 	}
@@ -46,7 +46,6 @@ class SyncFederationAddressBooks {
 	 * @param \Closure $callback
 	 */
 	public function syncThemAll(\Closure $callback) {
-
 		$trustedServers = $this->dbHandler->getAllServer();
 		foreach ($trustedServers as $trustedServer) {
 			$url = $trustedServer['url'];
@@ -54,7 +53,7 @@ class SyncFederationAddressBooks {
 			$sharedSecret = $trustedServer['shared_secret'];
 			$syncToken = $trustedServer['sync_token'];
 
-			if (\is_null($sharedSecret)) {
+			if ($sharedSecret === null) {
 				continue;
 			}
 			$targetBookId = $trustedServer['url_hash'];

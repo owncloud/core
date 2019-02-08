@@ -65,7 +65,6 @@ class VersioningTest extends TestCase {
 
 		$application = new \OCA\Files_Sharing\AppInfo\Application();
 		$application->registerMountProviders();
-
 	}
 
 	protected function setUp() {
@@ -119,9 +118,13 @@ class VersioningTest extends TestCase {
 		}
 
 		$user = \OC::$server->getUserManager()->get($this->user1);
-		if ($user !== null) { $user->delete(); }
+		if ($user !== null) {
+			$user->delete();
+		}
 		$user = \OC::$server->getUserManager()->get($this->user2);
-		if ($user !== null) { $user->delete(); }
+		if ($user !== null) {
+			$user->delete();
+		}
 
 		\OC_Hook::clear();
 
@@ -145,7 +148,7 @@ class VersioningTest extends TestCase {
 		$this->assertEquals($sizeOfAllDeletedFiles, $size);
 
 		// the deleted array should only contain versions which should be deleted
-		foreach($deleted as $key => $path) {
+		foreach ($deleted as $key => $path) {
 			unset($versions[$key]);
 			$this->assertEquals("delete", \substr($path, 0, \strlen("delete")));
 		}
@@ -154,7 +157,6 @@ class VersioningTest extends TestCase {
 		foreach ($versions as $version) {
 			$this->assertEquals("keep", $version['path']);
 		}
-
 	}
 
 	public function versionsProvider() {
@@ -276,7 +278,6 @@ class VersioningTest extends TestCase {
 	}
 
 	public function testRename() {
-
 		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");
 
 		$t1 = \time();
@@ -306,7 +307,6 @@ class VersioningTest extends TestCase {
 	}
 
 	public function testRenameInSharedFolder() {
-
 		\OC\Files\Filesystem::mkdir('folder1');
 		\OC\Files\Filesystem::mkdir('folder1/folder2');
 		\OC\Files\Filesystem::file_put_contents("folder1/test.txt", "test file");
@@ -356,7 +356,6 @@ class VersioningTest extends TestCase {
 	}
 
 	public function testMoveFolder() {
-
 		\OC\Files\Filesystem::mkdir('folder1');
 		\OC\Files\Filesystem::mkdir('folder2');
 		\OC\Files\Filesystem::file_put_contents('folder1/test.txt', 'test file');
@@ -388,9 +387,7 @@ class VersioningTest extends TestCase {
 		$this->assertTrue($this->rootView->file_exists($v2Renamed));
 	}
 
-
 	public function testCopy() {
-
 		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");
 
 		$t1 = \time();
@@ -424,7 +421,6 @@ class VersioningTest extends TestCase {
 	 * the correct 'path' and 'name'
 	 */
 	public function testGetVersions() {
-
 		$t1 = \time();
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
@@ -514,7 +510,7 @@ class VersioningTest extends TestCase {
 		$eventHandler->expects($this->any())
 			->method('callback')
 			->will($this->returnCallback(
-				function($p) use (&$params) {
+				function ($p) use (&$params) {
 					$params = $p;
 				}
 			));
@@ -698,7 +694,7 @@ class VersioningTest extends TestCase {
 		$this->loginAsUser($this->user1);
 
 		// need to scan for the versions
-		list($rootStorage,) = $this->rootView->resolvePath($this->user1 . '/files_versions');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user1 . '/files_versions');
 		$rootStorage->getScanner()->scan('files_versions');
 
 		$versions = \OCA\Files_Versions\Storage::getVersions(
@@ -717,7 +713,6 @@ class VersioningTest extends TestCase {
 	 * @param bool $create
 	 */
 	public static function loginHelper($user, $create = false) {
-
 		if ($create) {
 			\OC::$server->getUserManager()->createUser($user, $user);
 		}
@@ -753,7 +748,5 @@ class VersionStorageToTest extends \OCA\Files_Versions\Storage {
 	 */
 	public function callProtectedGetExpireList($time, $versions) {
 		return self::getExpireList($time, $versions);
-
 	}
 }
-

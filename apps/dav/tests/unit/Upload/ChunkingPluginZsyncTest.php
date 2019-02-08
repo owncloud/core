@@ -18,7 +18,6 @@
  */
 namespace OCA\DAV\Tests\unit\Upload;
 
-
 use OCA\DAV\Upload\ChunkingPluginZsync;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
@@ -285,5 +284,4 @@ class ChunkingPluginZsyncTest extends TestCase {
 
 		$this->assertFalse($this->plugin->beforeMove('source/.file.zsync', $target));
 	}
-
 }

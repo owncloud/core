@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Tests\Core\Command\Encryption;
-
 
 use OC\Core\Command\Encryption\ChangeKeyStorageRoot;
 use OC\Encryption\Util;
@@ -85,14 +83,12 @@ class ChangeKeyStorageRootTest extends TestCase {
 			$this->util,
 			$this->questionHelper
 		);
-
 	}
 
 	/**
 	 * @dataProvider dataTestExecute
 	 */
 	public function testExecute($newRoot, $answer, $successMoveKey) {
-
 		$changeKeyStorageRoot = $this->getMockBuilder('OC\Core\Command\Encryption\ChangeKeyStorageRoot')
 			->setConstructorArgs(
 				[
@@ -164,7 +160,6 @@ class ChangeKeyStorageRootTest extends TestCase {
 		$changeKeyStorageRoot->expects($this->at(2))->method('moveUserKeys')->with('oldRoot', 'newRoot', $this->outputInterface);
 
 		$this->invokePrivate($changeKeyStorageRoot, 'moveAllKeys', ['oldRoot', 'newRoot', $this->outputInterface]);
-
 	}
 
 	public function testPrepareNewRoot() {
@@ -226,7 +221,6 @@ class ChangeKeyStorageRootTest extends TestCase {
 	 * @param bool $executeRename
 	 */
 	public function testMoveSystemKeys($dirExists, $targetExists, $executeRename) {
-
 		$changeKeyStorageRoot = $this->getMockBuilder('OC\Core\Command\Encryption\ChangeKeyStorageRoot')
 			->setConstructorArgs(
 				[
@@ -251,7 +245,6 @@ class ChangeKeyStorageRootTest extends TestCase {
 		}
 
 		$this->invokePrivate($changeKeyStorageRoot, 'moveSystemKeys', ['oldRoot', 'newRoot']);
-
 	}
 
 	public function dataTestMoveSystemKeys() {
@@ -263,9 +256,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 		];
 	}
 
-
 	public function testMoveUserKeys() {
-
 		$changeKeyStorageRoot = $this->getMockBuilder('OC\Core\Command\Encryption\ChangeKeyStorageRoot')
 			->setConstructorArgs(
 				[
@@ -296,7 +287,6 @@ class ChangeKeyStorageRootTest extends TestCase {
 	 * @param bool $shouldRename
 	 */
 	public function testMoveUserEncryptionFolder($userExists, $isDir, $targetExists, $shouldRename) {
-
 		$changeKeyStorageRoot = $this->getMockBuilder('OC\Core\Command\Encryption\ChangeKeyStorageRoot')
 			->setConstructorArgs(
 				[
@@ -326,7 +316,6 @@ class ChangeKeyStorageRootTest extends TestCase {
 		}
 
 		$this->invokePrivate($changeKeyStorageRoot, 'moveUserEncryptionFolder', ['user1', 'oldRoot', 'newRoot']);
-
 	}
 
 	public function dataTestMoveUserEncryptionFolder() {
@@ -341,14 +330,13 @@ class ChangeKeyStorageRootTest extends TestCase {
 		];
 	}
 
-
 	/**
 	 * @dataProvider dataTestPrepareParentFolder
 	 */
 	public function testPrepareParentFolder($path, $pathExists) {
 		$this->view->expects($this->any())->method('file_exists')
 			->willReturnCallback(
-				function($fileExistsPath) use ($path, $pathExists) {
+				function ($fileExistsPath) use ($path, $pathExists) {
 					if ($path === $fileExistsPath) {
 						return $pathExists;
 					}
@@ -395,5 +383,4 @@ class ChangeKeyStorageRootTest extends TestCase {
 
 		$this->invokePrivate($this->changeKeyStorageRoot, 'targetExists', ['path']);
 	}
-
 }

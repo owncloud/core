@@ -31,4 +31,3 @@ OCP\JSON::callCheck();
 $l = \OC::$server->getL10N('files_external');
 
 // TODO: implement redirect to which storage backend requested this
-

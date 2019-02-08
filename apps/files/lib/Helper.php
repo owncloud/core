@@ -67,7 +67,7 @@ class Helper {
 	 * @return string icon URL
 	 */
 	public static function determineIcon($file) {
-		if($file['type'] === 'dir') {
+		if ($file['type'] === 'dir') {
 			$icon = \OC::$server->getMimeTypeDetector()->mimeTypeIcon('dir');
 			// TODO: move this part to the client side, using mountType
 			if ($file->isShared()) {
@@ -75,7 +75,7 @@ class Helper {
 			} elseif ($file->isMounted()) {
 				$icon = \OC::$server->getMimeTypeDetector()->mimeTypeIcon('dir-external');
 			}
-		}else{
+		} else {
 			$icon = \OC::$server->getMimeTypeDetector()->mimeTypeIcon($file->getMimetype());
 		}
 
@@ -159,7 +159,7 @@ class Helper {
 		$mountType = null;
 		if ($i->isShared()) {
 			$mountType = 'shared';
-		} else if ($i->isMounted()) {
+		} elseif ($i->isMounted()) {
 			$mountType = 'external';
 		}
 		if ($mountType !== null) {
@@ -229,8 +229,8 @@ class Helper {
 			}
 
 			foreach ($filesById as $key => $fileWithTags) {
-				foreach($fileList as $key2 => $file){
-					if( $file[$fileIdentifier] == $key){
+				foreach ($fileList as $key2 => $file) {
+					if ($file[$fileIdentifier] == $key) {
 						$fileList[$key2] = $fileWithTags;
 					}
 				}
@@ -241,7 +241,6 @@ class Helper {
 					$fileList[$key]['tags'] = [];
 				}
 			}
-
 		}
 		return $fileList;
 	}
@@ -258,7 +257,7 @@ class Helper {
 		$sortFunc = 'compareFileNames';
 		if ($sortAttribute === 'mtime') {
 			$sortFunc = 'compareTimestamp';
-		} else if ($sortAttribute === 'size') {
+		} elseif ($sortAttribute === 'size') {
 			$sortFunc = 'compareSize';
 		}
 		\usort($files, ['\OCA\Files\Helper', $sortFunc]);

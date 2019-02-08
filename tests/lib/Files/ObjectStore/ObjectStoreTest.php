@@ -51,9 +51,14 @@ class ObjectStoreTest extends TestCase {
 		$this->impl->expects($this->any())
 			->method('getStorageId')
 			->willReturn('object-store-test');
-		$this->objectStore = new ObjectStoreStorage([
-			'objectstore' => $this->impl
-		]);
+
+		$this->objectStore = $this->getMockBuilder(ObjectStoreStorage::class)
+			->setMethods(['convertInternalPathToGlobalPath'])
+			->setConstructorArgs([[
+				'objectstore' => $this->impl
+			]])
+			->getMock();
+		$this->objectStore->method('convertInternalPathToGlobalPath')->willReturn(['user', 'foor/bar/file.png']);
 	}
 
 	public function testMkDir() {
@@ -102,7 +107,6 @@ class ObjectStoreTest extends TestCase {
 	public function testGetMime($expectedMime, $path) {
 		$this->assertTrue($this->objectStore->touch($path));
 		$this->assertEquals($expectedMime, $this->objectStore->getMimeType($path));
-
 	}
 
 	public function providersPathAndMime() {

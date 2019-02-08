@@ -27,7 +27,6 @@ namespace OC\Log;
 
 class Errorlog {
 
-
 	/**
 	 * Init class data
 	 */
@@ -44,4 +43,3 @@ class Errorlog {
 		\error_log('[owncloud]['.$app.']['.$level.'] '.$message);
 	}
 }
-

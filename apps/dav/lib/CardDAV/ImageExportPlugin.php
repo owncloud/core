@@ -49,8 +49,7 @@ class ImageExportPlugin extends ServerPlugin {
 	 * @param Server $server
 	 * @return void
 	 */
-	function initialize(Server $server) {
-
+	public function initialize(Server $server) {
 		$this->server = $server;
 		$this->server->on('method:GET', [$this, 'httpGet'], 90);
 	}
@@ -62,8 +61,7 @@ class ImageExportPlugin extends ServerPlugin {
 	 * @param ResponseInterface $response
 	 * @return bool|void
 	 */
-	function httpGet(RequestInterface $request, ResponseInterface $response) {
-
+	public function httpGet(RequestInterface $request, ResponseInterface $response) {
 		$queryParams = $request->getQueryParameters();
 		// TODO: in addition to photo we should also add logo some point in time
 		if (!\array_key_exists('photo', $queryParams)) {
@@ -98,7 +96,7 @@ class ImageExportPlugin extends ServerPlugin {
 		return true;
 	}
 
-	function getPhoto(Card $node) {
+	public function getPhoto(Card $node) {
 		// TODO: this is kind of expensive - load carddav data from database and parse it
 		//       we might want to build up a cache one day
 		try {
@@ -112,13 +110,13 @@ class ImageExportPlugin extends ServerPlugin {
 
 			$val = $photo->getValue();
 			if ($photo->getValueType() === 'URI') {
-				$parsed = \Sabre\URI\parse($val);
+				$parsed = \Sabre\Uri\parse($val);
 				//only allow data://
 				if ($parsed['scheme'] !== 'data') {
 					return false;
 				}
 				if (\substr_count($parsed['path'], ';') === 1) {
-					list($type,) = \explode(';', $parsed['path']);
+					list($type, ) = \explode(';', $parsed['path']);
 				}
 				$val = \file_get_contents($val);
 			}
@@ -131,7 +129,7 @@ class ImageExportPlugin extends ServerPlugin {
 				'Content-Type' => $type,
 				'body' => $val
 			];
-		} catch(\Exception $ex) {
+		} catch (\Exception $ex) {
 			$this->logger->logException($ex);
 		}
 		return false;

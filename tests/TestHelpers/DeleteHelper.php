@@ -21,7 +21,6 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\FutureResponse;
 use GuzzleHttp\Message\ResponseInterface;
 
 /**
@@ -44,17 +43,19 @@ class DeleteHelper {
 	 * @param array  $headers
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
+	 * @param Client|null $client
 	 *
-	 * @return FutureResponse|ResponseInterface|NULL
+	 * @return ResponseInterface
 	 */
 	public static function delete(
 		$baseUrl,
 		$user,
 		$password,
 		$fileName,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
-		$sourceIpAddress = null
+		$sourceIpAddress = null,
+		$client = null
 	) {
 		return WebDavHelper::makeDavRequest(
 			$baseUrl,
@@ -67,7 +68,11 @@ class DeleteHelper {
 			null,
 			$davPathVersionToUse,
 			"files",
-			$sourceIpAddress
+			$sourceIpAddress,
+			"basic",
+			false,
+			0,
+			$client
 		);
 	}
 }

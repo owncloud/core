@@ -82,7 +82,7 @@ class AvatarManager implements IAvatarManager {
 	 */
 	public function getAvatar($userId) {
 		$user = $this->userManager->get($userId);
-		if (\is_null($user)) {
+		if ($user === null) {
 			throw new \Exception('user does not exist');
 		}
 

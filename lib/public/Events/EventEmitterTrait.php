@@ -43,7 +43,7 @@ trait EventEmitterTrait {
 	 * @return mixed
 	 * @since 10.0.5
 	 */
-	public function emittingCall(\Closure $fn, $arguments ,$class, $eventName) {
+	public function emittingCall(\Closure $fn, $arguments, $class, $eventName) {
 		if (isset($arguments['before']) && \count($arguments['before']) > 0) {
 			\OC::$server->getEventDispatcher()->dispatch("$class.before$eventName", new GenericEvent(null, $arguments['before']));
 		}

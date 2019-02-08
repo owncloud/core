@@ -25,8 +25,7 @@ use Test\TestCase;
  *
  * @group DB
  */
-class OwncloudTest extends TestCase
-{
+class OwncloudTest extends TestCase {
 	private $restore_logfile;
 	private $restore_logdateformat;
 
@@ -45,12 +44,12 @@ class OwncloudTest extends TestCase
 			$config->getSystemValue("logfile", $this->restore_logfile);
 		} else {
 			$config->deleteSystemValue("logfile");
-		}		
+		}
 		if (isset($this->restore_logdateformat)) {
 			$config->getSystemValue("logdateformat", $this->restore_logdateformat);
 		} else {
 			$config->deleteSystemValue("restore_logdateformat");
-		}		
+		}
 		Owncloud::init();
 		parent::tearDown();
 	}
@@ -73,8 +72,5 @@ class OwncloudTest extends TestCase
 		$values = (array) \json_decode($line);
 		$microseconds = $values['time'];
 		$this->assertRegExp('/^\d{6}$/', $microseconds);
-		
 	}
-
-
 }

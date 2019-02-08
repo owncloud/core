@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace Tests\Core\Command\Config;
 
 use OCP\App\IAppManager;

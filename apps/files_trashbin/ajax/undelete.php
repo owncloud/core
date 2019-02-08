@@ -71,7 +71,7 @@ foreach ($list as $file) {
 		$timestamp = null;
 	}
 
-	if ( !OCA\Files_Trashbin\Trashbin::restore($path, $filename, $timestamp) ) {
+	if (!OCA\Files_Trashbin\Trashbin::restore($path, $filename, $timestamp)) {
 		$error[] = $filename;
 		\OCP\Util::writeLog('trashbin', 'can\'t restore ' . $filename, \OCP\Util::DEBUG);
 	} else {
@@ -79,12 +79,11 @@ foreach ($list as $file) {
 		$success[$i]['timestamp'] = $timestamp;
 		$i++;
 	}
-
 }
 
-if ( $error ) {
+if ($error) {
 	$filelist = '';
-	foreach ( $error as $e ) {
+	foreach ($error as $e) {
 		$filelist .= $e.', ';
 	}
 	$l = OC::$server->getL10N('files_trashbin');

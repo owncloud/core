@@ -25,7 +25,6 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre;
 use OCP\Share\IShare;
 
 class SharesPluginTest extends \Test\TestCase {
-
 	const SHARETYPES_PROPERTYNAME = \OCA\DAV\Connector\Sabre\SharesPlugin::SHARETYPES_PROPERTYNAME;
 
 	/**
@@ -102,9 +101,9 @@ class SharesPluginTest extends \Test\TestCase {
 				$requestedShareTypes,
 				$this->anything()
 			)
-			->will($this->returnCallback(function($userId, $requestedShareTypes, $node) use ($shareTypes){
-				$allShares = array();
-				foreach($requestedShareTypes as $requestedShareType){
+			->will($this->returnCallback(function ($userId, $requestedShareTypes, $node) use ($shareTypes) {
+				$allShares = [];
+				foreach ($requestedShareTypes as $requestedShareType) {
 					$share = $this->createMock(IShare::class);
 					$share->method('getShareType')->willReturn($requestedShareType);
 					$share->method('getNodeId')->willReturn(123);
@@ -183,9 +182,9 @@ class SharesPluginTest extends \Test\TestCase {
 				$requestedShareTypes,
 				$this->anything()
 			)
-			->will($this->returnCallback(function($userId, $requestedShareTypes, $node) use ($shareTypes){
-				$allShares = array();
-				foreach($requestedShareTypes as $requestedShareType){
+			->will($this->returnCallback(function ($userId, $requestedShareTypes, $node) use ($shareTypes) {
+				$allShares = [];
+				foreach ($requestedShareTypes as $requestedShareType) {
 					$share = $this->createMock(IShare::class);
 					$share->method('getShareType')->willReturn($requestedShareType);
 					$share->method('getNodeId')->willReturn(111);
@@ -234,7 +233,7 @@ class SharesPluginTest extends \Test\TestCase {
 		$this->assertEquals($shareTypes, $result[200][self::SHARETYPES_PROPERTYNAME]->getShareTypes());
 	}
 
-	function sharesGetPropertiesDataProvider() {
+	public function sharesGetPropertiesDataProvider() {
 		return [
 			[[]],
 			[[\OCP\Share::SHARE_TYPE_USER]],

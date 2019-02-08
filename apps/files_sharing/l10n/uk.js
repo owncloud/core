@@ -26,6 +26,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Немає установленого OwnCloud (7 або вище), можна знайти на {remote}",
     "Invalid ownCloud url" : "Невірний ownCloud URL",
     "Share" : "Поділитися",
+    "Pending" : "Очікування",
     "Shared by" : "Опубліковано",
     "Sharing" : "Спільний доступ",
     "A file or folder has been <strong>shared</strong>" : "Файл або теку було відкрито для <strong> спільного користування </strong>",
@@ -42,6 +43,9 @@ OC.L10N.register(
     "You shared %1$s via link" : "Ви поділилися %1$s використовуючи лінк",
     "%2$s shared %1$s with you" : "%2$s поділився %1$s з вами",
     "Shares" : "Розподільні",
+    "Couldn't send mail to following recipient(s): %s " : "Не вдалося надіслати повідомлення наступним користувачам: %s",
+    "Accept" : "Прийняти",
+    "Decline" : "Відхилити",
     "This share is password-protected" : "Цей ресурс обміну захищений паролем",
     "The password is wrong. Try again." : "Невірний пароль. Спробуйте ще раз.",
     "Password" : "Пароль",
@@ -59,4 +63,4 @@ OC.L10N.register(
     "Download %s" : "Завантажити %s",
     "Direct link" : "Пряме посилання"
 },
-"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");
+"nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);");

@@ -42,7 +42,7 @@ interface IShareProvider {
 
 	/**
 	 * Create a share
-	 * 
+	 *
 	 * @param \OCP\Share\IShare $share
 	 * @return \OCP\Share\IShare The share object
 	 * @since 9.0.0
@@ -87,6 +87,7 @@ interface IShareProvider {
 	 * @param string $recipient userId of recipient
 	 * @return \OCP\Share\IShare
 	 * @since 9.0.0
+	 * @deprecated 10.0.9 use updateForRecipient() instead
 	 */
 	public function move(\OCP\Share\IShare $share, $recipient);
 
@@ -136,7 +137,6 @@ interface IShareProvider {
 	 * @since 9.0.0
 	 */
 	public function getSharesByPath(Node $path);
-
 
 	/**
 	 * Get shared with the given user for shares of all supported share types for this share provider,
@@ -203,4 +203,18 @@ interface IShareProvider {
 	 * @since 9.1.0
 	 */
 	public function userDeletedFromGroup($uid, $gid);
+
+	/**
+	 * Updates the share entry of the given recipient
+	 *
+	 * For group shares, only the state for the given recipient is changed,
+	 * not for the whole group share.
+	 *
+	 * @param \OCP\Share\IShare $share
+	 * @param string $recipient userId of recipient
+	 * @param int $state state to set
+	 * @return \OCP\Share\IShare
+	 * @since 10.0.9
+	 */
+	public function updateForRecipient(\OCP\Share\IShare $share, $recipient);
 }

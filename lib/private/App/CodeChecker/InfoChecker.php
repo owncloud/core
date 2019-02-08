@@ -41,12 +41,12 @@ class InfoChecker extends BasicEmitter {
 		'licence',
 		'name',
 		'version',
+		'dependencies',
 	];
 	private $optionalFields = [
 		'bugs',
 		'category',
 		'default_enable',
-		'dependencies', // TODO: Mandatory as of ownCloud 11
 		'documentation',
 		'namespace',
 		'ocsid',
@@ -58,9 +58,6 @@ class InfoChecker extends BasicEmitter {
 	];
 	private $deprecatedFields = [
 		'info',
-		'require',
-		'requiremax',
-		'requiremin',
 		'shipped',
 		'standalone',
 	];
@@ -94,28 +91,24 @@ class InfoChecker extends BasicEmitter {
 			];
 		}
 
-		if (isset($info['dependencies']['owncloud']['@attributes']['min-version']) && ($info['requiremin'] || $info['require'])) {
-			$this->emit('InfoChecker', 'duplicateRequirement', ['min']);
-			$errors[] = [
-				'type' => 'duplicateRequirement',
-				'field' => 'min',
-			];
-		} else if (!isset($info['dependencies']['owncloud']['@attributes']['min-version'])) {
+		if (!isset($info['dependencies']['owncloud']['@attributes']['min-version'])) {
 			$this->emit('InfoChecker', 'missingRequirement', ['min']);
+			$errors[] = [
+				'type' => 'missingRequirement',
+				'message' => 'No minimum ownCloud version is defined in appinfo/info.xml',
+			];
 		}
 
-		if (isset($info['dependencies']['owncloud']['@attributes']['max-version']) && $info['requiremax']) {
-			$this->emit('InfoChecker', 'duplicateRequirement', ['max']);
-			$errors[] = [
-				'type' => 'duplicateRequirement',
-				'field' => 'max',
-			];
-		} else if (!isset($info['dependencies']['owncloud']['@attributes']['max-version'])) {
+		if (!isset($info['dependencies']['owncloud']['@attributes']['max-version'])) {
 			$this->emit('InfoChecker', 'missingRequirement', ['max']);
+			$errors[] = [
+				'type' => 'missingRequirement',
+				'message' => 'No maximum ownCloud version is defined in appinfo/info.xml',
+			];
 		}
 
 		foreach ($info as $key => $value) {
-			if(\is_array($value)) {
+			if (\is_array($value)) {
 				$value = \json_encode($value);
 			}
 			if (\in_array($key, $this->mandatoryFields)) {
@@ -130,7 +123,7 @@ class InfoChecker extends BasicEmitter {
 
 			if (\in_array($key, $this->deprecatedFields)) {
 				// skip empty arrays - empty arrays for remote and public are always added
-				if($value === '[]' && \in_array($key, ['public', 'remote', 'info'])) {
+				if ($value === '[]' && \in_array($key, ['public', 'remote', 'info'])) {
 					continue;
 				}
 				$this->emit('InfoChecker', 'deprecatedFieldFound', [$key, $value]);
@@ -141,7 +134,7 @@ class InfoChecker extends BasicEmitter {
 		}
 
 		foreach ($this->mandatoryFields as $key) {
-			if(!isset($info[$key])) {
+			if (!isset($info[$key])) {
 				$this->emit('InfoChecker', 'mandatoryFieldMissing', [$key]);
 				$errors[] = [
 					'type' => 'mandatoryFieldMissing',
@@ -154,7 +147,7 @@ class InfoChecker extends BasicEmitter {
 		if (\is_file($versionFile)) {
 			$version = \trim(\file_get_contents($versionFile));
 			if (isset($info['version'])) {
-				if($info['version'] !== $version) {
+				if ($info['version'] !== $version) {
 					$this->emit('InfoChecker', 'differentVersions',
 						[$version, $info['version']]);
 					$errors[] = [

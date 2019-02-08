@@ -19,4 +19,4 @@ OC.L10N.register(
     "Repair error: " : "Kesalahan ndandhani:",
     "Edit" : "Ngganti"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=1; plural=0;");

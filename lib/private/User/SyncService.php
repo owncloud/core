@@ -24,11 +24,13 @@ namespace OC\User;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\ILogger;
+use OCP\PreConditionNotMetException;
 use OCP\User\IProvidesDisplayNameBackend;
 use OCP\User\IProvidesEMailBackend;
 use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\User\IProvidesHomeBackend;
 use OCP\User\IProvidesQuotaBackend;
+use OCP\User\IProvidesUserNameBackend;
 use OCP\UserInterface;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
@@ -76,22 +78,46 @@ class SyncService {
 	/**
 	 * @param UserInterface $backend the backend to check
 	 * @param \Closure $callback is called for every user to allow progress display
-	 * @return array
+	 * @return array[] the first array contains a uid => account map of users that were removed in the external backend
+	 *                 the second array contains a uid => account map of users that are not enabled in oc, but are available in the external backend
 	 */
-	public function getNoLongerExistingUsers(UserInterface $backend, \Closure $callback) {
-		// detect no longer existing users
-		$toBeDeleted = [];
+	public function analyzeExistingUsers(UserInterface $backend, \Closure $callback) {
+		$removed = [];
+		$reappeared = [];
 		$backendClass = \get_class($backend);
-		$this->mapper->callForAllUsers(function (Account $a) use (&$toBeDeleted, $backend, $backendClass, $callback) {
-			if ($a->getBackend() === $backendClass) {
-				if (!$backend->userExists($a->getUserId())) {
-					$toBeDeleted[] = $a->getUserId();
-				}
-			}
+		$this->mapper->callForAllUsers(function (Account $a) use (&$removed, &$reappeared, $backend, $backendClass, $callback) {
+			// Check if the backend matches handles this user
+			list($wasRemoved, $didReappear) = $this->checkIfAccountReappeared($a, $backend, $backendClass);
+			$removed = \array_merge($removed, $wasRemoved);
+			$reappeared = \array_merge($reappeared, $didReappear);
 			$callback($a);
 		}, '', false);
+		return [$removed, $reappeared];
+	}
 
-		return $toBeDeleted;
+	/**
+	 * Checks a backend to see if a user reappeared relative to the accounts table
+	 * @param Account $a
+	 * @param UserInterface $backend
+	 * @param $backendClass
+	 * @return array
+	 */
+	private function checkIfAccountReappeared(Account $a, UserInterface $backend, $backendClass) {
+		$removed = [];
+		$reappeared = [];
+		if ($a->getBackend() === $backendClass) {
+			// Does the backend have this user still
+			if ($backend->userExists($a->getUserId())) {
+				// Is the user not enabled currently?
+				if ($a->getState() !== Account::STATE_ENABLED) {
+					$reappeared[$a->getUserId()] = $a;
+				}
+			} else {
+				// The backend no longer has this user
+				$removed[$a->getUserId()] = $a;
+			}
+		}
+		return [$removed, $reappeared];
 	}
 
 	/**
@@ -196,7 +222,8 @@ class SyncService {
 			if ($quota !== null) {
 				$a->setQuota($quota);
 			}
-		} else {
+		}
+		if ($quota === null) {
 			list($hasKey, $quota) = $this->readUserConfig($uid, 'files', 'quota');
 			if ($hasKey) {
 				$a->setQuota($quota);
@@ -215,10 +242,10 @@ class SyncService {
 	 */
 	private function syncHome(Account $a, UserInterface $backend) {
 		// Fallback for backends that dont yet use the new interfaces
-		$proividesHome = $backend instanceof IProvidesHomeBackend || $backend->implementsActions(\OC_User_Backend::GET_HOME);
+		$proividesHome = $backend instanceof IProvidesHomeBackend || $backend->implementsActions(\OC\User\Backend::GET_HOME);
 		$uid = $a->getUserId();
 		// Log when the backend returns a string that is a different home to the current value
-		if($proividesHome && \is_string($backend->getHome($uid)) && $a->getHome() !== $backend->getHome($uid)) {
+		if ($proividesHome && \is_string($backend->getHome($uid)) && $a->getHome() !== $backend->getHome($uid)) {
 			$existing = $a->getHome();
 			$backendHome = $backend->getHome($uid);
 			$class = \get_class($backend);
@@ -228,8 +255,7 @@ class SyncService {
 		}
 		// Home is handled differently, it should only be set on account creation, when there is no home already set
 		// Otherwise it could change on a sync and result in a new user folder being created
-		if($a->getHome() === null) {
-
+		if ($a->getHome() === null) {
 			$home = false;
 			if ($proividesHome) {
 				$home = $backend->getHome($uid);
@@ -257,12 +283,36 @@ class SyncService {
 	 */
 	private function syncDisplayName(Account $a, UserInterface $backend) {
 		$uid = $a->getUserId();
-		if ($backend instanceof IProvidesDisplayNameBackend || $backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
+		if ($backend instanceof IProvidesDisplayNameBackend || $backend->implementsActions(\OC\User\Backend::GET_DISPLAYNAME)) {
 			$displayName = $backend->getDisplayName($uid);
 			$a->setDisplayName($displayName);
 			if (\array_key_exists('displayName', $a->getUpdatedFields())) {
 				$this->logger->debug(
 					"Setting displayName for <$uid> to <$displayName>", ['app' => self::class]
+				);
+			}
+		}
+	}
+
+	/**
+	 * TODO store username in account table instead of user preferences
+	 *
+	 * @param Account $a
+	 * @param UserInterface $backend
+	 */
+	private function syncUserName(Account $a, UserInterface $backend) {
+		$uid = $a->getUserId();
+		if ($backend instanceof IProvidesUserNameBackend) {
+			$userName = $backend->getUserName($uid);
+			$currentUserName = $this->config->getUserValue($uid, 'core', 'username', null);
+			if ($userName !== $currentUserName) {
+				try {
+					$this->config->setUserValue($uid, 'core', 'username', $userName);
+				} catch (PreConditionNotMetException $e) {
+					// ignore, because precondition is empty
+				}
+				$this->logger->debug(
+					"Setting userName for <$uid> from <$currentUserName> to <$userName>", ['app' => self::class]
 				);
 			}
 		}
@@ -298,6 +348,7 @@ class SyncService {
 		$this->syncQuota($a, $backend);
 		$this->syncHome($a, $backend);
 		$this->syncDisplayName($a, $backend);
+		$this->syncUserName($a, $backend);
 		$this->syncSearchTerms($a, $backend);
 		return $a;
 	}
@@ -330,10 +381,9 @@ class SyncService {
 			throw new \Exception("The database returned multiple accounts for this uid: $uid");
 		}
 
-
 		// The account exists, sync
 		$account = $this->syncAccount($account, $backend);
-		if($account->getId() === null) {
+		if ($account->getId() === null) {
 			// New account, insert
 			$this->mapper->insert($account);
 		} else {
@@ -380,5 +430,4 @@ class SyncService {
 		$this->config->deleteUserValue($uid, 'settings', 'email');
 		$this->config->deleteUserValue($uid, 'files', 'quota');
 	}
-
 }

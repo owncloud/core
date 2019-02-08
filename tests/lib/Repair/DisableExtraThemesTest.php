@@ -57,7 +57,7 @@ class DisableExtraThemesTest extends TestCase {
 
 		$this->appManager->expects($this->exactly(2))
 			->method('disableApp')
-			->withConsecutive(['theme-one'],['theme-two']);
+			->withConsecutive(['theme-one'], ['theme-two']);
 
 		$this->config->expects($this->once())
 			->method('getSystemValue')

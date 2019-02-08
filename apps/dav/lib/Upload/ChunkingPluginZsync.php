@@ -18,7 +18,6 @@
  */
 namespace OCA\DAV\Upload;
 
-
 use OCA\DAV\Connector\Sabre\File;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Server;
@@ -32,7 +31,7 @@ class ChunkingPluginZsync extends ServerPlugin {
 	private $server;
 	/** @var FutureFileZsync */
 	private $sourceNode;
-	/** @var OC\Files\View */
+	/** @var View */
 	private $view;
 
 	public function __construct(View $view) {
@@ -43,7 +42,7 @@ class ChunkingPluginZsync extends ServerPlugin {
 	/**
 	 * @inheritdoc
 	 */
-	function initialize(Server $server) {
+	public function initialize(Server $server) {
 		$server->on('beforeMove', [$this, 'beforeMove']);
 		$this->server = $server;
 	}
@@ -52,7 +51,7 @@ class ChunkingPluginZsync extends ServerPlugin {
 	 * @param string $sourcePath source path
 	 * @param string $destination destination path
 	 */
-	function beforeMove($sourcePath, $destination) {
+	public function beforeMove($sourcePath, $destination) {
 		$this->sourceNode = $this->server->tree->getNodeForPath($sourcePath);
 		if (!$this->sourceNode instanceof FutureFileZsync) {
 			// skip handling as the source is not a chunked FutureFileZsync
@@ -110,8 +109,9 @@ class ChunkingPluginZsync extends ServerPlugin {
 	 * @param string $destination destination path
 	 */
 	private function postMoveZsync(&$zsyncMetadata, $destination) {
-		if (!$zsyncMetadata)
+		if (!$zsyncMetadata) {
 			return;
+		}
 		$destination = \implode('/', \array_slice(\explode('/', $destination), 2));
 		$info = $this->view->getFileInfo('files/'.$destination);
 		$zsyncMetadataFile = 'files_zsync/'.$info->getId();

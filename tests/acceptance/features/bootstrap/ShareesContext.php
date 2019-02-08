@@ -23,7 +23,8 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
 
 require_once 'bootstrap.php';
@@ -31,41 +32,48 @@ require_once 'bootstrap.php';
 /**
  * Sharees context.
  */
-class ShareesContext implements Context, SnippetAcceptingContext {
-	use BasicStructure;
+class ShareesContext implements Context {
 
 	/**
-	 * @When /^the user gets the sharees using the API with parameters$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode $body
+	 * @var FeatureContext
+	 */
+	private $featureContext;
+
+	/**
+	 * @When /^the user gets the sharees using the sharing API with parameters$/
+	 *
+	 * @param TableNode $body
 	 *
 	 * @return void
 	 */
 	public function theUserGetsTheShareesWithParameters($body) {
-		$this->userGetsTheShareesWithParameters($this->currentUser, $body);
+		$this->userGetsTheShareesWithParameters(
+			$this->featureContext->getCurrentUser(), $body
+		);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" gets the sharees using the API with parameters$/
+	 * @When /^user "([^"]*)" gets the sharees using the sharing API with parameters$/
 	 *
 	 * @param string $user
-	 * @param \Behat\Gherkin\Node\TableNode $body
+	 * @param TableNode $body
 	 *
 	 * @return void
 	 */
 	public function userGetsTheShareesWithParameters($user, $body) {
 		$url = '/apps/files_sharing/api/v1/sharees';
-		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($body instanceof TableNode) {
 			$parameters = [];
 			foreach ($body->getRowsHash() as $key => $value) {
-				$parameters[] = $key . '=' . $value;
+				$parameters[] = "$key=$value";
 			}
 			if (!empty($parameters)) {
 				$url .= '?' . \implode('&', $parameters);
 			}
 		}
 
-		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+		$this->featureContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, 'GET', $url, null
 		);
 	}
@@ -74,14 +82,14 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	 * @Then /^the "([^"]*)" sharees returned should be$/
 	 *
 	 * @param string $shareeType
-	 * @param \Behat\Gherkin\Node\TableNode $shareesList
+	 * @param TableNode $shareesList
 	 *
 	 * @return void
 	 */
 	public function theShareesReturnedShouldBe($shareeType, $shareesList) {
 		$sharees = $shareesList->getRows();
 		$respondedArray = $this->getArrayOfShareesResponded(
-			$this->response, $shareeType
+			$this->featureContext->getResponse(), $shareeType
 		);
 		PHPUnit_Framework_Assert::assertEquals($sharees, $respondedArray);
 	}
@@ -95,9 +103,19 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	 */
 	public function theShareesReturnedShouldBeEmpty($shareeType) {
 		$respondedArray = $this->getArrayOfShareesResponded(
-			$this->response, $shareeType
+			$this->featureContext->getResponse(), $shareeType
 		);
-		PHPUnit_Framework_Assert::assertEmpty($respondedArray);
+		if (isset($respondedArray[0])) {
+			// [0] is display name and [2] is user or group id
+			$firstEntry = $respondedArray[0][0] . " (" . $respondedArray[0][2] . ")";
+		} else {
+			$firstEntry = "";
+		}
+
+		PHPUnit_Framework_Assert::assertEmpty(
+			$respondedArray,
+			"'$shareeType' array should be empty, but it starts with $firstEntry"
+		);
 	}
 
 	/**
@@ -109,7 +127,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	public function getArrayOfShareesResponded(
 		ResponseInterface $response, $shareeType
 	) {
-		$elements = $response->xml()->data;
+		$elements = $this->featureContext->getResponseXml($response)->data;
 		$elements = \json_decode(\json_encode($elements), 1);
 		if (\strpos($shareeType, 'exact ') === 0) {
 			$elements = $elements['exact'];
@@ -140,18 +158,19 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	}
 
 	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
 	 * @return void
 	 */
-	protected function resetAppConfigs() {
-		// Remember the current capabilities
-		$this->getCapabilitiesCheckResponse();
-		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
-		// Set the required starting values for testing
-		$capabilitiesArray = $this->getCommonSharingConfigs();
-		$capabilitiesArray = \array_merge(
-			$capabilitiesArray,
-			$this->getCommonFederationConfigs()
-		);
-		$this->setCapabilities($capabilitiesArray);
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }

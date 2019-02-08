@@ -117,7 +117,6 @@ class LocalTest extends Storage {
 	 * @expectedException \OCP\Files\ForbiddenException
 	 */
 	public function testBrokenSymlink() {
-
 		$linkTarget = $this->tmpDir . 'link_target';
 		$linkName = $this->tmpDir . 'broken_symlink';
 
@@ -128,4 +127,3 @@ class LocalTest extends Storage {
 		$this->instance->getSourcePath('broken_symlink');
 	}
 }
-

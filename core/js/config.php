@@ -53,7 +53,7 @@ $defaults = new OC_Defaults();
 
 // Get the config
 $apps_paths = [];
-foreach(OC_App::getEnabledApps() as $app) {
+foreach (OC_App::getEnabledApps() as $app) {
 	$apps_paths[$app] = OC_App::getAppWebPath($app);
 }
 
@@ -76,7 +76,7 @@ $countOfDataLocation = 0;
 $value = $config->getAppValue('core', 'shareapi_enable_link_password_by_default', 'no');
 
 $dataLocation = \str_replace(OC::$SERVERROOT .'/', '', $config->getSystemValue('datadirectory', ''), $countOfDataLocation);
-if($countOfDataLocation !== 1 || !OC_User::isAdminUser(OC_User::getUser())){
+if ($countOfDataLocation !== 1 || !OC_User::isAdminUser(OC_User::getUser())) {
 	$dataLocation = false;
 }
 
@@ -154,8 +154,8 @@ $array = [
 	),
 	"firstDay" => \json_encode($l->l('firstday', null)) ,
 	"oc_config" => [
-			'session_lifetime'	=> \min(\OCP\Config::getSystemValue('session_lifetime', OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')), OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')),
-			'session_keepalive'	=> \OCP\Config::getSystemValue('session_keepalive', true),
+			'session_lifetime'	=> \min(\OC::$server->getConfig()->getSystemValue('session_lifetime', OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')), OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')),
+			'session_keepalive'	=> \OC::$server->getConfig()->getSystemValue('session_keepalive', true),
 			'enable_avatars'	=> \OC::$server->getConfig()->getSystemValue('enable_avatars', true) === true,
 			'lost_password_link'	=> \OC::$server->getConfig()->getSystemValue('lost_password_link', null),
 			'modRewriteWorking'	=> (\getenv('front_controller_active') === 'true'),

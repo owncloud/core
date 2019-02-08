@@ -32,4 +32,5 @@ namespace OCP\Files;
  * Exception for no read access to a file/folder/resource
  * @since 10.0.5
  */
-class NoReadAccessException extends \Exception {}
+class NoReadAccessException extends \Exception {
+}

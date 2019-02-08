@@ -22,12 +22,11 @@
  *
  */
 
-
 namespace OC\DB;
 
 class AdapterOCI8 extends Adapter {
 	public function lastInsertId($table) {
-		if (\is_null($table)) {
+		if ($table === null) {
 			throw new \InvalidArgumentException('Oracle requires a table name to be passed into lastInsertId()');
 		}
 		if ($table !== null) {
@@ -41,7 +40,7 @@ class AdapterOCI8 extends Adapter {
 
 	public function fixupStatement($statement) {
 		$statement = \preg_replace('( LIKE \?)', '$0 ESCAPE \'\\\'', $statement);
-		$statement = \preg_replace('/`(\w+)` ILIKE \?/', 'REGEXP_LIKE(`$1`, \'^\' || REPLACE(?, \'%\', \'.*\') || \'$\', \'i\')', $statement);
+		$statement = \preg_replace('/`(\w+)` ILIKE \?/', "LOWER(`$1`) LIKE LOWER(?) ESCAPE '\\' -- \\'' \n", $statement);  // FIXME workaround for singletick matching with regexes in SQLParserUtils::getUnquotedStatementFragments
 		$statement = \str_replace('`', '"', $statement);
 		$statement = \str_ireplace('NOW()', 'CURRENT_TIMESTAMP', $statement);
 		$statement = \str_ireplace('UNIX_TIMESTAMP()', self::UNIX_TIMESTAMP_REPLACEMENT, $statement);

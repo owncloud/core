@@ -26,6 +26,7 @@
 namespace OC\Files\Storage\Wrapper;
 
 use OCP\Files\Cache\ICacheEntry;
+use OCP\Files\Storage\IStorage;
 
 class Quota extends Wrapper {
 
@@ -43,7 +44,7 @@ class Quota extends Wrapper {
 	 * @param array $parameters
 	 */
 	public function __construct($parameters) {
-		$this->storage = $parameters['storage'];
+		parent::__construct($parameters);
 		$this->quota = $parameters['quota'];
 		$this->sizeRoot = isset($parameters['root']) ? $parameters['root'] : '';
 	}
@@ -60,7 +61,7 @@ class Quota extends Wrapper {
 	 * @param \OC\Files\Storage\Storage $storage
 	 */
 	protected function getSize($path, $storage = null) {
-		if (\is_null($storage)) {
+		if ($storage === null) {
 			$cache = $this->getCache();
 		} else {
 			$cache = $storage->getCache();

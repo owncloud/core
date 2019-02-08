@@ -1,4 +1,7 @@
 <?php
+
+use OCP\IConfig;
+
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
@@ -31,7 +34,6 @@
  *
  */
 class OC_Defaults {
-
 	private $theme;
 	private $l;
 
@@ -48,9 +50,14 @@ class OC_Defaults {
 	private $defaultSlogan;
 	private $defaultLogoClaim;
 	private $defaultMailHeaderColor;
+	/**
+	 * @var IConfig
+	 */
+	private $config;
 
-	function __construct() {
+	public function __construct() {
 		$this->l = \OC::$server->getL10N('lib');
+		$this->config = \OC::$server->getConfig();
 		$version = \OCP\Util::getVersion();
 
 		$this->defaultEntity = 'ownCloud'; /* e.g. company name, used for footers and copyright notices */
@@ -83,6 +90,7 @@ class OC_Defaults {
 
 	/**
 	 * @param string $method
+	 * @return bool
 	 */
 	private function themeExist($method) {
 		if (isset($this->theme) && \method_exists($this->theme, $method)) {
@@ -243,9 +251,16 @@ class OC_Defaults {
 		if ($this->themeExist('getShortFooter')) {
 			$footer = $this->theme->getShortFooter();
 		} else {
-			$footer = '<a href="'. $this->getBaseUrl() . '" target="_blank"' .
-				' rel="noreferrer">' .$this->getEntity() . '</a>'.
-				' – ' . $this->getSlogan();
+			$footer  = '<a href="' . $this->getBaseUrl() . '" target="_blank" rel="noreferrer">' . $this->getEntity() . '</a>';
+			$footer .= ' &ndash; ' . $this->getSlogan();
+
+			if ($this->getImprintUrl() !== '') {
+				$footer .= '<span class="nowrap"> | <a href="' . $this->getImprintUrl() . '" target="_blank">' . $this->l->t('Imprint') . '</a></span>';
+			}
+
+			if ($this->getPrivacyPolicyUrl() !== '') {
+				$footer .= '<span class="nowrap"> | <a href="'. $this->getPrivacyPolicyUrl() .'" target="_blank">'. $this->l->t('Privacy Policy') .'</a></span>';
+			}
 		}
 
 		return $footer;
@@ -287,4 +302,36 @@ class OC_Defaults {
 		}
 	}
 
+	/**
+	 * Returns URL to imprint
+	 * @return string
+	 */
+	public function getImprintUrl() {
+		try {
+			return $this->config->getAppValue('core', 'legal.imprint_url', '');
+		} catch (\Exception $e) {
+			return '';
+		}
+	}
+
+	/**
+	 * Returns URL to Privacy Policy
+	 * @return string
+	 */
+	public function getPrivacyPolicyUrl() {
+		try {
+			return $this->config->getAppValue('core', 'legal.privacy_policy_url', '');
+		} catch (\Exception $e) {
+			return '';
+		}
+	}
+
+	/**
+	 * @internal Used for unit tests
+	 *
+	 * @param IConfig $config
+	 */
+	public function setConfig(IConfig $config) {
+		$this->config = $config;
+	}
 }

@@ -125,5 +125,4 @@ interface GroupInterface {
 	 * @since 10.0.0
 	 */
 	public function isVisibleForScope($scope);
-
 }

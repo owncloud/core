@@ -47,7 +47,7 @@ class SessionStorage {
 	 */
 	public function getToken() {
 		$token = $this->session->get('requesttoken');
-		if(empty($token)) {
+		if (empty($token)) {
 			throw new \Exception('Session does not contain a requesttoken');
 		}
 

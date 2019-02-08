@@ -38,7 +38,7 @@ class RegisterConsumerEventImpl extends RegisterConsumerEvent {
 	/** @var Manager */
 	private $manager;
 
-	public function __construct (Manager $manager) {
+	public function __construct(Manager $manager) {
 		$this->manager = $manager;
 	}
 

@@ -8,8 +8,6 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "Não é possível criar uma partilha federada com o mesmo utilizador",
     "File is already shared with %s" : "O ficheiro já foi partilhado com %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "A partilha de %s falhou, não foi possível encontrar %s. É possível que o servidor esteja inacessível.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "Recebeu \"/%3$s\" como uma partilha remota de %1$s (por conta de %2$s)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "Recebeu \"/%3$s\" como uma partilha remota de %1$s",
     "Accept" : "Aceitar",
     "Decline" : "Recusar",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Partilhe comigo através da minha Id. da Nuvem Federada #ownCloud, veja %s",

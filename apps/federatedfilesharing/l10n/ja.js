@@ -8,8 +8,6 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "同じユーザーではサーバー連携共有は作成できません",
     "File is already shared with %s" : "ファイルはすでに %s と共有されています。",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "%s を共有できませんでした。%s が見つかりませんでした。現在サーバーに接続できないようです。",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "%1$s からリモート共有として \"/%3$s\" を受け取りました。(%2$s の代理として)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "%1$s からリモート共有として \"/%3$s\" を受け取りました。",
     "Accept" : "受領",
     "Decline" : "拒否",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "#ownCloud の「クラウド連携ID」で私と共有できます。こちらを見てください。%s",

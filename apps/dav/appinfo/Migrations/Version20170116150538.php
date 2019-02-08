@@ -169,7 +169,7 @@ class Version20170116150538 implements ISchemaMigration {
 	/**
 	 * @param Schema $schema
 	 */
-	private function createCalendarObjectsTable(Schema $schema){
+	private function createCalendarObjectsTable(Schema $schema) {
 		if (!$schema->hasTable("{$this->prefix}calendarobjects")) {
 			$table = $schema->createTable("{$this->prefix}calendarobjects");
 			$table->addColumn('id', 'integer', [
@@ -237,7 +237,7 @@ class Version20170116150538 implements ISchemaMigration {
 	/**
 	 * @param Schema $schema
 	 */
-	private function createCalendarsTable(Schema $schema){
+	private function createCalendarsTable(Schema $schema) {
 		if (!$schema->hasTable("{$this->prefix}calendars")) {
 			$table = $schema->createTable("{$this->prefix}calendars");
 			$table->addColumn('id', 'integer', [
@@ -298,7 +298,7 @@ class Version20170116150538 implements ISchemaMigration {
 	/**
 	 * @param Schema $schema
 	 */
-	private function createCalendarChangesTable(Schema $schema){
+	private function createCalendarChangesTable(Schema $schema) {
 		if (!$schema->hasTable("{$this->prefix}calendarchanges")) {
 			$table = $schema->createTable("{$this->prefix}calendarchanges");
 			$table->addColumn('id', 'integer', [
@@ -334,7 +334,7 @@ class Version20170116150538 implements ISchemaMigration {
 	/**
 	 * @param Schema $schema
 	 */
-	private function createCalendarSubscriptionsTable(Schema $schema){
+	private function createCalendarSubscriptionsTable(Schema $schema) {
 		if (!$schema->hasTable("{$this->prefix}calendarsubscriptions")) {
 			$table = $schema->createTable("{$this->prefix}calendarsubscriptions");
 			$table->addColumn('id', 'integer', [
@@ -397,7 +397,7 @@ class Version20170116150538 implements ISchemaMigration {
 	/**
 	 * @param Schema $schema
 	 */
-	private function createSchedulingObjectsTable(Schema $schema){
+	private function createSchedulingObjectsTable(Schema $schema) {
 		if (!$schema->hasTable("{$this->prefix}schedulingobjects")) {
 			$table = $schema->createTable("{$this->prefix}schedulingobjects");
 			$table->addColumn('id', 'integer', [
@@ -434,7 +434,7 @@ class Version20170116150538 implements ISchemaMigration {
 		}
 	}
 
-	private function createCardsPropertiesTable(Schema $schema){
+	private function createCardsPropertiesTable(Schema $schema) {
 		if (!$schema->hasTable("{$this->prefix}cards_properties")) {
 			$table = $schema->createTable("{$this->prefix}cards_properties");
 			$table->addColumn('id', 'integer', [
@@ -482,7 +482,7 @@ class Version20170116150538 implements ISchemaMigration {
 		}
 	}
 
-	private function createDavSharesTable(Schema $schema){
+	private function createDavSharesTable(Schema $schema) {
 		if (!$schema->hasTable("{$this->prefix}dav_shares")) {
 			$table = $schema->createTable("{$this->prefix}dav_shares");
 			$table->addColumn('id', 'integer', [
@@ -518,5 +518,4 @@ class Version20170116150538 implements ISchemaMigration {
 			);
 		}
 	}
-
 }

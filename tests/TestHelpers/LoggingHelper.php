@@ -21,6 +21,8 @@
  */
 namespace TestHelpers;
 
+use SimpleXMLElement;
+
 /**
  * Helper to read and analyze the owncloud log file
  *
@@ -29,7 +31,7 @@ namespace TestHelpers;
  */
 class LoggingHelper {
 	/**
-	 * returns the log file path
+	 * returns the log file path local to the system ownCloud is running on
 	 *
 	 * @throws \Exception
 	 * @return string
@@ -53,6 +55,31 @@ class LoggingHelper {
 			throw new \Exception("could not get owncloud log file information");
 		}
 		return $matches[2];
+	}
+
+	/**
+	 *
+	 * @param string $baseUrl
+	 * @param string $adminUsername
+	 * @param string $adminPassword
+	 * @param int $noOfLinesToRead
+	 *
+	 * @throws \Exception
+	 * @return SimpleXMLElement
+	 */
+	public static function getLogFileContent(
+		$baseUrl, $adminUsername, $adminPassword, $noOfLinesToRead = 0
+	) {
+		$result = OcsApiHelper::sendRequest(
+			$baseUrl, $adminUsername,
+			$adminPassword, "GET", "/apps/testing/api/v1/logfile/$noOfLinesToRead"
+		);
+		if ($result->getStatusCode() !== 200) {
+			throw new \Exception(
+				"could not get logfile content " . $result->getReasonPhrase()
+			);
+		}
+		return HttpRequestHelper::getResponseXml($result)->data->element;
 	}
 
 	/**
@@ -183,97 +210,20 @@ class LoggingHelper {
 
 	/**
 	 *
+	 * @param string $baseUrl
+	 * @param string $adminUsername
+	 * @param string $adminPassword
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public static function clearLogFile() {
-		$fp = \fopen(self::getLogFilePath(), 'w');
-		if ($fp === false) {
-			throw new \Exception("could not clear the log file");
+	public static function clearLogFile($baseUrl, $adminUsername, $adminPassword) {
+		$result = OcsApiHelper::sendRequest(
+			$baseUrl, $adminUsername,
+			$adminPassword, "DELETE", "/apps/testing/api/v1/logfile"
+		);
+		if ($result->getStatusCode() !== 200) {
+			throw new \Exception("could not clear logfile");
 		}
-		\fclose($fp);
-	}
-
-	/**
-	 * reads x last lines from a file
-	 * Slightly modified version of
-	 * http://www.geekality.net/2011/05/28/php-tail-tackling-large-files/
-	 *
-	 * @param string $filepath file to read
-	 * @param int $noOfLinesToRead no of lines to read
-	 * @param bool $adaptive make the file buffer adaptive
-	 *
-	 * @return array lines of the file to read
-	 * @throws \Exception
-	 * @author Torleif Berger, Lorenzo Stanco
-	 * @link http://stackoverflow.com/a/15025877/995958
-	 * @license http://creativecommons.org/licenses/by/3.0/
-	 */
-	public static function tailFile(
-		$filepath, $noOfLinesToRead = 1, $adaptive = true
-	) {
-		$lines = $noOfLinesToRead; //set a counter
-		// Open file
-		$f = @\fopen($filepath, "rb");
-		if ($f === false) {
-			throw new \Exception("could not read file '$filepath'");
-		}
-
-		// Sets buffer size, according to the number of lines to retrieve.
-		// This gives a performance boost when reading a few lines from the file.
-		if (!$adaptive) {
-			$buffer = 4096;
-		} else {
-			$buffer = ($lines < 2 ? 64 : ($lines < 10 ? 512 : 4096));
-		}
-
-		// Jump to last character
-		\fseek($f, -1, SEEK_END);
-
-		// Read it and adjust line number if necessary
-		// Otherwise the result would be wrong if file doesn't end with a blank line
-		if (\fread($f, 1) != "\n") {
-			$lines -= 1;
-		}
-
-		// Start reading
-		$output = '';
-
-		// While we would like more
-		while (\ftell($f) > 0 && $lines >= 0) {
-
-			// Figure out how far back we should jump
-			$seek = \min(\ftell($f), $buffer);
-
-			// Do the jump (backwards, relative to where we are)
-			\fseek($f, -$seek, SEEK_CUR);
-
-			// Read a chunk and prepend it to our output
-			$output = ($chunk = \fread($f, $seek)) . $output;
-
-			// Jump back to where we started reading
-			\fseek($f, -\mb_strlen($chunk, '8bit'), SEEK_CUR);
-
-			// Decrease our line counter
-			$lines -= \substr_count($chunk, "\n");
-		}
-
-		// While we have too many lines
-		// (Because of buffer size we might have read too many)
-		while ($lines++ < 0) {
-			// Find first newline and remove all text before that
-			$output = \substr($output, \strpos($output, "\n") + 1);
-		}
-
-		// Close file and return
-		\fclose($f);
-		$output = \explode("\n", $output);
-		if ($output[\count($output) - 1] === "") {
-			\array_pop($output);
-		}
-		if (\count($output) > $noOfLinesToRead) {
-			throw new \Exception("size of output array is bigger than expected");
-		}
-		return $output;
 	}
 }

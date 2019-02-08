@@ -68,14 +68,14 @@ class Application extends App {
 		/**
 		 * Core
 		 */
-		$container->registerService('L10N', function(IContainer $c) {
+		$container->registerService('L10N', function (IContainer $c) {
 			return $c->query('ServerContainer')->getL10N($c->query('AppName'));
 		});
 
 		/**
 		 * Services
 		 */
-		$container->registerService('TagService', function(IContainer $c)  {
+		$container->registerService('TagService', function (IContainer $c) {
 			return new TagService(
 				$c->query('ServerContainer')->getUserSession(),
 				$c->query('ServerContainer')->getTagManager(),
@@ -83,10 +83,10 @@ class Application extends App {
 			);
 		});
 
-		$container->registerService('OCP\Lock\ILockingProvider', function(IContainer $c)  {
+		$container->registerService('OCP\Lock\ILockingProvider', function (IContainer $c) {
 			return $c->query('ServerContainer')->getLockingProvider();
 		});
-		$container->registerService('OCP\Files\IMimeTypeLoader', function(IContainer $c)  {
+		$container->registerService('OCP\Files\IMimeTypeLoader', function (IContainer $c) {
 			return $c->query('ServerContainer')->getMimeTypeLoader();
 		});
 

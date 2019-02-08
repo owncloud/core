@@ -28,7 +28,7 @@ use OCP\AppFramework\App;
 use OCA\Files_Trashbin\Trashbin;
 
 class Application extends App {
-	public function __construct (array $urlParams = []) {
+	public function __construct(array $urlParams = []) {
 		parent::__construct('files_trashbin', $urlParams);
 
 		$container = $this->getContainer();
@@ -40,7 +40,7 @@ class Application extends App {
 		/*
 		 * Register expiration
 		 */
-		$container->registerService('Expiration', function($c) {
+		$container->registerService('Expiration', function ($c) {
 			return new Expiration(
 				$c->query('ServerContainer')->getConfig(),
 				$c->query('OCP\AppFramework\Utility\ITimeFactory')
@@ -50,7 +50,7 @@ class Application extends App {
 		/*
 		 * Register quota
 		 */
-		$container->registerService('Quota', function($c) {
+		$container->registerService('Quota', function ($c) {
 			return new Quota(
 				$c->getServer()->getUserManager(),
 				$c->query('ServerContainer')->getConfig()
@@ -60,7 +60,7 @@ class Application extends App {
 		/*
 		 * Register trashbin service
 		 */
-		$container->registerService('Trashbin', function($c) {
+		$container->registerService('Trashbin', function ($c) {
 			return new Trashbin(
 				$c->getServer()->getLazyRootFolder(),
 				$c->getServer()->getUrlGenerator(),

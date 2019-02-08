@@ -21,7 +21,6 @@
 
 namespace OCA\Files_Versions\Command;
 
-
 use OCP\Files\IRootFolder;
 use OCP\IUserBackend;
 use OCP\IUserManager;
@@ -42,7 +41,7 @@ class CleanUp extends Command {
 	 * @param IRootFolder $rootFolder
 	 * @param IUserManager $userManager
 	 */
-	function __construct(IRootFolder $rootFolder, IUserManager $userManager) {
+	public function __construct(IRootFolder $rootFolder, IUserManager $userManager) {
 		parent::__construct();
 		$this->userManager = $userManager;
 		$this->rootFolder = $rootFolder;
@@ -59,9 +58,7 @@ class CleanUp extends Command {
 			);
 	}
 
-
 	protected function execute(InputInterface $input, OutputInterface $output) {
-
 		$users = $input->getArgument('user_id');
 		if (!empty($users)) {
 			foreach ($users as $user) {
@@ -97,7 +94,6 @@ class CleanUp extends Command {
 		}
 	}
 
-
 	/**
 	 * delete versions for the given user
 	 *
@@ -110,5 +106,4 @@ class CleanUp extends Command {
 			$this->rootFolder->get('/' . $user . '/files_versions')->delete();
 		}
 	}
-
 }

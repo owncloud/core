@@ -71,5 +71,4 @@ class Admin implements ISettings {
 
 		return $tmpl;
 	}
-
 }

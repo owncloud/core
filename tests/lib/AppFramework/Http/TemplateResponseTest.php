@@ -21,14 +21,12 @@
  *
  */
 
-
 namespace Test\AppFramework\Http;
 
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\TemplateResponse;
 use Test\TestCase;
 use OC\AppFramework\Core\API;
-
 
 /**
  * Class TemplateResponseTest
@@ -37,7 +35,6 @@ use OC\AppFramework\Core\API;
  * @group DB
  */
 class TemplateResponseTest extends TestCase {
-
 	public function testSetParamsConstructor() {
 		$params = ['hi' => 'yo'];
 		$tpl = new TemplateResponse('app', 'home', $params);
@@ -45,14 +42,14 @@ class TemplateResponseTest extends TestCase {
 		$this->assertEquals(['hi' => 'yo'], $tpl->getParams());
 	}
 
-	public function testSetRenderAsConstructor(){
+	public function testSetRenderAsConstructor() {
 		$renderAs = 'myrender';
 		$tpl = new TemplateResponse('app', 'home', [], $renderAs);
 
 		$this->assertEquals($renderAs, $tpl->getRenderAs());
 	}
 
-	public function testSetParams(){
+	public function testSetParams() {
 		$params = ['hi' => 'yo'];
 		$tpl = new TemplateResponse('app', 'home');
 		$tpl->setParams($params);
@@ -60,13 +57,12 @@ class TemplateResponseTest extends TestCase {
 		$this->assertEquals(['hi' => 'yo'], $tpl->getParams());
 	}
 
-
-	public function testGetTemplateName(){
+	public function testGetTemplateName() {
 		$tpl = new TemplateResponse('app', 'home');
 		$this->assertEquals('home', $tpl->getTemplateName());
 	}
 
-	public function testGetRenderAs(){
+	public function testGetRenderAs() {
 		$render = 'myrender';
 		$tpl = new TemplateResponse('app', 'home');
 		$tpl->renderAs($render);
@@ -89,5 +85,4 @@ class TemplateResponseTest extends TestCase {
 		$this->assertContains('File not found', $data);
 		$this->assertContains('The specified document has not been found on the server.', $data);
 	}
-
 }

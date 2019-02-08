@@ -63,7 +63,6 @@ use Sabre\DAV\IFile;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class File extends Node implements IFile, IFileNode {
-
 	use EventEmitterTrait;
 	protected $request;
 	
@@ -82,7 +81,30 @@ class File extends Node implements IFile, IFileNode {
 		}
 		parent::__construct($view, $info, $shareManager);
 	}
-	
+
+	/**
+	 * Handles metadata updates for the target storage (mtime, propagation)
+	 *
+	 * @param Storage $targetStorage
+	 * @param $targetInternalPath
+	 */
+	private function handleMetadataUpdate(\OC\Files\Storage\Storage $targetStorage, $targetInternalPath) {
+		// since we skipped the view we need to scan and emit the hooks ourselves
+		
+		// allow sync clients to send the mtime along in a header
+		if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
+			$mtime = $this->sanitizeMtime(
+				$this->request->server ['HTTP_X_OC_MTIME']
+			);
+			if ($targetStorage->touch($targetInternalPath, $mtime)) {
+				$this->header('X-OC-MTime: accepted');
+			}
+			$targetStorage->getUpdater()->update($targetInternalPath, $mtime);
+		} else {
+			$targetStorage->getUpdater()->update($targetInternalPath);
+		}
+	}
+
 	/**
 	 * Updates the data
 	 *
@@ -112,9 +134,6 @@ class File extends Node implements IFile, IFileNode {
 	 * @return string|null
 	 */
 	public function put($data) {
-		$path = $this->fileView->getAbsolutePath($this->path);
-		$beforeEvent = new GenericEvent(null, ['path' => $path]);
-		\OC::$server->getEventDispatcher()->dispatch('file.beforecreate', $beforeEvent);
 		try {
 			$exists = $this->fileView->file_exists($this->path);
 			if ($this->info && $exists && !$this->info->isUpdateable()) {
@@ -136,6 +155,16 @@ class File extends Node implements IFile, IFileNode {
 			}
 		}
 
+		$newFile = false;
+		$path = $this->fileView->getAbsolutePath($this->path);
+		$beforeEvent = new GenericEvent(null, ['path' => $path]);
+		if (!$this->fileView->file_exists($this->path)) {
+			\OC::$server->getEventDispatcher()->dispatch('file.beforecreate', $beforeEvent);
+			$newFile = true;
+		} else {
+			\OC::$server->getEventDispatcher()->dispatch('file.beforeupdate', $beforeEvent);
+		}
+
 		list($partStorage) = $this->fileView->resolvePath($this->path);
 		$needsPartFile = $this->needsPartFile($partStorage) && (\strlen($this->path) > 1);
 
@@ -153,14 +182,30 @@ class File extends Node implements IFile, IFileNode {
 		/** @var \OC\Files\Storage\Storage $storage */
 		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
 		try {
+			try {
+				$this->changeLock(ILockingProvider::LOCK_EXCLUSIVE);
+			} catch (LockedException $e) {
+				if ($needsPartFile) {
+					$partStorage->unlink($internalPartPath);
+				}
+				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
+			}
+
 			$target = $partStorage->fopen($internalPartPath, 'wb');
-			if ($target === false) {
+			if (!\is_resource($target)) {
 				\OCP\Util::writeLog('webdav', '\OC\Files\Filesystem::fopen() failed', \OCP\Util::ERROR);
 				// because we have no clue about the cause we can only throw back a 500/Internal Server Error
 				throw new Exception('Could not write file contents');
 			}
+
 			list($count, $result) = \OC_Helper::streamCopy($data, $target);
 			\fclose($target);
+
+			try {
+				$this->changeLock(ILockingProvider::LOCK_SHARED);
+			} catch (LockedException $e) {
+				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
+			}
 
 			if (!self::isChecksumValid($partStorage, $internalPartPath)) {
 				throw new BadRequest('The computed checksum does not match the one received from the client.');
@@ -183,7 +228,6 @@ class File extends Node implements IFile, IFileNode {
 					throw new BadRequest('expected filesize ' . $expected . ' got ' . $count);
 				}
 			}
-
 		} catch (\Exception $e) {
 			if ($needsPartFile) {
 				$partStorage->unlink($internalPartPath);
@@ -195,6 +239,10 @@ class File extends Node implements IFile, IFileNode {
 			$view = \OC\Files\Filesystem::getView();
 			if ($view) {
 				$run = $this->emitPreHooks($exists);
+				if ($run === false) {
+					$view->unlockFile($this->path, ILockingProvider::LOCK_SHARED);
+					return null;
+				}
 			} else {
 				$run = true;
 			}
@@ -227,21 +275,12 @@ class File extends Node implements IFile, IFileNode {
 				}
 			}
 
-			// since we skipped the view we need to scan and emit the hooks ourselves
-			$storage->getUpdater()->update($internalPath);
+			$this->handleMetadataUpdate($storage, $internalPath);
 
 			try {
 				$this->changeLock(ILockingProvider::LOCK_SHARED);
 			} catch (LockedException $e) {
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
-			}
-
-			// allow sync clients to send the mtime along in a header
-			if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
-				$mtime = $this->sanitizeMtime($this->request->server ['HTTP_X_OC_MTIME']);
-				if ($this->fileView->touch($this->path, $mtime)) {
-					$this->header('X-OC-MTime: accepted');
-				}
 			}
 
 			if ($view) {
@@ -254,7 +293,11 @@ class File extends Node implements IFile, IFileNode {
 		}
 
 		$afterEvent = new GenericEvent(null, ['path' => $path]);
-		\OC::$server->getEventDispatcher()->dispatch('file.aftercreate', $afterEvent);
+		if ($newFile === true) {
+			\OC::$server->getEventDispatcher()->dispatch('file.aftercreate', $afterEvent);
+		} else {
+			\OC::$server->getEventDispatcher()->dispatch('file.afterupdate', $afterEvent);
+		}
 		return '"' . $this->info->getEtag() . '"';
 	}
 
@@ -271,7 +314,7 @@ class File extends Node implements IFile, IFileNode {
 	 * @param string $path
 	 */
 	private function emitPreHooks($exists, $path = null) {
-		if (\is_null($path)) {
+		if ($path === null) {
 			$path = $this->path;
 		}
 		$hookPath = Filesystem::getView()->getRelativePath($this->fileView->getAbsolutePath($path));
@@ -315,7 +358,7 @@ class File extends Node implements IFile, IFileNode {
 	 * @param string $path
 	 */
 	private function emitPostHooks($exists, $path = null) {
-		if (\is_null($path)) {
+		if ($path === null) {
 			$path = $this->path;
 		}
 		$hookPath = Filesystem::getView()->getRelativePath($this->fileView->getAbsolutePath($path));
@@ -414,9 +457,9 @@ class File extends Node implements IFile, IFileNode {
 		if (\OCP\App::isEnabled('encryption')) {
 			return [];
 		}
-		/** @var \OCP\Files\Storage $storage */
+		/** @var \OCP\Files\Storage\IStorage $storage */
 		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
-		if (\is_null($storage)) {
+		if ($storage === null) {
 			return [];
 		}
 
@@ -432,7 +475,7 @@ class File extends Node implements IFile, IFileNode {
 	 * @throws ServiceUnavailable
 	 */
 	private function createFileChunked($data) {
-		list($path, $name) = \Sabre\HTTP\URLUtil::splitPath($this->path);
+		list($path, $name) = \Sabre\Uri\split($this->path);
 
 		$info = \OC_FileChunking::decodeName($name);
 		if (empty($info)) {
@@ -443,7 +486,7 @@ class File extends Node implements IFile, IFileNode {
 		$bytesWritten = $chunk_handler->store($info['index'], $data);
 
 		//detect aborted upload
-		if (isset ($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
+		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
 			if (isset($_SERVER['CONTENT_LENGTH'])) {
 				$expected = $_SERVER['CONTENT_LENGTH'];
 				if ($bytesWritten != $expected) {
@@ -455,11 +498,21 @@ class File extends Node implements IFile, IFileNode {
 		}
 
 		if ($chunk_handler->isComplete()) {
-			list($storage,) = $this->fileView->resolvePath($path);
+			list($storage, ) = $this->fileView->resolvePath($path);
 			$needsPartFile = $this->needsPartFile($storage);
 			$partFile = null;
 
 			$targetPath = $path . '/' . $info['name'];
+			$absPath = $this->fileView->getAbsolutePath($targetPath);
+			$beforeEvent = new GenericEvent(null, ['path' => $absPath]);
+			$newFile = false;
+			if (!$this->fileView->file_exists($targetPath)) {
+				\OC::$server->getEventDispatcher()->dispatch('file.beforecreate', $beforeEvent);
+				$newFile = true;
+			} else {
+				\OC::$server->getEventDispatcher()->dispatch('file.beforeupdate', $beforeEvent);
+			}
+
 			/** @var \OC\Files\Storage\Storage $targetStorage */
 			list($targetStorage, $targetInternalPath) = $this->fileView->resolvePath($targetPath);
 
@@ -478,7 +531,6 @@ class File extends Node implements IFile, IFileNode {
 					$partFile = $this->getPartFileBasePath($path . '/' . $info['name']) . '.ocTransferId' . $info['transferid'] . '.part';
 					/** @var \OC\Files\Storage\Storage $targetStorage */
 					list($partStorage, $partInternalPath) = $this->fileView->resolvePath($partFile);
-
 
 					$chunk_handler->file_assemble($partStorage, $partInternalPath);
 
@@ -506,18 +558,7 @@ class File extends Node implements IFile, IFileNode {
 					$chunk_handler->file_assemble($targetStorage, $targetInternalPath);
 				}
 
-				// allow sync clients to send the mtime along in a header
-				if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
-					$mtime = $this->sanitizeMtime(
-						$this->request->server ['HTTP_X_OC_MTIME']
-					);
-					if ($targetStorage->touch($targetInternalPath, $mtime)) {
-						$this->header('X-OC-MTime: accepted');
-					}
-				}
-
-				// since we skipped the view we need to scan and emit the hooks ourselves
-				$targetStorage->getUpdater()->update($targetInternalPath);
+				$this->handleMetadataUpdate($targetStorage, $targetInternalPath);
 
 				$this->fileView->changeLock($targetPath, ILockingProvider::LOCK_SHARED);
 
@@ -526,8 +567,7 @@ class File extends Node implements IFile, IFileNode {
 				// FIXME: should call refreshInfo but can't because $this->path is not the of the final file
 				$info = $this->fileView->getFileInfo($targetPath);
 
-
-				if (isset($partStorage) && isset($partInternalPath)) {
+				if (isset($partStorage, $partInternalPath)) {
 					$checksums = $partStorage->getMetaData($partInternalPath)['checksum'];
 				} else {
 					$checksums = $targetStorage->getMetaData($targetInternalPath)['checksum'];
@@ -542,7 +582,16 @@ class File extends Node implements IFile, IFileNode {
 
 				$this->fileView->unlockFile($targetPath, ILockingProvider::LOCK_SHARED);
 
-				return $info->getEtag();
+				$etag = $info->getEtag();
+				if ($etag !== null) {
+					$afterEvent = new GenericEvent(null, ['path' => $absPath]);
+					if ($newFile === true) {
+						\OC::$server->getEventDispatcher()->dispatch('file.aftercreate', $afterEvent);
+					} else {
+						\OC::$server->getEventDispatcher()->dispatch('file.afterupdate', $afterEvent);
+					}
+				}
+				return $etag;
 			} catch (\Exception $e) {
 				if ($partFile !== null) {
 					$targetStorage->unlink($targetInternalPath);
@@ -574,7 +623,6 @@ class File extends Node implements IFile, IFileNode {
 		$computedChecksums = $meta['checksum'];
 
 		return \strpos($computedChecksums, $expectedChecksum) !== false;
-
 	}
 
 	/**
@@ -582,7 +630,7 @@ class File extends Node implements IFile, IFileNode {
 	 * or whether the file can be assembled/uploaded directly on the
 	 * target storage.
 	 *
-	 * @param \OCP\Files\Storage $storage
+	 * @param \OCP\Files\Storage\IStorage $storage
 	 * @return bool true if the storage needs part file handling
 	 */
 	private function needsPartFile($storage) {
@@ -603,7 +651,7 @@ class File extends Node implements IFile, IFileNode {
 	private function convertToSabreException(\Exception $e) {
 		if ($e instanceof FileContentNotAllowedException) {
 			// the file content is not permitted
-			throw new FileContentNotAllowedException($e->getMessage(), $e->getRetry(), $e);
+			throw new DAVForbiddenException($e->getMessage(), $e->getRetry(), $e);
 		}
 		if ($e instanceof \Sabre\DAV\Exception) {
 			throw $e;

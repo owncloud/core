@@ -53,7 +53,6 @@ class UtilTest extends TestCase {
 			$this->groupManager,
 			$this->config
 		);
-
 	}
 
 	/**
@@ -76,7 +75,6 @@ class UtilTest extends TestCase {
 	 * @dataProvider providesHeaders
 	 */
 	public function testCreateHeader($expected, $header, $moduleId) {
-
 		$em = $this->createMock('\OCP\Encryption\IEncryptionModule');
 		$em->expects($this->any())->method('getId')->willReturn($moduleId);
 
@@ -97,7 +95,6 @@ class UtilTest extends TestCase {
 	 * @expectedException \OC\Encryption\Exceptions\EncryptionHeaderKeyExistsException
 	 */
 	public function testCreateHeaderFailed() {
-
 		$header = ['header1' => 1, 'header2' => 2, 'oc_encryption_module' => 'foo'];
 
 		$em = $this->createMock('\OCP\Encryption\IEncryptionModule');
@@ -188,5 +185,4 @@ class UtilTest extends TestCase {
 			['/foo/test.txt.ocTransferId7567.part', '/foo/test.txt'],
 		];
 	}
-
 }

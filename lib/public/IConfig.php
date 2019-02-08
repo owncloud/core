@@ -116,8 +116,8 @@ interface IConfig {
 	 *
 	 * @param string $appName the appName that we stored the value under
 	 * @param string $key the key of the value, under which it was saved
-	 * @param string $default the default value to be returned if the value isn't set
-	 * @return string the saved value
+	 * @param mixed $default the default value to be returned if the value isn't set
+	 * @return mixed the saved value, or default
 	 * @since 6.0.0 - parameter $default was added in 7.0.0
 	 */
 	public function getAppValue($appName, $key, $default = '');
@@ -138,7 +138,6 @@ interface IConfig {
 	 * @since 8.0.0
 	 */
 	public function deleteAppValues($appName);
-
 
 	/**
 	 * Set a user defined value
@@ -161,7 +160,7 @@ interface IConfig {
 	 * @param string $appName the appName that we stored the value under
 	 * @param string $key the key under which the value is being stored
 	 * @param mixed $default the default value to be returned if the value isn't set
-	 * @return string
+	 * @return mixed
 	 * @since 6.0.0 - parameter $default was added in 7.0.0
 	 */
 	public function getUserValue($userId, $appName, $key, $default = '');

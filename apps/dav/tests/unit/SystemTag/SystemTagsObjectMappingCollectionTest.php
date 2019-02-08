@@ -23,7 +23,6 @@
 
 namespace OCA\DAV\Tests\unit\SystemTag;
 
-
 use OC\SystemTag\SystemTag;
 use OCP\SystemTag\TagNotFoundException;
 
@@ -54,7 +53,7 @@ class SystemTagsObjectMappingCollectionTest extends \Test\TestCase {
 	}
 
 	public function getNode() {
-		return new \OCA\DAV\SystemTag\SystemTagsObjectMappingCollection (
+		return new \OCA\DAV\SystemTag\SystemTagsObjectMappingCollection(
 			111,
 			'files',
 			$this->user,
@@ -73,6 +72,8 @@ class SystemTagsObjectMappingCollectionTest extends \Test\TestCase {
 			->method('canUserAssignTag')
 			->with($tag)
 			->will($this->returnValue(true));
+		$this->tagManager->method('canUserUseStaticTagInGroup')
+			->willReturn(true);
 
 		$this->tagManager->expects($this->once())
 			->method('getTagsByIds')
@@ -123,6 +124,26 @@ class SystemTagsObjectMappingCollectionTest extends \Test\TestCase {
 		}
 
 		$this->assertInstanceOf($expectedException, $thrown);
+	}
+
+	/**
+	 * @expectedException  \Sabre\DAV\Exception\Forbidden
+	 * @expectedExceptionMessage No permission to assign tag 555
+	 */
+	public function testStaticTagAssignNoPermission() {
+		$tag = new SystemTag('1', 'Test', true, true, false);
+		$this->tagManager->expects($this->once())
+			->method('getTagsByIds')
+			->with(['555'])
+			->will($this->returnValue([$tag]));
+		$this->tagManager->method('canUserSeeTag')
+			->willReturn(true);
+		$this->tagManager->method('canUserAssignTag')
+			->willReturn(true);
+		$this->tagManager->method('canUserUseStaticTagInGroup')
+			->willReturn(false);
+
+		$this->getNode()->createFile('555');
 	}
 
 	/**
@@ -243,7 +264,7 @@ class SystemTagsObjectMappingCollectionTest extends \Test\TestCase {
 
 		$this->tagManager->expects($this->exactly(3))
 			->method('canUserSeeTag')
-			->will($this->returnCallback(function($tag) {
+			->will($this->returnCallback(function ($tag) {
 				return $tag->isUserVisible();
 			}));
 

@@ -35,7 +35,7 @@ describe('OCA.Files.FileActions tests', function() {
 			name: 'Testdropdown',
 			displayName: 'Testdropdowndisplay',
 			mime: 'all',
-			permissions: OC.PERMISSION_READ,
+			permissions: OC.PERMISSION_UPDATE,
 			icon: function () {
 				return OC.imagePath('core', 'actions/download');
 			}
@@ -57,7 +57,9 @@ describe('OCA.Files.FileActions tests', function() {
 		});
 		fileActions.setDefault('all', 'Testdefault');
 		fileList = new OCA.Files.FileList($body, {
-			fileActions: fileActions
+			fileActions: fileActions,
+			// removes the "Details" action to not intefere with tests
+			detailsViewEnabled: false
 		});
 	});
 	afterEach(function() {
@@ -98,6 +100,7 @@ describe('OCA.Files.FileActions tests', function() {
 			expect($tr.find('.action.action-testinline').attr('data-action')).toEqual('Testinline');
 		});
 		it('does not render dropdown actions', function() {
+			delete(fileActions.Testdropdowndisplay);
 			expect($tr.find('.action.action-testdropdown').length).toEqual(0);
 		});
 		it('does not render default action', function() {
@@ -112,6 +115,15 @@ describe('OCA.Files.FileActions tests', function() {
 		it('renders actions menu trigger', function() {
 			expect($tr.find('.action.action-menu').length).toEqual(1);
 			expect($tr.find('.action.action-menu').attr('data-action')).toEqual('menu');
+		});
+		it('does not render actions menu trigger when no dropdown action', function() {
+			// remove update permission which would make the matching dropdown action disappear
+			$tr = fileList.add({
+				id: '19',
+				name: 'no-dropdown.txt',
+				permissions: OC.PERMISSION_READ
+			});
+			expect($tr.find('.action.action-menu').length).toEqual(0);
 		});
 		it('only renders actions relevant to the mime type', function() {
 			fileActions.registerAction({
@@ -674,6 +686,94 @@ describe('OCA.Files.FileActions tests', function() {
 			FileActions.updateFileActionSpinner($el, false);
 			expect($el.find('.icon.icon-loading-small').length).toEqual(0);
 			expect($el.find('.icon.icon-download').hasClass('hidden')).toEqual(false);
+		});
+	});
+	describe('advanced filter', function() {
+		var showMenuStub;
+
+		beforeEach(function() {
+			showMenuStub = sinon.stub(OC, 'showMenu');
+			fileActions.addAdvancedFilter(function(actions, context) {
+				var $file = context.$file;
+
+				// remove action if file is bigger than 10 kb
+				if (parseInt($file.attr('data-size'), 10) > 10000) {
+					delete(actions.Testinline);
+				}
+
+				return actions;
+			});
+			fileActions.addAdvancedFilter(function(actions, context) {
+				var $file = context.$file;
+
+				// remove action if file name starts with c
+				if ($file.attr('data-file').charAt(0) === 'c') {
+					delete(actions.Testdropdown);
+				}
+
+				return actions;
+			});
+		});
+		afterEach(function() { 
+			showMenuStub.restore(); 
+		});
+
+		var dataProvider = [{
+			fileData: {
+				id: '18',
+				type: 'file',
+				name: 'aaa.txt',
+				mimetype: 'text/plain',
+				size: 1234,
+				etag: 'a01234c',
+				mtime: '123456',
+				permissions: OC.PERMISSION_READ | OC.PERMISSION_UPDATE
+			},
+			inlineVisible: true,
+			dropVisible: true
+		}, {
+			fileData: {
+				id: '18',
+				type: 'file',
+				name: 'aaa.txt',
+				mimetype: 'text/plain',
+				size: 1000000,
+				etag: 'a01234c',
+				mtime: '123456',
+				permissions: OC.PERMISSION_READ | OC.PERMISSION_UPDATE
+			},
+			inlineVisible: false,
+			dropVisible: true
+		}, {
+			fileData: {
+				id: '18',
+				type: 'file',
+				name: 'ccc.txt',
+				mimetype: 'text/plain',
+				size: 123,
+				etag: 'a01234c',
+				mtime: '123456',
+				permissions: OC.PERMISSION_READ | OC.PERMISSION_UPDATE
+			},
+			inlineVisible: true,
+			dropVisible: false
+		}];
+
+		_.each(dataProvider, function(data, index) {
+			it('calls advanced filters and updates actions accordingly (case ' + index + ')', function() {
+				var $file = fileList.add(data.fileData);
+
+				expect($file.find('.action-testinline').length).toEqual(data.inlineVisible ? 1 : 0);
+
+				if (data.dropVisible) {
+					$file.find('.action-menu').click();
+
+					var $menuEl = showMenuStub.getCall(0).args[1];
+					expect($menuEl.find('.action-testdropdown').length).toEqual(1);
+				} else {
+					expect($file.find('.action-menu').length).toEqual(0);
+				}
+			});
 		});
 	});
 });

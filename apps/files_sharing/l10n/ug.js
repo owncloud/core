@@ -4,6 +4,7 @@ OC.L10N.register(
     "Uploading..." : "يۈكلەۋاتىدۇ…",
     "Cancel" : "ۋاز كەچ",
     "Share" : "ھەمبەھىر",
+    "Pending" : "كۈتۈۋاتىدۇ",
     "Shared by" : "ھەمبەھىرلىگۈچى",
     "Sharing" : "ھەمبەھىر",
     "Password" : "ئىم",

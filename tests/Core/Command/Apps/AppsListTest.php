@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace Tests\Core\Command\Config;
 
 use OC\Core\Command\App\ListApps;
@@ -50,18 +49,18 @@ class AppsListTest extends TestCase {
 	 * @param array $input
 	 * @param string $expectedOutput
 	 */
-	public function testCommandInput($input, $expectedOutput) {
+	public function testCommandInput($input, $expectedOutput): void {
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
 		$this->assertContains($expectedOutput, $output);
 	}
 
-	public function providesAppIds() {
+	public function providesAppIds(): array {
 		return [
-			[[], '- files: 1.5.1'],
-			[['--shipped' => 'true'], '- dav: 0.3.2'],
+			[[], '- files: 1.5'],
+			[['--shipped' => 'true'], '- dav: 0.4.0'],
 			[['--shipped' => 'false'], '- testing:'],
-			[['search-pattern' => 'dav'], '- dav: 0.3.2']
+			[['search-pattern' => 'dav'], '- dav: 0.4.0']
 		];
 	}
 }

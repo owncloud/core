@@ -69,7 +69,7 @@ class AdapterTest extends \Test\TestCase {
 		$qb = $this->conn->getQueryBuilder();
 		$qb->insert('appconfig');
 		$data['appid'] = 'testadapter';
-		foreach($data as $col => $val) {
+		foreach ($data as $col => $val) {
 			$qb->setValue($col, $qb->createParameter($col))
 				->setParameter($col, $val);
 		}
@@ -114,7 +114,6 @@ class AdapterTest extends \Test\TestCase {
 		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test2-newval', 'configkey' => 'test2-key'], ['appid', 'configkey']);
 		$this->assertEquals(1, $rows);
 		$this->assertRowExists('test2-key', 'test2-newval');
-
 	}
 
 	public function testUpsertWhenCompareColumnValueIsEmpty() {
@@ -163,9 +162,7 @@ class AdapterTest extends \Test\TestCase {
 		// Run
 		$adapter = new Adapter($mockConn);
 		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated'], ['appid', 'configkey']);
-
 	}
-
 
 	public function testUpsertAndThrowOtherDriverExceptions() {
 		$mockConn = $this->createMock(IDBConnection::class);
@@ -187,7 +184,5 @@ class AdapterTest extends \Test\TestCase {
 		// Run
 		$adapter = new Adapter($mockConn);
 		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated'], ['appid', 'configkey']);
-
 	}
-
 }

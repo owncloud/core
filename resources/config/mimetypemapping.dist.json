@@ -179,5 +179,8 @@
 	"xrf": ["image/x-dcraw"],
 	"yaml": ["application/yaml", "text/plain"],
 	"yml": ["application/yaml", "text/plain"],
-	"zip": ["application/zip"]
+	"zip": ["application/zip"],
+	"so": ["application/x-sharedlib"],
+	"dll": ["application/x-msdos-program"],
+	"dylib": ["application/x-sharedlib"]
 }

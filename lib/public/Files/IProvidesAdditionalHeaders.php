@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCP\Files;
-
 
 /**
  * Interface IProvidesAdditionalHeaders

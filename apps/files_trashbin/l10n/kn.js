@@ -7,4 +7,4 @@ OC.L10N.register(
     "Select all" : "﻿ಎಲ್ಲಾ ಆಯ್ಕೆ ಮಾಡಿ",
     "Name" : "﻿ಹೆಸರು"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

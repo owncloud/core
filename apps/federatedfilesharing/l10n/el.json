@@ -6,8 +6,6 @@
     "Not allowed to create a federated share with the same user" : "Δεν είναι επιτρεπτή η δημιουργία ομόσπονδου διαμοιρασμού με τον ίδιο διακομιστή χρήστη",
     "File is already shared with %s" : "Το αρχείο διαμοιράζεται ήδη με τον %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Αποτυχία διαμοιρασμού %s, δεν βρέθηκε το %s, μπορεί ο διακομιστής να είναι προσωρινά απροσπέλαστος.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "Λάβατε το \"/%3$s\" ως απομακρυσμένο διαμοιρασμό από %1$s (εκ μέρους του %2$s)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "Λάβατε το  \"/%3$s\"  ως απομακρυσμένο διαμοιρασμό από  %1$s",
     "Accept" : "Αποδοχή",
     "Decline" : "Απόρριψη",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Διαμοιρασμός με εμένα μέσω του #ownCloud Federated Cloud ID μου, δείτε %s",

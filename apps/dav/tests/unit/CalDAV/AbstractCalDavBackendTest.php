@@ -24,8 +24,10 @@ namespace OCA\DAV\Tests\unit\CalDAV;
 
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IConfig;
 use OCP\Security\ISecureRandom;
+use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Test\TestCase;
 
@@ -43,6 +45,9 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 
 	/** @var Principal | \PHPUnit_Framework_MockObject_MockObject */
 	protected $principal;
+
+	/** @var GroupPrincipalBackend | \PHPUnit_Framework_MockObject_MockObject */
+	protected $groupPrincipal;
 
 	/** @var IConfig */
 	protected $config;
@@ -69,10 +74,11 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 			->withAnyParameters()
 			->willReturn([self::UNIT_TEST_GROUP]);
 
+		$this->groupPrincipal = $this->createMock(GroupPrincipalBackend::class);
 		$db = \OC::$server->getDatabaseConnection();
 		$this->config = \OC::$server->getConfig();
 		$this->random = \OC::$server->getSecureRandom();
-		$this->backend = new CalDavBackend($db, $this->principal, $this->config, $this->random);
+		$this->backend = new CalDavBackend($db, $this->principal, $this->groupPrincipal, $this->random);
 
 		$this->tearDown();
 	}
@@ -99,7 +105,8 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 	 */
 	protected function createTestCalendar() {
 		$this->backend->createCalendar(self::UNIT_TEST_USER, 'Example', [
-			'{http://apple.com/ns/ical/}calendar-color' => '#1C4587FF'
+			'{http://apple.com/ns/ical/}calendar-color' => '#1C4587FF',
+			'{urn:ietf:params:xml:ns:caldav}schedule-calendar-transp'  => new ScheduleCalendarTransp('opaque')
 		]);
 		$calendars = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
 		$this->assertCount(1, $calendars);
@@ -109,13 +116,14 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 		$this->assertEquals(['VEVENT','VTODO'], $components->getValue());
 		$color = $calendars[0]['{http://apple.com/ns/ical/}calendar-color'];
 		$this->assertEquals('#1C4587FF', $color);
+		$transparent = $calendars[0]['{urn:ietf:params:xml:ns:caldav}schedule-calendar-transp'];
+		self::assertEquals(new ScheduleCalendarTransp('opaque'), $transparent);
 		$this->assertEquals('Example', $calendars[0]['uri']);
 		$this->assertEquals('Example', $calendars[0]['{DAV:}displayname']);
 		return $calendars[0]['id'];
 	}
 
 	protected function createEvent($calendarId, $start = '20130912T130000Z', $end = '20130912T140000Z') {
-
 		$calData = <<<EOD
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -139,7 +147,7 @@ EOD;
 	}
 
 	protected function assertAcl($principal, $privilege, $acl) {
-		foreach($acl as $a) {
+		foreach ($acl as $a) {
 			if ($a['principal'] === $principal && $a['privilege'] === $privilege) {
 				$this->assertTrue(true);
 				return;
@@ -149,7 +157,7 @@ EOD;
 	}
 
 	protected function assertNotAcl($principal, $privilege, $acl) {
-		foreach($acl as $a) {
+		foreach ($acl as $a) {
 			if ($a['principal'] === $principal && $a['privilege'] === $privilege) {
 				$this->fail("ACL contains $principal / $privilege");
 				return;

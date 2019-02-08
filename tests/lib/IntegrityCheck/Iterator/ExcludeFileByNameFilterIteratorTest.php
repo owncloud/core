@@ -35,10 +35,9 @@ class ExcludeFileByNameFilterIteratorTest extends TestCase {
 			->setMethods(['current'])
 			->getMock()
 		;
-
 	}
 
-	public function fileNameProvider(){
+	public function fileNameProvider() {
 		return [
 			['', 'a file', true],
 			['', 'Thumbs.db', false],
@@ -61,7 +60,7 @@ class ExcludeFileByNameFilterIteratorTest extends TestCase {
 	 * @param string $fileName
 	 * @param bool $expectedResult
 	 */
-	public function testAcceptForFiles($path, $fileName, $expectedResult){
+	public function testAcceptForFiles($path, $fileName, $expectedResult) {
 		$iteratorMock = $this->getMockBuilder(\RecursiveDirectoryIterator::class)
 			->disableOriginalConstructor()
 			->setMethods(['getPathname', 'getFilename', 'isDir'])
@@ -84,13 +83,12 @@ class ExcludeFileByNameFilterIteratorTest extends TestCase {
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 	
-
 	/**
 	 * @dataProvider fileNameProvider
 	 * @param string $fileName
 	 * @param bool $fakeExpectedResult
 	 */
-	public function testAcceptForDirs($fileName, $fakeExpectedResult){
+	public function testAcceptForDirs($fileName, $fakeExpectedResult) {
 		$iteratorMock = $this->getMockBuilder(\RecursiveDirectoryIterator::class)
 			->disableOriginalConstructor()
 			->setMethods(['getFilename', 'isDir'])

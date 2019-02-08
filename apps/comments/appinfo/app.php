@@ -23,8 +23,7 @@
 $eventDispatcher = \OC::$server->getEventDispatcher();
 $eventDispatcher->addListener(
 	'OCA\Files::loadAdditionalScripts',
-	function() {
-		\OCP\Util::addScript('oc-backbone-webdav');
+	function () {
 		\OCP\Util::addScript('comments', 'app');
 		\OCP\Util::addScript('comments', 'commentmodel');
 		\OCP\Util::addScript('comments', 'commentcollection');
@@ -37,14 +36,14 @@ $eventDispatcher->addListener(
 );
 
 $activityManager = \OC::$server->getActivityManager();
-$activityManager->registerExtension(function() {
+$activityManager->registerExtension(function () {
 	$application = new \OCP\AppFramework\App('comments');
 	/** @var \OCA\Comments\Activity\Extension $extension */
 	$extension = $application->getContainer()->query('OCA\Comments\Activity\Extension');
 	return $extension;
 });
 
-$managerListener = function(\OCP\Comments\CommentsEvent $event) use ($activityManager) {
+$managerListener = function (\OCP\Comments\CommentsEvent $event) {
 	$application = new \OCP\AppFramework\App('comments');
 	/** @var \OCA\Comments\Activity\Listener $listener */
 	$listener = $application->getContainer()->query('OCA\Comments\Activity\Listener');
@@ -53,9 +52,9 @@ $managerListener = function(\OCP\Comments\CommentsEvent $event) use ($activityMa
 
 $eventDispatcher->addListener(\OCP\Comments\CommentsEvent::EVENT_ADD, $managerListener);
 
-$eventDispatcher->addListener(\OCP\Comments\CommentsEntityEvent::EVENT_ENTITY, function(\OCP\Comments\CommentsEntityEvent $event) {
-	$event->addEntityCollection('files', function($name) {
-		$nodes = \OC::$server->getUserFolder()->getById(\intval($name));
+$eventDispatcher->addListener(\OCP\Comments\CommentsEntityEvent::EVENT_ENTITY, function (\OCP\Comments\CommentsEntityEvent $event) {
+	$event->addEntityCollection('files', function ($name) {
+		$nodes = \OC::$server->getUserFolder()->getById((int)$name, true);
 		return !empty($nodes);
 	});
 });
