@@ -39,7 +39,7 @@ class InfoParser {
 	public function parse($file) {
 		if (!\is_file($file)) {
 			throw new AppNotFoundException(
-				sprintf('%s does not exist', $file)
+				\sprintf('%s does not exist', $file)
 			);
 		}
 

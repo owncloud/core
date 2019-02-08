@@ -124,7 +124,7 @@ class CheckCode extends Command {
 		if (!$input->getOption('skip-validate-info')) {
 			$infoChecker = new InfoChecker($this->infoParser, $this->appManager);
 
-			$infoChecker->listen('InfoChecker', 'invalidAppInfo', function($appId) use ($output) {
+			$infoChecker->listen('InfoChecker', 'invalidAppInfo', function ($appId) use ($output) {
 				$output->writeln("<error>$appId has invalid XML in appinfo.xml</error>");
 			});
 

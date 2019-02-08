@@ -43,7 +43,7 @@ class InfoCheckerTest extends TestCase {
 			->method('getAppPath')
 			->will(
 				$this->returnCallback(
-					function ($appId){
+					function ($appId) {
 						return \OC::$SERVERROOT . '/tests/apps/' . $appId;
 					}
 				)
