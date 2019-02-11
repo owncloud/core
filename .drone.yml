@@ -57,11 +57,19 @@ pipeline:
       local: false
       event: [push, pull_request]
 
-  make-core:
+  composer:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - make
+      - ./tests/drone/composer-install.sh
+    when:
+      event: [push, pull_request]
+
+  yarn:
+    image: owncloudci/nodejs:latest
+    pull: true
+    commands:
+      - ./tests/drone/yarn-install.sh
     when:
       event: [push, pull_request]
 
@@ -76,7 +84,7 @@ pipeline:
       - build/node_modules
     when:
       local: false
-      event: [ push ]
+      event: [push, pull_request]
       matrix:
         TEST_SUITE: javascript
 
