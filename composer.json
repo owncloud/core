@@ -43,7 +43,7 @@
         "nikic/php-parser": "1.4.1",
         "icewind/Streams": "0.5.2",
         "swiftmailer/swiftmailer": "^5.4",
-        "guzzlehttp/guzzle": "^5.3",
+        "guzzlehttp/guzzle": "^6.3",
         "league/flysystem": "^1.0",
         "pear/pear-core-minimal": "^v1.10",
         "interfasys/lognormalizer": "^v1.0",
