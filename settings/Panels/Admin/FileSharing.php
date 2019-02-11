@@ -24,6 +24,7 @@ namespace OC\Settings\Panels\Admin;
 use OC\Helper\LocaleHelper;
 use OC\Settings\Panels\Helper;
 use OCP\IConfig;
+use OCP\L10N\IFactory;
 use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IL10N;
@@ -36,6 +37,10 @@ class FileSharing implements ISettings {
 	protected $helper;
 	/** @var IL10N */
 	protected $l;
+	/** @var IFactory */
+	private $lfactory;
+	/** @var LocaleHelper */
+	private $localeHelper;
 
 	public function __construct(IConfig $config, Helper $helper, IL10N $l) {
 		$this->config = $config;

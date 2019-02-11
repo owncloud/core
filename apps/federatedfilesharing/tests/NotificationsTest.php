@@ -22,11 +22,16 @@
 
 namespace OCA\FederatedFileSharing\Tests;
 
+use OC\AppFramework\Http;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\Notifications;
+use OCA\FederatedFileSharing\Ocm\NotificationManager;
+use OCA\FederatedFileSharing\Ocm\Permissions;
 use OCP\BackgroundJob\IJobList;
+use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
+use OCP\Http\Client\IResponse;
 use OCP\IConfig;
 use OCA\FederatedFileSharing\BackgroundJob\RetryJob;
 
@@ -41,6 +46,9 @@ class NotificationsTest extends \Test\TestCase {
 	/** @var  DiscoveryManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $discoveryManager;
 
+	/** @var NotificationManager | \PHPUnit_Framework_MockObject_MockObject */
+	private $notificationManager;
+
 	/** @var  IJobList | \PHPUnit_Framework_MockObject_MockObject */
 	private $jobList;
 
@@ -54,6 +62,9 @@ class NotificationsTest extends \Test\TestCase {
 		$this->config = $this->createMock(IConfig::class);
 		$this->discoveryManager = $this->getMockBuilder(DiscoveryManager::class)
 			->disableOriginalConstructor()->getMock();
+		$this->notificationManager = new NotificationManager(
+			$this->createMock(Permissions::class)
+		);
 		$this->httpClientService = $this->createMock(IClientService::class);
 		$this->addressHandler = $this->getMockBuilder(AddressHandler::class)
 			->disableOriginalConstructor()->getMock();
@@ -71,6 +82,7 @@ class NotificationsTest extends \Test\TestCase {
 				$this->addressHandler,
 				$this->httpClientService,
 				$this->discoveryManager,
+				$this->notificationManager,
 				$this->jobList,
 				$this->config
 			);
@@ -81,6 +93,7 @@ class NotificationsTest extends \Test\TestCase {
 						$this->addressHandler,
 						$this->httpClientService,
 						$this->discoveryManager,
+						$this->notificationManager,
 						$this->jobList,
 						$this->config
 					]
@@ -94,10 +107,11 @@ class NotificationsTest extends \Test\TestCase {
 	 * @dataProvider dataTestSendUpdateToRemote
 	 *
 	 * @param int $try
+	 * @param array $ocmHttpRequestResult
 	 * @param array $httpRequestResult
 	 * @param bool $expected
 	 */
-	public function testSendUpdateToRemote($try, $httpRequestResult, $expected) {
+	public function testSendUpdateToRemote($try, $ocmHttpRequestResult, $httpRequestResult, $expected) {
 		$remote = 'remote';
 		$id = 42;
 		$timestamp = 63576;
@@ -106,11 +120,15 @@ class NotificationsTest extends \Test\TestCase {
 
 		$instance->expects($this->any())->method('getTimestamp')->willReturn($timestamp);
 
-		$instance->expects($this->once())->method('tryHttpPostToShareEndpoint')
+		$instance->expects($this->at(0))->method('tryHttpPostToShareEndpoint')
+			->with($remote, '/notifications', $this->anything(), true)
+			->willReturn($ocmHttpRequestResult);
+
+		$instance->expects($this->at(1))->method('tryHttpPostToShareEndpoint')
 			->with($remote, '/'.$id.'/unshare', ['token' => $token, 'data1Key' => 'data1Value'])
 			->willReturn($httpRequestResult);
 
-		$this->addressHandler->expects($this->once())->method('removeProtocolFromUrl')
+		$this->addressHandler->method('removeProtocolFromUrl')
 			->with($remote)->willReturn($remote);
 
 		// only add background job on first try
@@ -140,17 +158,46 @@ class NotificationsTest extends \Test\TestCase {
 	public function dataTestSendUpdateToRemote() {
 		return [
 			// test if background job is added correctly
-			[0, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
-			[1, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
-			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
-			[1, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
+			[1, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
+			[1, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
 			// test all combinations of 'statuscode' and 'success'
-			[0, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
-			[0, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], true],
-			[0, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
-			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
-			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], false],
-			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], true],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
 		];
+	}
+
+	public function testOcmRequestsAreJson() {
+		$notifications = $this->getInstance();
+		$responseMock = $this->createMock(IResponse::class);
+		$clientMock = $this->createMock(IClient::class);
+		$clientMock->expects($this->once())
+			->method('post')
+			->with(
+				$this->anything(),
+				$this->callback(
+					function ($options) {
+						return isset($options['json'])
+						  && !isset($options['body']);
+					}
+				)
+			)
+			->willReturn($responseMock);
+		$this->httpClientService->method('newClient')->willReturn($clientMock);
+		$this->invokePrivate(
+			$notifications,
+			'tryHttpPostToShareEndpoint',
+			[
+				'domain',
+				'/notifications',
+				['key' => 'value'],
+				true
+			]
+		);
 	}
 }

@@ -25,7 +25,6 @@ use OCA\DAV\CardDAV\Xml\Groups;
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
-use Sabre\HTTP\URLUtil;
 
 class Plugin extends \Sabre\CardDAV\Plugin {
 	public function initialize(Server $server) {
@@ -41,15 +40,15 @@ class Plugin extends \Sabre\CardDAV\Plugin {
 	 */
 	protected function getAddressbookHomeForPrincipal($principal) {
 		if (\strrpos($principal, 'principals/users', -\strlen($principal)) !== false) {
-			list(, $principalId) = URLUtil::splitPath($principal);
+			list(, $principalId) = \Sabre\Uri\split($principal);
 			return self::ADDRESSBOOK_ROOT . '/users/' . $principalId;
 		}
 		if (\strrpos($principal, 'principals/groups', -\strlen($principal)) !== false) {
-			list(, $principalId) = URLUtil::splitPath($principal);
+			list(, $principalId) = \Sabre\Uri\split($principal);
 			return self::ADDRESSBOOK_ROOT . '/groups/' . $principalId;
 		}
 		if (\strrpos($principal, 'principals/system', -\strlen($principal)) !== false) {
-			list(, $principalId) = URLUtil::splitPath($principal);
+			list(, $principalId) = \Sabre\Uri\split($principal);
 			return self::ADDRESSBOOK_ROOT . '/system/' . $principalId;
 		}
 

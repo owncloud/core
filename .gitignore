@@ -8,6 +8,7 @@
 /assets
 /build/composer.phar
 /build/phan.phar
+/build/phpstan.phar*
 /core/vendor
 
 # ignore all apps except core ones
@@ -112,6 +113,10 @@ puphpet
 # vagrant
 .vagrant
 Vagrantfile
+
+# Composer
+vendor-bin/**/vendor
+vendor-bin/**/composer.lock
 
 # Tests - auto-generated files
 /data-autotest

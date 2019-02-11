@@ -56,7 +56,8 @@ class Folder extends Node implements \OCP\Files\Folder {
 
 	/**
 	 * @param string $path
-	 * @return string
+	 * @return string|null the relative path from this folder to $path or
+	 * null if $path is outside of this folder
 	 */
 	public function getRelativePath($path) {
 		if ($this->path === '' or $this->path === '/') {
@@ -268,9 +269,11 @@ class Folder extends Node implements \OCP\Files\Folder {
 
 	/**
 	 * @param int $id
+	 * @param boolean $first only return the first node that is found
 	 * @return \OC\Files\Node\Node[]
+	 * @throws NotFoundException
 	 */
-	public function getById($id) {
+	public function getById($id, $first = false) {
 		$mounts = $this->root->getMountsIn($this->path);
 		$mounts[] = $this->root->getMount($this->path);
 		// reverse the array so we start with the storage this view is in
@@ -289,6 +292,9 @@ class Folder extends Node implements \OCP\Files\Folder {
 					$fullPath = $mount->getMountPoint() . $internalPath;
 					if (($path = $this->getRelativePath($fullPath)) !== null) {
 						$nodes[] = $this->get($path);
+						if ($first) {
+							break;
+						}
 					}
 				}
 			}
@@ -307,7 +313,6 @@ class Folder extends Node implements \OCP\Files\Folder {
 			$this->view->rmdir($this->path);
 			$nonExisting = new NonExistingFolder($this->root, $this->view, $this->path, $fileInfo);
 			$this->root->emit('\OC\Files', 'postDelete', [$nonExisting]);
-			$this->exists = false;
 		} else {
 			throw new NotPermittedException('No delete permission for path ' . $this->getFullPath($this->path));
 		}

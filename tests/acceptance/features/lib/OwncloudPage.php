@@ -144,6 +144,39 @@ class OwncloudPage extends Page {
 	}
 
 	/**
+	 * waits for the element located by the xpath to be visible
+	 *
+	 * @param string $xpath the xpath of the element to wait for
+	 * @param int $timeout_msec
+	 *
+	 * @return NodeElement
+	 */
+	public function waitTillXpathIsVisible(
+		$xpath,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	) {
+		$element = $this->waitTillElementIsNotNull($xpath);
+		$this->assertElementNotNull(
+			$element,
+			__METHOD__ .
+			" xpath: $xpath" .
+			" timeout waiting for element to be available"
+		);
+		$visibility = $this->waitFor(
+			$timeout_msec / 1000,
+			[$element, 'isVisible']
+		);
+		if ($visibility !== true) {
+			throw new \Exception(
+				__METHOD__ .
+				" xpath: $xpath" .
+				" timeout waiting for element to be visible"
+			);
+		}
+		return $element;
+	}
+
+	/**
 	 * Get the text of the first notification
 	 *
 	 * @throws ElementNotFoundException
@@ -152,11 +185,10 @@ class OwncloudPage extends Page {
 	public function getNotificationText() {
 		$notificationElement = $this->findById($this->notificationId);
 
-		if ($notificationElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ . " could not find element with id $this->notificationId"
-			);
-		}
+		$this->assertElementNotNull(
+			$notificationElement,
+			__METHOD__ . " could not find element with id $this->notificationId"
+		);
 
 		return $this->getTrimmedText($notificationElement);
 	}
@@ -171,11 +203,10 @@ class OwncloudPage extends Page {
 		$notificationsText = [];
 		$notifications = $this->findById($this->notificationId);
 
-		if ($notifications === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ . " could not find element with id $this->notificationId"
-			);
-		}
+		$this->assertElementNotNull(
+			$notifications,
+			__METHOD__ . " could not find element with id $this->notificationId"
+		);
 
 		foreach ($notifications->findAll("xpath", "div") as $notification) {
 			\array_push($notificationsText, $this->getTrimmedText($notification));
@@ -190,11 +221,10 @@ class OwncloudPage extends Page {
 	 */
 	public function getPageTitle() {
 		$title = $this->find('xpath', $this->titleXpath);
-		if ($title === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ . " could not find title element"
-			);
-		}
+		$this->assertElementNotNull(
+			$title,
+			__METHOD__ . " could not find title element"
+		);
 		return \trim($title->getHtml());
 	}
 
@@ -221,21 +251,28 @@ class OwncloudPage extends Page {
 	/**
 	 * Open the settings menu
 	 *
+	 * @param Session $session
+	 *
 	 * @throws ElementNotFoundException
 	 * @return Page
 	 */
-	public function openSettingsMenu() {
+	public function openSettingsMenu(Session $session) {
 		$userNameDisplayElement = $this->findById($this->userNameDisplayId);
 
-		if ($userNameDisplayElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ . " could not find element with id $this->userNameDisplayId"
-			);
-		}
+		$this->assertElementNotNull(
+			$userNameDisplayElement,
+			__METHOD__ . " could not find element with id $this->userNameDisplayId"
+		);
 
 		$userNameDisplayElement->click();
 
-		return $this->getPage("OwncloudPageElement\\SettingsMenu");
+		/**
+		 *
+		 * @var SettingsMenu $settingsMenu
+		 */
+		$settingsMenu = $this->getPage("OwncloudPageElement\\SettingsMenu");
+		$settingsMenu->waitTillPageIsLoaded($session);
+		return $settingsMenu;
 	}
 	
 	/**
@@ -247,12 +284,11 @@ class OwncloudPage extends Page {
 	protected function findUserDisplayNameElement() {
 		$displayNameElement = $this->findById($this->userNameDisplayId);
 		
-		if ($displayNameElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find element with id $this->userNameDisplayId"
-			);
-		}
+		$this->assertElementNotNull(
+			$displayNameElement,
+			__METHOD__ .
+			" could not find element with id $this->userNameDisplayId"
+		);
 		return $displayNameElement;
 	}
 	
@@ -282,12 +318,11 @@ class OwncloudPage extends Page {
 	protected function findAvatarElement() {
 		$avatarElement = $this->find("xpath", $this->avatarImgXpath);
 		
-		if ($avatarElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find avatar image with xpath $this->avatarImgXpath"
-			);
-		}
+		$this->assertElementNotNull(
+			$avatarElement,
+			__METHOD__ .
+			" could not find avatar image with xpath $this->avatarImgXpath"
+		);
 		return $avatarElement;
 	}
 
@@ -314,13 +349,12 @@ class OwncloudPage extends Page {
 	 */
 	public function search($session, $searchTerm) {
 		$searchbox = $this->findById($this->searchBoxId);
-		if ($searchbox === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id: '$this->searchBoxId' " .
-				"could not find searchbox / button"
-			);
-		}
+		$this->assertElementNotNull(
+			$searchbox,
+			__METHOD__ .
+			" id: '$this->searchBoxId' " .
+			"could not find searchbox / button"
+		);
 		$searchbox->click();
 		$searchbox->setValue($searchTerm);
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -505,6 +539,11 @@ class OwncloudPage extends Page {
 			}
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
+		}
+		if ($currentTime > $end) {
+			$message = "INFORMATION: timed out waiting for ajax calls to start";
+			echo $message;
+			\error_log($message);
 		}
 	}
 
@@ -727,6 +766,29 @@ class OwncloudPage extends Page {
 	}
 
 	/**
+	 * Fill the field at the specified xpath with the given string
+	 *
+	 * If you want to put non-BMP characters, like emoji, into a text field in
+	 * the browser using "ordinary" methods like setValue or fillField,
+	 * then chromedriver complains:
+	 * "ChromeDriver only supports characters in the BMP"
+	 * This method provides a way to set the text field value via JavaScript.
+	 *
+	 * @param Session $session
+	 * @param string $xpath
+	 * @param string $string
+	 *
+	 * @return void
+	 */
+	public function fillFieldWithCharacters(
+		Session $session, $xpath, $string
+	) {
+		$session->executeScript(
+			"document.evaluate(`" . $xpath . "`, document).iterateNext().value = \"" . $string . "\";"
+		);
+	}
+
+	/**
 	 * Edge often returns whitespace before or after element text.
 	 * This is a convenient wrapper to ensure that text is trimmed
 	 * before using it in tests.
@@ -766,6 +828,20 @@ class OwncloudPage extends Page {
 			throw new \InvalidArgumentException(
 				"mixing both single and double quotes is unsupported - '$text'"
 			);
+		}
+	}
+
+	/**
+	 *
+	 * @param NodeElement $element
+	 * @param string $message
+	 *
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function assertElementNotNull($element, $message) {
+		if ($element === null) {
+			throw new ElementNotFoundException($message);
 		}
 	}
 }

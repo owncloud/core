@@ -83,8 +83,8 @@ class TagManager implements \OCP\ITagManager {
 				// nothing we can do without a user
 				return null;
 			}
-			$userId = $this->userSession->getUser()->getUId();
+			$userId = $this->userSession->getUser()->getUID();
 		}
-		return new Tags($this->mapper, $userId, $type, $defaultTags, $includeShared);
+		return new Tags($this->mapper, $userId, $type, $defaultTags);
 	}
 }

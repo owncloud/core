@@ -37,6 +37,9 @@ use TestHelpers\SetupHelper;
 use OC\Files\External\Auth\Password\Password;
 use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
 use Behat\Mink\Exception\ElementException;
+use GuzzleHttp\Message\ResponseInterface;
+use Page\GeneralErrorPage;
+use Page\SharedWithOthersPage;
 
 require_once 'bootstrap.php';
 
@@ -62,6 +65,17 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @var SharedWithYouPage
 	 */
 	private $sharedWithYouPage;
+
+	/**
+	 * @var SharedWithOthersPage
+	 */
+	private $sharedWithOthersPage;
+
+	/**
+	 *
+	 * @var GeneralErrorPage
+	 */
+	private $generalErrorPage;
 
 	/**
 	 *
@@ -105,15 +119,21 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param FilesPage $filesPage
 	 * @param PublicLinkFilesPage $publicLinkFilesPage
 	 * @param SharedWithYouPage $sharedWithYouPage
+	 * @param GeneralErrorPage $generalErrorPage
+	 * @param SharedWithOthersPage $sharedWithOthersPage
 	 */
 	public function __construct(
 		FilesPage $filesPage,
 		PublicLinkFilesPage $publicLinkFilesPage,
-		SharedWithYouPage $sharedWithYouPage
+		SharedWithYouPage $sharedWithYouPage,
+		GeneralErrorPage $generalErrorPage,
+		SharedWithOthersPage $sharedWithOthersPage
 	) {
 		$this->filesPage = $filesPage;
 		$this->publicLinkFilesPage = $publicLinkFilesPage;
 		$this->sharedWithYouPage = $sharedWithYouPage;
+		$this->generalErrorPage = $generalErrorPage;
+		$this->sharedWithOthersPage = $sharedWithOthersPage;
 	}
 
 	/**
@@ -128,8 +148,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the user shares the (?:file|folder) "([^"]*)" with the (?:(remote|federated)\s)?user "([^"]*)" using the webUI$/
-	 * @Given /^the user has shared the (?:file|folder) "([^"]*)" with the (?:(remote|federated)\s)?user "([^"]*)" using the webUI$/
+	 * @When /^the user shares (?:file|folder) "([^"]*)" with (?:(remote|federated)\s)?user "([^"]*)" using the webUI$/
+	 * @Given /^the user has shared (?:file|folder) "([^"]*)" with (?:(remote|federated)\s)?user "([^"]*)" using the webUI$/
 	 *
 	 * @param string $folder
 	 * @param string $remote
@@ -140,7 +160,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserSharesTheFileFolderWithTheUserUsingTheWebUI(
+	public function theUserSharesFileFolderWithUserUsingTheWebUI(
 		$folder, $remote, $user, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
@@ -166,8 +186,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user shares the file/folder :folder with the group :group using the webUI
-	 * @Given the user has shared the file/folder :folder with the group :group using the webUI
+	 * @When the user shares file/folder :folder with group :group using the webUI
+	 * @Given the user has shared file/folder :folder with group :group using the webUI
 	 *
 	 * @param string $folder
 	 * @param string $group
@@ -175,7 +195,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserSharesTheFileFolderWithTheGroupUsingTheWebUI(
+	public function theUserSharesFileFolderWithGroupUsingTheWebUI(
 		$folder, $group
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
@@ -192,15 +212,15 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user opens the share dialog for the file/folder :name
-	 * @Given the user has opened the share dialog for the file/folder :name
+	 * @When the user opens the share dialog for file/folder :name
+	 * @Given the user has opened the share dialog for file/folder :name
 	 *
 	 * @param string $name
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserOpensTheShareDialogForTheFileFolder($name) {
+	public function theUserOpensTheShareDialogForFileFolder($name) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
 			$name, $this->getSession()
@@ -215,7 +235,20 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws ElementNotFoundException
 	 */
 	public function theUserHasOpenedThePublicLinkShareTab() {
-		$this->publicShareTab = $this->sharingDialog->openPublicShareTab();
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab(
+			$this->getSession()
+		);
+	}
+
+	/**
+	 * @When the user deletes share with user :username for the current file
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theUserDeleteShareWithUser($username) {
+		$this->sharingDialog->deleteShareWithUser($this->getSession(), $username);
 	}
 
 	/**
@@ -228,18 +261,53 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function theUserOpensThePublicLinkEditDialogOfThe($oldName, $newName) {
-		$this->publicShareTab->editLink($oldName, $newName);
+	public function theUserHasRenamedThePublicLinkNameFromOldNameToNewName($oldName, $newName) {
+		$session = $this->getSession();
+		$this->publicShareTab->editLink($session, $oldName, $newName);
 
-		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($newName);
 		$this->addToListOfCreatedPublicLinks($newName, $linkUrl);
 	}
 
 	/**
-	 * @Given the user has changed the password of the public link for :name to :newPassword
-	 * @When the user changes the password of the public link for :name to :newPassword
+	 * @Given the user has opened the edit public link share popup for the link named :linkName
+	 * @When the user opens the edit public link share popup for the link named :linkName
+	 *
+	 * @param string $linkName
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserOpensThePublicLinkEditDialogForTheLinkName($linkName) {
+		$this->publicSharingPopup = $this->publicShareTab->openSharingPopupByLinkName($linkName, $this->getSession());
+	}
+
+	/**
+	 * @When the user does not save any changes in the edit public link share popup
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserDoesNotSaveAnyChangeInEditPublicLinkSharePopup() {
+		$this->publicSharingPopup->cancel();
+	}
+
+	/**
+	 * @When the user enters the password :password on the edit public link share popup for the link
+	 *
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function theUserEntersThePasswordForTheLink($password) {
+		$this->publicSharingPopup->setLinkPassword($password);
+	}
+
+	/**
+	 * @Given the user has changed the password of the public link named :name to :newPassword
+	 * @When the user changes the password of the public link named :name to :newPassword
 	 *
 	 * @param string $name
 	 * @param string $newPassword
@@ -247,17 +315,18 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function theUserChangesThePasswordOfThePublicLinkForTo($name, $newPassword) {
-		$this->publicShareTab->editLink($name, null, null, $newPassword);
-		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
+	public function theUserChangesThePasswordOfThePublicLinkNamedTo($name, $newPassword) {
+		$session = $this->getSession();
+		$this->publicShareTab->editLink($session, $name, null, null, $newPassword);
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($name);
 		$this->addToListOfCreatedPublicLinks($name, $linkUrl);
 	}
 
 	/**
-	 * @Given the user has changed the permission of the public link for :name to :newPermission
-	 * @When the user changes the permission of the public link for :name to :newPermission
+	 * @Given the user has changed the permission of the public link named :name to :newPermission
+	 * @When the user changes the permission of the public link named :name to :newPermission
 	 *
 	 * @param string $name
 	 * @param string $newPermission
@@ -265,12 +334,30 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function theUserChangesThePermissionOfThePublicLinkForTo($name, $newPermission) {
-		$this->publicShareTab->editLink($name, null, $newPermission);
-		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($this->getSession());
+	public function theUserChangesThePermissionOfThePublicLinkNamedTo($name, $newPermission) {
+		$session = $this->getSession();
+		$this->publicShareTab->editLink($session, $name, null, $newPermission);
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($name);
 		$this->addToListOfCreatedPublicLinks($name, $linkUrl);
+	}
+
+	/**
+	 * @When the user changes the expiration of the public link named :linkName of file/folder :name to :date
+	 *
+	 * @param string $linkName
+	 * @param string $name
+	 * @param string $date
+	 *
+	 * @return void
+	 */
+	public function theUserChangeTheExpirationOfThePublicLinkNamedForTo($linkName, $name, $date) {
+		$session = $this->getSession();
+		$this->theUserOpensTheShareDialogForFileFolder($name);
+		$this->theUserHasOpenedThePublicLinkShareTab();
+		$this->publicShareTab->editLink($session, $linkName, null, null, null, $date);
+		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
@@ -280,7 +367,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws ElementNotFoundException
 	 */
 	public function theUserOpensTheCreatePublicLinkSharePopup() {
-		$this->publicSharingPopup = $this->publicShareTab->openSharingPopup();
+		$this->publicSharingPopup = $this->publicShareTab->openSharingPopup(
+			$this->getSession()
+		);
 	}
 
 	/**
@@ -325,21 +414,21 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user creates a new public link for the file/folder :name using the webUI
-	 * @Given the user has created a new public link for the file/folder :name using the webUI
+	 * @When the user creates a new public link for file/folder :name using the webUI
+	 * @Given the user has created a new public link for file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserCreatesANewPublicLinkForUsingTheWebUI($name) {
-		$this->theUserCreatesANewPublicLinkForUsingTheWebUIWith($name);
+	public function theUserCreatesANewPublicLinkForFileFolderUsingTheWebUI($name) {
+		$this->theUserCreatesANewPublicLinkForFileFolderUsingTheWebUIWith($name);
 	}
 
 	/**
-	 * @When the user creates a new public link for the file/folder :name using the webUI with
-	 * @Given the user has created a new public link for the file/folder :name using the webUI with
+	 * @When the user creates a new public link for file/folder :name using the webUI with
+	 * @Given the user has created a new public link for file/folder :name using the webUI with
 	 *
 	 * @param string $name
 	 * @param TableNode $settings table with the settings and no header
@@ -352,7 +441,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserCreatesANewPublicLinkForUsingTheWebUIWith(
+	public function theUserCreatesANewPublicLinkForFileFolderUsingTheWebUIWith(
 		$name, TableNode $settings = null
 	) {
 		$linkName = $this->createPublicShareLink($name, $settings);
@@ -361,8 +450,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user tries to create a new public link for the file/folder :name using the webUI with
-	 * @When the user tries to create a new public link for the file/folder :name using the webUI
+	 * @When the user tries to create a new public link for file/folder :name using the webUI with
+	 * @When the user tries to create a new public link for file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 * @param TableNode $settings table with the settings and no header
@@ -374,7 +463,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserTriesToCreateANewPublicLinkForUsingTheWebUIWith(
+	public function theUserTriesToCreateANewPublicLinkForFileFolderUsingTheWebUIWith(
 		$name, TableNode $settings = null
 	) {
 		$this->linkName = $this->createPublicShareLink($name, $settings);
@@ -453,7 +542,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$userName, $fileName, TableNode $permissionsTable
 	) {
 		$userName = $this->featureContext->substituteInLineCodes($userName);
-		$this->theUserOpensTheShareDialogForTheFileFolder($fileName);
+		$this->theUserOpensTheShareDialogForFileFolder($fileName);
 		$this->sharingDialog->setSharingPermissions(
 			$userName, $permissionsTable->getRowsHash()
 		);
@@ -550,8 +639,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the public adds the public link to :server as user :username with the password :password using the webUI
-	 * @Given the public has added the public link to :server as user :username with the password :password using the webUI
+	 * @When the public adds the public link to :server as user :username with password :password using the webUI
+	 * @Given the public has added the public link to :server as user :username with password :password using the webUI
 	 *
 	 * @param string $server
 	 * @param string $username
@@ -574,8 +663,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the user (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the webUI$/
-	 * @Given /^the user has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)" using the webUI$/
+	 * @When /^the user (declines|accepts) share "([^"]*)" offered by user "([^"]*)" using the webUI$/
+	 * @Given /^the user has (declined|accepted) share "([^"]*)" offered by user "([^"]*)" using the webUI$/
 	 *
 	 * @param string $action
 	 * @param string $share
@@ -640,6 +729,55 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicLinkFilesPage->openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl);
 		$this->publicLinkFilesPage->enterPublicLinkPassword($wrongPassword);
 		$this->sharedWithYouPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+	}
+
+	/**
+	 * @When the user removes the public link of file/folder :entryName using the webUI
+	 *
+	 * @param string $entryName
+	 *
+	 * @return void
+	 */
+	public function theUserRemovesThePublicLinkOfFileUsingTheWebui($entryName) {
+		$session = $this->getSession();
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
+			$entryName, $session
+		);
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
+		$this->sharingDialog->removePublicLink($session);
+	}
+
+	/**
+	 * @When the user tries to remove the public link of file :entryName but later cancels the remove dialog using webUI
+	 *
+	 * @param string $entryName
+	 *
+	 * @return void
+	 */
+	public function theUserCancelsTheRemoveOperationOfFileUsingWebui($entryName) {
+		$session = $this->getSession();
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
+			$entryName, $session
+		);
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
+		$this->sharingDialog->cancelRemovePublicLinkOperation($session);
+	}
+
+	/**
+	 * @When the user removes the public link at position :number of file :entryName using the webUI
+	 *
+	 * @param integer $number
+	 * @param string $entryName
+	 *
+	 * @return void
+	 */
+	public function removesPublicLinkAtCertainPosition($number, $entryName) {
+		$session = $this->getSession();
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
+			$entryName, $session
+		);
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
+		$this->sharingDialog->removePublicLink($session, $number);
 	}
 
 	/**
@@ -788,7 +926,21 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (file|folder) "([^"]*)" should be marked as shared(?: with "([^"]*)")? by "([^"]*)" on the webUI$/
+	 * @Then the user :username should not be in share with user list
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theUserShouldNotBeInShareWithUserList($username) {
+		PHPUnit_Framework_Assert::assertFalse(
+			$this->sharingDialog->isUserPresentInShareWithList($username),
+			"user $username is present in the list"
+		);
+	}
+
+	/**
+	 * @Then /^(file|folder) "([^"]*)" should be marked as shared(?: with "([^"]*)")? by "([^"]*)" on the webUI$/
 	 *
 	 * @param string $fileOrFolder
 	 * @param string $itemName
@@ -798,7 +950,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFileFolderShouldBeMarkedAsSharedBy(
+	public function fileFolderShouldBeMarkedAsSharedBy(
 		$fileOrFolder, $itemName, $sharedWithGroup, $sharerName
 	) {
 		//close any open sharing dialog
@@ -840,7 +992,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the file/folder :item should be in state :state in the shared-with-you page on the webUI
+	 * @Then file/folder :item should be in state :state in the shared-with-you page on the webUI
 	 *
 	 * @param string $item
 	 * @param string $state
@@ -856,7 +1008,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the file/folder :item shared by :sharedBy should be in state :state in the shared-with-you page on the webUI
+	 * @Then file/folder :item shared by :sharedBy should be in state :state in the shared-with-you page on the webUI
 	 *
 	 * @param string $item
 	 * @param string $sharedBy
@@ -885,7 +1037,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the file/folder :item should be in state :state in the shared-with-you page on the webUI after a page reload
+	 * @Then file/folder :item should be in state :state in the shared-with-you page on the webUI after a page reload
 	 *
 	 * @param string $item
 	 * @param string $state
@@ -897,9 +1049,31 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->sharedWithYouPage->waitForAjaxCallsToStartAndFinish($this->getSession());
 		$this->assertShareIsInStateOnWebUI($item, $state);
 	}
-	
+
 	/**
-	 * @Then /^it should not be possible to share the (?:file|folder) "([^"]*)"(?: with "([^"]*)")? using the webUI$/
+	 * @Then the public link with name :entryName should not be in the public links list
+	 *
+	 * @param string $entryName
+	 *
+	 * @return void
+	 */
+	public function thePublicLinkWithNameShouldNotBeInPublicLinksList($entryName) {
+		$this->sharingDialog->checkThatNameIsNotInPublicLinkList($this->getSession(), $entryName);
+	}
+
+	/**
+	 * @Then the number of public links should be :count
+	 *
+	 * @param integer $count
+	 *
+	 * @return void
+	 */
+	public function theNumberOfPublicLinksShouldBe($count) {
+		$this->sharingDialog->checkPublicLinkCount($this->getSession(), $count);
+	}
+
+	/**
+	 * @Then /^it should not be possible to share (?:file|folder) "([^"]*)"(?: with "([^"]*)")? using the webUI$/
 	 *
 	 * @param string $fileName
 	 * @param string|null $shareWith
@@ -907,12 +1081,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function itShouldNotBePossibleToShareUsingTheWebUI(
+	public function itShouldNotBePossibleToShareFileFolderUsingTheWebUI(
 		$fileName, $shareWith = null
 	) {
 		$sharingWasPossible = false;
 		try {
-			$this->theUserSharesTheFileFolderWithTheUserUsingTheWebUI(
+			$this->theUserSharesFileFolderWithUserUsingTheWebUI(
 				$fileName, null, $shareWith, 2, true
 			);
 			$sharingWasPossible = true;
@@ -945,6 +1119,26 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the public should see an error message :errorMsg while accessing last created public link using the webUI
+	 *
+	 * @param string $errorMsg
+	 *
+	 * @return void
+	 */
+	public function thePublicShouldSeeAnErrorMessageWhileAccessingLastCreatedPublicLinkUsingTheWebui($errorMsg) {
+		$lastCreatedLink = \end($this->createdPublicLinks);
+		$path = \str_replace(
+			$this->featureContext->getBaseUrl(),
+			"",
+			$lastCreatedLink['url']
+		);
+		$this->generalErrorPage->setPagePath($path);
+		$this->generalErrorPage->open();
+		$actualErrorMsg = $this->generalErrorPage->getErrorMessage();
+		PHPUnit_Framework_Assert::assertContains($errorMsg, $actualErrorMsg);
+	}
+
+	/**
 	 * create public share link
 	 *
 	 * @param string $name
@@ -965,10 +1159,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$this->filesPage->closeDetailsDialog();
 		} catch (Exception $e) {
 		}
+		$session = $this->getSession();
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$name, $this->getSession()
+			$name, $session
 		);
-		$this->publicShareTab = $this->sharingDialog->openPublicShareTab();
+		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
 		if ($settings !== null) {
 			$settingsArray = $settings->getRowsHash();
 			if (!isset($settingsArray['name'])) {
@@ -1030,15 +1225,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the content of the file shared by last public link should be the same as :originalFile
+	 * @Then the content of the file shared by the last public link should be the same as :originalFile
 	 *
 	 * @param string $originalFile
 	 *
 	 * @return void
 	 */
 	public function theContentOfTheFileSharedByLastPublicLinkShouldBeTheSameAs($originalFile) {
-		$url = $this->publicLinkFilesPage->getDownloadUrl();
-		$response = HttpRequestHelper::get($url);
+		$response = $this->thePublicDownloadsTheLastCreatedFileUsingTheWebui();
 		PHPUnit_Framework_Assert::assertEquals(200, $response->getStatusCode());
 		$body = $response->getBody()->getContents();
 
@@ -1052,7 +1246,17 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the email address :address should have received an email containing last shared public link
+	 * @When the public downloads the last created file/folder using the webUI
+	 *
+	 * @return ResponseInterface
+	 */
+	public function thePublicDownloadsTheLastCreatedFileUsingTheWebui() {
+		$url = $this->publicLinkFilesPage->getDownloadUrl();
+		return HttpRequestHelper::get($url);
+	}
+
+	/**
+	 * @Then the email address :address should have received an email containing the last shared public link
 	 *
 	 * @param string $address
 	 *
@@ -1065,6 +1269,21 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		);
 		$lastCreatedPublicLink = \end($this->createdPublicLinks);
 		PHPUnit_Framework_Assert::assertContains($lastCreatedPublicLink["url"], $content);
+	}
+
+	/**
+	 * @Then the user should see an error message on the share dialog saying :message
+	 *
+	 * @param string $message
+	 *
+	 * @return void
+	 */
+	public function theUserShouldSeeAnErrorMessageOnTheShareDialogSaying($message) {
+		$sharingDialog = $this->filesPage->getSharingDialog();
+		$actualMessage = $sharingDialog->getNoSharingMessage(
+			$this->getSession()
+		);
+		PHPUnit_Framework_Assert::assertEquals($message, $actualMessage);
 	}
 
 	/**

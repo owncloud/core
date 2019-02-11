@@ -190,7 +190,7 @@ class FilesReportPlugin extends ServerPlugin {
 			try {
 				$resultFileIds = $this->processFilterRules($filterRules);
 			} catch (TagNotFoundException $e) {
-				throw new PreconditionFailed('Cannot filter by non-existing tag', 0, $e);
+				throw new PreconditionFailed('Cannot filter by non-existing tag');
 			}
 
 			// pre-slice the results if needed for pagination to not waste
@@ -360,9 +360,9 @@ class FilesReportPlugin extends ServerPlugin {
 
 		$results = [];
 		foreach ($fileIds as $fileId) {
-			$entry = $folder->getById($fileId);
+			$entries = $folder->getById($fileId, true);
+			$entry = $entries[0] ?? null;
 			if ($entry) {
-				$entry = \current($entry);
 				$node = $this->makeSabreNode($entry);
 				if ($node) {
 					$results[] = $node;

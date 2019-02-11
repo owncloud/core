@@ -23,6 +23,6 @@
 		<prevent_group_restriction/>
 	</types>
 	<dependencies>
-		<owncloud min-version="10.1" max-version="10.1" />
+		<owncloud min-version="11" max-version="11" />
 	</dependencies>
 </info>

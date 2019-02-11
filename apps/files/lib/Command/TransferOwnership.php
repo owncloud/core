@@ -206,7 +206,7 @@ class TransferOwnership extends Command {
 		}
 
 		$this->walkFiles($view, $walkPath,
-				function (FileInfo $fileInfo) use ($progress, $self) {
+				function (FileInfo $fileInfo) use ($progress) {
 					if ($fileInfo->getType() === FileInfo::TYPE_FOLDER) {
 						// only analyze into folders from main storage,
 						// sub-storages have an empty internal path

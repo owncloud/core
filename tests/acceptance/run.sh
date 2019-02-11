@@ -9,10 +9,17 @@ echo 'Script path: '${SCRIPT_PATH}
 
 OC_PATH=${SCRIPT_PATH}/../../
 OCC=${OC_PATH}occ
-BEHAT=${OC_PATH}lib/composer/bin/behat
+
+# Allow optionally passing in the path to the behat program.
+# This gives flexibility for callers that have installed their own behat
+if [ -z "${BEHAT_BIN}" ]
+then
+    BEHAT=${OC_PATH}vendor-bin/behat/vendor/bin/behat
+else
+    BEHAT=${BEHAT_BIN}
+fi
 
 BEHAT_TAGS_OPTION_FOUND=false
-BEHAT_RERUN_TIMES=1
 
 # The following environment variables can be specified:
 #
@@ -240,6 +247,11 @@ ADMIN_AUTH="${ADMIN_USERNAME}:${ADMIN_PASSWORD}"
 
 export ADMIN_USERNAME
 export ADMIN_PASSWORD
+
+if [ -z "${BEHAT_RERUN_TIMES}" ]
+then
+	BEHAT_RERUN_TIMES=1
+fi
 
 function env_alt_home_enable {
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set testing enable_alt_user_backend --value yes"
@@ -505,6 +517,30 @@ then
 	BEHAT_SUITE=`basename ${FEATURE_PATH}`
 fi
 
+if [ -z "${BEHAT_YML}" ]
+then
+	# Look for a behat.yml somewhere below the current working directory
+	# This saves app acceptance tests being forced to specify BEHAT_YML
+	BEHAT_YML="config/behat.yml"
+	if [ ! -f "${BEHAT_YML}" ]
+	then
+		BEHAT_YML="acceptance/config/behat.yml"
+	fi
+	if [ ! -f "${BEHAT_YML}" ]
+	then
+		BEHAT_YML="tests/acceptance/config/behat.yml"
+	fi
+	# If no luck above, then use the core behat.yml that should live below this script
+	if [ ! -f "${BEHAT_YML}" ]
+	then
+		BEHAT_YML="${SCRIPT_PATH}/config/behat.yml"
+	fi
+fi
+
+BEHAT_CONFIG_DIR=$(dirname "${BEHAT_YML}")
+ACCEPTANCE_DIR=$(dirname "${BEHAT_CONFIG_DIR}")
+BEHAT_FEATURES_DIR="${ACCEPTANCE_DIR}/features"
+
 declare -a BEHAT_SUITES
 if [ -n "${BEHAT_SUITE}" ]
 then
@@ -512,7 +548,7 @@ then
 else
 	if [ -n "${RUN_PART}" ]
 	then
-		ALL_SUITES=`find features/ -type d -iname ${ACCEPTANCE_TEST_TYPE}* | sort | cut -d"/" -f2`
+		ALL_SUITES=`find ${BEHAT_FEATURES_DIR}/ -type d -iname ${ACCEPTANCE_TEST_TYPE}* | sort | rev | cut -d"/" -f1 | rev`
 		COUNT_ALL_SUITES=`echo "${ALL_SUITES}" | wc -l`
 		#divide the suites letting it round down (could be zero)
 		MIN_SUITES_PER_RUN=$((${COUNT_ALL_SUITES} / ${DIVIDE_INTO_NUM_PARTS}))
@@ -576,26 +612,6 @@ else
 	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&${TEST_TYPE_TAG}"
 fi
 
-if [ -z "${BEHAT_YML}" ]
-then
-	# Look for a behat.yml somewhere below the current working directory
-	# This saves app acceptance tests being forced to specify BEHAT_YML
-	BEHAT_YML="config/behat.yml"
-	if [ ! -f "${BEHAT_YML}" ]
-	then
-		BEHAT_YML="acceptance/config/behat.yml"
-	fi
-	if [ ! -f "${BEHAT_YML}" ]
-	then
-		BEHAT_YML="tests/acceptance/config/behat.yml"
-	fi
-	# If no luck above, then use the core behat.yml that should live below this script
-	if [ ! -f "${BEHAT_YML}" ]
-	then
-		BEHAT_YML="${SCRIPT_PATH}/config/behat.yml"
-	fi
-fi
-
 # MAILHOG_HOST defines where the system-under-test can find the MailHog server
 # for sending email.
 if [ -z "${MAILHOG_HOST}" ]
@@ -654,16 +670,24 @@ fi
 # calculate the correct skeleton folder
 # $SRC_SKELETON_DIR is the path to the skeleton folder on the machine where the tests are executed
 # it is used for file comparisons in various tests
+
+# The testing app could be in the apps folder, or maybe another apps folder like
+# apps2 or apps-external, so be flexible about looking for the local skeleton folder.
+API_SKELETON_DIR=`find ${SCRIPT_PATH}/../../ -path "*/testing/data/apiSkeleton"`
+API_SKELETON_DIR="`( cd \"${API_SKELETON_DIR}\" && pwd )`"  # absolutized and normalized
+
 if [ "${RUNNING_API_TESTS}" = true ]
 then
-	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/apiSkeleton"
+	export SRC_SKELETON_DIR="${API_SKELETON_DIR}"
 elif [ "${RUNNING_CLI_TESTS}" = true ]
 then
 	# CLI tests use the apiSkeleton so that API-based "then" steps can be used
 	# to check the state of users after CLI commands
-	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/apiSkeleton"
+	export SRC_SKELETON_DIR="${API_SKELETON_DIR}"
 else
-	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/webUISkeleton"
+	WEBUI_SKELETON_DIR=`find ${SCRIPT_PATH}/../../ -path "*/testing/data/webUISkeleton"`
+	WEBUI_SKELETON_DIR="`( cd \"${WEBUI_SKELETON_DIR}\" && pwd )`"  # absolutized and normalized
+	export SRC_SKELETON_DIR="${WEBUI_SKELETON_DIR}"
 fi
 
 # $SKELETON_DIR is the path to the skeleton folder on the machine where oC runs (system under test)

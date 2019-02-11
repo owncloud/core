@@ -5,10 +5,10 @@ Feature: Display notifications when receiving a share
   So that I can easily decide what I want to do with new received shares
 
   Background:
-    Given the app "notifications" has been enabled
+    Given app "notifications" has been enabled
     And using OCS API version "1"
     And using new DAV path
-    And these users have been created:
+    And these users have been created with default attributes:
       | username |
       | user0    |
       | user1    |
@@ -57,7 +57,7 @@ Feature: Display notifications when receiving a share
   Scenario: share to group does not send notifications to either existing or new members for an old share created before auto-accept is disabled
     Given user "user0" has shared folder "/PARENT" with group "grp1"
     When the administrator sets parameter "shareapi_auto_accept_share" of app "core" to "no"
-    And the administrator creates the user "user3" using the provisioning API
+    And the administrator creates user "user3" using the provisioning API
     And the administrator adds user "user3" to group "grp1" using the provisioning API
     Then user "user1" should have 0 notifications
     And user "user2" should have 0 notifications
@@ -69,7 +69,7 @@ Feature: Display notifications when receiving a share
   Scenario: share to group sends notifications to existing members, but not to new members, for a share created after auto-accept is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
-    And the administrator creates the user "user3" using the provisioning API
+    And the administrator creates user "user3" using the provisioning API
     And the administrator adds user "user3" to group "grp1" using the provisioning API
     Then user "user1" should have 1 notification
     And the last notification of user "user1" should match these regular expressions
@@ -95,7 +95,7 @@ Feature: Display notifications when receiving a share
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "user0" has shared folder "/PARENT" with group "grp1"
     When the administrator sets parameter "shareapi_auto_accept_share" of app "core" to "yes"
-    And the administrator creates the user "user3" using the provisioning API
+    And the administrator creates user "user3" using the provisioning API
     And the administrator adds user "user3" to group "grp1" using the provisioning API
     Then user "user1" should have 1 notification
     And the last notification of user "user1" should match these regular expressions
@@ -117,7 +117,7 @@ Feature: Display notifications when receiving a share
   Scenario: share to group does not send notifications to existing and new members for a share created after auto-accept is enabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
-    And the administrator creates the user "user3" using the provisioning API
+    And the administrator creates user "user3" using the provisioning API
     And the administrator adds user "user3" to group "grp1" using the provisioning API
     Then user "user1" should have 0 notifications
     And user "user2" should have 0 notifications

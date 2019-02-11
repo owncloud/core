@@ -148,7 +148,6 @@ OC.L10N.register(
     "Expiration date is required" : "만료 날짜를 지정해야 함",
     "Delete {link}" : "{link} 삭제",
     "Remove link" : "링크 삭제",
-    "{fileName} link" : "{fileName} 링크",
     "Link" : "링크",
     "Create public link" : "공개 링크 만들기",
     "Edit" : "편집",

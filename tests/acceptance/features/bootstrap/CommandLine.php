@@ -20,6 +20,7 @@
  */
 
 use TestHelpers\SetupHelper;
+use TestHelpers\WebDavHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -290,38 +291,6 @@ trait CommandLine {
 	}
 
 	/**
-	 * @When /^the administrator invokes occ command "([^"]*)"$/
-	 * @Given /^the administrator has invoked occ command "([^"]*)"$/
-	 *
-	 * @param string $cmd
-	 *
-	 * @return void
-	 */
-	public function invokingTheCommand($cmd) {
-		$this->runOcc([$cmd]);
-	}
-
-	/**
-	 * @When /^the administrator invokes occ command "([^"]*)" with environment variable "([^"]*)" set to "([^"]*)"$/
-	 * @Given /^the administrator has invoked occ command "([^"]*)" with environment variable "([^"]*)" set to "([^"]*)"$/
-	 *
-	 * @param string $cmd
-	 * @param string $envVariableName
-	 * @param string $envVariableValue
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function invokingTheCommandWithEnvVariable(
-		$cmd, $envVariableName, $envVariableValue
-	) {
-		$args = [$cmd];
-		$this->runOccWithEnvVariables(
-			$args, [$envVariableName => $envVariableValue]
-		);
-	}
-
-	/**
 	 * Find exception texts in stderr
 	 *
 	 * @return array of exception texts
@@ -364,121 +333,6 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command should have been successful$/
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCommandShouldHaveBeenSuccessful() {
-		$exceptions = $this->findExceptions();
-		if ($this->lastCode !== 0) {
-			$msg = "The command was not successful, exit code was $this->lastCode.";
-			if (!empty($exceptions)) {
-				$msg .= ' Exceptions: ' . \implode(', ', $exceptions);
-			}
-			throw new \Exception($msg);
-		} elseif (!empty($exceptions)) {
-			$msg = 'The command was successful but triggered exceptions: '
-				. \implode(', ', $exceptions);
-			throw new \Exception($msg);
-		}
-	}
-
-	/**
-	 * @Then /^the command should have failed with exit code ([0-9]+)$/
-	 *
-	 * @param int $exitCode
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCommandFailedWithExitCode($exitCode) {
-		if ($this->lastCode !== (int)$exitCode) {
-			throw new \Exception(
-				"The command was expected to fail with exit code $exitCode but got "
-				. $this->lastCode
-			);
-		}
-	}
-
-	/**
-	 * @Then /^the command should have failed with exception text "([^"]*)"$/
-	 *
-	 * @param string $exceptionText
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCommandFailedWithExceptionText($exceptionText) {
-		$exceptions = $this->findExceptions();
-		if (empty($exceptions)) {
-			throw new \Exception('The command did not throw any exceptions');
-		}
-
-		if (!\in_array($exceptionText, $exceptions)) {
-			throw new \Exception(
-				"The command did not throw any exception with the text '$exceptionText'"
-			);
-		}
-	}
-
-	/**
-	 * @Then /^the command output should contain the text ((?:'[^']*')|(?:"[^"]*"))$/
-	 *
-	 * @param string $text
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCommandOutputContainsTheText($text) {
-		// The capturing group of the regex always includes the quotes at each
-		// end of the captured string, so trim them.
-		$text = \trim($text, $text[0]);
-		$lines = $this->findLines($this->lastStdOut, $text);
-		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
-			1,
-			\count($lines),
-			"The command output did not contain the expected text on stdout '$text'\n" .
-			"The command output on stdout was:\n" .
-			$this->lastStdOut
-		);
-	}
-
-	/**
-	 * @Then /^the command error output should contain the text ((?:'[^']*')|(?:"[^"]*"))$/
-	 *
-	 * @param string $text
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCommandErrorOutputContainsTheText($text) {
-		// The capturing group of the regex always includes the quotes at each
-		// end of the captured string, so trim them.
-		$text = \trim($text, $text[0]);
-		$lines = $this->findLines($this->lastStdErr, $text);
-		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
-			1,
-			\count($lines),
-			"The command output did not contain the expected text on stderr '$text'\n" .
-			"The command output on stderr was:\n" .
-			$this->lastStdErr
-		);
-	}
-
-	/**
-	 * @Then the occ command JSON output should be empty
-	 *
-	 * @return void
-	 */
-	public function theOccCommandJsonOutputShouldNotReturnAnyData() {
-		PHPUnit_Framework_Assert::assertEquals(\trim($this->lastStdOut), "[]");
-		PHPUnit_Framework_Assert::assertEmpty($this->lastStdErr);
-	}
-
-	private $lastTransferPath;
-
-	/**
 	 * @param string $sourceUser
 	 * @param string $targetUser
 	 *
@@ -486,22 +340,19 @@ trait CommandLine {
 	 */
 	public function findLastTransferFolderForUser($sourceUser, $targetUser) {
 		$foundPaths = [];
-		$results = $this->listFolder($targetUser, '', 1);
-		foreach ($results as $path => $data) {
-			$path = \rawurldecode($path);
+		$responseXmlObject = $this->listFolder($targetUser, '', 1);
+		$transferredElements = $responseXmlObject->xpath(
+			"//d:response/d:href[contains(., '/transferred%20from%20$sourceUser%20on%')]"
+		);
+		foreach ($transferredElements as $transferredElement) {
+			$path = \rawurldecode($transferredElement);
 			$parts = \explode(' ', $path);
-			if (\basename($parts[0]) !== 'transferred') {
-				continue;
-			}
-			if (isset($parts[2]) && $parts[2] === $sourceUser) {
-				// store timestamp as key
-				$foundPaths[] = [
-					'date' => \strtotime(\trim($parts[4], '/')),
-					'path' => $path,
-				];
-			}
+			// store timestamp as key
+			$foundPaths[] = [
+				'date' => \strtotime(\trim($parts[4], '/')),
+				'path' => $path,
+			];
 		}
-
 		if (empty($foundPaths)) {
 			return null;
 		}
@@ -520,56 +371,41 @@ trait CommandLine {
 	}
 
 	/**
-	 * @When /^the administrator transfers ownership from "([^"]+)" to "([^"]+)" using the occ command$/
-	 * @Given /^the administrator has transferred ownership from "([^"]+)" to "([^"]+)"$/
+	 * Reset user password
 	 *
-	 * @param string $user1
-	 * @param string $user2
+	 * If password is not supplied, then always send email.
+	 * If password is supplied, then only send email if sendEmail param is true
+	 *
+	 * @param string $username
+	 * @param string $password
+	 * @param bool $sendEmail
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function transferringOwnership($user1, $user2) {
-		if ($this->runOcc(['files:transfer-ownership', $user1, $user2]) === 0) {
-			$this->lastTransferPath
-				= $this->findLastTransferFolderForUser($user1, $user2);
+	public function resetUserPassword(
+		$username, $password = null, $sendEmail = false
+	) {
+		$actualUsername = $this->getActualUsername($username);
+		if ($password === null) {
+			$this->runOcc(
+				["user:resetpassword $actualUsername --send-email"]
+			);
 		} else {
-			// failure
-			$this->lastTransferPath = null;
+			$password = $this->getActualPassword($password);
+			if ($sendEmail) {
+				$sendEmailParam = "--send-email";
+			} else {
+				$sendEmailParam = "";
+			}
+			$this->runOccWithEnvVariables(
+				["user:resetpassword $actualUsername $sendEmailParam --password-from-env"],
+				['OC_PASS' => $password]
+			);
+			if ($username === "%admin%") {
+				$this->rememberNewAdminPassword($password);
+			}
 		}
-	}
-
-	/**
-	 * @When /^the administrator transfers ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)" using the occ command$/
-	 * @Given /^the administrator has transferred ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"$/
-	 *
-	 * @param string $path
-	 * @param string $user1
-	 * @param string $user2
-	 *
-	 * @return void
-	 */
-	public function transferringOwnershipPath($path, $user1, $user2) {
-		$path = "--path=$path";
-		if ($this->runOcc(['files:transfer-ownership', $path, $user1, $user2]) === 0) {
-			$this->lastTransferPath
-				= $this->findLastTransferFolderForUser($user1, $user2);
-		} else {
-			// failure
-			$this->lastTransferPath = null;
-		}
-	}
-
-	/**
-	 * @Given /^using received transfer folder of "([^"]+)" as dav path$/
-	 *
-	 * @param string $user
-	 *
-	 * @return void
-	 */
-	public function usingTransferFolderAsDavPath($user) {
-		$davPath = $this->getDavFilesPath($user);
-		$davPath = \rtrim($davPath, '/') . $this->lastTransferPath;
-		$this->usingDavPath($davPath);
 	}
 
 	/**

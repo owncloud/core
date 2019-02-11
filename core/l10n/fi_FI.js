@@ -141,7 +141,6 @@ OC.L10N.register(
     "Expiration date is required" : "Vanhenemispäivä vaaditaan",
     "Delete {link}" : "Poista {link}",
     "Remove link" : "Poista linkki",
-    "{fileName} link" : "{fileName} linkki",
     "Link" : "Linkki",
     "Create public link" : "Luo julkinen linkki",
     "Edit" : "Muokkaa",

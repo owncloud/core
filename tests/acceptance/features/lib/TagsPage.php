@@ -23,6 +23,8 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Page\FilesPageElement\FileRow;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
@@ -35,6 +37,12 @@ class TagsPage extends FilesPageBasic {
 	protected $fileListXpath = ".//div[@id='app-content-systemtagsfilter']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-systemtagsfilter']//div[@id='emptycontent']";
 	protected $filePathInRowXpath = ".//div[@id='app-content-systemtagsfilter']//tbody[@id='fileList']//tr";
+	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
+	/**
+	 *
+	 * @var FilesPageCRUD $filesPageCRUDFunctions
+	 */
+	protected $filesPageCRUDFunctions;
 
 	private $tagsInputXpath = "//div[@id='app-content-systemtagsfilter']//li[@class='select2-search-field']//input";
 	private $tagsSuggestDropDown = "//div[contains(@class, 'select2-drop-active') and contains(@id, 'select2-drop')]";
@@ -76,6 +84,25 @@ class TagsPage extends FilesPageBasic {
 	}
 
 	/**
+	 * @param Session $session
+	 * @param Factory $factory
+	 * @param array   $parameters
+	 */
+	public function __construct(
+		Session $session, Factory $factory, array $parameters = []
+	) {
+		parent::__construct($session, $factory, $parameters);
+		$this->filesPageCRUDFunctions = $this->getPage("FilesPageCRUD");
+		$this->filesPageCRUDFunctions->setXpath(
+			$this->emptyContentXpath,
+			$this->fileListXpath,
+			$this->fileNameMatchXpath,
+			$this->fileNamesXpath,
+			$this->deleteAllSelectedBtnXpath
+		);
+	}
+
+	/**
 	 * Search the given tag in the tags page
 	 *
 	 * @param string $tagName
@@ -90,13 +117,12 @@ class TagsPage extends FilesPageBasic {
 		/**
 		 * @return string
 		 */
-		if ($inputField === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->tagsInputXpath " .
-				"could not find input field"
-			);
-		}
+		$this->assertElementNotNull(
+			$inputField,
+			__METHOD__ .
+			" xpath $this->tagsInputXpath " .
+			"could not find input field"
+		);
 		$inputField->focus();
 		$inputField->setValue($tagName);
 		$this->waitTillElementIsNotNull($this->getTagsDropDownResultsXpath());
@@ -138,5 +164,35 @@ class TagsPage extends FilesPageBasic {
 			$fileRows[] = $fileRow;
 		}
 		return $fileRows;
+	}
+
+	/**
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 * @param bool $expectToDeleteFile
+	 * @param int $maxRetries
+	 *
+	 * @return void
+	 */
+	public function deleteFile(
+		$name,
+		Session $session,
+		$expectToDeleteFile = true,
+		$maxRetries = STANDARD_RETRY_COUNT
+	) {
+		$this->filesPageCRUDFunctions->deleteFile(
+			$name, $session, $expectToDeleteFile, $maxRetries
+		);
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function deleteAllSelectedFiles(Session $session) {
+		$this->filesPageCRUDFunctions->deleteAllSelectedFiles($session);
 	}
 }

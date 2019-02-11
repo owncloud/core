@@ -33,6 +33,7 @@ pipeline:
       - php occ config:list
       - echo "export TEST_SERVER_FED_URL=https://federated" > /drone/saved-settings.sh
       - php occ security:certificates:import /drone/server.crt
+      - php occ security:certificates:import /drone/federated.crt
       - php occ security:certificates
     when:
       matrix:
@@ -99,26 +100,35 @@ pipeline:
       matrix:
         TEST_SUITE: javascript
 
-  phplint:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      - make test-php-lint
-    when:
-      matrix:
-        TEST_SUITE: lint
-
-  php-cs-fixer:
+  owncloud-coding-standard:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
       - make test-php-style
     when:
       matrix:
-        TEST_SUITE: php-cs-fixer
+        TEST_SUITE: owncloud-coding-standard
 
-  php-phan:
+  php-phan-71:
     image: owncloudci/php:7.1
+    pull: true
+    commands:
+      - make test-php-phan
+    when:
+      matrix:
+        TEST_SUITE: phan
+
+  php-phan-72:
+    image: owncloudci/php:7.2
+    pull: true
+    commands:
+      - make test-php-phan
+    when:
+      matrix:
+        TEST_SUITE: phan
+
+  php-phan-73:
+    image: owncloudci/php:7.3
     pull: true
     commands:
       - make test-php-phan
@@ -131,19 +141,29 @@ pipeline:
     pull: true
     commands:
       - ./tests/drone/install-server.sh
-      - git clone https://github.com/owncloud/testing.git $$DRONE_WORKSPACE/apps/testing
-      - php occ a:l
-      - php occ a:e testing
       - php occ a:l
       - php occ config:system:set trusted_domains 1 --value=server
       - php occ config:system:set trusted_domains 2 --value=federated
       - php occ log:manage --level 0
       - php occ config:list
+      - php occ security:certificates:import /drone/server.crt
       - php occ security:certificates:import /drone/federated.crt
       - php occ security:certificates
     when:
       matrix:
         INSTALL_SERVER: true
+
+  install-testing-app:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - git clone https://github.com/owncloud/testing.git $$DRONE_WORKSPACE/apps/testing
+      - php occ a:l
+      - php occ a:e testing
+      - php occ a:l
+    when:
+      matrix:
+        INSTALL_TESTING_APP: true
 
   prepare-objectstore:
     image: owncloudci/php:${PHP_VERSION}
@@ -162,6 +182,15 @@ pipeline:
     when:
       matrix:
         TEST_OBJECTSTORAGE: true
+
+  phpstan:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - make test-php-phpstan
+    when:
+      matrix:
+        TEST_SUITE: phpstan
 
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
@@ -219,7 +248,7 @@ pipeline:
       - php occ a:e notifications
     when:
       matrix:
-        INSTALL_NOTIFICATIONS-APP: true
+        INSTALL_NOTIFICATIONS_APP: true
 
   fix-permissions:
     image: owncloudci/php:${PHP_VERSION}
@@ -355,6 +384,7 @@ pipeline:
     pull: true
     environment:
       - TEST_SERVER_URL=https://server
+      - MAILHOG_HOST=email
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
@@ -413,7 +443,7 @@ pipeline:
 
 services:
   mariadb:
-    image: mariadb:10.2
+    image: ${MARIADB_IMAGE=mariadb:10.2}
     environment:
       - MYSQL_USER=owncloud
       - MYSQL_PASSWORD=owncloud
@@ -424,7 +454,7 @@ services:
         DB_TYPE: mariadb
 
   mysql:
-    image: mysql:5.5
+    image: ${MYSQL_IMAGE=mysql:5.5}
     environment:
       - MYSQL_USER=owncloud
       - MYSQL_PASSWORD=owncloud
@@ -434,8 +464,10 @@ services:
       matrix:
         DB_TYPE: mysql
 
-  mysqlmb4:
-    image: mysql:5.7
+  mysql8:
+    image: ${MYSQL_IMAGE=mysql:8.0}
+    # see http://php.net/manual/en/mysqli.requirements.php
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_USER=owncloud
       - MYSQL_PASSWORD=owncloud
@@ -443,7 +475,7 @@ services:
       - MYSQL_ROOT_PASSWORD=owncloud
     when:
       matrix:
-        DB_TYPE: mysqlmb4
+        DB_TYPE: mysql8
 
   postgres:
     image: ${POSTGRES_IMAGE=postgres:9.4}
@@ -554,20 +586,18 @@ matrix:
       PHP_VERSION: 7.1
       COVERAGE: true
 
-  # linting
-    - TEST_SUITE: lint
-      PHP_VERSION: 7.1
+  # owncloud-coding-standard
+    - PHP_VERSION: 7.3
+      TEST_SUITE: owncloud-coding-standard
 
-    - TEST_SUITE: lint
-      PHP_VERSION: 7.2
-
-  # php-cs-fixer
-    - TEST_SUITE: php-cs-fixer
-      PHP_VERSION: 7.2
-
-  # phan
+  # phan (runs multiple PHP v7.* to provide syntax checks of each PHP version)
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
+
+  # phpstan
+    - TEST_SUITE: phpstan
+      PHP_VERSION: 7.1
+      INSTALL_SERVER: true
 
   # Litmus
     - PHP_VERSION: 7.1
@@ -582,11 +612,23 @@ matrix:
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
-      DB_TYPE: mysqlmb4
+      DB_TYPE: mysql
+      # mb4 support, with innodb_file_format=Barracuda
+      MYSQL_IMAGE: mysql:5.7
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      # mb4 support by default
+      DB_TYPE: mysql8
+      TEST_SUITE: phpunit
+      COVERAGE: false
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
 #    - PHP_VERSION: 7.1
 #      DB_TYPE: mariadb
@@ -599,6 +641,7 @@ matrix:
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: postgres
@@ -606,30 +649,43 @@ matrix:
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: mariadb
+      # mb4 support by default
+      MARIADB_IMAGE: mariadb:10.3
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: oracle
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
-
-    # PHP 7.2
+  # PHP 7.2
     - PHP_VERSION: 7.2
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.2
       DB_TYPE: mariadb
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
     #- PHP_VERSION: 7.2
     #  DB_TYPE: mysql
@@ -646,13 +702,27 @@ matrix:
     #   TEST_SUITE: phpunit
     #   INSTALL_SERVER: true
 
-    # test on objectstore
+  # PHP 7.3
+    - PHP_VERSION: 7.3
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.3
+      DB_TYPE: mariadb
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+  # test on objectstore
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
       COVERAGE: true
       TEST_OBJECTSTORAGE: true
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
   # Files External
     - PHP_VERSION: 7.1
@@ -660,6 +730,7 @@ matrix:
       COVERAGE: true
       DB_TYPE: sqlite
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
       FILES_EXTERNAL_TYPE: webdav_apache
 
     - PHP_VERSION: 7.1
@@ -667,6 +738,7 @@ matrix:
       COVERAGE: true
       DB_TYPE: sqlite
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
       FILES_EXTERNAL_TYPE: smb_samba
 
     - PHP_VERSION: 7.1
@@ -674,6 +746,7 @@ matrix:
       COVERAGE: true
       DB_TYPE: sqlite
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
       FILES_EXTERNAL_TYPE: smb_windows
 
     - PHP_VERSION: 7.1
@@ -681,6 +754,7 @@ matrix:
       COVERAGE: true
       DB_TYPE: sqlite
       INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
       FILES_EXTERNAL_TYPE: swift
 
   # API Acceptance tests
@@ -692,6 +766,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -701,6 +776,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -710,6 +786,17 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiFavorites
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -721,15 +808,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: api
-      BEHAT_SUITE: apiFavorites
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -739,6 +818,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -748,6 +828,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -757,6 +838,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -766,6 +848,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -775,6 +858,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -784,7 +868,8 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-      INSTALL_NOTIFICATIONS-APP: true
+      INSTALL_TESTING_APP: true
+      INSTALL_NOTIFICATIONS_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -794,6 +879,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -803,6 +889,37 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiVersions
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavLocks
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavMove
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -812,6 +929,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -821,8 +939,19 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
-  # CLI Provisioning Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavUpload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    # CLI Provisioning Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: cli
       BEHAT_SUITE: cliProvisioning
@@ -831,6 +960,8 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+      USE_EMAIL: true
 
   # CLI Main Acceptance tests
     - PHP_VERSION: 7.1
@@ -841,6 +972,29 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+  # CLI Background Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: cli
+      BEHAT_SUITE: cliBackground
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+  # CLI Trashbin Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: cli
+      BEHAT_SUITE: cliTrashbin
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
   # UI Acceptance tests
     - PHP_VERSION: 7.1
@@ -851,6 +1005,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -861,6 +1016,17 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUICreateDelete
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -870,6 +1036,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -879,6 +1046,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -888,6 +1056,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -898,6 +1067,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -907,6 +1077,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -917,6 +1088,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -926,6 +1098,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -935,6 +1108,17 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingAcceptShares
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -946,6 +1130,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -956,6 +1141,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -965,6 +1151,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -974,8 +1161,20 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
       USE_EMAIL: true
-      INSTALL_NOTIFICATIONS-APP: true
+      INSTALL_NOTIFICATIONS_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingPublic
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+      USE_EMAIL: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -985,6 +1184,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -994,6 +1194,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1003,6 +1204,27 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIWebdavLocks
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIWebdavLockProtection
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
 
     # caldav test
     - PHP_VERSION: 7.1

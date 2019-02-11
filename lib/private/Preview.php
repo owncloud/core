@@ -1238,7 +1238,11 @@ class Preview {
 		$path = Files\Filesystem::normalizePath($args['path']);
 		$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
 		if ($user === false) {
-			$user = Filesystem::getOwner($path);
+			try {
+				$user = Filesystem::getOwner($path);
+			} catch (NotFoundException $e) {
+				return;
+			}
 		}
 
 		$userFolder = \OC::$server->getUserFolder($user);
@@ -1308,7 +1312,11 @@ class Preview {
 		if (!isset(self::$deleteFileMapper[$path])) {
 			$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
 			if ($user === false) {
-				$user = Filesystem::getOwner($path);
+				try {
+					$user = Filesystem::getOwner($path);
+				} catch (NotFoundException $e) {
+					return;
+				}
 			}
 
 			$userFolder = \OC::$server->getUserFolder($user);

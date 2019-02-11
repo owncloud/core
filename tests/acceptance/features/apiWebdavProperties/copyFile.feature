@@ -6,7 +6,7 @@ Feature: copy file
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
 
   @smokeTest
   Scenario Outline: Copying a file
@@ -30,10 +30,22 @@ Feature: copy file
       | old         |
       | new         |
 
+  Scenario Outline: Copying a file when 2 files exist with different case
+    Given using <dav_version> DAV path
+    # "/textfile1.txt" already exists in the skeleton, make another with only case differences in the file name
+    When user "user0" copies file "/textfile0.txt" to "/TextFile1.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/textfile1.txt" for user "user0" should be "ownCloud test text file 1" plus end-of-line
+    And the content of file "/TextFile1.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
   Scenario Outline: Copying a file to a folder with no permissions
     Given using <dav_version> DAV path
-    And user "user1" has been created
-    And user "user1" has created a folder "/testshare"
+    And user "user1" has been created with default attributes
+    And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
       | shareType   | 0         |
@@ -41,7 +53,7 @@ Feature: copy file
       | shareWith   | user0     |
     When user "user0" copies file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    And user "user0" downloads the file "/testshare/textfile0.txt" using the WebDAV API
+    And user "user0" downloads file "/testshare/textfile0.txt" using the WebDAV API
     And the HTTP status code should be "404"
     Examples:
       | dav_version |
@@ -50,8 +62,8 @@ Feature: copy file
 
   Scenario Outline: Copying a file to overwrite a file into a folder with no permissions
     Given using <dav_version> DAV path
-    And user "user1" has been created
-    And user "user1" has created a folder "/testshare"
+    And user "user1" has been created with default attributes
+    And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
       | shareType   | 0         |

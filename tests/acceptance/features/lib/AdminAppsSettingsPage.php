@@ -36,64 +36,69 @@ class AdminAppsSettingsPage extends OwncloudPage {
 	protected $path = '/index.php/settings/admin?sectionid=apps';
 
 	protected $showDisabledAppsButtonId = 'button-apps-disabled';
-	protected $appEnableDisableButtonXpath = "//div[@id='app-%s']//input[@class='enable']";
+	protected $appEnableDisableButtonByNameXpath = "//div[@id='app-%s']//input[@class='enable']";
+	protected $appEnableDisableButtonXpath = "//input[@class='enable']";
 
 	/**
 	 * Browse to disabled app page
 	 *
+	 * @param Session $session
+	 *
 	 * @return void
 	 */
-	public function browseToDisabledAppsPage() {
+	public function browseToDisabledAppsPage(Session $session) {
 		$showDisablesAppsButton = $this->findById($this->showDisabledAppsButtonId);
 		$showDisablesAppsButton->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
 	 * Disable the app
 	 *
+	 * @param Session $session
 	 * @param string $appName
 	 *
 	 * @return void
 	 */
-	public function disableApp($appName) {
+	public function disableApp(Session $session, $appName) {
 		$appDisableButton = $this->find(
-			"xpath", \sprintf($this->appEnableDisableButtonXpath, $appName)
+			"xpath", \sprintf($this->appEnableDisableButtonByNameXpath, $appName)
 		);
 		$appDisableButton->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
 	 * Enable the app
 	 *
+	 * @param Session $session
 	 * @param string $appName
 	 *
 	 * @return void
 	 */
-	public function enableApp($appName) {
+	public function enableApp(Session $session, $appName) {
 		$appEnableButton = $this->find(
-			"xpath", \sprintf($this->appEnableDisableButtonXpath, $appName)
+			"xpath", \sprintf($this->appEnableDisableButtonByNameXpath, $appName)
 		);
 		$appEnableButton->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
-	 * waits till at least one Ajax call is active and
-	 * then waits till all outstanding ajax calls finish
+	 * waits for the page to appear completely
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
 	 *
 	 * @return void
 	 */
-	public function waitForAjaxCallsToStartAndFinish(
+	public function waitTillPageIsLoaded(
 		Session $session,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$start = \microtime(true);
-		$this->waitForAjaxCallsToStart($session);
-		$end = \microtime(true);
-		$timeout_msec = $timeout_msec - (($end - $start) * 1000);
-		$timeout_msec = \max($timeout_msec, MINIMUM_UI_WAIT_TIMEOUT_MILLISEC);
-		$this->waitForOutstandingAjaxCalls($session, $timeout_msec);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+		$this->waitTillXpathIsVisible(
+			$this->appEnableDisableButtonXpath, $timeout_msec
+		);
 	}
 }

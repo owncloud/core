@@ -159,6 +159,14 @@ class SystemTagMappingNode implements \Sabre\DAV\INode {
 			if (!$this->tagManager->canUserAssignTag($this->tag, $this->user)) {
 				throw new Forbidden('No permission to unassign tag ' . $this->tag->getId());
 			}
+			/**
+			 * static tags cannot be unassigned by users who are not part of the group
+			 * whitelisted in the static tags.
+			 */
+			if ((!$this->tag->isUserEditable() && $this->tag->isUserAssignable())
+				&& !$this->tagManager->canUserUseStaticTagInGroup($this->tag, $this->user)) {
+				throw new Forbidden('No permission to unassign tag ' . $this->tag->getId());
+			}
 			$this->tagMapper->unassignTags($this->objectId, $this->objectType, $this->tag->getId());
 		} catch (TagNotFoundException $e) {
 			// can happen if concurrent deletion occurred

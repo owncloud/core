@@ -20,6 +20,7 @@ OC.L10N.register(
     "Open documentation" : "Открыть документацию",
     "Allow users on this server to send shares to other servers" : "Разрешить пользователям делиться с пользователями других серверов",
     "Allow users on this server to receive shares from other servers" : "Разрешить пользователям использовать общие ресурсы с других серверов",
+    "Automatically accept remote shares from trusted servers" : "Автоматически принимать удалённый доступ от доверенных серверов",
     "Federated Cloud" : "Объединение облачных хранилищ",
     "Your Federated Cloud ID:" : "Ваш ID в объединении облачных хранилищ:",
     "Share it:" : "Поделись этим:",

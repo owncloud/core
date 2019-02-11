@@ -190,6 +190,7 @@ class File extends Node implements IFile, IFileNode {
 				}
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 			}
+
 			$target = $partStorage->fopen($internalPartPath, 'wb');
 			if (!\is_resource($target)) {
 				\OCP\Util::writeLog('webdav', '\OC\Files\Filesystem::fopen() failed', \OCP\Util::ERROR);
@@ -474,7 +475,7 @@ class File extends Node implements IFile, IFileNode {
 	 * @throws ServiceUnavailable
 	 */
 	private function createFileChunked($data) {
-		list($path, $name) = \Sabre\HTTP\URLUtil::splitPath($this->path);
+		list($path, $name) = \Sabre\Uri\split($this->path);
 
 		$info = \OC_FileChunking::decodeName($name);
 		if (empty($info)) {

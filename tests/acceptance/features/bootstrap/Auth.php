@@ -100,6 +100,9 @@ trait Auth {
 	public function sendRequest(
 		$url, $method, $authHeader = null, $useCookies = false
 	) {
+		// reset responseXml
+		$this->responseXml = '';
+
 		$fullUrl = $this->getBaseUrl() . $url;
 
 		$cookies = null;
@@ -175,6 +178,17 @@ trait Auth {
 		$resp = HttpRequestHelper::post($url, null, null, $headers, $body);
 		$this->clientToken
 			= \json_decode($resp->getBody()->getContents())->token;
+	}
+
+	/**
+	 * @When the administrator generates a new client token using the token API
+	 * @Given a new client token for the administrator has been generated
+	 *
+	 * @return void
+	 */
+	public function aNewClientTokenForTheAdministratorHasBeenGenerated() {
+		$admin = $this->getAdminUsername();
+		$this->aNewClientTokenHasBeenGenerated($admin);
 	}
 
 	/**
@@ -276,6 +290,16 @@ trait Auth {
 			$loginUrl, null, null, null, $body, null, $this->cookieJar
 		);
 		$this->extractRequestTokenFromResponse($response);
+	}
+
+	/**
+	 * @Given a new browser session for the administrator has been started
+	 *
+	 * @return void
+	 */
+	public function aNewBrowserSessionForTheAdministratorHasBeenStarted() {
+		$admin = $this->getAdminUsername();
+		$this->aNewBrowserSessionForHasBeenStarted($admin);
 	}
 
 	/**

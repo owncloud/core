@@ -104,7 +104,7 @@ class ApiTest extends TestCase {
 	/**
 	 * @param \OCP\IRequest $request
 	 * @param string $userId The userId of the caller
-	 * @return \OCA\Files_Sharing\API\Share20OCS
+	 * @return \OCA\Files_Sharing\Controller\Share20OcsController
 	 */
 	private function createOCS($request, $userId) {
 		$currentUser = \OC::$server->getUserManager()->get($userId);
@@ -115,11 +115,12 @@ class ApiTest extends TestCase {
 				return \vsprintf($text, $parameters);
 			}));
 
-		return new \OCA\Files_Sharing\API\Share20OCS(
+		return new \OCA\Files_Sharing\Controller\Share20OcsController(
+			'files_sharing',
+			$request,
 			$this->shareManager,
 			\OC::$server->getGroupManager(),
 			\OC::$server->getUserManager(),
-			$request,
 			\OC::$server->getRootFolder(),
 			\OC::$server->getURLGenerator(),
 			$currentUser,
@@ -1343,90 +1344,6 @@ class ApiTest extends TestCase {
 		$this->shareManager->deleteShare($share);
 
 		\OC_Hook::clear('OC_Filesystem', 'post_initMountPoints', '\OCA\Files_Sharing\Tests\ApiTest', 'initTestMountPointsHook');
-	}
-	/**
-	 * @expectedException \Exception
-	 */
-	public function testShareNonExisting() {
-		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
-
-		$id = PHP_INT_MAX - 1;
-		Share::shareItem('file', $id, Share::SHARE_TYPE_LINK, self::TEST_FILES_SHARING_API_USER2, 31);
-	}
-
-	/**
-	 * @expectedException \Exception
-	 */
-	public function testShareNotOwner() {
-		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
-		\OC\Files\Filesystem::file_put_contents('foo.txt', 'bar');
-		$info = \OC\Files\Filesystem::getFileInfo('foo.txt');
-
-		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
-
-		Share::shareItem('file', $info->getId(), Share::SHARE_TYPE_LINK, self::TEST_FILES_SHARING_API_USER2, 31);
-	}
-
-	public function testDefaultExpireDate() {
-		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
-
-		// TODO drop this once all code paths use the DI version - otherwise
-		// the cache inside this config object is out of date because
-		// OC_Appconfig is used and bypasses this cache which lead to integrity
-		// constraint violations
-		$config = \OC::$server->getConfig();
-		$config->deleteAppValue('core', 'shareapi_default_expire_date');
-		$config->deleteAppValue('core', 'shareapi_enforce_expire_date');
-		$config->deleteAppValue('core', 'shareapi_expire_after_n_days');
-
-		$config->setAppValue('core', 'shareapi_default_expire_date', 'yes');
-		$config->setAppValue('core', 'shareapi_enforce_expire_date', 'yes');
-		$config->setAppValue('core', 'shareapi_expire_after_n_days', '2');
-
-		// default expire date is set to 2 days
-		// the time when the share was created is set to 3 days in the past
-		// user defined expire date is set to +2 days from now on
-		// -> link should be already expired by the default expire date but the user
-		//    share should still exists.
-		$now = \time();
-		$dateFormat = 'Y-m-d H:i:s';
-		$shareCreated = $now - 3 * 24 * 60 * 60;
-		$expireDate = \date($dateFormat, $now + 2 * 24 * 60 * 60);
-
-		$info = \OC\Files\Filesystem::getFileInfo($this->filename);
-		$this->assertInstanceOf(\OC\Files\FileInfo::class, $info);
-
-		$result = Share::shareItem('file', $info->getId(), Share::SHARE_TYPE_LINK, null, Constants::PERMISSION_READ);
-		$this->assertInternalType('string', $result);
-
-		$result = Share::shareItem('file', $info->getId(), Share::SHARE_TYPE_USER, self::TEST_FILES_SHARING_API_USER2, 31);
-		$this->assertTrue($result);
-
-		$result = Share::setExpirationDate('file', $info->getId(), $expireDate, $now);
-		$this->assertTrue($result);
-
-		//manipulate stime so that both shares are older then the default expire date
-		$statement = "UPDATE `*PREFIX*share` SET `stime` = ? WHERE `share_type` = ?";
-		$query = \OCP\DB::prepare($statement);
-		$result = $query->execute([$shareCreated, Share::SHARE_TYPE_LINK]);
-		$this->assertSame(1, $result);
-		$query = \OCP\DB::prepare($statement);
-		$result = $query->execute([$shareCreated, Share::SHARE_TYPE_USER]);
-		$this->assertSame(1, $result);
-
-		// now the link share should expire because of enforced default expire date
-		// the user share should still exist
-		$result = Share::getItemShared('file', $info->getId());
-		$this->assertInternalType('array', $result);
-		$this->assertCount(1, $result);
-		$share = \reset($result);
-		$this->assertSame(Share::SHARE_TYPE_USER, $share['share_type']);
-
-		//cleanup
-		$result = Share::unshare('file', $info->getId(), Share::SHARE_TYPE_USER, self::TEST_FILES_SHARING_API_USER2);
-		$this->assertTrue($result);
-		$config->setAppValue('core', 'shareapi_default_expire_date', 'no');
-		$config->setAppValue('core', 'shareapi_enforce_expire_date', 'no');
 	}
 
 	public function datesProvider() {

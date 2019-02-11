@@ -33,6 +33,15 @@ use phpseclib\Crypt\RSA;
 use phpseclib\File\X509;
 use Test\TestCase;
 
+/**
+ * Test for integrity checker.
+ *
+ * To regenerate the signature data that is hard-coded in the tests when needed, do the following:
+ * - mkdir -p apps/SomeApp/appinfo
+ * - cp -R tests/data/integritycheck/app/* apps/SomeApp
+ * - occ integrity:sign-app --path apps/SomeApp/ --privateKey tests/data/integritycheck/SomeApp.key --certificate tests/data/integritycheck/SomeApp.crt
+ * - Then grab the signature file from "apps/SomeApp/appinfo/signature.json" and copy it into the hard-coded strings.
+ */
 class CheckerTest extends TestCase {
 	/** @var EnvironmentHelper | \PHPUnit_Framework_MockObject_MockObject */
 	private $environmentHelper;
@@ -329,6 +338,65 @@ class CheckerTest extends TestCase {
 				'UnecessaryFile' => [
 						'expected' => '',
 						'current' => 'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e',
+				],
+			],
+
+		];
+		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
+	}
+
+	public function testVerifyAppSignatureWithRenamedFiles() {
+		$map = [
+			['integrity.check.disabled', false, false],
+			['integrity.excluded.files', [], []],
+		];
+		$this->environmentHelper
+				->expects($this->once())
+				->method('getChannel')
+				->will($this->returnValue('stable'));
+		$this->config
+			->method('getSystemValue')
+			->will($this->returnValueMap($map));
+
+		$this->appLocator
+				->expects($this->once())
+				->method('getAppPath')
+				->with('SomeApp')
+				->will($this->returnValue(\OC::$SERVERROOT . '/tests/data/integritycheck/app/'));
+		$signatureDataFile = '{
+			"hashes": {
+				"AnotherFileOrigin.txt": "1570ca9420e37629de4328f48c51da29840ddeaa03ae733da4bf1d854b8364f594aac560601270f9e1797ed4cd57c1aea87bf44cf4245295c94f2e935a2f0112",
+				"subfolder\/file.txt": "410738545fb623c0a5c8a71f561e48ea69e3ada0981a455e920a5ae9bf17c6831ae654df324f9328ff8453de179276ae51931cca0fa71fe8ccde6c083ca0574b"
+			},
+			"signature": "OlP+AJfOD1bkAaPJmYoEMg4JMHdeBsPSrg9ogEHjnCrm\/Ze5GDF5iTmmSNX++hPjGVrSElAPEkrdkysm595XLBfpM6wPSARSKWbXIMsUPSlCut0AtI0arl1UsYsnbHmjINZh9JHJMNq56yMPJX\/jU9ot4DQvnDw\/moq6sK1JpORpzzuyfVn77BHKpem\/3Iq9OK8alCR0Admo6gR14NDDI7cfdIwoK5G6mp4Od+RN95qM+5ttuwBARjD0v93mLDuiUEZtJjNgCNHs6jslvSEFlzRD2jwltZ9Fzqnzd+ua7ET4AMm9hVmOsK6CB0PkbWhRd+QsnSSIynfMHszf1PmbOCaJsZg4lnXDdrPKgYNGYbb9yPaG+6aLNtRtpwtnQkRUcI09fhx+c3o3h\/XHu9iObFICQww\/TVTC5OjGfWW5QWHomFwK9xzrMP8uNU1MZoI23oCa8F8M69EXDZinFzE6qM462Mnl7kPCzsB\/xsfIUn5OhmVjkf80ww0nIrsMUUCy1K87nr7zdNbhtmp1xzxkln4uwDj\/joULe3GyohPUD8Yzq3E5TUDRhtmYV6D7ZpFm5BcgPLZe3MfDicfn5wbrvCM0Zvi9o1h0V6377b+zLceZ4SSoiibt5j8A0VydSYyZP7HfxLhAkIz26K7rb+vAPJJUsvGPbOFFzP90lzBVJvE=",
+			"certificate": "-----BEGIN CERTIFICATE-----\r\nMIIEwTCCAqmgAwIBAgIUWv0iujufs5lUr0svCf\/qTQvoyKAwDQYJKoZIhvcNAQEF\r\nBQAwIzEhMB8GA1UECgwYb3duQ2xvdWQgQ29kZSBTaWduaW5nIENBMB4XDTE1MTEw\r\nMzIyNDk1M1oXDTE2MTEwMzIyNDk1M1owEjEQMA4GA1UEAwwHU29tZUFwcDCCAiIw\r\nDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAK8q0x62agGSRBqeWsaeEwFfepMk\r\nF8cAobMMi50qHCv9IrOn\/ZH9l52xBrbIkErVmRjmly0d4JhD8Ymhidsh9ONKYl\/j\r\n+ishsZDM8eNNdp3Ew+fEYVvY1W7mR1qU24NWj0bzVsClI7hvPVIuw7AjfBDq1C5+\r\nA+ZSLSXYvOK2cEWjdxQfuNZwEZSjmA63DUllBIrm35IaTvfuyhU6BW9yHZxmb8+M\r\nw0xDv30D5UkE\/2N7Pa\/HQJLxCR+3zKibRK3nUyRDLSXxMkU9PnFNaPNX59VPgyj4\r\nGB1CFSToldJVPF4pzh7p36uGXZVxs8m3LFD4Ol8mhi7jkxDZjqFN46gzR0r23Py6\r\ndol9vfawGIoUwp9LvL0S7MvdRY0oazLXwClLP4OQ17zpSMAiCj7fgNT661JamPGj\r\nt5O7Zn2wA7I4ddDS\/HDTWCu98Zwc9fHIpsJPgCZ9awoqxi4Mnf7Pk9g5nnXhszGC\r\ncxxIASQKM+GhdzoRxKknax2RzUCwCzcPRtCj8AQT\/x\/mqN3PfRmlnFBNACUw9bpZ\r\nSOoNq2pCF9igftDWpSIXQ38pVpKLWowjjg3DVRmVKBgivHnUnVLyzYBahHPj0vaz\r\ntFtUFRaqXDnt+4qyUGyrT5h5pjZaTcHIcSB4PiarYwdVvgslgwnQzOUcGAzRWBD4\r\n6jV2brP5vFY3g6iPAgMBAAEwDQYJKoZIhvcNAQEFBQADggIBACTY3CCHC+Z28gCf\r\nFWGKQ3wAKs+k4+0yoti0qm2EKX7rSGQ0PHSas6uW79WstC4Rj+DYkDtIhGMSg8FS\r\nHVGZHGBCc0HwdX+BOAt3zi4p7Sf3oQef70\/4imPoKxbAVCpd\/cveVcFyDC19j1yB\r\nBapwu87oh+muoeaZxOlqQI4UxjBlR\/uRSMhOn2UGauIr3dWJgAF4pGt7TtIzt+1v\r\n0uA6FtN1Y4R5O8AaJPh1bIG0CVvFBE58esGzjEYLhOydgKFnEP94kVPgJD5ds9C3\r\npPhEpo1dRpiXaF7WGIV1X6DI\/ipWvfrF7CEy6I\/kP1InY\/vMDjQjeDnJ\/VrXIWXO\r\nyZvHXVaN\/m+1RlETsH7YO\/QmxRue9ZHN3gvvWtmpCeA95sfpepOk7UcHxHZYyQbF\r\n49\/au8j+5tsr4A83xzsT1JbcKRxkAaQ7WDJpOnE5O1+H0fB+BaLakTg6XX9d4Fo7\r\n7Gin7hVWX7pL+JIyxMzME3LhfI61+CRcqZQIrpyaafUziPQbWIPfEs7h8tCOWyvW\r\nUO8ZLervYCB3j44ivkrxPlcBklDCqqKKBzDP9dYOtS\/P4RB1NkHA9+NTvmBpTonS\r\nSFXdg9fFMD7VfjDE3Vnk+8DWkVH5wBYowTAD7w9Wuzr7DumiAULexnP\/Y7xwxLv7\r\n4B+pXTAcRK0zECDEaX3npS8xWzrB\r\n-----END CERTIFICATE-----"
+		}';
+		$this->fileAccessHelper
+				->expects($this->at(0))
+				->method('file_get_contents')
+				->with(
+						\OC::$SERVERROOT . '/tests/data/integritycheck/app//appinfo/signature.json'
+				)
+				->will($this->returnValue($signatureDataFile));
+		$this->fileAccessHelper
+				->expects($this->at(1))
+				->method('file_get_contents')
+				->with(
+						'/resources/codesigning/root.crt'
+				)
+				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
+
+		$expected = [
+			'FILE_MISSING' => [
+				'AnotherFileOrigin.txt' => [
+						'expected' => '1570ca9420e37629de4328f48c51da29840ddeaa03ae733da4bf1d854b8364f594aac560601270f9e1797ed4cd57c1aea87bf44cf4245295c94f2e935a2f0112',
+						'current' => '',
+				],
+			],
+			'EXTRA_FILE' => [
+				'AnotherFile.txt' => [
+						'expected' => '',
+						'current' => '1570ca9420e37629de4328f48c51da29840ddeaa03ae733da4bf1d854b8364f594aac560601270f9e1797ed4cd57c1aea87bf44cf4245295c94f2e935a2f0112',
 				],
 			],
 

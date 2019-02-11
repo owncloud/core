@@ -23,6 +23,7 @@ namespace OC\Repair;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use OC\App\Platform;
 use OC\RepairException;
 use OC_App;
 use OCP\App\AppAlreadyInstalledException;
@@ -31,12 +32,12 @@ use OCP\App\AppNotFoundException;
 use OCP\App\AppNotInstalledException;
 use OCP\App\AppUpdateNotFoundException;
 use OCP\App\IAppManager;
+use OCP\IConfig;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use OCP\Util;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use OCP\IConfig;
 
 class Apps implements IRepairStep {
 	const KEY_COMPATIBLE = 'compatible';
@@ -46,7 +47,7 @@ class Apps implements IRepairStep {
 	/** @var  IAppManager */
 	private $appManager;
 
-	/** @var  EventDispatcher */
+	/** @var  EventDispatcherInterface */
 	private $eventDispatcher;
 
 	/** @var IConfig */
@@ -55,19 +56,23 @@ class Apps implements IRepairStep {
 	/** @var \OC_Defaults */
 	private $defaults;
 
+	/** @var bool */
+	private $forceMajorUpgrade;
+
 	/**
 	 * Apps constructor.
 	 *
 	 * @param IAppManager $appManager
-	 * @param EventDispatcher $eventDispatcher
+	 * @param EventDispatcherInterface $eventDispatcher
 	 * @param IConfig $config
 	 * @param \OC_Defaults $defaults
 	 */
-	public function __construct(IAppManager $appManager, EventDispatcher $eventDispatcher, IConfig $config, \OC_Defaults $defaults) {
+	public function __construct(IAppManager $appManager, EventDispatcherInterface $eventDispatcher, IConfig $config, \OC_Defaults $defaults, $forceMajorUpgrade = false) {
 		$this->appManager = $appManager;
 		$this->eventDispatcher = $eventDispatcher;
 		$this->config = $config;
 		$this->defaults = $defaults;
+		$this->forceMajorUpgrade = $forceMajorUpgrade;
 	}
 
 	/**
@@ -83,12 +88,32 @@ class Apps implements IRepairStep {
 	 */
 	private function isCoreUpdate() {
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
-		$currentVersion = \implode('.', Util::getVersion());
+		$currentVersion = \implode('.', $this->getSourcesVersion());
 		$versionDiff = \version_compare($currentVersion, $installedVersion);
 		if ($versionDiff > 0) {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Is it a major core update
+	 *
+	 * @return bool
+	 */
+	private function isMajorCoreUpdate() {
+		if ($this->forceMajorUpgrade === true) {
+			return true;
+		}
+
+		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
+		$installedVersionArray = \explode('.', $installedVersion);
+		$installedVersionMajor = (int) $installedVersionArray[0];
+		$targetVersionArray = $this->getSourcesVersion();
+		$targetVersionMajor = (int) $targetVersionArray[0];
+		$majorUpgrade = $targetVersionMajor !== $installedVersionMajor;
+
+		return $majorUpgrade;
 	}
 
 	/**
@@ -160,7 +185,7 @@ class Apps implements IRepairStep {
 
 					// Try to update compatible apps
 					if (!empty($appsToUpgrade[self::KEY_COMPATIBLE])) {
-						$output->info('Attempting to update the following existing compatible apps from market: ' . \implode(', ', $appsToUpgrade[self::KEY_MISSING]));
+						$output->info('Attempting to update the following existing compatible apps from market: ' . \implode(', ', $appsToUpgrade[self::KEY_COMPATIBLE]));
 						$failedCompatibleApps = $this->getAppsFromMarket(
 							$output,
 							$appsToUpgrade[self::KEY_COMPATIBLE],
@@ -180,7 +205,7 @@ class Apps implements IRepairStep {
 		}
 
 		$hasBlockingMissingApps = \count($failedMissingApps);
-		$hasBlockingIncompatibleApps = \count($failedIncompatibleApps);
+		$hasBlockingIncompatibleApps = $this->hasBlockingIncompatibleApps($failedIncompatibleApps);
 
 		if ($hasBlockingIncompatibleApps || $hasBlockingMissingApps) {
 			// fail
@@ -218,7 +243,10 @@ class Apps implements IRepairStep {
 			try {
 				$this->eventDispatcher->dispatch(
 					\sprintf('%s::%s', IRepairStep::class, $event),
-					new GenericEvent($app)
+					new GenericEvent(
+						$app,
+						['isMajorUpdate' => $this->isMajorCoreUpdate()]
+					)
 				);
 			} catch (AppAlreadyInstalledException $e) {
 				$output->info($e->getMessage());
@@ -265,8 +293,7 @@ class Apps implements IRepairStep {
 				$appsToUpgrade[self::KEY_MISSING][] = $appId;
 				continue;
 			}
-			$version = Util::getVersion();
-			$key = (\OC_App::isAppCompatible($version, $info)) ? self::KEY_COMPATIBLE : self::KEY_INCOMPATIBLE;
+			$key = (\OC_App::isAppCompatible(new Platform($this->config), $info)) ? self::KEY_COMPATIBLE : self::KEY_INCOMPATIBLE;
 			$appsToUpgrade[$key][] = $appId;
 		}
 		return $appsToUpgrade;
@@ -283,6 +310,17 @@ class Apps implements IRepairStep {
 			$appList
 		);
 		return "\n" . \implode("\n", $appList);
+	}
+
+	/**
+	 * @param string[] $failedIncompatibleApps
+	 *
+	 * @return bool
+	 */
+	protected function hasBlockingIncompatibleApps($failedIncompatibleApps) {
+		$skipBlockingAppsCheck = \in_array(Util::getChannel(), ['git', 'daily'], true);
+		$hasBlockingIncompatibleApps = $skipBlockingAppsCheck === false && \count($failedIncompatibleApps);
+		return $hasBlockingIncompatibleApps;
 	}
 
 	/**
@@ -386,5 +424,12 @@ class Apps implements IRepairStep {
 				]);
 			}
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function getSourcesVersion() {
+		return Util::getVersion();
 	}
 }

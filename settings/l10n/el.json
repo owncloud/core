@@ -82,8 +82,6 @@
     "Report a bug" : "Αναφορά σφάλματος",
     "Show description …" : "Εμφάνιση περιγραφής",
     "Hide description …" : "Απόκρυψη περιγραφής",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Δεν έχει ανατεθεί ελάχιστη έκδοση ownCloud σε αυτή την εφαρμογή. Αυτό μπορεί να είναι σφάλμα από την έκδοση ownCloud 11 και μετά.",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Δεν έχει ανατεθεί μέγιστη έκδοση ownCloud σε αυτή την εφαρμογή. Αυτό μπορεί να είναι σφάλμα από την έκδοση ownCloud 11 και μετά.",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Αυτή η εφαρμογή δεν μπορεί να εγκατασταθεί διότι δεν εκπληρώνονται οι ακόλουθες εξαρτήσεις:",
     "Enable only for specific groups" : "Ενεργοποίηση μόνο για καθορισμένες ομάδες",
     "Uninstall App" : "Απεγκατάσταση Εφαρμογής",

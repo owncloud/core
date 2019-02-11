@@ -38,6 +38,7 @@ OC.L10N.register(
     "_%n file_::_%n files_" : ["%n lêer","%n lêers"],
     "{dirs} and {files}" : "{dirs} en {files}",
     "New" : "Nuut",
+    "Unknown user" : "Onbekende gebruiker",
     "\"{name}\" is an invalid file name." : "“{naam}” is ’n ongeldige lêernaam.",
     "File name cannot be empty." : "Lêernaam mag nie leeg wees nie.",
     "File name cannot contain \"/\"." : "Lêer kan nie “/” bevat nie.",

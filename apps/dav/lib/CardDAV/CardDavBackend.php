@@ -38,7 +38,6 @@ use Sabre\CardDAV\Backend\BackendInterface;
 use Sabre\CardDAV\Backend\SyncSupport;
 use Sabre\CardDAV\Plugin;
 use Sabre\DAV\Exception\BadRequest;
-use Sabre\HTTP\URLUtil;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Reader;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -174,7 +173,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->execute();
 
 		while ($row = $result->fetch()) {
-			list(, $name) = URLUtil::splitPath($row['principaluri']);
+			list(, $name) = \Sabre\Uri\split($row['principaluri']);
 			$uri = $row['uri'] . '_shared_by_' . $name;
 			$displayName = $row['displayname'] . " ($name)";
 			if (!isset($addressBooks[$row['id']])) {
@@ -1028,7 +1027,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 	private function convertPrincipal($principalUri, $toV2 = null) {
 		if ($this->principalBackend->getPrincipalPrefix() === 'principals') {
-			list(, $name) = URLUtil::splitPath($principalUri);
+			list(, $name) = \Sabre\Uri\split($principalUri);
 			$toV2 = $toV2 === null ? !$this->legacyMode : $toV2;
 			if ($toV2) {
 				return "principals/users/$name";

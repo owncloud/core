@@ -196,15 +196,17 @@ class UserHelper {
 	 * @param string $group
 	 * @param string $adminUser
 	 * @param string $adminPassword
+	 * @param integer $ocsApiVersion (1|2)
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function addUserToGroup(
-		$baseUrl, $user, $group, $adminUser, $adminPassword
+		$baseUrl, $user, $group, $adminUser, $adminPassword, $ocsApiVersion = 2
 	) {
 		return OcsApiHelper::sendRequest(
 			$baseUrl, $adminUser, $adminPassword, "POST",
-			"/cloud/users/" . $user . "/groups", ['groupid' => $group]
+			"/cloud/users/" . $user . "/groups", ['groupid' => $group],
+			$ocsApiVersion
 		);
 	}
 
@@ -215,15 +217,17 @@ class UserHelper {
 	 * @param string $group
 	 * @param string $adminUser
 	 * @param string $adminPassword
+	 * @param integer $ocsApiVersion (1|2)
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function removeUserFromGroup(
-		$baseUrl, $user, $group, $adminUser, $adminPassword
+		$baseUrl, $user, $group, $adminUser, $adminPassword, $ocsApiVersion = 2
 	) {
 		return OcsApiHelper::sendRequest(
 			$baseUrl, $adminUser, $adminPassword, "DELETE",
-			"/cloud/users/" . $user . "/groups", ['groupid' => $group]
+			"/cloud/users/" . $user . "/groups", ['groupid' => $group],
+			$ocsApiVersion
 		);
 	}
 

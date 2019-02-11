@@ -38,7 +38,7 @@ class AssemblyStreamZsync extends AssemblyStream {
 	private $backingNode = null;
 
 	/** @var array */
-	private $currentNode = null;
+	protected $currentNode = null;
 
 	/** @var int */
 	private $next = 0;

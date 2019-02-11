@@ -77,7 +77,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	private function resolveChunkFile($path) {
 		if (\OC_FileChunking::isWebdavChunk()) {
 			// resolve to real file name to find the proper node
-			list($dir, $name) = \Sabre\HTTP\URLUtil::splitPath($path);
+			list($dir, $name) = \Sabre\Uri\split($path);
 			if ($dir == '/' || $dir == '.') {
 				$dir = '';
 			}
@@ -228,7 +228,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		// with that we have covered both source and destination
 		$this->getNodeForPath($source);
 
-		list($destinationDir, $destinationName) = \Sabre\HTTP\URLUtil::splitPath($destination);
+		list($destinationDir, $destinationName) = \Sabre\Uri\split($destination);
 		try {
 			$this->fileView->verifyPath($destinationDir, $destinationName);
 		} catch (\OCP\Files\InvalidPathException $ex) {
@@ -255,7 +255,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
 
-		list($destinationDir, ) = \Sabre\HTTP\URLUtil::splitPath($destination);
+		list($destinationDir, ) = \Sabre\Uri\split($destination);
 		$this->markDirty($destinationDir);
 	}
 

@@ -23,6 +23,7 @@
 
 namespace Page\FilesPageElement;
 
+use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -56,7 +57,30 @@ class FileActionsMenu extends OwncloudPage {
 	public function setElement(NodeElement $menuElement) {
 		$this->menuElement = $menuElement;
 	}
-	
+
+	/**
+	 * waits for the tab to appear and sets the element
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 * @param string $xpath the xpath of the element to wait for
+	 *                      required to be set
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+		$xpath = null
+	) {
+		if ($xpath === null) {
+			throw new \InvalidArgumentException('$xpath needs to be set');
+		}
+		$this->waitForOutstandingAjaxCalls($session);
+		$element = $this->waitTillXpathIsVisible($xpath, $timeout_msec);
+		$this->setElement($element);
+	}
+
 	/**
 	 * clicks the rename button
 	 *
@@ -70,12 +94,11 @@ class FileActionsMenu extends OwncloudPage {
 		$xpathToWaitFor = null, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$renameBtn = $this->findButton($this->renameActionLabel);
-		if ($renameBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find action button with label $this->renameActionLabel"
-			);
-		}
+		$this->assertElementNotNull(
+			$renameBtn,
+			__METHOD__ .
+			" could not find action button with label $this->renameActionLabel"
+		);
 		$renameBtn->click();
 		if ($xpathToWaitFor !== null) {
 			$this->waitTillElementIsNotNull($xpathToWaitFor, $timeout_msec);
@@ -89,12 +112,11 @@ class FileActionsMenu extends OwncloudPage {
 	 */
 	public function delete() {
 		$deleteBtn = $this->findButton($this->deleteActionLabel);
-		if ($deleteBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find action button with label $this->deleteActionLabel"
-			);
-		}
+		$this->assertElementNotNull(
+			$deleteBtn,
+			__METHOD__ .
+			" could not find action button with label $this->deleteActionLabel"
+		);
 		$deleteBtn->focus();
 		$deleteBtn->click();
 	}
@@ -106,12 +128,11 @@ class FileActionsMenu extends OwncloudPage {
 	 */
 	public function openDetails() {
 		$detailsBtn = $this->findButton($this->detailsActionLabel);
-		if ($detailsBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find action button with label $this->deleteActionLabel"
-			);
-		}
+		$this->assertElementNotNull(
+			$detailsBtn,
+			__METHOD__ .
+			" could not find action button with label $this->deleteActionLabel"
+		);
 		$detailsBtn->focus();
 		$detailsBtn->click();
 	}
@@ -122,12 +143,11 @@ class FileActionsMenu extends OwncloudPage {
 	 */
 	public function declineShare() {
 		$declineBtn = $this->findButton($this->declineShareDataAction);
-		if ($declineBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" could not find action button with label $this->declineShareDataAction"
-			);
-		}
+		$this->assertElementNotNull(
+			$declineBtn,
+			__METHOD__ .
+			" could not find action button with label $this->declineShareDataAction"
+		);
 		$declineBtn->focus();
 		$declineBtn->click();
 	}
@@ -147,17 +167,15 @@ class FileActionsMenu extends OwncloudPage {
 			"xpath",
 			$xpathLocator
 		);
-		if ($button === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $xpathLocator could not find button '$action' in action Menu"
-			);
-		} else {
-			$this->waitFor(
-				STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$button, 'isVisible']
-			);
-			return $button;
-		}
+		$this->assertElementNotNull(
+			$button,
+			__METHOD__ .
+			" xpath $xpathLocator could not find button '$action' in action Menu"
+		);
+		$this->waitFor(
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$button, 'isVisible']
+		);
+		return $button;
 	}
 
 	/**

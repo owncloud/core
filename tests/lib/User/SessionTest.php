@@ -505,10 +505,14 @@ class SessionTest extends TestCase {
 		$session = $this->createMock(ISession::class);
 		/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject $request */
 		$request = $this->createMock(IRequest::class);
+		$request->method('getRemoteAddress')->willReturn('12.34.56.78');
+
+		/** @var EventDispatcher | \PHPUnit_Framework_MockObject_MockObject $eventDispatcher */
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
 
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService, $this->eventDispatcher])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService, $eventDispatcher])
 			->setMethods(['login', 'isTwoFactorEnforced'])
 			->getMock();
 
@@ -525,6 +529,8 @@ class SessionTest extends TestCase {
 			->method('isTwoFactorEnforced')
 			->with('john')
 			->will($this->returnValue(true));
+		$this->logger->expects($this->once())->method('warning')->with("Login failed: 'john' (Remote IP: '12.34.56.78')");
+		$eventDispatcher->expects($this->once())->method('dispatch')->with('user.loginfailed', new GenericEvent(null, ['user' => 'john']));
 
 		$userSession->logClientIn('john', 'doe', $request);
 	}
@@ -1169,7 +1175,7 @@ class SessionTest extends TestCase {
 		$apacheBackend->expects($this->once())->method('isSessionActive')->willReturn(true);
 
 		$failedEvent = new GenericEvent(null, ['user' => 'foo']);
-		$beforeLoginEvent = new GenericEvent(null, ['login' => 'foo', 'password' => '', 'loginType' => 'apache']);
+		$beforeLoginEvent = new GenericEvent(null, ['login' => 'foo', 'uid' => 'foo', 'password' => '', 'loginType' => 'apache']);
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
@@ -1204,7 +1210,7 @@ class SessionTest extends TestCase {
 		$iUser->expects($this->exactly(2))
 			->method('isEnabled')
 			->willReturn(true);
-		$iUser->expects($this->exactly(3))
+		$iUser->expects($this->exactly(4))
 			->method('getUID')
 			->willReturn('foo');
 
@@ -1212,8 +1218,8 @@ class SessionTest extends TestCase {
 			->method('get')
 			->willReturn($iUser);
 
-		$beforeLoginEvent = new GenericEvent(null, ['login' => 'foo', 'password' => '', 'loginType' => 'apache']);
-		$afterLoginEvent = new GenericEvent(null, ['user' => $iUser, 'login' => 'foo', 'password' => '', 'loginType' => 'apache']);
+		$beforeLoginEvent = new GenericEvent(null, ['login' => 'foo', 'uid' => 'foo', 'password' => '', 'loginType' => 'apache']);
+		$afterLoginEvent = new GenericEvent(null, ['user' => $iUser, 'login' => 'foo', 'uid' => 'foo', 'password' => '', 'loginType' => 'apache']);
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
@@ -1327,7 +1333,7 @@ class SessionTest extends TestCase {
 			->method('get')
 			->willReturn(null);
 
-		$event = new GenericEvent(null, ['login' => 'foo', 'password' => 'foobar', 'loginType' => 'token']);
+		$event = new GenericEvent(null, ['login' => 'foo', 'uid' => 'foo', 'password' => 'foobar', 'loginType' => 'token']);
 		$failedEvent = new GenericEvent(null, ['user' => 'foo']);
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
@@ -1378,11 +1384,11 @@ class SessionTest extends TestCase {
 
 		$beforeEvent = new GenericEvent(null,
 			[
-				'login' => 'foo', 'password' => 'foobar', 'loginType' => 'token'
+				'login' => 'foo', 'uid' => 'foo', 'password' => 'foobar', 'loginType' => 'token'
 			]);
 		$afterEvent = new GenericEvent(null,
 			[
-				'user' => $iUser, 'login' => 'foo', 'password' => 'foobar', 'loginType' => 'token'
+				'user' => $iUser, 'login' => 'foo', 'uid' => 'foo', 'password' => 'foobar', 'loginType' => 'token'
 			]);
 
 		$eventDispatcher->expects($this->exactly(2))
@@ -1547,6 +1553,8 @@ class SessionTest extends TestCase {
 		$iUser->expects($this->any())
 			->method('isEnabled')
 			->willReturn(true);
+		$iUser->expects($this->atLeastOnce())
+			->method('updateLastLoginTimestamp');
 
 		$result = $this->invokePrivate($userSession, 'loginUser', [$iUser, 'foo']);
 		$this->assertTrue($result);
@@ -1584,6 +1592,8 @@ class SessionTest extends TestCase {
 			->willReturn(false);
 		$iUser->method('getUID')
 			->willReturn('foo');
+		$iUser->expects($this->never())
+			->method('updateLastLoginTimestamp');
 
 		$failedEvent = new GenericEvent(null, ['user' => 'foo']);
 		$eventDispatcher->expects($this->once())

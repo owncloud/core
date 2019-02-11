@@ -139,7 +139,7 @@ class Server {
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $logger));
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
-		$this->server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($this->server->tree, false)));
+		$this->server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($this->server->tree, false, \OC::$server->getTimeFactory())));
 
 		// ACL plugin not used in files subtree, also it causes issues
 		// with performance and locking issues because it will query
@@ -195,7 +195,7 @@ class Server {
 
 		$this->server->addPlugin(new PreviewPlugin(\OC::$server->getTimeFactory(), \OC::$server->getPreviewManager()));
 		// wait with registering these until auth is handled and the filesystem is setup
-		$this->server->on('beforeMethod', function () use ($root) {
+		$this->server->on('beforeMethod:*', function () use ($root) {
 			// custom properties plugin must be the last one
 			$userSession = \OC::$server->getUserSession();
 			$user = $userSession->getUser();

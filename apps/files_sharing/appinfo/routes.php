@@ -45,7 +45,52 @@ $application->registerRoutes($this, [
 			'name' => 'sharees#search',
 			'url' => '/api/v1/sharees',
 			'verb' => 'GET',
-		]
+		],
+		[
+			'name' => 'Share20Ocs#getShares',
+			'url' => '/api/v1/shares',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'Share20Ocs#createShare',
+			'url' => '/api/v1/shares',
+			'verb' => 'POST'
+		],
+		[
+			'name' => 'Share20Ocs#acceptShare',
+			'url' => '/api/v1/shares/pending/{id}',
+			'verb' => 'POST'
+		],
+		[
+			'name' => 'Share20Ocs#declineShare',
+			'url' => '/api/v1/shares/pending/{id}',
+			'verb' => 'DELETE'
+		],
+		[
+			'name' => 'Share20Ocs#getShare',
+			'url' => '/api/v1/shares/{id}',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'Share20Ocs#updateShare',
+			'url' => '/api/v1/shares/{id}',
+			'verb' => 'PUT'
+		],
+		[
+			'name' => 'Share20Ocs#deleteShare',
+			'url' => '/api/v1/shares/{id}',
+			'verb' => 'DELETE'
+		],
+		[
+			'name' => 'Share20Ocs#notifyRecipients',
+			'url' => '/api/v1/notification/send',
+			'verb' => 'POST'
+		],
+		[
+			'name' => 'Share20Ocs#notifyRecipientsDisabled',
+			'url' => '/api/v1/notification/marksent',
+			'verb' => 'POST'
+		],
 	]
 ]);
 
@@ -65,45 +110,7 @@ $this->create('sharing_external_add', '/external')
 	->actionInclude('files_sharing/ajax/external.php');
 
 // OCS API
-
 //TODO: SET: mail notification, waiting for PR #4689 to be accepted
-
-$OCSShare = new \OCA\Files_Sharing\API\OCSShareWrapper($application);
-
-API::register('get',
-		'/apps/files_sharing/api/v1/shares',
-		[$OCSShare, 'getAllShares'],
-		'files_sharing');
-
-API::register('post',
-		'/apps/files_sharing/api/v1/shares',
-		[$OCSShare, 'createShare'],
-		'files_sharing');
-
-API::register('post',
-		'/apps/files_sharing/api/v1/shares/pending/{id}',
-		[$OCSShare, 'acceptShare'],
-		'files_sharing');
-
-API::register('delete',
-		'/apps/files_sharing/api/v1/shares/pending/{id}',
-		[$OCSShare, 'declineShare'],
-		'files_sharing');
-
-API::register('get',
-		'/apps/files_sharing/api/v1/shares/{id}',
-		[$OCSShare, 'getShare'],
-		'files_sharing');
-
-API::register('put',
-		'/apps/files_sharing/api/v1/shares/{id}',
-		[$OCSShare, 'updateShare'],
-		'files_sharing');
-
-API::register('delete',
-		'/apps/files_sharing/api/v1/shares/{id}',
-		[$OCSShare, 'deleteShare'],
-		'files_sharing');
 
 API::register('get',
 		'/apps/files_sharing/api/v1/remote_shares',

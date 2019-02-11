@@ -39,6 +39,7 @@ use TestHelpers\DownloadHelper;
 use Page\FilesPageBasic;
 use Page\FilesPageElement\FileActionsMenu;
 use Behat\Mink\Exception\ElementException;
+use Page\FilesPageElement\DetailsDialog;
 
 require_once 'bootstrap.php';
 
@@ -284,7 +285,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theThumbnailShouldBeVisibleInTheDetailsPanel() {
 		$detailsDialog = $this->filesPage->getDetailsDialog();
-		$style = $detailsDialog->findThumbnail()->getAttribute("style");
+		$thumbnail = $detailsDialog->findThumbnail();
+		PHPUnit_Framework_Assert::assertTrue(
+			$thumbnail->isVisible(),
+			"thumbnail is not visible"
+		);
+		$style = $thumbnail->getAttribute("style");
 		PHPUnit_Framework_Assert::assertNotNull(
 			$style,
 			'style attribute of details thumbnail is null'
@@ -321,6 +327,20 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		PHPUnit_Framework_Assert::assertTrue(
 			$sharingDialog->isShareWithFieldVisible(),
 			'the share-with field is not visible in the details panel'
+		);
+	}
+
+	/**
+	 * @Then the share-with field should not be visible in the details panel
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theShareWithFieldShouldNotBeVisibleInTheDetailsPanel() {
+		$sharingDialog = $this->filesPage->getSharingDialog();
+		PHPUnit_Framework_Assert::assertFalse(
+			$sharingDialog->isShareWithFieldVisible(),
+			'the share-with field is visible in the details panel'
 		);
 	}
 
@@ -486,8 +506,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function createAFolder($name) {
 		$session = $this->getSession();
-		$this->filesPage->createFolder($session, $name);
-		$this->filesPage->waitTillPageIsLoaded($session);
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->createFolder($session, $name);
+		$pageObject->waitTillPageIsLoaded($session);
 	}
 
 	/**
@@ -574,8 +595,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user renames the file/folder :fromName to :toName using the webUI
-	 * @Given the user has renamed the file/folder :fromName to :toName using the webUI
+	 * @When the user renames file/folder :fromName to :toName using the webUI
+	 * @Given the user has renamed file/folder :fromName to :toName using the webUI
 	 *
 	 * @param string $fromName
 	 * @param string $toName
@@ -583,11 +604,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserRenamesTheFileFolderToUsingTheWebUI(
+	public function theUserRenamesFileFolderToUsingTheWebUI(
 		$fromName, $toName
 	) {
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->filesPage->renameFile($fromName, $toName, $this->getSession());
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->waitTillPageIsLoaded($this->getSession());
+		$pageObject->renameFile($fromName, $toName, $this->getSession());
 	}
 
 	/**
@@ -611,8 +633,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$fromNameParts[] = $namePartsRow['from-name-parts'];
 			$toNameParts[] = $namePartsRow['to-name-parts'];
 		}
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->filesPage->renameFile(
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->waitTillPageIsLoaded($this->getSession());
+		$pageObject->renameFile(
 			$fromNameParts,
 			$toNameParts,
 			$this->getSession()
@@ -620,8 +643,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user renames the file/folder :fromName to one of these names using the webUI
-	 * @Given the user has renamed the file/folder :fromName to one of these names using the webUI
+	 * @When the user renames file/folder :fromName to one of these names using the webUI
+	 * @Given the user has renamed file/folder :fromName to one of these names using the webUI
 	 *
 	 * @param string $fromName
 	 * @param TableNode $table
@@ -629,12 +652,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserRenamesTheFileToOneOfTheseNamesUsingTheWebUI(
+	public function theUserRenamesFileToOneOfTheseNamesUsingTheWebUI(
 		$fromName, TableNode $table
 	) {
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->waitTillPageIsLoaded($this->getSession());
 		foreach ($table->getRows() as $row) {
-			$this->filesPage->renameFile($fromName, $row[0], $this->getSession());
+			$pageObject->renameFile($fromName, $row[0], $this->getSession());
 		}
 	}
 
@@ -668,15 +692,15 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * has an "Unshare" entry in the file actions menu. Clicking it works just
 	 * like delete.
 	 *
-	 * @When the user deletes/unshares the file/folder :name using the webUI
-	 * @Given the user has deleted/unshared the file/folder :name using the webUI
+	 * @When the user deletes/unshares file/folder :name using the webUI
+	 * @Given the user has deleted/unshared file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserDeletesTheFileUsingTheWebUI($name) {
+	public function theUserDeletesFileUsingTheWebUI($name) {
 		$this->deleteTheFileUsingTheWebUI($name);
 	}
 
@@ -698,8 +722,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		foreach ($namePartsTable as $namePartsRow) {
 			$fileNameParts[] = $namePartsRow['name-parts'];
 		}
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->filesPage->deleteFile($fileNameParts, $this->getSession());
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->waitTillPageIsLoaded($this->getSession());
+		$pageObject->deleteFile($fileNameParts, $this->getSession());
 	}
 
 	/**
@@ -771,16 +796,17 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user moves the file/folder :name into the folder :destination using the webUI
-	 * @Given the user has moved the file/folder :name into the folder :destination using the webUI
+	 * @When the user moves file/folder :name into folder :destination using the webUI
+	 * @Given the user has moved file/folder :name into folder :destination using the webUI
 	 *
 	 * @param string|array $name
 	 * @param string|array $destination
 	 *
 	 * @return void
 	 */
-	public function theUserMovesTheFileFolderToUsingTheWebUI($name, $destination) {
-		$this->filesPage->moveFileTo($name, $destination, $this->getSession());
+	public function theUserMovesFileFolderIntoFolderUsingTheWebUI($name, $destination) {
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->moveFileTo($name, $destination, $this->getSession());
 	}
 
 	/**
@@ -803,14 +829,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$itemToMoveNameParts[] = $namePartsRow['item-to-move-name-parts'];
 			$destinationNameParts[] = $namePartsRow['destination-name-parts'];
 		}
-		$this->theUserMovesTheFileFolderToUsingTheWebUI(
+		$this->theUserMovesFileFolderIntoFolderUsingTheWebUI(
 			$itemToMoveNameParts, $destinationNameParts
 		);
 	}
 
 	/**
-	 * @When the user batch moves these files/folders into the folder :folderName using the webUI
-	 * @Given the user has batch moved these files/folders into the folder :folderName using the webUI
+	 * @When the user batch moves these files/folders into folder :folderName using the webUI
+	 * @Given the user has batch moved these files/folders into folder :folderName using the webUI
 	 *
 	 * @param string $folderName
 	 * @param TableNode $files table of file names
@@ -819,49 +845,51 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserBatchMovesTheseFilesIntoTheFolderUsingTheWebUI(
+	public function theUserBatchMovesTheseFilesIntoFolderUsingTheWebUI(
 		$folderName, TableNode $files
 	) {
 		$this->theUserMarksTheseFilesForBatchActionUsingTheWebUI($files);
 		$firstFileName = $files->getRow(1)[0];
-		$this->theUserMovesTheFileFolderToUsingTheWebUI($firstFileName, $folderName);
+		$this->theUserMovesFileFolderIntoFolderUsingTheWebUI(
+			$firstFileName, $folderName
+		);
 		$this->movedElementsTable = $files;
 	}
 
 	/**
-	 * @When the user uploads overwriting the file :name using the webUI
-	 * @Given the user has uploaded overwriting the file :name using the webUI
+	 * @When the user uploads overwriting file :name using the webUI
+	 * @Given the user has uploaded overwriting file :name using the webUI
 	 *
 	 * @param string $name
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserUploadsOverwritingTheFileUsingTheWebUI($name) {
-		$this->theUserUploadsTheFileUsingTheWebUI($name);
+	public function theUserUploadsOverwritingFileUsingTheWebUI($name) {
+		$this->theUserUploadsFileUsingTheWebUI($name);
 		$this->choiceInUploadConflictDialogWebUI("new");
 		$this->theUserChoosesToInTheUploadDialog("Continue");
 	}
 
 	/**
-	 * @When the user uploads overwriting the file :name using the webUI and retries if the file is locked
-	 * @Given the user has uploaded overwriting the file :name using the webUI and retries if the file is locked
+	 * @When the user uploads overwriting file :name using the webUI and retries if the file is locked
+	 * @Given the user has uploaded overwriting file :name using the webUI and retries if the file is locked
 	 *
 	 * @param string $name
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserUploadsOverwritingTheFileUsingTheWebUIRetry($name) {
+	public function theUserUploadsOverwritingFileUsingTheWebUIRetry($name) {
 		$previousNotificationsCount = 0;
 
 		for ($retryCounter = 0;
 			 $retryCounter < STANDARD_RETRY_COUNT;
 			 $retryCounter++) {
-			$this->theUserUploadsOverwritingTheFileUsingTheWebUI($name);
+			$this->theUserUploadsOverwritingFileUsingTheWebUI($name);
 
 			try {
-				$notifications = $this->filesPage->getNotifications();
+				$notifications = $this->getCurrentPageObject()->getNotifications();
 			} catch (ElementNotFoundException $e) {
 				$notifications = [];
 			}
@@ -892,31 +920,31 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user uploads the file :name keeping both new and existing files using the webUI
-	 * @Given the user has uploaded the file :name keeping both new and existing files using the webUI
+	 * @When the user uploads file :name keeping both new and existing files using the webUI
+	 * @Given the user has uploaded file :name keeping both new and existing files using the webUI
 	 *
 	 * @param string $name
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserUploadsTheFileKeepingNewExistingUsingTheWebUI($name) {
-		$this->theUserUploadsTheFileUsingTheWebUI($name);
+	public function theUserUploadsFileKeepingNewExistingUsingTheWebUI($name) {
+		$this->theUserUploadsFileUsingTheWebUI($name);
 		$this->choiceInUploadConflictDialogWebUI("new");
 		$this->choiceInUploadConflictDialogWebUI("existing");
 		$this->theUserChoosesToInTheUploadDialog("Continue");
 	}
 
 	/**
-	 * @When the user uploads the file :name using the webUI
-	 * @Given the user has uploaded the file :name using the webUI
+	 * @When the user uploads file :name using the webUI
+	 * @Given the user has uploaded file :name using the webUI
 	 *
 	 * @param string $name
 	 *
 	 * @return void
 	 */
-	public function theUserUploadsTheFileUsingTheWebUI($name) {
-		$this->filesPage->uploadFile($this->getSession(), $name);
+	public function theUserUploadsFileUsingTheWebUI($name) {
+		$this->getCurrentPageObject()->uploadFile($this->getSession(), $name);
 	}
 
 	/**
@@ -929,7 +957,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function choiceInUploadConflictDialogWebUI($choice) {
-		$dialogs = $this->filesPage->getOcDialogs();
+		$dialogs = $this->getCurrentPageObject()->getOcDialogs();
 		$isConflictDialog = false;
 		foreach ($dialogs as $dialog) {
 			$isConflictDialog = \strstr(
@@ -969,11 +997,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserChoosesToInTheUploadDialog($label) {
-		$dialogs = $this->filesPage->getOcDialogs();
+		$pageObject = $this->getCurrentPageObject();
+		$dialogs = $pageObject->getOcDialogs();
 		$dialog = \end($dialogs);
 		$this->conflictDialog->setElement($dialog->getOwnElement());
 		$this->conflictDialog->clickButton($this->getSession(), $label);
-		$this->filesPage->waitForUploadProgressbarToFinish();
+		$pageObject->waitForUploadProgressbarToFinish();
 	}
 
 	/**
@@ -1017,6 +1046,20 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user opens the sharing tab from the file action menu of file/folder :entryName using the webUI
+	 *
+	 * @param string $entryName
+	 *
+	 * @return void
+	 */
+	public function theUserOpensTheSharingTabFromTheActionMenuOfFileUsingTheWebui($entryName) {
+		$this->theUserOpensTheFileActionMenuOfFileFolderInTheWebui($entryName);
+		$this->theUserClicksTheFileActionInTheWebui("details");
+		$this->theUserSwitchesToTabInDetailsPanelUsingTheWebui("sharing");
+		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+	}
+
+	/**
 	 * @Then the deleted elements should be listed in the trashbin on the webUI
 	 *
 	 * @return void
@@ -1033,7 +1076,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with the path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|shared with others page|tags page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
+	 * @Then /^(?:file|folder) ((?:'[^']*')|(?:"[^"]*")) with path ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|shared with others page|tags page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
 	 *
 	 * @param string $name enclosed in single or double quotes
 	 * @param string $path
@@ -1044,7 +1087,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFileFolderWithThePathShouldBeListedOnTheWebUI(
+	public function fileFolderWithPathShouldBeListedOnTheWebUI(
 		$name, $path, $shouldOrNot, $typeOfFilesPage = "", $folder = ""
 	) {
 		// The capturing groups of the regex include the quotes at each
@@ -1137,8 +1180,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the user opens the (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
-	 * @Given /^the user has opened the (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
+	 * @When /^the user opens (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
+	 * @Given /^the user has opened (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
 	 *
 	 * @param string $typeOfFilesPage
 	 * @param string $fileOrFolder
@@ -1147,43 +1190,70 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserOpensTheFolderNamedUsingTheWebUI(
+	public function theUserOpensFolderNamedUsingTheWebUI(
 		$typeOfFilesPage, $fileOrFolder, $name
 	) {
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
-		$this->theUserOpensTheFolderUsingTheWebUI(
+		$this->theUserOpensTheFileOrFolderUsingTheWebUI(
 			$typeOfFilesPage, $fileOrFolder, \trim($name, $name[0])
 		);
 	}
 
 	/**
+	 * Open a file or folder in the current folder, or in a path down from the
+	 * current folder.
+	 *
 	 * @param string $typeOfFilesPage
-	 * @param string $fileOrFolder
-	 * @param string|array $name
+	 * @param string $fileOrFolder "file" or "folder" - the type of the final item
+	 *                             to open
+	 * @param string|array $relativePath the path from the currently open folder
+	 *                                   down to and including the file or folder
+	 *                                   to open
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserOpensTheFolderUsingTheWebUI(
-		$typeOfFilesPage, $fileOrFolder, $name
+	public function theUserOpensTheFileOrFolderUsingTheWebUI(
+		$typeOfFilesPage, $fileOrFolder, $relativePath
 	) {
 		if ($typeOfFilesPage === "trashbin") {
 			$this->theUserBrowsesToTheTrashbinPage();
 		}
-		if ($fileOrFolder === "folder") {
-			if (\is_array($name)) {
-				$this->currentFolder .= "/" . \implode($name);
-			} else {
-				$this->currentFolder .= "/$name";
-			}
-		}
+
 		$pageObject = $this->getCurrentPageObject();
-		$pageObject->waitTillPageIsLoaded($this->getSession());
-		$pageObject->openFile($name, $this->getSession());
-		$pageObject->waitTillPageIsLoaded($this->getSession());
+
+		if (\is_array($relativePath)) {
+			// Store the single full concatenated file or folder name.
+			$breadCrumbs[] = \implode($relativePath);
+			// The passed-in path is itself an array of pieces of a single file
+			// or folder name. That is done when the file or folder name contains
+			// both single and double quotes. The pieces of the file or folder
+			// name need to be passed through to openFile still in array form.
+			$breadCrumbsForOpenFile[] = $relativePath;
+		} else {
+			// The passed-in path is a single string representing the path to
+			// the item to be opened. Each folder along the way is delimited
+			// by "/". Explode it into an array of items to be opened.
+			$breadCrumbs = \explode('/', \ltrim($relativePath, '/'));
+			$breadCrumbsForOpenFile = $breadCrumbs;
+		}
+
+		foreach ($breadCrumbsForOpenFile as $breadCrumb) {
+			$pageObject->openFile($breadCrumb, $this->getSession());
+			$pageObject->waitTillPageIsLoaded($this->getSession());
+		}
+
+		if ($fileOrFolder !== "folder") {
+			// Pop the file name off the end of the array of breadcrumbs
+			\array_pop($breadCrumbs);
+		}
+
+		if (\count($breadCrumbs)) {
+			$this->currentFolder .= "/" . \implode('/', $breadCrumbs);
+		}
 	}
-	
+
 	/**
 	 * @Then /^the folder should (not|)\s?be empty on the webUI$/
 	 *
@@ -1223,7 +1293,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
+	 * @Then /^(?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |in |)(files page|trashbin|favorites page|shared-with-you page|shared-with-others page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
 	 *
 	 * @param string $name enclosed in single or double quotes
 	 * @param string $shouldOrNot
@@ -1233,7 +1303,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFileFolderShouldBeListedOnTheWebUI(
+	public function fileFolderShouldBeListedOnTheWebUI(
 		$name, $shouldOrNot, $typeOfFilesPage = "", $folder = ""
 	) {
 		// The capturing groups of the regex include the quotes at each
@@ -1282,6 +1352,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				$this->theUserBrowsesToTheSharedByLinkPage();
 				break;
 			case "shared with others page":
+			case "shared-with-others page":
 				$this->theUserBrowsesToTheSharedWithOthersPage();
 				break;
 			case "tags page":
@@ -1297,7 +1368,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->waitTillPageIsLoaded($this->getSession());
 		if ($folder !== "") {
-			$this->theUserOpensTheFolderUsingTheWebUI(
+			$this->theUserOpensTheFileOrFolderUsingTheWebUI(
 				$typeOfFilesPage, "folder", $folder
 			);
 		}
@@ -1377,7 +1448,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the moved elements should (not|)\s?be listed in the folder ['"](.*)['"] on the webUI$/
+	 * @Then /^the moved elements should (not|)\s?be listed in folder ['"](.*)['"] on the webUI$/
 	 *
 	 * @param string $shouldOrNot
 	 * @param string $folderName
@@ -1385,11 +1456,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theMovedElementsShouldBeListedInTheFolderOnTheWebUI(
+	public function theMovedElementsShouldBeListedInFolderOnTheWebUI(
 		$shouldOrNot, $folderName
 	) {
-		$this->theUserOpensTheFolderUsingTheWebUI("", "folder", $folderName);
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->theUserOpensTheFileOrFolderUsingTheWebUI("", "folder", $folderName);
+		$this->getCurrentPageObject()->waitTillPageIsLoaded($this->getSession());
 		$this->theDeletedMovedElementsShouldBeListedOnTheWebUI($shouldOrNot);
 	}
 
@@ -1412,8 +1483,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$folderNameParts[] = $namePartsRow['folder-name-parts'];
 			$toBeListedTableArray[] = [$namePartsRow['item-name-parts']];
 		}
-		$this->theUserOpensTheFolderUsingTheWebUI("", "folder", $folderNameParts);
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->theUserOpensTheFileOrFolderUsingTheWebUI("", "folder", $folderNameParts);
+		$this->getCurrentPageObject()->waitTillPageIsLoaded($this->getSession());
 
 		$toBeListedTable = new TableNode($toBeListedTableArray);
 		$this->theFollowingFileFolderShouldBeListedOnTheWebUI(
@@ -1466,32 +1537,32 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then near the file/folder :name a tooltip with the text :toolTipText should be displayed on the webUI
+	 * @Then near file/folder :name a tooltip with the text :toolTipText should be displayed on the webUI
 	 *
 	 * @param string $name
 	 * @param string $toolTipText
 	 *
 	 * @return void
 	 */
-	public function nearTheFileATooltipWithTheTextShouldBeDisplayedOnTheWebUI(
+	public function nearFileATooltipWithTheTextShouldBeDisplayedOnTheWebUI(
 		$name,
 		$toolTipText
 	) {
 		PHPUnit_Framework_Assert::assertEquals(
 			$toolTipText,
-			$this->filesPage->getTooltipOfFile($name, $this->getSession())
+			$this->getCurrentPageObject()->getTooltipOfFile($name, $this->getSession())
 		);
 	}
 	
 	/**
-	 * @When the user restores the file/folder :fname from the trashbin using the webUI
-	 * @Given the user has restored the file/folder :fname from the trashbin using the webUI
+	 * @When the user restores file/folder :fname from the trashbin using the webUI
+	 * @Given the user has restored file/folder :fname from the trashbin using the webUI
 	 *
 	 * @param string $fname
 	 *
 	 * @return void
 	 */
-	public function restoreFileFolderFromTrashbinUsingTheWebUI($fname) {
+	public function theUserRestoresFileFolderFromTheTrashbinUsingTheWebUI($fname) {
 		$session = $this->getSession();
 		$this->trashbinPage->restore($fname, $session);
 	}
@@ -1506,19 +1577,19 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function folderInputFieldTooltipTextShouldBeDisplayedOnTheWebUI(
 		$tooltiptext
 	) {
-		$createFolderTooltip = $this->filesPage->getCreateFolderTooltip();
+		$createFolderTooltip = $this->getCurrentPageObject()->getCreateFolderTooltip();
 		PHPUnit_Framework_Assert::assertSame($tooltiptext, $createFolderTooltip);
 	}
 
 	/**
-	 * @Then it should not be possible to delete the file/folder :name using the webUI
+	 * @Then it should not be possible to delete file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function itShouldNotBePossibleToDeleteUsingTheWebUI($name) {
+	public function itShouldNotBePossibleToDeleteFileFolderUsingTheWebUI($name) {
 		try {
 			$this->deleteTheFileUsingTheWebUI($name, false);
 		} catch (ElementNotFoundException $e) {
@@ -1536,7 +1607,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theFilesActionMenuShouldBeCompletelyVisibleAfterOpeningItUsingTheWebUI() {
 		for ($i = 1; $i <= $this->filesPage->getSizeOfFileFolderList(); $i++) {
-			$actionMenu = $this->filesPage->openFileActionsMenuByNo($i);
+			$actionMenu = $this->filesPage->openFileActionsMenuByNo(
+				$i, $this->getSession()
+			);
 			
 			$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC;
 			$currentTime = \microtime(true);
@@ -1644,15 +1717,15 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user marks the file/folder :fileOrFolderName as favorite using the webUI
-	 * @Given the user has marked the file/folder :fileOrFolderName as favorite using the webUI
+	 * @When the user marks file/folder :fileOrFolderName as favorite using the webUI
+	 * @Given the user has marked file/folder :fileOrFolderName as favorite using the webUI
 	 *
 	 * @param string $fileOrFolderName
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theUserMarksTheFileAsFavoriteUsingTheWebUI($fileOrFolderName) {
+	public function theUserMarksFileAsFavoriteUsingTheWebUI($fileOrFolderName) {
 		$fileRow = $this->filesPage->findFileRowByName(
 			$fileOrFolderName, $this->getSession()
 		);
@@ -1661,14 +1734,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the file/folder :fileOrFolderName should be marked as favorite on the webUI
+	 * @Then file/folder :fileOrFolderName should be marked as favorite on the webUI
 	 *
 	 * @param string $fileOrFolderName
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFileShouldBeMarkedAsFavoriteOnTheWebUI($fileOrFolderName) {
+	public function fileFolderShouldBeMarkedAsFavoriteOnTheWebUI($fileOrFolderName) {
 		$fileRow = $this->filesPage->findFileRowByName(
 			$fileOrFolderName, $this->getSession()
 		);
@@ -1697,14 +1770,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the file/folder :fileOrFolderName should not be marked as favorite on the webUI
+	 * @Then file/folder :fileOrFolderName should not be marked as favorite on the webUI
 	 *
 	 * @param string $fileOrFolderName
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theFolderShouldNotBeMarkedAsFavoriteOnTheWebUI(
+	public function fileFolderShouldNotBeMarkedAsFavoriteOnTheWebUI(
 		$fileOrFolderName
 	) {
 		$fileRow = $this->filesPage->findFileRowByName(
@@ -1716,102 +1789,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				" The file $fileOrFolderName is marked as favorite but should not be"
 			);
 		}
-	}
-
-	/**
-	 * @Given the user has added a tag :tagName to the file using the webUI
-	 * @Given the user has toggled a tag :tagName on the file using the webUI
-	 * @When the user adds a tag :tagName to the file using the webUI
-	 * @When the user toggles a tag :tagName on the file using the webUI
-	 *
-	 * @param string $tagName
-	 *
-	 * @return void
-	 */
-	public function theUserAddsATagToTheFileUsingTheWebUI($tagName) {
-		$this->filesPage->getDetailsDialog()->addTag($tagName);
-
-		// For tags to be created, OC checks (|for the permission) if the tag could be created
-		// and if it can, then only it creates a tag. So, in the webUI, it does two
-		// requests before the tags are created.
-		// If we use a single wait, it returns after it has checked for the permission.
-		// Locally that passes but sometimes fail on the ci. So, we need two waits for each requests.
-		// FIXME: Find a better way to wait for these calls
-		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
-		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
-
-		$this->featureContext->addToTheListOfCreatedTagsByDisplayName($tagName);
-	}
-
-	/**
-	 * @When the user types :value in the collaborative tags field using the webUI
-	 *
-	 * @param string $value
-	 *
-	 * @return void
-	 */
-	public function theUserTypesAValueInTheCollaborativeTagsFieldUsingTheWebUI($value) {
-		$this->filesPage->getDetailsDialog()->insertTagNameInTheTagsField($value);
-	}
-
-	/**
-	 * @Then all the tags starting with :value in their name should be listed in the dropdown list on the webUI
-	 *
-	 * @param string $value
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function allTheTagsStartingWithInTheirNameShouldBeListedInTheDropdownListOnTheWebUI($value) {
-		$results = $this->filesPage->getDetailsDialog()->getDropDownTagsSuggestionResults();
-		foreach ($results as $tagResult) {
-			PHPUnit_Framework_Assert::assertStringStartsWith($value, $tagResult->getText());
-		}
-
-		// check also that all tags that have been created and starts with $value
-		// are also shown in the dropdown
-		$createdTags = $this->featureContext->getListOfCreatedTags();
-		foreach ($createdTags as $tag) {
-			$tagName = $tag['name'];
-			if (\substr($tagName, 0, \strlen($value)) === $value && !empty($tag['userAssignable'])) {
-				$this->theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName);
-			}
-		}
-	}
-
-	/**
-	 * @Then the tag :tagName should be listed in the dropdown list on the webUI
-	 *
-	 * @param string $tagName
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName) {
-		$results = $this->filesPage->getDetailsDialog()->getDropDownTagsSuggestionResults();
-		foreach ($results as $tagResult) {
-			if ($tagResult->getText() === $tagName) {
-				return;
-			}
-		}
-		throw new \Exception("No tags could be found with $tagName.");
-	}
-
-	/**
-	 * @Then the tag :tagName should not be listed in the dropdown list on the webUI
-	 *
-	 * @param string $tagName
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theTagShouldNotBeListedInTheDropdownListOnTheWebui($tagName) {
-		try {
-			$this->theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName);
-		} catch (\Exception $e) {
-			return;
-		}
-		throw new \Exception("Tag $tagName should not be on the dropdown.");
 	}
 
 	/**
@@ -1887,13 +1864,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user opens the file action menu of the file/folder :name in the webUI
+	 * @When the user opens the file action menu of file/folder :name in the webUI
 	 *
 	 * @param string $name Name of the file/Folder
 	 *
 	 * @return void
 	 */
-	public function theUserOpensTheFileActionMenuOfTheFolderInTheWebui($name) {
+	public function theUserOpensTheFileActionMenuOfFileFolderInTheWebui($name) {
 		$session = $this->getSession();
 		$this->selectedFileRow = $this->getCurrentPageObject()->findFileRowByName($name, $session);
 		$this->openedFileActionMenu = $this->selectedFileRow->openFileActionsMenu($session);
@@ -1926,6 +1903,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		switch ($action_label) {
 			case "details":
 				$this->openedFileActionMenu->openDetails();
+				$this->getCurrentPageObject()
+					->getDetailsDialog()
+					->waitTillPageIsLoaded($this->getSession());
 				break;
 			case "rename":
 				$this->openedFileActionMenu->rename();
@@ -1949,17 +1929,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the :tabName tab in details panel should be visible
-	 *
-	 * @param string $tabName
-	 *
-	 * @return void
-	 */
-	public function theTabInDetailsPanelShouldBeVisible($tabName) {
-		PHPUnit_Framework_Assert::assertTrue($this->filesPage->getDetailsDialog()->isVisible($tabName));
-	}
-
-	/**
 	 * @When the user switches to :tabName tab in details panel using the webUI
 	 *
 	 * @param string $tabName
@@ -1979,7 +1948,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theUserCommentsWithContentUsingTheWebui($content) {
 		$detailsDialog = $this->filesPage->getDetailsDialog();
-		$detailsDialog->addComment($content);
+		$detailsDialog->addComment($this->getSession(), $content);
 		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
 	}
 
@@ -2007,7 +1976,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theCommentShouldBeListedInTheCommentsTabInDetailsDialog($text, $shouldOrNot) {
 		$should = ($shouldOrNot !== "not");
 		$text = \trim($text, $text[0]);
+		/**
+		 *
+		 * @var DetailsDialog $detailsDialog
+		 */
 		$detailsDialog = $this->getCurrentPageObject()->getDetailsDialog();
+		$detailsDialog->waitTillPageIsLoaded($this->getSession());
 		if ($should) {
 			PHPUnit_Framework_Assert::assertTrue(
 				$detailsDialog->isCommentOnUI($text),
@@ -2042,13 +2016,24 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user deletes tag with name :name using the webUI
+	 * @Then the versions list should contain :num entries
 	 *
-	 * @param string $name
+	 * @param int $num
 	 *
 	 * @return void
 	 */
-	public function theUserDeletesTagWithNameUsingTheWebui($name) {
-		$this->filesPage->getDetailsDialog()->deleteTag($name);
+	public function theVersionsListShouldContainEntries($num) {
+		$versionsList = $this->filesPage->getDetailsDialog()->getVersionsList();
+		$versionsCount = \count($versionsList->findAll("xpath", "//li"));
+		PHPUnit_Framework_Assert::assertEquals($num, $versionsCount);
+	}
+
+	/**
+	 * @When the user restores the file to last version using the webUI
+	 *
+	 * @return void
+	 */
+	public function theUserRestoresTheFileToLastVersionUsingTheWebui() {
+		$this->filesPage->getDetailsDialog()->restoreCurrentFileToLastVersion();
 	}
 }

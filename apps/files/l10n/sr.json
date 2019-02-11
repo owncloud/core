@@ -34,6 +34,7 @@
     "You don’t have permission to upload or create files here" : "Немате дозволе да овде отпремате или стварате фајлове",
     "_Uploading %n file_::_Uploading %n files_" : ["Отпремам %n фајл","Отпремам %n фајла","Отпремам %n фајлова"],
     "New" : "Ново",
+    "Unknown user" : "Непознат корисник",
     "\"{name}\" is an invalid file name." : "\"{name}\" није исправан назив фајла.",
     "File name cannot be empty." : "Назив фајла не може бити празан.",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "Складиште корисника {owner} је пуно. Фајлови се не могу ажурирати нити синхронизовати!",

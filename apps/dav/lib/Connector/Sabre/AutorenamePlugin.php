@@ -96,7 +96,7 @@ class AutorenamePlugin extends ServerPlugin {
 			}
 
 			$view = $this->server->tree->getView();
-			list($nodePath, $nodeName) = \Sabre\HTTP\URLUtil::splitPath($node->getPath());
+			list($nodePath, $nodeName) = \Sabre\Uri\split($node->getPath());
 			$newName = \OC_Helper::buildNotExistingFileNameForView($nodePath, $nodeName, $view);
 
 			$body = $request->getBodyAsStream();

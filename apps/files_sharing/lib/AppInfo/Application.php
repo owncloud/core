@@ -28,11 +28,13 @@
 namespace OCA\Files_Sharing\AppInfo;
 
 use OC\AppFramework\Utility\SimpleContainer;
+use OCA\Files_Sharing\Controller\Share20OcsController;
 use OCA\Files_Sharing\Controllers\ExternalSharesController;
 use OCA\Files_Sharing\Controllers\ShareController;
 use OCA\Files_Sharing\Middleware\SharingCheckMiddleware;
 use OCA\Files_Sharing\MountProvider;
 use OCA\Files_Sharing\Notifier;
+use OCA\Files_Sharing\SharingBlacklist;
 use OCP\AppFramework\App;
 use OCP\IContainer;
 use OCA\Files_Sharing\Hooks;
@@ -72,6 +74,24 @@ class Application extends App {
 				$c->query('ExternalManager'),
 				$c->query('HttpClientService'),
 				$server->getEventDispatcher()
+			);
+		});
+
+		$container->registerService('Share20OcsController', function (SimpleContainer $c) use ($server) {
+			return new Share20OcsController(
+				$c->query('AppName'),
+				$server->getRequest(),
+				$server->getShareManager(),
+				$server->getGroupManager(),
+				$server->getUserManager(),
+				$server->getRootFolder(),
+				$server->getURLGenerator(),
+				$server->getUserSession()->getUser(),
+				$server->getL10N('files_sharing'),
+				$server->getConfig(),
+				$c->query(NotificationPublisher::class),
+				$server->getEventDispatcher(),
+				$c->query(SharingBlacklist::class)
 			);
 		});
 

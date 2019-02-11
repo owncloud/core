@@ -103,11 +103,11 @@ class OC_Template extends \OC\Template\Base {
 	 */
 	public static function initTemplateEngine($renderAs) {
 		if (self::$initTemplateEngineFirstRun) {
-
+			$isInstalled = \OC::$server->getSystemConfig()->getValue('installed', false);
 			//apps that started before the template initialization can load their own scripts/styles
 			//so to make sure this scripts/styles here are loaded first we use OC_Util::addScript() with $prepend=true
 			//meaning the last script/style in this list will be loaded first
-			if (\OC::$server->getSystemConfig()->getValue('installed', false) && $renderAs !== 'error' && !\OCP\Util::needUpgrade()) {
+			if ($isInstalled && $renderAs !== 'error' && !\OCP\Util::needUpgrade()) {
 				if (\OC::$server->getConfig()->getAppValue('core', 'backgroundjobs_mode', 'ajax') == 'ajax') {
 					OC_Util::addScript('backgroundjobs', null, true);
 				}
@@ -156,6 +156,20 @@ class OC_Template extends \OC\Template\Base {
 			OC_Util::addScript('files/fileinfo');
 			OC_Util::addScript('files/client');
 
+			if ($isInstalled && \OCP\Share::isEnabled()) {
+				\OC_Util::addScript('core', 'shareconfigmodel');
+				\OC_Util::addScript('core', 'shareitemmodel');
+				\OC_Util::addScript('core', 'sharedialogresharerinfoview');
+				\OC_Util::addScript('core', 'sharedialoglinkshareview');
+				\OC_Util::addScript('core', 'sharedialoglinksocialview');
+				\OC_Util::addScript('core', 'sharedialogmailview');
+				\OC_Util::addScript('core', 'sharedialogexpirationview');
+				\OC_Util::addScript('core', 'sharedialogshareelistview');
+				\OC_Util::addScript('core', 'sharedialogview');
+				\OC_Util::addScript('core', 'share');
+				\OC_Util::addStyle('core', 'share');
+			}
+
 			// Add the stuff we need always
 			// following logic will import all vendor libraries that are
 			// specified in core/js/core.json
@@ -177,6 +191,21 @@ class OC_Template extends \OC\Template\Base {
 				// shim for the davclient.js library
 				\OCP\Util::addScript('files/iedavclient');
 			}
+
+			\OCP\Util::addScript('core', 'shareconfigmodel');
+			\OCP\Util::addScript('core', 'sharemodel');
+			\OCP\Util::addScript('core', 'sharescollection');
+			\OCP\Util::addScript('core', 'shareitemmodel');
+			\OCP\Util::addScript('core', 'sharedialogresharerinfoview');
+			\OCP\Util::addScript('core', 'sharedialoglinklistview');
+			\OCP\Util::addScript('core', 'sharedialoglinkshareview');
+			\OCP\Util::addScript('core', 'sharedialogmailview');
+			\OCP\Util::addScript('core', 'sharedialoglinksocialview');
+			\OCP\Util::addScript('core', 'sharedialogexpirationview');
+			\OCP\Util::addScript('core', 'sharedialogshareelistview');
+			\OCP\Util::addScript('core', 'sharedialogview');
+			\OCP\Util::addScript('core', 'share');
+			\OCP\Util::addStyle('core', 'share');
 
 			self::$initTemplateEngineFirstRun = false;
 		}

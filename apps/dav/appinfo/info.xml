@@ -16,10 +16,11 @@
 		<webdav>appinfo/v1/publicwebdav.php</webdav>
 	</public>
 	<dependencies>
-		<owncloud min-version="10.1" max-version="10.1" />
+		<owncloud min-version="11" max-version="11" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\DAV\CardDAV\SyncJob</job>
+		<job>OCA\DAV\BackgroundJob\CleanProperties</job>
 	</background-jobs>
 	<commands>
 		<command>OCA\DAV\Command\CreateAddressBook</command>

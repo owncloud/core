@@ -39,6 +39,7 @@
 namespace OC;
 
 use Doctrine\DBAL\Exception\TableExistsException;
+use OC\App\Platform;
 use OC\DB\MigrationService;
 use OC_App;
 use OC_DB;
@@ -372,7 +373,7 @@ class Installer {
 		}
 
 		// check if the app is compatible with this version of ownCloud
-		if (!OC_App::isAppCompatible(\OCP\Util::getVersion(), $info)) {
+		if (!OC_App::isAppCompatible(new Platform(\OC::$server->getConfig()), $info)) {
 			OC_Helper::rmdirr($extractDir);
 			throw new \Exception($l->t("App can't be installed because it is not compatible with this version of ownCloud"));
 		}

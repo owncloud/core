@@ -80,6 +80,9 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	private $objectCache;
 
+	/** @var string  */
+	private $id;
+
 	/**
 	 * @param string $path
 	 */

@@ -22,6 +22,7 @@ namespace OCA\Files_Sharing;
 
 use OCP\Capabilities\ICapability;
 use OCP\IConfig;
+use OCP\IL10N;
 use OCP\Util\UserSearch;
 
 /**
@@ -39,15 +40,19 @@ class Capabilities implements ICapability {
 	 */
 	private $userSearch;
 
+	/** @var IL10N */
+	private $l10n;
+
 	/**
 	 * Capabilities constructor.
 	 *
 	 * @param IConfig $config
 	 * @param UserSearch $userSearch
 	 */
-	public function __construct(IConfig $config, UserSearch $userSearch) {
+	public function __construct(IConfig $config, UserSearch $userSearch, IL10N $l10n) {
 		$this->config = $config;
 		$this->userSearch = $userSearch;
+		$this->l10n = $l10n;
 	}
 
 	/**
@@ -92,6 +97,7 @@ class Capabilities implements ICapability {
 				$public['upload'] = $this->config->getAppValue('core', 'shareapi_allow_public_upload', 'yes') === 'yes';
 				$public['multiple'] = true;
 				$public['supports_upload_only'] = true;
+				$public['defaultPublicLinkShareName'] = $this->l10n->t('Public link');
 			}
 			$res["public"] = $public;
 

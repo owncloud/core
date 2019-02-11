@@ -5,15 +5,15 @@ Feature: rename folders
   So that I can organise my data structure
 
   Background:
-    Given user "user1" has been created
+    Given user "user1" has been created with default attributes
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 
   Scenario Outline: Rename a folder using special characters
-    When the user renames the folder "simple-folder" to <to_folder_name> using the webUI
-    Then the folder <to_folder_name> should be listed on the webUI
+    When the user renames folder "simple-folder" to <to_folder_name> using the webUI
+    Then folder <to_folder_name> should be listed on the webUI
     When the user reloads the current page of the webUI
-    Then the folder <to_folder_name> should be listed on the webUI
+    Then folder <to_folder_name> should be listed on the webUI
     Examples:
       | to_folder_name          |
       | 'सिमप्ले फोल्देर$%#?&@' |
@@ -21,39 +21,39 @@ Feature: rename folders
       | "'quotes2'"             |
 
   Scenario Outline: Rename a folder that has special characters in its name
-    When the user renames the folder <from_name> to <to_name> using the webUI
-    Then the folder <to_name> should be listed on the webUI
+    When the user renames folder <from_name> to <to_name> using the webUI
+    Then folder <to_name> should be listed on the webUI
     When the user reloads the current page of the webUI
-    Then the folder <to_name> should be listed on the webUI
+    Then folder <to_name> should be listed on the webUI
     Examples:
       | from_name               | to_name                     |
       | "strängé नेपाली folder" | "strängé नेपाली folder-#?2" |
       | "'single'quotes"        | "single-quotes"             |
 
   Scenario: Rename a folder using special characters and check its existence after page reload
-    When the user renames the folder "simple-folder" to "लोरेम।तयक्स्त $%&" using the webUI
+    When the user renames folder "simple-folder" to "लोरेम।तयक्स्त $%&" using the webUI
     And the user reloads the current page of the webUI
-    Then the folder "लोरेम।तयक्स्त $%&" should be listed on the webUI
-    When the user renames the folder "लोरेम।तयक्स्त $%&" to '"double"quotes' using the webUI
+    Then folder "लोरेम।तयक्स्त $%&" should be listed on the webUI
+    When the user renames folder "लोरेम।तयक्स्त $%&" to '"double"quotes' using the webUI
     And the user reloads the current page of the webUI
-    Then the folder '"double"quotes' should be listed on the webUI
-    When the user renames the folder '"double"quotes' to "no-double-quotes" using the webUI
+    Then folder '"double"quotes' should be listed on the webUI
+    When the user renames folder '"double"quotes' to "no-double-quotes" using the webUI
     And the user reloads the current page of the webUI
-    Then the folder "no-double-quotes" should be listed on the webUI
-    When the user renames the folder 'no-double-quotes' to "hash#And&QuestionMark?At@FolderName" using the webUI
+    Then folder "no-double-quotes" should be listed on the webUI
+    When the user renames folder 'no-double-quotes' to "hash#And&QuestionMark?At@FolderName" using the webUI
     And the user reloads the current page of the webUI
-    Then the folder "hash#And&QuestionMark?At@FolderName" should be listed on the webUI
+    Then folder "hash#And&QuestionMark?At@FolderName" should be listed on the webUI
 
   Scenario: Rename a folder using spaces at front and/or back of the name
-    When the user renames the folder "simple-folder" to " space at start" using the webUI
+    When the user renames folder "simple-folder" to " space at start" using the webUI
     And the user reloads the current page of the webUI
-    Then the folder " space at start" should be listed on the webUI
-    When the user renames the folder " space at start" to "space at end " using the webUI
+    Then folder " space at start" should be listed on the webUI
+    When the user renames folder " space at start" to "space at end " using the webUI
     And the user reloads the current page of the webUI
-    Then the folder "space at end " should be listed on the webUI
-    When the user renames the folder "space at end " to "  multiple   spaces    all     over   " using the webUI
+    Then folder "space at end " should be listed on the webUI
+    When the user renames folder "space at end " to "  multiple   spaces    all     over   " using the webUI
     And the user reloads the current page of the webUI
-    Then the folder "  multiple   spaces    all     over   " should be listed on the webUI
+    Then folder "  multiple   spaces    all     over   " should be listed on the webUI
 
   Scenario: Rename a folder using both double and single quotes
     When the user renames the following folder using the webUI
@@ -70,10 +70,10 @@ Feature: rename folders
       | First 'single' quotes | a normal folder |
       | -then "double"        |                 |
     And the user reloads the current page of the webUI
-    Then the folder "a normal folder" should be listed on the webUI
+    Then folder "a normal folder" should be listed on the webUI
 
   Scenario: Rename a folder using forbidden characters
-    When the user renames the folder "simple-folder" to one of these names using the webUI
+    When the user renames folder "simple-folder" to one of these names using the webUI
       | simple\folder   |
       | \\simple-folder |
       | .htaccess       |
@@ -81,20 +81,20 @@ Feature: rename folders
       | Could not rename "simple-folder" |
       | Could not rename "simple-folder" |
       | Could not rename "simple-folder" |
-    And the folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be listed on the webUI
 
   Scenario: Rename a folder putting a name of a file which already exists
-    When the user renames the folder "simple-folder" to "lorem.txt" using the webUI
-    Then near the folder "simple-folder" a tooltip with the text 'lorem.txt already exists' should be displayed on the webUI
+    When the user renames folder "simple-folder" to "lorem.txt" using the webUI
+    Then near folder "simple-folder" a tooltip with the text 'lorem.txt already exists' should be displayed on the webUI
 
   Scenario: Rename a folder to ..
-    When the user renames the folder "simple-folder" to ".." using the webUI
-    Then near the folder "simple-folder" a tooltip with the text '".." is an invalid file name.' should be displayed on the webUI
+    When the user renames folder "simple-folder" to ".." using the webUI
+    Then near folder "simple-folder" a tooltip with the text '".." is an invalid file name.' should be displayed on the webUI
 
   Scenario: Rename a folder to .
-    When the user renames the folder "simple-folder" to "." using the webUI
-    Then near the folder "simple-folder" a tooltip with the text '"." is an invalid file name.' should be displayed on the webUI
+    When the user renames folder "simple-folder" to "." using the webUI
+    Then near folder "simple-folder" a tooltip with the text '"." is an invalid file name.' should be displayed on the webUI
 
   Scenario: Rename a folder to .part
-    When the user renames the folder "simple-folder" to "simple.part" using the webUI
-    Then near the folder "simple-folder" a tooltip with the text '"simple.part" has a forbidden file type/extension.' should be displayed on the webUI
+    When the user renames folder "simple-folder" to "simple.part" using the webUI
+    Then near folder "simple-folder" a tooltip with the text '"simple.part" has a forbidden file type/extension.' should be displayed on the webUI

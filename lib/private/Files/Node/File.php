@@ -57,7 +57,9 @@ class File extends Node implements \OCP\Files\File, IPreviewNode {
 	}
 
 	/**
-	 * @param string $data
+	 * Write the contents of data into this file node. It can be a whole
+	 * string or a stream resource
+	 * @param string|resource $data
 	 * @throws \OCP\Files\NotPermittedException
 	 */
 	public function putContent($data) {
@@ -118,7 +120,6 @@ class File extends Node implements \OCP\Files\File, IPreviewNode {
 			$this->view->unlink($this->path);
 			$nonExisting = new NonExistingFile($this->root, $this->view, $this->path, $fileInfo);
 			$this->root->emit('\OC\Files', 'postDelete', [$nonExisting]);
-			$this->exists = false;
 			$this->fileInfo = null;
 		} else {
 			throw new NotPermittedException();

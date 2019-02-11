@@ -127,6 +127,10 @@ abstract class TestCase extends BaseTestCase {
 				\call_user_func([$this, $methodName]);
 			}
 		}
+
+		// necessary pre-set for phpbdg 7.3
+		$_SERVER['REQUEST_URI'] = '';
+		$_SERVER['REQUEST_METHOD'] = 'GET';
 	}
 
 	protected function tearDown() {
@@ -448,9 +452,9 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	private function IsDatabaseAccessAllowed() {
-		// on travis-ci.org we allow database access in any case - otherwise
+		// on travis-ci.org and drone, we allow database access in any case - otherwise
 		// this will break all apps right away
-		if (\getenv('TRAVIS') == true) {
+		if (\getenv('CI') !== false) {
 			return true;
 		}
 		$annotations = $this->getAnnotations();
@@ -549,7 +553,8 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	public function runsWithPrimaryObjectstorage() {
-		$objectstoreConfiguration = \OC::$server->getConfig()->getSystemValue('objectstore', null);
+		$objectstoreConfiguration = \OC::$server->getConfig()->getSystemValue('objectstore_multibucket', null);
+		$objectstoreConfiguration = \OC::$server->getConfig()->getSystemValue('objectstore', $objectstoreConfiguration);
 		if ($objectstoreConfiguration !== null) {
 			return true;
 		}

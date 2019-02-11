@@ -21,6 +21,7 @@
 
 namespace OCA\FederatedFileSharing;
 
+use OCA\FederatedFileSharing\Ocm\Permissions;
 use OCA\Files_Sharing\Activity;
 use OCP\Activity\IManager as ActivityManager;
 use OCP\Files\NotFoundException;
@@ -69,6 +70,11 @@ class FedShareManager {
 	private $addressHandler;
 
 	/**
+	 * @var Permissions
+	 */
+	private $permissions;
+
+	/**
 	 * @var EventDispatcherInterface
 	 */
 	private $eventDispatcher;
@@ -82,6 +88,7 @@ class FedShareManager {
 	 * @param ActivityManager $activityManager
 	 * @param NotificationManager $notificationManager
 	 * @param AddressHandler $addressHandler
+	 * @param Permissions $permissions
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
 	public function __construct(FederatedShareProvider $federatedShareProvider,
@@ -90,6 +97,7 @@ class FedShareManager {
 								ActivityManager $activityManager,
 								NotificationManager $notificationManager,
 								AddressHandler $addressHandler,
+								Permissions $permissions,
 								EventDispatcherInterface $eventDispatcher
 	) {
 		$this->federatedShareProvider = $federatedShareProvider;
@@ -98,45 +106,32 @@ class FedShareManager {
 		$this->activityManager = $activityManager;
 		$this->notificationManager = $notificationManager;
 		$this->addressHandler = $addressHandler;
+		$this->permissions = $permissions;
 		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
 	 * Create an incoming share
 	 *
+	 * @param Address $ownerAddress
+	 * @param Address $sharedByAddress
 	 * @param string $shareWith
-	 * @param string $remote
 	 * @param int $remoteId
-	 * @param string $owner
 	 * @param string $name
-	 * @param int $ownerFederatedId
-	 * @param int $sharedByFederatedId
-	 * @param string $sharedBy
 	 * @param string $token
 	 *
 	 * @return void
 	 */
-	public function createShare($shareWith,
-								$remote,
+	public function createShare(Address $ownerAddress,
+								Address $sharedByAddress,
+								$shareWith,
 								$remoteId,
-								$owner,
 								$name,
-								$ownerFederatedId,
-								$sharedByFederatedId,
-								$sharedBy,
 								$token
 	) {
-		if ($ownerFederatedId === null) {
-			$ownerFederatedId = $owner . '@' . $this->addressHandler->normalizeRemote($remote);
-		}
-		// if the owner of the share and the initiator are the same user
-		// we also complete the federated share ID for the initiator
-		if ($sharedByFederatedId === null && $owner === $sharedBy) {
-			$sharedByFederatedId = $ownerFederatedId;
-		}
-
+		$owner = $ownerAddress->getUserId();
 		$shareId = $this->federatedShareProvider->addShare(
-			$remote, $token, $name, $owner, $shareWith, $remoteId
+			$ownerAddress->getOrigin(), $token, $name, $owner, $shareWith, $remoteId
 		);
 
 		$this->eventDispatcher->dispatch(
@@ -145,10 +140,10 @@ class FedShareManager {
 				null,
 				[
 					'name' => $name,
-					'targetuser' => $sharedByFederatedId,
+					'targetuser' => $sharedByAddress->getCloudId(),
 					'owner' => $owner,
 					'sharewith' => $shareWith,
-					'sharedby' => $sharedBy,
+					'sharedby' => $sharedByAddress->getUserId(),
 					'remoteid' => $remoteId
 				]
 			)
@@ -156,14 +151,18 @@ class FedShareManager {
 		$this->publishActivity(
 			$shareWith,
 			Activity::SUBJECT_REMOTE_SHARE_RECEIVED,
-			[$ownerFederatedId, \trim($name, '/')],
+			[$ownerAddress->getCloudId(), \trim($name, '/')],
 			'files',
 			'',
 			'',
 			''
 		);
 		$link = $this->getActionLink($shareId);
-		$params = [$ownerFederatedId, $sharedByFederatedId, \trim($name, '/')];
+		$params = [
+			$ownerAddress->getCloudId(),
+			$sharedByAddress->getCloudId(),
+			\trim($name, '/')
+		];
 		$notification = $this->createNotification($shareWith);
 		$notification->setDateTime(new \DateTime())
 			->setObject('remote_share', $shareId)
@@ -184,14 +183,16 @@ class FedShareManager {
 	 * @param IShare $share
 	 * @param int $remoteId
 	 * @param string $shareWith
-	 * @param int $permissions
+	 * @param int|null $permissions - null for OCM 1.0-proposal1
 	 *
 	 * @return IShare
 	 *
 	 * @throws \OCP\Share\Exceptions\ShareNotFound
 	 */
-	public function reShare(IShare $share, $remoteId, $shareWith, $permissions) {
-		$share->setPermissions($share->getPermissions() & $permissions);
+	public function reShare(IShare $share, $remoteId, $shareWith, $permissions = null) {
+		if ($permissions !== null) {
+			$share->setPermissions($share->getPermissions() & $permissions);
+		}
 		// the recipient of the initial share is now the initiator for the re-share
 		$share->setSharedBy($share->getSharedWith());
 		$share->setSharedWith($shareWith);
@@ -253,7 +254,7 @@ class FedShareManager {
 	}
 
 	/**
-	 * Unshare an item
+	 * Unshare an item from self
 	 *
 	 * @param int $id
 	 * @param string $token
@@ -265,8 +266,7 @@ class FedShareManager {
 		if ($shareRow === false) {
 			return;
 		}
-		$remote = $this->addressHandler->normalizeRemote($shareRow['remote']);
-		$owner = $shareRow['owner'] . '@' . $remote;
+		$ownerAddress = new Address($shareRow['owner'] . '@' . $shareRow['remote']);
 		$mountpoint = $shareRow['mountpoint'];
 		$user = $shareRow['user'];
 		if ($shareRow['accepted']) {
@@ -280,7 +280,7 @@ class FedShareManager {
 		$this->publishActivity(
 			$user,
 			Activity::SUBJECT_REMOTE_SHARE_UNSHARED,
-			[$owner, $path],
+			[$ownerAddress->getCloudId(), $path],
 			'files',
 			'',
 			'',
@@ -293,8 +293,21 @@ class FedShareManager {
 	 *
 	 * @return void
 	 */
-	public function revoke(IShare $share) {
+	public function undoReshare(IShare $share) {
 		$this->federatedShareProvider->removeShareFromTable($share);
+	}
+
+	/**
+	 * Update permissions
+	 *
+	 * @param IShare $share
+	 * @param string[] $ocmPermissions as ['read', 'write', 'share']
+	 *
+	 * @return void
+	 */
+	public function updateOcmPermissions(IShare $share, $ocmPermissions) {
+		$permissions = $this->permissions->toOcPermissions($ocmPermissions);
+		$this->updatePermissions($share, $permissions);
 	}
 
 	/**
@@ -306,8 +319,10 @@ class FedShareManager {
 	 * @return void
 	 */
 	public function updatePermissions(IShare $share, $permissions) {
-		$share->setPermissions($permissions);
-		$this->federatedShareProvider->update($share);
+		if ($share->getPermissions() !== $permissions) {
+			$share->setPermissions($permissions);
+			$this->federatedShareProvider->update($share);
+		}
 	}
 
 	/**
@@ -319,11 +334,15 @@ class FedShareManager {
 	 */
 	protected function notifyRemote($share, $callback) {
 		if ($share->getShareOwner() !== $share->getSharedBy()) {
-			list(, $remote) = $this->addressHandler->splitUserRemote(
-				$share->getSharedBy()
-			);
-			$remoteId = $this->federatedShareProvider->getRemoteId($share);
-			$callback($remote, $remoteId, $share->getToken());
+			try {
+				list(, $remote) = $this->addressHandler->splitUserRemote(
+					$share->getSharedBy()
+				);
+				$remoteId = $this->federatedShareProvider->getRemoteId($share);
+				$callback($remote, $remoteId, $share->getToken());
+			} catch (\Exception $e) {
+				// expected fail if sender is a local user
+			}
 		}
 	}
 

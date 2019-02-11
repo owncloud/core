@@ -38,6 +38,8 @@ use OCP\IUserManager;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IShare;
 use OCP\Share\IShareProvider;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class FederatedShareProvider
@@ -49,6 +51,9 @@ class FederatedShareProvider implements IShareProvider {
 
 	/** @var IDBConnection */
 	private $dbConnection;
+
+	/** @var EventDispatcherInterface */
+	private $eventDispatcher;
 
 	/** @var AddressHandler */
 	private $addressHandler;
@@ -84,6 +89,7 @@ class FederatedShareProvider implements IShareProvider {
 	 * DefaultShareProvider constructor.
 	 *
 	 * @param IDBConnection $connection
+	 * @param EventDispatcherInterface $eventDispatcher
 	 * @param AddressHandler $addressHandler
 	 * @param Notifications $notifications
 	 * @param TokenHandler $tokenHandler
@@ -95,6 +101,7 @@ class FederatedShareProvider implements IShareProvider {
 	 */
 	public function __construct(
 			IDBConnection $connection,
+			EventDispatcherInterface $eventDispatcher,
 			AddressHandler $addressHandler,
 			Notifications $notifications,
 			TokenHandler $tokenHandler,
@@ -105,6 +112,7 @@ class FederatedShareProvider implements IShareProvider {
 			IUserManager $userManager
 	) {
 		$this->dbConnection = $connection;
+		$this->eventDispatcher = $eventDispatcher;
 		$this->addressHandler = $addressHandler;
 		$this->notifications = $notifications;
 		$this->tokenHandler = $tokenHandler;
@@ -151,17 +159,18 @@ class FederatedShareProvider implements IShareProvider {
 		}
 
 		// don't allow federated shares if source and target server are the same
-		list($user, $remote) = $this->addressHandler->splitUserRemote($shareWith);
-		$currentServer = $this->addressHandler->generateRemoteURL();
 		$currentUser = $sharedBy;
-		if ($this->addressHandler->compareAddresses($user, $remote, $currentUser, $currentServer)) {
+		$ownerAddress =  $this->addressHandler->getLocalUserFederatedAddress($currentUser);
+		$shareWithAddress = new Address($shareWith);
+
+		if ($ownerAddress->equalTo($shareWithAddress)) {
 			$message = 'Not allowed to create a federated share with the same user.';
 			$message_t = $this->l->t('Not allowed to create a federated share with the same user');
 			$this->logger->debug($message, ['app' => 'Federated File Sharing']);
 			throw new \Exception($message_t);
 		}
 
-		$share->setSharedWith($user . '@' . $remote);
+		$share->setSharedWith($shareWithAddress->getCloudId());
 
 		try {
 			$remoteShare = $this->getShareFromExternalShareTable($share);
@@ -184,7 +193,7 @@ class FederatedShareProvider implements IShareProvider {
 				$shareId = $this->createFederatedShare($share);
 			}
 			if ($send) {
-				$this->updateSuccessfulReshare($shareId, $token);
+				$this->updateSuccessfulReShare($shareId, $token);
 				$this->storeRemoteId($shareId, $remoteId);
 			} else {
 				$this->removeShareFromTable($share);
@@ -220,19 +229,24 @@ class FederatedShareProvider implements IShareProvider {
 		);
 
 		try {
-			$sharedByFederatedId = $share->getSharedBy();
-			if ($this->userManager->userExists($sharedByFederatedId)) {
-				$sharedByFederatedId = $sharedByFederatedId . '@' . $this->addressHandler->generateRemoteURL();
+			$sharedBy = $share->getSharedBy();
+			if ($this->userManager->userExists($sharedBy)) {
+				$sharedByAddress = $this->addressHandler->getLocalUserFederatedAddress($sharedBy);
+			} else {
+				$sharedByAddress = new Address($sharedBy);
 			}
+
+			$owner = $share->getShareOwner();
+			$ownerAddress = $this->addressHandler->getLocalUserFederatedAddress($owner);
+			$sharedWith = $share->getSharedWith();
+			$shareWithAddress = new Address($sharedWith);
 			$send = $this->notifications->sendRemoteShare(
+				$shareWithAddress,
+				$ownerAddress,
+				$sharedByAddress,
 				$token,
-				$share->getSharedWith(),
 				$share->getNode()->getName(),
-				$shareId,
-				$share->getShareOwner(),
-				$share->getShareOwner() . '@' . $this->addressHandler->generateRemoteURL(),
-				$share->getSharedBy(),
-				$sharedByFederatedId
+				$shareId
 			);
 
 			if ($send === false) {
@@ -475,8 +489,6 @@ class FederatedShareProvider implements IShareProvider {
 
 		$isOwner = false;
 
-		$this->removeShareFromTable($share);
-
 		// if the local user is the owner we can send the unShare request directly...
 		if ($this->userManager->userExists($share->getShareOwner())) {
 			$this->notifications->sendRemoteUnShare($remote, $share->getId(), $share->getToken());
@@ -498,6 +510,7 @@ class FederatedShareProvider implements IShareProvider {
 			}
 			$this->notifications->sendRevokeShare($remote, $remoteId, $share->getToken());
 		}
+		$this->removeShareFromTable($share);
 	}
 
 	/**
@@ -563,15 +576,18 @@ class FederatedShareProvider implements IShareProvider {
 	 */
 	public function getAllSharesBy($userId, $shareTypes, $nodeIDs, $reshares) {
 		$shares = [];
-		$qb = $this->dbConnection->getQueryBuilder();
 
 		$nodeIdsChunks = \array_chunk($nodeIDs, 100);
 		foreach ($nodeIdsChunks as $nodeIdsChunk) {
-			// In federates sharing currently we have only one share_type_remote
+			$qb = $this->dbConnection->getQueryBuilder();
 			$qb->select('*')
 				->from($this->shareTable);
 
+			// In federated sharing currently we have only one share_type_remote
 			$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)));
+
+			$qb->andWhere($qb->expr()->in('file_source', $qb->createParameter('file_source_ids')));
+			$qb->setParameter('file_source_ids', $nodeIdsChunk, IQueryBuilder::PARAM_INT_ARRAY);
 
 			/**
 			 * Reshares for this user are shares where they are the owner.
@@ -597,9 +613,6 @@ class FederatedShareProvider implements IShareProvider {
 					)
 				);
 			}
-
-			$qb->andWhere($qb->expr()->in('file_source', $qb->createParameter('file_source_ids')));
-			$qb->setParameter('file_source_ids', $nodeIdsChunk, IQueryBuilder::PARAM_INT_ARRAY);
 
 			$qb->orderBy('id');
 
@@ -881,7 +894,7 @@ class FederatedShareProvider implements IShareProvider {
 			throw new InvalidShare();
 		}
 
-		$nodes = $userFolder->getById($id);
+		$nodes = $userFolder->getById($id, true);
 
 		if (empty($nodes)) {
 			throw new InvalidShare();
@@ -1021,8 +1034,40 @@ class FederatedShareProvider implements IShareProvider {
 			$shareWith
 		);
 		$externalManager->addShare(
-			$remote, $token, '', $name, $owner, false, $shareWith, $remoteId
+			$remote,
+			$token,
+			'',
+			$name,
+			$owner,
+			$this->getAccepted($remote),
+			$shareWith,
+			$remoteId
 		);
 		return $this->dbConnection->lastInsertId("*PREFIX*{$this->externalShareTable}");
+	}
+
+	/**
+	 * @param string $remote
+	 *
+	 * @return bool
+	 */
+	protected function getAccepted($remote) {
+		$event = $this->eventDispatcher->dispatch(
+			'remoteshare.received',
+			new GenericEvent('', ['remote' => $remote])
+		);
+		if ($event->getArgument('autoAddServers')) {
+			return false;
+		}
+		$autoAccept = $this->config->getAppValue(
+			'federatedfilesharing',
+			'auto_accept_trusted',
+			'no'
+		);
+		if ($autoAccept !== 'yes') {
+			return false;
+		}
+
+		return $event->getArgument('isRemoteTrusted') === true;
 	}
 }

@@ -59,10 +59,9 @@ class ActivityHelper {
 		$rootFolder = \OC::$server->getUserFolder($user);
 		$folders = $items = [];
 		foreach ($favorites as $favorite) {
-			$nodes = $rootFolder->getById($favorite);
-			if (!empty($nodes)) {
-				/** @var \OCP\Files\Node $node */
-				$node = \array_shift($nodes);
+			$nodes = $rootFolder->getById($favorite, true);
+			$node = $nodes[0] ?? null;
+			if ($node) {
 				$path = \substr($node->getPath(), \strlen($user . '/files/'));
 
 				$items[] = $path;

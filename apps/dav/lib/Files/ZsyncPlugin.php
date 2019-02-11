@@ -137,7 +137,7 @@ class ZsyncPlugin extends ServerPlugin {
 			$info = $this->view->getFileInfo('files/'.$node->getPath());
 			$zsyncMetadataFile = 'files_zsync/'.$info->getId();
 			if ($this->view->file_exists($zsyncMetadataFile)) {
-				$propFind->handle(self::ZSYNC_PROPERTYNAME, function () use ($node) {
+				$propFind->handle(self::ZSYNC_PROPERTYNAME, function () {
 					return 'true';
 				});
 			}

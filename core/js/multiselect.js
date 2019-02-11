@@ -38,7 +38,7 @@
 		$.each(this.children(),function(i,option) {
 			// If the option is selected, but not in the checked array, add it.
 			if (
-				$(option).attr('selected') &&
+				$(option).prop('selected') &&
 				settings.checked.indexOf($(option).val()) === -1
 			) {
 				settings.checked.push($(option).val());
@@ -47,9 +47,9 @@
 			// If the option is in the checked array but not selected, select it.
 			else if (
 				settings.checked.indexOf($(option).val()) !== -1 &&
-				!$(option).attr('selected')
+				!$(option).prop('selected')
 			) {
-				$(option).attr('selected', 'selected');
+				$(option).prop('selected', true);
 				settings.labels.push($(option).text().trim());
 			}
 		});
@@ -158,10 +158,10 @@
 							settings.checked = [];
 							settings.labels = [];
 							$.each(self.find('option'), function() {
-								$(this).removeAttr('selected');
+								$(this).prop('selected', false);
 							});
 						}
-						element.attr('selected','selected');
+						element.prop('selected', true);
 						if(typeof settings.oncheck === 'function') {
 							if(settings.oncheck(value)===false) {
 								$(this).prop('checked', false);
@@ -173,10 +173,10 @@
 						$(this).parent().addClass('checked');
 					} else {
 						var index=settings.checked.indexOf(value);
-						element.attr('selected',null);
+						element.prop('selected', false);
 						if(typeof settings.onuncheck === 'function') {
 							if(settings.onuncheck(value)===false) {
-								$(this).prop('checked',true);
+								$(this).prop('checked', true);
 								return;
 							}
 						}
@@ -251,14 +251,14 @@
 							}
 							if(settings.singleSelect) {
 								$.each(select.find('option:selected'), function() {
-									$(this).removeAttr('selected');
+									$(this).prop('selected', false);
 								});
 							}
 							$(this).remove();
 							li.text('+ '+settings.createText);
 							li.before(createItem(this));
 							var option=$('<option selected="selected"/>');
-							option.text($(this).val()).val(val).attr('selected', 'selected');
+							option.text($(this).val()).val(val).prop('selected', true);
 							select.append(option);
 							li.prev().children('input').prop('checked', true).trigger('change');
 							button.parent().data('preventHide',false);

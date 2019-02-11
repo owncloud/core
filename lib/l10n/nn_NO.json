@@ -19,8 +19,6 @@
     "Search" : "Søk",
     "Invalid Federated Cloud ID" : "Ugyldig id for klarert skydeling (Federated Cloud ID)",
     "%s shared »%s« with you" : "%s delte «%s» med deg",
-    "Sharing %s failed, because this item is already shared with %s" : "Deling %s feila fordi det allereie er delt med %s",
-    "Not allowed to create a federated share with the same user" : "Ikkje lov til å lage klarert deling med same brukar",
     "A valid username must be provided" : "Du må oppgje eit gyldig brukarnamn",
     "A valid password must be provided" : "Du må oppgje eit gyldig passord",
     "Help" : "Hjelp",

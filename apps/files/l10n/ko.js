@@ -60,6 +60,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "여기에 파일을 업로드하거나 만들 권한이 없습니다",
     "_Uploading %n file_::_Uploading %n files_" : ["파일 %n개 업로드 중"],
     "New" : "새로 만들기",
+    "Unknown user" : "알려지지 않은 사용자",
     "\"{name}\" is an invalid file name." : "\"{name}\"은(는) 잘못된 파일 이름입니다.",
     "File name cannot be empty." : "파일 이름이 비어 있을 수 없습니다.",
     "File name cannot contain \"/\"." : "파일 이름은 '/'를 포함할 수 없습니다.",

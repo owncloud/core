@@ -22,6 +22,9 @@
 namespace TestHelpers;
 
 use GuzzleHttp\Message\ResponseInterface;
+use Exception;
+use PHPUnit_Framework_Assert;
+use SimpleXMLElement;
 
 /**
  * Helper to administer Tags
@@ -41,6 +44,8 @@ class TagsHelper {
 	 * @param string|null $fileOwner
 	 * @param string|null $fileOwnerPassword
 	 * @param int $davPathVersionToUse (1|2)
+	 * @param string $adminUsername
+	 * @param string $adminPassword
 	 *
 	 * @return ResponseInterface
 	 * @throws \Exception
@@ -53,7 +58,9 @@ class TagsHelper {
 		$fileName,
 		$fileOwner = null,
 		$fileOwnerPassword = null,
-		$davPathVersionToUse = 1
+		$davPathVersionToUse = 2,
+		$adminUsername = null,
+		$adminPassword = null
 	) {
 		if ($fileOwner === null) {
 			$fileOwner = $taggingUser;
@@ -67,10 +74,22 @@ class TagsHelper {
 			$baseUrl, $fileOwner, $fileOwnerPassword, $fileName
 		);
 
-		$tag = self::requestTagByDisplayName(
-			$baseUrl, $taggingUser, $password, $tagName
-		);
-		$tagID = (int) $tag['{http://owncloud.org/ns}id'];
+		try {
+			$tag = self::requestTagByDisplayName(
+				$baseUrl, $taggingUser, $password, $tagName
+			);
+		} catch (Exception $e) {
+			//the tag might be not accessible by the user
+			//if we still want to find it, we need to try as admin
+			if ($adminUsername !== null && $adminPassword !== null) {
+				$tag = self::requestTagByDisplayName(
+					$baseUrl, $adminUsername, $adminPassword, $tagName
+				);
+			} else {
+				throw $e;
+			}
+		}
+		$tagID = self::getTagIdFromTagData($tag);
 		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
 		$response = WebDavHelper::makeDavRequest(
 			$baseUrl, $taggingUser, $password, "PUT",
@@ -80,6 +99,20 @@ class TagsHelper {
 	}
 
 	/**
+	 * @param \SimpleXMLElement $tagData
+	 *
+	 * @return int
+	 */
+	public static function getTagIdFromTagData($tagData) {
+		$tagID = $tagData->xpath(".//oc:id");
+		\PHPUnit_Framework_Assert::assertArrayHasKey(
+			0, $tagID, "cannot find id of tag"
+		);
+		
+		return (int) $tagID[0]->__toString();
+	}
+	
+	/**
 	 * get all tags of a user
 	 *
 	 * @param string $baseUrl
@@ -87,7 +120,7 @@ class TagsHelper {
 	 * @param string $password
 	 * @param bool $withGroups
 	 *
-	 * @return array
+	 * @return SimpleXMLElement
 	 */
 	public static function requestTagsForUser(
 		$baseUrl,
@@ -95,24 +128,20 @@ class TagsHelper {
 		$password,
 		$withGroups = false
 	) {
-		$baseUrl = WebDavHelper::sanitizeUrl($baseUrl, true);
-		$client = WebDavHelper::getSabreClient($baseUrl, $user, $password);
 		$properties = [
-			'{http://owncloud.org/ns}id',
-			'{http://owncloud.org/ns}display-name',
-			'{http://owncloud.org/ns}user-visible',
-			'{http://owncloud.org/ns}user-assignable',
-			'{http://owncloud.org/ns}can-assign'
+			'oc:id',
+			'oc:display-name',
+			'oc:user-visible',
+			'oc:user-assignable',
+			'oc:can-assign'
 		];
 		if ($withGroups) {
-			\array_push($properties, '{http://owncloud.org/ns}groups');
+			\array_push($properties, 'oc:groups');
 		}
-		$appPath = '/systemtags/';
-		$fullUrl = $baseUrl
-			. WebDavHelper::getDavPath($user, 2, "systemtags")
-			. $appPath;
-		$response = $client->propfind($fullUrl, $properties, 1);
-		return $response;
+		$response = WebDavHelper::propfind(
+			$baseUrl, $user, $password, '/systemtags/', $properties, 1, "systemtags"
+		);
+		return HttpRequestHelper::getResponseXml($response);
 	}
 
 	/**
@@ -124,7 +153,7 @@ class TagsHelper {
 	 * @param string $tagDisplayName
 	 * @param bool $withGroups
 	 *
-	 * @return array
+	 * @return SimpleXMLElement
 	 */
 	public static function requestTagByDisplayName(
 		$baseUrl,
@@ -134,13 +163,14 @@ class TagsHelper {
 		$withGroups = false
 	) {
 		$tagList = self::requestTagsForUser($baseUrl, $user, $password, $withGroups);
-		foreach ($tagList as $path => $tagData) {
-			if (!empty($tagData)
-				&& $tagData['{http://owncloud.org/ns}display-name'] === $tagDisplayName
-			) {
-				return $tagData;
-			}
-		}
+		$tagData = $tagList->xpath(
+			"//d:prop//oc:display-name[text() ='$tagDisplayName']/.."
+		);
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			0, $tagData,
+			"cannot find 'oc:display-name' property with text '$tagDisplayName'"
+		);
+		return $tagData[0];
 	}
 
 	/**
@@ -151,6 +181,7 @@ class TagsHelper {
 	 * @param string $name
 	 * @param bool $userVisible
 	 * @param bool $userAssignable
+	 * @param bool $userEditable
 	 * @param string $groups separated by "|"
 	 * @param int $davPathVersionToUse (1|2)
 	 *
@@ -164,6 +195,7 @@ class TagsHelper {
 		$name,
 		$userVisible = true,
 		$userAssignable = true,
+		$userEditable = false,
 		$groups = null,
 		$davPathVersionToUse = 2
 	) {
@@ -172,6 +204,7 @@ class TagsHelper {
 			'name' => $name,
 			'userVisible' => $userVisible,
 			'userAssignable' => $userAssignable,
+			'userEditable' => $userEditable
 		];
 
 		if ($groups !== null) {
@@ -225,21 +258,25 @@ class TagsHelper {
 	 * @return boolean[]
 	 */
 	public static function validateTypeOfTag($type) {
-		$userVisible = true;
-		$userAssignable = true;
+		$userVisible = "1";
+		$userAssignable = "1";
+		$userEditable = "1";
 		switch ($type) {
 			case 'normal':
 				break;
 			case 'not user-assignable':
-				$userAssignable = false;
+				$userAssignable = "0";
 				break;
 			case 'not user-visible':
-				$userVisible = false;
+				$userVisible = "0";
+				break;
+			case 'static':
+				$userEditable = "0";
 				break;
 			default:
 				throw new \Exception('Unsupported type');
 		}
 
-		return [$userVisible, $userAssignable];
+		return [$userVisible, $userAssignable, $userEditable];
 	}
 }

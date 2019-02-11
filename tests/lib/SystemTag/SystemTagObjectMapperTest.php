@@ -119,6 +119,28 @@ class SystemTagObjectMapperTest extends TestCase {
 		$query->delete(SystemTagManager::TAG_TABLE)->execute();
 	}
 
+	/**
+	 * Test large array of object ids by splitting into chunks
+	 */
+	public function testGetTagIdsForObjectsWithChunks() {
+		$systemTags = [];
+		$objIds = [];
+		$expectedTagIDs = [];
+		$systemTagManager = \OC::$server->getSystemTagManager();
+		$tagMapper = new SystemTagObjectMapper($this->connection, $systemTagManager, $this->dispatcher);
+
+		for ($i = 1; $i <= 1300; $i++) {
+			$tagName = 'testTag' . (string)$i;
+			$systemTags[] = $systemTagManager->createTag($tagName, true, true, true);
+			$tagMapper->assignTags((string)$i, 'chunktest', $systemTags[$i-1]->getId());
+			$objIds[] = (string)$i;
+			$expectedTagIDs[$i][] = (string)$systemTags[$i-1]->getId();
+		}
+
+		$tagIdMap = $tagMapper->getTagIdsForObjects($objIds, 'chunktest');
+		$this->assertEquals($expectedTagIDs, $tagIdMap);
+	}
+
 	public function testGetTagIdsForObjects() {
 		$tagIdMapping = $this->tagMapper->getTagIdsForObjects(
 			['1', '2', '3', '4'],

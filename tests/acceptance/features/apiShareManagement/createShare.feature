@@ -3,13 +3,13 @@ Feature: sharing
 
   Background:
     Given using old DAV path
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
 
   @smokeTest
   @skipOnEncryptionType:user-keys @issue-32322
   Scenario Outline: Creating a new share with user
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     When user "user0" shares file "welcome.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -27,10 +27,7 @@ Feature: sharing
   Scenario Outline: Creating a share with a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | welcome.txt |
-      | shareWith | grp1        |
-      | shareType | 1           |
+    When user "user0" shares file "/welcome.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the share fields of the last share should include
@@ -46,14 +43,11 @@ Feature: sharing
 
   Scenario Outline: Creating a new share with user who already received a share through their group
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user0" has shared file "welcome.txt" with group "grp1"
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | welcome.txt |
-      | shareWith | user1       |
-      | shareType | 0           |
+    When user "user0" shares file "/welcome.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the share fields of the last share should include
@@ -131,34 +125,29 @@ Feature: sharing
 
   Scenario Outline: Creating a new share with a disabled user
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has been disabled
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | welcome.txt |
-      | shareWith | user1       |
-      | shareType | 0           |
+    When user "user0" shares file "welcome.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "401"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 997             |
 
-  @skip @issue-32068
+  @issue-32068
   Scenario: Creating a new share with a disabled user
     Given using OCS API version "2"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has been disabled
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | welcome.txt |
-      | shareWith | user1       |
-      | shareType | 0           |
-    Then the OCS status code should be "401"
+    When user "user0" shares file "welcome.txt" with user "user1" using the sharing API
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
 
   @public_link_share-feature-required
   Scenario Outline: Creating a link share with no specified permissions defaults to read permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created a folder "/afolder"
+    And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
       | path | /afolder |
     Then the OCS status code should be "<ocs_status_code>"
@@ -176,7 +165,7 @@ Feature: sharing
   Scenario Outline: Creating a link share with no specified permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
-    And user "user0" has created a folder "/afolder"
+    And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
       | path | /afolder |
     Then the OCS status code should be "<ocs_status_code>"
@@ -193,7 +182,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: Creating a link share with edit permissions keeps it
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created a folder "/afolder"
+    And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | /afolder |
       | permissions | 15       |
@@ -210,7 +199,7 @@ Feature: sharing
 
   Scenario Outline: Share of folder and sub-folder to same user - core#20645
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp4" has been created
     And user "user1" has been added to group "grp4"
     When user "user0" shares file "/PARENT" with user "user1" using the sharing API
@@ -233,12 +222,12 @@ Feature: sharing
   @smokeTest
   Scenario Outline: Share of folder to a group
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
-    And user "user2" has been created
+    And user "user1" has been created with default attributes
+    And user "user2" has been created with default attributes
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
-    And user "user0" shares file "/PARENT" with group "grp1" using the sharing API
+    When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
     Then user "user1" should see the following elements
       | /FOLDER/                 |
       | /PARENT/                 |
@@ -285,10 +274,10 @@ Feature: sharing
   @smokeTest
   Scenario: unique target names for incoming shares
     Given using OCS API version "1"
-    And user "user1" has been created
-    And user "user2" has been created
-    And user "user0" has created a folder "/foo"
-    And user "user1" has created a folder "/foo"
+    And user "user1" has been created with default attributes
+    And user "user2" has been created with default attributes
+    And user "user0" has created folder "/foo"
+    And user "user1" has created folder "/foo"
     When user "user0" shares file "/foo" with user "user2" using the sharing API
     And user "user1" shares file "/foo" with user "user2" using the sharing API
     Then user "user2" should see the following elements
@@ -297,15 +286,12 @@ Feature: sharing
 
   Scenario Outline: sharing again an own file while belonging to a group
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user1" has shared file "welcome.txt" with group "grp1"
     And user "user1" has deleted the last share
-    When user "user1" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | welcome.txt |
-      | shareWith | grp1        |
-      | shareType | 1           |
+    When user "user1" shares file "/welcome.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     Examples:
@@ -315,18 +301,15 @@ Feature: sharing
 
   Scenario Outline: sharing subfolder when parent already shared
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp1" has been created
-    And user "user0" has created a folder "/test"
-    And user "user0" has created a folder "/test/sub"
+    And user "user0" has created folder "/test"
+    And user "user0" has created folder "/test/sub"
     And user "user0" has shared file "/test" with group "grp1"
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | /test/sub |
-      | shareWith | user1     |
-      | shareType | 0         |
+    When user "user0" shares file "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user1" the folder "/sub" should exist
+    And as "user1" folder "/sub" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -334,19 +317,16 @@ Feature: sharing
 
   Scenario Outline: sharing subfolder when parent already shared with group of sharer
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp1" has been created
     And user "user0" has been added to group "grp1"
-    And user "user0" has created a folder "/test"
-    And user "user0" has created a folder "/test/sub"
+    And user "user0" has created folder "/test"
+    And user "user0" has created folder "/test/sub"
     And user "user0" has shared file "/test" with group "grp1"
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path      | /test/sub |
-      | shareWith | user1     |
-      | shareType | 0         |
+    When user "user0" shares file "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user1" the folder "/sub" should exist
+    And as "user1" folder "/sub" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -354,14 +334,14 @@ Feature: sharing
 
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
-    And user "user2" has been created
-    And user "user3" has been created
-    And user "user4" has been created
-    And user "user0" has created a folder "/folder1"
+    And user "user1" has been created with default attributes
+    And user "user2" has been created with default attributes
+    And user "user3" has been created with default attributes
+    And user "user4" has been created with default attributes
+    And user "user0" has created folder "/folder1"
     And user "user0" has shared file "/folder1" with user "user1"
     And user "user0" has shared file "/folder1" with user "user2"
-    And user "user0" has created a folder "/folder1/folder2"
+    And user "user0" has created folder "/folder1/folder2"
     And user "user0" has shared file "/folder1/folder2" with user "user3"
     And user "user0" has shared file "/folder1/folder2" with user "user4"
     And as user "user0"
@@ -382,7 +362,7 @@ Feature: sharing
 
   Scenario Outline: Cannot create share with zero permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
       | path        | welcome.txt |
       | shareWith   | user1       |
@@ -396,12 +376,12 @@ Feature: sharing
 
   Scenario Outline: user shares a file with file name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
     When user "user0" shares file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user1" the file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
+    And as "user1" file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -410,13 +390,13 @@ Feature: sharing
   Scenario Outline: user shares a file with file name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user1" has been added to group "grp1"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt"
     When user "user0" shares file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And as "user1" the file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
+    And as "user1" file "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -424,8 +404,8 @@ Feature: sharing
 
   Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created
-    And user "user0" has created a folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+    And user "user1" has been created with default attributes
+    And user "user0" has created folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
     When user "user0" shares folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -439,9 +419,9 @@ Feature: sharing
   Scenario Outline: user shares a folder with folder name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And user "user1" has been added to group "grp1"
-    And user "user0" has created a folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+    And user "user0" has created folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
     When user "user0" shares folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -469,7 +449,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: user creates a public link share of a folder with folder name longer than 64 chars
     Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created a folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
+    And user "user0" has created folder "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog"
     And user "user0" has moved file "welcome.txt" to "aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/welcome.txt"
     When user "user0" creates a public link share using the sharing API with settings
       | path | /aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog |

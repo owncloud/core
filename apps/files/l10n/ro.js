@@ -47,6 +47,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "Nu aveți permisiunea de a încărca sau crea fișiere aici",
     "_Uploading %n file_::_Uploading %n files_" : ["Se încarcă %n fișier.","Se încarcă %n fișiere.","Se încarcă %n fișiere."],
     "New" : "Nou",
+    "Unknown user" : "Utilizator necunoscut",
     "\"{name}\" is an invalid file name." : "\"{name}\" este un nume de fișier nevalid.",
     "File name cannot be empty." : "Numele fișierului nu poate rămâne gol.",
     "Your storage is full, files can not be updated or synced anymore!" : "Spațiul de stocare este plin, fișierele nu mai pot fi actualizate sau sincronizate!",

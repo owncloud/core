@@ -29,7 +29,6 @@ use OC\AppFramework\Http\Request;
 
 class DIContainerTest extends \Test\TestCase {
 	private $container;
-	private $api;
 
 	protected function setUp() {
 		parent::setUp();
@@ -37,29 +36,22 @@ class DIContainerTest extends \Test\TestCase {
 			->setMethods(['isAdminUser'])
 			->setConstructorArgs(['name'])
 			->getMock();
-		$this->api = $this->getMockBuilder('OC\AppFramework\Core\API')
-			->setConstructorArgs(['hi'])
-			->getMock();
-	}
-
-	public function testProvidesAPI() {
-		$this->assertTrue(isset($this->container['API']));
 	}
 
 	public function testProvidesRequest() {
-		$this->assertTrue(isset($this->container['Request']));
+		$this->assertArrayHasKey('Request', $this->container);
 	}
 
 	public function testProvidesSecurityMiddleware() {
-		$this->assertTrue(isset($this->container['SecurityMiddleware']));
+		$this->assertArrayHasKey('SecurityMiddleware', $this->container);
 	}
 
 	public function testProvidesMiddlewareDispatcher() {
-		$this->assertTrue(isset($this->container['MiddlewareDispatcher']));
+		$this->assertArrayHasKey('MiddlewareDispatcher', $this->container);
 	}
 
 	public function testProvidesAppName() {
-		$this->assertTrue(isset($this->container['AppName']));
+		$this->assertArrayHasKey('AppName', $this->container);
 	}
 
 	public function testAppNameIsSetCorrectly() {

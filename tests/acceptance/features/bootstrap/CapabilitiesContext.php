@@ -50,18 +50,7 @@ class CapabilitiesContext implements Context {
 		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
 
 		foreach ($formData->getHash() as $row) {
-			if ($row['value'] === "%edition%") {
-				$row['value'] = $this->featureContext->getEditionFromStatus();
-			}
-			if ($row['value'] === "%productname%") {
-				$row['value'] = $this->featureContext->getProductNameFromStatus();
-			}
-			if ($row['value'] === "%version%") {
-				$row['value'] = $this->featureContext->getVersionFromStatus();
-			}
-			if ($row['value'] === "%versionstring%") {
-				$row['value'] = $this->featureContext->getVersionStringFromStatus();
-			}
+			$row['value'] = $this->featureContext->substituteInLineCodes($row['value']);
 			PHPUnit_Framework_Assert::assertEquals(
 				$row['value'] === "EMPTY" ? '' : $row['value'],
 				$this->featureContext->getParameterValueFromXml(
@@ -72,6 +61,31 @@ class CapabilitiesContext implements Context {
 				"Failed field {$row['capability']} {$row['path_to_element']}"
 			);
 		}
+	}
+
+	/**
+	 * @Then the :pathToElement capability of files sharing app should be :value
+	 *
+	 * @param string $pathToElement
+	 * @param string $value
+	 *
+	 * @return void
+	 */
+	public function theCapabilityOfFilesSharingAppShouldBe(
+		$pathToElement, $value
+	) {
+		$this->featureContext->userGetsCapabilitiesCheckResponse(
+			$this->featureContext->getCurrentUser()
+		);
+		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
+		PHPUnit_Framework_Assert::assertEquals(
+			$value === "EMPTY" ? '' : $value,
+			$this->featureContext->getParameterValueFromXml(
+				$capabilitiesXML,
+				"files_sharing",
+				$pathToElement
+			)
+		);
 	}
 
 	/**

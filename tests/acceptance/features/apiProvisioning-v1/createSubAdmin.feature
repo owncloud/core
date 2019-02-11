@@ -9,41 +9,36 @@ Feature: create a subadmin
 
   @smokeTest
   Scenario: admin creates a subadmin
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/subadmins" with body
-      | groupid | new-group |
+    When the administrator makes user "brand-new-user" a subadmin of group "new-group" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And the user "brand-new-user" should be the subadmin of the group "new-group"
+    And user "brand-new-user" should be a subadmin of group "new-group"
 
   Scenario: admin tries to create a subadmin using a user which does not exist
     Given user "not-user" has been deleted
     And group "new-group" has been created
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/not-user/subadmins" with body
-      | groupid | new-group |
+    When the administrator makes user "not-user" a subadmin of group "new-group" using the provisioning API
     Then the OCS status code should be "101"
     And the HTTP status code should be "200"
-    And the user "not-user" should not be the subadmin of the group "new-group"
+    And user "not-user" should not be a subadmin of group "new-group"
 
   Scenario: admin tries to create a subadmin using a group which does not exist
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "not-group" has been deleted
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/subadmins" with body
-      | groupid | not-group |
+    When the administrator makes user "brand-new-user" a subadmin of group "not-group" using the provisioning API
     Then the OCS status code should be "102"
     And the HTTP status code should be "200"
     And the API should not return any data
 
   Scenario: subadmin of a group tries to make another user subadmin of their group
-    Given user "subadmin" has been created
-    And user "brand-new-user" has been created
+    Given user "subadmin" has been created with default attributes
+    And user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
-    And user "%admin%" has sent HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | new-group |
-    When user "subadmin" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/subadmins" with body
-      | groupid | new-group |
+    And user "brand-new-user" has been added to group "new-group"
+    When user "subadmin" makes user "brand-new-user" a subadmin of group "new-group" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
-    And the user "brand-new-user" should not be the subadmin of the group "new-group"
+    And user "brand-new-user" should not be a subadmin of group "new-group"

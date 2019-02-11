@@ -42,6 +42,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "У вас недостатньо прав для вивантаження або створення тут файлів",
     "_Uploading %n file_::_Uploading %n files_" : ["Вивантаження %n файлу","Вивантаження %n файлів","Вивантаження %n файлів","Вивантаження %n файлів"],
     "New" : "Створити",
+    "Unknown user" : "Невідомий користувач",
     "\"{name}\" is an invalid file name." : "\"{name}\" - некоректне ім'я файлу.",
     "File name cannot be empty." : " Ім'я файлу не може бути порожнім.",
     "Your storage is full, files can not be updated or synced anymore!" : "Ваше сховище переповнене, файли більше не можуть бути оновлені або синхронізовані !",

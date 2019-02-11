@@ -39,7 +39,12 @@ KARMA=$(NODE_PREFIX)/node_modules/.bin/karma
 JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
 PHPUNIT="$(shell pwd)/lib/composer/phpunit/phpunit/phpunit"
 COMPOSER_BIN=build/composer.phar
-PHAN_BIN=build/phan.phar
+
+# bin file definitions
+PHP_CS_FIXER=php -d zend.enable_gc=0 vendor-bin/owncloud-codestyle/vendor/bin/php-cs-fixer
+PHP_CODESNIFFER=vendor-bin/php_codesniffer/vendor/bin/phpcs
+PHAN=php -d zend.enable_gc=0 vendor-bin/phan/vendor/bin/phan
+PHPSTAN=php -d zend.enable_gc=0 vendor-bin/phpstan/vendor/bin/phpstan
 
 TEST_DATABASE=sqlite
 TEST_EXTERNAL_ENV=smb-silvershell
@@ -50,12 +55,13 @@ RELEASE_CHANNEL=git
 # internal aliases
 composer_deps=lib/composer
 composer_dev_deps=lib/composer/phpunit
+acceptance_test_deps=vendor-bin/behat/vendor
 nodejs_deps=build/node_modules
 core_vendor=core/vendor
 
 core_doc_files=AUTHORS COPYING README.md
 core_src_files=$(wildcard *.php) index.html db_structure.xml .htaccess .user.ini robots.txt
-core_src_dirs=apps core l10n lib occ ocs ocs-provider resources settings
+core_src_dirs=apps core l10n lib occ ocs ocs-provider ocm-provider resources settings
 core_test_dirs=tests
 core_all_src=$(core_src_files) $(core_src_dirs) $(core_doc_files)
 core_config_files=config/config.sample.php config/config.apps.sample.php
@@ -114,8 +120,6 @@ help:
 $(COMPOSER_BIN):
 	cd build && ./getcomposer.sh
 
-$(PHAN_BIN):
-	cd build && curl -s -L https://github.com/phan/phan/releases/download/0.12.10/phan.phar -o phan.phar;
 #
 # ownCloud core PHP dependencies
 #
@@ -143,6 +147,7 @@ update-composer: $(COMPOSER_BIN)
 clean-composer-deps:
 	rm -f $(COMPOSER_BIN)
 	rm -Rf lib/composer
+	rm -Rf vendor-bin/**/vendor vendor-bin/**/composer.lock
 
 #
 # Node JS dependencies for tools
@@ -163,9 +168,10 @@ clean-nodejs-deps:
 	rm -Rf $(core_vendor)
 	rm -Rf $(nodejs_deps)
 
-#
-# Tests
-#
+##---------------------
+## Tests
+##---------------------
+
 .PHONY: test-php
 test-php: $(composer_dev_deps)
 	PHPUNIT=$(PHPUNIT) build/autotest.sh $(TEST_DATABASE) $(TEST_PHP_SUITE)
@@ -183,37 +189,37 @@ test-js-debug: $(nodejs_deps)
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js
 
 .PHONY: test-acceptance-api
-test-acceptance-api: $(composer_dev_deps)
-	./tests/acceptance/run.sh --type api
+test-acceptance-api: $(acceptance_test_deps)
+	./tests/acceptance/run.sh --remote --type api
 
 .PHONY: test-acceptance-cli
-test-acceptance-cli: $(composer_dev_deps)
-	./tests/acceptance/run.sh --type cli
+test-acceptance-cli: $(acceptance_test_deps)
+	./tests/acceptance/run.sh --remote --type cli
 
 .PHONY: test-acceptance-webui
-test-acceptance-webui: $(composer_dev_deps)
-	./tests/acceptance/run.sh --type webUI
-
-.PHONY: test-php-lint
-test-php-lint: $(composer_dev_deps)
-	$(composer_deps)/bin/parallel-lint --exclude lib/composer --exclude build .
+test-acceptance-webui: $(acceptance_test_deps)
+	./tests/acceptance/run.sh --remote --type webUI
 
 .PHONY: test-php-style
-test-php-style: $(composer_dev_deps)
-	$(composer_deps)/bin/php-cs-fixer fix -v --diff --diff-format udiff --dry-run --allow-risky yes
-	$(composer_deps)/bin/phpcs --runtime-set ignore_warnings_on_exit --standard=phpcs.xml tests/acceptance
+test-php-style: vendor-bin/owncloud-codestyle/vendor vendor-bin/php_codesniffer/vendor
+	$(PHP_CS_FIXER) fix -v --diff --diff-format udiff --allow-risky yes --dry-run
+	$(PHP_CODESNIFFER) --runtime-set ignore_warnings_on_exit --standard=phpcs.xml tests/acceptance tests/TestHelpers
 	php build/OCPSinceChecker.php
 
 .PHONY: test-php-style-fix
-test-php-style-fix: $(composer_dev_deps)
-	$(composer_deps)/bin/php-cs-fixer fix -v --diff --diff-format udiff --allow-risky yes
+test-php-style-fix: vendor-bin/owncloud-codestyle/vendor
+	$(PHP_CS_FIXER) fix -v --diff --diff-format udiff --allow-risky yes
 
 .PHONY: test-php-phan
-test-php-phan: $(PHAN_BIN)
-	php $(PHAN_BIN) --config-file .phan/config.php --require-config-exists -p
+test-php-phan: vendor-bin/phan/vendor
+	$(PHAN) --config-file .phan/config.php --require-config-exists -p
+
+.PHONY: test-php-phpstan
+test-php-phpstan: vendor-bin/phpstan/vendor
+	$(PHPSTAN) analyse --memory-limit=2G --configuration=./phpstan.neon --level=0 apps core settings lib/private lib/public ocs ocs-provider
 
 .PHONY: test
-test: test-php-lint test-php-style test-php test-js test-acceptance-api test-acceptance-cli test-acceptance-webui
+test: test-php-style test-php test-js test-acceptance-api test-acceptance-cli test-acceptance-webui
 
 .PHONY: clean-test-acceptance
 clean-test-acceptance:
@@ -254,7 +260,8 @@ $(dist_dir)/owncloud: $(composer_deps) $(nodejs_deps) $(core_all_src)
 	rm -Rf $@/core/js/tests
 	rm -Rf $@/settings/tests
 	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,testem.json}
-	find $@/{core/,l10n/} -iname \*.sh -delete
+	rm -Rf $@/l10n/
+	find $@/core/ -iname \*.sh -delete
 	find $@/{apps/,lib/composer/,core/vendor/} \( \
 		-name bin -o \
 		-name test -o \
@@ -304,7 +311,8 @@ $(dist_dir)/qa/owncloud: $(composer_dev_deps) $(nodejs_deps) $(core_all_src) $(c
 	find $@ -name .gitignore -delete
 	find $@ -name no-php -delete
 	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,testem.json}
-	find $@/{core/,l10n/} -iname \*.sh -delete
+	rm -Rf $@/l10n/
+	find $@/core/ -iname \*.sh -delete
 	find $@/{apps/,lib/composer/,core/vendor/} \( \
 		-name test -o \
 		-name examples -o \
@@ -339,3 +347,45 @@ dist-dir-qa: $(dist_dir)/qa/owncloud
 update-php-license-header:
 	php build/license.php
 
+#
+# Dependency management
+#--------------------------------------
+
+composer.lock: composer.json
+	@echo composer.lock is not up to date.
+
+vendor: composer.lock
+	composer install --no-dev
+
+vendor/bamarni/composer-bin-plugin: composer.lock
+	composer install
+
+vendor-bin/owncloud-codestyle/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/owncloud-codestyle/composer.lock
+	composer bin owncloud-codestyle install --no-progress
+
+vendor-bin/owncloud-codestyle/composer.lock: vendor-bin/owncloud-codestyle/composer.json
+	@echo owncloud-codestyle composer.lock is not up to date.
+
+vendor-bin/php_codesniffer/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/php_codesniffer/composer.lock
+	composer bin php_codesniffer install --no-progress
+
+vendor-bin/php_codesniffer/composer.lock: vendor-bin/php_codesniffer/composer.json
+	@echo php_codesniffer composer.lock is not up to date.
+
+vendor-bin/phan/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/phan/composer.lock
+	composer bin phan install --no-progress
+
+vendor-bin/phan/composer.lock: vendor-bin/phan/composer.json
+	@echo phan composer.lock is not up to date.
+
+vendor-bin/phpstan/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/phpstan/composer.lock
+	composer bin phpstan install --no-progress
+
+vendor-bin/phpstan/composer.lock: vendor-bin/phpstan/composer.json
+	@echo phpstan composer.lock is not up to date.
+
+vendor-bin/behat/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/behat/composer.lock
+	composer bin behat install --no-progress
+
+vendor-bin/behat/composer.lock: vendor-bin/behat/composer.json
+	@echo behat composer.lock is not up to date.

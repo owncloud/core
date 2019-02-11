@@ -54,7 +54,6 @@ use Sabre\DAV\IFile;
 use Sabre\DAV\IMoveTarget;
 use Sabre\DAV\INode;
 use Sabre\DAV\IQuota;
-use Sabre\HTTP\URLUtil;
 
 class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 
@@ -152,11 +151,10 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			} elseif (FutureFile::isFutureFile() or FutureFileZsync::isFutureFile()) {
 				// Future file (chunked upload) requires fileinfo
 				$info = $this->fileView->getFileInfo($this->path . '/' . $name);
-			} else {
-				// For non-chunked upload it is enough to check if we can create a new file
-				if (!$this->fileView->isCreatable($this->path)) {
-					throw new SabreForbidden();
-				}
+			}
+
+			if (!$this->fileView->isCreatable($this->path)) {
+				throw new SabreForbidden();
 			}
 
 			$this->fileView->verifyPath($this->path, $name);
@@ -428,7 +426,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			throw new SabreForbidden('Could not copy directory ' . $sourceNode->getName() . ', target exists');
 		}
 
-		list($sourceDir, ) = URLUtil::splitPath($sourceNode->getPath());
+		list($sourceDir, ) = \Sabre\Uri\split($sourceNode->getPath());
 		$destinationDir = $this->getPath();
 
 		$sourcePath = $sourceNode->getPath();

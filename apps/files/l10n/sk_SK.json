@@ -44,6 +44,7 @@
     "You don’t have permission to upload or create files here" : "Nemáte oprávnenie sem nahrávať alebo vytvoriť súbory",
     "_Uploading %n file_::_Uploading %n files_" : ["Nahrávam %n súbor","Nahrávam %n súbory","Nahrávam %n súborov","Nahrávam %n súborov"],
     "New" : "Nový",
+    "Unknown user" : "Neznámy používateľ",
     "\"{name}\" is an invalid file name." : "\"{name}\" je neplatné meno súboru.",
     "File name cannot be empty." : "Meno súboru nemôže byť prázdne",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "Úložisko používateľa {owner} je plné, súbory sa viac nedajú aktualizovať ani synchronizovať.",

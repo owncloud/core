@@ -27,6 +27,8 @@ use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 use SimpleXMLElement;
+use Sabre\Xml\LibXMLException;
+use Sabre\Xml\Reader;
 
 /**
  * Helper for HTTP requests
@@ -42,7 +44,10 @@ class HttpRequestHelper {
 	 * @param mixed $body
 	 * @param array $config
 	 * @param CookieJar $cookies
-	 * @param boolean $stream
+	 * @param bool $stream Set to true to stream a response rather
+	 *                     than download it all up-front.
+	 * @param int $timeout
+	 * @param Client|null $client
 	 *
 	 * @throws BadResponseException
 	 * @return ResponseInterface
@@ -56,9 +61,14 @@ class HttpRequestHelper {
 		$body = null,
 		$config = null,
 		$cookies = null,
-		$stream = false
+		$stream = false,
+		$timeout = 0,
+		$client =  null
 	) {
-		$client = new Client();
+		if ($client === null) {
+			$client = new Client();
+		}
+
 		$options = [];
 		if ($user !== null) {
 			$options['auth'] = [$user, $password];
@@ -74,7 +84,7 @@ class HttpRequestHelper {
 		}
 		$options['stream'] = $stream;
 		$options['verify'] = false;
-		
+		$options['timeout'] = $timeout;
 		$request = $client->createRequest($method, $url, $options);
 		if ($headers !== null) {
 			foreach ($headers as $key => $value) {
@@ -236,5 +246,34 @@ class HttpRequestHelper {
 	 */
 	public static function getResponseXml($response) {
 		return $response->xml();
+	}
+
+	/**
+	 * parses the body content of $response and returns an array representing the XML
+	 * This function returns an array with the following three elements:
+	 *    * name - The root element name.
+	 *    * value - The value for the root element.
+	 *    * attributes - An array of attributes.
+	 *
+	 * @param ResponseInterface $response
+	 *
+	 * @return array
+	 */
+	public static function parseResponseAsXml($response) {
+		$body = $response->getBody()->getContents();
+		$parsedResponse = [];
+		if ($body && \substr($body, 0, 1) === '<') {
+			try {
+				$reader = new Reader();
+				$reader->xml($body);
+				$parsedResponse = $reader->parse();
+			} catch (LibXMLException $e) {
+				// Sometimes the body can be a real page of HTML and text.
+				// So it may not be a complete ordinary piece of XML.
+				// The XML parse might fail with an exception message like:
+				// Opening and ending tag mismatch: link line 31 and head.
+			}
+		}
+		return $parsedResponse;
 	}
 }

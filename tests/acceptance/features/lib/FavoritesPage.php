@@ -82,16 +82,6 @@ class FavoritesPage extends FilesPageBasic {
 	}
 
 	/**
-	 * gets a details dialog object
-	 *
-	 * @throws ElementNotFoundException
-	 * @return DetailsDialog
-	 */
-	public function getDetailsDialog() {
-		return $this->getPage("FilesPageElement\\DetailsDialog");
-	}
-
-	/**
 	 * finds all rows that have the given name
 	 *
 	 * @param string|array $name

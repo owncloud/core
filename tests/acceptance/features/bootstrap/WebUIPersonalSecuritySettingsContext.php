@@ -64,7 +64,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 */
 	public function theUserBrowsesToThePersonalSecuritySettingsPage() {
 		$this->personalSecuritySettingsPage->open();
-		$this->personalSecuritySettingsPage->waitForAjaxCallsToStartAndFinish(
+		$this->personalSecuritySettingsPage->waitTillPageIsLoaded(
 			$this->getSession()
 		);
 	}

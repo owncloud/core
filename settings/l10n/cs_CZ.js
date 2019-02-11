@@ -88,8 +88,6 @@ OC.L10N.register(
     "Report a bug" : "Nahlásit chybu",
     "Show description …" : "Zobrazit popis ...",
     "Hide description …" : "Skrýt popis ...",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Tato aplikace nemá přiřazenou nejnižší verzi ownCloud. Toto povede k chybě v ownCloud 11 a vyšším.",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Tato aplikace nemá přiřazenou nejvyšší verzi ownCloud. Toto povede k chybě v ownCloud 11 a vyšším.",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Tuto aplikaci nelze nainstalovat, protože nejsou splněny následující závislosti:",
     "Enable only for specific groups" : "Povolit pouze pro vybrané skupiny",
     "Uninstall App" : "Odinstalovat aplikaci",

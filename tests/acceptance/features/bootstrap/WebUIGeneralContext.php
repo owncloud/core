@@ -55,12 +55,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	private $loginPage;
 
-	/**
-	 *
-	 * @var string
-	 */
-	private $productName;
-
 	private $oldCSRFSetting = null;
 	private $oldPreviewSetting = null;
 	private $createdFiles = [];
@@ -194,13 +188,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getProductName() {
-		return $this->productName;
-	}
-
-	/**
 	 * @When the administrator logs in using the webUI
 	 * @Given the administrator has logged in using the webUI
 	 *
@@ -246,9 +233,10 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserLogsOutOfTheWebUI() {
-		$settingsMenu = $this->owncloudPage->openSettingsMenu();
+		$session = $this->getSession();
+		$settingsMenu = $this->owncloudPage->openSettingsMenu($session);
 		$settingsMenu->logout();
-		$this->loginPage->waitTillPageIsLoaded($this->getSession());
+		$this->loginPage->waitTillPageIsLoaded($session);
 		if ($this->webUIFilesContext !== null) {
 			$this->webUIFilesContext->resetFilesContext();
 		}
@@ -261,16 +249,32 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $errorMessage
 	 * @param int $numEmails which number of multiple emails to read (first email is 1)
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function followLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
+	public function getLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
 		$content = EmailHelper::getBodyOfEmail(
 			EmailHelper::getLocalMailhogUrl(), $emailAddress, $numEmails
 		);
 		$matches = [];
 		\preg_match($regexSearch, $content, $matches);
 		PHPUnit_Framework_Assert::assertArrayHasKey(1, $matches, $errorMessage);
-		$this->visitPath($matches[1]);
+		return $matches[1];
+	}
+
+	/**
+	 *
+	 * @param string $emailAddress
+	 * @param string $regexSearch
+	 * @param string $errorMessage
+	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 *
+	 * @return void
+	 */
+	public function followLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
+		$link = $this->getLinkFromEmail(
+			$emailAddress, $regexSearch, $errorMessage, $numEmails
+		);
+		$this->visitPath($link);
 	}
 
 	/**
@@ -410,17 +414,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @param string $text
-	 *
-	 * @return string
-	 */
-	public function replaceProductName($text) {
-		return \str_replace(
-			"%productname%", $this->getProductName(), $text
-		);
-	}
-
-	/**
 	 * @Then the user should be redirected to a webUI page with the title :title
 	 *
 	 * @param string $title
@@ -428,7 +421,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserShouldBeRedirectedToAWebUIPageWithTheTitle($title) {
-		$title = $this->replaceProductName($title);
+		$title = $this->featureContext->substituteInLineCodes($title);
 		$this->owncloudPage->waitForOutstandingAjaxCalls($this->getSession());
 		// Just check that the actual title starts with the expected title.
 		// Theming can have other text following.
@@ -445,7 +438,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserShouldBeRedirectedToGeneralErrorPage($title) {
-		$title = $this->replaceProductName($title);
+		$title = $this->featureContext->substituteInLineCodes($title);
 		$this->generalErrorPage->waitTillPageIsLoaded($this->getSession());
 		// Just check that the actual title starts with the expected title.
 		// Theming can have other text following.
@@ -524,8 +517,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 *
-	 * @When the user reloads the current page of the webUI
-	 * @Given the user has reloaded the current page of the webUI
+	 * @When the user/administrator reloads the current page of the webUI
+	 * @Given the user/administrator has reloaded the current page of the webUI
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -610,10 +603,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 		$this->savedCapabilitiesXml[$this->featureContext->getBaseUrl()]
 			= $capabilitiesXml;
-
-		$this->productName = $this->featureContext->getParameterValueFromXml(
-			$capabilitiesXml, "core", "status@@@productname"
-		);
 
 		if ($this->oldCSRFSetting === null) {
 			$oldCSRFSetting = $this->featureContext->getSystemConfigValue(
@@ -732,25 +721,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		foreach ($this->createdFiles as $file) {
 			\unlink($file);
 		}
-	}
-
-	/**
-	 * After Scenario. clear file locks
-	 *
-	 * @AfterScenario @webUI
-	 *
-	 * @return void
-	 */
-	public function clearFileLocks() {
-		$response = OcsApiHelper::sendRequest(
-			$this->featureContext->getBaseUrl(),
-			$this->featureContext->getAdminUsername(),
-			$this->featureContext->getAdminPassword(),
-			'delete',
-			"/apps/testing/api/v1/lockprovisioning",
-			["global" => "true"]
-		);
-		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
 	}
 
 	/**

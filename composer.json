@@ -10,6 +10,8 @@
             "php": "7.1"
         }
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload" : {
         "psr-4": {
             "OC\\": "lib/private",
@@ -23,20 +25,11 @@
         "files": ["tests/lib/TestCase.php"]
     },
     "require-dev": {
-        "behat/behat": "^3.0",
-        "behat/mink-extension": "^2.2",
-        "behat/mink-goutte-driver": "^1.2",
-        "behat/mink-selenium2-driver": "dev-master",
+        "bamarni/composer-bin-plugin": "^1.2",
         "jakub-onderka/php-console-highlighter": "^0.4",
-        "jakub-onderka/php-parallel-lint": "^1.0.0",
-        "jarnaiz/behat-junit-formatter": "^1.3",
         "mikey179/vfsStream": "^1.6",
-        "owncloud/coding-standard": "^1.0",
-        "squizlabs/php_codesniffer": "3.*",
         "phpunit/phpunit": "^5.7",
-        "rdx/behat-variables": "^1.2",
-        "roave/security-advisories": "dev-master",
-        "sensiolabs/behat-page-object-extension": "^2.0"
+        "roave/security-advisories": "dev-master"
     },
     "require": {
         "php": ">=7.1",
@@ -46,7 +39,7 @@
         "jeremeamia/superclosure": "^2.4",
         "bantu/ini-get-wrapper": "v1.0.1",
         "punic/punic": "^3.1",
-        "pear/archive_tar": "1.4.3",
+        "pear/archive_tar": "1.4.6",
         "patchwork/utf8": "^1.3",
         "symfony/console": "^3.1",
         "symfony/event-dispatcher": "^3.1",
@@ -55,7 +48,7 @@
         "pimple/pimple": "3.2.3",
         "nikic/php-parser": "^4.0",
         "icewind/Streams": "0.5.2",
-        "swiftmailer/swiftmailer": "^5.4",
+        "swiftmailer/swiftmailer": "^6.0",
         "guzzlehttp/guzzle": "^5.3",
         "league/flysystem": "^1.0",
         "pear/pear-core-minimal": "^v1.10",
@@ -63,11 +56,19 @@
         "deepdiver1975/TarStreamer": "v0.1.0",
         "patchwork/jsqueeze": "^2.0",
         "lukasreschke/id3parser": "^0.0.3",
-        "sabre/dav": "^3.2",
+        "sabre/dav": "^4.0.0-alpha5",
         "deepdiver/zipstreamer": "^1.1",
         "symfony/translation": "^3.4",
         "zendframework/zend-inputfilter": "^2.8",
         "zendframework/zend-servicemanager": "^3.3",
-        "zendframework/zend-validator": "^2.10"
+        "zendframework/zend-validator": "^2.10",
+        "composer/semver": "^1.4",
+        "dg/composer-cleaner": "^2.0",
+        "ext-json": "*"
+    },
+    "extra": {
+        "bamarni-bin": {
+            "bin-links": false
+        }
     }
 }

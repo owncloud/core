@@ -34,6 +34,7 @@ namespace OC\Settings;
 use OC\Server;
 use OC\AppFramework\Utility\TimeFactory;
 use OC\Settings\Controller\CorsController;
+use OC\Settings\Controller\GroupsController;
 use OC\Settings\Controller\SettingsPageController;
 use OC\Settings\Controller\AppSettingsController;
 use OC\Settings\Controller\AuthSettingsController;
@@ -150,6 +151,14 @@ class Application extends App {
 				$c->query('Logger'),
 				$c->query('URLGenerator'),
 				$c->query('Config')
+			);
+		});
+		$container->registerService('GroupsController', function (IContainer $c) {
+			return new GroupsController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('GroupManager'),
+				$c->query('UserSession')
 			);
 		});
 

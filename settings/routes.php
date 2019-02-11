@@ -60,6 +60,7 @@ $application->registerRoutes($this, [
 		['name' => 'Cors#removeDomain', 'url' => '/settings/domains/{id}', 'verb' => 'DELETE'],
 		['name' => 'LegalSettings#setImprintUrl', 'url' => '/settings/admin/legal/imprint', 'verb' => 'POST'],
 		['name' => 'LegalSettings#setPrivacyPolicyUrl', 'url' => '/settings/admin/legal/privacypolicy', 'verb' => 'POST'],
+		['name' => 'Groups#getGroupsForUser', 'url' => '/settings/users/groups', 'verb' => 'GET'],
 	]
 ]);
 

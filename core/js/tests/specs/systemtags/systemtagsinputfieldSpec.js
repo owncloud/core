@@ -113,6 +113,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 					name: 'newname',
 					userVisible: true,
 					userAssignable: true,
+					userEditable: true,
 					canAssign: true
 				});
 
@@ -191,6 +192,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 					name: 'newname',
 					userVisible: true,
 					userAssignable: true,
+					userEditable: true,
 					canAssign: true
 				});
 
@@ -369,6 +371,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 					new OC.SystemTags.SystemTagModel({id: '2', name: 'def'}),
 					new OC.SystemTags.SystemTagModel({id: '3', name: 'abd', userAssignable: false, canAssign: false}),
 					new OC.SystemTags.SystemTagModel({id: '4', name: 'Deg'}),
+					new OC.SystemTags.SystemTagModel({id: '5', name: 'staticTag', editableInGroup: true, canAssign: true, userAssignable: true, userEditable: false, userVisible: true})
 				]);
 			});
 			afterEach(function() {
@@ -399,6 +402,28 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 						userVisible: true,
 						userAssignable: false,
 						canAssign: false
+					}
+				]);
+			});
+			it('check static tag result', function () {
+				var callback = sinon.stub();
+				opts.query({
+					term: 'sta',
+					callback: callback
+				});
+				expect(fetchStub.calledOnce).toEqual(true);
+
+				fetchStub.yieldTo('success', view.collection);
+
+				expect(callback.getCall(0).args[0].results).toEqual([
+					{
+						id: '5',
+						name: 'staticTag',
+						editableInGroup: true,
+						canAssign: true,
+						userAssignable: true,
+						userEditable: false,
+						userVisible: true
 					}
 				]);
 			});
@@ -450,6 +475,30 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 			var opts = select2Stub.getCall(0).args[0];
 			var $el = $(opts.formatSelection({id: '1', name: 'test'}));
 			expect($el.text().trim()).toEqual('test');
+		});
+		it('formatSelection renders visibleTag', function () {
+			var opts = select2Stub.getCall(0).args[0];
+			var $el = $(opts.formatResult({id: '1', name: 'visibleTag', userAssignable: true, userEditable: true, userVisible: true, canAssign: true, editableInGroup: false}));
+			expect($el.find('.label').text()).toEqual('visibleTag');
+			expect($el.find('.rename').length).toEqual(1);
+		});
+		it('formatSelection renders restrictedTag', function () {
+			var opts = select2Stub.getCall(0).args[0];
+			var $el = $(opts.formatResult({id: '1', name: 'restrictTag', userAssignable: false, userEditable: false, userVisible: true, canAssign: true, editableInGroup: true}));
+			expect($el.find('.label').text()).toEqual('restrictTag');
+			expect($el.find('.rename').length).toEqual(1);
+		});
+		it('formatSelection renders staticTag', function () {
+			var opts = select2Stub.getCall(0).args[0];
+			var $el = $(opts.formatResult({id: '1', name: 'staticTag', userAssignable: true, userEditable: false, userVisible: true, canAssign: true, editableInGroup: true}));
+			expect($el.find('.label').text()).toEqual('staticTag');
+			expect($el.find('.rename').length).toEqual(0);
+		});
+		it('formatSelection renders staticTag should not showup', function () {
+			var opts = select2Stub.getCall(0).args[0];
+			var $el = $(opts.formatResult({id: '1', name: 'staticTag', userAssignable: true, userEditable: false, userVisible: true, canAssign: true, editableInGroup: false}));
+			expect($el.find('.label').text()).toEqual('');
+			expect($el.find('.rename').length).toEqual(0);
 		});
 		describe('initSelection', function() {
 			var fetchStub;

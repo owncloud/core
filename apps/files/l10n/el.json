@@ -57,6 +57,7 @@
     "You don’t have permission to upload or create files here" : "Δεν έχετε δικαιώματα φόρτωσης ή δημιουργίας αρχείων εδώ",
     "_Uploading %n file_::_Uploading %n files_" : ["Ανέβασμα %n αρχείου","Ανέβασμα %n αρχείων"],
     "New" : "Νέο",
+    "Unknown user" : "Άγνωστος χρήστης",
     "\"{name}\" is an invalid file name." : "Το \"{name}\" δεν είναι έγκυρο όνομα αρχείου.",
     "File name cannot be empty." : "Το όνομα αρχείου δεν μπορεί να είναι κενό.",
     "File name cannot contain \"/\"." : "Το όνομα αρχείου δεν μπορεί να περιέχει \"/\".",

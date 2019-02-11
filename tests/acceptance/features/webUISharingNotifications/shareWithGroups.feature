@@ -5,8 +5,8 @@ Feature: Sharing files and folders with internal groups
   So that those groups can access the files and folders
 
   Background:
-    Given the app "notifications" has been enabled
-    And these users have been created:
+    Given app "notifications" has been enabled
+    And these users have been created with default attributes:
       | username |
       | user1    |
       | user2    |

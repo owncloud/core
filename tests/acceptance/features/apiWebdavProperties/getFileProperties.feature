@@ -6,7 +6,7 @@ Feature: get file properties
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
 
   @smokeTest
   Scenario Outline: Do a PROPFIND of various file names
@@ -39,7 +39,7 @@ Feature: get file properties
 
   Scenario Outline: Do a PROPFIND of various folder/file names
     Given using <dav_version> DAV path
-    And user "user0" has created a folder "<folder_name>"
+    And user "user0" has created folder "<folder_name>"
     And user "user0" has uploaded file with content "uploaded content" to "<folder_name>/<file_name>"
     When user "user0" gets the properties of file "<folder_name>/<file_name>" using the WebDAV API
     Then the properties response should contain an etag
@@ -60,10 +60,10 @@ Feature: get file properties
 
   Scenario Outline: A file that is not shared does not have a share-types property
     Given using <dav_version> DAV path
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
-      | {http://owncloud.org/ns}share-types |
-    Then the response should contain an empty property "{http://owncloud.org/ns}share-types"
+      | oc:share-types |
+    Then the response should contain an empty property "oc:share-types"
     Examples:
       | dav_version |
       | old         |
@@ -71,15 +71,15 @@ Feature: get file properties
 
   Scenario Outline: A file that is shared to a user has a share-types property
     Given using <dav_version> DAV path
-    And user "user1" has been created
-    And user "user0" has created a folder "/test"
+    And user "user1" has been created with default attributes
+    And user "user0" has created folder "/test"
     And user "user0" has created a share with settings
       | path        | test  |
       | shareType   | 0     |
       | permissions | 31    |
       | shareWith   | user1 |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
-      | {http://owncloud.org/ns}share-types |
+      | oc:share-types |
     Then the response should contain a share-types property with
       | 0 |
     Examples:
@@ -90,14 +90,14 @@ Feature: get file properties
   Scenario Outline: A file that is shared to a group has a share-types property
     Given using <dav_version> DAV path
     And group "grp1" has been created
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has created a share with settings
       | path        | test |
       | shareType   | 1    |
       | permissions | 31   |
       | shareWith   | grp1 |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
-      | {http://owncloud.org/ns}share-types |
+      | oc:share-types |
     Then the response should contain a share-types property with
       | 1 |
     Examples:
@@ -108,12 +108,12 @@ Feature: get file properties
   @public_link_share-feature-required
   Scenario Outline: A file that is shared by link has a share-types property
     Given using <dav_version> DAV path
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has created a public link share with settings
       | path        | test |
       | permissions | 31   |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
-      | {http://owncloud.org/ns}share-types |
+      | oc:share-types |
     Then the response should contain a share-types property with
       | 3 |
     Examples:
@@ -124,9 +124,9 @@ Feature: get file properties
   @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required
   Scenario Outline: A file that is shared by user,group and link has a share-types property
     Given using <dav_version> DAV path
-    And user "user1" has been created
+    And user "user1" has been created with default attributes
     And group "grp2" has been created
-    And user "user0" has created a folder "/test"
+    And user "user0" has created folder "/test"
     And user "user0" has created a share with settings
       | path        | test  |
       | shareType   | 0     |
@@ -141,7 +141,7 @@ Feature: get file properties
       | path        | test |
       | permissions | 31   |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
-      | {http://owncloud.org/ns}share-types |
+      | oc:share-types |
     Then the response should contain a share-types property with
       | 0 |
       | 1 |
@@ -164,10 +164,10 @@ Feature: get file properties
   @smokeTest
   Scenario Outline: Retrieving private link
     Given using <dav_version> DAV path
-    And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
+    And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
     When user "user0" gets the following properties of file "/somefile.txt" using the WebDAV API
-      | {http://owncloud.org/ns}privatelink |
-    Then the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
+      | oc:privatelink |
+    Then the single response should contain a property "oc:privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
     Examples:
       | dav_version |
       | old         |

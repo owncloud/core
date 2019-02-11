@@ -22,13 +22,19 @@
 namespace OCA\FederatedFileSharing\AppInfo;
 
 use OCA\FederatedFileSharing\AddressHandler;
+use OCA\FederatedFileSharing\Controller\OcmController;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
+use OCA\FederatedFileSharing\Middleware\OcmMiddleware;
 use OCA\FederatedFileSharing\Notifications;
 use OCA\FederatedFileSharing\Controller\RequestHandlerController;
+use OCA\FederatedFileSharing\Ocm\NotificationManager;
+use OCA\FederatedFileSharing\Ocm\Permissions;
 use OCA\FederatedFileSharing\TokenHandler;
 use OCP\AppFramework\App;
+use OCP\Share\Events\AcceptShare;
+use OCP\Share\Events\DeclineShare;
 
 class Application extends App {
 
@@ -70,6 +76,7 @@ class Application extends App {
 					$c->query('AddressHandler'),
 					$server->getHTTPClientService(),
 					$c->query('DiscoveryManager'),
+					$c->query('NotificationManager'),
 					$server->getJobList(),
 					$server->getConfig()
 				);
@@ -86,7 +93,21 @@ class Application extends App {
 					$server->getActivityManager(),
 					$server->getNotificationManager(),
 					$c->query('AddressHandler'),
+					$c->query('Permissions'),
 					$server->getEventDispatcher()
+				);
+			}
+		);
+
+		$container->registerService(
+			'OcmMiddleware',
+			function ($c) use ($server) {
+				return new OcmMiddleware(
+					$this->getFederatedShareProvider(),
+					$server->getAppManager(),
+					$server->getUserManager(),
+					$c->query('AddressHandler'),
+					$server->getLogger()
 				);
 			}
 		);
@@ -97,12 +118,43 @@ class Application extends App {
 				return new RequestHandlerController(
 					$c->query('AppName'),
 					$c->query('Request'),
-					$this->getFederatedShareProvider(),
-					$server->getAppManager(),
+					$c->query('OcmMiddleware'),
 					$server->getUserManager(),
 					$c->query('AddressHandler'),
 					$c->query('FederatedShareManager')
 				);
+			}
+		);
+
+		$container->registerService(
+			'OcmController',
+			function ($c) use ($server) {
+				return new OcmController(
+					$c->query('AppName'),
+					$c->query('Request'),
+					$c->query('OcmMiddleware'),
+					$server->getURLGenerator(),
+					$server->getUserManager(),
+					$c->query('AddressHandler'),
+					$c->query('FederatedShareManager'),
+					$server->getLogger()
+				);
+			}
+		);
+
+		$container->registerService(
+			'NotificationManager',
+			function ($c) {
+				return new NotificationManager(
+					$c->query('Permissions')
+				);
+			}
+		);
+
+		$container->registerService(
+			'Permissions',
+			function ($c) {
+				return new Permissions();
 			}
 		);
 	}
@@ -131,10 +183,14 @@ class Application extends App {
 			\OC::$server->getMemCacheFactory(),
 			\OC::$server->getHTTPClientService()
 		);
+		$notificationManager = new NotificationManager(
+			new Permissions()
+		);
 		$notifications = new Notifications(
 			$addressHandler,
 			\OC::$server->getHTTPClientService(),
 			$discoveryManager,
+			$notificationManager,
 			\OC::$server->getJobList(),
 			\OC::$server->getConfig()
 		);
@@ -144,6 +200,7 @@ class Application extends App {
 
 		$this->federatedShareProvider = new FederatedShareProvider(
 			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getEventDispatcher(),
 			$addressHandler,
 			$notifications,
 			$tokenHandler,
@@ -152,6 +209,39 @@ class Application extends App {
 			\OC::$server->getLazyRootFolder(),
 			\OC::$server->getConfig(),
 			\OC::$server->getUserManager()
+		);
+	}
+
+	public function registerListeners() {
+		$container = $this->getContainer();
+		$server = $container->getServer();
+		$eventDispatcher = $server->getEventDispatcher();
+
+		// react to accept and decline share events
+		$eventDispatcher->addListener(
+			AcceptShare::class,
+			function (AcceptShare $event) use ($container) {
+				/** @var Notifications $notifications */
+				$notifications = $container->query('Notifications');
+				$notifications->sendAcceptShare(
+					$event->getRemote(),
+					$event->getRemoteId(),
+					$event->getShareToken()
+				);
+			}
+		);
+
+		$eventDispatcher->addListener(
+			DeclineShare::class,
+			function (DeclineShare $event) use ($container) {
+				/** @var Notifications $notifications */
+				$notifications = $container->query('Notifications');
+				$notifications->sendDeclineShare(
+					$event->getRemote(),
+					$event->getRemoteId(),
+					$event->getShareToken()
+				);
+			}
 		);
 	}
 }

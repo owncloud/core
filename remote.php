@@ -54,7 +54,7 @@ function handleException($e) {
 			// we shall not log on RemoteException
 			$server->addPlugin(new ExceptionLoggerPlugin('webdav', \OC::$server->getLogger()));
 		}
-		$server->on('beforeMethod', function () use ($e) {
+		$server->on('beforeMethod:*', function () use ($e) {
 			if ($e instanceof RemoteException) {
 				switch ($e->getCode()) {
 					case OC_Response::STATUS_SERVICE_UNAVAILABLE:

@@ -45,11 +45,12 @@ interface Folder extends Node {
 	public function getFullPath($path);
 
 	/**
-	 * Get the path of an item in the folder relative to the folder
+	 * Get the path of an item in the folder relative to the folder or null
+	 * if the path is outside of the folder
 	 *
 	 * @param string $path absolute path of an item in the folder
 	 * @throws \OCP\Files\NotFoundException
-	 * @return string
+	 * @return string|null
 	 * @since 6.0.0
 	 */
 	public function getRelativePath($path);
@@ -144,10 +145,11 @@ interface Folder extends Node {
 	 * get a file or folder inside the folder by it's internal id
 	 *
 	 * @param int $id
+	 * @param boolean $first only return the first node that is found
 	 * @return \OCP\Files\Node[]
 	 * @since 6.0.0
 	 */
-	public function getById($id);
+	public function getById($id, $first = false);
 
 	/**
 	 * Get the amount of free space inside the folder

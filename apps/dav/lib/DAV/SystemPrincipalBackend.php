@@ -23,7 +23,6 @@
 namespace OCA\DAV\DAV;
 
 use Sabre\DAVACL\PrincipalBackend\AbstractBackend;
-use Sabre\HTTP\URLUtil;
 
 class SystemPrincipalBackend extends AbstractBackend {
 
@@ -162,7 +161,7 @@ class SystemPrincipalBackend extends AbstractBackend {
 	 * @return array
 	 */
 	public function getGroupMembership($principal) {
-		list($prefix, $name) = URLUtil::splitPath($principal);
+		list($prefix, $name) = \Sabre\Uri\split($principal);
 
 		if ($prefix === 'principals/system') {
 			$principal = $this->getPrincipalByPath($principal);

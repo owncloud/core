@@ -41,6 +41,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Share;
+use OCA\FederatedFileSharing\FederatedShareProvider;
 
 /**
  * Class ShareesTest
@@ -107,6 +108,10 @@ class ShareesTest extends TestCase {
 		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
+		$federatedShareProviderMock = $this->getMockBuilder(FederatedShareProvider::class)->disableOriginalConstructor()->getMock();
+		$federatedShareProviderMock->expects($this->any())
+			->method('isOutgoingServer2serverShareEnabled')
+			->willReturn(true);
 
 		$this->sharingBlacklist = $this->getMockBuilder(SharingBlacklist::class)
 			->disableOriginalConstructor()
@@ -123,7 +128,8 @@ class ShareesTest extends TestCase {
 			$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 			$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
 			$this->shareManager,
-			$this->sharingBlacklist
+			$this->sharingBlacklist,
+			$federatedShareProviderMock
 		);
 	}
 
@@ -544,7 +550,8 @@ class ShareesTest extends TestCase {
 			$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 			$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
 			$this->shareManager,
-			$this->sharingBlacklist
+			$this->sharingBlacklist,
+			$this->getMockBuilder(FederatedShareProvider::class)->disableOriginalConstructor()->getMock()
 		);
 		$this->invokePrivate($this->sharees, 'limit', [2]);
 		$this->invokePrivate($this->sharees, 'offset', [0]);
@@ -1523,7 +1530,8 @@ class ShareesTest extends TestCase {
 				$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
 				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock(),
 				$this->shareManager,
-				$this->sharingBlacklist
+				$this->sharingBlacklist,
+				$this->getMockBuilder(FederatedShareProvider::class)->disableOriginalConstructor()->getMock()
 			])
 			->setMethods(['searchSharees', 'isRemoteSharingAllowed'])
 			->getMock();
@@ -1673,7 +1681,8 @@ class ShareesTest extends TestCase {
 				$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 				$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
 				$this->shareManager,
-				$this->sharingBlacklist
+				$this->sharingBlacklist,
+				$this->getMockBuilder(FederatedShareProvider::class)->disableOriginalConstructor()->getMock()
 			])
 			->setMethods(['getShareesForShareIds', 'getUsers', 'getGroups', 'getRemote'])
 			->getMock();
@@ -1900,5 +1909,61 @@ class ShareesTest extends TestCase {
 		$this->assertEquals($exactExpected, $result['exact']['users']);
 		$this->assertEquals($expected, $result['users']);
 		$this->assertCount((int) 1, $this->invokePrivate($this->sharees, 'reachedEndFor'));
+	}
+
+	/**
+	 * Test with User from an excluded group
+	 *
+	 */
+	public function testExcludedGroups() {
+		$user = $this->getUserMock(self::getUniqueID(), 'test');
+		$this->session
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($user);
+
+		$this->shareManager
+			->expects($this->once())
+			->method('sharingDisabledForUser')
+			->with($user->getUID())
+			->willReturn(true);
+
+		/** @var ShareesController | \PHPUnit_Framework_MockObject_MockObject $sharees */
+		$sharees = $this->getMockBuilder(ShareesController::class)
+			->setConstructorArgs([
+				'files_sharing',
+				$this->getMockBuilder(IRequest::class)->disableOriginalConstructor()->getMock(),
+				$this->groupManager,
+				$this->userManager,
+				$this->contactsManager,
+				$this->config,
+				$this->session,
+				$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
+				$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
+				$this->shareManager,
+				$this->sharingBlacklist,
+				$this->getMockBuilder(FederatedShareProvider::class)->disableOriginalConstructor()->getMock()
+			])
+			->setMethods(['getUsers', 'getGroups', 'getRemote'])
+			->getMock();
+
+		$sharees
+			->expects($this->never())
+			->method('getUsers');
+		$sharees
+			->expects($this->never())
+			->method('getGroups');
+		$sharees
+			->expects($this->never())
+			->method('getRemote');
+
+		$result = $sharees->search($user->getUID(), 'file');
+		$data = $result->getData();
+		self::assertEmpty($data['data']['exact']['users']);
+		self::assertEmpty($data['data']['exact']['groups']);
+		self::assertEmpty($data['data']['exact']['remotes']);
+		self::assertEmpty($data['data']['users']);
+		self::assertEmpty($data['data']['groups']);
+		self::assertEmpty($data['data']['remotes']);
 	}
 }

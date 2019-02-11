@@ -38,7 +38,6 @@ class PublicLinkTab extends OwncloudPage {
 	 * @var NodeElement of this tab
 	 */
 	private $publicLinkTabElement;
-	private $publicLinkTabId = "shareDialogLinkList";
 	private $createLinkBtnXpath = ".//button[@class='addLink']";
 	private $popupXpath = ".//div[@class='oc-dialog' and not(contains(@style,'display: none'))]";
 	private $linkEntryByNameXpath = ".//*[@class='link-entry--title' and .=%s]/..";
@@ -53,25 +52,42 @@ class PublicLinkTab extends OwncloudPage {
 	private $editPublicLinkPopupPageObject;
 	
 	/**
-	 * as it's not possible to run __construct() we need to run this function
-	 * every time we get the tab with
-	 * $this->getPage("FilesPageElement\\SharingDialogElement\\PublicLinkTab");
-	 * this function finds the tab in the DOM and sets $this->publicLinkTabElement
-	 * in the rest of the class we can use $this->publicLinkTabElement to find
-	 * other elements to make sure that we are searching in the right place
+	 * sets the NodeElement for the current popup
+	 * a little bit like __construct() but as we access this "sub-page-object"
+	 * from an other Page Object by
+	 * $this->getPage("....")
+	 * there is no real __construct() that can take arguments
+	 *
+	 * @param NodeElement $publicLinkTab
 	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
-	public function initElement() {
-		$publicLinkTab = $this->findById($this->publicLinkTabId);
-		if ($publicLinkTab === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->publicLinkTabId could not find public link tab"
-			);
-		}
+	public function setElement(NodeElement $publicLinkTab) {
 		$this->publicLinkTabElement = $publicLinkTab;
+	}
+
+	/**
+	 * waits for the tab to appear and sets the element
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 * @param string $xpath the xpath of the element to wait for
+	 *                      required to be set
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+		$xpath = null
+	) {
+		if ($xpath === null) {
+			throw new \InvalidArgumentException('$xpath needs to be set');
+		}
+		$this->waitForOutstandingAjaxCalls($session);
+		$element = $this->waitTillXpathIsVisible($xpath, $timeout_msec);
+		$this->setElement($element);
 	}
 
 	/**
@@ -97,7 +113,7 @@ class PublicLinkTab extends OwncloudPage {
 		$emailToSelf = null,
 		$personalMessage = null
 	) {
-		$editPublicLinkPopupPageObject = $this->openSharingPopup();
+		$editPublicLinkPopupPageObject = $this->openSharingPopup($session);
 		if ($name !== null) {
 			$editPublicLinkPopupPageObject->setLinkName($name);
 		}
@@ -129,29 +145,30 @@ class PublicLinkTab extends OwncloudPage {
 	}
 
 	/**
+	 * @param Session $session
+	 *
 	 * @return NodeElement
 	 *
 	 * @throws ElementNotFoundException
 	 */
-	public function openSharingPopup() {
+	public function openSharingPopup(Session $session) {
 		$createLinkBtn = $this->publicLinkTabElement->find(
 			"xpath", $this->createLinkBtnXpath
 		);
-		if ($createLinkBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->createLinkBtnXpath" .
-				" could not find create public link button"
-			);
-		}
+		$this->assertElementNotNull(
+			$createLinkBtn,
+			__METHOD__ .
+			" xpath $this->createLinkBtnXpath" .
+			" could not find create public link button"
+		);
 		$createLinkBtn->click();
-
-		$popupElement = $this->waitTillElementIsNotNull($this->popupXpath);
 
 		$this->editPublicLinkPopupPageObject = $this->getPage(
 			"FilesPageElement\\SharingDialogElement\\EditPublicLinkPopup"
 		);
-		$this->editPublicLinkPopupPageObject->setElement($popupElement);
+		$this->editPublicLinkPopupPageObject->waitTillPageIsLoaded(
+			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->popupXpath
+		);
 
 		return $this->editPublicLinkPopupPageObject;
 	}
@@ -159,43 +176,44 @@ class PublicLinkTab extends OwncloudPage {
 	/**
 	 * Updates sharing popup as popup may change
 	 *
+	 * @param Session $session
+	 *
 	 * @return void
 	 */
-	public function updateSharingPopup() {
-		$popupElement = $this->waitTillElementIsNotNull($this->popupXpath);
-
+	public function updateSharingPopup(Session $session) {
 		$this->editPublicLinkPopupPageObject = $this->getPage(
 			"FilesPageElement\\SharingDialogElement\\EditPublicLinkPopup"
 		);
-		$this->editPublicLinkPopupPageObject->setElement($popupElement);
+		$this->editPublicLinkPopupPageObject->waitTillPageIsLoaded(
+			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->popupXpath
+		);
 	}
 
 	/**
 	 *
+	 * @param Session $session
 	 * @param string $name
 	 * @param string $newName
 	 * @param string $permissions
 	 * @param string $password
 	 * @param string $expirationDate
 	 * @param string $email
+	 * @param string $save
 	 *
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
 	public function editLink(
+		Session $session,
 		$name,
 		$newName = null,
 		$permissions = null,
 		$password = null,
 		$expirationDate = null,
-		$email = null
+		$email = null,
+		$save = true
 	) {
-		$linkEntry = $this->findLinkEntryByName($name);
-		$editLinkBtn = $linkEntry->find("xpath", $this->linkEditBtnXpath);
-
-		$editLinkBtn->click();
-
-		$this->updateSharingPopup();
+		$this->openSharingPopupByLinkName($name, $session);
 
 		if ($newName !== null) {
 			$this->editPublicLinkPopupPageObject->setLinkName($newName);
@@ -206,7 +224,35 @@ class PublicLinkTab extends OwncloudPage {
 		if ($permissions !== null) {
 			$this->editPublicLinkPopupPageObject->setLinkPermissions($permissions);
 		}
-		$this->editPublicLinkPopupPageObject->save();
+		if ($expirationDate !== null) {
+			$this->editPublicLinkPopupPageObject->setLinkExpirationDate($expirationDate);
+		}
+
+		if ($save === true) {
+			$this->editPublicLinkPopupPageObject->save();
+		} else {
+			$this->editPublicLinkPopupPageObject->cancel();
+		}
+	}
+
+	/**
+	 * Open Sharing Popup from given link name
+	 *
+	 * @param string $name
+	 * @param Session $session
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function openSharingPopupByLinkName($name, $session) {
+		$linkEntry = $this->findLinkEntryByName($name);
+		$editLinkBtn = $linkEntry->find("xpath", $this->linkEditBtnXpath);
+
+		$editLinkBtn->click();
+
+		$this->updateSharingPopup($session);
+
+		return $this->editPublicLinkPopupPageObject;
 	}
 
 	/**
@@ -219,13 +265,12 @@ class PublicLinkTab extends OwncloudPage {
 	public function getLinkUrl($name) {
 		$linkEntry = $this->findLinkEntryByName($name);
 		$linkUrlInput = $linkEntry->find("xpath", $this->linkUrlInputXpath);
-		if ($linkUrlInput === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->linkUrlInputXpath" .
-				" could not find input field that contains the link URL"
-			);
-		}
+		$this->assertElementNotNull(
+			$linkUrlInput,
+			__METHOD__ .
+			" xpath $this->linkUrlInputXpath" .
+			" could not find input field that contains the link URL"
+		);
 		return $linkUrlInput->getValue();
 	}
 
@@ -270,7 +315,7 @@ class PublicLinkTab extends OwncloudPage {
 	}
 
 	/**
-	 * @return void
+	 * @return string
 	 */
 	public function getWarningMessage() {
 		$warningMessageField = $this->find("xpath", $this->publicLinkWarningMessageXpath);
@@ -290,13 +335,12 @@ class PublicLinkTab extends OwncloudPage {
 		$linkEntry = $this->publicLinkTabElement->find(
 			"xpath", \sprintf($this->linkEntryByNameXpath, $xpathString)
 		);
-		if ($linkEntry === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->linkEntryByNameXpath" .
-				" could not find link entry with the given name"
-			);
-		}
+		$this->assertElementNotNull(
+			$linkEntry,
+			__METHOD__ .
+			" xpath $this->linkEntryByNameXpath" .
+			" could not find link entry with the given name"
+		);
 		return $linkEntry;
 	}
 }

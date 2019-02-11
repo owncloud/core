@@ -14,6 +14,8 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" 邀请你查看 \"%3$s\"",
     "Accept" : "接受",
     "Decline" : "拒绝",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "通过我的 #ownCloud 联合云 ID 与我共享，见 %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "通过我的 #ownCloud 联合云 ID 与我共享",
     "Federated Cloud Sharing" : "联合云共享",
     "Open documentation" : "打开文档",
     "Allow users on this server to send shares to other servers" : "允许用户分享文件给其他服务器上的用户",

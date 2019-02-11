@@ -5,7 +5,7 @@ Feature: admin general settings
   So that I can configure general settings on the ownCloud server
 
   Background:
-    Given the administrator has changed the email of user "%admin%" to "admin@owncloud.com"
+    Given the administrator has changed their own email address to "admin@owncloud.com"
     And the administrator has browsed to the admin general settings page
 
   @smokeTest
@@ -43,24 +43,21 @@ Feature: admin general settings
     Given the administrator has invoked occ command "config:app:set core OC_Channel --value git"
     When the user reloads the current page of the webUI
     And the administrator sets the value of update channel to "daily" using the webUI
-    And the administrator invokes occ command "config:app:get core OC_Channel"
-    Then the command output should contain the text "daily"
+    Then the update channel should be "daily"
 
   @smokeTest
   Scenario: administrator changes the cron job
     Given the administrator has invoked occ command "config:app:set core backgroundjobs_mode --value ajax"
     When the user reloads the current page of the webUI
     And the administrator sets the value of cron job to "webcron" using the webUI
-    And the administrator invokes occ command "config:app:get core backgroundjobs_mode"
-    Then the command output should contain the text "webcron"
+    Then the background jobs mode should be "webcron"
 
   @smokeTest
   Scenario: administrator changes the log level
     Given the administrator has invoked occ command "config:system:set loglevel --value 0"
     When the user reloads the current page of the webUI
     And the administrator sets the value of log level to 1 using the webUI
-    And the administrator invokes occ command "config:system:get loglevel"
-    Then the command output should contain the text "1"
+    Then the log level should be "1"
 
   Scenario: administrator should be able to see system status
     Then the version of the owncloud installation should be displayed on the admin general settings page

@@ -23,7 +23,6 @@ namespace OCA\DAV\CalDAV;
 
 use Sabre\DAV;
 use Sabre\DAV\Xml\Property\ShareAccess;
-use Sabre\HTTP\URLUtil;
 
 class Plugin extends \Sabre\CalDAV\Plugin {
 	public function initialize(DAV\Server $server) {
@@ -34,7 +33,7 @@ class Plugin extends \Sabre\CalDAV\Plugin {
 		parent::propFind($propFind, $node);
 
 		if ($node instanceof Calendar && $node->getName() === BirthdayService::BIRTHDAY_CALENDAR_URI) {
-			$propFind->handle('{DAV:}share-access', function () use ($node) {
+			$propFind->handle('{DAV:}share-access', function () {
 				return new ShareAccess(DAV\Sharing\Plugin::ACCESS_NOACCESS);
 			});
 		}
@@ -45,7 +44,7 @@ class Plugin extends \Sabre\CalDAV\Plugin {
 	 */
 	public function getCalendarHomeForPrincipal($principalUrl) {
 		if (\strrpos($principalUrl, 'principals/users', -\strlen($principalUrl)) !== false) {
-			list(, $principalId) = URLUtil::splitPath($principalUrl);
+			list(, $principalId) = \Sabre\Uri\split($principalUrl);
 			return self::CALENDAR_ROOT .'/' . $principalId;
 		}
 

@@ -44,11 +44,12 @@ abstract class Image implements IProvider2 {
 		}
 
 		$image = new \OC_Image();
-		$stream = $file->fopen('r');
 
-		$image->loadFromFileHandle($stream);
+		$internalPath = $file->getInternalPath();
+		$localPath = $file->getStorage()->getLocalFile($internalPath);
+		$image->loadFromFile($localPath);
 		$image->fixOrientation();
-		\fclose($stream);
+
 		if ($image->valid()) {
 			$image->scaleDownToFit($maxX, $maxY);
 

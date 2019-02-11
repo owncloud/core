@@ -44,7 +44,6 @@ use Sabre\DAV;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\PropPatch;
-use Sabre\HTTP\URLUtil;
 use Sabre\VObject\DateTimeParser;
 use Sabre\VObject\Reader;
 use Sabre\VObject\Recur\EventIterator;
@@ -235,7 +234,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->execute();
 
 		while ($row = $result->fetch()) {
-			list(, $name) = URLUtil::splitPath($row['principaluri']);
+			list(, $name) = \Sabre\Uri\split($row['principaluri']);
 			$uri = $row['uri'] . '_shared_by_' . $name;
 			$row['displayname'] .= " ($name)";
 			$components = [];
@@ -338,7 +337,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->execute();
 
 		while ($row = $result->fetch()) {
-			list(, $name) = URLUtil::splitPath($row['principaluri']);
+			list(, $name) = \Sabre\Uri\split($row['principaluri']);
 			$row['displayname'] .= "($name)";
 			$components = [];
 			if ($row['components']) {
@@ -402,7 +401,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			throw new NotFound('Node with name \'' . $uri . '\' could not be found');
 		}
 
-		list(, $name) = URLUtil::splitPath($row['principaluri']);
+		list(, $name) = \Sabre\Uri\split($row['principaluri']);
 		$row['displayname'] = $row['displayname'] . ' ' . "($name)";
 		$components = [];
 		if ($row['components']) {
@@ -1660,7 +1659,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 
 	private function convertPrincipal($principalUri, $toV2 = null) {
 		if ($this->principalBackend->getPrincipalPrefix() === 'principals') {
-			list(, $name) = URLUtil::splitPath($principalUri);
+			list(, $name) = \Sabre\Uri\split($principalUri);
 			$toV2 = $toV2 === null ? !$this->legacyMode : $toV2;
 			if ($toV2) {
 				return "principals/users/$name";

@@ -93,15 +93,17 @@ class LockManagerTest extends TestCase {
 				$this->assertNull($lock->getPath());
 				$this->assertEquals(0, $lock->getDepth());
 				$this->assertEquals(ILock::LOCK_SCOPE_EXCLUSIVE, $lock->getScope());
-				$this->assertEquals('Alice <alice@example.net>', $lock->getOwner());
+				$this->assertEquals('Alice (alice@example.net)', $lock->getOwner());
 				$this->assertEquals(999, $lock->getOwnerAccountId());
 				$this->assertEquals(123456, $lock->getCreatedAt());
 			});
 
-		$this->manager->lock(6, '/foo/bar', 123, [
+		$lock = $this->manager->lock(6, '/foo/bar', 123, [
 			'token' => 'qwertzuiopü',
 			'scope' => ILock::LOCK_SCOPE_EXCLUSIVE
 		]);
+
+		$this->assertNotNull($lock);
 	}
 
 	public function testLockUpdate() {
@@ -141,5 +143,36 @@ class LockManagerTest extends TestCase {
 			->with(7, '/foo/bar', false);
 
 		$this->manager->getLocks(7, '/foo/bar', false);
+	}
+
+	public function lockTimeoutProvider() {
+		return [
+			// default value
+			[null, 1800],
+			// given value
+			[10, 10],
+			// given value higher than default
+			[2000, 2000],
+			// max value 1 day
+			[2*60*60*24, 60*60*24],
+			// max value 1 day, not infinite
+			[-1, 60*60*24],
+		];
+	}
+
+	/**
+	 * @dataProvider lockTimeoutProvider
+	 */
+	public function testLockTimeout($givenTimeout, $expectedTimeout) {
+		$lockInfo = [
+			'token' => 'qwertzuiopü',
+			'scope' => ILock::LOCK_SCOPE_EXCLUSIVE,
+		];
+		if ($givenTimeout !== null) {
+			$lockInfo['timeout'] = $givenTimeout;
+		}
+		$lock = $this->manager->lock(6, '/foo/bar', 123, $lockInfo);
+
+		$this->assertEquals($expectedTimeout, $lock->getTimeout());
 	}
 }

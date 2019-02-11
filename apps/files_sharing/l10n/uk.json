@@ -41,6 +41,7 @@
     "You shared %1$s via link" : "Ви поділилися %1$s використовуючи лінк",
     "%2$s shared %1$s with you" : "%2$s поділився %1$s з вами",
     "Shares" : "Розподільні",
+    "Couldn't send mail to following recipient(s): %s " : "Не вдалося надіслати повідомлення наступним користувачам: %s",
     "Accept" : "Прийняти",
     "Decline" : "Відхилити",
     "This share is password-protected" : "Цей ресурс обміну захищений паролем",

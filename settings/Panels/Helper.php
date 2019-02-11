@@ -35,7 +35,8 @@ class Helper {
 	}
 
 	public function shareWithGroupMembersOnly() {
-		return \OC\Share\Share::shareWithGroupMembersOnly();
+		$value = \OC::$server->getAppConfig()->getValue('core', 'shareapi_only_share_with_group_members', 'no');
+		return ($value === 'yes') ? true : false;
 	}
 
 	public function findBinaryPath($path) {

@@ -22,6 +22,7 @@
 
 namespace Page;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -39,7 +40,9 @@ class LoginPage extends OwncloudPage {
 	protected $passwordInputId = "password";
 	protected $submitLoginId = "submit";
 	protected $lostPasswordId = "lost-password";
+	protected $setPasswordErrorMessageId = "error-message";
 
+	protected $lostPasswordResetErrorXpath = "//li[contains(@class,'error')]";
 	protected $imprintUrlXpath = "//a[contains(text(),'Imprint')]";
 	protected $privacyPolicyXpath = "//a[contains(text(),'Privacy Policy')]";
 
@@ -56,12 +59,11 @@ class LoginPage extends OwncloudPage {
 		$this->fillField($this->passwordInputId, $password);
 		$submitElement = $this->findById($this->submitLoginId);
 
-		if ($submitElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->submitLoginId could not find login submit button"
-			);
-		}
+		$this->assertElementNotNull(
+			$submitElement,
+			__METHOD__ .
+			" id $this->submitLoginId could not find login submit button"
+		);
 
 		$submitElement->click();
 
@@ -111,13 +113,47 @@ class LoginPage extends OwncloudPage {
 	 */
 	private function lostPasswordField() {
 		$lostPasswordField = $this->findById($this->lostPasswordId);
-		if ($lostPasswordField === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->lostPasswordId could not find reset password field "
-			);
-		}
+		$this->assertElementNotNull(
+			$lostPasswordField,
+			__METHOD__ .
+			" id $this->lostPasswordId could not find reset password field "
+		);
 		return $lostPasswordField;
+	}
+
+	/**
+	 *
+	 * @throws ElementNotFoundException
+	 *
+	 * @return NodeElement
+	 */
+	private function getSetPasswordErrorMessageField() {
+		$setPasswordErrorMessageField = $this->findById($this->setPasswordErrorMessageId);
+		$this->assertElementNotNull(
+			$setPasswordErrorMessageField,
+			__METHOD__ .
+			" id $this->setPasswordErrorMessageId could not find set password error message field"
+		);
+		return $setPasswordErrorMessageField;
+	}
+
+	/**
+	 *
+	 * @throws ElementNotFoundException
+	 *
+	 * @return NodeElement
+	 */
+	private function getLostPasswordResetErrorMessageField() {
+		$lostPasswordResetErrorMessageField = $this->find(
+			"xpath", $this->lostPasswordResetErrorXpath
+		);
+		$this->assertElementNotNull(
+			$lostPasswordResetErrorMessageField,
+			__METHOD__ .
+			" id $this->lostPasswordResetErrorXpath" .
+			" could not find lost password reset error message field"
+		);
+		return $lostPasswordResetErrorMessageField;
 	}
 
 	/**
@@ -137,6 +173,24 @@ class LoginPage extends OwncloudPage {
 	public function getLostPasswordMessage() {
 		$passwordRecoveryMessage = $this->lostPasswordField()->getText();
 		return $passwordRecoveryMessage;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getSetPasswordErrorMessage() {
+		$setPasswordErrorMessage = $this->getSetPasswordErrorMessageField()->getText();
+		return $setPasswordErrorMessage;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getLostPasswordResetErrorMessage() {
+		$generalErrorMessage = $this->getLostPasswordResetErrorMessageField()->getText();
+		return $generalErrorMessage;
 	}
 
 	/**
@@ -170,13 +224,12 @@ class LoginPage extends OwncloudPage {
 			);
 		}
 
-		if ($legalUrlLink === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" id $this->imprintUrlXpath " .
-				"could not find link"
-			);
-		}
+		$this->assertElementNotNull(
+			$legalUrlLink,
+			__METHOD__ .
+			" id $this->imprintUrlXpath " .
+			"could not find link"
+		);
 
 		return($legalUrlLink->getAttribute("href"));
 	}

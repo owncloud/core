@@ -24,6 +24,7 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Page\FilesPageElement\DetailsDialog;
 use Page\FilesPageElement\FileActionsMenu;
 use Page\FilesPageElement\FileRow;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -43,13 +44,13 @@ abstract class FilesPageBasic extends OwncloudPage {
 	protected $appContentFilesContainerId = "app-content-files";
 	protected $controlsId = "controls";
 	protected $loadingIndicatorXpath = ".//*[@class='loading']";
-	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 	protected $fileRowXpathFromActionMenu = "/../..";
 	protected $appSettingsXpath = "//div[@id='app-settings']";
 	protected $showHiddenFilesCheckboxXpath = "//label[@for='showhiddenfilesToggle']";
 	protected $selectAllFilesCheckboxXpath = "//label[@for='select_all_files']";
 	protected $appSettingsContentId = "app-settings-content";
 	protected $styleOfCheckboxWhenVisible = "display: block;";
+	protected $detailsDialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
 
 	/**
 	 * @return string
@@ -82,7 +83,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @param string|array $name
 	 * @param Session $session
 	 *
-	 * @return FileRowElements[]
+	 * @return NodeElement[]
 	 * @throws ElementNotFoundException
 	 */
 	protected function getFileRowElementsByName($name, Session $session) {
@@ -120,13 +121,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 				$this->getFileListXpath()
 			);
 
-			if ($fileListElement === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" xpath " . $this->getFileListXpath() .
-					" could not find file list"
-				);
-			}
+			$this->assertElementNotNull(
+				$fileListElement,
+				__METHOD__ .
+				" xpath " . $this->getFileListXpath() .
+				" could not find file list"
+			);
 
 			$fileNameMatch = $fileListElement->findAll(
 				"xpath", \sprintf($this->getFileNameMatchXpath(), $xpathString)
@@ -183,16 +183,22 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$fileRowElements = [];
 		foreach ($fileNameMatch as $match) {
 			$fileRowElement = $match->find("xpath", $this->fileRowFromNameXpath);
-			if ($fileRowElement === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" xpath $this->fileRowFromNameXpath " .
-					"could not find file row"
-				);
-			}
+			$this->assertElementNotNull(
+				$fileRowElement,
+				__METHOD__ .
+				" xpath $this->fileRowFromNameXpath " .
+				"could not find file row"
+			);
 			$fileRowElements[] = $fileRowElement;
 		}
 		return $fileRowElements;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFileActionMenuXpath() {
+		return $this->fileActionMenuXpath;
 	}
 
 	/**
@@ -306,15 +312,13 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function findFileActionMenuElement() {
 		$actionMenu = $this->waitTillElementIsNotNull($this->fileActionMenuXpath);
-		if ($actionMenu === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->fileActionMenuXpath " .
-				"could not find open fileActionMenu"
-			);
-		} else {
-			return $actionMenu;
-		}
+		$this->assertElementNotNull(
+			$actionMenu,
+			__METHOD__ .
+			" xpath $this->fileActionMenuXpath " .
+			"could not find open fileActionMenu"
+		);
+		return $actionMenu;
 	}
 
 	/**
@@ -328,62 +332,6 @@ abstract class FilesPageBasic extends OwncloudPage {
 	public function openFile($name, Session $session) {
 		$fileRow = $this->findFileRowByName($name, $session);
 		$fileRow->openFileFolder();
-	}
-
-	/**
-	 *
-	 * @param string|array $name
-	 * @param Session $session
-	 * @param bool $expectToDeleteFile
-	 * @param int $maxRetries
-	 *
-	 * @return void
-	 */
-	public function deleteFile(
-		$name,
-		Session $session,
-		$expectToDeleteFile = true,
-		$maxRetries = STANDARD_RETRY_COUNT
-	) {
-		$this->initAjaxCounters($session);
-		$this->resetSumStartedAjaxRequests($session);
-		
-		for ($counter = 0; $counter < $maxRetries; $counter++) {
-			$row = $this->findFileRowByName($name, $session);
-			try {
-				$row->delete($session);
-				$this->waitForAjaxCallsToStartAndFinish($session);
-				$countXHRRequests = $this->getSumStartedAjaxRequests($session);
-				//if no XHR Request were fired we assume the delete action
-				//did not work and we retry
-				if ($countXHRRequests === 0) {
-					if ($expectToDeleteFile) {
-						\error_log("Error while deleting file");
-					}
-				} else {
-					break;
-				}
-			} catch (\Exception $e) {
-				$this->closeFileActionsMenu();
-				if ($expectToDeleteFile) {
-					\error_log(
-						"Error while deleting file"
-						. "\n-------------------------\n"
-						. $e->getMessage()
-						. "\n-------------------------\n"
-					);
-				}
-				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			}
-		}
-		if ($expectToDeleteFile && ($counter > 0)) {
-			if (\is_array($name)) {
-				$name = \implode($name);
-			}
-			$message = "INFORMATION: retried to delete file '$name' $counter times";
-			echo $message;
-			\error_log($message);
-		}
 	}
 
 	/**
@@ -409,22 +357,27 @@ abstract class FilesPageBasic extends OwncloudPage {
 	}
 
 	/**
+	 * gets a details dialog object
 	 *
 	 * @throws ElementNotFoundException
-	 * @return NodeElement
+	 * @return DetailsDialog
 	 */
-	public function findDeleteAllSelectedFilesBtn() {
-		$deleteAllSelectedBtn = $this->find(
-			"xpath", $this->deleteAllSelectedBtnXpath
+	public function getDetailsDialog() {
+		$detailsDialogElement = $this->find("xpath", $this->detailsDialogXpath);
+		$this->assertElementNotNull(
+			$detailsDialogElement,
+			__METHOD__ .
+			" xpath: $this->detailsDialogXpath " .
+			" could not find Details Dialog"
 		);
-		if ($deleteAllSelectedBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->deleteAllSelectedBtnXpath " .
-				"could not find button to delete all selected files"
-			);
-		}
-		return $deleteAllSelectedBtn;
+
+		/**
+		 *
+		 * @var DetailsDialog $dialog
+		 */
+		$dialog = $this->getPage("FilesPageElement\\DetailsDialog");
+		$dialog->setElement($detailsDialogElement);
+		return $dialog;
 	}
 
 	/**
@@ -436,25 +389,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$selectedAllFilesBtn = $this->find(
 			"xpath", $this->selectAllFilesCheckboxXpath
 		);
-		if ($selectedAllFilesBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				"could not find button $this->selectAllFilesCheckboxXpath to select all files"
-			);
-		}
+		$this->assertElementNotNull(
+			$selectedAllFilesBtn,
+			__METHOD__ .
+			"could not find button $this->selectAllFilesCheckboxXpath to select all files"
+		);
 		return $selectedAllFilesBtn;
-	}
-
-	/**
-	 *
-	 * @param Session $session
-	 *
-	 * @return void
-	 */
-	public function deleteAllSelectedFiles(Session $session) {
-		$this->findDeleteAllSelectedFilesBtn()->click();
-		$this->waitForAjaxCallsToStartAndFinish($session);
-		$this->waitTillFileRowsAreReady($session);
 	}
 
 	/**
@@ -489,13 +429,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 	public function findFileActionsMenuBtnByNo($number) {
 		$xpathLocator = \sprintf($this->fileActionMenuBtnXpathByNo, $number);
 		$actionMenuBtn = $this->find("xpath", $xpathLocator);
-		if ($actionMenuBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $xpathLocator " .
-				"could not find action menu button of file #$number"
-			);
-		}
+		$this->assertElementNotNull(
+			$actionMenuBtn,
+			__METHOD__ .
+			" xpath $xpathLocator " .
+			"could not find action menu button of file #$number"
+		);
 		return $actionMenuBtn;
 	}
 
@@ -512,14 +451,16 @@ abstract class FilesPageBasic extends OwncloudPage {
 	/**
 	 *
 	 * @param int $number
+	 * @param Session $session
 	 *
 	 * @return FileActionsMenu
 	 */
-	public function openFileActionsMenuByNo($number) {
+	public function openFileActionsMenuByNo($number, Session $session) {
 		$this->clickFileActionsMenuBtnByNo($number);
-		$actionMenuElement = $this->findFileActionMenuElement();
 		$actionMenu = $this->getPage('FilesPageElement\\FileActionsMenu');
-		$actionMenu->setElement($actionMenuElement);
+		$actionMenu->waitTillPageIsLoaded(
+			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->getFileActionMenuXpath()
+		);
 		return $actionMenu;
 	}
 
@@ -669,22 +610,20 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function enableShowHiddenFilesSettings() {
 		$appSettingsButton = $this->find('xpath', $this->appSettingsXpath);
-		if ($appSettingsButton === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->appSettingsXpath " .
-				"could not find the appSettings button"
-			);
-		}
+		$this->assertElementNotNull(
+			$appSettingsButton,
+			__METHOD__ .
+			" xpath $this->appSettingsXpath " .
+			"could not find the appSettings button"
+		);
 		$appSettingsButton->click();
 		$appSettingsDiv = $this->findById($this->appSettingsContentId);
-		if ($appSettingsDiv === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->appSettingsContentId " .
-				"could not find the appSettings section"
-			);
-		}
+		$this->assertElementNotNull(
+			$appSettingsDiv,
+			__METHOD__ .
+			" xpath $this->appSettingsContentId " .
+			"could not find the appSettings section"
+		);
 		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC;
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -702,13 +641,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$showHiddenFilesCheckBox = $this->find(
 			'xpath', $this->showHiddenFilesCheckboxXpath
 		);
-		if ($showHiddenFilesCheckBox === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->showHiddenFilesCheckboxXpath " .
-				"could not find the field for show hidden files checkbox"
-			);
-		}
+		$this->assertElementNotNull(
+			$showHiddenFilesCheckBox,
+			__METHOD__ .
+			" xpath $this->showHiddenFilesCheckboxXpath " .
+			"could not find the field for show hidden files checkbox"
+		);
 		$showHiddenFilesCheckBox->click();
 	}
 }

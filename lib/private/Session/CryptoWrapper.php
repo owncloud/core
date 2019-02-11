@@ -58,6 +58,12 @@ class CryptoWrapper {
 	/** @var ISecureRandom */
 	protected $random;
 
+	/** @var IConfig  */
+	private $config;
+
+	/** @var string  */
+	private $passphrase;
+
 	/**
 	 * @param IConfig $config
 	 * @param ICrypto $crypto

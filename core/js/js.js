@@ -428,6 +428,21 @@ var OC = {
 	},
 
 	/**
+	 * Returns true if the email regexp matches the email address else false returned
+	 * For example if email is "abc@foo.com", it will return true.
+	 * If email address is "abc@foo.c", then false will be returned.
+	 *
+	 * @param emailAddress
+	 * @returns {boolean}
+	 *
+	 * @since 10.1.0
+	 */
+	validateEmail: function(emailAddress) {
+		var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@\.]{2,}$/;
+		return (emailRegex.exec(emailAddress) !== null);
+	},
+
+	/**
 	 * Returns the dir name of the given path.
 	 * For example for "/abc/somefile.txt" it will return "/abc"
 	 *
@@ -760,7 +775,7 @@ var OC = {
 	 * @return {String} locale string
 	 */
 	getLocale: function () {
-		return $('html').prop('lang');
+		return $('html').attr('lang');
 	},
 
 	/**

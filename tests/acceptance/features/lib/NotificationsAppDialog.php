@@ -22,7 +22,7 @@
 
 namespace Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use Behat\Mink\Session;
 
 /**
  * PageObject for the Notifications area
@@ -42,26 +42,23 @@ class NotificationsAppDialog extends OwncloudPage {
 		$notificationsArray = [];
 		foreach ($notifications as $notification) {
 			$title = $notification->find("xpath", $this->notificationTitleXpath);
-			if ($title === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" could not find notification title with xpath $this->notificationTitleXpath"
-				);
-			}
+			$this->assertElementNotNull(
+				$title,
+				__METHOD__ .
+				" could not find notification title with xpath $this->notificationTitleXpath"
+			);
 			$link = $notification->find("xpath", $this->notificationLinkXpath);
-			if ($link === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" could not find notification link with xpath $this->notificationLinkXpath"
-				);
-			}
+			$this->assertElementNotNull(
+				$link,
+				__METHOD__ .
+				" could not find notification link with xpath $this->notificationLinkXpath"
+			);
 			$message = $notification->find("xpath", $this->notificationMessageXpath);
-			if ($message === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" could not find notification message with xpath $this->notificationMessageXpath"
-				);
-			}
+			$this->assertElementNotNull(
+				$message,
+				__METHOD__ .
+				" could not find notification message with xpath $this->notificationMessageXpath"
+			);
 			$notificationsArray[] = [
 				'title' => $title->getText(),
 				'link' => $link->getAttribute('href'),
@@ -88,5 +85,22 @@ class NotificationsAppDialog extends OwncloudPage {
 			$notificationObjects[] = $notificationObject;
 		}
 		return $notificationObjects;
+	}
+
+	/**
+	 * waits for the page to appear completely
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	) {
+		$this->waitTillXpathIsVisible(
+			$this->notificationContainerXpath, $timeout_msec
+		);
 	}
 }

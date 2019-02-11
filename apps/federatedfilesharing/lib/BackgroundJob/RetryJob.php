@@ -24,6 +24,7 @@ namespace OCA\FederatedFileSharing\BackgroundJob;
 use OC\BackgroundJob\Job;
 use OC\BackgroundJob\JobList;
 use OCA\FederatedFileSharing\AddressHandler;
+use OCA\FederatedFileSharing\AppInfo\Application;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\Notifications;
 use OCP\BackgroundJob\IJobList;
@@ -60,21 +61,8 @@ class RetryJob extends Job {
 		if ($notifications) {
 			$this->notifications = $notifications;
 		} else {
-			$addressHandler = new AddressHandler(
-				\OC::$server->getURLGenerator(),
-				\OC::$server->getL10N('federatedfilesharing')
-			);
-			$discoveryManager = new DiscoveryManager(
-				\OC::$server->getMemCacheFactory(),
-				\OC::$server->getHTTPClientService()
-			);
-			$this->notifications = new Notifications(
-				$addressHandler,
-				\OC::$server->getHTTPClientService(),
-				$discoveryManager,
-				\OC::$server->getJobList(),
-				\OC::$server->getConfig()
-			);
+			$federatedFileSharingApp = new Application();
+			$this->notifications = $federatedFileSharingApp->getContainer()->query('Notifications');
 		}
 	}
 

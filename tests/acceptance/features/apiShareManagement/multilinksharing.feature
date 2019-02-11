@@ -3,7 +3,7 @@ Feature: multilinksharing
 
   Background:
     Given using old DAV path
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
     And as user "user0"
 
   @smokeTest
@@ -120,7 +120,7 @@ Feature: multilinksharing
       | name        | sharedlink2   |
     And user "user0" has deleted file "/textfile0.txt"
     And the HTTP status code should be "204"
-    When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" using the WebDAV API
+    When user "user0" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as user "user0" the public shares of file "/textfile0.txt" should be
       |  |  |  |
@@ -170,7 +170,7 @@ Feature: multilinksharing
       | expireDate  | +3 days       |
       | permissions | 1             |
       | name        | sharedlink2   |
-    When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" using the WebDAV API
+    When user "user0" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" using the WebDAV API
     Then as user "user0" the public shares of file "/textfile0.txt" should be
       | /textfile0.txt | 1 | sharedlink1 |
       | /textfile0.txt | 1 | sharedlink2 |

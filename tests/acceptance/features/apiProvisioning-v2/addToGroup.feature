@@ -9,10 +9,9 @@ Feature: add users to group
 
   @smokeTest
   Scenario Outline: adding a user to a group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "<group_id>" has been created
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | <group_id> |
+    When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     Examples:
@@ -22,10 +21,9 @@ Feature: add users to group
       | नेपाली      | Unicode group name          |
 
   Scenario Outline: adding a user to a group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "<group_id>" has been created
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | <group_id> |
+    When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     Examples:
@@ -47,14 +45,18 @@ Feature: add users to group
       | 50%2Fix             | %2F literal looks like an escaped slash |
       | staff?group         | Question mark                           |
 
-  @skip @issue-31015
+  @issue-31015
   Scenario Outline: adding a user to a group that has a forward-slash in the group name
-    Given user "brand-new-user" has been created
-    And group "<group_id>" has been created
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | <group_id> |
+    Given user "brand-new-user" has been created with default attributes
+    # After fixing issue-31015, change the following step to "has been created"
+    And the administrator sends a group creation request for group "<group_id>" using the provisioning API
+    #And group "<group_id>" has been created
+    When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
+    # The following step is needed so that the group does get cleaned up.
+    # After fixing issue-31015, remove the following step:
+    And the administrator deletes group "<group_id>" using the occ command
     Examples:
       | group_id         | comment                            |
       | Mgmt/Sydney      | Slash (special escaping happens)   |
@@ -62,28 +64,26 @@ Feature: add users to group
       | var/../etc       | using slash-dot-dot                |
       | priv/subadmins/1 | Subadmins mentioned not at the end |
 
-  @skip @issue-31276
+  @issue-31276
   Scenario: normal user tries to add himself to a group
-    Given user "brand-new-user" has been created
-    When user "brand-new-user" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | new-group |
-    Then the OCS status code should be "401"
+    Given user "brand-new-user" has been created with default attributes
+    When user "brand-new-user" tries to add himself to group "new-group" using the provisioning API
+    Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And the API should not return any data
 
   Scenario: admin tries to add user to a group which does not exist
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "not-group" has been deleted
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | not-group |
+    When the administrator tries to add user "brand-new-user" to group "not-group" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And the API should not return any data
 
   Scenario: admin tries to add user to a group without sending the group
-    Given user "brand-new-user" has been created
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid |  |
+    Given user "brand-new-user" has been created with default attributes
+    When the administrator tries to add user "brand-new-user" to group "" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And the API should not return any data
@@ -91,31 +91,28 @@ Feature: add users to group
   Scenario: admin tries to add a user which does not exist to a group
     Given user "not-user" has been deleted
     And group "new-group" has been created
-    When user "%admin%" sends HTTP method "POST" to OCS API endpoint "/cloud/users/not-user/groups" with body
-      | groupid | new-group |
+    When the administrator tries to add user "not-user" to group "new-group" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And the API should not return any data
 
   Scenario: subadmin adds users to groups the subadmin is responsible for
-    Given user "subadmin" has been created
-    And user "brand-new-user" has been created
+    Given user "subadmin" has been created with default attributes
+    And user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
-    When user "subadmin" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | new-group |
+    When user "subadmin" tries to add user "brand-new-user" to group "new-group" using the provisioning API
     Then the OCS status code should be "403"
     And the HTTP status code should be "403"
     And user "brand-new-user" should not belong to group "new-group"
 
   Scenario: subadmin tries to add user to groups the subadmin is not responsible for
-    Given user "other-subadmin" has been created
-    And user "brand-new-user" has been created
+    Given user "other-subadmin" has been created with default attributes
+    And user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And group "other-group" has been created
     And user "other-subadmin" has been made a subadmin of group "other-group"
-    When user "other-subadmin" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | new-group |
+    When user "other-subadmin" tries to add user "brand-new-user" to group "new-group" using the provisioning API
     Then the OCS status code should be "403"
     And the HTTP status code should be "403"
     And user "brand-new-user" should not belong to group "new-group"

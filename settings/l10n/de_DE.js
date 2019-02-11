@@ -1,6 +1,8 @@
 OC.L10N.register(
     "settings",
     {
+    "Wrong current password" : "Falsches aktuelles Passwort",
+    "The new password cannot be the same as the previous one" : "Das neue Passwort kann nicht das gleiche sein wie das alte",
     "%s password changed successfully" : "%s Passwort erfolgreich geändert",
     "Couldn't send reset email. Please contact your administrator." : "Die E-Mail zum Zurücksetzen konnte nicht versendet werden. Bitte kontaktieren Sie Ihren Administrator.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "Das Installieren und Aktualisieren von Apps durch den App-Store oder durch Federated Cloud Sharing",
@@ -91,8 +93,6 @@ OC.L10N.register(
     "Report a bug" : "Melden Sie einen technischen Fehler",
     "Show description …" : "Beschreibung anzeigen…",
     "Hide description …" : "Beschreibung ausblenden…",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Dieser App ist keine minimum ownCloud Version zugewiesen. Dies wird ein Fehler in ownCloud 11 und später sein.",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Diese App hat keine maximale ownCloud Version zugeordnet. Dies wird ein Fehler in ownCloud 11 und später sein.",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Diese App kann nicht installiert werden, weil die folgenden Abhängigkeiten nicht erfüllt sind:",
     "Enable only for specific groups" : "Nur für bestimmte Gruppen aktivieren",
     "Uninstall App" : "App deinstallieren",
@@ -250,7 +250,7 @@ OC.L10N.register(
     "For password recovery and notifications" : "Für Passwort Wiederherstellung und Benachrichtigungen",
     "No email address set" : "Keine E-Mail-Adresse angegeben",
     "You are member of the following groups:" : "Sie sind Mitglied folgender Gruppen:",
-    "You are not a member of any groups." : "Du bist kein Mitglied einer Gruppe.",
+    "You are not a member of any groups." : "Sie sind kein Mitglied einer Gruppe.",
     "Password" : "Passwort",
     "Unable to change your password" : "Das Passwort konnte nicht geändert werden",
     "Current password" : "Aktuelles Passwort",

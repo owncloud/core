@@ -870,6 +870,21 @@ describe('OC.Files.Client tests', function() {
 		});
 	});
 
+	describe('getRelativePath', function() {
+		it('returns relative path when given path applies', function() {
+			expect(client.getRelativePath('/owncloud/remote.php/webdav/abc/def'))
+				.toEqual('/abc/def');
+		});
+		it('returns empty string when given path is equal to the root', function() {
+			expect(client.getRelativePath('/owncloud/remote.php/webdav/'))
+				.toEqual('');
+		});
+		it('returns null if given path is not relative to root', function() {
+			expect(client.getRelativePath('/other/remote.php/webdav/abc/def'))
+				.toEqual(null);
+		});
+	});
+
 	describe('default client', function() {
 		var getCurrentUserStub;
 		var propFindStub;

@@ -43,7 +43,7 @@ $activityManager->registerExtension(function () {
 	return $extension;
 });
 
-$managerListener = function (\OCP\Comments\CommentsEvent $event) use ($activityManager) {
+$managerListener = function (\OCP\Comments\CommentsEvent $event) {
 	$application = new \OCP\AppFramework\App('comments');
 	/** @var \OCA\Comments\Activity\Listener $listener */
 	$listener = $application->getContainer()->query('OCA\Comments\Activity\Listener');
@@ -54,7 +54,7 @@ $eventDispatcher->addListener(\OCP\Comments\CommentsEvent::EVENT_ADD, $managerLi
 
 $eventDispatcher->addListener(\OCP\Comments\CommentsEntityEvent::EVENT_ENTITY, function (\OCP\Comments\CommentsEntityEvent $event) {
 	$event->addEntityCollection('files', function ($name) {
-		$nodes = \OC::$server->getUserFolder()->getById(\intval($name));
+		$nodes = \OC::$server->getUserFolder()->getById((int)$name, true);
 		return !empty($nodes);
 	});
 });

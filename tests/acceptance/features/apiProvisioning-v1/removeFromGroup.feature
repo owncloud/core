@@ -9,11 +9,10 @@ Feature: remove a user from a group
 
   @smokeTest
   Scenario Outline: admin removes a user from a group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
-    When user "%admin%" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | <group_id> |
+    When the administrator removes user "brand-new-user" from group "<group_id>" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "brand-new-user" should not belong to group "<group_id>"
@@ -24,11 +23,10 @@ Feature: remove a user from a group
       | नेपाली      | Unicode group name          |
 
   Scenario Outline: admin removes a user from a group
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
-    When user "%admin%" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | <group_id> |
+    When the administrator removes user "brand-new-user" from group "<group_id>" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "brand-new-user" should not belong to group "<group_id>"
@@ -51,16 +49,20 @@ Feature: remove a user from a group
       | 50%2Fix             | %2F literal looks like an escaped slash |
       | staff?group         | Question mark                           |
 
-  @skip @issue-31015
+  @issue-31015
   Scenario Outline: admin removes a user from a group that has a forward-slash in the group name
-    Given user "brand-new-user" has been created
-    And group "<group_id>" has been created
+    Given user "brand-new-user" has been created with default attributes
+    # After fixing issue-31015, change the following step to "has been created"
+    And the administrator sends a group creation request for group "<group_id>" using the provisioning API
+    #And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
-    When user "%admin%" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | <group_id> |
+    When the administrator removes user "brand-new-user" from group "<group_id>" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "brand-new-user" should not belong to group "<group_id>"
+    # The following step is needed so that the group does get cleaned up.
+    # After fixing issue-31015, remove the following step:
+    And the administrator deletes group "<group_id>" using the occ command
     Examples:
       | group_id         | comment                            |
       | Mgmt/Sydney      | Slash (special escaping happens)   |
@@ -69,48 +71,44 @@ Feature: remove a user from a group
       | priv/subadmins/1 | Subadmins mentioned not at the end |
 
   Scenario: admin tries to remove a user from a group which does not exist
-    Given user "brand-new-user" has been created
+    Given user "brand-new-user" has been created with default attributes
     And group "not-group" has been deleted
-    When user "%admin%" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | not-group |
+    When the administrator removes user "brand-new-user" from group "not-group" using the provisioning API
     Then the OCS status code should be "102"
     And the HTTP status code should be "200"
     And the API should not return any data
 
   @smokeTest
   Scenario: a subadmin can remove users from groups the subadmin is responsible for
-    Given user "subadmin" has been created
-    And user "brand-new-user" has been created
+    Given user "subadmin" has been created with default attributes
+    And user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
-    When user "subadmin" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | new-group |
+    When user "subadmin" removes user "brand-new-user" from group "new-group" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "brand-new-user" should not belong to group "new-group"
 
   Scenario: a subadmin cannot remove users from groups the subadmin is not responsible for
-    Given user "other-subadmin" has been created
-    And user "brand-new-user" has been created
+    Given user "other-subadmin" has been created with default attributes
+    And user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
     And group "other-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "other-subadmin" has been made a subadmin of group "other-group"
-    When user "other-subadmin" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
-      | groupid | new-group |
+    When user "other-subadmin" removes user "brand-new-user" from group "new-group" using the provisioning API
     Then the OCS status code should be "104"
     And the HTTP status code should be "200"
     And user "brand-new-user" should belong to group "new-group"
 
-  Scenario: normal user tries to remove the user in his group
-    Given user "newuser" has been created
-    And user "anotheruser" has been created
+  Scenario: normal user tries to remove a user in their group
+    Given user "newuser" has been created with default attributes
+    And user "anotheruser" has been created with default attributes
     And group "new-group" has been created
     And user "newuser" has been added to group "new-group"
     And user "anotheruser" has been added to group "new-group"
-    When user "newuser" sends HTTP method "DELETE" to OCS API endpoint "/cloud/users/anotheruser/groups" with body
-      | groupid | new-group |
+    When user "newuser" tries to remove user "another-user" from group "new-group" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "anotheruser" should belong to group "new-group"

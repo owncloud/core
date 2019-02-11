@@ -384,9 +384,9 @@ class Checker {
 
 		// Compare the list of files which are not identical
 		$currentInstanceHashes = $this->generateHashes($this->getFolderIterator($basePath), $basePath);
-		$differencesA = \array_diff($expectedHashes, $currentInstanceHashes);
-		$differencesB = \array_diff($currentInstanceHashes, $expectedHashes);
-		$differences = \array_unique(\array_merge($differencesA, $differencesB));
+		$differencesA = \array_diff_assoc($expectedHashes, $currentInstanceHashes);
+		$differencesB = \array_diff_assoc($currentInstanceHashes, $expectedHashes);
+		$differences = \array_merge($differencesA, $differencesB);
 		$differenceArray = [];
 		foreach ($differences as $filename => $hash) {
 			//If filename in exclude files list, then ignore it

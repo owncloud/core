@@ -9,8 +9,12 @@ OC.L10N.register(
     "Please provide a valid app key and secret." : "请提供有效的应用key和secret",
     "Generate keys" : "生成密钥",
     "Error generating key pair" : "生成密钥时出错",
+    "All users. Type to select user or group." : "所有用户。输入以选择用户或组。",
+    "(group)" : "(组)",
     "Saved" : "已保存",
     "Disable external storage" : "停用外部存储",
+    "Empty response from the server" : "服务器未返回数据",
+    "Couldn't get the information from the ownCloud server: {code} {type}" : "无法从 ownCloud 服务器获取信息：{code} {type}",
     "There was an error with message: " : "发生错误：",
     "External mount error" : "外部挂载错误",
     "Username" : "用户名",
@@ -57,6 +61,7 @@ OC.L10N.register(
     "Never" : "从不",
     "External Storage" : "外部存储",
     "Enable external storage" : "启用外部存储",
+    "External storage has been disabled by the administrator" : "外部储存已被管理员停用",
     "Folder name" : "目录名称",
     "Authentication" : "认证",
     "Configuration" : "配置",
@@ -65,6 +70,7 @@ OC.L10N.register(
     "Advanced settings" : "高级选项",
     "Delete" : "删除",
     "Allow users to mount external storage" : "允许用户挂载外部存储",
-    "Allow users to mount the following external storage" : "允许用户挂载以下外部存储"
+    "Allow users to mount the following external storage" : "允许用户挂载以下外部存储",
+    "Allow sharing on user-mounted external storages" : "允许用户挂载的外部储存共享"
 },
 "nplurals=1; plural=0;");

@@ -33,6 +33,8 @@ use OCP\IConfig;
  * @package OC\App
  */
 class Platform {
+	/** @var IConfig */
+	private $config;
 
 	/**
 	 * @param IConfig $config
@@ -44,29 +46,29 @@ class Platform {
 	/**
 	 * @return string
 	 */
-	public function getPhpVersion() {
+	public function getPhpVersion(): string {
 		return \phpversion();
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getIntSize() {
+	public function getIntSize(): int {
 		return PHP_INT_SIZE;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getOcVersion() {
+	public function getOcVersion(): string {
 		$v = \OCP\Util::getVersion();
-		return \join('.', $v);
+		return \implode('.', $v);
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getDatabase() {
+	public function getDatabase(): string {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		if ($dbType === 'sqlite3') {
 			$dbType = 'sqlite';
@@ -78,7 +80,7 @@ class Platform {
 	/**
 	 * @return string
 	 */
-	public function getOS() {
+	public function getOS(): string {
 		return \php_uname('s');
 	}
 
@@ -86,14 +88,17 @@ class Platform {
 	 * @param $command
 	 * @return bool
 	 */
-	public function isCommandKnown($command) {
+	public function isCommandKnown($command): bool {
 		$path = \OC_Helper::findBinaryPath($command);
 		return ($path !== null);
 	}
 
-	public function getLibraryVersion($name) {
+	public function getLibraryVersion($name): ?string {
 		$repo = new PlatformRepository();
-		$lib = $repo->findLibrary($name);
-		return $lib;
+		return $repo->findLibrary($name);
+	}
+
+	public function getOcChannel(): string {
+		return \OCP\Util::getChannel();
 	}
 }

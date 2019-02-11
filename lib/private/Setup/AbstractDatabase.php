@@ -44,6 +44,8 @@ abstract class AbstractDatabase {
 	protected $dbHost;
 	/** @var string */
 	protected $tablePrefix;
+	/** @var string */
+	protected $dbprettyname;
 	/** @var IConfig */
 	protected $config;
 	/** @var ILogger */

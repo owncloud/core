@@ -24,6 +24,8 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Page\FilesPageElement\FileRow;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
@@ -44,7 +46,11 @@ class TrashbinPage extends FilesPageBasic {
 	protected $restoreAllSelectedBtnXpath = ".//*[@id='app-content-trashbin']//*[@class='undelete']";
 	protected $selectAllFilesCheckboxXpath = "//label[@for='select_all_trash']";
 	protected $filePathInRowXpath = "//span[@class='nametext extra-data']";
-
+	/**
+	 *
+	 * @var FilesPageCRUD $filesPageCRUDFunctions
+	 */
+	protected $filesPageCRUDFunctions;
 	/**
 	 * @return string
 	 */
@@ -85,6 +91,25 @@ class TrashbinPage extends FilesPageBasic {
 	}
 
 	/**
+	 * @param Session $session
+	 * @param Factory $factory
+	 * @param array   $parameters
+	 */
+	public function __construct(
+		Session $session, Factory $factory, array $parameters = []
+	) {
+		parent::__construct($session, $factory, $parameters);
+		$this->filesPageCRUDFunctions = $this->getPage("FilesPageCRUD");
+		$this->filesPageCRUDFunctions->setXpath(
+			$this->emptyContentXpath,
+			$this->fileListXpath,
+			$this->fileNameMatchXpath,
+			$this->fileNamesXpath,
+			$this->deleteAllSelectedBtnXpath
+		);
+	}
+
+	/**
 	 * @throws ElementNotFoundException
 	 * @return NodeElement
 	 */
@@ -92,13 +117,12 @@ class TrashbinPage extends FilesPageBasic {
 		$restoreAllSelectedBtn = $this->find(
 			"xpath", $this->restoreAllSelectedBtnXpath
 		);
-		if ($restoreAllSelectedBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->restoreAllSelectedBtnXpath " .
-				"could not find button to restore all selected files"
-			);
-		}
+		$this->assertElementNotNull(
+			$restoreAllSelectedBtn,
+			__METHOD__ .
+			" xpath $this->restoreAllSelectedBtnXpath " .
+			"could not find button to restore all selected files"
+		);
 		return $restoreAllSelectedBtn;
 	}
 
@@ -144,5 +168,35 @@ class TrashbinPage extends FilesPageBasic {
 			$fileRows[] = $fileRow;
 		}
 		return $fileRows;
+	}
+
+	/**
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 * @param bool $expectToDeleteFile
+	 * @param int $maxRetries
+	 *
+	 * @return void
+	 */
+	public function deleteFile(
+		$name,
+		Session $session,
+		$expectToDeleteFile = true,
+		$maxRetries = STANDARD_RETRY_COUNT
+	) {
+		$this->filesPageCRUDFunctions->deleteFile(
+			$name, $session, $expectToDeleteFile, $maxRetries
+		);
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function deleteAllSelectedFiles(Session $session) {
+		$this->filesPageCRUDFunctions->deleteAllSelectedFiles($session);
 	}
 }

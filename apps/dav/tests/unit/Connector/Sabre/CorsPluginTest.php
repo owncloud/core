@@ -92,6 +92,7 @@ class CorsPluginTest extends TestCase {
 			'X-Requested-With',
 			'Content-Type',
 			'Access-Control-Allow-Origin',
+			'X-Request-ID',
 			'X-OC-Mtime',
 			'OC-Checksum',
 			'OC-Total-Length',
@@ -289,7 +290,7 @@ class CorsPluginTest extends TestCase {
 		$this->server->httpRequest->setUrl('/owncloud/remote.php/dav/files/user1/target/path');
 
 		$this->server->addPlugin($this->plugin);
-		$this->server->exec();
+		$this->server->start();
 
 		$this->assertEquals($expectedStatus, $this->server->httpResponse->getStatus());
 

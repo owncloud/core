@@ -57,6 +57,7 @@ OC.L10N.register(
     "Shared via public link" : "Pasidalinta vieša nuoroda",
     "Shared by %2$s" : "Pasidalino %2$s",
     "Shares" : "Dalijimaisi",
+    "Public link" : "Vieša nuoroda",
     "Accept" : "Priimti",
     "Decline" : "Atmesti",
     "This share is password-protected" : "Turinys apsaugotas slaptažodžiu",

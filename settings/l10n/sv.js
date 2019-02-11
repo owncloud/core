@@ -83,8 +83,6 @@ OC.L10N.register(
     "Report a bug" : "Rapportera ett problem",
     "Show description …" : "Visa beskrivning",
     "Hide description …" : "Dölj beskrivning",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Denna applikation har ingen minimum version av Owncloud tilldelad. Detta kommer rapporteras som ett fel i Owncloud 11 och senare.",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Denna applikation har ingen maximal version av Owncloud tilldelad. Detta kommer rapporteras som ett fel i Owncloud 11 och senare.",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Denna applikation kan inte installeras då följande beroenden inte är uppfyllda: %s",
     "Enable only for specific groups" : "Aktivera endast för specifika grupper",
     "Uninstall App" : "Avinstallera applikation",

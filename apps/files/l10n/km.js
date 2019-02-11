@@ -17,6 +17,7 @@ OC.L10N.register(
     "Size" : "ទំហំ",
     "Modified" : "បាន​កែ​ប្រែ",
     "New" : "ថ្មី",
+    "Unknown user" : "មិនស្គាល់អ្នកប្រើប្រាស់",
     "File name cannot be empty." : "ឈ្មោះ​ឯកសារ​មិន​អាច​នៅ​ទទេ​បាន​ឡើយ។",
     "Folder" : "ថត",
     "New folder" : "ថត​ថ្មី",

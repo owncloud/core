@@ -36,12 +36,8 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 trait BasicStructure {
 	use AppConfiguration;
 	use Auth;
-	use Checksums;
-	use Comments;
 	use Provisioning;
 	use Sharing;
-	use Tags;
-	use Trashbin;
 	use WebDav;
 	use CommandLine;
 
@@ -181,9 +177,9 @@ trait BasicStructure {
 	private $requestToken;
 
 	/**
-	 * @var string
+	 * @var array
 	 */
-	private $storageId = null;
+	private $storageIds = [];
 
 	/**
 	 * The local source IP address from which to initiate API actions.
@@ -312,6 +308,39 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @param string $appTestCodeFullPath
+	 *
+	 * @return string the relative path from the core tests/acceptance dir
+	 *                to the equivalent dir in the app
+	 */
+	public function getPathFromCoreToAppAcceptanceTests(
+		$appTestCodeFullPath
+	) {
+		// $appTestCodeFullPath is something like:
+		// '/somedir/anotherdir/core/apps/guests/tests/acceptance/features/bootstrap'
+		// and we want to know the 'apps/guests/tests/acceptance' part
+
+		// Sadly we have to support PHP 5.6 still.
+		// From PHP 7.0 we can go up 2 levels more directly:
+		// $path = dirname(__DIR__, 2);
+		$path = \dirname(\dirname($appTestCodeFullPath));
+		$acceptanceDir = \basename($path);
+		$path = \dirname($path);
+		$testsDir = \basename($path);
+		$path = \dirname($path);
+		$appNameDir = \basename($path);
+		$path = \dirname($path);
+		// We specially are not sure about the name of the directory 'apps'
+		// Sometimes the app could be installed in some alternate apps directory
+		// like, for example, `apps-external`. So this really does need to be
+		// resolved here at run-time.
+		$appsDir = \basename($path);
+		// To get from core tests/acceptance we go up 2 levels then down through
+		// the above app dirs.
+		return "../../$appsDir/$appNameDir/$testsDir/$acceptanceDir";
+	}
+
+	/**
 	 * Get the externally-defined admin username, if any
 	 *
 	 * @return string|false
@@ -416,17 +445,6 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @param string $text
-	 *
-	 * @return string
-	 */
-	public function replaceProductName($text) {
-		return \str_replace(
-			"%productname%", $this->getProductNameFromStatus(), $text
-		);
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getOcPath() {
@@ -513,6 +531,21 @@ trait BasicStructure {
 	}
 
 	/**
+	 * returns the base URL without any sub-path e.g. http://localhost:8080
+	 * of the base URL http://localhost:8080/owncloud
+	 *
+	 * @return string
+	 */
+	public function getBaseUrlWithoutPath() {
+		$parts = \parse_url($this->getBaseUrl());
+		$url = $parts ["scheme"] . "://" . $parts["host"];
+		if (isset($parts["port"])) {
+			$url = "$url:" . $parts["port"];
+		}
+		return $url;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getOcsApiVersion() {
@@ -525,7 +558,39 @@ trait BasicStructure {
 	public function getSourceIpAddress() {
 		return $this->sourceIpAddress;
 	}
-	
+
+	/**
+	 * @return array|null
+	 */
+	public function getStorageIds() {
+		return $this->storageIds;
+	}
+
+	/**
+	 * @param string $storageName
+	 *
+	 * @throws Exception
+	 * @return integer
+	 */
+	public function getStorageId($storageName) {
+		if (\array_key_exists($storageName, $this->getStorageIds())) {
+			return $this->getStorageIds()[$storageName];
+		}
+		throw new \Exception(
+			"Could not find storageId with storage name $storageName"
+		);
+	}
+
+	/**
+	 * @param string $storageName
+	 * @param integer $storageId
+	 *
+	 * @return void
+	 */
+	public function addStorageId($storageName, $storageId) {
+		$this->storageIds[$storageName] = $storageId;
+	}
+
 	/**
 	 * @param string $sourceIpAddress
 	 *
@@ -585,6 +650,15 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Given as the administrator
+	 *
+	 * @return void
+	 */
+	public function asTheAdministrator() {
+		$this->currentUser = $this->getAdminUsername();
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getCurrentUser() {
@@ -611,6 +685,8 @@ trait BasicStructure {
 	 */
 	public function setResponse($response) {
 		$this->response = $response;
+		//after a new response reset the response xml
+		$this->responseXml = [];
 	}
 
 	/**
@@ -720,6 +796,19 @@ trait BasicStructure {
 			$url,
 			null
 		);
+	}
+
+	/**
+	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url
+	 *
+	 * @param string $verb
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSendsHttpMethodToOcsApiEndpoint($verb, $url) {
+		$admin = $this->getAdminUsername();
+		$this->userSendsToOcsApiEndpoint($admin, $verb, $url);
 	}
 
 	/**
@@ -877,6 +966,25 @@ trait BasicStructure {
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$user, $password, $verb, $url, $bodyArray, $this->ocsApiVersion
+		);
+	}
+
+	/**
+	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url with body
+	 * @Given the administrator has sent HTTP method :verb to OCS API endpoint :url with body
+	 *
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSendsHttpMethodToOcsApiEndpointWithBody(
+		$verb, $url, TableNode $body
+	) {
+		$admin = $this->getAdminUsername();
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$admin, $verb, $url, $body
 		);
 	}
 
@@ -1428,7 +1536,7 @@ trait BasicStructure {
 		} else {
 			// The user has not been created yet and is not one of the pre-known
 			// users. So let the caller have the default password.
-			return (string) $this->regularUserPassword;
+			return (string) $this->getActualPassword($this->regularUserPassword);
 		}
 	}
 
@@ -1516,6 +1624,7 @@ trait BasicStructure {
 		}
 	}
 
+	// TODO do similar for other usernames for e.g. %regularuser% or %test-user-1%
 	/**
 	 * @param string $functionalUsername
 	 *
@@ -1581,6 +1690,73 @@ trait BasicStructure {
 	 */
 	public function theAdministratorRequestsStatusPhp() {
 		$this->response = $this->getStatusPhp();
+	}
+
+	/**
+	 * @When the administrator creates file :path with content :content in local storage using the testing API
+	 * @Given the administrator has created file :path with content :content in local storage using the testing API
+	 *
+	 * @param string $path
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theAdministratorCreatesFileUsingTheTestingApi($path, $content) {
+		$this->theAdministratorCreatesFileWithContentInLocalStorageUsingTheTestingApi(
+			$path,
+			$content,
+			'local_storage'
+		);
+	}
+
+	/**
+	 * @When the administrator creates file :path with content :content in local storage :mountPoint using the testing API
+	 * @Given the administrator has created file :path with content :content in local storage :mountPount
+	 *
+	 * @param string $path
+	 * @param string $content
+	 * @param string $mountPoint
+	 *
+	 * @return void
+	 */
+	public function theAdministratorCreatesFileWithContentInLocalStorageUsingTheTestingApi(
+		$path, $content, $mountPoint
+	) {
+		$user = $this->getAdminUsername();
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getAdminPassword(),
+			'POST',
+			"/apps/testing/api/v1/file",
+			[
+				'file' => TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$mountPoint/$path",
+				'content' => $content
+			],
+			$this->getOcsApiVersion()
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @When the administrator deletes file :path in local storage using the testing API
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesFileInLocalStorageUsingTheTestingApi($path) {
+		$user = $this->getAdminUsername();
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getAdminPassword(),
+			'DELETE',
+			"/apps/testing/api/v1/file",
+			['file' => LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$path"],
+			$this->getOcsApiVersion()
+		);
+		$this->setResponse($response);
 	}
 
 	/**
@@ -1684,6 +1860,67 @@ trait BasicStructure {
 	}
 
 	/**
+	 * send request to read a server file
+	 *
+	 * @param string $path
+	 *
+	 * @return string
+	 */
+	public function readFileInServerRoot($path) {
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'GET',
+			"/apps/testing/api/v1/file?file={$path}"
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @Then the file :path with content :content should exist in the server root
+	 *
+	 * @param string $path
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function theFileWithContentShouldExistInTheServerRoot($path, $content) {
+		$this->readFileInServerRoot($path);
+		PHPUnit_Framework_Assert::assertSame(
+			200,
+			$this->getResponse()->getStatusCode(),
+			"Failed to read the file {$path}"
+		);
+
+		$fileContent = HttpRequestHelper::getResponseXml($this->getResponse());
+		$fileContent = (string)$fileContent->data->element->contentUrlEncoded;
+		$fileContent = \urldecode($fileContent);
+
+		PHPUnit_Framework_Assert::assertSame(
+			$content,
+			$fileContent,
+			"The content of the file does not match with '{$content}'"
+		);
+	}
+
+	/**
+	 * @Then the file :path should not exist in the server root
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theFileShouldNotExistInTheServerRoot($path) {
+		$this->readFileInServerRoot($path);
+		PHPUnit_Framework_Assert::assertSame(
+			404,
+			$this->getResponse()->getStatusCode(),
+			"The file '{$path}' exists in the server root"
+		);
+	}
+
+	/**
 	 * @param ResponseInterface|null $response
 	 *
 	 * @return array
@@ -1752,6 +1989,17 @@ trait BasicStructure {
 	}
 
 	/**
+	 * returns a string that can be used to check a url of comments with
+	 * regular expression (without delimiter)
+	 *
+	 * @return string
+	 */
+	public function getCommentUrlRegExp() {
+		$basePath = \ltrim($this->getBasePath() . "/", "/");
+		return "/{$basePath}remote.php/dav/comments/files/([0-9]+)";
+	}
+
+	/**
 	 * substitutes codes like %base_url% with the value
 	 * if the given value does not have anything to be substituted
 	 * then it is returned unmodified
@@ -1764,10 +2012,24 @@ trait BasicStructure {
 	 *                         own array
 	 *                         the replacement itself will be used as first parameter
 	 *                         e.g. substituteInLineCodes($value, ['preg_quote' => ['/']])
+	 * @param array $additionalSubstitutions
+	 *                         array of additional substitution configurations
+	 *                           [
+	 *                             [
+	 *                               "code" => "%my_code%",
+	 *                               "function" => [
+	 *                                                $myClass,
+	 *                                                "myFunction"
+	 *                               ],
+	 *                               "parameter" => []
+	 *                             ],
+	 *                           ]
 	 *
 	 * @return string
 	 */
-	public function substituteInLineCodes($value, $functions = []) {
+	public function substituteInLineCodes(
+		$value, $functions = [], $additionalSubstitutions = []
+	) {
 		$substitutions = [
 			[
 				"code" => "%base_url%",
@@ -1816,8 +2078,60 @@ trait BasicStructure {
 					"getLocalBaseUrlWithoutScheme"
 				],
 				"parameter" => []
+			],
+			[
+				"code" => "%base_path%",
+				"function" => [
+					$this,
+					"getBasePath"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%productname%",
+				"function" => [
+					$this,
+					"getProductNameFromStatus"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%edition%",
+				"function" => [
+					$this,
+					"getEditionFromStatus"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%version%",
+				"function" => [
+					$this,
+					"getVersionFromStatus"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%versionstring%",
+				"function" => [
+					$this,
+					"getVersionStringFromStatus"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%a_comment_url%",
+				"function" => [
+					$this,
+					"getCommentUrlRegExp"
+				],
+				"parameter" => []
 			]
 		];
+
+		if (!empty($additionalSubstitutions)) {
+			$substitutions = \array_merge($substitutions, $additionalSubstitutions);
+		}
 
 		foreach ($substitutions as $substitution) {
 			$replacement = \call_user_func_array(
@@ -1878,6 +2192,134 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Then the config key :key of app :appID should have value :value
+	 *
+	 * @param string $key
+	 * @param string $appID
+	 * @param string $value
+	 *
+	 * @return void
+	 */
+	public function theConfigKeyOfAppShouldHaveValue($key, $appID, $value) {
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'GET',
+			"/apps/testing/api/v1/app/{$appID}/{$key}",
+			[],
+			$this->getOcsApiVersion()
+		);
+		$configkeyValue = \json_decode(\json_encode($this->getResponseXml($response)->data[0]->element->value), 1)[0];
+		PHPUnit_Framework_Assert::assertEquals($value, $configkeyValue);
+	}
+
+	/**
+	 * Parse list of config keys from the given XML response
+	 *
+	 * @param SimpleXMLElement $responseXml
+	 *
+	 * @return array
+	 */
+	public function parseConfigListFromResponseXml($responseXml) {
+		$configkeyData = \json_decode(\json_encode($responseXml->data), 1);
+		if (isset($configkeyData['element'])) {
+			$configkeyData = $configkeyData['element'];
+		} else {
+			// There are no keys for the app
+			return [];
+		}
+		if (isset($configkeyData[0])) {
+			$configkeyValues = $configkeyData;
+		} else {
+			// There is just 1 key for the app
+			$configkeyValues[0] = $configkeyData;
+		}
+		return $configkeyValues;
+	}
+
+	/**
+	 * Returns a list of config keys for the given app
+	 *
+	 * @param string $appID
+	 *
+	 * @return array
+	 */
+	public function getConfigKeyList($appID) {
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'GET',
+			"/apps/testing/api/v1/app/{$appID}",
+			[],
+			$this->getOcsApiVersion()
+		);
+		return $this->parseConfigListFromResponseXml($this->getResponseXml($response));
+	}
+
+	/**
+	 * Check if given config key is present for given app
+	 *
+	 * @param string $key
+	 * @param string $appID
+	 *
+	 * @return bool
+	 */
+	public function checkConfigKeyInApp($key, $appID) {
+		$configkeyList = $this->getConfigKeyList($appID);
+		foreach ($configkeyList as $config) {
+			if ($config['configkey'] === $key) {
+				return  true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @Then /^app ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?have config key ((?:'[^']*')|(?:"[^"]*"))$/
+	 *
+	 * @param string $appID
+	 * @param string $shouldOrNot
+	 * @param string $key
+	 *
+	 * @return void
+	 */
+	public function appShouldHaveConfigKey($appID, $shouldOrNot, $key) {
+		$appID = \trim($appID, $appID[0]);
+		$key = \trim($key, $key[0]);
+
+		$should = ($shouldOrNot !== "not");
+
+		if ($should) {
+			PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($key, $appID));
+		} else {
+			PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($key, $appID));
+		}
+	}
+
+	/**
+	 * @Then /^following config keys should (not|)\s?exist$/
+	 *
+	 * @param string $shouldOrNot
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function followingConfigKeysShouldExist($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		} else {
+			foreach ($table as $item) {
+				PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+			}
+		}
+	}
+
+	/**
 	 * @BeforeScenario @local_storage
 	 *
 	 * @return void
@@ -1889,26 +2331,13 @@ trait BasicStructure {
 			$this->getBaseUrl(),
 			$this->getOcPath()
 		);
-		SetupHelper::mkDirOnServer(
-			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
-		);
-		$result = SetupHelper::runOcc(
-			[
-				'files_external:create',
-				'local_storage',
-				'local',
-				'null::null',
-				'-c',
-				'datadir=' . $this->getServerRoot() . '/' . LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
-			]
-		);
-		// stdOut should have a string like "Storage created with id 65"
-		$storageIdWords = \explode(" ", \trim($result['stdOut']));
-		$this->storageId = $storageIdWords[4];
+		$storageName = "local_storage";
+		$storageId = SetupHelper::createLocalStorageMount($storageName);
+		$this->addStorageId($storageName, $storageId);
 		SetupHelper::runOcc(
 			[
 				'files_external:option',
-				$this->storageId,
+				$storageId,
 				'enable_sharing',
 				'true'
 			]
@@ -1936,21 +2365,53 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function removeLocalStorageAfter() {
-		if ($this->storageId !== null) {
-			SetupHelper::runOcc(
-				[
-					'files_external:delete',
-					'-y',
-					$this->storageId
-				]
-			);
+		if ($this->getStorageIds() !== null) {
+			foreach ($this->getStorageIds() as $key => $value) {
+				SetupHelper::runOcc(
+					[
+						'files_external:delete',
+						'-y',
+						$value
+					]
+				);
+			}
 		}
-		SetupHelper::rmDirOnServer(
-			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER
-		);
 		SetupHelper::rmDirOnServer(
 			TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER
 		);
+	}
+
+	/**
+	 *
+	 * @param string $serverUrl
+	 *
+	 * @return void
+	 */
+	public function clearFileLocksForServer($serverUrl) {
+		$response = OcsApiHelper::sendRequest(
+			$serverUrl,
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'delete',
+			"/apps/testing/api/v1/lockprovisioning",
+			["global" => "true"]
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+	}
+
+	/**
+	 * After Scenario. clear file locks
+	 *
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function clearFileLocks() {
+		$this->deleteTokenAuthEnforcedAfterScenario();
+		$this->clearFileLocksForServer($this->getBaseUrl());
+		if ($this->remoteBaseUrl !== $this->localBaseUrl) {
+			$this->clearFileLocksForServer($this->getRemoteBaseUrl());
+		}
 	}
 
 	/**

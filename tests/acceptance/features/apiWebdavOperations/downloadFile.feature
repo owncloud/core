@@ -6,12 +6,12 @@ Feature: download file
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
 
   @smokeTest
   Scenario Outline: download a file
     Given using <dav_version> DAV path
-    When user "user0" downloads the file "/textfile0.txt" using the WebDAV API
+    When user "user0" downloads file "/textfile0.txt" using the WebDAV API
     Then the downloaded content should be "ownCloud test text file 0" plus end-of-line
     Examples:
       | dav_version |
@@ -28,33 +28,23 @@ Feature: download file
       | new         |
 
   @public_link_share-feature-required
-  Scenario Outline: download a public shared file with range
-    Given using <dav_version> DAV path
+  Scenario: download a public shared file with range
     When user "user0" creates a public link share using the sharing API with settings
       | path | welcome.txt |
-    And the public downloads the last public shared file with range "bytes=51-77" using the old WebDAV API
+    And the public downloads the last public shared file with range "bytes=51-77" using the public WebDAV API
     Then the downloaded content should be "example file for developers"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
 
   @public_link_share-feature-required
-  Scenario Outline: download a public shared file inside a folder with range
-    Given using <dav_version> DAV path
+  Scenario: download a public shared file inside a folder with range
     When user "user0" creates a public link share using the sharing API with settings
       | path | PARENT |
-    And the public downloads file "/parent.txt" from inside the last public shared folder with range "bytes=1-7" using the old WebDAV API
+    And the public downloads file "/parent.txt" from inside the last public shared folder with range "bytes=1-7" using the public WebDAV API
     Then the downloaded content should be "wnCloud"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
 
   @smokeTest
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
-    When user "user0" downloads the file "/welcome.txt" using the WebDAV API
+    When user "user0" downloads file "/welcome.txt" using the WebDAV API
     Then the following headers should be set
       | Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
       | Content-Security-Policy           | default-src 'none';                                              |

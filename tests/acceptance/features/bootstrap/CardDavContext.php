@@ -33,10 +33,6 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @var ResponseInterface
 	 */
 	private $response;
-	/**
-	 * @var array
-	 */
-	private $responseXml = '';
 
 	/**
 	 * @var FeatureContext
@@ -55,7 +51,6 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
-		$this->responseXml = '';
 	}
 
 	/**
@@ -89,6 +84,21 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		$this->response = HttpRequestHelper::get(
 			$davUrl, $user, $this->featureContext->getPasswordForUser($user)
 		);
+		$this->featureContext->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
+	}
+
+	/**
+	 * @When the administrator requests address book :addressBook using the new WebDAV API
+	 *
+	 * @param string $addressBook
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRequestsAddressBookUsingTheNewWebdavApi($addressBook) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->userRequestsAddressBookUsingTheAPI($admin, $addressBook);
 	}
 
 	/**
@@ -121,6 +131,21 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 			$headers, $body
 		);
 		$this->theCardDavHttpStatusCodeShouldBe(201);
+		$this->featureContext->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
+	}
+
+	/**
+	 * @Given the administrator has successfully created an address book named :addressBook
+	 *
+	 * @param string $addressBook
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSuccessfullyCreatedAnAddressBookNamed($addressBook) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->userHasCreatedAnAddressBookNamed($admin, $addressBook);
 	}
 
 	/**
@@ -141,36 +166,5 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 				)
 			);
 		}
-
-		$body = $this->response->getBody()->getContents();
-		if ($body && \substr($body, 0, 1) === '<') {
-			$reader = new Sabre\Xml\Reader();
-			$reader->xml($body);
-			$this->responseXml = $reader->parse();
-		}
-	}
-
-	/**
-	 * @Then the CardDAV exception should be :message
-	 *
-	 * @param string $message
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCardDavExceptionShouldBe($message) {
-		$this->featureContext->theDavExceptionShouldBe($message, $this->responseXml);
-	}
-
-	/**
-	 * @Then the CardDAV error message should be :arg1
-	 *
-	 * @param string $message
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function theCardDavErrorMessageShouldBe($message) {
-		$this->featureContext->theDavErrorMessageShouldBe($message, $this->responseXml);
 	}
 }

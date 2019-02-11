@@ -54,6 +54,9 @@ class AssemblyStream implements \Icewind\Streams\File {
 	/** @var resource */
 	protected $currentStream = null;
 
+	/** @var IFile */
+	protected $currentNode;
+
 	/**
 	 * @param string $path
 	 * @param string $mode

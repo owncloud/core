@@ -26,7 +26,6 @@ use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ICollection;
-use Sabre\HTTP\URLUtil;
 
 class AvatarHome implements ICollection {
 
@@ -96,7 +95,7 @@ class AvatarHome implements ICollection {
 	}
 
 	public function getName() {
-		list(, $name) = URLUtil::splitPath($this->principalInfo['uri']);
+		list(, $name) = \Sabre\Uri\split($this->principalInfo['uri']);
 		return $name;
 	}
 

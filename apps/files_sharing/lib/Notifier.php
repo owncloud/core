@@ -19,7 +19,7 @@
  *
  */
 
-namespace OCA\Files_sharing;
+namespace OCA\Files_Sharing;
 
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;

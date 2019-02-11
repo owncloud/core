@@ -40,6 +40,7 @@ use OCP\IRequest;
 use OCP\ITagManager;
 use OCP\IUserSession;
 use Sabre\DAV\Auth\Backend\BackendInterface;
+use OCP\AppFramework\Utility\ITimeFactory;
 
 class ServerFactory {
 	/** @var IConfig */
@@ -56,6 +57,8 @@ class ServerFactory {
 	private $tagManager;
 	/** @var IRequest */
 	private $request;
+	/** @var ITimeFactory */
+	private $timeFactory;
 
 	/**
 	 * @param IConfig $config
@@ -65,6 +68,7 @@ class ServerFactory {
 	 * @param IMountManager $mountManager
 	 * @param ITagManager $tagManager
 	 * @param IRequest $request
+	 * @param ITimeFactory $timeFactory
 	 */
 	public function __construct(
 		IConfig $config,
@@ -73,7 +77,8 @@ class ServerFactory {
 		IUserSession $userSession,
 		IMountManager $mountManager,
 		ITagManager $tagManager,
-		IRequest $request
+		IRequest $request,
+		ITimeFactory $timeFactory
 	) {
 		$this->config = $config;
 		$this->logger = $logger;
@@ -82,6 +87,7 @@ class ServerFactory {
 		$this->mountManager = $mountManager;
 		$this->tagManager = $tagManager;
 		$this->request = $request;
+		$this->timeFactory = $timeFactory;
 	}
 
 	/**
@@ -89,12 +95,14 @@ class ServerFactory {
 	 * @param string $requestUri
 	 * @param BackendInterface $authBackend
 	 * @param callable $viewCallBack callback that should return the view for the dav endpoint
+	 * @param bool $isPublicAccess whether DAV is accessed through a public link
 	 * @return Server
 	 */
 	public function createServer($baseUri,
 								 $requestUri,
 								 BackendInterface $authBackend,
-								 callable $viewCallBack) {
+								 callable $viewCallBack,
+								 $isPublicAccess = false) {
 		// Fire up server
 		$objectTree = new \OCA\DAV\Connector\Sabre\ObjectTree();
 		$server = new \OCA\DAV\Connector\Sabre\Server($objectTree);
@@ -112,14 +120,14 @@ class ServerFactory {
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\DummyGetResponsePlugin());
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $this->logger));
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
-		$server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($server->tree, true)));
+		$server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($server->tree, true, $this->timeFactory, $isPublicAccess)));
 
 		if (BrowserErrorPagePlugin::isBrowserRequest($this->request)) {
 			$server->addPlugin(new BrowserErrorPagePlugin());
 		}
 
 		// wait with registering these until auth is handled and the filesystem is setup
-		$server->on('beforeMethod', function () use ($server, $objectTree, $viewCallBack) {
+		$server->on('beforeMethod:*', function () use ($server, $objectTree, $viewCallBack) {
 			// ensure the skeleton is copied
 			// Try to obtain User Folder
 			$userFolder = \OC::$server->getUserFolder();

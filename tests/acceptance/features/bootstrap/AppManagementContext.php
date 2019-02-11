@@ -26,7 +26,7 @@ use TestHelpers\SetupHelper;
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 /**
- * App Management context.
+ * Context for steps that test apps_paths.
  */
 class AppManagementContext implements Context {
 	/**
@@ -122,8 +122,8 @@ class AppManagementContext implements Context {
 	}
 
 	/**
-	 * @When the administrator gets the path for app :appId using the console
-	 * @Given the administrator has got the path for app :appId using the console
+	 * @When the administrator gets the path for app :appId using the occ command
+	 * @Given the administrator has got the path for app :appId using the occ command
 	 *
 	 * @param string $appId app id
 	 *

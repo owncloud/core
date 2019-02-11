@@ -5,8 +5,8 @@ Feature: Sharing files and folders with internal users
   So that those users can access the files and folders
 
   Background:
-    Given the app "notifications" has been enabled
-    And these users have been created:
+    Given app "notifications" has been enabled
+    And these users have been created with default attributes:
       | username |
       | user1    |
       | user2    |
@@ -36,10 +36,10 @@ Feature: Sharing files and folders with internal users
     And user "user1" has shared folder "/simple-folder" with user "user2"
     And user "user1" has shared folder "/simple-empty-folder" with user "user2"
     When the user accepts all shares displayed in the notifications on the webUI
-    Then the folder "simple-folder (2)" should be listed in the files page on the webUI
-    And the folder "simple-empty-folder (2)" should be listed in the files page on the webUI
-    And the folder "simple-folder (2)" should be in state "" in the shared-with-you page on the webUI
-    And the folder "simple-empty-folder (2)" should be in state "" in the shared-with-you page on the webUI
+    Then folder "simple-folder (2)" should be listed in the files page on the webUI
+    And folder "simple-empty-folder (2)" should be listed in the files page on the webUI
+    And folder "simple-folder (2)" should be in state "" in the shared-with-you page on the webUI
+    And folder "simple-empty-folder (2)" should be in state "" in the shared-with-you page on the webUI
 
   @smokeTest
   Scenario: reject an offered share
@@ -47,8 +47,8 @@ Feature: Sharing files and folders with internal users
     And user "user1" has shared folder "/simple-folder" with user "user2"
     And user "user1" has shared folder "/simple-empty-folder" with user "user2"
     When the user declines all shares displayed in the notifications on the webUI
-    Then the folder "simple-folder (2)" should not be listed in the files page on the webUI
-    And the folder "simple-empty-folder (2)" should not be listed in the files page on the webUI
-    And the folder "simple-folder" should be in state "Declined" in the shared-with-you page on the webUI
-    And the folder "simple-empty-folder" should be in state "Declined" in the shared-with-you page on the webUI
+    Then folder "simple-folder (2)" should not be listed in the files page on the webUI
+    And folder "simple-empty-folder (2)" should not be listed in the files page on the webUI
+    And folder "simple-folder" should be in state "Declined" in the shared-with-you page on the webUI
+    And folder "simple-empty-folder" should be in state "Declined" in the shared-with-you page on the webUI
 

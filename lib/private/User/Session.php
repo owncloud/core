@@ -351,12 +351,11 @@ class Session implements IUserSession, Emitter {
 		if ($user === null || \trim($user) === '') {
 			throw new \InvalidArgumentException('$user cannot be empty');
 		}
-		if (!$isTokenPassword && $this->isTokenAuthEnforced()) {
+		if (!$isTokenPassword
+			&& ($this->isTokenAuthEnforced() || $this->isTwoFactorEnforced($user))
+		) {
 			$this->logger->warning("Login failed: '$user' (Remote IP: '{$request->getRemoteAddress()}')", ['app' => 'core']);
 			$this->emitFailedLogin($user);
-			throw new PasswordLoginForbiddenException();
-		}
-		if (!$isTokenPassword && $this->isTwoFactorEnforced($user)) {
 			throw new PasswordLoginForbiddenException();
 		}
 		if (!$this->login($user, $password)) {
@@ -572,7 +571,7 @@ class Session implements IUserSession, Emitter {
 		}
 
 		$this->manager->emit('\OC\User', 'preLogin', [$uid, $password]);
-		$beforeEvent = new GenericEvent(null, ['loginType' => 'token', 'login' => $uid, 'password' => $password]);
+		$beforeEvent = new GenericEvent(null, ['loginType' => 'token', 'login' => $uid, 'uid' => $uid, 'password' => $password]);
 		$this->eventDispatcher->dispatch('user.beforelogin', $beforeEvent);
 
 		$user = $this->manager->get($uid);
@@ -592,7 +591,7 @@ class Session implements IUserSession, Emitter {
 		$this->setUser($user);
 		$this->setLoginName($dbToken->getLoginName());
 		$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
-		$afterEvent = new GenericEvent(null, ['loginType' => 'token', 'user' => $user, 'login' => $user->getUID(), 'password' => $password]);
+		$afterEvent = new GenericEvent(null, ['loginType' => 'token', 'user' => $user, 'login' => $user->getUID(), 'uid' => $user->getUID(), 'password' => $password]);
 		$this->eventDispatcher->dispatch('user.afterlogin', $afterEvent);
 
 		if ($this->isLoggedIn()) {
@@ -654,7 +653,7 @@ class Session implements IUserSession, Emitter {
 		$this->session->regenerateId();
 
 		$this->manager->emit('\OC\User', 'preLogin', [$uid, '']);
-		$beforeEvent = new GenericEvent(null, ['loginType' => 'apache', 'login' => $uid, 'password' => '']);
+		$beforeEvent = new GenericEvent(null, ['loginType' => 'apache', 'login' => $uid, 'uid' => $uid, 'password' => '']);
 		$this->eventDispatcher->dispatch('user.beforelogin', $beforeEvent);
 
 		// Die here if not valid
@@ -687,7 +686,7 @@ class Session implements IUserSession, Emitter {
 
 			$firstTimeLogin = $user->updateLastLoginTimestamp();
 			$this->manager->emit('\OC\User', 'postLogin', [$user, '']);
-			$afterEvent = new GenericEvent(null, ['loginType' => 'apache', 'user' => $user, 'login' => $user->getUID(), 'password' => '']);
+			$afterEvent = new GenericEvent(null, ['loginType' => 'apache', 'user' => $user, 'login' => $user->getUID(), 'uid' => $user->getUID(), 'password' => '']);
 			$this->eventDispatcher->dispatch('user.afterlogin', $afterEvent);
 			if ($this->isLoggedIn()) {
 				$this->prepareUserLogin($firstTimeLogin);
@@ -996,6 +995,7 @@ class Session implements IUserSession, Emitter {
 
 			$this->setUser($user);
 			$this->setLoginName($user->getDisplayName());
+			$user->updateLastLoginTimestamp();
 
 			$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 
@@ -1007,8 +1007,8 @@ class Session implements IUserSession, Emitter {
 			}
 
 			return true;
-		}, ['before' => ['user' => $user, 'uid' => $uid, 'password' => $password],
-			'after' => ['user' => $user, 'uid' => $uid, 'password' => $password]],
+		}, ['before' => ['user' => $user, 'login' => $uid, 'uid' => $uid, 'password' => $password],
+			'after' => ['user' => $user, 'login' => $uid, 'uid' => $uid, 'password' => $password]],
 			'user', 'login');
 	}
 

@@ -46,13 +46,6 @@ use OCP\Files\StorageNotAvailableException;
  * @since 9.0.0
  */
 interface IStorage {
-	/**
-	 * $parameters is a free form array with the configuration options needed to construct the storage
-	 *
-	 * @param array $parameters
-	 * @since 9.0.0
-	 */
-	public function __construct($parameters);
 
 	/**
 	 * Get the identifier for the storage,

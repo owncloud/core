@@ -28,6 +28,9 @@ use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Locks;
 use Sabre\DAV\Locks\Backend\BackendInterface;
 use Sabre\DAV\Tree;
+use OCP\AppFramework\Utility\ITimeFactory;
+use OCA\DAV\Connector\Sabre\ObjectTree;
+use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 
 class FileLocksBackend implements BackendInterface {
 
@@ -35,10 +38,16 @@ class FileLocksBackend implements BackendInterface {
 	private $tree;
 	/** @var bool */
 	private $useV1;
+	/** @var ITimeFactory */
+	private $timeFactory;
+	/** @var bool */
+	private $isPublicEndpoint;
 
-	public function __construct($tree, $useV1) {
+	public function __construct($tree, $useV1, $timeFactory, $isPublicEndpoint = false) {
 		$this->tree = $tree;
 		$this->useV1 = $useV1;
+		$this->timeFactory = $timeFactory;
+		$this->isPublicEndpoint = $isPublicEndpoint;
 	}
 
 	/**
@@ -57,42 +66,87 @@ class FileLocksBackend implements BackendInterface {
 	public function getLocks($uri, $returnChildLocks) {
 		try {
 			$node = $this->tree->getNodeForPath($uri);
+
+			if (!$node instanceof Node) {
+				return [];
+			}
+
+			$storage = $node->getFileInfo()->getStorage();
+			if (!$storage->instanceOfStorage(IPersistentLockingStorage::class)) {
+				return [];
+			}
+
+			/** @var IPersistentLockingStorage $storage */
+			$locks = $storage->getLocks($node->getFileInfo()->getInternalPath(), $returnChildLocks);
 		} catch (NotFound $e) {
-			return [];
-		}
-		if (!$node instanceof Node) {
-			return [];
-		}
+			if ($uri === '') {
+				// no more parents
+				return [];
+			}
 
-		$storage = $node->getFileInfo()->getStorage();
-		if (!$storage->instanceOfStorage(IPersistentLockingStorage::class)) {
-			return [];
-		}
+			// get parent storage and check for locks on the target path
+			list($parentPath, $childPath) = \Sabre\Uri\split($uri);
 
-		/** @var IPersistentLockingStorage $storage */
-		$locks = $storage->getLocks($node->getFileInfo()->getInternalPath(), $returnChildLocks);
+			try {
+				$node = $this->tree->getNodeForPath($parentPath);
+			} catch (NotFound $e) {
+				return [];
+			}
+
+			if (!$node instanceof Node) {
+				return [];
+			}
+
+			// use storage of parent
+			$storage = $node->getFileInfo()->getStorage();
+			if (!$storage->instanceOfStorage(IPersistentLockingStorage::class)) {
+				return [];
+			}
+
+			/** @var IPersistentLockingStorage $storage */
+			$locks = $storage->getLocks($node->getFileInfo()->getInternalPath() . '/' . $childPath, $returnChildLocks);
+		}
 
 		$davLocks = [];
 		foreach ($locks as $lock) {
 			$lockInfo = new Locks\LockInfo();
 			$fileName = $lock->getAbsoluteDavPath();
+			$uid = $lock->getDavUserId();
 
-			if ($this->useV1) {
-				$lockInfo->uri = $fileName;
+			$pathInView = "/$uid/files/$fileName";
+
+			// v1 object tree, also used by public link
+			if ($this->tree instanceof ObjectTree) {
+				// get path relative to the view root, which can
+				// either be the user's home or a public link share's root
+				$subPath = $this->tree->getView()->getRelativePath($pathInView);
+				if ($subPath === null) {
+					// path is above the current view, just tell that the lock is on the root then
+					$lockInfo->uri = '';
+				} else {
+					$subPath = \ltrim($subPath, '/');
+					$lockInfo->uri = $subPath;
+				}
 			} else {
-				$uid = $lock->getDavUserId();
-				$lockInfo->uri = "files/$uid/$fileName";
+				if ($this->useV1) {
+					$lockInfo->uri = $fileName;
+				} else {
+					$lockInfo->uri = "files/$uid/$fileName";
+				}
 			}
-			$lockInfo->token = $lock->getToken();
+
+			if (!$this->isPublicEndpoint) {
+				$lockInfo->token = $lock->getToken();
+				$lockInfo->owner = $lock->getOwner();
+			}
 			$lockInfo->created = $lock->getCreatedAt();
 			$lockInfo->depth = $lock->getDepth();
-			$lockInfo->owner = $lock->getOwner();
 			if ($lock->getScope() === ILock::LOCK_SCOPE_EXCLUSIVE) {
 				$lockInfo->scope = Locks\LockInfo::EXCLUSIVE;
 			} else {
 				$lockInfo->scope = Locks\LockInfo::SHARED;
 			}
-			$lockInfo->timeout = $lock->getTimeout();
+			$lockInfo->timeout = $lock->getTimeout() - ($this->timeFactory->getTime() - $lock->getCreatedAt());
 
 			$davLocks[] = $lockInfo;
 		}
@@ -107,6 +161,9 @@ class FileLocksBackend implements BackendInterface {
 	 * @return bool
 	 */
 	public function lock($uri, Locks\LockInfo $lockInfo) {
+		if ($this->isPublicEndpoint) {
+			throw new Forbidden('Forbidden to lock from public endpoint');
+		}
 		try {
 			$node = $this->tree->getNodeForPath($uri);
 		} catch (NotFound $e) {
@@ -122,12 +179,18 @@ class FileLocksBackend implements BackendInterface {
 		}
 
 		/** @var IPersistentLockingStorage $storage */
-		return $storage->lockNodePersistent($node->getFileInfo()->getInternalPath(), [
+		$lock = $storage->lockNodePersistent($node->getFileInfo()->getInternalPath(), [
 			'token' => $lockInfo->token,
 			'scope' => $lockInfo->scope === Locks\LockInfo::EXCLUSIVE ? ILock::LOCK_SCOPE_EXCLUSIVE : ILock::LOCK_SCOPE_SHARED,
 			'depth' => $lockInfo->depth,
-			'owner' => $lockInfo->owner
+			'owner' => $lockInfo->owner,
+			'timeout' => $lockInfo->timeout
 		]);
+
+		// in case the timeout has not been accepted, adjust in lock info
+		$lockInfo->timeout = $lock->getTimeout();
+
+		return !empty($lock);
 	}
 
 	/**
@@ -138,6 +201,9 @@ class FileLocksBackend implements BackendInterface {
 	 * @return bool
 	 */
 	public function unlock($uri, Locks\LockInfo $lockInfo) {
+		if ($this->isPublicEndpoint) {
+			throw new Forbidden('Forbidden to unlock from public endpoint');
+		}
 		try {
 			$node = $this->tree->getNodeForPath($uri);
 		} catch (NotFound $e) {

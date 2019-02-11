@@ -6,12 +6,12 @@ Feature: delete folder contents
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created
+    And user "user0" has been created with default attributes
 
   Scenario Outline: Removing everything of a folder
     Given using <dav_version> DAV path
     And user "user0" has moved file "/welcome.txt" to "/FOLDER/welcome.txt"
-    And user "user0" has created a folder "/FOLDER/SUBFOLDER"
+    And user "user0" has created folder "/FOLDER/SUBFOLDER"
     And user "user0" has copied file "/textfile0.txt" to "/FOLDER/SUBFOLDER/testfile0.txt"
     When user "user0" deletes everything from folder "/FOLDER/" using the WebDAV API
     Then user "user0" should see the following elements

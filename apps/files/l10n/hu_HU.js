@@ -60,6 +60,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "Önnek nincs jogosultsága ahhoz, hogy ide állományokat töltsön föl, vagy itt újakat hozzon létre",
     "_Uploading %n file_::_Uploading %n files_" : ["%n állomány feltöltése","%n állomány feltöltése"],
     "New" : "Új",
+    "Unknown user" : "Ismeretlen felhasználó",
     "\"{name}\" is an invalid file name." : "\"{name}\" érvénytelen, mint fájlnév.",
     "File name cannot be empty." : "A fájlnév nem lehet semmi.",
     "File name cannot contain \"/\"." : "A fájl neve nem tartalmazhatja: \"/\" .",

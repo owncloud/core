@@ -65,7 +65,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function theUserBrowsesToThePersonalGeneralSettingsPage() {
 		$this->personalGeneralSettingsPage->open();
-		$this->personalGeneralSettingsPage->waitForOutstandingAjaxCalls(
+		$this->personalGeneralSettingsPage->waitTillPageIsLoaded(
 			$this->getSession()
 		);
 		$this->webUIGeneralContext->setCurrentPageObject(
@@ -192,13 +192,13 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
-	 * @Then the group :groupName should be displayed on the personal general settings page in the webUI
+	 * @Then group :groupName should be displayed on the personal general settings page in the webUI
 	 *
 	 * @param string $groupName
 	 *
 	 * @return void
 	 */
-	public function theGroupShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui($groupName) {
+	public function groupShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui($groupName) {
 		PHPUnit_Framework_Assert::assertTrue($this->personalGeneralSettingsPage->isGroupNameDisplayed($groupName));
 	}
 
@@ -241,6 +241,112 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 			$wrongPasswordmessageText,
 			$this->personalGeneralSettingsPage->getWrongPasswordMessageText()
 		);
+	}
+
+	/**
+	 * @When the user sets profile picture to :filename from their cloud files using the webUI
+	 *
+	 * @param string $filename
+	 *
+	 * @return void
+	 */
+	public function theUserSetsProfilePictureToFromTheirCloudFiles($filename) {
+		$this->personalGeneralSettingsPage->setProfilePicture($filename, $this->getSession());
+	}
+
+	/**
+	 * @Given the user has set profile picture to :filename from their cloud files
+	 *
+	 * @param string $filename
+	 *
+	 * @return void
+	 */
+	public function theUserHasSetProfilePictureToFromTheirCloudFiles($filename) {
+		$this->theUserSetsProfilePictureToFromTheirCloudFiles($filename);
+		$this->thePreviewOfTheProfilePictureShouldBeShownInTheWebui("");
+	}
+
+	/**
+	 * @Then /^the preview of the profile picture should (not|)\s?be shown in the webUI$/
+	 *
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 */
+	public function thePreviewOfTheProfilePictureShouldBeShownInTheWebui($shouldOrNot) {
+		if ($shouldOrNot !== "not") {
+			PHPUnit_Framework_Assert::assertTrue(
+				$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertFalse(
+				$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
+			);
+		}
+	}
+
+	/**
+	 * @When the user deletes the existing profile picture
+	 *
+	 * @return void
+	 */
+	public function theUserDeletesTheExistingProfilePicture() {
+		if ($this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()) {
+			$this->personalGeneralSettingsPage->deleteProfilePicture($this->getSession());
+		}
+	}
+
+	/**
+	 * @Given the user has deleted any existing profile picture
+	 *
+	 * @return void
+	 */
+	public function theUserHasDeletedAnyExistingProfilePicture() {
+		$this->theUserDeletesTheExistingProfilePicture();
+		PHPUnit_Framework_Assert::assertFalse(
+			$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
+		);
+	}
+
+	/**
+	 * @When the user uploads :fileName as a new profile picture using the webUI
+	 *
+	 * @param string $fileName
+	 *
+	 * @return void
+	 */
+	public function theUserUploadsAsANewProfilePicture($fileName) {
+		$this->personalGeneralSettingsPage->uploadProfilePicture($this->getSession(), $fileName);
+	}
+
+	/**
+	 * @When the user selects :fileName for uploading as a profile picture using the WebUI
+	 *
+	 * @param string $fileName
+	 *
+	 * @return void
+	 */
+	public function theUserSelectsForUploadingAsAProfilePicture($fileName) {
+		$this->personalGeneralSettingsPage->selectFileForUploadAsProfilePicture($this->getSession(), $fileName);
+	}
+
+	/**
+	 * @Then /^the user should (not|)\s?be able to upload the selected file as the profile picture$/
+	 *
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 */
+	public function theUserShouldBeAbleToUploadTheFileAsTheProfilePicture($shouldOrNot) {
+		if ($shouldOrNot !== "not") {
+			PHPUnit_Framework_Assert::assertFalse(
+				$this->personalGeneralSettingsPage->isFileUploadErrorMsgVisible()
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertTrue(
+				$this->personalGeneralSettingsPage->isFileUploadErrorMsgVisible()
+			);
+		}
 	}
 
 	/**

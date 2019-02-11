@@ -40,7 +40,6 @@ class FederationContext implements Context {
 
 	/**
 	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" using the sharing API$/
-	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)"$/
 	 *
 	 * @param string $sharerUser
 	 * @param string $sharerServer "LOCAL" or "REMOTE"
@@ -50,7 +49,7 @@ class FederationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function federateSharing(
+	public function userFromServerSharesWithUserFromServerUsingTheSharingAPI(
 		$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
 	) {
 		if ($shareeServer == "REMOTE") {
@@ -64,6 +63,26 @@ class FederationContext implements Context {
 		$this->featureContext->createShare(
 			$sharerUser, $sharerPath, 6, $shareWith, null, null, null
 		);
+		$this->featureContext->usingServer($previous);
+	}
+	
+	/**
+	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)"$/
+	 *
+	 * @param string $sharerUser
+	 * @param string $sharerServer "LOCAL" or "REMOTE"
+	 * @param string $sharerPath
+	 * @param string $shareeUser
+	 * @param string $shareeServer "LOCAL" or "REMOTE"
+	 *
+	 * @return void
+	 */
+	public function userFromServerHasSharedWithUserFromServer(
+		$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
+	) {
+		$this->userFromServerSharesWithUserFromServerUsingTheSharingAPI(
+			$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
+		);
 		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 		$this->featureContext->theOCSStatusCodeShouldBe(
 			'100', 'Could not share file/folder! message: "' .
@@ -71,26 +90,19 @@ class FederationContext implements Context {
 					$this->featureContext->getResponse()
 				) . '"'
 		);
-		$this->featureContext->usingServer($previous);
 	}
-	
+
 	/**
 	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" accepts the last pending share using the sharing API$/
-	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has accepted the last pending share$/
 	 *
 	 * @param string $user
 	 * @param string $server
 	 *
 	 * @return void
 	 */
-	public function acceptLastPendingShare($user, $server) {
+	public function userFromServerAcceptsLastPendingShareUsingTheSharingAPI($user, $server) {
 		$previous = $this->featureContext->usingServer($server);
-		$this->featureContext->asUser($user);
-		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
-			'GET',
-			"/apps/files_sharing/api/v1/remote_shares/pending",
-			null
-		);
+		$this->userGetsTheListOfPendingFederatedCloudShares($user);
 		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 		$this->featureContext->theOCSStatusCodeShouldBe('100');
 		$share_id = $this->featureContext->getResponseXml()->data[0]->element[0]->id;
@@ -99,9 +111,57 @@ class FederationContext implements Context {
 			"/apps/files_sharing/api/v1/remote_shares/pending/{$share_id}",
 			null
 		);
+		$this->featureContext->usingServer($previous);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has accepted the last pending share$/
+	 *
+	 * @param string $user
+	 * @param string $server
+	 *
+	 * @return void
+	 */
+	public function userFromServerHasAcceptedLastPendingShare($user, $server) {
+		$this->userFromServerAcceptsLastPendingShareUsingTheSharingAPI(
+			$user, $server
+		);
 		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 		$this->featureContext->theOCSStatusCodeShouldBe('100');
-		$this->featureContext->usingServer($previous);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets the list of pending federated cloud shares using the sharing API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userGetsTheListOfPendingFederatedCloudShares($user) {
+		$url = "/apps/files_sharing/api/v1/remote_shares/pending";
+		$this->featureContext->asUser($user);
+		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
+			'GET',
+			$url,
+			null
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" requests shared secret using the federation API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userRequestsSharedSecretUsingTheFederationApi($user) {
+		$url  = '/apps/federation/api/v1/request-shared-secret';
+		$this->featureContext->asUser($user);
+		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
+			'POST',
+			$url,
+			null
+		);
 	}
 
 	/**

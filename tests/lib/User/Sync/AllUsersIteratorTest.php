@@ -69,6 +69,24 @@ class AllUsersIteratorTest extends TestCase {
 	}
 
 	/**
+	 * test no results case
+	 */
+	public function testNextNoResults() {
+		$this->backend->expects($this->exactly(1))
+			->method('getUsers')
+			->with(
+					$this->equalTo(''),					// all users
+					$this->equalTo(UsersIterator::LIMIT),	// limit 500
+					$this->equalTo(0)						// at the beginning
+
+			)
+			->willReturn([]);
+
+		$this->iterator->rewind();
+		$this->assertFalse($this->iterator->valid());
+	}
+
+	/**
 	 * test three pages of results
 	 */
 	public function testNext() {
@@ -83,6 +101,57 @@ class AllUsersIteratorTest extends TestCase {
 			$page2[] = "user$i";
 		}
 		$page3 = ['user1000'];
+
+		$this->backend->expects($this->exactly(3))
+			->method('getUsers')
+			->withConsecutive(
+				[
+					$this->equalTo(''),					// all users
+					$this->equalTo(UsersIterator::LIMIT),	// limit 500
+					$this->equalTo(0)						// at the beginning
+				], [
+					$this->equalTo(''),					// all users
+					$this->equalTo(UsersIterator::LIMIT),	// limit 500
+					$this->equalTo(500)					// second page
+				], [
+					$this->equalTo(''),					// all users
+					$this->equalTo(UsersIterator::LIMIT),	// limit 500
+					$this->equalTo(1000)					// last page
+				]
+			)
+			->willReturnOnConsecutiveCalls($page1, $page2, $page3);
+
+		// loop over iterator manually to check key() and valid()
+
+		$this->iterator->rewind();
+		$this->assertTrue($this->iterator->valid());
+		$this->assertEquals('user0', $this->iterator->current());
+		$this->assertEquals(0, $this->iterator->key());
+		for ($i=1; $i<=1000; $i++) {
+			$this->iterator->next();
+			$this->assertTrue($this->iterator->valid());
+			$this->assertEquals("user$i", $this->iterator->current());
+			$this->assertEquals($i, $this->iterator->key());
+		}
+		$this->iterator->next();
+		$this->assertFalse($this->iterator->valid());
+	}
+
+	/**
+	 * test a page larger than the internal limit / page size of 500
+	 */
+	public function testOverLimit() {
+
+		// create pages for 1201 users (0..1200)
+		$page1 = [];
+		for ($i=0; $i<600; $i++) {
+			$page1[] = "user$i";
+		}
+		$page2 = [];
+		for ($i=600; $i<1200; $i++) {
+			$page2[] = "user$i";
+		}
+		$page3 = ['user1200'];
 
 		$this->backend->expects($this->exactly(3))
 			->method('getUsers')
@@ -109,7 +178,7 @@ class AllUsersIteratorTest extends TestCase {
 		$this->assertTrue($this->iterator->valid());
 		$this->assertEquals('user0', $this->iterator->current());
 		$this->assertEquals(0, $this->iterator->key());
-		for ($i=1; $i<=1000; $i++) {
+		for ($i=1; $i<=1200; $i++) {
 			$this->iterator->next();
 			$this->assertTrue($this->iterator->valid());
 			$this->assertEquals("user$i", $this->iterator->current());

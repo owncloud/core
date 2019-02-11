@@ -73,7 +73,13 @@ class Upgrade extends Command {
 				null,
 				InputOption::VALUE_NONE,
 				'Skip disabling of third party apps.'
-			);
+			)
+			->addOption(
+				'--major',
+				null,
+				InputOption::VALUE_NONE,
+				'Automatically update apps to new major versions during minor updates of ownCloud Server'
+				);
 	}
 
 	/**
@@ -96,12 +102,15 @@ class Upgrade extends Command {
 				$output->setFormatter($timestampFormatter);
 			}
 
-			$self = $this;
 			$updater = new Updater(
 					$this->config,
 					\OC::$server->getIntegrityCodeChecker(),
 					$this->logger
 			);
+
+			if ($input->getOption('major')) {
+				$updater->setForceMajorUpgrade(true);
+			}
 
 			$dispatcher = \OC::$server->getEventDispatcher();
 			$progress = new ProgressBar($output);
@@ -233,7 +242,7 @@ class Upgrade extends Command {
 			$updater->listen('\OC\Updater', 'appUpgrade', function ($app, $version) use ($output) {
 				$output->writeln("<info>Updated <$app> to $version</info>");
 			});
-			$updater->listen('\OC\Updater', 'failure', function ($message) use ($output, $self) {
+			$updater->listen('\OC\Updater', 'failure', function ($message) use ($output) {
 				$output->writeln("<error>$message</error>");
 			});
 			$updater->listen('\OC\Updater', 'setDebugLogLevel', function ($logLevel, $logLevelName) use ($output) {

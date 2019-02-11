@@ -28,6 +28,8 @@ use Behat\Mink\Session;
 use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use Page\OwncloudPageElement\OCDialog;
+use Behat\Mink\Exception\Exception;
 
 /**
  * The Sharing Dialog
@@ -53,8 +55,16 @@ class SharingDialog extends OwncloudPage {
 	private $permissionLabelXpath = ".//label[@for='%s']";
 	private $showCrudsXpath = ".//*[@class='showCruds']";
 	private $publicLinksShareTabXpath = ".//li[contains(@class,'subtab-publicshare')]";
+	private $publicLinksTabContentXpath = "//div[@id='shareDialogLinkList']";
+	private $noSharingMessageXpath = "//div[@class='noSharingPlaceholder']";
+	private $publicLinkRemoveBtnXpath = "//div[contains(@class, 'removeLink')]";
+	private $publicLinkTitleXpath = "//span[@class='link-entry--title']";
 
+	private $shareWithListXpath = "//ul[@id='shareWithList']/li";
+	private $userNameSpanXpath = "//span[contains(@class,'username')]";
+	private $unShareTabXpath = "//a[contains(@class,'unshare')]";
 	private $sharedWithGroupAndSharerName = null;
+	private $publicLinkRemoveDeclineMsg = "No";
 
 	/**
 	 *
@@ -63,12 +73,11 @@ class SharingDialog extends OwncloudPage {
 	 */
 	private function findShareWithField() {
 		$shareWithField = $this->find("xpath", $this->shareWithFieldXpath);
-		if ($shareWithField === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->shareWithFieldXpath could not find share-with-field"
-			);
-		}
+		$this->assertElementNotNull(
+			$shareWithField,
+			__METHOD__ .
+			" xpath $this->shareWithFieldXpath could not find share-with-field"
+		);
 		return $shareWithField;
 	}
 
@@ -105,6 +114,24 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
+	 * get no sharing message
+	 *
+	 * @param Session $session
+	 *
+	 * @return string
+	 */
+	public function getNoSharingMessage(Session $session) {
+		$noSharingMessage = $this->find("xpath", $this->noSharingMessageXpath);
+		$this->assertElementNotNull(
+			$noSharingMessage,
+			__METHOD__ .
+			" xpath $this->noSharingMessageXpath " .
+			"could not find no sharing message"
+		);
+		return $this->getTrimmedText($noSharingMessage);
+	}
+
+	/**
 	 * gets the NodeElement of the autocomplete list
 	 *
 	 * @return NodeElement
@@ -115,13 +142,12 @@ class SharingDialog extends OwncloudPage {
 			"xpath",
 			$this->shareWithAutocompleteListXpath
 		);
-		if ($autocompleteNodeElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->shareWithAutocompleteListXpath " .
-				"could not find autocompleteNodeElement"
-			);
-		}
+		$this->assertElementNotNull(
+			$autocompleteNodeElement,
+			__METHOD__ .
+			" xpath $this->shareWithAutocompleteListXpath " .
+			"could not find autocompleteNodeElement"
+		);
 		return $autocompleteNodeElement;
 	}
 
@@ -283,22 +309,20 @@ class SharingDialog extends OwncloudPage {
 		$xpathLocator = \sprintf(
 			$this->permissionsFieldByUserName, $shareReceiverName
 		);
-		$permissionsField = $this->find("xpath", $xpathLocator);
-		if ($permissionsField === null) {
-			throw new ElementNotFoundException(
-				__METHOD__
-				. " xpath $xpathLocator could not find share permissions field for user "
-				. $shareReceiverName
-			);
-		}
+		$permissionsField = $this->waitTillElementIsNotNull($xpathLocator);
+		$this->assertElementNotNull(
+			$permissionsField,
+			__METHOD__
+			. " xpath $xpathLocator could not find share permissions field for user "
+			. $shareReceiverName
+		);
 		$showCrudsBtn = $permissionsField->find("xpath", $this->showCrudsXpath);
-		if ($showCrudsBtn === null) {
-			throw new ElementNotFoundException(
-				__METHOD__
+		$this->assertElementNotNull(
+			$showCrudsBtn,
+			__METHOD__
 				. " xpath $this->showCrudsXpath could not find show-cruds button for user "
 				. $shareReceiverName
-			);
-		}
+		);
 		foreach ($permissions as $permission => $value) {
 			//the additional permission disappear again after they are changed
 			//so we need to open them again and again
@@ -311,33 +335,30 @@ class SharingDialog extends OwncloudPage {
 			//so we first find the checkbox, then get its id and find the label
 			//that is associated with that id, that label is finally what we click
 			$permissionCheckBox = $permissionsField->findField($permission);
-			if ($permissionCheckBox === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					"could not find the permission check box for permission " .
-					"'$permission' and user '$shareReceiverName'"
-				);
-			}
+			$this->assertElementNotNull(
+				$permissionCheckBox,
+				__METHOD__ .
+				"could not find the permission check box for permission " .
+				"'$permission' and user '$shareReceiverName'"
+			);
 			$checkBoxId = $permissionCheckBox->getAttribute("id");
-			if ($checkBoxId === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					"could not find the id of the permission check box of " .
-					"permission '$permission' and user '$shareReceiverName'"
-				);
-			}
+			$this->assertElementNotNull(
+				$checkBoxId,
+				__METHOD__ .
+				"could not find the id of the permission check box of " .
+				"permission '$permission' and user '$shareReceiverName'"
+			);
 
 			$xpathLocator = \sprintf($this->permissionLabelXpath, $checkBoxId);
 			$permissionLabel = $permissionsField->find("xpath", $xpathLocator);
 
-			if ($permissionLabel === null) {
-				throw new ElementNotFoundException(
-					__METHOD__ .
-					" xpath $xpathLocator " .
-					"could not find the label of the permission check box of " .
-					"permission '$permission' and user '$shareReceiverName'"
-				);
-			}
+			$this->assertElementNotNull(
+				$permissionLabel,
+				__METHOD__ .
+				" xpath $xpathLocator " .
+				"could not find the label of the permission check box of " .
+				"permission '$permission' and user '$shareReceiverName'"
+			);
 
 			if (($value === "yes" && !$permissionCheckBox->isChecked())
 				|| ($value === "no" && $permissionCheckBox->isChecked())
@@ -358,13 +379,12 @@ class SharingDialog extends OwncloudPage {
 		$shareWithTooltip = $shareWithField->find(
 			"xpath", $this->shareWithTooltipXpath
 		);
-		if ($shareWithTooltip === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->shareWithTooltipXpath " .
-				"could not find share-with-tooltip"
-			);
-		}
+		$this->assertElementNotNull(
+			$shareWithTooltip,
+			__METHOD__ .
+			" xpath $this->shareWithTooltipXpath " .
+			"could not find share-with-tooltip"
+		);
 		return $this->getTrimmedText($shareWithTooltip);
 	}
 
@@ -377,13 +397,12 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function findSharerInformationItem() {
 		$sharerInformation = $this->find("xpath", $this->sharerInformationXpath);
-		if ($sharerInformation === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->sharerInformationXpath " .
-				"could not find sharer information"
-			);
-		}
+		$this->assertElementNotNull(
+			$sharerInformation,
+			__METHOD__ .
+			" xpath $this->sharerInformationXpath " .
+			"could not find sharer information"
+		);
 		return $sharerInformation;
 	}
 
@@ -432,24 +451,194 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
+	 * @param Session $session
 	 *
 	 * @throws ElementNotFoundException
 	 * @return PublicLinkTab
 	 */
-	public function openPublicShareTab() {
+	public function openPublicShareTab(Session $session) {
 		$publicLinksShareTab = $this->find("xpath", $this->publicLinksShareTabXpath);
-		if ($publicLinksShareTab === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->publicLinksShareTabXpath " .
-				"could not find public links share tab"
-			);
-		}
+		$this->assertElementNotNull(
+			$publicLinksShareTab,
+			__METHOD__ .
+			" xpath $this->publicLinksShareTabXpath " .
+			"could not find public links share tab"
+		);
 		$publicLinksShareTab->click();
+		/**
+		 *
+		 * @var PublicLinkTab $publicLinkTab
+		 */
 		$publicLinkTab = $this->getPage(
 			"FilesPageElement\\SharingDialogElement\\PublicLinkTab"
 		);
-		$publicLinkTab->initElement();
+		$publicLinkTab->waitTillPageIsLoaded(
+			$session,
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+			$this->publicLinksTabContentXpath
+		);
 		return $publicLinkTab;
+	}
+
+	/**
+	 * @param Session $session
+	 * @param integer $number
+	 *
+	 * @return void
+	 */
+	public function removePublicLink(Session $session, $number = 1) {
+		$this->clickRemoveBtn($session, $number);
+		$ocDialog = $this->getLastOcDialog($session);
+		$ocDialog->accept($session);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function cancelRemovePublicLinkOperation(Session $session) {
+		$this->clickRemoveBtn($session);
+		$ocDialog = $this->getLastOcDialog($session);
+		$ocDialog->clickButton($session, $this->publicLinkRemoveDeclineMsg);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * @param Session $session
+	 * @param integer $number
+	 *
+	 * @return void
+	 */
+	private function clickRemoveBtn(Session $session, $number = 1) {
+		$publicLinkRemoveBtns = $this->findAll("xpath", $this->publicLinkRemoveBtnXpath);
+		$this->assertElementNotNull(
+			$publicLinkRemoveBtns,
+			__METHOD__ .
+			" xpath $this->publicLinkRemoveBtnXpath " .
+			"could not find public link remove buttons"
+		);
+		if ($number < 1) {
+			throw new \Exception("Position cannot be less than 1");
+		}
+		$publicLinkRemoveBtn = $publicLinkRemoveBtns[$number - 1];
+		$this->assertElementNotNull(
+			$publicLinkRemoveBtn,
+			__METHOD__ .
+			" xpath $this->publicLinkRemoveBtnXpath " .
+			"could not find public link remove button"
+		);
+		$publicLinkRemoveBtn->click();
+	}
+
+	/**
+	 * @param Session $session
+	 *
+	 * @return OCDialog
+	 */
+	private function getLastOcDialog(Session $session) {
+		$ocDialogs = $this->getOcDialogs();
+		return \end($ocDialogs);
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 * @param string $entryName
+	 *
+	 * @throws \Exception
+	 *
+	 * @return void
+	 */
+	public function checkThatNameIsNotInPublicLinkList(Session $session, $entryName) {
+		$publicLinkTitles = $this->findAll("xpath", $this->publicLinkTitleXpath);
+		foreach ($publicLinkTitles as $publicLinkTitle) {
+			if ($entryName === $publicLinkTitle->getText()) {
+				throw new \Exception("Public link with title" . $entryName . "is present");
+			}
+		}
+	}
+
+	/**
+	 * get the list of shared with users
+	 *
+	 * @return NodeElement
+	 */
+	public function getShareWithList() {
+		return $this->findAll('xpath', $this->shareWithListXpath);
+	}
+
+	/**
+	 * delete user from shared with list
+	 *
+	 * @param Session $session
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function deleteShareWithUser(Session $session, $username) {
+		$shareWithList = $this->getShareWithList();
+		foreach ($shareWithList as $userOrGroup) {
+			if ($userOrGroup->find('xpath', $this->userNameSpanXpath)->getHtml() === $username) {
+				$userOrGroup->find('xpath', $this->unShareTabXpath)->click();
+				$this->waitForAjaxCallsToStartAndFinish($session);
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 * @param integer $count
+	 *
+	 * @throws \Exception
+	 *
+	 * @return void
+	 */
+	public function checkPublicLinkCount(Session $session, $count) {
+		$publicLinkTitles = $this->findAll("xpath", $this->publicLinkTitleXpath);
+		if (\count($publicLinkTitles) != $count) {
+			throw new \Exception("Found $publicLinkTitlesCount public link entries but expected $count");
+		}
+	}
+
+	/**
+	 * check if user with the given username is present in the shared with list
+	 *
+	 * @param string $username
+	 *
+	 * @return bool
+	 */
+	public function isUserPresentInShareWithList($username) {
+		$shareWithList = $this->getShareWithList();
+		foreach ($shareWithList as $userOrGroup) {
+			if ($userOrGroup->find('xpath', $this->userNameSpanXpath)->getHtml() === $username) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * waits for the dialog to appear
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 * @param string $xpath the xpath of the element to wait for
+	 *                      required to be set
+	 *
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+		$xpath = null
+	) {
+		if ($xpath === null) {
+			throw new \InvalidArgumentException('$xpath needs to be set');
+		}
+		$this->waitForOutstandingAjaxCalls($session);
+		$this->waitTillXpathIsVisible($xpath, $timeout_msec);
 	}
 }

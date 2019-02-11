@@ -43,7 +43,6 @@ use OC\AppFramework\Utility\SimpleContainer;
 use OC\Core\Middleware\AccountModuleMiddleware;
 use OC\Core\Middleware\TwoFactorMiddleware;
 use OCP\App\IServiceLoader;
-use OCP\AppFramework\IApi;
 use OCP\AppFramework\IAppContainer;
 use OCP\Files\Mount\IMountManager;
 use OCP\IDateTimeFormatter;
@@ -309,17 +308,6 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $c->query('ServerContainer')->getWebRoot();
 		});
 
-		/**
-		 * App Framework APIs
-		 */
-		$this->registerService('API', function ($c) {
-			$c->query('OCP\\ILogger')->debug(
-				'Accessing the API class is deprecated! Use the appropriate ' .
-				'services instead!'
-			);
-			return new API($c['AppName']);
-		});
-
 		$this->registerService('Protocol', function ($c) {
 			/** @var \OC\Server $server */
 			$server = $c->query('ServerContainer');
@@ -399,14 +387,6 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			$dispatcher->registerMiddleware($c['SessionMiddleware']);
 			return $dispatcher;
 		});
-	}
-
-	/**
-	 * @deprecated implements only deprecated methods
-	 * @return IApi
-	 */
-	public function getCoreApi() {
-		return $this->query('API');
 	}
 
 	/**

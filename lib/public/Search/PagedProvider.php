@@ -41,7 +41,7 @@ abstract class PagedProvider extends Provider {
 	 * @since 8.0.0
 	 */
 	public function __construct($options) {
-		$this->options = $options;
+		parent::__construct($options);
 	}
 
 	/**

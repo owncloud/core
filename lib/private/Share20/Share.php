@@ -164,7 +164,7 @@ class Share implements \OCP\Share\IShare {
 				$userFolder = $this->rootFolder->getUserFolder($this->sharedBy);
 			}
 
-			$nodes = $userFolder->getById($this->fileId);
+			$nodes = $userFolder->getById($this->fileId, true);
 			if (empty($nodes)) {
 				throw new NotFoundException();
 			}

@@ -83,7 +83,6 @@ OC.L10N.register(
     "Expiration date is required" : "Termiņa datums ir jānorāda obligāti",
     "Delete {link}" : "Dzēst {link}",
     "Remove link" : "Noņemt saiti",
-    "{fileName} link" : "{fileName} saite",
     "Link" : "Saite",
     "Create public link" : "Izveidot koplietojamu saiti",
     "Edit" : "Rediģēt",

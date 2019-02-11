@@ -19,10 +19,12 @@
  *
  */
 namespace Test\Repair;
+
 use OC\Repair\Apps;
 use OCP\App\IAppManager;
 use OCP\IConfig;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\TestCase;
 
 /**
@@ -32,11 +34,11 @@ use Test\TestCase;
  */
 class AppsTest extends TestCase {
 
-	/** @var Apps */
+	/** @var Apps | \PHPUnit_Framework_MockObject_MockObject */
 	protected $repair;
 	/** @var IAppManager | \PHPUnit_Framework_MockObject_MockObject */
 	protected $appManager;
-	/** @var  EventDispatcher | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
 	protected $eventDispatcher;
 	/** @var  IConfig | \PHPUnit_Framework_MockObject_MockObject*/
 	protected $config;
@@ -45,12 +47,16 @@ class AppsTest extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-
 		$this->appManager = $this->createMock(IAppManager::class);
 		$this->defaults = $this->createMock(\OC_Defaults::class);
-		$this->eventDispatcher = $this->createMock(EventDispatcher::class);
+		$this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 		$this->config = $this->createMock(IConfig::class);
-		$this->repair = new Apps($this->appManager, $this->eventDispatcher, $this->config, $this->defaults);
+		$this->repair = new Apps(
+			$this->appManager,
+			$this->eventDispatcher,
+			$this->config,
+			$this->defaults
+		);
 	}
 
 	public function testMarketEnableVersionCompare10() {
@@ -71,5 +77,92 @@ class AppsTest extends TestCase {
 	public function testMarketEnableVersionCompareCurrent() {
 		$this->config->expects($this->once())->method('getSystemValue')->with('version', '0.0.0')->willReturn('10.0.1');
 		$this->assertFalse($this->invokePrivate($this->repair, 'requiresMarketEnable'));
+	}
+
+	public function dataTestHasBlockingIncompatibleApps() {
+		return [
+			['git', [], false],
+			['daily', [], false],
+			['stable', [], false],
+			['git', ['someapp'], false],
+			['daily', ['someapp'], false],
+			['stable', ['someapp'], true],
+		];
+	}
+
+	/**
+	 * @dataProvider dataTestHasBlockingIncompatibleApps
+	 * @param string $channel
+	 * @param string[] $blockingApps
+	 * @param bool $expectedResult
+	 */
+	public function testHasBlockingIncompatibleApps($channel, $blockingApps, $expectedResult) {
+		$oldChannel = \OCP\Util::getChannel();
+		\OCP\Util::setChannel($channel);
+		$this->assertEquals(
+			$expectedResult,
+			$this->invokePrivate($this->repair, 'hasBlockingIncompatibleApps', [$blockingApps])
+		);
+		\OCP\Util::setChannel($oldChannel);
+	}
+
+	public function dataTestUpdateEvent() {
+		return [
+			['10.1.0.0', [10, 1, 3, 7], false, false], // same major version
+			['10.1.0.0', [10, 1, 3, 7], true, true],   // same major version, but major forced
+			['10.1.0.0', [11, 0, 2, 0], false, true],  // different major version
+			['10.1.0.0', [10, 0, 2, 0], true, true],  // different major version, major forced
+		];
+	}
+
+	/**
+	 * @dataProvider dataTestUpdateEvent
+	 * @param string $installedVersion
+	 * @param int[] $sourcesVersion
+	 * @param bool $forceMajorUpdate
+	 * @param bool $expectedIsMajorUpdate
+	 */
+	public function testUpdateAppEvent($installedVersion, $sourcesVersion, $forceMajorUpdate, $expectedIsMajorUpdate) {
+		$appName = 'fakeapp';
+
+		$this->config->method('getSystemValue')
+			->with('version', '0.0.0')
+			->willReturn($installedVersion);
+		$this->configureRepair(['getSourcesVersion'], $forceMajorUpdate);
+
+		$this->repair->method('getSourcesVersion')
+			->willReturn($sourcesVersion);
+
+		$this->eventDispatcher->expects($this->once())->method('dispatch')
+			->willReturnCallback(
+				function ($eventName, $event) use ($appName) {
+					$this->assertEquals($appName, $event->getSubject());
+					$this->assertEquals(true, $event->getArgument('isMajorUpdate'));
+				}
+			);
+		$this->invokePrivate(
+			$this->repair,
+			'getAppsFromMarket',
+			[
+				new \OC\Migration\ConsoleOutput(new NullOutput()),
+				[ $appName ],
+				'john'
+			]
+		);
+	}
+
+	private function configureRepair($mockedMethods, $forceMajorUpgrade = false) {
+		$this->repair = $this->getMockBuilder(Apps::class)
+			->setConstructorArgs(
+				[
+					$this->appManager,
+					$this->eventDispatcher,
+					$this->config,
+					$this->defaults,
+					$forceMajorUpgrade
+				]
+			)
+			->setMethods($mockedMethods)
+			->getMock();
 	}
 }

@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
@@ -24,7 +25,6 @@ namespace OC\Files\Meta;
 use OC\Files\Node\AbstractFolder;
 use OCP\Files\IRootFolder;
 use OCP\Files\Storage\IVersionedStorage;
-use OC\Files\View;
 use OCP\Files\NotFoundException;
 use OCP\Files\Storage;
 
@@ -36,20 +36,20 @@ use OCP\Files\Storage;
  */
 class MetaVersionCollection extends AbstractFolder {
 
-	/** @var int */
-	private $fileId;
 	/** @var IRootFolder */
 	private $root;
+	/** @var \OCP\Files\Node */
+	private $node;
 
 	/**
 	 * MetaVersionCollection constructor.
 	 *
-	 * @param int $fileId
 	 * @param IRootFolder $root
+	 * @param \OCP\Files\Node $node
 	 */
-	public function __construct($fileId, IRootFolder $root) {
-		$this->fileId = $fileId;
+	public function __construct(IRootFolder $root, \OCP\Files\Node $node) {
 		$this->root = $root;
+		$this->node = $node;
 	}
 
 	/**
@@ -66,22 +66,19 @@ class MetaVersionCollection extends AbstractFolder {
 		return false;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
 	public function getDirectoryListing() {
-		$view = new View();
-		$path = $view->getPath($this->fileId);
-		/** @var Storage $storage */
-		list($storage, $internalPath) = $view->resolvePath($path);
+		$node = $this->node;
+		$storage = $node->getStorage();
+		$internalPath = $node->getInternalPath();
+
 		if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
 			return [];
 		}
 		/** @var IVersionedStorage | Storage $storage */
 		$versions = $storage->getVersions($internalPath);
-		return \array_values(\array_map(function ($version) use ($storage, $internalPath, $view, $path) {
+		return \array_values(\array_map(function ($version) use ($storage, $node, $internalPath) {
 			if (!isset($version['mimetype'])) {
-				$version['mimetype'] = $view->getMimeType($path);
+				$version['mimetype'] = $node->getMimetype();
 			}
 
 			return new MetaFileVersionNode($this, $this->root, $version, $storage, $internalPath);
@@ -97,10 +94,10 @@ class MetaVersionCollection extends AbstractFolder {
 			throw new NotFoundException();
 		}
 		$versionId = $pieces[0];
-		$view = new View();
-		$path = $view->getPath($this->fileId);
-		/** @var Storage $storage */
-		list($storage, $internalPath) = $view->resolvePath($path);
+
+		$storage = $this->node->getStorage();
+		$internalPath = $this->node->getInternalPath();
+
 		if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
 			throw new NotFoundException();
 		}
@@ -110,7 +107,7 @@ class MetaVersionCollection extends AbstractFolder {
 			throw new NotFoundException();
 		}
 		if (!isset($version['mimetype'])) {
-			$version['mimetype'] = $view->getMimeType($path);
+			$version['mimetype'] = $this->node->getMimetype();
 		}
 		return new MetaFileVersionNode($this, $this->root, $version, $storage, $internalPath);
 	}
@@ -119,7 +116,7 @@ class MetaVersionCollection extends AbstractFolder {
 	 * @inheritdoc
 	 */
 	public function getId() {
-		return $this->fileId;
+		return $this->node->getId();
 	}
 
 	public function getName() {
@@ -127,6 +124,6 @@ class MetaVersionCollection extends AbstractFolder {
 	}
 
 	public function getPath() {
-		return "/meta/{$this->fileId}/v";
+		return "/meta/{$this->getId()}/v";
 	}
 }

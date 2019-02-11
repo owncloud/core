@@ -9,6 +9,11 @@
 namespace Test;
 
 use OC_Util;
+use OCP\Files\Folder;
+use OCP\App\IAppManager;
+use OCP\IUser;
+use OCP\IGroupManager;
+use OCP\IConfig;
 
 /**
  * @group DB
@@ -39,7 +44,7 @@ class UtilTest extends \Test\TestCase {
 		\date_default_timezone_set("UTC");
 
 		$result = OC_Util::formatDate(1350129205);
-		$expected = 'October 13, 2012 at 11:53:25 AM GMT+0';
+		$expected = 'October 13, 2012 at 11:53:25 AM UTC';
 		$this->assertEquals($expected, $result);
 
 		$result = OC_Util::formatDate(1102831200, true);
@@ -65,11 +70,11 @@ class UtilTest extends \Test\TestCase {
 	public function formatDateWithTZFromSessionData() {
 		return [
 			[3, 'October 13, 2012 at 2:53:25 PM GMT+3', 'Etc/GMT-3'],
-			[15, 'October 13, 2012 at 11:53:25 AM GMT+0', 'UTC'],
-			[-13, 'October 13, 2012 at 11:53:25 AM GMT+0', 'UTC'],
+			[15, 'October 13, 2012 at 11:53:25 AM UTC', 'UTC'],
+			[-13, 'October 13, 2012 at 11:53:25 AM UTC', 'UTC'],
 			[9.5, 'October 13, 2012 at 9:23:25 PM GMT+9:30', 'Australia/Darwin'],
 			[-4.5, 'October 13, 2012 at 7:23:25 AM GMT-4:30', 'America/Caracas'],
-			[15.5, 'October 13, 2012 at 11:53:25 AM GMT+0', 'UTC'],
+			[15.5, 'October 13, 2012 at 11:53:25 AM UTC', 'UTC'],
 		];
 	}
 
@@ -258,11 +263,11 @@ class UtilTest extends \Test\TestCase {
 		$oldWebRoot = \OC::$WEBROOT;
 		\OC::$WEBROOT = '';
 
-		$appManager = $this->createMock('\OCP\App\IAppManager');
+		$appManager = $this->createMock(IAppManager::class);
 		$appManager->expects($this->any())
 			->method('isEnabledForUser')
 			->will($this->returnCallback(function ($appId) use ($enabledApps) {
-				return \in_array($appId, $enabledApps);
+				return \in_array($appId, $enabledApps, true);
 			}));
 		Dummy_OC_Util::$appManager = $appManager;
 
@@ -373,7 +378,7 @@ class UtilTest extends \Test\TestCase {
 	public function testCopySkeletonDirectoryDoesNotExist() {
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', '/not/existing/Directory');
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock(Folder::class);
 		\OC_Util::copySkeleton('testuser', $userFolder);
 
 		$config->deleteSystemValue('skeletondirectory');
@@ -395,7 +400,7 @@ class UtilTest extends \Test\TestCase {
 		\chmod($skeletonDir, 0);
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', $skeletonDir);
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock(Folder::class);
 		\OC_Util::copySkeleton('testuser', $userFolder);
 
 		$config->deleteSystemValue('skeletondirectory');
@@ -417,7 +422,7 @@ class UtilTest extends \Test\TestCase {
 		\chmod($skeletonDir . '/a-file', 0);
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', $skeletonDir);
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock(Folder::class);
 		\OC_Util::copySkeleton('testuser', $userFolder);
 
 		$config->deleteSystemValue('skeletondirectory');

@@ -35,6 +35,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "Sizin burda yükləməyə və ya fayl yaratmağa yetkiniz yoxdur  ",
     "_Uploading %n file_::_Uploading %n files_" : ["%n fayllar yüklənilir","%n fayllar yüklənilir"],
     "New" : "Yeni",
+    "Unknown user" : "Istifadəçi tanınmır ",
     "\"{name}\" is an invalid file name." : "\"{name}\" yalnış fayl adıdır.",
     "File name cannot be empty." : "Faylın adı boş ola bilməz.",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "{owner} məlumat anbarı doludur, fayllar artıq yenilənə və ya sinxronizasiya edilə bilməz!",

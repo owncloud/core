@@ -1,11 +1,11 @@
-@api @systemtags-app-required
+@api @systemtags-app-required @TestAlsoOnExternalUserBackend
 Feature: Creation of tags
   As a user
   I should be able to create tags
   So that I could categorize my files
 
   Background:
-    Given these users have been created:
+    Given these users have been created with default attributes:
       | username |
       | user0    |
       | user1    |
@@ -23,12 +23,17 @@ Feature: Creation of tags
       | tag_name            |
       | JustARegularTagName |
       | 😀                  |
-      | सिमप्ले                |
+      | सिमप्ले             |
 
   Scenario: Creating a not user-assignable tag as regular user should fail
     When the user creates a "not user-assignable" tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "400"
     And tag "JustARegularTagName" should not exist for the administrator
+
+  Scenario: Creating a static tag as regular user should fail
+    When the user creates a "static" tag with name "StaticTagName" using the WebDAV API
+    Then the HTTP status code should be "400"
+    And tag "StaticTagName" should not exist for the administrator
 
   Scenario: Creating a not user-visible tag as regular user should fail
     When the user creates a "not user-visible" tag with name "JustARegularTagName" using the WebDAV API
@@ -52,6 +57,12 @@ Feature: Creation of tags
     Then the HTTP status code should be "201"
     And the following tags should exist for the administrator
       | JustARegularTagName | not user-visible |
+
+  Scenario: Creating a static tag as administrator should work
+    When the administrator creates a "static" tag with name "StaticTagName" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the following tags should exist for the administrator
+      | StaticTagName | static |
 
   @smokeTest
   Scenario: Creating a not user-assignable tag with groups as admin should work
@@ -82,4 +93,9 @@ Feature: Creation of tags
   Scenario: Overwriting existing not user-visible tags should fail
     Given the administrator has created a "not user-visible" tag with name "MyFirstTag"
     When the administrator creates a "not user-visible" tag with name "MyFirstTag" using the WebDAV API
+    Then the HTTP status code should be "409"
+
+  Scenario: Overwriting existing static tags should fail
+    Given the administrator has created a "static" tag with name "StaticTag"
+    When the administrator creates a "static" tag with name "StaticTag" using the WebDAV API
     Then the HTTP status code should be "409"

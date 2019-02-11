@@ -3,6 +3,7 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Julian Müller <julimueller1998@gmail.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
@@ -35,7 +36,6 @@ use OCP\IUserManager;
 use Sabre\DAV\Exception;
 use Sabre\DAV\PropPatch;
 use Sabre\DAVACL\PrincipalBackend\BackendInterface;
-use Sabre\HTTP\URLUtil;
 
 class Principal implements BackendInterface {
 
@@ -99,7 +99,7 @@ class Principal implements BackendInterface {
 	 * @return array
 	 */
 	public function getPrincipalByPath($path) {
-		list($prefix, $name) = URLUtil::splitPath($path);
+		list($prefix, $name) = \Sabre\Uri\split($path);
 
 		if ($prefix === $this->principalPrefix) {
 			$user = $this->userManager->get($name);
@@ -137,7 +137,7 @@ class Principal implements BackendInterface {
 	 * @throws Exception
 	 */
 	public function getGroupMembership($principal, $needGroups = false) {
-		list($prefix, $name) = URLUtil::splitPath($principal);
+		list($prefix, $name) = \Sabre\Uri\split($principal);
 
 		if ($prefix === $this->principalPrefix) {
 			$user = $this->userManager->get($name);
@@ -146,7 +146,7 @@ class Principal implements BackendInterface {
 			}
 
 			if ($this->hasGroups || $needGroups) {
-				$groups = $this->groupManager->getUserGroups($user);
+				$groups = $this->groupManager->getUserGroups($user, 'sharing');
 				$groups = \array_map(function ($group) {
 					/** @var IGroup $group */
 					return 'principals/groups/' . $group->getGID();

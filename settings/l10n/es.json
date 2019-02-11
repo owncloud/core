@@ -91,8 +91,6 @@
     "Report a bug" : "Notificar un error",
     "Show description …" : "Mostrar descripción…",
     "Hide description …" : "Ocultar descripción…",
-    "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Esta aplicación no tiene ninguna versión mínima de ownCloud asignada. Este será un error en ownCloud 11 y posteriores.",
-    "This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Esta aplicación no tiene ninguna versión máxima de ownCloud asignada. Este será un error en ownCloud 11 y posteriores.",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Esta aplicación no puede instalarse porque las siguientes dependencias no están cumplimentadas:",
     "Enable only for specific groups" : "Activar solamente para grupos específicos",
     "Uninstall App" : "Desinstalar aplicación",

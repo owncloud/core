@@ -15,23 +15,23 @@
 
   <IfModule mod_env.c>
     # Add security and privacy related headers
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-XSS-Protection "1; mode=block"
-    Header set X-Robots-Tag "none"
-    Header set X-Frame-Options "SAMEORIGIN"
-    Header set X-Download-Options "noopen"
-    Header set X-Permitted-Cross-Domain-Policies "none"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set X-Robots-Tag "none"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Download-Options "noopen"
+    Header always set X-Permitted-Cross-Domain-Policies "none"
     SetEnv modHeadersAvailable true
   </IfModule>
 
   # Let browsers cache CSS, JS files for half a year
   <FilesMatch "\.(css|js)$">
-    Header set Cache-Control "max-age=15778463"
+    Header always set Cache-Control "max-age=15778463"
   </FilesMatch>
   
   # Let browsers cache WOFF files for a week
   <FilesMatch "\.woff$">
-    Header set Cache-Control "max-age=604800"
+    Header always set Cache-Control "max-age=604800"
   </FilesMatch>
 </IfModule>
 
@@ -85,3 +85,7 @@ Options -Indexes
   ModPagespeed Off
 </IfModule>
 
+#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####
+
+ErrorDocument 403 /core/templates/403.php
+ErrorDocument 404 /core/templates/404.php

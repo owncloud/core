@@ -60,9 +60,7 @@ class WebUIAdminAppsSettingsContext extends RawMinkContext implements Context {
 	public function theAdminBrowsesToTheAdminAppsSettingsPage() {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->adminAppsSettingsPage->open();
-		$this->adminAppsSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
-		);
+		$this->adminAppsSettingsPage->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**
@@ -71,38 +69,29 @@ class WebUIAdminAppsSettingsContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdminHasBrowsedToDisabledAppsPage() {
-		$this->adminAppsSettingsPage->browseToDisabledAppsPage();
-		$this->adminAppsSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
-		);
+		$this->adminAppsSettingsPage->browseToDisabledAppsPage($this->getSession());
 	}
 
 	/**
-	 * @When the administrator disables the app :app using the webUI
+	 * @When the administrator disables app :app using the webUI
 	 *
 	 * @param string $appName
 	 *
 	 * @return void
 	 */
-	public function theAdminDisablesTheAppUsingTheWebUI($appName) {
-		$this->adminAppsSettingsPage->disableApp($appName);
-		$this->adminAppsSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
-		);
+	public function theAdminDisablesAppUsingTheWebUI($appName) {
+		$this->adminAppsSettingsPage->disableApp($this->getSession(), $appName);
 	}
 
 	/**
-	 * @When the administrator enables the app :app using the webUI
+	 * @When the administrator enables app :app using the webUI
 	 *
 	 * @param string $appName
 	 *
 	 * @return void
 	 */
-	public function theAdminEnablesTheAppUsingTheWebui($appName) {
-		$this->adminAppsSettingsPage->enableApp($appName);
-		$this->adminAppsSettingsPage->waitForAjaxCallsToStartAndFinish(
-			$this->getSession()
-		);
+	public function theAdminEnablesAppUsingTheWebui($appName) {
+		$this->adminAppsSettingsPage->enableApp($this->getSession(), $appName);
 	}
 
 	/**
