@@ -63,9 +63,10 @@
   version "1.10.0"
   resolved "https://codeload.github.com/components/jqueryui/tar.gz/4c0bac635cc97c8cd5087bb244d497100429fea2"
 
-"@bower_components/jquery@jquery/jquery-dist#2.1.4":
-  version "2.1.4"
-  resolved "https://codeload.github.com/jquery/jquery-dist/tar.gz/7751e69b615c6eca6f783a81e292a55725af6b85"
+"@bower_components/jquery@jquery/jquery-dist#3.3.1":
+  version "3.3.1"
+  uid "9e8ec3d10fad04748176144f108d7355662ae75e"
+  resolved "https://codeload.github.com/jquery/jquery-dist/tar.gz/9e8ec3d10fad04748176144f108d7355662ae75e"
 
 "@bower_components/jsTimezoneDetect@HenningM/jstimezonedetect#1.0.5":
   version "1.0.5"
