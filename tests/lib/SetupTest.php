@@ -133,4 +133,68 @@ class SetupTest extends \Test\TestCase {
 			->will($this->returnValue('NotAnArray'));
 		$this->setupClass->getSupportedDatabases();
 	}
+
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage Can't update
+	 */
+	public function testCannotUpdateHtaccess() {
+		if ($this->getCurrentUser() === 'root') {
+			$this->markTestSkipped(
+				'You are running tests as root - this test will not work in this case.'
+			);
+		}
+		$origServerRoot = \OC::$SERVERROOT;
+		$htaccessFile = \OC::$SERVERROOT . '/tests/data/.htaccess';
+		\touch($htaccessFile);
+		\chmod($htaccessFile, 0400);
+		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
+		try {
+			$this->setupClass->updateHtaccess();
+		} catch (\Exception $e) {
+			throw $e;
+		} finally {
+			\OC::$SERVERROOT = $origServerRoot;
+			@\unlink($htaccessFile);
+		}
+	}
+
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage Can't update
+	 */
+	public function testHtaccessIsFolder() {
+		$origServerRoot = \OC::$SERVERROOT;
+		$htaccessFile = \OC::$SERVERROOT . '/tests/data/.htaccess';
+		@\unlink($htaccessFile);
+		@\mkdir($htaccessFile);
+		
+		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
+		try {
+			$this->setupClass->updateHtaccess();
+		} catch (\Exception $e) {
+			throw $e;
+		} finally {
+			\OC::$SERVERROOT = $origServerRoot;
+			@\rmdir($htaccessFile);
+		}
+	}
+
+	public function testUpdateHtaccess() {
+		$origServerRoot = \OC::$SERVERROOT;
+		$htaccessFile = \OC::$SERVERROOT . '/tests/data/.htaccess';
+		\touch($htaccessFile);
+		\chmod($htaccessFile, 0700);
+		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
+		try {
+			$this->setupClass->updateHtaccess();
+		} catch (\Exception $e) {
+			throw $e;
+		} finally {
+			\OC::$SERVERROOT = $origServerRoot;
+		}
+		$content = \file_get_contents($htaccessFile);
+		@\unlink($htaccessFile);
+		$this->assertContains('#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####', $content);
+	}
 }
