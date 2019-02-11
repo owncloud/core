@@ -9,9 +9,10 @@
   dependencies:
     underscore ">=1.8.3"
 
-"@bower_components/base64@davidchambers/Base64.js#0.3.0":
-  version "0.3.0"
-  resolved "https://codeload.github.com/davidchambers/Base64.js/tar.gz/52bd13075d9fdc82035330e5b8c79b05f023e394"
+"@bower_components/base64@davidchambers/Base64.js#1.0.1":
+  version "1.0.1"
+  uid b2d49f347ed1bce61000a82769bffc837b7c79dc
+  resolved "https://codeload.github.com/davidchambers/Base64.js/tar.gz/b2d49f347ed1bce61000a82769bffc837b7c79dc"
 
 "@bower_components/blueimp-md5@blueimp/JavaScript-MD5#1.0.1":
   version "1.0.1"
