@@ -100,7 +100,7 @@ $CONFIG = array(
 'show_server_hostname' => false,
 
 /**
- * Optionally, use the short hostname in the server.php.
+ * Optionally, use the short hostname in the status.php.
  * Defaults to use the gethostname() return value.
  */
 'use_relative_domain_name' => false,
