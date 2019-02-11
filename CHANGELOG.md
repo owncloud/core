@@ -4,6 +4,53 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+
+- Add before-after share link auth events - [#34399](https://github.com/owncloud/core/issues/34399)
+- Log broken smb config params for easier debugging - [#34056](https://github.com/owncloud/core/issues/34056)
+- Add support for detecting library mime types - [#34082](https://github.com/owncloud/core/issues/34082)
+- Support for automatically accepting incoming federated shares from trusted servers - [#34206](https://github.com/owncloud/core/issues/34206)
+
+### Changed
+
+- Bump extend from 3.0.1 to 3.0.2 in /build - [#34411](https://github.com/owncloud/core/issues/34411)
+- Bump @bower_components/backbone from 1.2.3 to 1.3.3 in /build - [#34288](https://github.com/owncloud/core/issues/34288)
+- Bump pimple/pimple from 3.0.2 to 3.2.3 - [#31753](https://github.com/owncloud/core/issues/31753)
+- Bump league flysystem 1.0.50 - [#34417](https://github.com/owncloud/core/issues/34417)
+- Bump react promise v2.7.1 - [#34416](https://github.com/owncloud/core/issues/34416)
+- Zendframework bumps 20190208 - [#34413](https://github.com/owncloud/core/issues/34413)
+- Bump paragonie/random_compat v2.0.17 => v2.0.18 - [#34043](https://github.com/owncloud/core/issues/34043)
+- Bump symfony v3.4.20 => v3.4.21 - [#34042](https://github.com/owncloud/core/issues/34042)
+- Bump symfony/process from 3.4.21 to 3.4.22 - [#34407](https://github.com/owncloud/core/issues/34407)
+- Bump symfony/translation from 3.4.21 to 3.4.22 - [#34406](https://github.com/owncloud/core/issues/34406)
+- Bump symfony/console from 3.4.21 to 3.4.22 - [#34404](https://github.com/owncloud/core/issues/34404)
+- Bump symfony/routing from 3.4.21 to 3.4.22 - [#34408](https://github.com/owncloud/core/issues/34408)
+- Bump symfony/event-dispatcher from 3.4.21 to 3.4.22 - [#34405](https://github.com/owncloud/core/issues/34405)
+- Bump remaining symfony 3.4.22 components - [#34412](https://github.com/owncloud/core/issues/34412)
+- Bump zendframework/zend-servicemanager from 3.3.2 to 3.4.0 - [#33971](https://github.com/owncloud/core/issues/33971)
+- Bump zendframework/zend-inputfilter from 2.9.0 to 2.9.1 - [#34145](https://github.com/owncloud/core/issues/34145)
+- Bump README.md doc links to 10.1 - [#34403](https://github.com/owncloud/core/issues/34403)
+- Increase size of login_name from 64 to 255 - [#34280](https://github.com/owncloud/core/issues/34280)
+
+### Fixed
+
+- Send OCM requests as JSON - [#34424](https://github.com/owncloud/core/issues/34424)
+- Remove composer that is now in vendor bin - [#34418](https://github.com/owncloud/core/issues/34418)
+- Use recipient language when sending notification email - [#34255](https://github.com/owncloud/core/issues/34255)
+- Fix shares not accessible for guest users when using "share_folder" config option - [#34395](https://github.com/owncloud/core/issues/34395)
+- Fix reset confirmation mail from occ - [#34154](https://github.com/owncloud/core/issues/34154)
+- Correctly write Login failed entry in log when 2FA is enforced - [#34055](https://github.com/owncloud/core/issues/34055)
+- Center the logo and login fields - [#34057](https://github.com/owncloud/core/issues/34057)
+- Fix Apache warnings by setting headers to "always" in htaccess - [#34089](https://github.com/owncloud/core/issues/34089)
+- Prevent static tags to be listed when searching files by tag - [#34116](https://github.com/owncloud/core/issues/34116)
+- Fix external storage advanced checkbox state issue - [#34168](https://github.com/owncloud/core/issues/34168)
+- Set permissions on log file creation instead of every write - [#34061](https://github.com/owncloud/core/issues/34061)
+- Images are again properly rotated now based on EXIF rotation - [#34356](https://github.com/owncloud/core/issues/34356)
+- Fix query parts for federated shares to be less expensive - [#34401](https://github.com/owncloud/core/issues/34401)
+- Fix cancel upload and hide 'uploading' message for files_drop shared folders - [#34097](https://github.com/owncloud/core/issues/34097)
+
 ## [10.1.0] - 2019-02-06
 
 ### Added
@@ -877,6 +924,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
+[Unreleased]: https://github.com/owncloud/core/compare/v10.1.0...stable10
 [10.1.0]: https://github.com/owncloud/core/compare/v10.0.10...v10.1.0
 [10.0.10]: https://github.com/owncloud/core/compare/v10.0.9...v10.0.10
 [10.0.9]: https://github.com/owncloud/core/compare/v10.0.8...v10.0.9
