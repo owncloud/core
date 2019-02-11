@@ -576,7 +576,11 @@ class AppManager implements IAppManager {
 
 			$versionToLoad = [];
 			foreach ($possibleAppRoots as $possibleAppRoot) {
-				$version = $this->getAppVersionByPath($possibleAppRoot['path'] . '/' . $appId);
+				try {
+					$version = $this->getAppVersionByPath($possibleAppRoot['path'] . '/' . $appId);
+				} catch (\Exception $e) {
+					continue;
+				}
 				if (empty($versionToLoad) || \version_compare($version, $versionToLoad['version'], '>')) {
 					$versionToLoad = \array_merge($possibleAppRoot, ['version' => $version]);
 					$versionToLoad['path'] .= '/' . $appId;

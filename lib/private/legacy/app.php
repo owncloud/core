@@ -642,7 +642,12 @@ class OC_App {
 		}
 
 		$parser = new InfoParser();
-		$data = $parser->parse($file);
+		try {
+			$data = $parser->parse($file);
+		} catch (\Exception $e) {
+			\OC::$server->getLogger()->logException($e);
+			throw $e;
+		}
 
 		if (\is_array($data)) {
 			$data = OC_App::parseAppInfo($data);
