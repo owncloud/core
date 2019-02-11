@@ -32,6 +32,7 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Middleware;
+use OCP\AppFramework\OCSController;
 use OCP\IRequest;
 use OCP\IUserSession;
 use OCP\IConfig;
@@ -98,10 +99,15 @@ class CORSMiddleware extends Middleware {
 			$userId = $this->session->getUser()->getUID();
 		}
 
-		if ($this->request->getHeader('Origin') !== null &&
-			$this->reflector->hasAnnotation('CORS')) {
-			$requesterDomain = $this->request->getHeader('Origin');
+		$requesterDomain = $this->request->getHeader('Origin');
+		if ($requesterDomain === null) {
+			return $response;
+		}
 
+		// controller methods with the annotation @CORS will add CORS headers
+		// same for all methods in a OCSController - all OCS requests are allowed via CORS by default
+		if ($controller instanceof OCSController ||
+			$this->reflector->hasAnnotation('CORS')) {
 			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, $this->config);
 			foreach ($headers as $key => $value) {
 				$response->addHeader($key, \implode(',', $value));
