@@ -141,6 +141,9 @@ class Repair implements IOutput {
 			new RemoveGetETagEntries(\OC::$server->getDatabaseConnection()),
 			new UpdateOutdatedOcsIds(\OC::$server->getConfig()),
 			new RepairInvalidShares(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()),
+			new RepairSubShares(
+				\OC::$server->getDatabaseConnection()
+			),
 			new SharePropagation(\OC::$server->getConfig()),
 			new MoveAvatarOutsideHome(
 				\OC::$server->getConfig(),
@@ -162,9 +165,6 @@ class Repair implements IOutput {
 				\OC::$server->getAppManager(),
 				\OC::$server->getConfig(),
 				\OC::$server->getAppConfig()
-			),
-			new RepairSubShares(
-				\OC::$server->getDatabaseConnection()
 			),
 		];
 	}
