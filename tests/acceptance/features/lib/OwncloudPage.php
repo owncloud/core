@@ -766,6 +766,29 @@ class OwncloudPage extends Page {
 	}
 
 	/**
+	 * Fill the field at the specified xpath with the given string
+	 *
+	 * If you want to put non-BMP characters, like emoji, into a text field in
+	 * the browser using "ordinary" methods like setValue or fillField,
+	 * then chromedriver complains:
+	 * "ChromeDriver only supports characters in the BMP"
+	 * This method provides a way to set the text field value via JavaScript.
+	 *
+	 * @param Session $session
+	 * @param string $xpath
+	 * @param string $string
+	 *
+	 * @return void
+	 */
+	public function fillFieldWithCharacters(
+		Session $session, $xpath, $string
+	) {
+		$session->executeScript(
+			"document.evaluate(`" . $xpath . "`, document).iterateNext().value = \"" . $string . "\";"
+		);
+	}
+
+	/**
 	 * Edge often returns whitespace before or after element text.
 	 * This is a convenient wrapper to ensure that text is trimmed
 	 * before using it in tests.

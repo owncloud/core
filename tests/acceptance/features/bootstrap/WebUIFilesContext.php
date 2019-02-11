@@ -1948,7 +1948,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theUserCommentsWithContentUsingTheWebui($content) {
 		$detailsDialog = $this->filesPage->getDetailsDialog();
-		$detailsDialog->addComment($content);
+		$detailsDialog->addComment($this->getSession(), $content);
 		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
 	}
 
