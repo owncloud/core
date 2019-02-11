@@ -208,7 +208,7 @@ class File extends Node implements IFile, IFileNode {
 			}
 
 			if (!self::isChecksumValid($partStorage, $internalPartPath)) {
-				throw new BadRequest('The computed checksum does not match the one received from the client.');
+				throw new BadRequest('The computed checksum does not match the one received from the client. Upload has been interrupted or got corrupted, and requires re-upload.');
 			}
 
 			if ($result === false) {
@@ -535,7 +535,7 @@ class File extends Node implements IFile, IFileNode {
 					$chunk_handler->file_assemble($partStorage, $partInternalPath);
 
 					if (!self::isChecksumValid($partStorage, $partInternalPath)) {
-						throw new BadRequest('The computed checksum does not match the one received from the client.');
+						throw new BadRequest('The computed checksum does not match the one received from the client for this chunked file.');
 					}
 
 					// here is the final atomic rename
