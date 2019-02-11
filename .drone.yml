@@ -58,7 +58,7 @@ pipeline:
       event: [push, pull_request]
 
   make-core:
-    image: owncloudci/nodejs:latest
+    image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
       - make
