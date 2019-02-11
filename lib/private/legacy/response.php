@@ -349,20 +349,34 @@ class OC_Response {
 		return $response;
 	}
 
+	/**
+	 * These are the header which a browser can access from javascript code.
+	 * Simple headers are always accessible.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers
+	 *
+	 * @return array
+	 */
 	private static function getExposeCorsHeaders() {
 		return [
-			'X-Sabre-Status',
+			'Content-Location',
+			'DAV',
 			'ETag',
+			'Link',
+			'Lock-Token',
 			'OC-ETag',
+			'OC-Checksum',
 			'OC-FileId',
 			'OC-JobStatus-Location',
 			'Vary',
-			'DAV',
-			'Lock-Token'
+			'Webdav-Location',
+			'X-Sabre-Status',
 		];
 	}
 
 	/**
+	 * These are the headers the browser is allowed to ask for in a CORS request.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers
+	 *
 	 * @param \OCP\IConfig $config
 	 * @return array|mixed
 	 */
@@ -372,14 +386,16 @@ class OC_Response {
 		}
 		$allowedDefaultHeaders = [
 			// own headers
-			'X-OC-Mtime', 'OC-Checksum', 'OC-Total-Length', 'OCS-APIREQUEST',
+			'OC-Checksum',
+			'OC-Total-Length',
+			'OCS-APIREQUEST',
+			'X-OC-Mtime',
 			// as used in sabre
 			'Accept',
 			'Authorization',
 			'Brief',
 			'Content-Length',
 			'Content-Range',
-			'Content-type',
 			'Content-Type',
 			'Date',
 			'Depth',

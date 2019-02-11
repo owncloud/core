@@ -88,8 +88,8 @@ class CorsPluginTest extends TestCase {
 		$allowedDomains = '["https://requesterdomain.tld", "http://anotherdomain.tld"]';
 
 		$allowedHeaders = [
-			'X-OC-Mtime', 'OC-Checksum', 'OC-Total-Length', 'OCS-APIREQUEST', 'Accept',
-			'Authorization', 'Brief', 'Content-Length', 'Content-Range', 'Content-type',
+			'OC-Checksum', 'OC-Total-Length', 'OCS-APIREQUEST', 'X-OC-Mtime', 'Accept',
+			'Authorization', 'Brief', 'Content-Length', 'Content-Range',
 			'Content-Type', 'Date', 'Depth', 'Destination', 'Host', 'If', 'If-Match',
 			'If-Modified-Since', 'If-None-Match', 'If-Range', 'If-Unmodified-Since',
 			'Location', 'Lock-Token', 'Overwrite', 'Prefer', 'Range', 'Schedule-Reply',
@@ -327,7 +327,7 @@ class CorsPluginTest extends TestCase {
 		];
 	}
 
-	public function testAdditionalAllowedHeaders() {
+	public function testAuthenticatedAdditionalAllowedHeaders() : void {
 		$user = $this->createMock(IUser::class);
 		$user->method('getUID')->willReturn('someuser');
 
@@ -347,7 +347,27 @@ class CorsPluginTest extends TestCase {
 		$this->server->addPlugin($this->plugin);
 
 		$this->plugin->setCorsHeaders($this->server->httpRequest, $this->server->httpResponse);
-		self::assertEquals('X-Additional-Configured-Header,authorization,X-OC-Mtime,OC-Checksum,OC-Total-Length,OCS-APIREQUEST,Accept,Authorization,Brief,Content-Length,Content-Range,Content-type,Content-Type,Date,Depth,Destination,Host,If,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Location,Lock-Token,Overwrite,Prefer,Range,Schedule-Reply,Timeout,User-Agent,X-Expected-Entity-Length,Accept-Language,Access-Control-Request-Method,Access-Control-Allow-Origin,ETag,OC-Autorename,OC-CalDav-Import,OC-Chunked,OC-Etag,OC-FileId,OC-LazyOps,OC-Total-File-Length,Origin,X-Request-ID,X-Requested-With',
+		self::assertEquals('X-Additional-Configured-Header,authorization,OC-Checksum,OC-Total-Length,OCS-APIREQUEST,X-OC-Mtime,Accept,Authorization,Brief,Content-Length,Content-Range,Content-Type,Date,Depth,Destination,Host,If,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Location,Lock-Token,Overwrite,Prefer,Range,Schedule-Reply,Timeout,User-Agent,X-Expected-Entity-Length,Accept-Language,Access-Control-Request-Method,Access-Control-Allow-Origin,ETag,OC-Autorename,OC-CalDav-Import,OC-Chunked,OC-Etag,OC-FileId,OC-LazyOps,OC-Total-File-Length,Origin,X-Request-ID,X-Requested-With',
+			$this->server->httpResponse->getHeader('Access-Control-Allow-Headers'));
+	}
+
+	public function testUnauthenticatedAdditionalAllowedHeaders() : void {
+		$this->userSession->method('getUser')->willReturn(null);
+		$this->server->httpRequest->setHeader('Origin', 'https://requesterdomain.tld');
+
+		$this->config->method('getSystemValue')->withConsecutive(
+			['cors.allowed-domains', []],
+			['cors.allowed-headers', []]
+		)
+			->willReturnMap([
+				['cors.allowed-domains', [], ['https://requesterdomain.tld']],
+				['cors.allowed-headers', [], ['X-Additional-Configured-Header', 'authorization']]
+			]);
+
+		$this->server->addPlugin($this->plugin);
+
+		$this->plugin->setCorsHeaders($this->server->httpRequest, $this->server->httpResponse);
+		self::assertEquals('X-Additional-Configured-Header,authorization,OC-Checksum,OC-Total-Length,OCS-APIREQUEST,X-OC-Mtime,Accept,Authorization,Brief,Content-Length,Content-Range,Content-Type,Date,Depth,Destination,Host,If,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Location,Lock-Token,Overwrite,Prefer,Range,Schedule-Reply,Timeout,User-Agent,X-Expected-Entity-Length,Accept-Language,Access-Control-Request-Method,Access-Control-Allow-Origin,ETag,OC-Autorename,OC-CalDav-Import,OC-Chunked,OC-Etag,OC-FileId,OC-LazyOps,OC-Total-File-Length,Origin,X-Request-ID,X-Requested-With',
 			$this->server->httpResponse->getHeader('Access-Control-Allow-Headers'));
 	}
 }

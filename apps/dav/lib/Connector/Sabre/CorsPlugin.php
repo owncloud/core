@@ -118,9 +118,14 @@ class CorsPlugin extends ServerPlugin {
 	 * @return void
 	 */
 	public function setCorsHeaders(RequestInterface $request, ResponseInterface $response) {
-		if ($request->getHeader('origin') !== null && $this->userSession->getUser() !== null) {
+		if ($request->getHeader('origin') !== null) {
 			$requesterDomain = $request->getHeader('origin');
-			$userId = $this->userSession->getUser()->getUID();
+			// unauthenticated request shall add cors headers as well
+			$userId = null;
+			if ($this->userSession->getUser() !== null) {
+				$userId = $this->userSession->getUser()->getUID();
+			}
+
 			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, null, $this->getExtraHeaders($request));
 			foreach ($headers as $key => $value) {
 				$response->addHeader($key, \implode(',', $value));
