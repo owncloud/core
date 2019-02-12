@@ -445,5 +445,10 @@ class Log implements ILogger {
 		$msg = isset($context['message']) ? $context['message'] : 'Exception';
 		$msg .= ': ' . \json_encode($exception);
 		$this->log($level, $msg, $context);
+		// also log previous exception
+		if ($context['exception']->getPrevious()) {
+			$context['message'] = 'Caused by';
+			$this->logException($context['exception']->getPrevious(), $context);
+		}
 	}
 }
