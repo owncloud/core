@@ -261,6 +261,10 @@ class Cache implements ICache {
 		$data['parent'] = $this->getParentId($file);
 		$data['name'] = \OC_Util::basename($file);
 
+		if (\strlen($data['name']) > 250) {
+			throw new \RuntimeException('File name is too long.');
+		}
+
 		list($queryParts, $params) = $this->buildParts($data);
 		$queryParts[] = '`storage`';
 		$params[] = $this->getNumericStorageId();
