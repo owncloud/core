@@ -286,6 +286,17 @@ class CacheTest extends TestCase {
 		$this->assertEquals($fileName, $cacheEntry['path']);
 	}
 
+	/**
+	 * Very long file names exceed the database implementation and should throw an exception
+	 * @expectedException \RuntimeException
+	 *
+	 * @return void
+	 */
+	public function testPutWithLongName() {
+		$name = str_repeat('1', 251);
+		$this->cache->put($name, ['size' => 20, 'mtime' => 25, 'mimetype' => 'foo/file', 'etag' => md5($name)]);
+	}
+
 	public function testSearch() {
 		$file1 = 'folder';
 		$file2 = 'folder/foobar';
