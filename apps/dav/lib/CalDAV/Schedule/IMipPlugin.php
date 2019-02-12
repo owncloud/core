@@ -113,6 +113,7 @@ class IMipPlugin extends SabreIMipPlugin {
 				break;
 			case 'CANCEL':
 				$subject = 'Cancelled: ' . $summary;
+				$iTipMessage->message->VEVENT->STATUS = 'CANCELLED';
 				break;
 		}
 
