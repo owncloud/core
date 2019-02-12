@@ -8,13 +8,18 @@ Feature: Comments
     And as user "user0"
 
   @smokeTest
-  Scenario: Edit my own comments on a file belonging to myself
+  Scenario Outline: Edit my own comments on a file belonging to myself
     Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has commented with content "File owner comment" on file "/myFileToComment.txt"
-    When the user edits the last created comment with content "My edited comment" using the WebDAV API
+    When the user edits the last created comment with content "<comment>" using the WebDAV API
     Then the HTTP status code should be "207"
     And the user should have the following comments on file "/myFileToComment.txt"
-      | user0 | My edited comment |
+      | user0 | <comment> |
+    Examples:
+      | comment           |
+      | My edited comment |
+      | 😀 🤖             |
+      | नेपालि            |
 
   Scenario: Edit my own comments on a file shared by someone with me
     Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"

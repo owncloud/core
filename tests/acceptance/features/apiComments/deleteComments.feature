@@ -8,12 +8,17 @@ Feature: Comments
     And as user "user0"
 
   @smokeTest
-  Scenario: Deleting my own comments on a file belonging to myself
+  Scenario Outline: Deleting my own comments on a file belonging to myself
     Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
-    And the user has commented with content "My first comment" on file "/myFileToComment.txt"
+    And the user has commented with content "<comment>" on file "/myFileToComment.txt"
     When the user deletes the last created comment using the WebDAV API
     Then the HTTP status code should be "204"
     And user "user0" should have 0 comments on file "/myFileToComment.txt"
+    Examples:
+      | comment          |
+      | My first comment |
+      | 😀 🤖            |
+      | नेपालि           |
 
   Scenario: Deleting a comment on a file belonging to myself having several comments
     Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"

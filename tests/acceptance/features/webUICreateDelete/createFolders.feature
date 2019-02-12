@@ -9,6 +9,16 @@ Feature: create folders
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 
+  Scenario Outline: Create a folder
+    When the user creates a folder with the name "<folder-name>" using the webUI
+    Then folder "<folder-name>" should be listed on the webUI
+    When the user reloads the current page of the webUI
+    Then folder "<folder-name>" should be listed on the webUI
+    Examples:
+      | folder-name       |
+      | folder-!@#$%^&* ! |
+      | नेपालि            |
+
   @smokeTest
   Scenario: Create a folder inside another folder
     When the user creates a folder with the name "top-folder" using the webUI
