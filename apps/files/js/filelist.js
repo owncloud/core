@@ -1723,15 +1723,7 @@
 			return OC.linkToRemoteBase('dav') + '/files/' + uid + encodedPath;
 		},
 
-		/**
-		 * Generates a preview URL based on the URL space.
-		 * @param urlSpec attributes for the URL
-		 * @param {int} urlSpec.x width
-		 * @param {int} urlSpec.y height
-		 * @param {String} urlSpec.file path to the file
-		 * @return {String} preview URL
-		 */
-		generatePreviewUrl: function(urlSpec) {
+		_generatePreviewParams: function(urlSpec) {
 			urlSpec = urlSpec || {};
 			if (!urlSpec.x) {
 				urlSpec.x = this.$table.data('preview-x') || 32;
@@ -1744,15 +1736,24 @@
 			urlSpec.x = Math.ceil(urlSpec.x);
 			urlSpec.y = Math.ceil(urlSpec.y);
 			urlSpec.forceIcon = 0;
-			var parts = urlSpec.file.split('/');
-			var encoded = [];
-			for (var i = 0; i < parts.length; i++) {
-				encoded.push(encodeURIComponent(parts[i]));
-			}
-			var file = encoded.join('/');
-			delete urlSpec.file;
 			urlSpec.preview = 1;
 
+			return urlSpec;
+		},
+
+		/**
+		 * Generates a preview URL based on the URL space.
+		 * @param urlSpec attributes for the URL
+		 * @param {int} urlSpec.x width
+		 * @param {int} urlSpec.y height
+		 * @param {String} urlSpec.file path to the file
+		 * @return {String} preview URL
+		 */
+		generatePreviewUrl: function(urlSpec) {
+			urlSpec = this._generatePreviewParams(urlSpec);
+
+			var file = OC.encodePath(urlSpec.file);
+			delete urlSpec.file;
 			return OC.linkToRemoteBase('dav') + '/files/' + OC.getCurrentUser().uid + file + '?' + $.param(urlSpec);
 		},
 

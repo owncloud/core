@@ -41,6 +41,8 @@ use OCP\ITagManager;
 use OCP\IUserSession;
 use Sabre\DAV\Auth\Backend\BackendInterface;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\IPreview;
+use OCA\DAV\Files\PreviewPlugin;
 
 class ServerFactory {
 	/** @var IConfig */
@@ -59,6 +61,8 @@ class ServerFactory {
 	private $request;
 	/** @var ITimeFactory */
 	private $timeFactory;
+	/** @var IPreview */
+	private $previewManager;
 
 	/**
 	 * @param IConfig $config
@@ -78,7 +82,8 @@ class ServerFactory {
 		IMountManager $mountManager,
 		ITagManager $tagManager,
 		IRequest $request,
-		ITimeFactory $timeFactory
+		ITimeFactory $timeFactory,
+		IPreview $previewManager
 	) {
 		$this->config = $config;
 		$this->logger = $logger;
@@ -88,6 +93,7 @@ class ServerFactory {
 		$this->tagManager = $tagManager;
 		$this->request = $request;
 		$this->timeFactory = $timeFactory;
+		$this->previewManager = $previewManager;
 	}
 
 	/**
@@ -125,6 +131,8 @@ class ServerFactory {
 		if (BrowserErrorPagePlugin::isBrowserRequest($this->request)) {
 			$server->addPlugin(new BrowserErrorPagePlugin());
 		}
+
+		$server->addPlugin(new PreviewPlugin($this->timeFactory, $this->previewManager));
 
 		// wait with registering these until auth is handled and the filesystem is setup
 		$server->on('beforeMethod', function () use ($server, $objectTree, $viewCallBack) {

@@ -206,19 +206,11 @@ OCA.Sharing.PublicApp = {
 			};
 
 			this.fileList.generatePreviewUrl = function (urlSpec) {
-				urlSpec = urlSpec || {};
-				if (!urlSpec.x) {
-					urlSpec.x = 32;
-				}
-				if (!urlSpec.y) {
-					urlSpec.y = 32;
-				}
-				urlSpec.x *= window.devicePixelRatio;
-				urlSpec.y *= window.devicePixelRatio;
-				urlSpec.x = Math.ceil(urlSpec.x);
-				urlSpec.y = Math.ceil(urlSpec.y);
-				urlSpec.t = $('#dirToken').val();
-				return OC.generateUrl('/apps/files_sharing/ajax/publicpreview.php?') + $.param(urlSpec);
+				urlSpec = this._generatePreviewParams(urlSpec);
+
+				var file = OC.encodePath(urlSpec.file);
+				delete urlSpec.file;
+				return OC.getRootPath() + '/public.php/webdav' + file + '?' + $.param(urlSpec);
 			};
 
 			this.fileList.updateEmptyContent = function() {

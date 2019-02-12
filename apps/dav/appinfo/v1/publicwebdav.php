@@ -49,7 +49,8 @@ $serverFactory = new OCA\DAV\Connector\Sabre\ServerFactory(
 	\OC::$server->getMountManager(),
 	\OC::$server->getTagManager(),
 	\OC::$server->getRequest(),
-	\OC::$server->getTimeFactory()
+	\OC::$server->getTimeFactory(),
+	\OC::$server->getPreviewManager()
 );
 
 $requestUri = \OC::$server->getRequest()->getRequestUri();

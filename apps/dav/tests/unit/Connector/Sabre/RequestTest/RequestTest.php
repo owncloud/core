@@ -31,6 +31,7 @@ use Sabre\HTTP\Request;
 use Test\TestCase;
 use Test\Traits\MountProviderTrait;
 use Test\Traits\UserTrait;
+use OCP\IPreview;
 
 abstract class RequestTest extends TestCase {
 	use UserTrait;
@@ -61,7 +62,8 @@ abstract class RequestTest extends TestCase {
 			\OC::$server->getMountManager(),
 			\OC::$server->getTagManager(),
 			$this->createMock('\OCP\IRequest'),
-			\OC::$server->getTimeFactory()
+			\OC::$server->getTimeFactory(),
+			$this->createMock(IPreview::class)
 		);
 	}
 
