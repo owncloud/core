@@ -461,6 +461,8 @@ class User implements IUser {
 			$quota = OC_Helper::humanFileSize($quota);
 		}
 		$this->account->setQuota($quota);
+		// Set the quota on the preferences table as an override
+		$this->config->setUserValue($this->getUID(), 'core', 'quota', $quota);
 		$this->mapper->update($this->account);
 		$this->triggerChange('quota', $quota);
 	}
