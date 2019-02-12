@@ -493,21 +493,17 @@ services:
       matrix:
         USE_SERVER: true
 
-  federated:
-    image: owncloud/server
-    pull: true
-    environment:
-      - APACHE_WEBROOT=/drone/fed-server/
-      - APACHE_CONFIG_TEMPLATE=ssl
-      - APACHE_SSL_CERT_CN=federated
-      - APACHE_SSL_CERT=/drone/federated.crt
-      - APACHE_SSL_KEY=/drone/federated.key
-      - OWNCLOUD_APPS_INSTALL=https://github.com/owncloud/testing/releases/download/latest/testing.tar.gz
-      - OWNCLOUD_APPS_ENABLE=testing
-    command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
-
   docker:
     image: docker:18.04-dind
+    when:
+      matrix:
+        TEST_FEDERATION: true
+
+  wait-for-federated-server:
+    image: owncloud/ubuntu:latest
+    pull: true
+    commands:
+      - wait-for-it -t 600 docker:8000
     when:
       matrix:
         TEST_FEDERATION: true
