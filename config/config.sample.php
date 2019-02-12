@@ -100,6 +100,12 @@ $CONFIG = array(
 'show_server_hostname' => false,
 
 /**
+ * Optionally, use the short hostname in the status.php.
+ * Defaults to use the gethostname() return value.
+ */
+'use_relative_domain_name' => false,
+
+/**
  * Identifies the database used with this installation. See also config option
  * `supportedDatabases`
  *
