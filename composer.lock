@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d2b10c6c41dbbe9a3683cf3a05b39e1",
+    "content-hash": "2e337fa166c6711637342f7f2ba9d330",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -1535,16 +1535,16 @@
         },
         {
             "name": "pear/archive_tar",
-            "version": "1.4.5",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Archive_Tar.git",
-                "reference": "ff716ca697c5e9e8593212cb785ffd03ee11b01f"
+                "reference": "b8e33f9063a7cd1d20f079014f8382b3a7aee47e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/ff716ca697c5e9e8593212cb785ffd03ee11b01f",
-                "reference": "ff716ca697c5e9e8593212cb785ffd03ee11b01f",
+                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/b8e33f9063a7cd1d20f079014f8382b3a7aee47e",
+                "reference": "b8e33f9063a7cd1d20f079014f8382b3a7aee47e",
                 "shasum": ""
             },
             "require": {
@@ -1597,7 +1597,7 @@
                 "archive",
                 "tar"
             ],
-            "time": "2019-01-02T21:45:13+00:00"
+            "time": "2019-02-01T11:10:38+00:00"
         },
         {
             "name": "pear/console_getopt",
