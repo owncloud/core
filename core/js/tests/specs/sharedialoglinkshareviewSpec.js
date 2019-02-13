@@ -230,6 +230,17 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				expect(view.$('.linkPassText').val()).toEqual('');
 				expect(view.$('.linkPassText').attr('placeholder')).toEqual(PASSWORD_PLACEHOLDER_STARS);
 			});
+			it('denies removing the password if it is enfoced', function() {
+				model.set('encryptedPassword', 'foo');
+				configModel.set({
+					enforceLinkPasswordReadOnly : true,
+					enforceLinkPasswordWriteOnly : true,
+					enforceLinkPasswordReadWrite : true
+				});
+				view.render();
+				view._onClickReset();
+				expect(model.get("resetPassword")).not.toBe(true);
+			});
 		});
 	});
 
