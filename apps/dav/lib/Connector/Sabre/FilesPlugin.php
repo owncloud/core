@@ -303,9 +303,13 @@ class FilesPlugin extends ServerPlugin {
 			});
 
 			$propFind->handle(self::SHARE_PERMISSIONS_PROPERTYNAME, function () use ($node, $httpRequest) {
-				return $node->getSharePermissions(
-					$httpRequest->getRawServerValue('PHP_AUTH_USER')
-				);
+				try {
+					return $node->getSharePermissions(
+						$httpRequest->getRawServerValue('PHP_AUTH_USER')
+					);
+				} catch (StorageNotAvailableException $ex) {
+					return null;
+				}
 			});
 
 			$propFind->handle(self::GETETAG_PROPERTYNAME, function () use ($node) {
