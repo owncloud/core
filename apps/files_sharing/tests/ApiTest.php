@@ -446,6 +446,7 @@ class ApiTest extends TestCase {
 	}
 
 	public function testGetAllSharesWithMe() {
+		\OC::$server->getConfig()->setAppValue('core', 'shareapi_exclude_groups_list', '[]');
 		$node1 = $this->userFolder->get($this->filename);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -473,6 +474,7 @@ class ApiTest extends TestCase {
 
 		$this->shareManager->deleteShare($share1);
 		$this->shareManager->deleteShare($share2);
+		\OC::$server->getConfig()->deleteAppValue('core', 'shareapi_exclude_groups_list');
 	}
 
 	/**

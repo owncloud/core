@@ -22,6 +22,7 @@
  */
 namespace OCA\Files_Sharing\API;
 
+use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
@@ -535,6 +536,17 @@ class Share20OCS {
 			if (($stateFilter === null || $share->getState() === $stateFilter) &&
 					$this->canAccessShare($share)) {
 				try {
+					/**
+					 * Check if the group to which the user belongs is not allowed
+					 * to reshare
+					 */
+					if ($this->shareManager->sharingDisabledForUser($this->currentUser->getUID())) {
+						/**
+						 * Now set the permission to 15. Which will allow not to reshare.
+						 */
+						$permissionEvaluated = $share->getPermissions() & ~Constants::PERMISSION_SHARE;
+						$share->setPermissions($permissionEvaluated);
+					}
 					$formatted[] = $this->formatShare($share, true);
 				} catch (NotFoundException $e) {
 					// Ignore this share
