@@ -144,6 +144,15 @@ pipeline:
       matrix:
         TEST_FEDERATION: true
 
+  wait-for-federated-server:
+    image: owncloud/ubuntu:latest
+    pull: true
+    commands:
+      - wait-for-it -t 600 federated:80
+    when:
+      matrix:
+        TEST_FEDERATION: true
+
   prepare-objectstore:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -341,7 +350,7 @@ pipeline:
       - TEST_SERVER_URL=https://server
       - TEST_FEDERATION=${TEST_FEDERATION}
     commands:
-      - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://docker:8000"; fi
+      - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://federated"; fi
       - make test-acceptance-api TESTING_REMOTE_SYSTEM=true
     when:
       matrix:
@@ -373,7 +382,7 @@ pipeline:
       - MAILHOG_HOST=email
       - TEST_FEDERATION=${TEST_FEDERATION}
     commands:
-      - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://docker:8000"; fi
+      - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://federated"; fi
       - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
     when:
       matrix:
@@ -486,15 +495,6 @@ services:
 
   docker:
     image: docker:18.04-dind
-    when:
-      matrix:
-        TEST_FEDERATION: true
-
-  wait-for-federated-server:
-    image: owncloud/ubuntu:latest
-    pull: true
-    commands:
-      - wait-for-it -t 600 docker:8000
     when:
       matrix:
         TEST_FEDERATION: true
