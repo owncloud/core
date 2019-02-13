@@ -114,7 +114,6 @@ class Installer {
 		if (!empty($data['pretend'])) {
 			return false;
 		}
-		OC_App::clearAppCache($info['id']);
 
 		//copy the app to the correct place
 		if (@!\mkdir($basedir)) {
@@ -348,18 +347,11 @@ class Installer {
 		// We can't trust the parsed info.xml file as it may have been tampered
 		// with by an attacker and thus we need to use the local data to check
 		// whether the application needs to be signed.
-		$appId = OC_App::cleanAppId(isset($data['appdata']['id']) ? $data['appdata']['id'] : '');
-		$appBelongingToId = OC_App::getInternalAppIdByOcs($appId);
-		if (\is_string($appBelongingToId)) {
-			$previouslySigned = \OC::$server->getConfig()->getAppValue($appBelongingToId, 'signed', 'false');
-		} else {
-			$appBelongingToId = $info['id'];
-			$previouslySigned = 'false';
-		}
-		if (\file_exists($extractDir . '/appinfo/signature.json') || $previouslySigned === 'true') {
-			\OC::$server->getConfig()->setAppValue($appBelongingToId, 'signed', 'true');
-			$integrityResult = \OC::$server->getIntegrityCodeChecker()->verifyAppSignature(
-					$appBelongingToId,
+		if (\file_exists("$extractDir/appinfo/signature.json")) {
+			\OC::$server->getConfig()->setAppValue($info['id'], 'signed', 'true');
+			$integrityResult = \OC::$server->getIntegrityCodeChecker()
+				->verifyAppSignature(
+					$info['id'],
 					$extractDir
 			);
 			if ($integrityResult !== []) {
@@ -552,9 +544,6 @@ class Installer {
 		$config = \OC::$server->getConfig();
 
 		$config->setAppValue($app, 'installed_version', OC_App::getAppVersion($app));
-		if (\array_key_exists('ocsid', $info)) {
-			$config->setAppValue($app, 'ocsid', $info['ocsid']);
-		}
 
 		//set remote/public handlers
 		foreach ($info['remote'] as $name=>$path) {
