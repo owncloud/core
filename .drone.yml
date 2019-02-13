@@ -341,7 +341,7 @@ pipeline:
       - TEST_SERVER_URL=https://server
       - TEST_FEDERATION=${TEST_FEDERATION}
     commands:
-      - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://federated"; fi
+      - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://federated:8000"; fi
       - make test-acceptance-api TESTING_REMOTE_SYSTEM=true
     when:
       matrix:
@@ -373,7 +373,7 @@ pipeline:
       - MAILHOG_HOST=email
       - TEST_FEDERATION=${TEST_FEDERATION}
     commands:
-      - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://federated"; fi
+      - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://federated:8000"; fi
       - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
     when:
       matrix:
