@@ -24,6 +24,7 @@
 namespace OCA\DAV\Upload;
 
 use Sabre\DAV\IFile;
+use Sabre\DAV\Exception\BadRequest;
 
 /**
  * Class AssemblyStream
@@ -113,6 +114,8 @@ class AssemblyStream implements \Icewind\Streams\File {
 	 * @return string
 	 */
 	public function stream_read($count) {
+		$node = null;
+		$lastNode = null;
 		do {
 			if ($this->currentStream === null) {
 				list($node, $posInNode) = $this->getNodeForPosition($this->pos);
@@ -134,7 +137,14 @@ class AssemblyStream implements \Icewind\Streams\File {
 				$read = \strlen($data);
 			}
 
+			// Only try the node twice if it's unable to be read to avoid infinite loops
+			if ($lastNode && $lastNode->getId() === $node->getId() && $read === 0) {
+				\OCP\Util::writeLog('dav', "Size mismatch for chunk '{$node->getPath()}'", \OCP\Util::ERROR);
+				throw new BadRequest('Uploading failed due to invalid or corrupt file transfer.', \OCP\AppFramework\Http::STATUS_INTERNAL_SERVER_ERROR);
+			}
+
 			if (\feof($this->currentStream)) {
+				$lastNode = $node;
 				\fclose($this->currentStream);
 				$this->currentNode = null;
 				$this->currentStream = null;
@@ -143,7 +153,6 @@ class AssemblyStream implements \Icewind\Streams\File {
 			// returning empty data can make the caller think there is no more
 			// data left to read
 		} while ($read === 0);
-
 		// update position
 		$this->pos += $read;
 		return $data;
