@@ -141,6 +141,8 @@ class MoveAvatarOutsideHome implements IRepairStep {
 			$this->userManager->callForSeenUsers($function);
 
 			$output->finishProgress();
+		} else {
+			$output->info("No action required");
 		}
 	}
 }
