@@ -286,11 +286,6 @@ class Setup {
 			$error[] = $l->t("Can't create or write into the data directory %s", [$dataDir]);
 		}
 		
-		// check if we can write .htaccess
-		if (!\is_file($this->pathToHtaccess()) || !\is_writable($this->pathToHtaccess())) {
-			$error[] = $l->t("Can't update %s", [$this->pathToHtaccess()]);
-		}
-
 		if (\count($error) != 0) {
 			return $error;
 		}
@@ -374,8 +369,13 @@ class Setup {
 			// out that this is indeed an ownCloud data directory
 			\file_put_contents($config->getSystemValue('datadirectory', \OC::$SERVERROOT.'/data').'/.ocdata', '');
 
-			// Update .htaccess files
-			Setup::updateHtaccess();
+			// check if we can write .htaccess
+			if (\is_file(self::pathToHtaccess())
+				&& \is_writable(self::pathToHtaccess())
+			) {
+				// Update .htaccess files
+				Setup::updateHtaccess();
+			}
 			Setup::protectDataDirectory();
 
 			//try to write logtimezone
@@ -402,7 +402,7 @@ class Setup {
 	/**
 	 * @return string Absolute path to htaccess
 	 */
-	private function pathToHtaccess() {
+	public static function pathToHtaccess() {
 		return \OC::$SERVERROOT.'/.htaccess';
 	}
 
@@ -425,11 +425,7 @@ class Setup {
 			$webRoot = !empty(\OC::$WEBROOT) ? \OC::$WEBROOT : '/';
 		}
 
-		$setupHelper = new \OC\Setup($config, \OC::$server->getIniWrapper(),
-			$il10n, new \OC_Defaults(), \OC::$server->getLogger(),
-			\OC::$server->getSecureRandom());
-
-		$htaccessContent = \file_get_contents($setupHelper->pathToHtaccess());
+		$htaccessContent = \file_get_contents(self::pathToHtaccess());
 		$content = "#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####\n";
 		$htaccessContent = \explode($content, $htaccessContent, 2)[0];
 
@@ -472,11 +468,11 @@ class Setup {
 
 		if ($content !== '') {
 			$fileWriteResult = @\file_put_contents(
-				$setupHelper->pathToHtaccess(), $htaccessContent . $content . "\n"
+				self::pathToHtaccess(), $htaccessContent . $content . "\n"
 			);
 			if ($fileWriteResult === false) {
 				throw new \Exception(
-					$il10n->t("Can't update %s", [$setupHelper->pathToHtaccess()])
+					$il10n->t("Can't update %s", [self::pathToHtaccess()])
 				);
 			}
 		}
