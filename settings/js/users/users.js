@@ -1042,6 +1042,34 @@ $(document).ready(function () {
 		}
 	});
 
+	if ($('#CheckboxQuota').is(':checked')) {
+		$("#userlist .quota").show();
+	}
+	// Option to display/hide the "User Backend" column
+	$('#CheckboxQuota').click(function() {
+		if ($('#CheckboxQuota').is(':checked')) {
+			$("#userlist .quota").show();
+			OC.AppConfig.setValue('core', 'umgmt_show_quota', 'true');
+		} else {
+			$("#userlist .quota").hide();
+			OC.AppConfig.setValue('core', 'umgmt_show_quota', 'false');
+		}
+	});
+
+	if ($('#CheckboxPassword').is(':checked')) {
+		$("#userlist .password").show();
+	}
+	// Option to display/hide the "User Backend" column
+	$('#CheckboxPassword').click(function() {
+		if ($('#CheckboxPassword').is(':checked')) {
+			$("#userlist .password").show();
+			OC.AppConfig.setValue('core', 'umgmt_show_password', 'true');
+		} else {
+			$("#userlist .password").hide();
+			OC.AppConfig.setValue('core', 'umgmt_show_password', 'false');
+		}
+	});
+
 	// calculate initial limit of users to load
 	var initialUserCountLimit = UserList.initialUsersToLoad,
 		containerHeight = $('#app-content').height();

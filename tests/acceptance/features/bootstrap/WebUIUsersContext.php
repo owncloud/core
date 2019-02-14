@@ -400,6 +400,62 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then /^the administrator should be able to see the quota of these users in the User Management page:$/
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdministratorShouldBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
+		foreach ($table as $row) {
+			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
+			PHPUnit_Framework_Assert::assertEquals(true, $visible);
+		}
+	}
+
+	/**
+	 * @Then /^the administrator should not be able to see the quota of these users in the User Management page:$/
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdministratorShouldNotBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
+		foreach ($table as $row) {
+			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
+			PHPUnit_Framework_Assert::assertEquals(false, $visible);
+		}
+	}
+
+	/**
+	 * @Then /^the administrator should be able to see the password of these users in the User Management page:$/
+	 *
+	 * @param TableNode $table table of usernames column with a heading | username |
+	 *
+	 * @return void
+	 */
+	public function theAdministratorShouldBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
+		foreach ($table as $row) {
+			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
+			PHPUnit_Framework_Assert::assertEquals(true, $visible);
+		}
+	}
+
+	/**
+	 * @Then /^the administrator should not be able to see the password of these users in the User Management page:$/
+	 *
+	 * @param TableNode $table table of usernames column with a heading | username |
+	 *
+	 * @return void
+	 */
+	public function theAdministratorShouldNotbeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
+		foreach ($table as $row) {
+			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
+			PHPUnit_Framework_Assert::assertEquals(false, $visible);
+		}
+	}
+
+	/**
 	 * @Then /^the administrator should be able to see the storage location of these users in the User Management page:$/
 	 *
 	 * @param TableNode $table table of usernames and storage locations with a heading | username | and | storage location |

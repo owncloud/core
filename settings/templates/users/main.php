@@ -98,6 +98,24 @@ translation('settings');
 						<?php p($l->t('Show email address')) ?>
 					</label>
 				</p>
+				<p>
+					<input type="checkbox" name="Password" value="Password" id="CheckboxPassword"
+						   class="checkbox" <?php if ($_['show_password'] === 'true') {
+	print_unescaped('checked="checked"');
+} ?> />
+					<label for="CheckboxPassword">
+						<?php p($l->t('Show password field')) ?>
+					</label>
+				</p>
+				<p>
+					<input type="checkbox" name="Quota" value="Quota" id="CheckboxQuota"
+						   class="checkbox" <?php if ($_['show_quota'] === 'true') {
+	print_unescaped('checked="checked"');
+} ?> />
+					<label for="CheckboxQuota">
+						<?php p($l->t('Show quota field')) ?>
+					</label>
+				</p>
 			</div>
 		</div>
 	</div>
