@@ -36,7 +36,7 @@ class TrashBinHomeTest extends TestCase {
 	 */
 	private $trashBinManager;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->trashBinManager = $this->createMock(TrashBinManager::class);
 		$this->trashBinHome = new TrashBinHome([

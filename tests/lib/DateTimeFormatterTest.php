@@ -27,12 +27,12 @@ class DateTimeFormatterTest extends TestCase {
 		self::$oneYear = self::$oneDay * 365;
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		\date_default_timezone_set(self::$defaultTimeZone);
 		parent::tearDownAfterClass();
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->formatter = new \OC\DateTimeFormatter(new \DateTimeZone('UTC'), \OC::$server->getL10NFactory()->get('lib', 'en'));
 	}

@@ -87,7 +87,7 @@ class TransferOwnershipTest extends TestCase {
 	 */
 	private $commandTester;
 
-	protected function setup() {
+	protected function setup(): void {
 		parent::setUp();
 		$this->userManager = \OC::$server->getUserManager();
 		$this->shareManager = \OC::$server->getShareManager();
@@ -113,7 +113,7 @@ class TransferOwnershipTest extends TestCase {
 		);
 		$this->commandTester = new CommandTester($command);
 	}
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->tearDownUserTrait();
 		$this->shareManager->userDeleted('share-receiver');
 		$this->shareManager->userDeleted($this->sourceUser->getUID());

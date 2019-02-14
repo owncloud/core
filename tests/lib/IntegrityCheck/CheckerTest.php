@@ -59,7 +59,7 @@ class CheckerTest extends TestCase {
 	/** @var IAppManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $appManager;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->environmentHelper = $this->createMock(EnvironmentHelper::class);
 		$this->fileAccessHelper = $this->createMock(FileAccessHelper::class);

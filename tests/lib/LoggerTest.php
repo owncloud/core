@@ -27,7 +27,7 @@ class LoggerTest extends TestCase {
 	/** @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $eventDispatcher;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		self::$logs = [];

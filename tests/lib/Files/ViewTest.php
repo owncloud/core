@@ -84,7 +84,7 @@ class ViewTest extends TestCase {
 	/** @var \OC\AllConfig */
 	private $config;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		\OC_Hook::clear();
 
@@ -112,7 +112,7 @@ class ViewTest extends TestCase {
 		$this->config = $this->createMock(AllConfig::class);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->restoreService('AllConfig');
 		\OC_User::setUserId($this->user);
 		foreach ($this->storages as $storage) {

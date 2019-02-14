@@ -52,7 +52,7 @@ class ActivityHelperTest extends \Test\TestCase {
 	 */
 	private $user;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->tags = $this->createMock(ITags::class);

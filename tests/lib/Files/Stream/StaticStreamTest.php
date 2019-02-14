@@ -12,13 +12,13 @@ class StaticStreamTest extends \Test\TestCase {
 	private $sourceFile;
 	private $sourceText;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->sourceFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
 		$this->sourceText = \file_get_contents($this->sourceFile);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		\OC\Files\Stream\StaticStream::clear();
 		parent::tearDown();
 	}

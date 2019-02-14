@@ -46,7 +46,7 @@ class EntityCollectionTest extends \Test\TestCase {
 	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
 	private $dispatcher;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->commentsManager = $this->createMock(ICommentsManager::class);

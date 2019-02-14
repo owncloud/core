@@ -24,7 +24,7 @@ class DBSchemaTest extends TestCase {
 	protected $table1;
 	protected $table2;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$dbfile = \OC::$SERVERROOT.'/tests/data/db_structure.xml';
@@ -43,7 +43,7 @@ class DBSchemaTest extends TestCase {
 		$this->table2 = $r.'cntcts_cards';
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		\unlink($this->schema_file);
 		\unlink($this->schema_file2);
 

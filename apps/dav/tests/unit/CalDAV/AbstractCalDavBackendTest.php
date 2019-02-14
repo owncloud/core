@@ -59,7 +59,7 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 	/** @var ISecureRandom */
 	private $random;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->principal = $this->getMockBuilder(Principal::class)
@@ -83,7 +83,7 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 		$this->tearDown();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 
 		if ($this->backend === null) {

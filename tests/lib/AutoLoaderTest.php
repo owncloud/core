@@ -16,7 +16,7 @@ class AutoLoaderTest extends TestCase {
 	 */
 	private $loader;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->loader = new AutoLoader();
 	}

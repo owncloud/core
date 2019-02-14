@@ -51,7 +51,7 @@ class AppTest extends \Test\TestCase {
 	private $controllerMethod;
 	private $appPath;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->container = new \OC\AppFramework\DependencyInjection\DIContainer('test', []);
@@ -118,7 +118,7 @@ class AppTest extends \Test\TestCase {
 		$this->assertEquals('OCA\NameSpaceTestApp', $ns);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		rrmdir($this->appPath);
 		parent::tearDown();
 	}

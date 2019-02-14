@@ -69,7 +69,7 @@ class MailNotificationsTest extends TestCase {
 	/** @var MailNotifications */
 	private $mailNotifications;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->shareManager = $this->createMock(IManager::class);

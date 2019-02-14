@@ -32,7 +32,7 @@ use OC_OCS_Privatedata;
 class PrivatedataTest extends \Test\TestCase {
 	private $appKey;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		\OC::$server->getSession()->set('user_id', 'user1');
 		$this->appKey = $this->getUniqueID('app');

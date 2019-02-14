@@ -23,7 +23,7 @@ class WrapperTest extends Storage {
 	 */
 	private $tmpDir;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->tmpDir = \OC::$server->getTempManager()->getTemporaryFolder();
@@ -31,7 +31,7 @@ class WrapperTest extends Storage {
 		$this->instance = new Wrapper(['storage' => $storage]);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		\OC_Helper::rmdirr($this->tmpDir);
 		parent::tearDown();
 	}

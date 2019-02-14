@@ -68,7 +68,7 @@ class CardDavBackendTest extends TestCase {
 	const UNIT_TEST_USER1 = 'principals/users/carddav-unit-test1';
 	const UNIT_TEST_GROUP = 'principals/groups/carddav-unit-test-group';
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->principal = $this->getMockBuilder(Principal::class)
@@ -98,7 +98,7 @@ class CardDavBackendTest extends TestCase {
 		$this->tearDown();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 
 		if ($this->backend === null) {

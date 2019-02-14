@@ -43,7 +43,7 @@ class LockingTest extends TestCase {
 	private $ownerUid;
 	private $recipientUid;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->ownerUid = $this->getUniqueID('owner_');

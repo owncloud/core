@@ -46,7 +46,7 @@ class ImageExportPluginTest extends TestCase {
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')->getMock();

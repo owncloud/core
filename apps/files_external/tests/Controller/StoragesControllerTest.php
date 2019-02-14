@@ -41,12 +41,12 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 	 */
 	protected $service;
 
-	public function setUp() {
+	public function setUp(): void {
 		\OC_Mount_Config::$skipTest = true;
 		\OC::$server->getSystemConfig()->setValue('files_external_allow_create_new_local', true);
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		\OC_Mount_Config::$skipTest = false;
 		\OC::$server->getSystemConfig()->setValue('files_external_allow_create_new_local', false);
 	}

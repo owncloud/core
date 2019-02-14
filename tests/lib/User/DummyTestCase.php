@@ -25,7 +25,7 @@ namespace Test\User;
 use Test\Util\User\Dummy;
 
 class DummyTestCase extends BackendTestCase {
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->backend = new Dummy();
 	}

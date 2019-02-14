@@ -48,7 +48,7 @@ class MetaPluginTest extends TestCase {
 	 */
 	private $server;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->userSession = $this->createMock(IUserSession::class);

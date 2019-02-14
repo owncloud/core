@@ -28,7 +28,7 @@ use OCA\Files_External\Controller\GlobalStoragesController;
 use OCP\Files\External\IStoragesBackendService;
 
 class GlobalStoragesControllerTest extends StoragesControllerTest {
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->service = $this->createMock('\OCP\Files\External\Service\IGlobalStoragesService');
 

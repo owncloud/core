@@ -45,7 +45,7 @@ class GroupsTest extends \Test\TestCase {
 	/** @var Groups */
 	protected $api;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->subAdminManager = $this->getMockBuilder('OC\SubAdmin')

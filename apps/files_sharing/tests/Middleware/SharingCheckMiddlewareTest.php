@@ -45,7 +45,7 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 	/** @var IControllerMethodReflector */
 	private $reflector;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->config = $this->getMockBuilder('\OCP\IConfig')
 			->disableOriginalConstructor()->getMock();
 		$this->appManager = $this->getMockBuilder('\OCP\App\IAppManager')

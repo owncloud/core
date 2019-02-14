@@ -14,7 +14,7 @@ class ReadOnlyJailTest extends TestCase {
 	/** @var  Temporary */
 	private $sourceStorage;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->sourceStorage = new Temporary([]);

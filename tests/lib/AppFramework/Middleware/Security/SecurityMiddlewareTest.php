@@ -72,7 +72,7 @@ class SecurityMiddlewareTest extends TestCase {
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	private $session;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->controller = $this->getMockBuilder(Controller::class)

@@ -36,7 +36,7 @@ class SettingTest extends TestCase {
 	/** @var \Symfony\Component\Console\Output\OutputInterface|\PHPUnit\Framework\MockObject\MockObject */
 	protected $consoleOutput;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->userManager = $this->getMockBuilder('OCP\IUserManager')

@@ -38,7 +38,7 @@ class DiscoveryManagerTest extends \Test\TestCase {
 	/** @var DiscoveryManager */
 	private $discoveryManager;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->cache = $this->createMock('\OCP\ICache');
 		/** @var ICacheFactory $cacheFactory */

@@ -37,7 +37,7 @@ use OCA\Files_External\Lib\Storage\SMB;
  * @package OCA\Files_External\Tests\Storage
  */
 class SmbTest extends \Test\Files\Storage\Storage {
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$id = $this->getUniqueID();
 		$config = include 'files_external/tests/config.smb.php';
@@ -52,7 +52,7 @@ class SmbTest extends \Test\Files\Storage\Storage {
 		$this->assertTrue($this->instance->mkdir('/'), 'Failed to create a root dir');
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->instance) {
 			$this->instance->rmdir('');
 			// force disconnect of the client

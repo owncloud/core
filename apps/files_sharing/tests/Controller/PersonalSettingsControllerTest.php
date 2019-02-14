@@ -44,7 +44,7 @@ class PersonalSettingsControllerTest extends TestCase {
 	/** @var PersonalSettingsController $personalSettingsController */
 	private $personalSettingsController;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()

@@ -20,7 +20,7 @@ class TokensTest extends \Test\TestCase {
 	/** @var Tokens */
 	private $panel;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->panel = new Tokens;
 	}

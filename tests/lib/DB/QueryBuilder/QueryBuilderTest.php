@@ -41,7 +41,7 @@ class QueryBuilderTest extends \Test\TestCase {
 	/** @var IDBConnection */
 	protected $connection;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();

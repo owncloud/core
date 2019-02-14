@@ -82,14 +82,14 @@ class FilesystemTest extends TestCase {
 		return ['datadir' => $dir];
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->createUser(self::TEST_FILESYSTEM_USER1, self::TEST_FILESYSTEM_USER1);
 		$this->createUser(self::TEST_FILESYSTEM_USER2, self::TEST_FILESYSTEM_USER2);
 		$this->loginAsUser();
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		foreach ($this->tmpDirs as $dir) {
 			\OC_Helper::rmdirr($dir);
 		}

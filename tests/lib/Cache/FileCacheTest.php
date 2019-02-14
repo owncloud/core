@@ -51,7 +51,7 @@ class FileCacheTest extends TestCache {
 	 * */
 	private $rootView;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		//clear all proxies and hooks so we can do clean testing
@@ -83,7 +83,7 @@ class FileCacheTest extends TestCache {
 		$this->instance->set('hack', 'hack');
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->instance) {
 			$this->instance->remove('hack', 'hack');
 		}

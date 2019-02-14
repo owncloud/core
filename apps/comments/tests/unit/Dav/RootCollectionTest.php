@@ -45,7 +45,7 @@ class RootCollectionTest extends \Test\TestCase {
 	/** @var \OCP\IUser|\PHPUnit\Framework\MockObject\MockObject */
 	protected $user;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->user = $this->createMock('\OCP\IUser');
