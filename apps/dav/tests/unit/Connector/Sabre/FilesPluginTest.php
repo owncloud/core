@@ -55,6 +55,7 @@ class FilesPluginTest extends TestCase {
 	const INTERNAL_FILEID_PROPERTYNAME = FilesPlugin::INTERNAL_FILEID_PROPERTYNAME;
 	const SIZE_PROPERTYNAME = FilesPlugin::SIZE_PROPERTYNAME;
 	const PERMISSIONS_PROPERTYNAME = FilesPlugin::PERMISSIONS_PROPERTYNAME;
+	const SHARE_PERMISSIONS_PROPERTYNAME = '{http://open-collaboration-services.org/ns}share-permissions';
 	const LASTMODIFIED_PROPERTYNAME = FilesPlugin::LASTMODIFIED_PROPERTYNAME;
 	const DOWNLOADURL_PROPERTYNAME = FilesPlugin::DOWNLOADURL_PROPERTYNAME;
 	const OWNER_ID_PROPERTYNAME = FilesPlugin::OWNER_ID_PROPERTYNAME;
@@ -95,7 +96,7 @@ class FilesPluginTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$this->config = $this->createMock(IConfig::class);
-		$this->config->expects($this->any())->method('getSystemValue')
+		$this->config->method('getSystemValue')
 			->with($this->equalTo('data-fingerprint'), $this->equalTo(''))
 			->willReturn('my_fingerprint');
 		$this->request = $this->createMock(IRequest::class);
@@ -109,7 +110,9 @@ class FilesPluginTest extends TestCase {
 		$response = $this->getMockBuilder(ResponseInterface::class)
 				->disableOriginalConstructor()
 				->getMock();
+		$request = $this->createMock(RequestInterface::class);
 		$this->server->httpResponse = $response;
+		$this->server->httpRequest = $request;
 
 		$this->plugin->initialize($this->server);
 	}
@@ -124,34 +127,34 @@ class FilesPluginTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$node->expects($this->any())
+		$node
 			->method('getId')
-			->will($this->returnValue(123));
+			->willReturn(123);
 
-		$this->tree->expects($this->any())
+		$this->tree
 			->method('getNodeForPath')
 			->with($path)
-			->will($this->returnValue($node));
+			->willReturn($node);
 
-		$node->expects($this->any())
+		$node
 			->method('getFileId')
-			->will($this->returnValue('00000123instanceid'));
-		$node->expects($this->any())
+			->willReturn('00000123instanceid');
+		$node
 			->method('getInternalFileId')
-			->will($this->returnValue('123'));
-		$node->expects($this->any())
+			->willReturn('123');
+		$node
 			->method('getEtag')
-			->will($this->returnValue('"abc"'));
-		$node->expects($this->any())
+			->willReturn('"abc"');
+		$node
 			->method('getDavPermissions')
-			->will($this->returnValue('DWCKMSR'));
+			->willReturn('DWCKMSR');
 
 		$fileInfo = $this->createMock(FileInfo::class);
-		$fileInfo->expects($this->any())
+		$fileInfo
 			->method('isReadable')
 			->willReturn(true);
 
-		$node->expects($this->any())
+		$node
 			->method('getFileInfo')
 			->willReturn($fileInfo);
 
@@ -170,6 +173,7 @@ class FilesPluginTest extends TestCase {
 				self::INTERNAL_FILEID_PROPERTYNAME,
 				self::SIZE_PROPERTYNAME,
 				self::PERMISSIONS_PROPERTYNAME,
+				self::SHARE_PERMISSIONS_PROPERTYNAME,
 				self::DOWNLOADURL_PROPERTYNAME,
 				self::OWNER_ID_PROPERTYNAME,
 				self::OWNER_DISPLAY_NAME_PROPERTYNAME,
@@ -183,18 +187,20 @@ class FilesPluginTest extends TestCase {
 		$user
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('foo'));
+			->willReturn('foo');
 		$user
 			->expects($this->once())
 			->method('getDisplayName')
-			->will($this->returnValue('M. Foo'));
+			->willReturn('M. Foo');
 
 		$node->expects($this->once())
 			->method('getDirectDownload')
-			->will($this->returnValue(['url' => 'http://example.com/']));
+			->willReturn(['url' => 'http://example.com/']);
 		$node->expects($this->exactly(2))
 			->method('getOwner')
-			->will($this->returnValue($user));
+			->willReturn($user);
+		$node->method('getSharePermissions')
+			->willReturn(666);
 
 		$this->plugin->handleGetProperties(
 			$propFind,
@@ -206,6 +212,7 @@ class FilesPluginTest extends TestCase {
 		$this->assertEquals('123', $propFind->get(self::INTERNAL_FILEID_PROPERTYNAME));
 		$this->assertNull($propFind->get(self::SIZE_PROPERTYNAME));
 		$this->assertEquals('DWCKMSR', $propFind->get(self::PERMISSIONS_PROPERTYNAME));
+		$this->assertEquals(666, $propFind->get(self::SHARE_PERMISSIONS_PROPERTYNAME));
 		$this->assertEquals('http://example.com/', $propFind->get(self::DOWNLOADURL_PROPERTYNAME));
 		$this->assertEquals('foo', $propFind->get(self::OWNER_ID_PROPERTYNAME));
 		$this->assertEquals('M. Foo', $propFind->get(self::OWNER_DISPLAY_NAME_PROPERTYNAME));
@@ -255,9 +262,9 @@ class FilesPluginTest extends TestCase {
 
 		/** @var File | \PHPUnit_Framework_MockObject_MockObject $node */
 		$node = $this->createTestNode(File::class);
-		$node->expects($this->any())
+		$node
 			->method('getDavPermissions')
-			->will($this->returnValue('DWCKMSR'));
+			->willReturn('DWCKMSR');
 
 		$this->plugin->handleGetProperties(
 			$propFind,
@@ -286,7 +293,7 @@ class FilesPluginTest extends TestCase {
 
 		$node->expects($this->once())
 			->method('getSize')
-			->will($this->returnValue(1025));
+			->willReturn(1025);
 
 		$this->plugin->handleGetProperties(
 			$propFind,
@@ -307,14 +314,14 @@ class FilesPluginTest extends TestCase {
 		$node = $this->getMockBuilder(Directory::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$node->expects($this->any())->method('getPath')->willReturn('/');
+		$node->method('getPath')->willReturn('/');
 
 		$fileInfo = $this->createMock(FileInfo::class);
-		$fileInfo->expects($this->any())
+		$fileInfo
 			->method('isReadable')
 			->willReturn(true);
 
-		$node->expects($this->any())
+		$node
 			->method('getFileInfo')
 			->willReturn($fileInfo);
 
@@ -342,14 +349,14 @@ class FilesPluginTest extends TestCase {
 		$node = $this->getMockBuilder(Directory::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$node->expects($this->any())->method('getPath')->willReturn('/');
+		$node->method('getPath')->willReturn('/');
 
 		$fileInfo = $this->createMock(FileInfo::class);
-		$fileInfo->expects($this->any())
+		$fileInfo
 			->method('isReadable')
 			->willReturn(false);
 
-		$node->expects($this->any())
+		$node
 			->method('getFileInfo')
 			->willReturn($fileInfo);
 
@@ -379,7 +386,7 @@ class FilesPluginTest extends TestCase {
 		$node->expects($this->once())
 			->method('setEtag')
 			->with('newetag')
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		// properties to set
 		$propPatch = new PropPatch([
@@ -450,9 +457,7 @@ class FilesPluginTest extends TestCase {
 			->method('isDeletable')
 			->willReturn(false);
 
-		$node = $this->getMockBuilder(Node::class)
-			->disableOriginalConstructor()
-			->getMock();
+		$node = $this->createMock(Node::class);
 		$node->expects($this->once())
 			->method('getFileInfo')
 			->willReturn($fileInfoFolderATestTXT);
@@ -471,9 +476,7 @@ class FilesPluginTest extends TestCase {
 			->method('isDeletable')
 			->willReturn(true);
 
-		$node = $this->getMockBuilder(Node::class)
-			->disableOriginalConstructor()
-			->getMock();
+		$node = $this->createMock(Node::class);
 		$node->expects($this->once())
 			->method('getFileInfo')
 			->willReturn($fileInfoFolderATestTXT);
@@ -489,9 +492,7 @@ class FilesPluginTest extends TestCase {
 	 * @expectedExceptionMessage FolderA/test.txt does not exist
 	 */
 	public function testMoveSrcNotExist() {
-		$node = $this->getMockBuilder(Node::class)
-			->disableOriginalConstructor()
-			->getMock();
+		$node = $this->createMock(Node::class);
 		$node->expects($this->once())
 			->method('getFileInfo')
 			->willReturn(null);
@@ -533,7 +534,7 @@ class FilesPluginTest extends TestCase {
 		$request
 			->expects($this->once())
 			->method('getPath')
-			->will($this->returnValue('test/somefile.xml'));
+			->willReturn('test/somefile.xml');
 
 		$node = $this->getMockBuilder(File::class)
 			->disableOriginalConstructor()
@@ -541,7 +542,7 @@ class FilesPluginTest extends TestCase {
 		$node
 			->expects($this->once())
 			->method('getName')
-			->will($this->returnValue('somefile.xml'));
+			->willReturn('somefile.xml');
 
 		$node->expects($this->once())
 			->method('getChecksum')
@@ -552,12 +553,12 @@ class FilesPluginTest extends TestCase {
 			->expects($this->once())
 			->method('getNodeForPath')
 			->with('test/somefile.xml')
-			->will($this->returnValue($node));
+			->willReturn($node);
 
 		$this->request
 			->expects($this->once())
 			->method('isUserAgent')
-			->will($this->returnValue($isClumsyAgent));
+			->willReturn($isClumsyAgent);
 
 		$response
 			->expects($this->exactly(2))
