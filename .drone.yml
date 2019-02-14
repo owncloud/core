@@ -108,9 +108,6 @@ pipeline:
       - php occ config:system:set trusted_domains 2 --value=federated
       - php occ log:manage --level 0
       - php occ config:list
-      - php occ security:certificates:import /drone/server.crt
-      - php occ security:certificates:import /drone/federated.crt
-      - php occ security:certificates
     when:
       matrix:
         INSTALL_SERVER: true
@@ -260,8 +257,8 @@ pipeline:
       - echo 'Sharing a folder ..'
       - OC_PASS=123456 php occ user:add --password-from-env user1
       - chown www-data /drone/src -R
-      - curl -k -s -u user1:123456 -X MKCOL 'https://server/remote.php/webdav/new_folder'
-      - curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data 'path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin'
+      - curl -k -s -u user1:123456 -X MKCOL 'http://server/remote.php/webdav/new_folder'
+      - curl -k -s -u user1:123456 "http://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data 'path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin'
     when:
       matrix:
         TEST_SUITE: litmus
@@ -270,7 +267,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-      - LITMUS_URL=https://server/remote.php/webdav
+      - LITMUS_URL=http://server/remote.php/webdav
       - LITMUS_USERNAME=admin
       - LITMUS_PASSWORD=admin
     when:
@@ -281,7 +278,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=https://server/remote.php/dav/files/admin
+    - LITMUS_URL=http://server/remote.php/dav/files/admin
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -292,7 +289,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=https://server/remote.php/dav/files/admin/local_storage/
+    - LITMUS_URL=http://server/remote.php/dav/files/admin/local_storage/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -303,7 +300,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=https://server/remote.php/webdav/local_storage/
+    - LITMUS_URL=http://server/remote.php/webdav/local_storage/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -314,7 +311,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=https://server/remote.php/dav/files/admin/new_folder/
+    - LITMUS_URL=http://server/remote.php/dav/files/admin/new_folder/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -325,7 +322,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=https://server/remote.php/webdav/new_folder/
+    - LITMUS_URL=http://server/remote.php/webdav/new_folder/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -347,7 +344,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-      - TEST_SERVER_URL=https://server
+      - TEST_SERVER_URL=http://server
       - TEST_FEDERATION=${TEST_FEDERATION}
     commands:
       - if [ "${TEST_FEDERATION}" != "" ]; then export TEST_SERVER_FED_URL="http://docker:8000"; fi
@@ -360,7 +357,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-      - TEST_SERVER_URL=https://server
+      - TEST_SERVER_URL=http://server
       - MAILHOG_HOST=email
     commands:
       - touch /drone/saved-settings.sh
@@ -377,7 +374,7 @@ pipeline:
       - BROWSER=chrome
       - SELENIUM_HOST=selenium
       - SELENIUM_PORT=4444
-      - TEST_SERVER_URL=https://server
+      - TEST_SERVER_URL=http://server
       - PLATFORM=Linux
       - MAILHOG_HOST=email
       - TEST_FEDERATION=${TEST_FEDERATION}
@@ -484,10 +481,6 @@ services:
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/src/
-      - APACHE_CONFIG_TEMPLATE=ssl
-      - APACHE_SSL_CERT_CN=server
-      - APACHE_SSL_CERT=/drone/server.crt
-      - APACHE_SSL_KEY=/drone/server.key
     command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
     when:
       matrix:
