@@ -1355,154 +1355,6 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BROWSER: firefox
-      BEHAT_SUITE: webUIAdminSettings
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-      USE_EMAIL: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUIComments
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUICreateDelete
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUIFavorites
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUIFiles
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUILogin
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-      USE_EMAIL: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUIMoveFilesFolders
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUIPersonalSettings
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-      USE_EMAIL: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUIRenameFiles
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUIRenameFolders
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUIRestrictSharing
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUISharingAcceptShares
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUISharingExternal
       DB_TYPE: mariadb
       USE_SERVER: true
       SERVER_PROTOCOL: http
@@ -1513,117 +1365,43 @@ matrix:
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
       USE_EMAIL: true
+      BEHAT_FILTER_TAGS: '@smokeTest&&~@notifications-app-required'
+      DIVIDE_INTO_NUM_PARTS: 3
+      RUN_PART: 1
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BROWSER: firefox
-      BEHAT_SUITE: webUISharingInternalGroups
       DB_TYPE: mariadb
       USE_SERVER: true
       SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUISharingInternalUsers
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUISharingNotifications
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
       USE_EMAIL: true
-      INSTALL_NOTIFICATIONS_APP: true
+      BEHAT_FILTER_TAGS: '@smokeTest&&~@notifications-app-required'
+      DIVIDE_INTO_NUM_PARTS: 3
+      RUN_PART: 2
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BROWSER: firefox
-      BEHAT_SUITE: webUISharingPublic
       DB_TYPE: mariadb
       USE_SERVER: true
       SERVER_PROTOCOL: http
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
       USE_EMAIL: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUITags
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUITrashbin
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUIUpload
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUIWebdavLocks
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: firefox
-      BEHAT_SUITE: webUIWebdavLockProtection
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: http
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
+      BEHAT_FILTER_TAGS: '@smokeTest&&~@notifications-app-required'
+      DIVIDE_INTO_NUM_PARTS: 3
+      RUN_PART: 3
 
     # caldav test
     - PHP_VERSION: 7.1
