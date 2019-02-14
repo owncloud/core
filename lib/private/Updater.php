@@ -84,7 +84,7 @@ class Updater extends BasicEmitter {
 
 	/**
 	 * runs the update actions in maintenance mode, does not upgrade the source files
-	 * except the main .htaccess file
+	 * except the main .htaccess file if it is writable
 	 *
 	 * @return bool true if the operation succeeded, false otherwise
 	 */
@@ -221,7 +221,7 @@ class Updater extends BasicEmitter {
 
 	/**
 	 * runs the update actions in maintenance mode, does not upgrade the source files
-	 * except the main .htaccess file
+	 * except the main .htaccess file if it is writable
 	 *
 	 * @param string $currentVersion current version to upgrade to
 	 * @param string $installedVersion previous version from which to upgrade from
@@ -237,7 +237,13 @@ class Updater extends BasicEmitter {
 
 		// Update .htaccess files
 		try {
-			Setup::updateHtaccess();
+			// check if we can write .htaccess
+			if (\is_file(Setup::pathToHtaccess())
+				&& \is_writable(Setup::pathToHtaccess())
+			) {
+				// Update .htaccess files
+				Setup::updateHtaccess();
+			}
 			Setup::protectDataDirectory();
 		} catch (\Exception $e) {
 			throw new \Exception($e->getMessage());
