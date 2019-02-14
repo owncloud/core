@@ -11,6 +11,7 @@ Feature: Change own email address on the personal settings page
 
   @issue-32385
   @smokeTest
+  @skipOnFIREFOX
   Scenario: Change email address
     When the user changes the email address to "new-address@owncloud.com" using the webUI
     # When the issue is fixed, remove the following step and replace with the commented-out step

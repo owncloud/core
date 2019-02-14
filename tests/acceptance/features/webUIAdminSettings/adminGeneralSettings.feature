@@ -45,7 +45,7 @@ Feature: admin general settings
     And the administrator sets the value of update channel to "daily" using the webUI
     Then the update channel should be "daily"
 
-  @smokeTest
+  @smokeTest @skipOnFIREFOX
   Scenario: administrator changes the cron job
     Given the administrator has invoked occ command "config:app:set core backgroundjobs_mode --value ajax"
     When the user reloads the current page of the webUI

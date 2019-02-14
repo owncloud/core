@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews
+@webUI @insulated @disablePreviews @skipOnFIREFOX
 Feature: Renaming files inside a folder with problematic name
   As a user
   I want to rename a file

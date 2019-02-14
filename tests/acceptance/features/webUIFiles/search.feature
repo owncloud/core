@@ -97,6 +97,7 @@ Feature: Search
     And the user searches for "simple" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
+  @skipOnFIREFOX
   Scenario: Search for a file after name is changed
     When the user renames file "lorem.txt" to "torem.txt" using the webUI
     And the user searches for "torem" using the webUI
