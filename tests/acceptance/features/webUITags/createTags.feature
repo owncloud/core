@@ -45,6 +45,7 @@ Feature: Creation of tags for the files and folders
     And the user toggles a tag "lorem" on the file using the webUI
     Then file "simple-folder/lorem.txt" should have no tags for user "user1"
 
+  @skipOnFIREFOX
   Scenario: Create and add tag on a shared file
     When the user renames file "lorem.txt" to "coolnewfile.txt" using the webUI
     And the user browses directly to display the details of file "coolnewfile.txt" in folder ""
@@ -60,6 +61,7 @@ Feature: Creation of tags for the files and folders
       | tag1 | normal |
       | tag2 | normal |
 
+  @skipOnFIREFOX
   Scenario: Delete a tag in a shared file
     When the user renames file "lorem.txt" to "coolnewfile.txt" using the webUI
     And the user browses directly to display the details of file "coolnewfile.txt" in folder ""

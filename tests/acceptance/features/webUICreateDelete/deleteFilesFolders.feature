@@ -27,6 +27,7 @@ Feature: deleting files and folders
     And the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 
+  @skipOnFIREFOX
   Scenario: Delete a file with problematic characters
     When the user renames the following file using the webUI
       | from-name-parts | to-name-parts   |
@@ -169,6 +170,7 @@ Feature: deleting files and folders
     And the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 
+  @skipOnFIREFOX
   Scenario: delete a file on a public share with problematic characters
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |

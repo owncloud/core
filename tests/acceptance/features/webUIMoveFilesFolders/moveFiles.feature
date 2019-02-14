@@ -35,6 +35,7 @@ Feature: move files
       | Could not move "data.zip", target exists |
     And file "data.zip" should be listed on the webUI
 
+  @skipOnFIREFOX
   Scenario: move a file into a folder where a file with the same name already exists
     When the user moves file "strängé filename (duplicate #2 &).txt" into folder "strängé नेपाली folder" using the webUI
     Then notifications should be displayed on the webUI with the text
@@ -52,6 +53,7 @@ Feature: move files
     And the moved elements should not be listed on the webUI after a page reload
     But the moved elements should be listed in folder "simple-empty-folder" on the webUI
 
+  @skipOnFIREFOX
   Scenario: move a file into a folder (problematic characters)
     When the user renames the following file using the webUI
       | from-name-parts | to-name-parts   |
