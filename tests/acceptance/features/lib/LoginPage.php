@@ -38,6 +38,8 @@ class LoginPage extends OwncloudPage {
 	protected $path = '/index.php/login';
 	protected $userInputId = "user";
 	protected $passwordInputId = "password";
+	protected $confirmPasswordInputId = "retypepassword";
+	protected $passwordResetConfrimMessage = "message";
 	protected $submitLoginId = "submit";
 	protected $lostPasswordId = "lost-password";
 	protected $setPasswordErrorMessageId = "error-message";
@@ -196,14 +198,24 @@ class LoginPage extends OwncloudPage {
 	/**
 	 *
 	 * @param string $newPassword
+	 * @param string $confirmNewPassword
 	 * @param Session $session
 	 *
 	 * @return void
 	 */
-	public function resetThePassword($newPassword, Session $session) {
+	public function resetThePassword($newPassword, $confirmNewPassword, Session $session) {
 		$this->fillField($this->passwordInputId, $newPassword);
+		$this->fillField($this->confirmPasswordInputId, $confirmNewPassword);
 		$this->findById($this->submitLoginId)->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRestPasswordConfirmError() {
+		$messageVal = $this->findById($this->passwordResetConfrimMessage)->getText();
+		return $messageVal;
 	}
 
 	/**
