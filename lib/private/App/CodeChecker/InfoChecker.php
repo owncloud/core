@@ -49,7 +49,6 @@ class InfoChecker extends BasicEmitter {
 		'dependencies', // TODO: Mandatory as of ownCloud 11
 		'documentation',
 		'namespace',
-		'ocsid',
 		'public',
 		'remote',
 		'repository',
@@ -61,6 +60,7 @@ class InfoChecker extends BasicEmitter {
 		'require',
 		'requiremax',
 		'requiremin',
+		'ocsid',
 		'shipped',
 		'standalone',
 	];

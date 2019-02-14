@@ -31,7 +31,10 @@
 namespace OC\App;
 
 use OC_App;
+use OC\Memcache\ArrayCache;
+use OC\Memcache\NullCache;
 use OC\Installer;
+use OCP\App\AppNotFoundException;
 use OCP\App\IAppManager;
 use OCP\App\AppManagerException;
 use OCP\App\ManagerEvent;
@@ -63,6 +66,8 @@ class AppManager implements IAppManager {
 	private $userSession;
 	/** @var \OCP\IAppConfig */
 	private $appConfig;
+	/** @var \OCP\ICache */
+	private $appInfo;
 	/** @var \OCP\IGroupManager */
 	private $groupManager;
 	/** @var \OCP\ICacheFactory */
@@ -107,6 +112,14 @@ class AppManager implements IAppManager {
 		$this->memCacheFactory = $memCacheFactory;
 		$this->dispatcher = $dispatcher;
 		$this->config = $config;
+
+		// TODO we have no public API for this
+		if (\method_exists($this->memCacheFactory, 'createLocal')) {
+			$this->appInfo = $this->memCacheFactory->createLocal('app-info');
+		}
+		if ($this->appInfo === null || $this->appInfo instanceof NullCache) {
+			$this->appInfo = new ArrayCache('app-info');
+		}
 	}
 
 	/**
@@ -334,6 +347,8 @@ class AppManager implements IAppManager {
 	public function clearAppsCache() {
 		$settingsMemCache = $this->memCacheFactory->create('settings');
 		$settingsMemCache->clear('listApps');
+		$this->appInfo->clear();
+		$this->appDirs = [];
 	}
 
 	/**
@@ -363,6 +378,23 @@ class AppManager implements IAppManager {
 	}
 
 	/**
+	 * @param $path
+	 * @return string|null an etag for the given $path or null
+	 */
+	private function getEtag($path) {
+		if (!\file_exists($path)) {
+			return null;
+		}
+		\clearstatcache(false, $path);
+		$stat = \stat($path);
+		if ($stat) {
+			// ok, file still exists
+			return "${stat['mtime']}|${stat['ino']}|${stat['dev']}|${stat['size']}";
+		}
+		return null;
+	}
+
+	/**
 	 * Returns the app information from "appinfo/info.xml".
 	 *
 	 * @param string $appId app id
@@ -370,17 +402,113 @@ class AppManager implements IAppManager {
 	 * @return array app info
 	 *
 	 * @internal
+	 * @throws \InvalidArgumentException
+	 * @throws AppNotFoundException
 	 */
 	public function getAppInfo($appId) {
-		$appInfo = \OC_App::getAppInfo($appId);
-		if ($appInfo === null) {
-			return null;
+		if (!\is_string($appId) || $appId === '') {
+			return null; // TODO explode?
 		}
-		if (!isset($appInfo['version'])) {
-			// read version from separate file
-			$appInfo['version'] = \OC_App::getAppVersion($appId);
+
+		$etag = null;
+
+		// check the cache
+		$data = $this->appInfo->get($appId);
+		if (isset($data['path'])) {
+			// check that that info file hasn't changed by comparing the etag
+			$etag = $this->getEtag($data['path']);
+			if ($data['etag'] === $etag) {
+				// nice, etag is still the same, return from cache!
+				return $data['info'];
+			}
+			// invalidate cache
+			$this->appInfo->remove($appId);
 		}
-		return $appInfo;
+
+		$appPath = $this->getAppPath($appId);
+		if ($appPath === false) {
+			// app no longer exists
+			return null; // TODO explode?
+		}
+
+		$file = "$appPath/appinfo/info.xml";
+		if (isset($data['path']) && $data['path'] !== $file) {
+			// path changed, invalidate etag
+			$etag = null;
+		}
+
+		// if we still have an etag, the content changed but the etag is up to
+		// date. otherwise the path changed and we have to recalculate it
+		return $this->getAppInfoByPath($file, $etag);
+	}
+
+	/**
+	 * Returns the app information from the given path.
+	 *
+	 * @note all data is read from info.xml, not just pre-defined fields
+	 *
+	 * @param string $path path to info xml
+	 * @param string $etag optional etag for the file, used to invalidate cache
+	 *
+	 * @return array app info
+	 *
+	 * @internal
+	 * @throws \InvalidArgumentException
+	 * @throws AppNotFoundException
+	 */
+	public function getAppInfoByPath($path, $etag = null) {
+		$file = \realpath($path);
+
+		// check the cache
+		$data = $this->appInfo->get($file);
+		if (isset($data['path'])) {
+			// check that that info file hasn't changed by comparing the etag
+			$etag = $this->getEtag($data['path']);
+			if ($data['etag'] === $etag) {
+				// nice, etag is still the same, return from cache!
+				return $data['info'];
+			}
+			// invalidate cache
+			$this->appInfo->remove($file);
+		}
+
+		// parse the actual file
+		$parser = new InfoParser();
+		try {
+			$info = $parser->parse($file);
+		} catch (\InvalidArgumentException $e) {
+			\OC::$server->getLogger()->logException($e);
+			throw $e;
+		} catch (AppNotFoundException $e) {
+			\OC::$server->getLogger()->logException($e);
+			throw $e;
+		}
+
+		$info = \OC_App::parseAppInfo($info); // TODO move to info parser?
+
+		$appId = \OC_App::cleanAppId($info['id']); // so we can fetch the right config value and cache correctly
+
+		$cachedInfo = $info;
+		$cachedInfo['_cached'] = true;
+		$info['_cached'] = false;
+
+		if ($etag === null) {
+			$etag = $this->getEtag($file);
+			// TODO if etag is still null?
+		}
+		// add etag and path so cache can be invalidated
+		$data = [
+			'etag' => $etag,
+			'path' => $file,
+			// store info in its own key so path and etag cannot be injected
+			'info' => $cachedInfo
+		];
+
+		// cache results for a day
+		$this->appInfo->set($appId, $data, 86400);
+		$this->appInfo->set($file, $data, 86400);
+
+		return $info;
 	}
 
 	/**
@@ -629,8 +757,14 @@ class AppManager implements IAppManager {
 	 *
 	 * @param string $path
 	 * @return string
+	 *
+	 * @internal
+	 * @throws \InvalidArgumentException
+	 * @throws AppNotFoundException
 	 */
-	protected function getAppVersionByPath($path) {
-		return \OC_App::getAppVersionByPath($path);
+	public function getAppVersionByPath($path) {
+		$infoFile = "{$path}/appinfo/info.xml";
+		$appData = $this->getAppInfoByPath($infoFile);
+		return isset($appData['version']) ? $appData['version'] : '';
 	}
 }
