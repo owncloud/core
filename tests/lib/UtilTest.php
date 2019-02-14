@@ -518,6 +518,12 @@ class UtilTest extends \Test\TestCase {
 		$statusInfo = \OCP\Util::getStatusInfo();
 		$this->assertArrayHasKey('productname', $statusInfo);
 		$this->assertEquals($statusInfo['productname'], 'ownCloud');
+		$statusInfoShortHostname = \OCP\Util::getStatusInfo(false, false, true);
+		if (\strpos($statusInfo['hostname'], '.') === false) {
+			$this->assertEquals($statusInfo['hostname'], $statusInfoShortHostname['hostname']);
+		} else {
+			$this->assertNotEquals($statusInfo['hostname'], $statusInfoShortHostname['hostname']);
+		}
 	}
 
 	public function fullDomainDataProvider() {
