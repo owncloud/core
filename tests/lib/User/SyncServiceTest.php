@@ -47,7 +47,7 @@ class SyncServiceTest extends TestCase {
 	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $mapper;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->createMock(IConfig::class);

@@ -40,7 +40,7 @@ class RouterTest extends \Test\TestCase {
 	/** @var ILogger */
 	private $l;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->l = $this->createMock(ILogger::class);
 	}

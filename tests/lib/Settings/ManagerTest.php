@@ -41,7 +41,7 @@ class SettingsManagerTest extends TestCase {
 	protected $certificateManager;
 	protected $factory;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->l = $this->getMockBuilder('\OCP\IL10N')->getMock();

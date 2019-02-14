@@ -80,7 +80,7 @@ class AsyncBusTest extends TestCase {
 		self::$lastCommand = 'static';
 	}
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->jobList = new DummyJobList();
 		$this->bus = new \OC\Command\AsyncBus($this->jobList);
 		self::$lastCommand = '';

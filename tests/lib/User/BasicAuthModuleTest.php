@@ -49,7 +49,7 @@ class BasicAuthModuleTest extends TestCase {
 	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
 	private $session;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->createMock(IConfig::class);
 		$this->logger = $this->createMock(ILogger::class);

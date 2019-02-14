@@ -36,7 +36,7 @@ class SharingPersonalPanelTest extends \Test\TestCase {
 	/** @var SharingPersonalPanel $personalPanel */
 	private $sharingPersonalPanel;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();

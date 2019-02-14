@@ -30,7 +30,7 @@ class CertificatesTest extends \Test\TestCase {
 	/** @var ICertificateManager */
 	private $certManager;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->urlGenerator =$this->getMockBuilder(IURLGenerator::class)->getMock();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();

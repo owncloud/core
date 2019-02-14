@@ -42,7 +42,7 @@ class MigrationTest extends TestCase {
 
 	private $table = 'share';
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
@@ -51,7 +51,7 @@ class MigrationTest extends TestCase {
 		$this->cleanDB();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		$this->cleanDB();
 	}

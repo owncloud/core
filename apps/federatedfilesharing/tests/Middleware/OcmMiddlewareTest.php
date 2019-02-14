@@ -71,7 +71,7 @@ class OcmMiddlewareTest extends TestCase {
 	 */
 	private $logger;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->federatedShareProvider = $this->createMock(

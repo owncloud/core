@@ -84,7 +84,7 @@ class DavTest extends TestCase {
 	 */
 	private $cache;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->httpClientService = $this->createMock(IClientService::class);
@@ -117,7 +117,7 @@ class DavTest extends TestCase {
 		$this->instance->method('getCache')->willReturn($this->cache);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->restoreService('HttpClientService');
 		$this->restoreService('WebDavClientService');
 		$this->restoreService('TimeFactory');

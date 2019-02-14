@@ -61,7 +61,7 @@ class ManagerTest extends TestCase {
 	private $user;
 	private $mountProvider;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->uid = $this->getUniqueID('user');

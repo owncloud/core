@@ -35,7 +35,7 @@ class JobListTest extends TestCase {
 	/** @var ILogger|\PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();

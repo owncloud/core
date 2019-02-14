@@ -101,7 +101,7 @@ abstract class TestCase extends BaseTestCase {
 		});
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		// detect database access
 		self::$wasDatabaseAllowed = true;
 		if (!$this->IsDatabaseAccessAllowed()) {
@@ -133,7 +133,7 @@ abstract class TestCase extends BaseTestCase {
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		// store testname in static attr for use in class teardown
 		self::$lastTest = \get_class($this) . ':' . $this->getName();
 
@@ -225,7 +225,7 @@ abstract class TestCase extends BaseTestCase {
 		);
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		// fail if still in a transaction after test run
 		if (self::$wasDatabaseAllowed && \OC::$server->getDatabaseConnection()->inTransaction()) {
 			// This is bad. But we cannot fail the unit test since we are already

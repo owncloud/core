@@ -68,13 +68,13 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 		\OC\Files\Filesystem::getLoader()->removeStorageWrapper('oc_trashbin');
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		if (self::$trashBinStatus) {
 			\OC::$server->getAppManager()->enableApp('files_trashbin');
 		}
 	}
 
-	protected function setup() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
@@ -93,7 +93,7 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 		$this->job = new DeleteOrphanedSharesJob();
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->connection->executeUpdate('DELETE FROM `*PREFIX*share`');
 
 		$userManager = \OC::$server->getUserManager();

@@ -34,14 +34,14 @@ class CommonTest extends Storage {
 	 * @var string tmpDir
 	 */
 	private $tmpDir;
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->tmpDir = \OC::$server->getTempManager()->getTemporaryFolder();
 		$this->instance=new \OC\Files\Storage\CommonTest(['datadir'=>$this->tmpDir]);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		\OC_Helper::rmdirr($this->tmpDir);
 		parent::tearDown();
 	}

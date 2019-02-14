@@ -42,7 +42,7 @@ class MySqlToolsTest extends \Test\TestCase {
 	 * @var MySqlTools
 	 */
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->db = $this->createMock(Connection::class);

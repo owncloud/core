@@ -55,7 +55,7 @@ class UserTest extends TestCase {
 	/** @var  Session | \PHPUnit\Framework\MockObject\MockObject */
 	private $sessionUser;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->accountMapper = $this->createMock(AccountMapper::class);
 		$this->config = $this->createMock(IConfig::class);

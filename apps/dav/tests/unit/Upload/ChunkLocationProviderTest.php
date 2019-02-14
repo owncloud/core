@@ -39,7 +39,7 @@ class ChunkLocationProviderTest extends TestCase {
 	/** @var IStorageFactory | \PHPUnit\Framework\MockObject\MockObject */
 	private $factory;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->config = $this->createMock(IConfig::class);
 		$this->provider = new ChunkLocationProvider($this->config);

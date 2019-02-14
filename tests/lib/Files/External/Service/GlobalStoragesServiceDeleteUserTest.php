@@ -35,11 +35,11 @@ use Test\TestCase;
  * @package Test\Files\External\Service
  */
 class GlobalStoragesServiceDeleteUserTest extends TestCase {
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 
 		//Remove all global storages created

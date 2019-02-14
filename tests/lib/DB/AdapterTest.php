@@ -49,7 +49,7 @@ class AdapterTest extends \Test\TestCase {
 		parent::__construct();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		// remove columns from the appconfig table
 		$qb = $this->conn->getQueryBuilder();
 		$qb->delete('*PREFIX*appconfig')

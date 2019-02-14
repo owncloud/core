@@ -35,12 +35,12 @@ abstract class PropagationTestCase extends TestCase {
 		\OCA\Files_Sharing\Helper::registerHooks();
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->setUpShares();
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		\OC_Hook::clear('OC_Filesystem', 'post_write');
 		\OC_Hook::clear('OC_Filesystem', 'post_delete');
 		\OC_Hook::clear('OC_Filesystem', 'post_rename');

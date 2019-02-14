@@ -41,7 +41,7 @@ class ZsyncPluginTest extends TestCase {
 	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->view = $this->getMockBuilder('\OC\Files\View')
 			->disableOriginalConstructor()
 			->getMock();

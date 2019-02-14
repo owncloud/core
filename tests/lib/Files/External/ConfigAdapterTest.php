@@ -54,7 +54,7 @@ class ConfigAdapterTest extends \Test\TestCase {
 	/** @var int */
 	private $configId;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->config = $this->createMock(IConfig::class);
 		$this->userStoragesService = $this->createMock(UserStoragesService::class);
 		$this->userGlobalStoragesService = $this->createMock(UserGlobalStoragesService::class);

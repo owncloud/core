@@ -50,7 +50,7 @@ abstract class RequestTest extends TestCase {
 		return $stream;
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		unset($_SERVER['HTTP_OC_CHUNKED']);

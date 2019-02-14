@@ -56,7 +56,7 @@ class CorsControllerTest extends TestCase {
 	/** @var IUser */
 	private $userSession;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->request = $this->createMock(IRequest::class);

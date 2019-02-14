@@ -39,7 +39,7 @@ class LegalSettingsControllerTest extends \Test\TestCase {
 	 */
 	private $legalSettingsController;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$app = new Application();
 		$this->container = $app->getContainer();
 		$this->container['Config'] = $this->getMockBuilder(IConfig::class)

@@ -55,7 +55,7 @@ class GroupsControllerTest extends TestCase {
 	/** @var GroupsController */
 	private $groupsController;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->appName = 'settings';
 		$this->request = $this->createMock(IRequest::class);

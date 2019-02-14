@@ -42,7 +42,7 @@ class JobStatusMapperTest extends TestCase {
 	/** @var JobStatus */
 	private $testJobStatus;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->database = \OC::$server->getDatabaseConnection();
 		$this->mapper = new JobStatusMapper($this->database);
@@ -54,7 +54,7 @@ class JobStatusMapperTest extends TestCase {
 		$this->testJobStatus->setStatusInfo(\json_encode([]));
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		if ($this->mapper !== null && $this->testJobStatus !== null) {
 			$this->mapper->delete($this->testJobStatus);

@@ -40,7 +40,7 @@ class IntegrationTest extends TestCase {
 	 */
 	private $view;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$manager = Filesystem::getMountManager();
@@ -60,7 +60,7 @@ class IntegrationTest extends TestCase {
 		$this->root->mount($subStorage, '/substorage/');
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		foreach ($this->storages as $storage) {
 			$storage->getCache()->clear();

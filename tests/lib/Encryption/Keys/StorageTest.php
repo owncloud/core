@@ -53,7 +53,7 @@ class StorageTest extends TestCase {
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->util = $this->getMockBuilder('OC\Encryption\Util')
@@ -81,7 +81,7 @@ class StorageTest extends TestCase {
 		$this->storage = new Storage($this->view, $this->util, $userSession);
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		\OC\Files\Filesystem::tearDown();
 		parent::tearDown();
 	}

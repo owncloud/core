@@ -73,7 +73,7 @@ class AvatarControllerTest extends TestCase {
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->createUser('userid', 'pass');
 		$this->loginAsUser('userid');
@@ -124,7 +124,7 @@ class AvatarControllerTest extends TestCase {
 		$this->avatarFile->expects($this->any())->method('getEtag')->willReturn('my etag');
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$this->logout();
 		parent::tearDown();
 	}

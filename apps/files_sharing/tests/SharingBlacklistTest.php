@@ -32,7 +32,7 @@ class SharingBlacklistTest extends \Test\TestCase {
 	/** @var SharingBlacklist | \PHPUnit\Framework\MockObject\MockObject */
 	private $sharingBlacklist;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();

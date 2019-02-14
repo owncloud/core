@@ -44,7 +44,7 @@ class TagsTest extends TestCase {
 	/** @var \OCP\ITagManager */
 	protected $tagMgr;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$userId = $this->getUniqueID('user_');
@@ -61,7 +61,7 @@ class TagsTest extends TestCase {
 		$this->tagMgr = new TagManager($this->tagMapper, $this->userSession);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$conn = \OC::$server->getDatabaseConnection();
 		$conn->executeQuery('DELETE FROM `*PREFIX*vcategory_to_object`');
 		$conn->executeQuery('DELETE FROM `*PREFIX*vcategory`');

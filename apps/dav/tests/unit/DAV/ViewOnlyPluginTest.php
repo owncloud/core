@@ -43,7 +43,7 @@ class ViewOnlyPluginTest extends TestCase {
 	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->plugin = new ViewOnlyPlugin(
 			$this->createMock(ILogger::class)
 		);

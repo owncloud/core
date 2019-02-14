@@ -38,7 +38,7 @@ class HookManagerTest extends TestCase {
 	/** @var L10N */
 	private $l10n;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->l10n = $this->getMockBuilder('OC\L10N\L10N')

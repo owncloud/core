@@ -36,12 +36,12 @@ class WebDavClientServiceTest extends \Test\TestCase {
 	 */
 	private $tempManager;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->tempManager = \OC::$server->getTempManager();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$this->tempManager->clean();
 		parent::tearDown();
 	}

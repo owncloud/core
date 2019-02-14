@@ -57,7 +57,7 @@ class PreviewManagerTest extends TestCase {
 	/** @var IPreview */
 	private $previewManager;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->user = $this->createUser(self::TEST_PREVIEW_USER1, self::TEST_PREVIEW_USER1);

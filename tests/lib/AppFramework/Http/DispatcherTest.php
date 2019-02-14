@@ -88,7 +88,7 @@ class DispatcherTest extends \Test\TestCase {
 	/** @var Controller | \PHPUnit\Framework\MockObject\MockObject */
 	private $controller;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->controllerMethod = 'test';
 

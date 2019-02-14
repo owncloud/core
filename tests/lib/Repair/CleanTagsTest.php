@@ -34,7 +34,7 @@ class CleanTagsTest extends \Test\TestCase {
 	/** @var IOutput */
 	private $outputMock;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
@@ -50,7 +50,7 @@ class CleanTagsTest extends \Test\TestCase {
 		$this->cleanUpTables();
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->cleanUpTables();
 
 		parent::tearDown();

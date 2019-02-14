@@ -55,7 +55,7 @@ class PollIncomingSharesTest extends TestCase {
 	/** @var IStorageFactory | \PHPUnit_Framework_MockObject_MockObject */
 	private $loader;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dbConnection = $this->createMock(IDBConnection::class);
 		$this->userManager = $this->createMock(IUserManager::class);

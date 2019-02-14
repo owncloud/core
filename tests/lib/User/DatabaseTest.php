@@ -39,12 +39,12 @@ class DatabaseTest extends BackendTestCase {
 		return $user;
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->backend = new \OC\User\Database();
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if (!isset($this->users)) {
 			return;
 		}

@@ -29,7 +29,7 @@ class NotificationTest extends TestCase {
 	/** @var INotification */
 	protected $notification;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->notification = new Notification();
 	}

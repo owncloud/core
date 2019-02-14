@@ -71,7 +71,7 @@ class LostControllerTest extends TestCase {
 	/** @var Session */
 	private $userSession;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->existingUser = $this->getMockBuilder('OCP\IUser')
 				->disableOriginalConstructor()->getMock();
 

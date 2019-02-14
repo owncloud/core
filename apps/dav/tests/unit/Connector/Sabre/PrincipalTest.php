@@ -37,7 +37,7 @@ class PrincipalTest extends TestCase {
 	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $groupManager;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->userManager = $this->getMockBuilder('\OCP\IUserManager')
 			->disableOriginalConstructor()->getMock();
 		$this->groupManager = $this->getMockBuilder('\OCP\IGroupManager')

@@ -43,7 +43,7 @@ class RepairSubSharesTest extends TestCase {
 
 	/** @var  IRepairStep */
 	private $repair;
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
@@ -51,7 +51,7 @@ class RepairSubSharesTest extends TestCase {
 		$this->createUser('admin');
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->deleteAllUsersAndGroups();
 		$this->deleteAllShares();
 		parent::tearDown();

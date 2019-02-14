@@ -34,7 +34,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 	protected $server;
 	protected $userFolder;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->commentsManager = $this->createMock('\OCP\Comments\ICommentsManager');

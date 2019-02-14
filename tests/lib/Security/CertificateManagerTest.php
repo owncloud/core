@@ -24,7 +24,7 @@ class CertificateManagerTest extends \Test\TestCase {
 	/** @var String */
 	private $username;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->username = $this->getUniqueID('', 20);

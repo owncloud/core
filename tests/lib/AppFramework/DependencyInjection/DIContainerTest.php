@@ -30,7 +30,7 @@ use OC\AppFramework\Http\Request;
 class DIContainerTest extends \Test\TestCase {
 	private $container;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->container = $this->getMockBuilder('OC\AppFramework\DependencyInjection\DIContainer')
 			->setMethods(['isAdminUser'])

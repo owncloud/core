@@ -28,7 +28,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 	/** @var \OCP\IConfig */
 	protected $config;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->config = $this->createMock('\OCP\IConfig');
 	}
 

@@ -43,7 +43,7 @@ class CapabilitiesTest extends \Test\TestCase {
 	/**
 	 *
 	 */
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->userSearch = $this->getMockBuilder(\OCP\Util\UserSearch::class)
 			->disableOriginalConstructor()

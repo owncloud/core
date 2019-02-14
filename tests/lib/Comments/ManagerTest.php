@@ -19,7 +19,7 @@ class ManagerTest extends TestCase {
 	/** @var IDBConnection */
 	private $dbConn;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->dbConn = \OC::$server->getDatabaseConnection();
@@ -29,7 +29,7 @@ class ManagerTest extends TestCase {
 		$this->dbConn->prepare($sql)->execute();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$this->dbConn->getQueryBuilder()->delete('comments')->execute();
 		$this->dbConn->getQueryBuilder()->delete('comments_read_markers')->execute();
 		parent::tearDown();

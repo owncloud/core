@@ -34,7 +34,7 @@ class ListUsersTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		\OC::$server->getUserManager()->createUser('testlistuser', 'password');
@@ -42,7 +42,7 @@ class ListUsersTest extends TestCase {
 		$this->commandTester = new CommandTester($command);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		\OC::$server->getUserManager()->get('testlistuser')->delete();
 	}

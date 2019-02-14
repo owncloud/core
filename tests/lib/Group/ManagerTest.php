@@ -49,7 +49,7 @@ class ManagerTest extends \Test\TestCase {
 	/** @var \OC\Group\Manager */
 	protected $manager;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->userSearch = $this->getMockBuilder(UserSearch::class)
 			->disableOriginalConstructor()

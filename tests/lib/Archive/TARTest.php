@@ -11,7 +11,7 @@ namespace Test\Archive;
 use OC\Archive\TAR;
 
 class TARTest extends TestBase {
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 	}
 

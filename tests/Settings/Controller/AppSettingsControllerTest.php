@@ -45,7 +45,7 @@ class AppSettingsControllerTest extends TestCase {
 	/** @var IAppManager */
 	private $appManager;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->request = $this->getMockBuilder(IRequest::class)

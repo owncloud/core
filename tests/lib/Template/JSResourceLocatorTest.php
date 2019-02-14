@@ -23,7 +23,7 @@ class JSResourceLocatorTest extends TestCase {
 	protected $appRoot = '/var/www/apps';
 	protected $themeAppDir = 'theme-best';
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->logger = $this->createMock(ILogger::class);
 	}

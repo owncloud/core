@@ -46,7 +46,7 @@ class SettingsPageControllerTest extends TestCase {
 	/** @var IFactory */
 	protected $lfactory;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->request = $this->getMockBuilder(IRequest::class)->getMock();

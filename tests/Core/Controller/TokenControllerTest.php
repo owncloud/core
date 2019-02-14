@@ -38,7 +38,7 @@ class TokenControllerTest extends TestCase {
 	private $twoFactorAuthManager;
 	private $secureRandom;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->request = $this->createMock('\OCP\IRequest');

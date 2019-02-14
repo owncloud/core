@@ -51,7 +51,7 @@ class LockPluginTest extends TestCase {
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	private $userSession;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->plugin = new LockPlugin();
 
@@ -67,7 +67,7 @@ class LockPluginTest extends TestCase {
 		$this->overwriteService('UserSession', $this->userSession);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 		$this->restoreService('UserSession');
 		$this->restoreService(LockMapper::class);

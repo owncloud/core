@@ -58,7 +58,7 @@ class AdminControllerTest extends TestCase {
 	/** @var IDateTimeFormatter */
 	private $dateTimeFormatter;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->request = $this->createMock('\\OCP\\IRequest');

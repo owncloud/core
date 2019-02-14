@@ -19,7 +19,7 @@ use Doctrine\DBAL\Platforms\OraclePlatform;
  * @package Test\DB
  */
 class MDB2SchemaManagerTest extends \Test\TestCase {
-	protected function tearDown() {
+	protected function tearDown(): void {
 		// do not drop the table for Oracle as it will create a bogus transaction
 		// that will break the following test suites requiring transactions
 		if (\OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite') !== 'oci') {

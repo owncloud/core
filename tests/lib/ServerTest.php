@@ -133,7 +133,7 @@ class ServerTest extends TestCase {
 	/** @var Server */
 	protected $server;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$config = new Config(\OC::$configDir);
 		$this->server = new Server('', $config);

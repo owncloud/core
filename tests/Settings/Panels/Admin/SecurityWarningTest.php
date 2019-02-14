@@ -35,7 +35,7 @@ class SecurityWarningTest extends \Test\TestCase {
 	/** @var Helper */
 	private $helper;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->l = $this->getMockBuilder(IL10N::class)->getMock();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();

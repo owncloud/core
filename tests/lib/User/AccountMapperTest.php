@@ -72,7 +72,7 @@ class AccountMapperTest extends TestCase {
 		}
 	}
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->createMock(IConfig::class);
@@ -86,7 +86,7 @@ class AccountMapperTest extends TestCase {
 		);
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		\OC::$server->getDatabaseConnection()->rollBack();
 		parent::tearDownAfterClass();
 	}

@@ -35,7 +35,7 @@ class ResetTokenBackgroundJobTest extends TestCase {
 	/** @var ITimeFactory */
 	private $timeFactory;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->createMock('\\OCP\\IConfig');
 		$this->timeFactory = $this->createMock('\\OCP\\AppFramework\\Utility\\ITimeFactory');

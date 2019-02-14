@@ -78,7 +78,7 @@ class ShareesTest extends TestCase {
 	/** @var SharingBlacklist|\PHPUnit\Framework\MockObject\MockObject */
 	protected $sharingBlacklist;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->userManager = $this->getMockBuilder(IUserManager::class)

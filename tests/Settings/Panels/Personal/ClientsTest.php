@@ -26,7 +26,7 @@ class ClientsTest extends \Test\TestCase {
 	/** @var Defaults */
 	private $defaults;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
 		$this->defaults = $this->getMockBuilder(Defaults::class)->getMock();

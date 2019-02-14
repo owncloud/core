@@ -74,7 +74,7 @@ class ShareControllerTest extends \Test\TestCase {
 	/** @var EventDispatcher | \PHPUnit\Framework\MockObject\MockObject */
 	private $eventDispatcher;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->appName = 'files_sharing';
 
@@ -112,7 +112,7 @@ class ShareControllerTest extends \Test\TestCase {
 		$this->loginAsUser($this->user);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
 		Filesystem::tearDown();

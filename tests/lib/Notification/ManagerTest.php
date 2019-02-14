@@ -38,7 +38,7 @@ class ManagerTest extends TestCase {
 	/** @var EventDispatcherInterface */
 	protected $eventDispatcher;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$eventMap = [];

@@ -48,7 +48,7 @@ class DBLockingProviderTest extends LockingProvider {
 
 	private $currentTime;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->currentTime = \time();
 		$this->timeFactory = $this->createMock('\OCP\AppFramework\Utility\ITimeFactory');
 		$this->timeFactory->expects($this->any())
@@ -69,7 +69,7 @@ class DBLockingProviderTest extends LockingProvider {
 		return new \OC\Lock\DBLockingProvider($this->connection, \OC::$server->getLogger(), $this->timeFactory, 3600);
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$this->connection->executeQuery('DELETE FROM `*PREFIX*file_locks`');
 		parent::tearDown();
 	}

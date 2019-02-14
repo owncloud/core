@@ -36,7 +36,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		// mocks is not used, but is required. Else it will try to
 		// contact original server and will fail our tests.
 		$mock = new Mock(

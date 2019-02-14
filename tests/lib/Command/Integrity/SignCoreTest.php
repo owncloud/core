@@ -33,7 +33,7 @@ class SignCoreTest extends TestCase {
 	/** @var FileAccessHelper */
 	private $fileAccessHelper;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->checker = $this->getMockBuilder('\OC\IntegrityCheck\Checker')
 			->disableOriginalConstructor()->getMock();

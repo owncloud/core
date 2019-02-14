@@ -27,7 +27,7 @@ use Test\TestCase;
 class EnvironmentHelperTest extends TestCase {
 	private $environmentHelper;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->environmentHelper = new EnvironmentHelper();
 		parent::setUp();
 	}

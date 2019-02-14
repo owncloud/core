@@ -67,7 +67,7 @@ class GetSharedSecretTest extends TestCase {
 	/** @var GetSharedSecret */
 	private $getSharedSecret;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->httpClient = $this->createMock('OCP\Http\Client\IClient');

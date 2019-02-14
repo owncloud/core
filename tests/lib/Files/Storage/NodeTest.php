@@ -39,7 +39,7 @@ abstract class NodeTest extends TestCase {
 	 */
 	protected $storage;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->storage = $this->createMock(IStorage::class);
 		$this->storage->expects($this->any())

@@ -44,7 +44,7 @@ class ObjectStoreTest extends TestCase {
 	/** @var ObjectStoreStorage | \PHPUnit\Framework\MockObject\MockObject */
 	private $objectStore;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->impl = $this->createMock([IObjectStore::class, IVersionedObjectStorage::class]);
 		$this->impl->expects($this->any())

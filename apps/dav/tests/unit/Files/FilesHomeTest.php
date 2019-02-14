@@ -37,7 +37,7 @@ class FilesHomeTest extends TestCase {
 	/** @var View | \PHPUnit\Framework\MockObject\MockObject */
 	private $view;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->view = $this->createMock(View::class);
 		$this->filesHome = new FilesHome([
 			'uri' => 'principals/users/user01'

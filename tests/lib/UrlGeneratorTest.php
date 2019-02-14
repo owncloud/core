@@ -27,7 +27,7 @@ class UrlGeneratorTest extends TestCase {
 	/** @var EnvironmentHelper | \PHPUnit\Framework\MockObject\MockObject */
 	private $environmentHelper;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$config = $this->createMock(IConfig::class);
 		$cacheFactory = $this->createMock(ICacheFactory::class);

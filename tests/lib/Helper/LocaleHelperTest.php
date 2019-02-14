@@ -37,7 +37,7 @@ class LocaleHelperTest extends TestCase {
 	 */
 	protected $localeHelper;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->localeHelper = new LocaleHelper();
 	}

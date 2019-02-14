@@ -55,7 +55,7 @@ class RepairUnmergedSharesTest extends TestCase {
 	/** @var IGroupManager */
 	private $groupManager;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$config = $this->getMockBuilder('OCP\IConfig')
@@ -127,7 +127,7 @@ class RepairUnmergedSharesTest extends TestCase {
 		$this->repair->run($outputMock);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->deleteAllShares();
 
 		parent::tearDown();

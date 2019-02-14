@@ -36,7 +36,7 @@ use OC\Files\Storage\DAV;
  * @package OCA\Files_External\Tests\Storage
  */
 class WebdavTest extends \Test\Files\Storage\Storage {
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$id = $this->getUniqueID();
@@ -52,7 +52,7 @@ class WebdavTest extends \Test\Files\Storage\Storage {
 		$this->instance->mkdir('/');
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->instance) {
 			$this->instance->rmdir('/');
 		}

@@ -70,7 +70,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 	/** @var int */
 	private $maxId;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->server = new \Sabre\DAV\Server();
 		$this->tree = $this->getMockBuilder(Tree::class)
@@ -101,7 +101,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			->execute()->fetchColumn();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$connection = \OC::$server->getDatabaseConnection();
 		$deleteStatement = $connection->prepare(
 			'DELETE FROM `*PREFIX*properties`' .

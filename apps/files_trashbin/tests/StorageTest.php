@@ -61,7 +61,7 @@ class StorageTest extends TestCase {
 	 */
 	private $userView;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		\OC_Hook::clear();
@@ -87,7 +87,7 @@ class StorageTest extends TestCase {
 		$this->userView->file_put_contents('folder/inside.txt', 'bar');
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		\OC\Files\Filesystem::getLoader()->removeStorageWrapper('oc_trashbin');
 		$this->logout();
 		\OC_Hook::clear();

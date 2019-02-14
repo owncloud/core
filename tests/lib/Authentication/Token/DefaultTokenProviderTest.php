@@ -38,7 +38,7 @@ class DefaultTokenProviderTest extends TestCase {
 	private $timeFactory;
 	private $time;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mapper = $this->getMockBuilder('\OC\Authentication\Token\DefaultTokenMapper')

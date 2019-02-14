@@ -32,7 +32,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 	private $connection;
 
 	private $config;
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
@@ -51,7 +51,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$this->repair->setCountOnly(false);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->delete('filecache')->execute();
 		parent::tearDown();

@@ -31,7 +31,7 @@ class SettingsPanelTest extends \Test\TestCase {
 	/** @var SettingsPanel | \PHPUnit\Framework\MockObject\MockObject */
 	private $settingsPanel;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->sharingBlacklist = $this->getMockBuilder(SharingBlacklist::class)
 			->disableOriginalConstructor()
 			->getMock();

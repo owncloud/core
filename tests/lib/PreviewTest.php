@@ -75,7 +75,7 @@ class PreviewTest extends TestCase {
 	/**
 	 * Make sure your configuration file doesn't contain any additional providers
 	 */
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->createUser(self::TEST_PREVIEW_USER1, self::TEST_PREVIEW_USER1);
@@ -126,7 +126,7 @@ class PreviewTest extends TestCase {
 		$this->prepareSample('testimage.gif', 64, 64);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->logout();
 
 		parent::tearDown();

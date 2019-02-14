@@ -55,7 +55,7 @@ class NotifierTest extends \Test\TestCase {
 	/** @var IConfig */
 	private $config;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->notificationManager = $this->getMockBuilder(INotificationManager::class)

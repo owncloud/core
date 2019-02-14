@@ -43,7 +43,7 @@ class VerifyChecksumsTest extends TestCase {
 	 */
 	private $testFiles;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->rootFolder = \OC::$server->getRootFolder();

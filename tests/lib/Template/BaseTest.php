@@ -19,7 +19,7 @@ class BaseTest extends \Test\TestCase {
 	/** @var string */
 	protected $serverRoot;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->serverRoot = \OC::$SERVERROOT;
 		$this->theme = $this->getMockBuilder(ITheme::class)

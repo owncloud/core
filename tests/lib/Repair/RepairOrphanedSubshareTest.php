@@ -44,14 +44,14 @@ class RepairOrphanedSubshareTest extends TestCase {
 	/** @var  IRepairStep */
 	private $repair;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->repair = new RepairOrphanedSubshare($this->connection);
 		$this->createUser('admin');
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->deleteAllShares();
 		$this->tearDownUserTrait();
 		parent::tearDown();

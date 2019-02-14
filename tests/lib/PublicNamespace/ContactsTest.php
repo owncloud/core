@@ -22,7 +22,7 @@
 namespace Test\PublicNamespace;
 
 class ContactsTest extends \Test\TestCase {
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		\OCP\Contacts::clear();
 	}

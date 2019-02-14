@@ -36,7 +36,7 @@ class SignAppTest extends TestCase {
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->checker = $this->getMockBuilder('\OC\IntegrityCheck\Checker')
 			->disableOriginalConstructor()->getMock();

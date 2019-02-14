@@ -49,7 +49,7 @@ class DirMaskTest extends TestCase {
 		);
 	}
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->sourceStorage = new Temporary([]);
 	}

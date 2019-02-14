@@ -48,7 +48,7 @@ class SchemaDiffTest extends TestCase {
 	/** @var string */
 	private $testPrefix;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->config = \OC::$server->getConfig();
@@ -57,7 +57,7 @@ class SchemaDiffTest extends TestCase {
 		$this->testPrefix= \strtolower($this->getUniqueID($this->config->getSystemValue('dbtableprefix', 'oc_'), 3));
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->manager->removeDBStructure('static://test_db_scheme');
 		parent::tearDown();
 	}

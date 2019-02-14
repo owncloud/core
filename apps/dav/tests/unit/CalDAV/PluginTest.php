@@ -14,7 +14,7 @@ class PluginTest extends TestCase {
 	/** @var Plugin */
 	private $plugin;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->plugin = new Plugin();
