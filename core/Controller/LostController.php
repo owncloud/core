@@ -319,8 +319,9 @@ class LostController extends Controller {
 					return false;
 				case 1:
 					$this->logger->info('User with input as email address found. User: {user}', ['app' => 'core', 'user' => $user]);
-					$email = $users[0]->getEMailAddress();
-					$user = $users[0]->getUID();
+					$userObject = $users[0];
+					$email = $userObject->getEMailAddress();
+					$user = $userObject->getUID();
 					break;
 				default:
 					$this->logger->error('Could not send reset email because the email id is not unique. User: {user}', ['app' => 'core', 'user' => $user]);
