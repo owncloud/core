@@ -135,7 +135,7 @@ pipeline:
       - DOCKER_HOST=tcp://docker:2375
     commands:
       - |
-        docker run -p 8000:80 \
+        docker run -p 8000:8080 \
         -e DEBUG=true \
         -e OWNCLOUD_APPS_INSTALL=https://github.com/owncloud/testing/releases/download/latest/testing.tar.gz \
         -e OWNCLOUD_APPS_ENABLE=testing \
