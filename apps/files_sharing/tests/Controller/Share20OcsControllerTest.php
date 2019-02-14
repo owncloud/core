@@ -3078,7 +3078,14 @@ class Share20OcsControllerTest extends TestCase {
 		$group = $this->createMock(IGroup::class);
 		$group->method('inGroup')->with($this->currentUser)->willReturn(true);
 
-		$this->groupManager->method('get')->with('group1')->willReturn($group);
+		$groupObj = $this->createMock(IGroup::class);
+		$groupObj->method('inGroup')->willReturn(false);
+
+		$this->groupManager->method('get')
+			->will($this->returnValueMap([
+				['group1', $group],
+				['excluded_group', $groupObj]
+			]));
 
 		$node = null;
 		if ($requestedPath !== null) {
@@ -3130,6 +3137,72 @@ class Share20OcsControllerTest extends TestCase {
 			$this->assertCount(2, $result->getData());
 			$this->assertNotContains($userShareDifferentState, $result->getData(), 'result contains only share from requested state');
 		}
+	}
+
+	public function testGetSharesSharedWithMeAndBlockGroup() {
+		$requestedPath = "/requested/path";
+		$stateFilter = "all";
+		$testStateFilter = $stateFilter;
+		if ($testStateFilter === '' || $testStateFilter === 'all') {
+			$testStateFilter = \OCP\Share::STATE_ACCEPTED;
+		}
+		$userShare = $this->newShare();
+		$userShare->setShareOwner('shareOwner');
+		$userShare->setSharedWith('currentUser');
+		$userShare->setShareType(\OCP\Share::SHARE_TYPE_USER);
+		$userShare->setState($testStateFilter);
+		$userShare->setPermissions(\OCP\Constants::PERMISSION_ALL);
+
+		$group = $this->createMock(IGroup::class);
+		$group->method('inGroup')->with($this->currentUser)->willReturn(true);
+
+		$groupObj = $this->createMock(IGroup::class);
+		$groupObj->method('inGroup')
+			->willReturn(true);
+
+		$this->groupManager->method('get')
+			->will($this->returnValueMap([
+				['group', $group],
+				['excluded_group', $groupObj]
+			]));
+
+		$node = $this->createMock(Node::class);
+		$node->expects($this->at(0))
+			->method('lock');
+		$node->expects($this->at(1))
+			->method('unlock');
+
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->expects($this->once())
+			->method('get')
+			->with($requestedPath)
+			->willReturn($node);
+		$this->rootFolder->expects($this->once())
+			->method('getUserFolder')
+			->with('currentUser')
+			->willReturn($userFolder);
+
+		$this->shareManager->method('getSharedWith')
+			->will($this->returnValueMap([
+				['currentUser', \OCP\Share::SHARE_TYPE_USER, $node, -1, 0, [$userShare]],
+				['currentUser', \OCP\Share::SHARE_TYPE_GROUP, $node, -1, 0, []],
+			]));
+		$this->shareManager->method('sharingDisabledForUser')
+			->with('currentUser')
+			->willReturn(true);
+
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['path', null, $requestedPath],
+				['state', \OCP\Share::STATE_ACCEPTED, $stateFilter],
+				['shared_with_me', null, 'true'],
+			]));
+
+		$ocs = $this->mockFormatShare();
+		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$result = $ocs->getShares();
+		$this->assertEquals($userShare->getPermissions(), $result->getData()[0]->getPermissions());
 	}
 
 	public function providesAcceptRejectShare() {
