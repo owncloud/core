@@ -62,7 +62,7 @@ class AuthTest extends TestCase {
 	/** @var AccountModuleManager | MockObject */
 	private $accountModuleManager;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->session = $this->createMock(ISession::class);
 		$this->userSession = $this->createMock(Session::class);

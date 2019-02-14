@@ -35,7 +35,7 @@ class AppsGetPathTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$command = new GetPath();

@@ -84,7 +84,7 @@ class HooksTest extends \Test\TestCase {
 	 */
 	private $hooks;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->eventDispatcher = new EventDispatcher();
 		$this->urlGenerator = $this->createMock(IURLGenerator::class);
 		$this->rootFolder = $this->createMock(IRootFolder::class);

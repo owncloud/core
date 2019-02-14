@@ -79,7 +79,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	/** @var FederatedShareProvider */
 	protected $provider;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
@@ -121,10 +121,10 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->shareManager = \OC::$server->getShareManager();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$this->connection->getQueryBuilder()->delete('share')->execute();
 
-		return parent::tearDown();
+		parent::tearDown();
 	}
 
 	public function testCreate() {

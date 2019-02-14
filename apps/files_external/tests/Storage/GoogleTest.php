@@ -41,7 +41,7 @@ use \OCA\Files_External\Lib\Storage\Google;
 class GoogleTest extends \Test\Files\Storage\Storage {
 	private $config;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->config = include('files_external/tests/config.php');
@@ -53,7 +53,7 @@ class GoogleTest extends \Test\Files\Storage\Storage {
 		$this->instance = new Google($this->config['google']);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->instance) {
 			$this->instance->rmdir('/');
 		}

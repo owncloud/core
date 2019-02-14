@@ -55,7 +55,7 @@ class ActivityTest extends TestCase {
 	/** @var \OCA\Files\Activity */
 	protected $activityExtension;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->request = $this->getMockBuilder('OCP\IRequest')

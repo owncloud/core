@@ -17,7 +17,7 @@ class HTTPHelperTest extends \Test\TestCase {
 	/** @var \OCP\Http\Client\IClientService */
 	private $clientService;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->getMockBuilder('\OCP\IConfig')

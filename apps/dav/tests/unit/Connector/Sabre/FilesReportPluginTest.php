@@ -66,7 +66,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 	/** @var Folder|\PHPUnit\Framework\MockObject\MockObject **/
 	private $userFolder;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->tree = $this->getMockBuilder('\Sabre\DAV\Tree')
 			->disableOriginalConstructor()

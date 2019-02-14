@@ -43,7 +43,7 @@ class PersonalTest extends \Test\TestCase {
 	/** @var Manager */
 	private $encManager;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->backendService = $this->createMock(IStoragesBackendService::class);
 		$this->storagesService = $this->createMock(IUserStoragesService::class);

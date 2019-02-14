@@ -61,7 +61,7 @@ class PublicCalendarRootTest extends TestCase {
 	/** @var ISecureRandom */
 	private $random;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$db = \OC::$server->getDatabaseConnection();
@@ -81,7 +81,7 @@ class PublicCalendarRootTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 
 		if ($this->backend === null) {

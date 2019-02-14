@@ -65,7 +65,7 @@ class PollIncomingSharesTest extends TestCase {
 	 */
 	private $externalManager;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dbConnection = $this->createMock(IDBConnection::class);
 		$this->userManager = $this->createMock(IUserManager::class);

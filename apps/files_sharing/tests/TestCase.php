@@ -71,7 +71,7 @@ abstract class TestCase extends \Test\TestCase {
 
 	private static $alreadyRegistered = false;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		if (!self::$alreadyRegistered) {
@@ -89,7 +89,7 @@ abstract class TestCase extends \Test\TestCase {
 		\OC::registerShareHooks();
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		// create users
@@ -124,14 +124,14 @@ abstract class TestCase extends \Test\TestCase {
 		$this->rootFolder = \OC::$server->getRootFolder();
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$query = \OCP\DB::prepare('DELETE FROM `*PREFIX*share`');
 		$query->execute();
 
 		parent::tearDown();
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		// delete group
 		$group = \OC::$server->getGroupManager()->get(self::TEST_FILES_SHARING_API_GROUP1);
 		if ($group !== null) {

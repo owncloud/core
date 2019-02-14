@@ -48,7 +48,7 @@ class UserMountCacheTest extends TestCase {
 
 	private $fileIds = [];
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->fileIds = [];
 		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->userSearch = $this->getMockBuilder(\OCP\Util\UserSearch::class)
@@ -89,7 +89,7 @@ class UserMountCacheTest extends TestCase {
 		$this->userManager->listen('\OC\User', 'postDelete', [$this->cache, 'removeUserMounts']);
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$builder = $this->connection->getQueryBuilder();
 
 		$builder->delete('mounts')->execute();

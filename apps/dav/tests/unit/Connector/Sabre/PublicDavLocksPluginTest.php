@@ -35,7 +35,7 @@ class PublicDavLocksPluginTest extends TestCase {
 	/** @var PublicDavLocksPlugin */
 	private $publicDavLocksPlugin;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->backendInterface = $this->createMock(BackendInterface::class);
 		$this->matcher = $this->getMockBuilder(\stdClass::class)

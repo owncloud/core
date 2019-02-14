@@ -45,7 +45,7 @@ class SystemTagsObjectTypeCollectionTest extends \Test\TestCase {
 	 */
 	private $userFolder;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->tagManager = $this->createMock('\OCP\SystemTag\ISystemTagManager');

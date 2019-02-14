@@ -53,7 +53,7 @@ class TwoFactorMiddlewareTest extends TestCase {
 	/** @var TwoFactorMiddleware */
 	private $middleware;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->twoFactorManager = $this->getMockBuilder(Manager::class)

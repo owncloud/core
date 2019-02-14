@@ -40,7 +40,7 @@ class ActivityTest extends TestCase {
 	 */
 	private $activity;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->activity = new Activity(
 			$this->getMockBuilder('OCP\L10N\IFactory')

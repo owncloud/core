@@ -74,7 +74,7 @@ abstract class StoragesServiceTest extends TestCase {
 	 */
 	protected $backends;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->dbConfig = new CleaningDBConfig(\OC::$server->getDatabaseConnection(), \OC::$server->getCrypto());
 		self::$hookCalls = [];
@@ -152,7 +152,7 @@ abstract class StoragesServiceTest extends TestCase {
 			}));
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		self::$hookCalls = [];
 		if ($this->dbConfig) {
 			$this->dbConfig->clean();
