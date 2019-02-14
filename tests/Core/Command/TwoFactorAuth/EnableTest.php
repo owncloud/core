@@ -37,7 +37,7 @@ class EnableTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$command = new Enable(\OC::$server->getTwoFactorAuthManager(), \OC::$server->getUserManager());

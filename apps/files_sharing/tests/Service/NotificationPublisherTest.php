@@ -51,7 +51,7 @@ class NotificationPublisherTest extends TestCase {
 	/** @var NotificationPublisher */
 	private $publisher;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->groupManager = $this->createMock('OCP\IGroupManager');
 		$this->userManager = $this->createMock('OCP\IUserManager');
 		$this->notificationManager = $this->createMock(\OCP\Notification\IManager::class);
@@ -79,7 +79,7 @@ class NotificationPublisherTest extends TestCase {
 			->will($this->returnArgument(0));
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 	}
 

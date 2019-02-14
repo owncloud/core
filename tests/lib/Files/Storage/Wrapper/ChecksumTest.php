@@ -41,7 +41,7 @@ class ChecksumTest extends \Test\TestCase {
 	const TEST_DATA = 'somedata';
 	const EXPECTED_CHECKSUMS = 'SHA1:efaa311ae448a7374c122061bfed952d940e9e37 MD5:aefaf7502d52994c3b01957636a3cdd2 ADLER32:0f2c034f';
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->sourceStorage = new \OC\Files\Storage\Temporary([]);
 		$this->instance = new \OC\Files\Storage\Wrapper\Checksum([

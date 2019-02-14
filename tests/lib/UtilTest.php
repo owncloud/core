@@ -425,13 +425,13 @@ class UtilTest extends \Test\TestCase {
 		$config->deleteSystemValue('skeletondirectory');
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		\OC_Util::$scripts = [];
 		\OC_Util::$styles = [];
 	}
-	protected function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 
 		\OC_Util::$scripts = [];

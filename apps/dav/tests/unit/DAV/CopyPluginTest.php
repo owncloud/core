@@ -48,7 +48,7 @@ class CopyPluginTest extends TestCase {
 	/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $response;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->plugin = new CopyPlugin();
 

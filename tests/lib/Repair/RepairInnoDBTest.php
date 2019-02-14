@@ -27,7 +27,7 @@ class RepairInnoDBTest extends \Test\TestCase {
 	/** @var string */
 	private $tableName;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
@@ -42,7 +42,7 @@ class RepairInnoDBTest extends \Test\TestCase {
 		$this->repair = new \OC\Repair\InnoDB();
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->connection->getSchemaManager()->dropTable($this->tableName);
 		parent::tearDown();
 	}

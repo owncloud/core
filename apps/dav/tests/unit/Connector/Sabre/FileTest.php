@@ -69,7 +69,7 @@ class FileTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		unset($_SERVER['HTTP_OC_CHUNKED'], $_SERVER['CONTENT_LENGTH'], $_SERVER['REQUEST_METHOD']);
 		
@@ -84,7 +84,7 @@ class FileTest extends TestCase {
 		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$userManager = \OC::$server->getUserManager();
 		if ($userManager->userExists($this->user)) {
 			$userManager->get($this->user)->delete();

@@ -13,14 +13,14 @@ use OC\Installer;
 class InstallerTest extends TestCase {
 	private static $appid = 'testapp';
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		Installer::removeApp(self::$appid);
 		\OC::$server->getConfig()->deleteAppValues(self::$appid);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		Installer::removeApp(self::$appid);
 		\OC::$server->getConfig()->deleteAppValues(self::$appid);
 		parent::tearDown();

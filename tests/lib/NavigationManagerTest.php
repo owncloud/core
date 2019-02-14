@@ -26,7 +26,7 @@ class NavigationManagerTest extends TestCase {
 	/** @var \OC\NavigationManager */
 	protected $navigationManager;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->navigationManager = new NavigationManager();

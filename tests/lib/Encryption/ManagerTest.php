@@ -28,7 +28,7 @@ class ManagerTest extends TestCase {
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OC\Memcache\ArrayCache */
 	private $arrayCache;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->createMock('\OCP\IConfig');
 		$this->logger = $this->createMock('\OCP\ILogger');

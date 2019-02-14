@@ -43,7 +43,7 @@ class MountProviderTest extends TestCase {
 	/** @var MountProvider */
 	private $mountProvider;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->dbConnection = $this->createMock(IDBConnection::class);
 		$this->mountProvider = new MountProvider($this->dbConnection, function () {

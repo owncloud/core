@@ -31,7 +31,7 @@ class SectionTest extends \Test\TestCase {
 	/** @var Section $section */
 	private $section;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->l = $this->getMockBuilder(IL10N::class)
 			->disableOriginalConstructor()
 			->getMock();

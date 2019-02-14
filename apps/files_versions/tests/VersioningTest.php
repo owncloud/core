@@ -60,14 +60,14 @@ class VersioningTest extends TestCase {
 	 */
 	private $rootView;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		$application = new \OCA\Files_Sharing\AppInfo\Application();
 		$application->registerMountProviders();
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$config = \OC::$server->getConfig();
@@ -107,7 +107,7 @@ class VersioningTest extends TestCase {
 		}
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->restoreService('AllConfig');
 
 		if ($this->rootView) {

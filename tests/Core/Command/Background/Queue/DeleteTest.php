@@ -38,7 +38,7 @@ class DeleteTest extends TestCase {
 	/** @var IJobList */
 	private $jobList;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->jobList = $this->createMock(IJobList::class);

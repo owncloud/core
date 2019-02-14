@@ -672,7 +672,7 @@ class CacheTest extends TestCase {
 		$this->assertEmpty($entry['checksum']);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->cache) {
 			$this->cache->clear();
 		}
@@ -680,7 +680,7 @@ class CacheTest extends TestCase {
 		parent::tearDown();
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->storage = new Temporary([]);

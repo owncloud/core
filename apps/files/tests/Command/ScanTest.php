@@ -94,7 +94,7 @@ class ScanTest extends TestCase {
 	 */
 	private $groupsCreated = [];
 
-	protected function setUp() {
+	protected function setUp(): void {
 		if ($this->runsWithPrimaryObjectstorage()) {
 			$this->markTestSkipped('not testing scanner as it does not make sense for primary object store');
 		}
@@ -131,7 +131,7 @@ class ScanTest extends TestCase {
 		@\mkdir($this->dataDir . '/' . $this->scanUser1->getUID() . '/files/toscan', 0777, true);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		foreach ($this->groupsCreated as $group) {
 			$this->groupManager->get($group)->delete();
 		}

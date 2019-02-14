@@ -26,7 +26,7 @@ class EtagTest extends \Test\TestCase {
 
 	private $tmpDir;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		\OC_Hook::clear('OC_Filesystem', 'setup');
@@ -39,7 +39,7 @@ class EtagTest extends \Test\TestCase {
 		$config->setSystemValue('datadirectory', $this->tmpDir);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		\OC::$server->getConfig()->setSystemValue('datadirectory', $this->datadir);
 
 		$this->logout();

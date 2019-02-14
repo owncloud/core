@@ -29,7 +29,7 @@ class LoggingTest extends \Test\TestCase {
 	/** @var Helper */
 	private $helper;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->urlGenerator = $this->getMockBuilder(IURLGenerator::class)->getMock();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();

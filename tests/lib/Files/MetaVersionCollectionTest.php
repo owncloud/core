@@ -56,7 +56,7 @@ class MetaVersionCollectionTest extends TestCase {
 	 */
 	private $storage;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->rootFolder = $this->createMock(IRootFolder::class);
@@ -66,7 +66,7 @@ class MetaVersionCollectionTest extends TestCase {
 		$this->collection = new MetaVersionCollection($this->rootFolder, $this->node);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 

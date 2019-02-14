@@ -60,7 +60,7 @@ class ExpireSharesJobTest extends \Test\TestCase {
 	 */
 	private $user2;
 
-	protected function setup() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->shareManager = \OC::$server->getShareManager();
@@ -80,7 +80,7 @@ class ExpireSharesJobTest extends \Test\TestCase {
 		$this->job = new ExpireSharesJob($this->connection, $this->shareManager, \OC::$server->getLogger());
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->connection->executeUpdate('DELETE FROM `*PREFIX*share`');
 
 		$userManager = \OC::$server->getUserManager();

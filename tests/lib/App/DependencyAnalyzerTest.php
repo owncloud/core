@@ -29,7 +29,7 @@ class DependencyAnalyzerTest extends TestCase {
 		'@attributes' => [ 'min-version' => '11.0', 'max-version' => '100.0.0' ]
 	];
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->platformMock = $this->getMockBuilder(Platform::class)
 			->disableOriginalConstructor()
 			->getMock();

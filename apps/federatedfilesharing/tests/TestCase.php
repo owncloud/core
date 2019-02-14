@@ -39,7 +39,7 @@ abstract class TestCase extends \Test\TestCase {
 	const TEST_FILES_SHARING_API_USER1 = "test-share-user1";
 	const TEST_FILES_SHARING_API_USER2 = "test-share-user2";
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		// reset backend
@@ -47,7 +47,7 @@ abstract class TestCase extends \Test\TestCase {
 		\OC::$server->getGroupManager()->clearBackends();
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->createUser(self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER1);
@@ -57,7 +57,7 @@ abstract class TestCase extends \Test\TestCase {
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		// cleanup users
 		$user = \OC::$server->getUserManager()->get(self::TEST_FILES_SHARING_API_USER1);
 		if ($user !== null) {

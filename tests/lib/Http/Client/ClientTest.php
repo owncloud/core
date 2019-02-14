@@ -23,7 +23,7 @@ class ClientTest extends \Test\TestCase {
 	/** @var IConfig */
 	private $config;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->createMock('\OCP\IConfig');
 		$this->guzzleClient = $this->getMockBuilder('\GuzzleHttp\Client')

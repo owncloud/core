@@ -36,7 +36,7 @@ class GroupPrincipalTest extends \Test\TestCase {
 	/** @var GroupPrincipalBackend */
 	private $connector;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->groupManager = $this->getMockBuilder(IGroupManager::class)
 			->disableOriginalConstructor()->getMock();
 

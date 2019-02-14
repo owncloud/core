@@ -42,7 +42,7 @@ class AllUsersIteratorTest extends TestCase {
 	 */
 	private $iterator;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->backend = $this->createMock(UserInterface::class);

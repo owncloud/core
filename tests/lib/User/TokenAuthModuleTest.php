@@ -45,7 +45,7 @@ class TokenAuthModuleTest extends TestCase {
 	/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject */
 	private $tokenProvider;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->manager = $this->createMock(IUserManager::class);
 		$this->session = $this->createMock(ISession::class);

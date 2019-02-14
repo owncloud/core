@@ -26,7 +26,7 @@ class HelperStorageTest extends TestCase {
 	/** @var IUser */
 	private $userObj;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->user = $this->getUniqueID('user_');
@@ -41,7 +41,7 @@ class HelperStorageTest extends TestCase {
 		$this->storageMock = null;
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->storageMock) {
 			$this->storageMock->getCache()->clear();
 			$this->storageMock = null;

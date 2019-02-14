@@ -24,7 +24,7 @@ class LogSettingsControllerTest extends \Test\TestCase {
 	/** @var LogSettingsController */
 	private $logSettingsController;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$app = new Application();
 		$this->container = $app->getContainer();
 		$this->container['Config'] = $this->getMockBuilder('\OCP\IConfig')

@@ -18,7 +18,7 @@ class InfoParserTest extends TestCase {
 	/** @var InfoParser */
 	private $parser;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->parser = new InfoParser();
 	}
 
