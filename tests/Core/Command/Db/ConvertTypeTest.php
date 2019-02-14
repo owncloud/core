@@ -50,7 +50,7 @@ class ConvertTypeTest extends TestCase {
 	/** @var \Doctrine\DBAL\Connection */
 	private $connection;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->config = $this->getMockBuilder(IConfig::class)

@@ -97,7 +97,7 @@ class TrashbinTest extends TestCase {
 		self::loginHelper(self::TEST_TRASHBIN_USER1, true);
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		// cleanup test user
 		$user = \OC::$server->getUserManager()->get(self::TEST_TRASHBIN_USER1);
 		if ($user !== null) {
@@ -121,7 +121,7 @@ class TrashbinTest extends TestCase {
 		parent::tearDownAfterClass();
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		\OC::$server->getAppManager()->enableApp('files_trashbin');
@@ -144,7 +144,7 @@ class TrashbinTest extends TestCase {
 		self::loginHelper(self::TEST_TRASHBIN_USER1);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->restoreService('AllConfig');
 		// disable trashbin to be able to properly clean up
 		\OC::$server->getAppManager()->disableApp('files_trashbin');

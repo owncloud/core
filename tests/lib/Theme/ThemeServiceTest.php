@@ -17,7 +17,7 @@ class ThemeServiceTest extends \PHPUnit\Framework\TestCase {
 	 */
 	private $environmentHelper;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->appManager = $this->getMockBuilder(IAppManager::class)
 			->getMock();

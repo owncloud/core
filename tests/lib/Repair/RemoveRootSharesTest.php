@@ -51,7 +51,7 @@ class RemoveRootSharesTest extends \Test\TestCase {
 	/** @var IRootFolder */
 	private $rootFolder;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
@@ -65,12 +65,12 @@ class RemoveRootSharesTest extends \Test\TestCase {
 		$this->repair = new RemoveRootShares($this->connection, $this->userManager, $this->rootFolder);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->delete('share');
 		$qb->execute();
 
-		return parent::tearDown();
+		parent::tearDown();
 	}
 
 	public function testRootSharesExist() {

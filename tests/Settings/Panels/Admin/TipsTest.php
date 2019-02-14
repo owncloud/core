@@ -20,7 +20,7 @@ class TipsTest extends \Test\TestCase {
 	/** @var Tips */
 	private $panel;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->panel = new Tips();
 	}

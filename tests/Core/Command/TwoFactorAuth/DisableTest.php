@@ -37,7 +37,7 @@ class DisableTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$command = new Disable(\OC::$server->getTwoFactorAuthManager(), \OC::$server->getUserManager());

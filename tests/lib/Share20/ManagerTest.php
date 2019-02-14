@@ -94,7 +94,7 @@ class ManagerTest extends \Test\TestCase {
 	/** @var IDBConnection | \PHPUnit\Framework\MockObject\MockObject */
 	protected $connection;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->logger = $this->createMock(ILogger::class);
@@ -140,7 +140,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->factory->setProvider($this->defaultProvider);
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		// clear legacy hook handlers
 		\OC_Hook::clear('\OC\Share');
 		parent::tearDown();

@@ -34,7 +34,7 @@ class ProfileTest extends \Test\TestCase {
 	/** @var IUserSession */
 	private $userSession;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
 		$this->groupManager = $this->getMockBuilder(IGroupManager::class)->getMock();

@@ -24,7 +24,7 @@ class BackgroundJobsTest extends \Test\TestCase {
 	/** @var IConfig */
 	private $config;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config =$this->getMockBuilder(IConfig::class)->getMock();
 		$this->panel = new BackgroundJobs($this->config);

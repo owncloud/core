@@ -32,7 +32,7 @@ class InfoCheckerTest extends TestCase {
 	/** @var IAppManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $appManager;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->appManager = $this->getMockBuilder(IAppManager::class)

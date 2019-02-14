@@ -48,7 +48,7 @@ class SystemTagManagerTest extends TestCase {
 	 */
 	private $dispatcher;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
@@ -66,7 +66,7 @@ class SystemTagManagerTest extends TestCase {
 		$this->pruneTagsTables();
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$this->pruneTagsTables();
 		parent::tearDown();
 	}

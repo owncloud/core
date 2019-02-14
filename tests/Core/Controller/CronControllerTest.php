@@ -48,7 +48,7 @@ class CronControllerTest extends TestCase {
 	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->request = $this->createMock(IRequest::class);
 		$this->config = $this->createMock(IConfig::class);
 		$this->logger = $this->createMock(ILogger::class);

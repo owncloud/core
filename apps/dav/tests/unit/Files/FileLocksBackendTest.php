@@ -49,7 +49,7 @@ class FileLocksBackendTest extends TestCase {
 	/** @var IPersistentLockingStorage | IStorage | \PHPUnit\Framework\MockObject\MockObject */
 	private $storageOfFileToBeLocked;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->storageOfFileToBeLocked = $this->createMock([IPersistentLockingStorage::class, IStorage::class]);

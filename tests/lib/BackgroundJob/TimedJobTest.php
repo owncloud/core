@@ -40,7 +40,7 @@ class TimedJobTest extends \Test\TestCase {
 		$this->jobRun = true;
 	}
 
-	protected function setup() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->jobList = new DummyJobList();

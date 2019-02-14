@@ -23,7 +23,7 @@ class LegacyTest extends \Test\TestCase {
 	/** @var Helper */
 	private $helper;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->helper = $this->getMockBuilder(Helper::class)->getMock();
 		$this->panel = new Legacy($this->helper);

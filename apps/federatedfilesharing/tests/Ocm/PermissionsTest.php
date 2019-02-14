@@ -37,7 +37,7 @@ class PermissionsTest extends TestCase {
 	 */
 	private $permissions;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->permissions = new Permissions();
 	}

@@ -22,7 +22,7 @@ class DropOldJobsTest extends \Test\TestCase {
 	/** @var IJobList */
 	protected $jobList;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->jobList = \OC::$server->getJobList();

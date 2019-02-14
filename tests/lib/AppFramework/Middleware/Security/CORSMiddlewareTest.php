@@ -43,7 +43,7 @@ class CORSMiddlewareTest extends \Test\TestCase {
 		];
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->createMock(IConfig::class);

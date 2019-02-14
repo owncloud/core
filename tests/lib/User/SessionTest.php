@@ -61,7 +61,7 @@ class SessionTest extends TestCase {
 	/** @var  EventDispatcher */
 	protected $eventDispatcher;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->timeFactory = $this->createMock(ITimeFactory::class);

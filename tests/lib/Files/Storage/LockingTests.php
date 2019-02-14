@@ -40,7 +40,7 @@ class LockingTests extends TestCase {
 	/** @var int */
 	private $fileId;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$user = $this->createUser('locking-user');
@@ -55,7 +55,7 @@ class LockingTests extends TestCase {
 		list($this->storage, ) = $this->view->resolvePath('foo/bar.txt');
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->storage) {
 			$this->storage->unlockNodePersistent('files/foo/bar.txt', [
 				'token' => '123-456-789'

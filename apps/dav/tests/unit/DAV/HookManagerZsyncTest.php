@@ -54,7 +54,7 @@ class HookManagerZsyncTest extends TestCase {
 		self::loginHelper(self::TEST_ZSYNC_HOOKS_USER, true);
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		// cleanup test user
 		$user = \OC::$server->getUserManager()->get(self::TEST_ZSYNC_HOOKS_USER);
 		if ($user !== null) {
@@ -64,7 +64,7 @@ class HookManagerZsyncTest extends TestCase {
 		parent::tearDownAfterClass();
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$config = \OC::$server->getConfig();
@@ -121,7 +121,7 @@ class HookManagerZsyncTest extends TestCase {
 		}
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->restoreService('AllConfig');
 
 		if ($this->rootView) {

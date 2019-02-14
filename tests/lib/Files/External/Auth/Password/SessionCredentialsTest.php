@@ -38,7 +38,7 @@ class SessionCredentialsTest extends \Test\TestCase {
 	/** @var ICrypto | \PHPUnit\Framework\MockObject\MockObject */
 	private $crypto;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->session = $this->createMock(ISession::class);
 		$this->crypto = $this->createMock(ICrypto::class);
@@ -48,7 +48,7 @@ class SessionCredentialsTest extends \Test\TestCase {
 		);
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		\OC_Hook::clear('OC_User', 'post_login');
 		parent::tearDown();
 	}

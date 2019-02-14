@@ -38,7 +38,7 @@ use OCA\Files_External\Lib\Storage\Swift;
 class SwiftTest extends \Test\Files\Storage\Storage {
 	private $config;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->config = include('files_external/tests/config.swift.php');
@@ -48,7 +48,7 @@ class SwiftTest extends \Test\Files\Storage\Storage {
 		$this->instance = new Swift($this->config);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if ($this->instance) {
 			try {
 				$connection = $this->instance->getConnection();

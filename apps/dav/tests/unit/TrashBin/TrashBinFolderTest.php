@@ -41,7 +41,7 @@ class TrashBinFolderTest extends TestCase {
 	 */
 	private $fileInfo;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->fileInfo = $this->createMock(FileInfo::class);
 		$this->trashBinManager = $this->createMock(TrashBinManager::class);

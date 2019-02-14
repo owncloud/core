@@ -44,7 +44,7 @@ class CleanPropertiesTest extends TestCase {
 	/** @var string */
 	private $username;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();

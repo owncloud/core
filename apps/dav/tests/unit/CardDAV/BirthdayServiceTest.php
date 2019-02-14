@@ -42,7 +42,7 @@ class BirthdayServiceTest extends TestCase {
 	/** @var GroupPrincipalBackend | \PHPUnit\Framework\MockObject\MockObject */
 	private $groupPrincipalBackend;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->calDav = $this->getMockBuilder(CalDavBackend::class)->disableOriginalConstructor()->getMock();

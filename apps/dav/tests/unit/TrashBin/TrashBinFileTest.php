@@ -32,7 +32,7 @@ class TrashBinFileTest extends TestCase {
 	 */
 	private $trashBinFile;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$fileInfo = $this->createMock(FileInfo::class);
 		$trashBinManager = $this->createMock(TrashBinManager::class);

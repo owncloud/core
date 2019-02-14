@@ -57,7 +57,7 @@ class PanelTest extends \Test\TestCase {
 	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->connection = $this->getMockBuilder(IDBConnection::class)->getMock();
 		$this->l = $this->getMockBuilder(IL10N::class)->getMock();

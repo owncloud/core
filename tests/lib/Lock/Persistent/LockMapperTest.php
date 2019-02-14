@@ -66,7 +66,7 @@ class LockMapperTest extends TestCase {
 	/** @var ITimeFactory */
 	private $timeFactory;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->db = \OC::$server->getDatabaseConnection();
@@ -117,7 +117,7 @@ class LockMapperTest extends TestCase {
 		];
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		foreach ($this->locks as $lock) {
 			$this->mapper->delete($lock);
 		}

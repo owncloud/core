@@ -80,7 +80,7 @@ class ViewTest extends TestCase {
 	/** @var \OC\Files\Storage\Storage */
 	private $tempStorage;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		\OC_Hook::clear();
 
@@ -106,7 +106,7 @@ class ViewTest extends TestCase {
 		$this->tempStorage = null;
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		\OC_User::setUserId($this->user);
 		foreach ($this->storages as $storage) {
 			$cache = $storage->getCache();

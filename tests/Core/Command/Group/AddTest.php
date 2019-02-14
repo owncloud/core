@@ -34,7 +34,7 @@ class AddTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$command = new Add(\OC::$server->getGroupManager());

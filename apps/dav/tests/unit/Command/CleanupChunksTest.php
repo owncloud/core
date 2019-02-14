@@ -42,7 +42,7 @@ class CleanupChunksTest extends TestCase {
 	/** @var IUser */
 	private $user;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$command = new CleanupChunks(\OC::$server->getUserManager());

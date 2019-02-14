@@ -48,7 +48,7 @@ class MetaFilesTest extends TestCase {
 	 */
 	private $userId;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		// workaround: re-setup versions hooks
@@ -59,7 +59,7 @@ class MetaFilesTest extends TestCase {
 		$this->loginAsUser($this->userId);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		self::logout();
 		parent::tearDown();
 	}

@@ -41,7 +41,7 @@ class CacheMountProviderTest extends \Test\TestCase {
 	/** @var IStorageFactory|\PHPUnit\Framework\MockObject\MockObject */
 	protected $loader;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->config = $this->createMock(IConfig::class);

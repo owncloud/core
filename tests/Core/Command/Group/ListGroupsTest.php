@@ -34,7 +34,7 @@ class ListGroupsTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$command = new ListGroups(\OC::$server->getGroupManager());

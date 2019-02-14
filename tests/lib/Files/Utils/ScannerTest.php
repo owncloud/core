@@ -46,13 +46,13 @@ class TestScanner extends \OC\Files\Utils\Scanner {
 class ScannerTest extends \Test\TestCase {
 	use UserTrait;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->loginAsUser();
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->logout();
 		parent::tearDown();
 	}
