@@ -1,4 +1,4 @@
-@api
+@api @skipOnOcV10.0
 Feature: lock should propagate correctly if a share is reshared
 
   Background:
