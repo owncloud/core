@@ -92,7 +92,7 @@ OC.Lostpassword = {
 			$('#retypepassword').val('');
 			$('#password').parent().addClass('shake');
 			$('#message').addClass('warning');
-			$('#message').text('Passwords does not match');
+			$('#message').text('Passwords do not match');
 			$('#message').show();
 			$('#password').focus();
 		}
