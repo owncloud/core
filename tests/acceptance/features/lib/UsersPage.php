@@ -418,11 +418,14 @@ class UsersPage extends OwncloudPage {
 	 * @param string $username
 	 * @param string $quota text form of quota to be input
 	 * @param Session $session
+	 * @param boolean $valid is the set quota expected to be valid
 	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
-	public function setQuotaOfUserTo($username, $quota, Session $session) {
+	public function setQuotaOfUserTo(
+		$username, $quota, Session $session, $valid = true
+	) {
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
 
@@ -464,7 +467,13 @@ class UsersPage extends OwncloudPage {
 		} else {
 			$selectOption->click();
 		}
-		$this->waitForAjaxCallsToStartAndFinish($session);
+		//a valid quota will be send by AJAX to the server
+		//invalid quotas are checked by JS, so we just wait for the notification to appear
+		if ($valid === true) {
+			$this->waitForAjaxCallsToStartAndFinish($session);
+		} else {
+			$this->waitTillXpathIsVisible("//*[@id='$this->notificationId']");
+		}
 	}
 
 	/**

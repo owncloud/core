@@ -95,6 +95,22 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the administrator sets/changes the quota of user :username to the invalid string :quota using the webUI
+	 *
+	 * @param string $username
+	 * @param string $quota
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsInvalidQuotaOfUserUsingTheWebUI(
+		$username, $quota
+	) {
+		$this->usersPage->setQuotaOfUserTo(
+			$username, $quota, $this->getSession(), false
+		);
+	}
+
+	/**
 	 * @When /^the administrator (attempts to create|creates) a user with the name "([^"]*)" (?:and )?the password "([^"]*)"(?: and the email "([^"]*)")?(?: that is a member of these groups)? using the webUI$/
 	 *
 	 * @param string $attemptTo
