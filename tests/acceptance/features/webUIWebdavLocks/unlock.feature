@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews
+@webUI @insulated @disablePreviews @skipOnOcV10.0
 Feature: Unlock locked files and folders
   As a user
   I would like to be able to unlock files and folders
