@@ -188,12 +188,15 @@ class Controller {
 		if ($email !== null && $email !== '') {
 			$tmpl = new \OC_Template('core', 'lostpassword/notify');
 			$msg = $tmpl->fetchPage();
+			$tmplAlt = new \OC_Template('core', 'lostpassword/altnotify');
+			$msgAlt = $tmplAlt->fetchPage();
 
 			try {
 				$message = $mailer->createMessage();
 				$message->setTo([$email => $username]);
 				$message->setSubject($l10n->t('%s password changed successfully', [$defaults->getName()]));
-				$message->setPlainBody($msg);
+				$message->setPlainBody($msgAlt);
+				$message->setHtmlBody($msg);
 				$message->setFrom([$from => $defaults->getName()]);
 				$mailer->send($message);
 			} catch (\Exception $e) {

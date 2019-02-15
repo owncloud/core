@@ -517,9 +517,13 @@ class LostControllerTest extends TestCase {
 		$message
 			->expects($this->at(2))
 			->method('setPlainBody')
-			->with('Password changed successfully');
+			->with($this->stringContains('Password changed successfully'));
 		$message
 			->expects($this->at(3))
+			->method('setHtmlBody')
+			->with($this->stringContains('Password changed successfully'));
+		$message
+			->expects($this->at(4))
 			->method('setFrom')
 			->with(['lostpassword-noreply@localhost' => null]);
 		$this->mailer
