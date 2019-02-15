@@ -98,10 +98,6 @@ class EnableTest extends TestCase {
 		if (!empty($availableModules)) {
 			$this->manager->method('getDefaultEncryptionModuleId')
 				->willReturn($defaultModule);
-			/*$this->config->expects($this->at($invokeCount))
-				->method('getAppValue')
-				->with('core', 'default_encryption_module', $this->anything())
-				->willReturn($defaultModule);*/
 		}
 
 		$this->consoleOutput->expects($this->at(0))
