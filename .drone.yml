@@ -31,7 +31,7 @@ pipeline:
       - php occ config:system:set trusted_domains 2 --value=federated
       - php occ log:manage --level 0
       - php occ config:list
-      - echo "export TEST_SERVER_FED_URL=https://federated" > /drone/saved-settings.sh
+      - echo "export TEST_SERVER_FED_URL=${SERVER_PROTOCOL}://federated" > /drone/saved-settings.sh
       - php occ security:certificates:import /drone/server.crt
       - php occ security:certificates:import /drone/federated.crt
       - php occ security:certificates
@@ -287,8 +287,8 @@ pipeline:
       - echo 'Sharing a folder ..'
       - OC_PASS=123456 php occ user:add --password-from-env user1
       - chown www-data /drone/src -R
-      - curl -k -s -u user1:123456 -X MKCOL 'https://server/remote.php/webdav/new_folder'
-      - curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data 'path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin'
+      - curl -k -s -u user1:123456 -X MKCOL '${SERVER_PROTOCOL}://server/remote.php/webdav/new_folder'
+      - curl -k -s -u user1:123456 "${SERVER_PROTOCOL}://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data 'path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin'
     when:
       matrix:
         TEST_SUITE: litmus
@@ -297,7 +297,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-      - LITMUS_URL=https://server/remote.php/webdav
+      - LITMUS_URL=${SERVER_PROTOCOL}://server/remote.php/webdav
       - LITMUS_USERNAME=admin
       - LITMUS_PASSWORD=admin
     when:
@@ -308,7 +308,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=https://server/remote.php/dav/files/admin
+    - LITMUS_URL=${SERVER_PROTOCOL}://server/remote.php/dav/files/admin
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -319,7 +319,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=https://server/remote.php/dav/files/admin/local_storage/
+    - LITMUS_URL=${SERVER_PROTOCOL}://server/remote.php/dav/files/admin/local_storage/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -330,7 +330,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=https://server/remote.php/webdav/local_storage/
+    - LITMUS_URL=${SERVER_PROTOCOL}://server/remote.php/webdav/local_storage/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -341,7 +341,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=https://server/remote.php/dav/files/admin/new_folder/
+    - LITMUS_URL=${SERVER_PROTOCOL}://server/remote.php/dav/files/admin/new_folder/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -352,7 +352,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=https://server/remote.php/webdav/new_folder/
+    - LITMUS_URL=${SERVER_PROTOCOL}://server/remote.php/webdav/new_folder/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -385,7 +385,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-      - TEST_SERVER_URL=https://server
+      - TEST_SERVER_URL=${SERVER_PROTOCOL}://server
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
@@ -398,7 +398,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-      - TEST_SERVER_URL=https://server
+      - TEST_SERVER_URL=${SERVER_PROTOCOL}://server
       - MAILHOG_HOST=email
     commands:
       - touch /drone/saved-settings.sh
@@ -412,10 +412,10 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-      - BROWSER=chrome
+      - BROWSER=${BROWSER}
       - SELENIUM_HOST=selenium
       - SELENIUM_PORT=4444
-      - TEST_SERVER_URL=https://server
+      - TEST_SERVER_URL=${SERVER_PROTOCOL}://server
       - PLATFORM=Linux
       - MAILHOG_HOST=email
     commands:
@@ -505,6 +505,17 @@ services:
     when:
       matrix:
         TEST_SUITE: selenium
+        BROWSER: chrome
+
+  selenium:
+    image: selenium/standalone-firefox-debug:3.8.1
+    pull: true
+    environment:
+      - SE_OPTS=-enablePassThrough false
+    when:
+      matrix:
+        TEST_SUITE: selenium
+        BROWSER: firefox
 
   server:
     image: owncloudci/php:${PHP_VERSION}
@@ -519,6 +530,18 @@ services:
     when:
       matrix:
         USE_SERVER: true
+        SERVER_PROTOCOL: https
+
+  server:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    environment:
+      - APACHE_WEBROOT=/drone/src/
+    command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
+    when:
+      matrix:
+        USE_SERVER: true
+        SERVER_PROTOCOL: http
 
   federated:
     image: owncloudci/php:${PHP_VERSION}
@@ -533,6 +556,18 @@ services:
     when:
       matrix:
         USE_FEDERATED_SERVER: true
+        SERVER_PROTOCOL: https
+
+  federated:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    environment:
+      - APACHE_WEBROOT=/drone/fed-server/
+    command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
+    when:
+      matrix:
+        USE_FEDERATED_SERVER: true
+        SERVER_PROTOCOL: http
 
   apache_webdav:
     image: owncloudci/php
@@ -610,6 +645,7 @@ matrix:
   # Litmus
     - PHP_VERSION: 7.1
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       TEST_SUITE: litmus
       INSTALL_SERVER: true
       OWNCLOUD_LOG: true
@@ -732,6 +768,7 @@ matrix:
       BEHAT_SUITE: apiMain
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -742,6 +779,7 @@ matrix:
       BEHAT_SUITE: apiCapabilities
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -752,6 +790,7 @@ matrix:
       BEHAT_SUITE: apiComments
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -762,6 +801,7 @@ matrix:
       BEHAT_SUITE: apiFavorites
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -772,6 +812,7 @@ matrix:
       BEHAT_SUITE: apiFederation
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       USE_FEDERATED_SERVER: true
       FEDERATION_OC_VERSION: daily-stable10-qa
       INSTALL_SERVER: true
@@ -784,6 +825,7 @@ matrix:
       BEHAT_SUITE: apiProvisioning-v1
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -794,6 +836,7 @@ matrix:
       BEHAT_SUITE: apiProvisioning-v2
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -804,6 +847,7 @@ matrix:
       BEHAT_SUITE: apiSharees
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -814,6 +858,7 @@ matrix:
       BEHAT_SUITE: apiShareManagement
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -824,6 +869,7 @@ matrix:
       BEHAT_SUITE: apiShareOperations
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -834,6 +880,7 @@ matrix:
       BEHAT_SUITE: apiSharingNotifications
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -845,6 +892,7 @@ matrix:
       BEHAT_SUITE: apiTags
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -855,6 +903,7 @@ matrix:
       BEHAT_SUITE: apiTrashbin
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -865,6 +914,7 @@ matrix:
       BEHAT_SUITE: apiVersions
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -875,6 +925,7 @@ matrix:
       BEHAT_SUITE: apiWebdavLocks
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -885,6 +936,7 @@ matrix:
       BEHAT_SUITE: apiWebdavMove
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -895,6 +947,7 @@ matrix:
       BEHAT_SUITE: apiWebdavOperations
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -905,6 +958,7 @@ matrix:
       BEHAT_SUITE: apiWebdavProperties
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -915,6 +969,7 @@ matrix:
       BEHAT_SUITE: apiWebdavUpload
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -926,6 +981,7 @@ matrix:
       BEHAT_SUITE: cliProvisioning
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -938,6 +994,7 @@ matrix:
       BEHAT_SUITE: cliMain
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -949,6 +1006,7 @@ matrix:
       BEHAT_SUITE: cliBackground
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -960,17 +1018,21 @@ matrix:
       BEHAT_SUITE: cliTrashbin
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
 
   # UI Acceptance tests
+  ## Chrome
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIAdminSettings
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -979,9 +1041,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIComments
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -989,9 +1053,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUICreateDelete
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -999,9 +1065,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIEncryptionUserKeysType
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1009,9 +1077,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIFavorites
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1019,9 +1089,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIFiles
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1029,9 +1101,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUILogin
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1040,9 +1114,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIMoveFilesFolders
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1050,9 +1126,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIPersonalSettings
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1061,9 +1139,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIRenameFiles
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1071,9 +1151,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIRenameFolders
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1081,9 +1163,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIRestrictSharing
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1091,9 +1175,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUISharingAcceptShares
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1101,9 +1187,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUISharingExternal
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       USE_FEDERATED_SERVER: true
       FEDERATION_OC_VERSION: daily-stable10-qa
       INSTALL_SERVER: true
@@ -1114,9 +1202,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUISharingInternalGroups
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1124,9 +1214,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUISharingInternalUsers
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1134,9 +1226,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUISharingNotifications
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1146,9 +1240,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUISharingPublic
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1157,9 +1253,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUITags
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1167,9 +1265,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUITrashbin
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1177,9 +1277,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIUpload
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1188,9 +1290,11 @@ matrix:
     # This suite is part of the user_management app in later core versions
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIManageUsersGroups
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       USE_EMAIL: true
@@ -1200,9 +1304,11 @@ matrix:
     # This suite is part of the user_management app in later core versions
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIManageQuota
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1211,9 +1317,11 @@ matrix:
     # This suite is part of the user_management app in later core versions
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUISettingsMenu
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1221,9 +1329,11 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIWebdavLocks
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1231,19 +1341,74 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIWebdavLockProtection
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+
+    ## Firefox
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BROWSER: firefox
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: http
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+      USE_EMAIL: true
+      BEHAT_FILTER_TAGS: '@smokeTest&&~@notifications-app-required'
+      DIVIDE_INTO_NUM_PARTS: 3
+      RUN_PART: 1
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BROWSER: firefox
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: http
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+      USE_EMAIL: true
+      BEHAT_FILTER_TAGS: '@smokeTest&&~@notifications-app-required'
+      DIVIDE_INTO_NUM_PARTS: 3
+      RUN_PART: 2
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BROWSER: firefox
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: http
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+      USE_EMAIL: true
+      BEHAT_FILTER_TAGS: '@smokeTest&&~@notifications-app-required'
+      DIVIDE_INTO_NUM_PARTS: 3
+      RUN_PART: 3
 
     # caldav test
     - PHP_VERSION: 7.1
       TEST_SUITE: caldav
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1254,6 +1419,7 @@ matrix:
       TEST_SUITE: carddav
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1264,6 +1430,7 @@ matrix:
       TEST_SUITE: caldav-old-endpoint
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1274,6 +1441,7 @@ matrix:
       TEST_SUITE: carddav-old-endpoint
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1285,6 +1453,7 @@ matrix:
       BEHAT_SUITE: cliEncryption
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1297,6 +1466,7 @@ matrix:
       BEHAT_SUITE: cliEncryption
       DB_TYPE: mariadb
       USE_SERVER: true
+      SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true

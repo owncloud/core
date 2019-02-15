@@ -25,7 +25,7 @@ Feature: Sharing files and folders with internal users
     Then file "lorem.txt" should be listed on the webUI
     But folder "simple-folder (2)" should not be listed on the webUI
 
-  @TestAlsoOnExternalUserBackend
+  @TestAlsoOnExternalUserBackend @skipOnFIREFOX
   Scenario: share a file with another internal user who overwrites and unshares the file
     Given user "user2" has logged in using the webUI
     When the user renames file "lorem.txt" to "new-lorem.txt" using the webUI
@@ -96,6 +96,7 @@ Feature: Sharing files and folders with internal users
     And the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
 
+  @skipOnFIREFOX
   Scenario: share a folder with other user and then it should be listed on Shared with You for other user
     Given user "user2" has logged in using the webUI
     And the user has renamed folder "simple-folder" to "new-simple-folder" using the webUI

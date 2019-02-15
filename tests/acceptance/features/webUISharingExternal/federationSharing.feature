@@ -136,6 +136,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     But file "lorem-big.txt" should not be listed on the webUI
     And the content of "renamed file.txt" on the local server should be the same as the original "simple-folder/lorem-big.txt"
 
+  @skipOnFIREFOX
   Scenario: rename a file in a received share - remote server shares - local server receives
     Given user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
     And the user has reloaded the current page of the webUI
@@ -278,6 +279,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And using server "LOCAL"
     Then as "user1" file "simple-folder/simple-empty-folder/lorem.txt" should exist
 
+  @skipOnFIREFOX
   Scenario: rename a file in a folder inside a shared folder
     Given user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/simple-empty-folder/textfile.txt"
     And user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
