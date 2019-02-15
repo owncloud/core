@@ -78,5 +78,5 @@ Feature: reset the password
     When the user resets the password to "%alt3%" and confirms with "foo" using the webUI
     Then the user should see a password mismatch message displayed on the webUI
     """
-    Passwords does not match
+    Passwords do not match
     """
