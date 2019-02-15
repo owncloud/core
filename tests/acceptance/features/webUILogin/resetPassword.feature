@@ -30,7 +30,7 @@ Feature: reset the password
     When the user requests the password reset link using the webUI
     And the user follows the password reset link from email address "user1@example.org"
     Then the user should be redirected to a webUI page with the title "%productname%"
-    When the user resets the password to "%alt3%" and confirms same password using the webUI
+    When the user resets the password to "%alt3%" and confirms with the same password using the webUI
     Then the email address "user1@example.org" should have received an email with the body containing
       """
       Password changed successfully
@@ -43,7 +43,7 @@ Feature: reset the password
     When the user requests the password reset link using the webUI
     And the user follows the password reset link from email address "user1@example.org"
     Then the user should be redirected to a webUI page with the title "%productname%"
-    When the user resets the password to "%alt3%" and confirms same password using the webUI
+    When the user resets the password to "%alt3%" and confirms with the same password using the webUI
     Then the email address "user1@example.org" should have received an email with the body containing
       """
       Password changed successfully
@@ -75,8 +75,8 @@ Feature: reset the password
     When the user requests the password reset link using the webUI
     And the user follows the password reset link from email address "user1@example.org"
     Then the user should be redirected to a webUI page with the title "%productname%"
-    When the user has resets password to "%alt3%" and confirms with "foo" using the webUI
-    Then user should see password mismatch message displayed on the webUI
+    When the user resets the password to "%alt3%" and confirms with "foo" using the webUI
+    Then the user should see a password mismatch message displayed on the webUI
     """
-    Passwords does not match
+    Passwords do not match
     """

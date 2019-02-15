@@ -545,8 +545,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user resets/sets the password to :newPassword and confirms same password using the webUI
-	 * @Given the user has reset/set the password to :newPassword and confirms same password using the webUI
+	 * @When the user resets/sets the password to :newPassword and confirms with the same password using the webUI
+	 * @Given the user has reset/set the password to :newPassword and confirms with the same password using the webUI
 	 *
 	 * @param string $newPassword
 	 *
@@ -559,8 +559,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @when the user resets/sets password to :newPassword and confirms with :confirmPassword using the webUI
-	 * @Given the user has resets/sets password to :newPassword and confirms with :confirmPassword using the webUI
+	 * @When the user resets/sets the password to :newPassword and confirms with :confirmPassword using the webUI
+	 * @Given the user has reset/set the password to :newPassword and confirms with :confirmPassword using the webUI
 	 *
 	 * @param string $newPassword
 	 * @param string $confirmNewPassword
@@ -573,7 +573,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then user should see password mismatch message displayed on the webUI
+	 * @Then the user should see a password mismatch message displayed on the webUI
 	 *
 	 * @param PyStringNode $string
 	 *
