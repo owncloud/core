@@ -76,6 +76,20 @@ Feature: add users
       | guiusr1  | simple user-name      |
       | a@-_.'b  | complicated user-name |
 
+  Scenario Outline: user sets his own password but retypes it wrongly after being created with an Email address only
+    When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
+    And the administrator logs out of the webUI
+    And the user follows the password set link received by "guiusr1@owncloud" using the webUI
+    And the user sets the password to "%regular%" and confirms with "foo" using the webUI
+    Then the user should see a password mismatch message displayed on the webUI
+      """
+      Passwords do not match
+      """
+    Examples:
+      | username | comment               |
+      | guiusr1  | simple user-name      |
+      | a@-_.'b  | complicated user-name |
+
   Scenario Outline: webUI refuses to create users with invalid Email addresses
     When the administrator creates a user with the name "guiusr1" and the email "<email>" without a password using the webUI
     Then notifications should be displayed on the webUI with the text

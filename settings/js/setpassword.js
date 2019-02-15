@@ -5,17 +5,28 @@
 		},
 
 		onClickSetPassword : function(event){
-			event.preventDefault();
 			var passwordObj = $('#password');
-			if (passwordObj.val()){
+			var retypePasswordObj = $('#retypepassword');
+			passwordObj.parent().removeClass('shake');
+			event.preventDefault();
+			if (passwordObj.val() === retypePasswordObj.val()) {
 				$.post(
 					passwordObj.parents('form').attr('action'),
-					{password : passwordObj.val()}
+					{password: passwordObj.val()}
 				).done(function (result) {
 					OCA.UserManagement.SetPassword._resetDone(result);
 				}).fail(function (result) {
 					OCA.UserManagement.SetPassword._onSetPasswordFail(result);
 				});
+			} else {
+				//Password mismatch happened
+				passwordObj.val('');
+				retypePasswordObj.val('');
+				passwordObj.parent().addClass('shake');
+				$('#message').addClass('warning');
+				$('#message').text('Passwords do not match');
+				$('#message').show();
+				passwordObj.focus();
 			}
 		},
 
@@ -59,4 +70,14 @@
 
 $(document).ready(function () {
 	OCA.UserManagement.SetPassword.init();
+	$('#password').keypress(function () {
+		/*
+		 The warning message should be shown only during password mismatch.
+		 Else it should not.
+		 */
+		if (($('#password').val().length >= 0) && ($('#retypepassword').val().length === 0)) {
+			$('#message').removeClass('warning');
+			$('#message').text('');
+		}
+	});
 });
