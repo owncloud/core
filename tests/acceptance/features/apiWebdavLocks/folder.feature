@@ -1,4 +1,4 @@
-@api
+@api @skipOnOcV10.0
 Feature: lock folders
 
   Background:

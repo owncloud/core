@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @smokeTest @public_link_share-feature-required
+@api @TestAlsoOnExternalUserBackend @smokeTest @public_link_share-feature-required @skipOnOcV10.0
 Feature: persistent-locking in case of a public link
 
   Background:
