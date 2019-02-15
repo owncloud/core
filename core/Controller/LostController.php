@@ -259,6 +259,7 @@ class LostController extends Controller {
 	protected function sendNotificationMail($userId) {
 		$user = $this->userManager->get($userId);
 		$email = $user->getEMailAddress();
+		$name = $user->getDisplayName();
 
 		if ($email !== '') {
 			$tmpl = new \OC_Template('core', 'lostpassword/notify');
@@ -268,7 +269,7 @@ class LostController extends Controller {
 
 			try {
 				$message = $this->mailer->createMessage();
-				$message->setTo([$email => $userId]);
+				$message->setTo([$email => $name]);
 				$message->setSubject($this->l10n->t('%s password changed successfully', [$this->defaults->getName()]));
 				$message->setPlainBody($msgAlt);
 				$message->setHtmlBody($msg);
@@ -321,8 +322,9 @@ class LostController extends Controller {
 					return false;
 				case 1:
 					$this->logger->info('User with input as email address found. User: {user}', ['app' => 'core', 'user' => $user]);
-					$email = $users[0]->getEMailAddress();
-					$user = $users[0]->getUID();
+					$userObject = $users[0];
+					$email = $userObject->getEMailAddress();
+					$user = $userObject->getUID();
 					break;
 				default:
 					$this->logger->error('Could not send reset email because the email id is not unique. User: {user}', ['app' => 'core', 'user' => $user]);
@@ -347,10 +349,11 @@ class LostController extends Controller {
 		$tmplAlt = new \OC_Template('core', 'lostpassword/altemail');
 		$tmplAlt->assign('link', $link);
 		$msgAlt = $tmplAlt->fetchPage();
+		$name = $userObject->getDisplayName();
 
 		try {
 			$message = $this->mailer->createMessage();
-			$message->setTo([$email => $user]);
+			$message->setTo([$email => $name]);
 			$message->setSubject($this->l10n->t('%s password reset', [$this->defaults->getName()]));
 			$message->setPlainBody($msgAlt);
 			$message->setHtmlBody($msg);

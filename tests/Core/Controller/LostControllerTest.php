@@ -80,6 +80,11 @@ class LostControllerTest extends TestCase {
 			->method('getEMailAddress')
 			->willReturn('test@example.com');
 
+		$this->existingUser
+			->expects($this->any())
+			->method('getDisplayName')
+			->willReturn('Existing User Name');
+
 		$this->config = $this->getMockBuilder('\OCP\IConfig')
 			->disableOriginalConstructor()->getMock();
 		$this->l10n = $this->getMockBuilder('\OCP\IL10N')
@@ -355,7 +360,7 @@ class LostControllerTest extends TestCase {
 		$message
 			->expects($this->at(0))
 			->method('setTo')
-			->with(['test@example.com' => 'ExistingUser']);
+			->with(['test@example.com' => 'Existing User Name']);
 		$message
 			->expects($this->at(1))
 			->method('setSubject')
@@ -420,7 +425,7 @@ class LostControllerTest extends TestCase {
 		$message
 			->expects($this->at(0))
 			->method('setTo')
-			->with(['test@example.com' => 'ExistingUser']);
+			->with(['test@example.com' => 'Existing User Name']);
 		$message
 			->expects($this->at(1))
 			->method('setSubject')
@@ -503,6 +508,9 @@ class LostControllerTest extends TestCase {
 			->expects($this->once())
 			->method('getEMailAddress')
 			->will($this->returnValue('test@example.com'));
+		$user
+			->method('getDisplayName')
+			->will($this->returnValue('ValidTokenUser'));
 
 		$message = $this->getMockBuilder('\OC\Mail\Message')
 			->disableOriginalConstructor()->getMock();
