@@ -53,9 +53,10 @@ class Enable extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		if ($this->config->getAppValue('core', 'encryption_enabled', 'no') === 'yes') {
+		if ($this->encryptionManager->isEnabled()) {
 			$output->writeln('Encryption is already enabled');
 		} else {
+			// TODO add and use api to enable encryption
 			$this->config->setAppValue('core', 'encryption_enabled', 'yes');
 			$output->writeln('<info>Encryption enabled</info>');
 		}
@@ -65,8 +66,8 @@ class Enable extends Command {
 		if (empty($modules)) {
 			$output->writeln('<error>No encryption module is loaded</error>');
 		} else {
-			$defaultModule = $this->config->getAppValue('core', 'default_encryption_module', null);
-			if ($defaultModule === null) {
+			$defaultModule = $this->encryptionManager->getDefaultEncryptionModuleId();
+			if ($defaultModule === '') {
 				$output->writeln('<error>No default module is set</error>');
 			} elseif (!isset($modules[$defaultModule])) {
 				$output->writeln('<error>The current default module does not exist: ' . $defaultModule . '</error>');
