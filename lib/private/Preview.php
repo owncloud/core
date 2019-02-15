@@ -1256,7 +1256,12 @@ class Preview {
 		if ($userFolder === false) {
 			return;
 		}
-		$node = $userFolder->get($path);
+		if (\strpos($path, '/files_trashbin/') === 0) {
+			$node = $userFolder->getParent()->get($path);
+		} else {
+			$node = $userFolder->get($path);
+		}
+
 		self::addPathToDeleteFileMapper($path, $node);
 		if ($node->getType() === FileInfo::TYPE_FOLDER) {
 			$children = self::getAllChildren($node);
@@ -1324,7 +1329,11 @@ class Preview {
 			if ($userFolder === false) {
 				return;
 			}
-			$node = $userFolder->get($path);
+			if (\strpos($path, '/files_trashbin/') === 0) {
+				$node = $userFolder->getParent()->get($path);
+			} else {
+				$node = $userFolder->get($path);
+			}
 		} else {
 			/** @var FileInfo $node */
 			$node = self::$deleteFileMapper[$path];
