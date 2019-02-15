@@ -13,7 +13,6 @@ Feature: move files
     When the user renames file "data.zip" to "simple-folder/data.zip" using the webUI
     Then near file "data.zip" a tooltip with the text 'File name cannot contain "/".' should be displayed on the webUI
 
-  @skipOnFIREFOX
   @smokeTest
   Scenario: move a file into a folder
     When the user moves file "data.zip" into folder "simple-empty-folder" using the webUI
@@ -28,7 +27,6 @@ Feature: move files
     Then file "strängé filename (duplicate #2 &).txt" should not be listed on the webUI
     But file "strängé filename (duplicate #2 &).txt" should be listed in folder "strängé नेपाली folder empty" on the webUI
 
-  @skipOnFIREFOX
   Scenario: move a file into a folder where a file with the same name already exists
     When the user moves file "data.zip" into folder "simple-folder" using the webUI
     And the user moves file "data.zip" into folder "strängé नेपाली folder" using the webUI
@@ -44,7 +42,6 @@ Feature: move files
       | Could not move "strängé filename (duplicate #2 &).txt", target exists |
     And file "strängé filename (duplicate #2 &).txt" should be listed on the webUI
 
-  @skipOnFIREFOX
   @smokeTest
   Scenario: Move multiple files at once
     When the user batch moves these files into folder "simple-empty-folder" using the webUI
@@ -83,7 +80,6 @@ Feature: move files
       | question?       | question?           |
       | &and#hash       | &and#hash           |
 
-  @skipOnFIREFOX
   Scenario: move files on a public share
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
