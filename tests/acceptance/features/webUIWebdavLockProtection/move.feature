@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews
+@webUI @insulated @disablePreviews @skipOnOcV10.0
 Feature: Locks
   As a user
   I would like to be able to use locks control moving and renaming of files and folders
