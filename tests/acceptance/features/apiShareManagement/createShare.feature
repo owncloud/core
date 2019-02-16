@@ -379,7 +379,7 @@ Feature: sharing
     #  | 1               | 400             | 400              |
       | 2               | 400             | 400              |
 
-  @issue-33733
+  @issue-33733 @skipOnLDAP @user_ldap-issue-378
   Scenario Outline: user who is excluded from sharing tries to share a file with another user
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes
@@ -421,7 +421,7 @@ Feature: sharing
       | 2               | 200             | 200              |
     #  | 2               | 403             | 403              |
 
-  @issue-33733
+  @issue-33733 @skipOnLDAP @user_ldap-issue-378
   Scenario Outline: user who is excluded from sharing tries to share a folder with another user
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes
