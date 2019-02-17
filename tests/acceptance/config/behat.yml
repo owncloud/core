@@ -177,6 +177,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - TransferOwnershipContext:
 
     cliProvisioning:
       paths:
