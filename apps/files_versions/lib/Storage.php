@@ -236,7 +236,7 @@ class Storage {
 			$versions = self::getVersions($uid, $filename);
 			if (!empty($versions)) {
 				foreach ($versions as $v) {
-					$hookData = 						[
+					$hookData = [
 						'user' => $uid,
 						'path' => $path . $v['version'],
 						'original_path' => $path,
