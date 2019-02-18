@@ -52,7 +52,7 @@ Feature: admin general settings
     And the administrator sets the value of cron job to "webcron" using the webUI
     Then the background jobs mode should be "webcron"
 
-  @smokeTest
+  @smokeTest @skipOnDockerContainerTesting
   Scenario: administrator changes the log level
     Given the administrator has invoked occ command "config:system:set loglevel --value 0"
     When the user reloads the current page of the webUI

@@ -59,7 +59,7 @@ Feature: add users
       Access it:
       """
 
-  @smokeTest
+  @smokeTest @skipOnOcV10.0 @skipOnOcV10.1
   Scenario Outline: user sets his own password after being created with an Email address only
     When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
