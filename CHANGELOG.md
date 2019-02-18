@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Extend repair command to be able to list repair steps and run them individually - [#34499](https://github.com/owncloud/core/issues/34499)
 - Added CORS headers for many existing API calls, required for Phoenix  - [#34476](https://github.com/owncloud/core/issues/34476)
 - Encryption now supports working with a Hardware Security Module - [#34527](https://github.com/owncloud/core/issues/34527)
+- Command for first run wizard to reset for all users - [firstrunwizard/#83](https://github.com/owncloud/firstrunwizard/pull/83)
 
 ### Changed
 
