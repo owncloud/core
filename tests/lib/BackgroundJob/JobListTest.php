@@ -255,7 +255,10 @@ class JobListTest extends TestCase {
 
 	private function addWrongJob() {
 		$query = $this->connection->getQueryBuilder();
-		$query->insert('jobs')->values(['class' => $query->expr()->literal('wrong job title')]);
+		$query->insert('jobs')->values([
+			'class' => $query->expr()->literal('wrong job title'),
+			'argument' => $query->expr()->literal('[]'),
+		]);
 		$query->execute();
 	}
 
