@@ -24,7 +24,6 @@
 
 namespace OCA\Encryption\Users;
 
-
 use OCA\Encryption\Crypto\Crypt;
 use OCA\Encryption\KeyManager;
 use OCP\ILogger;
@@ -48,7 +47,6 @@ class Setup {
 	 */
 	private $user;
 
-
 	/**
 	 * @param ILogger $logger
 	 * @param IUserSession $userSession
@@ -63,7 +61,7 @@ class Setup {
 		$this->user = $userSession && $userSession->isLoggedIn() ? $userSession->getUser()->getUID() : false;
 		$this->crypt = $crypt;
 		$this->keyManager = $keyManager;
- 	}
+	}
 
 	/**
 	 * @param string $uid user id
@@ -73,7 +71,7 @@ class Setup {
 	public function setupUser($uid, $password) {
 		if (!$this->keyManager->userHasKeys($uid)) {
 			return $this->keyManager->storeKeyPair($uid, $password,
-				$this->crypt->createKeyPair());
+				$this->crypt->createKeyPair("oc:uid:$uid"));
 		}
 		return true;
 	}
