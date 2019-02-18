@@ -331,7 +331,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function openFile($name, Session $session) {
 		$fileRow = $this->findFileRowByName($name, $session);
-		$fileRow->openFileFolder();
+		$fileRow->openFileFolder($session);
 	}
 
 	/**
