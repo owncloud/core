@@ -2459,4 +2459,27 @@ trait BasicStructure {
 
 		HttpRequestHelper::post($fullUrl, $adminUsername, $adminPassword);
 	}
+
+	/**
+	 * runs a function on every server (LOCAL & REMOTE).
+	 * The callable function receives the server (LOCAL or REMOTE) as first argument
+	 *
+	 * @param callable $callback
+	 *
+	 * @return mixed[]
+	 */
+	public function runFunctionOnEveryServer($callback) {
+		$previousServer = $this->getCurrentServer();
+		$result = [];
+		foreach (['LOCAL','REMOTE'] as $server) {
+			$this->usingServer($server);
+			if (($server === 'LOCAL')
+				|| $this->federatedServerExists()
+			) {
+				$result[$server] = \call_user_func($callback, $server);
+			}
+		}
+		$this->usingServer($previousServer);
+		return $result;
+	}
 }
