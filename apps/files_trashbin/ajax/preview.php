@@ -52,12 +52,12 @@ try {
 	/** @var \OCP\Files\Folder $trashFolder */
 	$trashFolder = $userFolder->getParent()->get('files_trashbin/files');
 	/** @var \OCP\Files\File | \OCP\Files\IPreviewNode $file */
-	$file = $trashFolder->get($file);
+	$fileNode = $trashFolder->get($file);
 
-	if ($file->getType() === \OCP\Files\FileInfo::TYPE_FOLDER) {
+	if ($fileNode->getType() === \OCP\Files\FileInfo::TYPE_FOLDER) {
 		$mimetype = 'httpd/unix-directory';
 	} else {
-		$pathInfo = \pathinfo(\ltrim($file->getName(), '/'));
+		$pathInfo = \pathinfo(\ltrim($file, '/'));
 		$fileName = $pathInfo['basename'];
 		// if in root dir
 		if ($pathInfo['dirname'] === '.') {
@@ -70,7 +70,7 @@ try {
 		$mimetype = \OC::$server->getMimeTypeDetector()->detectPath($fileName);
 	}
 
-	$image = $file->getThumbnail([
+	$image = $fileNode->getThumbnail([
 		'x' => $maxX,
 		'y' => $maxY,
 		'scalingup' => $scalingUp,
