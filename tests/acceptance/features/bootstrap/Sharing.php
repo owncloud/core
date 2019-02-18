@@ -85,16 +85,14 @@ trait Sharing {
 	 * @return void
 	 */
 	private function waitToCreateShare() {
-		$time = \time();
 		if (($this->localLastShareTime !== null)
-			&& (($time - $this->localLastShareTime) < 1)
+			&& ((\microtime(true) - $this->localLastShareTime) < 1)
 		) {
 			// prevent creating two shares with the same "stime" which is
 			// based on seconds, this affects share merging order and could
 			// affect expected test result order
 			\sleep(1);
 		}
-		$this->localLastShareTime = $time;
 	}
 
 	/**
@@ -666,6 +664,7 @@ trait Sharing {
 			$this->sharingApiVersion
 		);
 		$this->lastShareData = $this->getResponseXml();
+		$this->localLastShareTime = \microtime(true);
 	}
 
 	/**
