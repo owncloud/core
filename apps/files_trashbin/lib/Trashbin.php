@@ -595,7 +595,7 @@ class Trashbin {
 
 		// Single-File Hooks
 		foreach ($filePaths as $path) {
-			self::emitTrashbinPreDelete($path);
+			self::emitTrashbinPreDelete($user, $path);
 		}
 
 		// actual file deletion
@@ -608,7 +608,7 @@ class Trashbin {
 
 		// Single-File Hooks
 		foreach ($filePaths as $path) {
-			self::emitTrashbinPostDelete($path);
+			self::emitTrashbinPostDelete($user, $path);
 		}
 
 		$view->mkdir('files_trashbin');
@@ -619,18 +619,30 @@ class Trashbin {
 
 	/**
 	 * wrapper function to emit the 'preDelete' hook of \OCP\Trashbin before a file is deleted
+	 *
+	 * @param string $uid
 	 * @param string $path
 	 */
-	protected static function emitTrashbinPreDelete($path) {
-		\OC_Hook::emit('\OCP\Trashbin', 'preDelete', ['path' => $path]);
+	protected static function emitTrashbinPreDelete($uid, $path) {
+		\OC_Hook::emit(
+			'\OCP\Trashbin',
+			'preDelete',
+			['path' => $path, 'user'=> $uid]
+		);
 	}
 
 	/**
 	 * wrapper function to emit the 'delete' hook of \OCP\Trashbin after a file has been deleted
+	 *
+	 * @param string $uid
 	 * @param string $path
 	 */
-	protected static function emitTrashbinPostDelete($path) {
-		\OC_Hook::emit('\OCP\Trashbin', 'delete', ['path' => $path]);
+	protected static function emitTrashbinPostDelete($uid, $path) {
+		\OC_Hook::emit(
+			'\OCP\Trashbin',
+			'delete',
+			['path' => $path, 'user'=> $uid]
+		);
 	}
 
 	/**
@@ -661,9 +673,9 @@ class Trashbin {
 		} else {
 			$size += $view->filesize('/files_trashbin/files/' . $file);
 		}
-		self::emitTrashbinPreDelete('/files_trashbin/files/' . $file);
+		self::emitTrashbinPreDelete($user, "/files_trashbin/files/$file");
 		$view->unlink('/files_trashbin/files/' . $file);
-		self::emitTrashbinPostDelete('/files_trashbin/files/' . $file);
+		self::emitTrashbinPostDelete($user, "/files_trashbin/files/$file");
 
 		return $size;
 	}

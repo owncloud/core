@@ -33,7 +33,6 @@ namespace OC;
 
 use OC\Files\Filesystem;
 use OC\Files\View;
-use OCP\Files\File;
 use OCP\Files\FileInfo;
 use OCP\Files\Folder;
 use OCP\Files\Node;
@@ -62,7 +61,7 @@ class Preview {
 	private $userView = null;
 
 	//vars
-	/** @var File */
+	/** @var Node | null */
 	private $file;
 	private $maxX;
 	private $maxY;
@@ -152,9 +151,9 @@ class Preview {
 	}
 
 	/**
-	 * returns the path of the file you want a thumbnail from
+	 * returns the node you want a thumbnail from
 	 *
-	 * @return File
+	 * @return Node | null
 	 */
 	public function getFile() {
 		return $this->file;
@@ -221,15 +220,6 @@ class Preview {
 	 */
 	public function getConfigMaxY() {
 		return $this->configMaxHeight;
-	}
-
-	/**
-	 * Returns the FileInfo object associated with the file to preview
-	 *
-	 * @return false|Files\FileInfo|\OCP\Files\FileInfo
-	 */
-	protected function getFileInfo() {
-		return $this->file;
 	}
 
 	/**
@@ -367,7 +357,7 @@ class Preview {
 			return false;
 		}
 
-		if (!$this->getFileInfo() instanceof FileInfo) {
+		if (!$this->getFile() instanceof FileInfo) {
 			Util::writeLog('core', 'File:"' . $file->getPath() . '" not found', Util::DEBUG);
 
 			return false;
@@ -379,16 +369,28 @@ class Preview {
 	/**
 	 * Deletes the preview of a file with specific width and height
 	 *
-	 * This should never delete the max preview, use deleteAllPreviews() instead
+	 * This should never delete versions preview, use deleteAllPreviews() instead
+	 *
+	 * @param bool $keepMax - keep max size preview
 	 *
 	 * @return bool
 	 */
-	public function deletePreview() {
-		$fileInfo = $this->getFileInfo();
+	public function deletePreview($keepMax = true) {
+		$fileInfo = $this->getFile();
 		if ($fileInfo !== null && $fileInfo !== false) {
-			$previewPath = $this->buildCachePath();
-			if (!\strpos($previewPath, 'max')) {
-				return $this->userView->unlink($previewPath);
+			if ($keepMax === true) {
+				$previewPath = $this->buildCachePath();
+				if (!\strpos($previewPath, 'max')) {
+					return $this->userView->unlink($previewPath);
+				}
+			} else {
+				$previewPath = $this->getPreviewPath();
+				foreach ($this->userView->getDirectoryContent($previewPath) as $fileInfo) {
+					if ($fileInfo->getType() === FileInfo::TYPE_FILE) {
+						$this->userView->unlink("$previewPath/{$fileInfo->getName()}");
+					}
+				}
+				return true;
 			}
 		}
 
@@ -396,15 +398,17 @@ class Preview {
 	}
 
 	/**
-	 * Deletes all previews of a file
+	 * Deletes all previews of a file including version previews
+	 *
+	 * @param int|null $versionId (optional) - delete all previews of the specified versionId
 	 */
-	public function deleteAllPreviews() {
+	public function deleteAllPreviews($versionId = null) {
 		$thumbnailMount = $this->userView->getMount($this->getThumbnailsFolder());
 		$propagator = $thumbnailMount->getStorage()->getPropagator();
 		$propagator->beginBatch();
 
 		$toDelete = $this->getChildren();
-		$toDelete[] = $this->getFileInfo();
+		$toDelete[] = $this->getFile();
 
 		foreach ($toDelete as $delete) {
 			if ($delete instanceof FileInfo) {
@@ -415,6 +419,10 @@ class Preview {
 				// .ocTransferId*.part file from chunked file upload.
 				if (!empty($fileId)) {
 					$previewPath = $this->getPreviewPath($fileId);
+					if ($versionId !== null) {
+						$versionId = \intval($versionId);
+						$previewPath = "$previewPath/$versionId";
+					}
 					$this->userView->rmdir($previewPath);
 				}
 			}
@@ -435,7 +443,7 @@ class Preview {
 	 * @return string|false path to the cached preview if it exists or false
 	 */
 	public function isCached() {
-		$fileId = $this->getFileInfo()->getId();
+		$fileId = $this->getFile()->getId();
 		if ($fileId === null) {
 			return false;
 		}
@@ -746,7 +754,7 @@ class Preview {
 		}
 
 		$this->preview = null;
-		$fileInfo = $this->getFileInfo();
+		$fileInfo = $this->getFile();
 		if ($fileInfo === null || $fileInfo === false) {
 			return new \OC_Image();
 		}
@@ -1071,14 +1079,15 @@ class Preview {
 	/**
 	 * Returns the path to the folder where the previews are stored, identified by the fileId
 	 *
+	 * @param int $fileId (optional)
+	 *
 	 * @return string
 	 */
 	private function getPreviewPath($fileId = null) {
 		if ($fileId === null) {
-			$fileId = $this->getFileInfo()->getId();
+			$fileId = $this->getFile()->getId();
 			if ($this->versionId !== null) {
-				$fileId .= '/';
-				$fileId .= $this->versionId;
+				$fileId .= "/{$this->versionId}";
 			}
 		}
 		return $this->getThumbnailsFolder() . '/' . $fileId . '/';
@@ -1220,7 +1229,10 @@ class Preview {
 	 * @param array $args
 	 */
 	public static function post_write($args) {
-		self::post_delete($args, 'files/');
+		self::post_delete(
+			\array_merge($args, ['keep_versions' => true]),
+			'files/'
+		);
 	}
 
 	/**
@@ -1235,22 +1247,21 @@ class Preview {
 	 * @param string $prefix
 	 */
 	public static function prepare_delete(array $args, $prefix = '') {
-		$path = Files\Filesystem::normalizePath($args['path']);
-		$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
-		if ($user === false) {
-			try {
-				$user = Filesystem::getOwner($path);
-			} catch (NotFoundException $e) {
-				return;
-			}
+		// override path for versions
+		if (isset($args['original_path'])) {
+			$args['path'] = $args['original_path'];
 		}
-
-		$userFolder = \OC::$server->getUserFolder($user);
-		if ($userFolder === null) {
+		$path = Files\Filesystem::normalizePath($args['path']);
+		$userFolder = self::getUserFolder($args);
+		if ($userFolder === false) {
 			return;
 		}
+		if (\strpos($path, '/files_trashbin/') === 0) {
+			$node = $userFolder->getParent()->get($path);
+		} else {
+			$node = $userFolder->get($path);
+		}
 
-		$node = $userFolder->get($path);
 		self::addPathToDeleteFileMapper($path, $node);
 		if ($node->getType() === FileInfo::TYPE_FOLDER) {
 			$children = self::getAllChildren($node);
@@ -1300,6 +1311,9 @@ class Preview {
 	 * @param array $args
 	 */
 	public static function post_delete_versions($args) {
+		if (isset($args['original_path'])) {
+			$args['path'] = $args['original_path'];
+		}
 		self::post_delete($args, 'files/');
 	}
 
@@ -1309,28 +1323,48 @@ class Preview {
 	 */
 	public static function post_delete($args, $prefix = '') {
 		$path = Files\Filesystem::normalizePath($args['path']);
-		if (!isset(self::$deleteFileMapper[$path])) {
-			$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
-			if ($user === false) {
-				try {
-					$user = Filesystem::getOwner($path);
-				} catch (NotFoundException $e) {
-					return;
-				}
-			}
 
-			$userFolder = \OC::$server->getUserFolder($user);
-			if ($userFolder === null) {
+		if (!isset(self::$deleteFileMapper[$path])) {
+			$userFolder = self::getUserFolder($args);
+			if ($userFolder === false) {
 				return;
 			}
-
-			$node = $userFolder->get($path);
+			if (\strpos($path, '/files_trashbin/') === 0) {
+				$node = $userFolder->getParent()->get($path);
+			} else {
+				$node = $userFolder->get($path);
+			}
 		} else {
 			/** @var FileInfo $node */
 			$node = self::$deleteFileMapper[$path];
 		}
 
 		$preview = new Preview($node->getOwner()->getUID(), $prefix, $node);
-		$preview->deleteAllPreviews();
+		$versionId = isset($args['deleted_revision']) ? $args['deleted_revision'] : null;
+		if (isset($args['keep_versions'])) {
+			// PostWrite hook - delete main preview keeping versions previews
+			$preview->deletePreview(false);
+		} else {
+			// "true" PostDelete
+			$preview->deleteAllPreviews($versionId);
+		}
+	}
+
+	/**
+	 * @param string[] $args
+	 * @return Folder|bool
+	 */
+	private static function getUserFolder($args) {
+		$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
+		if ($user === false) {
+			try {
+				$path = Files\Filesystem::normalizePath($args['path']);
+				$user = Filesystem::getOwner($path);
+			} catch (NotFoundException $e) {
+				return false;
+			}
+		}
+		$userFolder = \OC::$server->getUserFolder($user);
+		return $userFolder === null ? false : $userFolder;
 	}
 }
