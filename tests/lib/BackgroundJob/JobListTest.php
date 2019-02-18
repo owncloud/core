@@ -262,7 +262,8 @@ class JobListTest extends TestCase {
 	public function testUnknownJobLogsException() {
 		$this->addWrongJob();
 		$this->logger->expects($this->once())->method('logException');
-		$this->instance->listJobs(function(){});
+		$this->instance->listJobs(function () {
+		});
 		$this->clearJobsList();
 	}
 }
