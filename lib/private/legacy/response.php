@@ -298,7 +298,8 @@ class OC_Response {
 		}
 		if ($isCorsRequest) {
 			// TODO: infer allowed verbs from existing known routes
-			$allHeaders['Access-Control-Allow-Headers'] = ['authorization', 'OCS-APIREQUEST', 'Origin', 'X-Requested-With', 'Content-Type', 'Access-Control-Allow-Origin', 'X-Request-ID'];
+			$allHeaders['Access-Control-Allow-Headers'] = self::getAllowedCorsHeaders($config);
+			$allHeaders['Access-Control-Expose-Headers'] = self::getExposeCorsHeaders();
 			$allHeaders['Access-Control-Allow-Origin'] = [$domain];
 			$allHeaders['Access-Control-Allow-Methods'] =['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE', 'MKCOL', 'PROPFIND', 'PATCH', 'PROPPATCH', 'REPORT'];
 
@@ -326,11 +327,12 @@ class OC_Response {
 	 *     "Access-Control-Allow-Methods": ["a", "b", "c"]
 	 * ]
 	 *
+	 * @param \OCP\IConfig|null $config
 	 * @return Sabre\HTTP\ResponseInterface $response
 	 */
-	public static function setOptionsRequestHeaders($response, $headers = []) {
+	public static function setOptionsRequestHeaders($response, $headers = [], \OCP\IConfig $config = null) {
 		// TODO: infer allowed verbs from existing known routes
-		$allHeaders['Access-Control-Allow-Headers'] = ['authorization', 'OCS-APIREQUEST', 'Origin', 'X-Requested-With', 'Content-Type', 'Access-Control-Allow-Origin', 'X-Request-ID'];
+		$allHeaders['Access-Control-Allow-Headers'] = self::getAllowedCorsHeaders($config);
 		$allHeaders['Access-Control-Allow-Origin'] = ['*'];
 		$allHeaders['Access-Control-Allow-Methods'] =['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE', 'MKCOL', 'PROPFIND', 'PATCH', 'PROPPATCH', 'REPORT'];
 
@@ -345,5 +347,95 @@ class OC_Response {
 		}
 
 		return $response;
+	}
+
+	/**
+	 * These are the header which a browser can access from javascript code.
+	 * Simple headers are always accessible.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers
+	 *
+	 * @return array
+	 */
+	private static function getExposeCorsHeaders() {
+		return [
+			'Content-Location',
+			'DAV',
+			'ETag',
+			'Link',
+			'Lock-Token',
+			'OC-ETag',
+			'OC-Checksum',
+			'OC-FileId',
+			'OC-JobStatus-Location',
+			'Vary',
+			'Webdav-Location',
+			'X-Sabre-Status',
+		];
+	}
+
+	/**
+	 * These are the headers the browser is allowed to ask for in a CORS request.
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers
+	 *
+	 * @param \OCP\IConfig $config
+	 * @return array|mixed
+	 */
+	private static function getAllowedCorsHeaders(\OCP\IConfig $config = null) {
+		if ($config === null) {
+			$config = \OC::$server->getConfig();
+		}
+		$allowedDefaultHeaders = [
+			// own headers
+			'OC-Checksum',
+			'OC-Total-Length',
+			'OCS-APIREQUEST',
+			'X-OC-Mtime',
+			// as used in sabre
+			'Accept',
+			'Authorization',
+			'Brief',
+			'Content-Length',
+			'Content-Range',
+			'Content-Type',
+			'Date',
+			'Depth',
+			'Destination',
+			'Host',
+			'If',
+			'If-Match',
+			'If-Modified-Since',
+			'If-None-Match',
+			'If-Range',
+			'If-Unmodified-Since',
+			'Location',
+			'Lock-Token',
+			'Overwrite',
+			'Prefer',
+			'Range',
+			'Schedule-Reply',
+			'Timeout',
+			'User-Agent',
+			'X-Expected-Entity-Length',
+			// generally used headers in core
+			'Accept-Language',
+			'Access-Control-Request-Method',
+			'Access-Control-Allow-Origin',
+			'ETag',
+			'OC-Autorename',
+			'OC-CalDav-Import',
+			'OC-Chunked',
+			'OC-Etag',
+			'OC-FileId',
+			'OC-LazyOps',
+			'OC-Total-File-Length',
+			'OC-Total-Length',
+			'Origin',
+			'X-Request-ID',
+			'X-Requested-With'
+		];
+		$corsAllowedHeaders = $config->getSystemValue('cors.allowed-headers', []);
+		$corsAllowedHeaders = \array_merge($corsAllowedHeaders, $allowedDefaultHeaders);
+		$corsAllowedHeaders = \array_unique(\array_values($corsAllowedHeaders));
+		return $corsAllowedHeaders;
 	}
 }

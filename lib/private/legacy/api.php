@@ -184,10 +184,14 @@ class OC_API {
 
 		// If CORS is set to active for some method, try to add CORS headers
 		if (self::$actions[$name][0]['cors'] &&
-			\OC::$server->getUserSession()->getUser() !== null &&
 			\OC::$server->getRequest()->getHeader('Origin') !== null) {
 			$requesterDomain = \OC::$server->getRequest()->getHeader('Origin');
-			$userId = \OC::$server->getUserSession()->getUser()->getUID();
+
+			// unauthenticated request shall add cors headers as well
+			$userId = null;
+			if (\OC::$server->getUserSession()->getUser() !== null) {
+				$userId = \OC::$server->getUserSession()->getUser()->getUID();
+			}
 			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain);
 			foreach ($headers as $key => $value) {
 				$response->addHeader($key, \implode(',', $value));

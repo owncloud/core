@@ -31,7 +31,7 @@ class CORSMiddlewareTest extends \Test\TestCase {
 	private $reflector;
 	/** @var Session */
 	private $session;
-	/** @var IConfig */
+	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject*/
 	private $config;
 	/** @var IUserSession */
 	private $fakeSession;
@@ -68,6 +68,7 @@ class CORSMiddlewareTest extends \Test\TestCase {
 	 * @CORS
 	 */
 	public function testSetCORSAPIHeader() {
+		$this->config->method('getSystemValue')->willReturn([]);
 		$request = new Request(
 			[
 				'server' => [
@@ -179,6 +180,7 @@ class CORSMiddlewareTest extends \Test\TestCase {
 	 * @expectedException \OC\AppFramework\Middleware\Security\Exceptions\SecurityException
 	 */
 	public function testCorsIgnoredIfWithCredentialsHeaderPresent() {
+		$this->config->method('getSystemValue')->willReturn([]);
 		$request = new Request(
 			[
 				'server' => [

@@ -58,8 +58,6 @@ class CorsPlugin extends ServerPlugin {
 
 	private function getExtraHeaders(RequestInterface $request) {
 		if ($this->extraHeaders === null) {
-			// TODO: design a way to have plugins provide these
-			$this->extraHeaders['Access-Control-Allow-Headers'] = ['X-OC-Mtime', 'OC-Checksum', 'OC-Total-Length', 'Depth', 'Destination', 'Overwrite'];
 			if ($this->userSession->getUser() === null) {
 				$this->extraHeaders['Access-Control-Allow-Methods'] = [
 					'OPTIONS',
@@ -118,9 +116,14 @@ class CorsPlugin extends ServerPlugin {
 	 * @return void
 	 */
 	public function setCorsHeaders(RequestInterface $request, ResponseInterface $response) {
-		if ($request->getHeader('origin') !== null && $this->userSession->getUser() !== null) {
+		if ($request->getHeader('origin') !== null) {
 			$requesterDomain = $request->getHeader('origin');
-			$userId = $this->userSession->getUser()->getUID();
+			// unauthenticated request shall add cors headers as well
+			$userId = null;
+			if ($this->userSession->getUser() !== null) {
+				$userId = $this->userSession->getUser()->getUID();
+			}
+
 			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, null, $this->getExtraHeaders($request));
 			foreach ($headers as $key => $value) {
 				$response->addHeader($key, \implode(',', $value));
