@@ -113,7 +113,9 @@ trait CommandLine {
 		}
 
 		$args[] = '--no-ansi';
-
+		if ($baseUrl === null) {
+			$baseUrl = $this->getBaseUrl();
+		}
 		return SetupHelper::runOcc(
 			$args,
 			$adminUsername,
@@ -186,6 +188,9 @@ trait CommandLine {
 		$baseUrl = null,
 		$ocPath = null
 	) {
+		if ($baseUrl === null) {
+			$baseUrl = $this->getBaseUrl();
+		}
 		return $this->getSystemConfig(
 			$key,
 			$output,
@@ -220,7 +225,9 @@ trait CommandLine {
 		$args[] = $key;
 
 		$args[] = '--no-ansi';
-
+		if ($baseUrl === null) {
+			$baseUrl = $this->getBaseUrl();
+		}
 		return SetupHelper::runOcc(
 			$args,
 			$adminUsername,
