@@ -980,6 +980,7 @@ class OC_App {
 		foreach ($jobs as $job) {
 			$queue->add($job);
 		}
+		// TODO remove jobs that no longer exist in this app version
 	}
 
 	/**
