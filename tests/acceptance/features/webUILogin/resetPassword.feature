@@ -24,7 +24,7 @@ Feature: reset the password
       Use the following link to reset your password: <a href=
       """
 
-  @skipOnEncryption
+  @skipOnEncryption @skipOnOcV10.0 @skipOnOcV10.1
   @smokeTest
   Scenario: reset password for the ordinary (no encryption) case
     When the user requests the password reset link using the webUI
