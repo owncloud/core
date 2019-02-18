@@ -149,6 +149,15 @@ class FileHelperTest extends \Test\TestCase {
 		);
 	}
 
+	/**
+	 * Traverse an array as if it is a directory tree
+	 * treating 'children' key as directory items
+	 *
+	 * @param string $path
+	 * @param string[][] $tree
+	 *
+	 * @return string[] an array that matches given path or an empty array
+	 */
 	protected function descendByPath($path, $tree) {
 		$dirName = \trim($path, '/');
 		$path = \explode('/', $dirName);
