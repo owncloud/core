@@ -398,10 +398,13 @@ class FileRow extends OwncloudPage {
 	/**
 	 * opens the current file or folder by clicking on the link
 	 *
+	 * @param Session $session
+	 *
 	 * @return void
 	 */
-	public function openFileFolder() {
+	public function openFileFolder(Session $session) {
 		$this->findFileLink()->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 	
 	/**
