@@ -78,20 +78,13 @@ Feature: sharing
     And as "user1" folder "/merge-test-inside-twogroups-perms (2)" should not exist
     And as "user1" folder "/merge-test-inside-twogroups-perms (3)" should not exist
 
-  @issue-34235 @skipOnLDAP
   Scenario: Merging shares for recipient when shared from outside with group then user and recipient renames in between
     Given user "user0" has created folder "/merge-test-outside-groups-renamebeforesecondshare"
     When user "user0" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with group "grp1" using the sharing API
     And user "user1" moves folder "/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the WebDAV API
     And user "user0" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with user "user1" using the sharing API
-    # issue-34235 bug is that usually user1 continues to see the share with the correct renamed name,
-    # but sometimes reverts to seeing the share with the original name.
-    # when the bug is fixed, delete the following test step, and uncomment the test steps below it
-    Then as "user1" exactly one of these folders should exist
-      | /merge-test-outside-groups-renamebeforesecondshare         |
-      | /merge-test-outside-groups-renamebeforesecondshare-renamed |
-    #Then as user "user1" folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" should contain a property "oc:permissions" with value "SRDNVCK"
-    #And as "user1" folder "/merge-test-outside-groups-renamebeforesecondshare" should not exist
+    Then as user "user1" folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" should contain a property "oc:permissions" with value "SRDNVCK"
+    And as "user1" folder "/merge-test-outside-groups-renamebeforesecondshare" should not exist
 
   @skipOnLDAP @user_ldap-issue-274
   Scenario: Merging shares for recipient when shared from outside with user then group and recipient renames in between
