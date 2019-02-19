@@ -24,6 +24,7 @@
 namespace OCA\DAV\Tests\unit\SystemTag;
 
 use OC\SystemTag\SystemTag;
+use OCP\IUser;
 use OCP\SystemTag\TagNotFoundException;
 
 class SystemTagsByIdCollectionTest extends \Test\TestCase {
@@ -141,8 +142,8 @@ class SystemTagsByIdCollectionTest extends \Test\TestCase {
 	}
 
 	public function testGetChildrenAdmin() {
-		$tag1 = new SystemTag(123, 'One', true, false);
-		$tag2 = new SystemTag(456, 'Two', true, true);
+		$tag1 = new SystemTag(123, 'One', true, false, false);
+		$tag2 = new SystemTag(456, 'Two', true, true, true);
 
 		$this->tagManager->expects($this->once())
 			->method('getAllTags')
@@ -160,8 +161,8 @@ class SystemTagsByIdCollectionTest extends \Test\TestCase {
 	}
 
 	public function testGetChildrenNonAdmin() {
-		$tag1 = new SystemTag(123, 'One', true, false);
-		$tag2 = new SystemTag(456, 'Two', true, true);
+		$tag1 = new SystemTag(123, 'One', true, false, false);
+		$tag2 = new SystemTag(456, 'Two', true, true, true);
 
 		$this->tagManager->expects($this->once())
 			->method('getAllTags')
@@ -176,6 +177,65 @@ class SystemTagsByIdCollectionTest extends \Test\TestCase {
 		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[1]);
 		$this->assertEquals($tag1, $children[0]->getSystemTag());
 		$this->assertEquals($tag2, $children[1]->getSystemTag());
+	}
+
+	/**
+	 * This test proves getChildren would provide staticTags if the user has the
+	 * privilege to see the static tag
+	 */
+	public function testGetChildrenWithStaticTagsAndOtherTags() {
+		$visibleTag = new SystemTag(123, 'VisibleTag', true, true, true);
+		$restrictTag = new SystemTag(456, 'RestrictTag', true, false, false);
+		$staticTag = new SystemTag(789, 'StaticTag', true, false, true);
+
+		$this->tagManager->method('getAllTags')
+			->with(true)
+			->will($this->returnValue([$visibleTag, $restrictTag, $staticTag]));
+
+		$user = $this->createMock(IUser::class);
+
+		$this->tagManager->method('canUserUseStaticTagInGroup')
+			->with($staticTag, $user)
+			->willReturn(true);
+
+		$children = $this->getNode(false)->getChildren();
+
+		$this->assertCount(3, $children);
+		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[0]);
+		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[1]);
+		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[2]);
+		$this->assertEquals($visibleTag, $children[0]->getSystemTag());
+		$this->assertEquals($restrictTag, $children[1]->getSystemTag());
+		$this->assertEquals($staticTag, $children[2]->getSystemTag());
+	}
+
+	/**
+	 * This test proves getChildren would prohibit staticTags if the user doesn't
+	 * have the privilege to see the static tag
+	 */
+	public function testGetChildrenWithoutStaticTagsAndOtherTags() {
+		$visibleTag = new SystemTag(123, 'VisibleTag', true, true, true);
+		$restrictTag = new SystemTag(456, 'RestrictTag', true, false, false);
+		$staticTag = new SystemTag(789, 'StaticTag', true, false, true);
+
+		$this->tagManager->method('getAllTags')
+			->with(true)
+			->will($this->returnValue([$visibleTag, $restrictTag]));
+
+		$user = $this->createMock(IUser::class);
+
+		$this->tagManager->method('canUserUseStaticTagInGroup')
+			->with($staticTag, $user)
+			->willReturn(false);
+
+		$children = $this->getNode(false)->getChildren();
+
+		$this->assertCount(2, $children);
+
+		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[0]);
+		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[1]);
+		$this->assertEquals($visibleTag, $children[0]->getSystemTag());
+		$this->assertEquals($restrictTag, $children[1]->getSystemTag());
 	}
 
 	public function testGetChildrenEmpty() {
