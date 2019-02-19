@@ -87,9 +87,7 @@ class SyncService {
 		$backendClass = \get_class($backend);
 		$this->mapper->callForAllUsers(function (Account $a) use (&$removed, &$reappeared, $backend, $backendClass, $callback) {
 			// Check if the backend matches handles this user
-			list($wasRemoved, $didReappear) = $this->checkIfAccountReappeared($a, $backend, $backendClass);
-			$removed = \array_merge($removed, $wasRemoved);
-			$reappeared = \array_merge($reappeared, $didReappear);
+			$this->checkIfAccountReappeared($a, $removed, $reappeared, $backend, $backendClass);
 			$callback($a);
 		}, '', false);
 		return [$removed, $reappeared];
@@ -98,13 +96,13 @@ class SyncService {
 	/**
 	 * Checks a backend to see if a user reappeared relative to the accounts table
 	 * @param Account $a
+	 * @param array $removed
+	 * @param array $reappeared
 	 * @param UserInterface $backend
 	 * @param $backendClass
-	 * @return array
+	 * @return void
 	 */
-	private function checkIfAccountReappeared(Account $a, UserInterface $backend, $backendClass) {
-		$removed = [];
-		$reappeared = [];
+	private function checkIfAccountReappeared(Account $a, array &$removed, array &$reappeared, UserInterface $backend, $backendClass) {
 		if ($a->getBackend() === $backendClass) {
 			// Does the backend have this user still
 			if ($backend->userExists($a->getUserId())) {
@@ -117,7 +115,6 @@ class SyncService {
 				$removed[$a->getUserId()] = $a;
 			}
 		}
-		return [$removed, $reappeared];
 	}
 
 	/**
