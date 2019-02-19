@@ -1125,6 +1125,20 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Then /^the HTTP status code should be "([^"]*)" or "([^"]*)"$/
+	 *
+	 * @param int $statusCode1
+	 * @param int $statusCode2
+	 *
+	 * @return void
+	 */
+	public function theHTTPStatusCodeShouldBeOr($statusCode1, $statusCode2) {
+		$this->theHTTPStatusCodeShouldBe(
+			[$statusCode1, $statusCode2]
+		);
+	}
+
+	/**
 	 * Check the text in an HTTP reason phrase
 	 *
 	 * @Then /^the HTTP reason phrase should be "([^"]*)"$/
