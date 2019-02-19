@@ -131,7 +131,7 @@ $(composer_deps): $(COMPOSER_BIN) composer.json composer.lock
 	php $(COMPOSER_BIN) install --no-dev
 
 $(composer_dev_deps): $(COMPOSER_BIN) composer.json composer.lock
-	php $(COMPOSER_BIN) install --dev
+	php $(COMPOSER_BIN) install
 
 .PHONY: install-composer-release-deps
 install-composer-release-deps: $(composer_deps)
