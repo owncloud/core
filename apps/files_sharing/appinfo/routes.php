@@ -39,6 +39,16 @@ $application->registerRoutes($this, [
 			'url' => '/testremote',
 			'verb' => 'GET'
 		],
+        [
+            'name' => 'userSettings#getUserShareFolder',
+            'url' => '/getUserShareFolder',
+            'verb' => 'GET'
+        ],
+        [
+            'name' => 'userSettings#setUserShareFolder',
+            'url' => '/setUserShareFolder',
+            'verb' => 'POST'
+        ]
 	],
 	'ocs' => [
 		[

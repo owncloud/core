@@ -26,6 +26,7 @@ Turning the feature off removes shared files and folders on the server for all s
 
 	<settings>
 		<admin>OCA\Files_Sharing\Panels\Admin\SettingsPanel</admin>
+		<personal>OCA\Files_Sharing\Panels\Personal\PersonalPanel</personal>
 	</settings>
 
 	<background-jobs>
