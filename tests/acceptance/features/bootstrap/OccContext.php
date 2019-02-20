@@ -749,7 +749,7 @@ class OccContext implements Context {
 		$this->featureContext->userDownloadsFileUsingTheAPI($username, "/$fileName");
 		$fileContentServer = (string)$this->featureContext->getResponse()->getBody();
 		PHPUnit_Framework_Assert::assertEquals(
-			\trim($fileContentServer),
+			$fileContentServer,
 			$fileContent
 		);
 	}
