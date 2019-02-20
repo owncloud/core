@@ -31,7 +31,6 @@
 namespace OC\AppFramework\DependencyInjection;
 
 use OC;
-use OC\AppFramework\Core\API;
 use OC\AppFramework\Http;
 use OC\AppFramework\Http\Dispatcher;
 use OC\AppFramework\Http\Output;
