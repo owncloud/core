@@ -125,4 +125,36 @@ class IMipPluginTest extends TestCase {
 		$this->assertEquals(['gandalf@wiz.ard' => null], $mailMessage->getReplyTo());
 		$this->assertEquals('text/calendar; charset=UTF-8; method=REQUEST', $mailMessage->getSwiftMessage()->getContentType());
 	}
+
+	public function testDeliveryOfCancel() {
+		$mailMessage = new \OC\Mail\Message(new \Swift_Message());
+		/** @var Mailer | \PHPUnit_Framework_MockObject_MockObject $mailer */
+		$mailer = $this->createMock(Mailer::class);
+		$mailer->method('createMessage')->willReturn($mailMessage);
+		$mailer->expects($this->once())->method('send');
+		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
+		$logger = $this->createMock(Log::class);
+		/** @var IRequest| \PHPUnit_Framework_MockObject_MockObject $request */
+		$request = $this->createMock(IRequest::class);
+
+		$plugin = new IMipPlugin($mailer, $logger, $request);
+		$message = new Message();
+		$message->method = 'CANCEL';
+		$message->message = new VCalendar();
+		$message->message->add('VEVENT', [
+			'UID' => $message->uid,
+			'SEQUENCE' => $message->sequence,
+			'SUMMARY' => 'Fellowship meeting',
+		]);
+		$message->sender = 'mailto:gandalf@wiz.ard';
+		$message->recipient = 'mailto:frodo@hobb.it';
+
+		$plugin->schedule($message);
+		$this->assertEquals('1.1', $message->getScheduleStatus());
+		$this->assertEquals('Cancelled: Fellowship meeting', $mailMessage->getSubject());
+		$this->assertEquals(['frodo@hobb.it' => null], $mailMessage->getTo());
+		$this->assertEquals(['gandalf@wiz.ard' => null], $mailMessage->getReplyTo());
+		$this->assertEquals('text/calendar; charset=UTF-8; method=CANCEL', $mailMessage->getSwiftMessage()->getContentType());
+		$this->assertEquals('CANCELLED', $message->message->VEVENT->STATUS->getValue());
+	}
 }
