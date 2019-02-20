@@ -31,6 +31,7 @@ namespace OCA\Files_Sharing\Tests;
 use OCP\Constants;
 use OCP\IL10N;
 use OCP\IRequest;
+use OCP\IUserSession;
 use OCP\Share;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCA\Files_Sharing\SharingBlacklist;
@@ -108,6 +109,8 @@ class ApiTest extends TestCase {
 	 */
 	private function createOCS($request, $userId) {
 		$currentUser = \OC::$server->getUserManager()->get($userId);
+		$userSession = $this->createMock(IUserSession::class);
+		$userSession->method('getUser')->willReturn($currentUser);
 
 		$l = $this->createMock(IL10N::class);
 		$l->method('t')
@@ -123,7 +126,7 @@ class ApiTest extends TestCase {
 			\OC::$server->getUserManager(),
 			\OC::$server->getRootFolder(),
 			\OC::$server->getURLGenerator(),
-			$currentUser,
+			$userSession,
 			$l,
 			\OC::$server->getConfig(),
 			\OC::$server->getAppContainer('files_sharing')->query(NotificationPublisher::class),
