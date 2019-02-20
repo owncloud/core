@@ -33,13 +33,16 @@ use OC\AppFramework\Middleware\Security\Exceptions\NotAdminException;
 use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
 use OC\AppFramework\Utility\ControllerMethodReflector;
 use OC\Core\Controller\LoginController;
+use OC\OCS\Result;
 use OC\Security\CSP\ContentSecurityPolicyManager;
+use OCP\API;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Middleware;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\AppFramework\OCSController;
 use OCP\INavigationManager;
 use OCP\IURLGenerator;
 use OCP\IRequest;
@@ -184,6 +187,13 @@ class SecurityMiddleware extends Middleware {
 	 * @return Response a Response object or null in case that the exception could not be handled
 	 */
 	public function afterException($controller, $methodName, \Exception $exception) {
+		if ($controller instanceof OCSController) {
+			if ($exception instanceof NotLoggedInException) {
+				return $controller->buildResponse(new Result(null, API::RESPOND_UNAUTHORISED, 'Unauthorised'));
+			}
+			return $controller->buildResponse(new Result(null, API::RESPOND_SERVER_ERROR, $exception->getMessage()));
+		}
+
 		if ($exception instanceof SecurityException) {
 			if (\stripos($this->request->getHeader('Accept'), 'html') === false) {
 				$response = new JSONResponse(
