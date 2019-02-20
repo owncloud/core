@@ -38,6 +38,8 @@ use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IGroup;
 use OCP\IUserManager;
+use OCP\IUserSession;
+use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use OCP\Share;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -76,6 +78,9 @@ class Share20OCSTest extends TestCase {
 	/** @var IUser */
 	private $currentUser;
 
+	/** @var IUserSession */
+	private $userSession;
+
 	/** @var Share20OCS */
 	private $ocs;
 
@@ -104,8 +109,10 @@ class Share20OCSTest extends TestCase {
 		$this->urlGenerator = $this->createMock('OCP\IURLGenerator');
 		$this->currentUser = $this->createMock('OCP\IUser');
 		$this->currentUser->method('getUID')->willReturn('currentUser');
+		$this->userSession = $this->createMock(IUserSession::class);
+		$this->userSession->method('getUser')->willReturn($this->currentUser);
 
-		$this->userManager->expects($this->any())->method('userExists')->willReturn(true);
+		$this->userManager->method('userExists')->willReturn(true);
 
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
@@ -131,7 +138,7 @@ class Share20OCSTest extends TestCase {
 			$this->request,
 			$this->rootFolder,
 			$this->urlGenerator,
-			$this->currentUser,
+			$this->userSession,
 			$this->l,
 			$this->config,
 			$this->notificationPublisher,
@@ -153,7 +160,7 @@ class Share20OCSTest extends TestCase {
 				$this->request,
 				$this->rootFolder,
 				$this->urlGenerator,
-				$this->currentUser,
+				$this->userSession,
 				$this->l,
 				$this->config,
 				$this->notificationPublisher,
@@ -478,7 +485,7 @@ class Share20OCSTest extends TestCase {
 					$this->request,
 					$this->rootFolder,
 					$this->urlGenerator,
-					$this->currentUser,
+					$this->userSession,
 					$this->l,
 					$this->config,
 					$this->notificationPublisher,
@@ -2775,7 +2782,7 @@ class Share20OCSTest extends TestCase {
 			$this->request,
 			$this->rootFolder,
 			$this->urlGenerator,
-			$this->currentUser,
+			$this->userSession,
 			$this->l,
 			$this->config,
 			$this->notificationPublisher,
@@ -2868,7 +2875,7 @@ class Share20OCSTest extends TestCase {
 			$this->request,
 			$this->rootFolder,
 			$this->urlGenerator,
-			$this->currentUser,
+			$this->userSession,
 			$this->l,
 			$config,
 			$this->notificationPublisher,

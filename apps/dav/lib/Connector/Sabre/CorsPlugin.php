@@ -48,6 +48,10 @@ class CorsPlugin extends ServerPlugin {
 
 	/** @var array */
 	private $extraHeaders;
+	/**
+	 * @var bool
+	 */
+	private $alreadyExecuted = false;
 
 	/**
 	 * @param IUserSession $userSession
@@ -105,9 +109,13 @@ class CorsPlugin extends ServerPlugin {
 		}
 
 		$this->server->on('beforeMethod', [$this, 'setCorsHeaders']);
+		$this->server->on('exception', [$this, 'onException']);
 		$this->server->on('beforeMethod:OPTIONS', [$this, 'setOptionsRequestHeaders']);
 	}
 
+	public function onException(\Throwable $ex) {
+		$this->setCorsHeaders($this->server->httpRequest, $this->server->httpResponse);
+	}
 	/**
 	 * This method sets the cors headers for all requests
 	 *
@@ -116,18 +124,23 @@ class CorsPlugin extends ServerPlugin {
 	 * @return void
 	 */
 	public function setCorsHeaders(RequestInterface $request, ResponseInterface $response) {
-		if ($request->getHeader('origin') !== null) {
-			$requesterDomain = $request->getHeader('origin');
-			// unauthenticated request shall add cors headers as well
-			$userId = null;
-			if ($this->userSession->getUser() !== null) {
-				$userId = $this->userSession->getUser()->getUID();
-			}
+		if ($request->getHeader('origin') === null) {
+			return;
+		}
+		if ($this->alreadyExecuted) {
+			return;
+		}
+		$this->alreadyExecuted = true;
+		$requesterDomain = $request->getHeader('origin');
+		// unauthenticated request shall add cors headers as well
+		$userId = null;
+		if ($this->userSession->getUser() !== null) {
+			$userId = $this->userSession->getUser()->getUID();
+		}
 
-			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, null, $this->getExtraHeaders($request));
-			foreach ($headers as $key => $value) {
-				$response->addHeader($key, \implode(',', $value));
-			}
+		$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, null, $this->getExtraHeaders($request));
+		foreach ($headers as $key => $value) {
+			$response->addHeader($key, \implode(',', $value));
 		}
 	}
 
