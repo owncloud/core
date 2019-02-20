@@ -17,5 +17,27 @@
     "files_external",
     "dav",
     "federatedfilesharing"
+  ],
+  "appsInTar": [
+    "comments",
+    "configreport",
+    "dav",
+    "encryption",
+    "external",
+    "federatedfilesharing",
+    "federation",
+    "files",
+    "files_external",
+    "files_sharing",
+    "files_trashbin",
+    "files_versions",
+    "files_videoplayer",
+    "firstrunwizard",
+    "market",
+    "notifications",
+    "provisioning_api",
+    "systemtags",
+    "updatenotification",
+    "user_external"
   ]
 }

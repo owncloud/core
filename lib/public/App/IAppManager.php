@@ -114,6 +114,12 @@ interface IAppManager {
 	 */
 	public function getAlwaysEnabledApps();
 
+	/* Get all apps that are part of the tar file
+	 * @return string[]
+	 * @since 10.2.0
+	 */
+	public function getAppsInTar();
+
 	/**
 	 * @param string $package
 	 * @param bool $skipMigrations whether to skip migrations, which would only install the code

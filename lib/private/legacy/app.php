@@ -298,6 +298,14 @@ class OC_App {
 		return \OC::$server->getAppManager()->isShipped($appId);
 	}
 
+	/* Get all apps that are part of the tar file
+	 * @return string[]
+	 * @since 10.2.0
+	 */
+	public static function getAppsInTar() {
+		return \OC::$server->getAppManager()->getAppsInTar();
+	}
+
 	/**
 	 * get all enabled apps
 	 */
