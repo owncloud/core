@@ -26,23 +26,17 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FavoritesPage;
 use Page\FilesPage;
-use Page\FilesPageElement\ConflictDialog;
 use Page\OwncloudPage;
+use Page\SharedByLinkPage;
 use Page\SharedWithOthersPage;
 use Page\SharedWithYouPage;
-use Page\SharedByLinkPage;
 use Page\TagsPage;
 use Page\TrashbinPage;
+use Page\FilesPageElement\ConflictDialog;
+use Page\FilesPageElement\FileActionsMenu;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\DeleteHelper;
-use TestHelpers\DownloadHelper;
-use TestHelpers\HttpRequestHelper;
-use TestHelpers\OcsApiHelper;
-use Page\FilesPageBasic;
-use Page\FilesPageElement\FileActionsMenu;
-use Behat\Mink\Exception\ElementException;
-use Page\FilesPageElement\DetailsDialog;
-use TestHelpers\WebDavHelper;
+use TestHelpers\Asserts\WebDav as WebDavAssert;
 
 require_once 'bootstrap.php';
 
@@ -1796,8 +1790,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * Asserts that the content of a remote and a local file is the same
-	 * or is different
+	 * @see WebDavAssert::assertContentOfRemoteAndLocalFileIsSame
 	 * uses the current user to download the remote file
 	 *
 	 * @param string $remoteFile
@@ -1819,31 +1812,18 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 		
 		$username = $this->featureContext->getCurrentUser();
-		$result = DownloadHelper::download(
+		WebDavAssert::assertContentOfRemoteAndLocalFileIsSame(
 			$baseUrl,
 			$username,
 			$this->featureContext->getUserPassword($username),
-			$remoteFile
+			$remoteFile,
+			$localFile,
+			$shouldBeSame
 		);
-		
-		$localContent = \file_get_contents($localFile);
-		$downloadedContent = $result->getBody()->getContents();
-		
-		if ($shouldBeSame) {
-			PHPUnit_Framework_Assert::assertSame(
-				$localContent, $downloadedContent
-			);
-		} else {
-			PHPUnit_Framework_Assert::assertNotSame(
-				$localContent, $downloadedContent
-			);
-		}
 	}
 
 	/**
-	 * Asserts that the content of a remote file (downloaded by DAV)
-	 * and a file in the skeleton folder of the system under test is the same
-	 * or is different
+	 * @see WebDavAssert::assertContentOfDAVFileAndSkeletonFileOnSUT
 	 * uses the current user to download the remote file
 	 *
 	 * @param string $remoteFile
@@ -1868,64 +1848,16 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 
 		$username = $this->featureContext->getCurrentUser();
-		$result = DownloadHelper::download(
+		WebDavAssert::assertContentOfDAVFileAndSkeletonFileOnSUT(
 			$baseUrl,
 			$username,
 			$this->featureContext->getUserPassword($username),
-			$remoteFile
-		);
-		$downloadedContent = $result->getBody()->getContents();
-
-		//find the absolute path of the serverroot
-		$response = OcsApiHelper::sendRequest(
-			$baseUrl,
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
-			'GET',
-			"/apps/testing/api/v1/sysinfo"
+			$remoteFile,
+			$fileInSkeletonFolder,
+			$shouldBeSame
 		);
-		$responseXml = $this->featureContext->getResponseXml($response);
-		$serverRoot = (string)$responseXml->data->server_root;
-
-		//find the absolute path of the root folder of skeleton folders
-		$response = OcsApiHelper::sendRequest(
-			$baseUrl,
-			$this->featureContext->getAdminUsername(),
-			$this->featureContext->getAdminPassword(),
-			'GET',
-			"/apps/testing/api/v1/testingskeletondirectory"
-		);
-		$responseXml = $this->featureContext->getResponseXml($response);
-		$skeletonRoot = (string)$responseXml->data->rootdirectory;
-
-		//download the content of the particular file in the skeleton folder
-		$skeletonRootRelativeToServerRoot = \str_replace(
-			$serverRoot, "", $skeletonRoot
-		);
-		$fileInSkeletonFolder = "$skeletonRootRelativeToServerRoot/" .
-								\getenv('SRC_SKELETON_DIR') .
-								"/$fileInSkeletonFolder";
-		$this->featureContext->readFileInServerRoot($fileInSkeletonFolder);
-		PHPUnit_Framework_Assert::assertSame(
-			200,
-			$this->featureContext->getResponse()->getStatusCode(),
-			"Failed to read the file {$fileInSkeletonFolder}"
-		);
-		$localContent = HttpRequestHelper::getResponseXml(
-			$this->featureContext->getResponse()
-		);
-		$localContent = (string)$localContent->data->element->contentUrlEncoded;
-		$localContent = \urldecode($localContent);
-
-		if ($shouldBeSame) {
-			PHPUnit_Framework_Assert::assertSame(
-				$localContent, $downloadedContent
-			);
-		} else {
-			PHPUnit_Framework_Assert::assertNotSame(
-				$localContent, $downloadedContent
-			);
-		}
 	}
 
 	/**
