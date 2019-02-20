@@ -78,10 +78,13 @@ class FolderTest extends NodeTest {
 		$node = $this->createTestNode('sub', $storage);
 		$children = $node->getDirectoryListing();
 		$this->assertCount(2, $children);
-		$this->assertInstanceOf(File::class, $children[0]);
-		$this->assertInstanceOf(Folder::class, $children[1]);
-		$this->assertEquals('f1.txt', $children[0]->getName());
-		$this->assertEquals('folder1', $children[1]->getName());
+		foreach ($children as $child) {
+			if ($child instanceof File) {
+				$this->assertEquals('f1.txt', $child->getName());
+			} elseif ($child instanceof Folder) {
+				$this->assertEquals('folder1', $child->getName());
+			}
+		}
 	}
 
 	public function testGet() {
