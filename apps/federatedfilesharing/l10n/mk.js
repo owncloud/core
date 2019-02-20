@@ -1,6 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
+    "Federated sharing" : "Федерирано споделување",
     "Add to your ownCloud" : "Додади во вашиот ownCloud",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" сподели\"%3$s\" со вас  (во име на \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" сподели\"%3$s\" со вас",

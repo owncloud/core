@@ -326,6 +326,7 @@ OC.L10N.register(
     "Password changed successfully" : "Лозинката успешно е променета",
     "New password" : "Нова лозинка",
     "New Password" : "Нова лозинка",
+    "Confirm Password" : "Потврди лозинка",
     "Reset password" : "Ресетирај лозинка",
     "Personal note from the sender: <br> %s." : "Персонална белешка од испраќачот: <br> %s.",
     "This ownCloud instance is currently in single user mode." : "Оваа ownCloud инстанца е моментално во режим на еден корисник.",

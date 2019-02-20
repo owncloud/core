@@ -324,6 +324,7 @@
     "Password changed successfully" : "O contrasinal foi cambiado satisfactoriamente",
     "New password" : "Novo contrasinal",
     "New Password" : "Novo contrasinal",
+    "Confirm Password" : "Confirme o contrasinal",
     "Reset password" : "Restabelecer o contrasinal",
     "Personal note from the sender: <br> %s." : "Nota persoal do remitente: <br>%s.",
     "This ownCloud instance is currently in single user mode." : "Esta instancia do ownCloud está actualmente en modo de usuario único.",

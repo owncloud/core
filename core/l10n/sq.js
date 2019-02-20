@@ -326,6 +326,7 @@ OC.L10N.register(
     "Password changed successfully" : "Fjalëkalimi u ndryshua me sukses",
     "New password" : "Fjalëkalim i ri",
     "New Password" : "Fjalëkalim i Ri",
+    "Confirm Password" : "Ripohoni Fjalëkalimin",
     "Reset password" : "Ricaktoni fjalëkalimin",
     "Personal note from the sender: <br> %s." : "Shënim personal nga dërguesi: <br> %s.",
     "This ownCloud instance is currently in single user mode." : "Kjo instancë ownCloud është aktualisht në gjendjen me përdorues të vetëm.",

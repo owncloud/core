@@ -326,6 +326,7 @@ OC.L10N.register(
     "Password changed successfully" : "Contraseña cambiada con exito",
     "New password" : "Nueva contraseña",
     "New Password" : "Contraseña nueva",
+    "Confirm Password" : "Confirmar contraseña",
     "Reset password" : "Restablecer contraseña",
     "Personal note from the sender: <br> %s." : "Nota personal del remitente: <br> %s.",
     "This ownCloud instance is currently in single user mode." : "Esta instalación de ownCloud se encuentra en modo de usuario único.",

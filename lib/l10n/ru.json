@@ -88,6 +88,7 @@
     "Set an admin username." : "Задать имя пользователя для администратора.",
     "Set an admin password." : "Задать пароль для admin.",
     "Can't create or write into the data directory %s" : "Невозможно создать или записать в каталог данных %s",
+    "Can't update %s" : "Не получается обновить %s",
     "Invalid Federated Cloud ID" : "Неверный ID в объединении облачных хранилищ.",
     "%s shared »%s« with you" : "%s поделился »%s« с вами",
     "%s via %s" : "%s через %s",
