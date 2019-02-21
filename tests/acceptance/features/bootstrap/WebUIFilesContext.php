@@ -26,20 +26,15 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FavoritesPage;
 use Page\FilesPage;
-use Page\FilesPageElement\ConflictDialog;
-use Page\OwncloudPage;
+use Page\SharedByLinkPage;
 use Page\SharedWithOthersPage;
 use Page\SharedWithYouPage;
 use Page\TagsPage;
-use Page\SharedByLinkPage;
 use Page\TrashbinPage;
+use Page\FilesPageElement\ConflictDialog;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\DeleteHelper;
-use TestHelpers\DownloadHelper;
-use Page\FilesPageBasic;
-use Page\FilesPageElement\FileActionsMenu;
-use Behat\Mink\Exception\ElementException;
-use Page\FilesPageElement\DetailsDialog;
+use TestHelpers\Asserts\WebDav as WebDavAssert;
 
 require_once 'bootstrap.php';
 
@@ -1658,9 +1653,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$remoteFile = $this->currentFolder . "/" . \trim($remoteFile, $remoteFile[0]);
-		$originalFile = \getenv("SRC_SKELETON_DIR") . "/" . \trim($originalFile, $originalFile[0]);
+		$originalFile = \trim($originalFile, $originalFile[0]);
+
 		$shouldBeSame = ($shouldOrNot !== "not");
-		$this->assertContentOfRemoteAndLocalFileIsSame(
+		$this->assertContentOfDAVFileAndSkeletonFileOnSUT(
 			$remoteFile, $originalFile, $shouldBeSame, $checkOnRemoteServer
 		);
 	}
@@ -1710,8 +1706,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		} else {
 			$subFolderPath = "";
 		}
-		$localFile = \getenv("SRC_SKELETON_DIR") . "/$subFolderPath$fileName";
-		$this->assertContentOfRemoteAndLocalFileIsSame(
+		$localFile = "$subFolderPath$fileName";
+		$this->assertContentOfDAVFileAndSkeletonFileOnSUT(
 			$remoteFile, $localFile, true, $checkOnRemoteServer
 		);
 	}
@@ -1792,8 +1788,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * Asserts that the content of a remote and a local file is the same
-	 * or is different
+	 * @see WebDavAssert::assertContentOfRemoteAndLocalFileIsSame
 	 * uses the current user to download the remote file
 	 *
 	 * @param string $remoteFile
@@ -1813,27 +1808,54 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		} else {
 			$baseUrl = $this->featureContext->getLocalBaseUrl();
 		}
-
+		
 		$username = $this->featureContext->getCurrentUser();
-		$result = DownloadHelper::download(
+		WebDavAssert::assertContentOfRemoteAndLocalFileIsSame(
 			$baseUrl,
 			$username,
 			$this->featureContext->getUserPassword($username),
-			$remoteFile
+			$remoteFile,
+			$localFile,
+			$shouldBeSame
 		);
+	}
 
-		$localContent = \file_get_contents($localFile);
-		$downloadedContent = $result->getBody()->getContents();
-
-		if ($shouldBeSame) {
-			PHPUnit_Framework_Assert::assertSame(
-				$localContent, $downloadedContent
-			);
+	/**
+	 * @see WebDavAssert::assertContentOfDAVFileAndSkeletonFileOnSUT
+	 * uses the current user to download the remote file
+	 *
+	 * @param string $remoteFile
+	 * @param string $fileInSkeletonFolder
+	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
+	 *                           otherwise check that the file contents are different
+	 * @param bool $checkOnRemoteServer if true, then use the remote server to download the file
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	private function assertContentOfDAVFileAndSkeletonFileOnSUT(
+		$remoteFile,
+		$fileInSkeletonFolder,
+		$shouldBeSame = true,
+		$checkOnRemoteServer = false
+	) {
+		if ($checkOnRemoteServer) {
+			$baseUrl = $this->featureContext->getRemoteBaseUrl();
 		} else {
-			PHPUnit_Framework_Assert::assertNotSame(
-				$localContent, $downloadedContent
-			);
+			$baseUrl = $this->featureContext->getLocalBaseUrl();
 		}
+
+		$username = $this->featureContext->getCurrentUser();
+		WebDavAssert::assertContentOfDAVFileAndSkeletonFileOnSUT(
+			$baseUrl,
+			$username,
+			$this->featureContext->getUserPassword($username),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
+			$remoteFile,
+			$fileInSkeletonFolder,
+			$shouldBeSame
+		);
 	}
 
 	/**
