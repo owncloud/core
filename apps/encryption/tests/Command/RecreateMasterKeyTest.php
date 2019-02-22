@@ -196,17 +196,24 @@ class RecreateMasterKeyTest extends TestCase {
 				->with('user1')
 				->willReturn(true);
 
-			global $outputText;
+			$outputText = '';
+			$reloginText = '';
 
 			$this->output->expects($this->at(16))
 				->method('writeln')
-				->willReturnCallback(function ($value){
-					global $outputText;
+				->willReturnCallback(function ($value) use (&$outputText){
 					$outputText .= $value . "\n";
+				});
+
+			$this->output->expects($this->at(17))
+				->method('writeln')
+				->willReturnCallback(function ($value) use (&$reloginText) {
+					$reloginText = $value;
 				});
 
 			$this->invokePrivate($this->recreateMasterKey, 'execute', [$this->input, $this->output]);
 			$this->assertSame("Encryption completed successfully", trim($outputText, "\n"));
+			$this->assertEquals("\n<info>Note: All users are required to relogin.</info>\n",$reloginText);
 			$outputText="";
 		} else {
 			$this->recreateMasterKey = $this->getMockBuilder('OCA\Encryption\Command\RecreateMasterKey')

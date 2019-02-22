@@ -231,6 +231,7 @@ class RecreateMasterKey extends Command {
 				$this->keyManager->validateMasterKey();
 				$this->encryptAllUsers($input, $output);
 				$output->writeln("\nEncryption completed successfully\n");
+				$output->writeln("\n<info>Note: All users are required to relogin.</info>\n");
 			} else {
 				$output->writeln("The process is abandoned");
 			}
