@@ -817,10 +817,17 @@ trait BasicStructure {
 	 *
 	 * @param ResponseInterface $response
 	 *
+	 * @throws \Exception
 	 * @return string
 	 */
 	public function getOCSResponseStatusCode($response) {
-		return (string) $this->getResponseXml($response)->meta[0]->statuscode;
+		$responseXml = $this->getResponseXml($response);
+		if (isset($responseXml->meta[0], $responseXml->meta[0]->statuscode)) {
+			return (string) $responseXml->meta[0]->statuscode;
+		}
+		throw new \Exception(
+			"No OCS status code found in responseXml"
+		);
 	}
 
 	/**
