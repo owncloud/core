@@ -27,6 +27,7 @@ use Behat\Gherkin\Node\TableNode;
 use TestHelpers\DownloadHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcsApiHelper;
+use TestHelpers\SetupHelper;
 
 /**
  * WebDAV related asserts
@@ -153,51 +154,9 @@ class WebDav {
 		);
 		$downloadedContent = $result->getBody()->getContents();
 		
-		//find the absolute path of the serverroot
-		$response = OcsApiHelper::sendRequest(
-			$baseUrl,
-			$adminUsername,
-			$adminPassword,
-			'GET',
-			"/apps/testing/api/v1/sysinfo"
+		$localContent = SetupHelper::readSkeletonFile(
+			$fileInSkeletonFolder, $baseUrl, $adminUsername, $adminPassword
 		);
-		$responseXml = HttpRequestHelper::getResponseXml($response);
-		$serverRoot = (string)$responseXml->data->server_root;
-		
-		//find the absolute path of the root folder of skeleton folders
-		$response = OcsApiHelper::sendRequest(
-			$baseUrl,
-			$adminUsername,
-			$adminPassword,
-			'GET',
-			"/apps/testing/api/v1/testingskeletondirectory"
-		);
-		$responseXml = HttpRequestHelper::getResponseXml($response);
-		$skeletonRoot = (string)$responseXml->data->rootdirectory;
-		
-		//download the content of the particular file in the skeleton folder
-		$skeletonRootRelativeToServerRoot = \str_replace(
-			$serverRoot, "", $skeletonRoot
-		);
-		$fileInSkeletonFolder = \rawurlencode($fileInSkeletonFolder);
-		$fileInSkeletonFolder = "$skeletonRootRelativeToServerRoot/" .
-								\getenv('SRC_SKELETON_DIR') .
-								"/$fileInSkeletonFolder";
-		$response = OcsApiHelper::sendRequest(
-			$baseUrl,
-			$adminUsername,
-			$adminPassword,
-			'GET',
-			"/apps/testing/api/v1/file?file={$fileInSkeletonFolder}"
-		);
-		PHPUnit_Framework_Assert::assertSame(
-			200,
-			$response->getStatusCode(),
-			"Failed to read the file {$fileInSkeletonFolder}"
-		);
-		$localContent = HttpRequestHelper::getResponseXml($response);
-		$localContent = (string)$localContent->data->element->contentUrlEncoded;
-		$localContent = \urldecode($localContent);
 		
 		if ($shouldBeSame) {
 			PHPUnit_Framework_Assert::assertSame(
