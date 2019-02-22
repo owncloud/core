@@ -495,15 +495,8 @@ class SetupHelper {
 			$adminPassword, "readSkeletonFile"
 		);
 		//find the absolute path of the serverroot
-		$response = OcsApiHelper::sendRequest(
-			$baseUrl,
-			$adminUsername,
-			$adminPassword,
-			'GET',
-			"/apps/testing/api/v1/sysinfo"
-		);
-		$responseXml = HttpRequestHelper::getResponseXml($response);
-		$serverRoot = (string)$responseXml->data->server_root;
+		$sysInfo = self::getSysInfo($baseUrl, $adminUsername, $adminPassword);
+		$serverRoot = $sysInfo->server_root;
 		
 		//find the absolute path of the root folder of skeleton folders
 		$response = OcsApiHelper::sendRequest(
