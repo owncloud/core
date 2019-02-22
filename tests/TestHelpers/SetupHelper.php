@@ -24,6 +24,7 @@ namespace TestHelpers;
 use Behat\Testwork\Hook\Scope\HookScope;
 use GuzzleHttp\Exception\ServerException;
 use Exception;
+use PHPUnit_Framework_Assert;
 use GuzzleHttp\Message\ResponseInterface;
 use SimpleXMLElement;
 
@@ -468,6 +469,70 @@ class SetupHelper {
 				"could not delete file $filePathFromServerRoot " . $result->getReasonPhrase()
 			);
 		}
+	}
+
+	/**
+	 * returns the content of a file in a skeleton folder
+	 *
+	 * @param string $fileInSkeletonFolder
+	 * @param string|null $baseUrl
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 *
+	 * @return string content of the file
+	 */
+	public static function readSkeletonFile(
+		$fileInSkeletonFolder,
+		$baseUrl = null,
+		$adminUsername = null,
+		$adminPassword = null
+	) {
+		$baseUrl = self::checkBaseUrl($baseUrl, "readSkeletonFile");
+		$adminUsername = self::checkAdminUsername(
+			$adminUsername, "readSkeletonFile"
+		);
+		$adminPassword = self::checkAdminPassword(
+			$adminPassword, "readSkeletonFile"
+		);
+		//find the absolute path of the serverroot
+		$sysInfo = self::getSysInfo($baseUrl, $adminUsername, $adminPassword);
+		$serverRoot = $sysInfo->server_root;
+		
+		//find the absolute path of the root folder of skeleton folders
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			'GET',
+			"/apps/testing/api/v1/testingskeletondirectory"
+		);
+		$responseXml = HttpRequestHelper::getResponseXml($response);
+		$skeletonRoot = (string)$responseXml->data->rootdirectory;
+		
+		//download the content of the particular file in the skeleton folder
+		$skeletonRootRelativeToServerRoot = \str_replace(
+			$serverRoot, "", $skeletonRoot
+		);
+		$fileInSkeletonFolder = \rawurlencode($fileInSkeletonFolder);
+		$fileInSkeletonFolder = "$skeletonRootRelativeToServerRoot/" .
+								\getenv('SRC_SKELETON_DIR') .
+								"/$fileInSkeletonFolder";
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			'GET',
+			"/apps/testing/api/v1/file?file={$fileInSkeletonFolder}"
+		);
+		PHPUnit_Framework_Assert::assertSame(
+			200,
+			$response->getStatusCode(),
+			"Failed to read the file {$fileInSkeletonFolder}"
+		);
+		$localContent = HttpRequestHelper::getResponseXml($response);
+		$localContent = (string)$localContent->data->element->contentUrlEncoded;
+		$localContent = \urldecode($localContent);
+		return $localContent;
 	}
 
 	/**
