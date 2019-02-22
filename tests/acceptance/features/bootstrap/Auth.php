@@ -48,6 +48,13 @@ trait Auth {
 	private $tokenAuthHasBeenSetTo = '';
 
 	/**
+	 * @return string
+	 */
+	public function getTokenAuthHasBeenSetTo() {
+		return $this->tokenAuthHasBeenSetTo;
+	}
+
+	/**
 	 * get the client token that was last generated
 	 * app acceptance tests that have their own step code may need to use this
 	 *
@@ -330,6 +337,16 @@ trait Auth {
 	}
 
 	/**
+	 *
+	 * @return string
+	 */
+	public function generateAuthTokenForAdmin() {
+		$this->aNewBrowserSessionForHasBeenStarted($this->getAdminUsername());
+		$this->userGeneratesNewAppPasswordNamed('acceptance-test ' . \microtime());
+		return $this->appToken;
+	}
+
+	/**
 	 * delete token_auth_enforced if it was set in the scenario
 	 *
 	 * @AfterScenario
@@ -342,9 +359,7 @@ trait Auth {
 				// Because token auth is enforced, we have to use a token
 				// (app password) as the password to send to the testing app
 				// so it will authenticate us.
-				$this->aNewBrowserSessionForHasBeenStarted($this->getAdminUsername());
-				$this->userGeneratesNewAppPasswordNamed('acceptance-test ' . \microtime());
-				$appTokenForOccCommand = $this->appToken;
+				$appTokenForOccCommand = $this->generateAuthTokenForAdmin();
 			} else {
 				$appTokenForOccCommand = null;
 			}
