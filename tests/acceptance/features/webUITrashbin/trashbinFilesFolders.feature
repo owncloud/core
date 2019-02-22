@@ -45,6 +45,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | question?       |
       | &and#hash       |
 
+  @skipOnEncryption @encryption-issue-74
   Scenario: Delete multiple files at once and check that they are all in the trashbin
     When the user batch deletes these files using the webUI
       | name          |
