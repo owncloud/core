@@ -461,6 +461,8 @@ class Checker {
 		}
 
 		$this->setAppValue(self::CACHE_KEY, \json_encode($resultArray));
+		//Set cache for each app
+		$this->cache->set($scope, \json_encode($resultArray));
 		$this->cache->set(self::CACHE_KEY, \json_encode($resultArray));
 	}
 
@@ -533,6 +535,29 @@ class Checker {
 		if ($this->config !== null) {
 			$this->config->deleteAppValue('core', $key);
 		}
+	}
+
+	/**
+	 * Get the verified apps from the cache, if the result is cached.
+	 * If the app result is not cached, then verification result will get cached
+	 * and then returned.
+	 *
+	 * The reason for introducing this method:
+	 * verifyAppSignature() internally calls verify() which does call phpseclib
+	 * routines like validateSignature(). validateSignature is taking lot of memory.
+	 * Hence its better to cache the results to avoid huge memory consumption.
+	 *
+	 * @param string $appId
+	 * @param string $path Optional path. If none is given it will be guessed.
+	 * @param bool $force force check even if disabled
+	 * @return array
+	 */
+	public function getVerifiedAppsFromCache($appId, $path = '', $force = false) {
+		$cacheVal = $this->cache->get($appId);
+		if ($cacheVal !== null) {
+			return $cacheVal;
+		}
+		return $this->verifyAppSignature($appId, $path, $force);
 	}
 
 	/**
