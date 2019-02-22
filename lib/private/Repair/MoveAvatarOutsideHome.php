@@ -21,7 +21,12 @@
  */
 namespace OC\Repair;
 
+use OC\Files\Node\File;
+use OC\NotSquareException;
+use OC\User\NoUserException;
+use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
+use OCP\Files\Storage\IStorage;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\ILogger;
@@ -104,22 +109,33 @@ class MoveAvatarOutsideHome implements IRepairStep {
 	private function moveAvatars(IOutput $out, IUser $user) {
 		$userId = $user->getUID();
 
-		\OC\Files\Filesystem::initMountPoints($userId);
-
-		// call get instead of getUserFolder to avoid needless skeleton copy
 		try {
-			$oldAvatarUserFolder = $this->rootFolder->get('/' . $userId);
-			$oldAvatar = new Avatar($oldAvatarUserFolder, $this->l, $user, $this->logger);
-			if ($oldAvatar->exists()) {
-				$newAvatarsUserFolder = $this->avatarManager->getAvatarFolder($user);
+			\OC\Files\Filesystem::initMountPoints($userId);
 
-				// get original file
-				$oldAvatarFile = $oldAvatar->getFile(-1);
-				$oldAvatarFile->move($newAvatarsUserFolder->getPath() . '/' . $oldAvatarFile->getName());
-				$oldAvatar->remove();
+			/** @var File $oldAvatarFile */
+			$oldAvatarFile = null;
+
+			// call get instead of getUserFolder to avoid needless skeleton copy
+			/** @var Folder $oldAvatarFolder */
+			$oldAvatarFolder = $this->rootFolder->get('/' . $userId . '/avatars/');
+			try {
+				$oldAvatarFile = $oldAvatarFolder->get('/avatar.jpg');
+			} catch (NotFoundException $e) {
+				$oldAvatarFile = $oldAvatarFolder->get('/avatar.png');
 			}
+			$newAvatarStorage = $this->rootFolder->get('/avatars/')->getStorage();
+			$avatar = new Avatar($newAvatarStorage, $this->l, $user, $this->logger);
+			$avatar->set($oldAvatarFile->getContent());
+			$oldAvatarFile->delete();
+		} catch (NoUserException $e) {
+			$this->logger->warning("Skipping avatar move for $userId: User does not exist.", ['app' => __METHOD__]);
 		} catch (NotFoundException $e) {
 			// not all users have a home, ignore
+			$this->logger->debug("Skipping avatar move for $userId: User has no home or avatar folder.", ['app' => __METHOD__]);
+		} catch (NotSquareException $e) {
+			$this->logger->warning("Skipping avatar move for $userId: avatar image {$oldAvatarFile->getPath()} for user $userId is not square.", ['app' => __METHOD__]);
+		} catch (\Exception $e) {
+			$this->logger->logException($e, ['app' => __METHOD__, 'message' => "Skipping avatar move for $userId"]);
 		}
 
 		\OC_Util::tearDownFS();
@@ -130,7 +146,9 @@ class MoveAvatarOutsideHome implements IRepairStep {
 	 */
 	public function run(IOutput $output) {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
-		if (\version_compare($ocVersionFromBeforeUpdate, '9.2.0.2', '<')) {
+		$avatarMigrationStatus = $this->config->getAppValue('core', 'avatar_migration_completed', 'false');
+		if (($avatarMigrationStatus === 'false') &&
+			\version_compare($ocVersionFromBeforeUpdate, '9.2.0.2', '<')) {
 			$function = function (IUser $user) use ($output) {
 				$this->moveAvatars($output, $user);
 				$output->advance();
@@ -139,6 +157,9 @@ class MoveAvatarOutsideHome implements IRepairStep {
 			$output->startProgress($this->userManager->countSeenUsers());
 
 			$this->userManager->callForSeenUsers($function);
+
+			//Set this if repair step is executed
+			$this->config->setAppValue('core', 'avatar_migration_completed', 'true');
 
 			$output->finishProgress();
 		} else {
