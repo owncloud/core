@@ -160,7 +160,7 @@ class OwncloudPage extends Page {
 			$element,
 			__METHOD__ .
 			" xpath: $xpath" .
-			" timeout waiting for element to be available"
+			" cannot find element"
 		);
 		$visibility = $this->waitFor(
 			$timeout_msec / 1000,
