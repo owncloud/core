@@ -436,7 +436,7 @@ class UsersPage extends OwncloudPage {
 				"could not find quota select element"
 			);
 		}
-
+		$selectField->click();
 		$selectOption = $selectField->find(
 			'xpath', \sprintf($this->quotaOptionXpath, $quota)
 		);
