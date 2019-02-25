@@ -66,9 +66,6 @@ $application->registerRoutes($this, [
 
 /** @var $this \OCP\Route\IRouter */
 
-// Settings pages
-$this->create('settings_help', '/settings/help')
-	->actionInclude('settings/help.php');
 // Settings ajax actions
 // personal
 $this->create('settings_personal_changepassword', '/settings/personal/changepassword')
