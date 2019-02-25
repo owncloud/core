@@ -48,6 +48,8 @@ class UsersPage extends OwncloudPage {
 	protected $quotaOptionXpath = "//option[contains(text(), '%s')]";
 
 	protected $emailColumnXpath = "//td[@class='mailAddress']";
+	protected $passwordColumnXpath = "//td[@class='password']";
+	protected $quotaColumnXpath = "//td[@class='quota']";
 	protected $storageLocationColumnXpath = "//td[@class='storageLocation']";
 	protected $lastLoginXpath = "//td[@class='lastLogin']";
 
@@ -166,6 +168,56 @@ class UsersPage extends OwncloudPage {
 
 		return $this->getTrimmedText($userEmail);
 	}
+
+	/**
+	 * @param string $username
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function isPasswordColumnOfUserVisible($username) {
+		$userTr = $this->findUserInTable($username);
+		$userPassword = $userTr->find('xpath', $this->passwordColumnXpath);
+
+		if ($userPassword === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->passwordColumnXpath " .
+				"password column of user " . $username . " not found"
+			);
+		}
+
+		if (!$userPassword->isVisible()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param string $username
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function isQuotaColumnOfUserVisible($username) {
+		$userTr = $this->findUserInTable($username);
+		$userQuota = $userTr->find('xpath', $this->quotaColumnXpath);
+
+		if ($userQuota === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->quotaColumnXpath " .
+				"quota column of user " . $username . " not found"
+			);
+		}
+
+		if (!$userQuota->isVisible()) {
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * @param string $username
 	 *

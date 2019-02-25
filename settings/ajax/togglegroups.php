@@ -79,5 +79,8 @@ if (\OC::$server->getGroupManager()->inGroup($username, $group)) {
 	$targetGroupObject->addUser($targetUserObject);
 }
 
-// Return Success story
-OC_JSON::success(["data" => ["username" => $username, "action" => $action, "groupname" => $group]]);
+if (\OC::$server->getGroupManager()->isInGroup($username, $group)) {
+	OC_JSON::success(["data" => ["username" => $username, "action" => $action, "groupname" => $group]]);
+} else {
+	OC_JSON::error();
+}
