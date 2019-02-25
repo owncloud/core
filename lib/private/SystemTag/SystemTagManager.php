@@ -166,10 +166,19 @@ class SystemTagManager implements ISystemTagManager {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getTag($tagName, $userVisible, $userAssignable, $userEditable = false) {
+	public function getTag($tagName, $userVisible, $userAssignable, $userEditable = null) {
 		$userVisible = (int)$userVisible;
 		$userAssignable = (int)$userAssignable;
-		$userEditable = (int)$userEditable;
+
+		/**
+		 * Change made inorder to make sure this API should not be broken,
+		 * if variable $userEditable is not passed to this method.
+		 */
+		if ($userEditable === null) {
+			$userEditable = $userAssignable;
+		} elseif (\is_bool($userEditable)) {
+			$userEditable = (int)$userEditable;
+		}
 
 		$result = $this->selectTagQuery
 			->setParameter('name', $tagName)
@@ -192,10 +201,19 @@ class SystemTagManager implements ISystemTagManager {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function createTag($tagName, $userVisible, $userAssignable, $userEditable = false) {
+	public function createTag($tagName, $userVisible, $userAssignable, $userEditable = null) {
 		$userVisible = (int)$userVisible;
 		$userAssignable = (int)$userAssignable;
-		$userEditable = (int)$userEditable;
+
+		/**
+		 * Change made inorder to make sure this API should not be broken,
+		 * if variable $userEditable is not passed to this method.
+		 */
+		if ($userEditable === null) {
+			$userEditable = 1;
+		} elseif (\is_bool($userEditable)) {
+			$userEditable = (int)$userEditable;
+		}
 
 		if ($userEditable === 1) {
 			$editable = $userAssignable;
@@ -243,10 +261,19 @@ class SystemTagManager implements ISystemTagManager {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function updateTag($tagId, $tagName, $userVisible, $userAssignable, $userEditable = false) {
+	public function updateTag($tagId, $tagName, $userVisible, $userAssignable, $userEditable = null) {
 		$userVisible = (int)$userVisible;
 		$userAssignable = (int)$userAssignable;
-		$userEditable = (int)$userEditable;
+
+		/**
+		 * Change made inorder to make sure this API should not be broken,
+		 * if variable $userEditable is not passed to this method.
+		 */
+		if ($userEditable === null) {
+			$userEditable = $userAssignable;
+		} elseif (\is_bool($userEditable)) {
+			$userEditable = (int)$userEditable;
+		}
 
 		try {
 			$tags = $this->getTagsByIds($tagId);
