@@ -727,7 +727,7 @@ then
 	fi
 	for URL in ${TESTING_APP_URL} ${TESTING_APP_FED_URL}
 	do
-		curl -k -s -u $ADMIN_AUTH $URL/testingskeletondirectory -d "directory=${SRC_SKELETON_DIR}" > /dev/null
+		curl -k -s -u $ADMIN_AUTH ${URL}testingskeletondirectory -d "directory=${SRC_SKELETON_DIR}" > /dev/null
 	done
 else
 	for URL in ${OCC_URL} ${OCC_FED_URL}
