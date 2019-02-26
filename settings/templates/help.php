@@ -3,15 +3,21 @@
 	<?php if ($_['admin']) {
 	?>
 		<li>
-			<a class="<?php p($_['style1']); ?>"
-				href="<?php print_unescaped($_['url1']); ?>">
-				<?php p($l->t('User documentation')); ?>
+			<a class="<?php p($_['style1']); ?>" target="_blank"
+				href="https://doc.owncloud.com/server/user_manual/index.html">
+				<?php p($l->t('User documentation')); ?> ↗
 			</a>
 		</li>
 		<li>
-			<a class="<?php p($_['style2']); ?>"
-				href="<?php print_unescaped($_['url2']); ?>">
-				<?php p($l->t('Administrator documentation')); ?>
+			<a class="<?php p($_['style2']); ?>" target="_blank"
+				href="https://doc.owncloud.com/server/admin_manual/index.html">
+				<?php p($l->t('Administrator documentation')); ?> ↗
+			</a>
+		</li>
+		<li>
+			<a class="<?php p($_['style1']); ?>" target="_blank"
+			   href="https://doc.owncloud.com/server/developer_manual/index.html">
+				<?php p($l->t('Developer documentation')); ?> ↗
 			</a>
 		</li>
 	<?php
