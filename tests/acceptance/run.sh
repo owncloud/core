@@ -223,12 +223,12 @@ declare -a PREVIOUS_SETTINGS
 
 # get the sub path from an URL
 # $1 the full URL including the protocol
-# echos the path
+# echos the path without trailing slash
 function get_path_from_url() {
 	PROTOCOL="$(echo $1 | grep :// | sed -e's,^\(.*://\).*,\1,g')"
 	URL="$(echo ${1/$PROTOCOL/})"
 	PATH="$(echo ${URL} | grep / | cut -d/ -f2-)"
-	echo ${PATH}
+	echo ${PATH%/}
 }
 
 # Provide a default admin username and password.
