@@ -460,20 +460,6 @@ class OC_App {
 		$urlGenerator = \OC::$server->getURLGenerator();
 
 		$settings = [];
-		// by default, settings only contain the help menu
-		if (OC_Util::getEditionString() === OC_Util::EDITION_COMMUNITY &&
-			\OC::$server->getSystemConfig()->getValue('knowledgebaseenabled', true) == true
-		) {
-			$settings = [
-				[
-					"id" => "help",
-					"order" => 1000,
-					"href" => $urlGenerator->linkToRoute('settings_help'),
-					"name" => $l->t("Help"),
-					"icon" => $urlGenerator->imagePath("settings", "help.svg")
-				]
-			];
-		}
 
 		// if the user is logged-in
 		if (OC_User::isLoggedIn()) {
