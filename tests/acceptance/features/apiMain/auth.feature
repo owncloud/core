@@ -78,6 +78,8 @@ Feature: auth
       |/ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
       |/ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
       |/ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      |/ocs/v1.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      |/ocs/v2.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
       |/ocs/v1.php/cloud/apps                                      | 997      | 401       |
       |/ocs/v2.php/cloud/apps                                      | 997      | 401       |
       |/ocs/v1.php/cloud/groups                                    | 997      | 401       |
@@ -88,14 +90,6 @@ Feature: auth
       |/ocs/v2.php/config                                          | 200      | 200       |
       |/ocs/v1.php/privatedata/getattribute                        | 997      | 401       |
       |/ocs/v2.php/privatedata/getattribute                        | 997      | 401       |
-
-  #merge into previous scenario when fixed
-  @issue-34626
-  Scenario: using OCS anonymously
-    When a user requests "/ocs/v1.php/apps/files_sharing/api/v1/shares" with "GET" and no authentication
-    Then the HTTP status code should be "200"
-    #Then the HTTP status code should be "401"
-    #And the OCS status code should be "997"
 
   Scenario Outline: using OCS with non-admin basic auth
     When user "user0" requests "<endpoint>" with "GET" using basic auth
