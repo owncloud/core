@@ -42,6 +42,9 @@ KARMA=$(NODE_PREFIX)/node_modules/.bin/karma
 JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
 PHPUNIT="$(shell pwd)/lib/composer/phpunit/phpunit/phpunit"
 COMPOSER_BIN := $(shell command -v composer 2> /dev/null)
+ifndef COMPOSER_BIN
+    $(error composer is not available on your system, please install composer)
+endif
 
 # bin file definitions
 PHP_CS_FIXER=php -d zend.enable_gc=0 vendor-bin/owncloud-codestyle/vendor/bin/php-cs-fixer
