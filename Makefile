@@ -146,7 +146,6 @@ update-composer:
 
 .PHONY: clean-composer-deps
 clean-composer-deps:
-	rm -f $(COMPOSER_BIN)
 	rm -Rf lib/composer
 	rm -Rf vendor-bin/**/vendor vendor-bin/**/composer.lock
 
