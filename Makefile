@@ -1,10 +1,13 @@
 # Main Makefile for ownCloud development
 #
 # Requirements to run make here:
+#    - composer
 #    - node
 #    - yarn
 #
-# Both can be installed following e.g. the Debian/Ubuntu instructions at
+# Installing composer can be done via https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx
+#
+# Node/Yarn can be installed following e.g. the Debian/Ubuntu instructions at
 # https://nodejs.org/en/download/package-manager/
 #
 #  curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
@@ -42,7 +45,10 @@ endif
 KARMA=$(NODE_PREFIX)/node_modules/.bin/karma
 JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
 PHPUNIT="$(shell pwd)/lib/composer/phpunit/phpunit/phpunit"
-COMPOSER_BIN=build/composer.phar
+COMPOSER_BIN := $(shell command -v composer 2> /dev/null)
+ifndef COMPOSER_BIN
+    $(error composer is not available on your system, please install composer)
+endif
 
 # bin file definitions
 PHP_CS_FIXER=php -d zend.enable_gc=0 vendor-bin/owncloud-codestyle/vendor/bin/php-cs-fixer
@@ -119,18 +125,12 @@ help:
 
 
 #
-# Basic required tools
-#
-$(COMPOSER_BIN):
-	cd build && ./getcomposer.sh
-
-#
 # ownCloud core PHP dependencies
 #
-$(composer_deps): $(COMPOSER_BIN) composer.json composer.lock
+$(composer_deps): composer.json composer.lock
 	php $(COMPOSER_BIN) install --no-dev
 
-$(composer_dev_deps): $(COMPOSER_BIN) composer.json composer.lock
+$(composer_dev_deps): composer.json composer.lock
 	php $(COMPOSER_BIN) install
 
 .PHONY: install-composer-release-deps
@@ -143,13 +143,12 @@ install-composer-dev-deps: $(composer_dev_deps)
 install-composer-deps: install-composer-dev-deps
 
 .PHONY: update-composer
-update-composer: $(COMPOSER_BIN)
+update-composer:
 	rm -f composer.lock
 	php $(COMPOSER_BIN) install --prefer-dist
 
 .PHONY: clean-composer-deps
 clean-composer-deps:
-	rm -f $(COMPOSER_BIN)
 	rm -Rf lib/composer
 	rm -Rf vendor-bin/**/vendor vendor-bin/**/composer.lock
 
