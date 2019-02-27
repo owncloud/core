@@ -216,6 +216,20 @@ trait Auth {
 	}
 
 	/**
+	 * @When the administrator requests :url with :method using basic auth
+	 *
+	 * @param string $url
+	 * @param string $method
+	 *
+	 * @return void
+	 */
+	public function administratorRequestsURLWithUsingBasicAuth($url, $method) {
+		$this->userRequestsURLWithUsingBasicAuth(
+			$this->getAdminUsername(), $url, $method
+		);
+	}
+
+	/**
 	 * @When user :user requests :url with :method using basic token auth
 	 * @Given user :user has requested :url with :method using basic token auth
 	 *
