@@ -781,34 +781,41 @@ trait BasicStructure {
 
 	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" using password "([^"]*)"$/
 	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
+	 * @param string $password
 	 *
 	 * @return void
 	 */
-	public function userSendsToOcsApiEndpoint($user, $verb, $url) {
+	public function userSendsToOcsApiEndpoint($user, $verb, $url, $password = null) {
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			$verb,
 			$url,
-			null
+			null,
+			$password
 		);
 	}
 
 	/**
 	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url
+	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url using password :password
 	 *
 	 * @param string $verb
 	 * @param string $url
+	 * @param string $password
 	 *
 	 * @return void
 	 */
-	public function theAdministratorSendsHttpMethodToOcsApiEndpoint($verb, $url) {
+	public function theAdministratorSendsHttpMethodToOcsApiEndpoint(
+		$verb, $url, $password = null
+	) {
 		$admin = $this->getAdminUsername();
-		$this->userSendsToOcsApiEndpoint($admin, $verb, $url);
+		$this->userSendsToOcsApiEndpoint($admin, $verb, $url, $password);
 	}
 
 	/**
@@ -944,11 +951,12 @@ trait BasicStructure {
 	 * @param string $verb
 	 * @param string $url
 	 * @param TableNode|null $body
+	 * @param string $password
 	 *
 	 * @return void
 	 */
 	public function userSendsHTTPMethodToOcsApiEndpointWithBody(
-		$user, $verb, $url, $body
+		$user, $verb, $url, $body = null, $password = null
 	) {
 
 		/**
@@ -964,7 +972,9 @@ trait BasicStructure {
 
 		if ($user !== 'UNAUTHORIZED_USER') {
 			$user = $this->getActualUsername($user);
-			$password = $this->getPasswordForUser($user);
+			if ($password === null) {
+				$password = $this->getPasswordForUser($user);
+			}
 		} else {
 			$user = null;
 			$password = null;
