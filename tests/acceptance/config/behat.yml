@@ -20,6 +20,12 @@ default:
         - OccContext:
         - TransferOwnershipContext:
 
+    apiAuth:
+      paths:
+        - '%paths.base%/../features/apiAuth'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
     apiCapabilities:
       paths:
         - '%paths.base%/../features/apiCapabilities'
