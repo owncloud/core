@@ -103,7 +103,7 @@ help:
 	@echo
 	@echo -e "Testing:\n"
 	@echo -e "make test\t\t\trun all tests"
-	@echo -e "make test-php\t\t\trun all PHP tests"
+	@echo -e "make test-php-unit\t\t\trun all PHP tests"
 	@echo -e "make test-php-style\t\trun PHP code style checks"
 	@echo -e "make test-js\t\t\trun Javascript tests"
 	@echo -e "make test-js-debug\t\trun Javascript tests in debug mode (continuous)"
@@ -113,7 +113,7 @@ help:
 	@echo -e "make clean-test\t\t\tclean test results"
 	@echo
 	@echo It is also possible to run individual PHP test files with the following command:
-	@echo -e "make test-php TEST_DATABASE=mysql TEST_PHP_SUITE=path/to/testfile.php"
+	@echo -e "make test-php-unit TEST_DATABASE=mysql TEST_PHP_SUITE=path/to/testfile.php"
 	@echo
 	@echo -e "Tools:\n"
 	@echo -e "make test-php-style-fix\t\trun PHP code style checks and fix any issues found"
@@ -171,8 +171,8 @@ clean-nodejs-deps:
 ## Tests
 ##---------------------
 
-.PHONY: test-php
-test-php: $(composer_dev_deps)
+.PHONY: test-php-unit
+test-php-unit: $(composer_dev_deps)
 	PHPUNIT=$(PHPUNIT) build/autotest.sh $(TEST_DATABASE) $(TEST_PHP_SUITE)
 
 .PHONY: test-external
@@ -218,7 +218,7 @@ test-php-phpstan: vendor-bin/phpstan/vendor
 	$(PHPSTAN) analyse --memory-limit=2G --configuration=./phpstan.neon --level=0 apps core settings lib/private lib/public ocs ocs-provider
 
 .PHONY: test
-test: test-php-style test-php test-js test-acceptance-api test-acceptance-cli test-acceptance-webui
+test: test-php-style test-php-unit test-js test-acceptance-api test-acceptance-cli test-acceptance-webui
 
 .PHONY: clean-test-acceptance
 clean-test-acceptance:
