@@ -897,10 +897,13 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	 * @dataProvider dataTestGetAccepted
 	 *
 	 */
-	public function testGetAccepted($autoAddServers, $autoAccept, $isRemoteTrusted, $expected) {
+	public function testGetAccepted($autoAddServers, $globalAutoAccept, $userAutoAccept, $isRemoteTrusted, $expected) {
 		$this->config->method('getAppValue')
 			->with('federatedfilesharing', 'auto_accept_trusted', 'no')
-			->willReturn($autoAccept);
+			->willReturn($globalAutoAccept);
+		$this->config->method('getUserValue')
+			->with('user@server.com', 'federatedfilesharing', 'auto_accept_share_trusted', $globalAutoAccept)
+			->willReturn($userAutoAccept);
 
 		$event = new GenericEvent(
 			'',
@@ -916,7 +919,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$shouldAutoAccept = $this->invokePrivate(
 			$this->provider,
 			'getAccepted',
-			['remote']
+			['remote', 'user@server.com']
 		);
 
 		$this->assertEquals($expected, $shouldAutoAccept);
@@ -925,17 +928,20 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	public function dataTestGetAccepted() {
 		return [
 			// never autoaccept when auto add to trusted is on
-			[true, 'yes', true, false],
-			[true, 'yes', false, false],
-			[true, 'no', true, false],
-			[true, 'no', false, false],
+			[true, 'yes', 'yes', true, false],
+			[true, 'yes', 'yes', false, false],
+			[true, 'no', 'no', true, false],
+			[true, 'no', 'no', false, false],
 			// never autoaccept when auto autoaccept is off
-			[false, 'no', false, false],
-			[false, 'no', true, false],
+			[false, 'no', 'no', false, false],
+			[false, 'no', 'no', true, false],
 			// never autoaccept when remote is not trusted
-			[false, 'yes', false, false],
+			[false, 'yes', 'yes', false, false],
 			// autoaccept
-			[false, 'yes', true, true],
+			[false, 'yes', 'yes', true, true],
+			// userAutoAccept overrides globalAutoAccept
+			[false, 'yes', 'no', true, false],
+			[false, 'no', 'yes', true, true],
 		];
 	}
 }
