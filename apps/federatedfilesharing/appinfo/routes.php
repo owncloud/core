@@ -40,5 +40,10 @@ return [
 		['name' => 'ocm#index', 'url' => '/', 'verb' => 'GET'],
 		['name' => 'ocm#createShare', 'url' => '/shares', 'verb' => 'POST'],
 		['name' => 'ocm#processNotification', 'url' => '/notifications', 'verb' => 'POST'],
+		[
+			'name' => 'SharingPersonalSettings#setUserConfig',
+			'url' => '/personalsettings/setuserconfig',
+			'verb' => 'POST'
+		],
 	]
 ];

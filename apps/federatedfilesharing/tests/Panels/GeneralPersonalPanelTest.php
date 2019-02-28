@@ -19,10 +19,10 @@
  *
  */
 
-namespace OCA\FederatedFileSharing\Tests;
+namespace OCA\FederatedFileSharing\Tests\Panels;
 
 use OCA\FederatedFileSharing\FederatedShareProvider;
-use OCA\FederatedFileSharing\PersonalPanel;
+use OCA\FederatedFileSharing\Panels\GeneralPersonalPanel;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
@@ -32,9 +32,9 @@ use OCP\IUserSession;
 /**
  * @package OCA\FederatedFileSharing\Tests
  */
-class PersonalPanelTest extends \Test\TestCase {
+class GeneralPersonalPanelTest extends \Test\TestCase {
 
-	/** @var PersonalPanel */
+	/** @var GeneralPersonalPanel */
 	private $panel;
 	/** @var IL10N */
 	private $l;
@@ -56,7 +56,7 @@ class PersonalPanelTest extends \Test\TestCase {
 		$this->shareProvider = $this->getMockBuilder(FederatedShareProvider::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->panel = new PersonalPanel($this->l,
+		$this->panel = new GeneralPersonalPanel($this->l,
 			$this->userSession,
 			$this->urlGenerator,
 			$this->shareProvider,

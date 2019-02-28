@@ -18,8 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OCA\FederatedFileSharing;
+namespace OCA\FederatedFileSharing\Panels;
 
+use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCP\IConfig;
 use OCP\Settings\ISettings;
 use OCP\Template;

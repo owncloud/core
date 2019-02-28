@@ -18,8 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OCA\FederatedFileSharing;
+namespace OCA\FederatedFileSharing\Panels;
 
+use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
@@ -27,7 +28,7 @@ use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class PersonalPanel implements ISettings {
+class GeneralPersonalPanel implements ISettings {
 
 	/** @var IL10N */
 	protected $l;
@@ -69,7 +70,7 @@ class PersonalPanel implements ISettings {
 		$cloudID = $this->userSession->getUser()->getCloudId();
 		$url = 'https://owncloud.org/federation#' . $cloudID;
 		$ownCloudLogoPath = $this->urlGenerator->imagePath('core', 'logo-icon.svg');
-		$tmpl = new Template('federatedfilesharing', 'settings-personal');
+		$tmpl = new Template('federatedfilesharing', 'settings-personal-general');
 		$tmpl->assign('outgoingServer2serverShareEnabled', $this->shareProvider->isOutgoingServer2serverShareEnabled());
 		$tmpl->assign('message_with_URL', $this->l->t('Share with me through my #ownCloud Federated Cloud ID, see %s', [$url]));
 		$tmpl->assign('message_without_URL', $this->l->t('Share with me through my #ownCloud Federated Cloud ID', [$cloudID]));
