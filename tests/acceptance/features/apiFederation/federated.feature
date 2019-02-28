@@ -66,10 +66,10 @@ Feature: federated
       | mountpoint  | {{TemporaryMountPointName#/textfile0.txt}} |
       | accepted    | 0                                          |
 
-  Scenario: Remote sharee requests informations of only one share
+  Scenario: Remote sharee requests information of only one share
     Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
-    When user "user1" gets informations of last federated cloud share using the sharing API
+    When user "user1" retrieves the information of the last federated cloud share using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -86,9 +86,9 @@ Feature: federated
       | permissions | 27                 |
 
   @issue-34636
-  Scenario: Remote sharee requests informations of only one share before accepting it
+  Scenario: Remote sharee requests information of only one share before accepting it
     Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
-    When user "user1" gets informations of last pending federated cloud share using the sharing API
+    When user "user1" retrieves the information of the last pending federated cloud share using the sharing API
     Then the HTTP status code should be "200"
     And the body of the response should be empty
     #And the OCS status code should be "100"
