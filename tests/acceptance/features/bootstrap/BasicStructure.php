@@ -944,6 +944,25 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body using password "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param string $password
+	 * @param TableNode $body
+	 *
+	 * @return void
+	 */
+	public function userSendsHTTPMethodToOcsApiEndpointWithBodyAndPassword(
+		$user, $verb, $url, $password, $body
+	) {
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user, $verb, $url, $body, $password
+		);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
 	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
 	 *
