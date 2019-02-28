@@ -195,4 +195,24 @@ class SharingHelper {
 		}
 		return $permissionSum;
 	}
+
+	/**
+	 *
+	 * @param \SimpleXMLElement $responseXmlObject
+	 * @param string $errorMessage
+	 *
+	 * @throws \Exception
+	 *
+	 * @return string
+	 */
+	public static function getLastShareIdFromResponse(
+		$responseXmlObject, $errorMessage = "cannot find share id in response"
+	) {
+		$xmlPart = $responseXmlObject->xpath("//data/element[last()]/id");
+		
+		if (!\is_array($xmlPart) || (\count($xmlPart) === 0)) {
+			throw new \Exception($errorMessage);
+		}
+		return $xmlPart[0]->__toString();
+	}
 }

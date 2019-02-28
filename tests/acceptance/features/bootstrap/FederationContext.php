@@ -24,6 +24,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use TestHelpers\SharingHelper;
 
 require_once 'bootstrap.php';
 
@@ -105,7 +106,9 @@ class FederationContext implements Context {
 		$this->userGetsTheListOfPendingFederatedCloudShares($user);
 		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 		$this->featureContext->theOCSStatusCodeShouldBe('100');
-		$share_id = $this->featureContext->getResponseXml()->data[0]->element[0]->id;
+		$share_id = SharingHelper::getLastShareIdFromResponse(
+			$this->featureContext->getResponseXml()
+		);
 		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
 			'POST',
 			"/apps/files_sharing/api/v1/remote_shares/pending/{$share_id}",
@@ -128,6 +131,55 @@ class FederationContext implements Context {
 		);
 		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 		$this->featureContext->theOCSStatusCodeShouldBe('100');
+	}
+
+	/**
+	 * @When /^user "([^"]*)" retrieves the information of the last federated cloud share using the sharing API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userRetrievesInformationOfLastFederatedShare($user) {
+		$this->featureContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			'GET',
+			"/apps/files_sharing/api/v1/remote_shares",
+			null
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe('100');
+		$share_id = SharingHelper::getLastShareIdFromResponse(
+			$this->featureContext->getResponseXml()
+		);
+		$this->featureContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			'GET',
+			"/apps/files_sharing/api/v1/remote_shares/{$share_id}",
+			null
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" retrieves the information of the last pending federated cloud share using the sharing API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userRetrievesInformationOfLastPendingFederatedShare($user) {
+		$this->userGetsTheListOfPendingFederatedCloudShares($user);
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe('100');
+		$share_id = SharingHelper::getLastShareIdFromResponse(
+			$this->featureContext->getResponseXml()
+		);
+		$this->featureContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			'GET',
+			"/apps/files_sharing/api/v1/remote_shares/{$share_id}",
+			null
+		);
 	}
 
 	/**
