@@ -1,8 +1,9 @@
 <?php
 /**
  * @author Viktar Dubiniuk <dubiniuk@owncloud.com>
+ * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -377,7 +378,8 @@ class Share20OcsController extends OCSController {
 
 		$shareWith = $this->request->getParam('shareWith', null);
 
-		$autoAccept = $this->config->getAppValue('core', 'shareapi_auto_accept_share', 'yes') === 'yes';
+		$globalAutoAcceptValue = $this->config->getAppValue('core', 'shareapi_auto_accept_share', 'yes');
+		$autoAccept = $this->config->getUserValue($shareWith, 'files_sharing', 'auto_accept_share', $globalAutoAcceptValue) === 'yes';
 		if ($shareType === Share::SHARE_TYPE_USER) {
 			// Valid user is required to share
 			if ($shareWith === null || !$this->userManager->userExists($shareWith)) {
