@@ -66,6 +66,53 @@ Feature: federated
       | mountpoint  | {{TemporaryMountPointName#/textfile0.txt}} |
       | accepted    | 0                                          |
 
+  Scenario: Remote sharee requests informations of only one share
+    Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    When user "user1" gets informations of last federated cloud share using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | id          | A_NUMBER           |
+      | remote      | REMOTE             |
+      | remote_id   | A_NUMBER           |
+      | share_token | A_TOKEN            |
+      | name        | /textfile0.txt     |
+      | owner       | user0              |
+      | user        | user1              |
+      | mountpoint  | /textfile0 (2).txt |
+      | accepted    | 1                  |
+      | type        | file               |
+      | permissions | 27                 |
+
+  @issue-34636
+  Scenario: Remote sharee requests informations of only one share before accepting it
+    Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
+    When user "user1" gets informations of last pending federated cloud share using the sharing API
+    Then the HTTP status code should be "200"
+    And the body of the response should be empty
+    #And the OCS status code should be "100"
+    #And the fields of the last response should include
+    #  | id          | A_NUMBER                                   |
+    #  | remote      | REMOTE                                     |
+    #  | remote_id   | A_NUMBER                                   |
+    #  | share_token | A_TOKEN                                    |
+    #  | name        | /textfile0.txt                             |
+    #  | owner       | user0                                      |
+    #  | user        | user1                                      |
+    #  | mountpoint  | {{TemporaryMountPointName#/textfile0.txt}} |
+    #  | accepted    | 0                                          |
+
+  Scenario: sending a GET request to a pending remote share is not valid
+    When user "user1" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/remote_shares/pending/12"
+    Then the HTTP status code should be "405"
+    And the body of the response should be empty
+
+  Scenario: sending a GET request to a not existing remote share
+    When user "user1" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/remote_shares/9999999999"
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "200"
+
   Scenario: accept a pending remote share
     Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
     When user "user1" from server "LOCAL" accepts the last pending share using the sharing API
