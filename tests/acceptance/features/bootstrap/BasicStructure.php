@@ -1942,6 +1942,17 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Then the body of the response should be empty
+	 *
+	 * @return void
+	 */
+	public function theResponseBodyShouldBeEmpty() {
+		PHPUnit_Framework_Assert::assertEmpty(
+			$this->getResponse()->getBody()->getContents()
+		);
+	}
+
+	/**
 	 * @param ResponseInterface|null $response
 	 *
 	 * @return array

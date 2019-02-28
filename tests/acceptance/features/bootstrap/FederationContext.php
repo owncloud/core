@@ -131,6 +131,65 @@ class FederationContext implements Context {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" gets informations of last federated cloud share using the sharing API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userGetsInformationOfLastFederatedCloudShare($user) {
+		$this->featureContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			'GET',
+			"/apps/files_sharing/api/v1/remote_shares",
+			null
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe('100');
+		$xmlObject = $this->featureContext->getResponseXml();
+		$xmlPart = $xmlObject->xpath("//data/element[last()]/id");
+
+		if (!\is_array($xmlPart) || (\count($xmlPart) === 0)) {
+			throw new \Exception("cannot find share id in remote shares response");
+		}
+		$share_id = $xmlPart[0]->__toString();
+		$this->featureContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			'GET',
+			"/apps/files_sharing/api/v1/remote_shares/{$share_id}",
+			null
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets informations of last pending federated cloud share using the sharing API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userGetsInformationOfLastPendingFederatedCloudShare($user) {
+		$this->userGetsTheListOfPendingFederatedCloudShares($user);
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe('100');
+		$xmlObject = $this->featureContext->getResponseXml();
+		$xmlPart = $xmlObject->xpath("//data/element[last()]/id");
+		
+		if (!\is_array($xmlPart) || (\count($xmlPart) === 0)) {
+			throw new \Exception(
+				"cannot find share id in pending remote shares response"
+			);
+		}
+		$share_id = $xmlPart[0]->__toString();
+		$this->featureContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			'GET',
+			"/apps/files_sharing/api/v1/remote_shares/{$share_id}",
+			null
+		);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" gets the list of pending federated cloud shares using the sharing API$/
 	 *
 	 * @param string $user
