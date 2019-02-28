@@ -1025,6 +1025,25 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url with body using password :password
+	 *
+	 * @param string $verb
+	 * @param string $url
+	 * @param string $password
+	 * @param TableNode $body
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSendsHttpMethodToOcsApiWithBodyAndPassword(
+		$verb, $url, $password, TableNode $body
+	) {
+		$admin = $this->getAdminUsername();
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$admin, $verb, $url, $body, $password
+		);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to URL "([^"]*)"$/
 	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to URL "([^"]*)"$/
 	 *
