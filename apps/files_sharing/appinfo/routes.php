@@ -39,6 +39,11 @@ $application->registerRoutes($this, [
 			'url' => '/testremote',
 			'verb' => 'GET'
 		],
+		[
+			'name' => 'PersonalSettings#setUserConfig',
+			'url' => '/personalsettings/setuserconfig',
+			'verb' => 'POST'
+		],
 	],
 	'ocs' => [
 		[
