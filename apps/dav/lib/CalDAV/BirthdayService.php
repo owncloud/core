@@ -32,6 +32,7 @@ use Sabre\VObject\Document;
 use Sabre\VObject\InvalidDataException;
 use Sabre\VObject\Property\VCard\DateAndOrTime;
 use Sabre\VObject\Reader;
+use Sabre\VObject\UUIDUtil;
 
 class BirthdayService {
 	const BIRTHDAY_CALENDAR_URI = 'contact_birthdays';
@@ -59,7 +60,7 @@ class BirthdayService {
 	 */
 	public function onCardChanged($addressBookId, $cardUri, $cardData) {
 		$targetPrincipals = $this->getAllAffectedPrincipals($addressBookId);
-		
+
 		$book = $this->cardDavBackEnd->getAddressBookById($addressBookId);
 		$targetPrincipals[] = $book['principaluri'];
 		$datesToSync = [
@@ -187,7 +188,7 @@ class BirthdayService {
 			$date
 		);
 		$vEvent->DTEND['VALUE'] = 'DATE';
-		$vEvent->{'UID'} = $doc->UID;
+		$vEvent->{'UID'} = UUIDUtil::getUUID();
 		$vEvent->{'RRULE'} = 'FREQ=YEARLY';
 		$vEvent->{'SUMMARY'} = $summary;
 		$vEvent->{'TRANSP'} = 'TRANSPARENT';
