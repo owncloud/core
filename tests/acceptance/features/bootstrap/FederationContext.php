@@ -141,12 +141,7 @@ class FederationContext implements Context {
 	 * @return void
 	 */
 	public function userRetrievesInformationOfLastFederatedShare($user) {
-		$this->featureContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user,
-			'GET',
-			"/apps/files_sharing/api/v1/remote_shares",
-			null
-		);
+		$this->userGetsTheListOfFederatedCloudShares($user);
 		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 		$this->featureContext->theOCSStatusCodeShouldBe('100');
 		$share_id = SharingHelper::getLastShareIdFromResponse(
@@ -196,6 +191,54 @@ class FederationContext implements Context {
 			'GET',
 			$url,
 			null
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets the list of federated cloud shares using the sharing API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userGetsTheListOfFederatedCloudShares($user) {
+		$this->featureContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user, 'GET', "/apps/files_sharing/api/v1/remote_shares"
+		);
+	}
+
+	/**
+	 *
+	 * @When /^user "([^"]*)" deletes the last (pending|)\s?federated cloud share using the sharing API$/
+	 * @When /^user "([^"]*)" deletes the last (pending|)\s?federated cloud share with password "([^"]*)" using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $shareType "pending" or empty string
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userDeletesLastFederatedCloudShare(
+		$user, $shareType, $password = null
+	) {
+		if ($shareType === "pending") {
+			$this->userGetsTheListOfPendingFederatedCloudShares($user);
+		} else {
+			$this->userGetsTheListOfFederatedCloudShares($user);
+		}
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe('100');
+		$share_id = SharingHelper::getLastShareIdFromResponse(
+			$this->featureContext->getResponseXml()
+		);
+		if ($shareType === "pending") {
+			$url = "/apps/files_sharing/api/v1/remote_shares/pending/$share_id";
+		} else {
+			$url = "/apps/files_sharing/api/v1/remote_shares/$share_id";
+		}
+		
+		$this->featureContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user, 'DELETE', $url, null, $password
 		);
 	}
 
