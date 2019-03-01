@@ -200,6 +200,76 @@ Feature: federated
     And the content of file "/PARENT (2)/textfile0.txt" for user "user1" should be "AAAAABBBBBCCCCC"
     And the content of file "/PARENT/textfile0.txt" for user "user0" on server "REMOTE" should be "AAAAABBBBBCCCCC"
 
+  Scenario: Remote sharee deletes an accepted federated share
+    Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    When user "user1" deletes the last federated cloud share using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user1" should not see the following elements
+      | /textfile0%20(2).txt      |
+    When user "user1" gets the list of federated cloud shares using the sharing API
+    Then the response should contain 0 entries
+    When user "user1" gets the list of pending federated cloud shares using the sharing API
+    Then the response should contain 0 entries
+
+  Scenario: Remote sharee tries to delete an accepted federated share sending wrong password
+    Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    When user "user1" deletes the last federated cloud share with password "invalid" using the sharing API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And user "user1" should see the following elements
+      | /textfile0%20(2).txt      |
+    When user "user1" gets the list of federated cloud shares using the sharing API
+    Then the fields of the last response should include
+      | id          | A_NUMBER           |
+      | remote      | REMOTE             |
+      | remote_id   | A_NUMBER           |
+      | share_token | A_TOKEN            |
+      | name        | /textfile0.txt     |
+      | owner       | user0              |
+      | user        | user1              |
+      | mountpoint  | /textfile0 (2).txt |
+      | accepted    | 1                  |
+      | type        | file               |
+      | permissions | 27                 |
+    When user "user1" gets the list of pending federated cloud shares using the sharing API
+    Then the response should contain 0 entries
+
+  Scenario: Remote sharee deletes a pending federated share
+    Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
+    When user "user1" deletes the last pending federated cloud share using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user1" should not see the following elements
+      | /textfile0%20(2).txt      |
+    When user "user1" gets the list of federated cloud shares using the sharing API
+    Then the response should contain 0 entries
+    When user "user1" gets the list of pending federated cloud shares using the sharing API
+    Then the response should contain 0 entries
+
+  Scenario: Remote sharee tries to delete a pending federated share sending wrong password
+    Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
+    When user "user1" deletes the last pending federated cloud share with password "invalid" using the sharing API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And user "user1" should not see the following elements
+      | /textfile0%20(2).txt      |
+    When user "user1" gets the list of pending federated cloud shares using the sharing API
+    Then the fields of the last response should include
+      | id          | A_NUMBER                                   |
+      | remote      | REMOTE                                     |
+      | remote_id   | A_NUMBER                                   |
+      | share_token | A_TOKEN                                    |
+      | name        | /textfile0.txt                             |
+      | owner       | user0                                      |
+      | user        | user1                                      |
+      | mountpoint  | {{TemporaryMountPointName#/textfile0.txt}} |
+      | accepted    | 0                                          |
+    When user "user1" gets the list of federated cloud shares using the sharing API
+    Then the response should contain 0 entries
+
   Scenario: Trusted server handshake does not require authenticated requests - we force 403 by sending an empty body
     Given using server "LOCAL"
     And using OCS API version "2"
