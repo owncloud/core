@@ -285,6 +285,13 @@ $CONFIG = array(
 'accounts.enable_medial_search' => true,
 
 /**
+ * Allow medial search on the group id. Allows finding 'test' when searching for 'es'.
+ * This is only used in the DB group backend (local groups), and won't be used against LDAP
+ * Shibboleth or any other group backend.
+ */
+'groups.enable_medial_search' => true,
+
+/**
  * Defines the minimum characters entered before a search returns results for 
  * users or groups in the share autocomplete form. Lower values increase search
  * time especially for large backends.
