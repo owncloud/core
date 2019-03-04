@@ -17,12 +17,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Encryption now supports working with a Hardware Security Module - [#34527](https://github.com/owncloud/core/issues/34527)
 - Command for first run wizard to reset for all users - [firstrunwizard/#83](https://github.com/owncloud/firstrunwizard/pull/83)
 - Inform admin about the need to login again after changing the master encryption key - [#34596](https://github.com/owncloud/core/issues/34596)
+- Added checkboxes to hide quota and password - [#34479](https://github.com/owncloud/core/issues/34479)
+- New option to allow users to configure automatically accept incoming local shares - [#34647](https://github.com/owncloud/core/issues/34647)
+- By default the "apps-external" directory is included in config.php during installation - [#34656](https://github.com/owncloud/core/issues/34656)
 
 ### Changed
 
 - Bump @bower_components/backbone from 1.2.3 to 1.3.3 in /build - [#34288](https://github.com/owncloud/core/issues/34288)
 - Bump @bower_components/base64 from 0.3.0 to 1.0.2 in /build - [#34542](https://github.com/owncloud/core/issues/34542)
 - Bump @bower_components/handlebars from v4.0.12 to v4.1.0 in /build - [#34454](https://github.com/owncloud/core/issues/34454)
+- Bump @bower_components/moment from 2.22.0 to 2.24.0 in /build - [#34459](https://github.com/owncloud/core/issues/34459)
 - Bump @bower_components/strengthify from 0.5.2 to 0.5.6 in /build - [#34451](https://github.com/owncloud/core/issues/34451)
 - Bump @bower_components/underscore from 1.8.3 to 1.9.1 in /build - [#34457](https://github.com/owncloud/core/issues/34457)
 - Bump extend from 3.0.1 to 3.0.2 in /build - [#34411](https://github.com/owncloud/core/issues/34411)
@@ -49,6 +53,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Add password confirmation field when resetting password - [#34492](https://github.com/owncloud/core/issues/34492)
 - Add email footer with motto in email for changing password - [#34498](https://github.com/owncloud/core/issues/34498)
 - Change the styling of the active settings navigation menu item - [#34561](https://github.com/owncloud/core/issues/34561)
+- Added delay in search field - [#34613](https://github.com/owncloud/core/issues/34613)
+
+### Removed
+
+- Removed bundled documentation, help links now point to the online documentation - [#34612](https://github.com/owncloud/core/issues/34612) [#34649](https://github.com/owncloud/core/issues/34649)
 
 ### Fixed
 
@@ -58,6 +67,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fixes issue file picker choose button disabled for directory selection - [#34426](https://github.com/owncloud/core/issues/34426)
 - Use sabre/vobject ^4.2 to fix issues in ITip messages - [#34553](https://github.com/owncloud/core/issues/34553)
 - Filter static tags when searching files by tag - [#34557](https://github.com/owncloud/core/issues/34557)
+- Fix collaborative tags PHP API for get and create operations - [#34610](https://github.com/owncloud/core/issues/34610)
 - Improve performance of account sync service - [#34546](https://github.com/owncloud/core/issues/34546)
 - Improve code occ files_external:list --short - [#34549](https://github.com/owncloud/core/issues/34549)
 - Fix preview expiration issues with trashbin/versions - [#34533](https://github.com/owncloud/core/issues/34533)
