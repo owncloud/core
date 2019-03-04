@@ -178,6 +178,21 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 				'personalNote' => $emailBody
 			]);
 
+			$isLinkValid = false;
+			$link = \parse_url($filter->getLink());
+			$trustedDomains = \OC::$server->getConfig()->getSystemValue('trusted_domains');
+			foreach ($trustedDomains as $trustedDomain) {
+				if (\parse_url($trustedDomain)['host'] === $link['host']) {
+					$isLinkValid = true;
+					break;
+				}
+			}
+
+			if (!$isLinkValid) {
+				$l = \OC::$server->getL10N('core');
+				return OCP\JSON::error(['data' => ['message' => $l->t("Invalid share-link provided")]]);
+			}
+
 			$options = [];
 			$results = [];
 			$toEmails = \explode(',', $filter->getToAddress());
@@ -217,6 +232,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 				if ($emailBody !== null || $emailBody !== '') {
 					$emailBody = \strip_tags($emailBody);
 				}
+
 				$result = $mailNotification->sendLinkShareMail(
 					null,
 					$filter->getFile(),
@@ -225,7 +241,6 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 					$filter->getPersonalNote(),
 					$options
 				);
-
 				$results = \array_merge($results, $result);
 			}
 
