@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -18,41 +18,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+namespace OCA\DAV\TrashBin;
 
-namespace OCA\DAV;
+use Sabre\DAV\INode;
 
-use OCP\Capabilities\ICapability;
-use OCP\IConfig;
-
-class Capabilities implements ICapability {
-	/** @var IConfig */
-	private $config;
+/**
+ * Interface ITrashBinNode
+ *
+ * A common interface for all trash bin items
+ *
+ * @package OCA\DAV\TrashBin
+ */
+interface ITrashBinNode extends INode {
+	/**
+	 * @return string
+	 */
+	public function getOriginalFileName() : string;
+	/**
+	 * @return string
+	 */
+	public function getOriginalLocation() : string;
+	/**
+	 * @return int
+	 */
+	public function getDeleteTimestamp() : int;
 
 	/**
-	 * Capabilities constructor.
-	 *
-	 * @param IConfig $config
+	 * @param string $targetLocation
+	 * @return bool
 	 */
-	public function __construct(IConfig $config) {
-		$this->config = $config;
-	}
-
-	public function getCapabilities() {
-		$cap =  [
-			'dav' => [
-				'chunking' => '1.0',
-				'trashbin' => '1.0',
-				'zsync' => '1.0',
-				'reports' => [
-					'search-files',
-				]
-			]
-		];
-
-		if ($this->config->getSystemValue('dav.enable.async', false)) {
-			$cap['async'] = '1.0';
-		}
-
-		return $cap;
-	}
+	public function restore(string $targetLocation) : bool;
 }

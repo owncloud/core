@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -19,40 +19,27 @@
  *
  */
 
-namespace OCA\DAV;
+namespace OCA\DAV\TrashBin;
 
-use OCP\Capabilities\ICapability;
-use OCP\IConfig;
+use Sabre\DAVACL\AbstractPrincipalCollection;
 
-class Capabilities implements ICapability {
-	/** @var IConfig */
-	private $config;
+class RootCollection extends AbstractPrincipalCollection {
 
 	/**
-	 * Capabilities constructor.
+	 * This method returns a node for a principal.
 	 *
-	 * @param IConfig $config
+	 * The passed array contains principal information, and is guaranteed to
+	 * at least contain a uri item. Other properties may or may not be
+	 * supplied by the authentication backend.
+	 *
+	 * @param array $principalInfo
+	 * @return TrashBinHome
 	 */
-	public function __construct(IConfig $config) {
-		$this->config = $config;
+	public function getChildForPrincipal(array $principalInfo) {
+		return new TrashBinHome($principalInfo, new TrashBinManager());
 	}
 
-	public function getCapabilities() {
-		$cap =  [
-			'dav' => [
-				'chunking' => '1.0',
-				'trashbin' => '1.0',
-				'zsync' => '1.0',
-				'reports' => [
-					'search-files',
-				]
-			]
-		];
-
-		if ($this->config->getSystemValue('dav.enable.async', false)) {
-			$cap['async'] = '1.0';
-		}
-
-		return $cap;
+	public function getName() {
+		return 'trash-bin';
 	}
 }

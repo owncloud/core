@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -19,40 +19,17 @@
  *
  */
 
-namespace OCA\DAV;
+namespace OCA\DAV\TrashBin;
 
-use OCP\Capabilities\ICapability;
-use OCP\IConfig;
+use Sabre\DAV\Exception\Forbidden;
+use Sabre\DAV\IFile;
 
-class Capabilities implements ICapability {
-	/** @var IConfig */
-	private $config;
-
-	/**
-	 * Capabilities constructor.
-	 *
-	 * @param IConfig $config
-	 */
-	public function __construct(IConfig $config) {
-		$this->config = $config;
+class TrashBinFile extends AbstractTrashBinNode implements IFile {
+	public function put($data) {
+		throw new Forbidden('Permission denied to write this file');
 	}
 
-	public function getCapabilities() {
-		$cap =  [
-			'dav' => [
-				'chunking' => '1.0',
-				'trashbin' => '1.0',
-				'zsync' => '1.0',
-				'reports' => [
-					'search-files',
-				]
-			]
-		];
-
-		if ($this->config->getSystemValue('dav.enable.async', false)) {
-			$cap['async'] = '1.0';
-		}
-
-		return $cap;
+	public function get() {
+		throw new Forbidden('Permission denied to read this file');
 	}
 }
