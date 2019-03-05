@@ -55,6 +55,7 @@ use OCA\DAV\Files\FileLocksBackend;
 use OCA\DAV\Files\PreviewPlugin;
 use OCA\DAV\JobStatus\Entity\JobStatusMapper;
 use OCA\DAV\SystemTag\SystemTagPlugin;
+use OCA\DAV\TrashBin\TrashBinPlugin;
 use OCA\DAV\Upload\ChunkingPlugin;
 use OCP\IRequest;
 use OCP\SabrePluginEvent;
@@ -187,6 +188,7 @@ class Server {
 
 		$this->server->addPlugin(new CopyEtagHeaderPlugin());
 		$this->server->addPlugin(new ChunkingPlugin());
+		$this->server->addPlugin(new TrashBinPlugin());
 
 		// Allow view-only plugin for webdav requests
 		$this->server->addPlugin(new ViewOnlyPlugin(
@@ -215,7 +217,7 @@ class Server {
 					)
 				);
 
-				if ($this->isRequestForSubtree(['files', 'uploads'])) {
+				if ($this->isRequestForSubtree(['files', 'uploads', 'trash-bin'])) {
 					//For files only
 					$filePropertiesPlugin = new FileCustomPropertiesPlugin(
 						new FileCustomPropertiesBackend(
