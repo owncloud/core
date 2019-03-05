@@ -6,8 +6,12 @@ RELATIVE_PATH := $(dir $(lastword $(MAKEFILE_LIST)))
 include $(RELATIVE_PATH)check-composer.mk
 
 # bin file definitions
-PHPUNIT=php -d zend.enable_gc=0  "$(PWD)/../../lib/composer/bin/phpunit"
-PHPUNITDBG=phpdbg -qrr -d memory_limit=4096M -d zend.enable_gc=0 "$(PWD)/../../lib/composer/bin/phpunit"
+PATH_TO_PHPUNIT=$(CURDIR)/lib/composer/bin/phpunit
+ifeq ("$(wildcard $(PATH_TO_PHPUNIT))","")
+	PATH_TO_PHPUNIT=$(CURDIR)/../../lib/composer/bin/phpunit
+endif
+PHPUNIT=php -d zend.enable_gc=0  "$(PATH_TO_PHPUNIT)"
+PHPUNITDBG=phpdbg -qrr -d memory_limit=4096M -d zend.enable_gc=0 "$(PATH_TO_PHPUNIT)"
 PHP_CS_FIXER=php -d zend.enable_gc=0 vendor-bin/owncloud-codestyle/vendor/bin/php-cs-fixer
 PHAN=php -d zend.enable_gc=0 vendor-bin/phan/vendor/bin/phan
 PHPSTAN=php -d zend.enable_gc=0 vendor-bin/phpstan/vendor/bin/phpstan

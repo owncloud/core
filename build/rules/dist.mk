@@ -3,7 +3,11 @@
 ##--------------------------------------
 
 # signing
-occ=$(CURDIR)/../../occ
+PATH_TO_OCC=$(CURDIR)/occ
+ifeq ("$(wildcard $(PATH_TO_OCC))","")
+	PATH_TO_OCC=$(CURDIR)/../../occ
+endif
+occ=$(PATH_TO_OCC)
 private_key=$(HOME)/.owncloud/certificates/$(app_name).key
 certificate=$(HOME)/.owncloud/certificates/$(app_name).crt
 sign=$(occ) integrity:sign-app --privateKey="$(private_key)" --certificate="$(certificate)"
