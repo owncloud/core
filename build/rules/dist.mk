@@ -28,7 +28,16 @@ endif
 
 # If not specified by the caller, then select some common doc files to put in the tarball.
 ifndef doc_files
-	doc_files=CHANGELOG.md CONTRIBUTING.md LICENSE README.md
+	doc_files=CHANGELOG.md README.md
+ifneq ("$(wildcard LICENSE)","")
+	doc_files+=LICENSE
+endif
+ifneq ("$(wildcard LICENSE.md)","")
+	doc_files+=LICENSE.md
+endif
+ifneq ("$(wildcard CONTRIBUTING.md)","")
+	doc_files+=CONTRIBUTING.md
+endif
 endif
 
 # If not specified by the caller, then select a "standard" set of dirs to put in the tarball.
