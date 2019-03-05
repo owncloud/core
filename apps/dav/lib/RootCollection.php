@@ -58,6 +58,8 @@ class RootCollection extends SimpleCollection {
 		$systemPrincipals->disableListing = $disableListing;
 		$filesCollection = new Files\RootCollection($userPrincipalBackend, 'principals/users');
 		$filesCollection->disableListing = $disableListing;
+		$trashBinCollection = new TrashBin\RootCollection($userPrincipalBackend, 'principals/users');
+		$trashBinCollection->disableListing = $disableListing;
 		$caldavBackend = new CalDavBackend($db, $userPrincipalBackend, $groupPrincipalBackend, $random);
 		$calendarRoot = new CalendarRoot($userPrincipalBackend, $caldavBackend, 'principals/users');
 		$calendarRoot->disableListing = $disableListing;
@@ -100,6 +102,7 @@ class RootCollection extends SimpleCollection {
 						$groupPrincipals,
 						$systemPrincipals]),
 				$filesCollection,
+				$trashBinCollection,
 				$calendarRoot,
 				$publicCalendarRoot,
 				new SimpleCollection('addressbooks', [
