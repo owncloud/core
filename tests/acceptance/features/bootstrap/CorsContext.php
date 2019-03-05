@@ -54,22 +54,19 @@ class CorsContext implements Context {
 				'domains'
 			]
 		);
-		$domains = [];
 		if ($this->featureContext->getExitStatusCodeOfOccCommand() === 0) {
-			$domains = \json_decode($this->featureContext->getStdOutOfOccCommand());
-			//the admin is not deleted after the tests, so better reset the cors setting
-			if ($user === $this->featureContext->getAdminUsername()
-				&& $this->originalAdminCorsDomains === null
-			) {
-				$this->originalAdminCorsDomains
-					= $this->featureContext->getStdOutOfOccCommand();
-			}
-		} elseif ($user === $this->featureContext->getAdminUsername()
+			$domainsJson = $this->featureContext->getStdOutOfOccCommand();
+			$domains = \json_decode($domainsJson);
+		} else {
+			$domainsJson = "";
+			$domains = [];
+		}
+		if ($user === $this->featureContext->getAdminUsername()
 			&& $this->originalAdminCorsDomains === null
 		) {
-			//exit code was not 0, so no CORS domain was set
-			$this->originalAdminCorsDomains = "";
+			$this->originalAdminCorsDomains = $domainsJson;
 		}
+		
 		$domains[] = $domain;
 		$valueString = \json_encode($domains);
 		
