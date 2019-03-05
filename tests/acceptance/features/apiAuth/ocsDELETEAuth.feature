@@ -28,18 +28,8 @@ Feature: auth
       | 2               |/cloud/users/user0/groups                            | 997      | 401       |
       | 1               |/cloud/users/user0/subadmins                         | 997      | 401       |
       | 2               |/cloud/users/user0/subadmins                         | 997      | 401       |
+      | 1               |/apps/files_sharing/api/v1/shares/123                | 997      | 401       |
+      | 2               |/apps/files_sharing/api/v1/shares/123                | 997      | 401       |
+      | 1               |/apps/files_sharing/api/v1/shares/pending/123        | 997      | 401       |
+      | 2               |/apps/files_sharing/api/v1/shares/pending/123        | 997      | 401       |
 
-  #merge into previous scenario when fixed
-  @issue-34626
-  Scenario Outline: send DELETE requests to OCS endpoints as admin with wrong password
-    Given using OCS API version "<ocs_api_version>"
-    When the administrator sends HTTP method "DELETE" to OCS API endpoint "<endpoint>" using password "invalid"
-    Then the HTTP status code should be "200"
-    And the body of the response should be empty
-    #And the OCS status code should be "997"
-    Examples:
-      | ocs_api_version | endpoint                                      |
-      | 1               | /apps/files_sharing/api/v1/shares/123         |
-      | 2               | /apps/files_sharing/api/v1/shares/123         |
-      | 1               | /apps/files_sharing/api/v1/shares/pending/123 |
-      | 2               | /apps/files_sharing/api/v1/shares/pending/123 |

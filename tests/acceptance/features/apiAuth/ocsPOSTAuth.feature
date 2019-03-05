@@ -33,19 +33,8 @@ Feature: auth
       | 2               |/privatedata/deleteattribute/testing/test            | 997      | 401       |
       | 1               |/privatedata/setattribute/testing/test               | 997      | 401       |
       | 2               |/privatedata/setattribute/testing/test               | 997      | 401       |
+      | 1               |/apps/files_sharing/api/v1/shares                    | 997      | 401       |
+      | 2               |/apps/files_sharing/api/v1/shares                    | 997      | 401       |
+      | 1               |/apps/files_sharing/api/v1/shares/pending/123        | 997      | 401       |
+      | 2               |/apps/files_sharing/api/v1/shares/pending/123        | 997      | 401       |
 
-  #merge into previous scenario when fixed
-  @issue-34626
-  Scenario Outline: send POST requests to OCS endpoints as normal user with wrong password
-    Given using OCS API version "<ocs_api_version>"
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "<endpoint>" with body using password "invalid"
-      | data        | doesnotmatter |
-    Then the HTTP status code should be "200"
-    And the body of the response should be empty
-    #And the OCS status code should be "997"
-    Examples:
-      | ocs_api_version | endpoint                                      |
-      | 1               | /apps/files_sharing/api/v1/shares             |
-      | 2               | /apps/files_sharing/api/v1/shares             |
-      | 1               | /apps/files_sharing/api/v1/shares/pending/123 |
-      | 2               | /apps/files_sharing/api/v1/shares/pending/123 |

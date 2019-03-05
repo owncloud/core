@@ -27,14 +27,8 @@ Feature: auth
       |/ocs/v2.php/config                                          | 200      | 200       |
       |/ocs/v1.php/privatedata/getattribute                        | 997      | 401       |
       |/ocs/v2.php/privatedata/getattribute                        | 997      | 401       |
-
-  #merge into previous scenario when fixed
-  @issue-34626
-  Scenario: using OCS anonymously
-    When a user requests "/ocs/v1.php/apps/files_sharing/api/v1/shares" with "GET" and no authentication
-    Then the HTTP status code should be "200"
-    #Then the HTTP status code should be "401"
-    #And the OCS status code should be "997"
+      |/ocs/v1.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      |/ocs/v2.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
 
   @issue-32068
   Scenario Outline: using OCS with non-admin basic auth
@@ -86,19 +80,8 @@ Feature: auth
       | 2               |/config                                          | 200      | 200       |
       | 1               |/privatedata/getattribute                        | 997      | 401       |
       | 2               |/privatedata/getattribute                        | 997      | 401       |
-
-  #merge into previous scenario when fixed
-  @issue-34626
-  Scenario Outline: using OCS as normal user with wrong password
-    Given using OCS API version "<ocs_api_version>"
-    When user "user0" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares" using password "invalid"
-    Then the HTTP status code should be "200"
-    And the body of the response should be empty
-    #And the OCS status code should be "997"
-    Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | 1               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      | 2               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
 
   Scenario Outline: using OCS with admin basic auth
     When the administrator requests "<endpoint>" with "GET" using basic auth
@@ -134,19 +117,8 @@ Feature: auth
       | 2               |/cloud/users                                     | 997      | 401       |
       | 1               |/privatedata/getattribute                        | 997      | 401       |
       | 2               |/privatedata/getattribute                        | 997      | 401       |
-
-  #merge into previous scenario when fixed
-  @issue-34626
-  Scenario Outline: using OCS as admin user with wrong password
-    Given using OCS API version "<ocs_api_version>"
-    When the administrator sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares" using password "invalid"
-    Then the HTTP status code should be "200"
-    And the body of the response should be empty
-    #And the OCS status code should be "997"
-    Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | 1               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      | 2               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
 
   Scenario Outline: using OCS with token auth of a normal user
     When user "user0" requests "<endpoint>" with "GET" using basic token auth
