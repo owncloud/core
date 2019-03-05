@@ -28,7 +28,7 @@ endif
 
 # If not specified by the caller, then select some common doc files to put in the tarball.
 ifndef doc_files
-	doc_files=README.md CHANGELOG.md
+	doc_files=CHANGELOG.md CONTRIBUTING.md LICENSE README.md
 endif
 
 # If not specified by the caller, then select a "standard" set of dirs to put in the tarball.
