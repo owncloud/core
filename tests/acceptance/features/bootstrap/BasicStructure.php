@@ -802,6 +802,50 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with headers$/
+	 *
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode $headersTable
+	 *
+	 * @return void
+	 */
+	public function userSendsToOcsApiEndpointWithHeaders(
+		$user, $verb, $url, TableNode $headersTable
+	) {
+		$user = $this->getActualUsername($user);
+		$password = $this->getPasswordForUser($user);
+		
+		$headers = [];
+		foreach ($headersTable as $row) {
+			$headers[$row['header']] = $row ['value'];
+		}
+
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(), $user, $password, $verb,
+			$url, [], $this->ocsApiVersion, $headers
+		);
+	}
+
+	/**
+	 * @When /^the administrator sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with headers$/
+	 *
+	 * @param string $verb
+	 * @param string $url
+	 * @param TableNode $headersTable
+	 *
+	 * @return void
+	 */
+	public function administratorSendsToOcsApiEndpointWithHeaders(
+		$verb, $url, TableNode $headersTable
+	) {
+		$this->userSendsToOcsApiEndpointWithHeaders(
+			$this->getAdminUsername(), $verb, $url, $headersTable
+		);
+	}
+
+	/**
 	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url
 	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url using password :password
 	 *
