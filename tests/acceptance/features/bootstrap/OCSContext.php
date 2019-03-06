@@ -151,17 +151,9 @@ class OCSContext implements Context {
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$password = $this->featureContext->getPasswordForUser($user);
-		
-		$headers = [];
-		foreach ($headersTable as $row) {
-			$headers[$row['header']] = $row ['value'];
-		}
-		
-		$response = OcsApiHelper::sendRequest(
-			$this->featureContext->getBaseUrl(), $user, $password, $verb,
-			$url, [], $this->featureContext->getOcsApiVersion(), $headers
+		$this->userSendsToOcsApiEndpointWithHeadersAndPassword(
+			$user, $verb, $url, $password, $headersTable
 		);
-		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -178,6 +170,51 @@ class OCSContext implements Context {
 	) {
 		$this->userSendsToOcsApiEndpointWithHeaders(
 			$this->featureContext->getAdminUsername(), $verb, $url, $headersTable
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with headers using password "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param string $password
+	 * @param TableNode $headersTable
+	 *
+	 * @return void
+	 */
+	public function userSendsToOcsApiEndpointWithHeadersAndPassword(
+		$user, $verb, $url, $password, TableNode $headersTable
+	) {
+		$user = $this->featureContext->getActualUsername($user);
+		$headers = [];
+		foreach ($headersTable as $row) {
+			$headers[$row['header']] = $row ['value'];
+		}
+		
+		$response = OcsApiHelper::sendRequest(
+			$this->featureContext->getBaseUrl(), $user, $password, $verb,
+			$url, [], $this->featureContext->getOcsApiVersion(), $headers
+		);
+		$this->featureContext->setResponse($response);
+	}
+
+	/**
+	 * @When /^the administrator sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with headers using password "([^"]*)"$/
+	 *
+	 * @param string $verb
+	 * @param string $url
+	 * @param string $password
+	 * @param TableNode $headersTable
+	 *
+	 * @return void
+	 */
+	public function administratorSendsToOcsApiEndpointWithHeadersAndPassword(
+		$verb, $url, $password, TableNode $headersTable
+	) {
+		$this->userSendsToOcsApiEndpointWithHeadersAndPassword(
+			$this->featureContext->getAdminUsername(), $verb, $url, $password, $headersTable
 		);
 	}
 
