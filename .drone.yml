@@ -496,7 +496,7 @@ services:
         DB_TYPE: oracle
 
   selenium:
-    image: selenium/standalone-chrome-debug:latest
+    image: selenium/standalone-chrome:latest
     pull: true
     when:
       matrix:
@@ -504,7 +504,7 @@ services:
         BROWSER: chrome
 
   selenium:
-    image: selenium/standalone-firefox-debug:3.8.1
+    image: selenium/standalone-firefox:3.8.1
     pull: true
     environment:
       - SE_OPTS=-enablePassThrough false
