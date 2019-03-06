@@ -496,7 +496,7 @@ services:
         DB_TYPE: oracle
 
   selenium:
-    image: selenium/standalone-chrome:latest
+    image: selenium/standalone-chrome-debug:latest
     pull: true
     environment:
       - JAVA_OPTS=-Dselenium.LOGGER.level=WARNING
@@ -506,7 +506,7 @@ services:
         BROWSER: chrome
 
   selenium:
-    image: selenium/standalone-firefox:3.8.1
+    image: selenium/standalone-firefox-debug:3.8.1
     pull: true
     environment:
       - SE_OPTS=-enablePassThrough false
