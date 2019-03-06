@@ -34,6 +34,7 @@ use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\IUserSession;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use OCP\Share;
@@ -61,10 +62,10 @@ class Share20OcsController extends OCSController {
 	private $userManager;
 	/** @var IRootFolder */
 	private $rootFolder;
+	/** @var IUserSession */
+	private $userSession;
 	/** @var IURLGenerator */
 	private $urlGenerator;
-	/** @var IUser */
-	private $currentUser;
 	/** @var IL10N */
 	private $l;
 	/** @var IConfig */
@@ -73,9 +74,9 @@ class Share20OcsController extends OCSController {
 	private $notificationPublisher;
 	/** @var EventDispatcher  */
 	private $eventDispatcher;
+
 	/** @var SharingBlacklist */
 	private $sharingBlacklist;
-
 	/**
 	 * @var string
 	 */
@@ -89,7 +90,7 @@ class Share20OcsController extends OCSController {
 		IUserManager $userManager,
 		IRootFolder $rootFolder,
 		IURLGenerator $urlGenerator,
-		IUser $currentUser,
+		IUserSession $userSession,
 		IL10N $l10n,
 		IConfig $config,
 		NotificationPublisher $notificationPublisher,
@@ -103,13 +104,13 @@ class Share20OcsController extends OCSController {
 		$this->userManager = $userManager;
 		$this->rootFolder = $rootFolder;
 		$this->urlGenerator = $urlGenerator;
-		$this->currentUser = $currentUser;
 		$this->l = $l10n;
 		$this->config = $config;
 		$this->notificationPublisher = $notificationPublisher;
 		$this->eventDispatcher = $eventDispatcher;
 		$this->sharingBlacklist = $sharingBlacklist;
 		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -158,14 +159,14 @@ class Share20OcsController extends OCSController {
 			$result['state'] = $share->getState();
 
 			// can only fetch path info if mounted already or if owner
-			if ($share->getState() === Share::STATE_ACCEPTED || $share->getShareOwner() === $this->currentUser->getUID()) {
-				$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
+			if ($share->getState() === Share::STATE_ACCEPTED || $share->getShareOwner() === $this->userSession->getUser()->getUID()) {
+				$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
 			} else {
 				// need to go through owner user for pending shares
 				$userFolder = $this->rootFolder->getUserFolder($share->getShareOwner());
 			}
 		} else {
-			$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
+			$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
 		}
 
 		$nodes = $userFolder->getById($share->getNodeId(), true);
@@ -315,7 +316,7 @@ class Share20OcsController extends OCSController {
 			return new Result(null, 404, $this->l->t('Please specify a file or folder path'));
 		}
 
-		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
+		$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
 
 		try {
 			$path = $userFolder->get($path);
@@ -337,16 +338,16 @@ class Share20OcsController extends OCSController {
 		$permissions = $this->request->getParam('permissions', null);
 		if ($permissions === null) {
 			if ($shareType !== Share::SHARE_TYPE_LINK) {
-				$permissions = $this->config->getAppValue('core', 'shareapi_default_permissions', \OCP\Constants::PERMISSION_ALL);
-				$permissions |= \OCP\Constants::PERMISSION_READ;
+				$permissions = $this->config->getAppValue('core', 'shareapi_default_permissions', Constants::PERMISSION_ALL);
+				$permissions |= Constants::PERMISSION_READ;
 			} else {
-				$permissions = \OCP\Constants::PERMISSION_ALL;
+				$permissions = Constants::PERMISSION_ALL;
 			}
 		} else {
 			$permissions = (int)$permissions;
 		}
 
-		if ($permissions < 0 || $permissions > \OCP\Constants::PERMISSION_ALL) {
+		if ($permissions < 0 || $permissions > Constants::PERMISSION_ALL) {
 			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 			return new Result(null, 404, 'invalid permissions');
 		}
@@ -356,15 +357,15 @@ class Share20OcsController extends OCSController {
 		}
 
 		// link shares can have create-only without read (anonymous upload)
-		if ($shareType !== Share::SHARE_TYPE_LINK && $permissions !== \OCP\Constants::PERMISSION_CREATE) {
+		if ($shareType !== Share::SHARE_TYPE_LINK && $permissions !== Constants::PERMISSION_CREATE) {
 			// Shares always require read permissions
-			$permissions |= \OCP\Constants::PERMISSION_READ;
+			$permissions |= Constants::PERMISSION_READ;
 		}
 
 		if ($path instanceof \OCP\Files\File) {
 			// Single file shares should never have delete or create permissions
-			$permissions &= ~\OCP\Constants::PERMISSION_DELETE;
-			$permissions &= ~\OCP\Constants::PERMISSION_CREATE;
+			$permissions &= ~Constants::PERMISSION_DELETE;
+			$permissions &= ~Constants::PERMISSION_CREATE;
 		}
 
 		/*
@@ -424,7 +425,7 @@ class Share20OcsController extends OCSController {
 			// legacy way, expecting that this won't be used together with "create-only" shares
 			$publicUpload = $this->request->getParam('publicUpload', null);
 			// a few permission checks
-			if ($publicUpload === 'true' || $permissions === \OCP\Constants::PERMISSION_CREATE) {
+			if ($publicUpload === 'true' || $permissions === Constants::PERMISSION_CREATE) {
 				// Check if public upload is allowed
 				if (!$this->shareManager->shareApiLinkAllowPublicUpload()) {
 					$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
@@ -441,18 +442,18 @@ class Share20OcsController extends OCSController {
 			// convert to permissions
 			if ($publicUpload === 'true') {
 				$share->setPermissions(
-					\OCP\Constants::PERMISSION_READ |
-					\OCP\Constants::PERMISSION_CREATE |
-					\OCP\Constants::PERMISSION_UPDATE |
-					\OCP\Constants::PERMISSION_DELETE
+					Constants::PERMISSION_READ |
+					Constants::PERMISSION_CREATE |
+					Constants::PERMISSION_UPDATE |
+					Constants::PERMISSION_DELETE
 				);
-			} elseif ($permissions === \OCP\Constants::PERMISSION_CREATE ||
-				$permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE)) {
+			} elseif ($permissions === Constants::PERMISSION_CREATE ||
+				$permissions === (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE | Constants::PERMISSION_DELETE)) {
 				$share->setPermissions($permissions);
 			} else {
 				// because when "publicUpload" is passed usually no permissions are set,
 				// which defaults to ALL. But in the case of link shares we default to READ...
-				$share->setPermissions(\OCP\Constants::PERMISSION_READ);
+				$share->setPermissions(Constants::PERMISSION_READ);
 			}
 
 			// set name only if passed as parameter, empty string is allowed
@@ -493,7 +494,7 @@ class Share20OcsController extends OCSController {
 		}
 
 		$share->setShareType($shareType);
-		$share->setSharedBy($this->currentUser->getUID());
+		$share->setSharedBy($this->userSession->getUser()->getUID());
 
 		try {
 			$share = $this->shareManager->createShare($share);
@@ -520,13 +521,13 @@ class Share20OcsController extends OCSController {
 	 * @return Result
 	 */
 	private function getSharedWithMe($node = null, $includeTags, $stateFilter = 0) {
-		$userShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), Share::SHARE_TYPE_USER, $node, -1, 0);
-		$groupShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), Share::SHARE_TYPE_GROUP, $node, -1, 0);
+		$userShares = $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_USER, $node, -1, 0);
+		$groupShares = $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_GROUP, $node, -1, 0);
 
 		$shares = \array_merge($userShares, $groupShares);
 
 		$shares = \array_filter($shares, function (IShare $share) {
-			return $share->getShareOwner() !== $this->currentUser->getUID();
+			return $share->getShareOwner() !== $this->userSession->getUser()->getUID();
 		});
 
 		$formatted = [];
@@ -538,7 +539,7 @@ class Share20OcsController extends OCSController {
 					 * Check if the group to which the user belongs is not allowed
 					 * to reshare
 					 */
-					if ($this->shareManager->sharingDisabledForUser($this->currentUser->getUID())) {
+					if ($this->shareManager->sharingDisabledForUser($this->userSession->getUser()->getUID())) {
 						/**
 						 * Now set the permission to 15. Which will allow not to reshare.
 						 */
@@ -572,11 +573,11 @@ class Share20OcsController extends OCSController {
 		/** @var IShare[] $shares */
 		$shares = [];
 		foreach ($nodes as $node) {
-			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), Share::SHARE_TYPE_USER, $node, false, -1, 0));
-			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), Share::SHARE_TYPE_GROUP, $node, false, -1, 0));
-			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), Share::SHARE_TYPE_LINK, $node, false, -1, 0));
+			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_USER, $node, false, -1, 0));
+			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_GROUP, $node, false, -1, 0));
+			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_LINK, $node, false, -1, 0));
 			if ($this->shareManager->outgoingServer2ServerSharesAllowed()) {
-				$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), Share::SHARE_TYPE_REMOTE, $node, false, -1, 0));
+				$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_REMOTE, $node, false, -1, 0));
 			}
 		}
 
@@ -619,7 +620,7 @@ class Share20OcsController extends OCSController {
 		$includeTags = $this->request->getParam('include_tags', false);
 
 		if ($path !== null) {
-			$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
+			$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
 			try {
 				$path = $userFolder->get($path);
 				$path->lock(ILockingProvider::LOCK_SHARED);
@@ -661,13 +662,13 @@ class Share20OcsController extends OCSController {
 		}
 
 		// Get all shares
-		$userShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), Share::SHARE_TYPE_USER, $path, $reshares, -1, 0);
-		$groupShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), Share::SHARE_TYPE_GROUP, $path, $reshares, -1, 0);
-		$linkShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), Share::SHARE_TYPE_LINK, $path, $reshares, -1, 0);
+		$userShares = $this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_USER, $path, $reshares, -1, 0);
+		$groupShares = $this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_GROUP, $path, $reshares, -1, 0);
+		$linkShares = $this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_LINK, $path, $reshares, -1, 0);
 		$shares = \array_merge($userShares, $groupShares, $linkShares);
 
 		if ($this->shareManager->outgoingServer2ServerSharesAllowed()) {
-			$federatedShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), Share::SHARE_TYPE_REMOTE, $path, $reshares, -1, 0);
+			$federatedShares = $this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_REMOTE, $path, $reshares, -1, 0);
 			$shares = \array_merge($shares, $federatedShares);
 		}
 
@@ -733,9 +734,9 @@ class Share20OcsController extends OCSController {
 
 			$newPermissions = null;
 			if ($publicUpload === 'true') {
-				$newPermissions = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE;
+				$newPermissions = Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE | Constants::PERMISSION_DELETE;
 			} elseif ($publicUpload === 'false') {
-				$newPermissions = \OCP\Constants::PERMISSION_READ;
+				$newPermissions = Constants::PERMISSION_READ;
 			}
 
 			if ($permissions !== null) {
@@ -743,12 +744,12 @@ class Share20OcsController extends OCSController {
 			}
 
 			if ($newPermissions !== null &&
-				$newPermissions !== \OCP\Constants::PERMISSION_READ &&
-				$newPermissions !== \OCP\Constants::PERMISSION_CREATE &&
+				$newPermissions !== Constants::PERMISSION_READ &&
+				$newPermissions !== Constants::PERMISSION_CREATE &&
 				// legacy
-				$newPermissions !== (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE) &&
+				$newPermissions !== (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE) &&
 				// correct
-				$newPermissions !== (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE)
+				$newPermissions !== (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE | Constants::PERMISSION_DELETE)
 			) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new Result(null, 400, $this->l->t('Can\'t change permissions for public share links'));
@@ -756,9 +757,9 @@ class Share20OcsController extends OCSController {
 
 			if (
 				// legacy
-				$newPermissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE) ||
+				$newPermissions === (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE) ||
 				// correct
-				$newPermissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE)
+				$newPermissions === (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE | Constants::PERMISSION_DELETE)
 			) {
 				if (!$this->shareManager->shareApiLinkAllowPublicUpload()) {
 					$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
@@ -771,12 +772,12 @@ class Share20OcsController extends OCSController {
 				}
 
 				// normalize to correct public upload permissions
-				$newPermissions = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE;
+				$newPermissions = Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE | Constants::PERMISSION_DELETE;
 			}
 
 			// create-only (upload-only)
 			if (
-				$newPermissions === \OCP\Constants::PERMISSION_CREATE
+				$newPermissions === Constants::PERMISSION_CREATE
 			) {
 				if (!$this->shareManager->shareApiLinkAllowPublicUpload()) {
 					$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
@@ -828,10 +829,10 @@ class Share20OcsController extends OCSController {
 			}
 		}
 
-		if ($permissions !== null && $share->getShareOwner() !== $this->currentUser->getUID()) {
+		if ($permissions !== null && $share->getShareOwner() !== $this->userSession->getUser()->getUID()) {
 			/* Check if this is an incoming share */
-			$incomingShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), Share::SHARE_TYPE_USER, $share->getNode(), -1, 0);
-			$incomingShares = \array_merge($incomingShares, $this->shareManager->getSharedWith($this->currentUser->getUID(), Share::SHARE_TYPE_GROUP, $share->getNode(), -1, 0));
+			$incomingShares = $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_USER, $share->getNode(), -1, 0);
+			$incomingShares = \array_merge($incomingShares, $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_GROUP, $share->getNode(), -1, 0));
 
 			if (!empty($incomingShares)) {
 				$maxPermissions = 0;
@@ -907,13 +908,13 @@ class Share20OcsController extends OCSController {
 		// don't send a mail to the user who shared the file
 		$recipientList = \array_filter($recipientList, function ($user) {
 			/** @var IUser $user */
-			return $user->getUID() !== $this->currentUser->getUID();
+			return $user->getUID() !== $this->userSession->getUser()->getUID();
 		});
 
 		$defaults = new \OCP\Defaults();
 		$mailNotification = new \OC\Share\MailNotifications(
 			$this->shareManager,
-			$this->currentUser,
+			$this->userSession->getUser(),
 			\OC::$server->getL10N('lib'),
 			\OC::$server->getMailer(),
 			$this->config,
@@ -923,7 +924,7 @@ class Share20OcsController extends OCSController {
 			$this->eventDispatcher
 		);
 
-		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
+		$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
 		$nodes = $userFolder->getById($itemSource, true);
 		$node = $nodes[0] ?? null;
 		$result = $mailNotification->sendInternalShareMail($node, $shareType, $recipientList);
@@ -961,7 +962,7 @@ class Share20OcsController extends OCSController {
 	 * @return Result
 	 */
 	public function notifyRecipientsDisabled($itemSource, $shareType, $recipient) {
-		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
+		$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
 		$nodes = $userFolder->getById($itemSource, true);
 		$node = $nodes[0] ?? null;
 
@@ -992,7 +993,7 @@ class Share20OcsController extends OCSController {
 		}
 
 		try {
-			$share = $this->getShareById($id, $this->currentUser->getUID());
+			$share = $this->getShareById($id, $this->userSession->getUser()->getUID());
 			$this->eventDispatcher->dispatch('share.before' . $eventName, new GenericEvent(null, ['share' => $share]));
 		} catch (ShareNotFound $e) {
 			return new Result(null, 404, $this->l->t('Wrong share ID, share doesn\'t exist'));
@@ -1008,8 +1009,8 @@ class Share20OcsController extends OCSController {
 		}
 
 		// only recipient can accept/reject share
-		if ($share->getShareOwner() === $this->currentUser->getUID() ||
-			$share->getSharedBy() === $this->currentUser->getUID()) {
+		if ($share->getShareOwner() === $this->userSession->getUser()->getUID() ||
+			$share->getSharedBy() === $this->userSession->getUser()->getUID()) {
 			$node->unlock(ILockingProvider::LOCK_SHARED);
 			return new Result(null, 403, $this->l->t('Only recipient can change accepted state'));
 		}
@@ -1025,8 +1026,8 @@ class Share20OcsController extends OCSController {
 
 		// we actually want to update all shares related to the node in case there are multiple
 		// incoming shares for the same node (ex: receiving simultaneously through group share and user share)
-		$allShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), Share::SHARE_TYPE_USER, $node, -1, 0);
-		$allShares = \array_merge($allShares, $this->shareManager->getSharedWith($this->currentUser->getUID(), Share::SHARE_TYPE_GROUP, $node, -1, 0));
+		$allShares = $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_USER, $node, -1, 0);
+		$allShares = \array_merge($allShares, $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_GROUP, $node, -1, 0));
 
 		// resolve and deduplicate target if accepting
 		if ($state === Share::STATE_ACCEPTED) {
@@ -1039,7 +1040,7 @@ class Share20OcsController extends OCSController {
 			foreach ($allShares as $aShare) {
 				$aShare->setState($share->getState());
 				$aShare->setTarget($share->getTarget());
-				$this->shareManager->updateShareForRecipient($aShare, $this->currentUser->getUID());
+				$this->shareManager->updateShareForRecipient($aShare, $this->userSession->getUser()->getUID());
 			}
 		} catch (\Exception $e) {
 			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
@@ -1052,9 +1053,9 @@ class Share20OcsController extends OCSController {
 		\OC\Files\Filesystem::tearDown();
 		// FIXME: trigger mount for user to make sure the new node is mounted already
 		// before formatShare resolves it
-		$this->rootFolder->getUserFolder($this->currentUser->getUID());
+		$this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
 
-		$this->notificationPublisher->discardNotificationForUser($share, $this->currentUser->getUID());
+		$this->notificationPublisher->discardNotificationForUser($share, $this->userSession->getUser()->getUID());
 
 		if ($eventName !== '') {
 			$this->eventDispatcher->dispatch('share.after' . $eventName, new GenericEvent(null, ['share' => $share]));
@@ -1070,7 +1071,7 @@ class Share20OcsController extends OCSController {
 	 * @return IShare same share with target updated if necessary
 	 */
 	private function deduplicateShareTarget(IShare $share) {
-		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
+		$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
 		$mountPoint = \basename($share->getTarget());
 		$parentDir = \dirname($share->getTarget());
 		if (!$userFolder->nodeExists($parentDir)) {
@@ -1108,21 +1109,21 @@ class Share20OcsController extends OCSController {
 		}
 
 		// Owner of the file and the sharer of the file can always get share
-		if ($share->getShareOwner() === $this->currentUser->getUID() ||
-			$share->getSharedBy() === $this->currentUser->getUID()
+		if ($share->getShareOwner() === $this->userSession->getUser()->getUID() ||
+			$share->getSharedBy() === $this->userSession->getUser()->getUID()
 		) {
 			return true;
 		}
 
 		// If the share is shared with you (or a group you are a member of)
 		if ($share->getShareType() === Share::SHARE_TYPE_USER &&
-			$share->getSharedWith() === $this->currentUser->getUID()) {
+			$share->getSharedWith() === $this->userSession->getUser()->getUID()) {
 			return true;
 		}
 
 		if ($share->getShareType() === Share::SHARE_TYPE_GROUP) {
 			$sharedWith = $this->groupManager->get($share->getSharedWith());
-			if ($sharedWith !== null && $sharedWith->inGroup($this->currentUser)) {
+			if ($sharedWith !== null && $sharedWith->inGroup($this->userSession->getUser())) {
 				return true;
 			}
 		}
