@@ -498,6 +498,8 @@ services:
   selenium:
     image: selenium/standalone-chrome-debug:latest
     pull: true
+    environment:
+      - JAVA_OPTS=-Dselenium.LOGGER.level=WARNING
     when:
       matrix:
         TEST_SUITE: selenium
@@ -508,6 +510,7 @@ services:
     pull: true
     environment:
       - SE_OPTS=-enablePassThrough false
+      - JAVA_OPTS=-Dselenium.LOGGER.level=WARNING
     when:
       matrix:
         TEST_SUITE: selenium
