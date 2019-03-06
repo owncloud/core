@@ -133,3 +133,6 @@ clover.xml
 /tests/output
 .php_cs.cache
 .php_cs
+
+# CI
+.cache
