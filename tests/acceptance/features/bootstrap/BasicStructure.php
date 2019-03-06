@@ -19,6 +19,7 @@
  *
  */
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
@@ -190,6 +191,12 @@ trait BasicStructure {
 	private $sourceIpAddress = null;
 	
 	private $guzzleClientHeaders = [];
+
+	/**
+	 *
+	 * @var OCSContext
+	 */
+	private $ocsContext;
 
 	/**
 	 * BasicStructure constructor.
@@ -767,121 +774,6 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When /^the user sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
-	 * @Given /^the user has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
-	 *
-	 * @param string $verb
-	 * @param string $url
-	 *
-	 * @return void
-	 */
-	public function theUserSendsToOcsApiEndpoint($verb, $url) {
-		$this->theUserSendsToOcsApiEndpointWithBody($verb, $url, null);
-	}
-
-	/**
-	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
-	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" using password "([^"]*)"$/
-	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
-	 *
-	 * @param string $user
-	 * @param string $verb
-	 * @param string $url
-	 * @param string $password
-	 *
-	 * @return void
-	 */
-	public function userSendsToOcsApiEndpoint($user, $verb, $url, $password = null) {
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user,
-			$verb,
-			$url,
-			null,
-			$password
-		);
-	}
-
-	/**
-	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with headers$/
-	 *
-	 * @param string $user
-	 * @param string $verb
-	 * @param string $url
-	 * @param TableNode $headersTable
-	 *
-	 * @return void
-	 */
-	public function userSendsToOcsApiEndpointWithHeaders(
-		$user, $verb, $url, TableNode $headersTable
-	) {
-		$user = $this->getActualUsername($user);
-		$password = $this->getPasswordForUser($user);
-		
-		$headers = [];
-		foreach ($headersTable as $row) {
-			$headers[$row['header']] = $row ['value'];
-		}
-
-		$this->response = OcsApiHelper::sendRequest(
-			$this->getBaseUrl(), $user, $password, $verb,
-			$url, [], $this->ocsApiVersion, $headers
-		);
-	}
-
-	/**
-	 * @When /^the administrator sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with headers$/
-	 *
-	 * @param string $verb
-	 * @param string $url
-	 * @param TableNode $headersTable
-	 *
-	 * @return void
-	 */
-	public function administratorSendsToOcsApiEndpointWithHeaders(
-		$verb, $url, TableNode $headersTable
-	) {
-		$this->userSendsToOcsApiEndpointWithHeaders(
-			$this->getAdminUsername(), $verb, $url, $headersTable
-		);
-	}
-
-	/**
-	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url
-	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url using password :password
-	 *
-	 * @param string $verb
-	 * @param string $url
-	 * @param string $password
-	 *
-	 * @return void
-	 */
-	public function theAdministratorSendsHttpMethodToOcsApiEndpoint(
-		$verb, $url, $password = null
-	) {
-		$admin = $this->getAdminUsername();
-		$this->userSendsToOcsApiEndpoint($admin, $verb, $url, $password);
-	}
-
-	/**
-	 * Parses the xml answer to get ocs response which doesn't match with
-	 * http one in v1 of the api.
-	 *
-	 * @param ResponseInterface $response
-	 *
-	 * @throws \Exception
-	 * @return string
-	 */
-	public function getOCSResponseStatusCode($response) {
-		$responseXml = $this->getResponseXml($response);
-		if (isset($responseXml->meta[0], $responseXml->meta[0]->statuscode)) {
-			return (string) $responseXml->meta[0]->statuscode;
-		}
-		throw new \Exception(
-			"No OCS status code found in responseXml"
-		);
-	}
-
-	/**
 	 * Parses the response as XML
 	 *
 	 * @param ResponseInterface $response
@@ -894,18 +786,6 @@ trait BasicStructure {
 		}
 
 		return HttpRequestHelper::getResponseXml($response);
-	}
-
-	/**
-	 * Parses the xml answer to get ocs response message which doesn't match with
-	 * http one in v1 of the api.
-	 *
-	 * @param ResponseInterface $response
-	 *
-	 * @return string
-	 */
-	public function getOCSResponseStatusMessage($response) {
-		return (string) $this->getResponseXml($response)->meta[0]->message;
 	}
 
 	/**
@@ -966,125 +846,6 @@ trait BasicStructure {
 			}, $arrayOfArrays
 		);
 		return $a;
-	}
-
-	/**
-	 * @When /^the user sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
-	 * @Given /^the user has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
-	 *
-	 * @param string $verb
-	 * @param string $url
-	 * @param TableNode $body
-	 *
-	 * @return void
-	 */
-	public function theUserSendsToOcsApiEndpointWithBody($verb, $url, $body) {
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$this->currentUser,
-			$verb,
-			$url,
-			$body
-		);
-	}
-
-	/**
-	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body using password "([^"]*)"$/
-	 *
-	 * @param string $user
-	 * @param string $verb
-	 * @param string $url
-	 * @param string $password
-	 * @param TableNode $body
-	 *
-	 * @return void
-	 */
-	public function userSendsHTTPMethodToOcsApiEndpointWithBodyAndPassword(
-		$user, $verb, $url, $password, $body
-	) {
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user, $verb, $url, $body, $password
-		);
-	}
-
-	/**
-	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
-	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
-	 *
-	 * @param string $user
-	 * @param string $verb
-	 * @param string $url
-	 * @param TableNode|null $body
-	 * @param string $password
-	 *
-	 * @return void
-	 */
-	public function userSendsHTTPMethodToOcsApiEndpointWithBody(
-		$user, $verb, $url, $body = null, $password = null
-	) {
-
-		/**
-		 * array of the data to be sent in the body.
-		 * contains $body data converted to an array
-		 *
-		 * @var array $bodyArray
-		 */
-		$bodyArray = [];
-		if ($body instanceof TableNode) {
-			$bodyArray = $body->getRowsHash();
-		}
-
-		if ($user !== 'UNAUTHORIZED_USER') {
-			$user = $this->getActualUsername($user);
-			if ($password === null) {
-				$password = $this->getPasswordForUser($user);
-			}
-		} else {
-			$user = null;
-			$password = null;
-		}
-
-		$this->response = OcsApiHelper::sendRequest(
-			$this->getBaseUrl(),
-			$user, $password, $verb, $url, $bodyArray, $this->ocsApiVersion
-		);
-	}
-
-	/**
-	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url with body
-	 * @Given the administrator has sent HTTP method :verb to OCS API endpoint :url with body
-	 *
-	 * @param string $verb
-	 * @param string $url
-	 * @param TableNode|null $body
-	 *
-	 * @return void
-	 */
-	public function theAdministratorSendsHttpMethodToOcsApiEndpointWithBody(
-		$verb, $url, TableNode $body
-	) {
-		$admin = $this->getAdminUsername();
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$admin, $verb, $url, $body
-		);
-	}
-
-	/**
-	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url with body using password :password
-	 *
-	 * @param string $verb
-	 * @param string $url
-	 * @param string $password
-	 * @param TableNode $body
-	 *
-	 * @return void
-	 */
-	public function theAdministratorSendsHttpMethodToOcsApiWithBodyAndPassword(
-		$verb, $url, $password, TableNode $body
-	) {
-		$admin = $this->getAdminUsername();
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$admin, $verb, $url, $body, $password
-		);
 	}
 
 	/**
@@ -1173,32 +934,6 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Then /^the OCS status code should be "([^"]*)"$/
-	 *
-	 * @param int|int[] $statusCode
-	 * @param string $message
-	 *
-	 * @return void
-	 */
-	public function theOCSStatusCodeShouldBe($statusCode, $message = "") {
-		if ($message === "") {
-			$message = "OCS status code is not the expected value";
-		}
-
-		if (\is_array($statusCode)) {
-			PHPUnit_Framework_Assert::assertContains(
-				$this->getOCSResponseStatusCode($this->response), $statusCode,
-				$message
-			);
-		} else {
-			PHPUnit_Framework_Assert::assertEquals(
-				$statusCode, $this->getOCSResponseStatusCode($this->response),
-				$message
-			);
-		}
-	}
-
-	/**
 	 * @Then /^the HTTP status code should be "([^"]*)"$/
 	 *
 	 * @param int|int[] $statusCode
@@ -1279,55 +1014,6 @@ trait BasicStructure {
 			$reasonPhrase->getRaw(),
 			$this->getResponse()->getReasonPhrase(),
 			'Unexpected HTTP reason phrase in response'
-		);
-	}
-
-	/**
-	 * Check the text in an OCS status message
-	 *
-	 * @Then /^the OCS status message should be "([^"]*)"$/
-	 *
-	 * @param string $statusMessage
-	 *
-	 * @return void
-	 */
-	public function theOCSStatusMessageShouldBe($statusMessage) {
-		PHPUnit_Framework_Assert::assertEquals(
-			$statusMessage,
-			$this->getOCSResponseStatusMessage(
-				$this->getResponse()
-			),
-			'Unexpected OCS status message in response'
-		);
-	}
-
-	/**
-	 * Check the text in an OCS status message.
-	 * Use this step form if the expected text contains double quotes,
-	 * single quotes and other content that theOCSStatusMessageShouldBe()
-	 * cannot handle.
-	 *
-	 * After the step, write the expected text in PyString form like:
-	 *
-	 * """
-	 * File "abc.txt" can't be shared due to reason "xyz"
-	 * """
-	 *
-	 * @Then /^the OCS status message should be:$/
-	 *
-	 * @param PyStringNode $statusMessage
-	 *
-	 * @return void
-	 */
-	public function theOCSStatusMessageShouldBePyString(
-		PyStringNode $statusMessage
-	) {
-		PHPUnit_Framework_Assert::assertEquals(
-			$statusMessage->getRaw(),
-			$this->getOCSResponseStatusMessage(
-				$this->getResponse()
-			),
-			'Unexpected OCS status message in response'
 		);
 	}
 
@@ -2582,6 +2268,26 @@ trait BasicStructure {
 		}
 
 		HttpRequestHelper::post($fullUrl, $adminUsername, $adminPassword);
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// registers context in every suite, as every suite has FeatureContext
+		// that calls BasicStructure.php
+		$this->ocsContext = new OCSContext();
+		$this->ocsContext->before($scope);
+		$environment->registerContext($this->ocsContext);
 	}
 
 	/**
