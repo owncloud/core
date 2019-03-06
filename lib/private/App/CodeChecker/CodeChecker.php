@@ -24,7 +24,6 @@
 namespace OC\App\CodeChecker;
 
 use OC\Hooks\BasicEmitter;
-use PhpParser\Lexer;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use RecursiveCallbackFilterIterator;
@@ -51,7 +50,7 @@ class CodeChecker extends BasicEmitter {
 
 	public function __construct(ICheck $checkList) {
 		$this->checkList = $checkList;
-		$this->parser = new Parser(new Lexer);
+		$this->parser = (new \PhpParser\ParserFactory())->create(\PhpParser\ParserFactory::PREFER_PHP7);
 	}
 
 	/**
