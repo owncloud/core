@@ -29,6 +29,12 @@ Feature: CORS headers
       | 2               |/apps/files_sharing/api/v1/shares                | 200      | 200       |
       | 1               |/privatedata/getattribute                        | 100      | 200       |
       | 2               |/privatedata/getattribute                        | 200      | 200       |
+      | 1               |/cloud/apps                                      | 997      | 401       |
+      | 2               |/cloud/apps                                      | 997      | 401       |
+      | 1               |/cloud/groups                                    | 997      | 401       |
+      | 2               |/cloud/groups                                    | 997      | 401       |
+      | 1               |/cloud/users                                     | 997      | 401       |
+      | 2               |/cloud/users                                     | 997      | 401       |
 
   #merge into previous scenario when fixed
   @issue-34664
@@ -99,6 +105,12 @@ Feature: CORS headers
       | 2               |/config                                          | 200      | 200       |
       | 1               |/privatedata/getattribute                        | 100      | 200       |
       | 2               |/privatedata/getattribute                        | 200      | 200       |
+      | 1               |/cloud/apps                                      | 997      | 401       |
+      | 2               |/cloud/apps                                      | 997      | 401       |
+      | 1               |/cloud/groups                                    | 997      | 401       |
+      | 2               |/cloud/groups                                    | 997      | 401       |
+      | 1               |/cloud/users                                     | 997      | 401       |
+      | 2               |/cloud/users                                     | 997      | 401       |
 
   Scenario Outline: no CORS headers should be returned when CORS domain does not match Origin header (admin only endpoints)
     Given using OCS API version "<ocs_api_version>"
