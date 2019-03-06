@@ -525,7 +525,7 @@ services:
       - APACHE_SSL_CERT_CN=server
       - APACHE_SSL_CERT=/drone/server.crt
       - APACHE_SSL_KEY=/drone/server.key
-    command: [ "/usr/local/bin/apachectl", "-e", "info" , "-D", "FOREGROUND" ]
+    command: [ "/usr/local/bin/apachectl", "-e", "notice" , "-D", "FOREGROUND" ]
     when:
       matrix:
         USE_SERVER: true
@@ -536,7 +536,7 @@ services:
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/src/
-    command: [ "/usr/local/bin/apachectl", "-e", "info" , "-D", "FOREGROUND" ]
+    command: [ "/usr/local/bin/apachectl", "-e", "notice" , "-D", "FOREGROUND" ]
     when:
       matrix:
         USE_SERVER: true
