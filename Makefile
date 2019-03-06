@@ -359,6 +359,9 @@ vendor: composer.lock
 vendor/bamarni/composer-bin-plugin: composer.lock
 	composer install
 
+.PHONY: vendor-bin-deps
+vendor-bin-deps: vendor-bin/owncloud-codestyle/vendor vendor-bin/php_codesniffer/vendor vendor-bin/phan/vendor vendor-bin/phpstan/vendor vendor-bin/behat/vendor
+
 vendor-bin/owncloud-codestyle/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/owncloud-codestyle/composer.lock
 	composer bin owncloud-codestyle install --no-progress
 

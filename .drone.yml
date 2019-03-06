@@ -48,14 +48,14 @@ pipeline:
       matrix:
         USE_FEDERATED_SERVER: true
 
-#  restore:
-#    image: plugins/s3-cache:1
-#    pull: true
-#    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
-#    restore: true
-#    when:
-#      local: false
-#      event: [push, pull_request]
+  restore:
+    image: plugins/s3-cache:1
+    pull: true
+    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
+    restore: true
+    when:
+      local: false
+      event: [push, pull_request]
 
   composer:
     image: owncloudci/php:${PHP_VERSION}
@@ -64,6 +64,7 @@ pipeline:
       - COMPOSER_HOME=/drone/src/.cache/composer
     commands:
       - make install-composer-deps
+      - make vendor-bin-deps
     when:
       event: [push, pull_request]
 
