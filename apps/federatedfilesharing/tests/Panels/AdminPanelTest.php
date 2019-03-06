@@ -19,9 +19,9 @@
  *
  */
 
-namespace OCA\FederatedFileSharing\Tests;
+namespace OCA\FederatedFileSharing\Tests\Panels;
 
-use OCA\FederatedFileSharing\AdminPanel;
+use OCA\FederatedFileSharing\Panels\AdminPanel;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCP\IConfig;
 
