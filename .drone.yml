@@ -629,16 +629,8 @@ matrix:
       PHP_VERSION: 7.1
       COVERAGE: true
 
-    - PHP_VERSION: 5.6
-      DB_TYPE: postgres
-      TEST_SUITE: phpunit
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
   # owncloud-coding-standard
-  # Run with PHP 5.6 because that is not supported by phan.
-  # This gives us a syntax check for PHP 5.6
-    - PHP_VERSION: 5.6
+    - PHP_VERSION: 7.1
       TEST_SUITE: owncloud-coding-standard
 
   # phan (runs multiple PHP v7.* to provide syntax checks of each PHP version)
@@ -685,6 +677,31 @@ matrix:
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
       COVERAGE: true
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    # PHP 7.0
+    - PHP_VERSION: 7.0
+      DB_TYPE: mysql
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.0
+      DB_TYPE: mysqlmb4
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.0
+      DB_TYPE: postgres
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.0
+      DB_TYPE: oracle
+      TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
@@ -735,7 +752,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
   # Primary Objectstorage
-    - PHP_VERSION: 5.6
+    - PHP_VERSION: 7.0
       TEST_SUITE: phpunit
       DB_TYPE: sqlite
       OBJECTSTORE: swift
@@ -1462,7 +1479,7 @@ matrix:
       CALDAV_CARDDAV_JOB: true
 
     # encryption tests
-    - PHP_VERSION: 5.6
+    - PHP_VERSION: 7.0
       TEST_SUITE: cli
       BEHAT_SUITE: cliEncryption
       DB_TYPE: mariadb
