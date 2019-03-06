@@ -64,6 +64,7 @@ pipeline:
       - COMPOSER_HOME=/drone/src/.cache/composer
     commands:
       - make install-composer-deps
+      - make vendor-bin-deps
     when:
       event: [push, pull_request]
 
