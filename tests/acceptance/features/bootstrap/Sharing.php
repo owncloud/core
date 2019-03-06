@@ -216,7 +216,7 @@ trait Sharing {
 	 */
 	public function theUserHasCreatedAShareWithSettings($body) {
 		$this->userCreatesAShareWithSettings($this->currentUser, $body);
-		$this->theOCSStatusCodeShouldBe([100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe([100, 200]);
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
@@ -229,7 +229,7 @@ trait Sharing {
 	 */
 	public function theUserHasCreatedAPublicLinkShareWithSettings($body) {
 		$this->theUserCreatesAPublicLinkShareWithSettings($body);
-		$this->theOCSStatusCodeShouldBe([100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe([100, 200]);
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
@@ -547,7 +547,7 @@ trait Sharing {
 		$this->createAPublicShare($sharer, $filepath);
 		PHPUnit_Framework_Assert::assertEquals(
 			404,
-			$this->getOCSResponseStatusCode($this->response)
+			$this->ocsContext->getOCSResponseStatusCode($this->response)
 		);
 	}
 
@@ -1064,7 +1064,7 @@ trait Sharing {
 		$this->createShare(
 			$sharer, $filepath, $shareType, $sharee, null, null, $permissions
 		);
-		$statusCode = $this->getOCSResponseStatusCode($this->response);
+		$statusCode = $this->ocsContext->getOCSResponseStatusCode($this->response);
 		PHPUnit_Framework_Assert::assertTrue(
 			($statusCode == 404) || ($statusCode == 403),
 			"Sharing should have failed but passed with status code $statusCode"
@@ -1092,7 +1092,7 @@ trait Sharing {
 		
 		//v1.php returns 100 as success code
 		//v2.php returns 200 in the same case
-		$this->theOCSStatusCodeShouldBe([100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe([100, 200]);
 	}
 
 	/**
@@ -1116,7 +1116,7 @@ trait Sharing {
 	public function userDeletesLastShareUsingTheSharingApi($user) {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "DELETE", $url, null
 		);
 	}
@@ -1140,7 +1140,7 @@ trait Sharing {
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user) {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "GET", $url, null
 		);
 	}
@@ -1154,7 +1154,7 @@ trait Sharing {
 	 */
 	public function userGetsAllTheSharesSharedWithHimUsingTheSharingApi($user) {
 		$url = "/apps/files_sharing/api/v1/shares?shared_with_me=true";
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'GET',
 			$url,
@@ -1173,7 +1173,7 @@ trait Sharing {
 	public function userGetsAllSharesSharedWithHimFromFileOrFolderUsingTheProvisioningApi($user, $path) {
 		$url = "/apps/files_sharing/api/"
 		. "v{$this->sharingApiVersion}/shares?shared_with_me=true&path=$path";
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'GET',
 			$url,
@@ -1528,7 +1528,9 @@ trait Sharing {
 	) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->theUserSendsToOcsApiEndpointWithBody("DELETE", $url, null);
+		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
+			"DELETE", $url, null
+		);
 	}
 
 	/**
@@ -1567,7 +1569,7 @@ trait Sharing {
 			$httpRequestMethod = "POST";
 		}
 		
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, $httpRequestMethod, $url, null
 		);
 	}
@@ -1674,7 +1676,7 @@ trait Sharing {
 		
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" .
 			   "?format=json&shared_with_me=true&state=$stateCode";
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "GET", $url, null
 		);
 		if ($this->response->getStatusCode() !== 200) {

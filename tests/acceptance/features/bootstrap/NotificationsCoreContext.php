@@ -48,6 +48,12 @@ class NotificationsCoreContext implements Context {
 	private $featureContext;
 
 	/**
+	 *
+	 * @var OCSContext
+	 */
+	private $ocsContext;
+
+	/**
 	 * @return array[]
 	 */
 	public function getNotificationIds() {
@@ -110,7 +116,7 @@ class NotificationsCoreContext implements Context {
 	 * @return void
 	 */
 	public function userNumNotifications($user, $numNotifications, $missingLast) {
-		$this->featureContext->userSendsToOcsApiEndpoint(
+		$this->ocsContext->userSendsToOcsApiEndpoint(
 			$user, 'GET', '/apps/notifications/api/v1/notifications?format=json'
 		);
 		PHPUnit_Framework_Assert::assertEquals(
@@ -189,7 +195,7 @@ class NotificationsCoreContext implements Context {
 			$notificationId = \end($lastNotifications);
 		}
 
-		$this->featureContext->userSendsToOcsApiEndpoint(
+		$this->ocsContext->userSendsToOcsApiEndpoint(
 			$user,
 			'GET',
 			"/apps/notifications/api/v1/notifications/$notificationId?format=json"
@@ -250,7 +256,7 @@ class NotificationsCoreContext implements Context {
 		);
 		PHPUnit_Framework_Assert::assertEquals(200, $response->getStatusCode());
 		PHPUnit_Framework_Assert::assertEquals(
-			200, (int) $this->featureContext->getOCSResponseStatusCode($response)
+			200, (int) $this->ocsContext->getOCSResponseStatusCode($response)
 		);
 	}
 
@@ -266,6 +272,7 @@ class NotificationsCoreContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->ocsContext = $environment->getContext('OCSContext');
 		$this->clearNotifications();
 	}
 }
