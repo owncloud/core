@@ -41,6 +41,11 @@ class ShareesContext implements Context {
 	private $featureContext;
 
 	/**
+	 *
+	 * @var OCSContext
+	 */
+	private $ocsContext;
+	/**
 	 * @When /^the user gets the sharees using the sharing API with parameters$/
 	 *
 	 * @param TableNode $body
@@ -73,7 +78,7 @@ class ShareesContext implements Context {
 			}
 		}
 
-		$this->featureContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, 'GET', $url, null
 		);
 	}
@@ -172,5 +177,6 @@ class ShareesContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->ocsContext = $environment->getContext('OCSContext');
 	}
 }
