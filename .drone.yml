@@ -48,18 +48,20 @@ pipeline:
       matrix:
         USE_FEDERATED_SERVER: true
 
-  restore:
-    image: plugins/s3-cache:1
-    pull: true
-    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
-    restore: true
-    when:
-      local: false
-      event: [push, pull_request]
+#  restore:
+#    image: plugins/s3-cache:1
+#    pull: true
+#    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
+#    restore: true
+#    when:
+#      local: false
+#      event: [push, pull_request]
 
   composer:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
+    environment:
+      - COMPOSER_HOME=/drone/src/.cache/composer
     commands:
       - make install-composer-deps
     when:
@@ -68,6 +70,10 @@ pipeline:
   yarn:
     image: owncloudci/nodejs:latest
     pull: true
+    environment:
+      - NPM_CONFIG_CACHE=/drone/src/.cache/npm
+      - YARN_CACHE_FOLDER=/drone/src/.cache/yarn
+      - bower_storage__packages=/drone/src/.cache/bower
     commands:
       - ./tests/drone/yarn-install.sh
     when:
@@ -79,9 +85,7 @@ pipeline:
     secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
     rebuild: true
     mount:
-      - lib/composer
-      - core/vendor
-      - build/node_modules
+      - .cache
     when:
       local: false
       event: [ push ]
