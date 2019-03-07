@@ -831,7 +831,9 @@ trait Sharing {
 		}
 		
 		$data = $this->getResponseXml()->data[0];
-		if (\is_iterable($data)) {
+		if (\is_array($data)
+			|| (\is_object($data) && ($data instanceof \Traversable))
+		) {
 			foreach ($data as $element) {
 				if ($element->share_with->__toString() === $userOrGroup
 					&& ($permissions === null
