@@ -342,6 +342,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - WebUIAdminSharingSettingsContext:
+        - WebUIPersonalSharingSettingsContext:
 
     webUISharingExternal:
       paths:
