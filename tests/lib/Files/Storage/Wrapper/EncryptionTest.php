@@ -7,6 +7,8 @@ use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OC\User\Manager;
 use OCP\Files\Storage\IStorage;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\Files\Storage\Storage;
 use OC\Files\Storage\Wrapper\Encryption;
 use OC\Files\Cache\Cache;
@@ -101,6 +103,9 @@ class EncryptionTest extends Storage {
 	/** @var  \OC\Memcache\ArrayCache | \PHPUnit_Framework_MockObject_MockObject */
 	private $arrayCache;
 
+	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	private $eventDisaptcher;
+
 	/** @var  integer dummy unencrypted size */
 	private $dummySize = -1;
 
@@ -178,6 +183,8 @@ class EncryptionTest extends Storage {
 			->disableOriginalConstructor()->getMock();
 		$this->mountManager->expects($this->any())->method('findByStorageId')->willReturn([]);
 
+		$this->eventDisaptcher = $this->createMock(EventDispatcherInterface::class);
+
 		$this->instance = $this->getMockBuilder(Encryption::class)
 			->setConstructorArgs(
 				[
@@ -187,7 +194,9 @@ class EncryptionTest extends Storage {
 						'mountPoint' => '/',
 						'mount' => $this->mount
 					],
-					$this->encryptionManager, $this->util, $this->logger, $this->file, null, $this->keyStore, $this->update, $this->mountManager, $this->arrayCache
+					$this->encryptionManager, $this->util, $this->logger,
+					$this->file, null, $this->keyStore, $this->update,
+					$this->mountManager, $this->arrayCache, $this->eventDisaptcher
 				]
 			)
 			->setMethods(['getMetaData', 'getCache', 'getEncryptionModule'])

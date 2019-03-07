@@ -40,6 +40,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class TransferOwnership extends Command {
 
@@ -60,6 +62,9 @@ class TransferOwnership extends Command {
 
 	/** @var ProviderFactory  */
 	private $shareProviderFactory;
+
+	/** @var EventDispatcherInterface */
+	private $eventDispatcher;
 
 	/** @var bool */
 	private $filesExist = false;
@@ -85,13 +90,20 @@ class TransferOwnership extends Command {
 	/** @var string */
 	private $finalTarget;
 
-	public function __construct(IUserManager $userManager, IManager $shareManager, IMountManager $mountManager, Manager $encryptionManager, ILogger $logger, ProviderFactory $shareProviderFactory) {
+	/** @var array , Files affected with signature mismatch */
+	private $affectedFiles = [];
+
+	public function __construct(IUserManager $userManager, IManager $shareManager,
+								IMountManager $mountManager, Manager $encryptionManager,
+								ILogger $logger, ProviderFactory $shareProviderFactory,
+								EventDispatcherInterface $eventDispatcher) {
 		$this->userManager = $userManager;
 		$this->shareManager = $shareManager;
 		$this->mountManager = $mountManager;
 		$this->encryptionManager = $encryptionManager;
 		$this->logger = $logger;
 		$this->shareProviderFactory = $shareProviderFactory;
+		$this->eventDispatcher = $eventDispatcher;
 		parent::__construct();
 	}
 
@@ -287,7 +299,20 @@ class TransferOwnership extends Command {
 			}
 		}
 
+		$this->eventDispatcher->addListener('files.aftersignaturemismatch', function (GenericEvent $event) {
+			if ($event->hasArgument('signatureMismatch') && $event->hasArgument('fileName')) {
+				$fileName = $event->getArgument('fileName');
+				if (!isset($this->affectedFiles[$fileName])) {
+					$this->affectedFiles[$fileName] = 1;
+				}
+			}
+		}, 10);
+
 		$view->rename($sourcePath, $this->finalTarget);
+		if (\count($this->affectedFiles) >= 1) {
+			$glueString = (\count($this->affectedFiles) > 1) ? ", " : "";
+			$output->writeln("<error>The affected files are : " . \implode($glueString, \array_keys($this->affectedFiles)) . "</error>");
+		}
 
 		if (!\is_dir("$this->sourceUser/files")) {
 			// because the files folder is moved away we need to recreate it

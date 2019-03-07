@@ -28,6 +28,7 @@ namespace OC\Files\Stream;
 
 use Icewind\Streams\Wrapper;
 use OC\Encryption\Exceptions\EncryptionHeaderKeyExistsException;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Encryption extends Wrapper {
 
@@ -281,6 +282,7 @@ class Encryption extends Wrapper {
 
 	public function stream_read($count) {
 		$result = '';
+		$genericEvent = new GenericEvent('SignatureMismatch', []);
 
 		$count = \min($count, $this->unencryptedSize - $this->position);
 		while ($count > 0) {
@@ -302,6 +304,7 @@ class Encryption extends Wrapper {
 				$count -= ($this->unencryptedBlockSize - $blockPosition);
 			}
 		}
+		\OC::$server->getEventDispatcher()->dispatch('files.aftersignaturemismatch', $genericEvent);
 		return $result;
 	}
 

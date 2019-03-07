@@ -42,6 +42,8 @@ use OCP\Files\Mount\IMountPoint;
 use OCP\Files\Storage;
 use OCP\ILogger;
 use OCP\Files\Cache\ICacheEntry;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Encryption extends Wrapper {
 	use LocalTempFileTrait;
@@ -85,6 +87,9 @@ class Encryption extends Wrapper {
 	/** @var  ArrayCache */
 	private $arrayCache;
 
+	/** @var EventDispatcherInterface */
+	private $eventDispatcher;
+
 	/** @var array which has information of sourcePath during rename operation */
 	private $sourcePath;
 
@@ -112,7 +117,8 @@ class Encryption extends Wrapper {
 			IStorage $keyStorage = null,
 			Update $update = null,
 			Manager $mountManager = null,
-			ArrayCache $arrayCache = null
+			ArrayCache $arrayCache = null,
+			EventDispatcherInterface $eventDispatcher = null
 		) {
 		$this->mountPoint = $parameters['mountPoint'];
 		$this->mount = $parameters['mount'];
@@ -126,6 +132,7 @@ class Encryption extends Wrapper {
 		$this->update = $update;
 		$this->mountManager = $mountManager;
 		$this->arrayCache = $arrayCache;
+		$this->eventDispatcher = ($eventDispatcher === null) ? \OC::$server->getEventDispatcher() : $eventDispatcher;
 		parent::__construct($parameters);
 	}
 
@@ -774,6 +781,13 @@ class Encryption extends Wrapper {
 			}
 		} else {
 			try {
+				$signatureMismatch = false;
+				$this->eventDispatcher->addListener('files.aftersignaturemismatch', function (GenericEvent $event) use ($sourceInternalPath, &$signatureMismatch) {
+					if ($event->hasArgument('signatureMismatch') && ($event->getArgument('signatureMismatch') === true)) {
+						$event->setArgument('fileName', $sourceInternalPath);
+						$signatureMismatch = true;
+					}
+				}, 20);
 				$source = $sourceStorage->fopen($sourceInternalPath, 'r');
 				if ($isRename && (\count($mount) === 1)) {
 					$sourceStorageMountPoint = $mount[0]->getMountPoint();
@@ -785,6 +799,9 @@ class Encryption extends Wrapper {
 				list(, $result) = \OC_Helper::streamCopy($source, $target);
 				\fclose($source);
 				\fclose($target);
+				if ($signatureMismatch === true) {
+					$this->logger->warning("The file $sourceInternalPath has signature mismatch");
+				}
 			} catch (\Exception $e) {
 				Encryption::setDisableWriteEncryption(false);
 				\fclose($source);
