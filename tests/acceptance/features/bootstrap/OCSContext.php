@@ -299,7 +299,7 @@ class OCSContext implements Context {
 		PHPUnit_Framework_Assert::assertEquals(
 			$statusMessage,
 			$this->getOCSResponseStatusMessage(
-				$this->getResponse()
+				$this->featureContext->getResponse()
 			),
 			'Unexpected OCS status message in response'
 		);
@@ -329,7 +329,7 @@ class OCSContext implements Context {
 		PHPUnit_Framework_Assert::assertEquals(
 			$statusMessage->getRaw(),
 			$this->getOCSResponseStatusMessage(
-				$this->getResponse()
+				$this->featureContext->getResponse()
 			),
 			'Unexpected OCS status message in response'
 		);
