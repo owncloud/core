@@ -461,6 +461,24 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When /^the administrator (disables|enables) the setting "([^"]*)" in the section "([^"]*)"$/
+	 *
+	 * @param string $value
+	 * @param string $setting
+	 * @param string $section
+	 *
+	 * @return void
+	 */
+	public function adminSwitchesSettingInSection($value, $setting, $section) {
+		if ($value === "enables") {
+			$value = "enabled";
+		} elseif ($value === "disables") {
+			$value = "disabled";
+		}
+		$this->settingInSectionHasBeen($setting, $section, $value);
+	}
+
+	/**
 	 * @Given /^the setting "([^"]*)" in the section "([^"]*)" has been (disabled|enabled)$/
 	 *
 	 * @param string $setting
