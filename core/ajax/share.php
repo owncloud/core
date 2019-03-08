@@ -178,19 +178,22 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 				'personalNote' => $emailBody
 			]);
 
-			$isLinkValid = false;
-			$link = \parse_url($filter->getLink());
-			$trustedDomains = \OC::$server->getConfig()->getSystemValue('trusted_domains');
-			foreach ($trustedDomains as $trustedDomain) {
-				if (\parse_url($trustedDomain)['host'] === $link['host']) {
-					$isLinkValid = true;
-					break;
+			// Allow links to only point to trusted domains
+			if ($filter->getLink() !== null) {
+				$isLinkValid = false;
+				$link = \parse_url($filter->getLink());
+				$trustedDomains = \OC::$server->getConfig()->getSystemValue('trusted_domains');
+				foreach ($trustedDomains as $trustedDomain) {
+					if (\parse_url($trustedDomain)['host'] === $link['host']) {
+						$isLinkValid = true;
+						break;
+					}
 				}
-			}
 
-			if (!$isLinkValid) {
-				$l = \OC::$server->getL10N('core');
-				return OCP\JSON::error(['data' => ['message' => $l->t("Invalid share-link provided")]]);
+				if (!$isLinkValid) {
+					$l = \OC::$server->getL10N('core');
+					return OCP\JSON::error(['data' => ['message' => $l->t("Invalid share-link provided")]]);
+				}
 			}
 
 			$options = [];
