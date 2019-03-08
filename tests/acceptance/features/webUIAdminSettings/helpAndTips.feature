@@ -1,4 +1,4 @@
-@webUI @admin_settings-feature-required @insulated
+@webUI @insulated @disablePreviews @admin_settings-feature-required
 Feature: Help and tips page
   As an admin
   I want to be able to view a page with links to various help information

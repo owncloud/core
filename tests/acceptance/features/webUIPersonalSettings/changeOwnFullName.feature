@@ -1,4 +1,4 @@
-@webUI @insulated
+@webUI @insulated @disablePreviews
 Feature: Change own full name on the personal settings page
   As a user
   I would like to change my own full name
