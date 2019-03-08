@@ -1,4 +1,4 @@
-@webUI @insulated  @comments-app-required
+@webUI @insulated @disablePreviews @comments-app-required
 Feature: Add, delete and edit comments in files and folders
 
   As a user

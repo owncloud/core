@@ -1,4 +1,4 @@
-@webUI @insulated @systemtags-app-required
+@webUI @insulated @disablePreviews @systemtags-app-required
 Feature: Suggestion for matching tag names
   As a user
   I want to get suggestions for adding tags from already existing tags

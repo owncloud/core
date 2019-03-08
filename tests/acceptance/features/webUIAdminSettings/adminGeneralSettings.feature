@@ -1,4 +1,4 @@
-@webUI @mailhog @admin_settings-feature-required
+@webUI @insulated @disablePreviews @mailhog @admin_settings-feature-required
 Feature: admin general settings
   As an admin
   I want to be able to manage general settings on the ownCloud server

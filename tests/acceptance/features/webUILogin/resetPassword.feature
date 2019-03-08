@@ -1,5 +1,4 @@
 @webUI @insulated @disablePreviews @mailhog
-
 Feature: reset the password
   As a user
   I want to reset my password

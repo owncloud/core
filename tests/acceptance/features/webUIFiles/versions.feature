@@ -1,4 +1,5 @@
-@webUI @insulated  @files_versions-app-required
+@webUI @insulated @disablePreviews
+@files_versions-app-required
 Feature: Versions of a file
 
   As a user
