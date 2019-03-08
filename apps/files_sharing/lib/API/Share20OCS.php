@@ -214,8 +214,8 @@ class Share20OCS {
 			$result['share_with'] = $share->getSharedWith();
 			$result['share_with_displayname'] = $group !== null ? $group->getDisplayName() : $share->getSharedWith();
 		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
-			$result['share_with'] = $share->getPassword();
-			$result['share_with_displayname'] = $share->getPassword();
+			$result['share_with'] = '***redacted***';
+			$result['share_with_displayname'] = '***redacted***';
 			$result['name'] = $share->getName();
 
 			$result['token'] = $share->getToken();
