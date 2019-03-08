@@ -1,5 +1,4 @@
 @webUI @insulated @disablePreviews @mailhog
-
 Feature: reset the password using an email address
   As a user
   I want to reset my password using an email address

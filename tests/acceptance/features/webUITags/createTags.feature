@@ -1,4 +1,4 @@
-@webUI @insulated @systemtags-app-required
+@webUI @insulated @disablePreviews @systemtags-app-required
 Feature: Creation of tags for the files and folders
   As a user
   I want to create tags for the files/folders

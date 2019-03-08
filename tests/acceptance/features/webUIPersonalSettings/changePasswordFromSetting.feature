@@ -1,4 +1,4 @@
-@webUI @insulated
+@webUI @insulated @disablePreviews
 Feature: Change Login Password
   As a user
   I would like to change my login password
