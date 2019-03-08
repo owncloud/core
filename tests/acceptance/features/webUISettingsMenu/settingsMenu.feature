@@ -1,4 +1,4 @@
-@webUI
+@webUI @insulated @disablePreviews
 Feature: add users
   As an admin
   I want to be able to change different settings
