@@ -296,6 +296,15 @@ class UsersPage extends OwncloudPage {
 			);
 		}
 		$settingsBtn->click();
+		// At this point isVisible() on the settings menu returns true
+		// But the settings menu animation is happening.
+		// If we try to click a setting before the animation is finished
+		// then the click is not effective.
+		// This results in intermittent test fails, because the expected
+		// setting does not happen.
+		// ToDo: some day sort out how to query the settings menu div in a loop
+		//       and wait until the animation has stopped
+		\sleep(1);
 	}
 
 	/**
