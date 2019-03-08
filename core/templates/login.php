@@ -58,9 +58,10 @@ script('core', [
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
 				autocomplete="off" autocapitalize="off" autocorrect="off" required>
 			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
-			<input type="submit" id="submit" class="login primary icon-confirm" title="<?php p($l->t('Log in')); ?>" value="" disabled="disabled"/>
 		</p>
-
+		<p class=loginbutton>
+			<input type="submit" id="submit" class="login primary" title="<?php p($l->t('Log in')); ?>" value="Log in" disabled="disabled"/>
+		</p>
 		<?php if (!empty($_['csrf_error'])) {
 		?>
 		<p class="warning">

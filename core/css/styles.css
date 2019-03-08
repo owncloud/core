@@ -276,18 +276,18 @@ a.two-factor-cancel {
 
 /* position log in button as confirm icon in right of password field */
 #body-login #submit.login {
-	position: absolute;
 	right: 0;
 	top: 0;
-	border: none;
-	background-color: transparent;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-	opacity: .3;
+	border: 2px solid #ffffff;
+	background-color: rgba(0, 0, 0, .25);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+	opacity: .9;
+	}
 }
 #body-login #submit.login:hover,
 #body-login #submit.login:focus {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
-	opacity: .7;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+	opacity: .9;
 }
 #body-login input[type="password"],
 #body-login input[name="adminpass-clone"] {
@@ -618,8 +618,11 @@ label.infield {
 	width: 249px;
 }
 #body-login input.login {
-	width: auto;
-	float: right;
+	width: -webkit-fill-available;
+	width: -moz-available;
+	width: fill-available;
+	max-width: 300px;
+	float: none;
 }
 #body-login input[type="submit"] {
 	padding: 10px 20px; /* larger log in and installation buttons */
@@ -631,7 +634,9 @@ label.infield {
 	margin-top: 10px;
 	text-align: center;
 }
-
+#loginbutton {
+	text-align: center;
+}
 /* Sticky footer */
 #body-login .wrapper {
 	min-height: 100%;
