@@ -831,14 +831,24 @@ trait Sharing {
 		}
 		
 		$data = $this->getResponseXml()->data[0];
-		foreach ($data as $element) {
-			if ($element->share_with->__toString() === $userOrGroup
-				&& ($permissions === null
-				|| $permissionSum === (int)$element->permissions->__toString())
-			) {
-				return true;
+		if (\is_array($data)
+			|| (\is_object($data) && ($data instanceof \Traversable))
+		) {
+			foreach ($data as $element) {
+				if ($element->share_with->__toString() === $userOrGroup
+					&& ($permissions === null
+					|| $permissionSum === (int)$element->permissions->__toString())
+				) {
+					return true;
+				}
 			}
+			return false;
 		}
+		\error_log(
+			"INFORMATION: isUserOrGroupInSharedData response XML data is " .
+			\gettype($data) .
+			" and therefore does not contain share_with information."
+		);
 		return false;
 	}
 
