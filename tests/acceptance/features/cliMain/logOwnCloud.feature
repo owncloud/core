@@ -8,6 +8,7 @@ Feature: manipulate the ownCloud logging backend
     When the administrator enables the ownCloud backend using the occ command
     Then the command should have been successful
     And the command output should contain the text 'Log backend ownCloud: enabled'
+
   Scenario Outline: Admin sets the log file path
     When the administrator sets the log file path to "<path>" using the occ command
     Then the command should have been successful

@@ -30,6 +30,7 @@ Feature: auth
       |/ocs/v1.php/privatedata/getattribute                        | 997      | 401       |
       |/ocs/v2.php/privatedata/getattribute                        | 997      | 401       |
 
+  @issue-32068
   Scenario Outline: using OCS with non-admin basic auth
     When user "user0" requests "<endpoint>" with "GET" using basic auth
     Then the OCS status code should be "<ocs-code>"
