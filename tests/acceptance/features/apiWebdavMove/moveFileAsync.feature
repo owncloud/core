@@ -23,7 +23,7 @@ Feature: move (rename) file
       | /welcome.txt |
     Examples:
       | destination-file-name |
-      | नेपाली.txt              |
+      | नेपाली.txt            |
       | strängé file.txt      |
       | C++ file.cpp          |
       | file #2.txt           |
