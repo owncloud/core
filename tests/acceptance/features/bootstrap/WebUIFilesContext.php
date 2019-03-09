@@ -173,8 +173,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->conflictDialog = $conflictDialog;
 		$this->favoritesPage = $favoritesPage;
 		$this->sharedWithYouPage = $sharedWithYouPage;
-		$this->sharedByLinkPage = $sharedByLinkPage;
 		$this->tagsPage = $tagsPage;
+		$this->sharedByLinkPage = $sharedByLinkPage;
 		$this->sharedWithOthersPage = $sharedWithOthersPage;
 	}
 
