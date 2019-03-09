@@ -24,6 +24,12 @@ Feature: capabilities
     When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "yes"
     Then the capabilities setting of "files_sharing" path "group_sharing" should be "1"
 
+  Scenario: Check that group sharing can be disabled
+    Given parameter "shareapi_allow_group_sharing" of app "core" has been set to "yes"
+    And the capabilities setting of "files_sharing" path "group_sharing" has been confirmed to be "1"
+    When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "no"
+    Then the capabilities setting of "files_sharing" path "group_sharing" should be ""
+
   @smokeTest
   Scenario: getting capabilities with admin user
     When the administrator retrieves the capabilities using the capabilities API
