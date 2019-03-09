@@ -17,6 +17,8 @@ Feature: auth
       |/ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
       |/ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
       |/ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      |/ocs/v1.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      |/ocs/v2.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
       |/ocs/v1.php/cloud/apps                                      | 997      | 401       |
       |/ocs/v2.php/cloud/apps                                      | 997      | 401       |
       |/ocs/v1.php/cloud/groups                                    | 997      | 401       |
@@ -27,8 +29,6 @@ Feature: auth
       |/ocs/v2.php/config                                          | 200      | 200       |
       |/ocs/v1.php/privatedata/getattribute                        | 997      | 401       |
       |/ocs/v2.php/privatedata/getattribute                        | 997      | 401       |
-      |/ocs/v1.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
-      |/ocs/v2.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
 
   @issue-32068
   Scenario Outline: using OCS with non-admin basic auth
@@ -70,6 +70,8 @@ Feature: auth
       | 2               |/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
       | 1               |/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
       | 2               |/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      | 1               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      | 2               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
       | 1               |/cloud/apps                                      | 997      | 401       |
       | 2               |/cloud/apps                                      | 997      | 401       |
       | 1               |/cloud/groups                                    | 997      | 401       |
@@ -80,8 +82,6 @@ Feature: auth
       | 2               |/config                                          | 200      | 200       |
       | 1               |/privatedata/getattribute                        | 997      | 401       |
       | 2               |/privatedata/getattribute                        | 997      | 401       |
-      | 1               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
-      | 2               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
 
   Scenario Outline: using OCS with admin basic auth
     When the administrator requests "<endpoint>" with "GET" using basic auth
@@ -109,6 +109,8 @@ Feature: auth
       | 2               |/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
       | 1               |/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
       | 2               |/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      | 1               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      | 2               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
       | 1               |/cloud/apps                                      | 997      | 401       |
       | 2               |/cloud/apps                                      | 997      | 401       |
       | 1               |/cloud/groups                                    | 997      | 401       |
@@ -117,8 +119,6 @@ Feature: auth
       | 2               |/cloud/users                                     | 997      | 401       |
       | 1               |/privatedata/getattribute                        | 997      | 401       |
       | 2               |/privatedata/getattribute                        | 997      | 401       |
-      | 1               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
-      | 2               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
 
   Scenario Outline: using OCS with token auth of a normal user
     When user "user0" requests "<endpoint>" with "GET" using basic token auth

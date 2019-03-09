@@ -18,6 +18,10 @@ Feature: auth
       | 2               |/apps/files_sharing/api/v1/remote_shares/pending/123 | 997      | 401       |
       | 1               |/apps/files_sharing/api/v1/remote_shares/123         | 997      | 401       |
       | 2               |/apps/files_sharing/api/v1/remote_shares/123         | 997      | 401       |
+      | 1               |/apps/files_sharing/api/v1/shares/123                | 997      | 401       |
+      | 2               |/apps/files_sharing/api/v1/shares/123                | 997      | 401       |
+      | 1               |/apps/files_sharing/api/v1/shares/pending/123        | 997      | 401       |
+      | 2               |/apps/files_sharing/api/v1/shares/pending/123        | 997      | 401       |
       | 1               |/cloud/apps/testing                                  | 997      | 401       |
       | 2               |/cloud/apps/testing                                  | 997      | 401       |
       | 1               |/cloud/groups/group1                                 | 997      | 401       |
@@ -28,8 +32,4 @@ Feature: auth
       | 2               |/cloud/users/user0/groups                            | 997      | 401       |
       | 1               |/cloud/users/user0/subadmins                         | 997      | 401       |
       | 2               |/cloud/users/user0/subadmins                         | 997      | 401       |
-      | 1               |/apps/files_sharing/api/v1/shares/123                | 997      | 401       |
-      | 2               |/apps/files_sharing/api/v1/shares/123                | 997      | 401       |
-      | 1               |/apps/files_sharing/api/v1/shares/pending/123        | 997      | 401       |
-      | 2               |/apps/files_sharing/api/v1/shares/pending/123        | 997      | 401       |
 
