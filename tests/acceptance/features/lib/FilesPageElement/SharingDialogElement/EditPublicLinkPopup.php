@@ -43,8 +43,8 @@ class EditPublicLinkPopup extends OwncloudPage {
 	private $expirationDateInputXpath = ".//input[contains(@class,'expirationDate')]";
 	private $emailInputXpath = "//form[@id='emailPrivateLink']//input[@class='select2-input']";
 	private $emailToSelfCheckboxXpath = "//form[@id='emailPrivateLink']" . "//input[@class='emailPrivateLinkForm--emailToSelf']";
-	private $personalMessageInputXpath = "//*[@class='public-link-modal--input emailPrivateLinkForm--emailBodyField']";
 	private $emailInputCloseXpath = "//a[@class='select2-search-choice-close']";
+	private $personalMessageInputXpath = "//*[@class='public-link-modal--input emailPrivateLinkForm--emailBodyField']";
 	private $shareButtonXpath = ".//button[contains(text(), 'Share') or contains(text(), 'Save')]";
 	private $cancelButtonXpath = ".//button[contains(text(), 'Cancel')]";
 	private $permissionLabelXpath = [
