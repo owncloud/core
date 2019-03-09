@@ -20,7 +20,7 @@ Feature: reset the password
       """
     And the email address "user1@example.org" should have received an email with the body containing
       """
-      Use the following link to reset your password:
+      Use the following link to reset your password: <a href=
       """
 
   @skipOnEncryption @skipOnOcV10.0 @skipOnOcV10.1
