@@ -15,13 +15,13 @@ Feature: reset the password using an email address
   Scenario: send password reset email
     When the user requests the password reset link using the webUI
     Then a message with this text should be displayed on the webUI:
-			"""
-			The link to reset your password has been sent to your email. If you do not receive it within a reasonable amount of time, check your spam/junk folders. If it is not there ask your local administrator.
-			"""
+      """
+      The link to reset your password has been sent to your email. If you do not receive it within a reasonable amount of time, check your spam/junk folders. If it is not there ask your local administrator.
+      """
     And the email address "user1@example.org" should have received an email with the body containing
-			"""
-			Use the following link to reset your password: <a href=
-			"""
+      """
+      Use the following link to reset your password: <a href=
+      """
 
   @skipOnEncryption
   # consider adding this to the smoke tests when the issue is fixed @smokeTest
