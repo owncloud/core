@@ -47,6 +47,7 @@ table td.filename .nametext {
 /* ellipsis on file names */
 table td.filename .nametext .innernametext {
 	max-width: 50%;
+	min-width: 180px;
 }
 
 /* proper notification area for multi line messages */
