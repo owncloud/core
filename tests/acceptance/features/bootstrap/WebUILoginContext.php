@@ -586,7 +586,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 			$expectedString, $passwordMismatchMessage
 		);
 	}
-	
+
 	/**
 	 * @When /^the user follows the password set link received by "([^"]*)"(?: in Email number (\d+))? using the webUI$/
 	 *
