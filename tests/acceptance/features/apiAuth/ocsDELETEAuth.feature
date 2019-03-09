@@ -32,4 +32,3 @@ Feature: auth
       | 2               |/cloud/users/user0/groups                            | 997      | 401       |
       | 1               |/cloud/users/user0/subadmins                         | 997      | 401       |
       | 2               |/cloud/users/user0/subadmins                         | 997      | 401       |
-
