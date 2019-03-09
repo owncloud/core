@@ -95,8 +95,8 @@ Feature: upload file using new chunking
     And the following headers should match these regular expressions
       | OC-JobStatus-Location | /%base_path%\/remote\.php\/dav\/job-status\/user0\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ |
     And the oc job status values of last request for user "user0" should match these regular expressions
-      | status       | /^error$/ |
-      | errorCode    | /^400$/   |
+      | status       | /^error$/                                         |
+      | errorCode    | /^400$/                                           |
       | errorMessage | /^Chunks on server do not sum up to 5 but to 15$/ |
 
   Scenario: Upload file via new chunking endpoint with correct size header using async MOVE
@@ -149,7 +149,7 @@ Feature: upload file using new chunking
     And the following headers should not be set
       | OC-JobStatus-Location |
     And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
-    
+
   Scenario: enabling async operations does no difference to normal MOVE - Upload chunked file
     When user "user0" uploads the following chunks to "/myChunkedFile.txt" with new chunking and using the WebDAV API
       | 1 | AAAAA |
