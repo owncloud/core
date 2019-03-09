@@ -432,7 +432,7 @@ table td.filename .nametext {
 }
 
 table td.filename .nametext .innernametext {
-	text-overflow: ellipsis;
+	text-overflow: clip;
 	overflow: hidden;
 	position: relative;
 	display: inline-block;
