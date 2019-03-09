@@ -17,6 +17,10 @@ Feature: auth
       | ocs_api_version |endpoint                                             | ocs-code | http-code |
       | 1               |/apps/files_sharing/api/v1/remote_shares/pending/123 | 997      | 401       |
       | 2               |/apps/files_sharing/api/v1/remote_shares/pending/123 | 997      | 401       |
+      | 1               |/apps/files_sharing/api/v1/shares                    | 997      | 401       |
+      | 2               |/apps/files_sharing/api/v1/shares                    | 997      | 401       |
+      | 1               |/apps/files_sharing/api/v1/shares/pending/123        | 997      | 401       |
+      | 2               |/apps/files_sharing/api/v1/shares/pending/123        | 997      | 401       |
       | 1               |/cloud/apps/testing                                  | 997      | 401       |
       | 2               |/cloud/apps/testing                                  | 997      | 401       |
       | 1               |/cloud/groups                                        | 997      | 401       |
@@ -33,8 +37,4 @@ Feature: auth
       | 2               |/privatedata/deleteattribute/testing/test            | 997      | 401       |
       | 1               |/privatedata/setattribute/testing/test               | 997      | 401       |
       | 2               |/privatedata/setattribute/testing/test               | 997      | 401       |
-      | 1               |/apps/files_sharing/api/v1/shares                    | 997      | 401       |
-      | 2               |/apps/files_sharing/api/v1/shares                    | 997      | 401       |
-      | 1               |/apps/files_sharing/api/v1/shares/pending/123        | 997      | 401       |
-      | 2               |/apps/files_sharing/api/v1/shares/pending/123        | 997      | 401       |
 

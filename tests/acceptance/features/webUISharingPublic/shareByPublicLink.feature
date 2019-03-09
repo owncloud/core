@@ -169,6 +169,22 @@ Feature: Share by public link
     And the email address "foo@bar.co" should have received an email containing the last shared public link
     And the email address "foo@barr.co" should have received an email containing the last shared public link
 
+  Scenario: user shares a public link via email with a personal message
+    Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
+    And the user has reloaded the current page of the webUI
+    When the user creates a new public link for folder "simple-folder" using the webUI with
+      | email           | foo@bar.co  |
+      | personalMessage | lorem ipsum |
+    Then the email address "foo@bar.co" should have received an email with the body containing
+			"""
+			User One shared simple-folder with you
+			"""
+    And the email address "foo@bar.co" should have received an email with the body containing
+			"""
+			lorem ipsum
+			"""
+    And the email address "foo@bar.co" should have received an email containing the last shared public link
+
   Scenario: user shares a public link via email adding few addresses before and then removing some addresses afterwards
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And the user has reloaded the current page of the webUI

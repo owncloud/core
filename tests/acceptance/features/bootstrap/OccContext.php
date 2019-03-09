@@ -227,7 +227,7 @@ class OccContext implements Context {
 			"log:manage --level $level"
 		);
 	}
-	
+
 	/**
 	 * @When the administrator sets the timezone to :timezone using the occ command
 	 *
@@ -240,7 +240,7 @@ class OccContext implements Context {
 			"log:manage --timezone $timezone"
 		);
 	}
-	
+
 	/**
 	 * @When the administrator sets the backend to :backend using the occ command
 	 *
@@ -253,7 +253,7 @@ class OccContext implements Context {
 			"log:manage --backend $backend"
 		);
 	}
-	
+
 	/**
 	 * @When the administrator enables the ownCloud backend using the occ command
 	 *
@@ -264,7 +264,7 @@ class OccContext implements Context {
 			"log:owncloud --enable"
 		);
 	}
-	
+
 	/**
 	 * @When the administrator sets the log file path to :path using the occ command
 	 *
@@ -277,7 +277,7 @@ class OccContext implements Context {
 			"log:owncloud --file $path"
 		);
 	}
-	
+
 	/**
 	 * @When the administrator sets the log rotate file size to :size using the occ command
 	 *

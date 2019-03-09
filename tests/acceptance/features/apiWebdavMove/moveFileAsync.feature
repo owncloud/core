@@ -23,7 +23,7 @@ Feature: move (rename) file
       | /welcome.txt |
     Examples:
       | destination-file-name |
-      | नेपाली.txt              |
+      | नेपाली.txt            |
       | strängé file.txt      |
       | C++ file.cpp          |
       | file #2.txt           |
@@ -123,8 +123,8 @@ Feature: move (rename) file
     When user "user0" moves file "/welcome.txt" asynchronously to "/not-existing/welcome.txt" using the WebDAV API
     Then the HTTP status code should be "202"
     And the oc job status values of last request for user "user0" should match these regular expressions
-      | status       | /^error$/ |
-      | errorCode    | /^409$/   |
+      | status       | /^error$/                             |
+      | errorCode    | /^409$/                               |
       | errorMessage | /^The destination node is not found$/ |
     And user "user0" should see the following elements
       | /welcome.txt |

@@ -20,7 +20,6 @@
  */
 
 use TestHelpers\SetupHelper;
-use TestHelpers\WebDavHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
