@@ -42,15 +42,6 @@ default:
         - CommentsContext:
         - WebDavPropertiesContext:
 
-    cliEncryption:
-      paths:
-        - '%paths.base%/../features/cliEncryption'
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - EncryptionContext:
-        - OccContext:
-        - WebDavPropertiesContext:
-
     apiFavorites:
       paths:
         - '%paths.base%/../features/apiFavorites'
@@ -186,6 +177,15 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+
+    cliEncryption:
+      paths:
+        - '%paths.base%/../features/cliEncryption'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - EncryptionContext:
+        - OccContext:
+        - WebDavPropertiesContext:
 
     cliMain:
       paths:
