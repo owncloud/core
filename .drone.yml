@@ -121,7 +121,7 @@ pipeline:
       - make test-php-phan
     when:
       matrix:
-        TEST_SUITE: phan
+        TEST_SUITE: phan-70
 
   php-phan-71:
     image: owncloudci/php:7.1
@@ -638,7 +638,11 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: owncloud-coding-standard
 
-  # phan (runs multiple PHP v7.* to provide syntax checks of each PHP version)
+  # phan (runs on just PHP 7.0 because that has different dependencies for phan)
+    - TEST_SUITE: phan-70
+      PHP_VERSION: 7.0
+
+    # phan (runs multiple PHP v7.1+ to provide syntax checks of each PHP version)
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
 
