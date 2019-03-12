@@ -378,6 +378,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - PublicWebDavContext:
+        - WebUIPersonalSharingSettingsContext:
 
     webUISharingInternalGroups:
       paths:
