@@ -60,14 +60,21 @@ pipeline:
   composer:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
+    environment:
+      - COMPOSER_HOME=/drone/src/.cache/composer
     commands:
       - make install-composer-deps
+      - make vendor-bin-deps
     when:
       event: [push, pull_request]
 
   yarn:
     image: owncloudci/nodejs:latest
     pull: true
+    environment:
+      - NPM_CONFIG_CACHE=/drone/src/.cache/npm
+      - YARN_CACHE_FOLDER=/drone/src/.cache/yarn
+      - bower_storage__packages=/drone/src/.cache/bower
     commands:
       - ./tests/drone/yarn-install.sh
     when:
@@ -79,9 +86,7 @@ pipeline:
     secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
     rebuild: true
     mount:
-      - lib/composer
-      - core/vendor
-      - build/node_modules
+      - .cache
     when:
       local: false
       event: [ push ]
@@ -116,7 +121,7 @@ pipeline:
       - make test-php-phan
     when:
       matrix:
-        TEST_SUITE: phan
+        TEST_SUITE: phan-70
 
   php-phan-71:
     image: owncloudci/php:7.1
@@ -629,19 +634,15 @@ matrix:
       PHP_VERSION: 7.1
       COVERAGE: true
 
-    - PHP_VERSION: 5.6
-      DB_TYPE: postgres
-      TEST_SUITE: phpunit
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
   # owncloud-coding-standard
-  # Run with PHP 5.6 because that is not supported by phan.
-  # This gives us a syntax check for PHP 5.6
-    - PHP_VERSION: 5.6
+    - PHP_VERSION: 7.1
       TEST_SUITE: owncloud-coding-standard
 
-  # phan (runs multiple PHP v7.* to provide syntax checks of each PHP version)
+  # phan (runs on just PHP 7.0 because that has different dependencies for phan)
+    - TEST_SUITE: phan-70
+      PHP_VERSION: 7.0
+
+    # phan (runs multiple PHP v7.1+ to provide syntax checks of each PHP version)
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
 
@@ -685,6 +686,31 @@ matrix:
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
       COVERAGE: true
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    # PHP 7.0
+    - PHP_VERSION: 7.0
+      DB_TYPE: mysql
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.0
+      DB_TYPE: mysqlmb4
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.0
+      DB_TYPE: postgres
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.0
+      DB_TYPE: oracle
+      TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
@@ -735,7 +761,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
   # Primary Objectstorage
-    - PHP_VERSION: 5.6
+    - PHP_VERSION: 7.0
       TEST_SUITE: phpunit
       DB_TYPE: sqlite
       OBJECTSTORE: swift
@@ -1462,7 +1488,7 @@ matrix:
       CALDAV_CARDDAV_JOB: true
 
     # encryption tests
-    - PHP_VERSION: 5.6
+    - PHP_VERSION: 7.0
       TEST_SUITE: cli
       BEHAT_SUITE: cliEncryption
       DB_TYPE: mariadb
