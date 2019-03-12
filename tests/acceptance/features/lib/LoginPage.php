@@ -39,7 +39,7 @@ class LoginPage extends OwncloudPage {
 	protected $userInputId = "user";
 	protected $passwordInputId = "password";
 	protected $confirmPasswordInputId = "retypepassword";
-	protected $passwordResetConfrimMessage = "message";
+	protected $passwordResetConfirmMessage = "message";
 	protected $submitLoginId = "submit";
 	protected $lostPasswordId = "lost-password";
 	protected $setPasswordErrorMessageId = "error-message";
@@ -214,7 +214,7 @@ class LoginPage extends OwncloudPage {
 	 * @return string
 	 */
 	public function getRestPasswordConfirmError() {
-		$messageVal = $this->findById($this->passwordResetConfrimMessage)->getText();
+		$messageVal = $this->findById($this->passwordResetConfirmMessage)->getText();
 		return $messageVal;
 	}
 

@@ -46,7 +46,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	protected $linkedAppNameXpath = '//span[@class="token-name"]';
 	protected $disconnectButtonXpath = '//*[@data-original-title="Disconnect"]';
 	protected $createNewAppPasswordLoadingIndicatorClass = 'icon-loading-small';
-	protected $corsInputfieldXpath = "//input[@id='domain']";
+	protected $corsInputFieldXpath = "//input[@id='domain']";
 
 	/**
 	 * create a new app password for the app named $appName
@@ -151,7 +151,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	) {
 		$this->waitForOutstandingAjaxCalls($session);
 		$this->waitTillXpathIsVisible(
-			$this->corsInputfieldXpath, $timeout_msec
+			$this->corsInputFieldXpath, $timeout_msec
 		);
 	}
 }

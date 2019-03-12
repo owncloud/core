@@ -2633,7 +2633,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function userHasBeeenGivenUnlimitedQuota($user) {
+	public function userHasBeenGivenUnlimitedQuota($user) {
 		$this->theQuotaOfUserHasBeenSetTo($user, 'none');
 	}
 

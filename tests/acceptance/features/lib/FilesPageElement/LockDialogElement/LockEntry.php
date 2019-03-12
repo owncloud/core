@@ -80,7 +80,7 @@ class LockEntry extends OwncloudPage {
 	}
 
 	/**
-	 * gets the user that has locked the ressource
+	 * gets the user that has locked the resource
 	 *
 	 * @throws \Exception
 	 *
