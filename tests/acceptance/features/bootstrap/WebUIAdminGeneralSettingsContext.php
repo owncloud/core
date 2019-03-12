@@ -83,8 +83,12 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function administratorSetsTheFollowingSettingsInEmailServerSettingUsingTheWebui(TableNode $emailSettingsTable) {
-		$this->adminGeneralSettingsPage->setEmailServerSettings($emailSettingsTable);
+	public function administratorSetsTheFollowingSettingsInEmailServerSettingUsingTheWebui(
+		TableNode $emailSettingsTable
+	) {
+		$this->adminGeneralSettingsPage->setEmailServerSettings(
+			$this->getSession(), $emailSettingsTable
+		);
 	}
 
 	/**

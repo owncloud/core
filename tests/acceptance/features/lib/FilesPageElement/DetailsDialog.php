@@ -165,7 +165,7 @@ class DetailsDialog extends OwncloudPage {
 	/**
 	 * find the xpath of button to revert to last version
 	 *
-	 * @return void
+	 * @return NodeElement
 	 */
 	public function getLastVersionRevertButton() {
 		$btn = $this->detailsDialogElement->find(
@@ -507,12 +507,14 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
+	 * @param Session $session
+	 *
 	 * @return void
 	 */
-	public function restoreCurrentFileToLastVersion() {
+	public function restoreCurrentFileToLastVersion($session) {
 		$revertBtn = $this->getLastVersionRevertButton();
 		$revertBtn->click();
-		$this->waitForAjaxCallsToStartAndFinish($this->getSession());
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
