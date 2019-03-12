@@ -153,7 +153,7 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 			}
 		} else {
 			throw new \Exception(
-				__METHOD__ . " invalid action: $action"
+				__METHOD__ . " invalid auth required checkbox state: $requiredState"
 			);
 		}
 	}

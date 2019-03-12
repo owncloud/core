@@ -47,7 +47,6 @@ class FilesPage extends FilesPageBasic {
 	 * @var FilesPageCRUD $filesPageCRUDFunctions
 	 */
 	protected $filesPageCRUDFunctions;
-	private $strForNormalFileName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 
 	/**
 	 * @return string

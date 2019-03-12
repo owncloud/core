@@ -598,7 +598,8 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function checkPublicLinkCount(Session $session, $count) {
 		$publicLinkTitles = $this->findAll("xpath", $this->publicLinkTitleXpath);
-		if (\count($publicLinkTitles) != $count) {
+		$publicLinkTitlesCount = \count($publicLinkTitles);
+		if ($publicLinkTitlesCount != $count) {
 			throw new \Exception("Found $publicLinkTitlesCount public link entries but expected $count");
 		}
 	}
