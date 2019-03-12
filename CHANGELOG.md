@@ -5,13 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-
 ### Added
 
 - Add before-after share link auth events - [#34399](https://github.com/owncloud/core/issues/34399)
 - Log broken smb config params for easier debugging - [#34056](https://github.com/owncloud/core/issues/34056)
 - Add support for detecting library mime types - [#34082](https://github.com/owncloud/core/issues/34082)
 - Support for automatically accepting incoming federated shares from trusted servers - [#34206](https://github.com/owncloud/core/issues/34206)
+- User option for automatically accepting incoming federated shares - [#34706](https://github.com/owncloud/core/issues/34706)
 - Extend repair command to be able to list repair steps and run them individually - [#34499](https://github.com/owncloud/core/issues/34499)
 - Added CORS headers for many existing API calls, required for Phoenix  - [#34476](https://github.com/owncloud/core/issues/34476)
 - Encryption now supports working with a Hardware Security Module - [#34527](https://github.com/owncloud/core/issues/34527)
@@ -39,6 +39,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump phpseclib/phpseclib from 2.0.13 to 2.0.14 - [#34285](https://github.com/owncloud/core/issues/34285)
 - Bump pimple/pimple from 3.0.2 to 3.2.3 - [#31753](https://github.com/owncloud/core/issues/31753)
 - Bump symfony v3.4.20 => v3.4.21 - [#34042](https://github.com/owncloud/core/issues/34042)
+- Bump symfony v3.4.22 => v3.4.23 - [#34663](https://github.com/owncloud/core/issues/34663)
 - Bump symfony/process from 3.4.21 to 3.4.22 - [#34407](https://github.com/owncloud/core/issues/34407)
 - Bump symfony/translation from 3.4.21 to 3.4.22 - [#34406](https://github.com/owncloud/core/issues/34406)
 - Bump symfony/console from 3.4.21 to 3.4.22 - [#34404](https://github.com/owncloud/core/issues/34404)
@@ -58,9 +59,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Removed
 
 - Removed bundled documentation, help links now point to the online documentation - [#34612](https://github.com/owncloud/core/issues/34612) [#34649](https://github.com/owncloud/core/issues/34649)
+- Remove incompatible script for generating DB changeset - [#34722](https://github.com/owncloud/core/issues/34722)
 
 ### Fixed
 
+- Don't expose hashed password in OCS api - [#34691](https://github.com/owncloud/core/issues/34691)
+- Fixes UID issue with birthday calendar events - [#34701](https://github.com/owncloud/core/issues/34701)
 - Improve avatar performance by having many avatar related calls bypass the file cache - [#34592](https://github.com/owncloud/core/issues/34592)
 - Improve speed of apps list settings page by caching integrity check results - [#34584](https://github.com/owncloud/core/issues/34584)
 - Fix chunking infinite loop in some environment related issues - [#34558](https://github.com/owncloud/core/issues/34558)
