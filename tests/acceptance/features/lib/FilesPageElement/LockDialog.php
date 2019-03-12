@@ -29,7 +29,7 @@ use Page\OwncloudPage;
 use Page\FilesPageElement\LockDialogElement\LockEntry;
 
 /**
- * The Lock Dialog, lists all the locks and gives a posibility to delete them
+ * The Lock Dialog, lists all the locks and gives a possibility to delete them
  *
  */
 class LockDialog extends OwncloudPage {

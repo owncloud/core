@@ -102,7 +102,7 @@ class WebDavLockingContext implements Context {
 			$this->tokenOfLastLock[$user][$file] = (string)$xmlPart[0];
 		} else {
 			if ($expectToSucceed === true) {
-				PHPUnit_Framework_Assert::fail("could not find lock tocken");
+				PHPUnit_Framework_Assert::fail("could not find lock token");
 			}
 		}
 	}
@@ -363,7 +363,7 @@ class WebDavLockingContext implements Context {
 	 * @param string $destination
 	 * @param string $itemToUseLockOf
 	 *
-	 * @return string
+	 * @return void
 	 */
 	public function userUploadsAFileWithContentTo(
 		$user, $content, $destination, $itemToUseLockOf

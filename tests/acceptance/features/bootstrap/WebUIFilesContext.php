@@ -2058,6 +2058,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserRestoresTheFileToLastVersionUsingTheWebui() {
-		$this->filesPage->getDetailsDialog()->restoreCurrentFileToLastVersion();
+		$this->filesPage->getDetailsDialog()->restoreCurrentFileToLastVersion(
+			$this->getSession()
+		);
 	}
 }

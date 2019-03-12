@@ -41,8 +41,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	protected $publicShareCheckboxId = 'allowLinks';
 	protected $publicUploadCheckboxXpath = '//label[@for="allowPublicUpload"]';
 	protected $publicUploadCheckboxId = 'allowPublicUpload';
-	protected $mailNotiticationOnPublicShareCheckboxXpath = '//label[@for="allowPublicMailNotification"]';
-	protected $mailNotiticationOnPublicShareCheckboxId = 'allowPublicMailNotification';
+	protected $mailNotificationOnPublicShareCheckboxXpath = '//label[@for="allowPublicMailNotification"]';
+	protected $mailNotificationOnPublicShareCheckboxId = 'allowPublicMailNotification';
 	protected $shareFileViaSocialMediaOnPublicShareCheckboxXpath = '//label[@for="allowSocialShare"]';
 	protected $shareFileViaSocialMediaOnPublicShareCheckboxId = 'allowSocialShare';
 	protected $enforceLinkPasswordReadOnlyCheckboxXpath = '//label[@for="enforceLinkPasswordReadOnly"]';
@@ -128,8 +128,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 		$this->toggleCheckbox(
 			$session,
 			$action,
-			$this->mailNotiticationOnPublicShareCheckboxXpath,
-			$this->mailNotiticationOnPublicShareCheckboxId
+			$this->mailNotificationOnPublicShareCheckboxXpath,
+			$this->mailNotificationOnPublicShareCheckboxId
 		);
 	}
 

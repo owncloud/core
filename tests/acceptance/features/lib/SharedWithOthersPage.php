@@ -12,7 +12,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See thed
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
@@ -81,7 +81,7 @@ class SharedWithOthersPage extends FilesPageBasic {
 	 *
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function getFilePathInRowXpath() {
 		return $this->filePathInRowXpath;
@@ -117,6 +117,7 @@ class SharedWithOthersPage extends FilesPageBasic {
 	 */
 	public function findAllFileRowsByName($name, Session $session) {
 		$fileRowElements = $this->getFileRowElementsByName($name, $session);
+		$fileRows = [];
 		foreach ($fileRowElements as $fileRowElement) {
 			$fileRow = $this->getPage('FilesPageElement\\SharedWithOthersFileRow');
 			$fileRow->setElement($fileRowElement);

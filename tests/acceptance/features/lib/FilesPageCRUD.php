@@ -44,6 +44,7 @@ class FilesPageCRUD extends FilesPageBasic {
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 	protected $fileUploadInputId = "file_upload_start";
 	protected $uploadProgressbarLabelXpath = "//div[@id='uploadprogressbar']/em";
+	protected $strForNormalFileName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 
 	/**
 	 * @param string $fileNamesXpath

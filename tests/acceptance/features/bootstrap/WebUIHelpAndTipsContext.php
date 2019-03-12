@@ -22,7 +22,6 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\HelpAndTipsPage;
@@ -46,8 +45,6 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	 * @var FeatureContext
 	 */
 	private $featureContext;
-
-	private $pageTitle = "Settings - ownCloud";
 
 	/**
 	 * WebUIHelpAndTips constructor.

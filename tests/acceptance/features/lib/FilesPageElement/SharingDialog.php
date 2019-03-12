@@ -29,7 +29,6 @@ use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Page\OwncloudPageElement\OCDialog;
-use Behat\Mink\Exception\Exception;
 
 /**
  * The Sharing Dialog
@@ -598,7 +597,8 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function checkPublicLinkCount(Session $session, $count) {
 		$publicLinkTitles = $this->findAll("xpath", $this->publicLinkTitleXpath);
-		if (\count($publicLinkTitles) != $count) {
+		$publicLinkTitlesCount = \count($publicLinkTitles);
+		if ($publicLinkTitlesCount != $count) {
 			throw new \Exception("Found $publicLinkTitlesCount public link entries but expected $count");
 		}
 	}
