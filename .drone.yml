@@ -573,7 +573,7 @@ services:
         USE_FEDERATED_SERVER: true
         SERVER_PROTOCOL: http
 
-  apache_webdav:
+  apache-webdav:
     image: owncloudci/php
     pull: true
     environment:
@@ -583,7 +583,7 @@ services:
       matrix:
         FILES_EXTERNAL_TYPE: webdav_apache
 
-  smb_samba:
+  smb-samba:
     image: owncloudci/samba
     pull: true
     command: "-u \"test;test\" -s \"public;/tmp;yes;no;no;test;none;test\" -S"
