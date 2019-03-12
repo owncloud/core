@@ -115,6 +115,7 @@ trait Sharing {
 	 *       |                 |     1 = read; 2 = update; 4 = create;               |
 	 *       |                 |     8 = delete; 16 = share; 31 = all                |
 	 *       |                 |     15 = change                                     |
+	 *       |                 |     7 = uploadwriteonly                             |
 	 *       |                 |     (default: 31, for public shares: 1)             |
 	 *       |                 |     Pass either the (total) number,                 |
 	 *       |                 |     or the keyword,                                 |
@@ -292,8 +293,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|share|all) permission(?:s|)$/
-	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @When /^user "([^"]*)" creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|uploadwriteonly|share|all) permission(?:s|)$/
+	 * @Given /^user "([^"]*)" has created a public link share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|uploadwriteonly|share|all) permission(?:s|)$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -308,8 +309,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|share|all) permission(?:s|)$/
-	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|uploadwriteonly|share|all) permission(?:s|)$/
+	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|uploadwriteonly|share|all) permission(?:s|)$/
 	 *
 	 * @param string $path
 	 * @param string|int|string[]|int[]|null $permissions

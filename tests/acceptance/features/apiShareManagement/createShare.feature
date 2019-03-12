@@ -197,6 +197,24 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @public_link_share-feature-required
+  Scenario Outline: Creating a link share with upload permissions keeps it
+    Given using OCS API version "<ocs_api_version>"
+    And user "user0" has created folder "/afolder"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path        | /afolder |
+      | permissions | 7        |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the share fields of the last share should include
+      | id          | A_NUMBER |
+      | share_type  | 3        |
+      | permissions | 7        |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
   Scenario Outline: Share of folder and sub-folder to same user - core#20645
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes

@@ -843,16 +843,6 @@ OC.Uploader.prototype = _.extend({
 					upload
 				]);
 				return false;
-			} else {
-				/**
-				 * The public link with view-download-upload option. Here we would
-				 * not overwrite the files. Instead create new file by autorenaming,
-				 * if the file already exists.
-				 *
-				 */
-				if (fileInfo) {
-					callbacks.onAutoRenameForPublicLink(upload);
-				}
 			}
 			return true;
 		});
@@ -1111,9 +1101,6 @@ OC.Uploader.prototype = _.extend({
 
 							onNoConflicts: function (selection) {
 								self.submitUploads(selection.uploads);
-							},
-							onAutoRenameForPublicLink: function(upload) {
-								self.onAutorename(upload);
 							},
 							onSkipConflicts: function (selection) {
 								//TODO mark conflicting files as toskip
