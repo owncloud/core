@@ -76,7 +76,7 @@ class TagsPage extends FilesPageBasic {
 	}
 
 	/**
-	 * @return void
+	 * @return string
 	 * @throws ElementNotFoundException
 	 */
 	protected function getFilePathInRowXpath() {

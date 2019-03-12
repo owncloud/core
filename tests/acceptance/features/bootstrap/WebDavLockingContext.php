@@ -363,7 +363,7 @@ class WebDavLockingContext implements Context {
 	 * @param string $destination
 	 * @param string $itemToUseLockOf
 	 *
-	 * @return string
+	 * @return void
 	 */
 	public function userUploadsAFileWithContentTo(
 		$user, $content, $destination, $itemToUseLockOf

@@ -241,7 +241,7 @@ class PublicLinkTab extends OwncloudPage {
 	 * @param string $name
 	 * @param Session $session
 	 *
-	 * @return void
+	 * @return EditPublicLinkPopup
 	 * @throws ElementNotFoundException
 	 */
 	public function openSharingPopupByLinkName($name, $session) {
