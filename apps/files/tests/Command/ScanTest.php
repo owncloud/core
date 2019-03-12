@@ -140,6 +140,8 @@ class ScanTest extends TestCase {
 
 	public function dataInput() {
 		return [
+			[['--groups' => 'haystack'], 'Group name haystack doesn\'t exist'],
+			[['--groups' => 'group1'], 'Starting scan for user 1 out of 1 (user1)'],
 			[['--group' => ['haystack']], 'Group name haystack doesn\'t exist'],
 			[['--group' => ['haystack,barn']], 'Group name haystack,barn doesn\'t exist'],
 			[['--group' => ['group1']], 'Starting scan for user 1 out of 1 (user1)'],
@@ -186,6 +188,9 @@ class ScanTest extends TestCase {
 
 	public function multipleGroupTest() {
 		return [
+			[['--groups' => 'group1,group2'], ''],
+			[['--groups' => 'group1,group2,group3'], ''],
+			[['--groups' => 'group1,group2', '--group' => ['group2','group3']], ''],
 			[['--group' => ['group1,x','group2']], ''],
 			[['--group' => ['group1','group2,x','group3']], '']
 		];
@@ -197,7 +202,13 @@ class ScanTest extends TestCase {
 	 */
 	public function testMultipleGroups($input) {
 		//Create 10 users in each group
-		$groups = $input['--group'];
+		$groups = [];
+		if (\array_key_exists('--groups', $input)) {
+			$groups = \explode(',', $input['--groups']);
+		}
+		if (\array_key_exists('--group', $input)) {
+			$groups = \array_merge($groups, $input['--group']);
+		}
 		$user = "user";
 		$userObj = [];
 		for ($i = 1; $i <= (10 * \count($groups)); $i++) {
