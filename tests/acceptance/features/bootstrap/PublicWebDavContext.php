@@ -248,7 +248,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * Uploads a file through the public WebDAV API and sets $reponse in FeatureContext
+	 * Uploads a file through the public WebDAV API and sets the response in FeatureContext
 	 *
 	 * @param string $filename
 	 * @param string $password

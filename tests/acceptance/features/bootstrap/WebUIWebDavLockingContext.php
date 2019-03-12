@@ -195,7 +195,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 		try {
 			$pageObject->closeDetailsDialog();
 		} catch (Exception $e) {
-			//ignoge if dialog cannot be closed
+			//ignore if dialog cannot be closed
 			//most likely there is no dialog open
 		}
 	}

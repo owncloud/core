@@ -466,10 +466,10 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function thePrivacyPolicyUrlOnTheLoginPageShouldLinkTo($expectedPrivacyPolicyUrl) {
-		$actualPrivacyPolilcyUrl = $this->loginPage->getLegalUrl("Privacy Policy");
+		$actualPrivacyPolicyUrl = $this->loginPage->getLegalUrl("Privacy Policy");
 		PHPUnit_Framework_Assert::assertEquals(
 			$expectedPrivacyPolicyUrl,
-			$actualPrivacyPolilcyUrl
+			$actualPrivacyPolicyUrl
 		);
 	}
 

@@ -228,17 +228,17 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
-	 * @Then a password error message should be displayed on the webUI with the text :wrongPasswordmessageText
+	 * @Then a password error message should be displayed on the webUI with the text :wrongPasswordMessageText
 	 *
-	 * @param string $wrongPasswordmessageText
+	 * @param string $wrongPasswordMessageText
 	 *
 	 * @return void
 	 */
 	public function aPasswordErrorMessageShouldBeDisplayedOnTheWebUIWithTheText(
-		$wrongPasswordmessageText
+		$wrongPasswordMessageText
 	) {
 		PHPUnit_Framework_Assert::assertEquals(
-			$wrongPasswordmessageText,
+			$wrongPasswordMessageText,
 			$this->personalGeneralSettingsPage->getWrongPasswordMessageText()
 		);
 	}

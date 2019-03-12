@@ -118,7 +118,7 @@ trait Sharing {
 	 *       |                 |     (default: 31, for public shares: 1)             |
 	 *       |                 |     Pass either the (total) number,                 |
 	 *       |                 |     or the keyword,                                 |
-	 *       |                 |     or an comma seperated list of keywords          |
+	 *       |                 |     or an comma separated list of keywords          |
 	 *       | shareWith       | The user or group id with which the file should     |
 	 *       |                 | be shared.                                          |
 	 *       | shareType       | The type of the share. This can be one of:          |
