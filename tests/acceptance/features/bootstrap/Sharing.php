@@ -471,37 +471,6 @@ trait Sharing {
 	/**
 	 * @param string $url
 	 * @param string $user
-	 * @param string $mimeType
-	 *
-	 * @return void
-	 */
-	private function checkUserDownload($url, $user, $mimeType) {
-		$this->response = HttpRequestHelper::get(
-			$url, $user, $this->getPasswordForUser($user)
-		);
-		PHPUnit_Framework_Assert::assertEquals(
-			200,
-			$this->response->getStatusCode()
-		);
-		
-		$buf = '';
-		$body = $this->response->getBody();
-		while (!$body->eof()) {
-			// read everything
-			$buf .= $body->read(8192);
-		}
-		if ($mimeType !== null) {
-			$finfo = new finfo;
-			PHPUnit_Framework_Assert::assertEquals(
-				$mimeType,
-				$finfo->buffer($buf, FILEINFO_MIME_TYPE)
-			);
-		}
-	}
-
-	/**
-	 * @param string $url
-	 * @param string $user
 	 * @param string $password
 	 * @param string $mimeType
 	 *
