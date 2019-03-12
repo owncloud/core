@@ -84,7 +84,7 @@ class Factory implements ICacheFactory {
 		if (!$localCacheClass::isAvailable()) {
 			if (\OC::$CLI && !\defined('PHPUNIT_RUN')) {
 				// CLI should not hard-fail on broken memcache
-				$this->logger->info($missingCacheMessage, [
+				$this->logger->debug($missingCacheMessage, [
 					'class' => $localCacheClass,
 					'use' => 'local',
 					'app' => 'cli'
@@ -99,7 +99,7 @@ class Factory implements ICacheFactory {
 		if (!$distributedCacheClass::isAvailable()) {
 			if (\OC::$CLI && !\defined('PHPUNIT_RUN')) {
 				// CLI should not hard-fail on broken memcache
-				$this->logger->info($missingCacheMessage, [
+				$this->logger->debug($missingCacheMessage, [
 					'class' => $distributedCacheClass,
 					'use' => 'distributed',
 					'app' => 'cli'
