@@ -37,7 +37,11 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 		= '//label[@for="userAutoAcceptShareInput"]';
 	protected $autoAcceptLocalSharesCheckboxXpathCheckboxId
 		= 'userAutoAcceptShareInput';
-	
+	protected $autoAcceptFederatedSharesCheckboxXpath
+		= '//label[@for="userAutoAcceptShareTrustedInput"]';
+	protected $autoAcceptFederatedSharesCheckboxXpathCheckboxId
+		= 'userAutoAcceptShareTrustedInput';
+
 	/**
 	 *
 	 * @param Session $session
@@ -51,6 +55,22 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 			$action,
 			$this->autoAcceptLocalSharesCheckboxXpath,
 			$this->autoAcceptLocalSharesCheckboxXpathCheckboxId
+		);
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 * @param string $action "enables|disables"
+	 *
+	 * @return void
+	 */
+	public function toggleAutoAcceptingFederatedShares(Session $session, $action) {
+		$this->toggleCheckbox(
+			$session,
+			$action,
+			$this->autoAcceptFederatedSharesCheckboxXpath,
+			$this->autoAcceptFederatedSharesCheckboxXpathCheckboxId
 		);
 	}
 

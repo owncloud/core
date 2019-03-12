@@ -67,4 +67,17 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 			$this->getSession(), $action
 		);
 	}
+
+	/**
+	 * @When /^the user (disables|enables) automatically accepting remote shares from trusted servers$/
+	 *
+	 * @param string $action
+	 *
+	 * @return void
+	 */
+	public function switchAutoAcceptingFederatedShares($action) {
+		$this->personalSharingSettingsPage->toggleAutoAcceptingFederatedShares(
+			$this->getSession(), $action
+		);
+	}
 }
