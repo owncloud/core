@@ -366,3 +366,17 @@ Feature: Share by public link
     When the user removes the public link at position 3 of file "lorem.txt" using the webUI
     Then the public link with name "third-link" should not be in the public links list
     And the number of public links should be 2
+
+  Scenario: user creates public link with view and upload feature
+    When the user creates a new public link for folder "simple-folder" using the webUI with
+      | permission | upload-write-without-modify |
+    And the public accesses the last created public link using the webUI
+
+  Scenario: user edits the permission of an already existing public link from read-write to upload-write-without-overwrite
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
+      | permission | read-write |
+    When the user changes the permission of the public link named "Public link" to "upload-write-without-modify"
+    And the public accesses the last created public link using the webUI
+    When the user uploads file "lorem.txt" keeping both new and existing files using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem (2).txt" should be listed on the webUI

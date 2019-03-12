@@ -311,3 +311,25 @@ Feature: sharing
       | 1 | hallo |
       | 2 | welt  |
     Then the HTTP status code should be "403"
+
+  @smokeTest @public_link_share-feature-required
+  Scenario: Uploading to a public upload-read-write and no edit and no overwrite share
+    Given as user "user0"
+    And the user has created a public link share with settings
+      | path        | FOLDER          |
+      | permissions | uploadwriteonly |
+    When the public uploads file "test.txt" with content "test" using the public WebDAV API
+    Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
+
+  @smokeTest @public_link_share-feature-required
+  Scenario: Uploading same file to a public upload-read-write and no edit and no overwrite share multiple times
+    Given as user "user0"
+    And the user has created a public link share with settings
+      | path        | FOLDER          |
+      | permissions | uploadwriteonly |
+    When the public uploads file "test.txt" with content "test" using the public WebDAV API
+    And the public uploads file "test.txt" with content "test2" with autorename mode using the public WebDAV API
+    And the public uploads file "test.txt" with content "test3" with autorename mode using the public WebDAV API
+    Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
+    And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
+    And the content of file "/FOLDER/test (3).txt" for user "user0" should be "test3"
