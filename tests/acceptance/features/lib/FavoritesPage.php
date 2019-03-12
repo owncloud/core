@@ -23,7 +23,6 @@
 namespace Page;
 
 use Behat\Mink\Session;
-use Page\FilesPageElement\DetailsDialog;
 use Page\FilesPageElement\FileRow;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 

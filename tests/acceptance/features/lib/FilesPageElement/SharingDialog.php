@@ -29,7 +29,6 @@ use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Page\OwncloudPageElement\OCDialog;
-use Behat\Mink\Exception\Exception;
 
 /**
  * The Sharing Dialog
