@@ -25,7 +25,6 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
-use OC\Group\Group;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 

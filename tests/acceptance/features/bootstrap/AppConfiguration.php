@@ -22,7 +22,6 @@
  *
  */
 
-use Behat\Gherkin\Node\TableNode;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\OcsApiHelper;
 

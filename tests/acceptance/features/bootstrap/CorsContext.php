@@ -133,11 +133,9 @@ class CorsContext implements Context {
 	/**
 	 * @AfterScenario
 	 *
-	 * @param AfterScenarioScope $scope
-	 *
 	 * @return void
 	 */
-	public function resetAdminCors(AfterScenarioScope $scope) {
+	public function resetAdminCors() {
 		if ($this->originalAdminCorsDomains !== null) {
 			if ($this->originalAdminCorsDomains !== "") {
 				$this->featureContext->runOcc(
