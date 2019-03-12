@@ -73,7 +73,7 @@ class SettingsController extends Controller {
 	}
 
 	/**
-	 * add server to the list of trusted ownClouds
+	 * remove server from the list of trusted ownCloud servers
 	 *
 	 * @param int $id
 	 * @return DataResponse
