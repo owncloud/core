@@ -1663,7 +1663,7 @@ trait BasicStructure {
 	 *
 	 * @param string $path
 	 *
-	 * @return string
+	 * @return void
 	 */
 	public function readFileInServerRoot($path) {
 		$response = OcsApiHelper::sendRequest(

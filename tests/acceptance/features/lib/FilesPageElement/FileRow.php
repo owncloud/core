@@ -27,7 +27,6 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-use OC\IntegrityCheck\Helpers\FileAccessHelper;
 
 /**
  * Object of a row on the FilesPage
@@ -227,14 +226,14 @@ class FileRow extends OwncloudPage {
 			" xpath $this->lockStateXpath could not find lock button in row"
 		);
 		$element->click();
-		$lockDailogElement = $this->findById($this->lockDialogId);
+		$lockDialogElement = $this->findById($this->lockDialogId);
 		$this->assertElementNotNull(
-			$lockDailogElement,
+			$lockDialogElement,
 			__METHOD__ .
 			" id $this->lockDialogId could not find lock dialog"
 		);
 		$this->waitFor(
-			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$lockDailogElement, 'isVisible']
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$lockDialogElement, 'isVisible']
 		);
 
 		/**
@@ -242,7 +241,7 @@ class FileRow extends OwncloudPage {
 		 * @var LockDialog $lockDialog
 		 */
 		$lockDialog = $this->getPage("FilesPageElement\\LockDialog");
-		$lockDialog->setElement($lockDailogElement);
+		$lockDialog->setElement($lockDialogElement);
 		return $lockDialog;
 	}
 

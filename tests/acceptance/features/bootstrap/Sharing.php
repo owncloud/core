@@ -118,7 +118,7 @@ trait Sharing {
 	 *       |                 |     (default: 31, for public shares: 1)             |
 	 *       |                 |     Pass either the (total) number,                 |
 	 *       |                 |     or the keyword,                                 |
-	 *       |                 |     or an comma seperated list of keywords          |
+	 *       |                 |     or an comma separated list of keywords          |
 	 *       | shareWith       | The user or group id with which the file should     |
 	 *       |                 | be shared.                                          |
 	 *       | shareType       | The type of the share. This can be one of:          |
@@ -344,14 +344,13 @@ trait Sharing {
 	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)$"/
 	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with expiry "([^"]*)$/
 	 *
-	 * @param string $user
 	 * @param string $path
 	 * @param string $expiryDate in a valid date format, e.g. "+30 days"
 	 *
 	 * @return void
 	 */
 	public function aPublicLinkShareOfIsCreatedWithExpiry(
-		$user, $path, $expiryDate
+		$path, $expiryDate
 	) {
 		$this->createAPublicShare(
 			$this->currentUser, $path, true, null, null, null, $expiryDate
@@ -466,37 +465,6 @@ trait Sharing {
 			$buf .= $body->read(8192);
 		}
 		PHPUnit_Framework_Assert::assertSame($content, $buf);
-	}
-
-	/**
-	 * @param string $url
-	 * @param string $user
-	 * @param string $mimeType
-	 *
-	 * @return void
-	 */
-	private function checkUserDownload($url, $user, $mimeType) {
-		$this->response = HttpRequestHelper::get(
-			$url, $user, $this->getPasswordForUser($user)
-		);
-		PHPUnit_Framework_Assert::assertEquals(
-			200,
-			$this->response->getStatusCode()
-		);
-		
-		$buf = '';
-		$body = $this->response->getBody();
-		while (!$body->eof()) {
-			// read everything
-			$buf .= $body->read(8192);
-		}
-		if ($mimeType !== null) {
-			$finfo = new finfo;
-			PHPUnit_Framework_Assert::assertEquals(
-				$mimeType,
-				$finfo->buffer($buf, FILEINFO_MIME_TYPE)
-			);
-		}
 	}
 
 	/**
@@ -919,7 +887,7 @@ trait Sharing {
 	) {
 		$admin = $this->getAdminUsername();
 		$this->userHasSharedFileWithUserUsingTheSharingApi(
-			$sharer, $filepath, $admin, $permissions = null
+			$sharer, $filepath, $admin, $permissions
 		);
 	}
 

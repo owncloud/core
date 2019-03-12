@@ -262,7 +262,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	/**
 	 * Check if the preview of the profile pic is shown in the webui
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	public function isProfilePicturePreviewDisplayed() {
 		$profilePicPreview = $this->find('xpath', $this->profilePicPreviewXpath);
@@ -344,7 +344,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	/**
 	 * return if the "invalid image" message is visible
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	public function isFileUploadErrorMsgVisible() {
 		$errorMsg = $this->waitTillElementIsNotNull($this->invalidImageErrorMsgXpath);

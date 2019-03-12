@@ -419,7 +419,9 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theadminAddsRemovesAsTheApplicableUserLastLocalMountUsingTheOccCommand($action, $userOrGroup, $user) {
+	public function theAdminAddsRemovesAsTheApplicableUserLastLocalMountUsingTheOccCommand(
+		$action, $userOrGroup, $user
+	) {
 		if ($action === "adds" || $action === "added") {
 			$action = "--add";
 		} else {

@@ -805,7 +805,7 @@ class TagsContext implements Context {
 	 * @param string $adminOrUser
 	 * @param TableNode $table
 	 *
-	 * @return bool
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function sharedByTheUserOrAdminHasTheFollowingTags(
@@ -900,7 +900,7 @@ class TagsContext implements Context {
 	 * @param string $fileName
 	 * @param string $sharingUser
 	 *
-	 * @return bool
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function sharedByHasNoTags($fileName, $sharingUser) {

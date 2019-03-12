@@ -83,8 +83,12 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function administratorSetsTheFollowingSettingsInEmailServerSettingUsingTheWebui(TableNode $emailSettingsTable) {
-		$this->adminGeneralSettingsPage->setEmailServerSettings($emailSettingsTable);
+	public function administratorSetsTheFollowingSettingsInEmailServerSettingUsingTheWebui(
+		TableNode $emailSettingsTable
+	) {
+		$this->adminGeneralSettingsPage->setEmailServerSettings(
+			$this->getSession(), $emailSettingsTable
+		);
 	}
 
 	/**
@@ -225,11 +229,9 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @AfterScenario @webUI
 	 *
-	 * @param AfterScenarioScope $afterScenarioScope
-	 *
 	 * @return void
 	 */
-	public function restoreScenario(AfterScenarioScope $afterScenarioScope) {
+	public function restoreScenario() {
 		// Restore app config settings
 		AppConfigHelper::modifyAppConfigs(
 			$this->featureContext->getBaseUrl(),

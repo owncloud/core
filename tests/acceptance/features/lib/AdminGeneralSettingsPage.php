@@ -65,11 +65,12 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	/**
 	 * set email server settings
 	 *
+	 * @param Session $session
 	 * @param TableNode $emailSettingsTable
 	 *
 	 * @return void
 	 */
-	public function setEmailServerSettings($emailSettingsTable) {
+	public function setEmailServerSettings($session, $emailSettingsTable) {
 		foreach ($emailSettingsTable as $row) {
 			if ($row['setting'] === 'send mode') {
 				$this->selectFieldOption($this->sendModeTypeId, $row['value']);
@@ -92,7 +93,7 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 				$this->fillField($this->serverPortFieldId, $row['value']);
 			}
 		}
-		$this->waitForAjaxCallsToStartAndFinish($this->getSession());
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
@@ -152,7 +153,7 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 			}
 		} else {
 			throw new \Exception(
-				__METHOD__ . " invalid action: $action"
+				__METHOD__ . " invalid auth required checkbox state: $requiredState"
 			);
 		}
 	}

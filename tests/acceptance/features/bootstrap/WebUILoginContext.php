@@ -25,7 +25,6 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
-use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
 
@@ -466,10 +465,10 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function thePrivacyPolicyUrlOnTheLoginPageShouldLinkTo($expectedPrivacyPolicyUrl) {
-		$actualPrivacyPolilcyUrl = $this->loginPage->getLegalUrl("Privacy Policy");
+		$actualPrivacyPolicyUrl = $this->loginPage->getLegalUrl("Privacy Policy");
 		PHPUnit_Framework_Assert::assertEquals(
 			$expectedPrivacyPolicyUrl,
-			$actualPrivacyPolilcyUrl
+			$actualPrivacyPolicyUrl
 		);
 	}
 
