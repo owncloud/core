@@ -157,6 +157,7 @@ class TagsPage extends FilesPageBasic {
 	 */
 	public function findAllFileRowsByName($name, Session $session) {
 		$fileRowElements = $this->getFileRowElementsByName($name, $session);
+		$fileRows = [];
 		foreach ($fileRowElements as $fileRowElement) {
 			$fileRow = $this->getPage('FilesPageElement\\SharedWithOthersFileRow');
 			$fileRow->setElement($fileRowElement);
