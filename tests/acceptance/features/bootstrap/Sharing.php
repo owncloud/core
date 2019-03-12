@@ -888,7 +888,7 @@ trait Sharing {
 	) {
 		$admin = $this->getAdminUsername();
 		$this->userHasSharedFileWithUserUsingTheSharingApi(
-			$sharer, $filepath, $admin, $permissions = null
+			$sharer, $filepath, $admin, $permissions
 		);
 	}
 
