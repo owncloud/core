@@ -20,12 +20,12 @@ set_up_external_storage() {
     php occ config:app:set core enable_external_storage --value=yes
     case "${FILES_EXTERNAL_TYPE}" in
     webdav_apache)
-      wait-for-it -t 120 apache_webdav:80
+      wait-for-it -t 120 apache-webdav:80
       cp tests/drone/configs/config.files_external.webdav-apache.php apps/files_external/tests/config.webdav.php
       FILES_EXTERNAL_TEST_TO_RUN=WebdavTest.php
       ;;
     smb_samba)
-      wait-for-it -t 120 smb_samba:445
+      wait-for-it -t 120 smb-samba:445
       cp tests/drone/configs/config.files_external.smb-samba.php apps/files_external/tests/config.smb.php
       FILES_EXTERNAL_TEST_TO_RUN=SmbTest.php
       ;;
