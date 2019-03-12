@@ -829,7 +829,11 @@ OC.Uploader.prototype = _.extend({
 				return true;
 			}
 			var fileInfo = fileList.findFile(file.name);
-			if (fileInfo) {
+			var sharePermission = $("#sharePermission").val();
+			if (sharePermission !== undefined) {
+				sharePermission &= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE);
+			}
+			if (fileInfo && (sharePermission !== (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE))) {
 				conflicts.push([
 					// original
 					_.extend(fileInfo, {
@@ -839,13 +843,24 @@ OC.Uploader.prototype = _.extend({
 					upload
 				]);
 				return false;
+			} else {
+				/**
+				 * The public link with view-download-upload option. Here we would
+				 * not overwrite the files. Instead create new file by autorenaming,
+				 * if the file already exists.
+				 *
+				 */
+				if (fileInfo) {
+					callbacks.onAutoRenameForPublicLink(upload);
+				}
 			}
 			return true;
 		});
+
 		if (conflicts.length) {
 			// wait for template loading
-			OC.dialogs.fileexists(null, null, null, this).done(function() {
-				_.each(conflicts, function(conflictData) {
+			OC.dialogs.fileexists(null, null, null, this).done(function () {
+				_.each(conflicts, function (conflictData) {
 					OC.dialogs.fileexists(conflictData[1], conflictData[0], conflictData[1].getFile(), this);
 				});
 			});
@@ -1096,6 +1111,9 @@ OC.Uploader.prototype = _.extend({
 
 							onNoConflicts: function (selection) {
 								self.submitUploads(selection.uploads);
+							},
+							onAutoRenameForPublicLink: function(upload) {
+								self.onAutorename(upload);
 							},
 							onSkipConflicts: function (selection) {
 								//TODO mark conflicting files as toskip

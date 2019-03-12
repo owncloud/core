@@ -455,8 +455,9 @@ class Share20OcsController extends OCSController {
 					Constants::PERMISSION_UPDATE |
 					Constants::PERMISSION_DELETE
 				);
-			} elseif ($permissions === Constants::PERMISSION_CREATE ||
-				$permissions === (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE | Constants::PERMISSION_DELETE)) {
+			} elseif ($permissions === \OCP\Constants::PERMISSION_CREATE ||
+				$permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE) ||
+				$permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE)) {
 				$share->setPermissions($permissions);
 			} else {
 				// because when "publicUpload" is passed usually no permissions are set,
