@@ -344,14 +344,13 @@ trait Sharing {
 	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)$"/
 	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with expiry "([^"]*)$/
 	 *
-	 * @param string $user
 	 * @param string $path
 	 * @param string $expiryDate in a valid date format, e.g. "+30 days"
 	 *
 	 * @return void
 	 */
 	public function aPublicLinkShareOfIsCreatedWithExpiry(
-		$user, $path, $expiryDate
+		$path, $expiryDate
 	) {
 		$this->createAPublicShare(
 			$this->currentUser, $path, true, null, null, null, $expiryDate
