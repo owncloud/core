@@ -1,7 +1,7 @@
 <?php
 return [
 	'run'=>true,
-	'host'=>'apache_webdav:80/webdav',
+	'host'=>'apache-webdav:80/webdav',
 	'user'=>'username',
 	'password'=>'password',
 	'root'=>'',
