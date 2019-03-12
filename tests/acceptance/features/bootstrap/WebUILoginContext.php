@@ -25,7 +25,6 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
-use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
 

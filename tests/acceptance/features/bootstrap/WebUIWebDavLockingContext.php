@@ -52,8 +52,6 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	 */
 	private $webUIGeneralContext;
 
-	private $uploadConflictDialogTitle = "file conflict";
-
 	/**
 	 * WebUIFilesContext constructor.
 	 *
