@@ -27,11 +27,11 @@ pipeline:
       - php occ a:l
       - php occ a:e testing
       - php occ a:l
-      - php occ config:system:set trusted_domains 1 --value=server_${SERVER_PROTOCOL}
-      - php occ config:system:set trusted_domains 2 --value=federated_${SERVER_PROTOCOL}
+      - php occ config:system:set trusted_domains 1 --value=server-${SERVER_PROTOCOL}
+      - php occ config:system:set trusted_domains 2 --value=federated-${SERVER_PROTOCOL}
       - php occ log:manage --level 2
       - php occ config:list
-      - echo "export TEST_SERVER_FED_URL=${SERVER_PROTOCOL}://federated_${SERVER_PROTOCOL}" > /drone/saved-settings.sh
+      - echo "export TEST_SERVER_FED_URL=${SERVER_PROTOCOL}://federated-${SERVER_PROTOCOL}" > /drone/saved-settings.sh
       - php occ security:certificates:import /drone/server.crt
       - php occ security:certificates:import /drone/federated.crt
       - php occ security:certificates
@@ -147,8 +147,8 @@ pipeline:
     commands:
       - ./tests/drone/install-server.sh
       - php occ a:l
-      - php occ config:system:set trusted_domains 1 --value=server_${SERVER_PROTOCOL}
-      - php occ config:system:set trusted_domains 2 --value=federated_${SERVER_PROTOCOL}
+      - php occ config:system:set trusted_domains 1 --value=server-${SERVER_PROTOCOL}
+      - php occ config:system:set trusted_domains 2 --value=federated-${SERVER_PROTOCOL}
       - php occ log:manage --level 2
       - php occ config:list
       - php occ security:certificates:import /drone/server.crt
@@ -277,8 +277,8 @@ pipeline:
       - echo 'Sharing a folder ..'
       - OC_PASS=123456 php occ user:add --password-from-env user1
       - chown www-data /drone/src -R
-      - curl -k -s -u user1:123456 -X MKCOL '${SERVER_PROTOCOL}://server_${SERVER_PROTOCOL}/remote.php/webdav/new_folder'
-      - curl -k -s -u user1:123456 "${SERVER_PROTOCOL}://server_${SERVER_PROTOCOL}/ocs/v2.php/apps/files_sharing/api/v1/shares" --data 'path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin'
+      - curl -k -s -u user1:123456 -X MKCOL '${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}/remote.php/webdav/new_folder'
+      - curl -k -s -u user1:123456 "${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}/ocs/v2.php/apps/files_sharing/api/v1/shares" --data 'path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin'
     when:
       matrix:
         TEST_SUITE: litmus
@@ -287,7 +287,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-      - LITMUS_URL=${SERVER_PROTOCOL}://server_${SERVER_PROTOCOL}/remote.php/webdav
+      - LITMUS_URL=${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}/remote.php/webdav
       - LITMUS_USERNAME=admin
       - LITMUS_PASSWORD=admin
     when:
@@ -298,7 +298,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=${SERVER_PROTOCOL}://server_${SERVER_PROTOCOL}/remote.php/dav/files/admin
+    - LITMUS_URL=${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}/remote.php/dav/files/admin
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -309,7 +309,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=${SERVER_PROTOCOL}://server_${SERVER_PROTOCOL}/remote.php/dav/files/admin/local_storage/
+    - LITMUS_URL=${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}/remote.php/dav/files/admin/local_storage/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -320,7 +320,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=${SERVER_PROTOCOL}://server_${SERVER_PROTOCOL}/remote.php/webdav/local_storage/
+    - LITMUS_URL=${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}/remote.php/webdav/local_storage/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -331,7 +331,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=${SERVER_PROTOCOL}://server_${SERVER_PROTOCOL}/remote.php/dav/files/admin/new_folder/
+    - LITMUS_URL=${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}/remote.php/dav/files/admin/new_folder/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -342,7 +342,7 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-    - LITMUS_URL=${SERVER_PROTOCOL}://server_${SERVER_PROTOCOL}/remote.php/webdav/new_folder/
+    - LITMUS_URL=${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}/remote.php/webdav/new_folder/
     - LITMUS_USERNAME=admin
     - LITMUS_PASSWORD=admin
     when:
@@ -375,7 +375,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-      - TEST_SERVER_URL=${SERVER_PROTOCOL}://server_${SERVER_PROTOCOL}
+      - TEST_SERVER_URL=${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
@@ -388,7 +388,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-      - TEST_SERVER_URL=${SERVER_PROTOCOL}://server_${SERVER_PROTOCOL}
+      - TEST_SERVER_URL=${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}
       - MAILHOG_HOST=email
     commands:
       - touch /drone/saved-settings.sh
@@ -405,7 +405,7 @@ pipeline:
       - BROWSER=${BROWSER}
       - SELENIUM_HOST=${BROWSER}
       - SELENIUM_PORT=4444
-      - TEST_SERVER_URL=${SERVER_PROTOCOL}://server_${SERVER_PROTOCOL}
+      - TEST_SERVER_URL=${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}
       - PLATFORM=Linux
       - MAILHOG_HOST=email
     commands:
@@ -521,13 +521,13 @@ services:
         TEST_SUITE: selenium
         BROWSER: firefox
 
-  server_https:
+  server-https:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/src/
       - APACHE_CONFIG_TEMPLATE=ssl
-      - APACHE_SSL_CERT_CN=server_${SERVER_PROTOCOL}
+      - APACHE_SSL_CERT_CN=server-${SERVER_PROTOCOL}
       - APACHE_SSL_CERT=/drone/server.crt
       - APACHE_SSL_KEY=/drone/server.key
     command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
@@ -536,7 +536,7 @@ services:
         USE_SERVER: true
         SERVER_PROTOCOL: https
 
-  server_http:
+  server-http:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
@@ -547,13 +547,13 @@ services:
         USE_SERVER: true
         SERVER_PROTOCOL: http
 
-  federated_https:
+  federated-https:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/fed-server/
       - APACHE_CONFIG_TEMPLATE=ssl
-      - APACHE_SSL_CERT_CN=federated_${SERVER_PROTOCOL}
+      - APACHE_SSL_CERT_CN=federated-${SERVER_PROTOCOL}
       - APACHE_SSL_CERT=/drone/federated.crt
       - APACHE_SSL_KEY=/drone/federated.key
     command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
@@ -562,7 +562,7 @@ services:
         USE_FEDERATED_SERVER: true
         SERVER_PROTOCOL: https
 
-  federated_http:
+  federated-http:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
