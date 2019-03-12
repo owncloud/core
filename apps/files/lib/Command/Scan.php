@@ -106,9 +106,15 @@ class Scan extends Base {
 			)
 			->addOption(
 				'group',
-				'g',
+				'',
 				InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED,
 				'Scan user(s) under the group(s). This option can be used as --group=foo --group=bar to scan groups foo and bar'
+			)
+			->addOption(
+				'groups',
+				'g',
+				InputArgument::OPTIONAL,
+				'Scan user(s) under the group(s). This option can be used as --groups=foo,bar to scan groups foo and bar'
 			)
 			->addOption(
 				'quiet',
@@ -276,7 +282,8 @@ class Scan extends Base {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$inputPath = $input->getOption('path');
-		$groups = $input->getOption('group');
+		$groups = $input->getOption('groups') ? \explode(',', $input->getOption('groups')) : [];
+		$groups = \array_unique(\array_merge($groups, $input->getOption('group')));
 		$shouldRepairStoragesIndividually = (bool) $input->getOption('repair');
 
 		if (\count($groups) >= 1) {
