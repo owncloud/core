@@ -208,7 +208,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 					permissions: OC.PERMISSION_READ | OC.PERMISSION_CREATE
 				});
 				view.render();
-				expect(view.$('.publicPermissions').length).toEqual(3);
+				expect(view.$('.publicPermissions').length).toEqual(4);
 			});
 			it('renders checkbox disabled when public upload is disallowed by user', function() {
 				publicUploadConfigStub.returns(true);

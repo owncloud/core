@@ -27,11 +27,16 @@
 				'<label class="bold" for="sharingDialogAllowPublicRead-{{cid}}">{{publicReadLabel}}</label>' +
 				'<p><em>{{publicReadDescription}}</em></p>' +
 			'</div>' +
-			'{{#if publicUploadPossible}}' +
-			'<div id="allowPublicReadWrite-{{cid}}" class="public-link-modal--item">' +
+			'<div id="allowPublicRead-{{cid}}" class="public-link-modal--item">' +
 				'<input type="radio" value="{{publicReadWriteValue}}" name="publicPermissions" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicReadWriteSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowPublicReadWrite-{{cid}}">{{publicReadWriteLabel}}</label>' +
 				'<p><em>{{publicReadWriteDescription}}</em></p>' +
+			'</div>' +
+			'{{#if publicUploadPossible}}' +
+			'<div id="allowpublicUploadWrite-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="{{publicUploadWriteValue}}" name="publicPermissions" id="sharingDialogAllowpublicUploadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicUploadWriteSelected}}checked{{/if}} />' +
+				'<label class="bold" for="sharingDialogAllowpublicUploadWrite-{{cid}}">{{publicUploadWriteLabel}}</label>' +
+				'<p><em>{{publicUploadWriteDescription}}</em></p>' +
 			'</div>' +
 			'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
 				'<input type="radio" value="{{publicUploadValue}}" name="publicPermissions" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicPermissions" {{#if publicUploadSelected}}checked{{/if}} />' +
@@ -258,8 +263,13 @@
 				publicReadValue            : OC.PERMISSION_READ,
 				publicReadSelected         : this.model.get('permissions') === OC.PERMISSION_READ,
 
-				publicReadWriteLabel       : t('core', 'Download / View / Upload'),
-				publicReadWriteDescription : t('core', 'Recipients can view, download, edit, delete and upload contents.'),
+				publicUploadWriteLabel       : t('core', 'Download / View / Upload'),
+				publicUploadWriteDescription : t('core', 'Recipients can view, download and upload contents.'),
+				publicUploadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE,
+				publicUploadWriteSelected    : this.model.get('permissions') === (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE),
+
+				publicReadWriteLabel       : t('core', 'Download / View / Edit'),
+				publicReadWriteDescription : t('core', 'Recipients can view, download and edit contents.'),
 				publicReadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE,
 				publicReadWriteSelected    : this.model.get('permissions') >= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE),
 
