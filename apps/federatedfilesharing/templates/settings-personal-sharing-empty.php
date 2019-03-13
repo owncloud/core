@@ -19,22 +19,10 @@
  *
  */
 
-/** @var array $_ */
 /** @var \OCP\IL10N $l */
-
-script('federatedfilesharing', 'settings-personal-sharing');
 ?>
 
-<form class="section" id="federatedfilesharing_settings">
+<div class="section" id="files_sharing_settings">
 	<h2 class="app-name"><?php p($l->t('Federated Cloud Sharing'));?></h2>
-	<?php if (isset($_['userAutoAcceptShareTrustedEnabled'])): ?>
-		<?php if ($_['userAutoAcceptShareTrustedEnabled'] === 'yes'): ?>
-			<input type="checkbox" name="auto_accept_share_trusted" id="userAutoAcceptShareTrustedInput" class="checkbox" value="1" checked="checked" />
-		<?php else: ?>
-			<input type="checkbox" name="auto_accept_share_trusted" id="userAutoAcceptShareTrustedInput" class="checkbox" value="1" />
-		<?php endif; ?>
-		<label for="userAutoAcceptShareTrustedInput">
-			<?php p($l->t('Automatically accept remote shares from trusted servers')); ?>
-		</label><br/>
-	<?php endif; ?>
-</form>
+	<p><?php p($l->t('Nothing to configure.')); ?></p>
+</div>

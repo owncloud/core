@@ -33,6 +33,8 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	 * @var string $path
 	 */
 	protected $path = '/index.php/settings/personal?sectionid=sharing';
+	protected $personalSharingPanelDivXpath
+		= '//div[@id="OCA\Files_Sharing\Panels\Personal\PersonalPanel"]';
 	protected $autoAcceptLocalSharesCheckboxXpath
 		= '//label[@for="userAutoAcceptShareInput"]';
 	protected $autoAcceptLocalSharesCheckboxXpathCheckboxId
@@ -76,7 +78,7 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 
 	/**
 	 * there is no reliable loading indicator on the personal sharing settings page,
-	 * so just wait for the auto accept checkbox to be there and all Ajax calls to finish
+	 * so just wait for files_sharing personal panel div to be there and all Ajax calls to finish
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
@@ -89,7 +91,33 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	) {
 		$this->waitForOutstandingAjaxCalls($session);
 		$this->waitTillXpathIsVisible(
-			$this->autoAcceptLocalSharesCheckboxXpath, $timeout_msec
+			$this->personalSharingPanelDivXpath, $timeout_msec
 		);
+	}
+
+	/**
+	 * Check if the auto accept local shares checkbox is shown in the webui
+	 *
+	 * @return boolean
+	 */
+	public function isAutoAcceptLocalSharesCheckboxDisplayed() {
+		$localAutoAcceptCheckbox = $this->find('xpath', $this->autoAcceptLocalSharesCheckboxXpath);
+		if ($localAutoAcceptCheckbox === null) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Check if the auto accept local shares checkbox is shown in the webui
+	 *
+	 * @return boolean
+	 */
+	public function isAutoAcceptFederatedSharesCheckboxDisplayed() {
+		$localAutoAcceptCheckbox = $this->find('xpath', $this->autoAcceptFederatedSharesCheckboxXpath);
+		if ($localAutoAcceptCheckbox === null) {
+			return false;
+		}
+		return true;
 	}
 }

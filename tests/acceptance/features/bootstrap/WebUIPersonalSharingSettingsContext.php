@@ -80,4 +80,26 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 			$this->getSession(), $action
 		);
 	}
+
+	/**
+	 * @Then User-based auto accepting checkbox should not be displayed on the personal sharing settings page in the webUI
+	 *
+	 * @return void
+	 */
+	public function autoAcceptingCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPageInTheWebui() {
+		PHPUnit_Framework_Assert::assertFalse(
+			$this->personalSharingSettingsPage->isAutoAcceptLocalSharesCheckboxDisplayed()
+		);
+	}
+
+	/**
+	 * @Then User-based auto accepting from trusted servers checkbox should not be displayed on the personal sharing settings page in the webUI
+	 *
+	 * @return void
+	 */
+	public function autoAcceptingFederatedCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPageInTheWebui() {
+		PHPUnit_Framework_Assert::assertFalse(
+			$this->personalSharingSettingsPage->isAutoAcceptFederatedSharesCheckboxDisplayed()
+		);
+	}
 }

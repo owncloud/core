@@ -19,22 +19,10 @@
  *
  */
 
-/** @var array $_ */
 /** @var \OCP\IL10N $l */
-
-script('files_sharing', 'settings-personal');
 ?>
 
-<form class="section" id="files_sharing_settings">
+<div class="section" id="files_sharing_settings">
 	<h2 class="app-name"><?php p($l->t('Sharing'));?></h2>
-	<?php if (isset($_['userAutoAcceptShareEnabled'])): ?>
-		<?php if ($_['userAutoAcceptShareEnabled'] === 'yes'): ?>
-			<input type="checkbox" name="auto_accept_share" id="userAutoAcceptShareInput" class="checkbox" value="1" checked="checked" />
-		<?php else: ?>
-			<input type="checkbox" name="auto_accept_share" id="userAutoAcceptShareInput" class="checkbox" value="1" />
-		<?php endif; ?>
-		<label for="userAutoAcceptShareInput">
-			<?php p($l->t('Automatically accept new incoming local user shares')); ?>
-		</label><br/>
-	<?php endif; ?>
-</form>
+	<p><?php p($l->t('Nothing to configure.')); ?></p>
+</div>

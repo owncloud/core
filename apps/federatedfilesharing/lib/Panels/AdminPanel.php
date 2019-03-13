@@ -57,7 +57,7 @@ class AdminPanel implements ISettings {
 		$tmpl->assign('incomingServer2serverShareEnabled', $this->shareProvider->isIncomingServer2serverShareEnabled());
 		$tmpl->assign(
 			'autoAcceptTrusted',
-			$this->config->getAppValue('federatedfilesharing', 'auto_accept_trusted', 'no')
+			$this->config->getAppValue('federatedfilesharing', 'auto_accept_trusted', 'no') === 'yes'
 		);
 		return $tmpl;
 	}
