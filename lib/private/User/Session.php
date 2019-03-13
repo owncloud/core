@@ -976,7 +976,7 @@ class Session implements IUserSession, Emitter {
 	 * @return boolean True if the user can be authenticated, false otherwise
 	 * @throws LoginException if an app canceled the login process or the user is not enabled
 	 */
-	protected function loginUser(IUser $user = null, $password) {
+	public function loginUser(IUser $user = null, $password) {
 		$uid = $user === null ? '' : $user->getUID();
 		return $this->emittingCall(function () use (&$user, &$password) {
 			if ($user === null) {
@@ -995,12 +995,12 @@ class Session implements IUserSession, Emitter {
 
 			$this->setUser($user);
 			$this->setLoginName($user->getDisplayName());
-			$user->updateLastLoginTimestamp();
+			$firstTimeLogin = $user->updateLastLoginTimestamp();
 
 			$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 
 			if ($this->isLoggedIn()) {
-				$this->prepareUserLogin();
+				$this->prepareUserLogin($firstTimeLogin);
 			} else {
 				$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
 				throw new LoginException($message);
