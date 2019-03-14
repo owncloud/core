@@ -798,4 +798,35 @@ class UsersPage extends OwncloudPage {
 			$this->waitForAjaxCallsToStartAndFinish($session);
 		}
 	}
+
+	/**
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	) {
+		$currentTime = \microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
+			if ($this->findById($this->groupListId) !== null) {
+				break;
+			}
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = \microtime(true);
+		}
+
+		if ($currentTime > $end) {
+			throw new \Exception(
+				__METHOD__ . " timeout waiting for users page to load"
+			);
+		}
+
+		$this->waitForOutstandingAjaxCalls($session);
+	}
 }
