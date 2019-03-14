@@ -105,6 +105,12 @@ class Scan extends Base {
 				'Limit rescan to this path, e.g., --path="/alice/files/Music", the user_id is determined by the path and the user_id parameter and --all are ignored.'
 			)
 			->addOption(
+				'group',
+				'',
+				InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED,
+				'Scan user(s) under the group(s). This option can be used as --group=foo --group=bar to scan groups foo and bar'
+			)
+			->addOption(
 				'groups',
 				'g',
 				InputArgument::OPTIONAL,
@@ -277,6 +283,7 @@ class Scan extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$inputPath = $input->getOption('path');
 		$groups = $input->getOption('groups') ? \explode(',', $input->getOption('groups')) : [];
+		$groups = \array_unique(\array_merge($groups, $input->getOption('group')));
 		$shouldRepairStoragesIndividually = (bool) $input->getOption('repair');
 
 		if (\count($groups) >= 1) {
