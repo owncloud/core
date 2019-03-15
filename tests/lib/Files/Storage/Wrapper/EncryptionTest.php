@@ -7,6 +7,7 @@ use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OC\User\Manager;
 use OCP\Files\Storage\IStorage;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\Files\Storage\Storage;
 use OC\Files\Storage\Wrapper\Encryption;
 use OC\Files\Cache\Cache;
@@ -101,6 +102,9 @@ class EncryptionTest extends Storage {
 	/** @var  \OC\Memcache\ArrayCache | \PHPUnit_Framework_MockObject_MockObject */
 	private $arrayCache;
 
+	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	private $eventDispatcherInterface;
+
 	/** @var  integer dummy unencrypted size */
 	private $dummySize = -1;
 
@@ -187,7 +191,9 @@ class EncryptionTest extends Storage {
 						'mountPoint' => '/',
 						'mount' => $this->mount
 					],
-					$this->encryptionManager, $this->util, $this->logger, $this->file, null, $this->keyStore, $this->update, $this->mountManager, $this->arrayCache
+					$this->encryptionManager, $this->util, $this->logger,
+					$this->file, null, $this->keyStore, $this->update,
+					$this->mountManager, $this->arrayCache, $this->eventDispatcherInterface
 				]
 			)
 			->setMethods(['getMetaData', 'getCache', 'getEncryptionModule'])

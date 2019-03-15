@@ -27,6 +27,7 @@ namespace OCA\Files\Command;
 use OC\Encryption\Manager;
 use OC\Files\Filesystem;
 use OC\Files\View;
+use OC\HintException;
 use OC\Share20\ProviderFactory;
 use OCP\Files\FileInfo;
 use OCP\Files\Mount\IMountManager;
@@ -40,6 +41,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class TransferOwnership extends Command {
 
@@ -60,6 +63,9 @@ class TransferOwnership extends Command {
 
 	/** @var ProviderFactory  */
 	private $shareProviderFactory;
+
+	/** @var EventDispatcherInterface  */
+	private $eventDispatcher;
 
 	/** @var bool */
 	private $filesExist = false;
@@ -85,13 +91,19 @@ class TransferOwnership extends Command {
 	/** @var string */
 	private $finalTarget;
 
-	public function __construct(IUserManager $userManager, IManager $shareManager, IMountManager $mountManager, Manager $encryptionManager, ILogger $logger, ProviderFactory $shareProviderFactory) {
+	private $disableSignatureCheck = false;
+
+	public function __construct(IUserManager $userManager, IManager $shareManager,
+								IMountManager $mountManager, Manager $encryptionManager,
+								ILogger $logger, ProviderFactory $shareProviderFactory,
+								EventDispatcherInterface $eventDispatcher) {
 		$this->userManager = $userManager;
 		$this->shareManager = $shareManager;
 		$this->mountManager = $mountManager;
 		$this->encryptionManager = $encryptionManager;
 		$this->logger = $logger;
 		$this->shareProviderFactory = $shareProviderFactory;
+		$this->eventDispatcher = $eventDispatcher;
 		parent::__construct();
 	}
 
@@ -286,6 +298,18 @@ class TransferOwnership extends Command {
 				$this->finalTarget = $this->finalTarget . '/' . \basename($sourcePath);
 			}
 		}
+
+		$this->eventDispatcher->addListener('files.aftersignaturemismatch', function (GenericEvent $event) use ($output) {
+			if ($event->hasArgument('fileName')) {
+				$output->writeln("<error>The file affected by signature mismatch: " . $event->getArgument('fileName') . "</error>");
+			}
+			if (!$event->hasArgument('retryWithIgnoreSignature')) {
+				$this->disableSignatureCheck =  true;
+			} else {
+				$this->disableSignatureCheck = false;
+			}
+			$event->setArgument('retryWithIgnoreSignature', $this->disableSignatureCheck);
+		}, 20);
 
 		$view->rename($sourcePath, $this->finalTarget);
 
