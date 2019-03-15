@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ownCloud
  *
@@ -20,12 +21,14 @@
  *
  */
 
- namespace Page;
- use Behat\Mink\Session;
+namespace Page;
 
- /**
-  * PageObject for the admin encryption settings page
-  */
+use Behat\Mink\Session;
+
+/**
+ * PageObject for the admin encryption settings page
+ *
+ */
 class AdminEncryptionSettingsPage extends OwncloudPage {
 
 	/**
@@ -87,11 +90,13 @@ class AdminEncryptionSettingsPage extends OwncloudPage {
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
+
 		if ($currentTime > $end) {
 			throw new \Exception(
 				__METHOD__ . " timeout waiting for admin encryption settings page to load"
 			);
 		}
+
 		$this->waitForOutstandingAjaxCalls($session);
 	}
 }

@@ -71,11 +71,11 @@ class WebUIAdminEncryptionSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
-	 * @Given the administrator has browsed to admin encryption settings page
+	 * @Given the administrator has browsed to the admin encryption settings page
 	 *
 	 * @return void
 	 */
-	public function theAdministratorHasBrowsedToAdminEncryptionSettingsPage() {
+	public function theAdministratorHasBrowsedToTheAdminEncryptionSettingsPage() {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->adminEncryptionSettingsPage->open();
 		$this->adminEncryptionSettingsPage->waitTillPageIsLoaded($this->getSession());
