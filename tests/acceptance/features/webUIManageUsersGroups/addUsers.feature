@@ -15,9 +15,9 @@ Feature: add users
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario: use the webUI to create a user with special valid characters
-    When the administrator creates a user with the name "@-_.'" and the password "pwd" using the webUI
+    When the administrator creates a user with the name "@-_.'" and the password "%regular%" using the webUI
     And the administrator logs out of the webUI
-    And the user logs in with username "@-_.'" and password "pwd" using the webUI
+    And user "@-_.'" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario Outline: use the webUI to create a user with special invalid characters
@@ -31,7 +31,7 @@ Feature: add users
       | "a+^"  | "%alt1%"    |
       | "a)~"  | "%alt2%"    |
       | "a(="  | "%alt3%"    |
-      | "a`*^" | "%regular%" |
+      | "a`*^" | "%alt4%"    |
 
   Scenario: use the webUI to create a user with empty password
     When the administrator attempts to create a user with the name "bijay" and the password "" using the webUI
@@ -54,7 +54,7 @@ Feature: add users
     Then the email address "guiusr1@owncloud" should have received an email with the body containing
       """
       just letting you know that you now have an %productname% account.
-      
+
       Your username: guiusr1
       Access it:
       """
@@ -165,7 +165,7 @@ Feature: add users
       """
     And the reset email to "guiusr1@owncloud" should be from "owncloud@foobar.com"
 
-   Scenario Outline: admin creates a user and sets password containing special characters
+  Scenario Outline: admin creates a user and sets password containing special characters
     Given user "brand-new-user" has been deleted
     When the administrator creates a user with the name "brand-new-user" and the password "<password>" using the webUI
     And the administrator logs out of the webUI
@@ -179,7 +179,7 @@ Feature: add users
       | नेपाली                                                  | Unicode                     |
       | password with spaces         | password with spaces        |
 
-   Scenario Outline: admin creates a user without setting password and user sets password containing special characters
+  Scenario Outline: admin creates a user without setting password and user sets password containing special characters
     Given user "brand-new-user" has been deleted
     When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
@@ -195,7 +195,7 @@ Feature: add users
       | नेपाली                                                  | Unicode                     |
       | password with spaces         | password with spaces        |
 
-   Scenario: admin creates a user without setting password and user sets empty spaces as password
+  Scenario: admin creates a user without setting password and user sets empty spaces as password
     Given user "brand-new-user" has been deleted
     When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
     And the administrator logs out of the webUI

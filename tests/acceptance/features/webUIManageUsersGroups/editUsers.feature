@@ -16,7 +16,7 @@ Feature: edit users
     Then "New User" should be shown as the name of the current user on the WebUI
     And user "user0" should exist
     And the user attributes returned by the API should include
-    | displayname | New User |
+      | displayname | New User |
 
   @skipOnEncryptionType:user-keys
   Scenario: Admin changes the password of the user

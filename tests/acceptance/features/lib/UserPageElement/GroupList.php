@@ -44,9 +44,9 @@ class GroupList extends OwncloudPage {
 	protected $addNewGroupInputBoxId = 'newgroupname';
 	protected $addNewGroupButtonXpath = '//input[@class="button icon-add"]';
 	protected $deleteConfirmButtonXpath
-		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style,'display: none')])]//button[text()='Yes']";
+		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style, 'display: none')])]//button[text()='Yes']";
 	protected $deleteNotConfirmButtonXpath
-		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style,'display: none')])]//button[text()='No']";
+		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style, 'display: none')])]//button[text()='No']";
 
 	/**
 	 * sets the NodeElement for the current group list
