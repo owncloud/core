@@ -77,6 +77,8 @@ class UsersPage extends OwncloudPage {
 	protected $deleteNotConfirmBtnXpath
 		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style,'display: none')])]//button[text()='No']";
 
+	protected $userNameFieldCss = ".name";
+
 	protected $editUserDisplayNameBtnXpath = ".//td[@class='displayName']/img";
 	protected $editUserDisplayNameFieldXpath = "/td[@class='displayName']/input";
 
@@ -101,7 +103,7 @@ class UsersPage extends OwncloudPage {
 		$userTrs = $this->findAll('xpath', $this->userTrXpath);
 
 		foreach ($userTrs as $userTr) {
-			$user = $userTr->find("css", ".name");
+			$user = $userTr->find("css", $this->userNameFieldCss);
 			if ($this->getTrimmedText($user) === $username) {
 				return $userTr;
 			}
@@ -823,11 +825,19 @@ class UsersPage extends OwncloudPage {
 		Session $session,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
+		// There is always at least the "admin" user in the displayed list of users
+		// So wait for the user list to have at least 1 real user in it
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
-			if ($this->findById($this->groupListId) !== null) {
-				break;
+			$userTrs = $this->findAll('xpath', $this->userTrXpath);
+			foreach ($userTrs as $userTr) {
+				$user = $userTr->find("css", $this->userNameFieldCss);
+				if ($this->getTrimmedText($user) !== '') {
+					// We have found a real user
+					// (note that there is a hidden empty "template" row)
+					break 2;
+				}
 			}
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
@@ -835,10 +845,8 @@ class UsersPage extends OwncloudPage {
 
 		if ($currentTime > $end) {
 			throw new \Exception(
-				__METHOD__ . " timeout waiting for users page to load"
+				__METHOD__ . " timeout waiting for user list to load on users page"
 			);
 		}
-
-		$this->waitForOutstandingAjaxCalls($session);
 	}
 }
