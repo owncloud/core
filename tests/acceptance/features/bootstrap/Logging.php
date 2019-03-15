@@ -36,9 +36,9 @@ trait Logging {
 	 * order of the table has to be the same as in the log file
 	 * empty cells in the table will not be checked!
 	 *
-	 * @Then /^the last lines of the log file should contain log-entries (with|containing) these attributes:$/
+	 * @Then /^the last lines of the log file should contain log-entries (with|containing|matching) these attributes:$/
 	 *
-	 * @param string $withOrContaining
+	 * @param string $comparingMode
 	 * @param TableNode $expectedLogEntries table with headings that correspond
 	 *                                      to the json keys in the log entry
 	 *                                      e.g.
@@ -48,7 +48,7 @@ trait Logging {
 	 * @throws \Exception
 	 */
 	public function theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
-		$withOrContaining, TableNode $expectedLogEntries
+		$comparingMode, TableNode $expectedLogEntries
 	) {
 		//-1 because getRows gives also the header
 		$linesToRead = \count($expectedLogEntries->getRows()) - 1;
@@ -76,13 +76,18 @@ trait Logging {
 				);
 				if ($expectedLogEntry[$attribute] !== "") {
 					$message = "log entry:\n{$logLines[$lineNo]}\n";
-					if ($withOrContaining === 'with') {
+					if ($comparingMode === 'with') {
 						PHPUnit_Framework_Assert::assertEquals(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
-					} else {
+					} elseif ($comparingMode === 'containing') {
 						PHPUnit_Framework_Assert::assertContains(
+							$expectedLogEntry[$attribute], $logEntry[$attribute],
+							$message
+						);
+					} elseif ($comparingMode === 'matching') {
+						PHPUnit_Framework_Assert::assertRegExp(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
