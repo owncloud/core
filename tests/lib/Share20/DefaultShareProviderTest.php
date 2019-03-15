@@ -2678,7 +2678,7 @@ class DefaultShareProviderTest extends TestCase {
 		$folder = $this->createMock(Folder::class);
 		$folder->method('getId')->willReturn(42);
 
-		$this->rootFolder->method('getUserFolder')->with('user1')->will($this->returnSelf());
+		$this->rootFolder->method('getUserFolder')->with($this->logicalOr('user1', 'user2'))->will($this->returnSelf());
 		$this->rootFolder->method('getById')->willReturn([$folder]);
 
 		$share = $this->provider->getShareById($id, 'user0');
