@@ -533,7 +533,19 @@ class UsersPage extends OwncloudPage {
 		if ($valid === true) {
 			$this->waitForAjaxCallsToStartAndFinish($session);
 		} else {
-			$this->waitTillXpathIsVisible("//*[@id='$this->notificationId']");
+			try {
+				$this->waitTillXpathIsVisible(
+					"//*[@id='$this->notificationId']", 1000
+				);
+			} catch (\Exception $e) {
+				// Sometimes the notification is not "noticed".
+				// Later steps are responsible for caring if a notification
+				// is actually seen, so just output some information
+				$message = __METHOD__ . " INFORMATION: notificationId '" .
+					$this->notificationId . "' did not become visible";
+				echo $message;
+				\error_log($message);
+			}
 		}
 	}
 
