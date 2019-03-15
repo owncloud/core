@@ -71,11 +71,11 @@ class WebUIPersonalEncryptionSettingsContext extends RawMinkContext implements C
 	}
 
 	/**
-	 * @Given the user/administrator has browsed to personal encryption settings page
+	 * @Given the user/administrator has browsed to the personal encryption settings page
 	 *
 	 * @return void
 	 */
-	public function theUserHasBrowsedToPersonalEncryptionSettingsPage() {
+	public function theUserHasBrowsedToThePersonalEncryptionSettingsPage() {
 		$this->personalEncryptionSettingsPage->open();
 		$this->personalEncryptionSettingsPage->waitTillPageIsLoaded($this->getSession());
 	}

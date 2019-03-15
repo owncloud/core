@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ownCloud
  *
@@ -20,12 +21,14 @@
  *
  */
 
- namespace Page;
- use Behat\Mink\Session;
+namespace Page;
 
- /**
-  * PageObject for the personal encryption settings page
-  */
+use Behat\Mink\Session;
+
+/**
+ * PageObject for the personal encryption settings page
+ *
+ */
 class PersonalEncryptionSettingsPage extends OwncloudPage {
 
 	/**
@@ -36,7 +39,6 @@ class PersonalEncryptionSettingsPage extends OwncloudPage {
 
 	private $userEnableRecoveryCheckboxId = 'userEnableRecoveryCheckbox';
 	private $userEnableRecoveryCheckboxXpath = '//label[@for="userEnableRecoveryCheckbox"]';
-
 	/**
 	 * Enable password recovery
 	 *
@@ -50,6 +52,7 @@ class PersonalEncryptionSettingsPage extends OwncloudPage {
 			" id $this->userEnableRecoveryCheckboxXpath " .
 			"could not find enable checkbox"
 		);
+
 		$userEnableRecoveryCheckbox->click();
 	}
 
@@ -76,11 +79,13 @@ class PersonalEncryptionSettingsPage extends OwncloudPage {
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$currentTime = \microtime(true);
 		}
+
 		if ($currentTime > $end) {
 			throw new \Exception(
 				__METHOD__ . " timeout waiting for personal encryption settings page to load"
 			);
 		}
+
 		$this->waitForOutstandingAjaxCalls($session);
 	}
 }
