@@ -56,6 +56,19 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
+	 * @When /^the public downloads the last public shared file using the public WebDAV API$/
+	 *
+	 * @return void
+	 */
+	public function downloadPublicFile() {
+		$token = $this->featureContext->getLastShareData()->data->token;
+		$fullUrl = $this->featureContext->getBaseUrl() . "/public.php/webdav";
+		$this->featureContext->setResponse(
+			HttpRequestHelper::get($fullUrl, $token)
+		);
+	}
+	
+	/**
 	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with range "([^"]*)" using the public WebDAV API$/
 	 *
 	 * @param string $path
