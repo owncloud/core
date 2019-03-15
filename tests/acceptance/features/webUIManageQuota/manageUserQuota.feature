@@ -5,9 +5,9 @@ Feature: manage user quota
   So that users can only take up a certain amount of storage space
 
   Background:
-    Given these users have been created but not initialized:
-      | username | password | displayname | email        |
-      | user1    | 1234     | User One    | u1@oc.com.np |
+    Given these users have been created with default attributes but not initialized:
+      | username |
+      | user1    |
     And the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 

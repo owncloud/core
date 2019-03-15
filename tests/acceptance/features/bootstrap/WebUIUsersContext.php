@@ -483,7 +483,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	) {
 		foreach ($table as $row) {
 			$userLastLogin = $this->usersPage->getLastLoginOfUser($row['username']);
-			
+
 			PHPUnit_Framework_Assert::assertContains($row['last login'], $userLastLogin);
 		}
 	}
