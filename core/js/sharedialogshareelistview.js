@@ -300,12 +300,12 @@
 			$loading.removeClass('hidden');
 
 			this.model.sendNotificationForShare(shareType, shareWith, true).then(function(result) {
-				if (result.status === 'success') {
+				if (result.ocs.meta.status === 'ok') {
 					OC.Notification.showTemporary(t('core', 'Email notification was sent!'));
 					$target.remove();
 				} else {
 					// sending was successful but some users might not have any email address
-					OC.dialogs.alert(t('core', result.data.message), t('core', 'Email notification not sent'));
+					OC.dialogs.alert(t('core', result.ocs.meta.message), t('core', 'Email notification not sent'));
 				}
 
 				$target.removeClass('hidden');

@@ -32,6 +32,7 @@ use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FedShareManager;
 use OCA\FederatedFileSharing\Middleware\OcmMiddleware;
 use OCA\FederatedFileSharing\Ocm\Exception\BadRequestException;
+use OCA\FederatedFileSharing\Ocm\Exception\ForbiddenException;
 use OCA\FederatedFileSharing\Ocm\Exception\NotImplementedException;
 use OCA\FederatedFileSharing\Ocm\Exception\OcmException;
 use OCP\AppFramework\Http;
@@ -255,6 +256,18 @@ class RequestHandlerController extends OCSController {
 			$token = $this->request->getParam('token', null);
 			$share = $this->ocmMiddleware->getValidShare($id, $token);
 			$this->fedShareManager->acceptShare($share);
+		} catch (BadRequestException $e) {
+			return new Result(
+				null,
+				Http::STATUS_GONE,
+				$e->getMessage()
+			);
+		} catch (ForbiddenException $e) {
+			return new Result(
+				null,
+				Http::STATUS_FORBIDDEN,
+				$e->getMessage()
+			);
 		} catch (NotImplementedException $e) {
 			return new Result(
 				null,
@@ -281,6 +294,18 @@ class RequestHandlerController extends OCSController {
 			$this->ocmMiddleware->assertOutgoingSharingEnabled();
 			$share = $this->ocmMiddleware->getValidShare($id, $token);
 			$this->fedShareManager->declineShare($share);
+		} catch (BadRequestException $e) {
+			return new Result(
+				null,
+				Http::STATUS_GONE,
+				$e->getMessage()
+			);
+		} catch (ForbiddenException $e) {
+			return new Result(
+				null,
+				Http::STATUS_FORBIDDEN,
+				$e->getMessage()
+			);
 		} catch (NotImplementedException $e) {
 			return new Result(
 				null,

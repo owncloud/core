@@ -36,7 +36,6 @@
  */
 
 use OC\Share\Filters\MailNotificationFilter;
-use OCP\IUser;
 
 OC_JSON::checkLoggedIn();
 OCP\JSON::callCheck();
@@ -77,91 +76,8 @@ function displayNamesInGroups($gids, $search = '', $limit = -1, $offset = 0) {
 	return $displayNames;
 }
 
-/**
- * @param $gid
- * @param string $search
- * @param int $limit
- * @param int $offset
- * @return array
- */
-function usersInGroup($gid, $search = '', $limit = -1, $offset = 0) {
-	$group = \OC::$server->getGroupManager()->get($gid);
-	if ($group) {
-		$users = $group->searchUsers($search, $limit, $offset);
-		$userIds = [];
-		foreach ($users as $user) {
-			$userIds[] = $user->getUID();
-		}
-		return $userIds;
-	} else {
-		return [];
-	}
-}
-
 if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 	switch ($_POST['action']) {
-		case 'informRecipients':
-			$l = \OC::$server->getL10N('core');
-			$shareType = (int) $_POST['shareType'];
-			$itemType = (string)$_POST['itemType'];
-			$itemSource = (string)$_POST['itemSource'];
-			$recipient = (string)$_POST['recipient'];
-
-			$userManager = \OC::$server->getUserManager();
-			$recipientList = [];
-			if ($shareType === \OCP\Share::SHARE_TYPE_USER) {
-				$recipientList[] = $userManager->get($recipient);
-			} elseif ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
-				$recipientList = usersInGroup($recipient);
-				$group = \OC::$server->getGroupManager()->get($recipient);
-				$recipientList = $group->searchUsers('');
-			}
-			// don't send a mail to the user who shared the file
-			$recipientList = \array_filter($recipientList, function ($user) {
-				/** @var IUser $user */
-				return $user->getUID() !== \OCP\User::getUser();
-			});
-
-			$mailNotification = new \OC\Share\MailNotifications(
-				\OC::$server->getUserSession()->getUser(),
-				\OC::$server->getL10N('lib'),
-				\OC::$server->getMailer(),
-				\OC::$server->getConfig(),
-				\OC::$server->getLogger(),
-				$defaults,
-				\OC::$server->getURLGenerator(),
-				\OC::$server->getEventDispatcher()
-			);
-
-			$result = $mailNotification->sendInternalShareMail($recipientList, $itemSource, $itemType);
-
-			// if we were able to send to at least one recipient, mark as sent
-			// allowing the user to resend would spam users who already got a notification
-			if (\count($result) < \count($recipientList)) {
-				\OCP\Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
-			}
-
-			if (empty($result)) {
-				OCP\JSON::success();
-			} else {
-				OCP\JSON::error([
-					'data' => [
-						'message' => $l->t("Couldn't send mail to following recipient(s): %s ",
-								\implode(', ', $result)
-								)
-					]
-				]);
-			}
-			break;
-		case 'informRecipientsDisabled':
-			$itemSource = (string)$_POST['itemSource'];
-			$shareType = (int)$_POST['shareType'];
-			$itemType = (string)$_POST['itemType'];
-			$recipient = (string)$_POST['recipient'];
-			\OCP\Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, false);
-			OCP\JSON::success();
-			break;
-
 		case 'email':
 			$emailBody = null;
 
@@ -194,6 +110,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 
 				$sendingUser = \OC::$server->getUserSession()->getUser();
 				$mailNotification = new \OC\Share\MailNotifications(
+					\OC::$server->getShareManager(),
 					$sendingUser,
 					$l10n,
 					\OC::$server->getMailer(),

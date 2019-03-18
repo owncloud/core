@@ -25,7 +25,7 @@
 namespace OCA\Files_Sharing\Tests\API;
 
 use OC\OCS\Result;
-use OCA\Files_Sharing\API\Share20OCS;
+use OCA\Files_Sharing\Controller\Share20OcsController;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCA\Files_Sharing\SharingBlacklist;
 use OCP\Files\IRootFolder;
@@ -38,6 +38,7 @@ use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IGroup;
 use OCP\IUserManager;
+use OCP\IUserSession;
 use OCP\Lock\LockedException;
 use OCP\Share;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -48,12 +49,12 @@ use OCP\Files\Node;
 use OCP\Share\Exceptions\ShareNotFound;
 
 /**
- * Class Share20OCSTest
+ * Class Share20OcsControllerTest
  *
- * @package OCA\Files_Sharing\Tests\API
+ * @package OCA\Files_Sharing\Tests\Controller
  * @group DB
  */
-class Share20OCSTest extends TestCase {
+class Share20OcsControllerTest extends TestCase {
 
 	/** @var \OC\Share20\Manager | \PHPUnit_Framework_MockObject_MockObject */
 	private $shareManager;
@@ -76,7 +77,10 @@ class Share20OCSTest extends TestCase {
 	/** @var IUser */
 	private $currentUser;
 
-	/** @var Share20OCS */
+	/** @var IUserSession */
+	private $userSession;
+
+	/** @var Share20OcsController */
 	private $ocs;
 
 	/** @var IL10N */
@@ -88,6 +92,8 @@ class Share20OCSTest extends TestCase {
 	private $eventDispatcher;
 	/** @var SharingBlacklist */
 	private $sharingBlacklist;
+	/** @var IConfig */
+	private $config;
 
 	protected function setUp() {
 		$this->shareManager = $this->getMockBuilder('OCP\Share\IManager')
@@ -104,8 +110,10 @@ class Share20OCSTest extends TestCase {
 		$this->urlGenerator = $this->createMock('OCP\IURLGenerator');
 		$this->currentUser = $this->createMock('OCP\IUser');
 		$this->currentUser->method('getUID')->willReturn('currentUser');
+		$this->userSession = $this->createMock(IUserSession::class);
+		$this->userSession->method('getUser')->willReturn($this->currentUser);
 
-		$this->userManager->expects($this->any())->method('userExists')->willReturn(true);
+		$this->userManager->method('userExists')->willReturn(true);
 
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
@@ -124,14 +132,15 @@ class Share20OCSTest extends TestCase {
 		$this->eventDispatcher = $this->createMock(EventDispatcher::class);
 		$this->sharingBlacklist = $this->createMock(SharingBlacklist::class);
 
-		$this->ocs = new Share20OCS(
+		$this->ocs = new Share20OcsController(
+			'files_sharing',
+			$this->request,
 			$this->shareManager,
 			$this->groupManager,
 			$this->userManager,
-			$this->request,
 			$this->rootFolder,
 			$this->urlGenerator,
-			$this->currentUser,
+			$this->userSession,
 			$this->l,
 			$this->config,
 			$this->notificationPublisher,
@@ -144,16 +153,20 @@ class Share20OCSTest extends TestCase {
 		parent::tearDown();
 	}
 
+	/**
+	 * @return Share20OcsController | \PHPUnit_Framework_MockObject_MockObject
+	 */
 	private function mockFormatShare() {
-		return $this->getMockBuilder(\OCA\Files_Sharing\API\Share20OCS::class)
+		return $this->getMockBuilder(Share20OcsController::class)
 			->setConstructorArgs([
+				'files_sharing',
+				$this->request,
 				$this->shareManager,
 				$this->groupManager,
 				$this->userManager,
-				$this->request,
 				$this->rootFolder,
 				$this->urlGenerator,
-				$this->currentUser,
+				$this->userSession,
 				$this->l,
 				$this->config,
 				$this->notificationPublisher,
@@ -470,15 +483,16 @@ class Share20OCSTest extends TestCase {
 	 * @dataProvider dataGetShare
 	 */
 	public function testGetShare(\OCP\Share\IShare $share, array $result) {
-		$ocs = $this->getMockBuilder('OCA\Files_Sharing\API\Share20OCS')
+		$ocs = $this->getMockBuilder(Share20OcsController::class)
 				->setConstructorArgs([
+					'files_sharing',
+					$this->request,
 					$this->shareManager,
 					$this->groupManager,
 					$this->userManager,
-					$this->request,
 					$this->rootFolder,
 					$this->urlGenerator,
-					$this->currentUser,
+					$this->userSession,
 					$this->l,
 					$this->config,
 					$this->notificationPublisher,
@@ -487,7 +501,7 @@ class Share20OCSTest extends TestCase {
 				])->setMethods(['canAccessShare'])
 				->getMock();
 
-		$ocs->method('canAccessShare')->willReturn(true);
+		$ocs->expects($this->any())->method('canAccessShare')->willReturn(true);
 
 		$this->shareManager
 			->expects($this->once())
@@ -2757,7 +2771,7 @@ class Share20OCSTest extends TestCase {
 	}
 
 	/**
-	 * @return Share20OCS
+	 * @return Share20OcsController
 	 */
 	public function getOcsDisabledAPI() {
 		$shareManager = $this->getMockBuilder('OCP\Share\IManager')
@@ -2768,14 +2782,15 @@ class Share20OCSTest extends TestCase {
 			->method('shareApiEnabled')
 			->willReturn(false);
 
-		return new Share20OCS(
+		return new Share20OcsController(
+			'files_sharing',
+			$this->request,
 			$shareManager,
 			$this->groupManager,
 			$this->userManager,
-			$this->request,
 			$this->rootFolder,
 			$this->urlGenerator,
-			$this->currentUser,
+			$this->userSession,
 			$this->l,
 			$this->config,
 			$this->notificationPublisher,
@@ -2861,14 +2876,15 @@ class Share20OCSTest extends TestCase {
 		$recipient->method('getUID')->willReturn('recipient_id');
 		$recipient->method('getEMailAddress')->willReturn('email@example.com');
 
-		$ocs = new Share20OCS(
+		$ocs = new Share20OcsController(
+			'files_sharing',
+			$this->request,
 			$this->shareManager,
 			$this->groupManager,
 			$this->userManager,
-			$this->request,
 			$this->rootFolder,
 			$this->urlGenerator,
-			$this->currentUser,
+			$this->userSession,
 			$this->l,
 			$config,
 			$this->notificationPublisher,
@@ -2976,7 +2992,7 @@ class Share20OCSTest extends TestCase {
 		$this->shareManager->method('outgoingServer2ServerSharesAllowed')->willReturn($fedAllowed);
 
 		$ocs = $this->mockFormatShare();
-		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$ocs->expects($this->any())->method('formatShare')->will($this->returnArgument(0));
 		$result = $ocs->getShares();
 
 		if ($fedAllowed) {
@@ -3096,7 +3112,7 @@ class Share20OCSTest extends TestCase {
 		]));
 
 		$ocs = $this->mockFormatShare();
-		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$ocs->expects($this->any())->method('formatShare')->will($this->returnArgument(0));
 		$result = $ocs->getShares();
 
 		$this->assertContains($userShare, $result->getData(), 'result contains user share');
@@ -3173,7 +3189,7 @@ class Share20OCSTest extends TestCase {
 			]));
 
 		$ocs = $this->mockFormatShare();
-		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$ocs->expects($this->any())->method('formatShare')->will($this->returnArgument(0));
 		$result = $ocs->getShares();
 		$this->assertEquals($userShare->getPermissions(), $result->getData()[0]->getPermissions());
 	}
@@ -3257,7 +3273,7 @@ class Share20OCSTest extends TestCase {
 			->willReturn($userFolder);
 
 		$ocs = $this->mockFormatShare();
-		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$ocs->expects($this->any())->method('formatShare')->will($this->returnArgument(0));
 		$result = $ocs->$method(123);
 
 		$this->assertEquals(100, $result->getStatusCode());
@@ -3387,7 +3403,7 @@ class Share20OCSTest extends TestCase {
 			->willReturn($userFolder);
 
 		$ocs = $this->mockFormatShare();
-		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$ocs->expects($this->any())->method('formatShare')->will($this->returnArgument(0));
 		$result = $ocs->$method(123);
 
 		$this->assertEquals(100, $result->getStatusCode());
