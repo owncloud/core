@@ -34,7 +34,8 @@
     "@bower_components/strengthify": "MorrisJobke/strengthify#0.5.6",
     "@bower_components/underscore": "jashkenas/underscore#1.9.1",
     "@bower_components/zxcvbn": "dropbox/zxcvbn#4.4.2",
-    "modclean": "^3.0.0-beta.1"
+    "modclean": "^3.0.0-beta.1",
+    "modclean-patterns-owncloud": "./modclean-patterns-owncloud/"
   },
   "devDependencies": {
     "handlebars": "^4.1.0",
@@ -55,6 +56,7 @@
     "yarn": ">= 1.0.0"
   },
   "scripts": {
-    "postinstall": "modclean -r --patterns=\"default:safe\" && node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), '../core/vendor', 'junction') } catch (e) { }\""
+    "clean-modules": "modclean -r --patterns=\"default:safe,owncloud:basic\"",
+    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), '../core/vendor', 'junction') } catch (e) { }\""
   }
 }
