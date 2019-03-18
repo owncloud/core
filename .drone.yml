@@ -645,7 +645,7 @@ matrix:
       COVERAGE: true
 
   # owncloud-coding-standard
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.3
       TEST_SUITE: owncloud-coding-standard
 
   # phan (runs on just PHP 7.0 because that has different dependencies for phan)
