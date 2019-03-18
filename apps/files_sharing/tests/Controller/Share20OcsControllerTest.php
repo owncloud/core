@@ -92,6 +92,8 @@ class Share20OcsControllerTest extends TestCase {
 	private $eventDispatcher;
 	/** @var SharingBlacklist */
 	private $sharingBlacklist;
+	/** @var IConfig */
+	private $config;
 
 	protected function setUp() {
 		$this->shareManager = $this->getMockBuilder('OCP\Share\IManager')
@@ -499,7 +501,7 @@ class Share20OcsControllerTest extends TestCase {
 				])->setMethods(['canAccessShare'])
 				->getMock();
 
-		$ocs->method('canAccessShare')->willReturn(true);
+		$ocs->expects($this->any())->method('canAccessShare')->willReturn(true);
 
 		$this->shareManager
 			->expects($this->once())
@@ -2990,7 +2992,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('outgoingServer2ServerSharesAllowed')->willReturn($fedAllowed);
 
 		$ocs = $this->mockFormatShare();
-		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$ocs->expects($this->any())->method('formatShare')->will($this->returnArgument(0));
 		$result = $ocs->getShares();
 
 		if ($fedAllowed) {
@@ -3110,7 +3112,7 @@ class Share20OcsControllerTest extends TestCase {
 		]));
 
 		$ocs = $this->mockFormatShare();
-		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$ocs->expects($this->any())->method('formatShare')->will($this->returnArgument(0));
 		$result = $ocs->getShares();
 
 		$this->assertContains($userShare, $result->getData(), 'result contains user share');
@@ -3187,7 +3189,7 @@ class Share20OcsControllerTest extends TestCase {
 			]));
 
 		$ocs = $this->mockFormatShare();
-		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$ocs->expects($this->any())->method('formatShare')->will($this->returnArgument(0));
 		$result = $ocs->getShares();
 		$this->assertEquals($userShare->getPermissions(), $result->getData()[0]->getPermissions());
 	}
@@ -3271,7 +3273,7 @@ class Share20OcsControllerTest extends TestCase {
 			->willReturn($userFolder);
 
 		$ocs = $this->mockFormatShare();
-		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$ocs->expects($this->any())->method('formatShare')->will($this->returnArgument(0));
 		$result = $ocs->$method(123);
 
 		$this->assertEquals(100, $result->getStatusCode());
@@ -3401,7 +3403,7 @@ class Share20OcsControllerTest extends TestCase {
 			->willReturn($userFolder);
 
 		$ocs = $this->mockFormatShare();
-		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$ocs->expects($this->any())->method('formatShare')->will($this->returnArgument(0));
 		$result = $ocs->$method(123);
 
 		$this->assertEquals(100, $result->getStatusCode());

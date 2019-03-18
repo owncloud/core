@@ -41,6 +41,7 @@ use OC\AppFramework\Middleware\SessionMiddleware;
 use OC\AppFramework\Utility\SimpleContainer;
 use OC\Core\Middleware\AccountModuleMiddleware;
 use OC\Core\Middleware\TwoFactorMiddleware;
+use OCP\API;
 use OCP\App\IServiceLoader;
 use OCP\AppFramework\IApi;
 use OCP\AppFramework\IAppContainer;
