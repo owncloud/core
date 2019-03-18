@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9812c0c4232c6f2f1f98837f981e56eb",
+    "content-hash": "e32b66982c62cbad27cb7ebb3c1bebae",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -196,16 +196,16 @@
         },
         {
             "name": "deepdiver1975/tarstreamer",
-            "version": "v0.1.0",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/owncloud/TarStreamer.git",
-                "reference": "859a0170de120c66b042e6c0dbc1a9979c74669b"
+                "reference": "2d99636ded9c8a8a1ecd8129e7976dcd606106d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/owncloud/TarStreamer/zipball/859a0170de120c66b042e6c0dbc1a9979c74669b",
-                "reference": "859a0170de120c66b042e6c0dbc1a9979c74669b",
+                "url": "https://api.github.com/repos/owncloud/TarStreamer/zipball/2d99636ded9c8a8a1ecd8129e7976dcd606106d9",
+                "reference": "2d99636ded9c8a8a1ecd8129e7976dcd606106d9",
                 "shasum": ""
             },
             "require": {
@@ -234,7 +234,7 @@
                 "stream",
                 "tar"
             ],
-            "time": "2016-02-15T10:52:44+00:00"
+            "time": "2019-02-11T13:56:51+00:00"
         },
         {
             "name": "dg/composer-cleaner",
@@ -5367,7 +5367,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",

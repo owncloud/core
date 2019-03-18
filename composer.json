@@ -47,7 +47,7 @@
         "league/flysystem": "^1.0",
         "pear/pear-core-minimal": "^v1.10",
         "interfasys/lognormalizer": "^v1.0",
-        "deepdiver1975/tarstreamer": "v0.1.0",
+        "deepdiver1975/tarstreamer": "v0.1.1",
         "patchwork/jsqueeze": "^2.0",
         "lukasreschke/id3parser": "^0.0.3",
         "sabre/dav": "^3.2",
