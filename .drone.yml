@@ -652,7 +652,7 @@ matrix:
     - TEST_SUITE: phan-70
       PHP_VERSION: 7.0
 
-    # phan (runs multiple PHP v7.1+ to provide syntax checks of each PHP version)
+  # phan (runs multiple PHP v7.1+ to provide syntax checks of each PHP version)
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
 
