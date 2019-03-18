@@ -38,10 +38,6 @@ SHELL=/bin/bash
 # Define YARN and check if it is available on the system.
 #
 YARN := $(shell command -v yarn 2> /dev/null)
-ifndef YARN
-	$(error yarn is not available on your system, please install yarn (npm install -g yarn))
-endif
-
 KARMA=$(NODE_PREFIX)/node_modules/.bin/karma
 JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
 PHPUNIT="$(shell pwd)/lib/composer/phpunit/phpunit/phpunit"
@@ -101,7 +97,7 @@ help:
 	@echo -e "make clean\t\t\tclean everything"
 	@echo -e "make install-composer-deps\tinstall composer dependencies"
 	@echo -e "make update-composer\t\tupdate composer.lock"
-	@echo -e "make install-nodejs-deps\t\tinstall Node JS and Javascript dependencies"
+	@echo -e "make install-nodejs-deps\tinstall Node JS and Javascript dependencies"
 	@echo
 	@echo -e "Note that running 'make' without arguments already installs all required dependencies"
 	@echo
@@ -156,6 +152,7 @@ clean-composer-deps:
 # Node JS dependencies for tools
 #
 $(nodejs_deps): build/package.json
+	@test -x "$(YARN)" || { echo "yarn is not available on your system, please install yarn (npm install -g yarn)" && exit 1; }
 	cd $(NODE_PREFIX) && $(YARN) install
 	touch $@
 
