@@ -440,6 +440,16 @@ pipeline:
       matrix:
         CALDAV_CARDDAV_JOB: true
 
+  print-log:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - cat /drone/src/data/owncloud.log
+    when:
+      status:  [ failure ]
+      matrix:
+        TEST_SUITE: phpunit
+
   notify:
     image: plugins/slack:1
     pull: true
@@ -635,14 +645,14 @@ matrix:
       COVERAGE: true
 
   # owncloud-coding-standard
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.3
       TEST_SUITE: owncloud-coding-standard
 
   # phan (runs on just PHP 7.0 because that has different dependencies for phan)
     - TEST_SUITE: phan-70
       PHP_VERSION: 7.0
 
-    # phan (runs multiple PHP v7.1+ to provide syntax checks of each PHP version)
+  # phan (runs multiple PHP v7.1+ to provide syntax checks of each PHP version)
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
 
