@@ -176,13 +176,13 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-      - OBJECTSTORE=$OBJECTSTORE
+      - OBJECTSTORE=${OBJECTSTORE}
     commands:
       - cd /drone/src/apps
       - git clone https://github.com/owncloud/files_primary_s3.git
       - cd files_primary_s3
       - composer install
-      - cp tests/drone/$${OBJECTSTORE}.config.php /drone/src/config
+      - cp tests/drone/${OBJECTSTORE}.config.php /drone/src/config
       - cd /drone/src
       - php occ a:l
       - php occ a:e files_primary_s3
