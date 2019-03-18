@@ -55,6 +55,6 @@
   },
   "scripts": {
     "clean-modules": "modclean -r --patterns=\"default:safe,owncloud:basic\"",
-    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), '../core/vendor', 'junction') } catch (e) { }\""
+    "postinstall": "modclean -r --patterns=\"default:safe\" && node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), '../core/vendor', 'junction') } catch (e) { }\""
   }
 }

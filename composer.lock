@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c00b6c2d1a9694608e1f13ca45cac489",
+    "content-hash": "9812c0c4232c6f2f1f98837f981e56eb",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -235,6 +235,52 @@
                 "tar"
             ],
             "time": "2016-02-15T10:52:44+00:00"
+        },
+        {
+            "name": "dg/composer-cleaner",
+            "version": "v2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dg/composer-cleaner.git",
+                "reference": "41db7585dc9f2f345020931c76091dd3936df930"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dg/composer-cleaner/zipball/41db7585dc9f2f345020931c76091dd3936df930",
+                "reference": "41db7585dc9f2f345020931c76091dd3936df930",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "nette/tester": "^1.7"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "DG\\ComposerCleaner\\Plugin"
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                }
+            ],
+            "description": "Victor The Cleaner: removes unnecessary files from vendor directory.",
+            "keywords": [
+                "composer"
+            ],
+            "time": "2017-09-20T12:41:46+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1662,16 +1708,16 @@
         },
         {
             "name": "pear/pear-core-minimal",
-            "version": "v1.10.7",
+            "version": "v1.10.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/pear-core-minimal.git",
-                "reference": "19a3e0fcd50492c4357372f623f55f1b144346da"
+                "reference": "742be8dd68c746a01e4b0a422258e9c9cae1c37f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/19a3e0fcd50492c4357372f623f55f1b144346da",
-                "reference": "19a3e0fcd50492c4357372f623f55f1b144346da",
+                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/742be8dd68c746a01e4b0a422258e9c9cae1c37f",
+                "reference": "742be8dd68c746a01e4b0a422258e9c9cae1c37f",
                 "shasum": ""
             },
             "require": {
@@ -1702,7 +1748,7 @@
                 }
             ],
             "description": "Minimal set of PEAR core files to be used as composer dependency",
-            "time": "2018-12-05T20:03:52+00:00"
+            "time": "2019-03-13T18:15:44+00:00"
         },
         {
             "name": "pear/pear_exception",
