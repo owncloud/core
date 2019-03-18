@@ -1,6 +1,6 @@
 #content {
 	height: initial;
-	min-height: calc(100vh - 120px);
+	min-height: calc(100vh - 140px);
 }
 
 /* force layout to make sure the content element's height matches its contents' height */
