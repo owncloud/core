@@ -64,10 +64,6 @@
     "extra": {
         "bamarni-bin": {
             "bin-links": false
-        },
-        "cleaner-ignore": {
-            "behat/behat": true,
-            "behat/gherkin": true
         }
     }
 }
