@@ -63,8 +63,8 @@
         "zendframework/zend-servicemanager": "^3.3",
         "zendframework/zend-validator": "^2.10",
         "composer/semver": "^1.4",
-        "dg/composer-cleaner": "^2.0",
-        "ext-json": "*"
+        "ext-json": "*",
+        "dg/composer-cleaner": "^2.0"
     },
     "extra": {
         "bamarni-bin": {
