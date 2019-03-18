@@ -97,7 +97,7 @@ help:
 	@echo -e "make clean\t\t\tclean everything"
 	@echo -e "make install-composer-deps\tinstall composer dependencies"
 	@echo -e "make update-composer\t\tupdate composer.lock"
-	@echo -e "make install-nodejs-deps\t\tinstall Node JS and Javascript dependencies"
+	@echo -e "make install-nodejs-deps\tinstall Node JS and Javascript dependencies"
 	@echo
 	@echo -e "Note that running 'make' without arguments already installs all required dependencies"
 	@echo
