@@ -144,6 +144,8 @@ pipeline:
   install-server:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
+    environment:
+      - DB_TYPE=${DB_TYPE}
     commands:
       - ./tests/drone/install-server.sh
       - php occ a:l
@@ -173,12 +175,14 @@ pipeline:
   prepare-objectstore:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
+    environment:
+      - OBJECTSTORE=$OBJECTSTORE
     commands:
       - cd /drone/src/apps
       - git clone https://github.com/owncloud/files_primary_s3.git
       - cd files_primary_s3
       - composer install
-      - cp tests/drone/scality.config.php /drone/src/config
+      - cp tests/drone/$${OBJECTSTORE}.config.php /drone/src/config
       - cd /drone/src
       - php occ a:l
       - php occ a:e files_primary_s3
@@ -186,7 +190,7 @@ pipeline:
       - php ./occ s3:create-bucket owncloud --accept-warning
     when:
       matrix:
-        TEST_OBJECTSTORAGE: true
+        PRIMARY_OBJECTSTORE: files_primary_s3
 
   phpstan:
     image: owncloudci/php:${PHP_VERSION}
@@ -202,10 +206,9 @@ pipeline:
     pull: true
     group: test
     environment:
-      - PHP_VERSION=${PHP_VERSION}
-      - DB_TYPE=${DB_TYPE}
       - FILES_EXTERNAL_TYPE=${FILES_EXTERNAL_TYPE}
       - COVERAGE=${COVERAGE}
+      - PRIMARY_OBJECTSTORE=${PRIMARY_OBJECTSTORE}
     commands:
       - ./tests/drone/test-phpunit.sh
     when:
@@ -613,7 +616,7 @@ services:
       - HOST_NAME=scality
     when:
       matrix:
-        TEST_OBJECTSTORAGE: true
+        OBJECTSTORE: scality
 
   email:
     image: mailhog/mailhog
@@ -621,6 +624,7 @@ services:
     when:
       matrix:
         USE_EMAIL: true
+
 matrix:
   include:
 
@@ -731,21 +735,6 @@ matrix:
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: mysql
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: postgres
-    #  TEST_SUITE: phpunit
-    #  INSTALL_SERVER: true
-    #
-    # - PHP_VERSION: 7.2
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
-    #   INSTALL_SERVER: true
-
   # PHP 7.3
     - PHP_VERSION: 7.3
       DB_TYPE: sqlite
@@ -759,47 +748,60 @@ matrix:
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
-  # test on objectstore
-    - PHP_VERSION: 7.1
-      DB_TYPE: sqlite
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      TEST_OBJECTSTORAGE: true
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
   # Files External
     - PHP_VERSION: 7.1
       TEST_SUITE: phpunit
       COVERAGE: true
       DB_TYPE: sqlite
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
       FILES_EXTERNAL_TYPE: webdav_apache
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: phpunit
       COVERAGE: true
       DB_TYPE: sqlite
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
       FILES_EXTERNAL_TYPE: smb_samba
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: phpunit
       COVERAGE: true
       DB_TYPE: sqlite
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
       FILES_EXTERNAL_TYPE: smb_windows
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: phpunit
       COVERAGE: true
       DB_TYPE: sqlite
+      FILES_EXTERNAL_TYPE: swift
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
+
+  # Primary Objectstorage
+    - PHP_VERSION: 7.1
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      DB_TYPE: sqlite
+      OBJECTSTORE: swift
+      PRIMARY_OBJECTSTORE: swift
       FILES_EXTERNAL_TYPE: swift
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+  # files_primary_s3
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      DB_TYPE: sqlite
+      OBJECTSTORE: scality
+      PRIMARY_OBJECTSTORE: files_primary_s3
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
 
   # API Acceptance tests
     - PHP_VERSION: 7.1
