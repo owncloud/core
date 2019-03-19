@@ -1214,18 +1214,17 @@ trait Provisioning {
 			$password = $this->getPasswordForUser($user);
 		}
 
-		if ($displayName === null) {
+		if ($displayName === null && $setDefault === true) {
 			$displayName = $this->getDisplayNameForUser($user);
-
-			if ($displayName === null && $setDefault == true) {
+			if ($displayName === null) {
 				$displayName = $this->getDisplayNameForUser('regularuser');
 			}
 		}
 
-		if ($email === null) {
+		if ($email === null && $setDefault === true) {
 			$email = $this->getEmailAddressForUser($user);
 
-			if ($email === null && $setDefault == true) {
+			if ($email === null) {
 				$email = $user . '@owncloud.org';
 			}
 		}
