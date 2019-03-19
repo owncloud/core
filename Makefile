@@ -65,7 +65,7 @@ acceptance_test_deps=vendor-bin/behat/vendor
 nodejs_deps=build/node_modules
 core_vendor=core/vendor
 
-core_doc_files=AUTHORS COPYING README.md
+core_doc_files=AUTHORS COPYING README.md CHANGELOG.md
 core_src_files=$(wildcard *.php) index.html db_structure.xml .htaccess .user.ini robots.txt
 core_src_dirs=apps apps-external core l10n lib occ ocs ocs-provider ocm-provider resources settings
 core_test_dirs=tests
