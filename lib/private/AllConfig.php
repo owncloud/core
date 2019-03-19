@@ -45,7 +45,9 @@ class AllConfig implements IConfig {
 	/** @var IDBConnection */
 	private $connection;
 
+	/** @var EventDispatcher */
 	private $eventDispatcher;
+
 	/**
 	 * 3 dimensional array with the following structure:
 	 * [ $userId =>
@@ -69,7 +71,10 @@ class AllConfig implements IConfig {
 	private $userCache;
 
 	/**
+	 * AllConfig constructor.
+	 *
 	 * @param SystemConfig $systemConfig
+	 * @param EventDispatcher|null $eventDispatcher
 	 */
 	public function __construct(SystemConfig $systemConfig, EventDispatcher $eventDispatcher) {
 		$this->userCache = new CappedMemoryCache();
@@ -300,8 +305,9 @@ class AllConfig implements IConfig {
 		$arguments = ['uid' => $userId, 'key' => $key, 'app' => $appName];
 		$this->eventDispatcher->dispatch('userpreferences.beforeDeleteValue',
 			new GenericEvent(null, $arguments));
-		$sql  = 'DELETE FROM `*PREFIX*preferences` '.
-				'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?';
+
+		$sql = 'DELETE FROM `*PREFIX*preferences` '.
+			'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?';
 		$this->connection->executeUpdate($sql, [$userId, $appName, $key]);
 
 		if (isset($this->userCache[$userId], $this->userCache[$userId][$appName])) {
@@ -326,7 +332,7 @@ class AllConfig implements IConfig {
 		$arguments = ['uid' => $userId];
 		$this->eventDispatcher->dispatch('userpreferences.beforeDeleteUser', new GenericEvent(null, $arguments));
 
-		$sql  = 'DELETE FROM `*PREFIX*preferences` '.
+		$sql = 'DELETE FROM `*PREFIX*preferences` '.
 			'WHERE `userid` = ?';
 		$this->connection->executeUpdate($sql, [$userId]);
 
@@ -350,8 +356,8 @@ class AllConfig implements IConfig {
 		$arguments = ['app' => $appName];
 		$this->eventDispatcher->dispatch('userpreferences.beforeDeleteApp', new GenericEvent(null, $arguments));
 
-		$sql  = 'DELETE FROM `*PREFIX*preferences` '.
-				'WHERE `appid` = ?';
+		$sql = 'DELETE FROM `*PREFIX*preferences` '.
+			'WHERE `appid` = ?';
 		$this->connection->executeUpdate($sql, [$appName]);
 
 		foreach ($this->userCache as &$userCache) {
@@ -420,10 +426,10 @@ class AllConfig implements IConfig {
 
 			$placeholders = (\sizeof($chunk) === 50) ? $placeholders50 :  \implode(',', \array_fill(0, \sizeof($chunk), '?'));
 
-			$query    = 'SELECT `userid`, `configvalue` ' .
-						'FROM `*PREFIX*preferences` ' .
-						'WHERE `appid` = ? AND `configkey` = ? ' .
-						'AND `userid` IN (' . $placeholders . ')';
+			$query = 'SELECT `userid`, `configvalue` ' .
+				'FROM `*PREFIX*preferences` ' .
+				'WHERE `appid` = ? AND `configkey` = ? ' .
+				'AND `userid` IN (' . $placeholders . ')';
 			$result = $this->connection->executeQuery($query, $queryParams);
 
 			while ($row = $result->fetch()) {

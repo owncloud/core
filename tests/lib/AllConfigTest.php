@@ -55,9 +55,9 @@ class AllConfigTest extends \Test\TestCase {
 		$config->deleteUserValue('userDelete', 'appDelete', 'keyDelete');
 
 		$result = $this->connection->executeQuery(
-				'SELECT COUNT(*) AS `count` FROM `*PREFIX*preferences` WHERE `userid` = ?',
-				['userDelete']
-			)->fetch();
+			'SELECT COUNT(*) AS `count` FROM `*PREFIX*preferences` WHERE `userid` = ?',
+			['userDelete']
+		)->fetch();
 		$actualCount = $result['count'];
 
 		$this->assertEquals(0, $actualCount, 'There was one value in the database and after the tests there should be no entry left.');
@@ -225,7 +225,7 @@ class AllConfigTest extends \Test\TestCase {
 		$connectionMock->expects($this->once())
 			->method('executeQuery')
 			->with($this->equalTo('SELECT `configvalue` FROM `*PREFIX*preferences` '.
-					'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?'),
+				'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?'),
 				$this->equalTo(['userSetUnchanged', 'appSetUnchanged', 'keySetUnchanged']))
 			->will($this->returnValue($resultMock));
 		$connectionMock->expects($this->never())
@@ -337,10 +337,10 @@ class AllConfigTest extends \Test\TestCase {
 		$value = $config->getUserValueForUsers('appFetch2', 'keyFetch1',
 			['userFetch1', 'userFetch2', 'userFetch3', 'userFetch5']);
 		$this->assertEquals([
-				'userFetch1' => 'value1',
-				'userFetch2' => 'value2',
-				'userFetch3' => 3,
-				'userFetch5' => 'value5'
+			'userFetch1' => 'value1',
+			'userFetch2' => 'value2',
+			'userFetch3' => 3,
+			'userFetch5' => 'value5'
 		], $value);
 
 		$value = $config->getUserValueForUsers('appFetch2', 'keyFetch1',
