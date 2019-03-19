@@ -20,6 +20,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added checkboxes to hide quota and password - [#34479](https://github.com/owncloud/core/issues/34479)
 - New option to allow users to configure automatically accept incoming local shares - [#34647](https://github.com/owncloud/core/issues/34647)
 - By default the "apps-external" directory is included in config.php during installation - [#34656](https://github.com/owncloud/core/issues/34656)
+- Added files:scan --group and --groups options - [#34754](https://github.com/owncloud/core/issues/34754)
+- Allow admins to enable medial search on group and user - [#34779](https://github.com/owncloud/core/issues/34779)
+- Add composer cleaner - [#34784](https://github.com/owncloud/core/issues/34784)
 
 ### Changed
 
@@ -36,7 +39,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump react promise v2.7.1 - [#34416](https://github.com/owncloud/core/issues/34416)
 - Zendframework bumps 20190208 - [#34413](https://github.com/owncloud/core/issues/34413)
 - Bump paragonie/random_compat v2.0.17 => v2.0.18 - [#34043](https://github.com/owncloud/core/issues/34043)
-- Bump phpseclib/phpseclib from 2.0.13 to 2.0.14 - [#34285](https://github.com/owncloud/core/issues/34285)
+- Bump phpseclib/phpseclib from 2.0.13 to 2.0.15 - [#34285](https://github.com/owncloud/core/issues/34285) [#34741](https://github.com/owncloud/core/issues/34741)
 - Bump pimple/pimple from 3.0.2 to 3.2.3 - [#31753](https://github.com/owncloud/core/issues/31753)
 - Bump symfony v3.4.20 => v3.4.21 - [#34042](https://github.com/owncloud/core/issues/34042)
 - Bump symfony v3.4.22 => v3.4.23 - [#34663](https://github.com/owncloud/core/issues/34663)
@@ -48,6 +51,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump remaining symfony 3.4.22 components - [#34412](https://github.com/owncloud/core/issues/34412)
 - Bump zendframework/zend-servicemanager from 3.3.2 to 3.4.0 - [#33971](https://github.com/owncloud/core/issues/33971)
 - Bump zendframework/zend-inputfilter from 2.9.0 to 2.9.1 - [#34145](https://github.com/owncloud/core/issues/34145)
+- Bump dependencies after PHP 5.6 deprecation, swiftmailer 6.2 - [#34755](https://github.com/owncloud/core/issues/34755)
 - Bump README.md doc links to 10.1 - [#34403](https://github.com/owncloud/core/issues/34403)
 - Increase size of login_name from 64 to 255 - [#34280](https://github.com/owncloud/core/issues/34280)
 - Warn when .htaccess file is not writable - [#34486](https://github.com/owncloud/core/issues/34486) [#34461](https://github.com/owncloud/core/issues/34461)
@@ -55,14 +59,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Add email footer with motto in email for changing password - [#34498](https://github.com/owncloud/core/issues/34498)
 - Change the styling of the active settings navigation menu item - [#34561](https://github.com/owncloud/core/issues/34561)
 - Added delay in search field - [#34613](https://github.com/owncloud/core/issues/34613)
+- Tidy up code for notification by email - [#34786](https://github.com/owncloud/core/issues/34786)
 
 ### Removed
 
+- Drop PHP 5.6 support across the platform - [#34698](https://github.com/owncloud/core/issues/34698)
 - Removed bundled documentation, help links now point to the online documentation - [#34612](https://github.com/owncloud/core/issues/34612) [#34649](https://github.com/owncloud/core/issues/34649)
 - Remove incompatible script for generating DB changeset - [#34722](https://github.com/owncloud/core/issues/34722)
 
 ### Fixed
 
+- Handle accept decline with invalid share id - [#34786](https://github.com/owncloud/core/issues/34786)
+- Normalize path when moving chunks to final destination - [#34777](https://github.com/owncloud/core/issues/34777)
+- Better support for international email addresses after swiftmailer update - [#34759](https://github.com/owncloud/core/issues/34759)
+- Fix first time login handling - [#34758](https://github.com/owncloud/core/issues/34758)
+- Server container interface should inherit from icontainer,… - [#34756](https://github.com/owncloud/core/issues/34756)
 - Don't expose hashed password in OCS api - [#34691](https://github.com/owncloud/core/issues/34691)
 - Fixes UID issue with birthday calendar events - [#34701](https://github.com/owncloud/core/issues/34701)
 - Improve avatar performance by having many avatar related calls bypass the file cache - [#34592](https://github.com/owncloud/core/issues/34592)
