@@ -13,8 +13,6 @@ if [[ "$(pwd)" == "$(cd "$(dirname "$0")"; pwd -P)" ]]; then
   exit 1
 fi
 
-export ZEND_DONT_UNLOAD_MODULES=1
-
 set_up_external_storage() {
     php occ app:enable files_external
     php occ config:app:set core enable_external_storage --value=yes
