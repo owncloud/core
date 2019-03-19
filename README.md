@@ -3,7 +3,6 @@
 [![Build Status](https://drone.owncloud.com/api/badges/owncloud/core/status.svg?branch=stable10)](https://drone.owncloud.com/owncloud/core)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/owncloud/core/badges/quality-score.png?s=ce2f5ded03d4ac628e9ee5c767243fa7412e644f)](https://scrutinizer-ci.com/g/owncloud/core/)
 [![codecov.io](https://codecov.io/github/owncloud/core/coverage.svg?branch=master)](https://codecov.io/github/owncloud/core?branch=master)
-[![Build Status](https://saucelabs.com/buildstatus/DeepDiver1975)](https://saucelabs.com/beta/builds/358889d1dc0a45ff927e3d6b844cabf0)
 
 **[ownCloud](http://ownCloud.org) gives you freedom and control over your own data.
 A personal cloud which runs on your own server.**
