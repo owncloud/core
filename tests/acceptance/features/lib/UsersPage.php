@@ -313,8 +313,7 @@ class UsersPage extends OwncloudPage {
 		// then the click is not effective.
 		// This results in intermittent test fails, because the expected
 		// setting does not happen.
-		// ToDo: some day sort out how to query the settings menu div in a loop
-		//       and wait until the animation has stopped
+		// Ref: https://github.com/owncloud/core/issues/34689
 		\sleep(1);
 	}
 
