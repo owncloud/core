@@ -19,7 +19,6 @@
  *
  */
 
-
 require_once __DIR__ . '/../lib/composer/autoload.php';
 
 /**
@@ -28,7 +27,6 @@ require_once __DIR__ . '/../lib/composer/autoload.php';
  * this class checks all methods for the presence of the @since tag
  */
 class SinceTagCheckVisitor extends \PhpParser\NodeVisitorAbstract {
-
 	const INVALID_VERSIONS = ['9.2'];
 
 	/** @var string */
@@ -42,62 +40,62 @@ class SinceTagCheckVisitor extends \PhpParser\NodeVisitorAbstract {
 	protected $errors = [];
 
 	public function enterNode(\PhpParser\Node $node) {
-		if($this->deprecatedClass) {
+		if ($this->deprecatedClass) {
 			return;
 		}
 
-		if($node instanceof \PhpParser\Node\Stmt\Namespace_) {
+		if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
 			$this->namespace = $node->name;
 		}
 
-		if($node instanceof \PhpParser\Node\Stmt\Interface_ or
+		if ($node instanceof \PhpParser\Node\Stmt\Interface_ or
 			$node instanceof \PhpParser\Node\Stmt\Class_) {
 			$this->className = $node->name;
 
 			/** @var \PhpParser\Comment\Doc[] $comments */
 			$comments = $node->getAttribute('comments');
 
-			if(count($comments) === 0) {
+			if (\count($comments) === 0) {
 				$this->errors[] = 'PHPDoc is needed for ' . $this->namespace . '\\' . $this->className . '::' . $node->name;
 				return;
 			}
 
-			$comment = $comments[count($comments) - 1];
+			$comment = $comments[\count($comments) - 1];
 			$text = $comment->getText();
-			if(strpos($text, '@deprecated') !== false) {
+			if (\strpos($text, '@deprecated') !== false) {
 				$this->deprecatedClass = true;
 			}
 
-			if($this->deprecatedClass === false && strpos($text, '@since') === false && strpos($text, '@deprecated') === false) {
+			if ($this->deprecatedClass === false && \strpos($text, '@since') === false && \strpos($text, '@deprecated') === false) {
 				$type = $node instanceof \PhpParser\Node\Stmt\Interface_ ? 'interface' : 'class';
 				$this->errors[] = '@since or @deprecated tag is needed in PHPDoc for ' . $type . ' ' . $this->namespace . '\\' . $this->className;
 				return;
 			}
 
-			if($this->deprecatedClass === false && ($ver = $this->checkInvalidVersions($text)) !== null) {
+			if ($this->deprecatedClass === false && ($ver = $this->checkInvalidVersions($text)) !== null) {
 				$type = $node instanceof \PhpParser\Node\Stmt\Interface_ ? 'interface' : 'class';
 				$this->errors[] = 'Specified version ' . $ver . ' does not exist for ' . $type . ' ' . $this->namespace . '\\' . $this->className;
 				return;
 			}
 		}
 
-		if($node instanceof \PhpParser\Node\Stmt\ClassMethod) {
+		if ($node instanceof \PhpParser\Node\Stmt\ClassMethod) {
 			/** @var \PhpParser\Node\Stmt\ClassMethod $node */
 			/** @var \PhpParser\Comment\Doc[] $comments */
 			$comments = $node->getAttribute('comments');
 
-			if(count($comments) === 0) {
+			if (\count($comments) === 0) {
 				$this->errors[] = 'PHPDoc is needed for ' . $this->namespace . '\\' . $this->className . '::' . $node->name;
 				return;
 			}
-			$comment = $comments[count($comments) - 1];
+			$comment = $comments[\count($comments) - 1];
 			$text = $comment->getText();
-			if(strpos($text, '@since') === false && strpos($text, '@deprecated') === false) {
+			if (\strpos($text, '@since') === false && \strpos($text, '@deprecated') === false) {
 				$this->errors[] = '@since or @deprecated tag is needed in PHPDoc for ' . $this->namespace . '\\' . $this->className . '::' . $node->name;
 				return;
 			}
 
-			if(($ver = $this->checkInvalidVersions($text)) !== null) {
+			if (($ver = $this->checkInvalidVersions($text)) !== null) {
 				$this->errors[] = 'Specified version ' . $ver . ' does not exist for ' . $this->namespace . '\\' . $this->className;
 				return;
 			}
@@ -109,10 +107,10 @@ class SinceTagCheckVisitor extends \PhpParser\NodeVisitorAbstract {
 	 */
 	private function checkInvalidVersions($text) {
 		foreach (self::INVALID_VERSIONS as $ver) {
-			if (preg_match('/' . preg_quote('@since') . '\s*' . preg_quote($ver) . '/', $text) === 1) {
+			if (\preg_match('/' . \preg_quote('@since') . '\s*' . \preg_quote($ver) . '/', $text) === 1) {
 				return $ver;
 			}
-			if (preg_match('/' . preg_quote('@deprecated') . '\s*' . preg_quote($ver) . '/', $text) === 1) {
+			if (\preg_match('/' . \preg_quote('@deprecated') . '\s*' . \preg_quote($ver) . '/', $text) === 1) {
 				return $ver;
 			}
 		}
@@ -129,24 +127,24 @@ echo 'Parsing all files in lib/public for the presence of @since or @deprecated 
 $parser = (new \PhpParser\ParserFactory())->create(\PhpParser\ParserFactory::PREFER_PHP7);
 
 /* iterate over all .php files in lib/public */
-$Directory = new RecursiveDirectoryIterator(dirname(__DIR__) . '/lib/public');
+$Directory = new RecursiveDirectoryIterator(\dirname(__DIR__) . '/lib/public');
 $Iterator = new RecursiveIteratorIterator($Directory);
 $Regex = new RegexIterator($Iterator, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
 
 $errors = [];
 
-foreach($Regex as $file) {
-	$stmts = $parser->parse(file_get_contents($file[0]));
+foreach ($Regex as $file) {
+	$stmts = $parser->parse(\file_get_contents($file[0]));
 
 	$visitor = new SinceTagCheckVisitor();
 	$traverser = new \PhpParser\NodeTraverser();
 	$traverser->addVisitor($visitor);
 	$traverser->traverse($stmts);
 
-	$errors = array_merge($errors, $visitor->getErrors());
+	$errors = \array_merge($errors, $visitor->getErrors());
 }
 
-if(count($errors)) {
-	echo join(PHP_EOL, $errors) . PHP_EOL . PHP_EOL;
+if (\count($errors)) {
+	echo \join(PHP_EOL, $errors) . PHP_EOL . PHP_EOL;
 	exit(1);
 }

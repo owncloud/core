@@ -27,7 +27,7 @@ if (!isset($argv[1])) {
 try {
 	$cloverFile = $argv[1];
 
-	$doc = simplexml_load_file($cloverFile);
+	$doc = \simplexml_load_file($cloverFile);
 
 	$metrics = [];
 	foreach ($doc->project->metrics->attributes() as $k => $v) {
@@ -50,10 +50,10 @@ try {
 	if ($percent >= 75) {
 		$color = 'green';
 	}
-	$content = file_get_contents("https://img.shields.io/badge/coverage-$percent%-$color.svg");
-	file_put_contents('coverage.svg', $content);
-} catch(Exception $ex) {
+	$content = \file_get_contents("https://img.shields.io/badge/coverage-$percent%-$color.svg");
+	\file_put_contents('coverage.svg', $content);
+} catch (Exception $ex) {
 	echo $ex->getMessage() . PHP_EOL;
-	$content = file_get_contents("https://img.shields.io/badge/coverage-ERROR-red.svg");
-	file_put_contents('coverage.svg', $content);
+	$content = \file_get_contents("https://img.shields.io/badge/coverage-ERROR-red.svg");
+	\file_put_contents('coverage.svg', $content);
 }
