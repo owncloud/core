@@ -57,6 +57,13 @@ matrix:
   include:
     - php: 5.6
       if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUILogin" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -149,6 +156,13 @@ matrix:
     - php: 5.6
       if: type = cron
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIUpload" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUILogin" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
@@ -253,6 +267,13 @@ matrix:
         sauce_connect: true
     - php: 5.6
       if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUILogin" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -351,6 +372,13 @@ matrix:
         sauce_connect: true
     - php: 5.6
       if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUILogin" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -443,6 +471,13 @@ matrix:
     - php: 5.6
       if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIUpload" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUILogin" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
