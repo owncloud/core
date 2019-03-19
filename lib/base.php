@@ -913,11 +913,6 @@ class OC {
 				throw $e;
 			} catch (Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
 				//header('HTTP/1.0 404 Not Found');
-				$dispatcher = \OC::$server->getEventDispatcher();
-				$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
-					\OCP\Http\HttpEvents::EVENT_404,
-					OC::$server->getRequest()
-				));
 			} catch (Symfony\Component\Routing\Exception\MethodNotAllowedException $e) {
 				OC_Response::setStatus(405);
 				return;
