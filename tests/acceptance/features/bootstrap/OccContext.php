@@ -380,7 +380,7 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorScansTheFilesystemForGroupUsingTheOccCommand($group) {
 		$this->invokingTheCommand(
-			"files:scan --groups=$group"
+			"files:scan --group=$group"
 		);
 	}
 
