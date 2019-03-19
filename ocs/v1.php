@@ -11,7 +11,6 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
- * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -64,11 +63,6 @@ try {
 	OC::$server->getRouter()->match('/ocs'.\OC::$server->getRequest()->getRawPathInfo());
 	return;
 } catch (ResourceNotFoundException $e) {
-	$dispatcher = \OC::$server->getEventDispatcher();
-	$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
-		\OCP\Http\HttpEvents::EVENT_404,
-		OC::$server->getRequest()
-	));
 	// Fall through the not found
 } catch (MethodNotAllowedException $e) {
 	OC_API::setContentType();
@@ -91,11 +85,6 @@ try {
 } catch (LoginException $e) {
 	OC_API::respond(new Result(null, \OCP\API::RESPOND_UNAUTHORISED, 'Unauthorised'), OC_API::requestedFormat());
 } catch (ResourceNotFoundException $e) {
-	$dispatcher = \OC::$server->getEventDispatcher();
-	$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
-		\OCP\Http\HttpEvents::EVENT_404,
-		OC::$server->getRequest()
-	));
 	OC_API::setContentType();
 	OC_API::notFound();
 } catch (MethodNotAllowedException $e) {
