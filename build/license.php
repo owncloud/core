@@ -92,14 +92,14 @@ EOS;
 	 * @param string|string[] $folder
 	 * @param string|bool $gitRoot
 	 */
-	function exec($folder, $license, $gitRoot = false) {
+	public function exec($folder, $license, $gitRoot = false) {
 		if (isset($this->licenseText[$license])) {
 			echo "Unknown license $license. Supported: agpl, gpl or ocl";
 		}
 		$license = $this->licenseText[$license];
 
 		if (\is_array($folder)) {
-			foreach($folder as $f) {
+			foreach ($folder as $f) {
 				$this->exec($f, $license, $gitRoot);
 			}
 			return;
@@ -114,14 +114,14 @@ EOS;
 			return;
 		}
 
-		$excludes = \array_map(function($item) use ($folder) {
+		$excludes = \array_map(function ($item) use ($folder) {
 			return $folder . '/' . $item;
 		}, ['vendor', '3rdparty', '.git', 'l10n', 'templates']);
 
 		$iterator = new RecursiveDirectoryIterator($folder, RecursiveDirectoryIterator::SKIP_DOTS);
-		$iterator = new RecursiveCallbackFilterIterator($iterator, function($item) use ($folder, $excludes){
+		$iterator = new RecursiveCallbackFilterIterator($iterator, function ($item) use ($folder, $excludes) {
 			/** @var SplFileInfo $item */
-			foreach($excludes as $exclude) {
+			foreach ($excludes as $exclude) {
 				if (\substr($item->getPath(), 0, \strlen($exclude)) === $exclude) {
 					return false;
 				}
@@ -137,7 +137,7 @@ EOS;
 		}
 	}
 
-	function writeAuthorsFile() {
+	public function writeAuthorsFile() {
 		\ksort($this->authors);
 		$template = "ownCloud is written by:
 @AUTHORS@
@@ -148,7 +148,7 @@ With help from many libraries and frameworks including:
 	jQuery
 	…
 ";
-		$authors = \implode(PHP_EOL, \array_map(function($author){
+		$authors = \implode(PHP_EOL, \array_map(function ($author) {
 			return " - ".$author;
 		}, $this->authors));
 		$template = \str_replace('@AUTHORS@', $authors, $template);
@@ -161,7 +161,7 @@ With help from many libraries and frameworks including:
 	 * @param string $path
 	 * @param string|bool $gitRoot
 	 */
-	function handleFile($path, $license, $gitRoot) {
+	public function handleFile($path, $license, $gitRoot) {
 		$source = \file_get_contents($path);
 		if ($this->isMITLicensed($source)) {
 			echo "MIT licensed file: $path" . PHP_EOL;
@@ -172,7 +172,7 @@ With help from many libraries and frameworks including:
 		$license = \str_replace('@AUTHORS@', $authors, $license);
 
 		$source = "<?php" . PHP_EOL . $license . PHP_EOL . $source;
-		\file_put_contents($path,$source);
+		\file_put_contents($path, $source);
 		echo "License updated: $path" . PHP_EOL;
 	}
 
@@ -182,7 +182,7 @@ With help from many libraries and frameworks including:
 	 */
 	private function isMITLicensed($source) {
 		$lines = \explode(PHP_EOL, $source);
-		while(!empty($lines)) {
+		while (!empty($lines)) {
 			$line = $lines[0];
 			\array_shift($lines);
 			if (\strpos($line, 'The MIT License') !== false) {
@@ -199,7 +199,7 @@ With help from many libraries and frameworks including:
 	 */
 	private function eatOldLicense($source) {
 		$lines = \explode(PHP_EOL, $source);
-		while(!empty($lines)) {
+		while (!empty($lines)) {
 			$line = $lines[0];
 			if (\strpos($line, '<?php') !== false) {
 				\array_shift($lines);
@@ -209,7 +209,7 @@ With help from many libraries and frameworks including:
 				\array_shift($lines);
 				continue;
 			}
-			if (\strpos($line, '*/') !== false ) {
+			if (\strpos($line, '*/') !== false) {
 				\array_shift($lines);
 				break;
 			}
@@ -255,7 +255,7 @@ With help from many libraries and frameworks including:
 		}
 		$authors = \explode(PHP_EOL, $out);
 
-		$authors = \array_filter($authors, function($author) {
+		$authors = \array_filter($authors, function ($author) {
 			return !\in_array($author, [
 				'',
 				'Not Committed Yet <not.committed.yet>',
@@ -269,7 +269,7 @@ With help from many libraries and frameworks including:
 			$authors = \array_unique($authors);
 		}
 
-		$authors = \array_map(function($author){
+		$authors = \array_map(function ($author) {
 			$this->authors[$author] = $author;
 			return " * @author $author";
 		}, $authors);
@@ -305,7 +305,6 @@ if (isset($argv[1])) {
 	}
 	$licenses->exec($argv[1], $argv[2], isset($argv[3]) ? $argv[1] : false);
 } else {
-
 	$licenses->exec([
 		__DIR__ . '/../apps/comments',
 		__DIR__ . '/../apps/dav',
