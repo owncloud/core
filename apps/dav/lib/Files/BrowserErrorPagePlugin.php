@@ -80,19 +80,22 @@ class BrowserErrorPagePlugin extends ServerPlugin {
 		}
 		$this->server->httpResponse->addHeaders($headers);
 		$this->server->httpResponse->setStatus($httpCode);
-		$body = $this->generateBody();
+		$body = $this->generateBody($ex);
 		$this->server->httpResponse->setBody($body);
+		$this->server->httpResponse->setHeader('Content-Security-Policy', "default-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self';");
 		$this->sendResponse();
 	}
 
 	/**
 	 * @codeCoverageIgnore
+	 * @param \Exception $ex
 	 * @return bool|string
 	 */
-	public function generateBody() {
+	public function generateBody(\Exception $ex) {
 		$request = \OC::$server->getRequest();
 		$content = new OC_Template('dav', 'exception', 'guest');
 		$content->assign('title', $this->server->httpResponse->getStatusText());
+		$content->assign('hint', $ex->getMessage());
 		$content->assign('remoteAddr', $request->getRemoteAddress());
 		$content->assign('requestID', $request->getId());
 		return $content->fetchPage();
