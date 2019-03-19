@@ -70,11 +70,12 @@ trait Logging {
 					= $this->featureContext->substituteInLineCodes(
 						$expectedLogEntry[$attribute]
 					);
-				PHPUnit_Framework_Assert::assertArrayHasKey(
-					$attribute, $logEntry,
-					"could not find attribute: '$attribute' in log entry: '{$logLines[$lineNo]}'"
-				);
+
 				if ($expectedLogEntry[$attribute] !== "") {
+					PHPUnit_Framework_Assert::assertArrayHasKey(
+						$attribute, $logEntry,
+						"could not find attribute: '$attribute' in log entry: '{$logLines[$lineNo]}'"
+					);
 					$message = "log entry:\n{$logLines[$lineNo]}\n";
 					if ($comparingMode === 'with') {
 						PHPUnit_Framework_Assert::assertEquals(
