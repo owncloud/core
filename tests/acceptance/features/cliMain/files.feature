@@ -44,20 +44,20 @@ Feature: Files Operations command
     Then the propfind result should not contain these entries:
       | /hello2.txt |
 
-  Scenario: Adding a folder to local storage, sharing with groups and running scan for specific group should add files for users of that group
+  Scenario Outline: Adding a folder to local storage, sharing with groups and running scan for specific group should add files for users of that group
     Given using new DAV path
     And these users have been created with default attributes:
       | username |
       | user1    |
       | user2    |
-    And group "grp1" has been created
-    And user "user1" has been added to group "grp1"
-    And user "user2" has been added to group "grp1"
+    And group "<groupname>" has been created
+    And user "user1" has been added to group "<groupname>"
+    And user "user2" has been added to group "<groupname>"
     And user "user1" has created folder "/local_storage/folder1"
     And the administrator has set the external storage "local_storage" to be never scanned automatically
-    And user "user1" has shared folder "/local_storage/folder1" with group "grp1"
+    And user "user1" has shared folder "/local_storage/folder1" with group "<groupname>"
     And the administrator has scanned the filesystem for all users
-    And the administrator has scanned the filesystem for group "grp1"
+    And the administrator has scanned the filesystem for group "<groupname>"
     When the administrator creates file "folder1/hello1.txt" with content "<? php :)" in local storage using the testing API
     And user "user1" requests "/remote.php/dav/files/user1/local_storage/folder1" with "PROPFIND" using basic auth
     Then the propfind result should not contain these entries:
@@ -65,13 +65,17 @@ Feature: Files Operations command
     When user "user2" requests "/remote.php/dav/files/user2/local_storage/folder1" with "PROPFIND" using basic auth
     Then the propfind result should not contain these entries:
       | /hello1.txt |
-    When the administrator scans the filesystem for group "grp1" using the occ command
+    When the administrator scans the filesystem for group "<groupname>" using the occ command
     And user "user1" requests "/remote.php/dav/files/user1/local_storage/folder1" with "PROPFIND" using basic auth
     Then the propfind result should contain these entries:
       | /hello1.txt |
     When user "user2" requests "/remote.php/dav/files/user2/folder1" with "PROPFIND" using basic auth
     Then the propfind result should contain these entries:
       | /hello1.txt |
+    Examples:
+      | groupname            |
+      | grp1                 |
+      | commas,in,group,name |
 
   Scenario: administrator should be able to create a local mount for a specific user
     Given using new DAV path
