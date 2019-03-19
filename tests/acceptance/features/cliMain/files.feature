@@ -77,6 +77,64 @@ Feature: Files Operations command
       | grp1                 |
       | commas,in,group,name |
 
+  Scenario: Adding a folder to local storage, sharing with groups and running scan for a list of groups should add files for users in the groups
+    Given using new DAV path
+    And these users have been created with default attributes:
+      | username |
+      | user1    |
+      | user2    |
+      | user3    |
+      | user4    |
+    And group "grp1" has been created
+    And group "grp2" has been created
+    And group "grp3" has been created
+    And user "user1" has been added to group "grp1"
+    And user "user2" has been added to group "grp2"
+    And user "user3" has been added to group "grp3"
+    And user "user4" has been added to group "grp3"
+    And the administrator has created the local storage mount "local_storage1"
+    And the administrator has added user "user1" as the applicable user for the last local storage mount
+    And the administrator has created the local storage mount "local_storage2"
+    And the administrator has added user "user2" as the applicable user for the last local storage mount
+    And the administrator has created the local storage mount "local_storage3"
+    And the administrator has added group "grp3" as the applicable group for the last local storage mount
+    And user "user1" has created folder "/local_storage1/folder1"
+    And user "user2" has created folder "/local_storage2/folder2"
+    And user "user3" has created folder "/local_storage3/folder3"
+    And the administrator has set the external storage "local_storage1" to be never scanned automatically
+    And the administrator has set the external storage "local_storage2" to be never scanned automatically
+    And the administrator has set the external storage "local_storage3" to be never scanned automatically
+    And the administrator has scanned the filesystem for all users
+    And the administrator has scanned the filesystem for groups list "grp1,grp2,grp3"
+    When the administrator creates file "folder1/hello1.txt" with content "<? php :)" in local storage "local_storage1" using the testing API
+    And the administrator creates file "folder2/hello2.txt" with content "<? php :)" in local storage "local_storage2" using the testing API
+    And the administrator creates file "folder3/hello3.txt" with content "<? php :)" in local storage "local_storage3" using the testing API
+    And user "user1" requests "/remote.php/dav/files/user1/local_storage1/folder1" with "PROPFIND" using basic auth
+    Then the propfind result should not contain these entries:
+      | /hello1.txt |
+    When user "user2" requests "/remote.php/dav/files/user2/local_storage2/folder2" with "PROPFIND" using basic auth
+    Then the propfind result should not contain these entries:
+      | /hello2.txt |
+    When user "user3" requests "/remote.php/dav/files/user3/local_storage3/folder3" with "PROPFIND" using basic auth
+    Then the propfind result should not contain these entries:
+      | /hello3.txt |
+    When user "user4" requests "/remote.php/dav/files/user4/local_storage3/folder3" with "PROPFIND" using basic auth
+    Then the propfind result should not contain these entries:
+      | /hello3.txt |
+    When the administrator scans the filesystem for groups list "grp2,grp3" using the occ command
+    And user "user1" requests "/remote.php/dav/files/user1/local_storage1/folder1" with "PROPFIND" using basic auth
+    Then the propfind result should not contain these entries:
+      | /hello1.txt |
+    When user "user2" requests "/remote.php/dav/files/user2/local_storage2/folder2" with "PROPFIND" using basic auth
+    Then the propfind result should contain these entries:
+      | /hello2.txt |
+    When user "user3" requests "/remote.php/dav/files/user3/local_storage3/folder3" with "PROPFIND" using basic auth
+    Then the propfind result should contain these entries:
+      | /hello3.txt |
+    When user "user4" requests "/remote.php/dav/files/user4/local_storage3/folder3" with "PROPFIND" using basic auth
+    Then the propfind result should contain these entries:
+      | /hello3.txt |
+
   Scenario: administrator should be able to create a local mount for a specific user
     Given using new DAV path
     And these users have been created with default attributes:
