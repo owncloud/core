@@ -157,7 +157,9 @@ $(document).ready(function () {
 		 The warning message should be shown only during password mismatch.
 		 Else it should not.
 		 */
-		if (($('#password').val().length >= 0) && ($('#retypepassword').val().length === 0)) {
+		if (($('#password').val().length >= 0)
+			&& ($('#retypepassword').length)
+			&& ($('#retypepassword').val().length === 0)) {
 			$('#message').removeClass('warning');
 			$('#message').text('');
 		}
