@@ -379,12 +379,12 @@ class Share20OcsController extends OCSController {
 
 		$shareWith = $this->request->getParam('shareWith', null);
 
-		$autoAccept = false;
-		$globalAutoAcceptValue = $this->config->getAppValue('core', 'shareapi_auto_accept_share', 'yes');
-		if ($globalAutoAcceptValue === 'yes') {
-			$autoAccept = $this->config->getUserValue($shareWith, 'files_sharing', 'auto_accept_share', $globalAutoAcceptValue) === 'yes';
-		}
+		$globalAutoAccept = $this->config->getAppValue('core', 'shareapi_auto_accept_share', 'yes') === 'yes';
 		if ($shareType === Share::SHARE_TYPE_USER) {
+			$userAutoAccept = false;
+			if ($globalAutoAccept) {
+				$userAutoAccept = $this->config->getUserValue($shareWith, 'files_sharing', 'auto_accept_share', 'yes') === 'yes';
+			}
 			// Valid user is required to share
 			if ($shareWith === null || !$this->userManager->userExists($shareWith)) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
@@ -392,7 +392,7 @@ class Share20OcsController extends OCSController {
 			}
 			$share->setSharedWith($shareWith);
 			$share->setPermissions($permissions);
-			if ($autoAccept) {
+			if ($userAutoAccept) {
 				$share->setState(Share::STATE_ACCEPTED);
 			} else {
 				$share->setState(Share::STATE_PENDING);
@@ -413,7 +413,7 @@ class Share20OcsController extends OCSController {
 			}
 			$share->setSharedWith($shareWith);
 			$share->setPermissions($permissions);
-			if ($autoAccept) {
+			if ($globalAutoAccept) {
 				$share->setState(Share::STATE_ACCEPTED);
 			} else {
 				$share->setState(Share::STATE_PENDING);
@@ -501,6 +501,21 @@ class Share20OcsController extends OCSController {
 
 		try {
 			$share = $this->shareManager->createShare($share);
+			/**
+			 * If auto accept enabled by admin and it is a group share,
+			 * create sub-share for auto accept disabled users in pending state.
+			 */
+			if ($share->getShareType() === Share::SHARE_TYPE_GROUP && $globalAutoAccept) {
+				$subShare = $share;
+				$group = $this->groupManager->get($share->getSharedWith());
+				foreach ($group->getUsers() as $user) {
+					$userAutoAccept = $this->config->getUserValue($user->getUID(), 'files_sharing', 'auto_accept_share', 'yes') === 'yes';
+					if (!$userAutoAccept) {
+						$subShare->setState(Share::STATE_PENDING);
+						$this->shareManager->updateShareForRecipient($subShare, $user->getUID());
+					}
+				}
+			}
 		} catch (GenericShareException $e) {
 			$code = $e->getCode() === 0 ? 403 : $e->getCode();
 			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
