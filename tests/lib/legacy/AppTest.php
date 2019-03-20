@@ -23,6 +23,8 @@ namespace Test\legacy;
 use OC\NavigationManager;
 use OCP\App\AppNotFoundException;
 use Test\TestCase;
+use OCP\App\IAppManager;
+use OCP\IAppConfig;
 
 class AppTest extends TestCase {
 	private $appPath;
@@ -42,6 +44,8 @@ class AppTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		\OC_App::clearCaches();
+
 		$this->appPath = __DIR__ . '/../../../apps/appinfotestapp';
 		$infoXmlPath = "{$this->appPath}/appinfo/info.xml";
 		\mkdir("{$this->appPath}/appinfo", 0777, true);
@@ -60,6 +64,8 @@ class AppTest extends TestCase {
 		if (\is_dir($this->appPath)) {
 			self::rrmdir($this->appPath);
 		}
+
+		\OC_App::clearCaches();
 		parent::tearDown();
 	}
 
@@ -233,5 +239,47 @@ class AppTest extends TestCase {
 			\OC_App::getAppInfo("{$this->appPath}/appinfo/info.xml", true);
 		}
 		self::assertFalse(true, 'expected a AppNotFoundException');
+	}
+
+	public function providesShouldUpgrade() {
+		return [
+			['1.2.3', '1.2.3', false, false],
+			['1.2.3', '1.2.4', false, true],
+			['1.2.3', '1.3.0', true, false],
+		];
+	}
+
+	/**
+	 * @dataProvider providesShouldUpgrade
+	 */
+	public function testShouldUpgrade($dbVersion, $diskVersion, $result, $expectsDbUpdate = false) {
+		$appManager = $this->createMock(IAppManager::class);
+		$appConfig = $this->createMock(IAppConfig::class);
+
+		$this->overwriteService('AppManager', $appManager);
+		$this->overwriteService('AppConfig', $appConfig);
+
+		$appConfig->expects($this->once())
+			->method('getValues')
+			->with(false, 'installed_version')
+			->willReturn(['someapp' => $dbVersion]);
+
+		$appManager->expects($this->once())
+			->method('getAppInfo')
+			->with('someapp')
+			->willReturn([
+				'version' => $diskVersion
+			]);
+
+		if ($expectsDbUpdate) {
+			$appConfig->expects($this->once())
+				->method('setValue')
+				->with('someapp', 'installed_version', $diskVersion);
+		} else {
+			$appConfig->expects($this->never())
+				->method('setValue');
+		}
+
+		$this->assertEquals($result, \OC_App::shouldUpgrade('someapp'));
 	}
 }

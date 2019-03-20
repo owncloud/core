@@ -61,8 +61,23 @@ class OC_App {
 	private static $loadedApps = [];
 	private static $loadedTypes = [];
 	private static $altLogin = [];
+
+	private static $versionsCache = [];
+
 	const officialApp = 200;
 	const approvedApp = 100;
+
+	/**
+	 * Clears the static caches
+	 *
+	 * @internal
+	 */
+	public static function clearCaches() {
+		self::$versionsCache = [];
+		self::$appTypes = [];
+		self::$loadedApps = [];
+		self::$loadedTypes = [];
+	}
 
 	/**
 	 * clean the appId
@@ -877,13 +892,11 @@ class OC_App {
 	 * get the installed version of all apps
 	 */
 	public static function getAppVersions() {
-		static $versions;
-
-		if (!$versions) {
+		if (!self::$versionsCache) {
 			$appConfig = \OC::$server->getAppConfig();
-			$versions = $appConfig->getValues(false, 'installed_version');
+			self::$versionsCache = $appConfig->getValues(false, 'installed_version');
 		}
-		return $versions;
+		return self::$versionsCache;
 	}
 
 	/**
