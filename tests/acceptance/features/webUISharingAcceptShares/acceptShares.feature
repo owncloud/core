@@ -257,47 +257,27 @@ Feature: accept/decline shares coming from internal users
     #And folder "simple-folder" should be in state "Pending" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI
 
-  @issue-34708 @issue-34705
-  Scenario: User-based accepting is enabled while global is disabled
-    Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
+  Scenario: User-based accepting is enabled while global is enabled
+    Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
     And user "user1" has logged in using the webUI
     And the user has browsed to the personal sharing settings page
-    When the user disables automatically accepting new incoming local shares
-    And the user enables automatically accepting new incoming local shares
-    And user "user2" shares folder "/simple-folder" with group "grp1" using the sharing API
-    And user "user2" shares file "/testimage.jpg" with user "user1" using the sharing API
-    And the user browses to the files page
-    Then folder "simple-folder (2)" should not be listed on the webUI
-    #Then folder "simple-folder (2)" should be listed on the webUI
-    And file "testimage (2).jpg" should be listed on the webUI
-    And folder "simple-folder" should be listed in the shared-with-you page on the webUI
-    #And folder "simple-folder (2)" should be listed in the shared-with-you page on the webUI
-    And file "testimage (2).jpg" should be listed in the shared-with-you page on the webUI
-    And folder "simple-folder" should be in state "Pending" in the shared-with-you page on the webUI
-    #And folder "simple-folder (2)" should be in state "" in the shared-with-you page on the webUI
-    And file "testimage (2).jpg" should be in state "" in the shared-with-you page on the webUI
-
-  @issue-34705
-  Scenario: Admin enables auto-accept setting again after user disabled personal auto-accept setting
-    Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
-    And user "user1" has logged in using the webUI
-    And the user has browsed to the personal sharing settings page
-    When the user disables automatically accepting new incoming local shares
-    And the administrator enables the setting "Automatically accept new incoming local user shares" in the section "Sharing"
+    When the user enables automatically accepting new incoming local shares
     And user "user2" shares folder "/simple-folder" with group "grp1" using the sharing API
     And user "user2" shares file "/testimage.jpg" with user "user1" using the sharing API
     And the user browses to the files page
     Then folder "simple-folder (2)" should be listed on the webUI
-    #Then folder "simple-folder (2)" should not be listed on the webUI
-    And file "testimage (2).jpg" should not be listed on the webUI
+    And file "testimage (2).jpg" should be listed on the webUI
     And folder "simple-folder (2)" should be listed in the shared-with-you page on the webUI
-    #But folder "simple-folder" should be listed in the shared-with-you page on the webUI
-    And file "testimage.jpg" should be listed in the shared-with-you page on the webUI
+    And file "testimage (2).jpg" should be listed in the shared-with-you page on the webUI
     And folder "simple-folder (2)" should be in state "" in the shared-with-you page on the webUI
-    #And folder "simple-folder" should be in state "Pending" in the shared-with-you page on the webUI
-    And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI
+    And file "testimage (2).jpg" should be in state "" in the shared-with-you page on the webUI
 
-  @issue-34705
+  Scenario: User-based accepting checkbox is not visible while global is disabled
+    Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
+    And user "user1" has logged in using the webUI
+    And the user has browsed to the personal sharing settings page
+    Then User-based auto accepting checkbox should not be displayed on the personal sharing settings page in the webUI
+
   Scenario: Admin disables auto-accept setting again after user enabled personal auto-accept setting
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
     And user "user1" has logged in using the webUI
@@ -309,11 +289,8 @@ Feature: accept/decline shares coming from internal users
     And user "user2" shares file "/testimage.jpg" with user "user1" using the sharing API
     And the user browses to the files page
     Then folder "simple-folder (2)" should not be listed on the webUI
-    #Then folder "simple-folder (2)" should be listed on the webUI
-    And file "testimage (2).jpg" should be listed on the webUI
+    And file "testimage (2).jpg" should not be listed on the webUI
     And folder "simple-folder" should be listed in the shared-with-you page on the webUI
-    #And folder "simple-folder (2)" should be listed in the shared-with-you page on the webUI
-    And file "testimage (2).jpg" should be listed in the shared-with-you page on the webUI
+    And file "testimage.jpg" should be listed in the shared-with-you page on the webUI
     And folder "simple-folder" should be in state "Pending" in the shared-with-you page on the webUI
-    #And folder "simple-folder (2)" should be in state "" in the shared-with-you page on the webUI
-    And file "testimage (2).jpg" should be in state "" in the shared-with-you page on the webUI
+    And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI

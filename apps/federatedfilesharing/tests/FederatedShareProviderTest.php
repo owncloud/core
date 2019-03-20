@@ -939,9 +939,10 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			[false, 'yes', 'yes', false, false],
 			// autoaccept
 			[false, 'yes', 'yes', true, true],
-			// userAutoAccept overrides globalAutoAccept
+			// users can override globalAutoAccept when globalAutoAccept enabled
 			[false, 'yes', 'no', true, false],
-			[false, 'no', 'yes', true, true],
+			[false, 'no', 'yes', true, false],
+			[false, 'yes', 'yes', true, true],
 		];
 	}
 }

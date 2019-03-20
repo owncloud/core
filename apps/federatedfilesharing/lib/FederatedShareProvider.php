@@ -1065,11 +1065,15 @@ class FederatedShareProvider implements IShareProvider {
 			'auto_accept_trusted',
 			'no'
 		);
+		if ($globalAutoAcceptValue !== 'yes') {
+			return false;
+		}
 		$autoAccept = $this->config->getUserValue(
 			$shareWith,
 			'federatedfilesharing',
 			'auto_accept_share_trusted',
-			$globalAutoAcceptValue);
+			$globalAutoAcceptValue
+		);
 		if ($autoAccept !== 'yes') {
 			return false;
 		}

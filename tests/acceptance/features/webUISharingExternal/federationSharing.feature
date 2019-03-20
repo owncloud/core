@@ -92,8 +92,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then user "user2" should see the following elements
       | /lorem%20(2).txt |
 
-  @issue-34708
-  Scenario: User-based auto accepting is enabled while global is disabled
+  Scenario: User-based accepting from trusted server checkbox is not visible while global is disabled
     Given parameter "autoAddServers" of app "federation" has been set to "1"
     And user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
@@ -101,12 +100,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
     And parameter "autoAddServers" of app "federation" has been set to "0"
     And the user has browsed to the personal sharing settings page
-    #delete the following line when issue-34708 is fixed
-    When the user disables automatically accepting remote shares from trusted servers
-    And the user enables automatically accepting remote shares from trusted servers
-    And user "user1" from server "REMOTE" shares "/lorem.txt" with user "user1" from server "LOCAL" using the sharing API
-    Then user "user1" should see the following elements
-      | /lorem%20(2).txt |
+    Then User-based auto accepting from trusted servers checkbox should not be displayed on the personal sharing settings page in the webUI
 
   @skip @issue-34742
   Scenario: User-based & global auto accepting is enabled but remote server is not trusted
