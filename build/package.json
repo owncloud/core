@@ -18,7 +18,7 @@
     "@bower_components/browser-update": "Graffino/Browser-Update#v2.0.2",
     "@bower_components/clipboard": "zenorocha/clipboard.js#v2.0.4",
     "@bower_components/davclient.js": "owncloud/davclient.js#0.1.3",
-    "@bower_components/es6-promise": "jakearchibald/es6-promise#2.3.0",
+    "@bower_components/es6-promise": "components/es6-promise#v4.2.4",
     "@bower_components/handlebars": "components/handlebars.js#v4.1.2",
     "@bower_components/jcrop": "tapmodo/Jcrop#0.9.12",
     "@bower_components/jquery": "jquery/jquery-dist#2.1.4",

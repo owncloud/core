@@ -46,9 +46,9 @@
   version "0.1.3"
   resolved "https://codeload.github.com/owncloud/davclient.js/tar.gz/0e5ef1af5d174d9ec10dbe889a415b8f481d5094"
 
-"@bower_components/es6-promise@jakearchibald/es6-promise#2.3.0":
-  version "2.3.0"
-  resolved "https://codeload.github.com/jakearchibald/es6-promise/tar.gz/d3959b5c4c239b604bf95b737a0243ca6e94aa7e"
+"@bower_components/es6-promise@components/es6-promise#v4.2.4":
+  version "0.0.0"
+  resolved "https://codeload.github.com/components/es6-promise/tar.gz/c7911b0f272651dca8c3163704fd39628ed4283a"
 
 "@bower_components/handlebars@components/handlebars.js#v4.1.2":
   version "4.1.2"
