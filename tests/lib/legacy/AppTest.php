@@ -22,11 +22,22 @@ namespace Test\legacy;
 
 use OC\NavigationManager;
 use OCP\App\AppNotFoundException;
-use function Test\AppFramework\rrmdir;
 use Test\TestCase;
 
 class AppTest extends TestCase {
 	private $appPath;
+
+	private static function rrmdir($directory) {
+		$files = \array_diff(\scandir($directory), ['.','..']);
+		foreach ($files as $file) {
+			if (\is_dir($directory . '/' . $file)) {
+				self::rrmdir($directory . '/' . $file);
+			} else {
+				\unlink($directory . '/' . $file);
+			}
+		}
+		return \rmdir($directory);
+	}
 
 	protected function setUp() {
 		parent::setUp();
@@ -47,7 +58,7 @@ class AppTest extends TestCase {
 		$this->restoreService('NavigationManager');
 		\OC::$server->getAppManager()->clearAppsCache();
 		if (\is_dir($this->appPath)) {
-			rrmdir($this->appPath);
+			self::rrmdir($this->appPath);
 		}
 		parent::tearDown();
 	}
@@ -213,7 +224,7 @@ class AppTest extends TestCase {
 		$info = \OC_App::getAppInfo('appinfotestapp');
 		$this->assertEqualsAppInfo($info);
 
-		rrmdir($this->appPath);
+		self::rrmdir($this->appPath);
 
 		try {
 			\OC_App::getAppInfo('appinfotestapp');
