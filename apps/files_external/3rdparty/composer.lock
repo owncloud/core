@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86fe563ac066913616ad54d354e8af4c",
+    "content-hash": "556ab6b6ced73e1757be5ab469190d12",
     "packages": [
         {
             "name": "icewind/smb",
@@ -49,16 +49,16 @@
         },
         {
             "name": "icewind/streams",
-            "version": "0.5.2",
+            "version": "v0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/Streams.git",
-                "reference": "6bfd2fdbd99319f5e010d0a684409189a562cb1e"
+                "reference": "4db3ed6c366e90b958d00e1d4c6360a9b39b2121"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/6bfd2fdbd99319f5e010d0a684409189a562cb1e",
-                "reference": "6bfd2fdbd99319f5e010d0a684409189a562cb1e",
+                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/4db3ed6c366e90b958d00e1d4c6360a9b39b2121",
+                "reference": "4db3ed6c366e90b958d00e1d4c6360a9b39b2121",
                 "shasum": ""
             },
             "require": {
@@ -86,7 +86,7 @@
                 }
             ],
             "description": "A set of generic stream wrappers",
-            "time": "2016-12-02T14:21:23+00:00"
+            "time": "2019-02-15T12:57:29+00:00"
         }
     ],
     "packages-dev": [],
