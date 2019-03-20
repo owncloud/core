@@ -79,6 +79,9 @@ trait Logging {
 						"could not find attribute: '$attribute' in log entry: '{$logLines[$lineNo]}'"
 					);
 					$message = "log entry:\n{$logLines[$lineNo]}\n";
+					if (!\is_string($logEntry[$attribute])) {
+						$logEntry[$attribute] = \json_encode($logEntry[$attribute]);
+					}
 					if ($comparingMode === 'with') {
 						PHPUnit_Framework_Assert::assertEquals(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
