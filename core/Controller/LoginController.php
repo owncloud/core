@@ -141,6 +141,13 @@ class LoginController extends Controller {
 		if (!$parameters['resetPasswordLink']) {
 			if ($user !== null && $user !== '') {
 				$userObj = $this->userManager->get($user);
+				if ($userObj === null) {
+					$users = $this->userManager->find($user);
+					if (\count($users) === 1) {
+						$userId = \key($users);
+						$userObj = $this->userManager->get($userId);
+					}
+				}
 				if ($userObj instanceof IUser) {
 					$parameters['canResetPassword'] = $userObj->canChangePassword();
 				}
