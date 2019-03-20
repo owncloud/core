@@ -45,6 +45,11 @@ foreach ($apps as $app) {
 	if ($app === 'files_external') {
 		continue;
 	}
+
+	if ($app !== 'files') {
+		continue;
+	}
+
 	$dir = OC_App::getAppPath($app);
 	if (\is_dir($dir . '/tests')) {
 		loadDirectory($dir . '/tests');
