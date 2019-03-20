@@ -39,6 +39,7 @@ trait Logging {
 	 * @Then /^the last lines of the log file should contain log-entries (with|containing|matching) these attributes:$/
 	 *
 	 * @param string $comparingMode
+	 * @param string|int $ignoredLines
 	 * @param TableNode $expectedLogEntries table with headings that correspond
 	 *                                      to the json keys in the log entry
 	 *                                      e.g.
@@ -48,10 +49,11 @@ trait Logging {
 	 * @throws \Exception
 	 */
 	public function theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
-		$comparingMode, TableNode $expectedLogEntries
+		$comparingMode, $ignoredLines = 0, TableNode $expectedLogEntries = null
 	) {
+		$ignoredLines = (int) $ignoredLines;
 		//-1 because getRows gives also the header
-		$linesToRead = \count($expectedLogEntries->getRows()) - 1;
+		$linesToRead = \count($expectedLogEntries->getRows()) - 1 + $ignoredLines;
 		$logLines = LoggingHelper::getLogFileContent(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -92,11 +94,37 @@ trait Logging {
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
+					} else {
+						throw new \InvalidArgumentException(
+							"$comparingMode is not a valid mode"
+						);
 					}
 				}
 			}
 			$lineNo++;
+			if (($lineNo + $ignoredLines) >= $linesToRead) {
+				break;
+			}
 		}
+	}
+
+	/**
+	 * alternative wording theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes()
+	 *
+	 * @Then /^the last lines of the log file, ignoring the last (\d+) lines, should contain log-entries (with|containing|matching) these attributes:$/
+	 *
+	 * @param string|int $ignoredLines
+	 * @param string $comparingMode
+	 * @param TableNode $expectedLogEntries
+	 *
+	 * @return void
+	 */
+	public function theLastLinesOfTheLogFileIgnoringSomeShouldContainEntries(
+		$ignoredLines, $comparingMode, TableNode $expectedLogEntries
+	) {
+		$this->theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
+			$comparingMode, $ignoredLines, $expectedLogEntries
+		);
 	}
 
 	/**
