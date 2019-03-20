@@ -191,6 +191,7 @@ class Share20OcsControllerTest extends TestCase {
 		if (isset($attrs['displayname'])) {
 			$groupMock->method('getDisplayName')->willReturn($attrs['displayname']);
 		}
+		$groupMock->method('getUsers')->willReturn([]);
 		return $groupMock;
 	}
 
