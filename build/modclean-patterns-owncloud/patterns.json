@@ -16,7 +16,6 @@
             ".spmignore",
             "AUTHORS*",
             "benchmarks",
-            "build",
             "data",
             "data-scripts",
             "docs",
