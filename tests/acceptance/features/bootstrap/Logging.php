@@ -128,6 +128,24 @@ trait Logging {
 	}
 
 	/**
+	 * alternative wording theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes()
+	 *
+	 * @Then /^the last lines of the log file, ignoring the last line, should contain log-entries (with|containing|matching) these attributes:$/
+	 *
+	 * @param string $comparingMode
+	 * @param TableNode $expectedLogEntries
+	 *
+	 * @return void
+	 */
+	public function theLastLinesOfTheLogFileIgnoringLastShouldContainEntries(
+		$comparingMode, TableNode $expectedLogEntries
+	) {
+		$this->theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
+			$comparingMode, 1, $expectedLogEntries
+		);
+	}
+
+	/**
 	 * fails if there is at least one line in the log file that matches all
 	 * given attributes
 	 * attributes in the table that are empty will match any value in the
