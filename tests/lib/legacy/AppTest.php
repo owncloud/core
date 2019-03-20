@@ -96,7 +96,7 @@ class AppTest extends TestCase {
 	private function assertEqualsAppInfo($info, array $changed = []) {
 		self::assertEquals(\array_replace(
 			[
-				'id' => 'appinfotestapp',
+				'id' => 'appinfotestappzzz',
 				'namespace' => 'AppInfoTestApp',
 				'info' => [],
 				'remote' => [],
