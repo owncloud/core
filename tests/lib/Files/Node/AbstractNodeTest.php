@@ -26,7 +26,7 @@ use Test\TestCase;
 
 class AbstractNodeTest extends TestCase {
 	public function testMime() {
-		/** @var AbstractNode | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var AbstractNode | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->getMockForAbstractClass(AbstractNode::class);
 		$node->expects($this->any())->method('getMimetype')->willReturn('foo/bar');
 		$this->assertEquals('foo/bar', $node->getMimetype());
@@ -38,7 +38,7 @@ class AbstractNodeTest extends TestCase {
 	 * @dataProvider providesOperations
 	 */
 	public function testOperations($operation) {
-		/** @var AbstractNode | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var AbstractNode | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->getMockForAbstractClass(AbstractNode::class);
 		$node->$operation('');
 	}

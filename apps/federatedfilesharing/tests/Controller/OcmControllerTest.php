@@ -47,42 +47,42 @@ use OCP\Share\IShare;
  */
 class OcmControllerTest extends TestCase {
 	/**
-	 * @var IRequest | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IRequest | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $request;
 
 	/**
-	 * @var OcmMiddleware | \PHPUnit_Framework_MockObject_MockObject
+	 * @var OcmMiddleware | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $ocmMiddleware;
 
 	/**
-	 * @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $urlGenerator;
 
 	/**
-	 * @var IAppManager | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IAppManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $appManager;
 
 	/**
-	 * @var IUserManager | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IUserManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $userManager;
 
 	/**
-	 * @var AddressHandler | \PHPUnit_Framework_MockObject_MockObject
+	 * @var AddressHandler | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $addressHandler;
 
 	/**
-	 * @var FedShareManager | \PHPUnit_Framework_MockObject_MockObject
+	 * @var FedShareManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $fedShareManager;
 
 	/**
-	 * @var ILogger | \PHPUnit_Framework_MockObject_MockObject
+	 * @var ILogger | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $logger;
 

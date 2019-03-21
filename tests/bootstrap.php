@@ -18,6 +18,6 @@ require_once __DIR__ . '/../lib/base.php';
 // load all enabled apps
 \OC_App::loadApps();
 
-PHPUnit_Framework_Error_Deprecated::$enabled = false;
+PHPUnit\Framework\Error\Deprecated::$enabled = false;
 
 OC_Hook::clear();

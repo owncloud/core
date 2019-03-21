@@ -76,7 +76,7 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 	}
 
 	public function testFreeSpaceWithUnknownDiskSpace() {
-		/** @var Local | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Local | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->getMockBuilder(Local::class)
 			->setMethods(['free_space'])
 			->setConstructorArgs([['datadir' => $this->tmpDir]])

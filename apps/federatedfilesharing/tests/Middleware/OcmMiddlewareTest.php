@@ -47,27 +47,27 @@ class OcmMiddlewareTest extends TestCase {
 	private $ocmMiddleware;
 
 	/**
-	 * @var FederatedShareProvider | \PHPUnit_Framework_MockObject_MockObject
+	 * @var FederatedShareProvider | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $federatedShareProvider;
 
 	/**
-	 * @var IAppManager | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IAppManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $appManager;
 
 	/**
-	 * @var IUserManager | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IUserManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $userManager;
 
 	/**
-	 * @var AddressHandler | \PHPUnit_Framework_MockObject_MockObject
+	 * @var AddressHandler | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $addressHandler;
 
 	/**
-	 * @var ILogger | \PHPUnit_Framework_MockObject_MockObject
+	 * @var ILogger | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $logger;
 

@@ -23,7 +23,6 @@ namespace TestHelpers;
 
 use GuzzleHttp\Message\ResponseInterface;
 use Exception;
-use PHPUnit_Framework_Assert;
 use SimpleXMLElement;
 
 /**
@@ -32,7 +31,7 @@ use SimpleXMLElement;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class TagsHelper {
+class TagsHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * tags a file
 	 *
@@ -105,7 +104,7 @@ class TagsHelper {
 	 */
 	public static function getTagIdFromTagData($tagData) {
 		$tagID = $tagData->xpath(".//oc:id");
-		\PHPUnit_Framework_Assert::assertArrayHasKey(
+		self::assertArrayHasKey(
 			0, $tagID, "cannot find id of tag"
 		);
 		
@@ -166,7 +165,7 @@ class TagsHelper {
 		$tagData = $tagList->xpath(
 			"//d:prop//oc:display-name[text() ='$tagDisplayName']/.."
 		);
-		PHPUnit_Framework_Assert::assertArrayHasKey(
+		self::assertArrayHasKey(
 			0, $tagData,
 			"cannot find 'oc:display-name' property with text '$tagDisplayName'"
 		);

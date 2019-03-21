@@ -27,10 +27,10 @@ use OCP\IUserSession;
 
 class SharingPersonalPanelTest extends \Test\TestCase {
 
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject $config */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject $config */
 	private $config;
 
-	/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject $userSession */
+	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject $userSession */
 	private $userSession;
 
 	/** @var SharingPersonalPanel $personalPanel */

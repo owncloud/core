@@ -210,7 +210,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	public function theVersionOfOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage() {
 		$actualVersion = $this->adminGeneralSettingsPage->getOwncloudVersion();
 		$expectedVersion = $this->featureContext->getSystemConfigValue('version');
-		PHPUnit_Framework_Assert::assertEquals(\trim($expectedVersion), $actualVersion);
+		PHPUnit\Framework\Assert::assertEquals(\trim($expectedVersion), $actualVersion);
 	}
 
 	/**
@@ -221,7 +221,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	public function theVersionStringOfTheOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage() {
 		$actualVersion =  $this->adminGeneralSettingsPage->getOwncloudVersionString();
 		$expectedVersion = SetupHelper::runOcc(['-V'])['stdOut'];
-		PHPUnit_Framework_Assert::assertStringEndsWith($actualVersion, \trim($expectedVersion));
+		PHPUnit\Framework\Assert::assertStringEndsWith($actualVersion, \trim($expectedVersion));
 	}
 
 	/**

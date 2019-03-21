@@ -27,7 +27,7 @@ use Test\TestCase;
 
 class CleanupPersistentFileLocksTest extends TestCase {
 	public function testJob() {
-		/** @var LockMapper | \PHPUnit_Framework_MockObject_MockObject $lockMapper */
+		/** @var LockMapper | \PHPUnit\Framework\MockObject\MockObject $lockMapper */
 		$lockMapper = $this->createMock(LockMapper::class);
 		$lockMapper->expects(self::once())->method('cleanup');
 		$job = new CleanupPersistentFileLocks($lockMapper);

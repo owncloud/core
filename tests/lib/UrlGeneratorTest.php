@@ -21,10 +21,10 @@ class UrlGeneratorTest extends TestCase {
 
 	/** @var IURLGenerator */
 	private $urlGenerator;
-	/** @var IRouter | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRouter | \PHPUnit\Framework\MockObject\MockObject */
 	private $router;
 
-	/** @var EnvironmentHelper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var EnvironmentHelper | \PHPUnit\Framework\MockObject\MockObject */
 	private $environmentHelper;
 
 	public function setUp() {

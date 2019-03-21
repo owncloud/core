@@ -580,7 +580,7 @@ class RepairUnmergedSharesTest extends TestCase {
 			$shareIds[] = $this->createShare($share[0], $share[1], $share[2], $share[3], $share[4], $share[5]);
 		}
 
-		/** @var IOutput | \PHPUnit_Framework_MockObject_MockObject $outputMock */
+		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
 		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
 			->disableOriginalConstructor()
 			->getMock();

@@ -94,7 +94,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 		$this->closeDetailsDialog();
 		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
 		$fileRow = $pageObject->findFileRowByName($file, $this->getSession());
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			$fileRow->getLockState(),
 			"'$file' should be marked as locked, but its not"
 		);
@@ -111,7 +111,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 		$this->closeDetailsDialog();
 		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
 		$fileRow = $pageObject->findFileRowByName($file, $this->getSession());
-		PHPUnit_Framework_Assert::assertFalse(
+		PHPUnit\Framework\Assert::assertFalse(
 			$fileRow->getLockState(),
 			"'$file' should not be marked as locked, but it is"
 		);
@@ -137,7 +137,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 			$lockDialog = $fileRow->openLockDialog();
 		} catch (ElementNotFoundException $e) {
 			if ($should) {
-				PHPUnit_Framework_Assert::fail(
+				PHPUnit\Framework\Assert::fail(
 					"looking for a lock set by $lockedBy but no lock dialog exists"
 				);
 			} else {
@@ -153,14 +153,14 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 				if ($should) {
 					return true;
 				} else {
-					PHPUnit_Framework_Assert::fail(
+					PHPUnit\Framework\Assert::fail(
 						"found a lock set by $lockedBy that should not be listed"
 					);
 				}
 			}
 		}
 		if ($should) {
-			PHPUnit_Framework_Assert::fail("cannot find a lock set by $lockedBy");
+			PHPUnit\Framework\Assert::fail("cannot find a lock set by $lockedBy");
 		} else {
 			return true;
 		}

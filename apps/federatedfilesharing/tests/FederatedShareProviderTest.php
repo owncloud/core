@@ -54,9 +54,9 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	protected $connection;
 	/** @var EventDispatcherInterface */
 	protected $eventDispatcher;
-	/** @var AddressHandler | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var AddressHandler | \PHPUnit\Framework\MockObject\MockObject */
 	protected $addressHandler;
-	/** @var Notifications | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Notifications | \PHPUnit\Framework\MockObject\MockObject */
 	protected $notifications;
 	/** @var TokenHandler */
 	protected $tokenHandler;
@@ -64,11 +64,11 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	protected $l;
 	/** @var ILogger */
 	protected $logger;
-	/** @var IRootFolder | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRootFolder | \PHPUnit\Framework\MockObject\MockObject */
 	protected $rootFolder;
-	/** @var  IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
-	/** @var  IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
 
 	/** @var IManager */

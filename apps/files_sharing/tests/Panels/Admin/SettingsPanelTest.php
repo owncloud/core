@@ -25,10 +25,10 @@ use OCA\Files_Sharing\SharingBlacklist;
 use OCA\Files_Sharing\Panels\Admin\SettingsPanel;
 
 class SettingsPanelTest extends \Test\TestCase {
-	/** @var SharingBlacklist | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var SharingBlacklist | \PHPUnit\Framework\MockObject\MockObject */
 	private $sharingBlacklist;
 
-	/** @var SettingsPanel | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var SettingsPanel | \PHPUnit\Framework\MockObject\MockObject */
 	private $settingsPanel;
 
 	protected function setUp() {

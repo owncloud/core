@@ -44,7 +44,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testDelete() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 
@@ -101,7 +101,7 @@ abstract class NodeTest extends TestCase {
 		 */
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
@@ -133,7 +133,7 @@ abstract class NodeTest extends TestCase {
 	 */
 	public function testDeleteNotPermitted() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -153,7 +153,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testStat() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -180,7 +180,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testGetId() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -206,7 +206,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testGetSize() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -232,7 +232,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testGetEtag() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -258,7 +258,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testGetMTime() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -284,7 +284,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testGetStorage() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -292,7 +292,7 @@ abstract class NodeTest extends TestCase {
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		/**
-		 * @var \OC\Files\Storage\Storage | \PHPUnit_Framework_MockObject_MockObject $storage
+		 * @var \OC\Files\Storage\Storage | \PHPUnit\Framework\MockObject\MockObject $storage
 		 */
 		$storage = $this->createMock('\OC\Files\Storage\Storage');
 
@@ -307,7 +307,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testGetPath() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -321,7 +321,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testGetInternalPath() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -329,7 +329,7 @@ abstract class NodeTest extends TestCase {
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		/**
-		 * @var \OC\Files\Storage\Storage | \PHPUnit_Framework_MockObject_MockObject $storage
+		 * @var \OC\Files\Storage\Storage | \PHPUnit\Framework\MockObject\MockObject $storage
 		 */
 		$storage = $this->createMock('\OC\Files\Storage\Storage');
 
@@ -344,7 +344,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testGetName() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -358,7 +358,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testTouchSetMTime() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -407,7 +407,7 @@ abstract class NodeTest extends TestCase {
 		 */
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
@@ -439,7 +439,7 @@ abstract class NodeTest extends TestCase {
 	 */
 	public function testTouchNotPermitted() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -461,7 +461,7 @@ abstract class NodeTest extends TestCase {
 	 */
 	public function testInvalidPath() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -472,7 +472,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testCopySameStorage() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -507,12 +507,12 @@ abstract class NodeTest extends TestCase {
 	 */
 	public function testCopyNotPermitted() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
 		/**
-		 * @var \OC\Files\Storage\Storage | \PHPUnit_Framework_MockObject_MockObject $storage
+		 * @var \OC\Files\Storage\Storage | \PHPUnit\Framework\MockObject\MockObject $storage
 		 */
 		$storage = $this->createMock('\OC\Files\Storage\Storage');
 
@@ -543,7 +543,7 @@ abstract class NodeTest extends TestCase {
 	 */
 	public function testCopyNoParent() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -566,7 +566,7 @@ abstract class NodeTest extends TestCase {
 	 */
 	public function testCopyParentIsFile() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -588,7 +588,7 @@ abstract class NodeTest extends TestCase {
 
 	public function testMoveSameStorage() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -633,7 +633,7 @@ abstract class NodeTest extends TestCase {
 		 */
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -714,7 +714,7 @@ abstract class NodeTest extends TestCase {
 	 */
 	public function testMoveNotPermitted() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -742,12 +742,12 @@ abstract class NodeTest extends TestCase {
 	 */
 	public function testMoveNoParent() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
 		/**
-		 * @var \OC\Files\Storage\Storage | \PHPUnit_Framework_MockObject_MockObject $storage
+		 * @var \OC\Files\Storage\Storage | \PHPUnit\Framework\MockObject\MockObject $storage
 		 */
 		$storage = $this->createMock('\OC\Files\Storage\Storage');
 
@@ -770,7 +770,7 @@ abstract class NodeTest extends TestCase {
 	public function testMoveParentIsFile() {
 		/**
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -794,7 +794,7 @@ abstract class NodeTest extends TestCase {
 	 */
 	public function testMoveFailed() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');
@@ -823,7 +823,7 @@ abstract class NodeTest extends TestCase {
 	 */
 	public function testCopyFailed() {
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root');

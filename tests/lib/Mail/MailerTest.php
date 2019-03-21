@@ -16,11 +16,11 @@ use Test\TestCase;
 use OC\Mail\Message;
 
 class MailerTest extends TestCase {
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var OC_Defaults */
 	private $defaults;
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 	/** @var Mailer */
 	private $mailer;
@@ -80,7 +80,7 @@ class MailerTest extends TestCase {
 	 * @expectedException \Exception
 	 */
 	public function testSendInvalidMailException(): void {
-		/** @var Message | \PHPUnit_Framework_MockObject_MockObject $message */
+		/** @var Message | \PHPUnit\Framework\MockObject\MockObject $message */
 		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
 		$message->expects($this->once())
@@ -120,7 +120,7 @@ class MailerTest extends TestCase {
 
 		$this->mailer->method('getInstance')->willReturn($this->createMock(\Swift_SendmailTransport::class));
 
-		/** @var Message | \PHPUnit_Framework_MockObject_MockObject $message */
+		/** @var Message | \PHPUnit\Framework\MockObject\MockObject $message */
 		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
 		$message->expects($this->once())

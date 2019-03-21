@@ -37,7 +37,7 @@ class CapabilitiesTest extends \Test\TestCase {
 	 */
 	protected $userSearch;
 
-	/** @var IL10N | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject */
 	private $l10n;
 
 	/**

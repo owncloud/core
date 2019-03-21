@@ -35,7 +35,7 @@ use Test\TestCase;
 class SeenUsersIteratorTest extends TestCase {
 
 	/**
-	 * @var AccountMapper|\PHPUnit_Framework_MockObject_MockObject
+	 * @var AccountMapper|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $mapper;
 	/**

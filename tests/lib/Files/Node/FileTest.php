@@ -35,7 +35,7 @@ class FileTest extends NodeTest {
 		/** @var Manager $manager */
 		$manager = $this->createMock(Manager::class);
 		/**
-		 * @var View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock(View::class);
 		$root = new Root($manager, $view, $this->user);
@@ -65,9 +65,9 @@ class FileTest extends NodeTest {
 	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetContentNotPermitted() {
-		/** @var View | \PHPUnit_Framework_MockObject_MockObject $view */
+		/** @var View | \PHPUnit\Framework\MockObject\MockObject $view */
 		$view = $this->createMock(View::class);
-		/** @var Root | \PHPUnit_Framework_MockObject_MockObject $root */
+		/** @var Root | \PHPUnit\Framework\MockObject\MockObject $root */
 		$root = $this->createMock(Root::class);
 
 		$root->expects($this->any())
@@ -84,9 +84,9 @@ class FileTest extends NodeTest {
 	}
 
 	public function testPutContent() {
-		/** @var View | \PHPUnit_Framework_MockObject_MockObject $view */
+		/** @var View | \PHPUnit\Framework\MockObject\MockObject $view */
 		$view = $this->createMock(View::class);
-		/** @var Root | \PHPUnit_Framework_MockObject_MockObject $root */
+		/** @var Root | \PHPUnit\Framework\MockObject\MockObject $root */
 		$root = $this->createMock(Root::class);
 
 		$root->expects($this->any())
@@ -111,9 +111,9 @@ class FileTest extends NodeTest {
 	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testPutContentNotPermitted() {
-		/** @var View | \PHPUnit_Framework_MockObject_MockObject $view */
+		/** @var View | \PHPUnit\Framework\MockObject\MockObject $view */
 		$view = $this->createMock(View::class);
-		/** @var Root | \PHPUnit_Framework_MockObject_MockObject $root */
+		/** @var Root | \PHPUnit\Framework\MockObject\MockObject $root */
 		$root = $this->createMock(Root::class);
 
 		$view->expects($this->once())
@@ -126,9 +126,9 @@ class FileTest extends NodeTest {
 	}
 
 	public function testGetMimeType() {
-		/** @var View | \PHPUnit_Framework_MockObject_MockObject $view */
+		/** @var View | \PHPUnit\Framework\MockObject\MockObject $view */
 		$view = $this->createMock(View::class);
-		/** @var Root | \PHPUnit_Framework_MockObject_MockObject $root */
+		/** @var Root | \PHPUnit\Framework\MockObject\MockObject $root */
 		$root = $this->createMock(Root::class);
 
 		$view->expects($this->once())
@@ -150,7 +150,7 @@ class FileTest extends NodeTest {
 		 */
 		$manager = $this->createMock(Manager::class);
 		/**
-		 * @var View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock(View::class);
 		$root = new Root($manager, $view, $this->user);
@@ -186,7 +186,7 @@ class FileTest extends NodeTest {
 		 */
 		$manager = $this->createMock(Manager::class);
 		/**
-		 * @var View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock(View::class);
 		$root = new Root($manager, new $view, $this->user);
@@ -227,7 +227,7 @@ class FileTest extends NodeTest {
 		 */
 		$manager = $this->createMock(Manager::class);
 		/**
-		 * @var View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock(View::class);
 		$root = new Root($manager, $view, $this->user);
@@ -254,7 +254,7 @@ class FileTest extends NodeTest {
 		 */
 		$manager = $this->createMock(Manager::class);
 		/**
-		 * @var View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock(View::class);
 		$root = new Root($manager, $view, $this->user);
@@ -281,7 +281,7 @@ class FileTest extends NodeTest {
 		 */
 		$manager = $this->createMock(Manager::class);
 		/**
-		 * @var View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock(View::class);
 		$root = new Root($manager, new $view, $this->user);
@@ -303,7 +303,7 @@ class FileTest extends NodeTest {
 		/** @var Manager $manager */
 		$manager = $this->createMock(Manager::class);
 		/**
-		 * @var View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock(View::class);
 		$root = new Root($manager, $view, $this->user);

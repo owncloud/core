@@ -8,7 +8,7 @@ use Test\TestCase;
 
 class EncryptionTest extends TestCase {
 
-	/** @var  \OCP\Encryption\IEncryptionModule | \PHPUnit_Framework_MockObject_MockObject  */
+	/** @var  \OCP\Encryption\IEncryptionModule | \PHPUnit\Framework\MockObject\MockObject  */
 	private $encryptionModule;
 
 	/**
@@ -305,7 +305,7 @@ class EncryptionTest extends TestCase {
 	}
 
 	/**
-	 * @return \PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function buildMockModule() {
 		$encryptionModule = $this->getMockBuilder('\OCP\Encryption\IEncryptionModule')
