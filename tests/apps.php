@@ -46,6 +46,10 @@ foreach ($apps as $app) {
 		continue;
 	}
 
+	if ($app === 'federation') {
+		continue;
+	}
+
 	if ($app === 'files') {
 		continue;
 	}
