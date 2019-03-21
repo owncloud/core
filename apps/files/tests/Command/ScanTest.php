@@ -268,25 +268,6 @@ class ScanTest extends TestCase {
 		$this->assertEquals('files/toscan2', $entry2['path']);
 	}
 
-	public function testScanOne() {
-		@\mkdir($this->dataDir . '/' . $this->scanUser2->getUID() . '/files/toscan2', 0777, true);
-
-		$input = [
-			'user_id' => [$this->scanUser2->getUID()],
-		];
-
-		$result = $this->commandTester->execute($input);
-		$this->assertEquals(0, $result);
-
-		// new entry was found only for user2
-		$storageId = $this->getStorageId('home::' . $this->scanUser1->getUID());
-		$this->assertFalse($this->getFileCacheEntry($storageId, 'files/toscan'));
-
-		$storageId2 = $this->getStorageId('home::' . $this->scanUser2->getUID());
-		$entry2 = $this->getFileCacheEntry($storageId2, 'files/toscan2');
-		$this->assertEquals('files/toscan2', $entry2['path']);
-	}
-
 	/**
 	 * Returns storage numeric id for the given string id
 	 *
