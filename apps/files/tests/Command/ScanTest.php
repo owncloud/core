@@ -142,4 +142,25 @@ class ScanTest extends TestCase {
 		}
 		parent::tearDown();
 	}
+
+	public function dataInput() {
+		return [
+			[['--groups' => 'haystack'], 'Group name haystack doesn\'t exist'],
+			[['--groups' => 'group1'], 'Starting scan for user 1 out of 1 (user1)'],
+			[['--group' => ['haystack']], 'Group name haystack doesn\'t exist'],
+			[['--group' => ['haystack,barn']], 'Group name haystack,barn doesn\'t exist'],
+			[['--group' => ['group1']], 'Starting scan for user 1 out of 1 (user1)'],
+			[['user_id' => ['user1']], 'Starting scan for user 1 out of 1 (user1)'],
+			[['user_id' => ['user2']], 'Starting scan for user 1 out of 1 (user2)']
+		];
+	}
+
+	/**
+	 * @dataProvider dataInput
+	 */
+	public function testCommandInput($input, $expectedOutput) {
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
+	}
 }
