@@ -132,10 +132,10 @@ class ScanTest extends TestCase {
 		//$this->scanUser2 = $this->createUser('scanuser2' . \uniqid());
 
 		$user1 = $this->createUser('user1');
-		$this->createUser('user2');
-		$this->groupManager->createGroup('group1');
-		$this->groupManager->get('group1')->addUser($user1);
-		$this->groupsCreated[] = 'group1';
+		//$this->createUser('user2');
+		//$this->groupManager->createGroup('group1');
+		//$this->groupManager->get('group1')->addUser($user1);
+		//$this->groupsCreated[] = 'group1';
 
 		//$this->dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
 
