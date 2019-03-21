@@ -628,23 +628,9 @@ services:
 matrix:
   include:
 
-  # frontend
-    - TEST_SUITE: javascript
-      PHP_VERSION: 7.1
-      COVERAGE: true
-
   # owncloud-coding-standard
     - PHP_VERSION: 7.3
       TEST_SUITE: owncloud-coding-standard
-
-  # phan (runs multiple PHP v7.* to provide syntax checks of each PHP version)
-    - TEST_SUITE: phan
-      PHP_VERSION: 7.1
-
-  # phpstan
-    - TEST_SUITE: phpstan
-      PHP_VERSION: 7.1
-      INSTALL_SERVER: true
 
   # Unit Tests
   # with code coverage
