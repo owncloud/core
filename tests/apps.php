@@ -46,7 +46,19 @@ foreach ($apps as $app) {
 		continue;
 	}
 
-	if ($app === 'updatenotification') {
+	if ($app === 'files_sharing') {
+		continue;
+	}
+	if ($app === 'files_trashbin') {
+		continue;
+	}
+	if ($app === 'files_versions') {
+		continue;
+	}
+	if ($app === 'provisioning_api') {
+		continue;
+	}
+	if ($app === 'systemtags') {
 		continue;
 	}
 
