@@ -163,31 +163,4 @@ class ScanTest extends TestCase {
 		$output = $this->commandTester->getDisplay();
 		$this->assertContains($expectedOutput, $output);
 	}
-
-	public function userInputData() {
-		return [
-			[['--group' => ['group1']], 'Starting scan for user 1 out of 200']
-		];
-	}
-
-	/**
-	 * @dataProvider userInputData
-	 * @param $input
-	 * @param $expectedOutput
-	 */
-	public function testGroupPaginationForUsers($input, $expectedOutput) {
-		//First we populate the users
-		$user = 'user';
-		$numberOfUsersInGroup = 210;
-		for ($i = 2; $i <= $numberOfUsersInGroup; $i++) {
-			$userObj = $this->createUser($user.$i);
-			$this->groupManager->get('group1')->addUser($userObj);
-		}
-
-		$this->commandTester->execute($input);
-		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
-		//If pagination works then below assert shouldn't fail
-		$this->assertNotContains("Starting scan for user 1 out of $numberOfUsersInGroup", $output);
-	}
 }
