@@ -45,6 +45,11 @@ class ScanTest extends TestCase {
 	use UserTrait;
 
 	/**
+	 * @var string
+	 */
+	private $dataDir;
+
+	/**
 	 * @var IDBConnection
 	 */
 	private $connection;
