@@ -11,6 +11,7 @@
 	<testsuite name='ownCloud'>
 		<directory suffix='.php'>lib/</directory>
 		<directory suffix='.php'>Core/Command/</directory>
+		<directory suffix='.php'>Core/Controller/</directory>
 		<directory suffix='.php'>Settings/</directory>
 		<directory suffix='.php'>ocs-provider/</directory>
 		<directory suffix='.php'>TestHelpers/Unit</directory>
