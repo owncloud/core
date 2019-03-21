@@ -14,6 +14,7 @@
 		<directory suffix='.php'>Core/</directory>
 		<directory suffix='.php'>ocs-provider/</directory>
 		<directory suffix='Test.php'>TestHelpers/Unit</directory>
+		<file>apps.php</file>
 	</testsuite>
 	<!-- filters for code coverage -->
 	<filter>
