@@ -44,19 +44,19 @@ use Test\TestCase;
  * - Then grab the signature file from "apps/SomeApp/appinfo/signature.json" and copy it into the hard-coded strings.
  */
 class CheckerTest extends TestCase {
-	/** @var EnvironmentHelper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var EnvironmentHelper | \PHPUnit\Framework\MockObject\MockObject */
 	private $environmentHelper;
-	/** @var AppLocator | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var AppLocator | \PHPUnit\Framework\MockObject\MockObject */
 	private $appLocator;
 	/** @var Checker */
 	private $checker;
-	/** @var FileAccessHelper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var FileAccessHelper | \PHPUnit\Framework\MockObject\MockObject */
 	private $fileAccessHelper;
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var ICacheFactory | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ICacheFactory | \PHPUnit\Framework\MockObject\MockObject */
 	private $cacheFactory;
-	/** @var IAppManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IAppManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $appManager;
 
 	public function setUp() {

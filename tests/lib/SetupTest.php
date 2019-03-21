@@ -12,19 +12,19 @@ use OCP\IConfig;
 
 class SetupTest extends \Test\TestCase {
 
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
-	/** @var \bantu\IniGetWrapper\IniGetWrapper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \bantu\IniGetWrapper\IniGetWrapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $iniWrapper;
-	/** @var \OCP\IL10N | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IL10N | \PHPUnit\Framework\MockObject\MockObject */
 	private $l10n;
-	/** @var \OC_Defaults | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OC_Defaults | \PHPUnit\Framework\MockObject\MockObject */
 	private $defaults;
-	/** @var \OC\Setup | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OC\Setup | \PHPUnit\Framework\MockObject\MockObject */
 	protected $setupClass;
-	/** @var \OCP\ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
-	/** @var \OCP\Security\ISecureRandom | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\Security\ISecureRandom | \PHPUnit\Framework\MockObject\MockObject */
 	protected $random;
 
 	protected function setUp() {

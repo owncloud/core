@@ -37,7 +37,7 @@ use OC\Files\External\StorageConfig;
 
 class ConfigAdapterTest extends \Test\TestCase {
 
-	/** @var \OCP\IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 
 	/** @var IUserStoragesService */
@@ -46,10 +46,10 @@ class ConfigAdapterTest extends \Test\TestCase {
 	/** @var IUserGlobalStoragesService */
 	private $userGlobalStoragesService;
 
-	/** @var IUser | \PHPUnit_Framework_MockObject_MockObject **/
+	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject **/
 	private $user;
 
-	/** @var ISession | \PHPUnit_Framework_MockObject_MockObject **/
+	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject **/
 	private $session;
 
 	/** @var int */

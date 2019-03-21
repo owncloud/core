@@ -18,20 +18,20 @@ use OCP\IL10N;
 use OCP\ILogger;
 
 class AvatarTest extends \Test\TestCase {
-	/** @var IStorage | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IStorage | \PHPUnit\Framework\MockObject\MockObject */
 	private $storage;
 
 	/** @var \OC\Avatar */
 	private $avatar;
 
-	/** @var \OC\User\User | \PHPUnit_Framework_MockObject_MockObject $user */
+	/** @var \OC\User\User | \PHPUnit\Framework\MockObject\MockObject $user */
 	private $user;
 
 	public function setUp() {
 		parent::setUp();
 
 		$this->storage = $this->createMock(IStorage::class);
-		/** @var \OCP\IL10N | \PHPUnit_Framework_MockObject_MockObject $l */
+		/** @var \OCP\IL10N | \PHPUnit\Framework\MockObject\MockObject $l */
 		$l = $this->createMock(IL10N::class);
 		$l->method('t')->will($this->returnArgument(0));
 		$this->user = $this->getMockBuilder(User::class)->disableOriginalConstructor()->getMock();

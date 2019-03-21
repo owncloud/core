@@ -34,13 +34,13 @@ use OCP\IUser;
 use OCP\IUserSession;
 
 class GroupsTest extends \Test\TestCase {
-	/** @var IGroupManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IGroupManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $groupManager;
-	/** @var IUserSession|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserSession|\PHPUnit\Framework\MockObject\MockObject */
 	protected $userSession;
-	/** @var IRequest|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRequest|\PHPUnit\Framework\MockObject\MockObject */
 	protected $request;
-	/** @var \OC\SubAdmin|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OC\SubAdmin|\PHPUnit\Framework\MockObject\MockObject */
 	protected $subAdminManager;
 	/** @var Groups */
 	protected $api;
@@ -70,7 +70,7 @@ class GroupsTest extends \Test\TestCase {
 
 	/**
 	 * @param string $gid
-	 * @return \OCP\IGroup|\PHPUnit_Framework_MockObject_MockObject
+	 * @return \OCP\IGroup|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private function createGroup($gid) {
 		$group = $this->createMock('OCP\IGroup');
@@ -82,7 +82,7 @@ class GroupsTest extends \Test\TestCase {
 
 	/**
 	 * @param string $uid
-	 * @return \OCP\IUser|\PHPUnit_Framework_MockObject_MockObject
+	 * @return \OCP\IUser|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private function createUser($uid) {
 		$user = $this->createMock('OCP\IUser');

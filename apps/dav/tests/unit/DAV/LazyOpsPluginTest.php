@@ -41,13 +41,13 @@ class LazyOpsPluginTest extends TestCase {
 	private $plugin;
 	/** @var ILogger */
 	private $logger;
-	/** @var JobStatusMapper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var JobStatusMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $jobStatusMapper;
-	/** @var IShutdownManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IShutdownManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $shutdownManager;
-	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
 	private $urlGenerator;
-	/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	private $userSession;
 
 	public function setUp() {

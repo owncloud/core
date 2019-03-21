@@ -57,7 +57,7 @@ class ApplicationTest extends TestCase {
 		});
 
 		// assert setupContactsProvider() is proper
-		/** @var IManager | \PHPUnit_Framework_MockObject_MockObject $cm */
+		/** @var IManager | \PHPUnit\Framework\MockObject\MockObject $cm */
 		$cm = $this->getMockBuilder('OCP\Contacts\IManager')->disableOriginalConstructor()->getMock();
 		$app->setupContactsProvider($cm, 'xxx');
 		$this->assertTrue(true);

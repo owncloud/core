@@ -37,22 +37,22 @@ use OCA\FederatedFileSharing\BackgroundJob\RetryJob;
 
 class NotificationsTest extends \Test\TestCase {
 
-	/** @var  AddressHandler | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  AddressHandler | \PHPUnit\Framework\MockObject\MockObject */
 	private $addressHandler;
 
-	/** @var  IClientService | \PHPUnit_Framework_MockObject_MockObject*/
+	/** @var  IClientService | \PHPUnit\Framework\MockObject\MockObject*/
 	private $httpClientService;
 
-	/** @var  DiscoveryManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  DiscoveryManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $discoveryManager;
 
-	/** @var NotificationManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var NotificationManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $notificationManager;
 
-	/** @var  IJobList | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  IJobList | \PHPUnit\Framework\MockObject\MockObject */
 	private $jobList;
 
-	/** @var  IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 
 	public function setUp() {
@@ -74,7 +74,7 @@ class NotificationsTest extends \Test\TestCase {
 	 * get instance of Notifications class
 	 *
 	 * @param array $mockedMethods methods which should be mocked
-	 * @return Notifications | \PHPUnit_Framework_MockObject_MockObject
+	 * @return Notifications | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private function getInstance(array $mockedMethods = []) {
 		if (empty($mockedMethods)) {

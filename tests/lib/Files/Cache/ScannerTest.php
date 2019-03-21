@@ -387,7 +387,7 @@ class ScannerTest extends \Test\TestCase {
 	 * @throws \OC\ServerNotAvailableException
 	 */
 	public function testUnLockInCaseOfExceptionInScanFile() {
-		/** @var Storage | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Storage | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->createMock(Storage::class);
 		$storage->expects($this->any())
 			->method('instanceOfStorage')
@@ -412,7 +412,7 @@ class ScannerTest extends \Test\TestCase {
 	 * @throws \OC\ServerNotAvailableException
 	 */
 	public function testUnLockInCaseOfExceptionInScan() {
-		/** @var Storage | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Storage | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->createMock(Storage::class);
 		$storage->expects($this->any())
 			->method('instanceOfStorage')

@@ -29,7 +29,7 @@ use GuzzleHttp\Subscriber\History;
 /**
  * Test for WebDavHelper
  */
-class WebDavHelperTest extends PHPUnit_Framework_TestCase {
+class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	/**
 	 * Setup mock response, client and listen for all requests
 	 * through history.

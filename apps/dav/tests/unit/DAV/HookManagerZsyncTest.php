@@ -91,22 +91,22 @@ class HookManagerZsyncTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject $userManager */
+		/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject $userManager */
 		$userManager = $this->getMockBuilder(IUserManager::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		/** @var SyncService | \PHPUnit_Framework_MockObject_MockObject $syncService */
+		/** @var SyncService | \PHPUnit\Framework\MockObject\MockObject $syncService */
 		$syncService = $this->getMockBuilder(SyncService::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		/** @var CalDavBackend | \PHPUnit_Framework_MockObject_MockObject $cal */
+		/** @var CalDavBackend | \PHPUnit\Framework\MockObject\MockObject $cal */
 		$cal = $this->getMockBuilder(CalDavBackend::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		/** @var CardDavBackend | \PHPUnit_Framework_MockObject_MockObject $card */
+		/** @var CardDavBackend | \PHPUnit\Framework\MockObject\MockObject $card */
 		$card = $this->getMockBuilder(CardDavBackend::class)
 			->disableOriginalConstructor()
 			->getMock();

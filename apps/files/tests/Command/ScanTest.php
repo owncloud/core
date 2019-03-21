@@ -60,17 +60,17 @@ class ScanTest extends TestCase {
 	private $groupManager;
 
 	/**
-	 * @var ILockingProvider | \PHPUnit_Framework_MockObject_MockObject
+	 * @var ILockingProvider | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $lockingProvider;
 
 	/**
-	 * @var IMimeTypeLoader | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IMimeTypeLoader | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $mimeTypeLoader;
 
 	/**
-	 * @var IConfig | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IConfig | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $config;
 

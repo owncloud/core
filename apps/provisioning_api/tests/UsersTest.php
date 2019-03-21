@@ -35,7 +35,7 @@ use OCP\API;
 use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\IUserSession;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase as OriginalTest;
 use OCP\IUser;
 use OC\SubAdmin;
@@ -44,17 +44,17 @@ use OC\Authentication\TwoFactorAuth\Manager;
 
 class UsersTest extends OriginalTest {
 	
-	/** @var IUserManager | PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserManager | PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
-	/** @var \OC\Group\Manager | PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OC\Group\Manager | PHPUnit\Framework\MockObject\MockObject */
 	protected $groupManager;
-	/** @var IUserSession | PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserSession | PHPUnit\Framework\MockObject\MockObject */
 	protected $userSession;
-	/** @var ILogger | PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger | PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
-	/** @var Users | PHPUnit_Framework_MockObject_MockObject */
+	/** @var Users | PHPUnit\Framework\MockObject\MockObject */
 	protected $api;
-	/** @var \OC\Authentication\TwoFactorAuth\Manager | PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OC\Authentication\TwoFactorAuth\Manager | PHPUnit\Framework\MockObject\MockObject */
 	private $twoFactorAuthManager;
 
 	protected function tearDown() {

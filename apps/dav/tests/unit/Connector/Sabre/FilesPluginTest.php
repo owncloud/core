@@ -63,12 +63,12 @@ class FilesPluginTest extends TestCase {
 	const DATA_FINGERPRINT_PROPERTYNAME = FilesPlugin::DATA_FINGERPRINT_PROPERTYNAME;
 
 	/**
-	 * @var Server | \PHPUnit_Framework_MockObject_MockObject
+	 * @var Server | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $server;
 
 	/**
-	 * @var Tree | \PHPUnit_Framework_MockObject_MockObject
+	 * @var Tree | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $tree;
 
@@ -78,12 +78,12 @@ class FilesPluginTest extends TestCase {
 	private $plugin;
 
 	/**
-	 * @var IConfig | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IConfig | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $config;
 
 	/**
-	 * @var IRequest | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IRequest | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $request;
 
@@ -120,7 +120,7 @@ class FilesPluginTest extends TestCase {
 	/**
 	 * @param string $class
 	 * @param string $path
-	 * @return \PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private function createTestNode($class, $path = '/dummypath') {
 		$node = $this->getMockBuilder($class)
@@ -162,7 +162,7 @@ class FilesPluginTest extends TestCase {
 	}
 
 	public function testGetPropertiesForFile() {
-		/** @var File | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var File | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->createTestNode(File::class);
 
 		$propFind = new PropFind(
@@ -221,7 +221,7 @@ class FilesPluginTest extends TestCase {
 	}
 
 	public function testGetPropertiesStorageNotAvailable() {
-		/** @var File | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var File | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->createTestNode(File::class);
 
 		$propFind = new PropFind(
@@ -260,7 +260,7 @@ class FilesPluginTest extends TestCase {
 			0
 		);
 
-		/** @var File | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var File | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->createTestNode(File::class);
 		$node
 			->method('getDavPermissions')
@@ -275,7 +275,7 @@ class FilesPluginTest extends TestCase {
 	}
 
 	public function testGetPropertiesForDirectory() {
-		/** @var Directory | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var Directory | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->createTestNode(Directory::class);
 
 		$propFind = new PropFind(
@@ -310,7 +310,7 @@ class FilesPluginTest extends TestCase {
 	}
 
 	public function testGetPropertiesForRootDirectory() {
-		/** @var Directory | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var Directory | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->getMockBuilder(Directory::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -345,7 +345,7 @@ class FilesPluginTest extends TestCase {
 	 * @expectedException \Sabre\DAV\Exception\NotFound
 	 */
 	public function testGetPropertiesWhenNoPermission() {
-		/** @var Directory | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var Directory | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->getMockBuilder(Directory::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -522,11 +522,11 @@ class FilesPluginTest extends TestCase {
 	 * @param string $contentDispositionHeader
 	 */
 	public function testDownloadHeaders($isClumsyAgent, $contentDispositionHeader) {
-		/** @var RequestInterface | \PHPUnit_Framework_MockObject_MockObject $request */
+		/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject $request */
 		$request = $this->getMockBuilder(RequestInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
-		/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject $response */
+		/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject $response */
 		$response = $this->getMockBuilder(ResponseInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -577,11 +577,11 @@ class FilesPluginTest extends TestCase {
 	}
 
 	public function testAdditionalHeaders() {
-		/** @var RequestInterface | \PHPUnit_Framework_MockObject_MockObject $request */
+		/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject $request */
 		$request = $this->getMockBuilder(RequestInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
-		/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject $response */
+		/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject $response */
 		$response = $this->getMockBuilder(ResponseInterface::class)
 			->disableOriginalConstructor()
 			->getMock();

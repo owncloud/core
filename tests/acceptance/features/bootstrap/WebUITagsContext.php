@@ -114,7 +114,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	public function allTheTagsStartingWithInTheirNameShouldBeListedInTheDropdownListOnTheWebUI($value) {
 		$results = $this->filesPage->getDetailsDialog()->getDropDownTagsSuggestionResults();
 		foreach ($results as $tagResult) {
-			PHPUnit_Framework_Assert::assertStringStartsWith($value, $tagResult->getText());
+			PHPUnit\Framework\Assert::assertStringStartsWith($value, $tagResult->getText());
 		}
 
 		// check also that all tags that have been created and starts with $value

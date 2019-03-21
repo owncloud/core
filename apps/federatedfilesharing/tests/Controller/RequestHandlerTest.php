@@ -53,7 +53,7 @@ class RequestHandlerTest extends TestCase {
 	const DEFAULT_TOKEN = 'abc';
 
 	/**
-	 * @var IRequest | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IRequest | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $request;
 
@@ -63,17 +63,17 @@ class RequestHandlerTest extends TestCase {
 	private $ocmMiddleware;
 
 	/**
-	 * @var IUserManager | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IUserManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $userManager;
 
 	/**
-	 * @var AddressHandler | \PHPUnit_Framework_MockObject_MockObject
+	 * @var AddressHandler | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $addressHandler;
 
 	/**
-	 * @var FedShareManager | \PHPUnit_Framework_MockObject_MockObject
+	 * @var FedShareManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $fedShareManager;
 

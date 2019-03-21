@@ -52,7 +52,7 @@ class PreviewManagerTest extends TestCase {
 	private $user;
 	/** @var View */
 	private $rootView;
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var IPreview */
 	private $previewManager;
@@ -75,7 +75,7 @@ class PreviewManagerTest extends TestCase {
 		$this->rootView->file_put_contents($imgPath, $imgData);
 		$this->config = $this->createMock(IConfig::class);
 
-		/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject $userSession */
+		/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject $userSession */
 		$userSession = $this->createMock(IUserSession::class);
 		$userSession->method('getUser')->willReturn($this->user);
 
@@ -94,7 +94,7 @@ class PreviewManagerTest extends TestCase {
 		// return defaults
 		$this->config->method('getSystemValue')->will($this->returnArgument(1));
 
-		/** @var FileInfo | \PHPUnit_Framework_MockObject_MockObject $file */
+		/** @var FileInfo | \PHPUnit\Framework\MockObject\MockObject $file */
 		$file = $this->createMock(FileInfo::class);
 		$file->expects($this->atLeastOnce())
 			->method('getMimetype')
@@ -107,7 +107,7 @@ class PreviewManagerTest extends TestCase {
 		// return defaults
 		$this->config->method('getSystemValue')->with('enable_previews', true)->willReturn(false);
 
-		/** @var FileInfo | \PHPUnit_Framework_MockObject_MockObject $file */
+		/** @var FileInfo | \PHPUnit\Framework\MockObject\MockObject $file */
 		$file = $this->createMock(FileInfo::class);
 		$file->expects($this->never())->method('getMimetype');
 
@@ -118,7 +118,7 @@ class PreviewManagerTest extends TestCase {
 		// return defaults
 		$this->config->method('getSystemValue')->will($this->returnArgument(1));
 
-		/** @var FileInfo | \PHPUnit_Framework_MockObject_MockObject $file */
+		/** @var FileInfo | \PHPUnit\Framework\MockObject\MockObject $file */
 		$file = $this->createMock(FileInfo::class);
 		$file->expects($this->atLeastOnce())
 			->method('getMimetype')

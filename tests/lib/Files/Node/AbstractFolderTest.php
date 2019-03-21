@@ -27,7 +27,7 @@ use Test\TestCase;
 
 class AbstractFolderTest extends TestCase {
 	public function testMimeAndGetType() {
-		/** @var AbstractFolder | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var AbstractFolder | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->getMockForAbstractClass(AbstractFolder::class);
 		$this->assertEquals('httpd/unix-directory', $node->getMimetype());
 		$this->assertEquals('httpd', $node->getMimePart());
@@ -39,7 +39,7 @@ class AbstractFolderTest extends TestCase {
 	 * @dataProvider providesOperations
 	 */
 	public function testOperations($operation) {
-		/** @var AbstractFolder | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var AbstractFolder | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->getMockForAbstractClass(AbstractFolder::class);
 		$node->$operation('', '');
 	}

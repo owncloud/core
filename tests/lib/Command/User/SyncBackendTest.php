@@ -43,18 +43,18 @@ use Test\TestCase;
 
 class SyncBackendTest extends TestCase {
 
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
-	/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $mapper;
-	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
 	/** @var SyncBackend */
 	private $command;
 
-	/** @var UserInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var UserInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $dummyBackend;
 
 	public function setUp() {

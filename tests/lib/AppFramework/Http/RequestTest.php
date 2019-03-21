@@ -26,11 +26,11 @@ use Test\TestCase;
 class RequestTest extends TestCase {
 	/** @var string */
 	protected $stream = 'fakeinput://data';
-	/** @var ISecureRandom | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ISecureRandom | \PHPUnit\Framework\MockObject\MockObject */
 	protected $secureRandom;
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
-	/** @var CsrfTokenManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var CsrfTokenManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $csrfTokenManager;
 
 	protected function setUp() {
@@ -1395,7 +1395,7 @@ class RequestTest extends TestCase {
 			->with('overwritecondaddr')
 			->will($this->returnValue($overwriteCondAddr));
 
-		/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject $request */
+		/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject $request */
 		$request = $this->getMockBuilder('\OC\AppFramework\Http\Request')
 			->setMethods(['getScriptName'])
 			->setConstructorArgs([
