@@ -28,6 +28,20 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class PersonalPanel implements ISettings {
+	const USER_CONFIGS = [
+		[
+			'key' => 'auto_accept_share',
+			'label' => 'Automatically accept new incoming local user shares',
+			'default' => 'yes'
+		],
+		[
+			'key' => 'allow_share_dialog_user_enumeration',
+			'label' => 'Allow finding you via autocomplete in share dialog. If this is disabled the full username needs to be entered.',
+			'default' => 'yes'
+		]
+	];
+
+	const GLOBAL_CONFIG_PREFIX = 'shareapi_';
 
 	/** @var IConfig $config */
 	private $config;
@@ -47,28 +61,34 @@ class PersonalPanel implements ISettings {
 	 */
 	public function getPanel() {
 		$tmpl = new Template('files_sharing', 'settings-personal');
-		$showEmptyTemplate = true;
-		$globalAutoAcceptShareEnabled = $this->config->getAppValue(
-			'core',
-			'shareapi_auto_accept_share',
-			'yes'
-		);
-		$autoAcceptShareEnabled = $this->config->getUserValue(
-			$this->userSession->getUser()->getUID(),
-			'files_sharing',
-			'auto_accept_share',
-			$globalAutoAcceptShareEnabled
-		);
-		if ($globalAutoAcceptShareEnabled === 'yes') {
-			$showEmptyTemplate = false;
-			$tmpl->assign(
-				'userAutoAcceptShareEnabled',
-				$autoAcceptShareEnabled
+		$enabledConfigs = [];
+		foreach (self::USER_CONFIGS as $config) {
+			/**
+			 * Show configurations only if global enabled
+			 */
+			$globalConfigKey = self::GLOBAL_CONFIG_PREFIX . $config['key'];
+			$globalEnabled = $this->config->getAppValue(
+				'core',
+				$globalConfigKey,
+				$config['default']
 			);
+			if ($globalEnabled === 'yes') {
+				$userEnabled = $this->config->getUserValue(
+					$this->userSession->getUser()->getUID(),
+					'files_sharing',
+					$config['key'],
+					'yes'
+				);
+				$enabledConfigs[$config['key']] = [
+					'enabled' => $userEnabled,
+					'label' => $config['label']
+				];
+			}
 		}
-		if ($showEmptyTemplate) {
+		if (empty($enabledConfigs)) {
 			return new Template('files_sharing', 'settings-personal-empty');
 		}
+		$tmpl->assign('enabled_configs', $enabledConfigs);
 		return $tmpl;
 	}
 
