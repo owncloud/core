@@ -47,7 +47,7 @@ class ScanTest extends TestCase {
 	/**
 	 * @var string
 	 */
-	private $dataDir;
+	//private $dataDir;
 
 	/**
 	 * @var IDBConnection
@@ -87,12 +87,12 @@ class ScanTest extends TestCase {
 	/**
 	 * @var IUser
 	 */
-	private $scanUser1;
+	//private $scanUser1;
 
 	/**
 	 * @var IUser
 	 */
-	private $scanUser2;
+	//private $scanUser2;
 
 	/**
 	 * @var CommandTester
@@ -137,7 +137,7 @@ class ScanTest extends TestCase {
 		$this->groupManager->get('group1')->addUser($user1);
 		$this->groupsCreated[] = 'group1';
 
-		$this->dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
+		//$this->dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
 
 		// \mkdir($this->dataDir . '/' . $this->scanUser1->getUID() . '/files/toscan', 0777, true);
 	}
