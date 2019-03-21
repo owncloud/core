@@ -142,7 +142,19 @@ class ScanTest extends TestCase {
 		}
 		parent::tearDown();
 	}
-	public function testDummyThing() {
-		$this->assertTrue(true);
+
+	public function dataInput() {
+		return [
+			[['user_id' => ['user1']], 'Starting scan for user 1 out of 1 (user1)']
+		];
+	}
+
+	/**
+	 * @dataProvider dataInput
+	 */
+	public function testCommandInput($input, $expectedOutput) {
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
 	}
 }
