@@ -128,8 +128,8 @@ class ScanTest extends TestCase {
 		);
 		$this->commandTester = new CommandTester($command);
 
-		$this->scanUser1 = $this->createUser('scanuser1' . \uniqid());
-		$this->scanUser2 = $this->createUser('scanuser2' . \uniqid());
+		//$this->scanUser1 = $this->createUser('scanuser1' . \uniqid());
+		//$this->scanUser2 = $this->createUser('scanuser2' . \uniqid());
 
 		$user1 = $this->createUser('user1');
 		$this->createUser('user2');
