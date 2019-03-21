@@ -65,6 +65,11 @@ class ScanTest extends TestCase {
 	private $groupManager;
 
 	/**
+	 * @var ILogger | \PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $logger;
+
+	/**
 	 * @var ILockingProvider | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $lockingProvider;
@@ -111,13 +116,14 @@ class ScanTest extends TestCase {
 		$this->lockingProvider = $this->createMock(ILockingProvider::class);
 		$this->mimeTypeLoader = $this->createMock(IMimeTypeLoader::class);
 		$this->config = $this->createMock(IConfig::class);
+		$this->logger = $this->createMock(ILogger::class);
 
 		$command = new Scan(
 			$this->userManager,
 			$this->groupManager,
 			$this->lockingProvider,
 			$this->mimeTypeLoader,
-			$this->createMock(ILogger::class),
+			$this->logger,
 			$this->config
 		);
 		$this->commandTester = new CommandTester($command);
