@@ -145,8 +145,7 @@ class ScanTest extends TestCase {
 
 	public function dataInput() {
 		return [
-			[['user_id' => ['user1']], 'Starting scan for user 1 out of 1 (user1)'],
-			[['user_id' => ['user2']], 'Starting scan for user 1 out of 1 (user2)']
+			[['user_id' => ['user1']], 'Starting scan for user 1 out of 1 (user1)']
 		];
 	}
 
