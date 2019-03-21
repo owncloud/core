@@ -287,49 +287,6 @@ class ScanTest extends TestCase {
 		$this->assertEquals('files/toscan2', $entry2['path']);
 	}
 
-	public function maintenanceConfigsProvider() {
-		return [
-			[
-				[
-					['singleuser', false, true],
-					['maintenance', false, false],
-				],
-			],
-			[
-				[
-					['singleuser', false, false],
-					['maintenance', false, true],
-				],
-			],
-		];
-	}
-
-	/**
-	 * Test running repair all
-	 *
-	 * @dataProvider maintenanceConfigsProvider
-	 */
-	public function testScanRepairAllInMaintenanceMode($config) {
-		$this->config->method('getSystemValue')
-			->will($this->returnValueMap($config));
-
-		$input = [
-			'--all' => true,
-			'--repair' => true,
-		];
-
-		$result = $this->commandTester->execute($input);
-
-		// TODO: find a way to test that repair code has run
-
-		// new entry was found
-		$storageId = $this->getStorageId('home::' . $this->scanUser1->getUID());
-		$entry = $this->getFileCacheEntry($storageId, 'files/toscan');
-		$this->assertEquals('files/toscan', $entry['path']);
-
-		$this->assertEquals(0, $result);
-	}
-
 	/**
 	 * Returns storage numeric id for the given string id
 	 *
