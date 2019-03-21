@@ -62,4 +62,11 @@ if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
     $phpunit_cmd --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/output/coverage/autotest-external-clover-"${DB_TYPE}"-"${FILES_EXTERNAL_TYPE}".xml "${FILES_EXTERNAL_TEST_TO_RUN}"
 else
     $phpunit_cmd --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/output/coverage/autotest-clover-"${DB_TYPE}".xml
+    PHPUNIT_STATUS=$?
+    if [ ${PHPUNIT_STATUS} -eq 0 ]; then
+        echo "PHPunit exited with success status 0"
+    else
+        echo "PHPunit exited with failure status ${PHPUNIT_STATUS}"
+    fi
+    exit ${PHPUNIT_STATUS}
 fi
