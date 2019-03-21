@@ -25,8 +25,6 @@ use PHPUnit_Framework_Assert;
 use SimpleXMLElement;
 use Behat\Gherkin\Node\TableNode;
 use TestHelpers\DownloadHelper;
-use TestHelpers\HttpRequestHelper;
-use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 
 /**
