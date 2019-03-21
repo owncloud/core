@@ -400,17 +400,4 @@ class ScanTest extends TestCase {
 		$storageId = $this->getStorageId('home::' . $this->scanUser1->getUID());
 		$this->assertFalse($this->getFileCacheEntry($storageId, 'files/toscan'));
 	}
-
-	/**
-	 * Scan and repair a single user
-	 */
-	public function testRepairOne() {
-		@\mkdir($this->dataDir . '/' . $this->scanUser2->getUID() . '/files/toscan3', 0777, true);
-		$input = [
-			'user_id' => [$this->scanUser2->getUID()],
-			'--repair' => true,
-		];
-		$result = $this->commandTester->execute($input);
-		$this->assertEquals(0, $result);
-	}
 }
