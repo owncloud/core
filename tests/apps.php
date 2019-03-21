@@ -46,9 +46,6 @@ foreach ($apps as $app) {
 		continue;
 	}
 
-	if ($app === 'systemtags') {
-		continue;
-	}
 	if ($app === 'updatenotification') {
 		continue;
 	}
