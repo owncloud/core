@@ -115,7 +115,7 @@ class ScanTest extends TestCase {
 	}
 
 	public function testCommandInput() {
-		$exitCode = $this->commandTester->execute(['user1']);
+		$exitCode = $this->commandTester->execute(['user_id' => ['user1']]);
 		$this->assertEquals(0, $exitCode, "got exit code $exitCode");
 	}
 }
