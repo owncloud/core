@@ -25,6 +25,8 @@ use OCP\App\AppNotFoundException;
 use function Test\AppFramework\rrmdir;
 use Test\TestCase;
 
+require __DIR__ . "/../AppFramework/AppTest.php";
+
 class AppTest extends TestCase {
 	private $appPath;
 
