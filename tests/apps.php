@@ -45,6 +45,31 @@ foreach ($apps as $app) {
 	if ($app === 'files_external') {
 		continue;
 	}
+
+	if ($app === 'files_sharing') {
+		continue;
+	}
+
+	if ($app === 'files_trashbin') {
+		continue;
+	}
+
+	if ($app === 'files_versions') {
+		continue;
+	}
+
+	if ($app === 'provisioning_api') {
+		continue;
+	}
+
+	if ($app === 'systemtags') {
+		continue;
+	}
+
+	if ($app === 'updatenotification') {
+		continue;
+	}
+
 	$dir = OC_App::getAppPath($app);
 	if (\is_dir($dir . '/tests')) {
 		loadDirectory($dir . '/tests');
