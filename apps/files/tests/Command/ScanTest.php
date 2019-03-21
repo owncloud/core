@@ -145,9 +145,6 @@ class ScanTest extends TestCase {
 
 	public function dataInput() {
 		return [
-			[['--group' => ['haystack']], 'Group name haystack doesn\'t exist'],
-			[['--group' => ['haystack,barn']], 'Group name haystack,barn doesn\'t exist'],
-			[['--group' => ['group1']], 'Starting scan for user 1 out of 1 (user1)'],
 			[['user_id' => ['user1']], 'Starting scan for user 1 out of 1 (user1)'],
 			[['user_id' => ['user2']], 'Starting scan for user 1 out of 1 (user2)']
 		];
