@@ -280,14 +280,14 @@ a.two-factor-cancel {
 	top: 0;
 	border: 2px solid #ffffff;
 	background-color: rgba(0, 0, 0, .25);
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-	opacity: .9;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+	opacity: .75;
 	}
 }
 #body-login #submit.login:hover,
 #body-login #submit.login:focus {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-	opacity: .9;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity: .100;
 }
 #body-login input[type="password"],
 #body-login input[name="adminpass-clone"] {
