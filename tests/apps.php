@@ -46,9 +46,6 @@ foreach ($apps as $app) {
 		continue;
 	}
 
-	if ($app !== 'updatenotification') {
-		continue;
-	}
 
 	$dir = OC_App::getAppPath($app);
 	if (\is_dir($dir . '/tests')) {
