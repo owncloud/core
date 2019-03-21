@@ -159,9 +159,9 @@ class ScanTest extends TestCase {
 	 * @dataProvider dataInput
 	 */
 	public function testCommandInput($input) {
-		$this->commandTester->execute($input);
+		$exitCode = $this->commandTester->execute($input);
 		//$output = $this->commandTester->getDisplay();
 		//$this->assertContains($expectedOutput, $output);
-		$this->assertTrue(true);
+		$this->assertEquals(0, $exitCode, "got exit code $exitCode");
 	}
 }
