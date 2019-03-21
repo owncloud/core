@@ -22,7 +22,7 @@
         "classmap": ["lib/private/legacy"]
     },
     "autoload-dev" : {
-        "files": ["tests/lib/TestCase.php", "tests/lib/AppFramework/AppTest.php"]
+        "files": ["tests/lib/TestCase.php"]
     },
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.2",
