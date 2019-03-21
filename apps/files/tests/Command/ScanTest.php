@@ -252,46 +252,4 @@ class ScanTest extends TestCase {
 			$this->assertContains('Starting scan for user 10 out of 10 (user30)', $output);
 		}
 	}
-
-	/**
-	 * Returns storage numeric id for the given string id
-	 *
-	 * @param string $storageStringId
-	 * @return int|null numeric id
-	 */
-	private function getStorageId($storageStringId) {
-		$qb = $this->connection->getQueryBuilder();
-		$qb->select('numeric_id')
-			->from('storages')
-			->where($qb->expr()->eq('id', $qb->createNamedParameter($storageStringId)));
-		$results = $qb->execute();
-		$result = $results->fetch();
-		$results->closeCursor();
-
-		if ($result) {
-			return (int)$result['numeric_id'];
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns file cache DB entry for given path
-	 *
-	 * @param int $storageId storage numeric id
-	 * @param string $path path
-	 * @return array file cache DB entry
-	 */
-	private function getFileCacheEntry($storageId, $path) {
-		$qb = $this->connection->getQueryBuilder();
-		$qb->select('*')
-			->from('filecache')
-			->where($qb->expr()->eq('storage', $qb->createNamedParameter($storageId)))
-			->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(\md5($path))));
-		$results = $qb->execute();
-		$result = $results->fetch();
-		$results->closeCursor();
-
-		return $result;
-	}
 }
