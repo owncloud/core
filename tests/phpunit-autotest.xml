@@ -16,7 +16,7 @@
 		<directory suffix='.php'>Core/Middleware/</directory>
 		<directory suffix='.php'>Core/Templates/</directory>
 		<directory suffix='.php'>ocs-provider/</directory>
-		<directory suffix='.php'>TestHelpers/Unit</directory>
+		<directory suffix='Test.php'>TestHelpers/Unit</directory>
 	</testsuite>
 	<!-- filters for code coverage -->
 	<filter>
