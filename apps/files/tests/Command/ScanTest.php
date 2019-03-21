@@ -30,7 +30,6 @@ use OCP\IUserManager;
 use OCP\IConfig;
 use OCP\Files\IMimeTypeLoader;
 use OCP\Lock\ILockingProvider;
-use OCP\IUser;
 use OCP\IDBConnection;
 use OCP\IGroupManager;
 use OCP\ILogger;
@@ -43,11 +42,6 @@ use OCP\ILogger;
  */
 class ScanTest extends TestCase {
 	use UserTrait;
-
-	/**
-	 * @var string
-	 */
-	//private $dataDir;
 
 	/**
 	 * @var IDBConnection
@@ -65,11 +59,6 @@ class ScanTest extends TestCase {
 	private $groupManager;
 
 	/**
-	 * @var ILogger | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $logger;
-
-	/**
 	 * @var ILockingProvider | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $lockingProvider;
@@ -85,24 +74,14 @@ class ScanTest extends TestCase {
 	private $config;
 
 	/**
-	 * @var IUser
+	 * @var ILogger | \PHPUnit_Framework_MockObject_MockObject
 	 */
-	//private $scanUser1;
-
-	/**
-	 * @var IUser
-	 */
-	//private $scanUser2;
+	private $logger;
 
 	/**
 	 * @var CommandTester
 	 */
 	private $commandTester;
-
-	/**
-	 * @var string[]
-	 */
-	private $groupsCreated = [];
 
 	protected function setUp() {
 		if ($this->runsWithPrimaryObjectstorage()) {
@@ -128,40 +107,15 @@ class ScanTest extends TestCase {
 		);
 		$this->commandTester = new CommandTester($command);
 
-		//$this->scanUser1 = $this->createUser('scanuser1' . \uniqid());
-		//$this->scanUser2 = $this->createUser('scanuser2' . \uniqid());
-
-		$user1 = $this->createUser('user1');
-		//$this->createUser('user2');
-		//$this->groupManager->createGroup('group1');
-		//$this->groupManager->get('group1')->addUser($user1);
-		//$this->groupsCreated[] = 'group1';
-
-		//$this->dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
-
-		// \mkdir($this->dataDir . '/' . $this->scanUser1->getUID() . '/files/toscan', 0777, true);
+		$this->createUser('user1');
 	}
 
 	protected function tearDown() {
-		foreach ($this->groupsCreated as $group) {
-			$this->groupManager->get($group)->delete();
-		}
 		parent::tearDown();
 	}
 
-	public function dataInput() {
-		return [
-			[['user_id' => ['user1']]]
-		];
-	}
-
-	/**
-	 * @dataProvider dataInput
-	 */
-	public function testCommandInput($input) {
-		$exitCode = $this->commandTester->execute($input);
-		//$output = $this->commandTester->getDisplay();
-		//$this->assertContains($expectedOutput, $output);
+	public function testCommandInput() {
+		$exitCode = $this->commandTester->execute(['user1']);
 		$this->assertEquals(0, $exitCode, "got exit code $exitCode");
 	}
 }
