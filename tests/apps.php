@@ -46,14 +46,6 @@ foreach ($apps as $app) {
 		continue;
 	}
 
-	if ($app === 'federatedfilesharing') {
-		continue;
-	}
-
-	if ($app === 'federation') {
-		continue;
-	}
-
 	if ($app === 'files') {
 		continue;
 	}
