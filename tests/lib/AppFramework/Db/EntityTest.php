@@ -108,19 +108,19 @@ class EntityTest extends \Test\TestCase {
 	}
 
 	public function testCallShouldOnlyWorkForGetterSetter() {
-		$this->setExpectedException('\BadFunctionCallException');
+		$this->expectException('\BadFunctionCallException');
 
 		$this->entity->something();
 	}
 
 	public function testGetterShouldFailIfAttributeNotDefined() {
-		$this->setExpectedException('\BadFunctionCallException');
+		$this->expectException('\BadFunctionCallException');
 
 		$this->entity->getTest();
 	}
 
 	public function testSetterShouldFailIfAttributeNotDefined() {
-		$this->setExpectedException('\BadFunctionCallException');
+		$this->expectException('\BadFunctionCallException');
 
 		$this->entity->setTest();
 	}
