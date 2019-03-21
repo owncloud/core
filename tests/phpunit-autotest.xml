@@ -10,6 +10,7 @@
 >
 	<testsuite name='ownCloud'>
 		<directory suffix='.php'>lib/</directory>
+		<directory suffix='.php'>Settings/</directory>
 	</testsuite>
 	<!-- filters for code coverage -->
 	<filter>
