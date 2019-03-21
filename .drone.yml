@@ -646,70 +646,9 @@ matrix:
       PHP_VERSION: 7.1
       INSTALL_SERVER: true
 
-  # Litmus
-    - PHP_VERSION: 7.1
-      USE_SERVER: true
-      SERVER_PROTOCOL: https
-      TEST_SUITE: litmus
-      INSTALL_SERVER: true
-      OWNCLOUD_LOG: true
-
   # Unit Tests
     - PHP_VERSION: 7.1
       DB_TYPE: mysql
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: mysql
-      # mb4 support, with innodb_file_format=Barracuda
-      MYSQL_IMAGE: mysql:5.7
-      TEST_SUITE: phpunit
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      # mb4 support by default
-      DB_TYPE: mysql8
-      TEST_SUITE: phpunit
-      COVERAGE: false
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
-#    - PHP_VERSION: 7.1
-#      DB_TYPE: mariadb
-#      TEST_SUITE: phpunit
-#      INSTALL_SERVER: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: postgres
-      POSTGRES_IMAGE: postgres:9.4
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: postgres
-      POSTGRES_IMAGE: postgres:10.3
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: mariadb
-      # mb4 support by default
-      MARIADB_IMAGE: mariadb:10.3
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: oracle
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
@@ -729,21 +668,9 @@ matrix:
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
-    - PHP_VERSION: 7.2
-      DB_TYPE: mariadb
-      TEST_SUITE: phpunit
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
   # PHP 7.3
     - PHP_VERSION: 7.3
       DB_TYPE: sqlite
-      TEST_SUITE: phpunit
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.3
-      DB_TYPE: mariadb
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
