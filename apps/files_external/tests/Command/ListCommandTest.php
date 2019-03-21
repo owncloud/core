@@ -34,16 +34,16 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class ListCommandTest extends CommandTest {
 	/**
-	 * @return \OCA\Files_External\Command\ListCommand|\PHPUnit_Framework_MockObject_MockObject
+	 * @return \OCA\Files_External\Command\ListCommand|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private function getInstance() {
-		/** @var \OCP\Files\External\Service\IGlobalStoragesService|\PHPUnit_Framework_MockObject_MockObject $globalService */
+		/** @var \OCP\Files\External\Service\IGlobalStoragesService|\PHPUnit\Framework\MockObject\MockObject $globalService */
 		$globalService = $this->createMock('\OCP\Files\External\Service\IGlobalStoragesService');
-		/** @var \OC\Files\External\Service\IUserStoragesService|\PHPUnit_Framework_MockObject_MockObject $userService */
+		/** @var \OC\Files\External\Service\IUserStoragesService|\PHPUnit\Framework\MockObject\MockObject $userService */
 		$userService = $this->createMock('\OCP\Files\External\Service\IUserStoragesService');
-		/** @var \OCP\IUserManager|\PHPUnit_Framework_MockObject_MockObject $userManager */
+		/** @var \OCP\IUserManager|\PHPUnit\Framework\MockObject\MockObject $userManager */
 		$userManager = $this->createMock('\OCP\IUserManager');
-		/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject $userSession */
+		/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject $userSession */
 		$userSession = $this->createMock('\OCP\IUserSession');
 
 		return new ListCommand($globalService, $userService, $userSession, $userManager);

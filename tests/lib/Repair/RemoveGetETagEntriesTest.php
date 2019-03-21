@@ -64,7 +64,7 @@ class RemoveGetETagEntriesTest extends TestCase {
 			$this->assertContains($entry, $data, 'Asserts that the entries are the ones from the test data set');
 		}
 
-		/** @var IOutput | \PHPUnit_Framework_MockObject_MockObject $outputMock */
+		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
 		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
 			->disableOriginalConstructor()
 			->getMock();

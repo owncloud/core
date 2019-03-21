@@ -39,13 +39,13 @@ class CronControllerTest extends TestCase {
 
 	/** @var CronController */
 	private $controller;
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
-	/** @var IJobList | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IJobList | \PHPUnit\Framework\MockObject\MockObject */
 	private $jobList;
-	/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
 
 	protected function setUp() {

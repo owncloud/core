@@ -34,15 +34,15 @@ use Test\TestCase;
  */
 class AppsTest extends TestCase {
 
-	/** @var Apps | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Apps | \PHPUnit\Framework\MockObject\MockObject */
 	protected $repair;
-	/** @var IAppManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IAppManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $appManager;
-	/** @var  EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
 	protected $eventDispatcher;
-	/** @var  IConfig | \PHPUnit_Framework_MockObject_MockObject*/
+	/** @var  IConfig | \PHPUnit\Framework\MockObject\MockObject*/
 	protected $config;
-	/** @var \OC_Defaults | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OC_Defaults | \PHPUnit\Framework\MockObject\MockObject */
 	private $defaults;
 
 	protected function setUp() {

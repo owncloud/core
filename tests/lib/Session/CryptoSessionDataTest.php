@@ -27,7 +27,7 @@ use OCP\Session\Exceptions\SessionNotAvailableException;
 use OC\Session\Memory;
 
 class CryptoSessionDataTest extends Session {
-	/** @var \PHPUnit_Framework_MockObject_MockObject|\OCP\Security\ICrypto */
+	/** @var \PHPUnit\Framework\MockObject\MockObject|\OCP\Security\ICrypto */
 	protected $crypto;
 
 	/** @var \OCP\ISession */
@@ -58,7 +58,7 @@ class CryptoSessionDataTest extends Session {
 	 * Thrown exception during session destruct/close should be handled silently
 	 */
 	public function testDestructExceptionCatching() {
-		/** @var Memory | \PHPUnit_Framework_MockObject_MockObject $session */
+		/** @var Memory | \PHPUnit\Framework\MockObject\MockObject $session */
 		$session = $this->getMockBuilder(Memory::class)
 			->disableOriginalConstructor()
 			->getMock();

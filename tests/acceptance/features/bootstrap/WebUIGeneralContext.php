@@ -256,7 +256,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		);
 		$matches = [];
 		\preg_match($regexSearch, $content, $matches);
-		PHPUnit_Framework_Assert::assertArrayHasKey(1, $matches, $errorMessage);
+		PHPUnit\Framework\Assert::assertArrayHasKey(1, $matches, $errorMessage);
 		return $matches[1];
 	}
 
@@ -284,7 +284,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function noNotificationShouldBeDisplayedOnTheWebUI() {
 		try {
 			$notificationText = $this->owncloudPage->getNotificationText();
-			PHPUnit_Framework_Assert::assertEquals(
+			PHPUnit\Framework\Assert::assertEquals(
 				'',
 				$notificationText,
 				"Expecting no notifications but got $notificationText"
@@ -304,7 +304,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function aNotificationShouldBeDisplayedOnTheWebUIWithTheText(
 		$notificationText
 	) {
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$notificationText, $this->owncloudPage->getNotificationText()
 		);
 	}
@@ -327,7 +327,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$expectedNotifications = $table->getRows();
 		$numExpectedNotifications = \count($expectedNotifications);
 
-		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+		PHPUnit\Framework\Assert::assertGreaterThanOrEqual(
 			$numExpectedNotifications,
 			$numActualNotifications,
 			"expected at least $numExpectedNotifications notifications but only found $numActualNotifications"
@@ -344,7 +344,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 					);
 				}
 			} else {
-				PHPUnit_Framework_Assert::assertEquals(
+				PHPUnit\Framework\Assert::assertEquals(
 					$expectedNotificationText,
 					$actualNotificationText
 				);
@@ -380,7 +380,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				$currentTime = \microtime(true);
 				$dialogs = $this->owncloudPage->getOcDialogs();
 			}
-			PHPUnit_Framework_Assert::assertEquals($count, \count($dialogs));
+			PHPUnit\Framework\Assert::assertEquals($count, \count($dialogs));
 		}
 		if ($table !== null) {
 			$expectedDialogs = $table->getHash();
@@ -402,7 +402,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				}
 			}
 			foreach ($expectedDialogs as $expectedDialog) {
-				PHPUnit_Framework_Assert::assertArrayHasKey(
+				PHPUnit\Framework\Assert::assertArrayHasKey(
 					"found",
 					$expectedDialog,
 					"could not find dialog with title '{$expectedDialog['title']}' "
@@ -424,7 +424,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$this->owncloudPage->waitForOutstandingAjaxCalls($this->getSession());
 		// Just check that the actual title starts with the expected title.
 		// Theming can have other text following.
-		PHPUnit_Framework_Assert::assertStringStartsWith(
+		PHPUnit\Framework\Assert::assertStringStartsWith(
 			$title, $this->owncloudPage->getPageTitle()
 		);
 	}
@@ -441,7 +441,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$this->generalErrorPage->waitTillPageIsLoaded($this->getSession());
 		// Just check that the actual title starts with the expected title.
 		// Theming can have other text following.
-		PHPUnit_Framework_Assert::assertStringStartsWith(
+		PHPUnit\Framework\Assert::assertStringStartsWith(
 			$title, $this->generalErrorPage->getPageTitle()
 		);
 	}
@@ -454,7 +454,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function anErrorShouldBeDisplayedOnTheGeneralErrorPage($error) {
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$error, $this->generalErrorPage->getErrorMessage()
 		);
 	}

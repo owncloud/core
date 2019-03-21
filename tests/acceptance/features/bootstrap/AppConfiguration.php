@@ -99,7 +99,7 @@ trait AppConfiguration {
 	) {
 		$this->theAdministratorGetsCapabilitiesCheckResponse();
 
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedValue,
 			$this->getAppParameter($capabilitiesApp, $capabilitiesPath)
 		);
@@ -146,7 +146,7 @@ trait AppConfiguration {
 	 */
 	public function userGetsCapabilitiesCheckResponse($username) {
 		$this->userGetsCapabilities($username);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
 	}
@@ -360,12 +360,12 @@ trait AppConfiguration {
 		$this->theUserSendsToOcsApiEndpoint('get', '/cloud/apps?filter=enabled');
 		$this->theHTTPStatusCodeShouldBe('200');
 		if ($enabled) {
-			PHPUnit_Framework_Assert::assertContains(
+			PHPUnit\Framework\Assert::assertContains(
 				'testing',
 				$this->response->getBody()->getContents()
 			);
 		} else {
-			PHPUnit_Framework_Assert::assertNotContains(
+			PHPUnit\Framework\Assert::assertNotContains(
 				'testing',
 				$this->response->getBody()->getContents()
 			);

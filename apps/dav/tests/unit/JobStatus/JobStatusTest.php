@@ -37,7 +37,7 @@ class JobStatusTest extends TestCase {
 	private $jobStatus;
 	/** @var JobStatusEntity */
 	private $jobStatusEntity;
-	/** @var JobStatusMapper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var JobStatusMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $mapper;
 
 	protected function setUp() {

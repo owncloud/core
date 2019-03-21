@@ -50,37 +50,37 @@ use Test\TestCase;
 class DavTest extends TestCase {
 
 	/**
-	 * @var DAV | \PHPUnit_Framework_MockObject_MockObject
+	 * @var DAV | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $instance;
 
 	/**
-	 * @var IClientService | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IClientService | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $httpClientService;
 
 	/**
-	 * @var IWebDavClientService | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IWebDavClientService | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $webDavClientService;
 
 	/**
-	 * @var Client | \PHPUnit_Framework_MockObject_MockObject
+	 * @var Client | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $davClient;
 
 	/**
-	 * @var IClient | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IClient | \PHPUnit\Framework\MockObject\MockObject
 	 **/
 	private $httpClient;
 
 	/**
-	 * @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject
+	 * @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $timeFactory;
 
 	/**
-	 * @var Cache | \PHPUnit_Framework_MockObject_MockObject
+	 * @var Cache | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $cache;
 

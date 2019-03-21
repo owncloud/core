@@ -21,10 +21,10 @@ class LoggerTest extends TestCase {
 	private $logger;
 	private static $logs = [];
 
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 
-	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $eventDispatcher;
 
 	protected function setUp() {

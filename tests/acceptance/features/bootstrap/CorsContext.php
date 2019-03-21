@@ -95,7 +95,7 @@ class CorsContext implements Context {
 			]
 		);
 		$domains = \json_decode($this->featureContext->getStdOutOfOccCommand());
-		PHPUnit_Framework_Assert::assertContains(
+		PHPUnit\Framework\Assert::assertContains(
 			$domain, $domains, "CORS domain was not added correctly"
 		);
 	}

@@ -31,7 +31,7 @@ class CORSMiddlewareTest extends \Test\TestCase {
 	private $reflector;
 	/** @var Session */
 	private $session;
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject*/
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject*/
 	private $config;
 	/** @var IUserSession */
 	private $fakeSession;

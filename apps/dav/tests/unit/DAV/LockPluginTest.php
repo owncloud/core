@@ -40,15 +40,15 @@ use Test\TestCase;
  */
 class LockPluginTest extends TestCase {
 
-	/** @var Server | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Server | \PHPUnit\Framework\MockObject\MockObject */
 	private $server;
 	/** @var LockPlugin */
 	private $plugin;
-	/** @var Tree | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */
 	private $tree;
-	/** @var LockMapper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var LockMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $lockMapper;
-	/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	private $userSession;
 
 	public function setUp() {

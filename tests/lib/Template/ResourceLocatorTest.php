@@ -14,7 +14,7 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
 
 class ResourceLocatorTest extends \Test\TestCase {
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
 	protected $root;
 	
@@ -42,7 +42,7 @@ class ResourceLocatorTest extends \Test\TestCase {
 	 * @param string $theme
 	 * @param array $core_map
 	 * @param array $appsRoots
-	 * @return \PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit\Framework\MockObject\MockObject
 	 */
 	public function getResourceLocator($theme, $core_map, $appsRoots) {
 		$themeInstance = $this->createMock('OC\Theme\Theme');

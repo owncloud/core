@@ -25,7 +25,7 @@ use OC\IntegrityCheck\Iterator\ExcludeFileByNameFilterIterator;
 use Test\TestCase;
 
 class ExcludeFileByNameFilterIteratorTest extends TestCase {
-	/** @var \PHPUnit_Framework_MockObject_MockBuilder */
+	/** @var \PHPUnit\Framework\MockObject\Mockbuilder */
 	protected $filter;
 
 	public function setUp() {

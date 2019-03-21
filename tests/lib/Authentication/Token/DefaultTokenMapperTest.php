@@ -161,7 +161,7 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	public function testGetTokenByUserNotFound() {
-		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
+		/** @var IUser | \PHPUnit\Framework\MockObject\MockObject $user */
 		$user = $this->createMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('getUID')
@@ -171,7 +171,7 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	public function testDeleteById() {
-		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
+		/** @var IUser | \PHPUnit\Framework\MockObject\MockObject $user */
 		$user = $this->createMock('\OCP\IUser');
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->select('id')
@@ -188,7 +188,7 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	public function testDeleteByIdWrongUser() {
-		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
+		/** @var IUser | \PHPUnit\Framework\MockObject\MockObject $user */
 		$user = $this->createMock('\OCP\IUser');
 		$id = 33;
 		$user->expects($this->once())

@@ -36,19 +36,19 @@ use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\ISystemTagObjectMapper;
 
 class FilesReportPluginTest extends \Test\TestCase {
-	/** @var \Sabre\DAV\Server|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \Sabre\DAV\Server|\PHPUnit\Framework\MockObject\MockObject */
 	private $server;
 
-	/** @var \Sabre\DAV\Tree|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \Sabre\DAV\Tree|\PHPUnit\Framework\MockObject\MockObject */
 	private $tree;
 
-	/** @var ISystemTagObjectMapper|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var ISystemTagObjectMapper|\PHPUnit\Framework\MockObject\MockObject */
 	private $tagMapper;
 
-	/** @var ISystemTagManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var ISystemTagManager|\PHPUnit\Framework\MockObject\MockObject */
 	private $tagManager;
 
-	/** @var ITags|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var ITags|\PHPUnit\Framework\MockObject\MockObject */
 	private $privateTags;
 
 	/** @var  \OCP\IUserSession */
@@ -57,13 +57,13 @@ class FilesReportPluginTest extends \Test\TestCase {
 	/** @var FilesReportPluginImplementation */
 	private $plugin;
 
-	/** @var View|\PHPUnit_Framework_MockObject_MockObject **/
+	/** @var View|\PHPUnit\Framework\MockObject\MockObject **/
 	private $view;
 
-	/** @var IGroupManager|\PHPUnit_Framework_MockObject_MockObject **/
+	/** @var IGroupManager|\PHPUnit\Framework\MockObject\MockObject **/
 	private $groupManager;
 
-	/** @var Folder|\PHPUnit_Framework_MockObject_MockObject **/
+	/** @var Folder|\PHPUnit\Framework\MockObject\MockObject **/
 	private $userFolder;
 
 	public function setUp() {
@@ -371,7 +371,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->with('222')
 			->will($this->returnValue([$filesNode2]));
 
-		/** @var \OCA\DAV\Connector\Sabre\Directory|\PHPUnit_Framework_MockObject_MockObject $reportTargetNode */
+		/** @var \OCA\DAV\Connector\Sabre\Directory|\PHPUnit\Framework\MockObject\MockObject $reportTargetNode */
 		$result = $this->plugin->findNodesByFileIds($reportTargetNode, ['111', '222']);
 
 		$this->assertCount(2, $result);
@@ -421,7 +421,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->with('222')
 			->will($this->returnValue([$filesNode2]));
 
-		/** @var \OCA\DAV\Connector\Sabre\Directory|\PHPUnit_Framework_MockObject_MockObject $reportTargetNode */
+		/** @var \OCA\DAV\Connector\Sabre\Directory|\PHPUnit\Framework\MockObject\MockObject $reportTargetNode */
 		$result = $this->plugin->findNodesByFileIds($reportTargetNode, ['111', '222']);
 
 		$this->assertCount(2, $result);

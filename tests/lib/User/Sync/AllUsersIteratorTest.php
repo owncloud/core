@@ -34,7 +34,7 @@ use Test\TestCase;
 class AllUsersIteratorTest extends TestCase {
 
 	/**
-	 * @var UserInterface|\PHPUnit_Framework_MockObject_MockObject
+	 * @var UserInterface|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $backend;
 	/**
