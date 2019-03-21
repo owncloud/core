@@ -62,7 +62,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	) {
 		$notificationsDialog = $this->openNotificationsDialog($this->getSession());
 		$notifications = $notificationsDialog->getAllNotifications();
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$number,
 			\count($notifications),
 			"expected $number notifications, found " . \count($notifications)
@@ -84,7 +84,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 				}
 			}
 			if (!$found) {
-				PHPUnit_Framework_Assert::fail(
+				PHPUnit\Framework\Assert::fail(
 					"could not find expected notification: " .
 					\print_r($expectedNotification, true) .
 					" in viewed notifications: " .

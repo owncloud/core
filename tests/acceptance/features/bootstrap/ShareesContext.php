@@ -96,7 +96,7 @@ class ShareesContext implements Context {
 		$respondedArray = $this->getArrayOfShareesResponded(
 			$this->featureContext->getResponse(), $shareeType
 		);
-		PHPUnit_Framework_Assert::assertEquals($sharees, $respondedArray);
+		PHPUnit\Framework\Assert::assertEquals($sharees, $respondedArray);
 	}
 
 	/**
@@ -117,7 +117,7 @@ class ShareesContext implements Context {
 			$firstEntry = "";
 		}
 
-		PHPUnit_Framework_Assert::assertEmpty(
+		PHPUnit\Framework\Assert::assertEmpty(
 			$respondedArray,
 			"'$shareeType' array should be empty, but it starts with $firstEntry"
 		);

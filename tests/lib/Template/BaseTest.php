@@ -13,7 +13,7 @@ use OCP\Theme\ITheme;
 
 class BaseTest extends \Test\TestCase {
 
-	/** @var ITheme|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var ITheme|\PHPUnit\Framework\MockObject\MockObject */
 	protected $theme;
 
 	/** @var string */

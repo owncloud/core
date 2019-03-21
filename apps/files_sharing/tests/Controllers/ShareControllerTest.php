@@ -59,19 +59,19 @@ class ShareControllerTest extends \Test\TestCase {
 	private $appName = 'files_sharing';
 	/** @var ShareController */
 	private $shareController;
-	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
 	private $urlGenerator;
-	/** @var ISession | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
 	private $session;
-	/** @var \OCP\IPreview | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IPreview | \PHPUnit\Framework\MockObject\MockObject */
 	private $previewManager;
-	/** @var \OCP\IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var  \OC\Share20\Manager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  \OC\Share20\Manager | \PHPUnit\Framework\MockObject\MockObject */
 	private $shareManager;
-	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
-	/** @var EventDispatcher | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var EventDispatcher | \PHPUnit\Framework\MockObject\MockObject */
 	private $eventDispatcher;
 
 	protected function setUp() {

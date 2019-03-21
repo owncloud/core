@@ -32,7 +32,7 @@ class SyncFederationAddressbooksTest extends \Test\TestCase {
 	private $callBacks = [];
 
 	public function testSync() {
-		/** @var DbHandler | \PHPUnit_Framework_MockObject_MockObject $dbHandler */
+		/** @var DbHandler | \PHPUnit\Framework\MockObject\MockObject $dbHandler */
 		$dbHandler = $this->getMockBuilder('OCA\Federation\DbHandler')->
 			disableOriginalConstructor()->
 			getMock();
@@ -62,7 +62,7 @@ class SyncFederationAddressbooksTest extends \Test\TestCase {
 	}
 
 	public function testException() {
-		/** @var DbHandler | \PHPUnit_Framework_MockObject_MockObject $dbHandler */
+		/** @var DbHandler | \PHPUnit\Framework\MockObject\MockObject $dbHandler */
 		$dbHandler = $this->getMockBuilder('OCA\Federation\DbHandler')->
 		disableOriginalConstructor()->
 		getMock();

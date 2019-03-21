@@ -25,7 +25,7 @@ namespace OCA\DAV\Tests\unit\CardDAV;
 use OCA\DAV\CardDAV\Converter;
 use OCP\IImage;
 use OCP\IUser;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
 class ConverterTest extends TestCase {
@@ -122,7 +122,7 @@ class ConverterTest extends TestCase {
 	 * @param $displayName
 	 * @param $eMailAddress
 	 * @param $cloudId
-	 * @return IUser | PHPUnit_Framework_MockObject_MockObject
+	 * @return IUser | PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getUserMock($displayName, $eMailAddress, $cloudId) {
 		$image0 = $this->getMockBuilder(IImage::class)->disableOriginalConstructor()->getMock();

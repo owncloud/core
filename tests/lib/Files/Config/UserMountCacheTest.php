@@ -60,7 +60,7 @@ class UserMountCacheTest extends TestCase {
 
 		/** @var IConfig $config */
 		$config = $this->createMock(IConfig::class);
-		/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject $accountMapper */
+		/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject $accountMapper */
 		$accountMapper = $this->createMock(AccountMapper::class);
 		$a1 = new Account();
 		$a1->setId(1);

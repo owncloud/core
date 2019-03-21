@@ -900,7 +900,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userShouldExist($user) {
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			$this->userExists($user),
 			"User '$user' should exist but does not exist"
 		);
@@ -914,7 +914,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userShouldNotExist($user) {
-		PHPUnit_Framework_Assert::assertFalse(
+		PHPUnit\Framework\Assert::assertFalse(
 			$this->userExists($user),
 			"User '$user' should not exist but does exist"
 		);
@@ -929,7 +929,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function groupShouldExist($group) {
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			$this->groupExists($group),
 			"Group '$group' should exist but does not exist"
 		);
@@ -943,7 +943,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function groupShouldNotExist($group) {
-		PHPUnit_Framework_Assert::assertFalse(
+		PHPUnit\Framework\Assert::assertFalse(
 			$this->groupExists($group),
 			"Group '$group' should not exist but does exist"
 		);
@@ -1351,8 +1351,8 @@ trait Provisioning {
 		$this->theAdministratorGetsAllTheGroupsOfUser($user);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		\sort($respondedArray);
-		PHPUnit_Framework_Assert::assertContains($group, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertContains($group, $respondedArray);
+		PHPUnit\Framework\Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
 	}
@@ -1372,8 +1372,8 @@ trait Provisioning {
 		);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		\sort($respondedArray);
-		PHPUnit_Framework_Assert::assertNotContains($group, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertNotContains($group, $respondedArray);
+		PHPUnit\Framework\Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
 	}
@@ -2062,7 +2062,7 @@ trait Provisioning {
 		$this->adminMakesUserSubadminOfGroupUsingTheProvisioningApi(
 			$user, $group
 		);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
 	}
@@ -2147,7 +2147,7 @@ trait Provisioning {
 			$users = $usersList->getRows();
 			$usersSimplified = $this->simplifyArray($users);
 			$respondedArray = $this->getArrayOfUsersResponded($this->response);
-			PHPUnit_Framework_Assert::assertEquals(
+			PHPUnit\Framework\Assert::assertEquals(
 				$usersSimplified, $respondedArray, "", 0.0, 10, true
 			);
 		}
@@ -2165,7 +2165,7 @@ trait Provisioning {
 			$groups = $groupsList->getRows();
 			$groupsSimplified = $this->simplifyArray($groups);
 			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-			PHPUnit_Framework_Assert::assertEquals(
+			PHPUnit\Framework\Assert::assertEquals(
 				$groupsSimplified, $respondedArray, "", 0.0, 10, true
 			);
 		}
@@ -2180,7 +2180,7 @@ trait Provisioning {
 	 */
 	public function theGroupsReturnedByTheApiShouldInclude($group) {
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		PHPUnit_Framework_Assert::assertContains($group, $respondedArray);
+		PHPUnit\Framework\Assert::assertContains($group, $respondedArray);
 	}
 
 	/**
@@ -2192,7 +2192,7 @@ trait Provisioning {
 	 */
 	public function theGroupsReturnedByTheApiShouldNotInclude($group) {
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		PHPUnit_Framework_Assert::assertNotContains($group, $respondedArray);
+		PHPUnit\Framework\Assert::assertNotContains($group, $respondedArray);
 	}
 
 	/**
@@ -2204,7 +2204,7 @@ trait Provisioning {
 	 */
 	public function theUsersReturnedByTheApiShouldNotInclude($user) {
 		$respondedArray = $this->getArrayOfUsersResponded($this->response);
-		PHPUnit_Framework_Assert::assertNotContains($user, $respondedArray);
+		PHPUnit\Framework\Assert::assertNotContains($user, $respondedArray);
 	}
 
 	/**
@@ -2216,7 +2216,7 @@ trait Provisioning {
 		$tableRows = $groupsOrUsersList->getRows();
 		$simplifiedTableRows = $this->simplifyArray($tableRows);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$simplifiedTableRows, $respondedArray, "", 0.0, 10, true
 		);
 	}
@@ -2255,7 +2255,7 @@ trait Provisioning {
 		$appsSimplified = $this->simplifyArray($apps);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
 		foreach ($appsSimplified as $app) {
-			PHPUnit_Framework_Assert::assertContains($app, $respondedArray);
+			PHPUnit\Framework\Assert::assertContains($app, $respondedArray);
 		}
 	}
 
@@ -2272,7 +2272,7 @@ trait Provisioning {
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
-		PHPUnit_Framework_Assert::assertNotContains($appName, $respondedArray);
+		PHPUnit\Framework\Assert::assertNotContains($appName, $respondedArray);
 	}
 
 	/**
@@ -2285,11 +2285,11 @@ trait Provisioning {
 	 */
 	public function userShouldBeASubadminOfGroup($user, $group) {
 		$this->theAdministratorGetsAllTheSubadminsOfGroupUsingTheProvisioningApi($group);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
 		$listOfSubadmins = $this->getArrayOfSubadminsResponded($this->response);
-		PHPUnit_Framework_Assert::assertContains(
+		PHPUnit\Framework\Assert::assertContains(
 			$user,
 			$listOfSubadmins
 		);
@@ -2306,7 +2306,7 @@ trait Provisioning {
 	public function userShouldNotBeASubadminOfGroup($user, $group) {
 		$this->theAdministratorGetsAllTheSubadminsOfGroupUsingTheProvisioningApi($group);
 		$listOfSubadmins = $this->getArrayOfSubadminsResponded($this->response);
-		PHPUnit_Framework_Assert::assertNotContains(
+		PHPUnit\Framework\Assert::assertNotContains(
 			$user,
 			$listOfSubadmins
 		);
@@ -2321,7 +2321,7 @@ trait Provisioning {
 	 */
 	public function theDisplayNameReturnedByTheApiShouldBe($expectedDisplayName) {
 		$responseDisplayName = (string) $this->getResponseXml()->data[0]->displayname;
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedDisplayName,
 			$responseDisplayName
 		);
@@ -2349,7 +2349,7 @@ trait Provisioning {
 	 */
 	public function theEmailAddressReturnedByTheApiShouldBe($expectedEmailAddress) {
 		$responseEmailAddress = (string) $this->getResponseXml()->data[0]->email;
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedEmailAddress,
 			$responseEmailAddress
 		);
@@ -2377,7 +2377,7 @@ trait Provisioning {
 	 */
 	public function theQuotaDefinitionReturnedByTheApiShouldBe($expectedQuotaDefinition) {
 		$responseQuotaDefinition = (string) $this->getResponseXml()->data[0]->quota->definition;
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedQuotaDefinition,
 			$responseQuotaDefinition
 		);
@@ -2485,8 +2485,8 @@ trait Provisioning {
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
-		PHPUnit_Framework_Assert::assertContains($app, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertContains($app, $respondedArray);
+		PHPUnit\Framework\Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
 	}
@@ -2504,8 +2504,8 @@ trait Provisioning {
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
-		PHPUnit_Framework_Assert::assertContains($app, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertContains($app, $respondedArray);
+		PHPUnit\Framework\Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
 	}
@@ -2522,17 +2522,17 @@ trait Provisioning {
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
 		$respondedArray = $this->getArrayOfAppInfoResponded($this->response);
-		PHPUnit_Framework_Assert::assertArrayHasKey(
+		PHPUnit\Framework\Assert::assertArrayHasKey(
 			'version',
 			$respondedArray,
 			"app info returned for $app app does not have a version"
 		);
 		$appVersion = $respondedArray['version'];
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			\substr_count($appVersion, '.') > 1,
 			"app version '$appVersion' returned in app info is not a valid version string"
 		);
@@ -2551,7 +2551,7 @@ trait Provisioning {
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			"false", $this->getResponseXml()->data[0]->enabled
 		);
 	}
@@ -2569,7 +2569,7 @@ trait Provisioning {
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			"true", $this->getResponseXml()->data[0]->enabled
 		);
 	}
@@ -2667,7 +2667,7 @@ trait Provisioning {
 				$data = $data->$field_name;
 			}
 			if ($data != $value) {
-				PHPUnit_Framework_Assert::fail(
+				PHPUnit\Framework\Assert::fail(
 					"$field has value $data"
 				);
 			}
@@ -2697,7 +2697,7 @@ trait Provisioning {
 	 */
 	public function theApiShouldNotReturnAnyData() {
 		$responseData = $this->getResponseXml()->data[0];
-		PHPUnit_Framework_Assert::assertEmpty(
+		PHPUnit\Framework\Assert::assertEmpty(
 			$responseData,
 			"Response data is not empty but it should be empty"
 		);
@@ -2710,7 +2710,7 @@ trait Provisioning {
 	 */
 	public function theListOfUsersReturnedByTheApiShouldBeEmpty() {
 		$usersList = $this->getResponseXml()->data[0]->users[0];
-		PHPUnit_Framework_Assert::assertEmpty(
+		PHPUnit\Framework\Assert::assertEmpty(
 			$usersList,
 			"Users list is not empty but it should be empty"
 		);
@@ -2723,7 +2723,7 @@ trait Provisioning {
 	 */
 	public function theListOfGroupsReturnedByTheApiShouldBeEmpty() {
 		$groupsList = $this->getResponseXml()->data[0]->groups[0];
-		PHPUnit_Framework_Assert::assertEmpty(
+		PHPUnit\Framework\Assert::assertEmpty(
 			$groupsList,
 			"Groups list is not empty but it should be empty"
 		);

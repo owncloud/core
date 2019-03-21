@@ -38,19 +38,19 @@ use Test\TestCase;
 class LoginControllerTest extends TestCase {
 	/** @var LoginController */
 	private $loginController;
-	/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var ISession | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
 	private $session;
-	/** @var Session | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Session | \PHPUnit\Framework\MockObject\MockObject */
 	private $userSession;
-	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
 	private $urlGenerator;
-	/** @var Manager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Manager | \PHPUnit\Framework\MockObject\MockObject */
 	private $twoFactorManager;
 
 	public function setUp() {
@@ -325,7 +325,7 @@ class LoginControllerTest extends TestCase {
 	}
 
 	public function testLoginWithValidCredentials() {
-		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
+		/** @var IUser | \PHPUnit\Framework\MockObject\MockObject $user */
 		$user = $this->createMock(IUser::class);
 		$password = 'secret';
 		$indexPageUrl = 'some url';
@@ -368,7 +368,7 @@ class LoginControllerTest extends TestCase {
 	}
 
 	public function testLoginWithValidCredentialsAndRedirectUrl() {
-		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
+		/** @var IUser | \PHPUnit\Framework\MockObject\MockObject $user */
 		$user = $this->createMock(IUser::class);
 		$user->expects($this->any())
 			->method('getUID')
@@ -401,7 +401,7 @@ class LoginControllerTest extends TestCase {
 	}
 	
 	public function testLoginWithTwoFactorEnforced() {
-		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
+		/** @var IUser | \PHPUnit\Framework\MockObject\MockObject $user */
 		$user = $this->createMock(IUser::class);
 		$user->expects($this->any())
 			->method('getUID')
@@ -438,7 +438,7 @@ class LoginControllerTest extends TestCase {
 	}
 
 	public function testToNotLeakLoginName() {
-		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
+		/** @var IUser | \PHPUnit\Framework\MockObject\MockObject $user */
 		$user = $this->createMock(IUser::class);
 		$user->expects($this->any())
 			->method('getUID')

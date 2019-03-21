@@ -60,7 +60,7 @@ class EmailContext implements Context {
 		$expectedContent = $this->featureContext->substituteInLineCodes(
 			$expectedContent
 		);
-		PHPUnit_Framework_Assert::assertContains(
+		PHPUnit\Framework\Assert::assertContains(
 			$expectedContent,
 			EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address)
 		);
@@ -75,7 +75,7 @@ class EmailContext implements Context {
 	 * @return void
 	 */
 	public function theResetEmailSenderEmailAddressShouldBe($receiverAddress, $senderAddress) {
-		PHPUnit_Framework_Assert::assertContains(
+		PHPUnit\Framework\Assert::assertContains(
 			$senderAddress,
 			EmailHelper::getSenderOfEmail($this->localMailhogUrl, $receiverAddress)
 		);
@@ -90,7 +90,7 @@ class EmailContext implements Context {
 	 * @throws \Exception
 	 */
 	public function assertThatEmailDoesntExistWithTheAddress($address) {
-		PHPUnit_Framework_Assert::assertFalse(
+		PHPUnit\Framework\Assert::assertFalse(
 			EmailHelper::emailReceived(
 				EmailHelper::getLocalMailhogUrl(), $address
 			),

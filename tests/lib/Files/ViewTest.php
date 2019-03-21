@@ -1197,7 +1197,7 @@ class ViewTest extends TestCase {
 
 	private function doTestCopyRenameFail($operation) {
 		$storage1 = new Temporary([]);
-		/** @var \PHPUnit_Framework_MockObject_MockObject | Temporary $storage2 */
+		/** @var \PHPUnit\Framework\MockObject\MockObject | Temporary $storage2 */
 		$storage2 = $this->getMockBuilder(TemporaryNoCross::class)
 			->setConstructorArgs([[]])
 			->setMethods(['fopen'])
@@ -1206,7 +1206,7 @@ class ViewTest extends TestCase {
 		$storage2->expects($this->any())
 			->method('fopen')
 			->will($this->returnCallback(function ($path, $mode) use ($storage2) {
-				/** @var \PHPUnit_Framework_MockObject_MockObject | Temporary $storage2 */
+				/** @var \PHPUnit\Framework\MockObject\MockObject | Temporary $storage2 */
 				$source = \fopen($storage2->getSourcePath($path), $mode);
 				return \OC\Files\Stream\Quota::wrap($source, 9);
 			}));
@@ -1249,7 +1249,7 @@ class ViewTest extends TestCase {
 
 	public function testDeleteFailKeepCache() {
 		/**
-		 * @var \PHPUnit_Framework_MockObject_MockObject | Temporary $storage
+		 * @var \PHPUnit\Framework\MockObject\MockObject | Temporary $storage
 		 */
 		$storage = $this->getMockBuilder(Temporary::class)
 			->setConstructorArgs([[]])
@@ -1850,7 +1850,7 @@ class ViewTest extends TestCase {
 	) {
 		$view = new View('/' . $this->user . '/files/');
 
-		/** @var Temporary | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Temporary | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->getMockBuilder(Temporary::class)
 			->setMethods([$operation])
 			->getMock();
@@ -1906,7 +1906,7 @@ class ViewTest extends TestCase {
 		$view = new View('/' . $this->user . '/files/');
 
 		$path = 'test_file_put_contents.txt';
-		/** @var Temporary | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Temporary | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->getMockBuilder(Temporary::class)
 			->setMethods(['fopen'])
 			->getMock();
@@ -1938,7 +1938,7 @@ class ViewTest extends TestCase {
 		$view = new View('/' . $this->user . '/files/');
 
 		$path = 'test_file_put_contents.txt';
-		/** @var Temporary | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Temporary | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->getMockBuilder(Temporary::class)
 			->setMethods(['fopen'])
 			->getMock();
@@ -1997,7 +1997,7 @@ class ViewTest extends TestCase {
 		$view = new View('/' . $this->user . '/files/');
 
 		$path = 'test_file_put_contents.txt';
-		/** @var Temporary | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Temporary | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->getMockBuilder(Temporary::class)
 			->setMethods(['fopen'])
 			->getMock();
@@ -2049,7 +2049,7 @@ class ViewTest extends TestCase {
 	) {
 		$view = new View('/' . $this->user . '/files/');
 
-		/** @var Temporary | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Temporary | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->getMockBuilder(Temporary::class)
 			->setMethods([$operation])
 			->getMock();
@@ -2103,7 +2103,7 @@ class ViewTest extends TestCase {
 	) {
 		$view = new View('/' . $this->user . '/files/');
 
-		/** @var Temporary | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Temporary | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->getMockBuilder(Temporary::class)
 			->setMethods([$operation])
 			->getMock();
@@ -2142,7 +2142,7 @@ class ViewTest extends TestCase {
 	public function testLockFileRename($operation, $expectedLockTypeSourceDuring) {
 		$view = new View('/' . $this->user . '/files/');
 
-		/** @var Temporary | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Temporary | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->getMockBuilder(Temporary::class)
 			->setMethods([$operation, 'filemtime'])
 			->getMock();
@@ -2198,7 +2198,7 @@ class ViewTest extends TestCase {
 	public function testLockFileCopyException() {
 		$view = new View('/' . $this->user . '/files/');
 
-		/** @var Temporary | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Temporary | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->getMockBuilder(Temporary::class)
 			->setMethods(['copy'])
 			->getMock();
@@ -2317,11 +2317,11 @@ class ViewTest extends TestCase {
 	public function testLockFileRenameCrossStorage($viewOperation, $storageOperation, $expectedLockTypeSourceDuring) {
 		$view = new View('/' . $this->user . '/files/');
 
-		/** @var Temporary | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Temporary | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->getMockBuilder(Temporary::class)
 			->setMethods([$storageOperation])
 			->getMock();
-		/** @var Temporary | \PHPUnit_Framework_MockObject_MockObject $storage2 */
+		/** @var Temporary | \PHPUnit\Framework\MockObject\MockObject $storage2 */
 		$storage2 = $this->getMockBuilder(Temporary::class)
 			->setMethods([$storageOperation, 'filemtime'])
 			->getMock();
@@ -2657,7 +2657,7 @@ class ViewTest extends TestCase {
 		// since stream wrappers influence the streams,
 		// this test makes sure that all stream wrappers properly return a failure
 		// to the caller instead of wrapping the boolean
-		/** @var Temporary | \PHPUnit_Framework_MockObject_MockObject $storage */
+		/** @var Temporary | \PHPUnit\Framework\MockObject\MockObject $storage */
 		$storage = $this->getMockBuilder(Temporary::class)
 			->setMethods(['fopen'])
 			->getMock();

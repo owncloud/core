@@ -38,7 +38,7 @@ class RootTest extends TestCase {
 		 */
 		$storage = $this->createMock('\OC\Files\Storage\Storage');
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
@@ -64,7 +64,7 @@ class RootTest extends TestCase {
 		 */
 		$storage = $this->createMock('\OC\Files\Storage\Storage');
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
@@ -84,7 +84,7 @@ class RootTest extends TestCase {
 	public function testGetInvalidPath() {
 		$manager = new Manager();
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
@@ -98,7 +98,7 @@ class RootTest extends TestCase {
 	public function testGetNoStorages() {
 		$manager = new Manager();
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
@@ -113,7 +113,7 @@ class RootTest extends TestCase {
 		$this->logout();
 		$manager = new Manager();
 		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = new \OC\Files\View();
 

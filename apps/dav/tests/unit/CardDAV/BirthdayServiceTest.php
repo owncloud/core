@@ -35,11 +35,11 @@ class BirthdayServiceTest extends TestCase {
 
 	/** @var BirthdayService */
 	private $service;
-	/** @var CalDavBackend | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var CalDavBackend | \PHPUnit\Framework\MockObject\MockObject */
 	private $calDav;
-	/** @var CardDavBackend | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var CardDavBackend | \PHPUnit\Framework\MockObject\MockObject */
 	private $cardDav;
-	/** @var GroupPrincipalBackend | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var GroupPrincipalBackend | \PHPUnit\Framework\MockObject\MockObject */
 	private $groupPrincipalBackend;
 
 	public function setUp() {
@@ -107,7 +107,7 @@ class BirthdayServiceTest extends TestCase {
 			]);
 		$this->cardDav->expects($this->once())->method('getShares')->willReturn([]);
 
-		/** @var BirthdayService | \PHPUnit_Framework_MockObject_MockObject $service */
+		/** @var BirthdayService | \PHPUnit\Framework\MockObject\MockObject $service */
 		$service = $this->getMockBuilder(BirthdayService::class)
 			->setMethods(['buildDateFromContact', 'birthdayEvenChanged'])
 			->setConstructorArgs([$this->calDav, $this->cardDav, $this->groupPrincipalBackend])

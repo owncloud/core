@@ -51,7 +51,7 @@ class CapabilitiesContext implements Context {
 
 		foreach ($formData->getHash() as $row) {
 			$row['value'] = $this->featureContext->substituteInLineCodes($row['value']);
-			PHPUnit_Framework_Assert::assertEquals(
+			PHPUnit\Framework\Assert::assertEquals(
 				$row['value'] === "EMPTY" ? '' : $row['value'],
 				$this->featureContext->getParameterValueFromXml(
 					$capabilitiesXML,
@@ -78,7 +78,7 @@ class CapabilitiesContext implements Context {
 			$this->featureContext->getCurrentUser()
 		);
 		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$value === "EMPTY" ? '' : $value,
 			$this->featureContext->getParameterValueFromXml(
 				$capabilitiesXML,
@@ -99,7 +99,7 @@ class CapabilitiesContext implements Context {
 		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
 
 		foreach ($formData->getHash() as $row) {
-			PHPUnit_Framework_Assert::assertFalse(
+			PHPUnit\Framework\Assert::assertFalse(
 				$this->featureContext->parameterValueExistsInXml(
 					$capabilitiesXML,
 					$row['capability'],

@@ -55,7 +55,7 @@ class TrashbinContext implements Context {
 			$this->featureContext->getResponse()->getBody(), true
 		);
 		if (isset($decodedResponse['status'])) {
-			PHPUnit_Framework_Assert::assertNotEquals(
+			PHPUnit\Framework\Assert::assertNotEquals(
 				'error', $decodedResponse['status']
 			);
 		}
@@ -100,7 +100,7 @@ class TrashbinContext implements Context {
 
 		$firstEntry = $this->findFirstTrashedEntry($user, \trim($sections[0], '/'));
 
-		PHPUnit_Framework_Assert::assertNotNull($firstEntry);
+		PHPUnit\Framework\Assert::assertNotNull($firstEntry);
 
 		// query was on the main element ?
 		if (\count($sections) === 1) {
@@ -126,7 +126,7 @@ class TrashbinContext implements Context {
 			}
 		}
 
-		PHPUnit_Framework_Assert::assertTrue($found);
+		PHPUnit\Framework\Assert::assertTrue($found);
 	}
 
 	/**
@@ -172,7 +172,7 @@ class TrashbinContext implements Context {
 			$this->featureContext->getResponse()->getBody(), true
 		);
 		if (isset($decodedResponse['status'])) {
-			PHPUnit_Framework_Assert::assertNotEquals(
+			PHPUnit\Framework\Assert::assertNotEquals(
 				'error', $decodedResponse['status']
 			);
 		}
@@ -213,7 +213,7 @@ class TrashbinContext implements Context {
 	 */
 	public function elementInTrashIsRestored($user, $originalPath) {
 		$this->restoreElement($user, $originalPath);
-		PHPUnit_Framework_Assert::assertFalse(
+		PHPUnit\Framework\Assert::assertFalse(
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath is still in the trashbin"
 		);
@@ -230,7 +230,7 @@ class TrashbinContext implements Context {
 	public function elementIsInTrashCheckingOriginalPath(
 		$user, $originalPath
 	) {
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath wasn't found in the trashbin"
 		);
@@ -247,7 +247,7 @@ class TrashbinContext implements Context {
 	public function elementIsNotInTrashCheckingOriginalPath(
 		$user, $originalPath
 	) {
-		PHPUnit_Framework_Assert::assertFalse(
+		PHPUnit\Framework\Assert::assertFalse(
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath was found in the trashbin"
 		);

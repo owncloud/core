@@ -77,7 +77,7 @@ class FilesVersionsContext implements Context {
 		$path, $user, $count
 	) {
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
-		PHPUnit_Framework_Assert::assertNotNull($fileId, "file $path not found");
+		PHPUnit\Framework\Assert::assertNotNull($fileId, "file $path not found");
 		$this->theVersionFolderOfFileIdShouldContainElements($fileId, $user, $count);
 	}
 
@@ -95,7 +95,7 @@ class FilesVersionsContext implements Context {
 	) {
 		$responseXml = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
 		$xmlPart = $responseXml->xpath("//d:prop/d:getetag");
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$count, \count($xmlPart) - 1,
 			"could not find $count version element(s) in \n" . $responseXml->asXML()
 		);
@@ -119,7 +119,7 @@ class FilesVersionsContext implements Context {
 			$user, "/meta/$fileId/v", 1, ['getcontentlength']
 		);
 		$xmlPart = $responseXml->xpath("//d:prop/d:getcontentlength");
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$length, (int)$xmlPart[$index]
 		);
 	}

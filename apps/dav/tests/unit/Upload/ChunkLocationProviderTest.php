@@ -30,13 +30,13 @@ use org\bovigo\vfs\vfsStream;
 use Test\TestCase;
 
 class ChunkLocationProviderTest extends TestCase {
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var ChunkLocationProvider | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ChunkLocationProvider | \PHPUnit\Framework\MockObject\MockObject */
 	private $provider;
-	/** @var IUser | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject */
 	private $user;
-	/** @var IStorageFactory | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IStorageFactory | \PHPUnit\Framework\MockObject\MockObject */
 	private $factory;
 
 	protected function setUp() {

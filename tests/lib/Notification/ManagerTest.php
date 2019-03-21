@@ -411,7 +411,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testNotify() {
-		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
+		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
 		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -419,7 +419,7 @@ class ManagerTest extends TestCase {
 			->method('isValid')
 			->willReturn(true);
 
-		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $app */
+		/** @var \OCP\Notification\IApp|\PHPUnit\Framework\MockObject\MockObject $app */
 		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -427,7 +427,7 @@ class ManagerTest extends TestCase {
 			->method('notify')
 			->with($notification);
 
-		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $app2 */
+		/** @var \OCP\Notification\IApp|\PHPUnit\Framework\MockObject\MockObject $app2 */
 		$app2 = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -449,7 +449,7 @@ class ManagerTest extends TestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function testNotifyInvalid() {
-		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
+		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
 		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -461,14 +461,14 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testPrepare() {
-		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
+		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
 		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$notification->expects($this->once())
 			->method('isValidParsed')
 			->willReturn(true);
-		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification2 */
+		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification2 */
 		$notification2 = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -476,7 +476,7 @@ class ManagerTest extends TestCase {
 			->method('isValidParsed')
 			->willReturn(true);
 
-		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $notifier */
+		/** @var \OCP\Notification\IApp|\PHPUnit\Framework\MockObject\MockObject $notifier */
 		$notifier = $this->getMockBuilder(INotifier::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -485,7 +485,7 @@ class ManagerTest extends TestCase {
 			->with($notification, 'en')
 			->willReturnArgument(0);
 
-		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $notifier2 */
+		/** @var \OCP\Notification\IApp|\PHPUnit\Framework\MockObject\MockObject $notifier2 */
 		$notifier2 = $this->getMockBuilder(INotifier::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -512,7 +512,7 @@ class ManagerTest extends TestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function testPrepareInvalid() {
-		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
+		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
 		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -520,7 +520,7 @@ class ManagerTest extends TestCase {
 			->method('isValidParsed')
 			->willReturn(false);
 
-		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $notifier */
+		/** @var \OCP\Notification\IApp|\PHPUnit\Framework\MockObject\MockObject $notifier */
 		$notifier = $this->getMockBuilder(INotifier::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -539,7 +539,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testPrepareNotifierThrows() {
-		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
+		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
 		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -547,7 +547,7 @@ class ManagerTest extends TestCase {
 			->method('isValidParsed')
 			->willReturn(true);
 
-		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $notifier */
+		/** @var \OCP\Notification\IApp|\PHPUnit\Framework\MockObject\MockObject $notifier */
 		$notifier = $this->getMockBuilder(INotifier::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -569,7 +569,7 @@ class ManagerTest extends TestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function testPrepareNoNotifier() {
-		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
+		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
 		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -581,12 +581,12 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testMarkProcessed() {
-		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
+		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
 		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $app */
+		/** @var \OCP\Notification\IApp|\PHPUnit\Framework\MockObject\MockObject $app */
 		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -594,7 +594,7 @@ class ManagerTest extends TestCase {
 			->method('markProcessed')
 			->with($notification);
 
-		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $app2 */
+		/** @var \OCP\Notification\IApp|\PHPUnit\Framework\MockObject\MockObject $app2 */
 		$app2 = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -613,12 +613,12 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testGetCount() {
-		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
+		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
 		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $app */
+		/** @var \OCP\Notification\IApp|\PHPUnit\Framework\MockObject\MockObject $app */
 		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -627,7 +627,7 @@ class ManagerTest extends TestCase {
 			->with($notification)
 			->willReturn(21);
 
-		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $app2 */
+		/** @var \OCP\Notification\IApp|\PHPUnit\Framework\MockObject\MockObject $app2 */
 		$app2 = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();

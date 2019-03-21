@@ -49,10 +49,10 @@ class CardDavBackendTest extends TestCase {
 	/** @var CardDavBackend */
 	private $backend;
 
-	/** @var Principal | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Principal | \PHPUnit\Framework\MockObject\MockObject */
 	private $principal;
 
-	/** @var GroupPrincipalBackend | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var GroupPrincipalBackend | \PHPUnit\Framework\MockObject\MockObject */
 	private $groupPrincipal;
 
 	/** @var  IDBConnection */
@@ -170,7 +170,7 @@ class CardDavBackendTest extends TestCase {
 	 */
 	public function testCardOperations() {
 
-		/** @var CardDavBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+		/** @var CardDavBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$backend = $this->getMockBuilder(CardDavBackend::class)
 				->setConstructorArgs([$this->db, $this->principal, $this->groupPrincipal, null])
 				->setMethods(['updateProperties', 'purgeProperties'])->getMock();
