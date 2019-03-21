@@ -647,6 +647,7 @@ matrix:
       INSTALL_SERVER: true
 
   # Unit Tests
+  # with code coverage
     - PHP_VERSION: 7.1
       DB_TYPE: mysql
       TEST_SUITE: phpunit
@@ -658,6 +659,21 @@ matrix:
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
       COVERAGE: true
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.2
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+  # no code coverage
+  # PHP 7.1
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
