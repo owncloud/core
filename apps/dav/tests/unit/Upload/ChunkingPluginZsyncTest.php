@@ -31,17 +31,17 @@ class ChunkingPluginZsyncTest extends TestCase {
 	const TEST_CHUNKING_USER1 = "test-chunking-user1";
 
 	/**
-	 * @var \Sabre\DAV\Server | \PHPUnit_Framework_MockObject_MockObject
+	 * @var \Sabre\DAV\Server | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $server;
 
 	/**
-	 * @var \Sabre\DAV\Tree | \PHPUnit_Framework_MockObject_MockObject
+	 * @var \Sabre\DAV\Tree | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $tree;
 
 	/**
-	 * @var OC\Files\View | \PHPUnit_Framework_MockObject_MockObject
+	 * @var OC\Files\View | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $view;
 
@@ -49,9 +49,9 @@ class ChunkingPluginZsyncTest extends TestCase {
 	 * @var ChunkingPluginZsync
 	 */
 	private $plugin;
-	/** @var RequestInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $response;
 
 	public function setUp() {

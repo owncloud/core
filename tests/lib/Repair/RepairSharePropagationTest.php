@@ -26,7 +26,7 @@ class RepairSharePropagationTest extends \Test\TestCase {
 	 * @param array $expectedRemovedKeys
 	 */
 	public function testRemovePropagationEntries(array $startKeys, array $expectedRemovedKeys) {
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\OCP\IConfig $config */
+		/** @var \PHPUnit\Framework\MockObject\MockObject|\OCP\IConfig $config */
 		$config = $this->createMock('\OCP\IConfig');
 		$config->expects($this->once())
 			->method('getAppKeys')
@@ -41,7 +41,7 @@ class RepairSharePropagationTest extends \Test\TestCase {
 				$removedKeys[] = $key;
 			}));
 
-		/** @var IOutput | \PHPUnit_Framework_MockObject_MockObject $outputMock */
+		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
 		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
 			->disableOriginalConstructor()
 			->getMock();

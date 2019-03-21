@@ -134,7 +134,7 @@ class CommentsContext implements Context {
 					break;
 				}
 			}
-			PHPUnit_Framework_Assert::assertTrue(
+			PHPUnit\Framework\Assert::assertTrue(
 				$commentFound,
 				"Comment with actorId = '$expectedElement[0]' " .
 				"and message = '$expectedElement[1]' not found"
@@ -173,7 +173,7 @@ class CommentsContext implements Context {
 			$user, $commentsPath, $properties
 		);
 		$messages = $elementList->xpath("//d:prop/oc:message");
-		PHPUnit_Framework_Assert::assertCount(
+		PHPUnit\Framework\Assert::assertCount(
 			(int) $numberOfComments, $messages
 		);
 	}

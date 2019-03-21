@@ -29,9 +29,9 @@ use Test\TestCase;
 
 class NotifierTest extends TestCase {
 
-	/** @var IManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $notificationManager;
-	/** @var IFactory|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IFactory|\PHPUnit\Framework\MockObject\MockObject */
 	protected $l10nFactory;
 
 	public function setUp() {
@@ -43,7 +43,7 @@ class NotifierTest extends TestCase {
 
 	/**
 	 * @param array $methods
-	 * @return Notifier|\PHPUnit_Framework_MockObject_MockObject
+	 * @return Notifier|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getNotifier(array $methods = []) {
 		if (empty($methods)) {

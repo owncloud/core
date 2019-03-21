@@ -21,7 +21,6 @@
  */
 namespace TestHelpers\Asserts;
 
-use PHPUnit_Framework_Assert;
 use SimpleXMLElement;
 use Behat\Gherkin\Node\TableNode;
 use TestHelpers\DownloadHelper;
@@ -30,7 +29,7 @@ use TestHelpers\SetupHelper;
 /**
  * WebDAV related asserts
  */
-class WebDav {
+class WebDav extends \PHPUnit\Framework\Assert {
 	/**
 	 *
 	 * @param string $element exception|message|reason
@@ -43,7 +42,7 @@ class WebDav {
 	public static function assertDavResponseElementIs(
 		$element, $expectedValue, $responseXml
 	) {
-		PHPUnit_Framework_Assert::assertArrayHasKey(
+		self::assertArrayHasKey(
 			'value', $responseXml, '$responseXml seems not to be a valid array'
 		);
 		if ($element === "exception") {
@@ -53,8 +52,8 @@ class WebDav {
 		} elseif ($element === "reason") {
 			$result = $responseXml['value'][3]['value'];
 		}
-		
-		PHPUnit_Framework_Assert::assertEquals(
+
+		self::assertEquals(
 			$expectedValue, $result,
 			"Expected '$expectedValue' in element $element got '$result'"
 		);
@@ -74,7 +73,7 @@ class WebDav {
 			$xmlPart = $responseXmlObject->xpath(
 				"//d:prop/oc:share-types/oc:share-type[.=" . $row[0] . "]"
 			);
-			PHPUnit_Framework_Assert::assertNotEmpty(
+			self::assertNotEmpty(
 				$xmlPart, "cannot find share-type '" . $row[0] . "'"
 			);
 		}
@@ -106,11 +105,11 @@ class WebDav {
 		$downloadedContent = $result->getBody()->getContents();
 		
 		if ($shouldBeSame) {
-			PHPUnit_Framework_Assert::assertSame(
+			self::assertSame(
 				$localContent, $downloadedContent
 			);
 		} else {
-			PHPUnit_Framework_Assert::assertNotSame(
+			self::assertNotSame(
 				$localContent, $downloadedContent
 			);
 		}
@@ -157,11 +156,11 @@ class WebDav {
 		);
 		
 		if ($shouldBeSame) {
-			PHPUnit_Framework_Assert::assertSame(
+			self::assertSame(
 				$localContent, $downloadedContent
 			);
 		} else {
-			PHPUnit_Framework_Assert::assertNotSame(
+			self::assertNotSame(
 				$localContent, $downloadedContent
 			);
 		}

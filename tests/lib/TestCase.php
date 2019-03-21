@@ -475,7 +475,7 @@ abstract class TestCase extends BaseTestCase {
 
 		$requestToken = 12345;
 		$theme = new OC_Defaults();
-		/** @var IL10N | \PHPUnit_Framework_MockObject_MockObject $l10n */
+		/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject $l10n */
 		$l10n = $this->getMockBuilder('\OCP\IL10N')
 			->disableOriginalConstructor()->getMock();
 		$l10n

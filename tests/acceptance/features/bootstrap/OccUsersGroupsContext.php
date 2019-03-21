@@ -438,7 +438,7 @@ class OccUsersGroupsContext implements Context {
 			"user:setting $username core lang"
 		);
 		$responseLanguage = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit_Framework_Assert::assertEquals($language, \trim($responseLanguage));
+		PHPUnit\Framework\Assert::assertEquals($language, \trim($responseLanguage));
 	}
 
 	/**
@@ -461,8 +461,8 @@ class OccUsersGroupsContext implements Context {
 			$result = $lastOutputUsers;
 		}
 		foreach ($useridTable as $row) {
-			PHPUnit_Framework_Assert::assertArrayHasKey($row['uid'], $result);
-			PHPUnit_Framework_Assert::assertContains($row['display name'], $result);
+			PHPUnit\Framework\Assert::assertArrayHasKey($row['uid'], $result);
+			PHPUnit\Framework\Assert::assertContains($row['display name'], $result);
 		}
 	}
 
@@ -478,10 +478,10 @@ class OccUsersGroupsContext implements Context {
 		$lastOutputGroups = \json_decode($lastOutput, true);
 
 		foreach ($groupTableNode as $row) {
-			PHPUnit_Framework_Assert::assertContains($row['group'], $lastOutputGroups);
+			PHPUnit\Framework\Assert::assertContains($row['group'], $lastOutputGroups);
 			$lastOutputGroups = \array_diff($lastOutputGroups, [$row['group']]);
 		}
-		PHPUnit_Framework_Assert::assertEmpty(
+		PHPUnit\Framework\Assert::assertEmpty(
 			$lastOutputGroups,
 			"more than the expected groups are returned\n" .
 			\print_r($lastOutputGroups, true)
@@ -499,7 +499,7 @@ class OccUsersGroupsContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputUser = \json_decode($lastOutput, true);
 		$lastOutputDisplayName = \array_column($lastOutputUser, 'displayName')[0];
-		PHPUnit_Framework_Assert::assertEquals($displayName, $lastOutputDisplayName);
+		PHPUnit\Framework\Assert::assertEquals($displayName, $lastOutputDisplayName);
 	}
 
 	/**
@@ -527,7 +527,7 @@ class OccUsersGroupsContext implements Context {
 	 */
 	public function theCommandOutputOfUserLastSeenShouldBeNever() {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit_Framework_Assert::assertContains(
+		PHPUnit\Framework\Assert::assertContains(
 			"has never logged in.",
 			$lastOutput
 		);
@@ -543,7 +543,7 @@ class OccUsersGroupsContext implements Context {
 	public function theTotalUsersReturnedByTheCommandShouldBe($noOfUsers) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		\preg_match("/\|\s+total users\s+\|\s+(\d+)\s+\|/", $lastOutput, $actualUsers);
-		PHPUnit_Framework_Assert::assertEquals($noOfUsers, $actualUsers[1]);
+		PHPUnit\Framework\Assert::assertEquals($noOfUsers, $actualUsers[1]);
 	}
 
 	/**

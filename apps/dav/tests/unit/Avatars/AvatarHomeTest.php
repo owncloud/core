@@ -34,7 +34,7 @@ class AvatarHomeTest extends TestCase {
 	/** @var AvatarHome */
 	private $home;
 
-	/** @var IAvatarManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IAvatarManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $avatarManager;
 
 	public function setUp() {

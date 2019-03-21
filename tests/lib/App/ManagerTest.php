@@ -32,27 +32,27 @@ use org\bovigo\vfs\vfsStream;
  */
 class ManagerTest extends TestCase {
 
-	/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	protected $userSession;
-	/** @var IGroupManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $groupManager;
 	/** @var IAppConfig */
 	protected $appConfig;
-	/** @var ICache | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ICache | \PHPUnit\Framework\MockObject\MockObject */
 	protected $cache;
-	/** @var ICacheFactory | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ICacheFactory | \PHPUnit\Framework\MockObject\MockObject */
 	protected $cacheFactory;
 	/** @var IAppManager */
 	protected $manager;
-	/** @var  EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
 	protected $eventDispatcher;
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var Platform | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Platform | \PHPUnit\Framework\MockObject\MockObject */
 	private $platform;
 
 	/**
-	 * @return IAppConfig | \PHPUnit_Framework_MockObject_MockObject
+	 * @return IAppConfig | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getAppConfig() {
 		$appConfig = [];
@@ -133,7 +133,7 @@ class ManagerTest extends TestCase {
 	 */
 	public function testEnableSecondAppTheme(): void {
 		$appThemeName = 'theme-one';
-		/** @var AppManager | \PHPUnit_Framework_MockObject_MockObject $manager */
+		/** @var AppManager | \PHPUnit\Framework\MockObject\MockObject $manager */
 		$manager = $this->getMockBuilder(AppManager::class)
 			->setMethods(['isTheme', 'getAppInfo', 'getAppPath'])
 			->setConstructorArgs([$this->userSession, $this->appConfig,
@@ -242,7 +242,7 @@ class ManagerTest extends TestCase {
 		];
 		$this->expectClearCache();
 
-		/** @var AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
+		/** @var AppManager|\PHPUnit\Framework\MockObject\MockObject $manager */
 		$manager = $this->getMockBuilder(AppManager::class)
 			->setConstructorArgs([
 				$this->userSession, $this->appConfig, $this->groupManager,
@@ -287,7 +287,7 @@ class ManagerTest extends TestCase {
 			new Group('group2', [], null, $this->eventDispatcher)
 		];
 
-		/** @var AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
+		/** @var AppManager|\PHPUnit\Framework\MockObject\MockObject $manager */
 		$manager = $this->getMockBuilder(AppManager::class)
 			->setConstructorArgs([
 				$this->userSession, $this->appConfig, $this->groupManager,

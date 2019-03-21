@@ -34,17 +34,17 @@ use Test\TestCase;
 
 class BackgroundJobTest extends TestCase {
 
-	/** @var IConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
-	/** @var IManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $notificationManager;
-	/** @var IGroupManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IGroupManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $groupManager;
-	/** @var IAppManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IAppManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $appManager;
-	/** @var IClientService|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IClientService|\PHPUnit\Framework\MockObject\MockObject */
 	protected $client;
-	/** @var IURLGenerator|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IURLGenerator|\PHPUnit\Framework\MockObject\MockObject */
 	protected $urlGenerator;
 
 	public function setUp() {
@@ -60,7 +60,7 @@ class BackgroundJobTest extends TestCase {
 
 	/**
 	 * @param array $methods
-	 * @return BackgroundJob|\PHPUnit_Framework_MockObject_MockObject
+	 * @return BackgroundJob|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getJob(array $methods = []) {
 		if (empty($methods)) {
@@ -350,7 +350,7 @@ class BackgroundJobTest extends TestCase {
 
 	/**
 	 * @param string[] $userIds
-	 * @return IUser[]|\PHPUnit_Framework_MockObject_MockObject[]
+	 * @return IUser[]|\PHPUnit\Framework\MockObject\MockObject[]
 	 */
 	protected function getUsers(array $userIds) {
 		$users = [];
@@ -366,7 +366,7 @@ class BackgroundJobTest extends TestCase {
 
 	/**
 	 * @param $gid
-	 * @return \OCP\IGroup|\PHPUnit_Framework_MockObject_MockObject
+	 * @return \OCP\IGroup|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getGroup($gid) {
 		$group = $this->createMock('OCP\IGroup');

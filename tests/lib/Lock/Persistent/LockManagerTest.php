@@ -37,13 +37,13 @@ use Test\TestCase;
  * @group DB
  */
 class LockManagerTest extends TestCase {
-	/** @var LockMapper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var LockMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $lockMapper;
-	/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	private $userSession;
 	/** @var LockManager */
 	private $manager;
-	/** @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
 	private $timeFactory;
 
 	public function setUp() {

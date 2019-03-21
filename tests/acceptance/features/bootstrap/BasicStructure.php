@@ -947,12 +947,12 @@ trait BasicStructure {
 		}
 
 		if (\is_array($statusCode)) {
-			PHPUnit_Framework_Assert::assertContains(
+			PHPUnit\Framework\Assert::assertContains(
 				$this->response->getStatusCode(), $statusCode,
 				$message
 			);
 		} else {
-			PHPUnit_Framework_Assert::assertEquals(
+			PHPUnit\Framework\Assert::assertEquals(
 				$statusCode, $this->response->getStatusCode(), $message
 			);
 		}
@@ -982,7 +982,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function theHTTPReasonPhraseShouldBe($reasonPhrase) {
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$reasonPhrase,
 			$this->getResponse()->getReasonPhrase(),
 			'Unexpected HTTP reason phrase in response'
@@ -1010,7 +1010,7 @@ trait BasicStructure {
 	public function theHTTPReasonPhraseShouldBePyString(
 		PyStringNode $reasonPhrase
 	) {
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$reasonPhrase->getRaw(),
 			$this->getResponse()->getReasonPhrase(),
 			'Unexpected HTTP reason phrase in response'
@@ -1027,7 +1027,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function theXMLKey1Key2ValueShouldBe($key1, $key2, $idText) {
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$idText,
 			$this->getXMLKey1Key2Value($this->response, $key1, $key2)
 		);
@@ -1046,7 +1046,7 @@ trait BasicStructure {
 	public function theXMLKey1Key2Key3ValueShouldBe(
 		$key1, $key2, $key3, $idText
 	) {
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$idText,
 			$this->getXMLKey1Key2Key3Value($this->response, $key1, $key2, $key3)
 		);
@@ -1068,7 +1068,7 @@ trait BasicStructure {
 		$value = $this->getXMLKey1Key2Key3AttributeValue(
 			$this->response, $key1, $key2, $key3, $attribute
 		);
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			\version_compare($value, '0.0.1') >= 0,
 			"attribute $attribute value $value is not a valid version string"
 		);
@@ -1614,7 +1614,7 @@ trait BasicStructure {
 		);
 
 		if (!\strlen($edition)) {
-			PHPUnit_Framework_Assert::fail(
+			PHPUnit\Framework\Assert::fail(
 				"Cannot get edition from capabilities"
 			);
 		}
@@ -1626,7 +1626,7 @@ trait BasicStructure {
 		);
 
 		if (!\strlen($edition)) {
-			PHPUnit_Framework_Assert::fail(
+			PHPUnit\Framework\Assert::fail(
 				"Cannot get productname from capabilities"
 			);
 		}
@@ -1638,11 +1638,11 @@ trait BasicStructure {
 		if ($runOccStatus === 0) {
 			$output = \explode("- ", $this->lastStdOut);
 			$version = \explode(": ", $output[3]);
-			PHPUnit_Framework_Assert::assertEquals(
+			PHPUnit\Framework\Assert::assertEquals(
 				"version", $version[0]
 			);
 			$versionString = \explode(": ", $output[4]);
-			PHPUnit_Framework_Assert::assertEquals(
+			PHPUnit\Framework\Assert::assertEquals(
 				"versionstring", $versionString[0]
 			);
 			$jsonExpectedDecoded['version'] = \trim($version[1]);
@@ -1652,7 +1652,7 @@ trait BasicStructure {
 				$jsonExpectedEncoded, $jsonRespondedEncoded
 			);
 		} else {
-			PHPUnit_Framework_Assert::fail(
+			PHPUnit\Framework\Assert::fail(
 				"Cannot get version variables from occ - status $runOccStatus"
 			);
 		}
@@ -1686,7 +1686,7 @@ trait BasicStructure {
 	 */
 	public function theFileWithContentShouldExistInTheServerRoot($path, $content) {
 		$this->readFileInServerRoot($path);
-		PHPUnit_Framework_Assert::assertSame(
+		PHPUnit\Framework\Assert::assertSame(
 			200,
 			$this->getResponse()->getStatusCode(),
 			"Failed to read the file {$path}"
@@ -1696,7 +1696,7 @@ trait BasicStructure {
 		$fileContent = (string)$fileContent->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($fileContent);
 
-		PHPUnit_Framework_Assert::assertSame(
+		PHPUnit\Framework\Assert::assertSame(
 			$content,
 			$fileContent,
 			"The content of the file does not match with '{$content}'"
@@ -1712,7 +1712,7 @@ trait BasicStructure {
 	 */
 	public function theFileShouldNotExistInTheServerRoot($path) {
 		$this->readFileInServerRoot($path);
-		PHPUnit_Framework_Assert::assertSame(
+		PHPUnit\Framework\Assert::assertSame(
 			404,
 			$this->getResponse()->getStatusCode(),
 			"The file '{$path}' exists in the server root"
@@ -1725,7 +1725,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function theResponseBodyShouldBeEmpty() {
-		PHPUnit_Framework_Assert::assertEmpty(
+		PHPUnit\Framework\Assert::assertEmpty(
 			$this->getResponse()->getBody()->getContents()
 		);
 	}
@@ -2021,7 +2021,7 @@ trait BasicStructure {
 			$this->getOcsApiVersion()
 		);
 		$configkeyValue = \json_decode(\json_encode($this->getResponseXml($response)->data[0]->element->value), 1)[0];
-		PHPUnit_Framework_Assert::assertEquals($value, $configkeyValue);
+		PHPUnit\Framework\Assert::assertEquals($value, $configkeyValue);
 	}
 
 	/**
@@ -2102,9 +2102,9 @@ trait BasicStructure {
 		$should = ($shouldOrNot !== "not");
 
 		if ($should) {
-			PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($key, $appID));
+			PHPUnit\Framework\Assert::assertTrue($this->checkConfigKeyInApp($key, $appID));
 		} else {
-			PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($key, $appID));
+			PHPUnit\Framework\Assert::assertFalse($this->checkConfigKeyInApp($key, $appID));
 		}
 	}
 
@@ -2120,11 +2120,11 @@ trait BasicStructure {
 		$should = ($shouldOrNot !== "not");
 		if ($should) {
 			foreach ($table as $item) {
-				PHPUnit_Framework_Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+				PHPUnit\Framework\Assert::assertTrue($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
 			}
 		} else {
 			foreach ($table as $item) {
-				PHPUnit_Framework_Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
+				PHPUnit\Framework\Assert::assertFalse($this->checkConfigKeyInApp($item['configkey'], $item['appid']));
 			}
 		}
 	}
@@ -2206,7 +2206,7 @@ trait BasicStructure {
 			"/apps/testing/api/v1/lockprovisioning",
 			["global" => "true"]
 		);
-		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		PHPUnit\Framework\Assert::assertEquals("200", $response->getStatusCode());
 	}
 
 	/**

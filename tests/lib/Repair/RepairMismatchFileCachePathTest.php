@@ -44,7 +44,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 				['httpd/unix-directory', 2],
 			]));
 
-		/** @var \PHPUnit_Framework_MockObject_MockObject | ILogger $logger */
+		/** @var \PHPUnit\Framework\MockObject\MockObject | ILogger $logger */
 		$logger = $this->createMock(ILogger::class);
 		$this->config = $this->createMock(IConfig::class);
 		$this->repair = new RepairMismatchFileCachePath($this->connection, $mimeLoader, $logger, $this->config);

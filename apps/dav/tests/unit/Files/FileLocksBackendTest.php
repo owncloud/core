@@ -44,9 +44,9 @@ class FileLocksBackendTest extends TestCase {
 
 	/** @var FileLocksBackend */
 	private $plugin;
-	/** @var Tree | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */
 	private $tree;
-	/** @var IPersistentLockingStorage | IStorage | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IPersistentLockingStorage | IStorage | \PHPUnit\Framework\MockObject\MockObject */
 	private $storageOfFileToBeLocked;
 
 	public function setUp() {

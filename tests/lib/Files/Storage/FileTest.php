@@ -31,7 +31,7 @@ use OCP\Files\Storage\IStorage;
 class FileTest extends NodeTest {
 	/**
 	 * @param $path
-	 * @param IStorage|\PHPUnit_Framework_MockObject_MockObject|null $storage
+	 * @param IStorage|\PHPUnit\Framework\MockObject\MockObject|null $storage
 	 * @return File
 	 */
 	protected function createTestNode($path, IStorage $storage = null) {

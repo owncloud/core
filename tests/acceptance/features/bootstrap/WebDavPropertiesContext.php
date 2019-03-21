@@ -198,10 +198,10 @@ class WebDavPropertiesContext implements Context {
 		$xmlPart = $responseXmlObject->xpath(
 			"//d:prop/" . "$nameSpacePrefix:$propertyName"
 		);
-		PHPUnit_Framework_Assert::assertArrayHasKey(
+		PHPUnit\Framework\Assert::assertArrayHasKey(
 			0, $xmlPart, "Cannot find property \"$propertyName\""
 		);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$propertyValue, $xmlPart[0]->__toString(),
 			"\"$propertyName\" has a value \"" .
 			$xmlPart[0]->__toString() . "\" but \"$propertyValue\" expected"
@@ -224,7 +224,7 @@ class WebDavPropertiesContext implements Context {
 		$xmlPart = $this->featureContext->getResponseXmlObject()->xpath(
 			"//d:prop/$property/$childProperty"
 		);
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			isset($xmlPart[0]), "Cannot find property \"$property/$childProperty\""
 		);
 	}
@@ -262,7 +262,7 @@ class WebDavPropertiesContext implements Context {
 		$xmlPart = $this->featureContext->getResponseXmlObject()->xpath(
 			"//d:prop/$key"
 		);
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			isset($xmlPart[0]), "Cannot find property \"$key\""
 		);
 		$value = $xmlPart[0]->__toString();
@@ -274,7 +274,7 @@ class WebDavPropertiesContext implements Context {
 		if (\preg_match($expectedValue, $value) !== 1
 			&& \preg_match($altExpectedValue, $value) !== 1
 		) {
-			PHPUnit_Framework_Assert::fail(
+			PHPUnit\Framework\Assert::fail(
 				"Property \"$key\" found with value \"$value\", " .
 				"expected \"$expectedValue\" or \"$altExpectedValue\""
 			);
@@ -292,14 +292,14 @@ class WebDavPropertiesContext implements Context {
 	 */
 	public function assertValueOfItemInResponseIs($xpath, $expectedValue) {
 		$xmlPart = $this->featureContext->getResponseXmlObject()->xpath($xpath);
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			isset($xmlPart[0]), "Cannot find item with xpath \"$xpath\""
 		);
 		$value = $xmlPart[0]->__toString();
 		$expectedValue = $this->featureContext->substituteInLineCodes(
 			$expectedValue
 		);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedValue, $value,
 			"item \"$xpath\" found with value \"$value\", " .
 			"expected \"$expectedValue\""
@@ -317,14 +317,14 @@ class WebDavPropertiesContext implements Context {
 	 */
 	public function assertValueOfItemInResponseRegExp($xpath, $pattern) {
 		$xmlPart = $this->featureContext->getResponseXmlObject()->xpath($xpath);
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			isset($xmlPart[0]), "Cannot find item with xpath \"$xpath\""
 		);
 		$value = $xmlPart[0]->__toString();
 		$pattern = $this->featureContext->substituteInLineCodes(
 			$pattern
 		);
-		PHPUnit_Framework_Assert::assertRegExp(
+		PHPUnit\Framework\Assert::assertRegExp(
 			$pattern, $value,
 			"item \"$xpath\" found with value \"$value\", " .
 			"expected to match regex pattern: \"$pattern\""
@@ -386,11 +386,11 @@ class WebDavPropertiesContext implements Context {
 		$xmlPart = $this->featureContext->getResponseXmlObject()->xpath(
 			"//d:prop/$key"
 		);
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			isset($xmlPart[0]), "Cannot find property \"$key\""
 		);
 		$value = $xmlPart[0]->__toString();
-		PHPUnit_Framework_Assert::assertRegExp(
+		PHPUnit\Framework\Assert::assertRegExp(
 			$regex, $value,
 			"Property \"$key\" found with value \"$value\", expected \"$regex\""
 		);
@@ -422,10 +422,10 @@ class WebDavPropertiesContext implements Context {
 		$xmlPart = $this->featureContext->getResponseXmlObject()->xpath(
 			"//d:prop/$property"
 		);
-		PHPUnit_Framework_Assert::assertCount(
+		PHPUnit\Framework\Assert::assertCount(
 			1, $xmlPart, "Cannot find property \"$property\""
 		);
-		PHPUnit_Framework_Assert::assertEmpty(
+		PHPUnit\Framework\Assert::assertEmpty(
 			$xmlPart[0], "Property \"$property\" is not empty"
 		);
 	}
@@ -475,7 +475,7 @@ class WebDavPropertiesContext implements Context {
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable
 		);
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$this->storedETAG[$user][$path],
 			$this->featureContext->getEtagFromResponseXmlObject()
 		);
@@ -494,7 +494,7 @@ class WebDavPropertiesContext implements Context {
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable
 		);
-		PHPUnit_Framework_Assert::assertNotEquals(
+		PHPUnit\Framework\Assert::assertNotEquals(
 			$this->storedETAG[$user][$path],
 			$this->featureContext->getEtagFromResponseXmlObject()
 		);

@@ -98,7 +98,7 @@ class CalDavBackendTest extends AbstractCalDavBackendTest {
 	 */
 	public function testCalendarSharing($userCanRead, $userCanWrite, $groupCanRead, $groupCanWrite, $add) {
 
-		/** @var IL10N | \PHPUnit_Framework_MockObject_MockObject $l10n */
+		/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject $l10n */
 		$l10n = $this->getMockBuilder(IL10N::class)
 			->disableOriginalConstructor()->getMock();
 		$l10n

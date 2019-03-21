@@ -39,13 +39,13 @@ use Test\Traits\UserTrait;
 class CronTest extends TestCase {
 	use UserTrait;
 
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
-	/** @var IJobList | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IJobList | \PHPUnit\Framework\MockObject\MockObject */
 	private $jobList;
-	/** @var ITempManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ITempManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $tempManager;
 
 	/** @var CommandTester */

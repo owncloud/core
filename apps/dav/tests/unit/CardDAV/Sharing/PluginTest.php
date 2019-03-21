@@ -38,13 +38,13 @@ class PluginTest extends TestCase {
 	private $plugin;
 	/** @var Server */
 	private $server;
-	/** @var IShareable | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IShareable | \PHPUnit\Framework\MockObject\MockObject */
 	private $book;
 
 	public function setUp() {
 		parent::setUp();
 		
-		/** @var Auth | \PHPUnit_Framework_MockObject_MockObject $authBackend */
+		/** @var Auth | \PHPUnit\Framework\MockObject\MockObject $authBackend */
 		$authBackend = $this->getMockBuilder('OCA\DAV\Connector\Sabre\Auth')->disableOriginalConstructor()->getMock();
 		$authBackend->method('isDavAuthenticated')->willReturn(true);
 

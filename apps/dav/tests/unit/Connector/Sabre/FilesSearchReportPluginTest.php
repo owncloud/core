@@ -33,16 +33,16 @@ use Sabre\DAV\Server;
 use Sabre\DAV\PropFind;
 
 class FilesSearchReportPluginTest extends \Test\TestCase {
-	/** @var Server|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var Server|\PHPUnit\Framework\MockObject\MockObject */
 	private $server;
 
-	/** @var Tree|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var Tree|\PHPUnit\Framework\MockObject\MockObject */
 	private $tree;
 
-	/** @var ISearch|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var ISearch|\PHPUnit\Framework\MockObject\MockObject */
 	private $searchService;
 
-	/** @var FilesSearchReportPlugin|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var FilesSearchReportPlugin|\PHPUnit\Framework\MockObject\MockObject */
 	private $plugin;
 
 	public function setUp() {

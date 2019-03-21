@@ -28,7 +28,7 @@ use OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType;
 use OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin as PluginToTest;
 use OCP\Files\ExcludeForbiddenException;
 use OCP\Files\FileContentNotAllowedException;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\DAV\Exception\InsufficientStorage;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Server;
@@ -56,7 +56,7 @@ class ExceptionLoggerPluginTest extends TestCase {
 	/** @var PluginToTest */
 	private $plugin;
 
-	/** @var TestLogger | PHPUnit_Framework_MockObject_MockObject */
+	/** @var TestLogger | PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 
 	private function init() {

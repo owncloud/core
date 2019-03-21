@@ -39,15 +39,15 @@ use Test\Traits\UserTrait;
 class ModifyTest extends TestCase {
 	use UserTrait;
 
-	/** @var  IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
 
-	/** @var  IMailer | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  IMailer | \PHPUnit\Framework\MockObject\MockObject */
 	protected $mailer;
-	/** @var  InputInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  InputInterface | \PHPUnit\Framework\MockObject\MockObject */
 	protected $consoleInput;
 
-	/** @var  OutputInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  OutputInterface | \PHPUnit\Framework\MockObject\MockObject */
 	protected $consoleOutput;
 
 	protected function setUp() {

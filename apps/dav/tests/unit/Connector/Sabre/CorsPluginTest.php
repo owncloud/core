@@ -43,12 +43,12 @@ class CorsPluginTest extends TestCase {
 	private $plugin;
 
 	/**
-	 * @var IUserSession | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IUserSession | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $userSession;
 
 	/**
-	 * @var IConfig | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IConfig | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $config;
 
@@ -70,7 +70,7 @@ class CorsPluginTest extends TestCase {
 
 		$this->plugin = new CorsPlugin($this->userSession);
 
-		/** @var ServerPlugin | \PHPUnit_Framework_MockObject_MockObject $extraMethodPlugin */
+		/** @var ServerPlugin | \PHPUnit\Framework\MockObject\MockObject $extraMethodPlugin */
 		$extraMethodPlugin = $this->createMock(ServerPlugin::class);
 		$extraMethodPlugin->method('getHTTPMethods')
 			->with('owncloud/remote.php/dav/files/user1/target/path')

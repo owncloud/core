@@ -20,16 +20,16 @@ use Test\TestCase;
  */
 class DisableExtraThemesTest extends TestCase {
 
-	/** @var IAppManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IAppManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $appManager;
 
-	/** @var IConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
-	/** @var IAppConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IAppConfig|\PHPUnit\Framework\MockObject\MockObject */
 	protected $appConfig;
 
-	/** @var IOutput|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IOutput|\PHPUnit\Framework\MockObject\MockObject */
 	protected $output;
 
 	protected function setUp() {

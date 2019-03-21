@@ -29,13 +29,13 @@ use OCP\IUser;
 
 class SessionCredentialsTest extends \Test\TestCase {
 
-	/** @var SessionCredentials | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var SessionCredentials | \PHPUnit\Framework\MockObject\MockObject */
 	private $authMech;
 
-	/** @var ISession | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
 	private $session;
 
-	/** @var ICrypto | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ICrypto | \PHPUnit\Framework\MockObject\MockObject */
 	private $crypto;
 
 	public function setUp() {

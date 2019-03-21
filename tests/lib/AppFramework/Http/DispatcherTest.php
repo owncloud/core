@@ -71,21 +71,21 @@ class TestController extends Controller {
 }
 
 class DispatcherTest extends \Test\TestCase {
-	/** @var MiddlewareDispatcher | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var MiddlewareDispatcher | \PHPUnit\Framework\MockObject\MockObject */
 	private $middlewareDispatcher;
-	/** @var Dispatcher | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Dispatcher | \PHPUnit\Framework\MockObject\MockObject */
 	private $dispatcher;
 	private $controllerMethod;
-	/** @var Response | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Response | \PHPUnit\Framework\MockObject\MockObject */
 	private $response;
 	private $request;
 	private $lastModified;
 	private $etag;
-	/** @var Http | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Http | \PHPUnit\Framework\MockObject\MockObject */
 	private $http;
 	private $reflector;
 
-	/** @var Controller | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Controller | \PHPUnit\Framework\MockObject\MockObject */
 	private $controller;
 
 	protected function setUp() {

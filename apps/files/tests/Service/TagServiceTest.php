@@ -64,7 +64,7 @@ class TagServiceTest extends \Test\TestCase {
 		$user = $this->createUser($this->user, 'test');
 		\OC_User::setUserId($this->user);
 		\OC_Util::setupFS($this->user);
-		/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject $userSession */
+		/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject $userSession */
 		$userSession = $this->createMock('\OCP\IUserSession');
 		$userSession->expects($this->any())
 			->method('getUser')

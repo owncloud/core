@@ -51,7 +51,7 @@ class RepairInnoDBTest extends \Test\TestCase {
 		$result = $this->countMyIsamTables();
 		$this->assertEquals(1, $result);
 
-		/** @var IOutput | \PHPUnit_Framework_MockObject_MockObject $outputMock */
+		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
 		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
 			->disableOriginalConstructor()
 			->getMock();

@@ -43,21 +43,21 @@ use Test\TestCase;
  */
 class CheckSetupControllerTest extends TestCase {
 
-	/** @var CheckSetupController | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var CheckSetupController | \PHPUnit\Framework\MockObject\MockObject */
 	private $checkSetupController;
-	/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var IClientService | \PHPUnit_Framework_MockObject_MockObject*/
+	/** @var IClientService | \PHPUnit\Framework\MockObject\MockObject*/
 	private $clientService;
-	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
 	private $urlGenerator;
 	/** @var OC_Util */
 	private $util;
-	/** @var IL10N | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject */
 	private $l10n;
-	/** @var Checker | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Checker | \PHPUnit\Framework\MockObject\MockObject */
 	private $checker;
 
 	public function setUp() {
@@ -451,7 +451,7 @@ class CheckSetupControllerTest extends TestCase {
 			->will($this->returnValue(['ssl_version' => 'NSS/1.0.2b']));
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
-		/** @var ClientException | \PHPUnit_Framework_MockObject_MockObject $exception */
+		/** @var ClientException | \PHPUnit\Framework\MockObject\MockObject $exception */
 		$exception = $this->getMockBuilder('\GuzzleHttp\Exception\ClientException')
 			->disableOriginalConstructor()->getMock();
 		$response = $this->getMockBuilder('\GuzzleHttp\Message\ResponseInterface')
@@ -485,7 +485,7 @@ class CheckSetupControllerTest extends TestCase {
 			->will($this->returnValue(['ssl_version' => 'NSS/1.0.2b']));
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
-		/** @var ClientException | \PHPUnit_Framework_MockObject_MockObject $exception */
+		/** @var ClientException | \PHPUnit\Framework\MockObject\MockObject $exception */
 		$exception = $this->getMockBuilder('\GuzzleHttp\Exception\ClientException')
 			->disableOriginalConstructor()->getMock();
 		$response = $this->getMockBuilder('\GuzzleHttp\Message\ResponseInterface')
