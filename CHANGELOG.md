@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [10.1.1]
+
+### Fixed
+
+- Set the correct value when upgrading app patch version in DB - [#34859](https://github.com/owncloud/core/pull/34859)
+
+## [10.1.0] - 2019-02-06
 
 ### Added
 
@@ -877,7 +883,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[Unreleased]: https://github.com/owncloud/core/compare/v10.0.10...stable10
+[10.1.1]: https://github.com/owncloud/core/compare/v10.1.0...v10.1.1
+[10.1.0]: https://github.com/owncloud/core/compare/v10.0.10...v10.1.0
 [10.0.10]: https://github.com/owncloud/core/compare/v10.0.9...v10.0.10
 [10.0.9]: https://github.com/owncloud/core/compare/v10.0.8...v10.0.9
 [10.0.8]: https://github.com/owncloud/core/compare/v10.0.7...v10.0.8
