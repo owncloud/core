@@ -63,13 +63,7 @@ class PersonalPanelTest extends \Test\TestCase {
 		];
 	}
 
-	/**
-	 * @dataProvider globalSharingConfigProvider
-	 *
-	 * @param array $globalConfigs
-	 * @param string $expectedString
-	 */
-	public function testGetPanel($globalConfigs, $expectedString) {
+	public function testGetPanelEmpty() {
 		$mockUser = $this->getMockBuilder(IUser::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -80,12 +74,32 @@ class PersonalPanelTest extends \Test\TestCase {
 		$this->userSession->expects($this->any())
 			->method('getUser')
 			->willReturn($mockUser);
-		$this->config->expects($this->once())
+
+		$this->config->expects($this->any())
 			->method('getAppValue')
-			->with('core', 'shareapi_auto_accept_share', 'yes')
-			->willReturn($globalConfigs['shareapi_auto_accept_share']);
+			->willReturn('no');
 
 		$templateHtml = $this->personalPanel->getPanel()->fetchPage();
-		$this->assertContains($expectedString, $templateHtml);
+		$this->assertContains('<p>Nothing to configure.</p>', $templateHtml);
+	}
+
+	public function testGetPanelNotEmpty() {
+		$mockUser = $this->getMockBuilder(IUser::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$mockUser->expects($this->any())
+			->method('getUID')
+			->willReturn('testuser');
+
+		$this->userSession->expects($this->any())
+			->method('getUser')
+			->willReturn($mockUser);
+
+		$this->config->expects($this->any())
+			->method('getAppValue')
+			->willReturn('yes');
+
+		$templateHtml = $this->personalPanel->getPanel()->fetchPage();
+		$this->assertContains('<form class="section" id="files_sharing_settings">', $templateHtml);
 	}
 }

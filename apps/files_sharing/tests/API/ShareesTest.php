@@ -275,6 +275,24 @@ class ShareesTest extends TestCase {
 			[
 				'test',
 				false,
+				true,
+				[],
+				[
+					$this->getUserMock('test1', 'Test One'),
+					$this->getUserMock('test2', 'Test Two'),
+				],
+				[],
+				[],
+				false,
+				false,
+				false,
+				null,
+				//users don't want to be found with auto-complete
+				'no'
+			],
+			[
+				'test',
+				false,
 				false,
 				[],
 				[
@@ -520,6 +538,7 @@ class ShareesTest extends TestCase {
 	 * @param mixed $singleUser false for testing search or user mock when we are testing a direct match
 	 * @param mixed $shareeEnumerationGroupMembers restrict enumeration to group members
 	 * @param mixed $additionalUserInfoField
+	 * @param string $usersAutoCompletePreference
 	 */
 	public function testGetUsers(
 		$searchTerm,
@@ -532,12 +551,20 @@ class ShareesTest extends TestCase {
 		$reachedEnd,
 		$singleUser,
 		$shareeEnumerationGroupMembers = false,
-		$additionalUserInfoField = null
+		$additionalUserInfoField = null,
+		$usersAutoCompletePreference = 'yes'
 	) {
 		$this->config->expects($this->once())
 			->method('getAppValue')
 			->with('core', 'user_additional_info_field', '')
 			->willReturn($additionalUserInfoField);
+		$this->config->method('getUserValue')
+			->with(
+				$this->isType('string'),
+				'files_sharing',
+				'allow_share_dialog_user_enumeration',
+				'yes'
+			)->willReturn($usersAutoCompletePreference);
 
 		$this->sharees = new ShareesController(
 			'files_sharing',
