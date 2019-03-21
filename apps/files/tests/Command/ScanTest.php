@@ -371,33 +371,4 @@ class ScanTest extends TestCase {
 
 		return $result;
 	}
-
-	/**
-	 * Test repair all error message when not in maintenance mode
-	 *
-	 */
-	public function testScanRepairAllNoSingleUserMode() {
-		$this->config->method('getSystemValue')
-			->will($this->returnValueMap([
-				['singleuser', false, false],
-				['maintenance', false, false],
-			]));
-
-		$input = [
-			'--all' => true,
-			'--repair' => true,
-		];
-
-		$result = $this->commandTester->execute($input);
-
-		$this->assertEquals(1, $result);
-
-		$output = $this->commandTester->getDisplay();
-
-		$this->assertContains('Please switch to single user mode', $output);
-		$this->assertContains('specify a user to repair', $output);
-
-		$storageId = $this->getStorageId('home::' . $this->scanUser1->getUID());
-		$this->assertFalse($this->getFileCacheEntry($storageId, 'files/toscan'));
-	}
 }
