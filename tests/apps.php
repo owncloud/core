@@ -46,9 +46,6 @@ foreach ($apps as $app) {
 		continue;
 	}
 
-	if ($app === 'provisioning_api') {
-		continue;
-	}
 	if ($app === 'systemtags') {
 		continue;
 	}
