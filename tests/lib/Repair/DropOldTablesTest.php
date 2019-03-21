@@ -32,7 +32,7 @@ class DropOldTablesTest extends \Test\TestCase {
 		$this->assertFalse($this->connection->tableExists('sharing'), 'Asserting that the table oc_sharing does not exist before repairing');
 		$this->assertTrue($this->connection->tableExists('permissions'), 'Asserting that the table oc_permissions does exist before repairing');
 
-		/** @var IOutput | \PHPUnit_Framework_MockObject_MockObject $outputMock */
+		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
 		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
 			->disableOriginalConstructor()
 			->getMock();

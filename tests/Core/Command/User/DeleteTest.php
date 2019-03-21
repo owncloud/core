@@ -30,7 +30,7 @@ use Test\TestCase;
 
 class DeleteTest extends TestCase {
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject|IUserManager */
+	/** @var \PHPUnit\Framework\MockObject\MockObject|IUserManager */
 	protected $userManager;
 
 	/** @var CommandTester */

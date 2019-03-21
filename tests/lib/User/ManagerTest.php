@@ -36,9 +36,9 @@ class ManagerTest extends TestCase {
 
 	/** @var Manager */
 	private $manager;
-	/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $accountMapper;
-	/** @var SyncService | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var SyncService | \PHPUnit\Framework\MockObject\MockObject */
 	private $syncService;
 
 	/**
@@ -50,9 +50,9 @@ class ManagerTest extends TestCase {
 		parent::setUp();
 
 		$this->overwriteService('EventDispatcher', new EventDispatcher());
-		/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject $config */
+		/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject $config */
 		$config = $this->createMock(IConfig::class);
-		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
+		/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject $logger */
 		$logger = $this->createMock(ILogger::class);
 		$this->accountMapper = $this->createMock(AccountMapper::class);
 		$this->syncService = $this->createMock(SyncService::class);
@@ -69,12 +69,12 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testGetBackends() {
-		/** @var Backend | \PHPUnit_Framework_MockObject_MockObject $backend */
+		/** @var Backend | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$backend = $this->createMock(Backend::class);
 		$this->manager->registerBackend($backend);
 		$this->assertEquals([$backend], $this->manager->getBackends());
 
-		/** @var Backend | \PHPUnit_Framework_MockObject_MockObject $dummyDatabaseBackend */
+		/** @var Backend | \PHPUnit\Framework\MockObject\MockObject $dummyDatabaseBackend */
 		$dummyDatabaseBackend = $this->createMock(Database::class);
 		$this->manager->registerBackend($dummyDatabaseBackend);
 		$this->assertEquals([$backend, $dummyDatabaseBackend], $this->manager->getBackends());
@@ -93,7 +93,7 @@ class ManagerTest extends TestCase {
 
 	public function testCheckPassword() {
 		/**
-		 * @var \OC\User\Backend | \PHPUnit_Framework_MockObject_MockObject $backend
+		 * @var \OC\User\Backend | \PHPUnit\Framework\MockObject\MockObject $backend
 		 */
 		$backend = $this->createMock(Database::class);
 		$backend->expects($this->once())
@@ -126,7 +126,7 @@ class ManagerTest extends TestCase {
 
 	public function testCheckPasswordNotSupported() {
 		/**
-		 * @var \OC\User\Backend | \PHPUnit_Framework_MockObject_MockObject $backend
+		 * @var \OC\User\Backend | \PHPUnit\Framework\MockObject\MockObject $backend
 		 */
 		$backend = $this->createMock(Database::class);
 		$backend->expects($this->never())

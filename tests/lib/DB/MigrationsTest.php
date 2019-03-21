@@ -23,9 +23,9 @@ use OCP\Migration\ISqlMigration;
  */
 class MigrationsTest extends \Test\TestCase {
 
-	/** @var MigrationService | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var MigrationService | \PHPUnit\Framework\MockObject\MockObject */
 	private $migrationService;
-	/** @var \PHPUnit_Framework_MockObject_MockObject | IDBConnection $db */
+	/** @var \PHPUnit\Framework\MockObject\MockObject | IDBConnection $db */
 	private $db;
 
 	public function setUp() {

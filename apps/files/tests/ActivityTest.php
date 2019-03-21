@@ -37,19 +37,19 @@ class ActivityTest extends TestCase {
 	/** @var \OCP\Activity\IManager */
 	private $activityManager;
 
-	/** @var \OCP\IRequest|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IRequest|\PHPUnit\Framework\MockObject\MockObject */
 	protected $request;
 
-	/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject */
 	protected $session;
 
-	/** @var \OCP\IConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
-	/** @var \OCA\Files\ActivityHelper|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCA\Files\ActivityHelper|\PHPUnit\Framework\MockObject\MockObject */
 	protected $activityHelper;
 
-	/** @var \OCP\L10N\IFactory|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\L10N\IFactory|\PHPUnit\Framework\MockObject\MockObject */
 	protected $l10nFactory;
 
 	/** @var \OCA\Files\Activity */

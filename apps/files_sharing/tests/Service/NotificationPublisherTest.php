@@ -36,13 +36,13 @@ use OCP\IUser;
  */
 class NotificationPublisherTest extends TestCase {
 
-	/** @var IGroupManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $groupManager;
 
-	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
 
-	/** @var \OCP\Notification\IManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\Notification\IManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $notificationManager;
 
 	/** @var IURLGenerator */

@@ -29,7 +29,7 @@ use GuzzleHttp\Subscriber\History;
 /**
  * Unit tests for TestHelpers\DeleteHelper;
  */
-class DeleteHelperTest extends PHPUnit_Framework_TestCase {
+class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 
 	/**
 	 * Setup http client, mock requests, and attach history

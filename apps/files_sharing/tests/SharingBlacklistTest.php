@@ -26,10 +26,10 @@ use OCP\GroupInterface;
 use OCA\Files_Sharing\SharingBlacklist;
 
 class SharingBlacklistTest extends \Test\TestCase {
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 
-	/** @var SharingBlacklist | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var SharingBlacklist | \PHPUnit\Framework\MockObject\MockObject */
 	private $sharingBlacklist;
 
 	public function setUp() {

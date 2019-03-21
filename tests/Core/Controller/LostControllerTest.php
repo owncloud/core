@@ -34,7 +34,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Mail\IMailer;
 use OCP\Security\ISecureRandom;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -48,25 +48,25 @@ class LostControllerTest extends TestCase {
 	private $lostController;
 	/** @var IUser */
 	private $existingUser;
-	/** @var IURLGenerator | PHPUnit_Framework_MockObject_MockObject */
+	/** @var IURLGenerator | PHPUnit\Framework\MockObject\MockObject */
 	private $urlGenerator;
 	/** @var IL10N */
 	private $l10n;
-	/** @var IUserManager | PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserManager | PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
 	/** @var \OC_Defaults */
 	private $defaults;
-	/** @var IConfig | PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var IMailer | PHPUnit_Framework_MockObject_MockObject */
+	/** @var IMailer | PHPUnit\Framework\MockObject\MockObject */
 	private $mailer;
-	/** @var ISecureRandom | PHPUnit_Framework_MockObject_MockObject */
+	/** @var ISecureRandom | PHPUnit\Framework\MockObject\MockObject */
 	private $secureRandom;
-	/** @var ITimeFactory | PHPUnit_Framework_MockObject_MockObject */
+	/** @var ITimeFactory | PHPUnit\Framework\MockObject\MockObject */
 	private $timeFactory;
-	/** @var IRequest | PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRequest | PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var ILogger | PHPUnit_Framework_MockObject_MockObject*/
+	/** @var ILogger | PHPUnit\Framework\MockObject\MockObject*/
 	private $logger;
 	/** @var Session */
 	private $userSession;

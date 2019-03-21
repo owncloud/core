@@ -8,12 +8,12 @@ use OCP\App\IAppManager;
 
 class ThemeServiceTest extends \PHPUnit\Framework\TestCase {
 	/**
-	 * @var IAppManager | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IAppManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $appManager;
 
 	/**
-	 * @var EnvironmentHelper |  \PHPUnit_Framework_MockObject_MockObject
+	 * @var EnvironmentHelper |  \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $environmentHelper;
 

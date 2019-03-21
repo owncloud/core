@@ -44,31 +44,31 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @group DB
  */
 class FedShareManagerTest extends TestCase {
-	/** @var FederatedShareProvider | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var FederatedShareProvider | \PHPUnit\Framework\MockObject\MockObject */
 	private $federatedShareProvider;
 
-	/** @var Notifications | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Notifications | \PHPUnit\Framework\MockObject\MockObject */
 	private $notifications;
 
-	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
 
-	/** @var ActivityManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ActivityManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $activityManager;
 
-	/** @var NotificationManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var NotificationManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $notificationManager;
 
-	/** @var FedShareManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var FedShareManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $fedShareManager;
 
-	/** @var AddressHandler | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var AddressHandler | \PHPUnit\Framework\MockObject\MockObject */
 	private $addressHandler;
 
-	/** @var Permissions | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Permissions | \PHPUnit\Framework\MockObject\MockObject */
 	private $permissions;
 
-	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $eventDispatcher;
 
 	protected function setUp() {

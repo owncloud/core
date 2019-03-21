@@ -33,17 +33,17 @@ use OCP\Comments\ICommentsManager;
 
 class EntityCollectionTest extends \Test\TestCase {
 
-	/** @var \OCP\Comments\ICommentsManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\Comments\ICommentsManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $commentsManager;
-	/** @var \OCP\IUserManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IUserManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
-	/** @var \OCP\ILogger|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\ILogger|\PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
 	/** @var \OCA\Comments\Dav\EntityCollection */
 	protected $collection;
-	/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject */
 	protected $userSession;
-	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $dispatcher;
 
 	public function setUp() {

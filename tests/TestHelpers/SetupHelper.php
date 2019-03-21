@@ -24,7 +24,6 @@ namespace TestHelpers;
 use Behat\Testwork\Hook\Scope\HookScope;
 use GuzzleHttp\Exception\ServerException;
 use Exception;
-use PHPUnit_Framework_Assert;
 use GuzzleHttp\Message\ResponseInterface;
 use SimpleXMLElement;
 
@@ -34,7 +33,7 @@ use SimpleXMLElement;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class SetupHelper {
+class SetupHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @var string
@@ -524,7 +523,7 @@ class SetupHelper {
 			'GET',
 			"/apps/testing/api/v1/file?file={$fileInSkeletonFolder}"
 		);
-		PHPUnit_Framework_Assert::assertSame(
+		self::assertSame(
 			200,
 			$response->getStatusCode(),
 			"Failed to read the file {$fileInSkeletonFolder}"

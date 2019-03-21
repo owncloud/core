@@ -102,7 +102,7 @@ class WebDavLockingContext implements Context {
 			$this->tokenOfLastLock[$user][$file] = (string)$xmlPart[0];
 		} else {
 			if ($expectToSucceed === true) {
-				PHPUnit_Framework_Assert::fail("could not find lock token");
+				PHPUnit\Framework\Assert::fail("could not find lock token");
 			}
 		}
 	}
@@ -440,7 +440,7 @@ class WebDavLockingContext implements Context {
 		$responseXml = $this->featureContext->getResponseXml($response);
 		$responseXml->registerXPathNamespace('d', 'DAV:');
 		$xmlPart = $responseXml->xpath("//d:response//d:lockdiscovery/d:activelock");
-		PHPUnit_Framework_Assert::assertCount(
+		PHPUnit\Framework\Assert::assertCount(
 			(int)$count, $xmlPart,
 			"expected $count lock(s) for '$file' but found " . \count($xmlPart)
 		);

@@ -33,16 +33,16 @@ use Test\TestCase;
 
 class ManagerTest extends TestCase {
 
-	/** @var IUser|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUser|\PHPUnit\Framework\MockObject\MockObject */
 	private $user;
 
-	/** @var IConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 
-	/** @var ILogger|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger|\PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 
-	/** @var IServiceLoader|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IServiceLoader|\PHPUnit\Framework\MockObject\MockObject */
 	private $serviceLoader;
 
 	/** @var Manager */

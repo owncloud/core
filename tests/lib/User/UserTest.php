@@ -34,25 +34,25 @@ use Test\Traits\PasswordTrait;
  * @package Test\User
  */
 class UserTest extends TestCase {
-	/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $accountMapper;
 	/** @var Account */
 	private $account;
 	/** @var User */
 	private $user;
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var PublicEmitter */
 	private $emitter;
-	/** @var EventDispatcher | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var EventDispatcher | \PHPUnit\Framework\MockObject\MockObject */
 	private $eventDispatcher;
-	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
 	private $urlGenerator;
-	/** @var  Manager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  Manager | \PHPUnit\Framework\MockObject\MockObject */
 	private $groupManager;
-	/** @var  SubAdmin | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  SubAdmin | \PHPUnit\Framework\MockObject\MockObject */
 	private $subAdmin;
-	/** @var  Session | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  Session | \PHPUnit\Framework\MockObject\MockObject */
 	private $sessionUser;
 
 	public function setUp() {
@@ -142,7 +142,7 @@ class UserTest extends TestCase {
 			$calledEvents['user.aftersetpassword'] = $event;
 		});
 		$backend = $this->createMock(IChangePasswordBackend::class);
-		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		/** @var Account | \PHPUnit\Framework\MockObject\MockObject $account */
 		$account = $this->createMock(Account::class);
 		$account->expects($this->any())->method('getBackendInstance')->willReturn($backend);
 		$account->expects($this->any())->method('__call')->with('getUserId')->willReturn('foo');
@@ -192,7 +192,7 @@ class UserTest extends TestCase {
 			->with('foo', 'owncloud', 'lostpassword');
 
 		$backend = $this->createMock(IChangePasswordBackend::class);
-		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		/** @var Account | \PHPUnit\Framework\MockObject\MockObject $account */
 		$account = $this->createMock(Account::class);
 		$account->expects($this->any())->method('getBackendInstance')->willReturn($backend);
 		$account->expects($this->any())->method('__call')->with('getUserId')->willReturn('foo');
@@ -225,7 +225,7 @@ class UserTest extends TestCase {
 			->getMock();
 		$backend->expects($this->any())->method('canChangeAvatar')->willReturn($canChange);
 
-		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		/** @var Account | \PHPUnit\Framework\MockObject\MockObject $account */
 		$account = $this->createMock(Account::class);
 		$account->expects($this->any())->method('getBackendInstance')->willReturn($backend);
 		$account->expects($this->any())->method('__call')->with('getUserId')->willReturn('foo');
@@ -304,7 +304,7 @@ class UserTest extends TestCase {
 			->setMethods(['implementsActions'])
 			->getMock();
 
-		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		/** @var Account | \PHPUnit\Framework\MockObject\MockObject $account */
 		$account = $this->getMockBuilder(Account::class)
 			->setMethods(['getBackendInstance', 'getDisplayName', 'setDisplayName'])
 			->getMock();
@@ -334,7 +334,7 @@ class UserTest extends TestCase {
 			->setMethods(['implementsActions'])
 			->getMock();
 
-		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		/** @var Account | \PHPUnit\Framework\MockObject\MockObject $account */
 		$account = $this->getMockBuilder(Account::class)
 			->setMethods(['getBackendInstance', 'getDisplayName', 'setDisplayName'])
 			->getMock();
@@ -384,7 +384,7 @@ class UserTest extends TestCase {
 			->setMethods(['implementsActions'])
 			->getMock();
 
-		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		/** @var Account | \PHPUnit\Framework\MockObject\MockObject $account */
 		$account = $this->getMockBuilder(Account::class)
 			->setMethods(['getBackendInstance', 'getDisplayName', 'setDisplayName'])
 			->getMock();
@@ -416,7 +416,7 @@ class UserTest extends TestCase {
 			->setMethods(['implementsActions'])
 			->getMock();
 
-		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		/** @var Account | \PHPUnit\Framework\MockObject\MockObject $account */
 		$account = $this->createMock(Account::class);
 		$account->expects($this->any())->method('getBackendInstance')->willReturn($backend);
 		$account->expects($this->any())->method('__call')->with('getDisplayName')->willReturn('foo');
@@ -451,7 +451,7 @@ class UserTest extends TestCase {
 		$emitter->listen('\OC\User', 'postSetPassword', $hook);
 
 		$backend = $this->createMock(IChangePasswordBackend::class);
-		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		/** @var Account | \PHPUnit\Framework\MockObject\MockObject $account */
 		$account = $this->createMock(Account::class);
 		$account->expects($this->any())->method('getBackendInstance')->willReturn($backend);
 		$account->expects($this->any())->method('__call')->with('getUserId')->willReturn('foo');

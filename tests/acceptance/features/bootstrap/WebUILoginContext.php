@@ -403,7 +403,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	public function thisMessageShouldBeDisplayed(PyStringNode $string) {
 		$expectedString = $string->getRaw();
 		$passwordRecoveryMessage = $this->loginPage->getLostPasswordMessage();
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedString, $passwordRecoveryMessage
 		);
 	}
@@ -420,7 +420,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	) {
 		$expectedString = $string->getRaw();
 		$setPasswordErrorMessage = $this->loginPage->getSetPasswordErrorMessage();
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedString, $setPasswordErrorMessage
 		);
 	}
@@ -437,7 +437,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	) {
 		$expectedString = $string->getRaw();
 		$resetPasswordErrorMessage = $this->loginPage->getLostPasswordResetErrorMessage();
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedString, $resetPasswordErrorMessage
 		);
 	}
@@ -451,7 +451,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 */
 	public function theImprintUrlOnTheLoginPageShouldLinkTo($expectedImprintUrl) {
 		$actualImprintUrl = $this->loginPage->getLegalUrl("Imprint");
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedImprintUrl,
 			$actualImprintUrl
 		);
@@ -466,7 +466,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 */
 	public function thePrivacyPolicyUrlOnTheLoginPageShouldLinkTo($expectedPrivacyPolicyUrl) {
 		$actualPrivacyPolicyUrl = $this->loginPage->getLegalUrl("Privacy Policy");
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedPrivacyPolicyUrl,
 			$actualPrivacyPolicyUrl
 		);
@@ -581,7 +581,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	public function theUserResetConfirmPasswordErrorMessage(PyStringNode $string) {
 		$expectedString = $string->getRaw();
 		$passwordMismatchMessage = $this->loginPage->getRestPasswordConfirmError();
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$expectedString, $passwordMismatchMessage
 		);
 	}

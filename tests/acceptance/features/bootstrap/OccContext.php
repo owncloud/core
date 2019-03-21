@@ -152,7 +152,7 @@ class OccContext implements Context {
 			$commandOutput,
 			$text
 		);
-		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+		PHPUnit\Framework\Assert::assertGreaterThanOrEqual(
 			1,
 			\count($lines),
 			"The command output did not contain the expected text on stdout '$text'\n" .
@@ -178,7 +178,7 @@ class OccContext implements Context {
 			$commandOutput,
 			$text
 		);
-		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
+		PHPUnit\Framework\Assert::assertGreaterThanOrEqual(
 			1,
 			\count($lines),
 			"The command output did not contain the expected text on stderr '$text'\n" .
@@ -193,11 +193,11 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theOccCommandJsonOutputShouldNotReturnAnyData() {
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			\trim($this->featureContext->getStdOutOfOccCommand()),
 			"[]"
 		);
-		PHPUnit_Framework_Assert::assertEmpty(
+		PHPUnit\Framework\Assert::assertEmpty(
 			$this->featureContext->getStdErrOfOccCommand()
 		);
 	}
@@ -456,7 +456,7 @@ class OccContext implements Context {
 			"config:app:get core backgroundjobs_mode"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit_Framework_Assert::assertEquals($mode, \trim($lastOutput));
+		PHPUnit\Framework\Assert::assertEquals($mode, \trim($lastOutput));
 	}
 
 	/**
@@ -471,7 +471,7 @@ class OccContext implements Context {
 			"config:app:get core OC_Channel"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit_Framework_Assert::assertEquals($value, \trim($lastOutput));
+		PHPUnit\Framework\Assert::assertEquals($value, \trim($lastOutput));
 	}
 
 	/**
@@ -486,7 +486,7 @@ class OccContext implements Context {
 			"config:system:get loglevel"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit_Framework_Assert::assertEquals($logLevel, \trim($lastOutput));
+		PHPUnit\Framework\Assert::assertEquals($logLevel, \trim($lastOutput));
 	}
 
 	/**
@@ -577,7 +577,7 @@ class OccContext implements Context {
 	 */
 	public function systemConfigKeyShouldHaveValue($key, $value) {
 		$config = \trim($this->featureContext->getSystemConfigValue($key));
-		PHPUnit_Framework_Assert::assertSame($value, $config);
+		PHPUnit\Framework\Assert::assertSame($value, $config);
 	}
 
 	/**
@@ -588,7 +588,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function systemConfigKeyShouldNotExist($key) {
-		PHPUnit_Framework_Assert::assertEmpty($this->featureContext->getSystemConfig($key)['stdOut']);
+		PHPUnit\Framework\Assert::assertEmpty($this->featureContext->getSystemConfig($key)['stdOut']);
 	}
 
 	/**
@@ -609,12 +609,12 @@ class OccContext implements Context {
 	 */
 	public function theCommandOutputShouldContainTheAppsConfigs() {
 		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true);
-		PHPUnit_Framework_Assert::assertArrayHasKey(
+		PHPUnit\Framework\Assert::assertArrayHasKey(
 			'apps',
 			$config_list,
 			"The occ output does not contain apps configs"
 		);
-		PHPUnit_Framework_Assert::assertNotEmpty(
+		PHPUnit\Framework\Assert::assertNotEmpty(
 			$config_list['apps'],
 			"The occ output does not contain apps configs"
 		);
@@ -627,12 +627,12 @@ class OccContext implements Context {
 	 */
 	public function theCommandOutputShouldContainTheSystemConfigs() {
 		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true);
-		PHPUnit_Framework_Assert::assertArrayHasKey(
+		PHPUnit\Framework\Assert::assertArrayHasKey(
 			'system',
 			$config_list,
 			"The occ output does not contain system configs"
 		);
-		PHPUnit_Framework_Assert::assertNotEmpty(
+		PHPUnit\Framework\Assert::assertNotEmpty(
 			$config_list['system'],
 			"The occ output does not contain system configs"
 		);
@@ -649,7 +649,7 @@ class OccContext implements Context {
 		$this->invokingTheCommand(
 			"versions:cleanup $user"
 		);
-		PHPUnit_Framework_Assert::assertSame(
+		PHPUnit\Framework\Assert::assertSame(
 			"Delete versions of   $user",
 			\trim($this->featureContext->getStdOutOfOccCommand())
 		);
@@ -664,7 +664,7 @@ class OccContext implements Context {
 		$this->invokingTheCommand(
 			"versions:cleanup"
 		);
-		PHPUnit_Framework_Assert::assertContains(
+		PHPUnit\Framework\Assert::assertContains(
 			"Delete all versions",
 			\trim($this->featureContext->getStdOutOfOccCommand())
 		);

@@ -15,9 +15,9 @@ use OCP\ILogger;
 use Test\TestCase;
 
 class CSSResourceLocatorTest extends TestCase {
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $appManager;
 	protected $serverRoot = '/var/www/owncloud';
 	protected $appRoot = '/var/www/apps';
@@ -32,7 +32,7 @@ class CSSResourceLocatorTest extends TestCase {
 	 * @param string $theme
 	 * @param array $core_map
 	 * @param array $appsRoots
-	 * @return \PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit\Framework\MockObject\MockObject
 	 */
 	public function getResourceLocator($theme, $core_map, $appsRoots) {
 		$themeInstance = $this->createMock(Theme::class);

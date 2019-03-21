@@ -20,16 +20,16 @@ use Test\TestCase;
  */
 class FactoryTest extends TestCase {
 
-	/** @var \OCP\IConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
-	/** @var \OCP\IRequest|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IRequest|\PHPUnit\Framework\MockObject\MockObject */
 	protected $request;
 
-	/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject */
 	protected $userSession;
 
-	/** @var IThemeService|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IThemeService|\PHPUnit\Framework\MockObject\MockObject */
 	protected $themeService;
 
 	/** @var string */
@@ -60,7 +60,7 @@ class FactoryTest extends TestCase {
 
 	/**
 	 * @param array $methods
-	 * @return Factory|\PHPUnit_Framework_MockObject_MockObject
+	 * @return Factory|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getFactory(array $methods = []) {
 		if (!empty($methods)) {

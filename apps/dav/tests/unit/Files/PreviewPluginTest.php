@@ -42,15 +42,15 @@ use OCP\Files\FileInfo;
 
 class PreviewPluginTest extends TestCase {
 
-	/** @var RequestInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var IPreviewNode | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IPreviewNode | \PHPUnit\Framework\MockObject\MockObject */
 	private $previewNode;
-	/** @var IPreview | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IPreview | \PHPUnit\Framework\MockObject\MockObject */
 	private $previewManager;
 	/** @var PreviewPlugin */
 	private $plugin;
-	/** @var ResponseInterface| \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ResponseInterface| \PHPUnit\Framework\MockObject\MockObject */
 	private $response;
 
 	public function setUp() {
@@ -62,28 +62,28 @@ class PreviewPluginTest extends TestCase {
 		$this->previewNode = $this->createMock([IPreviewNode::class, FileInfo::class]);
 
 		$this->request = $this->createMock(RequestInterface::class);
-		/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject $response */
+		/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject $response */
 		$this->response = $this->createMock(ResponseInterface::class);
 
 		$this->initPlugin();
 	}
 
 	private function initPlugin() {
-		/** @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject $timeFactory */
+		/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject $timeFactory */
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		$timeFactory->method('getTime')->willReturn(1234567);
 
 		$this->plugin = new PreviewPlugin($timeFactory, $this->previewManager);
 
-		/** @var IFileNode | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var IFileNode | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->createMock(IFileNode::class);
 		$node->method('getNode')->willReturn($this->previewNode);
 
-		/** @var Tree | \PHPUnit_Framework_MockObject_MockObject $tree */
+		/** @var Tree | \PHPUnit\Framework\MockObject\MockObject $tree */
 		$tree = $this->createMock(Tree::class);
 		$tree->method('getNodeForPath')->willReturn($node);
 
-		/** @var Server | \PHPUnit_Framework_MockObject_MockObject $server */
+		/** @var Server | \PHPUnit\Framework\MockObject\MockObject $server */
 		$server = $this->createMock(Server::class);
 		$server->tree = $tree;
 

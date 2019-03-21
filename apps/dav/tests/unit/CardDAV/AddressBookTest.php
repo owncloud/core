@@ -29,7 +29,7 @@ use Test\TestCase;
 
 class AddressBookTest extends TestCase {
 	public function testDelete() {
-		/** @var \PHPUnit_Framework_MockObject_MockObject | CardDavBackend $backend */
+		/** @var \PHPUnit\Framework\MockObject\MockObject | CardDavBackend $backend */
 		$backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
 		$backend->expects($this->once())->method('updateShares');
 		$backend->expects($this->any())->method('getShares')->willReturn([
@@ -48,7 +48,7 @@ class AddressBookTest extends TestCase {
 	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testDeleteFromGroup() {
-		/** @var \PHPUnit_Framework_MockObject_MockObject | CardDavBackend $backend */
+		/** @var \PHPUnit\Framework\MockObject\MockObject | CardDavBackend $backend */
 		$backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
 		$backend->expects($this->never())->method('updateShares');
 		$backend->expects($this->any())->method('getShares')->willReturn([
@@ -67,7 +67,7 @@ class AddressBookTest extends TestCase {
 	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testPropPatch() {
-		/** @var \PHPUnit_Framework_MockObject_MockObject | CardDavBackend $backend */
+		/** @var \PHPUnit\Framework\MockObject\MockObject | CardDavBackend $backend */
 		$backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
 		$calendarInfo = [
 			'{http://owncloud.org/ns}owner-principal' => 'user1',
@@ -82,7 +82,7 @@ class AddressBookTest extends TestCase {
 	 * @dataProvider providesReadOnlyInfo
 	 */
 	public function testAcl($expectsWrite, $readOnlyValue, $hasOwnerSet) {
-		/** @var \PHPUnit_Framework_MockObject_MockObject | CardDavBackend $backend */
+		/** @var \PHPUnit\Framework\MockObject\MockObject | CardDavBackend $backend */
 		$backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
 		$backend->expects($this->any())->method('applyShareAcl')->willReturnArgument(1);
 		$calendarInfo = [

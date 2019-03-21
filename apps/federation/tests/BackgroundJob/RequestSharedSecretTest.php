@@ -35,22 +35,22 @@ use Test\TestCase;
 
 class RequestSharedSecretTest extends TestCase {
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject | IClient */
+	/** @var \PHPUnit\Framework\MockObject\MockObject | IClient */
 	private $httpClient;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject | IJobList */
+	/** @var \PHPUnit\Framework\MockObject\MockObject | IJobList */
 	private $jobList;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject | IURLGenerator */
+	/** @var \PHPUnit\Framework\MockObject\MockObject | IURLGenerator */
 	private $urlGenerator;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject | DbHandler */
+	/** @var \PHPUnit\Framework\MockObject\MockObject | DbHandler */
 	private $dbHandler;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject | TrustedServers */
+	/** @var \PHPUnit\Framework\MockObject\MockObject | TrustedServers */
 	private $trustedServers;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject | IResponse */
+	/** @var \PHPUnit\Framework\MockObject\MockObject | IResponse */
 	private $response;
 
 	/** @var  RequestSharedSecret */
@@ -84,7 +84,7 @@ class RequestSharedSecretTest extends TestCase {
 	 * @param bool $retainBackgroundJob
 	 */
 	public function testExecute($isTrustedServer, $retainBackgroundJob) {
-		/** @var RequestSharedSecret |\PHPUnit_Framework_MockObject_MockObject $requestSharedSecret */
+		/** @var RequestSharedSecret |\PHPUnit\Framework\MockObject\MockObject $requestSharedSecret */
 		$requestSharedSecret = $this->getMockBuilder('OCA\Federation\BackgroundJob\RequestSharedSecret')
 			->setConstructorArgs(
 				[
