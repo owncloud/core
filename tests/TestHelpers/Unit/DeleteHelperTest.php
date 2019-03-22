@@ -21,7 +21,6 @@
  */
 
 use TestHelpers\DeleteHelper;
-use TestHelpers\WebDavHelper;
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Mock;
 use GuzzleHttp\Message\Response;
