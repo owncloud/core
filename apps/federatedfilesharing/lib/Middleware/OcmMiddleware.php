@@ -93,7 +93,7 @@ class OcmMiddleware {
 	 *
 	 * @param string[] $params
 	 *
-	 * @return bool
+	 * @return void
 	 *
 	 * @throws BadRequestException
 	 */

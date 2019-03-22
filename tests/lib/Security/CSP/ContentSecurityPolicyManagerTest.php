@@ -36,7 +36,11 @@ class ContentSecurityPolicyManagerTest extends TestCase {
 	}
 
 	public function testAddDefaultPolicy() {
-		$this->contentSecurityPolicyManager->addDefaultPolicy(new \OCP\AppFramework\Http\ContentSecurityPolicy());
+		$this->assertNull(
+			$this->contentSecurityPolicyManager->addDefaultPolicy(
+				new \OCP\AppFramework\Http\ContentSecurityPolicy()
+			)
+		);
 	}
 
 	public function testGetDefaultPolicyWithPolicies() {

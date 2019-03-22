@@ -102,7 +102,9 @@ class OcmMiddlewareTest extends TestCase {
 		if (\is_string($expectedResult)) {
 			$this->expectException($expectedResult);
 		}
-		$this->ocmMiddleware->assertNotNull($input);
+		$this->assertNull(
+			$this->ocmMiddleware->assertNotNull($input)
+		);
 	}
 
 	public function dataTestAssertNotNull() {
@@ -204,7 +206,9 @@ class OcmMiddlewareTest extends TestCase {
 		if ($isExceptionExpected) {
 			$this->expectException(NotImplementedException::class);
 		}
-		$this->ocmMiddleware->assertIncomingSharingEnabled();
+		$this->assertNull(
+			$this->ocmMiddleware->assertIncomingSharingEnabled()
+		);
 	}
 
 	public function dataTestAssertIncomingSharingEnabled() {
@@ -225,7 +229,9 @@ class OcmMiddlewareTest extends TestCase {
 		if ($isExceptionExpected) {
 			$this->expectException(NotImplementedException::class);
 		}
-		$this->ocmMiddleware->assertOutgoingSharingEnabled();
+		$this->assertNull(
+			$this->ocmMiddleware->assertOutgoingSharingEnabled()
+		);
 	}
 
 	public function dataTestAssertOutgoingSharingEnabled() {
