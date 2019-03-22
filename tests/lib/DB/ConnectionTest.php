@@ -12,6 +12,7 @@ namespace Test\DB;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use OC\DB\MDB2SchemaManager;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use PHPUnit\Framework\Constraint\IsType;
 
 /**
  * Class Connection
@@ -181,19 +182,23 @@ class ConnectionTest extends \Test\TestCase {
 
 	public function testSetValuesSameNoError() {
 		$this->makeTestTable();
-		$this->connection->setValues('table', [
+		$numNewRows = $this->connection->setValues('table', [
 			'integerfield' => 1
 		], [
 			'textfield' => 'foo',
 			'clobfield' => 'not_null'
 		]);
 
+		$this->assertInternalType(IsType::TYPE_INT, $numNewRows);
+
 		// this will result in 'no affected rows' on certain optimizing DBs
 		// ensure the PreConditionNotMetException isn't thrown
-		$this->connection->setValues('table', [
+		$numNewRows = $this->connection->setValues('table', [
 			'integerfield' => 1
 		], [
 			'textfield' => 'foo'
 		]);
+
+		$this->assertInternalType(IsType::TYPE_INT, $numNewRows);
 	}
 }

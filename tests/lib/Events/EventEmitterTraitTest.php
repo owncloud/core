@@ -97,6 +97,10 @@ class EventEmitterTraitTest extends TestCase {
 			$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
 			$this->assertArrayHasKey('item', $calledAfterEvent[1]);
 			$this->assertEquals('testing', $calledAfterEvent[1]->getArgument('item'));
+		} else {
+			$this->assertEquals($calledAfterEvent[0], "$className.after$eventName");
+			$this->assertArrayHasKey('item', $calledAfterEvent[1]);
+			$this->assertEquals('testing', $calledAfterEvent[1]->getArgument('item'));
 		}
 	}
 }
