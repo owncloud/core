@@ -149,6 +149,127 @@ trait Logging {
 	}
 
 	/**
+	 * wrapper around assertLogFileContainsAtLeastOneEntryMatchingTable()
+	 *
+	 * @see assertLogFileContainsAtLeastOneEntryMatchingTable()
+	 *
+	 * @Then the log file should contain at least one entry matching each of these lines:
+	 *
+	 * @param TableNode $expectedLogEntries table with headings that correspond
+	 *                                      to the json keys in the log entry
+	 *                                      e.g.
+	 *                                      |user|app|method|message|
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function logFileShouldContainEntriesMatching(
+		TableNode $expectedLogEntries
+	) {
+		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
+			$expectedLogEntries
+		);
+	}
+
+	/**
+	 * wrapper around assertLogFileContainsAtLeastOneEntryMatchingTable()
+	 *
+	 * @see assertLogFileContainsAtLeastOneEntryMatchingTable()
+	 *
+	 * @Then the log file should contain at least one entry matching the regular expressions in each of these lines:
+	 *
+	 * @param TableNode $expectedLogEntries
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function logFileShouldContainEntriesMatchingRegularExpression(
+		TableNode $expectedLogEntries
+	) {
+		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
+			$expectedLogEntries, true
+		);
+	}
+
+	/**
+	 * checks that every line in the table has at least one
+	 * corresponding line in the log file
+	 * empty cells in the table will not be checked!
+	 *
+	 * @param TableNode $expectedLogEntries table with headings that correspond
+	 *                                      to the json keys in the log entry
+	 *                                      e.g.
+	 *                                      |user|app|method|message|
+	 * @param boolean $regexCompare if true the table entries are expected
+	 *                              to be regular expressions
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	private function assertLogFileContainsAtLeastOneEntryMatchingTable(
+		TableNode $expectedLogEntries, $regexCompare = false
+	) {
+		$logLines = LoggingHelper::getLogFileContent(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword()
+		);
+		$expectedLogEntries = $expectedLogEntries->getHash();
+		foreach ($logLines as $logLine) {
+			$logEntry = \json_decode($logLine, true);
+			if ($logEntry === null) {
+				throw new \Exception("the logline :\n{$logLine} is not valid JSON");
+			}
+			//reindex the array, we might have deleted entries
+			$expectedLogEntries = \array_values($expectedLogEntries);
+			for ($entryNo = 0; $entryNo < \count($expectedLogEntries); $entryNo++) {
+				$expectedLogEntry = $expectedLogEntries[$entryNo];
+				$foundLine = true;
+				foreach (\array_keys($expectedLogEntry) as $attribute) {
+					if ($expectedLogEntry[$attribute] === "") {
+						//don't check empty table entries
+						continue;
+					}
+					if (!isset($logEntry[$attribute])) {
+						//this line does not have the attribute we are looking for
+						$foundLine = false;
+						break;
+					}
+					if (!\is_string($logEntry[$attribute])) {
+						$logEntry[$attribute] = \json_encode($logEntry[$attribute]);
+					}
+					$expectedLogEntry[$attribute]
+						= $this->featureContext->substituteInLineCodes(
+							$expectedLogEntry[$attribute]
+						);
+					if ($regexCompare === true) {
+						$matchAttribute = \preg_match(
+							$expectedLogEntry[$attribute], $logEntry[$attribute]
+						);
+					} else {
+						$matchAttribute
+							= ($expectedLogEntry[$attribute] === $logEntry[$attribute]);
+					}
+					
+					if (!$matchAttribute) {
+						$foundLine = false;
+						break;
+					}
+				}
+				if ($foundLine === true) {
+					unset($expectedLogEntries[$entryNo]);
+				}
+			}
+		}
+		
+		$notFoundLines = \print_r($expectedLogEntries, true);
+		PHPUnit_Framework_Assert::assertEmpty(
+			$expectedLogEntries,
+			"could not find these expected line(s):\n $notFoundLines"
+		);
+	}
+
+	/**
 	 * fails if there is at least one line in the log file that matches all
 	 * given attributes
 	 * attributes in the table that are empty will match any value in the
