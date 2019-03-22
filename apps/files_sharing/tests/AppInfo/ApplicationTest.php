@@ -31,6 +31,8 @@ use OCA\Files_Sharing\Tests\TestCase;
 class ApplicationTest extends TestCase {
 	public function testConstructor() {
 		$app = new Application();
-		$app->getContainer()->query('Share20OcsController');
+		$this->assertNotNull(
+			$app->getContainer()->query('Share20OcsController')
+		);
 	}
 }

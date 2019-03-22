@@ -23,6 +23,7 @@
 namespace Test\Files\Storage;
 
 use OC\Files\Storage\Local;
+use PHPUnit\Framework\Constraint\IsType;
 
 /**
  * Class LocalTest
@@ -99,7 +100,7 @@ class LocalTest extends Storage {
 		$storage->file_put_contents('sym/foo', 'bar');
 	}
 
-	public function testDisallowSymlinksInsideDatadir() {
+	public function testAllowSymlinksInsideDatadir() {
 		$subDir1 = $this->tmpDir . 'sub1';
 		$subDir2 = $this->tmpDir . 'sub1/sub2';
 		$sym = $this->tmpDir . 'sub1/sym';
@@ -110,7 +111,8 @@ class LocalTest extends Storage {
 
 		$storage = new \OC\Files\Storage\Local(['datadir' => $subDir1]);
 
-		$storage->file_put_contents('sym/foo', 'bar');
+		$numBytes = $storage->file_put_contents('sym/foo', 'bar');
+		$this->assertInternalType(IsType::TYPE_INT, $numBytes);
 	}
 
 	/**
