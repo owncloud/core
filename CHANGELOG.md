@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
-- Set the correct value when upgrading app patch version in DB - [#34859](https://github.com/owncloud/core/pull/34859)
+- Set the correct value when upgrading app patch version in DB - [#34878](https://github.com/owncloud/core/pull/34878)
 
 ## [10.1.0] - 2019-02-06
 
