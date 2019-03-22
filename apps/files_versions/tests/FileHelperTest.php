@@ -41,7 +41,9 @@ class FileHelperTest extends \Test\TestCase {
 				[$this->equalTo(FileHelper::VERSIONS_RELATIVE_PATH . '/some/long/path')],
 				[$this->equalTo(FileHelper::VERSIONS_RELATIVE_PATH . '/some/long/path/to')]
 			);
-		$fileHelper->createMissingDirectories($viewMock, $path);
+		$this->assertNull(
+			$fileHelper->createMissingDirectories($viewMock, $path)
+		);
 	}
 
 	/**
