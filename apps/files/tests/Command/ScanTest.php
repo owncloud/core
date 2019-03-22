@@ -239,12 +239,20 @@ class ScanTest extends TestCase {
 		if (\count($groups) === 2) {
 			$this->assertContains('Starting scan for user 1 out of 10 (user1)', $output);
 			$this->assertContains('Starting scan for user 1 out of 10 (user11)', $output);
-		}
-		if (\count($groups) === 3) {
+		} elseif (\count($groups) === 3) {
 			$this->assertContains('Starting scan for user 1 out of 10 (user1)', $output);
 			$this->assertContains('Starting scan for user 1 out of 10 (user11)', $output);
 			$this->assertContains('Starting scan for user 1 out of 10 (user21)', $output);
 			$this->assertContains('Starting scan for user 10 out of 10 (user30)', $output);
+		} elseif (\count($groups) === 4) {
+			$this->assertContains('Starting scan for user 1 out of 10 (user1)', $output);
+			$this->assertContains('Starting scan for user 1 out of 20 (user11)', $output);
+			$this->assertContains('Starting scan for user 11 out of 20 (user21)', $output);
+			$this->assertContains('Starting scan for user 10 out of 10 (user40)', $output);
+		} else {
+			$this->fail(
+				"testMultipleGroups supports testing with 2,3, or 4 groups but the input has $groups groups"
+			);
 		}
 	}
 
