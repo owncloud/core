@@ -35,19 +35,19 @@ use OCP\IUserSession;
 use Test\TestCase;
 
 class CryptHSMTest extends TestCase {
-	/** @var IClientService | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IClientService | \PHPUnit\Framework\MockObject\MockObject */
 	private $clientService;
-	/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
 	private $timeFactory;
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
-	/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	private $userSession;
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var IL10N | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject */
 	private $l10n;
 	/** @var CryptHSM */
 	private $cryptHSM;

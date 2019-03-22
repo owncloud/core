@@ -40,7 +40,7 @@ class MigrationTest extends \Test\TestCase {
 	private $recovery_key_id = 'recovery_key_id';
 	private $moduleId;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | ILogger */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | ILogger */
 	private $logger;
 
 	public static function setUpBeforeClass() {
@@ -196,7 +196,7 @@ class MigrationTest extends \Test\TestCase {
 
 		$this->createDummySystemWideKeys();
 
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\OCA\Encryption\Migration $m */
+		/** @var \PHPUnit\Framework\MockObject\MockObject|\OCA\Encryption\Migration $m */
 		$m = $this->getMockBuilder('OCA\Encryption\Migration')
 			->setConstructorArgs(
 				[

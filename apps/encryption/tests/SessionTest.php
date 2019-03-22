@@ -35,7 +35,7 @@ class SessionTest extends TestCase {
 	 * @var Session
 	 */
 	private $instance;
-	/** @var \OCP\ISession|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\ISession|\PHPUnit\Framework\MockObject\MockObject */
 	private $sessionMock;
 
 	/**

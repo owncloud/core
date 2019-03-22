@@ -43,25 +43,25 @@ class KeyManagerTest extends TestCase {
 	/** @var string */
 	private $systemKeyId;
 
-	/** @var \OCP\Encryption\Keys\IStorage|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\Encryption\Keys\IStorage|\PHPUnit\Framework\MockObject\MockObject */
 	private $keyStorageMock;
 
-	/** @var \OCA\Encryption\Crypto\Crypt|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCA\Encryption\Crypto\Crypt|\PHPUnit\Framework\MockObject\MockObject */
 	private $cryptMock;
 
-	/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject */
 	private $userMock;
 
-	/** @var \OCA\Encryption\Session|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCA\Encryption\Session|\PHPUnit\Framework\MockObject\MockObject */
 	private $sessionMock;
 
-	/** @var \OCP\ILogger|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\ILogger|\PHPUnit\Framework\MockObject\MockObject */
 	private $logMock;
 
-	/** @var \OCA\Encryption\Util|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCA\Encryption\Util|\PHPUnit\Framework\MockObject\MockObject */
 	private $utilMock;
 
-	/** @var \OCP\IConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	private $configMock;
 
 	public function setUp() {
@@ -254,7 +254,7 @@ class KeyManagerTest extends TestCase {
 	 */
 	public function testInit($useMasterKey) {
 
-		/** @var \OCA\Encryption\KeyManager|\PHPUnit_Framework_MockObject_MockObject $instance */
+		/** @var \OCA\Encryption\KeyManager|\PHPUnit\Framework\MockObject\MockObject $instance */
 		$instance = $this->getMockBuilder('OCA\Encryption\KeyManager')
 			->setConstructorArgs(
 				[
@@ -585,7 +585,7 @@ class KeyManagerTest extends TestCase {
 			->method('getAppValue')
 			->willReturn($returnVal);
 
-		/** @var \OCA\Encryption\KeyManager | \PHPUnit_Framework_MockObject_MockObject $instance */
+		/** @var \OCA\Encryption\KeyManager | \PHPUnit\Framework\MockObject\MockObject $instance */
 		$instance = $this->getMockBuilder('OCA\Encryption\KeyManager')
 			->setConstructorArgs(
 				[
