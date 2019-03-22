@@ -914,7 +914,7 @@ class OC_App {
 				return true;
 			}
 			// update app version in db
-			\OC::$server->getConfig()->setAppValue($app, 'installed_version', $currentVersion);
+			\OC::$server->getConfig()->setAppValue($app, 'installed_version', $versions[$app]);
 		}
 		return false;
 	}
