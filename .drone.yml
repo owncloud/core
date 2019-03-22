@@ -722,6 +722,13 @@ matrix:
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
+  # PHP 7.1 (without coverage)
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
   # PHP 7.2
     - PHP_VERSION: 7.2
       DB_TYPE: sqlite
