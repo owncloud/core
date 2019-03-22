@@ -235,6 +235,9 @@ trait Logging {
 						$foundLine = false;
 						break;
 					}
+					if (!\is_string($logEntry[$attribute])) {
+						$logEntry[$attribute] = \json_encode($logEntry[$attribute]);
+					}
 					$expectedLogEntry[$attribute]
 						= $this->featureContext->substituteInLineCodes(
 							$expectedLogEntry[$attribute]
