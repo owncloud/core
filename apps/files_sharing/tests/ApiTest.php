@@ -1025,7 +1025,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		$meta = $result->getMeta();
-		$this->assertTrue($result->succeeded(), $meta['message']);
+		$this->assertTrue($result->succeeded(), (string) $meta['message']);
 
 		$share1 = $this->shareManager->getShareById('ocinternal:' . $share1->getId());
 		$this->assertEquals(1, $share1->getPermissions());
