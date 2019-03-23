@@ -32,11 +32,8 @@ class DefaultsTest extends TestCase {
 		$imprintUrl = 'http://example.org/imprint';
 		$privacyPolicyUrl = 'http://example.org/privacy';
 		$defaults = $this->getDefaultsMock(
-			['themeExist', 'getImprintUrl', 'getPrivacyPolicyUrl']
+			['getImprintUrl', 'getPrivacyPolicyUrl']
 		);
-		$defaults->expects($this->any())
-			->method('themeExist')
-			->willReturn(false);
 		$defaults->expects($this->exactly(2))
 			->method('getImprintUrl')
 			->willReturn($imprintUrl);
@@ -55,12 +52,7 @@ class DefaultsTest extends TestCase {
 		$config->expects($this->any())
 			->method('getAppValue')
 			->willThrowException(new \Exception());
-		$defaults = $this->getDefaultsMock(
-			['themeExist']
-		);
-		$defaults->expects($this->any())
-			->method('themeExist')
-			->willReturn(false);
+		$defaults = new OC_Defaults();
 		$defaults->setConfig($config);
 
 		$footer = $defaults->getShortFooter();
