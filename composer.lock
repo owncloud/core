@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ccbfb436109d1f0fe3e2f4f68874e83",
+    "content-hash": "5f1e04646de23e3370731bc9be4e801b",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
