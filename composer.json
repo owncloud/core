@@ -68,6 +68,9 @@
     "extra": {
         "bamarni-bin": {
             "bin-links": false
+        },
+        "cleaner-ignore": {
+            "phpunit/phpunit": ["phpunit.xsd"]
         }
     }
 }
