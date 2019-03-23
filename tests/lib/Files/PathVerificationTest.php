@@ -85,7 +85,9 @@ class PathVerificationTest extends \Test\TestCase {
 			$this->expectException(InvalidPathException::class);
 			$this->expectExceptionMessage('4-byte characters are not supported in file names');
 		}
-		$this->view->verifyPath('', $fileName);
+		$this->assertNull(
+			$this->view->verifyPath('', $fileName)
+		);
 	}
 
 	public function providesAstralPlane() {
