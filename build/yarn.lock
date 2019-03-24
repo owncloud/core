@@ -2,9 +2,10 @@
 # yarn lockfile v1
 
 
-"@bower_components/backbone@jashkenas/backbone#1.3.3":
-  version "1.3.3"
-  resolved "https://codeload.github.com/jashkenas/backbone/tar.gz/8ec88604732944f197b352a6be22c8216ea9d3a1"
+"@bower_components/backbone@jashkenas/backbone#1.4.0":
+  version "1.4.0"
+  uid "5de45fc9e1cbe5f61cf459067207bbe73451ac91"
+  resolved "https://codeload.github.com/jashkenas/backbone/tar.gz/5de45fc9e1cbe5f61cf459067207bbe73451ac91"
   dependencies:
     underscore ">=1.8.3"
 
