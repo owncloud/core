@@ -138,7 +138,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	): void {
 		foreach ($expectedSubset as $key => $value) {
 			$this->assertArrayHasKey($key, $actualArray);
-			$this->assertSame($value, $actualArray[$key]);
+			$this->assertEquals($value, $actualArray[$key]);
 		}
 	}
 
