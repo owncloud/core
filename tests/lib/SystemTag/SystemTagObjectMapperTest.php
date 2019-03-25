@@ -170,10 +170,7 @@ class SystemTagObjectMapperTest extends TestCase {
 			'testtype'
 		);
 
-		$this->assertEquals([
-			'1',
-			'2',
-		], $objectIds, '', 0.0, 10, true);
+		$this->assertEqualsCanonicalizing(['1', '2'], $objectIds);
 	}
 
 	public function testGetObjectsForTagsLimit() {

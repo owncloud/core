@@ -82,7 +82,7 @@ class TemplateResponseTest extends TestCase {
 	public function testRender() {
 		$tpl = new TemplateResponse('core', '404', [], 'base');
 		$data = $tpl->render();
-		$this->assertContains('File not found', $data);
-		$this->assertContains('The specified document has not been found on the server.', $data);
+		$this->assertStringContainsString('File not found', $data);
+		$this->assertStringContainsString('The specified document has not been found on the server.', $data);
 	}
 }
