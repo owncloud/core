@@ -191,11 +191,11 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 	}
 
 	/**
+	 * @throws \Exception
 	 */
 	public function testNonExistingStorage() {
 		$this->expectException(\DomainException::class);
-
-		parent::testNonExistingStorage();
+		$this->tryToUpdateNonExistingStorage();
 	}
 
 	/**
@@ -223,8 +223,7 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 	 */
 	public function testDeleteUnexistingStorage() {
 		$this->expectException(\DomainException::class);
-
-		parent::testDeleteUnexistingStorage();
+		$this->service->removeStorage(255);
 	}
 
 	public function getUniqueStoragesProvider() {
