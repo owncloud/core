@@ -152,8 +152,9 @@ class FilesPlugin extends ServerPlugin {
 		$this->server->on('propPatch', [$this, 'handleUpdateProperties']);
 		$this->server->on('afterBind', [$this, 'sendFileIdHeader']);
 		$this->server->on('afterWriteContent', [$this, 'sendFileIdHeader']);
-		$this->server->on('afterMethod:GET', [$this,'httpGet']);
+		$this->server->on('afterMethod:GET', [$this, 'httpGet']);
 		$this->server->on('afterMethod:GET', [$this, 'handleDownloadToken']);
+		$this->server->on('exception', [$this, 'handleDownloadFailure']);
 		$this->server->on('afterResponse', function ($request, ResponseInterface $response) {
 			$body = $response->getBody();
 			if (\is_resource($body)) {
@@ -192,9 +193,20 @@ class FilesPlugin extends ServerPlugin {
 	}
 
 	/**
+	 * This sets a cookie to be able to recognize the failure of the download
+	 *
+	 * @param \Exception $ex
+	 */
+	public function handleDownloadFailure(\Exception $ex) {
+		$queryParams = $this->server->httpRequest->getQueryParameters();
+
+		if (isset($queryParams['downloadStartSecret'])) {
+			$this->setSecretCookie('ocDownloadStarted', '-1');
+		}
+	}
+
+	/**
 	 * This sets a cookie to be able to recognize the start of the download
-	 * the content must not be longer than 32 characters and must only contain
-	 * alphanumeric characters
 	 *
 	 * @param RequestInterface $request
 	 * @param ResponseInterface $response
@@ -202,18 +214,8 @@ class FilesPlugin extends ServerPlugin {
 	public function handleDownloadToken(RequestInterface $request, ResponseInterface $response) {
 		$queryParams = $request->getQueryParameters();
 
-		/**
-		 * this sets a cookie to be able to recognize the start of the download
-		 * the content must not be longer than 32 characters and must only contain
-		 * alphanumeric characters
-		 */
 		if (isset($queryParams['downloadStartSecret'])) {
-			$token = $queryParams['downloadStartSecret'];
-			if (!isset($token[32])
-				&& \preg_match('!^[a-zA-Z0-9]+$!', $token) === 1) {
-				// FIXME: use $response->setHeader() instead
-				\setcookie('ocDownloadStarted', $token, \time() + 20, '/');
-			}
+			$this->setSecretCookie('ocDownloadStarted', $queryParams['downloadStartSecret']);
 		}
 	}
 
@@ -431,6 +433,21 @@ class FilesPlugin extends ServerPlugin {
 			if ($fileId !== null) {
 				$this->server->httpResponse->setHeader('OC-FileId', $fileId);
 			}
+		}
+	}
+
+	/**
+	 * This sets a cookie, which content must not be longer than 32 characters and must only contain
+	 * alphanumeric characters if request is successfuk, or -1 if request failed.
+	 *
+	 * @param $secretName
+	 * @param $secretToken
+	 */
+	private function setSecretCookie($secretName, $secretToken) {
+		if ($secretToken == '-1' || (!isset($secretToken[32])
+			&& \preg_match('!^[a-zA-Z0-9]+$!', $secretToken) === 1)) {
+			// FIXME: use $response->setHeader() instead
+			\setcookie($secretName, $secretToken, \time() + 20, '/');
 		}
 	}
 }

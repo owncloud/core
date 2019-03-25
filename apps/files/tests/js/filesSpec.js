@@ -129,19 +129,24 @@ describe('OCA.Files.Files tests', function() {
 			token = OC.parseQueryString(redirectStub.getCall(0).args[0]).downloadStartSecret;
 			expect(token).toBeDefined();
 
-			expect(cookieStub.calledOnce).toEqual(true);
-			cookieStub.returns(false);
+			expect(cookieStub.callCount).toEqual(2);
+			cookieStub.onCall(0).returns(false);
+			cookieStub.onCall(1).returns(false);
 			clock.tick(600);
 
-			expect(cookieStub.calledTwice).toEqual(true);
-			expect(cookieStub.getCall(1).args[0]).toEqual('ocDownloadStarted');
-			expect(cookieStub.getCall(1).args[1]).toEqual(token);
+			expect(cookieStub.callCount).toEqual(4);
+			expect(cookieStub.getCall(2).args[0]).toEqual('ocDownloadStarted');
+			expect(cookieStub.getCall(2).args[1]).toEqual(token);
+			expect(cookieStub.getCall(3).args[0]).toEqual('ocDownloadStarted');
+			expect(cookieStub.getCall(3).args[1]).toEqual('-1');
 			expect(callbackStub.notCalled).toEqual(true);
 
+			// now 1 ocDownloadStarted expected, with token argument
+			// should be called and return true
 			cookieStub.returns(true);
-			clock.tick(2000);
 
-			expect(cookieStub.callCount).toEqual(3);
+			clock.tick(2000);
+			expect(cookieStub.callCount).toEqual(5);
 			expect(callbackStub.calledOnce).toEqual(true);
 		});
 	});
