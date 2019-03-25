@@ -127,6 +127,21 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		parent::tearDown();
 	}
 
+	/**
+	 * Check that each key-value pair in expectedSubset exists in actualArray.
+	 *
+	 * @param array $expectedSubset
+	 * @param array $actualArray
+	 */
+	public function checkKeysAndValues(
+		array $expectedSubset, array $actualArray
+	): void {
+		foreach ($expectedSubset as $key => $value) {
+			$this->assertArrayHasKey($key, $actualArray);
+			$this->assertSame($value, $actualArray[$key]);
+		}
+	}
+
 	public function testCreate() {
 		$share = $this->shareManager->newShare();
 
@@ -175,7 +190,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$data = $stmt->fetch();
 		$stmt->closeCursor();
 
-		$expected = [
+		$expectedSubset = [
 			'share_type' => \OCP\Share::SHARE_TYPE_REMOTE,
 			'share_with' => 'user@server.com',
 			'uid_owner' => 'shareOwner',
@@ -187,7 +202,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			'accepted' => 0,
 			'token' => 'token',
 		];
-		$this->assertArraySubset($expected, $data);
+		$this->checkKeysAndValues($expectedSubset, $data);
 
 		$this->assertEquals($data['id'], $share->getId());
 		$this->assertEquals(\OCP\Share::SHARE_TYPE_REMOTE, $share->getShareType());
@@ -259,7 +274,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$data = $stmt->fetch();
 		$stmt->closeCursor();
 
-		$expected = [
+		$expectedSubset = [
 			'share_type' => \OCP\Share::SHARE_TYPE_REMOTE,
 			'share_with' => 'user@server.com',
 			'uid_owner' => 'shareOwner',
@@ -271,7 +286,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			'accepted' => 0,
 			'token' => 'token',
 		];
-		$this->assertArraySubset($expected, $data);
+		$this->checkKeysAndValues($expectedSubset, $data);
 
 		$this->assertEquals($data['id'], $share->getId());
 		$this->assertEquals(\OCP\Share::SHARE_TYPE_REMOTE, $share->getShareType());

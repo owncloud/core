@@ -1767,7 +1767,10 @@ trait Sharing {
 			$row['path'] = \rtrim($row['path'], "/");
 			foreach ($usersShares as $share) {
 				try {
-					PHPUnit\Framework\Assert::assertArraySubset($row, $share);
+					foreach ($row as $key => $value) {
+						PHPUnit\Framework\Assert::assertArrayHasKey($key, $share);
+						PHPUnit\Framework\Assert::assertSame($value, $share[$key]);
+					}
 					$found = true;
 					break;
 				} catch (PHPUnit\Framework\ExpectationFailedException $e) {
