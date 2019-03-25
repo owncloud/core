@@ -234,10 +234,15 @@ class ChunkingPluginZsyncTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\BadRequest
-	 * @expectedExceptionMessage Chunks on server do not sum up to 4 but to 3
 	 */
 	public function testBeforeMoveSizeIsWrong() {
+		$this->expectException(
+			\Sabre\DAV\Exception\BadRequest::class
+		);
+		$this->expectExceptionMessage(
+			'Chunks on server do not sum up to 4 but to 3'
+		);
+
 		$sourceNode = $this->createMock(FutureFileZsync::class);
 		$sourceNode->expects($this->once())
 			->method('getSize')

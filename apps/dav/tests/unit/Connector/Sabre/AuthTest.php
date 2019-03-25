@@ -226,9 +226,10 @@ class AuthTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden
 	 */
 	public function testValidateUserPassWithPasswordLoginForbidden() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden::class);
+
 		$this->userSession
 			->expects($this->once())
 			->method('isLoggedIn')
@@ -339,10 +340,15 @@ class AuthTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotAuthenticated
-	 * @expectedExceptionMessage 2FA challenge not passed.
 	 */
 	public function testAuthenticateAlreadyLoggedInWithoutTwoFactorChallengePassed() {
+		$this->expectException(
+			\Sabre\DAV\Exception\NotAuthenticated::class
+		);
+		$this->expectExceptionMessage(
+			'2FA challenge not passed.'
+		);
+
 		/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject $request */
 		$request = $this->getMockBuilder(RequestInterface::class)
 			->disableOriginalConstructor()
@@ -517,9 +523,10 @@ class AuthTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException Sabre\DAV\Exception\NotAuthenticated
 	 */
 	public function testAutenticateWithLoggedInUserButLoginExceptionThrown() {
+		$this->expectException(\Sabre\DAV\Exception\NotAuthenticated::class);
+
 		/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject $request */
 		$request = $this->getMockBuilder(RequestInterface::class)
 			->disableOriginalConstructor()
@@ -550,10 +557,15 @@ class AuthTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotAuthenticated
-	 * @expectedExceptionMessage Cannot authenticate over ajax calls
 	 */
 	public function testAuthenticateNoBasicAuthenticateHeadersProvidedWithAjax() {
+		$this->expectException(
+			\Sabre\DAV\Exception\NotAuthenticated::class
+		);
+		$this->expectExceptionMessage(
+			'Cannot authenticate over ajax calls'
+		);
+
 		/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject $httpRequest */
 		$httpRequest = $this->getMockBuilder(RequestInterface::class)
 			->disableOriginalConstructor()

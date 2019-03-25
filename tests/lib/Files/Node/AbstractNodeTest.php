@@ -34,10 +34,11 @@ class AbstractNodeTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 * @dataProvider providesOperations
 	 */
 	public function testOperations($operation) {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		/** @var AbstractNode | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->getMockForAbstractClass(AbstractNode::class);
 		$node->$operation('');

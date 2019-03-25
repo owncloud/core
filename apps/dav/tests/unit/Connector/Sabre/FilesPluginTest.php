@@ -342,9 +342,10 @@ class FilesPluginTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
 	 */
 	public function testGetPropertiesWhenNoPermission() {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+
 		/** @var Directory | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->getMockBuilder(Directory::class)
 			->disableOriginalConstructor()
@@ -446,10 +447,11 @@ class FilesPluginTest extends TestCase {
 	 * FolderA is an incoming shared folder and there are no delete permissions.
 	 * Thus moving /FolderA/test.txt to /test.txt should fail already on that check
 	 *
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
-	 * @expectedExceptionMessage FolderA/test.txt cannot be deleted
 	 */
 	public function testMoveSrcNotDeletable() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+		$this->expectExceptionMessage('FolderA/test.txt cannot be deleted');
+
 		$fileInfoFolderATestTXT = $this->getMockBuilder(FileInfo::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -488,10 +490,11 @@ class FilesPluginTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
-	 * @expectedExceptionMessage FolderA/test.txt does not exist
 	 */
 	public function testMoveSrcNotExist() {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+		$this->expectExceptionMessage('FolderA/test.txt does not exist');
+
 		$node = $this->createMock(Node::class);
 		$node->expects($this->once())
 			->method('getFileInfo')

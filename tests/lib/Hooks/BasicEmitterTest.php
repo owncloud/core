@@ -51,9 +51,10 @@ class BasicEmitterTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Test\Hooks\EmittedException
 	 */
 	public function testAnonymousFunction() {
+		$this->expectException(\Test\Hooks\EmittedException::class);
+
 		$this->emitter->listen('Test', 'test', function () {
 			throw new EmittedException;
 		});
@@ -61,17 +62,19 @@ class BasicEmitterTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Test\Hooks\EmittedException
 	 */
 	public function testStaticCallback() {
+		$this->expectException(\Test\Hooks\EmittedException::class);
+
 		$this->emitter->listen('Test', 'test', ['\Test\Hooks\BasicEmitterTest', 'staticCallBack']);
 		$this->emitter->emitEvent('Test', 'test');
 	}
 
 	/**
-	 * @expectedException \Test\Hooks\EmittedException
 	 */
 	public function testNonStaticCallback() {
+		$this->expectException(\Test\Hooks\EmittedException::class);
+
 		$this->emitter->listen('Test', 'test', [$this, 'nonStaticCallBack']);
 		$this->emitter->emitEvent('Test', 'test');
 	}
@@ -126,9 +129,10 @@ class BasicEmitterTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Test\Hooks\EmittedException
 	 */
 	public function testArguments() {
+		$this->expectException(\Test\Hooks\EmittedException::class);
+
 		$this->emitter->listen('Test', 'test', function ($foo, $bar) {
 			if ($foo == 'foo' and $bar == 'bar') {
 				throw new EmittedException;
@@ -138,9 +142,10 @@ class BasicEmitterTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Test\Hooks\EmittedException
 	 */
 	public function testNamedArguments() {
+		$this->expectException(\Test\Hooks\EmittedException::class);
+
 		$this->emitter->listen('Test', 'test', function ($foo, $bar) {
 			if ($foo == 'foo' and $bar == 'bar') {
 				throw new EmittedException;
@@ -217,9 +222,10 @@ class BasicEmitterTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Test\Hooks\EmittedException
 	 */
 	public function testRemoveKeepOtherCallback() {
+		$this->expectException(\Test\Hooks\EmittedException::class);
+
 		$listener1 = function () {
 			throw new EmittedException;
 		};
@@ -235,9 +241,10 @@ class BasicEmitterTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Test\Hooks\EmittedException
 	 */
 	public function testRemoveKeepOtherMethod() {
+		$this->expectException(\Test\Hooks\EmittedException::class);
+
 		$listener = function () {
 			throw new EmittedException;
 		};
@@ -250,9 +257,10 @@ class BasicEmitterTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Test\Hooks\EmittedException
 	 */
 	public function testRemoveKeepOtherScope() {
+		$this->expectException(\Test\Hooks\EmittedException::class);
+
 		$listener = function () {
 			throw new EmittedException;
 		};
@@ -265,9 +273,10 @@ class BasicEmitterTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Test\Hooks\EmittedException
 	 */
 	public function testRemoveNonExistingName() {
+		$this->expectException(\Test\Hooks\EmittedException::class);
+
 		$listener = function () {
 			throw new EmittedException;
 		};

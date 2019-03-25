@@ -371,9 +371,10 @@ class LockMapperTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\AppFramework\Db\DoesNotExistException
 	 */
 	public function testDeleteUserDeletesLock() {
+		$this->expectException(\OCP\AppFramework\Db\DoesNotExistException::class);
+
 		if ($this->db->getDatabasePlatform() instanceof SqlitePlatform) {
 			// remove when https://github.com/doctrine/dbal/issues/1204 and https://github.com/doctrine/dbal/issues/2833 are fixed
 			$this->markTestSkipped("No cascade delete possible on Sqlite with Doctrine DBAL");

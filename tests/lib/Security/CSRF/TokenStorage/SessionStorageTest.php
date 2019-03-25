@@ -52,10 +52,11 @@ class SessionStorageTest extends \Test\TestCase {
 	 * @param string $token
 	 * @dataProvider getTokenDataProvider
 	 *
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Session does not contain a requesttoken
 	 */
 	public function testGetTokenWithEmptyToken($token) {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Session does not contain a requesttoken');
+
 		$this->session
 			->expects($this->once())
 			->method('get')

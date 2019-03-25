@@ -227,9 +227,10 @@ class SystemTagPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testGetPropertiesForbidden() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$systemTag = new SystemTag(1, 'Test', true, false);
 		$requestedProperties = [
 			self::ID_PROPERTYNAME,
@@ -326,9 +327,10 @@ class SystemTagPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testUpdatePropertiesForbidden() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$systemTag = new SystemTag(1, 'Test', true, false);
 		$this->user->expects($this->any())
 			->method('getUID')
@@ -379,10 +381,11 @@ class SystemTagPluginTest extends \Test\TestCase {
 	}
 	/**
 	 * @dataProvider createTagInsufficientPermissionsProvider
-	 * @expectedException \Sabre\DAV\Exception\BadRequest
-	 * @expectedExceptionMessage Not sufficient permissions
 	 */
 	public function testCreateNotAssignableTagAsRegularUser($userVisible, $userAssignable, $userEditable, $groups) {
+		$this->expectException(\Sabre\DAV\Exception\BadRequest::class);
+		$this->expectExceptionMessage('Not sufficient permissions');
+
 		$this->user->expects($this->once())
 			->method('getUID')
 			->willReturn('admin');
@@ -655,9 +658,10 @@ class SystemTagPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
 	 */
 	public function testCreateTagToUnknownNode() {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+
 		$node = $this->getMockBuilder('\OCA\DAV\SystemTag\SystemTagsObjectMappingCollection')
 			->disableOriginalConstructor()
 			->getMock();
@@ -688,9 +692,10 @@ class SystemTagPluginTest extends \Test\TestCase {
 
 	/**
 	 * @dataProvider nodeClassProvider
-	 * @expectedException \Sabre\DAV\Exception\Conflict
 	 */
 	public function testCreateTagConflict($nodeClass) {
+		$this->expectException(\Sabre\DAV\Exception\Conflict::class);
+
 		$this->user->expects($this->once())
 			->method('getUID')
 			->willReturn('admin');

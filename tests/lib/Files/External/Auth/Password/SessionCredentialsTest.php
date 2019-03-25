@@ -108,9 +108,10 @@ class SessionCredentialsTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\External\InsufficientDataForMeaningfulAnswerException
 	 */
 	public function testManipulateStorageConfigFailsWhenEmptyCredentials() {
+		$this->expectException(\OCP\Files\External\InsufficientDataForMeaningfulAnswerException::class);
+
 		$storageConfig = $this->createMock(IStorageConfig::class);
 		$user = $this->createMock(IUser::class);
 

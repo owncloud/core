@@ -66,18 +66,20 @@ class LockManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage No token provided in $lockInfo
 	 */
 	public function testLockNoToken() {
+		$this->expectException(\InvalidArgumentException::class);
+		$this->expectExceptionMessage('No token provided in $lockInfo');
+
 		$this->manager->lock(6, '/foo/bar', 123, []);
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Invalid file id
 	 */
 	public function testLockInvalidFileId() {
+		$this->expectException(\InvalidArgumentException::class);
+		$this->expectExceptionMessage('Invalid file id');
+
 		$this->manager->lock(6, '/foo/bar', -1, []);
 	}
 

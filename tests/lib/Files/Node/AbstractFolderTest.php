@@ -35,10 +35,11 @@ class AbstractFolderTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Files\NotPermittedException
 	 * @dataProvider providesOperations
 	 */
 	public function testOperations($operation) {
+		$this->expectException(\OCP\Files\NotPermittedException::class);
+
 		/** @var AbstractFolder | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->getMockForAbstractClass(AbstractFolder::class);
 		$node->$operation('', '');

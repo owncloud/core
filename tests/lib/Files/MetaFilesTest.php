@@ -155,9 +155,10 @@ class MetaFilesTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException OCP\Files\NotFoundException
 	 */
 	public function testMetaRootGetNotFound() {
+		$this->expectException(\OCP\Files\NotFoundException::class);
+
 		$info = $this->createFile();
 
 		$metaRoot = \OC::$server->getRootFolder();

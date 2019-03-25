@@ -53,26 +53,29 @@ class MigrationsTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Version 20170130180000 is unknown.
 	 */
 	public function testExecuteUnknownStep() {
+		$this->expectException(\InvalidArgumentException::class);
+		$this->expectExceptionMessage('Version 20170130180000 is unknown.');
+
 		$this->migrationService->executeStep('20170130180000');
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage App not found
 	 */
 	public function testUnknownApp() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('App not found');
+
 		$migrationService = new MigrationService('unknown-bloody-app', $this->db);
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Migration step 'X' is unknown
 	 */
 	public function testExecuteStepWithUnknownClass() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Migration step \'X\' is unknown');
+
 		$this->migrationService = $this->getMockBuilder(MigrationService::class)
 			->setMethods(['findMigrations'])
 			->setConstructorArgs(['files_sharing', $this->db])

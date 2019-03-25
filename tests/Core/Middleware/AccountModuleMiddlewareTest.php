@@ -132,9 +132,10 @@ class AccountModuleMiddlewareTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \UnexpectedValueException
 	 */
 	public function testBeforeControllerNoUserInSession() {
+		$this->expectException(\UnexpectedValueException::class);
+
 		$this->reflector->expects($this->once())
 			->method('hasAnnotation')
 			->with('PublicPage')
@@ -172,9 +173,10 @@ class AccountModuleMiddlewareTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Authentication\Exceptions\AccountCheckException
 	 */
 	public function testBeforeControllerAccountNeedsUpdate() {
+		$this->expectException(\OCP\Authentication\Exceptions\AccountCheckException::class);
+
 		$this->reflector->expects($this->once())
 			->method('hasAnnotation')
 			->with('PublicPage')
@@ -204,10 +206,11 @@ class AccountModuleMiddlewareTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage testAfterException
 	 */
 	public function testAfterException() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('testAfterException');
+
 		$ex = new \Exception('testAfterException');
 		$this->middleware->afterException(null, null, $ex);
 	}

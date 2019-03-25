@@ -74,9 +74,10 @@ class LockPluginTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException  \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testBeforeUnlock() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$lock = new LockInfo();
 		$lock->token = '123-456-789';
 

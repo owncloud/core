@@ -125,9 +125,10 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testDeleteRootFolderFails() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$this->info->expects($this->any())
 			->method('isDeletable')
 			->will($this->returnValue(true));
@@ -138,9 +139,10 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
 	 */
 	public function testDeleteForbidden() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
+
 		// deletion allowed
 		$this->info->expects($this->once())
 			->method('isDeletable')
@@ -176,9 +178,10 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testDeleteFolderFailsWhenNotAllowed() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$this->info->expects($this->once())
 			->method('isDeletable')
 			->will($this->returnValue(false));
@@ -188,9 +191,10 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testDeleteFolderThrowsWhenDeletionFailed() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		// deletion allowed
 		$this->info->expects($this->once())
 			->method('isDeletable')
@@ -265,9 +269,10 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testGetChildrenNoPermission() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$info = $this->getMockBuilder('OC\Files\FileInfo')
 			->disableOriginalConstructor()
 			->getMock();
@@ -280,9 +285,10 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
 	 */
 	public function testGetChildNoPermission() {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+
 		$info = $this->getMockBuilder('OC\Files\FileInfo')
 			->disableOriginalConstructor()
 			->getMock();
@@ -295,9 +301,10 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\ServiceUnavailable
 	 */
 	public function testGetChildThrowStorageNotAvailableException() {
+		$this->expectException(\Sabre\DAV\Exception\ServiceUnavailable::class);
+
 		$this->view->expects($this->once())
 			->method('getFileInfo')
 			->willThrowException(new StorageNotAvailableException());
@@ -307,9 +314,10 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\InvalidPath
 	 */
 	public function testGetChildThrowInvalidPath() {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\InvalidPath::class);
+
 		$this->view->expects($this->once())
 			->method('verifyPath')
 			->willThrowException(new \OCP\Files\InvalidPathException());
@@ -385,9 +393,10 @@ class DirectoryTest extends \Test\TestCase {
 
 	/**
 	 * @dataProvider moveFailedProvider
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testMoveFailed($source, $destination, $updatables, $deletables) {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$this->moveTest($source, $destination, $updatables, $deletables);
 	}
 
@@ -401,9 +410,10 @@ class DirectoryTest extends \Test\TestCase {
 
 	/**
 	 * @dataProvider moveFailedInvalidCharsProvider
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\InvalidPath
 	 */
 	public function testMoveFailedInvalidChars($source, $destination, $updatables, $deletables) {
+		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\InvalidPath::class);
+
 		$this->moveTest($source, $destination, $updatables, $deletables);
 	}
 
@@ -455,10 +465,11 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
-	 * @expectedExceptionMessage Could not copy directory b, target exists
 	 */
 	public function testFailingMove() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+		$this->expectExceptionMessage('Could not copy directory b, target exists');
+
 		$source = 'a/b';
 		$destination = 'c/b';
 		$updatables = ['a' => true, 'a/b' => true, 'b' => true, 'c/b' => false];
@@ -484,10 +495,11 @@ class DirectoryTest extends \Test\TestCase {
 	/**
 	 * A test to throw ExcludeForbiddenException
 	 *
-	 * @expectedException \OCP\Files\FileContentNotAllowedException
-	 * @expectedExceptionMessage The message already logged
 	 */
 	public function testFailCreateFile() {
+		$this->expectException(\OCP\Files\FileContentNotAllowedException::class);
+		$this->expectExceptionMessage('The message already logged');
+
 		//$this->invokePrivate();
 		$previous = new FileContentNotAllowedException('The message already logged', false);
 		$this->view->expects($this->any())
@@ -498,9 +510,10 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testCreateFileForbidden() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$this->view->expects($this->any())
 			->method('isCreatable')
 			->willThrowException(new \Sabre\DAV\Exception\Forbidden());

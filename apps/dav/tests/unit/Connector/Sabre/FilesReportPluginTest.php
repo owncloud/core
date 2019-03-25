@@ -594,9 +594,10 @@ class FilesReportPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\SystemTag\TagNotFoundException
 	 */
 	public function testProcessFilterRulesInvisibleTagAsUser() {
+		$this->expectException(\OCP\SystemTag\TagNotFoundException::class);
+
 		$this->groupManager->expects($this->any())
 			->method('isAdmin')
 			->will($this->returnValue(false));

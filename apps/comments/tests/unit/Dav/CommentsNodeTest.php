@@ -84,9 +84,10 @@ class CommentsNodeTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testDeleteForbidden() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$user = $this->createMock('\OCP\IUser');
 
 		$user->expects($this->once())
@@ -124,9 +125,10 @@ class CommentsNodeTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\MethodNotAllowed
 	 */
 	public function testSetName() {
+		$this->expectException(\Sabre\DAV\Exception\MethodNotAllowed::class);
+
 		$this->node->setName('666');
 	}
 
@@ -167,10 +169,11 @@ class CommentsNodeTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException Exception
-	 * @expectedExceptionMessage buh!
 	 */
 	public function testUpdateCommentLogException() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('buh!');
+
 		$msg = null;
 
 		$user = $this->createMock('\OCP\IUser');
@@ -206,10 +209,15 @@ class CommentsNodeTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\BadRequest
-	 * @expectedExceptionMessage Message exceeds allowed character limit of
 	 */
 	public function testUpdateCommentMessageTooLongException() {
+		$this->expectException(
+			\Sabre\DAV\Exception\BadRequest::class
+		);
+		$this->expectExceptionMessage(
+			'Message exceeds allowed character limit of'
+		);
+
 		$user = $this->createMock('\OCP\IUser');
 
 		$user->expects($this->once())
@@ -243,9 +251,10 @@ class CommentsNodeTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testUpdateForbiddenByUser() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$msg = 'HaXX0r';
 
 		$user = $this->createMock('\OCP\IUser');
@@ -276,9 +285,10 @@ class CommentsNodeTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testUpdateForbiddenByType() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$msg = 'HaXX0r';
 
 		$user = $this->createMock('\OCP\IUser');
@@ -304,9 +314,10 @@ class CommentsNodeTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testUpdateForbiddenByNotLoggedIn() {
+		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+
 		$msg = 'HaXX0r';
 
 		$this->userSession->expects($this->once())

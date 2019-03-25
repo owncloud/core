@@ -155,9 +155,10 @@ class CommentsPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
 	 */
 	public function testCreateCommentInvalidObject() {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+
 		$commentData = [
 			'actorType' => 'users',
 			'verb' => 'comment',
@@ -235,9 +236,10 @@ class CommentsPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\BadRequest
 	 */
 	public function testCreateCommentInvalidActor() {
+		$this->expectException(\Sabre\DAV\Exception\BadRequest::class);
+
 		$commentData = [
 			'actorType' => 'robots',
 			'verb' => 'comment',
@@ -321,9 +323,10 @@ class CommentsPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\UnsupportedMediaType
 	 */
 	public function testCreateCommentUnsupportedMediaType() {
+		$this->expectException(\Sabre\DAV\Exception\UnsupportedMediaType::class);
+
 		$commentData = [
 			'actorType' => 'users',
 			'verb' => 'comment',
@@ -407,9 +410,10 @@ class CommentsPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\BadRequest
 	 */
 	public function testCreateCommentInvalidPayload() {
+		$this->expectException(\Sabre\DAV\Exception\BadRequest::class);
+
 		$commentData = [
 			'actorType' => 'users',
 			'verb' => '',
@@ -499,10 +503,15 @@ class CommentsPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\BadRequest
-	 * @expectedExceptionMessage Message exceeds allowed character limit of
 	 */
 	public function testCreateCommentMessageTooLong() {
+		$this->expectException(
+			\Sabre\DAV\Exception\BadRequest::class
+		);
+		$this->expectExceptionMessage(
+			'Message exceeds allowed character limit of'
+		);
+
 		$commentData = [
 			'actorType' => 'users',
 			'verb' => 'comment',
@@ -591,9 +600,10 @@ class CommentsPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\ReportNotSupported
 	 */
 	public function testOnReportInvalidNode() {
+		$this->expectException(\Sabre\DAV\Exception\ReportNotSupported::class);
+
 		$path = 'totally/unrelated/13';
 
 		$this->tree->expects($this->any())
@@ -610,9 +620,10 @@ class CommentsPluginTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\ReportNotSupported
 	 */
 	public function testOnReportInvalidReportName() {
+		$this->expectException(\Sabre\DAV\Exception\ReportNotSupported::class);
+
 		$path = 'comments/files/42';
 
 		$this->tree->expects($this->any())

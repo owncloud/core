@@ -207,9 +207,10 @@ class AppTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\App\AppNotFoundException
 	 */
 	public function testGetAppInfoDeleted() {
+		$this->expectException(\OCP\App\AppNotFoundException::class);
+
 		$info = \OC_App::getAppInfo('appinfotestapp');
 		$this->assertEqualsAppInfo($info);
 

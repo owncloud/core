@@ -302,10 +302,11 @@ class TrustedServersTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage simulated exception
 	 */
 	public function testIsOwnCloudServerFail() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('simulated exception');
+
 		$server = 'server1';
 
 		$this->httpClientService->expects($this->once())->method('newClient')
@@ -335,10 +336,15 @@ class TrustedServersTest extends TestCase {
 
 	/**
 	 * @dataProvider dataTestCheckOwnCloudVersionTooLow
-	 * @expectedException \OC\HintException
-	 * @expectedExceptionMessage Remote server version is too low. ownCloud 9.0 is required.
 	 */
 	public function testCheckOwnCloudVersionTooLow($status) {
+		$this->expectException(
+			\OC\HintException::class
+		);
+		$this->expectExceptionMessage(
+			'Remote server version is too low. ownCloud 9.0 is required.'
+		);
+
 		$this->invokePrivate($this->trustedServers, 'checkOwnCloudVersion', [$status]);
 	}
 

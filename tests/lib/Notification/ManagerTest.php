@@ -88,9 +88,10 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testRegisterAppInvalid() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$notifier = $this->getMockBuilder(INotifier::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -158,9 +159,10 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testRegisterNotifierInvalid() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -188,10 +190,11 @@ class ManagerTest extends TestCase {
 
 	/**
 	 * @dataProvider dataRegisterNotifierInfoInvalid
-	 * @expectedException \InvalidArgumentException
 	 * @param mixed $data
 	 */
 	public function testRegisterNotifierInfoInvalid($data) {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -208,10 +211,15 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage The given notifier ID test1 is already in use
 	 */
 	public function testRegisterNotifierInfoDuplicate() {
+		$this->expectException(
+			\InvalidArgumentException::class
+		);
+		$this->expectExceptionMessage(
+			'The given notifier ID test1 is already in use'
+		);
+
 		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -305,9 +313,10 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\Notification\Exceptions\NotifierIdInUseException
 	 */
 	public function testRegisterNotifierNewDuplicatedId() {
+		$this->expectException(\OCP\Notification\Exceptions\NotifierIdInUseException::class);
+
 		$notifier = $this->getMockBuilder(INotifier::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -446,9 +455,10 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testNotifyInvalid() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
 		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
@@ -509,9 +519,10 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testPrepareInvalid() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
 		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
@@ -566,9 +577,10 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testPrepareNoNotifier() {
+		$this->expectException(\InvalidArgumentException::class);
+
 		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
 		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()

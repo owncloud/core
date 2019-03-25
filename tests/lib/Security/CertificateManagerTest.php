@@ -69,10 +69,11 @@ class CertificateManagerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Certificate could not get parsed.
 	 */
 	public function testAddInvalidCertificate() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Certificate could not get parsed.');
+
 		$this->certificateManager->addCertificate('InvalidCertificate', 'invalidCertificate');
 	}
 
@@ -88,12 +89,13 @@ class CertificateManagerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Filename is not valid
 	 * @dataProvider dangerousFileProvider
 	 * @param string $filename
 	 */
 	public function testAddDangerousFile($filename) {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Filename is not valid');
+
 		$this->certificateManager->addCertificate(\file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt'), $filename);
 	}
 

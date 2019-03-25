@@ -275,9 +275,10 @@ class SessionTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OC\User\LoginException
 	 */
 	public function testLoginValidPasswordDisabled() {
+		$this->expectException(\OC\User\LoginException::class);
+
 		/** @var ISession | \PHPUnit\Framework\MockObject\MockObject $session */
 		$session = $this->createMock(Memory::class);
 		$session->expects($this->never())
@@ -403,9 +404,10 @@ class SessionTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OC\Authentication\Exceptions\PasswordLoginForbiddenException
 	 */
 	public function testLogClientInNoTokenPasswordWith2fa() {
+		$this->expectException(\OC\Authentication\Exceptions\PasswordLoginForbiddenException::class);
+
 		$manager = $this->getMockBuilder(Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -496,9 +498,10 @@ class SessionTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OC\Authentication\Exceptions\PasswordLoginForbiddenException
 	 */
 	public function testLogClientInNoTokenPasswordNo2fa() {
+		$this->expectException(\OC\Authentication\Exceptions\PasswordLoginForbiddenException::class);
+
 		$manager = $this->getMockBuilder(Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -823,9 +826,10 @@ class SessionTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OC\User\LoginException
 	 */
 	public function testTryTokenLoginWithDisabledUser() {
+		$this->expectException(\OC\User\LoginException::class);
+
 		$manager = $this->getMockBuilder(Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -1561,10 +1565,11 @@ class SessionTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OC\User\LoginException
-	 * @expectedExceptionMessage User disabled
 	 */
 	public function testFailedLoginUserDisabled() {
+		$this->expectException(\OC\User\LoginException::class);
+		$this->expectExceptionMessage('User disabled');
+
 		/** @var Manager | \PHPUnit\Framework\MockObject\MockObject $userManager */
 		$userManager = $this->createMock(Manager::class);
 		$userManager->expects($this->any())->method('emit')->willReturn(null);

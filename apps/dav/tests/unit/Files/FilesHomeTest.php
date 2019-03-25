@@ -55,20 +55,30 @@ class FilesHomeTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
-	 * @expectedExceptionMessage Permission denied to rename this folder
 	 * @throws \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testSetName() {
+		$this->expectException(
+			\Sabre\DAV\Exception\Forbidden::class
+		);
+		$this->expectExceptionMessage(
+			'Permission denied to rename this folder'
+		);
+
 		$this->filesHome->setName('alice');
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
-	 * @expectedExceptionMessage Permission denied to delete home folder
 	 * @throws \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testDelete() {
+		$this->expectException(
+			\Sabre\DAV\Exception\Forbidden::class
+		);
+		$this->expectExceptionMessage(
+			'Permission denied to delete home folder'
+		);
+
 		$this->filesHome->delete();
 	}
 

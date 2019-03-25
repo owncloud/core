@@ -81,9 +81,10 @@ class EntityCollectionTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
 	 */
 	public function testGetChildException(): void {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+
 		$this->commentsManager->expects($this->once())
 			->method('get')
 			->with('55')

@@ -79,10 +79,11 @@ class AvatarManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage user does not exist
 	 */
 	public function testGetAvatarInvalidUser() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('user does not exist');
+
 		$this->rootFolder = $this->createMock(IRootFolder::class);
 		$this->rootFolder->expects(self::never())
 			->method('get');

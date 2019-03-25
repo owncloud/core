@@ -285,11 +285,14 @@ class SecurityMiddlewareTest extends TestCase {
 
 	/**
 	 * @PublicPage
-	 * @expectedException \OC\AppFramework\Middleware\Security\Exceptions\CrossSiteRequestForgeryException
 	 * @throws SecurityException
 	 * @throws \ReflectionException
 	 */
 	public function testCsrfCheck() {
+		$this->expectException(
+			\OC\AppFramework\Middleware\Security\Exceptions\CrossSiteRequestForgeryException::class
+		);
+
 		$this->request->expects($this->once())
 			->method('passesCSRFCheck')
 			->will($this->returnValue(false));

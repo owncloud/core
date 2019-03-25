@@ -43,10 +43,15 @@ class ValidateRequestPluginTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\ServiceUnavailable
-	 * @expectedExceptionMessage Specified  header (HTTP_OC_CHUNKED/OC-Chunked header) is allowed only in webdav endpoint
 	 */
 	public function testOldChunkingInNewEndpoint1() {
+		$this->expectException(
+			\Sabre\DAV\Exception\ServiceUnavailable::class
+		);
+		$this->expectExceptionMessage(
+			'Specified  header (HTTP_OC_CHUNKED/OC-Chunked header) is allowed only in webdav endpoint'
+		);
+
 		$headers['HTTP_OC_CHUNKED'] = 1;
 
 		$this->plugin = new ValidateRequestPlugin('dav');
@@ -57,10 +62,15 @@ class ValidateRequestPluginTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\ServiceUnavailable
-	 * @expectedExceptionMessage Specified  header (HTTP_OC_CHUNKED/OC-Chunked header) is allowed only in webdav endpoint
 	 */
 	public function testOldChunkingInNewEndpoint2() {
+		$this->expectException(
+			\Sabre\DAV\Exception\ServiceUnavailable::class
+		);
+		$this->expectExceptionMessage(
+			'Specified  header (HTTP_OC_CHUNKED/OC-Chunked header) is allowed only in webdav endpoint'
+		);
+
 		$headers['OC-Chunked'] = 1;
 
 		$this->plugin = new ValidateRequestPlugin('dav');
