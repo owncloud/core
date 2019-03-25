@@ -102,7 +102,7 @@ class DependencyAnalyzerTest extends TestCase {
 		$this->platformMock->method('getOcVersion')->willReturn('11.0.0.0');
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertInternalType('array', $missing);
+		$this->assertIsArray($missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -123,7 +123,7 @@ class DependencyAnalyzerTest extends TestCase {
 		$this->platformMock->method('getOcVersion')->willReturn('11.0.0.0');
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertInternalType('array', $missing);
+		$this->assertIsArray($missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -145,7 +145,7 @@ class DependencyAnalyzerTest extends TestCase {
 		$this->platformMock->method('getOcVersion')->willReturn('11.0.0.0');
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertInternalType('array', $missing);
+		$this->assertIsArray($missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -167,7 +167,7 @@ class DependencyAnalyzerTest extends TestCase {
 		$this->platformMock->method('getOcVersion')->willReturn('11.0.0.0');
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertInternalType('array', $missing);
+		$this->assertIsArray($missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -188,7 +188,7 @@ class DependencyAnalyzerTest extends TestCase {
 		$this->platformMock->method('getOcVersion')->willReturn('11.0.0.0');
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertInternalType('array', $missing);
+		$this->assertIsArray($missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -210,7 +210,7 @@ class DependencyAnalyzerTest extends TestCase {
 			->will($this->returnValue('8.0.2'));
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertInternalType('array', $missing);
+		$this->assertIsArray($missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 

@@ -1112,7 +1112,7 @@ class DavTest extends TestCase {
 			->willReturn([]);
 
 		// unique id
-		$this->assertInternalType('string', $this->instance->getETag('some%dir'));
+		$this->assertIsString($this->instance->getETag('some%dir'));
 	}
 
 	public function testGetEtagUnexist() {

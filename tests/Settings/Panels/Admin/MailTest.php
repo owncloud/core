@@ -38,7 +38,7 @@ class MailTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertInternalType('int', $this->panel->getPriority());
+		$this->assertIsInt($this->panel->getPriority());
 		$this->assertGreaterThan(-100, $this->panel->getPriority());
 		$this->assertLessThan(100, $this->panel->getPriority());
 	}

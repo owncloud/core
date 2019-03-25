@@ -51,7 +51,7 @@ class FutureFileTest extends \Test\TestCase {
 	public function testGet() {
 		$f = $this->mockFutureFile();
 		$stream = $f->get();
-		$this->assertInternalType('resource', $stream);
+		$this->assertIsResource($stream);
 	}
 
 	public function testDelete() {

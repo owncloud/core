@@ -245,7 +245,7 @@ class ApiTest extends TestCase {
 		$data = $result->getData();
 		$this->assertEquals(1, $data['permissions']);
 		$this->assertEmpty($data['expiration']);
-		$this->assertInternalType('string', $data['token']);
+		$this->assertIsString($data['token']);
 
 		// check for correct link
 		$url = \OC::$server->getURLGenerator()->getAbsoluteURL('/index.php/s/' . $data['token']);
@@ -281,7 +281,7 @@ class ApiTest extends TestCase {
 			$data['permissions']
 		);
 		$this->assertEmpty($data['expiration']);
-		$this->assertInternalType('string', $data['token']);
+		$this->assertIsString($data['token']);
 
 		// check for correct link
 		$url = \OC::$server->getURLGenerator()->getAbsoluteURL('/index.php/s/' . $data['token']);
@@ -497,7 +497,7 @@ class ApiTest extends TestCase {
 		$data = $result->getData();
 
 		// check if we have a token
-		$this->assertInternalType('string', $data['token']);
+		$this->assertIsString($data['token']);
 		$id = $data['id'];
 
 		// check for correct link
@@ -1398,7 +1398,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		$data = $result->getData();
-		$this->assertInternalType('string', $data['token']);
+		$this->assertIsString($data['token']);
 		$this->assertEquals($date, \substr($data['expiration'], 0, 10));
 
 		// check for correct link
@@ -1432,7 +1432,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		$data = $result->getData();
-		$this->assertInternalType('string', $data['token']);
+		$this->assertIsString($data['token']);
 		$this->assertEquals($date->format('Y-m-d') . ' 00:00:00', $data['expiration']);
 
 		// check for correct link

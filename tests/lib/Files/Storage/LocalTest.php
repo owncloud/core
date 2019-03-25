@@ -112,7 +112,7 @@ class LocalTest extends Storage {
 		$storage = new \OC\Files\Storage\Local(['datadir' => $subDir1]);
 
 		$numBytes = $storage->file_put_contents('sym/foo', 'bar');
-		$this->assertInternalType(IsType::TYPE_INT, $numBytes);
+		$this->assertIsInt($numBytes);
 	}
 
 	/**

@@ -62,7 +62,7 @@ class ChecksumTest extends \Test\TestCase {
 	public function testWriteToFileHandleCalculatesChecksum() {
 		$handle = $this->instance->fopen($this->testFileName, 'w');
 
-		$this->assertInternalType('resource', $handle);
+		$this->assertIsResource($handle);
 		$this->assertNotFalse(\fwrite($handle, self::TEST_DATA));
 		$this->assertNotFalse(\fclose($handle));
 

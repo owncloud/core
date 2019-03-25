@@ -189,7 +189,7 @@ class ConnectionTest extends \Test\TestCase {
 			'clobfield' => 'not_null'
 		]);
 
-		$this->assertInternalType(IsType::TYPE_INT, $numNewRows);
+		$this->assertIsInt($numNewRows);
 
 		// this will result in 'no affected rows' on certain optimizing DBs
 		// ensure the PreConditionNotMetException isn't thrown
@@ -199,6 +199,6 @@ class ConnectionTest extends \Test\TestCase {
 			'textfield' => 'foo'
 		]);
 
-		$this->assertInternalType(IsType::TYPE_INT, $numNewRows);
+		$this->assertIsInt($numNewRows);
 	}
 }

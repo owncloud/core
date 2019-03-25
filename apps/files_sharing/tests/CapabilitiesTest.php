@@ -116,7 +116,7 @@ class CapabilitiesTest extends \Test\TestCase {
 			['core', 'shareapi_allow_links', 'yes', 'no'],
 		];
 		$result = $this->getResults($map);
-		$this->assertInternalType('array', $result['public']);
+		$this->assertIsArray($result['public']);
 		$this->assertFalse($result['public']['enabled']);
 	}
 
@@ -126,7 +126,7 @@ class CapabilitiesTest extends \Test\TestCase {
 			['core', 'shareapi_allow_links', 'yes', 'yes'],
 		];
 		$result = $this->getResults($map);
-		$this->assertInternalType('array', $result['public']);
+		$this->assertIsArray($result['public']);
 		$this->assertTrue($result['public']['enabled']);
 	}
 
@@ -190,7 +190,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertArrayHasKey('expire_date', $result['public']);
-		$this->assertInternalType('array', $result['public']['expire_date']);
+		$this->assertIsArray($result['public']['expire_date']);
 		$this->assertFalse($result['public']['expire_date']['enabled']);
 	}
 
@@ -204,7 +204,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertArrayHasKey('expire_date', $result['public']);
-		$this->assertInternalType('array', $result['public']['expire_date']);
+		$this->assertIsArray($result['public']['expire_date']);
 		$this->assertTrue($result['public']['expire_date']['enabled']);
 		$this->assertArrayHasKey('days', $result['public']['expire_date']);
 		$this->assertFalse($result['public']['expire_date']['enforced']);
@@ -219,7 +219,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertArrayHasKey('expire_date', $result['public']);
-		$this->assertInternalType('array', $result['public']['expire_date']);
+		$this->assertIsArray($result['public']['expire_date']);
 		$this->assertTrue($result['public']['expire_date']['enforced']);
 	}
 
