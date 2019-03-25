@@ -162,7 +162,7 @@ EOS
 			for ($i = 0; $i < $countResults; $i++) {
 				$this->assertEquals($expectedResult[$i]['mount_id'], $results[$i]['mount_id']);
 				$this->assertEquals($expectedResult[$i]['mount_point'], $results[$i]['mount_point']);
-				$this->assertContains($results[$i]['auth'], 'UserSession', true);
+				$this->assertStringContainsString($results[$i]['auth'], 'UserSession');
 				$this->assertEquals($expectedResult[$i]['type'], $results[$i]['type']);
 			}
 		} else {
