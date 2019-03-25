@@ -493,6 +493,18 @@ trait BasicStructure {
 	}
 
 	/**
+	 * returns the OCS path
+	 * the path is without a slash at the end and without a slash at the beginning
+	 *
+	 * @param string $ocsApiVersion
+	 *
+	 * @return string
+	 */
+	public function getOCSPath($ocsApiVersion) {
+		return \ltrim($this->getBasePath() . "/ocs/v{$ocsApiVersion}.php", "/");
+	}
+
+	/**
 	 * returns the base URL but without "http(s)://" in front of it
 	 *
 	 * @return string
@@ -1896,6 +1908,22 @@ trait BasicStructure {
 					"getBasePath"
 				],
 				"parameter" => []
+			],
+			[
+				"code" => "%ocs_path_v1%",
+				"function" => [
+					$this,
+					"getOCSPath"
+				],
+				"parameter" => [1]
+			],
+			[
+				"code" => "%ocs_path_v2%",
+				"function" => [
+					$this,
+					"getOCSPath"
+				],
+				"parameter" => [2]
 			],
 			[
 				"code" => "%productname%",
