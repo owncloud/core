@@ -195,7 +195,7 @@ pipeline:
       - OBJECTSTORE=$OBJECTSTORE
     commands:
       - cd /drone/src/apps
-      - git clone https://github.com/owncloud/files_primary_s3.git
+      - git clone -b v1.0.3 https://github.com/owncloud/files_primary_s3.git
       - cd files_primary_s3
       - composer install
       - cp tests/drone/$${OBJECTSTORE}.config.php /drone/src/config
@@ -259,7 +259,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - git clone https://github.com/owncloud/notifications.git apps/notifications
+      - git clone -b v10.1.1 https://github.com/owncloud/notifications.git apps/notifications
       - php occ a:e notifications
     when:
       matrix:
