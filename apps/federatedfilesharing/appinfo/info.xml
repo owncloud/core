@@ -20,4 +20,7 @@
         <personal>OCA\FederatedFileSharing\Panels\GeneralPersonalPanel</personal>
         <personal>OCA\FederatedFileSharing\Panels\SharingPersonalPanel</personal>
     </settings>
+    <commands>
+        <command>OCA\FederatedFileSharing\Command\PollIncomingShares</command>
+    </commands>
 </info>
