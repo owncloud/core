@@ -230,7 +230,7 @@ trait Logging {
 						//don't check empty table entries
 						continue;
 					}
-					if (!isset($logEntry[$attribute])) {
+					if (!\array_key_exists($attribute, $logEntry)) {
 						//this line does not have the attribute we are looking for
 						$foundLine = false;
 						break;
