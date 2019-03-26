@@ -2,7 +2,7 @@ workspace:
   base: /drone
   path: src
 
-branches: [master, stable10, stable9.1, stable9]
+branches: [master, stable10, release*]
 
 clone:
   git:
