@@ -285,7 +285,22 @@ class Setup {
 		) {
 			$error[] = $l->t("Can't create or write into the data directory %s", [$dataDir]);
 		}
-		
+
+		// create the apps-external directory only during installation
+		$appsExternalDir = \OC::$SERVERROOT.'/apps-external';
+		if (!\file_exists($appsExternalDir)) {
+			@\mkdir($appsExternalDir);
+		}
+
+		// validate the apps-external directory
+		if (
+			(!\is_dir($appsExternalDir) and !\mkdir($appsExternalDir)) or
+			!\is_writable($appsExternalDir)
+		) {
+			$htmlAppsExternalDir = \htmlspecialchars_decode($appsExternalDir);
+			$error[] = $l->t("Can't create or write into the apps-external directory %s", $htmlAppsExternalDir);
+		}
+
 		if (\count($error) != 0) {
 			return $error;
 		}
@@ -383,10 +398,10 @@ class Setup {
 				$config->setSystemValue('logtimezone', \date_default_timezone_get());
 			}
 
-			// adding the apps-external directory by default using apps_path
+			// add the apps-external directory to config using apps_path
+			// add the key only if it does not exist (protect against overwriting)
 			$apps2Key = \OC::$server->getSystemConfig()->getValue('apps_paths', false);
 
-			// add the key only if it does not exist (protect against overwriting)
 			if ($apps2Key === false) {
 				$defaultAppsPaths = [
 					'apps_paths' => [
