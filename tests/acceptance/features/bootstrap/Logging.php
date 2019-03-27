@@ -263,7 +263,7 @@ trait Logging {
 		}
 		
 		$notFoundLines = \print_r($expectedLogEntries, true);
-		PHPUnit_Framework_Assert::assertEmpty(
+		PHPUnit\Framework\Assert::assertEmpty(
 			$expectedLogEntries,
 			"could not find these expected line(s):\n $notFoundLines"
 		);
