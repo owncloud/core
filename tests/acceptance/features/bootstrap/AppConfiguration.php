@@ -22,8 +22,8 @@
  *
  */
 
-use Behat\Gherkin\Node\TableNode;
 use TestHelpers\AppConfigHelper;
+use TestHelpers\OcsApiHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -47,37 +47,6 @@ trait AppConfiguration {
 	 * @var array the changes made to capabilities for the test scenario
 	 */
 	private $savedCapabilitiesChanges = [];
-
-	/**
-	 * @param string $verb
-	 * @param string $url
-	 *
-	 * @return void
-	 */
-	abstract public function theUserSendsToOcsApiEndpoint($verb, $url);
-
-	/**
-	 * @param string $verb
-	 * @param string $url
-	 * @param TableNode $body
-	 *
-	 * @return void
-	 */
-	abstract public function theUserSendsToOcsApiEndpointWithBody($verb, $url, $body);
-
-	/**
-	 * @param mixed $statusCode
-	 *
-	 * @return void
-	 */
-	abstract public function theOCSStatusCodeShouldBe($statusCode);
-
-	/**
-	 * @param mixed $statusCode
-	 *
-	 * @return void
-	 */
-	abstract public function theHTTPStatusCodeShouldBe($statusCode);
 
 	/**
 	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to "([^"]*)"$/
@@ -160,7 +129,12 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function userGetsCapabilities($username) {
-		$this->userSendsToOcsApiEndpoint($username, 'GET', '/cloud/capabilities');
+		$user = $this->getActualUsername($username);
+		$password = $this->getPasswordForUser($user);
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(), $user, $password, 'GET', '/cloud/capabilities',
+			[], $this->getOcsApiVersion()
+		);
 	}
 
 	/**
@@ -380,7 +354,7 @@ trait AppConfiguration {
 		);
 		$this->theHTTPStatusCodeShouldBe('200');
 		if ($this->ocsApiVersion == 1) {
-			$this->theOCSStatusCodeShouldBe('100');
+			$this->ocsContext->theOCSStatusCodeShouldBe('100');
 		}
 
 		$this->theUserSendsToOcsApiEndpoint('get', '/cloud/apps?filter=enabled');

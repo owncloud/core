@@ -4,6 +4,112 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+### Added
+
+- Add before-after share link auth events - [#34399](https://github.com/owncloud/core/issues/34399)
+- Log broken smb config params for easier debugging - [#34056](https://github.com/owncloud/core/issues/34056)
+- Add support for detecting library mime types - [#34082](https://github.com/owncloud/core/issues/34082)
+- Support for automatically accepting incoming federated shares from trusted servers - [#34206](https://github.com/owncloud/core/issues/34206)
+- User option for automatically accepting incoming federated shares - [#34706](https://github.com/owncloud/core/issues/34706)
+- Extend repair command to be able to list repair steps and run them individually - [#34499](https://github.com/owncloud/core/issues/34499)
+- Added CORS headers for many existing API calls, required for Phoenix  - [#34476](https://github.com/owncloud/core/issues/34476)
+- Encryption now supports working with a Hardware Security Module - [#34527](https://github.com/owncloud/core/issues/34527)
+- Command for first run wizard to reset for all users - [firstrunwizard/#83](https://github.com/owncloud/firstrunwizard/pull/83)
+- Inform admin about the need to login again after changing the master encryption key - [#34596](https://github.com/owncloud/core/issues/34596)
+- Added checkboxes to hide quota and password - [#34479](https://github.com/owncloud/core/issues/34479)
+- New option to allow users to configure automatically accept incoming local shares - [#34647](https://github.com/owncloud/core/issues/34647)
+- By default the "apps-external" directory is included in config.php during installation - [#34656](https://github.com/owncloud/core/issues/34656)
+- Added files:scan --group and --groups options - [#34754](https://github.com/owncloud/core/issues/34754)
+- Allow admins to enable medial search on group and user - [#34779](https://github.com/owncloud/core/issues/34779)
+- Add composer cleaner - [#34784](https://github.com/owncloud/core/issues/34784)
+
+### Changed
+
+- Bump @bower_components/backbone from 1.2.3 to 1.3.3 in /build - [#34288](https://github.com/owncloud/core/issues/34288)
+- Bump @bower_components/base64 from 0.3.0 to 1.0.2 in /build - [#34542](https://github.com/owncloud/core/issues/34542)
+- Bump @bower_components/handlebars from v4.0.12 to v4.1.0 in /build - [#34454](https://github.com/owncloud/core/issues/34454)
+- Bump @bower_components/moment from 2.22.0 to 2.24.0 in /build - [#34459](https://github.com/owncloud/core/issues/34459)
+- Bump @bower_components/strengthify from 0.5.2 to 0.5.6 in /build - [#34451](https://github.com/owncloud/core/issues/34451)
+- Bump @bower_components/underscore from 1.8.3 to 1.9.1 in /build - [#34457](https://github.com/owncloud/core/issues/34457)
+- Bump extend from 3.0.1 to 3.0.2 in /build - [#34411](https://github.com/owncloud/core/issues/34411)
+- Bump handlebars from 4.0.12 to 4.1.0 in /build - [#34456](https://github.com/owncloud/core/issues/34456)
+- Bump karma from 3.1.3 to 4.0.0 in /build - [#34458](https://github.com/owncloud/core/issues/34458)
+- Bump league flysystem 1.0.50 - [#34417](https://github.com/owncloud/core/issues/34417)
+- Bump react promise v2.7.1 - [#34416](https://github.com/owncloud/core/issues/34416)
+- Zendframework bumps 20190208 - [#34413](https://github.com/owncloud/core/issues/34413)
+- Bump paragonie/random_compat v2.0.17 => v2.0.18 - [#34043](https://github.com/owncloud/core/issues/34043)
+- Bump phpseclib/phpseclib from 2.0.13 to 2.0.15 - [#34285](https://github.com/owncloud/core/issues/34285) [#34741](https://github.com/owncloud/core/issues/34741)
+- Bump pimple/pimple from 3.0.2 to 3.2.3 - [#31753](https://github.com/owncloud/core/issues/31753)
+- Bump symfony v3.4.20 => v3.4.21 - [#34042](https://github.com/owncloud/core/issues/34042)
+- Bump symfony v3.4.22 => v3.4.23 - [#34663](https://github.com/owncloud/core/issues/34663)
+- Bump symfony/process from 3.4.21 to 3.4.22 - [#34407](https://github.com/owncloud/core/issues/34407)
+- Bump symfony/translation from 3.4.21 to 3.4.22 - [#34406](https://github.com/owncloud/core/issues/34406)
+- Bump symfony/console from 3.4.21 to 3.4.22 - [#34404](https://github.com/owncloud/core/issues/34404)
+- Bump symfony/routing from 3.4.21 to 3.4.22 - [#34408](https://github.com/owncloud/core/issues/34408)
+- Bump symfony/event-dispatcher from 3.4.21 to 3.4.22 - [#34405](https://github.com/owncloud/core/issues/34405)
+- Bump remaining symfony 3.4.22 components - [#34412](https://github.com/owncloud/core/issues/34412)
+- Bump zendframework/zend-servicemanager from 3.3.2 to 3.4.0 - [#33971](https://github.com/owncloud/core/issues/33971)
+- Bump zendframework/zend-inputfilter from 2.9.0 to 2.9.1 - [#34145](https://github.com/owncloud/core/issues/34145)
+- Bump dependencies after PHP 5.6 deprecation, swiftmailer 6.2 - [#34755](https://github.com/owncloud/core/issues/34755)
+- Bump README.md doc links to 10.1 - [#34403](https://github.com/owncloud/core/issues/34403)
+- Increase size of login_name from 64 to 255 - [#34280](https://github.com/owncloud/core/issues/34280)
+- Warn when .htaccess file is not writable - [#34486](https://github.com/owncloud/core/issues/34486) [#34461](https://github.com/owncloud/core/issues/34461)
+- Add password confirmation field when resetting password - [#34492](https://github.com/owncloud/core/issues/34492)
+- Add email footer with motto in email for changing password - [#34498](https://github.com/owncloud/core/issues/34498)
+- Change the styling of the active settings navigation menu item - [#34561](https://github.com/owncloud/core/issues/34561)
+- Added delay in search field - [#34613](https://github.com/owncloud/core/issues/34613)
+- Tidy up code for notification by email - [#34786](https://github.com/owncloud/core/issues/34786)
+
+### Removed
+
+- Drop PHP 5.6 support across the platform - [#34698](https://github.com/owncloud/core/issues/34698)
+- Removed bundled documentation, help links now point to the online documentation - [#34612](https://github.com/owncloud/core/issues/34612) [#34649](https://github.com/owncloud/core/issues/34649)
+- Remove incompatible script for generating DB changeset - [#34722](https://github.com/owncloud/core/issues/34722)
+
+### Fixed
+
+- Handle accept decline with invalid share id - [#34786](https://github.com/owncloud/core/issues/34786)
+- Normalize path when moving chunks to final destination - [#34777](https://github.com/owncloud/core/issues/34777)
+- Better support for international email addresses after swiftmailer update - [#34759](https://github.com/owncloud/core/issues/34759)
+- Fix first time login handling - [#34758](https://github.com/owncloud/core/issues/34758)
+- Server container interface should inherit from icontainer,… - [#34756](https://github.com/owncloud/core/issues/34756)
+- Don't expose hashed password in OCS api - [#34691](https://github.com/owncloud/core/issues/34691)
+- Fixes UID issue with birthday calendar events - [#34701](https://github.com/owncloud/core/issues/34701)
+- Improve avatar performance by having many avatar related calls bypass the file cache - [#34592](https://github.com/owncloud/core/issues/34592)
+- Improve speed of apps list settings page by caching integrity check results - [#34584](https://github.com/owncloud/core/issues/34584)
+- Fix chunking infinite loop in some environment related issues - [#34558](https://github.com/owncloud/core/issues/34558)
+- Fixes issue file picker choose button disabled for directory selection - [#34426](https://github.com/owncloud/core/issues/34426)
+- Use sabre/vobject ^4.2 to fix issues in ITip messages - [#34553](https://github.com/owncloud/core/issues/34553)
+- Filter static tags when searching files by tag - [#34557](https://github.com/owncloud/core/issues/34557)
+- Fix collaborative tags PHP API for get and create operations - [#34610](https://github.com/owncloud/core/issues/34610)
+- Improve performance of account sync service - [#34546](https://github.com/owncloud/core/issues/34546)
+- Improve code occ files_external:list --short - [#34549](https://github.com/owncloud/core/issues/34549)
+- Fix preview expiration issues with trashbin/versions - [#34533](https://github.com/owncloud/core/issues/34533)
+- Use the displayname in lost password emails where possible - [#34512](https://github.com/owncloud/core/issues/34512)
+- Store quota overrides in preferences table - [#34467](https://github.com/owncloud/core/issues/34467)
+- Prevent password removal in share dialog if enforced - [#34497](https://github.com/owncloud/core/issues/34497)
+- Encryption now skips shared files when adding recovery key - [#34506](https://github.com/owncloud/core/issues/34506)
+- Fix encryption to use API instead of config access - [#34504](https://github.com/owncloud/core/issues/34504)
+- Properly handle StorageNotAvailableException in Webdav endpoint - [#34485](https://github.com/owncloud/core/issues/34485)
+- Properly hide share fields in "Shared with You" section when permissions are restricted - [#34473](https://github.com/owncloud/core/issues/34473)
+- Repair subshares earlier to avoid errors - [#34462](https://github.com/owncloud/core/issues/34462)
+- Only parse info.xml once to improve performance for every request - [#34482](https://github.com/owncloud/core/issues/34482)
+- Catch errors when info.xml is malformed - [#34427](https://github.com/owncloud/core/issues/34427)
+- Send OCM requests as JSON - [#34424](https://github.com/owncloud/core/issues/34424)
+- Remove composer that is now in vendor bin - [#34418](https://github.com/owncloud/core/issues/34418)
+- Use recipient language when sending notification email - [#34255](https://github.com/owncloud/core/issues/34255)
+- Fix shares not accessible for guest users when using "share_folder" config option - [#34395](https://github.com/owncloud/core/issues/34395)
+- Fix reset confirmation mail from occ - [#34154](https://github.com/owncloud/core/issues/34154)
+- Correctly write Login failed entry in log when 2FA is enforced - [#34055](https://github.com/owncloud/core/issues/34055)
+- Center the logo and login fields - [#34057](https://github.com/owncloud/core/issues/34057)
+- Fix Apache warnings by setting headers to "always" in htaccess - [#34089](https://github.com/owncloud/core/issues/34089)
+- Fix external storage advanced checkbox state issue - [#34168](https://github.com/owncloud/core/issues/34168)
+- Set permissions on log file creation instead of every write - [#34061](https://github.com/owncloud/core/issues/34061)
+- Images are again properly rotated now based on EXIF rotation - [#34356](https://github.com/owncloud/core/issues/34356)
+- Fix query parts for federated shares to be less expensive - [#34401](https://github.com/owncloud/core/issues/34401)
+- Fix cancel upload and hide 'uploading' message for files_drop shared folders - [#34097](https://github.com/owncloud/core/issues/34097)
+
 ## [10.1.1]
 
 ### Fixed
@@ -28,6 +134,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Federated sharing new spec OCM 1.0-proposal1 - [#33027](https://github.com/owncloud/core/issues/33027) [#34113](https://github.com/owncloud/core/issues/34113) [#34252](https://github.com/owncloud/core/issues/34252)
 - Add sharing scope to enable addressbook sharing with custom groups - [#33849](https://github.com/owncloud/core/issues/33849)
 - Add X-Request-ID to header Access-Control-Allow-Headers - [#33926](https://github.com/owncloud/core/issues/33926)
+- Now also logging wrapped exceptions - [#34475](https://github.com/owncloud/core/issues/34475)
+- Switch to shorten hostname in status.php - [#34469](https://github.com/owncloud/core/issues/34469)
 
 ### Changed
 
@@ -49,7 +157,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump karma from 3.0.0 to 3.1.3 in /build - [#33256](https://github.com/owncloud/core/issues/33256) [#33343](https://github.com/owncloud/core/issues/33343) [#33737](https://github.com/owncloud/core/issues/33737)
 - Bump league/flysystem from 1.0.46 to 1.0.48 - [#33199](https://github.com/owncloud/core/issues/33199)
 - Bump lodash from 4.17.4 to 4.17.11 in /build - [#33754](https://github.com/owncloud/core/issues/33754)
-- Bump pear/archive_tar from 1.4.3 to 1.4.5 - [#34080](https://github.com/owncloud/core/issues/34080)
+- Bump pear/archive_tar from 1.4.3 to 1.4.6 - [#34080](https://github.com/owncloud/core/issues/34080) [#34448](https://github.com/owncloud/core/issues/34448)
 - Bump phan 0.12.11 - [#34022](https://github.com/owncloud/core/issues/34022)
 - Bump phpseclib/phpseclib from 2.0.11 to 2.0.13 - [#33433](https://github.com/owncloud/core/issues/33433) [#33922](https://github.com/owncloud/core/issues/33922)
 - Bump punic 3.1.0 => 3.2.0 - [#33462](https://github.com/owncloud/core/issues/33462)
@@ -883,6 +991,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
+[Unreleased]: https://github.com/owncloud/core/compare/v10.1.1...stable10
 [10.1.1]: https://github.com/owncloud/core/compare/v10.1.0...v10.1.1
 [10.1.0]: https://github.com/owncloud/core/compare/v10.0.10...v10.1.0
 [10.0.10]: https://github.com/owncloud/core/compare/v10.0.9...v10.0.10

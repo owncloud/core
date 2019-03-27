@@ -1,4 +1,4 @@
-@api
+@api @skipOnOcV10.0
 Feature: there can be only one exclusive lock on a resource
 
   Background:

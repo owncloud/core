@@ -21,6 +21,10 @@ describe('OCA.UserManagement.SetPassword tests', function () {
 			'placeholder="New Password"' +
 			'autocomplete="off" autocapitalize="off" autocorrect="off"' +
 			'required autofocus />' +
+			'<input type="password" name="retypepassword" id="retypepassword" value=""' +
+			'placeholder="<"Confirm Password">' +
+			' />' +
+			'<span id="message"></span>' +
 			'</p>' +
 			'<input type="submit" id="submit" value="Please set your password"' +
 			'</fieldset>' +
@@ -47,6 +51,7 @@ describe('OCA.UserManagement.SetPassword tests', function () {
 
 			SetPassword.init();
 			$('#password').val('foo');
+			$('#retypepassword').val('foo');
 			$('#submit').click();
 
 			expect(resultSpy.calledOnce).toEqual(true);
@@ -63,6 +68,7 @@ describe('OCA.UserManagement.SetPassword tests', function () {
 
 			SetPassword.init();
 			$('#password').val('foo');
+			$('#retypepassword').val('foo');
 			$('#submit').click();
 
 			expect(resultSpy.calledOnce).toEqual(true);

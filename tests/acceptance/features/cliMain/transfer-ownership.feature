@@ -1,4 +1,4 @@
-@api
+@cli
 Feature: transfer-ownership
 
   @smokeTest

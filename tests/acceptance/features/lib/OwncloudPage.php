@@ -160,7 +160,7 @@ class OwncloudPage extends Page {
 			$element,
 			__METHOD__ .
 			" xpath: $xpath" .
-			" timeout waiting for element to be available"
+			" cannot find element"
 		);
 		$visibility = $this->waitFor(
 			$timeout_msec / 1000,
@@ -763,6 +763,29 @@ class OwncloudPage extends Page {
 		$element = $driver->getWebDriverSession()->element('xpath', $element->getXpath());
 		$value = \str_repeat(Key::BACKSPACE . Key::DELETE, \strlen($element->attribute('value'))) . $value;
 		$element->postValue(['value' => [$value]]);
+	}
+
+	/**
+	 * Fill the field at the specified xpath with the given string
+	 *
+	 * If you want to put non-BMP characters, like emoji, into a text field in
+	 * the browser using "ordinary" methods like setValue or fillField,
+	 * then chromedriver complains:
+	 * "ChromeDriver only supports characters in the BMP"
+	 * This method provides a way to set the text field value via JavaScript.
+	 *
+	 * @param Session $session
+	 * @param string $xpath
+	 * @param string $string
+	 *
+	 * @return void
+	 */
+	public function fillFieldWithCharacters(
+		Session $session, $xpath, $string
+	) {
+		$session->executeScript(
+			"document.evaluate(`" . $xpath . "`, document).iterateNext().value = \"" . $string . "\";"
+		);
 	}
 
 	/**

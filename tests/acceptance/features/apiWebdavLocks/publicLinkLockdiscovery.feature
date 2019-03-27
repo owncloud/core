@@ -1,4 +1,4 @@
-@api @TestAlsoOnExternalUserBackend @smokeTest @public_link_share-feature-required
+@api @TestAlsoOnExternalUserBackend @smokeTest @public_link_share-feature-required @skipOnOcV10.0
 Feature: LOCKDISCOVERY for public links
 
   Background:

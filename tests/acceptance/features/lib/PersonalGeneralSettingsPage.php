@@ -130,7 +130,14 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 * @return void
 	 */
 	public function changeEmailAddress($newEmailAddress, Session $session) {
-		$this->fillField($this->emailAddressInputID, $newEmailAddress);
+		$emailField = $this->findById($this->emailAddressInputID);
+		if ($emailField === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" could not find email field with id $this->emailAddressInputID"
+			);
+		}
+		$emailField->setValue($newEmailAddress);
 		$changeEmailButton = $this->findById($this->changeEmailButtonID);
 		$this->assertElementNotNull(
 			$changeEmailButton,
@@ -255,7 +262,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	/**
 	 * Check if the preview of the profile pic is shown in the webui
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	public function isProfilePicturePreviewDisplayed() {
 		$profilePicPreview = $this->find('xpath', $this->profilePicPreviewXpath);
@@ -337,7 +344,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	/**
 	 * return if the "invalid image" message is visible
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	public function isFileUploadErrorMsgVisible() {
 		$errorMsg = $this->waitTillElementIsNotNull($this->invalidImageErrorMsgXpath);

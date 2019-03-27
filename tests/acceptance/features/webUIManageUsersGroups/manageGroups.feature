@@ -21,6 +21,14 @@ Feature: manage groups
       | groupname |
       | 0         |
       | false     |
+    Then these groups should be listed on the webUI:
+      |groupname     |
+      |do-not-delete |
+      |do-not-delete2|
+    But these groups should not be listed on the webUI:
+      |groupname|
+      |0        |
+      |false    |
     And the administrator reloads the users page
     Then these groups should be listed on the webUI:
       | groupname      |
@@ -56,6 +64,16 @@ Feature: manage groups
       | per%cent  |
       | hash#char |
       | q?mark    |
+    Then these groups should be listed on the webUI:
+      |groupname     |
+      |do-not-delete |
+      |do-not-delete2|
+    But these groups should not be listed on the webUI:
+      |groupname     |
+      |a/slash       |
+      |per%cent      |
+      |hash#char     |
+      |q?mark        |
     And the administrator reloads the users page
     Then these groups should be listed on the webUI:
       | groupname      |
@@ -89,6 +107,16 @@ Feature: manage groups
       | do-not-delete2 |
     And the administrator has browsed to the users page
     When the administrator deletes these groups and confirms the deletion using the webUI:
+      | groupname   |
+      | grp1        |
+      | space group |
+      | quotes'     |
+      | quotes"     |
+    Then these groups should be listed on the webUI:
+      |groupname     |
+      |do-not-delete |
+      |do-not-delete2|
+    But these groups should not be listed on the webUI:
       | groupname   |
       | grp1        |
       | space group |

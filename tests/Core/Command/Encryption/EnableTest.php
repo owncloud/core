@@ -75,11 +75,11 @@ class EnableTest extends TestCase {
 	 * @param string $expectedDefaultModuleString
 	 */
 	public function testEnable($oldStatus, $defaultModule, $availableModules, $isUpdating, $expectedString, $expectedDefaultModuleString) {
+		$defaultModule = ($defaultModule === null) ? '' : $defaultModule;
 		$invokeCount = 0;
-		$this->config->expects($this->at($invokeCount))
-			->method('getAppValue')
-			->with('core', 'encryption_enabled', $this->anything())
-			->willReturn($oldStatus);
+		$this->manager->method('isEnabled')
+			->willReturn(\filter_var($oldStatus, FILTER_VALIDATE_BOOLEAN));
+
 		$invokeCount++;
 
 		if ($isUpdating) {
@@ -93,10 +93,10 @@ class EnableTest extends TestCase {
 			->method('getEncryptionModules')
 			->willReturn($availableModules);
 
+		$this->manager->method('getEncryptionModules')
+			->willReturn($availableModules);
 		if (!empty($availableModules)) {
-			$this->config->expects($this->at($invokeCount))
-				->method('getAppValue')
-				->with('core', 'default_encryption_module', $this->anything())
+			$this->manager->method('getDefaultEncryptionModuleId')
 				->willReturn($defaultModule);
 		}
 

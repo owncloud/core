@@ -85,16 +85,14 @@ trait Sharing {
 	 * @return void
 	 */
 	private function waitToCreateShare() {
-		$time = \time();
 		if (($this->localLastShareTime !== null)
-			&& (($time - $this->localLastShareTime) < 1)
+			&& ((\microtime(true) - $this->localLastShareTime) < 1)
 		) {
 			// prevent creating two shares with the same "stime" which is
 			// based on seconds, this affects share merging order and could
 			// affect expected test result order
 			\sleep(1);
 		}
-		$this->localLastShareTime = $time;
 	}
 
 	/**
@@ -120,7 +118,7 @@ trait Sharing {
 	 *       |                 |     (default: 31, for public shares: 1)             |
 	 *       |                 |     Pass either the (total) number,                 |
 	 *       |                 |     or the keyword,                                 |
-	 *       |                 |     or an comma seperated list of keywords          |
+	 *       |                 |     or an comma separated list of keywords          |
 	 *       | shareWith       | The user or group id with which the file should     |
 	 *       |                 | be shared.                                          |
 	 *       | shareType       | The type of the share. This can be one of:          |
@@ -218,7 +216,7 @@ trait Sharing {
 	 */
 	public function theUserHasCreatedAShareWithSettings($body) {
 		$this->userCreatesAShareWithSettings($this->currentUser, $body);
-		$this->theOCSStatusCodeShouldBe([100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe([100, 200]);
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
@@ -231,7 +229,7 @@ trait Sharing {
 	 */
 	public function theUserHasCreatedAPublicLinkShareWithSettings($body) {
 		$this->theUserCreatesAPublicLinkShareWithSettings($body);
-		$this->theOCSStatusCodeShouldBe([100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe([100, 200]);
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
@@ -346,14 +344,13 @@ trait Sharing {
 	 * @When /^the user creates a public link share of (?:file|folder) "([^"]*)" using the sharing API with expiry "([^"]*)$"/
 	 * @Given /^the user has created a public link share of (?:file|folder) "([^"]*)" with expiry "([^"]*)$/
 	 *
-	 * @param string $user
 	 * @param string $path
 	 * @param string $expiryDate in a valid date format, e.g. "+30 days"
 	 *
 	 * @return void
 	 */
 	public function aPublicLinkShareOfIsCreatedWithExpiry(
-		$user, $path, $expiryDate
+		$path, $expiryDate
 	) {
 		$this->createAPublicShare(
 			$this->currentUser, $path, true, null, null, null, $expiryDate
@@ -473,37 +470,6 @@ trait Sharing {
 	/**
 	 * @param string $url
 	 * @param string $user
-	 * @param string $mimeType
-	 *
-	 * @return void
-	 */
-	private function checkUserDownload($url, $user, $mimeType) {
-		$this->response = HttpRequestHelper::get(
-			$url, $user, $this->getPasswordForUser($user)
-		);
-		PHPUnit_Framework_Assert::assertEquals(
-			200,
-			$this->response->getStatusCode()
-		);
-		
-		$buf = '';
-		$body = $this->response->getBody();
-		while (!$body->eof()) {
-			// read everything
-			$buf .= $body->read(8192);
-		}
-		if ($mimeType !== null) {
-			$finfo = new finfo;
-			PHPUnit_Framework_Assert::assertEquals(
-				$mimeType,
-				$finfo->buffer($buf, FILEINFO_MIME_TYPE)
-			);
-		}
-	}
-
-	/**
-	 * @param string $url
-	 * @param string $user
 	 * @param string $password
 	 * @param string $mimeType
 	 *
@@ -549,7 +515,7 @@ trait Sharing {
 		$this->createAPublicShare($sharer, $filepath);
 		PHPUnit_Framework_Assert::assertEquals(
 			404,
-			$this->getOCSResponseStatusCode($this->response)
+			$this->ocsContext->getOCSResponseStatusCode($this->response)
 		);
 	}
 
@@ -666,6 +632,7 @@ trait Sharing {
 			$this->sharingApiVersion
 		);
 		$this->lastShareData = $this->getResponseXml();
+		$this->localLastShareTime = \microtime(true);
 	}
 
 	/**
@@ -832,14 +799,24 @@ trait Sharing {
 		}
 		
 		$data = $this->getResponseXml()->data[0];
-		foreach ($data as $element) {
-			if ($element->share_with->__toString() === $userOrGroup
-				&& ($permissions === null
-				|| $permissionSum === (int)$element->permissions->__toString())
-			) {
-				return true;
+		if (\is_array($data)
+			|| (\is_object($data) && ($data instanceof \Traversable))
+		) {
+			foreach ($data as $element) {
+				if ($element->share_with->__toString() === $userOrGroup
+					&& ($permissions === null
+					|| $permissionSum === (int)$element->permissions->__toString())
+				) {
+					return true;
+				}
 			}
+			return false;
 		}
+		\error_log(
+			"INFORMATION: isUserOrGroupInSharedData response XML data is " .
+			\gettype($data) .
+			" and therefore does not contain share_with information."
+		);
 		return false;
 	}
 
@@ -912,7 +889,7 @@ trait Sharing {
 	) {
 		$admin = $this->getAdminUsername();
 		$this->userHasSharedFileWithUserUsingTheSharingApi(
-			$sharer, $filepath, $admin, $permissions = null
+			$sharer, $filepath, $admin, $permissions
 		);
 	}
 
@@ -1065,7 +1042,7 @@ trait Sharing {
 		$this->createShare(
 			$sharer, $filepath, $shareType, $sharee, null, null, $permissions
 		);
-		$statusCode = $this->getOCSResponseStatusCode($this->response);
+		$statusCode = $this->ocsContext->getOCSResponseStatusCode($this->response);
 		PHPUnit_Framework_Assert::assertTrue(
 			($statusCode == 404) || ($statusCode == 403),
 			"Sharing should have failed but passed with status code $statusCode"
@@ -1093,7 +1070,7 @@ trait Sharing {
 		
 		//v1.php returns 100 as success code
 		//v2.php returns 200 in the same case
-		$this->theOCSStatusCodeShouldBe([100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe([100, 200]);
 	}
 
 	/**
@@ -1117,7 +1094,7 @@ trait Sharing {
 	public function userDeletesLastShareUsingTheSharingApi($user) {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "DELETE", $url, null
 		);
 	}
@@ -1141,7 +1118,7 @@ trait Sharing {
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user) {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "GET", $url, null
 		);
 	}
@@ -1155,7 +1132,7 @@ trait Sharing {
 	 */
 	public function userGetsAllTheSharesSharedWithHimUsingTheSharingApi($user) {
 		$url = "/apps/files_sharing/api/v1/shares?shared_with_me=true";
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'GET',
 			$url,
@@ -1174,7 +1151,7 @@ trait Sharing {
 	public function userGetsAllSharesSharedWithHimFromFileOrFolderUsingTheProvisioningApi($user, $path) {
 		$url = "/apps/files_sharing/api/"
 		. "v{$this->sharingApiVersion}/shares?shared_with_me=true&path=$path";
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'GET',
 			$url,
@@ -1341,6 +1318,7 @@ trait Sharing {
 	public function checkShareFields($body) {
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
+
 			foreach ($fd as $field => $value) {
 				$value = $this->replaceValuesFromTable($field, $value);
 				if (!$this->isFieldInShareResponse($field, $value)) {
@@ -1529,7 +1507,9 @@ trait Sharing {
 	) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->theUserSendsToOcsApiEndpointWithBody("DELETE", $url, null);
+		$this->ocsContext->theUserSendsToOcsApiEndpointWithBody(
+			"DELETE", $url, null
+		);
 	}
 
 	/**
@@ -1568,7 +1548,7 @@ trait Sharing {
 			$httpRequestMethod = "POST";
 		}
 		
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, $httpRequestMethod, $url, null
 		);
 	}
@@ -1675,7 +1655,7 @@ trait Sharing {
 		
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" .
 			   "?format=json&shared_with_me=true&state=$stateCode";
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "GET", $url, null
 		);
 		if ($this->response->getStatusCode() !== 200) {

@@ -26,7 +26,7 @@
 		'        <input type="button" class="stop icon-close" style="display:none" value="" />' +
 		'    </div>' +
 		'    <label>' +
-		'        <input type="file" class="uploader hiddenuploadfield" name="files[]" />' +
+		'        <input type="file" id="file_upload_start" class="uploader hiddenuploadfield" name="files[]" />' +
 		'        <div class="public-upload-view--dropzone">' +
 		'            <span class="icon icon-upload"></span><span>{{uploadButtonLabel}}</span>' +
 		'        </div>' +
@@ -66,6 +66,8 @@
 				this,
 				'_onUploadBeforeAdd',
 				'_onUploadDone',
+				'_onUploadStop',
+				'onUploadCancel',
 				'_getUploadUrl'
 			);
 		},
@@ -81,6 +83,14 @@
 			this.$('.public-upload-view--completed ul').append(this.itemTemplate({
 				fileName: fileName
 			}));
+		},
+
+		_onUploadStop: function (e, data) {
+			this.$('#uploadprogresswrapper .stop, #uploadprogressbar .label').hide();
+		},
+
+		onUploadCancel: function () {
+			this._uploader.cancelUploads();
 		},
 
 		_getUploadUrl: function(fileName) {
@@ -127,6 +137,7 @@
 			});
 			this._uploader.on('beforeadd', this._onUploadBeforeAdd);
 			this._uploader.on('done', this._onUploadDone);
+			this._uploader.on('stop', this._onUploadStop);
 
 			return this;
 		},
@@ -144,6 +155,9 @@
 		view.render();
 
 		$('#preview .uploadForm').append(view.$el);
+		$('#uploadprogresswrapper .stop').on('click', function () {
+			view.onUploadCancel();
+		});
 	});
 
 })(OC,OCA);

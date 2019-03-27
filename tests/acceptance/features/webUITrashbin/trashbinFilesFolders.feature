@@ -24,6 +24,7 @@ Feature: files and folders exist in the trashbin after being deleted
     And the deleted elements should be listed in the trashbin on the webUI
     And file "lorem.txt" should be listed in the trashbin folder "simple-folder" on the webUI
 
+  @skipOnFIREFOX
   Scenario: Delete a file with problematic characters and check it is in the trashbin
     When the user renames the following file using the webUI
       | from-name-parts | to-name-parts   |
@@ -44,6 +45,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | question?       |
       | &and#hash       |
 
+  @skipOnEncryption @encryption-issue-74
   Scenario: Delete multiple files at once and check that they are all in the trashbin
     When the user batch deletes these files using the webUI
       | name          |

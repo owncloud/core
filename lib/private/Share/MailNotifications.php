@@ -29,7 +29,7 @@
 
 namespace OC\Share;
 
-use DateTime;
+use OCP\Files\Node;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
@@ -37,6 +37,8 @@ use OCP\IUser;
 use OCP\Mail\IMailer;
 use OCP\ILogger;
 use OCP\Defaults;
+use OCP\Share\IManager;
+use OCP\Share\IShare;
 use OCP\Util;
 use OC\Share\Filters\MailNotificationFilter;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -48,7 +50,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OC\Share
  */
 class MailNotifications {
-
+	/** @var IManager */
+	private $shareManager;
 	/** @var IUser sender userId */
 	private $user;
 	/** @var string sender email address */
@@ -78,17 +81,22 @@ class MailNotifications {
 	 * @param ILogger $logger
 	 * @param Defaults $defaults
 	 * @param IURLGenerator $urlGenerator
+	 * @param EventDispatcher $eventDispatcher
 	 */
-	public function __construct(IUser $user,
-								IL10N $l10n,
-								IMailer $mailer,
-								IConfig $config,
-								ILogger $logger,
-								Defaults $defaults,
-								IURLGenerator $urlGenerator,
-								EventDispatcher $eventDispatcher) {
-		$this->l = $l10n;
+	public function __construct(
+		IManager $shareManager,
+		IUser $user,
+		IL10N $l10n,
+		IMailer $mailer,
+		IConfig $config,
+		ILogger $logger,
+		Defaults $defaults,
+		IURLGenerator $urlGenerator,
+		EventDispatcher $eventDispatcher
+	) {
+		$this->shareManager = $shareManager;
 		$this->user = $user;
+		$this->l = $l10n;
 		$this->mailer = $mailer;
 		$this->config = $config;
 		$this->logger = $logger;
@@ -121,12 +129,13 @@ class MailNotifications {
 	/**
 	 * inform users if a file was shared with them
 	 *
+	 * @param Node shared node
+	 * @param string $shareType share type
 	 * @param IUser[] $recipientList list of recipients
-	 * @param string $itemSource shared item source
-	 * @param string $itemType shared item type
+	 *
 	 * @return array list of user to whom the mail send operation failed
 	 */
-	public function sendInternalShareMail($recipientList, $itemSource, $itemType) {
+	public function sendInternalShareMail($node, $shareType, $recipientList) {
 		$noMail = [];
 
 		foreach ($recipientList as $recipient) {
@@ -138,12 +147,19 @@ class MailNotifications {
 				continue;
 			}
 
-			$items = $this->getItemSharedWithUser($itemSource, $itemType, $recipient);
-			$filename = \trim($items[0]['file_target'], '/');
+			$items = $this->shareManager->getSharedWith($recipient->getUID(), $shareType, $node);
+			if (\count($items) === 0) {
+				$noMail[] = $recipientDisplayName;
+				continue;
+			}
+			/** @var IShare $firstItem */
+			$firstItem = $items[0];
+
+			$filename = \trim($firstItem->getTarget(), '/');
 			$expiration = null;
-			if (isset($items[0]['expiration'])) {
+			if ($firstItem->getExpirationDate() instanceof \DateTime) {
 				try {
-					$date = new DateTime($items[0]['expiration']);
+					$date = $firstItem->getExpirationDate();
 					$expiration = $date->getTimestamp();
 				} catch (\Exception $e) {
 					$this->logger->error("Couldn't read date: ".$e->getMessage(), ['app' => 'sharing']);
@@ -152,7 +168,7 @@ class MailNotifications {
 
 			$link = $this->urlGenerator->linkToRouteAbsolute(
 				'files.viewcontroller.showFile',
-				['fileId' => $items[0]['item_source']]
+				['fileId' => $firstItem->getNodeId()]
 			);
 
 			$filter = new MailNotificationFilter([
@@ -164,8 +180,16 @@ class MailNotifications {
 			$filename = $filter->getFile();
 			$link = $filter->getLink();
 
-			$subject = (string) $this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $unescapedFilename]);
-			list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, null, 'internal');
+			$recipientLanguageCode = $this->config->getUserValue($recipient->getUID(), 'core', 'lang', 'en');
+			$recipientL10N = \OC::$server->getL10N('core');
+			if ($this->l->getLanguageCode() !== $recipientLanguageCode) {
+				$recipientL10N = \OC::$server->getL10N('core', $recipientLanguageCode);
+				$subject = (string)$recipientL10N->t('%s shared »%s« with you', [$this->senderDisplayName, $unescapedFilename]);
+			} else {
+				$subject = (string)$this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $unescapedFilename]);
+			}
+
+			list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, null, 'internal', $recipientL10N);
 
 			// send it out now
 			try {
@@ -349,16 +373,6 @@ class MailNotifications {
 		$plainTextMail = $plainText->fetchPage();
 
 		return [$htmlMail, $plainTextMail];
-	}
-
-	/**
-	 * @param string $itemSource
-	 * @param string $itemType
-	 * @param IUser $recipient
-	 * @return array
-	 */
-	protected function getItemSharedWithUser($itemSource, $itemType, $recipient) {
-		return Share::getItemSharedWithUser($itemType, $itemSource, $recipient->getUID());
 	}
 
 	/**

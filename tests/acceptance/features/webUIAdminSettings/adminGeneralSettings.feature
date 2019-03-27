@@ -1,4 +1,4 @@
-@webUI @mailhog @admin_settings-feature-required
+@webUI @insulated @disablePreviews @mailhog @admin_settings-feature-required
 Feature: admin general settings
   As an admin
   I want to be able to manage general settings on the ownCloud server
@@ -45,14 +45,14 @@ Feature: admin general settings
     And the administrator sets the value of update channel to "daily" using the webUI
     Then the update channel should be "daily"
 
-  @smokeTest
+  @smokeTest @skipOnFIREFOX @skipOnDockerContainerTesting
   Scenario: administrator changes the cron job
     Given the administrator has invoked occ command "config:app:set core backgroundjobs_mode --value ajax"
     When the user reloads the current page of the webUI
     And the administrator sets the value of cron job to "webcron" using the webUI
     Then the background jobs mode should be "webcron"
 
-  @smokeTest
+  @smokeTest @skipOnDockerContainerTesting
   Scenario: administrator changes the log level
     Given the administrator has invoked occ command "config:system:set loglevel --value 0"
     When the user reloads the current page of the webUI

@@ -19,6 +19,7 @@
  *
  */
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
@@ -190,6 +191,12 @@ trait BasicStructure {
 	private $sourceIpAddress = null;
 	
 	private $guzzleClientHeaders = [];
+
+	/**
+	 *
+	 * @var OCSContext
+	 */
+	private $ocsContext;
 
 	/**
 	 * BasicStructure constructor.
@@ -486,6 +493,18 @@ trait BasicStructure {
 	}
 
 	/**
+	 * returns the OCS path
+	 * the path is without a slash at the end and without a slash at the beginning
+	 *
+	 * @param string $ocsApiVersion
+	 *
+	 * @return string
+	 */
+	public function getOCSPath($ocsApiVersion) {
+		return \ltrim($this->getBasePath() . "/ocs/v{$ocsApiVersion}.php", "/");
+	}
+
+	/**
 	 * returns the base URL but without "http(s)://" in front of it
 	 *
 	 * @return string
@@ -767,63 +786,6 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When /^the user sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
-	 * @Given /^the user has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
-	 *
-	 * @param string $verb
-	 * @param string $url
-	 *
-	 * @return void
-	 */
-	public function theUserSendsToOcsApiEndpoint($verb, $url) {
-		$this->theUserSendsToOcsApiEndpointWithBody($verb, $url, null);
-	}
-
-	/**
-	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
-	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
-	 *
-	 * @param string $user
-	 * @param string $verb
-	 * @param string $url
-	 *
-	 * @return void
-	 */
-	public function userSendsToOcsApiEndpoint($user, $verb, $url) {
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user,
-			$verb,
-			$url,
-			null
-		);
-	}
-
-	/**
-	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url
-	 *
-	 * @param string $verb
-	 * @param string $url
-	 *
-	 * @return void
-	 */
-	public function theAdministratorSendsHttpMethodToOcsApiEndpoint($verb, $url) {
-		$admin = $this->getAdminUsername();
-		$this->userSendsToOcsApiEndpoint($admin, $verb, $url);
-	}
-
-	/**
-	 * Parses the xml answer to get ocs response which doesn't match with
-	 * http one in v1 of the api.
-	 *
-	 * @param ResponseInterface $response
-	 *
-	 * @return string
-	 */
-	public function getOCSResponseStatusCode($response) {
-		return (string) $this->getResponseXml($response)->meta[0]->statuscode;
-	}
-
-	/**
 	 * Parses the response as XML
 	 *
 	 * @param ResponseInterface $response
@@ -836,18 +798,6 @@ trait BasicStructure {
 		}
 
 		return HttpRequestHelper::getResponseXml($response);
-	}
-
-	/**
-	 * Parses the xml answer to get ocs response message which doesn't match with
-	 * http one in v1 of the api.
-	 *
-	 * @param ResponseInterface $response
-	 *
-	 * @return string
-	 */
-	public function getOCSResponseStatusMessage($response) {
-		return (string) $this->getResponseXml($response)->meta[0]->message;
 	}
 
 	/**
@@ -908,84 +858,6 @@ trait BasicStructure {
 			}, $arrayOfArrays
 		);
 		return $a;
-	}
-
-	/**
-	 * @When /^the user sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
-	 * @Given /^the user has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
-	 *
-	 * @param string $verb
-	 * @param string $url
-	 * @param TableNode $body
-	 *
-	 * @return void
-	 */
-	public function theUserSendsToOcsApiEndpointWithBody($verb, $url, $body) {
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$this->currentUser,
-			$verb,
-			$url,
-			$body
-		);
-	}
-
-	/**
-	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
-	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
-	 *
-	 * @param string $user
-	 * @param string $verb
-	 * @param string $url
-	 * @param TableNode|null $body
-	 *
-	 * @return void
-	 */
-	public function userSendsHTTPMethodToOcsApiEndpointWithBody(
-		$user, $verb, $url, $body
-	) {
-
-		/**
-		 * array of the data to be sent in the body.
-		 * contains $body data converted to an array
-		 *
-		 * @var array $bodyArray
-		 */
-		$bodyArray = [];
-		if ($body instanceof TableNode) {
-			$bodyArray = $body->getRowsHash();
-		}
-
-		if ($user !== 'UNAUTHORIZED_USER') {
-			$user = $this->getActualUsername($user);
-			$password = $this->getPasswordForUser($user);
-		} else {
-			$user = null;
-			$password = null;
-		}
-
-		$this->response = OcsApiHelper::sendRequest(
-			$this->getBaseUrl(),
-			$user, $password, $verb, $url, $bodyArray, $this->ocsApiVersion
-		);
-	}
-
-	/**
-	 * @When the administrator sends HTTP method :verb to OCS API endpoint :url with body
-	 * @Given the administrator has sent HTTP method :verb to OCS API endpoint :url with body
-	 *
-	 * @param string $verb
-	 * @param string $url
-	 * @param TableNode|null $body
-	 *
-	 * @return void
-	 */
-	public function theAdministratorSendsHttpMethodToOcsApiEndpointWithBody(
-		$verb, $url, TableNode $body
-	) {
-		$admin = $this->getAdminUsername();
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$admin, $verb, $url, $body
-		);
 	}
 
 	/**
@@ -1074,32 +946,6 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Then /^the OCS status code should be "([^"]*)"$/
-	 *
-	 * @param int|int[] $statusCode
-	 * @param string $message
-	 *
-	 * @return void
-	 */
-	public function theOCSStatusCodeShouldBe($statusCode, $message = "") {
-		if ($message === "") {
-			$message = "OCS status code is not the expected value";
-		}
-
-		if (\is_array($statusCode)) {
-			PHPUnit_Framework_Assert::assertContains(
-				$this->getOCSResponseStatusCode($this->response), $statusCode,
-				$message
-			);
-		} else {
-			PHPUnit_Framework_Assert::assertEquals(
-				$statusCode, $this->getOCSResponseStatusCode($this->response),
-				$message
-			);
-		}
-	}
-
-	/**
 	 * @Then /^the HTTP status code should be "([^"]*)"$/
 	 *
 	 * @param int|int[] $statusCode
@@ -1122,6 +968,20 @@ trait BasicStructure {
 				$statusCode, $this->response->getStatusCode(), $message
 			);
 		}
+	}
+
+	/**
+	 * @Then /^the HTTP status code should be "([^"]*)" or "([^"]*)"$/
+	 *
+	 * @param int $statusCode1
+	 * @param int $statusCode2
+	 *
+	 * @return void
+	 */
+	public function theHTTPStatusCodeShouldBeOr($statusCode1, $statusCode2) {
+		$this->theHTTPStatusCodeShouldBe(
+			[$statusCode1, $statusCode2]
+		);
 	}
 
 	/**
@@ -1166,55 +1026,6 @@ trait BasicStructure {
 			$reasonPhrase->getRaw(),
 			$this->getResponse()->getReasonPhrase(),
 			'Unexpected HTTP reason phrase in response'
-		);
-	}
-
-	/**
-	 * Check the text in an OCS status message
-	 *
-	 * @Then /^the OCS status message should be "([^"]*)"$/
-	 *
-	 * @param string $statusMessage
-	 *
-	 * @return void
-	 */
-	public function theOCSStatusMessageShouldBe($statusMessage) {
-		PHPUnit_Framework_Assert::assertEquals(
-			$statusMessage,
-			$this->getOCSResponseStatusMessage(
-				$this->getResponse()
-			),
-			'Unexpected OCS status message in response'
-		);
-	}
-
-	/**
-	 * Check the text in an OCS status message.
-	 * Use this step form if the expected text contains double quotes,
-	 * single quotes and other content that theOCSStatusMessageShouldBe()
-	 * cannot handle.
-	 *
-	 * After the step, write the expected text in PyString form like:
-	 *
-	 * """
-	 * File "abc.txt" can't be shared due to reason "xyz"
-	 * """
-	 *
-	 * @Then /^the OCS status message should be:$/
-	 *
-	 * @param PyStringNode $statusMessage
-	 *
-	 * @return void
-	 */
-	public function theOCSStatusMessageShouldBePyString(
-		PyStringNode $statusMessage
-	) {
-		PHPUnit_Framework_Assert::assertEquals(
-			$statusMessage->getRaw(),
-			$this->getOCSResponseStatusMessage(
-				$this->getResponse()
-			),
-			'Unexpected OCS status message in response'
 		);
 	}
 
@@ -1864,7 +1675,7 @@ trait BasicStructure {
 	 *
 	 * @param string $path
 	 *
-	 * @return string
+	 * @return void
 	 */
 	public function readFileInServerRoot($path) {
 		$response = OcsApiHelper::sendRequest(
@@ -1917,6 +1728,17 @@ trait BasicStructure {
 			404,
 			$this->getResponse()->getStatusCode(),
 			"The file '{$path}' exists in the server root"
+		);
+	}
+
+	/**
+	 * @Then the body of the response should be empty
+	 *
+	 * @return void
+	 */
+	public function theResponseBodyShouldBeEmpty() {
+		PHPUnit_Framework_Assert::assertEmpty(
+			$this->getResponse()->getBody()->getContents()
 		);
 	}
 
@@ -2086,6 +1908,22 @@ trait BasicStructure {
 					"getBasePath"
 				],
 				"parameter" => []
+			],
+			[
+				"code" => "%ocs_path_v1%",
+				"function" => [
+					$this,
+					"getOCSPath"
+				],
+				"parameter" => [1]
+			],
+			[
+				"code" => "%ocs_path_v2%",
+				"function" => [
+					$this,
+					"getOCSPath"
+				],
+				"parameter" => [2]
 			],
 			[
 				"code" => "%productname%",
@@ -2458,5 +2296,48 @@ trait BasicStructure {
 		}
 
 		HttpRequestHelper::post($fullUrl, $adminUsername, $adminPassword);
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// registers context in every suite, as every suite has FeatureContext
+		// that calls BasicStructure.php
+		$this->ocsContext = new OCSContext();
+		$this->ocsContext->before($scope);
+		$environment->registerContext($this->ocsContext);
+	}
+
+	/**
+	 * runs a function on every server (LOCAL & REMOTE).
+	 * The callable function receives the server (LOCAL or REMOTE) as first argument
+	 *
+	 * @param callable $callback
+	 *
+	 * @return mixed[]
+	 */
+	public function runFunctionOnEveryServer($callback) {
+		$previousServer = $this->getCurrentServer();
+		$result = [];
+		foreach (['LOCAL','REMOTE'] as $server) {
+			$this->usingServer($server);
+			if (($server === 'LOCAL')
+				|| $this->federatedServerExists()
+			) {
+				$result[$server] = \call_user_func($callback, $server);
+			}
+		}
+		$this->usingServer($previousServer);
+		return $result;
 	}
 }

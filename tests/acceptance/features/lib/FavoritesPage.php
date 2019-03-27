@@ -23,7 +23,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
-use Page\FilesPageElement\DetailsDialog;
+use Page\FilesPageElement\FileRow;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
@@ -75,7 +75,7 @@ class FavoritesPage extends FilesPageBasic {
 	 *
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function getFilePathInRowXpath() {
 		return $this->filePathInRowXpath;
@@ -92,6 +92,7 @@ class FavoritesPage extends FilesPageBasic {
 	 */
 	public function findAllFileRowsByName($name, Session $session) {
 		$fileRowElements = $this->getFileRowElementsByName($name, $session);
+		$fileRows = [];
 		foreach ($fileRowElements as $fileRowElement) {
 			$fileRow = $this->getPage('FilesPageElement\\FavoritesFileRow');
 			$fileRow->setElement($fileRowElement);

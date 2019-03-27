@@ -16,7 +16,8 @@
 		<owncloud min-version="10.0.2.4" max-version="10" />
     </dependencies>
     <settings>
-        <admin>OCA\FederatedFileSharing\AdminPanel</admin>
-        <personal>OCA\FederatedFileSharing\PersonalPanel</personal>
+        <admin>OCA\FederatedFileSharing\Panels\AdminPanel</admin>
+        <personal>OCA\FederatedFileSharing\Panels\GeneralPersonalPanel</personal>
+        <personal>OCA\FederatedFileSharing\Panels\SharingPersonalPanel</personal>
     </settings>
 </info>

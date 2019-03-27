@@ -33,7 +33,7 @@ Feature: Sharing files and folders with internal groups
     And file "testimage (2).jpg" should be listed on the webUI
     And file "testimage (2).jpg" should be marked as shared with "grp1" by "User Three" on the webUI
 
-  @TestAlsoOnExternalUserBackend
+  @TestAlsoOnExternalUserBackend @skipOnFIREFOX
   Scenario: share a file with an internal group a member overwrites and unshares the file
     Given user "user3" has logged in using the webUI
     When the user renames file "lorem.txt" to "new-lorem.txt" using the webUI

@@ -223,7 +223,7 @@ class SystemTagManagerTest extends TestCase {
 
 		$testTagsById = [];
 		foreach ($expectedResults as $expectedTag) {
-			$tag = $this->tagManager->getTag($expectedTag[0], $expectedTag[1], $expectedTag[2], $expectedTag[3]);
+			$tag = $this->tagManager->getTag($expectedTag[0], $expectedTag[1], $expectedTag[2]);
 			$testTagsById[$tag->getId()] = $tag;
 		}
 
@@ -579,5 +579,33 @@ class SystemTagManagerTest extends TestCase {
 			->willReturn($userGroups);
 		$result = $this->tagManager->canUserUseStaticTagInGroup($tag1, $user);
 		$this->assertEquals($result, $expectedResult);
+	}
+
+	public function provideTagsWithDefaultParams() {
+		return [
+			['visibleTag', true, true, ['invisibleTag', false, false]],
+			['invisibleTag', false, false, ['visibleTag', true, true]],
+			['restrictedTag', true, false, ['visibleTag', true, true]],
+		];
+	}
+
+	/**
+	 * @dataProvider provideTagsWithDefaultParams
+	 */
+	public function testCreateAndGetAndUpdateAPIWithoutLastArg($tagName, $userVisible, $userAssignable, $updateTag) {
+		$createdTag = $this->tagManager->createTag($tagName, $userVisible, $userAssignable);
+		$resultTag = $this->tagManager->getTag($tagName, $userVisible, $userAssignable);
+
+		$this->assertEquals($createdTag->getName(), $resultTag->getName());
+		$this->assertEquals($createdTag->getId(), $resultTag->getId());
+		$this->assertEquals($createdTag->isUserVisible(), $resultTag->isUserVisible());
+		$this->assertEquals($createdTag->isUserAssignable(), $resultTag->isUserAssignable());
+		$this->assertEquals($createdTag->isUserEditable(), $resultTag->isUserEditable());
+
+		$this->tagManager->updateTag($resultTag->getId(), $updateTag[0], $updateTag[1], $updateTag[2]);
+		$retrieveTag = $this->tagManager->getTag($updateTag[0], $updateTag[1], $updateTag[2]);
+		$this->assertEquals($retrieveTag->getName(), $updateTag[0]);
+		$this->assertEquals($retrieveTag->isUserVisible(), $updateTag[1]);
+		$this->assertEquals($retrieveTag->isUserAssignable(), $updateTag[2]);
 	}
 }

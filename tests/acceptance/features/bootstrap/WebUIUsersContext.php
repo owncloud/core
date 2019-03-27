@@ -95,6 +95,22 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the administrator sets/changes the quota of user :username to the invalid string :quota using the webUI
+	 *
+	 * @param string $username
+	 * @param string $quota
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSetsInvalidQuotaOfUserUsingTheWebUI(
+		$username, $quota
+	) {
+		$this->usersPage->setQuotaOfUserTo(
+			$username, $quota, $this->getSession(), false
+		);
+	}
+
+	/**
 	 * @When /^the administrator (attempts to create|creates) a user with the name "([^"]*)" (?:and )?the password "([^"]*)"(?: and the email "([^"]*)")?(?: that is a member of these groups)? using the webUI$/
 	 *
 	 * @param string $attemptTo
@@ -275,7 +291,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdminDisablesUserUsingTheWebui($username) {
-		$this->usersPage->openSettingsMenu();
+		$this->usersPage->openAppSettingsMenu();
 		$this->usersPage->setSetting("Show enabled/disabled option");
 		$this->usersPage->disableUser($username);
 	}
@@ -384,6 +400,62 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then /^the administrator should be able to see the quota of these users in the User Management page:$/
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdministratorShouldBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
+		foreach ($table as $row) {
+			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
+			PHPUnit_Framework_Assert::assertEquals(true, $visible);
+		}
+	}
+
+	/**
+	 * @Then /^the administrator should not be able to see the quota of these users in the User Management page:$/
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdministratorShouldNotBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
+		foreach ($table as $row) {
+			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
+			PHPUnit_Framework_Assert::assertEquals(false, $visible);
+		}
+	}
+
+	/**
+	 * @Then /^the administrator should be able to see the password of these users in the User Management page:$/
+	 *
+	 * @param TableNode $table table of usernames column with a heading | username |
+	 *
+	 * @return void
+	 */
+	public function theAdministratorShouldBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
+		foreach ($table as $row) {
+			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
+			PHPUnit_Framework_Assert::assertEquals(true, $visible);
+		}
+	}
+
+	/**
+	 * @Then /^the administrator should not be able to see the password of these users in the User Management page:$/
+	 *
+	 * @param TableNode $table table of usernames column with a heading | username |
+	 *
+	 * @return void
+	 */
+	public function theAdministratorShouldNotbeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
+		foreach ($table as $row) {
+			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
+			PHPUnit_Framework_Assert::assertEquals(false, $visible);
+		}
+	}
+
+	/**
 	 * @Then /^the administrator should be able to see the storage location of these users in the User Management page:$/
 	 *
 	 * @param TableNode $table table of usernames and storage locations with a heading | username | and | storage location |
@@ -411,7 +483,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	) {
 		foreach ($table as $row) {
 			$userLastLogin = $this->usersPage->getLastLoginOfUser($row['username']);
-			
+
 			PHPUnit_Framework_Assert::assertContains($row['last login'], $userLastLogin);
 		}
 	}
@@ -549,7 +621,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorChangesTheEmailOfUserToUsingTheWebui($username, $email) {
-		$this->usersPage->openSettingsMenu();
+		$this->usersPage->openAppSettingsMenu();
 		$this->usersPage->setSetting('Show email address');
 		$this->usersPage->changeUserEmail($this->getSession(), $username, $email);
 	}

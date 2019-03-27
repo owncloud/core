@@ -75,8 +75,9 @@ OC.Lostpassword = {
 	},
 
 	resetPassword : function(event){
+		$('#password').parent().removeClass('shake');
 		event.preventDefault();
-		if ($('#password').val()){
+		if ($('#password').val() === $('#retypepassword').val()){
 			$.post(
 					$('#password').parents('form').attr('action'),
 					{
@@ -85,6 +86,15 @@ OC.Lostpassword = {
 					},
 					OC.Lostpassword.resetDone
 			);
+		} else {
+			//Password mismatch happened
+			$('#password').val('');
+			$('#retypepassword').val('');
+			$('#password').parent().addClass('shake');
+			$('#message').addClass('warning');
+			$('#message').text('Passwords do not match');
+			$('#message').show();
+			$('#password').focus();
 		}
 		if($('#encrypted-continue').is(':checked')) {
 			$('#reset-password #submit').hide();
@@ -140,4 +150,18 @@ OC.Lostpassword = {
 
 };
 
-$(document).ready(OC.Lostpassword.init);
+$(document).ready(function () {
+	OC.Lostpassword.init();
+	$('#password').keypress(function () {
+		/*
+		 The warning message should be shown only during password mismatch.
+		 Else it should not.
+		 */
+		if (($('#password').val().length >= 0)
+			&& ($('#retypepassword').length)
+			&& ($('#retypepassword').val().length === 0)) {
+			$('#message').removeClass('warning');
+			$('#message').text('');
+		}
+	});
+});

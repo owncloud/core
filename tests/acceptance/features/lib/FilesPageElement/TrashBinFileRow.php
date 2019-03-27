@@ -23,11 +23,6 @@
 
 namespace Page\FilesPageElement;
 
-use Behat\Mink\Element\NodeElement;
-use Behat\Mink\Session;
-use Page\OwncloudPage;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-
 /**
  * Object of a row on the FilesPage
  */

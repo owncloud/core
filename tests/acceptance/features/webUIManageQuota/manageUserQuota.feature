@@ -5,9 +5,9 @@ Feature: manage user quota
   So that users can only take up a certain amount of storage space
 
   Background:
-    Given these users have been created but not initialized:
-      | username | password | displayname | email        |
-      | user1    | 1234     | User One    | u1@oc.com.np |
+    Given these users have been created with default attributes but not initialized:
+      | username |
+      | user1    |
     And the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
@@ -35,7 +35,7 @@ Feature: manage user quota
     Then the quota of user "user1" should be set to "0 B" on the webUI
 
   Scenario Outline: change quota to an invalid value
-    When the administrator changes the quota of user "user1" to "<wished_quota>" using the webUI
+    When the administrator changes the quota of user "user1" to the invalid string "<wished_quota>" using the webUI
     Then a notification should be displayed on the webUI with the text 'Invalid quota value "<wished_quota>"'
     And the quota of user "user1" should be set to "Default" on the webUI
     Examples:

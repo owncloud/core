@@ -30,7 +30,7 @@ use OCP\API;
 API::register(
 	'get',
 	'/config',
-	['OC_OCS_Config', 'apiConfig'],
+	['\OC\OCS\Config', 'apiConfig'],
 	'core',
 	API::GUEST_AUTH
 	);
@@ -38,7 +38,7 @@ API::register(
 API::register(
 	'post',
 	'/person/check',
-	['OC_OCS_Person', 'check'],
+	['\OC\OCS\Person', 'check'],
 	'core',
 	API::GUEST_AUTH
 	);
@@ -46,7 +46,7 @@ API::register(
 API::register(
 	'get',
 	'/privatedata/getattribute',
-	['OC_OCS_Privatedata', 'get'],
+	['\OC\OCS\PrivateData', 'get'],
 	'core',
 	API::USER_AUTH,
 	['app' => '', 'key' => '']
@@ -54,7 +54,7 @@ API::register(
 API::register(
 	'get',
 	'/privatedata/getattribute/{app}',
-	['OC_OCS_Privatedata', 'get'],
+	['\OC\OCS\PrivateData', 'get'],
 	'core',
 	API::USER_AUTH,
 	['key' => '']
@@ -62,21 +62,21 @@ API::register(
 API::register(
 	'get',
 	'/privatedata/getattribute/{app}/{key}',
-	['OC_OCS_Privatedata', 'get'],
+	['\OC\OCS\PrivateData', 'get'],
 	'core',
 	API::USER_AUTH
 	);
 API::register(
 	'post',
 	'/privatedata/setattribute/{app}/{key}',
-	['OC_OCS_Privatedata', 'set'],
+	['\OC\OCS\PrivateData', 'set'],
 	'core',
 	API::USER_AUTH
 	);
 API::register(
 	'post',
 	'/privatedata/deleteattribute/{app}/{key}',
-	['OC_OCS_Privatedata', 'delete'],
+	['\OC\OCS\PrivateData', 'delete'],
 	'core',
 	API::USER_AUTH
 	);

@@ -98,29 +98,29 @@ class ListCommandTest extends CommandTest {
 			[
 				['short' => true, 'output' => 'json'],
 				[
-					['mount_id' => 1, 'mount_point' => '/ownCloud', 'type' => 'admin'],
-					['mount_id' => 2, 'mount_point' => '/SFTP', 'type' => 'personal'],
+					['mount_id' => 1, 'mount_point' => '/ownCloud', 'auth' => 'User', 'type' => 'Admin'],
+					['mount_id' => 2, 'mount_point' => '/SFTP', 'auth' => 'User', 'type' => 'Personal'],
 				],
 				[
-					['mount_id' => 1, 'mount_point' => '/ownCloud', 'type' => StorageConfig::MOUNT_TYPE_ADMIN],
-					['mount_id' => 2, 'mount_point' => '/SFTP', 'type' => StorageConfig::MOUNT_TYPE_PERSONAl],
+					['mount_id' => 1, 'mount_point' => '/ownCloud', 'auth' => 'User', 'type' => StorageConfig::MOUNT_TYPE_ADMIN],
+					['mount_id' => 2, 'mount_point' => '/SFTP', 'auth' => 'User', 'type' => StorageConfig::MOUNT_TYPE_PERSONAl],
 				]
 			],
 			[
 				['short' => true],
 				<<<EOS
-+----------+-------------+----------+
-| Mount ID | Mount Point | Type     |
-+----------+-------------+----------+
-| 1        | /ownCloud   | Admin    |
-| 2        | /SFTP       | Personal |
-+----------+-------------+----------+
++----------+-------------+------+----------+
+| Mount ID | Mount Point | Auth | Type     |
++----------+-------------+------+----------+
+| 1        | /ownCloud   | User | Admin    |
+| 2        | /SFTP       | User | Personal |
++----------+-------------+------+----------+
 
 EOS
 				,
 				[
-					['mount_id' => 1, 'mount_point' => '/ownCloud', 'type' => StorageConfig::MOUNT_TYPE_ADMIN],
-					['mount_id' => 2, 'mount_point' => '/SFTP', 'type' => StorageConfig::MOUNT_TYPE_PERSONAl],
+					['mount_id' => 1, 'mount_point' => '/ownCloud', 'auth' => 'User', 'type' => StorageConfig::MOUNT_TYPE_ADMIN],
+					['mount_id' => 2, 'mount_point' => '/SFTP', 'auth' => 'User', 'type' => StorageConfig::MOUNT_TYPE_PERSONAl],
 				]
 			],
 		];
@@ -162,6 +162,7 @@ EOS
 			for ($i = 0; $i < $countResults; $i++) {
 				$this->assertEquals($expectedResult[$i]['mount_id'], $results[$i]['mount_id']);
 				$this->assertEquals($expectedResult[$i]['mount_point'], $results[$i]['mount_point']);
+				$this->assertContains($results[$i]['auth'], 'UserSession', true);
 				$this->assertEquals($expectedResult[$i]['type'], $results[$i]['type']);
 			}
 		} else {

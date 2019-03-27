@@ -133,6 +133,7 @@ class OccUsersGroupsContext implements Context {
 			$this->featureContext->getActualPassword($password)
 		);
 		$this->featureContext->addUserToCreatedUsersList($username, $password);
+		$this->featureContext->addGroupToCreatedGroupsList($group);
 	}
 
 	/**
@@ -478,7 +479,13 @@ class OccUsersGroupsContext implements Context {
 
 		foreach ($groupTableNode as $row) {
 			PHPUnit_Framework_Assert::assertContains($row['group'], $lastOutputGroups);
+			$lastOutputGroups = \array_diff($lastOutputGroups, [$row['group']]);
 		}
+		PHPUnit_Framework_Assert::assertEmpty(
+			$lastOutputGroups,
+			"more than the expected groups are returned\n" .
+			\print_r($lastOutputGroups, true)
+		);
 	}
 
 	/**

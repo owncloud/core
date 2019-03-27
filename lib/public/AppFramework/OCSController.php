@@ -33,6 +33,7 @@
 namespace OCP\AppFramework;
 
 use OC\OCS\Result;
+use OCP\API;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\OCSResponse;
 use OCP\AppFramework\Http\Response;
@@ -145,6 +146,11 @@ abstract class OCSController extends ApiController {
 				// OCS code
 				$resp->setStatusCode($statusCode);
 			}
+		}
+
+		if ($resp->getStatusCode() === API::RESPOND_UNAUTHORISED) {
+			// HTTP code
+			$resp->setStatus(401);
 		}
 
 		return $resp;

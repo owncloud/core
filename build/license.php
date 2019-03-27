@@ -22,9 +22,10 @@ class Licenses {
 	protected $paths = [];
 	protected $mailMap = [];
 	public $authors = [];
+	private $licenseText = [];
 
 	public function __construct() {
-		$this->licenseText = <<<EOD
+		$this->licenseText['agpl'] = <<<EOD
 /**
 @AUTHORS@
  *
@@ -45,40 +46,83 @@ class Licenses {
  *
  */
 EOD;
-		$this->licenseText = str_replace('@YEAR@', date("Y"), $this->licenseText);
+		$this->licenseText['gpl'] = <<<EOS
+/**
+@AUTHORS@
+ *
+ * @copyright Copyright (c) @YEAR@, ownCloud GmbH
+ * @license GPL-2.0
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
+EOS;
+		$this->licenseText['ocl'] = <<<EOS
+/**
+ *
+ * @copyright Copyright (c) @YEAR@, ownCloud GmbH
+ * @license OCL
+ *
+ * This code is covered by the ownCloud Commercial License.
+ *
+ * You should have received a copy of the ownCloud Commercial License
+ * along with this program. If not, see <https://owncloud.com/licenses/owncloud-commercial/>.
+ *
+ */
+EOS;
+
+		$this->licenseText = \array_map(function ($text) {
+			return \str_replace('@YEAR@', \date('Y'), $text);
+		}, $this->licenseText);
 	}
 
 	/**
 	 * @param string|string[] $folder
 	 * @param string|bool $gitRoot
 	 */
-	function exec($folder, $gitRoot = false) {
+	public function exec($folder, $license, $gitRoot = false) {
+		if (isset($this->licenseText[$license])) {
+			echo "Unknown license $license. Supported: agpl, gpl or ocl";
+		}
+		$license = $this->licenseText[$license];
 
-		if (is_array($folder)) {
-			foreach($folder as $f) {
-				$this->exec($f, $gitRoot);
+		if (\is_array($folder)) {
+			foreach ($folder as $f) {
+				$this->exec($f, $license, $gitRoot);
 			}
 			return;
 		}
 
-		if ($gitRoot !== false && substr($gitRoot, -1) !== '/') {
+		if ($gitRoot !== false && \substr($gitRoot, -1) !== '/') {
 			$gitRoot .= '/';
 		}
 
-		if (is_file($folder)) {
-			$this->handleFile($folder, $gitRoot);
+		if (\is_file($folder)) {
+			$this->handleFile($folder, $license, $gitRoot);
 			return;
 		}
 
-		$excludes = array_map(function($item) use ($folder) {
+		$excludes = \array_map(function ($item) use ($folder) {
 			return $folder . '/' . $item;
 		}, ['vendor', '3rdparty', '.git', 'l10n', 'templates']);
 
 		$iterator = new RecursiveDirectoryIterator($folder, RecursiveDirectoryIterator::SKIP_DOTS);
-		$iterator = new RecursiveCallbackFilterIterator($iterator, function($item) use ($folder, $excludes){
+		$iterator = new RecursiveCallbackFilterIterator($iterator, function ($item) use ($folder, $excludes) {
 			/** @var SplFileInfo $item */
-			foreach($excludes as $exclude) {
-				if (substr($item->getPath(), 0, strlen($exclude)) === $exclude) {
+			foreach ($excludes as $exclude) {
+				if (\substr($item->getPath(), 0, \strlen($exclude)) === $exclude) {
 					return false;
 				}
 			}
@@ -89,12 +133,12 @@ EOD;
 
 		foreach ($iterator as $file) {
 			/** @var SplFileInfo $file */
-			$this->handleFile($file, $gitRoot);
+			$this->handleFile($file, $license, $gitRoot);
 		}
 	}
 
-	function writeAuthorsFile() {
-		ksort($this->authors);
+	public function writeAuthorsFile() {
+		\ksort($this->authors);
 		$template = "ownCloud is written by:
 @AUTHORS@
 
@@ -104,25 +148,31 @@ With help from many libraries and frameworks including:
 	jQuery
 	…
 ";
-		$authors = implode(PHP_EOL, array_map(function($author){
+		$authors = \implode(PHP_EOL, \array_map(function ($author) {
 			return " - ".$author;
 		}, $this->authors));
-		$template = str_replace('@AUTHORS@', $authors, $template);
-		file_put_contents(__DIR__.'/../AUTHORS', $template);
+		$template = \str_replace('@AUTHORS@', $authors, $template);
+		\file_put_contents(__DIR__.'/../AUTHORS', $template);
 	}
 
-	function handleFile($path, $gitRoot) {
-		$source = file_get_contents($path);
+	/**
+	 * Update the license file
+	 *
+	 * @param string $path
+	 * @param string|bool $gitRoot
+	 */
+	public function handleFile($path, $license, $gitRoot) {
+		$source = \file_get_contents($path);
 		if ($this->isMITLicensed($source)) {
 			echo "MIT licensed file: $path" . PHP_EOL;
 			return;
 		}
 		$source = $this->eatOldLicense($source);
 		$authors = $this->getAuthors($path, $gitRoot);
-		$license = str_replace('@AUTHORS@', $authors, $this->licenseText);
+		$license = \str_replace('@AUTHORS@', $authors, $license);
 
 		$source = "<?php" . PHP_EOL . $license . PHP_EOL . $source;
-		file_put_contents($path,$source);
+		\file_put_contents($path, $source);
 		echo "License updated: $path" . PHP_EOL;
 	}
 
@@ -131,11 +181,11 @@ With help from many libraries and frameworks including:
 	 * @return bool
 	 */
 	private function isMITLicensed($source) {
-		$lines = explode(PHP_EOL, $source);
-		while(!empty($lines)) {
+		$lines = \explode(PHP_EOL, $source);
+		while (!empty($lines)) {
 			$line = $lines[0];
-			array_shift($lines);
-			if (strpos($line, 'The MIT License') !== false) {
+			\array_shift($lines);
+			if (\strpos($line, 'The MIT License') !== false) {
 				return true;
 			}
 		}
@@ -148,51 +198,65 @@ With help from many libraries and frameworks including:
 	 * @return string
 	 */
 	private function eatOldLicense($source) {
-		$lines = explode(PHP_EOL, $source);
-		while(!empty($lines)) {
+		$lines = \explode(PHP_EOL, $source);
+		while (!empty($lines)) {
 			$line = $lines[0];
-			if (strpos($line, '<?php') !== false) {
-				array_shift($lines);
+			if (\strpos($line, '<?php') !== false) {
+				\array_shift($lines);
 				continue;
 			}
-			if (strpos($line, '/**') !== false) {
-				array_shift($lines);
+			if (\strpos($line, '/**') !== false) {
+				\array_shift($lines);
 				continue;
 			}
-			if (strpos($line, '*/') !== false ) {
-				array_shift($lines);
+			if (\strpos($line, '*/') !== false) {
+				\array_shift($lines);
 				break;
 			}
-			if (strpos($line, '*') !== false) {
-				array_shift($lines);
+			if (\strpos($line, '*') !== false) {
+				\array_shift($lines);
 				continue;
 			}
-			if (trim($line) === '') {
-				array_shift($lines);
+			if (\trim($line) === '') {
+				\array_shift($lines);
 				continue;
 			}
 			break;
 		}
 
-		return implode(PHP_EOL, $lines);
+		return \implode(PHP_EOL, $lines);
 	}
 
+	/**
+	 * Retrieve a list of code contributors
+	 *
+	 * @param string $file
+	 * @param string|bool $gitRoot
+	 * @return string
+	 */
 	private function getAuthors($file, $gitRoot) {
 		// only add authors that changed code and not the license header
-		$licenseHeaderEndsAtLine = trim(shell_exec("grep -n '*/' $file | head -n 1 | cut -d ':' -f 1"));
-		$buildDir = getcwd();
-		if ($gitRoot) {
-			chdir($gitRoot);
-			$file = substr($file, strlen($gitRoot));
-		}
-		$out = shell_exec("git blame --line-porcelain -L $licenseHeaderEndsAtLine, $file | sed -n 's/^author //p;s/^author-mail //p' | sed 'N;s/\\n/ /' | sort -f | uniq");
-		if ($gitRoot) {
-			chdir($buildDir);
-		}
-		$authors = explode(PHP_EOL, $out);
+		$licenseHeaderEndsAtLine = \trim(\shell_exec(\sprintf("grep -n '*/' %s | head -n 1 | cut -d ':' -f 1", \escapeshellarg($file))));
 
-		$authors = array_filter($authors, function($author) {
-			return !in_array($author, [
+		$buildDir = \getcwd();
+		if ($gitRoot) {
+			\chdir($gitRoot);
+			$file = \substr($file, \strlen($gitRoot));
+		}
+
+		$out = \shell_exec(
+			\sprintf("git blame --line-porcelain -L %d, %s | sed -n 's/^author //p;s/^author-mail //p' | sed 'N;s/\\n/ /' | sort -f | uniq",
+			(int)$licenseHeaderEndsAtLine,
+			\escapeshellarg($file))
+		);
+
+		if ($gitRoot) {
+			\chdir($buildDir);
+		}
+		$authors = \explode(PHP_EOL, $out);
+
+		$authors = \array_filter($authors, function ($author) {
+			return !\in_array($author, [
 				'',
 				'Not Committed Yet <not.committed.yet>',
 				'Jenkins for ownCloud <owncloud-bot@tmit.eu>',
@@ -201,26 +265,26 @@ With help from many libraries and frameworks including:
 		});
 
 		if ($gitRoot) {
-			$authors = array_map([$this, 'checkCoreMailMap'], $authors);
-			$authors = array_unique($authors);
+			$authors = \array_map([$this, 'checkCoreMailMap'], $authors);
+			$authors = \array_unique($authors);
 		}
 
-		$authors = array_map(function($author){
+		$authors = \array_map(function ($author) {
 			$this->authors[$author] = $author;
 			return " * @author $author";
 		}, $authors);
-		return implode(PHP_EOL, $authors);
+		return \implode(PHP_EOL, $authors);
 	}
 
 	private function checkCoreMailMap($author) {
 		if (empty($this->mailMap)) {
-			$content = file_get_contents(__DIR__ . '/../.mailmap');
-			$entries = explode("\n", $content);
+			$content = \file_get_contents(__DIR__ . '/../.mailmap');
+			$entries = \explode("\n", $content);
 			foreach ($entries as $entry) {
-				if (strpos($entry, '> ') === false) {
+				if (\strpos($entry, '> ') === false) {
 					$this->mailMap[$entry] = $entry;
 				} else {
-					list($use, $actual) = explode('> ', $entry);
+					list($use, $actual) = \explode('> ', $entry);
 					$this->mailMap[$actual] = $use . '>';
 				}
 			}
@@ -235,9 +299,12 @@ With help from many libraries and frameworks including:
 
 $licenses = new Licenses;
 if (isset($argv[1])) {
-	$licenses->exec($argv[1], isset($argv[2]) ? $argv[1] : false);
+	if (!isset($argv[2])) {
+		echo 'Second argument has to be the license';
+		return;
+	}
+	$licenses->exec($argv[1], $argv[2], isset($argv[3]) ? $argv[1] : false);
 } else {
-
 	$licenses->exec([
 		__DIR__ . '/../apps/comments',
 		__DIR__ . '/../apps/dav',
@@ -264,6 +331,6 @@ if (isset($argv[1])) {
 		__DIR__ . '/../remote.php',
 		__DIR__ . '/../status.php',
 		__DIR__ . '/../version.php',
-	]);
+	], 'agpl');
 	$licenses->writeAuthorsFile();
 }

@@ -31,6 +31,7 @@ namespace OCA\Files_Sharing\Tests;
 use OCP\Constants;
 use OCP\IL10N;
 use OCP\IRequest;
+use OCP\IUserSession;
 use OCP\Share;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCA\Files_Sharing\SharingBlacklist;
@@ -104,10 +105,12 @@ class ApiTest extends TestCase {
 	/**
 	 * @param \OCP\IRequest $request
 	 * @param string $userId The userId of the caller
-	 * @return \OCA\Files_Sharing\API\Share20OCS
+	 * @return \OCA\Files_Sharing\Controller\Share20OcsController
 	 */
 	private function createOCS($request, $userId) {
 		$currentUser = \OC::$server->getUserManager()->get($userId);
+		$userSession = $this->createMock(IUserSession::class);
+		$userSession->method('getUser')->willReturn($currentUser);
 
 		$l = $this->createMock(IL10N::class);
 		$l->method('t')
@@ -115,14 +118,15 @@ class ApiTest extends TestCase {
 				return \vsprintf($text, $parameters);
 			}));
 
-		return new \OCA\Files_Sharing\API\Share20OCS(
+		return new \OCA\Files_Sharing\Controller\Share20OcsController(
+			'files_sharing',
+			$request,
 			$this->shareManager,
 			\OC::$server->getGroupManager(),
 			\OC::$server->getUserManager(),
-			$request,
 			\OC::$server->getRootFolder(),
 			\OC::$server->getURLGenerator(),
-			$currentUser,
+			$userSession,
 			$l,
 			\OC::$server->getConfig(),
 			\OC::$server->getAppContainer('files_sharing')->query(NotificationPublisher::class),
@@ -446,6 +450,7 @@ class ApiTest extends TestCase {
 	}
 
 	public function testGetAllSharesWithMe() {
+		\OC::$server->getConfig()->setAppValue('core', 'shareapi_exclude_groups_list', '[]');
 		$node1 = $this->userFolder->get($this->filename);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -473,6 +478,7 @@ class ApiTest extends TestCase {
 
 		$this->shareManager->deleteShare($share1);
 		$this->shareManager->deleteShare($share2);
+		\OC::$server->getConfig()->deleteAppValue('core', 'shareapi_exclude_groups_list');
 	}
 
 	/**

@@ -25,7 +25,6 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
-use OC\Group\Group;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -406,7 +405,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theAdministratorGetsTheInfoOfApp($app) {
-		$this->userSendsToOcsApiEndpoint(
+		$this->ocsContext->userSendsToOcsApiEndpoint(
 			$this->getAdminUsername(),
 			"GET",
 			"/cloud/apps/$app"
@@ -433,7 +432,7 @@ trait Provisioning {
 	public function adminSendsUserCreationRequestUsingTheProvisioningApi($user, $password) {
 		$password = $this->getActualPassword($password);
 		$bodyTable = new TableNode([['userid', $user], ['password', $password]]);
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"POST",
 			"/cloud/users",
@@ -458,7 +457,7 @@ trait Provisioning {
 		$bodyTable = new TableNode(
 			[['userid', $user], ['password', $password], ['groups[]', $group]]
 		);
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"POST",
 			"/cloud/users",
@@ -515,7 +514,7 @@ trait Provisioning {
 	public function userTriesToResetPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
 		$password = $this->getActualPassword($password);
 		$bodyTable = new TableNode([['key', 'password'], ['value', $password]]);
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			"PUT",
 			"/cloud/users/$username",
@@ -1215,18 +1214,17 @@ trait Provisioning {
 			$password = $this->getPasswordForUser($user);
 		}
 
-		if ($displayName === null) {
+		if ($displayName === null && $setDefault === true) {
 			$displayName = $this->getDisplayNameForUser($user);
-
-			if ($displayName === null && $setDefault == true) {
+			if ($displayName === null) {
 				$displayName = $this->getDisplayNameForUser('regularuser');
 			}
 		}
 
-		if ($email === null) {
+		if ($email === null && $setDefault === true) {
 			$email = $this->getEmailAddressForUser($user);
 
-			if ($email === null && $setDefault == true) {
+			if ($email === null) {
 				$email = $user . '@owncloud.org';
 			}
 		}
@@ -1681,7 +1679,7 @@ trait Provisioning {
 	) {
 		$bodyTable = new TableNode([['groupid', $group]]);
 		$user = $user === null ? $this->getAdminUsername() : $user;
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			"POST",
 			"/cloud/groups",
@@ -2633,7 +2631,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function userHasBeeenGivenUnlimitedQuota($user) {
+	public function userHasBeenGivenUnlimitedQuota($user) {
 		$this->theQuotaOfUserHasBeenSetTo($user, 'none');
 	}
 
@@ -2685,7 +2683,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function checkAttributesForUser($user, $body) {
-		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(), "GET", "/cloud/users/$user",
 			null
 		);

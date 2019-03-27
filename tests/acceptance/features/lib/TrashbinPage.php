@@ -84,7 +84,7 @@ class TrashbinPage extends FilesPageBasic {
 	 *
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function getFilePathInRowXpath() {
 		return $this->filePathInRowXpath;
@@ -161,6 +161,7 @@ class TrashbinPage extends FilesPageBasic {
 	 */
 	public function findAllFileRowsByName($name, Session $session) {
 		$fileRowElements = $this->getFileRowElementsByName($name, $session);
+		$fileRows = [];
 		foreach ($fileRowElements as $fileRowElement) {
 			$fileRow = $this->getPage('FilesPageElement\\TrashBinFileRow');
 			$fileRow->setElement($fileRowElement);

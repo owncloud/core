@@ -250,7 +250,7 @@
 
 			this.$el.find('[title]').tooltip();
 
-			var clipboard = new Clipboard('#' + this.id + ' .clipboardButton');
+			var clipboard = new ClipboardJS('#' + this.id + ' .clipboardButton');
 			clipboard.on('success', function (e) {
 				var $input = $(e.trigger);
 				$input.tooltip({

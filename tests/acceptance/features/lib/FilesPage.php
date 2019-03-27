@@ -27,7 +27,6 @@ use Page\FilesPageElement\SharingDialog;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
  * Files page.
@@ -47,7 +46,6 @@ class FilesPage extends FilesPageBasic {
 	 * @var FilesPageCRUD $filesPageCRUDFunctions
 	 */
 	protected $filesPageCRUDFunctions;
-	private $strForNormalFileName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 
 	/**
 	 * @return string

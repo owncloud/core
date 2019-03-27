@@ -10,6 +10,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And using server "LOCAL"
     And user "user1" has been created with default attributes
     And user "user1" has logged in using the webUI
+    And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
 
   Scenario: test the single steps of sharing a folder to a remote server
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
@@ -52,6 +53,65 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user declines the offered remote shares using the webUI
     Then file "lorem (2).txt" should not be listed on the webUI
     And file "lorem (2).txt" should not be listed in the shared-with-you page on the webUI
+
+  Scenario: automatically accept a federation share when it is allowed by the config
+    Given parameter "autoAddServers" of app "federation" has been set to "1"
+    And user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    And the user has reloaded the current page of the webUI
+    And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
+    And parameter "autoAddServers" of app "federation" has been set to "0"
+    When user "user1" from server "REMOTE" shares "/lorem.txt" with user "user1" from server "LOCAL" using the sharing API
+    And the user has reloaded the current page of the webUI
+    Then file "lorem (2).txt" should be listed on the webUI
+
+  Scenario: User-based auto accepting is disabled while global is enabled
+    Given parameter "autoAddServers" of app "federation" has been set to "1"
+    And user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    And the user has reloaded the current page of the webUI
+    And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
+    And parameter "autoAddServers" of app "federation" has been set to "0"
+    And the user has browsed to the personal sharing settings page
+    When the user disables automatically accepting remote shares from trusted servers
+    And user "user1" from server "REMOTE" shares "/lorem.txt" with user "user1" from server "LOCAL" using the sharing API
+    Then user "user1" should not see the following elements
+      | /lorem%20(2).txt |
+
+  Scenario: one user disabling user-based auto accepting while global is enabled has no effect on other users
+    Given user "user2" has been created with default attributes
+    And parameter "autoAddServers" of app "federation" has been set to "1"
+    And user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    And the user has reloaded the current page of the webUI
+    And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
+    And parameter "autoAddServers" of app "federation" has been set to "0"
+    And the user has browsed to the personal sharing settings page
+    When the user disables automatically accepting remote shares from trusted servers
+    And user "user1" from server "REMOTE" shares "/lorem.txt" with user "user2" from server "LOCAL" using the sharing API
+    Then user "user2" should see the following elements
+      | /lorem%20(2).txt |
+
+  Scenario: User-based accepting from trusted server checkbox is not visible while global is disabled
+    Given parameter "autoAddServers" of app "federation" has been set to "1"
+    And user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    And the user has reloaded the current page of the webUI
+    And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
+    And parameter "autoAddServers" of app "federation" has been set to "0"
+    And the user has browsed to the personal sharing settings page
+    Then User-based auto accepting from trusted servers checkbox should not be displayed on the personal sharing settings page in the webUI
+
+  @skip @issue-34742
+  Scenario: User-based & global auto accepting is enabled but remote server is not trusted
+    Given parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
+    And parameter "autoAddServers" of app "federation" has been set to "0"
+    And the user has browsed to the personal sharing settings page
+    When the user disables automatically accepting remote shares from trusted servers
+    And the user enables automatically accepting remote shares from trusted servers
+    And user "user1" from server "REMOTE" shares "/lorem.txt" with user "user1" from server "LOCAL" using the sharing API
+    Then user "user1" should not see the following elements
+      | /lorem%20(2).txt |
 
   @skipOnMICROSOFTEDGE
   Scenario: share a folder with an remote user and prohibit deleting - local server shares - remote server receives
@@ -124,6 +184,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     But file "lorem-big.txt" should not be listed on the webUI
     And the content of "renamed file.txt" on the local server should be the same as the original "simple-folder/lorem-big.txt"
 
+  @skipOnFIREFOX
   Scenario: rename a file in a received share - remote server shares - local server receives
     Given user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
     And the user has reloaded the current page of the webUI
@@ -266,6 +327,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And using server "LOCAL"
     Then as "user1" file "simple-folder/simple-empty-folder/lorem.txt" should exist
 
+  @skipOnFIREFOX
   Scenario: rename a file in a folder inside a shared folder
     Given user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/simple-empty-folder/textfile.txt"
     And user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"

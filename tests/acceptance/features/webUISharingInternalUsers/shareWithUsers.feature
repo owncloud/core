@@ -25,7 +25,7 @@ Feature: Sharing files and folders with internal users
     Then file "lorem.txt" should be listed on the webUI
     But folder "simple-folder (2)" should not be listed on the webUI
 
-  @TestAlsoOnExternalUserBackend
+  @TestAlsoOnExternalUserBackend @skipOnFIREFOX
   Scenario: share a file with another internal user who overwrites and unshares the file
     Given user "user2" has logged in using the webUI
     When the user renames file "lorem.txt" to "new-lorem.txt" using the webUI
@@ -96,6 +96,7 @@ Feature: Sharing files and folders with internal users
     And the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
 
+  @skipOnFIREFOX
   Scenario: share a folder with other user and then it should be listed on Shared with You for other user
     Given user "user2" has logged in using the webUI
     And the user has renamed folder "simple-folder" to "new-simple-folder" using the webUI
@@ -209,7 +210,6 @@ Feature: Sharing files and folders with internal users
     Then the user should see an error message on the share dialog saying "Sharing is not allowed"
     And the share-with field should not be visible in the details panel
 
-  @enterprise-issue-3037 # after the issue is fixed remove the comments on two lines and remove last line
   Scenario: user tries to re-share a file from a group which is blacklisted from sharing using webUI from shared with you page
     Given group "grp1" has been created
     And user "user1" has been added to group "grp1"
@@ -221,9 +221,8 @@ Feature: Sharing files and folders with internal users
     And the user re-logs in as "user1" using the webUI
     And the user browses to the shared-with-you page
     And the user opens the sharing tab from the file action menu of file "testimage (2).jpg" using the webUI
-    #Then the user should see an error message on the share dialog saying "Sharing is not allowed"
-    #And the share-with field should not be visible in the details panel
-    Then the share-with field should be visible in the details panel
+    Then the user should see an error message on the share dialog saying "Sharing is not allowed"
+    And the share-with field should not be visible in the details panel
     And user "user1" should not be able to share file "testimage (2).jpg" with user "User Three" using the sharing API
 
   Scenario: user shares the file/folder with another internal user and delete the share with user

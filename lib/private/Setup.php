@@ -285,7 +285,7 @@ class Setup {
 		) {
 			$error[] = $l->t("Can't create or write into the data directory %s", [$dataDir]);
 		}
-
+		
 		if (\count($error) != 0) {
 			return $error;
 		}
@@ -369,13 +369,41 @@ class Setup {
 			// out that this is indeed an ownCloud data directory
 			\file_put_contents($config->getSystemValue('datadirectory', \OC::$SERVERROOT.'/data').'/.ocdata', '');
 
-			// Update .htaccess files
-			Setup::updateHtaccess();
+			// check if we can write .htaccess
+			if (\is_file(self::pathToHtaccess())
+				&& \is_writable(self::pathToHtaccess())
+			) {
+				// Update .htaccess files
+				Setup::updateHtaccess();
+			}
 			Setup::protectDataDirectory();
 
 			//try to write logtimezone
 			if (\date_default_timezone_get()) {
 				$config->setSystemValue('logtimezone', \date_default_timezone_get());
+			}
+
+			// adding the apps-external directory by default using apps_path
+			$apps2Key = \OC::$server->getSystemConfig()->getValue('apps_paths', false);
+
+			// add the key only if it does not exist (protect against overwriting)
+			if ($apps2Key === false) {
+				$defaultAppsPaths = [
+					'apps_paths' => [
+						[
+							"path" => \OC::$SERVERROOT . '/apps',
+							"url" => "/apps",
+							"writable" => false
+						],
+						[
+							"path" => \OC::$SERVERROOT . '/apps-external',
+							"url" => "/apps-external",
+							"writable" => true
+						]
+					]
+				];
+						
+				$config->setSystemValues($defaultAppsPaths);
 			}
 
 			self::installBackgroundJobs();
@@ -385,6 +413,8 @@ class Setup {
 
 			//and we are done
 			$config->setSystemValue('installed', true);
+
+			// finished initial setup
 		}
 
 		return $error;
@@ -397,7 +427,7 @@ class Setup {
 	/**
 	 * @return string Absolute path to htaccess
 	 */
-	private function pathToHtaccess() {
+	public static function pathToHtaccess() {
 		return \OC::$SERVERROOT.'/.htaccess';
 	}
 
@@ -406,6 +436,7 @@ class Setup {
 	 */
 	public static function updateHtaccess() {
 		$config = \OC::$server->getConfig();
+		$il10n = \OC::$server->getL10N('lib');
 
 		// For CLI read the value from overwrite.cli.url
 		if (\OC::$CLI) {
@@ -419,11 +450,7 @@ class Setup {
 			$webRoot = !empty(\OC::$WEBROOT) ? \OC::$WEBROOT : '/';
 		}
 
-		$setupHelper = new \OC\Setup($config, \OC::$server->getIniWrapper(),
-			\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
-			\OC::$server->getSecureRandom());
-
-		$htaccessContent = \file_get_contents($setupHelper->pathToHtaccess());
+		$htaccessContent = \file_get_contents(self::pathToHtaccess());
 		$content = "#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####\n";
 		$htaccessContent = \explode($content, $htaccessContent, 2)[0];
 
@@ -465,8 +492,14 @@ class Setup {
 		}
 
 		if ($content !== '') {
-			//suppress errors in case we don't have permissions for it
-			@\file_put_contents($setupHelper->pathToHtaccess(), $htaccessContent.$content . "\n");
+			$fileWriteResult = @\file_put_contents(
+				self::pathToHtaccess(), $htaccessContent . $content . "\n"
+			);
+			if ($fileWriteResult === false) {
+				throw new \Exception(
+					$il10n->t("Can't update %s", [self::pathToHtaccess()])
+				);
+			}
 		}
 	}
 

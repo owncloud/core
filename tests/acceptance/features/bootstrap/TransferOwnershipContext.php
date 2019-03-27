@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use GuzzleHttp\Message\ResponseInterface;
 
 require_once 'bootstrap.php';
 
@@ -119,7 +120,7 @@ class TransferOwnershipContext implements Context {
 	 * @param string $entry
 	 * @param string $path
 	 *
-	 * @return array
+	 * @return ResponseInterface
 	 * @throws \Exception
 	 */
 	public function asFileOrFolderShouldNotExist($user, $entry, $path) {

@@ -25,7 +25,6 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
-use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
 
@@ -466,10 +465,10 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function thePrivacyPolicyUrlOnTheLoginPageShouldLinkTo($expectedPrivacyPolicyUrl) {
-		$actualPrivacyPolilcyUrl = $this->loginPage->getLegalUrl("Privacy Policy");
+		$actualPrivacyPolicyUrl = $this->loginPage->getLegalUrl("Privacy Policy");
 		PHPUnit_Framework_Assert::assertEquals(
 			$expectedPrivacyPolicyUrl,
-			$actualPrivacyPolilcyUrl
+			$actualPrivacyPolicyUrl
 		);
 	}
 
@@ -545,16 +544,46 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user resets/sets the password to :newPassword using the webUI
-	 * @Given the user has reset/set the password to :newPassword using the webUI
+	 * @When the user resets/sets the password to :newPassword and confirms with the same password using the webUI
+	 * @Given the user has reset/set the password to :newPassword and confirms with the same password using the webUI
 	 *
 	 * @param string $newPassword
 	 *
 	 * @return void
 	 */
-	public function theUserResetsThePasswordToUsingTheWebui($newPassword) {
+	public function theUserResetsThePasswordWithSameConfirmationToUsingTheWebui($newPassword) {
 		$newPassword = $this->featureContext->getActualPassword($newPassword);
-		$this->loginPage->resetThePassword($newPassword, $this->getSession());
+		$confirmNewPassword = $this->featureContext->getActualPassword($newPassword);
+		$this->loginPage->resetThePassword($newPassword, $confirmNewPassword, $this->getSession());
+	}
+
+	/**
+	 * @When the user resets/sets the password to :newPassword and confirms with :confirmPassword using the webUI
+	 * @Given the user has reset/set the password to :newPassword and confirms with :confirmPassword using the webUI
+	 *
+	 * @param string $newPassword
+	 * @param string $confirmNewPassword
+	 *
+	 * @return void
+	 */
+	public function theUserResetsPasswordWIthDiffConfirmUsingTheWebUI($newPassword, $confirmNewPassword) {
+		$newPassword = $this->featureContext->getActualPassword($newPassword);
+		$this->loginPage->resetThePassword($newPassword, $confirmNewPassword, $this->getSession());
+	}
+
+	/**
+	 * @Then the user should see a password mismatch message displayed on the webUI
+	 *
+	 * @param PyStringNode $string
+	 *
+	 * @return void
+	 */
+	public function theUserResetConfirmPasswordErrorMessage(PyStringNode $string) {
+		$expectedString = $string->getRaw();
+		$passwordMismatchMessage = $this->loginPage->getRestPasswordConfirmError();
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedString, $passwordMismatchMessage
+		);
 	}
 
 	/**

@@ -24,6 +24,8 @@ namespace TestHelpers\Asserts;
 use PHPUnit_Framework_Assert;
 use SimpleXMLElement;
 use Behat\Gherkin\Node\TableNode;
+use TestHelpers\DownloadHelper;
+use TestHelpers\SetupHelper;
 
 /**
  * WebDAV related asserts
@@ -74,6 +76,93 @@ class WebDav {
 			);
 			PHPUnit_Framework_Assert::assertNotEmpty(
 				$xmlPart, "cannot find share-type '" . $row[0] . "'"
+			);
+		}
+	}
+
+	/**
+	 * Asserts that the content of a remote and a local file is the same
+	 * or is different
+	 *
+	 * @param string $baseUrl
+	 * @param string $username
+	 * @param string $password
+	 * @param string $remoteFile
+	 * @param string $localFile
+	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
+	 *                           otherwise check that the file contents are different
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public static function assertContentOfRemoteAndLocalFileIsSame(
+		$baseUrl, $username, $password, $remoteFile, $localFile, $shouldBeSame = true
+	) {
+		$result = DownloadHelper::download(
+			$baseUrl, $username, $password, $remoteFile
+		);
+		
+		$localContent = \file_get_contents($localFile);
+		$downloadedContent = $result->getBody()->getContents();
+		
+		if ($shouldBeSame) {
+			PHPUnit_Framework_Assert::assertSame(
+				$localContent, $downloadedContent
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertNotSame(
+				$localContent, $downloadedContent
+			);
+		}
+	}
+
+	/**
+	 * Asserts that the content of a remote file (downloaded by DAV)
+	 * and a file in the skeleton folder of the system under test is the same
+	 * or is different
+	 *
+	 * @param string $baseUrl
+	 * @param string $username
+	 * @param string $password
+	 * @param string $adminUsername
+	 * @param string $adminPassword
+	 * @param string $remoteFile
+	 * @param string $fileInSkeletonFolder
+	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
+	 *                           otherwise check that the file contents are different
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public static function assertContentOfDAVFileAndSkeletonFileOnSUT(
+		$baseUrl,
+		$username,
+		$password,
+		$adminUsername,
+		$adminPassword,
+		$remoteFile,
+		$fileInSkeletonFolder,
+		$shouldBeSame = true
+	) {
+		$result = DownloadHelper::download(
+			$baseUrl,
+			$username,
+			$password,
+			$remoteFile
+		);
+		$downloadedContent = $result->getBody()->getContents();
+		
+		$localContent = SetupHelper::readSkeletonFile(
+			$fileInSkeletonFolder, $baseUrl, $adminUsername, $adminPassword
+		);
+		
+		if ($shouldBeSame) {
+			PHPUnit_Framework_Assert::assertSame(
+				$localContent, $downloadedContent
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertNotSame(
+				$localContent, $downloadedContent
 			);
 		}
 	}

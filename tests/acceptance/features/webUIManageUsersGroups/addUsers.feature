@@ -15,9 +15,9 @@ Feature: add users
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario: use the webUI to create a user with special valid characters
-    When the administrator creates a user with the name "@-_.'" and the password "pwd" using the webUI
+    When the administrator creates a user with the name "@-_.'" and the password "%regular%" using the webUI
     And the administrator logs out of the webUI
-    And the user logs in with username "@-_.'" and password "pwd" using the webUI
+    And user "@-_.'" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
   Scenario Outline: use the webUI to create a user with special invalid characters
@@ -31,7 +31,7 @@ Feature: add users
       | "a+^"  | "%alt1%"    |
       | "a)~"  | "%alt2%"    |
       | "a(="  | "%alt3%"    |
-      | "a`*^" | "%regular%" |
+      | "a`*^" | "%alt4%"    |
 
   Scenario: use the webUI to create a user with empty password
     When the administrator attempts to create a user with the name "bijay" and the password "" using the webUI
@@ -54,23 +54,37 @@ Feature: add users
     Then the email address "guiusr1@owncloud" should have received an email with the body containing
       """
       just letting you know that you now have an %productname% account.
-      
+
       Your username: guiusr1
       Access it:
       """
 
-  @smokeTest
+  @smokeTest @skipOnOcV10.0 @skipOnOcV10.1
   Scenario Outline: user sets his own password after being created with an Email address only
     When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "guiusr1@owncloud" using the webUI
-    And the user sets the password to "%regular%" using the webUI
+    And the user sets the password to "%regular%" and confirms with the same password using the webUI
     Then the email address "guiusr1@owncloud" should have received an email with the body containing
       """
       Password changed successfully
       """
     When the user logs in with username "<username>" and password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
+    Examples:
+      | username | comment               |
+      | guiusr1  | simple user-name      |
+      | a@-_.'b  | complicated user-name |
+
+  Scenario Outline: user sets his own password but retypes it wrongly after being created with an Email address only
+    When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
+    And the administrator logs out of the webUI
+    And the user follows the password set link received by "guiusr1@owncloud" using the webUI
+    And the user sets the password to "%regular%" and confirms with "foo" using the webUI
+    Then the user should see a password mismatch message displayed on the webUI
+      """
+      Passwords do not match
+      """
     Examples:
       | username | comment               |
       | guiusr1  | simple user-name      |
@@ -105,7 +119,7 @@ Feature: add users
     When the administrator creates a user with the name "guiusr1" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "guiusr1@owncloud" using the webUI
-    And the user sets the password to "%regular%" using the webUI
+    And the user sets the password to "%regular%" and confirms with the same password using the webUI
     And the user follows the password set link received by "guiusr1@owncloud" in Email number 2 using the webUI
     Then the user should be redirected to the general error webUI page with the title "%productname%"
     And an error should be displayed on the general error webUI page saying "The token provided is invalid."
@@ -116,7 +130,7 @@ Feature: add users
     And the administrator creates a user with the name "guiusr1" and the email "correct@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "correct@owncloud" using the webUI
-    And the user sets the password to "%regular%" using the webUI
+    And the user sets the password to "%regular%" and confirms with the same password using the webUI
     And the user logs in with username "guiusr1" and password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
@@ -136,7 +150,7 @@ Feature: add users
     And the administrator logs out of the webUI
     And the user follows the password set link received by "mistake@owncloud" using the webUI
     And the user follows the password set link received by "correct@owncloud" using the webUI
-    And the user sets the password to "%regular%" using the webUI
+    And the user sets the password to "%regular%" and confirms with the same password using the webUI
     And the user logs in with username "guiusr1" and password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
@@ -144,14 +158,14 @@ Feature: add users
     When the administrator creates a user with the name "user1" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "guiusr1@owncloud" using the webUI
-    And the user sets the password to "%regular%" using the webUI
+    And the user sets the password to "%regular%" and confirms with the same password using the webUI
     Then the email address "guiusr1@owncloud" should have received an email with the body containing
       """
       Password changed successfully
       """
     And the reset email to "guiusr1@owncloud" should be from "owncloud@foobar.com"
 
-   Scenario Outline: admin creates a user and sets password containing special characters
+  Scenario Outline: admin creates a user and sets password containing special characters
     Given user "brand-new-user" has been deleted
     When the administrator creates a user with the name "brand-new-user" and the password "<password>" using the webUI
     And the administrator logs out of the webUI
@@ -165,12 +179,12 @@ Feature: add users
       | नेपाली                                                  | Unicode                     |
       | password with spaces         | password with spaces        |
 
-   Scenario Outline: admin creates a user without setting password and user sets password containing special characters
+  Scenario Outline: admin creates a user without setting password and user sets password containing special characters
     Given user "brand-new-user" has been deleted
     When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "bnu@owncloud" using the webUI
-    And the user sets the password to "<password>" using the webUI
+    And the user sets the password to "<password>" and confirms with the same password using the webUI
     And the user logs in with username "brand-new-user" and password "<password>" using the webUI
     Then user "brand-new-user" should exist
     And the user should be redirected to a webUI page with the title "Files - %productname%"
@@ -181,10 +195,10 @@ Feature: add users
       | नेपाली                                                  | Unicode                     |
       | password with spaces         | password with spaces        |
 
-   Scenario: admin creates a user without setting password and user sets empty spaces as password
+  Scenario: admin creates a user without setting password and user sets empty spaces as password
     Given user "brand-new-user" has been deleted
     When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "bnu@owncloud" using the webUI
-    And the user sets the password to " " using the webUI
+    And the user sets the password to " " and confirms with the same password using the webUI
     Then the user should be redirected to a webUI page with the title "%productname%"

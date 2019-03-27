@@ -1,10 +1,13 @@
 # Main Makefile for ownCloud development
 #
 # Requirements to run make here:
+#    - composer
 #    - node
 #    - yarn
 #
-# Both can be installed following e.g. the Debian/Ubuntu instructions at
+# Installing composer can be done via https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx
+#
+# Node/Yarn can be installed following e.g. the Debian/Ubuntu instructions at
 # https://nodejs.org/en/download/package-manager/
 #
 #  curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
@@ -35,14 +38,13 @@ SHELL=/bin/bash
 # Define YARN and check if it is available on the system.
 #
 YARN := $(shell command -v yarn 2> /dev/null)
-ifndef YARN
-	$(error yarn is not available on your system, please install yarn (npm install -g yarn))
-endif
-
 KARMA=$(NODE_PREFIX)/node_modules/.bin/karma
 JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
 PHPUNIT="$(shell pwd)/lib/composer/phpunit/phpunit/phpunit"
-COMPOSER_BIN=build/composer.phar
+COMPOSER_BIN := $(shell command -v composer 2> /dev/null)
+ifndef COMPOSER_BIN
+    $(error composer is not available on your system, please install composer)
+endif
 
 # bin file definitions
 PHP_CS_FIXER=php -d zend.enable_gc=0 vendor-bin/owncloud-codestyle/vendor/bin/php-cs-fixer
@@ -65,7 +67,7 @@ core_vendor=core/vendor
 
 core_doc_files=AUTHORS COPYING README.md CHANGELOG.md
 core_src_files=$(wildcard *.php) index.html db_structure.xml .htaccess .user.ini robots.txt
-core_src_dirs=apps core l10n lib occ ocs ocs-provider ocm-provider resources settings
+core_src_dirs=apps apps-external core l10n lib occ ocs ocs-provider ocm-provider resources settings
 core_test_dirs=tests
 core_all_src=$(core_src_files) $(core_src_dirs) $(core_doc_files)
 core_config_files=config/config.sample.php config/config.apps.sample.php
@@ -95,13 +97,13 @@ help:
 	@echo -e "make clean\t\t\tclean everything"
 	@echo -e "make install-composer-deps\tinstall composer dependencies"
 	@echo -e "make update-composer\t\tupdate composer.lock"
-	@echo -e "make install-nodejs-deps\t\tinstall Node JS and Javascript dependencies"
+	@echo -e "make install-nodejs-deps\tinstall Node JS and Javascript dependencies"
 	@echo
 	@echo -e "Note that running 'make' without arguments already installs all required dependencies"
 	@echo
 	@echo -e "Testing:\n"
 	@echo -e "make test\t\t\trun all tests"
-	@echo -e "make test-php\t\t\trun all PHP tests"
+	@echo -e "make test-php-unit\t\t\trun all PHP tests"
 	@echo -e "make test-php-style\t\trun PHP code style checks"
 	@echo -e "make test-js\t\t\trun Javascript tests"
 	@echo -e "make test-js-debug\t\trun Javascript tests in debug mode (continuous)"
@@ -111,7 +113,7 @@ help:
 	@echo -e "make clean-test\t\t\tclean test results"
 	@echo
 	@echo It is also possible to run individual PHP test files with the following command:
-	@echo -e "make test-php TEST_DATABASE=mysql TEST_PHP_SUITE=path/to/testfile.php"
+	@echo -e "make test-php-unit TEST_DATABASE=mysql TEST_PHP_SUITE=path/to/testfile.php"
 	@echo
 	@echo -e "Tools:\n"
 	@echo -e "make test-php-style-fix\t\trun PHP code style checks and fix any issues found"
@@ -119,19 +121,13 @@ help:
 
 
 #
-# Basic required tools
-#
-$(COMPOSER_BIN):
-	cd build && ./getcomposer.sh
-
-#
 # ownCloud core PHP dependencies
 #
-$(composer_deps): $(COMPOSER_BIN) composer.json composer.lock
+$(composer_deps): composer.json composer.lock
 	php $(COMPOSER_BIN) install --no-dev
 
-$(composer_dev_deps): $(COMPOSER_BIN) composer.json composer.lock
-	php $(COMPOSER_BIN) install --dev
+$(composer_dev_deps): composer.json composer.lock
+	php $(COMPOSER_BIN) install
 
 .PHONY: install-composer-release-deps
 install-composer-release-deps: $(composer_deps)
@@ -143,13 +139,12 @@ install-composer-dev-deps: $(composer_dev_deps)
 install-composer-deps: install-composer-dev-deps
 
 .PHONY: update-composer
-update-composer: $(COMPOSER_BIN)
+update-composer:
 	rm -f composer.lock
 	php $(COMPOSER_BIN) install --prefer-dist
 
 .PHONY: clean-composer-deps
 clean-composer-deps:
-	rm -f $(COMPOSER_BIN)
 	rm -Rf lib/composer
 	rm -Rf vendor-bin/**/vendor vendor-bin/**/composer.lock
 
@@ -157,6 +152,7 @@ clean-composer-deps:
 # Node JS dependencies for tools
 #
 $(nodejs_deps): build/package.json
+	@test -x "$(YARN)" || { echo "yarn is not available on your system, please install yarn (npm install -g yarn)" && exit 1; }
 	cd $(NODE_PREFIX) && $(YARN) install
 	touch $@
 
@@ -175,8 +171,8 @@ clean-nodejs-deps:
 ## Tests
 ##---------------------
 
-.PHONY: test-php
-test-php: $(composer_dev_deps)
+.PHONY: test-php-unit
+test-php-unit: $(composer_dev_deps)
 	PHPUNIT=$(PHPUNIT) build/autotest.sh $(TEST_DATABASE) $(TEST_PHP_SUITE)
 
 .PHONY: test-external
@@ -206,7 +202,7 @@ test-acceptance-webui: $(acceptance_test_deps)
 .PHONY: test-php-style
 test-php-style: vendor-bin/owncloud-codestyle/vendor vendor-bin/php_codesniffer/vendor
 	$(PHP_CS_FIXER) fix -v --diff --diff-format udiff --allow-risky yes --dry-run
-	$(PHP_CODESNIFFER) --runtime-set ignore_warnings_on_exit --standard=phpcs.xml tests/acceptance tests/TestHelpers
+	$(PHP_CODESNIFFER) --cache --runtime-set ignore_warnings_on_exit --standard=phpcs.xml tests/acceptance tests/TestHelpers
 	php build/OCPSinceChecker.php
 
 .PHONY: test-php-style-fix
@@ -222,7 +218,7 @@ test-php-phpstan: vendor-bin/phpstan/vendor
 	$(PHPSTAN) analyse --memory-limit=2G --configuration=./phpstan.neon --level=0 apps core settings lib/private lib/public ocs ocs-provider
 
 .PHONY: test
-test: test-php-style test-php test-js test-acceptance-api test-acceptance-cli test-acceptance-webui
+test: test-php-style test-php-unit test-js test-acceptance-api test-acceptance-cli test-acceptance-webui
 
 .PHONY: clean-test-acceptance
 clean-test-acceptance:
@@ -266,7 +262,7 @@ $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,testem.json}
 	rm -Rf $@/l10n/
 	find $@/core/ -iname \*.sh -delete
-	find $@/{apps/,lib/composer/,core/vendor/} \( \
+	find $@/{apps/,apps-external/,lib/composer/,core/vendor/} \( \
 		-name bin -o \
 		-name test -o \
 		-name tests -o \
@@ -277,7 +273,7 @@ $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 		-name travis -o \
 		-iname \*.sh \
 		\) -print | xargs rm -Rf
-	find $@/{apps/,lib/composer/} -iname \*.exe -delete
+	find $@/{apps/,apps-external/,lib/composer/} -iname \*.exe -delete
 	# Set build
 	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
 	# Replace channel in version.php
@@ -317,7 +313,7 @@ $(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(c
 	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,testem.json}
 	rm -Rf $@/l10n/
 	find $@/core/ -iname \*.sh -delete
-	find $@/{apps/,lib/composer/,core/vendor/} \( \
+	find $@/{apps/,apps-external/,lib/composer/,core/vendor/} \( \
 		-name test -o \
 		-name examples -o \
 		-name demo -o \
@@ -326,7 +322,7 @@ $(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(c
 		-name travis -o \
 		-iname \*.sh \
 		\) -print | xargs rm -Rf
-	find $@/{apps/,lib/composer/} -iname \*.exe -delete
+	find $@/{apps/,apps-external/,lib/composer/} -iname \*.exe -delete
 	# Set build
 	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
 	# Replace channel in version.php
@@ -364,6 +360,9 @@ vendor: composer.lock
 vendor/bamarni/composer-bin-plugin: composer.lock
 	composer install
 
+.PHONY: vendor-bin-deps
+vendor-bin-deps: vendor-bin/owncloud-codestyle/vendor vendor-bin/php_codesniffer/vendor vendor-bin/phan/vendor vendor-bin/phpstan/vendor vendor-bin/behat/vendor
+
 vendor-bin/owncloud-codestyle/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/owncloud-codestyle/composer.lock
 	composer bin owncloud-codestyle install --no-progress
 
@@ -382,8 +381,17 @@ vendor-bin/phan/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/phan/compo
 vendor-bin/phan/composer.lock: vendor-bin/phan/composer.json
 	@echo phan composer.lock is not up to date.
 
+# The first line of "php --version" output looks like:
+# PHP 7.2.16-1+ubuntu18.04.1+deb.sury.org+1 (cli) (built: Mar  7 2019 20:23:29) ( NTS )
+# We want the 2nd "word", then the first 2 numbers separated by the dot
+PHP_MINOR_VERSION = $(shell php --version | head -n 1 | cut -d' ' -f2 | cut -d'.' -f1-2)
+
 vendor-bin/phpstan/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/phpstan/composer.lock
+ifeq "$(PHP_MINOR_VERSION)" "7.0"
+	@echo "phpstan is not supported on PHP 7.0 so it is not being installed"
+else
 	composer bin phpstan install --no-progress
+endif
 
 vendor-bin/phpstan/composer.lock: vendor-bin/phpstan/composer.json
 	@echo phpstan composer.lock is not up to date.

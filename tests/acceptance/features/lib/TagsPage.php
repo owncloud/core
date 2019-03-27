@@ -76,7 +76,7 @@ class TagsPage extends FilesPageBasic {
 	}
 
 	/**
-	 * @return void
+	 * @return string
 	 * @throws ElementNotFoundException
 	 */
 	protected function getFilePathInRowXpath() {
@@ -157,6 +157,7 @@ class TagsPage extends FilesPageBasic {
 	 */
 	public function findAllFileRowsByName($name, Session $session) {
 		$fileRowElements = $this->getFileRowElementsByName($name, $session);
+		$fileRows = [];
 		foreach ($fileRowElements as $fileRowElement) {
 			$fileRow = $this->getPage('FilesPageElement\\SharedWithOthersFileRow');
 			$fileRow->setElement($fileRowElement);

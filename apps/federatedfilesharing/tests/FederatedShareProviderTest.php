@@ -39,6 +39,8 @@ use OCP\Share\IManager;
 use OCP\Share\IShare;
 use OCP\Files\Folder;
 use OCP\IUser;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class FederatedShareProviderTest
@@ -50,6 +52,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 
 	/** @var IDBConnection */
 	protected $connection;
+	/** @var EventDispatcherInterface */
+	protected $eventDispatcher;
 	/** @var AddressHandler | \PHPUnit_Framework_MockObject_MockObject */
 	protected $addressHandler;
 	/** @var Notifications | \PHPUnit_Framework_MockObject_MockObject */
@@ -76,6 +80,9 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
+		$this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
+			->disableOriginalConstructor()
+			->getMock();
 		$this->notifications = $this->getMockBuilder('OCA\FederatedFileSharing\Notifications')
 			->disableOriginalConstructor()
 			->getMock();
@@ -91,13 +98,13 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->rootFolder = $this->createMock('OCP\Files\IRootFolder');
 		$this->config = $this->createMock('OCP\IConfig');
 		$this->userManager = $this->createMock('OCP\IUserManager');
-		//$this->addressHandler = new AddressHandler(\OC::$server->getURLGenerator(), $this->l);
 		$this->addressHandler = $this->getMockBuilder('OCA\FederatedFileSharing\AddressHandler')->disableOriginalConstructor()->getMock();
 
 		$this->userManager->expects($this->any())->method('userExists')->willReturn(true);
 
 		$this->provider = new FederatedShareProvider(
 			$this->connection,
+			$this->eventDispatcher,
 			$this->addressHandler,
 			$this->notifications,
 			$this->tokenHandler,
@@ -464,10 +471,11 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	 *
 	 */
 	public function testUpdate($owner, $sharedBy) {
-		$this->provider = $this->getMockBuilder('OCA\FederatedFileSharing\FederatedShareProvider')
+		$this->provider = $this->getMockBuilder(FederatedShareProvider::class)
 			->setConstructorArgs(
 				[
 					$this->connection,
+					\OC::$server->getEventDispatcher(),
 					$this->addressHandler,
 					$this->notifications,
 					$this->tokenHandler,
@@ -883,5 +891,58 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$returnedShare = $this->provider->updateForRecipient($share, 'recipient1');
 
 		$this->assertEquals($share, $returnedShare);
+	}
+
+	/**
+	 * @dataProvider dataTestGetAccepted
+	 *
+	 */
+	public function testGetAccepted($autoAddServers, $globalAutoAccept, $userAutoAccept, $isRemoteTrusted, $expected) {
+		$this->config->method('getAppValue')
+			->with('federatedfilesharing', 'auto_accept_trusted', 'no')
+			->willReturn($globalAutoAccept);
+		$this->config->method('getUserValue')
+			->with('user@server.com', 'federatedfilesharing', 'auto_accept_share_trusted', $globalAutoAccept)
+			->willReturn($userAutoAccept);
+
+		$event = new GenericEvent(
+			'',
+			[
+				'autoAddServers' => $autoAddServers,
+				'isRemoteTrusted' => $isRemoteTrusted
+			]
+		);
+		$this->eventDispatcher->method('dispatch')
+			->with('remoteshare.received', $this->anything())
+			->willReturn($event);
+
+		$shouldAutoAccept = $this->invokePrivate(
+			$this->provider,
+			'getAccepted',
+			['remote', 'user@server.com']
+		);
+
+		$this->assertEquals($expected, $shouldAutoAccept);
+	}
+
+	public function dataTestGetAccepted() {
+		return [
+			// never autoaccept when auto add to trusted is on
+			[true, 'yes', 'yes', true, false],
+			[true, 'yes', 'yes', false, false],
+			[true, 'no', 'no', true, false],
+			[true, 'no', 'no', false, false],
+			// never autoaccept when auto autoaccept is off
+			[false, 'no', 'no', false, false],
+			[false, 'no', 'no', true, false],
+			// never autoaccept when remote is not trusted
+			[false, 'yes', 'yes', false, false],
+			// autoaccept
+			[false, 'yes', 'yes', true, true],
+			// users can override globalAutoAccept when globalAutoAccept enabled
+			[false, 'yes', 'no', true, false],
+			[false, 'no', 'yes', true, false],
+			[false, 'yes', 'yes', true, true],
+		];
 	}
 }

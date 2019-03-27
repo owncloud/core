@@ -24,6 +24,12 @@ Feature: capabilities
     When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "yes"
     Then the capabilities setting of "files_sharing" path "group_sharing" should be "1"
 
+  Scenario: Check that group sharing can be disabled
+    Given parameter "shareapi_allow_group_sharing" of app "core" has been set to "yes"
+    And the capabilities setting of "files_sharing" path "group_sharing" has been confirmed to be "1"
+    When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "no"
+    Then the capabilities setting of "files_sharing" path "group_sharing" should be ""
+
   @smokeTest
   Scenario: getting capabilities with admin user
     When the administrator retrieves the capabilities using the capabilities API
@@ -86,30 +92,6 @@ Feature: capabilities
     Then the capabilities should contain
       | capability | path_to_element | value |
       | async      |                 | EMPTY |
-
-  Scenario: Changing public upload
-    Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
-    When the administrator retrieves the capabilities using the capabilities API
-    Then the capabilities should contain
-      | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
-      | core          | webdav-root                           | remote.php/webdav |
-      | files_sharing | api_enabled                           | 1                 |
-      | files_sharing | can_share                             | 1                 |
-      | files_sharing | public@@@enabled                      | 1                 |
-      | files_sharing | public@@@upload                       | EMPTY             |
-      | files_sharing | public@@@send_mail                    | EMPTY             |
-      | files_sharing | public@@@social_share                 | 1                 |
-      | files_sharing | resharing                             | 1                 |
-      | files_sharing | federation@@@outgoing                 | 1                 |
-      | files_sharing | federation@@@incoming                 | 1                 |
-      | files_sharing | group_sharing                         | 1                 |
-      | files_sharing | share_with_group_members_only         | EMPTY             |
-      | files_sharing | user_enumeration@@@enabled            | 1                 |
-      | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
-      | files         | bigfilechunking                       | 1                 |
-      | files         | undelete                              | 1                 |
-      | files         | versioning                            | 1                 |
 
   Scenario: Changing public upload
     Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"

@@ -1,4 +1,4 @@
-@webUI @insulated @mailhog
+@webUI @insulated @disablePreviews @mailhog
 Feature: Change own email address on the personal settings page
   As a user
   I would like to change my own email address
@@ -10,6 +10,7 @@ Feature: Change own email address on the personal settings page
     And the user has browsed to the personal general settings page
 
   @smokeTest
+  @skipOnFIREFOX
   Scenario: Change email address
     When the user changes the email address to "new-address@owncloud.com" using the webUI
     And the user follows the email change confirmation link received by "new-address@owncloud.com" using the webUI

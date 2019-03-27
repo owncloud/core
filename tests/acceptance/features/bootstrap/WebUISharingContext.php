@@ -23,7 +23,6 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
 use Page\FilesPageElement\SharingDialog;
@@ -33,10 +32,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 use TestHelpers\AppConfigHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\EmailHelper;
-use TestHelpers\SetupHelper;
-use OC\Files\External\Auth\Password\Password;
 use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
-use Behat\Mink\Exception\ElementException;
 use GuzzleHttp\Message\ResponseInterface;
 use Page\GeneralErrorPage;
 use Page\SharedWithOthersPage;

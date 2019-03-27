@@ -479,11 +479,9 @@ trait WebDav {
 	public function userMovesFileUsingTheAPI(
 		$user, $fileSource, $type, $fileDestination
 	) {
-		$headers = [
-			'Destination' => $this->destinationHeaderValue(
-				$user, $fileDestination
-			)
-		];
+		$headers['Destination'] = $this->destinationHeaderValue(
+			$user, $fileDestination
+		);
 		$stream = false;
 		if ($type === "asynchronously") {
 			$headers['OC-LazyOps'] = 'true';

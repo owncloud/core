@@ -30,7 +30,6 @@ use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\EmailHelper;
-use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
 use Page\GeneralErrorPage;
@@ -56,7 +55,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	private $loginPage;
 
 	private $oldCSRFSetting = null;
-	private $oldPreviewSetting = null;
+	private $oldPreviewSetting = [];
 	private $createdFiles = [];
 
 	/**
@@ -461,6 +460,24 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When /^the administrator (disables|enables) the setting "([^"]*)" in the section "([^"]*)"$/
+	 *
+	 * @param string $value
+	 * @param string $setting
+	 * @param string $section
+	 *
+	 * @return void
+	 */
+	public function adminSwitchesSettingInSection($value, $setting, $section) {
+		if ($value === "enables") {
+			$value = "enabled";
+		} elseif ($value === "disables") {
+			$value = "disabled";
+		}
+		$this->settingInSectionHasBeen($setting, $section, $value);
+	}
+
+	/**
 	 * @Given /^the setting "([^"]*)" in the section "([^"]*)" has been (disabled|enabled)$/
 	 *
 	 * @param string $setting
@@ -641,14 +658,18 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function disablePreviewBeforeScenario() {
-		if ($this->oldPreviewSetting === null) {
-			$oldPreviewSetting = $this->featureContext->getSystemConfigValue(
-				'enable_previews'
-			);
-			$this->oldPreviewSetting = \trim($oldPreviewSetting);
-		}
-		$this->featureContext->setSystemConfig(
-			'enable_previews', 'false', 'boolean'
+		$this->featureContext->runFunctionOnEveryServer(
+			function ($server) {
+				if (!isset($this->oldPreviewSetting[$server])) {
+					$oldPreviewSetting = $this->featureContext->getSystemConfigValue(
+						'enable_previews'
+					);
+					$this->oldPreviewSetting[$server] = \trim($oldPreviewSetting);
+				}
+				$this->featureContext->setSystemConfig(
+					'enable_previews', 'false', 'boolean'
+				);
+			}
 		);
 	}
 
@@ -665,14 +686,18 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function enablePreviewBeforeScenario() {
-		if ($this->oldPreviewSetting === null) {
-			$oldPreviewSetting = $this->featureContext->getSystemConfigValue(
-				'enable_previews'
-			);
-			$this->oldPreviewSetting = \trim($oldPreviewSetting);
-		}
-		$this->featureContext->setSystemConfig(
-			'enable_previews', 'true', 'boolean'
+		$this->featureContext->runFunctionOnEveryServer(
+			function ($server) {
+				if (!isset($this->oldPreviewSetting[$server])) {
+					$oldPreviewSetting = $this->featureContext->getSystemConfigValue(
+						'enable_previews'
+					);
+					$this->oldPreviewSetting[$server] = \trim($oldPreviewSetting);
+				}
+				$this->featureContext->setSystemConfig(
+					'enable_previews', 'true', 'boolean'
+				);
+			}
 		);
 	}
 
@@ -702,13 +727,19 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$this->savedCapabilitiesChanges
 		);
 
-		if ($this->oldPreviewSetting === "") {
-			$this->featureContext->deleteSystemConfig('enable_previews');
-		} elseif ($this->oldPreviewSetting !== null) {
-			$this->featureContext->setSystemConfig(
-				'enable_previews', $this->oldPreviewSetting, 'boolean'
-			);
-		}
+		$this->featureContext->runFunctionOnEveryServer(
+			function ($server) {
+				if (isset($this->oldPreviewSetting[$server])
+					&& $this->oldPreviewSetting[$server] === ""
+				) {
+					$this->featureContext->deleteSystemConfig('enable_previews');
+				} elseif (isset($this->oldPreviewSetting[$server])) {
+					$this->featureContext->setSystemConfig(
+						'enable_previews', $this->oldPreviewSetting[$server], 'boolean'
+					);
+				}
+			}
+		);
 		
 		if ($this->oldCSRFSetting === "") {
 			$this->featureContext->deleteSystemConfig('csrf.disabled');

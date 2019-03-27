@@ -38,6 +38,8 @@ use OCP\IUserManager;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IShare;
 use OCP\Share\IShareProvider;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class FederatedShareProvider
@@ -49,6 +51,9 @@ class FederatedShareProvider implements IShareProvider {
 
 	/** @var IDBConnection */
 	private $dbConnection;
+
+	/** @var EventDispatcherInterface */
+	private $eventDispatcher;
 
 	/** @var AddressHandler */
 	private $addressHandler;
@@ -84,6 +89,7 @@ class FederatedShareProvider implements IShareProvider {
 	 * DefaultShareProvider constructor.
 	 *
 	 * @param IDBConnection $connection
+	 * @param EventDispatcherInterface $eventDispatcher
 	 * @param AddressHandler $addressHandler
 	 * @param Notifications $notifications
 	 * @param TokenHandler $tokenHandler
@@ -95,6 +101,7 @@ class FederatedShareProvider implements IShareProvider {
 	 */
 	public function __construct(
 			IDBConnection $connection,
+			EventDispatcherInterface $eventDispatcher,
 			AddressHandler $addressHandler,
 			Notifications $notifications,
 			TokenHandler $tokenHandler,
@@ -105,6 +112,7 @@ class FederatedShareProvider implements IShareProvider {
 			IUserManager $userManager
 	) {
 		$this->dbConnection = $connection;
+		$this->eventDispatcher = $eventDispatcher;
 		$this->addressHandler = $addressHandler;
 		$this->notifications = $notifications;
 		$this->tokenHandler = $tokenHandler;
@@ -568,15 +576,18 @@ class FederatedShareProvider implements IShareProvider {
 	 */
 	public function getAllSharesBy($userId, $shareTypes, $nodeIDs, $reshares) {
 		$shares = [];
-		$qb = $this->dbConnection->getQueryBuilder();
 
 		$nodeIdsChunks = \array_chunk($nodeIDs, 100);
 		foreach ($nodeIdsChunks as $nodeIdsChunk) {
-			// In federates sharing currently we have only one share_type_remote
+			$qb = $this->dbConnection->getQueryBuilder();
 			$qb->select('*')
 				->from($this->shareTable);
 
+			// In federated sharing currently we have only one share_type_remote
 			$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)));
+
+			$qb->andWhere($qb->expr()->in('file_source', $qb->createParameter('file_source_ids')));
+			$qb->setParameter('file_source_ids', $nodeIdsChunk, IQueryBuilder::PARAM_INT_ARRAY);
 
 			/**
 			 * Reshares for this user are shares where they are the owner.
@@ -602,9 +613,6 @@ class FederatedShareProvider implements IShareProvider {
 					)
 				);
 			}
-
-			$qb->andWhere($qb->expr()->in('file_source', $qb->createParameter('file_source_ids')));
-			$qb->setParameter('file_source_ids', $nodeIdsChunk, IQueryBuilder::PARAM_INT_ARRAY);
 
 			$qb->orderBy('id');
 
@@ -1026,8 +1034,50 @@ class FederatedShareProvider implements IShareProvider {
 			$shareWith
 		);
 		$externalManager->addShare(
-			$remote, $token, '', $name, $owner, false, $shareWith, $remoteId
+			$remote,
+			$token,
+			'',
+			$name,
+			$owner,
+			$this->getAccepted($remote, $shareWith),
+			$shareWith,
+			$remoteId
 		);
 		return $this->dbConnection->lastInsertId("*PREFIX*{$this->externalShareTable}");
+	}
+
+	/**
+	 * @param string $remote
+	 * @param string $shareWith
+	 *
+	 * @return bool
+	 */
+	protected function getAccepted($remote, $shareWith) {
+		$event = $this->eventDispatcher->dispatch(
+			'remoteshare.received',
+			new GenericEvent('', ['remote' => $remote])
+		);
+		if ($event->getArgument('autoAddServers')) {
+			return false;
+		}
+		$globalAutoAcceptValue  = $this->config->getAppValue(
+			'federatedfilesharing',
+			'auto_accept_trusted',
+			'no'
+		);
+		if ($globalAutoAcceptValue !== 'yes') {
+			return false;
+		}
+		$autoAccept = $this->config->getUserValue(
+			$shareWith,
+			'federatedfilesharing',
+			'auto_accept_share_trusted',
+			$globalAutoAcceptValue
+		);
+		if ($autoAccept !== 'yes') {
+			return false;
+		}
+
+		return $event->getArgument('isRemoteTrusted') === true;
 	}
 }

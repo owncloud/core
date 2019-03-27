@@ -36,9 +36,10 @@ trait Logging {
 	 * order of the table has to be the same as in the log file
 	 * empty cells in the table will not be checked!
 	 *
-	 * @Then /^the last lines of the log file should contain log-entries (with|containing) these attributes:$/
+	 * @Then /^the last lines of the log file should contain log-entries (with|containing|matching) these attributes:$/
 	 *
-	 * @param string $withOrContaining
+	 * @param string $comparingMode
+	 * @param string|int $ignoredLines
 	 * @param TableNode $expectedLogEntries table with headings that correspond
 	 *                                      to the json keys in the log entry
 	 *                                      e.g.
@@ -48,10 +49,11 @@ trait Logging {
 	 * @throws \Exception
 	 */
 	public function theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
-		$withOrContaining, TableNode $expectedLogEntries
+		$comparingMode, $ignoredLines = 0, TableNode $expectedLogEntries = null
 	) {
+		$ignoredLines = (int) $ignoredLines;
 		//-1 because getRows gives also the header
-		$linesToRead = \count($expectedLogEntries->getRows()) - 1;
+		$linesToRead = \count($expectedLogEntries->getRows()) - 1 + $ignoredLines;
 		$logLines = LoggingHelper::getLogFileContent(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -70,27 +72,201 @@ trait Logging {
 					= $this->featureContext->substituteInLineCodes(
 						$expectedLogEntry[$attribute]
 					);
-				PHPUnit_Framework_Assert::assertArrayHasKey(
-					$attribute, $logEntry,
-					"could not find attribute: '$attribute' in log entry: '{$logLines[$lineNo]}'"
-				);
+
 				if ($expectedLogEntry[$attribute] !== "") {
+					PHPUnit_Framework_Assert::assertArrayHasKey(
+						$attribute, $logEntry,
+						"could not find attribute: '$attribute' in log entry: '{$logLines[$lineNo]}'"
+					);
 					$message = "log entry:\n{$logLines[$lineNo]}\n";
-					if ($withOrContaining === 'with') {
+					if (!\is_string($logEntry[$attribute])) {
+						$logEntry[$attribute] = \json_encode($logEntry[$attribute]);
+					}
+					if ($comparingMode === 'with') {
 						PHPUnit_Framework_Assert::assertEquals(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
-					} else {
+					} elseif ($comparingMode === 'containing') {
 						PHPUnit_Framework_Assert::assertContains(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
+						);
+					} elseif ($comparingMode === 'matching') {
+						PHPUnit_Framework_Assert::assertRegExp(
+							$expectedLogEntry[$attribute], $logEntry[$attribute],
+							$message
+						);
+					} else {
+						throw new \InvalidArgumentException(
+							"$comparingMode is not a valid mode"
 						);
 					}
 				}
 			}
 			$lineNo++;
+			if (($lineNo + $ignoredLines) >= $linesToRead) {
+				break;
+			}
 		}
+	}
+
+	/**
+	 * alternative wording theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes()
+	 *
+	 * @Then /^the last lines of the log file, ignoring the last (\d+) lines, should contain log-entries (with|containing|matching) these attributes:$/
+	 *
+	 * @param string|int $ignoredLines
+	 * @param string $comparingMode
+	 * @param TableNode $expectedLogEntries
+	 *
+	 * @return void
+	 */
+	public function theLastLinesOfTheLogFileIgnoringSomeShouldContainEntries(
+		$ignoredLines, $comparingMode, TableNode $expectedLogEntries
+	) {
+		$this->theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
+			$comparingMode, $ignoredLines, $expectedLogEntries
+		);
+	}
+
+	/**
+	 * alternative wording theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes()
+	 *
+	 * @Then /^the last lines of the log file, ignoring the last line, should contain log-entries (with|containing|matching) these attributes:$/
+	 *
+	 * @param string $comparingMode
+	 * @param TableNode $expectedLogEntries
+	 *
+	 * @return void
+	 */
+	public function theLastLinesOfTheLogFileIgnoringLastShouldContainEntries(
+		$comparingMode, TableNode $expectedLogEntries
+	) {
+		$this->theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
+			$comparingMode, 1, $expectedLogEntries
+		);
+	}
+
+	/**
+	 * wrapper around assertLogFileContainsAtLeastOneEntryMatchingTable()
+	 *
+	 * @see assertLogFileContainsAtLeastOneEntryMatchingTable()
+	 *
+	 * @Then the log file should contain at least one entry matching each of these lines:
+	 *
+	 * @param TableNode $expectedLogEntries table with headings that correspond
+	 *                                      to the json keys in the log entry
+	 *                                      e.g.
+	 *                                      |user|app|method|message|
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function logFileShouldContainEntriesMatching(
+		TableNode $expectedLogEntries
+	) {
+		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
+			$expectedLogEntries
+		);
+	}
+
+	/**
+	 * wrapper around assertLogFileContainsAtLeastOneEntryMatchingTable()
+	 *
+	 * @see assertLogFileContainsAtLeastOneEntryMatchingTable()
+	 *
+	 * @Then the log file should contain at least one entry matching the regular expressions in each of these lines:
+	 *
+	 * @param TableNode $expectedLogEntries
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function logFileShouldContainEntriesMatchingRegularExpression(
+		TableNode $expectedLogEntries
+	) {
+		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
+			$expectedLogEntries, true
+		);
+	}
+
+	/**
+	 * checks that every line in the table has at least one
+	 * corresponding line in the log file
+	 * empty cells in the table will not be checked!
+	 *
+	 * @param TableNode $expectedLogEntries table with headings that correspond
+	 *                                      to the json keys in the log entry
+	 *                                      e.g.
+	 *                                      |user|app|method|message|
+	 * @param boolean $regexCompare if true the table entries are expected
+	 *                              to be regular expressions
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	private function assertLogFileContainsAtLeastOneEntryMatchingTable(
+		TableNode $expectedLogEntries, $regexCompare = false
+	) {
+		$logLines = LoggingHelper::getLogFileContent(
+			$this->featureContext->getBaseUrl(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword()
+		);
+		$expectedLogEntries = $expectedLogEntries->getHash();
+		foreach ($logLines as $logLine) {
+			$logEntry = \json_decode($logLine, true);
+			if ($logEntry === null) {
+				throw new \Exception("the logline :\n{$logLine} is not valid JSON");
+			}
+			//reindex the array, we might have deleted entries
+			$expectedLogEntries = \array_values($expectedLogEntries);
+			for ($entryNo = 0; $entryNo < \count($expectedLogEntries); $entryNo++) {
+				$expectedLogEntry = $expectedLogEntries[$entryNo];
+				$foundLine = true;
+				foreach (\array_keys($expectedLogEntry) as $attribute) {
+					if ($expectedLogEntry[$attribute] === "") {
+						//don't check empty table entries
+						continue;
+					}
+					if (!\array_key_exists($attribute, $logEntry)) {
+						//this line does not have the attribute we are looking for
+						$foundLine = false;
+						break;
+					}
+					if (!\is_string($logEntry[$attribute])) {
+						$logEntry[$attribute] = \json_encode($logEntry[$attribute]);
+					}
+					$expectedLogEntry[$attribute]
+						= $this->featureContext->substituteInLineCodes(
+							$expectedLogEntry[$attribute]
+						);
+					if ($regexCompare === true) {
+						$matchAttribute = \preg_match(
+							$expectedLogEntry[$attribute], $logEntry[$attribute]
+						);
+					} else {
+						$matchAttribute
+							= ($expectedLogEntry[$attribute] === $logEntry[$attribute]);
+					}
+					
+					if (!$matchAttribute) {
+						$foundLine = false;
+						break;
+					}
+				}
+				if ($foundLine === true) {
+					unset($expectedLogEntries[$entryNo]);
+				}
+			}
+		}
+		
+		$notFoundLines = \print_r($expectedLogEntries, true);
+		PHPUnit_Framework_Assert::assertEmpty(
+			$expectedLogEntries,
+			"could not find these expected line(s):\n $notFoundLines"
+		);
 	}
 
 	/**

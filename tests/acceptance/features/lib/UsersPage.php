@@ -48,32 +48,45 @@ class UsersPage extends OwncloudPage {
 	protected $quotaOptionXpath = "//option[contains(text(), '%s')]";
 
 	protected $emailColumnXpath = "//td[@class='mailAddress']";
+	protected $passwordColumnXpath = "//td[@class='password']";
+	protected $quotaColumnXpath = "//td[@class='quota']";
 	protected $storageLocationColumnXpath = "//td[@class='storageLocation']";
 	protected $lastLoginXpath = "//td[@class='lastLogin']";
 
-	protected $manualQuotaInputXpath = "//input[contains(@data-original-title,'Please enter storage quota')]";
+	protected $manualQuotaInputXpath
+		= "//input[contains(@data-original-title,'Please enter storage quota')]";
 	protected $settingsBtnXpath = ".//*[@id='app-settings-header']/button";
 	protected $settingContentId = "app-settings-content";
-	protected $labelMailOnUserCreateXpath = ".//label[@for='CheckboxMailOnUserCreate']";
-	protected $settingByTextXpath = ".//*[@id='userlistoptions']//label[normalize-space()='%s']";
+	protected $labelMailOnUserCreateXpath
+		= ".//label[@for='CheckboxMailOnUserCreate']";
+	protected $settingByTextXpath
+		= ".//*[@id='userlistoptions']//label[normalize-space()='%s']";
 	protected $newUserUsernameFieldId = "newusername";
 	protected $newUserPasswordFieldId = "newuserpassword";
 	protected $newUserEmailFieldId = "newemail";
 	protected $createUserBtnXpath = ".//*[@id='newuser']/input[@type='submit']";
-	protected $newUserGroupsDropDownXpath = ".//*[@id='newuser']//div[@class='groupsListContainer multiselect button']";
+	protected $newUserGroupsDropDownXpath
+		= ".//*[@id='newuser']//div[@class='groupsListContainer multiselect button']";
 	protected $newUserGroupsDropDownListTag = "li";
 	protected $newUserGroupsSelectedClass = "selected";
-	protected $newUserGroupsListXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']";
-	protected $newUserGroupXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']//label[@title='%s']/..";
-	protected $newUserAddGroupBtnXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']//li[@title='add group']";
-	protected $createGroupWithNewUserInputXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']//input[@type='text']";
+	protected $newUserGroupsListXpath
+		= ".//*[@id='newuser']//ul[@class='multiselectoptions down']";
+	protected $newUserGroupXpath
+		= ".//*[@id='newuser']//ul[@class='multiselectoptions down']//label[@title='%s']/..";
+	protected $newUserAddGroupBtnXpath
+		= ".//*[@id='newuser']//ul[@class='multiselectoptions down']//li[@title='add group']";
+	protected $createGroupWithNewUserInputXpath
+		= ".//*[@id='newuser']//ul[@class='multiselectoptions down']//input[@type='text']";
 	protected $groupListId = "usergrouplist";
 	protected $disableUserCheckboxXpath = "//input[@type='checkbox']";
-	protected $deleteUserBtnXpath = ".//td[@class='remove']/a[@class='action delete']";
+	protected $deleteUserBtnXpath
+		= ".//td[@class='remove']/a[@class='action delete']";
 	protected $deleteConfirmBtnXpath
-		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style,'display: none')])]//button[text()='Yes']";
+		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style, 'display: none')])]//button[text()='Yes']";
 	protected $deleteNotConfirmBtnXpath
-		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style,'display: none')])]//button[text()='No']";
+		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style, 'display: none')])]//button[text()='No']";
+
+	protected $userNameFieldCss = ".name";
 
 	protected $editUserDisplayNameBtnXpath = ".//td[@class='displayName']/img";
 	protected $editUserDisplayNameFieldXpath = "/td[@class='displayName']/input";
@@ -99,7 +112,7 @@ class UsersPage extends OwncloudPage {
 		$userTrs = $this->findAll('xpath', $this->userTrXpath);
 
 		foreach ($userTrs as $userTr) {
-			$user = $userTr->find("css", ".name");
+			$user = $userTr->find("css", $this->userNameFieldCss);
 			if ($this->getTrimmedText($user) === $username) {
 				return $userTr;
 			}
@@ -166,6 +179,56 @@ class UsersPage extends OwncloudPage {
 
 		return $this->getTrimmedText($userEmail);
 	}
+
+	/**
+	 * @param string $username
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function isPasswordColumnOfUserVisible($username) {
+		$userTr = $this->findUserInTable($username);
+		$userPassword = $userTr->find('xpath', $this->passwordColumnXpath);
+
+		if ($userPassword === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->passwordColumnXpath " .
+				"password column of user " . $username . " not found"
+			);
+		}
+
+		if (!$userPassword->isVisible()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param string $username
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function isQuotaColumnOfUserVisible($username) {
+		$userTr = $this->findUserInTable($username);
+		$userQuota = $userTr->find('xpath', $this->quotaColumnXpath);
+
+		if ($userQuota === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->quotaColumnXpath " .
+				"quota column of user " . $username . " not found"
+			);
+		}
+
+		if (!$userQuota->isVisible()) {
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * @param string $username
 	 *
@@ -234,7 +297,7 @@ class UsersPage extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
-	public function openSettingsMenu() {
+	public function openAppSettingsMenu() {
 		$settingsBtn = $this->find("xpath", $this->settingsBtnXpath);
 		if ($settingsBtn === null) {
 			throw new ElementNotFoundException(
@@ -244,6 +307,14 @@ class UsersPage extends OwncloudPage {
 			);
 		}
 		$settingsBtn->click();
+		// At this point isVisible() on the settings menu returns true
+		// But the settings menu animation is happening.
+		// If we try to click a setting before the animation is finished
+		// then the click is not effective.
+		// This results in intermittent test fails, because the expected
+		// setting does not happen.
+		// Ref: https://github.com/owncloud/core/issues/34689
+		\sleep(1);
 	}
 
 	/**
@@ -282,7 +353,7 @@ class UsersPage extends OwncloudPage {
 		}
 
 		if (!$settingContentIsVisible) {
-			$this->openSettingsMenu();
+			$this->openAppSettingsMenu();
 		}
 
 		$xpathLocator = \sprintf($this->settingByTextXpath, $setting);
@@ -404,7 +475,8 @@ class UsersPage extends OwncloudPage {
 						$createUserInput->setValue($group . "\n");
 					} catch (NoSuchElement $e) {
 						// this seems to be a bug in MinkSelenium2Driver.
-						// Actually all that we need does happen, so we just don't do anything
+						// Actually all that we need does happen,
+						// so we just don't do anything
 					}
 				}
 			}
@@ -418,11 +490,14 @@ class UsersPage extends OwncloudPage {
 	 * @param string $username
 	 * @param string $quota text form of quota to be input
 	 * @param Session $session
+	 * @param boolean $valid is the set quota expected to be valid
 	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
-	public function setQuotaOfUserTo($username, $quota, Session $session) {
+	public function setQuotaOfUserTo(
+		$username, $quota, Session $session, $valid = true
+	) {
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
 
@@ -433,7 +508,7 @@ class UsersPage extends OwncloudPage {
 				"could not find quota select element"
 			);
 		}
-
+		$selectField->click();
 		$selectOption = $selectField->find(
 			'xpath', \sprintf($this->quotaOptionXpath, $quota)
 		);
@@ -450,7 +525,9 @@ class UsersPage extends OwncloudPage {
 			}
 
 			$selectOption->click();
-			$manualQuotaInputElement = $this->find('xpath', $this->manualQuotaInputXpath);
+			$manualQuotaInputElement = $this->find(
+				'xpath', $this->manualQuotaInputXpath
+			);
 
 			if ($manualQuotaInputElement === null) {
 				throw new ElementNotFoundException(
@@ -464,7 +541,25 @@ class UsersPage extends OwncloudPage {
 		} else {
 			$selectOption->click();
 		}
-		$this->waitForAjaxCallsToStartAndFinish($session);
+		//a valid quota will be send by AJAX to the server
+		//invalid quotas are checked by JS, so we just wait for the notification to appear
+		if ($valid === true) {
+			$this->waitForAjaxCallsToStartAndFinish($session);
+		} else {
+			try {
+				$this->waitTillXpathIsVisible(
+					"//*[@id='$this->notificationId']", 1000
+				);
+			} catch (\Exception $e) {
+				// Sometimes the notification is not "noticed".
+				// Later steps are responsible for caring if a notification
+				// is actually seen, so just output some information
+				$message = __METHOD__ . " INFORMATION: notificationId '" .
+					$this->notificationId . "' did not become visible";
+				echo $message;
+				\error_log($message);
+			}
+		}
 	}
 
 	/**
@@ -502,9 +597,10 @@ class UsersPage extends OwncloudPage {
 	}
 
 	/**
+	 *
 	 * @param string $name
 	 * @param Session $session
-	 * @param bool $confirm  , true is to delete and false is not to delete
+	 * @param bool $confirm true is to delete and false is not to delete
 	 *
 	 * @return void
 	 */
@@ -726,6 +822,43 @@ class UsersPage extends OwncloudPage {
 			$groupLabel->focus();
 			$groupLabel->click();
 			$this->waitForAjaxCallsToStartAndFinish($session);
+		}
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	) {
+		// There is always at least the "admin" user in the displayed list of users
+		// So wait for the user list to have at least 1 real user in it
+		$currentTime = \microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
+			$userTrs = $this->findAll('xpath', $this->userTrXpath);
+			foreach ($userTrs as $userTr) {
+				$user = $userTr->find("css", $this->userNameFieldCss);
+				if ($this->getTrimmedText($user) !== '') {
+					// We have found a real user
+					// (note that there is a hidden empty "template" row)
+					break 2;
+				}
+			}
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = \microtime(true);
+		}
+
+		if ($currentTime > $end) {
+			throw new \Exception(
+				__METHOD__ . " timeout waiting for user list to load on users page"
+			);
 		}
 	}
 }

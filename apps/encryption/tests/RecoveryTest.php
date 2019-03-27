@@ -27,7 +27,13 @@
 namespace OCA\Encryption\Tests;
 
 
+use OC\Files\FileInfo;
+use OC\Files\Mount\MountPoint;
 use OCA\Encryption\Recovery;
+use OCA\Files_Sharing\ISharedStorage;
+use OCP\Files\Cache\ICacheEntry;
+use OCP\Files\Storage\IStorage;
+use OCP\IUser;
 use Test\TestCase;
 
 class RecoveryTest extends TestCase {
@@ -242,6 +248,27 @@ class RecoveryTest extends TestCase {
 		$this->assertNull(self::invokePrivate($this->instance,
 			'recoverFile',
 			['/', 'testkey', 'admin']));
+	}
+
+	public function testNormalShareOrFedShareRecoveryKeySkipped() {
+		$storage = $this->createMock(IStorage::class);
+		$storage->method('instanceOfStorage')
+			->with(ISharedStorage::class)
+			->willReturn(true);
+
+		$cacheEntry = $this->createMock(ICacheEntry::class);
+		$mountPoint = $this->createMock(MountPoint::class);
+		$mountPoint->method('getStorage')
+			->willReturn($storage);
+
+		$user = $this->createMock(IUser::class);
+		$remoteUser = $this->createMock(IUser::class);
+		$normalShare = new FileInfo('test/files/foo', $storage, '', $cacheEntry, $mountPoint, $user);
+		$fedShare = new FileInfo('test/files/fedshare', $storage, '', $cacheEntry, $mountPoint, $remoteUser);
+
+		$this->viewMock->method('getDirectoryContent')
+			->willReturn([$normalShare, $fedShare]);
+		$this->assertEquals(true, $this->instance->setRecoveryForUser('1'));
 	}
 
 	protected function setUp() {

@@ -416,11 +416,13 @@
 		sendNotificationForShare: function(shareType, shareWith, state) {
 			var itemType = this.get('itemType');
 			var itemSource = this.get('itemSource');
+			var baseUrl = OC.linkToOCS('/apps/files_sharing/api/v1/notification/', 2);
+			var action = state ? 'send' : 'marksent';
 
 			return $.post(
-				OC.generateUrl('core/ajax/share.php'),
+				baseUrl + action,
 				{
-					action: state ? 'informRecipients' : 'informRecipientsDisabled',
+					format: 'json',
 					recipient: shareWith,
 					shareType: shareType,
 					itemSource: itemSource,

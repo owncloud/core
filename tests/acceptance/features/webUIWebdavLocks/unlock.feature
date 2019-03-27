@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews
+@webUI @insulated @disablePreviews @skipOnOcV10.0
 Feature: Unlock locked files and folders
   As a user
   I would like to be able to unlock files and folders
@@ -106,6 +106,7 @@ Feature: Unlock locked files and folders
       | exclusive |
       | shared    |
 
+  @skipOnFIREFOX
   Scenario: deleting the first one of multiple shared locks on the webUI
     Given these users have been created:
       | username  |
@@ -144,6 +145,7 @@ Feature: Unlock locked files and folders
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver1" by the WebDAV API
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
+  @skipOnFIREFOX
   Scenario: deleting the second one of multiple shared locks on the webUI
     Given these users have been created:
       | username  |
@@ -182,6 +184,7 @@ Feature: Unlock locked files and folders
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver1" by the WebDAV API
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
+  @skipOnFIREFOX
   Scenario: deleting the last one of multiple shared locks on the webUI
     Given these users have been created:
       | username  |

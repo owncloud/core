@@ -27,7 +27,7 @@ use Behat\Mink\Session;
 /**
  * Admin Sharing Settings page.
  */
-class AdminSharingSettingsPage extends OwncloudPage {
+class AdminSharingSettingsPage extends SharingSettingsPage {
 	
 	/**
 	 *
@@ -41,8 +41,8 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	protected $publicShareCheckboxId = 'allowLinks';
 	protected $publicUploadCheckboxXpath = '//label[@for="allowPublicUpload"]';
 	protected $publicUploadCheckboxId = 'allowPublicUpload';
-	protected $mailNotiticationOnPublicShareCheckboxXpath = '//label[@for="allowPublicMailNotification"]';
-	protected $mailNotiticationOnPublicShareCheckboxId = 'allowPublicMailNotification';
+	protected $mailNotificationOnPublicShareCheckboxXpath = '//label[@for="allowPublicMailNotification"]';
+	protected $mailNotificationOnPublicShareCheckboxId = 'allowPublicMailNotification';
 	protected $shareFileViaSocialMediaOnPublicShareCheckboxXpath = '//label[@for="allowSocialShare"]';
 	protected $shareFileViaSocialMediaOnPublicShareCheckboxId = 'allowSocialShare';
 	protected $enforceLinkPasswordReadOnlyCheckboxXpath = '//label[@for="enforceLinkPasswordReadOnly"]';
@@ -64,47 +64,6 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	protected $excludeGroupFromSharesFieldXpath = '//div[@id="files_sharing"]//input[contains(@class,"select2-input")]';
 	protected $groupListXpath = '//div[@id="select2-drop"]//li[contains(@class, "select2-result")]';
 	protected $groupListDropDownXpath = "//div[@id='select2-drop']";
-
-	/**
-	 * toggle checkbox
-	 *
-	 * @param Session $session
-	 * @param string $action "enables|disables"
-	 * @param string $checkboxXpath
-	 * @param string $checkboxId
-	 *
-	 * @return void
-	 */
-	public function toggleCheckbox(Session $session, $action, $checkboxXpath, $checkboxId) {
-		$checkbox = $this->find("xpath", $checkboxXpath);
-		$checkCheckbox = $this->findById($checkboxId);
-		$this->assertElementNotNull(
-			$checkbox,
-			__METHOD__ .
-			" xpath $checkboxXpath " .
-			"could not find label for checkbox"
-		);
-		$this->assertElementNotNull(
-			$checkCheckbox,
-			__METHOD__ .
-			" id $checkboxId " .
-			"could not find checkbox"
-		);
-		if ($action === "disables") {
-			if ($checkCheckbox->isChecked()) {
-				$checkbox->click();
-			}
-		} elseif ($action === "enables") {
-			if ((!($checkCheckbox->isChecked()))) {
-				$checkbox->click();
-			}
-		} else {
-			throw new \Exception(
-				__METHOD__ . " invalid action: $action"
-			);
-		}
-		$this->waitForAjaxCallsToStartAndFinish($session);
-	}
 
 	/**
 	 * toggle the Share API
@@ -169,8 +128,8 @@ class AdminSharingSettingsPage extends OwncloudPage {
 		$this->toggleCheckbox(
 			$session,
 			$action,
-			$this->mailNotiticationOnPublicShareCheckboxXpath,
-			$this->mailNotiticationOnPublicShareCheckboxId
+			$this->mailNotificationOnPublicShareCheckboxXpath,
+			$this->mailNotificationOnPublicShareCheckboxId
 		);
 	}
 

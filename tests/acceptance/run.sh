@@ -223,12 +223,12 @@ declare -a PREVIOUS_SETTINGS
 
 # get the sub path from an URL
 # $1 the full URL including the protocol
-# echos the path
+# echos the path without trailing slash
 function get_path_from_url() {
 	PROTOCOL="$(echo $1 | grep :// | sed -e's,^\(.*://\).*,\1,g')"
 	URL="$(echo ${1/$PROTOCOL/})"
 	PATH="$(echo ${URL} | grep / | cut -d/ -f2-)"
-	echo ${PATH}
+	echo ${PATH%/}
 }
 
 # Provide a default admin username and password.
@@ -459,11 +459,13 @@ then
 	# The endpoint to use to do occ commands via the testing app
 	# set it already here, so it can be used for remote_occ
 	# we know the TEST_SERVER_URL already
-	OCC_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/occ"
-	DIR_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/dir"
+	TESTING_APP_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/"
+	OCC_URL="${TESTING_APP_URL}occ"
+	DIR_URL="${TESTING_APP_URL}dir"
 	if [ -n "${TEST_SERVER_FED_URL}" ]
 	then
-		OCC_FED_URL="${TEST_SERVER_FED_URL}/ocs/v2.php/apps/testing/api/v1/occ"
+		TESTING_APP_FED_URL="${TEST_SERVER_FED_URL}/ocs/v2.php/apps/testing/api/v1/"
+		OCC_FED_URL="${TESTING_APP_FED_URL}occ"
 	fi
 	
 	echo "Not using php inbuilt server for running scenario ..."
@@ -502,8 +504,9 @@ else
 	export TEST_SERVER_FED_URL="http://localhost:${PORT_FED}"
 
 	# The endpoint to use to do occ commands via the testing app
-	OCC_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/occ"
-	DIR_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/dir"
+	TESTING_APP_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/"
+	OCC_URL="${TESTING_APP_URL}occ"
+	DIR_URL="${TESTING_APP_URL}dir"
 
 	# Give time for the PHP dev server to become available
 	# because we want to use it to get and change settings with the testing app
@@ -667,36 +670,6 @@ else
 	TESTING_ENABLED_BY_SCRIPT=false;
 fi
 
-# calculate the correct skeleton folder
-# $SRC_SKELETON_DIR is the path to the skeleton folder on the machine where the tests are executed
-# it is used for file comparisons in various tests
-
-# The testing app could be in the apps folder, or maybe another apps folder like
-# apps2 or apps-external, so be flexible about looking for the local skeleton folder.
-API_SKELETON_DIR=`find ${SCRIPT_PATH}/../../ -path "*/testing/data/apiSkeleton"`
-API_SKELETON_DIR="`( cd \"${API_SKELETON_DIR}\" && pwd )`"  # absolutized and normalized
-
-if [ "${RUNNING_API_TESTS}" = true ]
-then
-	export SRC_SKELETON_DIR="${API_SKELETON_DIR}"
-elif [ "${RUNNING_CLI_TESTS}" = true ]
-then
-	# CLI tests use the apiSkeleton so that API-based "then" steps can be used
-	# to check the state of users after CLI commands
-	export SRC_SKELETON_DIR="${API_SKELETON_DIR}"
-else
-	WEBUI_SKELETON_DIR=`find ${SCRIPT_PATH}/../../ -path "*/testing/data/webUISkeleton"`
-	WEBUI_SKELETON_DIR="`( cd \"${WEBUI_SKELETON_DIR}\" && pwd )`"  # absolutized and normalized
-	export SRC_SKELETON_DIR="${WEBUI_SKELETON_DIR}"
-fi
-
-# $SKELETON_DIR is the path to the skeleton folder on the machine where oC runs (system under test)
-# It is used to give users a defined set of files and folders for the tests
-if [ -z "${SKELETON_DIR}" ]
-then
-	export SKELETON_DIR="${SRC_SKELETON_DIR}"
-fi
-
 # table of settings to be remembered and set
 #system|app;app-name;setting-name;value;variable-type
 declare -a SETTINGS
@@ -709,7 +682,7 @@ SETTINGS+=("app;core;backgroundjobs_mode;webcron")
 SETTINGS+=("system;;sharing.federation.allowHttpFallback;true;boolean")
 SETTINGS+=("app;core;enable_external_storage;yes")
 SETTINGS+=("system;;files_external_allow_create_new_local;true")
-SETTINGS+=("system;;skeletondirectory;${SKELETON_DIR}")
+SETTINGS+=("system;;skeletondirectory;;")
 
 # Set various settings
 for URL in ${OCC_URL} ${OCC_FED_URL}
@@ -739,6 +712,29 @@ do
 		fi
 	done
 done
+
+#set the skeleton folder
+if [ -z "${SKELETON_DIR}" ]
+then
+	# calculate the correct skeleton folder
+	if [ "${RUNNING_API_TESTS}" = true ] || [ "${RUNNING_CLI_TESTS}" = true ]
+	then
+		# CLI tests use the apiSkeleton so that API-based "then" steps can be used
+		# to check the state of users after CLI commands
+		export SRC_SKELETON_DIR="apiSkeleton"
+	else
+		export SRC_SKELETON_DIR="webUISkeleton"
+	fi
+	for URL in ${TESTING_APP_URL} ${TESTING_APP_FED_URL}
+	do
+		curl -k -s -u $ADMIN_AUTH ${URL}testingskeletondirectory -d "directory=${SRC_SKELETON_DIR}" > /dev/null
+	done
+else
+	for URL in ${OCC_URL} ${OCC_FED_URL}
+	do
+		remote_occ ${ADMIN_AUTH} ${URL} "config:system:set skeletondirectory --value=${SKELETON_DIR}"
+	done
+fi
 
 #Enable and disable apps as required for default
 if [ -z "${APPS_TO_DISABLE}" ]
