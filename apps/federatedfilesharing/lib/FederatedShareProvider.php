@@ -577,44 +577,45 @@ class FederatedShareProvider implements IShareProvider {
 	public function getAllSharesBy($userId, $shareTypes, $nodeIDs, $reshares) {
 		$shares = [];
 
-		$nodeIdsChunks = \array_chunk($nodeIDs, 100);
-		foreach ($nodeIdsChunks as $nodeIdsChunk) {
-			$qb = $this->dbConnection->getQueryBuilder();
-			$qb->select('*')
-				->from($this->shareTable);
+		$qb = $this->dbConnection->getQueryBuilder();
+		$qb->select('*')
+			->from($this->shareTable);
 
-			// In federated sharing currently we have only one share_type_remote
-			$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)));
+		// In federated sharing currently we have only one share_type_remote
+		$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)));
 
-			$qb->andWhere($qb->expr()->in('file_source', $qb->createParameter('file_source_ids')));
-			$qb->setParameter('file_source_ids', $nodeIdsChunk, IQueryBuilder::PARAM_INT_ARRAY);
+		$qb->andWhere($qb->expr()->in('file_source', $qb->createParameter('file_source_ids')));
 
-			/**
-			 * Reshares for this user are shares where they are the owner.
-			 */
-			if ($reshares === false) {
-				//Special case for old shares created via the web UI
-				$or1 = $qb->expr()->andX(
+		/**
+		 * Reshares for this user are shares where they are the owner.
+		 */
+		if ($reshares === false) {
+			//Special case for old shares created via the web UI
+			$or1 = $qb->expr()->andX(
+				$qb->expr()->eq('uid_owner', $qb->createNamedParameter($userId)),
+				$qb->expr()->isNull('uid_initiator')
+			);
+
+			$qb->andWhere(
+				$qb->expr()->orX(
+					$qb->expr()->eq('uid_initiator', $qb->createNamedParameter($userId)),
+					$or1
+				)
+			);
+		} else {
+			$qb->andWhere(
+				$qb->expr()->orX(
 					$qb->expr()->eq('uid_owner', $qb->createNamedParameter($userId)),
-					$qb->expr()->isNull('uid_initiator')
-				);
+					$qb->expr()->eq('uid_initiator', $qb->createNamedParameter($userId))
+				)
+			);
+		}
 
-				$qb->andWhere(
-					$qb->expr()->orX(
-						$qb->expr()->eq('uid_initiator', $qb->createNamedParameter($userId)),
-						$or1
-					)
-				);
-			} else {
-				$qb->andWhere(
-					$qb->expr()->orX(
-						$qb->expr()->eq('uid_owner', $qb->createNamedParameter($userId)),
-						$qb->expr()->eq('uid_initiator', $qb->createNamedParameter($userId))
-					)
-				);
-			}
+		$qb->orderBy('id');
 
-			$qb->orderBy('id');
+		$nodeIdsChunks = \array_chunk($nodeIDs, 900);
+		foreach ($nodeIdsChunks as $nodeIdsChunk) {
+			$qb->setParameter('file_source_ids', $nodeIdsChunk, IQueryBuilder::PARAM_INT_ARRAY);
 
 			$cursor = $qb->execute();
 			while ($data = $cursor->fetch()) {
