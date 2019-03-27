@@ -29,13 +29,14 @@
   version "2.0.2"
   resolved "https://codeload.github.com/Graffino/Browser-Update/tar.gz/0edda8c7f53ad2cbe68538c00b8c790513096d60"
 
-"@bower_components/clipboard@zenorocha/clipboard.js#1.5.12":
-  version "1.5.12"
-  resolved "https://codeload.github.com/zenorocha/clipboard.js/tar.gz/eb7418b51bb3c963893d83954c5cfa4de3f7f527"
+"@bower_components/clipboard@zenorocha/clipboard.js#v2.0.4":
+  version "2.0.4"
+  uid d17eca050e705ae4932fd1be3e96abe38bd3397c
+  resolved "https://codeload.github.com/zenorocha/clipboard.js/tar.gz/d17eca050e705ae4932fd1be3e96abe38bd3397c"
   dependencies:
-    good-listener "^1.1.6"
-    select "^1.0.6"
-    tiny-emitter "^1.0.0"
+    good-listener "^1.2.2"
+    select "^1.1.2"
+    tiny-emitter "^2.0.0"
 
 "@bower_components/davclient.js@owncloud/davclient.js#0.1.3":
   version "0.1.3"
@@ -1079,7 +1080,7 @@ glob@^7.0.5, glob@^7.1.1, glob@^7.1.2:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-good-listener@^1.1.6:
+good-listener@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/good-listener/-/good-listener-1.2.2.tgz#d53b30cdf9313dffb7dc9a0d477096aa6d145c50"
   dependencies:
@@ -2437,7 +2438,7 @@ sax@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
 
-select@^1.0.6:
+select@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/select/-/select-1.1.2.tgz#0e7350acdec80b1108528786ec1d4418d11b396d"
 
@@ -2762,9 +2763,9 @@ throttleit@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/throttleit/-/throttleit-1.0.0.tgz#9e785836daf46743145a5984b6268d828528ac6c"
 
-tiny-emitter@^1.0.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-1.2.0.tgz#6dc845052cb08ebefc1874723b58f24a648c3b6f"
+tiny-emitter@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
 
 tmp@0.0.33, tmp@0.0.x:
   version "0.0.33"
