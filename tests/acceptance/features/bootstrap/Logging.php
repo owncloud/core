@@ -68,10 +68,17 @@ trait Logging {
 			}
 
 			foreach (\array_keys($expectedLogEntry) as $attribute) {
-				$expectedLogEntry[$attribute]
-					= $this->featureContext->substituteInLineCodes(
-						$expectedLogEntry[$attribute]
-					);
+				if ($comparingMode === 'matching') {
+					$expectedLogEntry[$attribute]
+						= $this->featureContext->substituteInLineCodes(
+							$expectedLogEntry[$attribute], ['preg_quote' => ['/'] ]
+						);
+				} else {
+					$expectedLogEntry[$attribute]
+						= $this->featureContext->substituteInLineCodes(
+							$expectedLogEntry[$attribute]
+						);
+				}
 
 				if ($expectedLogEntry[$attribute] !== "") {
 					PHPUnit_Framework_Assert::assertArrayHasKey(
@@ -238,15 +245,20 @@ trait Logging {
 					if (!\is_string($logEntry[$attribute])) {
 						$logEntry[$attribute] = \json_encode($logEntry[$attribute]);
 					}
-					$expectedLogEntry[$attribute]
-						= $this->featureContext->substituteInLineCodes(
-							$expectedLogEntry[$attribute]
-						);
+
 					if ($regexCompare === true) {
+						$expectedLogEntry[$attribute]
+							= $this->featureContext->substituteInLineCodes(
+								$expectedLogEntry[$attribute], ['preg_quote' => ['/'] ]
+							);
 						$matchAttribute = \preg_match(
 							$expectedLogEntry[$attribute], $logEntry[$attribute]
 						);
 					} else {
+						$expectedLogEntry[$attribute]
+							= $this->featureContext->substituteInLineCodes(
+								$expectedLogEntry[$attribute]
+							);
 						$matchAttribute
 							= ($expectedLogEntry[$attribute] === $logEntry[$attribute]);
 					}
