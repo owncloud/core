@@ -110,6 +110,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fix query parts for federated shares to be less expensive - [#34401](https://github.com/owncloud/core/issues/34401)
 - Fix cancel upload and hide 'uploading' message for files_drop shared folders - [#34097](https://github.com/owncloud/core/issues/34097)
 
+## [10.1.1]
+
+### Fixed
+
+- Set the correct value when upgrading app patch version in DB - [#34878](https://github.com/owncloud/core/pull/34878)
+
 ## [10.1.0] - 2019-02-06
 
 ### Added
@@ -985,7 +991,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[Unreleased]: https://github.com/owncloud/core/compare/v10.1.0...stable10
+[Unreleased]: https://github.com/owncloud/core/compare/v10.1.1...stable10
+[10.1.1]: https://github.com/owncloud/core/compare/v10.1.0...v10.1.1
 [10.1.0]: https://github.com/owncloud/core/compare/v10.0.10...v10.1.0
 [10.0.10]: https://github.com/owncloud/core/compare/v10.0.9...v10.0.10
 [10.0.9]: https://github.com/owncloud/core/compare/v10.0.8...v10.0.9
