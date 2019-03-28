@@ -64,13 +64,12 @@ interface IExpressionBuilder {
 	 *     // (u.type = ?) AND (u.role = ?)
 	 *     $expr->andX('u.type = ?', 'u.role = ?'));
 	 *
-	 * @param mixed $x Optional clause. Defaults = null, but requires
-	 *                 at least one defined when converting to string.
-	 *
+	 * @param array $clauses Optional clause(s). Defaults = null, but requires
+	 *                       at least one defined when converting to string.
 	 * @return \OCP\DB\QueryBuilder\ICompositeExpression
 	 * @since 8.2.0
 	 */
-	public function andX($x = null);
+	public function andX(...$clauses);
 
 	/**
 	 * Creates a disjunction of the given boolean expressions.
@@ -81,13 +80,13 @@ interface IExpressionBuilder {
 	 *     // (u.type = ?) OR (u.role = ?)
 	 *     $qb->where($qb->expr()->orX('u.type = ?', 'u.role = ?'));
 	 *
-	 * @param mixed $x Optional clause. Defaults = null, but requires
-	 *                 at least one defined when converting to string.
+	 * @param array $clauses Optional clause(s). Defaults = null, but requires
+	 *                       at least one defined when converting to string.
 	 *
 	 * @return \OCP\DB\QueryBuilder\ICompositeExpression
 	 * @since 8.2.0
 	 */
-	public function orX($x = null);
+	public function orX(...$clauses);
 
 	/**
 	 * Creates a comparison expression.
