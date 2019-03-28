@@ -23,7 +23,9 @@ namespace OCA\FederatedFileSharing\Command;
 
 use OC\ServerNotAvailableException;
 use OCA\Files_Sharing\AppInfo\Application;
+use OCA\Files_Sharing\External\MountProvider;
 use OCP\Files\Storage\IStorage;
+use OCP\Files\Storage\IStorageFactory;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IDBConnection;
@@ -41,15 +43,29 @@ class PollIncomingShares extends Command {
 	private $userManager;
 
 	/**
+	 * @var MountProvider
+	 */
+	private $externalMountProvider;
+
+	/**
+	 * @var IStorageFactory
+	 */
+	private $loader;
+
+	/**
 	 * PollIncomingShares constructor.
 	 *
 	 * @param IDBConnection $dbConnection
 	 * @param IUserManager $userManager
+	 * @param MountProvider $externalMountProvider
+	 * @param IStorageFactory $loader
 	 */
-	public function __construct(IDBConnection $dbConnection, IUserManager $userManager) {
+	public function __construct(IDBConnection $dbConnection, IUserManager $userManager, MountProvider $externalMountProvider, IStorageFactory $loader) {
 		parent::__construct();
 		$this->dbConnection = $dbConnection;
 		$this->userManager = $userManager;
+		$this->externalMountProvider = $externalMountProvider;
+		$this->loader = $loader;
 	}
 
 	protected function configure() {
@@ -64,17 +80,19 @@ class PollIncomingShares extends Command {
 	 * @return int|null|void
 	 */
 	public function execute(InputInterface $input, OutputInterface $output) {
-		$mountProvider = $this->getExternalMountProvider();
-		$loader = $this->getLoader();
 		$cursor = $this->getCursor();
 		while ($data = $cursor->fetch()) {
 			$user = $this->userManager->get($data['user']);
-			$userMounts = $mountProvider->getMountsForUser($user, $loader);
+			$userMounts = $this->externalMountProvider->getMountsForUser($user, $this->loader);
 			/** @var \OCA\Files_Sharing\External\Mount $mount */
 			foreach ($userMounts as $mount) {
-				/** @var Storage $storage */
-				$storage = $mount->getStorage();
-				$this->refreshStorageRoot($storage);
+				try {
+					/** @var Storage $storage */
+					$storage = $mount->getStorage();
+					$this->refreshStorageRoot($storage);
+				} catch (\Exception $e) {
+					$output->writeln($e->getMessage());
+				}
 			}
 		}
 		$cursor->closeCursor();
@@ -82,24 +100,17 @@ class PollIncomingShares extends Command {
 
 	/**
 	 * @param IStorage $storage
+	 *
+	 * @throws LockedException
+	 * @throws ServerNotAvailableException
+	 * @throws StorageInvalidException
+	 * @throws StorageNotAvailableException
 	 */
 	protected function refreshStorageRoot(IStorage $storage) {
-		try {
-			$localMtime = $storage->filemtime('');
-			/** @var \OCA\Files_Sharing\External\Storage $storage */
-			if ($storage->hasUpdated('', $localMtime)) {
-				try {
-					$storage->getScanner('')->scan('', false, 0);
-				} catch (LockedException $e) {
-					// it can be locked, let's skip it then
-				} catch (ServerNotAvailableException $e) {
-					// remote server hasn't responded
-				}
-			}
-		} catch (StorageNotAvailableException $e) {
-			// pass
-		} catch (StorageInvalidException $e) {
-			// pass
+		$localMtime = $storage->filemtime('');
+		/** @var \OCA\Files_Sharing\External\Storage $storage */
+		if ($storage->hasUpdated('', $localMtime)) {
+			$storage->getScanner('')->scan('', false, 0);
 		}
 	}
 
@@ -113,20 +124,5 @@ class PollIncomingShares extends Command {
 			->where($qb->expr()->eq('accepted', $qb->expr()->literal('1')));
 
 		return $qb->execute();
-	}
-
-	/**
-	 * @return \OCP\Files\Storage\IStorageFactory
-	 */
-	protected function getLoader() {
-		return \OC\Files\Filesystem::getLoader();
-	}
-
-	/**
-	 * @return \OCA\Files_Sharing\External\MountProvider
-	 */
-	protected function getExternalMountProvider() {
-		$app = new Application();
-		return $app->getContainer()->query('ExternalMountProvider');
 	}
 }

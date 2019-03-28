@@ -22,6 +22,7 @@
 namespace OCA\FederatedFileSharing\AppInfo;
 
 use OCA\FederatedFileSharing\AddressHandler;
+use OCA\FederatedFileSharing\Command\PollIncomingShares;
 use OCA\FederatedFileSharing\Controller\OcmController;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\FederatedShareProvider;
@@ -155,6 +156,19 @@ class Application extends App {
 			'Permissions',
 			function ($c) {
 				return new Permissions();
+			}
+		);
+
+		$container->registerService(
+			PollIncomingShares::class,
+			function ($c) use ($server) {
+				$sharingApp = new \OCA\Files_Sharing\AppInfo\Application();
+				return new PollIncomingShares(
+					$server->getDatabaseConnection(),
+					$server->getUserManager(),
+					$sharingApp->getContainer()->query('ExternalMountProvider'),
+					\OC\Files\Filesystem::getLoader()
+				);
 			}
 		);
 	}
