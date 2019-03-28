@@ -24,8 +24,10 @@ namespace OCA\FederatedFileSharing\Tests\Command;
 use Doctrine\DBAL\Driver\Statement;
 use OCA\FederatedFileSharing\Tests\TestCase;
 use OCA\FederatedFileSharing\Command\PollIncomingShares;
+use OCA\Files_Sharing\External\MountProvider;
 use OCP\DB\QueryBuilder\IExpressionBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\Files\Storage\IStorageFactory;
 use OCP\IDBConnection;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -47,11 +49,19 @@ class PollIncomingSharesTest extends TestCase {
 	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $userManager;
 
+	/** @var MountProvider | \PHPUnit_Framework_MockObject_MockObject */
+	private $externalMountProvider;
+
+	/** @var IStorageFactory | \PHPUnit_Framework_MockObject_MockObject */
+	private $loader;
+
 	protected function setUp() {
 		parent::setUp();
 		$this->dbConnection = $this->createMock(IDBConnection::class);
 		$this->userManager = $this->createMock(IUserManager::class);
-		$command = new PollIncomingShares($this->dbConnection, $this->userManager);
+		$this->externalMountProvider = $this->createMock(MountProvider::class);
+		$this->loader = $this->createMock(IStorageFactory::class);
+		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->externalMountProvider, $this->loader);
 		$this->commandTester = new CommandTester($command);
 	}
 
@@ -70,6 +80,9 @@ class PollIncomingSharesTest extends TestCase {
 		$userMock = $this->createMock(IUser::class);
 		$this->userManager->expects($this->once())->method('get')
 			->with($uid)->willReturn($userMock);
+
+		$this->externalMountProvider->expects($this->once())->method('getMountsForUser')
+			->willReturn([]);
 
 		$this->dbConnection->method('getQueryBuilder')->willReturn($qbMock);
 		$this->commandTester->execute([]);
