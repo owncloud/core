@@ -26,6 +26,6 @@ if (\OCP\Util::needUpgrade()) {
 // load all enabled apps
 \OC_App::loadApps();
 
-PHPUnit\Framework\Error\Deprecated::$enabled = false;
+PHPUnit_Framework_Error_Deprecated::$enabled = false;
 
 OC_Hook::clear();
