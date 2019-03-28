@@ -155,7 +155,13 @@ abstract class Backend extends \Test\TestCase {
 	public function testAddDouble() {
 		$group = $this->getGroupName();
 
-		$this->backend->createGroup($group);
-		$this->backend->createGroup($group);
+		$this->assertTrue(
+			$this->backend->createGroup($group),
+			"there was a problem creating $group"
+		);
+		$this->assertFalse(
+			$this->backend->createGroup($group),
+			"there was a problem creating $group a second time"
+		);
 	}
 }

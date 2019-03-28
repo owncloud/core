@@ -792,6 +792,6 @@ class RepairMismatchFileCachePathTest extends TestCase {
 				->method('info')
 				->with($this->repair->getName() . ' is not executed');
 		}
-		$this->repair->run($outputMock);
+		$this->assertNull($this->repair->run($outputMock));
 	}
 }

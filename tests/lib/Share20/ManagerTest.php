@@ -1196,7 +1196,9 @@ class ManagerTest extends \Test\TestCase {
 			->with($path)
 			->willReturn([]);
 
-		$this->invokePrivate($this->manager, 'userCreateChecks', [$share]);
+		$this->assertNull(
+			$this->invokePrivate($this->manager, 'userCreateChecks', [$share])
+		);
 	}
 
 	/**
@@ -1331,7 +1333,9 @@ class ManagerTest extends \Test\TestCase {
 			->with($path)
 			->willReturn([$share2]);
 
-		$this->invokePrivate($this->manager, 'userCreateChecks', [$share]);
+		$this->assertNull(
+			$this->invokePrivate($this->manager, 'userCreateChecks', [$share])
+		);
 	}
 
 	/**
@@ -1425,7 +1429,9 @@ class ManagerTest extends \Test\TestCase {
 				['core', 'shareapi_allow_group_sharing', 'yes', 'yes'],
 			]));
 
-		$this->invokePrivate($this->manager, 'groupCreateChecks', [$share]);
+		$this->assertNull(
+			$this->invokePrivate($this->manager, 'groupCreateChecks', [$share])
+		);
 	}
 
 	/**
@@ -1480,7 +1486,9 @@ class ManagerTest extends \Test\TestCase {
 				['core', 'shareapi_allow_group_sharing', 'yes', 'yes'],
 			]));
 
-		$this->invokePrivate($this->manager, 'groupCreateChecks', [$share]);
+		$this->assertNull(
+			$this->invokePrivate($this->manager, 'groupCreateChecks', [$share])
+		);
 	}
 
 	/**
@@ -1548,7 +1556,9 @@ class ManagerTest extends \Test\TestCase {
 				['core', 'shareapi_allow_public_upload', 'yes', 'yes']
 			]));
 
-		$this->invokePrivate($this->manager, 'linkCreateChecks', [$share]);
+		$this->assertNull(
+			$this->invokePrivate($this->manager, 'linkCreateChecks', [$share])
+		);
 	}
 
 	public function testLinkCreateChecksReadOnly() {
@@ -1563,7 +1573,9 @@ class ManagerTest extends \Test\TestCase {
 				['core', 'shareapi_allow_public_upload', 'yes', 'no']
 			]));
 
-		$this->invokePrivate($this->manager, 'linkCreateChecks', [$share]);
+		$this->assertNull(
+			$this->invokePrivate($this->manager, 'linkCreateChecks', [$share])
+		);
 	}
 
 	/**
@@ -1595,13 +1607,17 @@ class ManagerTest extends \Test\TestCase {
 
 		$this->mountManager->method('findIn')->with('path')->willReturn([$mount]);
 
-		$this->invokePrivate($this->manager, 'pathCreateChecks', [$path]);
+		$this->assertNull(
+			$this->invokePrivate($this->manager, 'pathCreateChecks', [$path])
+		);
 	}
 
 	public function testPathCreateChecksContainsNoFolder() {
 		$path = $this->createMock('\OCP\Files\File');
 
-		$this->invokePrivate($this->manager, 'pathCreateChecks', [$path]);
+		$this->assertNull(
+			$this->invokePrivate($this->manager, 'pathCreateChecks', [$path])
+		);
 	}
 
 	public function dataIsSharingDisabledForUser() {
@@ -3432,7 +3448,9 @@ class ManagerTest extends \Test\TestCase {
 
 		$this->defaultProvider->method('move')->with($share, 'recipient')->will($this->returnArgument(0));
 
-		$this->manager->updateShareForRecipient($share, 'recipient');
+		$this->assertNull(
+			$this->manager->updateShareForRecipient($share, 'recipient')
+		);
 	}
 
 	public function testGetSharedWith() {
