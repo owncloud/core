@@ -87,7 +87,9 @@ trait Logging {
 					);
 					$message = "log entry:\n{$logLines[$lineNo]}\n";
 					if (!\is_string($logEntry[$attribute])) {
-						$logEntry[$attribute] = \json_encode($logEntry[$attribute]);
+						$logEntry[$attribute] = \json_encode(
+							$logEntry[$attribute], JSON_UNESCAPED_SLASHES
+						);
 					}
 					if ($comparingMode === 'with') {
 						PHPUnit_Framework_Assert::assertEquals(
@@ -243,7 +245,9 @@ trait Logging {
 						break;
 					}
 					if (!\is_string($logEntry[$attribute])) {
-						$logEntry[$attribute] = \json_encode($logEntry[$attribute]);
+						$logEntry[$attribute] = \json_encode(
+							$logEntry[$attribute], JSON_UNESCAPED_SLASHES
+						);
 					}
 
 					if ($regexCompare === true) {
