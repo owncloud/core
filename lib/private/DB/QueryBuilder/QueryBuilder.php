@@ -306,12 +306,16 @@ class QueryBuilder implements IQueryBuilder {
 	 *         ->leftJoin('u', 'phonenumbers', 'p', 'u.id = p.user_id');
 	 * </code>
 	 *
-	 * @param mixed $select The selection expressions.
+	 * @param mixed $select The first selection expression or an array of expressions.
+	 * @param array ...$otherExpressions Any other expressions as a variable-length argument list
 	 *
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
-	public function select($select = null) {
-		$selects = \is_array($select) ? $select : \func_get_args();
+	public function select($select = null, ...$otherExpressions) {
+		if (!\is_array($select)) {
+			$select = [$select];
+		}
+		$selects = \array_merge($select, $otherExpressions);
 
 		$this->queryBuilder->select(
 			$this->helper->quoteColumnNames($selects)
