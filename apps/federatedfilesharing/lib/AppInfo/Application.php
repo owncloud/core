@@ -162,12 +162,18 @@ class Application extends App {
 		$container->registerService(
 			PollIncomingShares::class,
 			function ($c) use ($server) {
-				$sharingApp = new \OCA\Files_Sharing\AppInfo\Application();
+				if ($server->getAppManager()->isEnabledForUser('files_sharing')) {
+					$sharingApp = new \OCA\Files_Sharing\AppInfo\Application();
+					$externalMountProvider = $sharingApp->getContainer()->query('ExternalMountProvider');
+				} else {
+					$externalMountProvider = null;
+				}
+
 				return new PollIncomingShares(
 					$server->getDatabaseConnection(),
 					$server->getUserManager(),
-					$sharingApp->getContainer()->query('ExternalMountProvider'),
-					\OC\Files\Filesystem::getLoader()
+					\OC\Files\Filesystem::getLoader(),
+					$externalMountProvider
 				);
 			}
 		);
