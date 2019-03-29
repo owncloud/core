@@ -21,10 +21,8 @@
 
 namespace Tests\Core\Command\Config;
 
-use OCP\App\IAppManager;
 use OC\App\InfoParser;
 use OC\Core\Command\App\CheckCode;
-use OCP\App\AppNotFoundException;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 

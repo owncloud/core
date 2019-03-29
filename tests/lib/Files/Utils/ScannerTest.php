@@ -15,7 +15,6 @@ use OCP\Files\Storage\IStorageFactory;
 use OCP\IUser;
 use Test\Traits\UserTrait;
 use OCP\Files\Cache\ICache;
-use OCP\Files\Storage\IStorage;
 use OC\ForbiddenException;
 use OC\Files\Storage\Storage;
 

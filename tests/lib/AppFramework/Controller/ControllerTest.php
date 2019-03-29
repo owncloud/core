@@ -28,7 +28,6 @@ use OC\AppFramework\Http\Request;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;

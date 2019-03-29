@@ -27,7 +27,6 @@ use OCP\AppFramework\Http;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
-use OCP\Files\NotFoundException;
 use OCP\IAvatar;
 use OCP\IAvatarManager;
 use OCP\IL10N;

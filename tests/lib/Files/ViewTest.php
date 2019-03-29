@@ -15,7 +15,6 @@ use OC\Files\Storage\Common;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OCP\Files\FileInfo;
-use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 use OCP\Util;
 use Symfony\Component\EventDispatcher\GenericEvent;

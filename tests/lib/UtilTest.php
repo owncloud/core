@@ -11,9 +11,6 @@ namespace Test;
 use OC_Util;
 use OCP\Files\Folder;
 use OCP\App\IAppManager;
-use OCP\IUser;
-use OCP\IGroupManager;
-use OCP\IConfig;
 
 /**
  * @group DB

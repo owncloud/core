@@ -21,10 +21,8 @@
 
 namespace Test\Share;
 
-use OCP\IConfig;
 use Test\Traits\UserTrait;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class Test_Share

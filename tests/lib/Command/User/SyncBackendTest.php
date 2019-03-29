@@ -20,22 +20,15 @@
  */
 namespace Test\Command\User;
 
-use OC\Core\Command\Integrity\SignApp;
 use OC\Core\Command\User\SyncBackend;
-use OC\IntegrityCheck\Checker;
-use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\SyncService;
 use OCP\IConfig;
 use OCP\ILogger;
-use OCP\IURLGenerator;
 use OCP\IUser;
-use OCP\IUserBackend;
 use OCP\IUserManager;
-use OCP\User;
 use OCP\UserInterface;
-use React\Promise\Exception\LengthException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
