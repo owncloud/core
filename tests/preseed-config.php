@@ -17,6 +17,3 @@ if (\is_dir(OC::$SERVERROOT.'/apps2')) {
 		'writable' => false,
 	];
 }
-if (\getenv("TC") === "selenium") {
-	$CONFIG['skeletondirectory'] = OC::$SERVERROOT . '/tests/ui/skeleton';
-}
