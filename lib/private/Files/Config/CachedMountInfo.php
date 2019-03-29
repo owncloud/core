@@ -92,10 +92,7 @@ class CachedMountInfo implements ICachedMountInfo {
 		Filesystem::initMountPoints($this->getUser()->getUID());
 		$userNode = \OC::$server->getUserFolder($this->getUser()->getUID());
 		$nodes = $userNode->getParent()->getById($this->getRootId(), true);
-		if (empty($nodes)) {
-			return null;
-		}
-		return $nodes[0];
+		return $nodes[0] ?? null;
 	}
 
 	/**

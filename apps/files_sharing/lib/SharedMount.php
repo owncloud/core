@@ -194,10 +194,10 @@ class SharedMount extends MountPoint implements MoveableMount {
 		}
 
 		$targetNodes = \OC::$server->getRootFolder()->getById($fileId, true);
-		if (empty($targetNodes)) {
+		$targetNode = $targetNodes[0] ?? null;
+		if ($targetNode === null) {
 			return false;
 		}
-		$targetNode = $targetNodes[0];
 
 		$shareManager = \OC::$server->getShareManager();
 		// FIXME: make it stop earlier in '/$userId/files'
