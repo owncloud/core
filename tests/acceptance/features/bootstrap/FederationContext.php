@@ -90,12 +90,11 @@ class FederationContext implements Context {
 		$this->userFromServerSharesWithUserFromServerUsingTheSharingAPI(
 			$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
 		);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->ocsContext->theOCSStatusCodeShouldBe(
-			'100', 'Could not share file/folder! message: "' .
-				$this->ocsContext->getOCSResponseStatusMessage(
-					$this->featureContext->getResponse()
-				) . '"'
+		$this->ocsContext->assertOCSResponseIndicatesSuccess(
+			'Could not share file/folder! message: "' .
+			$this->ocsContext->getOCSResponseStatusMessage(
+				$this->featureContext->getResponse()
+			) . '"'
 		);
 	}
 
@@ -133,8 +132,7 @@ class FederationContext implements Context {
 		$this->userFromServerAcceptsLastPendingShareUsingTheSharingAPI(
 			$user, $server
 		);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->ocsContext->theOCSStatusCodeShouldBe('100');
+		$this->ocsContext->assertOCSResponseIndicatesSuccess();
 	}
 
 	/**

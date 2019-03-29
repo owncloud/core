@@ -404,6 +404,22 @@ class OCSContext implements Context {
 	}
 
 	/**
+	 * check if the HTTP status code and the OCS status code indicate that the request was successful
+	 * this function is aware of the currently used OCS version
+	 *
+	 * @param string $message
+	 *
+	 * @return void
+	 */
+	public function assertOCSResponseIndicatesSuccess($message = "") {
+		$this->featureContext->theHTTPStatusCodeShouldBe('200', $message);
+		if ($this->featureContext->getOcsApiVersion() === 1) {
+			$this->theOCSStatusCodeShouldBe('100', $message);
+		} else {
+			$this->theOCSStatusCodeShouldBe('200', $message);
+		}
+	}
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
