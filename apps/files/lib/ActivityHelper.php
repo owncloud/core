@@ -60,8 +60,8 @@ class ActivityHelper {
 		$folders = $items = [];
 		foreach ($favorites as $favorite) {
 			$nodes = $rootFolder->getById($favorite, true);
-			if (!empty($nodes)) {
-				$node = $nodes[0];
+			$node = $nodes[0] ?? null;
+			if ($node) {
 				$path = \substr($node->getPath(), \strlen($user . '/files/'));
 
 				$items[] = $path;

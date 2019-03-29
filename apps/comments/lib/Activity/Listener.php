@@ -87,8 +87,8 @@ class Listener {
 			$owner = $mount->getUser()->getUID();
 			$ownerFolder = $this->rootFolder->getUserFolder($owner);
 			$nodes = $ownerFolder->getById($event->getComment()->getObjectId(), true);
-			if (!empty($nodes)) {
-				$node = $nodes[0];
+			$node = $nodes[0] ?? null;
+			if ($node) {
 				$path = $node->getPath();
 				if (\strpos($path, '/' . $owner . '/files/') === 0) {
 					$path = \substr($path, \strlen('/' . $owner . '/files'));

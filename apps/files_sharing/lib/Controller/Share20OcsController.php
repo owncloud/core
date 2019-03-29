@@ -169,7 +169,8 @@ class Share20OcsController extends OCSController {
 		}
 
 		$nodes = $userFolder->getById($share->getNodeId(), true);
-		if (empty($nodes)) {
+		$node = $nodes[0] ?? null;
+		if ($node === null) {
 			throw new NotFoundException();
 		}
 		$node = $nodes[0];
@@ -965,8 +966,8 @@ class Share20OcsController extends OCSController {
 	 */
 	public function notifyRecipientsDisabled($itemSource, $shareType, $recipient) {
 		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
-		$nodes = $userFolder->getById($itemSource);
-		$node = $nodes[0];
+		$nodes = $userFolder->getById($itemSource, true);
+		$node = $nodes[0] ?? null;
 
 		$items = $this->shareManager->getSharedWith($recipient, $shareType, $node);
 		if (\count($items) > 0) {
