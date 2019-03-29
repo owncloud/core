@@ -10,7 +10,6 @@ namespace Test\Files\Cache;
 
 use OC\Files\Cache\CacheEntry;
 use OC\Files\Storage\Storage;
-use OC\Files\Utils\FileUtils;
 use OCA\Files_Sharing\ISharedStorage;
 use OCP\Files\IHomeStorage;
 use OCP\Files\Storage\ILockingStorage;

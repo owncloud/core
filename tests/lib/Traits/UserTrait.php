@@ -11,7 +11,6 @@ namespace Test\Traits;
 use OC\User\AccountTermMapper;
 use OC\User\SyncService;
 use OC\User\User;
-use OCP\IConfig;
 use OCP\ILogger;
 use Test\Util\User\Dummy;
 use Test\Util\User\MemoryAccountMapper;

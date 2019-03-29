@@ -25,7 +25,6 @@ use OC\Files\Cache\CacheEntry;
 use OC\Files\Cache\Updater;
 use OC\Files\ObjectStore\NoopScanner;
 use OC\Files\ObjectStore\ObjectStoreStorage;
-use OC\Files\Storage\Storage;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;

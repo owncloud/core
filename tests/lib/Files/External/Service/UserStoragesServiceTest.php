@@ -33,7 +33,6 @@ use OC\Files\Mount\MountPoint;
 use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\Service\IStoragesService;
 use OCP\ILogger;
-use OCP\IUser;
 use Test\Traits\UserTrait;
 
 /**

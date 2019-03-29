@@ -22,7 +22,6 @@
 namespace OC\User\Sync;
 
 use OC\User\AccountMapper;
-use OCP\UserInterface;
 use Test\TestCase;
 
 /**

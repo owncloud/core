@@ -26,7 +26,6 @@ use OCP\Files\Node;
 use OC\Files\Meta\MetaVersionCollection;
 use OCP\Files\IRootFolder;
 use OCP\Files\Storage\IStorage;
-use OCA\Files_Sharing\External\Storage;
 use OCP\Files\Storage\IVersionedStorage;
 use OC\Files\Meta\MetaFileVersionNode;
 

@@ -10,7 +10,6 @@
 namespace Test\User;
 use OC\User\Account;
 use OC\User\AccountMapper;
-use OC\User\AccountTermMapper;
 use OC\User\Backend;
 use OC\User\Database;
 use OC\User\Manager;
@@ -20,7 +19,6 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
-use Punic\Data;
 use Test\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;

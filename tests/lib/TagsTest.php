@@ -23,7 +23,6 @@
 namespace Test;
 use OC\Tagging\TagMapper;
 use OC\TagManager;
-use OCP\IUserSession;
 use Test\Traits\UserTrait;
 
 /**

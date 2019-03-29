@@ -27,7 +27,6 @@ use OC\Files\External\Service\UserStoragesService;
 use OC\Files\Storage\StorageFactory;
 use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\Backend\Backend;
-use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\Service\IUserGlobalStoragesService;
 use OCP\Files\External\Service\IUserStoragesService;
 use OCP\IConfig;
