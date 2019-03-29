@@ -565,7 +565,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @return string
+	 * @return int
 	 */
 	public function getOcsApiVersion() {
 		return $this->ocsApiVersion;
