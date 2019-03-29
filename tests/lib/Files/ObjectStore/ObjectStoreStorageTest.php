@@ -21,9 +21,6 @@
 
 namespace Test\Files\ObjectStore;
 
-use OC\Files\ObjectStore\ObjectStoreStorage;
-use OC\Files\ObjectStore\Swift;
-
 /**
  * Class ObjectStoreStorageTest
  *

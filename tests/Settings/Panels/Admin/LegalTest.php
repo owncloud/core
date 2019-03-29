@@ -23,7 +23,6 @@ namespace Tests\Settings\Panels\Admin;
 
 use OC\Settings\Panels\Admin\Legal;
 use OCP\IConfig;
-use OCP\IURLGenerator;
 
 /**
  * @package Tests\Settings\Panels\Admin

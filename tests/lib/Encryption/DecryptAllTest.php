@@ -49,7 +49,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
-use OCP\Files\Storage\IStorage;
 use Test\Traits\UserTrait;
 
 /**
