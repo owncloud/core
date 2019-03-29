@@ -110,8 +110,6 @@ class FederationContext implements Context {
 	public function userFromServerAcceptsLastPendingShareUsingTheSharingAPI($user, $server) {
 		$previous = $this->featureContext->usingServer($server);
 		$this->userGetsTheListOfPendingFederatedCloudShares($user);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->ocsContext->theOCSStatusCodeShouldBe('100');
 		$share_id = SharingHelper::getLastShareIdFromResponse(
 			$this->featureContext->getResponseXml()
 		);
@@ -148,8 +146,6 @@ class FederationContext implements Context {
 	 */
 	public function userRetrievesInformationOfLastFederatedShare($user) {
 		$this->userGetsTheListOfFederatedCloudShares($user);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->ocsContext->theOCSStatusCodeShouldBe('100');
 		$share_id = SharingHelper::getLastShareIdFromResponse(
 			$this->featureContext->getResponseXml()
 		);
@@ -170,8 +166,6 @@ class FederationContext implements Context {
 	 */
 	public function userRetrievesInformationOfLastPendingFederatedShare($user) {
 		$this->userGetsTheListOfPendingFederatedCloudShares($user);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->ocsContext->theOCSStatusCodeShouldBe('100');
 		$share_id = SharingHelper::getLastShareIdFromResponse(
 			$this->featureContext->getResponseXml()
 		);
@@ -232,8 +226,6 @@ class FederationContext implements Context {
 		} else {
 			$this->userGetsTheListOfFederatedCloudShares($user);
 		}
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->ocsContext->theOCSStatusCodeShouldBe('100');
 		$share_id = SharingHelper::getLastShareIdFromResponse(
 			$this->featureContext->getResponseXml()
 		);
