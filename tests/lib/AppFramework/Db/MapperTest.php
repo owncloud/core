@@ -102,7 +102,7 @@ class MapperTest extends MapperTestUtility {
 		$params = ['jo'];
 		$rows = [];
 		$this->setMapperResult($sql, $params, $rows);
-		$this->setExpectedException(
+		$this->expectException(
 			'\OCP\AppFramework\Db\DoesNotExistException');
 		$this->mapper->find($sql, $params);
 	}
@@ -112,7 +112,7 @@ class MapperTest extends MapperTestUtility {
 		$params = ['jo'];
 		$rows = [];
 		$this->setMapperResult($sql, $params, $rows, null, null, true);
-		$this->setExpectedException(
+		$this->expectException(
 			'\OCP\AppFramework\Db\DoesNotExistException');
 		$this->mapper->findOneEntity($sql, $params);
 	}
@@ -124,7 +124,7 @@ class MapperTest extends MapperTestUtility {
 			['jo'], ['ho']
 		];
 		$this->setMapperResult($sql, $params, $rows, null, null, true);
-		$this->setExpectedException(
+		$this->expectException(
 			'\OCP\AppFramework\Db\MultipleObjectsReturnedException');
 		$this->mapper->find($sql, $params);
 	}
@@ -136,7 +136,7 @@ class MapperTest extends MapperTestUtility {
 			['jo'], ['ho']
 		];
 		$this->setMapperResult($sql, $params, $rows, null, null, true);
-		$this->setExpectedException(
+		$this->expectException(
 			'\OCP\AppFramework\Db\MultipleObjectsReturnedException');
 		$this->mapper->findOneEntity($sql, $params);
 	}
@@ -224,7 +224,7 @@ class MapperTest extends MapperTestUtility {
 		$entity->setPreName($params[0]);
 		$entity->setEmail($params[1]);
 
-		$this->setExpectedException('InvalidArgumentException');
+		$this->expectException('InvalidArgumentException');
 
 		$this->mapper->update($entity);
 	}
