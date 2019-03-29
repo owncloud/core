@@ -21,7 +21,6 @@
 
 namespace Test;
 
-use OC\Avatar;
 use OC\AvatarManager;
 use OC\Files\Storage\Folder;
 use OC\User\User;

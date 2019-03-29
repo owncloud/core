@@ -20,7 +20,6 @@ use OCP\AppFramework\Http\RedirectResponse;
 use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\IGroupManager;
-use OCP\IUserSession;
 use OCP\IConfig;
 use OCP\Security\ISecureRandom;
 use OCP\IL10N;

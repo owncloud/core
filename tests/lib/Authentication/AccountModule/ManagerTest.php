@@ -22,12 +22,10 @@
 namespace Test\Authentication\AccountModule;
 
 use OC\Authentication\AccountModule\Manager;
-use OCP\App\IAppManager;
 use OCP\App\IServiceLoader;
 use OCP\Authentication\IAccountModule;
 use OCP\IConfig;
 use OCP\ILogger;
-use OCP\IServerContainer;
 use OCP\IUser;
 use Test\TestCase;
 
