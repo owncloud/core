@@ -61,7 +61,7 @@ class PollIncomingSharesTest extends TestCase {
 		$this->userManager = $this->createMock(IUserManager::class);
 		$this->externalMountProvider = $this->createMock(MountProvider::class);
 		$this->loader = $this->createMock(IStorageFactory::class);
-		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->externalMountProvider, $this->loader);
+		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->loader, $this->externalMountProvider);
 		$this->commandTester = new CommandTester($command);
 	}
 
@@ -88,5 +88,13 @@ class PollIncomingSharesTest extends TestCase {
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$this->assertEmpty($output);
+	}
+
+	public function testWithFilesSharingDisabled() {
+		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->loader, null);
+		$this->commandTester = new CommandTester($command);
+		$this->commandTester->execute([]);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains("Polling is not possible when files_sharing app is disabled. Please enable it with 'occ app:enable files_sharing'", $output);
 	}
 }

@@ -22,7 +22,6 @@
 namespace OCA\FederatedFileSharing\Command;
 
 use OC\ServerNotAvailableException;
-use OCA\Files_Sharing\AppInfo\Application;
 use OCA\Files_Sharing\External\MountProvider;
 use OCP\Files\Storage\IStorage;
 use OCP\Files\Storage\IStorageFactory;
@@ -42,15 +41,11 @@ class PollIncomingShares extends Command {
 	/** @var IUserManager */
 	private $userManager;
 
-	/**
-	 * @var MountProvider
-	 */
-	private $externalMountProvider;
-
-	/**
-	 * @var IStorageFactory
-	 */
+	/** @var IStorageFactory */
 	private $loader;
+
+	/** @var MountProvider | null */
+	private $externalMountProvider;
 
 	/**
 	 * PollIncomingShares constructor.
@@ -60,12 +55,12 @@ class PollIncomingShares extends Command {
 	 * @param MountProvider $externalMountProvider
 	 * @param IStorageFactory $loader
 	 */
-	public function __construct(IDBConnection $dbConnection, IUserManager $userManager, MountProvider $externalMountProvider, IStorageFactory $loader) {
+	public function __construct(IDBConnection $dbConnection, IUserManager $userManager, IStorageFactory $loader, MountProvider $externalMountProvider = null) {
 		parent::__construct();
 		$this->dbConnection = $dbConnection;
 		$this->userManager = $userManager;
-		$this->externalMountProvider = $externalMountProvider;
 		$this->loader = $loader;
+		$this->externalMountProvider = $externalMountProvider;
 	}
 
 	protected function configure() {
@@ -80,6 +75,10 @@ class PollIncomingShares extends Command {
 	 * @return int|null|void
 	 */
 	public function execute(InputInterface $input, OutputInterface $output) {
+		if ($this->externalMountProvider === null) {
+			$output->writeln("Polling is not possible when files_sharing app is disabled. Please enable it with 'occ app:enable files_sharing'");
+			return 1;
+		}
 		$cursor = $this->getCursor();
 		while ($data = $cursor->fetch()) {
 			$user = $this->userManager->get($data['user']);
