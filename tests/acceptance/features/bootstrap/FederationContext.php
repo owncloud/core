@@ -90,12 +90,11 @@ class FederationContext implements Context {
 		$this->userFromServerSharesWithUserFromServerUsingTheSharingAPI(
 			$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
 		);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->ocsContext->theOCSStatusCodeShouldBe(
-			'100', 'Could not share file/folder! message: "' .
-				$this->ocsContext->getOCSResponseStatusMessage(
-					$this->featureContext->getResponse()
-				) . '"'
+		$this->ocsContext->assertOCSResponseIndicatesSuccess(
+			'Could not share file/folder! message: "' .
+			$this->ocsContext->getOCSResponseStatusMessage(
+				$this->featureContext->getResponse()
+			) . '"'
 		);
 	}
 
@@ -110,8 +109,6 @@ class FederationContext implements Context {
 	public function userFromServerAcceptsLastPendingShareUsingTheSharingAPI($user, $server) {
 		$previous = $this->featureContext->usingServer($server);
 		$this->userGetsTheListOfPendingFederatedCloudShares($user);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->ocsContext->theOCSStatusCodeShouldBe('100');
 		$share_id = SharingHelper::getLastShareIdFromResponse(
 			$this->featureContext->getResponseXml()
 		);
@@ -135,8 +132,7 @@ class FederationContext implements Context {
 		$this->userFromServerAcceptsLastPendingShareUsingTheSharingAPI(
 			$user, $server
 		);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->ocsContext->theOCSStatusCodeShouldBe('100');
+		$this->ocsContext->assertOCSResponseIndicatesSuccess();
 	}
 
 	/**
@@ -148,8 +144,6 @@ class FederationContext implements Context {
 	 */
 	public function userRetrievesInformationOfLastFederatedShare($user) {
 		$this->userGetsTheListOfFederatedCloudShares($user);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->ocsContext->theOCSStatusCodeShouldBe('100');
 		$share_id = SharingHelper::getLastShareIdFromResponse(
 			$this->featureContext->getResponseXml()
 		);
@@ -170,8 +164,6 @@ class FederationContext implements Context {
 	 */
 	public function userRetrievesInformationOfLastPendingFederatedShare($user) {
 		$this->userGetsTheListOfPendingFederatedCloudShares($user);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->ocsContext->theOCSStatusCodeShouldBe('100');
 		$share_id = SharingHelper::getLastShareIdFromResponse(
 			$this->featureContext->getResponseXml()
 		);
@@ -232,8 +224,6 @@ class FederationContext implements Context {
 		} else {
 			$this->userGetsTheListOfFederatedCloudShares($user);
 		}
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$this->ocsContext->theOCSStatusCodeShouldBe('100');
 		$share_id = SharingHelper::getLastShareIdFromResponse(
 			$this->featureContext->getResponseXml()
 		);
