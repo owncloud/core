@@ -115,15 +115,6 @@ pipeline:
       matrix:
         TEST_SUITE: owncloud-coding-standard
 
-  php-phan-70:
-    image: owncloudci/php:7.0
-    pull: true
-    commands:
-      - make test-php-phan
-    when:
-      matrix:
-        TEST_SUITE: phan-70
-
   php-phan-71:
     image: owncloudci/php:7.1
     pull: true
@@ -488,7 +479,7 @@ pipeline:
 services:
 
   mariadb:
-    image: mariadb:10.2
+    image: ${MARIADB_IMAGE=mariadb:10.2}
     environment:
       - MYSQL_USER=owncloud
       - MYSQL_PASSWORD=owncloud
@@ -499,7 +490,7 @@ services:
         DB_TYPE: mariadb
 
   mysql:
-    image: mysql:5.5
+    image: ${MYSQL_IMAGE=mysql:5.5}
     environment:
       - MYSQL_USER=owncloud
       - MYSQL_PASSWORD=owncloud
@@ -509,8 +500,10 @@ services:
       matrix:
         DB_TYPE: mysql
 
-  mysqlmb4:
-    image: mysql:5.7
+  mysql8:
+    image: ${MYSQL_IMAGE=mysql:8.0}
+    # see http://php.net/manual/en/mysqli.requirements.php
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_USER=owncloud
       - MYSQL_PASSWORD=owncloud
@@ -518,10 +511,10 @@ services:
       - MYSQL_ROOT_PASSWORD=owncloud
     when:
       matrix:
-        DB_TYPE: mysqlmb4
+        DB_TYPE: mysql8
 
   postgres:
-    image: postgres:9.4
+    image: ${POSTGRES_IMAGE=postgres:9.4}
     environment:
       - POSTGRES_USER=owncloud
       - POSTGRES_PASSWORD=owncloud
@@ -672,11 +665,7 @@ matrix:
     - PHP_VERSION: 7.3
       TEST_SUITE: owncloud-coding-standard
 
-  # phan (runs on just PHP 7.0 because that has different dependencies for phan)
-    - TEST_SUITE: phan-70
-      PHP_VERSION: 7.0
-
-  # phan (runs multiple PHP v7.1+ to provide syntax checks of each PHP version)
+  # phan (runs multiple PHP v7.* to provide syntax checks of each PHP version)
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
 
@@ -702,58 +691,66 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
-      DB_TYPE: mysqlmb4
-      TEST_SUITE: phpunit
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: postgres
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: oracle
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: sqlite
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
-    # PHP 7.0
-    - PHP_VERSION: 7.0
       DB_TYPE: mysql
+      # mb4 support, with innodb_file_format=Barracuda
+      MYSQL_IMAGE: mysql:5.7
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
-    - PHP_VERSION: 7.0
-      DB_TYPE: mysqlmb4
+    - PHP_VERSION: 7.1
+      # mb4 support by default
+      DB_TYPE: mysql8
       TEST_SUITE: phpunit
+      COVERAGE: false
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
-    - PHP_VERSION: 7.0
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: mariadb
+#      TEST_SUITE: phpunit
+#      INSTALL_SERVER: true
+
+    - PHP_VERSION: 7.1
       DB_TYPE: postgres
+      POSTGRES_IMAGE: postgres:9.4
       TEST_SUITE: phpunit
+      COVERAGE: true
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
-    - PHP_VERSION: 7.0
+    - PHP_VERSION: 7.1
+      DB_TYPE: postgres
+      POSTGRES_IMAGE: postgres:10.3
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: mariadb
+      # mb4 support by default
+      MARIADB_IMAGE: mariadb:10.3
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
       DB_TYPE: oracle
       TEST_SUITE: phpunit
+      COVERAGE: true
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
-    # PHP 7.2
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+  # PHP 7.2
     - PHP_VERSION: 7.2
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
@@ -761,6 +758,19 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.2
+      DB_TYPE: mariadb
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+  # PHP 7.3
+    - PHP_VERSION: 7.3
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.3
       DB_TYPE: mariadb
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
@@ -813,15 +823,6 @@ matrix:
       INSTALL_TESTING_APP: true
 
   # Primary Objectstorage
-    - PHP_VERSION: 7.0
-      TEST_SUITE: phpunit
-      DB_TYPE: sqlite
-      OBJECTSTORE: swift
-      PRIMARY_OBJECTSTORE: swift
-      FILES_EXTERNAL_TYPE: swift
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
-
     - PHP_VERSION: 7.1
       TEST_SUITE: phpunit
       COVERAGE: true
@@ -1645,20 +1646,6 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       CALDAV_CARDDAV_JOB: true
-
-    # This suite is part of the encryption app in later core versions
-    - PHP_VERSION: 7.0
-      TEST_SUITE: cli
-      BEHAT_SUITE: cliEncryption
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: https
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      CONFIGURE_ENCRYPTION: true
-      ENCRYPTION_TYPE: masterkey
-      INSTALL_TESTING_APP: true
 
     # This suite is part of the encryption app in later core versions
     - PHP_VERSION: 7.1
