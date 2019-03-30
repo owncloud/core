@@ -30,7 +30,6 @@ config = {
 		},
 		'reducedDatabases' : {
 			'phpVersions': [
-				'7.0',
 				'7.2',
 				'7.3',
 			],
@@ -983,9 +982,9 @@ def phptests(testType):
 	errorFound = False
 
 	default = {
-		'phpVersions': ['7.0', '7.1', '7.2', '7.3'],
+		'phpVersions': ['7.1', '7.2', '7.3'],
 		'databases': [
-			'sqlite', 'mariadb:10.2', 'mariadb:10.3', 'mysql:5.5', 'mysql:5.7', 'mysql:8.0', 'postgres:9.4', 'oracle'
+			'sqlite', 'mariadb:10.2', 'mariadb:10.3', 'mysql:5.5', 'mysql:5.7', 'mysql:8.0', 'postgres:9.4', 'postgres:10.3', 'oracle'
 		],
 		'coverage': True,
 		'includeKeyInMatrixName': False,
