@@ -34,7 +34,7 @@ class FolderTest extends NodeTest {
 
 	/**
 	 * @param $path
-	 * @param IStorage|\PHPUnit_Framework_MockObject_MockObject|null $storage
+	 * @param IStorage|\PHPUnit\Framework\MockObject\MockObject|null $storage
 	 * @return Folder
 	 */
 	protected function createTestNode($path, IStorage $storage = null) {

@@ -31,12 +31,12 @@ use Test\TestCase;
 class ChunkingPluginTest extends TestCase {
 
 	/**
-	 * @var \Sabre\DAV\Server | \PHPUnit_Framework_MockObject_MockObject
+	 * @var \Sabre\DAV\Server | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $server;
 
 	/**
-	 * @var \Sabre\DAV\Tree | \PHPUnit_Framework_MockObject_MockObject
+	 * @var \Sabre\DAV\Tree | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $tree;
 
@@ -44,9 +44,9 @@ class ChunkingPluginTest extends TestCase {
 	 * @var ChunkingPlugin
 	 */
 	private $plugin;
-	/** @var RequestInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $response;
 
 	public function setUp() {

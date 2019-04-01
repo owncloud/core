@@ -50,27 +50,27 @@ class AvatarControllerTest extends TestCase {
 
 	/** @var \OC\Core\Controller\AvatarController */
 	private $avatarController;
-	/** @var IAvatar | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IAvatar | \PHPUnit\Framework\MockObject\MockObject */
 	private $avatarMock;
-	/** @var IUser | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject */
 	private $userMock;
-	/** @var File | \PHPUnit_Framework_MockObject_MockObject*/
+	/** @var File | \PHPUnit\Framework\MockObject\MockObject*/
 	private $avatarFile;
-	/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var IL10N | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject */
 	private $l10N;
-	/** @var IAvatarManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IAvatarManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $avatarManager;
-	/** @var \OC\Cache\File | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OC\Cache\File | \PHPUnit\Framework\MockObject\MockObject */
 	private $cache;
-	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
-	/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	private $userSession;
-	/** @var Folder | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Folder | \PHPUnit\Framework\MockObject\MockObject */
 	private $rootFolder;
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 
 	protected function setUp() {

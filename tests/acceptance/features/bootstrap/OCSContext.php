@@ -311,12 +311,12 @@ class OCSContext implements Context {
 			$this->featureContext->getResponse()
 		);
 		if (\is_array($statusCode)) {
-			PHPUnit_Framework_Assert::assertContains(
+			PHPUnit\Framework\Assert::assertContains(
 				$responseStatusCode, $statusCode,
 				$message
 			);
 		} else {
-			PHPUnit_Framework_Assert::assertEquals(
+			PHPUnit\Framework\Assert::assertEquals(
 				$statusCode, $responseStatusCode,
 				$message
 			);
@@ -333,7 +333,7 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function theOCSStatusMessageShouldBe($statusMessage) {
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$statusMessage,
 			$this->getOCSResponseStatusMessage(
 				$this->featureContext->getResponse()
@@ -363,7 +363,7 @@ class OCSContext implements Context {
 	public function theOCSStatusMessageShouldBePyString(
 		PyStringNode $statusMessage
 	) {
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$statusMessage->getRaw(),
 			$this->getOCSResponseStatusMessage(
 				$this->featureContext->getResponse()

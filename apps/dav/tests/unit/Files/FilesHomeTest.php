@@ -32,9 +32,9 @@ class FilesHomeTest extends TestCase {
 
 	/** @var FilesHome */
 	private $filesHome;
-	/** @var Directory | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Directory | \PHPUnit\Framework\MockObject\MockObject */
 	private $rootNode;
-	/** @var View | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var View | \PHPUnit\Framework\MockObject\MockObject */
 	private $view;
 
 	protected function setUp() {
@@ -44,7 +44,7 @@ class FilesHomeTest extends TestCase {
 		]);
 
 		$this->rootNode = $this->createMock(Directory::class);
-		/** @var IMountManager | \PHPUnit_Framework_MockObject_MockObject $mountManager */
+		/** @var IMountManager | \PHPUnit\Framework\MockObject\MockObject $mountManager */
 		$mountManager = $this->createMock(IMountManager::class);
 
 		$this->filesHome->init($this->rootNode, $this->view, $mountManager);

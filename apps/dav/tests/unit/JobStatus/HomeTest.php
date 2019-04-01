@@ -35,7 +35,7 @@ use Test\TestCase;
  */
 class HomeTest extends TestCase {
 	public function testGetName() {
-		/** @var JobStatusMapper | \PHPUnit_Framework_MockObject_MockObject $mapper */
+		/** @var JobStatusMapper | \PHPUnit\Framework\MockObject\MockObject $mapper */
 		$mapper = $this->createMock(JobStatusMapper::class);
 		$home = new Home(['uri' => 'principals/users/user1'], $mapper);
 		$this->assertEquals('user1', $home->getName());
@@ -45,14 +45,14 @@ class HomeTest extends TestCase {
 	 * @expectedException \Sabre\DAV\Exception\MethodNotAllowed
 	 */
 	public function testGetChildren() {
-		/** @var JobStatusMapper | \PHPUnit_Framework_MockObject_MockObject $mapper */
+		/** @var JobStatusMapper | \PHPUnit\Framework\MockObject\MockObject $mapper */
 		$mapper = $this->createMock(JobStatusMapper::class);
 		$home = new Home(['uri' => 'principals/users/user1'], $mapper);
 		$home->getChildren();
 	}
 
 	public function testGetChild() {
-		/** @var JobStatusMapper | \PHPUnit_Framework_MockObject_MockObject $mapper */
+		/** @var JobStatusMapper | \PHPUnit\Framework\MockObject\MockObject $mapper */
 		$mapper = $this->createMock(JobStatusMapper::class);
 
 		$jobStatusEntity = new JobStatusEntity();
@@ -67,7 +67,7 @@ class HomeTest extends TestCase {
 	 * @expectedException \Sabre\DAV\Exception\NotFound
 	 */
 	public function testGetChildNotFound() {
-		/** @var JobStatusMapper | \PHPUnit_Framework_MockObject_MockObject $mapper */
+		/** @var JobStatusMapper | \PHPUnit\Framework\MockObject\MockObject $mapper */
 		$mapper = $this->createMock(JobStatusMapper::class);
 
 		$ex = new DoesNotExistException('');

@@ -34,7 +34,7 @@ use Test\TestCase;
 abstract class CommandTest extends TestCase {
 	/**
 	 * @param IStorageConfig[] $mounts
-	 * @return \OCP\Files\External\Service\IGlobalStoragesService|\PHPUnit_Framework_MockObject_MockObject
+	 * @return \OCP\Files\External\Service\IGlobalStoragesService|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getGlobalStorageService(array $mounts = []) {
 		$mock = $this->createMock('OCP\Files\External\Service\IGlobalStoragesService');
@@ -45,10 +45,10 @@ abstract class CommandTest extends TestCase {
 	}
 
 	/**
-	 * @param \PHPUnit_Framework_MockObject_MockObject $mock
+	 * @param \PHPUnit\Framework\MockObject\MockObject $mock
 	 * @param IStorageConfig[] $mounts
 	 */
-	protected function bindMounts(\PHPUnit_Framework_MockObject_MockObject $mock, array $mounts) {
+	protected function bindMounts(\PHPUnit\Framework\MockObject\MockObject $mock, array $mounts) {
 		$mock->expects($this->any())
 			->method('getStorage')
 			->will($this->returnCallback(function ($id) use ($mounts) {

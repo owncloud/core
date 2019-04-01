@@ -56,13 +56,13 @@ class TestRepairStep implements IRepairStep {
 
 class BackgroundRepairTest extends TestCase {
 
-	/** @var \OC\BackgroundJob\JobList | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OC\BackgroundJob\JobList | \PHPUnit\Framework\MockObject\MockObject */
 	private $jobList;
 
-	/** @var BackgroundRepair | \PHPUnit_Framework_MockObject_MockObject  */
+	/** @var BackgroundRepair | \PHPUnit\Framework\MockObject\MockObject  */
 	private $job;
 
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 
 	public function setUp() {
@@ -105,7 +105,7 @@ class BackgroundRepairTest extends TestCase {
 	}
 
 	public function testWorkingStep() {
-		/** @var EventDispatcher | \PHPUnit_Framework_MockObject_MockObject $dispatcher */
+		/** @var EventDispatcher | \PHPUnit\Framework\MockObject\MockObject $dispatcher */
 		$dispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcher');
 		$dispatcher->expects($this->once())->method('dispatch')
 			->with('\OC\Repair::step', new GenericEvent('\OC\Repair::step', ['A test repair step']));

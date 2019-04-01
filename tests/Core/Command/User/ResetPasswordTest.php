@@ -39,15 +39,15 @@ use Test\TestCase;
  * @package Tests\Core\Command\User
  */
 class ResetPasswordTest extends TestCase {
-	/** @var  IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
-	/** @var  IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var  ITimeFactory | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
 	private $timeFactory;
-	/** @var  EnvironmentHelper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  EnvironmentHelper | \PHPUnit\Framework\MockObject\MockObject */
 	private $environmentHelper;
-	/** @var LostController | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var LostController | \PHPUnit\Framework\MockObject\MockObject */
 	private $lostController;
 	/** @var  ResetPassword */
 	private $resetPassword;

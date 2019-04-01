@@ -24,7 +24,7 @@ use Test\TestCase;
 
 class DefaultsTest extends TestCase {
 	/**
-	 * @var OC_Defaults | \PHPUnit_Framework_MockObject_MockObject
+	 * @var OC_Defaults | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected $defaults;
 

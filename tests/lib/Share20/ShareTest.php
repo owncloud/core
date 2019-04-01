@@ -29,7 +29,7 @@ use OCP\Files\IRootFolder;
  */
 class ShareTest extends \Test\TestCase {
 
-	/** @var IRootFolder|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRootFolder|\PHPUnit\Framework\MockObject\MockObject */
 	protected $rootFolder;
 	/** @var \OCP\Share\IShare */
 	protected $share;

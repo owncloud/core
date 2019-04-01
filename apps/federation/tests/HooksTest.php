@@ -28,7 +28,7 @@ use Test\TestCase;
 
 class HooksTest extends TestCase {
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject | TrustedServers */
+	/** @var \PHPUnit\Framework\MockObject\MockObject | TrustedServers */
 	private $trustedServers;
 
 	/** @var  Hooks */

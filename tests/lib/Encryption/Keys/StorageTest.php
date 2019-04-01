@@ -44,13 +44,13 @@ class StorageTest extends TestCase {
 	/** @var Storage */
 	protected $storage;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject | Util */
+	/** @var \PHPUnit\Framework\MockObject\MockObject | Util */
 	protected $util;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject | View */
+	/** @var \PHPUnit\Framework\MockObject\MockObject | View */
 	protected $view;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
 	public function setUp() {
@@ -72,7 +72,7 @@ class StorageTest extends TestCase {
 
 		$user = $this->createMock(IUser::class);
 		$user->method('getUID')->willReturn('user1');
-		/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject $userSession */
+		/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject $userSession */
 		$userSession = $this->createMock(IUserSession::class);
 		$userSession->method('getUser')->willReturn($user);
 

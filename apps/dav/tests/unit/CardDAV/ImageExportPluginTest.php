@@ -33,17 +33,17 @@ use Test\TestCase;
 
 class ImageExportPluginTest extends TestCase {
 
-	/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $response;
-	/** @var RequestInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var ImageExportPlugin | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ImageExportPlugin | \PHPUnit\Framework\MockObject\MockObject */
 	private $plugin;
 	/** @var Server */
 	private $server;
-	/** @var Tree | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */
 	private $tree;
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 
 	public function setUp() {
@@ -128,7 +128,7 @@ class ImageExportPluginTest extends TestCase {
 	 * @param $cardData
 	 */
 	public function testGetPhoto($expected, $cardData) {
-		/** @var Card | \PHPUnit_Framework_MockObject_MockObject $card */
+		/** @var Card | \PHPUnit\Framework\MockObject\MockObject $card */
 		$card = $this->getMockBuilder('Sabre\CardDAV\Card')->disableOriginalConstructor()->getMock();
 		$card->expects($this->once())->method('get')->willReturn($cardData);
 

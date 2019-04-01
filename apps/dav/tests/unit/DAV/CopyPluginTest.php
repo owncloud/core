@@ -37,15 +37,15 @@ use OCA\DAV\Files\ICopySource;
 
 class CopyPluginTest extends TestCase {
 
-	/** @var Server | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Server | \PHPUnit\Framework\MockObject\MockObject */
 	private $server;
 	/** @var CopyPlugin */
 	private $plugin;
-	/** @var Tree | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */
 	private $tree;
-	/** @var RequestInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $response;
 
 	public function setUp() {
@@ -55,9 +55,9 @@ class CopyPluginTest extends TestCase {
 		$this->server = $this->createMock(Server::class);
 		$this->tree = $this->createMock(Tree::class);
 		$this->server->tree = $this->tree;
-		/** @var RequestInterface | \PHPUnit_Framework_MockObject_MockObject $request */
+		/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject $request */
 		$this->request = $this->createMock(RequestInterface::class);
-		/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject $response */
+		/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject $response */
 		$this->response = $this->createMock(ResponseInterface::class);
 
 		$this->plugin->initialize($this->server);

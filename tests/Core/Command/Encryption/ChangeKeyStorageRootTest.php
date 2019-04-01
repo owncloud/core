@@ -36,28 +36,28 @@ class ChangeKeyStorageRootTest extends TestCase {
 	/** @var ChangeKeyStorageRoot */
 	protected $changeKeyStorageRoot;
 
-	/** @var View | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var View | \PHPUnit\Framework\MockObject\MockObject */
 	protected $view;
 
-	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
 
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
-	/**  @var Util | \PHPUnit_Framework_MockObject_MockObject */
+	/**  @var Util | \PHPUnit\Framework\MockObject\MockObject */
 	protected $util;
 
-	/** @var QuestionHelper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var QuestionHelper | \PHPUnit\Framework\MockObject\MockObject */
 	protected $questionHelper;
 
-	/** @var InputInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var InputInterface | \PHPUnit\Framework\MockObject\MockObject */
 	protected $inputInterface;
 
-	/** @var OutputInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var OutputInterface | \PHPUnit\Framework\MockObject\MockObject */
 	protected $outputInterface;
 
-	/** @var \OCP\UserInterface |  \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\UserInterface |  \PHPUnit\Framework\MockObject\MockObject */
 	protected $userInterface;
 
 	public function setUp() {

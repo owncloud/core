@@ -35,7 +35,7 @@ abstract class NodeTest extends TestCase {
 	protected $viewDeleteMethod = 'unlink';
 	protected $user;
 	/**
-	 * @var IStorage|\PHPUnit_Framework_MockObject_MockObject
+	 * @var IStorage|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected $storage;
 

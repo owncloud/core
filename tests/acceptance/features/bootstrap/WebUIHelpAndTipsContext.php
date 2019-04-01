@@ -132,7 +132,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	public function theLinkForShouldBeValid($linkTitle) {
 		$linkUrl = $this->generateHelpLinks($this->getLinkID($linkTitle));
 		$linkOnUI = $this->helpAndTipsPage->getLinkUrlByTitle($linkTitle);
-		PHPUnit_Framework_Assert::assertSame($linkUrl, $linkOnUI);
+		PHPUnit\Framework\Assert::assertSame($linkUrl, $linkOnUI);
 	}
 
 	/**

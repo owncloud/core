@@ -35,13 +35,13 @@ use Test\TestCase;
 class OccControllerTest extends TestCase {
 	const TEMP_SECRET = 'test';
 
-	/** @var \OC\AppFramework\Http\Request | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OC\AppFramework\Http\Request | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var  \OC\Core\Controller\OccController | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  \OC\Core\Controller\OccController | \PHPUnit\Framework\MockObject\MockObject */
 	private $controller;
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var  Application | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  Application | \PHPUnit\Framework\MockObject\MockObject */
 	private $console;
 
 	public function testFromInvalidLocation() {

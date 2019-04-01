@@ -119,7 +119,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			->with('demo@owncloud.com')
 			->will($this->returnValue(true));
 
-		/** @var \PHPUnit_Framework_MockObject_MockObject $config */
+		/** @var \PHPUnit\Framework\MockObject\MockObject $config */
 		$config = $this->container['Config'];
 		$config->expects($this->exactly(2))
 			->method('setSystemValues');

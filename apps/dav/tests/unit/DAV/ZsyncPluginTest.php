@@ -36,9 +36,9 @@ class ZsyncPluginTest extends TestCase {
 	private $plugin;
 	/** @var \OC\Files\View */
 	private $view;
-	/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $response;
-	/** @var RequestInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
 
 	public function setUp() {

@@ -35,16 +35,16 @@ use OC\Core\Controller\TwoFactorChallengeController;
 
 class AccountModuleMiddlewareTest extends TestCase {
 
-	/** @var ILogger|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger|\PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 
-	/** @var Manager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var Manager|\PHPUnit\Framework\MockObject\MockObject */
 	private $manager;
 
-	/** @var IUserSession|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserSession|\PHPUnit\Framework\MockObject\MockObject */
 	private $userSession;
 
-	/** @var IControllerMethodReflector|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IControllerMethodReflector|\PHPUnit\Framework\MockObject\MockObject */
 	private $reflector;
 
 	/** @var AccountModuleMiddleware */

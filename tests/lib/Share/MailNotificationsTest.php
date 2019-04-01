@@ -43,21 +43,21 @@ use Test\TestCase;
  * @group DB
  */
 class MailNotificationsTest extends TestCase {
-	/** @var IManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $shareManager;
 	/** @var IL10N */
 	private $l10n;
-	/** @var IMailer | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IMailer | \PHPUnit\Framework\MockObject\MockObject */
 	private $mailer;
 	/** @var ILogger */
 	private $logger;
 	/** @var IConfig */
 	private $config;
-	/** @var Defaults | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Defaults | \PHPUnit\Framework\MockObject\MockObject */
 	private $defaults;
-	/** @var IUser | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject */
 	private $user;
-	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
 	private $urlGenerator;
 	private $eventDispatcher;
 

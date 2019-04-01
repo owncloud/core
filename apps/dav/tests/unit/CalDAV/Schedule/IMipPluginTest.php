@@ -34,13 +34,13 @@ use OC\Log;
 class IMipPluginTest extends TestCase {
 	public function testDelivery(): void {
 		$mailMessage = new \OC\Mail\Message(new \Swift_Message());
-		/** @var Mailer | \PHPUnit_Framework_MockObject_MockObject $mailer */
+		/** @var Mailer | \PHPUnit\Framework\MockObject\MockObject $mailer */
 		$mailer = $this->createMock(Mailer::class);
 		$mailer->method('createMessage')->willReturn($mailMessage);
 		$mailer->expects($this->once())->method('send');
-		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
+		/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject $logger */
 		$logger = $this->createMock(Log::class);
-		/** @var IRequest| \PHPUnit_Framework_MockObject_MockObject $request */
+		/** @var IRequest| \PHPUnit\Framework\MockObject\MockObject $request */
 		$request = $this->createMock(IRequest::class);
 
 		$plugin = new IMipPlugin($mailer, $logger, $request);
@@ -65,13 +65,13 @@ class IMipPluginTest extends TestCase {
 
 	public function testFailedDeliveryWithException(): void {
 		$mailMessage = new \OC\Mail\Message(new \Swift_Message());
-		/** @var Mailer | \PHPUnit_Framework_MockObject_MockObject $mailer */
+		/** @var Mailer | \PHPUnit\Framework\MockObject\MockObject $mailer */
 		$mailer = $this->createMock(Mailer::class);
 		$mailer->method('createMessage')->willReturn($mailMessage);
 		$mailer->method('send')->willThrowException(new \Exception());
-		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
+		/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject $logger */
 		$logger = $this->createMock(Log::class);
-		/** @var IRequest| \PHPUnit_Framework_MockObject_MockObject $request */
+		/** @var IRequest| \PHPUnit\Framework\MockObject\MockObject $request */
 		$request = $this->createMock(IRequest::class);
 
 		$plugin = new IMipPlugin($mailer, $logger, $request);
@@ -96,14 +96,14 @@ class IMipPluginTest extends TestCase {
 
 	public function testFailedDelivery(): void {
 		$mailMessage = new \OC\Mail\Message(new \Swift_Message());
-		/** @var Mailer | \PHPUnit_Framework_MockObject_MockObject $mailer */
+		/** @var Mailer | \PHPUnit\Framework\MockObject\MockObject $mailer */
 		$mailer = $this->createMock(Mailer::class);
 		$mailer->method('createMessage')->willReturn($mailMessage);
 		$mailer->method('send')->willReturn(['foo@example.net']);
-		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
+		/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject $logger */
 		$logger = $this->createMock(Log::class);
 		$logger->expects(self::once())->method('error')->with('Unable to deliver message to {failed}', ['app' => 'dav', 'failed' => 'foo@example.net']);
-		/** @var IRequest| \PHPUnit_Framework_MockObject_MockObject $request */
+		/** @var IRequest| \PHPUnit\Framework\MockObject\MockObject $request */
 		$request = $this->createMock(IRequest::class);
 
 		$plugin = new IMipPlugin($mailer, $logger, $request);
@@ -128,13 +128,13 @@ class IMipPluginTest extends TestCase {
 
 	public function testDeliveryOfCancel(): void {
 		$mailMessage = new \OC\Mail\Message(new \Swift_Message());
-		/** @var Mailer | \PHPUnit_Framework_MockObject_MockObject $mailer */
+		/** @var Mailer | \PHPUnit\Framework\MockObject\MockObject $mailer */
 		$mailer = $this->createMock(Mailer::class);
 		$mailer->method('createMessage')->willReturn($mailMessage);
 		$mailer->expects($this->once())->method('send');
-		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
+		/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject $logger */
 		$logger = $this->createMock(Log::class);
-		/** @var IRequest| \PHPUnit_Framework_MockObject_MockObject $request */
+		/** @var IRequest| \PHPUnit\Framework\MockObject\MockObject $request */
 		$request = $this->createMock(IRequest::class);
 
 		$plugin = new IMipPlugin($mailer, $logger, $request);

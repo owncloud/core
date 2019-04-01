@@ -53,23 +53,23 @@ class SecurityMiddlewareTest extends TestCase {
 
 	/** @var SecurityMiddleware */
 	private $middleware;
-	/** @var Controller | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Controller | \PHPUnit\Framework\MockObject\MockObject */
 	private $controller;
 	private $secException;
 	private $secAjaxException;
-	/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var ControllerMethodReflector | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ControllerMethodReflector | \PHPUnit\Framework\MockObject\MockObject */
 	private $reader;
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
-	/** @var INavigationManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var INavigationManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $navigationManager;
-	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
 	private $urlGenerator;
-	/** @var ContentSecurityPolicyManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ContentSecurityPolicyManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $contentSecurityPolicyManager;
-	/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	private $session;
 
 	protected function setUp() {
@@ -522,7 +522,7 @@ class SecurityMiddlewareTest extends TestCase {
 	}
 
 	public function testAfterController() {
-		/** @var Response | \PHPUnit_Framework_MockObject_MockObject $response */
+		/** @var Response | \PHPUnit\Framework\MockObject\MockObject $response */
 		$response = $this->getMockBuilder(Response::class)->disableOriginalConstructor()->getMock();
 		$defaultPolicy = new ContentSecurityPolicy();
 		$defaultPolicy->addAllowedImageDomain('defaultpolicy');

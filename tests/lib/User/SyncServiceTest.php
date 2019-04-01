@@ -40,11 +40,11 @@ use Test\TestCase;
 
 class SyncServiceTest extends TestCase {
 
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
-	/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $mapper;
 
 	protected function setUp() {
@@ -56,7 +56,7 @@ class SyncServiceTest extends TestCase {
 	}
 
 	public function testSetupAccount() {
-		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$backend = $this->createMock(UserInterface::class);
 
 		$this->config->expects($this->any())->method('getUserKeys')->willReturnMap([
@@ -81,7 +81,7 @@ class SyncServiceTest extends TestCase {
 	 * Pass in a backend that has new users anc check that they accounts are inserted
 	 */
 	public function testSetupNewAccount() {
-		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$backend = $this->createMock(UserInterface::class);
 		$account = $this->createMock(Account::class);
 
@@ -118,7 +118,7 @@ class SyncServiceTest extends TestCase {
 	 * Pass in a backend that has new users anc check that they accounts are inserted
 	 */
 	public function testSetupNewAccountLogsErrorOnException() {
-		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$backend = $this->createMock(UserInterface::class);
 
 		$backendUids = ['thisuserhasntbeenseenbefore'];
@@ -138,7 +138,7 @@ class SyncServiceTest extends TestCase {
 
 	public function testSyncHomeLogsWhenBackendDiffersFromExisting() {
 
-		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$backend = $this->createMock([UserInterface::class, IProvidesHomeBackend::class]);
 		$a = $this->getMockBuilder(Account::class)->setMethods(['getHome'])->getMock();
 
@@ -193,11 +193,11 @@ class SyncServiceTest extends TestCase {
 	 */
 	public function testSyncQuota($backendProvidesQuota, $backendQuota, $preferencesQuota, $expectedQuota) {
 
-		/** @var UserInterface | \PHPUnit_Framework_MockObject_MockObject $backend */
+		/** @var UserInterface | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$a = $this->getMockBuilder(Account::class)->setMethods(['setQuota'])->getMock();
 
 		if ($backendProvidesQuota) {
-			/** @var UserInterface | IProvidesQuotaBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+			/** @var UserInterface | IProvidesQuotaBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
 			$backend = $this->createMock([UserInterface::class, IProvidesQuotaBackend::class]);
 			$backend->expects($this->exactly(1))->method('getQuota')->willReturn($backendQuota);
 		} else {
@@ -227,7 +227,7 @@ class SyncServiceTest extends TestCase {
 		$a = $this->createMock(Account::class);
 		$a->method('__call')->with('getUserId')->willReturn('user1');
 
-		/** @var UserInterface | IProvidesUserNameBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+		/** @var UserInterface | IProvidesUserNameBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$backend = $this->createMock([UserInterface::class, IProvidesUserNameBackend::class]);
 		$backend->expects($this->once())
 			->method('getUserName')
