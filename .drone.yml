@@ -13,6 +13,7 @@ pipeline:
   install-fed-server:
     image: owncloudci/core
     pull: true
+    exclude: apps/testing
     version: ${FEDERATION_OC_VERSION}
     core_path: /drone/fed-server
     when:
