@@ -493,35 +493,25 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$adminPassword = self::checkAdminPassword(
 			$adminPassword, "readSkeletonFile"
 		);
-		//find the absolute path of the serverroot
-		$sysInfo = self::getSysInfo($baseUrl, $adminUsername, $adminPassword);
-		$serverRoot = $sysInfo->server_root;
-		
-		//find the absolute path of the root folder of skeleton folders
+
+		//find the absolute path of the currently set skeletondirectory
+		$occResponse = self::runOcc(
+			['config:system:get', 'skeletondirectory']
+		);
+		if ((int) $occResponse['code'] !== 0) {
+			throw new \Exception(
+				"could not get current skeletondirectory. " . $occResponse['stdErr']
+			);
+		}
+		$skeletonRoot = \trim($occResponse['stdOut']);
+
+		$fileInSkeletonFolder = \rawurlencode("$skeletonRoot/$fileInSkeletonFolder");
 		$response = OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUsername,
 			$adminPassword,
 			'GET',
-			"/apps/testing/api/v1/testingskeletondirectory"
-		);
-		$responseXml = HttpRequestHelper::getResponseXml($response);
-		$skeletonRoot = (string)$responseXml->data->rootdirectory;
-		
-		//download the content of the particular file in the skeleton folder
-		$skeletonRootRelativeToServerRoot = \str_replace(
-			$serverRoot, "", $skeletonRoot
-		);
-		$fileInSkeletonFolder = \rawurlencode($fileInSkeletonFolder);
-		$fileInSkeletonFolder = "$skeletonRootRelativeToServerRoot/" .
-								\getenv('SRC_SKELETON_DIR') .
-								"/$fileInSkeletonFolder";
-		$response = OcsApiHelper::sendRequest(
-			$baseUrl,
-			$adminUsername,
-			$adminPassword,
-			'GET',
-			"/apps/testing/api/v1/file?file={$fileInSkeletonFolder}"
+			"/apps/testing/api/v1/file?file={$fileInSkeletonFolder}&absolute=true"
 		);
 		self::assertSame(
 			200,
