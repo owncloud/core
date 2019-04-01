@@ -27,22 +27,22 @@ use Test\TestCase;
 
 class ManagerTest extends TestCase {
 
-	/** @var \OCP\IUser|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IUser|\PHPUnit\Framework\MockObject\MockObject */
 	private $user;
 
-	/** @var \OC\App\AppManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OC\App\AppManager|\PHPUnit\Framework\MockObject\MockObject */
 	private $appManager;
 
-	/** @var \OCP\ISession|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\ISession|\PHPUnit\Framework\MockObject\MockObject */
 	private $session;
 
 	/** @var Manager */
 	private $manager;
 
-	/** @var \OCP\IConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 
-	/** @var \OCP\Authentication\TwoFactorAuth\IProvider|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\Authentication\TwoFactorAuth\IProvider|\PHPUnit\Framework\MockObject\MockObject */
 	private $fakeProvider;
 
 	protected function setUp() {

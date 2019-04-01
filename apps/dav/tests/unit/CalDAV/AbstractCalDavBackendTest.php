@@ -43,10 +43,10 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 	/** @var CalDavBackend */
 	protected $backend;
 
-	/** @var Principal | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Principal | \PHPUnit\Framework\MockObject\MockObject */
 	protected $principal;
 
-	/** @var GroupPrincipalBackend | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var GroupPrincipalBackend | \PHPUnit\Framework\MockObject\MockObject */
 	protected $groupPrincipal;
 
 	/** @var IConfig */

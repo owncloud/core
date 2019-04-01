@@ -36,27 +36,27 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class HooksTest extends \Test\TestCase {
 
 	/**
-	 * @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject
+	 * @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $eventDispatcher;
 
 	/**
-	 * @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $urlGenerator;
 
 	/**
-	 * @var IRootFolder | \PHPUnit_Framework_MockObject_MockObject
+	 * @var IRootFolder | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $rootFolder;
 
 	/**
-	 * @var \OCP\Share\IManager | \PHPUnit_Framework_MockObject_MockObject
+	 * @var \OCP\Share\IManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $shareManager;
 
 	/**
-	 * @var NotificationPublisher | \PHPUnit_Framework_MockObject_MockObject
+	 * @var NotificationPublisher | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $notificationPublisher;
 

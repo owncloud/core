@@ -12,13 +12,13 @@ class ObjectHomeMountProviderTest extends \Test\TestCase {
 	/** @var ObjectHomeMountProvider */
 	protected $provider;
 
-	/** @var IConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
-	/** @var IUser|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUser|\PHPUnit\Framework\MockObject\MockObject */
 	protected $user;
 
-	/** @var IStorageFactory|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IStorageFactory|\PHPUnit\Framework\MockObject\MockObject */
 	protected $loader;
 
 	public function setUp() {

@@ -189,7 +189,7 @@ class RoutingTest extends \Test\TestCase {
 	 * @param string $actionName
 	 * @param array $requirements
 	 * @param array $defaults
-	 * @return \PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private function mockRoute(
 		DIContainer $container,

@@ -29,7 +29,7 @@ use Test\TestCase;
 
 class InfoCheckerTest extends TestCase {
 
-	/** @var IAppManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IAppManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $appManager;
 
 	protected function setUp() {

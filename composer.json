@@ -22,7 +22,7 @@
         "bamarni/composer-bin-plugin": "^1.2",
         "jakub-onderka/php-console-highlighter": "^0.4",
         "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^5.7",
+        "phpunit/phpunit": "^6.5",
         "roave/security-advisories": "dev-master"
     },
     "require": {

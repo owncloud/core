@@ -25,7 +25,7 @@ use OCA\Encryption\JWT;
 use Test\TestCase;
 
 class JWTTest extends TestCase {
-	/** @var JWT | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var JWT | \PHPUnit\Framework\MockObject\MockObject */
 	private $jwt;
 
 	public function setUp() {

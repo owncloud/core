@@ -22,9 +22,9 @@ class ManagerTest extends TestCase {
 
 	/** @var \OC\Activity\Manager */
 	private $activityManager;
-	/** @var \OCP\IRequest|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IRequest|\PHPUnit\Framework\MockObject\MockObject */
 	protected $request;
-	/** @var \OCP\IConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
 	protected function setUp() {

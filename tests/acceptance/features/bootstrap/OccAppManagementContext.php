@@ -116,7 +116,7 @@ class OccAppManagementContext implements Context {
 	public function theAppNameReturnedByTheOccCommandShouldBe($appName) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputArray = \json_decode($lastOutput, true);
-		PHPUnit_Framework_Assert::assertEquals($appName, \key($lastOutputArray['apps']));
+		PHPUnit\Framework\Assert::assertEquals($appName, \key($lastOutputArray['apps']));
 	}
 
 	/**
@@ -166,7 +166,7 @@ class OccAppManagementContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputArray = \json_decode($lastOutput, true);
 		$actualAppEnabledStatus = $lastOutputArray['apps'][$appName]['enabled'];
-		PHPUnit_Framework_Assert::assertEquals($appStatus, $actualAppEnabledStatus);
+		PHPUnit\Framework\Assert::assertEquals($appStatus, $actualAppEnabledStatus);
 	}
 
 	/**
@@ -184,7 +184,7 @@ class OccAppManagementContext implements Context {
 		$appsSimplified = $this->featureContext->simplifyArray($apps);
 
 		foreach ($appsSimplified as $app) {
-			PHPUnit_Framework_Assert::assertContains($app, $lastOutputApps);
+			PHPUnit\Framework\Assert::assertContains($app, $lastOutputApps);
 		}
 	}
 

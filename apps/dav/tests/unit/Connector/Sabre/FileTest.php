@@ -66,7 +66,7 @@ class FileTest extends TestCase {
 	 */
 	private $user;
 
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
 	public function setUp() {
@@ -95,7 +95,7 @@ class FileTest extends TestCase {
 	}
 
 	/**
-	 * @return \PHPUnit_Framework_MockObject_MockObject | Storage
+	 * @return \PHPUnit\Framework\MockObject\MockObject | Storage
 	 */
 	private function getMockStorage() {
 		$storage = $this->createMock(Storage::class);
@@ -181,7 +181,7 @@ class FileTest extends TestCase {
 			->setConstructorArgs([['datadir' => \OC::$server->getTempManager()->getTemporaryFolder()]])
 			->getMock();
 		Filesystem::mount($storage, [], $this->user . '/');
-		/** @var View | \PHPUnit_Framework_MockObject_MockObject $view */
+		/** @var View | \PHPUnit\Framework\MockObject\MockObject $view */
 		$view = $this->getMockBuilder(View::class)
 			->setMethods(['getRelativePath', 'resolvePath'])
 			->setConstructorArgs([])
@@ -254,7 +254,7 @@ class FileTest extends TestCase {
 			->getMock();
 		Filesystem::mount($storage, [], $this->user . '/');
 		/**
-		 * @var View | \PHPUnit_Framework_MockObject_MockObject $view
+		 * @var View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = $this->getMockBuilder(View::class)
 			->setMethods(['getRelativePath', 'resolvePath'])
@@ -315,7 +315,7 @@ class FileTest extends TestCase {
 		$storage->method('fopen')
 			->willReturn($this->getStream('qwertz'));
 		Filesystem::mount($storage, [], $this->user . '/');
-		/** @var View | \PHPUnit_Framework_MockObject_MockObject $view */
+		/** @var View | \PHPUnit\Framework\MockObject\MockObject $view */
 		$view = $this->getMockBuilder(View::class)
 			->setMethods(['getRelativePath', 'resolvePath'])
 			->setConstructorArgs([])
@@ -445,7 +445,7 @@ class FileTest extends TestCase {
 			null
 		);
 
-		/** @var File | \PHPUnit_Framework_MockObject_MockObject $file */
+		/** @var File | \PHPUnit\Framework\MockObject\MockObject $file */
 		$file = $this->getMockBuilder(File::class)
 			->setConstructorArgs([$view, $info, null, $request])
 			->setMethods(['header'])

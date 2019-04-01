@@ -39,27 +39,27 @@ use Test\TestCase;
 class RecoveryTest extends TestCase {
 	private static $tempStorage = [];
 	/**
-	 * @var \OCP\Encryption\IFile|\PHPUnit_Framework_MockObject_MockObject
+	 * @var \OCP\Encryption\IFile|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $fileMock;
 	/**
-	 * @var \OC\Files\View|\PHPUnit_Framework_MockObject_MockObject
+	 * @var \OC\Files\View|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $viewMock;
 	/**
-	 * @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject
+	 * @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $userSessionMock;
 	/**
-	 * @var \OCA\Encryption\KeyManager|\PHPUnit_Framework_MockObject_MockObject
+	 * @var \OCA\Encryption\KeyManager|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $keyManagerMock;
 	/**
-	 * @var \OCP\IConfig|\PHPUnit_Framework_MockObject_MockObject
+	 * @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $configMock;
 	/**
-	 * @var \OCA\Encryption\Crypto\Crypt|\PHPUnit_Framework_MockObject_MockObject
+	 * @var \OCA\Encryption\Crypto\Crypt|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $cryptMock;
 	/**

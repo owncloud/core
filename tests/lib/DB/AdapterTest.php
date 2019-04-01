@@ -173,7 +173,7 @@ class AdapterTest extends \Test\TestCase {
 		$ex = $this->createMock(DriverException::class);
 		$ex->expects($this->exactly(1))->method('getErrorCode')->willReturn(1214);
 		// Wrap the exception in a doctrine exception
-		/** @var  DriverException|\PHPUnit_Framework_MockObject_MockObject $ex */
+		/** @var  DriverException|\PHPUnit\Framework\MockObject\MockObject $ex */
 		$e = new \Doctrine\DBAL\Exception\DriverException('1214', $ex);
 		// Should be called 5 times for maxTry then kick out the exception
 		$qb->expects($this->exactly(1))->method('execute')->willThrowException($e);

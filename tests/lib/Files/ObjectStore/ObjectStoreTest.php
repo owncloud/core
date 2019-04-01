@@ -43,9 +43,9 @@ use Test\TestCase;
  */
 class ObjectStoreTest extends TestCase {
 
-	/** @var IObjectStore | IVersionedObjectStorage | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IObjectStore | IVersionedObjectStorage | \PHPUnit\Framework\MockObject\MockObject */
 	private $impl;
-	/** @var ObjectStoreStorage | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ObjectStoreStorage | \PHPUnit\Framework\MockObject\MockObject */
 	private $objectStore;
 
 	public function setUp() {

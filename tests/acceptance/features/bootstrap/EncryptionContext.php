@@ -124,7 +124,7 @@ class EncryptionContext implements Context {
 		$this->featureContext->userDownloadsFileUsingTheAPI($username, "/$fileName");
 		$fileContentServer = (string)$this->featureContext->getResponse()->getBody();
 
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$fileContentServer,
 			$fileContent
 		);
@@ -148,7 +148,7 @@ class EncryptionContext implements Context {
 		$encodedFileContent = (string)$parsedResponse->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($encodedFileContent);
 
-		PHPUnit_Framework_Assert::assertStringStartsWith(
+		PHPUnit\Framework\Assert::assertStringStartsWith(
 			"HBEGIN:oc_encryption_module:OC_DEFAULT_MODULE:cipher:AES-256-CTR:signed:true",
 			$fileContent
 		);

@@ -51,7 +51,7 @@ class ManagerTest extends TestCase {
 	/** @var \OC\Files\Mount\Manager */
 	private $mountManager;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	private $eventDispatcher;
 
 	private $uid;

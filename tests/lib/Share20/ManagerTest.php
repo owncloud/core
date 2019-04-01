@@ -60,7 +60,7 @@ class ManagerTest extends \Test\TestCase {
 
 	/** @var Manager */
 	protected $manager;
-	/** @var ILogger */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
 	/** @var IConfig */
 	protected $config;
@@ -68,24 +68,25 @@ class ManagerTest extends \Test\TestCase {
 	protected $secureRandom;
 	/** @var IHasher */
 	protected $hasher;
-	/** @var IShareProvider | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IShareProvider | \PHPUnit\Framework\MockObject\MockObject */
 	protected $defaultProvider;
 	/** @var  IMountManager */
 	protected $mountManager;
 	/** @var  IGroupManager */
 	protected $groupManager;
-	/** @var IL10N */
+	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject */
 	protected $l;
 	/** @var DummyFactory */
 	protected $factory;
-	/** @var IUserManager */
+	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
-	/** @var IRootFolder | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRootFolder | \PHPUnit\Framework\MockObject\MockObject */
 	protected $rootFolder;
 	/** @var  EventDispatcher */
 	protected $eventDispatcher;
-	/** @var  View */
+	/** @var  View | \PHPUnit\Framework\MockObject\MockObject */
 	protected $view;
+	/** @var IDBConnection | \PHPUnit\Framework\MockObject\MockObject */
 	protected $connection;
 
 	public function setUp() {
@@ -141,7 +142,7 @@ class ManagerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @return \PHPUnit_Framework_MockObject_MockBuilder
+	 * @return \PHPUnit\Framework\MockObject\MockBuilder
 	 */
 	private function createManagerMock() {
 		return 	$this->getMockBuilder('\OC\Share20\Manager')

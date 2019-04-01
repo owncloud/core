@@ -39,13 +39,13 @@ use Test\TestCase;
  * @package OCA\Encryption\Tests\Command
  */
 class HSMDaemonTest extends TestCase {
-	/** @var IClientService | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IClientService | \PHPUnit\Framework\MockObject\MockObject */
 	private $httpClient;
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
-	/** @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
 	private $timeFactory;
 	/** @var HSMDaemon */
 	private $hsmDeamon;

@@ -91,10 +91,10 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 		$appTr = $this->personalSecuritySettingsPage->getLinkedAppByName(
 			$this->appName
 		);
-		PHPUnit_Framework_Assert::assertNotEmpty($appTr);
+		PHPUnit\Framework\Assert::assertNotEmpty($appTr);
 		$disconnectButton
 			= $this->personalSecuritySettingsPage->getDisconnectButton($appTr);
-		PHPUnit_Framework_Assert::assertNotEmpty($disconnectButton);
+		PHPUnit\Framework\Assert::assertNotEmpty($disconnectButton);
 	}
 
 	/**
@@ -104,12 +104,12 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 */
 	public function theUserDisplayNameAndAppPasswordShouldBeDisplayedOnTheWebUI() {
 		$result = $this->personalSecuritySettingsPage->getAppPasswordResult();
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$this->featureContext->getCurrentUser(),
 			$result[0]->getValue()
 		);
 
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			1, \preg_match(
 				'/(([A-Z]){5}-){3}([A-Z]){5}/', $result[1]->getValue()
 			)

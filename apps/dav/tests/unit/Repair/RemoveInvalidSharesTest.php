@@ -48,12 +48,12 @@ class RemoveInvalidSharesTest extends TestCase {
 
 	public function test() {
 		$db = \OC::$server->getDatabaseConnection();
-		/** @var Principal | \PHPUnit_Framework_MockObject_MockObject $principal */
+		/** @var Principal | \PHPUnit\Framework\MockObject\MockObject $principal */
 		$principal = $this->createMock(Principal::class);
-		/** @var GroupPrincipalBackend | \PHPUnit_Framework_MockObject_MockObject $groupPrincipal */
+		/** @var GroupPrincipalBackend | \PHPUnit\Framework\MockObject\MockObject $groupPrincipal */
 		$groupPrincipal = $this->createMock(GroupPrincipalBackend::class);
 
-		/** @var IOutput | \PHPUnit_Framework_MockObject_MockObject $output */
+		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $output */
 		$output = $this->createMock(IOutput::class);
 
 		$repair = new RemoveInvalidShares($db, $principal, $groupPrincipal);

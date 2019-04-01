@@ -229,7 +229,7 @@ class PublicWebDavContext implements Context {
 	public function publiclyUploadingShouldNotWork() {
 		$this->publicUploadContent('whateverfilefortesting.txt', '', 'test');
 		$response = $this->featureContext->getResponse();
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			($response->getStatusCode() == 507)
 			|| (
 				($response->getStatusCode() >= 400)
@@ -250,7 +250,7 @@ class PublicWebDavContext implements Context {
 		$content = 'test';
 		$this->publicUploadContent($path, '', $content);
 		$response = $this->featureContext->getResponse();
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			($response->getStatusCode() == 201),
 			"upload should have passed but failed with code " .
 			$response->getStatusCode()

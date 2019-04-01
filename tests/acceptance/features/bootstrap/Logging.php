@@ -81,7 +81,7 @@ trait Logging {
 				}
 
 				if ($expectedLogEntry[$attribute] !== "") {
-					PHPUnit_Framework_Assert::assertArrayHasKey(
+					PHPUnit\Framework\Assert::assertArrayHasKey(
 						$attribute, $logEntry,
 						"could not find attribute: '$attribute' in log entry: '{$logLines[$lineNo]}'"
 					);
@@ -92,17 +92,17 @@ trait Logging {
 						);
 					}
 					if ($comparingMode === 'with') {
-						PHPUnit_Framework_Assert::assertEquals(
+						PHPUnit\Framework\Assert::assertEquals(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
 					} elseif ($comparingMode === 'containing') {
-						PHPUnit_Framework_Assert::assertContains(
+						PHPUnit\Framework\Assert::assertContains(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
 					} elseif ($comparingMode === 'matching') {
-						PHPUnit_Framework_Assert::assertRegExp(
+						PHPUnit\Framework\Assert::assertRegExp(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
@@ -279,7 +279,7 @@ trait Logging {
 		}
 		
 		$notFoundLines = \print_r($expectedLogEntries, true);
-		PHPUnit_Framework_Assert::assertEmpty(
+		PHPUnit\Framework\Assert::assertEmpty(
 			$expectedLogEntries,
 			"could not find these expected line(s):\n $notFoundLines"
 		);
@@ -336,7 +336,7 @@ trait Logging {
 					}
 				}
 			}
-			PHPUnit_Framework_Assert::assertFalse(
+			PHPUnit\Framework\Assert::assertFalse(
 				$match,
 				"found a log entry that should not be there\n$logLine\n"
 			);

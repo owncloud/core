@@ -27,7 +27,7 @@ use Test\TestCase;
 
 class AbstractFileTest extends TestCase {
 	public function testMime() {
-		/** @var AbstractFile | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var AbstractFile | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = new AbstractFile();
 		$this->assertEquals('application/octet-stream', $node->getMimetype());
 		$this->assertEquals('application', $node->getMimePart());
@@ -39,7 +39,7 @@ class AbstractFileTest extends TestCase {
 	 * @dataProvider providesOperations
 	 */
 	public function testOperations($operation) {
-		/** @var AbstractFile | \PHPUnit_Framework_MockObject_MockObject $node */
+		/** @var AbstractFile | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->getMockForAbstractClass(AbstractFile::class);
 		$node->$operation('');
 	}

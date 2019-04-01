@@ -35,42 +35,42 @@ use Test\TestCase;
 
 class RecreateMasterKeyTest extends TestCase {
 
-	/** @var Manager  | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Manager  | \PHPUnit\Framework\MockObject\MockObject */
 	protected $encryptionManager;
 
-	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject  */
+	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject  */
 	protected $userManager;
 
-	/** @var View | \PHPUnit_Framework_MockObject_MockObject  */
+	/** @var View | \PHPUnit\Framework\MockObject\MockObject  */
 	protected $rootView;
 
-	/** @var KeyManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var KeyManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $keyManager;
 
-	/** @var Util | \PHPUnit_Framework_MockObject_MockObject  */
+	/** @var Util | \PHPUnit\Framework\MockObject\MockObject  */
 	protected $util;
 
 	protected $encUitl;
 
-	/** @var  IAppManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  IAppManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $IAppManager;
 
-	/** @var  IAppConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  IAppConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $appConfig;
 
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
-	/** @var ISession | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
 	protected $session;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \OCP\UserInterface */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OCP\UserInterface */
 	protected $userInterface;
 
-	/** @var  \Symfony\Component\Console\Output\OutputInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  \Symfony\Component\Console\Output\OutputInterface | \PHPUnit\Framework\MockObject\MockObject */
 	protected $output;
 
-	/** @var  \Symfony\Component\Console\Input\InputInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var  \Symfony\Component\Console\Input\InputInterface | \PHPUnit\Framework\MockObject\MockObject */
 	protected $input;
 
 	protected $questionHelper;

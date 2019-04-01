@@ -37,7 +37,7 @@ use Test\Traits\UserTrait;
 class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 	use UserTrait;
 
-	/** @var \OCP\IGroupManager|\PHPUnit_Framework_MockObject_MockObject groupManager */
+	/** @var \OCP\IGroupManager|\PHPUnit\Framework\MockObject\MockObject groupManager */
 	protected $groupManager;
 
 	/**
@@ -62,7 +62,7 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 		$this->globalStoragesService = $this->service;
 
 		$this->user = $this->createUser(self::USER_ID, self::USER_ID);
-		/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject $userSession */
+		/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject $userSession */
 		$userSession = $this->createMock('\OCP\IUserSession');
 		$userSession
 			->expects($this->any())

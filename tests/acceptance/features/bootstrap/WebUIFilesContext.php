@@ -283,16 +283,16 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theThumbnailShouldBeVisibleInTheDetailsPanel() {
 		$detailsDialog = $this->filesPage->getDetailsDialog();
 		$thumbnail = $detailsDialog->findThumbnail();
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			$thumbnail->isVisible(),
 			"thumbnail is not visible"
 		);
 		$style = $thumbnail->getAttribute("style");
-		PHPUnit_Framework_Assert::assertNotNull(
+		PHPUnit\Framework\Assert::assertNotNull(
 			$style,
 			'style attribute of details thumbnail is null'
 		);
-		PHPUnit_Framework_Assert::assertContains(
+		PHPUnit\Framework\Assert::assertContains(
 			$this->getCurrentFolderFilePath(),
 			$style
 		);
@@ -307,7 +307,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theTabNameDetailsPanelShouldBeVisible($tabName) {
 		$detailsDialog = $this->filesPage->getDetailsDialog();
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			$detailsDialog->isDetailsPanelVisible($tabName),
 			"the $tabName panel is not visible in the details panel"
 		);
@@ -321,7 +321,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theShareWithFieldShouldBeVisibleInTheDetailsPanel() {
 		$sharingDialog = $this->filesPage->getSharingDialog();
-		PHPUnit_Framework_Assert::assertTrue(
+		PHPUnit\Framework\Assert::assertTrue(
 			$sharingDialog->isShareWithFieldVisible(),
 			'the share-with field is not visible in the details panel'
 		);
@@ -335,7 +335,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theShareWithFieldShouldNotBeVisibleInTheDetailsPanel() {
 		$sharingDialog = $this->filesPage->getSharingDialog();
-		PHPUnit_Framework_Assert::assertFalse(
+		PHPUnit\Framework\Assert::assertFalse(
 			$sharingDialog->isShareWithFieldVisible(),
 			'the share-with field is visible in the details panel'
 		);
@@ -537,7 +537,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function thereShouldBeNoFilesFoldersListedOnTheWebUI() {
 		$pageObject = $this->getCurrentPageObject();
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			0,
 			$pageObject->getSizeOfFileFolderList()
 		);
@@ -554,7 +554,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function thereShouldBeCountFilesFoldersListedOnTheWebUI($count) {
 		$pageObject = $this->getCurrentPageObject();
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$count,
 			$pageObject->getSizeOfFileFolderList()
 		);
@@ -1264,12 +1264,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$folderIsEmpty = $pageObject->isFolderEmpty($this->getSession());
 
 		if ($should) {
-			PHPUnit_Framework_Assert::assertTrue(
+			PHPUnit\Framework\Assert::assertTrue(
 				$folderIsEmpty,
 				"folder contains items but should be empty"
 			);
 		} else {
-			PHPUnit_Framework_Assert::assertFalse(
+			PHPUnit\Framework\Assert::assertFalse(
 				$folderIsEmpty,
 				"folder is empty but should contain items"
 			);
@@ -1417,11 +1417,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 
 		if ($should) {
-			PHPUnit_Framework_Assert::assertNotNull(
+			PHPUnit\Framework\Assert::assertNotNull(
 				$fileRow,
 				"could not find $fileLocationText when it should be listed"
 			);
-			PHPUnit_Framework_Assert::assertTrue(
+			PHPUnit\Framework\Assert::assertTrue(
 				$fileRow->isVisible(),
 				"file row of $fileLocationText is not visible but should"
 			);
@@ -1430,13 +1430,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				$name = \implode($name);
 			}
 			if ($fileRow === null) {
-				PHPUnit_Framework_Assert::assertContains(
+				PHPUnit\Framework\Assert::assertContains(
 					"could not find file with the name '$name'",
 					$exceptionMessage,
 					"found $fileLocationText when it should not be listed"
 				);
 			} else {
-				PHPUnit_Framework_Assert::assertFalse(
+				PHPUnit\Framework\Assert::assertFalse(
 					$fileRow->isVisible(),
 					"file row of $fileLocationText is visible but should not"
 				);
@@ -1514,7 +1514,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				$fileNameParts[] = $namePartsRow['name-parts'];
 			}
 		} else {
-			PHPUnit_Framework_Assert::fail(
+			PHPUnit\Framework\Assert::fail(
 				'no table of file name parts passed to theFollowingFileFolderShouldBeListed'
 			);
 		}
@@ -1545,7 +1545,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$name,
 		$toolTipText
 	) {
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit\Framework\Assert::assertEquals(
 			$toolTipText,
 			$this->getCurrentPageObject()->getTooltipOfFile($name, $this->getSession())
 		);
@@ -1575,7 +1575,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$tooltiptext
 	) {
 		$createFolderTooltip = $this->getCurrentPageObject()->getCreateFolderTooltip();
-		PHPUnit_Framework_Assert::assertSame($tooltiptext, $createFolderTooltip);
+		PHPUnit\Framework\Assert::assertSame($tooltiptext, $createFolderTooltip);
 	}
 
 	/**
@@ -1590,7 +1590,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		try {
 			$this->deleteTheFileUsingTheWebUI($name, false);
 		} catch (ElementNotFoundException $e) {
-			PHPUnit_Framework_Assert::assertContains(
+			PHPUnit\Framework\Assert::assertContains(
 				"could not find button 'Delete' in action Menu",
 				$e->getMessage()
 			);
@@ -1629,7 +1629,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				$currentTime = \microtime(true);
 			}
 			
-			PHPUnit_Framework_Assert::assertLessThanOrEqual(
+			PHPUnit\Framework\Assert::assertLessThanOrEqual(
 				$windowHeight, $deleteBtnCoordinates ["top"]
 			);
 			//this will close the menu again
@@ -1909,7 +1909,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserShouldSeeFileActionTranslatedToInTheWebui($action_label, $translated_label) {
-		PHPUnit_Framework_Assert::assertSame(
+		PHPUnit\Framework\Assert::assertSame(
 			$translated_label,
 			$this->openedFileActionMenu->getActionLabelLocalized($action_label)
 		);
@@ -1949,7 +1949,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theDetailsDialogShouldBeVisibleInTheWebui() {
-		PHPUnit_Framework_Assert::assertTrue($this->filesPage->getDetailsDialog()->isDialogVisible());
+		PHPUnit\Framework\Assert::assertTrue($this->filesPage->getDetailsDialog()->isDialogVisible());
 	}
 
 	/**
@@ -2007,12 +2007,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$detailsDialog = $this->getCurrentPageObject()->getDetailsDialog();
 		$detailsDialog->waitTillPageIsLoaded($this->getSession());
 		if ($should) {
-			PHPUnit_Framework_Assert::assertTrue(
+			PHPUnit\Framework\Assert::assertTrue(
 				$detailsDialog->isCommentOnUI($text),
 				"Failed to find comment with text $text in the webUI"
 			);
 		} else {
-			PHPUnit_Framework_Assert::assertFalse(
+			PHPUnit\Framework\Assert::assertFalse(
 				$detailsDialog->isCommentOnUI($text),
 				"The comment with text $text exists in the webUI"
 			);
@@ -2049,7 +2049,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theVersionsListShouldContainEntries($num) {
 		$versionsList = $this->filesPage->getDetailsDialog()->getVersionsList();
 		$versionsCount = \count($versionsList->findAll("xpath", "//li"));
-		PHPUnit_Framework_Assert::assertEquals($num, $versionsCount);
+		PHPUnit\Framework\Assert::assertEquals($num, $versionsCount);
 	}
 
 	/**

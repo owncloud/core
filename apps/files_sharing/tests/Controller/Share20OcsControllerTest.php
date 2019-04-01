@@ -56,19 +56,19 @@ use OCP\Share\Exceptions\ShareNotFound;
  */
 class Share20OcsControllerTest extends TestCase {
 
-	/** @var \OC\Share20\Manager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OC\Share20\Manager | \PHPUnit\Framework\MockObject\MockObject */
 	private $shareManager;
 
-	/** @var IGroupManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $groupManager;
 
-	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
 
-	/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
 
-	/** @var IRootFolder | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRootFolder | \PHPUnit\Framework\MockObject\MockObject */
 	private $rootFolder;
 
 	/** @var IURLGenerator */
@@ -154,7 +154,7 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	/**
-	 * @return Share20OcsController | \PHPUnit_Framework_MockObject_MockObject
+	 * @return Share20OcsController | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private function mockFormatShare() {
 		return $this->getMockBuilder(Share20OcsController::class)

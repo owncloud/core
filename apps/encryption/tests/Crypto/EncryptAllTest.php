@@ -49,43 +49,43 @@ use Test\Traits\UserTrait;
 class EncryptAllTest extends TestCase {
 	use UserTrait;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \OCA\Encryption\KeyManager */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OCA\Encryption\KeyManager */
 	protected $keyManager;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \OCA\Encryption\Util */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OCA\Encryption\Util */
 	protected $util;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \OCP\IUserManager */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OCP\IUserManager */
 	protected $userManager;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \OCA\Encryption\Users\Setup */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OCA\Encryption\Users\Setup */
 	protected $setupUser;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \OC\Files\View */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OC\Files\View */
 	protected $view;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \OCP\IConfig */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OCP\IConfig */
 	protected $config;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \OCP\Mail\IMailer */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OCP\Mail\IMailer */
 	protected $mailer;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \OCP\IL10N */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OCP\IL10N */
 	protected $l;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \Symfony\Component\Console\Helper\QuestionHelper */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \Symfony\Component\Console\Helper\QuestionHelper */
 	protected $questionHelper;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \Symfony\Component\Console\Input\InputInterface */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \Symfony\Component\Console\Input\InputInterface */
 	protected $inputInterface;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \Symfony\Component\Console\Output\OutputInterface */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \Symfony\Component\Console\Output\OutputInterface */
 	protected $outputInterface;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \OCP\UserInterface */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OCP\UserInterface */
 	protected $userInterface;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject | \OCP\Security\ISecureRandom  */
+	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OCP\Security\ISecureRandom  */
 	protected $secureRandom;
 
 	/** @var  EncryptAll */
@@ -144,7 +144,7 @@ class EncryptAllTest extends TestCase {
 	}
 
 	public function testEncryptAll() {
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[
@@ -173,7 +173,7 @@ class EncryptAllTest extends TestCase {
 	}
 
 	public function testEncryptAllWithMasterKey() {
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[
@@ -203,7 +203,7 @@ class EncryptAllTest extends TestCase {
 	}
 
 	public function testCreateKeyPairs() {
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[
@@ -252,7 +252,7 @@ class EncryptAllTest extends TestCase {
 	}
 
 	public function testCreateMailBody() {
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[
@@ -287,7 +287,7 @@ class EncryptAllTest extends TestCase {
 	 * @dataProvider providerSendMailStatus
 	 */
 	public function testSendPasswordsByMail($sendStatus) {
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[
@@ -357,7 +357,7 @@ class EncryptAllTest extends TestCase {
 
 	public function testOutputPasswords() {
 		$this->view = new View('/');
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[
@@ -397,7 +397,7 @@ class EncryptAllTest extends TestCase {
 	 * @dataProvider providerMasterKeyEncryptionStatus
 	 */
 	public function testEncryptAllUsersFiles($masterKeyEnabled) {
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[
@@ -431,7 +431,7 @@ class EncryptAllTest extends TestCase {
 	}
 
 	public function testEncryptUsersFiles() {
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[
@@ -494,7 +494,7 @@ class EncryptAllTest extends TestCase {
 	}
 
 	public function testEncryptUsersFilesIncomingShares() {
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[
@@ -544,7 +544,7 @@ class EncryptAllTest extends TestCase {
 		$view->touch('bar.txt');
 		$oldFileInfo = $view->getFileInfo('bar.txt');
 
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[
@@ -584,7 +584,7 @@ class EncryptAllTest extends TestCase {
 	public function testEncryptFilePositiveTest() {
 		$path = 'test.txt';
 
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[
@@ -618,7 +618,7 @@ class EncryptAllTest extends TestCase {
 	public function testEncryptFileFails() {
 		$path = 'test.txt';
 
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[
@@ -652,7 +652,7 @@ class EncryptAllTest extends TestCase {
 
 	/** A dummy test for getTimeStamp  */
 	public function testGetTimeStamp() {
-		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
+		/** @var EncryptAll  | \PHPUnit\Framework\MockObject\MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
 			->setConstructorArgs(
 				[

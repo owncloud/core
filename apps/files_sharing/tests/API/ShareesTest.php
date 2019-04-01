@@ -53,28 +53,28 @@ class ShareesTest extends TestCase {
 	/** @var ShareesController */
 	protected $sharees;
 
-	/** @var \OCP\IUserManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IUserManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
 
-	/** @var \OCP\IGroupManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IGroupManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $groupManager;
 
-	/** @var \OCP\Contacts\IManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\Contacts\IManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $contactsManager;
 
-	/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject */
 	protected $session;
 
-	/** @var \OCP\IConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
-	/** @var \OCP\IRequest|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IRequest|\PHPUnit\Framework\MockObject\MockObject */
 	protected $request;
 
-	/** @var \OCP\Share\IManager|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\Share\IManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $shareManager;
 
-	/** @var SharingBlacklist|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var SharingBlacklist|\PHPUnit\Framework\MockObject\MockObject */
 	protected $sharingBlacklist;
 
 	protected function setUp() {
@@ -132,7 +132,7 @@ class ShareesTest extends TestCase {
 	 * @param string $displayName
 	 * @param string $email
 	 * @param array $terms Search terms for the user
-	 * @return \OCP\IUser|\PHPUnit_Framework_MockObject_MockObject
+	 * @return \OCP\IUser|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getUserMock($uid, $displayName, $email = null, $terms = []) {
 		$user = $this->getMockBuilder(IUser::class)
@@ -160,7 +160,7 @@ class ShareesTest extends TestCase {
 
 	/**
 	 * @param string $gid
-	 * @return \OCP\IGroup|\PHPUnit_Framework_MockObject_MockObject
+	 * @return \OCP\IGroup|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getGroupMock($gid, $displayName = null) {
 		$group = $this->getMockBuilder(IGroup::class)
@@ -1510,7 +1510,7 @@ class ShareesTest extends TestCase {
 	 * @param string $message
 	 */
 	public function testSearchInvalid($message, $search = '', $itemType = null, $page = 1, $perPage = 200) {
-		/** @var ShareesController | \PHPUnit_Framework_MockObject_MockObject $sharees */
+		/** @var ShareesController | \PHPUnit\Framework\MockObject\MockObject $sharees */
 		$sharees = $this->getMockBuilder(ShareesController::class)
 			->setConstructorArgs([
 				'files_sharing',
@@ -1660,7 +1660,7 @@ class ShareesTest extends TestCase {
 	 */
 	public function testSearchSharees($searchTerm, $itemType, array $shareTypes, $page, $perPage, $shareWithGroupOnly,
 									  $mockedUserResult, $mockedGroupsResult, $mockedRemotesResult, $expected, $nextLink) {
-		/** @var \PHPUnit_Framework_MockObject_MockObject | ShareesController $sharees */
+		/** @var \PHPUnit\Framework\MockObject\MockObject | ShareesController $sharees */
 		$sharees = $this->getMockBuilder(ShareesController::class)
 			->setConstructorArgs([
 				'files_sharing',
@@ -1919,7 +1919,7 @@ class ShareesTest extends TestCase {
 			->with($user->getUID())
 			->willReturn(true);
 
-		/** @var ShareesController | \PHPUnit_Framework_MockObject_MockObject $sharees */
+		/** @var ShareesController | \PHPUnit\Framework\MockObject\MockObject $sharees */
 		$sharees = $this->getMockBuilder(ShareesController::class)
 			->setConstructorArgs([
 				'files_sharing',

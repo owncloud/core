@@ -25,10 +25,10 @@ use OCP\IUserManager;
 
 class QuotaTest extends \Test\TestCase {
 
-	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject  */
+	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject  */
 	private $userManager;
 
-	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject  */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject  */
 	protected $config;
 
 	protected function setUp() {
