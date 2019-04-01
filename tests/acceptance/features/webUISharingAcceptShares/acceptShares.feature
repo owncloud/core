@@ -238,7 +238,6 @@ Feature: accept/decline shares coming from internal users
     Then folder "simple-folder-renamed" should be in state "" in the shared-with-you page on the webUI
     And folder "simple-folder-renamed" should be listed in the files page on the webUI
 
-  @issue-34705
   Scenario: User-based accepting is disabled while global is enabled
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
     And user "user1" has logged in using the webUI
@@ -247,14 +246,11 @@ Feature: accept/decline shares coming from internal users
     And user "user2" shares folder "/simple-folder" with group "grp1" using the sharing API
     And user "user2" shares file "/testimage.jpg" with user "user1" using the sharing API
     And the user browses to the files page
-    Then folder "simple-folder (2)" should be listed on the webUI
-    #Then folder "simple-folder (2)" should not be listed on the webUI
+    Then folder "simple-folder (2)" should not be listed on the webUI
     And file "testimage (2).jpg" should not be listed on the webUI
-    And folder "simple-folder (2)" should be listed in the shared-with-you page on the webUI
-    #But folder "simple-folder" should be listed in the shared-with-you page on the webUI
+    But folder "simple-folder" should be listed in the shared-with-you page on the webUI
     And file "testimage.jpg" should be listed in the shared-with-you page on the webUI
-    And folder "simple-folder (2)" should be in state "" in the shared-with-you page on the webUI
-    #And folder "simple-folder" should be in state "Pending" in the shared-with-you page on the webUI
+    And folder "simple-folder" should be in state "Pending" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI
 
   Scenario: User-based accepting is enabled while global is enabled
