@@ -39,6 +39,17 @@ if (!\OC\Files\Filesystem::file_exists($filename)) {
 	exit;
 }
 
+//Dispatch an event to see if any apps have problem with download
+$event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['path' => $filename]);
+OC::$server->getEventDispatcher()->dispatch('file.beforeGetDirect', $event);
+if ($event->hasArgument('errorMessage')) {
+	\header("HTTP/1.0 403 Forbidden");
+	$tmpl = new OCP\Template('', '403', 'guest');
+	$tmpl->assign('file', $filename);
+	$tmpl->printPage();
+	exit;
+}
+
 $ftype=\OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
 
 \header('Content-Type:'.$ftype);

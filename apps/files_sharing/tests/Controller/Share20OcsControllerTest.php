@@ -54,6 +54,7 @@ use OCP\Files\Cache\ICache;
 use OCP\Files\File;
 use OCA\Files_Sharing\External\Storage;
 use OCP\Share\IShare;
+use OCP\Share\IAttributes as IShareAttributes;
 use OC\Files\Cache\Cache;
 
 /**
@@ -112,6 +113,10 @@ class Share20OcsControllerTest extends TestCase {
 			->expects($this->any())
 			->method('shareApiEnabled')
 			->willReturn(true);
+		$this->shareManager
+			->expects($this->any())
+			->method('newShare')
+			->willReturn($this->newShare());
 		$this->groupManager = $this->createMock(IGroupManager::class);
 		$this->userManager = $this->createMock(IUserManager::class);
 		$this->request = $this->createMock(IRequest::class);
@@ -204,6 +209,25 @@ class Share20OcsControllerTest extends TestCase {
 		return $groupMock;
 	}
 
+	private function mockShareAttributes() {
+		$formattedShareAttributes = [
+			[
+				[
+					"scope" => "permissions",
+					"key" => "download",
+					"enabled" => true
+				]
+			]
+		];
+
+		$shareAttributes = $this->createMock(IShareAttributes::class);
+		$shareAttributes->method('toArray')->willReturn($formattedShareAttributes);
+		$shareAttributes->method('getAttribute')->with('permissions', 'download')->willReturn(true);
+
+		// send both IShare attributes class and expected json string
+		return [$shareAttributes, \json_encode($formattedShareAttributes)];
+	}
+
 	public function testDeleteShareShareNotFound() {
 		$this->shareManager
 			->expects($this->exactly(2))
@@ -294,7 +318,7 @@ class Share20OcsControllerTest extends TestCase {
 
 	public function createShare($id, $shareType, $sharedWith, $sharedBy, $shareOwner, $path, $permissions,
 								$shareTime, $expiration, $parent, $target, $mail_send, $token=null,
-								$password=null, $name=null) {
+								$password=null, $name=null, $attributes=null) {
 		$share = $this->createMock(IShare::class);
 		$share->method('getId')->willReturn($id);
 		$share->method('getShareType')->willReturn($shareType);
@@ -303,6 +327,7 @@ class Share20OcsControllerTest extends TestCase {
 		$share->method('getShareOwner')->willReturn($shareOwner);
 		$share->method('getNode')->willReturn($path);
 		$share->method('getPermissions')->willReturn($permissions);
+		$share->method('getAttributes')->willReturn($attributes);
 		$time = new \DateTime();
 		$time->setTimestamp($shareTime);
 		$share->method('getShareTime')->willReturn($time);
@@ -353,6 +378,8 @@ class Share20OcsControllerTest extends TestCase {
 		$folder->method('getParent')->willReturn($parentFolder);
 		$folder->method('getMimeType')->willReturn('myFolderMimeType');
 
+		[$shareAttributes, $shareAttributesReturnJson] = $this->mockShareAttributes();
+
 		// File shared with user
 		$share = $this->createShare(
 			100,
@@ -366,7 +393,11 @@ class Share20OcsControllerTest extends TestCase {
 			null,
 			6,
 			'target',
-			0
+			0,
+			null,
+			null,
+			null,
+			$shareAttributes
 		);
 		$expected = [
 			'id' => 100,
@@ -384,6 +415,7 @@ class Share20OcsControllerTest extends TestCase {
 			'token' => null,
 			'expiration' => null,
 			'permissions' => 4,
+			'attributes' => $shareAttributesReturnJson,
 			'stime' => 5,
 			'parent' => null,
 			'storage_id' => 'STORAGE',
@@ -409,7 +441,11 @@ class Share20OcsControllerTest extends TestCase {
 			null,
 			6,
 			'target',
-			0
+			0,
+			null,
+			null,
+			null,
+			$shareAttributes
 		);
 		$expected = [
 			'id' => 101,
@@ -426,6 +462,7 @@ class Share20OcsControllerTest extends TestCase {
 			'token' => null,
 			'expiration' => null,
 			'permissions' => 4,
+			'attributes' => $shareAttributesReturnJson,
 			'stime' => 5,
 			'parent' => null,
 			'storage_id' => 'STORAGE',
@@ -472,6 +509,7 @@ class Share20OcsControllerTest extends TestCase {
 			'token' => 'token',
 			'expiration' => '2000-01-02 00:00:00',
 			'permissions' => 4,
+			'attributes' => null,
 			'stime' => 5,
 			'parent' => null,
 			'storage_id' => 'STORAGE',
@@ -2440,6 +2478,7 @@ class Share20OcsControllerTest extends TestCase {
 		$initiator->method('getDisplayName')->willReturn('initiatorDN');
 		$recipient = $this->createMock(IUser::class);
 		$recipient->method('getDisplayName')->willReturn('recipientDN');
+		[$shareAttributes, $shareAttributesReturnJson] = $this->mockShareAttributes();
 
 		$result = [];
 
@@ -2449,6 +2488,7 @@ class Share20OcsControllerTest extends TestCase {
 			->setSharedBy('initiator')
 			->setShareOwner('owner')
 			->setPermissions(\OCP\Constants::PERMISSION_READ)
+			->setAttributes($shareAttributes)
 			->setNode($file)
 			->setShareTime(new \DateTime('2000-01-01T00:01:02'))
 			->setTarget('myTarget')
@@ -2462,6 +2502,7 @@ class Share20OcsControllerTest extends TestCase {
 				'uid_owner' => 'initiator',
 				'displayname_owner' => 'initiator',
 				'permissions' => 1,
+				'attributes' => $shareAttributesReturnJson,
 				'stime' => 946684862,
 				'parent' => null,
 				'expiration' => null,
@@ -2491,6 +2532,7 @@ class Share20OcsControllerTest extends TestCase {
 				'uid_owner' => 'initiator',
 				'displayname_owner' => 'initiatorDN',
 				'permissions' => 1,
+				'attributes' => $shareAttributesReturnJson,
 				'stime' => 946684862,
 				'parent' => null,
 				'expiration' => null,
@@ -2536,6 +2578,7 @@ class Share20OcsControllerTest extends TestCase {
 				'uid_owner' => 'initiator',
 				'displayname_owner' => 'initiator',
 				'permissions' => 1,
+				'attributes' => null,
 				'stime' => 946684862,
 				'parent' => null,
 				'expiration' => null,
@@ -2576,6 +2619,7 @@ class Share20OcsControllerTest extends TestCase {
 				'uid_owner' => 'initiator',
 				'displayname_owner' => 'initiator',
 				'permissions' => 1,
+				'attributes' => null,
 				'stime' => 946684862,
 				'parent' => null,
 				'expiration' => null,
@@ -2615,6 +2659,7 @@ class Share20OcsControllerTest extends TestCase {
 				'uid_owner' => 'initiator',
 				'displayname_owner' => 'initiator',
 				'permissions' => 1,
+				'attributes' => null,
 				'stime' => 946684862,
 				'parent' => null,
 				'expiration' => null,
@@ -2657,6 +2702,7 @@ class Share20OcsControllerTest extends TestCase {
 				'uid_owner' => 'initiator',
 				'displayname_owner' => 'initiator',
 				'permissions' => 1,
+				'attributes' => null,
 				'stime' => 946684862,
 				'parent' => null,
 				'expiration' => '2001-01-02 00:00:00',
@@ -2698,6 +2744,7 @@ class Share20OcsControllerTest extends TestCase {
 				'uid_owner' => 'initiator',
 				'displayname_owner' => 'initiator',
 				'permissions' => 1,
+				'attributes' => null,
 				'stime' => 946684862,
 				'parent' => null,
 				'expiration' => null,

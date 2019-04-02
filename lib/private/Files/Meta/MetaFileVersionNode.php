@@ -178,4 +178,13 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 		$preview->setKeepAspect($keepAspect);
 		return $preview->getPreview();
 	}
+
+	public function getStorage() {
+		return $this->storage;
+	}
+
+	public function isUpdateable() {
+		// Versions are not updateable
+		return false;
+	}
 }

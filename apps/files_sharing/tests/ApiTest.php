@@ -1005,8 +1005,11 @@ class ApiTest extends TestCase {
 			->setSharedBy(self::TEST_FILES_SHARING_API_USER1)
 			->setSharedWith(self::TEST_FILES_SHARING_API_USER2)
 			->setShareType(Share::SHARE_TYPE_USER)
-			->setPermissions(19);
+			->setPermissions(19)
+			->setAttributes($this->shareManager->newShare()->newAttributes());
 		$share1 = $this->shareManager->createShare($share1);
+		$this->assertEquals(19, $share1->getPermissions());
+		$this->assertEquals(null, $share1->getAttributes());
 
 		$share2 = $this->shareManager->newShare();
 		$share2->setNode($node1)
@@ -1014,12 +1017,20 @@ class ApiTest extends TestCase {
 			->setShareType(Share::SHARE_TYPE_LINK)
 			->setPermissions(1);
 		$share2 = $this->shareManager->createShare($share2);
+		$this->assertEquals(1, $share2->getPermissions());
 
 		// update permissions
-		$params = [];
-		$params['permissions'] = 1;
-
-		$request = $this->createRequest(['permissions' => 1]);
+		$params = [
+			'permissions' => '1',
+			'attributes' => [
+				[
+					'scope' => 'app1',
+					'key' => 'attr1',
+					'enabled' => 'true',
+				],
+			]
+		];
+		$request = $this->createRequest($params);
 		$ocs = $this->createOCS($request, self::TEST_FILES_SHARING_API_USER1);
 		$result = $ocs->updateShare($share1->getId());
 		$this->assertTrue($result->succeeded());
@@ -1029,6 +1040,7 @@ class ApiTest extends TestCase {
 
 		$share1 = $this->shareManager->getShareById('ocinternal:' . $share1->getId());
 		$this->assertEquals(1, $share1->getPermissions());
+		$this->assertEquals(true, $share1->getAttributes()->getAttribute('app1', 'attr1'));
 
 		// update password for link share
 		$this->assertNull($share2->getPassword());
