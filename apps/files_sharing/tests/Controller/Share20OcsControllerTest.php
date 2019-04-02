@@ -375,7 +375,7 @@ class Share20OcsControllerTest extends TestCase {
 		$folder->method('getParent')->willReturn($parentFolder);
 		$folder->method('getMimeType')->willReturn('myFolderMimeType');
 
-		[$shareAttributes, $shareAttributesReturnJson] = $this->mockShareAttributes();
+		list($shareAttributes, $shareAttributesReturnJson) = $this->mockShareAttributes();
 
 		// File shared with user
 		$share = $this->createShare(
@@ -2475,7 +2475,7 @@ class Share20OcsControllerTest extends TestCase {
 		$initiator->method('getDisplayName')->willReturn('initiatorDN');
 		$recipient = $this->createMock('\OCP\IUser');
 		$recipient->method('getDisplayName')->willReturn('recipientDN');
-		[$shareAttributes, $shareAttributesReturnJson] = $this->mockShareAttributes();
+		list($shareAttributes, $shareAttributesReturnJson) = $this->mockShareAttributes();
 
 		$result = [];
 

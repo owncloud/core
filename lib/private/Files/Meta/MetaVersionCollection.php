@@ -63,7 +63,7 @@ class MetaVersionCollection extends AbstractFolder {
 	 * @inheritdoc
 	 */
 	public function isShared() {
-		return false;
+		return $this->node->isShared();
 	}
 
 	public function getDirectoryListing() {
