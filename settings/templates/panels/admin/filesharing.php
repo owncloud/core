@@ -56,19 +56,31 @@
 	print_unescaped('checked="checked"');
 } ?> />
 		<label for="shareapiDefaultExpireDate"><?php p($l->t('Set default expiration date'));?></label><br/>
+		<span id="setDefaultExpireDate" class="indent <?php if ($_['allowLinks'] !== 'yes' || $_['shareDefaultExpireDateSet'] === 'no' || $_['shareAPIEnabled'] === 'no') {
+	p('hidden');
+}?>">
+			<?php p($l->t('Expire after ')); ?>
+			<input type="text" name='shareapi_expire_after_n_days' id="shareapiExpireAfterNDays" placeholder="<?php p('7')?>"
+				   value='<?php p($_['shareExpireAfterNDays']) ?>' />
+			<?php p($l->t('days')); ?><br/>
+			<?php if ($_['shareEnforceExpireDate'] === 'yes'): ?>
+				<input type="checkbox" name="shareapi_enforce_expire_date" id="shareapiEnforceExpireDate" class="checkbox" value="1" checked="checked" />
+			<?php else: ?>
+				<input type="checkbox" name="shareapi_enforce_expire_date" id="shareapiEnforceExpireDate" class="checkbox" value="1" />
+			<?php endif; ?>
+			<label class="indent" for="shareapiEnforceExpireDate"><?php p($l->t('Enforce expiration date'));?></label><br/>
+		</span>
 
 		<input type="checkbox" name="shareapi_allow_public_notification" id="allowPublicMailNotification" class="checkbox"
 			   value="1" <?php if ($_['allowPublicMailNotification'] == 'yes') {
 	print_unescaped('checked="checked"');
 } ?> />
 		<label for="allowPublicMailNotification"><?php p($l->t('Allow users to send mail notification for shared files'));?></label><br/>
-	<span id="publicMailNotificationLang" <?php if ($_['allowPublicMailNotification'] == 'no') {
-	print_unescaped('class="hidden"');
-} ?>>
-		<label><?php p($l->t('Language used for public mail notifications for shared files'));?></label>
-		<?php print_unescaped($_['publicMailNotificationLang']); ?>
-		<br>
-	</span>
+		<span id="publicMailNotificationLang" class="indent <?php if ($_['allowPublicMailNotification'] == 'no'): ?>hidden<?php endif; ?>">
+			<label><?php p($l->t('Language used for public mail notifications for shared files'));?></label>
+			<?php print_unescaped($_['publicMailNotificationLang']); ?>
+			<br>
+		</span>
 
 
 		<input type="checkbox" name="shareapi_allow_social_share" id="allowSocialShare" class="checkbox"
@@ -77,19 +89,6 @@
 } ?> />
 		<label for="allowSocialShare"><?php p($l->t('Allow users to share file via social media'));?></label><br/>
 
-	</p>
-	<p id="setDefaultExpireDate" class="double-indent <?php if ($_['allowLinks'] !== 'yes' || $_['shareDefaultExpireDateSet'] === 'no' || $_['shareAPIEnabled'] === 'no') {
-	p('hidden');
-}?>">
-		<?php p($l->t('Expire after ')); ?>
-		<input type="text" name='shareapi_expire_after_n_days' id="shareapiExpireAfterNDays" placeholder="<?php p('7')?>"
-			   value='<?php p($_['shareExpireAfterNDays']) ?>' />
-		<?php p($l->t('days')); ?>
-		<input type="checkbox" name="shareapi_enforce_expire_date" id="shareapiEnforceExpireDate" class="checkbox"
-			   value="1" <?php if ($_['shareEnforceExpireDate'] === 'yes') {
-	print_unescaped('checked="checked"');
-} ?> />
-		<label for="shareapiEnforceExpireDate"><?php p($l->t('Enforce expiration date'));?></label><br/>
 	</p>
 	<p class="<?php if ($_['shareAPIEnabled'] === 'no') {
 	p('hidden');

@@ -934,7 +934,7 @@ class ManagerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException  \InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function testvalidateExpirationDateEnforceButNotSetNewShare() {
 		$share = $this->manager->newShare();
