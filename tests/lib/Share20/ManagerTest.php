@@ -939,24 +939,19 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertNull($share->getExpirationDate());
 	}
 
+	/**
+	 * @expectedException  \InvalidArgumentException
+	 */
 	public function testvalidateExpirationDateEnforceButNotSetNewShare() {
 		$share = $this->manager->newShare();
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
-				['core', 'shareapi_enforce_expire_date', 'no', 'yes'],
-				['core', 'shareapi_expire_after_n_days', '7', '3'],
 				['core', 'shareapi_default_expire_date', 'no', 'yes'],
+				['core', 'shareapi_enforce_expire_date', 'no', 'yes'],
 			]));
 
-		$expected = new \DateTime();
-		$expected->setTime(0, 0, 0);
-		$expected->add(new \DateInterval('P3D'));
-
 		$this->invokePrivate($this->manager, 'validateExpirationDate', [$share]);
-
-		$this->assertNotNull($share->getExpirationDate());
-		$this->assertEquals($expected, $share->getExpirationDate());
 	}
 
 	public function testvalidateExpirationDateEnforceToFarIntoFuture() {
@@ -969,6 +964,7 @@ class ManagerTest extends \Test\TestCase {
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
+				['core', 'shareapi_default_expire_date', 'no', 'yes'],
 				['core', 'shareapi_enforce_expire_date', 'no', 'yes'],
 				['core', 'shareapi_expire_after_n_days', '7', '3'],
 			]));
