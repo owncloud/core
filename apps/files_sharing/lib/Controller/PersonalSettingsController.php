@@ -30,8 +30,9 @@ use OCP\IUserSession;
  */
 
 class PersonalSettingsController extends Controller {
-	const USERCONFIGS = [
-		'auto_accept_share'
+	const USER_CONFIGS = [
+		'auto_accept_share',
+		'allow_share_dialog_user_enumeration'
 	];
 
 	/** @var IConfig $config */
@@ -85,7 +86,7 @@ class PersonalSettingsController extends Controller {
 	 * @return bool
 	 */
 	private function validateParameter($key, $value) {
-		return \in_array($key, self::USERCONFIGS) && ($value === 'yes' || $value === 'no');
+		return \in_array($key, self::USER_CONFIGS) && ($value === 'yes' || $value === 'no');
 	}
 
 	/**

@@ -36,9 +36,9 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	protected $personalSharingPanelDivXpath
 		= '//div[@id="OCA\Files_Sharing\Panels\Personal\PersonalPanel"]';
 	protected $autoAcceptLocalSharesCheckboxXpath
-		= '//label[@for="userAutoAcceptShareInput"]';
+		= '//label[@for="auto_accept_share_input"]';
 	protected $autoAcceptLocalSharesCheckboxXpathCheckboxId
-		= 'userAutoAcceptShareInput';
+		= 'auto_accept_share_input';
 	protected $autoAcceptFederatedSharesCheckboxXpath
 		= '//label[@for="userAutoAcceptShareTrustedInput"]';
 	protected $autoAcceptFederatedSharesCheckboxXpathCheckboxId
