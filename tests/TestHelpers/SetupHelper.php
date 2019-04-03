@@ -496,7 +496,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 		//find the absolute path of the currently set skeletondirectory
 		$occResponse = self::runOcc(
-			['config:system:get', 'skeletondirectory']
+			['config:system:get', 'skeletondirectory'],
+			$adminUsername,
+			$adminPassword,
+			$baseUrl
 		);
 		if ((int) $occResponse['code'] !== 0) {
 			throw new \Exception(
