@@ -393,6 +393,12 @@ trait AppConfiguration {
 			if (($server === 'LOCAL') || $this->federatedServerExists()) {
 				$this->usingServer($server);
 				$this->resetAppConfigs();
+				$this->coreConfigs[$server] = AppConfigHelper::getAppConfigs(
+					$this->getBaseUrl(),
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					'core'
+				);
 			}
 		}
 		$this->usingServer($previousServer);
@@ -414,6 +420,28 @@ trait AppConfiguration {
 				$this->usingServer($server);
 				if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {
 					$this->modifyAppConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
+				}
+				$currentCoreConfigs = AppConfigHelper::getAppConfigs(
+					$this->getBaseUrl(),
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					'core'
+				);
+				foreach ($currentCoreConfigs as $config) {
+					$found = false;
+					foreach ($this->coreConfigs[$server] as $originalConfig) {
+						if ($config['configkey'] === $originalConfig['configkey']) {
+							$found = true;
+							break;
+						}
+					}
+					if ($found === false) {
+						AppConfigHelper::deleteAppConfig(
+							$this->getBaseUrl(),
+							$this->getAdminUsername(),
+							$this->getAdminPassword(), 'core', $config['configkey']
+						);
+					}
 				}
 			}
 		}
