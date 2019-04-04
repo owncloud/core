@@ -445,7 +445,7 @@ class FilesPlugin extends ServerPlugin {
 	 * @param $secretToken
 	 */
 	private function setSecretCookie($secretName, $secretToken) {
-		if ($secretToken == '-1' || (!isset($secretToken[32])
+		if ($secretToken === '-1' || (!isset($secretToken[32])
 			&& \preg_match('!^[a-zA-Z0-9]+$!', $secretToken) === 1)) {
 			// FIXME: use $response->setHeader() instead
 			\setcookie($secretName, $secretToken, \time() + 20, '/');
