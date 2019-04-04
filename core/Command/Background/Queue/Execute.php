@@ -26,10 +26,12 @@ use OC\Log\CommandLogger;
 use OCP\BackgroundJob\IJobList;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class Execute extends Command {
 
@@ -51,7 +53,8 @@ class Execute extends Command {
 			->setName('background:queue:execute')
 			->setDescription("Run a single background job from the queue")
 			->addArgument('Job ID', InputArgument::REQUIRED, 'ID of the job to run')
-			->addOption('force', 'f', InputOption::VALUE_NONE, 'Force run the job even if within timing interval');
+			->addOption('force', 'f', InputOption::VALUE_NONE, 'Force run the job even if within timing interval')
+			->addOption('accept-warning', null, InputOption::VALUE_NONE, 'No warning about the usage of this command will be displayed');
 	}
 
 	/**
@@ -59,6 +62,20 @@ class Execute extends Command {
 	 * @param OutputInterface $output
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
+		if (!$input->getOption('accept-warning')) {
+			$helper = new QuestionHelper();
+			$q = <<<EOS
+<question>This command is for maintenance and support purposes. 
+This will run the specified background job now. Regular scheduled runs of the job will
+continue to happen at their scheduled times. 
+If you still want to use this command please confirm the usage by entering: yes
+</question>
+EOS;
+			if (!$helper->ask($input, $output, new ConfirmationQuestion($q, false))) {
+				return 1;
+			}
+		}
+
 		// Get the job to run
 		$jobId = $input->getArgument('Job ID');
 		// Try to find the job
