@@ -38,7 +38,7 @@ class Version20181220085457 implements ISchemaMigration {
 			if (!$shareTable->hasColumn('attributes')) {
 				$shareTable->addColumn(
 					'attributes',
-					Type::JSON,
+					Type::TEXT,
 					[
 						'default' => null,
 						'notnull' => false
