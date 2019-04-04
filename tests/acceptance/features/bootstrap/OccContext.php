@@ -374,13 +374,31 @@ class OccContext implements Context {
 	 * @When the administrator scans the filesystem for group :group using the occ command
 	 * @Given the administrator has scanned the filesystem for group :group
 	 *
-	 * @param string $group
+	 * Used to test the --group option of the files:scan command
+	 *
+	 * @param string $group a single group name
 	 *
 	 * @return void
 	 */
 	public function theAdministratorScansTheFilesystemForGroupUsingTheOccCommand($group) {
 		$this->invokingTheCommand(
 			"files:scan --group=$group"
+		);
+	}
+
+	/**
+	 * @When the administrator scans the filesystem for groups list :groups using the occ command
+	 * @Given the administrator has scanned the filesystem for groups list :groups
+	 *
+	 * Used to test the --groups option of the files:scan command
+	 *
+	 * @param string $groups a comma-separated list of group names
+	 *
+	 * @return void
+	 */
+	public function theAdministratorScansTheFilesystemForGroupsUsingTheOccCommand($groups) {
+		$this->invokingTheCommand(
+			"files:scan --groups=$groups"
 		);
 	}
 
