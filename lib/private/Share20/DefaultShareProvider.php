@@ -395,59 +395,36 @@ class DefaultShareProvider implements IShareProvider {
 				throw new ProviderException('Recipient not in receiving group');
 			}
 
-			// Check if there is a usergroup share
-			$qb = $this->dbConn->getQueryBuilder();
-			$stmt = $qb->select('id')
-				->from('share')
-				->where($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_USERGROUP)))
-				->andWhere($qb->expr()->eq('share_with', $qb->createNamedParameter($recipient)))
-				->andWhere($qb->expr()->eq('parent', $qb->createNamedParameter($share->getId())))
-				->andWhere($qb->expr()->orX(
-					$qb->expr()->eq('item_type', $qb->createNamedParameter('file')),
-					$qb->expr()->eq('item_type', $qb->createNamedParameter('folder'))
-				))
-				->setMaxResults(1)
-				->execute();
-
-			$data = $stmt->fetch();
-			$stmt->closeCursor();
+			$node = $share->getNode();
 
 			$shareAttributes = $this->formatShareAttributes(
 				$share->getAttributes()
 			);
 
-			if ($data === false) {
-				// No usergroup share yet. Create one.
-				$qb = $this->dbConn->getQueryBuilder();
-				$qb->insert('share')
-					->values([
-						'share_type' => $qb->createNamedParameter(self::SHARE_TYPE_USERGROUP),
-						'share_with' => $qb->createNamedParameter($recipient),
-						'uid_owner' => $qb->createNamedParameter($share->getShareOwner()),
-						'uid_initiator' => $qb->createNamedParameter($share->getSharedBy()),
-						'parent' => $qb->createNamedParameter($share->getId()),
-						'item_type' => $qb->createNamedParameter($share->getNode() instanceof File ? 'file' : 'folder'),
-						'item_source' => $qb->createNamedParameter($share->getNode()->getId()),
-						'file_source' => $qb->createNamedParameter($share->getNode()->getId()),
-						'file_target' => $qb->createNamedParameter($share->getTarget()),
-						'permissions' => $qb->createNamedParameter($share->getPermissions()),
-						'attributes' => $qb->createNamedParameter($shareAttributes),
-						'stime' => $qb->createNamedParameter($share->getShareTime()->getTimestamp()),
-						'accepted' => $qb->createNamedParameter($share->getState()),
-					])->execute();
-			} else {
-				// Already a usergroup share. Update it.
-				$qb = $this->dbConn->getQueryBuilder();
-				$qb->update('share')
-					->set('accepted', $qb->createNamedParameter($share->getState()))
-					->set('file_target', $qb->createNamedParameter($share->getTarget()))
-					// make sure to reset the permissions to the one of the parent share,
-					// as legacy entries with zero permissions might still exist
-					->set('permissions', $qb->createNamedParameter($share->getPermissions()))
-					->set('attributes', $qb->createNamedParameter($shareAttributes))
-					->where($qb->expr()->eq('id', $qb->createNamedParameter($data['id'])))
-					->execute();
-			}
+			// Check if there is a usergroup share
+			$this->dbConn->upsert(
+				'*PREFIX*share',
+				[
+					'share_type' => self::SHARE_TYPE_USERGROUP,
+					'share_with' => $recipient,
+					'parent' => $share->getId(),
+					'uid_owner' => $share->getShareOwner(),
+					'uid_initiator' => $share->getSharedBy(),
+					'item_type' => $node instanceof File ? 'file' : 'folder',
+					'item_source' => $node->getId(),
+					'file_source' => $node->getId(),
+					'file_target' => $share->getTarget(),
+					'attributes' => $shareAttributes,
+					'permissions' => $share->getPermissions(),
+					'stime' => $share->getShareTime()->getTimestamp(),
+					'accepted' => $share->getState(),
+				],
+				[
+					'share_type',
+					'share_with',
+					'parent'
+				]
+			);
 		} else {
 			throw new ProviderException('Can\'t update share of recipient for share type ' . $share->getShareType());
 		}
