@@ -8,25 +8,27 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- User-based option for "Automatically accept incoming shares" - [#34647](https://github.com/owncloud/core/pull/34647) [#34842](https://github.com/owncloud/core/pull/34842) [#34934](https://github.com/owncloud/core/issues/34934)
+- Support for extra share key-value attributes - [#34951](https://github.com/owncloud/core/issues/34951)
+- Internal permission to prevent file download when set in share attribute, for "secure view" feature  - [#34951](https://github.com/owncloud/core/issues/34951)
+- Support for automatically accepting incoming federated shares from trusted servers - [#34206](https://github.com/owncloud/core/issues/34206)
+- User option for automatically accepting incoming shares - [#34647](https://github.com/owncloud/core/pull/34647) [#34842](https://github.com/owncloud/core/pull/34842) [#34934](https://github.com/owncloud/core/issues/34934)
+- User option for automatically accepting incoming federated shares - [#34706](https://github.com/owncloud/core/issues/34706)
+- User option to opt-out autocomplete in share dialog - [#34942](https://github.com/owncloud/core/issues/34942)
 - Add before-after share link auth events - [#34399](https://github.com/owncloud/core/issues/34399)
 - Log broken smb config params for easier debugging - [#34056](https://github.com/owncloud/core/issues/34056)
 - Add support for detecting library mime types - [#34082](https://github.com/owncloud/core/issues/34082)
-- Support for automatically accepting incoming federated shares from trusted servers - [#34206](https://github.com/owncloud/core/issues/34206)
-- User option for automatically accepting incoming federated shares - [#34706](https://github.com/owncloud/core/issues/34706)
 - Extend repair command to be able to list repair steps and run them individually - [#34499](https://github.com/owncloud/core/issues/34499)
 - Added CORS headers for many existing API calls, required for Phoenix  - [#34476](https://github.com/owncloud/core/issues/34476)
 - Encryption now supports working with a Hardware Security Module - [#34527](https://github.com/owncloud/core/issues/34527)
 - Command for first run wizard to reset for all users - [firstrunwizard/#83](https://github.com/owncloud/firstrunwizard/pull/83)
 - Inform admin about the need to login again after changing the master encryption key - [#34596](https://github.com/owncloud/core/issues/34596)
 - Added checkboxes to hide quota and password - [#34479](https://github.com/owncloud/core/issues/34479)
-- New option to allow users to configure automatically accept incoming local shares - [#34647](https://github.com/owncloud/core/issues/34647)
 - By default the "apps-external" directory is included in config.php during installation - [#34656](https://github.com/owncloud/core/issues/34656) [#34902](https://github.com/owncloud/core/issues/34902)
 - Added files:scan --group and --groups options - [#34754](https://github.com/owncloud/core/issues/34754)
 - Allow admins to enable medial search on group and user - [#34779](https://github.com/owncloud/core/issues/34779)
 - Add composer cleaner - [#34784](https://github.com/owncloud/core/issues/34784)
 - Add events for user preference changes - [#34820](https://github.com/owncloud/core/issues/34820)
-- Add occ command to poll incoming federated shares for updates - [#34933](https://github.com/owncloud/core/issues/34933)
+- Add occ command to poll incoming federated shares for updates - [#34933](https://github.com/owncloud/core/issues/34933) [#34959](https://github.com/owncloud/core/issues/34959)
 
 ### Changed
 
@@ -53,7 +55,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump phpseclib/phpseclib from 2.0.13 to 2.0.15 - [#34285](https://github.com/owncloud/core/issues/34285) [#34741](https://github.com/owncloud/core/issues/34741)
 - Bump pimple/pimple from 3.0.2 to 3.2.3 - [#31753](https://github.com/owncloud/core/issues/31753)
 - Bump sinon from 7.1.1 to 7.3.1 in /build - [#34881](https://github.com/owncloud/core/issues/34881) [#34943](https://github.com/owncloud/core/issues/34943)
-- Bump symfony v3.4.20 => v3.4.23 - [#34042](https://github.com/owncloud/core/issues/34042) [#34663](https://github.com/owncloud/core/issues/34663)
+- Bump symfony v3.4.20 => v3.4.24 - [#34042](https://github.com/owncloud/core/issues/34042) [#34663](https://github.com/owncloud/core/issues/34663) [#34954](https://github.com/owncloud/core/issues/34954)
 - Bump symfony/process from 3.4.21 to 3.4.22 - [#34407](https://github.com/owncloud/core/issues/34407)
 - Bump symfony/translation from 3.4.21 to 3.4.22 - [#34406](https://github.com/owncloud/core/issues/34406)
 - Bump symfony/console from 3.4.21 to 3.4.22 - [#34404](https://github.com/owncloud/core/issues/34404)
@@ -86,6 +88,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- Prevent concurrent updates in group shares to avoid duplicate entries - [#34769](https://github.com/owncloud/core/issues/34769)
+- Calender invitation now uses actual sender name - [#34901](https://github.com/owncloud/core/issues/34901)
+- Fix public link share default expiration behavior - [#34971](https://github.com/owncloud/core/issues/34971)
+- Improve files error handling on download - [#34886](https://github.com/owncloud/core/issues/34886)
+- Directly honour robots.txt if htaccess.RewriteBase is set - [#34949](https://github.com/owncloud/core/issues/34949)
 - Reduce sharing query size by properly reusing the query builder - [#34915](https://github.com/owncloud/core/issues/34915)
 - Tar download support for file names longer than 99 chars - [#34615](https://github.com/owncloud/core/issues/34615)
 - Fix Webdav error page, include CSP and message - [#34817](https://github.com/owncloud/core/issues/34817)
