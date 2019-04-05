@@ -159,7 +159,8 @@ class Application extends App {
 				$c->getServer()->getUrlGenerator(),
 				$c->getServer()->getEventDispatcher(),
 				$c->getServer()->getShareManager(),
-				$c->query(NotificationPublisher::class)
+				$c->query(NotificationPublisher::class),
+				$c->getServer()->getUserSession()
 			);
 		});
 

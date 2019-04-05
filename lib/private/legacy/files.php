@@ -138,7 +138,7 @@ class OC_Files {
 			$event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['dir' => $dir, 'files' => $files, 'run' => true]);
 			OC::$server->getEventDispatcher()->dispatch('file.beforeCreateZip', $event);
 			if (($event->getArgument('run') === false) or ($event->hasArgument('errorMessage'))) {
-				throw new \OC\ForbiddenException("Access denied: " . $event->getArgument('errorMessage'));
+				throw new \OC\ForbiddenException($event->getArgument('errorMessage'));
 			}
 
 			$streamer = new Streamer();
@@ -181,7 +181,10 @@ class OC_Files {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
 			$l = \OC::$server->getL10N('core');
-			\OC_Template::printErrorPage($l->t('File cannot be read'), $ex->getMessage(), 403);
+			\OC_Template::printErrorPage($l->t('Access to this resource or one of its sub-items has been denied.'), $ex->getMessage(), 403);
+		} catch (\OC\ForbiddenException $ex) {
+			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
+			\OC_Template::printErrorPage('Access denied', $ex->getMessage(), 403);
 		} catch (\Exception $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
@@ -190,7 +193,7 @@ class OC_Files {
 			if ($event->hasArgument('message')) {
 				$hint .= ' ' . $event->getArgument('message');
 			}
-			\OC_Template::printErrorPage($l->t('File cannot be read'), $hint);
+			\OC_Template::printErrorPage($l->t('File cannot be downloaded'), $hint);
 		}
 	}
 
@@ -249,6 +252,7 @@ class OC_Files {
 	 * @param string $name
 	 * @param string $dir
 	 * @param array $params ; 'head' boolean to only send header of the request ; 'range' http range header
+	 * @throws \OC\ForbiddenException
 	 */
 	private static function getSingleFile($view, $dir, $name, $params) {
 		$filename = $dir . '/' . $name;
@@ -261,8 +265,11 @@ class OC_Files {
 			$rangeArray = self::parseHttpRangeHeader(\substr($params['range'], 6),
 								 \OC\Files\Filesystem::filesize($filename));
 		}
-		
-		if (\OC\Files\Filesystem::isReadable($filename)) {
+
+		$event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['path' => $filename]);
+		OC::$server->getEventDispatcher()->dispatch('file.beforeGetDirect', $event);
+
+		if (\OC\Files\Filesystem::isReadable($filename) && !$event->hasArgument('errorMessage')) {
 			self::sendHeaders($filename, $name, $rangeArray);
 		} elseif (!\OC\Files\Filesystem::file_exists($filename)) {
 			\header("HTTP/1.1 404 Not Found");
@@ -270,8 +277,12 @@ class OC_Files {
 			$tmpl->printPage();
 			exit();
 		} else {
-			\header("HTTP/1.1 403 Forbidden");
-			die('403 Forbidden');
+			if (!$event->hasArgument('errorMessage')) {
+				$msg = $event->getArgument('errorMessage');
+			} else {
+				$msg = 'Access denied';
+			}
+			throw new \OC\ForbiddenException($msg);
 		}
 		if (isset($params['head']) && $params['head']) {
 			return;

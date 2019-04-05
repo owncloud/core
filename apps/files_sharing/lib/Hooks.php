@@ -28,6 +28,7 @@ namespace OCA\Files_Sharing;
 use OC\Files\Filesystem;
 use OCP\IURLGenerator;
 use OCP\Files\IRootFolder;
+use OCP\IUserSession;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -46,6 +47,11 @@ class Hooks {
 	private $rootFolder;
 
 	/**
+	 * @var IUserSession|null
+	 */
+	private $userSession;
+
+	/**
 	 * @var EventDispatcher
 	 */
 	private $eventDispatcher;
@@ -60,13 +66,25 @@ class Hooks {
 	 */
 	private $notificationPublisher;
 
+	/**
+	 * Hooks constructor.
+	 *
+	 * @param IRootFolder $rootFolder
+	 * @param IURLGenerator $urlGenerator
+	 * @param EventDispatcher $eventDispatcher
+	 * @param \OCP\Share\IManager $shareManager
+	 * @param NotificationPublisher $notificationPublisher
+	 * @param IUserSession|null $userSession
+	 */
 	public function __construct(
 		IRootFolder $rootFolder,
 		IUrlGenerator $urlGenerator,
 		EventDispatcher $eventDispatcher,
 		\OCP\Share\IManager $shareManager,
-		NotificationPublisher $notificationPublisher
+		NotificationPublisher $notificationPublisher,
+		$userSession
 	) {
+		$this->userSession = $userSession;
 		$this->rootFolder = $rootFolder;
 		$this->urlGenerator = $urlGenerator;
 		$this->eventDispatcher = $eventDispatcher;
@@ -131,6 +149,65 @@ class Hooks {
 				$this->notificationPublisher->discardNotification($shareObject);
 			}
 		);
+
+		$this->eventDispatcher->addListener(
+			'file.beforeGetDirect',
+			function (GenericEvent $event) {
+				$pathsToCheck[] = $event->getArgument('path');
+
+				// Check only for user/group shares. Don't restrict e.g. share links
+				if ($uid = $this->getCurrentUserUid()) {
+					$viewOnlyHandler = new ViewOnly(
+						$this->rootFolder->getUserFolder($uid)
+					);
+					if (!$viewOnlyHandler->check($pathsToCheck)) {
+						$event->setArgument('errorMessage', 'Access to this resource or one of its sub-items has been denied.');
+					}
+				}
+			}
+		);
+
+		$this->eventDispatcher->addListener(
+			'file.beforeCreateZip',
+			function (GenericEvent $event) {
+				$dir = $event->getArgument('dir');
+				$files = $event->getArgument('files');
+
+				$pathsToCheck = [];
+				if (\is_array($files)) {
+					foreach ($files as $file) {
+						$pathsToCheck[] = $dir . '/' . $file;
+					}
+				} elseif (\is_string($files)) {
+					$pathsToCheck[] = $dir . '/' . $files;
+				}
+
+				// Check only for user/group shares. Don't restrict e.g. share links
+				$uid = $this->getCurrentUserUid();
+				if ($uid !== null) {
+					$viewOnlyHandler = new ViewOnly(
+						$this->rootFolder->getUserFolder($uid)
+					);
+					if (!$viewOnlyHandler->check($pathsToCheck)) {
+						$event->setArgument('errorMessage', 'Access to this resource or one of its sub-items has been denied.');
+						$event->setArgument('run', false);
+					} else {
+						$event->setArgument('run', true);
+					}
+				} else {
+					$event->setArgument('run', true);
+				}
+			}
+		);
+	}
+
+	private function getCurrentUserUid() {
+		// User session can be null when installing oc and Hook is triggered, or
+		// user is not logged in
+		if ($this->userSession && $this->userSession->isLoggedIn()) {
+			return $this->userSession->getUser()->getUID();
+		}
+		return null;
 	}
 
 	private function filterSharesByFileId($shares, $fileId) {
