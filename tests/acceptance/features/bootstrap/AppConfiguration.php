@@ -24,6 +24,7 @@
 
 use TestHelpers\AppConfigHelper;
 use TestHelpers\OcsApiHelper;
+use TestHelpers\SetupHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -48,6 +49,11 @@ trait AppConfiguration {
 	 */
 	private $savedCapabilitiesChanges = [];
 
+	/**
+	 * @var array saved configuration of the system before test runs as reported
+	 *            by occ config:list
+	 */
+	private $savedConfigList = [];
 	/**
 	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to "([^"]*)"$/
 	 *
@@ -393,12 +399,11 @@ trait AppConfiguration {
 			if (($server === 'LOCAL') || $this->federatedServerExists()) {
 				$this->usingServer($server);
 				$this->resetAppConfigs();
-				$this->coreConfigs[$server] = AppConfigHelper::getAppConfigs(
-					$this->getBaseUrl(),
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					'core'
+				$result = SetupHelper::runOcc(
+					['config:list'], $this->getAdminUsername(),
+					$this->getAdminPassword(), $this->getBaseUrl(), $this->getOcPath()
 				);
+				$this->savedConfigList[$server] = \json_decode($result['stdOut'], true);
 			}
 		}
 		$this->usingServer($previousServer);
@@ -414,38 +419,61 @@ trait AppConfiguration {
 		$this->deleteTokenAuthEnforcedAfterScenario();
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
-		$previousServer = $this->currentServer;
-		foreach (['LOCAL','REMOTE'] as $server) {
-			if (($server === 'LOCAL') || $this->federatedServerExists()) {
-				$this->usingServer($server);
-				if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {
-					$this->modifyAppConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
-				}
-				$currentCoreConfigs = AppConfigHelper::getAppConfigs(
-					$this->getBaseUrl(),
+		$this->runFunctionOnEveryServer([$this, 'restoreParameters']);
+		$this->currentUser = $user;
+	}
+
+	/**
+	 * restore settings of the system and delete new settings that were created in the test runs
+	 *
+	 * @param string $server LOCAL|REMOTE
+	 *
+	 * @throws \Exception
+	 *
+	 * @return void
+	 *
+	 */
+	private function restoreParameters($server) {
+		if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {
+			$this->modifyAppConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
+		}
+		$result = SetupHelper::runOcc(
+			['config:list'], $this->getAdminUsername(),
+			$this->getAdminPassword(), $this->getBaseUrl(),
+			$this->getOcPath()
+		);
+		$currentConfigList = \json_decode($result['stdOut'], true);
+		foreach ($currentConfigList['system'] as $configKey => $configValue) {
+			if (!\array_key_exists(
+				$configKey, $this->savedConfigList[$server]['system']
+			)
+			) {
+				SetupHelper::runOcc(
+					['config:system:delete', $configKey],
 					$this->getAdminUsername(),
 					$this->getAdminPassword(),
-					'core'
+					$this->getBaseUrl(),
+					$this->getOcPath()
 				);
-				foreach ($currentCoreConfigs as $config) {
-					$found = false;
-					foreach ($this->coreConfigs[$server] as $originalConfig) {
-						if ($config['configkey'] === $originalConfig['configkey']) {
-							$found = true;
-							break;
-						}
-					}
-					if ($found === false) {
-						AppConfigHelper::deleteAppConfig(
-							$this->getBaseUrl(),
-							$this->getAdminUsername(),
-							$this->getAdminPassword(), 'core', $config['configkey']
-						);
-					}
+			}
+		}
+		foreach ($currentConfigList['apps'] as $appName => $appSettings) {
+			foreach ($appSettings as $configKey => $configValue) {
+				//only check if the app was there in the original configuration
+				if (\array_key_exists($appName, $this->savedConfigList[$server]['apps'])
+					&& !\array_key_exists(
+						$configKey, $this->savedConfigList[$server]['apps'][$appName]
+					)
+				) {
+					SetupHelper::runOcc(
+						['config:app:delete', $appName, $configKey],
+						$this->getAdminUsername(),
+						$this->getAdminPassword(),
+						$this->getBaseUrl(),
+						$this->getOcPath()
+					);
 				}
 			}
 		}
-		$this->usingServer($previousServer);
-		$this->currentUser = $user;
 	}
 }
