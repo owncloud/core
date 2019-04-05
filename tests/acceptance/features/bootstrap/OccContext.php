@@ -508,7 +508,8 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator adds config key :key with value :value in app :app using the occ command
+	 * @Given the administrator has added config key :key with value :value in app :app
+	 * @When the administrator adds/updates config key :key with value :value in app :app using the occ command
 	 *
 	 * @param string $key
 	 * @param string $value
@@ -537,7 +538,8 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator adds system config key :key with value :value using the occ command
+	 * @Given the administrator has added system config key :key with value :value
+	 * @When the administrator adds/updates system config key :key with value :value using the occ command
 	 *
 	 * @param string $key
 	 * @param string $value
