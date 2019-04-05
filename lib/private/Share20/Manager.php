@@ -327,20 +327,6 @@ class Manager implements IManager {
 			}
 		}
 
-		// If expiredate is empty set a default one if there is a default
-		$fullId = null;
-		try {
-			$fullId = $share->getFullId();
-		} catch (\UnexpectedValueException $e) {
-			// This is a new share
-		}
-
-		if ($fullId === null && $expirationDate === null && $this->shareApiLinkDefaultExpireDate()) {
-			$expirationDate = new \DateTime();
-			$expirationDate->setTime(0, 0, 0);
-			$expirationDate->add(new \DateInterval('P'.$this->shareApiLinkDefaultExpireDays().'D'));
-		}
-
 		// If we enforce the expiration date check that is does not exceed
 		if ($this->shareApiLinkDefaultExpireDateEnforced()) {
 			if ($expirationDate === null) {
