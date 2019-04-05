@@ -126,6 +126,7 @@ OC.L10N.register(
     "Could not unlock, please contact the lock owner {owner}" : "Não foi possível desbloquear, entre em contato com o proprietário do bloqueio {owner}",
     "Unlock failed with status {status}" : "Desbloqueio falhou com o status {status}",
     "Locks" : "Bloqueios",
-    "Resource is not locked" : "O recurso não está bloqueado"
+    "Resource is not locked" : "O recurso não está bloqueado",
+    "Unknown user" : "Usuário desconhecido"
 },
 "nplurals=2; plural=(n > 1);");

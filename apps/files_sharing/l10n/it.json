@@ -117,6 +117,17 @@
     "Accept" : "Accetta",
     "Decline" : "Rifiuta",
     "Declined" : "Rifiutato",
-    "Public link" : "Collegamento pubblico"
+    "Public link" : "Collegamento pubblico",
+    "Couldn't send mail to following recipient(s): %s " : "Invio dell'email fallito al/ai seguente/i destinatario/i: %s ",
+    "An error occurred while updating share state: {message}" : "Si è verificato un errore aggiornando lo stato di condivisione: {message}",
+    "Accept Share" : "Accetta condivisione",
+    "Decline Share" : "Rifiuta condivisione",
+    "File sharing" : "Condivisione file",
+    "The group is blacklisted for sharing" : "Al gruppo non è permesso condividere",
+    "Only recipient can change accepted state" : "Solo il destinatario può cambiare lo stato di accettazione",
+    "State" : "Stato",
+    "Group Sharing Blacklist" : "Lista nera condivisione gruppi",
+    "Exclude groups from receiving shares" : "Escludi gruppi dalla ricezione di condivisioni",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Questi gruppi non saranno disponibili per la condivisione. Ai membri del gruppo non è vietato iniziare condivisioni e possono ricevere condivisioni con altri gruppi di cui sono membri come di consueto."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

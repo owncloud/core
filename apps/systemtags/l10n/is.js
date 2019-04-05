@@ -27,6 +27,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Engar skrár fundust í þessari möppu",
     "Name" : "Heiti",
     "Size" : "Stærð",
-    "Modified" : "Breytt"
+    "Modified" : "Breytt",
+    "%s (static)" : "%s (fast)"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

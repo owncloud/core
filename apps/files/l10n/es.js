@@ -118,6 +118,15 @@ OC.L10N.register(
     "Processing files..." : "Procesando archivos ...",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Limita la notificación a la creacción y cambios de sus <strong>archivos favoritos</strong>",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Vd. no tiene permisos para acceder a esta carpeta/archivo. Por favor contacte con el propietario que lo ha compartido con Vd.",
-    "Error when assembling chunks, status code {status}" : "Error ensamblando chunks, codigo de error:  {status}"
+    "Error when assembling chunks, status code {status}" : "Error ensamblando chunks, codigo de error:  {status}",
+    "Unknown user" : "Usuario desconocido",
+    "The file {file} is currently locked, please try again later" : "El archivo {file} está bloqueado actualmente, inténtalo de nuevo más tarde",
+    "Lock status" : "Estado de bloqueo",
+    "This resource is locked. Click to see more details." : "Este recurso está bloqueado. Haga clic para ver más detalles.",
+    "{owner} has locked this resource via {path}" : "{owner} ha bloqueado este recurso a través de {path}",
+    "Could not unlock, please contact the lock owner {owner}" : "No se pudo desbloquear, comuníquese con el propietario del bloqueo {owner}",
+    "Unlock failed with status {status}" : "Desbloqueo fallido con estado {status}",
+    "Locks" : "Bloqueos",
+    "Resource is not locked" : "Recurso no esta bloqueado"
 },
 "nplurals=2; plural=(n != 1);");

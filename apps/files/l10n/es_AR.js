@@ -59,6 +59,7 @@ OC.L10N.register(
     "The files you are trying to upload exceed the maximum size for file uploads on this server." : "Los archivos que intentás subir sobrepasan el tamaño máximo ",
     "Text file" : "Archivo de texto",
     "Storage is temporarily not available" : "El repositorio no está disponible temporalmente",
-    "..." : "..."
+    "..." : "...",
+    "Unknown user" : "Usuario desconocido"
 },
 "nplurals=2; plural=(n != 1);");

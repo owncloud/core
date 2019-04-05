@@ -104,6 +104,7 @@ OC.L10N.register(
     "No favorites" : "Nengún favoritu",
     "Files and folders you mark as favorite will show up here" : "Los ficheros y carpetes que marque como favoritos apaecerán equí",
     "Text file" : "Ficheru de testu",
-    "New text file.txt" : "Nuevu testu ficheru.txt"
+    "New text file.txt" : "Nuevu testu ficheru.txt",
+    "Unknown user" : "Usuariu desconocíu"
 },
 "nplurals=2; plural=(n != 1);");

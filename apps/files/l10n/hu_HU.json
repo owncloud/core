@@ -111,6 +111,7 @@
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Korlát értesítések a <strong>kedvenc fájlok</strong> létrehozása és változtatása ügyében",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Önnek nincsen engedélye, hogy hozzáférjen ehhez a fájlhoz/mappához - Kérjük, hogy vegye fel a kapcsolatot a tulajdonossal, hogy azt megossza Önnel.",
     "Error when assembling chunks, status code {status}" : "Hiba lépett fel a darabok összeállítása közben, státusz kód {status}",
-    "Not enough free space" : "Nincs elég szabad hely"
+    "Not enough free space" : "Nincs elég szabad hely",
+    "Unknown user" : "Ismeretlen felhasználó"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

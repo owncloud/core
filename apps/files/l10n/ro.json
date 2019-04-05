@@ -93,6 +93,7 @@
     "No favorites" : "Fără favorite",
     "Files and folders you mark as favorite will show up here" : "FIșierele și directoarele pe care le marchezi ca favorite vor apărea aici",
     "Text file" : "Fișier text",
-    "New text file.txt" : "New text file.txt"
+    "New text file.txt" : "New text file.txt",
+    "Unknown user" : "Utilizator necunoscut"
 },"pluralForm" :"nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));"
 }

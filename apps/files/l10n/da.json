@@ -112,6 +112,7 @@
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privat link: Kun personer, der har adgang til filen/mappen kan bruge dette. Brug det som et permanent link for dig selv eller til at dirigere andre til delte filer",
     "No entries in this folder match {filter}" : "Ingen indgange i denne mappe passer {filter}",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Begræns notificationer omkring oprettelse og ændringer af dine <strong>favoritfiler</strong>",
-    "Error when assembling chunks, status code {status}" : "Fejl i samling af delene, statuskode {status}"
+    "Error when assembling chunks, status code {status}" : "Fejl i samling af delene, statuskode {status}",
+    "Unknown user" : "Ukendt bruger"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

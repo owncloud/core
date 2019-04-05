@@ -372,6 +372,16 @@ OC.L10N.register(
     "Set password for new users" : "Imposta la password per i nuovi utenti",
     "Resend activation link" : "Invia nuovamente il collegamento di attivazione",
     "New Password" : "Nuova password",
-    "Please set your password" : "Imposta la tua password"
+    "Please set your password" : "Imposta la tua password",
+    "Owner language" : "Lingua del proprietario",
+    "Language used for public mail notifications for shared files" : "Lingua usata per notifiche email pubbliche per file condivisi",
+    "Automatically accept new incoming local user shares" : "Accetta automaticamente nuove condivisioni in arrivo di utenti locali",
+    "Legal" : "Informazioni legali",
+    "Privacy Policy URL:" : "URL informativa sulla privacy:",
+    "Privacy Policy URL" : "URL informativa sulla privacy",
+    "App passwords / tokens" : "Password / token app",
+    "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "Le password o token di applicazione sono un codice di sicurezza che fornisce a un'app o dispositivo i permessi di accesso al tuo account %s.",
+    "Use them as a security measure to hide your actual password which you may only want to use for web interface login." : "Usale come misura di sicurezza per nascondere la tua password che potresti voler usare per accedere all'interfaccia web.",
+    "Password / Token" : "Password / Token"
 },
 "nplurals=2; plural=(n != 1);");

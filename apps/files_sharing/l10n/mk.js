@@ -129,6 +129,7 @@ OC.L10N.register(
     "Removed public link" : "Одстрането споделувањето преку јавен линк",
     "%2$s removed public link" : "%2$s го одстрани споделувањето преку јавен линк",
     "Public link of %2$s expired" : "Споделувањето преку јавен линк на %2$s истече",
-    "%s is publicly shared" : "%s е јавно споделен"
+    "%s is publicly shared" : "%s е јавно споделен",
+    "Public link" : "Јавен линк"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

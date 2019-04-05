@@ -113,6 +113,7 @@
     "Processing files..." : "Файловете се обработват...",
     "No entries in this folder match {filter}" : "Нищо в тази папка не отговаря на {filter}",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Ограничете известията за създаването и промените в <strong>любимите ви файлове </strong>",
-    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Нямате разрешение за достъп до този файл папка - Моля, свържете се със собственика, за да го сподели с вас."
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Нямате разрешение за достъп до този файл папка - Моля, свържете се със собственика, за да го сподели с вас.",
+    "Unknown user" : "Непознат потребител"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

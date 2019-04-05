@@ -112,6 +112,7 @@ OC.L10N.register(
     "Error when assembling chunks, status code {status}" : "خطأ عند تجميع القطع ، رمز الحالة {status}",
     "No entries in this folder match {filter}" : "لا يوجد في هذا المجلد إدخالات تتطابق مع {filter}",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "الحد من الإخطارات حول تغييرات\n<strong>ملفاتك المفضلة</strong>",
-    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "ليس مرخصا لك الوصول إلى هذا الملف أو المجلد - يرجى الاتصال بالمالك لمشاركة الترخيص معك."
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "ليس مرخصا لك الوصول إلى هذا الملف أو المجلد - يرجى الاتصال بالمالك لمشاركة الترخيص معك.",
+    "Unknown user" : "المستخدم غير معروف"
 },
 "nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;");

@@ -187,6 +187,7 @@
     "Privacy Policy" : "Política de Privacidade",
     "__language_name__" : "__language_name__",
     "No minimum ownCloud version is defined in appinfo/info.xml." : "Nenhuma versão mínima do ownCloud foi definida em appinfo/info.xml.",
-    "No maximum ownCloud version is defined in appinfo/info.xml." : "Nenhuma versão máxima do ownCloud foi definida em appinfo/info.xml."
+    "No maximum ownCloud version is defined in appinfo/info.xml." : "Nenhuma versão máxima do ownCloud foi definida em appinfo/info.xml.",
+    "Can't update %s" : "Não consigo atualizar %s"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

@@ -88,6 +88,24 @@
     "Storage is temporarily not available" : "O almacenamento non está dispoñíbel temporalmente",
     "File could not be found" : "Non foi posíbel atopar o ficheiro",
     "Not enough free space" : "Non hai espazo libre abondo",
-    "Show hidden files" : "Amosar os ficheiros agachados"
+    "Show hidden files" : "Amosar os ficheiros agachados",
+    "Processing files..." : "Procesando ficheiros...",
+    "Unknown user" : "Usuario descoñecido",
+    "{newname} already exists" : " {new_name} xa existe",
+    "No entries in this folder match {filter}" : "Non hai entradas neste cartafol coincidentes con {filter}",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Limita as notificacións sobre a creación e modificación dos seus <strong>ficheiros favoritos</strong>",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Non ten permisos para acceder a este ficheiro/cartafol: contacte co propietario para que o  comparta con vostede.",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Ligazón privada: Só as persoas que teñen acceso ao ficheiro/cartafol poden empregalo. Úseo como ligazón permanente para vostede ou para dirixir a outros a ficheiros compartidos.",
+    "The file {file} is currently locked, please try again later" : "O ficheiro {file} está bloqueado neste momento, tenteo máis tarde.",
+    "Lock status" : "Estado do bloqueo",
+    "This resource is locked. Click to see more details." : "Este recurso está bloqueado. Prema para ver máis detalles.",
+    "{owner} has locked this resource via {path}" : "{owner} bloqueou este recurso mediante {path}",
+    "Could not unlock, please contact the lock owner {owner}" : "Non se puido desbloquear, contacte co propietario do bloqueo {owner}",
+    "Unlock failed with status {status}" : "Produciuse un fallo no desbloqueo co estado {status}",
+    "Locks" : "Bloqueos",
+    "Resource is not locked" : "O recurso non está bloqueado",
+    "Changed by %2$s" : "Cambiado por %2$s",
+    "Deleted by %2$s" : "Eliminado por %2$s",
+    "Restored by %2$s" : "Restaurado por %2$s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

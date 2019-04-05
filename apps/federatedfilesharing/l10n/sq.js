@@ -23,6 +23,7 @@ OC.L10N.register(
     "Add to your website" : "Shtojeni te sajti juaj",
     "Share with me via ownCloud" : "Ndani me mua përmes ownCloud-it",
     "HTML Code:" : "Kod HTML:",
-    "Add to your ownCloud" : "Shtojeni te ownCloud-i juaj"
+    "Add to your ownCloud" : "Shtojeni te ownCloud-i juaj",
+    "Automatically accept remote shares from trusted servers" : "Prano vetvetiu ndarje të largëta prej shërbyesish të besuar"
 },
 "nplurals=2; plural=(n != 1);");

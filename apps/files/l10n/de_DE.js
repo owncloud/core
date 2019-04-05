@@ -118,6 +118,8 @@ OC.L10N.register(
     "Processing files..." : "Verarbeite Dateien…",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Benachrichtigungen über Neues und Änderungen auf Ihre <strong>favorisierten Dateien</strong> beschränken",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Sie haben keine Rechte, um auf diese(n) Datei/Ordner zuzugreifen - Bitte den Besitzer kontaktieren, damit er dies mit Ihnen teilt.",
-    "Error when assembling chunks, status code {status}" : "Fehler beim Zusammenfügen der Datenblöcke, Statuscode {status}"
+    "Error when assembling chunks, status code {status}" : "Fehler beim Zusammenfügen der Datenblöcke, Statuscode {status}",
+    "Unknown user" : "Unbekannter Benutzer",
+    "The file {file} is currently locked, please try again later" : "Die Datei {file} ist zur Zeit gesperrt, bitte versuchen Sie es später noch einmal"
 },
 "nplurals=2; plural=(n != 1);");

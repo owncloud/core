@@ -112,6 +112,7 @@ OC.L10N.register(
     "New text file.txt" : "Uusi tekstitiedosto.txt",
     "Target folder does not exist any more" : "Kohdekansiota ei ole enää olemassa",
     "Upload timeout for file \"{file}\"" : "Lähetyksen aikakatkaisu tiedostolle \"{file}\"",
-    "Processing files..." : "Käsitellään tiedostoja..."
+    "Processing files..." : "Käsitellään tiedostoja...",
+    "Unknown user" : "Tuntematon käyttäjä"
 },
 "nplurals=2; plural=(n != 1);");

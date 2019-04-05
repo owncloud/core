@@ -362,6 +362,16 @@ OC.L10N.register(
     "The new password cannot be the same as the previous one" : "Nýja lykilorðið má ekki vera eins og það fyrra",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Póstur var sendur á þetta tölvupóstfang til staðfestingar. Tölvupóstfangið verður ekki sett fyrr en það hefur verið staðfest.",
     "Users" : "Notendur",
-    "New Password" : "Nýtt lykilorð"
+    "New Password" : "Nýtt lykilorð",
+    "Owner language" : "Tungumál eiganda",
+    "Legal" : "Lagaleg atriði",
+    "Imprint URL:" : "Vefslóð á lagalega yfirlýsingu:",
+    "Imprint URL" : "Vefslóð á lagalega yfirlýsingu",
+    "Privacy Policy URL:" : "Slóð á stefnu um meðferð persónulegra gagna:",
+    "Privacy Policy URL" : "Slóð á stefnu um meðferð persónulegra gagna",
+    "You are using %s" : "Þú ert að nota %s",
+    "App passwords / tokens" : "Lykilorð / teikn forrita",
+    "Create new app passcode" : "Búa til nýjan lykilkóða forrits",
+    "Password / Token" : "Lykilorð / teikn"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

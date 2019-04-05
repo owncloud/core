@@ -84,6 +84,7 @@ OC.L10N.register(
     "No favorites" : "Немає улюблених",
     "Files and folders you mark as favorite will show up here" : "Файли і теки, які ви позначили як улюблені, з’являться тут",
     "Text file" : "Текстовий файл",
-    "New text file.txt" : "Новий текстовий файл file.txt"
+    "New text file.txt" : "Новий текстовий файл file.txt",
+    "Unknown user" : "Невідомий користувач"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

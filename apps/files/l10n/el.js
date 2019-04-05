@@ -114,6 +114,7 @@ OC.L10N.register(
     "Files and folders you mark as favorite will show up here" : "Τα αρχεία και οι φάκελοι που σημειώνονται ως αγαπημένα  θα εμφανιστούν εδώ ",
     "Text file" : "Αρχείο κειμένου",
     "New text file.txt" : "Νέο αρχείο κειμένου.txt",
-    "Processing files..." : "Γίνεται επεξεργασία των αρχείων..."
+    "Processing files..." : "Γίνεται επεξεργασία των αρχείων...",
+    "Unknown user" : "Άγνωστος χρήστης"
 },
 "nplurals=2; plural=(n != 1);");

@@ -374,6 +374,7 @@ OC.L10N.register(
     "Privacy Policy" : "Rregulla Privatësie",
     "Personal note from the sender: <br> %s." : "Shënim personal nga dërguesi: <br> %s.",
     "Sharing is not allowed" : "Nuk lejohet ndarja me të tjerët",
-    "Static" : "Statike"
+    "Static" : "Statike",
+    "Confirm Password" : "Ripohoni Fjalëkalimin"
 },
 "nplurals=2; plural=(n != 1);");

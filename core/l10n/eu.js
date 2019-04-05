@@ -258,6 +258,10 @@ OC.L10N.register(
     "Download / View / Upload" : "Deskargatu / Ikusi / Kargatu",
     "Maintenance mode is kept active" : "Mantentze-modua aktibo dago",
     "Set log level to debug" : "Log maila arazketa gisa jarri",
-    "Problem loading page, reloading in 5 seconds" : "Arazoa orria kargatzen, 5 segundo barru birkargatuko da"
+    "Problem loading page, reloading in 5 seconds" : "Arazoa orria kargatzen, 5 segundo barru birkargatuko da",
+    "Please use the command line updater because automatic updating is disabled in the config.php." : "Mesedez, erabili komando lerroko eguneraketa, modu automatikoa desgaitua dago config.php fitxategian",
+    "[%d / %d]: Checking table %s" : "[%d / %d]: %s Taula baieztatzen",
+    "Checking whether the database schema for %s can be updated (this can take a long time depending on the database size)" : "%s-en datubase eskema eguneratu daitekeen baieztatzen (datubasearen tamainaren arabera denbora luzea eman dezake honek)",
+    "Your web server is not yet set up properly to allow file synchronization because the WebDAV interface seems to be broken." : "Zure web zerbitzaria ez dago ondo ezarrita WebDAV interfazea apurtuta dagoela dirudielako."
 },
 "nplurals=2; plural=(n != 1);");

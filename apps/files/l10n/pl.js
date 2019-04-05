@@ -114,6 +114,7 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Prywatny link: Tylko użytkownicy, którzy mają przyznany dostęp do folderów lub plików mogą z niego skorzystać. Użyj go jako linka bezpośredniego dla siebie lub jako odnośnik dla użytkowników, którym udostępniasz.",
     "No entries in this folder match {filter}" : "Brak wyników w tym folderze pasujących do {filter}",
     "Processing files..." : "Przetwarzanie plików...",
-    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Nie masz uprawnień do tego pliku/katalogu - Proszę o kontakt z właścicielem udostępnianych zasobów."
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Nie masz uprawnień do tego pliku/katalogu - Proszę o kontakt z właścicielem udostępnianych zasobów.",
+    "Unknown user" : "Nieznany użytkownik"
 },
 "nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);");

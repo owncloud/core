@@ -57,6 +57,7 @@ OC.L10N.register(
     "%1$s was created in a public folder" : "%1$s is in ’n openbare vouer geskep",
     "%2$s changed %1$s" : "%2$s het %1$s verander",
     "%2$s deleted %1$s" : "%2$s het %1$s geskrap",
-    "Upload (max. %s)" : "Laai op (maks. %s)"
+    "Upload (max. %s)" : "Laai op (maks. %s)",
+    "Unknown user" : "Onbekende gebruiker"
 },
 "nplurals=2; plural=(n != 1);");

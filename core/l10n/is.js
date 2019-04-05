@@ -366,6 +366,8 @@ OC.L10N.register(
     "Download / View" : "Sækja / Skoða",
     "Download / View / Upload" : "Sækja / Skoða / Senda inn",
     "Recipients can view or download contents." : "Viðtakendur geta skoðað eða sótt efni.",
-    "Recipients can view, download, edit, delete and upload contents." : "Viðtakendur geta skoðað, sótt, breytt, eytt eða sent inn efni."
+    "Recipients can view, download, edit, delete and upload contents." : "Viðtakendur geta skoðað, sótt, breytt, eytt eða sent inn efni.",
+    "E-Mail sent" : "Tölvupóstur sendur",
+    "Privacy Policy" : "Stefna vegna gagnaleyndar og friðhelgi"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

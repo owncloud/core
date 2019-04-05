@@ -32,6 +32,27 @@
     "Never" : "Никогаш",
     "Once every direct access" : "Еднаш при директен пристап",
     "Authentication" : "Автентикација",
-    "Add storage" : "Додади складиште"
+    "Add storage" : "Додади складиште",
+    "(group)" : "(group)",
+    "<b>Note:</b> " : "<b>Забелешка:</b> ",
+    "Bucket" : "Кофа",
+    "You can add external storages in the storage settings" : "Можете да додадете надворешни складирања во подесувањата за Складиште",
+    "Enable external storage" : "Овозможи надворешно складирање",
+    "External storage has been disabled by the administrator" : "Надворешно складирање не е дозволено од администраторот",
+    "Allow users to mount the following external storage" : "Дозволи на корисниците да ги монтираат следниве  надворешни складови",
+    "Credentials saving failed" : "Акредетивите не се зачувани",
+    "Request timeout (seconds)" : "Времетраење на барањето (секунди)",
+    "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Забелешка:</b> cURL поддршка во PHP не е овозможена или не е инсталирана. Монтирање на %s не е возможно. Контактирајте го администраторот.",
+    "Allow sharing on user-mounted external storages" : "Дозволи споделувања на корисничките монтирани надворешни складови",
+    "System" : "Систем",
+    "Credentials saved" : "Акредетивите зачувани",
+    "Credentials required" : "Акредетивите се задолжителни",
+    "Insufficient data: %s" : "Недоволно податоци: %s",
+    "%s" : "%s",
+    "Service name" : "Име на сервисот",
+    "Allow users to mount external storage" : "Дозволи на корисниците да монтираат надворешно складирање",
+    "No external storage configured" : "Нема надворешно складирање",
+    "Available for" : "Достапно за",
+    "Advanced settings" : "Напредни подесувања"
 },"pluralForm" :"nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;"
 }

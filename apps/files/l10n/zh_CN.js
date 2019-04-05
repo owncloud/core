@@ -118,6 +118,7 @@ OC.L10N.register(
     "No entries in this folder match {filter}" : "此文件夹中无项目匹配 {filter}",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "限制关于<strong>已收藏文件</strong>的新建和修改相关的通知",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "你无权访问此文件/目录 - 请联系拥有者向你分享此权限。",
-    "Error when assembling chunks, status code {status}" : "合并文件块时发生 {status} 代码错误"
+    "Error when assembling chunks, status code {status}" : "合并文件块时发生 {status} 代码错误",
+    "Unknown user" : "未知用户"
 },
 "nplurals=1; plural=0;");
