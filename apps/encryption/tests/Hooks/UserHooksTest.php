@@ -345,7 +345,7 @@ class UserHooksTest extends TestCase {
 			->method('error')
 			->with('Encryption Could not update users encryption password');
 
-		$userHooks->setPassphrase($this->params);
+		$this->assertNull($userHooks->setPassphrase($this->params));
 	}
 
 	public function testSetPasswordNoUser() {

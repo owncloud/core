@@ -427,7 +427,7 @@ class EncryptAllTest extends TestCase {
 			$encryptAll->expects($this->at(1))->method('encryptUsersFiles')->with('user2');
 		}
 
-		$this->invokePrivate($encryptAll, 'encryptAllUsersFiles');
+		$this->assertNull($this->invokePrivate($encryptAll, 'encryptAllUsersFiles'));
 	}
 
 	public function testEncryptUsersFiles() {
@@ -490,7 +490,7 @@ class EncryptAllTest extends TestCase {
 
 		$output = new ConsoleOutput();
 		$progressBar = new ProgressBar($output);
-		$this->invokePrivate($encryptAll, 'encryptUsersFiles', ['user1', $progressBar, '']);
+		$this->assertNull($this->invokePrivate($encryptAll, 'encryptUsersFiles', ['user1', $progressBar, '']));
 	}
 
 	public function testEncryptUsersFilesIncomingShares() {
