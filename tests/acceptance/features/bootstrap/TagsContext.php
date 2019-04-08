@@ -962,6 +962,20 @@ class TagsContext implements Context {
 	}
 
 	/**
+	 * @When user :user removes tag :tagName from file :fileName using the WebDAV API
+	 * @Given user :user has removed tag :tagName from file :fileName
+	 *
+	 * @param string $user
+	 * @param string $tagName
+	 * @param string $fileName
+	 *
+	 * @return void
+	 */
+	public function removesTagFromFile($user, $tagName, $fileName) {
+		$this->untag($user, $tagName, $fileName, $user);
+	}
+
+	/**
 	 * @When user :user removes tag :tagName from file :fileName shared by :shareUser using the WebDAV API
 	 * @Given user :user has removed tag :tagName from file :fileName shared by :shareUser
 	 *
