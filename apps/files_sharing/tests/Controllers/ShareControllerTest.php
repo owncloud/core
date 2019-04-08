@@ -424,6 +424,7 @@ class ShareControllerTest extends \Test\TestCase {
 			'shareUrl' => null,
 			'previewImage' => null,
 			'canDownload' => true,
+			'sharePermission' => true
 		];
 
 		$csp = new \OCP\AppFramework\Http\ContentSecurityPolicy();

@@ -829,7 +829,11 @@ OC.Uploader.prototype = _.extend({
 				return true;
 			}
 			var fileInfo = fileList.findFile(file.name);
-			if (fileInfo) {
+			var sharePermission = $("#sharePermission").val();
+			if (sharePermission !== undefined) {
+				sharePermission &= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE);
+			}
+			if (fileInfo && (sharePermission !== (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE))) {
 				conflicts.push([
 					// original
 					_.extend(fileInfo, {
@@ -842,10 +846,11 @@ OC.Uploader.prototype = _.extend({
 			}
 			return true;
 		});
+
 		if (conflicts.length) {
 			// wait for template loading
-			OC.dialogs.fileexists(null, null, null, this).done(function() {
-				_.each(conflicts, function(conflictData) {
+			OC.dialogs.fileexists(null, null, null, this).done(function () {
+				_.each(conflicts, function (conflictData) {
 					OC.dialogs.fileexists(conflictData[1], conflictData[0], conflictData[1].getFile(), this);
 				});
 			});
