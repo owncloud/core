@@ -505,6 +505,15 @@ trait BasicStructure {
 	}
 
 	/**
+	 * returns the complete DAV path including the base path e.g. owncloud-core/remote.php/dav
+
+	 * @return string
+	 */
+	public function getDAVPathIncludingBasePath() {
+		return \ltrim($this->getBasePath() . "/" . $this->getDavPath(), "/");
+	}
+
+	/**
 	 * returns the base URL but without "http(s)://" in front of it
 	 *
 	 * @return string
@@ -1906,6 +1915,14 @@ trait BasicStructure {
 				"function" => [
 					$this,
 					"getBasePath"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%dav_path%",
+				"function" => [
+					$this,
+					"getDAVPathIncludingBasePath"
 				],
 				"parameter" => []
 			],
