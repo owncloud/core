@@ -21,21 +21,13 @@
 
 namespace Tests\Core\Command\Background\Queue;
 
-use OC\BackgroundJob\Legacy\RegularJob;
 use OC\BackgroundJob\TimedJob;
+use OCP\BackgroundJob\IJob;
 use OC\Core\Command\Background\Queue\Execute;
 use OCP\BackgroundJob\IJobList;
+use OCP\AppFramework\Utility\ITimeFactory;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
-
-class TimedJobForExecuteTest extends TimedJob {
-	public function __construct() {
-		$this->setInterval(10);
-	}
-
-	public function run($argument) {
-	}
-}
 
 /**
  * Class ExecuteTest
@@ -48,98 +40,159 @@ class ExecuteTest extends TestCase {
 	private $commandTester;
 	/** @var IJobList */
 	private $jobList;
-	/** @var string */
-	private $confirmPromptMessage = 'If you still want to use this command please confirm the usage by entering: yes';
+	/** @var ITimeFactory */
+	private $timeFactory;
+	/** @var IJob[] */
+	private $jobById = [];
 
 	public function setUp() {
 		parent::setUp();
 
+		$normalJob = $this->createMock(IJob::class);
+		$timedJob = $this->createMock(TimedJob::class);
+		$this->jobById = [];
+		$this->jobById[42] = $timedJob;
+		$this->jobById[48] = $normalJob;
+
+		$this->timeFactory = $this->createMock(ITimeFactory::class);
+
 		$this->jobList = $this->createMock(IJobList::class);
 		$this->jobList->expects($this->any())->method('getById')
 			->willReturnCallback(function ($id) {
-				if ($id === '666') {
+				if (isset($this->jobById[$id])) {
+					return $this->jobById[$id];
+				} else {
 					return null;
 				}
-				if ($id === '42') {
-					$job = new TimedJobForExecuteTest();
-				} else {
-					$job = new RegularJob();
-				}
-				$job->setId($id);
-				return $job;
 			});
 
-		$command = new Execute($this->jobList);
+		$command = new Execute($this->jobList, $this->timeFactory);
 		$this->commandTester = new CommandTester($command);
 	}
 
-	/**
-	 * @dataProvider providesJobIds
-	 * @param $jobId
-	 * @param $expectedOutputs
-	 */
-	public function testCommandWithAcceptWarningOption($jobId, $expectedOutputs) {
-		$input = ['Job ID' => $jobId, '--accept-warning' => null];
-		$this->commandTester->execute($input);
-		$output = $this->commandTester->getDisplay();
-		$this->assertNotContains($this->confirmPromptMessage, $output);
-		foreach ($expectedOutputs as $expectedOutput) {
-			$this->assertContains($expectedOutput, $output);
-		}
-	}
-
-	/**
-	 * @dataProvider providesJobIds
-	 * @param $jobId
-	 * @param $expectedOutputs
-	 */
-	public function testCommandWithManualConfirmation($jobId, $expectedOutputs) {
-		$this->commandTester->setInputs(['yes']);
-		$input = ['Job ID' => $jobId];
-		$this->commandTester->execute($input);
-		$output = $this->commandTester->getDisplay();
-		$this->assertContains($this->confirmPromptMessage, $output);
-		foreach ($expectedOutputs as $expectedOutput) {
-			$this->assertContains($expectedOutput, $output);
-		}
-	}
-
-	public function providesJobIds() {
+	public function executeJobIdProvider() {
 		return [
-			['666', ['Job not found']],
-			['1', ['Found job: OC\BackgroundJob\Legacy\RegularJob with ID 1', 'Running job...', 'Finished in', 'seconds']],
+			[48],
+			[42],
 		];
 	}
 
-	public function testCommandWithManualAbort() {
-		$this->commandTester->setInputs(['no']);
-		$input = ['Job ID' => 1];
-		$this->commandTester->execute($input);
-		$output = $this->commandTester->getDisplay();
-		$this->assertContains($this->confirmPromptMessage, $output);
-		$this->assertNotContains('Running job', $output);
+	public function testExecuteJobNotFoundWithAcceptWarning() {
+		$input = ['Job ID' => '666', '--accept-warning' => null];
+		foreach ($this->jobById as $id => $job) {
+			$job->expects($this->never())
+				->method('execute');
+		}
+
+		$this->assertSame(1, $this->commandTester->execute($input));
+	}
+
+	public function testExecuteJobNotFoundWithManualConfirmation() {
+		$this->commandTester->setInputs(['yes']);
+		$input = ['Job ID' => '666'];
+		foreach ($this->jobById as $id => $job) {
+			$job->expects($this->never())
+				->method('execute');
+		}
+
+		$this->assertSame(1, $this->commandTester->execute($input));
 	}
 
 	/**
-	 * @dataProvider providesJobIdsForForceOption
-	 * @param $jobId
-	 * @param $expectedOutputs
+	 * @dataProvider executeJobIdProvider
 	 */
-	public function testCommandWithForceOption($jobId, $expectedOutputs) {
+	public function testExecuteJobWithAcceptWarning($jobId) {
+		$input = ['Job ID' => $jobId, '--accept-warning' => null];  // normal job
+		foreach ($this->jobById as $id => $job) {
+			if ($id === \intval($jobId)) {
+				// only the target job should be executed
+				$job->expects($this->once())
+					->method('execute');
+				$this->jobList->expects($this->once())
+					->method('setLastJob')
+					->with($job);
+				$this->jobList->expects($this->once())
+					->method('setExecutionTime')
+					->with($job, $this->anything());
+			} else {
+				$job->expects($this->never())
+					->method('execute');
+			}
+		}
+
+		$this->assertSame(0, $this->commandTester->execute($input));
+	}
+
+	/**
+	 * @dataProvider executeJobIdProvider
+	 */
+	public function testExecuteJobWithManualConfirmation($jobId) {
+		$this->commandTester->setInputs(['yes']);
+		$input = ['Job ID' => $jobId];  // normal job
+		foreach ($this->jobById as $id => $job) {
+			if ($id === \intval($jobId)) {
+				// only the target job should be executed
+				$job->expects($this->once())
+					->method('execute');
+				$this->jobList->expects($this->once())
+					->method('setLastJob')
+					->with($job);
+				$this->jobList->expects($this->once())
+					->method('setExecutionTime')
+					->with($job, $this->anything());
+			} else {
+				$job->expects($this->never())
+					->method('execute');
+			}
+		}
+
+		$this->assertSame(0, $this->commandTester->execute($input));
+	}
+
+	/**
+	 * @dataProvider executeJobIdProvider
+	 */
+	public function testExecuteJobWithManualAbort($jobId) {
+		$this->commandTester->setInputs(['no']);
+		$input = ['Job ID' => $jobId];
+		foreach ($this->jobById as $id => $job) {
+			$job->expects($this->never())
+				->method('execute');
+		}
+
+		$this->assertSame(1, $this->commandTester->execute($input));
+	}
+
+	/**
+	 * @dataProvider executeJobIdProvider
+	 */
+	public function testExecuteJobWithForceOption($jobId) {
 		$this->commandTester->setInputs(['yes']);
 		$input = ['Job ID' => $jobId, '--force' => null];
-		$this->commandTester->execute($input);
-		$output = $this->commandTester->getDisplay();
-		$this->assertContains($this->confirmPromptMessage, $output);
-		foreach ($expectedOutputs as $expectedOutput) {
-			$this->assertContains($expectedOutput, $output);
-		}
-	}
+		foreach ($this->jobById as $id => $job) {
+			if ($id === \intval($jobId)) {
+				// only the target job should be executed
+				$job->expects($this->once())
+					->method('execute');
+				$this->jobList->expects($this->once())
+					->method('setLastJob')
+					->with($job);
+				$this->jobList->expects($this->once())
+					->method('setExecutionTime')
+					->with($job, $this->anything());
 
-	public function providesJobIdsForForceOption() {
-		return [
-			['666', ['Job not found']],
-			['42', ['Found job: Tests\Core\Command\Background\Queue\TimedJobForExecuteTest with ID 42', 'Forcing run, resetting last run value to 0', 'Running job...', 'Finished in', 'seconds']],
-		];
+				if ($job instanceof TimedJob) {
+					// if it's a timed job, reset the last run, otherwise just run it normally
+					$job->expects($this->once())
+						->method('setLastRun')
+						->with(0);
+				}
+			} else {
+				$job->expects($this->never())
+					->method('execute');
+			}
+		}
+
+		$this->assertSame(0, $this->commandTester->execute($input));
 	}
 }

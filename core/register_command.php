@@ -74,7 +74,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Background\Ajax(\OC::$server->getConfig()));
 	$application->add(new OC\Core\Command\Background\Queue\Status(\OC::$server->getJobList()));
 	$application->add(new OC\Core\Command\Background\Queue\Delete(\OC::$server->getJobList()));
-	$application->add(new OC\Core\Command\Background\Queue\Execute(\OC::$server->getJobList()));
+	$application->add(new OC\Core\Command\Background\Queue\Execute(\OC::$server->getJobList(), \OC::$server->getTimeFactory()));
 
 	$application->add(new OC\Core\Command\Config\App\DeleteConfig(\OC::$server->getConfig()));
 	$application->add(new OC\Core\Command\Config\App\GetConfig(\OC::$server->getConfig()));
