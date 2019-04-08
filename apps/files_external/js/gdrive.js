@@ -22,38 +22,37 @@ $(document).ready(function() {
 			});
 			el.tooltip({placement: 'top'});
 			backendEl.append(el);
+
+			/**
+			 * ------- OAUTH2 Events ----------
+			 *
+			 * The files_external_{backendId} app's CUSTOM JS should handle the OAuth2 events itself
+			 * instead on relying on the core for the implemention. These two functions
+			 * [1] OCA.External.Settings.OAuth2.getAuthUrl, [2] OCA.External.Settings.OAuth2.verifyCode
+			 * abstract away the details of sending the request to backend for getting the AuthURL or
+			 * verifying the code, mounting the storage config etc
+			 */
+			$tr.find('.configuration').on('oauth_step1', function (event, data) {
+				if (data['backend_id'] !== backendId) {
+					return;	// means the trigger is not for this storage adapter
+				}
+
+				// Redirects the User on success else displays an alert (with error message sent by backend)
+				OCA.External.Settings.OAuth2.getAuthUrl(backendUrl, data);
+			});
+
+			$tr.find('.configuration').on('oauth_step2', function (event, data) {
+				if (data['backend_id'] !== backendId || data['code'] === undefined) {
+					return;		// means the trigger is not for this OAuth2 grant
+				}
+
+				OCA.External.Settings.OAuth2.verifyCode(backendUrl, data)
+					.fail(function (message) {
+						OC.dialogs.alert(message,
+							t('files_external', 'Error verifying OAuth2 Code for ' + backendId)
+						);
+					});
+			});
 		}
 	});
-
-	/**
-	 * ------- OAUTH2 Events ----------
-	 * 
-	 * The files_external_{backendId} app's CUSTOM JS should handle the OAuth2 events itself
-	 * instead on relying on the core for the implemention. These two functions
-	 * [1] OCA.External.Settings.OAuth2.getAuthUrl, [2] OCA.External.Settings.OAuth2.verifyCode
-	 * abstract away the details of sending the request to backend for getting the AuthURL or
-	 * verifying the code, mounting the storage config etc
-	 */
-	$('.configuration').on('oauth_step1', function (event, data) {
-		if (data['backend_id'] !== backendId) {
-			return;	// means the trigger is not for this storage adapter
-		}
-
-		// Redirects the User on success else displays an alert (with error message sent by backend)
-		OCA.External.Settings.OAuth2.getAuthUrl(backendUrl, data);
-	});
-
-	$('.configuration').on('oauth_step2', function (event, data) {
-		if (data['backend_id'] !== backendId || data['code'] === undefined) {
-			return;		// means the trigger is not for this OAuth2 grant
-		}
-
-		OCA.External.Settings.OAuth2.verifyCode(backendUrl, data)
-		.fail(function (message) {
-			OC.dialogs.alert(message,
-				t('files_external', 'Error verifying OAuth2 Code for ' + backendId)
-			);
-		})
-	});
-
 });
