@@ -24,6 +24,7 @@ namespace OC\Core\Command\Background\Queue;
 use OC\BackgroundJob\TimedJob;
 use OC\Log\CommandLogger;
 use OCP\BackgroundJob\IJobList;
+use OCP\AppFramework\Utility\ITimeFactory;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -39,13 +40,16 @@ class Execute extends Command {
 	 * @var IJobList
 	 */
 	protected $jobList;
+	/** @var ITimeFactory */
+	protected $timeFactory;
 
 	/**
 	 * @param IJobList $jobList
 	 */
-	public function __construct(IJobList $jobList) {
-		$this->jobList = $jobList;
+	public function __construct(IJobList $jobList, ITimeFactory $timeFactory) {
 		parent::__construct();
+		$this->jobList = $jobList;
+		$this->timeFactory = $timeFactory;
 	}
 
 	protected function configure() {
@@ -88,7 +92,7 @@ EOS;
 		$jobClass = \get_class($job);
 		$output->writeln("<info>Found job: $jobClass with ID $jobId</info>");
 
-		$start = \time();
+		$start = $this->timeFactory->getTime();
 
 		// Run the job if not reserved
 		$logger = new \OC\Log(new CommandLogger($output), \OC::$server->getSystemConfig());
@@ -103,7 +107,7 @@ EOS;
 
 		$job->execute($this->jobList, $logger);
 
-		$duration = \time() - $start;
+		$duration = $this->timeFactory->getTime() - $start;
 
 		$output->writeln("<info>Finished in $duration seconds</info>");
 		$this->jobList->setLastJob($job);
