@@ -113,6 +113,7 @@ OC.L10N.register(
     "No favorites" : "Žádné oblíbené",
     "Files and folders you mark as favorite will show up here" : "Soubory a adresáře označené jako oblíbené budou zobrazeny zde",
     "Text file" : "Textový soubor",
-    "New text file.txt" : "Nový textový soubor.txt"
+    "New text file.txt" : "Nový textový soubor.txt",
+    "Unknown user" : "Neznámý uživatel"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

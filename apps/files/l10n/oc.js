@@ -108,6 +108,7 @@ OC.L10N.register(
     "No favorites" : "Pas cap de favorit",
     "Files and folders you mark as favorite will show up here" : "Los fichièrs e dorsièrs aponduts a vòstres favorits apareisseràn aicí",
     "Text file" : "Fichièr tèxte",
-    "New text file.txt" : "Novèl fichièr tèxte .txt"
+    "New text file.txt" : "Novèl fichièr tèxte .txt",
+    "Unknown user" : "Utilizaire desconegut"
 },
 "nplurals=2; plural=(n > 1);");

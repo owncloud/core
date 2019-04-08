@@ -185,6 +185,8 @@
     "Imprint" : "Impressum",
     "The username can not be longer than 64 characters" : "Der Benutzername darf nicht länger als 64 Zeichen sein",
     "Privacy Policy" : "Datenschutzerklärung",
-    "__language_name__" : "Deutsch (Förmlich: Sie)"
+    "__language_name__" : "Deutsch (Förmlich: Sie)",
+    "No minimum ownCloud version is defined in appinfo/info.xml." : "Es ist keine minimale ownCloud-Version in appinfo/info.xml definiert.",
+    "No maximum ownCloud version is defined in appinfo/info.xml." : "Es ist keine maximale ownCloud-Version in appinfo/info.xml definiert."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

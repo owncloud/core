@@ -117,6 +117,7 @@ OC.L10N.register(
     "No entries in this folder match {filter}" : "Aucun fichier dans ce dossier ne correspond à {filter}",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Limiter les notifications à la création ou la modification de vos <strong>fichiers favoris</strong>",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Vous n'êtes pas autorisé à accéder à ce fichier/dossier. Merci de contacter le propriétaire afin qu'il le partage avec vous.",
-    "Error when assembling chunks, status code {status}" : "Erreur lors de l'assemblage d'un bloc, code {status}"
+    "Error when assembling chunks, status code {status}" : "Erreur lors de l'assemblage d'un bloc, code {status}",
+    "Unknown user" : "Utilisateur inconnu"
 },
 "nplurals=2; plural=(n > 1);");

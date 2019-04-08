@@ -103,6 +103,8 @@ OC.L10N.register(
     "No favorites" : "Sık kullanılan öge yok.",
     "Files and folders you mark as favorite will show up here" : "Sık kullanılan olarak işaretlediğiniz dosya ve klasörler burada gösterilecek",
     "Text file" : "Metin dosyası",
-    "New text file.txt" : "Yeni metin dosyası.txt"
+    "New text file.txt" : "Yeni metin dosyası.txt",
+    "Processing files..." : "Dosyalar işleniyor...",
+    "Unknown user" : "Bilinmeyen kullanıcı"
 },
 "nplurals=2; plural=(n > 1);");

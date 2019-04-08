@@ -110,6 +110,7 @@ OC.L10N.register(
     "Files and folders you mark as favorite will show up here" : "Datoteke ali mape, ki so označene kot priljubljene, bodo zbrane na tem mestu.",
     "Text file" : "Besedilna datoteka",
     "New text file.txt" : "Nova datoteka.txt",
-    "Target folder does not exist any more" : "Ciljna mapa ne obstaja več"
+    "Target folder does not exist any more" : "Ciljna mapa ne obstaja več",
+    "Unknown user" : "Neznan uporabnik"
 },
 "nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);");

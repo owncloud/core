@@ -118,6 +118,7 @@ OC.L10N.register(
     "Processing files..." : "Verarbeite Dateien…",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Benachrichtigungen über Neues und Änderungen auf Deine <strong>favorisierten Dateien</strong> beschränken",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Du hast keine Berechtigung, um auf diese(n) Datei/Ordner zuzugreifen - Bitte kontaktiere den Besitzer, damit er dies mit dir teilt.",
-    "Error when assembling chunks, status code {status}" : "Fehler beim Zusammenfügen der Datenblöcke, Statuscode {status}"
+    "Error when assembling chunks, status code {status}" : "Fehler beim Zusammenfügen der Datenblöcke, Statuscode {status}",
+    "Unknown user" : "Unbekannter Benutzer"
 },
 "nplurals=2; plural=(n != 1);");

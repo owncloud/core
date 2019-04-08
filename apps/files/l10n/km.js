@@ -33,6 +33,7 @@ OC.L10N.register(
     "Settings" : "ការកំណត់",
     "WebDAV" : "WebDAV",
     "Upload too large" : "ផ្ទុក​ឡើង​ធំ​ពេក",
-    "Text file" : "ឯកសារ​អក្សរ"
+    "Text file" : "ឯកសារ​អក្សរ",
+    "Unknown user" : "មិនស្គាល់អ្នកប្រើប្រាស់"
 },
 "nplurals=1; plural=0;");

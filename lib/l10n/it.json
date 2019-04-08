@@ -185,6 +185,8 @@
     "Imprint" : "Imprint",
     "__language_name__" : "Italiano",
     "Privacy Policy" : "Regole sulla riservatezza",
-    "The username can not be longer than 64 characters" : "Il nome utente non può essere più lungo di 64 caratteri"
+    "The username can not be longer than 64 characters" : "Il nome utente non può essere più lungo di 64 caratteri",
+    "No minimum ownCloud version is defined in appinfo/info.xml." : "Nessuna versione minima di ownCloud definita in appinfo/info.xml.",
+    "No maximum ownCloud version is defined in appinfo/info.xml." : "Nessuna versione massima di ownCloud definita in appinfo/info.xml."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

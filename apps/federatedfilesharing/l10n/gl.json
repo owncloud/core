@@ -15,6 +15,11 @@
     "Share it:" : "Compártao:",
     "Share with me via ownCloud" : "Comparte comigo a través do ownCloud",
     "HTML Code:" : "Código HTML:",
-    "Add to your ownCloud" : "Engadir ao seu ownCloud"
+    "Add to your ownCloud" : "Engadir ao seu ownCloud",
+    "Automatically accept remote shares from trusted servers" : "Aceptar automaticamente os recursos compartidos remotos de servidores de confianza",
+    "Federated sharing" : "Compartición federada",
+    "File is already shared with %s" : "O ficheiro xa está a ser compartido con %s",
+    "Decline" : "Declinar",
+    "Add to your website" : "Engadir ao seu sitio web"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

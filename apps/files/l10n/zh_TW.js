@@ -100,6 +100,7 @@ OC.L10N.register(
     "No favorites" : "沒有最愛",
     "Files and folders you mark as favorite will show up here" : "您標記為最愛的檔案與資料夾將會顯示在這裡",
     "Text file" : "文字檔",
-    "New text file.txt" : "新文字檔.txt"
+    "New text file.txt" : "新文字檔.txt",
+    "Unknown user" : "未知的使用者"
 },
 "nplurals=1; plural=0;");

@@ -97,6 +97,7 @@ OC.L10N.register(
     "No favorites" : "Neniu pliŝato",
     "Files and folders you mark as favorite will show up here" : "Dosieroj kaj dosierujoj, kiujn vi markas, kiel pliŝatoj, aperos ĉi tie",
     "Text file" : "Tekstodosiero",
-    "New text file.txt" : "Nova tekstodosiero.txt"
+    "New text file.txt" : "Nova tekstodosiero.txt",
+    "Unknown user" : "Nekonata uzanto"
 },
 "nplurals=2; plural=(n != 1);");

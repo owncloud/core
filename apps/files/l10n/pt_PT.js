@@ -113,6 +113,7 @@ OC.L10N.register(
     "No favorites" : "Sem favoritos",
     "Files and folders you mark as favorite will show up here" : "Os ficheiros e pastas que marcou como favoritos serão mostrados aqui",
     "Text file" : "Ficheiro de Texto",
-    "New text file.txt" : "Novo texto ficheiro.txt"
+    "New text file.txt" : "Novo texto ficheiro.txt",
+    "Unknown user" : "Utilizador desconhecido"
 },
 "nplurals=2; plural=(n != 1);");

@@ -64,6 +64,7 @@ OC.L10N.register(
     "Add storage" : "Додати сховище",
     "Advanced settings" : "Розширені налаштування",
     "Delete" : "Видалити",
-    "Allow users to mount the following external storage" : "Дозволити користувачам монтувати наступні зовнішні сховища"
+    "Allow users to mount the following external storage" : "Дозволити користувачам монтувати наступні зовнішні сховища",
+    "Never" : "Ніколи"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

@@ -109,6 +109,7 @@ OC.L10N.register(
     "No favorites" : "Tidak ada favorit",
     "Files and folders you mark as favorite will show up here" : "Berkas dan folder yang Anda tandai sebagai favorit akan ditampilkan disini.",
     "Text file" : "Berkas teks",
-    "New text file.txt" : "Teks baru file.txt"
+    "New text file.txt" : "Teks baru file.txt",
+    "Unknown user" : "Pengguna tidak dikenal"
 },
 "nplurals=1; plural=0;");

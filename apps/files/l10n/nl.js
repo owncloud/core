@@ -113,6 +113,7 @@ OC.L10N.register(
     "Target folder does not exist any more" : "Doelmap bestaat niet mee",
     "Upload timeout for file \"{file}\"" : "Upload timeout voor bestand \"{file}\"",
     "Processing files..." : "Verwerken bestanden...",
-    "No entries in this folder match {filter}" : "Niets in deze map komt overeen met {filter}"
+    "No entries in this folder match {filter}" : "Niets in deze map komt overeen met {filter}",
+    "Unknown user" : "Onbekende gebruiker"
 },
 "nplurals=2; plural=(n != 1);");

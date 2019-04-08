@@ -9,6 +9,7 @@
     "Add to your website" : "Додади на твојот веб сајт",
     "Share with me via ownCloud" : "Сподели со мене преку ownCloud",
     "HTML Code:" : "HTML код:",
-    "Add to your ownCloud" : "Додади во вашиот ownCloud"
+    "Add to your ownCloud" : "Додади во вашиот ownCloud",
+    "Federated sharing" : "Федерирано споделување"
 },"pluralForm" :"nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;"
 }

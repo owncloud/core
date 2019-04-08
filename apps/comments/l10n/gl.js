@@ -11,6 +11,16 @@ OC.L10N.register(
     "Edit comment" : "Editar comentario",
     "Comments" : "Comentarios",
     "More comments..." : "Máis comentarios...",
-    "{count} unread comments" : "{count} comentarios sen ler"
+    "{count} unread comments" : "{count} comentarios sen ler",
+    "[Deleted user]" : "[Usuario eliminado]",
+    "You commented on %2$s" : "Vostede comentou en %1$s",
+    "Allowed characters {count} of {max}" : "Caracteres permitidos {count} de {max}",
+    "Error occurred while retrieving comment with id {id}" : "Produciuse un erro ao recuperar o comentario co ID {id}",
+    "Error occurred while updating comment with id {id}" : "Produciuse un erro ao actualizar o comentario co ID {id}",
+    "Error occurred while posting comment" : "Produciuse un erro ao publicar o comentario",
+    "%1$s commented on %2$s" : "%1$s comentados en %2$s",
+    "No other comments available" : "Non hai outros comentarios dispoñíbeis",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Comentarios</strong> para os ficheiros <em>(sempre listados no fluxo)</em>",
+    "%1$s commented" : "%1$s comentados"
 },
 "nplurals=2; plural=(n != 1);");

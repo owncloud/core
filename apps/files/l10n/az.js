@@ -82,6 +82,7 @@ OC.L10N.register(
     "No favorites" : "Seçilmiş yoxdur",
     "Files and folders you mark as favorite will show up here" : "İstəkli qeyd etdiyiniz fayllar və qovluqlar burda göstəriləcək",
     "Text file" : "Tekst faylı",
-    "New text file.txt" : "Yeni mətn file.txt"
+    "New text file.txt" : "Yeni mətn file.txt",
+    "Unknown user" : "Istifadəçi tanınmır "
 },
 "nplurals=2; plural=(n != 1);");

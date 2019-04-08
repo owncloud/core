@@ -187,6 +187,7 @@
     "Privacy Policy" : "Rregulla Privatësie",
     "__language_name__" : "Shqip",
     "No minimum ownCloud version is defined in appinfo/info.xml." : "Te appinfo/info.xml s’ka të përcaktuar version minimum ownCloud-i.",
-    "No maximum ownCloud version is defined in appinfo/info.xml." : "Te appinfo/info.xml s’ka të përcaktuar version maksimum ownCloud-i."
+    "No maximum ownCloud version is defined in appinfo/info.xml." : "Te appinfo/info.xml s’ka të përcaktuar version maksimum ownCloud-i.",
+    "Can't update %s" : "S’përditësohet dot %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

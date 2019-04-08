@@ -115,6 +115,7 @@ OC.L10N.register(
     "No entries in this folder match {filter}" : "Inga poster i mappen matchar {filter}",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Begränsa meddelanden om att skapa och ändra till dina <strong>favoritfiler</strong>",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Du har inte behörighet att komma åt denna fil/mapp - Kontakta ägaren för att dela den med dig.",
-    "Error when assembling chunks, status code {status}" : "Fel vid sammanställning av bitar, statuskod {status}"
+    "Error when assembling chunks, status code {status}" : "Fel vid sammanställning av bitar, statuskod {status}",
+    "Unknown user" : "Okänd användare"
 },
 "nplurals=2; plural=(n != 1);");

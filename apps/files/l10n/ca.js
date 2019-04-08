@@ -78,6 +78,7 @@ OC.L10N.register(
     "No favorites" : "No hi ha favorits",
     "Files and folders you mark as favorite will show up here" : "Aquí apareixeran els arxius i carpetes que vostè marqui com favorits",
     "Text file" : "Fitxer de text",
-    "Storage is temporarily not available" : "Emmagatzematge temporalment no disponible"
+    "Storage is temporarily not available" : "Emmagatzematge temporalment no disponible",
+    "Unknown user" : "Usuari desconegut"
 },
 "nplurals=2; plural=(n != 1);");

@@ -23,6 +23,7 @@ OC.L10N.register(
     "Add to your website" : "Añadir a su sitio web",
     "Share with me via ownCloud" : "Compartirlo conmigo vía OwnCloud",
     "HTML Code:" : "Código HTML:",
-    "Add to your ownCloud" : "Agregue a su ownCloud"
+    "Add to your ownCloud" : "Agregue a su ownCloud",
+    "Automatically accept remote shares from trusted servers" : "Aceptar automáticamente compartidos remotos desde servidores confiables"
 },
 "nplurals=2; plural=(n != 1);");

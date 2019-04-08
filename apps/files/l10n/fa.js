@@ -99,6 +99,7 @@ OC.L10N.register(
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "اعلان محدودیت ها در مورد ایجاد و تغییر در <strong>پرونده های مورد علاقه شما</strong>",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "شما اجازه دسترسی به این پرونده/پوشه را ندارید - لطفا با مالک تماس بگیرید تا آن را با شما به اشتراک بگذارد.",
     "Error when assembling chunks, status code {status}" : "خطا هنگام سرهم بندی قطعات، کد وضعیت {status}",
-    "Not enough free space" : "فضای آزاد کافی نیست"
+    "Not enough free space" : "فضای آزاد کافی نیست",
+    "Unknown user" : "کاربر نامعلوم"
 },
 "nplurals=1; plural=0;");

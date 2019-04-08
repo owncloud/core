@@ -374,6 +374,7 @@ OC.L10N.register(
     "Privacy Policy" : "Política de privacidad",
     "Sharing is not allowed" : "No se permite compartir",
     "Personal note from the sender: <br> %s." : "Nota personal del remitente: <br> %s.",
-    "Static" : "Estático"
+    "Static" : "Estático",
+    "Confirm Password" : "Confirmar contraseña"
 },
 "nplurals=2; plural=(n != 1);");

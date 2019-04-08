@@ -117,6 +117,7 @@ OC.L10N.register(
     "No entries in this folder match {filter}" : "이 폴더에 '{filter}'와(과) 일치하는 항목 없음",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "<strong>즐겨찾는 파일</strong>의 생성 및 변경의 알림 제한",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "이 파일/폴더에 접근할 권한이 없습니다 - 귀하에게 공유한 소유자에게 연락해 주십시오.",
-    "Error when assembling chunks, status code {status}" : "조각을 모으는 중 오류 발생, 상태 코드 {status}"
+    "Error when assembling chunks, status code {status}" : "조각을 모으는 중 오류 발생, 상태 코드 {status}",
+    "Unknown user" : "알려지지 않은 사용자"
 },
 "nplurals=1; plural=0;");

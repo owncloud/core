@@ -125,6 +125,7 @@ OC.L10N.register(
     "Could not unlock, please contact the lock owner {owner}" : "S’u shkyç dot, ju lutemi, lidhuni me të zotin e kyçjes {owner}",
     "Unlock failed with status {status}" : "Shkyçja dështoi, me gjendjen {status}",
     "Locks" : "Kyçje",
-    "Resource is not locked" : "Burimi s’është i kyçur"
+    "Resource is not locked" : "Burimi s’është i kyçur",
+    "Unknown user" : "Përdorues i panjohur"
 },
 "nplurals=2; plural=(n != 1);");

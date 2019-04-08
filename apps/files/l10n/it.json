@@ -114,6 +114,15 @@
     "No entries in this folder match {filter}" : "Nessuna file in questa cartella risponde a {filter}",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Limita notiriche di creazione e cambio al tuoi <strong> file preferito</strong>",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Non hai il permeso di accedere a questo file/cartella - contatta il proprietario che lo ha condiviso con te.",
-    "Error when assembling chunks, status code {status}" : "Errore assemblando le parti, codice di stato {status}"
+    "Error when assembling chunks, status code {status}" : "Errore assemblando le parti, codice di stato {status}",
+    "Unknown user" : "Utente sconosciuto",
+    "The file {file} is currently locked, please try again later" : "Il file {file} è attualmente bloccato, riprova più tardi",
+    "Lock status" : "Stato di blocco",
+    "This resource is locked. Click to see more details." : "Questa risorsa è bloccata. Clicca per maggiori dettagli.",
+    "{owner} has locked this resource via {path}" : "{owner} ha bloccato questa risorsa via {path}",
+    "Could not unlock, please contact the lock owner {owner}" : "Impossibile sbloccare, contatta il proprietario del blocco {owner}",
+    "Unlock failed with status {status}" : "Sblocco fallito con stato {status}",
+    "Locks" : "Blocchi",
+    "Resource is not locked" : "La risorsa non è bloccata"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

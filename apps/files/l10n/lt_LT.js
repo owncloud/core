@@ -108,6 +108,7 @@ OC.L10N.register(
     "No favorites" : "Nėra mėgstamiausių",
     "Files and folders you mark as favorite will show up here" : "Failai ir aplankai, kuriuos pažymite mėgstamais, atsiras čia",
     "Text file" : "Teksto failas",
-    "New text file.txt" : "Naujas tekstas file.txt"
+    "New text file.txt" : "Naujas tekstas file.txt",
+    "Unknown user" : "Neatpažintas naudotojas"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);");

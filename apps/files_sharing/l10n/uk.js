@@ -61,6 +61,7 @@ OC.L10N.register(
     "Direct link" : "Пряме посилання",
     "Pending" : "Очікування",
     "Accept" : "Прийняти",
-    "Decline" : "Відхилити"
+    "Decline" : "Відхилити",
+    "Couldn't send mail to following recipient(s): %s " : "Не вдалося надіслати повідомлення наступним користувачам: %s"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

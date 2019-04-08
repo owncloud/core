@@ -116,6 +116,15 @@
     "Processing files..." : "Meðhöndla skrár...",
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Takmarka tilkynningar um gerð og breytingar á <strong>eftirlætisskrám</strong>",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Þú hefur ekki aðgangsheimildir til að skoða þessa skrá/möppu. Hafðu samband við eigandann og biddu hann um að deila þessu með þér.",
-    "Error when assembling chunks, status code {status}" : "Villa við að setja saman búta, stöðukóði {status}"
+    "Error when assembling chunks, status code {status}" : "Villa við að setja saman búta, stöðukóði {status}",
+    "Unknown user" : "Óþekktur notandi",
+    "The file {file} is currently locked, please try again later" : "Skráin {file} er læst í augnablikinu, reyndu aftur síðar",
+    "Lock status" : "Staða læsingar",
+    "This resource is locked. Click to see more details." : "Þetta tilfang er læst. Smelltu til að sjá frekari upplýsingar.",
+    "{owner} has locked this resource via {path}" : "{owner} hefur læst þessu tilfangi í gegnum {path}",
+    "Could not unlock, please contact the lock owner {owner}" : "Gat ekki aflæst, hafðu samband við eiganda læsingarinnar {owner}",
+    "Unlock failed with status {status}" : "Aflæsing mistókst með stöðuskilaboðum {status}",
+    "Locks" : "Læsingar",
+    "Resource is not locked" : "Tilfang er ekki læst"
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }

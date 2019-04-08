@@ -85,6 +85,7 @@
     "No favorites" : "Lemmikuid pole",
     "Files and folders you mark as favorite will show up here" : "Siin kuvatakse faile ja kaustasid, mille oled märkinud lemmikuteks",
     "Text file" : "Tekstifail",
-    "New text file.txt" : "Uus tekstifail.txt"
+    "New text file.txt" : "Uus tekstifail.txt",
+    "Unknown user" : "Tundmatu kasutaja"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

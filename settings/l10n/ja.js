@@ -367,6 +367,8 @@ OC.L10N.register(
     "Email address changed to {mailAddress} successfully." : "emailアドレスの {mailAddress} への変更に成功しました。",
     "Users" : "ユーザー",
     "Show enabled/disabled option" : "有効/無効オプションを表示",
-    "New Password" : "新しいパスワード"
+    "New Password" : "新しいパスワード",
+    "App passwords / tokens" : "パスワード／トークンを追加する",
+    "Create new app passcode" : "新しいパスコードを作成する"
 },
 "nplurals=1; plural=0;");

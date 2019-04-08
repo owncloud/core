@@ -97,6 +97,7 @@ OC.L10N.register(
     "Text file" : "Textový súbor",
     "New text file.txt" : "Nový text file.txt",
     "Storage is temporarily not available" : "Úložisko je dočasne nedostupné",
-    "Not enough free space" : "Nedostatok voľného miesta"
+    "Not enough free space" : "Nedostatok voľného miesta",
+    "Unknown user" : "Neznámy používateľ"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

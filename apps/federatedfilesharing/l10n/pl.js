@@ -18,6 +18,7 @@ OC.L10N.register(
     "Add to your website" : "Dodaj do swojej strony",
     "Share with me via ownCloud" : "Współdziel ze mną przez ownCloud",
     "HTML Code:" : "Kod HTML:",
-    "Add to your ownCloud" : "Dodaj do twojego ownCloud"
+    "Add to your ownCloud" : "Dodaj do twojego ownCloud",
+    "Automatically accept remote shares from trusted servers" : "Automatycznie akceptuj zdalne udziały z zaufanych serwerów"
 },
 "nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);");

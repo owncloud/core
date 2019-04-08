@@ -93,6 +93,15 @@ OC.L10N.register(
     "A file or folder has been <strong>deleted</strong>" : "Датотека или директоиум се <strong>избришани</strong>",
     "A file or folder has been <strong>restored</strong>" : "Датотека или директоиум се <strong>вратени</strong>",
     "%2$s restored %1$s" : "%2$s врати %1$s",
-    "Upload some content or sync with your devices!" : "Прикачете некоја содржина или синхронизирајте со вашите уреди!"
+    "Upload some content or sync with your devices!" : "Прикачете некоја содржина или синхронизирајте со вашите уреди!",
+    "Unknown user" : "Непознат корисник",
+    "The file {file} is currently locked, please try again later" : "Датотеката {file} е моментално заклучена, Обидете се повторно",
+    "Lock status" : "Статус на заклучување",
+    "This resource is locked. Click to see more details." : "Ресурсот е заклучен. Кликни за повеќе детали.",
+    "{owner} has locked this resource via {path}" : "{owner} го заклучи овој ресурс преку {path}",
+    "Could not unlock, please contact the lock owner {owner}" : "Неможе да се одклучи, контактирајте го сопственикот {owner}",
+    "Unlock failed with status {status}" : "Неуспешно одклучување со статус {status}",
+    "Locks" : "Заклучувања",
+    "Resource is not locked" : "Ресурсот не е заклучен"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

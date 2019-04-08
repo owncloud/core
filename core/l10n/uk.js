@@ -330,6 +330,13 @@ OC.L10N.register(
     "An error occured while sending email" : "Виникла помилка при відсиланні листа",
     "Sharing is not allowed" : "Публікація не дозволяється",
     "Privacy Policy" : "Політика конфіденційності",
-    "Static" : "Статичний"
+    "Static" : "Статичний",
+    "User and Groups" : "Користувач та групи",
+    "Public Links" : "Публічні посилання",
+    "Couldn't send mail to following recipient(s): %s " : "Не вдалося надіслати повідомлення наступним користувачам: %s",
+    "Choose an expiration date" : "Оберіть термін дії",
+    "Expiration date is required" : "Термін дії є необхідним",
+    "E-Mail sent" : "Листа відправлено",
+    "Error adding {addItem}: {addItem} already exists" : "Помилка додавання {addItem}: {addItem} вже існує"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

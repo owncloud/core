@@ -57,6 +57,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Պանակում մուտքին համապատասխանող ոչինչ չգտնվեց",
     "Select all" : "Նշել բոլորը",
     "Text file" : "Տեքստ ֆայլ",
-    "New text file.txt" : "Նոր տեքստ ֆայլ.txt"
+    "New text file.txt" : "Նոր տեքստ ֆայլ.txt",
+    "Unknown user" : "Անհայտ օգտատեր"
 },
 "nplurals=2; plural=(n != 1);");
