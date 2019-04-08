@@ -14,7 +14,7 @@
     "@bower_components/base64": "davidchambers/Base64.js#1.0.2",
     "@bower_components/blueimp-md5": "blueimp/JavaScript-MD5#1.0.1",
     "@bower_components/bootstrap": "twbs/bootstrap#3.3.7",
-    "@bower_components/bowser": "ded/bowser#1.9.4",
+    "@bower_components/bowser": "ded/bowser#2.2.0",
     "@bower_components/browser-update": "Graffino/Browser-Update#v2.0.2",
     "@bower_components/clipboard": "zenorocha/clipboard.js#v2.0.4",
     "@bower_components/davclient.js": "owncloud/davclient.js#0.1.3",
