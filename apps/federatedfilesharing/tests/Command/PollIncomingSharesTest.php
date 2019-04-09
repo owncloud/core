@@ -28,6 +28,7 @@ use OCA\Files_Sharing\External\MountProvider;
 use OCP\DB\QueryBuilder\IExpressionBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Storage\IStorageFactory;
+use OCP\Files\StorageNotAvailableException;
 use OCP\IDBConnection;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -96,5 +97,40 @@ class PollIncomingSharesTest extends TestCase {
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$this->assertContains("Polling is not possible when files_sharing app is disabled. Please enable it with 'occ app:enable files_sharing'", $output);
+	}
+
+	public function testUnavailableStorage() {
+		$uid = 'foo';
+		$exprBuilder = $this->createMock(IExpressionBuilder::class);
+		$statementMock = $this->createMock(Statement::class);
+		$statementMock->method('fetch')->willReturnOnConsecutiveCalls(['user' => $uid], false);
+		$qbMock = $this->createMock(IQueryBuilder::class);
+		$qbMock->method('selectDistinct')->willReturnSelf();
+		$qbMock->method('from')->willReturnSelf();
+		$qbMock->method('where')->willReturnSelf();
+		$qbMock->method('expr')->willReturn($exprBuilder);
+		$qbMock->method('execute')->willReturn($statementMock);
+
+		$userMock = $this->createMock(IUser::class);
+		$this->userManager->expects($this->once())->method('get')
+			->with($uid)->willReturn($userMock);
+		
+		$storage = $this->createMock(\OCA\Files_Sharing\External\Storage::class);
+		$storage->method('hasUpdated')->willThrowException(new StorageNotAvailableException('Ooops'));
+		$storage->method('getRemote')->willReturn('example.org');
+
+		$mount = $this->createMock(\OCA\Files_Sharing\External\Mount::class);
+		$mount->method('getStorage')->willReturn($storage);
+		$mount->method('getMountPoint')->willReturn("/$uid/files/point");
+		$this->externalMountProvider->expects($this->once())->method('getMountsForUser')
+			->willReturn([$mount]);
+
+		$this->dbConnection->method('getQueryBuilder')->willReturn($qbMock);
+		$this->commandTester->execute([]);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains(
+			'Skipping external share with id "0" from remote "example.org". Reason: "Ooops"',
+			$output
+		);
 	}
 }
