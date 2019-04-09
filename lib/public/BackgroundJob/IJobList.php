@@ -127,4 +127,19 @@ interface IJobList {
 	 * @since 10.0.0
 	 */
 	public function setExecutionTime($job, $timeTaken);
+
+	/**
+	 * iterate over all jobs in the queue
+	 *
+	 * @return void
+	 * @since 10.0.9
+	 */
+	public function listJobs(\Closure $callback);
+
+	/**
+	 * remove a specific job by id
+	 * @return void
+	 * @since 10.0.9
+	 */
+	public function removeById($id);
 }
