@@ -57,7 +57,7 @@ class DeleteTest extends TestCase {
 	 * @param $expectedOutput
 	 */
 	public function testCommandInput($jobId, $expectedOutput) {
-		$input = ['id' => $jobId];
+		$input = ['Job ID' => $jobId];
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
 		$this->assertContains($expectedOutput, $output);
@@ -65,7 +65,7 @@ class DeleteTest extends TestCase {
 
 	public function providesJobIds() {
 		return [
-			['666', 'Job with id <666> is not known.'],
+			['666', 'Job with ID <666> is not known.'],
 			['1', 'Job has been deleted.'],
 		];
 	}

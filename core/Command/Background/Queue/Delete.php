@@ -41,7 +41,7 @@ class Delete extends Command {
 		$this
 			->setName('background:queue:delete')
 			->setDescription('Delete a job from the queue')
-			->addArgument('id', InputArgument::REQUIRED, 'id of the job to be deleted');
+			->addArgument('Job ID', InputArgument::REQUIRED, 'ID of the job to be deleted');
 	}
 
 	/**
@@ -50,11 +50,11 @@ class Delete extends Command {
 	 * @return int
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$id = $input->getArgument('id');
+		$id = $input->getArgument('Job ID');
 
 		$job = $this->jobList->getById($id);
 		if ($job === null) {
-			$output->writeln("Job with id <$id> is not known.");
+			$output->writeln("Job with ID <$id> is not known.");
 			return 1;
 		}
 
