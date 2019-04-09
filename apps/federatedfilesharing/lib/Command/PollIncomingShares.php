@@ -90,7 +90,12 @@ class PollIncomingShares extends Command {
 					$storage = $mount->getStorage();
 					$this->refreshStorageRoot($storage);
 				} catch (\Exception $e) {
-					$output->writeln($e->getMessage());
+					$entryId = $this->getExternalShareId($data['user'], $mount->getMountPoint());
+					$remote = $storage->getRemote();
+					$reason = $e->getMessage();
+					$output->writeln(
+						"Skipping external share with id \"$entryId\" from remote \"$remote\". Reason: \"$reason\""
+					);
 				}
 			}
 		}
@@ -123,5 +128,26 @@ class PollIncomingShares extends Command {
 			->where($qb->expr()->eq('accepted', $qb->expr()->literal('1')));
 
 		return $qb->execute();
+	}
+
+	protected function getExternalShareId(string $userId, string $mountPoint) {
+		$relativeMountPoint =\rtrim(
+			\substr($mountPoint, \strlen("/$userId/files")),
+			'/'
+		);
+		$qb = $this->dbConnection->getQueryBuilder();
+		$qb->selectDistinct('id')
+			->from('share_external')
+			->where(
+				$qb->expr()->eq('user',
+					$qb->expr()->literal($userId)
+				))
+		->andWhere(
+			$qb->expr()->eq('mountpoint',
+				$qb->expr()->literal($relativeMountPoint)
+			));
+		$result = $qb->execute();
+		$externalShare = $result->fetch();
+		return $externalShare['id'] ?? 0;
 	}
 }
