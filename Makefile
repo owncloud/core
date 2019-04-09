@@ -56,7 +56,9 @@ TEST_DATABASE=sqlite
 TEST_EXTERNAL_ENV=smb-silvershell
 TEST_PHP_SUITE=
 
-RELEASE_CHANNEL=git
+# release related variables
+RELEASE_CHANNEL?=git
+RELEASE_EDITION?=community
 
 # internal aliases
 composer_deps=lib/composer
@@ -247,8 +249,23 @@ clean-docs:
 	rm -Rf build/jsdocs
 
 #
+# Build Helpers
+#
+
+define replace_version
+	# Set build
+	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
+	sed -i \
+		-e 's/$$OC_Channel.*$$/$$OC_Channel = '"'"$(RELEASE_CHANNEL)"'"';/g' \
+		-e 's/$$OC_Build.*$$/$$OC_Build = '"'"$(_BUILD)"'"';/g' \
+		$(1)
+	echo -e '\n$$OC_Edition = '"'"$(RELEASE_EDITION)"'"';' >> $(1)
+endef
+
+#
 # Build distribution
 #
+
 $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 	cd $(NODE_PREFIX) && $(YARN) run clean-modules
 	rm -Rf $@; mkdir -p $@/config
@@ -274,13 +291,8 @@ $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 		-iname \*.sh \
 		\) -print | xargs rm -Rf
 	find $@/{apps/,lib/composer/} -iname \*.exe -delete
-	# Set build
-	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
-	# Replace channel in version.php
-	sed -i \
-		-e 's/$$OC_Channel.*$$/$$OC_Channel = '"'"$(RELEASE_CHANNEL)"'"';/g' \
-		-e 's/$$OC_Build.*$$/$$OC_Build = '"'"$(_BUILD)"'"';/g' \
-		$(dist_dir)/owncloud/version.php
+	# update version.php
+	$(call replace_version,$@/version.php)
 
 $(dist_dir)/owncloud-core.tar.bz2: $(dist_dir)/owncloud
 	cd $(dist_dir) && tar cjf owncloud-core.tar.bz2 owncloud --format=gnu
@@ -323,13 +335,8 @@ $(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(c
 		-iname \*.sh \
 		\) -print | xargs rm -Rf
 	find $@/{apps/,lib/composer/} -iname \*.exe -delete
-	# Set build
-	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
-	# Replace channel in version.php
-	sed -i \
-		-e 's/$$OC_Channel.*$$/$$OC_Channel = '"'"$(RELEASE_CHANNEL)"'"';/g' \
-		-e 's/$$OC_Build.*$$/$$OC_Build = '"'"$(_BUILD)"'"';/g' \
-		$(dist_dir)/qa/owncloud/version.php
+	# update version.php
+	$(call replace_version,$@/version.php)
 
 $(dist_dir)/owncloud-qa-core.tar.bz2: $(dist_dir)/qa/owncloud
 	cd $(dist_dir)/qa && tar cjf owncloud-qa-core.tar.bz2 owncloud --format=gnu
