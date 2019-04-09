@@ -74,6 +74,7 @@
 	 * @property {number[]} shareType
 	 * @property {number[]} incompatiblePermissions
 	 * @property {OC.Share.Types.ShareAttribute[]} incompatibleAttributes
+	 * @property {number[]} requiredPermissions
 	 */
 
 	/**
@@ -896,6 +897,11 @@
 				var attr = this._registeredAttributes[i];
 				for(var ii in attr.incompatiblePermissions) {
 					if (this._hasPermission(permissions, attr.incompatiblePermissions[ii])) {
+						compatible = false;
+					}
+				}
+				for(var ii in attr.requiredPermissions) {
+					if (!this._hasPermission(permissions, attr.requiredPermissions[ii])) {
 						compatible = false;
 					}
 				}
