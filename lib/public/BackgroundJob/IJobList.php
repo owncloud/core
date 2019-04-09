@@ -132,14 +132,14 @@ interface IJobList {
 	 * iterate over all jobs in the queue
 	 *
 	 * @return void
-	 * @since 10.0.9
+	 * @since 10.2.0
 	 */
 	public function listJobs(\Closure $callback);
 
 	/**
 	 * remove a specific job by id
 	 * @return void
-	 * @since 10.0.9
+	 * @since 10.2.0
 	 */
 	public function removeById($id);
 }
