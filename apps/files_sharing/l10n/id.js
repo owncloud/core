@@ -56,6 +56,7 @@ OC.L10N.register(
     "Shared via public link" : "Dibagikan via tautan publik",
     "Shared by %2$s" : "Dibagikan oleh %2$s",
     "Shares" : "Dibagikan",
+    "Public link" : "Tautan publik",
     "Accept" : "Terima",
     "Decline" : "Tolak",
     "This share is password-protected" : "Berbagi ini dilindungi sandi",

@@ -173,7 +173,7 @@ OC.L10N.register(
     "Download / View" : "Descargar / Ver",
     "Recipients can view or download contents." : "Se puede ver o descargar el contenido",
     "Download / View / Upload" : "Descargar / Ver / Subir",
-    "Recipients can view, download, edit, delete and upload contents." : "Se puede ver, descargar, editar, borrar y subir contenido.",
+    "Can not remove required password" : "No se puede quitar la contraseña solicitada",
     "Edit link share: {name}" : "Editar link compartido: {name}",
     "Create link share: {name}" : "Crear link compartido: {name}",
     "Share" : "Compartir",

@@ -20,6 +20,7 @@ OC.L10N.register(
     "Open documentation" : "Dokumentation öffnen",
     "Allow users on this server to send shares to other servers" : "Benutzern auf diesem Server das Senden von Freigaben an andere Server erlauben",
     "Allow users on this server to receive shares from other servers" : "Benutzern auf diesem Server das Empfangen von Freigaben von anderen Servern erlauben",
+    "Automatically accept remote shares from trusted servers" : "Erhaltene entfernte Benutzerfreigaben von vertrauten Servern automatisch akzeptieren",
     "Federated Cloud" : "Federated Cloud",
     "Your Federated Cloud ID:" : "Ihre Federated-Cloud-ID:",
     "Share it:" : "Zum Teilen:",

@@ -173,7 +173,7 @@ OC.L10N.register(
     "Download / View" : "Скачивание / Просмотр",
     "Recipients can view or download contents." : "Получатели могут просматривать или скачивать содержимое.",
     "Download / View / Upload" : "Скачивание / Просмотр / Закачка",
-    "Recipients can view, download, edit, delete and upload contents." : "Получатели могут просматривать, скачивать, править, удалять и закачивать содержимое.",
+    "Can not remove required password" : "Нельзя удалить обязательный пароль",
     "Edit link share: {name}" : "Изменить доступ по ссылке: {name}",
     "Create link share: {name}" : "Создать доступ по ссылке: {name}",
     "Share" : "Поделиться",

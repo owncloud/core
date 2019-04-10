@@ -172,7 +172,6 @@ OC.L10N.register(
     "Download / View" : "Télécharger / Voir",
     "Recipients can view or download contents." : "Les bénéficiaires peuvent voir ou télécharger le contenu.",
     "Download / View / Upload" : "Télécharger / Voir / Téléverser",
-    "Recipients can view, download, edit, delete and upload contents." : "Les bénéficiaires peuvent voir, télécharger, modifier, supprimer et téléverser le contenu.",
     "Edit link share: {name}" : "Editer le lien de partage : {name}",
     "Create link share: {name}" : "Créer le lien de partage : {name}",
     "Share" : "Partager",

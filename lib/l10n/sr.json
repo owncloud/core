@@ -80,7 +80,6 @@
     "A valid username must be provided" : "Морате унети исправно корисничко име",
     "A valid password must be provided" : "Морате унети исправну лозинку",
     "The username is already being used" : "Корисничко име се већ користи",
-    "Help" : "Помоћ",
     "Settings" : "Поставке",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Апликација „%s“ не може бити инсталирана јер следеће зависности нису испуњене: %s",
     "Imprint" : "Жиг",

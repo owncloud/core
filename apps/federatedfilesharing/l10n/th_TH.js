@@ -20,6 +20,7 @@ OC.L10N.register(
     "Open documentation" : "เปิดเอกสาร",
     "Allow users on this server to send shares to other servers" : "อนุญาตให้ผู้ใช้บนเซิร์ฟเวอร์นี้สามารถแชร์ไปยังเซิร์ฟเวอร์อื่นๆ",
     "Allow users on this server to receive shares from other servers" : "อนุญาตให้ผู้ใช้บนเซิร์ฟเวอร์นี้สามารถรับการแชร์จากเซิร์ฟเวอร์อื่นๆ",
+    "Automatically accept remote shares from trusted servers" : "ยอมรับการแชร์รีโมทจากเซิร์ฟเวอร์ที่เชื่อถือได้โดยอัตโนมัติ",
     "Federated Cloud" : "คลาวด์สหพันธ์",
     "Your Federated Cloud ID:" : "ไอดีคลาวด์สหพันธ์ของคุณ:",
     "Share it:" : "แชร์ไปยัง:",

@@ -173,7 +173,6 @@ OC.L10N.register(
     "Download / View" : "Letöltés / Megjelenítés",
     "Recipients can view or download contents." : "Fogadók letölthetnek és megjeleníthetnek tartalmakat.",
     "Download / View / Upload" : "Letöltés / Megjelenítés / Feltöltés",
-    "Recipients can view, download, edit, delete and upload contents." : "Fogadók megjeleníthetnek, letölthetnek, módosíthatnak, törölhetnek és feltölthetnek tartalmakat.",
     "Edit link share: {name}" : "Megosztási hivatkozás szerkesztése: {name}",
     "Create link share: {name}" : "Megosztási hivatkozás létrehozása: {name}",
     "Share" : "Megosztás",

@@ -54,7 +54,6 @@
     "Username contains whitespace at the beginning or at the end" : "Uzantonomo enhavas blankospacon eke aŭ maleke",
     "A valid password must be provided" : "Valida pasvorto devas proviziĝi",
     "The username is already being used" : "La uzantonomo jam uzatas",
-    "Help" : "Helpo",
     "Settings" : "Agordo",
     "Application is not enabled" : "La aplikaĵo ne estas kapabligita",
     "Authentication error" : "Aŭtentiga eraro",
