@@ -16,10 +16,8 @@ l10n-clean:
 
 .PHONY: l10n-read
 l10n-read:
-	cpan Locale::PO
 	perl l10n.pl read
 
 .PHONY: l10n-write
 l10n-write:
-	cpan Locale::PO
 	perl l10n.pl write
