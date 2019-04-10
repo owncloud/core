@@ -302,7 +302,7 @@ class FederatedShareProvider implements IShareProvider {
 			->andWhere($query->expr()->eq('mountpoint', $query->createNamedParameter($share->getTarget())));
 		$result = $query->execute()->fetchAll();
 
-		if (isset($result[0]) && (int)$result[0]['remote_id'] > 0) {
+		if (isset($result[0]) && $result[0]['remote_id'] !== "") {
 			return $result[0];
 		}
 
@@ -427,7 +427,7 @@ class FederatedShareProvider implements IShareProvider {
 	 * get share ID on remote server for federated re-shares
 	 *
 	 * @param IShare $share
-	 * @return int
+	 * @return string
 	 * @throws ShareNotFound
 	 */
 	public function getRemoteId(IShare $share) {
@@ -440,7 +440,7 @@ class FederatedShareProvider implements IShareProvider {
 			throw new ShareNotFound();
 		}
 
-		return (int)$data['remote_id'];
+		return $data['remote_id'];
 	}
 
 	/**
@@ -975,7 +975,7 @@ class FederatedShareProvider implements IShareProvider {
 	}
 
 	/**
-	 * @param int $remoteId
+	 * @param string $remoteId
 	 * @param string $shareToken
 	 * @return mixed
 	 */
