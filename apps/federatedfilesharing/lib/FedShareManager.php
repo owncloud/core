@@ -116,7 +116,7 @@ class FedShareManager {
 	 * @param Address $ownerAddress
 	 * @param Address $sharedByAddress
 	 * @param string $shareWith
-	 * @param int $remoteId
+	 * @param string $remoteId
 	 * @param string $name
 	 * @param string $token
 	 *
@@ -181,7 +181,7 @@ class FedShareManager {
 
 	/**
 	 * @param IShare $share
-	 * @param int $remoteId
+	 * @param string $remoteId
 	 * @param string $shareWith
 	 * @param int|null $permissions - null for OCM 1.0-proposal1
 	 *
