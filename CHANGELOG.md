@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- Add background:queue:execute occ command for running cron jobs manually - [#34995](https://github.com/owncloud/core/issues/34995)
+- Adding background:queue commands: status and delete - [#34783](https://github.com/owncloud/core/issues/34783)
+- Added new permissions option for public link - [#34983](https://github.com/owncloud/core/issues/34983)
 - Support for extra share key-value attributes - [#34951](https://github.com/owncloud/core/issues/34951)
 - Internal permission to prevent file download when set in share attribute, for "secure view" feature  - [#34951](https://github.com/owncloud/core/issues/34951)
 - Support for automatically accepting incoming federated shares from trusted servers - [#34206](https://github.com/owncloud/core/issues/34206)
@@ -28,7 +31,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Allow admins to enable medial search on group and user - [#34779](https://github.com/owncloud/core/issues/34779)
 - Add composer cleaner - [#34784](https://github.com/owncloud/core/issues/34784)
 - Add events for user preference changes - [#34820](https://github.com/owncloud/core/issues/34820)
-- Add occ command to poll incoming federated shares for updates - [#34933](https://github.com/owncloud/core/issues/34933) [#34959](https://github.com/owncloud/core/issues/34959)
+- Add occ command to poll incoming federated shares for updates - [#34933](https://github.com/owncloud/core/issues/34933) [#34959](https://github.com/owncloud/core/issues/34959) [#34993](https://github.com/owncloud/core/issues/34993)
 
 ### Changed
 
@@ -52,6 +55,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump react promise v2.7.1 - [#34416](https://github.com/owncloud/core/issues/34416)
 - Zendframework bumps 20190208 - [#34413](https://github.com/owncloud/core/issues/34413)
 - Bump paragonie/random_compat v2.0.17 => v2.0.18 - [#34043](https://github.com/owncloud/core/issues/34043)
+- Bump pear/archive_tar from 1.4.6 to 1.4.7 - [#34990](https://github.com/owncloud/core/issues/34990)
 - Bump phpseclib/phpseclib from 2.0.13 to 2.0.15 - [#34285](https://github.com/owncloud/core/issues/34285) [#34741](https://github.com/owncloud/core/issues/34741)
 - Bump pimple/pimple from 3.0.2 to 3.2.3 - [#31753](https://github.com/owncloud/core/issues/31753)
 - Bump sinon from 7.1.1 to 7.3.1 in /build - [#34881](https://github.com/owncloud/core/issues/34881) [#34943](https://github.com/owncloud/core/issues/34943)
@@ -88,6 +92,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- Log exception when background job class not found - [#34723](https://github.com/owncloud/core/issues/34723)
 - Prevent concurrent updates in group shares to avoid duplicate entries - [#34769](https://github.com/owncloud/core/issues/34769)
 - Calender invitation now uses actual sender name - [#34901](https://github.com/owncloud/core/issues/34901)
 - Fix public link share default expiration behavior - [#34971](https://github.com/owncloud/core/issues/34971)
