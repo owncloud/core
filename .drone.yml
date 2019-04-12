@@ -161,6 +161,17 @@ pipeline:
       matrix:
         INSTALL_SERVER: true
 
+  configure-redis:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+    - php occ config:system:set redis --type=json --value="{\\"redis\\":{\\"host\\":\\"redis\\",\\"port\\":\\"6379\\"}}"
+    - php occ config:system:set memcache.local --value=\\\\OC\\\\Memcache\\\\APCu
+    - php occ config:system:set memcache.distributed --value=\\\\OC\\\\Memcache\\\\Redis
+    when:
+      matrix:
+        USE_CACHE: true
+
   install-testing-app:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -610,6 +621,13 @@ services:
       matrix:
         FILES_EXTERNAL_TYPE: swift
 
+  redis:
+    image: redis
+    pull: true
+    when:
+      matrix:
+        USE_CACHE: true
+
   scality:
     image: owncloudci/scality-s3server
     pull: true
@@ -815,6 +833,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -826,6 +845,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -837,6 +857,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -848,6 +869,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -859,6 +881,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -872,6 +895,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -883,6 +907,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -894,6 +919,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -905,6 +931,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -916,6 +943,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -927,6 +955,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -938,6 +967,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
       INSTALL_NOTIFICATIONS_APP: true
 
     - PHP_VERSION: 7.1
@@ -950,6 +980,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -961,6 +992,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -972,6 +1004,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -983,6 +1016,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -994,6 +1028,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -1005,6 +1040,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -1016,6 +1052,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
@@ -1027,6 +1064,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     # CLI Provisioning Acceptance tests
     - PHP_VERSION: 7.1
@@ -1039,6 +1077,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
       USE_EMAIL: true
 
   # CLI Main Acceptance tests
@@ -1052,6 +1091,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
   # CLI Background Acceptance tests
     - PHP_VERSION: 7.1
@@ -1064,6 +1104,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
   # CLI Trashbin Acceptance tests
     - PHP_VERSION: 7.1
@@ -1076,6 +1117,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
   # UI Acceptance tests
   ## Chrome
@@ -1090,6 +1132,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -1103,6 +1146,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1115,6 +1159,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1127,6 +1172,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1139,6 +1185,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1151,6 +1198,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -1164,6 +1212,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1176,6 +1225,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -1189,6 +1239,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1201,6 +1252,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1213,6 +1265,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1225,6 +1278,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1239,6 +1293,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -1252,6 +1307,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1264,6 +1320,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1276,6 +1333,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
       USE_EMAIL: true
       INSTALL_NOTIFICATIONS_APP: true
 
@@ -1290,6 +1348,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
       USE_EMAIL: true
 
     - PHP_VERSION: 7.1
@@ -1303,6 +1362,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1315,6 +1375,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1327,6 +1388,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1339,6 +1401,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1351,6 +1414,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
 
     ## Firefox
     - PHP_VERSION: 7.1
@@ -1365,6 +1429,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
       USE_EMAIL: true
       BEHAT_FILTER_TAGS: '@smokeTest&&~@notifications-app-required'
       DIVIDE_INTO_NUM_PARTS: 3
@@ -1382,6 +1447,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
       USE_EMAIL: true
       BEHAT_FILTER_TAGS: '@smokeTest&&~@notifications-app-required'
       DIVIDE_INTO_NUM_PARTS: 3
@@ -1399,6 +1465,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_CACHE: true
       USE_EMAIL: true
       BEHAT_FILTER_TAGS: '@smokeTest&&~@notifications-app-required'
       DIVIDE_INTO_NUM_PARTS: 3
