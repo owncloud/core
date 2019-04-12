@@ -33,6 +33,7 @@
 		<command>OCA\Encryption\Command\RecreateMasterKey</command>
 		<command>OCA\Encryption\Command\MigrateKeys</command>
 		<command>OCA\Encryption\Command\HSMDaemon</command>
+		<command>OCA\Encryption\Command\FixEncryptedVersion</command>
 	</commands>
 	<settings>
 		<admin>OCA\Encryption\Panels\Admin</admin>
