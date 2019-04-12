@@ -114,7 +114,7 @@ class PollIncomingSharesTest extends TestCase {
 		$userMock = $this->createMock(IUser::class);
 		$this->userManager->expects($this->once())->method('get')
 			->with($uid)->willReturn($userMock);
-		
+
 		$storage = $this->createMock(\OCA\Files_Sharing\External\Storage::class);
 		$storage->method('hasUpdated')->willThrowException(new StorageNotAvailableException('Ooops'));
 		$storage->method('getRemote')->willReturn('example.org');
@@ -130,6 +130,29 @@ class PollIncomingSharesTest extends TestCase {
 		$output = $this->commandTester->getDisplay();
 		$this->assertContains(
 			'Skipping external share with id "0" from remote "example.org". Reason: "Ooops"',
+			$output
+		);
+	}
+
+	public function testNotExistingUser() {
+		$uid = 'foo';
+		$exprBuilder = $this->createMock(IExpressionBuilder::class);
+		$statementMock = $this->createMock(Statement::class);
+		$statementMock->method('fetch')->willReturnOnConsecutiveCalls(['user' => $uid], false);
+		$qbMock = $this->createMock(IQueryBuilder::class);
+		$qbMock->method('selectDistinct')->willReturnSelf();
+		$qbMock->method('from')->willReturnSelf();
+		$qbMock->method('where')->willReturnSelf();
+		$qbMock->method('expr')->willReturn($exprBuilder);
+		$qbMock->method('execute')->willReturn($statementMock);
+
+		$this->externalMountProvider->expects($this->never())->method('getMountsForUser');
+
+		$this->dbConnection->method('getQueryBuilder')->willReturn($qbMock);
+		$this->commandTester->execute([]);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains(
+			'Skipping user "foo". Reason: user manager was unable to resolve the uid into the user object',
 			$output
 		);
 	}

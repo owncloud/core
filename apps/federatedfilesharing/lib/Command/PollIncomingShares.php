@@ -82,6 +82,13 @@ class PollIncomingShares extends Command {
 		$cursor = $this->getCursor();
 		while ($data = $cursor->fetch()) {
 			$user = $this->userManager->get($data['user']);
+			if ($user === null) {
+				$output->writeln(
+					"Skipping user \"{$data['user']}\". Reason: user manager was unable to resolve the uid into the user object"
+				);
+				continue;
+			}
+
 			$userMounts = $this->externalMountProvider->getMountsForUser($user, $this->loader);
 			/** @var \OCA\Files_Sharing\External\Mount $mount */
 			foreach ($userMounts as $mount) {
