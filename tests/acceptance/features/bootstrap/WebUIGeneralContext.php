@@ -772,11 +772,11 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$passed = "false";
 		}
 
-		$jobId = $this->getSessionId();
 		$sauceUsername = \getenv('SAUCE_USERNAME');
 		$sauceAccessKey = \getenv('SAUCE_ACCESS_KEY');
 
 		if ($sauceUsername && $sauceAccessKey) {
+			$jobId = $this->getSessionId();
 			\error_log("SAUCELABS RESULT: ($passOrFail) https://saucelabs.com/jobs/$jobId");
 			\exec('curl -X PUT -s -d "{\"passed\": ' . $passed . '}" -u ' . $sauceUsername . ':' . $sauceAccessKey . ' https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/' . $jobId);
 		} else {
