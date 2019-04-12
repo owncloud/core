@@ -52,12 +52,12 @@ class FixEncryptedVersion extends Command {
 		parent::configure();
 
 		$this
-			->setName('encryption:fixencryptedversion')
+			->setName('encryption:fix-encrypted-version')
 			->setDescription('Fix the encrypted version if the encrypted file(s) are not downloadable.')
 			->addArgument(
 				'user',
 				InputArgument::REQUIRED,
-				'The user id whose files needs fix'
+				'The id of the user whose files need fixing'
 			);
 	}
 
@@ -65,11 +65,11 @@ class FixEncryptedVersion extends Command {
 		$user = $input->getArgument('user');
 
 		if ($user === null) {
-			$output->writeln("<error>No user provided.</error>\n");
+			$output->writeln("<error>No user id provided.</error>\n");
 		}
 
 		if ($this->userManager->get($user) === null) {
-			$output->writeln("<error>User $user does not exist. Please provide a valid user id</error>");
+			$output->writeln("<error>User id $user does not exist. Please provide a valid user id</error>");
 			return 1;
 		}
 		$this->walkUserFolder($user, $output);
@@ -143,7 +143,7 @@ class FixEncryptedVersion extends Command {
 		$fileCache = $cache->get($fileId);
 
 		if ($storage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
-			$output->writeln("<info>The file: $path is a share. Hence kindly fix this by running the script under the owner of share</info>");
+			$output->writeln("<info>The file: $path is a share. Hence kindly fix this by running the script for the owner of share</info>");
 			return true;
 		}
 
@@ -155,17 +155,17 @@ class FixEncryptedVersion extends Command {
 				$cache->put($fileCache->getPath(), $cacheInfo);
 				$output->writeln("<info>Decrement the encrypted version to $encryptedVersion</info>");
 				if ($this->verifyFileContent($path, $output, false) === true) {
-					$output->writeln("<info>Fixed the file $path with version " . $encryptedVersion . "</info>");
+					$output->writeln("<info>Fixed the file: $path with version " . $encryptedVersion . "</info>");
 					return true;
 				}
 				$encryptedVersion--;
 			}
 
-			//So decrementing did not worked. Now lets increment. Max increment is till 5
+			//So decrementing did not work. Now lets increment. Max increment is till 5
 			$increment = 1;
 			while ($increment <= 5) {
 				/**
-				 * The wrongEncryptedVersion would not be incremented so nothing to worry here.
+				 * The wrongEncryptedVersion would not be incremented so nothing to worry about here.
 				 * Only the newEncryptedVersion is incremented.
 				 * For example if the wrong encrypted version is 4 then
 				 * cycle1 -> newEncryptedVersion = 5 ( 4 + 1)
@@ -178,7 +178,7 @@ class FixEncryptedVersion extends Command {
 				$cache->put($fileCache->getPath(), $cacheInfo);
 				$output->writeln("<info>Increment the encrypted version to $newEncryptedVersion</info>");
 				if ($this->verifyFileContent($path, $output, false) === true) {
-					$output->writeln("<info>Fixed the file $path with version " . $newEncryptedVersion . "</info>");
+					$output->writeln("<info>Fixed the file: $path with version " . $newEncryptedVersion . "</info>");
 					return true;
 				}
 				$increment++;
