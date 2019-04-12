@@ -21,9 +21,7 @@
 
 namespace OCA\Encryption\Command;
 
-use OCA\Encryption\AppInfo\Application;
 use OCA\Encryption\JWT;
-use OCA\Encryption\KeyManager;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Encryption\IEncryptionModule;
 use OCP\Http\Client\IClient;
