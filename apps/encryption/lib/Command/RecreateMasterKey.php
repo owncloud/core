@@ -23,11 +23,8 @@
 namespace OCA\Encryption\Command;
 
 use OC\Encryption\DecryptAll;
-use OC\Encryption\Exceptions\DecryptionFailedException;
 use OC\Encryption\Manager;
-use OC\Files\Filesystem;
 use OC\Files\View;
-use OC\Memcache\ArrayCache;
 use OCA\Encryption\Crypto\EncryptAll;
 use OCA\Encryption\KeyManager;
 use OCA\Encryption\Users\Setup;

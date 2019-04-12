@@ -25,7 +25,6 @@ namespace OCA\Encryption\Tests\Crypto;
 
 
 use OC\Helper\EnvironmentHelper;
-use OC\User\LoginException;
 use OCA\Encryption\Crypto\Crypt;
 use OCA\Encryption\Crypto\DecryptAll;
 use OCA\Encryption\KeyManager;

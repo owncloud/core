@@ -22,15 +22,12 @@
 
 namespace OCA\Encryption\Tests\Command;
 
-use OC\Files\FileInfo;
 use OC\Files\View;
 use OCA\Encryption\Command\RecreateMasterKey;
-use OC\Encryption\Exceptions\DecryptionFailedException;
 use OCA\Encryption\Users\Setup;
 use OCP\IL10N;
 use OCP\Mail\IMailer;
 use OCP\Security\ISecureRandom;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Test\TestCase;
 
 class RecreateMasterKeyTest extends TestCase {
