@@ -71,12 +71,11 @@ class AdminTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertTrue(is_integer($this->panel->getPriority()));
+		$this->assertTrue(\is_integer($this->panel->getPriority()));
 	}
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertContains('<form id="ocDefaultEncryptionModule" class="sub-section">', $templateHtml);
 	}
-
 }

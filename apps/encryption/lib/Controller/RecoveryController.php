@@ -23,7 +23,6 @@
 
 namespace OCA\Encryption\Controller;
 
-
 use OCA\Encryption\Recovery;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -120,7 +119,7 @@ class RecoveryController extends Controller {
 
 		if (empty($newPassword)) {
 			$errorMessage = (string)$this->l->t('Please provide a new recovery password');
-			return new DataResponse (['data' => ['message' => $errorMessage]], Http::STATUS_BAD_REQUEST);
+			return new DataResponse(['data' => ['message' => $errorMessage]], Http::STATUS_BAD_REQUEST);
 		}
 
 		if (empty($confirmPassword)) {
@@ -160,7 +159,6 @@ class RecoveryController extends Controller {
 	 */
 	public function userSetRecovery($userEnableRecovery) {
 		if ($userEnableRecovery === '0' || $userEnableRecovery === '1') {
-
 			$result = $this->recovery->setRecoveryForUser($userEnableRecovery);
 
 			if ($result) {
@@ -179,7 +177,6 @@ class RecoveryController extends Controller {
 					]
 				);
 			}
-
 		}
 		return new DataResponse(
 			[
@@ -188,5 +185,4 @@ class RecoveryController extends Controller {
 				]
 			], Http::STATUS_BAD_REQUEST);
 	}
-
 }

@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\Encryption\Tests\Command;
-
 
 use OCA\Encryption\Command\SelectEncryptionType;
 use OCA\Encryption\Util;
@@ -72,7 +70,6 @@ class TestEnableMasterKey extends TestCase {
 	 * @param string $answer
 	 */
 	public function testExecute($isAlreadyEnabled, $answer) {
-
 		$this->config->expects($this->at(0))
 			->method('getAppValue')
 			->with('core', 'encryption_enabled', 'no')
@@ -80,7 +77,7 @@ class TestEnableMasterKey extends TestCase {
 
 		$this->config->expects($this->at(1))
 			->method('getAppValue')
-			->with('encryption','userSpecificKey', '')
+			->with('encryption', 'userSpecificKey', '')
 			->willReturn("");
 
 		$this->util->expects($this->once())->method('isMasterKeyEnabled')
@@ -104,14 +101,12 @@ class TestEnableMasterKey extends TestCase {
 
 				$this->questionHelper->expects($this->once())->method('ask')->willReturn(false);
 				$this->config->expects($this->never())->method('setAppValue');
-
 			}
 		}
 
 		$this->input->expects($this->once())->method('getArgument')
 			->with('encryption-type')
 			->willReturn("masterkey");
-
 
 		$this->invokePrivate($this->enableMasterKey, 'execute', [$this->input, $this->output]);
 	}

@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\Encryption\Crypto;
-
 
 use OC\Helper\EnvironmentHelper;
 use OC\User\LoginException;
@@ -131,7 +129,7 @@ class DecryptAll {
 			// Must either be using recovery keys, or just decrypting one user and know their password
 
 			// Check a method has been passed
-			if(!$input->hasOption('method') && !in_array($input->getOption('method'),['recovery', 'password'])) {
+			if (!$input->hasOption('method') && !\in_array($input->getOption('method'), ['recovery', 'password'])) {
 				$output->writeln('A method must be supplied when decrypting from user-key state');
 				return false;
 			}
@@ -198,8 +196,7 @@ class DecryptAll {
 							$output->writeln('OC password not set in the envrironment');
 							$throwLoginException = true;
 						}
-				}
-
+					}
 				}
 			}
 

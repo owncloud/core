@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\Encryption;
-
 
 use OC\Files\View;
 use OCA\Encryption\Crypto\Crypt;
@@ -174,14 +172,13 @@ class Util {
 	 */
 	public function getOwner($path) {
 		$owner = '';
-		$parts = explode('/', $path, 3);
-		if (count($parts) > 1) {
+		$parts = \explode('/', $path, 3);
+		if (\count($parts) > 1) {
 			$owner = $parts[1];
 			if ($this->userManager->userExists($owner) === false) {
 				throw new \BadMethodCallException('Unknown user: ' .
 				'method expects path to a user folder relative to the data folder');
 			}
-
 		}
 
 		return $owner;
@@ -197,5 +194,4 @@ class Util {
 		$storage = $this->files->getMount($path)->getStorage();
 		return $storage;
 	}
-
 }

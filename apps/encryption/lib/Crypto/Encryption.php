@@ -26,7 +26,6 @@
 
 namespace OCA\Encryption\Crypto;
 
-
 use OC\Encryption\Exceptions\DecryptionFailedException;
 use OC\Files\Cache\Scanner;
 use OC\Files\View;
@@ -41,7 +40,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Encryption implements IEncryptionModule {
-
 	const ID = 'OC_DEFAULT_MODULE';
 	const DISPLAY_NAME = 'Default encryption module';
 
@@ -106,7 +104,6 @@ class Encryption implements IEncryptionModule {
 
 	/** @var array remember encryption signature version */
 	private static $rememberVersion = [];
-
 
 	/**
 	 *
@@ -211,7 +208,7 @@ class Encryption implements IEncryptionModule {
 			// if we read a part file we need to increase the version by 1
 			// because the version number was also increased by writing
 			// the part file
-			if(Scanner::isPartialFile($path)) {
+			if (Scanner::isPartialFile($path)) {
 				$this->version = $this->version + 1;
 			}
 		}
@@ -302,16 +299,15 @@ class Encryption implements IEncryptionModule {
 			// Clear the write cache, ready for reuse - it has been
 			// flushed and its old contents processed
 			$this->writeCache = '';
-
 		}
 
 		$encrypted = '';
 		// While there still remains some data to be processed & written
-		while (strlen($data) > 0) {
+		while (\strlen($data) > 0) {
 
 			// Remaining length for this iteration, not of the
 			// entire file (may be greater than 8192 bytes)
-			$remainingLength = strlen($data);
+			$remainingLength = \strlen($data);
 
 			// If data remaining to be written is less than the
 			// size of 1 6126 byte block
@@ -329,21 +325,18 @@ class Encryption implements IEncryptionModule {
 
 				// Clear $data ready for next round
 				$data = '';
-
 			} else {
 
 				// Read the chunk from the start of $data
-				$chunk = substr($data, 0, $this->unencryptedBlockSizeSigned);
+				$chunk = \substr($data, 0, $this->unencryptedBlockSizeSigned);
 
 				$encrypted .= $this->crypt->symmetricEncryptFileContent($chunk, $this->fileKey, $this->version + 1, $position);
 
 				// Remove the chunk we just processed from
 				// $data, leaving only unprocessed data in $data
 				// var, for handling on the next round
-				$data = substr($data, $this->unencryptedBlockSizeSigned);
-
+				$data = \substr($data, $this->unencryptedBlockSizeSigned);
 			}
-
 		}
 
 		return $encrypted;
@@ -378,7 +371,6 @@ class Encryption implements IEncryptionModule {
 	 * @return boolean
 	 */
 	public function update($path, $uid, array $accessList) {
-
 		if (empty($accessList)) {
 			if (isset(self::$rememberVersion[$path])) {
 				$this->keyManager->setVersion($path, self::$rememberVersion[$path], new View());
@@ -390,7 +382,6 @@ class Encryption implements IEncryptionModule {
 		$fileKey = $this->keyManager->getFileKey($path, $uid);
 
 		if (!empty($fileKey)) {
-
 			$publicKeys = [];
 			if ($this->useMasterPassword === true) {
 				$publicKeys[$this->keyManager->getMasterKeyId()] = $this->keyManager->getPublicMasterKey();
@@ -411,7 +402,6 @@ class Encryption implements IEncryptionModule {
 			$this->keyManager->deleteAllFileKeys($path);
 
 			$this->keyManager->setAllFileKeys($path, $encryptedFileKey);
-
 		} else {
 			$this->logger->debug('no file key found, we assume that the file "{file}" is not encrypted',
 				['file' => $path, 'app' => 'encryption']);
@@ -435,8 +425,8 @@ class Encryption implements IEncryptionModule {
 				return false;
 			}
 		}
-		$parts = explode('/', $path);
-		if (count($parts) < 4) {
+		$parts = \explode('/', $path);
+		if (\count($parts) < 4) {
 			return false;
 		}
 
@@ -520,18 +510,17 @@ class Encryption implements IEncryptionModule {
 		return $this->decryptAll->prepare($input, $output, $user);
 	}
 
-
 	/**
 	 * @param string $path
 	 * @return string
 	 */
 	protected function getPathToRealFile($path) {
 		$realPath = $path;
-		$parts = explode('/', $path);
+		$parts = \explode('/', $path);
 		if ($parts[2] === 'files_versions') {
-			$realPath = '/' . $parts[1] . '/files/' . implode('/', array_slice($parts, 3));
-			$length = strrpos($realPath, '.');
-			$realPath = substr($realPath, 0, $length);
+			$realPath = '/' . $parts[1] . '/files/' . \implode('/', \array_slice($parts, 3));
+			$length = \strrpos($realPath, '.');
+			$realPath = \substr($realPath, 0, $length);
 		}
 
 		return $realPath;
@@ -545,9 +534,9 @@ class Encryption implements IEncryptionModule {
 	 * @return string
 	 */
 	protected function stripPartFileExtension($path) {
-		if (pathinfo($path, PATHINFO_EXTENSION) === 'part') {
-			$pos = strrpos($path, '.', -6);
-			$path = substr($path, 0, $pos);
+		if (\pathinfo($path, PATHINFO_EXTENSION) === 'part') {
+			$pos = \strrpos($path, '.', -6);
+			$path = \substr($path, 0, $pos);
 		}
 
 		return $path;

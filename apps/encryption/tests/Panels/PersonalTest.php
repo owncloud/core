@@ -77,7 +77,7 @@ class PersonalTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertTrue(is_integer($this->panel->getPriority()));
+		$this->assertTrue(\is_integer($this->panel->getPriority()));
 	}
 
 	public function testGetPanel() {
@@ -87,5 +87,4 @@ class PersonalTest extends \Test\TestCase {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertContains('<form id="ocDefaultEncryptionModule" class="section">', $templateHtml);
 	}
-
 }

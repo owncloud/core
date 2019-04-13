@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\Encryption\Tests\Crypto;
-
 
 use OC\Encryption\Exceptions\DecryptionFailedException;
 use OC\Files\FileInfo;
@@ -91,7 +89,7 @@ class EncryptAllTest extends TestCase {
 	/** @var  EncryptAll */
 	protected $encryptAll;
 
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 		$this->setupUser = $this->getMockBuilder('OCA\Encryption\Users\Setup')
 			->disableOriginalConstructor()->getMock();
@@ -169,7 +167,6 @@ class EncryptAllTest extends TestCase {
 		$encryptAll->expects($this->at(2))->method('outputPasswords')->with();
 
 		$encryptAll->encryptAll($this->inputInterface, $this->outputInterface);
-
 	}
 
 	public function testEncryptAllWithMasterKey() {
@@ -199,7 +196,6 @@ class EncryptAllTest extends TestCase {
 		$encryptAll->expects($this->never())->method('outputPasswords');
 
 		$encryptAll->encryptAll($this->inputInterface, $this->outputInterface);
-
 	}
 
 	public function testCreateKeyPairs() {
@@ -221,7 +217,6 @@ class EncryptAllTest extends TestCase {
 			)
 			->setMethods(['setupUserFS', 'generateOneTimePassword'])
 			->getMock();
-
 
 		// set protected property $output
 		$this->invokePrivate($encryptAll, 'output', [$this->outputInterface]);
@@ -247,7 +242,7 @@ class EncryptAllTest extends TestCase {
 		// we only expect the skipped user, because generateOneTimePassword which
 		// would set the user with the new password was mocked.
 		// This method will be tested separately
-		$this->assertSame(1, count($userPasswords));
+		$this->assertSame(1, \count($userPasswords));
 		$this->assertSame('', $userPasswords['user2']);
 	}
 
@@ -272,8 +267,8 @@ class EncryptAllTest extends TestCase {
 			->getMock();
 		$result = $this->invokePrivate($encryptAll, 'createMailBody', ['foo']);
 		$this->assertEquals(2, \count($result));
-		$this->assertGreaterThan(1, strlen($result[0]));
-		$this->assertGreaterThan(1, strlen($result[1]));
+		$this->assertGreaterThan(1, \strlen($result[0]));
+		$this->assertGreaterThan(1, \strlen($result[1]));
 	}
 
 	public function providerSendMailStatus() {
@@ -473,7 +468,7 @@ class EncryptAllTest extends TestCase {
 
 		$this->view->expects($this->any())->method('is_dir')
 			->willReturnCallback(
-				function($path) {
+				function ($path) {
 					if ($path === '/user1/files/foo') {
 						return true;
 					}
@@ -573,11 +568,11 @@ class EncryptAllTest extends TestCase {
 
 	public function testGenerateOneTimePassword() {
 		$password = $this->invokePrivate($this->encryptAll, 'generateOneTimePassword', ['user1']);
-		$this->assertTrue(is_string($password));
-		$this->assertSame(8, strlen($password));
+		$this->assertTrue(\is_string($password));
+		$this->assertSame(8, \strlen($password));
 
 		$userPasswords = $this->invokePrivate($this->encryptAll, 'userPasswords');
-		$this->assertSame(1, count($userPasswords));
+		$this->assertSame(1, \count($userPasswords));
 		$this->assertSame($password, $userPasswords['user1']);
 	}
 

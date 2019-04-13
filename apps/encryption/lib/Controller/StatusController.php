@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\Encryption\Controller;
-
 
 use OCA\Encryption\Session;
 use OCP\AppFramework\Controller;
@@ -59,10 +57,9 @@ class StatusController extends Controller {
 	 * @return DataResponse
 	 */
 	public function getStatus() {
-
 		$status = 'error';
 		$message = 'no valid init status';
-		switch( $this->session->getStatus()) {
+		switch ($this->session->getStatus()) {
 			case Session::RUN_MIGRATION:
 				$status = 'interactionNeeded';
 				$message = (string)$this->l->t(
@@ -94,5 +91,4 @@ class StatusController extends Controller {
 			]
 		);
 	}
-
 }

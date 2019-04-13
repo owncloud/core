@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OCA\Encryption\Tests\Command;
 
 use OC\Files\View;
@@ -141,7 +140,6 @@ class RecreateMasterKeyTest extends TestCase {
 			$this->encryptionManager, $this->questionHelper,
 			$this->userSetup, $this->mailer, $this->secureRandom, $this->l, $this->logger);
 
-
 		$this->invokePrivate($this->recreateMasterKey, 'input', [$this->input]);
 		$this->invokePrivate($this->recreateMasterKey, 'output', [$this->output]);
 	}
@@ -150,8 +148,7 @@ class RecreateMasterKeyTest extends TestCase {
 	 * @dataProvider dataTestExecute
 	 */
 	public function testNewMasterKey($mastkerKeyEnabled) {
-
-		if( $mastkerKeyEnabled === true) {
+		if ($mastkerKeyEnabled === true) {
 			$this->recreateMasterKey = $this->getMockBuilder('OCA\Encryption\Command\RecreateMasterKey')
 				->setConstructorArgs(
 					[
@@ -180,7 +177,7 @@ class RecreateMasterKeyTest extends TestCase {
 
 			$this->rootView->expects($this->any())->method('is_dir')
 				->willReturnCallback(
-					function($path) {
+					function ($path) {
 						if ($path === '/user1/files/foo') {
 							return true;
 						}
@@ -225,13 +222,13 @@ class RecreateMasterKeyTest extends TestCase {
 			global $outputText;
 			$this->output->expects($this->at(0))
 				->method('writeln')
-				->willReturnCallback(function ($value){
+				->willReturnCallback(function ($value) {
 					global $outputText;
 					$outputText .= $value . "\n";
 				});
 
 			$this->invokePrivate($this->recreateMasterKey, 'execute', [$this->input, $this->output]);
-			$this->assertSame("Master key is not enabled.", trim($outputText, "\n"));
+			$this->assertSame("Master key is not enabled.", \trim($outputText, "\n"));
 		}
 	}
 
@@ -242,4 +239,3 @@ class RecreateMasterKeyTest extends TestCase {
 		];
 	}
 }
-

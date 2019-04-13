@@ -22,9 +22,7 @@
  *
  */
 
-
 namespace OCA\Encryption\Tests;
-
 
 use OCA\Encryption\Session;
 use Test\TestCase;
@@ -52,7 +50,6 @@ class SessionTest extends TestCase {
 	public function testSetAndGetPrivateKey() {
 		$this->instance->setPrivateKey('dummyPrivateKey');
 		$this->assertEquals('dummyPrivateKey', $this->instance->getPrivateKey());
-
 	}
 
 	/**
@@ -187,7 +184,6 @@ class SessionTest extends TestCase {
 		$this->sessionMock->expects($this->any())
 			->method('remove')
 			->will($this->returnCallback([$this, "removeValueTester"]));
-
 
 		$this->instance = new Session($this->sessionMock);
 	}
