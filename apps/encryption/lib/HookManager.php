@@ -22,11 +22,9 @@
 
 namespace OCA\Encryption;
 
-
 use OCA\Encryption\Hooks\Contracts\IHook;
 
 class HookManager {
-
 	private $hookInstances = [];
 
 	/**
@@ -35,14 +33,13 @@ class HookManager {
 	 * @return bool
 	 */
 	public function registerHook($instances) {
-		if (is_array($instances)) {
+		if (\is_array($instances)) {
 			foreach ($instances as $instance) {
 				if (!$instance instanceof IHook) {
 					return false;
 				}
 				$this->hookInstances[] = $instance;
 			}
-
 		} elseif ($instances instanceof IHook) {
 			$this->hookInstances[] = $instances;
 		}
@@ -58,7 +55,5 @@ class HookManager {
 			 */
 			$instance->addHooks();
 		}
-
 	}
-
 }

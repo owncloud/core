@@ -6,7 +6,7 @@ style('encryption', 'settings-admin');
 ?>
 <form id="ocDefaultEncryptionModule" class="sub-section">
 	<h2 class="app-name"><?php p($l->t('Default encryption module')); ?></h2>
-	<?php if(!$_["initStatus"] and (\OC::$server->getAppConfig()->getValue('encryption', 'useMasterKey', '0') !== '0'
+	<?php if (!$_["initStatus"] and (\OC::$server->getAppConfig()->getValue('encryption', 'useMasterKey', '0') !== '0'
 		or \OC::$server->getAppConfig()->getValue('encryption', 'encryptHomeStorage', '') !== '')): ?>
 		<?php p($l->t("Encryption App is enabled but your keys are not initialized, please log-out and log-in again")); ?>
 	<?php else: ?>
@@ -14,10 +14,10 @@ style('encryption', 'settings-admin');
 			<?php
 			$masterKey = \OC::$server->getAppConfig()->getValue('encryption', 'useMasterKey', '0');
 			$userSpecificKey = \OC::$server->getAppConfig()->getValue('encryption', 'userSpecificKey', '');
-			if($masterKey !== '0') {
+			if ($masterKey !== '0') {
 				p($l->t("Encryption type: Master Key"));
 			} else {
-				if($userSpecificKey !== "") {
+				if ($userSpecificKey !== "") {
 					p($l->t("Encryption type: User Specific Key"));
 				}
 			}
@@ -38,12 +38,14 @@ style('encryption', 'settings-admin');
 
 		<p id="encryptHomeStorageSetting" class="hidden">
 			<input type="checkbox" class="checkbox" name="encrypt_home_storage" id="encryptHomeStorage"
-				   value="1" <?php if ($_['encryptHomeStorage']) print_unescaped('checked="checked"'); ?> />
+				   value="1" <?php if ($_['encryptHomeStorage']) {
+				print_unescaped('checked="checked"');
+			} ?> />
 			<label for="encryptHomeStorage"><?php p($l->t('Encrypt the home storage'));?></label></br>
-			<em><?php p( $l->t( "Enabling this option encrypts all files stored on the main storage, otherwise only files on external storage will be encrypted" ) ); ?></em>
+			<em><?php p($l->t("Enabling this option encrypts all files stored on the main storage, otherwise only files on external storage will be encrypted")); ?></em>
 		</p>
 		<br />
-		<?php if($_['masterKeyEnabled'] === false): ?>
+		<?php if ($_['masterKeyEnabled'] === false): ?>
 			<p id="encryptionSetRecoveryKey" class="hidden">
 				<?php $_["recoveryEnabled"] === '0' ?  p($l->t("Enable recovery key")) : p($l->t("Disable recovery key")); ?>
 				<span class="msg"></span>
@@ -68,7 +70,9 @@ style('encryption', 'settings-admin');
 			</p>
 			<br/><br/>
 
-			<p name="changeRecoveryPasswordBlock" id="encryptionChangeRecoveryKey" <?php if($_['recoveryEnabled'] === '0') print_unescaped('class="hidden"');?>>
+			<p name="changeRecoveryPasswordBlock" id="encryptionChangeRecoveryKey" <?php if ($_['recoveryEnabled'] === '0') {
+				print_unescaped('class="hidden"');
+			}?>>
 				<?php p($l->t("Change recovery key password:")); ?>
 				<span class="msg"></span>
 				<br/>

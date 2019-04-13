@@ -103,7 +103,6 @@ class EncryptionTest extends TestCase {
 			$this->loggerMock,
 			$this->l10nMock
 		);
-
 	}
 
 	/**
@@ -147,7 +146,6 @@ class EncryptionTest extends TestCase {
 		$this->instance->end('/foo/bar');
 	}
 
-
 	public function getPublicKeyCallback($uid) {
 		if ($uid === 'user2') {
 			throw new PublicKeyMissingException($uid);
@@ -156,7 +154,7 @@ class EncryptionTest extends TestCase {
 	}
 
 	public function addSystemKeysCallback($accessList, $publicKeys) {
-		$this->assertSame(2, count($publicKeys));
+		$this->assertSame(2, \count($publicKeys));
 		$this->assertArrayHasKey('user1', $publicKeys);
 		$this->assertArrayHasKey('user3', $publicKeys);
 		return $publicKeys;
@@ -184,7 +182,6 @@ class EncryptionTest extends TestCase {
 	 * @dataProvider dataTestBegin
 	 */
 	public function testBegin($mode, $header, $legacyCipher, $defaultCipher, $fileKey, $expected) {
-
 		$this->sessionMock->expects($this->once())
 			->method('decryptAllModeActivated')
 			->willReturn(false);
@@ -234,12 +231,10 @@ class EncryptionTest extends TestCase {
 		];
 	}
 
-
 	/**
 	 * test begin() if decryptAll mode was activated
 	 */
 	public function testBeginDecryptAll() {
-
 		$path = '/user/files/foo.txt';
 		$recoveryKeyId = 'recoveryKeyId';
 		$recoveryShareKey = 'recoveryShareKey';
@@ -292,7 +287,7 @@ class EncryptionTest extends TestCase {
 
 		$this->keyManagerMock->expects($this->any())
 			->method('addSystemKeys')
-			->willReturnCallback(function($accessList, $publicKeys) {
+			->willReturnCallback(function ($accessList, $publicKeys) {
 				return $publicKeys;
 			});
 
@@ -312,14 +307,13 @@ class EncryptionTest extends TestCase {
 	}
 
 	public function testUpdateNoUsers() {
-
 		$this->invokePrivate($this->instance, 'rememberVersion', [['path' => 2]]);
 
 		$this->keyManagerMock->expects($this->never())->method('getFileKey');
 		$this->keyManagerMock->expects($this->never())->method('getPublicKey');
 		$this->keyManagerMock->expects($this->never())->method('addSystemKeys');
 		$this->keyManagerMock->expects($this->once())->method('setVersion')
-			->willReturnCallback(function($path, $version, $view) {
+			->willReturnCallback(function ($path, $version, $view) {
 				$this->assertSame('path', $path);
 				$this->assertSame(2, $version);
 				$this->assertTrue($view instanceof \OC\Files\View);
@@ -337,20 +331,20 @@ class EncryptionTest extends TestCase {
 
 		$this->keyManagerMock->expects($this->any())
 			->method('getPublicKey')->willReturnCallback(
-				function($user) {
+				function ($user) {
 					throw new PublicKeyMissingException($user);
 				}
 			);
 
 		$this->keyManagerMock->expects($this->any())
 			->method('addSystemKeys')
-			->willReturnCallback(function($accessList, $publicKeys) {
+			->willReturnCallback(function ($accessList, $publicKeys) {
 				return $publicKeys;
 			});
 
 		$this->cryptMock->expects($this->once())->method('multiKeyEncrypt')
 			->willReturnCallback(
-				function($fileKey, $publicKeys) {
+				function ($fileKey, $publicKeys) {
 					$this->assertEmpty($publicKeys);
 					$this->assertSame('fileKey', $fileKey);
 				}
@@ -421,5 +415,4 @@ class EncryptionTest extends TestCase {
 
 		$this->instance->prepareDecryptAll($input, $output, 'user');
 	}
-
 }

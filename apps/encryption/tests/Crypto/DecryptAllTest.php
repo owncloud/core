@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\Encryption\Tests\Crypto;
-
 
 use OC\Helper\EnvironmentHelper;
 use OCA\Encryption\Crypto\Crypt;
@@ -168,7 +166,6 @@ class DecryptAllTest extends TestCase {
 			$this->keyManager->expects($this->never())->method('getPrivateKey');
 			$this->crypt->expects($this->once())->method('decryptPrivateKey')
 				->with($masterKey, $password, $masterKeyId)->willReturn($unencryptedKey);
-
 		} else {
 			$this->keyManager->expects($this->never())->method('getSystemPrivateKey');
 			$this->keyManager->expects($this->once())->method('getPrivateKey')
@@ -352,7 +349,6 @@ class DecryptAllTest extends TestCase {
 					->willReturn(false);
 			}
 		}
-
 
 		$result = $this->instance->prepare($input, $output, $user);
 		$this->assertEquals($expectedResult, $result);

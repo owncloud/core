@@ -22,9 +22,7 @@
  *
  */
 
-
 namespace OCA\Encryption\Tests;
-
 
 use OCA\Encryption\Util;
 use Test\TestCase;
@@ -100,7 +98,6 @@ class UtilTest extends TestCase {
 		$userSessionMock->expects($this->any())
 			->method($this->anything())
 			->will($this->returnSelf());
-
 
 		$this->configMock = $this->createMock('OCP\IConfig');
 
@@ -211,5 +208,4 @@ class UtilTest extends TestCase {
 
 		$this->assertEquals($return, $this->instance->getStorage($path));
 	}
-
 }
