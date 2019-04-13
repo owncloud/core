@@ -6,7 +6,7 @@
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,8 +28,8 @@ namespace OCA\Encryption\Tests;
 use OC\Files\FileInfo;
 use OC\Files\Mount\MountPoint;
 use OCA\Encryption\Recovery;
-use OCA\Files_Sharing\ISharedStorage;
 use OCP\Files\Cache\ICacheEntry;
+use OCA\Files_Sharing\ISharedStorage;
 use OCP\Files\Storage\IStorage;
 use OCP\IUser;
 use Test\TestCase;

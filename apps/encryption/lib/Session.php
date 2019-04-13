@@ -4,7 +4,7 @@
  * @author Clark Tomlinson <fallen013@gmail.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -138,7 +138,7 @@ class Session {
 	 */
 	public function getDecryptAllUid() {
 		$uid = $this->session->get('decryptAllUid');
-		if ($uid === null && $this->decryptAllModeActivated()) {
+		if (($uid === null) && $this->decryptAllModeActivated()) {
 			throw new \Exception('No uid found while in decrypt all mode');
 		} elseif ($uid === null) {
 			throw new \Exception('Please activate decrypt all mode first');
@@ -155,7 +155,7 @@ class Session {
 	 */
 	public function getDecryptAllKey() {
 		$privateKey = $this->session->get('decryptAllKey');
-		if ($privateKey === null && $this->decryptAllModeActivated()) {
+		if (($privateKey === null) && $this->decryptAllModeActivated()) {
 			throw new PrivateKeyMissingException('No private key found while in decrypt all mode');
 		} elseif ($privateKey === null) {
 			throw new PrivateKeyMissingException('Please activate decrypt all mode first');
