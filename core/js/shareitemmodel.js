@@ -38,7 +38,7 @@
 	 * @typedef {object} OC.Share.Types.ShareInfo
 	 * @property {number} share_type
 	 * @property {number} permissions
-	 * @property {string} attributes
+	 * @property {OC.Share.Types.ShareAttribute[]} attributes
 	 * @property {number} file_source optional
 	 * @property {number} item_source
 	 * @property {string} token
@@ -73,8 +73,8 @@
 	 * @property {string} description
 	 * @property {number[]} shareType
 	 * @property {number[]} incompatiblePermissions
-	 * @property {OC.Share.Types.ShareAttribute[]} incompatibleAttributes
 	 * @property {number[]} requiredPermissions
+	 * @property {OC.Share.Types.ShareAttribute[]} incompatibleAttributes
 	 */
 
 	/**
@@ -84,6 +84,13 @@
 	var SHARE_RESPONSE_INT_PROPS = [
 		'id', 'file_parent', 'mail_send', 'file_source', 'item_source', 'permissions',
 		'storage', 'share_type', 'parent', 'stime'
+	];
+
+	/**
+	 * Properties which are json and need to be parsed
+	 */
+	var SHARE_RESPONSE_JSON_PROPS = [
+		'attributes'
 	];
 
 	/**
@@ -172,10 +179,11 @@
 			}
 			properties.permissions = defaultPermissions & possiblePermissions;
 
+			// FIXME: simplify the logic by merging and then filtering
 			// Set default attributes for this share based on registered
 			// attributes (filtered by their incompatible permissions)
 			var newShareAttributes = [];
-			var filteredRegisteredAttributes = this.filterRegisteredAttributes(properties.permissions);
+			var filteredRegisteredAttributes = this._filterRegisteredAttributes(properties.permissions);
 			_.map(filteredRegisteredAttributes, function(filteredRegisteredAttribute) {
 				var isCompatible = true;
 				// Check if this attribute can be added due to its incompatible attributes
@@ -234,12 +242,13 @@
 			var self = this;
 			options = options || {};
 
+			// FIXME: simplify the logic by merging and then filtering
 			// Set share attributes for this share based on registered
 			// attributes (filtered by their incompatible permissions
 			// and incompatible attributes)
 			var newShareAttributes = [];
 			var filteredAttributes = [];
-			var filteredRegisteredAttributes = this.filterRegisteredAttributes(properties.permissions);
+			var filteredRegisteredAttributes = this._filterRegisteredAttributes(properties.permissions);
 			_.map(filteredRegisteredAttributes, function(filteredRegisteredAttribute) {
 				// Check if this allowed registered attribute
 				// is on the list of currently set properties,
@@ -786,9 +795,15 @@
 				// returns integers as string...
 				var i;
 				for (i = 0; i < SHARE_RESPONSE_INT_PROPS.length; i++) {
-					var prop = SHARE_RESPONSE_INT_PROPS[i];
-					if (!_.isUndefined(share[prop])) {
-						share[prop] = parseInt(share[prop], 10);
+					var propInt = SHARE_RESPONSE_INT_PROPS[i];
+					if (!_.isUndefined(share[propInt])) {
+						share[propInt] = parseInt(share[propInt], 10);
+					}
+				}
+				for (i = 0; i < SHARE_RESPONSE_JSON_PROPS.length; i++) {
+					var propJson = SHARE_RESPONSE_JSON_PROPS[i];
+					if (!_.isUndefined(share[propJson])) {
+						share[propJson] = JSON.parse(share.attributes);
 					}
 				}
 				return share;
@@ -870,13 +885,32 @@
 		},
 
 		/**
+		 * Returns share attributes for given share index
+		 *
+		 * @param shareIndex
+		 * @returns OC.Share.Types.ShareAttribute[]
+		 */
+		getShareAttributes: function(shareIndex) {
+			/** @type OC.Share.Types.ShareInfo **/
+			var share = this.get('shares')[shareIndex];
+			if(!_.isObject(share)) {
+				throw "Unknown Share";
+			}
+
+			if (_.isNull(share.attributes) || _.isUndefined(share.attributes)) {
+				return [];
+			}
+			return share.attributes;
+		},
+
+		/**
 		 * Filter registered attributes by current share permissions
 		 *
 		 * @param {number} permissions
 		 * @returns {OC.Share.Types.RegisteredShareAttribute[]}
 		 * @private
 		 */
-		filterRegisteredAttributes: function(permissions) {
+		_filterRegisteredAttributes: function(permissions) {
 			var filteredByPermissions = [];
 			for(var i in this._registeredAttributes) {
 				var compatible = true;
@@ -901,50 +935,29 @@
 		},
 
 		/**
-		 * Returns share attributes for given share index
-		 *
-		 * @param shareIndex
-		 * @returns OC.Share.Types.ShareAttribute[]
-		 */
-		getShareAttributes: function(shareIndex) {
-			/** @type OC.Share.Types.ShareInfo **/
-			var share = this.get('shares')[shareIndex];
-			if(!_.isObject(share)) {
-				throw "Unknown Share";
-			}
-
-			if (_.isUndefined(share.attributes) || _.isUndefined(share.permissions)) {
-				return [];
-			}
-
-			// Add attributes for this share
-			var currentAttributes = JSON.parse(share.attributes);
-			if (currentAttributes) {
-				return currentAttributes;
-			}
-			return [];
-		},
-
-		/**
 		 * Returns share attribute label for given attribute scope and name. If
 		 * attribute does not exist, null is returned.
 		 *
 		 * @param scope
 		 * @param key
-		 * @returns string|null
+		 * @returns {OC.Share.Types.RegisteredShareAttribute}
 		 */
-		getRegisteredShareAttributeLabel: function(scope, key) {
+		getRegisteredShareAttribute: function(scope, key) {
 			for(var i in this._registeredAttributes) {
 				if (this._registeredAttributes[i].scope === scope
 					&& this._registeredAttributes[i].key === key) {
-					return this._registeredAttributes[i].label;
+					return this._registeredAttributes[i];
 				}
 			}
 			return null;
 		},
 
 		/**
-		 * Apps can register default share attributes
+		 * Apps can register default share attributes. The applications
+		 * registering share attributes are required to follow the rules:
+		 *   attribute enabled -> functionality is added (e.g. can download)
+		 *   attribute disabled -> functionality is restricted
+		 *   incompatible attribute -> functionality is ignored
 		 *
 		 * @param {OC.Share.Types.RegisteredShareAttribute} $shareAttribute
 		 */
