@@ -29,10 +29,10 @@ style('encryption', 'settings-admin');
 				<option value="masterkey" <?php \OC::$server->getAppConfig()->getValue('encryption', 'useMasterKey', '0') !== '0' ? print_unescaped('selected="selected"') : print_unescaped(''); ?>><?php p($l->t("Master Key"))?></option>
 				<option value="customkey"><?php p($l->t("User-specific key"))?></option>
 			</select>
-			<button id="select-mode" type="button" class="hidden"><?php p($l->t("Permanently select this mode"));?></button>
+			<button id="select-mode" type="button" class="hidden"><?php p($l->t("Permanently select this mode")); ?></button>
 			<div style="display:inline-block;margin-left: 20px;" class="hidden"></div>
-			<div id="masterKeyVal" data-master-key="<?php echo \OC::$server->getAppConfig()->getValue("encryption", "useMasterKey", "");?>"></div>
-			<div id="userSpecificKey" data-user-specific-key="<?php echo \OC::$server->getAppConfig()->getValue("encryption", "userSpecificKey", "");?>"></div>
+			<div id="masterKeyVal" data-master-key="<?php echo \OC::$server->getAppConfig()->getValue("encryption", "useMasterKey", ""); ?>"></div>
+			<div id="userSpecificKey" data-user-specific-key="<?php echo \OC::$server->getAppConfig()->getValue("encryption", "userSpecificKey", ""); ?>"></div>
 		</span>
 		<br />
 
@@ -41,13 +41,13 @@ style('encryption', 'settings-admin');
 				   value="1" <?php if ($_['encryptHomeStorage']) {
 				print_unescaped('checked="checked"');
 			} ?> />
-			<label for="encryptHomeStorage"><?php p($l->t('Encrypt the home storage'));?></label></br>
+			<label for="encryptHomeStorage"><?php p($l->t('Encrypt the home storage')); ?></label></br>
 			<em><?php p($l->t("Enabling this option encrypts all files stored on the main storage, otherwise only files on external storage will be encrypted")); ?></em>
 		</p>
 		<br />
 		<?php if ($_['masterKeyEnabled'] === false): ?>
 			<p id="encryptionSetRecoveryKey" class="hidden">
-				<?php $_["recoveryEnabled"] === '0' ?  p($l->t("Enable recovery key")) : p($l->t("Disable recovery key")); ?>
+				<?php $_["recoveryEnabled"] === '0' ? p($l->t("Enable recovery key")) : p($l->t("Disable recovery key")); ?>
 				<span class="msg"></span>
 				<br/>
 				<em>
@@ -66,13 +66,13 @@ style('encryption', 'settings-admin');
 					   name="enableRecoveryKey"
 					   id="enableRecoveryKey"
 					   status="<?php p($_["recoveryEnabled"]) ?>"
-					   value="<?php $_["recoveryEnabled"] === '0' ?  p($l->t("Enable recovery key")) : p($l->t("Disable recovery key")); ?>"/>
+					   value="<?php $_["recoveryEnabled"] === '0' ? p($l->t("Enable recovery key")) : p($l->t("Disable recovery key")); ?>"/>
 			</p>
 			<br/><br/>
 
 			<p name="changeRecoveryPasswordBlock" id="encryptionChangeRecoveryKey" <?php if ($_['recoveryEnabled'] === '0') {
 				print_unescaped('class="hidden"');
-			}?>>
+			} ?>>
 				<?php p($l->t("Change recovery key password:")); ?>
 				<span class="msg"></span>
 				<br/>

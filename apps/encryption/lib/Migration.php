@@ -347,9 +347,9 @@ class Migration {
 					return $targetDir;
 				}
 			}
-		} elseif ($trash === false && $this->view->file_exists('/' . $user. '/files/' . $filePath)) {
+		} elseif ($trash === false && $this->view->file_exists('/' . $user . '/files/' . $filePath)) {
 			return $targetDir;
-		} elseif ($trash === true && $this->view->file_exists('/' . $user. '/files_trashbin/' . $filePath)) {
+		} elseif ($trash === true && $this->view->file_exists('/' . $user . '/files_trashbin/' . $filePath)) {
 			return $targetDir;
 		}
 

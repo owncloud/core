@@ -162,7 +162,7 @@ class Encryption implements IEncryptionModule {
 	 * @param array $header contains the header data read from the file
 	 * @param array $accessList who has access to the file contains the key 'users' and 'public'
 	 * @param string|null $sourceFileOfRename Either false or the name of source file to be renamed.
-	 * 										This is helpful for revision increment during move operation between storage.
+	 * 										  This is helpful for revision increment during move operation between storage.
 	 *
 	 * @return array $header contain data as key-value pairs which should be
 	 *                       written to the header, in case of a write operation

@@ -21,7 +21,6 @@
 
 namespace OCA\Encryption\Command;
 
-use OC\Files\Cache\Cache;
 use OC\Files\View;
 use OC\HintException;
 use OCP\Files\IRootFolder;
