@@ -29,7 +29,6 @@ use OCA\Encryption\Migration;
 use OCP\ILogger;
 
 class MigrationTest extends \Test\TestCase {
-
 	const TEST_ENCRYPTION_MIGRATION_USER1='test_encryption_user1';
 	const TEST_ENCRYPTION_MIGRATION_USER2='test_encryption_user2';
 	const TEST_ENCRYPTION_MIGRATION_USER3='test_encryption_user3';
@@ -52,14 +51,19 @@ class MigrationTest extends \Test\TestCase {
 
 	public static function tearDownAfterClass() {
 		$user = \OC::$server->getUserManager()->get(self::TEST_ENCRYPTION_MIGRATION_USER1);
-		if ($user !== null) { $user->delete(); }
+		if ($user !== null) {
+			$user->delete();
+		}
 		$user = \OC::$server->getUserManager()->get(self::TEST_ENCRYPTION_MIGRATION_USER2);
-		if ($user !== null) { $user->delete(); }
+		if ($user !== null) {
+			$user->delete();
+		}
 		$user = \OC::$server->getUserManager()->get(self::TEST_ENCRYPTION_MIGRATION_USER3);
-		if ($user !== null) { $user->delete(); }
+		if ($user !== null) {
+			$user->delete();
+		}
 		parent::tearDownAfterClass();
 	}
-
 
 	public function setUp() {
 		$this->logger = $this->getMockBuilder('\OCP\ILogger')->disableOriginalConstructor()->getMock();
@@ -77,23 +81,23 @@ class MigrationTest extends \Test\TestCase {
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/folder2/file2');
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/file.1');
 		$this->view->mkdir($uid . '/files_encryption/keys/folder2/file.2.1');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/folder3/file3/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/folder3/file3/' . self::TEST_ENCRYPTION_MIGRATION_USER2 . '.shareKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/folder3/file3/' . self::TEST_ENCRYPTION_MIGRATION_USER3 . '.shareKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/file2/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/file2/' . self::TEST_ENCRYPTION_MIGRATION_USER2 . '.shareKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/file2/' . self::TEST_ENCRYPTION_MIGRATION_USER3 . '.shareKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/file.1/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/file.1/' . self::TEST_ENCRYPTION_MIGRATION_USER2 . '.shareKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/file.1/' . self::TEST_ENCRYPTION_MIGRATION_USER3 . '.shareKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/' . self::TEST_ENCRYPTION_MIGRATION_USER2 . '.shareKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/' . self::TEST_ENCRYPTION_MIGRATION_USER3 . '.shareKey'  , 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/folder3/file3/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/folder3/file3/' . self::TEST_ENCRYPTION_MIGRATION_USER2 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/folder3/file3/' . self::TEST_ENCRYPTION_MIGRATION_USER3 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/file2/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/file2/' . self::TEST_ENCRYPTION_MIGRATION_USER2 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/file2/' . self::TEST_ENCRYPTION_MIGRATION_USER3 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/file.1/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/file.1/' . self::TEST_ENCRYPTION_MIGRATION_USER2 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/file.1/' . self::TEST_ENCRYPTION_MIGRATION_USER3 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/' . self::TEST_ENCRYPTION_MIGRATION_USER2 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/' . self::TEST_ENCRYPTION_MIGRATION_USER3 . '.shareKey', 'data');
 		if ($this->public_share_key_id) {
-			$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/' . $this->public_share_key_id . '.shareKey'  , 'data');
+			$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/' . $this->public_share_key_id . '.shareKey', 'data');
 		}
 		if ($this->recovery_key_id) {
-			$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/' . $this->recovery_key_id . '.shareKey'  , 'data');
+			$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/' . $this->recovery_key_id . '.shareKey', 'data');
 		}
 	}
 
@@ -119,10 +123,10 @@ class MigrationTest extends \Test\TestCase {
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/folder2/file2');
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/file.1');
 		$this->view->mkdir($uid . '/files_encryption/keys/folder2/file.2.1');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/folder3/file3/fileKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/file2/fileKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/file.1/fileKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/fileKey'  , 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/folder3/file3/fileKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/folder2/file2/fileKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder1/file.1/fileKey', 'data');
+		$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/fileKey', 'data');
 	}
 
 	/**
@@ -135,10 +139,10 @@ class MigrationTest extends \Test\TestCase {
 		$this->view->mkdir($uid . '/files/folder1/folder2/file2');
 		$this->view->mkdir($uid . '/files/folder1/file.1');
 		$this->view->mkdir($uid . '/files/folder2/file.2.1');
-		$this->view->file_put_contents($uid . '/files/folder1/folder2/folder3/file3/fileKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files/folder1/folder2/file2/fileKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files/folder1/file.1/fileKey'  , 'data');
-		$this->view->file_put_contents($uid . '/files/folder2/file.2.1/fileKey'  , 'data');
+		$this->view->file_put_contents($uid . '/files/folder1/folder2/folder3/file3/fileKey', 'data');
+		$this->view->file_put_contents($uid . '/files/folder1/folder2/file2/fileKey', 'data');
+		$this->view->file_put_contents($uid . '/files/folder1/file.1/fileKey', 'data');
+		$this->view->file_put_contents($uid . '/files/folder2/file.2.1/fileKey', 'data');
 	}
 
 	/**
@@ -149,17 +153,17 @@ class MigrationTest extends \Test\TestCase {
 
 		$this->view->mkdir($uid . '/files_trashbin/keys/file1.d5457864');
 		$this->view->mkdir($uid . '/files_trashbin/keys/folder1.d7437648723/file2');
-		$this->view->file_put_contents($uid . '/files_trashbin/keys/file1.d5457864/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey' , 'data');
-		$this->view->file_put_contents($uid . '/files_trashbin/keys/file1.d5457864/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey' , 'data');
-		$this->view->file_put_contents($uid . '/files_trashbin/keys/folder1.d7437648723/file2/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey' , 'data');
+		$this->view->file_put_contents($uid . '/files_trashbin/keys/file1.d5457864/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_trashbin/keys/file1.d5457864/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey', 'data');
+		$this->view->file_put_contents($uid . '/files_trashbin/keys/folder1.d7437648723/file2/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey', 'data');
 
-		$this->view->file_put_contents($uid . '/files_trashbin/keys/file1.d5457864/fileKey' , 'data');
-		$this->view->file_put_contents($uid . '/files_trashbin/keys/folder1.d7437648723/file2/fileKey' , 'data');
+		$this->view->file_put_contents($uid . '/files_trashbin/keys/file1.d5457864/fileKey', 'data');
+		$this->view->file_put_contents($uid . '/files_trashbin/keys/folder1.d7437648723/file2/fileKey', 'data');
 
 		// create the files itself
 		$this->view->mkdir($uid . '/files_trashbin/folder1.d7437648723');
-		$this->view->file_put_contents($uid . '/files_trashbin/file1.d5457864' , 'data');
-		$this->view->file_put_contents($uid . '/files_trashbin/folder1.d7437648723/file2' , 'data');
+		$this->view->file_put_contents($uid . '/files_trashbin/file1.d5457864', 'data');
+		$this->view->file_put_contents($uid . '/files_trashbin/folder1.d7437648723/file2', 'data');
 	}
 
 	protected function createDummySystemWideKeys() {
@@ -242,7 +246,7 @@ class MigrationTest extends \Test\TestCase {
 
 		$this->assertTrue(
 			$this->view->file_exists(
-			    '/files_encryption/' . $this->moduleId . '/systemwide_1.publicKey')
+				'/files_encryption/' . $this->moduleId . '/systemwide_1.publicKey')
 		);
 		$this->assertTrue(
 			$this->view->file_exists(
@@ -256,7 +260,6 @@ class MigrationTest extends \Test\TestCase {
 		$this->verifyNewKeyPath('');
 		// trash
 		$this->verifyFilesInTrash(self::TEST_ENCRYPTION_MIGRATION_USER2);
-
 	}
 
 	/**
@@ -333,8 +336,8 @@ class MigrationTest extends \Test\TestCase {
 
 		//$this->invokePrivate($config, 'cache', [[]]);
 		$cache = $this->invokePrivate(\OC::$server->getAppConfig(), 'cache');
-		unset($cache['encryption']);
-		unset($cache['files_encryption']);
+		unset($cache['encryption'], $cache['files_encryption']);
+		
 		$this->invokePrivate(\OC::$server->getAppConfig(), 'cache', [$cache]);
 
 		// delete default values set by the encryption app during initialization
@@ -364,7 +367,6 @@ class MigrationTest extends \Test\TestCase {
 		$this->verifyDB('preferences', 'files_encryption', 0);
 		$this->verifyDB('appconfig', 'encryption', 3);
 		$this->verifyDB('preferences', 'encryption', 1);
-
 	}
 
 	/**
@@ -417,7 +419,6 @@ class MigrationTest extends \Test\TestCase {
 		$value = $result->fetch();
 		$this->assertTrue(isset($value['configvalue']));
 		$this->assertSame('1', $value['configvalue']);
-
 	}
 
 	/**
@@ -436,7 +437,7 @@ class MigrationTest extends \Test\TestCase {
 		$result = $query->execute();
 		$values = $result->fetchAll();
 		$this->assertSame($expected,
-			count($values)
+			\count($values)
 		);
 	}
 
@@ -458,15 +459,13 @@ class MigrationTest extends \Test\TestCase {
 			->from('filecache');
 		$result = $query->execute();
 		$entries = $result->fetchAll();
-		foreach($entries as $entry) {
+		foreach ($entries as $entry) {
 			if ((int)$entry['encrypted'] === 1) {
 				$this->assertSame((int)$entry['unencrypted_size'], (int)$entry['size']);
 			} else {
 				$this->assertSame((int)$entry['unencrypted_size'] - 2, (int)$entry['size']);
 			}
 		}
-
-
 	}
 
 	public function prepareFileCache() {
@@ -505,14 +504,13 @@ class MigrationTest extends \Test\TestCase {
 		$result = $query->select('fileid')
 			->from('filecache')
 			->execute()->fetchAll();
-		$this->assertSame(19, count($result));
+		$this->assertSame(19, \count($result));
 	}
 
 	/**
 	 * @dataProvider dataTestGetTargetDir
 	 */
 	public function testGetTargetDir($user, $keyPath, $filename, $trash, $systemMounts, $expected) {
-
 		$view = $this->getMockBuilder('\OC\Files\View')
 			->disableOriginalConstructor()->getMock();
 		$view->expects($this->any())->method('file_exists')->willReturn(true);
@@ -579,5 +577,4 @@ class MigrationTest extends \Test\TestCase {
 			]
 		];
 	}
-
 }

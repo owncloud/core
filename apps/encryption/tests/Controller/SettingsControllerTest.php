@@ -61,7 +61,6 @@ class SettingsControllerTest extends TestCase {
 	private $utilMock;
 
 	protected function setUp() {
-
 		parent::setUp();
 
 		$this->requestMock = $this->createMock('OCP\IRequest');
@@ -71,7 +70,7 @@ class SettingsControllerTest extends TestCase {
 
 		$this->l10nMock->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function($message) {
+			->will($this->returnCallback(function ($message) {
 				return $message;
 			}));
 
@@ -132,7 +131,6 @@ class SettingsControllerTest extends TestCase {
 	 * test updatePrivateKeyPassword() if wrong new password was entered
 	 */
 	public function testUpdatePrivateKeyPasswordWrongNewPassword() {
-
 		$oldPassword = 'old';
 		$newPassword = 'new';
 
@@ -156,7 +154,6 @@ class SettingsControllerTest extends TestCase {
 	 * test updatePrivateKeyPassword() if wrong old password was entered
 	 */
 	public function testUpdatePrivateKeyPasswordWrongOldPassword() {
-
 		$oldPassword = 'old';
 		$newPassword = 'new';
 
@@ -183,7 +180,6 @@ class SettingsControllerTest extends TestCase {
 	 * test updatePrivateKeyPassword() with the correct old and new password
 	 */
 	public function testUpdatePrivateKeyPassword() {
-
 		$oldPassword = 'old';
 		$newPassword = 'new';
 
@@ -200,8 +196,6 @@ class SettingsControllerTest extends TestCase {
 			->method('checkPassword')
 			->with('testUser', 'new')
 			->willReturn(true);
-
-
 
 		$this->cryptMock
 			->expects($this->once())
@@ -243,10 +237,9 @@ class SettingsControllerTest extends TestCase {
 			$data['message']);
 	}
 
-	function testSetEncryptHomeStorage() {
+	public function testSetEncryptHomeStorage() {
 		$value = true;
 		$this->utilMock->expects($this->once())->method('setEncryptHomeStorage')->with($value);
 		$this->controller->setEncryptHomeStorage($value);
 	}
-
 }

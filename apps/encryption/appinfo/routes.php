@@ -21,7 +21,6 @@
  *
  */
 
-
 namespace OCA\Encryption\AppInfo;
 
 (new Application())->registerRoutes($this, ['routes' => [
@@ -56,6 +55,5 @@ namespace OCA\Encryption\AppInfo;
 		'url' => '/ajax/getStatus',
 		'verb' => 'GET'
 	]
-
 
 ]]);

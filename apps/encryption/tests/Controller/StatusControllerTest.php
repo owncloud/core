@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\Encryption\Tests\Controller;
-
 
 use OCA\Encryption\Controller\StatusController;
 use OCA\Encryption\Session;
@@ -44,7 +42,6 @@ class StatusControllerTest extends TestCase {
 	protected $controller;
 
 	protected function setUp() {
-
 		parent::setUp();
 
 		$this->sessionMock = $this->getMockBuilder('OCA\Encryption\Session')
@@ -55,7 +52,7 @@ class StatusControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->l10nMock->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function($message) {
+			->will($this->returnCallback(function ($message) {
 				return $message;
 			}));
 
@@ -63,7 +60,6 @@ class StatusControllerTest extends TestCase {
 			$this->requestMock,
 			$this->l10nMock,
 			$this->sessionMock);
-
 	}
 
 	/**

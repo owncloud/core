@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\Encryption\Tests\Controller;
-
 
 use OCA\Encryption\Controller\RecoveryController;
 use OCP\AppFramework\Http;
@@ -59,8 +57,6 @@ class RecoveryControllerTest extends TestCase {
 	 * @param $expectedStatus
 	 */
 	public function testAdminRecovery($recoveryPassword, $passConfirm, $enableRecovery, $expectedMessage, $expectedStatus) {
-
-
 		$this->recoveryMock->expects($this->any())
 			->method('enableAdminRecovery')
 			->willReturn(true);
@@ -73,11 +69,8 @@ class RecoveryControllerTest extends TestCase {
 			$passConfirm,
 			$enableRecovery);
 
-
 		$this->assertEquals($expectedMessage, $response->getData()['data']['message']);
 		$this->assertEquals($expectedStatus, $response->getStatus());
-
-
 	}
 
 	public function changeRecoveryPasswordProvider() {
@@ -113,8 +106,6 @@ class RecoveryControllerTest extends TestCase {
 
 		$this->assertEquals($expectedMessage, $response->getData()['data']['message']);
 		$this->assertEquals($expectedStatus, $response->getStatus());
-
-
 	}
 
 	public function userSetRecoveryProvider() {
@@ -139,12 +130,10 @@ class RecoveryControllerTest extends TestCase {
 				['0', false]
 			]));
 
-
 		$response = $this->controller->userSetRecovery($enableRecovery);
 
 		$this->assertEquals($expectedMessage, $response->getData()['data']['message']);
 		$this->assertEquals($expectedStatus, $response->getStatus());
-
 	}
 
 	protected function setUp() {
@@ -177,5 +166,4 @@ class RecoveryControllerTest extends TestCase {
 			$this->l10nMock,
 			$this->recoveryMock);
 	}
-
 }

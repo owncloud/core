@@ -23,9 +23,7 @@
  *
  */
 
-
 namespace OCA\Encryption\Tests;
-
 
 use OC\Files\FileInfo;
 use OC\Files\Mount\MountPoint;
@@ -165,7 +163,6 @@ class RecoveryTest extends TestCase {
 	}
 
 	public function testDisableAdminRecovery() {
-
 		$this->keyManagerMock->expects($this->exactly(2))
 			->method('checkRecoveryPassword')
 			->willReturnOnConsecutiveCalls(true, false);
@@ -178,7 +175,6 @@ class RecoveryTest extends TestCase {
 	}
 
 	public function testIsRecoveryEnabledForUser() {
-
 		$this->configMock->expects($this->exactly(2))
 			->method('getUserValue')
 			->willReturnOnConsecutiveCalls('1', '0');
@@ -238,7 +234,6 @@ class RecoveryTest extends TestCase {
 			->with($this->anything(), $this->anything(), $this->equalTo('admin'))
 			->willReturn(['admin' => 'publicKey']);
 
-
 		$this->cryptMock->expects($this->once())
 			->method('multiKeyEncrypt');
 
@@ -273,7 +268,6 @@ class RecoveryTest extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-
 
 		$this->userSessionMock = $this->getMockBuilder('OCP\IUserSession')
 			->disableOriginalConstructor()
@@ -321,7 +315,6 @@ class RecoveryTest extends TestCase {
 			$this->viewMock);
 	}
 
-
 	/**
 	 * @param $app
 	 * @param $key
@@ -349,6 +342,4 @@ class RecoveryTest extends TestCase {
 		}
 		return null;
 	}
-
-
 }

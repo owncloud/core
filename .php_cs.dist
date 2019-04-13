@@ -6,6 +6,7 @@ $dirIterator = new DirectoryIterator(__DIR__ . '/' . $dirToParse);
 $bundledApps = [
 	'comments',
 	'dav',
+	'encryption',
 	'federatedfilesharing',
 	'federation',
 	'files',

@@ -22,15 +22,12 @@
  *
  */
 
-
 namespace OCA\Encryption\Tests\Crypto;
-
 
 use OCA\Encryption\Crypto\Crypt;
 use Test\TestCase;
 
 class CryptTest extends TestCase {
-
 
 	/** @var \OCP\ILogger|\PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
@@ -71,14 +68,13 @@ class CryptTest extends TestCase {
 	 * test getOpenSSLConfig without any additional parameters
 	 */
 	public function testGetOpenSSLConfigBasic() {
-
 		$this->config->expects($this->once())
 			->method('getSystemValue')
 			->with($this->equalTo('openssl'), $this->equalTo([]))
 			->willReturn([]);
 
 		$result = self::invokePrivate($this->crypt, 'getOpenSSLConfig');
-		$this->assertSame(1, count($result));
+		$this->assertSame(1, \count($result));
 		$this->assertArrayHasKey('private_key_bits', $result);
 		$this->assertSame(4096, $result['private_key_bits']);
 	}
@@ -87,20 +83,18 @@ class CryptTest extends TestCase {
 	 * test getOpenSSLConfig with additional parameters defined in config.php
 	 */
 	public function testGetOpenSSLConfig() {
-
 		$this->config->expects($this->once())
 			->method('getSystemValue')
 			->with($this->equalTo('openssl'), $this->equalTo([]))
 			->willReturn(['foo' => 'bar', 'private_key_bits' => 1028]);
 
 		$result = self::invokePrivate($this->crypt, 'getOpenSSLConfig');
-		$this->assertSame(2, count($result));
+		$this->assertSame(2, \count($result));
 		$this->assertArrayHasKey('private_key_bits', $result);
 		$this->assertArrayHasKey('foo', $result);
 		$this->assertSame(1028, $result['private_key_bits']);
 		$this->assertSame('bar', $result['foo']);
 	}
-
 
 	/**
 	 * test generateHeader with valid key formats
@@ -108,7 +102,6 @@ class CryptTest extends TestCase {
 	 * @dataProvider dataTestGenerateHeader
 	 */
 	public function testGenerateHeader($keyFormat, $expected) {
-
 		$this->config->expects($this->once())
 			->method('getSystemValue')
 			->with($this->equalTo('cipher'), $this->equalTo('AES-256-CTR'))
@@ -153,7 +146,7 @@ class CryptTest extends TestCase {
 			->method('warning')
 			->with('Unsupported cipher (Not-Existing-Cipher) defined in config.php supported. Falling back to AES-256-CTR');
 
-		$this->assertSame('AES-256-CTR',  $this->crypt->getCipher());
+		$this->assertSame('AES-256-CTR', $this->crypt->getCipher());
 	}
 
 	/**
@@ -170,7 +163,6 @@ class CryptTest extends TestCase {
 		$this->assertSame($expected,
 			$this->crypt->getCipher()
 		);
-
 	}
 
 	/**
@@ -193,7 +185,6 @@ class CryptTest extends TestCase {
 	 * test concatIV()
 	 */
 	public function testConcatIV() {
-
 		$result = self::invokePrivate(
 			$this->crypt,
 			'concatIV',
@@ -209,8 +200,8 @@ class CryptTest extends TestCase {
 	 */
 	public function testSplitMetaData($data, $expected) {
 		$result = self::invokePrivate($this->crypt, 'splitMetaData', [$data, 'AES-256-CFB']);
-		$this->assertTrue(is_array($result));
-		$this->assertSame(3, count($result));
+		$this->assertTrue(\is_array($result));
+		$this->assertSame(3, \count($result));
 		$this->assertArrayHasKey('encrypted', $result);
 		$this->assertArrayHasKey('iv', $result);
 		$this->assertArrayHasKey('signature', $result);
@@ -287,7 +278,7 @@ class CryptTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataProviderRemovePadding()  {
+	public function dataProviderRemovePadding() {
 		return [
 			['dataxx', 'data'],
 			['data', false]
@@ -298,12 +289,11 @@ class CryptTest extends TestCase {
 	 * test parseHeader()
 	 */
 	public function testParseHeader() {
-
 		$header= 'HBEGIN:foo:bar:cipher:AES-256-CFB:HEND';
 		$result = self::invokePrivate($this->crypt, 'parseHeader', [$header]);
 
-		$this->assertTrue(is_array($result));
-		$this->assertSame(2, count($result));
+		$this->assertTrue(\is_array($result));
+		$this->assertSame(2, \count($result));
 		$this->assertArrayHasKey('foo', $result);
 		$this->assertArrayHasKey('cipher', $result);
 		$this->assertSame('bar', $result['foo']);
@@ -316,24 +306,22 @@ class CryptTest extends TestCase {
 	 * @return string
 	 */
 	public function testEncrypt() {
-
 		$decrypted = 'content';
 		$password = 'password';
 		$iv = self::invokePrivate($this->crypt, 'generateIv');
 
-		$this->assertTrue(is_string($iv));
-		$this->assertSame(16, strlen($iv));
+		$this->assertTrue(\is_string($iv));
+		$this->assertSame(16, \strlen($iv));
 
 		$result = self::invokePrivate($this->crypt, 'encrypt', [$decrypted, $iv, $password]);
 
-		$this->assertTrue(is_string($result));
+		$this->assertTrue(\is_string($result));
 
 		return [
 			'password' => $password,
 			'iv' => $iv,
 			'encrypted' => $result,
 			'decrypted' => $decrypted];
-
 	}
 
 	/**
@@ -342,14 +330,12 @@ class CryptTest extends TestCase {
 	 * @depends testEncrypt
 	 */
 	public function testDecrypt($data) {
-
 		$result = self::invokePrivate(
 			$this->crypt,
 			'decrypt',
 			[$data['encrypted'], $data['iv'], $data['password']]);
 
 		$this->assertSame($data['decrypted'], $result);
-
 	}
 
 	/**
@@ -440,8 +426,8 @@ class CryptTest extends TestCase {
 	}
 
 	public function testIsValidPrivateKey() {
-		$res = openssl_pkey_new();
-		openssl_pkey_export($res, $privateKey);
+		$res = \openssl_pkey_new();
+		\openssl_pkey_export($res, $privateKey);
 
 		// valid private key
 		$this->assertTrue(
@@ -453,5 +439,4 @@ class CryptTest extends TestCase {
 			$this->invokePrivate($this->crypt, 'isValidPrivateKey', ['foo'])
 		);
 	}
-
 }

@@ -22,9 +22,7 @@
  *
  */
 
-
 namespace OCA\Encryption\Tests\Users;
-
 
 use OCA\Encryption\Users\Setup;
 use Test\TestCase;
@@ -65,7 +63,6 @@ class SetupTest extends TestCase {
 			$this->keyManagerMock);
 	}
 
-
 	public function testSetupSystem() {
 		$this->keyManagerMock->expects($this->once())->method('validateShareKey');
 		$this->keyManagerMock->expects($this->once())->method('validateMasterKey');
@@ -80,7 +77,6 @@ class SetupTest extends TestCase {
 	 * @param bool $expected
 	 */
 	public function testSetupUser($hasKeys, $expected) {
-
 		$this->keyManagerMock->expects($this->once())->method('userHasKeys')
 			->with('uid')->willReturn($hasKeys);
 
@@ -103,5 +99,4 @@ class SetupTest extends TestCase {
 			[false, true]
 		];
 	}
-
 }

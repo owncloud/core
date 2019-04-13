@@ -95,7 +95,6 @@ class SettingsController extends Controller {
 		$this->util = $util;
 	}
 
-
 	/**
 	 * @NoAdminRequired
 	 * @UseSession
@@ -149,7 +148,6 @@ class SettingsController extends Controller {
 				Http::STATUS_BAD_REQUEST
 			);
 		}
-
 	}
 
 	/**
