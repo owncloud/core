@@ -1405,4 +1405,78 @@ $CONFIG = array(
  * Async dav extensions can be enabled or disabled.
  */
 'dav.enable.async' => false,
+
+/**
+ * App: Activity
+ * 
+ * Possible values: `activity_expire_days` days
+ */
+ 
+/**
+ * Retention for activities of the activity app
+ */
+
+'activity_expire_days' => 365,
+
+/**
+ * App: LDAP
+ * 
+ * Possible values: `ldapIgnoreNamingRules` 'doSet' or false
+ * 
+ * Possible values: `user_ldap.enable_medial_search` true or false
+ */
+ 
+/**
+ * Configuring the LDAP app
+ */
+
+'ldapIgnoreNamingRules' => false,
+'user_ldap.enable_medial_search' => false,
+
+/**
+ * App: Market
+ * 
+ * Possible values: `appstoreurl` URL
+ */
+
+/**
+ * Configuring the download URL for apps
+ */
+
+'appstoreurl' => 'https://marketplace.owncloud.com',
+
+/**
+ * App: Firstrunwizard
+ * 
+ * Possible values: `customclient_desktop` URL
+ * 
+ * Possible values: `customclient_android` URL
+ * 
+ * Possible values: `customclient_ios` URL
+ */
+
+/**
+ * Configuring the download links for ownCloud clients, 
+ * as seen in the first-run wizard and on Personal pages
+ */
+ 
+'customclient_desktop' =>
+	'https://owncloud.org/install/#install-clients',
+'customclient_android' =>
+	'https://play.google.com/store/apps/details?id=com.owncloud.android',
+'customclient_ios' =>
+	'https://itunes.apple.com/us/app/owncloud/id543672169?mt=8',
+
+/**
+ * App: Richdocuments
+ * 
+ * Possible values: `collabora_group` string
+ */
+
+/**
+ * Configuring the group name for users allowed to use collabora
+ */
+
+'collabora_group' => '',
+
 );
