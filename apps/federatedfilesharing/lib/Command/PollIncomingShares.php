@@ -22,7 +22,11 @@
 namespace OCA\FederatedFileSharing\Command;
 
 use OC\ServerNotAvailableException;
+use OC\User\NoUserException;
+use OCA\FederatedFileSharing\FederatedShareProvider;
+use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\External\MountProvider;
+use OCP\Files\Mount\IMountManager;
 use OCP\Files\Storage\IStorage;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\Files\StorageInvalidException;
@@ -44,7 +48,11 @@ class PollIncomingShares extends Command {
 	/** @var IStorageFactory */
 	private $loader;
 
+	/** @var Manager */
+	private $externalManager;
+
 	/** @var MountProvider | null */
+
 	private $externalMountProvider;
 
 	/**
@@ -55,11 +63,12 @@ class PollIncomingShares extends Command {
 	 * @param MountProvider $externalMountProvider
 	 * @param IStorageFactory $loader
 	 */
-	public function __construct(IDBConnection $dbConnection, IUserManager $userManager, IStorageFactory $loader, MountProvider $externalMountProvider = null) {
+	public function __construct(IDBConnection $dbConnection, IUserManager $userManager, IStorageFactory $loader, Manager $externalManager = null, MountProvider $externalMountProvider = null) {
 		parent::__construct();
 		$this->dbConnection = $dbConnection;
 		$this->userManager = $userManager;
 		$this->loader = $loader;
+		$this->externalManager = $externalManager;
 		$this->externalMountProvider = $externalMountProvider;
 	}
 
@@ -96,9 +105,22 @@ class PollIncomingShares extends Command {
 					/** @var Storage $storage */
 					$storage = $mount->getStorage();
 					$this->refreshStorageRoot($storage);
+				} catch (NoUserException $e) {
+					$shareData = $this->getExternalShareData($data['user'], $mount->getMountPoint());
+					$entryId = $shareData['id'];
+					$remote = $shareData['remote'];
+					// uid was null so we need to set it
+					$this->externalManager->setUid($data['user']);
+					$this->externalManager->removeShare($mount->getMountPoint());
+					// and now we need to reset uid back to null
+					$this->externalManager->setUid(null);
+					$output->writeln(
+						"Remote \"$remote\" reports that external share with id \"$entryId\" no longer exists. Removing it.."
+					);
 				} catch (\Exception $e) {
-					$entryId = $this->getExternalShareId($data['user'], $mount->getMountPoint());
-					$remote = $storage->getRemote();
+					$shareData = $this->getExternalShareData($data['user'], $mount->getMountPoint());
+					$entryId = $shareData['id'];
+					$remote = $shareData['remote'];
 					$reason = $e->getMessage();
 					$output->writeln(
 						"Skipping external share with id \"$entryId\" from remote \"$remote\". Reason: \"$reason\""
@@ -137,13 +159,13 @@ class PollIncomingShares extends Command {
 		return $qb->execute();
 	}
 
-	protected function getExternalShareId(string $userId, string $mountPoint) {
+	protected function getExternalShareData(string $userId, string $mountPoint) {
 		$relativeMountPoint =\rtrim(
 			\substr($mountPoint, \strlen("/$userId/files")),
 			'/'
 		);
 		$qb = $this->dbConnection->getQueryBuilder();
-		$qb->selectDistinct('id')
+		$qb->select('*')
 			->from('share_external')
 			->where(
 				$qb->expr()->eq('user',
@@ -155,6 +177,6 @@ class PollIncomingShares extends Command {
 			));
 		$result = $qb->execute();
 		$externalShare = $result->fetch();
-		return $externalShare['id'] ?? 0;
+		return $externalShare;
 	}
 }
