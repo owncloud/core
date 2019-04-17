@@ -126,13 +126,13 @@ class RequestHandlerController extends OCSController {
 				);
 			}
 			// FIXME this should be a method in the user management instead
-			\OCP\Util::writeLog('files_sharing', 'shareWith before, ' . $shareWith, \OCP\Util::DEBUG);
+			\OCP\Util::writeLog('federatedfilesharing', 'shareWith before, ' . $shareWith, \OCP\Util::DEBUG);
 			\OCP\Util::emitHook(
 				'\OCA\Files_Sharing\API\Server2Server',
 				'preLoginNameUsedAsUserName',
 				['uid' => &$shareWith]
 			);
-			\OCP\Util::writeLog('files_sharing', 'shareWith after, ' . $shareWith, \OCP\Util::DEBUG);
+			\OCP\Util::writeLog('federatedfilesharing', 'shareWith after, ' . $shareWith, \OCP\Util::DEBUG);
 			if (!$this->userManager->userExists($shareWith)) {
 				throw new BadRequestException('User does not exist');
 			}
@@ -164,7 +164,7 @@ class RequestHandlerController extends OCSController {
 			);
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog(
-				'files_sharing',
+				'federatedfilesharing',
 				'server can not add remote share, ' . $e->getMessage(),
 				\OCP\Util::ERROR
 			);
