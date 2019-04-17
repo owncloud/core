@@ -40,6 +40,7 @@ use OCP\Files\Cache\ICache;
 use OCP\Files\Cache\ICacheEntry;
 use \OCP\Files\IMimeTypeLoader;
 use OCP\IDBConnection;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 
 /**
  * Metadata cache for a storage
@@ -211,6 +212,91 @@ class Cache implements ICache {
 		} else {
 			return [];
 		}
+	}
+
+	/**
+	 * Get a generator to traverse the cached contents of the folder. The generator will be the same
+	 * that can be gotten by the getFolderContentsByIdGenerator, the only difference is that this method
+	 * accepts a path instead of a file id. See that function for more information.
+	 *
+	 * Note that a DB cursor is used to fetch each row. The cursor will be automatically closed after
+	 * all results have been fetched. If you want to stop the loop earlier, use `$gen->send('stop')`
+	 * in order to give this function the oportunity to close the cursor
+	 *
+	 * @param string $folder the folder whose content we want to traverse
+	 * @param string $sortColumn the name of the column that will be used to sort the results
+	 * @param bool $sortDescending sort the results in a descending order
+	 * @return Generator a generator object returning CacheEntry
+	 */
+	public function getFolderContentsGenerator($folder, $sortColumn = 'name', $sortDescending = false) {
+		$fileId = $this->getId($folder);
+		// We HAVE TO return the same generator to make sure the "gen->send('stop')" works properly
+		// Do NOT create a new generator to traverse the one created by the getFolderContentsByIdGenerator function
+		return $this->getFolderContentsByIdGenerator($fileId, $sortColumn, $sortDescending);
+	}
+
+	/**
+	 * Get a Generator to traverse the cached contents of the folder.
+	 * You can specify some columns in order to retrieve the results sorted by that column
+	 * and in the specified order.
+	 * Available columns that can be sorted by are: fileid, path, name, size, mtime and storage_mtime.
+	 * The default column is 'name'. If a value other than any of the available column is used, it
+	 * will fallback to the default one.
+	 *
+	 * Note that a DB cursor is used to fetch each row. The cursor will be automatically closed after
+	 * all results have been fetched. If you want to stop the loop earlier, use `$gen->send('stop')`
+	 * in order to give this function the oportunity to close the cursor
+	 *
+	 * @param int $fileId the file id of the folder whose content we want to traverse
+	 * @param string $sortColumn the name of the column that will be used to sort the results
+	 * @param bool $sortDescending sort the results in a descending order
+	 * @return Generator a generator object returning CacheEntry
+	 */
+	public function getFolderContentsByIdGenerator($fileId, $sortColumn = 'name', $sortDescending = false) {
+		$sortableColumns = [
+			'fileid',
+			'path',
+			'name',
+			'size',
+			'mtime',
+			'storage_mtime',
+		];
+
+		if (!\in_array($sortColumn, $sortableColumns, true)) {
+			$sortColumn = 'name';
+		}
+
+		$sortOrder = 'ASC';
+		if ($sortDescending) {
+			$sortOrder = 'DESC';
+		}
+
+		$qb = $this->connection->getQueryBuilder();
+		$qb->select('fileid', 'storage', 'path', 'parent', 'name', 'mimetype', 'mimepart', 'size', 'mtime',
+				'storage_mtime', 'encrypted', 'etag', 'permissions', 'checksum')
+			->from('filecache')
+			->where($qb->expr()->eq('parent', $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT)))
+			->orderBy($sortColumn, $sortOrder);
+
+		$result = $qb->execute();
+		while (($row = $result->fetch()) !== false) {
+			$row['mimetype'] = $this->mimetypeLoader->getMimetypeById($row['mimetype']);
+			$row['mimepart'] = $this->mimetypeLoader->getMimetypeById($row['mimepart']);
+			if ($row['storage_mtime'] == 0) {
+				$row['storage_mtime'] = $row['mtime'];
+			}
+			$row['permissions'] = (int)$row['permissions'];
+			$row['mtime'] = (int)$row['mtime'];
+			$row['storage_mtime'] = (int)$row['storage_mtime'];
+			$row['size'] = 0 + $row['size'];
+			$cacheEntry = new CacheEntry($row);
+
+			$genCmd = (yield $cacheEntry);
+			if ($genCmd === 'stop') {
+				break;
+			}
+		}
+		$result->closeCursor();
 	}
 
 	/**

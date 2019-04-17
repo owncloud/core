@@ -81,8 +81,11 @@ class ExpireTrash extends \OC\BackgroundJob\TimedJob {
 			if (!$this->setupFS($uid)) {
 				return;
 			}
-			$dirContent = Helper::getTrashFiles('/', $uid, 'mtime');
-			Trashbin::deleteExpiredFiles($dirContent, $uid);
+
+			$trashFilesGenerator = Helper::getTrashFilesGenerator('/', $uid, 'mtime');
+			foreach ($trashFilesGenerator as $trashFile) {
+				Trashbin::deleteFileIfExpired($this->expiration, $trashFile, $uid);
+			}
 		});
 		
 		\OC_Util::tearDownFS();

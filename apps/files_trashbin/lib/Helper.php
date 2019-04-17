@@ -100,6 +100,69 @@ class Helper {
 		return $result;
 	}
 
+	public static function getTrashFilesGenerator($dir, $user, $sortAttribute = 'name', $sortDescending = false) {
+		$timestamp = null;
+		$view = new \OC\Files\View('/' . $user . '/files_trashbin/files');
+
+		if (\ltrim($dir, '/') !== '' && !$view->is_dir($dir)) {
+			throw new \Exception('Directory does not exists');
+		}
+
+		$mount = $view->getMount($dir);
+		$storage = $mount->getStorage();
+		$absoluteDir = $view->getAbsolutePath($dir);
+		$internalPath = $mount->getInternalPath($absoluteDir);
+
+		$originalLocations = \OCA\Files_Trashbin\Trashbin::getLocations($user);
+		$targetDirInternalPath = $mount->getInternalPath($view->getAbsolutePath($dir));
+		$dirContentGenerator = $storage->getCache()->getFolderContentsGenerator($targetDirInternalPath, $sortAttribute, $sortDescending);
+
+		foreach ($dirContentGenerator as $entry) {
+			$entryName = $entry->getName();
+			$id = $entry->getId();
+
+			$name = $entryName;
+			if ($dir === '' || $dir === '/') {
+				$pathparts = \pathinfo($entryName);
+				$timestamp = \substr($pathparts['extension'], 1);
+				$name = $pathparts['filename'];
+			} elseif ($timestamp === null) {
+				// for subfolders we need to calculate the timestamp only once
+				$parts = \explode('/', \ltrim($dir, '/'));
+				$timestamp = \substr(\pathinfo($parts[0], PATHINFO_EXTENSION), 1);
+			}
+
+			$originalPath = '';
+			$originalName = \substr($entryName, 0, -\strlen($timestamp)-2);
+			if (isset($originalLocations[$originalName][$timestamp])) {
+				$originalPath = $originalLocations[$originalName][$timestamp];
+				if (\substr($originalPath, -1) === '/') {
+					$originalPath = \substr($originalPath, 0, -1);
+				}
+			}
+			$i = [
+				'name' => $name,
+				'mtime' => $timestamp,
+				'mimetype' => $entry->getMimeType(),
+				'type' => $entry->getMimeType() === ICacheEntry::DIRECTORY_MIMETYPE ? 'dir' : 'file',
+				'directory' => ($dir === '/') ? '' : $dir,
+				'size' => $entry->getSize(),
+				'etag' => '',
+				'permissions' => Constants::PERMISSION_ALL - Constants::PERMISSION_SHARE
+			];
+			if ($originalPath) {
+				$i['extraData'] = $originalPath . '/' . $originalName;
+			}
+			$fileinfo = new FileInfo($absoluteDir . '/' . $i['name'], $storage, $internalPath . '/' . $i['name'], $i, $mount);
+
+			$genCmd = (yield $fileinfo);
+			if ($genCmd === 'stop') {
+				$dirContentGenerator->send('stop'); // tell the dirContentGenerator to stop so it can close the cursor
+				break;
+			}
+		}
+	}
+
 	/**
 	 * Format file infos for JSON
 	 *

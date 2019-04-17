@@ -41,12 +41,14 @@ use OC\Files\Filesystem;
 use OC\Files\View;
 use OCA\Files_Trashbin\AppInfo\Application;
 use OCA\Files_Trashbin\Command\Expire;
+use OCA\Files_Trashbin\Expiration;
 use OCP\Encryption\Keys\IStorage;
 use OCP\Files\NotFoundException;
 use OCP\User;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
+use OCP\Files\FileInfo;
 use OCP\IURLGenerator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -856,6 +858,32 @@ class Trashbin {
 		}
 
 		return [$size, $count];
+	}
+
+	/**
+	 * Delete the target file only if it's expired. The function will return the size of the deleted file.
+	 * In order to provide a similar behaviour like the deleteExpiredFiled function, the function will return 0 if
+	 * the file isn't expired.
+	 * It might not be possible to distinguish between an expired 0 byte file and a non-expired one.
+	 *
+	 * @param Expiration $expiration an Expiration object to check if the file has expired or not
+	 * @param FileInfo $file the fileinfo object representing the file that we want to delete
+	 * @param string $user
+	 * @return int the size of the deleted file or 0 if the file hasn't been deleted. Note that a 0-byte file
+	 * can be deleted (if expired) and it will also return 0.
+	 */
+	public static function deleteFileIfExpired(Expiration $expiration, FileInfo $file, $user) {
+		$size = 0;
+		$timestamp = $file->getMtime();
+		$filename = $file->getName();
+		if ($expiration->isExpired($timestamp)) {
+			$size = self::delete($filename, $user, $timestamp);
+			\OC::$server->getLogger()->info(
+				'Remove "' . $filename . '" from trashbin because it exceeds max retention obligation term.',
+				['app' => 'files_trashbin']
+			);
+		}
+		return $size;
 	}
 
 	/**
