@@ -18,7 +18,7 @@ A personal cloud which runs on your own server.**
 * ...
 
 ## Installation instructions
-https://doc.owncloud.org/server/10.1/developer_manual/app/index.html
+https://doc.owncloud.org/server/latest/admin_manual/installation/
 
 ## Contribution Guidelines
 https://owncloud.org/contribute/
