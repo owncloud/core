@@ -77,14 +77,14 @@ class Helper {
 		try {
 			$path = Filesystem::getPath($linkItem['file_source']);
 		} catch (NotFoundException $e) {
-			\OCP\Util::writeLog('share', 'could not resolve linkItem', \OCP\Util::DEBUG);
+			\OCP\Util::writeLog('files_sharing', 'could not resolve linkItem', \OCP\Util::DEBUG);
 			\OC_Response::setStatus(404);
 			\OCP\JSON::error(['success' => false]);
 			exit();
 		}
 
 		if (!isset($linkItem['item_type'])) {
-			\OCP\Util::writeLog('share', 'No item type set for share id: ' . $linkItem['id'], \OCP\Util::ERROR);
+			\OCP\Util::writeLog('files_sharing', 'No item type set for share id: ' . $linkItem['id'], \OCP\Util::ERROR);
 			\OC_Response::setStatus(404);
 			\OCP\JSON::error(['success' => false]);
 			exit();
@@ -144,7 +144,7 @@ class Helper {
 					return false;
 				}
 			} else {
-				\OCP\Util::writeLog('share', 'Unknown share type '.$linkItem['share_type']
+				\OCP\Util::writeLog('files_sharing', 'Unknown share type '.$linkItem['share_type']
 					.' for share id '.$linkItem['id'], \OCP\Util::ERROR);
 				return false;
 			}
@@ -176,7 +176,7 @@ class Helper {
 			if ($info instanceof \OC\Files\FileInfo) {
 				$ids[] = $info['fileid'];
 			} else {
-				\OCP\Util::writeLog('sharing', 'No fileinfo available for: ' . $path, \OCP\Util::WARN);
+				\OCP\Util::writeLog('files_sharing', 'No fileinfo available for: ' . $path, \OCP\Util::WARN);
 			}
 			$path = \dirname($path);
 		}
