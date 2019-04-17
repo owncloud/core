@@ -257,7 +257,7 @@ OCA.Sharing.App = {
 		fileActions.registerAction({
 			name: 'Accept',
 			type: OCA.Files.FileActions.TYPE_INLINE,
-			displayName: t('files', 'Accept Share'),
+			displayName: t('files_sharing', 'Accept Share'),
 			mime: 'all',
 			iconClass: 'icon-checkmark',
 			permissions: OC.PERMISSION_READ,
@@ -268,7 +268,7 @@ OCA.Sharing.App = {
 		fileActions.registerAction({
 			name: 'Reject',
 			type: OCA.Files.FileActions.TYPE_INLINE,
-			displayName: t('files', 'Decline Share'),
+			displayName: t('files_sharing', 'Decline Share'),
 			iconClass: 'icon-close',
 			mime: 'all',
 			permissions: OC.PERMISSION_READ,
