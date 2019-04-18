@@ -219,7 +219,7 @@ OCA.Sharing.App = {
 			if(response.responseJSON && response.responseJSON.message) {
 				message = ': ' + response.responseJSON.message;
 			}
-			OC.Notification.show(t('files', 'An error occurred while updating share state: {message}', {message:  message}), {type: 'error'});
+			OC.Notification.show(t('files_sharing', 'An error occurred while updating share state: {message}', {message:  message}), {type: 'error'});
 		});
 		return xhr;
 	},
@@ -239,7 +239,7 @@ OCA.Sharing.App = {
 						path: OC.dirname(data.file_target)
 					});
 				} else {
-					OC.Notification.show(t('files', 'An error occurred while updating share state: {message}', {message: meta.message}), {type: 'error'});
+					OC.Notification.show(t('files_sharing', 'An error occurred while updating share state: {message}', {message: meta.message}), {type: 'error'});
 				}
 			}
 			context.fileList.showFileBusyState(context.$file, false);
@@ -257,7 +257,7 @@ OCA.Sharing.App = {
 		fileActions.registerAction({
 			name: 'Accept',
 			type: OCA.Files.FileActions.TYPE_INLINE,
-			displayName: t('files', 'Accept Share'),
+			displayName: t('files_sharing', 'Accept Share'),
 			mime: 'all',
 			iconClass: 'icon-checkmark',
 			permissions: OC.PERMISSION_READ,
@@ -268,7 +268,7 @@ OCA.Sharing.App = {
 		fileActions.registerAction({
 			name: 'Reject',
 			type: OCA.Files.FileActions.TYPE_INLINE,
-			displayName: t('files', 'Decline Share'),
+			displayName: t('files_sharing', 'Decline Share'),
 			iconClass: 'icon-close',
 			mime: 'all',
 			permissions: OC.PERMISSION_READ,
