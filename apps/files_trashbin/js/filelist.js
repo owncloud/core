@@ -350,7 +350,7 @@
 			if (result.status === 403) {
 				// Go home
 				this.changeDirectory('/');
-				OC.Notification.show(t('files', 'This operation is forbidden'));
+				OC.Notification.show(t('files_trashbin', 'This operation is forbidden'));
 				return false;
 			}
 
@@ -358,7 +358,7 @@
 			if (result.status === 500) {
 				// Go home
 				this.changeDirectory('/');
-				OC.Notification.show(t('files', 'This directory is unavailable, please check the logs or contact the administrator'));
+				OC.Notification.show(t('files_trashbin', 'This directory is unavailable, please check the logs or contact the administrator'));
 				return false;
 			}
 
