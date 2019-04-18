@@ -73,7 +73,7 @@ foreach ($list as $file) {
 
 	if (!OCA\Files_Trashbin\Trashbin::restore($path, $filename, $timestamp)) {
 		$error[] = $filename;
-		\OCP\Util::writeLog('trashbin', 'can\'t restore ' . $filename, \OCP\Util::DEBUG);
+		\OCP\Util::writeLog('files_trashbin', 'can\'t restore ' . $filename, \OCP\Util::DEBUG);
 	} else {
 		$success[$i]['filename'] = $file;
 		$success[$i]['timestamp'] = $timestamp;
