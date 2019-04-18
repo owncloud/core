@@ -152,9 +152,10 @@
 		var view = new OCA.Sharing.PublicUploadView({
 			shareToken: $('#sharingToken').val()
 		});
+		$('#preview .uploadForm').append(view.$el);
+
 		view.render();
 
-		$('#preview .uploadForm').append(view.$el);
 		$('#uploadprogresswrapper .stop').on('click', function () {
 			view.onUploadCancel();
 		});
