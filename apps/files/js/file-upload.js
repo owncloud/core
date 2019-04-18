@@ -829,11 +829,7 @@ OC.Uploader.prototype = _.extend({
 				return true;
 			}
 			var fileInfo = fileList.findFile(file.name);
-			var sharePermission = $("#sharePermission").val();
-			if (sharePermission !== undefined) {
-				sharePermission &= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE);
-			}
-			if (fileInfo && (sharePermission !== (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE))) {
+			if (fileInfo) {
 				conflicts.push([
 					// original
 					_.extend(fileInfo, {
