@@ -17,11 +17,12 @@ class InstallerTest extends TestCase {
 		parent::setUp();
 
 		Installer::removeApp(self::$appid);
+		\OC::$server->getConfig()->deleteAppValues(self::$appid);
 	}
 
 	protected function tearDown() {
 		Installer::removeApp(self::$appid);
-
+		\OC::$server->getConfig()->deleteAppValues(self::$appid);
 		parent::tearDown();
 	}
 
@@ -88,5 +89,70 @@ class InstallerTest extends TestCase {
 		$newVersionNumber = \OC_App::getAppVersion(self::$appid);
 
 		$this->assertNotEquals($oldVersionNumber, $newVersionNumber);
+	}
+
+	/**
+	 * Tests that update is installed into writable app dir if the original app dir is not writable
+	 */
+	public function testUpdateIntoWritableAppDir() {
+		$oldAppRoots = \OC::$APPSROOTS;
+		$relativePath = "/anotherdir";
+
+		// Install old version
+		$pathOfOldTestApp = __DIR__ . '/../data/testapp.zip';
+		$oldTmp = \OC::$server->getTempManager()->getTemporaryFile('.zip');
+		\OC_Helper::copyr($pathOfOldTestApp, $oldTmp);
+		$oldData = [
+			'path' => $oldTmp,
+			'source' => 'path',
+			'appdata' => [
+				'id' => 'testapp',
+				'level' => 100,
+			]
+		];
+		$installResult = Installer::installApp($oldData);
+		$this->assertEquals('testapp', $installResult);
+		$oldAppPath = \OC_App::getAppPath(self::$appid);
+
+		// Mark the first app as dir non-writable and create the second as writable
+		$firstAppDir = \array_shift(\OC::$APPSROOTS);
+		$firstAppDir['writable'] = false;
+
+		$path = \dirname($firstAppDir['path']) . $relativePath;
+		\mkdir($path);
+		\clearstatcache();
+		\OC::$APPSROOTS = [
+			$firstAppDir,
+			[
+			'path' => $path,
+			'url'  => $relativePath,
+			'writable' => true
+			]
+		];
+		\OC::$server->getAppManager()->clearAppsCache();
+
+		// Update app
+		$pathOfNewTestApp  = __DIR__ . '/../data/testapp2.zip';
+		$newTmp = \OC::$server->getTempManager()->getTemporaryFile('.zip');
+		\OC_Helper::copyr($pathOfNewTestApp, $newTmp);
+
+		$newData = [
+			'path' => $newTmp,
+			'source' => 'path',
+			'appdata' => [
+				'id' => 'testapp',
+				'level' => 100,
+			]
+		];
+		$updateResult = Installer::updateApp($newData);
+		$this->assertTrue($updateResult);
+		$newAppPath = \OC_App::getAppPath(self::$appid);
+
+		$this->assertNotEquals($oldAppPath, $newAppPath);
+		$this->assertStringStartsWith($path, $newAppPath);
+
+		\OC_Helper::rmdirr($path);
+		\OC::$APPSROOTS = $oldAppRoots;
+		\OC::$server->getAppManager()->clearAppsCache();
 	}
 }
