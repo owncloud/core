@@ -164,8 +164,10 @@ class Application extends App {
 			function ($c) use ($server) {
 				if ($server->getAppManager()->isEnabledForUser('files_sharing')) {
 					$sharingApp = new \OCA\Files_Sharing\AppInfo\Application();
+					$externalManager = $sharingApp->getContainer()->query('ExternalManager');
 					$externalMountProvider = $sharingApp->getContainer()->query('ExternalMountProvider');
 				} else {
+					$externalManager = null;
 					$externalMountProvider = null;
 				}
 
@@ -173,6 +175,7 @@ class Application extends App {
 					$server->getDatabaseConnection(),
 					$server->getUserManager(),
 					\OC\Files\Filesystem::getLoader(),
+					$externalManager,
 					$externalMountProvider
 				);
 			}
