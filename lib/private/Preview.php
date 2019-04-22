@@ -1348,6 +1348,8 @@ class Preview {
 			// "true" PostDelete
 			$preview->deleteAllPreviews($versionId);
 		}
+		unset(self::$deleteFileMapper[$path]);
+		unset(self::$deleteChildrenMapper[$node->getPath()]);
 	}
 
 	/**
