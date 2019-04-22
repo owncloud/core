@@ -23,9 +23,10 @@ namespace OCA\Files_Sharing\Tests;
 
 use OCA\Files_Sharing\Hooks;
 use OCA\Files_Sharing\SharedStorage;
+use OCP\Activity\IEvent;
+use OCP\Activity\IManager as ActivityManager;
 use OCP\Files\File;
 use OCP\Files\Folder;
-use OCP\Files\NotFoundException;
 use OCP\Files\Storage\IStorage;
 use OCP\IUser;
 use OCP\IUserSession;
@@ -74,6 +75,11 @@ class HooksTest extends \Test\TestCase {
 	private $notificationPublisher;
 
 	/**
+	 * @var ActivityManager | \PHPUnit\Framework\MockObject\MockObject
+	 */
+	private $activityManager;
+
+	/**
 	 * @var Hooks
 	 */
 	private $hooks;
@@ -84,6 +90,7 @@ class HooksTest extends \Test\TestCase {
 		$this->rootFolder = $this->createMock(IRootFolder::class);
 		$this->shareManager = $this->createMock(\OCP\Share\IManager::class);
 		$this->notificationPublisher = $this->createMock(NotificationPublisher::class);
+		$this->activityManager = $this->createMock(ActivityManager::class);
 		$this->userSession = $this->createMock(IUserSession::class);
 
 		$this->hooks = new Hooks(
@@ -92,6 +99,7 @@ class HooksTest extends \Test\TestCase {
 			$this->eventDispatcher,
 			$this->shareManager,
 			$this->notificationPublisher,
+			$this->activityManager,
 			$this->userSession
 		);
 		$this->hooks->registerListeners();
@@ -338,5 +346,35 @@ class HooksTest extends \Test\TestCase {
 		// It should run as this would restrict e.g. share links otherwise
 		$this->assertTrue($event->getArgument('run'));
 		$this->assertFalse($event->hasArgument('errorMessage'));
+	}
+
+	public function testPublishShareSelfUnshareEvent() {
+		$activityEvent = $this->createMock(IEvent::class);
+		$activityEvent->expects($this->once())
+			->method('setApp')
+			->willReturn($activityEvent);
+		$activityEvent->expects($this->once())
+			->method('setType')
+			->willReturn($activityEvent);
+		$activityEvent->expects($this->once())
+			->method('setAffectedUser')
+			->willReturn($activityEvent);
+		$activityEvent->expects($this->once())
+			->method('setSubject')
+			->willReturn($activityEvent);
+
+		$this->activityManager->expects($this->once())
+			->method('generateEvent')
+			->willReturn($activityEvent);
+		$this->activityManager->expects($this->once())
+			->method('publish')
+			->with($activityEvent);
+
+		$event = new GenericEvent(null, [
+			'recipientPath' => 'testfile.pdf',
+			'shareRecipient' => 'recipient_user',
+			'shareOwner' => 'owner_user',
+		]);
+		$this->eventDispatcher->dispatch('fromself.unshare', $event);
 	}
 }
