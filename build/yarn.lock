@@ -46,10 +46,10 @@
   version "2.3.0"
   resolved "https://codeload.github.com/jakearchibald/es6-promise/tar.gz/d3959b5c4c239b604bf95b737a0243ca6e94aa7e"
 
-"@bower_components/handlebars@components/handlebars.js#v4.1.1":
-  version "4.1.1"
-  uid "5fbed547d30751b0e5a871de241353bbc013aefb"
-  resolved "https://codeload.github.com/components/handlebars.js/tar.gz/5fbed547d30751b0e5a871de241353bbc013aefb"
+"@bower_components/handlebars@components/handlebars.js#v4.1.2":
+  version "4.1.2"
+  uid "5e52d62e36bc94561cc9b3acdf27ef878df1a5ab"
+  resolved "https://codeload.github.com/components/handlebars.js/tar.gz/5e52d62e36bc94561cc9b3acdf27ef878df1a5ab"
 
 "@bower_components/jcrop@tapmodo/Jcrop#0.9.12":
   version "0.0.0"
