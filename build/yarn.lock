@@ -1559,9 +1559,9 @@ karma-phantomjs-launcher@*:
     lodash "^4.0.1"
     phantomjs-prebuilt "^2.1.7"
 
-karma@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/karma/-/karma-4.0.1.tgz#2581d6caa0d4cd28b65131561b47bad6d5478773"
+karma@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/karma/-/karma-4.1.0.tgz#d07387c9743a575b40faf73e8a3eb5421c2193e1"
   dependencies:
     bluebird "^3.3.0"
     body-parser "^1.16.1"
