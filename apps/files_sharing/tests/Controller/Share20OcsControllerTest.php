@@ -906,7 +906,7 @@ class Share20OcsControllerTest extends TestCase {
 				->with('valid-path')
 				->willReturn($path);
 
-		$this->userManager->method('userExists')->with('validUser')->willReturn(true);
+		$this->userManager->method('userExists')->with('validuser')->willReturn(true);
 
 		$path->expects($this->once())
 			->method('lock')
@@ -924,7 +924,7 @@ class Share20OcsControllerTest extends TestCase {
 						~\OCP\Constants::PERMISSION_CREATE
 					) &&
 					$share->getShareType() === Share::SHARE_TYPE_USER &&
-					$share->getSharedWith() === 'validUser' &&
+					$share->getSharedWith() === 'validuser' &&
 					$share->getSharedBy() === 'currentUser';
 			}))
 			->will($this->returnArgument(0));
@@ -1590,7 +1590,7 @@ class Share20OcsControllerTest extends TestCase {
 			->with('valid-path')
 			->willReturn($path);
 
-		$this->userManager->method('userExists')->with('validUser')->willReturn(true);
+		$this->userManager->method('userExists')->with('validuser')->willReturn(true);
 
 		$this->shareManager
 			->expects($this->once())
