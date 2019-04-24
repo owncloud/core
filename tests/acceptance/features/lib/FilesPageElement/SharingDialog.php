@@ -198,7 +198,7 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
-	private function shareWithUserOrGroup(
+	public function shareWithUserOrGroup(
 		$nameToType, $nameToMatch, Session $session, $maxRetries = 5, $quiet = false
 	) {
 		$userFound = false;
