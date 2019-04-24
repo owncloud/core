@@ -100,6 +100,38 @@ class Helper {
 		return $result;
 	}
 
+	/**
+	 * Get a Generator object to traverse the trash files. This function behaves the same way as the
+	 * `getTrashFiles` function, and accepts the same parameters, but returns a generator object instead of
+	 * a full array. Note that the order might be slightly different because this function sorts the elements
+	 * by name by default, and the sorting is done in the DB.
+	 *
+	 * NOTE: the function relies on another generator which uses a DB cursor. The DB cursor is expected to be
+	 * closed automatically after traversing all the generated elements. If you don't want to traverse all the elements,
+	 * send a "stop" string to the generator in order to give a chance to close the DB cursor and free memory
+	 * ```
+	 * $generator = getTrashFilesGenerator(....)
+	 * foreach ($generator as $element) {
+	 *   // do something
+	 *   break;
+	 * }
+	 * $generator->send('stop');
+	 * ```
+	 * ```
+	 * $generator = getTrashFilesGenerator(....)
+	 * foreach ($generator as $element) {
+	 *   // traverse all the elements
+	 * }
+	 * // no need to $generator->send('stop')
+	 * ```
+	 *
+	 * @param string $dir path to the directory inside the trashbin
+	 * or empty to retrieve the root of the trashbin
+	 * @param string $user
+	 * @param string $sortAttribute attribute to sort on (default to "name")
+	 * @param bool $sortDescending true for descending sort, false otherwise
+	 * @return Generator a generator to traverse the trash files, getting \OCP\Files\FileInfo objects
+	 */
 	public static function getTrashFilesGenerator($dir, $user, $sortAttribute = 'name', $sortDescending = false) {
 		$timestamp = null;
 		$view = new \OC\Files\View('/' . $user . '/files_trashbin/files');
