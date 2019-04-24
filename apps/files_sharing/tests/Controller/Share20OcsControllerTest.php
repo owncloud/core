@@ -164,6 +164,20 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function tearDown() {
+		$this->shareManager = null;
+		$this->groupManager = null;
+		$this->userManager = null;
+		$this->request = null;
+		$this->rootFolder = null;
+		$this->config = null;
+		$this->urlGenerator = null;
+		$this->currentUser = null;
+		$this->userSession = null;
+		$this->ocs = null;
+		$this->l = null;
+		$this->notificationPublisher = null;
+		$this->eventDispatcher = null;
+		$this->sharingBlacklist = null;
 		parent::tearDown();
 	}
 
