@@ -936,6 +936,66 @@ class Share20OcsControllerTest extends TestCase {
 		$this->assertEquals($expected->getData(), $result->getData());
 	}
 
+	public function testLowerCaseShareWithCreateShare() {
+		$share = $this->newShare();
+		$this->shareManager->method('newShare')->willReturn($share);
+
+		$share->setShareOwner('shareOwner');
+
+		$ocs = $this->mockFormatShare();
+
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['path', null, 'valid-path'],
+				['permissions', null, \OCP\Constants::PERMISSION_SHARE],
+				['shareType', $this->any(), Share::SHARE_TYPE_USER],
+				['shareWith', null, 'fOoBar@TesT.COm'],
+			]));
+
+		$userFolder = $this->createMock(Folder::class);
+		$this->rootFolder->expects($this->once())
+			->method('getUserFolder')
+			->with('currentUser')
+			->willReturn($userFolder);
+
+		$path = $this->createMock(File::class);
+		$storage = $this->createMock(IStorage::class);
+		$storage->method('instanceOfStorage')
+			->with(Storage::class)
+			->willReturn(false);
+		$path->method('getStorage')->willReturn($storage);
+		$userFolder->expects($this->once())
+			->method('get')
+			->with('valid-path')
+			->willReturn($path);
+
+		$this->userManager->method('userExists')->with('foobar@test.com')->willReturn(true);
+
+		$path->expects($this->once())
+			->method('lock')
+			->with(ILockingProvider::LOCK_SHARED);
+		$path->expects($this->once())
+			->method('unlock')
+			->with(ILockingProvider::LOCK_SHARED);
+
+		$this->shareManager->method('createShare')
+			->with($this->callback(function (\OCP\Share\IShare $share) use ($path) {
+				return $share->getNode() === $path &&
+					$share->getPermissions() === (
+						\OCP\Constants::PERMISSION_ALL &
+						~\OCP\Constants::PERMISSION_DELETE &
+						~\OCP\Constants::PERMISSION_CREATE
+					) &&
+					$share->getShareType() === Share::SHARE_TYPE_USER &&
+					$share->getSharedWith() === 'foobar@test.com' &&
+					$share->getSharedBy() === 'currentUser';
+			}))
+			->will($this->returnArgument(0));
+
+		$ocs->createShare();
+	}
+
 	public function testCreateShareGroupNoValidShareWith() {
 		$share = $this->newShare();
 		$this->shareManager->method('newShare')->willReturn($share);
@@ -3627,65 +3687,5 @@ class Share20OcsControllerTest extends TestCase {
 		$result = $this->ocs->$method(123);
 
 		$this->assertEquals($expected, $result);
-	}
-
-	public function testLowerCaseShareWithCreateShare() {
-		$share = $this->newShare();
-		$this->shareManager->method('newShare')->willReturn($share);
-
-		$share->setShareOwner('shareOwner');
-
-		$ocs = $this->mockFormatShare();
-
-		$this->request
-			->method('getParam')
-			->will($this->returnValueMap([
-				['path', null, 'valid-path'],
-				['permissions', null, \OCP\Constants::PERMISSION_SHARE],
-				['shareType', $this->any(), Share::SHARE_TYPE_USER],
-				['shareWith', null, 'fOoBar@TesT.COm'],
-			]));
-
-		$userFolder = $this->createMock(Folder::class);
-		$this->rootFolder->expects($this->once())
-			->method('getUserFolder')
-			->with('currentUser')
-			->willReturn($userFolder);
-
-		$path = $this->createMock(File::class);
-		$storage = $this->createMock(IStorage::class);
-		$storage->method('instanceOfStorage')
-			->with(Storage::class)
-			->willReturn(false);
-		$path->method('getStorage')->willReturn($storage);
-		$userFolder->expects($this->once())
-			->method('get')
-			->with('valid-path')
-			->willReturn($path);
-
-		$this->userManager->method('userExists')->with('foobar@test.com')->willReturn(true);
-
-		$path->expects($this->once())
-			->method('lock')
-			->with(ILockingProvider::LOCK_SHARED);
-		$path->expects($this->once())
-			->method('unlock')
-			->with(ILockingProvider::LOCK_SHARED);
-
-		$this->shareManager->method('createShare')
-			->with($this->callback(function (\OCP\Share\IShare $share) use ($path) {
-				return $share->getNode() === $path &&
-					$share->getPermissions() === (
-						\OCP\Constants::PERMISSION_ALL &
-						~\OCP\Constants::PERMISSION_DELETE &
-						~\OCP\Constants::PERMISSION_CREATE
-					) &&
-					$share->getShareType() === Share::SHARE_TYPE_USER &&
-					$share->getSharedWith() === 'foobar@test.com' &&
-					$share->getSharedBy() === 'currentUser';
-			}))
-			->will($this->returnArgument(0));
-
-		$ocs->createShare();
 	}
 }
