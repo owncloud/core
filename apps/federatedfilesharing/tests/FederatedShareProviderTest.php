@@ -24,11 +24,14 @@
  */
 namespace OCA\FederatedFileSharing\Tests;
 
+use Doctrine\DBAL\Driver\Statement;
 use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\Notifications;
 use OCA\FederatedFileSharing\TokenHandler;
+use OCP\DB\QueryBuilder\IExpressionBuilder;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\IRootFolder;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -944,5 +947,39 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			[false, 'no', 'yes', true, false],
 			[false, 'yes', 'yes', true, true],
 		];
+	}
+
+	public function testGetRemoteId() {
+		$exprBuilder = $this->createMock(IExpressionBuilder::class);
+		$statementMock = $this->createMock(Statement::class);
+		$statementMock->method('fetch')->willReturn(['remote_id' => 'a0b0c0']);
+
+		$qbMock = $this->createMock(IQueryBuilder::class);
+		$qbMock->method('select')->willReturnSelf();
+		$qbMock->method('from')->willReturnSelf();
+		$qbMock->method('where')->willReturnSelf();
+		$qbMock->method('expr')->willReturn($exprBuilder);
+		$qbMock->method('execute')->willReturn($statementMock);
+		$connectionMock = $this->createMock(IDBConnection::class);
+		$connectionMock->method('getQueryBuilder')->willReturn($qbMock);
+
+		$shareMock = $this->createMock(IShare::class);
+		$this->provider = new FederatedShareProvider(
+			$connectionMock,
+			$this->eventDispatcher,
+			$this->addressHandler,
+			$this->notifications,
+			$this->tokenHandler,
+			$this->l,
+			$this->logger,
+			$this->rootFolder,
+			$this->config,
+			$this->userManager
+		);
+
+		$this->assertEquals(
+			'a0b0c0',
+			$this->provider->getRemoteId($shareMock)
+		);
 	}
 }
