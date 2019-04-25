@@ -795,7 +795,7 @@ matrix:
 
   # files_primary_s3
 
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.2
       TEST_SUITE: phpunit
       COVERAGE: true
       DB_TYPE: sqlite
