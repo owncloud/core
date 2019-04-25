@@ -22,9 +22,12 @@
 namespace OCA\FederatedFileSharing\Tests\Command;
 
 use Doctrine\DBAL\Driver\Statement;
+use OC\User\NoUserException;
 use OCA\FederatedFileSharing\Tests\TestCase;
 use OCA\FederatedFileSharing\Command\PollIncomingShares;
+use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\External\MountProvider;
+use OCA\Files_Sharing\External\Storage;
 use OCP\DB\QueryBuilder\IExpressionBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Storage\IStorageFactory;
@@ -32,6 +35,7 @@ use OCP\Files\StorageNotAvailableException;
 use OCP\IDBConnection;
 use OCP\IUser;
 use OCP\IUserManager;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -44,25 +48,31 @@ class PollIncomingSharesTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
-	/** @var IDBConnection | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IDBConnection | MockObject */
 	private $dbConnection;
 
-	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IUserManager | MockObject */
 	private $userManager;
 
-	/** @var MountProvider | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var MountProvider | MockObject */
 	private $externalMountProvider;
 
-	/** @var IStorageFactory | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IStorageFactory | MockObject */
 	private $loader;
+
+	/**
+	 * @var Manager | MockObject
+	 */
+	private $externalManager;
 
 	protected function setUp() {
 		parent::setUp();
 		$this->dbConnection = $this->createMock(IDBConnection::class);
 		$this->userManager = $this->createMock(IUserManager::class);
-		$this->externalMountProvider = $this->createMock(MountProvider::class);
 		$this->loader = $this->createMock(IStorageFactory::class);
-		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->loader, $this->externalMountProvider);
+		$this->externalManager = $this->createMock(Manager::class);
+		$this->externalMountProvider = $this->createMock(MountProvider::class);
+		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->loader, $this->externalManager, $this->externalMountProvider);
 		$this->commandTester = new CommandTester($command);
 	}
 
@@ -92,7 +102,7 @@ class PollIncomingSharesTest extends TestCase {
 	}
 
 	public function testWithFilesSharingDisabled() {
-		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->loader, null);
+		$command = new PollIncomingShares($this->dbConnection, $this->userManager, $this->loader, $this->externalManager, null);
 		$this->commandTester = new CommandTester($command);
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
@@ -103,8 +113,13 @@ class PollIncomingSharesTest extends TestCase {
 		$uid = 'foo';
 		$exprBuilder = $this->createMock(IExpressionBuilder::class);
 		$statementMock = $this->createMock(Statement::class);
-		$statementMock->method('fetch')->willReturnOnConsecutiveCalls(['user' => $uid], false);
+		$statementMock->method('fetch')->willReturnOnConsecutiveCalls(
+			['user' => $uid],
+			['id' => 50, 'remote' => 'example.org'],
+			false
+		);
 		$qbMock = $this->createMock(IQueryBuilder::class);
+		$qbMock->method('select')->willReturnSelf();
 		$qbMock->method('selectDistinct')->willReturnSelf();
 		$qbMock->method('from')->willReturnSelf();
 		$qbMock->method('where')->willReturnSelf();
@@ -114,8 +129,8 @@ class PollIncomingSharesTest extends TestCase {
 		$userMock = $this->createMock(IUser::class);
 		$this->userManager->expects($this->once())->method('get')
 			->with($uid)->willReturn($userMock);
-		
-		$storage = $this->createMock(\OCA\Files_Sharing\External\Storage::class);
+
+		$storage = $this->createMock(Storage::class);
 		$storage->method('hasUpdated')->willThrowException(new StorageNotAvailableException('Ooops'));
 		$storage->method('getRemote')->willReturn('example.org');
 
@@ -129,7 +144,71 @@ class PollIncomingSharesTest extends TestCase {
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$this->assertContains(
-			'Skipping external share with id "0" from remote "example.org". Reason: "Ooops"',
+			'Skipping external share with id "50" from remote "example.org". Reason: "Ooops"',
+			$output
+		);
+	}
+
+	public function testNotExistingUser() {
+		$uid = 'foo';
+		$exprBuilder = $this->createMock(IExpressionBuilder::class);
+		$statementMock = $this->createMock(Statement::class);
+		$statementMock->method('fetch')->willReturnOnConsecutiveCalls(['user' => $uid], false);
+		$qbMock = $this->createMock(IQueryBuilder::class);
+		$qbMock->method('selectDistinct')->willReturnSelf();
+		$qbMock->method('from')->willReturnSelf();
+		$qbMock->method('where')->willReturnSelf();
+		$qbMock->method('expr')->willReturn($exprBuilder);
+		$qbMock->method('execute')->willReturn($statementMock);
+
+		$this->externalMountProvider->expects($this->never())->method('getMountsForUser');
+
+		$this->dbConnection->method('getQueryBuilder')->willReturn($qbMock);
+		$this->commandTester->execute([]);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains(
+			'Skipping user "foo". Reason: user manager was unable to resolve the uid into the user object',
+			$output
+		);
+	}
+
+	public function testPollingUnsharedMount() {
+		$uid = 'foo';
+		$exprBuilder = $this->createMock(IExpressionBuilder::class);
+		$statementMock = $this->createMock(Statement::class);
+		$statementMock->method('fetch')->willReturnOnConsecutiveCalls(
+			['user' => $uid],
+			['id' => 50, 'remote' => 'example.org'],
+			false
+		);
+		$qbMock = $this->createMock(IQueryBuilder::class);
+		$qbMock->method('select')->willReturnSelf();
+		$qbMock->method('selectDistinct')->willReturnSelf();
+		$qbMock->method('from')->willReturnSelf();
+		$qbMock->method('where')->willReturnSelf();
+		$qbMock->method('expr')->willReturn($exprBuilder);
+		$qbMock->method('execute')->willReturn($statementMock);
+
+		$userMock = $this->createMock(IUser::class);
+		$this->userManager->expects($this->once())->method('get')
+			->with($uid)->willReturn($userMock);
+
+		$this->externalManager->expects($this->once())->method('removeShare');
+
+		$storage = $this->createMock(Storage::class);
+		$storage->method('hasUpdated')->willThrowException(new NoUserException('Ooops'));
+
+		$mount = $this->createMock(\OCA\Files_Sharing\External\Mount::class);
+		$mount->method('getStorage')->willReturn($storage);
+		$mount->method('getMountPoint')->willReturn("/$uid/files/point");
+		$this->externalMountProvider->expects($this->once())->method('getMountsForUser')
+			->willReturn([$mount]);
+
+		$this->dbConnection->method('getQueryBuilder')->willReturn($qbMock);
+		$this->commandTester->execute([]);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains(
+			'Remote "example.org" reports that external share with id "50" no longer exists. Removing it..',
 			$output
 		);
 	}
