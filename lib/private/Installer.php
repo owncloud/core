@@ -225,16 +225,18 @@ class Installer {
 		$info = self::checkAppsIntegrity($info, $extractDir, $path, $isShipped);
 
 		$currentDir = OC_App::getAppPath($info['id']);
+		if (\is_dir("$currentDir/.git")) {
+			throw new AppAlreadyInstalledException("App <{$info['id']}> is a git clone - it will not be updated.");
+		}
+
 		$basedir  = OC_App::getInstallPath();
 		$basedir .= '/';
 		$basedir .= $info['id'];
 
-		if ($currentDir !== false && \is_writable($currentDir)) {
+		if ($currentDir !== false && OC_App::isAppDirWritable($info['id'])) {
 			$basedir = $currentDir;
 		}
-		if (\is_dir("$basedir/.git")) {
-			throw new AppAlreadyInstalledException("App <{$info['id']}> is a git clone - it will not be updated.");
-		}
+
 		if (\is_dir($basedir)) {
 			OC_Helper::rmdirr($basedir);
 		}

@@ -529,6 +529,20 @@ class OC_App {
 	 */
 	public static function isAppDirWritable($appId) {
 		$path = self::getAppPath($appId);
+		// Check if the parent directory is marked as writable in config.php
+		if ($path !== false) {
+			$appDir = \substr($path, 0, -\strlen("/$appId"));
+			foreach (OC::$APPSROOTS as $dir) {
+				if ($dir['path'] !== $appDir) {
+					continue;
+				}
+				if (!isset($dir['writable'])
+					|| $dir['writable'] !== true
+				) {
+					return false;
+				}
+			}
+		}
 		return ($path !== false) ? \is_writable($path) : false;
 	}
 
@@ -894,6 +908,7 @@ class OC_App {
 	 * @throws \OC\NeedsUpdateException
 	 */
 	public static function updateApp($appId) {
+		\OC::$server->getAppManager()->clearAppsCache();
 		$appPath = self::getAppPath($appId);
 		if ($appPath === false) {
 			return false;
@@ -910,7 +925,6 @@ class OC_App {
 		}
 		self::executeRepairSteps($appId, $appData['repair-steps']['post-migration']);
 		self::setupLiveMigrations($appId, $appData['repair-steps']['live-migration']);
-		\OC::$server->getAppManager()->clearAppsCache();
 		// run upgrade code
 		if (\file_exists($appPath . '/appinfo/update.php')) {
 			self::loadApp($appId, false);
