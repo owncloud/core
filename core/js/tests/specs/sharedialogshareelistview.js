@@ -45,14 +45,14 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			sharePermissions: 31
 		});
 
-		var attributes = {
+		var properties = {
 			itemType: fileInfoModel.isDirectory() ? 'folder' : 'file',
 			itemSource: fileInfoModel.get('id'),
 			possiblePermissions: 31,
 			permissions: 31
 		};
 
-		shareModel = new OC.Share.ShareItemModel(attributes, {
+		shareModel = new OC.Share.ShareItemModel(properties, {
 			configModel: configModel,
 			fileInfoModel: fileInfoModel
 		});
@@ -91,7 +91,8 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 
 	describe('rendering', function() {
 		it('Renders shares', function() {
-			shareModel.set('shares', [{
+			shareModel.set('shares', [
+				{
 					id: 100,
 					item_source: '123',
 					permissions: 1,
@@ -99,10 +100,12 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 					share_with: 'user1',
 					share_with_displayname: 'User One',
 					share_with_additional_info: 'user1@example.com'
-				}, {
+				},
+				{
 					id: 101,
 					item_source: '123',
 					permissions: 1,
+					attributes: [],
 					share_type: OC.Share.SHARE_TYPE_GROUP,
 					share_with: 'group1',
 					share_with_displayname: 'Group One'
@@ -122,9 +125,39 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect($li.find('.username').text()).toEqual('Group One (group)');
 			expect($li.find('.user-additional-info').length).toEqual(0);
 		});
+
+		it('renders share attribute correctly', function () {
+			shareModel.registerShareAttribute({
+				scope: "test",
+				key: "test-attribute",
+				default: true,
+				label: "test attribute",
+				shareType : [],
+				incompatiblePermissions: [],
+				requiredPermissions: [],
+				incompatibleAttributes: []
+			});
+
+			shareModel.set('shares', [{
+				id: 100,
+				item_source: '123',
+				permissions: 1,
+				attributes: [{ scope: 'test', key: 'test-attribute', enabled: true }],
+				share_type: OC.Share.SHARE_TYPE_USER,
+				share_with: 'user1',
+				share_with_displayname: 'User One'
+			}]);
+
+			listView.render();
+			var $li = listView.$('li').eq(0);
+			var input = $li.find("input[name='test-attribute']");
+			expect(input.is(':checked')).toEqual(true);
+			expect(input.labels().text()).toEqual('test attribute');
+		});
 	});
 
 	describe('Manages checkbox events correctly', function () {
+
 		it('Checks cruds boxes when edit box checked', function () {
 			shareModel.set('shares', [{
 				id: 100,
@@ -196,6 +229,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(listView.$el.find("input[name='mailNotification']").length).toEqual(0);
 
 		});
+
 		it('displays error if email notification not sent', function () {
 			var notifStub = sinon.stub(OC.dialogs, 'alert');
 			shareModel.set('shares', [{
@@ -222,6 +256,139 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(listView.$el.find("input[name='mailNotification']").hasClass('hidden')).toEqual(false);
 		});
 
+		it('share attribute can be unchecked', function () {
+			shareModel.registerShareAttribute({
+				scope: "test",
+				key: "test-attribute",
+				default: true,
+				label: "test attribute",
+				shareType : [],
+				incompatiblePermissions: [],
+				requiredPermissions: [],
+				incompatibleAttributes: []
+			});
+
+			shareModel.set('shares', [{
+				id: 100,
+				item_source: '123',
+				permissions: 1,
+				attributes: [{ scope: 'test', key: 'test-attribute', enabled: true }],
+				share_type: OC.Share.SHARE_TYPE_USER,
+				share_with: 'user1',
+				share_with_displayname: 'User One'
+			}]);
+
+			listView.render();
+			listView.$el.find("input[name='test-attribute']").click();
+			expect(listView.$el.find("input[name='test-attribute']").is(':checked')).toEqual(false);
+			expect(updateShareStub.calledOnce).toEqual(true);
+		});
+
+		it('share attribute checkbox enabled by checking required permission', function () {
+			shareModel.registerShareAttribute({
+				scope: "test",
+				key: "test-attribute",
+				default: true,
+				label: "test attribute",
+				shareType : [],
+				incompatiblePermissions: [],
+				requiredPermissions: [ OC.PERMISSION_UPDATE ],
+				incompatibleAttributes: []
+			});
+
+			shareModel.set('shares', [{
+				id: 100,
+				item_source: '123',
+				permissions: 1,
+				attributes: [],
+				share_type: OC.Share.SHARE_TYPE_USER,
+				share_with: 'user1',
+				share_with_displayname: 'User One'
+			}]);
+
+			listView.render();
+
+			expect(listView.$el.find("input[name='test-attribute']").length > 0).toEqual(false);
+
+			updateShareStub.callsFake(function() {
+				// Updated share permission should now enable the permission
+				shareModel.set('shares', [{
+					id: 100,
+					item_source: '123',
+					permissions: 1,
+					attributes: [{ scope: 'test', key: 'test-attribute', enabled: true }],
+					share_type: OC.Share.SHARE_TYPE_USER,
+					share_with: 'user1',
+					share_with_displayname: 'User One'
+				}]);
+			});
+
+			// Click on update should cause attribute test-attribute
+			// to appear as requiredPermissions got satisfied
+			listView.$el.find("input[name='update']").click();
+			expect(listView.$el.find("input[name='test-attribute']").is(':checked')).toEqual(true);
+			expect(updateShareStub.calledOnce).toEqual(true);
+		});
+
+		it('share attribute checkbox enabled by unchecking incompatible attribute', function () {
+			shareModel.registerShareAttribute({
+				scope: "test",
+				key: "incompatible-attribute",
+				default: true,
+				label: "incompatible attribute",
+				shareType : [],
+				incompatiblePermissions: [],
+				requiredPermissions: [ ],
+				incompatibleAttributes: []
+			});
+			shareModel.registerShareAttribute({
+				scope: "test",
+				key: "test-attribute",
+				default: true,
+				label: "test attribute",
+				shareType : [],
+				incompatiblePermissions: [],
+				requiredPermissions: [ ],
+				incompatibleAttributes: [{ scope: 'test', key: 'incompatible-attribute', enabled: true }]
+			});
+
+			shareModel.set('shares', [{
+				id: 100,
+				item_source: '123',
+				permissions: 1,
+				attributes: [{ scope: 'test', key: 'incompatible-attribute', enabled: true }],
+				share_type: OC.Share.SHARE_TYPE_USER,
+				share_with: 'user1',
+				share_with_displayname: 'User One'
+			}]);
+
+			listView.render();
+
+			expect(listView.$el.find("input[name='incompatible-attribute']").is(':checked')).toEqual(true);
+			expect(listView.$el.find("input[name='test-attribute']").length > 0).toEqual(false);
+
+			updateShareStub.callsFake(function() {
+				// Updated share permission should now enable the permission
+				shareModel.set('shares', [{
+					id: 100,
+					item_source: '123',
+					permissions: 1,
+					attributes: [
+						{ scope: 'test', key: 'incompatible-attribute', enabled: false },
+						{ scope: 'test', key: 'test-attribute', enabled: true }
+					],
+					share_type: OC.Share.SHARE_TYPE_USER,
+					share_with: 'user1',
+					share_with_displayname: 'User One'
+				}]);
+			});
+
+			listView.$el.find("input[name='incompatible-attribute']").click();
+
+			expect(listView.$el.find("input[name='incompatible-attribute']").is(':checked')).toEqual(false);
+			expect(listView.$el.find("input[name='test-attribute']").is(':checked')).toEqual(true);
+			expect(updateShareStub.calledOnce).toEqual(true);
+		});
 	});
 
 });

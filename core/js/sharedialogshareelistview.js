@@ -137,19 +137,19 @@
 			attributes.map(function(attribute) {
 				// Check if the share attribute set for this file is still in
 				// registered share attributes and get its label
-				var label = model.getRegisteredShareAttributeLabel(
+				var regAttr = model.getRegisteredShareAttribute(
 					attribute.scope,
 					attribute.key
 				);
 
-				if (label) {
+				if (regAttr && regAttr.label) {
 					list.push({
 						cid: cid,
 						shareWith: shareWith,
 						enabled: attribute.enabled,
 						scope: attribute.scope,
 						name: attribute.key,
-						label: label
+						label: regAttr.label
 					});
 				} else {
 					OC.Notification.showTemporary(t('core', 'Share with ' +
