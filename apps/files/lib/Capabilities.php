@@ -58,6 +58,7 @@ class Capabilities implements ICapability {
 			],
 			'files' => [
 				'privateLinks' => true,
+				'privateLinksDetailsParam' => true,
 				'bigfilechunking' => true,
 				'blacklisted_files' => $this->config->getSystemValue('blacklisted_files', ['.htaccess']),
 			],
