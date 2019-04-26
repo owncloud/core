@@ -50,6 +50,7 @@ class Account extends Entity {
 	const STATE_ENABLED = 1;
 	const STATE_DISABLED = 2;
 	const STATE_DELETED = 3;
+	const STATE_AUTODISABLED = 4;
 
 	protected $email;
 	protected $userId;

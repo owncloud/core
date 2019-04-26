@@ -51,6 +51,8 @@ class SyncService {
 	private $logger;
 	/** @var AccountMapper */
 	private $mapper;
+	/** @var SyncLimiter */
+	private $syncLimiter;
 
 	/**
 	 * SyncService constructor.
@@ -59,12 +61,16 @@ class SyncService {
 	 * @param ILogger $logger
 	 * @param AccountMapper $mapper
 	 */
-	public function __construct(IConfig $config,
-								ILogger $logger,
-								AccountMapper $mapper) {
+	public function __construct(
+		IConfig $config,
+		ILogger $logger,
+		AccountMapper $mapper,
+		SyncLimiter $syncLimiter
+	) {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->mapper = $mapper;
+		$this->syncLimiter = $syncLimiter;
 	}
 
 	/**
@@ -126,7 +132,7 @@ class SyncService {
 		// update existing and insert new users
 		foreach ($userIds as $uid) {
 			try {
-				$account = $this->createOrSyncAccount($uid, $backend);
+				$account = $this->internalCreateOrSyncAccount($uid, $backend);
 				$uid = $account->getUserId(); // get correct case
 				// clean the user's preferences
 				$this->cleanPreferences($uid);
@@ -140,6 +146,7 @@ class SyncService {
 			// call the callback
 			$callback($uid);
 		}
+		$this->syncLimiter->limitEnabledUsers();
 	}
 
 	/**
@@ -359,6 +366,12 @@ class SyncService {
 	 * that doesnt match an existing account
 	 */
 	public function createOrSyncAccount($uid, UserInterface $backend) {
+		$account = $this->internalCreateOrSyncAccount($uid, $backend);
+		$this->syncLimiter->limitEnabledUsers();
+		return $account;
+	}
+
+	private function internalCreateOrSyncAccount($uid, UserInterface $backend) {
 		// Try to find the account based on the uid
 		try {
 			$account = $this->mapper->getByUid($uid);

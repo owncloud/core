@@ -24,6 +24,7 @@
 namespace OC\User;
 
 use OC\DB\QueryBuilder\Literal;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\Mapper;
@@ -218,6 +219,37 @@ class AccountMapper extends Mapper {
 		return (int) $data['count'];
 	}
 
+	/**
+	 * Get the user count for a specific backend splitted by the different account states
+	 * This means that you'll get the number of enabled users in the backend, the number of
+	 * disabled users, and so on.
+	 * The function returns an array [state => user_count]:
+	 * ```
+	 * $userCount = getUserCountForBackendGroupByState('myBackend');
+	 * $enabledUsersInBackend = $userCount[Account::STATE_ENABLED];
+	 * $disabledUsersInBackend = $userCount[Account::STATE_DISABLED];
+	 * ```
+	 * @param string $backendName the name of the backend to be checked
+	 * @return array [state => user_count]
+	 */
+	public function getUserCountForBackendGroupByState($backendName) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(['state', $qb->createFunction('count(*) as `count`')])
+			->from($this->getTableName())
+			->where($qb->expr()->eq('backend', $qb->createNamedParameter($backendName)))
+			->groupBy('state');
+
+		$result = $qb->execute();
+		$data = $result->fetchAll();  // there are only 5 different states at the moment
+		$result->closeCursor();
+
+		$returnedValue = [];
+		foreach ($data as $row) {
+			$returnedValue[$row['state']] = $row['count'];
+		}
+		return $returnedValue;
+	}
+
 	public function callForAllUsers($callback, $search, $onlySeen) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(['*'])
@@ -273,5 +305,105 @@ class AccountMapper extends Mapper {
 		$rows = $stmt->fetchAll(\PDO::FETCH_COLUMN);
 		$stmt->closeCursor();
 		return $rows;
+	}
+
+	/**
+	 * Ensure that there is only $maxUsers users enabled in the backend. If there are more
+	 * enabled users than the limit, some of the enabled users will be set as "auto_disabled".
+	 * Only the first $maxUsers sorted by id that are enabled will remain enabled after this function
+	 * finishes. Note that users in different states, such as "disabled" will be ignored
+	 *
+	 * The expected query to be executed is as follow:
+	 * ```
+	 * update
+	 *   oc_accounts t1
+	 *   inner join
+	 *   (
+	 *     select * from oc_accounts where backend = 'OCA\\User_LDAP\\User_Proxy' and state = 1 and id > (
+	 *       select id from oc_accounts where backend = 'OCA\\User_LDAP\\User_Proxy' and state = 1 order by id limit 50,1
+	 *     )
+	 *   ) t2
+	 *   on (t1.id = t2.id)
+	 *   set t1.state = 4;
+	 * ```
+	 *
+	 * Note that the "original" query should be:
+	 * ```
+	 * update
+	 *   oc_accounts
+	 *   set state = 4
+	 *   where backend = 'OCA\\User_LDAP\\User_Proxy' and id >= (
+	 *     select id from oc_accounts
+	 *     where backend = 'OCA\\User\\Database' and state = 1
+	 *     order by id asc limit 50,1
+	 *   );
+	 * but MySQL is giving problems: ERROR 1093 (HY000)
+	 * ```
+	 * @param string $backendName the backend name
+	 * @param int $maxUsers the maximum number of enabled users that the backend will have
+	 * @return int the number of affected rows by the update operation
+	 */
+	public function ensureMaximumEnabledUsersForBackend($backendName, $maxUsers) {
+		$tableName = $this->getTableName();
+
+		$selectQuery = $this->db->getQueryBuilder();
+		$selectQuery->select('id')
+			->from($tableName)
+			->where($selectQuery->expr()->eq('backend', $selectQuery->createNamedParameter($backendName, IQueryBuilder::PARAM_STR, ':backendName')))
+			->andWhere($selectQuery->expr()->eq('state', $selectQuery->createNamedParameter(Account::STATE_ENABLED, IQueryBuilder::PARAM_INT, ':oldState')))
+			->orderBy('id')
+			->setFirstResult($maxUsers)
+			->setMaxResults(1);
+
+		$selectJoinedTable = $this->db->getQueryBuilder();
+		$selectJoinedTable->select('*')
+			->from($tableName)
+			->where($selectJoinedTable->expr()->eq('backend', $selectJoinedTable->createNamedParameter($backendName, IQueryBuilder::PARAM_STR, ':backendName')))
+			->andWhere($selectJoinedTable->expr()->eq('state', $selectJoinedTable->createNamedParameter(Account::STATE_ENABLED, IQueryBuilder::PARAM_INT, ':oldState')))
+			->andWhere($selectJoinedTable->expr()->gte('id', $selectJoinedTable->createFunction("({$selectQuery->getSQL()})")));
+
+		/*
+		 * FIXME
+		 * Following query can't be used by the queryBuilder because the table in the innerJoin
+		 * can't be a temporary one. We need to workaround that for now.
+		 *
+		 * $updateQuery = $this->db->getQueryBuilder();
+		 * $updateQuery->update($tableName, 't1')
+		 * 	->innerJoin('t1', $updateQuery->createFunction($selectJoinedTable->getSQL()), 't2', $updateQuery->expr()->eq('t1.id', 't2.id'))
+		 * 	->set('t1.state', Account::STATE_AUTODISABLED);
+		 * return $updateQuery->execute();
+		*/
+
+		$selectJoinedTableSql = $selectJoinedTable->getSQL();
+
+		$updateQuery = "UPDATE `$tableName` t1 INNER JOIN ($selectJoinedTableSql) t2 ON (t1.`id` = t2.`id`) SET t1.`state` = :newState";
+
+		return $this->db->executeUpdate(
+			$updateQuery,
+			[
+				'backendName' => $backendName,
+				'oldState' => Account::STATE_ENABLED,
+				'newState' => Account::STATE_AUTODISABLED
+			],
+			[
+				'backendName' => IQueryBuilder::PARAM_STR,
+				'oldState' => IQueryBuilder::PARAM_INT,
+				'newState' => IQueryBuilder::PARAM_INT
+			]
+		);
+	}
+
+	/**
+	 * Enable all the automatically disabled users in the specified backend
+	 * @param string $backendName the name of the backend
+	 * @return int the affected number of rows
+	 */
+	public function enableAutoDisabledUsers($backendName) {
+		$updateQuery = $this->db->getQueryBuilder();
+		$updateQuery->update($this->getTableName())
+			->set('state', $updateQuery->createNamedParameter(Account::STATE_ENABLED, IQueryBuilder::PARAM_INT))
+			->where($updateQuery->expr()->eq('backend', $updateQuery->createNamedParameter($backendName)))
+			->andWhere($updateQuery->expr()->eq('state', $updateQuery->createNamedParameter(Account::STATE_AUTODISABLED, IQueryBuilder::PARAM_INT)));
+		return $updateQuery->execute();
 	}
 }
