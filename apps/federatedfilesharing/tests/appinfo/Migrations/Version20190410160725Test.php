@@ -16,14 +16,10 @@ class Version20190410160725Test extends TestCase {
 		$migration = new Version20190410160725();
 		$table = $this->createMock(Table::class);
 		$schema = $this->createMock(Schema::class);
-		$schema->method('hasTable')->withConsecutive(
-			['pr_federated_reshares'],
-			['pr_share_external']
-		)->willReturn(true);
-		$schema->method('getTable')->withConsecutive(
-			['pr_federated_reshares'],
-			['pr_share_external']
-		)->willReturn($table);
+		$schema->method('hasTable')->with('pr_federated_reshares')
+			->willReturn(true);
+		$schema->method('getTable')->with('pr_federated_reshares')
+			->willReturn($table);
 
 		$this->assertNull($migration->changeSchema($schema, ['tablePrefix' => $tablePrefix]));
 	}
