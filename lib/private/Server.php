@@ -90,6 +90,7 @@ use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
 use OC\User\Session;
 use OC\User\SyncService;
+use OC\User\SyncLimiter;
 use OCP\App\IServiceLoader;
 use OCP\AppFramework\QueryException;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -257,7 +258,11 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				new SyncService(
 					$c->getConfig(),
 					$c->getLogger(),
-					$c->getAccountMapper()
+					$c->getAccountMapper(),
+					new SyncLimiter(
+						$c->getAccountMapper(),
+						$c->getConfig()
+					)
 				),
 				new UserSearch(
 					$c->getConfig()
@@ -324,7 +329,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$defaultTokenProvider = null;
 			}
 
-			$userSyncService = new SyncService($c->getConfig(), $c->getLogger(), $c->getAccountMapper());
+			$syncLimiter = new SyncLimiter($c->getAccountMapper(), $c->getConfig());
+			$userSyncService = new SyncService($c->getConfig(), $c->getLogger(), $c->getAccountMapper(), $syncLimiter);
 
 			$userSession = new Session($manager, $session, $timeFactory,
 				$defaultTokenProvider, $c->getConfig(), $c->getLogger(), $this, $userSyncService, $c->getEventDispatcher());
