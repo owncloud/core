@@ -69,7 +69,7 @@
 			'<div class="shareAttributes"">' +
 			'{{#each shareAttributes}}' +
 			'<span class="shareOption">' +
-			'<input id="can-{{name}}-{{cid}}-{{shareWith}}" type="checkbox" name="{{name}}" class="attributes checkbox" {{#if enabled}}checked="checked"{{/if}} data-scope="{{scope}}" data-enabled="{{enabled}}""/>' +
+			'<input id="can-{{name}}-{{cid}}-{{shareWith}}" type="checkbox" name="{{name}}" class="attributes checkbox" {{#if isReshare}}disabled{{/if}} {{#if enabled}}checked="checked"{{/if}} data-scope="{{scope}}" data-enabled="{{enabled}}""/>' +
 			'<label for="can-{{name}}-{{cid}}-{{shareWith}}">{{label}}</label>' +
 			'</span>' +
 			'{{/each}}' +
@@ -129,6 +129,9 @@
 			var cid = this.cid;
 			var shareWith = model.getShareWith(shareIndex);
 
+			// Check if reshare, and if so disable the checkboxes
+			var isReshare = model.hasReshare();
+
 			// Returns OC.Share.Types.ShareAttribute[] which were set for this
 			// share (and stored in DB)
 			var attributes = model.getShareAttributes(shareIndex);
@@ -145,6 +148,7 @@
 				if (regAttr && regAttr.label) {
 					list.push({
 						cid: cid,
+						isReshare: isReshare,
 						shareWith: shareWith,
 						enabled: attribute.enabled,
 						scope: attribute.scope,

@@ -389,6 +389,64 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(listView.$el.find("input[name='test-attribute']").is(':checked')).toEqual(true);
 			expect(updateShareStub.calledOnce).toEqual(true);
 		});
+		
+		it('prevents checking/unchecking attribute when reshared', function () {
+			shareModel.registerShareAttribute({
+				scope: "test",
+				key: "test-attribute-checked",
+				default: true,
+				label: "test attribute checked",
+				shareType : [],
+				incompatiblePermissions: [],
+				requiredPermissions: [],
+				incompatibleAttributes: []
+			});
+			shareModel.registerShareAttribute({
+				scope: "test",
+				key: "test-attribute-unchecked",
+				default: false,
+				label: "test attribute unchecked",
+				shareType : [],
+				incompatiblePermissions: [],
+				requiredPermissions: [],
+				incompatibleAttributes: []
+			});
+
+			shareModel.set('reshare', {
+				uid_owner: 100
+			});
+			shareModel.set('shares', [
+				{
+					id: 100,
+					item_source: '123',
+					permissions: 1,
+					attributes: [{ scope: 'test', key: 'test-attribute-checked', enabled: true }],
+					share_type: OC.Share.SHARE_TYPE_USER,
+					share_with: 'user1',
+					share_with_displayname: 'User One'
+				},
+				{
+					id: 101,
+					item_source: '123',
+					permissions: 1,
+					attributes: [{ scope: 'test', key: 'test-attribute-unchecked', enabled: false }],
+					share_type: OC.Share.SHARE_TYPE_USER,
+					share_with: 'user2',
+					share_with_displayname: 'User Two'
+				}
+			]);
+
+			listView.render();
+
+			// Click should have no action
+			listView.$el.find("input[name='test-attribute-checked']").click();
+			expect(listView.$el.find("input[name='test-attribute-checked']").is(':checked')).toEqual(true);
+			listView.$el.find("input[name='test-attribute-unchecked']").click();
+			expect(listView.$el.find("input[name='test-attribute-unchecked']").is(':checked')).toEqual(false);
+
+			// Update never called when clicked
+			expect(updateShareStub.called).toEqual(false);
+		});
 	});
 
 });
