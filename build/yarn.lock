@@ -71,9 +71,13 @@
   version "2.24.0"
   resolved "https://codeload.github.com/moment/moment/tar.gz/96d0d6791ab495859d09a868803d31a55c917de1"
 
-"@bower_components/select2@ivaynberg/select2#3.5.4":
-  version "3.5.4"
-  resolved "https://codeload.github.com/ivaynberg/select2/tar.gz/95a977f674b6938af55ec5f28b7772df93786c5c"
+"@bower_components/select2@ivaynberg/select2#4.0.6":
+  version "4.0.6"
+  uid "5dcc1022bffbccbf6894a26572f34627adaf7599"
+  resolved "https://codeload.github.com/ivaynberg/select2/tar.gz/5dcc1022bffbccbf6894a26572f34627adaf7599"
+  dependencies:
+    almond "~0.3.1"
+    jquery-mousewheel "~3.1.13"
 
 "@bower_components/showdown@showdownjs/showdown#1.9.0":
   version "1.9.0"
@@ -149,6 +153,10 @@ ajv@^5.1.0:
     fast-deep-equal "^1.0.0"
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.3.0"
+
+almond@~0.3.1:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/almond/-/almond-0.3.3.tgz#a0e7c95ac7624d6417b4494b1e68bff693168a20"
 
 amdefine@>=0.0.4:
   version "1.0.1"
@@ -1451,6 +1459,10 @@ jasmine-sinon@^0.4.0:
   resolved "https://registry.yarnpkg.com/jasmine-sinon/-/jasmine-sinon-0.4.0.tgz#8040a179a01ae0349b234aee438c24191239ae98"
   dependencies:
     sinon ">= 1.7.1"
+
+jquery-mousewheel@~3.1.13:
+  version "3.1.13"
+  resolved "https://registry.yarnpkg.com/jquery-mousewheel/-/jquery-mousewheel-3.1.13.tgz#06f0335f16e353a695e7206bf50503cb523a6ee5"
 
 js-yaml@3.x:
   version "3.10.0"

@@ -25,7 +25,7 @@
     "@bower_components/jquery-ui": "components/jqueryui#1.12.1",
     "@bower_components/jsTimezoneDetect": "HenningM/jstimezonedetect#1.0.5",
     "@bower_components/moment": "moment/moment#2.24.0",
-    "@bower_components/select2": "ivaynberg/select2#3.5.4",
+    "@bower_components/select2": "ivaynberg/select2#4.0.6",
     "@bower_components/showdown": "showdownjs/showdown#1.9.0",
     "@bower_components/snapjs": "jakiestfu/Snap.js#2.0.0-rc1",
     "@bower_components/strengthify": "MorrisJobke/strengthify#0.5.6",
