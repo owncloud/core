@@ -391,11 +391,16 @@ class ObjectStoreStorage extends Common {
 		$fileId = $this->getCache()->put($path, $stat);
 		try {
 			//upload to object storage
-			$this->objectStore->writeObject($this->getURN($fileId), \fopen($tmpFile, 'r'));
+			$status = $this->objectStore->writeObject($this->getURN($fileId), \fopen($tmpFile, 'r'));
 		} catch (\Exception $ex) {
 			$this->getCache()->remove($path);
 			\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
 			throw $ex; // make this bubble up
+		}
+		if ($status !== true) {
+			$this->getCache()->remove($path);
+			\OCP\Util::writeLog('objectstore', 'Could not create object: kindly contact your administrator.', \OCP\Util::ERROR);
+			return false;
 		}
 	}
 

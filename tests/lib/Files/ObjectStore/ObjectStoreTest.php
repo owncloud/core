@@ -76,14 +76,34 @@ class ObjectStoreTest extends TestCase {
 		$this->assertFalse($this->objectStore->file_exists('test'));
 	}
 
-	public function testGetAndPutContents() {
-		$this->impl->expects($this->once())->method('writeObject');
+	public function providesGetAndPutContents() {
+		return [
+			['123456', true],
+			['123456', false]
+		];
+	}
+
+	/**
+	 * @dataProvider providesGetAndPutContents
+	 * @param string $streamContent
+	 * @param bool $expectedResult
+	 */
+	public function testGetAndPutContents($streamContent, $expectedResult) {
+		$this->impl->expects($this->once())->method('writeObject')->willReturn($expectedResult);
 		$this->assertEquals(5, $this->objectStore->file_put_contents('test.txt', 'lorem'));
 
-		$stream = $this->createStreamFor('123456');
+		$stream = $this->createStreamFor($streamContent);
 
-		$this->impl->expects($this->once())->method('readObject')->willReturn($stream);
-		$this->assertEquals('123456', $this->objectStore->file_get_contents('test.txt'));
+		if ($expectedResult === true) {
+			$this->impl->expects($this->once())->method('readObject')->willReturn($stream);
+		}
+
+		if ($expectedResult === true) {
+			$result = '123456';
+		} else {
+			$result = false;
+		}
+		$this->assertEquals($result, $this->objectStore->file_get_contents('test.txt'));
 	}
 
 	public function testGetScanner() {
