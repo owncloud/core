@@ -44,7 +44,7 @@ class LoginPage extends OwncloudPage {
 	protected $lostPasswordId = "lost-password";
 	protected $setPasswordErrorMessageId = "error-message";
 
-	protected $setPasswordFormXpath = '//form[@id="set-password"]';
+	protected $setPasswordFormXpath = "//form[@id='reset-password' or @id='set-password']";
 	protected $lostPasswordResetErrorXpath = "//li[contains(@class,'error')]";
 	protected $imprintUrlXpath = "//a[contains(text(),'Imprint')]";
 	protected $privacyPolicyXpath = "//a[contains(text(),'Privacy Policy')]";
