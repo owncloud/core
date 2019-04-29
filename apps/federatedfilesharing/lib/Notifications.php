@@ -83,7 +83,7 @@ class Notifications {
 	 * @param Address $sharedByAddress
 	 * @param string $token
 	 * @param string $name
-	 * @param int $remote_id
+	 * @param string $remote_id
 	 *
 	 * @return bool
 	 *
@@ -148,7 +148,7 @@ class Notifications {
 			if (\is_array($response) && isset($response['sharedSecret'], $response['providerId'])) {
 				return [
 					$response['sharedSecret'],
-					(int) $response['providerId']
+					$response['providerId']
 				];
 			}
 			return true;
@@ -172,7 +172,7 @@ class Notifications {
 		if ($httpRequestSuccessful && $this->isOcsStatusOk($status) && $validToken && $validRemoteId) {
 			return [
 				$status['ocs']['data']['token'],
-				(int)$status['ocs']['data']['remoteId']
+				$status['ocs']['data']['remoteId']
 			];
 		}
 
@@ -207,7 +207,7 @@ class Notifications {
 	 * send notification to remote server if the permissions was changed
 	 *
 	 * @param string $remote
-	 * @param int $remoteId
+	 * @param string $remoteId
 	 * @param string $token
 	 * @param int $permissions
 	 * @return bool
@@ -220,7 +220,7 @@ class Notifications {
 	 * forward accept reShare to remote server
 	 *
 	 * @param string $remote
-	 * @param int $remoteId
+	 * @param string $remoteId
 	 * @param string $token
 	 */
 	public function sendAcceptShare($remote, $remoteId, $token) {
@@ -231,7 +231,7 @@ class Notifications {
 	 * forward decline reShare to remote server
 	 *
 	 * @param string $remote
-	 * @param int $remoteId
+	 * @param string $remoteId
 	 * @param string $token
 	 */
 	public function sendDeclineShare($remote, $remoteId, $token) {
@@ -242,7 +242,7 @@ class Notifications {
 	 * inform remote server whether server-to-server share was accepted/declined
 	 *
 	 * @param string $remote
-	 * @param int $remoteId Share id on the remote host
+	 * @param string $remoteId Share id on the remote host
 	 * @param string $token
 	 * @param string $action possible actions:
 	 * 	                     accept, decline, unshare, revoke, permissions
@@ -371,7 +371,7 @@ class Notifications {
 		$fields = [
 			'shareWith' => $shareWithAddress->getCloudId(),
 			'name' => $name,
-			'providerId' => $remote_id,
+			'providerId' => (string) $remote_id,
 			'owner' => $ownerAddress->getCloudId(),
 			'ownerDisplayName' => $ownerAddress->getDisplayName(),
 			'sender' => $sharedByAddress->getCloudId(),

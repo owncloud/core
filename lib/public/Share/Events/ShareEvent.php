@@ -62,11 +62,11 @@ class ShareEvent extends Event {
 	}
 
 	/**
-	 * @return int
+	 * @return string
 	 * @since 10.0.2
 	 */
 	public function getRemoteId() {
-		return (int)$this->share['remote_id'];
+		return $this->share['remote_id'];
 	}
 
 	/**
