@@ -31,6 +31,7 @@ use OCP\AppFramework\Db\Mapper;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IConfig;
 use OCP\IDBConnection;
+use Doctrine\DBAL\DBALException;
 
 class AccountMapper extends Mapper {
 
@@ -313,20 +314,6 @@ class AccountMapper extends Mapper {
 	 * Only the first $maxUsers sorted by id that are enabled will remain enabled after this function
 	 * finishes. Note that users in different states, such as "disabled" will be ignored
 	 *
-	 * The expected query to be executed is as follow:
-	 * ```
-	 * update
-	 *   oc_accounts t1
-	 *   inner join
-	 *   (
-	 *     select * from oc_accounts where backend = 'OCA\\User_LDAP\\User_Proxy' and state = 1 and id > (
-	 *       select id from oc_accounts where backend = 'OCA\\User_LDAP\\User_Proxy' and state = 1 order by id limit 50,1
-	 *     )
-	 *   ) t2
-	 *   on (t1.id = t2.id)
-	 *   set t1.state = 4;
-	 * ```
-	 *
 	 * Note that the "original" query should be:
 	 * ```
 	 * update
@@ -341,56 +328,43 @@ class AccountMapper extends Mapper {
 	 * ```
 	 * @param string $backendName the backend name
 	 * @param int $maxUsers the maximum number of enabled users that the backend will have
-	 * @return int the number of affected rows by the update operation
+	 * @return int the number of affected rows by the update operation, or -1 in case of
+	 * error that cause a rollback of the operation
 	 */
 	public function ensureMaximumEnabledUsersForBackend($backendName, $maxUsers) {
+		$this->db->beginTransaction();
+
 		$tableName = $this->getTableName();
 
-		$selectQuery = $this->db->getQueryBuilder();
-		$selectQuery->select('id')
-			->from($tableName)
-			->where($selectQuery->expr()->eq('backend', $selectQuery->createNamedParameter($backendName, IQueryBuilder::PARAM_STR, ':backendName')))
-			->andWhere($selectQuery->expr()->eq('state', $selectQuery->createNamedParameter(Account::STATE_ENABLED, IQueryBuilder::PARAM_INT, ':oldState')))
-			->orderBy('id')
-			->setFirstResult($maxUsers)
-			->setMaxResults(1);
+		try {
+			$selectQuery = $this->db->getQueryBuilder();
+			$selectQuery->select('id')
+				->from($tableName)
+				->where($selectQuery->expr()->eq('backend', $selectQuery->createNamedParameter($backendName)))
+				->andWhere($selectQuery->expr()->eq('state', $selectQuery->createNamedParameter(Account::STATE_ENABLED, IQueryBuilder::PARAM_INT)))
+				->orderBy('id')
+				->setFirstResult($maxUsers)
+				->setMaxResults(1);
+			$selectResult = $selectQuery->execute();
 
-		$selectJoinedTable = $this->db->getQueryBuilder();
-		$selectJoinedTable->select('*')
-			->from($tableName)
-			->where($selectJoinedTable->expr()->eq('backend', $selectJoinedTable->createNamedParameter($backendName, IQueryBuilder::PARAM_STR, ':backendName')))
-			->andWhere($selectJoinedTable->expr()->eq('state', $selectJoinedTable->createNamedParameter(Account::STATE_ENABLED, IQueryBuilder::PARAM_INT, ':oldState')))
-			->andWhere($selectJoinedTable->expr()->gte('id', $selectJoinedTable->createFunction("({$selectQuery->getSQL()})")));
+			$affectedRows = 0;
+			if (($row = $selectResult->fetch()) !== false) {
+				// there are users that need to be disabled
+				$minimumId = (int) $row['id'];
 
-		/*
-		 * FIXME
-		 * Following query can't be used by the queryBuilder because the table in the innerJoin
-		 * can't be a temporary one. We need to workaround that for now.
-		 *
-		 * $updateQuery = $this->db->getQueryBuilder();
-		 * $updateQuery->update($tableName, 't1')
-		 * 	->innerJoin('t1', $updateQuery->createFunction($selectJoinedTable->getSQL()), 't2', $updateQuery->expr()->eq('t1.id', 't2.id'))
-		 * 	->set('t1.state', Account::STATE_AUTODISABLED);
-		 * return $updateQuery->execute();
-		*/
-
-		$selectJoinedTableSql = $selectJoinedTable->getSQL();
-
-		$updateQuery = "UPDATE `$tableName` t1 INNER JOIN ($selectJoinedTableSql) t2 ON (t1.`id` = t2.`id`) SET t1.`state` = :newState";
-
-		return $this->db->executeUpdate(
-			$updateQuery,
-			[
-				'backendName' => $backendName,
-				'oldState' => Account::STATE_ENABLED,
-				'newState' => Account::STATE_AUTODISABLED
-			],
-			[
-				'backendName' => IQueryBuilder::PARAM_STR,
-				'oldState' => IQueryBuilder::PARAM_INT,
-				'newState' => IQueryBuilder::PARAM_INT
-			]
-		);
+				$updateQuery = $this->db->getQueryBuilder();
+				$updateQuery->update($tableName)
+					->set('state', $updateQuery->createNamedParameter(Account::STATE_AUTODISABLED, IQueryBuilder::PARAM_INT))
+					->where($updateQuery->expr()->eq('backend', $updateQuery->createNamedParameter($backendName)))
+					->andWhere($updateQuery->expr()->gte('id', $updateQuery->createNamedParameter($minimumId, IQueryBuilder::PARAM_INT)));
+				$affectedRows = $updateQuery->execute();
+			}
+			$this->db->commit();
+			return $affectedRows;
+		} catch (\Exception $ex) {
+			$this->db->rollBack();
+			return -1;
+		}
 	}
 
 	/**
