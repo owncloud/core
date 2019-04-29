@@ -44,6 +44,7 @@ class LoginPage extends OwncloudPage {
 	protected $lostPasswordId = "lost-password";
 	protected $setPasswordErrorMessageId = "error-message";
 
+	protected $setPasswordFormXpath = '//form[@id="set-password"]';
 	protected $lostPasswordResetErrorXpath = "//li[contains(@class,'error')]";
 	protected $imprintUrlXpath = "//a[contains(text(),'Imprint')]";
 	protected $privacyPolicyXpath = "//a[contains(text(),'Privacy Policy')]";
@@ -204,6 +205,14 @@ class LoginPage extends OwncloudPage {
 	 * @return void
 	 */
 	public function resetThePassword($newPassword, $confirmNewPassword, Session $session) {
+		$form = $this->waitTillElementIsNotNull($this->setPasswordFormXpath);
+		$this->assertElementNotNull(
+			$form,
+			__METHOD__ .
+			" xpath $this->setPasswordFormXpath " .
+			'could not find set password form.'
+		);
+
 		$this->fillField($this->passwordInputId, $newPassword);
 		$this->fillField($this->confirmPasswordInputId, $confirmNewPassword);
 		$this->findById($this->submitLoginId)->click();
