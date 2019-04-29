@@ -1199,7 +1199,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws \Exception
 	 */
-	private function createUser(
+	public function createUser(
 		$user,
 		$password = null,
 		$displayName = null,
