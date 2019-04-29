@@ -140,7 +140,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 
 			shareModel.set('shares', [{
 				id: 100,
-				item_source: '123',
+				item_source: 123,
 				permissions: 1,
 				attributes: [{ scope: 'test', key: 'test-attribute', enabled: true }],
 				share_type: OC.Share.SHARE_TYPE_USER,
@@ -152,7 +152,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			var $li = listView.$('li').eq(0);
 			var input = $li.find("input[name='test-attribute']");
 			expect(input.is(':checked')).toEqual(true);
-			expect(input.labels().text()).toEqual('test attribute');
+			expect($("label[for='" + input.attr('id') + "']").text()).toEqual('test attribute');
 		});
 	});
 
@@ -256,7 +256,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(listView.$el.find("input[name='mailNotification']").hasClass('hidden')).toEqual(false);
 		});
 
-		it('share attribute can be unchecked', function () {
+		it('unchecks share attribute when clicked on checked', function () {
 			shareModel.registerShareAttribute({
 				scope: "test",
 				key: "test-attribute",
@@ -270,7 +270,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 
 			shareModel.set('shares', [{
 				id: 100,
-				item_source: '123',
+				item_source: 123,
 				permissions: 1,
 				attributes: [{ scope: 'test', key: 'test-attribute', enabled: true }],
 				share_type: OC.Share.SHARE_TYPE_USER,
@@ -284,7 +284,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(updateShareStub.calledOnce).toEqual(true);
 		});
 
-		it('share attribute checkbox enabled by checking required permission', function () {
+		it('shows share attribute checkbox when checking required permission', function () {
 			shareModel.registerShareAttribute({
 				scope: "test",
 				key: "test-attribute",
@@ -298,7 +298,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 
 			shareModel.set('shares', [{
 				id: 100,
-				item_source: '123',
+				item_source: 123,
 				permissions: 1,
 				attributes: [],
 				share_type: OC.Share.SHARE_TYPE_USER,
@@ -314,7 +314,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 				// Updated share permission should now enable the permission
 				shareModel.set('shares', [{
 					id: 100,
-					item_source: '123',
+					item_source: 123,
 					permissions: 1,
 					attributes: [{ scope: 'test', key: 'test-attribute', enabled: true }],
 					share_type: OC.Share.SHARE_TYPE_USER,
@@ -330,7 +330,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(updateShareStub.calledOnce).toEqual(true);
 		});
 
-		it('share attribute checkbox enabled by unchecking incompatible attribute', function () {
+		it('shows share attribute checkbox when unchecking incompatible attribute', function () {
 			shareModel.registerShareAttribute({
 				scope: "test",
 				key: "incompatible-attribute",
@@ -354,7 +354,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 
 			shareModel.set('shares', [{
 				id: 100,
-				item_source: '123',
+				item_source: 123,
 				permissions: 1,
 				attributes: [{ scope: 'test', key: 'incompatible-attribute', enabled: true }],
 				share_type: OC.Share.SHARE_TYPE_USER,
@@ -371,7 +371,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 				// Updated share permission should now enable the permission
 				shareModel.set('shares', [{
 					id: 100,
-					item_source: '123',
+					item_source: 123,
 					permissions: 1,
 					attributes: [
 						{ scope: 'test', key: 'incompatible-attribute', enabled: false },
