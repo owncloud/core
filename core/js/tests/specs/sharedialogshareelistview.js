@@ -152,7 +152,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			var $li = listView.$('li').eq(0);
 			var input = $li.find("input[name='test-attribute']");
 			expect(input.is(':checked')).toEqual(true);
-			expect(input.labels().text()).toEqual('test attribute');
+			expect($("label[for='" + input.attr('id') + "']").text()).toEqual('test attribute');
 		});
 	});
 
@@ -256,7 +256,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(listView.$el.find("input[name='mailNotification']").hasClass('hidden')).toEqual(false);
 		});
 
-		it('share attribute can be unchecked', function () {
+		it('unchecks share attribute when clicked on checked', function () {
 			shareModel.registerShareAttribute({
 				scope: "test",
 				key: "test-attribute",
@@ -284,7 +284,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(updateShareStub.calledOnce).toEqual(true);
 		});
 
-		it('share attribute checkbox enabled by checking required permission', function () {
+		it('shows share attribute checkbox when checking required permission', function () {
 			shareModel.registerShareAttribute({
 				scope: "test",
 				key: "test-attribute",
@@ -330,7 +330,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(updateShareStub.calledOnce).toEqual(true);
 		});
 
-		it('share attribute checkbox enabled by unchecking incompatible attribute', function () {
+		it('shows share attribute checkbox when unchecking incompatible attribute', function () {
 			shareModel.registerShareAttribute({
 				scope: "test",
 				key: "incompatible-attribute",
