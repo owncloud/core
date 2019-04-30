@@ -143,7 +143,17 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\User\Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager(), \OC::$server->getMailer()));
 	$application->add(new OC\Core\Command\User\Delete(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\Disable(\OC::$server->getUserManager()));
-	$application->add(new OC\Core\Command\User\Enable(\OC::$server->getUserManager()));
+	$application->add(new OC\Core\Command\User\Enable(
+		\OC::$server->getUserManager(),
+		new OC\User\SyncService(
+			\OC::$server->getConfig(),
+			\OC::$server->getLogger(),
+			\OC::$server->getAccountMapper(),
+			new OC\User\SyncLimiter(
+				\OC::$server->getAccountMapper(),
+				\OC::$server->getConfig()
+			)
+		)));
 	$application->add(new OC\Core\Command\User\Inactive(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\LastSeen(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\ListUsers(\OC::$server->getUserManager()));

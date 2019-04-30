@@ -27,6 +27,7 @@ use OC\User\AccountMapper;
 use OC\User\Sync\AllUsersIterator;
 use OC\User\Sync\SeenUsersIterator;
 use OC\User\SyncService;
+use OC\User\SyncLimiter;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
@@ -163,7 +164,7 @@ class SyncBackend extends Command {
 			$missingAccountsAction = $helper->ask($input, $output, $question);
 		}
 
-		$syncService = new SyncService($this->config, $this->logger, $this->accountMapper);
+		$syncService = new SyncService($this->config, $this->logger, $this->accountMapper, new SyncLimiter($this->accountMapper, $this->config));
 
 		$uid = $input->getOption('uid');
 

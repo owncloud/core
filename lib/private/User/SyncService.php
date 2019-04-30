@@ -417,6 +417,51 @@ class SyncService {
 	}
 
 	/**
+	 * Check if any additional to-be-enabled user in the specified backend will be disabled
+	 * in the next sync run according to the limits set by the SyncLimiter.
+	 * @param string $backend the backend to check
+	 * @return bool true if the user will be disabled, false otherwise
+	 */
+	public function userWillBeDisabledInBackend($backend) {
+		$limitInfo = $this->syncLimiter->getLimitInfo();
+		if (!isset($limitInfo[$backend])) {
+			// no limit info found for the backend -> user can be enabled
+			return false;
+		}
+
+		$backendStateStats = $this->mapper->getUserCountForBackendGroupByState($backend);
+		$numberOfEnabledUsers = 0;
+		if (isset($backendStateStats[Account::STATE_ENABLED])) {
+			$numberOfEnabledUsers = $backendStateStats[Account::STATE_ENABLED];
+		}
+
+		if ($numberOfEnabledUsers >= $limitInfo[$backend]['hard']) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Check if the user will be disabled in the next sync run according to the limits set
+	 * by the SyncLimiter.
+	 * This function should be used before any attempt to enable a user. It will assume
+	 * you're trying to enable a disabled user.
+	 * The returned value might be wrong if the
+	 * user is already enabled because we can't be sure what exact user will be disabled.
+	 * Consider to use this function as a check for the number of users to be or not
+	 * over the expected backend limits.
+	 * @param string $uid the uid of the user to be enabled
+	 * @throws DoesNotExistException if the user doesn't exists
+	 * @throws MultipleObjectsReturnedException if multiple users match the uid
+	 * @return bool true if the user will be disabled, false otherwise
+	 */
+	public function userWillBeDisabled($uid) {
+		$account = $this->mapper->getByUid($uid);
+		return $this->userWillBeDisabledInBackend($account->getBackend());
+	}
+
+	/**
 	 * @param string $uid
 	 * @param string $app
 	 * @param string $key
