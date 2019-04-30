@@ -69,7 +69,7 @@
 			'<div class="shareAttributes"">' +
 			'{{#each shareAttributes}}' +
 			'<span class="shareOption">' +
-			'<input id="can-{{name}}-{{cid}}-{{shareWith}}" type="checkbox" name="{{name}}" class="attributes checkbox" {{#if enabled}}checked="checked"{{/if}} data-scope="{{scope}}" data-enabled="{{enabled}}""/>' +
+			'<input id="can-{{name}}-{{cid}}-{{shareWith}}" type="checkbox" name="{{name}}" class="attributes checkbox" {{#if isReshare}}disabled{{/if}} {{#if enabled}}checked="checked"{{/if}} data-scope="{{scope}}" data-enabled="{{enabled}}""/>' +
 			'<label for="can-{{name}}-{{cid}}-{{shareWith}}">{{label}}</label>' +
 			'</span>' +
 			'{{/each}}' +
@@ -129,6 +129,9 @@
 			var cid = this.cid;
 			var shareWith = model.getShareWith(shareIndex);
 
+			// Check if reshare, and if so disable the checkboxes
+			var isReshare = model.hasReshare();
+
 			// Returns OC.Share.Types.ShareAttribute[] which were set for this
 			// share (and stored in DB)
 			var attributes = model.getShareAttributes(shareIndex);
@@ -137,19 +140,20 @@
 			attributes.map(function(attribute) {
 				// Check if the share attribute set for this file is still in
 				// registered share attributes and get its label
-				var label = model.getRegisteredShareAttributeLabel(
+				var regAttr = model.getRegisteredShareAttribute(
 					attribute.scope,
 					attribute.key
 				);
 
-				if (label) {
+				if (regAttr && regAttr.label) {
 					list.push({
 						cid: cid,
+						isReshare: isReshare,
 						shareWith: shareWith,
 						enabled: attribute.enabled,
 						scope: attribute.scope,
 						name: attribute.key,
-						label: label
+						label: regAttr.label
 					});
 				} else {
 					OC.Notification.showTemporary(t('core', 'Share with ' +
