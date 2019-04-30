@@ -44,6 +44,7 @@ use OCP\IUserManager;
 use OCP\IConfig;
 use OCP\UserInterface;
 use OCP\Util\UserSearch;
+use OCP\User\ShouldNotBeEnabledException;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -420,6 +421,25 @@ class Manager extends PublicEmitter implements IUserManager {
 			return $this->accountMapper->getUserCount($hasLoggedIn);
 		}
 		return $this->accountMapper->getUserCountPerBackend($hasLoggedIn);
+	}
+
+	/**
+	 * Check if $uid might get automatically disabled if you decide to enable it. This is just
+	 * a check, and it doesn't enforce anything, so you can still enable the user.
+	 * Note that this function is intended to be called just before enabling a disabled
+	 * user.
+	 * If the user is already enabled, it will be ignored and won't throw exceptions.
+	 *
+	 * @param string $uid
+	 * @throws \OCP\User\ShouldNotBeEnabledException explaining the reason
+	 */
+	public function mightGetDisabled($uid) {
+		$account = $this->accountMapper->getByUid($uid);
+		if ($account->getState() !== Account::STATE_ENABLED) {
+			if ($this->syncService->userWillBeDisabledInBackend($account->getBackend())) {
+				throw new ShouldNotBeEnabledException('Allowed number of enabled users is over the limit');
+			}
+		}
 	}
 
 	/**
