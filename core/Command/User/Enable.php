@@ -21,6 +21,7 @@
 
 namespace OC\Core\Command\User;
 
+use OC\User\SyncService;
 use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,12 +31,15 @@ use Symfony\Component\Console\Input\InputArgument;
 class Enable extends Command {
 	/** @var IUserManager */
 	protected $userManager;
+	/** @var SyncService */
+	protected $syncService;
 
 	/**
 	 * @param IUserManager $userManager
 	 */
-	public function __construct(IUserManager $userManager) {
+	public function __construct(IUserManager $userManager, SyncService $syncService) {
 		$this->userManager = $userManager;
+		$this->syncService = $syncService;
 		parent::__construct();
 	}
 
@@ -51,13 +55,19 @@ class Enable extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$user = $this->userManager->get($input->getArgument('uid'));
+		$uid = $input->getArgument('uid');
+		$user = $this->userManager->get($uid);
 		if ($user === null) {
 			$output->writeln('<error>User does not exist</error>');
 			return;
 		}
 
-		$user->setEnabled(true);
-		$output->writeln('<info>The specified user is enabled</info>');
+		if ($user->isEnabled() || !$this->syncService->userWillBeDisabled($uid)) {
+			// keep the same old behaviour if the user is already enabled
+			$user->setEnabled(true);
+			$output->writeln('<info>The specified user is enabled</info>');
+		} else {
+			$output->writeln('<error>The user cannot be enabled due to user limits. Disable some users first</error>');
+		}
 	}
 }
