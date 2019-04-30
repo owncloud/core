@@ -682,6 +682,7 @@ OC.Uploader.prototype = _.extend({
 		this.log('canceling uploads');
 		jQuery.each(this._uploads, function(i, upload) {
 			upload.abort();
+			upload.aborted = true;
 		});
 		this.clear();
 	},
@@ -691,7 +692,7 @@ OC.Uploader.prototype = _.extend({
 	clear: function() {
 		var remainingUploads = {};
 		_.each(this._uploads, function(upload, key) {
-			if (!upload.isDone) {
+			if (!upload.isDone && !upload.aborted) {
 				remainingUploads[key] = upload;
 			}
 		});
