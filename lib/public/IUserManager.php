@@ -141,6 +141,18 @@ interface IUserManager {
 	public function createUser($uid, $password);
 
 	/**
+	 * Check if $uid might get automatically disabled if you decide to enable it. This is just
+	 * a check, and it doesn't enforce anything, so you can still enable the user.
+	 * Note that this function is intended to be called just before enabling a disabled
+	 * user.
+	 * The function won't return anything if it's ok
+	 *
+	 * @param string $uid
+	 * @throws \OCP\User\ShouldNotBeEnabledException explaining the reason
+	 */
+	public function mightGetDisabled($uid);
+
+	/**
 	 * returns how many users per backend exist (if supported by backend)
 	 *
 	 * @return array an array of backend class as key and count number as value
