@@ -916,11 +916,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->with('remoteshare.received', $this->anything())
 			->willReturn($event);
 
-		$shouldAutoAccept = $this->invokePrivate(
-			$this->provider,
-			'getAccepted',
-			['remote', 'user@server.com']
-		);
+		$shouldAutoAccept = $this->provider->getAccepted('remote', 'user@server.com');
 
 		$this->assertEquals($expected, $shouldAutoAccept);
 	}
