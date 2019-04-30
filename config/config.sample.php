@@ -777,6 +777,17 @@ $CONFIG = array(
 'enable_previews' => true,
 
 /**
+ * Location of the thumbnails folder, defaults to `data/$user/thumbnails` where
+ * `$user` is the current user. When specified, the format will change to
+ * `$previews_path/$user` where `$previews_path` is the configured previews base directory
+ * and `$user` will be substituted with the user id automatically.
+ *
+ * For example if `previews_path` is `/var/cache/owncloud/thumbnails` then for a logged in
+ * user `user1` the thumbnail path will be `/var/cache/owncloud/thumbnails/user1`.
+ */
+'previews_path' => '',
+
+/**
  * The maximum width, in pixels, of a preview. A value of `null` means there
  * is no limit.
  */
