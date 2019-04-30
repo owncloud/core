@@ -133,11 +133,13 @@ describe('OC.Upload tests', function() {
 		it('clear leaves pending uploads', function() {
 			uploader._uploads = {
 				'abc': {name: 'a job well done.txt', isDone: true},
-				'def': {name: 'whatevs.txt'}
+				'def': {name: 'whatevs.txt'},
+				'ghi': {name: 'aborted.txt', aborted: true}
 			};
 
 			uploader.clear();
 
+			//This does verify that aborted upload(s) will not be available in the _uploads
 			expect(uploader._uploads).toEqual({'def': {name: 'whatevs.txt'}});
 		});
 	});
