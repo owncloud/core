@@ -386,6 +386,10 @@ class Share20OcsController extends OCSController {
 
 		$globalAutoAccept = $this->config->getAppValue('core', 'shareapi_auto_accept_share', 'yes') === 'yes';
 		if ($shareType === Share::SHARE_TYPE_USER) {
+			//Lower the case if the share type is user
+			if (($shareWith !== null) && ($shareWith !== '')) {
+				$shareWith = \strtolower($shareWith);
+			}
 			$userAutoAccept = false;
 			if ($globalAutoAccept) {
 				$userAutoAccept = $this->config->getUserValue($shareWith, 'files_sharing', 'auto_accept_share', 'yes') === 'yes';
