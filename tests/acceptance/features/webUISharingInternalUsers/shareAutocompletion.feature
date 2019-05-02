@@ -36,6 +36,7 @@ Feature: Autocompletion of share-with names
     When the user types "us" in the share-with-field
     Then all users and groups that contain the string "us" in their name should be listed in the autocomplete list on the webUI
     And the users own name should not be listed in the autocomplete list on the webUI
+    And user "Four" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
   @smokeTest
@@ -46,6 +47,7 @@ Feature: Autocompletion of share-with names
     When the user types "fi" in the share-with-field
     Then all users and groups that contain the string "fi" in their name should be listed in the autocomplete list on the webUI
     And the users own name should not be listed in the autocomplete list on the webUI
+    And user "other" should not be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion for a pattern that does not match any user or group
     Given user "regularuser" has logged in using the webUI
@@ -66,6 +68,7 @@ Feature: Autocompletion of share-with names
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "Use" in the share-with-field
     Then only "Use" should be listed in the autocomplete list on the webUI
+    And user "User Two" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
   Scenario: autocomplete short group names when completely typed
@@ -78,6 +81,7 @@ Feature: Autocompletion of share-with names
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "fi" in the share-with-field
     Then only "fi (group)" should be listed in the autocomplete list on the webUI
+    And user "finance1" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
   Scenario: autocompletion when minimum characters is the default (2) and not enough characters are typed
@@ -107,6 +111,7 @@ Feature: Autocompletion of share-with names
     When the user types "use" in the share-with-field
     Then all users and groups that contain the string "use" in their name should be listed in the autocomplete list on the webUI
     And the users own name should not be listed in the autocomplete list on the webUI
+    And user "Four" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP @user_ldap-issue-175
   Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (folder)
@@ -117,6 +122,7 @@ Feature: Autocompletion of share-with names
     When the user types "user" in the share-with-field
     Then all users and groups that contain the string "user" in their name should be listed in the autocomplete list on the webUI except user "User One"
     And the users own name should not be listed in the autocomplete list on the webUI
+    And user "Four" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP @user_ldap-issue-175
   Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (file)
@@ -127,6 +133,7 @@ Feature: Autocompletion of share-with names
     When the user types "user" in the share-with-field
     Then all users and groups that contain the string "user" in their name should be listed in the autocomplete list on the webUI except user "User Grp"
     And the users own name should not be listed in the autocomplete list on the webUI
+    And user "Four" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (folder)
@@ -137,6 +144,7 @@ Feature: Autocompletion of share-with names
     When the user types "fi" in the share-with-field
     Then all users and groups that contain the string "fi" in their name should be listed in the autocomplete list on the webUI except group "finance1"
     And the users own name should not be listed in the autocomplete list on the webUI
+    And user "Four" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (file)
@@ -147,3 +155,24 @@ Feature: Autocompletion of share-with names
     When the user types "fi" in the share-with-field
     Then all users and groups that contain the string "fi" in their name should be listed in the autocomplete list on the webUI except group "finance1"
     And the users own name should not be listed in the autocomplete list on the webUI
+    And user "Four" should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing users contain the pattern somewhere in the middle
+    Given user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "se" in the share-with-field
+    Then all users and groups that contain the string "se" in their name should be listed in the autocomplete list on the webUI
+    And the users own name should not be listed in the autocomplete list on the webUI
+    And user "Four" should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing users contain the pattern at the end
+    Given user "usergrp" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "r3" in the share-with-field
+    Then all users and groups that contain the string "r3" in their name should be listed in the autocomplete list on the webUI
+    And the users own name should not be listed in the autocomplete list on the webUI
+    And user "User One" should not be listed in the autocomplete list on the webUI
