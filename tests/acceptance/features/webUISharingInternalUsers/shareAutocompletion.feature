@@ -176,3 +176,95 @@ Feature: Autocompletion of share-with names
     Then all users and groups that contain the string "r3" in their name should be listed in the autocomplete list on the webUI
     And the users own name should not be listed in the autocomplete list on the webUI
     And user "User One" should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: allow user to disable autocomplete in sharing dialog
+    Given user "regularuser" has logged in using the webUI
+    And the user has browsed to the personal sharing settings page
+    When the user disables allow finding you via autocomplete in share dialog
+    And the user re-logs in as "user1" using the webUI
+    And the user browses to the files page
+    And the user opens the share dialog for folder "simple-folder"
+    And the user types "reg" in the share-with-field
+    Then user "Regular User" should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: user disables autocomplete in sharing dialog but the sharer types full username
+    Given user "regularuser" has logged in using the webUI
+    And the user has browsed to the personal sharing settings page
+    When the user disables allow finding you via autocomplete in share dialog
+    And the user re-logs in as "user1" using the webUI
+    And the user browses to the files page
+    And the user opens the share dialog for folder "simple-folder"
+    And the user types "regularuser" in the share-with-field
+    Then user "Regular User" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: user disables autocomplete in sharing dialog but the sharer types full display name
+    Given user "regularuser" has logged in using the webUI
+    And the user has browsed to the personal sharing settings page
+    When the user disables allow finding you via autocomplete in share dialog
+    And the user re-logs in as "user1" using the webUI
+    And the user browses to the files page
+    And the user opens the share dialog for folder "simple-folder"
+    And the user types "Regular User" in the share-with-field
+    Then user "Regular User" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: allow user to enable autocomplete in sharing dialog
+    Given user "regularuser" has logged in using the webUI
+    And the user has browsed to the personal sharing settings page
+    When the user enables allow finding you via autocomplete in share dialog
+    And the user re-logs in as "user1" using the webUI
+    And the user browses to the files page
+    And the user opens the share dialog for folder "simple-folder"
+    And the user types "reg" in the share-with-field
+    Then user "Regular User" should be listed in the autocomplete list on the webUI
+    And the users own name should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern when admin disables username autocompletion in share dialog
+    Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
+    And user "regularuser" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "user" in the share-with-field
+    Then a tooltip with the text "No users or groups found for user" should be shown near the share-with-field on the webUI
+    And the autocomplete list should not be displayed on the webUI
+
+  @skipOnLDAP
+  Scenario: admin disables share dialog user enumeration
+    Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
+    And user "regularuser" has logged in using the webUI
+    When the user browses to the personal sharing settings page
+    Then allow finding you via autocomplete checkbox should not be displayed on the personal sharing settings page
+
+  @skipOnLDAP
+  Scenario: admin disables share dialog user enumeration and types full user name of user in sharing dialog
+    Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
+    And user "regularuser" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "user1" in the share-with-field
+    Then user "User One" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: admin disables share dialog user enumeration and types full display name of user in sharing dialog
+    Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
+    And user "regularuser" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "User One" in the share-with-field
+    Then user "User One" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of pattern when user disables and then enables autocompletion in sharing dialog
+    Given user "regularuser" has logged in using the webUI
+    And the user has browsed to the personal sharing settings page
+    When the user disables allow finding you via autocomplete in share dialog
+    And the user enables allow finding you via autocomplete in share dialog
+    And the user re-logs in as "user1" using the webUI
+    And the user browses to the files page
+    And the user opens the share dialog for folder "simple-folder"
+    And the user types "reg" in the share-with-field
+    Then user "Regular User" should be listed in the autocomplete list on the webUI
