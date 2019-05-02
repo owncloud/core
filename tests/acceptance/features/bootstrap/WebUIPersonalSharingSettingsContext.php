@@ -82,6 +82,19 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
+	 * @When /^the user (disables|enables) allow finding you via autocomplete in share dialog$/
+	 *
+	 * @param string $action
+	 *
+	 * @return void
+	 */
+	public function switchAllowFindingYouViaAutocompleteInShareDialog($action) {
+		$this->personalSharingSettingsPage->toggleFindingYouViaAutocomplete(
+			$this->getSession(), $action
+		);
+	}
+
+	/**
 	 * @Then User-based auto accepting checkbox should not be displayed on the personal sharing settings page in the webUI
 	 *
 	 * @return void
@@ -100,6 +113,17 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	public function autoAcceptingFederatedCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPageInTheWebui() {
 		PHPUnit\Framework\Assert::assertFalse(
 			$this->personalSharingSettingsPage->isAutoAcceptFederatedSharesCheckboxDisplayed()
+		);
+	}
+
+	/**
+	 * @Then allow finding you via autocomplete checkbox should not be displayed on the personal sharing settings page
+	 *
+	 * @return void
+	 */
+	public function allowFindingYouViaAutocompleteCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPage() {
+		PHPUnit\Framework\Assert::assertFalse(
+			$this->personalSharingSettingsPage->isAllowFindingYouViaAutocompleteCheckboxDisplayed()
 		);
 	}
 }

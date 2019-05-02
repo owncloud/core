@@ -443,6 +443,7 @@ default:
         - WebUISharingContext:
         - EmailContext:
         - WebUIAdminSharingSettingsContext:
+        - WebUIPersonalSharingSettingsContext:
 
     webUISharingNotifications:
       paths:
