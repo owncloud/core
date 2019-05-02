@@ -32,6 +32,7 @@
 use OC\Core\Application;
 
 $application = new Application();
+$application->registerNotifier();
 $application->registerRoutes($this, [
 	'routes' => [
 		['name' => 'lost#email', 'url' => '/lostpassword/email', 'verb' => 'POST'],

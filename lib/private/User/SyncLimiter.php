@@ -53,21 +53,33 @@ class SyncLimiter {
 	/**
 	 * Get the limit information. This function will return
 	 * a map with the backend's name and the limits for it ['soft' => X, 'hard' => Y]
-	 * with the respective limits.
+	 * with the respective limits. False can also be returned for a specific backend
+	 * instead of the array with the "soft" and "hard" keys, meaning that the limits
+	 * for the specific backend have been disabled
 	 * Note that negative limits might be returned, but those should be ignored.
 	 * This function guarantees that the hard limit will be greater than or equal to
 	 * the soft limit.
+	 *
+	 * Possibilities are:
+	 * - Missing backend: no limits set for that backend
+	 * - Backend with false: limits have been disabled for that backend
+	 * - Backend with array: specific limits for that backend.
 	 * @param string $backendName the name of the backend to get the limits for
-	 * @return array [backendName => ['soft' => X, 'hard' => Y]]
+	 * @return array [backendName => ['soft' => X, 'hard' => Y], backendName2 => false]
 	 */
 	public function getLimitInfo() {
 		$limits = $this->getDefaultLimits();
 
+		$enterpriseActive = $this->config->getAppValue('enterprise_key', 'enabled', 'no') === 'yes';
 		foreach ($limits as $backendName => $limitData) {
-			// soft limit isn't configurable
-			$defaultHardLimit = $limitData['hard'];
-			$hardLimit = (int) $this->config->getAppValue('core', "user_sync_hard_limit_$backendName", $defaultHardLimit);
-			$limits[$backendName]['hard'] = \max($limitData['soft'], $hardLimit);
+			if ($enterpriseActive) {
+				$limits[$backendName] = false;
+			} else {
+				// soft limit isn't configurable
+				$defaultHardLimit = $limitData['hard'];
+				$hardLimit = (int) $this->config->getAppValue('core', "user_sync_hard_limit_$backendName", $defaultHardLimit);
+				$limits[$backendName]['hard'] = \max($limitData['soft'], $hardLimit);
+			}
 		}
 		return $limits;
 	}
@@ -100,11 +112,10 @@ class SyncLimiter {
 	 */
 	public function limitEnabledUsers() {
 		$limitInfo = $this->getLimitInfo();
-		$enterpriseActive = $this->config->getAppValue('enterprise_key', 'enabled', 'no') === 'yes';
 
 		$resultInfo = [];
 		foreach ($limitInfo as $backendName => $limitData) {
-			if ($enterpriseActive) {
+			if ($limitData === false) {
 				$userNumber = $this->mapper->enableAutoDisabledUsers($backendName);
 				$resultInfo[$backendName] = [
 					'switchTo' => 'enabled',

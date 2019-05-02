@@ -32,7 +32,10 @@ use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\IGroupManager;
 use OCP\UserInterface;
+use OCP\Notification\IManager;
+use OCP\Notification\INotification;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -40,6 +43,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Helper\Table;
 
 class SyncBackend extends Command {
 	const VALID_ACTIONS = ['disable', 'remove'];
@@ -50,6 +54,10 @@ class SyncBackend extends Command {
 	private $config;
 	/** @var IUserManager */
 	private $userManager;
+	/** @var IGroupManager */
+	private $groupManager;
+	/** @var IManager */
+	private $notificationManager;
 	/** @var ILogger */
 	private $logger;
 
@@ -57,16 +65,24 @@ class SyncBackend extends Command {
 	 * @param AccountMapper $accountMapper
 	 * @param IConfig $config
 	 * @param IUserManager $userManager
+	 * @param IGroupManager $groupManager
+	 * @param IManager $notificationManager
 	 * @param ILogger $logger
 	 */
-	public function __construct(AccountMapper $accountMapper,
-								IConfig $config,
-								IUserManager $userManager,
-								ILogger $logger) {
+	public function __construct(
+		AccountMapper $accountMapper,
+		IConfig $config,
+		IUserManager $userManager,
+		IGroupManager $groupManager,
+		IManager $notificationManager,
+		ILogger $logger
+	) {
 		parent::__construct();
 		$this->accountMapper = $accountMapper;
 		$this->config = $config;
 		$this->userManager = $userManager;
+		$this->groupManager = $groupManager;
+		$this->notificationManager = $notificationManager;
 		$this->logger = $logger;
 	}
 
@@ -173,6 +189,33 @@ class SyncBackend extends Command {
 		} else {
 			$this->syncMultipleUsers($input, $output, $syncService, $backend, $missingAccountsAction);
 		}
+
+		$stats = $this->showSyncStats($output, $this->accountMapper, $backend);
+
+		$syncLimitInfo = $syncService->getUserLimitInfo(\get_class($backend));
+		if ($syncLimitInfo) {
+			$userCount = 0;
+			// we're only interested in enabled and auto_disabled users.
+			// other states won't determine whether we should send a notification or not
+			if (isset($stats[Account::STATE_ENABLED])) {
+				$userCount += $stats[Account::STATE_ENABLED];
+			}
+			if (isset($stats[Account::STATE_AUTODISABLED])) {
+				$userCount += $stats[Account::STATE_AUTODISABLED];
+			}
+
+			if ($userCount > $syncLimitInfo['hard']) {
+				$output->writeln("Several users have been automatically disabled because you have over {$syncLimitInfo['hard']} users");
+				$output->writeln("Please consider to buy a enterprise license to have unlimited users in this backend");
+				$this->notifyHardLimit($syncLimitInfo['soft'], $syncLimitInfo['hard'], $backend->getBackendName());
+			} elseif ($userCount > $syncLimitInfo['soft']) {
+				$output->writeln("You are getting near the {$syncLimitInfo['hard']} users, which is the maximum number of enabled users you can have");
+				$output->writeln("Please consider to buy a enterprise license to have unlimited users in this backend");
+				$this->notifySoftLimit($syncLimitInfo['soft'], $syncLimitInfo['hard'], $backend->getBackendName());
+			}
+		}
+		// no need to do anything if there is no limit info
+
 		return 0;
 	}
 
@@ -417,5 +460,85 @@ class SyncBackend extends Command {
 				}
 			);
 		}
+	}
+
+	/**
+	 * Show the number of users in the backend grouped by state. This function will
+	 * return the same information as $mapper->getUserCountForBackendGroupByState(...)
+	 * after that information has been written in the output.
+	 */
+	private function showSyncStats(OutputInterface $output, AccountMapper $mapper, UserInterface $backend) {
+		$backendClassName = \get_class($backend);
+		$stats = $mapper->getUserCountForBackendGroupByState($backendClassName);
+
+		$stateToString = [
+			Account::STATE_INITIAL => 'Initial State',
+			Account::STATE_ENABLED => 'Enabled',
+			Account::STATE_DISABLED => 'Disabled',
+			Account::STATE_DELETED => 'Deleted',
+			Account::STATE_AUTODISABLED => 'Auto Disabled',
+		];
+
+		$rowData = [];
+		$userNumberInUnknownState = 0;
+		foreach ($stats as $state => $userNumber) {
+			if (isset($stateToString[$state])) {
+				$rowData[] = [$stateToString[$state], $userNumber];
+			} else {
+				$userNumberInUnknownState += $userNumber;
+			}
+		}
+		if ($userNumberInUnknownState > 0) {
+			$rowData[] = ['Unknown State', $userNumberInUnknownState];
+		}
+
+		$output->writeln("Stats for $backendClassName");
+
+		$table = new Table($output);
+		$table->setHeaders(['State', 'User Count']);
+		$table->setRows($rowData);
+		$table->render();
+
+		return $stats;
+	}
+
+	private function notifySoftLimit($softLimit, $hardLimit, $backendName) {
+		if ($this->config->getAppValue('core', 'user_sync_soft_limit_sent')) {
+			return;
+		}
+
+		$adminGroup = $this->groupManager->get('admin');
+		foreach ($adminGroup->getUsers() as $adminUser) {
+			$notification = $this->notificationManager->createNotification();
+			$notification->setApp('core')
+				->setUser($adminUser->getUID())
+				->setDateTime(new \DateTime())
+				->setObject('user_sync_soft_limit', $adminUser->getUID())
+				->setSubject('user_sync_soft_limit', [$softLimit, $hardLimit, $backendName])
+				->setMessage('user_sync_soft_limit', [$softLimit, $hardLimit, $backendName]);
+
+			$this->notificationManager->notify($notification);
+		}
+		$this->config->setAppValue('core', 'user_sync_soft_limit_sent', \time());
+	}
+
+	private function notifyHardLimit($softLimit, $hardLimit, $backendName) {
+		if ($this->config->getAppValue('core', 'user_sync_hard_limit_sent')) {
+			return;
+		}
+
+		$adminGroup = $this->groupManager->get('admin');
+		foreach ($adminGroup->getUsers() as $adminUser) {
+			$notification = $this->notificationManager->createNotification();
+			$notification->setApp('core')
+				->setUser($adminUser->getUID())
+				->setDateTime(new \DateTime())
+				->setObject('user_sync_hard_limit', $adminUser->getUID())
+				->setSubject('user_sync_hard_limit', [$softLimit, $hardLimit, $backendName])
+				->setMessage('user_sync_hard_limit', [$softLimit, $hardLimit, $backendName]);
+
+			$this->notificationManager->notify($notification);
+		}
+		$this->config->setAppValue('core', 'user_sync_hard_limit_sent', \time());
 	}
 }

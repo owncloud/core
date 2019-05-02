@@ -443,22 +443,22 @@ class SyncService {
 	}
 
 	/**
-	 * Check if the user will be disabled in the next sync run according to the limits set
-	 * by the SyncLimiter.
-	 * This function should be used before any attempt to enable a user. It will assume
-	 * you're trying to enable a disabled user.
-	 * The returned value might be wrong if the
-	 * user is already enabled because we can't be sure what exact user will be disabled.
-	 * Consider to use this function as a check for the number of users to be or not
-	 * over the expected backend limits.
-	 * @param string $uid the uid of the user to be enabled
-	 * @throws DoesNotExistException if the user doesn't exists
-	 * @throws MultipleObjectsReturnedException if multiple users match the uid
-	 * @return bool true if the user will be disabled, false otherwise
+	 * Get the user limitation being applied by the SyncService for the specified backend
+	 * If there is no limit being applied, this function will return false, otherwise it will
+	 * return an array with "soft" and "hard" keys meaning the soft and hard limits for
+	 * the number of enabled users in the backend.
+	 * ['soft' => X, 'hard' => Y]
+	 * @param string $backend the backend name to check the limits
+	 * @return array|false an array with the limit information for the backend or false if no
+	 * limit is set.
 	 */
-	public function userWillBeDisabled($uid) {
-		$account = $this->mapper->getByUid($uid);
-		return $this->userWillBeDisabledInBackend($account->getBackend());
+	public function getUserLimitInfo($backend) {
+		$limitInfo = $this->syncLimiter->getLimitInfo();
+		if (isset($limitInfo[$backend])) {
+			return $limitInfo[$backend];
+		} else {
+			return false;
+		}
 	}
 
 	/**
