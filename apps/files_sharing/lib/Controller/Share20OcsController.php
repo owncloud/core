@@ -920,12 +920,13 @@ class Share20OcsController extends OCSController {
 	 * @NoAdminRequired
 	 *
 	 * @param int $itemSource
+	 * @param string $itemType
 	 * @param int $shareType
 	 * @param string $recipient
 	 *
 	 * @return Result
 	 */
-	public function notifyRecipients($itemSource, $shareType, $recipient) {
+	public function notifyRecipients($itemSource, $itemType, $shareType, $recipient) {
 		$recipientList = [];
 		if ($shareType === Share::SHARE_TYPE_USER) {
 			$recipientList[] = $this->userManager->get($recipient);
@@ -960,12 +961,8 @@ class Share20OcsController extends OCSController {
 		// if we were able to send to at least one recipient, mark as sent
 		// allowing the user to resend would spam users who already got a notification
 		if (\count($result) < \count($recipientList)) {
-			$items = $this->shareManager->getSharedWith($recipient, $shareType, $node);
-			if (\count($items) > 0) {
-				$share = $items[0];
-				$share->setMailSend(true);
-				$this->shareManager->updateShare($share);
-			}
+			// FIXME: migrate to a new share API
+			Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
 		}
 
 		$message = empty($result)
@@ -984,22 +981,15 @@ class Share20OcsController extends OCSController {
 	 * @NoAdminRequired
 	 *
 	 * @param int $itemSource
+	 * @param string $itemType
 	 * @param int $shareType
 	 * @param string $recipient
 	 *
 	 * @return Result
 	 */
-	public function notifyRecipientsDisabled($itemSource, $shareType, $recipient) {
-		$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
-		$nodes = $userFolder->getById($itemSource, true);
-		$node = $nodes[0] ?? null;
-
-		$items = $this->shareManager->getSharedWith($recipient, $shareType, $node);
-		if (\count($items) > 0) {
-			$share = $items[0];
-			$share->setMailSend(true);
-			$this->shareManager->updateShare($share);
-		}
+	public function notifyRecipientsDisabled($itemSource, $itemType, $shareType, $recipient) {
+		// FIXME: migrate to a new share API
+		Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
 		return new Result();
 	}
 
