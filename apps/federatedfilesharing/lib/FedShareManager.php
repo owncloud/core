@@ -130,8 +130,9 @@ class FedShareManager {
 								$token
 	) {
 		$owner = $ownerAddress->getUserId();
+		$remote = $ownerAddress->getOrigin();
 		$shareId = $this->federatedShareProvider->addShare(
-			$ownerAddress->getOrigin(), $token, $name, $owner, $shareWith, $remoteId
+			$remote, $token, $name, $owner, $shareWith, $remoteId
 		);
 
 		$this->eventDispatcher->dispatch(
@@ -163,20 +164,22 @@ class FedShareManager {
 			$sharedByAddress->getCloudId(),
 			\trim($name, '/')
 		];
-		$notification = $this->createNotification($shareWith);
-		$notification->setDateTime(new \DateTime())
-			->setObject('remote_share', $shareId)
-			->setSubject('remote_share', $params)
-			->setMessage('remote_share', $params);
-		$declineAction = $notification->createAction();
-		$declineAction->setLabel('decline')
-			->setLink($link, 'DELETE');
-		$notification->addAction($declineAction);
-		$acceptAction = $notification->createAction();
-		$acceptAction->setLabel('accept')
-			->setLink($link, 'POST');
-		$notification->addAction($acceptAction);
-		$this->notificationManager->notify($notification);
+		if (!$this->federatedShareProvider->getAccepted($remote, $shareWith)) {
+			$notification = $this->createNotification($shareWith);
+			$notification->setDateTime(new \DateTime())
+				->setObject('remote_share', $shareId)
+				->setSubject('remote_share', $params)
+				->setMessage('remote_share', $params);
+			$declineAction = $notification->createAction();
+			$declineAction->setLabel('decline')
+				->setLink($link, 'DELETE');
+			$notification->addAction($declineAction);
+			$acceptAction = $notification->createAction();
+			$acceptAction->setLabel('accept')
+				->setLink($link, 'POST');
+			$notification->addAction($acceptAction);
+			$this->notificationManager->notify($notification);
+		}
 	}
 
 	/**
