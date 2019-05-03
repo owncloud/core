@@ -875,6 +875,28 @@ trait Sharing {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user with uppercase letters "([^"]*)"(?: with permissions (.*))?$/
+	 *
+	 * @param string $user1
+	 * @param string $filepath
+	 * @param string $user2
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function userHasSharedFileWithUserWithUppercaseLettersUsingTheSharingApi(
+		$user1, $filepath, $user2, $permissions = null
+	) {
+		$this->userSharesFileWithUserUsingTheSharingApi(
+			$user1, $filepath, $user2, $permissions
+		);
+		PHPUnit\Framework\Assert::assertTrue(
+			$this->isUserOrGroupInSharedData(\strtolower($user2), $permissions),
+			"User $user1 failed to share $filepath with user $user2"
+		);
+	}
+
+	/**
 	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with the administrator(?: with permissions (.*))?$/
 	 *
 	 * @param string $sharer
