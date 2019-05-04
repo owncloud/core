@@ -76,6 +76,11 @@ class SettingsManagerTest extends TestCase {
 		);
 	}
 
+	public function testGetBuiltInSections() {
+		$sections = $this->invokePrivate($this->settingsManager, 'getBuiltInSections', ['admin']);
+		$this->assertNotEmpty($sections);
+	}
+
 	public function testGetBuiltInPanel() {
 		$panel = $this->settingsManager->getBuiltInPanel('OC\Settings\Panels\Personal\Profile');
 		$this->assertNotFalse($panel);

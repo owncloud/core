@@ -110,7 +110,7 @@ OC.Share = _.extend(OC.Share || {}, {
 		}
 		// TODO: iterating over the files might be more efficient
 		for (item in OC.Share.statuses){
-			var iconClass = 'icon-share';
+			var iconClass = 'icon-shared';
 			var data = OC.Share.statuses[item];
 			var hasLink = data.link;
 			// Links override shared in terms of icon display
@@ -118,7 +118,7 @@ OC.Share = _.extend(OC.Share || {}, {
 				iconClass = 'icon-public';
 			}
 			if (itemType !== 'file' && itemType !== 'folder') {
-				$('a.share[data-item="'+item+'"] .icon').removeClass('icon-share icon-public').addClass(iconClass);
+				$('a.share[data-item="'+item+'"] .icon').removeClass('icon-shared icon-public').addClass(iconClass);
 			} else {
 				// TODO: ultimately this part should be moved to files_sharing app
 				var file = $fileList.find('tr[data-id="'+item+'"]');
@@ -176,12 +176,12 @@ OC.Share = _.extend(OC.Share || {}, {
 					}
 				} else if (OC.Share.itemShares[index].length > 0) {
 					shares = true;
-					iconClass = 'icon-share';
+					iconClass = 'icon-shared';
 				}
 			}
 		});
 		if (itemType != 'file' && itemType != 'folder') {
-			$('a.share[data-item="'+itemSource+'"] .icon').removeClass('icon-share icon-public').addClass(iconClass);
+			$('a.share[data-item="'+itemSource+'"] .icon').removeClass('icon-shared icon-public').addClass(iconClass);
 		} else {
 			var $tr = $('tr').filterAttr('data-id', String(itemSource));
 			if ($tr.length > 0) {
@@ -265,7 +265,7 @@ OC.Share = _.extend(OC.Share || {}, {
 		var recipients;
 		var owner = $tr.attr('data-share-owner');
 		var shareFolderIcon;
-		var iconClass = 'icon-share';
+		var iconClass = 'icon-shared';
 		action.removeClass('shared-style');
 		// update folder icon
 		if (type === 'dir' && (hasShares || hasLink || owner)) {
@@ -315,7 +315,7 @@ OC.Share = _.extend(OC.Share || {}, {
 		if (hasLink) {
 			iconClass = 'icon-public';
 		}
-		icon.removeClass('icon-share icon-public').addClass(iconClass);
+		icon.removeClass('icon-shared icon-public').addClass(iconClass);
 	},
 	/**
 	 *
