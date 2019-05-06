@@ -796,9 +796,6 @@ class Share20OcsController extends OCSController {
 					$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 					return new Result(null, 400, $this->l->t('Public upload is only possible for publicly shared folders'));
 				}
-
-				// normalize to correct public upload permissions
-				$newPermissions = Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE | Constants::PERMISSION_DELETE;
 			}
 
 			// create-only (upload-only)
