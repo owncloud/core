@@ -471,6 +471,46 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
+	 * @param string $fileInCore e.g. 'app2/myapp/appinfo/info.xml'
+	 * @param string|null $baseUrl
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public static function readFileFromServer(
+		$fileInCore,
+		$baseUrl  = null,
+		$adminUsername = null,
+		$adminPassword = null
+	) {
+		$baseUrl = self::checkBaseUrl($baseUrl, "readFile");
+		$adminUsername = self::checkAdminUsername(
+			$adminUsername, "readFile"
+		);
+		$adminPassword = self::checkAdminPassword(
+			$adminPassword, "readFile"
+		);
+
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			'GET',
+			"/apps/testing/api/v1/file?file={$fileInCore}"
+		);
+		self::assertSame(
+			200,
+			$response->getStatusCode(),
+			"Failed to read the file {$fileInCore}"
+		);
+		$localContent = HttpRequestHelper::getResponseXml($response);
+		$localContent = (string)$localContent->data->element->contentUrlEncoded;
+		return \urldecode($localContent);
+	}
+
+	/**
 	 * returns the content of a file in a skeleton folder
 	 *
 	 * @param string $fileInSkeletonFolder
