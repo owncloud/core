@@ -400,7 +400,7 @@ trait AppConfiguration {
 				$this->usingServer($server);
 				$this->resetAppConfigs();
 				$result = SetupHelper::runOcc(
-					['config:list'], $this->getAdminUsername(),
+					['config:list', '--private'], $this->getAdminUsername(),
 					$this->getAdminPassword(), $this->getBaseUrl(), $this->getOcPath()
 				);
 				$this->savedConfigList[$server] = \json_decode($result['stdOut'], true);
@@ -454,6 +454,15 @@ trait AppConfiguration {
 					$this->getAdminPassword(),
 					$this->getBaseUrl(),
 					$this->getOcPath()
+				);
+			}
+		}
+		foreach ($this->savedConfigList[$server]['system'] as $configKey => $configValue) {
+			if (!\array_key_exists($configKey, $currentConfigList["system"])
+				|| $currentConfigList["system"][$configKey] !== $this->savedConfigList[$server]['system'][$configKey]
+			) {
+				SetupHelper::runOcc(
+					['config:system:set', "--type=json", "--value=" . \json_encode($configValue), $configKey]
 				);
 			}
 		}
