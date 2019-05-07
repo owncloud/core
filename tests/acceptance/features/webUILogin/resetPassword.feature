@@ -30,7 +30,8 @@ Feature: reset the password
     And the user follows the password reset link from email address "user1@example.org"
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user resets the password to "%alt3%" and confirms with the same password using the webUI
-    Then the email address "user1@example.org" should have received an email with the body containing
+    Then the user should be redirected to the login page
+    And the email address "user1@example.org" should have received an email with the body containing
       """
       Password changed successfully
       """
@@ -43,7 +44,8 @@ Feature: reset the password
     And the user follows the password reset link from email address "user1@example.org"
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user resets the password to "%alt3%" and confirms with the same password using the webUI
-    Then the email address "user1@example.org" should have received an email with the body containing
+    Then the user should be redirected to the login page
+    And the email address "user1@example.org" should have received an email with the body containing
       """
       Password changed successfully
       """
