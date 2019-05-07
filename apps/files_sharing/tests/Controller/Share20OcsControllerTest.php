@@ -1773,9 +1773,15 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
 			$this->callback(function (\OCP\Share\IShare $share) {
-				return $share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE) &&
-				$share->getPassword() === 'password' &&
-				$share->getExpirationDate() === null;
+				if ($share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE)) {
+					return $share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE) &&
+						$share->getPassword() === 'password' &&
+						$share->getExpirationDate() === null;
+				} else {
+					return $share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE) &&
+						$share->getPassword() === 'password' &&
+						$share->getExpirationDate() === null;
+				}
 			})
 		)->will($this->returnArgument(0));
 
@@ -2052,7 +2058,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
 			$this->callback(function (\OCP\Share\IShare $share) use ($date) {
-				return $share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE) &&
+				return $share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE) &&
 				$share->getPassword() === 'password' &&
 				$share->getExpirationDate() === $date;
 			})
