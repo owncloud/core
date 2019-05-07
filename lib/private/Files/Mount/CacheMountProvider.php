@@ -36,7 +36,7 @@ class CacheMountProvider implements IMountProvider {
 	private $config;
 
 	/**
-	 * ObjectStoreHomeMountProvider constructor.
+	 * CacheMountProvider constructor.
 	 *
 	 * @param IConfig $config
 	 */
@@ -60,7 +60,7 @@ class CacheMountProvider implements IMountProvider {
 			}
 
 			return [
-				new MountPoint('\OC\Files\Storage\Local', '/' . $user->getUID() . '/cache', ['datadir' => $cacheDir, $loader])
+				new MountPoint('\OC\Files\Storage\Local', '/' . $user->getUID() . '/cache', ['datadir' => $cacheDir], $loader)
 			];
 		} else {
 			return [];
