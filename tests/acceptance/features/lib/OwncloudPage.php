@@ -50,35 +50,6 @@ class OwncloudPage extends Page {
 	protected $originalPath = null;
 
 	/**
-	 * Waits for jquery and the document to load
-	 *
-	 * @param Session $session
-	 * @param int $timeout_msec
-	 *
-	 * @return void
-	 */
-	private function waitTillJqueryIsLoaded(
-		Session $session,
-		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	): void {
-		/* language=javascript */
-		$script = '(
-			document.readyState === "complete" &&
-			typeof jQuery !== "undefined"
-		)';
-		$result = $session->wait($timeout_msec, $script);
-
-		if ($result === true) {
-			// okay, document and javascript loaded fine
-			return;
-		}
-		// we have waited long enough, log the message and move on
-		$message = 'INFORMATION: timed out waiting for jQuery to load.';
-		echo $message;
-		\error_log($message);
-	}
-
-	/**
 	 * @param Session $session
 	 * @param int $timeout_msec
 	 *
@@ -472,7 +443,6 @@ class OwncloudPage extends Page {
 	 * @return void
 	 */
 	public function scrollToPosition($jQuerySelector, $position, Session $session) {
-		$this->waitTillJqueryIsLoaded($session);
 		$session->executeScript(
 			'jQuery("' . $jQuerySelector . '").scrollTop(' . $position . ');'
 		);
@@ -543,7 +513,6 @@ class OwncloudPage extends Page {
 	public function waitForAjaxCallsToStart(
 		Session $session, $timeout_msec = 1000
 	) {
-		$this->waitTillJqueryIsLoaded($session);
 		$timeout_msec = (int) $timeout_msec;
 		if ($timeout_msec <= 0) {
 			throw new \InvalidArgumentException("negative or zero timeout");
@@ -558,7 +527,7 @@ class OwncloudPage extends Page {
 					if (typeof window.activeAjaxCount === "number") {
 						result = result + window.activeAjaxCount;
 					}
-					if (typeof jQuery.active === "number") {
+					if (typeof jQuery !== "undefined" && typeof jQuery.active === "number") {
 						result = result + jQuery.active;
 					}
 					return result;
@@ -738,7 +707,6 @@ class OwncloudPage extends Page {
 		Session $session, $scrolledElement,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$this->waitTillJqueryIsLoaded($session);
 		// Wait so that, if scrolling is going to happen, it will have started.
 		// Otherwise, we might start checking early, before scrolling begins.
 		// The downside here is that if scrolling is not needed at all then we
