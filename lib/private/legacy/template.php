@@ -178,6 +178,8 @@ class OC_Template extends \OC\Template\Base {
 				\OCP\Util::addScript('files/iedavclient');
 			}
 
+			\OCP\Util::addScript('core', 'sync/syncnotification');
+
 			self::$initTemplateEngineFirstRun = false;
 		}
 	}
