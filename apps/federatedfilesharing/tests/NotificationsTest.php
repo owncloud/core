@@ -34,6 +34,7 @@ use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IResponse;
 use OCP\IConfig;
 use OCA\FederatedFileSharing\BackgroundJob\RetryJob;
+use OCP\Share\Events\DeclineShare;
 
 class NotificationsTest extends \Test\TestCase {
 
@@ -199,5 +200,20 @@ class NotificationsTest extends \Test\TestCase {
 				true
 			]
 		);
+	}
+
+	public function testDeclineEvent() {
+		$dispatcher = \OC::$server->getEventDispatcher();
+		$event = $dispatcher->dispatch(
+			DeclineShare::class,
+			new DeclineShare(
+				[
+					'remote_id' => '4354353',
+					'remote' => 'http://localhost',
+					'share_token' => 'ohno'
+				]
+			)
+		);
+		$this->assertInstanceOf(DeclineShare::class, $event);
 	}
 }

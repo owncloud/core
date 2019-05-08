@@ -21,6 +21,7 @@
 
 namespace OCA\FederatedFileSharing\AppInfo;
 
+use GuzzleHttp\Exception\ServerException;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\Command\PollIncomingShares;
 use OCA\FederatedFileSharing\Controller\OcmController;
@@ -34,6 +35,7 @@ use OCA\FederatedFileSharing\Ocm\NotificationManager;
 use OCA\FederatedFileSharing\Ocm\Permissions;
 use OCA\FederatedFileSharing\TokenHandler;
 use OCP\AppFramework\App;
+use OCP\AppFramework\Http;
 use OCP\Share\Events\AcceptShare;
 use OCP\Share\Events\DeclineShare;
 
@@ -259,11 +261,19 @@ class Application extends App {
 			function (DeclineShare $event) use ($container) {
 				/** @var Notifications $notifications */
 				$notifications = $container->query('Notifications');
-				$notifications->sendDeclineShare(
-					$event->getRemote(),
-					$event->getRemoteId(),
-					$event->getShareToken()
-				);
+				try {
+					$notifications->sendDeclineShare(
+						$event->getRemote(),
+						$event->getRemoteId(),
+						$event->getShareToken()
+					);
+				} catch (ServerException $e) {
+					// ownCloud lower than 10.2 responded with Internal Server Error
+					// on declining non-existing share. It can't be caught outside the closure
+					if ($e->getCode() !== Http::STATUS_INTERNAL_SERVER_ERROR) {
+						throw $e;
+					}
+				}
 			}
 		);
 	}
