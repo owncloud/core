@@ -36,6 +36,7 @@ use OCP\IGroupManager;
 use OCP\UserInterface;
 use OCP\Mail\IMailer;
 use OCP\L10N\IFactory;
+use OCP\Template;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -514,22 +515,32 @@ class SyncBackend extends Command {
 		$adminGroup = $this->groupManager->get('admin');
 		foreach ($adminGroup->getUsers() as $adminUser) {
 			$adminUserEmail = $adminUser->getEMailAddress();
+			$adminUserDisplayname = $adminUser->getDisplayName();
 			if ($adminUserEmail === null || !$this->mailer->validateMailAddress($adminUserEmail)) {
-				$this->logger->debug('Could not sent email to ' . $adminUser->getDisplayName());
+				$this->logger->debug("Could not sent email to $adminUserDisplayname");
 				continue;
 			}
 
 			$userLanguage = $this->config->getUserValue($adminUser->getUID(), 'core', 'lang', 'en');
 			$l10n = $this->l10nFactory->get('core', $userLanguage);
 
-			$message = $l10n->t("You are getting near the %s users, which is the maximum number of enabled users you can have. Please consider to buy a enterprise license to have unlimited users in this backend", [
-				$hardLimit
-			]);
+			$tmpl = new Template('core', 'sync/htmlmail.softlimit', '', false, $userLanguage);
+			$tmpl->assign('displayname', $adminUserDisplayname);
+			$tmpl->assign('hardLimit', $hardLimit);
+			$tmpl->assign('backend', $backendName);
+			$htmlBody = $tmpl->fetchPage();
+
+			$tmpl2 = new Template('core', 'sync/plainmail.softlimit', '', false, $userLanguage);
+			$tmpl2->assign('displayname', $adminUserDisplayname);
+			$tmpl2->assign('hardLimit', $hardLimit);
+			$tmpl2->assign('backend', $backendName);
+			$plainBody = $tmpl2->fetchPage();
 
 			$mail = $this->mailer->createMessage();
 			$mail->setTo([$adminUserEmail]);
 			$mail->setSubject((string) $l10n->t('Soft limit for users reached'));
-			$mail->setPlainBody((string) $message);
+			$mail->setHtmlBody($htmlBody);
+			$mail->setPlainBody($plainBody);
 
 			$this->mailer->send($mail);
 		}
@@ -544,22 +555,32 @@ class SyncBackend extends Command {
 		$adminGroup = $this->groupManager->get('admin');
 		foreach ($adminGroup->getUsers() as $adminUser) {
 			$adminUserEmail = $adminUser->getEMailAddress();
+			$adminUserDisplayname = $adminUser->getDisplayName();
 			if ($adminUserEmail === null || !$this->mailer->validateMailAddress($adminUserEmail)) {
-				$this->logger->debug('Could not sent email to ' . $adminUser->getDisplayName());
+				$this->logger->debug("Could not sent email to $adminUserDisplayname");
 				continue;
 			}
 
 			$userLanguage = $this->config->getUserValue($adminUser->getUID(), 'core', 'lang', 'en');
 			$l10n = $this->l10nFactory->get('core', $userLanguage);
 
-			$message = $l10n->t("Several users have been automatically disabled because you have over %s users. Please consider to buy a enterprise license to have unlimited users in this backend", [
-				$hardLimit
-			]);
+			$tmpl = new Template('core', 'sync/htmlmail.hardlimit', '', false, $userLanguage);
+			$tmpl->assign('displayname', $adminUserDisplayname);
+			$tmpl->assign('hardLimit', $hardLimit);
+			$tmpl->assign('backend', $backendName);
+			$htmlBody = $tmpl->fetchPage();
+
+			$tmpl2 = new Template('core', 'sync/plainmail.hardlimit', '', false, $userLanguage);
+			$tmpl2->assign('displayname', $adminUserDisplayname);
+			$tmpl2->assign('hardLimit', $hardLimit);
+			$tmpl2->assign('backend', $backendName);
+			$plainBody = $tmpl2->fetchPage();
 
 			$mail = $this->mailer->createMessage();
 			$mail->setTo([$adminUserEmail]);
 			$mail->setSubject((string) $l10n->t('Hard limit for users reached'));
-			$mail->setPlainBody((string) $message);
+			$mail->setHtmlBody($htmlBody);
+			$mail->setPlainBody($plainBody);
 
 			$this->mailer->send($mail);
 		}
