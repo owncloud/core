@@ -27,6 +27,12 @@ default:
         - FeatureContext: *common_feature_context_params
         - CorsContext:
 
+    apiAuthOcs:
+      paths:
+        - '%paths.base%/../features/apiAuthOcs'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
     apiCapabilities:
       paths:
         - '%paths.base%/../features/apiCapabilities'
