@@ -112,6 +112,15 @@ default:
         - TrashbinContext:
         - WebDavPropertiesContext:
 
+    apiShareManagementBasic:
+      paths:
+        - '%paths.base%/../features/apiShareManagementBasic'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
     apiShareOperations:
       paths:
         - '%paths.base%/../features/apiShareOperations'
