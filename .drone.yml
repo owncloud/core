@@ -827,6 +827,17 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
+      BEHAT_SUITE: apiAuthOcs
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
       BEHAT_SUITE: apiCapabilities
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -895,6 +906,28 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioningGroups-v1
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioningGroups-v2
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
       BEHAT_SUITE: apiSharees
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -907,6 +940,17 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiShareManagement
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiShareManagementBasic
       DB_TYPE: mariadb
       USE_SERVER: true
       SERVER_PROTOCOL: https
@@ -974,6 +1018,17 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavLocks
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavLocks2
       DB_TYPE: mariadb
       USE_SERVER: true
       SERVER_PROTOCOL: https
