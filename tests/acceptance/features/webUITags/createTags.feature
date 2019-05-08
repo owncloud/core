@@ -74,3 +74,21 @@ Feature: Creation of tags for the files and folders
     And the user deletes tag with name "tag1" using the webUI
     Then tag "tag1" should not exist for user "user1"
     And tag "tag1" should not exist for user "user2"
+
+  Scenario: Delete a tag that already exists for a file in the root
+    Given the user has created a "normal" tag with name "lorem"
+    And the user has added tag "lorem" to file "lorem.txt"
+    When the user browses directly to display the details of file "lorem.txt" in folder "/"
+    Then file "lorem.txt" should have the following tags for user "user1"
+      | lorem | normal |
+    When the user deletes tag with name "lorem" using the webUI
+    Then tag "lorem" should not exist for user "user1"
+
+  Scenario: Delete a tag that already exists for a file in a folder
+    Given the user has created a "normal" tag with name "lorem"
+    And the user has added tag "lorem" to file "simple-folder/lorem.txt"
+    When the user browses directly to display the details of file "lorem.txt" in folder "simple-folder"
+    Then file "simple-folder/lorem.txt" should have the following tags for user "user1"
+      | lorem | normal |
+    When the user deletes tag with name "lorem" using the webUI
+    Then tag "lorem" should not exist for user "user1"
