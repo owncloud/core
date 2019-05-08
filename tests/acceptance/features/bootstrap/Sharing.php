@@ -110,7 +110,7 @@ trait Sharing {
 	 *       | password        | The password to protect the public link share with. |
 	 *       | expireDate      | An expire date for public link shares.              |
 	 *       |                 | This argument expects a date string.                |
-	 *       |                 | in the format 'YYYY-MM-DD'.                         |
+	 *       |                 | in the format 'YYYY-MM-DD' or '+ x days'.            |
 	 *       | permissions     | The permissions to set on the share.                |
 	 *       |                 |     1 = read; 2 = update; 4 = create;               |
 	 *       |                 |     8 = delete; 16 = share; 31 = all                |
@@ -647,7 +647,8 @@ trait Sharing {
 		if ($data === null) {
 			$data = $this->getResponseXml()->data[0];
 		}
-		if ((string) $field === 'expiration') {
+		//do not try to convert empty date
+		if ((string) $field === 'expiration' && !empty($contentExpected)) {
 			$contentExpected
 				= \date(
 					'Y-m-d',
@@ -673,7 +674,6 @@ trait Sharing {
 					print($element->$field);
 				}
 			}
-
 			return false;
 		} else {
 			if ($contentExpected == "A_TOKEN") {
@@ -1299,6 +1299,7 @@ trait Sharing {
 	}
 
 	/**
+
 	 * @Then the fields of the last response should include
 	 *
 	 * @param TableNode|null $body
@@ -1311,7 +1312,7 @@ trait Sharing {
 
 			foreach ($fd as $field => $value) {
 				$value = $this->replaceValuesFromTable($field, $value);
-				if (!$this->isFieldInResponse($field, $value)) {
+				if (!$this->isFieldInShareResponse($field, $value)) {
 					PHPUnit\Framework\Assert::fail(
 						"$field doesn't have value $value"
 					);
