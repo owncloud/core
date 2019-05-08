@@ -36,7 +36,8 @@ Feature: reset the password using an email address
 			Could not reset password because the token is invalid
 			"""
     #When the user resets the password to "%alt3%" using the webUI
-    #Then the email address "user1@example.org" should have received an email with the body containing
+    #Then the user should be redirected to the login page
+    #And the email address "user1@example.org" should have received an email with the body containing
 	#		"""
 	#		Password changed successfully
 	#		"""
