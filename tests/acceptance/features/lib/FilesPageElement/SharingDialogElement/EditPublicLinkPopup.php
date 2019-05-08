@@ -54,6 +54,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 		'upload' => ".//label[contains(@for, 'sharingDialogAllowPublicUpload')]"
 	];
 	private $popupCloseButton = "//a[@class='oc-dialog-close']";
+	private $expirationDateRequiredErrorMessageXpath = './/*[@id="shareDialogExpirationView"]//span[@class="error-message"]';
 
 	/**
 	 * sets the NodeElement for the current popup
@@ -171,7 +172,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 			" could not find input field for the expiration date of the public link"
 		);
 		$expirationDateInput->setValue($date);
-		
+
 		//try to close the date picker by clicking the label
 		//because that date picker might overlap the email field
 		//but do not panic if the label is not found, maybe we still can
@@ -333,5 +334,24 @@ class EditPublicLinkPopup extends OwncloudPage {
 		$this->waitForOutstandingAjaxCalls($session);
 		$popupElement = $this->waitTillXpathIsVisible($xpath, $timeout_msec);
 		$this->setElement($popupElement);
+	}
+
+	/**
+	 *
+	 * @return $errorMessage
+	 * @throws ElementNotFoundException
+	 */
+	public function getErrorMessage() {
+		$errorMessageElement = $this->popupElement->find(
+			"xpath",
+			$this->expirationDateRequiredErrorMessageXpath
+		);
+		$this->assertElementNotNull(
+			$errorMessageElement,
+			__METHOD__ .
+			" xpath $this->expirationDateRequiredErrorMessageXpath" .
+			" could not find expiration date required error message"
+		);
+		return $errorMessageElement->getText();
 	}
 }

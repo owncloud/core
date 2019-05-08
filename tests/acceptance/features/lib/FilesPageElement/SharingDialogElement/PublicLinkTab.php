@@ -233,6 +233,7 @@ class PublicLinkTab extends OwncloudPage {
 		} else {
 			$this->editPublicLinkPopupPageObject->cancel();
 		}
+		return $this->editPublicLinkPopupPageObject;
 	}
 
 	/**

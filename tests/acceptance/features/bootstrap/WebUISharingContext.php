@@ -352,7 +352,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$session = $this->getSession();
 		$this->theUserOpensTheShareDialogForFileFolder($name);
 		$this->theUserHasOpenedThePublicLinkShareTab();
-		$this->publicShareTab->editLink($session, $linkName, null, null, null, $date);
+		$this->publicSharingPopup = $this->publicShareTab->editLink(
+			$session,
+			$linkName,
+			null,
+			null,
+			null,
+			$date
+		);
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 	}
 
@@ -477,6 +484,18 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	) {
 		$warningMessage = $this->publicShareTab->getWarningMessage();
 		PHPUnit\Framework\Assert::assertEquals($expectedWarningMessage, $warningMessage);
+	}
+
+	/**
+	 * @Then the user should see an error message on the public link popup saying :message
+	 *
+	 * @param string $message
+	 *
+	 * @return void
+	 */
+	public function theUserShouldSeeAnErrorMessageOnThPublicLinkPopupSaying($message) {
+		$errormessage = $this->publicSharingPopup->getErrorMessage();
+		PHPUnit\Framework\Assert::assertEquals($message, $errormessage);
 	}
 
 	/**

@@ -299,7 +299,7 @@ Feature: Share by public link
       | shareType  | 3           |
     When the user changes the expiration of the public link named "Public link" of file "lorem.txt" to "21-07-2038"
     And the user gets the info of the last share using the sharing API
-    Then the fields of the last response should include
+    Then the share fields of the last share should include
       | expiration | 21-07-2038 |
 
   Scenario: user tries to change the expiration date of the public link to past date using webUI
@@ -311,7 +311,7 @@ Feature: Share by public link
     When the user changes the expiration of the public link named "Public link" of file "lorem.txt" to "14-09-2017"
     And the user gets the info of the last share using the sharing API
     Then the user should see an error message on the public link share dialog saying "Expiration date is in the past"
-    And the fields of the last response should include
+    And the share fields of the last share should include
       | expiration | 14-10-2038 |
 
   Scenario: share two file with same name but different paths by public link
@@ -481,3 +481,31 @@ Feature: Share by public link
     And the user changes the permission of the public link named "Public link" to "read-write"
     And the public accesses the last created public link using the webUI
     Then it should be possible to delete file "lorem-big.txt" using the webUI
+
+  Scenario: user tries to deletes the expiration date of already existing public link using webUI when expiration date is enforced
+    Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
+    And user "user1" has created a share with settings
+      | path       | lorem.txt   |
+      | name       | Public link |
+      | expireDate | + 5 days    |
+      | shareType  | 3           |
+    When the user reloads the current page of the webUI
+    And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
+    Then the user should see an error message on the public link popup saying "Expiration date is required"
+    And the user gets the info of the last share using the sharing API
+    And the share fields of the last share should include
+      | expiration | + 5 days   |
+
+  Scenario: user deletes the expiration date of already existing public link using webUI when expiration date is set but not enforced
+    Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
+    And user "user1" has created a share with settings
+      | path       | lorem.txt   |
+      | name       | Public link |
+      | expireDate |  + 5 days   |
+      | shareType  | 3           |
+    When the user reloads the current page of the webUI
+    And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
+    And the user gets the info of the last share using the sharing API
+    And the share fields of the last share should include
+      | expiration | |
