@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Sujith Haridasan <sharidasan@owncloud.com>
+ * @author Juan Pablo Villafáñez <jvillafanez@solidgeargroup.com>
  *
  * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0

@@ -207,6 +207,8 @@ class OC_Template extends \OC\Template\Base {
 			\OCP\Util::addScript('core', 'share');
 			\OCP\Util::addStyle('core', 'share');
 
+			\OCP\Util::addScript('core', 'sync/syncnotification');
+
 			self::$initTemplateEngineFirstRun = false;
 		}
 	}

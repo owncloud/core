@@ -461,6 +461,43 @@ class SyncService {
 		}
 	}
 
+	public function getLimitInfoStats() {
+		$stateToString = [
+			Account::STATE_INITIAL => 'Initial State',
+			Account::STATE_ENABLED => 'Enabled',
+			Account::STATE_DISABLED => 'Disabled',
+			Account::STATE_DELETED => 'Deleted',
+			Account::STATE_AUTODISABLED => 'Auto Disabled',
+		];
+
+		$stats = [];
+		$limitInfo = $this->syncLimiter->getLimitInfo();
+		foreach ($limitInfo as $backend => $limits) {
+			$backendStateStats = $this->mapper->getUserCountForBackendGroupByState($backend);
+			$backendStateStatsTranslated = [];
+			$userNumberInUnknownState = 0;
+			foreach ($backendStateStats as $backendStateCode => $userCount) {
+				if (isset($stateToString[$backendStateCode])) {
+					$stateName = $stateToString[$backendStateCode];
+					$backendStateStatsTranslated[$stateName] = $userCount;
+				} else {
+					$userNumberInUnknownState += $userCount;
+				}
+			}
+
+			if ($userNumberInUnknownState > 0) {
+				$backendStateStatsTranslated['Unknown State'] = $userNumberInUnknownState;
+			}
+			
+			$stats[$backend] = [
+				'limits' => $limits,
+				'usersStatsCode' => $backendStateStats,
+				'usersStats' => $backendStateStatsTranslated,
+			];
+		}
+		return $stats;
+	}
+
 	/**
 	 * @param string $uid
 	 * @param string $app

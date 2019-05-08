@@ -32,7 +32,6 @@
 use OC\Core\Application;
 
 $application = new Application();
-$application->registerNotifier();
 $application->registerRoutes($this, [
 	'routes' => [
 		['name' => 'lost#email', 'url' => '/lostpassword/email', 'verb' => 'POST'],
@@ -52,6 +51,8 @@ $application->registerRoutes($this, [
 		['name' => 'TwoFactorChallenge#showChallenge', 'url' => '/login/challenge/{challengeProviderId}', 'verb' => 'GET'],
 		['name' => 'TwoFactorChallenge#solveChallenge', 'url' => '/login/challenge/{challengeProviderId}', 'verb' => 'POST'],
 		['name' => 'Cron#run', 'url' => '/cron', 'verb' => 'GET'],
+		['name' => 'Sync#getInfo', 'url' => '/sync/info', 'verb' => 'GET'],
+		['name' => 'Sync#markNotificationAsRead', 'url' => '/sync/notifyRead', 'verb' => 'POST'],
 	],
 	'ocs' => [
 		['root' => '/cloud', 'name' => 'Cloud#getCapabilities', 'url' => '/capabilities', 'verb' => 'GET'],

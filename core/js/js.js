@@ -1134,8 +1134,10 @@ OC.Notification = {
 	 *
 	 * @param {string} html Message to display
 	 * @param {Object} [options] options
-	 * @param {string] [options.type] notification type
+	 * @param {string} [options.type] notification type
 	 * @param {int} [options.timeout=0] timeout value, defaults to 0 (permanent)
+	 * @param {function} [options.onCloseButtonClicked] the callback when the close button
+	 * is clicked. The callback will be executed after hidding the notification
 	 * @return {jQuery} jQuery element for notification row
 	 */
 	showHtml: function (html, options) {
@@ -1159,7 +1161,7 @@ OC.Notification = {
 			$closeButton.attr('alt', t('core', 'Dismiss'));
 			$row.append($closeButton);
 			$closeButton.one('click', function () {
-				self.hide($row);
+				self.hide($row, options.onCloseButtonClicked);
 				return false;
 			});
 			$row.addClass('closeable');

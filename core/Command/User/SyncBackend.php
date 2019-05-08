@@ -34,8 +34,8 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IGroupManager;
 use OCP\UserInterface;
-use OCP\Notification\IManager;
-use OCP\Notification\INotification;
+use OCP\Mail\IMailer;
+use OCP\L10N\IFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -56,8 +56,10 @@ class SyncBackend extends Command {
 	private $userManager;
 	/** @var IGroupManager */
 	private $groupManager;
-	/** @var IManager */
-	private $notificationManager;
+	/** @var IMailer */
+	private $mailer;
+	/** @var IFactory */
+	private $l10nFactory;
 	/** @var ILogger */
 	private $logger;
 
@@ -66,7 +68,7 @@ class SyncBackend extends Command {
 	 * @param IConfig $config
 	 * @param IUserManager $userManager
 	 * @param IGroupManager $groupManager
-	 * @param IManager $notificationManager
+	 * @param IMailer $mailer
 	 * @param ILogger $logger
 	 */
 	public function __construct(
@@ -74,7 +76,8 @@ class SyncBackend extends Command {
 		IConfig $config,
 		IUserManager $userManager,
 		IGroupManager $groupManager,
-		IManager $notificationManager,
+		IMailer $mailer,
+		IFactory $l10nFactory,
 		ILogger $logger
 	) {
 		parent::__construct();
@@ -82,7 +85,8 @@ class SyncBackend extends Command {
 		$this->config = $config;
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
-		$this->notificationManager = $notificationManager;
+		$this->mailer = $mailer;
+		$this->l10nFactory = $l10nFactory;
 		$this->logger = $logger;
 	}
 
@@ -503,42 +507,62 @@ class SyncBackend extends Command {
 	}
 
 	private function notifySoftLimit($softLimit, $hardLimit, $backendName) {
-		if ($this->config->getAppValue('core', 'user_sync_soft_limit_sent')) {
+		if ($this->config->getAppValue('core', "sync_sent_{$backendName}_soft")) {
 			return;
 		}
 
 		$adminGroup = $this->groupManager->get('admin');
 		foreach ($adminGroup->getUsers() as $adminUser) {
-			$notification = $this->notificationManager->createNotification();
-			$notification->setApp('core')
-				->setUser($adminUser->getUID())
-				->setDateTime(new \DateTime())
-				->setObject('user_sync_soft_limit', $adminUser->getUID())
-				->setSubject('user_sync_soft_limit', [$softLimit, $hardLimit, $backendName])
-				->setMessage('user_sync_soft_limit', [$softLimit, $hardLimit, $backendName]);
+			$adminUserEmail = $adminUser->getEMailAddress();
+			if ($adminUserEmail === null || !$this->mailer->validateMailAddress($adminUserEmail)) {
+				$this->logger->debug('Could not sent email to ' . $adminUser->getDisplayName());
+				continue;
+			}
 
-			$this->notificationManager->notify($notification);
+			$userLanguage = $this->config->getUserValue($adminUser->getUID(), 'core', 'lang', 'en');
+			$l10n = $this->l10nFactory->get('core', $userLanguage);
+
+			$message = $l10n->t("You are getting near the %s users, which is the maximum number of enabled users you can have. Please consider to buy a enterprise license to have unlimited users in this backend", [
+				$hardLimit
+			]);
+
+			$mail = $this->mailer->createMessage();
+			$mail->setTo([$adminUserEmail]);
+			$mail->setSubject((string) $l10n->t('Soft limit for users reached'));
+			$mail->setPlainBody((string) $message);
+
+			$this->mailer->send($mail);
 		}
-		$this->config->setAppValue('core', 'user_sync_soft_limit_sent', \time());
+		$this->config->setAppValue('core', "sync_sent_{$backendName}_soft", \time());
 	}
 
 	private function notifyHardLimit($softLimit, $hardLimit, $backendName) {
-		if ($this->config->getAppValue('core', 'user_sync_hard_limit_sent')) {
+		if ($this->config->getAppValue('core', "sync_sent_{$backendName}_hard")) {
 			return;
 		}
 
 		$adminGroup = $this->groupManager->get('admin');
 		foreach ($adminGroup->getUsers() as $adminUser) {
-			$notification = $this->notificationManager->createNotification();
-			$notification->setApp('core')
-				->setUser($adminUser->getUID())
-				->setDateTime(new \DateTime())
-				->setObject('user_sync_hard_limit', $adminUser->getUID())
-				->setSubject('user_sync_hard_limit', [$softLimit, $hardLimit, $backendName])
-				->setMessage('user_sync_hard_limit', [$softLimit, $hardLimit, $backendName]);
+			$adminUserEmail = $adminUser->getEMailAddress();
+			if ($adminUserEmail === null || !$this->mailer->validateMailAddress($adminUserEmail)) {
+				$this->logger->debug('Could not sent email to ' . $adminUser->getDisplayName());
+				continue;
+			}
 
-			$this->notificationManager->notify($notification);
+			$userLanguage = $this->config->getUserValue($adminUser->getUID(), 'core', 'lang', 'en');
+			$l10n = $this->l10nFactory->get('core', $userLanguage);
+
+			$message = $l10n->t("Several users have been automatically disabled because you have over %s users. Please consider to buy a enterprise license to have unlimited users in this backend", [
+				$hardLimit
+			]);
+
+			$mail = $this->mailer->createMessage();
+			$mail->setTo([$adminUserEmail]);
+			$mail->setSubject((string) $l10n->t('Hard limit for users reached'));
+			$mail->setPlainBody((string) $message);
+
+			$this->mailer->send($mail);
 		}
-		$this->config->setAppValue('core', 'user_sync_hard_limit_sent', \time());
+		$this->config->setAppValue('core', "sync_sent_{$backendName}_hard", \time());
 	}
 }
