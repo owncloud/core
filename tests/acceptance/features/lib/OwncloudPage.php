@@ -527,7 +527,7 @@ class OwncloudPage extends Page {
 					if (typeof window.activeAjaxCount === "number") {
 						result = result + window.activeAjaxCount;
 					}
-					if (typeof jQuery.active === "number") {
+					if (typeof jQuery !== "undefined" && typeof jQuery.active === "number") {
 						result = result + jQuery.active;
 					}
 					return result;
