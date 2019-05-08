@@ -80,6 +80,22 @@ default:
         - OccContext:
         - OccUsersGroupsContext:
 
+    apiProvisioningGroups-v1:
+      paths:
+        - '%paths.base%/../features/apiProvisioningGroups-v1'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - OccUsersGroupsContext:
+
+    apiProvisioningGroups-v2:
+      paths:
+        - '%paths.base%/../features/apiProvisioningGroups-v2'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - OccUsersGroupsContext:
+
     apiSharees:
       paths:
         - '%paths.base%/../features/apiSharees'
