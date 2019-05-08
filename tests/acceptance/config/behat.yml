@@ -169,6 +169,15 @@ default:
         - WebDavLockingContext:
         - WebDavPropertiesContext:
 
+    apiWebdavLocks2:
+      paths:
+        - '%paths.base%/../features/apiWebdavLocks2'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - PublicWebDavContext:
+        - WebDavLockingContext:
+        - WebDavPropertiesContext:
+
     apiWebdavMove:
       paths:
         - '%paths.base%/../features/apiWebdavMove'
