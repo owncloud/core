@@ -51,7 +51,8 @@ class Version20190503101238 implements ISimpleMigration {
 		$userCountPerBackend = $this->accountMapper->getUserCountPerBackend(false);
 		foreach ($userCountPerBackend as $backendName => $userCount) {
 			$limitInfo = $this->syncService->getUserLimitInfo($backendName);
-			if ($limitInfo !== false && $userCount > ($limitInfo['hard'] - 10)) {
+			if (\is_array($limitInfo) && $userCount > ($limitInfo['hard'] - 10)) {
+				// if the limit is disabled or missing, don't set a new limit
 				// ensure that up to 10 new users can be added before hitting the limit
 				$this->config->setAppValue('core', "user_sync_hard_limit_$backendName", $userCount + 10);
 			}
