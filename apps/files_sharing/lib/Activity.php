@@ -59,6 +59,7 @@ class Activity implements IExtension {
 	const SUBJECT_RESHARED_USER_BY = 'reshared_user_by';
 	const SUBJECT_UNSHARED_USER_SELF = 'unshared_user_self';
 	const SUBJECT_UNSHARED_USER_BY = 'unshared_user_by';
+	const SUBJECT_UNSHARED_FROM_SELF = 'unshared_from_self';
 
 	const SUBJECT_SHARED_GROUP_SELF = 'shared_group_self';
 	const SUBJECT_RESHARED_GROUP_BY = 'reshared_group_by';
@@ -218,6 +219,8 @@ class Activity implements IExtension {
 				return (string) $l->t('You removed the share of %2$s for %1$s', $params);
 			case self::SUBJECT_UNSHARED_USER_BY:
 				return (string) $l->t('%2$s removed the share of %3$s for %1$s', $params);
+			case self::SUBJECT_UNSHARED_FROM_SELF:
+				return (string) $l->t('You unshared %1$s shared by %2$s from self', $params);
 
 			case self::SUBJECT_SHARED_GROUP_SELF:
 				return (string) $l->t('You shared %1$s with group %2$s', $params);
@@ -272,6 +275,8 @@ class Activity implements IExtension {
 				return (string) $l->t('Removed share for %2$s', $params);
 			case self::SUBJECT_UNSHARED_USER_BY:
 				return (string) $l->t('%2$s removed share for %3$s', $params);
+			case self::SUBJECT_UNSHARED_FROM_SELF:
+				return (string) $l->t('Unshared %1$s from self', $params);
 
 			case self::SUBJECT_SHARED_GROUP_SELF:
 				return (string) $l->t('Shared with group %2$s', $params);
@@ -366,7 +371,8 @@ class Activity implements IExtension {
 						1 => 'username',
 						2 => 'username',
 					];
-
+				case self::SUBJECT_UNSHARED_FROM_SELF:
+					return [0 => 'file', 1 => 'username'];
 				case self::SUBJECT_SHARED_GROUP_SELF:
 				case self::SUBJECT_UNSHARED_GROUP_SELF:
 					return [

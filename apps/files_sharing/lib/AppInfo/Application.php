@@ -150,9 +150,6 @@ class Application extends App {
 			);
 		});
 
-		/*
-		 * Register trashbin service
-		 */
 		$container->registerService('Hooks', function ($c) {
 			return new Hooks(
 				$c->getServer()->getLazyRootFolder(),
@@ -160,6 +157,7 @@ class Application extends App {
 				$c->getServer()->getEventDispatcher(),
 				$c->getServer()->getShareManager(),
 				$c->query(NotificationPublisher::class),
+				$c->getServer()->getActivityManager(),
 				$c->getServer()->getUserSession()
 			);
 		});
