@@ -461,6 +461,26 @@ class SyncService {
 		}
 	}
 
+	/**
+	 * Get stat info about the limits being applied by this SyncService. The information returned
+	 * will contain per backend: the limits being applied for the backend and the and the number of
+	 * users which are in a specific state.
+	 * The function will return something like:
+	 * [
+	 *   'myBackend' => [
+	 *     'limits' => $limits,
+	 *     'usersStatsCode' => $stats,
+	 *     'usersStats' => $statsTranslated
+	 *   ]
+	 * ]
+	 * The limits will contain an array with soft and hard limits of the backend, or false if the
+	 * limits are disabled
+	 * Both the usersStatsCode and usersStats will contain mainly the same information. The main
+	 * difference is that the keys usersStatsCode will be the Account::STATE_* constants (numeric)
+	 * while the usersStats will be the "translated" name of those constants (string). Another difference
+	 * is that a new "Unknown State" key might appear in the usersStats grouping non-translated states
+	 * @return array with the information explained above
+	 */
 	public function getLimitInfoStats() {
 		$stateToString = [
 			Account::STATE_INITIAL => 'Initial State',

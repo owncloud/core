@@ -74,6 +74,7 @@ class SyncBackend extends Command {
 	 * @param IGroupManager $groupManager
 	 * @param IMailer $mailer
 	 * @param ILogger $logger
+	 * @param ITimeFactory $timeFactory
 	 */
 	public function __construct(
 		AccountMapper $accountMapper,
@@ -476,6 +477,9 @@ class SyncBackend extends Command {
 	 * Show the number of users in the backend grouped by state. This function will
 	 * return the same information as $mapper->getUserCountForBackendGroupByState(...)
 	 * after that information has been written in the output.
+	 * @param OutputInterface $output
+	 * @param AccountMapper $mapper
+	 * @param UserInterface $backend
 	 */
 	private function showSyncStats(OutputInterface $output, AccountMapper $mapper, UserInterface $backend) {
 		$backendClassName = \get_class($backend);
@@ -512,6 +516,15 @@ class SyncBackend extends Command {
 		return $stats;
 	}
 
+	/**
+	 * Send an email to the admin group to notify they're over the soft limit for the backend
+	 * If the anyone of the admin group doesn't have a valid email or doesn't have the email set,
+	 * it will be silently ignored.
+	 * The notification will be resend after 30 days if it's still applicable
+	 * @param int $softLimit
+	 * @param int $hardLimit
+	 * @param string $backendName
+	 */
 	private function notifySoftLimit($softLimit, $hardLimit, $backendName) {
 		$timeGap = 60 * 60 * 24 * 30;  // 30 days
 		$lastSentTimestamp = $this->config->getAppValue('core', "sync_sent_{$backendName}_soft", 0);
@@ -554,6 +567,15 @@ class SyncBackend extends Command {
 		$this->config->setAppValue('core', "sync_sent_{$backendName}_soft", $this->timeFactory->getTime());
 	}
 
+	/**
+	 * Send an email to the admin group to notify they're over the hard limit for the backend
+	 * If the anyone of the admin group doesn't have a valid email or doesn't have the email set,
+	 * it will be silently ignored.
+	 * The notification will be resend after 3 days if it's still applicable
+	 * @param int $softLimit
+	 * @param int $hardLimit
+	 * @param string $backendName
+	 */
 	private function notifyHardLimit($softLimit, $hardLimit, $backendName) {
 		$timeGap = 60 * 60 * 24 * 3;  // 3 days
 		$lastSentTimestamp = $this->config->getAppValue('core', "sync_sent_{$backendName}_hard", 0);
