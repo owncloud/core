@@ -34,5 +34,8 @@ class ApplicationTest extends TestCase {
 		$this->assertNotNull(
 			$app->getContainer()->query('Share20OcsController')
 		);
+		$this->assertNotNull(
+			$app->getContainer()->query('Hooks')
+		);
 	}
 }

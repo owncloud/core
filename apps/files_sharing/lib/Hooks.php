@@ -33,7 +33,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use OCA\Files_Sharing\Service\NotificationPublisher;
-use OCP\Share\Exceptions\ShareNotFound;
+use OCP\Activity\IManager as ActivityManager;
 
 class Hooks {
 	/**
@@ -67,6 +67,11 @@ class Hooks {
 	private $notificationPublisher;
 
 	/**
+	 * @var ActivityManager
+	 */
+	private $activityManager;
+
+	/**
 	 * Hooks constructor.
 	 *
 	 * @param IRootFolder $rootFolder
@@ -74,6 +79,7 @@ class Hooks {
 	 * @param EventDispatcher $eventDispatcher
 	 * @param \OCP\Share\IManager $shareManager
 	 * @param NotificationPublisher $notificationPublisher
+	 * @param ActivityManager $activityManager
 	 * @param IUserSession|null $userSession
 	 */
 	public function __construct(
@@ -82,6 +88,7 @@ class Hooks {
 		EventDispatcher $eventDispatcher,
 		\OCP\Share\IManager $shareManager,
 		NotificationPublisher $notificationPublisher,
+		ActivityManager $activityManager,
 		$userSession
 	) {
 		$this->userSession = $userSession;
@@ -90,6 +97,7 @@ class Hooks {
 		$this->eventDispatcher = $eventDispatcher;
 		$this->shareManager = $shareManager;
 		$this->notificationPublisher = $notificationPublisher;
+		$this->activityManager = $activityManager;
 	}
 
 	public static function deleteUser($params) {
@@ -197,6 +205,21 @@ class Hooks {
 				} else {
 					$event->setArgument('run', true);
 				}
+			}
+		);
+
+		$this->eventDispatcher->addListener(
+			'fromself.unshare',
+			function (GenericEvent $event) {
+				$activityEvent = $this->activityManager->generateEvent();
+				$activityEvent->setApp(Activity::FILES_SHARING_APP)
+					->setType(Activity::TYPE_SHARED)
+					->setAffectedUser($event->getArgument('shareRecipient'))
+					->setSubject(
+						Activity::SUBJECT_UNSHARED_FROM_SELF,
+						[$event->getArgument('recipientPath'), $event->getArgument('shareOwner')]
+					);
+				$this->activityManager->publish($activityEvent);
 			}
 		);
 	}
