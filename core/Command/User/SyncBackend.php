@@ -37,6 +37,7 @@ use OCP\UserInterface;
 use OCP\Mail\IMailer;
 use OCP\L10N\IFactory;
 use OCP\Template;
+use OCP\AppFramework\Utility\ITimeFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -63,6 +64,8 @@ class SyncBackend extends Command {
 	private $l10nFactory;
 	/** @var ILogger */
 	private $logger;
+	/** @var ITimeFactory */
+	private $timeFactory;
 
 	/**
 	 * @param AccountMapper $accountMapper
@@ -79,7 +82,8 @@ class SyncBackend extends Command {
 		IGroupManager $groupManager,
 		IMailer $mailer,
 		IFactory $l10nFactory,
-		ILogger $logger
+		ILogger $logger,
+		ITimeFactory $timeFactory
 	) {
 		parent::__construct();
 		$this->accountMapper = $accountMapper;
@@ -89,6 +93,7 @@ class SyncBackend extends Command {
 		$this->mailer = $mailer;
 		$this->l10nFactory = $l10nFactory;
 		$this->logger = $logger;
+		$this->timeFactory = $timeFactory;
 	}
 
 	protected function configure() {
@@ -508,7 +513,9 @@ class SyncBackend extends Command {
 	}
 
 	private function notifySoftLimit($softLimit, $hardLimit, $backendName) {
-		if ($this->config->getAppValue('core', "sync_sent_{$backendName}_soft")) {
+		$timeGap = 60 * 60 * 24 * 30;  // 30 days
+		$lastSentTimestamp = $this->config->getAppValue('core', "sync_sent_{$backendName}_soft", 0);
+		if ($this->timeFactory->getTime() < (\intval($lastSentTimestamp) + $timeGap)) {
 			return;
 		}
 
@@ -544,11 +551,13 @@ class SyncBackend extends Command {
 
 			$this->mailer->send($mail);
 		}
-		$this->config->setAppValue('core', "sync_sent_{$backendName}_soft", \time());
+		$this->config->setAppValue('core', "sync_sent_{$backendName}_soft", $this->timeFactory->getTime());
 	}
 
 	private function notifyHardLimit($softLimit, $hardLimit, $backendName) {
-		if ($this->config->getAppValue('core', "sync_sent_{$backendName}_hard")) {
+		$timeGap = 60 * 60 * 24 * 3;  // 3 days
+		$lastSentTimestamp = $this->config->getAppValue('core', "sync_sent_{$backendName}_hard", 0);
+		if ($this->timeFactory->getTime() < (\intval($lastSentTimestamp) + $timeGap)) {
 			return;
 		}
 
@@ -584,6 +593,6 @@ class SyncBackend extends Command {
 
 			$this->mailer->send($mail);
 		}
-		$this->config->setAppValue('core', "sync_sent_{$backendName}_hard", \time());
+		$this->config->setAppValue('core', "sync_sent_{$backendName}_hard", $this->timeFactory->getTime());
 	}
 }
