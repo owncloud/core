@@ -756,7 +756,6 @@ $CONFIG = array(
       ),
     ),
 
-
 /**
  * Previews
  *
@@ -1064,56 +1063,6 @@ $CONFIG = array(
  * cache directory and `$user` is the user.
  */
 'dav.chunk_base_dir' => '',
-
-/**
- * Using Object Store with ownCloud
- */
-
-/**
- * This example shows how to configure ownCloud to store all files in a
- * swift object storage.
- *
- * It is important to note that ownCloud in object store mode will expect
- * exclusive access to the object store container because it only stores the
- * binary data for each file. The metadata is currently kept in the local
- * database for performance reasons.
- *
- * WARNING: The current implementation is incompatible with any app that uses
- * direct file IO and circumvents our virtual filesystem. That includes
- * Encryption and Gallery. Gallery will store thumbnails directly in the
- * filesystem and encryption will cause severe overhead because key files need
- * to be fetched in addition to any requested file.
- *
- * One way to test is applying for a trystack account at http://trystack.org/
- */
-'objectstore' => [
-	'class' => 'OC\\Files\\ObjectStore\\Swift',
-	'arguments' => [
-		// trystack will use your facebook id as the user name
-		'username' => 'facebook100000123456789',
-		// in the trystack dashboard go to user -> settings -> API Password to
-		// generate a password
-		'password' => 'Secr3tPaSSWoRdt7',
-		// must already exist in the objectstore, name can be different
-		'container' => 'owncloud',
-		// prefix to prepend to the fileid, default is 'oid:urn:'
-		'objectPrefix' => 'oid:urn:',
-		// create the container if it does not exist. default is false
-		'autocreate' => true,
-		// required, dev-/trystack defaults to 'RegionOne'
-		'region' => 'RegionOne',
-		// The Identity / Keystone endpoint
-		'url' => 'http://8.21.28.222:5000/v2.0',
-		// required on dev-/trystack
-		'tenantName' => 'facebook100000123456789',
-		// dev-/trystack uses swift by default, the lib defaults to 'cloudFiles'
-		// if omitted
-		'serviceName' => 'swift',
-		// The Interface / url Type, optional
-		'urlType' => 'internal'
-	],
-],
-
 
 /**
  * Sharing

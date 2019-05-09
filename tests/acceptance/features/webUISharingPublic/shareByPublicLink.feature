@@ -380,3 +380,38 @@ Feature: Share by public link
     When the user uploads file "lorem.txt" keeping both new and existing files using the webUI
     Then file "lorem.txt" should be listed on the webUI
     And file "lorem (2).txt" should be listed on the webUI
+<<<<<<< HEAD
+=======
+
+  Scenario: user creates public link with view download and upload feature and uploads and cancels same file multiple times to verify the conflict dialog exits after clicking cancel button
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
+      | permission | upload-write-without-modify |
+    And the public accesses the last created public link using the webUI
+    When the user uploads file "lorem.txt" and clicks "Cancel" button 10 times using webUI
+    Then no dialog should be displayed on the webUI
+    And no notification should be displayed on the webUI
+    And file "lorem.txt" should be listed on the webUI
+    And the content of "lorem.txt" should not have changed
+    And file "lorem (2).txt" should not be listed on the webUI
+
+  @issue-35177
+  Scenario: User renames a subfolder among subfolders with same names which are shared by public links
+    Given user "user1" has created folder "nf1"
+    And user "user1" has created folder "nf1/newfolder"
+    And user "user1" has created folder "nf2"
+    And user "user1" has created folder "nf2/newfolder"
+    And user "user1" has created folder "test"
+    And user "user1" has created folder "test/test"
+    And user "user1" has created a public link share with settings
+      | path | nf1/newfolder |
+    And user "user1" has created a public link share with settings
+      | path | nf2/newfolder |
+    And user "user1" has created a public link share with settings
+      | path | test/test |
+    And the user has browsed to the shared-by-link page
+    When the user renames folder "newfolder" to "newfolder1" using the webUI
+    Then folder "newfolder1" should be listed on the webUI
+    And folder "newfolder" should not be listed on the webUI
+    #And folder "newfolder" should be listed on the webUI
+    And folder "test" should be listed on the webUI
+>>>>>>> 7958acbf03... Acceptance test for renaming subfolders with same name  shared by public links
