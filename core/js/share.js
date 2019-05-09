@@ -160,45 +160,6 @@ OC.Share = _.extend(OC.Share || {}, {
 			}
 		}
 	},
-	updateIcon:function(itemType, itemSource) {
-		var shares = false;
-		var link = false;
-		var image = OC.imagePath('core', 'actions/share');
-		var iconClass = '';
-		$.each(OC.Share.itemShares, function(index) {
-			if (OC.Share.itemShares[index]) {
-				if (index == OC.Share.SHARE_TYPE_LINK) {
-					if (OC.Share.itemShares[index] == true) {
-						shares = true;
-						iconClass = 'icon-public';
-						link = true;
-						return;
-					}
-				} else if (OC.Share.itemShares[index].length > 0) {
-					shares = true;
-					iconClass = 'icon-shared';
-				}
-			}
-		});
-		if (itemType != 'file' && itemType != 'folder') {
-			$('a.share[data-item="'+itemSource+'"] .icon').removeClass('icon-shared icon-public').addClass(iconClass);
-		} else {
-			var $tr = $('tr').filterAttr('data-id', String(itemSource));
-			if ($tr.length > 0) {
-				// it might happen that multiple lists exist in the DOM
-				// with the same id
-				$tr.each(function() {
-					OC.Share.markFileAsShared($(this), shares, link);
-				});
-			}
-		}
-		if (shares) {
-			OC.Share.statuses[itemSource] = OC.Share.statuses[itemSource] || {};
-			OC.Share.statuses[itemSource]['link'] = link;
-		} else {
-			delete OC.Share.statuses[itemSource];
-		}
-	},
 	/**
 	 * Format a remote address
 	 *
