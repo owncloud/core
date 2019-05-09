@@ -24,6 +24,7 @@ use OC\User\SyncService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IRequest;
 use OCP\IConfig;
 
@@ -32,18 +33,57 @@ class SyncController extends Controller {
 	private $syncService;
 	/** @var IConfig */
 	private $config;
+	/** @var ITimeFactory */
+	private $timeFactory;
 
 	private $notificationTypes = [
 		'soft',
 		'hard',
 	];
 
-	public function __construct($appName, IRequest $request, SyncService $syncService, IConfig $config) {
+	public function __construct($appName, IRequest $request, SyncService $syncService, ITimeFactory $timeFactory, IConfig $config) {
 		parent::__construct($appName, $request);
 		$this->syncService = $syncService;
+		$this->timeFactory = $timeFactory;
 		$this->config = $config;
 	}
 
+	/**
+	 * Get the information used by the SyncService
+	 * For each known backend (some backends might not appear), it will show:
+	 * - the applicable limits ('soft' and 'hard', or false if the limits are disabled)
+	 * - the user state stats: state -> user count
+	 * - the timestamp whether a particular notification has been read (or marked as read)
+	 * This function will return a Json with the following structure:
+	 * {
+	 *   'myBackend': {
+	 *     'limits': {
+	 *       'soft': 50,
+	 *       'hard': 100
+	 *     },
+	 *     'userStats': {
+	 *       'Enabled': 178,
+	 *       'Disabled': 4,
+	 *       'Auto Disabled': 20
+	 *     },
+	 *     'warningRead': {
+	 *       'soft': 15678956,
+	 *       'hard': 0
+	 *     }
+	 *   },
+	 *   'myOtherBackend': {
+	 *     'limits': false,
+	 *     'userStats': {
+	 *       'Enabled': 43
+	 *     },
+	 *     'warningRead': {
+	 *       'soft': 0,
+	 *       'hard': 0,
+	 *     }
+	 *   },
+	 * }
+	 * @return JSONResponse
+	 */
 	public function getInfo() {
 		$stats = $this->syncService->getLimitInfoStats();
 
@@ -63,8 +103,11 @@ class SyncController extends Controller {
 	}
 
 	/**
+	 * Mark the notification $type notification as read for the $backend.
+	 * Known notification types are "soft" and "hard"
 	 * @param string $backend the backend for the notification
 	 * @param string $type the type of notification
+	 * @return JSONResponse
 	 */
 	public function markNotificationAsRead($backend, $type) {
 		if (!in_array($type, $this->notificationTypes, true)) {
@@ -72,7 +115,8 @@ class SyncController extends Controller {
 		}
 
 		$configKey = "sync_read_{$type}_{$backend}";
-		$this->config->setAppValue('core', $configKey, \time());
-		return new JSONResponse([]);
+		$timestamp = $this->timeFactory->getTime();
+		$this->config->setAppValue('core', $configKey, $timestamp);
+		return new JSONResponse($timestamp);
 	}
 }

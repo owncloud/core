@@ -26,21 +26,23 @@ $(document).ready(function() {
 				}
 
 				if (enabledUsers > info.limits.hard) {
-					$message = t('core', '{backend} has more than the allowed {userCount} users. Several users have been disabled. Please contact {entity} for additional information', {
+					var message = t('core', '{backend} has more than the allowed {userCount} users. Several users have been disabled. Please contact {entity} for additional information', {
 						backend: backend,
 						userCount: info.limits.hard,
 						entity: OC.theme.entity
 					});
-					OC.Notification.show($message);
+					OC.Notification.show(message);
 				} else if (enabledUsers > info.limits.soft) {
-					if (info.warningRead.soft <= 0) {
+					var currentTimestamp = Date.now() / 1000;
+					var timeGap = 60 * 60 * 24 * 30;
+					if (currentTimestamp > (info.warningRead.soft + timeGap)) {
 						// soft warning already read. No need to show it again
-						$message = t('core', '{backend} is getting close to the allowed limit of {userCount} users. Please contact {entity} for additional information', {
+						message = t('core', '{backend} is getting close to the allowed limit of {userCount} users. Please contact {entity} for additional information', {
 							backend: backend,
 							userCount: info.limits.hard,
 							entity: OC.theme.entity
 						});
-						OC.Notification.show($message, {
+						OC.Notification.show(message, {
 							type: 'error',
 							onCloseButtonClicked: function() {
 								$.post(OC.generateUrl('/sync/notifyRead'), {
