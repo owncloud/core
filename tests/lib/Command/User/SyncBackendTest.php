@@ -28,7 +28,11 @@ use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\IGroupManager;
 use OCP\UserInterface;
+use OCP\Mail\IMailer;
+use OCP\L10N\IFactory;
+use OCP\AppFramework\Utility\ITimeFactory;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -44,6 +48,14 @@ class SyncBackendTest extends TestCase {
 	private $mapper;
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
+	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
+	private $groupmanager;
+	/** @var IMailer | \PHPUnit\Framework\MockObject\MockObject */
+	private $mailer;
+	/** @var IFactory | \PHPUnit\Framework\MockObject\MockObject */
+	private $l10nFactory;
+	/** @var IFactory | \PHPUnit\Framework\MockObject\MockObject */
+	private $timeFactory;
 	/** @var SyncBackend */
 	private $command;
 
@@ -57,6 +69,10 @@ class SyncBackendTest extends TestCase {
 		$this->logger = $this->createMock(ILogger::class);
 		$this->mapper = $this->createMock(AccountMapper::class);
 		$this->userManager = $this->createMock(IUserManager::class);
+		$this->groupmanager = $this->createMock(IGroupManager::class);
+		$this->mailer = $this->createMock(IMailer::class);
+		$this->l10nFactory = $this->createMock(IFactory::class);
+		$this->timeFactory = $this->createMock(ITimeFactory::class);
 
 		$this->dummyBackend = $this->createMock(UserInterface::class);
 
@@ -68,7 +84,11 @@ class SyncBackendTest extends TestCase {
 			$this->mapper,
 			$this->config,
 			$this->userManager,
-			$this->logger
+			$this->groupmanager,
+			$this->mailer,
+			$this->l10nFactory,
+			$this->logger,
+			$this->timeFactory
 		);
 	}
 
@@ -263,6 +283,8 @@ class SyncBackendTest extends TestCase {
 			->expects($this->at(0))
 			->method('writeln')
 			->with($expected);
+
+		$this->mapper->method('getUserCountForBackendGroupByState')->willReturn([]);
 
 		$this->assertEquals(0, static::invokePrivate($this->command, 'execute', [$inputInterface, $outputInterface]));
 	}

@@ -94,7 +94,7 @@ class SyncController extends Controller {
 			$stats[$backend]['warningRead'] = [];
 			foreach ($this->notificationTypes as $notificationType) {
 				$configKey = "sync_read_{$notificationType}_{$backend}";
-				$timing = intval($this->config->getAppValue('core', $configKey, 0));
+				$timing = \intval($this->config->getAppValue('core', $configKey, 0));
 				$stats[$backend]['warningRead'][$notificationType] = $timing;
 			}
 		}
@@ -110,7 +110,7 @@ class SyncController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function markNotificationAsRead($backend, $type) {
-		if (!in_array($type, $this->notificationTypes, true)) {
+		if (!\in_array($type, $this->notificationTypes, true)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 

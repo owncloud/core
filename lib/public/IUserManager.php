@@ -150,7 +150,7 @@ interface IUserManager {
 	 * @param string $uid
 	 * @throws \OCP\User\ShouldNotBeEnabledException explaining the reason
 	 */
-	public function mightGetDisabled($uid);
+	public function throwExceptionIfMightGetDisabled($uid);
 
 	/**
 	 * returns how many users per backend exist (if supported by backend)

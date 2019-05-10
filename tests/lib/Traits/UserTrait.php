@@ -10,6 +10,7 @@ namespace Test\Traits;
 
 use OC\User\AccountTermMapper;
 use OC\User\SyncService;
+use OC\User\SyncLimiter;
 use OC\User\User;
 use OCP\ILogger;
 use Test\Util\User\Dummy;
@@ -43,7 +44,7 @@ trait UserTrait {
 		$config =  \OC::$server->getConfig();
 		$accountMapper = new MemoryAccountMapper($config, $db, new AccountTermMapper($db));
 		$logger = $this->createMock(ILogger::class);
-		$syncService = new SyncService($config, $logger, $accountMapper);
+		$syncService = new SyncService($config, $logger, $accountMapper, new SyncLimiter($accountMapper, $config));
 		$accountMapper->testCaseName = \get_class($this);
 		$this->previousUserManagerInternals = \OC::$server->getUserManager()
 			->reset($accountMapper, [Dummy::class => new Dummy()], $syncService);
