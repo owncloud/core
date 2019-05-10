@@ -265,8 +265,8 @@
 
 				publicUploadWriteLabel       : t('core', 'Download / View / Upload'),
 				publicUploadWriteDescription : t('core', 'Recipients can view, download and upload contents.'),
-				publicUploadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE,
-				publicUploadWriteSelected    : this.model.get('permissions') === (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE),
+				publicUploadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_CREATE,
+				publicUploadWriteSelected    : this.model.get('permissions') === (OC.PERMISSION_READ | OC.PERMISSION_CREATE),
 
 				publicReadWriteLabel       : t('core', 'Download / View / Edit'),
 				publicReadWriteDescription : t('core', 'Recipients can view, download and edit contents.'),

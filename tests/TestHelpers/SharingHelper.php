@@ -50,7 +50,7 @@ class SharingHelper {
 	 *                                                    1 = read; 2 = update; 4 = create;
 	 *                                                    8 = delete; 16 = share; 31 = all
 	 *                                                    15 = change
-	 *                                                    7 = uploadwriteonly
+	 *                                                    5 = uploadwriteonly
 	 *                                                    (default: 31, for public shares: 1)
 	 *                                                    Pass either the (total) number,
 	 *                                                    or the keyword,
@@ -171,7 +171,7 @@ class SharingHelper {
 					'read' => 1,
 					'update' => 2,
 					'create' => 4,
-					'uploadwriteonly' => 7,
+					'uploadwriteonly' => 5,
 					'delete' => 8,
 					'change' => 15,
 					'share' => 16,
