@@ -52,6 +52,7 @@ use OC\Diagnostics\QueryLogger;
 use OC\Files\Config\UserMountCache;
 use OC\Files\Config\UserMountCacheListener;
 use OC\Files\Mount\CacheMountProvider;
+use OC\Files\Mount\PreviewsMountProvider;
 use OC\Files\Mount\LocalHomeMountProvider;
 use OC\Files\Mount\ObjectHomeMountProvider;
 use OC\Files\Node\HookConnector;
@@ -629,6 +630,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 
 			$config = $c->getConfig();
 			$manager->registerProvider(new CacheMountProvider($config));
+			$manager->registerProvider(new PreviewsMountProvider($config));
 			$manager->registerHomeProvider(new LocalHomeMountProvider());
 			$manager->registerHomeProvider(new ObjectHomeMountProvider($config));
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Robin Appelman <icewind@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -27,16 +27,16 @@ use OCP\IConfig;
 use OCP\IUser;
 
 /**
- * Mount provider for custom cache storages
+ * Mount provider for custom preview storages
  */
-class CacheMountProvider implements IMountProvider {
+class PreviewsMountProvider implements IMountProvider {
 	/**
 	 * @var IConfig
 	 */
 	private $config;
 
 	/**
-	 * CacheMountProvider constructor.
+	 * PreviewsMountProvider constructor.
 	 *
 	 * @param IConfig $config
 	 */
@@ -45,22 +45,22 @@ class CacheMountProvider implements IMountProvider {
 	}
 
 	/**
-	 * Get the cache mount for a user
+	 * Get the previews mount for a user
 	 *
 	 * @param IUser $user
 	 * @param IStorageFactory $loader
 	 * @return \OCP\Files\Mount\IMountPoint[]
 	 */
 	public function getMountsForUser(IUser $user, IStorageFactory $loader) {
-		$cacheBaseDir = $this->config->getSystemValue('cache_path', '');
-		if ($cacheBaseDir !== '') {
-			$cacheDir = \rtrim($cacheBaseDir, '/') . '/' . $user->getUID();
-			if (!\file_exists($cacheDir)) {
-				\mkdir($cacheDir, 0770, true);
+		$previewsPath = $this->config->getSystemValue('previews_path', '');
+		if ($previewsPath !== '') {
+			$previewsDir = \rtrim($previewsPath, '/') . '/' . $user->getUID();
+			if (!\file_exists($previewsDir)) {
+				\mkdir($previewsDir, 0770, true);
 			}
 
 			return [
-				new MountPoint('\OC\Files\Storage\Local', '/' . $user->getUID() . '/cache', ['datadir' => $cacheDir], $loader)
+				new MountPoint('\OC\Files\Storage\Local', '/' . $user->getUID() . '/thumbnails', ['datadir' => $previewsDir], $loader)
 			];
 		} else {
 			return [];
