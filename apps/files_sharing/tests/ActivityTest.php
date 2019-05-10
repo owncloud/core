@@ -24,6 +24,8 @@
 
 namespace OCA\Files_Sharing\Tests;
 
+use OCA\Files_Sharing\Activity;
+
 /**
  * Class ActivityTest
  *
@@ -34,13 +36,13 @@ namespace OCA\Files_Sharing\Tests;
 class ActivityTest extends TestCase {
 
 	/**
-	 * @var \OCA\Files_Sharing\Activity
+	 * @var Activity
 	 */
 	private $activity;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->activity = new \OCA\Files_Sharing\Activity(
+		$this->activity = new Activity(
 			$this->getMockBuilder('OCP\L10N\IFactory')
 				->disableOriginalConstructor()
 				->getMock(),
@@ -71,8 +73,25 @@ class ActivityTest extends TestCase {
 
 	public function dataTestGetDefaultType() {
 		return [
-			['email', [\OCA\Files_Sharing\Activity::TYPE_SHARED, \OCA\Files_Sharing\Activity::TYPE_REMOTE_SHARE]],
-			['stream', [\OCA\Files_Sharing\Activity::TYPE_SHARED, \OCA\Files_Sharing\Activity::TYPE_REMOTE_SHARE, \OCA\Files_Sharing\Activity::TYPE_PUBLIC_LINKS]],
+			['email', [Activity::TYPE_SHARED, Activity::TYPE_REMOTE_SHARE]],
+			['stream', [Activity::TYPE_SHARED, Activity::TYPE_REMOTE_SHARE, Activity::TYPE_PUBLIC_LINKS]],
+		];
+	}
+
+	/**
+	 * @dataProvider dataGetTypeIcon
+	 *
+	 * @param string $type
+	 * @param string$expectedResult
+	 */
+	public function testGetTypeIcon($type, $expectedResult) {
+		$this->assertSame($expectedResult, $this->activity->getTypeIcon($type));
+	}
+
+	public function dataGetTypeIcon() {
+		return [
+			[Activity::TYPE_SHARED, 'icon-shared'],
+			[Activity::TYPE_PUBLIC_LINKS, 'icon-download'],
 		];
 	}
 }

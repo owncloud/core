@@ -559,8 +559,8 @@ li > a.icon-search {
 	background-image: url("../../core/img/actions/search.svg");
 }
 
-li > a.icon-share {
-	background-image: url("../../core/img/actions/share.svg");
+li > a.icon-shared {
+	background-image: url("../../core/img/actions/shared.svg");
 }
 
 li > a.icon-folder {

@@ -149,7 +149,7 @@ class Activity implements IExtension {
 		switch ($type) {
 			case self::TYPE_SHARED:
 			case self::TYPE_REMOTE_SHARE:
-				return 'icon-share';
+				return 'icon-shared';
 			case self::TYPE_PUBLIC_LINKS:
 				return 'icon-download';
 		}

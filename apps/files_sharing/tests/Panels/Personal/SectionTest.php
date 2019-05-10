@@ -44,7 +44,7 @@ class SectionTest extends \Test\TestCase {
 	}
 
 	public function testGetIconName() {
-		$this->assertEquals('share', $this->section->getIconName());
+		$this->assertEquals('shared', $this->section->getIconName());
 	}
 
 	public function testGetID() {
