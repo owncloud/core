@@ -31,7 +31,7 @@
 			'</div>' +
 			'{{#if ../socialShareEnabled}}' +
 			'<div class="link-entry--icon-button shareLink" title="{{../shareText}}">' +
-			'	<span class="icon icon-share"></span>' +
+			'	<span class="icon icon-shared"></span>' +
 			'	<span class="hidden">{{../shareText}}</span>' +
 			'</div>' +
 			'{{/if}}' +

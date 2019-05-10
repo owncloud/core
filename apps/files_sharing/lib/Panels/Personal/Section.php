@@ -36,7 +36,7 @@ class Section implements ISection {
 	}
 
 	public function getIconName() {
-		return 'share';
+		return 'shared';
 	}
 
 	public function getID() {
