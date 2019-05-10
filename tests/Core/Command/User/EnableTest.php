@@ -22,9 +22,11 @@
 namespace Tests\Core\Command\User;
 
 use OC\Core\Command\User\Enable;
+use OCP\IUserManager;
+use OCP\IUser;
+use OCP\User\ShouldNotBeEnabledException;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
-use Test\Traits\UserTrait;
 
 /**
  * Class EnableTest
@@ -32,7 +34,7 @@ use Test\Traits\UserTrait;
  * @group DB
  */
 class EnableTest extends TestCase {
-	use UserTrait;
+	private $userManager;
 
 	/** @var CommandTester */
 	private $commandTester;
@@ -40,26 +42,40 @@ class EnableTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$command = new Enable(\OC::$server->getUserManager());
+		$this->userManager = $this->createMock(IUserManager::class);
+
+		$command = new Enable($this->userManager);
 		$this->commandTester = new CommandTester($command);
-		$this->createUser('user1');
 	}
 
-	/**
-	 * @dataProvider inputProvider
-	 * @param array $input
-	 * @param string $expectedOutput
-	 */
-	public function testCommandInput($input, $expectedOutput) {
-		$this->commandTester->execute($input);
-		$output = $this->commandTester->getDisplay();
-		$this->assertContains($expectedOutput, $output);
+	public function testEnableMissingUser() {
+		$this->userManager->method('get')
+			->willReturn(null);
+
+		$this->assertSame(Enable::EXIT_CODE_USER_NOT_EXISTS, $this->commandTester->execute(['uid' => 'user1']));
 	}
 
-	public function inputProvider() {
-		return [
-			[['uid' => 'user2'], 'User does not exist'],
-			[['uid' => 'user1'], 'The specified user is enabled'],
-		];
+	public function testEnable() {
+		$user = $this->createMock(IUser::class);
+		$user->expects($this->once())
+			->method('setEnabled')
+			->with($this->equalTo(true));
+
+		$this->userManager->method('get')
+			->willReturn($user);
+		$this->assertSame(0, $this->commandTester->execute(['uid' => 'user1']));
+	}
+
+	public function testWontBeEnabled() {
+		$user = $this->createMock(IUser::class);
+		$user->expects($this->never())
+			->method('setEnabled');
+
+		$this->userManager->method('get')
+			->willReturn($user);
+		$this->userManager->method('throwExceptionIfMightGetDisabled')
+			->will($this->throwException(new ShouldNotBeEnabledException()));
+
+		$this->assertSame(Enable::EXIT_CODE_USER_NOT_ENABLED, $this->commandTester->execute(['uid' => 'user1']));
 	}
 }

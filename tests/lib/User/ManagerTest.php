@@ -252,6 +252,56 @@ class ManagerTest extends TestCase {
 		$user4->delete();
 	}
 
+	public function testThrowExceptionIfMightGetDisabled() {
+		$account = new Account();
+		$account->setState(Account::STATE_ENABLED);
+
+		$this->accountMapper->method('getByUid')
+			->willReturn($account);
+
+		$this->assertNull($this->manager->throwExceptionIfMightGetDisabled('user1'));
+	}
+
+	public function throwExceptionIfMightGetDisabledProvider() {
+		return [
+			[Account::STATE_INITIAL],
+			[Account::STATE_DISABLED],
+			[Account::STATE_DELETED],
+			[Account::STATE_AUTODISABLED],
+		];
+	}
+
+	/**
+	 * @dataProvider throwExceptionIfMightGetDisabledProvider
+	 */
+	public function testThrowExceptionIfMightGetDisabledUnlimitedBackend($state) {
+		$account = new Account();
+		$account->setState($state);
+
+		$this->accountMapper->method('getByUid')
+			->willReturn($account);
+		$this->syncService->method('userWillBeDisabledInBackend')
+			->willReturn(false);
+
+		$this->assertNull($this->manager->throwExceptionIfMightGetDisabled('user1'));
+	}
+
+	/**
+	 * @dataProvider throwExceptionIfMightGetDisabledProvider
+	 * @expectedException \OCP\User\ShouldNotBeEnabledException
+	 */
+	public function testThrowExceptionIfMightGetDisabledLimitedBackend($state) {
+		$account = new Account();
+		$account->setState($state);
+
+		$this->accountMapper->method('getByUid')
+			->willReturn($account);
+		$this->syncService->method('userWillBeDisabledInBackend')
+			->willReturn(true);
+
+		$this->manager->throwExceptionIfMightGetDisabled('user1');
+	}
+
 	public function testCallForSeenUsers() {
 		$this->manager = \OC::$server->getUserManager();
 		if ($this->manager->userExists('testseen1')) {

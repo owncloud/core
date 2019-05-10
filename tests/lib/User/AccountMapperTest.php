@@ -212,4 +212,15 @@ class AccountMapperTest extends TestCase {
 		$result = $this->mapper->findUserIds($backend, true, $limit, $offset);
 		$this->assertSame($expected, $result);
 	}
+
+	public function testGetUserCountForBackendGroupByState() {
+		$expectedResult = [
+			Account::STATE_INITIAL => 4,
+		];
+		$this->assertEquals($expectedResult, $this->mapper->getUserCountForBackendGroupByState(self::class));
+	}
+
+	public function testGetUserCountForBackendGroupByStateWrongBackend() {
+		$this->assertEquals([], $this->mapper->getUserCountForBackendGroupByState('The missing backend'));
+	}
 }

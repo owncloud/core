@@ -433,7 +433,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param string $uid
 	 * @throws \OCP\User\ShouldNotBeEnabledException explaining the reason
 	 */
-	public function mightGetDisabled($uid) {
+	public function throwExceptionIfMightGetDisabled($uid) {
 		$account = $this->accountMapper->getByUid($uid);
 		if ($account->getState() !== Account::STATE_ENABLED) {
 			if ($this->syncService->userWillBeDisabledInBackend($account->getBackend())) {

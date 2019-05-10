@@ -29,6 +29,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 class Enable extends Command {
+	const EXIT_CODE_USER_NOT_EXISTS = 1;
+	const EXIT_CODE_USER_NOT_ENABLED = 2;
 	/** @var IUserManager */
 	protected $userManager;
 
@@ -56,16 +58,18 @@ class Enable extends Command {
 		$user = $this->userManager->get($uid);
 		if ($user === null) {
 			$output->writeln('<error>User does not exist</error>');
-			return;
+			return self::EXIT_CODE_USER_NOT_EXISTS;
 		}
 
 		try {
-			$this->userManager->mightGetDisabled($uid);  // it might throw an exception
+			$this->userManager->throwExceptionIfMightGetDisabled($uid);
 			$user->setEnabled(true);
 			$output->writeln('<info>The specified user is enabled</info>');
+			return 0;
 		} catch (ShouldNotBeEnabledException $e) {
 			$errorMessage = $e->getMessage();
 			$output->writeln("<error>$errorMessage</error>");
+			return self::EXIT_CODE_USER_NOT_ENABLED;
 		}
 	}
 }

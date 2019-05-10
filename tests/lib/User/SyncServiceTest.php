@@ -27,6 +27,7 @@ use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\Database;
 use OC\User\Sync\AllUsersIterator;
+use OC\User\SyncLimiter;
 use OC\User\SyncService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -46,6 +47,10 @@ class SyncServiceTest extends TestCase {
 	private $logger;
 	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $mapper;
+	/** @var SyncLimiter | \PHPUnit\Framework\MockObject\MockObject */
+	private $syncLimiter;
+	/** @var SyncService | \PHPUnit\Framework\MockObject\MockObject */
+	private $syncService;
 
 	protected function setUp() {
 		parent::setUp();
@@ -53,6 +58,9 @@ class SyncServiceTest extends TestCase {
 		$this->config = $this->createMock(IConfig::class);
 		$this->logger = $this->createMock(ILogger::class);
 		$this->mapper = $this->createMock(AccountMapper::class);
+		$this->syncLimiter = $this->createMock(SyncLimiter::class);
+
+		$this->syncService = new SyncService($this->config, $this->logger, $this->mapper, $this->syncLimiter);
 	}
 
 	public function testSetupAccount() {
@@ -69,10 +77,9 @@ class SyncServiceTest extends TestCase {
 			['user1', 'settings', 'email', '', 'foo@bar.net'],
 		]);
 
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$a = new Account();
 		$a->setUserId('user1');
-		$s->syncAccount($a, $backend);
+		$this->syncService->syncAccount($a, $backend);
 
 		$this->assertEquals('foo@bar.net', $a->getEmail());
 	}
@@ -107,11 +114,10 @@ class SyncServiceTest extends TestCase {
 
 		// Ignore state flag
 
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend), function ($uid) {
+		$this->syncService->run($backend, new AllUsersIterator($backend), function ($uid) {
 		});
 
-		static::invokePrivate($s, 'syncHome', [$account, $backend]);
+		static::invokePrivate($this->syncService, 'syncHome', [$account, $backend]);
 	}
 
 	/**
@@ -131,8 +137,7 @@ class SyncServiceTest extends TestCase {
 		$this->logger->expects($this->at(0))->method('error');
 		$this->logger->expects($this->at(1))->method('logException');
 
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend), function ($uid) {
+		$this->syncService->run($backend, new AllUsersIterator($backend), function ($uid) {
 		});
 	}
 
@@ -151,9 +156,7 @@ class SyncServiceTest extends TestCase {
 		// Should produce an error in the log if backend home different from stored account home
 		$this->logger->expects($this->once())->method('error');
 
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
-
-		static::invokePrivate($s, 'syncHome', [$a, $backend]);
+		static::invokePrivate($this->syncService, 'syncHome', [$a, $backend]);
 	}
 
 	/**
@@ -169,9 +172,7 @@ class SyncServiceTest extends TestCase {
 
 		$this->mapper->expects($this->once())->method('getByUid')->with($uid)->willReturn($a);
 
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
-
-		$s->createOrSyncAccount($uid, $wrongBackend);
+		$this->syncService->createOrSyncAccount($uid, $wrongBackend);
 	}
 
 	public function providesSyncQuota() {
@@ -219,8 +220,7 @@ class SyncServiceTest extends TestCase {
 			$a->expects($this->never())->method('setQuota');
 		}
 
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		static::invokePrivate($s, 'syncQuota', [$a, $backend]);
+		static::invokePrivate($this->syncService, 'syncQuota', [$a, $backend]);
 	}
 
 	public function testSyncUserName() {
@@ -242,19 +242,17 @@ class SyncServiceTest extends TestCase {
 			->method('setUserValue')
 			->with('user1', 'core', 'username', 'userName1');
 
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		static::invokePrivate($s, 'syncUserName', [$a, $backend]);
+		static::invokePrivate($this->syncService, 'syncUserName', [$a, $backend]);
 	}
 
 	public function testAnalyseExistingUsers() {
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$this->mapper->expects($this->once())
 			->method('callForAllUsers')
 			->with($this->callback(function ($param) {
 				return \is_callable($param);
 			}));
 		$backend = $this->createMock(UserInterface::class);
-		$result = $s->analyzeExistingUsers($backend, function () {
+		$result = $this->syncService->analyzeExistingUsers($backend, function () {
 		});
 		$this->assertInternalType('array', $result);
 		$this->assertCount(2, $result);
@@ -272,10 +270,9 @@ class SyncServiceTest extends TestCase {
 		$backend->expects($this->once())->method('userExists')->willReturn(true);
 		$account->expects($this->once())->method('getState')->willReturn(false);
 		$account->expects($this->exactly(2))->method('getUserId')->willReturn('test');
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$removed = [];
 		$reappeared = [];
-		static::invokePrivate($s, 'checkIfAccountReappeared', [$account, &$removed, &$reappeared, $backend, $backendClass]);
+		static::invokePrivate($this->syncService, 'checkIfAccountReappeared', [$account, &$removed, &$reappeared, $backend, $backendClass]);
 		$this->assertCount(0, $removed);
 		$this->assertCount(1, $reappeared);
 	}
@@ -292,11 +289,157 @@ class SyncServiceTest extends TestCase {
 		$backend->expects($this->once())->method('userExists')->willReturn(false);
 		$account->expects($this->never())->method('getState')->willReturn(false);
 		$account->expects($this->exactly(2))->method('getUserId')->willReturn('test');
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$removed = [];
 		$reappeared = [];
-		static::invokePrivate($s, 'checkIfAccountReappeared', [$account, &$removed, &$reappeared, $backend, $backendClass]);
+		static::invokePrivate($this->syncService, 'checkIfAccountReappeared', [$account, &$removed, &$reappeared, $backend, $backendClass]);
 		$this->assertCount(1, $removed);
 		$this->assertCount(0, $reappeared);
+	}
+
+	public function testUserWillBeDisabledInBackendNoLimitInfoFound() {
+		$this->syncLimiter->method('getLimitInfo')
+			->willReturn([]);
+
+		$this->assertFalse($this->syncService->userWillBeDisabledInBackend('mybackend'));
+	}
+
+	public function testUserWillBeDisabledInBackendLimitDisabled() {
+		$this->syncLimiter->method('getLimitInfo')
+			->willReturn(['mybackend' => false]);
+		$this->mapper->method('getUserCountForBackendGroupByState')
+			->willReturn([Account::STATE_ENABLED => 30]);
+
+		$this->assertFalse($this->syncService->userWillBeDisabledInBackend('mybackend'));
+	}
+
+	public function testUserWillBeDisabledInBackendBelowLimit() {
+		$this->syncLimiter->method('getLimitInfo')
+			->willReturn(['mybackend' => ['soft' => 50, 'hard' => 100]]);
+		$this->mapper->method('getUserCountForBackendGroupByState')
+			->willReturn([Account::STATE_ENABLED => 70]);
+
+		$this->assertFalse($this->syncService->userWillBeDisabledInBackend('mybackend'));
+	}
+
+	public function testUserWillBeDisabledInBackendAboveLimit() {
+		$this->syncLimiter->method('getLimitInfo')
+			->willReturn(['mybackend' => ['soft' => 50, 'hard' => 100]]);
+		$this->mapper->method('getUserCountForBackendGroupByState')
+			->willReturn([Account::STATE_ENABLED => 170]);
+
+		$this->assertTrue($this->syncService->userWillBeDisabledInBackend('mybackend'));
+	}
+
+	public function testGetUserLimitInfoNoLimitFound() {
+		$this->syncLimiter->method('getLimitInfo')
+			->willReturn([]);
+		$this->assertFalse($this->syncService->getUserLimitInfo('mybackend'));
+	}
+
+	public function testGetUserLimitInfoLimitDisabled() {
+		$this->syncLimiter->method('getLimitInfo')
+			->willReturn(['mybackend' => false]);
+		$this->assertFalse($this->syncService->getUserLimitInfo('mybackend'));
+	}
+
+	public function testGetUserLimitInfoLimit() {
+		$this->syncLimiter->method('getLimitInfo')
+			->willReturn(['mybackend' => ['soft' => 50, 'hard' => 100]]);
+		$this->assertEquals(['soft' => 50, 'hard' => 100], $this->syncService->getUserLimitInfo('mybackend'));
+	}
+
+	public function getLimitInfoStatsProvider() {
+		$backendLimits = [
+			'mybackend' => [
+				'soft' => 50,
+				'hard' => 75,
+			],
+			'mybackend2' => false,
+		];
+		$userCount1 = [
+			'mybackend' => [
+				Account::STATE_ENABLED => 33,
+				Account::STATE_DISABLED => 2,
+				Account::STATE_AUTODISABLED => 42,
+			],
+			'mybackend2' => [
+				Account::STATE_ENABLED => 44,
+			],
+		];
+		$userCount2 = [
+			'mybackend' => [
+				Account::STATE_ENABLED => 23,
+				Account::STATE_DISABLED => 1,
+				Account::STATE_AUTODISABLED => 32,
+				56 => 2,
+				123 => 3,
+			],
+			'mybackend2' => [
+				Account::STATE_ENABLED => 54,
+			],
+		];
+
+		$expectedResult1 = [
+			'mybackend' => [
+				'limits' => $backendLimits['mybackend'],
+				'usersStatsCode' => $userCount1['mybackend'],
+				'usersStats' => [
+					'Enabled' => 33,
+					'Disabled' => 2,
+					'Auto Disabled' => 42,
+				],
+			],
+			'mybackend2' => [
+				'limits' => $backendLimits['mybackend2'],
+				'usersStatsCode' => $userCount1['mybackend2'],
+				'usersStats' => [
+					'Enabled' => 44,
+				],
+			],
+		];
+
+		$expectedResult2 = [
+			'mybackend' => [
+				'limits' => $backendLimits['mybackend'],
+				'usersStatsCode' => $userCount2['mybackend'],
+				'usersStats' => [
+					'Enabled' => 23,
+					'Disabled' => 1,
+					'Auto Disabled' => 32,
+					'Unknown State' => 5,
+				],
+			],
+			'mybackend2' => [
+				'limits' => $backendLimits['mybackend2'],
+				'usersStatsCode' => $userCount2['mybackend2'],
+				'usersStats' => [
+					'Enabled' => 54,
+				],
+			],
+		];
+		return [
+			[[], [], []],
+			[[], $userCount1, []],
+			[[], $userCount2, []],
+			[$backendLimits, $userCount1, $expectedResult1],
+			[$backendLimits, $userCount2, $expectedResult2]
+		];
+	}
+
+	/**
+	 * @dataProvider getLimitInfoStatsProvider
+	 */
+	public function testGetLimitInfoStats($limitInfo, $userCountBackends, $expectedResult) {
+		$this->syncLimiter->method('getLimitInfo')
+			->willReturn($limitInfo);
+		$this->mapper->method('getUserCountForBackendGroupByState')
+			->will($this->returnCallback(function ($backend) use ($userCountBackends) {
+				if (isset($userCountBackends[$backend])) {
+					return $userCountBackends[$backend];
+				} else {
+					return [];
+				}
+			}));
+		$this->assertEquals($expectedResult, $this->syncService->getLimitInfoStats());
 	}
 }

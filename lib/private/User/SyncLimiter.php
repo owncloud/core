@@ -20,7 +20,6 @@
  */
 namespace OC\User;
 
-use OCP\IAppConfig;
 use OCP\IConfig;
 
 /**

@@ -429,6 +429,11 @@ class SyncService {
 			return false;
 		}
 
+		if ($limitInfo[$backend] === false) {
+			// limit disabled for that backend
+			return false;
+		}
+
 		$backendStateStats = $this->mapper->getUserCountForBackendGroupByState($backend);
 		$numberOfEnabledUsers = 0;
 		if (isset($backendStateStats[Account::STATE_ENABLED])) {
