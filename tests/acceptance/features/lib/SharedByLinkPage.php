@@ -28,7 +28,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 /**
  * Shared By Link page.
  */
-class SharedByLinkPage extends FilesPageBasic {
+class SharedByLinkPage extends FilesPageCRUD {
 
 	/**
 	 *
