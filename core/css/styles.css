@@ -942,31 +942,31 @@ div.crumb:active {
 
 /* Force constant vertical height for login box over all devices */
 #body-login .wrapper {
-    height: 100vh; /* fix IE11 */
-    display: -webkit-box !important;
-    -webkit-box-orient: horizontal !important;
-    -webkit-box-pack: center !important;
-    -webkit-box-align: center !important;
-    display: -webkit-flex !important;
-    -webkit-flex-direction: row !important;
-    -webkit-align-self: center !important;
-    -webkit-align-items: center !important;
-    display: -moz-box !important;
-    -moz-box-orient: horizontal !important;
-    -moz-box-pack: center !important;
-    -moz-box-align: center !important;
-    display: -ms-flexbox !important;
-    -ms-flex-direction: row !important;
-    -ms-flex-pack: center !important;
-    -ms-flex-align: center !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-self: center !important;
-    align-items: center !important;
+	min-height: 100vh; /* fix IE11 */
+	display: -webkit-box !important;
+	-webkit-box-orient: horizontal !important;
+	-webkit-box-pack: center !important;
+	-webkit-box-align: center !important;
+	display: -webkit-flex !important;
+	-webkit-flex-direction: row !important;
+	-webkit-align-self: center !important;
+	-webkit-align-items: center !important;
+	display: -moz-box !important;
+	-moz-box-orient: horizontal !important;
+	-moz-box-pack: center !important;
+	-moz-box-align: center !important;
+	display: -ms-flexbox !important;
+	-ms-flex-direction: row !important;
+	-ms-flex-pack: center !important;
+	-ms-flex-align: center !important;
+	display: flex !important;
+	flex-direction: row !important;
+	align-self: center !important;
+	align-items: center !important;
 }
 
 #body-login .v-align {
-    margin-top: -120px;
+	margin-top: -120px;
 }
 
 /* LEGACY FIX only - do not use fieldsets for settings */
