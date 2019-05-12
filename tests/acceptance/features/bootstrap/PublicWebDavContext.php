@@ -67,6 +67,44 @@ class PublicWebDavContext implements Context {
 			HttpRequestHelper::get($fullUrl, $token)
 		);
 	}
+
+	/**
+	 * @When /^the public deletes file "([^"]*)" from the last public share using the public WebDAV API$/
+	 *
+	 * @param string $fileName
+	 *
+	 * @return void
+	 */
+	public function deleteFileFromPublicShare($fileName) {
+		$token = $this->featureContext->getLastShareData()->data->token;
+		$fullUrl = $this->featureContext->getBaseUrl() . "/public.php/webdav/" . $fileName;
+		$headers = [
+			'X-Requested-With' => 'XMLHttpRequest'
+		];
+		$this->featureContext->setResponse(
+			HttpRequestHelper::delete($fullUrl, $token, "", $headers)
+		);
+	}
+
+	/**
+	 * @When /^the public renames file "([^"]*)" to "([^"]*)" from the last public share using the public WebDAV API$/
+	 *
+	 * @param string $fileName
+	 * @param string $toFileName
+	 *
+	 * @return void
+	 */
+	public function renameFileFromPublicShare($fileName, $toFileName) {
+		$token = $this->featureContext->getLastShareData()->data->token;
+		$fullUrl = $this->featureContext->getBaseUrl() . "/public.php/webdav/" . $fileName;
+		$headers = [
+			'X-Requested-With' => 'XMLHttpRequest',
+			'Destination' => $this->featureContext->getBaseUrl() . "/public.php/webdav/" . $toFileName
+		];
+		$this->featureContext->setResponse(
+			HttpRequestHelper::sendRequest($fullUrl, "MOVE", $token, "", $headers)
+		);
+	}
 	
 	/**
 	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with range "([^"]*)" using the public WebDAV API$/
