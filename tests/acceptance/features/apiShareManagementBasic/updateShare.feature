@@ -407,3 +407,43 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+  @public_link_share-feature-required
+  Scenario Outline: Updating share permissions from change to read/update/create restricts public from deleting files
+    Given using OCS API version "<ocs_api_version>"
+    And user "user0" has created a public link share with settings
+      | path        | /PARENT |
+      | permissions | 15      |
+    When user "user0" updates the last share using the sharing API with
+      | permissions | 7 |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When the user gets the info of the last share using the sharing API
+    Then the share fields of the last share should include
+      | permissions | 7 |
+    When the public deletes file "CHILD/child.txt" from the last public share using the public WebDAV API
+    Then the HTTP status code should be "403"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @public_link_share-feature-required
+  Scenario Outline: Updating share permissions from read/update/create to change allows public to delete files
+    Given using OCS API version "<ocs_api_version>"
+    And user "user0" has created a public link share with settings
+      | path        | /PARENT |
+      | permissions | 7       |
+    When user "user0" updates the last share using the sharing API with
+      | permissions | 15 |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When the user gets the info of the last share using the sharing API
+    Then the share fields of the last share should include
+      | permissions | 15 |
+    When the public deletes file "CHILD/child.txt" from the last public share using the public WebDAV API
+    Then the HTTP status code should be "204"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
