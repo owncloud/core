@@ -402,6 +402,9 @@ class FilesPageCRUD extends FilesPageBasic {
 			$message = "INFORMATION: retried to delete file '$name' $counter times";
 			echo $message;
 			\error_log($message);
+			if ($counter === $maxRetries) {
+				throw new \Exception($message);
+			}
 		}
 	}
 

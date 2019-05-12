@@ -1613,6 +1613,60 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then it should be possible to delete file/folder :name using the webUI
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function itShouldBePossibleToDeleteFileFolderUsingTheWebUI($name) {
+		$this->deleteTheFileUsingTheWebUI($name, true);
+	}
+
+	/**
+	 * @Then /^the option to (delete|rename|download)\s?(?:file|folder) "([^"]*)" should (not|)\s?be available in the webUI$/
+	 *
+	 * @param string $action
+	 * @param string $name
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function optionShouldNotBeAvailable($action, $name, $shouldOrNot) {
+		$visible = $shouldOrNot !== "not";
+		$pageObject = $this->getCurrentPageObject();
+		$session = $this->getSession();
+		$pageObject->waitTillPageIsLoaded($session);
+		$fileRow = $pageObject->findFileRowByName($name, $session);
+		$action = \ucfirst($action);
+		if ($visible) {
+			PHPUnit\Framework\Assert::assertTrue($fileRow->isActionLabelAvailable($action, $session));
+		} else {
+			PHPUnit\Framework\Assert::assertFalse($fileRow->isActionLabelAvailable($action, $session));
+		}
+		$fileRow->clickFileActionButton();
+	}
+
+	/**
+	 * @Then /^the option to upload file should (not|)\s?be available in the webUI$/
+	 *
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function uploadButtonShouldNotBeVisible($shouldOrNot) {
+		$visible = $shouldOrNot !== "not";
+		if ($visible) {
+			PHPUnit\Framework\Assert::assertTrue($this->getCurrentPageObject()->isUploadButtonAvailable());
+		} else {
+			PHPUnit\Framework\Assert::assertFalse($this->getCurrentPageObject()->isUploadButtonAvailable());
+		}
+	}
+
+	/**
 	 * @Then the files action menu should be completely visible after opening it using the webUI
 	 *
 	 * @return void
