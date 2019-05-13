@@ -217,7 +217,7 @@ class ConvertType extends Command {
 		$output->writeln('<info>This feature is currently experimental.</info>');
 		$this->targetType = $this->connectionFactory->normalizeType($input->getArgument('type'));
 		$this->targetHostname = $input->getArgument('hostname');
-		$this->targetPort = $input->getOption('port') ? $input->getOption('port') : null;
+		$this->targetPort = $input->getOption('port');
 		$this->targetUsername = $input->getArgument('username');
 		$this->targetDatabase = $input->getArgument('database');
 		$this->targetTablePrefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
@@ -389,8 +389,10 @@ class ConvertType extends Command {
 			->setMaxResults($chunkSize);
 
 		try {
+			// Primary key is faster
 			$orderColumns = $table->getPrimaryKeyColumns();
 		} catch (DBALException $e) {
+			// But the table can have no primary key in this case we fallback to the column order
 			$orderColumns = [];
 			foreach ($table->getColumns() as $column) {
 				$orderColumns[] = $column->getName();
@@ -470,7 +472,7 @@ class ConvertType extends Command {
 				if ($tableName === $toDB->getPrefix() . 'migrations') {
 					$output->writeln(
 						\sprintf(
-							'<info>Skipping "%s" as it already has migrations data</info>',
+							'<info>Skipping copying data for the table "%s", it will be populated later.</info>',
 							$tableName
 						)
 					);
