@@ -394,6 +394,7 @@ pipeline:
     environment:
       - TEST_SERVER_URL=${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}
       - MAILHOG_HOST=email
+      - NORERUN=true
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
@@ -412,6 +413,7 @@ pipeline:
       - TEST_SERVER_URL=${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}
       - PLATFORM=Linux
       - MAILHOG_HOST=email
+      - NORERUN=true
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
