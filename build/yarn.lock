@@ -71,9 +71,10 @@
   version "2.24.0"
   resolved "https://codeload.github.com/moment/moment/tar.gz/96d0d6791ab495859d09a868803d31a55c917de1"
 
-"@bower_components/select2@ivaynberg/select2#3.5.4":
-  version "3.5.4"
-  resolved "https://codeload.github.com/ivaynberg/select2/tar.gz/95a977f674b6938af55ec5f28b7772df93786c5c"
+"@bower_components/select2@ivaynberg/select2#4.0.7":
+  version "4.0.7"
+  uid "04fce559673684af8ec2912457a9d6380ea90314"
+  resolved "https://codeload.github.com/ivaynberg/select2/tar.gz/04fce559673684af8ec2912457a9d6380ea90314"
 
 "@bower_components/showdown@showdownjs/showdown#1.9.0":
   version "1.9.0"
