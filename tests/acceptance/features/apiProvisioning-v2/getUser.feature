@@ -49,11 +49,13 @@ Feature: get user
     And the HTTP status code should be "401"
     And the API should not return any data
 
+  @issue-31276
   Scenario: a normal user tries to get information of another user
     Given user "newuser" has been created with default attributes
     And user "anotheruser" has been created with default attributes
     When user "anotheruser" retrieves the information of user "newuser" using the provisioning API
     Then the OCS status code should be "997"
+    #And the OCS status code should be "401"
     And the HTTP status code should be "401"
     And the API should not return any data
 
