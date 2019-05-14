@@ -221,7 +221,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(notificationStub.called).toEqual(true);
 			notificationStub.restore();
 
-			deferred.resolve({ ocs: { meta: {status: 'ok' }}});
+			deferred.resolve({ ocs: { data : { status: 'success'},  meta: {message: null }}});
 			expect(notifStub.calledOnce).toEqual(true);
 			notifStub.restore();
 
@@ -247,7 +247,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(notificationStub.called).toEqual(true);
 			notificationStub.restore();
 
-			deferred.resolve({ ocs: { meta: {status: 'error', message: 'message'}}});
+			deferred.resolve({ ocs: { data: {status: 'error'}, meta: {message: 'message'}}});
 			expect(notifStub.calledOnce).toEqual(true);
 			notifStub.restore();
 
