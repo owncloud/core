@@ -441,6 +441,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - WebUIAdminSharingSettingsContext:
+        - WebUIPersonalSharingSettingsContext:
 
     webUISharingNotifications:
       paths:

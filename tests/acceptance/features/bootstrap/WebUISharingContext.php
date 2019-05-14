@@ -897,6 +897,23 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then user :username should be listed in the autocomplete list on the webUI
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userShouldBeListedInTheAutocompleteListOnTheWebui($username) {
+		$names = $this->sharingDialog->getAutocompleteItemsList();
+		PHPUnit\Framework\Assert::assertContains(
+			$username,
+			$names,
+			"$username not found in autocomplete list"
+		);
+	}
+
+	/**
 	 * @Then user :username should not be listed in the autocomplete list on the webUI
 	 *
 	 * @param string $username
