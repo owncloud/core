@@ -967,13 +967,17 @@ class Share20OcsController extends OCSController {
 			Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
 		}
 
-		$message = empty($result)
-			? null
-			: $this->l->t(
+		if (empty($result)) {
+			$message = null;
+			$data = ['status' => 'success'];
+		} else {
+			$message = $this->l->t(
 				"Couldn't send mail to following recipient(s): %s ",
 				\implode(', ', $result)
 			);
-		return new Result([], 200, $message);
+			$data = ['status' => 'error'];
+		}
+		return new Result($data, 200, $message);
 	}
 
 	/**
@@ -992,7 +996,7 @@ class Share20OcsController extends OCSController {
 	public function notifyRecipientsDisabled($itemSource, $itemType, $shareType, $recipient) {
 		// FIXME: migrate to a new share API
 		Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
-		return new Result();
+		return new Result(['status' => 'success']);
 	}
 
 	/**

@@ -369,7 +369,7 @@
 			$loading.removeClass('hidden');
 
 			this.model.sendNotificationForShare(shareType, shareWith, true).then(function(result) {
-				if (result.ocs.meta.status === 'ok') {
+				if (result.ocs.data.status === 'success') {
 					OC.Notification.showTemporary(t('core', 'Email notification was sent!'));
 					$target.remove();
 				} else {
