@@ -429,6 +429,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - EmailContext:
         - WebUIAdminSharingSettingsContext:
 
     webUISharingInternalUsers:
@@ -440,6 +441,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - EmailContext:
         - WebUIAdminSharingSettingsContext:
         - WebUIPersonalSharingSettingsContext:
 

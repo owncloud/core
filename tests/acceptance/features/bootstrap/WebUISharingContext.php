@@ -675,7 +675,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$fileRows = $this->sharedWithYouPage->findAllFileRowsByName(
 			$share, $this->getSession()
 		);
-		
+
 		$found = false;
 		foreach ($fileRows as $fileRow) {
 			if ($offeredBy === $fileRow->getSharer()) {
@@ -774,6 +774,40 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		);
 		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
 		$this->sharingDialog->removePublicLink($session, $number);
+	}
+
+	/**
+	 * @When the user sends the share notification by email using the webUI
+	 *
+	 * @return void
+	 */
+	public function theUserSendsTheShareNotificationByEmailUsingTheWebui() {
+		PHPUnit\Framework\Assert::assertNotNull(
+			$this->sharingDialog, "Sharing Dialog is not open"
+		);
+		$this->sharingDialog->sendShareNotificationByEmail($this->getSession());
+	}
+
+	/**
+	 * @Then the user should not be able to send the share notification by email using the webUI
+	 *
+	 * @return void
+	 */
+	public function theUserShouldNotBeAbleToSendTheShareNotificationByEmailUsingTheWebui() {
+		$errorMessage = "";
+		PHPUnit\Framework\Assert::assertNotNull(
+			$this->sharingDialog, "Sharing Dialog is not open"
+		);
+		try {
+			$this->sharingDialog->sendShareNotificationByEmail($this->getSession());
+		} catch (Exception $e) {
+			$errorMessage = $e->getMessage();
+		}
+		PHPUnit\Framework\Assert::assertContains(
+			"could not find notify by email button",
+			$errorMessage,
+			"User was not expected to be able to send the share notification by email but was"
+		);
 	}
 
 	/**
@@ -988,7 +1022,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$this->filesPage->closeDetailsDialog();
 		} catch (Exception $e) {
 		}
-		
+
 		$row = $this->filesPage->findFileRowByName($itemName, $this->getSession());
 		$sharingBtn = $row->findSharingButton();
 		PHPUnit\Framework\Assert::assertSame(
