@@ -240,12 +240,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $tabName
 	 * @param string $fileName
 	 * @param string $folderName
+	 * @param boolean $allowToFail
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function theUserBrowsesDirectlyToDetailsTabOfFileInFolder(
-		$tabName, $fileName, $folderName
+		$tabName, $fileName, $folderName, $allowToFail = false
 	) {
 		$this->currentFolder = '/' . \trim($folderName, '/');
 		$this->currentFile = $fileName;
@@ -256,8 +257,35 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->filesPage->browseToFileId(
 			$fileId, $this->currentFolder, $tabName
 		);
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->filesPage->getDetailsDialog()->waitTillPageIsLoaded($this->getSession());
+		$session = $this->getSession();
+		$this->filesPage->waitTillPageIsLoaded($session);
+		if ($allowToFail === true) {
+			try {
+				$this->filesPage->getDetailsDialog()->waitTillPageIsLoaded($session);
+			} catch (\Exception $e) {
+				//ignore it
+			}
+		} else {
+			$this->filesPage->getDetailsDialog()->waitTillPageIsLoaded($session);
+		}
+	}
+
+	/**
+	 * @When the user tries to browse directly to display the :tabName details of file :fileName in folder :folderName
+	 *
+	 * @param string $tabName
+	 * @param string $fileName
+	 * @param string $folderName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserTriesToBrowseDirectlyToDetailsTabOfFileInFolder(
+		$tabName, $fileName, $folderName
+	) {
+		$this->theUserBrowsesDirectlyToDetailsTabOfFileInFolder(
+			$tabName, $fileName, $folderName, true
+		);
 	}
 
 	/**
@@ -310,6 +338,21 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		PHPUnit\Framework\Assert::assertTrue(
 			$detailsDialog->isDetailsPanelVisible($tabName),
 			"the $tabName panel is not visible in the details panel"
+		);
+	}
+
+	/**
+	 * @Then the :tabName details panel should not be visible
+	 *
+	 * @param string $tabName
+	 *
+	 * @return void
+	 */
+	public function theTabNameDetailsPanelShouldNotBeVisible($tabName) {
+		$detailsDialog = $this->filesPage->getDetailsDialog();
+		PHPUnit\Framework\Assert::assertFalse(
+			$detailsDialog->isDetailsPanelVisible($tabName),
+			"the $tabName panel is visible in the details panel but should not be"
 		);
 	}
 
