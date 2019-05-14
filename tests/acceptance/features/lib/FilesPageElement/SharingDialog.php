@@ -58,6 +58,7 @@ class SharingDialog extends OwncloudPage {
 	private $noSharingMessageXpath = "//div[@class='noSharingPlaceholder']";
 	private $publicLinkRemoveBtnXpath = "//div[contains(@class, 'removeLink')]";
 	private $publicLinkTitleXpath = "//span[@class='link-entry--title']";
+	private $notifyByEmailBtnXpath = "//input[@name='mailNotification']";
 
 	private $shareWithListXpath = "//ul[@id='shareWithList']/li";
 	private $userNameSpanXpath = "//span[contains(@class,'username')]";
@@ -209,7 +210,7 @@ class SharingDialog extends OwncloudPage {
 			$userElements = $autocompleteNodeElement->findAll(
 				"xpath", $this->autocompleteItemsTextXpath
 			);
-	
+
 			$userFound = false;
 			foreach ($userElements as $user) {
 				if ($this->getTrimmedText($user) === $nameToMatch) {
@@ -618,6 +619,25 @@ class SharingDialog extends OwncloudPage {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * send share notification by email to the sharee
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function sendShareNotificationByEmail($session) {
+		$notifyByEmailBtn = $this->find("xpath", $this->notifyByEmailBtnXpath);
+		$this->assertElementNotNull(
+			$notifyByEmailBtn,
+			__METHOD__ .
+			" xpath $this->notifyByEmailBtnXpath " .
+			"could not find notify by email button"
+		);
+		$notifyByEmailBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**

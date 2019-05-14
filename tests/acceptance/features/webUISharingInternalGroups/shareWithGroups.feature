@@ -130,3 +130,77 @@ Feature: Sharing files and folders with internal groups
     And the user types "system-group" in the share-with-field
     Then a tooltip with the text "No users or groups found for system-group" should be shown near the share-with-field on the webUI
     And the autocomplete list should not be displayed on the webUI
+
+  @mailhog
+  Scenario: user should be able to send notification by email when allow share mail notification has been enabled
+    Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
+    And user "user3" has logged in using the webUI
+    And user "user3" has shared file "lorem.txt" with group "grp1"
+    And the user has opened the share dialog for file "lorem.txt"
+    When the user sends the share notification by email using the webUI
+    Then a notification should be displayed on the webUI with the text "Email notification was sent!"
+    And the email address "user1@example.org" should have received an email with the body containing
+      """
+      just letting you know that User Three shared lorem.txt with you.
+      """
+    And the email address "user2@example.org" should have received an email with the body containing
+      """
+      just letting you know that User Three shared lorem.txt with you.
+      """
+
+  @mailhog
+  Scenario: user should not be able to send notification by email more than once
+    Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
+    And user "user3" has logged in using the webUI
+    And user "user3" has shared file "lorem.txt" with group "grp1"
+    And the user has opened the share dialog for file "lorem.txt"
+    When the user sends the share notification by email using the webUI
+    Then the user should not be able to send the share notification by email using the webUI
+    When the user reloads the current page of the webUI
+    And the user opens the share dialog for file "lorem.txt"
+    Then the user should not be able to send the share notification by email using the webUI
+
+  Scenario: user should not be able to send notification by email when allow share mail notification has been disabled
+    Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "no"
+    And user "user3" has logged in using the webUI
+    And user "user3" has shared file "lorem.txt" with group "grp1"
+    When the user opens the share dialog for file "lorem.txt"
+    Then the user should not be able to send the share notification by email using the webUI
+
+  @mailhog
+  Scenario: user should not get an email notification if the user is added to the group after the mail notification was sent
+    Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
+    And user "user0" has been created with default attributes
+    And user "user3" has logged in using the webUI
+    And user "user3" has shared file "lorem.txt" with group "grp1"
+    And the user has opened the share dialog for file "lorem.txt"
+    When the user sends the share notification by email using the webUI
+    Then a notification should be displayed on the webUI with the text "Email notification was sent!"
+    When the administrator adds user "user0" to group "grp1" using the provisioning API
+    Then the email address "user0@example.org" should not have received an email
+
+  @mailhog @issue-35218
+  Scenario: user should get an error message when trying to send notification by email to the group where some user have set up their email and others haven't
+    Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
+    And these users have been created:
+      | username           |
+      | brand-new-user     |
+      | off-brand-new-user |
+    And user "brand-new-user" has been added to group "grp1"
+    And user "off-brand-new-user" has been added to group "grp1"
+    And user "user3" has logged in using the webUI
+    And user "user3" has shared file "lorem.txt" with group "grp1"
+    And the user has opened the share dialog for file "lorem.txt"
+    When the user sends the share notification by email using the webUI
+    Then a notification should be displayed on the webUI with the text "Email notification was sent!"
+#    Then dialog should be displayed on the webUI
+#      | title                       | content                                                                          |
+#      | Email notification not sent | Couldn't send mail to following recipient(s): brand-new-user, off-brand-new-user |
+    And the email address "user1@example.org" should have received an email with the body containing
+      """
+      just letting you know that User Three shared lorem.txt with you.
+      """
+    And the email address "user2@example.org" should have received an email with the body containing
+      """
+      just letting you know that User Three shared lorem.txt with you.
+      """

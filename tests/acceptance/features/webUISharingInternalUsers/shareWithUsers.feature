@@ -233,3 +233,50 @@ Feature: Sharing files and folders with internal users
     Then the user "User Two" should not be in share with user list
     And file "lorem.txt" should not be listed in shared-with-others page on the webUI
     And as "user2" file "lorem (2).txt" should not exist
+
+  @mailhog
+  Scenario: user should be able to send notification by email when allow share mail notification has been enabled
+    Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
+    And user "user1" has logged in using the webUI
+    And user "user1" has shared file "lorem.txt" with user "user2"
+    And the user has opened the share dialog for file "lorem.txt"
+    When the user sends the share notification by email using the webUI
+    Then a notification should be displayed on the webUI with the text "Email notification was sent!"
+    And the email address "user2@example.org" should have received an email with the body containing
+      """
+      just letting you know that User One shared lorem.txt with you.
+      """
+
+  @mailhog @issue-35218
+  Scenario: user should get and error message when trying to send notification by email to a user who has not setup their email
+    Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
+    And these users have been created:
+      |username|password|
+      |user0   |1234    |
+    And user "user1" has logged in using the webUI
+    And user "user1" has shared file "lorem.txt" with user "user0"
+    And the user has opened the share dialog for file "lorem.txt"
+    When the user sends the share notification by email using the webUI
+#    Then dialog should be displayed on the webUI
+#      | title                       | content                                             |
+#      | Email notification not sent | Couldn't send mail to following recipient(s): user0 |
+    Then a notification should be displayed on the webUI with the text "Email notification was sent!"
+
+  @mailhog
+  Scenario: user should not be able to send notification by email more than once
+    Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
+    And user "user1" has logged in using the webUI
+    And user "user1" has shared file "lorem.txt" with user "user2"
+    And the user has opened the share dialog for file "lorem.txt"
+    When the user sends the share notification by email using the webUI
+    Then the user should not be able to send the share notification by email using the webUI
+    When the user reloads the current page of the webUI
+    And the user opens the share dialog for file "lorem.txt"
+    Then the user should not be able to send the share notification by email using the webUI
+
+  Scenario: user should not be able to send notification by email when allow share mail notification has been disabled
+    Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "no"
+    And user "user1" has logged in using the webUI
+    And user "user1" has shared file "lorem.txt" with user "user2"
+    When the user opens the share dialog for file "lorem.txt"
+    Then the user should not be able to send the share notification by email using the webUI
