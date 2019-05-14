@@ -414,5 +414,6 @@ Feature: Share by public link
       And the user has browsed to the shared-by-link page
       When the user renames folder "test" to "newfolder" using the webUI
       Then near folder "test" a tooltip with the text 'newfolder already exists' should be displayed on the webUI
-      #Then folder "newfolder" should be listed on the webUI
-      #And folder "newfolder" should be listed on the webUI
+      #Then the following folder should be listed on the webUI
+        #| newfolder |
+        #| newfolder |
