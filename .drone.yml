@@ -1307,6 +1307,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_EMAIL: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1319,6 +1320,7 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
+      USE_EMAIL: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
