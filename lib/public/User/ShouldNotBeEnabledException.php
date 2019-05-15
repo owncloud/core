@@ -21,5 +21,8 @@
 
 namespace OCP\User;
 
+/**
+ * @since 10.3.0
+ */
 class ShouldNotBeEnabledException extends \Exception {
 }

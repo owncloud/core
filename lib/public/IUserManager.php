@@ -147,6 +147,7 @@ interface IUserManager {
 	 * user.
 	 * The function won't return anything if it's ok
 	 *
+	 * @since 10.3.0
 	 * @param string $uid
 	 * @throws \OCP\User\ShouldNotBeEnabledException explaining the reason
 	 */
