@@ -126,6 +126,23 @@ class FilesPage extends FilesPageBasic {
 	}
 
 	/**
+	 * returns the tooltip that is displayed next to the filename
+	 * if something is wrong
+	 *
+	 * @param string $fileName
+	 * @param Session $session
+	 *
+	 * @return string
+	 */
+	public function getTooltipOfFile(
+		$fileName, Session $session
+	) {
+		return $this->filesPageCRUDFunctions->getTooltipOfFile(
+			$fileName, $session
+		);
+	}
+
+	/**
 	 *
 	 * @throws ElementNotFoundException
 	 * @return string
@@ -255,21 +272,6 @@ class FilesPage extends FilesPageBasic {
 		$this->filesPageCRUDFunctions->moveFileTo(
 			$name, $destination, $session, $maxRetries
 		);
-	}
-
-	/**
-	 * returns the tooltip that is displayed next to the filename
-	 * if something is wrong
-	 *
-	 * @param string $fileName
-	 * @param Session $session
-	 *
-	 * @return string
-	 * @throws ElementNotFoundException
-	 */
-	public function getTooltipOfFile($fileName, Session $session) {
-		$fileRow = $this->findFileRowByName($fileName, $session);
-		return $fileRow->getTooltip();
 	}
 
 	/**
