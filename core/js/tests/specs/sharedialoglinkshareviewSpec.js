@@ -209,7 +209,54 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				});
 				view.render();
 				expect(view.$('.publicPermissions').length).toEqual(4);
+				expect(view.$('.publicPermissions').context.innerHTML).toContain('Download / View');
+				expect(view.$('.publicPermissions').context.innerHTML).toContain('Download / View / Edit');
+				expect(view.$('.publicPermissions').context.innerHTML).toContain('Download / View / Upload');
+				expect(view.$('.publicPermissions').context.innerHTML).toContain('Upload only (File Drop)');
 			});
+			it('renders listing radio buttons for file when public upload is allowed globally', function () {
+				fileInfoModel = new OCA.Files.FileInfoModel({
+					id: '123',
+					name: 'file.txt',
+					path: '/subdir',
+					size: 100,
+					mimetype: 'text/plain',
+					permissions: 31,
+					sharePermissions: 31
+				});
+				itemModel = new OC.Share.ShareItemModel({
+					itemType: 'file',
+					itemSource: 123,
+					permissions: 31
+				}, {
+					configModel: configModel,
+					fileInfoModel: fileInfoModel
+				});
+
+				model = new OC.Share.ShareModel({
+					id: 1,
+					name: 'first link',
+					token: 'tehtokenz',
+					shareType: OC.Share.SHARE_TYPE_LINK,
+					itemType: 'file',
+					stime: 1489657516,
+					permissions: OC.PERMISSION_READ
+				});
+
+				view = new OC.Share.ShareDialogLinkShareView({
+					model: model,
+					itemModel: itemModel
+				});
+
+				model.set({
+					permissions: OC.PERMISSION_READ | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE
+				});
+
+				view.render();
+				expect(view.$('.publicPermissions').length).toEqual(1);
+				expect(view.$('.publicPermissions').context.innerHTML).toContain('Download / View');
+			});
+
 			it('renders checkbox disabled when public upload is disallowed by user', function() {
 				publicUploadConfigStub.returns(true);
 				model.set({
