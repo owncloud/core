@@ -34,7 +34,7 @@ class SyncLimiterTest extends TestCase {
 	/** @var SyncLimiter | \PHPUnit\Framework\MockObject\MockObject */
 	private $syncLimiter;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mapper = $this->createMock(AccountMapper::class);

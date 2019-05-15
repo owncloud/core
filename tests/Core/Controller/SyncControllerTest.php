@@ -42,7 +42,7 @@ class SyncControllerTest extends TestCase {
 	/** @var SyncController */
 	private $syncController;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->syncService = $this->createMock(SyncService::class);

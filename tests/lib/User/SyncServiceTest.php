@@ -180,7 +180,7 @@ class SyncServiceTest extends TestCase {
 	}
 
 	public function testAnalyseExistingUsers() {
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		$s = new SyncService($this->config, $this->logger, $this->mapper, $this->syncLimiter);
 		$this->mapper->expects($this->once())
 			->method('callForAllUsers')
 			->with($this->callback(function ($param) {
@@ -205,7 +205,7 @@ class SyncServiceTest extends TestCase {
 		$backend->expects($this->once())->method('userExists')->willReturn(true);
 		$account->expects($this->once())->method('getState')->willReturn(false);
 		$account->expects($this->exactly(2))->method('getUserId')->willReturn('test');
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		$s = new SyncService($this->config, $this->logger, $this->mapper, $this->syncLimiter);
 		$removed = [];
 		$reappeared = [];
 		static::invokePrivate($s, 'checkIfAccountReappeared', [$account, &$removed, &$reappeared, $backend, $backendClass]);
@@ -225,7 +225,7 @@ class SyncServiceTest extends TestCase {
 		$backend->expects($this->once())->method('userExists')->willReturn(false);
 		$account->expects($this->never())->method('getState')->willReturn(false);
 		$account->expects($this->exactly(2))->method('getUserId')->willReturn('test');
-		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		$s = new SyncService($this->config, $this->logger, $this->mapper, $this->syncLimiter);
 		$removed = [];
 		$reappeared = [];
 		static::invokePrivate($s, 'checkIfAccountReappeared', [$account, &$removed, &$reappeared, $backend, $backendClass]);

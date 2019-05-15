@@ -34,6 +34,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IGroupManager;
 use OCP\UserInterface;
+use OCP\IUserBackend;
 use OCP\Mail\IMailer;
 use OCP\L10N\IFactory;
 use OCP\Template;
@@ -216,14 +217,20 @@ class SyncBackend extends Command {
 				$userCount += $stats[Account::STATE_AUTODISABLED];
 			}
 
+			// try to get the backend name ($backend might not be a IUserBackend)
+			$backendName = \get_class($backend);
+			if ($backend instanceof IUserBackend) {
+				$backendName = $backend->getBackendName();
+			}
+
 			if ($userCount > $syncLimitInfo['hard']) {
 				$output->writeln("Several users have been automatically disabled because you have over {$syncLimitInfo['hard']} users");
 				$output->writeln("Please consider to buy a enterprise license to have unlimited users in this backend");
-				$this->notifyHardLimit($syncLimitInfo['soft'], $syncLimitInfo['hard'], $backend->getBackendName());
+				$this->notifyHardLimit($syncLimitInfo['soft'], $syncLimitInfo['hard'], $backendName);
 			} elseif ($userCount > $syncLimitInfo['soft']) {
 				$output->writeln("You are getting near the {$syncLimitInfo['hard']} users, which is the maximum number of enabled users you can have");
 				$output->writeln("Please consider to buy a enterprise license to have unlimited users in this backend");
-				$this->notifySoftLimit($syncLimitInfo['soft'], $syncLimitInfo['hard'], $backend->getBackendName());
+				$this->notifySoftLimit($syncLimitInfo['soft'], $syncLimitInfo['hard'], $backendName);
 			}
 		}
 		// no need to do anything if there is no limit info
