@@ -408,3 +408,19 @@ Feature: Share by public link
     And folder "newfolder" should not be listed on the webUI
     #And folder "newfolder" should be listed on the webUI
     And folder "test" should be listed on the webUI
+
+    @issue-35174
+    Scenario: User renames folders with different path in Shared by link page
+      Given user "user1" has created folder "nf1"
+      And user "user1" has created folder "nf1/newfolder"
+      And user "user1" has created folder "test"
+      And user "user1" has created a public link share with settings
+        | path | nf1/newfolder |
+      And user "user1" has created a public link share with settings
+        | path | test |
+      And the user has browsed to the shared-by-link page
+      When the user renames folder "test" to "newfolder" using the webUI
+      Then near folder "test" a tooltip with the text 'newfolder already exists' should be displayed on the webUI
+      #Then the following folder should be listed on the webUI
+        #| newfolder |
+        #| newfolder |
