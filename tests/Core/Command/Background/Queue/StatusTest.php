@@ -44,6 +44,12 @@ class StatusTest extends TestCase {
 		parent::setUp();
 
 		$this->jobList = $this->createMock(IJobList::class);
+		$command = new Status($this->jobList);
+		$command->setApplication(new Application());
+		$this->commandTester = new CommandTester($command);
+	}
+
+	public function testCommandInput() {
 		$this->jobList->expects($this->any())->method('listJobs')
 			->willReturnCallback(function (\Closure $callBack) {
 				$job = new RegularJob();
@@ -51,12 +57,6 @@ class StatusTest extends TestCase {
 				$callBack($job);
 			});
 
-		$command = new Status($this->jobList);
-		$command->setApplication(new Application());
-		$this->commandTester = new CommandTester($command);
-	}
-
-	public function testCommandInput() {
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$expected = <<<EOS
@@ -65,6 +65,27 @@ class StatusTest extends TestCase {
 +--------+------------------------------------+---------------------------+---------------+
 | 666    | OC\BackgroundJob\Legacy\RegularJob | 1970-01-01T00:00:00+00:00 |               |
 +--------+------------------------------------+---------------------------+---------------+
+EOS;
+
+		$this->assertContains($expected, $output);
+	}
+
+	public function testJobWithArray() {
+		$this->jobList->expects($this->any())->method('listJobs')
+			->willReturnCallback(function (\Closure $callBack) {
+				$job = new RegularJob();
+				$job->setId(666);
+				$job->setArgument(['k'=> 'v','test2']);
+				$callBack($job);
+			});
+		$this->commandTester->execute([]);
+		$output = $this->commandTester->getDisplay();
+		$expected = <<<EOS
++--------+------------------------------------+---------------------------+-----------------------+
+| Job ID | Job                                | Last Run                  | Job Arguments         |
++--------+------------------------------------+---------------------------+-----------------------+
+| 666    | OC\BackgroundJob\Legacy\RegularJob | 1970-01-01T00:00:00+00:00 | {"k":"v","0":"test2"} |
++--------+------------------------------------+---------------------------+-----------------------+
 EOS;
 
 		$this->assertContains($expected, $output);
