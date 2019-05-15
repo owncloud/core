@@ -27,7 +27,9 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use WebDriver\Exception\NoSuchElement;
 use WebDriver\Exception\StaleElementReference;
+use WebDriver\Key;
 
 /**
  * The Details Dialog
@@ -60,6 +62,7 @@ class DetailsDialog extends OwncloudPage {
 	private $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
 										"//ul[@class='select2-results']" .
 										"//span[@class='label']";
+	private $tagEditInputXpath = "//input[@id='view9-rename-input']";
 
 	private $commentXpath = "//ul[@class='comments']//div[@class='message' and contains(., '%s')]";
 	private $commentInputXpath = "//form[@class='newCommentForm']//textarea[@class='message']";
@@ -232,6 +235,7 @@ class DetailsDialog extends OwncloudPage {
 			"xpath", $this->commentListXpath
 		);
 	}
+
 	/**
 	 * check if a comment with given text is listed on the webUI
 	 *
@@ -497,6 +501,60 @@ class DetailsDialog extends OwncloudPage {
 			}
 		}
 	}
+
+	/**
+	 * Rename a tag on the files in the details dialog
+	 *
+	 * @param string $tagName
+	 * @param string $newName
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function renameTag($tagName, $newName) {
+		$this->insertTagNameInTheTagsField($tagName);
+		$suggestions = $this->getDropDownTagsSuggestionResults();
+		foreach ($suggestions as $tag) {
+			if ($tag->getText() === $tagName) {
+				$tagContainer = $tag->getParent();
+				$editBtn = $tagContainer->find("xpath", $this->tagEditButtonInTagXpath);
+				$this->assertElementNotNull(
+					$editBtn,
+					__METHOD__ .
+					" xpath: $this->tagEditButtonInTagXpath" .
+					"could not find tag edit button"
+				);
+				$editBtn->focus();
+				$editBtn->click();
+				$editInput = $this->find(
+					"xpath", $this->tagEditInputXpath
+				);
+				$this->assertElementNotNull(
+					$editInput,
+					__METHOD__ .
+					"xpath: $this->tagEditInputXpath" .
+					" could not find tag edit input"
+				);
+				$editInput->focus();
+				$editInput->click();
+				try {
+					$this->fillField("Rename", $newName . Key::ENTER);
+				} catch (NoSuchElement $e) {
+					// this seems to be a bug in MinkSelenium2Driver.
+					// Used to work fine in 1.3.1 but now throws this exception
+					// Actually all that we need does happen, so we just don't do anything
+				} catch (StaleElementReference $e) {
+					// At the end of processing setValue, MinkSelenium2Driver tries to blur
+					// away from the element. But we pressed enter which has already
+					// made the element go away. So we do not care about this exception.
+					// This issue started happening due to:
+					// https://github.com/minkphp/MinkSelenium2Driver/pull/286
+				}
+				break;
+			}
+		}
+	}
+
 	/**
 	 * Returns xpath of the tag results dropdown
 	 *
