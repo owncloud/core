@@ -25,6 +25,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
 use Page\TagsPage;
+use Behat\Gherkin\Node\TableNode;
 
 require_once 'bootstrap.php';
 
@@ -101,6 +102,18 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 */
 	public function theUserTypesAValueInTheCollaborativeTagsFieldUsingTheWebUI($value) {
 		$this->filesPage->getDetailsDialog()->insertTagNameInTheTagsField($value);
+	}
+
+	/**
+	 * @When the user edits the tag with name :oldName and sets its name to :newName using the webUI
+	 *
+	 * @param string $oldName
+	 * @param string $newName
+	 *
+	 * @return void
+	 */
+	public function theUserEditsTheTagWithNameAndSetsItsNameToUsingTheWebui($oldName, $newName) {
+		$this->filesPage->getDetailsDialog()->renameTag($oldName, $newName);
 	}
 
 	/**
