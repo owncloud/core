@@ -17,7 +17,7 @@ Feature: add groups
       | group_id    | comment                     |
       | simplegroup | nothing special here        |
       | España      | special European characters |
-      | नेपाली      | Unicode group name          |
+      | नेपाली        | Unicode group name          |
 
   Scenario Outline: admin creates a group
     When the administrator sends a group creation request for group "<group_id>" using the provisioning API
@@ -42,6 +42,7 @@ Feature: add groups
       | 50%2Eagle           | %2E literal looks like an escaped "."   |
       | 50%2Fix             | %2F literal looks like an escaped slash |
       | staff?group         | Question mark                           |
+      | 😅 😆               | emoji                                   |
 
     # Note: these groups do get created OK, but:
     # 1) the "should exist" step fails because the API to check their existence does not work.

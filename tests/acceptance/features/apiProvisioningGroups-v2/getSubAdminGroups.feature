@@ -11,10 +11,13 @@ Feature: get subadmin groups
   Scenario: admin gets subadmin groups of a user
     Given user "brand-new-user" has been created with default attributes
     And group "new-group" has been created
+    And group "😅 😆" has been created
     And user "brand-new-user" has been made a subadmin of group "new-group"
+    And user "brand-new-user" has been made a subadmin of group "😅 😆"
     When the administrator gets all the groups where user "brand-new-user" is subadmin using the provisioning API
     Then the subadmin groups returned by the API should be
       | new-group |
+      | 😅 😆      |
     And the OCS status code should be "200"
     And the HTTP status code should be "200"
 
