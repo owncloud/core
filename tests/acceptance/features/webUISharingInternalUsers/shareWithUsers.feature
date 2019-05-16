@@ -247,7 +247,7 @@ Feature: Sharing files and folders with internal users
       just letting you know that User One shared lorem.txt with you.
       """
 
-  @mailhog @issue-35218
+  @mailhog
   Scenario: user should get and error message when trying to send notification by email to a user who has not setup their email
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created:
@@ -257,10 +257,9 @@ Feature: Sharing files and folders with internal users
     And user "user1" has shared file "lorem.txt" with user "user0"
     And the user has opened the share dialog for file "lorem.txt"
     When the user sends the share notification by email using the webUI
-#    Then dialog should be displayed on the webUI
-#      | title                       | content                                             |
-#      | Email notification not sent | Couldn't send mail to following recipient(s): user0 |
-    Then a notification should be displayed on the webUI with the text "Email notification was sent!"
+    Then dialog should be displayed on the webUI
+      | title                       | content                                             |
+      | Email notification not sent | Couldn't send mail to following recipient(s): user0 |
 
   @mailhog
   Scenario: user should not be able to send notification by email more than once
