@@ -179,7 +179,7 @@ Feature: Sharing files and folders with internal groups
     When the administrator adds user "user0" to group "grp1" using the provisioning API
     Then the email address "user0@example.org" should not have received an email
 
-  @mailhog @issue-35218
+  @mailhog
   Scenario: user should get an error message when trying to send notification by email to the group where some user have set up their email and others haven't
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created:
@@ -192,10 +192,9 @@ Feature: Sharing files and folders with internal groups
     And user "user3" has shared file "lorem.txt" with group "grp1"
     And the user has opened the share dialog for file "lorem.txt"
     When the user sends the share notification by email using the webUI
-    Then a notification should be displayed on the webUI with the text "Email notification was sent!"
-#    Then dialog should be displayed on the webUI
-#      | title                       | content                                                                          |
-#      | Email notification not sent | Couldn't send mail to following recipient(s): brand-new-user, off-brand-new-user |
+    Then dialog should be displayed on the webUI
+      | title                       | content                                                                          |
+      | Email notification not sent | Couldn't send mail to following recipient(s): brand-new-user, off-brand-new-user |
     And the email address "user1@example.org" should have received an email with the body containing
       """
       just letting you know that User Three shared lorem.txt with you.
