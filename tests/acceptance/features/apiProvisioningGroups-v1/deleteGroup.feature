@@ -18,7 +18,7 @@ Feature: delete groups
       | group_id    | comment                     |
       | simplegroup | nothing special here        |
       | España      | special European characters |
-      | नेपाली      | Unicode group name          |
+      | नेपाली        | Unicode group name          |
 
   Scenario Outline: admin deletes a group
     Given group "<group_id>" has been created
@@ -44,6 +44,7 @@ Feature: delete groups
       | 50%2Eagle           | %2E literal looks like an escaped "."   |
       | 50%2Fix             | %2F literal looks like an escaped slash |
       | staff?group         | Question mark                           |
+      | 😁 😂               | emoji                                   |
 
   @issue-31015
   Scenario Outline: admin deletes a group that has a forward-slash in the group name

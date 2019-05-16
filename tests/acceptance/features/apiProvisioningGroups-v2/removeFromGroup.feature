@@ -22,7 +22,7 @@ Feature: remove a user from a group
       | España      | special European characters |
       | नेपाली      | Unicode group name          |
 
-  Scenario Outline: admin removes a user from a group
+   Scenario Outline: admin removes a user from a group
     Given user "brand-new-user" has been created with default attributes
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
@@ -48,6 +48,7 @@ Feature: remove a user from a group
       | 50%2Eagle           | %2E literal looks like an escaped "."   |
       | 50%2Fix             | %2F literal looks like an escaped slash |
       | staff?group         | Question mark                           |
+      | 😅 😆               | emoji                                   |
 
   @issue-31015
   Scenario Outline: admin removes a user from a group that has a forward-slash in the group name
