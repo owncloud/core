@@ -16,18 +16,21 @@ Feature: get user groups
     And group "Admin & Finance (NP)" has been created
     And group "admin:Pokhara@Nepal" has been created
     And group "नेपाली" has been created
+    And group "😅 😆" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "brand-new-user" has been added to group "0"
     And user "brand-new-user" has been added to group "Admin & Finance (NP)"
     And user "brand-new-user" has been added to group "admin:Pokhara@Nepal"
     And user "brand-new-user" has been added to group "नेपाली"
+    And user "brand-new-user" has been added to group "😅 😆"
     When the administrator gets all the groups of user "brand-new-user" using the provisioning API
     Then the groups returned by the API should be
       | new-group            |
       | 0                    |
       | Admin & Finance (NP) |
       | admin:Pokhara@Nepal  |
-      | नेपाली               |
+      | नेपाली                 |
+      | 😅 😆                |
     And the OCS status code should be "100"
     And the HTTP status code should be "200"
 
