@@ -387,26 +387,37 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			//we iterate first through the real dialogs because that way we can
 			//save time by calling getMessage() & getTitle() only once
 			foreach ($dialogs as $dialog) {
-				$content = $dialog->getMessage();
-				$title = $dialog->getTitle();
+				$headings = ['title', 'content'];
+				$dialogValues = [
+					'content' => $dialog->getMessage(),
+					'title' => $dialog->getTitle()
+				];
 				for ($dialogI = 0; $dialogI < \count($expectedDialogs); $dialogI++) {
-					$expectedDialogs[$dialogI]['content']
-						= $this->featureContext->substituteInLineCodes(
-							$expectedDialogs[$dialogI]['content']
-						);
-					if ($content === $expectedDialogs[$dialogI]['content']
-						&& $title === $expectedDialogs[$dialogI]['title']
-					) {
-						$expectedDialogs[$dialogI]['found'] = true;
+					$found = true;
+					foreach ($headings as $heading) {
+						if (\array_key_exists($heading, $expectedDialogs[$dialogI])
+							&& $dialogValues[$heading] !== $this->featureContext->substituteInLineCodes(
+								$expectedDialogs[$dialogI][$heading]
+							)
+						) {
+							$found = false;
+							break;
+						}
 					}
+					$expectedDialogs[$dialogI]['found'] = $found;
 				}
 			}
 			foreach ($expectedDialogs as $expectedDialog) {
-				PHPUnit\Framework\Assert::assertArrayHasKey(
-					"found",
-					$expectedDialog,
-					"could not find dialog with title '{$expectedDialog['title']}' "
-					. "and content '{$expectedDialog['content']}'"
+				$message = "Could not find dialog with ";
+				if (\array_key_exists('title', $expectedDialog)) {
+					$message = $message . "title :'{$expectedDialog['title']}' ";
+				}
+				if (\array_key_exists('content', $expectedDialog)) {
+					$message = $message . "content :'{$expectedDialog['content']}' ";
+				}
+				PHPUnit\Framework\Assert::assertTrue(
+					$expectedDialog['found'],
+					$message
 				);
 			}
 		}
