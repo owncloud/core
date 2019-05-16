@@ -14,3 +14,6 @@ Maps file extensions to mimetypes in alphabetical order. Any changes to this fil
 The first index in the mapped array is assumed to be the correct mimetype. The second one is a secure alternative.
 
 To add a custom mimetype mapping, create a `mimetypemapping.json` file in the `/config` directory.
+
+## updating/generating current ca-bundle.crt
+Use: https://github.com/curl/curl/blob/master/lib/mk-ca-bundle.pl
