@@ -394,29 +394,41 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		}
 		if ($table !== null) {
 			$expectedDialogs = $table->getHash();
+			for ($dialogI = 0; $dialogI < \count($expectedDialogs); $dialogI++) {
+				foreach ($expectedDialogs[$dialogI] as $key => $value) {
+					$expectedDialogs[$dialogI][$key] = $this->featureContext->substituteInLineCodes($value);
+				}
+			}
 			//we iterate first through the real dialogs because that way we can
 			//save time by calling getMessage() & getTitle() only once
 			foreach ($dialogs as $dialog) {
-				$content = $dialog->getMessage();
-				$title = $dialog->getTitle();
+				$dialogValues = [
+					'content' => $dialog->getMessage(),
+					'title' => $dialog->getTitle()
+				];
 				for ($dialogI = 0; $dialogI < \count($expectedDialogs); $dialogI++) {
-					$expectedDialogs[$dialogI]['content']
-						= $this->featureContext->substituteInLineCodes(
-							$expectedDialogs[$dialogI]['content']
-						);
-					if ($content === $expectedDialogs[$dialogI]['content']
-						&& $title === $expectedDialogs[$dialogI]['title']
+					// We check the difference between the expected array and the actual array
+					// This will allow to identify dialogs based on single property also
+					if (!\array_key_exists('found', $expectedDialogs[$dialogI])
+						&& \array_diff_assoc($expectedDialogs[$dialogI], $dialogValues) == []
 					) {
-						$expectedDialogs[$dialogI]['found'] = true;
+						$expectedDialogs[$dialogI]['found'] = (boolean)true;
+						break;
 					}
 				}
 			}
 			foreach ($expectedDialogs as $expectedDialog) {
+				$message = "Could not find dialog with ";
+				if (\array_key_exists('title', $expectedDialog)) {
+					$message = $message . "title :'{$expectedDialog['title']}' ";
+				}
+				if (\array_key_exists('content', $expectedDialog)) {
+					$message = $message . "content :'{$expectedDialog['content']}' ";
+				}
 				PHPUnit\Framework\Assert::assertArrayHasKey(
 					"found",
 					$expectedDialog,
-					"could not find dialog with title '{$expectedDialog['title']}' "
-					. "and content '{$expectedDialog['content']}'"
+					$message
 				);
 			}
 		}
