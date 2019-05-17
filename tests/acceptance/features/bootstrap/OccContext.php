@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
@@ -463,6 +464,15 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator list the repair steps using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorListTheRepairStepsUsingTheOccCommand() {
+		$this->invokingTheCommand('maintenance:repair --list');
+	}
+
+	/**
 	 * @Then the background jobs mode should be :mode
 	 *
 	 * @param string $mode
@@ -598,6 +608,27 @@ class OccContext implements Context {
 	public function systemConfigKeyShouldHaveValue($key, $value) {
 		$config = \trim($this->featureContext->getSystemConfigValue($key));
 		PHPUnit\Framework\Assert::assertSame($value, $config);
+	}
+
+	/**
+	 * @Then the command output table should contain the following text:
+	 *
+	 * @param TableNode $table table of patterns to find with table title as 'table_column'
+	 *
+	 * @return void
+	 */
+	public function theCommandOutputTableShouldContainTheFollowingText(TableNode $table) {
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		foreach ($table as $row) {
+			$lines = $this->featureContext->findLines(
+				$commandOutput,
+				$row['table_column']
+			);
+			PHPUnit\Framework\Assert::assertNotEmpty(
+				$lines,
+				"Value: " . $row['table_column'] . " not found"
+			);
+		}
 	}
 
 	/**
