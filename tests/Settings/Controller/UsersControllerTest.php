@@ -3305,6 +3305,9 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('setPlainBody')
 			->willReturn($message);
 		$message->expects($this->once())
+			->method('setHtmlBody')
+			->willReturn($message);
+		$message->expects($this->once())
 			->method('setFrom')
 			->willReturn($message);
 
