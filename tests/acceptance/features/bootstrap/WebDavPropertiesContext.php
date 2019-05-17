@@ -322,7 +322,7 @@ class WebDavPropertiesContext implements Context {
 		);
 		$value = $xmlPart[0]->__toString();
 		$pattern = $this->featureContext->substituteInLineCodes(
-			$pattern
+			$pattern, ['preg_quote' => ['/'] ]
 		);
 		PHPUnit\Framework\Assert::assertRegExp(
 			$pattern, $value,
