@@ -462,7 +462,11 @@ trait AppConfiguration {
 				|| $currentConfigList["system"][$configKey] !== $this->savedConfigList[$server]['system'][$configKey]
 			) {
 				SetupHelper::runOcc(
-					['config:system:set', "--type=json", "--value=" . \json_encode($configValue), $configKey]
+					['config:system:set', "--type=json", "--value=" . \json_encode($configValue), $configKey],
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					$this->getBaseUrl(),
+					$this->getOcPath()
 				);
 			}
 		}
