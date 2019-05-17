@@ -590,6 +590,7 @@ trait Sharing {
 		$this->response = HttpRequestHelper::put(
 			$fullUrl, $user, $this->getPasswordForUser($user), null, $fd
 		);
+		$this->lastShareData = $this->getResponseXml();
 	}
 
 	/**
