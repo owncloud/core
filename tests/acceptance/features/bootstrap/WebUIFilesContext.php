@@ -34,6 +34,7 @@ use Page\TagsPage;
 use Page\TrashbinPage;
 use Page\FilesPageElement\ConflictDialog;
 use Page\FilesPageElement\FileActionsMenu;
+use Page\GeneralExceptionPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\DeleteHelper;
 use TestHelpers\Asserts\WebDav as WebDavAssert;
@@ -145,6 +146,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	private $uploadConflictDialogTitle = "file conflict";
 
 	/**
+	 *
+	 * @var GeneralExceptionPage
+	 */
+	private $generalExceptionPage;
+
+	/**
 	 * WebUIFilesContext constructor.
 	 *
 	 * @param FilesPage $filesPage
@@ -155,6 +162,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param TagsPage $tagsPage
 	 * @param SharedByLinkPage $sharedByLinkPage
 	 * @param SharedWithOthersPage $sharedWithOthersPage
+	 * @param GeneralExceptionPage $generalExceptionPage
 	 *
 	 * @return void
 	 */
@@ -166,7 +174,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		SharedWithYouPage $sharedWithYouPage,
 		TagsPage $tagsPage,
 		SharedByLinkPage $sharedByLinkPage,
-		SharedWithOthersPage $sharedWithOthersPage
+		SharedWithOthersPage $sharedWithOthersPage,
+		GeneralExceptionPage $generalExceptionPage
 	) {
 		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
@@ -176,6 +185,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->tagsPage = $tagsPage;
 		$this->sharedByLinkPage = $sharedByLinkPage;
 		$this->sharedWithOthersPage = $sharedWithOthersPage;
+		$this->generalExceptionPage = $generalExceptionPage;
 	}
 
 	/**
@@ -1235,23 +1245,25 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the user opens (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
-	 * @Given /^the user has opened (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
+	 * @When /^the user opens (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) (expecting to fail|)\s?using the webUI$/
+	 * @Given /^the user has opened (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) (expecting to fail|)\s?using the webUI$/
 	 *
 	 * @param string $typeOfFilesPage
 	 * @param string $fileOrFolder
 	 * @param string $name enclosed in single or double quotes
+	 * @param string $expectToFail
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theUserOpensFolderNamedUsingTheWebUI(
-		$typeOfFilesPage, $fileOrFolder, $name
+		$typeOfFilesPage, $fileOrFolder, $name, $expectToFail
 	) {
+		$expectToFail = $expectToFail !== "";
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
 		$this->theUserOpensTheFileOrFolderUsingTheWebUI(
-			$typeOfFilesPage, $fileOrFolder, \trim($name, $name[0])
+			$typeOfFilesPage, $fileOrFolder, \trim($name, $name[0]), $expectToFail
 		);
 	}
 
@@ -1265,12 +1277,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string|array $relativePath the path from the currently open folder
 	 *                                   down to and including the file or folder
 	 *                                   to open
+	 * @param boolean $expectToFail
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theUserOpensTheFileOrFolderUsingTheWebUI(
-		$typeOfFilesPage, $fileOrFolder, $relativePath
+		$typeOfFilesPage, $fileOrFolder, $relativePath, $expectToFail = false
 	) {
 		if ($typeOfFilesPage === "trashbin") {
 			$this->theUserBrowsesToTheTrashbinPage();
@@ -1293,19 +1306,37 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$breadCrumbs = \explode('/', \ltrim($relativePath, '/'));
 			$breadCrumbsForOpenFile = $breadCrumbs;
 		}
-
+		$failed = false;
 		foreach ($breadCrumbsForOpenFile as $breadCrumb) {
 			$pageObject->openFile($breadCrumb, $this->getSession());
-			$pageObject->waitTillPageIsLoaded($this->getSession());
+			try {
+				$pageObject->waitTillPageIsLoaded($this->getSession());
+			} catch (\Exception $e) {
+				// The file was not opened correctly as the page didn't load correctly
+				$failed = true;
+				break;
+			}
 		}
+		// Check the status of file opened according to the expected result.
+		if ($failed) {
+			// The task was not expected to fail but failed.
+			if (!$expectToFail) {
+				throw new \Exception('The file was expected to open successfully but failed!');
+			}
+		} else {
+			// The task was expected to fail but didn't fail.
+			if ($expectToFail) {
+				throw new \Exception('The file was not expected to open successfully but was opened!');
+			}
 
-		if ($fileOrFolder !== "folder") {
-			// Pop the file name off the end of the array of breadcrumbs
-			\array_pop($breadCrumbs);
-		}
-
-		if (\count($breadCrumbs)) {
-			$this->currentFolder .= "/" . \implode('/', $breadCrumbs);
+			// The task was not expected to fail and was successful.
+			if ($fileOrFolder !== "folder") {
+				// Pop the file name off the end of the array of breadcrumbs
+				\array_pop($breadCrumbs);
+			}
+			if (\count($breadCrumbs)) {
+				$this->currentFolder .= "/" . \implode('/', $breadCrumbs);
+			};
 		}
 	}
 
