@@ -555,15 +555,17 @@ class OccContext implements Context {
 	/**
 	 * @Given the administrator has added system config key :key with value :value
 	 * @When the administrator adds/updates system config key :key with value :value using the occ command
+	 * @When the administrator adds/updates system config key :key with value :value and type :type using the occ command
 	 *
 	 * @param string $key
 	 * @param string $value
+	 * @param boolean $type
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand($key, $value) {
+	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand($key, $value, $type="string") {
 		$this->invokingTheCommand(
-			"config:system:set --value ${value} ${key}"
+			"config:system:set --value ${value} --type ${type} ${key}"
 		);
 	}
 
