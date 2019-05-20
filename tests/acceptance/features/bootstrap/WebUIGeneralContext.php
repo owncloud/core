@@ -33,6 +33,7 @@ use TestHelpers\EmailHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
 use Page\GeneralErrorPage;
+use Page\GeneralExceptionPage;
 
 require_once 'bootstrap.php';
 
@@ -47,6 +48,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @var GeneralErrorPage
 	 */
 	private $generalErrorPage;
+
+	/**
+	 *
+	 * @var GeneralExceptionPage
+	 */
+	private $generalExceptionPage;
 
 	/**
 	 *
@@ -141,15 +148,18 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param OwncloudPage $owncloudPage
 	 * @param LoginPage $loginPage
 	 * @param GeneralErrorPage $generalErrorPage
+	 * @param GeneralExceptionPage $generalExceptionPage
 	 */
 	public function __construct(
 		OwncloudPage $owncloudPage,
 		LoginPage $loginPage,
-		GeneralErrorPage $generalErrorPage
+		GeneralErrorPage $generalErrorPage,
+		GeneralExceptionPage $generalExceptionPage
 	) {
 		$this->owncloudPage = $owncloudPage;
 		$this->loginPage = $loginPage;
 		$this->generalErrorPage = $generalErrorPage;
+		$this->generalExceptionPage = $generalExceptionPage;
 	}
 
 	/**
@@ -456,6 +466,50 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function anErrorShouldBeDisplayedOnTheGeneralErrorPage($error) {
 		PHPUnit\Framework\Assert::assertEquals(
 			$error, $this->generalErrorPage->getErrorMessage()
+		);
+	}
+
+	/**
+	 * @Then the user should be redirected to the general exception webUI page with the title :title
+	 *
+	 * @param string $title
+	 *
+	 * @return void
+	 */
+	public function theUserShouldBeRedirectedToGeneralExceptionPage($title) {
+		$title = $this->featureContext->substituteInLineCodes($title);
+		$this->generalExceptionPage->waitTillPageIsLoaded($this->getSession());
+		// Just check that the actual title starts with the expected title.
+		// Theming can have other text following.
+		PHPUnit\Framework\Assert::assertStringStartsWith(
+			$title, $this->generalExceptionPage->getPageTitle()
+		);
+	}
+
+	/**
+	 * @Then the title of the exception on general exception webUI page should be :title
+	 *
+	 * @param string $title
+	 *
+	 * @return void
+	 */
+	public function anErrorShouldBeDisplayedOnTheGeneralExceptionPageWithTitle($title) {
+		PHPUnit\Framework\Assert::assertEquals(
+			$title, $this->generalExceptionPage->getExceptionTitle()
+		);
+	}
+
+	/**
+	 * @Then a message should be displayed on the general exception webUI page containing :message
+	 *
+	 * @param string $message
+	 *
+	 * @return void
+	 */
+	public function anErrorShouldBeDisplayedOnTheGeneralErrorPageContaining($message) {
+		PHPUnit\Framework\Assert::assertContains(
+			$message,
+			$this->generalExceptionPage->getExceptionMessage()
 		);
 	}
 
