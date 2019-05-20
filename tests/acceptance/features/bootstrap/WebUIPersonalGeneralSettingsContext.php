@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\PersonalGeneralSettingsPage;
+use PHPUnit\Framework\Assert;
 use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
@@ -154,6 +155,22 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 		$this->personalGeneralSettingsPage->changeFullname(
 			$newFullname, $this->getSession()
 		);
+	}
+
+	/**
+	 * @Then the user should not be able to change the full name using the webUI
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserShouldNotBeAbleToChangeTheFullNameUsingTheWebui() {
+		try {
+			$this->personalGeneralSettingsPage->changeFullname(
+				"anything", $this->getSession()
+			);
+			PHPUnit\Framework\Assert::fail("changing the full name was possible, but should not");
+		} catch (Behat\Mink\Exception\ElementNotFoundException $e) {
+		}
 	}
 
 	/**
