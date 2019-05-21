@@ -1725,6 +1725,18 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Then /^the content in the response should match with the content of file "([^"]*)" in the server root$/
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theContentInTheRespShouldMatchWithFileInTheServerRoot($path) {
+		$content = $this->getResponse()->getBody()->getContents();
+		$this->theFileWithContentShouldExistInTheServerRoot($path, $content);
+	}
+
+	/**
 	 * @Then the file :path should not exist in the server root
 	 *
 	 * @param string $path
