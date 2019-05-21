@@ -17,8 +17,8 @@ Feature: Autocompletion of share-with names
       | username  | password  | displayname     | email          |
       | two       | %regular% | User Two        | u2@oc.com.np   |
       | u444      | %regular% | Four            | u3@oc.com.np   |
-      | five      | %regular% | User Group      | five@oc.com.np |
-      | usersmith | %regular% | John Finn Smith | js@oc.com.np   |
+      | five      | %regular% | User Group      | five@oc.net.np |
+      | usersmith | %regular% | John Finn Smith | js@oc.com.de   |
     And these groups have been created:
       | groupname     |
       | finance1      |
@@ -158,7 +158,7 @@ Feature: Autocompletion of share-with names
     And user "Four" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
-  Scenario: autocompletion of a pattern where the name of existing users contain the pattern somewhere in the middle
+  Scenario: autocompletion of a pattern where the name of existing users contains the pattern somewhere in the middle
     Given user "user1" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
@@ -168,7 +168,7 @@ Feature: Autocompletion of share-with names
     And user "Four" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
-  Scenario: autocompletion of a pattern where the name of existing users contain the pattern at the end
+  Scenario: autocompletion of a pattern where the name of existing users contains the pattern at the end
     Given user "usergrp" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
@@ -176,6 +176,199 @@ Feature: Autocompletion of share-with names
     Then all users and groups that contain the string "r3" in their name should be listed in the autocomplete list on the webUI
     And the users own name should not be listed in the autocomplete list on the webUI
     And user "User One" should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the username of existing user contains the pattern somewhere in the middle
+    Given user "ivan" has been created with default attributes
+    And user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "iv" in the share-with-field
+    Then all users and groups that contain the string "iv" in their name should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing group contains the pattern somewhere in the middle
+    Given user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "anc" in the share-with-field
+    Then all users and groups that contain the string "finance" in their name should be listed in the autocomplete list on the webUI
+    But group "other" should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the username of the existing user contains the pattern somewhere in the end
+    Given these users have been created with default attributes but not initialized:
+      | username     | displayname   |
+      | regularuser3 | Guest User |
+    And user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "user3" in the share-with-field
+    Then all users and groups that contain the string "user3" in their name should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing group contains the pattern at the end
+    Given user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "ce2" in the share-with-field
+    Then all users and groups that contain the string "ce2" in their name should be listed in the autocomplete list on the webUI
+    But group "finance1" should not be listed in the autocomplete list on the webUI
+    And group "finance3" should not be listed in the autocomplete list on the webUI
+    And group "users-finance" should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing user contains the pattern somewhere in the middle
+    Given user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "finn" in the share-with-field
+    Then only "John Finn Smith" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing user contains the pattern somewhere at the end
+    Given user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "group" in the share-with-field
+    Then only "User Group" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the beginning
+    Given user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "u2" in the share-with-field
+    Then only "User Two" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the middle
+    Given user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "net" in the share-with-field
+    Then only "User Group" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the end
+    Given user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "de" in the share-with-field
+    Then only "John Finn Smith" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing group contains the pattern somewhere in the middle but group medial search is disabled
+    Given these groups have been created:
+      | groupname |
+      | nanumber  |
+    And user "user1" has logged in using the webUI
+    And the administrator has added system config key "groups.enable_medial_search" with value "false" and type "boolean"
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "nan" in the share-with-field
+    Then all users and groups that contain the string "nanumber" in their name should be listed in the autocomplete list on the webUI
+    But group "finance1" should not be listed in the autocomplete list on the webUI
+    And group "finance2" should not be listed in the autocomplete list on the webUI
+    And group "users-finance" should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing group contains the pattern somewhere in the end but group medial search is disabled
+    Given these groups have been created:
+      | groupname         |
+      | ncell-customers   |
+      | customers-finance |
+    And user "user1" has logged in using the webUI
+    And the administrator has added system config key "groups.enable_medial_search" with value "false" and type "boolean"
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "customers" in the share-with-field
+    Then all users and groups that contain the string "customers-finance" in their name should be listed in the autocomplete list on the webUI
+    And group "ncell-customers" should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the user name contains the pattern somewhere in the middle but accounts medial search is disabled
+    Given these users have been created with default attributes but not initialized:
+      | username | displayname |
+      | ivan     | Ivan         |
+    And user "user1" has logged in using the webUI
+    And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "iv" in the share-with-field
+    Then only "Ivan" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the user name contains the pattern somewhere in the end but accounts medial search is disabled
+    Given these users have been created with default attributes but not initialized:
+      | username     | displayname   |
+      | regularuser3 | Guest User |
+    And user "user1" has logged in using the webUI
+    And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "user3" in the share-with-field
+    Then only "User Three" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing user contains the pattern somewhere in the middle but accounts medial search is disabled
+    Given these users have been created with default attributes but not initialized:
+      | username | displayname   |
+      | user2    | finnance typo |
+    And user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "finn" in the share-with-field
+    Then only "finnance typo" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the display name of existing user contains the pattern somewhere in the end but accounts medial search is disabled
+    Given these users have been created with default attributes but not initialized:
+      | username | displayname   |
+      | user2    | Group User |
+    And user "user1" has logged in using the webUI
+    And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "group" in the share-with-field
+    Then only "Group User" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the beginning but accounts medial search is disabled
+    Given these users have been created with default attributes but not initialized:
+      | username | displayname | email              |
+      | user2    | User2       | hello2u2@oc.com.np |
+    And user "user1" has logged in using the webUI
+    And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "u2" in the share-with-field
+    Then only "User Two" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the middle but accounts medial search is disabled
+    Given these users have been created with default attributes but not initialized:
+      | username | displayname | email              |
+      | user2    | User2       | net@oc.com.np |
+    And user "user1" has logged in using the webUI
+    And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "net" in the share-with-field
+    Then only "User2" should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the end but accounts medial search is disabled
+    Given these users have been created with default attributes but not initialized:
+      | username | displayname | email        |
+      | user2    | User2       | de@oc.com.np |
+    And user "user1" has logged in using the webUI
+    And the administrator has added system config key "accounts.enable_medial_search" with value "false" and type "boolean"
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "de" in the share-with-field
+    Then only "User2" should be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
   Scenario: allow user to disable autocomplete in sharing dialog
