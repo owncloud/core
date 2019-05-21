@@ -2533,6 +2533,18 @@
 			}
 			if (!_.isUndefined(detailTabId)) {
 				var filename = file[file.length - 1];
+				//Double check if the area that you are scrolling is beyond the page limit?
+				var pageSize = this.pageSize();
+				var index = _.findIndex(this.files, function (obj) {
+					return obj.name === filename;
+				});
+				if (index >= pageSize) {
+					var numberOfMorePagesToScroll = Math.floor(index / pageSize);
+					while (numberOfMorePagesToScroll > 0) {
+						this._nextPage();
+						numberOfMorePagesToScroll--;
+					}
+				}
 				this.showDetailsView(filename, detailTabId);
 			}
 			this.highlightFiles(file, function($tr) {

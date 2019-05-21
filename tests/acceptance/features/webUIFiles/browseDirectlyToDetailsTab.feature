@@ -23,12 +23,11 @@ Feature: browse directly to details tab
 
   #merge this tests into previous scenario when bug is fixed
   @smokeTest
-  @issue-35200
   Scenario Outline: Browse directly to the sharing details of a file
     When the user tries to browse directly to display the "sharing" details of file "<file>" in folder "<folder>"
     #Then the thumbnail should be visible in the details panel
     Then the "sharing" details panel should be visible
-    And the share-with field should not be visible in the details panel
+    And the share-with field should be visible in the details panel
     #And the share-with field should be visible in the details panel
     Examples:
       | file                                 | folder        | comment   |
@@ -48,7 +47,6 @@ Feature: browse directly to details tab
       | lorem.txt         | simple-folder | a file somewhere in between |
 
   #merge this tests into previous scenario when bug is fixed
-  @issue-35200
   @comments-app-required
   Scenario Outline: Browse directly to the comments details of a file
     When the user tries to browse directly to display the "comments" details of file "<file>" in folder "<folder>"
@@ -72,7 +70,6 @@ Feature: browse directly to details tab
       | lorem.txt         | simple-folder | a file somewhere in between |
 
   #merge this tests into previous scenario when bug is fixed
-  @issue-35200
   @files_versions-app-required
   Scenario Outline: Browse directly to the versions details of a file
     When the user tries to browse directly to display the "versions" details of file "<file>" in folder "<folder>"
