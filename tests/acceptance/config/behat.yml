@@ -234,6 +234,8 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
         - TransferOwnershipContext:
+        - FederationContext:
+        - WebDavPropertiesContext:
 
     cliProvisioning:
       paths:
