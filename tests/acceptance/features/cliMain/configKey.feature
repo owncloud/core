@@ -35,3 +35,22 @@ Feature: add and delete app configs using occ command
     Then the command should have been successful
     And the command output should contain the apps configs
 
+  Scenario: app directory should be listed in the config file
+    When the administrator lists the config keys
+    Then the command should have been successful
+    And the system config key "apps_paths" from the last command output should match value '/\"url\":\"\/apps\",\"writable\":false/' of type "json"
+
+  Scenario: app-external directory should be listed in the config
+    When the administrator lists the config keys
+    Then the command should have been successful
+    And the system config key "apps_paths" from the last command output should match value '/\"url\":\"\/apps-external\",\"writable\":true/' of type "json"
+
+  Scenario: log time zone should be listed in the config file
+    When the administrator lists the config keys
+    Then the command should have been successful
+    And the system config key "logtimezone" from the last command output should match value "UTC" of type "string"
+
+  Scenario: server installed should be listed in the config file
+    When the administrator lists the config keys
+    Then the command should have been successful
+    And the system config key "installed" from the last command output should match value "true" of type "boolean"
