@@ -208,6 +208,7 @@ class File extends Node implements IFile, IFileNode {
 			}
 
 			if (!self::isChecksumValid($partStorage, $internalPartPath)) {
+				$partStorage->unlink($internalPartPath);  // remove the uploaded file on checksum error
 				throw new BadRequest('The computed checksum does not match the one received from the client.');
 			}
 
@@ -535,6 +536,7 @@ class File extends Node implements IFile, IFileNode {
 					$chunk_handler->file_assemble($partStorage, $partInternalPath);
 
 					if (!self::isChecksumValid($partStorage, $partInternalPath)) {
+						$partStorage->unlink($partInternalPath);  // remove the uploaded file on checksum error
 						throw new BadRequest('The computed checksum does not match the one received from the client.');
 					}
 
