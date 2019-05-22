@@ -234,6 +234,7 @@ Feature: Sharing files and folders with internal users
     And file "lorem.txt" should not be listed in shared-with-others page on the webUI
     And as "user2" file "lorem (2).txt" should not exist
 
+  @skipOnEncryptionType:user-keys @issue-encryption-126
   @mailhog
   Scenario: user should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
