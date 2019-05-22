@@ -16,7 +16,7 @@ Feature: external-storage
       | path | foo |
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id       | A_NUMBER             |
       | url      | AN_URL               |
       | token    | A_TOKEN              |

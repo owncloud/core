@@ -590,7 +590,6 @@ trait Sharing {
 		$this->response = HttpRequestHelper::put(
 			$fullUrl, $user, $this->getPasswordForUser($user), null, $fd
 		);
-		$this->lastShareData = $this->getResponseXml();
 	}
 
 	/**
@@ -688,17 +687,6 @@ trait Sharing {
 			}
 			return false;
 		}
-	}
-
-	/**
-	 * @param string $field
-	 * @param string $contentExpected
-	 *
-	 * @return bool
-	 */
-	public function isFieldInShareResponse($field, $contentExpected) {
-		$data = $this->lastShareData->data[0];
-		return $this->isFieldInResponse($field, $contentExpected, $data);
 	}
 
 	/**
@@ -1308,28 +1296,6 @@ trait Sharing {
 	public function checkingTheResponseEntriesCount($count) {
 		$actualCount = \count($this->getResponseXml()->data[0]);
 		PHPUnit\Framework\Assert::assertEquals($count, $actualCount);
-	}
-
-	/**
-	 * @Then /^the share fields of the last share should include$/
-	 *
-	 * @param TableNode|null $body
-	 *
-	 * @return void
-	 */
-	public function checkShareFields($body) {
-		if ($body instanceof TableNode) {
-			$fd = $body->getRowsHash();
-
-			foreach ($fd as $field => $value) {
-				$value = $this->replaceValuesFromTable($field, $value);
-				if (!$this->isFieldInShareResponse($field, $value)) {
-					PHPUnit\Framework\Assert::fail(
-						"$field doesn't have value $value"
-					);
-				}
-			}
-		}
 	}
 
 	/**

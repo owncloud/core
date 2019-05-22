@@ -13,7 +13,7 @@ Feature: sharing
     When user "user0" shares file "welcome.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | share_with  | user1        |
       | file_target | /welcome.txt |
       | path        | /welcome.txt |
@@ -30,7 +30,7 @@ Feature: sharing
     When user "user0" shares file "/welcome.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | share_with  | grp1         |
       | file_target | /welcome.txt |
       | path        | /welcome.txt |
@@ -50,7 +50,7 @@ Feature: sharing
     When user "user0" shares file "/welcome.txt" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | share_with  | user1        |
       | file_target | /welcome.txt |
       | path        | /welcome.txt |
@@ -96,7 +96,7 @@ Feature: sharing
       | permissions | 31          |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | file_target | /welcome.txt |
       | path        | /welcome.txt |
       | item_type   | file         |
@@ -130,7 +130,7 @@ Feature: sharing
       | path     | welcome.txt   |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | file_target            | /welcome.txt   |
       | path                   | /welcome.txt   |
       | item_type              | file           |
@@ -173,7 +173,7 @@ Feature: sharing
       | path | /afolder |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id          | A_NUMBER |
       | share_type  | 3        |
       | permissions | 1        |
@@ -191,7 +191,7 @@ Feature: sharing
       | path | /afolder |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id          | A_NUMBER |
       | share_type  | 3        |
       | permissions | 1        |
@@ -209,7 +209,7 @@ Feature: sharing
       | permissions | 15       |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id          | A_NUMBER |
       | share_type  | 3        |
       | permissions | 15       |
@@ -227,7 +227,7 @@ Feature: sharing
       | permissions | 5        |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id          | A_NUMBER |
       | share_type  | 3        |
       | permissions | 5        |

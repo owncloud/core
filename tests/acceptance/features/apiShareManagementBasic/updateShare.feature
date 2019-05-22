@@ -315,7 +315,8 @@ Feature: sharing
     And user "user0" has shared folder "/folder1" with user "user1" with permissions 31
     And user "user1" has shared folder "/folder1/folder2" with user "user2" with permissions 31
     When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
-    Then the share fields of the last share should include
+    And user "user1" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -342,7 +343,8 @@ Feature: sharing
     And user "user0" has shared folder "/user0-folder" with user "user1" with permissions 31
     And user "user2" has shared folder "/user2-folder" with user "user1" with permissions 31
     When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2" using the WebDAV API
-    Then the share fields of the last share should include
+    And user "user2" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
@@ -451,8 +453,8 @@ Feature: sharing
       | permissions | 7 |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    When the user gets the info of the last share using the sharing API
-    Then the share fields of the last share should include
+    When user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
       | permissions | 7 |
     When the public deletes file "CHILD/child.txt" from the last public share using the public WebDAV API
     Then the HTTP status code should be "403"
@@ -471,8 +473,8 @@ Feature: sharing
       | permissions | 15 |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    When the user gets the info of the last share using the sharing API
-    Then the share fields of the last share should include
+    When user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
       | permissions | 15 |
     When the public deletes file "CHILD/child.txt" from the last public share using the public WebDAV API
     Then the HTTP status code should be "204"
