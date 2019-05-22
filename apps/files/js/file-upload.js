@@ -682,6 +682,7 @@ OC.Uploader.prototype = _.extend({
 		this.log('canceling uploads');
 		jQuery.each(this._uploads, function(i, upload) {
 			upload.abort();
+			upload.aborted = true;
 		});
 		this.clear();
 	},
@@ -691,7 +692,7 @@ OC.Uploader.prototype = _.extend({
 	clear: function() {
 		var remainingUploads = {};
 		_.each(this._uploads, function(upload, key) {
-			if (!upload.isDone) {
+			if (!upload.isDone && !upload.aborted) {
 				remainingUploads[key] = upload;
 			}
 		});
@@ -829,11 +830,12 @@ OC.Uploader.prototype = _.extend({
 				return true;
 			}
 			var fileInfo = fileList.findFile(file.name);
-			var sharePermission = $("#sharePermission").val();
-			if (sharePermission !== undefined) {
-				sharePermission &= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE);
-			}
-			if (fileInfo && (sharePermission !== (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE))) {
+			if (fileInfo) {
+				var sharePermission = parseInt($("#sharePermission").val());
+				if (sharePermission === (OC.PERMISSION_READ | OC.PERMISSION_CREATE)) {
+					OC.Notification.show(t('files', 'The file {file} already exists', {file: fileInfo.name}), {type: 'error'});
+					return false;
+				}
 				conflicts.push([
 					// original
 					_.extend(fileInfo, {

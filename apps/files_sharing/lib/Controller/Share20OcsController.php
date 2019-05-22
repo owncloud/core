@@ -461,7 +461,7 @@ class Share20OcsController extends OCSController {
 				);
 			} elseif ($permissions === \OCP\Constants::PERMISSION_CREATE ||
 				$permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE) ||
-				$permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE)) {
+				$permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE)) {
 				$share->setPermissions($permissions);
 			} else {
 				// because when "publicUpload" is passed usually no permissions are set,
@@ -776,6 +776,7 @@ class Share20OcsController extends OCSController {
 			if ($newPermissions !== null &&
 				$newPermissions !== Constants::PERMISSION_READ &&
 				$newPermissions !== Constants::PERMISSION_CREATE &&
+				$newPermissions !== (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE) &&
 				// legacy
 				$newPermissions !== (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE) &&
 				// correct
@@ -800,9 +801,6 @@ class Share20OcsController extends OCSController {
 					$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 					return new Result(null, 400, $this->l->t('Public upload is only possible for publicly shared folders'));
 				}
-
-				// normalize to correct public upload permissions
-				$newPermissions = Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE | Constants::PERMISSION_DELETE;
 			}
 
 			// create-only (upload-only)
@@ -924,12 +922,13 @@ class Share20OcsController extends OCSController {
 	 * @NoAdminRequired
 	 *
 	 * @param int $itemSource
+	 * @param string $itemType
 	 * @param int $shareType
 	 * @param string $recipient
 	 *
 	 * @return Result
 	 */
-	public function notifyRecipients($itemSource, $shareType, $recipient) {
+	public function notifyRecipients($itemSource, $itemType, $shareType, $recipient) {
 		$recipientList = [];
 		if ($shareType === Share::SHARE_TYPE_USER) {
 			$recipientList[] = $this->userManager->get($recipient);
@@ -964,21 +963,21 @@ class Share20OcsController extends OCSController {
 		// if we were able to send to at least one recipient, mark as sent
 		// allowing the user to resend would spam users who already got a notification
 		if (\count($result) < \count($recipientList)) {
-			$items = $this->shareManager->getSharedWith($recipient, $shareType, $node);
-			if (\count($items) > 0) {
-				$share = $items[0];
-				$share->setMailSend(true);
-				$this->shareManager->updateShare($share);
-			}
+			// FIXME: migrate to a new share API
+			Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
 		}
 
-		$message = empty($result)
-			? null
-			: $this->l->t(
+		if (empty($result)) {
+			$message = null;
+			$data = ['status' => 'success'];
+		} else {
+			$message = $this->l->t(
 				"Couldn't send mail to following recipient(s): %s ",
 				\implode(', ', $result)
 			);
-		return new Result([], 200, $message);
+			$data = ['status' => 'error'];
+		}
+		return new Result($data, 200, $message);
 	}
 
 	/**
@@ -988,23 +987,16 @@ class Share20OcsController extends OCSController {
 	 * @NoAdminRequired
 	 *
 	 * @param int $itemSource
+	 * @param string $itemType
 	 * @param int $shareType
 	 * @param string $recipient
 	 *
 	 * @return Result
 	 */
-	public function notifyRecipientsDisabled($itemSource, $shareType, $recipient) {
-		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
-		$nodes = $userFolder->getById($itemSource, true);
-		$node = $nodes[0] ?? null;
-
-		$items = $this->shareManager->getSharedWith($recipient, $shareType, $node);
-		if (\count($items) > 0) {
-			$share = $items[0];
-			$share->setMailSend(true);
-			$this->shareManager->updateShare($share);
-		}
-		return new Result();
+	public function notifyRecipientsDisabled($itemSource, $itemType, $shareType, $recipient) {
+		// FIXME: migrate to a new share API
+		Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
+		return new Result(['status' => 'success']);
 	}
 
 	/**

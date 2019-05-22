@@ -371,15 +371,22 @@ Feature: Share by public link
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | permission | upload-write-without-modify |
     And the public accesses the last created public link using the webUI
+    Then it should not be possible to delete file "lorem.txt" using the webUI
 
-  Scenario: user edits the permission of an already existing public link from read-write to upload-write-without-overwrite
+  Scenario: user creates public link with view download and upload feature and uploads same file name and verifies no auto-renamed file seen in UI
     Given the user has created a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
-    When the user changes the permission of the public link named "Public link" to "upload-write-without-modify"
+      | permission | upload-write-without-modify |
     And the public accesses the last created public link using the webUI
-    When the user uploads file "lorem.txt" keeping both new and existing files using the webUI
-    Then file "lorem.txt" should be listed on the webUI
-    And file "lorem (2).txt" should be listed on the webUI
+    When the user uploads file "lorem.txt" 5 times using webUI
+    Then notifications should be displayed on the webUI with the text
+      | The file lorem.txt already exists |
+      | The file lorem.txt already exists |
+      | The file lorem.txt already exists |
+      | The file lorem.txt already exists |
+      | The file lorem.txt already exists |
+    And file "lorem.txt" should be listed on the webUI
+    And the content of "lorem.txt" should not have changed
+    And file "lorem (2).txt" should not be listed on the webUI
 
   @issue-35177
   Scenario: User renames a subfolder among subfolders with same names which are shared by public links

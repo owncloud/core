@@ -149,7 +149,7 @@ Feature: sharing
     When the user creates a public link share using the sharing API with settings
       | path | FOLDER |
     And the user updates the last share using the sharing API with
-      | permissions | 7 |
+      | permissions | 15 |
     And the user gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -161,6 +161,39 @@ Feature: sharing
       | file_source       | A_NUMBER             |
       | file_target       | /FOLDER              |
       | permissions       | 15                   |
+      | stime             | A_NUMBER             |
+      | token             | A_TOKEN              |
+      | storage           | A_NUMBER             |
+      | mail_send         | 0                    |
+      | uid_owner         | user0                |
+      | file_parent       | A_NUMBER             |
+      | displayname_owner | User Zero            |
+      | url               | AN_URL               |
+      | mimetype          | httpd/unix-directory |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @public_link_share-feature-required
+  Scenario Outline: Creating a new public link share, updating its permissions to view download and upload and getting its info
+    Given using OCS API version "<ocs_api_version>"
+    And as user "user0"
+    When the user creates a public link share using the sharing API with settings
+      | path | FOLDER |
+    And the user updates the last share using the sharing API with
+      | permissions | 7 |
+    And the user gets the info of the last share using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | id                | A_NUMBER             |
+      | item_type         | folder               |
+      | item_source       | A_NUMBER             |
+      | share_type        | 3                    |
+      | file_source       | A_NUMBER             |
+      | file_target       | /FOLDER              |
+      | permissions       | 7                    |
       | stime             | A_NUMBER             |
       | token             | A_TOKEN              |
       | storage           | A_NUMBER             |

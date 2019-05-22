@@ -328,8 +328,5 @@ Feature: sharing
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
     When the public uploads file "test.txt" with content "test" using the public WebDAV API
-    And the public uploads file "test.txt" with content "test2" with autorename mode using the public WebDAV API
-    And the public uploads file "test.txt" with content "test3" with autorename mode using the public WebDAV API
+    And the public uploads file "test.txt" with content "test2" using the public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
-    And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
-    And the content of file "/FOLDER/test (3).txt" for user "user0" should be "test3"

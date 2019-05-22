@@ -1053,7 +1053,7 @@ class FederatedShareProvider implements IShareProvider {
 	 *
 	 * @return bool
 	 */
-	protected function getAccepted($remote, $shareWith) {
+	public function getAccepted($remote, $shareWith) {
 		$event = $this->eventDispatcher->dispatch(
 			'remoteshare.received',
 			new GenericEvent('', ['remote' => $remote])

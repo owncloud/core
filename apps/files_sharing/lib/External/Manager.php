@@ -30,6 +30,7 @@
 namespace OCA\Files_Sharing\External;
 
 use OC\Files\Filesystem;
+use OC\User\NoUserException;
 use OCP\Files;
 use OCP\Notification\IManager;
 use OCP\Share\Events\AcceptShare;
@@ -264,7 +265,7 @@ class Manager {
 	 * @return string
 	 */
 	protected function stripPath($path) {
-		$prefix = '/' . $this->uid . '/files';
+		$prefix = "/{$this->uid}/files";
 		return \rtrim(\substr($path, \strlen($prefix)), '/');
 	}
 
@@ -315,7 +316,27 @@ class Manager {
 		return $result;
 	}
 
+	/**
+	 * Explicitly set uid when the shares are managed in CLI
+	 *
+	 * @param string|null $uid
+	 */
+	public function setUid($uid) {
+		// FIXME: External manager should not depend on uid
+		$this->uid = $uid;
+	}
+
+	/**
+	 * @param $mountPoint
+	 * @return bool
+	 *
+	 * @throws NoUserException
+	 */
 	public function removeShare($mountPoint) {
+		if ($this->uid === null) {
+			throw new NoUserException();
+		}
+
 		$mountPointObj = $this->mountManager->find($mountPoint);
 		$id = $mountPointObj->getStorage()->getCache()->getId('');
 

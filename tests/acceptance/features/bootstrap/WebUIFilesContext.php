@@ -1046,6 +1046,21 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user uploads file :name :number_of times using webUI
+	 *
+	 * @param string $name
+	 * @param int $number_of
+	 *
+	 * @return void
+	 */
+	public function theUserClicksUploadAndCancelMultipleTimes($name, $number_of) {
+		for ($i = 0; $i < $number_of; $i++) {
+			$this->theUserUploadsFileUsingTheWebUI($name);
+			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+		}
+	}
+
+	/**
 	 * @Then /^the (?:deleted|moved) elements should (not|)\s?be listed on the webUI$/
 	 *
 	 * @param string $shouldOrNot

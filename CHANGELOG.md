@@ -4,16 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [10.2.0] - 2019-05-16
 
 ### Added
 
+- Add new capability to advertise the availability of the detail parameter for private links - [#35104](https://github.com/owncloud/core/issues/35104)
 - Add background:queue:execute occ command for running cron jobs manually - [#34995](https://github.com/owncloud/core/issues/34995)
-- Adding background:queue commands: status and delete - [#34783](https://github.com/owncloud/core/issues/34783)
-- Added new permissions option for public link - [#34983](https://github.com/owncloud/core/issues/34983)
+- Adding background:queue commands: status and delete - [#34783](https://github.com/owncloud/core/issues/34783) [#35228](https://github.com/owncloud/core/pull/35228)
+- Added new permissions option for public link - [#34983](https://github.com/owncloud/core/issues/34983) [#35082](https://github.com/owncloud/core/issues/35082)[#35159](https://github.com/owncloud/core/pull/35159)[#35197](https://github.com/owncloud/core/pull/35197)[#35238](https://github.com/owncloud/core/pull/35238)
 - Support for extra share key-value attributes - [#34951](https://github.com/owncloud/core/issues/34951)
-- Internal permission to prevent file download when set in share attribute, for "secure view" feature  - [#34951](https://github.com/owncloud/core/issues/34951)
-- Support for automatically accepting incoming federated shares from trusted servers - [#34206](https://github.com/owncloud/core/issues/34206)
+- Internal permission to prevent file download when set in share attribute, for "secure view" feature  - [#34951](https://github.com/owncloud/core/issues/34951) [#35095](https://github.com/owncloud/core/issues/35095)
+- Support for automatically accepting incoming federated shares from trusted servers - [#34206](https://github.com/owncloud/core/issues/34206) [#35135](https://github.com/owncloud/core/issues/35135)
 - User option for automatically accepting incoming shares - [#34647](https://github.com/owncloud/core/pull/34647) [#34842](https://github.com/owncloud/core/pull/34842) [#34934](https://github.com/owncloud/core/issues/34934)
 - User option for automatically accepting incoming federated shares - [#34706](https://github.com/owncloud/core/issues/34706)
 - User option to opt-out autocomplete in share dialog - [#34942](https://github.com/owncloud/core/issues/34942)
@@ -31,7 +32,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Allow admins to enable medial search on group and user - [#34779](https://github.com/owncloud/core/issues/34779)
 - Add composer cleaner - [#34784](https://github.com/owncloud/core/issues/34784)
 - Add events for user preference changes - [#34820](https://github.com/owncloud/core/issues/34820)
-- Add occ command to poll incoming federated shares for updates - [#34933](https://github.com/owncloud/core/issues/34933) [#34959](https://github.com/owncloud/core/issues/34959) [#34993](https://github.com/owncloud/core/issues/34993)
+- Add occ command to poll incoming federated shares for updates - [#34933](https://github.com/owncloud/core/issues/34933) [#34959](https://github.com/owncloud/core/issues/34959) [#34993](https://github.com/owncloud/core/issues/34993) [#35073](https://github.com/owncloud/core/issues/35073)
 
 ### Changed
 
@@ -59,14 +60,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump phpseclib/phpseclib from 2.0.13 to 2.0.15 - [#34285](https://github.com/owncloud/core/issues/34285) [#34741](https://github.com/owncloud/core/issues/34741)
 - Bump pimple/pimple from 3.0.2 to 3.2.3 - [#31753](https://github.com/owncloud/core/issues/31753)
 - Bump sinon from 7.1.1 to 7.3.1 in /build - [#34881](https://github.com/owncloud/core/issues/34881) [#34943](https://github.com/owncloud/core/issues/34943)
-- Bump symfony v3.4.20 => v3.4.24 - [#34042](https://github.com/owncloud/core/issues/34042) [#34663](https://github.com/owncloud/core/issues/34663) [#34954](https://github.com/owncloud/core/issues/34954)
-- Bump symfony/process from 3.4.21 to 3.4.22 - [#34407](https://github.com/owncloud/core/issues/34407)
-- Bump symfony/translation from 3.4.21 to 3.4.22 - [#34406](https://github.com/owncloud/core/issues/34406)
-- Bump symfony/console from 3.4.21 to 3.4.22 - [#34404](https://github.com/owncloud/core/issues/34404)
+- Bump symfony and modules to 3.4.26 - [#35062](https://github.com/owncloud/core/issues/35062)
 - Bump symfony/polyfill components from v1.10.0 to v1.11.0 - [#34882](https://github.com/owncloud/core/pull/34882)
-- Bump symfony/routing from 3.4.21 to 3.4.22 - [#34408](https://github.com/owncloud/core/issues/34408)
-- Bump symfony/event-dispatcher from 3.4.21 to 3.4.22 - [#34405](https://github.com/owncloud/core/issues/34405)
-- Bump remaining symfony 3.4.22 components - [#34412](https://github.com/owncloud/core/issues/34412)
 - Bump deepdiver1975/tarstreamer from 0.1.0 to 0.1.1 - [#34615](https://github.com/owncloud/core/issues/34615)
 - Bump zendframework/zend-servicemanager from 3.3.2 to 3.4.0 - [#33971](https://github.com/owncloud/core/issues/33971)
 - Bump zendframework/zend-inputfilter from 2.9.0 to 2.9.1 - [#34145](https://github.com/owncloud/core/issues/34145)
@@ -80,7 +75,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Add email footer with motto in email for changing password - [#34498](https://github.com/owncloud/core/issues/34498)
 - Change the styling of the active settings navigation menu item - [#34561](https://github.com/owncloud/core/issues/34561)
 - Added delay in search field - [#34613](https://github.com/owncloud/core/issues/34613)
-- Tidy up code for notification by email - [#34786](https://github.com/owncloud/core/issues/34786)
+- Tidy up code for notification by email - [#34786](https://github.com/owncloud/core/issues/34786) [#35137](https://github.com/owncloud/core/issues/35137)
 - Some code now made PHP 7 specific - [#34925](https://github.com/owncloud/core/issues/34925)
 
 ### Removed
@@ -92,6 +87,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- Wrong translation file referenced for accept & decline share - [#35063](https://github.com/owncloud/core/issues/35063)
+- Respect 'writable' appdir flag on update - [#35097](https://github.com/owncloud/core/issues/35097)
+- Aborted uploads in web UI are now properly cleared - [#35134](https://github.com/owncloud/core/issues/35134)
+- Fix regression with missing progress bar in files drop view - [#35059](https://github.com/owncloud/core/issues/35059)
 - Log exception when background job class not found - [#34723](https://github.com/owncloud/core/issues/34723)
 - Prevent concurrent updates in group shares to avoid duplicate entries - [#34769](https://github.com/owncloud/core/issues/34769)
 - Calender invitation now uses actual sender name - [#34901](https://github.com/owncloud/core/issues/34901)
@@ -101,7 +100,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Reduce sharing query size by properly reusing the query builder - [#34915](https://github.com/owncloud/core/issues/34915)
 - Tar download support for file names longer than 99 chars - [#34615](https://github.com/owncloud/core/issues/34615)
 - Fix Webdav error page, include CSP and message - [#34817](https://github.com/owncloud/core/issues/34817)
-- Handle accept decline with invalid share id - [#34786](https://github.com/owncloud/core/issues/34786)
+- Handle accept decline with invalid share id - [#34786](https://github.com/owncloud/core/issues/34786) [#35221](https://github.com/owncloud/core/pull/35221)
 - Normalize path when moving chunks to final destination - [#34777](https://github.com/owncloud/core/issues/34777)
 - Better support for international email addresses after swiftmailer update - [#34759](https://github.com/owncloud/core/issues/34759)
 - Fix first time login handling - [#34758](https://github.com/owncloud/core/issues/34758)
@@ -135,7 +134,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fix reset confirmation mail from occ - [#34154](https://github.com/owncloud/core/issues/34154)
 - Correctly write Login failed entry in log when 2FA is enforced - [#34055](https://github.com/owncloud/core/issues/34055)
 - Center the logo and login fields - [#34057](https://github.com/owncloud/core/issues/34057)
-- Fix Apache warnings by setting headers to "always" in htaccess - [#34089](https://github.com/owncloud/core/issues/34089)
+- Fix Apache warnings by setting headers to "always" in htaccess - [#34089](https://github.com/owncloud/core/issues/34089) [#35118](https://github.com/owncloud/core/issues/35118)
 - Fix external storage advanced checkbox state issue - [#34168](https://github.com/owncloud/core/issues/34168)
 - Set permissions on log file creation instead of every write - [#34061](https://github.com/owncloud/core/issues/34061)
 - Images are again properly rotated now based on EXIF rotation - [#34356](https://github.com/owncloud/core/issues/34356)
@@ -1023,7 +1022,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[Unreleased]: https://github.com/owncloud/core/compare/v10.1.1...stable10
+[10.2.0]: https://github.com/owncloud/core/compare/v10.1.1...v10.2.0
 [10.1.1]: https://github.com/owncloud/core/compare/v10.1.0...v10.1.1
 [10.1.0]: https://github.com/owncloud/core/compare/v10.0.10...v10.1.0
 [10.0.10]: https://github.com/owncloud/core/compare/v10.0.9...v10.0.10
