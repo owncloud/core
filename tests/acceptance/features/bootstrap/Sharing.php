@@ -660,6 +660,9 @@ trait Sharing {
 		}
 		if (\count($data->element) > 0) {
 			foreach ($data as $element) {
+				if (!isset($element->$field)) {
+					continue;
+				}
 				if ($contentExpected == "A_TOKEN") {
 					return (\strlen((string)$element->$field) == 15);
 				} elseif ($contentExpected == "A_NUMBER") {
@@ -1297,7 +1300,6 @@ trait Sharing {
 	}
 
 	/**
-
 	 * @Then the fields of the last response should include
 	 *
 	 * @param TableNode|null $body
@@ -1310,7 +1312,7 @@ trait Sharing {
 
 			foreach ($fd as $field => $value) {
 				$value = $this->replaceValuesFromTable($field, $value);
-				if (!$this->isFieldInShareResponse($field, $value)) {
+				if (!$this->isFieldInResponse($field, $value)) {
 					PHPUnit\Framework\Assert::fail(
 						"$field doesn't have value $value"
 					);
