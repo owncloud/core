@@ -131,6 +131,7 @@ Feature: Sharing files and folders with internal groups
     Then a tooltip with the text "No users or groups found for system-group" should be shown near the share-with-field on the webUI
     And the autocomplete list should not be displayed on the webUI
 
+  @skipOnEncryptionType:user-keys @issue-encryption-126
   @mailhog
   Scenario: user should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
@@ -179,6 +180,7 @@ Feature: Sharing files and folders with internal groups
     When the administrator adds user "user0" to group "grp1" using the provisioning API
     Then the email address "user0@example.org" should not have received an email
 
+  @skipOnEncryptionType:user-keys @issue-encryption-126
   @mailhog
   Scenario: user should get an error message when trying to send notification by email to the group where some user have set up their email and others haven't
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
