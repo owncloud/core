@@ -12,7 +12,7 @@ Feature: federated
     When user "user1" from server "LOCAL" shares "/textfile0.txt" with user "user0" from server "REMOTE" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id                     | A_NUMBER       |
       | item_type              | file           |
       | item_source            | A_NUMBER       |
@@ -38,7 +38,7 @@ Feature: federated
     When user "user0" from server "REMOTE" shares "/textfile0.txt" with user "user1" from server "LOCAL" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id                     | A_NUMBER       |
       | item_type              | file           |
       | item_source            | A_NUMBER       |
@@ -172,7 +172,7 @@ Feature: federated
       | permissions | 19                 |
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id                     | A_NUMBER           |
       | item_type              | file               |
       | item_source            | A_NUMBER           |
