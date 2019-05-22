@@ -617,3 +617,33 @@ Feature: sharing
     And the HTTP status code should be "200"
     And user "user1" should see the following elements
       | /welcome.txt |
+
+  Scenario Outline: Share of folder to a group with emoji in the name
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes
+    And user "user2" has been created with default attributes
+    And group "😀 😁" has been created
+    And user "user1" has been added to group "😀 😁"
+    And user "user2" has been added to group "😀 😁"
+    When user "user0" shares folder "/PARENT" with group "😀 😁" using the sharing API
+    Then user "user1" should see the following elements
+      | /FOLDER/                 |
+      | /PARENT/                 |
+      | /PARENT/parent.txt       |
+      | /PARENT%20(2)/           |
+      | /PARENT%20(2)/parent.txt |
+    And the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "user2" should see the following elements
+      | /FOLDER/                 |
+      | /PARENT/                 |
+      | /PARENT/parent.txt       |
+      | /PARENT%20(2)/           |
+      | /PARENT%20(2)/parent.txt |
+    And the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+    
