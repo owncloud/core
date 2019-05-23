@@ -91,7 +91,6 @@
     "A valid password must be provided" : "Un senhal valid deu èsser sasit",
     "The username is already being used" : "Aqueste nom d'utilizaire es ja utilizat",
     "User disabled" : "Utilizaire desactivat",
-    "Help" : "Ajuda",
     "Settings" : "Paramètres",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "L'aplicacion \"%s\" pòt pas èsser installada a causa de las dependéncias seguentas pas satisfachas : %s",
     "A safe home for all your data" : "Un endrech segur per totas vòstras donadas",

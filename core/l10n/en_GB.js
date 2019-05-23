@@ -173,7 +173,6 @@ OC.L10N.register(
     "Download / View" : "Download / View",
     "Recipients can view or download contents." : "Recipients can view or download contents.",
     "Download / View / Upload" : "Download / View / Upload",
-    "Recipients can view, download, edit, delete and upload contents." : "Recipients can view, download, edit, delete and upload contents.",
     "Edit link share: {name}" : "Edit link share: {name}",
     "Create link share: {name}" : "Create link share: {name}",
     "Share" : "Share",

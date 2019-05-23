@@ -16,7 +16,6 @@
     "Can't create app folder. Please fix permissions. %s" : "No se puede crear el directorio de aplicación. Por favor corregir los permisos. %s",
     "No source specified when installing app" : "No se especificó el origen al instalar la aplicación",
     "General" : "General",
-    "Help" : "Ayuda",
     "Settings" : "Configuración"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
