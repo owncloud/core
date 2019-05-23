@@ -33,6 +33,7 @@ namespace OCA\Files_Sharing;
 use OC\Files\Filesystem;
 use OC\Files\View;
 use OCP\Files\NotFoundException;
+use OCP\Share\IShare;
 use OCP\User;
 
 class Helper {
@@ -270,14 +271,22 @@ class Helper {
 	/**
 	 * get default share folder
 	 *
-	 * @param \OC\Files\View
+	 * @param IShare $share
+	 * @param View
 	 * @return string
 	 */
-	public static function getShareFolder($view = null) {
+	public static function getShareFolder($share, $view = null) {
 		if ($view === null) {
 			$view = Filesystem::getView();
 		}
-		$shareFolder = \OC::$server->getConfig()->getSystemValue('share_folder', '/');
+		$config = \OC::$server->getConfig();
+		$systemShareFolder = $config->getSystemValue('share_folder', '/');
+		$shareFolder = $config->getUserValue(
+			$share->getSharedWith(),
+			'files_sharing',
+			'share_folder',
+			$systemShareFolder
+		);
 		$shareFolder = Filesystem::normalizePath($shareFolder);
 
 		if (!$view->file_exists($shareFolder)) {

@@ -615,7 +615,17 @@ class Manager implements IManager {
 		}
 
 		// Generate the target
-		$target = $this->config->getSystemValue('share_folder', '/') .'/'. $share->getNode()->getName();
+		$systemShareFolder = $this->config->getSystemValue(
+			'share_folder',
+			'/'
+		);
+		$userShareFolder = $this->config->getUserValue(
+			$share->getSharedWith(),
+			'files_sharing',
+			'share_folder',
+			$systemShareFolder
+		);
+		$target = $userShareFolder .'/'. $share->getNode()->getName();
 		$target = \OC\Files\Filesystem::normalizePath($target);
 		$share->setTarget($target);
 

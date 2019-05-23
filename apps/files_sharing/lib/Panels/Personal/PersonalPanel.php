@@ -85,10 +85,19 @@ class PersonalPanel implements ISettings {
 				];
 			}
 		}
-		if (empty($enabledConfigs)) {
-			return new Template('files_sharing', 'settings-personal-empty');
-		}
 		$tmpl->assign('enabled_configs', $enabledConfigs);
+
+		$systemShareFolder = $this->config->getSystemValue(
+			'share_folder',
+			'/'
+		);
+		$userShareFolder = $this->config->getUserValue(
+			$this->userSession->getUser()->getUID(),
+			'files_sharing',
+			'share_folder',
+			$systemShareFolder
+		);
+		$tmpl->assign('share_folder', $userShareFolder);
 		return $tmpl;
 	}
 

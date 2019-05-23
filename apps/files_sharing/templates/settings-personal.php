@@ -37,4 +37,9 @@ script('files_sharing', 'settings-personal');
 			<?php p($l->t($value['label'])); ?>
 		</label><br/>
 	<?php endforeach;?>
+	<h3><?php p($l->t('Configure share folder'));?></h3>
+	<label for="share_folder_input"><?php p($l->t('Define a default folder for shared files and folders with you')) ?></label><br>
+	<input id="share_folder_input" name="share_folder" type="text" value="<?php p($_['share_folder'])?>">
+	<input type="button" id="share_folder_button" class="button" value="<?php p($l->t("Save")); ?>">
+	<span id="share_folder_save_message" class="msg"></span>
 </form>

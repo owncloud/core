@@ -1096,10 +1096,9 @@ class Share20OcsController extends OCSController {
 	 */
 	private function deduplicateShareTarget(IShare $share) {
 		$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
-		$mountPoint = \basename($share->getTarget());
 		$parentDir = \dirname($share->getTarget());
 		if (!$userFolder->nodeExists($parentDir)) {
-			$parentDir = Helper::getShareFolder();
+			$parentDir = Helper::getShareFolder($share);
 			$pathAttempt = \OC\Files\Filesystem::normalizePath($parentDir . '/' . $share->getTarget());
 		} else {
 			$pathAttempt = \OC\Files\Filesystem::normalizePath($share->getTarget());
