@@ -31,6 +31,7 @@ namespace OCA\Files_Sharing\External;
 
 use OC\Files\Filesystem;
 use OC\User\NoUserException;
+use OCA\Files_Sharing\Helper;
 use OCP\Files;
 use OCP\Notification\IManager;
 use OCP\Share\Events\AcceptShare;
@@ -142,8 +143,9 @@ class Manager {
 			return null;
 		}
 
-		$mountPoint = Files::buildNotExistingFileName('/', $name);
-		$mountPoint = Filesystem::normalizePath('/' . $mountPoint);
+		$shareFolder = Helper::getShareFolder();
+		$mountPoint = Files::buildNotExistingFileName($shareFolder, $name);
+		$mountPoint = Filesystem::normalizePath($mountPoint);
 		$hash = \md5($mountPoint);
 
 		$query = $this->connection->prepare('
@@ -189,8 +191,9 @@ class Manager {
 		$share = $this->getShare($id);
 
 		if ($share) {
-			$mountPoint = Files::buildNotExistingFileName('/', $share['name']);
-			$mountPoint = Filesystem::normalizePath('/' . $mountPoint);
+			$shareFolder = Helper::getShareFolder();
+			$mountPoint = Files::buildNotExistingFileName($shareFolder, $share['name']);
+			$mountPoint = Filesystem::normalizePath($mountPoint);
 			$hash = \md5($mountPoint);
 
 			$acceptShare = $this->connection->prepare('
