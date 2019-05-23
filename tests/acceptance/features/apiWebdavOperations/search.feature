@@ -9,6 +9,7 @@ Feature: Search
     And user "user0" has created folder "/just-a-folder"
     And user "user0" has created folder "/फनी näme"
     And user "user0" has created folder "/upload folder"
+    And user "user0" has created folder "/upload😀 😁"
     And user "user0" has uploaded file with content "does-not-matter" to "/upload.txt"
     And user "user0" has uploaded file with content "does-not-matter" to "/a-image.png"
     And user "user0" has uploaded file with content "does-not-matter" to "/just-a-folder/upload.txt"
@@ -17,6 +18,7 @@ Feature: Search
     And user "user0" has uploaded file with content "does-not-matter" to "/just-a-folder/uploadÜठिF.txt"
     And user "user0" has uploaded file with content "does-not-matter" to "/फनी näme/upload.txt"
     And user "user0" has uploaded file with content "does-not-matter" to "/फनी näme/a-image.png"
+    And user "user0" has uploaded file with content "does-not-matter" to "/upload😀 😁/upload😀 😁.txt"
 
   @smokeTest
   Scenario Outline: search for entry by pattern
@@ -29,8 +31,10 @@ Feature: Search
       | /upload folder                |
       | /just-a-folder/uploadÜठिF.txt |
       | /फनी näme/upload.txt          |
+      | /upload😀 😁                  |
+      | /upload😀 😁/upload😀 😁.txt  |
     But the search result should not contain these entries:
-      | /a-image.png |
+      | /a-image.png             |
     Examples:
       | dav_version |
       | old         |
@@ -87,6 +91,8 @@ Feature: Search
       | /upload folder                |
       | /upload.txt                   |
       | /फनी näme/upload.txt          |
+      | /upload😀 😁                  |
+      | /upload😀 😁/upload😀 😁.txt  |
     Examples:
       | dav_version |
       | old         |
@@ -108,13 +114,15 @@ Feature: Search
     Given using <dav_version> DAV path
     When user "user0" searches for "upload" and limits the results to "100" items using the WebDAV API
     Then the HTTP status code should be "207"
-    And the search result should contain "5" entries
+    And the search result should contain "7" entries
     And the search result should contain these entries:
       | /upload.txt                   |
       | /just-a-folder/upload.txt     |
       | /upload folder                |
       | /just-a-folder/uploadÜठिF.txt |
       | /फनी näme/upload.txt          |
+      | /upload😀 😁                  |
+      | /upload😀 😁/upload😀 😁.txt  |
     Examples:
       | dav_version |
       | old         |
@@ -170,6 +178,25 @@ Feature: Search
       | {http://owncloud.org/ns}size               | 0                                                                                                 |
       | {http://owncloud.org/ns}owner-id           | user0                                                                                             |
       | {http://owncloud.org/ns}owner-display-name | User Zero                                                                                         |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: search for entry with emoji by pattern
+    Given using <dav_version> DAV path
+    When user "user0" searches for "😀 😁" using the WebDAV API
+    Then the HTTP status code should be "207"
+    And the search result should contain these entries:
+      | /upload😀 😁                 |
+      | /upload😀 😁/upload😀 😁.txt |
+    But the search result should not contain these entries:
+      | /a-image.png                  |
+      | /upload.txt                   |
+      | /just-a-folder/upload.txt     |
+      | /upload folder                |
+      | /just-a-folder/uploadÜठिF.txt |
+      | /फनी näme/upload.txt          |
     Examples:
       | dav_version |
       | old         |
