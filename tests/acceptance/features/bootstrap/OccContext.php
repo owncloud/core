@@ -797,6 +797,55 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Then the system config key :key from the last command output should match value :value of type :type
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param string $type
+	 *
+	 * @return void
+	 */
+	public function theSystemConfigKeyFromLastCommandOutputShouldContainValue(
+		$key, $value, $type
+	) {
+		$configList = \json_decode(
+			$this->featureContext->getStdOutOfOccCommand(), true
+		);
+		$systemConfig = $configList['system'];
+
+		// convert the value to it's respective type based on type given in the type column
+		if ($type === 'boolean') {
+			$value = $value === 'true' ? true : false;
+		} elseif ($type === 'integer') {
+			$value = (int) $value;
+		} elseif ($type === 'json') {
+			// if the expected value of the key is a json
+			// match the value with the regular expression
+			$actualKeyValuePair = \json_encode(
+				$systemConfig[$key], JSON_UNESCAPED_SLASHES
+			);
+
+			PHPUnit\Framework\Assert::assertThat(
+				$actualKeyValuePair,
+				PHPUnit\Framework\Assert::matchesRegularExpression($value)
+			);
+			return;
+		}
+
+		if (!\array_key_exists($key, $systemConfig)) {
+			PHPUnit\Framework\Assert::fail(
+				"system config doesn't contain key: " . $key
+			);
+		}
+
+		PHPUnit\Framework\Assert::assertEquals(
+			$value,
+			$systemConfig[$key],
+			"config: $key doesn't contain value: $value"
+		);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
