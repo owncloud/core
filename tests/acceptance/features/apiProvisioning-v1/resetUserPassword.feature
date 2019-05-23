@@ -71,3 +71,19 @@ Feature: reset user password
     And the HTTP status code should be "200"
     And the content of file "textfile0.txt" for user "brand-new-user" using password "%alt1%" should be "ownCloud test text file 0" plus end-of-line
     But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
+
+  Scenario Outline: reset user password including emoji
+    Given these users have been created:
+      | username       | password  | displayname | email                    |
+      | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
+    When the administrator resets the password of user "brand-new-user" to "<password>" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the content of file "textfile0.txt" for user "brand-new-user" using password "<password>" should be "ownCloud test text file 0" plus end-of-line
+    Examples:
+      | password        | comment  |
+      | 😛 😜           | smileys  |
+      | 🐶🐱 🐭           | Animals  |
+      | ⌚️ 📱 📲 💻           | objects  |
+      | 🚴🏿‍♀️ 🚴‍♂️            | cycling |
+    But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
