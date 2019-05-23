@@ -35,7 +35,7 @@ Feature: sharing
     And the user gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the fields of the last share response should include
+    And the fields of the last response should include
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
