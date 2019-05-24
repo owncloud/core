@@ -173,6 +173,15 @@ pipeline:
       matrix:
         INSTALL_TESTING_APP: true
 
+  setup-proxy-on-local-server:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - php occ config:system:set proxy --value "http://mitmproxy:8080"
+    when:
+      matrix:
+        RUN_PROXY_ON: local_server
+
   prepare-objectstore:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -626,5 +635,42 @@ services:
       matrix:
         USE_EMAIL: true
 
+  mitmproxy:
+    image: mitmproxy/mitmproxy
+    pull: true
+    command: [ "mitmdump", "--set", "ssl_insecure", "--verbose", "--showhost" ]
+    when:
+      matrix:
+        RUN_PROXY_ON: local_server
+
 matrix:
   include:
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiFederation
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+      RUN_PROXY_ON: local_server
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BROWSER: chrome
+      BEHAT_SUITE: webUISharingExternal
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+      USE_EMAIL: true
+      RUN_PROXY_ON: local_server
