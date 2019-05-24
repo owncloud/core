@@ -48,6 +48,7 @@ Feature: remove a user from a group
       | 50%2Eagle           | %2E literal looks like an escaped "."   |
       | 50%2Fix             | %2F literal looks like an escaped slash |
       | staff?group         | Question mark                           |
+      | 😁 😂               | emoji                                   |
 
   @issue-31015
   Scenario Outline: admin removes a user from a group that has a forward-slash in the group name
