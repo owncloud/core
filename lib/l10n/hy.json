@@ -20,6 +20,7 @@
     "General" : "Ընդհանուր",
     "Security" : "Անվտանգություն",
     "Search" : "Փնտրել",
+    "Help" : "Օգնություն",
     "Settings" : "Կարգավորումներ",
     "Unknown user" : "Անհայտ օգտատեր",
     "PostgreSQL >= 9 required" : "Պահանջվում է PostgreSQL >= 9"

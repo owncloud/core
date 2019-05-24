@@ -14,7 +14,7 @@ OC.L10N.register(
     "Anonymous upload" : "Анонимно прикачување",
     "Click to select files or use drag & drop to upload" : "Кликнете за да изберете датотеки или користете drag & drop за да испратите",
     "Uploaded files" : "Подигнати датотеки",
-    "Uploading..." : "Прикачување...",
+    "Uploading..." : "Подигнувам...",
     "Nothing shared with you yet" : "Сеуште ништо не е споделено со вас",
     "Files and folders others share with you will show up here" : "Датотеките и папките што другите ќе ги споделат со вас ќе се појават тука",
     "Nothing shared yet" : "Уште ништо не е споделено",

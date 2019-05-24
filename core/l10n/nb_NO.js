@@ -173,6 +173,7 @@ OC.L10N.register(
     "Download / View" : "Last ned / Se",
     "Recipients can view or download contents." : "Mottakere kan se og laste ned innhold.",
     "Download / View / Upload" : "Last ned / Se / Last opp",
+    "Recipients can view, download, edit, delete and upload contents." : "Mottakere kan se, laste ned, redigere, slette og laste opp innhold.",
     "Edit link share: {name}" : "Rediger lenke-deling: {name}",
     "Create link share: {name}" : "Opprett lenke-deling: {name}",
     "Share" : "Del",

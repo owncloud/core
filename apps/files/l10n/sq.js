@@ -30,7 +30,7 @@ OC.L10N.register(
     "Rename" : "Riemërtojeni",
     "Delete" : "Fshije",
     "Disconnect storage" : "Shkëpute depozitën",
-    "Unshare" : "Hiqi ndarjen me të tjerë",
+    "Unshare" : "Hiqe ndarjen",
     "Could not load info for file \"{file}\"" : "S’u ngarkuan dot të dhëna ose kartelë \"{file}\"",
     "Files" : "Kartela",
     "Details" : "Hollësi",

@@ -97,6 +97,7 @@
     "The username is already being used" : "El nome d'usuariu yá ta usándose",
     "Login canceled by app" : "Aniciar sesión canceláu pola aplicación",
     "User disabled" : "Usuariu desactiváu",
+    "Help" : "Ayuda",
     "Settings" : "Axustes",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "L'aplicación \"%s\" nun puede instalase porque les siguientes dependencies nun se cumplen: %s",
     "A safe home for all your data" : "Un llar seguru pa tolos sos datos",

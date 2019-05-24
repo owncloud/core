@@ -97,6 +97,7 @@
     "The username is already being used" : "Bu kullanıcı adı zaten kullanımda",
     "Login canceled by app" : "Giriş uygulama tarafından iptal edildi",
     "User disabled" : "Kullanıcı devre dışı",
+    "Help" : "Yardım",
     "Settings" : "Ayarlar",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "\"%s\" uygulaması, şu bağımlılıklar sağlanmadığı için yüklenemiyor: %s",
     "A safe home for all your data" : "Verileriniz için güvenli bir yuva",

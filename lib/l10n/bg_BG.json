@@ -95,6 +95,7 @@
     "The username is already being used" : "Това потребителско име е вече заето.",
     "Login canceled by app" : "Вписването преустановено от приложението",
     "User disabled" : "Потребителят е деактивиран",
+    "Help" : "Помощ",
     "Settings" : "Настройки",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Приложение \"%s\" не може да бъде инсталирано, защото следните зависимости не са изпълнени: %s",
     "A safe home for all your data" : "Сигурен дом за цялата всичките Ви данни",

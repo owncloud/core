@@ -16,7 +16,6 @@
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Nicht genügend freier Speicherplatz, du möchtest {size1} hochladen, es sind jedoch nur noch {size2} verfügbar.",
     "Target folder \"{dir}\" does not exist any more" : "Zielverzeichnis \"{dir}\" existiert nicht mehr",
     "Target folder does not exist any more" : "Zielverzeichnis existiert nicht mehr",
-    "The file {file} is currently locked, please try again later" : "Die Datei {file} ist zur Zeit gesperrt, bitte versuche es später noch einmal",
     "Not enough free space" : "Nicht genügend Speicherplatz verfügbar",
     "Uploading..." : "Lädt hoch...",
     "..." : "...",

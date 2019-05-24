@@ -171,6 +171,7 @@
     "Download / View" : "下载 / 查看",
     "Recipients can view or download contents." : "接收者可查看或下载内容。",
     "Download / View / Upload" : "下载 / 查看 / 上传",
+    "Recipients can view, download, edit, delete and upload contents." : "接收者可查看、下载、编辑、删除以及上传内容。",
     "Edit link share: {name}" : "编辑共享链接： {name}",
     "Create link share: {name}" : "创建共享链接： {name}",
     "Share" : "分享",

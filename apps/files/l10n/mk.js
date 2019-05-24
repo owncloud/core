@@ -49,7 +49,7 @@ OC.L10N.register(
     "The name \"{targetName}\" is already used in the folder \"{dir}\". Please choose a different name." : "Името \"{targetName}\" веќе се користи во папката \"{dir}\". Ве молиме изберете друго име.",
     "The file \"{fileName}\" is locked and can not be renamed." : "Датотеката \"{fileName}\" е заклучена и немеже да се промени името.",
     "Could not rename \"{fileName}\"" : "Не можеше да се преименува \"{fileName}\"",
-    "Could not create file \"{file}\"" : "Не може да се креира датотека \"{file}\"",
+    "Could not create file \"{file}\"" : "Не можам да креирам датотека \"{file}\"",
     "Could not create file \"{file}\" because it already exists" : "Не може да се создаде датотека \"{file}\" бидејќи веќе постои",
     "Could not create folder \"{dir}\" because it already exists" : "Не можам да креирам папка \"{dir}\" затоа што веќе постои",
     "The file \"{fileName}\" is locked and cannot be deleted." : "Датотеката \"{fileName}\" е заклучена и неможе да се избрише.",

@@ -62,6 +62,7 @@
     "A valid username must be provided" : "Nužno je navesti ispravno korisničko ime",
     "A valid password must be provided" : "Nužno je navesti ispravnu lozinku",
     "The username is already being used" : "Korisničko ime se već koristi",
+    "Help" : "Pomoć",
     "Settings" : "Postavke",
     "Imprint" : "Otisak",
     "Application is not enabled" : "Aplikacija nije aktivirana",

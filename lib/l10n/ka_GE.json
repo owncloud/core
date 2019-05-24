@@ -29,6 +29,7 @@
     "Could not find category \"%s\"" : "\"%s\" კატეგორიის მოძებნა ვერ მოხერხდა",
     "A valid username must be provided" : "უნდა მიუთითოთ არსებული მომხმარებლის სახელი",
     "A valid password must be provided" : "უნდა მიუთითოთ არსებული პაროლი",
+    "Help" : "დახმარება",
     "Settings" : "პარამეტრები",
     "Imprint" : "ბეჭედი",
     "Application is not enabled" : "აპლიკაცია არ არის აქტიური",
