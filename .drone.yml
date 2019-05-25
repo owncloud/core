@@ -14,7 +14,7 @@ pipeline:
     image: owncloudci/core
     pull: true
     exclude: apps/testing
-    version: ${FEDERATION_OC_VERSION}
+    git_reference: ${FEDERATION_OC_VERSION}
     core_path: /drone/fed-server
     when:
       matrix:
@@ -653,7 +653,7 @@ matrix:
       USE_SERVER: true
       SERVER_PROTOCOL: https
       USE_FEDERATED_SERVER: true
-      FEDERATION_OC_VERSION: daily-stable10-qa
+      FEDERATION_OC_VERSION: fix/webdavclient-proxy-credentials
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -668,7 +668,7 @@ matrix:
       USE_SERVER: true
       SERVER_PROTOCOL: https
       USE_FEDERATED_SERVER: true
-      FEDERATION_OC_VERSION: daily-stable10-qa
+      FEDERATION_OC_VERSION: fix/webdavclient-proxy-credentials
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
