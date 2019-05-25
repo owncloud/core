@@ -638,7 +638,7 @@ services:
   mitmproxy:
     image: mitmproxy/mitmproxy
     pull: true
-    command: [ "mitmdump", "--set", "ssl_insecure", "--verbose", "--showhost" ]
+    command: [ "mitmdump", "--set", "ssl_insecure", "--verbose", "--showhost", "--ignore-hosts", "^(.+.)?(server|federated)(:80|-https:443)$" ]
     when:
       matrix:
         RUN_PROXY_ON: local_server
