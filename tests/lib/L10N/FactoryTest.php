@@ -317,7 +317,15 @@ class FactoryTest extends TestCase {
 			->with('theme')
 			->willReturn('abc');
 
-		$this->assertEquals(['en', 'zz'], $factory->findAvailableLanguages($app), '', 0.0, 10, true);
+		$this->assertEquals(["en","af_ZA","ar","ast","az","be","bg_BG","bn_BD",
+			"bn_IN","bs","ca","cs_CZ","cy_GB","da","de","de_AT","de_DE","el",
+			"en_GB","eo","es","es_AR","es_CL","es_MX","et_EE","eu","fa","fi_FI",
+			"fil","fr","gl","gu","he","hi","hr","hu_HU","hy","ia","id","is","it",
+			"ja","jv","ka_GE","km","kn","ko","ku_IQ","lb","lo","lt_LT","lv","mk",
+			"ml_IN","mn","ms_MY","my_MM","nb_NO","nds","nl","nn_NO","oc","pa","pl",
+			"pt_BR","pt_PT","ro","ru","si_LK","sk_SK","sl","sq","sr","sr@latin","sv",
+			"ta_IN","ta_LK","te","th_TH","tr","ug","uk","ur_PK","vi","zh_CN","zh_HK",
+			"zh_TW","zz"], $factory->findAvailableLanguages($app), '', 0.0, 10, true);
 	}
 
 	public function testFindAvailableLanguagesWithAppThemes() {
