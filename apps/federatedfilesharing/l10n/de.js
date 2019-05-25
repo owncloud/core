@@ -26,6 +26,7 @@ OC.L10N.register(
     "Share it:" : "Zum Teilen:",
     "Add to your website" : "Zu deiner Webseite hinzufügen",
     "Share with me via ownCloud" : "Teile mit mir über ownCloud",
-    "HTML Code:" : "HTML-Code:"
+    "HTML Code:" : "HTML-Code:",
+    "Nothing to configure." : "Nichts zu konfigurieren. "
 },
 "nplurals=2; plural=(n != 1);");

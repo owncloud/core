@@ -26,6 +26,7 @@ OC.L10N.register(
     "Share it:" : "Ndajeni:",
     "Add to your website" : "Shtojeni te sajti juaj",
     "Share with me via ownCloud" : "Ndani me mua përmes ownCloud-it",
-    "HTML Code:" : "Kod HTML:"
+    "HTML Code:" : "Kod HTML:",
+    "Nothing to configure." : "S’ka gjë për formësim."
 },
 "nplurals=2; plural=(n != 1);");

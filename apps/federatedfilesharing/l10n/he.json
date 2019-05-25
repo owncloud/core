@@ -6,6 +6,10 @@
     "Not allowed to create a federated share with the same user" : "אסור ליצור שיתוף מאוגד עם אותו משתמש",
     "File is already shared with %s" : "הקובץ כבר משותף עם %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "שיתוף %s נכשל, לא ניתן לאתר %s, ייתכן שהשרת לא ניתן להשגה כרגע.",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" משתף \"%3$s\" אתך (בשם \"%2$s\")",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" משתף \"%3$s\" אתך",
+    "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" מזמין אותך לצפות ב- \"%3$s\" (בשם \"%2$s\")",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" מזמין אותך לצפות ב- \"%3$s\"",
     "Accept" : "אישור",
     "Decline" : "סירוב",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "שיתוף איתי באמצעות מספר זהות שרת ה- #ownCloud המאוגד שלי, ניתן לראות %s",
@@ -14,11 +18,13 @@
     "Open documentation" : "תיעוד פתוח",
     "Allow users on this server to send shares to other servers" : "מאפשר למשתמשים בשרת זה לשלוח שיתופים לשרתים אחרים",
     "Allow users on this server to receive shares from other servers" : "מאפשר למשתמשים בשרת זה לקבל שיתופים משרתים אחרים",
+    "Automatically accept remote shares from trusted servers" : "אישור אוטומטי לשיתוף מרוחק משרתים מהימנים",
     "Federated Cloud" : "ענן מאוגד",
     "Your Federated Cloud ID:" : "מספר זיהוי הענן המאוגד שלך:",
     "Share it:" : "שיתוף שלו:",
     "Add to your website" : "הוספה לאתר האינטרנט שלך",
     "Share with me via ownCloud" : "שיתוף איתי באמצעות ownCloud",
-    "HTML Code:" : "קוד HTML:"
+    "HTML Code:" : "קוד HTML:",
+    "Nothing to configure." : "אין שום דבר להגדיר."
 },"pluralForm" :"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;"
 }

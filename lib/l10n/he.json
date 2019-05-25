@@ -105,6 +105,7 @@
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "היישום \"%s\" לא ניתן להתקנה כיוון שיחסי התלות הבאים אינם מתקיימים: %s",
     "A safe home for all your data" : "בית בטוח לכל המידע שלך",
     "Imprint" : "חותמת",
+    "Privacy Policy" : "מדיניות הפרטיות",
     "File is currently busy, please try again later" : "הקובץ בשימוש כרגע, יש לנסות שוב מאוחר יותר",
     "Application is not enabled" : "יישומים אינם מופעלים",
     "Authentication error" : "שגיאת הזדהות",

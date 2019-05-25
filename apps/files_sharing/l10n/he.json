@@ -97,6 +97,10 @@
     "Wrong or no update parameter given" : "משתנה עדכון שניתן שגוי או לא קיים",
     "Cannot increase permissions" : "לא ניתן להעלות הרשאות",
     "Couldn't send mail to following recipient(s): %s " : "נא ניתן לשלוח דוא״ל לנמענים הבאים: %s",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" משתף \"%3$s\" אתך (בשם \"%2$s\")",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" משתף \"%3$s\" אתך",
+    "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" מזמין אותך לצפות ב- \"%3$s\" (בשם \"%2$s\")",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" מזמין אותך לצפות ב- \"%3$s\"",
     "Accept" : "אישור",
     "Decline" : "סירוב",
     "This share is password-protected" : "שיתוף זה מוגן סיסמא",
@@ -115,6 +119,7 @@
     "%s is publicly shared" : "%s בשיתוף ציבורי",
     "Download" : "הורדה",
     "Download %s" : "הורדה %s",
-    "Direct link" : "קישור ישיר"
+    "Direct link" : "קישור ישיר",
+    "Nothing to configure." : "אין שום דבר להגדיר."
 },"pluralForm" :"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;"
 }

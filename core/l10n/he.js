@@ -269,6 +269,7 @@ OC.L10N.register(
     "Line: %s" : "שורה: %s",
     "Trace" : "עקבות",
     "Imprint" : "חותמת",
+    "Privacy Policy" : "מדיניות הפרטיות",
     "Create an <strong>admin account</strong>" : "יצירת <strong>חשבון מנהל</strong>",
     "Username" : "שם משתמש",
     "Storage & database" : "אחסון ומסד נתונים",
