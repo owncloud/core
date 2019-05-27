@@ -2,7 +2,6 @@
 Feature: CORS headers
   Background:
     Given user "user0" has been created with default attributes
-    And a new client token for "user0" has been generated
 
   Scenario Outline: CORS headers should be returned when setting CORS domain sending Origin header
     Given using OCS API version "<ocs_api_version>"
