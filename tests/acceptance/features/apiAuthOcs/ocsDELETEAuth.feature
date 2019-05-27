@@ -1,9 +1,6 @@
 @api @TestAlsoOnExternalUserBackend
 Feature: auth
 
-  Background:
-    Given user "user0" has been created with default attributes
-
   @issue-32068
   Scenario Outline: send DELETE requests to OCS endpoints as admin with wrong password
     Given using OCS API version "<ocs_api_version>"
