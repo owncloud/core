@@ -44,6 +44,20 @@ Feature: add groups
       | staff?group         | Question mark                           |
       | 😅 😆               | emoji                                   |
 
+  Scenario Outline: group names are case-sensitive, multiple groups can exist with different upper and lower case names
+    When the administrator sends a group creation request for group "<group_id1>" using the provisioning API
+    And the administrator sends a group creation request for group "<group_id2>" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And group "<group_id1>" should exist
+    And group "<group_id2>" should exist
+    But group "<group_id3>" should not exist
+    Examples:
+      | group_id1            | group_id2            | group_id3            |
+      | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
+      | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
+      | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
+
     # Note: these groups do get created OK, but:
     # 1) the "should exist" step fails because the API to check their existence does not work.
     # 2) the ordinary group deletion in AfterScenario does not work, because the
