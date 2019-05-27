@@ -65,6 +65,23 @@ Feature: add users to group
       | var/../etc       | using slash-dot-dot                |
       | priv/subadmins/1 | Subadmins mentioned not at the end |
 
+  Scenario Outline: adding a user to a group using mixes of upper and lower case in user and group names
+    Given user "brand-new-user" has been created with default attributes
+    And group "<group_id1>" has been created
+    And group "<group_id2>" has been created
+    And group "<group_id3>" has been created
+    When the administrator adds user "<user_id>" to group "<group_id1>" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "brand-new-user" should belong to group "<group_id1>"
+    But user "brand-new-user" should not belong to group "<group_id2>"
+    And user "brand-new-user" should not belong to group "<group_id3>"
+    Examples:
+      | user_id        | group_id1 | group_id2 | group_id3 |
+      | BRAND-NEW-USER | New-Group | new-group | NEW-GROUP |
+      | Brand-New-User | new-group | NEW-GROUP | New-Group |
+      | brand-new-user | NEW-GROUP | New-Group | new-group |
+
   Scenario: normal user tries to add himself to a group
     Given user "brand-new-user" has been created with default attributes
     When user "brand-new-user" tries to add himself to group "new-group" using the provisioning API
