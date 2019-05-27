@@ -3,7 +3,6 @@ Feature: auth
 
   Background:
     Given user "user0" has been created with default attributes
-    And a new client token for "user0" has been generated
 
   @issue-32068
   Scenario Outline: send PUT requests to OCS endpoints as admin with wrong password
