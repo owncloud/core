@@ -46,6 +46,22 @@ Feature: delete groups
       | staff?group         | Question mark                           |
       | 😅 😆               | emoji                                   |
 
+  Scenario Outline: group names are case-sensitive, the correct group is deleted
+    Given group "<group_id1>" has been created
+    And group "<group_id2>" has been created
+    And group "<group_id3>" has been created
+    When the administrator deletes group "<group_id1>" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And group "<group_id1>" should not exist
+    But group "<group_id2>" should exist
+    And group "<group_id3>" should exist
+    Examples:
+      | group_id1            | group_id2            | group_id3 |
+      | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
+      | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
+      | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
+
   @issue-31015
   Scenario Outline: admin deletes a group that has a forward-slash in the group name
     # After fixing issue-31015, change the following step to "has been created"
