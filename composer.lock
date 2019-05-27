@@ -1860,16 +1860,16 @@
         },
         {
             "name": "punic/punic",
-            "version": "3.3.1",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/punic/punic.git",
-                "reference": "db3b99397e7ede380eb8b27b08d7f7a95d85d7db"
+                "reference": "0fd7772bb494a11aec50d779b738611e164a33ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/punic/punic/zipball/db3b99397e7ede380eb8b27b08d7f7a95d85d7db",
-                "reference": "db3b99397e7ede380eb8b27b08d7f7a95d85d7db",
+                "url": "https://api.github.com/repos/punic/punic/zipball/0fd7772bb494a11aec50d779b738611e164a33ee",
+                "reference": "0fd7772bb494a11aec50d779b738611e164a33ee",
                 "shasum": ""
             },
             "require": {
@@ -1930,7 +1930,7 @@
                 "translations",
                 "unicode"
             ],
-            "time": "2018-12-07T16:55:52+00:00"
+            "time": "2019-05-22T08:47:32+00:00"
         },
         {
             "name": "rackspace/php-opencloud",
