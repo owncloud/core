@@ -317,7 +317,9 @@ class FactoryTest extends TestCase {
 			->with('theme')
 			->willReturn('abc');
 
-		$this->assertEquals(['en', 'zz'], $factory->findAvailableLanguages($app), '', 0.0, 10, true);
+		$availableLanguages = $factory->findAvailableLanguages($app);
+		$this->assertContains('en', $availableLanguages);
+		$this->assertContains('zz', $availableLanguages);
 	}
 
 	public function testFindAvailableLanguagesWithAppThemes() {
