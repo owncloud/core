@@ -182,6 +182,7 @@ pipeline:
       - cd /drone/src/apps
       - git clone https://github.com/owncloud/files_primary_s3.git
       - cd files_primary_s3
+      - git checkout update-guzzle-6
       - composer install
       - cp tests/drone/${OBJECTSTORE}.config.php /drone/src/config
       - cd /drone/src
