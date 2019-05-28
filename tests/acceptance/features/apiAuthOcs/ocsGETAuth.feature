@@ -2,7 +2,6 @@
 Feature: auth
   Background:
     Given user "user0" has been created with default attributes
-    And a new client token for "user0" has been generated
 
   @issue-32068
   Scenario Outline: using OCS anonymously
@@ -200,32 +199,8 @@ Feature: auth
       | 2               |/cloud/users/user0/subadmins                         | 997      | 401       |
 
   Scenario Outline: using OCS with token auth of a normal user
+    Given a new client token for "user0" has been generated
     When user "user0" requests "<endpoint>" with "GET" using basic token auth
-    Then the OCS status code should be "<ocs-code>"
-    And the HTTP status code should be "<http-code>"
-    Examples:
-      |endpoint                                                    | ocs-code | http-code |
-      |/ocs/v1.php/apps/files_external/api/v1/mounts               | 100      | 200       |
-      |/ocs/v2.php/apps/files_external/api/v1/mounts               | 200      | 200       |
-      |/ocs/v1.php/apps/files_sharing/api/v1/remote_shares         | 100      | 200       |
-      |/ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 200      | 200       |
-      |/ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending | 100      | 200       |
-      |/ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 200      | 200       |
-      |/ocs/v1.php/apps/files_sharing/api/v1/shares                | 100      | 200       |
-      |/ocs/v2.php/apps/files_sharing/api/v1/shares                | 200      | 200       |
-      |/ocs/v1.php/cloud/apps                                      | 997      | 401       |
-      |/ocs/v2.php/cloud/apps                                      | 997      | 401       |
-      |/ocs/v1.php/cloud/groups                                    | 997      | 401       |
-      |/ocs/v2.php/cloud/groups                                    | 997      | 401       |
-      |/ocs/v1.php/cloud/users                                     | 997      | 401       |
-      |/ocs/v2.php/cloud/users                                     | 997      | 401       |
-      |/ocs/v1.php/config                                          | 100      | 200       |
-      |/ocs/v2.php/config                                          | 200      | 200       |
-      |/ocs/v1.php/privatedata/getattribute                        | 100      | 200       |
-      |/ocs/v2.php/privatedata/getattribute                        | 200      | 200       |
-
-  Scenario Outline: using OCS with client token of a normal user
-    When the user requests "<endpoint>" with "GET" using the generated client token
     Then the OCS status code should be "<ocs-code>"
     And the HTTP status code should be "<http-code>"
     Examples:
