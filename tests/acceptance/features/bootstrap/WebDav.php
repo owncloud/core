@@ -2326,10 +2326,10 @@ trait WebDav {
 				HttpRequestHelper::parseResponseAsXml($this->response)
 			);
 		}
-		$fullWebDavPath = \ltrim(
-			\parse_url($this->response->getEffectiveUrl(), PHP_URL_PATH) . "/",
-			"/"
-		);
+		// The responseXml has item with name "{DAV:}href" and the value is
+		// the WebDav path of the top-level entry that was requested
+		$davHref = $this->responseXml['value'][0]['value'][0]['value'];
+		$fullWebDavPath = \ltrim($davHref, "/");
 		$multistatusResults = $this->responseXml["value"];
 		$results = [];
 		if ($multistatusResults !== null) {
