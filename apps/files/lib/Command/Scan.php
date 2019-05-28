@@ -386,9 +386,10 @@ class Scan extends Base {
 			if (\is_object($user)) {
 				$user = $user->getUID();
 			}
-			$path = $inputPath ? $inputPath : '/' . $user;
 			$user_count += 1;
 			if ($this->userManager->userExists($user)) {
+				$user = $this->userManager->get($user)->getUID();
+				$path = $inputPath ? $inputPath : '/' . $user;
 				# add an extra line when verbose is set to optical separate users
 				if ($verbose) {
 					$output->writeln("");
