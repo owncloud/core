@@ -15,6 +15,13 @@ Feature: delete users
     And the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
+  Scenario: Delete a user, and specify the user name in different case
+    Given user "brand-new-user" has been created with default attributes
+    When the administrator deletes user "Brand-New-User" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "brand-new-user" should not exist
+
   @smokeTest
   Scenario: subadmin deletes a user in their group
     Given user "subadmin" has been created with default attributes
