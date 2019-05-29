@@ -2768,25 +2768,35 @@ trait Provisioning {
 		}
 		$this->usingServer($previousServer);
 	}
-	
+
 	/**
 	 * @BeforeScenario
 	 *
 	 * @return void
 	 */
 	public function rememberAppEnabledDisabledState() {
-		$this->enabledApps = $this->getEnabledApps();
-		$this->disabledApps = $this->getDisabledApps();
+		SetupHelper::init(
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			$this->getBaseUrl(),
+			$this->getOcPath()
+		);
+		$this->runOcc(['app:list', '--output json']);
+		$apps = \json_decode($this->getStdOutOfOccCommand(), true);
+		$this->enabledApps = \array_keys($apps["enabled"]);
+		$this->disabledApps = \array_keys($apps["disabled"]);
 	}
-	
+
 	/**
 	 * @AfterScenario
 	 *
 	 * @return void
 	 */
 	public function restoreAppEnabledDisabledState() {
-		$currentlyDisabledApps = $this->getDisabledApps();
-		$currentlyEnabledApps = $this->getEnabledApps();
+		$this->runOcc(['app:list', '--output json']);
+		$apps = \json_decode($this->getStdOutOfOccCommand(), true);
+		$currentlyEnabledApps = \array_keys($apps["enabled"]);
+		$currentlyDisabledApps = \array_keys($apps["disabled"]);
 
 		foreach ($currentlyDisabledApps as $disabledApp) {
 			if (\in_array($disabledApp, $this->enabledApps)) {
