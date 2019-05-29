@@ -16,3 +16,16 @@ Feature: get groups
       | admin     |
       | new-group |
       | 0         |
+
+  Scenario: admin gets all the groups, including groups with mixed case
+    Given group "new-group" has been created
+    And group "New-Group" has been created
+    And group "NEW-GROUP" has been created
+    When the administrator gets the groups in JSON format using the occ command
+    Then the command should have been successful
+    And the groups returned by the occ command should be
+      | group     |
+      | admin     |
+      | new-group |
+      | New-Group |
+      | NEW-GROUP |

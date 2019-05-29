@@ -18,6 +18,26 @@ Feature: remove a user from a group
       | España      | special European characters |
       | नेपाली      | Unicode group name          |
 
+  Scenario Outline: remove a user from a group using mixes of upper and lower case in user and group names
+    Given user "brand-new-user" has been created with default attributes
+    And group "<group_id1>" has been created
+    And group "<group_id2>" has been created
+    And group "<group_id3>" has been created
+    And user "brand-new-user" has been added to group "<group_id1>"
+    And user "brand-new-user" has been added to group "<group_id2>"
+    And user "brand-new-user" has been added to group "<group_id3>"
+    When the administrator removes user "<user_id>" from group "<group_id1>" using the occ command
+    Then the command should have been successful
+    And the command output should contain the text 'Member "brand-new-user" removed from group "<group_id1>"'
+    And user "brand-new-user" should not belong to group "<group_id1>"
+    But user "brand-new-user" should belong to group "<group_id2>"
+    And user "brand-new-user" should belong to group "<group_id3>"
+    Examples:
+      | user_id        | group_id1 | group_id2 | group_id3 |
+      | BRAND-NEW-USER | New-Group | new-group | NEW-GROUP |
+      | Brand-New-User | new-group | NEW-GROUP | New-Group |
+      | brand-new-user | NEW-GROUP | New-Group | new-group |
+
   Scenario: admin tries to remove a user from a group which does not exist
     Given user "brand-new-user" has been created with default attributes
     And group "not-group" has been deleted

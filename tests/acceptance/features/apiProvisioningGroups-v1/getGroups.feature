@@ -18,3 +18,14 @@ Feature: get groups
       | admin     |
       | new-group |
       | 0         |
+
+  Scenario: admin gets all the groups, including groups with mixed case
+    Given group "new-group" has been created
+    And group "New-Group" has been created
+    And group "NEW-GROUP" has been created
+    When the administrator gets all the groups using the provisioning API
+    Then the groups returned by the API should be
+      | admin     |
+      | new-group |
+      | New-Group |
+      | NEW-GROUP |
