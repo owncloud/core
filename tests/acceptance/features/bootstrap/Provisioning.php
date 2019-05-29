@@ -282,8 +282,12 @@ trait Provisioning {
 		$this->featureContext->runOcc(["config:system:get skeletondirectory"]);
 		$path = \trim($this->featureContext->getStdOutOfOccCommand());
 		$this->featureContext->runOcc(["config:system:delete skeletondirectory"]);
-		$this->featureContext->userHasBeenCreatedWithDefaultAttributes($user);
-		$this->featureContext->runOcc(["config:system:set skeletondirectory --value $path"]);
+		try {
+			$this->featureContext->userHasBeenCreatedWithDefaultAttributes($user);
+		} finally {
+			// restore skeletondirectory even if user creation failed
+			$this->featureContext->runOcc(["config:system:set skeletondirectory --value $path"]);
+		}
 	}
 
 	/**
