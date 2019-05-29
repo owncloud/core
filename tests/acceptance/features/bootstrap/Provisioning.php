@@ -279,11 +279,50 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userHasBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles($user) {
-		$this->runOcc(["config:system:get skeletondirectory"]);
-		$path = \trim($this->getStdOutOfOccCommand());
-		$this->runOcc(["config:system:delete skeletondirectory"]);
+		$path = $this->popSkeletonDirectoryConfig();
 		try {
 			$this->userHasBeenCreatedWithDefaultAttributes($user);
+		} finally {
+			// restore skeletondirectory even if user creation failed
+			$this->runOcc(["config:system:set skeletondirectory --value $path"]);
+		}
+	}
+
+	/**
+	 * @Given these users have been created with default attributes and without skeleton files:
+	 * expects a table of users with the heading
+	 * "|username|"
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theseUsersHaveBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles(TableNode $table) {
+		$path = $this->popSkeletonDirectoryConfig();
+		try {
+			foreach ($table as $row) {
+				$this->userHasBeenCreatedWithDefaultAttributes($row['username']);
+			}
+		} finally {
+			// restore skeletondirectory even if user creation failed
+			$this->runOcc(["config:system:set skeletondirectory --value $path"]);
+		}
+	}
+
+	/**
+	 * @Given these users have been created without skeleton files:
+	 * expects a table of users with the heading
+	 * "|username|password|displayname|email|"
+	 * password, displayname & email are optional
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theseUsersHaveBeenCreatedWithoutSkeletonFiles(TableNode $table) {
+		$path = $this->popSkeletonDirectoryConfig();
+		try {
+			$this->theseUsersHaveBeenCreated("", "", $table);
 		} finally {
 			// restore skeletondirectory even if user creation failed
 			$this->runOcc(["config:system:set skeletondirectory --value $path"]);
@@ -2897,5 +2936,17 @@ trait Provisioning {
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
 		return ($this->getArrayOfAppsResponded($this->response));
+	}
+
+	/**
+	 * Removes skeleton directory config from config.php and returns the config value
+	 *
+	 * @return string
+	 */
+	public function popSkeletonDirectoryConfig() {
+		$this->runOcc(["config:system:get skeletondirectory"]);
+		$path = \trim($this->getStdOutOfOccCommand());
+		$this->runOcc(["config:system:delete skeletondirectory"]);
+		return $path;
 	}
 }
