@@ -588,3 +588,31 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+  Scenario: share with user when username contains capital letters
+    Given these users have been created:
+      | username |
+      | user1    |
+    When user "user0" shares file "/welcome.txt" with user "USER1" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | share_with  |  user1       |
+      | file_target | /welcome.txt |
+      | path        | /welcome.txt |
+      | permissions | 19           |
+      | uid_owner   | user0        |
+    And user "user1" should see the following elements
+      | /welcome.txt |
+
+  Scenario: creating a new share with user of a group when username contains capital letters
+    Given these users have been created:
+      | username |
+      | user1    |
+    And group "grp1" has been created
+    And user "USER1" has been added to group "grp1"
+    And user "user0" has shared file "welcome.txt" with group "grp1"
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user1" should see the following elements
+      | /welcome.txt |
