@@ -272,6 +272,25 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has been created with default attributes and without skeleton files$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userHasBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles($user) {
+		$this->featureContext->runOcc(["config:system:get skeletondirectory"]);
+		$path = \trim($this->featureContext->getStdOutOfOccCommand());
+		$this->featureContext->runOcc(["config:system:delete skeletondirectory"]);
+		try {
+			$this->featureContext->userHasBeenCreatedWithDefaultAttributes($user);
+		} finally {
+			// restore skeletondirectory even if user creation failed
+			$this->featureContext->runOcc(["config:system:set skeletondirectory --value $path"]);
+		}
+	}
+
+	/**
 	 * @Given /^these users have been created\s?(with default attributes|)\s?(but not initialized|):$/
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
@@ -2069,7 +2088,7 @@ trait Provisioning {
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
 		);
 	}
-	
+
 	/**
 	 * @Given /^user "([^"]*)" has been made a subadmin of group "([^"]*)"$/
 	 *
@@ -2790,7 +2809,7 @@ trait Provisioning {
 		}
 		$this->usingServer($previousServer);
 	}
-	
+
 	/**
 	 * @BeforeScenario
 	 *
@@ -2800,7 +2819,7 @@ trait Provisioning {
 		$this->enabledApps = $this->getEnabledApps();
 		$this->disabledApps = $this->getDisabledApps();
 	}
-	
+
 	/**
 	 * @AfterScenario
 	 *
