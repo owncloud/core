@@ -7,7 +7,6 @@ Feature: Search
 
   Background:
     Given user "user1" has been created with default attributes
-    And user "user0" has been created with default attributes
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 
@@ -78,6 +77,7 @@ Feature: Search
     And file "lorem.txt" with path "/simple-folder" should be listed in the tags page on the webUI
 
   Scenario: Search for a shared file
+    Given user "user0" has been created with default attributes
     When user "user0" shares file "/lorem.txt" with user "user1" using the sharing API
     And the user reloads the current page of the webUI
     And the user searches for "lorem" using the webUI
@@ -85,6 +85,7 @@ Feature: Search
 
   Scenario: Search for a re-shared file
     Given user "user2" has been created with default attributes
+    And user "user0" has been created with default attributes
     When user "user2" shares file "/lorem.txt" with user "user0" using the sharing API
     And user "user0" shares file "/lorem (2).txt" with user "user1" using the sharing API
     And the user reloads the current page of the webUI
@@ -92,6 +93,7 @@ Feature: Search
     Then file "lorem (2).txt" should be listed on the webUI
 
   Scenario: Search for a shared folder
+    Given user "user0" has been created with default attributes
     When user "user0" shares folder "simple-folder" with user "user1" using the sharing API
     And the user reloads the current page of the webUI
     And the user searches for "simple" using the webUI

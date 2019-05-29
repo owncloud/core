@@ -8,7 +8,6 @@ Feature: Creation of tags for the files and folders
     Given these users have been created with default attributes:
       | username |
       | user1    |
-      | user2    |
     And the user has browsed to the login page
     And the user has logged in with username "user1" and password "%alt1%" using the webUI
 
@@ -40,6 +39,7 @@ Feature: Creation of tags for the files and folders
 
   @skipOnFIREFOX
   Scenario: Create and add tag on a shared file
+    Given user "user2" has been created with default attributes
     When the user renames file "lorem.txt" to "coolnewfile.txt" using the webUI
     And the user browses directly to display the details of file "coolnewfile.txt" in folder ""
     And the user adds a tag "tag1" to the file using the webUI

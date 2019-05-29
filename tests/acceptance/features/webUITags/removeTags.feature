@@ -8,7 +8,6 @@ Feature: Removal of already existing tags from files and folders
     Given these users have been created with default attributes:
       | username |
       | user1    |
-      | user2    |
     And the user has browsed to the login page
     And the user has logged in with username "user1" and password "%alt1%" using the webUI
 
