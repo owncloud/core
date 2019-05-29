@@ -28,6 +28,26 @@ Feature: get group
     And the HTTP status code should be "200"
     And the list of users returned by the API should be empty
 
+  Scenario: admin tries to get users in a non-existent group
+    Given group "new-group" has been created
+    When the administrator gets all the members of group "not-a-group" using the provisioning API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "404"
+
+  Scenario Outline: admin tries to get users in a group but using wrong case of the group name
+    Given group "<group_id1>" has been created
+    When the administrator gets all the members of group "<group_id2>" using the provisioning API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "404"
+    Examples:
+      | group_id1            | group_id2            |
+      | case-sensitive-group | Case-Sensitive-Group |
+      | case-sensitive-group | CASE-SENSITIVE-GROUP |
+      | Case-Sensitive-Group | case-sensitive-group |
+      | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
+      | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
+      | CASE-SENSITIVE-GROUP | case-sensitive-group |
+
   @smokeTest
   Scenario: subadmin gets users in a group they are responsible for
     Given user "user1" has been created with default attributes

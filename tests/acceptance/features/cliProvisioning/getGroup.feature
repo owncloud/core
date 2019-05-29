@@ -31,3 +31,23 @@ Feature: get group
     And the users returned by the occ command should be
       | uid            | display name |
       | brand-new-user | Anne Brown   |
+
+  Scenario: admin tries to get users in a non-existent group
+    Given group "new-group" has been created
+    When the administrator gets the users in group "not-a-group" in JSON format using the occ command
+    Then the command should have failed with exit code 1
+    And the command output should contain the text 'Group not-a-group does not exist'
+
+  Scenario Outline: admin tries to get users in a group but using wrong case of the group name
+    Given group "<group_id1>" has been created
+    When the administrator gets the users in group "<group_id2>" in JSON format using the occ command
+    Then the command should have failed with exit code 1
+    And the command output should contain the text 'Group <group_id2> does not exist'
+    Examples:
+      | group_id1            | group_id2            |
+      | case-sensitive-group | Case-Sensitive-Group |
+      | case-sensitive-group | CASE-SENSITIVE-GROUP |
+      | Case-Sensitive-Group | case-sensitive-group |
+      | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
+      | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
+      | CASE-SENSITIVE-GROUP | case-sensitive-group |

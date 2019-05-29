@@ -34,14 +34,17 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 trait Provisioning {
 
 	/**
-	 * list of users that were created during test runs
-	 * key is the username value is an array of user attributes
+	 * list of users that were created on the local server during test runs
+	 * key is the lowercase username, value is an array of user attributes
 	 *
 	 * @var array
 	 */
 	private $createdUsers = [];
 
 	/**
+	 * list of users that were created on the remote server during test runs
+	 * key is the lowercase username, value is an array of user attributes
+	 *
 	 * @var array
 	 */
 	private $createdRemoteUsers = [];
@@ -65,6 +68,19 @@ trait Provisioning {
 	 * @var array
 	 */
 	private $createdGroups = [];
+
+	/**
+	 * Usernames are not case-sensitive, and can generally be specified with any
+	 * mix of upper and lower case. For remembering usernames use the normalized
+	 * form so that "User0" and "user0" are remembered as the same user.
+	 *
+	 * @param string $username
+	 *
+	 * @return string
+	 */
+	public function normalizeUsername($username) {
+		return \strtolower($username);
+	}
 
 	/**
 	 * @return array
@@ -99,8 +115,9 @@ trait Provisioning {
 	 * @return string
 	 */
 	public function getUserDisplayName($username) {
-		if (isset($this->createdUsers[$username]['displayname'])) {
-			$displayName = (string) $this->createdUsers[$username]['displayname'];
+		$user = $this->normalizeUsername($username);
+		if (isset($this->createdUsers[$user]['displayname'])) {
+			$displayName = (string) $this->createdUsers[$user]['displayname'];
 			if ($displayName !== '') {
 				return $displayName;
 			}
@@ -130,6 +147,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function getUserPassword($username) {
+		$username = $this->normalizeUsername($username);
 		if ($username === $this->getAdminUsername()) {
 			$password = $this->getAdminPassword();
 		} elseif (\array_key_exists($username, $this->createdUsers)) {
@@ -154,6 +172,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function theUserShouldExist($username) {
+		$username = $this->normalizeUsername($username);
 		if (\array_key_exists($username, $this->createdUsers)) {
 			return $this->createdUsers[$username]['shouldExist'];
 		}
@@ -1132,6 +1151,7 @@ trait Provisioning {
 	public function addUserToCreatedUsersList(
 		$user, $password, $displayName = null, $email = null, $shouldExist = true
 	) {
+		$user = $this->normalizeUsername($user);
 		$userData = [
 			"password" => $password,
 			"displayname" => $displayName,
@@ -1158,6 +1178,7 @@ trait Provisioning {
 	public function rememberUserPassword(
 		$user, $password
 	) {
+		$user = $this->normalizeUsername($user);
 		if ($this->currentServer === 'LOCAL') {
 			if (\array_key_exists($user, $this->createdUsers)) {
 				$this->createdUsers[$user]['password'] = $password;
@@ -1180,6 +1201,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function rememberThatUserIsNotExpectedToExist($user) {
+		$user = $this->normalizeUsername($user);
 		if (\array_key_exists($user, $this->createdUsers)) {
 			$this->createdUsers[$user]['shouldExist'] = false;
 		}
