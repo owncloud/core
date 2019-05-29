@@ -8,7 +8,6 @@ Feature: deleting files and folders
     Given these users have been created with default attributes:
       | username |
       | user1    |
-      | user2    |
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 
@@ -118,6 +117,7 @@ Feature: deleting files and folders
     And file "zzzz-must-be-last-file-in-folder.txt" should not be listed on the webUI
 
   Scenario: delete files from shared with others page
+    Given user "user2" has been created with default attributes
     Given the user has shared file "lorem.txt" with user "User Two" using the webUI
     And the user has shared folder "simple-folder" with user "User Two" using the webUI
     And the user has browsed to the shared-with-others page
