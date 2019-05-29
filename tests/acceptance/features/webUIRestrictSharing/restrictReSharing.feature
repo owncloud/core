@@ -10,7 +10,6 @@ Feature: restrict resharing
       | username |
       | user1    |
       | user2    |
-      | user3    |
     And these groups have been created:
       | groupname |
       | grp1      |

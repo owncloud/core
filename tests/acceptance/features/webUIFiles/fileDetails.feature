@@ -8,7 +8,6 @@ Feature: User can open the details panel for any file or folder
     Given these users have been created with default attributes:
       | username |
       | user1    |
-      | user2    |
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 
@@ -56,7 +55,8 @@ Feature: User can open the details panel for any file or folder
 
   @comments-app-required
   Scenario: user shares a file and then the details dialog should work in a Shared with others page
-    Given the user has shared folder "simple-folder" with user "User Two" using the webUI
+    Given user "user2" has been created with default attributes
+    And the user has shared folder "simple-folder" with user "User Two" using the webUI
     When the user browses to the shared-with-others page
     Then folder "simple-folder" should be listed on the webUI
     When the user opens the file action menu of folder "simple-folder" in the webUI
@@ -70,7 +70,8 @@ Feature: User can open the details panel for any file or folder
 
   @comments-app-required
   Scenario: the recipient user should be able to view different areas of details panel in Shared with you page
-    Given the user has shared folder "simple-folder" with user "User Two" using the webUI
+    Given user "user2" has been created with default attributes
+    And the user has shared folder "simple-folder" with user "User Two" using the webUI
     And the user re-logs in as "user2" using the webUI
     When the user browses to the shared-with-you page
     Then folder "simple-folder (2)" should be listed on the webUI
