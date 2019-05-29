@@ -9,7 +9,6 @@ Feature: accept/decline shares coming from internal users
       | username |
       | user1    |
       | user2    |
-      | user3    |
     And these groups have been created:
       | groupname |
       | grp1      |
@@ -31,6 +30,7 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: receive shares with same name from different users
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
+    And user "user3" has been created with default attributes
     And user "user2" has shared folder "/simple-folder" with user "user3"
     And user "user1" has shared folder "/simple-folder" with user "user3"
     When user "user3" logs in using the webUI
@@ -39,6 +39,7 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: receive shares with same name from different users, accept one by one
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
+    And user "user3" has been created with default attributes
     And user "user2" has created folder "/simple-folder/from_user2"
     And user "user2" has shared folder "/simple-folder" with user "user3"
     And user "user1" has created folder "/simple-folder/from_user1"
@@ -54,6 +55,7 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: receive shares with same name from different users
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
+    And user "user3" has been created with default attributes
     And user "user2" has shared folder "/simple-folder" with user "user3"
     And user "user1" has shared folder "/simple-folder" with user "user3"
     When user "user3" logs in using the webUI
