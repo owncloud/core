@@ -28,8 +28,6 @@
  *
  */
 class OC_Hook {
-	public static $thrownExceptions = [];
-
 	private static $registered = [];
 
 	/**
@@ -104,7 +102,6 @@ class OC_Hook {
 			try {
 				\call_user_func([$i["class"], $i["name"]], $params);
 			} catch (Exception $e) {
-				self::$thrownExceptions[] = $e;
 				\OC::$server->getLogger()->logException($e);
 				if ($e instanceof \OC\HintException) {
 					throw $e;
