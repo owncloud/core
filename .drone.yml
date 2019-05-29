@@ -30,6 +30,7 @@ pipeline:
       - php occ a:l
       - php occ config:system:set trusted_domains 1 --value=server-${SERVER_PROTOCOL}
       - php occ config:system:set trusted_domains 2 --value=federated-${SERVER_PROTOCOL}
+      - php occ config:system:set overwriteprotocol --value https
       - php occ log:manage --level 2
       - php occ config:list
       - echo "export TEST_SERVER_FED_URL=${SERVER_PROTOCOL}://federated-${SERVER_PROTOCOL}" > /drone/saved-settings.sh
@@ -152,6 +153,7 @@ pipeline:
       - php occ a:l
       - php occ config:system:set trusted_domains 1 --value=server-${SERVER_PROTOCOL}
       - php occ config:system:set trusted_domains 2 --value=federated-${SERVER_PROTOCOL}
+      - php occ config:system:set overwriteprotocol --value https
       - php occ log:manage --level 2
       - php occ config:list
       - php occ security:certificates:import /drone/server.crt
