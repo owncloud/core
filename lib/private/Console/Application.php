@@ -55,10 +55,9 @@ class Application {
 	 * @param EventDispatcherInterface $dispatcher
 	 * @param IRequest $request
 	 */
-	public function __construct(IConfig $config, EventDispatcherInterface $dispatcher, IRequest $request) {
-		$defaults = new OC_Defaults;
+	public function __construct(IConfig $config, SymfonyApplication $application, EventDispatcherInterface $dispatcher, IRequest $request) {
 		$this->config = $config;
-		$this->application = new SymfonyApplication($defaults->getName(), \OC_Util::getVersionString());
+		$this->application = $application;
 		$this->dispatcher = $dispatcher;
 		$this->request = $request;
 	}
