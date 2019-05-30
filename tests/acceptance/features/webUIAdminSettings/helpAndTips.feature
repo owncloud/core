@@ -8,7 +8,7 @@ Feature: Help and tips page
     Given the administrator has browsed to the help and tips page
 
   Scenario Outline: Admin can view links in help and tips page
-    Then the link for "<linkName>" should be shown in the webUI
+    Then the link for "<linkName>" should be shown on the webUI
     And the link for "<linkName>" should be valid
     Examples:
       | linkName                        |

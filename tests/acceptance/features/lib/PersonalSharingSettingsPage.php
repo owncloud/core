@@ -114,7 +114,7 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
-	 * Check if the auto accept local shares checkbox is shown in the webui
+	 * Check if the auto accept local shares checkbox is shown on the webui
 	 *
 	 * @return boolean
 	 */
@@ -127,7 +127,7 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
-	 * Check if the auto accept local shares checkbox is shown in the webui
+	 * Check if the auto accept local shares checkbox is shown on the webui
 	 *
 	 * @return boolean
 	 */
@@ -140,7 +140,7 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
-	 * Check if the allow finding you via autocomplete checkbox is shown in the webui
+	 * Check if the allow finding you via autocomplete checkbox is shown on the webui
 	 *
 	 * @return boolean
 	 */
