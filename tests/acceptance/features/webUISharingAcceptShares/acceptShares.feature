@@ -274,7 +274,7 @@ Feature: accept/decline shares coming from internal users
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
     And user "user1" has logged in using the webUI
     And the user has browsed to the personal sharing settings page
-    Then User-based auto accepting checkbox should not be displayed on the personal sharing settings page in the webUI
+    Then User-based auto accepting checkbox should not be displayed on the personal sharing settings page on the webUI
 
   Scenario: Admin disables auto-accept setting again after user enabled personal auto-accept setting
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled

@@ -1118,8 +1118,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserOpensTheSharingTabFromTheActionMenuOfFileUsingTheWebui($entryName) {
-		$this->theUserOpensTheFileActionMenuOfFileFolderInTheWebui($entryName);
-		$this->theUserClicksTheFileActionInTheWebui("details");
+		$this->theUserOpensTheFileActionMenuOfFileFolderOnTheWebui($entryName);
+		$this->theUserClicksTheFileActionOnTheWebui("details");
 		$this->theUserSwitchesToTabInDetailsPanelUsingTheWebui("sharing");
 		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
 	}
@@ -1411,7 +1411,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
 	 * @param string $folder
-	 * @param string $path if set, name and path (shown in the webUI) of the file need match
+	 * @param string $path if set, name and path (shown on the webUI) of the file to match
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -1699,7 +1699,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the option to (delete|rename|download)\s?(?:file|folder) "([^"]*)" should (not|)\s?be available in the webUI$/
+	 * @Then /^the option to (delete|rename|download)\s?(?:file|folder) "([^"]*)" should (not|)\s?be available on the webUI$/
 	 *
 	 * @param string $action
 	 * @param string $name
@@ -1724,7 +1724,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the option to upload file should (not|)\s?be available in the webUI$/
+	 * @Then /^the option to upload file should (not|)\s?be available on the webUI$/
 	 *
 	 * @param string $shouldOrNot
 	 *
@@ -2031,27 +2031,27 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user opens the file action menu of file/folder :name in the webUI
+	 * @When the user opens the file action menu of file/folder :name on the webUI
 	 *
 	 * @param string $name Name of the file/Folder
 	 *
 	 * @return void
 	 */
-	public function theUserOpensTheFileActionMenuOfFileFolderInTheWebui($name) {
+	public function theUserOpensTheFileActionMenuOfFileFolderOnTheWebui($name) {
 		$session = $this->getSession();
 		$this->selectedFileRow = $this->getCurrentPageObject()->findFileRowByName($name, $session);
 		$this->openedFileActionMenu = $this->selectedFileRow->openFileActionsMenu($session);
 	}
 
 	/**
-	 * @Then the user should see :action_label file action translated to :translated_label in the webUI
+	 * @Then the user should see :action_label file action translated to :translated_label on the webUI
 	 *
 	 * @param string $action_label
 	 * @param string $translated_label
 	 *
 	 * @return void
 	 */
-	public function theUserShouldSeeFileActionTranslatedToInTheWebui($action_label, $translated_label) {
+	public function theUserShouldSeeFileActionTranslatedToOnTheWebui($action_label, $translated_label) {
 		PHPUnit\Framework\Assert::assertSame(
 			$translated_label,
 			$this->openedFileActionMenu->getActionLabelLocalized($action_label)
@@ -2059,14 +2059,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user clicks the :action_label file action in the webUI
+	 * @When the user clicks the :action_label file action on the webUI
 	 *
 	 * @param string $action_label
 	 *
 	 * @throws \Exception
 	 * @return void
 	 */
-	public function theUserClicksTheFileActionInTheWebui($action_label) {
+	public function theUserClicksTheFileActionOnTheWebui($action_label) {
 		switch ($action_label) {
 			case "details":
 				$this->openedFileActionMenu->openDetails();
@@ -2087,11 +2087,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the details dialog should be visible in the webUI
+	 * @Then the details dialog should be visible on the webUI
 	 *
 	 * @return void
 	 */
-	public function theDetailsDialogShouldBeVisibleInTheWebui() {
+	public function theDetailsDialogShouldBeVisibleOnTheWebui() {
 		PHPUnit\Framework\Assert::assertTrue($this->filesPage->getDetailsDialog()->isDialogVisible());
 	}
 
@@ -2152,12 +2152,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		if ($should) {
 			PHPUnit\Framework\Assert::assertTrue(
 				$detailsDialog->isCommentOnUI($text),
-				"Failed to find comment with text $text in the webUI"
+				"Failed to find comment with text $text on the webUI"
 			);
 		} else {
 			PHPUnit\Framework\Assert::assertFalse(
 				$detailsDialog->isCommentOnUI($text),
-				"The comment with text $text exists in the webUI"
+				"The comment with text $text exists on the webUI"
 			);
 		}
 	}
