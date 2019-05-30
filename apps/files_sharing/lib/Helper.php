@@ -246,28 +246,6 @@ class Helper {
 	}
 
 	/**
-	 * check if file name already exists and generate unique target
-	 *
-	 * @param string $path
-	 * @param array $excludeList
-	 * @param View $view
-	 * @return string $path
-	 */
-	public static function generateUniqueTarget($path, $excludeList, $view) {
-		$pathinfo = \pathinfo($path);
-		$ext = (isset($pathinfo['extension'])) ? '.'.$pathinfo['extension'] : '';
-		$name = $pathinfo['filename'];
-		$dir = $pathinfo['dirname'];
-		$i = 2;
-		while ($view->file_exists($path) || \in_array($path, $excludeList)) {
-			$path = Filesystem::normalizePath($dir . '/' . $name . ' ('.$i.')' . $ext);
-			$i++;
-		}
-
-		return $path;
-	}
-
-	/**
 	 * get default share folder
 	 *
 	 * @param \OC\Files\View
