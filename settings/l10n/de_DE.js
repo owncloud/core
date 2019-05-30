@@ -140,7 +140,7 @@ OC.L10N.register(
     "Allow users to send mail notification for shared files" : "Benutzern erlauben, E-Mail-Benachrichtigungen für freigegebene Dateien zu senden",
     "Language used for public mail notifications for shared files" : "Sprache, die für öffentliche Mail-Benachrichtigungen für geteilte Daten benutzt wird ",
     "Allow users to share file via social media" : "Benutzern erlauben, Inhalte über die sozialen Medien zu teilen",
-    "Automatically accept new incoming local user shares" : "Erhaltene lokale Benutzerfreigaben automatisch akzeptieren",
+    "Automatically accept new incoming local user shares" : "Lokale Freigaben automatisch annehmen",
     "Allow resharing" : "Weiterverteilen erlauben",
     "Allow sharing with groups" : "Das Teilen mit Gruppen erlauben",
     "Restrict users to only share with users in their groups" : "Benutzer auf das Teilen innerhalb ihrer Gruppen beschränken",

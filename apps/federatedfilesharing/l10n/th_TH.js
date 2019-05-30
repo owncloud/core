@@ -26,6 +26,7 @@ OC.L10N.register(
     "Share it:" : "แชร์ไปยัง:",
     "Add to your website" : "เพิ่มไปยังเว็บไซต์",
     "Share with me via ownCloud" : "แชร์ผ่าน ownCloud",
-    "HTML Code:" : "โค้ด HTML:"
+    "HTML Code:" : "โค้ด HTML:",
+    "Nothing to configure." : "ไม่มีการกำหนดค่า"
 },
 "nplurals=1; plural=0;");
