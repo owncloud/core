@@ -429,17 +429,17 @@ Feature: Share by public link
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | upload-write-without-modify |
     When the public accesses the last created public link using the webUI
-    Then the option to rename file "lorem.txt" should not be available in the webUI
-    And the option to delete file "lorem.txt" should not be available in the webUI
-    And the option to upload file should be available in the webUI
+    Then the option to rename file "lorem.txt" should not be available on the webUI
+    And the option to delete file "lorem.txt" should not be available on the webUI
+    And the option to upload file should be available on the webUI
 
   Scenario: Permissions work correctly on public link share with read-write
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     When the public accesses the last created public link using the webUI
-    Then the option to rename file "lorem.txt" should be available in the webUI
-    And the option to delete file "lorem.txt" should be available in the webUI
-    And the option to upload file should be available in the webUI
+    Then the option to rename file "lorem.txt" should be available on the webUI
+    And the option to delete file "lorem.txt" should be available on the webUI
+    And the option to upload file should be available on the webUI
 
   Scenario: User tries to upload existing file in public link share with permissions upload-write-without-modify
     Given the user has created a new public link for folder "simple-folder" using the webUI with
@@ -468,13 +468,13 @@ Feature: Share by public link
     And the user opens the public link share tab
     And the user changes the permission of the public link named "Public link" to "upload-write-without-modify"
     And the public accesses the last created public link using the webUI
-    Then the option to delete file "lorem-big.txt" should not be available in the webUI
+    Then the option to delete file "lorem-big.txt" should not be available on the webUI
 
   Scenario: Editing the permission on a existing share from upload-write-without-modify to read-write works correctly
     Given the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | upload-write-without-modify |
     And the public accesses the last created public link using the webUI
-    Then the option to delete file "lorem.txt" should not be available in the webUI
+    Then the option to delete file "lorem.txt" should not be available on the webUI
     When the user browses to the files page
     And the user opens the share dialog for folder "simple-folder"
     And the user opens the public link share tab

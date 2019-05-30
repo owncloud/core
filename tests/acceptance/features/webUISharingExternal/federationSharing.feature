@@ -100,7 +100,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
     And parameter "autoAddServers" of app "federation" has been set to "0"
     And the user has browsed to the personal sharing settings page
-    Then User-based auto accepting from trusted servers checkbox should not be displayed on the personal sharing settings page in the webUI
+    Then User-based auto accepting from trusted servers checkbox should not be displayed on the personal sharing settings page on the webUI
 
   @skip @issue-34742
   Scenario: User-based & global auto accepting is enabled but remote server is not trusted

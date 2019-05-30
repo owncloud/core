@@ -188,34 +188,34 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
-	 * @Then the owncloud version should be displayed on the personal general settings page in the webUI
+	 * @Then the owncloud version should be displayed on the personal general settings page on the webUI
 	 *
 	 * @return void
 	 */
-	public function theOwncloudVersionShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui() {
+	public function theOwncloudVersionShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui() {
 		PHPUnit\Framework\Assert::assertTrue($this->personalGeneralSettingsPage->isVersionDisplayed());
 	}
 
 	/**
-	 * @Then the federated cloud id for user :user should be displayed on the personal general settings page in the webUI
+	 * @Then the federated cloud id for user :user should be displayed on the personal general settings page on the webUI
 	 *
 	 * @param string $user
 	 *
 	 * @return void
 	 */
-	public function theFederatedCloudIdForUserShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui($user) {
+	public function theFederatedCloudIdForUserShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui($user) {
 		$userFederatedCloudId = $user . "@" . $this->featureContext->getLocalBaseUrlWithoutScheme();
 		PHPUnit\Framework\Assert::assertEquals($this->personalGeneralSettingsPage->getFederatedCloudID(), $userFederatedCloudId);
 	}
 
 	/**
-	 * @Then group :groupName should be displayed on the personal general settings page in the webUI
+	 * @Then group :groupName should be displayed on the personal general settings page on the webUI
 	 *
 	 * @param string $groupName
 	 *
 	 * @return void
 	 */
-	public function groupShouldBeDisplayedOnThePersonalGeneralSettingsPageInTheWebui($groupName) {
+	public function groupShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui($groupName) {
 		PHPUnit\Framework\Assert::assertTrue($this->personalGeneralSettingsPage->isGroupNameDisplayed($groupName));
 	}
 
@@ -280,17 +280,17 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function theUserHasSetProfilePictureToFromTheirCloudFiles($filename) {
 		$this->theUserSetsProfilePictureToFromTheirCloudFiles($filename);
-		$this->thePreviewOfTheProfilePictureShouldBeShownInTheWebui("");
+		$this->thePreviewOfTheProfilePictureShouldBeShownOnTheWebui("");
 	}
 
 	/**
-	 * @Then /^the preview of the profile picture should (not|)\s?be shown in the webUI$/
+	 * @Then /^the preview of the profile picture should (not|)\s?be shown on the webUI$/
 	 *
 	 * @param string $shouldOrNot
 	 *
 	 * @return void
 	 */
-	public function thePreviewOfTheProfilePictureShouldBeShownInTheWebui($shouldOrNot) {
+	public function thePreviewOfTheProfilePictureShouldBeShownOnTheWebui($shouldOrNot) {
 		if ($shouldOrNot !== "not") {
 			PHPUnit\Framework\Assert::assertTrue(
 				$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
