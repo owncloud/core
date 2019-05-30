@@ -481,3 +481,31 @@ Feature: Share by public link
     And the user changes the permission of the public link named "Public link" to "read-write"
     And the public accesses the last created public link using the webUI
     Then it should be possible to delete file "lorem-big.txt" using the webUI
+
+  Scenario: user tries to deletes the expiration date of already existing public link using webUI when expiration date is enforced
+    Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
+    And user "user1" has created a share with settings
+      | path       | lorem.txt   |
+      | name       | Public link |
+      | expireDate | + 5 days    |
+      | shareType  | 3           |
+    When the user reloads the current page of the webUI
+    And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
+    Then the user should see an error message on the public link popup saying "Expiration date is required"
+    And the user gets the info of the last share using the sharing API
+    And the fields of the last response should include
+      | expiration | + 5 days   |
+
+  Scenario: user deletes the expiration date of already existing public link using webUI when expiration date is set but not enforced
+    Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
+    And user "user1" has created a share with settings
+      | path       | lorem.txt   |
+      | name       | Public link |
+      | expireDate |  + 5 days   |
+      | shareType  | 3           |
+    When the user reloads the current page of the webUI
+    And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
+    And the user gets the info of the last share using the sharing API
+    And the fields of the last response should include
+      | expiration   | |
