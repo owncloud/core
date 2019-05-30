@@ -56,6 +56,14 @@ TEST_DATABASE=sqlite
 TEST_EXTERNAL_ENV=smb-silvershell
 TEST_PHP_SUITE=
 
+# Acceptance test flags (for shells supporting autocompletion of makefiles, eg: zsh)
+TEST_SERVER_URL?=
+TEST_SERVER_FED_URL?=
+TEST_EXTERNAL_USER_BACKENDS?=
+BEHAT_FEATURE?=
+NORERUN?=
+BEHAT_RERUN_TIMES?=
+
 RELEASE_CHANNEL=git
 
 # internal aliases
