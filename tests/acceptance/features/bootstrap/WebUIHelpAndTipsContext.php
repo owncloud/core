@@ -108,13 +108,13 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the link for :linkTitle should be shown in the webUI
+	 * @Then the link for :linkTitle should be shown on the webUI
 	 *
 	 * @param string $linkTitle
 	 *
 	 * @return void
 	 */
-	public function theLinkForShouldBeShownInTheWebui($linkTitle) {
+	public function theLinkForShouldBeShownOnTheWebui($linkTitle) {
 		$link = $this->helpAndTipsPage->getLinkByTitle($linkTitle);
 		$this->helpAndTipsPage->assertElementNotNull(
 			$link,

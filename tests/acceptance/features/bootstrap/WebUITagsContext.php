@@ -81,7 +81,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 		$this->filesPage->getDetailsDialog()->addTag($tagName);
 
 		// For tags to be created, OC checks (|for the permission) if the tag could be created
-		// and if it can, then only it creates a tag. So, in the webUI, it does two
+		// and if it can, then only it creates a tag. So, on the webUI, it does two
 		// requests before the tags are created.
 		// If we use a single wait, it returns after it has checked for the permission.
 		// Locally that passes but sometimes fail on the ci. So, we need two waits for each requests.

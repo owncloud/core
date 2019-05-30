@@ -223,7 +223,7 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
-	 * get the list of comments listed in the webUI
+	 * get the list of comments listed on the webUI
 	 *
 	 * @return NodeElement[]
 	 */
@@ -233,7 +233,7 @@ class DetailsDialog extends OwncloudPage {
 		);
 	}
 	/**
-	 * check if a comment with given text is listed in the webUI
+	 * check if a comment with given text is listed on the webUI
 	 *
 	 * @param string $text
 	 *
@@ -254,7 +254,7 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
-	 * add a comment in a file whose details dialog is shown in the webUI
+	 * add a comment in a file whose details dialog is shown on the webUI
 	 *
 	 * @param Session $session
 	 * @param string $content
@@ -290,7 +290,7 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
-	 * delete the comment in a file whose details dialog is shown in the webUI with given content
+	 * delete the comment in a file whose details dialog is shown on the webUI with given content
 	 *
 	 * @param string $content
 	 *

@@ -260,7 +260,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	}
 
 	/**
-	 * Check if the preview of the profile pic is shown in the webui
+	 * Check if the preview of the profile pic is shown on the webui
 	 *
 	 * @return boolean
 	 */
