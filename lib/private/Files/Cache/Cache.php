@@ -226,7 +226,7 @@ class Cache implements ICache {
 	 * @param string $folder the folder whose content we want to traverse
 	 * @param string $sortColumn the name of the column that will be used to sort the results
 	 * @param bool $sortDescending sort the results in a descending order
-	 * @return Generator a generator object returning CacheEntry
+	 * @return \Generator a generator object returning CacheEntry
 	 */
 	public function getFolderContentsGenerator($folder, $sortColumn = 'name', $sortDescending = false) {
 		$fileId = $this->getId($folder);
@@ -250,7 +250,7 @@ class Cache implements ICache {
 	 * @param int $fileId the file id of the folder whose content we want to traverse
 	 * @param string $sortColumn the name of the column that will be used to sort the results
 	 * @param bool $sortDescending sort the results in a descending order
-	 * @return Generator a generator object returning CacheEntry
+	 * @return \Generator a generator object returning CacheEntry
 	 */
 	public function getFolderContentsByIdGenerator($fileId, $sortColumn = 'name', $sortDescending = false) {
 		$sortableColumns = [

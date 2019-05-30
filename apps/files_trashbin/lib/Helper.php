@@ -130,7 +130,7 @@ class Helper {
 	 * @param string $user
 	 * @param string $sortAttribute attribute to sort on (default to "name")
 	 * @param bool $sortDescending true for descending sort, false otherwise
-	 * @return Generator a generator to traverse the trash files, getting \OCP\Files\FileInfo objects
+	 * @return \Generator a generator to traverse the trash files, getting \OCP\Files\FileInfo objects
 	 */
 	public static function getTrashFilesGenerator($dir, $user, $sortAttribute = 'name', $sortDescending = false) {
 		$timestamp = null;
