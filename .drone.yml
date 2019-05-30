@@ -1172,7 +1172,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BROWSER: chrome
-      BEHAT_SUITE: webUIEncryptionUserKeysType
+      BEHAT_SUITE: webUIUserKeysType
       DB_TYPE: mariadb
       USE_SERVER: true
       SERVER_PROTOCOL: https
