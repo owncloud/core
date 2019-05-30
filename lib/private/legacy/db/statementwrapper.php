@@ -61,7 +61,7 @@ class OC_DB_StatementWrapper {
 	 * make execute return the result instead of a bool
 	 *
 	 * @param array $input
-	 * @return \OC_DB_StatementWrapper|int
+	 * @return \OC_DB_StatementWrapper|int|boolean
 	 */
 	public function execute(array $input= []) {
 		$this->lastArguments = $input;
