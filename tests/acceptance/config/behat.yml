@@ -293,19 +293,6 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
 
-    webUIEncryptionUserKeysType:
-      paths:
-        - '%paths.base%/../features/webUIEncryptionUserKeysType'
-      contexts:
-        - WebUIAdminEncryptionSettingsContext:
-        - WebUIPersonalEncryptionSettingsContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - FeatureContext: *common_feature_context_params
-        - EncryptionContext:
-        - OccContext:
-        - WebDavPropertiesContext:
-
     webUIFavorites:
       paths:
         - '%paths.base%/../features/webUIFavorites'
@@ -503,6 +490,20 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - PublicWebDavContext:
+
+    # This suite is part of the encryption app in later core versions
+    webUIUserKeysType:
+      paths:
+        - '%paths.base%/../features/webUIUserKeysType'
+      contexts:
+        - WebUIAdminEncryptionSettingsContext:
+        - WebUIPersonalEncryptionSettingsContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - FeatureContext: *common_feature_context_params
+        - EncryptionContext:
+        - OccContext:
+        - WebDavPropertiesContext:
 
     # This suite is part of the user_management app in later core versions
     webUIManageQuota:
