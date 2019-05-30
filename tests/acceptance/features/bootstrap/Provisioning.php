@@ -279,14 +279,14 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userHasBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles($user) {
-		$this->featureContext->runOcc(["config:system:get skeletondirectory"]);
-		$path = \trim($this->featureContext->getStdOutOfOccCommand());
-		$this->featureContext->runOcc(["config:system:delete skeletondirectory"]);
+		$this->runOcc(["config:system:get skeletondirectory"]);
+		$path = \trim($this->getStdOutOfOccCommand());
+		$this->runOcc(["config:system:delete skeletondirectory"]);
 		try {
-			$this->featureContext->userHasBeenCreatedWithDefaultAttributes($user);
+			$this->userHasBeenCreatedWithDefaultAttributes($user);
 		} finally {
 			// restore skeletondirectory even if user creation failed
-			$this->featureContext->runOcc(["config:system:set skeletondirectory --value $path"]);
+			$this->runOcc(["config:system:set skeletondirectory --value $path"]);
 		}
 	}
 
