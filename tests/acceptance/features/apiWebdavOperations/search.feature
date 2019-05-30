@@ -102,9 +102,14 @@ Feature: Search
     Given using <dav_version> DAV path
     When user "user0" searches for "upload" and limits the results to "1" items using the WebDAV API
     Then the HTTP status code should be "207"
-    And the search result should contain "1" entries
-    And the search result should contain these entries:
-      | /upload folder |
+    And the search result should contain any "1" of these entries:
+      | /just-a-folder/upload.txt     |
+      | /just-a-folder/uploadÜठिF.txt |
+      | /upload folder                |
+      | /upload.txt                   |
+      | /फनी näme/upload.txt          |
+      | /upload😀 😁                  |
+      | /upload😀 😁/upload😀 😁.txt  |
     Examples:
       | dav_version |
       | old         |
