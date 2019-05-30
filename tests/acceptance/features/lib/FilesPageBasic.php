@@ -652,7 +652,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	}
 
 	/**
-	 * Return is New File/folder button is available in the webUI
+	 * Return is New File/folder button is available on the webUI
 	 *
 	 * @return boolean
 	 */
