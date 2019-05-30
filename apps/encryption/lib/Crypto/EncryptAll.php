@@ -120,6 +120,28 @@ class EncryptAll {
 	}
 
 	/**
+	 * Call this method only when no master key is created.
+	 *
+	 * @return bool true when masterkey and sharekey is created else false
+	 */
+	public function createMasterKey() {
+		$this->keyManager->setPublicShareKeyIDAndMasterKeyId();
+
+		/**
+		 * Call validateShareKey method, to check if public share exists,
+		 * else create one.
+		 */
+		$this->keyManager->validateShareKey();
+
+		/**
+		 * Same here, check if public masterkey exists else
+		 * create one.
+		 */
+		$this->keyManager->validateMasterKey();
+		return (!empty($this->keyManager->getPublicShareKey()) && !empty($this->keyManager->getPublicMasterKey()));
+	}
+
+	/**
 	 * start to encrypt all files
 	 *
 	 * @param InputInterface $input

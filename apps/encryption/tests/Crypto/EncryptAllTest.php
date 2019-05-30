@@ -676,4 +676,34 @@ class EncryptAllTest extends TestCase {
 		$result = $this->invokePrivate($this->encryptAll, 'encryptFile', ['/user1/files/bar.txt']);
 		$this->assertFalse($result);
 	}
+
+	/**
+	 * @dataProvider providesCreateMasterKeyData
+	 * @param bool $isShareKeySet
+	 * @param bool $isMasterkeySet
+	 * @param bool $expectedResult
+	 */
+	public function testCreateMasterKey($isShareKeySet, $isMasterkeySet, $expectedResult) {
+		$this->keyManager->expects($this->once())
+			->method('setPublicShareKeyIDAndMasterKeyId');
+		$this->keyManager->expects($this->once())
+			->method('validateShareKey');
+		$this->keyManager->expects($this->once())
+			->method('validateMasterKey');
+		$this->keyManager->method('getPublicShareKey')
+			->willReturn($isShareKeySet);
+		$this->keyManager->method('getPublicMasterKey')
+			->willReturn($isMasterkeySet);
+		$returnVal = $this->encryptAll->createMasterKey();
+		$this->assertEquals($expectedResult, $returnVal);
+	}
+
+	public function providesCreateMasterKeyData() {
+		return [
+			[true, false, false],
+			[true, true, true],
+			[false, true, false],
+			[false, false, false],
+		];
+	}
 }

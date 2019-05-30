@@ -208,4 +208,19 @@ class UtilTest extends TestCase {
 
 		$this->assertEquals($return, $this->instance->getStorage($path));
 	}
+
+	public function testRemoveEncAppSettings() {
+		$this->configMock->expects($this->once())
+			->method('setAppValue')
+			->with('core', 'encryption_enabled', 'no');
+		$this->configMock->method('deleteAppValue')
+			->will($this->returnValueMap([
+				['encryption', 'useMasterKey', ''],
+				['encryption', 'masterKeyId', ''],
+				['encryption', 'recoveryKeyId', ''],
+				['encryption', 'publicShareKeyId', ''],
+				['files_encryption', 'installed_version', ''],
+			]));
+		$this->instance->removeEncryptionAppSettings();
+	}
 }

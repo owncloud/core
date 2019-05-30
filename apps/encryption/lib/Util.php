@@ -194,4 +194,16 @@ class Util {
 		$storage = $this->files->getMount($path)->getStorage();
 		return $storage;
 	}
+
+	/**
+	 * Deletes the encryption settings for the masterkey
+	 */
+	public function removeEncryptionAppSettings() {
+		$this->config->setAppValue('core', 'encryption_enabled', 'no');
+		$this->config->deleteAppValue('encryption', 'useMasterKey');
+		$this->config->deleteAppValue('encryption', 'masterKeyId');
+		$this->config->deleteAppValue('encryption', 'recoveryKeyId');
+		$this->config->deleteAppValue('encryption', 'publicShareKeyId');
+		$this->config->deleteAppValue('files_encryption', 'installed_version');
+	}
 }

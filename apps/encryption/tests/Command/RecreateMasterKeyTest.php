@@ -21,47 +21,40 @@
 
 namespace OCA\Encryption\Tests\Command;
 
+use OC\Encryption\DecryptAll;
 use OC\Files\View;
 use OCA\Encryption\Command\RecreateMasterKey;
-use OCA\Encryption\Users\Setup;
-use OCP\IL10N;
-use OCP\Mail\IMailer;
-use OCP\Security\ISecureRandom;
+use OCA\Encryption\Crypto\EncryptAll;
+use OCA\Encryption\Factory\EncDecAllFactory;
+use OCA\Encryption\Util;
+use OCP\App\IAppManager;
+use OCP\IAppConfig;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
+/**
+ * Class RecreateMasterKeyTest
+ *
+ * @package OCA\Encryption\Tests\Command
+ */
+
 class RecreateMasterKeyTest extends TestCase {
-
-	/** @var Manager  | \PHPUnit\Framework\MockObject\MockObject */
-	protected $encryptionManager;
-
-	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject  */
-	protected $userManager;
 
 	/** @var View | \PHPUnit\Framework\MockObject\MockObject  */
 	protected $rootView;
 
-	/** @var KeyManager | \PHPUnit\Framework\MockObject\MockObject */
-	protected $keyManager;
-
 	/** @var Util | \PHPUnit\Framework\MockObject\MockObject  */
 	protected $util;
 
+	/** @var \OC\Encryption\Util | \PHPUnit\Framework\MockObject\MockObject */
 	protected $encUitl;
 
 	/** @var  IAppManager | \PHPUnit\Framework\MockObject\MockObject */
-	protected $IAppManager;
+	protected $appManager;
 
 	/** @var  IAppConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $appConfig;
-
-	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	protected $config;
-
-	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
-	protected $session;
-
-	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OCP\UserInterface */
-	protected $userInterface;
 
 	/** @var  \Symfony\Component\Console\Output\OutputInterface | \PHPUnit\Framework\MockObject\MockObject */
 	protected $output;
@@ -69,59 +62,28 @@ class RecreateMasterKeyTest extends TestCase {
 	/** @var  \Symfony\Component\Console\Input\InputInterface | \PHPUnit\Framework\MockObject\MockObject */
 	protected $input;
 
-	protected $questionHelper;
-
-	protected $userSetup;
-
-	protected $mailer;
-
-	protected $secureRandom;
-
-	protected $l;
-
-	protected $logger;
-
-	protected $progressbar;
-
-	protected $setupfs;
+	/** @var EncDecAllFactory | \PHPUnit\Framework\MockObject\MockObject */
+	private $encdecAllFactory;
 
 	/** @var  RecreateMasterKey */
 	protected $recreateMasterKey;
 
+	private $commandTester;
+
 	public function setUp() {
 		parent::setUp();
 
-		$this->encryptionManager = $this->getMockBuilder('OC\Encryption\Manager')
-			->disableOriginalConstructor()->getMock();
-		$this->userManager = $this->getMockBuilder('OCP\IUserManager')
-		->disableOriginalConstructor()->getMock();
 		$this->rootView = $this->getMockBuilder('OC\Files\View')
-		->disableOriginalConstructor()->getMock();
-		$this->keyManager = $this->getMockBuilder('OCA\Encryption\KeyManager')
 		->disableOriginalConstructor()->getMock();
 		$this->util = $this->getMockBuilder('OCA\Encryption\Util')
 		->disableOriginalConstructor()->getMock();
 		$this->encUitl = $this->getMockBuilder('OC\Encryption\Util')
 		->disableOriginalConstructor()->getMock();
-		$this->IAppManager = $this->getMockBuilder('OCP\App\IAppManager')
+		$this->appManager = $this->getMockBuilder('OCP\App\IAppManager')
 		->disableOriginalConstructor()->getMock();
 		$this->appConfig = $this->getMockBuilder('OCP\IAppConfig')
 		->disableOriginalConstructor()->getMock();
-		$this->config = $this->getMockBuilder('OCP\IConfig')
-		->disableOriginalConstructor()->getMock();
-		$this->session = $this->getMockBuilder('OCP\ISession')
-		->disableOriginalConstructor()->getMock();
 		$this->questionHelper = $this->getMockBuilder('Symfony\Component\Console\Helper\QuestionHelper')
-			->disableOriginalConstructor()->getMock();
-		$this->userSetup = $this->getMockBuilder(Setup::class)
-			->disableOriginalConstructor()->getMock();
-		$this->mailer = $this->getMockBuilder(IMailer::class)
-			->disableOriginalConstructor()->getMock();
-		$this->secureRandom = $this->getMockBuilder(ISecureRandom::class)
-			->disableOriginalConstructor()->getMock();
-		$this->l = $this->getMockBuilder(IL10N::class)
-			->disableOriginalConstructor()->getMock();
-		$this->logger = $this->getMockBuilder('OCP\ILogger')
 			->disableOriginalConstructor()->getMock();
 		$this->input = $this->getMockBuilder('Symfony\Component\Console\Input\InputInterface')
 		->disableOriginalConstructor()->getMock();
@@ -134,108 +96,91 @@ class RecreateMasterKeyTest extends TestCase {
 		$this->output->expects($this->any())->method('getFormatter')
 			->willReturn($this->createMock('\Symfony\Component\Console\Formatter\OutputFormatterInterface'));
 
-		$this->recreateMasterKey = new RecreateMasterKey($this->userManager,
-			$this->rootView, $this->keyManager, $this->util, $this->encUitl,
-			$this->IAppManager, $this->appConfig, $this->config, $this->session,
-			$this->encryptionManager, $this->questionHelper,
-			$this->userSetup, $this->mailer, $this->secureRandom, $this->l, $this->logger);
+		$this->encdecAllFactory = $this->createMock(EncDecAllFactory::class);
 
-		$this->invokePrivate($this->recreateMasterKey, 'input', [$this->input]);
-		$this->invokePrivate($this->recreateMasterKey, 'output', [$this->output]);
+		$recreateMasterKeyCommand = new RecreateMasterKey($this->rootView, $this->util,
+			$this->encUitl, $this->appManager, $this->appConfig, $this->encdecAllFactory);
+
+		$this->commandTester = new CommandTester($recreateMasterKeyCommand);
 	}
 
-	/**
-	 * @dataProvider dataTestExecute
-	 */
-	public function testNewMasterKey($mastkerKeyEnabled) {
-		if ($mastkerKeyEnabled === true) {
-			$this->recreateMasterKey = $this->getMockBuilder('OCA\Encryption\Command\RecreateMasterKey')
-				->setConstructorArgs(
-					[
-						$this->userManager,
-						$this->rootView, $this->keyManager, $this->util, $this->encUitl,
-						$this->IAppManager, $this->appConfig, $this->config, $this->session,
-						$this->encryptionManager, $this->questionHelper,
-						$this->userSetup, $this->mailer, $this->secureRandom, $this->l,
-						$this->logger
-					]
-				)->setMethods(['setupUserFS', 'encryptAllUsers', 'decryptAllUsers'])->getMock();
+	public function testRecreateMasterKey() {
+		$this->util->method('isMasterKeyEnabled')
+			->willReturn(true);
 
-			$this->questionHelper->expects($this->once())->method('ask')
-				->willReturn(true);
+		$decryptAll = $this->createMock(DecryptAll::class);
+		$decryptAll->expects($this->once())
+			->method('decryptAll');
 
-			$this->util->expects($this->any())->method('isMasterKeyEnabled')
-				->willReturn(true);
+		$encryptAll = $this->createMock(EncryptAll::class);
+		$encryptAll->method('createMasterKey')
+			->willReturn(true);
+		$encryptAll->expects($this->once())
+			->method('encryptAll');
 
-			$this->userManager->expects($this->any())
-				->method('getBackends')
-				->willReturn([$this->userInterface]);
+		$this->encdecAllFactory->method('getDecryptAllObj')
+			->willReturn($decryptAll);
+		$this->encdecAllFactory->method('getEncryptAllObj')
+			->willReturn($encryptAll);
 
-			$this->userInterface->expects($this->any())
-				->method('getUsers')
-				->willReturn(['user1']);
+		$this->commandTester->execute([
+			'--yes' => 'y'
+		]);
 
-			$this->rootView->expects($this->any())->method('is_dir')
-				->willReturnCallback(
-					function ($path) {
-						if ($path === '/user1/files/foo') {
-							return true;
-						}
-						return false;
-					}
-				);
-
-			$this->encryptionManager->expects($this->any())
-				->method('isReadyForUser')
-				->with('user1')
-				->willReturn(true);
-
-			$this->output->method('writeln')
-				->will($this->onConsecutiveCalls(
-					"Decryption started\n",
-					"\nDecryption completed\n",
-					"Encryption started\n",
-					"Waiting for creating new masterkey\n",
-					"New masterkey created successfully\n",
-					"\nEncryption completed successfully\n",
-					"\n\<info\>Note: All users are required to relogin.\</info\>\n"
-
-				));
-
-			$this->invokePrivate($this->recreateMasterKey, 'execute', [$this->input, $this->output]);
-		} else {
-			$this->recreateMasterKey = $this->getMockBuilder('OCA\Encryption\Command\RecreateMasterKey')
-				->setConstructorArgs(
-					[
-						$this->userManager,
-						$this->rootView, $this->keyManager, $this->util, $this->encUitl,
-						$this->IAppManager, $this->appConfig, $this->config,
-						$this->session, $this->encryptionManager, $this->questionHelper,
-						$this->userSetup, $this->mailer, $this->secureRandom, $this->l,
-						$this->logger
-					]
-				)->setMethods(['setupUserFS'])->getMock();
-
-			$this->util->expects($this->once())->method('isMasterKeyEnabled')
-				->willReturn($mastkerKeyEnabled);
-
-			global $outputText;
-			$this->output->expects($this->at(0))
-				->method('writeln')
-				->willReturnCallback(function ($value) {
-					global $outputText;
-					$outputText .= $value . "\n";
-				});
-
-			$this->invokePrivate($this->recreateMasterKey, 'execute', [$this->input, $this->output]);
-			$this->assertSame("Master key is not enabled.", \trim($outputText, "\n"));
-		}
+		$this->assertEquals(0, $this->commandTester->getStatusCode());
 	}
 
-	public function dataTestExecute() {
-		return [
-			[true],
-			[false]
-		];
+	public function testMasterKeyRecreateFailed() {
+		$this->util->method('isMasterKeyEnabled')
+			->willReturn(true);
+
+		$decryptAll = $this->createMock(DecryptAll::class);
+		$decryptAll->expects($this->once())
+			->method('decryptAll');
+
+		$encryptAll = $this->createMock(EncryptAll::class);
+		$encryptAll->method('createMasterKey')
+			->willReturn(false);
+
+		$this->encdecAllFactory->method('getDecryptAllObj')
+			->willReturn($decryptAll);
+		$this->encdecAllFactory->method('getEncryptAllObj')
+			->willReturn($encryptAll);
+
+		$this->commandTester->execute([
+			'--yes' => 'y'
+		]);
+
+		$this->assertEquals(1, $this->commandTester->getStatusCode());
+	}
+
+	public function testMasterKeyNotEnabled() {
+		$this->util->method('isMasterKeyEnabled')
+			->willReturn(false);
+
+		$this->commandTester->execute([
+			'--yes' => 'y'
+		]);
+
+		$this->assertEquals(3, $this->commandTester->getStatusCode());
+	}
+
+	public function testAbandonProcess() {
+		$this->util->method('isMasterKeyEnabled')
+			->willReturn(true);
+
+		$application = new Application();
+		$recreateCmd = new RecreateMasterKey($this->rootView, $this->util,
+			$this->encUitl, $this->appManager, $this->appConfig, $this->encdecAllFactory);
+		$application->add($recreateCmd);
+
+		$command = $application->find('encryption:recreate-master-key');
+
+		$commandTester = new CommandTester($command);
+
+		$commandTester->setInputs(['n']);
+
+		$commandTester->execute([]);
+		$this->assertEquals(2, $commandTester->getStatusCode());
 	}
 }
