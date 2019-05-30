@@ -1581,3 +1581,17 @@ matrix:
       CONFIGURE_ENCRYPTION: true
       ENCRYPTION_TYPE: masterkey
       INSTALL_TESTING_APP: true
+
+    ## encryption WebUI acceptance tests master-keys encryption
+    - PHP_VERSION: 7.1
+      TEST_SUITE: webui
+      BEHAT_SUITE: webUIMasterKeyType
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CONFIGURE_ENCRYPTION: true
+      ENCRYPTION_TYPE: masterkey
+      INSTALL_TESTING_APP: true
