@@ -327,6 +327,20 @@ default:
         - WebUILoginContext:
         - WebUIPersonalGeneralSettingsContext:
 
+    # This suite is part of the encryption app in later core versions
+    webUIMasterKeyType:
+      paths:
+        - '%paths.base%/../features/webUIMasterKeyType'
+      contexts:
+        - EncryptionContext:
+        - WebUIAdminEncryptionSettingsContext:
+        - WebUIPersonalEncryptionSettingsContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIFilesContext:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+
     webUIMoveFilesFolders:
       paths:
         - '%paths.base%/../features/webUIMoveFilesFolders'
