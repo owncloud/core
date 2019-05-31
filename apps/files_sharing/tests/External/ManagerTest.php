@@ -236,6 +236,23 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
 	}
 
+	public function testAddShareAccepted() {
+		$shareData1 = [
+			'remote' => 'http://localhost',
+			'token' => 'token1',
+			'password' => '',
+			'name' => '/SharedFolder',
+			'owner' => 'foobar',
+			'accepted' => true,
+			'user' => $this->uid,
+		];
+
+		// Add a accepted share for "user"
+		\call_user_func_array([$this->manager, 'addShare'], $shareData1);
+		$this->setupMounts();
+		$this->assertMount($shareData1['name']);
+	}
+
 	/**
 	 * Verify that a share event matches a given share
 	 *
