@@ -474,12 +474,15 @@ then
 	WEBSERVER_PATH=$(get_path_from_url ${TEST_SERVER_URL})
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/"
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "maintenance:update:htaccess"
+	# Fail hard if .htaccess is not writable
+	[[ $? -eq 0 ]] || { echo >&2 "Could not update .htaccess in local server"; exit 1; }
 
 	if [ -n "${TEST_SERVER_FED_URL}" ]
 	then
 		WEBSERVER_PATH=$(get_path_from_url ${TEST_SERVER_FED_URL})
 		remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/"
 		remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "maintenance:update:htaccess"
+		[[ $? -eq 0 ]] || { echo >&2 "Could not update .htaccess in federation server"; exit 1; }
 	fi
 else
 	echo "Using php inbuilt server for running scenario ..."
