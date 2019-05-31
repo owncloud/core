@@ -307,6 +307,20 @@ default:
         - OccContext:
         - PublicWebDavContext:
 
+    webUIFiles2:
+      paths:
+        - '%paths.base%/../features/webUIFiles2'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - TagsContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISearchContext:
+        - WebUISharingContext:
+        - OccContext:
+        - PublicWebDavContext:
+
     webUILogin:
       paths:
         - '%paths.base%/../features/webUILogin'
