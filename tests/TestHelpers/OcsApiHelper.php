@@ -21,7 +21,10 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\BatchResults;
 use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Pool;
 
 /**
  * Helper to make requests to the OCS API
@@ -52,5 +55,42 @@ class OcsApiHelper {
 		$fullUrl .= "ocs/v{$ocsApiVersion}.php" . $path;
 
 		return HttpRequestHelper::sendRequest($fullUrl, $method, $user, $password, $headers, $body);
+	}
+
+	/**
+	 * @param string $baseUrl
+	 * @param string $user if set to null no authentication header will be sent
+	 * @param string $password
+	 * @param string $method HTTP Method
+	 * @param string $path
+	 * @param array $body array of key, value pairs e.g ['value' => 'yes']
+	 * @param array $options array of key, value pairs e.g ['completed' => function, 'error' => function]
+	 * @param int $ocsApiVersion (1|2) default 2
+	 * @param array $headers
+	 *
+	 * @return BatchResults
+	 */
+	public static function sendBatchRequest(
+		$baseUrl, $user, $password, $method, $path = [], $body = [], $ocsApiVersion = 2, $headers = []
+	) {
+		$client = new Client();
+
+		$requests = [];
+
+		if (\is_string($path)) {
+			$paths = \array_fill(0, count($body), $path);
+			$path = $paths;
+		}
+		for($index = 0; $index != count($body); $index++) {
+			$fullUrl = $baseUrl;
+			if (\substr($fullUrl, -1) !== '/') {
+				$fullUrl .= '/';
+			}
+			$fullUrl .= "ocs/v{$ocsApiVersion}.php" . $path[$index];
+			$request = HttpRequestHelper::createRequest($fullUrl, $method, $user, $password, $headers, $body[$index]);
+			\array_push($requests, $request);
+		}
+		return Pool::batch($client, $requests);
+
 	}
 }

@@ -267,6 +267,7 @@ trait Provisioning {
 	 */
 	public function theseUsersHaveBeenCreated($setDefaultAttributes, $doNotInitialize, TableNode $table) {
 		foreach ($table as $row) {
+			var_dump(microtime());
 			if (isset($row['displayname'])) {
 				$displayName = $row['displayname'];
 			} else {
@@ -296,6 +297,99 @@ trait Provisioning {
 				!($setDefaultAttributes === "")
 			);
 		}
+	}
+
+	/**
+	 * @Given these users have been created with default attributes using batch action:
+	 * expects a table of users with the heading
+	 * "|username|password|displayname|email|"
+	 * password, displayname & email are optional
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theseUsersHaveBeenCreatedUsingBatchAction(TableNode $table) {
+		$table = $table->getColumnsHash();
+		$bodies = [];
+		foreach ($table as $row) {
+			$body['userid'] = $this->getActualUsername($row['username']);
+
+			if (isset($row['displayname'])) {
+				$body['displayName'] = $row['displayname'];
+			} else {
+				$body['displayName'] = null;
+			}
+
+			if (isset($row['email'])) {
+				$body['email'] = $row['email'];
+			} else {
+				$body['email'] = null;
+			}
+
+			if (isset($row['password'])) {
+				$body['password'] = $this->getActualPassword($row['password']);
+			} else {
+				$body['password'] =  $this->getPasswordForUser($row['username']);
+			}
+			\array_push($bodies, $body);
+		}
+
+		$results = OcsApiHelper::sendBatchRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			"POST",
+			"/cloud/users",
+			$bodies
+		);
+
+		// Retrieve all failures.
+		foreach ($results->getFailures() as $requestException) {
+			throw $requestException;
+		}
+		$users = [];
+		foreach ($bodies as $user) {
+			array_push($users, $user['userid']);
+			$this->addUserToCreatedUsersList($user['userid'], $user['password']);
+			if (array_key_exists('displayname', $user)) {
+				UserHelper::editUser(
+					$this->getBaseUrl(),
+					$user['userid'],
+					'display',
+					$user['displayname'],
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					$ocsApiVersion = 2
+				);
+			}
+			if (array_key_exists('email', $user)) {
+				UserHelper::editUser(
+					$this->getBaseUrl(),
+					$user['userid'],
+					'email',
+					$user['email'],
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					$ocsApiVersion = 2
+				);
+			}
+		}
+
+		$url = "/ocs/v{$this->ocsApiVersion}.php/cloud/users/%s";
+		$paths = [];
+		foreach ($users as $user) {
+			array_push($paths, sprintf($url, $user));
+		}
+		OcsApiHelper::sendBatchRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'GET',
+			$paths
+		);
+		$this->initializeUserBatch($users);
 	}
 
 	/**
@@ -1114,6 +1208,31 @@ trait Provisioning {
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
 		HttpRequestHelper::get($url, $user, $password);
 		$this->lastUploadTime = \time();
+	}
+
+	/**
+	 * Make a request about the user. That will force the server to fully
+	 * initialize the user, including their skeleton files.
+	 *
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function initializeUserBatch($users) {
+		$url = $this->getBaseUrl()
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/%s";
+		$paths = [];
+		foreach ($users as $user) {
+			array_push($paths, sprintf($url, $user));
+		}
+		OcsApiHelper::sendBatchRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			'GET',
+			$paths
+		);
 	}
 
 	/**

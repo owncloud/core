@@ -7,7 +7,7 @@ Feature: Versions of a file
   So that I can have more control over the files
 
   Background:
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes using batch action:
       | username |
       | user0    |
       | user1    |

@@ -68,6 +68,66 @@ class HttpRequestHelper {
 		if ($client === null) {
 			$client = new Client();
 		}
+		$request = self::createRequest(
+			$url,
+			$method,
+			$user,
+			$password,
+			$headers,
+			$body,
+			$config,
+			$cookies,
+			$stream,
+			$timeout,
+			$client
+		);
+
+		try {
+			$response = $client->send($request);
+		} catch (BadResponseException $ex) {
+			$response = $ex->getResponse();
+
+			//if the response was null for some reason do not return it but re-throw
+			if ($response === null) {
+				throw $ex;
+			}
+		}
+		return $response;
+	}
+
+	/**
+	 *
+	 * @param string $url
+	 * @param string $method
+	 * @param string $user
+	 * @param string $password
+	 * @param array $headers ['X-MyHeader' => 'value']
+	 * @param mixed $body
+	 * @param array $config
+	 * @param CookieJar $cookies
+	 * @param bool $stream Set to true to stream a response rather
+	 *                     than download it all up-front.
+	 * @param int $timeout
+	 * @param Client|null $client
+	 *
+	 * @return RequestInterface
+	 */
+	public static function createRequest(
+		$url,
+		$method = 'GET',
+		$user = null,
+		$password = null,
+		$headers = null,
+		$body = null,
+		$config = null,
+		$cookies = null,
+		$stream = false,
+		$timeout = 0,
+		$client = null
+	) {
+		if ($client === null) {
+			$client = new Client();
+		}
 
 		$options = [];
 		if ($user !== null) {
@@ -95,18 +155,7 @@ class HttpRequestHelper {
 				}
 			}
 		}
-
-		try {
-			$response = $client->send($request);
-		} catch (BadResponseException $ex) {
-			$response = $ex->getResponse();
-			
-			//if the response was null for some reason do not return it but re-throw
-			if ($response === null) {
-				throw $ex;
-			}
-		}
-		return $response;
+		return $request;
 	}
 
 	/**

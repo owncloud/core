@@ -6,8 +6,10 @@ Feature: Search
   So that I can find needed files quickly
 
   Background:
-    Given user "user1" has been created with default attributes
-    And user "user0" has been created with default attributes
+    Given these users have been created with default attributes using batch action:
+      | username |
+      | user0    |
+      | user1    |
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 

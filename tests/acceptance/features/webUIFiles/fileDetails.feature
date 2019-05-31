@@ -5,7 +5,7 @@ Feature: User can open the details panel for any file or folder
   So that the details of the file or folder are visible to me
 
   Background:
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes using batch action:
       | username |
       | user1    |
       | user2    |
