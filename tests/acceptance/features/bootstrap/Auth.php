@@ -20,6 +20,7 @@
  */
 
 use TestHelpers\HttpRequestHelper;
+use Behat\Gherkin\Node\TableNode;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -94,6 +95,145 @@ trait Auth {
 	 */
 	public function userRequestsURLWith($url, $method) {
 		$this->sendRequest($url, $method);
+	}
+
+	/**
+	 * Verifies status code
+	 *
+	 * @param string $ocsCode
+	 * @param string $httpCode
+	 * @param string $endPoint
+	 *
+	 * @return void
+	 */
+	public function verifyStatusCode($ocsCode, $httpCode, $endPoint) {
+		$this->ocsContext->theOCSStatusCodeShouldBe(
+			$ocsCode,
+			$message = "Got unexpected OCS code while sending request to endpoint " . $endPoint
+		);
+		$this->theHTTPStatusCodeShouldBe(
+			$httpCode,
+			$message = "Got unexpected HTTP code while sending request to endpoint " . $endPoint
+		);
+	}
+
+	/**
+	 * @When a user requests these endpoints with :method and no authentication then the status codes should be as listed
+	 *
+	 * @param string $method
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userRequestsEndpointsWithNoAuthentication($method, TableNode $table) {
+		foreach ($table->getHash() as $row) {
+			$this->sendRequest($row['endpoint'], $method);
+			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+		}
+	}
+
+	/**
+	 * @When the user :user requests these endpoints with :method with basic auth then the status codes should be as listed
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userRequestsEndpointsWithBasicAuth($user, $method, TableNode $table) {
+		$this->userRequestsEndpointsWithPassword($user, $method, null, $table);
+	}
+
+	/**
+	 * @When user :user requests these endpoints with :method using password :password then the status codes should be as listed
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param string $password
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userRequestsEndpointsWithPassword($user, $method, $password, TableNode $table) {
+		foreach ($table->getHash() as $row) {
+			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $password);
+			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+		}
+	}
+
+	/**
+	 * @When the administrator requests these endpoint with :method then the status codes should be as listed
+	 *
+	 * @param string $method
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function adminRequestsEndpoint($method, TableNode $table) {
+		$this->adminRequestsEndpointsWithPassword($method, null, $table);
+	}
+
+	/**
+	 * @When the administrator requests these endpoints with :method using password :password then the status codes should be as listed
+	 *
+	 * @param string $method
+	 * @param string $password
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function adminRequestsEndpointsWithPassword($method, $password, TableNode $table) {
+		foreach ($table->getHash() as $row) {
+			$this->administratorRequestsURLWithUsingBasicAuth($row['endpoint'], $method, $password);
+			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+		}
+	}
+
+	/**
+	 * @When user :user requests these endpoints with :method using basic token auth then the status codes should be as listed
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function whenUserWithNewClientTokenRequestsForEndpointUsingBasicTokenAuth($user, $method, TableNode $table) {
+		foreach ($table->getHash() as $row) {
+			$this->userRequestsURLWithUsingBasicTokenAuth($user, $row['endpoint'], $method);
+			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+		}
+	}
+
+	/**
+	 * @When the user requests these endpoints with :method using a new browser session then the status codes should be as listed
+	 *
+	 * @param string $method
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userRequestsTheseEndpointsUsingNewBrowserSession($method, TableNode $table) {
+		foreach ($table->getHash() as $row) {
+			$this->userRequestsURLWithBrowserSession($row['endpoint'], $method);
+			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+		}
+	}
+
+	/**
+	 * @When the user requests these endpoints with :method using the generated app password then the status codes should be as listed
+	 *
+	 * @param string $method
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userRequestsEndpointsUsingTheGeneratedAppPassword($method, TableNode $table) {
+		foreach ($table->getHash() as $row) {
+			$this->userRequestsURLWithUsingAppPassword($row['endpoint'], $method);
+			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+		}
 	}
 
 	/**
@@ -205,11 +345,16 @@ trait Auth {
 	 * @param string $user
 	 * @param string $url
 	 * @param string $method
+	 * @param string $password
 	 *
 	 * @return void
 	 */
-	public function userRequestsURLWithUsingBasicAuth($user, $url, $method) {
-		$authString = "$user:" . $this->getPasswordForUser($user);
+	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password=null) {
+		if ($password === null) {
+			$authString = "$user:" . $this->getPasswordForUser($user);
+		} else {
+			$authString = $password;
+		}
 		$this->sendRequest(
 			$url, $method, 'basic ' . \base64_encode($authString)
 		);
@@ -220,12 +365,13 @@ trait Auth {
 	 *
 	 * @param string $url
 	 * @param string $method
+	 * @param string $password
 	 *
 	 * @return void
 	 */
-	public function administratorRequestsURLWithUsingBasicAuth($url, $method) {
+	public function administratorRequestsURLWithUsingBasicAuth($url, $method, $password=null) {
 		$this->userRequestsURLWithUsingBasicAuth(
-			$this->getAdminUsername(), $url, $method
+			$this->getAdminUsername(), $url, $method, $password
 		);
 	}
 
