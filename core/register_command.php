@@ -83,8 +83,13 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Config\System\DeleteConfig(\OC::$server->getSystemConfig()));
 	$application->add(new OC\Core\Command\Config\System\GetConfig(\OC::$server->getSystemConfig()));
 	$application->add(new OC\Core\Command\Config\System\SetConfig(\OC::$server->getSystemConfig()));
-
-	$application->add(new OC\Core\Command\Db\ConvertType(\OC::$server->getConfig(), new \OC\DB\ConnectionFactory(\OC::$server->getSystemConfig())));
+	$application->add(
+		new OC\Core\Command\Db\ConvertType(
+			\OC::$server->getConfig(),
+			new \OC\DB\ConnectionFactory(\OC::$server->getSystemConfig()),
+			\OC::$server->getAppManager()
+		)
+	);
 	$application->add(new OC\Core\Command\Db\ConvertMysqlToMB4(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection(), \OC::$server->getURLGenerator()));
 	$application->add(new OC\Core\Command\Db\Migrations\StatusCommand(\OC::$server->getDatabaseConnection()));
 	$application->add(new OC\Core\Command\Db\Migrations\MigrateCommand(\OC::$server->getDatabaseConnection()));
