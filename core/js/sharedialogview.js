@@ -54,8 +54,9 @@
 					'<div class="autocomplete-item-text">' +
 						'<span class="autocomplete-item-displayname">{{displayName}}</span>' +
 						'{{#if additionalInfo}}' +
-						'<span class="autocomplete-item-additional-info">({{additionalInfo}})</span>' +
+						'<br/><span class="autocomplete-item-additional-info">({{additionalInfo}})</span>' +
 						'{{/if}}' +
+						'<br/><span class="autocomplete-item-typeInfo">{{typeInfo}}</span>' +
 					'</div>' +
 				'</div>' +
 			'</a>' +
@@ -310,20 +311,20 @@
 		autocompleteRenderItem: function(ul, item) {
 
 			var text = item.label;
+			var typeInfo = t('core', 'User');
 			if (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) {
-				text = t('core', '{sharee} (group)', {
-					sharee: text
-				}, null, {escape: false});
-			} else if (item.value.shareType === OC.Share.SHARE_TYPE_REMOTE) {
+				typeInfo = t('core', 'Group');
+			}
+			if (item.value.shareType === OC.Share.SHARE_TYPE_GUEST) {
+				typeInfo = t('core', 'Guest');
+			}
+			if (item.value.shareType === OC.Share.SHARE_TYPE_REMOTE) {
 				if (item.value.server) {
-					text = t('core', '{sharee} (at {server})', {
-						sharee: text,
+					typeInfo = t('core', 'At {server}', {
 						server: item.value.server
 					});
 				} else {
-					text = t('core', '{sharee} (federated)', {
-						sharee: text
-					});
+					typeInfo = t('core', 'Federated');
 				}
 			}
 
@@ -331,6 +332,7 @@
 			var $el = $(template({
 				showAvatar: this.configModel.areAvatarsEnabled(),
 				displayName: text,
+				typeInfo: typeInfo,
 				additionalInfo: item.value.shareWithAdditionalInfo,
 				shareTypeClass: (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) ? 'group' : 'user'
 			}));
