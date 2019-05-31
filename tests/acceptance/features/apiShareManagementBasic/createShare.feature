@@ -589,6 +589,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnEncryption @issue-encryption-126
   Scenario: share with user when username contains capital letters
     Given these users have been created:
       | username |
