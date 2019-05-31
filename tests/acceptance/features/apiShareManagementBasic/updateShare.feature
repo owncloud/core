@@ -9,8 +9,10 @@ Feature: sharing
   @smokeTest
   Scenario Outline: Allow modification of reshare
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes
-    And user "user2" has been created with default attributes
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
     And user "user0" has created folder "/TMP"
     And user "user0" has shared folder "TMP" with user "user1"
     And user "user1" has shared folder "TMP" with user "user2"
@@ -276,7 +278,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions 17
     And as user "user1"
@@ -307,8 +309,10 @@ Feature: sharing
       | 2               | 400              |
 
   Scenario: Share ownership change after moving a shared file outside of an outer share
-    Given user "user1" has been created with default attributes
-    And user "user2" has been created with default attributes
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
     And user "user0" has created folder "/folder1"
     And user "user0" has created folder "/folder1/folder2"
     And user "user1" has created folder "/moved-out"
@@ -335,8 +339,10 @@ Feature: sharing
     And as "user2" folder "/folder2" should exist
 
   Scenario: Share ownership change after moving a shared file to another share
-    Given user "user1" has been created with default attributes
-    And user "user2" has been created with default attributes
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
     And user "user0" has created folder "/user0-folder"
     And user "user0" has created folder "/user0-folder/folder2"
     And user "user2" has created folder "/user2-folder"
@@ -365,7 +371,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions 31
     And as user "user1"
@@ -385,7 +391,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions 17
     And as user "user1"
@@ -405,7 +411,7 @@ Feature: sharing
   @public_link_share-feature-required
   Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has shared folder "/test" with user "user1" with permissions 31
     And as user "user1"
@@ -424,7 +430,7 @@ Feature: sharing
 
   Scenario Outline: Increasing permissions is allowed for owner
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user2" has been created with default attributes
     And group "grp1" has been created
     And user "user2" has been added to group "grp1"
