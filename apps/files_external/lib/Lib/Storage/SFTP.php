@@ -101,7 +101,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 		}
 
 		$this->root
-			= isset($params['root']) ? $this->cleanPath($params['root']) : '/';
+			= isset($params['root']) ? $this->normalizePath($params['root']) : '/';
 
 		if ($this->root[0] != '/') {
 			$this->root = '/' . $this->root;
@@ -197,7 +197,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	 * @return string
 	 */
 	private function absPath($path) {
-		return $this->root . $this->cleanPath($path);
+		return $this->root . $this->normalizePath($path);
 	}
 
 	/**

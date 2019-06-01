@@ -140,8 +140,6 @@ class Helper {
 				 *
 				 * @link https://github.com/owncloud/core/issues/10671
 				 */
-				} else {
-					return false;
 				}
 			} else {
 				\OCP\Util::writeLog('files_sharing', 'Unknown share type '.$linkItem['share_type']
