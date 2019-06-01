@@ -820,13 +820,11 @@ class Share20OcsController extends OCSController {
 
 			// set name only if passed as parameter, empty string is allowed
 			if ($name !== null) {
-				$oldname = $share->getName();
 				$share->setName($name);
 			}
 
 			if ($newPermissions !== null) {
 				$share->setPermissions($newPermissions);
-				$permissions = $newPermissions;
 			}
 
 			if ($expireDate === '') {
@@ -855,28 +853,6 @@ class Share20OcsController extends OCSController {
 				$permissions = (int)$permissions;
 				$share->setPermissions($permissions);
 			}
-		}
-
-		if ($permissions !== null && $share->getShareOwner() !== $this->userSession->getUser()->getUID()) {
-			/* Check if this is an incoming share */
-			$incomingShares = $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_USER, $share->getNode(), -1, 0);
-			$incomingShares = \array_merge($incomingShares, $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_GROUP, $share->getNode(), -1, 0));
-
-			if (!empty($incomingShares)) {
-				$maxPermissions = 0;
-				foreach ($incomingShares as $incomingShare) {
-					$maxPermissions |= $incomingShare->getPermissions();
-				}
-
-				if ($share->getPermissions() & ~$maxPermissions) {
-					$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
-					return new Result(null, 404, $this->l->t('Cannot increase permissions'));
-				}
-			}
-		}
-
-		if ($share->getPermissions() === 0) {
-			return new Result(null, 400, $this->l->t('Cannot remove all permissions'));
 		}
 
 		$share = $this->setShareAttributes($share, $this->request->getParam('attributes', null));

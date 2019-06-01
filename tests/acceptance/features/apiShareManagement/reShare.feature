@@ -132,3 +132,56 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 404              |
+  Scenario: Do not allow modification of reshare to grant higher privilege
+    Given using OCS API version "1"
+    And user "user1" has been created with default attributes
+    And user "user2" has been created with default attributes
+    And user "user0" has created folder "/TMP"
+    And user "user0" has shared folder "TMP" with user "user1" with permissions 17
+    And user "user1" has shared folder "TMP" with user "user2" with permissions 17
+    When user "user1" updates the last share using the sharing API with
+      | permissions | 31 |
+    Then the OCS status code should be "404"
+    And user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "TMP/textfile.txt"
+    And user "user1" should not be able to upload file "filesForUpload/textfile.txt" to "TMP/textfile.txt"
+  Scenario: Do not allow modification of reshare to grant higher privilege
+    Given using OCS API version "1"
+    And user "user1" has been created with default attributes
+    And user "user2" has been created with default attributes
+    And user "user0" has created folder "/TMP"
+    And user "user0" has created folder "/TMP/subfolder"
+    And user "user0" has shared folder "TMP" with user "user1" with permissions 17
+    And user "user1" has shared folder "TMP/subfolder" with user "user2" with permissions 17
+    When user "user1" updates the last share using the sharing API with
+      | permissions | 31 |
+    Then the OCS status code should be "404"
+    And user "user1" should not be able to upload file "filesForUpload/textfile.txt" to "subfolder/textfile.txt"
+    And user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "subfolder/textfile.txt"
+  Scenario: Do not allow modification of reshare of file in folder to grant higher privilege
+    Given using OCS API version "1"
+    And user "user1" has been created with default attributes
+    And user "user2" has been created with default attributes
+    And user "user0" has created folder "/TMP"
+    And user "user0" has uploaded file with content "qwerty" to "/TMP/afile.txt"
+    And user "user0" has shared folder "TMP" with user "user1" with permissions 17
+    And user "user1" has shared file "TMP/afile.txt" with user "user2" with permissions 17
+    When user "user1" updates the last share using the sharing API with
+      | permissions | 31 |
+    Then the OCS status code should be "400"
+    When user "user2" uploads file with content "from user2" to "/afile.txt" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And the content of file "/TMP/afile.txt" for user "user0" should be "qwerty"
+  Scenario: Do not allow modification of public reshare to grant higher privilege
+    Given using OCS API version "1"
+    And user "user1" has been created with default attributes
+    And user "user0" has created folder "/TMP"
+    And user "user0" has created folder "/TMP/subfolder"
+    And user "user0" has shared folder "TMP" with group "receiving-group" with permissions 17
+    And user "user1" has created a public link share with settings
+      | path        | /TMP/subfolder |
+      | permissions | 7              |
+    When user "user1" updates the last share using the sharing API with
+      | permissions | 15 |
+    Then the OCS status code should be "400"
+    When the public uploads file "afile.txt" with content "public-content" using the public WebDAV API
+    Then the HTTP status code should be "403"

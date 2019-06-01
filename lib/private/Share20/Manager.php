@@ -208,8 +208,9 @@ class Manager implements IManager {
 	 * @param \OCP\Share\IShare $share
 	 * @throws \InvalidArgumentException
 	 * @throws GenericShareException
+	 * @throws NotFoundException
 	 */
-	protected function generalCreateChecks(\OCP\Share\IShare $share) {
+	protected function generalChecks(\OCP\Share\IShare $share) {
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			// We expect a valid user as sharedWith for user shares
 			if (!$this->userManager->userExists($share->getSharedWith())) {
@@ -230,7 +231,7 @@ class Manager implements IManager {
 			}
 		} else {
 			// We can't handle other types yet
-			throw new \InvalidArgumentException('unkown share type');
+			throw new \InvalidArgumentException('unknown share type');
 		}
 
 		// Verify the initiator of the share is set
@@ -255,25 +256,38 @@ class Manager implements IManager {
 			throw new \InvalidArgumentException('Path should be either a file or a folder');
 		}
 
-		// And you can't share your rootfolder
+		$sharer = $share->getShareOwner();
 		if ($this->userManager->userExists($share->getSharedBy())) {
-			$sharedPath = $this->rootFolder->getUserFolder($share->getSharedBy())->getPath();
-		} else {
-			$sharedPath = $this->rootFolder->getUserFolder($share->getShareOwner())->getPath();
+			$sharer = $share->getSharedBy();
 		}
-		if ($sharedPath === $share->getNode()->getPath()) {
+		$sharerHome = $this->rootFolder->getUserFolder($sharer);
+		// And you can't share your rootfolder
+		if ($sharerHome->getPath() === $share->getNode()->getPath()) {
 			throw new \InvalidArgumentException('You can\'t share your root folder');
 		}
 
-		// Check if we actually have share permissions
-		if (!$share->getNode()->isShareable()) {
-			$message_t = $this->l->t('You are not allowed to share %s', [$share->getNode()->getPath()]);
-			throw new GenericShareException($message_t, $message_t, 404);
+		// Permissions should be set
+		if ($share->getPermissions() === null || $share->getPermissions() === 0) {
+			throw new \InvalidArgumentException('A share requires permissions');
+		}
+		// Actual permissions need to be taken from the user who has created the share.
+		// Note that the node inside the share is not guaranteed to be from the perspective
+		// of the sharer
+		$nodes = $sharerHome->getById($share->getNode()->getId());
+		// shared by user has no access to this node
+		if (empty($nodes)) {
+			throw new NotFoundException('Node with id ' . $share->getNode()->getId() . ' not found for user "' . $sharer . '"');
+		}
+		$permissions = 0;
+		//calculate permission by summing up all permissions on this node
+		foreach ($nodes as $node) {
+			$permissions |= $node->getPermissions();
 		}
 
-		// Permissions should be set
-		if ($share->getPermissions() === null) {
-			throw new \InvalidArgumentException('A share requires permissions');
+		// Check if we actually have share permissions
+		if (($permissions & \OCP\Constants::PERMISSION_SHARE) === 0) {
+			$message_t = $this->l->t('You are not allowed to share %s', [$share->getNode()->getPath()]);
+			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
 		/*
@@ -281,7 +295,6 @@ class Manager implements IManager {
 		 * Non moveable mount points do not have update and delete permissions
 		 * while we 'most likely' do have that on the storage.
 		 */
-		$permissions = $share->getNode()->getPermissions();
 		$mount = $share->getNode()->getMountPoint();
 		if (!($mount instanceof MoveableMount)) {
 			$permissions |= \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_UPDATE;
@@ -551,7 +564,7 @@ class Manager implements IManager {
 	public function createShare(\OCP\Share\IShare $share) {
 		$this->canShare($share);
 
-		$this->generalCreateChecks($share);
+		$this->generalChecks($share);
 
 		// Verify if there are any issues with the path
 		$this->pathCreateChecks($share->getNode());
@@ -812,7 +825,7 @@ class Manager implements IManager {
 			throw new \InvalidArgumentException('Can\'t share with the share owner');
 		}
 
-		$this->generalCreateChecks($share);
+		$this->generalChecks($share);
 
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			$this->userCreateChecks($share);
