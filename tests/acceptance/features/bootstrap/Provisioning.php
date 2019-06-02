@@ -1329,6 +1329,13 @@ trait Provisioning {
 				);
 				foreach ($results as $result) {
 					if ($result->getStatusCode() !== 200) {
+						$message = $this->getResponseXml($result)->xpath("/ocs/meta/message");
+						if ($message && (string) $message[0] === "User already exists") {
+							PHPUnit\Framework\Assert::fail(
+								'Could not create user as it already exists. ' .
+								'Please delete the user to run tests again.'
+							);
+						}
 						throw new Exception(
 							"could not create user. "
 							. $result->getStatusCode() . " " . $result->getBody()
