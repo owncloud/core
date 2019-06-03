@@ -79,11 +79,11 @@ class CleanProperties extends TimedJob {
 		/**
 		 * select prop.fileid from oc_properties prop
 		 * left join oc_filecache fc on fc.fileid = prop.fileid
-		 * where fc.fileid is not null limit 200
+		 * where prop.fileid is not null and fc.fileid is null limit 200
 		 */
 		$qb->select('prop.fileid')
 			->from('properties', 'prop')
-			->where($qb->expr()->isNull('fc.fileid'))
+			->where($qb->expr()->andX($qb->expr()->isNotNull('prop.fileid'), $qb->expr()->isNull('fc.fileid')))
 			->leftJoin('prop', 'filecache', 'fc', $qb->expr()->eq('prop.fileid', 'fc.fileid'))
 			->setMaxResults(self::CHUNK_SIZE);
 
