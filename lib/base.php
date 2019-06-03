@@ -750,7 +750,9 @@ class OC {
 
 	private static function registerEncryptionHooks() {
 		$enabled = self::$server->getEncryptionManager()->isEnabled();
-		if ($enabled) {
+		//Call share hooks if they are not masterkey
+		if ($enabled &&
+			(\OC::$server->getConfig()->getAppValue('encryption', 'useMasterKey', '0') === '0')) {
 			\OCP\Util::connectHook('OCP\Share', 'post_shared', 'OC\Encryption\HookManager', 'postShared');
 			\OCP\Util::connectHook('OCP\Share', 'post_unshare', 'OC\Encryption\HookManager', 'postUnshared');
 			\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OC\Encryption\HookManager', 'postRename');
