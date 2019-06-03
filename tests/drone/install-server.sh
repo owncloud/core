@@ -116,9 +116,15 @@ install_cmd="maintenance:install -vvv \
       --data-dir=${DATA_DIRECTORY} "
 
 if [[ "${DB_TYPE}" != "sqlite" ]]; then
-  install_cmd+=" --database-host=${DB_TYPE} \
-                 --database-user=${DB_USERNAME} \
-                 --database-pass=${DB_PASSWORD}"
+    if [[ "${DB_TYPE}" != "oracle" ]]; then
+      install_cmd+=" --database-host=${DB_TYPE} \
+                     --database-user=${DB_USERNAME} \
+                     --database-pass=${DB_PASSWORD}"
+    else
+      install_cmd+=" --database-connection-string=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=${DB_TYPE})(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=XE))) \
+                     --database-user=${DB_USERNAME} \
+                     --database-pass=${DB_PASSWORD}"
+    fi
 fi
 
 

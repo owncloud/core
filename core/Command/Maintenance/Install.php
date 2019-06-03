@@ -50,6 +50,7 @@ class Install extends Command {
 			->setName('maintenance:install')
 			->setDescription('Install ownCloud.')
 			->addOption('database', null, InputOption::VALUE_REQUIRED, 'Supported database type.', 'sqlite')
+			->addOption('database-connection-string', null, InputOption::VALUE_REQUIRED, 'Oracle specific connection string. As soon as this parameter is provided other parameters like database-host and database-name are not used and do not need to be provided')
 			->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'Name of the database.')
 			->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'Hostname of the database.', 'localhost')
 			->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'User name to connect to the database.')
@@ -108,6 +109,7 @@ class Install extends Command {
 		$dbUser = $input->getOption('database-user');
 		$dbPass = $input->getOption('database-pass');
 		$dbName = $input->getOption('database-name');
+		$dbConnectionString = $input->getOption('database-connection-string');
 		if ($db === 'oci') {
 			// an empty hostname needs to be read from the raw parameters
 			$dbHost = $input->getParameterOption('--database-host', '');
@@ -130,8 +132,8 @@ class Install extends Command {
 			if ($dbUser === null) {
 				throw new InvalidArgumentException("Database user not provided.");
 			}
-			if ($dbName === null) {
-				throw new InvalidArgumentException("Database name not provided.");
+			if ($dbName === null && $dbConnectionString === null) {
+				throw new InvalidArgumentException('Database name and connection string not provided.');
 			}
 			if ($dbPass === null) {
 				/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
@@ -156,6 +158,7 @@ class Install extends Command {
 			'dbpass' => $dbPass,
 			'dbname' => $dbName,
 			'dbhost' => $dbHost,
+			'dbconnectionstring' => $dbConnectionString,
 			'dbtableprefix' => $dbTablePrefix,
 			'adminlogin' => $adminLogin,
 			'adminpass' => $adminPassword,
