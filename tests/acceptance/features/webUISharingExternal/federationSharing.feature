@@ -125,11 +125,9 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   @skipOnMICROSOFTEDGE
   Scenario: share a folder with an remote user and prohibit deleting - remote server shares - local server receives
-    When user "user1" re-logs in to "%remote_server%" using the webUI
-    And the user shares folder "simple-folder" with remote user "user1@%local_server_without_scheme%" using the webUI
-    And the user sets the sharing permissions of "user1@%local_server_without_scheme% (federated)" for "simple-folder" using the webUI to
-      | delete | no |
-    And user "user1" re-logs in to "%local_server%" using the webUI
+    # permissions read+update+create = 7 (no delete, no (re)share permission)
+    Given user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL" with permissions 7
+    When the user browses to the files page
     And the user accepts the offered remote shares using the webUI
     And the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
