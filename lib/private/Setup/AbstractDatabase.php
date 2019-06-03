@@ -43,6 +43,8 @@ abstract class AbstractDatabase {
 	/** @var string */
 	protected $dbHost;
 	/** @var string */
+	protected $dbConnectionString;
+	/** @var string */
 	protected $tablePrefix;
 	/** @var string */
 	protected $dbprettyname;
@@ -80,11 +82,13 @@ abstract class AbstractDatabase {
 		$dbUser = $config['dbuser'];
 		$dbPass = $config['dbpass'];
 		$dbName = $config['dbname'];
+		$dbConnectionString = $config['dbconnectionstring'];
 		$dbHost = !empty($config['dbhost']) ? $config['dbhost'] : 'localhost';
 		$dbTablePrefix = isset($config['dbtableprefix']) ? $config['dbtableprefix'] : 'oc_';
 
 		$this->config->setSystemValues([
 			'dbname'		=> $dbName,
+			'dbconnectionstring' => $dbConnectionString,
 			'dbhost'		=> $dbHost,
 			'dbtableprefix'	=> $dbTablePrefix,
 		]);
@@ -93,6 +97,7 @@ abstract class AbstractDatabase {
 		$this->dbPassword = $dbPass;
 		$this->dbName = $dbName;
 		$this->dbHost = $dbHost;
+		$this->dbConnectionString = $dbConnectionString;
 		$this->tablePrefix = $dbTablePrefix;
 	}
 
