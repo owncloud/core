@@ -5,11 +5,11 @@ Feature: Sharing files and folders with internal groups
   So that those groups can access the files and folders
 
   Scenario Outline: sharing  files and folder with an internal problematic group name
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | user1    |
       | user2    |
-      | user3    |
+    And user "user3" has been created with default attributes
     And these groups have been created:
       | groupname |
       | <group>   |
@@ -19,15 +19,15 @@ Feature: Sharing files and folders with internal groups
     When the user shares folder "simple-folder" with group "<group>" using the webUI
     And the user shares file "testimage.jpg" with group "<group>" using the webUI
     And the user re-logs in as "user1" using the webUI
-    Then folder "simple-folder (2)" should be listed on the webUI
-    And folder "simple-folder (2)" should be marked as shared with "<group>" by "User Three" on the webUI
-    And file "testimage (2).jpg" should be listed on the webUI
-    And file "testimage (2).jpg" should be marked as shared with "<group>" by "User Three" on the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be marked as shared with "<group>" by "User Three" on the webUI
+    And file "testimage.jpg" should be listed on the webUI
+    And file "testimage.jpg" should be marked as shared with "<group>" by "User Three" on the webUI
     When the user re-logs in as "user2" using the webUI
-    Then folder "simple-folder (2)" should be listed on the webUI
-    And folder "simple-folder (2)" should be marked as shared with "<group>" by "User Three" on the webUI
-    And file "testimage (2).jpg" should be listed on the webUI
-    And file "testimage (2).jpg" should be marked as shared with "<group>" by "User Three" on the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be marked as shared with "<group>" by "User Three" on the webUI
+    And file "testimage.jpg" should be listed on the webUI
+    And file "testimage.jpg" should be marked as shared with "<group>" by "User Three" on the webUI
     Examples:
       | group     |
       | ?\?@#%@,; |
