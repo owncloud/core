@@ -187,12 +187,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $folder
 	 * @param string $group
+	 * @param int $maxRetries
+	 * @param bool $quiet
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theUserSharesFileFolderWithGroupUsingTheWebUI(
-		$folder, $group
+		$folder, $group, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		try {
@@ -203,7 +205,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
 			$folder, $this->getSession()
 		);
-		$this->sharingDialog->shareWithGroup($group, $this->getSession());
+		$this->sharingDialog->shareWithGroup(
+			$group, $this->getSession(), $maxRetries, $quiet
+		);
 		$this->theUserClosesTheShareDialog();
 	}
 
@@ -878,7 +882,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$requiredString
 	) {
 		$this->allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteListExcept(
-			$requiredString, '', ''
+			$requiredString, 'user', ''
 		);
 	}
 
@@ -898,27 +902,37 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$notToBeListed
 				= $this->sharingDialog->groupStringsToMatchAutoComplete($notToBeListed);
 		}
+		if ($userOrGroup === 'user') {
+			$notToBeListed
+				= $this->sharingDialog->userStringsToMatchAutoComplete($notToBeListed);
+		}
 		$autocompleteItems = $this->sharingDialog->getAutocompleteItemsList();
 		// Keep separate arrays of users and groups, because the names can overlap
-		$createdElements = [];
-		$createdElements['groups'] = $this->sharingDialog->groupStringsToMatchAutoComplete(
-			$this->featureContext->getCreatedGroups()
+		$createdElementsWithDisplayNames = [];
+		$createdElementsWithFullDisplayText = [];
+		$createdElementsWithDisplayNames['groups'] = $this->featureContext->getCreatedGroupDisplayNames();
+		$createdElementsWithFullDisplayText['groups'] = $this->sharingDialog->groupStringsToMatchAutoComplete(
+			$createdElementsWithDisplayNames['groups']
 		);
-		$createdElements['users'] = $this->featureContext->getCreatedUserDisplayNames();
+		$createdElementsWithDisplayNames['users'] = $this->featureContext->getCreatedUserDisplayNames();
+		$createdElementsWithFullDisplayText['users'] = $this->sharingDialog->userStringsToMatchAutoComplete(
+			$createdElementsWithDisplayNames['users']
+		);
 		$numExpectedItems = 0;
-		foreach ($createdElements as $elementArray) {
-			foreach ($elementArray as $internalName => $displayName) {
+		foreach ($createdElementsWithFullDisplayText as $usersOrGroups => $elementArray) {
+			foreach ($elementArray as $internalName => $fullDisplayText) {
+				$displayName = $createdElementsWithDisplayNames[$usersOrGroups][$internalName];
 				// Matching should be case-insensitive on the internal or display name
 				if (((\stripos($internalName, $requiredString) !== false)
 					|| (\stripos($displayName, $requiredString) !== false))
-					&& ($displayName !== $notToBeListed)
+					&& ($fullDisplayText !== $notToBeListed)
 					&& ($displayName !== $this->featureContext->getCurrentUser())
 					&& ($displayName !== $this->featureContext->getCurrentUserDisplayName())
 				) {
 					PHPUnit\Framework\Assert::assertContains(
-						$displayName,
+						$fullDisplayText,
 						$autocompleteItems,
-						"'$displayName' not in autocomplete list"
+						"'$fullDisplayText' not in autocomplete list"
 					);
 					$numExpectedItems = $numExpectedItems + 1;
 				}
@@ -976,8 +990,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function userShouldNotBeListedInTheAutocompleteListOnTheWebui($username) {
 		$names = $this->sharingDialog->getAutocompleteItemsList();
-		if (\in_array($username, $names)) {
-			throw new Exception("$username found in autocomplete list but not expected");
+		$userString = $this->sharingDialog->userStringsToMatchAutoComplete($username);
+		if (\in_array($userString, $names)) {
+			throw new Exception("$username ($userString) found in autocomplete list but not expected");
 		}
 	}
 
@@ -1171,28 +1186,44 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^it should not be possible to share (?:file|folder) "([^"]*)"(?: with "([^"]*)")? using the webUI$/
+	 * @Then /^it should not be possible to share (?:file|folder) "([^"]*)"(?: with (user|group) "([^"]*)")? using the webUI$/
 	 *
 	 * @param string $fileName
+	 * @param string $userOrGroup
 	 * @param string|null $shareWith
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function itShouldNotBePossibleToShareFileFolderUsingTheWebUI(
-		$fileName, $shareWith = null
+		$fileName, $userOrGroup = null, $shareWith = null
 	) {
 		$sharingWasPossible = false;
 		try {
-			$this->theUserSharesFileFolderWithUserUsingTheWebUI(
-				$fileName, null, $shareWith, 2, true
-			);
+			if ($userOrGroup === "user") {
+				$this->theUserSharesFileFolderWithUserUsingTheWebUI(
+					$fileName, null, $shareWith, 2, true
+				);
+			} else {
+				$this->theUserSharesFileFolderWithGroupUsingTheWebUI(
+					$fileName, $shareWith, 2, true
+				);
+			}
 			$sharingWasPossible = true;
 		} catch (ElementNotFoundException $e) {
+			if ($shareWith === null) {
+				$shareWithText = "";
+			} else {
+				if ($userOrGroup === "user") {
+					$shareWithText = $this->sharingDialog->userStringsToMatchAutoComplete($shareWith);
+				} else {
+					$shareWithText = $this->sharingDialog->groupStringsToMatchAutoComplete($shareWith);
+				}
+			}
 			$possibleMessages = [
 				"could not find share-with-field",
 				"could not find sharing button in fileRow",
-				"could not share with '$shareWith'"
+				"could not share with '$shareWithText'"
 			];
 			$foundMessage = false;
 			foreach ($possibleMessages as $message) {
