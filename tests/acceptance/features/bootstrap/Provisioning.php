@@ -126,7 +126,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * returns an array of the display names, keyed by username
+	 * returns an array of the user display names, keyed by username
 	 * if no "Display Name" is set the user-name is returned instead
 	 *
 	 * @return array
@@ -135,6 +135,22 @@ trait Provisioning {
 		$result = [];
 		foreach ($this->getCreatedUsers() as $username => $user) {
 			$result[$username] = $this->getUserDisplayName($username);
+		}
+		return $result;
+	}
+
+	/**
+	 * returns an array of the group display names, keyed by group name
+	 * currently group name and display name are always the same, so this
+	 * function is a convenience for getting the group names in a similar
+	 * format to what getCreatedUserDisplayNames() returns
+	 *
+	 * @return array
+	 */
+	public function getCreatedGroupDisplayNames() {
+		$result = [];
+		foreach ($this->getCreatedGroups() as $groupName => $groupData) {
+			$result[$groupName] = $groupName;
 		}
 		return $result;
 	}
