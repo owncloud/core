@@ -43,3 +43,37 @@ Feature: Deletion of existing tags from files and folders
       | lorem | normal |
     When the user deletes tag with name "lorem" using the webUI
     Then tag "lorem" should not exist for user "user1"
+
+  Scenario: Delete a tag that exists for multiple file
+    Given the user has created a "normal" tag with name "lorem"
+    And the user has added tag "lorem" to file "lorem.txt"
+    And the user has added tag "lorem" to file "lorem-big.txt"
+    And the user has browsed directly to display the details of file "lorem.txt" in folder "simple-folder"
+    When the user deletes tag with name "lorem" using the webUI
+    Then tag "lorem" should not exist for user "user1"
+
+  Scenario: Delete all tags that exist for a file
+    Given the user has created a "normal" tag with name "lorem"
+    And the user has created a "normal" tag with name "Confidential"
+    And the user has added tag "lorem" to file "lorem.txt"
+    And the user has added tag "Confidential" to file "lorem.txt"
+    And the user has browsed directly to display the details of file "lorem.txt" in folder "/"
+    When the user deletes tag with name "lorem" using the webUI
+    And the user deletes tag with name "Confidential" using the webUI
+    Then file "lorem.txt" should have no tags for user "user1"
+
+  Scenario: Delete multiple tags that exist for a file
+    Given the user has created a "normal" tag with name "lorem"
+    And the user has created a "normal" tag with name "Confidential"
+    And the user has created a "normal" tag with name "some-tag"
+    And the user has added tag "lorem" to file "lorem.txt"
+    And the user has added tag "Confidential" to file "lorem.txt"
+    And the user has added tag "some-tag" to file "lorem.txt"
+    And the user has browsed directly to display the details of file "lorem.txt" in folder "/"
+    When the user deletes tag with name "lorem" using the webUI
+    And the user deletes tag with name "Confidential" using the webUI
+    Then tag "lorem" should not exist for user "user1"
+    And tag "Confidential" should not exist for user "user1"
+    And file "/lorem.txt" should have the following tags for user "user1"
+      | some-tag | normal |
+
