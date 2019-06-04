@@ -766,13 +766,13 @@ matrix:
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
-    - PHP_VERSION: 7.1
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      DB_TYPE: sqlite
-      FILES_EXTERNAL_TYPE: smb_windows
-      INSTALL_SERVER: true
-      INSTALL_TESTING_APP: true
+    #- PHP_VERSION: 7.1
+    #  TEST_SUITE: phpunit
+    #  COVERAGE: true
+    #  DB_TYPE: sqlite
+    #  FILES_EXTERNAL_TYPE: smb_windows
+    #  INSTALL_SERVER: true
+    #  INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: phpunit
