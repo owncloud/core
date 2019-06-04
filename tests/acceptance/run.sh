@@ -263,6 +263,24 @@ function assert_testing_app_enabled() {
 	fi
 }
 
+# check if certain apache_module is enabled
+# $1 admin authentication string username:password
+# $2 the full url to the testing app
+# $3 Module to check for
+# return 0 if given module is enabled, else return with 1
+function check_apache_module_enabled() {
+	# test if mod_rewrite is enabled
+	CURL_RESULT=`curl -k -s -u $1 $2apache_modules/$3`
+	STATUS_CODE=`echo ${CURL_RESULT} | xmllint --xpath "string(ocs/meta/statuscode)" -`
+	if [[ ${STATUS_CODE} -ne 200 ]]
+	then
+		echo -n "Could not reliably determine if '$3' module is enabled, because "
+		echo ${CURL_RESULT} | xmllint --xpath "string(ocs/meta/message)" -
+		return 1
+	fi
+	return 0
+}
+
 # Provide a default admin username and password.
 # But let the caller pass them if they wish
 if [ -z "${ADMIN_USERNAME}" ]
@@ -515,6 +533,8 @@ then
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/"
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "maintenance:update:htaccess"
 	[[ $? -eq 0 ]] || { echo "${HTACCESS_UPDATE_FAILURE_MSG}"; }
+	# check if mod_rewrite module is enabled
+	check_apache_module_enabled ${ADMIN_AUTH} ${TESTING_APP_URL} "mod_rewrite"
 
 	if [ -n "${TEST_SERVER_FED_URL}" ]
 	then
@@ -522,6 +542,8 @@ then
 		remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/"
 		remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "maintenance:update:htaccess"
 		[[ $? -eq 0 ]] || { echo "${HTACCESS_UPDATE_FAILURE_MSG/local/federated}"; }
+		# check if mod_rewrite module is enabled
+		check_apache_module_enabled ${ADMIN_AUTH} ${TESTING_APP_URL} "mod_rewrite"
 	fi
 else
 	echo "Using php inbuilt server for running scenario ..."
