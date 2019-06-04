@@ -1401,7 +1401,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 		$this->webUIFilesContext = $environment->getContext('WebUIFilesContext');
-		$this->setupSharingConfigs();
 	}
 
 	/**
@@ -1434,96 +1433,5 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				'boolean'
 			);
 		}
-	}
-
-	/**
-	 * @return void
-	 */
-	private function setupSharingConfigs() {
-		$settings = [
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'api_enabled',
-				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_enabled',
-				'testingState' => true
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'public@@@enabled',
-				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_allow_links',
-				'testingState' => true
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'public@@@upload',
-				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_allow_public_upload',
-				'testingState' => true
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'group_sharing',
-				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_allow_group_sharing',
-				'testingState' => true
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'share_with_group_members_only',
-				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_only_share_with_group_members',
-				'testingState' => false
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'share_with_membership_groups_only',
-				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_only_share_with_membership_groups',
-				'testingState' => false
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' =>
-					'user_enumeration@@@enabled',
-				'testingApp' => 'core',
-				'testingParameter' =>
-					'shareapi_allow_share_dialog_user_enumeration',
-				'testingState' => true
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' =>
-					'user_enumeration@@@group_members_only',
-				'testingApp' => 'core',
-				'testingParameter' =>
-					'shareapi_share_dialog_user_enumeration_group_members',
-				'testingState' => false
-			],
-			[
-				'capabilitiesApp' => 'federation',
-				'capabilitiesParameter' => 'outgoing',
-				'testingApp' => 'files_sharing',
-				'testingParameter' => 'outgoing_server2server_share_enabled',
-				'testingState' => true
-			],
-			[
-				'capabilitiesApp' => 'federation',
-				'capabilitiesParameter' => 'incoming',
-				'testingApp' => 'files_sharing',
-				'testingParameter' => 'incoming_server2server_share_enabled',
-				'testingState' => true
-			]
-		];
-
-		$change = AppConfigHelper::setCapabilities(
-			$this->featureContext->getBaseUrl(),
-			$this->featureContext->getAdminUsername(),
-			$this->featureContext->getAdminPassword(),
-			$settings,
-			$this->webUIGeneralContext->getSavedCapabilitiesXml()[$this->featureContext->getBaseUrl()]
-		);
-		$this->webUIGeneralContext->addToSavedCapabilitiesChanges($change);
 	}
 }
