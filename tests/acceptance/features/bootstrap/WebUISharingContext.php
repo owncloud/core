@@ -159,26 +159,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserSharesFileFolderWithUserUsingTheWebUI(
 		$folder, $remote, $user, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
 	) {
-		$this->filesPage->waitTillPageIsloaded($this->getSession());
-		try {
-			$this->filesPage->closeDetailsDialog();
-		} catch (Exception $e) {
-			//we don't care
-		}
-		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$folder, $this->getSession()
+		$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
+			$folder, "user", $remote, $user, $maxRetries, $quiet
 		);
-		$user = $this->featureContext->substituteInLineCodes($user);
-		if ($remote === "remote") {
-			$this->sharingDialog->shareWithRemoteUser(
-				$user, $this->getSession(), $maxRetries, $quiet
-			);
-		} else {
-			$this->sharingDialog->shareWithUser(
-				$user, $this->getSession(), $maxRetries, $quiet
-			);
-		}
-		$this->theUserClosesTheShareDialog();
 	}
 
 	/**
@@ -196,6 +179,25 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserSharesFileFolderWithGroupUsingTheWebUI(
 		$folder, $group, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
 	) {
+		$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
+			$folder, "group", "", $group, $maxRetries, $quiet
+		);
+	}
+
+	/**
+	 * @param string $folder
+	 * @param string $userOrGroup
+	 * @param string $remote
+	 * @param string $name
+	 * @param int $maxRetries
+	 * @param bool $quiet
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
+		$folder, $userOrGroup, $remote, $name, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
+	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		try {
 			$this->filesPage->closeDetailsDialog();
@@ -205,9 +207,22 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
 			$folder, $this->getSession()
 		);
-		$this->sharingDialog->shareWithGroup(
-			$group, $this->getSession(), $maxRetries, $quiet
-		);
+		if ($userOrGroup === "user") {
+			$user = $this->featureContext->substituteInLineCodes($name);
+			if ($remote === "remote") {
+				$this->sharingDialog->shareWithRemoteUser(
+					$user, $this->getSession(), $maxRetries, $quiet
+				);
+			} else {
+				$this->sharingDialog->shareWithUser(
+					$user, $this->getSession(), $maxRetries, $quiet
+				);
+			}
+		} else {
+			$this->sharingDialog->shareWithGroup(
+				$name, $this->getSession(), $maxRetries, $quiet
+			);
+		}
 		$this->theUserClosesTheShareDialog();
 	}
 
@@ -1200,15 +1215,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	) {
 		$sharingWasPossible = false;
 		try {
-			if ($userOrGroup === "user") {
-				$this->theUserSharesFileFolderWithUserUsingTheWebUI(
-					$fileName, null, $shareWith, 2, true
-				);
-			} else {
-				$this->theUserSharesFileFolderWithGroupUsingTheWebUI(
-					$fileName, $shareWith, 2, true
-				);
-			}
+			$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
+				$fileName, $userOrGroup, "", $shareWith, 2, true
+			);
 			$sharingWasPossible = true;
 		} catch (ElementNotFoundException $e) {
 			if ($shareWith === null) {
