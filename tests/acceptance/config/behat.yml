@@ -386,6 +386,18 @@ default:
         - WebUIAdminSharingSettingsContext:
         - WebUIPersonalSharingSettingsContext:
 
+    webUISharingAutocompletion:
+      paths:
+        - '%paths.base%/../features/webUISharingAutocompletion'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+        - OccContext:
+        - WebUIPersonalSharingSettingsContext:
+
     webUISharingExternal:
       paths:
         - '%paths.base%/../features/webUISharingExternal'
