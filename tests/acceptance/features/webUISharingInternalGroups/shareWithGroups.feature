@@ -5,11 +5,11 @@ Feature: Sharing files and folders with internal groups
   So that those groups can access the files and folders
 
   Background:
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | user1    |
       | user2    |
-      | user3    |
+    And user "user3" has been created with default attributes
     And these groups have been created:
       | groupname |
       | grp1      |
@@ -23,15 +23,15 @@ Feature: Sharing files and folders with internal groups
     When the user shares folder "simple-folder" with group "grp1" using the webUI
     And the user shares file "testimage.jpg" with group "grp1" using the webUI
     And the user re-logs in as "user1" using the webUI
-    Then folder "simple-folder (2)" should be listed on the webUI
-    And folder "simple-folder (2)" should be marked as shared with "grp1" by "User Three" on the webUI
-    And file "testimage (2).jpg" should be listed on the webUI
-    And file "testimage (2).jpg" should be marked as shared with "grp1" by "User Three" on the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be marked as shared with "grp1" by "User Three" on the webUI
+    And file "testimage.jpg" should be listed on the webUI
+    And file "testimage.jpg" should be marked as shared with "grp1" by "User Three" on the webUI
     When the user re-logs in as "user2" using the webUI
-    Then folder "simple-folder (2)" should be listed on the webUI
-    And folder "simple-folder (2)" should be marked as shared with "grp1" by "User Three" on the webUI
-    And file "testimage (2).jpg" should be listed on the webUI
-    And file "testimage (2).jpg" should be marked as shared with "grp1" by "User Three" on the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be marked as shared with "grp1" by "User Three" on the webUI
+    And file "testimage.jpg" should be listed on the webUI
+    And file "testimage.jpg" should be marked as shared with "grp1" by "User Three" on the webUI
 
   @TestAlsoOnExternalUserBackend @skipOnFIREFOX
   Scenario: share a file with an internal group a member overwrites and unshares the file
@@ -112,19 +112,19 @@ Feature: Sharing files and folders with internal groups
     Given group "system-group" has been created
     And the administrator has browsed to the admin sharing settings page
     When the administrator excludes group "system-group" from receiving shares using the webUI
-    Then user "user1" should not be able to share file "lorem.txt" with group "system-group" using the sharing API
+    Then user "user3" should not be able to share file "lorem.txt" with group "system-group" using the sharing API
 
   Scenario: user tries to share a folder in a group which is excluded from receiving share
     Given group "system-group" has been created
     And the administrator has browsed to the admin sharing settings page
     When the administrator excludes group "system-group" from receiving shares using the webUI
-    Then user "user1" should not be able to share folder "simple-folder" with group "system-group" using the sharing API
+    Then user "user3" should not be able to share folder "simple-folder" with group "system-group" using the sharing API
 
   Scenario: autocompletion for a group that is excluded from receiving shares
     Given group "system-group" has been created
     And the administrator has browsed to the admin sharing settings page
     When the administrator excludes group "system-group" from receiving shares using the webUI
-    And the user re-logs in as "user1" using the webUI
+    And the user re-logs in as "user3" using the webUI
     And the user browses to the files page
     And the user opens the share dialog for folder "simple-folder"
     And the user types "system-group" in the share-with-field
@@ -184,7 +184,7 @@ Feature: Sharing files and folders with internal groups
   @mailhog
   Scenario: user should get an error message when trying to send notification by email to the group where some user have set up their email and others haven't
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
-    And these users have been created:
+    And these users have been created without skeleton files:
       | username           |
       | brand-new-user     |
       | off-brand-new-user |
