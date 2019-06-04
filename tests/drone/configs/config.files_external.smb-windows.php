@@ -1,7 +1,7 @@
 <?php
 return [
 	'run'=>true,
-	'host'=>'fsweb.test.owncloud.com',
+	'host'=>'172.16.115.3',
 	'user'=>'test100',
 	'password'=>'Password123!',
 	'root'=>'',
