@@ -9,7 +9,7 @@ Feature: reset user password
 
   @smokeTest @skipOnEncryptionType:user-keys @encryption-issue-57
   Scenario: reset user password
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       | password  | displayname | email                    |
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
     When the administrator resets the password of user "brand-new-user" to "%alt1%" using the provisioning API
@@ -25,7 +25,7 @@ Feature: reset user password
 
   @smokeTest @skipOnEncryptionType:user-keys @encryption-issue-57
   Scenario: subadmin should be able to reset the password of a user in their group
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       | password   | displayname | email                    |
       | brand-new-user | %regular%  | New user    | brand.new.user@oc.com.np |
       | subadmin       | %subadmin% | Sub Admin   | sub.admin@oc.com.np      |
@@ -39,7 +39,7 @@ Feature: reset user password
     But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
 
   Scenario: subadmin should not be able to reset the password of a user not in their group
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       | password   | displayname | email                    |
       | brand-new-user | %regular%  | New user    | brand.new.user@oc.com.np |
       | subadmin       | %subadmin% | Sub Admin   | sub.admin@oc.com.np      |
@@ -52,7 +52,7 @@ Feature: reset user password
     But user "brand-new-user" using password "%alt1%" should not be able to download file "textfile0.txt"
 
   Scenario: a user should not be able to reset the password of another user
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       | password   | displayname    | email                    |
       | brand-new-user | %regular%  | New user       | brand.new.user@oc.com.np |
       | wannabeadmin   | %altadmin% | Wanna Be Admin | wanna.be.admin@oc.com.np |
@@ -63,7 +63,7 @@ Feature: reset user password
     But user "brand-new-user" using password "%alt1%" should not be able to download file "textfile0.txt"
 
   Scenario: a user should be able to reset their own password
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       | password  | displayname | email                    |
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
     When user "brand-new-user" resets the password of user "brand-new-user" to "%alt1%" using the provisioning API
@@ -74,7 +74,7 @@ Feature: reset user password
 
   @skipOnEncryptionType:user-keys @encryption-issue-57
   Scenario Outline: reset user password including emoji
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       | password  | displayname | email                    |
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
     When the administrator resets the password of user "brand-new-user" to "<password>" using the provisioning API
