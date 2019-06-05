@@ -8,7 +8,7 @@ Feature: Maintenance command
   Scenario: Repair steps should be listed correctly
     When the administrator list the repair steps using the occ command
     Then the command should have been successful
-    And the command output should contain the text "Found 16 repair steps"
+    And the command output should contain the text "Found 17 repair steps"
     And the command output table should contain the following text:
       | table_column                          |
       | OC\Repair\RepairMimeTypes             |
@@ -22,6 +22,7 @@ Feature: Maintenance command
       | OC\Repair\RepairSubShares             |
       | OC\Repair\SharePropagation            |
       | OC\Repair\MoveAvatarOutsideHome       |
+      | OC\Repair\MoveAvatarIntoSubFolder     |
       | OC\Repair\RemoveRootShares            |
       | OC\Repair\RepairUnmergedShares        |
       | OC\Repair\DisableExtraThemes          |
