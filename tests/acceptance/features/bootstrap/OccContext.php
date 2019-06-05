@@ -39,6 +39,18 @@ class OccContext implements Context {
 	private $featureContext;
 
 	/**
+	 *
+	 * @var ImportedCertificates
+	 */
+	private $importedCertificates = [];
+
+	/**
+	 *
+	 * @var RemovedCertificates
+	 */
+	private $removedCertificates = [];
+
+	/**
 	 * @var string lastDeletedJobId
 	 */
 	private $lastDeletedJobId;
@@ -53,6 +65,33 @@ class OccContext implements Context {
 	 */
 	public function invokingTheCommand($cmd) {
 		$this->featureContext->runOcc([$cmd]);
+	}
+
+	/**
+	 * @When the administrator imports security certificate form the path :path
+	 * @Given the administrator has imported security certificate form the path :path
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theAdministratorImportsSecurityCertificateFormThePath($path) {
+		$this->invokingTheCommand("security:certificates:import " . $path);
+		$pathComponents = \explode("/", $path);
+		$certificate = \end($pathComponents);
+		\array_push($this->importedCertificates, $certificate);
+	}
+
+	/**
+	 * @When the administrator removes the security certificate :certificate
+	 *
+	 * @param string $certificate
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRemovesTheSecurityCertificate($certificate) {
+		$this->invokingTheCommand("security:certificates:remove " . $certificate);
+		\array_push($this->removedCertificates, $certificate);
 	}
 
 	/**
@@ -846,6 +885,21 @@ class OccContext implements Context {
 		);
 	}
 
+	/**
+	 * This will run after EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function removeImportedCertificates() {
+		$remainingCertificates = \array_diff($this->importedCertificates, $this->removedCertificates);
+		foreach ($remainingCertificates as $certificate) {
+			$this->invokingTheCommand("security:certificates:remove " . $certificate);
+			$this->theCommandShouldHaveBeenSuccessful();
+		}
+	}
 	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
