@@ -65,7 +65,7 @@ Feature: reset user password
     And the command output should contain the text 'User does not exist'
 
   Scenario: admin should be able to reset their own password
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username       | displayname    |
       | brand-new-user | Brand New User |
     When the administrator resets their own password to "%alt1%" using the occ command

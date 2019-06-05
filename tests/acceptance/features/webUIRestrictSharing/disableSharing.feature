@@ -5,7 +5,7 @@ Feature: disable sharing
   So that users cannot share files
 
   Background:
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
 
   @TestAlsoOnExternalUserBackend
   @smokeTest

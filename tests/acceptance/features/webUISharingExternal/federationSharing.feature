@@ -6,9 +6,9 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Background:
     Given using server "REMOTE"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And using server "LOCAL"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user1" has logged in using the webUI
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
 
@@ -24,7 +24,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: test the single steps of receiving a federation share
     Given using server "REMOTE"
-    And these users have been created with default attributes:
+    And these users have been created with default attributes and skeleton files:
       | username |
       | user2    |
       | user3    |
@@ -79,7 +79,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | /lorem%20(2).txt |
 
   Scenario: one user disabling user-based auto accepting while global is enabled has no effect on other users
-    Given user "user2" has been created with default attributes
+    Given user "user2" has been created with default attributes and skeleton files
     And parameter "autoAddServers" of app "federation" has been set to "1"
     And user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
@@ -217,7 +217,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: receive same name federation share from two users
     Given using server "REMOTE"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user1" from server "REMOTE" has shared "/lorem.txt" with user "user1" from server "LOCAL"
     And user "user2" from server "REMOTE" has shared "/lorem.txt" with user "user1" from server "LOCAL"
     And the user has reloaded the current page of the webUI

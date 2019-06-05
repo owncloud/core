@@ -6,7 +6,7 @@ Feature: get file properties
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
 
   @smokeTest
   Scenario Outline: Do a PROPFIND of various file names
@@ -71,7 +71,7 @@ Feature: get file properties
 
   Scenario Outline: A file that is shared to a user has a share-types property
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has created a share with settings
       | path        | test  |
@@ -124,7 +124,7 @@ Feature: get file properties
   @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required
   Scenario Outline: A file that is shared by user,group and link has a share-types property
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And group "grp2" has been created
     And user "user0" has created folder "/test"
     And user "user0" has created a share with settings

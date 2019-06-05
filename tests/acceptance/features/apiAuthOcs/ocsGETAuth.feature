@@ -1,7 +1,7 @@
 @api @TestAlsoOnExternalUserBackend
 Feature: auth
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
 
   @issue-32068
   Scenario Outline: using OCS anonymously

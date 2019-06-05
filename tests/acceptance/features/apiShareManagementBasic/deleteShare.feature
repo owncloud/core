@@ -5,8 +5,8 @@ Feature: sharing
     Given using old DAV path
 
   Scenario Outline: Delete all group shares
-    Given user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
     And using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
@@ -23,7 +23,7 @@ Feature: sharing
 
   @smokeTest
   Scenario Outline: delete a share
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
     And using OCS API version "<ocs_api_version>"
     And user "user0" has shared file "textfile0.txt" with user "user1"
@@ -86,7 +86,7 @@ Feature: sharing
   @smokeTest @files_trashbin-app-required
   Scenario: deleting a file out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
@@ -101,7 +101,7 @@ Feature: sharing
   @files_trashbin-app-required
   Scenario: deleting a folder out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/shared"
     And user "user0" has created folder "/shared/sub"
@@ -124,7 +124,7 @@ Feature: sharing
       | username |
       | user0    |
       | user1    |
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user2" has been added to group "grp1"
     And user "user1" has been added to group "grp1"
     And user "user2" has shared file "/PARENT/parent.txt" with group "grp1"
@@ -142,7 +142,7 @@ Feature: sharing
 
   Scenario: sharee of a read-only share folder tries to delete the shared folder
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
@@ -153,7 +153,7 @@ Feature: sharing
 
   Scenario: sharee of a upload-only shared folder tries to delete a file in the shared folder
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"

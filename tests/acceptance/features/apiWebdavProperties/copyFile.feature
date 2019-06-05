@@ -6,7 +6,7 @@ Feature: copy file
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
 
   @smokeTest
   Scenario Outline: Copying a file
@@ -44,7 +44,7 @@ Feature: copy file
 
   Scenario Outline: Copying a file to a folder with no permissions
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
@@ -62,7 +62,7 @@ Feature: copy file
 
   Scenario Outline: Copying a file to overwrite a file into a folder with no permissions
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
