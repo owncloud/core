@@ -3,9 +3,9 @@ Feature: federated
 
   Background:
     Given using server "REMOTE"
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And using server "LOCAL"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
 
   Scenario Outline: Federate share a file with another server
     Given using OCS API version "<ocs-api-version>"
@@ -163,7 +163,7 @@ Feature: federated
     Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "user1" creates a share using the sharing API with settings
       | path        | /textfile0 (2).txt |

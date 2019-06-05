@@ -9,7 +9,7 @@ Feature: Sharing files and folders with internal groups
       | username |
       | user1    |
       | user2    |
-    And user "user3" has been created with default attributes
+    And user "user3" has been created with default attributes and skeleton files
     And these groups have been created:
       | groupname |
       | <group>   |

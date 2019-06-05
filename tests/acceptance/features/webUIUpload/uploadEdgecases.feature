@@ -8,7 +8,7 @@ Feature: File Upload
   that is not academically correct but saves a lot of time
 
   Background:
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
     And user "user1" has logged in using the webUI
 
   Scenario: simple upload of a file that does not exist before

@@ -3,7 +3,7 @@ Feature: sharing
 
   Background:
     Given using old DAV path
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
 
   @smokeTest
   @skipOnEncryptionType:user-keys @issue-32322
@@ -238,7 +238,7 @@ Feature: sharing
 
   Scenario Outline: Share of folder and sub-folder to same user - core#20645
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And group "grp4" has been created
     And user "user1" has been added to group "grp4"
     When user "user0" shares file "/PARENT" with user "user1" using the sharing API
@@ -261,8 +261,8 @@ Feature: sharing
   @smokeTest
   Scenario Outline: Share of folder to a group
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes
-    And user "user2" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user2" has been created with default attributes and skeleton files
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
@@ -315,8 +315,8 @@ Feature: sharing
   @smokeTest
   Scenario: unique target names for incoming shares
     Given using OCS API version "1"
-    And user "user1" has been created with default attributes
-    And user "user2" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user2" has been created with default attributes and skeleton files
     And user "user0" has created folder "/foo"
     And user "user1" has created folder "/foo"
     When user "user0" shares file "/foo" with user "user2" using the sharing API
@@ -327,7 +327,7 @@ Feature: sharing
 
   Scenario Outline: sharing again an own file while belonging to a group
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user1" has shared file "welcome.txt" with group "grp1"
@@ -622,8 +622,8 @@ Feature: sharing
 
   Scenario Outline: Share of folder to a group with emoji in the name
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes
-    And user "user2" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user2" has been created with default attributes and skeleton files
     And group "😀 😁" has been created
     And user "user1" has been added to group "😀 😁"
     And user "user2" has been added to group "😀 😁"

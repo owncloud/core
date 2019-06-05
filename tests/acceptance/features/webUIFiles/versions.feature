@@ -7,7 +7,7 @@ Feature: Versions of a file
   So that I can have more control over the files
 
   Background:
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
 
@@ -31,7 +31,7 @@ Feature: Versions of a file
     Then the content of file "lorem-file.txt" for user "user0" should be "lorem content"
 
   Scenario: sharee can see the versions of a file
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has uploaded file with content "lorem content" to "/lorem-file.txt"
     And user "user0" has uploaded file with content "lorem" to "/lorem-file.txt"
     And user "user0" has uploaded file with content "new lorem content" to "/lorem-file.txt"
@@ -55,7 +55,7 @@ Feature: Versions of a file
 
   @skipOnStorage:ceph @files_primary_s3-issue-155
   Scenario: file versions cannot be seen on the webUI only for user whose versions is deleted
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has uploaded file with content "lorem content" to "/lorem-file.txt"
     And user "user0" has uploaded file with content "lorem" to "/lorem-file.txt"
     And user "user1" has uploaded file with content "lorem content" to "/lorem-file.txt"
@@ -73,7 +73,7 @@ Feature: Versions of a file
 
   @skipOnStorage:ceph @files_primary_s3-issue-155
   Scenario: file versions cannot be seen on the webUI for all users after deleting versions for all users
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
     And user "user0" has uploaded file with content "lorem content" to "/lorem-file.txt"
     And user "user0" has uploaded file with content "lorem" to "/lorem-file.txt"
     And user "user1" has uploaded file with content "lorem content" to "/lorem-file.txt"

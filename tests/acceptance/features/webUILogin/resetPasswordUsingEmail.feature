@@ -5,7 +5,7 @@ Feature: reset the password using an email address
   So that I can login to my account again after forgetting the password
 
   Background:
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and skeleton files but not initialized:
       | username |
       | user1    |
     And the user has browsed to the login page

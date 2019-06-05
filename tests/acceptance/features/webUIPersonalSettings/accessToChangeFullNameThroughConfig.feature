@@ -5,7 +5,7 @@ Feature: Control access to edit fullname of user through config file
   So that users can edit their fullname after getting permission from administrator
 
   Scenario: Admin gives access to users to change their full name
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
     And user "user1" has logged in using the webUI
     When the administrator updates system config key "allow_user_to_change_display_name" with value "true" and type "boolean" using the occ command
     And the user browses to the personal general settings page
@@ -16,7 +16,7 @@ Feature: Control access to edit fullname of user through config file
       | displayname | my#very&weird?नेपालि%name |
 
   Scenario: Admin doesnot give access to users to change their full name
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
     And user "user1" has logged in using the webUI
     When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
     And the user browses to the personal general settings page

@@ -9,7 +9,7 @@ Feature: get subadmin groups
 
   @smokeTest
   Scenario: admin gets subadmin groups of a user
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "new-group" has been created
     And group "😅 😆" has been created
     And user "brand-new-user" has been made a subadmin of group "new-group"
