@@ -5,7 +5,7 @@ Feature: get group
   So that I can know which users are in a group
 
   Scenario: admin gets users in the group
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       |
       | brand-new-user |
       | 123            |
