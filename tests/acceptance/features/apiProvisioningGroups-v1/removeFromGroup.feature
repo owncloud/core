@@ -9,7 +9,7 @@ Feature: remove a user from a group
 
   @smokeTest
   Scenario Outline: admin removes a user from a group
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
     When the administrator removes user "brand-new-user" from group "<group_id>" using the provisioning API
@@ -23,7 +23,7 @@ Feature: remove a user from a group
       | नेपाली      | Unicode group name          |
 
   Scenario Outline: admin removes a user from a group
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
     When the administrator removes user "brand-new-user" from group "<group_id>" using the provisioning API
@@ -52,7 +52,7 @@ Feature: remove a user from a group
 
   @issue-31015
   Scenario Outline: admin removes a user from a group that has a forward-slash in the group name
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     # After fixing issue-31015, change the following step to "has been created"
     And the administrator sends a group creation request for group "<group_id>" using the provisioning API
     #And group "<group_id>" has been created
@@ -72,7 +72,7 @@ Feature: remove a user from a group
       | priv/subadmins/1 | Subadmins mentioned not at the end |
 
   Scenario Outline: remove a user from a group using mixes of upper and lower case in user and group names
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "<group_id1>" has been created
     And group "<group_id2>" has been created
     And group "<group_id3>" has been created
@@ -92,7 +92,7 @@ Feature: remove a user from a group
       | brand-new-user | NEW-GROUP | New-Group | new-group |
 
   Scenario: admin tries to remove a user from a group which does not exist
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "not-group" has been deleted
     When the administrator removes user "brand-new-user" from group "not-group" using the provisioning API
     Then the OCS status code should be "102"
@@ -101,8 +101,8 @@ Feature: remove a user from a group
 
   @smokeTest
   Scenario: a subadmin can remove users from groups the subadmin is responsible for
-    Given user "subadmin" has been created with default attributes
-    And user "brand-new-user" has been created with default attributes
+    Given user "subadmin" has been created with default attributes and skeleton files
+    And user "brand-new-user" has been created with default attributes and skeleton files
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
@@ -112,8 +112,8 @@ Feature: remove a user from a group
     And user "brand-new-user" should not belong to group "new-group"
 
   Scenario: a subadmin cannot remove users from groups the subadmin is not responsible for
-    Given user "other-subadmin" has been created with default attributes
-    And user "brand-new-user" has been created with default attributes
+    Given user "other-subadmin" has been created with default attributes and skeleton files
+    And user "brand-new-user" has been created with default attributes and skeleton files
     And group "new-group" has been created
     And group "other-group" has been created
     And user "brand-new-user" has been added to group "new-group"
@@ -124,8 +124,8 @@ Feature: remove a user from a group
     And user "brand-new-user" should belong to group "new-group"
 
   Scenario: normal user tries to remove a user in their group
-    Given user "newuser" has been created with default attributes
-    And user "anotheruser" has been created with default attributes
+    Given user "newuser" has been created with default attributes and skeleton files
+    And user "anotheruser" has been created with default attributes and skeleton files
     And group "new-group" has been created
     And user "newuser" has been added to group "new-group"
     And user "anotheruser" has been added to group "new-group"

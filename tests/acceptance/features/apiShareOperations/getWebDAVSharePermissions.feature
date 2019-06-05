@@ -3,8 +3,8 @@ Feature: sharing
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
 
   @smokeTest
   Scenario Outline: Correct webdav share-permissions for owned file

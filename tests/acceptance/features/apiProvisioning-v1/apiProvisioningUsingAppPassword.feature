@@ -9,7 +9,7 @@ Feature: access user provisioning API using app password
 
   @smokeTest
   Scenario: admin deletes the user
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "new-group" has been created
     And a new client token for the administrator has been generated
     And a new browser session for the administrator has been started
@@ -19,8 +19,8 @@ Feature: access user provisioning API using app password
     And user "brand-new-user" should not exist
 
   Scenario: subadmin gets users in their group
-    Given user "brand-new-user" has been created with default attributes
-    And user "another-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
+    And user "another-new-user" has been created with default attributes and skeleton files
     And group "new-group" has been created
     And user "another-new-user" has been added to group "new-group"
     And user "brand-new-user" has been made a subadmin of group "new-group"
@@ -34,7 +34,7 @@ Feature: access user provisioning API using app password
 
   @smokeTest
   Scenario: normal user gets their own information using the app password
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username | displayname |
       | newuser  | New User    |
     And a new client token for "newuser" has been generated
@@ -45,8 +45,8 @@ Feature: access user provisioning API using app password
     And the display name returned by the API should be "New User"
 
   Scenario: subadmin tries to get users of other group
-    Given user "brand-new-user" has been created with default attributes
-    And user "another-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
+    And user "another-new-user" has been created with default attributes and skeleton files
     And group "new-group" has been created
     And group "another-new-group" has been created
     And user "another-new-user" has been added to group "another-new-group"
@@ -59,8 +59,8 @@ Feature: access user provisioning API using app password
     And the HTTP status code should be "200"
 
   Scenario: normal user tries to get other user information using the app password
-    Given user "newuser" has been created with default attributes
-    And user "anotheruser" has been created with default attributes
+    Given user "newuser" has been created with default attributes and skeleton files
+    And user "anotheruser" has been created with default attributes and skeleton files
     And a new client token for "newuser" has been generated
     And a new browser session for "newuser" has been started
     And the user has generated a new app password named "my-client"

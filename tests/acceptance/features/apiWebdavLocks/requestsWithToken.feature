@@ -2,7 +2,7 @@
 Feature: actions on a locked item are possible if the token is sent with the request
 
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
 
   Scenario Outline: rename a file in a locked folder
     Given using <dav-path> DAV path
@@ -54,7 +54,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
   @issue-34338
   Scenario Outline: share receiver cannot rename a file in a folder locked by the owner even when sending the locktoken
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has shared folder "PARENT" with user "user1"
     And user "user0" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
@@ -88,7 +88,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
   @issue-34360
   Scenario Outline: two users having both a shared lock can use the resource
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has shared file "textfile0.txt" with user "user1"
     And user "user0" has locked file "textfile0.txt" setting following properties
       | lockscope | shared |

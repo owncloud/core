@@ -3,8 +3,8 @@ Feature: sharing
 
   Background:
     Given using old DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
 
   @smokeTest
   Scenario Outline: getting all shares of a user using that user
@@ -35,8 +35,8 @@ Feature: sharing
   @smokeTest
   Scenario Outline: getting all shares of a file
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes
-    And user "user3" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
+    And user "user3" has been created with default attributes and skeleton files
     And user "user0" has shared file "textfile0.txt" with user "user1"
     And user "user0" has shared file "textfile0.txt" with user "user2"
     When user "user0" gets all the shares from the file "textfile0.txt" using the sharing API
@@ -53,8 +53,8 @@ Feature: sharing
   @smokeTest
   Scenario Outline: getting all shares of a file with reshares
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes
-    And user "user3" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
+    And user "user3" has been created with default attributes and skeleton files
     And user "user0" has shared file "textfile0.txt" with user "user1"
     And user "user1" has shared file "textfile0 (2).txt" with user "user2"
     When user "user0" gets all the shares with reshares from the file "textfile0.txt" using the sharing API
@@ -72,7 +72,7 @@ Feature: sharing
   Scenario Outline: User's own shares reshared to him don't appear when getting "shared with me" shares
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user2" has been added to group "grp1"
     And user "user2" has created folder "/shared"
     And user "user2" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
@@ -120,7 +120,7 @@ Feature: sharing
 
   Scenario Outline: Get a share with a user that didn't receive the share
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user0" has shared file "textfile0.txt" with user "user1"
     When user "user2" gets the info of the last share using the sharing API
     Then the OCS status code should be "404"
@@ -133,7 +133,7 @@ Feature: sharing
   @skipOnLDAP
   Scenario: Share of folder to a group, remove user from that group
     Given using OCS API version "1"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And group "group0" has been created
     And user "user1" has been added to group "group0"
     And user "user2" has been added to group "group0"

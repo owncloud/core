@@ -4,7 +4,7 @@ Feature: Editing the tags
   I want to be able to change the tags I have created
 
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     And as user "user0"
 
   @smokeTest

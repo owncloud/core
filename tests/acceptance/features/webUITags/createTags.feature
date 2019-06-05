@@ -5,7 +5,7 @@ Feature: Creation of tags for the files and folders
   So that I can find them easily
 
   Background:
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
     And the user has browsed to the login page
@@ -39,7 +39,7 @@ Feature: Creation of tags for the files and folders
 
   @skipOnFIREFOX
   Scenario: Create and add tag on a shared file
-    Given user "user2" has been created with default attributes
+    Given user "user2" has been created with default attributes and skeleton files
     When the user renames file "lorem.txt" to "coolnewfile.txt" using the webUI
     And the user browses directly to display the details of file "coolnewfile.txt" in folder ""
     And the user adds a tag "tag1" to the file using the webUI

@@ -21,7 +21,7 @@ Feature: get group
       | 123            | 123          |
 
   Scenario: admin gets user in the group who is disabled
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And the administrator has changed the display name of user "brand-new-user" to "Anne Brown"
     And user "brand-new-user" has been disabled
     And group "new-group" has been created

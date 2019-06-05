@@ -9,7 +9,7 @@ Feature: get user
 
   @smokeTest
   Scenario: admin gets an existing user
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username       | displayname    |
       | brand-new-user | Brand New User |
     When the administrator retrieves the information of user "brand-new-user" using the provisioning API
@@ -26,7 +26,7 @@ Feature: get user
 
   @smokeTest
   Scenario: a subadmin gets information of a user in their group
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username | displayname |
       | subadmin | Sub Admin   |
       | newuser  | New User    |
@@ -40,8 +40,8 @@ Feature: get user
     And the quota definition returned by the API should be "default"
 
   Scenario: a subadmin tries to get information of a user not in their group
-    Given user "subadmin" has been created with default attributes
-    And user "newuser" has been created with default attributes
+    Given user "subadmin" has been created with default attributes and skeleton files
+    And user "newuser" has been created with default attributes and skeleton files
     And group "newgroup" has been created
     And user "subadmin" has been made a subadmin of group "newgroup"
     When user "subadmin" retrieves the information of user "newuser" using the provisioning API
@@ -51,8 +51,8 @@ Feature: get user
 
   @issue-31276
   Scenario: a normal user tries to get information of another user
-    Given user "newuser" has been created with default attributes
-    And user "anotheruser" has been created with default attributes
+    Given user "newuser" has been created with default attributes and skeleton files
+    And user "anotheruser" has been created with default attributes and skeleton files
     When user "anotheruser" retrieves the information of user "newuser" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
@@ -61,7 +61,7 @@ Feature: get user
 
   @smokeTest
   Scenario: a normal user gets their own information
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username | displayname |
       | newuser  | New User    |
     When user "newuser" retrieves the information of user "newuser" using the provisioning API
