@@ -5,7 +5,7 @@ Feature: security certificates
   So that I can ensure the proper encrpytion mechanism
 
   Scenario: Import a security certificate
-    When the administrator imports security certificate form the path "tests/data/certificates/goodCertificate.crt"
+    When the administrator imports security certificate from the path "tests/data/certificates/goodCertificate.crt"
     Then the command should have been successful
     When the administrator invokes occ command "security:certificates"
     Then the command should have been successful
@@ -14,8 +14,8 @@ Feature: security certificates
       | goodCertificate.crt  |
 
   Scenario: List security certificates when multiple certificates are imported
-    Given the administrator has imported security certificate form the path "tests/data/certificates/goodCertificate.crt"
-    And the administrator has imported security certificate form the path "tests/data/certificates/badCertificate.crt"
+    Given the administrator has imported security certificate from the path "tests/data/certificates/goodCertificate.crt"
+    And the administrator has imported security certificate from the path "tests/data/certificates/badCertificate.crt"
     When the administrator invokes occ command "security:certificates"
     And the command output table should contain the following text:
     | table_column         |
@@ -23,8 +23,8 @@ Feature: security certificates
     | badCertificate.crt   |
 
   Scenario: Remove a security certificate
-    Given the administrator has imported security certificate form the path "tests/data/certificates/goodCertificate.crt"
-    And the administrator has imported security certificate form the path "tests/data/certificates/badCertificate.crt"
+    Given the administrator has imported security certificate from the path "tests/data/certificates/goodCertificate.crt"
+    And the administrator has imported security certificate from the path "tests/data/certificates/badCertificate.crt"
     When the administrator removes the security certificate "goodCertificate.crt"
     Then the command should have been successful
     When the administrator invokes occ command "security:certificates"
@@ -39,5 +39,5 @@ Feature: security certificates
     # Then the command should not have been successful
 
   Scenario: Import random file as certificate
-    When the administrator imports security certificate form the path "tests/data/lorem.txt"
+    When the administrator imports security certificate from the path "tests/data/lorem.txt"
     Then the command error output should contain the text "Certificate could not get parsed."

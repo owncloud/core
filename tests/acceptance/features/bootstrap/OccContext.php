@@ -68,14 +68,14 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator imports security certificate form the path :path
-	 * @Given the administrator has imported security certificate form the path :path
+	 * @When the administrator imports security certificate from the path :path
+	 * @Given the administrator has imported security certificate from the path :path
 	 *
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function theAdministratorImportsSecurityCertificateFormThePath($path) {
+	public function theAdministratorImportsSecurityCertificateFromThePath($path) {
 		$this->invokingTheCommand("security:certificates:import " . $path);
 		$pathComponents = \explode("/", $path);
 		$certificate = \end($pathComponents);
