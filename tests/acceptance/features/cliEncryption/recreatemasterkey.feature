@@ -7,7 +7,7 @@ Feature: recreate-master-key
     Then the downloaded content when downloading file "/somefile.txt" for user "admin" with range "bytes=0-6" should be "This is"
 
   Scenario: recreate masterkey and upload data
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
     When the administrator successfully recreates the encryption masterkey using the occ command
     And user "user0" uploads chunk file "1" of "1" with "AA" to "/somefile.txt" using the WebDAV API
