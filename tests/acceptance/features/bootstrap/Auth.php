@@ -183,9 +183,17 @@ trait Auth {
 	 *
 	 * @return void
 	 */
-	public function adminRequestsEndpointsWithPassword($method, $password, TableNode $table) {
+	public function adminRequestsEndpointsWithPassword(
+		$method,
+		$password,
+		TableNode $table
+	) {
 		foreach ($table->getHash() as $row) {
-			$this->administratorRequestsURLWithUsingBasicAuth($row['endpoint'], $method, $password);
+			$this->administratorRequestsURLWithUsingBasicAuth(
+				$row['endpoint'],
+				$method,
+				$password
+			);
 			$this->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
 		}
 	}
@@ -241,11 +249,12 @@ trait Auth {
 	 * @param string $method
 	 * @param string|null $authHeader
 	 * @param bool $useCookies
+	 * @param string $body
 	 *
 	 * @return void
 	 */
 	public function sendRequest(
-		$url, $method, $authHeader = null, $useCookies = false
+		$url, $method, $authHeader = null, $useCookies = false, $body = null
 	) {
 		// reset responseXml
 		$this->responseXml = '';
@@ -266,7 +275,7 @@ trait Auth {
 			$headers['requesttoken'] = $this->requestToken;
 		}
 		$this->response = HttpRequestHelper::sendRequest(
-			$fullUrl, $method, null, null, $headers, null, null, $cookies
+			$fullUrl, $method, null, null, $headers, $body, null, $cookies
 		);
 	}
 
@@ -346,17 +355,18 @@ trait Auth {
 	 * @param string $url
 	 * @param string $method
 	 * @param string $password
+	 * @param string $body
 	 *
 	 * @return void
 	 */
-	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password=null) {
+	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password=null, $body=null) {
 		if ($password === null) {
 			$authString = "$user:" . $this->getPasswordForUser($user);
 		} else {
 			$authString = $password;
 		}
 		$this->sendRequest(
-			$url, $method, 'basic ' . \base64_encode($authString)
+			$url, $method, 'basic ' . \base64_encode($authString), false, $body
 		);
 	}
 
