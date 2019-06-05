@@ -15,7 +15,7 @@ Feature: admin storage settings
     Then the external storage form should not be displayed on the storage settings page
 
   Scenario: administrator creates a local storage mount
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and without skeleton files
     And the administrator has browsed to the admin storage settings page
     And the administrator has enabled the external storage
     When the administrator creates the local storage mount "local_storage1" using the webUI
@@ -23,7 +23,7 @@ Feature: admin storage settings
     Then folder "local_storage1" should be listed on the webUI
 
   Scenario: administrator assigns an applicable user to a local storage mount
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | user0    |
       | user1    |
@@ -41,7 +41,7 @@ Feature: admin storage settings
     And folder "local_storage2" should be listed on the webUI
 
   Scenario: user should get access if the user is removed from the applicable user and the user was the only applicable user
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | user0    |
       | user1    |
@@ -56,7 +56,7 @@ Feature: admin storage settings
     And folder "local_storage1" should be listed on the webUI
 
   Scenario: administrator should be able to create a local mount for a specific group
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | user0    |
       | user1    |
@@ -72,7 +72,7 @@ Feature: admin storage settings
     And folder "local_storage1" should not be listed on the webUI
 
   Scenario: removing group from applicable group of a local mount
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | user0    |
       | user1    |
@@ -122,7 +122,7 @@ Feature: admin storage settings
     And folder "local_storage1" should not be listed on the webUI
 
   Scenario: local storage mount is not deleted when the one of two users applicable to the mount is deleted
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | user0    |
       | user1    |
