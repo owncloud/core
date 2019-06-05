@@ -331,8 +331,21 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^these users have been created\s?(with default attributes|)\s?(but not initialized|):$/
-	 * @Given /^these users have been created\s?(with default attributes and skeleton files|)\s?(but not initialized|):$/
+	 * @Given these users have been created with skeleton files:
+	 * expects a table of users with the heading
+	 * "|username|password|displayname|email|"
+	 * password, displayname & email are optional
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theseUsersHaveBeenCreatedWithSkeletonFiles(TableNode $table) {
+		$this->theseUsersHaveBeenCreated("", "", $table);
+	}
+
+	/**
+	 * @Given /^these users have been created\s?(with default attributes|with default attributes and skeleton files|)\s?(but not initialized|):$/
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
 	 * password, displayname & email are optional

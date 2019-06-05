@@ -5,7 +5,7 @@ Feature: reset user password
   So that I can secure individual access to resources on the ownCloud server
 
   Scenario: reset user password
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       | password  | displayname | email                    |
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
     When the administrator resets the password of user "brand-new-user" to "%alt1%" using the occ command
@@ -15,7 +15,7 @@ Feature: reset user password
     But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
 
   Scenario: user should get email when admin does a "send email" password reset without specifying a password
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       | password  | displayname | email                    |
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
     When the administrator invokes password reset for user "brand-new-user" using the occ command
@@ -27,7 +27,7 @@ Feature: reset user password
       """
 
   Scenario: user should get email when the administrator changes their password and specifies to also send email
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       | password  | displayname | email                    |
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
     When the administrator resets the password of user "brand-new-user" to "%alt1%" sending email using the occ command
@@ -41,7 +41,7 @@ Feature: reset user password
     But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
 
   Scenario: administrator gets error message while trying to reset user password with send email when the email address of the user is not setup
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       | password  | displayname |
       | brand-new-user | %regular% | New user    |
     When the administrator invokes password reset for user "brand-new-user" using the occ command
@@ -49,7 +49,7 @@ Feature: reset user password
     And the command output should contain the text "Email address is not set for the user brand-new-user"
 
   Scenario: user should not get an email when the smtpmode value points to an invalid or missing mail program
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       | password  | displayname | email                    |
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
     And the administrator has set the mail smtpmode to "sendmail"
