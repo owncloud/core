@@ -940,6 +940,12 @@ else
 		SAUCE_CREDENTIALS=""
 	fi
 
+	if [ "${BROWSER}" == "chrome" ]
+	then
+		# From chrome 75 the w3c mode was flipped to true, we want to stay with false
+		EXTRA_CAPABILITIES='"chromeOptions":{"w3c":false},'
+	fi
+
 	if [ "${BROWSER}" == "firefox" ]
 	then
 		# Set the screen resolution so that hopefully draggable elements will be visible
