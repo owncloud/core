@@ -5,7 +5,7 @@ Feature: Removal of already existing tags from files and folders
   So that I can properly organize my filing system
 
   Background:
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | user2    |

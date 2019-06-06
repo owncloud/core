@@ -6,7 +6,7 @@ Feature: Autocompletion of share-with names
 
   Background:
     # Users that are in the special known users already
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and skeleton files but not initialized:
       | username    |
       | user1       |
       | regularuser |
@@ -182,7 +182,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern where the username of existing user contains the pattern somewhere in the middle
-    Given user "ivan" has been created with default attributes
+    Given user "ivan" has been created with default attributes and skeleton files
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
@@ -200,7 +200,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern where the username of the existing user contains the pattern somewhere in the end
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and skeleton files but not initialized:
       | username     | displayname   |
       | regularuser3 | Guest User |
     And user "user1" has logged in using the webUI
@@ -291,7 +291,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern where the user name contains the pattern somewhere in the middle but accounts medial search is disabled
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and skeleton files but not initialized:
       | username | displayname |
       | ivan     | Ivan         |
     And user "user1" has logged in using the webUI
@@ -303,7 +303,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern where the user name contains the pattern somewhere in the end but accounts medial search is disabled
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and skeleton files but not initialized:
       | username     | displayname   |
       | regularuser3 | Guest User |
     And user "user1" has logged in using the webUI
@@ -315,7 +315,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern where the name of existing user contains the pattern somewhere in the middle but accounts medial search is disabled
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and skeleton files but not initialized:
       | username | displayname   |
       | user2    | finnance typo |
     And user "user1" has logged in using the webUI
@@ -327,7 +327,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern where the display name of existing user contains the pattern somewhere in the end but accounts medial search is disabled
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and skeleton files but not initialized:
       | username | displayname   |
       | user2    | Group User |
     And user "user1" has logged in using the webUI
@@ -339,7 +339,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the beginning but accounts medial search is disabled
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and skeleton files but not initialized:
       | username | displayname | email              |
       | user2    | User2       | hello2u2@oc.com.np |
     And user "user1" has logged in using the webUI
@@ -351,7 +351,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the middle but accounts medial search is disabled
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and skeleton files but not initialized:
       | username | displayname | email              |
       | user2    | User2       | net@oc.com.np |
     And user "user1" has logged in using the webUI
@@ -363,7 +363,7 @@ Feature: Autocompletion of share-with names
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the end but accounts medial search is disabled
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and skeleton files but not initialized:
       | username | displayname | email        |
       | user2    | User2       | de@oc.com.np |
     And user "user1" has logged in using the webUI

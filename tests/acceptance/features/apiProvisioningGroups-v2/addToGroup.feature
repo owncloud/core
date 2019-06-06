@@ -9,7 +9,7 @@ Feature: add users to group
 
   @smokeTest
   Scenario Outline: adding a user to a group
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "<group_id>" has been created
     When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
     Then the OCS status code should be "200"
@@ -21,7 +21,7 @@ Feature: add users to group
       | नेपाली      | Unicode group name          |
 
   Scenario Outline: adding a user to a group
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "<group_id>" has been created
     When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
     Then the OCS status code should be "200"
@@ -48,7 +48,7 @@ Feature: add users to group
 
   @issue-31015
   Scenario Outline: adding a user to a group that has a forward-slash in the group name
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     # After fixing issue-31015, change the following step to "has been created"
     And the administrator sends a group creation request for group "<group_id>" using the provisioning API
     #And group "<group_id>" has been created
@@ -66,7 +66,7 @@ Feature: add users to group
       | priv/subadmins/1 | Subadmins mentioned not at the end |
 
   Scenario Outline: adding a user to a group using mixes of upper and lower case in user and group names
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "<group_id1>" has been created
     And group "<group_id2>" has been created
     And group "<group_id3>" has been created
@@ -84,7 +84,7 @@ Feature: add users to group
 
   @issue-31276
   Scenario: normal user tries to add himself to a group
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     When user "brand-new-user" tries to add himself to group "new-group" using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"
@@ -92,7 +92,7 @@ Feature: add users to group
     And the API should not return any data
 
   Scenario: admin tries to add user to a group which does not exist
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "not-group" has been deleted
     When the administrator tries to add user "brand-new-user" to group "not-group" using the provisioning API
     Then the OCS status code should be "400"
@@ -100,7 +100,7 @@ Feature: add users to group
     And the API should not return any data
 
   Scenario: admin tries to add user to a group without sending the group
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator tries to add user "brand-new-user" to group "" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
@@ -115,8 +115,8 @@ Feature: add users to group
     And the API should not return any data
 
   Scenario: subadmin adds users to groups the subadmin is responsible for
-    Given user "subadmin" has been created with default attributes
-    And user "brand-new-user" has been created with default attributes
+    Given user "subadmin" has been created with default attributes and skeleton files
+    And user "brand-new-user" has been created with default attributes and skeleton files
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "subadmin" tries to add user "brand-new-user" to group "new-group" using the provisioning API
@@ -125,8 +125,8 @@ Feature: add users to group
     And user "brand-new-user" should not belong to group "new-group"
 
   Scenario: subadmin tries to add user to groups the subadmin is not responsible for
-    Given user "other-subadmin" has been created with default attributes
-    And user "brand-new-user" has been created with default attributes
+    Given user "other-subadmin" has been created with default attributes and skeleton files
+    And user "brand-new-user" has been created with default attributes and skeleton files
     And group "new-group" has been created
     And group "other-group" has been created
     And user "other-subadmin" has been made a subadmin of group "other-group"

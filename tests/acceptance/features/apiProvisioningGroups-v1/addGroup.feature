@@ -104,14 +104,14 @@ Feature: add groups
     And group "new-group" should exist
 
   Scenario: normal user tries to create a group
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     When user "brand-new-user" tries to send a group creation request for group "new-group" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And group "new-group" should not exist
 
   Scenario: subadmin tries to create a group
-    Given user "subadmin" has been created with default attributes
+    Given user "subadmin" has been created with default attributes and skeleton files
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "subadmin" tries to send a group creation request for group "another-group" using the provisioning API

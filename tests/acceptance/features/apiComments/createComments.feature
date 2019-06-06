@@ -3,8 +3,8 @@ Feature: Comments
 
   Background:
     Given using new DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
     And as user "user0"
 
   @smokeTest

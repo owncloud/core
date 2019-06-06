@@ -5,7 +5,7 @@ Feature: Search
   So that I can find needed files quickly
 
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     And user "user0" has created folder "/just-a-folder"
     And user "user0" has created folder "/फनी näme"
     And user "user0" has created folder "/upload folder"

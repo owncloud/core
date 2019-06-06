@@ -8,7 +8,7 @@ Feature: quota
 
   Scenario Outline: Uploading a file as owner having enough quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And the quota of user "user0" has been set to "10 MB"
     When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
@@ -20,7 +20,7 @@ Feature: quota
   @smokeTest
   Scenario Outline: Uploading a file as owner having insufficient quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And the quota of user "user0" has been set to "20 B"
     When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
@@ -32,7 +32,7 @@ Feature: quota
 
   Scenario Outline: Overwriting a file as owner having enough quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And the quota of user "user0" has been set to "10 MB"
     And user "user0" has uploaded file with content "test" to "/testquota.txt"
     When user "user0" overwrites file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
@@ -44,7 +44,7 @@ Feature: quota
 
   Scenario Outline: Overwriting a file as owner having insufficient quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And the quota of user "user0" has been set to "20 B"
     And user "user0" has uploaded file with content "test" to "/testquota.txt"
     When user "user0" overwrites file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
@@ -59,8 +59,8 @@ Feature: quota
 
   Scenario Outline: Uploading a file in received folder having enough quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
     And the quota of user "user0" has been set to "20 B"
     And the quota of user "user1" has been set to "10 MB"
     And user "user1" has created folder "/testquota"
@@ -74,8 +74,8 @@ Feature: quota
 
   Scenario Outline: Uploading a file in received folder having insufficient quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
     And the quota of user "user0" has been set to "10 MB"
     And the quota of user "user1" has been set to "20 B"
     And user "user1" has created folder "/testquota"
@@ -90,8 +90,8 @@ Feature: quota
 
   Scenario Outline: Overwriting a file in received folder having enough quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
     And the quota of user "user0" has been set to "20 B"
     And the quota of user "user1" has been set to "10 MB"
     And user "user1" has created folder "/testquota"
@@ -106,8 +106,8 @@ Feature: quota
 
   Scenario Outline: Overwriting a file in received folder having insufficient quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
     And the quota of user "user0" has been set to "10 MB"
     And the quota of user "user1" has been set to "20 B"
     And user "user1" has created folder "/testquota"
@@ -125,8 +125,8 @@ Feature: quota
 
   Scenario Outline: Overwriting a received file having enough quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
     And the quota of user "user0" has been set to "20 B"
     And the quota of user "user1" has been set to "10 MB"
     And user "user1" has uploaded file with content "test" to "/testquota.txt"
@@ -140,8 +140,8 @@ Feature: quota
 
   Scenario Outline: Overwriting a received file having insufficient quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
     And the quota of user "user0" has been set to "10 MB"
     And the quota of user "user1" has been set to "20 B"
     And user "user1" has moved file "/textfile0.txt" to "/testquota.txt"

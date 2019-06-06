@@ -6,7 +6,7 @@ Feature: Sharing files and folders with internal groups
 
   Background:
     Given app "notifications" has been enabled
-    And these users have been created with default attributes:
+    And these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | user2    |

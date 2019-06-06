@@ -6,7 +6,7 @@ Feature: Locks
 
   Background:
     #do not set email, see bugs in https://github.com/owncloud/core/pull/32250#issuecomment-434615887
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       |
       | brand-new-user |
     And user "brand-new-user" has logged in using the webUI

@@ -84,7 +84,7 @@ Feature: delete groups
       | priv/subadmins/1 | Subadmins mentioned not at the end |
 
   Scenario: normal user tries to delete the group
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     When user "brand-new-user" tries to delete group "new-group" using the provisioning API
@@ -93,7 +93,7 @@ Feature: delete groups
     And group "new-group" should exist
 
   Scenario: subadmin of the group tries to delete the group
-    Given user "subadmin" has been created with default attributes
+    Given user "subadmin" has been created with default attributes and skeleton files
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "subadmin" tries to delete group "new-group" using the provisioning API

@@ -4,9 +4,9 @@ Feature: sharing
   Background:
     Given using OCS API version "1"
     And using old DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
-    And user "user2" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user2" has been created with default attributes and skeleton files
 
   Scenario: Keep usergroup shares (#22143)
     Given group "grp1" has been created

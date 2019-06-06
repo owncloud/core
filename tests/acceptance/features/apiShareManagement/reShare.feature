@@ -3,12 +3,12 @@ Feature: sharing
 
   Background:
     Given using old DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and skeleton files
 
   Scenario Outline: User is not allowed to reshare file
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user0" has created a share with settings
       | path        | /textfile0.txt |
       | shareType   | 0              |
@@ -28,7 +28,7 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare file with more permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user0" has created a share with settings
       | path        | /textfile0.txt |
       | shareType   | 0              |
@@ -48,7 +48,7 @@ Feature: sharing
 
   Scenario Outline: Do not allow reshare to exceed permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user0" has created folder "/TMP"
     And user "user0" has created a share with settings
       | path        | /TMP  |
@@ -71,8 +71,8 @@ Feature: sharing
       | 2               | 404              |
 
   Scenario: Reshared files can be still accessed if a user in the middle removes it.
-    Given user "user2" has been created with default attributes
-    And user "user3" has been created with default attributes
+    Given user "user2" has been created with default attributes and skeleton files
+    And user "user3" has been created with default attributes and skeleton files
     And user "user0" has shared file "textfile0.txt" with user "user1"
     And user "user1" has moved file "/textfile0 (2).txt" to "/textfile0_shared.txt"
     And user "user1" has shared file "textfile0_shared.txt" with user "user2"
@@ -113,7 +113,7 @@ Feature: sharing
 
   Scenario Outline: resharing a file is not allowed when allow resharing has been disabled
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user0" has created a share with settings
       | path        | /textfile0.txt |
       | shareType   | 0              |

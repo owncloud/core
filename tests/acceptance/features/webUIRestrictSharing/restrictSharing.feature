@@ -5,7 +5,7 @@ Feature: restrict Sharing
   So that users can only share files with specific users and groups
 
   Background:
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | user2    |
