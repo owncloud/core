@@ -516,7 +516,7 @@ services:
         DB_TYPE: oracle
 
   chrome:
-    image: selenium/standalone-chrome-debug:latest
+    image: selenium/standalone-chrome-debug:3.141.59-oxygen
     pull: true
     environment:
       - JAVA_OPTS=-Dselenium.LOGGER.level=WARNING
