@@ -2235,7 +2235,8 @@ class Share20OcsControllerTest extends TestCase {
 			->setShareType(Share::SHARE_TYPE_GROUP)
 			->setSharedWith('group1')
 			->setPermissions(\OCP\Constants::PERMISSION_READ)
-			->setNode($folder);
+			->setNode($folder)
+			->setTarget('/folderShare');
 
 		$this->request
 			->method('getParam')
@@ -2254,11 +2255,87 @@ class Share20OcsControllerTest extends TestCase {
 
 		$this->shareManager->expects($this->never())->method('updateShare');
 
-		$expected = new Result(null, 404, 'Cannot increase permissions');
+		$folderOwner = $this->createMock(IUser::class);
+		$folderOwner->method('getUID')
+			->willReturn('foo1234');
+		$userHomeFolder = $this->createMock(Folder::class);
+		$userNode = $this->createMock(Folder::class);
+		$userNode->method('getOwner')
+			->willReturn($folderOwner);
+		$userHomeFolder->method('getById')
+			->willReturn([$userNode]);
+		$this->rootFolder->method('getUserFolder')
+			->willReturn($userHomeFolder);
+
+		$expected = new Result(null, 404, 'Cannot increase permission of ' . $share->getTarget());
 		$result = $ocs->updateShare(42);
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
 		$this->assertEquals($expected->getData(), $result->getData());
+	}
+
+	public function providesDataForTestingIncreasePermissionRegularShare() {
+		return [
+			['file', 16, 17],
+			['file', 17, 19],
+			['folder', 17, 19],
+			['folder', 19, 21],
+			['folder', 21, 23],
+		];
+	}
+
+	/**
+	 * @dataProvider providesDataForTestingIncreasePermissionRegularShare
+	 *
+	 * @param string $nodeType
+	 * @param int $currentPermission
+	 * @param string $updatePermissionTo
+	 */
+	public function testRegularShareRecipientCannotIncreasePermission($nodeType, $currentPermission, $updatePermissionTo) {
+		$ocs = $this->mockFormatShare();
+
+		$share = \OC::$server->getShareManager()->newShare();
+		$share
+			->setId(42)
+			->setSharedBy($this->currentUser->getUID())
+			->setShareOwner('anotheruser')
+			->setShareType(Share::SHARE_TYPE_USER)
+			->setSharedWith('user1')
+			->setPermissions($currentPermission);
+
+		if ($nodeType === 'file') {
+			$file = $this->createMock(File::class);
+			$share->setNode($file);
+			$share->setTarget('/testFile');
+		} else {
+			$folder = $this->createMock(Folder::class);
+			$share->setNode($folder);
+			$share->setTarget('/testFolder');
+		}
+
+		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
+
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['permissions', null, $updatePermissionTo],
+			]));
+
+		$folderOwner = $this->createMock(IUser::class);
+		$folderOwner->method('getUID')
+			->willReturn('foo1234');
+		$userHomeFolder = $this->createMock(Folder::class);
+		$userNode = $this->createMock(Folder::class);
+		$userNode->method('getOwner')
+			->willReturn($folderOwner);
+		$userHomeFolder->method('getById')
+			->willReturn([$userNode]);
+		$this->rootFolder->method('getUserFolder')
+			->willReturn($userHomeFolder);
+
+		$result = $ocs->updateShare(42);
+		$this->assertEquals(404, $result->getStatusCode());
+		$this->assertEquals('Cannot increase permission of ' . $share->getTarget(), $result->getMeta()['message']);
 	}
 
 	/**
@@ -2362,6 +2439,15 @@ class Share20OcsControllerTest extends TestCase {
 			->method('updateShare')
 			->with($share)
 			->willReturn($share);
+
+		$userHomeFolder = $this->createMock(Folder::class);
+		$userNode = $this->createMock(Folder::class);
+		$userNode->method('getOwner')
+			->willReturn($this->currentUser);
+		$userHomeFolder->method('getById')
+			->willReturn([$userNode]);
+		$this->rootFolder->method('getUserFolder')
+			->willReturn($userHomeFolder);
 
 		$expected = new Result();
 		$result = $ocs->updateShare(42);
