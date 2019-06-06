@@ -5,7 +5,7 @@ Feature: personal general settings
   So that I can personalise the User Interface
 
   Background:
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
     And user "user1" has logged in using the webUI
     And the user has browsed to the personal general settings page
 

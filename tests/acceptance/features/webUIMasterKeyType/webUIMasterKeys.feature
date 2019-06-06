@@ -5,7 +5,7 @@ Feature: encrypt files using master keys
   So that I can use a common key to encrypt files of all user
 
   Scenario: user cannot access their file after recreating master key with re-login
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     And the administrator has set the encryption type to "masterkey"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
     And user "user0" has logged in using the webUI
@@ -17,7 +17,7 @@ Feature: encrypt files using master keys
     And a message should be displayed on the general exception webUI page containing "Encryption not ready"
 
   Scenario: user can access their file after recreating master key with re-login
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     And the administrator has set the encryption type to "masterkey"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
     And user "user0" has logged in using the webUI

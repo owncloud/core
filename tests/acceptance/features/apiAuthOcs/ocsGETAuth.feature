@@ -1,7 +1,7 @@
 @api @TestAlsoOnExternalUserBackend
 Feature: auth
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
 
   @issue-32068
   Scenario Outline: using OCS anonymously
@@ -85,7 +85,7 @@ Feature: auth
   @issue-32068
   Scenario Outline: send POST requests to OCS endpoints as normal user with wrong password
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     When user "user0" sends HTTP method "POST" to OCS API endpoint "<endpoint>" with body using password "invalid"
       | data        | doesnotmatter |
     Then the OCS status code should be "<ocs-code>"

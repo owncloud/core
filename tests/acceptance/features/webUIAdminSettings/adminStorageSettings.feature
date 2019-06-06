@@ -89,7 +89,7 @@ Feature: admin storage settings
     And folder "local_storage1" should be listed on the webUI
 
   Scenario: administrator deletes local storage mount
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     And the administrator has browsed to the admin storage settings page
     And the administrator has enabled the external storage
     And the administrator has created the local storage mount "local_storage1" from the admin storage settings page
@@ -98,7 +98,7 @@ Feature: admin storage settings
     Then folder "local_storage1" should not be listed on the webUI
 
   Scenario: local storage mount is deleted when the last user applicable to it is deleted
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     And the administrator has browsed to the admin storage settings page
     And the administrator has enabled the external storage
     And the administrator has created the local storage mount "local_storage1" from the admin storage settings page
@@ -108,7 +108,7 @@ Feature: admin storage settings
     Then the last created local storage mount should not be listed on the webUI
 
   Scenario: local storage mount is not deleted when the last group applicable to it is deleted but the member of the deleted group should not have access to it
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     And group "newgroup" has been created
     And user "user0" has been added to group "newgroup"
     And the administrator has browsed to the admin storage settings page

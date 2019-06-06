@@ -8,7 +8,7 @@ Feature: Sharing files and folders with internal users
   @TestAlsoOnExternalUserBackend
   @smokeTest
   Scenario: share a file & folder with another internal user
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | user2    |
@@ -27,7 +27,7 @@ Feature: Sharing files and folders with internal users
   @TestAlsoOnExternalUserBackend @skipOnFIREFOX
   Scenario: share a file with another internal user who overwrites and unshares the file
     Given user "user1" has been created with default attributes and without skeleton files
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user2" has logged in using the webUI
     When the user renames file "lorem.txt" to "new-lorem.txt" using the webUI
     And the user shares file "new-lorem.txt" with user "User One" using the webUI
@@ -47,7 +47,7 @@ Feature: Sharing files and folders with internal users
   @TestAlsoOnExternalUserBackend
   Scenario: share a folder with another internal user who uploads, overwrites and deletes files
     Given user "user1" has been created with default attributes and without skeleton files
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user2" has logged in using the webUI
     When the user renames folder "simple-folder" to "new-simple-folder" using the webUI
     And the user shares folder "new-simple-folder" with user "User One" using the webUI
@@ -76,7 +76,7 @@ Feature: Sharing files and folders with internal users
   @TestAlsoOnExternalUserBackend
   Scenario: share a folder with another internal user who unshares the folder
     Given user "user1" has been created with default attributes and without skeleton files
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user2" has logged in using the webUI
     When the user renames folder "simple-folder" to "new-simple-folder" using the webUI
     And the user shares folder "new-simple-folder" with user "User One" using the webUI
@@ -93,7 +93,7 @@ Feature: Sharing files and folders with internal users
 
   @skipOnMICROSOFTEDGE @TestAlsoOnExternalUserBackend
   Scenario: share a folder with another internal user and prohibit deleting
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | user2    |
@@ -108,7 +108,7 @@ Feature: Sharing files and folders with internal users
   @skipOnFIREFOX
   Scenario: share a folder with other user and then it should be listed on Shared with You for other user
     Given user "user1" has been created with default attributes and without skeleton files
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user2" has logged in using the webUI
     And the user has renamed folder "simple-folder" to "new-simple-folder" using the webUI
     And the user has renamed file "lorem.txt" to "ipsum.txt" using the webUI
@@ -121,7 +121,7 @@ Feature: Sharing files and folders with internal users
 
   Scenario: share a folder with other user and then it should be listed on Shared with Others page
     Given user "user1" has been created with default attributes and without skeleton files
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user2" has logged in using the webUI
     And the user has shared file "lorem.txt" with user "User One" using the webUI
     And the user has shared folder "simple-folder" with user "User One" using the webUI
@@ -131,7 +131,7 @@ Feature: Sharing files and folders with internal users
 
   Scenario: share two file with same name but different paths
     Given user "user1" has been created with default attributes and without skeleton files
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user2" has logged in using the webUI
     And the user has shared file "lorem.txt" with user "User One" using the webUI
     When the user opens folder "simple-folder" using the webUI
@@ -146,7 +146,7 @@ Feature: Sharing files and folders with internal users
       | username |
       | user1    |
       | user3    |
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user1" has been added to group "grp1"
     And the administrator has browsed to the admin sharing settings page
     When the administrator enables exclude groups from sharing using the webUI
@@ -158,7 +158,7 @@ Feature: Sharing files and folders with internal users
       | username |
       | user1    |
       | user3    |
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And the administrator has browsed to the admin sharing settings page
@@ -167,7 +167,7 @@ Feature: Sharing files and folders with internal users
     Then user "user1" should not be able to share folder "simple-folder" with user "User Three" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a file received as a share
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | user3    |
@@ -205,7 +205,7 @@ Feature: Sharing files and folders with internal users
       | user1    |
       | user2    |
       | user4    |
-    And user "user3" has been created with default attributes
+    And user "user3" has been created with default attributes and skeleton files
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And the administrator has browsed to the admin sharing settings page
@@ -233,7 +233,7 @@ Feature: Sharing files and folders with internal users
 
   Scenario: user tries to share a file from a group which is blacklisted from sharing using webUI from files page
     Given group "grp1" has been created
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user1" has been added to group "grp1"
     And the administrator has browsed to the admin sharing settings page
     And the administrator has enabled exclude groups from sharing from the admin sharing settings page
@@ -245,7 +245,7 @@ Feature: Sharing files and folders with internal users
 
   Scenario: user tries to re-share a file from a group which is blacklisted from sharing using webUI from shared with you page
     Given group "grp1" has been created
-    And these users have been created with default attributes:
+    And these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | user2    |
@@ -263,7 +263,7 @@ Feature: Sharing files and folders with internal users
     And user "user1" should not be able to share file "testimage (2).jpg" with user "User Three" using the sharing API
 
   Scenario: user shares the file/folder with another internal user and delete the share with user
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | user2    |
@@ -279,7 +279,7 @@ Feature: Sharing files and folders with internal users
   @mailhog
   Scenario: user should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user2" has been created with default attributes and without skeleton files
     And user "user1" has logged in using the webUI
     And user "user1" has shared file "lorem.txt" with user "user2"
@@ -294,7 +294,7 @@ Feature: Sharing files and folders with internal users
   @mailhog
   Scenario: user should get and error message when trying to send notification by email to a user who has not setup their email
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And these users have been created without skeleton files:
       | username | password |
       | user0    | 1234     |
@@ -309,7 +309,7 @@ Feature: Sharing files and folders with internal users
   @mailhog
   Scenario: user should not be able to send notification by email more than once
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user2" has been created with default attributes and without skeleton files
     And user "user1" has logged in using the webUI
     And user "user1" has shared file "lorem.txt" with user "user2"
@@ -322,7 +322,7 @@ Feature: Sharing files and folders with internal users
 
   Scenario: user should not be able to send notification by email when allow share mail notification has been disabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "no"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user2" has been created with default attributes and without skeleton files
     And user "user1" has logged in using the webUI
     And user "user1" has shared file "lorem.txt" with user "user2"
@@ -331,7 +331,7 @@ Feature: Sharing files and folders with internal users
 
   @issue-35382
   Scenario: user shares a file with another user with uppercase username
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
     And these users have been created without skeleton files:
       | username |
       | SomeUser |

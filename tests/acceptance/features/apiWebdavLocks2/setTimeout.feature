@@ -2,7 +2,7 @@
 Feature: set timeouts of LOCKS
 
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
 
   Scenario Outline: set timeout on folder
     Given using <dav-path> DAV path
@@ -33,7 +33,7 @@ Feature: set timeouts of LOCKS
 
   Scenario Outline: as owner set timeout on folder as receiver check it
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has shared folder "PARENT" with user "user1"
     When user "user0" locks folder "PARENT" using the WebDAV API setting following properties
       | lockscope | shared    |
@@ -62,7 +62,7 @@ Feature: set timeouts of LOCKS
 
   Scenario Outline: as share receiver set timeout on folder as owner check it
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has shared folder "PARENT" with user "user1"
     When user "user1" locks folder "PARENT (2)" using the WebDAV API setting following properties
       | lockscope | shared    |

@@ -4,7 +4,7 @@ Feature: Deletion of tags
   I want to delete the tags that are already created
 
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     And as user "user0"
 
   @smokeTest

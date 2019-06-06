@@ -9,7 +9,7 @@ Feature: Share by public link
   So that public sharing is limited according to organization policy
 
   Background:
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
     And user "user1" has logged in using the webUI
 
   @smokeTest
@@ -42,7 +42,7 @@ Feature: Share by public link
   @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
   Scenario: mount public link
     Given using server "REMOTE"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     When the user creates a new public link for folder "simple-folder" using the webUI
     And the user logs out of the webUI
     And the public accesses the last created public link using the webUI
@@ -57,7 +57,7 @@ Feature: Share by public link
   @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
   Scenario: mount public link and overwrite file
     Given using server "REMOTE"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     And the user logs out of the webUI
