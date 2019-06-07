@@ -65,7 +65,7 @@ Feature: Autocompletion of share-with names
     Given the administrator has set the minimum characters for sharing autocomplete to "4"
     And user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
-    And these users have been created but not initialized:
+    And these users have been created with skeleton files but not initialized:
       | username | password | displayname | email        |
       | use      | %alt1%   | Use         | uz@oc.com.np |
     And the user has opened the share dialog for folder "simple-folder"
