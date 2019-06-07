@@ -218,6 +218,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
 
+    # This suite is part of the encryption app in later core versions
     cliEncryption:
       paths:
         - '%paths.base%/../features/cliEncryption'
