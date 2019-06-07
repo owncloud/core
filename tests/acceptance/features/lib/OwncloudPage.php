@@ -274,7 +274,7 @@ class OwncloudPage extends Page {
 		$settingsMenu->waitTillPageIsLoaded($session);
 		return $settingsMenu;
 	}
-	
+
 	/**
 	 * finds the element that contains the displayname of the current user
 	 *
@@ -283,7 +283,7 @@ class OwncloudPage extends Page {
 	 */
 	protected function findUserDisplayNameElement() {
 		$displayNameElement = $this->findById($this->userNameDisplayId);
-		
+
 		$this->assertElementNotNull(
 			$displayNameElement,
 			__METHOD__ .
@@ -291,7 +291,7 @@ class OwncloudPage extends Page {
 		);
 		return $displayNameElement;
 	}
-	
+
 	/**
 	 * returns the displayname (Full Name or username) of the current user
 	 *
@@ -317,7 +317,7 @@ class OwncloudPage extends Page {
 	 */
 	protected function findAvatarElement() {
 		$avatarElement = $this->find("xpath", $this->avatarImgXpath);
-		
+
 		$this->assertElementNotNull(
 			$avatarElement,
 			__METHOD__ .
@@ -585,7 +585,7 @@ class OwncloudPage extends Page {
 		$activeAjaxCountIsUndefined = $session->evaluateScript(
 			"(typeof window.activeAjaxCount === 'undefined')"
 		);
-		
+
 		//only overwrite the send and open functions once
 		if ($activeAjaxCountIsUndefined === true) {
 			$session->executeScript(
