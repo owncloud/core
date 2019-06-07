@@ -6,7 +6,7 @@ Feature: encrypt files using user specific keys
 
   Background:
     Given app "encryption" has been enabled
-    And these users have been created but not initialized:
+    And these users have been created with skeleton files but not initialized:
       | username       |
       | brand-new-user |
     And encryption has been enabled
@@ -27,7 +27,7 @@ Feature: encrypt files using user specific keys
     Then file "textfile0.txt" of user "brand-new-user" should be encrypted
 
   Scenario: decrypt user keys based encryption of all users
-    Given these users have been created but not initialized:
+    Given these users have been created with skeleton files but not initialized:
       | username         |
       | another-new-user |
     And the administrator has set the encryption type to "user-keys"
