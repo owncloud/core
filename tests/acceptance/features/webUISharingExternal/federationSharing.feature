@@ -247,7 +247,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: test sharing folder to a remote server and resharing it back to the local
     Given using server "LOCAL"
-    And these users have been created:
+    And these users have been created with skeleton files:
       | username |
       | user2    |
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
@@ -261,7 +261,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: test resharing folder as readonly and set it as readonly by resharer
     Given using server "LOCAL"
-    And these users have been created:
+    And these users have been created with skeleton files:
       | username |
       | user2    |
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
@@ -279,7 +279,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: test resharing folder and set it as readonly by owner
     Given using server "LOCAL"
-    And these users have been created:
+    And these users have been created with skeleton files:
       | username |
       | user2    |
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
