@@ -600,7 +600,7 @@ Feature: sharing
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  |  user1       |
+      | share_with  |  USER1       |
       | file_target | /welcome.txt |
       | path        | /welcome.txt |
       | permissions | 19           |
