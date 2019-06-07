@@ -432,3 +432,22 @@ Feature: accept/decline shares coming from internal users
       | path     |
       | /PARENT/ |
     And the sharing API should report that no shares are shared with user "user0"
+
+  Scenario: user accepts file that was initially accepted from another user and then declined
+    Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    And user "user0" has uploaded file with content "file from user0" to "/testfile.txt"
+    And user "user1" has uploaded file with content "file from user1" to "/testfile.txt"
+    And user "user2" has uploaded file with content "file from user2" to "/testfile.txt"
+    And user "user0" has shared file "/testfile.txt" with user "user2"
+    And user "user2" has accepted the share "/testfile.txt" offered by user "user0"
+    When user "user2" declines the share "/testfile (2).txt" offered by user "user0" using the sharing API
+    And user "user1" shares file "/testfile.txt" with user "user2" using the sharing API
+    And user "user2" accepts the share "/testfile.txt" offered by user "user1" using the sharing API
+    And user "user2" accepts the share "/testfile.txt" offered by user "user0" using the sharing API
+    Then the sharing API should report to user "user2" that these shares are in the accepted state
+      | path                  |
+      | /testfile (2).txt     |
+      | /testfile (2) (2).txt |
+    And the content of file "/testfile.txt" for user "user2" should be "file from user2"
+    And the content of file "/testfile (2).txt" for user "user2" should be "file from user1"
+    And the content of file "/testfile (2) (2).txt" for user "user2" should be "file from user0"
