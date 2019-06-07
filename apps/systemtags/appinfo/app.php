@@ -73,13 +73,15 @@ $mapperListener = function (MapperEvent $event) use ($activityManager) {
 $eventDispatcher->addListener(MapperEvent::EVENT_ASSIGN, $mapperListener);
 $eventDispatcher->addListener(MapperEvent::EVENT_UNASSIGN, $mapperListener);
 
-\OCA\Files\App::getNavigationManager()->add(function () {
-	$l = \OC::$server->getL10N('systemtags');
-	return [
-		'id' => 'systemtagsfilter',
-		'appname' => 'systemtags',
-		'script' => 'list.php',
-		'order' => 25,
-		'name' => $l->t('Tags')
-	];
-});
+if (\class_exists('OCA\Files\App')) {
+	\OCA\Files\App::getNavigationManager()->add(function () {
+		$l = \OC::$server->getL10N('systemtags');
+		return [
+			'id' => 'systemtagsfilter',
+			'appname' => 'systemtags',
+			'script' => 'list.php',
+			'order' => 25,
+			'name' => $l->t('Tags')
+		];
+	});
+}
