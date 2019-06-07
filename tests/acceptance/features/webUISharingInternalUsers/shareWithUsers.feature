@@ -339,3 +339,35 @@ Feature: Sharing files and folders with internal users
     And the user re-logs in as "SomeUser" using the webUI
     And the user browses to the shared-with-you page
     Then file "lorem.txt" should be listed on the webUI
+
+  Scenario: multiple users share a file with the same name to a user
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+      | user3    |
+    And user "user2" has uploaded file with content "user2 file" to "/randomfile.txt"
+    And user "user3" has uploaded file with content "user3 file" to "/randomfile.txt"
+    And user "user2" has shared file "randomfile.txt" with user "user1"
+    And user "user3" has shared file "randomfile.txt" with user "user1"
+    When user "user1" logs in using the webUI
+    Then file "randomfile.txt" should be listed on the webUI
+    And the content of file "randomfile.txt" for user "user1" should be "user2 file"
+    And file "randomfile (2).txt" should be listed on the webUI
+    And the content of file "randomfile (2).txt" for user "user1" should be "user3 file"
+
+  Scenario: multiple users share a folder with the same name to a user
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+      | user3    |
+    And user "user2" has created folder "/zzzfolder"
+    And user "user3" has created folder "/zzzfolder"
+    And user "user2" has shared folder "zzzfolder" with user "user1"
+    And user "user3" has shared folder "zzzfolder" with user "user1"
+    When user "user1" logs in using the webUI
+    Then folder "zzzfolder" should be listed on the webUI
+    And folder "zzzfolder" should be marked as shared by "User Two" on the webUI
+    And folder "zzzfolder (2)" should be listed on the webUI
+    And folder "zzzfolder (2)" should be marked as shared by "User Three" on the webUI

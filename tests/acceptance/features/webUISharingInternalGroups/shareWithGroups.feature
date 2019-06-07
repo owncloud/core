@@ -205,3 +205,12 @@ Feature: Sharing files and folders with internal groups
       """
       just letting you know that User Three shared lorem.txt with you.
       """
+  Scenario: user added to a group has a share that matches the skeleton of added user
+    Given user "user1" has uploaded file with content "some content" to "lorem.txt"
+    And user "user1" has shared file "lorem.txt" with group "grp1"
+    And user "user3" has been added to group "grp1"
+    When user "user3" logs in using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem (2).txt" should be listed on the webUI
+    And file "lorem (2).txt" should be marked as shared with "grp1" by "User One" on the webUI
+    And the content of file "lorem (2).txt" for user "user3" should be "some content"
