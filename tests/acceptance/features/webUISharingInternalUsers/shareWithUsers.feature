@@ -329,7 +329,6 @@ Feature: Sharing files and folders with internal users
     When the user opens the share dialog for file "lorem.txt"
     Then the user should not be able to send the share notification by email using the webUI
 
-  @issue-35382
   Scenario: user shares a file with another user with uppercase username
     Given user "user1" has been created with default attributes and skeleton files
     And these users have been created without skeleton files:
@@ -339,5 +338,4 @@ Feature: Sharing files and folders with internal users
     When the user shares file "lorem.txt" with user "SomeUser" using the webUI
     And the user re-logs in as "SomeUser" using the webUI
     And the user browses to the shared-with-you page
-    Then file "lorem.txt" should not be listed on the webUI
-#    Then file "lorem.txt" should be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
