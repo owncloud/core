@@ -5,7 +5,7 @@ Feature: manage user quota
   So that users can only take up a certain amount of storage space
 
   Background:
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and skeleton files but not initialized:
       | username |
       | user1    |
     And the administrator has logged in using the webUI
