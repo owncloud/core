@@ -5,7 +5,7 @@ Feature: disable users
   So that I can remove access to unnecessary users
 
   Background:
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and skeleton files but not initialized:
       | username |
       | user1    |
       | user2    |
