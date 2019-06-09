@@ -24,7 +24,7 @@ OC.L10N.register(
     "An error occurred while updating share state: {message}" : "เกิดข้อผิดพลาดขณะอัปเดตสถานะสถานะของแชร์: {message}",
     "Accept Share" : "ยอมรับแชร์",
     "Decline Share" : "ปฏิเสธแชร์",
-    "Do you want to add the remote share {name} from {owner}@{remote}?" : "คุณต้องการที่จะเพิ่มรีโมทแชร์ {name} จาก {owner}@{remote}?",
+    "Do you want to add the remote share {name} from {owner}@{remote}?" : "คุณต้องการเพิ่มรีโมทแชร์ {name} จาก {owner}@{remote}?",
     "Remote share" : "รีโมทแชร์",
     "Remote share password" : "รหัสผ่านรีโมทแชร์",
     "Cancel" : "ยกเลิก",

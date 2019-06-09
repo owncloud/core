@@ -64,7 +64,7 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "โฟลเดอร์ย่อยรีโมท",
     "Secure https://" : "โหมดปลอดภัย https://",
-    "Local" : "ต้นทาง",
+    "Local" : "ในเครื่อง",
     "Location" : "ตำแหน่งที่อยู่",
     "ownCloud" : "ownCloud",
     "SFTP" : "SFTP",
