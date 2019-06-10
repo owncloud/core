@@ -848,6 +848,10 @@ class Share20OcsController extends OCSController {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new Result(null, 400, $this->l->t('Wrong or no update parameter given'));
 			} else {
+				if (($share->getPermissions() < $permissions) &&
+					!$this->canIncreasePermission($share)) {
+					return new Result(null, 404, 'Cannot increase permission of ' . $share->getTarget());
+				}
 				$permissions = (int)$permissions;
 				$share->setPermissions($permissions);
 			}
@@ -887,6 +891,31 @@ class Share20OcsController extends OCSController {
 		$share->getNode()->unlock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
 
 		return new Result($this->formatShare($share));
+	}
+
+	/**
+	 * If the user is not the owner of the share, then lets not allow to increase
+	 * the permission of the share.
+	 *
+	 * @param IShare $share
+	 * @return bool , true if permission is allowed to increase, else false. Also false if no user session available
+	 */
+	private function canIncreasePermission(IShare $share) {
+		$userObj = $this->userSession->getUser();
+		if ($userObj === null) {
+			return false;
+		}
+
+		$shareHome = $this->rootFolder->getUserFolder($share->getSharedBy());
+		$nodes = $shareHome->getById($share->getNode()->getId());
+		foreach ($nodes as $node) {
+			$nodeOwner = $node->getOwner()->getUID();
+			if ($nodeOwner !== $userObj->getUID()) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
