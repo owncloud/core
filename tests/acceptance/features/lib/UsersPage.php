@@ -738,9 +738,9 @@ class UsersPage extends OwncloudPage {
 		try {
 			$editPasswordInput->focus();
 			$editPasswordInput->setValue($password . "\n");
-			$this->waitForAjaxCallsToStartAndFinish($session);
 		} catch (StaleElementReference $e) {
 		}
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**

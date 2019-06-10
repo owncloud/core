@@ -11,6 +11,7 @@ Feature: Add group
   Scenario Outline: Add group
     When the administrator adds group <groupname> using the webUI
     Then the group name <groupname> should be listed on the webUI
+    And group <groupname> should exist
     Examples:
       | groupname   |
       | "localuser" |
