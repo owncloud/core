@@ -562,6 +562,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theAdminAddsGroupUsingTheWebUI($groupName) {
 		$this->usersPage->addGroup($groupName, $this->getSession());
+		$this->featureContext->addGroupToCreatedGroupsList($groupName);
 	}
 
 	/**
