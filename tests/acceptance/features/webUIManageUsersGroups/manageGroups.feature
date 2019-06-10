@@ -185,3 +185,18 @@ Feature: manage groups
       | quotes"        |
       | do-not-delete2 |
       | a\slash        |
+
+  Scenario Outline: group names are case-sensitive, the correct group is deleted
+    Given group "<group_id1>" has been created
+    And group "<group_id2>" has been created
+    And group "<group_id3>" has been created
+    And the administrator has browsed to the users page
+    When the administrator deletes the group named "<group_id1>" using the webUI and confirms the deletion using the webUI
+    Then group "<group_id1>" should not exist
+    But group "<group_id2>" should exist
+    And group "<group_id3>" should exist
+    Examples:
+      | group_id1            | group_id2            | group_id3 |
+      | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
+      | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
+      | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |

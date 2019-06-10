@@ -91,3 +91,22 @@ Feature: edit users
     When the administrator changes the email of user "user0" to "new_email@oc.com" using the webUI
     Then user "user0" should exist
     And the email address of user "user0" should be "new_email@oc.com"
+
+  Scenario Outline: remove a user from a group using mixes of upper and lower case in group names
+    Given user "user0" has been created with default attributes and without skeleton files
+    And group "<group_id1>" has been created
+    And group "<group_id2>" has been created
+    And group "<group_id3>" has been created
+    And user "user0" has been added to group "<group_id1>"
+    And user "user0" has been added to group "<group_id2>"
+    And user "user0" has been added to group "<group_id3>"
+    And the administrator has browsed to the users page
+    When the administrator removes user "user0" from group "<group_id1>" using the webUI
+    And user "user0" should not belong to group "<group_id1>"
+    But user "user0" should belong to group "<group_id2>"
+    And user "user0" should belong to group "<group_id3>"
+    Examples:
+      | group_id1 | group_id2 | group_id3 |
+      | New-Group | new-group | NEW-GROUP |
+      | new-group | NEW-GROUP | New-Group |
+      | NEW-GROUP | New-Group | new-group |
