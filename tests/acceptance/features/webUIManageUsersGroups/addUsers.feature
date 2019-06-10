@@ -204,3 +204,22 @@ Feature: add users
     And the user follows the password set link received by "bnu@owncloud" using the webUI
     And the user sets the password to " " and confirms with the same password using the webUI
     Then the user should be redirected to a webUI page with the title "%productname%"
+
+  Scenario Outline: admin creates a user but logs in with different case username
+    When the administrator creates a user with the name "<creation-username>" and the password "password" using the webUI
+    And the administrator logs out of the webUI
+    And the user logs in with username "<login-username>" and password "password" using the webUI
+    Then user "<username>" should exist
+    And the user should be redirected to a webUI page with the title "Files - %productname%"
+    Examples:
+      | creation-username | login-username | username       |
+      | Brand-New-User    | brand-new-user | BRAND-NEW-USER |
+      | brand-new-user    | Brand-New-User | Brand-New-User |
+      | Brand-New-User    | BRAND-NEW-USER | brand-new-user |
+      | brand-new-user    | Brand-New-User | BRAND-NEW-USER |
+
+  Scenario: admin tries to create an existing user but with username containing capital letters
+    Given user "user1" has been created with default attributes and without skeleton files
+    When the administrator creates a user with the name "USER1" and the password "password" using the webUI
+    Then notifications should be displayed on the webUI with the text
+      | Error creating user: A user with that name already exists. |
