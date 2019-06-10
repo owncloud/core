@@ -592,6 +592,7 @@ Feature: sharing
       | 2               | 200             |
 
   @skipOnEncryption @issue-encryption-126
+  @skipOnLDAP @skipOnStorage:ceph @issue-QA-623
   Scenario: share with user when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
