@@ -648,4 +648,72 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
-    
+
+  Scenario Outline: multiple users share a file with the same name but different permissions to a user
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+      | user3    |
+    And user "user2" has uploaded file with content "user2 file" to "/randomfile.txt"
+    And user "user3" has uploaded file with content "user3 file" to "/randomfile.txt"
+    When user "user2" shares file "randomfile.txt" with user "user1" with permissions read using the sharing API
+    And user "user1" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | uid_owner   | user2              |
+      | share_with  | user1              |
+      | file_target | /randomfile.txt|
+      | item_type   | file               |
+      | permissions | 1                  |
+    When user "user3" shares file "randomfile.txt" with user "user1" with permissions update using the sharing API
+    And user "user1" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | uid_owner   | user3              |
+      | share_with  | user1              |
+      | file_target | /randomfile (2).txt|
+      | item_type   | file               |
+      | permissions | 3                  |
+    # Here the last response contains permissions = 3 which is equivalent to permissons: read(1) + update(2)
+    And the content of file "randomfile.txt" for user "user1" should be "user2 file"
+    And the content of file "randomfile (2).txt" for user "user1" should be "user3 file"
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  Scenario Outline: multiple users share a folder with the same name to a user
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+      | user3    |
+    And user "user2" has created folder "/zzzfolder"
+    And user "user2" has created folder "zzzfolder/user2"
+    And user "user3" has created folder "/zzzfolder"
+    And user "user3" has created folder "zzzfolder/user3"
+    When user "user2" shares folder "zzzfolder" with user "user1" with permissions delete using the sharing API
+    And user "user1" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | uid_owner   | user2              |
+      | share_with  | user1              |
+      | file_target | /zzzfolder     |
+      | item_type   | folder             |
+      | permissions | 9                  |
+    # The last response contains permissions = 9 which is equivalent to permissons: read(1) + delete(8)
+    When user "user3" shares folder "zzzfolder" with user "user1" with permissions share using the sharing API
+    And user "user1" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | uid_owner   | user3              |
+      | share_with  | user1              |
+      | file_target | /zzzfolder (2)     |
+      | item_type   | folder             |
+      | permissions | 17                 |
+    # Here the last response has permissions = 9 which is equivalent to permissons: read(1) + share(16)
+    And as "user1" folder "zzzfolder/user2" should exist
+    And as "user1" folder "zzzfolder (2)/user3" should exist
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
