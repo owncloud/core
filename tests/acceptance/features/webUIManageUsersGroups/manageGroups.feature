@@ -200,3 +200,4 @@ Feature: manage groups
       | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
       | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
+
