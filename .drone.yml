@@ -1411,6 +1411,20 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BROWSER: chrome
+      BEHAT_SUITE: webUIAddUsers
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      USE_EMAIL: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    # This suite is part of the user_management app in later core versions
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIManageUsersGroups
       DB_TYPE: mariadb
       USE_SERVER: true
