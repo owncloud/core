@@ -21,7 +21,10 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\BatchResults;
 use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Pool;
 
 /**
  * Helper to make requests to the OCS API
@@ -52,5 +55,42 @@ class OcsApiHelper {
 		$fullUrl .= "ocs/v{$ocsApiVersion}.php" . $path;
 
 		return HttpRequestHelper::sendRequest($fullUrl, $method, $user, $password, $headers, $body);
+	}
+
+	/**
+	 *
+	 * @param string $baseUrl
+	 * @param string $user if set to null no authentication header will be sent
+	 * @param string $password
+	 * @param string $method HTTP Method
+	 * @param string $path
+	 * @param array $body array of key, value pairs e.g ['value' => 'yes']
+	 * @param Client|null $client
+	 * @param int $ocsApiVersion (1|2) default 2
+	 * @param array $headers
+	 *
+	 * @return RequestInterface
+	 */
+	public static function createOcsRequest(
+		$baseUrl, $user, $password, $method, $path, $body = [], $client = null, $ocsApiVersion = 2, $headers = []
+	) {
+		$fullUrl = $baseUrl;
+		if (\substr($fullUrl, -1) !== '/') {
+			$fullUrl .= '/';
+		}
+		$fullUrl .= "ocs/v{$ocsApiVersion}.php" . $path;
+		return HttpRequestHelper::createRequest(
+			$fullUrl,
+			$method,
+			$user,
+			$password,
+			$headers,
+			$body,
+			null,
+			null,
+			null,
+			null,
+			$client
+		);
 	}
 }

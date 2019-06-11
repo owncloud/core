@@ -3,8 +3,10 @@ Feature: sharing
 
   Background:
     Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
 
   Scenario Outline: User is not allowed to reshare file
     Given using OCS API version "<ocs_api_version>"
