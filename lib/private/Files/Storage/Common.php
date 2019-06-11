@@ -409,30 +409,6 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	}
 
 	/**
-	 * clean a path, i.e. remove all redundant '.' and '..'
-	 * making sure that it can't point to higher than '/'
-	 *
-	 * @param string $path The path to clean
-	 * @return string cleaned path
-	 */
-	public function cleanPath($path) {
-		if (\strlen($path) == 0 or $path[0] != '/') {
-			$path = '/' . $path;
-		}
-
-		$output = [];
-		foreach (\explode('/', $path) as $chunk) {
-			if ($chunk == '..') {
-				\array_pop($output);
-			} elseif ($chunk == '.') {
-			} else {
-				$output[] = $chunk;
-			}
-		}
-		return \implode('/', $output);
-	}
-
-	/**
 	 * Test a storage for availability
 	 *
 	 * @return bool

@@ -5,7 +5,6 @@
  */
 class BadClass {
 	public function foo() {
-		if (true != false) {
-		}
+		
 	}
 }
