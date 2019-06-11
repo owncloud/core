@@ -599,7 +599,7 @@ trait Sharing {
 	 * @param string $shareWith
 	 * @param string $publicUpload
 	 * @param string $sharePassword
-	 * @param int $permissions
+	 * @param string|int|string[]|int[] $permissions
 	 * @param string $linkName
 	 * @param string $expireDate
 	 *
@@ -817,7 +817,7 @@ trait Sharing {
 	 * @param string $user1
 	 * @param string $filepath
 	 * @param string $user2
-	 * @param int $permissions
+	 * @param string|int|string[]|int[] $permissions
 	 *
 	 * @return void
 	 */
