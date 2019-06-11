@@ -1001,7 +1001,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theUsersOwnNameShouldNotBeListedInTheAutocompleteList() {
 		PHPUnit\Framework\Assert::assertNotContains(
-			$this->filesPage->getMyDisplayname(),
+			$this->sharingDialog->userStringsToMatchAutoComplete(
+				$this->filesPage->getMyDisplayname()
+			),
 			$this->sharingDialog->getAutocompleteItemsList()
 		);
 	}
@@ -1034,9 +1036,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function userShouldNotBeListedInTheAutocompleteListOnTheWebui($username) {
 		$names = $this->sharingDialog->getAutocompleteItemsList();
 		$userString = $this->sharingDialog->userStringsToMatchAutoComplete($username);
-		if (\in_array($userString, $names)) {
-			throw new Exception("$username ($userString) found in autocomplete list but not expected");
-		}
+		PHPUnit\Framework\Assert::assertFalse(
+			\in_array($userString, $names),
+			"$username ($userString) found in autocomplete list but not expected"
+		);
 	}
 
 	/**
