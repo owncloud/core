@@ -1251,7 +1251,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			);
 			$sharingWasPossible = true;
 		} catch (ElementNotFoundException $e) {
-			if ($shareWith === null) {
+			if ($this->sharingDialog === null) {
 				$shareWithText = "";
 			} else {
 				if ($userOrGroup === "user") {
