@@ -265,8 +265,9 @@ function assert_testing_app_enabled() {
 
 # check if certain apache_module is enabled
 # $1 admin authentication string username:password
-# $2 the full url to the testing app
+# $2 the full url to the testing app on the server to check
 # $3 Module to check for
+# $4 text description of the server being checked, e.g. "local", "remote"
 # return 0 if given module is enabled, else return with 1
 function check_apache_module_enabled() {
 	# test if mod_rewrite is enabled
@@ -274,8 +275,9 @@ function check_apache_module_enabled() {
 	STATUS_CODE=`echo ${CURL_RESULT} | xmllint --xpath "string(ocs/meta/statuscode)" -`
 	if [[ ${STATUS_CODE} -ne 200 ]]
 	then
-		echo -n "Could not reliably determine if '$3' module is enabled, because "
+		echo -n "Could not reliably determine if '$3' module is enabled on the $4 server, because "
 		echo ${CURL_RESULT} | xmllint --xpath "string(ocs/meta/message)" -
+		echo ""
 		return 1
 	fi
 	return 0
@@ -534,7 +536,7 @@ then
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "maintenance:update:htaccess"
 	[[ $? -eq 0 ]] || { echo "${HTACCESS_UPDATE_FAILURE_MSG}"; }
 	# check if mod_rewrite module is enabled
-	check_apache_module_enabled ${ADMIN_AUTH} ${TESTING_APP_URL} "mod_rewrite"
+	check_apache_module_enabled ${ADMIN_AUTH} ${TESTING_APP_URL} "mod_rewrite" "local"
 
 	if [ -n "${TEST_SERVER_FED_URL}" ]
 	then
@@ -543,7 +545,7 @@ then
 		remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "maintenance:update:htaccess"
 		[[ $? -eq 0 ]] || { echo "${HTACCESS_UPDATE_FAILURE_MSG/local/federated}"; }
 		# check if mod_rewrite module is enabled
-		check_apache_module_enabled ${ADMIN_AUTH} ${TESTING_APP_URL} "mod_rewrite"
+		check_apache_module_enabled ${ADMIN_AUTH} ${TESTING_APP_FED_URL} "mod_rewrite" "remote"
 	fi
 else
 	echo "Using php inbuilt server for running scenario ..."
