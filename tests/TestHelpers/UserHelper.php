@@ -21,7 +21,9 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\BatchResults;
 use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Client;
 
 /**
  * Helper to administrate users (and groups) through the provisioning API
@@ -30,7 +32,6 @@ use GuzzleHttp\Message\ResponseInterface;
  *
  */
 class UserHelper {
-	
 	/**
 	 * @param string $baseUrl
 	 * @param string $user
@@ -101,6 +102,44 @@ class UserHelper {
 			["key" => $key, "value" => $value],
 			$ocsApiVersion
 		);
+	}
+
+	/**
+	 * Send batch requests to edit the user.
+	 * This will send multiple requests in parallel to the server which will be faster in comparison to waiting for each request to complete.
+	 *
+	 * @param string $baseUrl
+	 * @param array $editData ['user' => '', 'key' => '', 'value' => '']
+	 * @param string $adminUser
+	 * @param string $adminPassword
+	 * @param int $ocsApiVersion
+	 *
+	 * @return BatchResults
+	 */
+	public static function editUserBatch(
+		$baseUrl, $editData, $adminUser, $adminPassword, $ocsApiVersion = 2
+	) {
+		$client = new Client();
+		$requests = [];
+		foreach ($editData as $data) {
+			$path = "/cloud/users/" . $data['user'];
+			$body = ["key" => $data['key'], 'value' => $data["value"]];
+			// Create the OCS API requests and push them to an array.
+			\array_push(
+				$requests,
+				OcsApiHelper::createOcsRequest(
+					$baseUrl,
+					$adminUser,
+					$adminPassword,
+					'PUT',
+					$path,
+					$body,
+					$client
+				)
+			);
+		}
+		// Send the array of requests at once in parallel.
+		return HttpRequestHelper::sendBatchRequest($requests, $client);
 	}
 
 	/**
