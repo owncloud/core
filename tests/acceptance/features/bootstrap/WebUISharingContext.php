@@ -864,14 +864,42 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then only :userOrGroupName should be listed in the autocomplete list on the webUI
+	 * @Then only user :userName should be listed in the autocomplete list on the webUI
 	 *
-	 * @param string $userOrGroupName
+	 * @param string $userName
 	 *
 	 * @return void
 	 */
-	public function onlyUserOrGroupNameShouldBeListedInTheAutocompleteList(
-		$userOrGroupName
+	public function onlyUserNameShouldBeListedInTheAutocompleteList(
+		$userName
+	) {
+		$this->onlyNameShouldBeListedInTheAutocompleteList(
+			$this->sharingDialog->userStringsToMatchAutoComplete($userName)
+		);
+	}
+
+	/**
+	 * @Then only group :groupName should be listed in the autocomplete list on the webUI
+	 *
+	 * @param string $groupName
+	 *
+	 * @return void
+	 */
+	public function onlyGroupNameShouldBeListedInTheAutocompleteList(
+		$groupName
+	) {
+		$this->onlyNameShouldBeListedInTheAutocompleteList(
+			$this->sharingDialog->groupStringsToMatchAutoComplete($groupName)
+		);
+	}
+
+	/**
+	 * @param string $autocompleteString the full text expected in the autocomplete item
+	 *
+	 * @return void
+	 */
+	public function onlyNameShouldBeListedInTheAutocompleteList(
+		$autocompleteString
 	) {
 		$autocompleteItems = $this->sharingDialog->getAutocompleteItemsList();
 		PHPUnit\Framework\Assert::assertCount(
@@ -880,9 +908,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			"expected 1 autocomplete item but there are " . \count($autocompleteItems)
 		);
 		PHPUnit\Framework\Assert::assertContains(
-			$userOrGroupName,
+			$autocompleteString,
 			$autocompleteItems,
-			"'$userOrGroupName' not in autocomplete list"
+			"'$autocompleteString' not in autocomplete list"
 		);
 	}
 
@@ -989,7 +1017,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function userShouldBeListedInTheAutocompleteListOnTheWebui($username) {
 		$names = $this->sharingDialog->getAutocompleteItemsList();
 		PHPUnit\Framework\Assert::assertContains(
-			$username,
+			$this->sharingDialog->userStringsToMatchAutoComplete($username),
 			$names,
 			"$username not found in autocomplete list"
 		);
