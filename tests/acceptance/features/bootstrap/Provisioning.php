@@ -25,6 +25,7 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
+use GuzzleHttp\Client;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -331,47 +332,113 @@ trait Provisioning {
 
 	/**
 	 * @Given /^these users have been created with ?(default attributes and|) skeleton files ?(but not initialized|):$/
+	 * This function will allow us to send user creation requests in parallel.
+	 * This will be faster in comparision to waiting for each request to complete before sending another request.
+	 *
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
 	 * password, displayname & email are optional
 	 *
-	 * @param string $setDefaultAttributes just set the defaults if it doesn't exist
-	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
+	 * @param string $setDefaultAttributes
+	 * @param string $doNotInitialize
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theseUsersHaveBeenCreated($setDefaultAttributes, $doNotInitialize, TableNode $table) {
+		$table = $table->getColumnsHash();
+		$setDefaultAttributes = $setDefaultAttributes !== "";
+		$initialize = $doNotInitialize === "";
+		// We add all the request bodies in an array.
+		$bodies = [];
+		// We add all the request objects in an array so that we can send all the requests in parallel.
+		$requests = [];
+		$client = new Client();
 		foreach ($table as $row) {
+			$body['userid'] = $this->getActualUsername($row['username']);
+
 			if (isset($row['displayname'])) {
-				$displayName = $row['displayname'];
+				$body['displayName'] = $row['displayname'];
+			} elseif ($setDefaultAttributes) {
+				$body['displayName'] = $this->getDisplayNameForUser($body['userid']);
+				if ($body['displayName'] === null) {
+					$body['displayName'] = $this->getDisplayNameForUser('regularuser');
+				}
 			} else {
-				$displayName = null;
+				$body['displayName'] = null;
 			}
 
 			if (isset($row['email'])) {
-				$email = $row['email'];
+				$body['email'] = $row['email'];
+			} elseif ($setDefaultAttributes) {
+				$body['email'] = $this->getEmailAddressForUser($body['userid']);
+				if ($body['email'] === null) {
+					$body['email'] = $row['username'] . '@owncloud.org';
+				}
 			} else {
-				$email = null;
+				$body['email'] = null;
 			}
 
 			if (isset($row['password'])) {
-				$password = $this->getActualPassword($row['password']);
+				$body['password'] = $this->getActualPassword($row['password']);
 			} else {
-				// Let createUser() select the password
-				$password = null;
+				$body['password'] =  $this->getPasswordForUser($row['username']);
 			}
 
-			$this->createUser(
-				$row ['username'],
-				$password,
-				$displayName,
-				$email,
-				($doNotInitialize === ""),
-				null,
-				!($setDefaultAttributes === "")
+			// Add request body to the bodies array. we will use that later to loop through created users.
+			\array_push($bodies, $body);
+
+			// Create a OCS request for creating the user. The request is not sent to the server yet.
+			$request = OcsApiHelper::createOcsRequest(
+				$this->getBaseUrl(),
+				$this->getAdminUsername(),
+				$this->getAdminPassword(),
+				'POST',
+				"/cloud/users",
+				$body,
+				$client
 			);
+			// Add the request to the $requests array so that they can be sent in parallel.
+			\array_push($requests, $request);
+		}
+
+		$results = HttpRequestHelper::sendBatchRequest($requests, $client);
+		// Retrieve all failures.
+		foreach ($results->getFailures() as $e) {
+			throw $e;
+		}
+
+		// Create requests for setting displayname and email for the newly created users.
+		// These values cannot be set while creating the user, so we have to edit the newly created user to set these values.
+		$users = [];
+		$editData = [];
+		foreach ($bodies as $user) {
+			\array_push($users, $user['userid']);
+			$this->addUserToCreatedUsersList($user['userid'], $user['password'], $user['displayName'], $user['email']);
+			if (isset($user['displayName'])) {
+				\array_push($editData, ['user' => $user['userid'], 'key' => 'displayname', 'value' => $user['displayName']]);
+			}
+			if (isset($user['email'])) {
+				\array_push($editData, ['user' => $user['userid'], 'key' => 'email', 'value' => $user['email']]);
+			}
+		}
+		// Edit the users in parallel to make the process faster.
+		if (\count($editData) > 0) {
+			$results = UserHelper::editUserBatch(
+				$this->getBaseUrl(),
+				$editData,
+				$this->getAdminUsername(),
+				$this->getAdminPassword()
+			);
+			foreach ($results->getFailures() as $e) {
+				throw new \Exception("Could not edit user\n" . $e->getMessage());
+			}
+		}
+
+		// If the users need to be initialized then initialize them in parallel.
+		if ($initialize) {
+			$this->initializeUserBatch($users);
 		}
 	}
 
@@ -1191,6 +1258,44 @@ trait Provisioning {
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
 		HttpRequestHelper::get($url, $user, $password);
 		$this->lastUploadTime = \time();
+	}
+
+	/**
+	 * Make a request about the users to initialize them in parallel.
+	 * This will be faster than sequential requests to initialize the users.
+	 * That will force the server to fully initialize the users, including their skeleton files.
+	 *
+	 * @param array $users
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function initializeUserBatch($users) {
+		$url = "/cloud/users/%s";
+		$requests = [];
+		$client = new Client();
+		foreach ($users as $user) {
+			// create a new request for each user but do not send it yet.
+			// push the newly created request to an array.
+			\array_push(
+				$requests,
+				OcsApiHelper::createOcsRequest(
+					$this->getBaseUrl(),
+					$user,
+					$this->getPasswordForUser($user),
+					$method = 'GET',
+					\sprintf($url, $user),
+					[],
+					$client
+				)
+			);
+		}
+		// Send all the requests in parallel.
+		$response = HttpRequestHelper::sendBatchRequest($requests, $client);
+		// throw an exception if any request fails.
+		foreach ($response->getFailures() as $e) {
+			throw new \Exception("Could not initialize user\n" . $e->getMessage());
+		}
 	}
 
 	/**
