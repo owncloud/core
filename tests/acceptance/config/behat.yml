@@ -534,6 +534,21 @@ default:
         - WebDavPropertiesContext:
 
     # This suite is part of the user_management app in later core versions
+    webUIAddUsers:
+      paths:
+        - '%paths.base%/../features/webUIAddUsers'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - EmailContext:
+        - WebDavPropertiesContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIPersonalGeneralSettingsContext:
+        - WebUIUsersContext:
+        - WebUIUserContext:
+
+    # This suite is part of the user_management app in later core versions
     webUIManageQuota:
       paths:
         - '%paths.base%/../features/webUIManageQuota'
