@@ -587,6 +587,16 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the user should be redirected to the login page
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserShouldBeRedirectedToTheLoginPage() {
+		$this->loginPage->waitTillPageIsLoaded($this->getSession());
+	}
+
+	/**
 	 * @When /^the user follows the password set link received by "([^"]*)"(?: in Email number (\d+))? using the webUI$/
 	 *
 	 * @param string $emailAddress
