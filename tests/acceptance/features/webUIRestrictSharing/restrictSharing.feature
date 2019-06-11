@@ -5,18 +5,18 @@ Feature: restrict Sharing
   So that users can only share files with specific users and groups
 
   Background:
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | user1    |
       | user2    |
-      | user3    |
     And these groups have been created:
       | groupname |
       | grp1      |
       | grp2      |
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
-    And user "user3" has been added to group "grp2"
+    And user "user1" has created folder "simple-folder"
+    And user "user2" has created folder "simple-folder"
     And user "user2" has logged in using the webUI
 
   @TestAlsoOnExternalUserBackend
@@ -41,7 +41,10 @@ Feature: restrict Sharing
 
   @TestAlsoOnExternalUserBackend
   Scenario: Do not restrict users to only share with groups they are member of
-    Given the setting "Restrict users to only share with groups they are member of" in the section "Sharing" has been disabled
+    Given user "user3" has been created with default attributes and without skeleton files
+    And user "user3" has been added to group "grp2"
+    And user "user3" has created folder "simple-folder"
+    And the setting "Restrict users to only share with groups they are member of" in the section "Sharing" has been disabled
     And the user browses to the files page
     When the user shares folder "simple-folder" with group "grp2" using the webUI
     And the user re-logs in as "user3" using the webUI
