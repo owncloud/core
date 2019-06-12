@@ -32,4 +32,4 @@ Feature: Maintenance command
   Scenario: Running single repair step without providing value should fail
     When the administrator invokes occ command "maintenance:repair --single"
     Then the command should have failed with exit code 1
-    And the command error output should contain the text 'The "--single" option requires a value'
+    And the command output should contain the text 'The "--single" option requires a value'
