@@ -5,7 +5,7 @@ Feature: personal general settings
   So that I can personalise the User Interface
 
   Background:
-    Given user "user1" has been created with default attributes and skeleton files
+    Given user "user1" has been created with default attributes and without skeleton files
     And user "user1" has logged in using the webUI
     And the user has browsed to the personal general settings page
 
@@ -15,6 +15,7 @@ Feature: personal general settings
     Then the user should be redirected to a webUI page with the title "Настройки - %productname%"
 
   Scenario: change language and check that file actions menu have been translated
+    Given the user has created folder "simple-folder"
     When the user changes the language to "हिन्दी" using the webUI
     And the user browses to the files page
     And the user opens the file action menu of folder "simple-folder" on the webUI
@@ -22,6 +23,7 @@ Feature: personal general settings
     And the user should see "Delete" file action translated to "हटाना" on the webUI
 
   Scenario: change language using the occ command and check that file actions menu have been translated
+    Given the user has created folder "simple-folder"
     When the administrator changes the language of user "user1" to "fr" using the occ command
     And the user browses to the files page
     And the user opens the file action menu of folder "simple-folder" on the webUI
@@ -29,6 +31,7 @@ Feature: personal general settings
     And the user should see "Delete" file action translated to "Supprimer" on the webUI
 
   Scenario: change language to invalid language using the occ command and check that the language defaults back to english
+    Given the user has created folder "simple-folder"
     When the administrator changes the language of user "user1" to "not-valid-lan" using the occ command
     And the user browses to the files page
     And the user opens the file action menu of folder "simple-folder" on the webUI
@@ -47,17 +50,20 @@ Feature: personal general settings
     And group "another-group" should be displayed on the personal general settings page on the webUI
 
   Scenario: User sets profile picture from their existing cloud file
-    Given the user has deleted any existing profile picture
+    Given user "user1" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
+    And the user has deleted any existing profile picture
     When the user sets profile picture to "testimage.jpg" from their cloud files using the webUI
     Then the preview of the profile picture should be shown on the webUI
 
   Scenario: User deletes the existing profile picture
-    Given the user has set profile picture to "testimage.jpg" from their cloud files
+    Given user "user1" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
+    And the user has set profile picture to "testimage.jpg" from their cloud files
     When the user deletes the existing profile picture
     Then the preview of the profile picture should not be shown on the webUI
 
   Scenario: User uploads new profile picture
-    Given the user has deleted any existing profile picture
+    Given user "user1" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
+    And the user has deleted any existing profile picture
     When the user uploads "testavatar.png" as a new profile picture using the webUI
     Then the preview of the profile picture should be shown on the webUI
 
