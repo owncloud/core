@@ -9,6 +9,7 @@
 namespace Test\Files\Cache;
 
 use OC\Files\Cache\Cache;
+use OC\Files\Cache\CacheEntry;
 use OC\Files\Storage\Temporary;
 use Test\TestCase;
 
@@ -150,6 +151,237 @@ class CacheTest extends TestCase {
 		$this->cache->remove($folder);
 		$this->assertFalse($this->cache->inCache($folder.'/foo'));
 		$this->assertFalse($this->cache->inCache($folder.'/bar'));
+	}
+
+	public function getFolderContentByIdGeneratorProvider() {
+		$fileData = [
+			'bar' => ['size' => 1000, 'name' => 'bar', 'mtime' => 20, 'mimetype' => 'foo/file'],
+			'foo' => ['size' => 20, 'name' => 'foo', 'mtime' => 25, 'mimetype' => 'foo/file'],
+			'azaq' => ['size' => 50, 'name' => 'azaq', 'mtime' => 30, 'mimetype' => 'foo/file'],
+			'crate' => ['size' => 100, 'name' => 'crate', 'mtime' => 35, 'mimetype' => 'foo/file'],
+		];
+		return [
+			[$fileData, 'name', true],
+			[$fileData, 'name', false],
+			[$fileData, 'fileid', true],
+			[$fileData, 'fileid', false],
+			[$fileData, 'mtime', true],
+			[$fileData, 'mtime', false],
+			[$fileData, 'size', true],
+			[$fileData, 'size', false],
+			[$fileData, 'randomMissingField', true],
+			[$fileData, 'randomMissingField', false],
+		];
+	}
+
+	/**
+	 * @dataProvider getFolderContentByIdGeneratorProvider
+	 */
+	public function testGetFolderContentByIdGenerator($folderContent, $field, $descending) {
+		$folder = 'folder';
+		$folderData = ['size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory'];
+		$folderId = $this->cache->put($folder, $folderData);
+
+		foreach ($folderContent as $key => &$value) {
+			$file = "$folder/$key";
+			$fileid = $this->cache->put($file, $value);
+			$value['fileid'] = $fileid;
+		}
+		unset($value);
+
+		$comparator = function($a, $b) use ($field, $descending) {
+			if ($field === 'randomMissingField') {
+				$field = 'name';
+			}
+
+			if ($a[$field] === $b[$field]) {
+				return 0;
+			}
+			if ($descending) {
+				return ($a[$field] < $b[$field]) ? 1 : -1;
+			} else {
+				return ($a[$field] < $b[$field]) ? -1 : 1;
+			}
+		};
+		$folderContentCopy = $folderContent;
+		usort($folderContentCopy, $comparator);
+
+		$contentGenerator = $this->cache->getFolderContentsByIdGenerator($folderId, $field, $descending);
+		$this->assertInstanceOf(\Generator::class, $contentGenerator);
+
+		$contentArray = iterator_to_array($contentGenerator);
+		$contentArray = \array_map(function($element) {
+			return [
+				'size' => $element->getSize(),
+				'name' => $element->getName(),
+				'mtime' => $element->getMTime(),
+				'mimetype' => $element->getMimeType(),
+				'fileid' => $element->getId(),
+			];
+		}, $contentArray);
+		$this->assertEquals($folderContentCopy, $contentArray);
+	}
+
+	/**
+	 * @dataProvider getFolderContentByIdGeneratorProvider
+	 */
+	public function testGetFolderContentByIdGeneratorStoppedHalfway($folderContent, $field, $descending) {
+		$folder = 'folder';
+		$folderData = ['size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory'];
+		$folderId = $this->cache->put($folder, $folderData);
+
+		foreach ($folderContent as $key => &$value) {
+			$file = "$folder/$key";
+			$fileid = $this->cache->put($file, $value);
+			$value['fileid'] = $fileid;
+		}
+		unset($value);
+
+		$comparator = function($a, $b) use ($field, $descending) {
+			if ($field === 'randomMissingField') {
+				$field = 'name';
+			}
+
+			if ($a[$field] === $b[$field]) {
+				return 0;
+			}
+			if ($descending) {
+				return ($a[$field] < $b[$field]) ? 1 : -1;
+			} else {
+				return ($a[$field] < $b[$field]) ? -1 : 1;
+			}
+		};
+		$folderContentCopy = $folderContent;
+		usort($folderContentCopy, $comparator);
+
+		$contentGenerator = $this->cache->getFolderContentsByIdGenerator($folderId, $field, $descending);
+		$this->assertInstanceOf(\Generator::class, $contentGenerator);
+
+		// we'll check just the 2 first elements
+		$contentArray = [];
+		$contentGenerator->rewind();
+		$contentArray[] = $contentGenerator->current();
+		$contentGenerator->next();
+		$contentArray[] = $contentGenerator->current();
+		$contentGenerator->send('stop');
+
+		$this->assertFalse($contentGenerator->valid());
+
+		$contentArray = \array_map(function($element) {
+			return [
+				'size' => $element->getSize(),
+				'name' => $element->getName(),
+				'mtime' => $element->getMTime(),
+				'mimetype' => $element->getMimeType(),
+				'fileid' => $element->getId(),
+			];
+		}, $contentArray);
+		$this->assertEquals(\array_slice($folderContentCopy, 0, 2), $contentArray);
+	}
+
+	/**
+	 * @dataProvider getFolderContentByIdGeneratorProvider
+	 */
+	public function testGetFolderContentGenerator($folderContent, $field, $descending) {
+		$folder = 'folder';
+		$folderData = ['size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory'];
+		$folderId = $this->cache->put($folder, $folderData);
+
+		foreach ($folderContent as $key => &$value) {
+			$file = "$folder/$key";
+			$fileid = $this->cache->put($file, $value);
+			$value['fileid'] = $fileid;
+		}
+		unset($value);
+
+		$comparator = function($a, $b) use ($field, $descending) {
+			if ($field === 'randomMissingField') {
+				$field = 'name';
+			}
+
+			if ($a[$field] === $b[$field]) {
+				return 0;
+			}
+			if ($descending) {
+				return ($a[$field] < $b[$field]) ? 1 : -1;
+			} else {
+				return ($a[$field] < $b[$field]) ? -1 : 1;
+			}
+		};
+		$folderContentCopy = $folderContent;
+		usort($folderContentCopy, $comparator);
+
+		$contentGenerator = $this->cache->getFolderContentsGenerator($folder, $field, $descending);
+		$this->assertInstanceOf(\Generator::class, $contentGenerator);
+
+		$contentArray = iterator_to_array($contentGenerator);
+		$contentArray = \array_map(function($element) {
+			return [
+				'size' => $element->getSize(),
+				'name' => $element->getName(),
+				'mtime' => $element->getMTime(),
+				'mimetype' => $element->getMimeType(),
+				'fileid' => $element->getId(),
+			];
+		}, $contentArray);
+		$this->assertEquals($folderContentCopy, $contentArray);
+	}
+
+	/**
+	 * @dataProvider getFolderContentByIdGeneratorProvider
+	 */
+	public function testGetFolderContentGeneratorStoppedHalfway($folderContent, $field, $descending) {
+		$folder = 'folder';
+		$folderData = ['size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory'];
+		$folderId = $this->cache->put($folder, $folderData);
+
+		foreach ($folderContent as $key => &$value) {
+			$file = "$folder/$key";
+			$fileid = $this->cache->put($file, $value);
+			$value['fileid'] = $fileid;
+		}
+		unset($value);
+
+		$comparator = function($a, $b) use ($field, $descending) {
+			if ($field === 'randomMissingField') {
+				$field = 'name';
+			}
+
+			if ($a[$field] === $b[$field]) {
+				return 0;
+			}
+			if ($descending) {
+				return ($a[$field] < $b[$field]) ? 1 : -1;
+			} else {
+				return ($a[$field] < $b[$field]) ? -1 : 1;
+			}
+		};
+		$folderContentCopy = $folderContent;
+		usort($folderContentCopy, $comparator);
+
+		$contentGenerator = $this->cache->getFolderContentsGenerator($folder, $field, $descending);
+		$this->assertInstanceOf(\Generator::class, $contentGenerator);
+
+		// we'll check just the 2 first elements
+		$contentArray = [];
+		$contentGenerator->rewind();
+		$contentArray[] = $contentGenerator->current();
+		$contentGenerator->next();
+		$contentArray[] = $contentGenerator->current();
+		$contentGenerator->send('stop');
+
+		$this->assertFalse($contentGenerator->valid());
+
+		$contentArray = \array_map(function($element) {
+			return [
+				'size' => $element->getSize(),
+				'name' => $element->getName(),
+				'mtime' => $element->getMTime(),
+				'mimetype' => $element->getMimeType(),
+				'fileid' => $element->getId(),
+			];
+		}, $contentArray);
+		$this->assertEquals(\array_slice($folderContentCopy, 0, 2), $contentArray);
 	}
 
 	public function testRemoveRecursive() {
