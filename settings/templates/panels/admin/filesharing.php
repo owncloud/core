@@ -68,7 +68,7 @@
 			<?php else: ?>
 				<input type="checkbox" name="shareapi_enforce_expire_date" id="shareapiEnforceExpireDate" class="checkbox" value="1" />
 			<?php endif; ?>
-			<label class="indent" for="shareapiEnforceExpireDate"><?php p($l->t('Enforce expiration date'));?></label><br/>
+			<label class="indent" for="shareapiEnforceExpireDate"><?php p($l->t('Enforce as maximum expiration date'));?></label><br/>
 		</span>
 
 		<input type="checkbox" name="shareapi_allow_public_notification" id="allowPublicMailNotification" class="checkbox"
