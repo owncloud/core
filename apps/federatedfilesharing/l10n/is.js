@@ -26,6 +26,7 @@ OC.L10N.register(
     "Share it:" : "Deila því:",
     "Add to your website" : "Bæta við vefsvæðið þitt",
     "Share with me via ownCloud" : "Deila með mér í gegnum ownCloud",
-    "HTML Code:" : "HTML-kóði:"
+    "HTML Code:" : "HTML-kóði:",
+    "Nothing to configure." : "Ekkert til að stilla."
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

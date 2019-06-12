@@ -128,6 +128,7 @@
     "Download" : "Shkarko",
     "Download %s" : "Shkarko %s",
     "Direct link" : "Lidhje e drejtpërdrejtë",
+    "Nothing to configure." : "S’ka gjë për formësim.",
     "Group Sharing Blacklist" : "Listë Bllokimesh Grupesh Ndarjesh",
     "Exclude groups from receiving shares" : "Përjashto grupe nga marrje ndarjesh",
     "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Për këto grupe nuk do të jetë e mundur të ndajnë me të tjerët. Anëtarët e grupit nuk janë të kufizuar të nisin ndarje dhe mund të marrin ndarje me grupe të tjerë te të cilët janë anëtarë, si zakonisht."
