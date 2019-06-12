@@ -5,7 +5,7 @@ Feature: Change own email address on the personal settings page
   So that I can be reached by the owncloud server
 
   Background:
-    Given user "user1" has been created with default attributes and skeleton files
+    Given user "user1" has been created with default attributes and without skeleton files
     And user "user1" has logged in using the webUI
     And the user has browsed to the personal general settings page
 
