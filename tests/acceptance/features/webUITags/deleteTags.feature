@@ -49,11 +49,13 @@ Feature: Deletion of existing tags from files and folders
 
   Scenario: Delete a tag that exists for multiple file
     Given user "user1" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "user1" has created folder "a-folder"
+    And user "user1" has uploaded file with content "another content" to "/a-folder/randomfile.txt"
     And user "user1" has uploaded file with content "more content" to "/randomfile-big.txt"
     And the user has created a "normal" tag with name "random"
     And the user has added tag "random" to file "randomfile.txt"
     And the user has added tag "random" to file "randomfile-big.txt"
-    And the user has browsed directly to display the details of file "randomfile.txt" in folder ""
+    And the user has browsed directly to display the details of file "randomfile.txt" in folder "a-folder"
     When the user deletes tag with name "random" using the webUI
     Then tag "random" should not exist for user "user1"
 
