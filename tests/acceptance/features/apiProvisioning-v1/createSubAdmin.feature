@@ -33,8 +33,10 @@ Feature: create a subadmin
     And the API should not return any data
 
   Scenario: subadmin of a group tries to make another user subadmin of their group
-    Given user "subadmin" has been created with default attributes and skeleton files
-    And user "brand-new-user" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username       |
+      | subadmin       |
+      | brand-new-user |
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     And user "brand-new-user" has been added to group "new-group"
