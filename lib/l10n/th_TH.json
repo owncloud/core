@@ -187,6 +187,10 @@
     "Privacy Policy" : "นโยบายส่วนบุคคล",
     "__language_name__" : "ภาษาไทย - Thai language",
     "No minimum ownCloud version is defined in appinfo/info.xml." : "ไม่ได้กำหนดรุ่น ownCloud ต่ำสุดใน appinfo/info.xml",
-    "No maximum ownCloud version is defined in appinfo/info.xml." : "ไม่ได้กำหนดรุ่น ownCloud สูงสุดใน appinfo/info.xml"
+    "No maximum ownCloud version is defined in appinfo/info.xml." : "ไม่ได้กำหนดรุ่น ownCloud สูงสุดใน appinfo/info.xml",
+    "Can't create or write into the apps-external directory %s" : "ไม่สามารถสร้างหรือเขียนลงในไดเรกทอรีภายนอกแอพ %s",
+    "Can't update %s" : "ไม่สามารถอัปเดต %s",
+    "Access to this resource or one of its sub-items has been denied." : "การเข้าถึงทรัพยากรนี้หรือหนึ่งในรายการย่อยถูกปฏิเสธ",
+    "File cannot be downloaded" : "ไม่สามารถดาวน์โหลดไฟล์"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

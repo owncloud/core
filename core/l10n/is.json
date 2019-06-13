@@ -366,6 +366,14 @@
     "Recipients can view or download contents." : "Viðtakendur geta skoðað eða sótt efni.",
     "Recipients can view, download, edit, delete and upload contents." : "Viðtakendur geta skoðað, sótt, breytt, eytt eða sent inn efni.",
     "E-Mail sent" : "Tölvupóstur sendur",
-    "Privacy Policy" : "Stefna vegna gagnaleyndar og friðhelgi"
+    "Privacy Policy" : "Stefna vegna gagnaleyndar og friðhelgi",
+    "Recipients can view, download and upload contents." : "Viðtakendur geta skoðað, sótt og sent inn efni.",
+    "Download / View / Edit" : "Sækja / Skoða / Breyta",
+    "Recipients can view, download and edit contents." : "Viðtakendur geta skoðað, sótt og breytt efni.",
+    "An error occured while sending email" : "Villa við að senda tölvupóst",
+    "Sharing is not allowed" : "Deiling er ekki leyfð",
+    "Confirm Password" : "Staðfestu lykilorðið",
+    "Receive files from multiple recipients without revealing the contents of the folder." : "Fáðu skrár frá mörgum aðilum án þess að birta innihald möppunnar.",
+    "Can not remove required password" : "Gat ekki fjarlægt umbeðið lykilorð"
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }

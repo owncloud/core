@@ -188,6 +188,9 @@
     "__language_name__" : "Castellano",
     "No minimum ownCloud version is defined in appinfo/info.xml." : "No está definida una versión mínima de ownCloud en appinfo/info.xml.",
     "No maximum ownCloud version is defined in appinfo/info.xml." : "No está especificada una versión máxima de ownCloud en appinfo/info.xml.",
-    "Can't update %s" : "No se puede actualizar %s"
+    "Can't update %s" : "No se puede actualizar %s",
+    "Can't create or write into the apps-external directory %s" : "No puedo crear o escribir en la carpeta externa %s",
+    "Access to this resource or one of its sub-items has been denied." : "El acceso a este recurso o uno de sus sub-elementos ha sido denegado.",
+    "File cannot be downloaded" : "El archivo no puede ser descargado"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

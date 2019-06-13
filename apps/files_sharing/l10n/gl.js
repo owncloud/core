@@ -129,6 +129,7 @@ OC.L10N.register(
     "%s is publicly shared" : "%s está compartido públicamente",
     "Group Sharing Blacklist" : "Lista negra de compartición en grupo",
     "Exclude groups from receiving shares" : "Excluir grupos de recibir comparticións",
-    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Estes grupos non estarán dispoñíbeis para compartir. Os membros do grupo non están restrinxidos ao iniciar comparticións e poden recibir comparticións con outros grupos dos que son membros como é habitual."
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Estes grupos non estarán dispoñíbeis para compartir. Os membros do grupo non están restrinxidos ao iniciar comparticións e poden recibir comparticións con outros grupos dos que son membros como é habitual.",
+    "Nothing to configure." : "Nada que configurar."
 },
 "nplurals=2; plural=(n != 1);");

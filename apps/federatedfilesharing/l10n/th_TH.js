@@ -23,6 +23,8 @@ OC.L10N.register(
     "Add to your website" : "เพิ่มไปยังเว็บไซต์",
     "Share with me via ownCloud" : "แชร์ผ่าน ownCloud",
     "HTML Code:" : "โค้ด HTML:",
-    "Add to your ownCloud" : "เพิ่มลงใน ownCloud ของคุณ"
+    "Add to your ownCloud" : "เพิ่มลงใน ownCloud ของคุณ",
+    "Automatically accept remote shares from trusted servers" : "ยอมรับการแชร์รีโมทจากเซิร์ฟเวอร์ที่เชื่อถือได้โดยอัตโนมัติ",
+    "Nothing to configure." : "ไม่มีการกำหนดค่า"
 },
 "nplurals=1; plural=0;");

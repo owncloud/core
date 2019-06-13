@@ -74,6 +74,7 @@ OC.L10N.register(
     "Pending" : "Tertunda",
     "Accept" : "Terima",
     "Decline" : "Tolak",
-    "Declined" : "Tolak"
+    "Declined" : "Tolak",
+    "Public link" : "Tautan publik"
 },
 "nplurals=1; plural=0;");

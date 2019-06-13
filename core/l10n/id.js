@@ -260,6 +260,10 @@ OC.L10N.register(
     "Anyone with the link has access to the file/folder" : "Siapapun yang mengetahui tautan memiliki akses ke berkas/ folder",
     "Menu" : "Menu",
     "Link name" : "Nama tautan",
-    "Imprint" : "Jejak"
+    "Imprint" : "Jejak",
+    "Public Links" : "Tautan Publik",
+    "Download / View" : "Unduh / Lihat",
+    "Download / View / Upload" : "Unduh / Lihat / Unggah",
+    "Recipients can view or download contents." : "Penerima dapat melihat atau mengunduh konten."
 },
 "nplurals=1; plural=0;");

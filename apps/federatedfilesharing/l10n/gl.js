@@ -22,6 +22,7 @@ OC.L10N.register(
     "Federated sharing" : "Compartición federada",
     "File is already shared with %s" : "O ficheiro xa está a ser compartido con %s",
     "Decline" : "Declinar",
-    "Add to your website" : "Engadir ao seu sitio web"
+    "Add to your website" : "Engadir ao seu sitio web",
+    "Nothing to configure." : "Nada que configurar."
 },
 "nplurals=2; plural=(n != 1);");

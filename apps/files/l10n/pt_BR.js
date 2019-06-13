@@ -127,6 +127,7 @@ OC.L10N.register(
     "Unlock failed with status {status}" : "Desbloqueio falhou com o status {status}",
     "Locks" : "Bloqueios",
     "Resource is not locked" : "O recurso não está bloqueado",
-    "Unknown user" : "Usuário desconhecido"
+    "Unknown user" : "Usuário desconhecido",
+    "The file {file} already exists" : "O arquivo {file} já existe"
 },
 "nplurals=2; plural=(n > 1);");

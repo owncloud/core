@@ -24,6 +24,7 @@ OC.L10N.register(
     "Share with me via ownCloud" : "Поделитесь со мной через ownCloud",
     "HTML Code:" : "HTML код:",
     "Add to your ownCloud" : "Добавить в свой ownCloud",
-    "Automatically accept remote shares from trusted servers" : "Автоматически принимать удалённый доступ от доверенных серверов"
+    "Automatically accept remote shares from trusted servers" : "Автоматически принимать удалённый доступ от доверенных серверов",
+    "Nothing to configure." : "Здесь настраивать нечего."
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

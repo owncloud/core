@@ -120,6 +120,13 @@ OC.L10N.register(
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Sie haben keine Rechte, um auf diese(n) Datei/Ordner zuzugreifen - Bitte den Besitzer kontaktieren, damit er dies mit Ihnen teilt.",
     "Error when assembling chunks, status code {status}" : "Fehler beim Zusammenfügen der Datenblöcke, Statuscode {status}",
     "Unknown user" : "Unbekannter Benutzer",
-    "The file {file} is currently locked, please try again later" : "Die Datei {file} ist zur Zeit gesperrt, bitte versuchen Sie es später noch einmal"
+    "The file {file} is currently locked, please try again later" : "Die Datei {file} ist zur Zeit gesperrt, bitte versuchen Sie es später noch einmal",
+    "Lock status" : "Sperrstatus",
+    "This resource is locked. Click to see more details." : "Die Ressource ist gesperrt. Klicken für mehr Details.",
+    "{owner} has locked this resource via {path}" : "{owner} hat diese Ressource via {path} gesperrt",
+    "Could not unlock, please contact the lock owner {owner}" : "Entsperren fehlgeschlagen, bitte kontaktieren Sie den Eigentümer der Sperre, {owner}",
+    "Unlock failed with status {status}" : "Entsperren fehlgeschlagen mit Status {status}",
+    "Locks" : "Sperren",
+    "Resource is not locked" : "Ressource ist nicht gesperrt"
 },
 "nplurals=2; plural=(n != 1);");
