@@ -16,8 +16,10 @@ Feature: sharing
     And the HTTP status code should be "404"
 
   Scenario: Share a file by multiple channels and download from sub-folder and direct file share
-    Given user "user1" has been created with default attributes and skeleton files
-    And user "user2" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+      | user2    |
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"

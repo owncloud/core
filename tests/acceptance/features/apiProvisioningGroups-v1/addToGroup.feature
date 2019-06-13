@@ -113,8 +113,10 @@ Feature: add users to group
     And the API should not return any data
 
   Scenario: a subadmin cannot add users to groups the subadmin is responsible for
-    Given user "subadmin" has been created with default attributes and skeleton files
-    And user "brand-new-user" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username       |
+      | brand-new-user |
+      | subadmin       |
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "subadmin" tries to add user "brand-new-user" to group "new-group" using the provisioning API
@@ -123,8 +125,10 @@ Feature: add users to group
     And user "brand-new-user" should not belong to group "new-group"
 
   Scenario: a subadmin cannot add users to groups the subadmin is not responsible for
-    Given user "other-subadmin" has been created with default attributes and skeleton files
-    And user "brand-new-user" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username       |
+      | brand-new-user |
+      | other-subadmin |
     And group "new-group" has been created
     And group "other-group" has been created
     And user "other-subadmin" has been made a subadmin of group "other-group"

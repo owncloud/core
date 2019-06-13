@@ -4,8 +4,10 @@ Feature: sharing
   Background:
     Given using OCS API version "1"
     And using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
 
   @smokeTest
   Scenario: moving a file into a share as recipient
