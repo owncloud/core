@@ -29,6 +29,8 @@ use GuzzleHttp\Message\ResponseInterface;
 use SimpleXMLElement;
 use Sabre\Xml\LibXMLException;
 use Sabre\Xml\Reader;
+use GuzzleHttp\BatchResults;
+use GuzzleHttp\Pool;
 
 /**
  * Helper for HTTP requests
@@ -68,6 +70,90 @@ class HttpRequestHelper {
 		if ($client === null) {
 			$client = new Client();
 		}
+		$request = self::createRequest(
+			$url,
+			$method,
+			$user,
+			$password,
+			$headers,
+			$body,
+			$config,
+			$cookies,
+			$stream,
+			$timeout,
+			$client
+		);
+
+		try {
+			$response = $client->send($request);
+		} catch (BadResponseException $ex) {
+			$response = $ex->getResponse();
+
+			//if the response was null for some reason do not return it but re-throw
+			if ($response === null) {
+				throw $ex;
+			}
+		}
+		return $response;
+	}
+
+	/**
+	 * Send the requests to the server in parallel.
+	 * This function takes an array of requests and an optional client.
+	 * It will send all the requests to the server using the Pool object in guzzle.
+	 *
+	 * @param array $requests
+	 * @param Client|null $client
+	 *
+	 * @return BatchResults
+	 */
+	public static function sendBatchRequest(
+		$requests,
+		$client = null
+	) {
+		if (!isset($client)) {
+			$client = new Client();
+		}
+		$results = Pool::batch($client, $requests);
+		return $results;
+	}
+
+	/**
+	 * Create an http request based on given parameters.
+	 * This creates an RequestInterface object before sending it to the server.
+	 * This also enables to create multiple requests in advance so that we can send them to the server at once in parallel.
+	 *
+	 * @param string $url
+	 * @param string $method
+	 * @param string $user
+	 * @param string $password
+	 * @param array $headers ['X-MyHeader' => 'value']
+	 * @param mixed $body
+	 * @param array $config
+	 * @param CookieJar $cookies
+	 * @param bool $stream Set to true to stream a response rather
+	 *                     than download it all up-front.
+	 * @param int $timeout
+	 * @param Client|null $client
+	 *
+	 * @return RequestInterface
+	 */
+	public static function createRequest(
+		$url,
+		$method = 'GET',
+		$user = null,
+		$password = null,
+		$headers = null,
+		$body = null,
+		$config = null,
+		$cookies = null,
+		$stream = false,
+		$timeout = 0,
+		$client = null
+	) {
+		if ($client === null) {
+			$client = new Client();
+		}
 
 		$options = [];
 		if ($user !== null) {
@@ -95,18 +181,7 @@ class HttpRequestHelper {
 				}
 			}
 		}
-
-		try {
-			$response = $client->send($request);
-		} catch (BadResponseException $ex) {
-			$response = $ex->getResponse();
-			
-			//if the response was null for some reason do not return it but re-throw
-			if ($response === null) {
-				throw $ex;
-			}
-		}
-		return $response;
+		return $request;
 	}
 
 	/**
