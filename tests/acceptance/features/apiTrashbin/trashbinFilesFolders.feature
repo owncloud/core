@@ -47,8 +47,10 @@ Feature: files and folders exist in the trashbin after being deleted
 
   Scenario Outline: deleting a file in a shared folder moves it to the trashbin root
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared folder "/shared" with user "user1"
@@ -63,8 +65,10 @@ Feature: files and folders exist in the trashbin after being deleted
 
   Scenario Outline: deleting a shared folder moves it to trashbin
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared folder "/shared" with user "user1"
@@ -77,8 +81,10 @@ Feature: files and folders exist in the trashbin after being deleted
 
   Scenario Outline: deleting a received folder doesn't move it to trashbin
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared folder "/shared" with user "user1"
@@ -92,8 +98,10 @@ Feature: files and folders exist in the trashbin after being deleted
 
   Scenario Outline: deleting a file in a received folder moves it to trashbin
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared folder "/shared" with user "user1"

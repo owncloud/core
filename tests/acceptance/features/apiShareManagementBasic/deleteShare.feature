@@ -5,8 +5,10 @@ Feature: sharing
     Given using old DAV path
 
   Scenario Outline: Delete all group shares
-    Given user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
     And user "user1" has been added to group "grp1"
