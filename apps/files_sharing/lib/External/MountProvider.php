@@ -69,6 +69,12 @@ class MountProvider implements IMountProvider {
 		while ($row = $query->fetch()) {
 			$row['manager'] = $this;
 			$row['token'] = $row['share_token'];
+			/// FIXME: Use \OCA\FederatedFileSharing\Address in external Storage and Cache
+			// Force missing proto to be https
+			if (\strpos($row['remote'], '://') === false) {
+				$row['remote'] = 'https://' .  $row['remote'];
+			}
+
 			$mounts[] = $this->getMount($user, $row, $loader);
 		}
 		return $mounts;
