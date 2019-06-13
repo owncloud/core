@@ -189,7 +189,7 @@ class CacheTest extends TestCase {
 		}
 		unset($value);
 
-		$comparator = function($a, $b) use ($field, $descending) {
+		$comparator = function ($a, $b) use ($field, $descending) {
 			if ($field === 'randomMissingField') {
 				$field = 'name';
 			}
@@ -204,13 +204,13 @@ class CacheTest extends TestCase {
 			}
 		};
 		$folderContentCopy = $folderContent;
-		usort($folderContentCopy, $comparator);
+		\usort($folderContentCopy, $comparator);
 
 		$contentGenerator = $this->cache->getFolderContentsByIdGenerator($folderId, $field, $descending);
 		$this->assertInstanceOf(\Generator::class, $contentGenerator);
 
-		$contentArray = iterator_to_array($contentGenerator);
-		$contentArray = \array_map(function($element) {
+		$contentArray = \iterator_to_array($contentGenerator);
+		$contentArray = \array_map(function ($element) {
 			return [
 				'size' => $element->getSize(),
 				'name' => $element->getName(),
@@ -237,7 +237,7 @@ class CacheTest extends TestCase {
 		}
 		unset($value);
 
-		$comparator = function($a, $b) use ($field, $descending) {
+		$comparator = function ($a, $b) use ($field, $descending) {
 			if ($field === 'randomMissingField') {
 				$field = 'name';
 			}
@@ -252,7 +252,7 @@ class CacheTest extends TestCase {
 			}
 		};
 		$folderContentCopy = $folderContent;
-		usort($folderContentCopy, $comparator);
+		\usort($folderContentCopy, $comparator);
 
 		$contentGenerator = $this->cache->getFolderContentsByIdGenerator($folderId, $field, $descending);
 		$this->assertInstanceOf(\Generator::class, $contentGenerator);
@@ -267,7 +267,7 @@ class CacheTest extends TestCase {
 
 		$this->assertFalse($contentGenerator->valid());
 
-		$contentArray = \array_map(function($element) {
+		$contentArray = \array_map(function ($element) {
 			return [
 				'size' => $element->getSize(),
 				'name' => $element->getName(),
@@ -294,7 +294,7 @@ class CacheTest extends TestCase {
 		}
 		unset($value);
 
-		$comparator = function($a, $b) use ($field, $descending) {
+		$comparator = function ($a, $b) use ($field, $descending) {
 			if ($field === 'randomMissingField') {
 				$field = 'name';
 			}
@@ -309,13 +309,13 @@ class CacheTest extends TestCase {
 			}
 		};
 		$folderContentCopy = $folderContent;
-		usort($folderContentCopy, $comparator);
+		\usort($folderContentCopy, $comparator);
 
 		$contentGenerator = $this->cache->getFolderContentsGenerator($folder, $field, $descending);
 		$this->assertInstanceOf(\Generator::class, $contentGenerator);
 
-		$contentArray = iterator_to_array($contentGenerator);
-		$contentArray = \array_map(function($element) {
+		$contentArray = \iterator_to_array($contentGenerator);
+		$contentArray = \array_map(function ($element) {
 			return [
 				'size' => $element->getSize(),
 				'name' => $element->getName(),
@@ -342,7 +342,7 @@ class CacheTest extends TestCase {
 		}
 		unset($value);
 
-		$comparator = function($a, $b) use ($field, $descending) {
+		$comparator = function ($a, $b) use ($field, $descending) {
 			if ($field === 'randomMissingField') {
 				$field = 'name';
 			}
@@ -357,7 +357,7 @@ class CacheTest extends TestCase {
 			}
 		};
 		$folderContentCopy = $folderContent;
-		usort($folderContentCopy, $comparator);
+		\usort($folderContentCopy, $comparator);
 
 		$contentGenerator = $this->cache->getFolderContentsGenerator($folder, $field, $descending);
 		$this->assertInstanceOf(\Generator::class, $contentGenerator);
@@ -372,7 +372,7 @@ class CacheTest extends TestCase {
 
 		$this->assertFalse($contentGenerator->valid());
 
-		$contentArray = \array_map(function($element) {
+		$contentArray = \array_map(function ($element) {
 			return [
 				'size' => $element->getSize(),
 				'name' => $element->getName(),
