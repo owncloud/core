@@ -3,8 +3,10 @@ Feature: sharing
 
   Background:
     Given using old DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
 
   @smokeTest
   Scenario Outline: getting all shares of a user using that user
@@ -35,8 +37,10 @@ Feature: sharing
   @smokeTest
   Scenario Outline: getting all shares of a file
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and skeleton files
-    And user "user3" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user2    |
+      | user3    |
     And user "user0" has shared file "textfile0.txt" with user "user1"
     And user "user0" has shared file "textfile0.txt" with user "user2"
     When user "user0" gets all the shares from the file "textfile0.txt" using the sharing API
@@ -53,8 +57,10 @@ Feature: sharing
   @smokeTest
   Scenario Outline: getting all shares of a file with reshares
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes and skeleton files
-    And user "user3" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user2    |
+      | user3    |
     And user "user0" has shared file "textfile0.txt" with user "user1"
     And user "user1" has shared file "textfile0 (2).txt" with user "user2"
     When user "user0" gets all the shares with reshares from the file "textfile0.txt" using the sharing API
