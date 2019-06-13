@@ -17,8 +17,10 @@ Feature: disable user
 
   @smokeTest
   Scenario: Subadmin should be able to disable an user in their group
-    Given user "subadmin" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+      | subadmin |
     And group "new-group" has been created
     And user "subadmin" has been added to group "new-group"
     And user "user1" has been added to group "new-group"
@@ -29,8 +31,10 @@ Feature: disable user
     And user "user1" should be disabled
 
   Scenario: Subadmin should not be able to disable an user not in their group
-    Given user "subadmin" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+      | subadmin |
     And group "new-group" has been created
     And group "another-group" has been created
     And user "subadmin" has been added to group "new-group"
@@ -42,8 +46,10 @@ Feature: disable user
     And user "user1" should be enabled
 
   Scenario: Subadmins should not be able to disable users that have admin permissions in their group
-    Given user "another-admin" has been created with default attributes and skeleton files
-    And user "subadmin" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username      |
+      | subadmin      |
+      | another-admin |
     And group "new-group" has been created
     And user "another-admin" has been added to group "admin"
     And user "subadmin" has been added to group "new-group"
@@ -82,8 +88,10 @@ Feature: disable user
     And user "another-admin" should be enabled
 
   Scenario: disable an user with a regular user
-    Given user "user1" has been created with default attributes and skeleton files
-    And user "user2" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+      | user2    |
     When user "user1" disables user "user2" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"

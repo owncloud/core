@@ -27,8 +27,10 @@ Feature: get subadmins
     And the API should not return any data
 
   Scenario: subadmin tries to get other subadmins of the same group
-    Given user "subadmin" has been created with default attributes and skeleton files
-    And user "newsubadmin" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username    |
+      | subadmin    |
+      | newsubadmin |
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     And user "newsubadmin" has been made a subadmin of group "new-group"
@@ -38,8 +40,10 @@ Feature: get subadmins
     And the API should not return any data
 
   Scenario: normal user tries to get the subadmins of the group
-    Given user "newuser" has been created with default attributes and skeleton files
-    And user "subadmin" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username    |
+      | subadmin    |
+      | newuser     |
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "newuser" gets all the subadmins of group "new-group" using the provisioning API
