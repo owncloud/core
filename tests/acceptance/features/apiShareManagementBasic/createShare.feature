@@ -723,3 +723,47 @@ Feature: sharing
       | ocs_api_version |
       | 1               |
       | 2               |
+
+  @skipOnEncryptionType:user-keys @encryption-issue-132
+  Scenario Outline: share with a group and then add a user to that group
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And these groups have been created:
+      | groupname |
+      | grp1      |
+    And user "user1" has been added to group "grp1"
+    And user "user0" has uploaded file with content "some content" to "lorem.txt"
+    When user "user0" shares file "lorem.txt" with group "grp1" using the sharing API
+    And the administrator adds user "user2" to group "grp1" using the provisioning API
+    Then the content of file "lorem.txt" for user "user1" should be "some content"
+    And the content of file "lorem.txt" for user "user2" should be "some content"
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnEncryptionType:user-keys @encryption-issue-132
+  Scenario Outline: share with a group and then add a user to that group that already has a file with the shared name
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And these groups have been created:
+      | groupname |
+      | grp1      |
+    And user "user1" has been added to group "grp1"
+    And user "user0" has uploaded file with content "user0 content" to "lorem.txt"
+    And user "user2" has uploaded file with content "user2 content" to "lorem.txt"
+    When user "user0" shares file "lorem.txt" with group "grp1" using the sharing API
+    And the administrator adds user "user2" to group "grp1" using the provisioning API
+    Then the content of file "lorem.txt" for user "user1" should be "user0 content"
+    And the content of file "lorem.txt" for user "user2" should be "user2 content"
+    And the content of file "lorem (2).txt" for user "user2" should be "user0 content"
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
