@@ -120,7 +120,6 @@ OC.L10N.register(
     "Set default expiration date" : "Aseta oletusvanhenemispäivä",
     "Expire after " : "Vanhenna",
     "days" : "päivän jälkeen",
-    "Enforce expiration date" : "Pakota vanhenemispäivä",
     "Allow users to send mail notification for shared files" : "Salli käyttäjien lähettää sähköposti-ilmoituksia jaetuista tiedostoista",
     "Allow users to share file via social media" : "Salli käyttäjien jakaa tiedosto sosiaalisessa mediassa",
     "Allow resharing" : "Salli uudelleenjakaminen",

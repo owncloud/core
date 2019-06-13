@@ -136,7 +136,6 @@ OC.L10N.register(
     "Set default expiration date" : "Definir a data predeterminada de caducidade",
     "Expire after " : "Caduca após ",
     "days" : "días",
-    "Enforce expiration date" : "Obrigar a data de caducidade",
     "Allow users to send mail notification for shared files" : "Permitirlle aos usuarios enviar notificacións por correo para os ficheiros compartidos",
     "Language used for public mail notifications for shared files" : "Idioma usado para as notificacións de correo público para ficheiros compartidos",
     "Allow users to share file via social media" : "Permitir que os usuarios compartan a través de medios sociais",

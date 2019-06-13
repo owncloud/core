@@ -62,7 +62,6 @@ OC.L10N.register(
     "Set default expiration date" : "Ezarri muga data lehenetsia",
     "Expire after " : "Iraungia honen ondoren",
     "days" : "egun",
-    "Enforce expiration date" : "Muga data betearazi",
     "Allow users to send mail notification for shared files" : "Baimendu erabiltzaileak epostako jakinarazpenak bidaltzen partekatutako fitxategientzat",
     "Allow resharing" : "Baimendu birpartekatzea",
     "Restrict users to only share with users in their groups" : "Mugatu partekatzeak taldeko erabiltzaileetara",

@@ -133,7 +133,6 @@ OC.L10N.register(
     "Set default expiration date" : "Ustaw domyślną datę wygaśnięcia",
     "Expire after " : "Wygaś po",
     "days" : "dniach",
-    "Enforce expiration date" : "Wymuś datę wygaśnięcia",
     "Allow users to send mail notification for shared files" : "Zezwól użytkownikom na wysyłanie powiadomień email dla udostępnionych plików",
     "Language used for public mail notifications for shared files" : "Język używany do publicznych powiadomień e-mail dla udostępnianych plików.",
     "Allow users to share file via social media" : "Zezwól użytkownikom na współdzielenie plików w mediach społecznościowych",

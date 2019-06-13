@@ -125,7 +125,6 @@ OC.L10N.register(
     "Set default expiration date" : "Vælg standard udløbsdato",
     "Expire after " : "Udløber efter",
     "days" : "dage",
-    "Enforce expiration date" : "Påtving udløbsdato",
     "Allow users to send mail notification for shared files" : "Tillad brugere at sende mail underretninger for delte filer",
     "Allow users to share file via social media" : "Tillad brugere at dele via socialt media",
     "Allow resharing" : "Tillad videredeling",

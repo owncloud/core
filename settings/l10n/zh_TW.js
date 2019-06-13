@@ -114,7 +114,6 @@ OC.L10N.register(
     "Set default expiration date" : "設定預設到期日",
     "Expire after " : "在什麼時候過期",
     "days" : "天",
-    "Enforce expiration date" : "強制分享連結設定到期日",
     "Allow users to send mail notification for shared files" : "允許使用者寄送有關分享檔案的郵件通知",
     "Allow resharing" : "允許轉分享",
     "Allow sharing with groups" : "允許和群組分享",

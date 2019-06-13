@@ -134,7 +134,6 @@
     "Set default expiration date" : "הגדרת תאריך תפוגה ברירת מחדל",
     "Expire after " : "פג אחרי",
     "days" : "ימים",
-    "Enforce expiration date" : "חייב תאריך תפוגה",
     "Allow users to send mail notification for shared files" : "אפשר למשתמשים לשלוח הודעות דואר אלקטרוני לשיתוף קבצים",
     "Language used for public mail notifications for shared files" : "שפה המשמשת עבור הודעות דואר ציבורי עבור קבצים משותפים",
     "Allow users to share file via social media" : "מאפשר למשתמשים לשתף קובץ באמצעות מדייה חברתית",

@@ -131,7 +131,6 @@
     "Set default expiration date" : "기본 만료 날짜 설정",
     "Expire after " : "다음 날짜 후 만료",
     "days" : "일",
-    "Enforce expiration date" : "만료 날짜 강제",
     "Allow users to send mail notification for shared files" : "공유 파일 이메일 알림 전송 허용",
     "Allow users to share file via social media" : "소셜 미디어로 파일 공유 허용",
     "Allow resharing" : "재공유 허용",

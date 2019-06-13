@@ -134,7 +134,6 @@
     "Set default expiration date" : "Establecer fecha de caducidad predeterminada",
     "Expire after " : "Caduca luego de",
     "days" : "días",
-    "Enforce expiration date" : "Imponer fecha de caducidad",
     "Allow users to send mail notification for shared files" : "Permitir a los usuarios enviar mensajes de notificación para ficheros compartidos",
     "Language used for public mail notifications for shared files" : "Idioma usado para notificaciones por correo públicas para los archivos compartidos",
     "Allow users to share file via social media" : "Permitir a los usuarios compartir archivo por redes sociales",

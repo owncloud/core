@@ -136,7 +136,6 @@ OC.L10N.register(
     "Set default expiration date" : "ตั้งค่าเริ่มต้นวันหมดอายุ",
     "Expire after " : "หลังจากหมดอายุ",
     "days" : "วัน",
-    "Enforce expiration date" : "บังคับให้มีวันที่หมดอายุ",
     "Allow users to send mail notification for shared files" : "อนุญาตให้ผู้ใช้ส่งการแจ้งเตือนอีเมลสำหรับไฟล์ที่ถูกแชร์",
     "Language used for public mail notifications for shared files" : "ภาษาที่ใช้แจ้งเตือนทางอีเมลสาธารณะสำหรับไฟล์ที่ใช้ร่วมกัน",
     "Allow users to share file via social media" : "อนุญาตให้ผู้ใช้แชร์ไฟล์ผ่านทางสื่อออนไลน์ เช่น Facebook Twitter ฯลฯ",

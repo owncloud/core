@@ -86,7 +86,6 @@ OC.L10N.register(
     "Set default expiration date" : "Estableix la data de venciment",
     "Expire after " : "Venciment després de",
     "days" : "dies",
-    "Enforce expiration date" : "Força la data de venciment",
     "Allow users to send mail notification for shared files" : "Permet als usuaris enviar notificacions de fitxers compartits per correu ",
     "Allow resharing" : "Permet compartir de nou",
     "Restrict users to only share with users in their groups" : "Permet als usuaris compartir només amb usuaris del seu grup",

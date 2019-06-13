@@ -13,6 +13,7 @@ OC.L10N.register(
     "Unknown error \"{error}\" uploading file \"{file}\"" : "Неизвестная ошибка \"{error}\" при загрузке файла \"{file}\"",
     "Could not create folder \"{dir}\"" : "Невозможно создать папку \"{dir}\"",
     "Upload cancelled." : "Загрузка отменена.",
+    "The file {file} already exists" : "Файл {file} уже существует",
     "Processing files..." : "Обработка файлов...",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Невозможно загрузить {filename}, так как это либо каталог, либо файл нулевого размера",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Недостаточно свободного места, Вы загружаете {size1}, но осталось только {size2}",

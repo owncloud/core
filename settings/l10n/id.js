@@ -104,7 +104,6 @@ OC.L10N.register(
     "Set default expiration date" : "Atur tanggal kadaluarsa default",
     "Expire after " : "Kadaluarsa setelah",
     "days" : "hari",
-    "Enforce expiration date" : "Berlakukan tanggal kadaluarsa",
     "Allow users to send mail notification for shared files" : "Izinkan pengguna untuk mengirimkan email pemberitahuan untuk berkas berbagi",
     "Allow resharing" : "Izinkan pembagian ulang",
     "Restrict users to only share with users in their groups" : "Batasi pengguna untuk hanya membagikan dengan pengguna didalam grup mereka",

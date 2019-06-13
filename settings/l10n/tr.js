@@ -120,7 +120,6 @@ OC.L10N.register(
     "Set default expiration date" : "Öntanımlı son kullanma tarihini ayarla",
     "Expire after " : "Süre",
     "days" : "gün sonra dolsun",
-    "Enforce expiration date" : "Son kullanma tarihini zorla",
     "Allow users to send mail notification for shared files" : "Paylaşılmış dosyalar için kullanıcıların posta bildirimi göndermesine izin ver",
     "Allow resharing" : "Yeniden paylaşıma izin ver",
     "Allow sharing with groups" : "Grouplar ile paylaşıma izin ver",

@@ -28,7 +28,6 @@ OC.L10N.register(
     "Sharing" : "ভাগাভাগিরত",
     "Expire after " : "এরপর মেয়াদোত্তীর্ণ হও",
     "days" : "দিনগুলি",
-    "Enforce expiration date" : "মেয়াদোত্তীর্ণ হওয়ার তারিখ কার্যকর করুন",
     "None" : "কোনটিই নয়",
     "Login" : "প্রবেশ",
     "Send mode" : "পাঠানো মোড",

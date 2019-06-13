@@ -90,7 +90,6 @@ OC.L10N.register(
     "Sharing" : "Deling",
     "Expire after " : "Verval na",
     "days" : "dae",
-    "Enforce expiration date" : "Dwing vervaldatum af",
     "Allow users to share file via social media" : "Laat gebruikers d.m.v. sosiale media deel",
     "None" : "Geen",
     "Log" : "Log",

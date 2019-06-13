@@ -131,7 +131,6 @@
     "Set default expiration date" : "Setja sjálfgefinn gildistíma",
     "Expire after " : "Rennur út eftir ",
     "days" : "daga",
-    "Enforce expiration date" : "Krefjast dagsetningar á gildistíma",
     "Allow users to send mail notification for shared files" : "Leyfa notendum að senda tilkynningar í tölvupósti vegna deildra skráa",
     "Allow users to share file via social media" : "Leyfa notendum að deila með samfélagsmiðlum",
     "Allow resharing" : "Leyfa endurdeilingu",
