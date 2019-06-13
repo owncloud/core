@@ -6,7 +6,7 @@ Feature: Display notifications when receiving a share and follow embedded links
 
   Background:
     Given app "notifications" has been enabled
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | user1    |
       | user2    |
@@ -15,6 +15,7 @@ Feature: Display notifications when receiving a share and follow embedded links
   @smokeTest
   Scenario: notification link redirection in case a share is pending
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
-    And user "user1" has shared folder "/simple-folder" with user "user2"
+    And user "user1" has created folder "a-folder"
+    And user "user1" has shared folder "a-folder" with user "user2"
     When the user follows the link of the first notification on the webUI
     Then the user should be redirected to a webUI page with the title "Shared with you - %productname%"
