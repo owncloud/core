@@ -19,8 +19,10 @@ Feature: get users
 
   @smokeTest
   Scenario: subadmin gets the users in their group
-    Given user "brand-new-user" has been created with default attributes and skeleton files
-    And user "another-new-user" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username         |
+      | brand-new-user   |
+      | another-new-user |
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "brand-new-user" has been made a subadmin of group "new-group"
@@ -32,8 +34,10 @@ Feature: get users
 
   @issue-31276
   Scenario: normal user tries to get other users
-    Given user "normaluser" has been created with default attributes and skeleton files
-    And user "newuser" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username   |
+      | normaluser |
+      | newuser    |
     When user "normaluser" gets the list of all users using the provisioning API
     Then the OCS status code should be "997"
     #And the OCS status code should be "401"

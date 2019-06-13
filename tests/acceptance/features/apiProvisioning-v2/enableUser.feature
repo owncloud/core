@@ -46,8 +46,10 @@ Feature: enable user
 
   @issue-31276
   Scenario: normal user tries to enable other user
-    Given user "user1" has been created with default attributes and skeleton files
-    And user "user2" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+      | user2    |
     And user "user2" has been disabled
     When user "user1" tries to enable user "user2" using the provisioning API
     Then the OCS status code should be "997"
