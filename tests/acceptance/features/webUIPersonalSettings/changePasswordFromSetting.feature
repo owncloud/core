@@ -5,7 +5,7 @@ Feature: Change Login Password
   So that I can login with my new password
 
   Background:
-    Given user "user1" has been created with default attributes and skeleton files
+    Given user "user1" has been created with default attributes and without skeleton files
     And user "user1" has logged in using the webUI
     And the user has browsed to the personal general settings page
 
