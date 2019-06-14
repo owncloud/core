@@ -1324,6 +1324,28 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then the fields of the last response should not include
+	 *
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function checkFieldsNotInResponse($body) {
+		if ($body instanceof TableNode) {
+			$fd = $body->getRowsHash();
+
+			foreach ($fd as $field => $value) {
+				$value = $this->replaceValuesFromTable($field, $value);
+				if ($this->isFieldInResponse($field, $value)) {
+					PHPUnit\Framework\Assert::fail(
+						"$field has value $value"
+					);
+				}
+			}
+		}
+	}
+
+	/**
 	 * @When user :user removes all shares from the file named :fileName using the sharing API
 	 * @Given user :user has removed all shares from the file named :fileName
 	 *
