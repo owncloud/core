@@ -40,8 +40,10 @@ Feature: get user
     And the quota definition returned by the API should be "default"
 
   Scenario: a subadmin tries to get information of a user not in their group
-    Given user "subadmin" has been created with default attributes and skeleton files
-    And user "newuser" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | subadmin |
+      | newuser  |
     And group "newgroup" has been created
     And user "subadmin" has been made a subadmin of group "newgroup"
     When user "subadmin" retrieves the information of user "newuser" using the provisioning API
@@ -50,8 +52,10 @@ Feature: get user
     And the API should not return any data
 
   Scenario: a normal user tries to get information of another user
-    Given user "newuser" has been created with default attributes and skeleton files
-    And user "anotheruser" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username    |
+      | newuser     |
+      | anotheruser |
     When user "anotheruser" retrieves the information of user "newuser" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
