@@ -59,8 +59,10 @@ Feature: quota
 
   Scenario Outline: Uploading a file in received folder having enough quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And the quota of user "user0" has been set to "20 B"
     And the quota of user "user1" has been set to "10 MB"
     And user "user1" has created folder "/testquota"
@@ -74,8 +76,10 @@ Feature: quota
 
   Scenario Outline: Uploading a file in received folder having insufficient quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And the quota of user "user0" has been set to "10 MB"
     And the quota of user "user1" has been set to "20 B"
     And user "user1" has created folder "/testquota"
@@ -90,8 +94,10 @@ Feature: quota
 
   Scenario Outline: Overwriting a file in received folder having enough quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And the quota of user "user0" has been set to "20 B"
     And the quota of user "user1" has been set to "10 MB"
     And user "user1" has created folder "/testquota"
@@ -106,8 +112,10 @@ Feature: quota
 
   Scenario Outline: Overwriting a file in received folder having insufficient quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And the quota of user "user0" has been set to "10 MB"
     And the quota of user "user1" has been set to "20 B"
     And user "user1" has created folder "/testquota"
@@ -125,8 +133,10 @@ Feature: quota
 
   Scenario Outline: Overwriting a received file having enough quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And the quota of user "user0" has been set to "20 B"
     And the quota of user "user1" has been set to "10 MB"
     And user "user1" has uploaded file with content "test" to "/testquota.txt"
@@ -140,8 +150,10 @@ Feature: quota
 
   Scenario Outline: Overwriting a received file having insufficient quota
     Given using <dav_version> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user1" has been created with default attributes and skeleton files
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And the quota of user "user0" has been set to "10 MB"
     And the quota of user "user1" has been set to "20 B"
     And user "user1" has moved file "/textfile0.txt" to "/testquota.txt"
