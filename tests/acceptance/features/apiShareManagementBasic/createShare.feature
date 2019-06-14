@@ -128,6 +128,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | welcome.txt   |
+      | password | %public%      |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -139,6 +140,29 @@ Feature: sharing
       | uid_owner              | user0          |
       | share_with             | ***redacted*** |
       | share_with_displayname | ***redacted*** |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @public_link_share-feature-required
+  Scenario Outline: Getting the share information of passwordless public-links hides credential placeholders
+    Given using OCS API version "<ocs_api_version>"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path     | welcome.txt   |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | file_target            | /welcome.txt   |
+      | path                   | /welcome.txt   |
+      | item_type              | file           |
+      | share_type             | 3              |
+      | permissions            | 1              |
+      | uid_owner              | user0          |
+    And the fields of the last response should not include
+      | share_with             | ***redacted*** |
+      | share_with_displayname | ***redacted*** |
+
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
