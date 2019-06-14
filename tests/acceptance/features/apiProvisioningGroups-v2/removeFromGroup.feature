@@ -101,8 +101,10 @@ Feature: remove a user from a group
 
   @smokeTest
   Scenario: a subadmin can remove users from groups the subadmin is responsible for
-    Given user "subadmin" has been created with default attributes and skeleton files
-    And user "brand-new-user" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username       |
+      | brand-new-user |
+      | subadmin       |
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
@@ -112,8 +114,10 @@ Feature: remove a user from a group
     And user "brand-new-user" should not belong to group "new-group"
 
   Scenario: a subadmin cannot remove users from groups the subadmin is not responsible for
-    Given user "other-subadmin" has been created with default attributes and skeleton files
-    And user "brand-new-user" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username       |
+      | brand-new-user |
+      | other-subadmin |
     And group "new-group" has been created
     And group "other-group" has been created
     And user "brand-new-user" has been added to group "new-group"
@@ -125,8 +129,10 @@ Feature: remove a user from a group
 
   @issue-31276
   Scenario: normal user tries to remove a user in their group
-    Given user "newuser" has been created with default attributes and skeleton files
-    And user "anotheruser" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username    |
+      | newuser     |
+      | anotheruser |
     And group "new-group" has been created
     And user "newuser" has been added to group "new-group"
     And user "anotheruser" has been added to group "new-group"

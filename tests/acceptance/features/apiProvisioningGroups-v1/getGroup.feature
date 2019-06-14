@@ -9,8 +9,10 @@ Feature: get group
 
   @smokeTest
   Scenario: admin gets users in the group
-    Given user "brand-new-user" has been created with default attributes and skeleton files
-    And user "123" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username       |
+      | brand-new-user |
+      | 123            |
     And group "new-group" has been created
     And user "brand-new-user" has been added to group "new-group"
     And user "123" has been added to group "new-group"
@@ -50,9 +52,11 @@ Feature: get group
 
   @smokeTest
   Scenario: subadmin gets users in a group they are responsible for
-    Given user "user1" has been created with default attributes and skeleton files
-    And user "user2" has been created with default attributes and skeleton files
-    And user "subadmin" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+      | subadmin |
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     And user "user1" has been added to group "new-group"
