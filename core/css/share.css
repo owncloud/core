@@ -69,12 +69,16 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
-	line-height: 32px;
 	vertical-align: middle;
 }
 
 .share-autocomplete-item .autocomplete-item-displayname {
 	margin-right: 5px;
+}
+
+.share-autocomplete-item .autocomplete-item-typeInfo {
+	font-size: smaller;
+	font-style: italic;
 }
 
 .share-autocomplete-item .avatardiv {
