@@ -33,6 +33,7 @@ use OC\Repair\CleanTags;
 use OC\Repair\Collation;
 use OC\Repair\DisableExtraThemes;
 use OC\Repair\DropOldJobs;
+use OC\Repair\MoveAvatarIntoSubFolder;
 use OC\Repair\OldGroupMembershipShares;
 use OC\Repair\RemoveGetETagEntries;
 use OC\Repair\RemoveRootShares;
@@ -143,6 +144,15 @@ class Repair implements IOutput {
 			),
 			new SharePropagation(\OC::$server->getConfig()),
 			new MoveAvatarOutsideHome(
+				\OC::$server->getConfig(),
+				\OC::$server->getDatabaseConnection(),
+				\OC::$server->getUserManager(),
+				\OC::$server->getAvatarManager(),
+				\OC::$server->getLazyRootFolder(),
+				\OC::$server->getL10N('core'),
+				\OC::$server->getLogger()
+			),
+			new MoveAvatarIntoSubFolder(
 				\OC::$server->getConfig(),
 				\OC::$server->getDatabaseConnection(),
 				\OC::$server->getUserManager(),
