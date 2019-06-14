@@ -40,4 +40,4 @@ Feature: security certificates
 
   Scenario: Import random file as certificate
     When the administrator imports security certificate from the path "tests/data/lorem.txt"
-    Then the command error output should contain the text "Certificate could not get parsed."
+    Then the command output should contain the text "Certificate could not get parsed."
