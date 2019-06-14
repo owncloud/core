@@ -58,54 +58,68 @@ if (\stripos(PHP_OS, 'WIN') === 0) {
 function exceptionHandler($exception) {
 	echo 'An unhandled exception has been thrown:' . PHP_EOL;
 	echo $exception;
+	\OC::$server->getLogger()->logException($exception);
 	exit(1);
 }
 try {
 	require_once __DIR__ . '/lib/base.php';
-
-	// set to run indefinitely if needed
-	\set_time_limit(0);
-
-	if (!OC::$CLI) {
-		echo 'This script can be run from the command line only' . PHP_EOL;
-		exit(1);
-	}
-
-	\set_exception_handler('exceptionHandler');
-
-	if (!\function_exists('posix_getuid')) {
-		echo 'The posix extensions are required - see http://php.net/manual/en/book.posix.php' . PHP_EOL;
-		exit(1);
-	}
-	$user = \posix_getpwuid(\posix_getuid());
-	$configUser = \posix_getpwuid(\fileowner(OC::$configDir . 'config.php'));
-	if ($user['name'] !== $configUser['name']) {
-		echo 'Console has to be executed with the user that owns the file config/config.php' . PHP_EOL;
-		echo 'Current user: ' . $user['name'] . PHP_EOL;
-		echo 'Owner of config.php: ' . $configUser['name'] . PHP_EOL;
-		echo "Try adding 'sudo -u " . $configUser['name'] . " ' to the beginning of the command (without the single quotes)" . PHP_EOL;
-		exit(1);
-	}
-
-	$oldWorkingDir = \getcwd();
-	if ($oldWorkingDir === false) {
-		echo 'This script can be run from the ownCloud root directory only.' . PHP_EOL;
-		echo "Can't determine current working dir - the script will continue to work but be aware of the above fact." . PHP_EOL;
-	} elseif ($oldWorkingDir !== __DIR__ && !\chdir(__DIR__)) {
-		echo 'This script can be run from the ownCloud root directory only.' . PHP_EOL;
-		echo "Can't change to ownCloud root directory." . PHP_EOL;
-		exit(1);
-	}
-
-	if (!\function_exists('pcntl_signal') && !\in_array('--no-warnings', $argv, true)) {
-		echo 'The process control (PCNTL) extensions are required in case you want to interrupt long running commands - see http://php.net/manual/en/book.pcntl.php' . PHP_EOL;
-	}
-
-	$application = new Application(\OC::$server->getConfig(), \OC::$server->getEventDispatcher(), \OC::$server->getRequest());
-	$application->loadCommands(new ArgvInput(), new ConsoleOutput());
-	$application->run();
 } catch (Exception $ex) {
-	exceptionHandler($ex);
+	echo "Something went wrong." . PHP_EOL;
+	echo $ex;
+	exit(1);
 } catch (Error $ex) {
-	exceptionHandler($ex);
+	echo "Something fatal happened." . PHP_EOL;
+	echo $ex;
+	exit(1);
 }
+
+// set to run indefinitely if needed
+\set_time_limit(0);
+
+if (!OC::$CLI) {
+	echo 'This script can be run from the command line only' . PHP_EOL;
+	exit(1);
+}
+
+\set_exception_handler('exceptionHandler');
+
+if (!\function_exists('posix_getuid')) {
+	echo 'The posix extensions are required - see http://php.net/manual/en/book.posix.php' . PHP_EOL;
+	exit(1);
+}
+$user = \posix_getpwuid(\posix_getuid());
+$configUser = \posix_getpwuid(\fileowner(OC::$configDir . 'config.php'));
+if ($user['name'] !== $configUser['name']) {
+	echo 'Console has to be executed with the user that owns the file config/config.php' . PHP_EOL;
+	echo 'Current user: ' . $user['name'] . PHP_EOL;
+	echo 'Owner of config.php: ' . $configUser['name'] . PHP_EOL;
+	echo "Try adding 'sudo -u " . $configUser['name'] . " ' to the beginning of the command (without the single quotes)" . PHP_EOL;
+	exit(1);
+}
+
+$oldWorkingDir = \getcwd();
+if ($oldWorkingDir === false) {
+	echo 'This script can be run from the ownCloud root directory only.' . PHP_EOL;
+	echo "Can't determine current working dir - the script will continue to work but be aware of the above fact." . PHP_EOL;
+} elseif ($oldWorkingDir !== __DIR__ && !\chdir(__DIR__)) {
+	echo 'This script can be run from the ownCloud root directory only.' . PHP_EOL;
+	echo "Can't change to ownCloud root directory." . PHP_EOL;
+	exit(1);
+}
+
+if (!\function_exists('pcntl_signal') && !\in_array('--no-warnings', $argv, true)) {
+	echo 'The process control (PCNTL) extensions are required in case you want to interrupt long running commands - see http://php.net/manual/en/book.pcntl.php' . PHP_EOL;
+}
+
+$defaults = new OC_Defaults();
+$symfonyApplication = new \Symfony\Component\Console\Application($defaults->getName(), \OC_Util::getVersionString());
+/**
+ * By default the catchExceptions is set to true. And hence the exceptions thrown
+ * from the occ commands will not reach here. Inorder to allow exceptions reach
+ * here we need to set catchExceptions as false.
+ */
+$symfonyApplication->setCatchExceptions(false);
+
+$application = new Application(\OC::$server->getConfig(), $symfonyApplication, \OC::$server->getEventDispatcher(), \OC::$server->getRequest());
+$application->loadCommands(new ArgvInput(), new ConsoleOutput());
+$application->run();
