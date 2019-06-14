@@ -367,6 +367,7 @@ OC.L10N.register(
     "Download / View" : "Télécharger / Voir",
     "Download / View / Upload" : "Télécharger / Voir / Téléverser",
     "Recipients can view or download contents." : "Les bénéficiaires peuvent voir ou télécharger le contenu.",
-    "Recipients can view, download, edit, delete and upload contents." : "Les bénéficiaires peuvent voir, télécharger, modifier, supprimer et téléverser le contenu."
+    "Recipients can view, download, edit, delete and upload contents." : "Les bénéficiaires peuvent voir, télécharger, modifier, supprimer et téléverser le contenu.",
+    "Confirm Password" : "Confirmer le mot de passe"
 },
 "nplurals=2; plural=(n > 1);");

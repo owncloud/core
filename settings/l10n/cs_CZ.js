@@ -354,6 +354,18 @@ OC.L10N.register(
     "Delete group" : "Smazat skupinu",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Na tuto adresu byl odeslán email s potvrzením. Až do ověření emailu nebude tato adresa nastavena.",
     "Users" : "Uživatelé",
-    "New Password" : "Nové heslo"
+    "New Password" : "Nové heslo",
+    "CORS" : "CORS",
+    "User ID" : "ID uživatele",
+    "Wrong current password" : "Chybné heslo",
+    "The new password cannot be the same as the previous one" : "Nové heslo nemůže být stejné jako to předchozí",
+    "Owner language" : "Jazyk vlastníka",
+    "Enforce password protection for read-only links" : "Vynutit ochranu heslem pro odkazy pro čtení",
+    "Enforce password protection for read & write links" : "Vynutit ochranu heslem pro odkazy pro čtení a zapisování",
+    "Enforce password protection for upload-only (File Drop) links" : "Vynutit ochranu heslem pro odkazy pro nahrávání (File Drop)",
+    "You are using %s" : "Používáte %s",
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Toto jsou klienti aktuálně přihlášení do instance %s přes web, počítač, či telefon.",
+    "App passwords / tokens" : "Hesla / tokeny aplikace",
+    "Password / Token" : "Heslo / Token"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

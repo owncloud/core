@@ -24,6 +24,7 @@ OC.L10N.register(
     "Share with me via ownCloud" : "Compartirlo conmigo vía OwnCloud",
     "HTML Code:" : "Código HTML:",
     "Add to your ownCloud" : "Agregue a su ownCloud",
-    "Automatically accept remote shares from trusted servers" : "Aceptar automáticamente compartidos remotos desde servidores confiables"
+    "Automatically accept remote shares from trusted servers" : "Aceptar automáticamente compartidos remotos desde servidores confiables",
+    "Nothing to configure." : "Nada que configurar"
 },
 "nplurals=2; plural=(n != 1);");

@@ -357,6 +357,14 @@ OC.L10N.register(
     "Add personal message" : "Přidat vlastní zprávu",
     "An error occured while sending email" : "Při posílání emailu došlo k chybě",
     "E-Mail sent" : "E-mail odeslán",
-    "Sharing is not allowed" : "Sdílení není povoleno"
+    "Sharing is not allowed" : "Sdílení není povoleno",
+    "Could not reset password because the token is invalid" : "Heslo nebylo změněno kvůli neplatnému tokenu",
+    "Could not reset password because the token expired" : "Heslo nebylo změněno z důvodu vypršení tokenu",
+    "Could not reset password because the token does not match" : "Heslo nebylo změněno protože token nesouhlasí",
+    "Recipients can view or download contents." : "Příjemce může zobrazit a stáhnout obsah.",
+    "Recipients can view, download and upload contents." : "Příjemce může zobrazit, stáhnout a nahrávat obsah.",
+    "Download / View / Edit" : "Stáhnout / zobrazit / upravit",
+    "Recipients can view, download and edit contents." : "Příjemce může zobrazit, stáhnout a upravovat obsah.",
+    "Confirm Password" : "Potvrdit heslo"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

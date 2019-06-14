@@ -131,6 +131,7 @@
     "Exclude groups from receiving shares" : "Përjashto grupe nga marrje ndarjesh",
     "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Për këto grupe nuk do të jetë e mundur të ndajnë me të tjerët. Anëtarët e grupit nuk janë të kufizuar të nisin ndarje dhe mund të marrin ndarje me grupe të tjerë te të cilët janë anëtarë, si zakonisht.",
     "Public link" : "Lidhje publike",
-    "Couldn't send mail to following recipient(s): %s " : "S’u dërgua dot postë te marrësi(t) vijues: %s "
+    "Couldn't send mail to following recipient(s): %s " : "S’u dërgua dot postë te marrësi(t) vijues: %s ",
+    "Nothing to configure." : "S’ka gjë për formësim."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

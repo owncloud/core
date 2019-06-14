@@ -72,6 +72,7 @@
     "Pending" : "Tertunda",
     "Accept" : "Terima",
     "Decline" : "Tolak",
-    "Declined" : "Tolak"
+    "Declined" : "Tolak",
+    "Public link" : "Tautan publik"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

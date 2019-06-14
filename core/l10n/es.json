@@ -373,6 +373,11 @@
     "Sharing is not allowed" : "No se permite compartir",
     "Personal note from the sender: <br> %s." : "Nota personal del remitente: <br> %s.",
     "Static" : "Estático",
-    "Confirm Password" : "Confirmar contraseña"
+    "Confirm Password" : "Confirmar contraseña",
+    "Recipients can view, download and upload contents." : "Los recipientes pueden ver, descargar y subir el contenido.",
+    "Download / View / Edit" : "Descargar / Ver / Editar",
+    "Recipients can view, download and edit contents." : "Los recipientes pueden ver, descargar y editar el contenido.",
+    "Can not remove required password" : "No se puede quitar la contraseña solicitada",
+    "Share with user {shareWith} has attribute {name} which is no longer available. Please recreate the share!" : "Compartido con el usuario {shareWith} tiene el atributo {name} que no está disponible. Por Favor, ¡recree el compartido!"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

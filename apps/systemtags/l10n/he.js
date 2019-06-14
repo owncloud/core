@@ -27,6 +27,7 @@ OC.L10N.register(
     "No entries found in this folder" : "לא נמצאו כניסות לתיקייה זו",
     "Name" : "שם",
     "Size" : "גודל",
-    "Modified" : "זמן שינוי"
+    "Modified" : "זמן שינוי",
+    "%s (static)" : "%s (סטטי)"
 },
 "nplurals=2; plural=(n != 1);");
