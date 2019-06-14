@@ -136,6 +136,7 @@ OC.L10N.register(
     "Set default expiration date" : "Caktoni datë parazgjedhje skadimi",
     "Expire after " : "Skadon pas ",
     "days" : "ditësh",
+    "Enforce as maximum expiration date" : "Zbato me detyrim një datë maksimum skadimi",
     "Allow users to send mail notification for shared files" : "Lejoju përdoruesve të dërgojnë njoftime me email për kartela të ndara me të tjerët",
     "Language used for public mail notifications for shared files" : "Gjuhë e përdorur për njoftime publike me email për kartela të ndara me të tjerët",
     "Allow users to share file via social media" : "Lejoji përdoruesit të ndajnë gjëra përmes mediash shoqërore",
