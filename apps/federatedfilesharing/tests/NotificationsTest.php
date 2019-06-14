@@ -22,6 +22,7 @@
 
 namespace OCA\FederatedFileSharing\Tests;
 
+use GuzzleHttp\Exception\ClientException;
 use OC\AppFramework\Http;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\DiscoveryManager;
@@ -200,6 +201,59 @@ class NotificationsTest extends \Test\TestCase {
 				true
 			]
 		);
+	}
+
+	/**
+	 * @dataProvider dataTryHttpPostToShareEndpointInException
+	 *
+	 * @param $exception
+	 * @param array $expected
+	 */
+	public function testTryHttpPostToShareEndpointInException($exception, $expected) {
+		$notifications = $this->getInstance();
+		$clientMock = $this->createMock(IClient::class);
+		$clientMock->method('post')
+			->willThrowException($exception);
+		$this->httpClientService->method('newClient')->willReturn($clientMock);
+		$result = $this->invokePrivate(
+			$notifications,
+			'tryHttpPostToShareEndpoint',
+			[
+				'domain',
+				'/notifications',
+				[],
+			]
+		);
+
+		$this->assertEquals($expected, $result);
+	}
+
+	public function dataTryHttpPostToShareEndpointInException() {
+		$responseMock = $this->createMock(IResponse::class);
+		$responseMock->method('getBody')
+			->willReturn('User does not exist');
+		$clientExceptionMock = $this->createMock(ClientException::class);
+		$clientExceptionMock->method('getResponse')->willReturn($responseMock);
+
+		$exceptionMock = $this->createMock(\Exception::class);
+		$exceptionMock->method('getCode')
+			->willReturn(Http::STATUS_NOT_ACCEPTABLE);
+		return [
+			[
+				$clientExceptionMock,
+				[
+					'success' => false,
+					'result' => 'User does not exist',
+				]
+			],
+			[
+				$exceptionMock,
+				[
+					'success' => false,
+					'result' => '',
+				]
+			],
+		];
 	}
 
 	public function testDeclineEvent() {
