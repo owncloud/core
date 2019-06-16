@@ -16,6 +16,7 @@ OC.L10N.register(
     "Password" : "Нууц үг",
     "Share" : "Түгээх",
     "Save" : "Хадгалах",
+    "Group" : "Грүпп",
     "Delete" : "Устгах",
     "Username" : "Хэрэглэгчийн нэр"
 },

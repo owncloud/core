@@ -73,6 +73,8 @@ OC.L10N.register(
     "can share" : "yayımlaya bilərsiniz",
     "can edit" : "dəyişmək olar",
     "delete" : "sil",
+    "User" : "İstifadəçi",
+    "Group" : "Qrup",
     "Delete" : "Sil",
     "Rename" : "Adı dəyiş",
     "Add" : "Əlavə etmək",

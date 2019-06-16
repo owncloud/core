@@ -113,6 +113,8 @@ OC.L10N.register(
     "change" : "thay đôi",
     "delete" : "xóa",
     "access control" : "quản lý truy cập",
+    "User" : "Người dùng",
+    "Group" : "N",
     "Public Links" : "Liên kết công khai",
     "Delete" : "Xóa",
     "Rename" : "Sửa tên",

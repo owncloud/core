@@ -65,6 +65,7 @@ OC.L10N.register(
     "create" : "உருவவாக்கல்",
     "delete" : "நீக்குக",
     "access control" : "கட்டுப்பாடான அணுகல்",
+    "User" : "பயனாளர்",
     "Delete" : "நீக்குக",
     "Rename" : "பெயர்மாற்றம்",
     "The object type is not specified." : "பொருள் வகை குறிப்பிடப்படவில்லை.",

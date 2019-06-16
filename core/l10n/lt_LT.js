@@ -148,6 +148,8 @@ OC.L10N.register(
     "change" : "keisti",
     "delete" : "ištrinti",
     "access control" : "priėjimo kontrolė",
+    "User" : "Naudotojas",
+    "Group" : "Grupė",
     "Public Links" : "Viešos nuorodos",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Dalintis su vartotoju kitame ownCloud debesyje, sintaksė vartotojas@example.com/owncloud",
     "Share with users…" : "Dalintis su vartotojais...",

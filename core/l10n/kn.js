@@ -86,6 +86,8 @@ OC.L10N.register(
     "change" : "﻿ಬದಲಾವಣೆ",
     "delete" : "﻿ಅಳಿಸಿ",
     "access control" : "﻿ಪ್ರವೇಶ ನಿಯಂತ್ರಣ",
+    "User" : "ಬಳಕೆದಾರ",
+    "Group" : "﻿ಗುಂಪು",
     "Delete" : "﻿ಅಳಿಸಿ",
     "Rename" : "﻿ಮರುಹೆಸರಿಸು",
     "The object type is not specified." : "﻿ವಸ್ತು ಮಾದರಿ ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ.",

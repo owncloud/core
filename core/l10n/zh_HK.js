@@ -69,6 +69,7 @@ OC.L10N.register(
     "can edit" : "可編輯",
     "create" : "新增",
     "delete" : "刪除",
+    "Group" : "群組",
     "Delete" : "刪除",
     "Rename" : "重新命名",
     "Add" : "加入",

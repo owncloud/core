@@ -133,6 +133,8 @@ OC.L10N.register(
     "change" : "измени",
     "delete" : "обриши",
     "access control" : "права приступа",
+    "User" : "Корисник",
+    "Group" : "Група",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Поделите са људима у другим облацима користећи синтаксу корисничкоиме@сервер.com/owncloud",
     "Delete" : "Обриши",
     "Rename" : "Преименуј",

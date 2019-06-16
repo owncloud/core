@@ -138,6 +138,8 @@ OC.L10N.register(
     "No users or groups found for {search}" : "Keng Benotzer oder Gruppe fonnt fir {Sich}",
     "No users found for {search}" : "Keng Benotzer fonnt fir {Sich}",
     "An error occurred. Please try again" : "Et ass e Fehler opgetrueden. W.e.g. probéier nach emol",
+    "User" : "Benotzer",
+    "Group" : "Grupp",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Mat Leit vun aneren ownCloud deelen, déi d'Syntax username@example.com/owncloud benotzen",
     "Share with users…" : "Mat Benotzer deelen ...",
     "Share with users, groups or remote users…" : "Mat Benotzer, Gruppen oder Benotzer op Distanz deelen ...",

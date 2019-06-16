@@ -111,6 +111,8 @@ OC.L10N.register(
     "change" : "promijeni",
     "delete" : "Izbrišite",
     "access control" : "Kontrola pristupa",
+    "User" : "Korisnik",
+    "Group" : "Grupa",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Podijelite sa korisnicima drugoga ownClouda koristeći format korisnickoime@primjer.com/owncloud",
     "Delete" : "Izbrišite",
     "Rename" : "Preimenujte",

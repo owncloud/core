@@ -92,6 +92,7 @@ OC.L10N.register(
     "create" : "ստեղծել",
     "change" : "փոխել",
     "delete" : "ջնջել",
+    "Group" : "Խումբ",
     "Non-existing tag #{tag}" : "Գոյություն չունեցող պիտակ #{tag}",
     "restricted" : "սահմանափակ",
     "invisible" : "անտեսանելի",

@@ -101,6 +101,8 @@ OC.L10N.register(
     "create" : "crear",
     "delete" : "borrar",
     "access control" : "control de acceso",
+    "User" : "Usuario",
+    "Group" : "Grupo",
     "Delete" : "Borrar",
     "Rename" : "Cambiar nombre",
     "The object type is not specified." : "El tipo de objeto no está especificado. ",

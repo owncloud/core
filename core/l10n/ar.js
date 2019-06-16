@@ -100,6 +100,8 @@ OC.L10N.register(
     "change" : "تغيير",
     "delete" : "حذف",
     "access control" : "ضبط الوصول",
+    "User" : "مستخدم",
+    "Group" : "مجموعة",
     "Delete" : "إلغاء",
     "Rename" : "إعادة التسمية",
     "The object type is not specified." : "نوع العنصر غير محدد.",

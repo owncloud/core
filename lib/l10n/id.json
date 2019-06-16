@@ -86,6 +86,7 @@
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Aplikasi \"%s\" tidak dapat diinstal karena dependensi berikut belum terpenuhi: %s",
     "A safe home for all your data" : "Sebuah rumah yang aman untuk semua data Anda",
     "Imprint" : "Jejak",
+    "Privacy Policy" : "Peraturan Kebijakan",
     "File is currently busy, please try again later" : "Berkas sedang sibuk, mohon coba lagi nanti",
     "Application is not enabled" : "Aplikasi tidak diaktifkan",
     "Authentication error" : "Galat saat otentikasi",

@@ -13,6 +13,7 @@ OC.L10N.register(
     "Unknown error \"{error}\" uploading file \"{file}\"" : "พบข้อผิดพลาดที่ไม่รู้จัก \"{error}\" ขณะอัปโหลดไฟล์ \"{file}\"",
     "Could not create folder \"{dir}\"" : "ไม่สามารถสร้างโฟลเดอร์ \"{dir}\"",
     "Upload cancelled." : "การอัปโหลดถูกยกเลิก",
+    "The file {file} already exists" : "ไฟล์ {file} มีอยู่แล้ว",
     "Processing files..." : "กำลังประมวลผลไฟล์ ...",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "ไม่สามารถอัปโหลด {filename} มันเป็นไดเรกทอรีหรือมี 0 ไบต์",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "พื้นที่ว่างไม่เพียงพอคุณจะอัปโหลด {size1} แต่มีพืนที่แค่ {size2}",

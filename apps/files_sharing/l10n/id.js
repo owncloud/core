@@ -57,6 +57,7 @@ OC.L10N.register(
     "Shared by %2$s" : "Dibagikan oleh %2$s",
     "Shares" : "Dibagikan",
     "Public link" : "Tautan publik",
+    "Couldn't send mail to following recipient(s): %s " : "Tidak dapat mengirim surel kepada penerima berikut: %s",
     "Accept" : "Terima",
     "Decline" : "Tolak",
     "This share is password-protected" : "Berbagi ini dilindungi sandi",
