@@ -7,7 +7,7 @@ Feature: sharing
 
   @smokeTest
   @skipOnEncryptionType:user-keys @issue-32322
-  Scenario Outline: Creating a new share with user
+  Scenario Outline: Creating a share of a file with a user
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     When user "user0" shares file "welcome.txt" with user "user1" using the sharing API
@@ -24,7 +24,54 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  Scenario Outline: Creating a share with a group
+  Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" shares file "welcome.txt" with user "user1" with permissions <requested_permissions> using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | share_with  | user1                 |
+      | file_target | /welcome.txt          |
+      | path        | /welcome.txt          |
+      | permissions | <granted_permissions> |
+      | uid_owner   | user0                 |
+    Examples:
+      | ocs_api_version | requested_permissions | granted_permissions | ocs_status_code |
+      # Ask for full permissions. You get share plus read plus update. create and delete do not apply to shares of a file
+      | 1               | 31                    | 19                  | 100             |
+      | 2               | 31                    | 19                  | 200             |
+      # Ask for share (16), create and delete. You get share plus read
+      | 1               | 28                    | 17                  | 100             |
+      | 2               | 28                    | 17                  | 200             |
+      # Ask for read, update, create, delete. You get read plus update.
+      | 1               | 15                    | 3                   | 100             |
+      | 2               | 15                    | 3                   | 200             |
+      # Ask for create and delete. You get just read.
+      | 1               | 12                    | 1                   | 100             |
+      | 2               | 12                    | 1                   | 200             |
+      # Ask for just update. You get read plus update.
+      | 1               | 2                     | 3                   | 100             |
+      | 2               | 2                     | 3                   | 200             |
+
+  Scenario Outline: Creating a share of a folder with a user
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    When user "user0" shares folder "/FOLDER" with user "user1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | share_with  | user1   |
+      | file_target | /FOLDER |
+      | path        | /FOLDER |
+      | permissions | 31      |
+      | uid_owner   | user0   |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  Scenario Outline: Creating a share of a file with a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
     When user "user0" shares file "/welcome.txt" with group "grp1" using the sharing API
@@ -36,6 +83,23 @@ Feature: sharing
       | path        | /welcome.txt |
       | permissions | 19           |
       | uid_owner   | user0        |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  Scenario Outline: Creating a share of a folder with a group
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    When user "user0" shares folder "/FOLDER" with group "grp1" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | share_with  | grp1    |
+      | file_target | /FOLDER |
+      | path        | /FOLDER |
+      | permissions | 31      |
+      | uid_owner   | user0   |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -124,7 +188,7 @@ Feature: sharing
       | 2               | 200             |
 
   @public_link_share-feature-required
-  Scenario Outline: Getting the share information of public link share form OCS API does not expose sensitive information
+  Scenario Outline: Getting the share information of public link share from the OCS API does not expose sensitive information
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | welcome.txt   |
