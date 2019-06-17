@@ -6,7 +6,7 @@ Feature: Upload a file
   So that I can store it in owncloud
 
   Background:
-    Given user "user1" has been created with default attributes and skeleton files
+    Given user "user1" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario: simple upload of a file with the size greater than the size of quota

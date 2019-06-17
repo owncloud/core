@@ -8,10 +8,10 @@ Feature: File Upload
   that is not academically correct but saves a lot of time
 
   Background:
-    Given user "user1" has been created with default attributes and skeleton files
-    And user "user1" has logged in using the webUI
+    Given user "user1" has been created with default attributes and without skeleton files
 
   Scenario: simple upload of a file that does not exist before
+    Given user "user1" has logged in using the webUI
     When the user uploads file "new-'single'quotes.txt" using the webUI
     Then file "new-'single'quotes.txt" should be listed on the webUI
     And the content of "new-'single'quotes.txt" should be the same as the local "new-'single'quotes.txt"
@@ -27,6 +27,8 @@ Feature: File Upload
   @smokeTest
   Scenario Outline: upload a new file into a sub folder
     Given a file with the size of "3000" bytes and the name "0" has been created locally
+    And user "user1" has created folder <folder-to-upload-to>
+    And user "user1" has logged in using the webUI
     When the user opens folder <folder-to-upload-to> using the webUI
     And the user uploads file "0" using the webUI
     Then file "0" should be listed on the webUI
@@ -50,6 +52,10 @@ Feature: File Upload
       | "strängé नेपाली folder" |
 
   Scenario: overwrite an existing file
+    Given user "user1" has uploaded file "filesForUpload/'single'quotes.txt" to "/'single'quotes.txt"
+    And user "user1" has uploaded file "filesForUpload/strängé filename (duplicate #2 &).txt" to "/strängé filename (duplicate #2 &).txt"
+    And user "user1" has uploaded file "filesForUpload/zzzz-must-be-last-file-in-folder.txt" to "/zzzz-must-be-last-file-in-folder.txt"
+    And user "user1" has logged in using the webUI
     When the user uploads overwriting file "'single'quotes.txt" using the webUI and retries if the file is locked
     Then file "'single'quotes.txt" should be listed on the webUI
     And the content of "'single'quotes.txt" should be the same as the local "'single'quotes.txt"
@@ -63,26 +69,31 @@ Feature: File Upload
     And the content of "zzzz-must-be-last-file-in-folder.txt" should be the same as the local "zzzz-must-be-last-file-in-folder.txt"
 
   Scenario: keep new and existing file
+    Given user "user1" has uploaded file with content "single quote content" to "/'single'quotes.txt"
+    And user "user1" has uploaded file with content "strange content" to "/strängé filename (duplicate #2 &).txt"
+    And user "user1" has uploaded file with content "zzz content" to "/zzzz-must-be-last-file-in-folder.txt"
+    And user "user1" has logged in using the webUI
     When the user uploads file "'single'quotes.txt" keeping both new and existing files using the webUI
     Then file "'single'quotes.txt" should be listed on the webUI
-    And the content of "'single'quotes.txt" should not have changed
+    And the content of file "'single'quotes.txt" for user "user1" should be "single quote content"
     And file "'single'quotes (2).txt" should be listed on the webUI
     And the content of "'single'quotes (2).txt" should be the same as the local "'single'quotes.txt"
 
     When the user uploads file "strängé filename (duplicate #2 &).txt" keeping both new and existing files using the webUI
     Then file "strängé filename (duplicate #2 &).txt" should be listed on the webUI
-    And the content of "strängé filename (duplicate #2 &).txt" should not have changed
+    And the content of file "strängé filename (duplicate #2 &).txt" for user "user1" should be "strange content"
     And file "strängé filename (duplicate #2 &) (2).txt" should be listed on the webUI
     And the content of "strängé filename (duplicate #2 &) (2).txt" should be the same as the local "strängé filename (duplicate #2 &).txt"
 
     When the user uploads file "zzzz-must-be-last-file-in-folder.txt" keeping both new and existing files using the webUI
     Then file "zzzz-must-be-last-file-in-folder.txt" should be listed on the webUI
-    And the content of "zzzz-must-be-last-file-in-folder.txt" should not have changed
+    And the content of file "zzzz-must-be-last-file-in-folder.txt" for user "user1" should be "zzz content"
     And file "zzzz-must-be-last-file-in-folder (2).txt" should be listed on the webUI
     And the content of "zzzz-must-be-last-file-in-folder (2).txt" should be the same as the local "zzzz-must-be-last-file-in-folder.txt"
 
   Scenario Outline: chunking upload using difficult names
     Given a file with the size of "30000000" bytes and the name <file-name> has been created locally
+    And user "user1" has logged in using the webUI
     When the user uploads file <file-name> using the webUI
     Then file <file-name> should be listed on the webUI
     And the content of <file-name> should be the same as the local <file-name>
@@ -94,6 +105,8 @@ Feature: File Upload
   # upload into "simple-folder" because there is already a folder called "0" in the root
   Scenario: Upload a file called "0" using chunking
     Given a file with the size of "30000000" bytes and the name "0" has been created locally
+    And user "user1" has created folder "simple-folder"
+    And user "user1" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
     And the user uploads file "0" using the webUI
     Then file "0" should be listed on the webUI
