@@ -21,68 +21,29 @@
 
 namespace OCA\DAV\TrashBin;
 
-use OCA\Files_Trashbin\Trashbin;
 use OCP\Files\FileInfo;
-use Sabre\DAV\File;
+use Sabre\DAV\Exception\Forbidden;
+use Sabre\DAV\IFile;
 
-class TrashBinFile extends File implements ITrashBinNode {
+class TrashBinFile extends AbstractTrashBinNode implements IFile {
 
-	/**
-	 * @var FileInfo
-	 */
-	private $fileInfo;
-
-	public function __construct(FileInfo $fileInfo) {
-		$this->fileInfo = $fileInfo;
+	public function __construct(FileInfo $fileInfo, TrashBinManager $trashBinManager) {
+		parent::__construct($fileInfo, $trashBinManager);
 	}
 
-	/**
-	 * Returns the name of the node.
-	 *
-	 * This is used to generate the url.
-	 *
-	 * @return string
-	 */
-	public function getName() {
-		return (string)$this->fileInfo['fileid'];
+	public function put($data) {
+		throw new Forbidden('Permission denied to write this file');
 	}
 
-	/**
-	 * Returns the mime-type for a file
-	 *
-	 * If null is returned, we'll assume application/octet-stream
-	 *
-	 * @return string|null
-	 */
-	public function getContentType() {
-		return $this->fileInfo['mimetype'];
+	public function get() {
+		throw new Forbidden('Permission denied to read this file');
 	}
 
-	public function getETag() {
-		return $this->fileInfo['etag'];
+	public function delete() {
+		throw new Forbidden('Permission denied to delete this file');
 	}
 
-	public function getLastModified() {
-		return $this->fileInfo['mtime'];
-	}
-	public function getSize() {
-		return $this->fileInfo['size'];
-	}
-
-	public function getOriginalFileName() : string {
-		$pathparts = \pathinfo($this->fileInfo->getName());
-		return $pathparts['filename'];
-	}
-
-	public function getOriginalLocation() : string {
-		$pathparts = \pathinfo($this->fileInfo->getName());
-		$timestamp = \substr($pathparts['extension'], 1);
-		// TODO: hide in TrashBinManager
-		return Trashbin::getLocation($this->fileInfo->getOwner(), $pathparts['filename'], $timestamp);
-	}
-
-	public function getDeleteTimestamp() : int {
-		$pathparts = \pathinfo($this->fileInfo->getName());
-		return (int)\substr($pathparts['extension'], 1);
+	public function setName($name) {
+		throw new Forbidden('Permission denied to rename this file');
 	}
 }

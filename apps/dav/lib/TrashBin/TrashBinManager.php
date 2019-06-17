@@ -62,6 +62,6 @@ class TrashBinManager {
 		if ($fileInfo->getMimetype() === 'httpd/unix-directory') {
 			return new TrashBinFolder($fileInfo, $this);
 		}
-		return new TrashBinFile($fileInfo);
+		return new TrashBinFile($fileInfo, $this);
 	}
 }

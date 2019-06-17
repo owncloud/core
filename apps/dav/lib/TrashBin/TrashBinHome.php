@@ -21,12 +21,10 @@
 
 namespace OCA\DAV\TrashBin;
 
+use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\Forbidden;
-use Sabre\DAV\Exception\MethodNotAllowed;
-use Sabre\DAV\Exception\NotFound;
-use Sabre\DAV\ICollection;
 
-class TrashBinHome implements ICollection {
+class TrashBinHome extends Collection {
 
 	/** @var array */
 	private $principalInfo;
@@ -46,31 +44,11 @@ class TrashBinHome implements ICollection {
 		$this->trashBinManager = $trashBinManager;
 	}
 
-	public function createFile($name, $data = null) {
-		throw new Forbidden('Permission denied to create a file');
-	}
-
-	public function createDirectory($name) {
-		throw new Forbidden('Permission denied to create a folder');
-	}
-
-	public function getChild($name) {
-		return $this->trashBinManager->getItemByFileId($this->getName(), $name);
-	}
-
 	public function getChildren() {
-		return $this->trashBinManager->getChildren($this->getName());
-	}
-
-	public function childExists($name) {
-		try {
-			$ret = $this->getChild($name);
-			return $ret !== null;
-		} catch (NotFound $ex) {
-			return false;
-		} catch (MethodNotAllowed $ex) {
-			return false;
-		}
+		return [
+			new RestoreFolder(),
+			new TrashBinItemsFolder($this->getName(), $this->trashBinManager)
+			];
 	}
 
 	public function delete() {

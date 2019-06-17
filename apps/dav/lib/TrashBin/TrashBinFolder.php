@@ -21,87 +21,50 @@
 
 namespace OCA\DAV\TrashBin;
 
-use OCA\Files_Trashbin\Trashbin;
 use OCP\Files\FileInfo;
-use Sabre\DAV\Collection;
-use Sabre\DAV\INode;
+use Sabre\DAV\Exception\Forbidden;
+use Sabre\DAV\Exception\MethodNotAllowed;
+use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\ICollection;
 
-class TrashBinFolder extends Collection implements ITrashBinNode {
-
-	/**
-	 * @var FileInfo
-	 */
-	private $fileInfo;
-	/**
-	 * @var TrashBinManager
-	 */
-	private $trashBinManager;
+class TrashBinFolder extends AbstractTrashBinNode implements ICollection {
 
 	public function __construct(FileInfo $fileInfo, TrashBinManager $trashBinManager) {
-		$this->fileInfo = $fileInfo;
-		$this->trashBinManager = $trashBinManager;
-	}
-
-	/**
-	 * Returns the name of the node.
-	 *
-	 * This is used to generate the url.
-	 *
-	 * @return string
-	 */
-	public function getName() {
-		return (string)$this->fileInfo['fileid'];
-	}
-
-	/**
-	 * Returns the mime-type for a file
-	 *
-	 * If null is returned, we'll assume application/octet-stream
-	 *
-	 * @return string|null
-	 */
-	public function getContentType() {
-		return $this->fileInfo['mimetype'];
-	}
-
-	public function getETag() {
-		return $this->fileInfo['etag'];
-	}
-
-	public function getLastModified() {
-		return $this->fileInfo['mtime'];
-	}
-	public function getSize() {
-		return $this->fileInfo['size'];
+		parent::__construct($fileInfo, $trashBinManager);
 	}
 
 	public function getChild($name) {
 		return $this->trashBinManager->getItemByFileId($this->getName(), $name);
 	}
 
-	/**
-	 * Returns an array with all the child nodes.
-	 *
-	 * @return INode[]
-	 */
 	public function getChildren() {
 		return $this->trashBinManager->getChildren($this->getName(), $this->getName());
 	}
 
-	public function getOriginalFileName() : string {
-		$pathparts = \pathinfo($this->fileInfo->getName());
-		return $pathparts['filename'];
+	public function createFile($name, $data = null) {
+		throw new Forbidden('Permission denied to create a file');
 	}
 
-	public function getOriginalLocation() : string {
-		$pathparts = \pathinfo($this->fileInfo->getName());
-		$timestamp = \substr($pathparts['extension'], 1);
-		// TODO: hide in TrashBinManager
-		return Trashbin::getLocation($this->fileInfo->getOwner(), $pathparts['filename'], $timestamp);
+	public function createDirectory($name) {
+		throw new Forbidden('Permission denied to create a folder');
 	}
 
-	public function getDeleteTimestamp() : int {
-		$pathparts = \pathinfo($this->fileInfo->getName());
-		return (int)\substr($pathparts['extension'], 1);
+	public function childExists($name) {
+		try {
+			$ret = $this->getChild($name);
+			return $ret !== null;
+		} catch (NotFound $ex) {
+			return false;
+		} catch (MethodNotAllowed $ex) {
+			return false;
+		}
+	}
+
+	public function delete() {
+		throw new Forbidden('Permission denied to delete this folder');
+	}
+
+	public function setName($name) {
+		throw new Forbidden('Permission denied to rename this folder');
 	}
 }

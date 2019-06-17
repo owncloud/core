@@ -18,35 +18,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OCA\DAV\TrashBin;
 
-/**
- * Interface ITrashBinNode
- *
- * A common interface for all trash bin items
- *
- * @package OCA\DAV\TrashBin
- */
-interface ITrashBinNode {
-	/**
-	 * @return string
-	 */
-	public function getOriginalFileName() : string;
-	/**
-	 * @return string
-	 */
-	public function getOriginalLocation() : string;
-	/**
-	 * @return int
-	 */
-	public function getDeleteTimestamp() : int;
-	/**
-	 * @return string
-	 */
-	public function getStoragePath() : string;
+use Sabre\DAV\Collection;
+
+class TrashBinItemsFolder extends Collection {
 
 	/**
-	 * @return bool
+	 * @var TrashBinManager
 	 */
-	public function restore() : bool;
+	private $trashBinManager;
+	/**
+	 * @var string
+	 */
+	private $user;
+
+	/**
+	 * AvatarHome constructor.
+	 *
+	 * @param string $user
+	 * @param TrashBinManager $trashBinManager
+	 */
+	public function __construct(string $user, TrashBinManager $trashBinManager) {
+
+		$this->trashBinManager = $trashBinManager;
+		$this->user = $user;
+	}
+
+	public function getChild($name) {
+		return $this->trashBinManager->getItemByFileId($this->user, $name);
+	}
+
+	public function getChildren() {
+		return $this->trashBinManager->getChildren($this->user);
+	}
+
+	public function getName() {
+		return 'items';
+	}
 }
