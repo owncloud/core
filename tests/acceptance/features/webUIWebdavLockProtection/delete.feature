@@ -6,15 +6,16 @@ Feature: Locks
 
   Background:
     #do not set email, see bugs in https://github.com/owncloud/core/pull/32250#issuecomment-434615887
-    Given these users have been created with skeleton files:
+    Given these users have been created without skeleton files:
       |username      |
       |brand-new-user|
-    And user "brand-new-user" has logged in using the webUI
 
   Scenario Outline: deleting a file in a public share of a locked folder
-    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has created folder "/simple-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
+    And user "brand-new-user" has locked folder "simple-folder" setting following properties
       | lockscope | <lockscope> |
-    And the user has browsed to the files page
+    And user "brand-new-user" has logged in using the webUI
     And the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     When the public accesses the last created public link using the webUI
@@ -27,4 +28,3 @@ Feature: Locks
       | lockscope |
       | exclusive |
       | shared    |
-
