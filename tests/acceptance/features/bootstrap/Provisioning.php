@@ -317,9 +317,7 @@ trait Provisioning {
 	public function theseUsersHaveBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles(TableNode $table) {
 		$path = $this->popSkeletonDirectoryConfig();
 		try {
-			foreach ($table as $row) {
-				$this->userHasBeenCreatedWithDefaultAttributes($row['username']);
-			}
+			$this->theseUsersHaveBeenCreated("default attributes and", "", $table);
 		} finally {
 			// restore skeletondirectory even if user creation failed
 			$this->runOcc(["config:system:set skeletondirectory --value $path"]);
