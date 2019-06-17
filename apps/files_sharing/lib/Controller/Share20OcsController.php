@@ -201,8 +201,12 @@ class Share20OcsController extends OCSController {
 			$result['share_with'] = $share->getSharedWith();
 			$result['share_with_displayname'] = $group !== null ? $group->getDisplayName() : $share->getSharedWith();
 		} elseif ($share->getShareType() === Share::SHARE_TYPE_LINK) {
-			$result['share_with'] = '***redacted***';
-			$result['share_with_displayname'] = '***redacted***';
+			if ($share->getPassword() !== null) {
+				// Misleading names ahead!: This fields are miss-used to
+				// read/write public link password-hashes
+				$result['share_with'] = '***redacted***';
+				$result['share_with_displayname'] = '***redacted***';
+			}
 			$result['name'] = $share->getName();
 
 			$result['token'] = $share->getToken();
