@@ -22,6 +22,7 @@
 namespace OCA\DAV\TrashBin;
 
 use OC\Files\FileInfo;
+use OCA\Files_Trashbin\Trashbin;
 use OCP\Files\NotFoundException;
 use Sabre\DAV\Exception\InvalidResourceType;
 use Sabre\DAV\Exception\NotFound;

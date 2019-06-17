@@ -39,10 +39,6 @@ class TrashBinFile extends AbstractTrashBinNode implements IFile {
 		throw new Forbidden('Permission denied to read this file');
 	}
 
-	public function delete() {
-		throw new Forbidden('Permission denied to delete this file');
-	}
-
 	public function setName($name) {
 		throw new Forbidden('Permission denied to rename this file');
 	}

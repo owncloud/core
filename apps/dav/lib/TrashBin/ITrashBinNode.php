@@ -41,11 +41,6 @@ interface ITrashBinNode {
 	 */
 	public function getDeleteTimestamp() : int;
 	/**
-	 * @return string
-	 */
-	public function getStoragePath() : string;
-
-	/**
 	 * @return bool
 	 */
 	public function restore() : bool;

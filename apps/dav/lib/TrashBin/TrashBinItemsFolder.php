@@ -21,6 +21,7 @@
 
 namespace OCA\DAV\TrashBin;
 
+use OCA\Files_Trashbin\Trashbin;
 use Sabre\DAV\Collection;
 
 class TrashBinItemsFolder extends Collection {
@@ -56,5 +57,9 @@ class TrashBinItemsFolder extends Collection {
 
 	public function getName() {
 		return 'items';
+	}
+
+	public function delete() {
+		Trashbin::deleteAll();
 	}
 }

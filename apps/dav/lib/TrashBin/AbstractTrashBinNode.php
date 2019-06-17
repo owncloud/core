@@ -92,16 +92,25 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 		return (int)\substr($pathparts['extension'], 1);
 	}
 
-	public function getStoragePath(): string {
-		return $this->fileInfo->getPath();
-	}
-
 	public function restore(): bool {
-		$path = $this->getStoragePath();
+		$path = $this->fileInfo->getPath();
 		$path = \explode('/', $path);
 		$elements = \array_splice($path, 4);
 		$path = \implode('/', $elements);
 		return Trashbin::restore($path,
 			$this->getOriginalFileName(), $this->getDeleteTimestamp());
+	}
+
+	public function delete() {
+		$path = $this->fileInfo->getPath();
+		$path = \explode('/', $path);
+		$user = $path[1];
+		$elements = \array_splice($path, 4);
+		$path = \implode('/', $elements);
+
+		$delimiter = \strrpos($path, '.d');
+		$path = \substr($path, 0, $delimiter);
+
+		Trashbin::delete($path, $user, $this->getDeleteTimestamp());
 	}
 }

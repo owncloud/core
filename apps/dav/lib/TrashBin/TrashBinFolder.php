@@ -60,10 +60,6 @@ class TrashBinFolder extends AbstractTrashBinNode implements ICollection {
 		}
 	}
 
-	public function delete() {
-		throw new Forbidden('Permission denied to delete this folder');
-	}
-
 	public function setName($name) {
 		throw new Forbidden('Permission denied to rename this folder');
 	}
