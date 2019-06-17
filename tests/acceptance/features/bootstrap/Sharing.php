@@ -814,6 +814,45 @@ trait Sharing {
 	}
 
 	/**
+	 *
+	 * @param string $user1
+	 * @param string $filepath
+	 * @param string $user2
+	 * @param string|int|string[]|int[] $permissions
+	 * @param bool $getShareData If true then only create the share if it is not
+	 *                           already existing, and at the end request the
+	 *                           share information and leave that in $this->response
+	 *                           Typically used in a "Given" step which verifies
+	 *                           that the share did get created successfully.
+	 *
+	 * @return void
+	 */
+	public function shareFileWithUserUsingTheSharingApi(
+		$user1, $filepath, $user2, $permissions = null, $getShareData = false
+	) {
+		$user1 = $this->getActualUsername($user1);
+		$user2 = $this->getActualUsername($user2);
+
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user1, $this->getPasswordForUser($user1)
+		);
+		if ($getShareData && $this->isUserOrGroupInSharedData($user2, $permissions)) {
+			return;
+		} else {
+			$this->createShare(
+				$user1, $filepath, 0, $user2, null, null, $permissions
+			);
+		}
+		if ($getShareData) {
+			$this->response = HttpRequestHelper::get(
+				$fullUrl, $user1, $this->getPasswordForUser($user1)
+			);
+		}
+	}
+
+	/**
 	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))? using the sharing API$/
 	 *
 	 * @param string $user1
@@ -826,23 +865,8 @@ trait Sharing {
 	public function userSharesFileWithUserUsingTheSharingApi(
 		$user1, $filepath, $user2, $permissions = null
 	) {
-		$user1 = $this->getActualUsername($user1);
-		$user2 = $this->getActualUsername($user2);
-
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user1, $this->getPasswordForUser($user1)
-		);
-		if ($this->isUserOrGroupInSharedData($user2, $permissions)) {
-			return;
-		} else {
-			$this->createShare(
-				$user1, $filepath, 0, $user2, null, null, $permissions
-			);
-		}
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user1, $this->getPasswordForUser($user1)
+		$this->shareFileWithUserUsingTheSharingApi(
+			$user1, $filepath, $user2, $permissions
 		);
 	}
 
@@ -859,8 +883,8 @@ trait Sharing {
 	public function userHasSharedFileWithUserUsingTheSharingApi(
 		$user1, $filepath, $user2, $permissions = null
 	) {
-		$this->userSharesFileWithUserUsingTheSharingApi(
-			$user1, $filepath, $user2, $permissions
+		$this->shareFileWithUserUsingTheSharingApi(
+			$user1, $filepath, $user2, $permissions, true
 		);
 		PHPUnit\Framework\Assert::assertTrue(
 			$this->isUserOrGroupInSharedData($user2, $permissions),
@@ -955,6 +979,42 @@ trait Sharing {
 	}
 
 	/**
+	 *
+	 * @param string $user
+	 * @param string $filepath
+	 * @param string $group
+	 * @param string|int|string[]|int[] $permissions
+	 * @param bool $getShareData If true then only create the share if it is not
+	 *                           already existing, and at the end request the
+	 *                           share information and leave that in $this->response
+	 *                           Typically used in a "Given" step which verifies
+	 *                           that the share did get created successfully.
+	 *
+	 * @return void
+	 */
+	public function shareFileWithGroupUsingTheSharingApi(
+		$user, $filepath, $group, $permissions = null, $getShareData = false
+	) {
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user, $this->getPasswordForUser($user)
+		);
+		if ($getShareData && $this->isUserOrGroupInSharedData($group, $permissions)) {
+			return;
+		} else {
+			$this->createShare(
+				$user, $filepath, 1, $group, null, null, $permissions
+			);
+		}
+		if ($getShareData) {
+			$this->response = HttpRequestHelper::get(
+				$fullUrl, $user, $this->getPasswordForUser($user)
+			);
+		}
+	}
+
+	/**
 	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (.*))? using the sharing API$/
 	 *
 	 * @param string $user
@@ -967,20 +1027,8 @@ trait Sharing {
 	public function userSharesFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null
 	) {
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
-		);
-		if ($this->isUserOrGroupInSharedData($group, $permissions)) {
-			return;
-		} else {
-			$this->createShare(
-				$user, $filepath, 1, $group, null, null, $permissions
-			);
-		}
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
+		$this->shareFileWithGroupUsingTheSharingApi(
+			$user, $filepath, $group, $permissions
 		);
 	}
 
@@ -997,8 +1045,8 @@ trait Sharing {
 	public function userHasSharedFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null
 	) {
-		$this->userSharesFileWithGroupUsingTheSharingApi(
-			$user, $filepath, $group, $permissions
+		$this->shareFileWithGroupUsingTheSharingApi(
+			$user, $filepath, $group, $permissions, true
 		);
 
 		PHPUnit\Framework\Assert::assertEquals(
