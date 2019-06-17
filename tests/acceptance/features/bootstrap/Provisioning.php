@@ -296,12 +296,16 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userHasBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles($user) {
-		$path = $this->popSkeletonDirectoryConfig();
+		$baseUrl = $this->getBaseUrl();
+		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
 			$this->userHasBeenCreatedWithDefaultAttributes($user);
 		} finally {
 			// restore skeletondirectory even if user creation failed
-			$this->runOcc(["config:system:set skeletondirectory --value $path"]);
+			$this->runOcc(
+				["config:system:set skeletondirectory --value $path"],
+				null, null, $baseUrl
+			);
 		}
 	}
 
@@ -315,14 +319,18 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theseUsersHaveBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles(TableNode $table) {
-		$path = $this->popSkeletonDirectoryConfig();
+		$baseUrl = $this->getBaseUrl();
+		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
 			foreach ($table as $row) {
 				$this->userHasBeenCreatedWithDefaultAttributes($row['username']);
 			}
 		} finally {
 			// restore skeletondirectory even if user creation failed
-			$this->runOcc(["config:system:set skeletondirectory --value $path"]);
+			$this->runOcc(
+				["config:system:set skeletondirectory --value $path"],
+				null, null, $baseUrl
+			);
 		}
 	}
 
@@ -337,12 +345,16 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theseUsersHaveBeenCreatedWithoutSkeletonFiles(TableNode $table) {
-		$path = $this->popSkeletonDirectoryConfig();
+		$baseUrl = $this->getBaseUrl();
+		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
 			$this->theseUsersHaveBeenCreated("", "", $table);
 		} finally {
 			// restore skeletondirectory even if user creation failed
-			$this->runOcc(["config:system:set skeletondirectory --value $path"]);
+			$this->runOcc(
+				["config:system:set skeletondirectory --value $path"],
+				null, null, $baseUrl
+			);
 		}
 	}
 
@@ -3069,12 +3081,20 @@ trait Provisioning {
 	/**
 	 * Removes skeleton directory config from config.php and returns the config value
 	 *
+	 * @param string $baseUrl
+	 *
 	 * @return string
 	 */
-	public function popSkeletonDirectoryConfig() {
-		$this->runOcc(["config:system:get skeletondirectory"]);
+	public function popSkeletonDirectoryConfig($baseUrl) {
+		$this->runOcc(
+			["config:system:get skeletondirectory"],
+			null, null, $baseUrl
+		);
 		$path = \trim($this->getStdOutOfOccCommand());
-		$this->runOcc(["config:system:delete skeletondirectory"]);
+		$this->runOcc(
+			["config:system:delete skeletondirectory"],
+			null, null, $baseUrl
+		);
 		return $path;
 	}
 }
