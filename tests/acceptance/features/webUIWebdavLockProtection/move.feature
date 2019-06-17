@@ -6,15 +6,16 @@ Feature: Locks
 
   Background:
     #do not set email, see bugs in https://github.com/owncloud/core/pull/32250#issuecomment-434615887
-    Given these users have been created with skeleton files:
+    Given these users have been created without skeleton files:
       | username       |
       | brand-new-user |
-    And user "brand-new-user" has logged in using the webUI
 
   Scenario Outline: moving a locked file
-    Given user "brand-new-user" has locked file "lorem.txt" setting following properties
+    Given user "brand-new-user" has created folder "/simple-empty-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    And user "brand-new-user" has locked file "lorem.txt" setting following properties
       | lockscope | <lockscope> |
-    And the user has browsed to the files page
+    And user "brand-new-user" has logged in using the webUI
     When the user moves file "lorem.txt" into folder "simple-empty-folder" using the webUI
     Then notifications should be displayed on the webUI with the text
       | Could not move "lorem.txt" because either the file or the target are locked. |
@@ -29,9 +30,12 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: moving a file trying to overwrite a locked file
-    Given user "brand-new-user" has locked file "/simple-folder/lorem.txt" setting following properties
+    Given user "brand-new-user" has created folder "/simple-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
+    And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    And user "brand-new-user" has locked file "/simple-folder/lorem.txt" setting following properties
       | lockscope | <lockscope> |
-    And the user has browsed to the files page
+    And user "brand-new-user" has logged in using the webUI
     When the user moves file "lorem.txt" into folder "simple-folder" using the webUI
     Then notifications should be displayed on the webUI with the text
       | Could not move "lorem.txt" because either the file or the target are locked. |
@@ -44,9 +48,11 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: moving a file into a locked folder
-    Given user "brand-new-user" has locked file "/simple-empty-folder" setting following properties
+    Given user "brand-new-user" has created folder "/simple-empty-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    And user "brand-new-user" has locked file "/simple-empty-folder" setting following properties
       | lockscope | <lockscope> |
-    And the user has browsed to the files page
+    And user "brand-new-user" has logged in using the webUI
     When the user moves file "lorem.txt" into folder "simple-empty-folder" using the webUI
     Then notifications should be displayed on the webUI with the text
       | Could not move "lorem.txt" because either the file or the target are locked. |
@@ -61,9 +67,10 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: renaming of a locked file
-    Given user "brand-new-user" has locked file "lorem.txt" setting following properties
+    Given user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    And user "brand-new-user" has locked file "lorem.txt" setting following properties
       | lockscope | <lockscope> |
-    And the user has browsed to the files page
+    And user "brand-new-user" has logged in using the webUI
     When the user renames file "lorem.txt" to "a-renamed-file.txt" using the webUI
     Then notifications should be displayed on the webUI with the text
       | The file "lorem.txt" is locked and can not be renamed. |
@@ -78,9 +85,11 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: renaming a file in a public share of a locked folder
-    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has created folder "/simple-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
+    And user "brand-new-user" has locked folder "simple-folder" setting following properties
       | lockscope | <lockscope> |
-    And the user has browsed to the files page
+    And user "brand-new-user" has logged in using the webUI
     And the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     When the public accesses the last created public link using the webUI
@@ -96,9 +105,12 @@ Feature: Locks
       | shared    |
 
   Scenario Outline: moving a locked file into an other folder in a public share
-    Given user "brand-new-user" has locked file "simple-folder/lorem.txt" setting following properties
+    Given user "brand-new-user" has created folder "/simple-folder"
+    And user "brand-new-user" has created folder "/simple-folder/simple-empty-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
+    And user "brand-new-user" has locked file "simple-folder/lorem.txt" setting following properties
       | lockscope | <lockscope> |
-    And the user has browsed to the files page
+    And user "brand-new-user" has logged in using the webUI
     And the user has created a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     When the public accesses the last created public link using the webUI
@@ -113,4 +125,3 @@ Feature: Locks
       | lockscope |
       | exclusive |
       | shared    |
-
