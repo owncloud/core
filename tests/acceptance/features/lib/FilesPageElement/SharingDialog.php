@@ -46,9 +46,9 @@ class SharingDialog extends OwncloudPage {
 	private $shareWithTooltipXpath = "/..//*[@class='tooltip-inner']";
 	private $shareWithAutocompleteListXpath = ".//ul[contains(@class,'ui-autocomplete')]";
 	private $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
-	private $suffixToIdentifyGroups = " Group";
-	private $suffixToIdentifyUsers = " User";
-	private $suffixToIdentifyRemoteUsers = " Federated";
+	private $suffixToIdentifyGroups = " (group)";
+	private $suffixToIdentifyUsers = "";
+	private $suffixToIdentifyRemoteUsers = " (federated)";
 	private $sharerInformationXpath = ".//*[@class='reshare']";
 	private $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
 	private $permissionsFieldByUserName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s']/..";
