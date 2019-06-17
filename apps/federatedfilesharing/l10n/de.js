@@ -8,6 +8,7 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "Das Erstellen einer Federated Cloud Freigabe mit dem gleichen Benutzer ist nicht erlaubt",
     "File is already shared with %s" : "Datei wird bereits geteilt mit %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Freigabe von %s fehlgeschlagen, da %s nicht gefunden wurde. Möglicherweise ist der Server nicht erreichbar.",
+    "Federated Sharing failed: %s" : "Federated-Sharing fehlgeschlagen: %s",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" hat \"%3$s\" mit dir geteilt (im Auftrag von \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" hat \"%3$s\" mit dir geteilt",
     "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" hat dich eingeladen \"%3$s\" anzusehen (im Auftrag von \"%2$s\")",

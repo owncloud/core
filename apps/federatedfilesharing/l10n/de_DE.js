@@ -8,6 +8,7 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "Das Erstellen einer Federated-Cloud-Freigabe mit dem gleichen Benutzer ist nicht erlaubt",
     "File is already shared with %s" : "Datei wird bereits geteilt mit %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Die Freigabe von %s ist fehlgeschlagen, da %s nicht gefunden wurde. Möglicherweise ist der Server nicht erreichbar.",
+    "Federated Sharing failed: %s" : "Federated-Sharing fehlgeschlagen: %s",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" hat \"%3$s\" mit dir geteilt (im Auftrag von \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" hat \"%3$s\" mit Ihnen geteilt",
     "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" hat Sie eingeladen \"%3$s\" anzusehen (im Auftrag von \"%2$s\")",
@@ -26,6 +27,7 @@ OC.L10N.register(
     "Share it:" : "Zum Teilen:",
     "Add to your website" : "Zu Ihrer Website hinzufügen",
     "Share with me via ownCloud" : "Teilen Sie mit mir über ownCloud",
-    "HTML Code:" : "HTML-Code:"
+    "HTML Code:" : "HTML-Code:",
+    "Nothing to configure." : "Nichts zum Konfigurieren vorhanden."
 },
 "nplurals=2; plural=(n != 1);");

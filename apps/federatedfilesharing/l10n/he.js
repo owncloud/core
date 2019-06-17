@@ -8,6 +8,7 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "אסור ליצור שיתוף מאוגד עם אותו משתמש",
     "File is already shared with %s" : "הקובץ כבר משותף עם %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "שיתוף %s נכשל, לא ניתן לאתר %s, ייתכן שהשרת לא ניתן להשגה כרגע.",
+    "Federated Sharing failed: %s" : "שיתוף מאוגד נכשל: %s",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" משתף \"%3$s\" אתך (בשם \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" משתף \"%3$s\" אתך",
     "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" מזמין אותך לצפות ב- \"%3$s\" (בשם \"%2$s\")",

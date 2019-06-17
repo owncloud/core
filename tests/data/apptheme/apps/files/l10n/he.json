@@ -11,6 +11,7 @@
     "Unknown error \"{error}\" uploading file \"{file}\"" : "שגיאה לא ידועה \"{error}\" בזמן העלאת קובץ \"{file}\"",
     "Could not create folder \"{dir}\"" : "לא ניתן ליצור את התיקייה \"{dir}\"",
     "Upload cancelled." : "ההעלאה בוטלה.",
+    "The file {file} already exists" : "הקובץ {file} כבר קיים",
     "Processing files..." : "מעבד קבצים...",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "לא ניתן להעלות {filename} כיוון שמדובר בתיקייה או שגודלו 0 בייט",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "לא קיים מספיק מקום פנוי, הקובץ המיועד להעלאה {size1} אבל נשאר {size2} בלבד",

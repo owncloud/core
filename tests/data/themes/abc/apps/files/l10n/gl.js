@@ -13,6 +13,7 @@ OC.L10N.register(
     "Unknown error \"{error}\" uploading file \"{file}\"" : "produciuse un erro «{error}» enviando o ficheiro «{file}»",
     "Could not create folder \"{dir}\"" : "Non foi posíbel crear o cartafol «{dir}»",
     "Upload cancelled." : "Envío cancelado.",
+    "The file {file} already exists" : "O ficheiro {file} xa existe",
     "Processing files..." : "Procesando ficheiros...",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Non é posíbel enviar {filename}, xa que ou é un directorio ou ten 0 bytes",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Non hai espazo libre abondo, o seu envío é de {size1} mais só dispón de {size2}",
