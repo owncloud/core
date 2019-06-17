@@ -21,6 +21,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use PHPUnit\Framework\Assert;
 use TestHelpers\SetupHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -41,6 +42,11 @@ class AppManagementContext implements Context {
 	 * @var string stdout of last command
 	 */
 	private $cmdOutput;
+
+	/**
+	 * @var string[]
+	 */
+	private $createdApps = [];
 
 	/**
 	 *
@@ -82,6 +88,7 @@ class AppManagementContext implements Context {
 
 	/**
 	 * @Given app :appId with version :version has been put in dir :dir
+	 * @When the administrator puts app :appId with version :version in dir :dir
 	 *
 	 * @param string $appId app id
 	 * @param string $version app version
@@ -119,6 +126,13 @@ class AppManagementContext implements Context {
 		$targetDir = "$dir/$appId/appinfo";
 		$this->featureContext->mkDirOnServer($targetDir);
 		$this->featureContext->createFileOnServerWithContent("$targetDir/info.xml", $appInfo);
+		if (!\array_key_exists($appId, $this->createdApps)) {
+			$this->createdApps[$appId][] = $targetDir;
+		} else {
+			if (!\in_array($targetDir, $this->createdApps[$appId])) {
+				$this->createdApps[$appId][] = $targetDir;
+			}
+		}
 	}
 
 	/**
@@ -148,6 +162,21 @@ class AppManagementContext implements Context {
 			$this->featureContext->getServerRoot() . "/$dir/$appId",
 			\trim($this->cmdOutput)
 		);
+	}
+
+	/**
+	 * @Then the installed version of :appId should be :version
+	 *
+	 * @param string $appId
+	 * @param string $version
+	 *
+	 * @return void
+	 */
+	public function assertInstalledVersionOfAppIs($appId, $version) {
+		$cmdOutput = SetupHelper::runOcc(
+			['config:app:get', $appId, 'installed_version', '--no-ansi']
+		)['stdOut'];
+		PHPUnit\Framework\Assert::assertEquals($version, \trim($cmdOutput));
 	}
 
 	/**
@@ -190,6 +219,35 @@ class AppManagementContext implements Context {
 			$this->featureContext->deleteSystemConfig('apps_paths');
 		} else {
 			$this->setAppsPaths($this->oldAppsPaths);
+		}
+	}
+
+	/**
+	 * @AfterScenario
+	 *
+	 * delete created apps including files and values in DB after each scenario
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function deleteCreatedApps() {
+		$configJson = SetupHelper::runOcc(['config:list'])['stdOut'];
+		$configList = \json_decode($configJson, true);
+		foreach ($this->createdApps as $app => $paths) {
+			//disable the app
+			$this->featureContext->appHasBeenDisabled($app, 'disables');
+
+			//delete config values out of the database
+			if (\array_key_exists($app, $configList['apps'])) {
+				foreach ($configList['apps'][$app] as $key => $value) {
+					SetupHelper::runOcc(['config:app:delete', $app, $key]);
+				}
+			}
+
+			//delete the app from the drive
+			foreach ($paths as $path) {
+				SetupHelper::rmDirOnServer(\dirname($path));
+			}
 		}
 	}
 }
