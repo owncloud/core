@@ -165,6 +165,7 @@ class LostController extends Controller {
 		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
 		if (\count($splittedToken) !== 2) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
+			$this->logger->info("The Token is invalid. User $userId requested a pw change with Token $token .");
 			throw new \Exception($this->l10n->t('Could not reset password because the token is invalid'));
 		}
 
