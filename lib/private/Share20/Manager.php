@@ -331,6 +331,13 @@ class Manager implements IManager {
 
 		// If we enforce the expiration date check that is does not exceed
 		if ($this->shareApiLinkDefaultExpireDateEnforced()) {
+			// If expiredate is empty and it is a new share, set a default one if there is a default
+			if ($this->isNewShare($share) && $expirationDate === null && $this->shareApiLinkDefaultExpireDate()) {
+				$expirationDate = new \DateTime();
+				$expirationDate->setTime(0, 0, 0);
+				$expirationDate->add(new \DateInterval('P'.$this->shareApiLinkDefaultExpireDays().'D'));
+			}
+
 			if ($expirationDate === null) {
 				throw new \InvalidArgumentException('Expiration date is enforced');
 			}
@@ -1548,5 +1555,19 @@ class Manager implements IManager {
 		}
 
 		return \md5(\json_encode($perms->toArray()));
+	}
+
+	/**
+	 * @param IShare $share
+	 * @return boolean
+	 */
+	private function isNewShare(IShare $share) {
+		$fullId = null;
+		try {
+			$fullId = $share->getFullId();
+		} catch (\UnexpectedValueException $e) {
+			// This is a new share
+		}
+		return ($fullId === null);
 	}
 }
