@@ -9,16 +9,8 @@ Feature: sharing
   Scenario Outline: User is not allowed to reshare file
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created a share with settings
-      | path        | /textfile0.txt |
-      | shareType   | 0              |
-      | shareWith   | user1          |
-      | permissions | 15             |
-    When user "user1" creates a share using the sharing API with settings
-      | path        | /textfile0.txt |
-      | shareType   | 0              |
-      | shareWith   | user2          |
-      | permissions | 15             |
+    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions 3
+    When user "user1" shares file "/textfile0.txt" with user "user2" with permissions 3 using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "user2" file "/textfile0.txt" should not exist
@@ -31,16 +23,8 @@ Feature: sharing
   Scenario Outline: User is allowed to reshare file with the same permissions
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created a share with settings
-      | path        | /textfile0.txt |
-      | shareType   | 0              |
-      | shareWith   | user1          |
-      | permissions | 17             |
-    When user "user1" creates a share using the sharing API with settings
-      | path        | /textfile0.txt |
-      | shareType   | 0              |
-      | shareWith   | user2          |
-      | permissions | 17             |
+    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions 17
+    When user "user1" shares file "/textfile0.txt" with user "user2" with permissions 17 using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "user2" file "/textfile0.txt" should exist
@@ -52,16 +36,8 @@ Feature: sharing
   Scenario Outline: User is allowed to reshare file with less permissions
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created a share with settings
-      | path        | /textfile0.txt |
-      | shareType   | 0              |
-      | shareWith   | user1          |
-      | permissions | 31             |
-    When user "user1" creates a share using the sharing API with settings
-      | path        | /textfile0.txt |
-      | shareType   | 0              |
-      | shareWith   | user2          |
-      | permissions | 17             |
+    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions 19
+    When user "user1" shares file "/textfile0.txt" with user "user2" with permissions 17 using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "user2" file "/textfile0.txt" should exist
@@ -73,16 +49,8 @@ Feature: sharing
   Scenario Outline: User is not allowed to reshare file with more permissions
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created a share with settings
-      | path        | /textfile0.txt |
-      | shareType   | 0              |
-      | shareWith   | user1          |
-      | permissions | 17             |
-    When user "user1" creates a share using the sharing API with settings
-      | path        | /textfile0.txt |
-      | shareType   | 0              |
-      | shareWith   | user2          |
-      | permissions | 31             |
+    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions 17
+    When user "user1" shares file "/textfile0.txt" with user "user2" with permissions 19 using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "user2" file "/textfile0.txt" should not exist
@@ -96,16 +64,8 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/TMP"
-    And user "user0" has created a share with settings
-      | path        | /TMP  |
-      | shareType   | 0     |
-      | shareWith   | user1 |
-      | permissions | 23    |
-    And user "user1" has created a share with settings
-      | path        | /TMP  |
-      | shareType   | 0     |
-      | shareWith   | user2 |
-      | permissions | 23    |
+    And user "user0" has shared folder "/TMP" with user "user1" with permissions 23
+    And user "user1" has shared folder "/TMP" with user "user2" with permissions 23
     When user "user1" updates the last share using the sharing API with
       | permissions | 17 |
     Then the OCS status code should be "<ocs_status_code>"
@@ -120,16 +80,8 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/TMP"
-    And user "user0" has created a share with settings
-      | path        | /TMP  |
-      | shareType   | 0     |
-      | shareWith   | user1 |
-      | permissions | 23    |
-    And user "user1" has created a share with settings
-      | path        | /TMP  |
-      | shareType   | 0     |
-      | shareWith   | user2 |
-      | permissions | 17    |
+    And user "user0" has shared folder "/TMP" with user "user1" with permissions 23
+    And user "user1" has shared folder "/TMP" with user "user2" with permissions 17
     When user "user1" updates the last share using the sharing API with
       | permissions | 23 |
     Then the OCS status code should be "404"
@@ -148,16 +100,8 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/TMP"
-    And user "user0" has created a share with settings
-      | path        | /TMP  |
-      | shareType   | 0     |
-      | shareWith   | user1 |
-      | permissions | 21    |
-    And user "user1" has created a share with settings
-      | path        | /TMP  |
-      | shareType   | 0     |
-      | shareWith   | user2 |
-      | permissions | 21    |
+    And user "user0" has shared folder "/TMP" with user "user1" with permissions 21
+    And user "user1" has shared folder "/TMP" with user "user2" with permissions 21
     When user "user1" updates the last share using the sharing API with
       | permissions | 31 |
     Then the OCS status code should be "404"
@@ -172,16 +116,8 @@ Feature: sharing
     And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/TMP"
     And user "user0" has created folder "/TMP/SUB"
-    And user "user0" has created a share with settings
-      | path        | /TMP  |
-      | shareType   | 0     |
-      | shareWith   | user1 |
-      | permissions | 17    |
-    When user "user1" creates a share using the sharing API with settings
-      | path        | /TMP/SUB |
-      | shareType   | 0        |
-      | shareWith   | user2    |
-      | permissions | 17       |
+    And user "user0" has shared folder "/TMP" with user "user1" with permissions 17
+    When user "user1" shares folder "/TMP/SUB" with user "user2" with permissions 17 using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "user2" folder "/SUB" should exist
@@ -196,16 +132,8 @@ Feature: sharing
     And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/TMP"
     And user "user0" has created folder "/TMP/SUB"
-    And user "user0" has created a share with settings
-      | path        | /TMP  |
-      | shareType   | 0     |
-      | shareWith   | user1 |
-      | permissions | 17    |
-    When user "user1" creates a share using the sharing API with settings
-      | path        | /TMP/SUB |
-      | shareType   | 0        |
-      | shareWith   | user2    |
-      | permissions | 31       |
+    And user "user0" has shared folder "/TMP" with user "user1" with permissions 17
+    When user "user1" shares folder "/TMP/SUB" with user "user2" with permissions 31 using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "user2" folder "/SUB" should not exist
@@ -434,17 +362,9 @@ Feature: sharing
   Scenario Outline: resharing a file is not allowed when allow resharing has been disabled
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
-    And user "user0" has created a share with settings
-      | path        | /textfile0.txt |
-      | shareType   | 0              |
-      | shareWith   | user1          |
-      | permissions | 31             |
+    And user "user0" has shared file "/textfile0.txt" with user "user1" with permissions 19
     And parameter "shareapi_allow_resharing" of app "core" has been set to "no"
-    When user "user1" creates a share using the sharing API with settings
-      | path        | /textfile0.txt |
-      | shareType   | 0              |
-      | shareWith   | user2          |
-      | permissions | 31             |
+    When user "user1" shares file "/textfile0.txt" with user "user2" with permissions 19 using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "user2" file "/textfile0.txt" should not exist
@@ -456,11 +376,7 @@ Feature: sharing
   Scenario Outline: ordinary sharing is allowed when allow resharing has been disabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_resharing" of app "core" has been set to "no"
-    When user "user0" creates a share using the sharing API with settings
-      | path        | /textfile0.txt |
-      | shareType   | 0              |
-      | shareWith   | user1          |
-      | permissions | 31             |
+    When user "user0" shares file "/textfile0.txt" with user "user1" with permissions 19 using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "user1" file "/textfile0.txt" should exist
