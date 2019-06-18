@@ -30,6 +30,7 @@ pipeline:
       - php occ a:l
       - php occ config:system:set trusted_domains 1 --value=server-${SERVER_PROTOCOL}
       - php occ config:system:set trusted_domains 2 --value=federated-${SERVER_PROTOCOL}
+      - php occ config:system:set overwriteprotocol --value https
       - php occ log:manage --level 2
       - php occ config:list
       - echo "export TEST_SERVER_FED_URL=${SERVER_PROTOCOL}://federated-${SERVER_PROTOCOL}" > /drone/saved-settings.sh
@@ -152,6 +153,7 @@ pipeline:
       - php occ a:l
       - php occ config:system:set trusted_domains 1 --value=server-${SERVER_PROTOCOL}
       - php occ config:system:set trusted_domains 2 --value=federated-${SERVER_PROTOCOL}
+      - php occ config:system:set overwriteprotocol --value https
       - php occ log:manage --level 2
       - php occ config:list
       - php occ security:certificates:import /drone/server.crt
@@ -177,7 +179,8 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - php occ config:system:set proxy --value "http://mitmproxy:8080"
+      - php occ config:system:set proxy --value "mitmproxy:8080"
+      - php occ config:system:set proxyuserpwd --value "admin:admin"
     when:
       matrix:
         RUN_PROXY_ON: local_server
@@ -638,7 +641,7 @@ services:
   mitmproxy:
     image: mitmproxy/mitmproxy
     pull: true
-    command: [ "mitmdump", "--set", "ssl_insecure", "--verbose", "--showhost", "--ignore-hosts", "^(.+.)?(server|federated)(:80|-https:443)$" ]
+    command: [ "mitmdump", "--ssl-insecure", "--verbose", "--showhost", "--ignore-hosts", "^(server-https|federated-https):443$", "--proxyauth", "admin:admin" ]
     when:
       matrix:
         RUN_PROXY_ON: local_server
