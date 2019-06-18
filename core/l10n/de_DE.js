@@ -199,7 +199,7 @@ OC.L10N.register(
     "Shared with you by {owner}" : "Von {owner} mit Ihnen geteilt.",
     "Share with user {shareWith} has attribute {name} which is no longer available. Please recreate the share!" : "Teilen mit Benutzer {shareWith} hat das Attribut {name}, das nicht mehr verfügbar ist. Bitte erstellen Sie die Freigabe erneut!",
     "group" : "Gruppe",
-    "federated" : "föderiert",
+    "federated" : "Verbunden zu anderer Instanz",
     "notify by email" : "per E-Mail benachrichtigen",
     "Unshare" : "Freigabe aufheben",
     "can share" : "kann teilen",

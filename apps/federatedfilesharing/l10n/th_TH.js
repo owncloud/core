@@ -8,6 +8,7 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "ไม่อนุญาตให้สร้างแชร์สหพันธ์กับผู้ใช้เดียวกัน",
     "File is already shared with %s" : "ไฟล์ได้ถูกแชร์แล้วกับ %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "การแชร์ %s ล้มเหลวไม่สามารถหา %s, บางทีอาจจะยังไม่สามารถเข้าถึงเซิร์ฟเวอร์ปัจจุบัน",
+    "Federated Sharing failed: %s" : "การแชร์ของสหพันธ์ล้มเหลว: %s",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" ได้แชร์ \"%3$s\" กับคุณ (ในนามของ \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" ได้แชร์ \"%3$s\" กับคุณ",
     "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" ได้เชิญคุณให้ดู \"%3$s\" (ในนามของ \"%2$s\")",
