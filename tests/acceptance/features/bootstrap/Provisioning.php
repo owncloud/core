@@ -322,9 +322,7 @@ trait Provisioning {
 		$baseUrl = $this->getBaseUrl();
 		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
-			foreach ($table as $row) {
-				$this->userHasBeenCreatedWithDefaultAttributes($row['username']);
-			}
+			$this->theseUsersHaveBeenCreated("default attributes and", "", $table);
 		} finally {
 			// restore skeletondirectory even if user creation failed
 			$this->runOcc(
