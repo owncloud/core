@@ -825,6 +825,14 @@ class Share20OcsController extends OCSController {
 			}
 
 			if ($newPermissions !== null) {
+				$shareHome = $this->rootFolder->getUserFolder($share->getSharedBy());
+				$nodes = $shareHome->getById($share->getNode()->getId());
+				foreach ($nodes as $node) {
+					if (($node->getPermissions() | $newPermissions) !== $node->getPermissions()) {
+						return new Result(null, 404, 'Cannot increase permission of ' . $share->getTarget());
+					}
+				}
+
 				$share->setPermissions($newPermissions);
 				$permissions = $newPermissions;
 			}
