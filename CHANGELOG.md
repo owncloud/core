@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
+## [10.2.1]
+
+### Fixed
+
+- Handling of "password fields" on public link shares - [#35541](https://github.com/owncloud/core/issues/35541) [#35563](https://github.com/owncloud/core/issues/35563)
+- Error when user was removed from a group - [#35289](https://github.com/owncloud/core/issues/35289) [#35570](https://github.com/owncloud/core/issues/35570)
+- Incorrect avatar storage location - [#35311](https://github.com/owncloud/core/issues/35311) [#35531](https://github.com/owncloud/core/issues/35531)
+- Incorrect rendering of password changed notification email - [#35255](https://github.com/owncloud/core/issues/35255) [#35491](https://github.com/owncloud/core/issues/35491)
+- Performance issue with sharing on masterkey encryption - [#35492](https://github.com/owncloud/core/issues/35492)
+- Permission change handling for share receivers on internal shares - [#35510](https://github.com/owncloud/core/issues/35510) [#35633](https://github.com/owncloud/core/pull/35633)
+- Permission handling of public link shares based upon internal shares [#35600](https://github.com/owncloud/core/pull/35600)
+- Automatically set expiration date on newly created shares [#35550](https://github.com/owncloud/core/issues/35550) [#35593](https://github.com/owncloud/core/pull/35593)
+- Incorrectly sent password reset tokens [#32889](https://github.com/owncloud/core/issues/32889) [#35607](https://github.com/owncloud/core/pull/35607)
+
+### Changed
+
+- Added `-y` option to `encryption:encrypt-all` occ command [encryption#33](https://github.com/owncloud/encryption/issues/33) [#35606](https://github.com/owncloud/core/pull/35606)
+- Updated application revocation list  - [#35506](https://github.com/owncloud/core/issues/35506)
+
 
 ## [10.2.0] - 2019-05-16
 
@@ -1022,6 +1041,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
+[10.2.1]: https://github.com/owncloud/core/compare/v10.2.0...v10.2.1
 [10.2.0]: https://github.com/owncloud/core/compare/v10.1.1...v10.2.0
 [10.1.1]: https://github.com/owncloud/core/compare/v10.1.0...v10.1.1
 [10.1.0]: https://github.com/owncloud/core/compare/v10.0.10...v10.1.0
