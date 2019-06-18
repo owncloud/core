@@ -6,8 +6,10 @@ Feature: sharing
 
   Background:
     Given using old DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
 
   @smokeTest
   Scenario Outline: user tries to share a file with another user when the sharing api has been disabled
@@ -98,7 +100,7 @@ Feature: sharing
   Scenario Outline: user shares a file with user who is in their group when sharing outside the group has been restricted
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user2" has been added to group "grp1"
     And user "user1" has been added to group "grp1"
     When parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
@@ -114,7 +116,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And group "grp2" has been created
     And group "grp1" has been created
-    And user "user3" has been created with default attributes
+    And user "user3" has been created with default attributes and skeleton files
     And user "user3" has been added to group "grp2"
     And user "user1" has been added to group "grp1"
     When parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
@@ -143,7 +145,7 @@ Feature: sharing
   Scenario Outline: user who is a member of a group tries to share a file in the group when group sharing has been disabled
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And user "user2" has been added to group "grp1"
     And user "user1" has been added to group "grp1"
     When parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"

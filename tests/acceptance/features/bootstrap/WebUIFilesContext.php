@@ -34,6 +34,7 @@ use Page\TagsPage;
 use Page\TrashbinPage;
 use Page\FilesPageElement\ConflictDialog;
 use Page\FilesPageElement\FileActionsMenu;
+use Page\GeneralExceptionPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\DeleteHelper;
 use TestHelpers\Asserts\WebDav as WebDavAssert;
@@ -145,6 +146,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	private $uploadConflictDialogTitle = "file conflict";
 
 	/**
+	 *
+	 * @var GeneralExceptionPage
+	 */
+	private $generalExceptionPage;
+
+	/**
 	 * WebUIFilesContext constructor.
 	 *
 	 * @param FilesPage $filesPage
@@ -155,6 +162,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param TagsPage $tagsPage
 	 * @param SharedByLinkPage $sharedByLinkPage
 	 * @param SharedWithOthersPage $sharedWithOthersPage
+	 * @param GeneralExceptionPage $generalExceptionPage
 	 *
 	 * @return void
 	 */
@@ -166,7 +174,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		SharedWithYouPage $sharedWithYouPage,
 		TagsPage $tagsPage,
 		SharedByLinkPage $sharedByLinkPage,
-		SharedWithOthersPage $sharedWithOthersPage
+		SharedWithOthersPage $sharedWithOthersPage,
+		GeneralExceptionPage $generalExceptionPage
 	) {
 		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
@@ -176,6 +185,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->tagsPage = $tagsPage;
 		$this->sharedByLinkPage = $sharedByLinkPage;
 		$this->sharedWithOthersPage = $sharedWithOthersPage;
+		$this->generalExceptionPage = $generalExceptionPage;
 	}
 
 	/**
@@ -240,12 +250,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $tabName
 	 * @param string $fileName
 	 * @param string $folderName
+	 * @param boolean $allowToFail
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function theUserBrowsesDirectlyToDetailsTabOfFileInFolder(
-		$tabName, $fileName, $folderName
+		$tabName, $fileName, $folderName, $allowToFail = false
 	) {
 		$this->currentFolder = '/' . \trim($folderName, '/');
 		$this->currentFile = $fileName;
@@ -256,8 +267,35 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->filesPage->browseToFileId(
 			$fileId, $this->currentFolder, $tabName
 		);
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->filesPage->getDetailsDialog()->waitTillPageIsLoaded($this->getSession());
+		$session = $this->getSession();
+		$this->filesPage->waitTillPageIsLoaded($session);
+		if ($allowToFail === true) {
+			try {
+				$this->filesPage->getDetailsDialog()->waitTillPageIsLoaded($session);
+			} catch (\Exception $e) {
+				//ignore it
+			}
+		} else {
+			$this->filesPage->getDetailsDialog()->waitTillPageIsLoaded($session);
+		}
+	}
+
+	/**
+	 * @When the user tries to browse directly to display the :tabName details of file :fileName in folder :folderName
+	 *
+	 * @param string $tabName
+	 * @param string $fileName
+	 * @param string $folderName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserTriesToBrowseDirectlyToDetailsTabOfFileInFolder(
+		$tabName, $fileName, $folderName
+	) {
+		$this->theUserBrowsesDirectlyToDetailsTabOfFileInFolder(
+			$tabName, $fileName, $folderName, true
+		);
 	}
 
 	/**
@@ -310,6 +348,21 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		PHPUnit\Framework\Assert::assertTrue(
 			$detailsDialog->isDetailsPanelVisible($tabName),
 			"the $tabName panel is not visible in the details panel"
+		);
+	}
+
+	/**
+	 * @Then the :tabName details panel should not be visible
+	 *
+	 * @param string $tabName
+	 *
+	 * @return void
+	 */
+	public function theTabNameDetailsPanelShouldNotBeVisible($tabName) {
+		$detailsDialog = $this->filesPage->getDetailsDialog();
+		PHPUnit\Framework\Assert::assertFalse(
+			$detailsDialog->isDetailsPanelVisible($tabName),
+			"the $tabName panel is visible in the details panel but should not be"
 		);
 	}
 
@@ -1065,8 +1118,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserOpensTheSharingTabFromTheActionMenuOfFileUsingTheWebui($entryName) {
-		$this->theUserOpensTheFileActionMenuOfFileFolderInTheWebui($entryName);
-		$this->theUserClicksTheFileActionInTheWebui("details");
+		$this->theUserOpensTheFileActionMenuOfFileFolderOnTheWebui($entryName);
+		$this->theUserClicksTheFileActionOnTheWebui("details");
 		$this->theUserSwitchesToTabInDetailsPanelUsingTheWebui("sharing");
 		$this->filesPage->waitForAjaxCallsToStartAndFinish($this->getSession());
 	}
@@ -1192,23 +1245,25 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the user opens (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
-	 * @Given /^the user has opened (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
+	 * @When /^the user opens (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) (expecting to fail|)\s?using the webUI$/
+	 * @Given /^the user has opened (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) (expecting to fail|)\s?using the webUI$/
 	 *
 	 * @param string $typeOfFilesPage
 	 * @param string $fileOrFolder
 	 * @param string $name enclosed in single or double quotes
+	 * @param string $expectToFail
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theUserOpensFolderNamedUsingTheWebUI(
-		$typeOfFilesPage, $fileOrFolder, $name
+		$typeOfFilesPage, $fileOrFolder, $name, $expectToFail
 	) {
+		$expectToFail = $expectToFail !== "";
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
 		$this->theUserOpensTheFileOrFolderUsingTheWebUI(
-			$typeOfFilesPage, $fileOrFolder, \trim($name, $name[0])
+			$typeOfFilesPage, $fileOrFolder, \trim($name, $name[0]), $expectToFail
 		);
 	}
 
@@ -1222,12 +1277,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string|array $relativePath the path from the currently open folder
 	 *                                   down to and including the file or folder
 	 *                                   to open
+	 * @param boolean $expectToFail
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theUserOpensTheFileOrFolderUsingTheWebUI(
-		$typeOfFilesPage, $fileOrFolder, $relativePath
+		$typeOfFilesPage, $fileOrFolder, $relativePath, $expectToFail = false
 	) {
 		if ($typeOfFilesPage === "trashbin") {
 			$this->theUserBrowsesToTheTrashbinPage();
@@ -1250,19 +1306,37 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$breadCrumbs = \explode('/', \ltrim($relativePath, '/'));
 			$breadCrumbsForOpenFile = $breadCrumbs;
 		}
-
+		$failed = false;
 		foreach ($breadCrumbsForOpenFile as $breadCrumb) {
 			$pageObject->openFile($breadCrumb, $this->getSession());
-			$pageObject->waitTillPageIsLoaded($this->getSession());
+			try {
+				$pageObject->waitTillPageIsLoaded($this->getSession());
+			} catch (\Exception $e) {
+				// The file was not opened correctly as the page didn't load correctly
+				$failed = true;
+				break;
+			}
 		}
+		// Check the status of file opened according to the expected result.
+		if ($failed) {
+			// The task was not expected to fail but failed.
+			if (!$expectToFail) {
+				throw new \Exception('The file was expected to open successfully but failed!');
+			}
+		} else {
+			// The task was expected to fail but didn't fail.
+			if ($expectToFail) {
+				throw new \Exception('The file was not expected to open successfully but was opened!');
+			}
 
-		if ($fileOrFolder !== "folder") {
-			// Pop the file name off the end of the array of breadcrumbs
-			\array_pop($breadCrumbs);
-		}
-
-		if (\count($breadCrumbs)) {
-			$this->currentFolder .= "/" . \implode('/', $breadCrumbs);
+			// The task was not expected to fail and was successful.
+			if ($fileOrFolder !== "folder") {
+				// Pop the file name off the end of the array of breadcrumbs
+				\array_pop($breadCrumbs);
+			}
+			if (\count($breadCrumbs)) {
+				$this->currentFolder .= "/" . \implode('/', $breadCrumbs);
+			};
 		}
 	}
 
@@ -1337,7 +1411,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
 	 * @param string $folder
-	 * @param string $path if set, name and path (shown in the webUI) of the file need match
+	 * @param string $path if set, name and path (shown on the webUI) of the file to match
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -1609,6 +1683,60 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				"could not find button 'Delete' in action Menu",
 				$e->getMessage()
 			);
+		}
+	}
+
+	/**
+	 * @Then it should be possible to delete file/folder :name using the webUI
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function itShouldBePossibleToDeleteFileFolderUsingTheWebUI($name) {
+		$this->deleteTheFileUsingTheWebUI($name, true);
+	}
+
+	/**
+	 * @Then /^the option to (delete|rename|download)\s?(?:file|folder) "([^"]*)" should (not|)\s?be available on the webUI$/
+	 *
+	 * @param string $action
+	 * @param string $name
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function optionShouldNotBeAvailable($action, $name, $shouldOrNot) {
+		$visible = $shouldOrNot !== "not";
+		$pageObject = $this->getCurrentPageObject();
+		$session = $this->getSession();
+		$pageObject->waitTillPageIsLoaded($session);
+		$fileRow = $pageObject->findFileRowByName($name, $session);
+		$action = \ucfirst($action);
+		if ($visible) {
+			PHPUnit\Framework\Assert::assertTrue($fileRow->isActionLabelAvailable($action, $session));
+		} else {
+			PHPUnit\Framework\Assert::assertFalse($fileRow->isActionLabelAvailable($action, $session));
+		}
+		$fileRow->clickFileActionButton();
+	}
+
+	/**
+	 * @Then /^the option to upload file should (not|)\s?be available on the webUI$/
+	 *
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function uploadButtonShouldNotBeVisible($shouldOrNot) {
+		$visible = $shouldOrNot !== "not";
+		if ($visible) {
+			PHPUnit\Framework\Assert::assertTrue($this->getCurrentPageObject()->isUploadButtonAvailable());
+		} else {
+			PHPUnit\Framework\Assert::assertFalse($this->getCurrentPageObject()->isUploadButtonAvailable());
 		}
 	}
 
@@ -1903,27 +2031,27 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user opens the file action menu of file/folder :name in the webUI
+	 * @When the user opens the file action menu of file/folder :name on the webUI
 	 *
 	 * @param string $name Name of the file/Folder
 	 *
 	 * @return void
 	 */
-	public function theUserOpensTheFileActionMenuOfFileFolderInTheWebui($name) {
+	public function theUserOpensTheFileActionMenuOfFileFolderOnTheWebui($name) {
 		$session = $this->getSession();
 		$this->selectedFileRow = $this->getCurrentPageObject()->findFileRowByName($name, $session);
 		$this->openedFileActionMenu = $this->selectedFileRow->openFileActionsMenu($session);
 	}
 
 	/**
-	 * @Then the user should see :action_label file action translated to :translated_label in the webUI
+	 * @Then the user should see :action_label file action translated to :translated_label on the webUI
 	 *
 	 * @param string $action_label
 	 * @param string $translated_label
 	 *
 	 * @return void
 	 */
-	public function theUserShouldSeeFileActionTranslatedToInTheWebui($action_label, $translated_label) {
+	public function theUserShouldSeeFileActionTranslatedToOnTheWebui($action_label, $translated_label) {
 		PHPUnit\Framework\Assert::assertSame(
 			$translated_label,
 			$this->openedFileActionMenu->getActionLabelLocalized($action_label)
@@ -1931,14 +2059,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user clicks the :action_label file action in the webUI
+	 * @When the user clicks the :action_label file action on the webUI
 	 *
 	 * @param string $action_label
 	 *
 	 * @throws \Exception
 	 * @return void
 	 */
-	public function theUserClicksTheFileActionInTheWebui($action_label) {
+	public function theUserClicksTheFileActionOnTheWebui($action_label) {
 		switch ($action_label) {
 			case "details":
 				$this->openedFileActionMenu->openDetails();
@@ -1959,11 +2087,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the details dialog should be visible in the webUI
+	 * @Then the details dialog should be visible on the webUI
 	 *
 	 * @return void
 	 */
-	public function theDetailsDialogShouldBeVisibleInTheWebui() {
+	public function theDetailsDialogShouldBeVisibleOnTheWebui() {
 		PHPUnit\Framework\Assert::assertTrue($this->filesPage->getDetailsDialog()->isDialogVisible());
 	}
 
@@ -2024,12 +2152,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		if ($should) {
 			PHPUnit\Framework\Assert::assertTrue(
 				$detailsDialog->isCommentOnUI($text),
-				"Failed to find comment with text $text in the webUI"
+				"Failed to find comment with text $text on the webUI"
 			);
 		} else {
 			PHPUnit\Framework\Assert::assertFalse(
 				$detailsDialog->isCommentOnUI($text),
-				"The comment with text $text exists in the webUI"
+				"The comment with text $text exists on the webUI"
 			);
 		}
 	}

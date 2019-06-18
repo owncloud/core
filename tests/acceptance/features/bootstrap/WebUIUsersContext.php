@@ -27,6 +27,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
 use Page\UsersPage;
+use PHPUnit\Framework\Assert;
 use TestHelpers\AppConfigHelper;
 
 require_once 'bootstrap.php';
@@ -228,7 +229,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theGroupNameShouldBeListed($groupName) {
 		$groups = $this->usersPage->getAllGroups();
-		PHPUnit\Framework\Assert::assertContains(
+		Assert::assertContains(
 			$groupName, $groups, "Expected '" . $groupName . "' does not exist"
 		);
 	}
@@ -241,7 +242,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theGroupNamedShouldNotBeListedOnTheWebUI($name) {
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			\in_array($name, $this->usersPage->getAllGroups(), true),
 			"group '" . $name . "' is listed but should not be"
 		);
@@ -262,7 +263,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$should = ($shouldOrNot !== "not");
 		$groups = $this->usersPage->getAllGroups();
 		foreach ($table as $row) {
-			PHPUnit\Framework\Assert::assertEquals(
+			Assert::assertEquals(
 				\in_array($row['groupname'], $groups, true),
 				$should,
 				"group '" . $row['groupname'] .
@@ -377,7 +378,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function quotaOfUserShouldBeSetToOnTheWebUI($username, $quota) {
 		$setQuota = $this->usersPage->getQuotaOfUser($username);
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$quota,
 			$setQuota,
 			'Users quota is set to "' . $setQuota .
@@ -395,7 +396,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdministratorShouldBeAbleToSeeEmailOfTheseUsers(TableNode $table) {
 		foreach ($table as $row) {
 			$userEmail = $this->usersPage->getEmailOfUser($row['username']);
-			PHPUnit\Framework\Assert::assertEquals($row['email'], $userEmail);
+			Assert::assertEquals($row['email'], $userEmail);
 		}
 	}
 
@@ -409,7 +410,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdministratorShouldBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
-			PHPUnit\Framework\Assert::assertEquals(true, $visible);
+			Assert::assertEquals(true, $visible);
 		}
 	}
 
@@ -423,7 +424,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdministratorShouldNotBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isQuotaColumnOfUserVisible($row['username']);
-			PHPUnit\Framework\Assert::assertEquals(false, $visible);
+			Assert::assertEquals(false, $visible);
 		}
 	}
 
@@ -437,7 +438,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdministratorShouldBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
-			PHPUnit\Framework\Assert::assertEquals(true, $visible);
+			Assert::assertEquals(true, $visible);
 		}
 	}
 
@@ -451,7 +452,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdministratorShouldNotbeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
 		foreach ($table as $row) {
 			$visible = $this->usersPage->isPasswordColumnOfUserVisible($row['username']);
-			PHPUnit\Framework\Assert::assertEquals(false, $visible);
+			Assert::assertEquals(false, $visible);
 		}
 	}
 
@@ -467,7 +468,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	) {
 		foreach ($table as $row) {
 			$userStorageLocation = $this->usersPage->getStorageLocationOfUser($row['username']);
-			PHPUnit\Framework\Assert::assertContains($row['storage location'], $userStorageLocation);
+			Assert::assertContains($row['storage location'], $userStorageLocation);
 		}
 	}
 
@@ -484,7 +485,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		foreach ($table as $row) {
 			$userLastLogin = $this->usersPage->getLastLoginOfUser($row['username']);
 
-			PHPUnit\Framework\Assert::assertContains($row['last login'], $userLastLogin);
+			Assert::assertContains($row['last login'], $userLastLogin);
 		}
 	}
 
@@ -562,6 +563,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theAdminAddsGroupUsingTheWebUI($groupName) {
 		$this->usersPage->addGroup($groupName, $this->getSession());
+		$this->featureContext->addGroupToCreatedGroupsList($groupName);
 	}
 
 	/**

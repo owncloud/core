@@ -9,7 +9,7 @@ Feature: Share by public link
   So that public sharing is limited according to organization policy
 
   Background:
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
     And user "user1" has logged in using the webUI
 
   @smokeTest
@@ -42,7 +42,7 @@ Feature: Share by public link
   @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
   Scenario: mount public link
     Given using server "REMOTE"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     When the user creates a new public link for folder "simple-folder" using the webUI
     And the user logs out of the webUI
     And the public accesses the last created public link using the webUI
@@ -57,7 +57,7 @@ Feature: Share by public link
   @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
   Scenario: mount public link and overwrite file
     Given using server "REMOTE"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     And the user logs out of the webUI
@@ -387,3 +387,125 @@ Feature: Share by public link
     And file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" should not have changed
     And file "lorem (2).txt" should not be listed on the webUI
+
+  @issue-35177
+  Scenario: User renames a subfolder among subfolders with same names which are shared by public links
+    Given user "user1" has created folder "nf1"
+    And user "user1" has created folder "nf1/newfolder"
+    And user "user1" has created folder "nf2"
+    And user "user1" has created folder "nf2/newfolder"
+    And user "user1" has created folder "test"
+    And user "user1" has created folder "test/test"
+    And user "user1" has created a public link share with settings
+      | path | nf1/newfolder |
+    And user "user1" has created a public link share with settings
+      | path | nf2/newfolder |
+    And user "user1" has created a public link share with settings
+      | path | test/test |
+    And the user has browsed to the shared-by-link page
+    When the user renames folder "newfolder" to "newfolder1" using the webUI
+    Then folder "newfolder1" should be listed on the webUI
+    And folder "newfolder" should not be listed on the webUI
+    #And folder "newfolder" should be listed on the webUI
+    And folder "test" should be listed on the webUI
+
+    @issue-35174
+    Scenario: User renames folders with different path in Shared by link page
+      Given user "user1" has created folder "nf1"
+      And user "user1" has created folder "nf1/newfolder"
+      And user "user1" has created folder "test"
+      And user "user1" has created a public link share with settings
+        | path | nf1/newfolder |
+      And user "user1" has created a public link share with settings
+        | path | test |
+      And the user has browsed to the shared-by-link page
+      When the user renames folder "test" to "newfolder" using the webUI
+      Then near folder "test" a tooltip with the text 'newfolder already exists' should be displayed on the webUI
+      #Then the following folder should be listed on the webUI
+        #| newfolder |
+        #| newfolder |
+
+  Scenario: Permissions work correctly on public link share with upload-write-without-modify
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
+      | permission | upload-write-without-modify |
+    When the public accesses the last created public link using the webUI
+    Then the option to rename file "lorem.txt" should not be available on the webUI
+    And the option to delete file "lorem.txt" should not be available on the webUI
+    And the option to upload file should be available on the webUI
+
+  Scenario: Permissions work correctly on public link share with read-write
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
+      | permission | read-write |
+    When the public accesses the last created public link using the webUI
+    Then the option to rename file "lorem.txt" should be available on the webUI
+    And the option to delete file "lorem.txt" should be available on the webUI
+    And the option to upload file should be available on the webUI
+
+  Scenario: User tries to upload existing file in public link share with permissions upload-write-without-modify
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
+      | permission | upload-write-without-modify |
+    And the public accesses the last created public link using the webUI
+    When the user uploads file "lorem.txt" using the webUI
+    Then a notification should be displayed on the webUI with the text "The file lorem.txt already exists"
+    And file "lorem.txt" should be listed on the webUI
+    And file "lorem (2).txt" should not be listed on the webUI
+
+  Scenario: User tries to upload existing file in public link share with permissions read-write
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
+      | permission | read-write |
+    And the public accesses the last created public link using the webUI
+    When the user uploads file "lorem.txt" keeping both new and existing files using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem (2).txt" should be listed on the webUI
+
+  Scenario: Editing the permission on a existing share from read-write to upload-write-without-modify works correctly
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
+      | permission | read-write |
+    And the public accesses the last created public link using the webUI
+    Then it should be possible to delete file "lorem.txt" using the webUI
+    When the user browses to the files page
+    And the user opens the share dialog for folder "simple-folder"
+    And the user opens the public link share tab
+    And the user changes the permission of the public link named "Public link" to "upload-write-without-modify"
+    And the public accesses the last created public link using the webUI
+    Then the option to delete file "lorem-big.txt" should not be available on the webUI
+
+  Scenario: Editing the permission on a existing share from upload-write-without-modify to read-write works correctly
+    Given the user has created a new public link for folder "simple-folder" using the webUI with
+      | permission | upload-write-without-modify |
+    And the public accesses the last created public link using the webUI
+    Then the option to delete file "lorem.txt" should not be available on the webUI
+    When the user browses to the files page
+    And the user opens the share dialog for folder "simple-folder"
+    And the user opens the public link share tab
+    And the user changes the permission of the public link named "Public link" to "read-write"
+    And the public accesses the last created public link using the webUI
+    Then it should be possible to delete file "lorem-big.txt" using the webUI
+
+  Scenario: user tries to deletes the expiration date of already existing public link using webUI when expiration date is enforced
+    Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
+    And user "user1" has created a share with settings
+      | path       | lorem.txt   |
+      | name       | Public link |
+      | expireDate | + 5 days    |
+      | shareType  | 3           |
+    When the user reloads the current page of the webUI
+    And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
+    Then the user should see an error message on the public link popup saying "Expiration date is required"
+    And the user gets the info of the last share using the sharing API
+    And the fields of the last response should include
+      | expiration | + 5 days   |
+
+  Scenario: user deletes the expiration date of already existing public link using webUI when expiration date is set but not enforced
+    Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
+    And user "user1" has created a share with settings
+      | path       | lorem.txt   |
+      | name       | Public link |
+      | expireDate |  + 5 days   |
+      | shareType  | 3           |
+    When the user reloads the current page of the webUI
+    And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
+    And the user gets the info of the last share using the sharing API
+    And the fields of the last response should include
+      | expiration   | |

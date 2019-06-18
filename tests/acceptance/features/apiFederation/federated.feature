@@ -3,16 +3,16 @@ Feature: federated
 
   Background:
     Given using server "REMOTE"
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And using server "LOCAL"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
 
   Scenario Outline: Federate share a file with another server
     Given using OCS API version "<ocs-api-version>"
     When user "user1" from server "LOCAL" shares "/textfile0.txt" with user "user0" from server "REMOTE" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id                     | A_NUMBER       |
       | item_type              | file           |
       | item_source            | A_NUMBER       |
@@ -38,7 +38,7 @@ Feature: federated
     When user "user0" from server "REMOTE" shares "/textfile0.txt" with user "user1" from server "LOCAL" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id                     | A_NUMBER       |
       | item_type              | file           |
       | item_source            | A_NUMBER       |
@@ -163,7 +163,7 @@ Feature: federated
     Given user "user0" from server "REMOTE" has shared "/textfile0.txt" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "user1" creates a share using the sharing API with settings
       | path        | /textfile0 (2).txt |
@@ -172,7 +172,7 @@ Feature: federated
       | permissions | 19                 |
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
-    And the share fields of the last share should include
+    And the fields of the last response should include
       | id                     | A_NUMBER           |
       | item_type              | file               |
       | item_source            | A_NUMBER           |
@@ -421,3 +421,63 @@ Feature: federated
       | ocs-api-version |
       | 1               |
       | 2               |
+
+  Scenario Outline: share of a folder to a remote user who already has a folder with the same name
+    Given using server "REMOTE"
+    And user "user0" has created folder "/zzzfolder"
+    And user "user0" has created folder "zzzfolder/user0"
+    And using server "LOCAL"
+    And user "user1" has created folder "/zzzfolder"
+    And user "user1" has created folder "zzzfolder/user1"
+    When user "user0" from server "REMOTE" shares "zzzfolder" with user "user1" from server "LOCAL" using the sharing API
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    When user "user1" retrieves the information of the last federated cloud share using the sharing API
+    Then the OCS status code should be "<ocs-status>"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | id          | A_NUMBER           |
+      | remote      | REMOTE             |
+      | name        | /zzzfolder         |
+      | owner       | user0              |
+      | user        | user1              |
+      | mountpoint  | /zzzfolder (2)     |
+      | type        | dir                |
+      | permissions | 31                 |
+    And as "user1" folder "zzzfolder/user1" should exist
+    And as "user1" folder "zzzfolder (2)/user0" should exist
+    Examples:
+      | ocs-api-version | ocs-status |
+      | 1               | 100        |
+      | 2               | 200        |
+
+  Scenario Outline: share of a file to the remote user who already has a file with the same name
+    Given using server "REMOTE"
+    And user "user0" has uploaded file with content "remote content" to "/randomfile.txt"
+    And using server "LOCAL"
+    And user "user1" has uploaded file with content "local content" to "/randomfile.txt"
+    When user "user0" from server "REMOTE" shares "/randomfile.txt" with user "user1" from server "LOCAL" using the sharing API
+    And user "user1" from server "LOCAL" has accepted the last pending share
+    And using OCS API version "<ocs-api-version>"
+    When user "user1" retrieves the information of the last federated cloud share using the sharing API
+    Then the OCS status code should be "<ocs-status>"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | id          | A_NUMBER           |
+      | remote      | REMOTE             |
+      | remote_id   | A_NUMBER           |
+      | share_token | A_TOKEN            |
+      | name        | /randomfile.txt    |
+      | owner       | user0              |
+      | user        | user1              |
+      | mountpoint  | /randomfile (2).txt|
+      | accepted    | 1                  |
+      | type        | file               |
+      | permissions | 27                 |
+    And the content of file "/randomfile.txt" for user "user1" on server "LOCAL" should be "local content"
+    And the content of file "/randomfile (2).txt" for user "user1" on server "LOCAL" should be "remote content"
+    Examples:
+      | ocs-api-version | ocs-status |
+      | 1               | 100        |
+      | 2               | 200        |
+

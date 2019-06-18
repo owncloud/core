@@ -51,6 +51,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	protected $appSettingsContentId = "app-settings-content";
 	protected $styleOfCheckboxWhenVisible = "display: block;";
 	protected $detailsDialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
+	protected $newFileFolderButtonXpath = './/*[@id="controls"]//a[@class="button new"]';
 
 	/**
 	 * @return string
@@ -648,5 +649,18 @@ abstract class FilesPageBasic extends OwncloudPage {
 			"could not find the field for show hidden files checkbox"
 		);
 		$showHiddenFilesCheckBox->click();
+	}
+
+	/**
+	 * Return is New File/folder button is available on the webUI
+	 *
+	 * @return boolean
+	 */
+	public function isUploadButtonAvailable() {
+		$btn = $this->find("xpath", $this->newFileFolderButtonXpath);
+		if ($btn === null) {
+			return false;
+		}
+		return $btn->isVisible();
 	}
 }

@@ -39,6 +39,23 @@ class OccContext implements Context {
 	private $featureContext;
 
 	/**
+	 *
+	 * @var ImportedCertificates
+	 */
+	private $importedCertificates = [];
+
+	/**
+	 *
+	 * @var RemovedCertificates
+	 */
+	private $removedCertificates = [];
+
+	/**
+	 * @var string lastDeletedJobId
+	 */
+	private $lastDeletedJobId;
+
+	/**
 	 * @When /^the administrator invokes occ command "([^"]*)"$/
 	 * @Given /^the administrator has invoked occ command "([^"]*)"$/
 	 *
@@ -48,6 +65,33 @@ class OccContext implements Context {
 	 */
 	public function invokingTheCommand($cmd) {
 		$this->featureContext->runOcc([$cmd]);
+	}
+
+	/**
+	 * @When the administrator imports security certificate from the path :path
+	 * @Given the administrator has imported security certificate from the path :path
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theAdministratorImportsSecurityCertificateFromThePath($path) {
+		$this->invokingTheCommand("security:certificates:import " . $path);
+		$pathComponents = \explode("/", $path);
+		$certificate = \end($pathComponents);
+		\array_push($this->importedCertificates, $certificate);
+	}
+
+	/**
+	 * @When the administrator removes the security certificate :certificate
+	 *
+	 * @param string $certificate
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRemovesTheSecurityCertificate($certificate) {
+		$this->invokingTheCommand("security:certificates:remove " . $certificate);
+		\array_push($this->removedCertificates, $certificate);
 	}
 
 	/**
@@ -549,16 +593,19 @@ class OccContext implements Context {
 
 	/**
 	 * @Given the administrator has added system config key :key with value :value
+	 * @Given the administrator has added system config key :key with value :value and type :type
 	 * @When the administrator adds/updates system config key :key with value :value using the occ command
+	 * @When the administrator adds/updates system config key :key with value :value and type :type using the occ command
 	 *
 	 * @param string $key
 	 * @param string $value
+	 * @param boolean $type
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand($key, $value) {
+	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand($key, $value, $type="string") {
 		$this->invokingTheCommand(
-			"config:system:set --value ${value} ${key}"
+			"config:system:set --value ${value} --type ${type} ${key}"
 		);
 	}
 
@@ -595,6 +642,52 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorEmptiesTheTrashbinOfAllUsersUsingTheOccCommand() {
 		$this->theAdministratorEmptiesTheTrashbinOfUserUsingTheOccCommand('');
+	}
+
+	/**
+	 * @When the administrator gets all the jobs in the background queue using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorGetsAllTheJobsInTheBackgroundQueueUsingTheOccCommand() {
+		$this->invokingTheCommand(
+			"background:queue:status"
+		);
+	}
+
+	/**
+	 * @When the administrator deletes last background job :job using the occ command
+	 *
+	 * @param string $job
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesLastBackgroundJobUsingTheOccCommand($job) {
+		$match = $this->getLastJobIdForJob($job);
+		if ($match === false) {
+			throw new \Exception("Couldn't find jobId for given job: $job");
+		}
+		$this->invokingTheCommand(
+			"background:queue:delete $match"
+		);
+		$this->lastDeletedJobId = $match;
+	}
+
+	/**
+	 * @Then the last deleted background job :job should not be listed in the background jobs queue
+	 *
+	 * @param string $job
+	 *
+	 * @return void
+	 */
+	public function theLastDeletedJobShouldNotBeListedInTheJobsQueue($job) {
+		$jobId = $this->lastDeletedJobId;
+		$match = $this->getLastJobIdForJob($job);
+		PHPUnit\Framework\Assert::assertNotEquals(
+			$jobId, $match,
+			"job $job with jobId $jobId" .
+			" was not expected to be listed in background queue, but was"
+		);
 	}
 
 	/**
@@ -721,6 +814,92 @@ class OccContext implements Context {
 		);
 	}
 
+	/**
+	 * get jobId of the latest job found of given job class
+	 *
+	 * @param string $job
+	 *
+	 * @return string|boolean
+	 */
+	public function getLastJobIdForJob($job) {
+		$this->theAdministratorGetsAllTheJobsInTheBackgroundQueueUsingTheOccCommand();
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$lines = $this->featureContext->findLines(
+			$commandOutput,
+			$job
+		);
+		// find the jobId of the newest job among the jobs with given class
+		$success = \preg_match("/\d+/", \end($lines), $match);
+		if ($success) {
+			return $match[0];
+		}
+		return false;
+	}
+
+	/**
+	 * @Then the system config key :key from the last command output should match value :value of type :type
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param string $type
+	 *
+	 * @return void
+	 */
+	public function theSystemConfigKeyFromLastCommandOutputShouldContainValue(
+		$key, $value, $type
+	) {
+		$configList = \json_decode(
+			$this->featureContext->getStdOutOfOccCommand(), true
+		);
+		$systemConfig = $configList['system'];
+
+		// convert the value to it's respective type based on type given in the type column
+		if ($type === 'boolean') {
+			$value = $value === 'true' ? true : false;
+		} elseif ($type === 'integer') {
+			$value = (int) $value;
+		} elseif ($type === 'json') {
+			// if the expected value of the key is a json
+			// match the value with the regular expression
+			$actualKeyValuePair = \json_encode(
+				$systemConfig[$key], JSON_UNESCAPED_SLASHES
+			);
+
+			PHPUnit\Framework\Assert::assertThat(
+				$actualKeyValuePair,
+				PHPUnit\Framework\Assert::matchesRegularExpression($value)
+			);
+			return;
+		}
+
+		if (!\array_key_exists($key, $systemConfig)) {
+			PHPUnit\Framework\Assert::fail(
+				"system config doesn't contain key: " . $key
+			);
+		}
+
+		PHPUnit\Framework\Assert::assertEquals(
+			$value,
+			$systemConfig[$key],
+			"config: $key doesn't contain value: $value"
+		);
+	}
+
+	/**
+	 * This will run after EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function removeImportedCertificates() {
+		$remainingCertificates = \array_diff($this->importedCertificates, $this->removedCertificates);
+		foreach ($remainingCertificates as $certificate) {
+			$this->invokingTheCommand("security:certificates:remove " . $certificate);
+			$this->theCommandShouldHaveBeenSuccessful();
+		}
+	}
 	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.

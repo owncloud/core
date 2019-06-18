@@ -25,6 +25,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
 use Page\TagsPage;
+use Behat\Gherkin\Node\TableNode;
 
 require_once 'bootstrap.php';
 
@@ -81,7 +82,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 		$this->filesPage->getDetailsDialog()->addTag($tagName);
 
 		// For tags to be created, OC checks (|for the permission) if the tag could be created
-		// and if it can, then only it creates a tag. So, in the webUI, it does two
+		// and if it can, then only it creates a tag. So, on the webUI, it does two
 		// requests before the tags are created.
 		// If we use a single wait, it returns after it has checked for the permission.
 		// Locally that passes but sometimes fail on the ci. So, we need two waits for each requests.
@@ -101,6 +102,18 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 */
 	public function theUserTypesAValueInTheCollaborativeTagsFieldUsingTheWebUI($value) {
 		$this->filesPage->getDetailsDialog()->insertTagNameInTheTagsField($value);
+	}
+
+	/**
+	 * @When the user edits the tag with name :oldName and sets its name to :newName using the webUI
+	 *
+	 * @param string $oldName
+	 * @param string $newName
+	 *
+	 * @return void
+	 */
+	public function theUserEditsTheTagWithNameAndSetsItsNameToUsingTheWebui($oldName, $newName) {
+		$this->filesPage->getDetailsDialog()->renameTag($oldName, $newName);
 	}
 
 	/**

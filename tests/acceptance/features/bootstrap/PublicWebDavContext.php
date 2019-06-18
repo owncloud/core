@@ -67,7 +67,74 @@ class PublicWebDavContext implements Context {
 			HttpRequestHelper::get($fullUrl, $token)
 		);
 	}
+
+	/**
+	 * @When /^the public deletes file "([^"]*)" from the last public share using the public WebDAV API$/
+	 *
+	 * @param string $fileName
+	 *
+	 * @return void
+	 */
+	public function deleteFileFromPublicShare($fileName) {
+		$token = $this->featureContext->getLastShareData()->data->token;
+		$fullUrl = $this->featureContext->getBaseUrl() . "/public.php/webdav/" . $fileName;
+		$headers = [
+			'X-Requested-With' => 'XMLHttpRequest'
+		];
+		$this->featureContext->setResponse(
+			HttpRequestHelper::delete($fullUrl, $token, "", $headers)
+		);
+	}
+
+	/**
+	 * @When /^the public renames file "([^"]*)" to "([^"]*)" from the last public share using the public WebDAV API$/
+	 *
+	 * @param string $fileName
+	 * @param string $toFileName
+	 *
+	 * @return void
+	 */
+	public function renameFileFromPublicShare($fileName, $toFileName) {
+		$token = $this->featureContext->getLastShareData()->data->token;
+		$fullUrl = $this->featureContext->getBaseUrl() . "/public.php/webdav/" . $fileName;
+		$headers = [
+			'X-Requested-With' => 'XMLHttpRequest',
+			'Destination' => $this->featureContext->getBaseUrl() . "/public.php/webdav/" . $toFileName
+		];
+		$this->featureContext->setResponse(
+			HttpRequestHelper::sendRequest($fullUrl, "MOVE", $token, "", $headers)
+		);
+	}
 	
+	/**
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder using the public WebDAV API$/
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function downloadPublicFileInsideAFolder($path) {
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
+			$path, "", ""
+		);
+	}
+
+	/**
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with password "([^"]*)" using the public WebDAV API$/
+	 *
+	 * @param string $path
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
+		$path, $password = ""
+	) {
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
+			$path, $password, ""
+		);
+	}
+
 	/**
 	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with range "([^"]*)" using the public WebDAV API$/
 	 *
@@ -77,17 +144,9 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function downloadPublicFileInsideAFolderWithRange($path, $range) {
-		$path = \ltrim($path, "/");
-		$fullUrl = $this->featureContext->getBaseUrl() . "/public.php/webdav/$path";
-		$headers = [
-			'X-Requested-With' => 'XMLHttpRequest',
-			'Range' => $range
-		];
-		$response = HttpRequestHelper::get(
-			$fullUrl, $this->featureContext->getLastShareData()->data->token,
-			"", $headers
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
+			$path, "", $range
 		);
-		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -99,16 +158,18 @@ class PublicWebDavContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
+	public function publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
 		$path, $password, $range
 	) {
 		$path = \ltrim($path, "/");
 		$password = $this->featureContext->getActualPassword($password);
 		$fullUrl = $this->featureContext->getBaseUrl() . "/public.php/webdav/$path";
 		$headers = [
-			'X-Requested-With' => 'XMLHttpRequest',
-			'Range' => $range
+			'X-Requested-With' => 'XMLHttpRequest'
 		];
+		if ($range !== "") {
+			$headers['Range'] = $range;
+		}
 		$response = HttpRequestHelper::get(
 			$fullUrl, $this->featureContext->getLastShareData()->data->token,
 			$password, $headers
@@ -185,6 +246,39 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
+	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public shared folder and the content should be "([^"]*)"$/
+	 *
+	 * @param string $path
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function shouldBeAbleToDownloadFileInsidePublicSharedFolder(
+		$path, $content
+	) {
+		$this->shouldBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
+			"", $path, "", $content
+		);
+	}
+
+	/**
+	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public shared folder with password "([^"]*)" and the content should be "([^"]*)"$/
+	 *
+	 * @param string $path
+	 * @param string $password
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function shouldBeAbleToDownloadFileInsidePublicSharedFolderWithPassword(
+		$path, $password, $content
+	) {
+		$this->shouldBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
+			"", $path, $password, $content
+		);
+	}
+
+	/**
 	 * @Then /^the public should be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder with password "([^"]*)" and the content should be "([^"]*)"$/
 	 *
 	 * @param string $range
@@ -194,10 +288,10 @@ class PublicWebDavContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function shouldBeAbleToDownloadFileInsidePublicSharedFolderWithPassword(
+	public function shouldBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
 		$range, $path, $password, $content
 	) {
-		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
 			$path, $password, $range
 		);
 		$this->featureContext->downloadedContentShouldBe($content);
@@ -212,12 +306,30 @@ class PublicWebDavContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function shouldBeAbleToDownloadFileInsidePublicSharedFolder(
+	public function shouldBeAbleToDownloadRangeOfFileInsidePublicSharedFolder(
 		$range, $path, $content
 	) {
-		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
-			$path, null, $range
+		$this->shouldBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
+			$range, $path, "", $content
 		);
+	}
+
+	/**
+	 * @Then /^the public should be able to upload file "([^"]*)" with content "([^"]*)" to the last public shared folder$/
+	 *
+	 * @param string $path
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function shouldBeAbleToUploadFileWithContentToTheLastPublicSharedFolder(
+		$path, $content
+	) {
+		$this->publiclyUploadingContent($path, $content);
+		$this->featureContext->theHTTPStatusCodeShouldBe(
+			"201", "Failed to upload file to public share"
+		);
+		$this->downloadPublicFileInsideAFolder($path);
 		$this->featureContext->downloadedContentShouldBe($content);
 	}
 
@@ -256,7 +368,7 @@ class PublicWebDavContext implements Context {
 			$response->getStatusCode()
 		);
 		$this->shouldBeAbleToDownloadFileInsidePublicSharedFolder(
-			"bytes=0-3", $path, $content
+			$path, $content
 		);
 	}
 

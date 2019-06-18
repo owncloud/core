@@ -43,7 +43,10 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 		= '//label[@for="userAutoAcceptShareTrustedInput"]';
 	protected $autoAcceptFederatedSharesCheckboxXpathCheckboxId
 		= 'userAutoAcceptShareTrustedInput';
-
+	protected $allowFindingYouViaAutocompleteCheckboxXpath
+		= '//label[@for="allow_share_dialog_user_enumeration_input"]';
+	protected $allowFindingYouViaAutocompleteCheckboxXpathCheckboxId
+		= 'allow_share_dialog_user_enumeration_input';
 	/**
 	 *
 	 * @param Session $session
@@ -77,6 +80,21 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
+	 *
+	 * @param Session $session
+	 * @param string $action "enables|disables"
+	 *
+	 * @return void
+	 */
+	public function toggleFindingYouViaAutocomplete(Session $session, $action) {
+		$this->toggleCheckbox(
+			$session,
+			$action,
+			$this->allowFindingYouViaAutocompleteCheckboxXpath,
+			$this->allowFindingYouViaAutocompleteCheckboxXpathCheckboxId
+		);
+	}
+	/**
 	 * there is no reliable loading indicator on the personal sharing settings page,
 	 * so just wait for files_sharing personal panel div to be there and all Ajax calls to finish
 	 *
@@ -96,7 +114,7 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
-	 * Check if the auto accept local shares checkbox is shown in the webui
+	 * Check if the auto accept local shares checkbox is shown on the webui
 	 *
 	 * @return boolean
 	 */
@@ -109,12 +127,28 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
-	 * Check if the auto accept local shares checkbox is shown in the webui
+	 * Check if the auto accept local shares checkbox is shown on the webui
 	 *
 	 * @return boolean
 	 */
 	public function isAutoAcceptFederatedSharesCheckboxDisplayed() {
 		$localAutoAcceptCheckbox = $this->find('xpath', $this->autoAcceptFederatedSharesCheckboxXpath);
+		if ($localAutoAcceptCheckbox === null) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Check if the allow finding you via autocomplete checkbox is shown on the webui
+	 *
+	 * @return boolean
+	 */
+	public function isAllowFindingYouViaAutocompleteCheckboxDisplayed() {
+		$localAutoAcceptCheckbox = $this->find(
+			'xpath',
+			$this->allowFindingYouViaAutocompleteCheckboxXpath
+		);
 		if ($localAutoAcceptCheckbox === null) {
 			return false;
 		}

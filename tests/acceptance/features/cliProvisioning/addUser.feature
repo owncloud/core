@@ -31,13 +31,13 @@ Feature: add a user using the using the occ command
       | email       | justauser@example.com |
 
   Scenario: admin tries to create an existing user
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator tries to create a user "brand-new-user" using the occ command
     Then the command should have failed with exit code 1
     And the command output should contain the text 'The user "brand-new-user" already exists.'
 
   Scenario: admin tries to create an existing disabled user
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And user "brand-new-user" has been disabled
     When the administrator tries to create a user "brand-new-user" using the occ command
     Then the command should have failed with exit code 1
@@ -69,3 +69,22 @@ Feature: add a user using the using the occ command
     When the administrator creates user "brand-new-user" password " " group "brand-new-group" using the occ command
     Then the command should have failed with exit code 1
     And user "brand-new-user" should not exist
+
+  Scenario: admin creates a user with username that contains capital letters
+    When the administrator creates this user using the occ command:
+      | username       |
+      | Brand-New-User |
+    Then the command should have been successful
+    And the command output should contain the text 'The user "Brand-New-User" was created successfully'
+    And user "Brand-New-User" should exist
+    And user "brand-new-user" should exist
+    And user "Brand-New-User" should be able to access a skeleton file
+    And the display name of user "brand-new-user" should be "Brand-New-User"
+
+  Scenario: admin tries to create an existing user but with username containing capital letters
+    Given user "brand-new-user" has been created with default attributes and skeleton files
+    When the administrator creates this user using the occ command:
+      | username       |
+      | Brand-New-User |
+    Then the command should have failed with exit code 1
+    And the command output should contain the text 'The user "Brand-New-User" already exists'

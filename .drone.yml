@@ -827,6 +827,17 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
+      BEHAT_SUITE: apiAuthOcs
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
       BEHAT_SUITE: apiCapabilities
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -895,6 +906,28 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioningGroups-v1
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioningGroups-v2
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
       BEHAT_SUITE: apiSharees
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -907,6 +940,17 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiShareManagement
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiShareManagementBasic
       DB_TYPE: mariadb
       USE_SERVER: true
       SERVER_PROTOCOL: https
@@ -974,6 +1018,17 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavLocks
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavLocks2
       DB_TYPE: mariadb
       USE_SERVER: true
       SERVER_PROTOCOL: https
@@ -1117,7 +1172,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BROWSER: chrome
-      BEHAT_SUITE: webUIEncryptionUserKeysType
+      BEHAT_SUITE: webUIUserKeysType
       DB_TYPE: mariadb
       USE_SERVER: true
       SERVER_PROTOCOL: https
@@ -1239,6 +1294,18 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BROWSER: chrome
+      BEHAT_SUITE: webUISharingAutocompletion
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUISharingExternal
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -1337,6 +1404,20 @@ matrix:
       SERVER_PROTOCOL: https
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    # This suite is part of the user_management app in later core versions
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BROWSER: chrome
+      BEHAT_SUITE: webUIAddUsers
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      USE_EMAIL: true
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
 
@@ -1517,6 +1598,20 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: cli
       BEHAT_SUITE: cliEncryption
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CONFIGURE_ENCRYPTION: true
+      ENCRYPTION_TYPE: masterkey
+      INSTALL_TESTING_APP: true
+
+    ## encryption WebUI acceptance tests master-keys encryption
+    - PHP_VERSION: 7.1
+      TEST_SUITE: webui
+      BEHAT_SUITE: webUIMasterKeyType
       DB_TYPE: mariadb
       USE_SERVER: true
       SERVER_PROTOCOL: https

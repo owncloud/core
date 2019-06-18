@@ -6,9 +6,17 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Background:
     Given using server "REMOTE"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "simple-folder"
+    And user "user1" has created folder "simple-empty-folder"
+    And user "user1" has uploaded file with content "I am lorem.txt inside simple-folder" to "/simple-folder/lorem.txt"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And using server "LOCAL"
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "simple-folder"
+    And user "user1" has created folder "simple-empty-folder"
+    And user "user1" has uploaded file with content "I am lorem.txt inside simple-folder" to "/simple-folder/lorem.txt"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "user1" has logged in using the webUI
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
 
@@ -24,10 +32,12 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: test the single steps of receiving a federation share
     Given using server "REMOTE"
-    And these users have been created with default attributes:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | user2    |
       | user3    |
+    And user "user2" has created folder "simple-empty-folder"
+    And user "user3" has uploaded file with content "I am lorem.txt" to "/lorem.txt"
     And user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
     And user "user2" from server "REMOTE" has shared "simple-empty-folder" with user "user1" from server "LOCAL"
     And user "user3" from server "REMOTE" has shared "lorem.txt" with user "user1" from server "LOCAL"
@@ -39,10 +49,10 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | Remote share | Do you want to add the remote share /lorem.txt from user3@%remote_server_without_scheme%?           |
     When the user accepts the offered remote shares using the webUI
     Then file "lorem (2).txt" should be listed on the webUI
-    And the content of "lorem (2).txt" on the local server should be the same as the original "lorem.txt"
+    And the content of file "lorem (2).txt" for user "user1" on server "LOCAL" should be "I am lorem.txt"
     And folder "simple-folder (2)" should be listed on the webUI
     And file "lorem.txt" should be listed in folder "simple-folder (2)" on the webUI
-    And the content of "lorem.txt" on the local server should be the same as the original "simple-folder/lorem.txt"
+    And the content of file "simple-folder (2)/lorem.txt" for user "user1" on server "LOCAL" should be "I am lorem.txt inside simple-folder"
     And file "lorem (2).txt" should be listed in the shared-with-you page on the webUI
     And folder "simple-folder (2)" should be listed in the shared-with-you page on the webUI
     And folder "simple-empty-folder (2)" should be listed in the shared-with-you page on the webUI
@@ -79,7 +89,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | /lorem%20(2).txt |
 
   Scenario: one user disabling user-based auto accepting while global is enabled has no effect on other users
-    Given user "user2" has been created with default attributes
+    Given user "user2" has been created with default attributes and without skeleton files
+    And user "user2" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "autoAddServers" of app "federation" has been set to "1"
     And user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
     And user "user1" from server "LOCAL" has accepted the last pending share
@@ -100,7 +111,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
     And parameter "autoAddServers" of app "federation" has been set to "0"
     And the user has browsed to the personal sharing settings page
-    Then User-based auto accepting from trusted servers checkbox should not be displayed on the personal sharing settings page in the webUI
+    Then User-based auto accepting from trusted servers checkbox should not be displayed on the personal sharing settings page on the webUI
 
   @skip @issue-34742
   Scenario: User-based & global auto accepting is enabled but remote server is not trusted
@@ -125,11 +136,9 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   @skipOnMICROSOFTEDGE
   Scenario: share a folder with an remote user and prohibit deleting - remote server shares - local server receives
-    When user "user1" re-logs in to "%remote_server%" using the webUI
-    And the user shares folder "simple-folder" with remote user "user1@%local_server_without_scheme%" using the webUI
-    And the user sets the sharing permissions of "user1@%local_server_without_scheme% (federated)" for "simple-folder" using the webUI to
-      | delete | no |
-    And user "user1" re-logs in to "%local_server%" using the webUI
+    # permissions read+update+create = 7 (no delete, no (re)share permission)
+    Given user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL" with permissions 7
+    When the user browses to the files page
     And the user accepts the offered remote shares using the webUI
     And the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
@@ -177,12 +186,12 @@ Feature: Federation Sharing - sharing with users on other cloud storages
   Scenario: rename a file in a received share - local server shares - remote server receives
     Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
-    When user "user1" on "REMOTE" moves file "/simple-folder%20(2)/lorem-big.txt" to "/simple-folder%20(2)/renamed%20file.txt" using the WebDAV API
+    When user "user1" on "REMOTE" moves file "/simple-folder%20(2)/lorem.txt" to "/simple-folder%20(2)/renamed%20file.txt" using the WebDAV API
     And user "user1" re-logs in to "%local_server%" using the webUI
     And the user opens folder "simple-folder" using the webUI
     Then file "renamed file.txt" should be listed on the webUI
-    But file "lorem-big.txt" should not be listed on the webUI
-    And the content of "renamed file.txt" on the local server should be the same as the original "simple-folder/lorem-big.txt"
+    But file "lorem.txt" should not be listed on the webUI
+    And the content of file "simple-folder/renamed file.txt" for user "user1" on server "LOCAL" should be "I am lorem.txt inside simple-folder"
 
   @skipOnFIREFOX
   Scenario: rename a file in a received share - remote server shares - local server receives
@@ -190,15 +199,16 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user has reloaded the current page of the webUI
     When the user accepts the offered remote shares using the webUI
     When the user opens folder "simple-folder (2)" using the webUI
-    And the user renames file "lorem-big.txt" to "renamed file.txt" using the webUI
+    And the user renames file "lorem.txt" to "renamed file.txt" using the webUI
     And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user opens folder "simple-folder" using the webUI
     Then file "renamed file.txt" should be listed on the webUI
-    And the content of "renamed file.txt" on the remote server should be the same as the original "simple-folder/lorem-big.txt"
-    But file "lorem-big.txt" should not be listed on the webUI
+    And the content of file "simple-folder/renamed file.txt" for user "user1" on server "REMOTE" should be "I am lorem.txt inside simple-folder"
+    But file "lorem.txt" should not be listed on the webUI
 
   Scenario: delete a file in a received share - local server shares - remote server receives
-    Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
+    Given user "user1" has uploaded file "filesForUpload/data.zip" to "/simple-folder/data.zip"
+    And user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
     When user "user1" on "REMOTE" deletes file "simple-folder (2)/data.zip" using the WebDAV API
     And user "user1" re-logs in to "%local_server%" using the webUI
@@ -206,7 +216,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then file "data.zip" should not be listed on the webUI
 
   Scenario: delete a file in a received share - remote server shares - local server receives
-    Given user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
+    Given user "user1" on "REMOTE" has uploaded file "filesForUpload/data.zip" to "/simple-folder/data.zip"
+    And user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL"
     And the user has reloaded the current page of the webUI
     When the user accepts the offered remote shares using the webUI
     And the user opens folder "simple-folder (2)" using the webUI
@@ -217,7 +228,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: receive same name federation share from two users
     Given using server "REMOTE"
-    And user "user2" has been created with default attributes
+    And user "user2" has been created with default attributes and without skeleton files
+    And user "user2" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "user1" from server "REMOTE" has shared "/lorem.txt" with user "user1" from server "LOCAL"
     And user "user2" from server "REMOTE" has shared "/lorem.txt" with user "user1" from server "LOCAL"
     And the user has reloaded the current page of the webUI
@@ -247,9 +259,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: test sharing folder to a remote server and resharing it back to the local
     Given using server "LOCAL"
-    And these users have been created:
-      | username |
-      | user2    |
+    And user "user2" has been created with default attributes and without skeleton files
+    And user "user2" has created folder "simple-folder"
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
     And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
@@ -261,9 +272,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: test resharing folder as readonly and set it as readonly by resharer
     Given using server "LOCAL"
-    And these users have been created:
-      | username |
-      | user2    |
+    And user "user2" has been created with default attributes and without skeleton files
+    And user "user2" has created folder "simple-folder"
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
     And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
@@ -279,9 +289,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: test resharing folder and set it as readonly by owner
     Given using server "LOCAL"
-    And these users have been created:
-      | username |
-      | user2    |
+    And user "user2" has been created with default attributes and without skeleton files
+    And user "user2" has created folder "simple-folder"
     When the user shares folder "simple-folder" with remote user "user1@%remote_server_without_scheme%" using the webUI
     And user "user1" re-logs in to "%remote_server%" using the webUI
     And the user accepts the offered remote shares using the webUI
@@ -307,7 +316,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then as "user1" file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should exist
 
   Scenario: sharee should be able to access the files/folders inside other folder
-    Given user "user1" has created folder "simple-folder/simple-empty-folder/finalfolder"
+    Given user "user1" has created folder "simple-folder/simple-empty-folder"
+    And user "user1" has created folder "simple-folder/simple-empty-folder/finalfolder"
     And user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/simple-empty-folder/textfile.txt"
     And user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
@@ -319,7 +329,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And folder "finalfolder" should be listed on the webUI
 
   Scenario: sharee uploads a file inside a folder of a folder
-    Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
+    Given user "user1" has created folder "simple-folder/simple-empty-folder"
+    And user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
     When user "user1" re-logs in to "%remote_server%" using the webUI
     And the user opens folder "simple-folder (2)/simple-empty-folder" using the webUI
@@ -329,7 +340,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   @skipOnFIREFOX
   Scenario: rename a file in a folder inside a shared folder
-    Given user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/simple-empty-folder/textfile.txt"
+    Given user "user1" has created folder "simple-folder/simple-empty-folder"
+    And user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/simple-empty-folder/textfile.txt"
     And user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
     And user "user1" re-logs in to "%remote_server%" using the webUI
@@ -340,7 +352,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     But as "user1" file "simple-folder/simple-empty-folder/textfile.txt" should not exist
 
   Scenario: delete a file in a folder inside a shared folder
-    Given user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/simple-empty-folder/textfile.txt"
+    Given user "user1" has created folder "simple-folder/simple-empty-folder"
+    And user "user1" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/simple-empty-folder/textfile.txt"
     And user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
     And user "user1" from server "REMOTE" has accepted the last pending share
     And user "user1" re-logs in to "%remote_server%" using the webUI

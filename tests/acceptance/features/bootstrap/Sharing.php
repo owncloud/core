@@ -110,7 +110,7 @@ trait Sharing {
 	 *       | password        | The password to protect the public link share with. |
 	 *       | expireDate      | An expire date for public link shares.              |
 	 *       |                 | This argument expects a date string.                |
-	 *       |                 | in the format 'YYYY-MM-DD'.                         |
+	 *       |                 | in the format 'YYYY-MM-DD' or '+ x days'.            |
 	 *       | permissions     | The permissions to set on the share.                |
 	 *       |                 |     1 = read; 2 = update; 4 = create;               |
 	 *       |                 |     8 = delete; 16 = share; 31 = all                |
@@ -599,7 +599,7 @@ trait Sharing {
 	 * @param string $shareWith
 	 * @param string $publicUpload
 	 * @param string $sharePassword
-	 * @param int $permissions
+	 * @param string|int|string[]|int[] $permissions
 	 * @param string $linkName
 	 * @param string $expireDate
 	 *
@@ -647,7 +647,8 @@ trait Sharing {
 		if ($data === null) {
 			$data = $this->getResponseXml()->data[0];
 		}
-		if ((string) $field === 'expiration') {
+		//do not try to convert empty date
+		if ((string) $field === 'expiration' && !empty($contentExpected)) {
 			$contentExpected
 				= \date(
 					'Y-m-d',
@@ -659,6 +660,9 @@ trait Sharing {
 		}
 		if (\count($data->element) > 0) {
 			foreach ($data as $element) {
+				if (!isset($element->$field)) {
+					continue;
+				}
 				if ($contentExpected == "A_TOKEN") {
 					return (\strlen((string)$element->$field) == 15);
 				} elseif ($contentExpected == "A_NUMBER") {
@@ -673,7 +677,6 @@ trait Sharing {
 					print($element->$field);
 				}
 			}
-
 			return false;
 		} else {
 			if ($contentExpected == "A_TOKEN") {
@@ -687,17 +690,6 @@ trait Sharing {
 			}
 			return false;
 		}
-	}
-
-	/**
-	 * @param string $field
-	 * @param string $contentExpected
-	 *
-	 * @return bool
-	 */
-	public function isFieldInShareResponse($field, $contentExpected) {
-		$data = $this->lastShareData->data[0];
-		return $this->isFieldInResponse($field, $contentExpected, $data);
 	}
 
 	/**
@@ -822,17 +814,21 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))? using the sharing API$/
 	 *
 	 * @param string $user1
 	 * @param string $filepath
 	 * @param string $user2
-	 * @param int $permissions
+	 * @param string|int|string[]|int[] $permissions
+	 * @param bool $getShareData If true then only create the share if it is not
+	 *                           already existing, and at the end request the
+	 *                           share information and leave that in $this->response
+	 *                           Typically used in a "Given" step which verifies
+	 *                           that the share did get created successfully.
 	 *
 	 * @return void
 	 */
-	public function userSharesFileWithUserUsingTheSharingApi(
-		$user1, $filepath, $user2, $permissions = null
+	public function shareFileWithUserUsingTheSharingApi(
+		$user1, $filepath, $user2, $permissions = null, $getShareData = false
 	) {
 		$user1 = $this->getActualUsername($user1);
 		$user2 = $this->getActualUsername($user2);
@@ -842,15 +838,35 @@ trait Sharing {
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $user1, $this->getPasswordForUser($user1)
 		);
-		if ($this->isUserOrGroupInSharedData($user2, $permissions)) {
+		if ($getShareData && $this->isUserOrGroupInSharedData($user2, $permissions)) {
 			return;
 		} else {
 			$this->createShare(
 				$user1, $filepath, 0, $user2, null, null, $permissions
 			);
 		}
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user1, $this->getPasswordForUser($user1)
+		if ($getShareData) {
+			$this->response = HttpRequestHelper::get(
+				$fullUrl, $user1, $this->getPasswordForUser($user1)
+			);
+		}
+	}
+
+	/**
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))? using the sharing API$/
+	 *
+	 * @param string $user1
+	 * @param string $filepath
+	 * @param string $user2
+	 * @param string|int|string[]|int[] $permissions
+	 *
+	 * @return void
+	 */
+	public function userSharesFileWithUserUsingTheSharingApi(
+		$user1, $filepath, $user2, $permissions = null
+	) {
+		$this->shareFileWithUserUsingTheSharingApi(
+			$user1, $filepath, $user2, $permissions
 		);
 	}
 
@@ -867,8 +883,8 @@ trait Sharing {
 	public function userHasSharedFileWithUserUsingTheSharingApi(
 		$user1, $filepath, $user2, $permissions = null
 	) {
-		$this->userSharesFileWithUserUsingTheSharingApi(
-			$user1, $filepath, $user2, $permissions
+		$this->shareFileWithUserUsingTheSharingApi(
+			$user1, $filepath, $user2, $permissions, true
 		);
 		PHPUnit\Framework\Assert::assertTrue(
 			$this->isUserOrGroupInSharedData($user2, $permissions),
@@ -963,6 +979,42 @@ trait Sharing {
 	}
 
 	/**
+	 *
+	 * @param string $user
+	 * @param string $filepath
+	 * @param string $group
+	 * @param string|int|string[]|int[] $permissions
+	 * @param bool $getShareData If true then only create the share if it is not
+	 *                           already existing, and at the end request the
+	 *                           share information and leave that in $this->response
+	 *                           Typically used in a "Given" step which verifies
+	 *                           that the share did get created successfully.
+	 *
+	 * @return void
+	 */
+	public function shareFileWithGroupUsingTheSharingApi(
+		$user, $filepath, $group, $permissions = null, $getShareData = false
+	) {
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user, $this->getPasswordForUser($user)
+		);
+		if ($getShareData && $this->isUserOrGroupInSharedData($group, $permissions)) {
+			return;
+		} else {
+			$this->createShare(
+				$user, $filepath, 1, $group, null, null, $permissions
+			);
+		}
+		if ($getShareData) {
+			$this->response = HttpRequestHelper::get(
+				$fullUrl, $user, $this->getPasswordForUser($user)
+			);
+		}
+	}
+
+	/**
 	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (.*))? using the sharing API$/
 	 *
 	 * @param string $user
@@ -975,20 +1027,8 @@ trait Sharing {
 	public function userSharesFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null
 	) {
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
-		);
-		if ($this->isUserOrGroupInSharedData($group, $permissions)) {
-			return;
-		} else {
-			$this->createShare(
-				$user, $filepath, 1, $group, null, null, $permissions
-			);
-		}
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
+		$this->shareFileWithGroupUsingTheSharingApi(
+			$user, $filepath, $group, $permissions
 		);
 	}
 
@@ -1005,8 +1045,8 @@ trait Sharing {
 	public function userHasSharedFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null
 	) {
-		$this->userSharesFileWithGroupUsingTheSharingApi(
-			$user, $filepath, $group, $permissions
+		$this->shareFileWithGroupUsingTheSharingApi(
+			$user, $filepath, $group, $permissions, true
 		);
 
 		PHPUnit\Framework\Assert::assertEquals(
@@ -1307,28 +1347,6 @@ trait Sharing {
 	public function checkingTheResponseEntriesCount($count) {
 		$actualCount = \count($this->getResponseXml()->data[0]);
 		PHPUnit\Framework\Assert::assertEquals($count, $actualCount);
-	}
-
-	/**
-	 * @Then /^the share fields of the last share should include$/
-	 *
-	 * @param TableNode|null $body
-	 *
-	 * @return void
-	 */
-	public function checkShareFields($body) {
-		if ($body instanceof TableNode) {
-			$fd = $body->getRowsHash();
-
-			foreach ($fd as $field => $value) {
-				$value = $this->replaceValuesFromTable($field, $value);
-				if (!$this->isFieldInShareResponse($field, $value)) {
-					PHPUnit\Framework\Assert::fail(
-						"$field doesn't have value $value"
-					);
-				}
-			}
-		}
 	}
 
 	/**

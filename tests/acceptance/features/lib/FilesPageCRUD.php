@@ -152,6 +152,20 @@ class FilesPageCRUD extends FilesPageBasic {
 	}
 
 	/**
+	 * returns the tooltip that is displayed next to the filename
+	 * if something is wrong
+	 *
+	 * @param string $fileName
+	 * @param Session $session
+	 *
+	 * @return string
+	 */
+	public function getTooltipOfFile($fileName, Session $session) {
+		$fileRow = $this->findFileRowByName($fileName, $session);
+		return $fileRow->getTooltip();
+	}
+
+	/**
 	 * {@inheritDoc}
 	 *
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
@@ -402,6 +416,9 @@ class FilesPageCRUD extends FilesPageBasic {
 			$message = "INFORMATION: retried to delete file '$name' $counter times";
 			echo $message;
 			\error_log($message);
+			if ($counter === $maxRetries) {
+				throw new \Exception($message);
+			}
 		}
 	}
 

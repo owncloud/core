@@ -6,7 +6,9 @@ Feature: Unmark file/folder as favorite
   So that I can remove my favorite file/folder from favorite page
 
   Background:
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has uploaded file "filesForUpload/data.zip" to "/data.zip"
+    And user "user1" has created folder "/simple-folder"
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
 
@@ -35,7 +37,7 @@ Feature: Unmark file/folder as favorite
     When the user browses to the files page
     Then file "data.zip" should not be marked as favorite on the webUI
 
-  Scenario: unmark a folder as favorite from files page
+  Scenario: unmark a folder as favorite from favorite page
     Given the user has marked folder "simple-folder" as favorite using the webUI
     And the user has browsed to the favorites page
     When the user unmarks the favorited folder "simple-folder" using the webUI

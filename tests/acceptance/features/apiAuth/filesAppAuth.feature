@@ -2,7 +2,7 @@
 Feature: auth
 
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     And a new client token for "user0" has been generated
 
   @smokeTest

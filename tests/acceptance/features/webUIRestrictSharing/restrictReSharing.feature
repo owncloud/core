@@ -6,16 +6,17 @@ Feature: restrict resharing
   I want to be able to forbid a user that received a share from me to share it further
 
   Background:
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | user1    |
       | user2    |
-      | user3    |
     And these groups have been created:
       | groupname |
       | grp1      |
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
+    And user "user1" has created folder "simple-folder"
+    And user "user2" has created folder "simple-folder"
     And user "user2" has logged in using the webUI
 
   @skipOnMICROSOFTEDGE @TestAlsoOnExternalUserBackend

@@ -8,7 +8,7 @@ Feature: Display notifications when receiving a share
     Given app "notifications" has been enabled
     And using OCS API version "1"
     And using new DAV path
-    And these users have been created with default attributes:
+    And these users have been created with default attributes and skeleton files:
       | username |
       | user0    |
       | user1    |

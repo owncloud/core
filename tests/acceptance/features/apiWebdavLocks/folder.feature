@@ -2,7 +2,7 @@
 Feature: lock folders
 
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
 
   Scenario Outline: upload to a locked folder
     Given using <dav-path> DAV path

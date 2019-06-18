@@ -27,6 +27,12 @@ default:
         - FeatureContext: *common_feature_context_params
         - CorsContext:
 
+    apiAuthOcs:
+      paths:
+        - '%paths.base%/../features/apiAuthOcs'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
     apiCapabilities:
       paths:
         - '%paths.base%/../features/apiCapabilities'
@@ -74,6 +80,22 @@ default:
         - OccContext:
         - OccUsersGroupsContext:
 
+    apiProvisioningGroups-v1:
+      paths:
+        - '%paths.base%/../features/apiProvisioningGroups-v1'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - OccUsersGroupsContext:
+
+    apiProvisioningGroups-v2:
+      paths:
+        - '%paths.base%/../features/apiProvisioningGroups-v2'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - OccUsersGroupsContext:
+
     apiSharees:
       paths:
         - '%paths.base%/../features/apiSharees'
@@ -84,6 +106,15 @@ default:
     apiShareManagement:
       paths:
         - '%paths.base%/../features/apiShareManagement'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
+    apiShareManagementBasic:
+      paths:
+        - '%paths.base%/../features/apiShareManagementBasic'
       contexts:
         - FeatureContext: *common_feature_context_params
         - PublicWebDavContext:
@@ -138,6 +169,15 @@ default:
         - WebDavLockingContext:
         - WebDavPropertiesContext:
 
+    apiWebdavLocks2:
+      paths:
+        - '%paths.base%/../features/apiWebdavLocks2'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - PublicWebDavContext:
+        - WebDavLockingContext:
+        - WebDavPropertiesContext:
+
     apiWebdavMove:
       paths:
         - '%paths.base%/../features/apiWebdavMove'
@@ -178,6 +218,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
 
+    # This suite is part of the encryption app in later core versions
     cliEncryption:
       paths:
         - '%paths.base%/../features/cliEncryption'
@@ -194,6 +235,8 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
         - TransferOwnershipContext:
+        - FederationContext:
+        - WebDavPropertiesContext:
 
     cliProvisioning:
       paths:
@@ -251,19 +294,6 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
 
-    webUIEncryptionUserKeysType:
-      paths:
-        - '%paths.base%/../features/webUIEncryptionUserKeysType'
-      contexts:
-        - WebUIAdminEncryptionSettingsContext:
-        - WebUIPersonalEncryptionSettingsContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - FeatureContext: *common_feature_context_params
-        - EncryptionContext:
-        - OccContext:
-        - WebDavPropertiesContext:
-
     webUIFavorites:
       paths:
         - '%paths.base%/../features/webUIFavorites'
@@ -297,6 +327,20 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIPersonalGeneralSettingsContext:
+
+    # This suite is part of the encryption app in later core versions
+    webUIMasterKeyType:
+      paths:
+        - '%paths.base%/../features/webUIMasterKeyType'
+      contexts:
+        - EncryptionContext:
+        - WebUIAdminEncryptionSettingsContext:
+        - WebUIPersonalEncryptionSettingsContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIFilesContext:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
 
     webUIMoveFilesFolders:
       paths:
@@ -366,6 +410,18 @@ default:
         - WebUIAdminSharingSettingsContext:
         - WebUIPersonalSharingSettingsContext:
 
+    webUISharingAutocompletion:
+      paths:
+        - '%paths.base%/../features/webUISharingAutocompletion'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+        - OccContext:
+        - WebUIPersonalSharingSettingsContext:
+
     webUISharingExternal:
       paths:
         - '%paths.base%/../features/webUISharingExternal'
@@ -403,6 +459,8 @@ default:
         - WebUISharingContext:
         - EmailContext:
         - WebUIAdminSharingSettingsContext:
+        - WebUIPersonalSharingSettingsContext:
+        - OccContext:
 
     webUISharingNotifications:
       paths:
@@ -460,6 +518,35 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - PublicWebDavContext:
+
+    # This suite is part of the encryption app in later core versions
+    webUIUserKeysType:
+      paths:
+        - '%paths.base%/../features/webUIUserKeysType'
+      contexts:
+        - WebUIAdminEncryptionSettingsContext:
+        - WebUIPersonalEncryptionSettingsContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - FeatureContext: *common_feature_context_params
+        - EncryptionContext:
+        - OccContext:
+        - WebDavPropertiesContext:
+
+    # This suite is part of the user_management app in later core versions
+    webUIAddUsers:
+      paths:
+        - '%paths.base%/../features/webUIAddUsers'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - EmailContext:
+        - WebDavPropertiesContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIPersonalGeneralSettingsContext:
+        - WebUIUsersContext:
+        - WebUIUserContext:
 
     # This suite is part of the user_management app in later core versions
     webUIManageQuota:

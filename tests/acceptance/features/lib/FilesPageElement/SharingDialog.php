@@ -47,6 +47,7 @@ class SharingDialog extends OwncloudPage {
 	private $shareWithAutocompleteListXpath = ".//ul[contains(@class,'ui-autocomplete')]";
 	private $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
 	private $suffixToIdentifyGroups = " (group)";
+	private $suffixToIdentifyUsers = "";
 	private $suffixToIdentifyRemoteUsers = " (federated)";
 	private $sharerInformationXpath = ".//*[@class='reshare']";
 	private $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
@@ -152,6 +153,25 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
+	 * returns the user names as they could appear in an autocomplete list
+	 *
+	 * @param string|array $userNames
+	 *
+	 * @return string|array
+	 */
+	public function userStringsToMatchAutoComplete($userNames) {
+		if (\is_array($userNames)) {
+			$autocompleteStrings = [];
+			foreach ($userNames as $userName => $userDisplayName) {
+				$autocompleteStrings[$userName] = $userDisplayName . $this->suffixToIdentifyUsers;
+			}
+		} else {
+			$autocompleteStrings = $userNames . $this->suffixToIdentifyUsers;
+		}
+		return $autocompleteStrings;
+	}
+
+	/**
 	 * returns the group names as they could appear in an autocomplete list
 	 *
 	 * @param string|array $groupNames
@@ -199,7 +219,7 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
-	private function shareWithUserOrGroup(
+	public function shareWithUserOrGroup(
 		$nameToType, $nameToMatch, Session $session, $maxRetries = 5, $quiet = false
 	) {
 		$userFound = false;
@@ -252,7 +272,8 @@ class SharingDialog extends OwncloudPage {
 		$name, Session $session, $maxRetries = 5, $quiet = false
 	) {
 		$this->shareWithUserOrGroup(
-			$name, $name, $session, $maxRetries, $quiet
+			$name, $name . $this->suffixToIdentifyUsers,
+			$session, $maxRetries, $quiet
 		);
 	}
 

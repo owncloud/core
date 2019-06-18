@@ -5,36 +5,86 @@ Feature: browse directly to details tab
   So that I can see the details immediately without needing to click in the UI
 
   Background:
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has created folder "simple-folder"
+    And user "user1" has uploaded file with content "some content" to "/block-aligned.txt"
+    And user "user1" has uploaded file with content "some content" to "/simple-folder/block-aligned.txt"
+    And user "user1" has uploaded file with content "some content" to "/lorem.txt"
+    And user "user1" has uploaded file with content "some content" to "/simple-folder/lorem.txt"
+    And user "user1" has uploaded file with content "some content" to "/zzzz-must-be-last-file-in-folder.txt"
+    And user "user1" has uploaded file with content "some content" to "/simple-folder/zzzz-must-be-last-file-in-folder.txt"
     And user "user1" has logged in using the webUI
 
   @smokeTest
   Scenario Outline: Browse directly to the sharing details of a file
-    When the user browses directly to display the "sharing" details of file "lorem.txt" in folder "<folder>"
+    When the user browses directly to display the "sharing" details of file "<file>" in folder "<folder>"
     Then the thumbnail should be visible in the details panel
     And the "sharing" details panel should be visible
     And the share-with field should be visible in the details panel
     Examples:
-      | folder        |
-      | /             |
-      | simple-folder |
+      | file              | folder        | comment                     |
+      | block-aligned.txt | /             | one of the first files      |
+      | block-aligned.txt | simple-folder | one of the first files      |
+      | lorem.txt         | /             | a file somewhere in between |
+      | lorem.txt         | simple-folder | a file somewhere in between |
+
+  #merge this tests into previous scenario when bug is fixed
+  @smokeTest
+  @issue-35200
+  Scenario Outline: Browse directly to the sharing details of a file
+    When the user tries to browse directly to display the "sharing" details of file "<file>" in folder "<folder>"
+    #Then the thumbnail should be visible in the details panel
+    Then the "sharing" details panel should be visible
+    #And the share-with field should be visible in the details panel
+    Examples:
+      | file                                 | folder        | comment   |
+      | zzzz-must-be-last-file-in-folder.txt | /             | last file |
+      | zzzz-must-be-last-file-in-folder.txt | simple-folder | last file |
 
   @comments-app-required
   Scenario Outline: Browse directly to the comments details of a file
-    When the user browses directly to display the "comments" details of file "lorem.txt" in folder "<folder>"
+    When the user browses directly to display the "comments" details of file "<file>" in folder "<folder>"
     Then the thumbnail should be visible in the details panel
     And the "comments" details panel should be visible
     Examples:
-      | folder        |
-      | /             |
-      | simple-folder |
+      | file              | folder        | comment                     |
+      | block-aligned.txt | /             | one of the first files      |
+      | block-aligned.txt | simple-folder | one of the first files      |
+      | lorem.txt         | /             | a file somewhere in between |
+      | lorem.txt         | simple-folder | a file somewhere in between |
+
+  #merge this tests into previous scenario when bug is fixed
+  @issue-35200
+  @comments-app-required
+  Scenario Outline: Browse directly to the comments details of a file
+    When the user tries to browse directly to display the "comments" details of file "<file>" in folder "<folder>"
+    #Then the thumbnail should be visible in the details panel
+    Then the "comments" details panel should be visible
+    Examples:
+      | file                                 | folder        | comment   |
+      | zzzz-must-be-last-file-in-folder.txt | /             | last file |
+      | zzzz-must-be-last-file-in-folder.txt | simple-folder | last file |
 
   @files_versions-app-required
   Scenario Outline: Browse directly to the versions details of a file
-    When the user browses directly to display the "versions" details of file "lorem.txt" in folder "<folder>"
+    When the user browses directly to display the "versions" details of file "<file>" in folder "<folder>"
     Then the thumbnail should be visible in the details panel
     And the "versions" details panel should be visible
     Examples:
-      | folder        |
-      | /             |
-      | simple-folder |
+      | file              | folder        | comment                     |
+      | block-aligned.txt | /             | one of the first files      |
+      | block-aligned.txt | simple-folder | one of the first files      |
+      | lorem.txt         | /             | a file somewhere in between |
+      | lorem.txt         | simple-folder | a file somewhere in between |
+
+  #merge this tests into previous scenario when bug is fixed
+  @issue-35200
+  @files_versions-app-required
+  Scenario Outline: Browse directly to the versions details of a file
+    When the user tries to browse directly to display the "versions" details of file "<file>" in folder "<folder>"
+    #Then the thumbnail should be visible in the details panel
+    Then the "versions" details panel should be visible
+    Examples:
+      | file                                 | folder        | comment   |
+      | zzzz-must-be-last-file-in-folder.txt | /             | last file |
+      | zzzz-must-be-last-file-in-folder.txt | simple-folder | last file |
