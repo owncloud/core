@@ -1360,6 +1360,8 @@ matrix:
       OWNCLOUD_LOG: true
       INSTALL_TESTING_APP: true
       USE_EMAIL: true
+      USE_FEDERATED_SERVER: true
+      FEDERATION_OC_VERSION: daily-stable10-qa
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
