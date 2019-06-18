@@ -179,7 +179,8 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - php occ config:system:set proxy --value "http://mitmproxy:8080"
+      - php occ config:system:set proxy --value "mitmproxy:8080"
+      - php occ config:system:set proxyuserpwd --value "admin:admin"
     when:
       matrix:
         RUN_PROXY_ON: local_server
@@ -640,7 +641,7 @@ services:
   mitmproxy:
     image: mitmproxy/mitmproxy
     pull: true
-    command: [ "mitmdump", "--set", "ssl_insecure", "--verbose", "--showhost", "--ignore-hosts", "^(.+.)?(server|federated)(:80|-https:443)$" ]
+    command: [ "mitmdump", "--ssl-insecure", "--verbose", "--showhost", "--ignore-hosts", "^(server-https|federated-https):443$", "--proxyauth", "admin:admin" ]
     when:
       matrix:
         RUN_PROXY_ON: local_server
