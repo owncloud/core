@@ -132,15 +132,6 @@ class NodeVisitor extends NodeVisitorAbstract {
 					$this->checkBlackListFunction($node->class->toString(), $node->name, $node);
 					$this->checkBlackListMethod($node->class->toString(), $node->name, $node);
 				}
-
-				if ($node->class instanceof Node\Expr\Variable) {
-					/**
-					 * TODO: find a way to detect something like this:
-					 *       $c = "OC_API";
-					 *       $n = $c::call();
-					 */
-					// $this->checkBlackListMethod($node->class->..., $node->name, $node);
-				}
 			}
 		}
 		if ($node instanceof Node\Expr\MethodCall) {
@@ -161,13 +152,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 				if ($node->class instanceof Name) {
 					$this->checkBlackList($node->class->toString(), CodeChecker::CLASS_CONST_FETCH_NOT_ALLOWED, $node);
 				}
-				if ($node->class instanceof Node\Expr\Variable) {
-					/**
-					 * TODO: find a way to detect something like this:
-					 *       $c = "OC_API";
-					 *       $n = $i::ADMIN_AUTH;
-					 */
-				} else {
+				if (!($node->class instanceof Node\Expr\Variable)) {
 					$this->checkBlackListConstant($node->class->toString(), $node->name, $node);
 				}
 			}
@@ -176,13 +161,6 @@ class NodeVisitor extends NodeVisitorAbstract {
 			if ($node->class !== null) {
 				if ($node->class instanceof Name) {
 					$this->checkBlackList($node->class->toString(), CodeChecker::CLASS_NEW_NOT_ALLOWED, $node);
-				}
-				if ($node->class instanceof Node\Expr\Variable) {
-					/**
-					 * TODO: find a way to detect something like this:
-					 *       $c = "OC_API";
-					 *       $n = new $i;
-					 */
 				}
 			}
 		}
