@@ -383,7 +383,11 @@ trait Provisioning {
 		// We add all the request objects in an array so that we can send all the requests in parallel.
 		$requests = [];
 		$client = new Client();
-		$methodLdap = \getenv("TEST_EXTERNAL_USER_BACKENDS");
+
+		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			echo "creating LDAP users is not implemented, so assume they exist\n";
+			return;
+		}
 
 		foreach ($table as $row) {
 			$body['userid'] = $this->getActualUsername($row['username']);
@@ -420,21 +424,17 @@ trait Provisioning {
 			\array_push($bodies, $body);
 
 			// Create a OCS request for creating the user. The request is not sent to the server yet.
-			if ($methodLdap === "true") {
-				echo "creating LDAP users is not implemented, so assume they exist\n";
-			} else {
-				$request = OcsApiHelper::createOcsRequest(
-					$this->getBaseUrl(),
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					'POST',
-					"/cloud/users",
-					$body,
-					$client
-				);
-				// Add the request to the $requests array so that they can be sent in parallel.
-				\array_push($requests, $request);
-			}
+			$request = OcsApiHelper::createOcsRequest(
+				$this->getBaseUrl(),
+				$this->getAdminUsername(),
+				$this->getAdminPassword(),
+				'POST',
+				"/cloud/users",
+				$body,
+				$client
+			);
+			// Add the request to the $requests array so that they can be sent in parallel.
+			\array_push($requests, $request);
 		}
 
 		$results = HttpRequestHelper::sendBatchRequest($requests, $client);
@@ -458,7 +458,7 @@ trait Provisioning {
 			}
 		}
 		// Edit the users in parallel to make the process faster.
-		if (\count($editData) > 0 and !$methodLdap === "true") {
+		if (\count($editData) > 0) {
 			$results = UserHelper::editUserBatch(
 				$this->getBaseUrl(),
 				$editData,
@@ -471,7 +471,7 @@ trait Provisioning {
 		}
 
 		// If the users need to be initialized then initialize them in parallel.
-		if ($initialize and !$methodLdap === "true") {
+		if ($initialize) {
 			$this->initializeUserBatch($users);
 		}
 	}
