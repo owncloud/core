@@ -22,13 +22,24 @@ Feature: browse directly to details tab
     And the "sharing" details panel should be visible
     And the share-with field should be visible in the details panel
     Examples:
-      | file                                 | folder        | comment                     |
-      | block-aligned.txt                    | /             | one of the first files      |
-      | block-aligned.txt                    | simple-folder | one of the first files      |
-      | lorem.txt                            | /             | a file somewhere in between |
-      | lorem.txt                            | simple-folder | a file somewhere in between |
-      | zzzz-must-be-last-file-in-folder.txt | /             | last file                   |
-      | zzzz-must-be-last-file-in-folder.txt | simple-folder | last file                   |
+      | file              | folder        | comment                     |
+      | block-aligned.txt | /             | one of the first files      |
+      | block-aligned.txt | simple-folder | one of the first files      |
+      | lorem.txt         | /             | a file somewhere in between |
+      | lorem.txt         | simple-folder | a file somewhere in between |
+
+  #merge this tests into previous scenario when bug is fixed
+  @smokeTest
+  @issue-35200
+  Scenario Outline: Browse directly to the sharing details of a file
+    When the user tries to browse directly to display the "sharing" details of file "<file>" in folder "<folder>"
+    #Then the thumbnail should be visible in the details panel
+    Then the "sharing" details panel should be visible
+    #And the share-with field should be visible in the details panel
+    Examples:
+      | file                                 | folder        | comment   |
+      | zzzz-must-be-last-file-in-folder.txt | /             | last file |
+      | zzzz-must-be-last-file-in-folder.txt | simple-folder | last file |
 
   @comments-app-required
   Scenario Outline: Browse directly to the comments details of a file
@@ -36,13 +47,23 @@ Feature: browse directly to details tab
     Then the thumbnail should be visible in the details panel
     And the "comments" details panel should be visible
     Examples:
-      | file                                 | folder        | comment                     |
-      | block-aligned.txt                    | /             | one of the first files      |
-      | block-aligned.txt                    | simple-folder | one of the first files      |
-      | lorem.txt                            | /             | a file somewhere in between |
-      | lorem.txt                            | simple-folder | a file somewhere in between |
-      | zzzz-must-be-last-file-in-folder.txt | /             | last file                   |
-      | zzzz-must-be-last-file-in-folder.txt | simple-folder | last file                   |
+      | file              | folder        | comment                     |
+      | block-aligned.txt | /             | one of the first files      |
+      | block-aligned.txt | simple-folder | one of the first files      |
+      | lorem.txt         | /             | a file somewhere in between |
+      | lorem.txt         | simple-folder | a file somewhere in between |
+
+  #merge this tests into previous scenario when bug is fixed
+  @issue-35200
+  @comments-app-required
+  Scenario Outline: Browse directly to the comments details of a file
+    When the user tries to browse directly to display the "comments" details of file "<file>" in folder "<folder>"
+    #Then the thumbnail should be visible in the details panel
+    Then the "comments" details panel should be visible
+    Examples:
+      | file                                 | folder        | comment   |
+      | zzzz-must-be-last-file-in-folder.txt | /             | last file |
+      | zzzz-must-be-last-file-in-folder.txt | simple-folder | last file |
 
   @files_versions-app-required
   Scenario Outline: Browse directly to the versions details of a file
@@ -50,10 +71,20 @@ Feature: browse directly to details tab
     Then the thumbnail should be visible in the details panel
     And the "versions" details panel should be visible
     Examples:
-      | file                                 | folder        | comment                     |
-      | block-aligned.txt                    | /             | one of the first files      |
-      | block-aligned.txt                    | simple-folder | one of the first files      |
-      | lorem.txt                            | /             | a file somewhere in between |
-      | lorem.txt                            | simple-folder | a file somewhere in between |
-      | zzzz-must-be-last-file-in-folder.txt | /             | last file                   |
-      | zzzz-must-be-last-file-in-folder.txt | simple-folder | last file                   |
+      | file              | folder        | comment                     |
+      | block-aligned.txt | /             | one of the first files      |
+      | block-aligned.txt | simple-folder | one of the first files      |
+      | lorem.txt         | /             | a file somewhere in between |
+      | lorem.txt         | simple-folder | a file somewhere in between |
+
+  #merge this tests into previous scenario when bug is fixed
+  @issue-35200
+  @files_versions-app-required
+  Scenario Outline: Browse directly to the versions details of a file
+    When the user tries to browse directly to display the "versions" details of file "<file>" in folder "<folder>"
+    #Then the thumbnail should be visible in the details panel
+    Then the "versions" details panel should be visible
+    Examples:
+      | file                                 | folder        | comment   |
+      | zzzz-must-be-last-file-in-folder.txt | /             | last file |
+      | zzzz-must-be-last-file-in-folder.txt | simple-folder | last file |
