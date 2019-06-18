@@ -85,6 +85,11 @@ class LostControllerTest extends TestCase {
 			->method('getDisplayName')
 			->willReturn('Existing User Name');
 
+		$this->existingUser
+			->expects($this->any())
+			->method('getUID')
+			->willReturn('ExistingUser');
+
 		$this->config = $this->getMockBuilder('\OCP\IConfig')
 			->disableOriginalConstructor()->getMock();
 		$this->l10n = $this->getMockBuilder('\OCP\IL10N')
@@ -295,7 +300,7 @@ class LostControllerTest extends TestCase {
 			->with($user)
 			->will($this->returnValue(true));
 		$this->userManager
-			->expects($this->once())
+			->expects($this->exactly(2))
 			->method('get')
 			->with($user)
 			->will($this->returnValue($this->existingUser));
@@ -317,6 +322,130 @@ class LostControllerTest extends TestCase {
 			'status' => 'success'
 		];
 		$response = $this->lostController->email($user);
+		$this->assertSame($expectedResponse, $response);
+	}
+
+	public function testExceptionDuringUserLookup() {
+		$user = 'ExistingUser';
+		$this->userManager
+			->expects($this->once())
+			->method('get')
+			->with($user)
+			->willThrowException(new \Exception("User not found"));
+		$expectedResponse = [
+			'status' => 'success'
+		];
+		$response = $this->lostController->email($user);
+		$this->assertSame($expectedResponse, $response);
+	}
+
+	public function testEmailUsedForLoginSuccessful() {
+		$this->config
+			->expects($this->once())
+			->method('getUserValue')
+			->with('ExistingUser', 'owncloud', 'lostpassword')
+			->will($this->returnValue('12000:AVerySecretToken'));
+		$this->timeFactory
+			->expects($this->any())
+			->method('getTime')
+			->willReturnOnConsecutiveCalls(12301, 12348);
+		$this->secureRandom
+			->expects($this->once())
+			->method('generate')
+			->with('21')
+			->will($this->returnValue('ThisIsMaybeANotSoSecretToken!'));
+		$this->userManager
+			->expects($this->once())
+			->method('userExists')
+			->with('ExistingUser')
+			->will($this->returnValue(true));
+		$this->userManager
+			->expects($this->any())
+			->method('get')
+			->willReturnMap(
+				[
+					['test@example.com', null],
+					['ExistingUser', $this->existingUser]
+				]
+			);
+		$this->userManager
+			->expects($this->once())
+			->method('getByEmail')
+			->with('test@example.com')
+			->willReturn([$this->existingUser]);
+
+		$this->config
+			->expects($this->once())
+			->method('setUserValue')
+			->with('ExistingUser', 'owncloud', 'lostpassword', '12348:ThisIsMaybeANotSoSecretToken!');
+		$this->urlGenerator
+			->expects($this->once())
+			->method('linkToRouteAbsolute')
+			->with('core.lost.resetform', ['userId' => 'ExistingUser', 'token' => 'ThisIsMaybeANotSoSecretToken!'])
+			->will($this->returnValue('https://ownCloud.com/index.php/lostpassword/'));
+		$message = $this->getMockBuilder('\OC\Mail\Message')
+			->disableOriginalConstructor()->getMock();
+		$message
+			->expects($this->at(0))
+			->method('setTo')
+			->with(['test@example.com' => 'Existing User Name']);
+		$message
+			->expects($this->at(1))
+			->method('setSubject')
+			->with(' password reset');
+		$message
+			->expects($this->at(2))
+			->method('setPlainBody')
+			->with($this->stringContains('Use the following link to reset your password: https://ownCloud.com/index.php/lostpassword/'));
+		$message
+			->expects($this->at(3))
+			->method('setHtmlBody')
+			->with($this->stringContains('Use the following link to reset your password: <a href="https://ownCloud.com/index.php/lostpassword/">https://ownCloud.com/index.php/lostpassword/</a>'));
+		$message
+			->expects($this->at(4))
+			->method('setFrom')
+			->with(['lostpassword-noreply@localhost' => null]);
+		$this->mailer
+			->expects($this->at(0))
+			->method('createMessage')
+			->will($this->returnValue($message));
+		$this->mailer
+			->expects($this->at(1))
+			->method('send')
+			->with($message);
+
+		$response = $this->lostController->email('test@example.com');
+		$expectedResponse = ['status' => 'success'];
+		$this->assertSame($expectedResponse, $response);
+	}
+
+	public function testEmailUsedForLoginUnsuccessful() {
+		$nonExistingUser = 'test2@example,com';
+		$this->userManager
+			->expects($this->once())
+			->method('get')
+			->with('test2@example,com')
+			->willReturn(null);
+		$this->userManager
+			->expects($this->any())
+			->method('getByEmail')
+			->with($nonExistingUser)
+			->willReturn([]);
+		$this->userManager
+			->expects($this->once())
+			->method('userExists')
+			->with($nonExistingUser)
+			->willReturn(false);
+		$this->logger->expects($this->any())
+			->method('error')
+			->with('Could not send reset email because User does not exist. User: {user}');
+
+		// With a non existing user
+		$response = $this->lostController->email($nonExistingUser);
+		$expectedResponse = [
+			'status' => 'success'
+		];
+
 		$this->assertSame($expectedResponse, $response);
 	}
 
