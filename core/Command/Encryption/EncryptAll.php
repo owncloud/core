@@ -30,6 +30,7 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Input\InputOption;
 
 class EncryptAll extends Command {
 
@@ -99,13 +100,19 @@ class EncryptAll extends Command {
 			'This will encrypt all files for all users. '
 			. 'Please make sure that no user access his files during this process!'
 		);
+		$this->addOption(
+			'yes',
+			'y',
+			InputOption::VALUE_NONE,
+			'Answer yes to all questions'
+		);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		if ($this->encryptionManager->isEnabled() === false) {
 			throw new \Exception('Server side encryption is not enabled');
 		}
-
+		$yes = $input->getOption('yes');
 		$masterKeyEnabled = $this->config->getAppValue('encryption', 'useMasterKey', '');
 		$userKeyEnabled = $this->config->getAppValue('encryption', 'userSpecificKey', '');
 		if (($masterKeyEnabled === '') && ($userKeyEnabled === '')) {
@@ -122,7 +129,7 @@ class EncryptAll extends Command {
 		$output->writeln('Note: The encryption module you use determines which files get encrypted.');
 		$output->writeln('');
 		$question = new ConfirmationQuestion('Do you really want to continue? (y/n) ', false);
-		if ($this->questionHelper->ask($input, $output, $question)) {
+		if ($yes || $this->questionHelper->ask($input, $output, $question)) {
 			$this->forceSingleUserAndTrashbin();
 
 			try {
