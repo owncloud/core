@@ -3083,7 +3083,7 @@ trait Provisioning {
 	 *
 	 * @return string
 	 */
-	public function popSkeletonDirectoryConfig($baseUrl) {
+	public function popSkeletonDirectoryConfig($baseUrl = null) {
 		$this->runOcc(
 			["config:system:get skeletondirectory"],
 			null, null, $baseUrl
