@@ -359,6 +359,38 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 404              |
 
+  @issue-enterprise-3364
+  Scenario Outline: increasing permissions of a public link from a sub-folder of a share with share+read only permissions is not allowed
+    Given using OCS API version "<ocs_api_version>"
+    And user "user0" has created folder "/test"
+    And user "user0" has created folder "/test/sub"
+    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user1" has created a public link share with settings
+      | path         | /test/sub |
+      | permissions  | 1         |
+      | publicUpload | false     |
+    And publicly uploading a file should not work
+    When user "user1" updates the last share using the sharing API with
+      | permissions | 15 |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    #Then the OCS status code should be "404"
+    #And the HTTP status code should be "<http_status_code>"
+    And publicly uploading a file should work
+    #And publicly uploading a file should not work
+    # Delete the following 4 steps when fixing the issue:
+    And the public should be able to upload file "file.txt" with content "some text" to the last public shared folder
+    And as "user0" file "/test/sub/file.txt" should exist
+    And as "user1" file "/test/sub/file.txt" should exist
+    And the content of file "/test/sub/file.txt" for user "user0" should be "some text"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+      #| ocs_api_version | http_status_code |
+      #| 1               | 200              |
+      #| 2               | 404              |
+
   Scenario Outline: resharing a file is not allowed when allow resharing has been disabled
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
