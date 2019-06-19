@@ -162,13 +162,20 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$principals = $this->principalBackend->getGroupMembership($principalUri, true);
 		$principals[]= $principalUri;
 
+		$addressBooksIds[] = -1;
+		foreach ($addressBooks as $book) {
+			$addressBooksIds[] = $book['id'];
+		}
+
 		$query = $this->db->getQueryBuilder();
 		$result = $query->select(['a.id', 'a.uri', 'a.displayname', 'a.principaluri', 'a.description', 'a.synctoken', 's.access'])
 			->from('dav_shares', 's')
 			->join('s', 'addressbooks', 'a', $query->expr()->eq('s.resourceid', 'a.id'))
 			->where($query->expr()->in('s.principaluri', $query->createParameter('principaluri')))
+			->andWhere($query->expr()->notIn('a.id', $query->createParameter('ownaddressbookids')))
 			->andWhere($query->expr()->eq('s.type', $query->createParameter('type')))
 			->setParameter('type', 'addressbook')
+			->setParameter('ownaddressbookids', $addressBooksIds, IQueryBuilder::PARAM_INT_ARRAY)
 			->setParameter('principaluri', $principals, IQueryBuilder::PARAM_STR_ARRAY)
 			->execute();
 
