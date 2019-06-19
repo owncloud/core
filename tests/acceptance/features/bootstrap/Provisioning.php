@@ -383,6 +383,12 @@ trait Provisioning {
 		// We add all the request objects in an array so that we can send all the requests in parallel.
 		$requests = [];
 		$client = new Client();
+
+		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			echo "creating LDAP users is not implemented, so assume they exist\n";
+			return;
+		}
+
 		foreach ($table as $row) {
 			$body['userid'] = $this->getActualUsername($row['username']);
 
@@ -3085,7 +3091,7 @@ trait Provisioning {
 	 *
 	 * @return string
 	 */
-	public function popSkeletonDirectoryConfig($baseUrl) {
+	public function popSkeletonDirectoryConfig($baseUrl = null) {
 		$this->runOcc(
 			["config:system:get skeletondirectory"],
 			null, null, $baseUrl

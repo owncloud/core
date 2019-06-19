@@ -73,14 +73,18 @@ Feature: edit users
       | email | brand-new-user@example.com |
     And the email address of user "brand-new-user" should be "brand-new-user@example.com"
 
-  Scenario: a normal user should be able to change their display name
+  Scenario Outline: a normal user should be able to change their display name
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    When user "brand-new-user" changes the display name of user "brand-new-user" to "Alan Border" using the provisioning API
+    When user "brand-new-user" changes the display name of user "brand-new-user" to "<display-name>" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the attributes of user "brand-new-user" returned by the API should include
-      | displayname | Alan Border |
-    And the display name of user "brand-new-user" should be "Alan Border"
+      | displayname | <display-name> |
+    And the display name of user "brand-new-user" should be "<display-name>"
+    Examples:
+      | display-name   |
+      | Alan Border    |
+      | Phil Cyclist 🚴 |
 
   Scenario: a normal user should not be able to change their quota
     Given user "brand-new-user" has been created with default attributes and skeleton files
