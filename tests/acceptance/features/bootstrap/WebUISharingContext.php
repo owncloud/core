@@ -32,6 +32,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\EmailHelper;
 use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
+use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
 use GuzzleHttp\Message\ResponseInterface;
 use Page\GeneralErrorPage;
 use Page\SharedWithOthersPage;
@@ -100,7 +101,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $oldMinCharactersForAutocomplete = null;
 	private $oldFedSharingFallbackSetting = null;
 
+	/**
+	 * @var PublicLinkTab
+	 */
 	private $publicShareTab;
+
 	/**
 	 *
 	 * @var EditPublicLinkPopup
@@ -432,6 +437,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
 		$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+
+		$this->featureContext->resetLastShareData();
 	}
 
 	/**
@@ -512,6 +519,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserShouldSeeAnErrorMessageOnThPublicLinkPopupSaying($message) {
+		// update public-sharing popup, as it might not have been set previously.
+		$this->publicSharingPopup = $this->publicShareTab->updateSharingPopup($this->getSession());
 		$errormessage = $this->publicSharingPopup->getErrorMessage();
 		PHPUnit\Framework\Assert::assertEquals($message, $errormessage);
 	}
