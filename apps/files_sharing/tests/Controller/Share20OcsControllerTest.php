@@ -40,6 +40,7 @@ use OCP\IUser;
 use OCP\IGroup;
 use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use OCP\Share;
 use Symfony\Component\EventDispatcher\EventDispatcher;
