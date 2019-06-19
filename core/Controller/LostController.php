@@ -36,6 +36,7 @@ use \OCP\IURLGenerator;
 use \OCP\IRequest;
 use \OCP\IL10N;
 use \OCP\IConfig;
+use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Mail\IMailer;
 use OCP\Security\ISecureRandom;
@@ -203,6 +204,22 @@ class LostController extends Controller {
 	 * @return array
 	 */
 	public function email($user) {
+		try {
+			$userObject = $this->userManager->get($user);
+			if ($userObject === null) {
+				$users = $this->userManager->getByEmail($user);
+				// we only allow login by email if unique
+				if (\count($users) === 1) {
+					$user = $users[0]->getUID();
+				}
+			}
+			if ($userObject instanceof IUser) {
+				$user = $userObject->getUID();
+			}
+		} catch (\Exception $e) {
+			// Do not disclose any information during User lookup
+			return $this->success();
+		}
 		// FIXME: use HTTP error codes
 		try {
 			list($link, $token) = $this->generateTokenAndLink($user);
