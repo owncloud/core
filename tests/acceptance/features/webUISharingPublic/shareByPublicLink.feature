@@ -614,3 +614,33 @@ Feature: Share by public link
     And the user gets the info of the last share using the sharing API
     And the fields of the last response should include
       | expiration   | |
+
+  Scenario: user creates a new public link using webUI without setting expiration date when default expire date is set but not enforced
+    Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date" of app "core" has been set to "no"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    And user "user1" has logged in using the webUI
+    When the user creates a new public link for file "lorem.txt" using the webUI with
+      | expiration | |
+    And user "user1" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | expiration   | |
+
+  Scenario: user creates a new public link using webUI removing expiration date when default expire date is set and enforced
+    Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    And user "user1" has logged in using the webUI
+    When the user tries to create a new public link for file "lorem.txt" using the webUI
+      | expiration | |
+    Then the user should see an error message on the public link popup saying "Expiration date is required"
+
+  Scenario: user creates a new public link using webUI when default expire date is set and enforced
+    Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
+    And user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    And user "user1" has logged in using the webUI
+    When the user creates a new public link for file "lorem.txt" using the webUI
+    And user "user1" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | expiration | +7 days |
