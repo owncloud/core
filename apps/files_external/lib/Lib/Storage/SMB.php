@@ -276,10 +276,15 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			} else {
 				$result = false;
 			}
+		} catch (ConnectException $e) {
+			$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+			$this->leave(__FUNCTION__, $ex);
+			throw $ex;
 		} catch (Exception $e) {
 			$this->swallow(__FUNCTION__, $e);
 			// Icewind\SMB\Exception\Exception, not a plain exception
 			if ($e->getCode() === 22) {
+				// some servers seem to return an error code 22 instead of the expected AlreadyExistException
 				if ($this->unlink($target)) {
 					$result = $this->share->rename($this->root . $source, $this->root . $target);
 					if ($result) {
@@ -289,13 +294,8 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 				} else {
 					$result = false;
 				}
-			} elseif ($e->getCode() === 16) {
-				$this->swallow(__FUNCTION__, $e);
-				$result = false;
 			} else {
-				$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
-				$this->leave(__FUNCTION__, $ex);
-				throw $ex;
+				$result = false;
 			}
 		} catch (\Exception $e) {
 			$this->swallow(__FUNCTION__, $e);
