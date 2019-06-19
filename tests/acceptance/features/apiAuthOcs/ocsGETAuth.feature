@@ -4,37 +4,31 @@ Feature: auth
     Given user "user0" has been created with default attributes and skeleton files
 
   @issue-32068
-  Scenario Outline: using OCS anonymously
-    When a user requests "<endpoint>" with "GET" and no authentication
-    Then the OCS status code should be "<ocs-code>"
-    And the HTTP status code should be "<http-code>"
-    Examples:
-      |endpoint                                                    | ocs-code | http-code |
-      |/ocs/v1.php/apps/files_external/api/v1/mounts               | 997      | 401       |
-      |/ocs/v2.php/apps/files_external/api/v1/mounts               | 997      | 401       |
-      |/ocs/v1.php/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
-      |/ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
-      |/ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
-      |/ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
-      |/ocs/v1.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
-      |/ocs/v2.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
-      |/ocs/v1.php/cloud/apps                                      | 997      | 401       |
-      |/ocs/v2.php/cloud/apps                                      | 997      | 401       |
-      |/ocs/v1.php/cloud/groups                                    | 997      | 401       |
-      |/ocs/v2.php/cloud/groups                                    | 997      | 401       |
-      |/ocs/v1.php/cloud/users                                     | 997      | 401       |
-      |/ocs/v2.php/cloud/users                                     | 997      | 401       |
-      |/ocs/v1.php/config                                          | 100      | 200       |
-      |/ocs/v2.php/config                                          | 200      | 200       |
-      |/ocs/v1.php/privatedata/getattribute                        | 997      | 401       |
-      |/ocs/v2.php/privatedata/getattribute                        | 997      | 401       |
+  Scenario: using OCS anonymously
+    When a user requests these endpoints with "GET" and no authentication then the status codes should be as listed
+      | endpoint                                                    | ocs-code | http-code |
+      | /ocs/v1.php/apps/files_external/api/v1/mounts               | 997      | 401       |
+      | /ocs/v2.php/apps/files_external/api/v1/mounts               | 997      | 401       |
+      | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
+      | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      | /ocs/v1.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      | /ocs/v1.php/cloud/apps                                      | 997      | 401       |
+      | /ocs/v2.php/cloud/apps                                      | 997      | 401       |
+      | /ocs/v1.php/cloud/groups                                    | 997      | 401       |
+      | /ocs/v2.php/cloud/groups                                    | 997      | 401       |
+      | /ocs/v1.php/cloud/users                                     | 997      | 401       |
+      | /ocs/v2.php/cloud/users                                     | 997      | 401       |
+      | /ocs/v1.php/config                                          | 100      | 200       |
+      | /ocs/v2.php/config                                          | 200      | 200       |
+      | /ocs/v1.php/privatedata/getattribute                        | 997      | 401       |
+      | /ocs/v2.php/privatedata/getattribute                        | 997      | 401       |
 
   @issue-32068
-  Scenario Outline: using OCS with non-admin basic auth
-    When user "user0" requests "<endpoint>" with "GET" using basic auth
-    Then the OCS status code should be "<ocs-code>"
-    And the HTTP status code should be "<http-code>"
-    Examples:
+  Scenario: using OCS with non-admin basic auth
+    When the user "user0" requests these endpoints with "GET" with basic auth then the status codes should be as listed
       |endpoint                                                    | ocs-code | http-code |
       |/ocs/v1.php/apps/files_external/api/v1/mounts               | 100      | 200       |
       |/ocs/v2.php/apps/files_external/api/v1/mounts               | 200      | 200       |
@@ -56,37 +50,30 @@ Feature: auth
       |/ocs/v2.php/privatedata/getattribute                        | 200      | 200       |
 
   @issue-32068
-  Scenario Outline: using OCS as normal user with wrong password
-    Given using OCS API version "<ocs_api_version>"
-    When user "user0" sends HTTP method "GET" to OCS API endpoint "<endpoint>" using password "invalid"
-    Then the OCS status code should be "<ocs-code>"
-    And the HTTP status code should be "<http-code>"
-    Examples:
-      | ocs_api_version |endpoint                                         | ocs-code | http-code |
-      | 1               |/apps/files_external/api/v1/mounts               | 997      | 401       |
-      | 2               |/apps/files_external/api/v1/mounts               | 997      | 401       |
-      | 1               |/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
-      | 2               |/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
-      | 1               |/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
-      | 2               |/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
-      | 1               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
-      | 2               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
-      | 1               |/cloud/apps                                      | 997      | 401       |
-      | 2               |/cloud/apps                                      | 997      | 401       |
-      | 1               |/cloud/groups                                    | 997      | 401       |
-      | 2               |/cloud/groups                                    | 997      | 401       |
-      | 1               |/cloud/users                                     | 997      | 401       |
-      | 2               |/cloud/users                                     | 997      | 401       |
-      | 1               |/config                                          | 100      | 200       |
-      | 2               |/config                                          | 200      | 200       |
-      | 1               |/privatedata/getattribute                        | 997      | 401       |
-      | 2               |/privatedata/getattribute                        | 997      | 401       |
+  Scenario: using OCS as normal user with wrong password
+    When user "user0" requests these endpoints with "GET" using password "invalid" then the status codes should be as listed
+      | endpoint                                                    | ocs-code | http-code |
+      | /ocs/v1.php/apps/files_external/api/v1/mounts               | 997      | 401       |
+      | /ocs/v2.php/apps/files_external/api/v1/mounts               | 997      | 401       |
+      | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
+      | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      | /ocs/v1.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      | /ocs/v1.php/cloud/apps                                      | 997      | 401       |
+      | /ocs/v2.php/cloud/apps                                      | 997      | 401       |
+      | /ocs/v1.php/cloud/groups                                    | 997      | 401       |
+      | /ocs/v2.php/cloud/groups                                    | 997      | 401       |
+      | /ocs/v1.php/cloud/users                                     | 997      | 401       |
+      | /ocs/v2.php/cloud/users                                     | 997      | 401       |
+      | /ocs/v1.php/config                                          | 100      | 200       |
+      | /ocs/v2.php/config                                          | 200      | 200       |
+      | /ocs/v1.php/privatedata/getattribute                        | 997      | 401       |
+      | /ocs/v2.php/privatedata/getattribute                        | 997      | 401       |
 
-  Scenario Outline: using OCS with admin basic auth
-    When the administrator requests "<endpoint>" with "GET" using basic auth
-    Then the OCS status code should be "<ocs-code>"
-    And the HTTP status code should be "<http-code>"
-    Examples:
+  Scenario:using OCS with admin basic auth
+    When the administrator requests these endpoint with "GET" then the status codes should be as listed
       |endpoint                                                    | ocs-code | http-code |
       |/ocs/v1.php/cloud/apps                                      | 100      | 200       |
       |/ocs/v2.php/cloud/apps                                      | 200      | 200       |
@@ -95,36 +82,31 @@ Feature: auth
       |/ocs/v1.php/cloud/users                                     | 100      | 200       |
       |/ocs/v2.php/cloud/users                                     | 200      | 200       |
 
-  Scenario Outline: using OCS as admin user with wrong password
-    Given using OCS API version "<ocs_api_version>"
-    When the administrator sends HTTP method "GET" to OCS API endpoint "<endpoint>" using password "invalid"
-    Then the OCS status code should be "<ocs-code>"
-    And the HTTP status code should be "<http-code>"
-    Examples:
-      | ocs_api_version |endpoint                                         | ocs-code | http-code |
-      | 1               |/apps/files_external/api/v1/mounts               | 997      | 401       |
-      | 2               |/apps/files_external/api/v1/mounts               | 997      | 401       |
-      | 1               |/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
-      | 2               |/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
-      | 1               |/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
-      | 2               |/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
-      | 1               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
-      | 2               |/apps/files_sharing/api/v1/shares                | 997      | 401       |
-      | 1               |/cloud/apps                                      | 997      | 401       |
-      | 2               |/cloud/apps                                      | 997      | 401       |
-      | 1               |/cloud/groups                                    | 997      | 401       |
-      | 2               |/cloud/groups                                    | 997      | 401       |
-      | 1               |/cloud/users                                     | 997      | 401       |
-      | 2               |/cloud/users                                     | 997      | 401       |
-      | 1               |/privatedata/getattribute                        | 997      | 401       |
-      | 2               |/privatedata/getattribute                        | 997      | 401       |
+  Scenario: using OCS as admin user with wrong password
+    When the administrator requests these endpoints with "GET" using password "invalid" then the status codes should be as listed
+      | endpoint                                                    | ocs-code | http-code |
+      | /ocs/v1.php/apps/files_external/api/v1/mounts               | 997      | 401       |
+      | /ocs/v2.php/apps/files_external/api/v1/mounts               | 997      | 401       |
+      | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
+      | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      | /ocs/v1.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      | /ocs/v2.php/apps/files_sharing/api/v1/shares                | 997      | 401       |
+      | /ocs/v1.php/cloud/apps                                      | 997      | 401       |
+      | /ocs/v2.php/cloud/apps                                      | 997      | 401       |
+      | /ocs/v1.php/cloud/groups                                    | 997      | 401       |
+      | /ocs/v2.php/cloud/groups                                    | 997      | 401       |
+      | /ocs/v1.php/cloud/users                                     | 997      | 401       |
+      | /ocs/v2.php/cloud/users                                     | 997      | 401       |
+      | /ocs/v1.php/config                                          | 100      | 200       |
+      | /ocs/v2.php/config                                          | 200      | 200       |
+      | /ocs/v1.php/privatedata/getattribute                        | 997      | 401       |
+      | /ocs/v2.php/privatedata/getattribute                        | 997      | 401       |
 
-  Scenario Outline: using OCS with token auth of a normal user
+  Scenario: using OCS with token auth of a normal user
     Given a new client token for "user0" has been generated
-    When user "user0" requests "<endpoint>" with "GET" using basic token auth
-    Then the OCS status code should be "<ocs-code>"
-    And the HTTP status code should be "<http-code>"
-    Examples:
+    When user "user0" requests these endpoints with "GET" using basic token auth then the status codes should be as listed
       |endpoint                                                    | ocs-code | http-code |
       |/ocs/v1.php/apps/files_external/api/v1/mounts               | 100      | 200       |
       |/ocs/v2.php/apps/files_external/api/v1/mounts               | 200      | 200       |
@@ -145,39 +127,33 @@ Feature: auth
       |/ocs/v1.php/privatedata/getattribute                        | 100      | 200       |
       |/ocs/v2.php/privatedata/getattribute                        | 200      | 200       |
 
-  Scenario Outline: using OCS with browser session of a normal user
-    Given a new browser session for "user0" has been started
-    When the user requests "<endpoint>" with "GET" using the browser session
-    Then the OCS status code should be "<ocs-code>"
-    And the HTTP status code should be "<http-code>"
-    Examples:
-      |endpoint                                                    | ocs-code | http-code |
-      |/ocs/v1.php/apps/files_external/api/v1/mounts               | 100      | 200       |
-      |/ocs/v2.php/apps/files_external/api/v1/mounts               | 200      | 200       |
-      |/ocs/v1.php/apps/files_sharing/api/v1/remote_shares         | 100      | 200       |
-      |/ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 200      | 200       |
-      |/ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending | 100      | 200       |
-      |/ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 200      | 200       |
-      |/ocs/v1.php/apps/files_sharing/api/v1/shares                | 100      | 200       |
-      |/ocs/v2.php/apps/files_sharing/api/v1/shares                | 200      | 200       |
-      |/ocs/v1.php/cloud/apps                                      | 997      | 401       |
-      |/ocs/v2.php/cloud/apps                                      | 997      | 401       |
-      |/ocs/v1.php/cloud/groups                                    | 997      | 401       |
-      |/ocs/v2.php/cloud/groups                                    | 997      | 401       |
-      |/ocs/v1.php/cloud/users                                     | 997      | 401       |
-      |/ocs/v2.php/cloud/users                                     | 997      | 401       |
-      |/ocs/v1.php/config                                          | 100      | 200       |
-      |/ocs/v2.php/config                                          | 200      | 200       |
-      |/ocs/v1.php/privatedata/getattribute                        | 100      | 200       |
-      |/ocs/v2.php/privatedata/getattribute                        | 200      | 200       |
+    Scenario: using OCS with browser session of normal user
+      Given a new browser session for "user0" has been started
+      When the user requests these endpoints with "GET" using a new browser session then the status codes should be as listed
+        |endpoint                                                    | ocs-code | http-code |
+        |/ocs/v1.php/apps/files_external/api/v1/mounts               | 100      | 200       |
+        |/ocs/v2.php/apps/files_external/api/v1/mounts               | 200      | 200       |
+        |/ocs/v1.php/apps/files_sharing/api/v1/remote_shares         | 100      | 200       |
+        |/ocs/v2.php/apps/files_sharing/api/v1/remote_shares         | 200      | 200       |
+        |/ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending | 100      | 200       |
+        |/ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending | 200      | 200       |
+        |/ocs/v1.php/apps/files_sharing/api/v1/shares                | 100      | 200       |
+        |/ocs/v2.php/apps/files_sharing/api/v1/shares                | 200      | 200       |
+        |/ocs/v1.php/cloud/apps                                      | 997      | 401       |
+        |/ocs/v2.php/cloud/apps                                      | 997      | 401       |
+        |/ocs/v1.php/cloud/groups                                    | 997      | 401       |
+        |/ocs/v2.php/cloud/groups                                    | 997      | 401       |
+        |/ocs/v1.php/cloud/users                                     | 997      | 401       |
+        |/ocs/v2.php/cloud/users                                     | 997      | 401       |
+        |/ocs/v1.php/config                                          | 100      | 200       |
+        |/ocs/v2.php/config                                          | 200      | 200       |
+        |/ocs/v1.php/privatedata/getattribute                        | 100      | 200       |
+        |/ocs/v2.php/privatedata/getattribute                        | 200      | 200       |
 
-  Scenario Outline: using OCS with an app password of a normal user
+  Scenario: using OCS with an app password of a normal user
     Given a new browser session for "user0" has been started
     And the user has generated a new app password named "my-client"
-    When the user requests "<endpoint>" with "GET" using the generated app password
-    Then the OCS status code should be "<ocs-code>"
-    And the HTTP status code should be "<http-code>"
-    Examples:
+    When the user requests these endpoints with "GET" using the generated app password then the status codes should be as listed
       |endpoint                                                    | ocs-code | http-code |
       |/ocs/v1.php/apps/files_external/api/v1/mounts               | 100      | 200       |
       |/ocs/v2.php/apps/files_external/api/v1/mounts               | 200      | 200       |
