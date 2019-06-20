@@ -24,6 +24,7 @@ OC.L10N.register(
     "Share with me via ownCloud" : "Deila með mér í gegnum ownCloud",
     "HTML Code:" : "HTML-kóði:",
     "Add to your ownCloud" : "Bæta í þitt eigið ownCloud",
-    "Automatically accept remote shares from trusted servers" : "Samþykkja sjálfkrafa fjartengdar sameignir af treystum þjónum"
+    "Automatically accept remote shares from trusted servers" : "Samþykkja sjálfkrafa fjartengdar sameignir af treystum þjónum",
+    "Nothing to configure." : "Ekkert til að stilla."
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

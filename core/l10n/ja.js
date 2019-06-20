@@ -371,6 +371,8 @@ OC.L10N.register(
     "federated" : "連携先",
     "{sharee} (federated)" : "{sharee} (連携先)",
     "Static" : "固定",
-    "Personal note from the sender: <br> %s." : "送信者からの個人的なお知らせ: <br>%s"
+    "Personal note from the sender: <br> %s." : "送信者からの個人的なお知らせ: <br>%s",
+    "User" : "ユーザー",
+    "Group" : "グループ"
 },
 "nplurals=1; plural=0;");

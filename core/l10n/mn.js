@@ -17,6 +17,7 @@ OC.L10N.register(
     "Edit" : "Засах",
     "Delete" : "Устгах",
     "Cancel" : "Цуцлах",
-    "Error" : "Алдаа"
+    "Error" : "Алдаа",
+    "Group" : "Грүпп"
 },
 "nplurals=2; plural=(n != 1);");

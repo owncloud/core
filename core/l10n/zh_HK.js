@@ -115,6 +115,8 @@ OC.L10N.register(
     "Reset password" : "重設密碼",
     "Thank you for your patience." : "感謝您的耐心等待.",
     "Two-step verification" : "雙重驗証",
-    "Cancel login" : "取消登入"
+    "Cancel login" : "取消登入",
+    "Group" : "群組",
+    "Imprint" : "版本說明"
 },
 "nplurals=1; plural=0;");

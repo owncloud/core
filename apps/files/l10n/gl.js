@@ -108,6 +108,7 @@ OC.L10N.register(
     "Resource is not locked" : "O recurso non está bloqueado",
     "Changed by %2$s" : "Cambiado por %2$s",
     "Deleted by %2$s" : "Eliminado por %2$s",
-    "Restored by %2$s" : "Restaurado por %2$s"
+    "Restored by %2$s" : "Restaurado por %2$s",
+    "The file {file} already exists" : "O ficheiro {file} xa existe"
 },
 "nplurals=2; plural=(n != 1);");

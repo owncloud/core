@@ -160,6 +160,8 @@ OC.L10N.register(
     "Share to Google+. Opens in a new window." : "Koplietot Google+. Tiks atvērts jaunā pārlūka logā.",
     "Share via email. Opens your mail client." : "Koplietot ar e-pasta ziņu. Tiks atvērts jūsu e-pasta lietotnē.",
     "Owner: {owner}" : "Īpašnieks: {owner}",
-    "If you select both versions, the copied file will have a number added to its name." : "Ja izvēlēsieties saglabāt abas versijas, tad jaunās datnes nosaukumam tiks pievienots numurs."
+    "If you select both versions, the copied file will have a number added to its name." : "Ja izvēlēsieties saglabāt abas versijas, tad jaunās datnes nosaukumam tiks pievienots numurs.",
+    "User" : "Lietotājs",
+    "Group" : "Grupa"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

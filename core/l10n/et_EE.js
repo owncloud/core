@@ -298,6 +298,11 @@ OC.L10N.register(
     "This page will refresh itself when the %s instance is available again." : "Se leht laetakse uuesti, kui %s instantsi on uuesti saadaval.",
     "Copy to clipboard" : "Kopeeri lõikepuhvrisse",
     "Menu" : "Menüü",
-    "Imprint" : "Impressum"
+    "Imprint" : "Impressum",
+    "User" : "Kasutaja",
+    "Group" : "Grupp",
+    "Link name" : "Lingi nimi",
+    "Download / View" : "Laadi alla / Vaata",
+    "Download / View / Upload" : "Laadi alla / Vaata / Laadi üles"
 },
 "nplurals=2; plural=(n != 1);");

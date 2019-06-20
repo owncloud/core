@@ -313,6 +313,7 @@ OC.L10N.register(
     "Please use the command line updater because you have a big instance." : "Per favor usa le actualisator del linea de commando, perque tu ha un grande installation.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Pro adjuta, vide le  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Iste installation de %s es actualmente in modo de mantenentia, lo que pote prender un certe tempore.",
-    "This page will refresh itself when the %s instance is available again." : "Iste pagina se refrescara quando le installation de %s es disponibile de novo."
+    "This page will refresh itself when the %s instance is available again." : "Iste pagina se refrescara quando le installation de %s es disponibile de novo.",
+    "Group" : "Gruppo"
 },
 "nplurals=2; plural=(n != 1);");

@@ -146,6 +146,7 @@ OC.L10N.register(
     "Start update" : "Սկսել թարմացումը",
     "Update needed" : "Թարմացում է հարկավոր",
     "Technical details" : "Տեխնիկական մանրամասներ",
-    "Remote Address: %s" : "Հեռակա հասցե. %s"
+    "Remote Address: %s" : "Հեռակա հասցե. %s",
+    "Group" : "Խումբ"
 },
 "nplurals=2; plural=(n != 1);");

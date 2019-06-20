@@ -348,6 +348,8 @@ OC.L10N.register(
     "Sharing is not allowed" : "Не е дозволено споделување",
     "Personal note from the sender: <br> %s." : "Персонална белешка од испраќачот: <br> %s.",
     "Static" : "Статични",
-    "Confirm Password" : "Потврди лозинка"
+    "Confirm Password" : "Потврди лозинка",
+    "User" : "Корисник",
+    "Group" : "Група"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

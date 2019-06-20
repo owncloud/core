@@ -21,6 +21,9 @@
     "Add to your website" : "Zu Ihrer Website hinzufügen",
     "Share with me via ownCloud" : "Teilen Sie mit mir über ownCloud",
     "HTML Code:" : "HTML-Code:",
-    "Add to your ownCloud" : "Zu Ihrer ownCloud hinzufügen"
+    "Add to your ownCloud" : "Zu Ihrer ownCloud hinzufügen",
+    "Federated Sharing failed: %s" : "Federated-Sharing fehlgeschlagen: %s",
+    "Automatically accept remote shares from trusted servers" : "Freigaben von vertrauenswürdigen Servern automatisch annehmen",
+    "Nothing to configure." : "Nichts zum Konfigurieren vorhanden."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

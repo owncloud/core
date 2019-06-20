@@ -375,6 +375,16 @@ OC.L10N.register(
     "Sharing is not allowed" : "Предоставление доступа не разрешено",
     "Personal note from the sender: <br> %s." : "Личная заметка от отправителя: <br> %s.",
     "Static" : "Статично",
-    "Confirm Password" : "Подтвердите пароль"
+    "Confirm Password" : "Подтвердите пароль",
+    "User" : "Пользователь",
+    "Group" : "Группа",
+    "Recipients can view, download and upload contents." : "Получатели могут просматривать, скачивать и закачивать содержимое.",
+    "Download / View / Edit" : "Скачивание / Просмотр / Правка",
+    "Recipients can view, download and edit contents." : "Получатели могут просматривать, скачиать или править содержимое.",
+    "Can not remove required password" : "Нельзя удалить обязательный пароль",
+    "Share with user {shareWith} has attribute {name} which is no longer available. Please recreate the share!" : "Доступ для пользователя {shareWith} создан с атрибутом {name}, который больше не поддерживается. Пожалуйста, переоткройте доступ!",
+    "Guest" : "Гость",
+    "At {server}" : "На {server}",
+    "Federated" : "Федеративный"
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

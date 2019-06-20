@@ -293,6 +293,8 @@ OC.L10N.register(
     "This page will refresh itself when the %s instance is available again." : "Aquesta pagina se refrescarà d'ela-meteissa quand l'instància %s serà disponibla tornamai.",
     "Copy to clipboard" : "Copiar dins lo quichapapièrs",
     "Menu" : "Menú",
-    "Imprint" : "Mencions"
+    "Imprint" : "Mencions",
+    "User" : "Utilizaire",
+    "Group" : "Grop"
 },
 "nplurals=2; plural=(n > 1);");

@@ -267,6 +267,7 @@ OC.L10N.register(
     "Download logfile (%s)" : "Unduh berkas catatan (%s)",
     "Error creating group: {message}" : "Error membuat grup : {pesan}",
     "Invalid quota value \"{val}\"" : "Quota tidak sesuai \"{val}\"",
-    "Users" : "Pengguna"
+    "Users" : "Pengguna",
+    "%s password changed successfully" : "%s sandi sukses diubah"
 },
 "nplurals=1; plural=0;");

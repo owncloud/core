@@ -249,6 +249,8 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Probeer weer of kontak u stelseladministrateur.",
     "Wrong password. Reset it?" : "Verkeerde wagwoord. Herstel dit?",
     "Wrong password." : "Verkeerde wagwoord.",
-    "Imprint" : "Afdruk"
+    "Imprint" : "Afdruk",
+    "User" : "Gebruiker",
+    "Group" : "Groep"
 },
 "nplurals=2; plural=(n != 1);");

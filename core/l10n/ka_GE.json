@@ -102,6 +102,7 @@
     "New password" : "ახალი პაროლი",
     "Reset password" : "პაროლის შეცვლა",
     "Copy to clipboard" : "კოპირებულია ქლიპბორდში ",
-    "Imprint" : "ბეჭედი"
+    "Imprint" : "ბეჭედი",
+    "User" : "მომხმარებელი"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

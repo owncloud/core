@@ -228,6 +228,7 @@ OC.L10N.register(
     "Share" : "Jaga",
     "Domain" : "Domeen",
     "Add" : "Lisa",
-    "Users" : "Kasutajad"
+    "Users" : "Kasutajad",
+    "Download logfile (%s)" : "Laeb alla logifaili (%s)"
 },
 "nplurals=2; plural=(n != 1);");

@@ -365,6 +365,8 @@ OC.L10N.register(
     "Recipients can view or download contents." : "Ontvangers kunnen de inhoud bekijken of downloaden.",
     "Recipients can view, download, edit, delete and upload contents." : "Ontvangers kunnen de inhoud bekijken, downloaden, bewerken, verwijderen en uploaden.",
     "An error occured while sending email" : "Er trad een fout op bij het versturen van de e-mail",
-    "E-Mail sent" : "E-mail verzonden"
+    "E-Mail sent" : "E-mail verzonden",
+    "User" : "Gebruiker",
+    "Group" : "Groep"
 },
 "nplurals=2; plural=(n != 1);");

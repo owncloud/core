@@ -133,6 +133,9 @@ OC.L10N.register(
     "Couldn't send mail to following recipient(s): %s " : "ไม่สามารถส่งจดหมายไปยังผู้รับต่อไปนี้: %s",
     "Group Sharing Blacklist" : "แชร์กลุ่มบัญชีดำ",
     "Exclude groups from receiving shares" : "ยกเว้นกลุ่มจากการแชร์",
-    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "กลุ่มเหล่านี้จะไม่สามารถแชร์กับสมาชิกของกลุ่มที่ถูกจำกัดไว้ แต่สามารถแชร์กับกลุ่มอื่นๆที่เป็นสมาชิกได้ตามปกติ"
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "กลุ่มเหล่านี้จะไม่สามารถแชร์กับสมาชิกของกลุ่มที่ถูกจำกัดไว้ แต่สามารถแชร์กับกลุ่มอื่นๆที่เป็นสมาชิกได้ตามปกติ",
+    "You unshared %1$s shared by %2$s from self" : "คุณเลิกแชร์ %1$s ที่แชร์โดย %2$s ",
+    "Unshared %1$s from self" : "เลิกแชร์ %1$s ของตัวเอง",
+    "Nothing to configure." : "ไม่มีการกำหนดค่า"
 },
 "nplurals=1; plural=0;");

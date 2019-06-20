@@ -133,6 +133,9 @@ OC.L10N.register(
     "Couldn't send mail to following recipient(s): %s " : "Não foi possível enviar email para o(s) seguinte(s) destinatário(s): %s ",
     "Group Sharing Blacklist" : "Lista negra de Compartilhamento de Grupos",
     "Exclude groups from receiving shares" : "Excluir grupos de receber compartilhamentos",
-    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Esses grupos não estarão disponíveis para compartilhar. Os membros do grupo não estão restritos a iniciar ações e podem receber ações de outros grupos dos quais são membros, como de costume."
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Esses grupos não estarão disponíveis para compartilhar. Os membros do grupo não estão restritos a iniciar ações e podem receber ações de outros grupos dos quais são membros, como de costume.",
+    "You unshared %1$s shared by %2$s from self" : "Você descompartilhou %1$s compartilhado por %2$s de si mesmo",
+    "Unshared %1$s from self" : "Descompartilhou %1$s de sí mesmo",
+    "Nothing to configure." : "Nada para configurar."
 },
 "nplurals=2; plural=(n > 1);");

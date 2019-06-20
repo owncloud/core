@@ -375,6 +375,16 @@ OC.L10N.register(
     "Personal note from the sender: <br> %s." : "Shënim personal nga dërguesi: <br> %s.",
     "Sharing is not allowed" : "Nuk lejohet ndarja me të tjerët",
     "Static" : "Statike",
-    "Confirm Password" : "Ripohoni Fjalëkalimin"
+    "Confirm Password" : "Ripohoni Fjalëkalimin",
+    "User" : "Përdorues",
+    "Group" : "Grup",
+    "Recipients can view, download and upload contents." : "Marrësit mund të shohin, shkarkojnë dhe ngarkojnë lëndë.",
+    "Download / View / Edit" : "Të shkarkojë / Të shohë / Të përpunojë",
+    "Recipients can view, download and edit contents." : "Marrësit mund të shohin, shkarkojnë dhe përpunojnë lëndë.",
+    "Can not remove required password" : "S’mund të heqin fjalëkalim të domosdoshëm",
+    "Share with user {shareWith} has attribute {name} which is no longer available. Please recreate the share!" : "Ndarja me përdorues {shareWith} ka atribut {name} që s’mund të kihet më. Ju lutemi, rikrijoni ndarjen!",
+    "Guest" : "Vizitor",
+    "At {server}" : "Te {server}",
+    "Federated" : "I federuar"
 },
 "nplurals=2; plural=(n != 1);");

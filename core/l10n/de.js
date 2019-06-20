@@ -374,6 +374,17 @@ OC.L10N.register(
     "Privacy Policy" : "Datenschutzerklärung",
     "Sharing is not allowed" : "Teilen nicht erlaubt",
     "Personal note from the sender: <br> %s." : "Persönliche Notiz vom Absender: <br>%s.",
-    "Static" : "Statisch"
+    "Static" : "Statisch",
+    "User" : "Benutzer",
+    "Group" : "Gruppe",
+    "Recipients can view, download and upload contents." : "Empfänger können Inhalte sehen, herunterladen und hochladen.",
+    "Download / View / Edit" : "Herunterladen / Ansehen / Bearbeiten",
+    "Recipients can view, download and edit contents." : "Empfänger können Inhalte sehen, herunterladen und bearbeiten.",
+    "Confirm Password" : "Passwort bestätigen",
+    "Can not remove required password" : "Das Passwort kann nicht entfernt werden",
+    "Share with user {shareWith} has attribute {name} which is no longer available. Please recreate the share!" : "Teilen mit Benutzer {shareWith} hat das Attribut {name}, das nicht mehr verfügbar ist. Bitte erstellen Sie die Freigabe neu!",
+    "Guest" : "Gast",
+    "At {server}" : "Auf {server}",
+    "Federated" : "Verbunden zu anderer Instanz"
 },
 "nplurals=2; plural=(n != 1);");

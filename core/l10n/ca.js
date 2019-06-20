@@ -300,6 +300,8 @@ OC.L10N.register(
     "Imprint" : "Imprint",
     "Link name" : "Nom de l'enllaç",
     "Download / View" : "Descarregar / Veure",
-    "Download / View / Upload" : "Descarregar / Veure / Pujar"
+    "Download / View / Upload" : "Descarregar / Veure / Pujar",
+    "User" : "Usuari",
+    "Group" : "Grup"
 },
 "nplurals=2; plural=(n != 1);");

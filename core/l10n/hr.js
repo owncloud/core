@@ -200,6 +200,8 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Da biste izbjegli vremensko prekoračenje s većim instalacijama, možete pokrenutisljedeću naredbu iz svoga instalacijskog direktorija:",
     "This page will refresh itself when the %s instance is available again." : "Stranica će se sama osvježiti kada %s bude ponovo dostupno.",
     "Menu" : "Meni",
-    "Imprint" : "Otisak"
+    "Imprint" : "Otisak",
+    "User" : "Korisnik",
+    "Group" : "Grupa"
 },
 "nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;");

@@ -15,6 +15,7 @@ OC.L10N.register(
     "Rename" : "পুনঃনামকরণ",
     "Add" : "যোগ করা",
     "Search" : "অনুসন্ধান",
-    "Imprint" : "অঙ্কিত করা"
+    "Imprint" : "অঙ্কিত করা",
+    "User" : "ব্যবহারকারী"
 },
 "nplurals=2; plural=(n != 1);");

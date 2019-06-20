@@ -379,6 +379,7 @@
     "Error while loading browser sessions and device tokens" : "Produciuse un erro ao cargar as sesións do seu navegador e as marcas dos dispositivos",
     "Error while creating device token" : "Produciuse un erro ao crear unha marca de dispositivo",
     "Error while deleting the token" : "Produciuse un erro ao eliminar unha marca",
-    "Report a bug" : "Informar dun fallo"
+    "Report a bug" : "Informar dun fallo",
+    "Enforce as maximum expiration date" : "Obrigar a data de caducidade máxima"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

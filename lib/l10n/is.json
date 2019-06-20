@@ -186,6 +186,10 @@
     "Privacy Policy" : "Stefna vegna gagnaleyndar og friðhelgi",
     "The username can not be longer than 64 characters" : "Notandanafnið má ekki vera lengra en 64 stafir",
     "No minimum ownCloud version is defined in appinfo/info.xml." : "Engin lágmarksútgáfa ownCloud er skilgreind í appinfo/info.xml.",
-    "No maximum ownCloud version is defined in appinfo/info.xml." : "Engin hámarksútgáfa ownCloud er skilgreind í appinfo/info.xml."
+    "No maximum ownCloud version is defined in appinfo/info.xml." : "Engin hámarksútgáfa ownCloud er skilgreind í appinfo/info.xml.",
+    "Can't create or write into the apps-external directory %s" : "Gat ekki búið til eða skrifað í utanforrits-möppuna %s",
+    "Can't update %s" : "Get ekki uppfært %s",
+    "Access to this resource or one of its sub-items has been denied." : "Aðgangi að tilfangi eða undiratriðum þess var hafnað.",
+    "File cannot be downloaded" : "Ekki er hægt að sækja skrána"
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }

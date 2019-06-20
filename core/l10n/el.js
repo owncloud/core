@@ -342,6 +342,8 @@ OC.L10N.register(
     "Menu" : "Μενού",
     "Link name" : "Όνομα συνδέσμου",
     "Imprint" : "Αποτύπωμα",
-    "Add personal message" : "Προσθήκη προσωπικού μηνύματος"
+    "Add personal message" : "Προσθήκη προσωπικού μηνύματος",
+    "User" : "Χρήστης",
+    "Group" : "Ομάδα"
 },
 "nplurals=2; plural=(n != 1);");

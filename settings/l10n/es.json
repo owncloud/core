@@ -396,6 +396,7 @@
     "Resend activation link" : "Reenviar enlace de activación",
     "New Password" : "Contraseña nueva",
     "Please set your password" : "Por favor establezca su contraseña",
-    "Activation link was sent to an email address, if one was configured." : "El enlace de activación se ha enviado a la dirección de correo, si estaba configurada."
+    "Activation link was sent to an email address, if one was configured." : "El enlace de activación se ha enviado a la dirección de correo, si estaba configurada.",
+    "Enforce as maximum expiration date" : "Hacer cumplir en tanto como máxima fecha de vencimiento"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

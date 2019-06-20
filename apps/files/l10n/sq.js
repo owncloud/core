@@ -126,6 +126,7 @@ OC.L10N.register(
     "Unlock failed with status {status}" : "Shkyçja dështoi, me gjendjen {status}",
     "Locks" : "Kyçje",
     "Resource is not locked" : "Burimi s’është i kyçur",
-    "Unknown user" : "Përdorues i panjohur"
+    "Unknown user" : "Përdorues i panjohur",
+    "The file {file} already exists" : "Kartela {file} ekziston tashmë"
 },
 "nplurals=2; plural=(n != 1);");
