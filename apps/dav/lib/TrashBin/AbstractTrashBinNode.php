@@ -23,8 +23,6 @@ namespace OCA\DAV\TrashBin;
 
 use OCA\Files_Trashbin\Trashbin;
 use OCP\Files\FileInfo;
-use Sabre\DAV\Collection;
-use Sabre\DAV\INode;
 
 abstract class AbstractTrashBinNode implements ITrashBinNode {
 
@@ -36,10 +34,15 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 	 * @var TrashBinManager
 	 */
 	protected $trashBinManager;
+	/**
+	 * @var string
+	 */
+	protected $user;
 
-	public function __construct(FileInfo $fileInfo, TrashBinManager $trashBinManager) {
+	public function __construct(string $user, FileInfo $fileInfo, TrashBinManager $trashBinManager) {
 		$this->fileInfo = $fileInfo;
 		$this->trashBinManager = $trashBinManager;
+		$this->user = $user;
 	}
 
 	/**
@@ -76,32 +79,43 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 	}
 
 	public function getOriginalFileName() : string {
-		$pathparts = \pathinfo($this->fileInfo->getName());
-		return $pathparts['filename'];
+		$path = $this->getPathInTrash();
+		if (\count($path) === 1) {
+			$path = \end($path);
+			$pathparts = \pathinfo($path);
+			return $pathparts['filename'];
+		}
+		return \end($path);
 	}
 
 	public function getOriginalLocation() : string {
-		$pathparts = \pathinfo($this->fileInfo->getName());
-		$timestamp = \substr($pathparts['extension'], 1);
+		$pathElements = $this->getPathInTrash();
+		$path = $pathElements[0];
+		$pathParts = \pathinfo($path);
+		$timestamp = (int)\substr($pathParts['extension'], 1);
+
 		// TODO: hide in TrashBinManager
-		return Trashbin::getLocation($this->fileInfo->getOwner(), $pathparts['filename'], $timestamp);
+		$location = Trashbin::getLocation($this->user, $pathParts['filename'], $timestamp);
+
+		$pathElements[0] = $pathParts['filename'];
+		return $location . '/' . \implode('/', $pathElements);
 	}
 
 	public function getDeleteTimestamp() : int {
-		$pathparts = \pathinfo($this->fileInfo->getName());
-		return (int)\substr($pathparts['extension'], 1);
+		$path = $this->getPathInTrash();
+		$path = $path[0];
+		$pathParts = \pathinfo($path);
+		return (int)\substr($pathParts['extension'], 1);
 	}
 
 	public function restore(): bool {
-		$path = $this->fileInfo->getPath();
-		$path = \explode('/', $path);
-		$elements = \array_splice($path, 4);
-		$path = \implode('/', $elements);
+		$path = $this->getPathInTrash();
+		$path = \implode('/', $path);
 		return Trashbin::restore($path,
 			$this->getOriginalFileName(), $this->getDeleteTimestamp());
 	}
 
-	public function delete() {
+	public function delete() : void {
 		$path = $this->fileInfo->getPath();
 		$path = \explode('/', $path);
 		$user = $path[1];
@@ -112,5 +126,14 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 		$path = \substr($path, 0, $delimiter);
 
 		Trashbin::delete($path, $user, $this->getDeleteTimestamp());
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getPathInTrash() {
+		$path = $this->fileInfo->getPath();
+		$path = \explode('/', $path);
+		return \array_splice($path, 4);
 	}
 }

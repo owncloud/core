@@ -26,11 +26,6 @@ use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\IFile;
 
 class TrashBinFile extends AbstractTrashBinNode implements IFile {
-
-	public function __construct(FileInfo $fileInfo, TrashBinManager $trashBinManager) {
-		parent::__construct($fileInfo, $trashBinManager);
-	}
-
 	public function put($data) {
 		throw new Forbidden('Permission denied to write this file');
 	}

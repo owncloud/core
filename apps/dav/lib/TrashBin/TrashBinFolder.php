@@ -28,17 +28,12 @@ use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ICollection;
 
 class TrashBinFolder extends AbstractTrashBinNode implements ICollection {
-
-	public function __construct(FileInfo $fileInfo, TrashBinManager $trashBinManager) {
-		parent::__construct($fileInfo, $trashBinManager);
-	}
-
 	public function getChild($name) {
-		return $this->trashBinManager->getItemByFileId($this->getName(), $name);
+		return $this->trashBinManager->getItemByFileId($this->user, $this->getName());
 	}
 
 	public function getChildren() {
-		return $this->trashBinManager->getChildren($this->getName(), $this->getName());
+		return $this->trashBinManager->getChildren($this->user, $this->getName());
 	}
 
 	public function createFile($name, $data = null) {

@@ -42,7 +42,6 @@ class TrashBinItemsFolder extends Collection {
 	 * @param TrashBinManager $trashBinManager
 	 */
 	public function __construct(string $user, TrashBinManager $trashBinManager) {
-
 		$this->trashBinManager = $trashBinManager;
 		$this->user = $user;
 	}

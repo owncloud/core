@@ -33,7 +33,7 @@ class TrashBinManager {
 			$view = new \OC\Files\View('/' . $user . '/files_trashbin/files');
 			$path = $view->getPath($id);
 			$fileInfo = $view->getFileInfo($path);
-			return $this->nodeFactory($fileInfo);
+			return $this->nodeFactory($user, $fileInfo);
 		} catch (NotFoundException $ex) {
 			throw new NotFound();
 		}
@@ -51,18 +51,18 @@ class TrashBinManager {
 				throw new InvalidResourceType();
 			}
 			$files = $view->getDirectoryContent($path);
-			return \array_map(function ($fileInfo) {
-				return $this->nodeFactory($fileInfo);
+			return \array_map(function ($fileInfo) use ($user) {
+				return $this->nodeFactory($user, $fileInfo);
 			}, $files);
 		} catch (\Exception $exception) {
 			return [];
 		}
 	}
 
-	private function nodeFactory(FileInfo $fileInfo) {
+	private function nodeFactory(string $user, FileInfo $fileInfo) {
 		if ($fileInfo->getMimetype() === 'httpd/unix-directory') {
-			return new TrashBinFolder($fileInfo, $this);
+			return new TrashBinFolder($user, $fileInfo, $this);
 		}
-		return new TrashBinFile($fileInfo, $this);
+		return new TrashBinFile($user, $fileInfo, $this);
 	}
 }
