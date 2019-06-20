@@ -970,6 +970,7 @@ class ManagerTest extends \Test\TestCase {
 
 		try {
 			$this->invokePrivate($this->manager, 'validateExpirationDate', [$share]);
+			$this->fail("expected GenericShareException but no exception was thrown");
 		} catch (\OCP\Share\Exceptions\GenericShareException $e) {
 			$this->assertEquals('Cannot set expiration date more than 3 days in the future', $e->getMessage());
 			$this->assertEquals('Cannot set expiration date more than 3 days in the future', $e->getHint());
