@@ -975,7 +975,7 @@ Feature: sharing
       | 2              | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 200             | 404              |
       | 2              | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 200             | 404              |
 
-  @issue-35550
+  @public_link_share-feature-required
   Scenario Outline: Create a public link with default expiration date set and max expiration date enforced
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
@@ -983,12 +983,28 @@ Feature: sharing
     When user "user0" creates a public link share using the sharing API with settings
       | path | textfile0.txt |
     Then the OCS status code should be "<ocs_status_code>"
-    And the OCS status message should be "Expiration date is enforced"
     And the HTTP status code should be "<http_status_code>"
-#    And the last public shared file should be able to be downloaded without a password
+    And the fields of the last response should include
+      | file_target | /textfile0.txt |
+      | path        | /textfile0.txt |
+      | item_type   | file           |
+      | share_type  | 3              |
+      | permissions | 1              |
+      | uid_owner   | user0          |
+      | expiration  | +7 days        |
+    When user "user0" gets the info of the last share using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response should include
+      | file_target | /textfile0.txt |
+      | path        | /textfile0.txt |
+      | item_type   | file           |
+      | share_type  | 3              |
+      | permissions | 1              |
+      | uid_owner   | user0          |
+      | expiration  | +7 days        |
+    And the last public shared file should be able to be downloaded without a password
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 403             | 200              |
-#      | 1               | 100             | 100              |
-      | 2               | 403             | 403              |
-#      | 2               | 200             | 200              |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
