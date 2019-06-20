@@ -828,7 +828,7 @@ class Share20OcsController extends OCSController {
 				$shareHome = $this->rootFolder->getUserFolder($share->getSharedBy());
 				$nodes = $shareHome->getById($share->getNode()->getId());
 				foreach ($nodes as $node) {
-					if (($node->getPermissions() | $newPermissions) !== $node->getPermissions()) {
+					if (!$this->strictSubsetOf($node->getPermissions(), $newPermissions)) {
 						return new Result(null, 404, 'Cannot increase permission of ' . $share->getTarget());
 					}
 				}
@@ -860,11 +860,11 @@ class Share20OcsController extends OCSController {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new Result(null, 400, $this->l->t('Wrong or no update parameter given'));
 			} else {
-				if (($share->getPermissions() < $permissions) &&
-					!$this->canIncreasePermission($share)) {
+				$permissions = (int)$permissions;
+				if (!$this->strictSubsetOf($share->getPermissions(), $permissions) &&
+					!$this->canIncreasePermission($share, $permissions)) {
 					return new Result(null, 404, 'Cannot increase permission of ' . $share->getTarget());
 				}
-				$permissions = (int)$permissions;
 				$share->setPermissions($permissions);
 			}
 		}
@@ -880,7 +880,7 @@ class Share20OcsController extends OCSController {
 					$maxPermissions |= $incomingShare->getPermissions();
 				}
 
-				if ($share->getPermissions() & ~$maxPermissions) {
+				if (!$this->strictSubsetOf($maxPermissions, $share->getPermissions())) {
 					$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 					return new Result(null, 404, $this->l->t('Cannot increase permissions'));
 				}
@@ -906,28 +906,30 @@ class Share20OcsController extends OCSController {
 	}
 
 	/**
-	 * If the user is not the owner of the share, then lets not allow to increase
-	 * the permission of the share.
+	 * If the user is not the owner of the share and has not enough permission on Node,
+	 * then lets not allow to increase the permission of the share.
 	 *
 	 * @param IShare $share
+	 * @param int $newPermissions
 	 * @return bool , true if permission is allowed to increase, else false. Also false if no user session available
 	 */
-	private function canIncreasePermission(IShare $share) {
+	private function canIncreasePermission(IShare $share, $newPermissions) {
 		$userObj = $this->userSession->getUser();
 		if ($userObj === null) {
 			return false;
 		}
 
-		$shareHome = $this->rootFolder->getUserFolder($share->getSharedBy());
+		$shareHome = $this->rootFolder->getUserFolder($userObj->getUID());
 		$nodes = $shareHome->getById($share->getNode()->getId());
 		foreach ($nodes as $node) {
+			$allowedPermissions = $node->getPermissions();
 			$nodeOwner = $node->getOwner()->getUID();
-			if ($nodeOwner !== $userObj->getUID()) {
-				return false;
+			if ($nodeOwner === $userObj->getUID() || $this->strictSubsetOf($allowedPermissions, $newPermissions)) {
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -1262,5 +1264,16 @@ class Share20OcsController extends OCSController {
 		$share->setAttributes($newShareAttributes);
 
 		return $share;
+	}
+
+	/**
+	 * Check $newPermissions bit is a subset of $allowedPermissions
+	 *
+	 * @param int $allowedPermissions
+	 * @param int $newPermissions
+	 * @return boolean ,true if $allowedPermissions bit super set of $newPermissions bit, else false
+	 */
+	private function strictSubsetOf($allowedPermissions, $newPermissions) {
+		return (($allowedPermissions | $newPermissions) === $allowedPermissions);
 	}
 }
