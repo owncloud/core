@@ -205,7 +205,7 @@ OC.L10N.register(
     "can share" : "kann teilen",
     "can edit" : "kann bearbeiten",
     "create" : "erstellen",
-    "change" : "Ändern",
+    "change" : "ändern",
     "delete" : "löschen",
     "access control" : "Zugriffskontrolle",
     "Could not unshare" : "Freigabe konnte nicht aufgehoben werden",
