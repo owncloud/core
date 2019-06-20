@@ -28,6 +28,7 @@ use OC\OCS\Result;
 use OCA\Files_Sharing\Controller\Share20OcsController;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCA\Files_Sharing\SharingBlacklist;
+use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
@@ -39,6 +40,7 @@ use OCP\IUser;
 use OCP\IGroup;
 use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use OCP\Share;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -1660,7 +1662,50 @@ class Share20OcsControllerTest extends TestCase {
 		$this->assertEquals($expected->getData(), $result->getData());
 	}
 
+	public function testUpdateLinkHigherPermissions() {
+		$node = $this->createMock(Folder::class);
+		$share = $this->newShare();
+		$share->setPermissions(Constants::PERMISSION_READ)
+			->setSharedBy($this->currentUser->getUID())
+			->setShareType(Share::SHARE_TYPE_LINK)
+			->setNode($node)
+			->setTarget('/foo/bar');
+
+		$node->expects($this->once())
+			->method('lock')
+			->with(ILockingProvider::LOCK_SHARED);
+
+		$this->request
+			->method('getParam')
+			->willReturnMap([
+				['permissions', null, '15'],
+			]);
+
+		$originalNode = $this->createMock(File::class);
+		$originalNode->method('getPermissions')->willReturn(17);
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getById')->willReturn([$originalNode]);
+		$this->rootFolder
+			->method('getUserFolder')
+			->willReturn($userFolder);
+
+		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
+		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
+
+		$expected = new Result(null, 404, 'Cannot increase permission of /foo/bar');
+		$result = $this->ocs->updateShare(42);
+
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+		$this->assertEquals($expected->getData(), $result->getData());
+	}
+
 	public function testUpdateLinkShareClear() {
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getById')->willReturn([]);
+		$this->rootFolder
+			->method('getUserFolder')
+			->willReturn($userFolder);
+
 		$ocs = $this->mockFormatShare();
 
 		$node = $this->createMock('\OCP\Files\Folder');
@@ -1707,6 +1752,12 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function testUpdateLinkShareSet() {
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getById')->willReturn([]);
+		$this->rootFolder
+			->method('getUserFolder')
+			->willReturn($userFolder);
+
 		$ocs = $this->mockFormatShare();
 
 		$folder = $this->createMock('\OCP\Files\Folder');
@@ -1751,6 +1802,12 @@ class Share20OcsControllerTest extends TestCase {
 	 * @dataProvider publicUploadParamsProvider
 	 */
 	public function testUpdateLinkShareEnablePublicUpload($params) {
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getById')->willReturn([]);
+		$this->rootFolder
+			->method('getUserFolder')
+			->willReturn($userFolder);
+
 		$ocs = $this->mockFormatShare();
 
 		$folder = $this->createMock('\OCP\Files\Folder');
@@ -1793,6 +1850,12 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function testUpdateLinkShareInvalidDate() {
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getById')->willReturn([]);
+		$this->rootFolder
+			->method('getUserFolder')
+			->willReturn($userFolder);
+
 		$ocs = $this->mockFormatShare();
 
 		$folder = $this->createMock('\OCP\Files\Folder');
@@ -1991,6 +2054,12 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function testUpdateLinkSharePublicUploadDoesNotChangeOther() {
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getById')->willReturn([]);
+		$this->rootFolder
+			->method('getUserFolder')
+			->willReturn($userFolder);
+
 		$ocs = $this->mockFormatShare();
 
 		$date = new \DateTime('2000-01-01');
@@ -2032,6 +2101,12 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function testUpdateLinkSharePermissions() {
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getById')->willReturn([]);
+		$this->rootFolder
+			->method('getUserFolder')
+			->willReturn($userFolder);
+
 		$ocs = $this->mockFormatShare();
 
 		$date = new \DateTime('2000-01-01');
@@ -2074,6 +2149,12 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function testUpdateLinkShareCreateOnly() {
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getById')->willReturn([]);
+		$this->rootFolder
+			->method('getUserFolder')
+			->willReturn($userFolder);
+
 		$ocs = $this->mockFormatShare();
 
 		$folder = $this->createMock('\OCP\Files\Folder');
@@ -2339,9 +2420,13 @@ class Share20OcsControllerTest extends TestCase {
 	 * @dataProvider publicUploadParamsProvider
 	 */
 	public function testUpdateShareCannotIncreasePermissionsPublicLink($params) {
-		$ocs = $this->mockFormatShare();
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getById')->willReturn([]);
+		$this->rootFolder
+			->method('getUserFolder')
+			->willReturn($userFolder);
 
-		$date = new \DateTime('2000-01-01');
+		$ocs = $this->mockFormatShare();
 
 		$folder = $this->createMock('\OCP\Files\Folder');
 
