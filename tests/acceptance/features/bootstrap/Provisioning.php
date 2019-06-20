@@ -383,7 +383,12 @@ trait Provisioning {
 		$client = new Client();
 
 		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			$users = [];
 			echo "creating LDAP users is not implemented, so assume they exist\n";
+			foreach ($table as $user) {
+				\array_push($users, $user["username"]);
+			}
+			$this->initializeUserBatch($users);
 			return;
 		}
 
