@@ -638,12 +638,43 @@ trait Sharing {
 
 	/**
 	 * @param string $field
+	 * @param string $value
 	 * @param string $contentExpected
+	 * @param bool $expectSuccess if true then the caller expects that the field
+	 *                            has the expected content
+	 *                            emit debugging information if the field is not as expected
+	 *
+	 * @return bool
+	 */
+	public function doesFieldValueMatchExpectedContent(
+		$field, $value, $contentExpected, $expectSuccess = true
+	) {
+		if (($contentExpected === "ANY_VALUE")
+			|| (($contentExpected === "A_TOKEN") && (\strlen($value) === 15))
+			|| (($contentExpected === "A_NUMBER") && \is_numeric($value))
+			|| (($contentExpected === "AN_URL") && $this->isAPublicLinkUrl($value))
+			|| (($field === 'remote') && (\rtrim($value, "/") === $contentExpected))
+			|| ($contentExpected === $value)
+		) {
+			if (!$expectSuccess) {
+				echo $field . " is unexpectedly set with value '" . $value . "'\n";
+			}
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @param string $field
+	 * @param mixed $contentExpected
+	 * @param bool $expectSuccess if true then the caller expects that the field
+	 *                            is in the response with the expected content
+	 *                            so emit debugging information if the field is not correct
 	 * @param SimpleXMLElement $data
 	 *
 	 * @return bool
 	 */
-	public function isFieldInResponse($field, $contentExpected, $data = null) {
+	public function isFieldInResponse($field, $contentExpected, $expectSuccess = true, $data = null) {
 		if ($data === null) {
 			$data = $this->getResponseXml()->data[0];
 		}
@@ -658,38 +689,44 @@ trait Sharing {
 					)
 				) . " 00:00:00";
 		}
+
+		$contentExpected = (string) $contentExpected;
+
 		if (\count($data->element) > 0) {
+			$fieldIsSet = false;
+			$value = "";
 			foreach ($data as $element) {
-				if (!isset($element->$field)) {
-					continue;
-				}
-				if ($contentExpected == "A_TOKEN") {
-					return (\strlen((string)$element->$field) == 15);
-				} elseif ($contentExpected == "A_NUMBER") {
-					return \is_numeric((string)$element->$field);
-				} elseif ($contentExpected == "AN_URL") {
-					return $this->isAPublicLinkUrl((string)$element->$field);
-				} elseif ($field === 'remote') {
-					return (\rtrim((string)$element->$field, "/") === $contentExpected);
-				} elseif ((string)$element->$field == $contentExpected) {
-					return true;
-				} else {
-					print($element->$field);
+				if (isset($element->$field)) {
+					$fieldIsSet = true;
+					$value = (string)$element->$field;
+					if ($this->doesFieldValueMatchExpectedContent(
+						$field, $value, $contentExpected, $expectSuccess
+					)
+					) {
+						return true;
+					}
 				}
 			}
-			return false;
 		} else {
-			if ($contentExpected == "A_TOKEN") {
-				return (\strlen((string)$data->$field) == 15);
-			} elseif ($contentExpected == "A_NUMBER") {
-				return \is_numeric((string)$data->$field);
-			} elseif ($contentExpected == "AN_URL") {
-				return $this->isAPublicLinkUrl((string)$data->$field);
-			} elseif ($contentExpected == $data->$field) {
-				return true;
+			$fieldIsSet = isset($data->$field);
+			if ($fieldIsSet) {
+				$value = (string)$data->$field;
+				if ($this->doesFieldValueMatchExpectedContent(
+					$field, $value, $contentExpected, $expectSuccess
+				)
+				) {
+					return true;
+				}
 			}
-			return false;
 		}
+		if ($expectSuccess) {
+			if ($fieldIsSet) {
+				echo $field . " has unexpected value '" . $value . "'\n";
+			} else {
+				echo $field . " is not set in response\n";
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -700,10 +737,10 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedFileInResponse($filename) {
-		$filename = \ltrim($filename, '/');
-		PHPUnit\Framework\Assert::assertEquals(
-			true,
-			$this->isFieldInResponse('file_target', "/$filename")
+		$filename = "/" . \ltrim($filename, '/');
+		PHPUnit\Framework\Assert::assertTrue(
+			$this->isFieldInResponse('file_target', "$filename"),
+			"'file_target' value '$filename' was not found in response"
 		);
 	}
 
@@ -715,10 +752,10 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedFileNotInResponse($filename) {
-		$filename = \ltrim($filename, '/');
-		PHPUnit\Framework\Assert::assertEquals(
-			false,
-			$this->isFieldInResponse('file_target', "/$filename")
+		$filename = "/" . \ltrim($filename, '/');
+		PHPUnit\Framework\Assert::assertFalse(
+			$this->isFieldInResponse('file_target', "$filename", false),
+			"'file_target' value '$filename' was unexpectedly found in response"
 		);
 	}
 
@@ -730,10 +767,10 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedFileAsPathInResponse($filename) {
-		$filename = \ltrim($filename, '/');
-		PHPUnit\Framework\Assert::assertEquals(
-			true,
-			$this->isFieldInResponse('path', "/$filename")
+		$filename = "/" . \ltrim($filename, '/');
+		PHPUnit\Framework\Assert::assertTrue(
+			$this->isFieldInResponse('path', "$filename"),
+			"'path' value '$filename' was not found in response"
 		);
 	}
 
@@ -745,10 +782,10 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedFileAsPathNotInResponse($filename) {
-		$filename = \ltrim($filename, '/');
-		PHPUnit\Framework\Assert::assertEquals(
-			false,
-			$this->isFieldInResponse('path', "/$filename")
+		$filename = "/" . \ltrim($filename, '/');
+		PHPUnit\Framework\Assert::assertFalse(
+			$this->isFieldInResponse('path', "$filename", false),
+			"'path' value '$filename' was unexpectedly found in response"
 		);
 	}
 
@@ -760,9 +797,9 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedUserInResponse($user) {
-		PHPUnit\Framework\Assert::assertEquals(
-			true,
-			$this->isFieldInResponse('share_with', "$user")
+		PHPUnit\Framework\Assert::assertTrue(
+			$this->isFieldInResponse('share_with', "$user"),
+			"'share_with' value '$user' was not found in response"
 		);
 	}
 
@@ -774,9 +811,9 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedUserNotInResponse($user) {
-		PHPUnit\Framework\Assert::assertEquals(
-			false,
-			$this->isFieldInResponse('share_with', "$user")
+		PHPUnit\Framework\Assert::assertFalse(
+			$this->isFieldInResponse('share_with', "$user", false),
+			"'share_with' value '$user' was unexpectedly found in response"
 		);
 	}
 
@@ -1316,7 +1353,7 @@ trait Sharing {
 	 */
 	public function checkingLastShareIDIsNotIncluded() {
 		$share_id = $this->lastShareData->data[0]->id;
-		if ($this->isFieldInResponse('id', $share_id)) {
+		if ($this->isFieldInResponse('id', $share_id, false)) {
 			PHPUnit\Framework\Assert::fail(
 				"Share id $share_id has been found in response"
 			);
@@ -1360,11 +1397,10 @@ trait Sharing {
 
 			foreach ($fd as $field => $value) {
 				$value = $this->replaceValuesFromTable($field, $value);
-				if (!$this->isFieldInResponse($field, $value)) {
-					PHPUnit\Framework\Assert::fail(
-						"$field doesn't have value $value"
-					);
-				}
+				PHPUnit\Framework\Assert::assertTrue(
+					$this->isFieldInResponse($field, $value),
+					"$field doesn't have value '$value'"
+				);
 			}
 		}
 	}
@@ -1382,11 +1418,10 @@ trait Sharing {
 
 			foreach ($fd as $field => $value) {
 				$value = $this->replaceValuesFromTable($field, $value);
-				if ($this->isFieldInResponse($field, $value)) {
-					PHPUnit\Framework\Assert::fail(
-						"$field has value $value"
-					);
-				}
+				PHPUnit\Framework\Assert::assertFalse(
+					$this->isFieldInResponse($field, $value, false),
+					"$field has value $value but should not"
+				);
 			}
 		}
 	}
