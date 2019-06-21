@@ -20,18 +20,14 @@ Feature: add users
     And user "@-_.'" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
-  Scenario Outline: use the webUI to create a user with special invalid characters
-    When the administrator attempts to create a user with the name <user> and the password <password> using the webUI
-    Then notifications should be displayed on the webUI with the text
-      | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
-    And the user should be redirected to a webUI page with the title "Users - %productname%"
-    Examples:
-      | user   | password    |
-      | "a#%"  | "%regular%" |
-      | "a+^"  | "%alt1%"    |
-      | "a)~"  | "%alt2%"    |
-      | "a(="  | "%alt3%"    |
-      | "a`*^" | "%alt4%"    |
+  Scenario: use the webUI to create a user with special invalid characters
+    When the administrator attempts to create these users then the notifications should be as listed
+      | user | password    | notification                                                                                                   |
+      | a#%  | "%regular%" | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
+      | a+^  | "%alt1%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
+      | a)~  | "%alt2%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
+      | a(=  | "%alt3%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
+      | a`*^ | "%alt4%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'" |
 
   Scenario: use the webUI to create a user with empty password
     When the administrator attempts to create a user with the name "bijay" and the password "" using the webUI
