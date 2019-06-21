@@ -291,3 +291,11 @@ Feature: Sharing files and folders with internal groups
     And the user re-logs in as "user1" using the webUI
     And the user shares file "lorem.txt" with group "grp1" using the webUI
     Then as "user2" file "/lorem.txt" should exist
+
+  Scenario: share folder with a group when group has matching folder
+    Given user "user1" has created folder "test"
+    And user "user3" has created folder "test"
+    And user "user3" has shared folder "test" with group "grp1"
+    When user "user1" logs in using the webUI
+    Then folder "test" should be listed on the webUI
+    And folder "test (2)" should be listed on the webUI
