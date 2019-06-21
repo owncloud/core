@@ -21,6 +21,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use TestHelpers\SetupHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -63,26 +64,28 @@ class AppManagementContext implements Context {
 	}
 
 	/**
-	 * @Given apps have been put in two directories :dir1 and :dir2
+	 * @Given these apps' path has been configured additionally with following attributes:
 	 *
-	 * @param string $dir1
-	 * @param string $dir2
+	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function setAppDirectories($dir1, $dir2) {
-		$fullpath1 = $this->featureContext->getServerRoot() . "/$dir1";
-		$fullpath2 = $this->featureContext->getServerRoot() . "/$dir2";
-
-		$this->featureContext->mkDirOnServer($dir1);
-		$this->featureContext->mkDirOnServer($dir2);
-		$this->setAppsPaths(
-			[
-				['path' => $fullpath1, 'url' => $dir1, 'writable' => true],
-				['path' => $fullpath2, 'url' => $dir2, 'writable' => true]
-			]
+	public function setAppDirectories(TableNode $table) {
+		$appsPathsConfigs = \json_decode(
+			$this->featureContext->getSystemConfig("apps_paths", "json")['stdOut'],
+			true
 		);
+		foreach ($table as $appsPathToAdd) {
+			$dir = $appsPathToAdd['dir'];
+			$appsPathsConfigs[] = [
+				'url' => $dir,
+				'path' => $this->featureContext->getServerRoot() . "/$dir",
+				'writable' => $appsPathToAdd['is_writable'] === 'true',
+			];
+			$this->featureContext->mkDirOnServer($appsPathToAdd['dir']);
+		}
+		$this->setAppsPaths($appsPathsConfigs);
 	}
 
 	/**
