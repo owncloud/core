@@ -359,6 +359,8 @@
     "You took too long to login, please try again now" : "Twoje logowanie trwało zbyt długo, spróbuj ponownie teraz",
     "Sharing is not allowed" : "Współdzielenie nie jest możliwe",
     "Privacy Policy" : "Polityka prywatności",
-    "Personal note from the sender: <br> %s." : "Własna informacja od nadawcy:<br> %s."
+    "Personal note from the sender: <br> %s." : "Własna informacja od nadawcy:<br> %s.",
+    "User" : "Użytkownik",
+    "Group" : "Grupa"
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }

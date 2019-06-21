@@ -367,6 +367,8 @@
     "federated" : "联合",
     "{sharee} (federated)" : "{sharee} (federated)",
     "Static" : "静态的",
-    "Personal note from the sender: <br> %s." : "来自发送者的个人留言：<br> %s."
+    "Personal note from the sender: <br> %s." : "来自发送者的个人留言：<br> %s.",
+    "User" : "用户",
+    "Group" : "群组"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

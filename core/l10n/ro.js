@@ -263,6 +263,8 @@ OC.L10N.register(
     "Menu" : "Meniu",
     "Link name" : "Numele legăturii",
     "%s password changed successfully" : "parola %s a fost schimbată cu succes",
-    "Imprint" : "Imprint"
+    "Imprint" : "Imprint",
+    "User" : "Utilizator",
+    "Group" : "Grup"
 },
 "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));");

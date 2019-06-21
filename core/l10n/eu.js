@@ -262,6 +262,8 @@ OC.L10N.register(
     "Please use the command line updater because automatic updating is disabled in the config.php." : "Mesedez, erabili komando lerroko eguneraketa, modu automatikoa desgaitua dago config.php fitxategian",
     "[%d / %d]: Checking table %s" : "[%d / %d]: %s Taula baieztatzen",
     "Checking whether the database schema for %s can be updated (this can take a long time depending on the database size)" : "%s-en datubase eskema eguneratu daitekeen baieztatzen (datubasearen tamainaren arabera denbora luzea eman dezake honek)",
-    "Your web server is not yet set up properly to allow file synchronization because the WebDAV interface seems to be broken." : "Zure web zerbitzaria ez dago ondo ezarrita WebDAV interfazea apurtuta dagoela dirudielako."
+    "Your web server is not yet set up properly to allow file synchronization because the WebDAV interface seems to be broken." : "Zure web zerbitzaria ez dago ondo ezarrita WebDAV interfazea apurtuta dagoela dirudielako.",
+    "User" : "Erabiltzailea",
+    "Group" : "Taldea"
 },
 "nplurals=2; plural=(n != 1);");

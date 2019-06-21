@@ -344,6 +344,8 @@
     "You are trying to access a private link. Please log in first." : "Ver venleg å logge inn for å få tilgang til privat lenke.",
     "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Din instans har mange filer og/enn brukarar. For å sikre god oppgradering ver venleg å bruk kommandolinje oppdatering (occ upgrade).",
     "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatisk oppgradering er skrudd av i config.php. For å oppgradere ver venleg å bruke kommando linje oppdatering (occ upgrade).",
-    "Imprint" : "Impressum"
+    "Imprint" : "Impressum",
+    "User" : "Brukar",
+    "Group" : "Gruppe"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

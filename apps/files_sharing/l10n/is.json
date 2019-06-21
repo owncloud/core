@@ -124,6 +124,7 @@
     "Files Sharing" : "Deiling skráa",
     "Exclude groups from receiving shares." : "Undanskilja hópa frá því að taka á móti sameignum.",
     "Public link" : "Opinber tengill",
-    "Couldn't send mail to following recipient(s): %s " : "Gat ekki sent póst á eftirfarandi notendur: %s "
+    "Couldn't send mail to following recipient(s): %s " : "Gat ekki sent póst á eftirfarandi notendur: %s ",
+    "Nothing to configure." : "Ekkert til að stilla."
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }

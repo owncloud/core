@@ -25,6 +25,7 @@
     "No entries found in this folder" : "לא נמצאו כניסות לתיקייה זו",
     "Name" : "שם",
     "Size" : "גודל",
-    "Modified" : "זמן שינוי"
+    "Modified" : "זמן שינוי",
+    "%s (static)" : "%s (סטטי)"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

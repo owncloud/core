@@ -121,6 +121,8 @@ OC.L10N.register(
     "New password" : "নতুন কূটশব্দ",
     "New Password" : "নতুন কূটশব্দ",
     "Reset password" : "কূটশব্দ পূনঃনির্ধারণ কর",
-    "Imprint" : "প্রতিচ্ছাপ"
+    "Imprint" : "প্রতিচ্ছাপ",
+    "User" : "ব্যবহারকারি",
+    "Group" : "গোষ্ঠীসমূহ"
 },
 "nplurals=2; plural=(n != 1);");

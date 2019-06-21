@@ -367,6 +367,8 @@ OC.L10N.register(
     "{sharee} (federated)" : "{sharee} (federated)",
     "Static" : "Static",
     "Personal note from the sender: <br> %s." : "Personal note from the sender: <br> %s.",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)."
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade).",
+    "User" : "User",
+    "Group" : "Group"
 },
 "nplurals=2; plural=(n != 1);");

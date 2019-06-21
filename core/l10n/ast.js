@@ -312,6 +312,8 @@ OC.L10N.register(
     "This page will refresh itself when the %s instance is available again." : "Esta páxina va anovase sola cuando la instancia %s tea disponible de nueves.",
     "Copy to clipboard" : "Copiar al cartafueyu",
     "Menu" : "Menú",
-    "Imprint" : "Imprint"
+    "Imprint" : "Imprint",
+    "User" : "Usuariu",
+    "Group" : "Grupu"
 },
 "nplurals=2; plural=(n != 1);");

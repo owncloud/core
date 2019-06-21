@@ -398,6 +398,7 @@ OC.L10N.register(
     "Resend activation link" : "ส่งลิงก์การเปิดใช้งานใหม่อีกครั้ง",
     "New Password" : "รหัสผ่านใหม่",
     "Please set your password" : "โปรดตั้งรหัสผ่านของคุณ",
-    "Activation link was sent to an email address, if one was configured." : "ลิงก์การเปิดใช้งานถูกส่งไปยังที่อยู่อีเมลหากมีการกำหนดค่าไว้"
+    "Activation link was sent to an email address, if one was configured." : "ลิงก์การเปิดใช้งานถูกส่งไปยังที่อยู่อีเมลหากมีการกำหนดค่าไว้",
+    "Enforce as maximum expiration date" : "บังคับใช้เป็นวันหมดอายุสูงสุด"
 },
 "nplurals=1; plural=0;");

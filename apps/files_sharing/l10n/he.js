@@ -119,6 +119,20 @@ OC.L10N.register(
     "Accept" : "אישור",
     "Decline" : "סירוב",
     "Public link" : "קישור ציבורי",
-    "Couldn't send mail to following recipient(s): %s " : "נא ניתן לשלוח דוא״ל לנמענים הבאים: %s"
+    "Couldn't send mail to following recipient(s): %s " : "נא ניתן לשלוח דוא״ל לנמענים הבאים: %s",
+    "Declined" : "נדחה",
+    "An error occurred while updating share state: {message}" : "אירעה שגיאה בזמן עדכון של מצב שיתוף: {message}",
+    "Accept Share" : "אישור שיתוף",
+    "Decline Share" : "דחיית שיתוף",
+    "File sharing" : "שיתוף קובץ",
+    "The group is blacklisted for sharing" : "הקבוצה משויכת לרשימה שחורה לשיתוף",
+    "Only recipient can change accepted state" : "רק נמענים יכולים לשנות המצב המקובל",
+    "State" : "מצב",
+    "You unshared %1$s shared by %2$s from self" : "ביטלת את השיתוף %1$s ששותף על ידי %2$s עם עצמך",
+    "Unshared %1$s from self" : "ביטלת את השיתוף של %1$s עם עצמך",
+    "Nothing to configure." : "אין שום דבר להגדיר.",
+    "Group Sharing Blacklist" : "רשימה שחורה לשיתוף קבוצות",
+    "Exclude groups from receiving shares" : "מניעת קבוצות מלקבל שיתופים",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "קבוצות אלו לא יהיו זמינות עבור שיתוף אליהן. החברים בקבוצות אלו לא מוגבלות ביצירת שיתופים, ויכולים לקבל שיתופים דרך קבוצות אחרות שהן חברים בהן."
 },
 "nplurals=2; plural=(n != 1);");

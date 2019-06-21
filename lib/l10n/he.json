@@ -180,6 +180,14 @@
     "%s is not supported and %s will not work properly on this platform. Use it at your own risk! " : "%s אינו נתמך וכן %s לא יעבוד באופן תקין בפלטפורמה זו. שימוש באחריותך בלבד! ",
     "Sharing %s failed, could not find %s, check spelling and server availability." : "השיתוף של %s נכשל, לא ניתן למצוא %s, יש לבדוק את האיות ואת זמינות השרת.",
     "Imprint" : "חותמת",
-    "__language_name__" : "עברית"
+    "__language_name__" : "עברית",
+    "Privacy Policy" : "מדיניות הפרטיות",
+    "No minimum ownCloud version is defined in appinfo/info.xml." : "לא מוגדרת גרסת מינימום של ownCloud בקובץ appinfo/info.xml.",
+    "No maximum ownCloud version is defined in appinfo/info.xml." : "לא מוגדרת גרסת מקסימום של ownCloud בקובץ appinfo/info.xml.",
+    "Can't create or write into the apps-external directory %s" : "לא ניתן ליצור או לכתוב לתיקייה החיצונית של היישום %s",
+    "Can't update %s" : "לא ניתן לעדכן %s",
+    "The username can not be longer than 64 characters" : "שם המשתמש אינו יכול להיות ארוך מ- 64 תווים",
+    "Access to this resource or one of its sub-items has been denied." : "הגישה נדרחתה למשאב זה או לאחד מפריטי המשנה שלו.",
+    "File cannot be downloaded" : "לא ניתן להוריד את הקובץ"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

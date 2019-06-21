@@ -372,6 +372,8 @@ OC.L10N.register(
     "You are using %s" : "Þú ert að nota %s",
     "App passwords / tokens" : "Lykilorð / teikn forrita",
     "Create new app passcode" : "Búa til nýjan lykilkóða forrits",
-    "Password / Token" : "Lykilorð / teikn"
+    "Password / Token" : "Lykilorð / teikn",
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Þetta eru þau veftól, tölvur og símar sem núna eru skráð inn á %s aðganginn þinn.",
+    "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "Lykilorð forrita eða teikn eru aðgangskóðar sem gefa forriti eða tæki heimild til að nota %s notandaaðganginn þinn."
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

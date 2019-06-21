@@ -339,6 +339,8 @@ OC.L10N.register(
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Моля свържете се със системният администратор ако тази грешка се повтаря многократно и включете техническите подробности отдолу, във уведомлението ви.",
     "You are trying to access a private link. Please log in first." : "Опитвате се да достъпите частна връзка. Моля влезте в системата.",
     "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Излгежда, че вашата система може да съдържа много файлове и/или потребители. За да сте сигурни че процеса по обновяваше ще протече без проблеми, моля използвате обновяване през конзолен ред (occ upgrade).",
-    "Imprint" : "Imprint"
+    "Imprint" : "Imprint",
+    "User" : "Потребител",
+    "Group" : "Група"
 },
 "nplurals=2; plural=(n != 1);");

@@ -398,6 +398,7 @@ OC.L10N.register(
     "Resend activation link" : "Ridërgo lidhje aktivizimi",
     "New Password" : "Fjalëkalim i Ri",
     "Please set your password" : "Ju lutemi, caktoni fjalëkalimin tuaj",
-    "Activation link was sent to an email address, if one was configured." : "Lidhja e aktivizimit u dërgua te një adresë email, në qe formësuar një e tillë."
+    "Activation link was sent to an email address, if one was configured." : "Lidhja e aktivizimit u dërgua te një adresë email, në qe formësuar një e tillë.",
+    "Enforce as maximum expiration date" : "Zbato me detyrim një datë maksimum skadimi"
 },
 "nplurals=2; plural=(n != 1);");

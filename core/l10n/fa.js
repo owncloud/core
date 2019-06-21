@@ -323,6 +323,8 @@ OC.L10N.register(
     "Please authenticate using the selected factor." : "لطفا با استفاده از عامل انتخاب شده تایید کنید.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "لطفا اطمینان حاصل کنید که پایگاه داده، پوشه پیکربندی و پوشه داده قبل از پیشرفت، پشتیبان گیری شده اند.",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "برای جلوگیری از وقفه ها در راه اندازی های طولانی تر، به جای آن شما می توانید دستور زیر را از مسیر نصب خود اجرا کنید:",
-    "Imprint" : "مهر زدن"
+    "Imprint" : "مهر زدن",
+    "User" : "کاربر",
+    "Group" : "گروه"
 },
 "nplurals=1; plural=0;");

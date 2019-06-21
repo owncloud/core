@@ -339,6 +339,8 @@ OC.L10N.register(
     "Download / View" : "İndir / Görüntüle",
     "Download / View / Upload" : "İndir / Görüntüle / Karşı tarafa yükle",
     "Recipients can view or download contents." : "İzleyiciler içeriği görüntüleyebilir ve indirebilir",
-    "Recipients can view, download, edit, delete and upload contents." : "Alıcılar içerik görüntüleyebilir, düzenleyebilir, silebilir ve karşı tarafa yükleyebilir."
+    "Recipients can view, download, edit, delete and upload contents." : "Alıcılar içerik görüntüleyebilir, düzenleyebilir, silebilir ve karşı tarafa yükleyebilir.",
+    "User" : "Kullanıcı",
+    "Group" : "Grup"
 },
 "nplurals=2; plural=(n > 1);");

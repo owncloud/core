@@ -150,6 +150,8 @@ OC.L10N.register(
     "This means only administrators can use the instance." : "ಇದರ ಅರ್ಥ, ಸದ್ಯದ ನಿದರ್ಶನದಲ್ಲಿ ನಿರ್ವಾಹಕರು ಮಾತ್ರ ಬಳಸಬಹುದಾಗಿದೆ.",
     "Thank you for your patience." : "﻿ನಿಮ್ಮ ತಾಳ್ಮೆಗೆ ಧನ್ಯವಾದಗಳು.",
     "Start update" : "ನವೀಕರಿಣವನ್ನು ಆರಂಭಿಸಿ",
-    "Imprint" : "ಮುದ್ರೆ"
+    "Imprint" : "ಮುದ್ರೆ",
+    "User" : "ಬಳಕೆದಾರ",
+    "Group" : "﻿ಗುಂಪು"
 },
 "nplurals=1; plural=0;");

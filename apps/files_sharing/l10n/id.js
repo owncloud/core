@@ -74,6 +74,8 @@ OC.L10N.register(
     "Pending" : "Tertunda",
     "Accept" : "Terima",
     "Decline" : "Tolak",
-    "Declined" : "Tolak"
+    "Declined" : "Tolak",
+    "Public link" : "Tautan publik",
+    "Couldn't send mail to following recipient(s): %s " : "Tidak dapat mengirim surel kepada penerima berikut: %s"
 },
 "nplurals=1; plural=0;");

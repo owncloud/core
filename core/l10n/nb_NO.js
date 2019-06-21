@@ -370,6 +370,8 @@ OC.L10N.register(
     "Recipients can view, download, edit, delete and upload contents." : "Mottakere kan se, laste ned, redigere, slette og laste opp innhold.",
     "An error occured while sending email" : "Det oppstod en feil ved sending av epost",
     "E-Mail sent" : "E-post sendt",
-    "Privacy Policy" : "Personvern regler"
+    "Privacy Policy" : "Personvern regler",
+    "User" : "Bruker",
+    "Group" : "Gruppe"
 },
 "nplurals=2; plural=(n != 1);");
