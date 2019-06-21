@@ -6,6 +6,7 @@
     "Not allowed to create a federated share with the same user" : "Не допускается создание федеративного общего ресурса с тем же пользователем",
     "File is already shared with %s" : "Доступ к файлу уже предоставлен %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Не удалось поделиться %s, не удалось найти %s, возможно, сервер не доступен.",
+    "Federated Sharing failed: %s" : "Предоставление доступа в объединении не удалось: %s",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "Пользователь «%1$s» предоставил вам доступ к «%3$s» (от имени «%2$s»)",
     "\"%1$s\" shared \"%3$s\" with you" : "Пользователь «%1$s» предоставил вам доступ к «%3$s»",
     "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "Пользователь «%1$s» предлагает вам посмотреть «%3$s» (от имени «%2$s»)",
