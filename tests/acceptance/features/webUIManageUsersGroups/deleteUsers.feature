@@ -23,3 +23,16 @@ Feature: delete users
   Scenario: use the webUI to cancel deletion of user
     When the administrator deletes user "user1" using the webUI and cancels the deletion using the webUI
     Then user "user1" should exist
+
+  Scenario Outline:  user names are not case-sensitive, deleting users with different upper and lower case names
+    When the administrator creates a user with the name "<user_id1>" and the password "password" using the webUI
+    Then user "<user_id1>" should exist
+    And user "<user_id2>" should exist
+    When the administrator deletes user "<user_id1>" using the webUI and confirms the deletion using the webUI
+    Then user "<user_id1>" should not exist
+    And user "<user_id2>" should not exist
+    Examples:
+      | user_id1          | user_id2       |
+      | Brand-New-User    | brand-new-user |
+      | brand-new-user    | Brand-New-User |
+      | Brand-New-User    | BRAND-NEW-USER |
