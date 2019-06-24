@@ -2291,8 +2291,6 @@ class Share20OcsControllerTest extends TestCase {
 	public function testUpdateShareCannotIncreasePermissions() {
 		$ocs = $this->mockFormatShare();
 
-		$date = new \DateTime('2000-01-01');
-
 		$folder = $this->createMock(Folder::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
@@ -2342,6 +2340,8 @@ class Share20OcsControllerTest extends TestCase {
 		$userNode = $this->createMock(Folder::class);
 		$userNode->method('getOwner')
 			->willReturn($folderOwner);
+		$userNode->method('getPermissions')
+			->willReturn(\OCP\Constants::PERMISSION_READ);
 		$userHomeFolder->method('getById')
 			->willReturn([$userNode]);
 		$this->rootFolder->method('getUserFolder')
@@ -2408,6 +2408,8 @@ class Share20OcsControllerTest extends TestCase {
 		$userNode = $this->createMock(Folder::class);
 		$userNode->method('getOwner')
 			->willReturn($folderOwner);
+		$userNode->method('getPermissions')
+			->willReturn($currentPermission);
 		$userHomeFolder->method('getById')
 			->willReturn([$userNode]);
 		$this->rootFolder->method('getUserFolder')
@@ -2475,10 +2477,23 @@ class Share20OcsControllerTest extends TestCase {
 		$this->assertEquals($expected->getData(), $result->getData());
 	}
 
-	public function testUpdateShareCanIncreasePermissionsIfOwner() {
-		$ocs = $this->mockFormatShare();
+	public function canIncreasePermissionsDataProvider() {
+		return [
+			//user is the owner of the share
+			['currentUser', 0],
+			//user not owner, but has enough permission
+			['mockUser', 31]
+		];
+	}
 
-		$date = new \DateTime('2000-01-01');
+	/**
+	 * @dataProvider canIncreasePermissionsDataProvider
+	 *
+	 * @param string $ownerUID
+	 * @param int $nodePermissions
+	 */
+	public function testUpdateShareCanIncreasePermissions($ownerUID, $nodePermissions) {
+		$ocs = $this->mockFormatShare();
 
 		$folder = $this->createMock(Folder::class);
 
@@ -2525,9 +2540,13 @@ class Share20OcsControllerTest extends TestCase {
 			->willReturn($share);
 
 		$userHomeFolder = $this->createMock(Folder::class);
+		$nodeOwner = $this->createMock(IUser::class);
+		$nodeOwner->method('getUID')->willReturn($ownerUID);
 		$userNode = $this->createMock(Folder::class);
 		$userNode->method('getOwner')
-			->willReturn($this->currentUser);
+			->willReturn($nodeOwner);
+		$userNode->method('getPermissions')
+			->willReturn($nodePermissions);
 		$userHomeFolder->method('getById')
 			->willReturn([$userNode]);
 		$this->rootFolder->method('getUserFolder')
@@ -3803,5 +3822,32 @@ class Share20OcsControllerTest extends TestCase {
 		$result = $this->ocs->$method(123);
 
 		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @dataProvider strictSubsetOfDataProvider
+	 *
+	 * @param int $allowedPermissions
+	 * @param int $newPermissions
+	 * @param boolean $expected
+	 */
+	public function testStrictSubsetOf($allowedPermissions, $newPermissions, $expected) {
+		$this->assertEquals(
+			$expected,
+			$this->invokePrivate(
+				$this->ocs,
+				'strictSubsetOf',
+				[$allowedPermissions, $newPermissions]
+			)
+		);
+	}
+
+	public function strictSubsetOfDataProvider() {
+		return [
+			[\bindec('11111'), \bindec('0111'), true],
+			[\bindec('01101'), \bindec('01001'), true],
+			[\bindec('01111'), \bindec('11111'), false],
+			[\bindec('10001'), \bindec('01111'), false],
+		];
 	}
 }
