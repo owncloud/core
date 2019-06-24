@@ -228,7 +228,7 @@ class Server {
 					)
 				);
 
-				if ($this->isRequestForSubtree(['files', 'uploads'])) {
+				if ($this->isRequestForSubtree(['files', 'uploads', 'trash-bin'])) {
 					//For files only
 					$filePropertiesPlugin = new FileCustomPropertiesPlugin(
 						new FileCustomPropertiesBackend(
