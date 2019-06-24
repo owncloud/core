@@ -287,18 +287,19 @@ class Setup {
 		}
 
 		// create the apps-external directory only during installation
-		$appsExternalDir = \OC::$SERVERROOT.'/apps-external';
-		if (!\file_exists($appsExternalDir)) {
-			@\mkdir($appsExternalDir);
-		}
-
-		// validate the apps-external directory
-		if (
-			(!\is_dir($appsExternalDir) and !\mkdir($appsExternalDir)) or
-			!\is_writable($appsExternalDir)
-		) {
-			$htmlAppsExternalDir = \htmlspecialchars_decode($appsExternalDir);
-			$error[] = $l->t("Can't create or write into the apps-external directory %s", $htmlAppsExternalDir);
+		$appsRoots = $options['apps_paths'];
+		foreach ($appsRoots as $appsRoot) {
+			$appDir = $appsRoot['path'];
+			if (\basename($appDir) === 'apps') {
+				continue;
+			}
+			if (
+				(!\is_dir($appDir) && !\mkdir($appDir))
+				|| !\is_writable($appDir)
+			) {
+				$htmlAppsExternalDir = \htmlspecialchars_decode($appDir);
+				$error[] = $l->t("Can't create or write into the custom apps directory %s", $htmlAppsExternalDir);
+			}
 		}
 
 		if (\count($error) != 0) {

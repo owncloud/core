@@ -213,6 +213,12 @@ class OC {
 		}
 		$paths = [];
 		foreach (OC::$APPSROOTS as $path) {
+			// if not installed - allow precreating of custom app directories later
+			if (self::$config->getValue('installed', false) === false
+				&& $path['path'] !==  OC::$SERVERROOT . '/apps'
+			) {
+				continue;
+			}
 			$paths[] = $path['path'];
 			if (!\is_dir($path['path'])) {
 				throw new \RuntimeException(\sprintf('App directory "%s" not found! Please put the ownCloud apps folder in the'
