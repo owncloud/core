@@ -214,3 +214,44 @@ Feature: Sharing files and folders with internal groups
     And file "lorem (2).txt" should be listed on the webUI
     And file "lorem (2).txt" should be marked as shared with "grp1" by "User One" on the webUI
     And the content of file "lorem (2).txt" for user "user3" should be "some content"
+
+  Scenario Outline: group names are case-sensitive, sharing with groups with different upper and lower case names
+    Given user "some-user" has been created with default attributes and skeleton files
+    And group "<group_id1>" has been created
+    And group "<group_id2>" has been created
+    And group "<group_id3>" has been created
+    And user "user1" has been added to group "<group_id1>"
+    And user "user2" has been added to group "<group_id2>"
+    And user "user3" has been added to group "<group_id3>"
+    And user "some-user" has created folder "/simple-folder"
+    And user "some-user" has logged in using the webUI
+    When the user shares folder "simple-folder" with group "<group_id1>" using the webUI
+    And the user shares folder "simple-folder" with group "<group_id2>" using the webUI
+    And the user shares folder "simple-folder" with group "<group_id3>" using the webUI
+    And the user re-logs in as "user1" using the webUI
+    Then folder "simple-folder" should be marked as shared with "<group_id1>" by "Regular User" on the webUI
+    When the user re-logs in as "user2" using the webUI
+    Then folder "simple-folder" should be marked as shared with "<group_id2>" by "Regular User" on the webUI
+    When the user re-logs in as "user3" using the webUI
+    Then folder "simple-folder (2)" should be marked as shared with "<group_id3>" by "Regular User" on the webUI
+    Examples:
+      | group_id1            | group_id2            | group_id3            |
+      | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
+      | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
+      | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
+
+  Scenario Outline: group names are case-sensitive, sharing with groups in different case group name fail, if they don't exist
+    Given group "<group_id1>" has been created
+    And user "user2" has created folder "/simple-folder"
+    And user "user2" has logged in using the webUI
+    When the user shares folder "simple-folder" with group "<group_id1>" using the webUI
+    And the user has opened the share dialog for folder "simple-folder"
+    And the user types "<group_id2>" in the share-with-field
+    Then a tooltip with the text "No users or groups found for <group_id2>" should be shown near the share-with-field on the webUI
+    When the user types "<group_id3>" in the share-with-field
+    Then a tooltip with the text "No users or groups found for <group_id3>" should be shown near the share-with-field on the webUI
+    Examples:
+      | group_id1            | group_id2            | group_id3            |
+      | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
+      | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
+      | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
