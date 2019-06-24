@@ -452,3 +452,24 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/testfile.txt" for user "user2" should be "file from user2"
     And the content of file "/testfile (2).txt" for user "user2" should be "file from user1"
     And the content of file "/testfile (2) (2).txt" for user "user2" should be "file from user0"
+
+   Scenario: user accepts shares received from multiple users with the same name when auto-accept share is disabled
+     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+     And user "user3" has been created with default attributes and skeleton files
+     And user "user1" has shared folder "/PARENT" with user "user0"
+     And user "user2" has shared folder "/PARENT" with user "user0"
+     When user "user0" accepts the share "/PARENT" offered by user "user1" using the sharing API
+     And user "user0" declines the share "/PARENT (2)" offered by user "user1" using the sharing API
+     And user "user0" accepts the share "/PARENT" offered by user "user2" using the sharing API
+     And user "user0" accepts the share "/PARENT" offered by user "user1" using the sharing API
+     And user "user0" declines the share "/PARENT (2)" offered by user "user2" using the sharing API
+     And user "user0" declines the share "/PARENT (2) (2)" offered by user "user1" using the sharing API
+     And user "user3" shares folder "/PARENT" with user "user0" using the sharing API
+     And user "user0" accepts the share "/PARENT" offered by user "user3" using the sharing API
+     And user "user0" accepts the share "/PARENT" offered by user "user2" using the sharing API
+     And user "user0" accepts the share "/PARENT" offered by user "user1" using the sharing API
+     Then the sharing API should report to user "user0" that these shares are in the accepted state
+       | path               | uid_owner |
+       | /PARENT (2)/         | user3     |
+       | /PARENT (2) (2)/     | user2     |
+       | /PARENT (2) (2) (2)/ | user1     |
