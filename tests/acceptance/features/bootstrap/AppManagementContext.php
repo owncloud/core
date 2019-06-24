@@ -21,7 +21,6 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use PHPUnit\Framework\Assert;
 use TestHelpers\SetupHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';

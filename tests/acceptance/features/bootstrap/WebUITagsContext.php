@@ -25,7 +25,6 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
 use Page\TagsPage;
-use Behat\Gherkin\Node\TableNode;
 
 require_once 'bootstrap.php';
 

@@ -21,10 +21,8 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\BatchResults;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Client;
-use GuzzleHttp\Pool;
 
 /**
  * Helper to make requests to the OCS API

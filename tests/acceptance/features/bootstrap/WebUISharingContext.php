@@ -29,7 +29,6 @@ use Page\FilesPageElement\SharingDialog;
 use Page\PublicLinkFilesPage;
 use Page\SharedWithYouPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-use TestHelpers\AppConfigHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\EmailHelper;
 use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
