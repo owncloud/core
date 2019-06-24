@@ -13,6 +13,7 @@ OC.L10N.register(
     "Unknown error \"{error}\" uploading file \"{file}\"" : "Error desconocido \"{error}\" subiendo el archivo \"{file}\"",
     "Could not create folder \"{dir}\"" : "No se pudo crear la carpeta «{dir}»",
     "Upload cancelled." : "Subida cancelada.",
+    "The file {file} already exists" : "El archivo {file} ya existe",
     "Processing files..." : "Procesando archivos ...",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "No ha sido posible subir {filename} porque es un directorio o tiene 0 bytes",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "No hay suficiente espacio libre. Quiere subir {size1} pero solo quedan {size2}",

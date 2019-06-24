@@ -8,6 +8,7 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "No se permite crear un recurso compartido federado con el mismo usuario",
     "File is already shared with %s" : "El Archivo ya está siendo compartido con %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Se falló al compartir %s. No se pudo hallar %s, quizás haya un problema de conexión con el servidor.",
+    "Federated Sharing failed: %s" : "El compartido federado falló: %s",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" ha compartido \"%3$s\" contigo (en nombre de \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" ha compartido \"%3$s\" contigo",
     "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" te ha invitado a ver \"%3$s\" (en nombre de \"%2$s\")(",
