@@ -34,7 +34,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
 class Install extends Command {
-
 	/**
 	 * @var IConfig
 	 */
@@ -82,6 +81,22 @@ class Install extends Command {
 
 		// validate user input
 		$options = $this->validateInput($input, $output, \array_keys($sysInfo['databases']));
+		$appsRoots = $this->config->getSystemValue(
+			'apps_paths',
+			[
+				0 => [
+					'path' => \OC::$SERVERROOT.'/apps',
+					'url' => '/apps',
+					'writable' => false,
+				],
+				1 => [
+					'path' => \OC::$SERVERROOT.'/apps-external',
+					'url' => '/apps-external',
+					'writable' => true,
+				]
+			]
+		);
+		$options['apps_paths'] = $appsRoots;
 
 		// perform installation
 		$errors = $setupHelper->install($options);
