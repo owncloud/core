@@ -101,6 +101,8 @@ class UsersPage extends OwncloudPage {
 	protected $userGroupsInputXpath = "./div[@class='groupsListContainer multiselect button']";
 	protected $groupLabelInInputXpath = ".//ul[@class='multiselectoptions down']/li/label[@title='%s']";
 	protected $groupInputXpath = ".//ul[@class='multiselectoptions down']/li/input[@id='%s']";
+	protected $activeDropDownXpath = "//div[@class='multiselect button active down']";
+	protected $groupUserCountXpath = "//li[@data-gid='%s']//span[@class='usercount']";
 
 	/**
 	 * @param string $username
@@ -786,6 +788,7 @@ class UsersPage extends OwncloudPage {
 	 * @param boolean $add Boolean value to specify wether to add or remove user from the group
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function addOrRemoveUserToGroup(Session $session, $user, $group, $add=true) {
 		$userTr = $this->findUserInTable($user);
@@ -823,6 +826,14 @@ class UsersPage extends OwncloudPage {
 			$groupLabel->click();
 			$this->waitForAjaxCallsToStartAndFinish($session);
 		}
+		$activeDropDown = $this->find('xpath', $this->activeDropDownXpath);
+		$this->assertElementNotNull(
+			$activeDropDown,
+			__METHOD__ .
+			" xpath $this->activeDropDownXpath " .
+			"could not find any active drop down"
+		);
+		$activeDropDown->click();
 	}
 
 	/**
@@ -860,5 +871,27 @@ class UsersPage extends OwncloudPage {
 				__METHOD__ . " timeout waiting for user list to load on users page"
 			);
 		}
+	}
+
+	/**
+	 * @param string $group
+	 *
+	 * @return int|null
+	 * @throws ElementNotFoundException
+	 */
+	public function getUserCountOfGroup($group) {
+		$groupUserCountXpath = \sprintf($this->groupUserCountXpath, $group);
+		$groupUserCount = $this->find('xpath', $groupUserCountXpath);
+		$this->assertElementNotNull(
+			$groupUserCount,
+			__METHOD__ .
+			" xpath $groupUserCountXpath " .
+			"could not find user count for group $group"
+		);
+		$groupUserCount = \trim($groupUserCount->getText());
+		if ($groupUserCount === "") {
+			return null;
+		}
+		return (int) $groupUserCount;
 	}
 }
