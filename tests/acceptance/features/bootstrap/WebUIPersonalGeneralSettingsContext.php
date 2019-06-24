@@ -24,7 +24,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\PersonalGeneralSettingsPage;
-use PHPUnit\Framework\Assert;
 use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
