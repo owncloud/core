@@ -27,6 +27,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
 use Page\UsersPage;
+use Page\OwncloudPage;
 use PHPUnit\Framework\Assert;
 use TestHelpers\AppConfigHelper;
 
@@ -43,6 +44,12 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @var LoginPage
 	 */
 	private $loginPage;
+
+	/**
+	 *
+	 * @var OwncloudPage
+	 */
+	private $owncloudPage;
 
 	/**
 	 *
@@ -63,10 +70,12 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @param UsersPage $usersPage
 	 * @param LoginPage $loginPage
+	 * @param OwncloudPage $owncloudPage
 	 */
-	public function __construct(UsersPage $usersPage, LoginPage $loginPage) {
+	public function __construct(UsersPage $usersPage, LoginPage $loginPage, OwncloudPage $owncloudPage) {
 		$this->usersPage = $usersPage;
 		$this->loginPage = $loginPage;
+		$this->owncloudPage = $owncloudPage;
 	}
 
 	/**
@@ -146,6 +155,32 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 			foreach ($groups as $group) {
 				$this->featureContext->addGroupToCreatedGroupsList($group);
 			}
+		}
+	}
+
+	/**
+	 * @When the administrator attempts to create these users then the notifications should be as listed
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdministratorAttemptsToCreateAUser(TableNode $table) {
+		foreach ($table->getHash() as $row) {
+			$user = $row['user'];
+			$this->theAdminCreatesAUserUsingTheWebUI(
+				"attempts to create", $user, $row['password']
+			);
+			$expectedNotification = $row['notification'];
+			$actualNotification = $this->owncloudPage->getNotifications();
+			Assert::assertNotEmpty($actualNotification, " User " . $user . " has been created ");
+			Assert::assertSame(
+				$expectedNotification,
+				$actualNotification[0],
+				"Got unexpected notification while creating user " . $user
+			);
+			$this->theUserReloadsTheUsersPage();
+			$this->featureContext->userShouldNotExist($user);
 		}
 	}
 
@@ -518,7 +553,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 
 		if ($this->appParameterValues === null) {
 			// Get app config values
-			$appConfigs =  AppConfigHelper::getAppConfigs(
+			$appConfigs = AppConfigHelper::getAppConfigs(
 				$this->featureContext->getBaseUrl(),
 				$this->featureContext->getAdminUsername(),
 				$this->featureContext->getAdminPassword(),

@@ -46,3 +46,15 @@ Feature: Add group
       | Oc-Group  | oc-group  | OC-GROUP  |
       | oc-group  | OC-GROUP  | Oc-Group  |
       | OC-GROUp  | Oc-Group  | oc-group  |
+
+  Scenario Outline: Add groups using emojis in group names
+    When the administrator adds group <groupname> using the webUI
+    Then the group name <groupname> should be listed on the webUI
+    And group <groupname> should exist
+    Examples:
+      | groupname                    |
+      | "☺"                          |
+      | "☹"                          |
+      | "✍"                          |
+      | "⛷"                           |
+      | "⛹"                           |

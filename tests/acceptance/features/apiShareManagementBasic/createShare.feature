@@ -224,8 +224,8 @@ Feature: sharing
       | permissions            | 1              |
       | uid_owner              | user0          |
     And the fields of the last response should not include
-      | share_with             | ***redacted*** |
-      | share_with_displayname | ***redacted*** |
+      | share_with             | ANY_VALUE |
+      | share_with_displayname | ANY_VALUE |
 
     Examples:
       | ocs_api_version | ocs_status_code |
