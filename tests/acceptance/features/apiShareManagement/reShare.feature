@@ -75,7 +75,6 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-35528
   Scenario Outline: Update of reshare can increase permissions to the maximum allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
@@ -84,17 +83,12 @@ Feature: sharing
     And user "user1" has shared folder "/TMP" with user "user2" with permissions 17
     When user "user1" updates the last share using the sharing API with
       | permissions | 23 |
-    Then the OCS status code should be "404"
-    And the HTTP status code should be "<http_status_code>"
-    #Then the OCS status code should be "<ocs_status_code>"
-    #And the HTTP status code should be "200"
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
     Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 404              |
-      #| ocs_api_version | ocs_status_code |
-      #| 1               | 100             |
-      #| 2               | 200             |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   Scenario Outline: Do not allow update of reshare to exceed permissions
     Given using OCS API version "<ocs_api_version>"
@@ -163,7 +157,6 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-35528
   Scenario Outline: User is allowed to update reshare of a sub-folder to the maximum allowed permissions
     Given using OCS API version "<ocs_api_version>"
     And user "user2" has been created with default attributes and without skeleton files
@@ -173,22 +166,16 @@ Feature: sharing
     And user "user1" has shared folder "/TMP/SUB" with user "user2" with permissions 17
     When user "user1" updates the last share using the sharing API with
       | permissions | 23 |
-    Then the OCS status code should be "404"
-    And the HTTP status code should be "<http_status_code>"
-    #Then the OCS status code should be "<ocs_status_code>"
-    #And the HTTP status code should be "200"
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
     And as "user2" folder "/SUB" should exist
-    And user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "/SUB/textfile.txt"
-    #And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/SUB/textfile.txt"
+    And user "user2" should be able to upload file "filesForUpload/textfile.txt" to "/SUB/textfile.txt"
     And as "user1" file "/TMP/SUB" should exist
     And user "user1" should be able to upload file "filesForUpload/textfile.txt" to "/TMP/SUB/textfile.txt"
     Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 404              |
-      #| ocs_api_version | ocs_status_code |
-      #| 1               | 100             |
-      #| 2               | 200             |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   Scenario Outline: User is not allowed to update reshare of a sub-folder with more permissions
     Given using OCS API version "<ocs_api_version>"
