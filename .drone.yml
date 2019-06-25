@@ -174,7 +174,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - git clone https://github.com/owncloud/testing.git $$DRONE_WORKSPACE/apps/testing
+      - git clone https://github.com/owncloud/testing.git $$DRONE_WORKSPACE/apps-external/testing
       - php occ a:l
       - php occ a:e testing
       - php occ a:l
