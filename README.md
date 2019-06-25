@@ -26,6 +26,8 @@ https://owncloud.org/contribute/
 ## Support
 Learn about the different ways you can get support for ownCloud: https://owncloud.org/support/
 
+Check CI
+
 ## Get in touch
 * :clipboard: [Forum](https://central.owncloud.org)
 * :envelope: [Mailing list](https://mailman.owncloud.org/mailman/listinfo)
