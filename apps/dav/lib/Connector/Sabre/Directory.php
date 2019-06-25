@@ -348,6 +348,8 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			throw new Forbidden($ex->getMessage(), $ex->getRetry());
 		} catch (LockedException $e) {
 			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
+		} catch (StorageNotAvailableException $e) {
+			throw new SabreServiceUnavailable($e->getMessage());
 		}
 	}
 
