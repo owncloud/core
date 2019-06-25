@@ -349,7 +349,7 @@ Feature: sharing
       | 1               | 200              | create,delete |
       | 2               | 400              | create,delete |
 
-  Scenario: Share ownership change after moving a shared file outside of an outer share
+  Scenario: Share ownership change after moving a shared folder outside of an outer share
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | user1    |
@@ -379,7 +379,7 @@ Feature: sharing
     And as "user0" folder "/folder1/folder2" should not exist
     And as "user2" folder "/folder2" should exist
 
-  Scenario: Share ownership change after moving a shared file to another share
+  Scenario: Share ownership change after moving a shared folder to another share
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | user1    |
@@ -469,27 +469,152 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  Scenario Outline: Increasing permissions is allowed for owner
+  Scenario Outline: Increasing permissions for a group is allowed for owner
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And user "user2" has been created with default attributes and skeleton files
     And group "grp1" has been created
+    And group "grp2" has been created
     # Note: in the user_ldap test environment user1 and user2 are in grp1
     And user "user1" has been added to group "grp1"
-    And user "user2" has been added to group "grp1"
+    # Note: trying to put user2 into different groups will not be effective in user_ldap
+    And user "user2" has been added to group "<group_of_user2>"
     And as user "user2"
-    And the user has shared folder "/FOLDER" with group "grp1"
-    And the user has updated the last share with
-      | permissions | read |
+    And the user has shared folder "/FOLDER" with group "grp1" with permissions "read"
     When the user updates the last share using the sharing API with
       | permissions | all |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "user1" should be able to upload file "filesForUpload/textfile.txt" to "FOLDER/textfile.txt"
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | group_of_user2 |
+      | 1               | 100             | grp1           |
+      | 2               | 200             | grp1           |
+      | 1               | 100             | grp2           |
+      | 2               | 200             | grp2           |
+
+  Scenario Outline: Giving increased permissions of a sub-folder for a group is allowed for owner
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user2" has been created with default attributes and skeleton files
+    And group "grp1" has been created
+    And group "grp2" has been created
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
+    And user "user1" has been added to group "grp1"
+    # Note: trying to put user2 into different groups will not be effective in user_ldap
+    And user "user2" has been added to group "<group_of_user2>"
+    And user "user2" has shared folder "/PARENT" with group "grp1" with permissions 1
+    When user "user2" shares folder "/PARENT/CHILD" with group "grp1" with permissions 15 using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "user1" should be able to upload file "filesForUpload/textfile.txt" to "CHILD/textfile.txt"
+    But user "user1" should not be able to upload file "filesForUpload/textfile.txt" to "PARENT/textfile.txt"
+    Examples:
+      | ocs_api_version | ocs_status_code | group_of_user2 |
+      | 1               | 100             | grp1           |
+      | 2               | 200             | grp1           |
+      | 1               | 100             | grp2           |
+      | 2               | 200             | grp2           |
+
+  Scenario Outline: Giving decreased permissions of a sub-folder for a group is allowed for owner
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user2" has been created with default attributes and skeleton files
+    And group "grp1" has been created
+    And group "grp2" has been created
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
+    And user "user1" has been added to group "grp1"
+    # Note: trying to put user2 into different groups will not be effective in user_ldap
+    And user "user2" has been added to group "<group_of_user2>"
+    And user "user2" has shared folder "/PARENT" with group "grp1" with permissions 15
+    When user "user2" shares folder "/PARENT/CHILD" with group "grp1" with permissions 1 using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "user1" should not be able to upload file "filesForUpload/textfile.txt" to "CHILD/textfile.txt"
+    But user "user1" should be able to upload file "filesForUpload/textfile.txt" to "PARENT/textfile.txt"
+    Examples:
+      | ocs_api_version | ocs_status_code | group_of_user2 |
+      | 1               | 100             | grp1           |
+      | 2               | 200             | grp1           |
+      | 1               | 100             | grp2           |
+      | 2               | 200             | grp2           |
+
+  Scenario Outline: Increasing permissions of a sub-folder for a group is allowed for owner
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user2" has been created with default attributes and skeleton files
+    And group "grp1" has been created
+    And group "grp2" has been created
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
+    And user "user1" has been added to group "grp1"
+    # Note: trying to put user2 into different groups will not be effective in user_ldap
+    And user "user2" has been added to group "<group_of_user2>"
+    And user "user2" has shared folder "/PARENT" with group "grp1" with permissions 1
+    And user "user2" has shared folder "/PARENT/CHILD" with group "grp1" with permissions 1
+    When user "user2" updates the last share using the sharing API with
+      | permissions | 15 |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "user1" should be able to upload file "filesForUpload/textfile.txt" to "CHILD/textfile.txt"
+    But user "user1" should not be able to upload file "filesForUpload/textfile.txt" to "PARENT/textfile.txt"
+    Examples:
+      | ocs_api_version | ocs_status_code | group_of_user2 |
+      | 1               | 100             | grp1           |
+      | 2               | 200             | grp1           |
+      | 1               | 100             | grp2           |
+      | 2               | 200             | grp2           |
+
+  Scenario Outline: Decreasing permissions of a sub-folder for a group is allowed for owner
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user2" has been created with default attributes and skeleton files
+    And group "grp1" has been created
+    And group "grp2" has been created
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
+    And user "user1" has been added to group "grp1"
+    # Note: trying to put user2 into different groups will not be effective in user_ldap
+    And user "user2" has been added to group "<group_of_user2>"
+    And user "user2" has shared folder "/PARENT" with group "grp1" with permissions 15
+    And user "user2" has shared folder "/PARENT/CHILD" with group "grp1" with permissions 15
+    When user "user2" updates the last share using the sharing API with
+      | permissions | 1 |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "user1" should not be able to upload file "filesForUpload/textfile.txt" to "CHILD/textfile.txt"
+    But user "user1" should be able to upload file "filesForUpload/textfile.txt" to "PARENT/textfile.txt"
+    Examples:
+      | ocs_api_version | ocs_status_code | group_of_user2 |
+      | 1               | 100             | grp1           |
+      | 2               | 200             | grp1           |
+      | 1               | 100             | grp2           |
+      | 2               | 200             | grp2           |
+
+  Scenario Outline: Decreasing then increasing permissions of a sub-folder for a group is allowed for owner
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user2" has been created with default attributes and skeleton files
+    And group "grp1" has been created
+    And group "grp2" has been created
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
+    And user "user1" has been added to group "grp1"
+    # Note: trying to put user2 into different groups will not be effective in user_ldap
+    And user "user2" has been added to group "<group_of_user2>"
+    And user "user2" has shared folder "/PARENT" with group "grp1" with permissions 1
+    And user "user2" has shared folder "/PARENT/CHILD" with group "grp1" with permissions 15
+    When user "user2" updates the last share using the sharing API with
+      | permissions | 1 |
+    And user "user2" updates the last share using the sharing API with
+      | permissions | 15 |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "user1" should be able to upload file "filesForUpload/textfile.txt" to "CHILD/textfile.txt"
+    But user "user1" should not be able to upload file "filesForUpload/textfile.txt" to "PARENT/textfile.txt"
+    Examples:
+      | ocs_api_version | ocs_status_code | group_of_user2 |
+      | 1               | 100             | grp1           |
+      | 2               | 200             | grp1           |
+      | 1               | 100             | grp2           |
+      | 2               | 200             | grp2           |
 
   @public_link_share-feature-required
   Scenario Outline: Updating share permissions from change to read/update/create restricts public from deleting files
