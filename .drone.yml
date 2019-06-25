@@ -1172,18 +1172,6 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BROWSER: chrome
-      BEHAT_SUITE: webUIUserKeysType
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      SERVER_PROTOCOL: https
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      INSTALL_TESTING_APP: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BROWSER: chrome
       BEHAT_SUITE: webUIFavorites
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -1583,7 +1571,7 @@ matrix:
       OWNCLOUD_LOG: true
       CALDAV_CARDDAV_JOB: true
 
-    # encryption tests
+    # This suite is part of the encryption app in later core versions
     - PHP_VERSION: 7.0
       TEST_SUITE: cli
       BEHAT_SUITE: cliEncryption
@@ -1597,6 +1585,7 @@ matrix:
       ENCRYPTION_TYPE: masterkey
       INSTALL_TESTING_APP: true
 
+    # This suite is part of the encryption app in later core versions
     - PHP_VERSION: 7.1
       TEST_SUITE: cli
       BEHAT_SUITE: cliEncryption
@@ -1610,9 +1599,23 @@ matrix:
       ENCRYPTION_TYPE: masterkey
       INSTALL_TESTING_APP: true
 
-    ## encryption WebUI acceptance tests master-keys encryption
+    # This suite is part of the encryption app in later core versions
     - PHP_VERSION: 7.1
-      TEST_SUITE: webui
+      TEST_SUITE: selenium
+      BROWSER: chrome
+      BEHAT_SUITE: webUIUserKeysType
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    # This suite is part of the encryption app in later core versions
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BROWSER: chrome
       BEHAT_SUITE: webUIMasterKeyType
       DB_TYPE: mariadb
       USE_SERVER: true
