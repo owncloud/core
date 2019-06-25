@@ -45,6 +45,12 @@ foreach ($apps as $app) {
 	if ($app === 'files_external') {
 		continue;
 	}
+	// skip the testing app, it may have been installed to the apps folder
+	// e.g. in a CI environment, but it is a separate app that runs its own
+	// unit tests.
+	if ($app === 'testing') {
+		continue;
+	}
 	$dir = OC_App::getAppPath($app);
 	if (\is_dir($dir . '/tests')) {
 		loadDirectory($dir . '/tests');
