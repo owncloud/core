@@ -730,7 +730,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should be included in the response$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should be included in the response$/
 	 *
 	 * @param string $filename
 	 *
@@ -745,7 +745,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should not be included in the response$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should not be included in the response$/
 	 *
 	 * @param string $filename
 	 *
@@ -760,7 +760,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should be included as path in the response$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should be included as path in the response$/
 	 *
 	 * @param string $filename
 	 *
@@ -775,7 +775,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should not be included as path in the response$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should not be included as path in the response$/
 	 *
 	 * @param string $filename
 	 *
