@@ -62,24 +62,24 @@ Feature: sharing
       | user3    |
       | user4    |
     And user "user0" has created folder "/folder1"
-    And user "user0" has shared file "/folder1" with user "user1"
-    And user "user0" has shared file "/folder1" with user "user2"
+    And user "user0" has shared folder "/folder1" with user "user1"
+    And user "user0" has shared folder "/folder1" with user "user2"
     And user "user0" has created folder "/folder1/folder2"
-    And user "user0" has shared file "/folder1/folder2" with user "user3"
-    And user "user0" has shared file "/folder1/folder2" with user "user4"
+    And user "user0" has shared folder "/folder1/folder2" with user "user3"
+    And user "user0" has shared folder "/folder1/folder2" with user "user4"
     And as user "user0"
     When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the response should contain 4 entries
-    And file "/folder1" should be included as path in the response
-    And file "/folder1/folder2" should be included as path in the response
+    And folder "/folder1" should be included as path in the response
+    And folder "/folder1/folder2" should be included as path in the response
     When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the response should contain 2 entries
-    And file "/folder1" should not be included as path in the response
-    And file "/folder1/folder2" should be included as path in the response
+    And folder "/folder1" should not be included as path in the response
+    And folder "/folder1/folder2" should be included as path in the response
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
