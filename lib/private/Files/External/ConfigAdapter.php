@@ -142,18 +142,6 @@ class ConfigAdapter implements IMountProvider {
 				$impl = new FailedStorage(['exception' => $e]);
 			}
 
-			try {
-				$availability = $impl->getAvailability();
-				if (!$availability['available'] && !Availability::shouldRecheck($availability)) {
-					$impl = new FailedStorage([
-						'exception' => new StorageNotAvailableException('Storage with mount id ' . $storage->getId() . ' is not available')
-					]);
-				}
-			} catch (\Exception $e) {
-				// propagate exception into filesystem
-				$impl = new FailedStorage(['exception' => $e]);
-			}
-
 			$mount = new MountPoint(
 				$impl,
 				'/' . $user->getUID() . '/files' . $storage->getMountPoint(),
