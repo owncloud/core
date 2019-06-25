@@ -155,6 +155,7 @@ class CleanupRemoteStorages extends Command {
 			$remoteStorages[$row['id']] = $row['numeric_id'];
 		}
 
+		\var_dump($remoteStorages);
 		return $remoteStorages;
 	}
 
@@ -170,6 +171,7 @@ class CleanupRemoteStorages extends Command {
 			$remoteShareIds[$row['id']] = 'shared::' . \md5($row['share_token'] . '@' . $row['remote']);
 		}
 
+		\var_dump($remoteShareIds);
 		return $remoteShareIds;
 	}
 }
