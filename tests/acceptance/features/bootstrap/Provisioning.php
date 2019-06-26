@@ -443,7 +443,18 @@ trait Provisioning {
 		$results = HttpRequestHelper::sendBatchRequest($requests, $client);
 		// Retrieve all failures.
 		foreach ($results->getFailures() as $e) {
-			throw $e;
+			$failedUser = $e->getRequest()->getBody()->getFields()['userid'];
+			$message = $this->getResponseXml($e->getResponse())->xpath("/ocs/meta/message");
+			if ($message && (string) $message[0] === "User already exists") {
+				PHPUnit\Framework\Assert::fail(
+					"Could not create user '$failedUser' as it already exists. " .
+					"Please delete the user to run tests again."
+				);
+			}
+			throw new Exception(
+				"could not create user. "
+				. $e->getResponse()->getStatusCode() . " " . $e->getResponse()->getBody()
+			);
 		}
 
 		// Create requests for setting displayname and email for the newly created users.
@@ -462,15 +473,12 @@ trait Provisioning {
 		}
 		// Edit the users in parallel to make the process faster.
 		if (\count($editData) > 0) {
-			$results = UserHelper::editUserBatch(
+			UserHelper::editUserBatch(
 				$this->getBaseUrl(),
 				$editData,
 				$this->getAdminUsername(),
 				$this->getAdminPassword()
 			);
-			foreach ($results->getFailures() as $e) {
-				throw new \Exception("Could not edit user\n" . $e->getMessage());
-			}
 		}
 
 		// If the users need to be initialized then initialize them in parallel.
@@ -1331,7 +1339,12 @@ trait Provisioning {
 		$response = HttpRequestHelper::sendBatchRequest($requests, $client);
 		// throw an exception if any request fails.
 		foreach ($response->getFailures() as $e) {
-			throw new \Exception("Could not initialize user\n" . $e->getMessage());
+			$pathArray = \explode('/', $e->getRequest()->getPath());
+			$failedUser = \end($pathArray);
+			throw new \Exception(
+				"Could not initialize user $failedUser \n"
+				. $e->getResponse()->getStatusCode() . "\n" . $e->getResponse()->getBody()
+			);
 		}
 	}
 

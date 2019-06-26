@@ -139,7 +139,18 @@ class UserHelper {
 			);
 		}
 		// Send the array of requests at once in parallel.
-		return HttpRequestHelper::sendBatchRequest($requests, $client);
+		$results =  HttpRequestHelper::sendBatchRequest($requests, $client);
+
+		foreach ($results->getFailures() as $e) {
+			$pathArray = \explode('/', $e->getRequest()->getPath());
+			$failedUser = \end($pathArray);
+			$editData = $e->getRequest()->getBody()->getFields();
+			throw new \Exception(
+				"Could not set '${editData['key']}' to '${editData['value']}' for user '$failedUser' \n"
+				. $e->getResponse()->getStatusCode() . "\n" . $e->getResponse()->getBody()
+			);
+		}
+		return $results;
 	}
 
 	/**
