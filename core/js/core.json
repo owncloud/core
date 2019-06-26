@@ -9,7 +9,7 @@
 		"blueimp-md5/js/md5.js",
 		"bootstrap/js/tooltip.js",
 		"backbone/backbone.js",
-		"es6-promise/dist/es6-promise.js",
+		"es6-promise/es6-promise.auto.js",
 		"davclient.js/lib/client.js",
 		"clipboard/dist/clipboard.js",
 		"bowser/src/bowser.js"
