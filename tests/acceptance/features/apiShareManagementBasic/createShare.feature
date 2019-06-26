@@ -329,8 +329,8 @@ Feature: sharing
     And user "user1" has been created with default attributes and skeleton files
     And group "grp4" has been created
     And user "user1" has been added to group "grp4"
-    When user "user0" shares file "/PARENT" with user "user1" using the sharing API
-    And user "user0" shares file "/PARENT/CHILD" with group "grp4" using the sharing API
+    When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
+    And user "user0" shares folder "/PARENT/CHILD" with group "grp4" using the sharing API
     Then user "user1" should see the following elements
       | /FOLDER/                 |
       | /PARENT/                 |
@@ -410,8 +410,8 @@ Feature: sharing
       | user2    |
     And user "user0" has created folder "/foo"
     And user "user1" has created folder "/foo"
-    When user "user0" shares file "/foo" with user "user2" using the sharing API
-    And user "user1" shares file "/foo" with user "user2" using the sharing API
+    When user "user0" shares folder "/foo" with user "user2" using the sharing API
+    And user "user1" shares folder "/foo" with user "user2" using the sharing API
     Then user "user2" should see the following elements
       | /foo/       |
       | /foo%20(2)/ |
@@ -437,8 +437,8 @@ Feature: sharing
     And group "grp1" has been created
     And user "user0" has created folder "/test"
     And user "user0" has created folder "/test/sub"
-    And user "user0" has shared file "/test" with group "grp1"
-    When user "user0" shares file "/test/sub" with user "user1" using the sharing API
+    And user "user0" has shared folder "/test" with group "grp1"
+    When user "user0" shares folder "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "user1" folder "/sub" should exist
@@ -454,8 +454,8 @@ Feature: sharing
     And user "user0" has been added to group "grp1"
     And user "user0" has created folder "/test"
     And user "user0" has created folder "/test/sub"
-    And user "user0" has shared file "/test" with group "grp1"
-    When user "user0" shares file "/test/sub" with user "user1" using the sharing API
+    And user "user0" has shared folder "/test" with group "grp1"
+    When user "user0" shares folder "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "user1" folder "/sub" should exist
@@ -473,22 +473,22 @@ Feature: sharing
       | user3    |
       | user4    |
     And user "user0" has created folder "/folder1"
-    And user "user0" has shared file "/folder1" with user "user1"
-    And user "user0" has shared file "/folder1" with user "user2"
+    And user "user0" has shared folder "/folder1" with user "user1"
+    And user "user0" has shared folder "/folder1" with user "user2"
     And user "user0" has created folder "/folder1/folder2"
-    And user "user0" has shared file "/folder1/folder2" with user "user3"
-    And user "user0" has shared file "/folder1/folder2" with user "user4"
+    And user "user0" has shared folder "/folder1/folder2" with user "user3"
+    And user "user0" has shared folder "/folder1/folder2" with user "user4"
     And as user "user0"
     When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the response should contain 4 entries
-    And file "/folder1" should be included as path in the response
-    And file "/folder1/folder2" should be included as path in the response
+    And folder "/folder1" should be included as path in the response
+    And folder "/folder1/folder2" should be included as path in the response
     And the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
     And the response should contain 2 entries
-    And file "/folder1" should not be included as path in the response
-    And file "/folder1/folder2" should be included as path in the response
+    And folder "/folder1" should not be included as path in the response
+    And folder "/folder1/folder2" should be included as path in the response
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -572,7 +572,7 @@ Feature: sharing
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["excludedFromSharing"]'
     And user "user0" has created folder "folderToShare"
-    When user "user0" shares file "folderToShare" with group "anotherGroup" using the sharing API
+    When user "user0" shares folder "folderToShare" with group "anotherGroup" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
     And as "user1" file "folderToShare" should not exist
