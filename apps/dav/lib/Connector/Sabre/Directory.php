@@ -403,7 +403,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	public function moveInto($targetName, $fullSourcePath, INode $sourceNode) {
 		if (!$sourceNode instanceof Node) {
 			if ($sourceNode instanceof ITrashBinNode) {
-				return $sourceNode->restore($targetName);
+				return $sourceNode->restore($this->path . '/' . $targetName);
 			}
 			// it's a file of another kind, like FutureFile
 			if ($sourceNode instanceof IFile) {

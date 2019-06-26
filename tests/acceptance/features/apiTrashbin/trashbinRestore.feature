@@ -68,22 +68,6 @@ Feature: Restore deleted files/folders
       | old      |
       | new      |
 
-  Scenario Outline: A file deleted from a folder is restored to root if the original folder does not exist
-    Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes and skeleton files
-    And user "user0" has created folder "/new-folder"
-    And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
-    And user "user0" has deleted file "/new-folder/new-file.txt"
-    And user "user0" has deleted folder "/new-folder"
-    And user "user0" has logged in to a web-style session
-    When user "user0" restores the file with original path "/new-folder/new-file.txt" using the trashbin API
-    Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
-    And as "user0" file "/new-file.txt" should exist
-    Examples:
-      | dav-path |
-      | old      |
-      | new      |
-
   Scenario Outline: A file deleted from a folder is restored to the original folder if the original folder was deleted and restored
     Given using <dav-path> DAV path
     And user "user0" has been created with default attributes and skeleton files
@@ -175,4 +159,3 @@ Feature: Restore deleted files/folders
     When user "user0" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the trashbin API
     Then as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
     And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" for user "user0" with range "bytes=0-1" should be "AA"
-    
