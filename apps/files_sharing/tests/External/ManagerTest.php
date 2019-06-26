@@ -94,7 +94,7 @@ class ManagerTest extends TestCase {
 	public function testAddShare() {
 		$shareData1 = [
 			'remote' => 'http://localhost',
-			'token' => 'token1',
+			'token' => 'token5',
 			'password' => '',
 			'name' => '/SharedFolder',
 			'owner' => 'foobar',
@@ -223,7 +223,7 @@ class ManagerTest extends TestCase {
 	public function testAddShareAccepted() {
 		$shareData1 = [
 			'remote' => 'http://localhost',
-			'token' => 'token1',
+			'token' => 'token6',
 			'password' => '',
 			'name' => '/SharedFolder',
 			'owner' => 'foobar',
