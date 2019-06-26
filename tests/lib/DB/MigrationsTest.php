@@ -33,13 +33,13 @@ class MigrationsTest extends \Test\TestCase {
 
 		$this->db = $this->createMock(Connection::class);
 		$this->db->expects($this->any())->method('getPrefix')->willReturn('test_oc_');
-		$this->migrationService = new MigrationService('testing', $this->db);
+		$this->migrationService = new MigrationService('files_sharing', $this->db);
 	}
 
 	public function testGetters() {
-		$this->assertEquals('testing', $this->migrationService->getApp());
-		$this->assertEquals(\OC::$SERVERROOT . '/apps/testing/appinfo/Migrations', $this->migrationService->getMigrationsDirectory());
-		$this->assertEquals('OCA\testing\Migrations', $this->migrationService->getMigrationsNamespace());
+		$this->assertEquals('files_sharing', $this->migrationService->getApp());
+		$this->assertEquals(\OC::$SERVERROOT . '/apps/files_sharing/appinfo/Migrations', $this->migrationService->getMigrationsDirectory());
+		$this->assertEquals('OCA\files_sharing\Migrations', $this->migrationService->getMigrationsNamespace());
 		$this->assertEquals('test_oc_migrations', $this->migrationService->getMigrationsTableName());
 	}
 
@@ -75,7 +75,7 @@ class MigrationsTest extends \Test\TestCase {
 	public function testExecuteStepWithUnknownClass() {
 		$this->migrationService = $this->getMockBuilder(MigrationService::class)
 			->setMethods(['findMigrations'])
-			->setConstructorArgs(['testing', $this->db])
+			->setConstructorArgs(['files_sharing', $this->db])
 			->getMock();
 		$this->migrationService->expects($this->any())->method('findMigrations')->willReturn(
 			['20170130180000' => 'X', '20170130180001' => 'Y', '20170130180002' => 'Z', '20170130180003' => 'A']
@@ -91,7 +91,7 @@ class MigrationsTest extends \Test\TestCase {
 		$step->expects($this->once())->method('changeSchema');
 		$this->migrationService = $this->getMockBuilder(MigrationService::class)
 			->setMethods(['createInstance'])
-			->setConstructorArgs(['testing', $this->db])
+			->setConstructorArgs(['files_sharing', $this->db])
 			->getMock();
 		$this->migrationService->expects($this->any())->method('createInstance')->with('20170130180000')->willReturn($step);
 		$this->migrationService->executeStep('20170130180000');
@@ -104,7 +104,7 @@ class MigrationsTest extends \Test\TestCase {
 		$step->expects($this->once())->method('sql')->willReturn(['1', '2', '3']);
 		$this->migrationService = $this->getMockBuilder(MigrationService::class)
 			->setMethods(['createInstance'])
-			->setConstructorArgs(['testing', $this->db])
+			->setConstructorArgs(['files_sharing', $this->db])
 			->getMock();
 		$this->migrationService->expects($this->any())->method('createInstance')->with('20170130180000')->willReturn($step);
 		$this->migrationService->executeStep('20170130180000');
@@ -113,7 +113,7 @@ class MigrationsTest extends \Test\TestCase {
 	public function testGetMigration() {
 		$this->migrationService = $this->getMockBuilder(MigrationService::class)
 			->setMethods(['getMigratedVersions', 'findMigrations'])
-			->setConstructorArgs(['testing', $this->db])
+			->setConstructorArgs(['files_sharing', $this->db])
 			->getMock();
 		$this->migrationService->expects($this->any())->method('getMigratedVersions')->willReturn(
 			['20170130180000', '20170130180001']
@@ -139,7 +139,7 @@ class MigrationsTest extends \Test\TestCase {
 	public function testMigrate() {
 		$this->migrationService = $this->getMockBuilder(MigrationService::class)
 			->setMethods(['getMigratedVersions', 'findMigrations', 'executeStep'])
-			->setConstructorArgs(['testing', $this->db])
+			->setConstructorArgs(['files_sharing', $this->db])
 			->getMock();
 		$this->migrationService->expects($this->any())->method('getMigratedVersions')->willReturn(
 			['20170130180000', '20170130180001']
