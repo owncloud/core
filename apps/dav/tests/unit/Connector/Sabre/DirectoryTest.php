@@ -31,6 +31,7 @@ use OCP\Files\Storage\IStorage;
 use OCP\Files\FileContentNotAllowedException;
 use OCP\Files\ForbiddenException;
 use OCP\Constants;
+use OCP\Files\StorageNotAvailableException;
 
 class TestDoubleFileView extends \OC\Files\View {
 	private $updatables;
@@ -94,6 +95,33 @@ class DirectoryTest extends \Test\TestCase {
 			->will($this->returnValue($path));
 
 		return new Directory($this->view, $this->info);
+	}
+
+	public function childExistsProvider() {
+		return [
+			[true],
+			[false],
+		];
+	}
+
+	/**
+	 * @dataProvider childExistsProvider
+	 */
+	public function testChildExists($exists) {
+		$this->view->method('file_exists')
+			->willReturn($exists);
+		$dir = $this->getDir();
+		$this->assertSame($exists, $dir->childExists('/foo'));
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\ServiceUnavailable
+	 */
+	public function testChildExistsStorageNotAvailable() {
+		$this->view->method('file_exists')
+			->will($this->throwException(new StorageNotAvailableException()));
+		$dir = $this->getDir();
+		$dir->childExists('/foo');
 	}
 
 	/**
@@ -178,6 +206,25 @@ class DirectoryTest extends \Test\TestCase {
 		$dir->delete();
 	}
 
+	/**
+	 * @expectedException \Sabre\DAV\Exception\ServiceUnavailable
+	 */
+	public function testDeleteFolderThrowsWhenStorageNotAvailable() {
+		// deletion allowed
+		$this->info->expects($this->once())
+			->method('isDeletable')
+			->will($this->returnValue(true));
+
+		// but fails
+		$this->view->expects($this->once())
+			->method('rmdir')
+			->with('sub')
+			->will($this->throwException(new StorageNotAvailableException()));
+
+		$dir = $this->getDir('sub');
+		$dir->delete();
+	}
+
 	public function testGetChildren() {
 		$info1 = $this->getMockBuilder('OC\Files\FileInfo')
 			->disableOriginalConstructor()
@@ -253,7 +300,7 @@ class DirectoryTest extends \Test\TestCase {
 	public function testGetChildThrowStorageNotAvailableException() {
 		$this->view->expects($this->once())
 			->method('getFileInfo')
-			->willThrowException(new \OCP\Files\StorageNotAvailableException());
+			->willThrowException(new StorageNotAvailableException());
 
 		$dir = new Directory($this->view, $this->info);
 		$dir->getChild('.');
