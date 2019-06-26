@@ -8,7 +8,7 @@
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,27 +28,52 @@
 namespace OC\Core\Controller;
 
 use OC\Setup;
+use OCP\IConfig;
+use OCP\ILogger;
 
 class SetupController {
+	/**
+	 * @var array map of setup key => config.php key
+	 */
+	private $keyMapping = [
+		'directory' => 'datadirectory',
+		'dbtype' => 'dbtype',
+		'dbname' => 'dbname',
+		'dbuser' => 'dbuser',
+		'dbpass' => 'dbpassword',
+		'dbhost' => 'dbhost',
+		'dbtableprefix' => 'dbtableprefix',
+		'apps_paths' => 'apps_paths',
+		'adminlogin' => 'adminlogin',
+		'adminpass' => 'adminpass',
+	];
+
+	protected $confUsed = false;
+
 	/** @var Setup */
 	protected $setupHelper;
-	/** @var string */
-	private $autoConfigFile;
+
+	/** @var IConfig */
+	protected $config;
+
+	/** @var ILogger */
+	protected $logger;
 
 	/**
 	 * @param Setup $setupHelper
 	 */
-	public function __construct(Setup $setupHelper) {
-		$this->autoConfigFile = \OC::$SERVERROOT.'/config/autoconfig.php';
+	public function __construct(Setup $setupHelper, IConfig $config, ILogger $logger) {
 		$this->setupHelper = $setupHelper;
+		$this->config = $config;
+		$this->logger = $logger;
 	}
 
 	/**
 	 * @param $post
 	 */
 	public function run($post) {
-		// Check for autosetup:
-		$post = $this->loadAutoConfig($post);
+		// Check for autosetup
+		$post = $this->loadConfig($post);
 		$opts = $this->setupHelper->getSystemInfo();
 
 		// convert 'abcpassword' to 'abcpass'
@@ -59,7 +84,7 @@ class SetupController {
 			$post['dbpass'] = $post['dbpassword'];
 		}
 
-		if (isset($post['install']) and $post['install']=='true') {
+		if (isset($post['install']) && $post['install']=='true') {
 			// We have to launch the installation process :
 			$e = $this->setupHelper->install($post);
 			$errors = ['errors' => $e];
@@ -86,6 +111,8 @@ class SetupController {
 			'dbtablespace' => '',
 			'dbhost' => 'localhost',
 			'dbtype' => '',
+			'directory' => '',
+			'databases' => []
 		];
 		$parameters = \array_merge($defaults, $post);
 
@@ -96,26 +123,48 @@ class SetupController {
 	}
 
 	public function finishSetup() {
-		if (\file_exists($this->autoConfigFile)) {
-			\unlink($this->autoConfigFile);
+		if ($this->confUsed === true) {
+			$this->logger->info(
+				'Config file found, setting up ownCloud…',
+				['app' => 'core']
+			);
+			// cleanup autoconf
+			$this->config->deleteSystemValue('adminlogin');
+			$this->config->deleteSystemValue('adminpass');
 		}
+
 		\OC::$server->getIntegrityCodeChecker()->runInstanceVerification();
 		\OC_Util::redirectToDefaultPage();
 	}
 
-	public function loadAutoConfig($post) {
-		if (\file_exists($this->autoConfigFile)) {
-			\OCP\Util::writeLog('core', 'Autoconfig file found, setting up ownCloud…', \OCP\Util::INFO);
-			$AUTOCONFIG = [];
-			include $this->autoConfigFile;
-			$post = \array_merge($post, $AUTOCONFIG);
+	public function loadConfig($post) {
+		foreach ($this->keyMapping as $setupKey => $configKey) {
+			$sysValue = $this->config->getSystemValue($configKey, null);
+			if ($sysValue !== null) {
+				$post[$setupKey] = $sysValue;
+				$this->confUsed = true;
+			} elseif ($configKey === 'apps_paths') {
+				// Default app directories configuration
+				$post[$setupKey] = [
+					0 => [
+						'path' => \OC::$SERVERROOT.'/apps',
+						'url' => '/apps',
+						'writable' => false,
+					],
+					1 => [
+						'path' => \OC::$SERVERROOT.'/apps-external',
+						'url' => '/apps-external',
+						'writable' => true,
+					]
+				];
+			}
 		}
 
 		$dbIsSet = isset($post['dbtype']);
 		$directoryIsSet = isset($post['directory']);
 		$adminAccountIsSet = isset($post['adminlogin']);
 
-		if ($dbIsSet and $directoryIsSet and $adminAccountIsSet) {
+		if ($dbIsSet && $directoryIsSet && $adminAccountIsSet) {
 			$post['install'] = 'true';
 		}
 		$post['dbIsSet'] = $dbIsSet;
