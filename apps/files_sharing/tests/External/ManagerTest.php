@@ -28,6 +28,7 @@ use OC\Files\Storage\StorageFactory;
 use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\External\MountProvider;
 use OCA\Files_Sharing\Tests\TestCase;
+use OCP\IDBConnection;
 use OCP\Share\Events\AcceptShare;
 use OCP\Share\Events\DeclineShare;
 use OCP\Share\Events\ShareEvent;
@@ -43,6 +44,11 @@ use Test\Traits\UserTrait;
  */
 class ManagerTest extends TestCase {
 	use UserTrait;
+
+	/**
+	 * @var IDBConnection
+	 */
+	protected $connection;
 
 	/** @var Manager **/
 	private $manager;
@@ -235,6 +241,36 @@ class ManagerTest extends TestCase {
 		\call_user_func_array([$this->manager, 'addShare'], $shareData1);
 		$this->setupMounts();
 		$this->assertMount($shareData1['name']);
+	}
+
+	public function getRemoteShareIds() {
+		$this->connection = \OC::$server->getDatabaseConnection();
+
+		$queryBuilder = $this->connection->getQueryBuilder();
+		$queryBuilder->select(['id', 'share_token', 'remote'])
+			->from('share_external');
+		$query = $queryBuilder->execute();
+
+		$remoteShareIds = [];
+		$remoteShareData = [];
+
+		while ($row = $query->fetch()) {
+			$remoteShareIds[$row['id']] = 'shared::' . \md5($row['share_token'] . '@' . $row['remote']);
+			$remoteShareData[$row['id']] = 'shared::' . $row['share_token'] . '@' . $row['remote'];
+		}
+
+		\var_dump($remoteShareIds);
+		\var_dump($remoteShareData);
+		return $remoteShareIds;
+	}
+
+	public function testReportLeftoverShareIds() {
+		$remoteShareIds = $this->getRemoteShareIds();
+		$this->assertCount(
+			0,
+			$remoteShareIds,
+			"there should be nothing in the share_external table but some share ids were found"
+		);
 	}
 
 	/**
