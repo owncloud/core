@@ -251,6 +251,7 @@ class ManagerTest extends TestCase {
 		\call_user_func_array([$this->manager, 'addShare'], $shareData1);
 		$this->setupMounts();
 		$this->assertMount($shareData1['name']);
+		$this->manager->removeUserShares($this->uid);
 	}
 
 	/**
