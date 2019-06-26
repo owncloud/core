@@ -305,10 +305,6 @@ a.two-factor-cancel {
 #body-login form fieldset {
 	margin-bottom: 20px;
 	text-align: left;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
 }
 #body-login form #sqliteInformation {
 	margin-top: -20px;
