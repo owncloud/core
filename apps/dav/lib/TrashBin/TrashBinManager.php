@@ -54,6 +54,9 @@ class TrashBinManager {
 				$path = $view->getPath($fileId);
 			}
 			$fileInfo = $view->getFileInfo($path);
+			if ($fileInfo === false) {
+				throw new NotFound();
+			}
 			if ($fileInfo->getMimetype() !== 'httpd/unix-directory') {
 				throw new InvalidResourceType();
 			}
