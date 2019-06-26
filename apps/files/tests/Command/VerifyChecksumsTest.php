@@ -258,7 +258,8 @@ class VerifyChecksumsTest extends TestCase {
 
 		$this->cmd->execute([
 			'-r' => null,
-			'-p' => "{$this->user1}/files/dir/nested"
+			'-u' => $this->user1,
+			'-p' => "dir/nested"
 		]);
 
 		$this->assertChecksumsAreCorrect([
@@ -357,6 +358,16 @@ class VerifyChecksumsTest extends TestCase {
 			VerifyChecksums::EXIT_INVALID_ARGS,
 			$this->cmd->getStatusCode(),
 			'User and path must return invalid args status code when combined'
+		);
+
+		$this->cmd->execute([
+			'-p' => '/some/path/for/testing?'
+		]);
+
+		$this->assertEquals(
+			VerifyChecksums::EXIT_INVALID_ARGS,
+			$this->cmd->getStatusCode(),
+			'User name cannot be omitted when path is provided.'
 		);
 	}
 }
