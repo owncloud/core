@@ -21,6 +21,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';
 
@@ -44,21 +45,22 @@ class TrashbinContext implements Context {
 	 * @return void
 	 */
 	public function emptyTrashbin($user) {
-		$body = new \Behat\Gherkin\Node\TableNode(
-			[['allfiles', 'true'], ['dir', '/']]
+		$response = WebDavHelper::makeDavRequest(
+			$this->featureContext->getBaseUrl(),
+			$user,
+			$this->featureContext->getPasswordForUser($user),
+			'DELETE',
+			"/trash-bin/$user/",
+			[],
+			null,
+			null,
+			2,
+			'trash-bin'
 		);
-		$this->featureContext->sendingToWithDirectUrl(
-			$user, 'POST', "/index.php/apps/files_trashbin/ajax/delete.php", $body
+
+		PHPUnit\Framework\Assert::assertEquals(
+			204, $response->getStatusCode()
 		);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$decodedResponse = \json_decode(
-			$this->featureContext->getResponse()->getBody(), true
-		);
-		if (isset($decodedResponse['status'])) {
-			PHPUnit\Framework\Assert::assertNotEquals(
-				'error', $decodedResponse['status']
-			);
-		}
 	}
 
 	/**
@@ -70,20 +72,66 @@ class TrashbinContext implements Context {
 	 * @return array response
 	 */
 	public function listTrashbinFolder($user, $path) {
-		$params = '?dir=' . \rawurlencode('/' . \trim($path, '/'));
-		$this->featureContext->sendingToWithDirectUrl(
+		$path = $path ?? '/';
+		$responseXml = WebDavHelper::listFolder(
+			$this->featureContext->getBaseUrl(),
 			$user,
-			'GET',
-			"/index.php/apps/files_trashbin/ajax/list.php$params",
-			null
+			$this->featureContext->getPasswordForUser($user),
+			"/trash-bin/$user/$path",
+			1,
+			[
+				'oc:trashbin-original-filename',
+				'oc:trashbin-original-location',
+				'oc:trashbin-delete-timestamp',
+				'd:getlastmodified'
+			],
+			'trash-bin'
 		);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 
-		$decodedResponse = \json_decode(
-			$this->featureContext->getResponse()->getBody(), true
+		$xmlElements = $responseXml->xpath('//d:response');
+		$files = \array_map(
+			static function (SimpleXMLElement $element) {
+				$href = $element->xpath('./d:href')[0];
+
+				$propStats = $element->xpath('./d:propstat');
+				$successPropStat = \array_filter(
+					$propStats, static function (SimpleXMLElement $propStat) {
+						$status = $propStat->xpath('./d:status');
+						return (string)$status[0] === 'HTTP/1.1 200 OK';
+					}
+				);
+				if (isset($successPropStat[0])) {
+					$successPropStat = $successPropStat[0];
+
+					$name = $successPropStat->xpath('./d:prop/oc:trashbin-original-filename');
+					$mtime = $successPropStat->xpath('./d:prop/oc:trashbin-delete-timestamp');
+					$originalLocation = $successPropStat->xpath('./d:prop/oc:trashbin-original-location');
+				} else {
+					$name = [];
+					$mtime = [];
+					$originalLocation = [];
+				}
+
+				return [
+				'href' => (string)$href,
+				'name' => isset($name[0]) ? (string)$name[0] : null,
+				'mtime' => isset($mtime[0]) ? (string)$mtime[0] : null,
+				'original-location' => isset($originalLocation[0]) ? (string)$originalLocation[0] : null
+				];
+			}, $xmlElements
 		);
 
-		return $decodedResponse['data']['files'];
+		// filter root element
+		$files = \array_filter(
+			$files, static function ($element) use ($user, $path) {
+				$path = \ltrim($path, '/');
+				if ($path !==  '') {
+					$path .= '/';
+				}
+				return ($element['href'] !== "/remote.php/dav/trash-bin/$user/$path");
+			}
+		);
+		return $files;
 	}
 
 	/**
@@ -108,14 +156,8 @@ class TrashbinContext implements Context {
 			return;
 		}
 
-		$subdir = \trim(\dirname($sections[1]), '/');
-		if ($subdir !== '' && $subdir !== '.') {
-			$subdir = "$firstEntry/$subdir";
-		} else {
-			$subdir = $firstEntry;
-		}
-
-		$listing = $this->listTrashbinFolder($user, $subdir);
+		// TODO: handle deeper structures
+		$listing = $this->listTrashbinFolder($user, \basename(\rtrim($firstEntry['href'], '/')));
 		$checkedName = \basename($path);
 
 		$found = false;
@@ -141,41 +183,32 @@ class TrashbinContext implements Context {
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = \trim($originalPath, '/');
 
-		$found = false;
 		foreach ($listing as $entry) {
-			if (\substr($entry['extraData'], 0, 2) === "./") {
-				$entry['extraData'] = \substr($entry['extraData'], 2);
-			}
-			if ($entry['extraData'] === $originalPath) {
-				$found = true;
-				break;
+			if ($entry['original-location'] === $originalPath) {
+				return true;
 			}
 		}
-		return $found;
+		return false;
 	}
 
 	/**
 	 * @param string $user
-	 * @param string $elementTrashID
+	 * @param string $trashItemHRef
+	 * @param string $originalLocation
 	 *
 	 * @return void
 	 */
-	private function sendUndeleteRequest($user, $elementTrashID) {
-		$body = new \Behat\Gherkin\Node\TableNode(
-			[['files',  "[\"$elementTrashID\"]"], ['dir', '/']]
+	private function sendUndeleteRequest($user, $trashItemHRef, $originalLocation) {
+		$destinationValue = $this->featureContext->getBaseUrl() . "/remote.php/dav/files/$user/$originalLocation";
+
+		$trashItemHRef = \substr($trashItemHRef, 15);
+		$headers['Destination'] = $destinationValue;
+		$response = $this->featureContext->makeDavRequest(
+			$user, 'MOVE', $trashItemHRef, $headers, null, 'trash-bin', null, 2
 		);
-		$this->featureContext->sendingToWithDirectUrl(
-			$user, 'POST', "/index.php/apps/files_trashbin/ajax/undelete.php", $body
+		PHPUnit\Framework\Assert::assertEquals(
+			201, $response->getStatusCode()
 		);
-		$this->featureContext->theHTTPStatusCodeShouldBe('200');
-		$decodedResponse = \json_decode(
-			$this->featureContext->getResponse()->getBody(), true
-		);
-		if (isset($decodedResponse['status'])) {
-			PHPUnit\Framework\Assert::assertNotEquals(
-				'error', $decodedResponse['status']
-			);
-		}
 	}
 
 	/**
@@ -189,13 +222,11 @@ class TrashbinContext implements Context {
 		$originalPath = \trim($originalPath, '/');
 
 		foreach ($listing as $entry) {
-			if (\substr($entry['extraData'], 0, 2) === "./") {
-				$entry['extraData'] = \substr($entry['extraData'], 2);
-			}
-			if ($entry['extraData'] === $originalPath) {
+			if ($entry['original-location'] === $originalPath) {
 				$this->sendUndeleteRequest(
 					$user,
-					$entry['name'] . '.d' . \floor((integer)$entry['mtime'] / 1000)
+					$entry['href'],
+					$entry['original-location']
 				);
 				break;
 			}
@@ -266,7 +297,7 @@ class TrashbinContext implements Context {
 
 		foreach ($listing as $entry) {
 			if ($entry['name'] === $name) {
-				return $entry['name'] . '.d' . ((int)$entry['mtime'] / 1000);
+				return $entry;
 			}
 		}
 
