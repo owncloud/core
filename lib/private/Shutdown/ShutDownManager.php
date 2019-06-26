@@ -55,6 +55,8 @@ class ShutDownManager implements IShutdownManager {
 	}
 
 	public function run(): void {
+		$callbacksCount = \count($this->callbacks);
+		\var_dump($callbacksCount);
 		\ksort($this->callbacks);
 		foreach ($this->callbacks as $callbacks) {
 			foreach ($callbacks as $callback) {
