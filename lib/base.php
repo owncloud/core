@@ -847,7 +847,11 @@ class OC {
 				\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
 				\OC::$server->getSecureRandom());
 
-			$controller = new OC\Core\Controller\SetupController($setupHelper);
+			$controller = new OC\Core\Controller\SetupController(
+				$setupHelper,
+				\OC::$server->getConfig(),
+				\OC::$server->getLogger()
+			);
 			$controller->run($_POST);
 			exit();
 		}
