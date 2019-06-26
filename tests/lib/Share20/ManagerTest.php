@@ -983,7 +983,7 @@ class ManagerTest extends \Test\TestCase {
 		}
 	}
 
-	public function testvalidateExpirationDateEnforceValid() {
+	public function testvalidateExpirationDateNoDefaultEnforceValid() {
 		// Expire date in the past
 		$future = new \DateTime();
 		$future->add(new \DateInterval('P2D'));
@@ -1048,7 +1048,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertNull($share->getExpirationDate());
 	}
 
-	public function testvalidateExpirationDateNoDateDefault() {
+	public function testvalidateExpirationDateNoDateButDefault() {
 		$future = new \DateTime();
 		$future->add(new \DateInterval('P3D'));
 		$future->setTime(0, 0, 0);
@@ -1056,7 +1056,6 @@ class ManagerTest extends \Test\TestCase {
 		$expected = clone $future;
 
 		$share = $this->manager->newShare();
-		$share->setExpirationDate($future);
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
