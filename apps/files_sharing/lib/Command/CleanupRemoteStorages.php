@@ -166,12 +166,15 @@ class CleanupRemoteStorages extends Command {
 		$query = $queryBuilder->execute();
 
 		$remoteShareIds = [];
+		$remoteShareData = [];
 
 		while ($row = $query->fetch()) {
 			$remoteShareIds[$row['id']] = 'shared::' . \md5($row['share_token'] . '@' . $row['remote']);
+			$remoteShareData[$row['id']] = 'shared::' . $row['share_token'] . '@' . $row['remote'];
 		}
 
 		\var_dump($remoteShareIds);
+		\var_dump($remoteShareData);
 		return $remoteShareIds;
 	}
 }
