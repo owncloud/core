@@ -13,15 +13,14 @@ function loadDirectory($path) {
 	if (\strcasecmp(\basename($path), 'ui') === 0) {
 		return;
 	}
-	if ($dh = \opendir($path)) {
-		while ($name = \readdir($dh)) {
-			if ($name[0] !== '.') {
-				$file = $path . '/' . $name;
-				if (\is_dir($file)) {
-					loadDirectory($file);
-				} elseif (\substr($name, -4, 4) === '.php') {
-					require_once $file;
-				}
+	$dirEntries = \scandir($path);
+	foreach ($dirEntries as $name) {
+		if ($name[0] !== '.') {
+			$file = $path . '/' . $name;
+			if (\is_dir($file)) {
+				loadDirectory($file);
+			} elseif (\substr($name, -4, 4) === '.php') {
+				require_once $file;
 			}
 		}
 	}
