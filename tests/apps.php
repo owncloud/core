@@ -45,7 +45,13 @@ foreach ($apps as $app) {
 		continue;
 	}
 	$dir = OC_App::getAppPath($app);
-	if (\is_dir($dir . '/tests')) {
-		loadDirectory($dir . '/tests');
+
+	// only consider the "built-in" apps found in the apps directory
+	// we do not want to automatically run unit tests for extra apps
+	// that might be in a secondary apps dir like apps-external
+	if (\basename(\dirname($dir)) === "apps") {
+		if (\is_dir($dir . '/tests')) {
+			loadDirectory($dir . '/tests');
+		}
 	}
 }
