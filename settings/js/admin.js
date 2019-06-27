@@ -53,7 +53,7 @@ $(document).ready(function(){
 	$('#shareapiExpireAfterNDays').change(function() {
 		var value = $(this).val();
 		if (value <= 0) {
-			$(this).val("1");
+			$(this).val("7");
 		}
 	});
 
