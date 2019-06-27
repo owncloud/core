@@ -262,6 +262,21 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
+	 * @Then /^the public should not be able to download file "([^"]*)" from inside the last public shared folder without a password$/
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function shouldNotBeAbleToDownloadFileInsidePublicSharedFolder(
+		$path
+	) {
+		$this->shouldNotBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
+			"", $path, ""
+		);
+	}
+
+	/**
 	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public shared folder with password "([^"]*)" and the content should be "([^"]*)"$/
 	 *
 	 * @param string $path
@@ -275,6 +290,22 @@ class PublicWebDavContext implements Context {
 	) {
 		$this->shouldBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
 			"", $path, $password, $content
+		);
+	}
+
+	/**
+	 * @Then /^the public should not be able to download file "([^"]*)" from inside the last public shared folder with password "([^"]*)"$/
+	 *
+	 * @param string $path
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function shouldNotBeAbleToDownloadFileInsidePublicSharedFolderWithPassword(
+		$path, $password
+	) {
+		$this->shouldNotBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
+			"", $path, $password
 		);
 	}
 
@@ -298,6 +329,24 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
+	 * @Then /^the public should not be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder with password "([^"]*)"$/
+	 *
+	 * @param string $range
+	 * @param string $path
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function shouldNotBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
+		$range, $path, $password
+	) {
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPasswordAndRange(
+			$path, $password, $range
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBe(401);
+	}
+
+	/**
 	 * @Then /^the public should be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder and the content should be "([^"]*)"$/
 	 *
 	 * @param string $range
@@ -311,6 +360,22 @@ class PublicWebDavContext implements Context {
 	) {
 		$this->shouldBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
 			$range, $path, "", $content
+		);
+	}
+
+	/**
+	 * @Then /^the public should not be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder without a password$/
+	 *
+	 * @param string $range
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function shouldNotBeAbleToDownloadRangeOfFileInsidePublicSharedFolder(
+		$range, $path
+	) {
+		$this->shouldNotBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
+			$range, $path, ""
 		);
 	}
 

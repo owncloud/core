@@ -405,6 +405,15 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then the last public shared file should not be able to be downloaded without a password
+	 *
+	 * @return void
+	 */
+	public function theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithoutAPassword() {
+		$this->theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithPassword(null);
+	}
+
+	/**
 	 * @Then /^the last public shared file should be able to be downloaded with password "([^"]*)"$/
 	 *
 	 * @param string $password
