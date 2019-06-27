@@ -1038,6 +1038,22 @@ class FileTest extends TestCase {
 	}
 
 	/**
+	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
+	 */
+	public function testSetNameRenameOperationFailed() {
+		$view = $this->createMock(View::class);
+		$view->method('verifyPath')->willReturn(true);
+		$view->method('getRelativePath')->will($this->returnArgument(0));
+		$view->method('rename')->willReturn(false);
+
+		$info = new FileInfo('/test.txt', $this->getMockStorage(), null, [
+			'permissions' => Constants::PERMISSION_ALL
+		], null);
+		$file = new File($view, $info);
+		$file->setName('/new_test_renamed.txt');
+	}
+
+	/**
 	 */
 	public function testUploadAbort() {
 		// setup
