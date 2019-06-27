@@ -52,6 +52,7 @@ Feature: Autocompletion of share-with names
     And the users own name should not be listed in the autocomplete list on the webUI
     And user "other" should not be listed in the autocomplete list on the webUI
 
+  @skipOnLDAP
   Scenario: autocompletion for a pattern that does not match any user or group
     Given user "regularuser" has logged in using the webUI
     And the user has browsed to the files page
