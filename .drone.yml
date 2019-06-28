@@ -140,7 +140,7 @@ pipeline:
       - make test-php-phan
     when:
       matrix:
-        TEST_SUITE: phan
+        TEST_SUITE: disabled-phan
 
   php-phan-73:
     image: owncloudci/php:7.3
@@ -149,7 +149,7 @@ pipeline:
       - make test-php-phan
     when:
       matrix:
-        TEST_SUITE: phan
+        TEST_SUITE: disabled-phan
 
   install-server:
     image: owncloudci/php:${PHP_VERSION}
