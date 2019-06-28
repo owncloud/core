@@ -51,9 +51,9 @@ else
   GROUP="--group DB"
 fi
 
-phpunit_cmd="php ./lib/composer/bin/phpunit"
+phpunit_cmd="php -d zend.enable_gc=1 ./lib/composer/bin/phpunit"
 if [[ "${COVERAGE}" == "true" ]]; then
-    phpunit_cmd="phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit"
+    phpunit_cmd="phpdbg -d memory_limit=4096M -d zend.enable_gc=1 -rr ./lib/composer/bin/phpunit"
 fi
 
 if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
