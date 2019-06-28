@@ -94,6 +94,9 @@ class TempManager implements ITempManager {
 				$fileNameWithPostfix = $this->buildFileNameWithSuffix($file, $postFix);
 				\touch($fileNameWithPostfix);
 				\chmod($fileNameWithPostfix, 0600);
+				echo "TempManager:getTemporaryFile created $fileNameWithPostfix\n";
+				echo "memory_get_usage " . \memory_get_usage() . "\n";
+				echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 				$this->current[] = $fileNameWithPostfix;
 				return $fileNameWithPostfix;
 			}

@@ -120,10 +120,20 @@ class TAR extends Archive {
 		if ($this->fileExists($path)) {
 			$this->remove($path);
 		}
+		echo "addFile $path $source\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		if ($source and $source[0] == '/' and \file_exists($source)) {
+			echo "get contents $source\n";
 			$source = \file_get_contents($source);
+			echo "after get contents length of source " . \strlen($source) . "\n";
+			echo "memory_get_usage " . \memory_get_usage() . "\n";
+			echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		}
 		$result = $this->tar->addString($path, $source);
+		echo "after addString\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		$this->fileList = false;
 		$this->cachedHeaders = false;
 		return $result;

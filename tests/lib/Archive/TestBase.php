@@ -120,24 +120,48 @@ abstract class TestBase extends \Test\TestCase {
 		\OCP\Files::rmdirr($tmpDir);
 	}
 	public function testMoveRemove() {
+		echo \date('H:i:s') . " Starting Archive:TestBase:testMoveRemove\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		$dir=\OC::$SERVERROOT.'/tests/data';
 		$textFile=$dir.'/lorem.txt';
 		$this->instance=$this->getNew();
 		$this->instance->addFile('lorem.txt', $textFile);
 		$this->assertFalse($this->instance->fileExists('target.txt'));
+		echo \date('H:i:s') . " Starting Archive:TestBase:testMoveRemove rename\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		$this->instance->rename('lorem.txt', 'target.txt');
 		$this->assertTrue($this->instance->fileExists('target.txt'));
 		$this->assertFalse($this->instance->fileExists('lorem.txt'));
 		$this->assertStringEqualsFile($textFile, $this->instance->getFile('target.txt'));
+		echo \date('H:i:s') . " Starting Archive:TestBase:testMoveRemove remove\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		$this->instance->remove('target.txt');
 		$this->assertFalse($this->instance->fileExists('target.txt'));
+		echo \date('H:i:s') . " Finished Archive:TestBase:testMoveRemove\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 	public function testRecursive() {
+		echo \date('H:i:s') . " Starting Archive:TestBase:testRecursive\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		$dir=\OC::$SERVERROOT.'/tests/data';
 		$this->instance=$this->getNew();
+		echo \date('H:i:s') . " Calling addRecursive\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		$this->instance->addRecursive('/dir', $dir);
+		echo \date('H:i:s') . " Finished addRecursive\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		$this->assertTrue($this->instance->fileExists('/dir/lorem.txt'));
 		$this->assertTrue($this->instance->fileExists('/dir/data.zip'));
 		$this->assertTrue($this->instance->fileExists('/dir/data.tar.gz'));
+		echo \date('H:i:s') . " Finished testRecursive\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }
