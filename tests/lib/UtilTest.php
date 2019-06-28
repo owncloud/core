@@ -436,6 +436,7 @@ class UtilTest extends \Test\TestCase {
 
 		\OC_Util::$scripts = [];
 		\OC_Util::$styles = [];
+		\OC::$server->getConfig()->deleteSystemValue('skeletondirectory');
 	}
 
 	public function testAddScript() {

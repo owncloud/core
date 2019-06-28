@@ -57,6 +57,7 @@
  */
 
 use OCP\Authentication\Exceptions\AccountCheckException;
+use OCP\Files\Folder;
 use OCP\Files\NoReadAccessException;
 use OCP\Files\Storage\IStorage;
 use OCP\IUser;
@@ -355,11 +356,45 @@ class OC_Util {
 	}
 
 	/**
+	 * Copies the skeleton to user/files using the storage
+	 *
+	 * @param Folder $userFolder
+	 */
+	public static function copySkeletonUsingStorage(Folder $userFolder) {
+		//Set local storage
+		$skeletonDir = \OC::$server->getConfig()->getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
+		$storageArgs = [
+			'datadir' => $skeletonDir
+		];
+		$sourceStorage = new OC\Files\Storage\Local($storageArgs);
+		$sourceDirHandler = $sourceStorage->opendir('');
+		while (($file = \readdir($sourceDirHandler)) !== false) {
+			if (!OC\Files\Filesystem::isIgnoredDir($file)) {
+				try {
+					$userFolder->getStorage()->copyFromStorage($sourceStorage, $file, "files/$file");
+				} catch (\OCP\Files\NotFoundException $ex) {
+					\OC::$server->getLogger()->logException($ex);
+				}
+			}
+		}
+
+		try {
+			$userFolder->getStorage()->getScanner()->scan('', OC\Files\Cache\Scanner::SCAN_RECURSIVE);
+		} catch (\OCP\Files\StorageNotAvailableException $ex) {
+			\OC::$server->getLogger()->logException($ex);
+		} catch (\OCP\Files\NotFoundException $ex) {
+			\OC::$server->getLogger()->logException($ex);
+		}
+	}
+
+	/**
 	 * copies the skeleton to the users /files
 	 *
 	 * @param String $userId
 	 * @param \OCP\Files\Folder $userDirectory
 	 * @throws \OC\HintException
+	 *
+	 * @deprecated Use \OC_Util::copySkeletonUsingStorage($userFolder) instead.
 	 */
 	public static function copySkeleton($userId, \OCP\Files\Folder $userDirectory) {
 		$skeletonDirectory = \OC::$server->getConfig()->getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');

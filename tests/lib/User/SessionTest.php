@@ -24,6 +24,10 @@ use OC\User\Session;
 use OCP\App\IServiceLoader;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Authentication\IAuthModule;
+use OCP\Files\Cache\IScanner;
+use OCP\Files\Folder;
+use OCP\Files\IRootFolder;
+use OCP\Files\Storage\IStorage;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IRequest;
@@ -74,6 +78,11 @@ class SessionTest extends TestCase {
 		$this->serviceLoader = $this->createMock(IServiceLoader::class);
 		$this->userSyncService = $this->createMock(\OC\User\SyncService::class);
 		$this->eventDispatcher = new EventDispatcher();
+	}
+
+	protected function tearDown() {
+		$this->restoreService('RootFolder');
+		parent::tearDown();
 	}
 
 	public function testGetUser() {
@@ -192,6 +201,52 @@ class SessionTest extends TestCase {
 			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
 			$this->userSyncService, $this->eventDispatcher);
 		$userSession->setUser($user);
+	}
+
+	public function testPrepareUserLoginWithFirstTimeLogin() {
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
+		$rootFolder = $this->createMock(IRootFolder::class);
+		$useFolder = $this->createMock(Folder::class);
+		$scanner = $this->createMock(IScanner::class);
+		$scanner->method('scan')
+			->willReturn([]);
+		$storage = $this->createMock(IStorage::class);
+		$storage->method('copyFromStorage')
+			->willReturn(true);
+		$storage->method('getScanner')
+			->willReturn($scanner);
+		$useFolder->method('getStorage')
+			->willReturn($storage);
+		$rootFolder->method('getUserFolder')
+			->willReturn($useFolder);
+		$this->overwriteService('RootFolder', $rootFolder);
+
+		$manager = $this->createMock(IUserManager::class);
+		$session = $this->createMock(ISession::class);
+		$user = $this->createMock(IUser::class);
+		$user->method('getUID')
+			->willReturn('foo');
+
+		$session->method('get')
+			->with('user_id')
+			->willReturn('foo');
+
+		$manager->method('get')
+			->with('foo')
+			->willReturn($user);
+
+		$userClassEvent = new GenericEvent($user);
+		$userFirstEvent = new GenericEvent($user);
+
+		$eventDispatcher->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo(IUser::class . '::firstLogin'), $this->equalTo($userClassEvent)],
+				[$this->equalTo('user.firstlogin'), $this->equalTo($userFirstEvent)]
+			);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
+			$this->userSyncService, $eventDispatcher);
+		$this->assertNull($userSession->prepareUserLogin(true));
 	}
 
 	public function testLoginValidPasswordEnabled() {
