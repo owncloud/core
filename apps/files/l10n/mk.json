@@ -11,6 +11,7 @@
     "Unknown error \"{error}\" uploading file \"{file}\"" : "Непозната грешка \"{error}\" при прикачување на датотеката \"{file}\"",
     "Could not create folder \"{dir}\"" : "Неможе да се креира директориум \"{dir}\"",
     "Upload cancelled." : "Преземањето е прекинато.",
+    "The file {file} already exists" : "Датотеката {file} веќе постои",
     "Processing files..." : "Обработка на датотеките...",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Неможе да се прикачи {filename} Бидејќи е директориум или големината е 0 бајти",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Нема доволно простор, вие прикачувате {size1} а расположлив простор е {size2} ",

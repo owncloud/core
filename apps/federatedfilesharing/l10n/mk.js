@@ -16,6 +16,7 @@ OC.L10N.register(
     "Share it:" : "Сподели го:",
     "Add to your website" : "Додади на твојот веб сајт",
     "Share with me via ownCloud" : "Сподели со мене преку ownCloud",
-    "HTML Code:" : "HTML код:"
+    "HTML Code:" : "HTML код:",
+    "Nothing to configure." : "Нема подесувања."
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");
