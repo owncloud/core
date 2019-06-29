@@ -565,7 +565,7 @@ Feature: sharing
 
   Scenario Outline: user who is excluded from sharing tries to share a file with another user
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and without skeleton files
+    And user "user1" has been created with default attributes and skeleton files
     And group "grp1" has been created
     # Note: in user_ldap, user1 is already in grp1
     And user "user1" has been added to group "grp1"
