@@ -13,15 +13,14 @@ function loadDirectory($path) {
 	if (\strcasecmp(\basename($path), 'ui') === 0) {
 		return;
 	}
-	if ($dh = \opendir($path)) {
-		while ($name = \readdir($dh)) {
-			if ($name[0] !== '.') {
-				$file = $path . '/' . $name;
-				if (\is_dir($file)) {
-					loadDirectory($file);
-				} elseif (\substr($name, -4, 4) === '.php') {
-					require_once $file;
-				}
+	$dirEntries = \scandir($path);
+	foreach ($dirEntries as $name) {
+		if ($name[0] !== '.') {
+			$file = $path . '/' . $name;
+			if (\is_dir($file)) {
+				loadDirectory($file);
+			} elseif (\substr($name, -4, 4) === '.php') {
+				require_once $file;
 			}
 		}
 	}
@@ -46,7 +45,13 @@ foreach ($apps as $app) {
 		continue;
 	}
 	$dir = OC_App::getAppPath($app);
-	if (\is_dir($dir . '/tests')) {
-		loadDirectory($dir . '/tests');
+
+	// only consider the "built-in" apps found in the apps directory
+	// we do not want to automatically run unit tests for extra apps
+	// that might be in a secondary apps dir like apps-external
+	if (\basename(\dirname($dir)) === "apps") {
+		if (\is_dir($dir . '/tests')) {
+			loadDirectory($dir . '/tests');
+		}
 	}
 }

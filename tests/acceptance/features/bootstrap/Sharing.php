@@ -25,6 +25,7 @@
 use Behat\Gherkin\Node\TableNode;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
+use GuzzleHttp\Message\ResponseInterface;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -68,6 +69,13 @@ trait Sharing {
 	}
 
 	/**
+	 * @return void
+	 */
+	public function resetLastShareData() {
+		$this->lastShareData = null;
+	}
+
+	/**
 	 * @return int
 	 */
 	public function getLocalLastShareTime() {
@@ -79,6 +87,20 @@ trait Sharing {
 	 */
 	public function getServerLastShareTime() {
 		return (int) $this->lastShareData->data->stime;
+	}
+
+	/**
+	 *
+	 * @return int
+	 *
+	 * @throws Exception
+	 */
+	public function getServerShareTimeFromLastResponse() {
+		$stime = $this->getResponseXml()->xpath("//stime");
+		if ((bool) $stime) {
+			return (int) $stime[0];
+		}
+		throw new Exception("Last share time (i.e. 'stime') could not be found in the response.");
 	}
 
 	/**
@@ -405,6 +427,15 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then the last public shared file should not be able to be downloaded without a password
+	 *
+	 * @return void
+	 */
+	public function theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithoutAPassword() {
+		$this->theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithPassword(null);
+	}
+
+	/**
 	 * @Then /^the last public shared file should be able to be downloaded with password "([^"]*)"$/
 	 *
 	 * @param string $password
@@ -685,7 +716,7 @@ trait Sharing {
 					'Y-m-d',
 					\strtotime(
 						$contentExpected,
-						$this->getServerLastShareTime()
+						$this->getServerShareTimeFromLastResponse()
 					)
 				) . " 00:00:00";
 		}
@@ -730,7 +761,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should be included in the response$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should be included in the response$/
 	 *
 	 * @param string $filename
 	 *
@@ -745,7 +776,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should not be included in the response$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should not be included in the response$/
 	 *
 	 * @param string $filename
 	 *
@@ -760,7 +791,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should be included as path in the response$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should be included as path in the response$/
 	 *
 	 * @param string $filename
 	 *
@@ -775,7 +806,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should not be included as path in the response$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should not be included as path in the response$/
 	 *
 	 * @param string $filename
 	 *
@@ -1194,7 +1225,75 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user) {
-		$share_id = $this->lastShareData->data[0]->id;
+		$share_id = $this->getLastShareIdOf($user);
+		$this->getShareData($user, $share_id);
+	}
+
+	/**
+	 * Get id of the last share of the user
+	 *
+	 * If lastShareData was not of $user, it fetches all shares for that user,
+	 * and extracts the id for last share from the response
+	 *
+	 * @param string $user
+	 *
+	 * @return int|null
+	 * @throws Exception
+	 */
+	public function getLastShareIdOf($user) {
+		if ($this->lastShareData !== null) {
+			return (int)$this->lastShareData->data[0]->id;
+		}
+
+		$this->getListOfShares($user);
+		$id = $this->extractLastSharedIdFromLastResponse();
+		if ($id === null) {
+			throw new Exception("Could not find id in the last response.");
+		}
+		return $id;
+	}
+
+	/**
+	 * Retrieves all the shares of the respective user
+	 *
+	 * @param string $user
+	 *
+	 * @return ResponseInterface
+	 */
+	public function getListOfShares($user) {
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
+			. "v{$this->sharingApiVersion}/shares";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user, $this->getPasswordForUser($user)
+		);
+		return $this->response;
+	}
+
+	/**
+	 * Extracts `id` from responseXml
+	 *
+	 * @return int|null
+	 */
+	public function extractLastSharedIdFromLastResponse() {
+		// extract max id
+		$xpath = '/ocs/data/element/id[not (. < ../../element/id)][1]';
+		$id = $this->getResponseXml()->xpath($xpath);
+		if ((bool) $id) {
+			return (int) $id[0];
+		}
+		return null;
+	}
+
+	/**
+	 * Get share data of specific share_id
+	 *
+	 * @param string $user
+	 * @param int $share_id
+	 *
+	 * @return void
+	 */
+	public function getShareData($user, $share_id) {
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "GET", $url, null

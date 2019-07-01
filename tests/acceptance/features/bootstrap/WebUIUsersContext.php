@@ -662,4 +662,32 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->usersPage->setSetting('Show email address');
 		$this->usersPage->changeUserEmail($this->getSession(), $username, $email);
 	}
+
+	/**
+	 * @Then /^the user count of group "([^"]*)" should display (\d+) users on the webUI$/
+	 *
+	 * @param string $group
+	 * @param int $count
+	 *
+	 * @return void
+	 */
+	public function theUserCountOfGroupShouldDisplayUsersOnTheWebUI($group, $count) {
+		$expectedCount = (int) $count;
+		$actualCount = $this->usersPage->getUserCountOfGroup($group);
+		PHPUnit\Framework\Assert::assertEquals($expectedCount, $actualCount);
+	}
+
+	/**
+	 * @Then the user count of group :group should not be displayed on the webUI
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theUserCountOfGroupShouldNotBeDisplayedOnTheWebui($group) {
+		$count = $this->usersPage->getUserCountOfGroup($group);
+		PHPUnit\Framework\Assert::assertNull(
+			$count, "Failed asserting that user count of group $group is not displayed"
+		);
+	}
 }

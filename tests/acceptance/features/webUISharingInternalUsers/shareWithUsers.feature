@@ -371,3 +371,24 @@ Feature: Sharing files and folders with internal users
     And folder "zzzfolder" should be marked as shared by "User Two" on the webUI
     And folder "zzzfolder (2)" should be listed on the webUI
     And folder "zzzfolder (2)" should be marked as shared by "User Three" on the webUI
+
+  Scenario Outline:  user names are not case-sensitive, sharing same file to user specifying different upper and lower case names
+    Given these users have been created with default attributes and without skeleton files:
+      | username       |
+      | user1          |
+      | brand-new-user |
+    And user "user1" has created folder "/simple-folder"
+    And user "user1" has shared folder "simple-folder" with user "brand-new-user"
+    And user "user1" has logged in using the webUI
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "<user_id1>" in the share-with-field
+    Then a tooltip with the text "No users or groups found for <user_id1>" should be shown near the share-with-field on the webUI
+    When the user types "<user_id2>" in the share-with-field
+    Then a tooltip with the text "No users or groups found for <user_id2>" should be shown near the share-with-field on the webUI
+    When the user types "<user_id3>" in the share-with-field
+    Then a tooltip with the text "No users or groups found for <user_id3>" should be shown near the share-with-field on the webUI
+    Examples:
+      | user_id1          | user_id2       | user_id3       |
+      | Brand-New-User    | brand-new-user | BRAND-NEW-USER |
+      | brand-new-user    | BRAND-NEW-USER | Brand-New-User |
+      | BRAND-NEW-USER    | Brand-New-User | brand-new-user |

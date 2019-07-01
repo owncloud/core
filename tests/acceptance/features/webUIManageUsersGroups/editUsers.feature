@@ -110,3 +110,22 @@ Feature: edit users
       | New-Group | new-group | NEW-GROUP |
       | new-group | NEW-GROUP | New-Group |
       | NEW-GROUP | New-Group | new-group |
+
+  Scenario: removing multiple users from a group
+    Given these users have been created without skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+      | user2    |
+    And group "grp1" has been created
+    And user "user0" has been added to group "grp1"
+    And user "user1" has been added to group "grp1"
+    And user "user2" has been added to group "grp1"
+    And the administrator has browsed to the users page
+    When the administrator removes user "user0" from group "grp1" using the webUI
+    And the administrator removes user "user1" from group "grp1" using the webUI
+    Then the user count of group "grp1" should display 1 users on the webUI
+    When the administrator removes user "user2" from group "grp1" using the webUI
+    Then the user count of group "grp1" should not be displayed on the webUI
+    When the administrator reloads the users page
+    Then the user count of group "grp1" should not be displayed on the webUI

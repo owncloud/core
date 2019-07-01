@@ -214,8 +214,16 @@ Feature: add users
       | Brand-New-User    | BRAND-NEW-USER | brand-new-user |
       | brand-new-user    | Brand-New-User | BRAND-NEW-USER |
 
-  Scenario: admin tries to create an existing user but with username containing capital letters
-    Given user "user1" has been created with default attributes and without skeleton files
-    When the administrator creates a user with the name "USER1" and the password "password" using the webUI
+  Scenario Outline: user names are not case-sensitive, multiple users can't exist with different upper and lower case names
+    When the administrator creates a user with the name "<user_id1>" and the password "password" using the webUI
+    And the administrator creates a user with the name "<user_id2>" and the password "password" using the webUI
     Then notifications should be displayed on the webUI with the text
       | Error creating user: A user with that name already exists. |
+    When the administrator creates a user with the name "<user_id3>" and the password "password" using the webUI
+    Then notifications should be displayed on the webUI with the text
+      | Error creating user: A user with that name already exists. |
+    Examples:
+      | user_id1          | user_id2       | user_id3       |
+      | Brand-New-User    | brand-new-user | BRAND-NEW-USER |
+      | brand-new-user    | BRAND-NEW-USER | Brand-New-User |
+      | BRAND-NEW-USER    | Brand-New-User | brand-new-user |

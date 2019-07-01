@@ -7,7 +7,7 @@ Feature: sharing
 
   @smokeTest
   @skipOnEncryptionType:user-keys @issue-32322
-  Scenario Outline: Creating a share of a file with a user
+  Scenario Outline: Creating a share of a file with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     When user "user0" shares file "welcome.txt" with user "user1" using the sharing API
@@ -54,7 +54,7 @@ Feature: sharing
       | 1               | 2                     | 3                   | 100             |
       | 2               | 2                     | 3                   | 200             |
 
-  Scenario Outline: Creating a share of a folder with a user
+  Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     When user "user0" shares folder "/FOLDER" with user "user1" using the sharing API
@@ -71,7 +71,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  Scenario Outline: Creating a share of a file with a group
+  Scenario Outline: Creating a share of a file with a group, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
     When user "user0" shares file "/welcome.txt" with group "grp1" using the sharing API
@@ -88,7 +88,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  Scenario Outline: Creating a share of a folder with a group
+  Scenario Outline: Creating a share of a folder with a group, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
     When user "user0" shares folder "/FOLDER" with group "grp1" using the sharing API
@@ -126,12 +126,24 @@ Feature: sharing
       | 2               | 200             |
 
   @public_link_share-feature-required
-  Scenario Outline: Creating a new public link share of a file
+  Scenario Outline: Creating a new public link share of a file, the default permissions are read (1)
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
       | path | welcome.txt |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | item_type              | file         |
+      | mimetype               | text/plain   |
+      | file_target            | /welcome.txt |
+      | path                   | /welcome.txt |
+      | permissions            | 1            |
+      | share_type             | 3            |
+      | displayname_file_owner | User Zero    |
+      | displayname_owner      | User Zero    |
+      | uid_file_owner         | user0        |
+      | uid_owner              | user0        |
+      | name                   |              |
     And the last public shared file should be able to be downloaded without a password
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -146,7 +158,21 @@ Feature: sharing
       | password | %public%    |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | item_type              | file         |
+      | mimetype               | text/plain   |
+      | file_target            | /welcome.txt |
+      | path                   | /welcome.txt |
+      | permissions            | 1            |
+      | share_type             | 3            |
+      | displayname_file_owner | User Zero    |
+      | displayname_owner      | User Zero    |
+      | uid_file_owner         | user0        |
+      | uid_owner              | user0        |
+      | name                   |              |
     And the last public shared file should be able to be downloaded with password "%public%"
+    But the last public shared file should not be able to be downloaded with password "%regular%"
+    And the last public shared file should not be able to be downloaded without a password
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -161,12 +187,17 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | file_target | /welcome.txt |
-      | path        | /welcome.txt |
-      | item_type   | file         |
-      | share_type  | 3            |
-      | permissions | 1            |
-      | uid_owner   | user0        |
+      | item_type              | file         |
+      | mimetype               | text/plain   |
+      | file_target            | /welcome.txt |
+      | path                   | /welcome.txt |
+      | permissions            | 1            |
+      | share_type             | 3            |
+      | displayname_file_owner | User Zero    |
+      | displayname_owner      | User Zero    |
+      | uid_file_owner         | user0        |
+      | uid_owner              | user0        |
+      | name                   |              |
     And the last public shared file should be able to be downloaded without a password
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -174,14 +205,54 @@ Feature: sharing
       | 2               | 200             |
 
   @public_link_share-feature-required
-  Scenario Outline: Creating a new public link share of a folder
+  Scenario Outline: Creating a new public link share of a folder, the default permissions are read (1) and can be accessed with no password or any password
+    Given using OCS API version "<ocs_api_version>"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path     | PARENT   |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | item_type              | folder               |
+      | mimetype               | httpd/unix-directory |
+      | file_target            | /PARENT              |
+      | path                   | /PARENT              |
+      | permissions            | 1                    |
+      | share_type             | 3                    |
+      | displayname_file_owner | User Zero            |
+      | displayname_owner      | User Zero            |
+      | uid_file_owner         | user0                |
+      | uid_owner              | user0                |
+      | name                   |                      |
+    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder and the content should be "wnCloud"
+    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder with password "%regular%" and the content should be "wnCloud"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @public_link_share-feature-required
+  Scenario Outline: Creating a new public link share of a folder, with a password
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
       | path     | PARENT   |
       | password | %public% |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    Then the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder with password "%public%" and the content should be "wnCloud"
+    And the fields of the last response should include
+      | item_type              | folder               |
+      | mimetype               | httpd/unix-directory |
+      | file_target            | /PARENT              |
+      | path                   | /PARENT              |
+      | permissions            | 1                    |
+      | share_type             | 3                    |
+      | displayname_file_owner | User Zero            |
+      | displayname_owner      | User Zero            |
+      | uid_file_owner         | user0                |
+      | uid_owner              | user0                |
+      | name                   |                      |
+    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder with password "%public%" and the content should be "wnCloud"
+    But the public should not be able to download file "/parent.txt" from inside the last public shared folder without a password
+    And the public should not be able to download file "/parent.txt" from inside the last public shared folder with password "%regular%"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -254,23 +325,6 @@ Feature: sharing
     And the HTTP status code should be "401"
 
   @public_link_share-feature-required
-  Scenario Outline: Creating a link share with no specified permissions defaults to read permissions
-    Given using OCS API version "<ocs_api_version>"
-    And user "user0" has created folder "/afolder"
-    When user "user0" creates a public link share using the sharing API with settings
-      | path | /afolder |
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
-    And the fields of the last response should include
-      | id          | A_NUMBER |
-      | share_type  | 3        |
-      | permissions | 1        |
-    Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
-
-  @public_link_share-feature-required
   Scenario Outline: Creating a link share with no specified permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -329,8 +383,8 @@ Feature: sharing
     And user "user1" has been created with default attributes and skeleton files
     And group "grp4" has been created
     And user "user1" has been added to group "grp4"
-    When user "user0" shares file "/PARENT" with user "user1" using the sharing API
-    And user "user0" shares file "/PARENT/CHILD" with group "grp4" using the sharing API
+    When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
+    And user "user0" shares folder "/PARENT/CHILD" with group "grp4" using the sharing API
     Then user "user1" should see the following elements
       | /FOLDER/                 |
       | /PARENT/                 |
@@ -410,8 +464,8 @@ Feature: sharing
       | user2    |
     And user "user0" has created folder "/foo"
     And user "user1" has created folder "/foo"
-    When user "user0" shares file "/foo" with user "user2" using the sharing API
-    And user "user1" shares file "/foo" with user "user2" using the sharing API
+    When user "user0" shares folder "/foo" with user "user2" using the sharing API
+    And user "user1" shares folder "/foo" with user "user2" using the sharing API
     Then user "user2" should see the following elements
       | /foo/       |
       | /foo%20(2)/ |
@@ -437,8 +491,8 @@ Feature: sharing
     And group "grp1" has been created
     And user "user0" has created folder "/test"
     And user "user0" has created folder "/test/sub"
-    And user "user0" has shared file "/test" with group "grp1"
-    When user "user0" shares file "/test/sub" with user "user1" using the sharing API
+    And user "user0" has shared folder "/test" with group "grp1"
+    When user "user0" shares folder "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "user1" folder "/sub" should exist
@@ -454,8 +508,8 @@ Feature: sharing
     And user "user0" has been added to group "grp1"
     And user "user0" has created folder "/test"
     And user "user0" has created folder "/test/sub"
-    And user "user0" has shared file "/test" with group "grp1"
-    When user "user0" shares file "/test/sub" with user "user1" using the sharing API
+    And user "user0" has shared folder "/test" with group "grp1"
+    When user "user0" shares folder "/test/sub" with user "user1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "user1" folder "/sub" should exist
@@ -473,22 +527,22 @@ Feature: sharing
       | user3    |
       | user4    |
     And user "user0" has created folder "/folder1"
-    And user "user0" has shared file "/folder1" with user "user1"
-    And user "user0" has shared file "/folder1" with user "user2"
+    And user "user0" has shared folder "/folder1" with user "user1"
+    And user "user0" has shared folder "/folder1" with user "user2"
     And user "user0" has created folder "/folder1/folder2"
-    And user "user0" has shared file "/folder1/folder2" with user "user3"
-    And user "user0" has shared file "/folder1/folder2" with user "user4"
+    And user "user0" has shared folder "/folder1/folder2" with user "user3"
+    And user "user0" has shared folder "/folder1/folder2" with user "user4"
     And as user "user0"
     When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the response should contain 4 entries
-    And file "/folder1" should be included as path in the response
-    And file "/folder1/folder2" should be included as path in the response
+    And folder "/folder1" should be included as path in the response
+    And folder "/folder1/folder2" should be included as path in the response
     And the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
     And the response should contain 2 entries
-    And file "/folder1" should not be included as path in the response
-    And file "/folder1/folder2" should be included as path in the response
+    And folder "/folder1" should not be included as path in the response
+    And folder "/folder1/folder2" should be included as path in the response
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -511,16 +565,17 @@ Feature: sharing
 
   Scenario Outline: user who is excluded from sharing tries to share a file with another user
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and without skeleton files
-    And group "excludedFromSharing" has been created
-    And user "user0" has been added to group "excludedFromSharing"
+    And user "user1" has been created with default attributes and skeleton files
+    And group "grp1" has been created
+    # Note: in user_ldap, user1 is already in grp1
+    And user "user1" has been added to group "grp1"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
-    And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["excludedFromSharing"]'
-    And user "user0" has moved file "welcome.txt" to "fileToShare.txt"
-    When user "user0" shares file "fileToShare.txt" with user "user1" using the sharing API
+    And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1"]'
+    And user "user1" has moved file "welcome.txt" to "fileToShare.txt"
+    When user "user1" shares file "fileToShare.txt" with user "user0" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
-    And as "user1" file "fileToShare.txt" should not exist
+    And as "user0" file "fileToShare.txt" should not exist
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -528,18 +583,20 @@ Feature: sharing
 
   Scenario Outline: user who is excluded from sharing tries to share a file with a group
     Given using OCS API version "<ocs_api_version>"
-    And user "user1" has been created with default attributes and without skeleton files
-    And group "excludedFromSharing" has been created
-    And group "anotherGroup" has been created
-    And user "user0" has been added to group "excludedFromSharing"
-    And user "user1" has been added to group "anotherGroup"
+    And user "user1" has been created with default attributes and skeleton files
+    And user "user3" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And group "grp2" has been created
+    # Note: in user_ldap, user1 is already in grp1, user3 is already in grp2
+    And user "user1" has been added to group "grp1"
+    And user "user3" has been added to group "grp2"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
-    And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["excludedFromSharing"]'
-    And user "user0" has moved file "welcome.txt" to "fileToShare.txt"
-    When user "user0" shares file "fileToShare.txt" with group "anotherGroup" using the sharing API
+    And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1"]'
+    And user "user1" has moved file "welcome.txt" to "fileToShare.txt"
+    When user "user1" shares file "fileToShare.txt" with group "grp2" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
-    And as "user1" file "fileToShare.txt" should not exist
+    And as "user3" file "fileToShare.txt" should not exist
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -548,15 +605,16 @@ Feature: sharing
   Scenario Outline: user who is excluded from sharing tries to share a folder with another user
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
-    And group "excludedFromSharing" has been created
-    And user "user0" has been added to group "excludedFromSharing"
+    And group "grp1" has been created
+    # Note: in user_ldap, user1 is already in grp1
+    And user "user1" has been added to group "grp1"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
-    And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["excludedFromSharing"]'
-    And user "user0" has created folder "folderToShare"
-    When user "user0" shares folder "folderToShare" with user "user1" using the sharing API
+    And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1"]'
+    And user "user1" has created folder "folderToShare"
+    When user "user1" shares folder "folderToShare" with user "user0" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
-    And as "user1" folder "folderToShare" should not exist
+    And as "user0" folder "folderToShare" should not exist
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -565,17 +623,19 @@ Feature: sharing
   Scenario Outline: user who is excluded from sharing tries to share a folder with a group
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
-    And group "excludedFromSharing" has been created
-    And group "anotherGroup" has been created
-    And user "user0" has been added to group "excludedFromSharing"
-    And user "user1" has been added to group "anotherGroup"
+    And user "user3" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And group "grp2" has been created
+    # Note: in user_ldap, user1 is already in grp1, user3 is already in grp2
+    And user "user1" has been added to group "grp1"
+    And user "user3" has been added to group "grp2"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
-    And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["excludedFromSharing"]'
-    And user "user0" has created folder "folderToShare"
-    When user "user0" shares file "folderToShare" with group "anotherGroup" using the sharing API
+    And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1"]'
+    And user "user1" has created folder "folderToShare"
+    When user "user1" shares folder "folderToShare" with group "grp2" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
-    And as "user1" file "folderToShare" should not exist
+    And as "user2" folder "folderToShare" should not exist
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -846,3 +906,105 @@ Feature: sharing
       | ocs_api_version |
       | 1               |
       | 2               |
+
+  @skipOnLDAP @issue-ldap-250
+  Scenario Outline: group names are case-sensitive, sharing with groups with different upper and lower case names
+    Given using OCS API version "<ocs_api_version>"
+    And group "<group_id1>" has been created
+    And group "<group_id2>" has been created
+    And group "<group_id3>" has been created
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+      | user3    |
+    And user "user1" has been added to group "<group_id1>"
+    And user "user2" has been added to group "<group_id2>"
+    And user "user3" has been added to group "<group_id3>"
+    When user "user0" shares file "textfile1.txt" with group "<group_id1>" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the content of file "textfile1.txt" for user "user1" should be "ownCloud test text file 1" plus end-of-line
+    When user "user0" shares folder "textfile2.txt" with group "<group_id2>" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the content of file "textfile2.txt" for user "user2" should be "ownCloud test text file 2" plus end-of-line
+    When user "user0" shares folder "textfile3.txt" with group "<group_id3>" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the content of file "textfile3.txt" for user "user3" should be "ownCloud test text file 3" plus end-of-line
+    Examples:
+      | ocs_api_version | group_id1           | group_id2            | group_id3            | ocs_status_code |
+      | 1              | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 100             |
+      | 1              | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 100             |
+      | 1              | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 100             |
+      | 2              | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 200             |
+      | 2              | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 200             |
+      | 2              | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 200             |
+
+  @skipOnLDAP @issue-ldap-250
+  Scenario Outline: group names are case-sensitive, sharing with non-existent groups with different upper and lower case names
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+    And group "<group_id1>" has been created
+    And user "user1" has been added to group "<group_id1>"
+    When user "user0" shares file "textfile1.txt" with group "<group_id1>" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | share_with  | <group_id1>    |
+      | file_target | /textfile1.txt |
+      | path        | /textfile1.txt |
+      | permissions | 19             |
+      | uid_owner   | user0          |
+    And the content of file "textfile1.txt" for user "user1" should be "ownCloud test text file 1" plus end-of-line
+    When user "user0" shares file "textfile2.txt" with group "<group_id2>" using the sharing API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "<http_status_code>"
+    When user "user0" shares file "textfile3.txt" with group "<group_id3>" using the sharing API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "<http_status_code>"
+    Examples:
+      |ocs_api_version | group_id1            | group_id2            | group_id3            | ocs_status_code | http_status_code |
+      | 1              | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 100             | 200              |
+      | 1              | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 100             | 200              |
+      | 1              | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 100             | 200              |
+      | 2              | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 200             | 404              |
+      | 2              | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 200             | 404              |
+      | 2              | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 200             | 404              |
+
+  @public_link_share-feature-required
+  Scenario Outline: Create a public link with default expiration date set and max expiration date enforced
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
+    And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path | textfile0.txt |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response should include
+      | file_target | /textfile0.txt |
+      | path        | /textfile0.txt |
+      | item_type   | file           |
+      | share_type  | 3              |
+      | permissions | 1              |
+      | uid_owner   | user0          |
+      | expiration  | +7 days        |
+    When user "user0" gets the info of the last share using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response should include
+      | file_target | /textfile0.txt |
+      | path        | /textfile0.txt |
+      | item_type   | file           |
+      | share_type  | 3              |
+      | permissions | 1              |
+      | uid_owner   | user0          |
+      | expiration  | +7 days        |
+    And the last public shared file should be able to be downloaded without a password
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |

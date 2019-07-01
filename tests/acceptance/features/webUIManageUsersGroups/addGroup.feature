@@ -58,3 +58,19 @@ Feature: Add group
       | "✍"                          |
       | "⛷"                           |
       | "⛹"                           |
+
+  Scenario: adding multiple users to a group
+    Given these users have been created without skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+      | user2    |
+    And group "grp1" has been created
+    And the administrator has reloaded the users page
+    When the administrator adds user "user0" to group "grp1" using the webUI
+    And the administrator adds user "user1" to group "grp1" using the webUI
+    Then the user count of group "grp1" should display 2 users on the webUI
+    When the administrator adds user "user2" to group "grp1" using the webUI
+    Then the user count of group "grp1" should display 3 users on the webUI
+    When the administrator reloads the users page
+    Then the user count of group "grp1" should display 3 users on the webUI

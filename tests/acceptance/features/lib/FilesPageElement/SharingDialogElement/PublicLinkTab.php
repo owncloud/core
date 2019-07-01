@@ -28,6 +28,7 @@ use Behat\Mink\Session;
 use Exception;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
  * The Public link tab of the Sharing Dialog
@@ -50,7 +51,7 @@ class PublicLinkTab extends OwncloudPage {
 	 * @var EditPublicLinkPopup
 	 */
 	private $editPublicLinkPopupPageObject;
-	
+
 	/**
 	 * sets the NodeElement for the current popup
 	 * a little bit like __construct() but as we access this "sub-page-object"
@@ -178,7 +179,7 @@ class PublicLinkTab extends OwncloudPage {
 	 *
 	 * @param Session $session
 	 *
-	 * @return void
+	 * @return EditPublicLinkPopup
 	 */
 	public function updateSharingPopup(Session $session) {
 		$this->editPublicLinkPopupPageObject = $this->getPage(
@@ -187,6 +188,7 @@ class PublicLinkTab extends OwncloudPage {
 		$this->editPublicLinkPopupPageObject->waitTillPageIsLoaded(
 			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->popupXpath
 		);
+		return $this->editPublicLinkPopupPageObject;
 	}
 
 	/**
