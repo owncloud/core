@@ -124,6 +124,9 @@ class BmpToResourceTest extends TestCase {
 		$stub = $this->getReadFileStub([]);
 		$resultArray = self::invokePrivate($stub, 'splitByteIntoArray', [\chr($char), $bitsPerPart]);
 		$this->assertEquals($expectedArray, $resultArray);
+		echo "In tests/lib/Image/testSplitByteIntoArray\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function bytesProvider() {

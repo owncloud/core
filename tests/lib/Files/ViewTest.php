@@ -2669,5 +2669,8 @@ class ViewTest extends TestCase {
 		$view = new View('/files');
 		$result = $view->fopen('unexist.txt', 'r');
 		$this->assertFalse($result);
+		echo "In tests/lib/Files/testFopenFail\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

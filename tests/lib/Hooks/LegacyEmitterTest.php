@@ -54,5 +54,8 @@ class LegacyEmitterTest extends BasicEmitterTest {
 		\OC_Hook::connect('Test', 'test', '\Test\Hooks\LegacyEmitterTest', 'staticLegacyArgumentsCallBack');
 		$this->emitter->emitEvent('Test', 'test', ['foo' => 'foo', 'bar' => 'bar']);
 		$this->assertTrue(self::$emitted);
+		echo "In tests/lib/Hooks/testLegacyArguments\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

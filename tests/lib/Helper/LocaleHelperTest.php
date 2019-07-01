@@ -147,5 +147,8 @@ class LocaleHelperTest extends TestCase {
 		$this->assertEquals($expectedUserLang, $userLang);
 		$this->assertEquals($expectedCommonLanguages, $commonLanguages);
 		$this->assertEquals($expectedLanguages, $languages);
+		echo "In tests/lib/Helper/testNormalization\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

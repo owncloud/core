@@ -97,5 +97,8 @@ class WebDavClientServiceTest extends \Test\TestCase {
 		]);
 
 		$this->assertInstanceOf(Client::class, $client);
+		echo "In tests/lib/Http/Client/testNewClientWithoutCertificate\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

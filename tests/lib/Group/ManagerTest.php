@@ -1452,5 +1452,8 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertArrayNotHasKey('user2', $users);
 		$this->assertArrayNotHasKey('user3', $users);
 		$this->assertArrayHasKey('user33', $users);
+		echo "In tests/lib/Group/testFindUsersInGroupWithOneUserBackendAndSearchEmptyAndLimitAndOffsetSpecified\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

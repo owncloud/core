@@ -102,5 +102,8 @@ class EventEmitterTraitTest extends TestCase {
 			$this->assertArrayHasKey('item', $calledAfterEvent[1]);
 			$this->assertEquals('testing', $calledAfterEvent[1]->getArgument('item'));
 		}
+		echo "In tests/lib/Events/testEmittingCallWithAdditionalArgument\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }
