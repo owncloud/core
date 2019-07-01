@@ -1613,6 +1613,34 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then user :user should be able to delete file :source
+	 *
+	 * @param string $user
+	 * @param string $source
+	 *
+	 * @return void
+	 */
+	public function userShouldBeAbleToDeleteFile($user, $source) {
+		$this->asFileOrFolderShouldExist($user, "file", $source);
+		$this->userDeletesFile($user, $source);
+		$this->asFileOrFolderShouldNotExist($user, "file", $source);
+	}
+
+	/**
+	 * @Then user :user should not be able to delete file :source
+	 *
+	 * @param string $user
+	 * @param string $source
+	 *
+	 * @return void
+	 */
+	public function theUserShouldNotBeAbleToDeleteFile($user, $source) {
+		$this->asFileOrFolderShouldExist($user, "file", $source);
+		$this->userDeletesFile($user, $source);
+		$this->asFileOrFolderShouldExist($user, "file", $source);
+	}
+
+	/**
 	 * @Given file :file has been deleted for user :user
 	 *
 	 * @param string $file
