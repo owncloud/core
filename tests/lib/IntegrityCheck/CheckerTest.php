@@ -96,6 +96,9 @@ class CheckerTest extends TestCase {
 		$x509 = new X509();
 		$x509->loadX509($keyBundle);
 		$this->checker->writeAppSignature('NotExistingApp', $x509, $rsa);
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureOfNotExistingApp\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	/**
@@ -114,6 +117,9 @@ class CheckerTest extends TestCase {
 		$x509 = new X509();
 		$x509->loadX509($keyBundle);
 		$this->checker->writeAppSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/app/', $x509, $rsa);
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureWrongPermissions\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testWriteAppSignature() {
@@ -146,6 +152,9 @@ class CheckerTest extends TestCase {
 		$x509 = new X509();
 		$x509->loadX509($keyBundle);
 		$this->checker->writeAppSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/app/', $x509, $rsa);
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignature\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testIgnoredAppSignatureWithoutSignatureData() {
@@ -164,6 +173,9 @@ class CheckerTest extends TestCase {
 
 		$expected = [];
 		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
+		echo "In tests/lib/IntegrityCheck/testIgnoredAppSignatureWithoutSignatureData\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyAppSignatureWithoutSignatureData() {
@@ -187,6 +199,9 @@ class CheckerTest extends TestCase {
 			],
 		];
 		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
+		echo "In tests/lib/IntegrityCheck/testVerifyAppSignatureWithoutSignatureData\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyAppSignatureWithValidSignatureData() {
@@ -231,6 +246,9 @@ class CheckerTest extends TestCase {
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
 		$this->assertSame([], $this->checker->verifyAppSignature('SomeApp'));
+		echo "In tests/lib/IntegrityCheck/testVerifyAppSignatureWithValidSignatureData\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyAppSignatureWithTamperedSignatureData() {
@@ -279,6 +297,9 @@ class CheckerTest extends TestCase {
 				],
 		];
 		$this->assertEquals($expected, $this->checker->verifyAppSignature('SomeApp'));
+		echo "In tests/lib/IntegrityCheck/testVerifyAppSignatureWithTamperedSignatureData\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyAppSignatureWithTamperedFiles() {
@@ -344,6 +365,9 @@ class CheckerTest extends TestCase {
 
 		];
 		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
+		echo "In tests/lib/IntegrityCheck/testVerifyAppSignatureWithTamperedFiles\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyAppSignatureWithRenamedFiles() {
@@ -403,6 +427,9 @@ class CheckerTest extends TestCase {
 
 		];
 		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
+		echo "In tests/lib/IntegrityCheck/testVerifyAppSignatureWithRenamedFiles\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyAppSignatureWithTamperedFilesAndAlternatePath() {
@@ -467,6 +494,9 @@ class CheckerTest extends TestCase {
 
 		];
 		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp', \OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData/'));
+		echo "In tests/lib/IntegrityCheck/testVerifyAppSignatureWithTamperedFilesAndAlternatePath\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyAppWithDifferentScope() {
@@ -513,6 +543,9 @@ class CheckerTest extends TestCase {
 					],
 		];
 		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
+		echo "In tests/lib/IntegrityCheck/testVerifyAppWithDifferentScope\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyAppWithDifferentScopeAndAlwaysTrustedCore() {
@@ -555,6 +588,9 @@ class CheckerTest extends TestCase {
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
 		$this->assertSame([], $this->checker->verifyAppSignature('SomeApp'));
+		echo "In tests/lib/IntegrityCheck/testVerifyAppWithDifferentScopeAndAlwaysTrustedCore\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testWriteCoreSignature() {
@@ -591,6 +627,9 @@ class CheckerTest extends TestCase {
 		$x509 = new X509();
 		$x509->loadX509($keyBundle);
 		$this->checker->writeCoreSignature($x509, $rsa, \OC::$SERVERROOT . '/tests/data/integritycheck/app/');
+		echo "In tests/lib/IntegrityCheck/testWriteCoreSignature\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testWriteCoreSignatureWithUnmodifiedHtaccess() {
@@ -627,6 +666,9 @@ class CheckerTest extends TestCase {
 		$x509 = new X509();
 		$x509->loadX509($keyBundle);
 		$this->checker->writeCoreSignature($x509, $rsa, \OC::$SERVERROOT . '/tests/data/integritycheck/htaccessUnmodified/');
+		echo "In tests/lib/IntegrityCheck/testWriteCoreSignatureWithUnmodifiedHtaccess\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testWriteCoreSignatureWithInvalidModifiedHtaccess() {
@@ -658,6 +700,9 @@ class CheckerTest extends TestCase {
 		$x509 = new X509();
 		$x509->loadX509($keyBundle);
 		$this->checker->writeCoreSignature($x509, $rsa, \OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithInvalidModifiedContent/');
+		echo "In tests/lib/IntegrityCheck/testWriteCoreSignatureWithInvalidModifiedHtaccess\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testWriteCoreSignatureWithValidModifiedHtaccessAndUserIni() {
@@ -699,6 +744,9 @@ class CheckerTest extends TestCase {
 		$x509 = new X509();
 		$x509->loadX509($keyBundle);
 		$this->checker->writeCoreSignature($x509, $rsa, \OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithValidModifiedContent');
+		echo "In tests/lib/IntegrityCheck/testWriteCoreSignatureWithValidModifiedHtaccessAndUserIni\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyCoreSignatureWithoutSignatureData() {
@@ -719,6 +767,9 @@ class CheckerTest extends TestCase {
 			],
 		];
 		$this->assertSame($expected, $this->checker->verifyCoreSignature());
+		echo "In tests/lib/IntegrityCheck/testVerifyCoreSignatureWithoutSignatureData\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyCoreSignatureWithValidSignatureData() {
@@ -762,6 +813,9 @@ class CheckerTest extends TestCase {
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
 		$this->assertSame([], $this->checker->verifyCoreSignature());
+		echo "In tests/lib/IntegrityCheck/testVerifyCoreSignatureWithValidSignatureData\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyCoreSignatureWithValidModifiedHtaccessAndUserIniSignatureData() {
@@ -806,6 +860,9 @@ class CheckerTest extends TestCase {
 			->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
 		$this->assertSame([], $this->checker->verifyCoreSignature());
+		echo "In tests/lib/IntegrityCheck/testVerifyCoreSignatureWithValidModifiedHtaccessAndUserIniSignatureData\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyCoreSignatureWithValidSignatureDataAndNotAlphabeticOrder() {
@@ -849,6 +906,9 @@ class CheckerTest extends TestCase {
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
 		$this->assertSame([], $this->checker->verifyCoreSignature());
+		echo "In tests/lib/IntegrityCheck/testVerifyCoreSignatureWithValidSignatureDataAndNotAlphabeticOrder\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyCoreSignatureWithTamperedSignatureData() {
@@ -896,6 +956,9 @@ class CheckerTest extends TestCase {
 				]
 		];
 		$this->assertSame($expected, $this->checker->verifyCoreSignature());
+		echo "In tests/lib/IntegrityCheck/testVerifyCoreSignatureWithTamperedSignatureData\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyCoreSignatureWithTamperedFiles() {
@@ -960,6 +1023,9 @@ class CheckerTest extends TestCase {
 
 		];
 		$this->assertSame($expected, $this->checker->verifyCoreSignature());
+		echo "In tests/lib/IntegrityCheck/testVerifyCoreSignatureWithTamperedFiles\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyCoreSignatureWithTamperedFilesExclude() {
@@ -1018,6 +1084,9 @@ class CheckerTest extends TestCase {
 
 		];
 		$this->assertSame($expected, $this->checker->verifyCoreSignature());
+		echo "In tests/lib/IntegrityCheck/testVerifyCoreSignatureWithTamperedFilesExclude\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyCoreWithInvalidCertificate() {
@@ -1065,6 +1134,9 @@ class CheckerTest extends TestCase {
 				]
 		];
 		$this->assertSame($expected, $this->checker->verifyCoreSignature());
+		echo "In tests/lib/IntegrityCheck/testVerifyCoreWithInvalidCertificate\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyCoreWithDifferentScope() {
@@ -1112,6 +1184,9 @@ class CheckerTest extends TestCase {
 				]
 		];
 		$this->assertSame($expected, $this->checker->verifyCoreSignature());
+		echo "In tests/lib/IntegrityCheck/testVerifyCoreWithDifferentScope\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testRunInstanceVerification() {
@@ -1201,6 +1276,9 @@ class CheckerTest extends TestCase {
 			->with('core', 'oc.integritycheck.checker');
 
 		$this->checker->runInstanceVerification();
+		echo "In tests/lib/IntegrityCheck/testRunInstanceVerification\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyAppSignatureWithoutSignatureDataAndCodeCheckerDisabled() {
@@ -1216,6 +1294,9 @@ class CheckerTest extends TestCase {
 
 		$expected = [];
 		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
+		echo "In tests/lib/IntegrityCheck/testVerifyAppSignatureWithoutSignatureDataAndCodeCheckerDisabled\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	/**
@@ -1245,6 +1326,9 @@ class CheckerTest extends TestCase {
 			->will($this->returnValue(false));
 
 		$this->assertSame($isCodeSigningEnforced, $this->checker->isCodeCheckEnforced());
+		echo "In tests/lib/IntegrityCheck/testIsCodeCheckEnforced\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	/**
@@ -1264,6 +1348,9 @@ class CheckerTest extends TestCase {
 
 		$result = $this->invokePrivate($this->checker, 'isCodeCheckEnforced');
 		$this->assertFalse($result);
+		echo "In tests/lib/IntegrityCheck/testIsCodeCheckEnforcedWithDisabledConfigSwitch\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testCertRevocation() {
@@ -1319,6 +1406,9 @@ class CheckerTest extends TestCase {
 		];
 
 		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
+		echo "In tests/lib/IntegrityCheck/testCertRevocation\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testVerifyCachedAppSignatureCheck() {
@@ -1343,6 +1433,9 @@ class CheckerTest extends TestCase {
 		);
 		$expected = '[]';
 		$this->assertSame($expected, $checker->getVerifiedAppsFromCache('SomeApp'));
+		echo "In tests/lib/IntegrityCheck/testVerifyCachedAppSignatureCheck\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function testAppNotCachedSignatureCheck() {
