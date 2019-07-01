@@ -320,7 +320,11 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 		// TODO: resolve chunk file name here and implement "updateFile"
 		$path = $this->path . '/' . $name;
 		$path = FileSystem::normalizePath($path);
-		return $this->fileView->file_exists($path);
+		try {
+			return $this->fileView->file_exists($path);
+		} catch (StorageNotAvailableException $e) {
+			throw new SabreServiceUnavailable($e->getMessage());
+		}
 	}
 
 	/**
@@ -344,6 +348,8 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			throw new Forbidden($ex->getMessage(), $ex->getRetry());
 		} catch (LockedException $e) {
 			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
+		} catch (StorageNotAvailableException $e) {
+			throw new SabreServiceUnavailable($e->getMessage());
 		}
 	}
 
