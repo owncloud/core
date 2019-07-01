@@ -44,7 +44,7 @@ interface ITrashBinNode extends INode {
 	public function getDeleteTimestamp() : int;
 
 	/**
-	 * @param string $targetLocation
+	 * @param \string $targetLocation
 	 * @return bool
 	 */
 	public function restore(string $targetLocation) : bool;

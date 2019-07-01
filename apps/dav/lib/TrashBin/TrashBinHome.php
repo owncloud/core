@@ -39,7 +39,7 @@ class TrashBinHome extends Collection {
 	 */
 	public function __construct(array $principalInfo, TrashBinManager $trashBinManager) {
 		$this->trashBinManager = $trashBinManager;
-		[, $name] = \Sabre\Uri\split($principalInfo['uri']);
+		list(, $name) = \Sabre\Uri\split($principalInfo['uri']);
 		$this->user = $name;
 	}
 

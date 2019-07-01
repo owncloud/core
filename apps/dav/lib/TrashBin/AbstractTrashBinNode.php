@@ -125,7 +125,7 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 	/**
 	 * @codeCoverageIgnore
 	 */
-	public function delete() : void {
+	public function delete() {
 		$path = $this->fileInfo->getPath();
 		$path = \explode('/', $path);
 		$user = $path[1];
