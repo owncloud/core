@@ -76,22 +76,12 @@ class VerifyChecksums extends Command {
 			->setDescription('Get all checksums in filecache and compares them by recalculating the checksum of the file.')
 			->addOption('repair', 'r', InputOption::VALUE_NONE, 'Repair filecache-entry with mismatched checksums.')
 			->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'Specific user to check')
-			->addOption('path', 'p', InputOption::VALUE_REQUIRED, 'Path to check relative to data e.g /john/files/', '');
+			->addOption('path', 'p', InputOption::VALUE_REQUIRED, 'Path to check relative to user folder, i.e, relative to /john/files. e.g tree/apple', '');
 	}
 
 	public function execute(InputInterface $input, OutputInterface $output) {
 		$pathOption = $input->getOption('path');
 		$userName = $input->getOption('user');
-
-		if (!$pathOption && !$userName) {
-			$output->writeln('<info>This operation might take quite some time.</info>');
-		}
-
-		if ($pathOption && $userName) {
-			$output->writeln('<error>Please use either path or user exclusively</error>');
-			$this->exitStatus = self::EXIT_INVALID_ARGS;
-			return $this->exitStatus;
-		}
 
 		$walkFunction = function (Node $node) use ($input, $output) {
 			$path = $node->getInternalPath();
@@ -141,23 +131,35 @@ class VerifyChecksums extends Command {
 			$this->walkNodes($userFolder->getDirectoryListing(), $walkFunction);
 		};
 
-		if ($userName && $this->userManager->userExists($userName)) {
-			$scanUserFunction($this->userManager->get($userName));
-		} elseif ($userName && !$this->userManager->userExists($userName)) {
-			$output->writeln("<error>User \"$userName\" does not exist</error>");
-			$this->exitStatus = self::EXIT_INVALID_ARGS;
-		} elseif ($input->getOption('path')) {
-			try {
-				$node = $this->rootFolder->get($input->getOption('path'));
-			} catch (NotFoundException $ex) {
-				$output->writeln("<error>Path \"{$ex->getMessage()}\" not found.</error>");
+		if ($userName) {
+			if (!$this->userManager->userExists($userName)) {
+				$output->writeln("<error>User \"$userName\" does not exist</error>");
 				$this->exitStatus = self::EXIT_INVALID_ARGS;
 				return $this->exitStatus;
 			}
+			if (!$pathOption) {
+				$scanUserFunction($this->userManager->get($userName));
+			} else {
+				try {
+					$userFolder = $this->rootFolder->getUserFolder($userName);
+					$node = $userFolder->get($pathOption);
+				} catch (NotFoundException $ex) {
+					$output->writeln("<error>Path \"{$ex->getMessage()}\" not found.</error>");
+					$this->exitStatus = self::EXIT_INVALID_ARGS;
+					return $this->exitStatus;
+				}
 
-			$this->walkNodes([$node], $walkFunction);
+				$this->walkNodes([$node], $walkFunction);
+			}
 		} else {
-			$this->userManager->callForAllUsers($scanUserFunction);
+			if ($pathOption) {
+				$output->writeln("<error>Please provide user when path is provided as argument</error>");
+				$this->exitStatus = self::EXIT_INVALID_ARGS;
+				return $this->exitStatus;
+			} else {
+				$output->writeln('<info>This operation might take quite some time.</info>');
+				$this->userManager->callForAllUsers($scanUserFunction);
+			}
 		}
 
 		return $this->exitStatus;
