@@ -144,13 +144,7 @@ abstract class TestCase extends BaseTestCase {
 			});
 		}
 
-		// further cleanup
-		$hookExceptions = \OC_Hook::$thrownExceptions;
-		\OC_Hook::$thrownExceptions = [];
 		\OC::$server->getLockingProvider()->releaseAll();
-		if (!empty($hookExceptions)) {
-			throw $hookExceptions[0];
-		}
 
 		// fail hard if xml errors have not been cleaned up
 		$errors = \libxml_get_errors();
