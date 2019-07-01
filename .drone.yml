@@ -402,6 +402,20 @@ pipeline:
       matrix:
         TEST_SUITE: cli
 
+  cli-acceptance-local-tests:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    environment:
+      - TEST_SERVER_URL=${SERVER_PROTOCOL}://server-${SERVER_PROTOCOL}
+    commands:
+      - touch /drone/saved-settings.sh
+      - . /drone/saved-settings.sh
+      - make
+      - su-exec www-data ./tests/acceptance/run.sh --type cli
+    when:
+      matrix:
+        TEST_SUITE: local-cli
+
   webui-acceptance-tests:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -1075,6 +1089,18 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavUpload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      SERVER_PROTOCOL: https
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_TESTING_APP: true
+
+    # CLI AppManagement Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: local-cli
+      BEHAT_SUITE: cliAppManagement
       DB_TYPE: mariadb
       USE_SERVER: true
       SERVER_PROTOCOL: https

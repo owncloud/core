@@ -211,6 +211,14 @@ default:
         - LoggingContext:
         - PublicWebDavContext:
 
+    cliAppManagement:
+      paths:
+        - '%paths.base%/../features/cliAppManagement'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - AppManagementContext:
+
     cliBackground:
       paths:
         - '%paths.base%/../features/cliBackground'

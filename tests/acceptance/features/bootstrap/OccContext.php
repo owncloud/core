@@ -115,6 +115,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator runs upgrade routines on local server using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRunsUpgradeRoutinesOnLocalServerUsingTheOccCommand() {
+		\system("./occ upgrade", $status);
+		if ($status !== 0) {
+			// if the above command fails make sure to turn off maintenance mode
+			\system("./occ maintenance:mode --off");
+		}
+	}
+
+	/**
 	 * @Then /^the command should have been successful$/
 	 *
 	 * @return void
