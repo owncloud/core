@@ -101,6 +101,32 @@ class JSResourceLocatorTest extends TestCase {
 		$locator->find(['randomapp/js/script']);
 	}
 
+	public function testFindAppScriptWithNoThemeActive() {
+		$this->themeAppDir = '';
+		/** @var \OC\Template\JSResourceLocator $locator */
+		$locator = $this->getResourceLocator(
+			'',
+			[$this->serverRoot => 'map'],
+			['foo' => 'bar']
+		);
+		$this->appManager->expects($this->any())
+			->method('getAppPath')
+			->with('randomapp')
+			->willReturn('/var/www/apps-external/randomapp');
+
+		$locator->expects($this->exactly(5))
+			->method('appendOnceIfExist')
+			->withConsecutive(
+				['/var/www/apps', '/randomapp/js/script.js', ''],
+				['/var/www/owncloud', 'randomapp/js/script.js', ''],
+				['/var/www/apps', '/core/randomapp/js/script.js', ''],
+				['/var/www/owncloud', 'core/randomapp/js/script.js', ''],
+				['/var/www/apps-external/randomapp', 'js/script.js', '']
+			);
+
+		$locator->find(['randomapp/js/script']);
+	}
+
 	public function testFindL10nScript() {
 		/** @var \OC\Template\JSResourceLocator $locator */
 		$locator = $this->getResourceLocator(

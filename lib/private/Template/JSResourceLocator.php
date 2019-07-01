@@ -52,13 +52,20 @@ class JSResourceLocator extends ResourceLocator {
 			if ($found) {
 				return;
 			}
-		} elseif ($this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot)
-			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$fullScript, $webRoot)
-			|| $this->appendOnceIfExist($this->serverroot, $fullScript)
-			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$fullScript, $webRoot)
-			|| $this->appendOnceIfExist($this->serverroot, 'core/'.$fullScript)
-		) {
-			return;
+		} else {
+			// Search in an active theme first. But only if it is active
+			if (
+				$themeDirectory !== '' && $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot)
+			) {
+				return;
+			}
+			if ($this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$fullScript, $webRoot)
+				|| $this->appendOnceIfExist($this->serverroot, $fullScript)
+				|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$fullScript, $webRoot)
+				|| $this->appendOnceIfExist($this->serverroot, 'core/'.$fullScript)
+			) {
+				return;
+			}
 		}
 
 		$app = \substr($fullScript, 0, \strpos($fullScript, '/'));
