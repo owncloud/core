@@ -119,6 +119,7 @@ pipeline:
     image: owncloudci/php:7.1
     pull: true
     commands:
+      - rm -f vendor-bin/phan/composer.lock
       - make test-php-phan
     when:
       matrix:
@@ -128,19 +129,23 @@ pipeline:
     image: owncloudci/php:7.2
     pull: true
     commands:
+      - rm -rf vendor-bin/phan/vendor
+      - rm -f vendor-bin/phan/composer.lock
       - make test-php-phan
     when:
       matrix:
-        TEST_SUITE: disabled-phan
+        TEST_SUITE: phan
 
   php-phan-73:
     image: owncloudci/php:7.3
     pull: true
     commands:
+      - rm -rf vendor-bin/phan/vendor
+      - rm -f vendor-bin/phan/composer.lock
       - make test-php-phan
     when:
       matrix:
-        TEST_SUITE: disabled-phan
+        TEST_SUITE: phan
 
   install-server:
     image: owncloudci/php:${PHP_VERSION}
