@@ -61,6 +61,9 @@ class CheckerTest extends TestCase {
 
 	public function setUp() {
 		parent::setUp();
+		echo "In tests/lib/IntegrityCheck/CheckerTest/setup 1\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		$this->environmentHelper = $this->createMock(EnvironmentHelper::class);
 		$this->fileAccessHelper = $this->createMock(FileAccessHelper::class);
 		$this->appLocator = $this->createMock(AppLocator::class);
@@ -68,12 +71,18 @@ class CheckerTest extends TestCase {
 		$this->cacheFactory = $this->createMock(ICacheFactory::class);
 		$this->appManager = $this->createMock(IAppManager::class);
 
+		echo "In tests/lib/IntegrityCheck/CheckerTest/setup 2\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		$this->cacheFactory
 			->expects($this->any())
 			->method('create')
 			->with('oc.integritycheck.checker')
 			->will($this->returnValue(new NullCache()));
 
+		echo "In tests/lib/IntegrityCheck/CheckerTest/setup 3\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		$this->checker = new Checker(
 			$this->environmentHelper,
 			$this->fileAccessHelper,
@@ -83,6 +92,9 @@ class CheckerTest extends TestCase {
 			$this->appManager,
 			\OC::$server->getTempManager()
 		);
+		echo "In tests/lib/IntegrityCheck/CheckerTest/setup 4\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	/**
