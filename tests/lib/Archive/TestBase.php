@@ -133,11 +133,17 @@ abstract class TestBase extends \Test\TestCase {
 		$this->assertFalse($this->instance->fileExists('target.txt'));
 	}
 	public function testRecursive() {
+		echo "Before tests/lib/Archive/TestBase:testRecursive\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		$dir=\OC::$SERVERROOT.'/tests/data';
 		$this->instance=$this->getNew();
 		$this->instance->addRecursive('/dir', $dir);
 		$this->assertTrue($this->instance->fileExists('/dir/lorem.txt'));
 		$this->assertTrue($this->instance->fileExists('/dir/data.zip'));
 		$this->assertTrue($this->instance->fileExists('/dir/data.tar.gz'));
+		echo "After tests/lib/Archive/TestBase:testRecursive\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

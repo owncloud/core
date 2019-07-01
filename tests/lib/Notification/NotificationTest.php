@@ -624,5 +624,8 @@ class NotificationTest extends TestCase {
 			->willReturn($objectId);
 
 		$this->assertEquals($expected, $this->invokePrivate($notification, 'isValidCommon'));
+		echo "In tests/lib/Notification/NotificationTest\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

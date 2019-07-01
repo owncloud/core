@@ -111,5 +111,8 @@ class ResourceLocatorTest extends \Test\TestCase {
 
 		$method->invoke($locator, __DIR__, 'does-not-exist');
 		$this->assertEquals([__FILE__ => $resource1], $locator->getResources());
+		echo "In tests/lib/Template/ResourceLocatorTest\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

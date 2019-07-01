@@ -63,5 +63,8 @@ abstract class Session extends \Test\TestCase {
 		$this->assertEquals('bar', $this->instance['foo']);
 		unset($this->instance['foo']);
 		$this->assertArrayNotHasKey('foo', $this->instance);
+		echo "In tests/lib/Session/SessionTest\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

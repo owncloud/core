@@ -175,6 +175,9 @@ class UtilTest extends TestCase {
 	public function testStripPartialFileExtension($path, $expected) {
 		$this->assertSame($expected,
 			$this->util->stripPartialFileExtension($path));
+		echo "In tests/lib/Encryption/UtilTest\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function dataTestStripPartialFileExtension() {

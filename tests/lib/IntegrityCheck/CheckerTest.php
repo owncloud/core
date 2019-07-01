@@ -1381,5 +1381,8 @@ class CheckerTest extends TestCase {
 
 		$expected = [];
 		$this->assertSame($expected, $this->checker->getVerifiedAppsFromCache('SomeApp'));
+		echo "In tests/lib/IntegrityCheck/CheckerTest\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }
