@@ -25,11 +25,13 @@ use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
+use Sabre\DAV\Xml\Property\GetLastModified;
 
 class TrashBinPlugin extends ServerPlugin {
 	public const TRASHBIN_ORIGINAL_FILENAME = '{http://owncloud.org/ns}trashbin-original-filename';
 	public const TRASHBIN_ORIGINAL_LOCATION = '{http://owncloud.org/ns}trashbin-original-location';
 	public const TRASHBIN_DELETE_TIMESTAMP = '{http://owncloud.org/ns}trashbin-delete-timestamp';
+	public const TRASHBIN_DELETE_DATETIME = '{http://owncloud.org/ns}trashbin-delete-datetime';
 
 	/** @var Server */
 	private $server;
@@ -55,6 +57,10 @@ class TrashBinPlugin extends ServerPlugin {
 
 		$propFind->handle(self::TRASHBIN_DELETE_TIMESTAMP, static function () use ($node) {
 			return $node->getDeleteTimestamp();
+		});
+
+		$propFind->handle(self::TRASHBIN_DELETE_DATETIME, static function () use ($node) {
+			return new GetLastModified($node->getDeleteTimestamp());
 		});
 	}
 }
