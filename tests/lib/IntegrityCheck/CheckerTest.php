@@ -101,37 +101,70 @@ class CheckerTest extends TestCase {
 	 * @expectedException \Exception
 	 */
 	public function testWriteAppSignatureOfNotExistingApp() {
-		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.crt');
-		$rsaPrivateKey = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.key');
-		$rsa = new RSA();
-		$rsa->loadKey($rsaPrivateKey);
-		$x509 = new X509();
-		$x509->loadX509($keyBundle);
-		$this->checker->writeAppSignature('NotExistingApp', $x509, $rsa);
-		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureOfNotExistingApp\n";
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureOfNotExistingApp 1\n";
 		echo "memory_get_usage " . \memory_get_usage() . "\n";
 		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
+		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.crt');
+		$rsaPrivateKey = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.key');
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureOfNotExistingApp 2\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
+		$rsa = new RSA();
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureOfNotExistingApp 3\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
+		$rsa->loadKey($rsaPrivateKey);
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureOfNotExistingApp 4\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
+		$x509 = new X509();
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureOfNotExistingApp 5\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
+		$x509->loadX509($keyBundle);
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureOfNotExistingApp 6\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
+		$this->checker->writeAppSignature('NotExistingApp', $x509, $rsa);
 	}
 
 	/**
 	 * @expectedException \Exception
 	 */
 	public function testWriteAppSignatureWrongPermissions() {
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureWrongPermissions 1\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 		$this->fileAccessHelper
 			->expects($this->once())
 			->method('file_put_contents')
 			->will($this->throwException(new \Exception))
 		;
-		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.crt');
-		$rsaPrivateKey = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.key');
-		$rsa = new RSA();
-		$rsa->loadKey($rsaPrivateKey);
-		$x509 = new X509();
-		$x509->loadX509($keyBundle);
-		$this->checker->writeAppSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/app/', $x509, $rsa);
-		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureWrongPermissions\n";
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureWrongPermissions 2\n";
 		echo "memory_get_usage " . \memory_get_usage() . "\n";
 		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
+		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.crt');
+		$rsaPrivateKey = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.key');
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureWrongPermissions 3\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
+		$rsa = new RSA();
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureWrongPermissions 4\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
+		$rsa->loadKey($rsaPrivateKey);
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureWrongPermissions 5\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
+		$x509 = new X509();
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureWrongPermissions 6\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
+		$x509->loadX509($keyBundle);
+		echo "In tests/lib/IntegrityCheck/testWriteAppSignatureWrongPermissions 7\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
+		$this->checker->writeAppSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/app/', $x509, $rsa);
 	}
 
 	public function testWriteAppSignature() {
