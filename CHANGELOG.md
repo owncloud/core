@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Permission handling of public link shares based upon internal shares [#35600](https://github.com/owncloud/core/pull/35600)
 - Automatically set expiration date on newly created shares [#35550](https://github.com/owncloud/core/issues/35550) [#35593](https://github.com/owncloud/core/pull/35593)
 - Incorrectly sent password reset tokens [#32889](https://github.com/owncloud/core/issues/32889) [#35607](https://github.com/owncloud/core/pull/35607)
+- Issue with loading javascript files from additional app folders [#35640](https://github.com/owncloud/core/issues/35640) [#35709](https://github.com/owncloud/core/pull/35709)
 
 ### Changed
 
