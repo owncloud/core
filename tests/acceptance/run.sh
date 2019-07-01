@@ -337,9 +337,9 @@ function run_behat_tests() {
 	echo "Running ${SUITE_FEATURE_TEXT} tests tagged ${BEHAT_FILTER_TAGS} ${BROWSER_TEXT}${BROWSER_VERSION_TEXT}${PLATFORM_TEXT}" | tee ${TEST_LOG_FILE}
 
 	${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
-	
+
 	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
-	
+
 	if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 	then
 		PASSED=true
@@ -361,7 +361,7 @@ function run_behat_tests() {
 			PASSED=false
 		fi
 	fi
-	
+
 	# With webUI tests, we try running failed tests again.
 	if [ "${PASSED}" = false ] && [ "${RUNNING_WEBUI_TESTS}" = true ] && [ "${RERUN_FAILED_WEBUI_SCENARIOS}" = true ]
 	then
@@ -387,7 +387,7 @@ function run_behat_tests() {
 					PASSED=false
 				fi
 			done
-	
+
 		if [ "${SOME_SCENARIO_RERUN}" = false ]
 		then
 			# If the original Behat had a fatal PHP error and exited directly with
@@ -397,7 +397,7 @@ function run_behat_tests() {
 			PASSED=false
 		fi
 	fi
-	
+
 	if [ "${BEHAT_TAGS_OPTION_FOUND}" != true ]
 	then
 		# The behat run specified to skip scenarios tagged @skip
@@ -426,7 +426,7 @@ function teardown() {
 		read -r -a APP <<< "${APPS_TO_REENABLE[$i]}"
 		remote_occ ${ADMIN_AUTH} ${APP[0]} "--no-warnings app:enable ${APP[1]}"
 	done
-	
+
 	# Disable any apps that were enabled for the test run
 	for i in "${!APPS_TO_REDISABLE[@]}"
 	do
@@ -454,7 +454,7 @@ function teardown() {
 			remote_occ ${ADMIN_AUTH} ${SETTING[0]} "config:${SETTING[1]}:set ${SETTING[2]} ${SETTING[3]} --value=${SETTING[4]}${TYPE_STRING}"
 		fi
 	done
-	
+
 	# Put back state of the testing app
 	if [ "${TESTING_ENABLED_BY_SCRIPT}" = true ]
 	then
@@ -485,7 +485,7 @@ function teardown() {
 
 	# Reset the original language
 	export LANG=${OLD_LANG}
-	
+
 	rm -f "${TEST_LOG_FILE}"
 
 	echo "runsh: Exit code of main run: ${BEHAT_EXIT_STATUS}"
@@ -759,16 +759,16 @@ do
 		IFS=';'
 		read -r -a SETTING <<< "${SETTINGS[$i]}"
 		IFS=${PREVIOUS_IFS}
-		
+
 		save_config_setting "${ADMIN_AUTH}" "${URL}" "${SETTING[0]}" "${SETTING[1]}" "${SETTING[2]}" "${SETTING[4]}"
-		
+
 		TYPE_STRING=""
 		if [ -n "${SETTING[4]}" ]
 		then
 			#place the space here not in the command line, so that there is no space if the string is empty
 			TYPE_STRING=" --type ${SETTING[4]}"
 		fi
-		
+
 		remote_occ ${ADMIN_AUTH} ${URL} "config:${SETTING[0]}:set ${SETTING[1]} ${SETTING[2]} --value=${SETTING[3]}${TYPE_STRING}"
 		if [ $? -ne 0 ]
 		then
