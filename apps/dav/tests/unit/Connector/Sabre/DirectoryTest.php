@@ -25,9 +25,12 @@
 namespace OCA\DAV\Tests\Unit\Connector\Sabre;
 
 use OC\Files\FileInfo;
+use OC\Files\View;
 use OCA\DAV\Connector\Sabre\Directory;
+use OCP\Files\Storage\IStorage;
 use OCP\Files\FileContentNotAllowedException;
 use OCP\Files\ForbiddenException;
+use OCP\Constants;
 
 class TestDoubleFileView extends \OC\Files\View {
 	private $updatables;
@@ -456,5 +459,24 @@ class DirectoryTest extends \Test\TestCase {
 			->willThrowException(new \Sabre\DAV\Exception\Forbidden());
 		$dir = $this->getDir();
 		$dir->createFile('foobar.txt', 'hello foo bar');
+	}
+
+	/**
+	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
+	 */
+	public function testSetNameRenameOperationFailed() {
+		$storage = $this->createMock(IStorage::class);
+		$storage->method('getId')->will($this->returnValue('home::someuser'));
+
+		$view = $this->createMock(View::class);
+		$view->method('verifyPath')->willReturn(true);
+		$view->method('getRelativePath')->will($this->returnArgument(0));
+		$view->method('rename')->willReturn(false);
+
+		$info = new FileInfo('/testdir', $storage, null, [
+			'permissions' => Constants::PERMISSION_ALL
+		], null);
+		$file = new Directory($view, $info);
+		$file->setName('/new_testdir_renamed');
 	}
 }

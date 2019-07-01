@@ -694,7 +694,9 @@ class View {
 						\fclose($target);
 						\fclose($data);
 
-						$this->writeUpdate($storage, $internalPath);
+						if ($result) {
+							$this->writeUpdate($storage, $internalPath);
+						}
 
 						$this->changeLock($path, ILockingProvider::LOCK_SHARED);
 
@@ -952,7 +954,9 @@ class View {
 							$result = $storage2->copyFromStorage($storage1, $internalPath1, $internalPath2);
 						}
 
-						$this->writeUpdate($storage2, $internalPath2);
+						if ($result) {
+							$this->writeUpdate($storage2, $internalPath2);
+						}
 
 						$this->changeLock($path2, ILockingProvider::LOCK_SHARED);
 						$lockTypePath2 = ILockingProvider::LOCK_SHARED;
@@ -1193,14 +1197,16 @@ class View {
 					throw $e;
 				}
 
-				if (\in_array('delete', $hooks) and $result) {
-					$this->removeUpdate($storage, $internalPath);
-				}
-				if (\in_array('write', $hooks) and $operation !== 'fopen') {
-					$this->writeUpdate($storage, $internalPath);
-				}
-				if (\in_array('touch', $hooks)) {
-					$this->writeUpdate($storage, $internalPath, $extraParam);
+				if ($result) {
+					if (\in_array('delete', $hooks)) {
+						$this->removeUpdate($storage, $internalPath);
+					}
+					if (\in_array('write', $hooks) and $operation !== 'fopen') {
+						$this->writeUpdate($storage, $internalPath);
+					}
+					if (\in_array('touch', $hooks)) {
+						$this->writeUpdate($storage, $internalPath, $extraParam);
+					}
 				}
 
 				if ((\in_array('write', $hooks) || \in_array('delete', $hooks)) && ($operation !== 'fopen' || $result === false)) {
