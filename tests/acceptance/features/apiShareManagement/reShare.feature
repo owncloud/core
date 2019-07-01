@@ -194,48 +194,48 @@ Feature: sharing
     And user "user2" has been created with default attributes and without skeleton files
     And user "user0" has shared folder "/PARENT" with user "user1" with permissions <received_permissions>
     When user "user1" shares folder "/PARENT" with user "user2" with permissions <reshare_permissions> using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    #Then the OCS status code should be "404"
-    And the HTTP status code should be "200"
-    #And the HTTP status code should be "<http_status_code>"
-    And as "user2" folder "/PARENT" should exist
-    #And as "user2" folder "/PARENT" should not exist
+    #Then the OCS status code should be "<ocs_status_code>"
+    Then the OCS status code should be "404"
+    #And the HTTP status code should be "200"
+    And the HTTP status code should be "<http_status_code>"
+    #And as "user2" folder "/PARENT" should exist
+    And as "user2" folder "/PARENT" should not exist
     # delete the next 2 lines when the issue is fixed
-    And user "user2" should be able to delete file "/PARENT/parent.txt"
-    And as "user2" file "/PARENT/parent.txt" should not exist
+    #And user "user2" should be able to delete file "/PARENT/parent.txt"
+    #And as "user2" file "/PARENT/parent.txt" should not exist
     # keep the following line
     But as "user1" folder "/PARENT" should exist
     Examples:
-      | ocs_api_version | ocs_status_code | received_permissions | reshare_permissions |
+      #| ocs_api_version | ocs_status_code | received_permissions | reshare_permissions |
       # try to pass on extra delete (including reshare)
-      | 1               | 100             | 17                   | 25                  |
-      | 2               | 200             | 17                   | 25                  |
-      | 1               | 100             | 19                   | 27                  |
-      | 2               | 200             | 19                   | 27                  |
-      | 1               | 100             | 23                   | 31                  |
-      | 2               | 200             | 23                   | 31                  |
+      #| 1               | 100             | 17                   | 25                  |
+      #| 2               | 200             | 17                   | 25                  |
+      #| 1               | 100             | 19                   | 27                  |
+      #| 2               | 200             | 19                   | 27                  |
+      #| 1               | 100             | 23                   | 31                  |
+      #| 2               | 200             | 23                   | 31                  |
       # try to pass on extra delete (but not reshare)
-      | 1               | 100             | 17                   | 9                   |
-      | 2               | 200             | 17                   | 9                   |
-      | 1               | 100             | 19                   | 11                  |
-      | 2               | 200             | 19                   | 11                  |
-      | 1               | 100             | 23                   | 15                  |
-      | 2               | 200             | 23                   | 15                  |
-      #| ocs_api_version | http_status_code | received_permissions | reshare_permissions |
+      #| 1               | 100             | 17                   | 9                   |
+      #| 2               | 200             | 17                   | 9                   |
+      #| 1               | 100             | 19                   | 11                  |
+      #| 2               | 200             | 19                   | 11                  |
+      #| 1               | 100             | 23                   | 15                  |
+      #| 2               | 200             | 23                   | 15                  |
+      | ocs_api_version | http_status_code | received_permissions | reshare_permissions |
       # try to pass on extra delete (including reshare)
-      #| 1               | 200              | 17                   | 25                  |
-      #| 2               | 404              | 17                   | 25                  |
-      #| 1               | 200              | 19                   | 27                  |
-      #| 2               | 404              | 19                   | 27                  |
-      #| 1               | 200              | 23                   | 31                  |
-      #| 2               | 404              | 23                   | 31                  |
+      | 1               | 200              | 17                   | 25                  |
+      | 2               | 404              | 17                   | 25                  |
+      | 1               | 200              | 19                   | 27                  |
+      | 2               | 404              | 19                   | 27                  |
+      | 1               | 200              | 23                   | 31                  |
+      | 2               | 404              | 23                   | 31                  |
       # try to pass on extra delete (but not reshare)
-      #| 1               | 200              | 17                   | 9                   |
-      #| 2               | 404              | 17                   | 9                   |
-      #| 1               | 200              | 19                   | 11                  |
-      #| 2               | 404              | 19                   | 11                  |
-      #| 1               | 200              | 23                   | 15                  |
-      #| 2               | 404              | 23                   | 15                  |
+      | 1               | 200              | 17                   | 9                   |
+      | 2               | 404              | 17                   | 9                   |
+      | 1               | 200              | 19                   | 11                  |
+      | 2               | 404              | 19                   | 11                  |
+      | 1               | 200              | 23                   | 15                  |
+      | 2               | 404              | 23                   | 15                  |
 
   Scenario Outline: Update of reshare can reduce permissions
     Given using OCS API version "<ocs_api_version>"

@@ -281,15 +281,15 @@ class Manager implements IManager {
 		 * Non moveable mount points do not have update and delete permissions
 		 * while we 'most likely' do have that on the storage.
 		 */
-		$permissions = $share->getNode()->getPermissions();
+		$allowedPermissions = $share->getNode()->getPermissions();
 		$mount = $share->getNode()->getMountPoint();
 		if (!($mount instanceof MoveableMount)) {
-			$permissions |= \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_UPDATE;
+			$allowedPermissions |= \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_UPDATE;
 		}
 
 		// Check that we do not share with more permissions than we have
-		if ($share->getPermissions() & ~$permissions) {
-			$message_t = $this->l->t('Cannot increase permissions of %s', [$share->getNode()->getPath()]);
+		if ($share->getPermissions() & ~$allowedPermissions) {
+			$message_t = $this->l->t('Cannot increase permissions of %s from %d to %d', [$share->getNode()->getPath(), $allowedPermissions, $share->getPermissions()]);
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
