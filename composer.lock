@@ -2043,16 +2043,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "4.0.0-beta1",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/dav.git",
-                "reference": "a92f0a7dbe2650167bfdace0ca1c8c51a4377669"
+                "reference": "a4959bf2b9b175aef6fd91c9006b1ca7a56f9bb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/a92f0a7dbe2650167bfdace0ca1c8c51a4377669",
-                "reference": "a92f0a7dbe2650167bfdace0ca1c8c51a4377669",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/a4959bf2b9b175aef6fd91c9006b1ca7a56f9bb0",
+                "reference": "a4959bf2b9b175aef6fd91c9006b1ca7a56f9bb0",
                 "shasum": ""
             },
             "require": {
@@ -2118,7 +2118,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2019-05-08T09:20:24+00:00"
+            "time": "2019-07-01T10:03:18+00:00"
         },
         {
             "name": "sabre/event",
