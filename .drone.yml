@@ -115,32 +115,14 @@ pipeline:
       matrix:
         TEST_SUITE: owncloud-coding-standard
 
-  php-phan-71:
-    image: owncloudci/php:7.1
+  php-phan:
+    image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
       - make test-php-phan
     when:
       matrix:
         TEST_SUITE: phan
-
-  php-phan-72:
-    image: owncloudci/php:7.2
-    pull: true
-    commands:
-      - make test-php-phan
-    when:
-      matrix:
-        TEST_SUITE: disabled-phan
-
-  php-phan-73:
-    image: owncloudci/php:7.3
-    pull: true
-    commands:
-      - make test-php-phan
-    when:
-      matrix:
-        TEST_SUITE: disabled-phan
 
   install-server:
     image: owncloudci/php:${PHP_VERSION}
@@ -638,9 +620,15 @@ matrix:
     - PHP_VERSION: 7.3
       TEST_SUITE: owncloud-coding-standard
 
-  # phan (runs multiple PHP v7.* to provide syntax checks of each PHP version)
+  # phan
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
+
+    - TEST_SUITE: phan
+      PHP_VERSION: 7.2
+
+    - TEST_SUITE: phan
+      PHP_VERSION: 7.3
 
   # phpstan
     - TEST_SUITE: phpstan
