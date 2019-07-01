@@ -28,6 +28,7 @@ use OCA\DAV\TrashBin\TrashBinPlugin;
 use phpDocumentor\Reflection\Types\This;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
+use Sabre\DAV\Xml\Property\GetLastModified;
 use Sabre\DAVACL\PrincipalBackend\BackendInterface;
 use Test\TestCase;
 
@@ -43,9 +44,12 @@ class TrashBinPluginTest extends TestCase {
 	/**
 	 * @dataProvider providesMethods
 	 */
-	public function testPropFind($expectedMethod, $expectedMethodReturn, $prop) {
+	public function testPropFind($expectedMethod, $expectedMethodReturn, $prop, $methodReturnValue = null) {
+		if ($methodReturnValue === null) {
+			$methodReturnValue = $expectedMethodReturn;
+		}
 		$node = $this->createMock(ITrashBinNode::class);
-		$node->expects(self::once())->method($expectedMethod)->willReturn($expectedMethodReturn);
+		$node->expects(self::once())->method($expectedMethod)->willReturn($methodReturnValue);
 		$propFind = new PropFind('', [$prop]);
 		$plugin = new TrashBinPlugin();
 		$plugin->propFind($propFind, $node);
@@ -57,7 +61,8 @@ class TrashBinPluginTest extends TestCase {
 		return [
 			['getOriginalFileName', 'bar.txt', TrashBinPlugin::TRASHBIN_ORIGINAL_FILENAME],
 			['getOriginalLocation', 'foo/bar.txt', TrashBinPlugin::TRASHBIN_ORIGINAL_LOCATION],
-			['getDeleteTimestamp', 123456, TrashBinPlugin::TRASHBIN_DELETE_TIMESTAMP]
+			['getDeleteTimestamp', 123456, TrashBinPlugin::TRASHBIN_DELETE_TIMESTAMP],
+			['getDeleteTimestamp', new GetLastModified(123456), TrashBinPlugin::TRASHBIN_DELETE_DATETIME, 123456]
 		];
 	}
 }
