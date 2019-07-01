@@ -47,5 +47,8 @@ class AppLocatorTest extends TestCase {
 
 	public function testGetAllApps() {
 		$this->assertSame(\OC_App::getAllApps(), $this->locator->getAllApps());
+		echo "In tests/lib/IntegrityCheck/Helpers/AppLocatorTest/testGetAllApps\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

@@ -39,5 +39,8 @@ class FileAccessHelperTest extends TestCase {
 
 		$this->fileAccessHelper->file_put_contents($filePath, $data);
 		$this->assertSame($data, $this->fileAccessHelper->file_get_contents($filePath));
+		echo "In tests/lib/IntegrityCheck/Helpers/FileAccessHelperTest/testReadAndWrite\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

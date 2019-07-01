@@ -106,5 +106,8 @@ class ExcludeFileByNameFilterIteratorTest extends TestCase {
 
 		$actualResult = $this->filter->accept();
 		$this->assertTrue($actualResult);
+		echo "In tests/lib/IntegrityCheck/Iterator/ExcludeFileByNameFilterIteratorTest/testAcceptForDirs\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

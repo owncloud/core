@@ -39,5 +39,8 @@ class EnvironmentHelperTest extends TestCase {
 
 	public function testGetChannel() {
 		$this->assertSame(\OC_Util::getChannel(), $this->environmentHelper->getChannel());
+		echo "In tests/lib/IntegrityCheck/Helpers/EnvironmentHelperTest/testGetChannel\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }
