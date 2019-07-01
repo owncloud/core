@@ -536,6 +536,9 @@ class UserTest extends TestCase {
 		// Call the method
 		$user = new User($account, $this->accountMapper, null, $this->config);
 		$user->setSearchTerms($terms);
+		echo "In tests/lib/User/UserTest\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function setTermsData() {

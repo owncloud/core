@@ -346,5 +346,8 @@ class NotificationPublisherTest extends TestCase {
 		$this->makeGroup('group1', ['groupMember1', 'groupMember2', 'shareOwner', 'sharedBy']);
 
 		$this->publisher->discardNotification($share);
+		echo "In apps/files_sharing/tests/Service/NotificationPublisherTest\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

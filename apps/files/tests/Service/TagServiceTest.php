@@ -123,5 +123,8 @@ class TagServiceTest extends \Test\TestCase {
 		$this->assertTrue($caught);
 
 		$subdir->delete();
+		echo "In apps/files/tests/Service/TagServiceTest\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

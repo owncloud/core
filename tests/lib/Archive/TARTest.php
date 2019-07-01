@@ -26,5 +26,8 @@ class TARTest extends TestBase {
 	public function testRecursive() {
 		// Skip this test. It is causing a memory problem, core issue 35685
 		$this->assertTrue(true);
+		echo "In tests/lib/Archive/TARTest\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }

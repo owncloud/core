@@ -87,6 +87,9 @@ class AddServerMiddlewareTest extends TestCase {
 		$this->assertSame($hint,
 			$data['message']
 		);
+		echo "In apps/federation/tests/Middleware/AddServerMiddlewareTest\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	public function dataTestAfterException() {

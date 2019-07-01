@@ -86,6 +86,9 @@ class FutureFileTestZsync extends \Test\TestCase {
 	public function testSetName() {
 		$f = $this->mockFutureFile();
 		$f->setName('');
+		echo "In apps/dav/tests/unit/Upload/FutureFileZsyncTest\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 
 	/**

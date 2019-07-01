@@ -87,5 +87,8 @@ class SharingPersonalPanelTest extends \Test\TestCase {
 		
 		$templateHtml = $this->sharingPersonalPanel->getPanel()->fetchPage();
 		$this->assertContains($expectedString, $templateHtml);
+		echo "In apps/federatedfilesharing/tests/Panels/SharingPersonalPanelTest\n";
+		echo "memory_get_usage " . \memory_get_usage() . "\n";
+		echo "memory_get_peak_usage " . \memory_get_peak_usage() . "\n";
 	}
 }
