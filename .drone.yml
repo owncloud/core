@@ -21,7 +21,7 @@ pipeline:
         USE_FEDERATED_SERVER: true
 
   configure-federation-server:
-    image: owncloudci/php:${PHP_VERSION}
+    image: owncloudci/php:${FEDERATION_PHP_VERSION}
     pull: true
     commands:
       - cd /drone/fed-server
@@ -41,7 +41,7 @@ pipeline:
         USE_FEDERATED_SERVER: true
 
   fix-permissions-federation-server:
-    image: owncloudci/php:${PHP_VERSION}
+    image: owncloudci/php:${FEDERATION_PHP_VERSION}
     pull: true
     commands:
       - chown www-data /drone/fed-server -R
@@ -563,7 +563,7 @@ services:
         SERVER_PROTOCOL: http
 
   federated-https:
-    image: owncloudci/php:${PHP_VERSION}
+    image: owncloudci/php:${FEDERATION_PHP_VERSION}
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/fed-server/
@@ -578,7 +578,7 @@ services:
         SERVER_PROTOCOL: https
 
   federated-http:
-    image: owncloudci/php:${PHP_VERSION}
+    image: owncloudci/php:${FEDERATION_PHP_VERSION}
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/fed-server/
@@ -643,22 +643,27 @@ matrix:
   # frontend
     - TEST_SUITE: javascript
       PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       COVERAGE: true
 
   # owncloud-coding-standard
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: owncloud-coding-standard
 
   # phan (runs on just PHP 7.0 because that has different dependencies for phan)
     - TEST_SUITE: phan-70
       PHP_VERSION: 7.0
+      FEDERATION_PHP_VERSION: 7.0
 
   # phan (runs multiple PHP v7.1+ to provide syntax checks of each PHP version)
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
+      FEDERATION_PHP_VERSION: 7.1
 
   # Litmus
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       USE_SERVER: true
       SERVER_PROTOCOL: https
       TEST_SUITE: litmus
@@ -667,6 +672,7 @@ matrix:
 
   # Unit Tests
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       DB_TYPE: mysql
       TEST_SUITE: phpunit
       COVERAGE: true
@@ -674,12 +680,14 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       DB_TYPE: mysqlmb4
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       DB_TYPE: postgres
       TEST_SUITE: phpunit
       COVERAGE: true
@@ -687,6 +695,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       DB_TYPE: oracle
       TEST_SUITE: phpunit
       COVERAGE: true
@@ -694,6 +703,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
       COVERAGE: true
@@ -702,24 +712,28 @@ matrix:
 
     # PHP 7.0
     - PHP_VERSION: 7.0
+      FEDERATION_PHP_VERSION: 7.0
       DB_TYPE: mysql
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.0
+      FEDERATION_PHP_VERSION: 7.0
       DB_TYPE: mysqlmb4
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.0
+      FEDERATION_PHP_VERSION: 7.0
       DB_TYPE: postgres
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.0
+      FEDERATION_PHP_VERSION: 7.0
       DB_TYPE: oracle
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
@@ -727,12 +741,14 @@ matrix:
 
     # PHP 7.2
     - PHP_VERSION: 7.2
+      FEDERATION_PHP_VERSION: 7.2
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.2
+      FEDERATION_PHP_VERSION: 7.2
       DB_TYPE: mariadb
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
@@ -740,12 +756,14 @@ matrix:
 
     # PHP 7.3
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       DB_TYPE: mariadb
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
@@ -753,6 +771,7 @@ matrix:
 
   # Files External
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: phpunit
       COVERAGE: true
       DB_TYPE: sqlite
@@ -761,6 +780,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: phpunit
       COVERAGE: true
       DB_TYPE: sqlite
@@ -777,6 +797,7 @@ matrix:
     #  INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: phpunit
       COVERAGE: true
       DB_TYPE: sqlite
@@ -786,6 +807,7 @@ matrix:
 
   # Primary Objectstorage
     - PHP_VERSION: 7.0
+      FEDERATION_PHP_VERSION: 7.0
       TEST_SUITE: phpunit
       DB_TYPE: sqlite
       OBJECTSTORE: swift
@@ -795,6 +817,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: phpunit
       COVERAGE: true
       DB_TYPE: sqlite
@@ -807,6 +830,7 @@ matrix:
   # files_primary_s3
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: phpunit
       COVERAGE: true
       DB_TYPE: sqlite
@@ -817,6 +841,7 @@ matrix:
 
   # API Acceptance tests
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
       DB_TYPE: mariadb
@@ -828,6 +853,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiAuth
       DB_TYPE: mariadb
@@ -839,6 +865,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiAuthOcs
       DB_TYPE: mariadb
@@ -850,6 +877,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiCapabilities
       DB_TYPE: mariadb
@@ -861,6 +889,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiComments
       DB_TYPE: mariadb
@@ -872,6 +901,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiFavorites
       DB_TYPE: mariadb
@@ -883,6 +913,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiFederation
       DB_TYPE: mariadb
@@ -896,6 +927,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiProvisioning-v1
       DB_TYPE: mariadb
@@ -907,6 +939,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiProvisioning-v2
       DB_TYPE: mariadb
@@ -918,6 +951,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiProvisioningGroups-v1
       DB_TYPE: mariadb
@@ -929,6 +963,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiProvisioningGroups-v2
       DB_TYPE: mariadb
@@ -940,6 +975,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiSharees
       DB_TYPE: mariadb
@@ -951,6 +987,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiShareManagement
       DB_TYPE: mariadb
@@ -962,6 +999,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiShareManagementBasic
       DB_TYPE: mariadb
@@ -973,6 +1011,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiShareOperations
       DB_TYPE: mariadb
@@ -984,6 +1023,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiSharingNotifications
       DB_TYPE: mariadb
@@ -996,6 +1036,7 @@ matrix:
       INSTALL_NOTIFICATIONS_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiTags
       DB_TYPE: mariadb
@@ -1007,6 +1048,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiTrashbin
       DB_TYPE: mariadb
@@ -1018,6 +1060,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiVersions
       DB_TYPE: mariadb
@@ -1029,6 +1072,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavLocks
       DB_TYPE: mariadb
@@ -1040,6 +1084,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavLocks2
       DB_TYPE: mariadb
@@ -1051,6 +1096,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavMove
       DB_TYPE: mariadb
@@ -1062,6 +1108,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavOperations
       DB_TYPE: mariadb
@@ -1073,6 +1120,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavProperties
       DB_TYPE: mariadb
@@ -1084,6 +1132,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdavUpload
       DB_TYPE: mariadb
@@ -1096,6 +1145,7 @@ matrix:
 
     # CLI Provisioning Acceptance tests
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: cli
       BEHAT_SUITE: cliProvisioning
       DB_TYPE: mariadb
@@ -1109,6 +1159,7 @@ matrix:
 
   # CLI Main Acceptance tests
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: cli
       BEHAT_SUITE: cliMain
       DB_TYPE: mariadb
@@ -1121,6 +1172,7 @@ matrix:
 
   # CLI Background Acceptance tests
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: cli
       BEHAT_SUITE: cliBackground
       DB_TYPE: mariadb
@@ -1133,6 +1185,7 @@ matrix:
 
   # CLI Trashbin Acceptance tests
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: cli
       BEHAT_SUITE: cliTrashbin
       DB_TYPE: mariadb
@@ -1146,6 +1199,7 @@ matrix:
   # UI Acceptance tests
   ## Chrome
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIAdminSettings
@@ -1159,6 +1213,7 @@ matrix:
       USE_EMAIL: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIComments
@@ -1171,6 +1226,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUICreateDelete
@@ -1183,6 +1239,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIFavorites
@@ -1195,6 +1252,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIFiles
@@ -1207,6 +1265,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUILogin
@@ -1220,6 +1279,7 @@ matrix:
       USE_EMAIL: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIMoveFilesFolders
@@ -1232,6 +1292,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIPersonalSettings
@@ -1245,6 +1306,7 @@ matrix:
       USE_EMAIL: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIRenameFiles
@@ -1257,6 +1319,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIRenameFolders
@@ -1269,6 +1332,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIRestrictSharing
@@ -1281,6 +1345,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUISharingAcceptShares
@@ -1293,6 +1358,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUISharingAutocompletion
@@ -1305,6 +1371,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUISharingExternal
@@ -1320,6 +1387,7 @@ matrix:
       USE_EMAIL: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUISharingInternalGroups
@@ -1333,6 +1401,7 @@ matrix:
       USE_EMAIL: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUISharingInternalUsers
@@ -1346,6 +1415,7 @@ matrix:
       USE_EMAIL: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUISharingNotifications
@@ -1360,6 +1430,7 @@ matrix:
       INSTALL_NOTIFICATIONS_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUISharingPublic
@@ -1375,6 +1446,7 @@ matrix:
       FEDERATION_OC_VERSION: daily-stable10-qa
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUITags
@@ -1387,6 +1459,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUITrashbin
@@ -1399,6 +1472,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIUpload
@@ -1412,6 +1486,7 @@ matrix:
 
     # This suite is part of the user_management app in later core versions
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIAddUsers
@@ -1426,6 +1501,7 @@ matrix:
 
     # This suite is part of the user_management app in later core versions
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIManageUsersGroups
@@ -1440,6 +1516,7 @@ matrix:
 
     # This suite is part of the user_management app in later core versions
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIManageQuota
@@ -1453,6 +1530,7 @@ matrix:
 
     # This suite is part of the user_management app in later core versions
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUISettingsMenu
@@ -1465,6 +1543,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIWebdavLocks
@@ -1477,6 +1556,7 @@ matrix:
       INSTALL_TESTING_APP: true
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIWebdavLockProtection
@@ -1490,6 +1570,7 @@ matrix:
 
     ## Firefox
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: firefox
       DB_TYPE: mariadb
@@ -1507,6 +1588,7 @@ matrix:
       RUN_PART: 1
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: firefox
       DB_TYPE: mariadb
@@ -1524,6 +1606,7 @@ matrix:
       RUN_PART: 2
 
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: firefox
       DB_TYPE: mariadb
@@ -1542,6 +1625,7 @@ matrix:
 
     # caldav test
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: caldav
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -1553,6 +1637,7 @@ matrix:
 
     # carddav test
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: carddav
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -1564,6 +1649,7 @@ matrix:
 
     # caldav-old-endpoint test
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: caldav-old-endpoint
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -1575,6 +1661,7 @@ matrix:
 
     # carddav-old-endpoint test
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: carddav-old-endpoint
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -1586,6 +1673,7 @@ matrix:
 
     # This suite is part of the encryption app in later core versions
     - PHP_VERSION: 7.0
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: cli
       BEHAT_SUITE: cliEncryption
       DB_TYPE: mariadb
@@ -1600,6 +1688,7 @@ matrix:
 
     # This suite is part of the encryption app in later core versions
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: cli
       BEHAT_SUITE: cliEncryption
       DB_TYPE: mariadb
@@ -1614,6 +1703,7 @@ matrix:
 
     # This suite is part of the encryption app in later core versions
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIUserKeysType
@@ -1627,6 +1717,7 @@ matrix:
 
     # This suite is part of the encryption app in later core versions
     - PHP_VERSION: 7.3
+      FEDERATION_PHP_VERSION: 7.2
       TEST_SUITE: selenium
       BROWSER: chrome
       BEHAT_SUITE: webUIMasterKeyType
