@@ -420,3 +420,110 @@ Feature: Sharing files and folders with internal users
     And the user re-logs in as "user1" using the webUI
     And the user shares file "lorem.txt" with user "User Two" using the webUI
     Then as "user2" file "/lorem.txt" should exist
+
+  Scenario: Create share with share permission only
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+      | user3    |
+    And user "user2" has created folder "simple-folder"
+    And user "user2" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
+    And user "user2" has logged in using the webUI
+    When the user shares folder "simple-folder" with user "User One" using the webUI
+    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+      | edit   | no |
+    And the user re-logs in as "user1" using the webUI
+    And the user opens folder "simple-folder" using the webUI
+    Then the option to rename file "lorem.txt" should not be available on the webUI
+    And the option to delete file "lorem.txt" should not be available on the webUI
+    And the option to upload file should not be available on the webUI
+    # Even though the upload option is not shown in the ui, the file input is still present.
+    # So we can attach a file to that input and try to upload.
+    When the user uploads file "textfile.txt" using the webUI
+    Then as "user1" file "simple-folder/textfile.txt" should not exist
+    And file "textfile.txt" should not be listed on the webUI
+    When the user shares file "lorem.txt" with user "User Three" using the webUI
+    Then as "user3" file "lorem.txt" should exist
+
+  Scenario: Create share with share and create permission only
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And user "user2" has created folder "simple-folder"
+    And user "user2" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
+    And user "user2" has logged in using the webUI
+    When the user shares folder "simple-folder" with user "User One" using the webUI
+    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+      | change | no |
+      | delete | no |
+    And the user re-logs in as "user1" using the webUI
+    And the user opens folder "simple-folder" using the webUI
+    Then the option to rename file "lorem.txt" should not be available on the webUI
+    And the option to delete file "lorem.txt" should not be available on the webUI
+    When the user uploads file "textfile.txt" using the webUI
+    Then as "user1" file "simple-folder/textfile.txt" should exist
+    And the content of "textfile.txt" should be the same as the local "textfile.txt"
+
+  Scenario: Create share with share and change permission only
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And user "user2" has created folder "simple-folder"
+    And user "user2" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
+    And user "user2" has logged in using the webUI
+    When the user shares folder "simple-folder" with user "User One" using the webUI
+    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+      | create | no |
+      | delete | no |
+    And the user re-logs in as "user1" using the webUI
+    And the user opens folder "simple-folder" using the webUI
+    Then the option to rename file "lorem.txt" should be available on the webUI
+    And the option to delete file "lorem.txt" should not be available on the webUI
+    When the user uploads file "textfile.txt" using the webUI
+    Then as "user1" file "simple-folder/textfile.txt" should not exist
+    And file "textfile.txt" should not be listed on the webUI
+
+  Scenario: Create share with share and delete permission only
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And user "user2" has created folder "simple-folder"
+    And user "user2" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
+    And user "user2" has logged in using the webUI
+    When the user shares folder "simple-folder" with user "User One" using the webUI
+    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+      | change | no |
+      | create | no |
+    And the user re-logs in as "user1" using the webUI
+    And the user opens folder "simple-folder" using the webUI
+    Then the option to rename file "lorem.txt" should not be available on the webUI
+    And it should be possible to delete file "lorem.txt" using the webUI
+    When the user uploads file "textfile.txt" using the webUI
+    Then as "user1" file "simple-folder/textfile.txt" should not exist
+    And file "textfile.txt" should not be listed on the webUI
+
+  Scenario: Create share with edit and without share permissions
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And user "user2" has created folder "simple-folder"
+    And user "user2" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
+    And user "user2" has logged in using the webUI
+    When the user shares folder "simple-folder" with user "User One" using the webUI
+    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+      | share   | no |
+    And the user re-logs in as "user1" using the webUI
+    And the user opens folder "simple-folder" using the webUI
+    Then the option to rename file "lorem.txt" should be available on the webUI
+    And the option to delete file "lorem.txt" should be available on the webUI
+    And the option to upload file should be available on the webUI
+    When the user uploads file "textfile.txt" using the webUI
+    Then as "user1" file "simple-folder/textfile.txt" should exist
+    And file "textfile.txt" should be listed on the webUI
+    And the content of "textfile.txt" should be the same as the local "textfile.txt"
+    Then it should not be possible to share file "textfile.txt" using the webUI
