@@ -474,32 +474,35 @@ class Trashbin {
 	 *
 	 * @return bool true on success, false otherwise
 	 */
-	public static function restore($file, $filename, $timestamp) {
+	public static function restore($file, $filename, $timestamp, $targetLocation = null) {
 		$user = User::getUser();
 		$view = new View('/' . $user);
 
-		$location = '';
-		if ($timestamp) {
-			$location = self::getLocation($user, $filename, $timestamp);
-			if ($location === false) {
-				\OCP\Util::writeLog('files_trashbin', 'Original location of file ' . $filename .
-					' not found in database, hence restoring into user\'s root instead', \OCP\Util::DEBUG);
-			} else {
-				// if location no longer exists, restore file in the root directory
-				if ($location !== '/' &&
-					(!$view->is_dir('files/' . $location) ||
-						!$view->isCreatable('files/' . $location))
-				) {
-					$location = '';
+		if ($targetLocation === null) {
+			$location = '';
+			if ($timestamp) {
+				$location = self::getLocation($user, $filename, $timestamp);
+				if ($location === false) {
+					\OCP\Util::writeLog('files_trashbin', 'Original location of file ' . $filename .
+						' not found in database, hence restoring into user\'s root instead', \OCP\Util::DEBUG);
+				} else {
+					// if location no longer exists, restore file in the root directory
+					if ($location !== '/' &&
+						(!$view->is_dir('files/' . $location) ||
+							!$view->isCreatable('files/' . $location))
+					) {
+						$location = '';
+					}
 				}
 			}
+
+			// we need a  extension in case a file/dir with the same name already exists
+			$uniqueFilename = self::getUniqueFilename($location, $filename, $view);
+			$targetLocation = $location . '/' . $uniqueFilename;
 		}
 
-		// we need a  extension in case a file/dir with the same name already exists
-		$uniqueFilename = self::getUniqueFilename($location, $filename, $view);
-
 		$source = Filesystem::normalizePath('files_trashbin/files/' . $file);
-		$target = Filesystem::normalizePath('files/' . $location . '/' . $uniqueFilename);
+		$target = Filesystem::normalizePath('files/' . $targetLocation);
 		if (!$view->file_exists($source)) {
 			return false;
 		}
@@ -512,12 +515,12 @@ class Trashbin {
 		if ($restoreResult) {
 			$fakeRoot = $view->getRoot();
 			$view->chroot('/' . $user . '/files');
-			$view->touch('/' . $location . '/' . $uniqueFilename, $mtime);
+			$view->touch('/' . $targetLocation, $mtime);
 			$view->chroot($fakeRoot);
-			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', ['filePath' => Filesystem::normalizePath('/' . $location . '/' . $uniqueFilename),
+			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', ['filePath' => Filesystem::normalizePath('/' . $targetLocation),
 				'trashPath' => Filesystem::normalizePath($file)]);
 
-			self::restoreVersions($view, $file, $filename, $uniqueFilename, $location, $timestamp);
+			self::restoreVersions($view, $file, $filename, $targetLocation, $timestamp);
 
 			if ($timestamp) {
 				$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=? AND `id`=? AND `timestamp`=?');
@@ -541,12 +544,12 @@ class Trashbin {
 	 * @param int $timestamp deletion time
 	 * @return false|null
 	 */
-	private static function restoreVersions(View $view, $file, $filename, $uniqueFilename, $location, $timestamp) {
+	private static function restoreVersions(View $view, $file, $filename, $targetLocation, $timestamp) {
 		if (\OCP\App::isEnabled('files_versions')) {
 			$user = User::getUser();
 			$rootView = new View('/');
 
-			$target = Filesystem::normalizePath('/' . $location . '/' . $uniqueFilename);
+			$target = Filesystem::normalizePath('/' . $targetLocation);
 
 			list($owner, $ownerPath) = self::getUidAndFilename($target);
 
