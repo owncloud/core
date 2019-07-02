@@ -150,7 +150,7 @@ Feature: Sharing files and folders with internal users
     And user "user1" has been added to group "grp1"
     And the administrator has browsed to the admin sharing settings page
     When the administrator enables exclude groups from sharing using the webUI
-    And the administrator adds group "grp1" to the group sharing blacklist using the webUI
+    And the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     Then user "user1" should not be able to share file "testimage.jpg" with user "user3" using the sharing API
 
   Scenario: user tries to share a folder from a group which is blacklisted from sharing
@@ -163,7 +163,7 @@ Feature: Sharing files and folders with internal users
     And user "user1" has been added to group "grp1"
     And the administrator has browsed to the admin sharing settings page
     When the administrator enables exclude groups from sharing using the webUI
-    And the administrator adds group "grp1" to the group sharing blacklist using the webUI
+    And the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     Then user "user1" should not be able to share folder "simple-folder" with user "User Three" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a file received as a share
@@ -180,7 +180,7 @@ Feature: Sharing files and folders with internal users
     And the administrator has browsed to the admin sharing settings page
     And user "user3" has shared file "/testimage.jpg" with user "user1"
     And the administrator has enabled exclude groups from sharing from the admin sharing settings page
-    When the administrator adds group "grp1" to the group sharing blacklist using the webUI
+    When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     Then user "user1" should not be able to share file "/testimage (2).jpg" with user "User Four" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a folder received as a share
@@ -196,7 +196,7 @@ Feature: Sharing files and folders with internal users
     And user "user3" has created folder "/common"
     And user "user3" has shared folder "/common" with user "user1"
     And the administrator has enabled exclude groups from sharing from the admin sharing settings page
-    When the administrator adds group "grp1" to the group sharing blacklist using the webUI
+    When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     Then user "user1" should not be able to share folder "/common" with user "User Four" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a file inside a folder received as a share
@@ -213,7 +213,7 @@ Feature: Sharing files and folders with internal users
     And user "user3" has moved file "/testimage.jpg" to "/common/testimage.jpg"
     And user "user3" has shared folder "/common" with user "user1"
     And the administrator has enabled exclude groups from sharing from the admin sharing settings page
-    When the administrator adds group "grp1" to the group sharing blacklist using the webUI
+    When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     Then user "user1" should not be able to share file "/common/testimage.jpg" with user "User Four" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a folder inside a folder received as a share
@@ -228,7 +228,7 @@ Feature: Sharing files and folders with internal users
     And user "user3" has created folder "/common/inside-common"
     And user "user3" has shared folder "/common" with user "user1"
     And the administrator has enabled exclude groups from sharing from the admin sharing settings page
-    When the administrator adds group "grp1" to the group sharing blacklist using the webUI
+    When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     Then user "user1" should not be able to share folder "/common/inside-common" with user "User Four" using the sharing API
 
   Scenario: user tries to share a file from a group which is blacklisted from sharing using webUI from files page
@@ -237,7 +237,7 @@ Feature: Sharing files and folders with internal users
     And user "user1" has been added to group "grp1"
     And the administrator has browsed to the admin sharing settings page
     And the administrator has enabled exclude groups from sharing from the admin sharing settings page
-    When the administrator adds group "grp1" to the group sharing blacklist using the webUI
+    When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     And the user re-logs in as "user1" using the webUI
     And the user opens the sharing tab from the file action menu of file "testimage.jpg" using the webUI
     Then the user should see an error message on the share dialog saying "Sharing is not allowed"
@@ -254,7 +254,7 @@ Feature: Sharing files and folders with internal users
     And user "user2" has shared file "/testimage.jpg" with user "user1"
     And the administrator has browsed to the admin sharing settings page
     And the administrator has enabled exclude groups from sharing from the admin sharing settings page
-    When the administrator adds group "grp1" to the group sharing blacklist using the webUI
+    When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     And the user re-logs in as "user1" using the webUI
     And the user browses to the shared-with-you page
     And the user opens the sharing tab from the file action menu of file "testimage (2).jpg" using the webUI
