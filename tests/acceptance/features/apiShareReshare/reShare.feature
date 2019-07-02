@@ -561,6 +561,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 404              |
 
+  @public_link_share-feature-required
   Scenario Outline: increasing permissions of a public link from a sub-folder of a share with share+read only permissions is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
