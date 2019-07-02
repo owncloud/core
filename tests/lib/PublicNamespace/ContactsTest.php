@@ -34,7 +34,7 @@ class ContactsTest extends \Test\TestCase {
 
 	public function testEnabledAfterRegister() {
 		// create mock for the addressbook
-		$stub = $this->getMockForAbstractClass("OCP\IAddressBook", ['getKey']);
+		$stub = $this->getMockForAbstractClass("OCP\IAddressBook");
 
 		// we expect getKey to be called twice:
 		// first time on register
@@ -60,7 +60,7 @@ class ContactsTest extends \Test\TestCase {
 
 	public function testAddressBookEnumeration() {
 		// create mock for the addressbook
-		$stub = $this->getMockForAbstractClass("OCP\IAddressBook", ['getKey', 'getDisplayName']);
+		$stub = $this->getMockForAbstractClass("OCP\IAddressBook");
 
 		// setup return for method calls
 		$stub->expects($this->any())
@@ -80,8 +80,8 @@ class ContactsTest extends \Test\TestCase {
 
 	public function testSearchInAddressBook() {
 		// create mock for the addressbook
-		$stub1 = $this->getMockForAbstractClass("OCP\IAddressBook", ['getKey', 'getDisplayName', 'search']);
-		$stub2 = $this->getMockForAbstractClass("OCP\IAddressBook", ['getKey', 'getDisplayName', 'search']);
+		$stub1 = $this->getMockForAbstractClass("OCP\IAddressBook");
+		$stub2 = $this->getMockForAbstractClass("OCP\IAddressBook");
 
 		$searchResult1 = [
 			['id' => 0, 'FN' => 'Frank Karlitschek', 'EMAIL' => 'a@b.c', 'GEO' => '37.386013;-122.082932'],
