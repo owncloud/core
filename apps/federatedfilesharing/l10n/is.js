@@ -8,6 +8,7 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "Ekki er heimilt að búa til skýjasambandssameign með sama notanda",
     "File is already shared with %s" : "Skránni er þegar deilt með %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Deiling %s mistókst, gat ekki fundið %s, hugsanlega er þjónninn ekki tiltækur í augnablikinu.",
+    "Federated Sharing failed: %s" : "Deiling milli þjóna mistókst: %s",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" deildi \"%3$s\" með þér (fyrir hönd \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" deildi \"%3$s\" með þér",
     "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" bauð þér að skoða \"%3$s\" (fyrir hönd \"%2$s\")",

@@ -130,6 +130,8 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Leyfa forritum að nota Share API",
     "Allow users to share via link" : "Leyfa notendum að deila með tengli",
     "Allow public uploads" : "Leyfa opinberar innsendingar",
+    "Enforce password protection for read-only links" : "Krefjast verndunar með lykilorði fyrir einungis-lesanlega tengla",
+    "Enforce password protection for read & write links" : "Krefjast verndunar með lykilorði fyrir les-og-skrifanlega tengla",
     "Set default expiration date" : "Setja sjálfgefinn gildistíma",
     "Expire after " : "Rennur út eftir ",
     "days" : "daga",
