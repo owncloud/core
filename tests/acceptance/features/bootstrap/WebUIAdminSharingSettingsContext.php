@@ -220,15 +220,15 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When the administrator adds group :group to the group sharing blacklist using the webUI
-	 * @Given the administrator has added group :group to the group sharing blacklist from the admin sharing settings page
+	 * @When the administrator adds group :group to the exclude group from sharing list using the webUI
+	 * @Given the administrator has added group :group to the exclude group from sharing list from the admin sharing settings page
 	 *
 	 * @param string $group
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsGroupToTheGroupSharingBlacklistUsingTheWebui($group) {
-		$this->adminSharingSettingsPage->addGroupToGroupSharingBlacklist(
+	public function theAdministratorAddsGroupToTheExcludeGroupFromSharingList($group) {
+		$this->adminSharingSettingsPage->addGroupToExcludeGroupsFromSharingList(
 			$this->getSession(), $group
 		);
 	}

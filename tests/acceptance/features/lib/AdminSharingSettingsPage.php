@@ -60,7 +60,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	protected $excludeGroupFromSharingCheckboxXpath = '//label[@for="shareapiExcludeGroups"]';
 	protected $excludeGroupFromSharingCheckboxId = 'shareapiExcludeGroups';
 
-	protected $groupSharingBlackListFieldXpath = '//p[@id="selectExcludedGroups"]//input[contains(@class,"select2-input")]';
+	protected $excludeGroupsFromSharingListFieldXpath = '//p[@id="selectExcludedGroups"]//input[contains(@class,"select2-input")]';
 	protected $excludeGroupFromSharesFieldXpath = '//div[@id="files_sharing"]//input[contains(@class,"select2-input")]';
 	protected $groupListXpath = '//div[@id="select2-drop"]//li[contains(@class, "select2-result")]';
 	protected $groupListDropDownXpath = "//div[@id='select2-drop']";
@@ -284,8 +284,10 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 *
 	 * @return void
 	 */
-	public function addGroupToGroupSharingBlacklist(Session $session, $groupName) {
-		$this->addGroupToInputField($groupName, $this->groupSharingBlackListFieldXpath);
+	public function addGroupToExcludeGroupsFromSharingList(
+		Session $session, $groupName
+	) {
+		$this->addGroupToInputField($groupName, $this->excludeGroupsFromSharingListFieldXpath);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
