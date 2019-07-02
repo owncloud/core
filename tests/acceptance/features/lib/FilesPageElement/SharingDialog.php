@@ -29,6 +29,7 @@ use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Page\OwncloudPageElement\OCDialog;
+use WebDriver\Exception\StaleElementReference;
 
 /**
  * The Sharing Dialog
@@ -319,13 +320,15 @@ class SharingDialog extends OwncloudPage {
 	 *
 	 * @param string $shareReceiverName
 	 * @param array $permissions [['permission' => 'yes|no']]
+	 * @param Session $session
 	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
 	public function setSharingPermissions(
 		$shareReceiverName,
-		$permissions
+		$permissions,
+		Session $session
 	) {
 		$xpathLocator = \sprintf(
 			$this->permissionsFieldByUserName, $shareReceiverName
@@ -384,7 +387,18 @@ class SharingDialog extends OwncloudPage {
 			if (($value === "yes" && !$permissionCheckBox->isChecked())
 				|| ($value === "no" && $permissionCheckBox->isChecked())
 			) {
-				$permissionLabel->click();
+				// Some times when we try to click the label it gives StaleElementReference.
+				try {
+					$permissionLabel->click();
+				} catch (StaleElementReference $e) {
+				}
+				$this->waitForAjaxCallsToStartAndFinish($session);
+				// We recheck the value to make sure that the permission has changed since clicking it.
+				if (($value === "yes" && !$permissionCheckBox->isChecked())
+					|| ($value === "no" && $permissionCheckBox->isChecked())
+				) {
+					throw new \Exception("The checkbox for permission {$permissionLabel->getText()} could not be clicked.");
+				}
 			}
 		}
 	}
