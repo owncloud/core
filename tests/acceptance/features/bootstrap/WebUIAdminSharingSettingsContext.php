@@ -220,6 +220,17 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When the administrator enables restrict users to only share with groups they are member of using the webUI
+	 *
+	 * @return void
+	 */
+	public function theAdministratorEnablesRestrictUsersToOnlyShareWithGroupsTheyAreMemberOfUsingTheWebui() {
+		$this->adminSharingSettingsPage->restrictUserToOnlyShareWithMembershipGroup(
+			$this->getSession()
+		);
+	}
+
+	/**
 	 * @When the administrator adds group :group to the exclude group from sharing list using the webUI
 	 * @Given the administrator has added group :group to the exclude group from sharing list from the admin sharing settings page
 	 *

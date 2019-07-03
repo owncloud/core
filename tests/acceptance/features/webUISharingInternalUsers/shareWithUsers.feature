@@ -392,3 +392,31 @@ Feature: Sharing files and folders with internal users
       | Brand-New-User    | brand-new-user | BRAND-NEW-USER |
       | brand-new-user    | BRAND-NEW-USER | Brand-New-User |
       | BRAND-NEW-USER    | Brand-New-User | brand-new-user |
+
+  Scenario: sharer should be able to share a folder to a user when only share with groups they are member of is enabled
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    And user "user1" has created folder "/simple-folder"
+    And the administrator has browsed to the admin sharing settings page
+    When the administrator enables restrict users to only share with groups they are member of using the webUI
+    And the user re-logs in as "user1" using the webUI
+    And the user shares folder "simple-folder" with user "User Two" using the webUI
+    Then as "user2" folder "/simple-folder" should exist
+
+  Scenario: sharer should be able to share a file to a user when only share with groups they are member of is enabled
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    And user "user1" has uploaded file with content "some content" to "lorem.txt"
+    And the administrator has browsed to the admin sharing settings page
+    When the administrator enables restrict users to only share with groups they are member of using the webUI
+    And the user re-logs in as "user1" using the webUI
+    And the user shares file "lorem.txt" with user "User Two" using the webUI
+    Then as "user2" file "/lorem.txt" should exist
