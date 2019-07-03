@@ -130,11 +130,11 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "user0" has copied file "/textfile0.txt" to "/folderC/textfile0.txt"
     And user "user0" has copied file "/textfile0.txt" to "/folderD/textfile0.txt"
     When user "user0" deletes these files without delays using the WebDAV API
+      | /textfile0.txt         |
       | /folderA/textfile0.txt |
       | /folderB/textfile0.txt |
       | /folderC/textfile0.txt |
       | /folderD/textfile0.txt |
-      | /textfile0.txt         |
     # When issue-23151 is fixed, uncomment these lines. They should pass reliably.
     #Then as "user0" the folder with original path "/folderA/textfile0.txt" should exist in trash
     #And as "user0" the folder with original path "/folderB/textfile0.txt" should exist in trash
