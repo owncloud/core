@@ -12,6 +12,7 @@ Feature: sharing
 
   Scenario: Keep usergroup shares (#22143)
     Given group "grp1" has been created
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
     And user "user0" has created folder "/TMP"
