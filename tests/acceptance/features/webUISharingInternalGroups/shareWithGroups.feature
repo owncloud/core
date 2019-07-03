@@ -255,3 +255,39 @@ Feature: Sharing files and folders with internal groups
       | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
       | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
+
+  Scenario: sharer should not be able to share a folder to a group which he/she is not member of when share with groups they are member of is enabled
+    Given group "grp2" has been created
+    And user "user1" has created folder "/simple-folder"
+    And the administrator has browsed to the admin sharing settings page
+    When the administrator enables restrict users to only share with groups they are member of using the webUI
+    And the user re-logs in as "user1" using the webUI
+    And the user opens the share dialog for folder "simple-folder"
+    And the user types "grp2" in the share-with-field
+    Then a tooltip with the text "No users or groups found for grp2" should be shown near the share-with-field on the webUI
+
+  Scenario: sharer should not be able to share a file to a group which he/she is not member of when share with groups they are member of is enabled
+    Given group "grp2" has been created
+    And user "user1" has uploaded file with content "some content" to "lorem.txt"
+    And the administrator has browsed to the admin sharing settings page
+    When the administrator enables restrict users to only share with groups they are member of using the webUI
+    And the user re-logs in as "user1" using the webUI
+    And the user opens the share dialog for file "lorem.txt"
+    And the user types "grp2" in the share-with-field
+    Then a tooltip with the text "No users or groups found for grp2" should be shown near the share-with-field on the webUI
+
+  Scenario: sharer should be able to share a folder to his/her own group when only share with groups they are member of is enabled
+    Given user "user1" has created folder "/simple-folder"
+    And the administrator has browsed to the admin sharing settings page
+    When the administrator enables restrict users to only share with groups they are member of using the webUI
+    And the user re-logs in as "user1" using the webUI
+    And the user shares folder "simple-folder" with group "grp1" using the webUI
+    Then as "user2" folder "/simple-folder" should exist
+
+  Scenario: sharer should be able to share a file to his/her own group when only share with groups they are member of is enabled
+    Given user "user1" has uploaded file with content "some content" to "lorem.txt"
+    And the administrator has browsed to the admin sharing settings page
+    When the administrator enables restrict users to only share with groups they are member of using the webUI
+    And the user re-logs in as "user1" using the webUI
+    And the user shares file "lorem.txt" with group "grp1" using the webUI
+    Then as "user2" file "/lorem.txt" should exist
