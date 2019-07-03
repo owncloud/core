@@ -50,8 +50,9 @@ class DisableTest extends TestCase {
 
 	public function dataDisable() {
 		return [
-			['yes', true, 'Encryption disabled'],
-			['no', false, 'Encryption is already disabled'],
+			['yes', true, '1', 'Encryption disabled'],
+			['yes', true, '', 'Encryption disabled'],
+			['no', false, false, 'Encryption is already disabled'],
 		];
 	}
 
@@ -60,22 +61,37 @@ class DisableTest extends TestCase {
 	 *
 	 * @param string $oldStatus
 	 * @param bool $isUpdating
+	 * @param bool $masterKeyEnabled
 	 * @param string $expectedString
 	 */
-	public function testDisable($oldStatus, $isUpdating, $expectedString) {
-		$this->config->expects($this->once())
+	public function testDisable($oldStatus, $isUpdating, $masterKeyEnabled, $expectedString) {
+		$this->config->expects($this->exactly(1))
 			->method('getAppValue')
-			->with('core', 'encryption_enabled', $this->anything())
-			->willReturn($oldStatus);
+			->willReturnMap([
+					['core', 'encryption_enabled', 'no', $oldStatus],
+				]
+			);
 
-		$this->consoleOutput->expects($this->once())
+		$this->consoleOutput->expects($this->exactly(2))
 			->method('writeln')
-			->with($this->stringContains($expectedString));
+			->will($this->onConsecutiveCalls([
+				$this->stringContains('<info>Cleaned up config</info>'),
+				$this->stringContains($expectedString),
+			]));
 
 		if ($isUpdating) {
-			$this->config->expects($this->once())
+			$this->config
 				->method('setAppValue')
-				->with('core', 'encryption_enabled', 'no');
+				->willReturnMap([
+						['core', 'encryption_enabled', 'no', true],
+					]
+				);
+			$this->config
+				->method('deleteAppValue')
+				->willReturnMap([
+					['encryption', 'useMasterKey', true],
+					['encryption', 'userSpecificKey', true],
+				]);
 		}
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);

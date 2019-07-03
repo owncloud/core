@@ -46,11 +46,20 @@ class Disable extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
+		/**
+		 * Delete both useMasterKey and userSepecificKey
+		 */
+		$this->config->deleteAppValue('encryption', 'useMasterKey');
+		$this->config->deleteAppValue('encryption', 'userSpecificKey');
+
+		$output->writeln('<info>Cleaned up config</info>');
+
 		if ($this->config->getAppValue('core', 'encryption_enabled', 'no') !== 'yes') {
 			$output->writeln('Encryption is already disabled');
-		} else {
-			$this->config->setAppValue('core', 'encryption_enabled', 'no');
-			$output->writeln('<info>Encryption disabled</info>');
+			return 0;
 		}
+
+		$this->config->setAppValue('core', 'encryption_enabled', 'no');
+		$output->writeln('<info>Encryption disabled</info>');
 	}
 }
