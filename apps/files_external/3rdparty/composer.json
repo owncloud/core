@@ -10,6 +10,9 @@
 	"require": {
 		"icewind/smb": "3.1.1",
 		"icewind/streams": "0.7.1"
+	},
+	"autoload": {
+		"files": ["../lib/config.php"]
 	}
 }
 

@@ -54,6 +54,7 @@
  *
  */
 
+use OC\Autoloader;
 use OCP\IRequest;
 
 require_once 'public/Constants.php';
@@ -102,7 +103,7 @@ class OC {
 	public static $CLI = false;
 
 	/**
-	 * @var \OC\Autoloader $loader
+	 * @var Autoloader $loader
 	 */
 	public static $loader = null;
 
@@ -485,16 +486,6 @@ class OC {
 
 		// register autoloader
 		$loaderStart = \microtime(true);
-		require_once __DIR__ . '/autoloader.php';
-		self::$loader = new \OC\Autoloader([
-			OC::$SERVERROOT . '/lib/private/legacy',
-		]);
-		if (\defined('PHPUNIT_RUN')) {
-			self::$loader->addValidRoot(OC::$SERVERROOT . '/tests');
-		}
-		\spl_autoload_register([self::$loader, 'load']);
-		$loaderEnd = \microtime(true);
-
 		self::$CLI = (\in_array(\php_sapi_name(), ['cli', 'phpdbg']));
 
 		// setup 3rdparty autoloader
@@ -510,6 +501,12 @@ class OC {
 			print('Composer autoloader not found!');
 			exit();
 		}
+		self::$loader = new Autoloader();
+		if (\defined('PHPUNIT_RUN')) {
+			self::$loader->addValidRoot(OC::$SERVERROOT . '/tests');
+		}
+		\spl_autoload_register([self::$loader, 'load']);
+		$loaderEnd = \microtime(true);
 
 		try {
 			self::initPaths();
