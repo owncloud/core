@@ -11,6 +11,7 @@ Feature: sharing
       | user1    |
     And using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
+    # Note: in the user_ldap test environment user1 is in grp1
     And user "user1" has been added to group "grp1"
     And user "user0" has shared file "textfile0.txt" with group "grp1"
     And user "user1" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
@@ -127,8 +128,9 @@ Feature: sharing
       | user0    |
       | user1    |
     And user "user2" has been created with default attributes and skeleton files
-    And user "user2" has been added to group "grp1"
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
     And user "user1" has been added to group "grp1"
+    And user "user2" has been added to group "grp1"
     And user "user2" has shared file "/PARENT/parent.txt" with group "grp1"
     And user "user2" has stored etag of element "/PARENT"
     And user "user1" has stored etag of element "/"
