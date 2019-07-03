@@ -261,6 +261,8 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "Dës %s Instanz ass am Moment am Maintenance Modus, dat kënnt ee Moment brauche.",
     "This page will refresh itself when the %s instance is available again." : "Dës Säit luet nees automatesch wann d' %s Instanz nees disponibel ass.",
     "Menu" : "Menü",
-    "Imprint" : "Impressum"
+    "Imprint" : "Impressum",
+    "User" : "Benotzer",
+    "Group" : "Grupp"
 },
 "nplurals=2; plural=(n != 1);");

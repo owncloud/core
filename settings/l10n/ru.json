@@ -396,6 +396,7 @@
     "Resend activation link" : "Заново отправить ссылку активации",
     "New Password" : "Новый пароль",
     "Please set your password" : "Пожалуйста, установите ваш пароль",
-    "Activation link was sent to an email address, if one was configured." : "Ссылка активации была отправлена на адрес почты, если он был настроен."
+    "Activation link was sent to an email address, if one was configured." : "Ссылка активации была отправлена на адрес почты, если он был настроен.",
+    "Enforce as maximum expiration date" : "Принудительно установить в качестве максимальной даты устаревания"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }

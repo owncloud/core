@@ -356,6 +356,8 @@ OC.L10N.register(
     "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "인스턴스에 너무 많은 파일이나 사용자가 있는 것 같습니다. 업그레이드를 순조롭게 진행하려면 명령행 업데이트 도구(occ upgrade)를 사용하십시오.",
     "{sharee} (federated)" : "{sharee}(연합)",
     "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "config.php에서 자동 업데이트가 비활성화되어 있습니다. 인스턴스를 업그레이드하려면 명령줄 업데이트(occ upgrade)를 사용하십시오.",
-    "Imprint" : "법적 고지"
+    "Imprint" : "법적 고지",
+    "User" : "사용자 이름",
+    "Group" : "그룹"
 },
 "nplurals=1; plural=0;");

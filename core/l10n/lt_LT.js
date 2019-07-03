@@ -240,6 +240,8 @@ OC.L10N.register(
     "Need help?" : "Reikia pagalbos?",
     "Imprint" : "Imprint",
     "Download / View" : "Atsisiųsti / Peržiūrėti",
-    "Download / View / Upload" : "Atsisiųsti / Peržiūrėti / Įkelti"
+    "Download / View / Upload" : "Atsisiųsti / Peržiūrėti / Įkelti",
+    "User" : "Naudotojas",
+    "Group" : "Grupė"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);");

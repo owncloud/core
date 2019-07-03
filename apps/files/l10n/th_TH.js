@@ -122,6 +122,7 @@ OC.L10N.register(
     "Unknown user" : "ไม่รู้จักผู้ใช้",
     "Lock status" : "ล็อคสถานะ",
     "{owner} has locked this resource via {path}" : "พาท {path} ถูก {owner} ล็อคข้อมูลอยู่",
+    "The file {file} already exists" : "ไฟล์ {file} มีอยู่แล้ว",
     "The file {file} is currently locked, please try again later" : "ไฟล์ {file} ถูกล็อคอยู่โปรดลองอีกครั้งในภายหลัง",
     "This resource is locked. Click to see more details." : "ข้อมูลนี้ถูกล็อคคลิกเพื่อดูรายละเอียดเพิ่มเติม",
     "Could not unlock, please contact the lock owner {owner}" : "ไม่สามารถปลดล็อกได้โปรดติดต่อ {owner}",

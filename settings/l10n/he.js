@@ -372,6 +372,7 @@ OC.L10N.register(
     "These are the web, desktop and mobile clients currently logged in to your %s." : "אלו הם לקוחות האינטרנט, לקוחות שולחן העבודה והלקוחות הניידים שמחוברים כרגע אל ה- %s שלך.",
     "App passwords / tokens" : "סיסמאות / חתימות ייצוג הישום",
     "Password / Token" : "סיסמא / חתימת ייצוג",
+    "Enforce as maximum expiration date" : "אכיפה כתאריך תפוגה מרבי",
     "Language used for public mail notifications for shared files" : "שפה המשמשת עבור הודעות דואר ציבורי עבור קבצים משותפים",
     "Automatically accept new incoming local user shares" : "קבלה אוטומטית של שיתופי משתמש מקומי חדשים",
     "Legal" : "משפטי",

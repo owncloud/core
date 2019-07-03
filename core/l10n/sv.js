@@ -339,6 +339,8 @@ OC.L10N.register(
     "Edit link share: {name}" : "Ändra länkdelningen {name}",
     "Create link share: {name}" : "Skapa länkdelningen {name}",
     "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Specifiera portnumret och värdnamnet (ex. localhost: 1337)",
-    "Imprint" : "Imprint"
+    "Imprint" : "Imprint",
+    "User" : "Användare",
+    "Group" : "Grupp"
 },
 "nplurals=2; plural=(n != 1);");

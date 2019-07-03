@@ -200,6 +200,8 @@ OC.L10N.register(
     "%s will be updated to version %s" : "%s ĝisdatiĝos al eldono %s",
     "These apps will be updated:" : "Ĉi tiuj aplikaĵoj ĝisdatiĝos:",
     "Start update" : "Ekĝisdatigi",
-    "Copy to clipboard" : "Kopii al tondejo"
+    "Copy to clipboard" : "Kopii al tondejo",
+    "User" : "Uzanto",
+    "Group" : "Grupo"
 },
 "nplurals=2; plural=(n != 1);");

@@ -398,6 +398,7 @@ OC.L10N.register(
     "Resend activation link" : "Aktivierungslink erneut versenden.",
     "New Password" : "Neues Passwort",
     "Please set your password" : "Bitte setzen Sie Ihr Passwort",
-    "Activation link was sent to an email address, if one was configured." : "Der Aktivierungs Link wurde an eine E-Mail-Adresse versandt, falls eine angelegt konfiguriert wurde. "
+    "Activation link was sent to an email address, if one was configured." : "Der Aktivierungs Link wurde an eine E-Mail-Adresse versandt, falls eine angelegt konfiguriert wurde. ",
+    "Enforce as maximum expiration date" : "Als spätestes Ablaufdatum erzwingen"
 },
 "nplurals=2; plural=(n != 1);");

@@ -41,6 +41,7 @@ OC.L10N.register(
     "Help" : "సహాయం",
     "Username" : "వాడుకరి పేరు",
     "Log out" : "నిష్క్రమించు",
-    "New password" : "కొత్త సంకేతపదం"
+    "New password" : "కొత్త సంకేతపదం",
+    "User" : "వాడుకరి"
 },
 "nplurals=2; plural=(n != 1);");

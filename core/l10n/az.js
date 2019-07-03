@@ -90,6 +90,8 @@ OC.L10N.register(
     "New password" : "Yeni şifrə",
     "You are accessing the server from an untrusted domain." : "Siz serverə inamsız domain-dən girməyə çalışırsız.",
     "Copy to clipboard" : "Buferə nüsxələ",
-    "Imprint" : "İşarələmək"
+    "Imprint" : "İşarələmək",
+    "User" : "İstifadəçi",
+    "Group" : "Qrup"
 },
 "nplurals=2; plural=(n != 1);");

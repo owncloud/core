@@ -24,6 +24,8 @@ OC.L10N.register(
     "Share with me via ownCloud" : "Teilen Sie mit mir über ownCloud",
     "HTML Code:" : "HTML-Code:",
     "Add to your ownCloud" : "Zu Ihrer ownCloud hinzufügen",
-    "Automatically accept remote shares from trusted servers" : "Freigaben von vertrauenswürdigen Servern automatisch annehmen"
+    "Federated Sharing failed: %s" : "Federated-Sharing fehlgeschlagen: %s",
+    "Automatically accept remote shares from trusted servers" : "Freigaben von vertrauenswürdigen Servern automatisch annehmen",
+    "Nothing to configure." : "Nichts zum Konfigurieren vorhanden."
 },
 "nplurals=2; plural=(n != 1);");

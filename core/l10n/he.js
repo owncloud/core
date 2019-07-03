@@ -361,6 +361,8 @@ OC.L10N.register(
     "Couldn't send mail to following recipient(s): %s " : "נא ניתן לשלוח דוא״ל לנמענים הבאים: %s",
     "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "עדכון אוטומטי מנוטרל בקובץ config.php. לשדרוג ההרצה שלך, יש להשתמש בעדכון המבוסס על שורת פקודה (שדרוג occ).",
     "Imprint" : "חותמת",
+    "User" : "שתמש",
+    "Group" : "קבוצה",
     "Download / View" : "הורדה/הצגה",
     "Download / View / Upload" : "הורדה / הצגה / העלאה",
     "Recipients can view or download contents." : "נמענים יכולים לצפות התוכן או להורידו.",
@@ -377,6 +379,9 @@ OC.L10N.register(
     "Share with user {shareWith} has attribute {name} which is no longer available. Please recreate the share!" : "לשיתוף עם משתמש {shareWith} יש משתנה {name} שאינו זמין יותר.  יש ליצור מחדש את השיתוף!",
     "federated" : "מאוגד",
     "{sharee} (federated)" : "{sharee} (מאוגד)",
+    "Guest" : "אורח",
+    "At {server}" : "ב- {server}",
+    "Federated" : "מאוגד",
     "Static" : "סטטי",
     "Personal note from the sender: <br> %s." : "מסר אישי מהשולח: <br> %s."
 },

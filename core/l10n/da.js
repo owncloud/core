@@ -339,6 +339,8 @@ OC.L10N.register(
     "{fileName} link" : "{fileName} link",
     "Edit link share: {name}" : "Rediger linkdeling: {name}",
     "Create link share: {name}" : "Opret linkdeling: {name}",
-    "Imprint" : "Aftryk"
+    "Imprint" : "Aftryk",
+    "User" : "Bruger",
+    "Group" : "Gruppe"
 },
 "nplurals=2; plural=(n != 1);");

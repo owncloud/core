@@ -2288,6 +2288,7 @@ class Share20OcsControllerTest extends TestCase {
 
 	public function testUpdateShareCannotIncreasePermissions() {
 		$ocs = $this->mockFormatShare();
+
 		$folder = $this->createMock(Folder::class);
 
 		$share = \OC::$server->getShareManager()->newShare();

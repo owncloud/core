@@ -361,6 +361,8 @@ OC.L10N.register(
     "Could not reset password because the token is invalid" : "Heslo nebylo změněno kvůli neplatnému tokenu",
     "Could not reset password because the token expired" : "Heslo nebylo změněno z důvodu vypršení tokenu",
     "Could not reset password because the token does not match" : "Heslo nebylo změněno protože token nesouhlasí",
+    "User" : "Uživatel",
+    "Group" : "Skupina",
     "Recipients can view or download contents." : "Příjemce může zobrazit a stáhnout obsah.",
     "Recipients can view, download and upload contents." : "Příjemce může zobrazit, stáhnout a nahrávat obsah.",
     "Download / View / Edit" : "Stáhnout / zobrazit / upravit",

@@ -119,6 +119,14 @@ OC.L10N.register(
     "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "限制关于<strong>已收藏文件</strong>的新建和修改相关的通知",
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "你无权访问此文件/目录 - 请联系拥有者向你分享此权限。",
     "Error when assembling chunks, status code {status}" : "合并文件块时发生 {status} 代码错误",
-    "Unknown user" : "未知用户"
+    "Unknown user" : "未知用户",
+    "The file {file} already exists" : "文件{file}已存在",
+    "The file {file} is currently locked, please try again later" : "文件{file}当前已被锁定，请稍后再试",
+    "Lock status" : "锁定状态",
+    "This resource is locked. Click to see more details." : "资源已被锁定。单击查看详细信息。",
+    "{owner} has locked this resource via {path}" : "{owner}已通过{path}锁定资源",
+    "Could not unlock, please contact the lock owner {owner}" : "无法解锁，请联系锁定所有者{owner}",
+    "Unlock failed with status {status}" : "解锁失败。{status}",
+    "Resource is not locked" : "资源未被锁定"
 },
 "nplurals=1; plural=0;");

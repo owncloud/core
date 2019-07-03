@@ -351,6 +351,8 @@
     "An error occured while sending email" : "Tapahtui virhe lähetettäessä sähköpostia",
     "E-Mail sent" : "Sähköposti lähetetty",
     "Personal note from the sender: <br> %s." : "Henkilökohtainen viesti lähettäjältä: <br> %s.",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automaattiset päivitykset on poistettu käytöstä config.php:ssä. Päivittääksesi asennuksesi, ole hyvä ja käytä päivittäjää komentoriviltä (occ upgrade)"
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automaattiset päivitykset on poistettu käytöstä config.php:ssä. Päivittääksesi asennuksesi, ole hyvä ja käytä päivittäjää komentoriviltä (occ upgrade)",
+    "User" : "Käyttäjä",
+    "Group" : "Ryhmä"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

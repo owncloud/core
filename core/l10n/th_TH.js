@@ -375,11 +375,16 @@ OC.L10N.register(
     "Sharing is not allowed" : "ไม่อนุญาตให้แชร์",
     "Personal note from the sender: <br> %s." : "บันทึกส่วนบุคคลจากผู้ส่ง: <br>%s",
     "Static" : "คงที่",
+    "User" : "ชื่อผู้ใช้",
+    "Group" : "กลุ่ม",
     "Recipients can view, download and upload contents." : "ผู้รับสามารถดู ดาวน์โหลด และอัปโหลดเนื้อหา",
     "Download / View / Edit" : "ดาวน์โหลด / ดู / แก้ไข",
     "Recipients can view, download and edit contents." : "ผู้รับสามารถดู ดาวน์โหลด และแก้ไขเนื้อหา",
     "Confirm Password" : "ยืนยันรหัสผ่าน",
     "Can not remove required password" : "ไม่สามารถลบรหัสผ่านที่ต้องการ",
-    "Share with user {shareWith} has attribute {name} which is no longer available. Please recreate the share!" : "แชร์กับผู้ใช้ {shareWith} มีแอตทริบิวต์ {name} ซึ่งไม่สามารถใช้ได้อีกต่อไป โปรดสร้างแชร์ใหม่อีกครั้ง!"
+    "Share with user {shareWith} has attribute {name} which is no longer available. Please recreate the share!" : "แชร์กับผู้ใช้ {shareWith} มีแอตทริบิวต์ {name} ซึ่งไม่สามารถใช้ได้อีกต่อไป โปรดสร้างแชร์ใหม่อีกครั้ง!",
+    "Guest" : "ผู้มาเยือน",
+    "At {server}" : "ที่ {server}",
+    "Federated" : "สหพันธ์"
 },
 "nplurals=1; plural=0;");

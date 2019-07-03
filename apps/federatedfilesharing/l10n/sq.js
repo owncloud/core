@@ -25,6 +25,7 @@ OC.L10N.register(
     "HTML Code:" : "Kod HTML:",
     "Add to your ownCloud" : "Shtojeni te ownCloud-i juaj",
     "Automatically accept remote shares from trusted servers" : "Prano vetvetiu ndarje të largëta prej shërbyesish të besuar",
+    "Federated Sharing failed: %s" : "Ndarja e Federuar dështoi: %s",
     "Nothing to configure." : "S’ka gjë për formësim."
 },
 "nplurals=2; plural=(n != 1);");

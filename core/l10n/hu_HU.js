@@ -370,6 +370,8 @@ OC.L10N.register(
     "Personal note from the sender: %s." : "Személyes megjegyzés %s küldőnek.",
     "Privacy Policy" : "Adatvédelmi szabályzat",
     "Sharing is not allowed" : "A megosztás nem engedélyezett",
-    "Personal note from the sender: <br> %s." : "A küldő személyes megjegyzése: <br> %s."
+    "Personal note from the sender: <br> %s." : "A küldő személyes megjegyzése: <br> %s.",
+    "User" : "Felhasználó",
+    "Group" : "Csoport"
 },
 "nplurals=2; plural=(n != 1);");

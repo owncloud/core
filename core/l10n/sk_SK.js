@@ -312,6 +312,8 @@ OC.L10N.register(
     "This page will refresh itself when the %s instance is available again." : "Táto stránka sa obnoví sama hneď ako bude %s inštancia znovu dostupná.",
     "Copy to clipboard" : "Skopírovať do schránky",
     "Menu" : "Menu",
-    "Imprint" : "Podmienky používania"
+    "Imprint" : "Podmienky používania",
+    "User" : "Používateľ",
+    "Group" : "Skupina"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

@@ -68,6 +68,7 @@ OC.L10N.register(
     "Log out" : "تىزىمدىن چىق",
     "Search" : "ئىزدە",
     "New password" : "يېڭى ئىم",
-    "Copy to clipboard" : "چاپلاش تاختىسىغا كۆچۈر"
+    "Copy to clipboard" : "چاپلاش تاختىسىغا كۆچۈر",
+    "User" : "ئىشلەتكۈچى"
 },
 "nplurals=1; plural=0;");

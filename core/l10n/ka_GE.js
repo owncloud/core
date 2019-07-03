@@ -104,6 +104,7 @@ OC.L10N.register(
     "New password" : "ახალი პაროლი",
     "Reset password" : "პაროლის შეცვლა",
     "Copy to clipboard" : "კოპირებულია ქლიპბორდში ",
-    "Imprint" : "ბეჭედი"
+    "Imprint" : "ბეჭედი",
+    "User" : "მომხმარებელი"
 },
 "nplurals=1; plural=0;");

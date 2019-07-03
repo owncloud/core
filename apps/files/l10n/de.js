@@ -120,6 +120,7 @@ OC.L10N.register(
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Du hast keine Berechtigung, um auf diese(n) Datei/Ordner zuzugreifen - Bitte kontaktiere den Besitzer, damit er dies mit dir teilt.",
     "Error when assembling chunks, status code {status}" : "Fehler beim Zusammenfügen der Datenblöcke, Statuscode {status}",
     "Unknown user" : "Unbekannter Benutzer",
+    "The file {file} already exists" : "Die Datei {file} existiert bereits",
     "The file {file} is currently locked, please try again later" : "Die Datei {file} ist zur Zeit gesperrt, bitte versuche es später noch einmal",
     "Lock status" : "Sperrstatus",
     "This resource is locked. Click to see more details." : "Die Ressource ist gesperrt. Klicken um mehr zu sehen.",

@@ -299,6 +299,8 @@ OC.L10N.register(
     "Copy to clipboard" : "Kopeeri lõikepuhvrisse",
     "Menu" : "Menüü",
     "Imprint" : "Impressum",
+    "User" : "Kasutaja",
+    "Group" : "Grupp",
     "Link name" : "Lingi nimi",
     "Download / View" : "Laadi alla / Vaata",
     "Download / View / Upload" : "Laadi alla / Vaata / Laadi üles"

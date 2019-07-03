@@ -374,6 +374,8 @@
     "Personal note from the sender: <br> %s." : "Nota personal del remitente: <br> %s.",
     "Static" : "Estático",
     "Confirm Password" : "Confirmar contraseña",
+    "User" : "Usuario",
+    "Group" : "Grupo",
     "Recipients can view, download and upload contents." : "Los recipientes pueden ver, descargar y subir el contenido.",
     "Download / View / Edit" : "Descargar / Ver / Editar",
     "Recipients can view, download and edit contents." : "Los recipientes pueden ver, descargar y editar el contenido.",

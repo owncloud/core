@@ -121,6 +121,7 @@ OC.L10N.register(
     "Error when assembling chunks, status code {status}" : "Fehler beim Zusammenfügen der Datenblöcke, Statuscode {status}",
     "Unknown user" : "Unbekannter Benutzer",
     "The file {file} is currently locked, please try again later" : "Die Datei {file} ist zur Zeit gesperrt, bitte versuchen Sie es später noch einmal",
+    "The file {file} already exists" : "Die Datei {file} existiert bereits",
     "Lock status" : "Sperrstatus",
     "This resource is locked. Click to see more details." : "Die Ressource ist gesperrt. Klicken für mehr Details.",
     "{owner} has locked this resource via {path}" : "{owner} hat diese Ressource via {path} gesperrt",

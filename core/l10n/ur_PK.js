@@ -109,6 +109,7 @@ OC.L10N.register(
     "Use the following link to reset your password: {link}" : "اپنا پاسورڈ ری سیٹ کرنے کے لیے اس لنک پر کلک کریں۔  {link}",
     "New password" : "نیا پاسورڈ",
     "Reset password" : "ری سیٹ پاسورڈ",
-    "Thank you for your patience." : "آپ کے صبر کا شکریہ"
+    "Thank you for your patience." : "آپ کے صبر کا شکریہ",
+    "Group" : "گروپ"
 },
 "nplurals=2; plural=(n != 1);");

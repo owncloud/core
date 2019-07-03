@@ -345,6 +345,8 @@ OC.L10N.register(
     "Link name" : "Naziv povezave",
     "Owner: {owner}" : "Lastnik: {owner}",
     "You are trying to access a private link. Please log in first." : "Poskušate odpreti zasebno povezavo. Pred nadaljevanjem se je treba prijaviti.",
-    "Imprint" : "Natis"
+    "Imprint" : "Natis",
+    "User" : "Uporabnik",
+    "Group" : "Skupina"
 },
 "nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);");

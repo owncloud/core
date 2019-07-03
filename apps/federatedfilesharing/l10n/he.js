@@ -24,6 +24,7 @@ OC.L10N.register(
     "Share with me via ownCloud" : "שיתוף איתי באמצעות ownCloud",
     "HTML Code:" : "קוד HTML:",
     "Add to your ownCloud" : "הוספה ל- ownCloud שלך",
+    "Federated Sharing failed: %s" : "שיתוף מאוגד נכשל: %s",
     "Automatically accept remote shares from trusted servers" : "אישור אוטומטי לשיתוף מרוחק משרתים מהימנים",
     "Nothing to configure." : "אין שום דבר להגדיר."
 },

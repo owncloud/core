@@ -120,6 +120,7 @@ OC.L10N.register(
     "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "אין לך הרשאות לגשת לקובץ/תיקייה - יש ליצור קשר עם הבעלים לשיתופם איתך.",
     "Error when assembling chunks, status code {status}" : "שגיאה בזמן בניית פיסות מידע למשלוח, קוד מצב {status}",
     "Unknown user" : "משתמש לא ידוע",
+    "The file {file} already exists" : "הקובץ {file} כבר קיים",
     "The file {file} is currently locked, please try again later" : "הקובץ {file} כרגע נעול, אפשר לנסות שוב מאוחר יותר",
     "Lock status" : "מצב נעילה",
     "This resource is locked. Click to see more details." : "המשאב נעול. יש ללחוץ לקבלת פרטים נוספים.",
