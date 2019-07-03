@@ -137,10 +137,5 @@ OC.L10N.register(
     "Nothing to configure." : "Nada para configurar.",
     "You unshared %1$s shared by %2$s from self" : "Você descompartilhou %1$s compartilhado por %2$s de si mesmo",
     "Unshared %1$s from self" : "Descompartilhou %1$s de sí mesmo"
-=======
-    "You unshared %1$s shared by %2$s from self" : "Você descompartilhou %1$s compartilhado por %2$s de si mesmo",
-    "Unshared %1$s from self" : "Descompartilhou %1$s de sí mesmo",
-    "Nothing to configure." : "Nada para configurar."
->>>>>>> release-10.2.1
 },
 "nplurals=2; plural=(n > 1);");
