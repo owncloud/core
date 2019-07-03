@@ -247,6 +247,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and skeleton files
     And group "grp1" has been created
+    # Note: in the user_ldap test environment user1 is in grp1
     And user "user1" has been added to group "grp1"
     And user "user0" has shared file "textfile0.txt" with group "grp1"
     And user "user1" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
@@ -433,8 +434,9 @@ Feature: sharing
     And user "user1" has been created with default attributes and without skeleton files
     And user "user2" has been created with default attributes and skeleton files
     And group "grp1" has been created
-    And user "user2" has been added to group "grp1"
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
     And user "user1" has been added to group "grp1"
+    And user "user2" has been added to group "grp1"
     And as user "user2"
     And the user has shared folder "/FOLDER" with group "grp1"
     And the user has updated the last share with
