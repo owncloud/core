@@ -752,6 +752,19 @@ matrix:
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
+    # PHP 7.3
+    - PHP_VERSION: 7.3
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.3
+      DB_TYPE: mariadb
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
   # Files External
     - PHP_VERSION: 7.1
       TEST_SUITE: phpunit

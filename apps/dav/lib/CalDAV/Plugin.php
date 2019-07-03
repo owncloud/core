@@ -23,7 +23,6 @@ namespace OCA\DAV\CalDAV;
 
 use Sabre\DAV;
 use Sabre\DAV\Xml\Property\ShareAccess;
-use Sabre\HTTP\URLUtil;
 
 class Plugin extends \Sabre\CalDAV\Plugin {
 	public function initialize(DAV\Server $server) {
@@ -45,7 +44,7 @@ class Plugin extends \Sabre\CalDAV\Plugin {
 	 */
 	public function getCalendarHomeForPrincipal($principalUrl) {
 		if (\strrpos($principalUrl, 'principals/users', -\strlen($principalUrl)) !== false) {
-			list(, $principalId) = URLUtil::splitPath($principalUrl);
+			list(, $principalId) = \Sabre\Uri\split($principalUrl);
 			return self::CALENDAR_ROOT .'/' . $principalId;
 		}
 

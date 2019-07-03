@@ -332,6 +332,22 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
+	 * @Then the item :xpath in the response should not exist
+	 *
+	 * @param string $xpath
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function assertItemInResponseDoesNotExist($xpath) {
+		$xmlPart = $this->featureContext->getResponseXmlObject()->xpath($xpath);
+		PHPUnit\Framework\Assert::assertFalse(
+			isset($xmlPart[0]),
+			"Found item with xpath \"$xpath\" but it should not exist"
+		);
+	}
+
+	/**
 	 * @Then /^as user "([^"]*)" (?:file|folder|entry) "([^"]*)" should contain a property "([^"]*)" with value "([^"]*)" or with value "([^"]*)"$/
 	 *
 	 * @param string $user

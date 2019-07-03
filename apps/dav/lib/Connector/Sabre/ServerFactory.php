@@ -128,7 +128,7 @@ class ServerFactory {
 		}
 
 		// wait with registering these until auth is handled and the filesystem is setup
-		$server->on('beforeMethod', function () use ($server, $objectTree, $viewCallBack) {
+		$server->on('beforeMethod:*', function () use ($server, $objectTree, $viewCallBack) {
 			// ensure the skeleton is copied
 			// Try to obtain User Folder
 			$userFolder = \OC::$server->getUserFolder();
