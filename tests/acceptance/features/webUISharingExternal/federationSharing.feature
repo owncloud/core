@@ -361,3 +361,14 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user deletes file "textfile.txt" using the webUI
     And using server "LOCAL"
     Then as "user1" file "/simple-folder/simple-empty-folder/textfile.txt" should not exist
+
+  Scenario: delete shared folder and create a folder for federation sharing with same name
+    Given user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
+    And user "user1" from server "REMOTE" has accepted the last pending share
+    And user "user1" has deleted folder "simple-folder"
+    And user "user1" has created folder "simple-folder"
+    And user "user1" from server "LOCAL" has shared "simple-folder" with user "user1" from server "REMOTE"
+    When user "user1" from server "REMOTE" accepts the last pending share using the sharing API
+    Then using server "REMOTE"
+    And as "user1" folder "simple-folder" should exist
+    And as "user1" folder "simple-folder (3)" should exist
