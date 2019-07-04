@@ -196,9 +196,9 @@ class FilesPlugin extends ServerPlugin {
 	/**
 	 * This sets a cookie to be able to recognize the failure of the download
 	 *
-	 * @param \Exception $ex
+	 * @param \Throwable $ex
 	 */
-	public function handleDownloadFailure(\Exception $ex) {
+	public function handleDownloadFailure(\Throwable $ex) {
 		$queryParams = $this->server->httpRequest->getQueryParameters();
 
 		if (isset($queryParams['downloadStartSecret'])) {

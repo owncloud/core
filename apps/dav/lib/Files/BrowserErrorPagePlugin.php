@@ -68,9 +68,9 @@ class BrowserErrorPagePlugin extends ServerPlugin {
 	}
 
 	/**
-	 * @param \Exception $ex
+	 * @param \Throwable $ex
 	 */
-	public function logException(\Exception $ex) {
+	public function logException(\Throwable $ex) {
 		if ($ex instanceof Exception) {
 			$httpCode = $ex->getHTTPCode();
 			$headers = $ex->getHTTPHeaders($this->server);
@@ -88,10 +88,10 @@ class BrowserErrorPagePlugin extends ServerPlugin {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @param \Exception $ex
+	 * @param \Throwable $ex
 	 * @return bool|string
 	 */
-	public function generateBody(\Exception $ex) {
+	public function generateBody(\Throwable $ex) {
 		$request = \OC::$server->getRequest();
 		$content = new OC_Template('dav', 'exception', 'guest');
 		$content->assign('title', $this->server->httpResponse->getStatusText());
