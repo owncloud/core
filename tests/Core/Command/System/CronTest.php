@@ -63,7 +63,7 @@ class CronTest extends TestCase {
 		$this->commandTester = new CommandTester($command);
 	}
 
-	public function testMaintenanceMode(): void {
+	public function testMaintenanceMode() {
 		$this->config->method('getSystemValue')->with('maintenance', false)->willReturn(true);
 
 		$this->commandTester->execute([]);
@@ -71,7 +71,7 @@ class CronTest extends TestCase {
 		$this->assertContains('We are in maintenance mode, skipping cron', $output);
 	}
 
-	public function testSingleuser(): void {
+	public function testSingleuser() {
 		$this->config->method('getSystemValue')
 			->willReturnMap([
 				['maintenance', false, false],
@@ -83,7 +83,7 @@ class CronTest extends TestCase {
 		$this->assertContains('We are in admin only mode, skipping cron', $output);
 	}
 
-	public function testCronDisabled(): void {
+	public function testCronDisabled() {
 		$this->config->method('getSystemValue')
 			->willReturnMap([
 				['maintenance', false, false],
@@ -96,7 +96,7 @@ class CronTest extends TestCase {
 		$this->assertContains('Background Jobs are disabled!', $output);
 	}
 
-	public function testCronRun(): void {
+	public function testCronRun() {
 		$this->config->method('getSystemValue')
 			->willReturnMap([
 				['maintenance', false, false],

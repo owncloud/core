@@ -58,19 +58,19 @@ class CronControllerTest extends TestCase {
 			$this->config, $this->logger, $this->jobList);
 	}
 
-	public function testCronDisabled(): void {
+	public function testCronDisabled() {
 		$this->config->method('getAppValue')->with('core', 'backgroundjobs_mode', 'ajax')->willReturn('none');
 		$response = $this->controller->run();
 		$this->assertEquals(new Http\JSONResponse(['data' => ['message' => 'Background jobs disabled!']]), $response);
 	}
 
-	public function testCronReal(): void {
+	public function testCronReal() {
 		$this->config->method('getAppValue')->with('core', 'backgroundjobs_mode', 'ajax')->willReturn('cron');
 		$response = $this->controller->run();
 		$this->assertEquals(new Http\JSONResponse(['data' => ['message' => 'Background jobs are using system cron!']]), $response);
 	}
 
-	public function testCronRun(): void {
+	public function testCronRun() {
 		$this->config->method('getAppValue')->with('core', 'backgroundjobs_mode', 'ajax')->willReturn('ajax');
 		$job = $this->createMock(IJob::class);
 		$job->expects(self::once())->method('execute')->with($this->jobList, $this->logger);
