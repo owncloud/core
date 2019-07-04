@@ -586,7 +586,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$userName = $this->featureContext->substituteInLineCodes($userName);
 		$this->theUserOpensTheShareDialogForFileFolder($fileName);
 		$this->sharingDialog->setSharingPermissions(
-			$userName, $permissionsTable->getRowsHash()
+			$userName, $permissionsTable->getRowsHash(), $this->getSession()
 		);
 	}
 
