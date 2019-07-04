@@ -236,8 +236,6 @@ class NotificationsTest extends \Test\TestCase {
 		$clientExceptionMock->method('getResponse')->willReturn($responseMock);
 
 		$exceptionMock = $this->createMock(\Exception::class);
-		$exceptionMock->method('getCode')
-			->willReturn(Http::STATUS_NOT_ACCEPTABLE);
 		return [
 			[
 				$clientExceptionMock,
