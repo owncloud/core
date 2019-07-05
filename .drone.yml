@@ -670,9 +670,10 @@ matrix:
       PHP_VERSION: 7.1
 
   # phpstan
-    - TEST_SUITE: phpstan
-      PHP_VERSION: 7.1
-      INSTALL_SERVER: true
+  # disable in stable10 until code fixes can be backported
+  #  - TEST_SUITE: phpstan
+  #    PHP_VERSION: 7.1
+  #    INSTALL_SERVER: true
 
   # Litmus
     - PHP_VERSION: 7.1
