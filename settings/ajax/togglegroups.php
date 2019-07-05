@@ -55,6 +55,7 @@ if (!OC_User::isAdminUser(OC_User::getUser())
 }
 
 if ($targetUserObject === null) {
+	$l = \OC::$server->getL10N('core');
 	OC_JSON::error(['data' => ['message' => $l->t('Unknown user')]]);
 	exit();
 }
