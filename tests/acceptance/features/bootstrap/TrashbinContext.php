@@ -201,7 +201,11 @@ class TrashbinContext implements Context {
 	private function sendUndeleteRequest($user, $trashItemHRef, $originalLocation) {
 		$destinationValue = $this->featureContext->getBaseUrl() . "/remote.php/dav/files/$user/$originalLocation";
 
-		$trashItemHRef = \substr($trashItemHRef, 15);
+		// we need to get the trashItemHRef from the format
+		// /<base>/remote.php/dav/trash-bin/<user>/<item_id>/ -->> /trash-bin/<user>/<item_id>
+		$trashItemHRef = \trim($trashItemHRef, '/');
+		$parts = \explode('/', $trashItemHRef);
+		$trashItemHRef = '/' . \join('/', \array_slice($parts, -3));
 		$headers['Destination'] = $destinationValue;
 		$response = $this->featureContext->makeDavRequest(
 			$user, 'MOVE', $trashItemHRef, $headers, null, 'trash-bin', null, 2
