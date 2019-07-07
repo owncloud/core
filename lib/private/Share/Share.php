@@ -640,8 +640,8 @@ class Share extends Constants {
 		$l = \OC::$server->getL10N('lib');
 
 		if ($backend->isShareTypeAllowed($shareType) === false) {
-			$message = 'Sharing %s failed, because the backend does not allow shares from type %i';
-			$message_t = $l->t('Sharing %s failed, because the backend does not allow shares from type %i', [$itemSourceName, $shareType]);
+			$message = 'Sharing %s failed, because the backend does not allow shares from type %d';
+			$message_t = $l->t('Sharing %s failed, because the backend does not allow shares from type %d', [$itemSourceName, $shareType]);
 			\OCP\Util::writeLog('OCP\Share', \sprintf($message, $itemSourceName, $shareType), \OCP\Util::DEBUG);
 			throw new \Exception($message_t);
 		}
