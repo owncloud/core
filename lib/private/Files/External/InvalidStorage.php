@@ -26,9 +26,8 @@ use OC\Files\Storage\FailedStorage;
 
 class InvalidStorage extends FailedStorage {
 	public function __construct($params) {
-		parent::__construct([
-			'exception' => new StorageNotAvailableException()
-		]);
+		$params['exception'] = new StorageNotAvailableException();
+		parent::__construct($params);
 		throw new StorageNotAvailableException();
 	}
 }
