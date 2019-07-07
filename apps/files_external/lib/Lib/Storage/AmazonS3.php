@@ -73,6 +73,10 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 	 * @var int in seconds
 	 */
 	private $rescanDelay = 10;
+	/**
+	 * @var string
+	 */
+	private $id;
 
 	/**
 	 * @param string $path
