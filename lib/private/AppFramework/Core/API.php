@@ -167,7 +167,7 @@ class API implements IApi {
 	 * @deprecated Use \OC::$server->getJobList()->add();
 	 */
 	public function addRegularTask($className, $methodName) {
-		\OCP\Backgroundjob::addRegularTask($className, $methodName);
+		\OCP\BackgroundJob::addRegularTask($className, $methodName);
 	}
 
 	/**
