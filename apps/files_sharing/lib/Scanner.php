@@ -89,7 +89,7 @@ class Scanner extends \OC\Files\Cache\Scanner {
 		$sourceScanner = $this->getSourceScanner();
 		if ($sourceScanner instanceof NoopScanner) {
 			list(, $internalPath) = $this->storage->resolvePath($file);
-			return parent::scan($internalPath, $reuseExisting, $parentId, $cacheData, $lock);
+			return parent::scan($internalPath, self::SCAN_SHALLOW, $reuseExisting, $lock);
 		} else {
 			return parent::scanFile($file, $reuseExisting, $parentId, $cacheData, $lock);
 		}
