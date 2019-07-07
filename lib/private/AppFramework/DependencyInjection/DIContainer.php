@@ -317,7 +317,7 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 				'Accessing the API class is deprecated! Use the appropriate ' .
 				'services instead!'
 			);
-			return new API($c['AppName']);
+			return new API();
 		});
 
 		$this->registerService('Protocol', function ($c) {
