@@ -29,7 +29,11 @@ namespace OC\Files\Storage;
  */
 class Temporary extends Local {
 	public function __construct($arguments = null) {
-		parent::__construct(['datadir' => \OC::$server->getTempManager()->getTemporaryFolder()]);
+		if (!\is_array($arguments)) {
+			$arguments = [];
+		}
+		$arguments['datadir'] = \OC::$server->getTempManager()->getTemporaryFolder();
+		parent::__construct($arguments);
 	}
 
 	public function cleanUp() {
