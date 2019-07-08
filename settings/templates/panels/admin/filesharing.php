@@ -60,7 +60,7 @@
 	p('hidden');
 }?>">
 			<?php p($l->t('Expire after ')); ?>
-			<input type="text" name='shareapi_expire_after_n_days' id="shareapiExpireAfterNDays" placeholder="<?php p('7')?>"
+			<input type="number" name='shareapi_expire_after_n_days' id="shareapiExpireAfterNDays" min="0" placeholder="<?php p('7')?>"
 				   value='<?php p($_['shareExpireAfterNDays']) ?>' />
 			<?php p($l->t('days')); ?><br/>
 			<?php if ($_['shareEnforceExpireDate'] === 'yes'): ?>
