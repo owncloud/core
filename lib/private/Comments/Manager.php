@@ -567,38 +567,37 @@ class Manager implements ICommentsManager {
 	 * @return bool
 	 */
 	protected function insert(IComment &$comment) {
-		return $this->emittingCall(function () use (&$comment) {
-			$qb = $this->dbConn->getQueryBuilder();
-			$affectedRows = $qb
-				->insert('comments')
-				->values([
-					'parent_id'					=> $qb->createNamedParameter($comment->getParentId()),
-					'topmost_parent_id' 		=> $qb->createNamedParameter($comment->getTopmostParentId()),
-					'children_count' 			=> $qb->createNamedParameter($comment->getChildrenCount()),
-					'actor_type' 				=> $qb->createNamedParameter($comment->getActorType()),
-					'actor_id' 					=> $qb->createNamedParameter($comment->getActorId()),
-					'message' 					=> $qb->createNamedParameter($comment->getMessage()),
-					'verb' 						=> $qb->createNamedParameter($comment->getVerb()),
-					'creation_timestamp' 		=> $qb->createNamedParameter($comment->getCreationDateTime(), 'datetime'),
-					'latest_child_timestamp'	=> $qb->createNamedParameter($comment->getLatestChildDateTime(), 'datetime'),
-					'object_type' 				=> $qb->createNamedParameter($comment->getObjectType()),
-					'object_id' 				=> $qb->createNamedParameter($comment->getObjectId()),
-				])
-				->execute();
+		$qb = $this->dbConn->getQueryBuilder();
+		$affectedRows = $qb
+			->insert('comments')
+			->values([
+				'parent_id'					=> $qb->createNamedParameter($comment->getParentId()),
+				'topmost_parent_id' 		=> $qb->createNamedParameter($comment->getTopmostParentId()),
+				'children_count' 			=> $qb->createNamedParameter($comment->getChildrenCount()),
+				'actor_type' 				=> $qb->createNamedParameter($comment->getActorType()),
+				'actor_id' 					=> $qb->createNamedParameter($comment->getActorId()),
+				'message' 					=> $qb->createNamedParameter($comment->getMessage()),
+				'verb' 						=> $qb->createNamedParameter($comment->getVerb()),
+				'creation_timestamp' 		=> $qb->createNamedParameter($comment->getCreationDateTime(), 'datetime'),
+				'latest_child_timestamp'	=> $qb->createNamedParameter($comment->getLatestChildDateTime(), 'datetime'),
+				'object_type' 				=> $qb->createNamedParameter($comment->getObjectType()),
+				'object_id' 				=> $qb->createNamedParameter($comment->getObjectId()),
+			])
+			->execute();
 
-			if ($affectedRows > 0) {
-				$comment->setId(\strval($qb->getLastInsertId()));
-			}
+		if ($affectedRows > 0) {
+			$comment->setId(\strval($qb->getLastInsertId()));
+		}
 
-			$this->dispatcher->dispatch(CommentsEvent::EVENT_ADD, new CommentsEvent(
-				CommentsEvent::EVENT_ADD,
-				$comment
-			));
-
+		$this->dispatcher->dispatch(CommentsEvent::EVENT_ADD, new CommentsEvent(
+			CommentsEvent::EVENT_ADD,
+			$comment
+		));
+		return $this->emittingCall(function () use ($affectedRows) {
 			return $affectedRows > 0;
 		}, [
 			'before' => ['objectId' => $comment->getObjectId(), 'message' => $comment->getMessage()],
-			'after' => ['objectId' => $comment->getObjectId(), 'message' => $comment->getMessage()]
+			'after' => ['commentId' => $comment->getId(), 'objectId' => $comment->getObjectId(), 'message' => $comment->getMessage()]
 		], 'comment', 'create');
 	}
 
