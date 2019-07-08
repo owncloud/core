@@ -485,6 +485,22 @@ trait AppConfiguration {
 						$this->getBaseUrl(),
 						$this->getOcPath()
 					);
+				} elseif (\array_key_exists($appName, $this->savedConfigList[$server]['apps'])
+					&& \array_key_exists($configKey, $this->savedConfigList[$server]['apps'][$appName])
+					&& $this->savedConfigList[$server]['apps'][$appName][$configKey] !== $configValue
+				) {
+					SetupHelper::runOcc(
+						[
+							'config:app:set',
+							$appName,
+							$configKey,
+							"--value=" . $this->savedConfigList[$server]['apps'][$appName][$configKey]
+						],
+						$this->getAdminUsername(),
+						$this->getAdminPassword(),
+						$this->getBaseUrl(),
+						$this->getOcPath()
+					);
 				}
 			}
 		}
