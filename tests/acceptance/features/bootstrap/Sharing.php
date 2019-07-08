@@ -23,6 +23,8 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
+use TestHelpers\SetupHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
 use GuzzleHttp\Message\ResponseInterface;
@@ -1791,6 +1793,41 @@ trait Sharing {
 		$usersShares = $this->getAllSharesSharedWithUser($user);
 		PHPUnit\Framework\Assert::assertEmpty(
 			$usersShares, "user has " . \count($usersShares) . " share(s)"
+		);
+	}
+
+	/**
+	 * @When the administrator adds group :group to the exclude group from sharing list using the occ command
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function administratorAddsGroupToExcludeFromSharingList($group) {
+		//get current groups
+		$occResult = SetupHelper::runOcc(
+			['config:app:get files_sharing blacklisted_receiver_groups']
+		);
+		//if the setting was never set before stdOut will be empty and return code will be 1
+		if (\trim($occResult['stdOut']) === "") {
+			$occResult['stdOut'] = "[]";
+		}
+
+		$currentGroups = \json_decode($occResult['stdOut'], true);
+		PHPUnit\Framework\Assert::assertNotNull(
+			$currentGroups,
+			"could not json decode app setting 'blacklisted_receiver_groups' of 'files_sharing'\n" .
+			"stdOut: '" . $occResult['stdOut'] . "'\n" .
+			"stdErr: '" . $occResult['stdErr'] . "'"
+		);
+
+		$currentGroups[] = $group;
+		$setSettingResult = SetupHelper::runOcc(
+			[
+				'config:app:set',
+				'files_sharing blacklisted_receiver_groups',
+				'--value=' . \json_encode($currentGroups)
+			]
 		);
 	}
 
