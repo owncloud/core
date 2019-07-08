@@ -52,8 +52,8 @@ $(document).ready(function(){
 
 	$('#shareapiExpireAfterNDays').change(function() {
 		var value = $(this).val();
-		if (value <= 0) {
-			$(this).val("1");
+		if (isNaN(value) || (parseInt(value) <= 0) || parseInt(value).toString() !== value) {
+			$(this).val('7');
 		}
 	});
 
