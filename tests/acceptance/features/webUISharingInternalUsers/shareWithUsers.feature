@@ -527,3 +527,17 @@ Feature: Sharing files and folders with internal users
     And file "textfile.txt" should be listed on the webUI
     And the content of "textfile.txt" should be the same as the local "textfile.txt"
     Then it should not be possible to share file "textfile.txt" using the webUI
+
+  @issue-35787
+  Scenario: share a skeleton file after changing its content to a user before the user has logged in
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user1    |
+      | user2    |
+    And user "user2" has logged in using the webUI
+    And user "user2" has uploaded file with content "edited original content" to "/lorem.txt"
+    When the user shares file "lorem.txt" with user "User One" using the webUI
+    Then the content of file "lorem.txt" for user "user2" should be "edited original content"
+    When the user re-logs in as "user1" using the webUI
+    Then the content of "lorem.txt" should be the same as the original "lorem.txt"
+#   And the content of file "lorem.txt" for user "user1" should be "edited original content"
