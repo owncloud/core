@@ -52,6 +52,7 @@ OC.L10N.register(
     "%2$s shared %1$s with %3$s" : "%2$s поделился %1$s с %3$s",
     "You removed the share of %2$s for %1$s" : "Вы удалили общий доступ к %2$s для %1$s",
     "%2$s removed the share of %3$s for %1$s" : "%2$s удалил общий доступ к %3$s для %1$s",
+    "You unshared %1$s shared by %2$s from self" : "Вы убрали доступ к %1$s, предоставленный пользователем %2$s от себя",
     "You shared %1$s with group %2$s" : "Вы поделились %1$s с группой %2$s",
     "%2$s shared %1$s with group %3$s" : "%2$s поделился %1$s с группой %3$s",
     "You removed the share of group %2$s for %1$s" : "Вы удалили общий доступ к группе %2$s для %1$s",
@@ -69,6 +70,7 @@ OC.L10N.register(
     "Shared with %3$s by %2$s" : "Поделился %2$s с %3$s",
     "Removed share for %2$s" : "Удалён общий доступ к %2$s",
     "%2$s removed share for %3$s" : "%2$s удалил общий доступ к %3$s",
+    "Unshared %1$s from self" : "Отменён доступ к %1$s от себя",
     "Shared with group %2$s" : "Поделился с группой %2$s",
     "Shared with group %3$s by %2$s" : "Поделился %2$s с группой %3$s",
     "Removed share of group %2$s" : "Удалён общий доступ к группе %2$s",
@@ -130,6 +132,7 @@ OC.L10N.register(
     "Download" : "Скачать",
     "Download %s" : "Скачать %s",
     "Direct link" : "Прямая ссылка",
+    "Nothing to configure." : "Здесь настраивать нечего.",
     "Group Sharing Blacklist" : "Чёрный список групп для общего доступа",
     "Exclude groups from receiving shares" : "Не давать группам получать общий доступ",
     "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Для этих групп не будет возможности предоставить им общий доступ к чему-либо. Членам группы не ограничивается право предоставлять общий доступ от себя, и они могут получать общий доступ через другие группы, если являются их членами, в обычном порядке."

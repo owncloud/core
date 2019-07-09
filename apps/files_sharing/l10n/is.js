@@ -126,6 +126,7 @@ OC.L10N.register(
     "%s is publicly shared" : "%s er deilt opinberlega",
     "Download" : "Niðurhal",
     "Download %s" : "Sækja %s",
-    "Direct link" : "Beinn tengill"
+    "Direct link" : "Beinn tengill",
+    "Nothing to configure." : "Ekkert til að stilla."
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

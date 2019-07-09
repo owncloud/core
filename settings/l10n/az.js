@@ -68,7 +68,6 @@ OC.L10N.register(
     "Set default expiration date" : "Susmaya görə olan bitmə vaxtını təyin edin",
     "Expire after " : "Bitir sonra",
     "days" : "günlər",
-    "Enforce expiration date" : "Bitmə tarixini həyata keçir",
     "Allow users to send mail notification for shared files" : "Yayımlanmış fayllar üçün, istifadəçilərə məktubla xəbərdarlığın yollanmasına izin verir",
     "Allow resharing" : "Yenidən paylaşıma izin",
     "Restrict users to only share with users in their groups" : "İstifadəçiləri yalnız yerləşdikləri qrup üzvləri ilə paylaşım edə bilmələrini məhdudla",

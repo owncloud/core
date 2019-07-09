@@ -52,6 +52,7 @@ OC.L10N.register(
     "%2$s shared %1$s with %3$s" : "%2$s geteilt %1$s mit %3$s",
     "You removed the share of %2$s for %1$s" : "Du hast die Freigabe von %2$s für %1$s entfernt",
     "%2$s removed the share of %3$s for %1$s" : "%2$s hat die Freigabe der %3$s für %1$s entfernt",
+    "You unshared %1$s shared by %2$s from self" : "Du hast das Teilen von %1$s mit %2$s aufgehoben",
     "You shared %1$s with group %2$s" : "Du hast %1$s mit der Gruppe %2$s geteilt",
     "%2$s shared %1$s with group %3$s" : "%2$s hat %1$s mit Gruppe %3$s geteilt",
     "You removed the share of group %2$s for %1$s" : "Du hast die Freigabe der Gruppe %2$s für %1$s entfernt",
@@ -69,6 +70,7 @@ OC.L10N.register(
     "Shared with %3$s by %2$s" : "Geteilt mit %3$s von %2$s",
     "Removed share for %2$s" : "Freigabe für %2$s entfernt",
     "%2$s removed share for %3$s" : "%2$s hat die Freigabe für %3$s entfernt",
+    "Unshared %1$s from self" : "Das eigene Teilen von %1$s wurde entfernt",
     "Shared with group %2$s" : "Geteilt mit Gruppe %2$s",
     "Shared with group %3$s by %2$s" : "Freigabe für Gruppe %3$s von %2$s entfernt",
     "Removed share of group %2$s" : "Freigabe für Gruppe %2$s entfernt",
@@ -130,6 +132,7 @@ OC.L10N.register(
     "Download" : "Herunterladen",
     "Download %s" : "Download %s",
     "Direct link" : "Direkter Link",
+    "Nothing to configure." : "Nichts zu konfigurieren. ",
     "Group Sharing Blacklist" : "Vom Teilen ausgeschlossene Gruppen",
     "Exclude groups from receiving shares" : "Gruppen von Teilen ausschliessen",
     "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Diese Gruppen stehen nicht zum Teilen von Daten zur Verfügung. Einzelne Mitglieder können weiterhin Shares für andere Gruppen anlegen oder von ihnen empfangen, in denen sie Mitglied sind."

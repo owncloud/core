@@ -169,6 +169,8 @@ OC.L10N.register(
     "change" : "aldatu",
     "delete" : "ezabatu",
     "access control" : "sarrera kontrola",
+    "User" : "Erabiltzailea",
+    "Group" : "Taldea",
     "User and Groups" : "Erabiltzaile eta Taldeak",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Partekatu beste ownClud-en jendearekin sintaxi honekin erabiltzaleizena@adibidea.com/owncloud",
     "Delete" : "Ezabatu",

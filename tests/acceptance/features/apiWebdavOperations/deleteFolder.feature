@@ -6,7 +6,7 @@ Feature: delete folder
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
 
   Scenario Outline: delete a folder
     Given using <dav_version> DAV path

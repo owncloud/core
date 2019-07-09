@@ -99,7 +99,8 @@ class DropOldTables implements IRepairStep {
 			'clndr_share_calendar',
 			'clndr_repeat',
 			'contacts_addressbooks',
-			'contacts_cards'
+			'contacts_cards',
+			'contacts_cards_properties'
 		];
 	}
 }

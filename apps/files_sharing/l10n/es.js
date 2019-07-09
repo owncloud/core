@@ -52,6 +52,7 @@ OC.L10N.register(
     "%2$s shared %1$s with %3$s" : "%2$s compartó %1$s con %3$s",
     "You removed the share of %2$s for %1$s" : "Ha cambiado el compartido %2$s por %1$s",
     "%2$s removed the share of %3$s for %1$s" : "%2$s eliminó la compartición de %3$s con %1$s",
+    "You unshared %1$s shared by %2$s from self" : "Tú dejaste de compartir %1$s compartido por %2$s de sí mismo",
     "You shared %1$s with group %2$s" : "Usted ha compartido %1$s con el grupo %2$s",
     "%2$s shared %1$s with group %3$s" : "%2$s compartió %1$s con el grupo %3$s",
     "You removed the share of group %2$s for %1$s" : "Ha cambiado el compartido del grupo %2$s por %1$s",
@@ -69,6 +70,7 @@ OC.L10N.register(
     "Shared with %3$s by %2$s" : "Compartido con %3$s por %2$s",
     "Removed share for %2$s" : "Borrado el compartido %2$s",
     "%2$s removed share for %3$s" : "%2$s ha borrado el compartido %3$s",
+    "Unshared %1$s from self" : "Dejó de compartirse  %1$s por ti",
     "Shared with group %2$s" : "Compartido con el grupo %2$s",
     "Shared with group %3$s by %2$s" : "Compartido con el grupo %3$s por %2$s",
     "Removed share of group %2$s" : "Borrado el compartido del grupo %2$s",
@@ -130,6 +132,7 @@ OC.L10N.register(
     "Download" : "Descargar",
     "Download %s" : "Descargar %s",
     "Direct link" : "Enlace directo",
+    "Nothing to configure." : "Nada que configurar",
     "Group Sharing Blacklist" : "Lista negra Grupo compartidos",
     "Exclude groups from receiving shares" : "Excluir grupos de recibir compartidos",
     "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Estos grupos no estarán disponibles para compartir. Los miembros de este grupo no están restringidos para compartir y pueden recibir compartidos respecto de otros grupos que sí son miembros."

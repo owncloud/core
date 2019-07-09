@@ -231,6 +231,58 @@ function get_path_from_url() {
 	echo ${PATH%/}
 }
 
+# check that server is up and working correctly
+# $1 the full URL including the protocol
+# exits if server is not working correctly (by pinging status.php), otherwise returns
+function assert_server_up() {
+	curl -k -sSf -L $1/status.php -o /dev/null
+	if [[ $? -eq 0 ]]
+	then
+		return
+	else
+		echo >&2 "Server on $1 is down or not working correctly."
+		exit 98
+	fi
+}
+
+# check that testing app is installed
+# $1 the full URL including the protocol
+# if testing app is not installed, this returns 500 status code
+# we are not sending request with auth, so if it is installed 401 Not Authorized is returned.
+# anyway, if it's not 500, assume testing app is installed and move on.
+# Otherwise, print to stderr and exit.
+function assert_testing_app_enabled() {
+	CURL_RESULT=`curl -s $1/ocs/v2.php/apps/testing/api/v1/app/testing -o /dev/null -w "%{http_code}"`
+	if [[ ${CURL_RESULT} -eq 500 ]]
+	then
+		echo >&2 "Testing app is not enabled on the server on $1."
+		echo >&2 "Please install and enable it to run the tests."
+		exit 98
+	else
+		return
+	fi
+}
+
+# check if certain apache_module is enabled
+# $1 admin authentication string username:password
+# $2 the full url to the testing app on the server to check
+# $3 Module to check for
+# $4 text description of the server being checked, e.g. "local", "remote"
+# return 0 if given module is enabled, else return with 1
+function check_apache_module_enabled() {
+	# test if mod_rewrite is enabled
+	CURL_RESULT=`curl -k -s -u $1 $2apache_modules/$3`
+	STATUS_CODE=`echo ${CURL_RESULT} | xmllint --xpath "string(ocs/meta/statuscode)" -`
+	if [[ ${STATUS_CODE} -ne 200 ]]
+	then
+		echo -n "Could not reliably determine if '$3' module is enabled on the $4 server, because "
+		echo ${CURL_RESULT} | xmllint --xpath "string(ocs/meta/message)" -
+		echo ""
+		return 1
+	fi
+	return 0
+}
+
 # Provide a default admin username and password.
 # But let the caller pass them if they wish
 if [ -z "${ADMIN_USERNAME}" ]
@@ -285,9 +337,9 @@ function run_behat_tests() {
 	echo "Running ${SUITE_FEATURE_TEXT} tests tagged ${BEHAT_FILTER_TAGS} ${BROWSER_TEXT}${BROWSER_VERSION_TEXT}${PLATFORM_TEXT}" | tee ${TEST_LOG_FILE}
 
 	${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
-	
+
 	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
-	
+
 	if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 	then
 		PASSED=true
@@ -309,7 +361,7 @@ function run_behat_tests() {
 			PASSED=false
 		fi
 	fi
-	
+
 	# With webUI tests, we try running failed tests again.
 	if [ "${PASSED}" = false ] && [ "${RUNNING_WEBUI_TESTS}" = true ] && [ "${RERUN_FAILED_WEBUI_SCENARIOS}" = true ]
 	then
@@ -335,7 +387,7 @@ function run_behat_tests() {
 					PASSED=false
 				fi
 			done
-	
+
 		if [ "${SOME_SCENARIO_RERUN}" = false ]
 		then
 			# If the original Behat had a fatal PHP error and exited directly with
@@ -345,7 +397,7 @@ function run_behat_tests() {
 			PASSED=false
 		fi
 	fi
-	
+
 	if [ "${BEHAT_TAGS_OPTION_FOUND}" != true ]
 	then
 		# The behat run specified to skip scenarios tagged @skip
@@ -374,7 +426,7 @@ function teardown() {
 		read -r -a APP <<< "${APPS_TO_REENABLE[$i]}"
 		remote_occ ${ADMIN_AUTH} ${APP[0]} "--no-warnings app:enable ${APP[1]}"
 	done
-	
+
 	# Disable any apps that were enabled for the test run
 	for i in "${!APPS_TO_REDISABLE[@]}"
 	do
@@ -402,7 +454,7 @@ function teardown() {
 			remote_occ ${ADMIN_AUTH} ${SETTING[0]} "config:${SETTING[1]}:set ${SETTING[2]} ${SETTING[3]} --value=${SETTING[4]}${TYPE_STRING}"
 		fi
 	done
-	
+
 	# Put back state of the testing app
 	if [ "${TESTING_ENABLED_BY_SCRIPT}" = true ]
 	then
@@ -425,17 +477,17 @@ function teardown() {
 		kill ${PHPPID}
 		kill ${PHPPID_FED}
 	fi
-	
+
 	if [ "${SHOW_OC_LOGS}" = true ]
 	then
 		tail "${OC_PATH}/data/owncloud.log"
 	fi
-	
+
 	# Reset the original language
 	export LANG=${OLD_LANG}
-	
+
 	rm -f "${TEST_LOG_FILE}"
-	
+
 	echo "runsh: Exit code of main run: ${BEHAT_EXIT_STATUS}"
 }
 
@@ -462,24 +514,38 @@ then
 	TESTING_APP_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/"
 	OCC_URL="${TESTING_APP_URL}occ"
 	DIR_URL="${TESTING_APP_URL}dir"
+	# test that server is up and running, and testing app is enabled.
+	assert_server_up ${TEST_SERVER_URL}
+	assert_testing_app_enabled ${TEST_SERVER_URL}
+
 	if [ -n "${TEST_SERVER_FED_URL}" ]
 	then
 		TESTING_APP_FED_URL="${TEST_SERVER_FED_URL}/ocs/v2.php/apps/testing/api/v1/"
 		OCC_FED_URL="${TESTING_APP_FED_URL}occ"
+		# test that fed server is up and running, and testing app is enabled.
+		assert_server_up ${TEST_SERVER_FED_URL}
+		assert_testing_app_enabled ${TEST_SERVER_FED_URL}
 	fi
-	
+
 	echo "Not using php inbuilt server for running scenario ..."
 	echo "Updating .htaccess for proper rewrites"
 	#get the sub path of the webserver and set the correct RewriteBase
 	WEBSERVER_PATH=$(get_path_from_url ${TEST_SERVER_URL})
+	HTACCESS_UPDATE_FAILURE_MSG="Could not update .htaccess in local server. Some tests might fail as a result."
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/"
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "maintenance:update:htaccess"
+	[[ $? -eq 0 ]] || { echo "${HTACCESS_UPDATE_FAILURE_MSG}"; }
+	# check if mod_rewrite module is enabled
+	check_apache_module_enabled ${ADMIN_AUTH} ${TESTING_APP_URL} "mod_rewrite" "local"
 
 	if [ -n "${TEST_SERVER_FED_URL}" ]
 	then
 		WEBSERVER_PATH=$(get_path_from_url ${TEST_SERVER_FED_URL})
 		remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/"
 		remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "maintenance:update:htaccess"
+		[[ $? -eq 0 ]] || { echo "${HTACCESS_UPDATE_FAILURE_MSG/local/federated}"; }
+		# check if mod_rewrite module is enabled
+		check_apache_module_enabled ${ADMIN_AUTH} ${TESTING_APP_FED_URL} "mod_rewrite" "remote"
 	fi
 else
 	echo "Using php inbuilt server for running scenario ..."
@@ -545,11 +611,11 @@ ACCEPTANCE_DIR=$(dirname "${BEHAT_CONFIG_DIR}")
 BEHAT_FEATURES_DIR="${ACCEPTANCE_DIR}/features"
 
 declare -a BEHAT_SUITES
-if [ -n "${BEHAT_SUITE}" ]
+if [[ -n "${BEHAT_SUITE}" ]]
 then
 	BEHAT_SUITES+=(${BEHAT_SUITE})
 else
-	if [ -n "${RUN_PART}" ]
+	if [[ -n "${RUN_PART}" ]]
 	then
 		ALL_SUITES=`find ${BEHAT_FEATURES_DIR}/ -type d -iname ${ACCEPTANCE_TEST_TYPE}* | sort | rev | cut -d"/" -f1 | rev`
 		COUNT_ALL_SUITES=`echo "${ALL_SUITES}" | wc -l`
@@ -560,13 +626,13 @@ else
 		# the remaining number of suites that need to be distributed (could be zero)
 		REMAINING_SUITES=$((${COUNT_ALL_SUITES} - (${DIVIDE_INTO_NUM_PARTS} * ${MIN_SUITES_PER_RUN})))
 
-		if [ ${RUN_PART} -le ${REMAINING_SUITES} ]
+		if [[ ${RUN_PART} -le ${REMAINING_SUITES} ]]
 		then
 			SUITES_THIS_RUN=${MAX_SUITES_PER_RUN}
 			SUITES_IN_PREVIOUS_RUNS=$((${MAX_SUITES_PER_RUN} * (${RUN_PART} - 1)))
 		else
 			SUITES_THIS_RUN=${MIN_SUITES_PER_RUN}
-			SUITES_IN_PREVIOUS_RUNS=$(((${MAX_SUITES_PER_RUN} * ${REMAINING_SUITES}) + (${MIN_SUITES_PER_RUN} * (${RUN_PART} - ${REMAINING_SUITES} - 1))))
+			SUITES_IN_PREVIOUS_RUNS=$((((${MAX_SUITES_PER_RUN} * ${REMAINING_SUITES}) + (${MIN_SUITES_PER_RUN} * (${RUN_PART} - ${REMAINING_SUITES} - 1)))))
 		fi
 
 		if [ ${SUITES_THIS_RUN} -eq 0 ]
@@ -693,16 +759,16 @@ do
 		IFS=';'
 		read -r -a SETTING <<< "${SETTINGS[$i]}"
 		IFS=${PREVIOUS_IFS}
-		
+
 		save_config_setting "${ADMIN_AUTH}" "${URL}" "${SETTING[0]}" "${SETTING[1]}" "${SETTING[2]}" "${SETTING[4]}"
-		
+
 		TYPE_STRING=""
 		if [ -n "${SETTING[4]}" ]
 		then
 			#place the space here not in the command line, so that there is no space if the string is empty
 			TYPE_STRING=" --type ${SETTING[4]}"
 		fi
-		
+
 		remote_occ ${ADMIN_AUTH} ${URL} "config:${SETTING[0]}:set ${SETTING[1]} ${SETTING[2]} --value=${SETTING[3]}${TYPE_STRING}"
 		if [ $? -ne 0 ]
 		then
@@ -727,7 +793,7 @@ then
 	fi
 	for URL in ${TESTING_APP_URL} ${TESTING_APP_FED_URL}
 	do
-		curl -k -s -u $ADMIN_AUTH ${URL}testingskeletondirectory -d "directory=${SRC_SKELETON_DIR}" > /dev/null
+		curl -k -s -u ${ADMIN_AUTH} ${URL}testingskeletondirectory -d "directory=${SRC_SKELETON_DIR}" > /dev/null
 	done
 else
 	for URL in ${OCC_URL} ${OCC_FED_URL}
@@ -930,11 +996,11 @@ for i in "${!BEHAT_SUITES[@]}"
 	do
 	BEHAT_SUITE_OPTION="--suite=${BEHAT_SUITES[$i]}"
 	SUITE_FEATURE_TEXT="${BEHAT_SUITES[$i]}"
-	for rerun_number in $(seq 1 $BEHAT_RERUN_TIMES)
+	for rerun_number in $(seq 1 ${BEHAT_RERUN_TIMES})
 		do
-		if (($BEHAT_RERUN_TIMES > 1))
+		if ((${BEHAT_RERUN_TIMES} > 1))
 		then
-			echo -e "\nTest repeat $rerun_number of $BEHAT_RERUN_TIMES"
+			echo -e "\nTest repeat $rerun_number of ${BEHAT_RERUN_TIMES}"
 		fi
 		run_behat_tests
 	done

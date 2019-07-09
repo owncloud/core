@@ -858,7 +858,7 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should have the following tags for the (administrator|user)$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should have the following tags for the (administrator|user)$/
 	 *
 	 * @param string $fileName
 	 * @param string $adminOrUser
@@ -913,8 +913,9 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @Then file :fileName should have no tags for user :user
-	 * @Then /^file "([^"]*)" should have no tags for the (administrator|user)?$/
+	 * @Then file/folder :fileName should have no tags for user :user
+	 * @Then entry :fileName should have no tags for user :user
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should have no tags for the (administrator|user)?$/
 	 *
 	 * @param string $fileName
 	 * @param string $adminOrUser

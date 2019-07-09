@@ -136,7 +136,6 @@ OC.L10N.register(
     "Set default expiration date" : "有効期限のデフォルト値を設定する",
     "Expire after " : "無効になるまで",
     "days" : "日",
-    "Enforce expiration date" : "有効期限を反映させる",
     "Allow users to send mail notification for shared files" : "共有ファイルに関するメール通知の送信をユーザーに許可する",
     "Language used for public mail notifications for shared files" : "共有ファイルメール通知に使用する言語",
     "Allow users to share file via social media" : "ユーザーがソーシャルメディア経由でファイルを共有できるようにする",

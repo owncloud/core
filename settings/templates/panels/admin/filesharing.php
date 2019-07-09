@@ -60,7 +60,7 @@
 	p('hidden');
 }?>">
 			<?php p($l->t('Expire after ')); ?>
-			<input type="text" name='shareapi_expire_after_n_days' id="shareapiExpireAfterNDays" placeholder="<?php p('7')?>"
+			<input type="number" name='shareapi_expire_after_n_days' id="shareapiExpireAfterNDays" min="0" placeholder="<?php p('7')?>"
 				   value='<?php p($_['shareExpireAfterNDays']) ?>' />
 			<?php p($l->t('days')); ?><br/>
 			<?php if ($_['shareEnforceExpireDate'] === 'yes'): ?>
@@ -68,7 +68,7 @@
 			<?php else: ?>
 				<input type="checkbox" name="shareapi_enforce_expire_date" id="shareapiEnforceExpireDate" class="checkbox" value="1" />
 			<?php endif; ?>
-			<label class="indent" for="shareapiEnforceExpireDate"><?php p($l->t('Enforce expiration date'));?></label><br/>
+			<label class="indent" for="shareapiEnforceExpireDate"><?php p($l->t('Enforce as maximum expiration date'));?></label><br/>
 		</span>
 
 		<input type="checkbox" name="shareapi_allow_public_notification" id="allowPublicMailNotification" class="checkbox"

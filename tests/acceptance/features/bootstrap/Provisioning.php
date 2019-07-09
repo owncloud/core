@@ -25,6 +25,7 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
+use GuzzleHttp\Client;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -126,7 +127,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * returns an array of the display names, keyed by username
+	 * returns an array of the user display names, keyed by username
 	 * if no "Display Name" is set the user-name is returned instead
 	 *
 	 * @return array
@@ -135,6 +136,22 @@ trait Provisioning {
 		$result = [];
 		foreach ($this->getCreatedUsers() as $username => $user) {
 			$result[$username] = $this->getUserDisplayName($username);
+		}
+		return $result;
+	}
+
+	/**
+	 * returns an array of the group display names, keyed by group name
+	 * currently group name and display name are always the same, so this
+	 * function is a convenience for getting the group names in a similar
+	 * format to what getCreatedUserDisplayNames() returns
+	 *
+	 * @return array
+	 */
+	public function getCreatedGroupDisplayNames() {
+		$result = [];
+		foreach ($this->getCreatedGroups() as $groupName => $groupData) {
+			$result[$groupName] = $groupName;
 		}
 		return $result;
 	}
@@ -256,7 +273,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has been created with default attributes$/
+	 * @Given /^user "([^"]*)" has been created with default attributes and skeleton files$/
 	 *
 	 * @param string $user
 	 *
@@ -279,12 +296,16 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userHasBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles($user) {
-		$path = $this->popSkeletonDirectoryConfig();
+		$baseUrl = $this->getBaseUrl();
+		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
 			$this->userHasBeenCreatedWithDefaultAttributes($user);
 		} finally {
 			// restore skeletondirectory even if user creation failed
-			$this->runOcc(["config:system:set skeletondirectory --value $path"]);
+			$this->runOcc(
+				["config:system:set skeletondirectory --value $path"],
+				null, null, $baseUrl
+			);
 		}
 	}
 
@@ -298,14 +319,16 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theseUsersHaveBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles(TableNode $table) {
-		$path = $this->popSkeletonDirectoryConfig();
+		$baseUrl = $this->getBaseUrl();
+		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
-			foreach ($table as $row) {
-				$this->userHasBeenCreatedWithDefaultAttributes($row['username']);
-			}
+			$this->theseUsersHaveBeenCreated("default attributes and", "", $table);
 		} finally {
 			// restore skeletondirectory even if user creation failed
-			$this->runOcc(["config:system:set skeletondirectory --value $path"]);
+			$this->runOcc(
+				["config:system:set skeletondirectory --value $path"],
+				null, null, $baseUrl
+			);
 		}
 	}
 
@@ -320,58 +343,147 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theseUsersHaveBeenCreatedWithoutSkeletonFiles(TableNode $table) {
-		$path = $this->popSkeletonDirectoryConfig();
+		$baseUrl = $this->getBaseUrl();
+		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
 			$this->theseUsersHaveBeenCreated("", "", $table);
 		} finally {
 			// restore skeletondirectory even if user creation failed
-			$this->runOcc(["config:system:set skeletondirectory --value $path"]);
+			$this->runOcc(
+				["config:system:set skeletondirectory --value $path"],
+				null, null, $baseUrl
+			);
 		}
 	}
 
 	/**
-	 * @Given /^these users have been created\s?(with default attributes|)\s?(but not initialized|):$/
+	 * @Given /^these users have been created with ?(default attributes and|) skeleton files ?(but not initialized|):$/
+	 * This function will allow us to send user creation requests in parallel.
+	 * This will be faster in comparision to waiting for each request to complete before sending another request.
+	 *
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
 	 * password, displayname & email are optional
 	 *
-	 * @param string $setDefaultAttributes just set the defaults if it doesn't exist
-	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
+	 * @param string $setDefaultAttributes
+	 * @param string $doNotInitialize
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theseUsersHaveBeenCreated($setDefaultAttributes, $doNotInitialize, TableNode $table) {
+		$table = $table->getColumnsHash();
+		$setDefaultAttributes = $setDefaultAttributes !== "";
+		$initialize = $doNotInitialize === "";
+		// We add all the request bodies in an array.
+		$bodies = [];
+		// We add all the request objects in an array so that we can send all the requests in parallel.
+		$requests = [];
+		$client = new Client();
+
+		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			$users = [];
+			echo "creating LDAP users is not implemented, so assume they exist\n";
+			foreach ($table as $user) {
+				\array_push($users, $user["username"]);
+			}
+			$this->initializeUserBatch($users);
+			return;
+		}
+
 		foreach ($table as $row) {
+			$body['userid'] = $this->getActualUsername($row['username']);
+
 			if (isset($row['displayname'])) {
-				$displayName = $row['displayname'];
+				$body['displayName'] = $row['displayname'];
+			} elseif ($setDefaultAttributes) {
+				$body['displayName'] = $this->getDisplayNameForUser($body['userid']);
+				if ($body['displayName'] === null) {
+					$body['displayName'] = $this->getDisplayNameForUser('regularuser');
+				}
 			} else {
-				$displayName = null;
+				$body['displayName'] = null;
 			}
 
 			if (isset($row['email'])) {
-				$email = $row['email'];
+				$body['email'] = $row['email'];
+			} elseif ($setDefaultAttributes) {
+				$body['email'] = $this->getEmailAddressForUser($body['userid']);
+				if ($body['email'] === null) {
+					$body['email'] = $row['username'] . '@owncloud.org';
+				}
 			} else {
-				$email = null;
+				$body['email'] = null;
 			}
 
 			if (isset($row['password'])) {
-				$password = $this->getActualPassword($row['password']);
+				$body['password'] = $this->getActualPassword($row['password']);
 			} else {
-				// Let createUser() select the password
-				$password = null;
+				$body['password'] =  $this->getPasswordForUser($row['username']);
 			}
 
-			$this->createUser(
-				$row ['username'],
-				$password,
-				$displayName,
-				$email,
-				($doNotInitialize === ""),
-				null,
-				!($setDefaultAttributes === "")
+			// Add request body to the bodies array. we will use that later to loop through created users.
+			\array_push($bodies, $body);
+
+			// Create a OCS request for creating the user. The request is not sent to the server yet.
+			$request = OcsApiHelper::createOcsRequest(
+				$this->getBaseUrl(),
+				$this->getAdminUsername(),
+				$this->getAdminPassword(),
+				'POST',
+				"/cloud/users",
+				$body,
+				$client
 			);
+			// Add the request to the $requests array so that they can be sent in parallel.
+			\array_push($requests, $request);
+		}
+
+		$results = HttpRequestHelper::sendBatchRequest($requests, $client);
+		// Retrieve all failures.
+		foreach ($results->getFailures() as $e) {
+			$failedUser = $e->getRequest()->getBody()->getFields()['userid'];
+			$message = $this->getResponseXml($e->getResponse())->xpath("/ocs/meta/message");
+			if ($message && (string) $message[0] === "User already exists") {
+				PHPUnit\Framework\Assert::fail(
+					"Could not create user '$failedUser' as it already exists. " .
+					"Please delete the user to run tests again."
+				);
+			}
+			throw new Exception(
+				"could not create user. "
+				. $e->getResponse()->getStatusCode() . " " . $e->getResponse()->getBody()
+			);
+		}
+
+		// Create requests for setting displayname and email for the newly created users.
+		// These values cannot be set while creating the user, so we have to edit the newly created user to set these values.
+		$users = [];
+		$editData = [];
+		foreach ($bodies as $user) {
+			\array_push($users, $user['userid']);
+			$this->addUserToCreatedUsersList($user['userid'], $user['password'], $user['displayName'], $user['email']);
+			if (isset($user['displayName'])) {
+				\array_push($editData, ['user' => $user['userid'], 'key' => 'displayname', 'value' => $user['displayName']]);
+			}
+			if (isset($user['email'])) {
+				\array_push($editData, ['user' => $user['userid'], 'key' => 'email', 'value' => $user['email']]);
+			}
+		}
+		// Edit the users in parallel to make the process faster.
+		if (\count($editData) > 0) {
+			UserHelper::editUserBatch(
+				$this->getBaseUrl(),
+				$editData,
+				$this->getAdminUsername(),
+				$this->getAdminPassword()
+			);
+		}
+
+		// If the users need to be initialized then initialize them in parallel.
+		if ($initialize) {
+			$this->initializeUserBatch($users);
 		}
 	}
 
@@ -1194,6 +1306,49 @@ trait Provisioning {
 	}
 
 	/**
+	 * Make a request about the users to initialize them in parallel.
+	 * This will be faster than sequential requests to initialize the users.
+	 * That will force the server to fully initialize the users, including their skeleton files.
+	 *
+	 * @param array $users
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function initializeUserBatch($users) {
+		$url = "/cloud/users/%s";
+		$requests = [];
+		$client = new Client();
+		foreach ($users as $user) {
+			// create a new request for each user but do not send it yet.
+			// push the newly created request to an array.
+			\array_push(
+				$requests,
+				OcsApiHelper::createOcsRequest(
+					$this->getBaseUrl(),
+					$user,
+					$this->getPasswordForUser($user),
+					$method = 'GET',
+					\sprintf($url, $user),
+					[],
+					$client
+				)
+			);
+		}
+		// Send all the requests in parallel.
+		$response = HttpRequestHelper::sendBatchRequest($requests, $client);
+		// throw an exception if any request fails.
+		foreach ($response->getFailures() as $e) {
+			$pathArray = \explode('/', $e->getRequest()->getPath());
+			$failedUser = \end($pathArray);
+			throw new \Exception(
+				"Could not initialize user $failedUser \n"
+				. $e->getResponse()->getStatusCode() . "\n" . $e->getResponse()->getBody()
+			);
+		}
+	}
+
+	/**
 	 * adds a user to the list of users that were created during test runs
 	 * makes it possible to use this list in other test steps
 	 * or to delete them at the end of the test
@@ -1329,6 +1484,13 @@ trait Provisioning {
 				);
 				foreach ($results as $result) {
 					if ($result->getStatusCode() !== 200) {
+						$message = $this->getResponseXml($result)->xpath("/ocs/meta/message");
+						if ($message && (string) $message[0] === "User already exists") {
+							PHPUnit\Framework\Assert::fail(
+								'Could not create user as it already exists. ' .
+								'Please delete the user to run tests again.'
+							);
+						}
 						throw new Exception(
 							"could not create user. "
 							. $result->getStatusCode() . " " . $result->getBody()
@@ -2941,12 +3103,20 @@ trait Provisioning {
 	/**
 	 * Removes skeleton directory config from config.php and returns the config value
 	 *
+	 * @param string $baseUrl
+	 *
 	 * @return string
 	 */
-	public function popSkeletonDirectoryConfig() {
-		$this->runOcc(["config:system:get skeletondirectory"]);
+	public function popSkeletonDirectoryConfig($baseUrl = null) {
+		$this->runOcc(
+			["config:system:get skeletondirectory"],
+			null, null, $baseUrl
+		);
 		$path = \trim($this->getStdOutOfOccCommand());
-		$this->runOcc(["config:system:delete skeletondirectory"]);
+		$this->runOcc(
+			["config:system:delete skeletondirectory"],
+			null, null, $baseUrl
+		);
 		return $path;
 	}
 }

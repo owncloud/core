@@ -29,10 +29,10 @@ use Page\FilesPageElement\SharingDialog;
 use Page\PublicLinkFilesPage;
 use Page\SharedWithYouPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-use TestHelpers\AppConfigHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\EmailHelper;
 use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
+use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
 use GuzzleHttp\Message\ResponseInterface;
 use Page\GeneralErrorPage;
 use Page\SharedWithOthersPage;
@@ -101,7 +101,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $oldMinCharactersForAutocomplete = null;
 	private $oldFedSharingFallbackSetting = null;
 
+	/**
+	 * @var PublicLinkTab
+	 */
 	private $publicShareTab;
+
 	/**
 	 *
 	 * @var EditPublicLinkPopup
@@ -159,26 +163,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserSharesFileFolderWithUserUsingTheWebUI(
 		$folder, $remote, $user, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
 	) {
-		$this->filesPage->waitTillPageIsloaded($this->getSession());
-		try {
-			$this->filesPage->closeDetailsDialog();
-		} catch (Exception $e) {
-			//we don't care
-		}
-		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$folder, $this->getSession()
+		$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
+			$folder, "user", $remote, $user, $maxRetries, $quiet
 		);
-		$user = $this->featureContext->substituteInLineCodes($user);
-		if ($remote === "remote") {
-			$this->sharingDialog->shareWithRemoteUser(
-				$user, $this->getSession(), $maxRetries, $quiet
-			);
-		} else {
-			$this->sharingDialog->shareWithUser(
-				$user, $this->getSession(), $maxRetries, $quiet
-			);
-		}
-		$this->theUserClosesTheShareDialog();
 	}
 
 	/**
@@ -187,12 +174,33 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $folder
 	 * @param string $group
+	 * @param int $maxRetries
+	 * @param bool $quiet
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function theUserSharesFileFolderWithGroupUsingTheWebUI(
-		$folder, $group
+		$folder, $group, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
+	) {
+		$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
+			$folder, "group", "", $group, $maxRetries, $quiet
+		);
+	}
+
+	/**
+	 * @param string $folder
+	 * @param string $userOrGroup
+	 * @param string $remote
+	 * @param string $name
+	 * @param int $maxRetries
+	 * @param bool $quiet
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
+		$folder, $userOrGroup, $remote, $name, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		try {
@@ -203,7 +211,22 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
 			$folder, $this->getSession()
 		);
-		$this->sharingDialog->shareWithGroup($group, $this->getSession());
+		if ($userOrGroup === "user") {
+			$user = $this->featureContext->substituteInLineCodes($name);
+			if ($remote === "remote") {
+				$this->sharingDialog->shareWithRemoteUser(
+					$user, $this->getSession(), $maxRetries, $quiet
+				);
+			} else {
+				$this->sharingDialog->shareWithUser(
+					$user, $this->getSession(), $maxRetries, $quiet
+				);
+			}
+		} else {
+			$this->sharingDialog->shareWithGroup(
+				$name, $this->getSession(), $maxRetries, $quiet
+			);
+		}
 		$this->theUserClosesTheShareDialog();
 	}
 
@@ -414,6 +437,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
 		$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+
+		$this->featureContext->resetLastShareData();
 	}
 
 	/**
@@ -494,6 +519,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserShouldSeeAnErrorMessageOnThPublicLinkPopupSaying($message) {
+		// update public-sharing popup, as it might not have been set previously.
+		$this->publicSharingPopup = $this->publicShareTab->updateSharingPopup($this->getSession());
 		$errormessage = $this->publicSharingPopup->getErrorMessage();
 		PHPUnit\Framework\Assert::assertEquals($message, $errormessage);
 	}
@@ -559,7 +586,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$userName = $this->featureContext->substituteInLineCodes($userName);
 		$this->theUserOpensTheShareDialogForFileFolder($fileName);
 		$this->sharingDialog->setSharingPermissions(
-			$userName, $permissionsTable->getRowsHash()
+			$userName, $permissionsTable->getRowsHash(), $this->getSession()
 		);
 	}
 
@@ -845,14 +872,42 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then only :userOrGroupName should be listed in the autocomplete list on the webUI
+	 * @Then only user :userName should be listed in the autocomplete list on the webUI
 	 *
-	 * @param string $userOrGroupName
+	 * @param string $userName
 	 *
 	 * @return void
 	 */
-	public function onlyUserOrGroupNameShouldBeListedInTheAutocompleteList(
-		$userOrGroupName
+	public function onlyUserNameShouldBeListedInTheAutocompleteList(
+		$userName
+	) {
+		$this->onlyNameShouldBeListedInTheAutocompleteList(
+			$this->sharingDialog->userStringsToMatchAutoComplete($userName)
+		);
+	}
+
+	/**
+	 * @Then only group :groupName should be listed in the autocomplete list on the webUI
+	 *
+	 * @param string $groupName
+	 *
+	 * @return void
+	 */
+	public function onlyGroupNameShouldBeListedInTheAutocompleteList(
+		$groupName
+	) {
+		$this->onlyNameShouldBeListedInTheAutocompleteList(
+			$this->sharingDialog->groupStringsToMatchAutoComplete($groupName)
+		);
+	}
+
+	/**
+	 * @param string $autocompleteString the full text expected in the autocomplete item
+	 *
+	 * @return void
+	 */
+	public function onlyNameShouldBeListedInTheAutocompleteList(
+		$autocompleteString
 	) {
 		$autocompleteItems = $this->sharingDialog->getAutocompleteItemsList();
 		PHPUnit\Framework\Assert::assertCount(
@@ -861,9 +916,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			"expected 1 autocomplete item but there are " . \count($autocompleteItems)
 		);
 		PHPUnit\Framework\Assert::assertContains(
-			$userOrGroupName,
+			$autocompleteString,
 			$autocompleteItems,
-			"'$userOrGroupName' not in autocomplete list"
+			"'$autocompleteString' not in autocomplete list"
 		);
 	}
 
@@ -878,7 +933,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$requiredString
 	) {
 		$this->allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteListExcept(
-			$requiredString, '', ''
+			$requiredString, 'user', ''
 		);
 	}
 
@@ -898,27 +953,37 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$notToBeListed
 				= $this->sharingDialog->groupStringsToMatchAutoComplete($notToBeListed);
 		}
+		if ($userOrGroup === 'user') {
+			$notToBeListed
+				= $this->sharingDialog->userStringsToMatchAutoComplete($notToBeListed);
+		}
 		$autocompleteItems = $this->sharingDialog->getAutocompleteItemsList();
 		// Keep separate arrays of users and groups, because the names can overlap
-		$createdElements = [];
-		$createdElements['groups'] = $this->sharingDialog->groupStringsToMatchAutoComplete(
-			$this->featureContext->getCreatedGroups()
+		$createdElementsWithDisplayNames = [];
+		$createdElementsWithFullDisplayText = [];
+		$createdElementsWithDisplayNames['groups'] = $this->featureContext->getCreatedGroupDisplayNames();
+		$createdElementsWithFullDisplayText['groups'] = $this->sharingDialog->groupStringsToMatchAutoComplete(
+			$createdElementsWithDisplayNames['groups']
 		);
-		$createdElements['users'] = $this->featureContext->getCreatedUserDisplayNames();
+		$createdElementsWithDisplayNames['users'] = $this->featureContext->getCreatedUserDisplayNames();
+		$createdElementsWithFullDisplayText['users'] = $this->sharingDialog->userStringsToMatchAutoComplete(
+			$createdElementsWithDisplayNames['users']
+		);
 		$numExpectedItems = 0;
-		foreach ($createdElements as $elementArray) {
-			foreach ($elementArray as $internalName => $displayName) {
+		foreach ($createdElementsWithFullDisplayText as $usersOrGroups => $elementArray) {
+			foreach ($elementArray as $internalName => $fullDisplayText) {
+				$displayName = $createdElementsWithDisplayNames[$usersOrGroups][$internalName];
 				// Matching should be case-insensitive on the internal or display name
 				if (((\stripos($internalName, $requiredString) !== false)
 					|| (\stripos($displayName, $requiredString) !== false))
-					&& ($displayName !== $notToBeListed)
+					&& ($fullDisplayText !== $notToBeListed)
 					&& ($displayName !== $this->featureContext->getCurrentUser())
 					&& ($displayName !== $this->featureContext->getCurrentUserDisplayName())
 				) {
 					PHPUnit\Framework\Assert::assertContains(
-						$displayName,
+						$fullDisplayText,
 						$autocompleteItems,
-						"'$displayName' not in autocomplete list"
+						"'$fullDisplayText' not in autocomplete list"
 					);
 					$numExpectedItems = $numExpectedItems + 1;
 				}
@@ -944,7 +1009,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theUsersOwnNameShouldNotBeListedInTheAutocompleteList() {
 		PHPUnit\Framework\Assert::assertNotContains(
-			$this->filesPage->getMyDisplayname(),
+			$this->sharingDialog->userStringsToMatchAutoComplete(
+				$this->filesPage->getMyDisplayname()
+			),
 			$this->sharingDialog->getAutocompleteItemsList()
 		);
 	}
@@ -960,7 +1027,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function userShouldBeListedInTheAutocompleteListOnTheWebui($username) {
 		$names = $this->sharingDialog->getAutocompleteItemsList();
 		PHPUnit\Framework\Assert::assertContains(
-			$username,
+			$this->sharingDialog->userStringsToMatchAutoComplete($username),
 			$names,
 			"$username not found in autocomplete list"
 		);
@@ -976,9 +1043,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function userShouldNotBeListedInTheAutocompleteListOnTheWebui($username) {
 		$names = $this->sharingDialog->getAutocompleteItemsList();
-		if (\in_array($username, $names)) {
-			throw new Exception("$username found in autocomplete list but not expected");
-		}
+		$userString = $this->sharingDialog->userStringsToMatchAutoComplete($username);
+		PHPUnit\Framework\Assert::assertFalse(
+			\in_array($userString, $names),
+			"$username ($userString) found in autocomplete list but not expected"
+		);
 	}
 
 	/**
@@ -1171,28 +1240,38 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^it should not be possible to share (?:file|folder) "([^"]*)"(?: with "([^"]*)")? using the webUI$/
+	 * @Then /^it should not be possible to share (?:file|folder) "([^"]*)"(?: with (user|group) "([^"]*)")? using the webUI$/
 	 *
 	 * @param string $fileName
+	 * @param string $userOrGroup
 	 * @param string|null $shareWith
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function itShouldNotBePossibleToShareFileFolderUsingTheWebUI(
-		$fileName, $shareWith = null
+		$fileName, $userOrGroup = null, $shareWith = null
 	) {
 		$sharingWasPossible = false;
 		try {
-			$this->theUserSharesFileFolderWithUserUsingTheWebUI(
-				$fileName, null, $shareWith, 2, true
+			$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
+				$fileName, $userOrGroup, "", $shareWith, 2, true
 			);
 			$sharingWasPossible = true;
 		} catch (ElementNotFoundException $e) {
+			if ($this->sharingDialog === null) {
+				$shareWithText = "";
+			} else {
+				if ($userOrGroup === "user") {
+					$shareWithText = $this->sharingDialog->userStringsToMatchAutoComplete($shareWith);
+				} else {
+					$shareWithText = $this->sharingDialog->groupStringsToMatchAutoComplete($shareWith);
+				}
+			}
 			$possibleMessages = [
 				"could not find share-with-field",
 				"could not find sharing button in fileRow",
-				"could not share with '$shareWith'"
+				"could not share with '$shareWithText'"
 			];
 			$foundMessage = false;
 			foreach ($possibleMessages as $message) {
@@ -1401,7 +1480,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 		$this->webUIFilesContext = $environment->getContext('WebUIFilesContext');
-		$this->setupSharingConfigs();
 	}
 
 	/**
@@ -1434,96 +1512,5 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				'boolean'
 			);
 		}
-	}
-
-	/**
-	 * @return void
-	 */
-	private function setupSharingConfigs() {
-		$settings = [
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'api_enabled',
-				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_enabled',
-				'testingState' => true
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'public@@@enabled',
-				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_allow_links',
-				'testingState' => true
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'public@@@upload',
-				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_allow_public_upload',
-				'testingState' => true
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'group_sharing',
-				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_allow_group_sharing',
-				'testingState' => true
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'share_with_group_members_only',
-				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_only_share_with_group_members',
-				'testingState' => false
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'share_with_membership_groups_only',
-				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_only_share_with_membership_groups',
-				'testingState' => false
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' =>
-					'user_enumeration@@@enabled',
-				'testingApp' => 'core',
-				'testingParameter' =>
-					'shareapi_allow_share_dialog_user_enumeration',
-				'testingState' => true
-			],
-			[
-				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' =>
-					'user_enumeration@@@group_members_only',
-				'testingApp' => 'core',
-				'testingParameter' =>
-					'shareapi_share_dialog_user_enumeration_group_members',
-				'testingState' => false
-			],
-			[
-				'capabilitiesApp' => 'federation',
-				'capabilitiesParameter' => 'outgoing',
-				'testingApp' => 'files_sharing',
-				'testingParameter' => 'outgoing_server2server_share_enabled',
-				'testingState' => true
-			],
-			[
-				'capabilitiesApp' => 'federation',
-				'capabilitiesParameter' => 'incoming',
-				'testingApp' => 'files_sharing',
-				'testingParameter' => 'incoming_server2server_share_enabled',
-				'testingState' => true
-			]
-		];
-
-		$change = AppConfigHelper::setCapabilities(
-			$this->featureContext->getBaseUrl(),
-			$this->featureContext->getAdminUsername(),
-			$this->featureContext->getAdminPassword(),
-			$settings,
-			$this->webUIGeneralContext->getSavedCapabilitiesXml()[$this->featureContext->getBaseUrl()]
-		);
-		$this->webUIGeneralContext->addToSavedCapabilitiesChanges($change);
 	}
 }

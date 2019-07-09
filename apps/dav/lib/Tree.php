@@ -21,6 +21,9 @@
 
 namespace OCA\DAV;
 
+use OC\Files\Filesystem;
+use OCA\DAV\Connector\Sabre\Directory;
+use OCA\DAV\Connector\Sabre\File;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ICollection;
 
@@ -70,5 +73,54 @@ class Tree extends \Sabre\DAV\Tree {
 
 		$this->cache[$path] = $node;
 		return $node;
+	}
+
+	/**
+	 * Copies a file from path to another.
+	 *
+	 * @param string $sourcePath      The source location
+	 * @param string $destinationPath The full destination path
+	 */
+	public function copy($sourcePath, $destinationPath) {
+		$sourceNode = $this->getNodeForPath($sourcePath);
+		if ($sourceNode instanceof File
+			|| $sourceNode instanceof Directory
+		) {
+			$hookSourcePath = $this->treePathToHookPath($sourcePath);
+			$hookDestinationPath = $this->treePathToHookPath($destinationPath);
+			$run = true;
+			\OC_Hook::emit(
+				Filesystem::CLASSNAME,
+				Filesystem::signal_copy,
+				[
+					Filesystem::signal_param_oldpath => $hookSourcePath,
+					Filesystem::signal_param_newpath => $hookDestinationPath,
+					Filesystem::signal_param_run => &$run
+				]
+			);
+			if ($run === true) {
+				parent::copy($sourcePath, $destinationPath);
+				\OC_Hook::emit(
+					Filesystem::CLASSNAME,
+					Filesystem::signal_post_copy,
+					[
+						Filesystem::signal_param_oldpath => $hookSourcePath,
+						Filesystem::signal_param_newpath => $hookDestinationPath
+					]
+				);
+			}
+		} else {
+			parent::copy($sourcePath, $destinationPath);
+		}
+	}
+
+	/**
+	 * @param string $treePath
+	 * @return string
+	 */
+	private function treePathToHookPath(string $treePath) {
+		$treePathArray = \explode('/', $treePath);
+		$hookPathArray = \array_slice($treePathArray, 2);
+		return \implode('/', $hookPathArray);
 	}
 }

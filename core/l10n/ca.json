@@ -170,6 +170,8 @@
     "delete" : "elimina",
     "access control" : "control d'accés",
     "Could not unshare" : "No es pot descompartir",
+    "User" : "Usuari",
+    "Group" : "Grup",
     "Public Links" : "Enllaços públics",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Compartir amb la gent en altres ownClouds utilitzant la sintaxi username@example.com/owncloud",
     "invisible" : "invisible",

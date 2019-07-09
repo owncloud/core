@@ -57,7 +57,6 @@
     "Set default expiration date" : "Establecer un periodo de expiración por defecto",
     "Expire after " : "Expirar después de ",
     "days" : "días",
-    "Enforce expiration date" : "Forzar uso de este periodo de expiración",
     "Allow users to send mail notification for shared files" : "Permitir a los usuarios mandar notificaciones por correo para archivos compartidos",
     "Allow users to share file via social media" : "Permitir a los usuarios compartir archivos vía redes sociales",
     "Allow resharing" : "Permitir a usuarios compartir contenido de otros usuarios",

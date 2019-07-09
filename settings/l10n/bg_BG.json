@@ -114,7 +114,6 @@
     "Set default expiration date" : "Заложи дата на изтичане по подразбиране",
     "Expire after " : "Изтечи след",
     "days" : "дена",
-    "Enforce expiration date" : "Изисквай дата на изтичане",
     "Allow users to send mail notification for shared files" : "Разреши потребителите да изпращат имейл уведомления за споделени файлове.",
     "Allow users to share file via social media" : "Позволете на потребителите да споделят файлове чрез социални медии",
     "Allow resharing" : "Разреши пресподеляне.",

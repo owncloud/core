@@ -70,6 +70,7 @@ OC.L10N.register(
     "create" : "შექმნა",
     "delete" : "წაშლა",
     "access control" : "დაშვების კონტროლი",
+    "User" : "მომხმარებელი",
     "Delete" : "წაშლა",
     "Rename" : "გადარქმევა",
     "The object type is not specified." : "ობიექტის ტიპი არ არის მითითებული.",

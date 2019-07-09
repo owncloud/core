@@ -59,7 +59,6 @@ OC.L10N.register(
     "Set default expiration date" : "Postavite zadani datum isteka",
     "Expire after " : "Istek nakon",
     "days" : "dana",
-    "Enforce expiration date" : "Nametni datum isteka",
     "Allow users to send mail notification for shared files" : "Dozvoli korisnicima slanje notifikacijske e-pošte za podijeljene datoteke",
     "Allow resharing" : "Dopustite ponovno dijeljenje",
     "Restrict users to only share with users in their groups" : "Ograniči korisnike na međusobno dijeljenje resursa samo s korisnicima unutar svoje grupe",

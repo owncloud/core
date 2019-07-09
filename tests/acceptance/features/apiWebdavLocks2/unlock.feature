@@ -2,7 +2,7 @@
 Feature: UNLOCK locked items
 
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     
   Scenario Outline: unlock a single lock set by the user itself
     Given using <dav-path> DAV path
@@ -48,7 +48,7 @@ Feature: UNLOCK locked items
 
   Scenario Outline: as share receiver unlocking a shared file locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has locked file "PARENT/parent.txt" setting following properties
       | lockscope | <lock-scope> |
     And user "user0" has shared file "PARENT/parent.txt" with user "user1"
@@ -65,7 +65,7 @@ Feature: UNLOCK locked items
 
   Scenario Outline: as share receiver unlocking a file in a share locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has locked file "PARENT/parent.txt" setting following properties
       | lockscope | <lock-scope> |
     And user "user0" has shared folder "PARENT" with user "user1"
@@ -82,7 +82,7 @@ Feature: UNLOCK locked items
 
   Scenario Outline: as share receiver unlocking a shared folder locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
     And user "user0" has shared folder "PARENT" with user "user1"
@@ -103,7 +103,7 @@ Feature: UNLOCK locked items
 
   Scenario Outline: as share receiver unlocking a shared file locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has locked file "PARENT/parent.txt" setting following properties
       | lockscope | <lock-scope> |
     And user "user0" has shared file "PARENT/parent.txt" with user "user1"
@@ -120,7 +120,7 @@ Feature: UNLOCK locked items
 
   Scenario Outline: as share receiver unlock a shared file
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has shared file "PARENT/parent.txt" with user "user1"
     And user "user1" has locked file "parent.txt" setting following properties
       | lockscope | <lock-scope> |
@@ -137,7 +137,7 @@ Feature: UNLOCK locked items
 
   Scenario Outline: as owner unlocking a shared file locked by the receiver is not possible. To unlock use the receivers locktoken
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has shared file "PARENT/parent.txt" with user "user1"
     And user "user1" has locked file "parent.txt" setting following properties
       | lockscope | <lock-scope> |
@@ -154,7 +154,7 @@ Feature: UNLOCK locked items
 
   Scenario Outline: as owner unlocking a file in a share that was locked by the share receiver is not possible. To unlock use the receivers locktoken
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has shared folder "PARENT" with user "user1"
     And user "user1" has locked file "PARENT (2)/parent.txt" setting following properties
       | lockscope | <lock-scope> |
@@ -171,7 +171,7 @@ Feature: UNLOCK locked items
 
   Scenario Outline: as owner unlocking a shared folder locked by the share receiver is not possible. To unlock use the receivers locktoken
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has shared folder "PARENT" with user "user1"
     And user "user1" has locked folder "PARENT (2)" setting following properties
       | lockscope | <lock-scope> |

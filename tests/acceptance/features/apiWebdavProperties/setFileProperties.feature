@@ -6,7 +6,7 @@ Feature: set file properties
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
 
   @smokeTest
   Scenario Outline: Setting custom DAV property and reading it
@@ -47,7 +47,7 @@ Feature: set file properties
 
   Scenario Outline: Setting custom DAV property on a shared file as an owner and reading as a recipient
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/testcustompropshared.txt"
     And user "user0" has created a share with settings
       | path        | testcustompropshared.txt |

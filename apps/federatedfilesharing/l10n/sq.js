@@ -8,6 +8,7 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "S’ka leje të krijojë një ndarje të federuar me të njëjtin përdorues",
     "File is already shared with %s" : "Kartelë e ndarë tashmë me %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Ndarja për %s dështoi, s’u gjet dot %s, ndoshta shërbyesi është hëpërhë jashtë pune.",
+    "Federated Sharing failed: %s" : "Ndarja e Federuar dështoi: %s",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" ndau me ju \"%3$s\" (në emër të \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" ndau \"%3$s\" me ju",
     "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" ju ftoi të shihni \"%3$s\" (në emër të \"%2$s\")",
@@ -26,6 +27,7 @@ OC.L10N.register(
     "Share it:" : "Ndajeni:",
     "Add to your website" : "Shtojeni te sajti juaj",
     "Share with me via ownCloud" : "Ndani me mua përmes ownCloud-it",
-    "HTML Code:" : "Kod HTML:"
+    "HTML Code:" : "Kod HTML:",
+    "Nothing to configure." : "S’ka gjë për formësim."
 },
 "nplurals=2; plural=(n != 1);");

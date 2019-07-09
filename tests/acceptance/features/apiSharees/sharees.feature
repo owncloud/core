@@ -2,7 +2,7 @@
 Feature: sharees
 
   Background:
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username |
       | user1    |
       | sharee1  |
@@ -453,7 +453,7 @@ Feature: sharees
   @skipOnLDAP
   Scenario Outline: Enumerate only group members - only show partial results from member groups
     Given using OCS API version "<ocs-api-version>"
-    Given these users have been created with default attributes:
+    Given these users have been created with default attributes and skeleton files:
       | username | displayname |
       | another  | Another     |
     And user "Another" has been added to group "ShareeGroup2"

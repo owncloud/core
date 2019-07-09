@@ -109,7 +109,6 @@ OC.L10N.register(
     "Set default expiration date" : "اعمال تاریخ اتمام پیش فرض",
     "Expire after " : "اتمام اعتبار بعد از",
     "days" : "روز",
-    "Enforce expiration date" : "اعمال تاریخ اتمام اشتراک گذاری",
     "Allow users to send mail notification for shared files" : "اجازه به کاربران برای ارسال ایمیل نوتیفیکیشن برای فایل‌های به اشتراک‌گذاشته شده",
     "Allow resharing" : "مجوز اشتراک گذاری مجدد",
     "Restrict users to only share with users in their groups" : "محدود کردن کاربران برای اشتراک‌گذاری تنها میان کاربران گروه خود",

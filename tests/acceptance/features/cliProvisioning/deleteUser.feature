@@ -5,7 +5,7 @@ Feature: delete users
   So that I can remove users from ownCloud
 
   Scenario: admin deletes a user
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       |
       | brand-new-user |
     When the administrator deletes user "brand-new-user" using the occ command
@@ -14,7 +14,7 @@ Feature: delete users
     And user "brand-new-user" should not exist
 
   Scenario: Delete a user, and specify the user name in different case
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       |
       | brand-new-user |
     When the administrator deletes user "Brand-New-User" using the occ command

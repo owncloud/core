@@ -130,6 +130,24 @@ default:
         - TrashbinContext:
         - WebDavPropertiesContext:
 
+    apiShareReshare:
+      paths:
+        - '%paths.base%/../features/apiShareReshare'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
+    apiShareUpdate:
+      paths:
+        - '%paths.base%/../features/apiShareUpdate'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
     apiSharingNotifications:
       paths:
         - '%paths.base%/../features/apiSharingNotifications'
@@ -210,6 +228,14 @@ default:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
         - PublicWebDavContext:
+
+    cliAppManagement:
+      paths:
+        - '%paths.base%/../features/cliAppManagement'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - AppManagementContext:
 
     cliBackground:
       paths:
@@ -384,6 +410,18 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - WebUIAdminSharingSettingsContext:
+        - WebUIPersonalSharingSettingsContext:
+
+    webUISharingAutocompletion:
+      paths:
+        - '%paths.base%/../features/webUISharingAutocompletion'
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+        - OccContext:
         - WebUIPersonalSharingSettingsContext:
 
     webUISharingExternal:

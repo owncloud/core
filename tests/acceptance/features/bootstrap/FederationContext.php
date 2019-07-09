@@ -59,6 +59,26 @@ class FederationContext implements Context {
 	public function userFromServerSharesWithUserFromServerUsingTheSharingAPI(
 		$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
 	) {
+		$this->userFromServerSharesWithUserFromServerUsingTheSharingAPIWithPermissions(
+			$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
+		);
+	}
+	
+	/**
+	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" using the sharing API with permissions (.*)$/
+	 *
+	 * @param string $sharerUser
+	 * @param string $sharerServer "LOCAL" or "REMOTE"
+	 * @param string $sharerPath
+	 * @param string $shareeUser
+	 * @param string $shareeServer "LOCAL" or "REMOTE"
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function userFromServerSharesWithUserFromServerUsingTheSharingAPIWithPermissions(
+		$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer, $permissions = null
+	) {
 		if ($shareeServer == "REMOTE") {
 			$shareWith
 				= "$shareeUser@" . $this->featureContext->getRemoteBaseUrl() . '/';
@@ -68,11 +88,11 @@ class FederationContext implements Context {
 		}
 		$previous = $this->featureContext->usingServer($sharerServer);
 		$this->featureContext->createShare(
-			$sharerUser, $sharerPath, 6, $shareWith, null, null, null
+			$sharerUser, $sharerPath, 6, $shareWith, null, null, $permissions
 		);
 		$this->featureContext->usingServer($previous);
 	}
-	
+
 	/**
 	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)"$/
 	 *
@@ -89,6 +109,32 @@ class FederationContext implements Context {
 	) {
 		$this->userFromServerSharesWithUserFromServerUsingTheSharingAPI(
 			$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
+		);
+		$this->ocsContext->assertOCSResponseIndicatesSuccess(
+			'Could not share file/folder! message: "' .
+			$this->ocsContext->getOCSResponseStatusMessage(
+				$this->featureContext->getResponse()
+			) . '"'
+		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" with permissions (.*)$/
+	 *
+	 * @param string $sharerUser
+	 * @param string $sharerServer "LOCAL" or "REMOTE"
+	 * @param string $sharerPath
+	 * @param string $shareeUser
+	 * @param string $shareeServer "LOCAL" or "REMOTE"
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function userFromServerHasSharedWithUserFromServerWithPermissions(
+		$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer, $permissions = null
+	) {
+		$this->userFromServerSharesWithUserFromServerUsingTheSharingAPIWithPermissions(
+			$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer, $permissions
 		);
 		$this->ocsContext->assertOCSResponseIndicatesSuccess(
 			'Could not share file/folder! message: "' .

@@ -132,7 +132,6 @@ OC.L10N.register(
     "Set default expiration date" : "Alapértelmezett lejárati idő beállítása",
     "Expire after " : "A lejárat legyen",
     "days" : "nap",
-    "Enforce expiration date" : "A beállított lejárati idő legyen kötelezően érvényes",
     "Allow users to send mail notification for shared files" : "A felhasználók küldhessenek e-mail értesítést a megosztás létrejöttéről",
     "Allow resharing" : "A megosztás továbbadásának engedélyezése",
     "Allow sharing with groups" : "Megosztás engedélyezése a csoportokkal",

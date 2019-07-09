@@ -73,7 +73,7 @@ class Avatar implements IAvatar {
 	}
 
 	private function buildAvatarPath() {
-		return \substr_replace(\substr_replace(\md5($this->user->getUID()), '/', 4, 0), '/', 2, 0);
+		return 'avatars/' . \substr_replace(\substr_replace(\md5($this->user->getUID()), '/', 4, 0), '/', 2, 0);
 	}
 
 	/**

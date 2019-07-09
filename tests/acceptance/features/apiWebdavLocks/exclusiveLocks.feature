@@ -2,7 +2,7 @@
 Feature: there can be only one exclusive lock on a resource
 
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
 
   Scenario Outline: a second lock cannot be set on a folder when its exclusively locked
     Given using <dav-path> DAV path
@@ -86,7 +86,7 @@ Feature: there can be only one exclusive lock on a resource
 
   Scenario Outline: a share receiver cannot lock a resource exclusively locked by itself
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has shared file "textfile0.txt" with user "user1"
     And user "user1" has locked file "textfile0 (2).txt" setting following properties
       | lockscope | exclusive |
@@ -104,7 +104,7 @@ Feature: there can be only one exclusive lock on a resource
 
   Scenario Outline: a share receiver cannot lock a resource exclusively locked by the owner
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has shared file "textfile0.txt" with user "user1"
     And user "user0" has locked file "textfile0.txt" setting following properties
       | lockscope | exclusive |
@@ -122,7 +122,7 @@ Feature: there can be only one exclusive lock on a resource
 
   Scenario Outline: a share owner cannot lock a resource exclusively locked by a share receiver
     Given using <dav-path> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has shared file "textfile0.txt" with user "user1"
     And user "user1" has locked file "textfile0 (2).txt" setting following properties
       | lockscope | exclusive |

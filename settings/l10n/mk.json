@@ -108,7 +108,6 @@
     "Set default expiration date" : "Постави основен датум на истекување",
     "Expire after " : "Истекува по",
     "days" : "денови",
-    "Enforce expiration date" : "Наметни датум на траење",
     "Allow users to send mail notification for shared files" : "Дозволи им на корисниците да испраќаат известувања по Email за споделени датотеки",
     "Language used for public mail notifications for shared files" : "Јазик што се користи за известувања за јавни споделувања на датотеки",
     "Allow users to share file via social media" : "Дозволи им на корисниците да споделуваат датотеки преку социјалните медиуми",

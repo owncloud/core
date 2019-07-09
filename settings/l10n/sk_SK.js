@@ -87,7 +87,6 @@ OC.L10N.register(
     "Set default expiration date" : "Nastaviť predvolený dátum expirácie",
     "Expire after " : "Platnosť do",
     "days" : "dni",
-    "Enforce expiration date" : "Vynútiť dátum expirácie",
     "Allow users to send mail notification for shared files" : "Povoliť používateľom zasielať emailom oznámenie o zdieľaní súborov",
     "Allow resharing" : "Povoliť zdieľanie ďalej",
     "Restrict users to only share with users in their groups" : "Povoliť používateľom zdieľanie len medzi nimi v rámci skupiny",

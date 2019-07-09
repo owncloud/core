@@ -3,7 +3,7 @@ Feature: favorite
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And as user "user0"
 
   Scenario Outline: Favorite a folder
@@ -83,7 +83,7 @@ Feature: favorite
 
   Scenario Outline: moving a favorite file out of a share keeps favorite state
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And the user has created folder "/shared"
     And the user has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And the user has shared folder "/shared" with user "user1"
@@ -148,7 +148,7 @@ Feature: favorite
 
   Scenario Outline: sharer file favorite state should not change the favorite state of sharee
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And the user has moved file "/textfile0.txt" to "/favoriteFile.txt"
     And the user has shared file "/favoriteFile.txt" with user "user1"
     When the user favorites element "/favoriteFile.txt" using the WebDAV API
@@ -160,7 +160,7 @@ Feature: favorite
 
   Scenario Outline: sharee file favorite state should not change the favorite state of sharer
     Given using <dav_version> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And the user has moved file "/textfile0.txt" to "/favoriteFile.txt"
     And the user has shared file "/favoriteFile.txt" with user "user1"
     When user "user1" favorites element "/favoriteFile.txt" using the WebDAV API

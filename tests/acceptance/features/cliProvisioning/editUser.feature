@@ -5,7 +5,7 @@ Feature: edit users
   So that I can keep the user information up-to-date
 
   Scenario: the administrator can edit a user email
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator changes the email of user "brand-new-user" to "brand-new-user@example.com" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'The email address of brand-new-user updated to brand-new-user@example.com'
@@ -14,7 +14,7 @@ Feature: edit users
       | email | brand-new-user@example.com |
 
   Scenario: the administrator can edit a user display name
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator changes the display name of user "brand-new-user" to "A New User" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'The displayname of brand-new-user updated to A New User'
@@ -24,7 +24,7 @@ Feature: edit users
 
   @issue-23603
   Scenario: the administrator can edit a user quota
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     When the administrator changes the quota of user "brand-new-user" to "12MB" using the occ command
     Then the command should have failed with exit code 1
     #Then the command should have been successful

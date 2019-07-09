@@ -4,12 +4,15 @@ Feature: sharing
   Background:
     Given using OCS API version "1"
     And using old DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
-    And user "user2" has been created with default attributes
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+      | user2    |
 
   Scenario: Keep usergroup shares (#22143)
     Given group "grp1" has been created
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
     And user "user0" has created folder "/TMP"

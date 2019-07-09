@@ -102,6 +102,8 @@ OC.L10N.register(
     "change" : "izmjeni",
     "delete" : "izbriši",
     "access control" : "Kontrola pristupa",
+    "User" : "Korisnik",
+    "Group" : "Grupa",
     "Delete" : "Izbriši",
     "Rename" : "Preimenuj",
     "The object type is not specified." : "Vrsta objekta nije određena.",

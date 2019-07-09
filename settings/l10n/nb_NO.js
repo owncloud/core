@@ -136,7 +136,6 @@ OC.L10N.register(
     "Set default expiration date" : "Sett standard utløpsdato",
     "Expire after " : "Utløper etter",
     "days" : "dager",
-    "Enforce expiration date" : "Krev utløpsdato",
     "Allow users to send mail notification for shared files" : "Tlllat at brukere sender e-postvarsler for delte filer",
     "Language used for public mail notifications for shared files" : "Språk som brukes til offentlig postvarsling for delte filer",
     "Allow users to share file via social media" : "Tillat brukere å dele fil via sosiale medier",

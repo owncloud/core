@@ -6,7 +6,7 @@ Feature: delete file
 
   Background:
     Given using OCS API version "1"
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
 
   @smokeTest
   Scenario Outline: delete a file

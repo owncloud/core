@@ -23,7 +23,7 @@ Feature: get status, delete and execute jobs in background queue
       | OC\Authentication\Token\DefaultTokenCleanupJob     |
 
   Scenario: delete one of the job in background queue
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
     And user "user0" has deleted file "/textfile0.txt"
     When the administrator deletes last background job "OC\Command\CommandJob" using the occ command
     Then the command should have been successful

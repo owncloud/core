@@ -2,7 +2,7 @@
 Feature: checksums
 
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
 
   Scenario Outline: Uploading a file with checksum should work
     Given using <dav_version> DAV path
@@ -109,7 +109,7 @@ Feature: checksums
 
   Scenario: Sharing a file with checksum should return the checksum in the propfind using new DAV path
     Given using new DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     When user "user0" shares file "/myChecksumFile.txt" with user "user1" using the sharing API
     And user "user1" requests the checksum of "/myChecksumFile.txt" via propfind
@@ -117,7 +117,7 @@ Feature: checksums
 
   Scenario: Sharing and modifying a file should return correct checksum in the propfind using new DAV path
     Given using new DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     When user "user0" shares file "/myChecksumFile.txt" with user "user1" using the sharing API
     And user "user1" uploads file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/myChecksumFile.txt" using the WebDAV API
@@ -131,7 +131,6 @@ Feature: checksums
     And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with checksum "SHA1:5d84d61b03fdacf813640f5242d309721e0629b1" using the WebDAV API
     Then the HTTP status code should be "201"
 
-  @skipOnStorage:ceph @files_primary_s3-issue-128
   Scenario: Upload new dav chunked file where checksum does not match
     Given using new DAV path
     When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
@@ -157,7 +156,6 @@ Feature: checksums
       | fileId | /^[0-9a-z]{20,}$/ |
     And the content of file "/myChunkedFile.txt" for user "user0" should be "BBBBBCCCCC"
 
-  @skipOnStorage:ceph @files_primary_s3-issue-128
   Scenario: Upload new dav chunked file using async MOVE where checksum does not matches
     Given using new DAV path
     And the administrator has enabled async operations
@@ -191,7 +189,6 @@ Feature: checksums
       | fileId | /^[0-9a-z]{20,}$/ |
     And the content of file "/myChunkedFile.txt" for user "user0" should be "BBBBBCCCCC"
 
-  @skipOnStorage:ceph @files_primary_s3-issue-128
   Scenario Outline: Upload a file where checksum does not match
     Given using <dav_version> DAV path
     And file "/chksumtst.txt" has been deleted for user "user0"
@@ -280,7 +277,7 @@ Feature: checksums
       | old         |
       | new         |
 
-  @skipOnStorage:ceph @files_primary_s3-issue-128
+  @skipOnStorage:ceph @files_primary_s3-issue-224
   Scenario Outline: Uploading a file with invalid SHA1 checksum overwriting an existing file
     Given using <dav_version> DAV path
     When user "user0" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" with checksum "SHA1:f005ba11f005ba11f005ba11f005ba11f005ba11" using the WebDAV API
@@ -300,7 +297,7 @@ Feature: checksums
     Then the HTTP status code should be "204"
     And the content of file "/textfile0.txt" for user "user0" should be "BBBBBCCCCC"
 
-  @skipOnStorage:ceph @files_primary_s3-issue-128
+  @skipOnStorage:ceph @files_primary_s3-issue-224
   Scenario: Upload overwriting a file with new chunking and invalid checksum
     Given using new DAV path
     When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API

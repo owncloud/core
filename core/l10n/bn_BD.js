@@ -81,6 +81,8 @@ OC.L10N.register(
     "create" : "তৈরী করুন",
     "delete" : "মুছে ফেল",
     "access control" : "অধিগম্যতা নিয়ন্ত্রণ",
+    "User" : "ব্যবহারকারি",
+    "Group" : "গোষ্ঠীসমূহ",
     "Delete" : "মুছে",
     "Rename" : "পূনঃনামকরণ",
     "The object type is not specified." : "অবজেক্টের ধরণটি সুনির্দিষ্ট নয়।",

@@ -334,7 +334,6 @@ trait CommandLine {
 				$results[] = $line;
 			}
 		}
-
 		return $results;
 	}
 

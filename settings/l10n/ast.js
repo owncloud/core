@@ -118,7 +118,6 @@ OC.L10N.register(
     "Set default expiration date" : "Afitar la data d'espiración predeterminada",
     "Expire after " : "Caduca dempués de",
     "days" : "díes",
-    "Enforce expiration date" : "Facer cumplir la data de caducidá",
     "Allow users to send mail notification for shared files" : "Permitir a los usuarios unviar mensaxes de notificación pa ficheros compartíos",
     "Allow resharing" : "Permitir re-compartición",
     "Allow sharing with groups" : "Permitir compartir colos grupos",

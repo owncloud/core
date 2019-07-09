@@ -5,7 +5,7 @@ Feature: get group
   So that I can know which users are in a group
 
   Scenario: admin gets users in the group
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       |
       | brand-new-user |
       | 123            |
@@ -21,7 +21,7 @@ Feature: get group
       | 123            | 123          |
 
   Scenario: admin gets user in the group who is disabled
-    Given user "brand-new-user" has been created with default attributes
+    Given user "brand-new-user" has been created with default attributes and skeleton files
     And the administrator has changed the display name of user "brand-new-user" to "Anne Brown"
     And user "brand-new-user" has been disabled
     And group "new-group" has been created

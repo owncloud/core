@@ -103,7 +103,6 @@
     "Set default expiration date" : "Especificar la data d'expiracion per defaut",
     "Expire after " : "Expiracion aprèp ",
     "days" : "jorns",
-    "Enforce expiration date" : "Impausar la data d'expiracion",
     "Allow users to send mail notification for shared files" : "Autorizar los utilizaires a mandar de notificacions per corrièl a prepaus dels partiments",
     "Allow resharing" : "Autorizar lo re-partiment",
     "Restrict users to only share with users in their groups" : "Autorizar pas los partiments qu'entre membres de meteisses gropes",

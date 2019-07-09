@@ -123,7 +123,6 @@ OC.L10N.register(
     "Set default expiration date" : "Ställ in standardutgångsdatum",
     "Expire after " : "Förfaller efter",
     "days" : "dagar",
-    "Enforce expiration date" : "Tillämpa förfallodatum",
     "Allow users to send mail notification for shared files" : "Tillåt användare att skicka mailnotifieringar för delade filer",
     "Allow users to share file via social media" : "Tillåt användare att dela fil via social media",
     "Allow resharing" : "Tillåt vidaredelning",

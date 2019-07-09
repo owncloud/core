@@ -11,6 +11,7 @@
     "Unknown error \"{error}\" uploading file \"{file}\"" : "Erro \"{error}\" desconhecido no envio do arquivo \"{file}\"",
     "Could not create folder \"{dir}\"" : "Não foi possível criar a pasta \"{dir}\"",
     "Upload cancelled." : "Envio cancelado.",
+    "The file {file} already exists" : "O arquivo {file} já existe",
     "Processing files..." : "Processando arquivos...",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Incapaz de fazer o envio de {filename}, pois é um diretório ou tem 0 bytes",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Não há espaço suficiente, você está enviando {size1} mas resta apenas {size2}",

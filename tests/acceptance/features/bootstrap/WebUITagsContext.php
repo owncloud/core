@@ -104,6 +104,18 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user edits the tag with name :oldName and sets its name to :newName using the webUI
+	 *
+	 * @param string $oldName
+	 * @param string $newName
+	 *
+	 * @return void
+	 */
+	public function theUserEditsTheTagWithNameAndSetsItsNameToUsingTheWebui($oldName, $newName) {
+		$this->filesPage->getDetailsDialog()->renameTag($oldName, $newName);
+	}
+
+	/**
 	 * @Then all the tags starting with :value in their name should be listed in the dropdown list on the webUI
 	 *
 	 * @param string $value

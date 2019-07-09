@@ -126,7 +126,7 @@
     "Cannot create \"data\" directory" : "Non é posíbel crear o directorio «data»",
     "This can usually be fixed by <a href=\"%s\" target=\"_blank\" rel=\"noreferrer\">giving the webserver write access to the root directory</a>." : "Polo xeral, isto pode ser fixado para <a href=\"%s\" target=\"_blank\" rel=\"noreferrer\">permitirlle ao servidor web acceso de escritura  ao directorio «root»</a>.",
     "Permissions can usually be fixed by %sgiving the webserver write access to the root directory%s." : "Polo xeral, isto pode ser fixado para %spermitirlle ao servidor web acceso de escritura  ao directorio «root»%s.",
-    "Setting locale to %s failed" : "Fallou o axuste da configuración local a %s",
+    "Setting locale to %s failed" : "Produciuse un fallo ao axustar a configuración local a %s",
     "Please install one of these locales on your system and restart your webserver." : "Instale unha destas configuracións locais no seu sistema e reinicie o servidor web.",
     "Please ask your server administrator to install the module." : "Pregúntelle ao administrador do servidor pola instalación do módulo.",
     "PHP module %s not installed." : "O módulo PHP %s non está instalado.",

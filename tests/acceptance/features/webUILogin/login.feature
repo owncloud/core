@@ -10,7 +10,7 @@ Feature: login users
 
   @TestAlsoOnExternalUserBackend
   Scenario: simple user login
-    Given these users have been created with default attributes but not initialized:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | user1    |
     When user "user1" logs in using the webUI

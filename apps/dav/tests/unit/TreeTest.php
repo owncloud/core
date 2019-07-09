@@ -21,7 +21,10 @@
 
 namespace OCA\DAV\Tests\unit;
 
+use OC\Files\Filesystem;
+use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\Tree;
+use OCP\Util;
 use Sabre\DAV\ICollection;
 use Sabre\DAV\IFile;
 use Test\TestCase;
@@ -32,6 +35,9 @@ class TreeTest1 extends TestCase {
 	private $rootNode;
 	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */
 	private $tree;
+
+	private $copyHookParams;
+	private $postCopyHookParams;
 
 	public function providesPaths() {
 		return [
@@ -81,5 +87,31 @@ class TreeTest1 extends TestCase {
 		// second call uses the caches nodes
 		$node = $this->tree->getNodeForPath($path);
 		$this->assertEquals($file, $node);
+	}
+
+	public function testCopyHook() {
+		$this->copyHookParams = null;
+		$this->postCopyHookParams = null;
+		Util::connectHook(Filesystem::CLASSNAME, Filesystem::signal_copy, $this, 'copyHook');
+		$source = 'files/user1/welcome.txt';
+		$destination = 'files/user1/welcome2.txt';
+
+		$fileMock = $this->createMock(File::class);
+
+		$filesTree = $this->createMock(\Sabre\DAV\Tree::class);
+		$filesTree->method('getNodeForPath')->willReturn($fileMock);
+
+		$this->rootNode->method('getChild')->willReturnMap([
+			['files', $filesTree]
+		]);
+		$this->tree->copy($source, $destination);
+		$this->assertNotNull($this->copyHookParams);
+		$this->assertEquals('welcome.txt', $this->copyHookParams[Filesystem::signal_param_oldpath]);
+		$this->assertEquals('welcome2.txt', $this->copyHookParams[Filesystem::signal_param_newpath]);
+	}
+
+	public function copyHook($params) {
+		$this->copyHookParams = $params;
+		$params[Filesystem::signal_param_run] = false;
 	}
 }

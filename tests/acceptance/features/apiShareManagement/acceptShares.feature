@@ -7,10 +7,13 @@ Feature: accept/decline shares coming from internal users
   Background:
     Given using OCS API version "1"
     And using new DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
-    And user "user2" has been created with default attributes
+    And these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+      | user2    |
     And group "grp1" has been created
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
     And user "user1" has been added to group "grp1"
     And user "user2" has been added to group "grp1"
 
@@ -430,3 +433,43 @@ Feature: accept/decline shares coming from internal users
       | path     |
       | /PARENT/ |
     And the sharing API should report that no shares are shared with user "user0"
+
+  Scenario: user accepts file that was initially accepted from another user and then declined
+    Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    And user "user0" has uploaded file with content "file from user0" to "/testfile.txt"
+    And user "user1" has uploaded file with content "file from user1" to "/testfile.txt"
+    And user "user2" has uploaded file with content "file from user2" to "/testfile.txt"
+    And user "user0" has shared file "/testfile.txt" with user "user2"
+    And user "user2" has accepted the share "/testfile.txt" offered by user "user0"
+    When user "user2" declines the share "/testfile (2).txt" offered by user "user0" using the sharing API
+    And user "user1" shares file "/testfile.txt" with user "user2" using the sharing API
+    And user "user2" accepts the share "/testfile.txt" offered by user "user1" using the sharing API
+    And user "user2" accepts the share "/testfile.txt" offered by user "user0" using the sharing API
+    Then the sharing API should report to user "user2" that these shares are in the accepted state
+      | path                  |
+      | /testfile (2).txt     |
+      | /testfile (2) (2).txt |
+    And the content of file "/testfile.txt" for user "user2" should be "file from user2"
+    And the content of file "/testfile (2).txt" for user "user2" should be "file from user1"
+    And the content of file "/testfile (2) (2).txt" for user "user2" should be "file from user0"
+
+   Scenario: user accepts shares received from multiple users with the same name when auto-accept share is disabled
+     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+     And user "user3" has been created with default attributes and skeleton files
+     And user "user1" has shared folder "/PARENT" with user "user0"
+     And user "user2" has shared folder "/PARENT" with user "user0"
+     When user "user0" accepts the share "/PARENT" offered by user "user1" using the sharing API
+     And user "user0" declines the share "/PARENT (2)" offered by user "user1" using the sharing API
+     And user "user0" accepts the share "/PARENT" offered by user "user2" using the sharing API
+     And user "user0" accepts the share "/PARENT" offered by user "user1" using the sharing API
+     And user "user0" declines the share "/PARENT (2)" offered by user "user2" using the sharing API
+     And user "user0" declines the share "/PARENT (2) (2)" offered by user "user1" using the sharing API
+     And user "user3" shares folder "/PARENT" with user "user0" using the sharing API
+     And user "user0" accepts the share "/PARENT" offered by user "user3" using the sharing API
+     And user "user0" accepts the share "/PARENT" offered by user "user2" using the sharing API
+     And user "user0" accepts the share "/PARENT" offered by user "user1" using the sharing API
+     Then the sharing API should report to user "user0" that these shares are in the accepted state
+       | path               | uid_owner |
+       | /PARENT (2)/         | user3     |
+       | /PARENT (2) (2)/     | user2     |
+       | /PARENT (2) (2) (2)/ | user1     |

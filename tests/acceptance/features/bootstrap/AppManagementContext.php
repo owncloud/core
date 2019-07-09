@@ -21,6 +21,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use TestHelpers\SetupHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -43,6 +44,11 @@ class AppManagementContext implements Context {
 	private $cmdOutput;
 
 	/**
+	 * @var string[]
+	 */
+	private $createdApps = [];
+
+	/**
 	 *
 	 * @param array $appsPaths of apps_paths entries
 	 *
@@ -58,30 +64,33 @@ class AppManagementContext implements Context {
 	}
 
 	/**
-	 * @Given apps have been put in two directories :dir1 and :dir2
+	 * @Given these apps' path has been configured additionally with following attributes:
 	 *
-	 * @param string $dir1
-	 * @param string $dir2
+	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function setAppDirectories($dir1, $dir2) {
-		$fullpath1 = $this->featureContext->getServerRoot() . "/$dir1";
-		$fullpath2 = $this->featureContext->getServerRoot() . "/$dir2";
-
-		$this->featureContext->mkDirOnServer($dir1);
-		$this->featureContext->mkDirOnServer($dir2);
-		$this->setAppsPaths(
-			[
-				['path' => $fullpath1, 'url' => $dir1, 'writable' => true],
-				['path' => $fullpath2, 'url' => $dir2, 'writable' => true]
-			]
+	public function setAppDirectories(TableNode $table) {
+		$appsPathsConfigs = \json_decode(
+			$this->featureContext->getSystemConfig("apps_paths", "json")['stdOut'],
+			true
 		);
+		foreach ($table as $appsPathToAdd) {
+			$dir = $appsPathToAdd['dir'];
+			$appsPathsConfigs[] = [
+				'url' => $dir,
+				'path' => $this->featureContext->getServerRoot() . "/$dir",
+				'writable' => $appsPathToAdd['is_writable'] === 'true',
+			];
+			$this->featureContext->mkDirOnServer($appsPathToAdd['dir']);
+		}
+		$this->setAppsPaths($appsPathsConfigs);
 	}
 
 	/**
 	 * @Given app :appId with version :version has been put in dir :dir
+	 * @When the administrator puts app :appId with version :version in dir :dir
 	 *
 	 * @param string $appId app id
 	 * @param string $version app version
@@ -119,6 +128,13 @@ class AppManagementContext implements Context {
 		$targetDir = "$dir/$appId/appinfo";
 		$this->featureContext->mkDirOnServer($targetDir);
 		$this->featureContext->createFileOnServerWithContent("$targetDir/info.xml", $appInfo);
+		if (!\array_key_exists($appId, $this->createdApps)) {
+			$this->createdApps[$appId][] = $targetDir;
+		} else {
+			if (!\in_array($targetDir, $this->createdApps[$appId])) {
+				$this->createdApps[$appId][] = $targetDir;
+			}
+		}
 	}
 
 	/**
@@ -148,6 +164,21 @@ class AppManagementContext implements Context {
 			$this->featureContext->getServerRoot() . "/$dir/$appId",
 			\trim($this->cmdOutput)
 		);
+	}
+
+	/**
+	 * @Then the installed version of :appId should be :version
+	 *
+	 * @param string $appId
+	 * @param string $version
+	 *
+	 * @return void
+	 */
+	public function assertInstalledVersionOfAppIs($appId, $version) {
+		$cmdOutput = SetupHelper::runOcc(
+			['config:app:get', $appId, 'installed_version', '--no-ansi']
+		)['stdOut'];
+		PHPUnit\Framework\Assert::assertEquals($version, \trim($cmdOutput));
 	}
 
 	/**
@@ -190,6 +221,35 @@ class AppManagementContext implements Context {
 			$this->featureContext->deleteSystemConfig('apps_paths');
 		} else {
 			$this->setAppsPaths($this->oldAppsPaths);
+		}
+	}
+
+	/**
+	 * @AfterScenario
+	 *
+	 * delete created apps including files and values in DB after each scenario
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function deleteCreatedApps() {
+		$configJson = SetupHelper::runOcc(['config:list'])['stdOut'];
+		$configList = \json_decode($configJson, true);
+		foreach ($this->createdApps as $app => $paths) {
+			//disable the app
+			$this->featureContext->appHasBeenDisabled($app, 'disables');
+
+			//delete config values out of the database
+			if (\array_key_exists($app, $configList['apps'])) {
+				foreach ($configList['apps'][$app] as $key => $value) {
+					SetupHelper::runOcc(['config:app:delete', $app, $key]);
+				}
+			}
+
+			//delete the app from the drive
+			foreach ($paths as $path) {
+				SetupHelper::rmDirOnServer(\dirname($path));
+			}
 		}
 	}
 }

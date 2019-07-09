@@ -2,7 +2,7 @@
 Feature: carddav
 
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
 
   @carddav
   Scenario: Accessing a not existing addressbook of another user

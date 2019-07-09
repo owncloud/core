@@ -1,6 +1,7 @@
 OC.L10N.register(
     "settings",
     {
+    "%s password changed successfully" : "%s sandi sukses diubah",
     "Couldn't send reset email. Please contact your administrator." : "Tidak dapat mengirim email setel ulang. Silakan hubungi administrator Anda.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL menggunakan versi lawas %s (%s). Silakan perbarui sistem operasi Anda atau fitur-fitur seperti %s tidak akan dapat bekerja dengan benar.",
     "Saved" : "Disimpan",
@@ -104,7 +105,6 @@ OC.L10N.register(
     "Set default expiration date" : "Atur tanggal kadaluarsa default",
     "Expire after " : "Kadaluarsa setelah",
     "days" : "hari",
-    "Enforce expiration date" : "Berlakukan tanggal kadaluarsa",
     "Allow users to send mail notification for shared files" : "Izinkan pengguna untuk mengirimkan email pemberitahuan untuk berkas berbagi",
     "Allow resharing" : "Izinkan pembagian ulang",
     "Restrict users to only share with users in their groups" : "Batasi pengguna untuk hanya membagikan dengan pengguna didalam grup mereka",

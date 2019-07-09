@@ -87,7 +87,6 @@ OC.L10N.register(
     "Set default expiration date" : "Määra vaikimisi aegumise kuupäev",
     "Expire after " : "Aegu pärast",
     "days" : "päeva",
-    "Enforce expiration date" : "Sunnitud aegumise kuupäev",
     "Allow users to send mail notification for shared files" : "Luba kasutajatel saata e-posti teavitusi jagatud failide kohta",
     "Allow resharing" : "Luba edasijagamine",
     "Restrict users to only share with users in their groups" : "Luba kasutajatel jagada kasutajatega ainult oma grupi piires",

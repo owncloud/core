@@ -90,7 +90,6 @@ class OCSContext implements Context {
 	public function userSendsHTTPMethodToOcsApiEndpointWithBody(
 		$user, $verb, $url, $body = null, $password = null
 	) {
-		
 		/**
 		 * array of the data to be sent in the body.
 		 * contains $body data converted to an array
@@ -276,6 +275,29 @@ class OCSContext implements Context {
 	}
 
 	/**
+	 * @When the administrator requests these endpoints with :method with body using password :password then the status codes should be as listed
+	 *
+	 * @param string $method
+	 * @param string $password
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function administratorSendsRequestToTheseEndpointsWithPassword(
+		$method,
+		$password,
+		TableNode $table
+	) {
+		$admin = $this->featureContext->getAdminUsername();
+		$this->userSendsRequestToTheseEndpointsWithBodyUsingPassword(
+			$admin,
+			$method,
+			$password,
+			$table
+		);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body using password "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -292,6 +314,29 @@ class OCSContext implements Context {
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, $verb, $url, $body, $password
 		);
+	}
+
+	/**
+	 * @When user :user requests these endpoints with :method including body using password :password then the status codes should be as listed
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param string $password
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword($user, $method, $password, TableNode $table) {
+		foreach ($table->getHash() as $row) {
+			$this->featureContext->userRequestsURLWithUsingBasicAuth(
+				$user,
+				$row['endpoint'],
+				$method,
+				$password,
+				$row['body']
+			);
+			$this->featureContext->verifyStatusCode($row['ocs-code'], $row['http-code'], $row['endpoint']);
+		}
 	}
 
 	/**

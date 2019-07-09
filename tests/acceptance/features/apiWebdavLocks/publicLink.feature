@@ -2,7 +2,7 @@
 Feature: persistent-locking in case of a public link
 
   Background:
-    Given user "user0" has been created with default attributes
+    Given user "user0" has been created with default attributes and skeleton files
 
   Scenario Outline: Uploading a file into a locked public folder
     Given using <dav-path> DAV path

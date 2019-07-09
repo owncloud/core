@@ -29,6 +29,7 @@ use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Page\OwncloudPageElement\OCDialog;
+use WebDriver\Exception\StaleElementReference;
 
 /**
  * The Sharing Dialog
@@ -46,8 +47,9 @@ class SharingDialog extends OwncloudPage {
 	private $shareWithTooltipXpath = "/..//*[@class='tooltip-inner']";
 	private $shareWithAutocompleteListXpath = ".//ul[contains(@class,'ui-autocomplete')]";
 	private $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
-	private $suffixToIdentifyGroups = " (group)";
-	private $suffixToIdentifyRemoteUsers = " (federated)";
+	private $suffixToIdentifyGroups = " Group";
+	private $suffixToIdentifyUsers = " User";
+	private $suffixToIdentifyRemoteUsers = " Federated";
 	private $sharerInformationXpath = ".//*[@class='reshare']";
 	private $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
 	private $permissionsFieldByUserName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s']/..";
@@ -152,6 +154,25 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
+	 * returns the user names as they could appear in an autocomplete list
+	 *
+	 * @param string|array $userNames
+	 *
+	 * @return string|array
+	 */
+	public function userStringsToMatchAutoComplete($userNames) {
+		if (\is_array($userNames)) {
+			$autocompleteStrings = [];
+			foreach ($userNames as $userName => $userDisplayName) {
+				$autocompleteStrings[$userName] = $userDisplayName . $this->suffixToIdentifyUsers;
+			}
+		} else {
+			$autocompleteStrings = $userNames . $this->suffixToIdentifyUsers;
+		}
+		return $autocompleteStrings;
+	}
+
+	/**
 	 * returns the group names as they could appear in an autocomplete list
 	 *
 	 * @param string|array $groupNames
@@ -252,7 +273,8 @@ class SharingDialog extends OwncloudPage {
 		$name, Session $session, $maxRetries = 5, $quiet = false
 	) {
 		$this->shareWithUserOrGroup(
-			$name, $name, $session, $maxRetries, $quiet
+			$name, $name . $this->suffixToIdentifyUsers,
+			$session, $maxRetries, $quiet
 		);
 	}
 
@@ -298,13 +320,15 @@ class SharingDialog extends OwncloudPage {
 	 *
 	 * @param string $shareReceiverName
 	 * @param array $permissions [['permission' => 'yes|no']]
+	 * @param Session $session
 	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
 	public function setSharingPermissions(
 		$shareReceiverName,
-		$permissions
+		$permissions,
+		Session $session
 	) {
 		$xpathLocator = \sprintf(
 			$this->permissionsFieldByUserName, $shareReceiverName
@@ -363,7 +387,18 @@ class SharingDialog extends OwncloudPage {
 			if (($value === "yes" && !$permissionCheckBox->isChecked())
 				|| ($value === "no" && $permissionCheckBox->isChecked())
 			) {
-				$permissionLabel->click();
+				// Some times when we try to click the label it gives StaleElementReference.
+				try {
+					$permissionLabel->click();
+				} catch (StaleElementReference $e) {
+				}
+				$this->waitForAjaxCallsToStartAndFinish($session);
+				// We recheck the value to make sure that the permission has changed since clicking it.
+				if (($value === "yes" && !$permissionCheckBox->isChecked())
+					|| ($value === "no" && $permissionCheckBox->isChecked())
+				) {
+					throw new \Exception("The checkbox for permission {$permissionLabel->getText()} could not be clicked.");
+				}
 			}
 		}
 	}

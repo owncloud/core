@@ -92,7 +92,6 @@
     "Set default expiration date" : "Постави подразумевано време истека",
     "Expire after " : "Истиче након",
     "days" : "дана",
-    "Enforce expiration date" : "Захтевај датум истека",
     "Allow users to send mail notification for shared files" : "Дозволи корисницима да шаљу обавештења за дељене фајлове",
     "Allow resharing" : "Дозволи поновно дељење",
     "Restrict users to only share with users in their groups" : "Ограничи кориснике да могу да деле само унутар групе",

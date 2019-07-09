@@ -73,16 +73,16 @@ trait WebDav {
 	private $customDavPath = null;
 
 	private $oldAsyncSetting = null;
-	
+
 	private $oldDavSlowdownSetting = null;
-	
+
 	/**
 	 * response content parsed from XML to an array
 	 *
 	 * @var array
 	 */
 	private $responseXml = [];
-	
+
 	/**
 	 * response content parsed into a SimpleXMLElement
 	 *
@@ -1089,7 +1089,7 @@ trait WebDav {
 		if ($this->customDavPath !== null) {
 			$path = $this->customDavPath . $path;
 		}
-		
+
 		return WebDavHelper::listFolder(
 			$this->getBaseUrl(),
 			$this->getActualUsername($user),
@@ -1198,6 +1198,7 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" on "(LOCAL|REMOTE)" has uploaded file "([^"]*)" to "([^"]*)"$/
 	 * @When /^user "([^"]*)" on "(LOCAL|REMOTE)" uploads file "([^"]*)" to "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
@@ -1323,7 +1324,7 @@ trait WebDav {
 			$user, $source, $destination, $noOfChunks, $chunkingVersion, true
 		);
 	}
-	 
+
 	/**
 	 * sets the chunking version from human readable format
 	 *
@@ -1609,6 +1610,34 @@ trait WebDav {
 			$file
 		);
 		$this->lastUploadDeleteTime = \time();
+	}
+
+	/**
+	 * @Then user :user should be able to delete file :source
+	 *
+	 * @param string $user
+	 * @param string $source
+	 *
+	 * @return void
+	 */
+	public function userShouldBeAbleToDeleteFile($user, $source) {
+		$this->asFileOrFolderShouldExist($user, "file", $source);
+		$this->userDeletesFile($user, $source);
+		$this->asFileOrFolderShouldNotExist($user, "file", $source);
+	}
+
+	/**
+	 * @Then user :user should not be able to delete file :source
+	 *
+	 * @param string $user
+	 * @param string $source
+	 *
+	 * @return void
+	 */
+	public function theUserShouldNotBeAbleToDeleteFile($user, $source) {
+		$this->asFileOrFolderShouldExist($user, "file", $source);
+		$this->userDeletesFile($user, $source);
+		$this->asFileOrFolderShouldExist($user, "file", $source);
 	}
 
 	/**
@@ -2100,7 +2129,7 @@ trait WebDav {
 			$expectedHeaderValue = $this->substituteInLineCodes(
 				$expectedHeaderValue, ['preg_quote' => ['/'] ]
 			);
-			
+
 			$returnedHeader = $this->response->getHeader($headerName);
 			PHPUnit\Framework\Assert::assertNotFalse(
 				(bool)\preg_match($expectedHeaderValue, $returnedHeader),
@@ -2205,7 +2234,7 @@ trait WebDav {
 	) {
 		$elementRows = $expectedFiles->getRows();
 		$should = ($shouldOrNot !== "not");
-		
+
 		foreach ($elementRows as $expectedFile) {
 			$fileFound = $this->findEntryFromPropfindResponse(
 				$expectedFile[0]

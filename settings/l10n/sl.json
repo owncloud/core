@@ -122,7 +122,6 @@
     "Set default expiration date" : "Vsili nastavitev privzetega datuma poteka",
     "Expire after " : "Preteče po",
     "days" : "dneh",
-    "Enforce expiration date" : "Vsili datum preteka",
     "Allow users to send mail notification for shared files" : "Dovoli uporabnikom pošiljati obvestila o souporabi datotek po elektronski pošti",
     "Allow users to share file via social media" : "Uporabnikom dovoli objavljanje datotek prek socialnih omrežij",
     "Allow resharing" : "Dovoli nadaljnjo souporabo",

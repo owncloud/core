@@ -3,12 +3,15 @@ Feature: sharing
 
   Background:
     Given using old DAV path
-    And user "user0" has been created with default attributes
-    And user "user1" has been created with default attributes
 
   Scenario Outline: Delete all group shares
-    Given using OCS API version "<ocs_api_version>"
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+    And using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
+    # Note: in the user_ldap test environment user1 is in grp1
     And user "user1" has been added to group "grp1"
     And user "user0" has shared file "textfile0.txt" with group "grp1"
     And user "user1" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
@@ -23,7 +26,9 @@ Feature: sharing
 
   @smokeTest
   Scenario Outline: delete a share
-    Given using OCS API version "<ocs_api_version>"
+    Given user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and without skeleton files
+    And using OCS API version "<ocs_api_version>"
     And user "user0" has shared file "textfile0.txt" with user "user1"
     When user "user0" deletes the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -36,6 +41,10 @@ Feature: sharing
 
   Scenario: orphaned shares
     Given using OCS API version "1"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And a new browser session for "user0" has been started
     And user "user0" has created folder "/common"
     And user "user0" has created folder "/common/sub"
@@ -46,28 +55,32 @@ Feature: sharing
 
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
-    And user "user2" has been created with default attributes
-    And user "user3" has been created with default attributes
-    And user "user4" has been created with default attributes
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+      | user2    |
+      | user3    |
+      | user4    |
     And user "user0" has created folder "/folder1"
-    And user "user0" has shared file "/folder1" with user "user1"
-    And user "user0" has shared file "/folder1" with user "user2"
+    And user "user0" has shared folder "/folder1" with user "user1"
+    And user "user0" has shared folder "/folder1" with user "user2"
     And user "user0" has created folder "/folder1/folder2"
-    And user "user0" has shared file "/folder1/folder2" with user "user3"
-    And user "user0" has shared file "/folder1/folder2" with user "user4"
+    And user "user0" has shared folder "/folder1/folder2" with user "user3"
+    And user "user0" has shared folder "/folder1/folder2" with user "user4"
     And as user "user0"
     When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the response should contain 4 entries
-    And file "/folder1" should be included as path in the response
-    And file "/folder1/folder2" should be included as path in the response
+    And folder "/folder1" should be included as path in the response
+    And folder "/folder1/folder2" should be included as path in the response
     When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the response should contain 2 entries
-    And file "/folder1" should not be included as path in the response
-    And file "/folder1/folder2" should be included as path in the response
+    And folder "/folder1" should not be included as path in the response
+    And folder "/folder1/folder2" should be included as path in the response
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -76,6 +89,8 @@ Feature: sharing
   @smokeTest @files_trashbin-app-required
   Scenario: deleting a file out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared folder "/shared" with user "user1"
@@ -89,6 +104,8 @@ Feature: sharing
   @files_trashbin-app-required
   Scenario: deleting a folder out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/shared"
     And user "user0" has created folder "/shared/sub"
     And user "user0" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
@@ -106,9 +123,14 @@ Feature: sharing
   Scenario Outline: unshare from self
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "user2" has been created with default attributes
-    And user "user2" has been added to group "grp1"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user0    |
+      | user1    |
+    And user "user2" has been created with default attributes and skeleton files
+    # Note: in the user_ldap test environment user1 and user2 are in grp1
     And user "user1" has been added to group "grp1"
+    And user "user2" has been added to group "grp1"
     And user "user2" has shared file "/PARENT/parent.txt" with group "grp1"
     And user "user2" has stored etag of element "/PARENT"
     And user "user1" has stored etag of element "/"
@@ -124,6 +146,8 @@ Feature: sharing
 
   Scenario: sharee of a read-only share folder tries to delete the shared folder
     Given using OCS API version "1"
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared folder "shared" with user "user1" with permissions 1
@@ -133,6 +157,8 @@ Feature: sharing
 
   Scenario: sharee of a upload-only shared folder tries to delete a file in the shared folder
     Given using OCS API version "1"
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "user0" has shared folder "shared" with user "user1" with permissions 4
@@ -142,6 +168,10 @@ Feature: sharing
 
   Scenario: sharee of an upload-only shared folder tries to delete their file in the folder
     Given using OCS API version "1"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | user0    |
+      | user1    |
     And user "user0" has created folder "/shared"
     And user "user0" has shared folder "shared" with user "user1" with permissions 4
     When user "user1" uploads file "filesForUpload/textfile.txt" to "shared/textfile.txt" using the WebDAV API

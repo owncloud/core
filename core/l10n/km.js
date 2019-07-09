@@ -80,6 +80,7 @@ OC.L10N.register(
     "create" : "បង្កើត",
     "delete" : "លុប",
     "access control" : "សិទ្ធិ​បញ្ជា",
+    "User" : "អ្នកប្រើ",
     "Delete" : "លុប",
     "Rename" : "ប្ដូរ​ឈ្មោះ",
     "The object type is not specified." : "មិន​បាន​កំណត់​ប្រភេទ​វត្ថុ។",

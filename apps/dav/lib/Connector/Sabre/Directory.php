@@ -36,6 +36,7 @@ use OC\Files\Mount\MoveableMount;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
+use OCA\DAV\TrashBin\ITrashBinNode;
 use OCA\DAV\Upload\FutureFile;
 use OCA\DAV\Upload\FutureFileZsync;
 use OCP\Files\FileContentNotAllowedException;
@@ -320,7 +321,11 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 		// TODO: resolve chunk file name here and implement "updateFile"
 		$path = $this->path . '/' . $name;
 		$path = FileSystem::normalizePath($path);
-		return $this->fileView->file_exists($path);
+		try {
+			return $this->fileView->file_exists($path);
+		} catch (StorageNotAvailableException $e) {
+			throw new SabreServiceUnavailable($e->getMessage());
+		}
 	}
 
 	/**
@@ -344,6 +349,8 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			throw new Forbidden($ex->getMessage(), $ex->getRetry());
 		} catch (LockedException $e) {
 			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
+		} catch (StorageNotAvailableException $e) {
+			throw new SabreServiceUnavailable($e->getMessage());
 		}
 	}
 
@@ -401,6 +408,9 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 */
 	public function moveInto($targetName, $fullSourcePath, INode $sourceNode) {
 		if (!$sourceNode instanceof Node) {
+			if ($sourceNode instanceof ITrashBinNode) {
+				return $sourceNode->restore($this->path . '/' . $targetName);
+			}
 			// it's a file of another kind, like FutureFile
 			if ($sourceNode instanceof IFile) {
 				// fallback to default copy+delete handling

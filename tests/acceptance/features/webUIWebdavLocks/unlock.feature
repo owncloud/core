@@ -6,7 +6,7 @@ Feature: Unlock locked files and folders
 
   Background:
     #do not set email, see bugs in https://github.com/owncloud/core/pull/32250#issuecomment-434615887
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username       |
       | brand-new-user |
     And user "brand-new-user" has logged in using the webUI
@@ -19,7 +19,7 @@ Feature: Unlock locked files and folders
     Then folder "simple-folder" should not be marked as locked on the webUI
 
   Scenario: unlocking by webDAV after the display name has been changed deletes the lock symbols at the correct files/folders
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username               | displayname   |
       | user-with-display-name | My fancy name |
     Given user "user-with-display-name" has locked folder "simple-folder" setting following properties
@@ -108,7 +108,7 @@ Feature: Unlock locked files and folders
 
   @skipOnFIREFOX
   Scenario: deleting the first one of multiple shared locks on the webUI
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username  |
       | receiver1 |
       | receiver2 |
@@ -147,7 +147,7 @@ Feature: Unlock locked files and folders
 
   @skipOnFIREFOX
   Scenario: deleting the second one of multiple shared locks on the webUI
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username  |
       | receiver1 |
       | receiver2 |
@@ -186,7 +186,7 @@ Feature: Unlock locked files and folders
 
   @skipOnFIREFOX
   Scenario: deleting the last one of multiple shared locks on the webUI
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username  |
       | receiver1 |
       | receiver2 |
@@ -224,7 +224,7 @@ Feature: Unlock locked files and folders
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
   Scenario Outline: deleting a lock that was created by an other user
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username  |
       | receiver1 |
     And user "brand-new-user" has shared file "/lorem.txt" with user "receiver1"

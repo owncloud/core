@@ -28,13 +28,13 @@ use Behat\Mink\Session;
  * Admin Sharing Settings page.
  */
 class AdminSharingSettingsPage extends SharingSettingsPage {
-	
+
 	/**
 	 *
 	 * @var string $path
 	 */
 	protected $path = '/index.php/settings/admin?sectionid=sharing';
-	
+
 	protected $shareApiCheckboxXpath = '//label[@for="shareAPIEnabled"]';
 	protected $shareApiCheckboxId = 'shareAPIEnabled';
 	protected $publicShareCheckboxXpath = '//label[@for="allowLinks"]';
@@ -59,8 +59,10 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	protected $onlyShareWithGroupMembersCheckboxId = 'onlyShareWithGroupMembers';
 	protected $excludeGroupFromSharingCheckboxXpath = '//label[@for="shareapiExcludeGroups"]';
 	protected $excludeGroupFromSharingCheckboxId = 'shareapiExcludeGroups';
+	protected $excludeGroupsFromSharingListFieldXpath = '//p[@id="selectExcludedGroups"]//input[contains(@class,"select2-input")]';
 
-	protected $groupSharingBlackListFieldXpath = '//p[@id="selectExcludedGroups"]//input[contains(@class,"select2-input")]';
+	protected $onlyShareWithMembershipGroupsCheckboxXpath = '//label[@for="onlyShareWithMembershipGroups"]';
+	protected $onlyShareWithMembershipGroupsCheckboxId = 'onlyShareWithMembershipGroups';
 	protected $excludeGroupFromSharesFieldXpath = '//div[@id="files_sharing"]//input[contains(@class,"select2-input")]';
 	protected $groupListXpath = '//div[@id="select2-drop"]//li[contains(@class, "select2-result")]';
 	protected $groupListDropDownXpath = "//div[@id='select2-drop']";
@@ -277,6 +279,22 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
+	 * enable restrict users to only share with groups they are member of
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function restrictUserToOnlyShareWithMembershipGroup(Session $session) {
+		$this->toggleCheckbox(
+			$session,
+			"enables",
+			$this->onlyShareWithMembershipGroupsCheckboxXpath,
+			$this->onlyShareWithMembershipGroupsCheckboxId
+		);
+	}
+
+	/**
 	 * add group to group sharing blacklist
 	 *
 	 * @param Session $session
@@ -284,8 +302,10 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 *
 	 * @return void
 	 */
-	public function addGroupToGroupSharingBlacklist(Session $session, $groupName) {
-		$this->addGroupToInputField($groupName, $this->groupSharingBlackListFieldXpath);
+	public function addGroupToExcludeGroupsFromSharingList(
+		Session $session, $groupName
+	) {
+		$this->addGroupToInputField($groupName, $this->excludeGroupsFromSharingListFieldXpath);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 

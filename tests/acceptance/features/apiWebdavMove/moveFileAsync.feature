@@ -6,7 +6,7 @@ Feature: move (rename) file
 
   Background:
     Given using new DAV path
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And the administrator has enabled async operations
 
   Scenario Outline: Moving a file
@@ -84,7 +84,7 @@ Feature: move (rename) file
       | /textfile1.txt |
 
   Scenario: Moving a file to a folder with no permissions
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
     And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
@@ -102,7 +102,7 @@ Feature: move (rename) file
       | /textfile0.txt |
 
   Scenario: Moving a file to overwrite a file in a folder with no permissions
-    Given user "user1" has been created with default attributes
+    Given user "user1" has been created with default attributes and skeleton files
     And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
@@ -189,7 +189,7 @@ Feature: move (rename) file
   Scenario Outline: enabling async operations does no difference to normal MOVE - Moving a file to a folder with no permissions
     Given the administrator has enabled async operations
     And using <dav_version> DAV path
-    And user "user1" has been created with default attributes
+    And user "user1" has been created with default attributes and skeleton files
     And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |

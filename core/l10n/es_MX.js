@@ -116,6 +116,8 @@ OC.L10N.register(
     "change" : "cambio",
     "delete" : "eliminar",
     "access control" : "control de acceso",
+    "User" : "Usuario",
+    "Group" : "Grupo",
     "restricted" : "restringido",
     "invisible" : "invisible",
     "({scope})" : "({scope})",

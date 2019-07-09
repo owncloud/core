@@ -612,6 +612,14 @@ describe('OC.Share.ShareDialogView', function() {
 											'shareType': OC.Share.SHARE_TYPE_REMOTE,
 											'shareWith': 'foo2@bar.com/baz'
 										}
+									},
+									{
+										'label': 'foo@knowncloud.com',
+										'value': {
+											'shareType': OC.Share.SHARE_TYPE_REMOTE,
+											'shareWith': 'foo@knowncloud.com',
+											'server': 'knowncloud.com'
+										}
 									}
 								]
 							}
@@ -625,6 +633,13 @@ describe('OC.Share.ShareDialogView', function() {
 					expect(response.getCall(0).args[0]).toEqual([{
 						'label': 'foo2@bar.com/baz',
 						'value': {'shareType': OC.Share.SHARE_TYPE_REMOTE, 'shareWith': 'foo2@bar.com/baz'}
+					},{
+						'label': 'foo@knowncloud.com',
+						'value': {
+							'shareType': OC.Share.SHARE_TYPE_REMOTE,
+							'shareWith': 'foo@knowncloud.com',
+							'server': 'knowncloud.com'
+						}
 					}]);
 					expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
 				});

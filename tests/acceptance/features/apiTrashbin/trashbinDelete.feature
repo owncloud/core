@@ -11,7 +11,7 @@ Feature: files and folders can be deleted from the trashbin
   @smokeTest
   Scenario Outline: Trashbin can be emptied
     Given using <dav-path> DAV path
-    And user "user0" has been created with default attributes
+    And user "user0" has been created with default attributes and skeleton files
     And a new browser session for "user0" has been started
     And user "user0" has deleted file "/textfile0.txt"
     And user "user0" has deleted file "/textfile1.txt"

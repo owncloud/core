@@ -23,8 +23,11 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
+use TestHelpers\SetupHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
+use GuzzleHttp\Message\ResponseInterface;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -68,6 +71,13 @@ trait Sharing {
 	}
 
 	/**
+	 * @return void
+	 */
+	public function resetLastShareData() {
+		$this->lastShareData = null;
+	}
+
+	/**
 	 * @return int
 	 */
 	public function getLocalLastShareTime() {
@@ -79,6 +89,20 @@ trait Sharing {
 	 */
 	public function getServerLastShareTime() {
 		return (int) $this->lastShareData->data->stime;
+	}
+
+	/**
+	 *
+	 * @return int
+	 *
+	 * @throws Exception
+	 */
+	public function getServerShareTimeFromLastResponse() {
+		$stime = $this->getResponseXml()->xpath("//stime");
+		if ((bool) $stime) {
+			return (int) $stime[0];
+		}
+		throw new Exception("Last share time (i.e. 'stime') could not be found in the response.");
 	}
 
 	/**
@@ -405,6 +429,15 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then the last public shared file should not be able to be downloaded without a password
+	 *
+	 * @return void
+	 */
+	public function theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithoutAPassword() {
+		$this->theLastPublicSharedFileShouldNotBeAbleToBeDownloadedWithPassword(null);
+	}
+
+	/**
 	 * @Then /^the last public shared file should be able to be downloaded with password "([^"]*)"$/
 	 *
 	 * @param string $password
@@ -599,7 +632,7 @@ trait Sharing {
 	 * @param string $shareWith
 	 * @param string $publicUpload
 	 * @param string $sharePassword
-	 * @param int $permissions
+	 * @param string|int|string[]|int[] $permissions
 	 * @param string $linkName
 	 * @param string $expireDate
 	 *
@@ -638,12 +671,43 @@ trait Sharing {
 
 	/**
 	 * @param string $field
+	 * @param string $value
 	 * @param string $contentExpected
+	 * @param bool $expectSuccess if true then the caller expects that the field
+	 *                            has the expected content
+	 *                            emit debugging information if the field is not as expected
+	 *
+	 * @return bool
+	 */
+	public function doesFieldValueMatchExpectedContent(
+		$field, $value, $contentExpected, $expectSuccess = true
+	) {
+		if (($contentExpected === "ANY_VALUE")
+			|| (($contentExpected === "A_TOKEN") && (\strlen($value) === 15))
+			|| (($contentExpected === "A_NUMBER") && \is_numeric($value))
+			|| (($contentExpected === "AN_URL") && $this->isAPublicLinkUrl($value))
+			|| (($field === 'remote') && (\rtrim($value, "/") === $contentExpected))
+			|| ($contentExpected === $value)
+		) {
+			if (!$expectSuccess) {
+				echo $field . " is unexpectedly set with value '" . $value . "'\n";
+			}
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @param string $field
+	 * @param mixed $contentExpected
+	 * @param bool $expectSuccess if true then the caller expects that the field
+	 *                            is in the response with the expected content
+	 *                            so emit debugging information if the field is not correct
 	 * @param SimpleXMLElement $data
 	 *
 	 * @return bool
 	 */
-	public function isFieldInResponse($field, $contentExpected, $data = null) {
+	public function isFieldInResponse($field, $contentExpected, $expectSuccess = true, $data = null) {
 		if ($data === null) {
 			$data = $this->getResponseXml()->data[0];
 		}
@@ -654,101 +718,107 @@ trait Sharing {
 					'Y-m-d',
 					\strtotime(
 						$contentExpected,
-						$this->getServerLastShareTime()
+						$this->getServerShareTimeFromLastResponse()
 					)
 				) . " 00:00:00";
 		}
+
+		$contentExpected = (string) $contentExpected;
+
 		if (\count($data->element) > 0) {
+			$fieldIsSet = false;
+			$value = "";
 			foreach ($data as $element) {
-				if (!isset($element->$field)) {
-					continue;
-				}
-				if ($contentExpected == "A_TOKEN") {
-					return (\strlen((string)$element->$field) == 15);
-				} elseif ($contentExpected == "A_NUMBER") {
-					return \is_numeric((string)$element->$field);
-				} elseif ($contentExpected == "AN_URL") {
-					return $this->isAPublicLinkUrl((string)$element->$field);
-				} elseif ($field === 'remote') {
-					return (\rtrim((string)$element->$field, "/") === $contentExpected);
-				} elseif ((string)$element->$field == $contentExpected) {
-					return true;
-				} else {
-					print($element->$field);
+				if (isset($element->$field)) {
+					$fieldIsSet = true;
+					$value = (string)$element->$field;
+					if ($this->doesFieldValueMatchExpectedContent(
+						$field, $value, $contentExpected, $expectSuccess
+					)
+					) {
+						return true;
+					}
 				}
 			}
-			return false;
 		} else {
-			if ($contentExpected == "A_TOKEN") {
-				return (\strlen((string)$data->$field) == 15);
-			} elseif ($contentExpected == "A_NUMBER") {
-				return \is_numeric((string)$data->$field);
-			} elseif ($contentExpected == "AN_URL") {
-				return $this->isAPublicLinkUrl((string)$data->$field);
-			} elseif ($contentExpected == $data->$field) {
-				return true;
+			$fieldIsSet = isset($data->$field);
+			if ($fieldIsSet) {
+				$value = (string)$data->$field;
+				if ($this->doesFieldValueMatchExpectedContent(
+					$field, $value, $contentExpected, $expectSuccess
+				)
+				) {
+					return true;
+				}
 			}
-			return false;
 		}
+		if ($expectSuccess) {
+			if ($fieldIsSet) {
+				echo $field . " has unexpected value '" . $value . "'\n";
+			} else {
+				echo $field . " is not set in response\n";
+			}
+		}
+		return false;
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should be included in the response$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should be included in the response$/
 	 *
 	 * @param string $filename
 	 *
 	 * @return void
 	 */
 	public function checkSharedFileInResponse($filename) {
-		$filename = \ltrim($filename, '/');
-		PHPUnit\Framework\Assert::assertEquals(
-			true,
-			$this->isFieldInResponse('file_target', "/$filename")
+		$filename = "/" . \ltrim($filename, '/');
+		PHPUnit\Framework\Assert::assertTrue(
+			$this->isFieldInResponse('file_target', "$filename"),
+			"'file_target' value '$filename' was not found in response"
 		);
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should not be included in the response$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should not be included in the response$/
 	 *
 	 * @param string $filename
 	 *
 	 * @return void
 	 */
 	public function checkSharedFileNotInResponse($filename) {
-		$filename = \ltrim($filename, '/');
-		PHPUnit\Framework\Assert::assertEquals(
-			false,
-			$this->isFieldInResponse('file_target', "/$filename")
+		$filename = "/" . \ltrim($filename, '/');
+		PHPUnit\Framework\Assert::assertFalse(
+			$this->isFieldInResponse('file_target', "$filename", false),
+			"'file_target' value '$filename' was unexpectedly found in response"
 		);
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should be included as path in the response$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should be included as path in the response$/
 	 *
 	 * @param string $filename
 	 *
 	 * @return void
 	 */
 	public function checkSharedFileAsPathInResponse($filename) {
-		$filename = \ltrim($filename, '/');
-		PHPUnit\Framework\Assert::assertEquals(
-			true,
-			$this->isFieldInResponse('path', "/$filename")
+		$filename = "/" . \ltrim($filename, '/');
+		PHPUnit\Framework\Assert::assertTrue(
+			$this->isFieldInResponse('path', "$filename"),
+			"'path' value '$filename' was not found in response"
 		);
 	}
 
 	/**
-	 * @Then /^file "([^"]*)" should not be included as path in the response$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" should not be included as path in the response$/
 	 *
 	 * @param string $filename
 	 *
 	 * @return void
 	 */
 	public function checkSharedFileAsPathNotInResponse($filename) {
-		$filename = \ltrim($filename, '/');
-		PHPUnit\Framework\Assert::assertEquals(
-			false,
-			$this->isFieldInResponse('path', "/$filename")
+		$filename = "/" . \ltrim($filename, '/');
+		PHPUnit\Framework\Assert::assertFalse(
+			$this->isFieldInResponse('path', "$filename", false),
+			"'path' value '$filename' was unexpectedly found in response"
 		);
 	}
 
@@ -760,9 +830,9 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedUserInResponse($user) {
-		PHPUnit\Framework\Assert::assertEquals(
-			true,
-			$this->isFieldInResponse('share_with', "$user")
+		PHPUnit\Framework\Assert::assertTrue(
+			$this->isFieldInResponse('share_with', "$user"),
+			"'share_with' value '$user' was not found in response"
 		);
 	}
 
@@ -774,9 +844,9 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedUserNotInResponse($user) {
-		PHPUnit\Framework\Assert::assertEquals(
-			false,
-			$this->isFieldInResponse('share_with', "$user")
+		PHPUnit\Framework\Assert::assertFalse(
+			$this->isFieldInResponse('share_with', "$user", false),
+			"'share_with' value '$user' was unexpectedly found in response"
 		);
 	}
 
@@ -812,17 +882,21 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))? using the sharing API$/
 	 *
 	 * @param string $user1
 	 * @param string $filepath
 	 * @param string $user2
-	 * @param int $permissions
+	 * @param string|int|string[]|int[] $permissions
+	 * @param bool $getShareData If true then only create the share if it is not
+	 *                           already existing, and at the end request the
+	 *                           share information and leave that in $this->response
+	 *                           Typically used in a "Given" step which verifies
+	 *                           that the share did get created successfully.
 	 *
 	 * @return void
 	 */
-	public function userSharesFileWithUserUsingTheSharingApi(
-		$user1, $filepath, $user2, $permissions = null
+	public function shareFileWithUserUsingTheSharingApi(
+		$user1, $filepath, $user2, $permissions = null, $getShareData = false
 	) {
 		$user1 = $this->getActualUsername($user1);
 		$user2 = $this->getActualUsername($user2);
@@ -832,15 +906,35 @@ trait Sharing {
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $user1, $this->getPasswordForUser($user1)
 		);
-		if ($this->isUserOrGroupInSharedData($user2, $permissions)) {
+		if ($getShareData && $this->isUserOrGroupInSharedData($user2, $permissions)) {
 			return;
 		} else {
 			$this->createShare(
 				$user1, $filepath, 0, $user2, null, null, $permissions
 			);
 		}
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user1, $this->getPasswordForUser($user1)
+		if ($getShareData) {
+			$this->response = HttpRequestHelper::get(
+				$fullUrl, $user1, $this->getPasswordForUser($user1)
+			);
+		}
+	}
+
+	/**
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))? using the sharing API$/
+	 *
+	 * @param string $user1
+	 * @param string $filepath
+	 * @param string $user2
+	 * @param string|int|string[]|int[] $permissions
+	 *
+	 * @return void
+	 */
+	public function userSharesFileWithUserUsingTheSharingApi(
+		$user1, $filepath, $user2, $permissions = null
+	) {
+		$this->shareFileWithUserUsingTheSharingApi(
+			$user1, $filepath, $user2, $permissions
 		);
 	}
 
@@ -857,8 +951,8 @@ trait Sharing {
 	public function userHasSharedFileWithUserUsingTheSharingApi(
 		$user1, $filepath, $user2, $permissions = null
 	) {
-		$this->userSharesFileWithUserUsingTheSharingApi(
-			$user1, $filepath, $user2, $permissions
+		$this->shareFileWithUserUsingTheSharingApi(
+			$user1, $filepath, $user2, $permissions, true
 		);
 		PHPUnit\Framework\Assert::assertTrue(
 			$this->isUserOrGroupInSharedData($user2, $permissions),
@@ -953,6 +1047,42 @@ trait Sharing {
 	}
 
 	/**
+	 *
+	 * @param string $user
+	 * @param string $filepath
+	 * @param string $group
+	 * @param string|int|string[]|int[] $permissions
+	 * @param bool $getShareData If true then only create the share if it is not
+	 *                           already existing, and at the end request the
+	 *                           share information and leave that in $this->response
+	 *                           Typically used in a "Given" step which verifies
+	 *                           that the share did get created successfully.
+	 *
+	 * @return void
+	 */
+	public function shareFileWithGroupUsingTheSharingApi(
+		$user, $filepath, $group, $permissions = null, $getShareData = false
+	) {
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user, $this->getPasswordForUser($user)
+		);
+		if ($getShareData && $this->isUserOrGroupInSharedData($group, $permissions)) {
+			return;
+		} else {
+			$this->createShare(
+				$user, $filepath, 1, $group, null, null, $permissions
+			);
+		}
+		if ($getShareData) {
+			$this->response = HttpRequestHelper::get(
+				$fullUrl, $user, $this->getPasswordForUser($user)
+			);
+		}
+	}
+
+	/**
 	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (.*))? using the sharing API$/
 	 *
 	 * @param string $user
@@ -965,20 +1095,8 @@ trait Sharing {
 	public function userSharesFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null
 	) {
-		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
-		);
-		if ($this->isUserOrGroupInSharedData($group, $permissions)) {
-			return;
-		} else {
-			$this->createShare(
-				$user, $filepath, 1, $group, null, null, $permissions
-			);
-		}
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $user, $this->getPasswordForUser($user)
+		$this->shareFileWithGroupUsingTheSharingApi(
+			$user, $filepath, $group, $permissions
 		);
 	}
 
@@ -995,8 +1113,8 @@ trait Sharing {
 	public function userHasSharedFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null
 	) {
-		$this->userSharesFileWithGroupUsingTheSharingApi(
-			$user, $filepath, $group, $permissions
+		$this->shareFileWithGroupUsingTheSharingApi(
+			$user, $filepath, $group, $permissions, true
 		);
 
 		PHPUnit\Framework\Assert::assertEquals(
@@ -1107,7 +1225,75 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user) {
-		$share_id = $this->lastShareData->data[0]->id;
+		$share_id = $this->getLastShareIdOf($user);
+		$this->getShareData($user, $share_id);
+	}
+
+	/**
+	 * Get id of the last share of the user
+	 *
+	 * If lastShareData was not of $user, it fetches all shares for that user,
+	 * and extracts the id for last share from the response
+	 *
+	 * @param string $user
+	 *
+	 * @return int|null
+	 * @throws Exception
+	 */
+	public function getLastShareIdOf($user) {
+		if ($this->lastShareData !== null) {
+			return (int)$this->lastShareData->data[0]->id;
+		}
+
+		$this->getListOfShares($user);
+		$id = $this->extractLastSharedIdFromLastResponse();
+		if ($id === null) {
+			throw new Exception("Could not find id in the last response.");
+		}
+		return $id;
+	}
+
+	/**
+	 * Retrieves all the shares of the respective user
+	 *
+	 * @param string $user
+	 *
+	 * @return ResponseInterface
+	 */
+	public function getListOfShares($user) {
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/"
+			. "v{$this->sharingApiVersion}/shares";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $user, $this->getPasswordForUser($user)
+		);
+		return $this->response;
+	}
+
+	/**
+	 * Extracts `id` from responseXml
+	 *
+	 * @return int|null
+	 */
+	public function extractLastSharedIdFromLastResponse() {
+		// extract max id
+		$xpath = '/ocs/data/element/id[not (. < ../../element/id)][1]';
+		$id = $this->getResponseXml()->xpath($xpath);
+		if ((bool) $id) {
+			return (int) $id[0];
+		}
+		return null;
+	}
+
+	/**
+	 * Get share data of specific share_id
+	 *
+	 * @param string $user
+	 * @param int $share_id
+	 *
+	 * @return void
+	 */
+	public function getShareData($user, $share_id) {
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "GET", $url, null
@@ -1268,7 +1454,7 @@ trait Sharing {
 	 */
 	public function checkingLastShareIDIsNotIncluded() {
 		$share_id = $this->lastShareData->data[0]->id;
-		if ($this->isFieldInResponse('id', $share_id)) {
+		if ($this->isFieldInResponse('id', $share_id, false)) {
 			PHPUnit\Framework\Assert::fail(
 				"Share id $share_id has been found in response"
 			);
@@ -1312,11 +1498,31 @@ trait Sharing {
 
 			foreach ($fd as $field => $value) {
 				$value = $this->replaceValuesFromTable($field, $value);
-				if (!$this->isFieldInResponse($field, $value)) {
-					PHPUnit\Framework\Assert::fail(
-						"$field doesn't have value $value"
-					);
-				}
+				PHPUnit\Framework\Assert::assertTrue(
+					$this->isFieldInResponse($field, $value),
+					"$field doesn't have value '$value'"
+				);
+			}
+		}
+	}
+
+	/**
+	 * @Then the fields of the last response should not include
+	 *
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function checkFieldsNotInResponse($body) {
+		if ($body instanceof TableNode) {
+			$fd = $body->getRowsHash();
+
+			foreach ($fd as $field => $value) {
+				$value = $this->replaceValuesFromTable($field, $value);
+				PHPUnit\Framework\Assert::assertFalse(
+					$this->isFieldInResponse($field, $value, false),
+					"$field has value $value but should not"
+				);
 			}
 		}
 	}
@@ -1587,6 +1793,41 @@ trait Sharing {
 		$usersShares = $this->getAllSharesSharedWithUser($user);
 		PHPUnit\Framework\Assert::assertEmpty(
 			$usersShares, "user has " . \count($usersShares) . " share(s)"
+		);
+	}
+
+	/**
+	 * @When the administrator adds group :group to the exclude group from sharing list using the occ command
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function administratorAddsGroupToExcludeFromSharingList($group) {
+		//get current groups
+		$occResult = SetupHelper::runOcc(
+			['config:app:get files_sharing blacklisted_receiver_groups']
+		);
+		//if the setting was never set before stdOut will be empty and return code will be 1
+		if (\trim($occResult['stdOut']) === "") {
+			$occResult['stdOut'] = "[]";
+		}
+
+		$currentGroups = \json_decode($occResult['stdOut'], true);
+		PHPUnit\Framework\Assert::assertNotNull(
+			$currentGroups,
+			"could not json decode app setting 'blacklisted_receiver_groups' of 'files_sharing'\n" .
+			"stdOut: '" . $occResult['stdOut'] . "'\n" .
+			"stdErr: '" . $occResult['stdErr'] . "'"
+		);
+
+		$currentGroups[] = $group;
+		$setSettingResult = SetupHelper::runOcc(
+			[
+				'config:app:set',
+				'files_sharing blacklisted_receiver_groups',
+				'--value=' . \json_encode($currentGroups)
+			]
 		);
 	}
 

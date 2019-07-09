@@ -54,10 +54,10 @@ class AvatarTest extends \Test\TestCase {
 
 	public function providesUserIds() {
 		return [
-			['21/23/2f297a57a5a743894a0e4a801fc3', 'admin'],
-			['c4/ca/4238a0b923820dcc509a6f75849b', '1'],
-			['f9/5b/70fdc3088560732a5ac135644506', '{'],
-			['d4/1d/8cd98f00b204e9800998ecf8427e', ''],
+			['avatars/21/23/2f297a57a5a743894a0e4a801fc3', 'admin'],
+			['avatars/c4/ca/4238a0b923820dcc509a6f75849b', '1'],
+			['avatars/f9/5b/70fdc3088560732a5ac135644506', '{'],
+			['avatars/d4/1d/8cd98f00b204e9800998ecf8427e', ''],
 		];
 	}
 
@@ -68,13 +68,13 @@ class AvatarTest extends \Test\TestCase {
 	public function testGetAvatarSizeMatch() {
 		$this->storage->method('file_exists')
 			->will($this->returnValueMap([
-				['d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg', true],
-				['d4/1d/8cd98f00b204e9800998ecf8427e/avatar.128.jpg', true],
+				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg', true],
+				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.128.jpg', true],
 			]));
 
 		$expected = new \OC_Image(\OC::$SERVERROOT . '/tests/data/testavatar.png');
 
-		$this->storage->method('file_get_contents')->with('d4/1d/8cd98f00b204e9800998ecf8427e/avatar.128.jpg')->willReturn($expected->data());
+		$this->storage->method('file_get_contents')->with('avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.128.jpg')->willReturn($expected->data());
 
 		$this->assertEquals($expected->data(), $this->avatar->get(128)->data());
 	}
@@ -82,12 +82,12 @@ class AvatarTest extends \Test\TestCase {
 	public function testGetAvatarSizeMinusOne() {
 		$this->storage->method('file_exists')
 			->will($this->returnValueMap([
-				['d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg', true],
+				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg', true],
 			]));
 
 		$expected = new \OC_Image(\OC::$SERVERROOT . '/tests/data/testavatar.png');
 
-		$this->storage->method('file_get_contents')->with('d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg')->willReturn($expected->data());
+		$this->storage->method('file_get_contents')->with('avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg')->willReturn($expected->data());
 
 		$this->assertEquals($expected->data(), $this->avatar->get(-1)->data());
 	}
@@ -95,8 +95,8 @@ class AvatarTest extends \Test\TestCase {
 	public function testGetAvatarNoSizeMatch() {
 		$this->storage->method('file_exists')
 			->will($this->returnValueMap([
-				['d4/1d/8cd98f00b204e9800998ecf8427e/avatar.png', true],
-				['d4/1d/8cd98f00b204e9800998ecf8427e/avatar.32.png', false],
+				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.png', true],
+				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.32.png', false],
 			]));
 
 		$expected = new \OC_Image(\OC::$SERVERROOT . '/tests/data/testavatar.png');
@@ -106,10 +106,10 @@ class AvatarTest extends \Test\TestCase {
 		$this->storage->method('file_get_contents')
 			->will($this->returnCallback(
 				function ($path) use ($expected, $expected2) {
-					if ($path === 'd4/1d/8cd98f00b204e9800998ecf8427e/avatar.png') {
+					if ($path === 'avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.png') {
 						return $expected->data();
 					}
-					if ($path === 'd4/1d/8cd98f00b204e9800998ecf8427e/avatar.32.png') {
+					if ($path === 'avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.32.png') {
 						return $expected2->data();
 					}
 					throw new \OCP\Files\NotFoundException();
@@ -118,7 +118,7 @@ class AvatarTest extends \Test\TestCase {
 
 		$this->storage->expects($this->once())
 			->method('file_put_contents')
-			->with('d4/1d/8cd98f00b204e9800998ecf8427e/avatar.32.png', $expected2->data());
+			->with('avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.32.png', $expected2->data());
 
 		$this->assertEquals($expected2->data(), $this->avatar->get(32)->data());
 	}
@@ -130,8 +130,8 @@ class AvatarTest extends \Test\TestCase {
 	public function testExiststJPG() {
 		$this->storage->method('file_exists')
 			->will($this->returnValueMap([
-				['d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg', true],
-				['d4/1d/8cd98f00b204e9800998ecf8427e/avatar.png', false],
+				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg', true],
+				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.png', false],
 			]));
 		$this->assertTrue($this->avatar->exists());
 	}
@@ -139,8 +139,8 @@ class AvatarTest extends \Test\TestCase {
 	public function testExistsPNG() {
 		$this->storage->method('file_exists')
 			->will($this->returnValueMap([
-				['d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg', false],
-				['d4/1d/8cd98f00b204e9800998ecf8427e/avatar.png', true],
+				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg', false],
+				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.png', true],
 			]));
 		$this->assertTrue($this->avatar->exists());
 	}
@@ -153,11 +153,11 @@ class AvatarTest extends \Test\TestCase {
 
 	public function testSetAvatar() {
 		$this->storage->expects($this->once())->method('rmdir')
-			->with('d4/1d/8cd98f00b204e9800998ecf8427e');
+			->with('avatars/d4/1d/8cd98f00b204e9800998ecf8427e');
 
 		$image = new \OC_Image(\OC::$SERVERROOT . '/tests/data/testavatar.png');
 		$this->storage->method('file_put_contents')
-			->with('d4/1d/8cd98f00b204e9800998ecf8427e/avatar.png', $image->data());
+			->with('avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.png', $image->data());
 
 		// One on remove and once on setting the new avatar
 		$this->user->expects($this->exactly(2))->method('triggerChange');
