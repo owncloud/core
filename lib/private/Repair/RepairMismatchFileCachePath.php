@@ -206,10 +206,10 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		}
 	}
 
-	private function countResultsToProcessParentIdWrongPath($storageNumericId = null) {
+	private function countResultsToProcessParentIdWrongPath() {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->select($qb->createFunction('COUNT(*)'));
-		$this->addQueryConditionsParentIdWrongPath($qb, $storageNumericId);
+		$this->addQueryConditionsParentIdWrongPath($qb);
 		$results = $qb->execute();
 		$count = $results->fetchColumn(0);
 		$results->closeCursor();
@@ -303,7 +303,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			->selectAlias('fc.parent', 'wrongparentid')
 			->selectAlias('fcp.storage', 'parentstorage')
 			->selectAlias('fcp.path', 'parentpath');
-		$this->addQueryConditionsParentIdWrongPath($qb, $storageNumericId);
+		$this->addQueryConditionsParentIdWrongPath($qb);
 		$qb->setMaxResults(self::CHUNK_SIZE);
 
 		do {
@@ -554,11 +554,9 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$this->reportAffectedStoragesParentIdWrongPath($out);
 			$this->reportAffectedStoragesNonExistingParentIdEntry($out);
 		} else {
-			$brokenPathEntries = $this->countResultsToProcessParentIdWrongPath($this->storageNumericId);
+			$brokenPathEntries = $this->countResultsToProcessParentIdWrongPath();
 			$brokenParentIdEntries = $this->countResultsToProcessNonExistingParentIdEntry($this->storageNumericId);
 			$out->startProgress($brokenPathEntries + $brokenParentIdEntries);
-
-			$totalFixed = 0;
 
 			/*
 			 * This repair itself might overwrite existing target parent entries and create

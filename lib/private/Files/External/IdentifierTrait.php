@@ -34,7 +34,7 @@ trait IdentifierTrait {
 	/** @var string[] */
 	protected $identifierAliases = [];
 
-	/** @var IdentifierTrait */
+	/** @var object | null */
 	protected $deprecateTo = null;
 
 	/**

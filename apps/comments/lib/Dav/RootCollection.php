@@ -106,6 +106,7 @@ class RootCollection implements ICollection {
 				$this->commentsManager,
 				$this->userManager,
 				$this->userSession,
+				$this->dispatcher,
 				$this->logger,
 				$entityExistsFunction
 			);

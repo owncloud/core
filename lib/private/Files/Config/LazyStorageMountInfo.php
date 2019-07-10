@@ -36,6 +36,7 @@ class LazyStorageMountInfo extends CachedMountInfo {
 	 * @param IMountPoint $mount
 	 */
 	public function __construct(IUser $user, IMountPoint $mount) {
+		parent::__construct($user, null, null, null);
 		$this->user = $user;
 		$this->mount = $mount;
 	}

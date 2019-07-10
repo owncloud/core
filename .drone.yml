@@ -214,6 +214,15 @@ pipeline:
       matrix:
         PRIMARY_OBJECTSTORE: files_primary_s3
 
+  phpstan:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - make test-php-phpstan
+    when:
+      matrix:
+        TEST_SUITE: phpstan
+
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -670,6 +679,11 @@ matrix:
   # phan (runs multiple PHP v7.1+ to provide syntax checks of each PHP version)
     - TEST_SUITE: phan
       PHP_VERSION: 7.1
+
+  # phpstan
+    - TEST_SUITE: phpstan
+      PHP_VERSION: 7.1
+      INSTALL_SERVER: true
 
   # Litmus
     - PHP_VERSION: 7.1

@@ -89,7 +89,7 @@ class Lock extends Entity implements ILock {
 	 * @since 10.1.0
 	 */
 	public function getOwner() {
-		return parent::getOwner();
+		return $this->owner;
 	}
 
 	/**
@@ -99,7 +99,7 @@ class Lock extends Entity implements ILock {
 	 * @since 10.1.0
 	 */
 	public function getFileId() {
-		return parent::getFileId();
+		return $this->fileId;
 	}
 
 	/**
@@ -109,7 +109,7 @@ class Lock extends Entity implements ILock {
 	 * @since 10.1.0
 	 */
 	public function getTimeout() {
-		return parent::getTimeout();
+		return $this->timeout;
 	}
 
 	/**
@@ -119,7 +119,7 @@ class Lock extends Entity implements ILock {
 	 * @since 10.1.0
 	 */
 	public function getCreatedAt() {
-		return parent::getCreatedAt();
+		return $this->createdAt;
 	}
 
 	/**
@@ -129,7 +129,7 @@ class Lock extends Entity implements ILock {
 	 * @since 10.1.0
 	 */
 	public function getToken() {
-		return parent::getToken();
+		return $this->token;
 	}
 
 	/**
@@ -139,7 +139,7 @@ class Lock extends Entity implements ILock {
 	 * @since 10.1.0
 	 */
 	public function getScope() {
-		return parent::getScope();
+		return $this->scope;
 	}
 
 	/**
@@ -149,7 +149,7 @@ class Lock extends Entity implements ILock {
 	 * @since 10.1.0
 	 */
 	public function getDepth() {
-		return parent::getDepth();
+		return $this->depth;
 	}
 
 	/**
@@ -159,7 +159,7 @@ class Lock extends Entity implements ILock {
 	 * @since 10.1.0
 	 */
 	public function getAbsoluteDavPath() {
-		return parent::getAbsoluteDavPath();
+		return $this->absoluteDavPath;
 	}
 
 	/**
@@ -169,7 +169,7 @@ class Lock extends Entity implements ILock {
 	 * @since 10.1.0
 	 */
 	public function getDavUserId() {
-		return parent::getDavUserId();
+		return $this->davUserId;
 	}
 
 	/**
@@ -180,6 +180,6 @@ class Lock extends Entity implements ILock {
 	 * @since 10.1.0
 	 */
 	public function setOwner($owner) {
-		parent::setOwner($owner);
+		$this->setter('owner', [$owner]);
 	}
 }

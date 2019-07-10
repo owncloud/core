@@ -61,7 +61,7 @@ class APCu extends Cache implements IMemcache {
 		if (\class_exists('\APCIterator')) {
 			$iter = new \APCIterator('user', '/^' . $ns . '/', APC_ITER_KEY);
 		} else {
-			$iter = new \APCUIterator('/^' . $ns . '/', APC_ITER_KEY);
+			$iter = new \APCuIterator('/^' . $ns . '/', APC_ITER_KEY);
 		}
 		return \apcu_delete($iter);
 	}

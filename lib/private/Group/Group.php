@@ -68,6 +68,9 @@ class Group implements IGroup {
 	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
 
+	/** @var null|string  */
+	private $displayName;
+
 	/**
 	 * @param string $gid
 	 * @param \OC\Group\Backend[] $backends

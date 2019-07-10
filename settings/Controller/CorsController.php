@@ -46,6 +46,9 @@ class CorsController extends Controller {
 	/** @var IConfig */
 	private $config;
 
+	/** @var string  */
+	private $AppName;
+
 	/**
 	 * CorsController constructor.
 	 *

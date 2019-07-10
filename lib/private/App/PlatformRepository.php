@@ -29,6 +29,8 @@ namespace OC\App;
  * @package OC\App
  */
 class PlatformRepository {
+	private $packages;
+
 	public function __construct() {
 		$this->packages = $this->initialize();
 	}

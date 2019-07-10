@@ -1,6 +1,8 @@
 parameters:
   bootstrap: %currentWorkingDirectory%/lib/base.php
   autoload_directories:
+    - %currentWorkingDirectory%/apps/encryption/appinfo/Migrations
+    - %currentWorkingDirectory%/apps/encryption/lib
     - %currentWorkingDirectory%/apps/files_sharing/appinfo/Migrations
     - %currentWorkingDirectory%/apps/dav/appinfo/Migrations
     - %currentWorkingDirectory%/apps/federatedfilesharing/appinfo/Migrations
@@ -22,6 +24,7 @@ parameters:
     - %currentWorkingDirectory%/apps/*/appinfo/routes.php
     - %currentWorkingDirectory%/apps/*/composer/*
     - %currentWorkingDirectory%/apps/*/3rdparty/*
+    - %currentWorkingDirectory%/apps/files_external/3rdparty/aws-sdk-php/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/fallback/Namespaced/FooBar.php
     - %currentWorkingDirectory%/apps/files_sharing/ajax/shareinfo.php
     - %currentWorkingDirectory%/settings/templates/*
     - %currentWorkingDirectory%/settings/routes.php

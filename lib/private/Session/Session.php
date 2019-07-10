@@ -33,13 +33,6 @@ abstract class Session implements \ArrayAccess, ISession {
 	protected $sessionClosed = false;
 
 	/**
-	 * $name serves as a namespace for the session keys
-	 *
-	 * @param string $name
-	 */
-	abstract public function __construct($name);
-
-	/**
 	 * @param mixed $offset
 	 * @return bool
 	 */

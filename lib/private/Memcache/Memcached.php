@@ -92,7 +92,7 @@ class Memcached extends Cache implements IMemcache {
 	/**
 	 * entries in XCache gets namespaced to prevent collisions between owncloud instances and users
 	 */
-	protected function getNameSpace() {
+	protected function getNamespace() {
 		return $this->prefix;
 	}
 

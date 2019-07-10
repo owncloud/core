@@ -49,12 +49,10 @@ class ScanFiles extends \OC\BackgroundJob\TimedJob {
 	/**
 	 * @param IConfig|null $config
 	 * @param IUserManager|null $userManager
-	 * @param IDBConnection|null $dbConnection
 	 * @param ILogger|null $logger
 	 */
 	public function __construct(IConfig $config = null,
 								IUserManager $userManager = null,
-								IDBConnection $dbConnection = null,
 								ILogger $logger = null) {
 		// Run once per 10 minutes
 		$this->setInterval(60 * 10);
