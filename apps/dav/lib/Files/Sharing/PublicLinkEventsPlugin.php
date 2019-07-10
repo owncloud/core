@@ -38,6 +38,10 @@ class PublicLinkEventsPlugin extends ServerPlugin {
 		$this->dispatcher = $dispatcher;
 	}
 
+	/**
+	 * Initialize the plugin
+	 * @param Server $server the Sabre server where this plugin will be hooked into
+	 */
 	public function initialize(Server $server) {
 		$this->server = $server;
 
@@ -45,6 +49,12 @@ class PublicLinkEventsPlugin extends ServerPlugin {
 		$server->on('afterMethod:*', [$this, 'afterMethod']);
 	}
 
+	/**
+	 * This callback will be called before any method. Note this is a callback
+	 * set during the plugin initialization, so don't call it directly.
+	 * @param RequestInterface $request
+	 * @param ResponseInterface $response
+	 */
 	public function beforeMethod(RequestInterface $request, ResponseInterface $response) {
 		$path = $request->getPath();
 		$method = $request->getMethod();
@@ -77,6 +87,12 @@ class PublicLinkEventsPlugin extends ServerPlugin {
 		$this->dispatcher->dispatch($eventName, $event);
 	}
 
+	/**
+	 * This callback will be called after any method. Note this is a callback
+	 * set during the plugin initialization, so don't call it directly.
+	 * @param RequestInterface $request
+	 * @param ResponseInterface $response
+	 */
 	public function afterMethod(RequestInterface $request, ResponseInterface $response) {
 		$path = $request->getPath();
 		$method = $request->getMethod();
