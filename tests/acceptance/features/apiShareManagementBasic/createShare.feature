@@ -1130,3 +1130,37 @@ Feature: sharing
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
+
+   Scenario Outline: shares shared to deleted group should not be available
+     Given using OCS API version "<ocs_api_version>"
+     And these users have been created with default attributes and without skeleton files:
+       | username |
+       | user1    |
+       | user2    |
+     And group "grp1" has been created
+     And user "user1" has been added to group "grp1"
+     And user "user2" has been added to group "grp1"
+     And user "user0" has shared file "/textfile0.txt" with group "grp1"
+     And as user "user0"
+     When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
+     Then the OCS status code should be "<ocs_status_code>"
+     And the HTTP status code should be "200"
+     And the fields of the last response should include
+       | share_with  | grp1                 |
+       | file_target | /textfile0.txt       |
+       | path        | /textfile0.txt       |
+       | uid_owner   | user0                |
+     And as "user1" file "/textfile0.txt" should exist
+     And as "user2" file "/textfile0.txt" should exist
+     When the administrator deletes group "grp1" using the provisioning API
+     And as user "user0"
+     When the user sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
+     Then the OCS status code should be "<ocs_status_code>"
+     And the HTTP status code should be "200"
+     And file "/textfile0.txt" should not be included as path in the response
+     And as "user1" file "/textfile0.txt" should not exist
+     And as "user2" file "/textfile0.txt" should not exist
+     Examples:
+       | ocs_api_version | ocs_status_code |
+       | 1               | 100             |
+       | 2               | 200             |

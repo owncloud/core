@@ -1107,6 +1107,20 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the group :groupName should not be in share with group list
+	 *
+	 * @param string $groupName
+	 *
+	 * @return void
+	 */
+	public function theGroupShouldNotBeInShareWithGroupList($groupName) {
+		PHPUnit\Framework\Assert::assertFalse(
+			$this->sharingDialog->isGroupPresentInShareWithList($groupName),
+			"group $groupName is present in the list"
+		);
+	}
+
+	/**
 	 * @Then /^(file|folder) "([^"]*)" should be marked as shared(?: with "([^"]*)")? by "([^"]*)" on the webUI$/
 	 *
 	 * @param string $fileOrFolder
