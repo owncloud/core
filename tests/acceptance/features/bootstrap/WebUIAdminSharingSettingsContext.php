@@ -258,6 +258,20 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When /^the administrator (enables|disables) add server automatically once a federation share was created successfully using the webUI$/
+	 *
+	 * @param string (enable | disable) $action
+	 *
+	 * @return void
+	 */
+	public function theAdministratorEnablesAddServerAutomatically($action) {
+		$this->adminSharingSettingsPage->toggleAutoAddServer(
+			$this->getSession(),
+			$action
+		);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
