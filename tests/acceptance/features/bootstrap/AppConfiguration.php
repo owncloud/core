@@ -489,18 +489,22 @@ trait AppConfiguration {
 					&& \array_key_exists($configKey, $this->savedConfigList[$server]['apps'][$appName])
 					&& $this->savedConfigList[$server]['apps'][$appName][$configKey] !== $configValue
 				) {
-					SetupHelper::runOcc(
-						[
-							'config:app:set',
-							$appName,
-							$configKey,
-							"--value=" . $this->savedConfigList[$server]['apps'][$appName][$configKey]
-						],
-						$this->getAdminUsername(),
-						$this->getAdminPassword(),
-						$this->getBaseUrl(),
-						$this->getOcPath()
-					);
+					// Do not accidentally disable apps here (perhaps too early)
+					// That is done in Provisioning.php restoreAppEnabledDisabledState()
+					if ($configKey !== "enabled") {
+						SetupHelper::runOcc(
+							[
+								'config:app:set',
+								$appName,
+								$configKey,
+								"--value=" . $this->savedConfigList[$server]['apps'][$appName][$configKey]
+							],
+							$this->getAdminUsername(),
+							$this->getAdminPassword(),
+							$this->getBaseUrl(),
+							$this->getOcPath()
+						);
+					}
 				}
 			}
 		}
