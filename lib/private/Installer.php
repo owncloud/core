@@ -221,6 +221,7 @@ class Installer {
 	 * "\OC::$server->getAppConfig()->getValue($appid, 'installed_version')"
 	 */
 	public static function updateApp($info= [], $isShipped=false) {
+		$l = \OC::$server->getL10N('lib');
 		list($extractDir, $path) = self::downloadApp($info);
 		$info = self::checkAppsIntegrity($info, $extractDir, $path, $isShipped);
 
@@ -233,6 +234,11 @@ class Installer {
 		$basedir .= '/';
 		$basedir .= $info['id'];
 
+		$extractDir .= '/' . $info['id'];
+                if (!\file_exists($extractDir)) {
+                        OC_Helper::rmdirr($extractDir);
+                        throw new \Exception($l->t("Archive does not contain a directory named %s", $info['id']));
+                }
 		if ($currentDir !== false && OC_App::isAppDirWritable($info['id'])) {
 			$basedir = $currentDir;
 		}
