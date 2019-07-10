@@ -47,11 +47,11 @@ Feature: Creation of tags for the files and folders
   Scenario: Create and add tag on a shared file
     Given user "user2" has been created with default attributes and without skeleton files
     And user "user1" has uploaded file with content "some content" to "/randomfile.txt"
-    And the user browses directly to display the details of file "randomfile.txt" in folder ""
+    And the user browses directly to display the details of file "randomfile.txt" in folder "/"
     When the user adds a tag "tag1" to the file using the webUI
     And the user shares file "randomfile.txt" with user "User Two" using the webUI
     And the user re-logs in with username "user2" and password "%alt2%" using the webUI
-    And the user browses directly to display the details of file "randomfile.txt" in folder ""
+    And the user browses directly to display the details of file "randomfile.txt" in folder "/"
     And the user adds a tag "tag2" to the file using the webUI
     Then file "randomfile.txt" should have the following tags for user "user1"
       | tag1 | normal |
@@ -59,3 +59,16 @@ Feature: Creation of tags for the files and folders
     And file "randomfile.txt" should have the following tags for user "user2"
       | tag1 | normal |
       | tag2 | normal |
+
+   Scenario: Add tags on skeleton file before sharing
+     Given these users have been created with skeleton files:
+       | username |
+       | user2    |
+       | user3    |
+     And the user re-logs in as "user2" using the webUI
+     And the user browses directly to display the details of file "lorem.txt" in folder "/"
+     When the user adds a tag "skeleton" to the file using the webUI
+     And the user shares file "lorem.txt" with user "user3" using the webUI
+     Then file "lorem (2).txt" should have the following tags for user "user3"
+       | skeleton | normal |
+     
