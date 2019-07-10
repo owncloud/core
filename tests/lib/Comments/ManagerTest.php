@@ -459,6 +459,8 @@ class ManagerTest extends TestCase {
 		$this->assertArrayHasKey('message', $calledBeforeCreateEvent[1]);
 		$this->assertArrayHasKey('objectId', $calledAfterCreateEvent[1]);
 		$this->assertArrayHasKey('message', $calledAfterCreateEvent[1]);
+		$this->assertArrayHasKey('commentId', $calledAfterCreateEvent[1]);
+		$this->assertGreaterThanOrEqual(1, $calledAfterCreateEvent[1]->getArgument('commentId'));
 
 		$loadedComment = $manager->get($comment->getId());
 		$this->assertSame($comment->getMessage(), $loadedComment->getMessage());
