@@ -649,6 +649,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator deletes all the versions for user :user
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userDeletesVersionsOfFileUsingOccComand($user) {
+		$this->invokingTheCommand(
+			"versions:cleanup $user"
+		);
+	}
+
+	/**
 	 * @When the administrator empties the trashbin of all users using the occ command
 	 *
 	 * @return void
