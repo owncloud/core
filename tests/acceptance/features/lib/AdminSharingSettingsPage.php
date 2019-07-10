@@ -66,6 +66,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	protected $excludeGroupFromSharesFieldXpath = '//div[@id="files_sharing"]//input[contains(@class,"select2-input")]';
 	protected $groupListXpath = '//div[@id="select2-drop"]//li[contains(@class, "select2-result")]';
 	protected $groupListDropDownXpath = "//div[@id='select2-drop']";
+	protected $autoAddServerCheckboxXpath = "//label[@for='autoAddServers']";
+	protected $autoAddServerCheckboxId = "autoAddServers";
 
 	/**
 	 * toggle the Share API
@@ -353,6 +355,23 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 				$group->click();
 			}
 		}
+	}
+
+	/**
+	 * Toggle checkbox to automatically add trusted servers after federation sharing
+	 *
+	 * @param Session $session
+	 * @param string $action
+	 *
+	 * @return void
+	 */
+	public function toggleAutoAddServer(Session $session, $action) {
+		$this->toggleCheckbox(
+			$session,
+			$action,
+			$this->autoAddServerCheckboxXpath,
+			$this->autoAddServerCheckboxId
+		);
 	}
 
 	/**

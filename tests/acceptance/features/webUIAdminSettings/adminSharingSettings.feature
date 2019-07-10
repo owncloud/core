@@ -129,3 +129,15 @@ Feature: admin sharing settings
     And the administrator has browsed to the admin sharing settings page
     When the administrator disables restrict users to only share with their group members using the webUI
     Then the "share_with_group_members_only" capability of files sharing app should be "EMPTY"
+
+  Scenario: enable Add server automatically once a federated share was created successfully
+    Given parameter "autoAddServers" of app "federation" has been set to "0"
+    And the administrator has browsed to the admin sharing settings page
+    When the administrator enables add server automatically once a federation share was created successfully using the webUI
+    Then the config key "autoAddServers" of app "federation" should have value "1"
+
+  Scenario: disable Add server automatically once a federated share was created successfully
+    Given parameter "autoAddServers" of app "federation" has been set to "1"
+    And the administrator has browsed to the admin sharing settings page
+    When the administrator disables add server automatically once a federation share was created successfully using the webUI
+    Then the config key "autoAddServers" of app "federation" should have value "0"
