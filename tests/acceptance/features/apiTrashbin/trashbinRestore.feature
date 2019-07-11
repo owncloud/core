@@ -81,6 +81,60 @@ Feature: Restore deleted files/folders
       | old      |
       | new      |
 
+  Scenario Outline: a file is deleted and restored to a new destination
+    Given using <dav-path> DAV path
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user0" has deleted file "<delete-path>"
+    When user "user0" restores the file with original path "<delete-path>" to "<restore-path>" using the trashbin API
+    Then as "user0" the file with original path "<delete-path>" should not exist in trash
+    And as "user0" file "<restore-path>" should exist
+    And as "user0" file "<delete-path>" should not exist
+    Examples:
+      | dav-path | delete-path              | restore-path         |
+      | old      | /PARENT/parent.txt       | parent.txt           |
+      | new      | /PARENT/parent.txt       | parent.txt           |
+      | old      | /PARENT/CHILD/child.txt  | child.txt            |
+      | new      | /PARENT/CHILD/child.txt  | child.txt            |
+      | old      | /textfile0.txt           | FOLDER/textfile0.txt |
+      | new      | /textfile0.txt           | FOLDER/textfile0.txt |
+
+  Scenario Outline: restoring a file to an already existing path overrides the file
+    Given using <dav-path> DAV path
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user0" has moved file "textfile0.txt" to "parent.txt"
+    And user "user0" has uploaded file with content "file to delete" to "/parent.txt"
+    And user "user0" has deleted file "parent.txt"
+    When user "user0" restores the file with original path "/parent.txt" to "/PARENT/parent.txt" using the trashbin API
+    Then the HTTP status code should be "204"
+    And as "user0" the file with original path "/parent.txt" should not exist in trash
+    And as "user0" the file with original path "/PARENT/parent.txt" should exist in trash
+    And as "user0" file "/PARENT/parent.txt" should exist
+    And the content of file "/PARENT/parent.txt" for user "user0" should be "file to delete"
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  Scenario Outline: restoring a file to an read-only folder
+    Given using <dav-path> DAV path
+    And these users have been created with default attributes and skeleton files:
+    | username |
+    | user0    |
+    | user1    |
+    And user "user1" has created folder "shareFolderParent"
+    And user "user1" has created folder "shareFolderParent/shareFolderChild"
+    And user "user1" has shared folder "shareFolderParent" with user "user0" with permissions 1
+    And as "user0" folder "/shareFolderParent/shareFolderChild" should exist
+    And user "user0" has deleted file "/textfile0.txt"
+    When user "user0" restores the file with original path "/textfile0.txt" to "/shareFolderParent/shareFolderChild/textfile0.txt" using the trashbin API
+    Then the HTTP status code should be "204"
+    And as "user0" the file with original path "/textfile0.txt" should not exist in trash
+    And as "user0" file "/shareFolderParent/shareFolderChild/textfile0.txt" should exist
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
   Scenario Outline: A file deleted from a folder is restored to the original folder if the original folder was deleted and recreated
     Given using <dav-path> DAV path
     And user "user0" has been created with default attributes and skeleton files

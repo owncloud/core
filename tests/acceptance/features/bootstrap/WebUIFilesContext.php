@@ -51,19 +51,19 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @var FilesPage
 	 */
 	private $filesPage;
-	
+
 	/**
 	 *
 	 * @var TrashbinPage
 	 */
 	private $trashbinPage;
-	
+
 	/**
 	 *
 	 * @var FavoritesPage
 	 */
 	private $favoritesPage;
-	
+
 	/**
 	 *
 	 * @var SharedWithYouPage
@@ -798,7 +798,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 					$this->featureContext->getUserPassword($username),
 					$file['name']
 				);
-				
+
 				if ($response->getStatusCode() >= 200
 					&& $response->getStatusCode() <= 399
 				) {
@@ -813,11 +813,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 						$response->getStatusCode()
 					);
 				}
-				
+
 				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				$currentTime = \microtime(true);
 			}
-			
+
 			if ($currentTime > $end) {
 				throw new \Exception(
 					__METHOD__ . " timeout deleting files by WebDAV"
@@ -1639,7 +1639,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$this->getCurrentPageObject()->getTooltipOfFile($name, $this->getSession())
 		);
 	}
-	
+
 	/**
 	 * @When the user restores file/folder :fname from the trashbin using the webUI
 	 * @Given the user has restored file/folder :fname from the trashbin using the webUI
@@ -1750,7 +1750,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$actionMenu = $this->filesPage->openFileActionsMenuByNo(
 				$i, $this->getSession()
 			);
-			
+
 			$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC;
 			$currentTime = \microtime(true);
 			$end = $currentTime + ($timeout_msec / 1000);
@@ -1758,7 +1758,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				$windowHeight = $this->filesPage->getWindowHeight(
 					$this->getSession()
 				);
-				
+
 				$deleteBtn = $actionMenu->findButton(
 					$actionMenu->getDeleteActionLabel()
 				);
@@ -1771,7 +1771,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				$currentTime = \microtime(true);
 			}
-			
+
 			PHPUnit\Framework\Assert::assertLessThanOrEqual(
 				$windowHeight, $deleteBtnCoordinates ["top"]
 			);
@@ -1893,7 +1893,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			);
 		}
 	}
-	
+
 	/**
 	 * @When the user unmarks the favorited file/folder :fileOrFolderName using the webUI
 	 * @Given the user has unmarked the favorited file/folder :fileOrFolderName using the webUI
@@ -1953,7 +1953,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		} else {
 			$baseUrl = $this->featureContext->getLocalBaseUrl();
 		}
-		
+
 		$username = $this->featureContext->getCurrentUser();
 		WebDavAssert::assertContentOfRemoteAndLocalFileIsSame(
 			$baseUrl,
