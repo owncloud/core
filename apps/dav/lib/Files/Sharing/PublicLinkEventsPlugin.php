@@ -59,6 +59,7 @@ class PublicLinkEventsPlugin extends ServerPlugin {
 		$path = $request->getPath();
 		$method = $request->getMethod();
 		$lowercaseMethod = \strtolower($method);
+		$token = $request->getRawServerValue('PHP_AUTH_USER');
 
 		if ($method === 'MOVE') {
 			$destination = $this->server->calculateUri($request->getHeader('Destination'));
@@ -66,12 +67,14 @@ class PublicLinkEventsPlugin extends ServerPlugin {
 				'path' => $path,
 				'destination' => $destination,
 				'method' => $method,
+				'token' => $token,
 				'timing' => 'before',
 			]);
 		} else {
 			$event = new GenericEvent(null, [
 				'path' => $path,
 				'method' => $method,
+				'token' => $token,
 				'timing' => 'before',
 			]);
 		}
@@ -97,6 +100,7 @@ class PublicLinkEventsPlugin extends ServerPlugin {
 		$path = $request->getPath();
 		$method = $request->getMethod();
 		$lowercaseMethod = \strtolower($method);
+		$token = $request->getRawServerValue('PHP_AUTH_USER');
 
 		if ($method === 'MOVE') {
 			$destination = $this->server->calculateUri($request->getHeader('Destination'));
@@ -104,12 +108,14 @@ class PublicLinkEventsPlugin extends ServerPlugin {
 				'path' => $path,
 				'destination' => $destination,
 				'method' => $method,
+				'token' => $token,
 				'timing' => 'after',
 			]);
 		} else {
 			$event = new GenericEvent(null, [
 				'path' => $path,
 				'method' => $method,
+				'token' => $token,
 				'timing' => 'after',
 			]);
 		}

@@ -60,6 +60,7 @@ class PublicLinkEventsPluginTest extends TestCase {
 			['PUT'],
 			['MOVE'],
 			['DELETE'],
+			['PROPFIND'],
 		];
 	}
 
@@ -71,6 +72,10 @@ class PublicLinkEventsPluginTest extends TestCase {
 		$response = $this->createMock(ResponseInterface::class);
 
 		$request->method('getPath')->willReturn('/mypath');
+		$request->expects($this->once())
+			->method('getRawServerValue')
+			->with('PHP_AUTH_USER')
+			->willReturn('ABcdEFgh');
 		$request->method('getMethod')->willReturn($method);
 		$request->method('getHeader')
 			->with($this->equalTo('Destination'))
@@ -96,6 +101,10 @@ class PublicLinkEventsPluginTest extends TestCase {
 
 		$request->method('getPath')->willReturn('/mypath');
 		$request->method('getMethod')->willReturn($method);
+		$request->expects($this->once())
+			->method('getRawServerValue')
+			->with('PHP_AUTH_USER')
+			->willReturn('ABcdEFgh');
 		$request->method('getHeader')
 			->with($this->equalTo('Destination'))
 			->willReturn('/pub/anotherpath');
