@@ -605,7 +605,8 @@ label.infield {
 	float: right;
 }
 #body-login input[type="submit"] {
-	padding: 10px 20px; /* larger log in and installation buttons */
+	padding: 10px 0px; /* larger log in and installation buttons */
+	max-width: 269px;
 }
 #remember_login {
 	margin: 18px 5px 0 16px !important;
