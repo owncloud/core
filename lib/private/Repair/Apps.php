@@ -368,6 +368,8 @@ class Apps implements IRepairStep {
 		try {
 			// Prepare oc_jobs for older ownCloud version fixes https://github.com/owncloud/update-testing/issues/5
 			$connection = \OC::$server->getDatabaseConnection();
+			// IDBConnection does not have getPrefix, but Conection does
+			'@phan-var \OC\DB\Connection $connection';
 			$toSchema = $connection->createSchema();
 			$this->changeSchema($toSchema, ['tablePrefix' => $connection->getPrefix()]);
 			$connection->migrateToSchema($toSchema);

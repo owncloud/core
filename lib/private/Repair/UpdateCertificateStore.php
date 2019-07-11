@@ -82,6 +82,10 @@ class UpdateCertificateStore implements IRepairStep {
 				 */
 				// Regenerate the certificates
 				$certificateManager = $this->server->getCertificateManager($uid);
+				// ICertificateManager does not have createCertificateBundle
+				// But CertificateManager has createCertificateBundle
+				// ToDo: sort that out
+				'@phan-var \OC\Security\CertificateManager $certificateManager';
 				$certificateManager->createCertificateBundle();
 			}
 		}

@@ -191,6 +191,7 @@ class CacheWrapper extends Cache {
 	 * remove all entries for files that are stored on the storage from the cache
 	 */
 	public function clear() {
+		'@phan-var \OC\Files\Cache\Cache $this->cache';
 		$this->cache->clear();
 	}
 
@@ -270,6 +271,7 @@ class CacheWrapper extends Cache {
 	 * @return int[]
 	 */
 	public function getAll() {
+		'@phan-var \OC\Files\Cache\Cache $this->cache';
 		return $this->cache->getAll();
 	}
 

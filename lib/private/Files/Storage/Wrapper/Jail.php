@@ -336,7 +336,9 @@ class Jail extends Wrapper /* implements IVersionedStorage */
 	 * @return array
 	 */
 	public function search($query) {
-		return $this->getWrapperStorage()->search($query);
+		$wrapperStorage = $this->getWrapperStorage();
+		'@phan-var \OC\Files\Storage\Common $wrapperStorage';
+		return $wrapperStorage->search($query);
 	}
 
 	/**
@@ -509,7 +511,9 @@ class Jail extends Wrapper /* implements IVersionedStorage */
 	 * @since 10.0.9
 	 */
 	public function getContentOfVersion($internalPath, $versionId) {
-		return $this->getWrapperStorage()->getContentOfVersion($this->getSourcePath($internalPath), $versionId);
+		$wrapperStorage = $this->getWrapperStorage();
+		'@phan-var \OC\Files\Storage\Common $wrapperStorage';
+		return $wrapperStorage->getContentOfVersion($this->getSourcePath($internalPath), $versionId);
 	}
 
 	/**
@@ -521,7 +525,9 @@ class Jail extends Wrapper /* implements IVersionedStorage */
 	 * @since 10.0.9
 	 */
 	public function restoreVersion($internalPath, $versionId) {
-		return $this->getWrapperStorage()->restoreVersion($this->getSourcePath($internalPath), $versionId);
+		$wrapperStorage = $this->getWrapperStorage();
+		'@phan-var \OC\Files\Storage\Common $wrapperStorage';
+		return $wrapperStorage->restoreVersion($this->getSourcePath($internalPath), $versionId);
 	}
 
 	/**
@@ -532,7 +538,9 @@ class Jail extends Wrapper /* implements IVersionedStorage */
 	 * @since 10.0.9
 	 */
 	public function saveVersion($internalPath) {
-		return $this->getWrapperStorage()->saveVersion($this->getSourcePath($internalPath));
+		$wrapperStorage = $this->getWrapperStorage();
+		'@phan-var \OC\Files\Storage\Common $wrapperStorage';
+		return $wrapperStorage->saveVersion($this->getSourcePath($internalPath));
 	}
 
 	/**
@@ -543,7 +551,9 @@ class Jail extends Wrapper /* implements IVersionedStorage */
 	 * @since 10.0.9
 	 */
 	public function getVersions($internalPath) {
-		return $this->getWrapperStorage()->getVersions($this->getSourcePath($internalPath));
+		$wrapperStorage = $this->getWrapperStorage();
+		'@phan-var \OC\Files\Storage\Common $wrapperStorage';
+		return $wrapperStorage->getVersions($this->getSourcePath($internalPath));
 	}
 
 	/**
@@ -555,6 +565,8 @@ class Jail extends Wrapper /* implements IVersionedStorage */
 	 * @since 10.0.9
 	 */
 	public function getVersion($internalPath, $versionId) {
-		return $this->getWrapperStorage()->getVersion($this->getSourcePath($internalPath), $versionId);
+		$wrapperStorage = $this->getWrapperStorage();
+		'@phan-var \OC\Files\Storage\Common $wrapperStorage';
+		return $wrapperStorage->getVersion($this->getSourcePath($internalPath), $versionId);
 	}
 }

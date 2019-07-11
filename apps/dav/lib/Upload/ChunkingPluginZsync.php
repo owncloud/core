@@ -77,9 +77,11 @@ class ChunkingPluginZsync extends ServerPlugin {
 			$node = $this->server->tree->getNodeForPath(\dirname($destination));
 		}
 
+		'@phan-var \OCA\DAV\Connector\Sabre\Node $node';
 		// Disable if external storage used.
 		if (\strpos($node->getDavPermissions(), 'M') === false) {
 			$zsyncMetadataNode = $this->server->tree->getNodeForPath($path);
+			'@phan-var \OCA\DAV\Upload\FutureFileZsync $zsyncMetadataNode';
 			$zsyncMetadataHandle = $zsyncMetadataNode->get();
 
 			// get .zsync contents before its deletion

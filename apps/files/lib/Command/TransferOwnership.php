@@ -315,6 +315,7 @@ class TransferOwnership extends Command {
 				 */
 				if ($share->getSharedWith() === $this->destinationUser) {
 					$provider = $this->shareProviderFactory->getProviderForType($share->getShareType());
+					'@phan-var \OC\Share20\DefaultShareProvider $provider';
 					foreach ($provider->getChildren($share) as $child) {
 						$childShares[] = $child->getId();
 					}

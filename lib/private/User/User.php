@@ -185,6 +185,7 @@ class User implements IUser {
 
 		$backend = $this->account->getBackendInstance();
 		if ($backend->implementsActions(Backend::SET_DISPLAYNAME)) {
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$backend->setDisplayName($this->account->getUserId(), $displayName);
 		}
 
@@ -305,6 +306,7 @@ class User implements IUser {
 			if ($this->canChangePassword()) {
 				/** @var IChangePasswordBackend $backend */
 				$backend = $this->account->getBackendInstance();
+				'@phan-var IChangePasswordBackend $backend';
 				$result = $backend->setPassword($this->getUID(), $password);
 				if ($result) {
 					if ($this->emitter) {
@@ -355,6 +357,7 @@ class User implements IUser {
 			return false;
 		}
 		if ($backend->implementsActions(Backend::PROVIDE_AVATAR)) {
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			return $backend->canChangeAvatar($this->getUID());
 		}
 		return true;

@@ -32,7 +32,8 @@
  *
  */
 
-/** @var $application Symfony\Component\Console\Application */
+/** @var Symfony\Component\Console\Application $application */
+'@phan-var \Symfony\Component\Console\Application $application';
 $application->add(new OC\Core\Command\Status);
 $application->add(new OC\Core\Command\Check(\OC::$server->getConfig()));
 $application->add(new OC\Core\Command\App\CheckCode(

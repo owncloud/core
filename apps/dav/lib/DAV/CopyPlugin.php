@@ -84,6 +84,7 @@ class CopyPlugin extends ServerPlugin {
 				return false;
 			}
 
+			'@phan-var ICopySource $sourceNode';
 			$sourceNode->copy($destinationNode->getFileInfo()->getPath());
 
 			$this->server->emit('afterBind', [$copyInfo['destination']]);

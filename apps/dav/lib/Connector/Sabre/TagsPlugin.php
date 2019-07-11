@@ -220,6 +220,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 			$folderContent = $node->getChildren();
 			$fileIds[] = (int)$node->getId();
 			foreach ($folderContent as $info) {
+				'@phan-var \OCA\DAV\Connector\Sabre\Node $info';
 				$fileIds[] = (int)$info->getId();
 			}
 			$tags = $this->getTagger()->getTagsForObjects($fileIds);

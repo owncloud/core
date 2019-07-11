@@ -62,6 +62,7 @@ trait LocalTempFileTrait {
 	 * @return string
 	 */
 	protected function toTmpFile($path) { //no longer in the storage api, still useful here
+		'@phan-var \OC\Files\Storage\Common $this';
 		$source = $this->fopen($path, 'r');
 		if (!$source) {
 			return false;

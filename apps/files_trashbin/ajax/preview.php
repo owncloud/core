@@ -51,8 +51,10 @@ try {
 	$userFolder = \OC::$server->getRootFolder()->getUserFolder(\OC_User::getUser());
 	/** @var \OCP\Files\Folder $trashFolder */
 	$trashFolder = $userFolder->getParent()->get('files_trashbin/files');
+	'@phan-var \OCP\Files\Folder $trashFolder';
 	/** @var \OCP\Files\File | \OCP\Files\IPreviewNode $file */
 	$fileNode = $trashFolder->get($file);
+	'@phan-var \OCP\Files\FileInfo | \OCP\Files\IPreviewNode $fileNode';
 
 	if ($fileNode->getType() === \OCP\Files\FileInfo::TYPE_FOLDER) {
 		$mimetype = 'httpd/unix-directory';

@@ -136,6 +136,7 @@ abstract class OCSController extends ApiController {
 		}
 		/** @var OCSResponse $resp */
 		$resp = parent::buildResponse($response, $format);
+		'@phan-var \OCP\AppFramework\Http\OCSResponse $resp';
 		$script = $this->request->getScriptName();
 
 		if (\substr($script, -11) === '/ocs/v2.php') {

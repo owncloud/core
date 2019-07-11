@@ -95,6 +95,9 @@ class MountPoint implements IMountPoint {
 		// FIXME: this should also check for IStorage, and the public Storage interface
 		if ($storage instanceof Storage) {
 			$this->class = \get_class($storage);
+			// IStorageFactory does not have wrap
+			// But StorageFactory does have wrap
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$this->storage = $this->loader->wrap($this, $storage);
 		} else {
 			// Update old classes to new namespace

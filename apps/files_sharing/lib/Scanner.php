@@ -47,6 +47,7 @@ class Scanner extends CacheScanner {
 		$sourceScanner = $this->getSourceScanner();
 		if ($sourceScanner instanceof NoopScanner) {
 			// No Operation Scanner will not update share permission (scanFile won't call getData)
+			'@phan-var \OC\Files\Storage\Storage $this->storage';
 			list(, $internalPath) = $this->storage->resolvePath($file);
 			return $sourceScanner->scanFile($internalPath, $reuseExisting, $parentId, $cacheData, $lock);
 		} else {
@@ -67,6 +68,7 @@ class Scanner extends CacheScanner {
 		if ($data === null) {
 			return null;
 		}
+		'@phan-var \OC\Files\Storage\Storage $this->storage';
 		list($sourceStorage, $internalPath) = $this->storage->resolvePath($path);
 		$data['permissions'] = $sourceStorage->getPermissions($internalPath);
 		return $data;
@@ -78,6 +80,7 @@ class Scanner extends CacheScanner {
 		}
 		if ($this->storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
 			/** @var \OC\Files\Storage\Storage $storage */
+			'@phan-var \OC\Files\Storage\Storage $this->storage';
 			list($storage) = $this->storage->resolvePath('');
 			$this->sourceScanner = $storage->getScanner();
 			return $this->sourceScanner;

@@ -60,6 +60,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	public function updateShares(array $add, array $remove) {
 		/** @var CalDavBackend $calDavBackend */
 		$calDavBackend = $this->caldavBackend;
+		'@phan-var CalDavBackend $calDavBackend';
 		$calDavBackend->updateShares($this, $add, $remove);
 	}
 
@@ -78,6 +79,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	public function getShares() {
 		/** @var CalDavBackend $calDavBackend */
 		$calDavBackend = $this->caldavBackend;
+		'@phan-var CalDavBackend $calDavBackend';
 		return $calDavBackend->getShares($this->getResourceId());
 	}
 
@@ -139,6 +141,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 
 		/** @var CalDavBackend $calDavBackend */
 		$calDavBackend = $this->caldavBackend;
+		'@phan-var CalDavBackend $calDavBackend';
 		return $calDavBackend->applyShareAcl($this->getResourceId(), $acl);
 	}
 
@@ -166,6 +169,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 
 			/** @var CalDavBackend $calDavBackend */
 			$calDavBackend = $this->caldavBackend;
+			'@phan-var CalDavBackend $calDavBackend';
 			$calDavBackend->updateShares($this, [], [
 				$principal
 			]);
@@ -253,6 +257,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	 * @return string|null
 	 */
 	public function setPublishStatus($value) {
+		'@phan-var CalDavBackend $this->calDavBackend';
 		$publicUri = $this->caldavBackend->setPublishStatus($value, $this);
 		$this->calendarInfo['publicuri'] = $publicUri;
 		return $publicUri;
@@ -262,6 +267,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	 * @return mixed $value
 	 */
 	public function getPublishStatus() {
+		'@phan-var CalDavBackend $this->calDavBackend';
 		return $this->caldavBackend->getPublishStatus($this);
 	}
 

@@ -132,6 +132,7 @@ class ServerFactory {
 			// ensure the skeleton is copied
 			// Try to obtain User Folder
 			$userFolder = \OC::$server->getUserFolder();
+			'@phan-var \OCA\DAV\Connector\Sabre\Node $userFolder';
 
 			/** @var \OC\Files\View $view */
 			$view = $viewCallBack($server);

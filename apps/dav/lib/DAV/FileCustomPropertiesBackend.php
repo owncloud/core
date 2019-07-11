@@ -71,6 +71,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	public function beforeDelete($path) {
 		try {
 			$node = $this->getNodeForPath($path);
+			'@phan-var \OCA\DAV\Connector\Sabre\Node $node';
 			if ($node !== null && $node->getId()) {
 				if ($this->deletedItemsCache === null) {
 					$this->deletedItemsCache = new CappedMemoryCache();
@@ -129,6 +130,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 * @inheritdoc
 	 */
 	protected function getProperties($path, INode $node, array $requestedProperties) {
+		'@phan-var \OCA\DAV\Connector\Sabre\Node $node';
 		$fileId = $node->getId();
 		if ($this->offsetGet($fileId) === null) {
 			// TODO: chunking if more than 1000 properties
@@ -154,6 +156,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 */
 	protected function updateProperties($path, INode $node, $changedProperties) {
 		$existingProperties = $this->getProperties($path, $node, []);
+		'@phan-var \OCA\DAV\Connector\Sabre\Node $node';
 		$fileId = $node->getId();
 		$deleteStatement = self::DELETE_BY_ID_AND_NAME_STMT;
 		$insertStatement = self::INSERT_BY_ID_STMT;
@@ -224,6 +227,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 		$childrenIds = [];
 		// pre-fill cache
 		foreach ($childNodes as $childNode) {
+			'@phan-var \OCA\DAV\Connector\Sabre\Node $childNode';
 			$childId = $childNode->getId();
 			if ($childId) {
 				$childrenIds[] = $childId;

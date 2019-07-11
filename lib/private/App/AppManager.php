@@ -120,6 +120,7 @@ class AppManager implements IAppManager {
 
 		// TODO we have no public API for this
 		if (\method_exists($this->memCacheFactory, 'createLocal')) {
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$this->appInfo = $this->memCacheFactory->createLocal('app-info');
 		}
 		if ($this->appInfo === null || $this->appInfo instanceof NullCache) {

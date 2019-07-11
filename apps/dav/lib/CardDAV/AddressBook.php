@@ -47,9 +47,10 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 	 * @return void
 	 */
 	public function updateShares(array $add, array $remove) {
-		/** @var CardDavBackend $carddavBackend */
-		$carddavBackend = $this->carddavBackend;
-		$carddavBackend->updateShares($this, $add, $remove);
+		/** @var CardDavBackend $cardDavBackend */
+		$cardDavBackend = $this->carddavBackend;
+		'@phan-var CardDavBackend $cardDavBackend';
+		$cardDavBackend->updateShares($this, $add, $remove);
 	}
 
 	/**
@@ -65,9 +66,10 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 	 * @return array
 	 */
 	public function getShares() {
-		/** @var CardDavBackend $carddavBackend */
-		$carddavBackend = $this->carddavBackend;
-		return $carddavBackend->getShares($this->getResourceId());
+		/** @var CardDavBackend $cardDavBackend */
+		$cardDavBackend = $this->carddavBackend;
+		'@phan-var CardDavBackend $cardDavBackend';
+		return $cardDavBackend->getShares($this->getResourceId());
 	}
 
 	public function getACL() {
@@ -104,9 +106,10 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 			];
 		}
 
-		/** @var CardDavBackend $carddavBackend */
-		$carddavBackend = $this->carddavBackend;
-		return $carddavBackend->applyShareAcl($this->getResourceId(), $acl);
+		/** @var CardDavBackend $cardDavBackend */
+		$cardDavBackend = $this->carddavBackend;
+		'@phan-var CardDavBackend $cardDavBackend';
+		return $cardDavBackend->applyShareAcl($this->getResourceId(), $acl);
 	}
 
 	public function getChildACL() {
@@ -149,6 +152,7 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 
 			/** @var CardDavBackend $cardDavBackend */
 			$cardDavBackend = $this->carddavBackend;
+			'@phan-var CardDavBackend $cardDavBackend';
 			$cardDavBackend->updateShares($this, [], [
 				$principal
 			]);
@@ -167,6 +171,7 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 	public function getContactsGroups() {
 		/** @var CardDavBackend $cardDavBackend */
 		$cardDavBackend = $this->carddavBackend;
+		'@phan-var CardDavBackend $cardDavBackend';
 
 		return $cardDavBackend->collectCardProperties($this->getResourceId(), 'CATEGORIES');
 	}

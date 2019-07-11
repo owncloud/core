@@ -73,6 +73,7 @@ class Storage extends Wrapper {
 		$sourceInternalPath = $mount1->getInternalPath($absolutePath1);
 		// check whether this is a cross-storage move from a *local* shared storage
 		if ($sourceInternalPath !== '' && $sourceStorage !== $targetStorage && $sourceStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
+			'@phan-var \OCA\Files_Sharing\SharedStorage $sourceStorage';
 			$ownerPath = $sourceStorage->getSourcePath($sourceInternalPath);
 			$owner = $sourceStorage->getOwner($sourceInternalPath);
 			if ($owner !== null && $owner !== '' && $ownerPath !== null && \substr($ownerPath, 0, 6) === 'files/') {

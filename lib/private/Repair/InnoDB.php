@@ -47,6 +47,8 @@ class InnoDB implements IRepairStep {
 		$tables = $this->getAllMyIsamTables($connection);
 		if (\is_array($tables)) {
 			foreach ($tables as $table) {
+				// On a MySqlPlatform we should have an exec method
+				/* @phan-suppress-next-line PhanUndeclaredMethod */
 				$connection->exec("ALTER TABLE $table ENGINE=InnoDB;");
 				$output->info("Fixed $table");
 			}

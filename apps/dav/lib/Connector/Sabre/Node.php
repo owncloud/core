@@ -287,6 +287,7 @@ abstract class Node implements \Sabre\DAV\INode {
 
 		if ($storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
 			/** @var \OCA\Files_Sharing\SharedStorage $storage */
+			'@phan-var \OCA\Files_Sharing\SharedStorage $storage';
 			$permissions = (int)$storage->getShare()->getPermissions();
 		} else {
 			$permissions = $storage->getPermissions($path);

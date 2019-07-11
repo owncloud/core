@@ -307,6 +307,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	private function removeFromCache($path) {
 		$path = \trim($path, '/');
 		// TODO The CappedCache does not really clear by prefix. It just clears all.
+		'@phan-var \OC\Cache\CappedMemoryCache $this->statCache';
 		$this->statCache->clear($path);
 	}
 	/**

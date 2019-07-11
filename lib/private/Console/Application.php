@@ -96,6 +96,7 @@ class Application {
 				if (\OCP\Util::needUpgrade()) {
 					throw new NeedsUpdateException();
 				} elseif ($this->config->getSystemValue('maintenance', false)) {
+					'@phan-var \Symfony\Component\Console\Output\ConsoleOutputInterface $output';
 					$errOutput = $output->getErrorOutput();
 					$errOutput->writeln('<comment>ownCloud is in maintenance mode - no app have been loaded</comment>' . PHP_EOL);
 				} else {

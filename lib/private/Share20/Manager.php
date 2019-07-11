@@ -510,7 +510,14 @@ class Manager implements IManager {
 		if (\method_exists($share, 'setParent')) {
 			$storage = $share->getNode()->getStorage();
 			if ($storage->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
-				$share->setParent($storage->getShareId());
+				// ISharedStorage does not mention getShareId
+				// getShareId is in SharedStorage
+				// FixMe: need to be sure that we always have a SharedStorage
+				'@phan-var \OCA\Files_Sharing\SharedStorage $storage';
+				$shareId = $storage->getShareId();
+				// We know that setParent exists because we checked method_exists
+				/* @phan-suppress-next-line PhanUndeclaredMethod */
+				$share->setParent($shareId);
 			}
 		};
 	}
@@ -739,6 +746,10 @@ class Manager implements IManager {
 
 			$provider = $this->factory->getProviderForType($share->getShareType());
 			//Try to get the children transferred and then delete the parent
+			// IShareProvider does not have getChildren
+			// But DefaultShareProvider has getChildren and getChildren has a comment
+			// FIXME: remove once https://github.com/owncloud/core/pull/21660 is in
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			foreach ($provider->getChildren($share) as $child) {
 				$this->transferShare($child, $oldOwner, $newOwner, $finalTarget, true);
 			}
@@ -937,6 +948,10 @@ class Manager implements IManager {
 
 		$provider = $this->factory->getProviderForType($share->getShareType());
 
+		// IShareProvider does not have getChildren
+		// But DefaultShareProvider has getChildren and getChildren has a comment
+		// FIXME: remove once https://github.com/owncloud/core/pull/21660 is in
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		foreach ($provider->getChildren($share) as $child) {
 			$deletedChildren = $this->deleteChildren($child);
 			$deletedShares = \array_merge($deletedShares, $deletedChildren);
@@ -966,6 +981,7 @@ class Manager implements IManager {
 			'itemSource' => $share->getNodeId(),
 			'shareType'  => $shareType,
 			'shareWith'  => $sharedWith,
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			'itemparent' => \method_exists($share, 'getParent') ? $share->getParent() : '',
 			'uidOwner'   => $share->getSharedBy(),
 			'fileSource' => $share->getNodeId(),

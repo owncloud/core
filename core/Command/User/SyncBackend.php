@@ -219,6 +219,7 @@ class SyncBackend extends Command {
 		$p = new ProgressBar($output);
 		$max = null;
 		if ($backend->implementsActions(\OC\User\Backend::COUNT_USERS) && $input->getOption('showCount')) {
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$max = $backend->countUsers();
 		}
 		$p->start($max);

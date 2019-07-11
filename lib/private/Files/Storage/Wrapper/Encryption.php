@@ -145,6 +145,7 @@ class Encryption extends Wrapper {
 			$size = $this->unencryptedSize[$fullPath];
 			// update file cache
 			if ($info instanceof ICacheEntry) {
+				'@phan-var \OC\Files\Cache\CacheEntry $info';
 				$info = $info->getData();
 				$info['encrypted'] = $info['encryptedVersion'];
 			} else {
