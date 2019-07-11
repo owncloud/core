@@ -38,7 +38,7 @@ Feature: admin general settings
     And the administrator logs out of the webUI
     Then the privacy policy url on the login page should link to "privacy_policy.html"
 
-  @smokeTest
+  @smokeTest @skipOnDockerContainerTesting
   Scenario: administrator sets update channel
     Given the administrator has invoked occ command "config:app:set core OC_Channel --value git"
     When the user reloads the current page of the webUI
