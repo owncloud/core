@@ -7,6 +7,7 @@ OC.L10N.register(
     "Save" : "Speichern",
     "Location" : "Ort",
     "Host" : "Host",
+    "Root" : "Root",
     "Share" : "Freigeben",
     "Name" : "Name",
     "Folder name" : "Ordner Name",
