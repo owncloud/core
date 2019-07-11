@@ -111,8 +111,10 @@ help:
 	@echo
 	@echo -e "Testing:\n"
 	@echo -e "make test\t\t\trun all tests"
-	@echo -e "make test-php-unit\t\t\trun all PHP tests"
+	@echo -e "make test-php-unit\t\trun all PHP tests"
 	@echo -e "make test-php-style\t\trun PHP code style checks"
+	@echo -e "make test-php-phan\t\trun PHP phan static code analyzer"
+	@echo -e "make test-php-phpstan\t\trun PHP phpstan static code analyzer"
 	@echo -e "make test-js\t\t\trun Javascript tests"
 	@echo -e "make test-js-debug\t\trun Javascript tests in debug mode (continuous)"
 	@echo -e "make test-acceptance-api\trun API acceptance tests"
