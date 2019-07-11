@@ -194,12 +194,13 @@ class TrashbinContext implements Context {
 	/**
 	 * @param string $user
 	 * @param string $trashItemHRef
-	 * @param string $originalLocation
+	 * @param string $destinationPath
 	 *
 	 * @return void
 	 */
-	private function sendUndeleteRequest($user, $trashItemHRef, $originalLocation) {
-		$destinationValue = $this->featureContext->getBaseUrl() . "/remote.php/dav/files/$user/$originalLocation";
+	private function sendUndeleteRequest($user, $trashItemHRef, $destinationPath) {
+		$destinationPath = \trim($destinationPath, '/');
+		$destinationValue = $this->featureContext->getBaseUrl() . "/remote.php/dav/files/$user/$destinationPath";
 
 		// we need to get the trashItemHRef from the format
 		// /<base>/remote.php/dav/trash-bin/<user>/<item_id>/ -->> /trash-bin/<user>/<item_id>
@@ -210,27 +211,27 @@ class TrashbinContext implements Context {
 		$response = $this->featureContext->makeDavRequest(
 			$user, 'MOVE', $trashItemHRef, $headers, null, 'trash-bin', null, 2
 		);
-		PHPUnit\Framework\Assert::assertEquals(
-			201, $response->getStatusCode()
-		);
 	}
 
 	/**
 	 * @param string $user
 	 * @param string $originalPath
+	 * @param string $destinationPath
 	 *
 	 * @return void
 	 */
-	private function restoreElement($user, $originalPath) {
+	private function restoreElement($user, $originalPath, $destinationPath = null) {
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = \trim($originalPath, '/');
-
+		if ($destinationPath === null) {
+			$destinationPath = $originalPath;
+		}
 		foreach ($listing as $entry) {
 			if ($entry['original-location'] === $originalPath) {
 				$this->sendUndeleteRequest(
 					$user,
 					$entry['href'],
-					$entry['original-location']
+					$destinationPath
 				);
 				break;
 			}
@@ -252,6 +253,21 @@ class TrashbinContext implements Context {
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath is still in the trashbin"
 		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" restores the (?:file|folder|entry) with original path "([^"]*)" to "([^"]*)" using the trashbin API$/
+	 *
+	 * @param string $user
+	 * @param string $originalPath
+	 * @param string $destinationPath
+	 *
+	 * @return void
+	 */
+	public function userRestoresTheFileWithOriginalPathToUsingTheTrashbinApi(
+		$user, $originalPath, $destinationPath
+	) {
+		$this->restoreElement($user, $originalPath, $destinationPath);
 	}
 
 	/**
