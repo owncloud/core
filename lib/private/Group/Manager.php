@@ -177,6 +177,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 		$backends = [];
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(\OC\Group\Backend::GROUP_DETAILS)) {
+				/* @phan-suppress-next-line PhanUndeclaredMethod */
 				$groupData = $backend->getGroupDetails($gid);
 				if (\is_array($groupData)) {
 					// take the display name from the first backend that has a non-null one
@@ -218,6 +219,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 			$this->eventDispatcher->dispatch('group.preCreate', new GenericEvent(null, ['gid' => $gid]));
 			foreach ($this->backends as $backend) {
 				if ($backend->implementsActions(\OC\Group\Backend::CREATE_GROUP)) {
+					/* @phan-suppress-next-line PhanUndeclaredMethod */
 					$backend->createGroup($gid);
 					$group = $this->getGroupObject($gid);
 					$this->emit('\OC\Group', 'postCreate', [$group]);

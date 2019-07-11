@@ -136,6 +136,7 @@ class Install extends Command {
 			if ($dbPass === null) {
 				/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 				$dialog = $this->getHelperSet()->get('question');
+				'@phan-var \Symfony\Component\Console\Helper\QuestionHelper $dialog';
 				$q = new Question("<question>What is the password to access the database with user <$dbUser>?</question>", false);
 				$q->setHidden(true);
 				$dbPass = $dialog->ask($input, $output, $q);
@@ -145,6 +146,7 @@ class Install extends Command {
 		if ($adminPassword === null) {
 			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 			$dialog = $this->getHelperSet()->get('question');
+			'@phan-var \Symfony\Component\Console\Helper\QuestionHelper $dialog';
 			$q = new Question("<question>What is the password you like to use for the admin account <$adminLogin>?</question>", false);
 			$q->setHidden(true);
 			$adminPassword = $dialog->ask($input, $output, $q);

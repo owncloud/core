@@ -128,6 +128,7 @@ class MoveAvatarIntoSubFolder implements IRepairStep {
 				} catch (NotFoundException $e) {
 					$oldAvatarFile = $this->rootFolder->get("{$brokenPath}/avatar.png");
 				}
+				'@phan-var \OC\Files\Node\File $oldAvatarFile';
 				$avatar->set($oldAvatarFile->getContent());
 
 				// Delete old avatars path only if it does not contain any other items

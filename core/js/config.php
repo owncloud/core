@@ -80,6 +80,9 @@ if ($countOfDataLocation !== 1 || !OC_User::isAdminUser(OC_User::getUser())) {
 	$dataLocation = false;
 }
 
+$previewManager = \OC::$server->getPreviewManager();
+'@phan-var \OC\PreviewManager $previewManager';
+
 $array = [
 	"oc_debug" => $config->getSystemValue('debug', false) ? 'true' : 'false',
 	"oc_isadmin" => OC_User::isAdminUser(OC_User::getUser()) ? 'true' : 'false',
@@ -174,7 +177,7 @@ $array = [
 				'remoteShareAllowed' => $outgoingServer2serverShareEnabled,
 				'allowGroupSharing' => \OC::$server->getShareManager()->allowGroupSharing(),
 				'previewsEnabled' => \OC::$server->getConfig()->getSystemValue('enable_previews', true) === true,
-				'enabledPreviewProviders' => \OC::$server->getPreviewManager()->getSupportedMimes()
+				'enabledPreviewProviders' => $previewManager->getSupportedMimes()
 			]
 		],
 	"oc_defaults" => [

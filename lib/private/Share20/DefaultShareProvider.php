@@ -130,6 +130,7 @@ class DefaultShareProvider implements IShareProvider {
 			}
 
 			if (\method_exists($share, 'getParent')) {
+				/* @phan-suppress-next-line PhanUndeclaredMethod */
 				$qb->setValue('parent', $qb->createNamedParameter($share->getParent()));
 			}
 

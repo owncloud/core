@@ -103,6 +103,7 @@ class ViewOnly {
 
 		// Extract extra permissions
 		/** @var \OCA\Files_Sharing\SharedStorage $storage */
+		'@phan-var \OCA\Files_Sharing\SharedStorage $storage';
 		$share = $storage->getShare();
 
 		// Check if read-only and on whether permission can download is both set and disabled.

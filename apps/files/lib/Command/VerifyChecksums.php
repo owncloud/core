@@ -174,6 +174,7 @@ class VerifyChecksums extends Command {
 	private function walkNodes(array $nodes, \Closure $callBack) {
 		foreach ($nodes as $node) {
 			if ($node->getType() === FileInfo::TYPE_FOLDER) {
+				'@phan-var \OCP\Files\Folder $node';
 				$this->walkNodes($node->getDirectoryListing(), $callBack);
 			} else {
 				$callBack($node);

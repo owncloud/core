@@ -53,7 +53,9 @@ class SubAdmin extends PublicEmitter {
 	public function __construct(IUserManager $userManager,
 								IGroupManager $groupManager,
 								IDBConnection $dbConn) {
+		'@phan-var \OC\User\Manager $userManager';
 		$this->userManager = $userManager;
+		'@phan-var \OC\Group\Manager $groupManager';
 		$this->groupManager = $groupManager;
 		$this->dbConn = $dbConn;
 

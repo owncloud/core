@@ -56,6 +56,7 @@ class FileCustomPropertiesPlugin extends Plugin {
 		if ($pathFilter && !$pathFilter($path)) {
 			return;
 		}
+		'@phan-var \OCA\DAV\DAV\FileCustomPropertiesBackend $this->backend';
 		$this->backend->beforeDelete($path);
 	}
 }

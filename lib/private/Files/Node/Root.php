@@ -168,6 +168,8 @@ class Root extends Folder implements IRootFolder {
 	 * @param \OC\Files\Mount\MountPoint $mount
 	 */
 	public function unMount($mount) {
+		// ToDo: why doesn't this call removeMount ?
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		$this->mountManager->remove($mount);
 	}
 
@@ -367,6 +369,7 @@ class Root extends Folder implements IRootFolder {
 		try {
 			$folder = $folder->get($dir);
 		} catch (NotFoundException $e) {
+			'@phan-var \OC\Files\Node\Folder $folder';
 			$folder = $folder->newFolder($dir);
 		}
 

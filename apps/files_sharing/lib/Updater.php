@@ -102,6 +102,7 @@ class Updater {
 			if ($mount->getStorage()->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
 				$mountPoint = $mount->getMountPoint();
 				$target = \str_replace($absOldPath, $absNewPath, $mountPoint);
+				'@phan-var \OCA\Files_Sharing\SharedMount $mount';
 				$mount->moveMount($target);
 			}
 		}

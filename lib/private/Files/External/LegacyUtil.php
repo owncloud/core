@@ -55,7 +55,9 @@ class LegacyUtil {
 		$mountPoints = [];
 
 		$userGlobalStoragesService = \OC::$server->getUserGlobalStoragesService();
+		'@phan-var \OC\Files\External\Service\UserGlobalStoragesService $userGlobalStoragesService';
 		$userStoragesService = \OC::$server->getUserStoragesService();
+		'@phan-var \OC\Files\External\Service\UserStoragesService $userStoragesService';
 		$user = \OC::$server->getUserManager()->get($uid);
 
 		$userGlobalStoragesService->setUser($user);

@@ -392,6 +392,7 @@ class Trashbin {
 			 * deleted due to move operation to trashbin.
 			 */
 			if ($sourceStorage !== null) {
+				'@phan-var \OCA\Files_Trashbin\Storage $sourceStorage';
 				$copyKeysResult = $sourceStorage->retainKeys($filename, $owner, $ownerPath, $timestamp, $sourceStorage);
 			}
 
@@ -1073,6 +1074,7 @@ class Trashbin {
 	public function resolvePrivateLink($uid, $fileId) {
 		if ($this->rootFolder->nodeExists($uid . '/files_trashbin/files/')) {
 			$baseFolder = $this->rootFolder->get($uid . '/files_trashbin/files/');
+			'@phan-var \OCP\Files\Folder $baseFolder';
 			$files = $baseFolder->getById($fileId);
 			if (!empty($files)) {
 				$params['view'] = 'trashbin';

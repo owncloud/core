@@ -77,6 +77,7 @@ class FileLocksBackend implements BackendInterface {
 			}
 
 			/** @var IPersistentLockingStorage $storage */
+			'@phan-var IPersistentLockingStorage $storage';
 			$locks = $storage->getLocks($node->getFileInfo()->getInternalPath(), $returnChildLocks);
 		} catch (NotFound $e) {
 			if ($uri === '') {
@@ -104,6 +105,7 @@ class FileLocksBackend implements BackendInterface {
 			}
 
 			/** @var IPersistentLockingStorage $storage */
+			'@phan-var IPersistentLockingStorage $storage';
 			$locks = $storage->getLocks($node->getFileInfo()->getInternalPath() . '/' . $childPath, $returnChildLocks);
 		}
 
@@ -179,6 +181,7 @@ class FileLocksBackend implements BackendInterface {
 		}
 
 		/** @var IPersistentLockingStorage $storage */
+		'@phan-var IPersistentLockingStorage $storage';
 		$lock = $storage->lockNodePersistent($node->getFileInfo()->getInternalPath(), [
 			'token' => $lockInfo->token,
 			'scope' => $lockInfo->scope === Locks\LockInfo::EXCLUSIVE ? ILock::LOCK_SCOPE_EXCLUSIVE : ILock::LOCK_SCOPE_SHARED,
@@ -219,6 +222,7 @@ class FileLocksBackend implements BackendInterface {
 		}
 
 		/** @var IPersistentLockingStorage $storage */
+		'@phan-var IPersistentLockingStorage $storage';
 		return $storage->unlockNodePersistent($node->getFileInfo()->getInternalPath(), [
 			'token' => $lockInfo->token
 		]);

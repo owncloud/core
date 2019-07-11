@@ -61,6 +61,7 @@ class UpdateDB extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
+		'@phan-var \OC\Files\MimetypeDetector $this->mimetypeDetector';
 		$mappings = $this->mimetypeDetector->getAllMappings();
 
 		$totalFilecacheUpdates = 0;
@@ -82,6 +83,7 @@ class UpdateDB extends Command {
 			}
 
 			if (!$existing || $input->getOption('repair-filecache')) {
+				/* @phan-suppress-next-line PhanUndeclaredMethod */
 				$touchedFilecacheRows = $this->mimetypeLoader->updateFilecache($ext, $mimetypeId);
 				if ($touchedFilecacheRows > 0) {
 					$output->writeln('Updated '.$touchedFilecacheRows.' filecache rows for mimetype "'.$mimetype.'"');

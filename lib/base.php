@@ -398,6 +398,7 @@ class OC {
 
 		/** @var \OC\App\AppManager $appManager */
 		$appManager = \OC::$server->getAppManager();
+		'@phan-var \OC\App\AppManager $appManager';
 
 		$tmpl = new OC_Template('', 'update.admin', 'guest');
 		$tmpl->assign('version', OC_Util::getVersionString());
@@ -818,6 +819,7 @@ class OC {
 		if ($instanceId) {
 			try {
 				$memcacheFactory = \OC::$server->getMemCacheFactory();
+				'@phan-var \OC\MemCache\Factory $memcacheFactory';
 				self::$loader->setMemoryCache($memcacheFactory->createLocal('Autoloader'));
 			} catch (\Exception $ex) {
 			}

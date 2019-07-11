@@ -102,6 +102,7 @@ class PreviewPlugin extends ServerPlugin {
 		// Checking ACL, if available.
 		if ($aclPlugin = $this->server->getPlugin('acl')) {
 			/** @var \Sabre\DAVACL\Plugin $aclPlugin */
+			'@phan-var \Sabre\DAVACL\Plugin $aclPlugin';
 			$aclPlugin->checkPrivileges($path, '{DAV:}read');
 		}
 

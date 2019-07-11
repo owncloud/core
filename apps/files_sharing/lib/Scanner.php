@@ -46,6 +46,7 @@ class Scanner extends \OC\Files\Cache\Scanner {
 		if ($data === null) {
 			return null;
 		}
+		'@phan-var \OC\Files\Storage\Storage $this->storage';
 		list($sourceStorage, $internalPath) = $this->storage->resolvePath($path);
 		$data['permissions'] = $sourceStorage->getPermissions($internalPath);
 		return $data;
@@ -57,6 +58,7 @@ class Scanner extends \OC\Files\Cache\Scanner {
 		}
 		if ($this->storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
 			/** @var \OC\Files\Storage\Storage $storage */
+			'@phan-var \OC\Files\Storage\Storage $this->storage';
 			list($storage) = $this->storage->resolvePath('');
 			$this->sourceScanner = $storage->getScanner();
 			return $this->sourceScanner;

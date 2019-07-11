@@ -144,6 +144,7 @@ class ResetPassword extends Command {
 		} elseif ($input->isInteractive()) {
 			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 			$dialog = $this->getHelperSet()->get('question');
+			'@phan-var \Symfony\Component\Console\Helper\QuestionHelper $dialog';
 
 			if (\OCP\App::isEnabled('encryption')) {
 				$output->writeln(

@@ -396,8 +396,9 @@ abstract class StoragesService implements IStoragesService {
 
 		$oldStorage = $this->getStorageConfigFromDBMount($existingMount);
 
-		if ($oldStorage->getBackend() instanceof InvalidBackend) {
-			throw new NotFoundException('Storage config with id "' . $id . '" and backend id "' . $oldStorage->getBackend()->getInvalidId() . '" cannot be edited due to missing backend');
+		$oldStorageBackend = $oldStorage->getBackend();
+		if ($oldStorageBackend instanceof InvalidBackend) {
+			throw new NotFoundException('Storage config with id "' . $id . '" and backend id "' . $oldStorageBackend->getInvalidId() . '" cannot be edited due to missing backend');
 		}
 
 		$removedUsers = \array_diff($oldStorage->getApplicableUsers(), $updatedStorage->getApplicableUsers());
@@ -539,6 +540,7 @@ abstract class StoragesService implements IStoragesService {
 			// auth mechanism should fire first
 			$storage = $storageConfig->getBackend()->wrapStorage($storage);
 			$storage = $storageConfig->getAuthMechanism()->wrapStorage($storage);
+			'@phan-var \OC\Files\Storage\Storage $storage';
 
 			return $storage->getStorageCache()->getNumericId();
 		} catch (\Exception $e) {

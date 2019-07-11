@@ -249,6 +249,7 @@ class Manager extends PublicEmitter implements IUserManager {
 
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(Backend::CHECK_PASSWORD)) {
+				/* @phan-suppress-next-line PhanUndeclaredMethod */
 				$uid = $backend->checkPassword($loginName, $password);
 				if ($uid !== false) {
 					$account = $this->syncService->createOrSyncAccount($uid, $backend);
@@ -377,6 +378,7 @@ class Manager extends PublicEmitter implements IUserManager {
 
 			foreach ($this->backends as $backend) {
 				if ($backend->implementsActions(Backend::CREATE_USER)) {
+					/* @phan-suppress-next-line PhanUndeclaredMethod */
 					$backend->createUser($uid, $password);
 					$user = $this->createUserFromBackend($uid, $password, $backend);
 					return $user === null ? false : $user;

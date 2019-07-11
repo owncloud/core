@@ -83,7 +83,9 @@ class UserGlobalStoragesController extends StoragesController {
 	 * @NoAdminRequired
 	 */
 	public function index() {
-		$storages = $this->service->getUniqueStorages();
+		$service = $this->service;
+		'@phan-var \OCP\Files\External\Service\IUserGlobalStoragesService $service';
+		$storages = $service->getUniqueStorages();
 
 		// remove configuration data, this must be kept private
 		foreach ($storages as $storage) {
@@ -158,6 +160,7 @@ class UserGlobalStoragesController extends StoragesController {
 			$authMechanism = $storage->getAuthMechanism();
 			if ($authMechanism instanceof IUserProvided) {
 				$authMechanism->saveBackendOptions($this->userSession->getUser(), $id, $backendOptions);
+				'@phan-var \OCP\Files\External\Auth\AuthMechanism $authMechanism';
 				$authMechanism->manipulateStorageConfig($storage, $this->userSession->getUser());
 			} else {
 				return new DataResponse(

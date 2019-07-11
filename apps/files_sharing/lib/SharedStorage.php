@@ -462,8 +462,13 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 		$locks = parent::getLocks($this->getSourcePath($internalPath), $returnChildLocks);
 		return \array_map(function (ILock $lock) {
 			// TODO: if path starts with rootpath
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$mountedPath = \substr($lock->getPath(), \strlen($this->rootPath)+1);
+			// FixMe: setDavUserId does not seem to exist anywhere
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$lock->setDavUserId($this->user);
+			// FixMe: setAbsoluteDavPath does not seem to exist anywhere
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$lock->setAbsoluteDavPath($this->getMountPoint() . '/' .$mountedPath);
 			return $lock;
 		}, $locks);

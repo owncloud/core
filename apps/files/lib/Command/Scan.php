@@ -502,6 +502,7 @@ class Scan extends Base {
 	protected function reconnectToDatabase(OutputInterface $output) {
 		/** @var Connection | IDBConnection $connection*/
 		$connection = \OC::$server->getDatabaseConnection();
+		'@phan-var Connection | IDBConnection $connection';
 		try {
 			$connection->close();
 		} catch (\Exception $ex) {

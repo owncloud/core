@@ -445,6 +445,7 @@ class Local extends Common {
 			 * @var \OC\Files\Storage\Local $sourceStorage
 			 */
 			$rootStorage = new Local(['datadir' => '/']);
+			'@phan-var \OC\Files\Storage\Local $sourceStorage';
 			return $rootStorage->copy($sourceStorage->getSourcePath($sourceInternalPath), $this->getSourcePath($targetInternalPath));
 		}
 

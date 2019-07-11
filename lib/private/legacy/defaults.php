@@ -129,6 +129,7 @@ class OC_Defaults {
 	 */
 	public function getiOSClientUrl() {
 		if ($this->themeExist('getiOSClientUrl')) {
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			return $this->theme->getiOSClientUrl();
 		} else {
 			return $this->defaultiOSClientUrl;
@@ -141,6 +142,7 @@ class OC_Defaults {
 	 */
 	public function getiTunesAppId() {
 		if ($this->themeExist('getiTunesAppId')) {
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			return $this->theme->getiTunesAppId();
 		} else {
 			return $this->defaultiTunesAppId;
@@ -153,6 +155,7 @@ class OC_Defaults {
 	 */
 	public function getAndroidClientUrl() {
 		if ($this->themeExist('getAndroidClientUrl')) {
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			return $this->theme->getAndroidClientUrl();
 		} else {
 			return $this->defaultAndroidClientUrl;
