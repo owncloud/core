@@ -281,6 +281,7 @@ class TrashbinContext implements Context {
 	public function elementIsInTrashCheckingOriginalPath(
 		$user, $originalPath
 	) {
+		sleep(5);
 		PHPUnit\Framework\Assert::assertTrue(
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath wasn't found in the trashbin"
