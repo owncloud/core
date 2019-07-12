@@ -1083,9 +1083,9 @@ class ApiTest extends TestCase {
 		$ocs = $this->createOCS($request, self::TEST_FILES_SHARING_API_USER1);
 		$result = $ocs->updateShare($share1->getId());
 
-		//Updating should fail with 400
+		//Updating should fail with 404
 		$this->assertFalse($result->succeeded());
-		$this->assertEquals(400, $result->getStatusCode());
+		$this->assertEquals(404, $result->getStatusCode());
 
 		//Permissions should not have changed!
 		$share1 = $this->shareManager->getShareById('ocinternal:' . $share1->getId());
@@ -1336,8 +1336,6 @@ class ApiTest extends TestCase {
 
 		// logging in will auto-mount the temp storage for user1 as well
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
-
-		$fileInfo = $this->view->getFileInfo($this->folder);
 
 		// user 1 shares the mount point folder with user2
 		$share = $this->share(

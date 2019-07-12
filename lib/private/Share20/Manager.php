@@ -208,7 +208,7 @@ class Manager implements IManager {
 	 * @throws \InvalidArgumentException
 	 * @throws GenericShareException
 	 */
-	protected function generalCreateChecks(\OCP\Share\IShare $share) {
+	protected function generalChecks(\OCP\Share\IShare $share) {
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			// We expect a valid user as sharedWith for user shares
 			if (!$this->userManager->userExists($share->getSharedWith())) {
@@ -270,29 +270,56 @@ class Manager implements IManager {
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
+		$this->validatePermissions($share);
+	}
+
+	/**
+	 * Validate if the permission allowed
+	 *
+	 * @param IShare $share The share to validate its permission
+	 * @throws GenericShareException
+	 * @throws \InvalidArgumentException
+	 */
+	protected function validatePermissions(IShare $share) {
 		// Permissions should be set
 		if ($share->getPermissions() === null) {
 			throw new \InvalidArgumentException('A share requires permissions');
 		}
 
+		if ($share->getPermissions() < 0 || $share->getPermissions() > \OCP\Constants::PERMISSION_ALL) {
+			$message_t = $this->l->t('invalid permissionss');
+			throw new GenericShareException($message_t, $message_t, 404);
+		}
+
+		if ($share->getPermissions() === 0) {
+			$message_t = $this->l->t('Cannot remove all permissions');
+			throw new GenericShareException($message_t, $message_t, 400);
+		}
+
+		$shareNode = $share->getNode();
+		/** Use share node permission as default $maxPermissions*/
+		$maxPermissions = $shareNode->getPermissions();
 		/*
 		 * Quick fix for #23536
 		 * Non moveable mount points do not have update and delete permissions
 		 * while we 'most likely' do have that on the storage.
 		 */
-		$permissions = $share->getNode()->getPermissions();
-		$mount = $share->getNode()->getMountPoint();
-		if (!($mount instanceof MoveableMount)) {
-			$permissions |= \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_UPDATE;
+		if (!($shareNode->getMountPoint() instanceof MoveableMount)) {
+			$maxPermissions |= \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_UPDATE;
+		}
+
+		/** If it is re-share, calculate $maxPermissions based on all incoming share permissions */
+		if ($shareNode->getOwner()->getUID() !== $share->getSharedBy()) {
+			$maxPermissions = $this->calculateReshareNodePermissions($share);
 		}
 
 		// Check that we do not share with more permissions than we have
-		if ($share->getPermissions() & ~$permissions) {
+		if (!$this->strictSubsetOf($maxPermissions, $share->getPermissions())) {
 			$message_t = $this->l->t('Cannot increase permissions of %s', [$share->getNode()->getPath()]);
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
-		if ($share->getNode() instanceof \OCP\Files\File) {
+		if ($shareNode instanceof \OCP\Files\File) {
 			if ($share->getPermissions() & \OCP\Constants::PERMISSION_DELETE) {
 				$message_t = $this->l->t('Files can\'t be shared with delete permissions');
 				throw new GenericShareException($message_t);
@@ -302,6 +329,48 @@ class Manager implements IManager {
 				throw new GenericShareException($message_t);
 			}
 		}
+	}
+
+	/**
+	 * It calculates reshare permissions based on all share mount points
+	 * that mounted to UserFolder of sharer user
+	 *
+	 * @param \OCP\Share\IShare $share The share to validate its permission
+	 * @return int
+	 */
+	protected function calculateReshareNodePermissions(IShare $share) {
+		$maxPermissions = 0;
+		$incomingShares = [];
+		$shareTypes = [
+			\OCP\Share::SHARE_TYPE_USER,
+			\OCP\Share::SHARE_TYPE_GROUP
+		];
+		$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
+		/**
+		 * The node can be shared multiple times, get all share nodes
+		 */
+		$incomingShareNodes = $userFolder->getById($share->getNode()->getId());
+		foreach ($incomingShareNodes as $incomingShareNode) {
+			/**
+			 * find mountpoint of the share node,
+			 * check incoming share permissions based on mountpoint node
+			 */
+			$mount = $incomingShareNode->getMountPoint();
+			$shareMountPointNodes = $userFolder->getById($mount->getStorageRootId());
+			foreach ($shareMountPointNodes as $shareMountPointNode) {
+				$incomingShares = \array_merge($incomingShares, $this->getAllSharedWith(
+					$share->getSharedBy(),
+					$shareTypes,
+					$shareMountPointNode
+				));
+			}
+		}
+
+		foreach ($incomingShares as $incomingShare) {
+			$maxPermissions |= $incomingShare->getPermissions();
+		}
+
+		return $maxPermissions;
 	}
 
 	/**
@@ -551,13 +620,14 @@ class Manager implements IManager {
 	 * @param \OCP\Share\IShare $share
 	 * @return Share The share object
 	 * @throws \Exception
+	 * @throws GenericShareException
 	 *
 	 * TODO: handle link share permissions or check them
 	 */
 	public function createShare(\OCP\Share\IShare $share) {
 		$this->canShare($share);
 
-		$this->generalCreateChecks($share);
+		$this->generalChecks($share);
 
 		// Verify if there are any issues with the path
 		$this->pathCreateChecks($share->getNode());
@@ -789,6 +859,7 @@ class Manager implements IManager {
 	 * @param \OCP\Share\IShare $share
 	 * @return \OCP\Share\IShare The share object
 	 * @throws \InvalidArgumentException
+	 * @throws GenericShareException
 	 */
 	public function updateShare(\OCP\Share\IShare $share) {
 		$expirationDateUpdated = false;
@@ -818,7 +889,7 @@ class Manager implements IManager {
 			throw new \InvalidArgumentException('Can\'t share with the share owner');
 		}
 
-		$this->generalCreateChecks($share);
+		$this->generalChecks($share);
 
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			$this->userCreateChecks($share);
@@ -1568,5 +1639,16 @@ class Manager implements IManager {
 			// This is a new share
 		}
 		return ($fullId === null);
+	}
+
+	/**
+	 * Check $newPermissions bit is a subset of $allowedPermissions
+	 *
+	 * @param int $allowedPermissions
+	 * @param int $newPermissions
+	 * @return boolean ,true if $allowedPermissions bit super set of $newPermissions bit, else false
+	 */
+	private function strictSubsetOf($allowedPermissions, $newPermissions) {
+		return (($allowedPermissions | $newPermissions) === $allowedPermissions);
 	}
 }
