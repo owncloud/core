@@ -79,7 +79,13 @@ $this->create('core_ajax_update', '/core/ajax/update.php')
 	->actionInclude('core/ajax/update.php');
 
 // File routes
-$this->create('files.viewcontroller.showFile', '/f/{fileId}')->action(function ($urlParams) {
+$this->create('files.viewcontroller.showFile', '/f/{fileId}')->action(static function ($urlParams) {
+	$phoenixBaseUrl = \OC::$server->getConfig()->getSystemValue('phoenix.baseUrl', null);
+	if ($phoenixBaseUrl) {
+		$fileId = $urlParams['fileId'];
+		\OC_Response::redirect("$phoenixBaseUrl/index.html#/f/$fileId");
+		return;
+	}
 	$app = new \OCA\Files\AppInfo\Application($urlParams);
 	$app->dispatch('ViewController', 'showFile');
 });

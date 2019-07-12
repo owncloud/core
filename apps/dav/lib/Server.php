@@ -54,6 +54,7 @@ use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCA\DAV\Files\FileLocksBackend;
 use OCA\DAV\Files\PreviewPlugin;
 use OCA\DAV\JobStatus\Entity\JobStatusMapper;
+use OCA\DAV\Meta\MetaPlugin;
 use OCA\DAV\SystemTag\SystemTagPlugin;
 use OCA\DAV\Upload\ChunkingPlugin;
 use OCP\IRequest;
@@ -187,6 +188,10 @@ class Server {
 
 		$this->server->addPlugin(new CopyEtagHeaderPlugin());
 		$this->server->addPlugin(new ChunkingPlugin());
+		$this->server->addPlugin(new MetaPlugin(
+			\OC::$server->getUserSession(),
+			\OC::$server->getLazyRootFolder()
+		));
 
 		// Allow view-only plugin for webdav requests
 		$this->server->addPlugin(new ViewOnlyPlugin(
