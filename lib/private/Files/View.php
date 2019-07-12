@@ -391,6 +391,8 @@ class View {
 	 */
 	public function readdir($handle) {
 		$fsLocal = new Local(['datadir' => '/']);
+		// ToDo: Local does not have readdir - what is happening here?
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		return $fsLocal->readdir($handle);
 	}
 

@@ -51,7 +51,9 @@ class MySqlSchemaColumnDefinitionListener {
 			$this->_platform = \OC::$server->getDatabaseConnection()->getDatabasePlatform();
 		}
 
-		$version = \OC::$server->getDatabaseConnection()->getDatabaseVersionString();
+		$databaseConnection = \OC::$server->getDatabaseConnection();
+		'@phan-var \OC\DB\Connection $databaseConnection';
+		$version = $databaseConnection->getDatabaseVersionString();
 		$mariadb = \stripos($version, 'mariadb') !== false;
 		if ($mariadb && \version_compare($this->getMariaDbMysqlVersionNumber($version), '10.2.7', '>=')) {
 			$tableColumn = $eventArgs->getTableColumn();

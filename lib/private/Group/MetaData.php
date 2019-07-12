@@ -189,6 +189,7 @@ class MetaData {
 		} else {
 			$userObject = $this->userSession->getUser();
 			if ($userObject !== null) {
+				'@phan-var \OC\Group\Manager $this->groupManager';
 				$groups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($userObject);
 			} else {
 				$groups = [];
