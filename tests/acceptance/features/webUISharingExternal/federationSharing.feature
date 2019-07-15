@@ -137,7 +137,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
   @skipOnMICROSOFTEDGE
   Scenario: share a folder with an remote user and prohibit deleting - remote server shares - local server receives
     # permissions read+update+create = 7 (no delete, no (re)share permission)
-    Given user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL" with permissions 7
+    Given user "user1" from server "REMOTE" has shared "simple-folder" with user "user1" from server "LOCAL" with permissions "create,read,update"
     When the user browses to the files page
     And the user accepts the offered remote shares using the webUI
     And the user opens folder "simple-folder (2)" using the webUI

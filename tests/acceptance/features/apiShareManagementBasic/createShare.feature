@@ -813,7 +813,7 @@ Feature: sharing
       | user3    |
     And user "user2" has uploaded file with content "user2 file" to "/randomfile.txt"
     And user "user3" has uploaded file with content "user3 file" to "/randomfile.txt"
-    When user "user2" shares file "randomfile.txt" with user "user1" with permissions read using the sharing API
+    When user "user2" shares file "randomfile.txt" with user "user1" with permissions "read" using the sharing API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | uid_owner   | user2              |
@@ -821,7 +821,7 @@ Feature: sharing
       | file_target | /randomfile.txt|
       | item_type   | file               |
       | permissions | 1                  |
-    When user "user3" shares file "randomfile.txt" with user "user1" with permissions update using the sharing API
+    When user "user3" shares file "randomfile.txt" with user "user1" with permissions "update" using the sharing API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | uid_owner   | user3              |
@@ -848,7 +848,7 @@ Feature: sharing
     And user "user2" has created folder "zzzfolder/user2"
     And user "user3" has created folder "/zzzfolder"
     And user "user3" has created folder "zzzfolder/user3"
-    When user "user2" shares folder "zzzfolder" with user "user1" with permissions delete using the sharing API
+    When user "user2" shares folder "zzzfolder" with user "user1" with permissions "delete" using the sharing API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | uid_owner   | user2              |
@@ -857,7 +857,7 @@ Feature: sharing
       | item_type   | folder             |
       | permissions | 9                  |
     # The last response contains permissions = 9 which is equivalent to permissons: read(1) + delete(8)
-    When user "user3" shares folder "zzzfolder" with user "user1" with permissions share using the sharing API
+    When user "user3" shares folder "zzzfolder" with user "user1" with permissions "share" using the sharing API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | uid_owner   | user3              |
