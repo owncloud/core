@@ -23,8 +23,10 @@
  */
 
 use TestHelpers\AppConfigHelper;
+use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
+use Behat\Gherkin\Node\TableNode;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -43,7 +45,7 @@ trait AppConfiguration {
 	 *            that contain the original capabilities in XML format
 	 */
 	private $savedCapabilitiesXml;
-	
+
 	/**
 	 * @var array the changes made to capabilities for the test scenario
 	 */
@@ -54,6 +56,12 @@ trait AppConfiguration {
 	 *            by occ config:list
 	 */
 	private $savedConfigList = [];
+
+	/**
+	 * @var array
+	 */
+	private $initialTrustedServer;
+
 	/**
 	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to "([^"]*)"$/
 	 *
@@ -379,6 +387,194 @@ trait AppConfiguration {
 	}
 
 	/**
+	 * @When the administrator adds url :url as trusted server using the testing API
+	 *
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function theAdministratorAddsUrlAsTrustedServerUsingTheTestingApi($url) {
+		$adminUser = $this->getAdminUsername();
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$adminUser,
+			$this->getAdminPassword(),
+			'POST',
+			"/apps/testing/api/v1/trustedservers",
+			['url' => $url]
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @Then url :url should be a trusted server
+	 *
+	 * @param string $url
+	 *
+	 * @return  void
+	 */
+	public function urlShouldBeATrustedServer($url) {
+		$trustedServers = $this->getTrustedServers();
+		foreach ($trustedServers as $server => $id) {
+			if ($server === $url) {
+				return;
+			}
+		}
+		\PHPUnit\Framework\Assert::fail("Given url $url is not a trusted server");
+	}
+
+	/**
+	 * @Then the trusted server list should include these urls:
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theTrustedServerListShouldIncludeTheseUrls(TableNode $table) {
+		$trustedServers = $this->getTrustedServers();
+		$expected = $table->getColumnsHash();
+
+		foreach ($expected as $server) {
+			$found = false;
+			foreach ($trustedServers as $url => $id) {
+				if ($url === $server['url']) {
+					$found = true;
+					break;
+				}
+			}
+			if (!$found) {
+				\PHPUnit\Framework\Assert::fail("Given url ${server['url']} is not a trusted server");
+			}
+		}
+	}
+
+	/**
+	 * @Given the administrator has added url :url as trusted server
+	 *
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasAddedUrlAsTrustedServer($url) {
+		$this->theAdministratorAddsUrlAsTrustedServerUsingTheTestingApi($url);
+		$status = $this->getResponse()->getStatusCode();
+		if ($status !== 201) {
+			throw new \Exception(
+				__METHOD__ .
+				"Could not add trusted serverThe request failed with status $status"
+			);
+		}
+	}
+
+	/**
+	 * @When the administrator deletes url :url from trusted servers using the testing API
+	 *
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesUrlFromTrustedServersUsingTheTestingApi($url) {
+		$adminUser = $this->getAdminUsername();
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$adminUser,
+			$this->getAdminPassword(),
+			'DELETE',
+			"/apps/testing/api/v1/trustedservers",
+			['url' => $url]
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @Then url :url should not be a trusted server
+	 *
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function urlShouldNotBeATrustedServer($url) {
+		$trustedServers = $this->getTrustedServers();
+		foreach ($trustedServers as $server => $id) {
+			if ($server === $url) {
+				\PHPUnit\Framework\Assert::fail("Given url $url is a trusted server but is not expected to be");
+			}
+		}
+	}
+
+	/**
+	 * @When the administrator deletes all trusted servers using the testing API
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesAllTrustedServersUsingTheTestingApi() {
+		$adminUser = $this->getAdminUsername();
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$adminUser,
+			$this->getAdminPassword(),
+			'DELETE',
+			"/apps/testing/api/v1/trustedservers/all"
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @Then the trusted server list should be empty
+	 *
+	 * @return void
+	 */
+	public function theTrustedServerListShouldBeEmpty() {
+		$trustedServers = $this->getTrustedServers();
+		\PHPUnit\Framework\Assert::assertEmpty($trustedServers, "Trusted server is not empty");
+	}
+
+	/**
+	 * Get the array of trusted servers in format ["url" => "id"]
+	 *
+	 * @param string $server 'LOCAL'/'REMOTE'
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public function getTrustedServers($server = 'LOCAL') {
+		if ($server === 'LOCAL') {
+			$url = $this->getLocalBaseUrl();
+		} elseif ($server === 'REMOTE') {
+			$url = $this->getRemoteBaseUrl();
+		} else {
+			throw new \Exception(__METHOD__ . "Invalid value for server : $server");
+		}
+		$adminUser = $this->getAdminUsername();
+		$response = OcsApiHelper::sendRequest(
+			$url,
+			$adminUser,
+			$this->getAdminPassword(),
+			'GET',
+			"/apps/testing/api/v1/trustedservers"
+		);
+		if ($response->getStatusCode() !== 200) {
+			throw new Exception("Could not get the list of trusted servers" . $response->getBody()->getContents());
+		}
+		$responseXml = HttpRequestHelper::getResponseXml(
+			$response
+		);
+		$serverData = \json_decode(
+			\json_encode(
+				$responseXml->data
+			),
+			true
+		);
+		if (!\array_key_exists('element', $serverData)) {
+			return [];
+		} else {
+			return isset($serverData['element'][0]) ?
+				\array_column($serverData['element'], 'id', 'url') :
+				\array_column($serverData, 'id', 'url');
+		}
+	}
+
+	/**
 	 * Setup any app config state.
 	 * This will be called before each scenario.
 	 *
@@ -408,6 +604,38 @@ trait AppConfiguration {
 		}
 		$this->usingServer($previousServer);
 		$this->currentUser = $user;
+		$this->initialTrustedServer = [
+			'LOCAL' => $this->getTrustedServers(),
+			'REMOTE' => $this->getTrustedServers('REMOTE')
+		];
+	}
+
+	/**
+	 * After Scenario. restore trusted servers
+	 *
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function restoreTrustedServersAfterScenario() {
+		$this->runFunctionOnEveryServer([$this, 'restoreTrustedServers']);
+	}
+
+	/**
+	 * After Scenario. restore trusted servers
+	 *
+	 * @param string $server 'LOCAL'/'REMOTE'
+	 *
+	 * @return void
+	 */
+	public function restoreTrustedServers($server) {
+		$currentTrustedServers = $this->getTrustedServers($server);
+		foreach (\array_diff($currentTrustedServers, $this->initialTrustedServer[$server]) as $url => $id) {
+			$this->theAdministratorDeletesUrlFromTrustedServersUsingTheTestingApi($url);
+		}
+		foreach (\array_diff($this->initialTrustedServer[$server], $currentTrustedServers) as $url => $id) {
+			$this->theAdministratorAddsUrlAsTrustedServerUsingTheTestingApi($url);
+		}
 	}
 
 	/**
