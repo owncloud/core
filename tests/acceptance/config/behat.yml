@@ -461,6 +461,7 @@ default:
         - WebUISharingContext:
         - PublicWebDavContext:
         - WebUIPersonalSharingSettingsContext:
+        - WebUIAdminSharingSettingsContext:
 
     webUISharingInternalGroups:
       paths:
