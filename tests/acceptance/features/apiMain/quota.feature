@@ -66,7 +66,7 @@ Feature: quota
     And the quota of user "user0" has been set to "20 B"
     And the quota of user "user1" has been set to "10 MB"
     And user "user1" has created folder "/testquota"
-    And user "user1" has shared folder "/testquota" with user "user0" with permissions 31
+    And user "user1" has shared folder "/testquota" with user "user0" with permissions "all"
     When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
     Examples:
@@ -83,7 +83,7 @@ Feature: quota
     And the quota of user "user0" has been set to "10 MB"
     And the quota of user "user1" has been set to "20 B"
     And user "user1" has created folder "/testquota"
-    And user "user1" has shared folder "/testquota" with user "user0" with permissions 31
+    And user "user1" has shared folder "/testquota" with user "user0" with permissions "all"
     When user "user0" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
     Then as "user0" the files uploaded to "/testquota.txt" with all mechanisms should not exist
@@ -102,7 +102,7 @@ Feature: quota
     And the quota of user "user1" has been set to "10 MB"
     And user "user1" has created folder "/testquota"
     And user "user1" has uploaded file with content "test" to "/testquota/testquota.txt"
-    And user "user1" has shared folder "/testquota" with user "user0" with permissions 31
+    And user "user1" has shared folder "/testquota" with user "user0" with permissions "all"
     When user "user0" overwrites file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
     Examples:
@@ -120,7 +120,7 @@ Feature: quota
     And the quota of user "user1" has been set to "20 B"
     And user "user1" has created folder "/testquota"
     And user "user1" has uploaded file with content "test" to "/testquota/testquota.txt"
-    And user "user1" has shared folder "/testquota" with user "user0" with permissions 31
+    And user "user1" has shared folder "/testquota" with user "user0" with permissions "all"
     When user "user0" overwrites file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
     Then as "user0" the files uploaded to "/testquota.txt" with all mechanisms should not exist
@@ -140,7 +140,7 @@ Feature: quota
     And the quota of user "user0" has been set to "20 B"
     And the quota of user "user1" has been set to "10 MB"
     And user "user1" has uploaded file with content "test" to "/testquota.txt"
-    And user "user1" has shared file "/testquota.txt" with user "user0" with permissions 19
+    And user "user1" has shared file "/testquota.txt" with user "user0" with permissions "share,update,read"
     When user "user0" overwrites file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
     Examples:
@@ -157,7 +157,7 @@ Feature: quota
     And the quota of user "user0" has been set to "10 MB"
     And the quota of user "user1" has been set to "20 B"
     And user "user1" has moved file "/textfile0.txt" to "/testquota.txt"
-    And user "user1" has shared file "/testquota.txt" with user "user0" with permissions 19
+    And user "user1" has shared file "/testquota.txt" with user "user0" with permissions "share,update,read"
     When user "user0" overwrites file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
     Examples:

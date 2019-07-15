@@ -17,7 +17,7 @@ Feature: sharing
     And user "user0" has shared folder "TMP" with user "user1"
     And user "user1" has shared folder "TMP" with user "user2"
     When user "user1" updates the last share using the sharing API with
-      | permissions | 1 |
+      | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "TMP/textfile.txt"
     And user "user1" should be able to upload file "filesForUpload/textfile.txt" to "TMP/textfile.txt"
@@ -253,7 +253,7 @@ Feature: sharing
     And user "user1" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
     And as user "user0"
     When the user updates the last share using the sharing API with
-      | permissions | 1 |
+      | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -281,7 +281,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     And as user "user1"
     And the user has created a public link share with settings
       | path         | /test |
@@ -317,8 +317,8 @@ Feature: sharing
     And user "user0" has created folder "/folder1"
     And user "user0" has created folder "/folder1/folder2"
     And user "user1" has created folder "/moved-out"
-    And user "user0" has shared folder "/folder1" with user "user1" with permissions 31
-    And user "user1" has shared folder "/folder1/folder2" with user "user2" with permissions 31
+    And user "user0" has shared folder "/folder1" with user "user1" with permissions "all"
+    And user "user1" has shared folder "/folder1/folder2" with user "user2" with permissions "all"
     When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
@@ -347,8 +347,8 @@ Feature: sharing
     And user "user0" has created folder "/user0-folder"
     And user "user0" has created folder "/user0-folder/folder2"
     And user "user2" has created folder "/user2-folder"
-    And user "user0" has shared folder "/user0-folder" with user "user1" with permissions 31
-    And user "user2" has shared folder "/user2-folder" with user "user1" with permissions 31
+    And user "user0" has shared folder "/user0-folder" with user "user1" with permissions "all"
+    And user "user2" has shared folder "/user2-folder" with user "user1" with permissions "all"
     When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2" using the WebDAV API
     And user "user2" gets the info of the last share using the sharing API
     Then the fields of the last response should include
@@ -374,7 +374,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 31
+    And user "user0" has shared folder "/test" with user "user1" with permissions "all"
     And as user "user1"
     And the user has created a public link share with settings
       | path         | /test |
@@ -394,11 +394,11 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     And as user "user1"
     And the user has created a public link share with settings
       | path        | /test |
-      | permissions | 1     |
+      | permissions | read  |
     When the user updates the last share using the sharing API with
       | permissions | 15 |
     Then the OCS status code should be "404"
@@ -414,11 +414,11 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 31
+    And user "user0" has shared folder "/test" with user "user1" with permissions "all"
     And as user "user1"
     And the user has created a public link share with settings
       | path        | /test |
-      | permissions | 1     |
+      | permissions | read    |
     When the user updates the last share using the sharing API with
       | permissions | 15 |
     Then the OCS status code should be "<ocs_status_code>"
@@ -440,7 +440,7 @@ Feature: sharing
     And as user "user2"
     And the user has shared folder "/FOLDER" with group "grp1"
     And the user has updated the last share with
-      | permissions | 1 |
+      | permissions | read |
     When the user updates the last share using the sharing API with
       | permissions | 31 |
     Then the OCS status code should be "<ocs_status_code>"

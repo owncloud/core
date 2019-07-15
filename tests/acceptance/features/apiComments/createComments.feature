@@ -47,7 +47,7 @@ Feature: Comments
       | path        | /myFileToComment.txt |
       | shareType   | 0                    |
       | shareWith   | user1                |
-      | permissions | 1                    |
+      | permissions | read                 |
     When user "user1" comments with content "Comment from sharee" on file "/myFileToComment.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the user should have the following comments on file "/myFileToComment.txt"
@@ -59,7 +59,7 @@ Feature: Comments
       | path        | /myFileToComment.txt |
       | shareType   | 0                    |
       | shareWith   | user1                |
-      | permissions | 4                    |
+      | permissions | create               |
     When user "user1" comments with content "Comment from sharee" on file "/myFileToComment.txt" using the WebDAV API
     Then the HTTP status code should be "501"
     And the user should have 0 comments on file "/myFileToComment.txt"

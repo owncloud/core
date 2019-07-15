@@ -13,7 +13,7 @@ Feature: reshare as public link
   Scenario Outline: creating a public link from a share with read permission only is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 1
+    And user "user0" has shared folder "/test" with user "user1" with permissions "read"
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test |
       | publicUpload | false |
@@ -29,7 +29,7 @@ Feature: reshare as public link
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file with content "some content" to "/test/file.txt"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test |
       | publicUpload | false |
@@ -46,7 +46,7 @@ Feature: reshare as public link
   Scenario Outline: creating an upload public link from a share with share+read only permissions is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test |
       | permissions  | 15    |
@@ -62,7 +62,7 @@ Feature: reshare as public link
   Scenario Outline: creating a public link from a share with read+write permissions only is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 15
+    And user "user0" has shared folder "/test" with user "user1" with permissions "change"
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test |
       | publicUpload | true  |
@@ -78,7 +78,7 @@ Feature: reshare as public link
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file with content "some content" to "/test/file.txt"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 31
+    And user "user0" has shared folder "/test" with user "user1" with permissions "all"
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test |
       | publicUpload | false |
@@ -96,7 +96,7 @@ Feature: reshare as public link
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file with content "some content" to "/test/file.txt"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 31
+    And user "user0" has shared folder "/test" with user "user1" with permissions "all"
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test |
       | permissions  | 15    |
@@ -115,7 +115,7 @@ Feature: reshare as public link
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has created folder "/test/sub"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test/sub |
       | permissions  | 15        |
@@ -132,7 +132,7 @@ Feature: reshare as public link
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has created folder "/test/sub"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     And user "user1" has created a public link share with settings
       | path         | /test |
       | permissions  | 1     |
@@ -152,7 +152,7 @@ Feature: reshare as public link
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has created folder "/test/sub"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     And user "user1" has created a public link share with settings
       | path         | /test/sub |
       | permissions  | 1         |
