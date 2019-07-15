@@ -401,7 +401,7 @@ trait AppConfiguration {
 			$this->getAdminPassword(),
 			'POST',
 			"/apps/testing/api/v1/trustedservers",
-			['url' => $url]
+			['url' => $this->substituteInLineCodes($url)]
 		);
 		$this->setResponse($response);
 	}
@@ -416,7 +416,7 @@ trait AppConfiguration {
 	public function urlShouldBeATrustedServer($url) {
 		$trustedServers = $this->getTrustedServers();
 		foreach ($trustedServers as $server => $id) {
-			if ($server === $url) {
+			if ($server === $this->substituteInLineCodes($url)) {
 				return;
 			}
 		}
