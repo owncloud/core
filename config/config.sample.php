@@ -474,6 +474,11 @@ $CONFIG = array(
 /**
  * The optional authentication for the proxy to use to connect to the internet.
  * The format is: `username:password`.
+ *
+ * The username and the password need to be urlencoded to avoid breaking the
+ * delimiter syntax "username:password@hostname:port
+ *
+ * Example: "usern@me" needs to be encoded as "usern%40ame"
  */
 'proxyuserpwd' => '',
 

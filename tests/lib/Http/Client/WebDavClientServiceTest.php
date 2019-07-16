@@ -62,12 +62,21 @@ class WebDavClientServiceTest extends \Test\TestCase {
 		$this->assertInstanceOf(Client::class, $client);
 	}
 
+	/**
+	 * Test Client with a proxy server
+	 *
+	 * @return void
+	 */
 	public function testNewClientWithProxy() {
 		$config = $this->createMock(IConfig::class);
-		$config->expects($this->once())
+		$config->expects($this->exactly(2))
 			->method('getSystemValue')
-			->with('proxy', '')
-			->willReturn('proxyhost');
+			->willReturnMap(
+				[
+					['proxy', null, 'proxyhost'],
+					['proxyuserpwd', null, null]
+				]
+			);
 
 		$certificateManager = $this->createMock(ICertificateManager::class);
 		$certificateManager->method('getAbsoluteBundlePath')
@@ -81,6 +90,42 @@ class WebDavClientServiceTest extends \Test\TestCase {
 		]);
 
 		$this->assertInstanceOf(Client::class, $client);
+
+		$curlSettings = $this->readAttribute($client, 'curlSettings');
+		$this->assertEquals('proxyhost', $curlSettings[CURLOPT_PROXY]);
+	}
+
+	/**
+	 * Test Client with a proxy server and Authorization
+	 *
+	 * @return void
+	 */
+	public function testNewClientWithProxyAndAuth() {
+		$config = $this->createMock(IConfig::class);
+		$config->expects($this->exactly(2))
+			->method('getSystemValue')
+			->willReturnMap(
+				[
+					['proxy', null, 'proxyhost'],
+					['proxyuserpwd', null, 'user:password']
+				]
+			);
+
+		$certificateManager = $this->createMock(ICertificateManager::class);
+		$certificateManager->method('getAbsoluteBundlePath')
+			->willReturn($this->tempManager->getTemporaryFolder());
+
+		$clientService = new WebDavClientService($config, $certificateManager);
+
+		$client = $clientService->newClient([
+			'baseUri' => 'https://davhost/davroot/',
+			'userName' => 'davUser'
+		]);
+
+		$this->assertInstanceOf(Client::class, $client);
+
+		$curlSettings = $this->readAttribute($client, 'curlSettings');
+		$this->assertEquals('user:password@proxyhost', $curlSettings[CURLOPT_PROXY]);
 	}
 
 	public function testNewClientWithoutCertificate() {
