@@ -69,6 +69,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	protected $autoAddServerCheckboxXpath = "//label[@for='autoAddServers']";
 	protected $autoAddServerCheckboxId = "autoAddServers";
 
+	protected $addTrustedServerBtnXpath = "//button[@id='ocFederationAddServerButton']";
+	protected $addTrustedServerConfirmBtnXpath = "//button[@id='ocFederationSubmit']";
+	protected $addTrustedServerInputXpath = "//input[@id='serverUrl']";
+	protected $deleteTrustedServerBtnXpath = "//ul[@id='listOfTrustedServers']//li[contains(., '%s')]//span[contains(@class, 'icon-delete')]";
+	protected $trustedServerErrorMsgXpath = "//p[@id='ocFederationAddServer']//span[@class='msg error']";
+
 	/**
 	 * toggle the Share API
 	 *
@@ -372,6 +378,78 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 			$this->autoAddServerCheckboxXpath,
 			$this->autoAddServerCheckboxId
 		);
+	}
+
+	/**
+	 * Add trusted server
+	 *
+	 * @param Session $session
+	 * @param string $url
+	 *
+	 * @return AdminSharingSettingsPage
+	 */
+	public function addTrustedServer(Session $session, $url) {
+		$btn = $this->find("xpath", $this->addTrustedServerBtnXpath);
+		$this->assertElementNotNull(
+			$btn,
+			__METHOD__ . "Could not find the button to add trusted server."
+		);
+		$btn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+		$input = $this->find("xpath", $this->addTrustedServerInputXpath);
+		$this->assertElementNotNull(
+			$input,
+			__METHOD__ . "Could not find the input to add trusted server."
+		);
+		$input->setValue($url);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+		$submit = $this->find("xpath", $this->addTrustedServerConfirmBtnXpath);
+		$this->assertElementNotNull(
+			$submit,
+			__METHOD__ . "Could not find the confirm button to add trusted server."
+		);
+		$submit->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+		return $this;
+	}
+
+	/**
+	 * Delete trusted server
+	 *
+	 * @param Session $session
+	 * @param string $url
+	 *
+	 * @return AdminSharingSettingsPage
+	 */
+	public function deleteTrustedServer(Session $session, $url) {
+		$btn = $this->find(
+			"xpath",
+			\sprintf($this->deleteTrustedServerBtnXpath, $url)
+		);
+		$this->assertElementNotNull(
+			$btn,
+			__METHOD__ . "Could not find the button to delete trusted server."
+		);
+		$btn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+		return $this;
+	}
+
+	/**
+	 * get Trusted Server error message
+	 *
+	 * @return string
+	 */
+	public function getTrustedServerErrorMsg() {
+		$err = $this->find(
+			"xpath",
+			$this->trustedServerErrorMsgXpath
+		);
+		$this->assertElementNotNull(
+			$err,
+			__METHOD__ . "Could not find the error message for trusted servers."
+		);
+		return $err->getText();
 	}
 
 	/**

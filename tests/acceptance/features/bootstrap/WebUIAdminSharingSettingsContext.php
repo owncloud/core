@@ -42,6 +42,12 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	private $webUIGeneralContext;
 
 	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
+
+	/**
 	 * WebUIAdminSharingSettingsContext constructor.
 	 *
 	 * @param AdminSharingSettingsPage $adminSharingSettingsPage
@@ -62,6 +68,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->adminSharingSettingsPage->open();
 		$this->adminSharingSettingsPage->waitTillPageIsLoaded($this->getSession());
+		$this->webUIGeneralContext->setCurrentPageObject($this->adminSharingSettingsPage);
 	}
 
 	/**
@@ -272,6 +279,46 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When the administrator adds :url as a trusted server using the webUI
+	 *
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function theAdministratorAddsAsATrustedServerUsingTheWebui($url) {
+		$this->adminSharingSettingsPage->addTrustedServer(
+			$this->getSession(),
+			$this->featureContext->substituteInLineCodes($url)
+		);
+	}
+
+	/**
+	 * @When the administrator deletes url :url from the trusted server list using the webUI
+	 *
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesAsATrustedServerUsingTheWebui($url) {
+		$this->adminSharingSettingsPage->deleteTrustedServer(
+			$this->getSession(),
+			$this->featureContext->substituteInLineCodes($url)
+		);
+	}
+
+	/**
+	 * @Then a trusted server error message should be displayed on the webUI with the text :text
+	 *
+	 * @param string $text
+	 *
+	 * @return void
+	 */
+	public function aErrorMessageForTrustedServerShouldContain($text) {
+		$msg = $this->adminSharingSettingsPage->getTrustedServerErrorMsg();
+		\PHPUnit\Framework\Assert::assertContains($text, $msg);
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
@@ -286,6 +333,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+		$this->featureContext = $environment->getContext('FeatureContext');
 		SetupHelper::runOcc(
 			['config:app:set files_sharing blacklisted_receiver_groups --value=']
 		);
