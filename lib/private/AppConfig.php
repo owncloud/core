@@ -297,15 +297,6 @@ class AppConfig implements IAppConfig {
 		if ($this->configLoaded) {
 			return;
 		}
-		if (file_exists("{$this->config->getConfigDir()}/apps.json")) {
-			$this->cache = json_decode(file_get_contents("{$this->config->getConfigDir()}/apps.json"), true);
-			if (json_last_error()) {
-				echo json_last_error_msg().' ('.json_last_error().")\n";
-				die;
-			}
-			$this->configLoaded = true;
-			return;
-		}
 
 		$this->cache = [];
 
@@ -331,6 +322,15 @@ class AppConfig implements IAppConfig {
 			$this->cache[$row['appid']][$row['configkey']] = $row['configvalue'];
 		}
 		$result->closeCursor();
+
+		if (\file_exists("{$this->config->getConfigDir()}/apps.json")) {
+			$cache = \json_decode(\file_get_contents("{$this->config->getConfigDir()}/apps.json"), true);
+			if (\json_last_error()) {
+				echo \json_last_error_msg().' ('.\json_last_error().")\n";
+				die;
+			}
+			$this->cache = \array_replace_recursive($this->cache, $cache);
+		}
 
 		$this->configLoaded = true;
 	}
