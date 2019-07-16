@@ -243,15 +243,17 @@ class OC_Util {
 			if (!\is_array($readOnlyGroups)) {
 				$readOnlyGroups = [];
 			}
+			$readOnlyGroupMemberships = [];
+			if ($readOnlyGroups) {
+				$userGroups = \array_keys(
+					\OC::$server->getGroupManager()->getUserIdGroups($user)
+				);
 
-			$userGroups = \array_keys(
-				\OC::$server->getGroupManager()->getUserIdGroups($user)
-			);
-
-			$readOnlyGroupMemberships = \array_intersect(
-				$readOnlyGroups,
-				$userGroups
-			);
+				$readOnlyGroupMemberships = \array_intersect(
+					$readOnlyGroups,
+					$userGroups
+				);
+			}
 		}
 
 		if ($isGuest === '1' || !empty($readOnlyGroupMemberships)) {
