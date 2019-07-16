@@ -42,16 +42,21 @@ class AppConfig implements IAppConfig {
 	/** @var \OCP\IDBConnection $conn */
 	protected $conn;
 
+	/** @var \OC\Config */
+	protected $config;
+
 	private $cache = [];
 
 	private $configLoaded;
 
 	/**
 	 * @param IDBConnection $conn
+	 * @param Config $config
 	 */
-	public function __construct(IDBConnection $conn) {
+	public function __construct(IDBConnection $conn, Config $config) {
 		$this->conn = $conn;
 		$this->configLoaded = false;
+		$this->config = $config;
 	}
 
 	/**
@@ -290,6 +295,15 @@ class AppConfig implements IAppConfig {
 	 */
 	protected function loadConfigValues() {
 		if ($this->configLoaded) {
+			return;
+		}
+		if (file_exists("{$this->config->getConfigDir()}/apps.json")) {
+			$this->cache = json_decode(file_get_contents("{$this->config->getConfigDir()}/apps.json"), true);
+			if (json_last_error()) {
+				echo json_last_error_msg().' ('.json_last_error().")\n";
+				die;
+			}
+			$this->configLoaded = true;
 			return;
 		}
 

@@ -57,7 +57,7 @@ class ListConfigs extends Base {
 			->addArgument(
 				'app',
 				InputArgument::OPTIONAL,
-				'Name of the app ("system" to get the config.php values, "all" for all apps and system).',
+				'Name of the app ("system" to get the config.php values, "apps" for all apps, "all" for all apps and system).',
 				'all'
 			)
 			->addOption(
@@ -80,6 +80,13 @@ class ListConfigs extends Base {
 				];
 			break;
 
+			case 'apps':
+				$apps = $this->appConfig->getApps();
+				$configs = [];
+				foreach ($apps as $appName) {
+					$configs[$appName] = $this->appConfig->getValues($appName, false);
+				}
+				break;
 			case 'all':
 				$apps = $this->appConfig->getApps();
 				$configs = [

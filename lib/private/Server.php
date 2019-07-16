@@ -403,8 +403,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		$this->registerService('SystemConfig', function ($c) use ($config) {
 			return new \OC\SystemConfig($config);
 		});
-		$this->registerService('AppConfig', function (Server $c) {
-			return new \OC\AppConfig($c->getDatabaseConnection());
+		$this->registerService('AppConfig', function (Server $c) use ($config) {
+			return new \OC\AppConfig($c->getDatabaseConnection(), $config);
 		});
 		$this->registerService('L10NFactory', function (Server $c) {
 			return new \OC\L10N\Factory(

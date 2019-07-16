@@ -65,6 +65,13 @@ class Config {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getConfigDir() {
+		return $this->configDir;
+	}
+
+	/**
 	 * Lists all available config keys
 	 *
 	 * Please note that it does not return the values.
