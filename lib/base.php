@@ -440,12 +440,22 @@ class OC {
 
 		$sessionLifeTime = self::getSessionLifeTime();
 
-		// session timeout
-		if ($session->exists('LAST_ACTIVITY') && (\time() - $session->get('LAST_ACTIVITY') > $sessionLifeTime)) {
+		if (!$session->exists('LAST_ACTIVITY')) {
+			// if this is a new session, invalidate any previously stored auth token.
+			// this could happen if the session disappears / expires in the server but the user
+			// didn't log out explicitly
+			\OC::$server->getUserSession()->logout();
 			if (isset($_COOKIE[\session_name()])) {
 				\setcookie(\session_name(), null, -1, self::$WEBROOT ? : '/');
 			}
-			\OC::$server->getUserSession()->logout();
+		} else {
+			if (\time() - $session->get('LAST_ACTIVITY') > $sessionLifeTime) {
+				// session timeout
+				\OC::$server->getUserSession()->logout();
+				if (isset($_COOKIE[\session_name()])) {
+					\setcookie(\session_name(), null, -1, self::$WEBROOT ? : '/');
+				}
+			}
 		}
 
 		$session->set('LAST_ACTIVITY', \time());
@@ -623,7 +633,7 @@ class OC {
 
 		//try to set the session lifetime
 		$sessionLifeTime = self::getSessionLifeTime();
-		@\ini_set('gc_maxlifetime', (string)$sessionLifeTime);
+		@\ini_set('session.gc_maxlifetime', (string)$sessionLifeTime);
 
 		$systemConfig = \OC::$server->getSystemConfig();
 

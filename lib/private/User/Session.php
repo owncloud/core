@@ -1071,13 +1071,10 @@ class Session implements IUserSession, Emitter {
 			}
 
 			$this->manager->emit('\OC\User', 'logout');
-			$user = $this->getUser();
-			if ($user !== null) {
-				try {
-					$this->tokenProvider->invalidateToken($this->session->getId());
-				} catch (SessionNotAvailableException $ex) {
-					$this->logger->logException($ex, ['app' => __METHOD__]);
-				}
+			try {
+				$this->tokenProvider->invalidateToken($this->session->getId());
+			} catch (SessionNotAvailableException $ex) {
+				$this->logger->logException($ex, ['app' => __METHOD__]);
 			}
 			$this->setUser(null);
 			$this->setLoginName(null);

@@ -237,11 +237,6 @@ class SecurityMiddleware extends Middleware {
 	}
 
 	private function isLoggedIn() {
-		static $loginCalled = false;
-		if (!$loginCalled && !$this->session->isLoggedIn()) {
-			\OC::handleLogin($this->request);
-			$loginCalled = true;
-		}
 		return $this->session->isLoggedIn();
 	}
 }
