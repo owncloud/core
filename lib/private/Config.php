@@ -146,16 +146,11 @@ class Config {
 			$oldValue = $this->cache[$key];
 		}
 
-		$this->emittingCall(function () use (&$key, &$value) {
-			if ($this->set($key, $value)) {
-				// Write changes
-				$this->writeData();
-			}
-			return true;
-		}, [
-			'before' => ['key' => $key, 'value' => $value],
-			'after' => ['key' => $key, 'value' => $value, 'update' => $update, 'oldvalue' => $oldValue]
-		], 'config', 'setvalue');
+		if ($this->set($key, $value)) {
+			// Write changes
+			$this->writeData();
+		}
+		return true;
 	}
 
 	/**
@@ -192,19 +187,12 @@ class Config {
 		if ($this->isReadOnly()) {
 			throw new \Exception('Config file is read only.');
 		}
-		$this->emittingCall(function (&$afterArray) use (&$key) {
-			if (isset($this->cache[$key])) {
-				$afterArray['value'] = $this->cache[$key];
-			}
-			if ($this->delete($key)) {
-				// Write changes
-				$this->writeData();
-			}
-			return true;
-		}, [
-			'before' => ['key' => $key, 'value' => null],
-			'after' => ['key' => $key, 'value' => null]
-		], 'config', 'deletevalue');
+
+		if ($this->delete($key)) {
+			// Write changes
+			$this->writeData();
+		}
+		return true;
 	}
 
 	/**
