@@ -63,10 +63,15 @@ class SharingDialog extends OwncloudPage {
 	private $notifyByEmailBtnXpath = "//input[@name='mailNotification']";
 
 	private $shareWithListXpath = "//ul[@id='shareWithList']/li";
-	private $userNameSpanXpath = "//span[contains(@class,'username')]";
+	private $userOrGroupNameSpanXpath = "//span[contains(@class,'username')]";
 	private $unShareTabXpath = "//a[contains(@class,'unshare')]";
 	private $sharedWithGroupAndSharerName = null;
 	private $publicLinkRemoveDeclineMsg = "No";
+
+	/**
+	 * @var string
+	 */
+	private $groupFramework = "%s (group)";
 
 	/**
 	 *
@@ -615,7 +620,7 @@ class SharingDialog extends OwncloudPage {
 	public function deleteShareWithUser(Session $session, $username) {
 		$shareWithList = $this->getShareWithList();
 		foreach ($shareWithList as $userOrGroup) {
-			if ($userOrGroup->find('xpath', $this->userNameSpanXpath)->getHtml() === $username) {
+			if ($userOrGroup->find('xpath', $this->userOrGroupNameSpanXpath)->getHtml() === $username) {
 				$userOrGroup->find('xpath', $this->unShareTabXpath)->click();
 				$this->waitForAjaxCallsToStartAndFinish($session);
 			}
@@ -648,8 +653,27 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function isUserPresentInShareWithList($username) {
 		$shareWithList = $this->getShareWithList();
-		foreach ($shareWithList as $userOrGroup) {
-			if ($userOrGroup->find('xpath', $this->userNameSpanXpath)->getHtml() === $username) {
+		foreach ($shareWithList as $user) {
+			$actualUsername = $user->find('xpath', $this->userOrGroupNameSpanXpath);
+			if ($actualUsername->getHtml() === $username) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * check if group with the given groupName is present in the shared with list
+	 *
+	 * @param string $groupName
+	 *
+	 * @return bool
+	 */
+	public function isGroupPresentInShareWithList($groupName) {
+		$shareWithList = $this->getShareWithList();
+		foreach ($shareWithList as $group) {
+			$actualGroupName = $group->find('xpath', $this->userOrGroupNameSpanXpath);
+			if ($actualGroupName->getHtml() === \sprintf($this->groupFramework, $groupName)) {
 				return true;
 			}
 		}
