@@ -401,7 +401,7 @@ trait AppConfiguration {
 			$this->getAdminPassword(),
 			'POST',
 			"/apps/testing/api/v1/trustedservers",
-			['url' => $url]
+			['url' => $this->substituteInLineCodes($url)]
 		);
 		$this->setResponse($response);
 	}
@@ -416,7 +416,7 @@ trait AppConfiguration {
 	public function urlShouldBeATrustedServer($url) {
 		$trustedServers = $this->getTrustedServers();
 		foreach ($trustedServers as $server => $id) {
-			if ($server === $url) {
+			if ($server === $this->substituteInLineCodes($url)) {
 				return;
 			}
 		}
@@ -437,7 +437,7 @@ trait AppConfiguration {
 		foreach ($expected as $server) {
 			$found = false;
 			foreach ($trustedServers as $url => $id) {
-				if ($url === $server['url']) {
+				if ($url === $this->substituteInLineCodes($server['url'])) {
 					$found = true;
 					break;
 				}
@@ -481,7 +481,7 @@ trait AppConfiguration {
 			$this->getAdminPassword(),
 			'DELETE',
 			"/apps/testing/api/v1/trustedservers",
-			['url' => $url]
+			['url' => $this->substituteInLineCodes($url)]
 		);
 		$this->setResponse($response);
 	}
@@ -496,7 +496,7 @@ trait AppConfiguration {
 	public function urlShouldNotBeATrustedServer($url) {
 		$trustedServers = $this->getTrustedServers();
 		foreach ($trustedServers as $server => $id) {
-			if ($server === $url) {
+			if ($server === $this->substituteInLineCodes($url)) {
 				\PHPUnit\Framework\Assert::fail("Given url $url is a trusted server but is not expected to be");
 			}
 		}
@@ -517,6 +517,22 @@ trait AppConfiguration {
 			"/apps/testing/api/v1/trustedservers/all"
 		);
 		$this->setResponse($response);
+	}
+
+	/**
+	 * @Given the trusted server list is cleared
+	 *
+	 * @return void
+	 */
+	public function theTrustedServerListIsCleared() {
+		$this->theAdministratorDeletesAllTrustedServersUsingTheTestingApi();
+		\PHPUnit\Framework\Assert::assertEquals(
+			204,
+			$this->getResponse()->getStatusCode(),
+			__METHOD__
+			. "Failed to clear all trusted servers"
+			. $this->getResponse()->getBody()->getContents()
+		);
 	}
 
 	/**
