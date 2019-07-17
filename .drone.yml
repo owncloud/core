@@ -77,6 +77,9 @@ pipeline:
       - YARN_CACHE_FOLDER=/drone/src/.cache/yarn
       - bower_storage__packages=/drone/src/.cache/bower
     commands:
+      - pwd
+      - ls -l core/vendor
+      - ls -l settings/js
       - ./tests/drone/yarn-install.sh
     when:
       event: [push, pull_request]
@@ -220,6 +223,9 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
+      - pwd
+      - ls -l core/vendor
+      - ls -l settings/js
       - ./tests/drone/test-javascript.sh
     when:
       matrix:
