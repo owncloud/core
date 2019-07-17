@@ -85,6 +85,7 @@ pipeline:
       - ls -l
       - ls -l core
       - ls -l core/vendor
+      - ls -l core/vendor/jquery-ui
       - ls -l settings/js
     when:
       event: [push, pull_request]
@@ -232,6 +233,7 @@ pipeline:
       - ls -l
       - ls -l core
       - ls -l core/vendor
+      - ls -l core/vendor/jquery-ui
       - ls -l settings/js
       - ./tests/drone/test-javascript.sh
     when:
