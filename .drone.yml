@@ -78,6 +78,7 @@ pipeline:
       - bower_storage__packages=/drone/src/.cache/bower
     commands:
       - pwd
+      - ls -l
       - ls -l core/vendor
       - ls -l settings/js
       - ./tests/drone/yarn-install.sh
@@ -245,6 +246,7 @@ pipeline:
     pull: true
     commands:
       - pwd
+      - ls -l
       - ls -l core/vendor
       - ls -l settings/js
       - ./tests/drone/test-javascript.sh
