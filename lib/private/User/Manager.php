@@ -270,9 +270,9 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OC\User\User[]
 	 */
 	public function search($pattern, $limit = null, $offset = null) {
-		$accounts = $this->accountMapper->search('user_id', $pattern, $limit, $offset);
 		$users = [];
 		if ($this->userSearch->isSearchable($pattern)) {
+			$accounts = $this->accountMapper->search('user_id', $pattern, $limit, $offset);
 			foreach ($accounts as $account) {
 				$user = $this->getUserObject($account);
 				$users[$user->getUID()] = $user;
@@ -291,9 +291,9 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OC\User\User[]
 	 */
 	public function find($pattern, $limit = null, $offset = null) {
-		$accounts = $this->accountMapper->find($pattern, $limit, $offset);
 		$users = [];
 		if ($this->userSearch->isSearchable($pattern)) {
+			$accounts = $this->accountMapper->find($pattern, $limit, $offset);
 			foreach ($accounts as $account) {
 				$user = $this->getUserObject($account);
 				$users[$user->getUID()] = $user;
