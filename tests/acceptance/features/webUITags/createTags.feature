@@ -71,4 +71,13 @@ Feature: Creation of tags for the files and folders
      And the user shares file "lorem.txt" with user "user3" using the webUI
      Then file "lorem (2).txt" should have the following tags for user "user3"
        | skeleton | normal |
-     
+
+  Scenario: Check for existence of tags in shared file
+    Given user "user2" has been created with default attributes and without skeleton files
+    And user "user1" has uploaded file with content "some content" to "/randomfile.txt"
+    When the user browses directly to display the details of file "randomfile.txt" in folder "/"
+    And the user adds a tag "Confidential" to the file using the webUI
+    And the user shares file "randomfile.txt" with user "User Two" using the webUI
+    Then file "/randomfile.txt" should have the following tags for user "user2"
+      | Confidential   | normal |
+
