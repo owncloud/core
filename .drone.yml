@@ -644,9 +644,10 @@ matrix:
   include:
 
   # frontend
-    - TEST_SUITE: javascript
-      PHP_VERSION: 7.1
-      COVERAGE: true
+  # disabled - see issue 35860
+  #  - TEST_SUITE: javascript
+  #    PHP_VERSION: 7.1
+  #    COVERAGE: true
 
   # owncloud-coding-standard
     - PHP_VERSION: 7.3
