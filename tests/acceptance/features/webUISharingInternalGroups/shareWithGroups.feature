@@ -299,3 +299,21 @@ Feature: Sharing files and folders with internal groups
     When user "user1" logs in using the webUI
     Then folder "test" should be listed on the webUI
     And folder "test (2)" should be listed on the webUI
+
+  Scenario: shares shared to deleted group should not be available
+    Given user "user1" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    And user "user1" has logged in using the webUI
+    And the user has shared file "/lorem.txt" with group "grp1"
+    And the user re-logs in as "user2" using the webUI
+    Then file "lorem.txt" should be marked as shared with "grp1" by "User One" on the webUI
+    When the administrator deletes group "grp1" using the provisioning API
+    And the user reloads the current page of the webUI
+    Then file "lorem.txt" should not be listed on the webUI
+    When the user browses to the shared-with-you page
+    Then file "lorem.txt" should not be listed on the webUI
+    And as "user2" file "/lorem.txt" should not exist
+    When the user re-logs in as "user1" using the webUI
+    And the user opens the share dialog for file "lorem.txt"
+    Then the group "grp1" should not be in share with group list
+
+
