@@ -444,10 +444,7 @@ class OC {
 			// if this is a new session, invalidate any previously stored auth token.
 			// this could happen if the session disappears / expires in the server but the user
 			// didn't log out explicitly
-			\OC::$server->getUserSession()->logout();
-			if (isset($_COOKIE[\session_name()])) {
-				\setcookie(\session_name(), null, -1, self::$WEBROOT ? : '/');
-			}
+			\OC::$server->getUserSession()->invalidateSessionToken();
 		} else {
 			if (\time() - $session->get('LAST_ACTIVITY') > $sessionLifeTime) {
 				// session timeout

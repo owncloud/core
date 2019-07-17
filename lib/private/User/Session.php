@@ -742,6 +742,16 @@ class Session implements IUserSession, Emitter {
 	}
 
 	/**
+	 * Invalidate the session token. This can be used if the session is lost but the user didn't log out,
+	 * in order to clean up the previously created token. Note that this assumes that the session id
+	 * is the same as the one that was used previously (if the session id is new, it shouldn't matter)
+	 */
+	public function invalidateSessionToken() {
+		$sessionId = $this->session->getId();
+		$this->tokenProvider->invalidateToken($sessionId);
+	}
+
+	/**
 	 * Checks if the given password is a token.
 	 * If yes, the password is extracted from the token.
 	 * If no, the same password is returned.
@@ -962,7 +972,11 @@ class Session implements IUserSession, Emitter {
 				$uid = $user->getUID();
 				$password = $authModule->getUserPassword($request);
 				$this->createSessionToken($request, $uid, $uid, $password);
-				return $this->loginUser($user, $password);
+				$loginOk = $this->loginUser($user, $password);
+				if ($loginOk) {
+					$this->session->set(Auth::DAV_AUTHENTICATED, $uid);
+				}
+				return $loginOk;
 			}
 		}
 
