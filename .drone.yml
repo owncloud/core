@@ -79,9 +79,13 @@ pipeline:
     commands:
       - pwd
       - ls -l
+      - ls -l core
+      - ./tests/drone/yarn-install.sh
+      - pwd
+      - ls -l
+      - ls -l core
       - ls -l core/vendor
       - ls -l settings/js
-      - ./tests/drone/yarn-install.sh
     when:
       event: [push, pull_request]
 
@@ -247,6 +251,7 @@ pipeline:
     commands:
       - pwd
       - ls -l
+      - ls -l core
       - ls -l core/vendor
       - ls -l settings/js
       - ./tests/drone/test-javascript.sh
