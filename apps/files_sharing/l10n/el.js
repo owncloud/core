@@ -99,6 +99,10 @@ OC.L10N.register(
     "Can't change permissions for public share links" : "Δεν μπορούν να γίνουν αλλαγές δικαιοδοσίας για δημόσιο διαμοιρασμό συνδέσμων",
     "Wrong or no update parameter given" : "Δόθηκε λανθασμένη ή χωρίς αναβάθμιση παράμετρος",
     "Cannot increase permissions" : "Τα δικαιώματα είναι περιορισμένα ",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "Ο \"%1$s\" διαμοιράστηκε μαζί σας το \"%3$s\" (εκ μέρους του \"%2$s\")",
+    "\"%1$s\" shared \"%3$s\" with you" : "Ο \"%1$s\" διαμοιράστηκε μαζί σας το \"%3$s\"",
+    "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "Ο \"%1$s\" σας προσκάλεσε να δείτε το \"%3$s\" (εκ μέρους του \"%2$s\")",
+    "\"%1$s\" invited you to view \"%3$s\"" : "O \"%1$s\" σας προσκάλεσε να δείτε το \"%3$s\"",
     "Accept" : "Αποδοχή",
     "Decline" : "Απόρριψη",
     "This share is password-protected" : "Αυτός ο κοινόχρηστος φάκελος προστατεύεται με κωδικό",
@@ -117,6 +121,7 @@ OC.L10N.register(
     "%s is publicly shared" : "Το %s είναι κοινόχρηστο δημοσίως",
     "Download" : "Λήψη",
     "Download %s" : "Λήψη %s",
-    "Direct link" : "Άμεσος σύνδεσμος"
+    "Direct link" : "Άμεσος σύνδεσμος",
+    "Nothing to configure." : "Τίποτα να ρυθμιστεί."
 },
 "nplurals=2; plural=(n != 1);");
