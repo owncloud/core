@@ -42,7 +42,10 @@ use OC\Files\View;
 use OCA\Files_Trashbin\AppInfo\Application;
 use OCA\Files_Trashbin\Command\Expire;
 use OCP\Encryption\Keys\IStorage;
+use OCP\Files\ForbiddenException;
 use OCP\Files\NotFoundException;
+use OCP\Files\StorageNotAvailableException;
+use OCP\Lock\LockedException;
 use OCP\User;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use OCP\Files\Folder;
@@ -473,6 +476,10 @@ class Trashbin {
 	 * @param int $timestamp time when the file/folder was deleted
 	 *
 	 * @return bool true on success, false otherwise
+	 * @throws \OC\DatabaseException
+	 * @throws ForbiddenException
+	 * @throws LockedException
+	 * @throws StorageNotAvailableException
 	 */
 	public static function restore($file, $filename, $timestamp, $targetLocation = null) {
 		$user = User::getUser();
@@ -656,6 +663,10 @@ class Trashbin {
 	 * @param int $timestamp of deletion time
 	 *
 	 * @return int size of deleted files
+	 * @throws \OC\DatabaseException
+	 * @throws ForbiddenException
+	 * @throws LockedException
+	 * @throws StorageNotAvailableException
 	 */
 	public static function delete($filename, $user, $timestamp = null) {
 		$view = new View('/' . $user);

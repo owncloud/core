@@ -24,7 +24,10 @@ namespace OCA\DAV\TrashBin;
 use OC\Files\FileInfo;
 use OC\Files\View;
 use OCA\Files_Trashbin\Trashbin;
+use OCP\Files\ForbiddenException;
 use OCP\Files\NotFoundException;
+use OCP\Files\StorageNotAvailableException;
+use OCP\Lock\LockedException;
 use Sabre\DAV\Exception\InvalidResourceType;
 use Sabre\DAV\Exception\NotFound;
 
@@ -76,11 +79,33 @@ class TrashBinManager {
 		return new TrashBinFile($user, $fileInfo, $this);
 	}
 
-	public function restore(string $user, AbstractTrashBinNode $trashItem, $targetLocation) {
+	/**
+	 * @param string $user
+	 * @param AbstractTrashBinNode $trashItem
+	 * @param $targetLocation
+	 * @return bool
+	 * @throws ForbiddenException
+	 * @throws LockedException
+	 * @throws StorageNotAvailableException
+	 */
+	public function restore(string $user, AbstractTrashBinNode $trashItem, $targetLocation) : bool {
 		$path = $trashItem->getPathInTrash();
 		$path = \implode('/', $path);
 		return Trashbin::restore($path,
 			$trashItem->getOriginalFileName(), $trashItem->getDeleteTimestamp(), $targetLocation);
+	}
+
+	/**
+	 * @param string $user
+	 * @param AbstractTrashBinNode $trashItem
+	 * @throws ForbiddenException
+	 * @throws LockedException
+	 * @throws StorageNotAvailableException
+	 */
+	public function delete(string $user, AbstractTrashBinNode $trashItem) {
+		$path = $trashItem->getPathInTrash();
+		$path = \implode('/', $path);
+		Trashbin::delete($path, $user, $trashItem->getDeleteTimestamp());
 	}
 
 	public function deleteAll() {
