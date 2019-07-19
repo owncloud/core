@@ -287,7 +287,7 @@ Feature: accept/decline shares coming from internal users
       | share_type             | 0                          |
       | uid_owner              | user0                      |
       | displayname_owner      | User Zero                  |
-      | permissions            | 19                         |
+      | permissions            | share,read,update          |
       | uid_file_owner         | user0                      |
       | displayname_file_owner | User Zero                  |
       | state                  | 0                          |

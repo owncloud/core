@@ -76,7 +76,7 @@ Feature: get file properties
     And user "user0" has created a share with settings
       | path        | test  |
       | shareType   | 0     |
-      | permissions | 31    |
+      | permissions | all   |
       | shareWith   | user1 |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
       | oc:share-types |
@@ -94,7 +94,7 @@ Feature: get file properties
     And user "user0" has created a share with settings
       | path        | test |
       | shareType   | 1    |
-      | permissions | 31   |
+      | permissions | all  |
       | shareWith   | grp1 |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
       | oc:share-types |
@@ -111,7 +111,7 @@ Feature: get file properties
     And user "user0" has created folder "/test"
     And user "user0" has created a public link share with settings
       | path        | test |
-      | permissions | 31   |
+      | permissions | all  |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
       | oc:share-types |
     Then the response should contain a share-types property with
@@ -130,16 +130,16 @@ Feature: get file properties
     And user "user0" has created a share with settings
       | path        | test  |
       | shareType   | 0     |
-      | permissions | 31    |
+      | permissions | all   |
       | shareWith   | user1 |
     And user "user0" has created a share with settings
       | path        | test |
       | shareType   | 1    |
-      | permissions | 31   |
+      | permissions | all  |
       | shareWith   | grp2 |
     And user "user0" has created a public link share with settings
       | path        | test |
-      | permissions | 31   |
+      | permissions | all  |
     When user "user0" gets the following properties of folder "/test" using the WebDAV API
       | oc:share-types |
     Then the response should contain a share-types property with
