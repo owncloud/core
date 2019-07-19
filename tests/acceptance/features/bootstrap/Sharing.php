@@ -1988,6 +1988,12 @@ trait Sharing {
 				$value
 			);
 		}
+		if ($field === "permissions") {
+			if (\is_string($value) && !\is_numeric($value)) {
+				$value = $this->splitPermissionsString($value);
+			}
+			$value = SharingHelper::getPermissionSum($value);
+		}
 		return $value;
 	}
 
