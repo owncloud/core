@@ -822,6 +822,22 @@ class SessionTest extends TestCase {
 		$this->assertFalse($userSession->createSessionToken($request, $uid, $loginName, $password));
 	}
 
+	public function testInvalidateSessionToken() {
+		$manager = $this->createMock(Manager::class);
+		$session = $this->createMock(ISession::class);
+		
+		$session->method('getId')->willReturn('sessionid');
+
+		$this->tokenProvider->expects($this->once())
+			->method('invalidateToken')
+			->with($this->equalTo('sessionid'));
+
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
+			$this->userSyncService, $this->eventDispatcher);
+		$this->assertNull($userSession->invalidateSessionToken());
+	}
+
 	/**
 	 * @expectedException \OC\User\LoginException
 	 */
