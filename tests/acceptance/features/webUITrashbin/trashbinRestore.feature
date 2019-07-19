@@ -88,3 +88,18 @@ Feature: Restore deleted files/folders
     And file "lorem-big.txt" should be listed on the webUI
     And file "data.zip" should be listed on the webUI
     And folder "simple-folder" should be listed on the webUI
+
+  Scenario: Delete a file and then restore it  when a file with the same name already exists
+    Given the user has deleted file "lorem.txt" using the webUI
+    And user "user1" has moved file "textfile0.txt" to "lorem.txt"
+    And the user has browsed to the trashbin page
+    Then folder "lorem.txt" should be listed in the trashbin on the webUI
+    When the user restores file "lorem.txt" from the trashbin using the webUI
+    Then file "lorem.txt" should not be listed on the webUI
+    When the user browses to the files page
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem (restored).txt" should be listed on the webUI
+    And the content of file "lorem.txt" for user "user1" should be "ownCloud test text file 0" plus end-of-line
+    And the content of "lorem (restored).txt" should be the same as the original "lorem.txt"
+
+
