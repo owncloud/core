@@ -38,4 +38,4 @@ Please submit translations via Transifex:
 https://www.transifex.com/projects/p/owncloud/
 
 For detailed information about translations:
-https://doc.owncloud.org/server/10.1/developer_manual/core/translation.html
+https://doc.owncloud.org/server/latest/developer_manual/core/translation.html
