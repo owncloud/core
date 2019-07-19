@@ -17,7 +17,7 @@ Feature: sharing
     And user "user0" has shared folder "TMP" with user "user1"
     And user "user1" has shared folder "TMP" with user "user2"
     When user "user1" updates the last share using the sharing API with
-      | permissions | 1 |
+      | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And user "user2" should not be able to upload file "filesForUpload/textfile.txt" to "TMP/textfile.txt"
     And user "user1" should be able to upload file "filesForUpload/textfile.txt" to "TMP/textfile.txt"
@@ -44,7 +44,7 @@ Feature: sharing
       | share_type        | 3                    |
       | file_source       | A_NUMBER             |
       | file_target       | /FOLDER              |
-      | permissions       | 1                    |
+      | permissions       | read                 |
       | stime             | A_NUMBER             |
       | expiration        | +3 days              |
       | token             | A_TOKEN              |
@@ -95,7 +95,7 @@ Feature: sharing
       | share_type        | 3                    |
       | file_source       | A_NUMBER             |
       | file_target       | /FOLDER              |
-      | permissions       | 1                    |
+      | permissions       | read                 |
       | stime             | A_NUMBER             |
       | expiration        | +3 days              |
       | token             | A_TOKEN              |
@@ -129,7 +129,7 @@ Feature: sharing
       | share_type        | 3                    |
       | file_source       | A_NUMBER             |
       | file_target       | /FOLDER              |
-      | permissions       | 1                    |
+      | permissions       | read                 |
       | stime             | A_NUMBER             |
       | token             | A_TOKEN              |
       | storage           | A_NUMBER             |
@@ -151,27 +151,27 @@ Feature: sharing
     When the user creates a public link share using the sharing API with settings
       | path | FOLDER |
     And the user updates the last share using the sharing API with
-      | permissions | 15 |
+      | permissions | read,update,create,delete |
     And the user gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | id                | A_NUMBER             |
-      | item_type         | folder               |
-      | item_source       | A_NUMBER             |
-      | share_type        | 3                    |
-      | file_source       | A_NUMBER             |
-      | file_target       | /FOLDER              |
-      | permissions       | 15                   |
-      | stime             | A_NUMBER             |
-      | token             | A_TOKEN              |
-      | storage           | A_NUMBER             |
-      | mail_send         | 0                    |
-      | uid_owner         | user0                |
-      | file_parent       | A_NUMBER             |
-      | displayname_owner | User Zero            |
-      | url               | AN_URL               |
-      | mimetype          | httpd/unix-directory |
+      | id                | A_NUMBER                  |
+      | item_type         | folder                    |
+      | item_source       | A_NUMBER                  |
+      | share_type        | 3                         |
+      | file_source       | A_NUMBER                  |
+      | file_target       | /FOLDER                   |
+      | permissions       | read,update,create,delete |
+      | stime             | A_NUMBER                  |
+      | token             | A_TOKEN                   |
+      | storage           | A_NUMBER                  |
+      | mail_send         | 0                         |
+      | uid_owner         | user0                     |
+      | file_parent       | A_NUMBER                  |
+      | displayname_owner | User Zero                 |
+      | url               | AN_URL                    |
+      | mimetype          | httpd/unix-directory      |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -184,7 +184,7 @@ Feature: sharing
     When the user creates a public link share using the sharing API with settings
       | path | FOLDER |
     And the user updates the last share using the sharing API with
-      | permissions | 7 |
+      | permissions | read,update,create |
     And the user gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -195,7 +195,7 @@ Feature: sharing
       | share_type        | 3                    |
       | file_source       | A_NUMBER             |
       | file_target       | /FOLDER              |
-      | permissions       | 7                    |
+      | permissions       | read,update,create   |
       | stime             | A_NUMBER             |
       | token             | A_TOKEN              |
       | storage           | A_NUMBER             |
@@ -222,22 +222,22 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | id                | A_NUMBER             |
-      | item_type         | folder               |
-      | item_source       | A_NUMBER             |
-      | share_type        | 3                    |
-      | file_source       | A_NUMBER             |
-      | file_target       | /FOLDER              |
-      | permissions       | 15                   |
-      | stime             | A_NUMBER             |
-      | token             | A_TOKEN              |
-      | storage           | A_NUMBER             |
-      | mail_send         | 0                    |
-      | uid_owner         | user0                |
-      | file_parent       | A_NUMBER             |
-      | displayname_owner | User Zero            |
-      | url               | AN_URL               |
-      | mimetype          | httpd/unix-directory |
+      | id                | A_NUMBER                  |
+      | item_type         | folder                    |
+      | item_source       | A_NUMBER                  |
+      | share_type        | 3                         |
+      | file_source       | A_NUMBER                  |
+      | file_target       | /FOLDER                   |
+      | permissions       | read,update,create,delete |
+      | stime             | A_NUMBER                  |
+      | token             | A_TOKEN                   |
+      | storage           | A_NUMBER                  |
+      | mail_send         | 0                         |
+      | uid_owner         | user0                     |
+      | file_parent       | A_NUMBER                  |
+      | displayname_owner | User Zero                 |
+      | url               | AN_URL                    |
+      | mimetype          | httpd/unix-directory      |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -253,7 +253,7 @@ Feature: sharing
     And user "user1" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
     And as user "user0"
     When the user updates the last share using the sharing API with
-      | permissions | 1 |
+      | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -263,7 +263,7 @@ Feature: sharing
       | share_type        | 1              |
       | file_source       | A_NUMBER       |
       | file_target       | /textfile0.txt |
-      | permissions       | 1              |
+      | permissions       | read           |
       | stime             | A_NUMBER       |
       | storage           | A_NUMBER       |
       | mail_send         | 0              |
@@ -281,7 +281,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     And as user "user1"
     And the user has created a public link share with settings
       | path         | /test |
@@ -317,8 +317,8 @@ Feature: sharing
     And user "user0" has created folder "/folder1"
     And user "user0" has created folder "/folder1/folder2"
     And user "user1" has created folder "/moved-out"
-    And user "user0" has shared folder "/folder1" with user "user1" with permissions 31
-    And user "user1" has shared folder "/folder1/folder2" with user "user2" with permissions 31
+    And user "user0" has shared folder "/folder1" with user "user1" with permissions "all"
+    And user "user1" has shared folder "/folder1/folder2" with user "user2" with permissions "all"
     When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
@@ -328,7 +328,7 @@ Feature: sharing
       | share_type        | 0                    |
       | file_source       | A_NUMBER             |
       | file_target       | /folder2             |
-      | permissions       | 31                   |
+      | permissions       | all                  |
       | stime             | A_NUMBER             |
       | storage           | A_NUMBER             |
       | mail_send         | 0                    |
@@ -347,8 +347,8 @@ Feature: sharing
     And user "user0" has created folder "/user0-folder"
     And user "user0" has created folder "/user0-folder/folder2"
     And user "user2" has created folder "/user2-folder"
-    And user "user0" has shared folder "/user0-folder" with user "user1" with permissions 31
-    And user "user2" has shared folder "/user2-folder" with user "user1" with permissions 31
+    And user "user0" has shared folder "/user0-folder" with user "user1" with permissions "all"
+    And user "user2" has shared folder "/user2-folder" with user "user1" with permissions "all"
     When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2" using the WebDAV API
     And user "user2" gets the info of the last share using the sharing API
     Then the fields of the last response should include
@@ -358,7 +358,7 @@ Feature: sharing
       | share_type        | 0                    |
       | file_source       | A_NUMBER             |
       | file_target       | /user2-folder        |
-      | permissions       | 31                   |
+      | permissions       | all                  |
       | stime             | A_NUMBER             |
       | storage           | A_NUMBER             |
       | mail_send         | 0                    |
@@ -374,7 +374,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 31
+    And user "user0" has shared folder "/test" with user "user1" with permissions "all"
     And as user "user1"
     And the user has created a public link share with settings
       | path         | /test |
@@ -394,13 +394,13 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     And as user "user1"
     And the user has created a public link share with settings
       | path        | /test |
-      | permissions | 1     |
+      | permissions | read  |
     When the user updates the last share using the sharing API with
-      | permissions | 15 |
+      | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And publicly uploading a file should not work
@@ -414,13 +414,13 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 31
+    And user "user0" has shared folder "/test" with user "user1" with permissions "all"
     And as user "user1"
     And the user has created a public link share with settings
       | path        | /test |
-      | permissions | 1     |
+      | permissions | read  |
     When the user updates the last share using the sharing API with
-      | permissions | 15 |
+      | permissions | read,update,create,delete |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And publicly uploading a file should work
@@ -440,9 +440,9 @@ Feature: sharing
     And as user "user2"
     And the user has shared folder "/FOLDER" with group "grp1"
     And the user has updated the last share with
-      | permissions | 1 |
+      | permissions | read |
     When the user updates the last share using the sharing API with
-      | permissions | 31 |
+      | permissions | all |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "user1" should be able to upload file "filesForUpload/textfile.txt" to "FOLDER/textfile.txt"
@@ -455,15 +455,15 @@ Feature: sharing
   Scenario Outline: Updating share permissions from change to read/update/create restricts public from deleting files
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created a public link share with settings
-      | path        | /PARENT |
-      | permissions | 15      |
+      | path        | /PARENT                   |
+      | permissions | read,update,create,delete |
     When user "user0" updates the last share using the sharing API with
-      | permissions | 7 |
+      | permissions | read,update,create |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | permissions | 7 |
+      | permissions | read,update,create |
     When the public deletes file "CHILD/child.txt" from the last public share using the public WebDAV API
     Then the HTTP status code should be "403"
     Examples:
@@ -475,15 +475,15 @@ Feature: sharing
   Scenario Outline: Updating share permissions from read/update/create to change allows public to delete files
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created a public link share with settings
-      | path        | /PARENT |
-      | permissions | 7       |
+      | path        | /PARENT            |
+      | permissions | read,update,create |
     When user "user0" updates the last share using the sharing API with
-      | permissions | 15 |
+      | permissions | read,update,create,delete |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | permissions | 15 |
+      | permissions | read,update,create,delete |
     When the public deletes file "CHILD/child.txt" from the last public share using the public WebDAV API
     Then the HTTP status code should be "204"
     Examples:

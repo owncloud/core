@@ -13,7 +13,7 @@ Feature: reshare as public link
   Scenario Outline: creating a public link from a share with read permission only is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 1
+    And user "user0" has shared folder "/test" with user "user1" with permissions "read"
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test |
       | publicUpload | false |
@@ -29,7 +29,7 @@ Feature: reshare as public link
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file with content "some content" to "/test/file.txt"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test |
       | publicUpload | false |
@@ -46,11 +46,11 @@ Feature: reshare as public link
   Scenario Outline: creating an upload public link from a share with share+read only permissions is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     When user "user1" creates a public link share using the sharing API with settings
-      | path         | /test |
-      | permissions  | 15    |
-      | publicUpload | true  |
+      | path         | /test                     |
+      | permissions  | read,update,create,delete |
+      | publicUpload | true                      |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     Examples:
@@ -62,7 +62,7 @@ Feature: reshare as public link
   Scenario Outline: creating a public link from a share with read+write permissions only is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 15
+    And user "user0" has shared folder "/test" with user "user1" with permissions "change"
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test |
       | publicUpload | true  |
@@ -78,7 +78,7 @@ Feature: reshare as public link
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file with content "some content" to "/test/file.txt"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 31
+    And user "user0" has shared folder "/test" with user "user1" with permissions "all"
     When user "user1" creates a public link share using the sharing API with settings
       | path         | /test |
       | publicUpload | false |
@@ -96,11 +96,11 @@ Feature: reshare as public link
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file with content "some content" to "/test/file.txt"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 31
+    And user "user0" has shared folder "/test" with user "user1" with permissions "all"
     When user "user1" creates a public link share using the sharing API with settings
-      | path         | /test |
-      | permissions  | 15    |
-      | publicUpload | true  |
+      | path         | /test                     |
+      | permissions  | read,update,create,delete |
+      | publicUpload | true                      |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the public should be able to download file "file.txt" from inside the last public shared folder and the content should be "some content"
@@ -115,11 +115,11 @@ Feature: reshare as public link
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has created folder "/test/sub"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     When user "user1" creates a public link share using the sharing API with settings
-      | path         | /test/sub |
-      | permissions  | 15        |
-      | publicUpload | true      |
+      | path         | /test/sub                 |
+      | permissions  | read,update,create,delete |
+      | publicUpload | true                      |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     Examples:
@@ -132,13 +132,13 @@ Feature: reshare as public link
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has created folder "/test/sub"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     And user "user1" has created a public link share with settings
       | path         | /test |
-      | permissions  | 1     |
+      | permissions  | read  |
       | publicUpload | false |
     When user "user1" updates the last share using the sharing API with
-      | permissions | 15 |
+      | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And publicly uploading a file should not work
@@ -152,14 +152,14 @@ Feature: reshare as public link
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/test"
     And user "user0" has created folder "/test/sub"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 17
+    And user "user0" has shared folder "/test" with user "user1" with permissions "share,read"
     And user "user1" has created a public link share with settings
       | path         | /test/sub |
-      | permissions  | 1         |
+      | permissions  | read      |
       | publicUpload | false     |
     And publicly uploading a file should not work
     When user "user1" updates the last share using the sharing API with
-      | permissions | 15 |
+      | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And publicly uploading a file should not work

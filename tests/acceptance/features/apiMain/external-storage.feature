@@ -74,7 +74,7 @@ Feature: external-storage
       | type        | dir           |
       | backend     | Local         |
       | scope       | system        |
-      | permissions | 1             |
+      | permissions | read          |
       | class       | local         |
     Examples:
       | ocs_api_version | endpoint                           | ocs-code | http-code |

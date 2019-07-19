@@ -22,8 +22,8 @@ Feature: sharing
 
   Scenario: Merging shares for recipient when shared from outside with group and member with different permissions
     Given user "user0" has created folder "/merge-test-outside-perms"
-    When user "user0" shares folder "/merge-test-outside-perms" with group "grp1" with permissions 1 using the sharing API
-    And user "user0" shares folder "/merge-test-outside-perms" with user "user1" with permissions 31 using the sharing API
+    When user "user0" shares folder "/merge-test-outside-perms" with group "grp1" with permissions "read" using the sharing API
+    And user "user0" shares folder "/merge-test-outside-perms" with user "user1" with permissions "all" using the sharing API
     Then as user "user1" folder "/merge-test-outside-perms" should contain a property "oc:permissions" with value "SRDNVCK"
     And as "user1" folder "/merge-test-outside-perms (2)" should not exist
 
@@ -42,8 +42,8 @@ Feature: sharing
     # Note: in the user_ldap test environment user1 is in grp4
     And user "user1" has been added to group "grp4"
     And user "user0" has created folder "/merge-test-outside-twogroups-perms"
-    When user "user0" shares folder "/merge-test-outside-twogroups-perms" with group "grp1" with permissions 1 using the sharing API
-    And user "user0" shares folder "/merge-test-outside-twogroups-perms" with group "grp4" with permissions 31 using the sharing API
+    When user "user0" shares folder "/merge-test-outside-twogroups-perms" with group "grp1" with permissions "read" using the sharing API
+    And user "user0" shares folder "/merge-test-outside-twogroups-perms" with group "grp4" with permissions "all" using the sharing API
     Then as user "user1" folder "/merge-test-outside-twogroups-perms" should contain a property "oc:permissions" with value "SRDNVCK"
     And as "user1" folder "/merge-test-outside-twogroups-perms (2)" should not exist
 
@@ -52,9 +52,9 @@ Feature: sharing
     # Note: in the user_ldap test environment user1 is in grp4
     And user "user1" has been added to group "grp4"
     And user "user0" has created folder "/merge-test-outside-twogroups-member-perms"
-    When user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with group "grp1" with permissions 1 using the sharing API
-    And user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with group "grp4" with permissions 31 using the sharing API
-    And user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with user "user1" with permissions 1 using the sharing API
+    When user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with group "grp1" with permissions "read" using the sharing API
+    And user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with group "grp4" with permissions "all" using the sharing API
+    And user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with user "user1" with permissions "read" using the sharing API
     Then as user "user1" folder "/merge-test-outside-twogroups-member-perms" should contain a property "oc:permissions" with value "SRDNVCK"
     And as "user1" folder "/merge-test-outside-twogroups-member-perms (2)" should not exist
 

@@ -150,7 +150,7 @@ Feature: sharing
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-    And user "user0" has shared folder "shared" with user "user1" with permissions 1
+    And user "user0" has shared folder "shared" with user "user1" with permissions "read"
     When user "user1" deletes file "/shared/shared_file.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "user1" file "/shared/shared_file.txt" should exist
@@ -161,7 +161,7 @@ Feature: sharing
     And user "user1" has been created with default attributes and without skeleton files
     And user "user0" has created folder "/shared"
     And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-    And user "user0" has shared folder "shared" with user "user1" with permissions 4
+    And user "user0" has shared folder "shared" with user "user1" with permissions "create"
     When user "user1" deletes file "/shared/shared_file.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "user0" file "/shared/shared_file.txt" should exist
@@ -173,7 +173,7 @@ Feature: sharing
       | user0    |
       | user1    |
     And user "user0" has created folder "/shared"
-    And user "user0" has shared folder "shared" with user "user1" with permissions 4
+    And user "user0" has shared folder "shared" with user "user1" with permissions "create"
     When user "user1" uploads file "filesForUpload/textfile.txt" to "shared/textfile.txt" using the WebDAV API
     And user "user1" deletes file "/shared/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"

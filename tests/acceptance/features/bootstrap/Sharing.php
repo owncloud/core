@@ -92,6 +92,39 @@ trait Sharing {
 	}
 
 	/**
+	 * Split given permissions string each separated with "," into array of strings
+	 *
+	 * @param string $str
+	 *
+	 * @return string[]
+	 */
+	private function splitPermissionsString($str) {
+		$str = \trim($str);
+		$permissions = \array_map('trim', \explode(',', $str));
+
+		/* We use 'all', 'uploadwriteonly' and 'change' in feature files
+		for readability. Parse into appropriate permissions and return them
+		without any duplications.*/
+		if (\in_array('all', $permissions, true)) {
+			$permissions = \array_keys(SharingHelper::PERMISSION_TYPES);
+		}
+		if (\in_array('uploadwriteonly', $permissions, true)) {
+			// remove 'uploadwriteonly' from $permissions
+			$permissions = \array_diff($permissions, ['uploadwriteonly']);
+			$permissions = \array_merge($permissions, ['create', 'read']);
+		}
+		if (\in_array('change', $permissions, true)) {
+			// remove 'change' from $permissions
+			$permissions = \array_diff($permissions, ['change']);
+			$permissions = \array_merge(
+				$permissions, ['create', 'delete', 'read', 'update']
+			);
+		}
+
+		return \array_unique($permissions);
+	}
+
+	/**
 	 *
 	 * @return int
 	 *
@@ -166,7 +199,7 @@ trait Sharing {
 				if (\is_numeric($fd['permissions'])) {
 					$fd['permissions'] = (int)$fd['permissions'];
 				} else {
-					$fd['permissions'] = \array_map('trim', \explode(',', $fd['permissions']));
+					$fd['permissions'] = $this->splitPermissionsString($fd['permissions']);
 				}
 			} else {
 				$fd['permissions'] = null;
@@ -618,6 +651,14 @@ trait Sharing {
 			if (\array_key_exists('password', $fd)) {
 				$fd['password'] = $this->getActualPassword($fd['password']);
 			}
+			if (\array_key_exists('permissions', $fd)) {
+				if (\is_numeric($fd['permissions'])) {
+					$fd['permissions'] = (int)$fd['permissions'];
+				} else {
+					$fd['permissions'] = $this->splitPermissionsString($fd['permissions']);
+					$fd['permissions'] = SharingHelper::getPermissionSum($fd['permissions']);
+				}
+			}
 		}
 
 		$this->response = HttpRequestHelper::put(
@@ -649,6 +690,9 @@ trait Sharing {
 		$linkName = null,
 		$expireDate = null
 	) {
+		if (\is_string($permissions) && !\is_numeric($permissions)) {
+			$permissions = $this->splitPermissionsString($permissions);
+		}
 		$this->waitToCreateShare();
 		$this->response = SharingHelper::createShare(
 			$this->getBaseUrl(),
@@ -858,9 +902,12 @@ trait Sharing {
 	 */
 	public function isUserOrGroupInSharedData($userOrGroup, $permissions = null) {
 		if ($permissions !== null) {
+			if (\is_string($permissions) && !\is_numeric($permissions)) {
+				$permissions = $this->splitPermissionsString($permissions);
+			}
 			$permissionSum = SharingHelper::getPermissionSum($permissions);
 		}
-		
+
 		$data = $this->getResponseXml()->data[0];
 		if (\is_iterable($data)) {
 			foreach ($data as $element) {
@@ -921,12 +968,13 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))? using the sharing API$/
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)" with permissions "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $user1
 	 * @param string $filepath
 	 * @param string $user2
-	 * @param string|int|string[]|int[] $permissions
+	 * @param int|string|string[]|int[] $permissions
 	 *
 	 * @return void
 	 */
@@ -939,12 +987,13 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))?$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (\d+))?$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)" with permissions "([^"]*)"$/
 	 *
 	 * @param string $user1
 	 * @param string $filepath
 	 * @param string $user2
-	 * @param int $permissions
+	 * @param int|string $permissions
 	 *
 	 * @return void
 	 */
@@ -954,6 +1003,7 @@ trait Sharing {
 		$this->shareFileWithUserUsingTheSharingApi(
 			$user1, $filepath, $user2, $permissions, true
 		);
+		// this is expected to fail if a file is shared with create and delete permissions, which is not possible
 		PHPUnit\Framework\Assert::assertTrue(
 			$this->isUserOrGroupInSharedData($user2, $permissions),
 			"User $user1 failed to share $filepath with user $user2"
@@ -961,11 +1011,12 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with the administrator(?: with permissions (.*))?$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with the administrator(?: with permissions (\d+))?$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with the administrator with permissions "([^"]*)"$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
-	 * @param int $permissions
+	 * @param int|string $permissions
 	 *
 	 * @return void
 	 */
@@ -979,11 +1030,12 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))? using the sharing API$/
+	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
+	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)" with permissions "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $filepath
 	 * @param string $user2
-	 * @param int $permissions
+	 * @param int|string $permissions
 	 *
 	 * @return void
 	 */
@@ -996,11 +1048,12 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (.*))?$/
+	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (\d+))?$/
+	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)" with permissions "([^"]*)"$/
 	 *
 	 * @param string $filepath
 	 * @param string $user2
-	 * @param int $permissions
+	 * @param int|string $permissions
 	 *
 	 * @return void
 	 */
@@ -1013,11 +1066,12 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (.*))? using the sharing API$/
+	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
+	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)" with permissions "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $filepath
 	 * @param string $group
-	 * @param int $permissions
+	 * @param int|string $permissions
 	 *
 	 * @return void
 	 */
@@ -1030,11 +1084,12 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (.*))?$/
+	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (\d+))?$/
+	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)" with permissions "([^"]*)"$/
 	 *
 	 * @param string $filepath
 	 * @param string $group
-	 * @param int $permissions
+	 * @param int|string $permissions
 	 *
 	 * @return void
 	 */
@@ -1083,12 +1138,13 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (.*))? using the sharing API$/
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)" with permissions "([^"]*)" using the sharing API$/
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
 	 *
 	 * @param string $user
 	 * @param string $filepath
 	 * @param string $group
-	 * @param int $permissions
+	 * @param int|string $permissions
 	 *
 	 * @return void
 	 */
@@ -1101,12 +1157,13 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (.*))?$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)" with permissions "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions (\d+))?$/
 	 *
 	 * @param string $user
 	 * @param string $filepath
 	 * @param string $group
-	 * @param int $permissions
+	 * @param int|string $permissions
 	 *
 	 * @return void
 	 */
@@ -1136,13 +1193,14 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions (.*))? using the sharing API$/
+	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
+	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)" with permissions "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
 	 * @param string $userOrGroup
 	 * @param string $sharee
-	 * @param int $permissions
+	 * @param int|string $permissions
 	 *
 	 * @return void
 	 */
@@ -1159,13 +1217,14 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions (.*))? using the sharing API$/
+	 * @Then /^user "([^"]*)" should be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
+	 * @Then /^user "([^"]*)" should be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)" with permissions "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
 	 * @param string $userOrGroup
 	 * @param string $sharee
-	 * @param int $permissions
+	 * @param int|string $permissions
 	 *
 	 * @return void
 	 */
@@ -1176,7 +1235,7 @@ trait Sharing {
 		$this->createShare(
 			$sharer, $filepath, $shareType, $sharee, null, null, $permissions
 		);
-		
+
 		//v1.php returns 100 as success code
 		//v2.php returns 200 in the same case
 		$this->ocsContext->theOCSStatusCodeShouldBe([100, 200]);
@@ -1722,7 +1781,7 @@ trait Sharing {
 		} elseif (\substr($action, 0, 6) === "accept") {
 			$httpRequestMethod = "POST";
 		}
-		
+
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, $httpRequestMethod, $url, null
 		);
@@ -1862,7 +1921,7 @@ trait Sharing {
 				);
 				break;
 		}
-		
+
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" .
 			   "?format=json&shared_with_me=true&state=$stateCode";
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -1890,7 +1949,7 @@ trait Sharing {
 		if (\count($this->lastShareData->data->element) > 0) {
 			return $this->lastShareData->data[0]->token;
 		}
-		
+
 		return $this->lastShareData->data->token;
 	}
 
@@ -1926,6 +1985,12 @@ trait Sharing {
 				$this->getLocalBaseUrl(),
 				$value
 			);
+		}
+		if ($field === "permissions") {
+			if (\is_string($value) && !\is_numeric($value)) {
+				$value = $this->splitPermissionsString($value);
+			}
+			$value = SharingHelper::getPermissionSum($value);
 		}
 		return $value;
 	}

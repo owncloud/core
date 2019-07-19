@@ -38,10 +38,10 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has uploaded file with content "foo" to "/tmp.txt"
     And user "user0" has created a share with settings
-      | path        | /tmp.txt |
-      | shareType   | 1        |
-      | permissions | 19       |
-      | shareWith   | grp1     |
+      | path        | /tmp.txt          |
+      | shareType   | 1                 |
+      | permissions | share,update,read |
+      | shareWith   | grp1              |
     When user "user1" gets the following properties of file "/tmp.txt" using the WebDAV API
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "19"
@@ -55,7 +55,7 @@ Feature: sharing
     And user "user0" has uploaded file with content "foo" to "/tmp.txt"
     And user "user0" has shared file "tmp.txt" with user "user1"
     When user "user0" updates the last share using the sharing API with
-      | permissions | 3 |
+      | permissions | update,read |
     Then as user "user1" file "/tmp.txt" should contain a property "ocs:share-permissions" with value "3"
     Examples:
       | dav-path |
@@ -68,10 +68,10 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has uploaded file with content "foo" to "/tmp.txt"
     And user "user0" has created a share with settings
-      | path        | /tmp.txt |
-      | shareType   | 1        |
-      | permissions | 3        |
-      | shareWith   | grp1     |
+      | path        | /tmp.txt    |
+      | shareType   | 1           |
+      | permissions | update,read |
+      | shareWith   | grp1        |
     When user "user1" gets the following properties of file "/tmp.txt" using the WebDAV API
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "3"
@@ -85,7 +85,7 @@ Feature: sharing
     And user "user0" has uploaded file with content "foo" to "/tmp.txt"
     And user "user0" has shared file "tmp.txt" with user "user1"
     When user "user0" updates the last share using the sharing API with
-      | permissions | 17 |
+      | permissions | share,read |
     Then as user "user1" file "/tmp.txt" should contain a property "ocs:share-permissions" with value "17"
     Examples:
       | dav-path |
@@ -98,10 +98,10 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has uploaded file with content "foo" to "/tmp.txt"
     And user "user0" has created a share with settings
-      | path        | /tmp.txt |
-      | shareType   | 1        |
-      | permissions | 17       |
-      | shareWith   | grp1     |
+      | path        | /tmp.txt   |
+      | shareType   | 1          |
+      | permissions | share,read |
+      | shareWith   | grp1       |
     When user "user1" gets the following properties of file "/tmp.txt" using the WebDAV API
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "17"
@@ -155,7 +155,7 @@ Feature: sharing
     And user "user0" has created folder "/tmp"
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user0" updates the last share using the sharing API with
-      | permissions | 29 |
+      | permissions | share,delete,create,read |
     Then as user "user1" folder "/tmp" should contain a property "ocs:share-permissions" with value "29"
     Examples:
       | dav-path |
@@ -168,10 +168,10 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
-      | path        | tmp  |
-      | shareType   | 1    |
-      | shareWith   | grp1 |
-      | permissions | 29   |
+      | path        | tmp                      |
+      | shareType   | 1                        |
+      | shareWith   | grp1                     |
+      | permissions | share,delete,create,read |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "29"
@@ -185,7 +185,7 @@ Feature: sharing
     And user "user0" has created folder "/tmp"
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user0" updates the last share using the sharing API with
-      | permissions | 27 |
+      | permissions | share,delete,update,read |
     Then as user "user1" folder "/tmp" should contain a property "ocs:share-permissions" with value "27"
     Examples:
       | dav-path |
@@ -198,10 +198,10 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
-      | path        | tmp  |
-      | shareType   | 1    |
-      | shareWith   | grp1 |
-      | permissions | 27   |
+      | path        | tmp                      |
+      | shareType   | 1                        |
+      | shareWith   | grp1                     |
+      | permissions | share,delete,update,read |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "27"
@@ -215,7 +215,7 @@ Feature: sharing
     And user "user0" has created folder "/tmp"
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user0" updates the last share using the sharing API with
-      | permissions | 23 |
+      | permissions | share,create,update,read |
     Then as user "user1" folder "/tmp" should contain a property "ocs:share-permissions" with value "23"
     Examples:
       | dav-path |
@@ -228,10 +228,10 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
-      | path        | tmp  |
-      | shareType   | 1    |
-      | shareWith   | grp1 |
-      | permissions | 23   |
+      | path        | tmp                        |
+      | shareType   | 1                          |
+      | shareWith   | grp1                       |
+      | permissions | share,create,update,read   |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "23"
@@ -245,7 +245,7 @@ Feature: sharing
     And user "user0" has created folder "/tmp"
     And user "user0" has shared file "/tmp" with user "user1"
     When user "user0" updates the last share using the sharing API with
-      | permissions | 15 |
+      | permissions | change |
     Then as user "user1" folder "/tmp" should contain a property "ocs:share-permissions" with value "15"
     Examples:
       | dav-path |
@@ -258,10 +258,10 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
-      | path        | tmp  |
-      | shareType   | 1    |
-      | shareWith   | grp1 |
-      | permissions | 15   |
+      | path        | tmp    |
+      | shareType   | 1      |
+      | shareWith   | grp1   |
+      | permissions | change |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "15"

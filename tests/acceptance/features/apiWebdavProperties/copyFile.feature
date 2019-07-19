@@ -49,7 +49,7 @@ Feature: copy file
     And user "user1" has created a share with settings
       | path        | testshare |
       | shareType   | 0         |
-      | permissions | 1         |
+      | permissions | read      |
       | shareWith   | user0     |
     When user "user0" copies file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "403"
@@ -67,7 +67,7 @@ Feature: copy file
     And user "user1" has created a share with settings
       | path        | testshare |
       | shareType   | 0         |
-      | permissions | 1         |
+      | permissions | read      |
       | shareWith   | user0     |
     And user "user1" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
     When user "user0" copies file "/textfile0.txt" to "/testshare/overwritethis.txt" using the WebDAV API

@@ -13,21 +13,21 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | id                     | A_NUMBER       |
-      | item_type              | file           |
-      | item_source            | A_NUMBER       |
-      | share_type             | 6              |
-      | file_source            | A_NUMBER       |
-      | path                   | /textfile0.txt |
-      | permissions            | 19             |
-      | stime                  | A_NUMBER       |
-      | storage                | A_NUMBER       |
-      | mail_send              | 0              |
-      | uid_owner              | user1          |
-      | file_parent            | A_NUMBER       |
-      | displayname_owner      | User One       |
-      | share_with             | user0@REMOTE   |
-      | share_with_displayname | user0@REMOTE   |
+      | id                     | A_NUMBER          |
+      | item_type              | file              |
+      | item_source            | A_NUMBER          |
+      | share_type             | 6                 |
+      | file_source            | A_NUMBER          |
+      | path                   | /textfile0.txt    |
+      | permissions            | share,read,update |
+      | stime                  | A_NUMBER          |
+      | storage                | A_NUMBER          |
+      | mail_send              | 0                 |
+      | uid_owner              | user1             |
+      | file_parent            | A_NUMBER          |
+      | displayname_owner      | User One          |
+      | share_with             | user0@REMOTE      |
+      | share_with_displayname | user0@REMOTE      |
     Examples:
       | ocs-api-version | ocs-status |
       | 1               | 100        |
@@ -39,21 +39,21 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | id                     | A_NUMBER       |
-      | item_type              | file           |
-      | item_source            | A_NUMBER       |
-      | share_type             | 6              |
-      | file_source            | A_NUMBER       |
-      | path                   | /textfile0.txt |
-      | permissions            | 19             |
-      | stime                  | A_NUMBER       |
-      | storage                | A_NUMBER       |
-      | mail_send              | 0              |
-      | uid_owner              | user0          |
-      | file_parent            | A_NUMBER       |
-      | displayname_owner      | User Zero      |
-      | share_with             | user1@LOCAL    |
-      | share_with_displayname | user1@LOCAL    |
+      | id                     | A_NUMBER          |
+      | item_type              | file              |
+      | item_source            | A_NUMBER          |
+      | share_type             | 6                 |
+      | file_source            | A_NUMBER          |
+      | path                   | /textfile0.txt    |
+      | permissions            | share,read,update |
+      | stime                  | A_NUMBER          |
+      | storage                | A_NUMBER          |
+      | mail_send              | 0                 |
+      | uid_owner              | user0             |
+      | file_parent            | A_NUMBER          |
+      | displayname_owner      | User Zero         |
+      | share_with             | user1@LOCAL       |
+      | share_with_displayname | user1@LOCAL       |
     Examples:
       | ocs-api-version | ocs-status |
       | 1               | 100        |
@@ -88,17 +88,17 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | id          | A_NUMBER           |
-      | remote      | REMOTE             |
-      | remote_id   | A_NUMBER           |
-      | share_token | A_TOKEN            |
-      | name        | /textfile0.txt     |
-      | owner       | user0              |
-      | user        | user1              |
-      | mountpoint  | /textfile0 (2).txt |
-      | accepted    | 1                  |
-      | type        | file               |
-      | permissions | 27                 |
+      | id          | A_NUMBER                 |
+      | remote      | REMOTE                   |
+      | remote_id   | A_NUMBER                 |
+      | share_token | A_TOKEN                  |
+      | name        | /textfile0.txt           |
+      | owner       | user0                    |
+      | user        | user1                    |
+      | mountpoint  | /textfile0 (2).txt       |
+      | accepted    | 1                        |
+      | type        | file                     |
+      | permissions | share,read,update,delete |
     Examples:
       | ocs-api-version | ocs-status |
       | 1               | 100        |
@@ -169,7 +169,7 @@ Feature: federated
       | path        | /textfile0 (2).txt |
       | shareType   | 0                  |
       | shareWith   | user2              |
-      | permissions | 19                 |
+      | permissions | share,read,update  |
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -179,7 +179,7 @@ Feature: federated
       | share_type             | 0                  |
       | file_source            | A_NUMBER           |
       | path                   | /textfile0 (2).txt |
-      | permissions            | 19                 |
+      | permissions            | share,read,update  |
       | stime                  | A_NUMBER           |
       | storage                | A_NUMBER           |
       | mail_send              | 0                  |
@@ -305,17 +305,17 @@ Feature: federated
       | /textfile0%20(2).txt      |
     When user "user1" gets the list of federated cloud shares using the sharing API
     Then the fields of the last response should include
-      | id          | A_NUMBER           |
-      | remote      | REMOTE             |
-      | remote_id   | A_NUMBER           |
-      | share_token | A_TOKEN            |
-      | name        | /textfile0.txt     |
-      | owner       | user0              |
-      | user        | user1              |
-      | mountpoint  | /textfile0 (2).txt |
-      | accepted    | 1                  |
-      | type        | file               |
-      | permissions | 27                 |
+      | id          | A_NUMBER                 |
+      | remote      | REMOTE                   |
+      | remote_id   | A_NUMBER                 |
+      | share_token | A_TOKEN                  |
+      | name        | /textfile0.txt           |
+      | owner       | user0                    |
+      | user        | user1                    |
+      | mountpoint  | /textfile0 (2).txt       |
+      | accepted    | 1                        |
+      | type        | file                     |
+      | permissions | share,delete,update,read |
     When user "user1" gets the list of pending federated cloud shares using the sharing API
     Then the response should contain 0 entries
     Examples:
@@ -436,14 +436,14 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | id          | A_NUMBER           |
-      | remote      | REMOTE             |
-      | name        | /zzzfolder         |
-      | owner       | user0              |
-      | user        | user1              |
-      | mountpoint  | /zzzfolder (2)     |
-      | type        | dir                |
-      | permissions | 31                 |
+      | id          | A_NUMBER       |
+      | remote      | REMOTE         |
+      | name        | /zzzfolder     |
+      | owner       | user0          |
+      | user        | user1          |
+      | mountpoint  | /zzzfolder (2) |
+      | type        | dir            |
+      | permissions | all            |
     And as "user1" folder "zzzfolder/user1" should exist
     And as "user1" folder "zzzfolder (2)/user0" should exist
     Examples:
@@ -463,17 +463,17 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | id          | A_NUMBER           |
-      | remote      | REMOTE             |
-      | remote_id   | A_NUMBER           |
-      | share_token | A_TOKEN            |
-      | name        | /randomfile.txt    |
-      | owner       | user0              |
-      | user        | user1              |
-      | mountpoint  | /randomfile (2).txt|
-      | accepted    | 1                  |
-      | type        | file               |
-      | permissions | 27                 |
+      | id          | A_NUMBER                 |
+      | remote      | REMOTE                   |
+      | remote_id   | A_NUMBER                 |
+      | share_token | A_TOKEN                  |
+      | name        | /randomfile.txt          |
+      | owner       | user0                    |
+      | user        | user1                    |
+      | mountpoint  | /randomfile (2).txt      |
+      | accepted    | 1                        |
+      | type        | file                     |
+      | permissions | share,delete,update,read |
     And the content of file "/randomfile.txt" for user "user1" on server "LOCAL" should be "local content"
     And the content of file "/randomfile (2).txt" for user "user1" on server "LOCAL" should be "remote content"
     Examples:
