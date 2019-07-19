@@ -22,6 +22,7 @@
  *
  */
 
+use PHPUnit\Framework\Assert;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcsApiHelper;
@@ -407,6 +408,34 @@ trait AppConfiguration {
 	}
 
 	/**
+	 * Return text that contains the details of the URL, including any differences due to inline codes
+	 *
+	 * @param string $url
+	 *
+	 * @return string
+	 */
+	private function getUrlStringForMessage($url) {
+		$text = $url;
+		$expectedUrl = $this->substituteInLineCodes($url);
+		if ($expectedUrl !== $url) {
+			$text .= " ($expectedUrl)";
+		}
+		return $text;
+	}
+
+	/**
+	 * @param string $url
+	 *
+	 * @return string
+	 */
+	private function getNotTrustedServerMessage($url) {
+		return
+			"URL "
+			. $this->getUrlStringForMessage($url)
+			. " is not a trusted server but should be";
+	}
+
+	/**
 	 * @Then url :url should be a trusted server
 	 *
 	 * @param string $url
@@ -420,7 +449,7 @@ trait AppConfiguration {
 				return;
 			}
 		}
-		\PHPUnit\Framework\Assert::fail("Given url $url is not a trusted server");
+		Assert::fail($this->getNotTrustedServerMessage($url));
 	}
 
 	/**
@@ -443,7 +472,7 @@ trait AppConfiguration {
 				}
 			}
 			if (!$found) {
-				\PHPUnit\Framework\Assert::fail("Given url ${server['url']} is not a trusted server");
+				Assert::fail($this->getNotTrustedServerMessage($server['url']));
 			}
 		}
 	}
@@ -461,7 +490,8 @@ trait AppConfiguration {
 		if ($status !== 201) {
 			throw new \Exception(
 				__METHOD__ .
-				"Could not add trusted serverThe request failed with status $status"
+				"Could not add trusted server " . $this->getUrlStringForMessage($url)
+				. ". The request failed with status $status"
 			);
 		}
 	}
@@ -497,7 +527,10 @@ trait AppConfiguration {
 		$trustedServers = $this->getTrustedServers();
 		foreach ($trustedServers as $server => $id) {
 			if ($server === $this->substituteInLineCodes($url)) {
-				\PHPUnit\Framework\Assert::fail("Given url $url is a trusted server but is not expected to be");
+				Assert::fail(
+					"URL " . $this->getUrlStringForMessage($url)
+					. " is a trusted server but is not expected to be"
+				);
 			}
 		}
 	}
@@ -526,7 +559,7 @@ trait AppConfiguration {
 	 */
 	public function theTrustedServerListIsCleared() {
 		$this->theAdministratorDeletesAllTrustedServersUsingTheTestingApi();
-		\PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			204,
 			$this->getResponse()->getStatusCode(),
 			__METHOD__
@@ -542,7 +575,7 @@ trait AppConfiguration {
 	 */
 	public function theTrustedServerListShouldBeEmpty() {
 		$trustedServers = $this->getTrustedServers();
-		\PHPUnit\Framework\Assert::assertEmpty($trustedServers, "Trusted server is not empty");
+		Assert::assertEmpty($trustedServers, "Trusted server list is not empty");
 	}
 
 	/**
