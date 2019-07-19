@@ -110,7 +110,7 @@ Feature: sharing
       | file_source            | A_NUMBER           |
       | file_target            | /file_to_share.txt |
       | path                   | /file_to_share.txt |
-      | permissions            | 19                 |
+      | permissions            | share,read,update  |
       | stime                  | A_NUMBER           |
       | storage                | A_NUMBER           |
       | mail_send              | 0                  |

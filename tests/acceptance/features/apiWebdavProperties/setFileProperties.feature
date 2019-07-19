@@ -52,7 +52,7 @@ Feature: set file properties
     And user "user0" has created a share with settings
       | path        | testcustompropshared.txt |
       | shareType   | 0                        |
-      | permissions | 31                       |
+      | permissions | all                      |
       | shareWith   | user1                    |
     And user "user0" has set property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testcustompropshared.txt" to "valueForSharetest"
     When user "user1" gets a custom property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testcustompropshared.txt"
