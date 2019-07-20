@@ -14,11 +14,11 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | user1        |
-      | file_target | /welcome.txt |
-      | path        | /welcome.txt |
-      | permissions | 19           |
-      | uid_owner   | user0        |
+      | share_with  | user1             |
+      | file_target | /welcome.txt      |
+      | path        | /welcome.txt      |
+      | permissions | share,read,update |
+      | uid_owner   | user0             |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -64,7 +64,7 @@ Feature: sharing
       | share_with  | user1   |
       | file_target | /FOLDER |
       | path        | /FOLDER |
-      | permissions | 31      |
+      | permissions | all     |
       | uid_owner   | user0   |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -78,11 +78,11 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | grp1         |
-      | file_target | /welcome.txt |
-      | path        | /welcome.txt |
-      | permissions | 19           |
-      | uid_owner   | user0        |
+      | share_with  | grp1              |
+      | file_target | /welcome.txt      |
+      | path        | /welcome.txt      |
+      | permissions | share,read,update |
+      | uid_owner   | user0             |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -98,7 +98,7 @@ Feature: sharing
       | share_with  | grp1    |
       | file_target | /FOLDER |
       | path        | /FOLDER |
-      | permissions | 31      |
+      | permissions | all     |
       | uid_owner   | user0   |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -116,11 +116,11 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | user1        |
-      | file_target | /welcome.txt |
-      | path        | /welcome.txt |
-      | permissions | 19           |
-      | uid_owner   | user0        |
+      | share_with  | user1             |
+      | file_target | /welcome.txt      |
+      | path        | /welcome.txt      |
+      | permissions | share,read,update |
+      | uid_owner   | user0             |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -138,7 +138,7 @@ Feature: sharing
       | mimetype               | text/plain   |
       | file_target            | /welcome.txt |
       | path                   | /welcome.txt |
-      | permissions            | 1            |
+      | permissions            | read         |
       | share_type             | 3            |
       | displayname_file_owner | User Zero    |
       | displayname_owner      | User Zero    |
@@ -164,7 +164,7 @@ Feature: sharing
       | mimetype               | text/plain   |
       | file_target            | /welcome.txt |
       | path                   | /welcome.txt |
-      | permissions            | 1            |
+      | permissions            | read         |
       | share_type             | 3            |
       | displayname_file_owner | User Zero    |
       | displayname_owner      | User Zero    |
@@ -184,7 +184,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | welcome.txt |
-      | permissions | 31          |
+      | permissions | all         |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
@@ -192,7 +192,7 @@ Feature: sharing
       | mimetype               | text/plain   |
       | file_target            | /welcome.txt |
       | path                   | /welcome.txt |
-      | permissions            | 1            |
+      | permissions            | read         |
       | share_type             | 3            |
       | displayname_file_owner | User Zero    |
       | displayname_owner      | User Zero    |
@@ -217,7 +217,7 @@ Feature: sharing
       | mimetype               | httpd/unix-directory |
       | file_target            | /PARENT              |
       | path                   | /PARENT              |
-      | permissions            | 1                    |
+      | permissions            | read                 |
       | share_type             | 3                    |
       | displayname_file_owner | User Zero            |
       | displayname_owner      | User Zero            |
@@ -244,7 +244,7 @@ Feature: sharing
       | mimetype               | httpd/unix-directory |
       | file_target            | /PARENT              |
       | path                   | /PARENT              |
-      | permissions            | 1                    |
+      | permissions            | read                 |
       | share_type             | 3                    |
       | displayname_file_owner | User Zero            |
       | displayname_owner      | User Zero            |
@@ -272,7 +272,7 @@ Feature: sharing
       | path                   | /welcome.txt   |
       | item_type              | file           |
       | share_type             | 3              |
-      | permissions            | 1              |
+      | permissions            | read           |
       | uid_owner              | user0          |
       | share_with             | ***redacted*** |
       | share_with_displayname | ***redacted*** |
@@ -293,7 +293,7 @@ Feature: sharing
       | path                   | /welcome.txt   |
       | item_type              | file           |
       | share_type             | 3              |
-      | permissions            | 1              |
+      | permissions            | read           |
       | uid_owner              | user0          |
     And the fields of the last response should not include
       | share_with             | ANY_VALUE |
@@ -337,7 +337,7 @@ Feature: sharing
     And the fields of the last response should include
       | id          | A_NUMBER |
       | share_type  | 3        |
-      | permissions | 1        |
+      | permissions | read     |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -348,14 +348,14 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
-      | path        | /afolder |
-      | permissions | 15       |
+      | path        | /afolder                  |
+      | permissions | read,update,create,delete |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | id          | A_NUMBER |
-      | share_type  | 3        |
-      | permissions | 15       |
+      | id          | A_NUMBER                  |
+      | share_type  | 3                         |
+      | permissions | read,update,create,delete |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -366,14 +366,14 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "user0" has created folder "/afolder"
     When user "user0" creates a public link share using the sharing API with settings
-      | path        | /afolder |
-      | permissions | 5        |
+      | path        | /afolder    |
+      | permissions | read,create |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | id          | A_NUMBER |
-      | share_type  | 3        |
-      | permissions | 5        |
+      | id          | A_NUMBER    |
+      | share_type  | 3           |
+      | permissions | read,create |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -746,11 +746,11 @@ Feature: sharing
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | USER1           |
-      | file_target | /randomfile.txt |
-      | path        | /randomfile.txt |
-      | permissions | 19              |
-      | uid_owner   | user0           |
+      | share_with  | USER1             |
+      | file_target | /randomfile.txt   |
+      | path        | /randomfile.txt   |
+      | permissions | share,read,update |
+      | uid_owner   | user0             |
     #And user "user1" should see the following elements
     #  | /randomfile.txt |
     #And the content of file "randomfile.txt" for user "user1" should be "user0 file"
@@ -813,22 +813,22 @@ Feature: sharing
       | user3    |
     And user "user2" has uploaded file with content "user2 file" to "/randomfile.txt"
     And user "user3" has uploaded file with content "user3 file" to "/randomfile.txt"
-    When user "user2" shares file "randomfile.txt" with user "user1" with permissions read using the sharing API
+    When user "user2" shares file "randomfile.txt" with user "user1" with permissions "read" using the sharing API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | uid_owner   | user2              |
-      | share_with  | user1              |
-      | file_target | /randomfile.txt|
-      | item_type   | file               |
-      | permissions | 1                  |
-    When user "user3" shares file "randomfile.txt" with user "user1" with permissions update using the sharing API
+      | uid_owner   | user2           |
+      | share_with  | user1           |
+      | file_target | /randomfile.txt |
+      | item_type   | file            |
+      | permissions | read            |
+    When user "user3" shares file "randomfile.txt" with user "user1" with permissions "update" using the sharing API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | uid_owner   | user3              |
       | share_with  | user1              |
       | file_target | /randomfile (2).txt|
       | item_type   | file               |
-      | permissions | 3                  |
+      | permissions | read,update        |
     # Here the last response contains permissions = 3 which is equivalent to permissons: read(1) + update(2)
     And the content of file "randomfile.txt" for user "user1" should be "user2 file"
     And the content of file "randomfile (2).txt" for user "user1" should be "user3 file"
@@ -848,24 +848,22 @@ Feature: sharing
     And user "user2" has created folder "zzzfolder/user2"
     And user "user3" has created folder "/zzzfolder"
     And user "user3" has created folder "zzzfolder/user3"
-    When user "user2" shares folder "zzzfolder" with user "user1" with permissions delete using the sharing API
+    When user "user2" shares folder "zzzfolder" with user "user1" with permissions "delete" using the sharing API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | uid_owner   | user2              |
-      | share_with  | user1              |
-      | file_target | /zzzfolder     |
-      | item_type   | folder             |
-      | permissions | 9                  |
-    # The last response contains permissions = 9 which is equivalent to permissons: read(1) + delete(8)
-    When user "user3" shares folder "zzzfolder" with user "user1" with permissions share using the sharing API
+      | uid_owner   | user2       |
+      | share_with  | user1       |
+      | file_target | /zzzfolder  |
+      | item_type   | folder      |
+      | permissions | read,delete |
+    When user "user3" shares folder "zzzfolder" with user "user1" with permissions "share" using the sharing API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
-      | uid_owner   | user3              |
-      | share_with  | user1              |
-      | file_target | /zzzfolder (2)     |
-      | item_type   | folder             |
-      | permissions | 17                 |
-    # Here the last response has permissions = 9 which is equivalent to permissons: read(1) + share(16)
+      | uid_owner   | user3          |
+      | share_with  | user1          |
+      | file_target | /zzzfolder (2) |
+      | item_type   | folder         |
+      | permissions | share,read     |
     And as "user1" folder "zzzfolder/user2" should exist
     And as "user1" folder "zzzfolder (2)/user3" should exist
     Examples:
@@ -966,11 +964,11 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | <group_id1>    |
-      | file_target | /textfile1.txt |
-      | path        | /textfile1.txt |
-      | permissions | 19             |
-      | uid_owner   | user0          |
+      | share_with  | <group_id1>       |
+      | file_target | /textfile1.txt    |
+      | path        | /textfile1.txt    |
+      | permissions | share,read,update |
+      | uid_owner   | user0             |
     And the content of file "textfile1.txt" for user "user1" should be "ownCloud test text file 1" plus end-of-line
     When user "user0" shares file "textfile2.txt" with group "<group_id2>" using the sharing API
     Then the OCS status code should be "404"
@@ -1001,7 +999,7 @@ Feature: sharing
       | path        | /textfile0.txt |
       | item_type   | file           |
       | share_type  | 3              |
-      | permissions | 1              |
+      | permissions | read           |
       | uid_owner   | user0          |
       | expiration  | +7 days        |
     When user "user0" gets the info of the last share using the sharing API
@@ -1012,7 +1010,7 @@ Feature: sharing
       | path        | /textfile0.txt |
       | item_type   | file           |
       | share_type  | 3              |
-      | permissions | 1              |
+      | permissions | read           |
       | uid_owner   | user0          |
       | expiration  | +7 days        |
     And the last public shared file should be able to be downloaded without a password

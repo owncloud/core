@@ -14,24 +14,24 @@ Feature: multilinksharing
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
-      | permissions  | 15          |
+      | permissions  | change      |
       | name         | sharedlink1 |
     And the user has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
-      | permissions  | 15          |
+      | permissions  | change      |
       | name         | sharedlink2 |
     And the user has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
-      | permissions  | 15          |
+      | permissions  | change      |
       | name         | sharedlink3 |
     When the user updates the last share using the sharing API with
-      | permissions | 1 |
+      | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as user "user0" the public shares of folder "/FOLDER" should be
@@ -49,22 +49,22 @@ Feature: multilinksharing
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
-      | permissions | 1             |
+      | permissions | read          |
       | name        | sharedlink1   |
     And the user has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
-      | permissions | 1             |
+      | permissions | read          |
       | name        | sharedlink2   |
     And the user has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
-      | permissions | 1             |
+      | permissions | read          |
       | name        | sharedlink3   |
     When the user updates the last share using the sharing API with
-      | permissions | 1 |
+      | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as user "user0" the public shares of file "/textfile0.txt" should be
@@ -83,14 +83,14 @@ Feature: multilinksharing
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
-      | permissions  | 15          |
+      | permissions  | change      |
       | name         | sharedlink1 |
     And the user has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
-      | permissions  | 15          |
+      | permissions  | change      |
       | name         | sharedlink2 |
     When the user updates the last share using the sharing API with
       | password | %alt1% |
@@ -110,13 +110,13 @@ Feature: multilinksharing
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
-      | permissions | 1             |
+      | permissions | read          |
       | name        | sharedlink1   |
     And the user has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
-      | permissions | 1             |
+      | permissions | read          |
       | name        | sharedlink2   |
     And user "user0" has deleted file "/textfile0.txt"
     And the HTTP status code should be "204"
@@ -131,19 +131,19 @@ Feature: multilinksharing
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
-      | permissions | 1             |
+      | permissions | read          |
       | name        | sharedlink1   |
     And the user has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
-      | permissions | 1             |
+      | permissions | read          |
       | name        | sharedlink2   |
     And the user has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
-      | permissions | 1             |
+      | permissions | read          |
       | name        | sharedlink3   |
     When user "user0" deletes public link share named "sharedlink2" in file "/textfile0.txt" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -162,13 +162,13 @@ Feature: multilinksharing
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
-      | permissions | 1             |
+      | permissions | read          |
       | name        | sharedlink1   |
     And the user has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
       | expireDate  | +3 days       |
-      | permissions | 1             |
+      | permissions | read          |
       | name        | sharedlink2   |
     When user "user0" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" using the WebDAV API
     Then as user "user0" the public shares of file "/textfile0.txt" should be
@@ -182,14 +182,14 @@ Feature: multilinksharing
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
-      | permissions  | 15          |
+      | permissions  | change      |
       | name         | sharedlink1 |
     And the user has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
       | expireDate   | +3 days     |
       | publicUpload | true        |
-      | permissions  | 15          |
+      | permissions  | change      |
       | name         | sharedlink2 |
     When user "user0" moves folder "/FOLDER" to "/FOLDER_RENAMED" using the WebDAV API
     Then as user "user0" the public shares of file "/FOLDER_RENAMED" should be

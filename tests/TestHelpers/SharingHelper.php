@@ -30,6 +30,14 @@ use GuzzleHttp\Message\ResponseInterface;
  *
  */
 class SharingHelper {
+	const PERMISSION_TYPES = [
+			'read' => 1,
+			'update' => 2,
+			'create' => 4,
+			'delete' => 8,
+			'share' => 16,
+	];
+
 	/**
 	 *
 	 * @param string $baseUrl baseURL of the ownCloud installation without /ocs.
@@ -141,7 +149,7 @@ class SharingHelper {
 
 		return HttpRequestHelper::post($fullUrl, $user, $password, null, $fd);
 	}
-	
+
 	/**
 	 * calculates the permission sum (int) from given permissions
 	 * permissions can be passed in as int, string or array of int or string
@@ -166,22 +174,11 @@ class SharingHelper {
 			if (!\is_array($permissions)) {
 				$permissions = [$permissions];
 			}
-			$validPermissionTypes
-				= [
-					'read' => 1,
-					'update' => 2,
-					'create' => 4,
-					'uploadwriteonly' => 5,
-					'delete' => 8,
-					'change' => 15,
-					'share' => 16,
-					'all' => 31
-				];
 			$permissionSum = 0;
 			foreach ($permissions as $permission) {
-				if (isset($validPermissionTypes[$permission])) {
-					$permissionSum += $validPermissionTypes[$permission];
-				} elseif (\in_array($permission, $validPermissionTypes)) {
+				if (\array_key_exists($permission, self::PERMISSION_TYPES)) {
+					$permissionSum += self::PERMISSION_TYPES[$permission];
+				} elseif (\in_array($permission, self::PERMISSION_TYPES, true)) {
 					$permissionSum += (int) $permission;
 				} else {
 					throw new \InvalidArgumentException(
@@ -211,7 +208,7 @@ class SharingHelper {
 		$responseXmlObject, $errorMessage = "cannot find share id in response"
 	) {
 		$xmlPart = $responseXmlObject->xpath("//data/element[last()]/id");
-		
+
 		if (!\is_array($xmlPart) || (\count($xmlPart) === 0)) {
 			throw new \Exception($errorMessage);
 		}

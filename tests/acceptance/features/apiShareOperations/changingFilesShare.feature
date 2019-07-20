@@ -74,7 +74,7 @@ Feature: sharing
       | 2               |
 
   @public_link_share-feature-required
-  Scenario Outline: Public link share permissions work correctly for renaming and share permissions 15
+  Scenario Outline: Public link share permissions work correctly for renaming and share permissions read,update,create,delete
     Given using OCS API version "<ocs_api_version>"
     When user "user0" creates a public link share using the sharing API with settings
       | path        | /PARENT                   |

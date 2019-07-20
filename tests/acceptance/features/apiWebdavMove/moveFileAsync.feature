@@ -89,7 +89,7 @@ Feature: move (rename) file
     And user "user1" has created a share with settings
       | path        | testshare |
       | shareType   | 0         |
-      | permissions | 1         |
+      | permissions | read      |
       | shareWith   | user0     |
     When user "user0" moves file "/textfile0.txt" asynchronously to "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "202"
@@ -107,7 +107,7 @@ Feature: move (rename) file
     And user "user1" has created a share with settings
       | path        | testshare |
       | shareType   | 0         |
-      | permissions | 1         |
+      | permissions | read      |
       | shareWith   | user0     |
     And user "user1" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
     When user "user0" moves file "/textfile0.txt" asynchronously to "/testshare/overwritethis.txt" using the WebDAV API
@@ -194,7 +194,7 @@ Feature: move (rename) file
     And user "user1" has created a share with settings
       | path        | testshare |
       | shareType   | 0         |
-      | permissions | 1         |
+      | permissions | read      |
       | shareWith   | user0     |
     When user "user0" moves file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "403"

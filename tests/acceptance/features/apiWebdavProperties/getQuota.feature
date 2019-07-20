@@ -36,7 +36,7 @@ Feature: get quota
     And user "user1" has created a share with settings
       | path        | testquota |
       | shareType   | 0         |
-      | permissions | 31        |
+      | permissions | all       |
       | shareWith   | user0     |
     When user "user0" gets the following properties of folder "/testquota" using the WebDAV API
       | d:quota-available-bytes |

@@ -119,7 +119,8 @@ class FederationContext implements Context {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" with permissions (.*)$/
+	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" with permissions (\d+)$/
+	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" with permissions "([^"]*)"$/
 	 *
 	 * @param string $sharerUser
 	 * @param string $sharerServer "LOCAL" or "REMOTE"

@@ -40,7 +40,7 @@ Feature: transfer-ownership
     And user "user1" has been created with default attributes and skeleton files
     And user "user2" has been created with default attributes and skeleton files
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
-    And user "user0" has shared file "/somefile.txt" with user "user2" with permissions 19
+    And user "user0" has shared file "/somefile.txt" with user "user2" with permissions "share,update,read"
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
     And the downloaded content when downloading file "/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
@@ -52,7 +52,7 @@ Feature: transfer-ownership
     And user "user2" has been created with default attributes and skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
-    And user "user0" has shared folder "/test" with user "user2" with permissions 31
+    And user "user0" has shared folder "/test" with user "user2" with permissions "all"
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
     And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
@@ -63,7 +63,7 @@ Feature: transfer-ownership
     And user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 31
+    And user "user0" has shared folder "/test" with user "user1" with permissions "all"
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
     And as "user1" folder "/test" should not exist
@@ -78,8 +78,8 @@ Feature: transfer-ownership
     And user "user2" has been added to group "group1"
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
-    And user "user0" has shared folder "/test" with group "group1" with permissions 31
-    And user "user0" has shared folder "/test" with user "user2" with permissions 31
+    And user "user0" has shared folder "/test" with group "group1" with permissions "all"
+    And user "user0" has shared folder "/test" with user "user2" with permissions "all"
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
     And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
@@ -90,7 +90,7 @@ Feature: transfer-ownership
     And user "user1" has been created with default attributes and skeleton files
     And user "user2" has been created with default attributes and skeleton files
     And user "user2" has created folder "/test"
-    And user "user2" has shared folder "/test" with user "user0" with permissions 31
+    And user "user2" has shared folder "/test" with user "user0" with permissions "all"
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
     And as "user1" folder "/test" should not exist in the last received transfer folder
@@ -110,7 +110,7 @@ Feature: transfer-ownership
     And user "user2" has been created with default attributes and skeleton files
     And user "user0" has created folder "/sub"
     And user "user0" has created folder "/sub/test"
-    And user "user0" has shared folder "/sub/test" with user "user2" with permissions 31
+    And user "user0" has shared folder "/sub/test" with user "user2" with permissions "all"
     And user "user0" has deleted folder "/sub"
     When the administrator transfers ownership from "user0" to "user1" using the occ command
     Then the command should have been successful
@@ -164,7 +164,7 @@ Feature: transfer-ownership
     And user "user2" has been created with default attributes and skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
-    And user "user0" has shared file "/test/somefile.txt" with user "user2" with permissions 19
+    And user "user0" has shared file "/test/somefile.txt" with user "user2" with permissions "share,update,read"
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
     Then the command should have been successful
     And the downloaded content when downloading file "/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
@@ -176,7 +176,7 @@ Feature: transfer-ownership
     And user "user2" has been created with default attributes and skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
-    And user "user0" has shared folder "/test" with user "user2" with permissions 31
+    And user "user0" has shared folder "/test" with user "user2" with permissions "all"
     And user "user1" has created a public link share with settings
       | path | /test/somefile.txt |
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
@@ -190,7 +190,7 @@ Feature: transfer-ownership
     And user "user2" has been created with default attributes and skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
-    And user "user0" has shared folder "/test" with user "user2" with permissions 31
+    And user "user0" has shared folder "/test" with user "user2" with permissions "all"
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
     Then the command should have been successful
     And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
@@ -201,7 +201,7 @@ Feature: transfer-ownership
     And user "user1" has been created with default attributes and skeleton files
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
-    And user "user0" has shared folder "/test" with user "user1" with permissions 31
+    And user "user0" has shared folder "/test" with user "user1" with permissions "all"
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
     Then the command should have been successful
     And as "user1" folder "/test" should not exist
@@ -216,8 +216,8 @@ Feature: transfer-ownership
     And user "user2" has been added to group "group1"
     And user "user0" has created folder "/test"
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
-    And user "user0" has shared folder "/test" with group "group1" with permissions 31
-    And user "user0" has shared folder "/test" with user "user2" with permissions 31
+    And user "user0" has shared folder "/test" with group "group1" with permissions "all"
+    And user "user0" has shared folder "/test" with user "user2" with permissions "all"
     When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
     Then the command should have been successful
     And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
@@ -228,7 +228,7 @@ Feature: transfer-ownership
     And user "user2" has been created with default attributes and skeleton files
     And user "user2" has created folder "/test"
     And user "user0" has created folder "/sub"
-    And user "user2" has shared folder "/test" with user "user0" with permissions 31
+    And user "user2" has shared folder "/test" with user "user0" with permissions "all"
     And user "user0" has moved folder "/test" to "/sub/test"
     When the administrator transfers ownership of path "sub" from "user0" to "user1" using the occ command
     Then the command should have been successful
@@ -243,7 +243,7 @@ Feature: transfer-ownership
     And user "user0" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
     And user "user0" creates a public link share using the sharing API with settings
       | path | /test/somefile.txt |
-    And user "user0" has shared file "/test" with user "user1" with permissions 31
+    And user "user0" has shared file "/test" with user "user1" with permissions "all"
     And user "user1" creates a public link share using the sharing API with settings
       | path | /test |
     When the administrator transfers ownership from "user0" to "user1" using the occ command
