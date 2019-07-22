@@ -81,7 +81,9 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		$this->log('enter: '.__FUNCTION__.'('.\json_encode($loggedParams).')');
 
 		if (isset($params['host'], $params['user'], $params['password'], $params['share'])) {
-			$auth = new BasicAuth($params['user'], '', $params['password']);
+			$domain = (isset($params['domain'])) ? $params['domain'] : '';
+
+			$auth = new BasicAuth($params['user'], $domain, $params['password']);
 			$serverFactory = new ServerFactory();
 			$this->server = $serverFactory->createServer($params['host'], $auth);
 			$this->share = $this->server->getShare(\trim($params['share'], '/'));
