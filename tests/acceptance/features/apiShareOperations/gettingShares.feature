@@ -105,7 +105,7 @@ Feature: sharing
       | id                     | A_NUMBER           |
       | item_type              | file               |
       | item_source            | A_NUMBER           |
-      | share_type             | 0                  |
+      | share_type             | user               |
       | share_with             | user1              |
       | file_source            | A_NUMBER           |
       | file_target            | /file_to_share.txt |

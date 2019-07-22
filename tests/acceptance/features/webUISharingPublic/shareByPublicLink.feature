@@ -354,7 +354,7 @@ Feature: Share by public link
       | path       | lorem.txt   |
       | name       | Public link |
       | expireDate | 14-10-2038  |
-      | shareType  | 3           |
+      | shareType  | public_link |
     And user "user1" has logged in using the webUI
     When the user changes the expiration of the public link named "Public link" of file "lorem.txt" to "21-07-2038"
     And the user gets the info of the last share using the sharing API
@@ -367,7 +367,7 @@ Feature: Share by public link
       | path       | lorem.txt   |
       | name       | Public link |
       | expireDate | 14-10-2038  |
-      | shareType  | 3           |
+      | shareType  | public_link |
     And user "user1" has logged in using the webUI
     When the user changes the expiration of the public link named "Public link" of file "lorem.txt" to "14-09-2017"
     And the user gets the info of the last share using the sharing API
@@ -593,7 +593,7 @@ Feature: Share by public link
       | path       | lorem.txt   |
       | name       | Public link |
       | expireDate | + 5 days    |
-      | shareType  | 3           |
+      | shareType  | public_link |
     And user "user1" has logged in using the webUI
     And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
     Then the user should see an error message on the public link popup saying "Expiration date is required"
@@ -608,7 +608,7 @@ Feature: Share by public link
       | path       | lorem.txt   |
       | name       | Public link |
       | expireDate |  + 5 days   |
-      | shareType  | 3           |
+      | shareType  | public_link |
     And user "user1" has logged in using the webUI
     And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
     And the user gets the info of the last share using the sharing API

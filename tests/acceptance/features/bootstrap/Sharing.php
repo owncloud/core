@@ -180,7 +180,7 @@ trait Sharing {
 	 *       | shareWith       | The user or group id with which the file should     |
 	 *       |                 | be shared.                                          |
 	 *       | shareType       | The type of the share. This can be one of:          |
-	 *       |                 |    0 = user, 1 = group, 3 = public (link),          |
+	 *       |                 |    0 = user, 1 = group, 3 = public_link,            |
 	 *       |                 |    6 = federated (cloud share).                     |
 	 *       |                 |    Pass either the number or the keyword.           |
 	 *
@@ -249,7 +249,7 @@ trait Sharing {
 	public function userCreatesAPublicLinkShareWithSettings($user, $body) {
 		$rows = $body->getRows();
 		// A public link share is shareType 3
-		$rows[] = ['shareType', '3'];
+		$rows[] = ['shareType', 'public_link'];
 		$newBody = new TableNode($rows);
 		$this->userCreatesAShareWithSettings($user, $newBody);
 	}
@@ -314,7 +314,7 @@ trait Sharing {
 		$this->createShare(
 			$user,
 			$path,
-			'public',
+			'public_link',
 			null, // shareWith
 			$publicUpload,
 			$sharePassword,
@@ -1198,16 +1198,15 @@ trait Sharing {
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
-	 * @param string $userOrGroup
+	 * @param string $userOrGroupShareType
 	 * @param string $sharee
 	 * @param int|string $permissions
 	 *
 	 * @return void
 	 */
-	public function userTriesToShareFileUsingTheSharingApi($sharer, $filepath, $userOrGroup, $sharee, $permissions = null) {
-		$shareType = ($userOrGroup === "user" ? 0 : 1);
+	public function userTriesToShareFileUsingTheSharingApi($sharer, $filepath, $userOrGroupShareType, $sharee, $permissions = null) {
 		$this->createShare(
-			$sharer, $filepath, $shareType, $sharee, null, null, $permissions
+			$sharer, $filepath, $userOrGroupShareType, $sharee, null, null, $permissions
 		);
 		$statusCode = $this->ocsContext->getOCSResponseStatusCode($this->response);
 		PHPUnit\Framework\Assert::assertTrue(
@@ -1222,18 +1221,17 @@ trait Sharing {
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
-	 * @param string $userOrGroup
+	 * @param string $userOrGroupShareType
 	 * @param string $sharee
 	 * @param int|string $permissions
 	 *
 	 * @return void
 	 */
 	public function userShouldBeAbleToShareUsingTheSharingApi(
-		$sharer, $filepath, $userOrGroup, $sharee, $permissions = null
+		$sharer, $filepath, $userOrGroupShareType, $sharee, $permissions = null
 	) {
-		$shareType = ($userOrGroup === "user" ? 0 : 1);
 		$this->createShare(
-			$sharer, $filepath, $shareType, $sharee, null, null, $permissions
+			$sharer, $filepath, $userOrGroupShareType, $sharee, null, null, $permissions
 		);
 
 		//v1.php returns 100 as success code
@@ -1991,6 +1989,9 @@ trait Sharing {
 				$value = $this->splitPermissionsString($value);
 			}
 			$value = SharingHelper::getPermissionSum($value);
+		}
+		if ($field === "share_type") {
+			$value = SharingHelper::getShareType($value);
 		}
 		return $value;
 	}

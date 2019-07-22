@@ -45,7 +45,7 @@ Feature: Comments
     Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has created a share with settings
       | path        | /myFileToComment.txt |
-      | shareType   | 0                    |
+      | shareType   | user                 |
       | shareWith   | user1                |
       | permissions | read                 |
     When user "user1" comments with content "Comment from sharee" on file "/myFileToComment.txt" using the WebDAV API
@@ -57,7 +57,7 @@ Feature: Comments
     Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And the user has created a share with settings
       | path        | /myFileToComment.txt |
-      | shareType   | 0                    |
+      | shareType   | user                 |
       | shareWith   | user1                |
       | permissions | create               |
     When user "user1" comments with content "Comment from sharee" on file "/myFileToComment.txt" using the WebDAV API
