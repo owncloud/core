@@ -16,7 +16,7 @@ Feature: federated
       | id                     | A_NUMBER          |
       | item_type              | file              |
       | item_source            | A_NUMBER          |
-      | share_type             | 6                 |
+      | share_type             | federated         |
       | file_source            | A_NUMBER          |
       | path                   | /textfile0.txt    |
       | permissions            | share,read,update |
@@ -42,7 +42,7 @@ Feature: federated
       | id                     | A_NUMBER          |
       | item_type              | file              |
       | item_source            | A_NUMBER          |
-      | share_type             | 6                 |
+      | share_type             | federated         |
       | file_source            | A_NUMBER          |
       | path                   | /textfile0.txt    |
       | permissions            | share,read,update |
@@ -167,7 +167,7 @@ Feature: federated
     And using OCS API version "<ocs-api-version>"
     When user "user1" creates a share using the sharing API with settings
       | path        | /textfile0 (2).txt |
-      | shareType   | 0                  |
+      | shareType   | user               |
       | shareWith   | user2              |
       | permissions | share,read,update  |
     Then the OCS status code should be "<ocs-status>"
@@ -176,7 +176,7 @@ Feature: federated
       | id                     | A_NUMBER           |
       | item_type              | file               |
       | item_source            | A_NUMBER           |
-      | share_type             | 0                  |
+      | share_type             | user               |
       | file_source            | A_NUMBER           |
       | path                   | /textfile0 (2).txt |
       | permissions            | share,read,update  |

@@ -39,7 +39,7 @@ Feature: sharing
     And user "user0" has uploaded file with content "foo" to "/tmp.txt"
     And user "user0" has created a share with settings
       | path        | /tmp.txt          |
-      | shareType   | 1                 |
+      | shareType   | group             |
       | permissions | share,update,read |
       | shareWith   | grp1              |
     When user "user1" gets the following properties of file "/tmp.txt" using the WebDAV API
@@ -69,7 +69,7 @@ Feature: sharing
     And user "user0" has uploaded file with content "foo" to "/tmp.txt"
     And user "user0" has created a share with settings
       | path        | /tmp.txt    |
-      | shareType   | 1           |
+      | shareType   | group       |
       | permissions | update,read |
       | shareWith   | grp1        |
     When user "user1" gets the following properties of file "/tmp.txt" using the WebDAV API
@@ -99,7 +99,7 @@ Feature: sharing
     And user "user0" has uploaded file with content "foo" to "/tmp.txt"
     And user "user0" has created a share with settings
       | path        | /tmp.txt   |
-      | shareType   | 1          |
+      | shareType   | group      |
       | permissions | share,read |
       | shareWith   | grp1       |
     When user "user1" gets the following properties of file "/tmp.txt" using the WebDAV API
@@ -139,9 +139,9 @@ Feature: sharing
     And user "user1" has been added to group "grp1"
     And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
-      | path      | tmp  |
-      | shareType | 1    |
-      | shareWith | grp1 |
+      | path      | tmp   |
+      | shareType | group |
+      | shareWith | grp1  |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
       | ocs:share-permissions |
     Then the single response should contain a property "ocs:share-permissions" with value "31"
@@ -169,7 +169,7 @@ Feature: sharing
     And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
       | path        | tmp                      |
-      | shareType   | 1                        |
+      | shareType   | group                    |
       | shareWith   | grp1                     |
       | permissions | share,delete,create,read |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
@@ -199,7 +199,7 @@ Feature: sharing
     And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
       | path        | tmp                      |
-      | shareType   | 1                        |
+      | shareType   | group                    |
       | shareWith   | grp1                     |
       | permissions | share,delete,update,read |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
@@ -229,7 +229,7 @@ Feature: sharing
     And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
       | path        | tmp                        |
-      | shareType   | 1                          |
+      | shareType   | group                      |
       | shareWith   | grp1                       |
       | permissions | share,create,update,read   |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
@@ -259,7 +259,7 @@ Feature: sharing
     And user "user0" has created folder "/tmp"
     And user "user0" has created a share with settings
       | path        | tmp    |
-      | shareType   | 1      |
+      | shareType   | group  |
       | shareWith   | grp1   |
       | permissions | change |
     When user "user1" gets the following properties of folder "/tmp" using the WebDAV API
