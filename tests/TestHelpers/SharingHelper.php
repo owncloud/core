@@ -38,6 +38,13 @@ class SharingHelper {
 			'share' => 16,
 	];
 
+	const SHARE_TYPES = [
+			'user' => 0,
+			'group' => 1,
+			'public_link' => 3,
+			'federated' => 6,
+	];
+
 	/**
 	 *
 	 * @param string $baseUrl baseURL of the ownCloud installation without /ocs.
@@ -100,14 +107,6 @@ class SharingHelper {
 			}
 		}
 
-		$validShareTypes
-			= ['user' => 0, 'group' => 1, 'public' => 3, 'federated' => 6];
-		if (isset($validShareTypes[$shareType])) {
-			$shareType = $validShareTypes[$shareType];
-		}
-		if (!\in_array($shareType, $validShareTypes, true)) {
-			throw new \InvalidArgumentException("invalid share type");
-		}
 		if ($permissions !== null) {
 			$fd['permissions'] = self::getPermissionSum($permissions);
 		}
@@ -129,7 +128,7 @@ class SharingHelper {
 		}
 		$fullUrl .= "ocs/v{$ocsApiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
 		$fd['path'] = $path;
-		$fd['shareType'] = $shareType;
+		$fd['shareType'] = self::getShareType($shareType);
 
 		if ($shareWith !== null) {
 			$fd['shareWith'] = $shareWith;
@@ -193,6 +192,32 @@ class SharingHelper {
 			);
 		}
 		return $permissionSum;
+	}
+
+	/**
+	 * returns the share type number corresponding to the share type keyword
+	 *
+	 * @param string|int $shareType a keyword from SHARE_TYPES or a share type number
+	 *
+	 * @return int
+	 * @throws \InvalidArgumentException
+	 *
+	 */
+	public static function getShareType($shareType) {
+		if (\array_key_exists($shareType, self::SHARE_TYPES)) {
+			return self::SHARE_TYPES[$shareType];
+		} else {
+			if (\ctype_digit($shareType)) {
+				$shareType = (int) $shareType;
+			}
+			$key = \array_search($shareType, self::SHARE_TYPES, true);
+			if ($key !== false) {
+				return self::SHARE_TYPES[$key];
+			}
+			throw new \InvalidArgumentException(
+				"invalid share type ($shareType)"
+			);
+		}
 	}
 
 	/**

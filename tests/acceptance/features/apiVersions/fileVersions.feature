@@ -107,7 +107,7 @@ Feature: dav-versions
     And we save it into "FILEID"
     When user "user0" creates a share using the sharing API with settings
       | path        | /davtest.txt |
-      | shareType   | 0            |
+      | shareType   | user         |
       | shareWith   | user1        |
       | permissions | delete       |
     Then the version folder of fileId "<<FILEID>>" for user "user1" should contain "1" element

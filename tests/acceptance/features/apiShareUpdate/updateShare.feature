@@ -41,7 +41,7 @@ Feature: sharing
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
-      | share_type        | 3                    |
+      | share_type        | public_link          |
       | file_source       | A_NUMBER             |
       | file_target       | /FOLDER              |
       | permissions       | read                 |
@@ -92,7 +92,7 @@ Feature: sharing
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
-      | share_type        | 3                    |
+      | share_type        | public_link          |
       | file_source       | A_NUMBER             |
       | file_target       | /FOLDER              |
       | permissions       | read                 |
@@ -126,7 +126,7 @@ Feature: sharing
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
-      | share_type        | 3                    |
+      | share_type        | public_link          |
       | file_source       | A_NUMBER             |
       | file_target       | /FOLDER              |
       | permissions       | read                 |
@@ -159,7 +159,7 @@ Feature: sharing
       | id                | A_NUMBER                  |
       | item_type         | folder                    |
       | item_source       | A_NUMBER                  |
-      | share_type        | 3                         |
+      | share_type        | public_link               |
       | file_source       | A_NUMBER                  |
       | file_target       | /FOLDER                   |
       | permissions       | read,update,create,delete |
@@ -192,7 +192,7 @@ Feature: sharing
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
-      | share_type        | 3                    |
+      | share_type        | public_link          |
       | file_source       | A_NUMBER             |
       | file_target       | /FOLDER              |
       | permissions       | read,update,create   |
@@ -225,7 +225,7 @@ Feature: sharing
       | id                | A_NUMBER                  |
       | item_type         | folder                    |
       | item_source       | A_NUMBER                  |
-      | share_type        | 3                         |
+      | share_type        | public_link               |
       | file_source       | A_NUMBER                  |
       | file_target       | /FOLDER                   |
       | permissions       | read,update,create,delete |
@@ -260,7 +260,7 @@ Feature: sharing
       | id                | A_NUMBER       |
       | item_type         | file           |
       | item_source       | A_NUMBER       |
-      | share_type        | 1              |
+      | share_type        | group          |
       | file_source       | A_NUMBER       |
       | file_target       | /textfile0.txt |
       | permissions       | read           |
@@ -325,7 +325,7 @@ Feature: sharing
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
-      | share_type        | 0                    |
+      | share_type        | user                 |
       | file_source       | A_NUMBER             |
       | file_target       | /folder2             |
       | permissions       | all                  |
@@ -355,7 +355,7 @@ Feature: sharing
       | id                | A_NUMBER             |
       | item_type         | folder               |
       | item_source       | A_NUMBER             |
-      | share_type        | 0                    |
+      | share_type        | user                 |
       | file_source       | A_NUMBER             |
       | file_target       | /user2-folder        |
       | permissions       | all                  |
