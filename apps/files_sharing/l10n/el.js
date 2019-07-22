@@ -21,6 +21,7 @@ OC.L10N.register(
     "Files and folders you share will show up here" : "Τα αρχεία και οι φάκελοι που διαμοιράζεστε θα εμφανιστούν εδώ",
     "No shared links" : "Κανένας διαμοιρασμένος σύνδεσμος",
     "Files and folders you share by link will show up here" : "Τα αρχεία και οι φάκελοι που διαμοιράζεστε μέσω συνδέσμου θα εμφανιστούνε εδώ",
+    "Decline Share" : "Απόρριψη κοινόχρηστου",
     "Do you want to add the remote share {name} from {owner}@{remote}?" : "Θέλετε να προσθέσουμε τον απομακρυσμένο κοινόχρηστο φάκελο {name} από {owner}@{remote}?",
     "Remote share" : "Απομακρυσμένος κοινόχρηστος φάκελος",
     "Remote share password" : "Κωδικός πρόσβασης απομακρυσμένου κοινόχρηστου φακέλου",
