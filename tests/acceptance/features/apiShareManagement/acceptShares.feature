@@ -284,7 +284,7 @@ Feature: accept/decline shares coming from internal users
     And the HTTP status code should be "200"
     And the fields of the last response should include
       | id                     | A_NUMBER                   |
-      | share_type             | 0                          |
+      | share_type             | user                       |
       | uid_owner              | user0                      |
       | displayname_owner      | User Zero                  |
       | permissions            | share,read,update          |

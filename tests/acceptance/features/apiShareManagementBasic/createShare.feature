@@ -139,7 +139,7 @@ Feature: sharing
       | file_target            | /welcome.txt |
       | path                   | /welcome.txt |
       | permissions            | read         |
-      | share_type             | 3            |
+      | share_type             | public_link  |
       | displayname_file_owner | User Zero    |
       | displayname_owner      | User Zero    |
       | uid_file_owner         | user0        |
@@ -165,7 +165,7 @@ Feature: sharing
       | file_target            | /welcome.txt |
       | path                   | /welcome.txt |
       | permissions            | read         |
-      | share_type             | 3            |
+      | share_type             | public_link  |
       | displayname_file_owner | User Zero    |
       | displayname_owner      | User Zero    |
       | uid_file_owner         | user0        |
@@ -193,7 +193,7 @@ Feature: sharing
       | file_target            | /welcome.txt |
       | path                   | /welcome.txt |
       | permissions            | read         |
-      | share_type             | 3            |
+      | share_type             | public_link  |
       | displayname_file_owner | User Zero    |
       | displayname_owner      | User Zero    |
       | uid_file_owner         | user0        |
@@ -218,7 +218,7 @@ Feature: sharing
       | file_target            | /PARENT              |
       | path                   | /PARENT              |
       | permissions            | read                 |
-      | share_type             | 3                    |
+      | share_type             | public_link          |
       | displayname_file_owner | User Zero            |
       | displayname_owner      | User Zero            |
       | uid_file_owner         | user0                |
@@ -245,7 +245,7 @@ Feature: sharing
       | file_target            | /PARENT              |
       | path                   | /PARENT              |
       | permissions            | read                 |
-      | share_type             | 3                    |
+      | share_type             | public_link          |
       | displayname_file_owner | User Zero            |
       | displayname_owner      | User Zero            |
       | uid_file_owner         | user0                |
@@ -271,7 +271,7 @@ Feature: sharing
       | file_target            | /welcome.txt   |
       | path                   | /welcome.txt   |
       | item_type              | file           |
-      | share_type             | 3              |
+      | share_type             | public_link    |
       | permissions            | read           |
       | uid_owner              | user0          |
       | share_with             | ***redacted*** |
@@ -292,7 +292,7 @@ Feature: sharing
       | file_target            | /welcome.txt   |
       | path                   | /welcome.txt   |
       | item_type              | file           |
-      | share_type             | 3              |
+      | share_type             | public_link    |
       | permissions            | read           |
       | uid_owner              | user0          |
     And the fields of the last response should not include
@@ -335,9 +335,9 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | id          | A_NUMBER |
-      | share_type  | 3        |
-      | permissions | read     |
+      | id          | A_NUMBER    |
+      | share_type  | public_link |
+      | permissions | read        |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -354,7 +354,7 @@ Feature: sharing
     And the HTTP status code should be "200"
     And the fields of the last response should include
       | id          | A_NUMBER                  |
-      | share_type  | 3                         |
+      | share_type  | public_link               |
       | permissions | read,update,create,delete |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -372,7 +372,7 @@ Feature: sharing
     And the HTTP status code should be "200"
     And the fields of the last response should include
       | id          | A_NUMBER    |
-      | share_type  | 3           |
+      | share_type  | public_link |
       | permissions | read,create |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -560,7 +560,7 @@ Feature: sharing
     When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
       | path        | welcome.txt |
       | shareWith   | user1       |
-      | shareType   | 0           |
+      | shareType   | user        |
       | permissions | 0           |
     Then the OCS status code should be "400"
     And the HTTP status code should be "<http_status_code>"
@@ -998,7 +998,7 @@ Feature: sharing
       | file_target | /textfile0.txt |
       | path        | /textfile0.txt |
       | item_type   | file           |
-      | share_type  | 3              |
+      | share_type  | public_link    |
       | permissions | read           |
       | uid_owner   | user0          |
       | expiration  | +7 days        |
@@ -1009,7 +1009,7 @@ Feature: sharing
       | file_target | /textfile0.txt |
       | path        | /textfile0.txt |
       | item_type   | file           |
-      | share_type  | 3              |
+      | share_type  | public_link    |
       | permissions | read           |
       | uid_owner   | user0          |
       | expiration  | +7 days        |

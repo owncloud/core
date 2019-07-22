@@ -48,7 +48,7 @@ Feature: copy file
     And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
-      | shareType   | 0         |
+      | shareType   | user      |
       | permissions | read      |
       | shareWith   | user0     |
     When user "user0" copies file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
@@ -66,7 +66,7 @@ Feature: copy file
     And user "user1" has created folder "/testshare"
     And user "user1" has created a share with settings
       | path        | testshare |
-      | shareType   | 0         |
+      | shareType   | user      |
       | permissions | read      |
       | shareWith   | user0     |
     And user "user1" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
