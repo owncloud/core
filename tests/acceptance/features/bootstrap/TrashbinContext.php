@@ -211,6 +211,7 @@ class TrashbinContext implements Context {
 		$response = $this->featureContext->makeDavRequest(
 			$user, 'MOVE', $trashItemHRef, $headers, null, 'trash-bin', null, 2
 		);
+		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -219,6 +220,7 @@ class TrashbinContext implements Context {
 	 * @param string $destinationPath
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	private function restoreElement($user, $originalPath, $destinationPath = null) {
 		$listing = $this->listTrashbinFolder($user, null);
@@ -233,9 +235,16 @@ class TrashbinContext implements Context {
 					$entry['href'],
 					$destinationPath
 				);
-				break;
+				return;
 			}
 		}
+		// The requested element to restore was not even in the trashbin.
+		// Throw an exception, because there was not any API call, and so there
+		// is also no up-to-date response to examine in later test steps.
+		throw new \Exception(
+			__METHOD__
+			. " cannot restore from trashbin because no element was found for user $user at original path $originalPath"
+		);
 	}
 
 	/**
