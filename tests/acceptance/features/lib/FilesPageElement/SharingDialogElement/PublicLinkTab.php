@@ -28,7 +28,6 @@ use Behat\Mink\Session;
 use Exception;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
  * The Public link tab of the Sharing Dialog

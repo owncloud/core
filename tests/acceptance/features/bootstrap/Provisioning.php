@@ -1502,7 +1502,7 @@ trait Provisioning {
 				$result = SetupHelper::createUser(
 					$user, $password, $displayName, $email
 				);
-				if ($result["code"] != 0) {
+				if ($result["code"] !== "0") {
 					throw new Exception(
 						"could not create user. {$result['stdOut']} {$result['stdErr']}"
 					);
@@ -1782,7 +1782,7 @@ trait Provisioning {
 				break;
 			case "occ":
 				$result = SetupHelper::addUserToGroup($group, $user);
-				if ($checkResult && ($result["code"] != 0)) {
+				if ($checkResult && ($result["code"] !== "0")) {
 					throw new Exception(
 						"could not add user to group. {$result['stdOut']} {$result['stdErr']}"
 					);
