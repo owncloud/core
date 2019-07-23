@@ -1566,6 +1566,96 @@ trait Sharing {
 	}
 
 	/**
+	 *
+	 * @return string
+	 *
+	 * @throws Exception
+	 */
+	public function getSharingAttributesFromLastResponse() {
+		$responseXml = $this->getResponseXml()->data[0];
+		$actualAttributesElement = $responseXml->xpath('//attributes');
+
+		if ((bool) $actualAttributesElement) {
+			$actualAttributes = (array) $actualAttributesElement[0];
+			if (empty($actualAttributes)) {
+				throw new Exception(
+					"No data inside 'attributes' element in the last response."
+				);
+			}
+			return $actualAttributes[0];
+		}
+
+		throw new Exception("No 'attributes' found inside the response of the last share.");
+	}
+
+	/**
+	 * @Then the additional sharing attributes for the response should include
+	 *
+	 * @param TableNode $attributes
+	 *
+	 * @return void
+	 */
+	public function checkingAttributesInLastShareResponse(TableNode $attributes) {
+		$attributes = $attributes->getHash();
+
+		// change string "true"/"false" to boolean inside array
+		\array_walk_recursive(
+			$attributes,
+			function (&$value, $key) {
+				if ($key !== 'enabled') {
+					return;
+				}
+				if ($value === 'true') {
+					$value = true;
+				}
+				if ($value === 'false') {
+					$value = false;
+				}
+			}
+		);
+
+		$actualAttributes = $this->getSharingAttributesFromLastResponse();
+
+		// parse json to array
+		$actualAttributesArray = \json_decode($actualAttributes, true);
+		if (\json_last_error() !== JSON_ERROR_NONE) {
+			$errMsg = \strtolower(\json_last_error_msg());
+			throw new Exception(
+				"JSON decoding failed because of $errMsg in json\n" .
+				'Expected data to be json with array of objects. ' .
+				"\nReceived:\n $actualAttributes"
+			);
+		}
+
+		// check if attributes received from table is subset of actualAttributes
+		PHPUnit\Framework\Assert::assertArraySubset(
+			$attributes,
+			$actualAttributesArray
+		);
+	}
+
+	/**
+	 * @Then the downloading of file :fileName for user :user should fail with error message
+	 *
+	 * @param string $fileName
+	 * @param string $user
+	 * @param PyStringNode $errorMessage
+	 *
+	 * @return void
+	 */
+	public function userDownloadsFailWithMessage($fileName, $user, $errorMessage) {
+		$this->downloadFileAsUserUsingPassword($user, $fileName);
+		$receivedErrorMessage = $this->getResponseXml()->xpath('//s:message');
+		if ((bool) $errorMessage) {
+			PHPUnit\Framework\Assert::assertEquals(
+				$errorMessage, (string) $receivedErrorMessage[0]
+			);
+			return;
+		}
+		throw new Exception("No 's:message' element found on the response.");
+	}
+
+	/**
 	 * @Then the fields of the last response should not include
 	 *
 	 * @param TableNode|null $body
