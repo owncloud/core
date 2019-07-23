@@ -20,7 +20,8 @@ Feature: Restore deleted files/folders
     And user "user1" has moved file "/shared" to "/renamed_shared"
     And user "user1" has deleted file "/renamed_shared/shared_file.txt"
     When user "user1" restores the file with original path "/renamed_shared/shared_file.txt" using the trashbin API
-    Then as "user1" the file with original path "/renamed_shared/shared_file.txt" should not exist in trash
+    Then the HTTP status code should be "201"
+    And as "user1" the file with original path "/renamed_shared/shared_file.txt" should not exist in trash
     And user "user1" should see the following elements
       | /renamed_shared/                |
       | /renamed_shared/shared_file.txt |
@@ -36,7 +37,8 @@ Feature: Restore deleted files/folders
     And user "user0" has deleted file "/textfile0.txt"
     And as "user0" file "/textfile0.txt" should exist in trash
     When user "user0" restores the folder with original path "/textfile0.txt" using the trashbin API
-    Then as "user0" the folder with original path "/textfile0.txt" should not exist in trash
+    Then the HTTP status code should be "201"
+    And as "user0" the folder with original path "/textfile0.txt" should not exist in trash
     And user "user0" should see the following elements
       | /FOLDER/           |
       | /PARENT/           |
@@ -58,7 +60,8 @@ Feature: Restore deleted files/folders
     And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
     And user "user0" has deleted file "/new-folder/new-file.txt"
     When user "user0" restores the file with original path "/new-folder/new-file.txt" using the trashbin API
-    Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
+    Then the HTTP status code should be "201"
+    And as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
     And as "user0" file "/new-folder/new-file.txt" should exist
     Examples:
       | dav-path |
@@ -74,7 +77,8 @@ Feature: Restore deleted files/folders
     And user "user0" has deleted folder "/new-folder"
     When user "user0" restores the folder with original path "/new-folder" using the trashbin API
     And user "user0" restores the file with original path "/new-folder/new-file.txt" using the trashbin API
-    Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
+    Then the HTTP status code should be "201"
+    And as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
     And as "user0" file "/new-folder/new-file.txt" should exist
     Examples:
       | dav-path |
@@ -86,7 +90,8 @@ Feature: Restore deleted files/folders
     And user "user0" has been created with default attributes and skeleton files
     And user "user0" has deleted file "<delete-path>"
     When user "user0" restores the file with original path "<delete-path>" to "<restore-path>" using the trashbin API
-    Then as "user0" the file with original path "<delete-path>" should not exist in trash
+    Then the HTTP status code should be "201"
+    And as "user0" the file with original path "<delete-path>" should not exist in trash
     And as "user0" file "<restore-path>" should exist
     And as "user0" file "<delete-path>" should not exist
     Examples:
@@ -110,7 +115,7 @@ Feature: Restore deleted files/folders
     And as "user0" folder "/shareFolderParent" should exist
     And user "user0" has deleted file "/textfile0.txt"
     When user "user0" restores the file with original path "/textfile0.txt" to "/shareFolderParent/textfile0.txt" using the trashbin API
-    Then the HTTP status code should be "204"
+    Then the HTTP status code should be "201"
     #Then the HTTP status code should be "403"
     And as "user0" the file with original path "/textfile0.txt" should not exist in trash
     #And as "user0" the file with original path "/textfile0.txt" should exist in trash
@@ -136,7 +141,7 @@ Feature: Restore deleted files/folders
     And as "user0" folder "/shareFolderParent/shareFolderChild" should exist
     And user "user0" has deleted file "/textfile0.txt"
     When user "user0" restores the file with original path "/textfile0.txt" to "/shareFolderParent/shareFolderChild/textfile0.txt" using the trashbin API
-    Then the HTTP status code should be "204"
+    Then the HTTP status code should be "201"
     #Then the HTTP status code should be "403"
     And as "user0" the file with original path "/textfile0.txt" should not exist in trash
     #And as "user0" the file with original path "/textfile0.txt" should exist in trash
@@ -158,7 +163,8 @@ Feature: Restore deleted files/folders
     And user "user0" has deleted folder "/new-folder"
     When user "user0" creates folder "/new-folder" using the WebDAV API
     And user "user0" restores the file with original path "/new-folder/new-file.txt" using the trashbin API
-    Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
+    Then the HTTP status code should be "201"
+    And as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
     And as "user0" file "/new-folder/new-file.txt" should exist
     Examples:
       | dav-path |
@@ -177,7 +183,8 @@ Feature: Restore deleted files/folders
     And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
     And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in trash
     When user "user0" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the trashbin API
-    Then as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
+    Then the HTTP status code should be "201"
+    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
     And user "user0" should see the following elements
       | /local_storage/                  |
       | /local_storage/tmp/              |
@@ -200,7 +207,8 @@ Feature: Restore deleted files/folders
     And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
     And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in trash
     When user "user0" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the trashbin API
-    Then as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
+    Then the HTTP status code should be "201"
+    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
     And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" for user "user0" with range "bytes=0-1" should be "AA"
 
   @local_storage
@@ -217,5 +225,6 @@ Feature: Restore deleted files/folders
     And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
     And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in trash
     When user "user0" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the trashbin API
-    Then as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
+    Then the HTTP status code should be "201"
+    And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
     And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" for user "user0" with range "bytes=0-1" should be "AA"
