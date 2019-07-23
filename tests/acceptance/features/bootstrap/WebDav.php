@@ -635,6 +635,8 @@ trait WebDav {
 	 * @return void
 	 */
 	public function downloadedContentShouldBe($content) {
+		var_dump($content);
+		var_dump((string)$this->response->getBody());
 		PHPUnit\Framework\Assert::assertEquals(
 			$content, (string)$this->response->getBody()
 		);
@@ -910,6 +912,7 @@ trait WebDav {
 	public function downloadFileAsUserUsingPassword(
 		$user, $fileName, $password = null, $headers = []
 	) {
+		sleep(2);
 		$password = $this->getActualPassword($password);
 		$this->response = $this->makeDavRequest(
 			$user,
@@ -923,6 +926,7 @@ trait WebDav {
 			false,
 			$password
 		);
+		sleep(2);
 	}
 
 	/**

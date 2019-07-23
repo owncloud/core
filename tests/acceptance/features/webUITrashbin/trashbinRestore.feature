@@ -102,7 +102,7 @@ Feature: Restore deleted files/folders
     And the content of file "lorem.txt" for user "user1" should be "ownCloud test text file 0" plus end-of-line
     And the content of "lorem (restored).txt" should be the same as the original "lorem.txt"
 
-  Scenario: delete a file inside a folder restore the file after the folder has been deletedq
+  Scenario: delete a file inside a folder restore the file after the folder has been deleted
     Given user "user1" has created folder "folder-to-delete"
     And user "user1" has moved file "lorem.txt" to "folder-to-delete/file-to-delete.txt"
     And the user has deleted file "folder-to-delete/file-to-delete.txt"

@@ -211,6 +211,7 @@ class TrashbinContext implements Context {
 		$response = $this->featureContext->makeDavRequest(
 			$user, 'MOVE', $trashItemHRef, $headers, null, 'trash-bin', null, 2
 		);
+		sleep(2);
 	}
 
 	/**
