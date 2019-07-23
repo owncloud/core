@@ -103,6 +103,31 @@ Feature: Restore deleted files/folders
       | old      | /textfile0.txt           | FOLDER/textfile0.txt |
       | new      | /textfile0.txt           | FOLDER/textfile0.txt |
 
+  @issue-35974
+  Scenario Outline: restoring a file to an already existing path overrides the file
+    Given using <dav-path> DAV path
+    And user "user0" has been created with default attributes and skeleton files
+    And user "user0" has uploaded file with content "file to delete" to "/textfile0.txt"
+    And user "user0" has uploaded file with content "PARENT textfile0 content" to "/PARENT/textfile0.txt"
+    And user "user0" has deleted file "/textfile0.txt"
+    When user "user0" restores the file with original path "/textfile0.txt" to "/PARENT/textfile0.txt" using the trashbin API
+    Then the HTTP status code should be "204"
+    # Sometimes "/PARENT/textfile0.txt" is found in the trashbin. Should it? Or not?
+    # That seems to be what happens when the restore-overwrite happens properly,
+    # The original /PARENT/textfile0.txt seems to be "deleted" and so goes to the trashbin
+    #And as "user0" the file with original path "/PARENT/textfile0.txt" should not exist in trash
+    And as "user0" file "/PARENT/textfile0.txt" should exist
+    # sometimes the restore from trashbin does overwrite the existing file, but sometimes it does not. That is also surprising.
+    # the current observed behavior is that if the original /PARENT/textfile0.txt ended up in the trashbin,
+    # then the new /PARENT/textfile0.txt has the "file to delete" content.
+    # otherwise /PARENT/textfile0.txt has its old content
+    And the content of file "/PARENT/textfile0.txt" for user "user0" if the file is also in the trashbin should be "file to delete" otherwise "PARENT textfile0 content"
+    #And the content of file "/PARENT/textfile0.txt" for user "user0" should be "file to delete"
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
   @issue-35900
   Scenario Outline: restoring a file to a read-only folder
     Given using <dav-path> DAV path
