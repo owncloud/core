@@ -168,22 +168,23 @@ class SharingHelper {
 	 */
 	public static function getPermissionSum($permissions) {
 		if (\is_numeric($permissions)) {
-			$permissionSum = (int) $permissions;
-		} else {
-			if (!\is_array($permissions)) {
-				$permissions = [$permissions];
-			}
-			$permissionSum = 0;
-			foreach ($permissions as $permission) {
-				if (\array_key_exists($permission, self::PERMISSION_TYPES)) {
-					$permissionSum += self::PERMISSION_TYPES[$permission];
-				} elseif (\in_array($permission, self::PERMISSION_TYPES, true)) {
-					$permissionSum += (int) $permission;
-				} else {
-					throw new \InvalidArgumentException(
-						"invalid permission type ($permission)"
-					);
-				}
+			// Allow any permission number so that test scenarios can
+			// specifically test invalid permission values
+			return (int) $permissions;
+		}
+		if (!\is_array($permissions)) {
+			$permissions = [$permissions];
+		}
+		$permissionSum = 0;
+		foreach ($permissions as $permission) {
+			if (\array_key_exists($permission, self::PERMISSION_TYPES)) {
+				$permissionSum += self::PERMISSION_TYPES[$permission];
+			} elseif (\in_array($permission, self::PERMISSION_TYPES, true)) {
+				$permissionSum += (int) $permission;
+			} else {
+				throw new \InvalidArgumentException(
+					"invalid permission type ($permission)"
+				);
 			}
 		}
 		if ($permissionSum < 1 || $permissionSum > 31) {

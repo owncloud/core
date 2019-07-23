@@ -554,20 +554,27 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  Scenario Outline: Cannot create share with zero permissions
+  Scenario Outline: Cannot create a share of a file or folder with invalid permissions
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
-    When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-      | path        | welcome.txt |
-      | shareWith   | user1       |
-      | shareType   | user        |
-      | permissions | 0           |
-    Then the OCS status code should be "400"
+    When user "user0" creates a share using the sharing API with settings
+      | path        | <item>        |
+      | shareWith   | user1         |
+      | shareType   | user          |
+      | permissions | <permissions> |
+    Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
+    And as "user1" entry "<item>" should not exist
     Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 400              |
+      | ocs_api_version | ocs_status_code | http_status_code | item          | permissions |
+      | 1               | 400             | 200              | textfile0.txt | 0           |
+      | 2               | 400             | 400              | textfile0.txt | 0           |
+      | 1               | 400             | 200              | PARENT        | 0           |
+      | 2               | 400             | 400              | PARENT        | 0           |
+      | 1               | 404             | 200              | textfile0.txt | 32          |
+      | 2               | 404             | 404              | textfile0.txt | 32          |
+      | 1               | 404             | 200              | PARENT        | 32          |
+      | 2               | 404             | 404              | PARENT        | 32          |
 
   Scenario Outline: user who is excluded from sharing tries to share a file with another user
     Given using OCS API version "<ocs_api_version>"
