@@ -21,9 +21,13 @@
 
 namespace OCA\DAV\TrashBin;
 
-use OCA\Files_Trashbin\Trashbin;
+use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCP\Files\FileInfo;
+use OCP\Files\ForbiddenException;
+use OCP\Files\StorageNotAvailableException;
+use OCP\Lock\LockedException;
 use Sabre\DAV\Exception\Forbidden;
+use Sabre\DAV\Exception\ServiceUnavailable as SabreServiceUnavailable;
 
 abstract class AbstractTrashBinNode implements ITrashBinNode {
 
@@ -40,7 +44,8 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 	 */
 	protected $user;
 
-	public function __construct(string $user, FileInfo $fileInfo, TrashBinManager $trashBinManager) {
+	public function __construct(string $user, FileInfo $fileInfo,
+								TrashBinManager $trashBinManager) {
 		$this->fileInfo = $fileInfo;
 		$this->trashBinManager = $trashBinManager;
 		$this->user = $user;
@@ -114,28 +119,31 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @param string $targetLocation
 	 * @return bool
 	 */
 	public function restore(string $targetLocation): bool {
-		return $this->trashBinManager->restore($this->user, $this, $targetLocation);
+		try {
+			return $this->trashBinManager->restore($this->user, $this, $targetLocation);
+		} catch (ForbiddenException $ex) {
+			throw new \OCA\DAV\Connector\Sabre\Exception\Forbidden($ex->getMessage(), $ex->getRetry());
+		} catch (LockedException $e) {
+			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
+		} catch (StorageNotAvailableException $e) {
+			throw new SabreServiceUnavailable($e->getMessage());
+		}
 	}
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function delete() {
-		$path = $this->fileInfo->getPath();
-		$path = \explode('/', $path);
-		$user = $path[1];
-		$elements = \array_splice($path, 4);
-		$path = \implode('/', $elements);
-
-		$delimiter = \strrpos($path, '.d');
-		$path = \substr($path, 0, $delimiter);
-
-		Trashbin::delete($path, $user, $this->getDeleteTimestamp());
+		try {
+			$this->trashBinManager->delete($this->user, $this);
+		} catch (ForbiddenException $ex) {
+			throw new \OCA\DAV\Connector\Sabre\Exception\Forbidden($ex->getMessage(), $ex->getRetry());
+		} catch (LockedException $e) {
+			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
+		} catch (StorageNotAvailableException $e) {
+			throw new SabreServiceUnavailable($e->getMessage());
+		}
 	}
 
 	/**
