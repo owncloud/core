@@ -21,7 +21,7 @@ table.multiselect thead {
 
 /* restrict length of displayed filename to prevent overflow */
 table td.filename .nametext {
-	width: 100%;
+	width: 130px;
 }
 
 #fileList a.action.action-menu img {
@@ -46,7 +46,7 @@ table td.filename .nametext {
 
 /* ellipsis on file names */
 table td.filename .nametext .innernametext {
-	max-width: 50%;
+	max-width: 80%;
 }
 
 /* proper notification area for multi line messages */

@@ -405,7 +405,7 @@ table td.filename .nametext {
 	left: 55px;
 	padding: 0;
 	overflow: hidden;
-	text-overflow: ellipsis;
+	text-overflow: clip;
 	max-width: 800px;
 	height: 100%;
 }
@@ -718,7 +718,7 @@ html.ie8 .column-mtime .selectedActions {
 }
 
 #fileList .filesize {
-	padding: 0 15px 0 60px;
+	padding: 0 15px 0 40px;
 }
 
 #fileList .popovermenu {
