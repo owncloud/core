@@ -1348,7 +1348,7 @@ class ManagerTest extends \Test\TestCase {
 
 	/**
 	 * @expectedException Exception
-	 * @expectedExceptionMessage Group sharing is now allowed
+	 * @expectedExceptionMessage Group sharing is not allowed
 	 */
 	public function testGroupCreateChecksShareWithGroupMembersGroupSharingNotAllowed() {
 		$share = $this->manager->newShare();

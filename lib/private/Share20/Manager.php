@@ -435,7 +435,7 @@ class Manager implements IManager {
 	protected function groupCreateChecks(\OCP\Share\IShare $share) {
 		// Verify group shares are allowed
 		if (!$this->allowGroupSharing()) {
-			throw new \Exception('Group sharing is now allowed');
+			throw new \Exception('Group sharing is not allowed');
 		}
 
 		// Verify if the user can share with this group
