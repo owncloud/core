@@ -339,6 +339,12 @@ class Manager implements IManager {
 	 * @return int
 	 */
 	protected function calculateReshareNodePermissions(IShare $share) {
+		/*
+		 * if it is an incoming federated share, use node permission
+		 */
+		if ($share->getNode()->getStorage()->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
+			return $share->getNode()->getPermissions();
+		}
 		$maxPermissions = 0;
 		$incomingShares = [];
 		$shareTypes = [
