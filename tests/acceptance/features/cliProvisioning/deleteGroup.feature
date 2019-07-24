@@ -11,10 +11,10 @@ Feature: delete groups
     And the command output should contain the text 'The specified group was deleted'
     And group "<group_id>" should not exist
     Examples:
-      | group_id    | comment                     |
-      | simplegroup | nothing special here        |
-      | España      | special European characters |
-      | नेपाली      | Unicode group name          |
+      | group_id     | comment                               |
+      | simplegroup  | nothing special here                  |
+      | España§àôœ€  | special European and other characters |
+      | नेपाली       | Unicode group name                    |
 
   Scenario Outline: group names are case-sensitive, the correct group is deleted
     Given group "<group_id1>" has been created
