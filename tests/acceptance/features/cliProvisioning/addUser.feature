@@ -60,7 +60,7 @@ Feature: add a user using the using the occ command
     Examples:
       | password                     | comment                     |
       | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters          |
-      | España                       | special European characters |
+      | España§àôœ€  | special European and other characters       |
       | नेपाली                       | Unicode                     |
       | password with spaces         | password with spaces        |
 
