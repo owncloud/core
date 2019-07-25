@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
+use PHPUnit\Framework\Assert;
 use TestHelpers\TagsHelper;
 use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
@@ -113,26 +114,26 @@ class TagsContext implements Context {
 		$userAssignable = ($userAttributes[1]) ? 'true' : 'false';
 		
 		$tagDisplayName = $tagData->xpath(".//oc:display-name");
-		PHPUnit\Framework\Assert::assertArrayHasKey(
+		Assert::assertArrayHasKey(
 			0, $tagDisplayName, "cannot find 'oc:display-name' property"
 		);
 		$tagDisplayName = $tagDisplayName[0]->__toString();
 		
 		$tagUserVisible = $tagData->xpath(".//oc:user-visible");
-		PHPUnit\Framework\Assert::assertArrayHasKey(
+		Assert::assertArrayHasKey(
 			0, $tagUserVisible, "cannot find 'oc:user-visible' property"
 		);
 		$tagUserVisible = $tagUserVisible[0]->__toString();
 		
 		$tagUserAssignable = $tagData->xpath(".//oc:user-assignable");
-		PHPUnit\Framework\Assert::assertArrayHasKey(
+		Assert::assertArrayHasKey(
 			0, $tagUserAssignable, "cannot find 'oc:user-assignable' property"
 		);
 		$tagUserAssignable = $tagUserAssignable[0]->__toString();
 		if (($tagUserVisible !== $userVisible)
 			|| ($tagUserAssignable !== $userAssignable)
 		) {
-			PHPUnit\Framework\Assert::fail(
+			Assert::fail(
 				"tag $tagDisplayName is not of type $type"
 			);
 		}
@@ -327,7 +328,7 @@ class TagsContext implements Context {
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
 			$tagData = $this->requestTagByDisplayName($user, $rowDisplayName);
 			if ($tagData === null) {
-				PHPUnit\Framework\Assert::fail(
+				Assert::fail(
 					"tag $rowDisplayName is not in propfind answer"
 				);
 			} else {
@@ -346,7 +347,7 @@ class TagsContext implements Context {
 	 */
 	public function tagShouldNotExistForUser($tagDisplayName, $user) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
-		PHPUnit\Framework\Assert::assertNull(
+		Assert::assertNull(
 			$tagData, "tag $tagDisplayName is in propfind answer"
 		);
 	}
@@ -425,7 +426,7 @@ class TagsContext implements Context {
 			);
 		}
 		$canAssign = $tagData->xpath(".//oc:can-assign[text() = '$expected']");
-		PHPUnit\Framework\Assert::assertArrayHasKey(0, $canAssign, $errorMessage);
+		Assert::assertArrayHasKey(0, $canAssign, $errorMessage);
 	}
 
 	/**
@@ -442,15 +443,15 @@ class TagsContext implements Context {
 		$tagData = $this->requestTagByDisplayName(
 			$this->featureContext->getAdminUsername(), $tagName, true
 		);
-		PHPUnit\Framework\Assert::assertNotNull(
+		Assert::assertNotNull(
 			$tagData, "Tag $tagName wasn't found for admin user"
 		);
 		$this->assertTypeOfTag($tagData, $type);
 		$groupsOfTag = $tagData->xpath(".//oc:groups");
-		PHPUnit\Framework\Assert::assertArrayHasKey(
+		Assert::assertArrayHasKey(
 			0, $groupsOfTag, "cannot find oc:groups element"
 		);
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$groupsOfTag[0],
 			$groups,
 			"Tag has groups '{$groupsOfTag[0]}' instead of the expected '$groups'"
@@ -793,7 +794,7 @@ class TagsContext implements Context {
 		$user, $fileName, $sharingUser, $status
 	) {
 		$this->requestTagsForFile($user, $fileName, $sharingUser);
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$status, $this->featureContext->getResponse()->getStatusCode()
 		);
 	}
@@ -839,7 +840,7 @@ class TagsContext implements Context {
 			$found = false;
 			foreach ($tagList as $tagData) {
 				$displayName = $tagData->xpath(".//oc:display-name");
-				PHPUnit\Framework\Assert::assertArrayHasKey(
+				Assert::assertArrayHasKey(
 					0, $displayName, "cannot find 'oc:display-name' property"
 				);
 				if ($displayName[0]->__toString() === $rowDisplayName) {
@@ -849,7 +850,7 @@ class TagsContext implements Context {
 				}
 			}
 			if ($found === false) {
-				PHPUnit\Framework\Assert::fail(
+				Assert::fail(
 					"tag $rowDisplayName is not in propfind answer"
 				);
 			}
@@ -909,7 +910,7 @@ class TagsContext implements Context {
 		// The array of tags has a single "empty" item at the start.
 		// If there are no tags, then the array should have just this
 		// one entry.
-		PHPUnit\Framework\Assert::assertCount(1, $tagList);
+		Assert::assertCount(1, $tagList);
 	}
 
 	/**

@@ -26,6 +26,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
@@ -96,7 +97,7 @@ class ShareesContext implements Context {
 		$respondedArray = $this->getArrayOfShareesResponded(
 			$this->featureContext->getResponse(), $shareeType
 		);
-		PHPUnit\Framework\Assert::assertEquals($sharees, $respondedArray);
+		Assert::assertEquals($sharees, $respondedArray);
 	}
 
 	/**
@@ -117,7 +118,7 @@ class ShareesContext implements Context {
 			$firstEntry = "";
 		}
 
-		PHPUnit\Framework\Assert::assertEmpty(
+		Assert::assertEmpty(
 			$respondedArray,
 			"'$shareeType' array should be empty, but it starts with $firstEntry"
 		);

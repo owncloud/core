@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Message\ResponseInterface;
+use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
 
 require_once 'bootstrap.php';
@@ -94,7 +95,7 @@ class NotificationsCoreContext implements Context {
 		$notifications = $this->getArrayOfNotificationsResponded(
 			$this->featureContext->getResponse()
 		);
-		PHPUnit\Framework\Assert::assertCount(
+		Assert::assertCount(
 			(int) $numNotifications, $notifications
 		);
 
@@ -119,13 +120,13 @@ class NotificationsCoreContext implements Context {
 		$this->ocsContext->userSendsToOcsApiEndpoint(
 			$user, 'GET', '/apps/notifications/api/v1/notifications?format=json'
 		);
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			200, $this->featureContext->getResponse()->getStatusCode()
 		);
 
 		$previousNotificationIds = [];
 		if ($missingLast) {
-			PHPUnit\Framework\Assert::assertNotEmpty($this->getNotificationIds());
+			Assert::assertNotEmpty($this->getNotificationIds());
 			$previousNotificationIds = $this->getLastNotificationIds();
 		}
 
@@ -139,7 +140,7 @@ class NotificationsCoreContext implements Context {
 				$now[] = $this->getDeletedNotification();
 			}
 
-			PHPUnit\Framework\Assert::assertEquals($previousNotificationIds, $now);
+			Assert::assertEquals($previousNotificationIds, $now);
 		}
 	}
 
@@ -200,7 +201,7 @@ class NotificationsCoreContext implements Context {
 			'GET',
 			"/apps/notifications/api/v1/notifications/$notificationId?format=json"
 		);
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			200, $this->featureContext->getResponse()->getStatusCode()
 		);
 		$response = \json_decode(
@@ -208,20 +209,20 @@ class NotificationsCoreContext implements Context {
 		);
 
 		foreach ($formData->getRowsHash() as $key => $value) {
-			PHPUnit\Framework\Assert::assertArrayHasKey(
+			Assert::assertArrayHasKey(
 				$key, $response['ocs']['data']
 			);
 			if ($regex) {
 				$value = $this->featureContext->substituteInLineCodes(
 					$value, ['preg_quote' => ['/'] ]
 				);
-				PHPUnit\Framework\Assert::assertNotFalse(
+				Assert::assertNotFalse(
 					(bool)\preg_match($value, $response['ocs']['data'][$key]),
 					"'$value' does not match '{$response['ocs']['data'][$key]}'"
 				);
 			} else {
 				$value = $this->featureContext->substituteInLineCodes($value);
-				PHPUnit\Framework\Assert::assertEquals(
+				Assert::assertEquals(
 					$value, $response['ocs']['data'][$key]
 				);
 			}
@@ -254,8 +255,8 @@ class NotificationsCoreContext implements Context {
 			"DELETE",
 			'/apps/testing/api/v1/notifications'
 		);
-		PHPUnit\Framework\Assert::assertEquals(200, $response->getStatusCode());
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(200, $response->getStatusCode());
+		Assert::assertEquals(
 			200, (int) $this->ocsContext->getOCSResponseStatusCode($response)
 		);
 	}

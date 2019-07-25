@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
@@ -210,7 +211,7 @@ class OccContext implements Context {
 			$commandOutput,
 			$text
 		);
-		PHPUnit\Framework\Assert::assertGreaterThanOrEqual(
+		Assert::assertGreaterThanOrEqual(
 			1,
 			\count($lines),
 			"The command output did not contain the expected text on stdout '$text'\n" .
@@ -236,7 +237,7 @@ class OccContext implements Context {
 			$commandOutput,
 			$text
 		);
-		PHPUnit\Framework\Assert::assertGreaterThanOrEqual(
+		Assert::assertGreaterThanOrEqual(
 			1,
 			\count($lines),
 			"The command output did not contain the expected text on stderr '$text'\n" .
@@ -251,11 +252,11 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theOccCommandJsonOutputShouldNotReturnAnyData() {
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			\trim($this->featureContext->getStdOutOfOccCommand()),
 			"[]"
 		);
-		PHPUnit\Framework\Assert::assertEmpty(
+		Assert::assertEmpty(
 			$this->featureContext->getStdErrOfOccCommand()
 		);
 	}
@@ -541,7 +542,7 @@ class OccContext implements Context {
 			"config:app:get core backgroundjobs_mode"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit\Framework\Assert::assertEquals($mode, \trim($lastOutput));
+		Assert::assertEquals($mode, \trim($lastOutput));
 	}
 
 	/**
@@ -556,7 +557,7 @@ class OccContext implements Context {
 			"config:app:get core OC_Channel"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit\Framework\Assert::assertEquals($value, \trim($lastOutput));
+		Assert::assertEquals($value, \trim($lastOutput));
 	}
 
 	/**
@@ -571,7 +572,7 @@ class OccContext implements Context {
 			"config:system:get loglevel"
 		);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit\Framework\Assert::assertEquals($logLevel, \trim($lastOutput));
+		Assert::assertEquals($logLevel, \trim($lastOutput));
 	}
 
 	/**
@@ -709,7 +710,7 @@ class OccContext implements Context {
 	public function theLastDeletedJobShouldNotBeListedInTheJobsQueue($job) {
 		$jobId = $this->lastDeletedJobId;
 		$match = $this->getLastJobIdForJob($job);
-		PHPUnit\Framework\Assert::assertNotEquals(
+		Assert::assertNotEquals(
 			$jobId, $match,
 			"job $job with jobId $jobId" .
 			" was not expected to be listed in background queue, but was"
@@ -726,7 +727,7 @@ class OccContext implements Context {
 	 */
 	public function systemConfigKeyShouldHaveValue($key, $value) {
 		$config = \trim($this->featureContext->getSystemConfigValue($key));
-		PHPUnit\Framework\Assert::assertSame($value, $config);
+		Assert::assertSame($value, $config);
 	}
 
 	/**
@@ -743,7 +744,7 @@ class OccContext implements Context {
 				$commandOutput,
 				$row['table_column']
 			);
-			PHPUnit\Framework\Assert::assertNotEmpty(
+			Assert::assertNotEmpty(
 				$lines,
 				"Value: " . $row['table_column'] . " not found"
 			);
@@ -758,7 +759,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function systemConfigKeyShouldNotExist($key) {
-		PHPUnit\Framework\Assert::assertEmpty($this->featureContext->getSystemConfig($key)['stdOut']);
+		Assert::assertEmpty($this->featureContext->getSystemConfig($key)['stdOut']);
 	}
 
 	/**
@@ -779,12 +780,12 @@ class OccContext implements Context {
 	 */
 	public function theCommandOutputShouldContainTheAppsConfigs() {
 		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true);
-		PHPUnit\Framework\Assert::assertArrayHasKey(
+		Assert::assertArrayHasKey(
 			'apps',
 			$config_list,
 			"The occ output does not contain apps configs"
 		);
-		PHPUnit\Framework\Assert::assertNotEmpty(
+		Assert::assertNotEmpty(
 			$config_list['apps'],
 			"The occ output does not contain apps configs"
 		);
@@ -797,12 +798,12 @@ class OccContext implements Context {
 	 */
 	public function theCommandOutputShouldContainTheSystemConfigs() {
 		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true);
-		PHPUnit\Framework\Assert::assertArrayHasKey(
+		Assert::assertArrayHasKey(
 			'system',
 			$config_list,
 			"The occ output does not contain system configs"
 		);
-		PHPUnit\Framework\Assert::assertNotEmpty(
+		Assert::assertNotEmpty(
 			$config_list['system'],
 			"The occ output does not contain system configs"
 		);
@@ -819,7 +820,7 @@ class OccContext implements Context {
 		$this->invokingTheCommand(
 			"versions:cleanup $user"
 		);
-		PHPUnit\Framework\Assert::assertSame(
+		Assert::assertSame(
 			"Delete versions of   $user",
 			\trim($this->featureContext->getStdOutOfOccCommand())
 		);
@@ -834,7 +835,7 @@ class OccContext implements Context {
 		$this->invokingTheCommand(
 			"versions:cleanup"
 		);
-		PHPUnit\Framework\Assert::assertContains(
+		Assert::assertContains(
 			"Delete all versions",
 			\trim($this->featureContext->getStdOutOfOccCommand())
 		);
@@ -891,20 +892,20 @@ class OccContext implements Context {
 				$systemConfig[$key], JSON_UNESCAPED_SLASHES
 			);
 
-			PHPUnit\Framework\Assert::assertThat(
+			Assert::assertThat(
 				$actualKeyValuePair,
-				PHPUnit\Framework\Assert::matchesRegularExpression($value)
+				Assert::matchesRegularExpression($value)
 			);
 			return;
 		}
 
 		if (!\array_key_exists($key, $systemConfig)) {
-			PHPUnit\Framework\Assert::fail(
+			Assert::fail(
 				"system config doesn't contain key: " . $key
 			);
 		}
 
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$value,
 			$systemConfig[$key],
 			"config: $key doesn't contain value: $value"

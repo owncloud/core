@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
@@ -438,7 +439,7 @@ class OccUsersGroupsContext implements Context {
 			"user:setting $username core lang"
 		);
 		$responseLanguage = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit\Framework\Assert::assertEquals($language, \trim($responseLanguage));
+		Assert::assertEquals($language, \trim($responseLanguage));
 	}
 
 	/**
@@ -461,8 +462,8 @@ class OccUsersGroupsContext implements Context {
 			$result = $lastOutputUsers;
 		}
 		foreach ($useridTable as $row) {
-			PHPUnit\Framework\Assert::assertArrayHasKey($row['uid'], $result);
-			PHPUnit\Framework\Assert::assertContains($row['display name'], $result);
+			Assert::assertArrayHasKey($row['uid'], $result);
+			Assert::assertContains($row['display name'], $result);
 		}
 	}
 
@@ -478,10 +479,10 @@ class OccUsersGroupsContext implements Context {
 		$lastOutputGroups = \json_decode($lastOutput, true);
 
 		foreach ($groupTableNode as $row) {
-			PHPUnit\Framework\Assert::assertContains($row['group'], $lastOutputGroups);
+			Assert::assertContains($row['group'], $lastOutputGroups);
 			$lastOutputGroups = \array_diff($lastOutputGroups, [$row['group']]);
 		}
-		PHPUnit\Framework\Assert::assertEmpty(
+		Assert::assertEmpty(
 			$lastOutputGroups,
 			"more than the expected groups are returned\n" .
 			\print_r($lastOutputGroups, true)
@@ -499,7 +500,7 @@ class OccUsersGroupsContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputUser = \json_decode($lastOutput, true);
 		$lastOutputDisplayName = \array_column($lastOutputUser, 'displayName')[0];
-		PHPUnit\Framework\Assert::assertEquals($displayName, $lastOutputDisplayName);
+		Assert::assertEquals($displayName, $lastOutputDisplayName);
 	}
 
 	/**
@@ -527,7 +528,7 @@ class OccUsersGroupsContext implements Context {
 	 */
 	public function theCommandOutputOfUserLastSeenShouldBeNever() {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		PHPUnit\Framework\Assert::assertContains(
+		Assert::assertContains(
 			"has never logged in.",
 			$lastOutput
 		);
@@ -543,7 +544,7 @@ class OccUsersGroupsContext implements Context {
 	public function theTotalUsersReturnedByTheCommandShouldBe($noOfUsers) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		\preg_match("/\|\s+total users\s+\|\s+(\d+)\s+\|/", $lastOutput, $actualUsers);
-		PHPUnit\Framework\Assert::assertEquals($noOfUsers, $actualUsers[1]);
+		Assert::assertEquals($noOfUsers, $actualUsers[1]);
 	}
 
 	/**

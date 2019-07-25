@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
 
@@ -134,7 +135,7 @@ class CommentsContext implements Context {
 					break;
 				}
 			}
-			PHPUnit\Framework\Assert::assertTrue(
+			Assert::assertTrue(
 				$commentFound,
 				"Comment with actorId = '$expectedElement[0]' " .
 				"and message = '$expectedElement[1]' not found"
@@ -173,7 +174,7 @@ class CommentsContext implements Context {
 			$user, $commentsPath, $properties
 		);
 		$messages = $elementList->xpath("//d:prop/oc:message");
-		PHPUnit\Framework\Assert::assertCount(
+		Assert::assertCount(
 			(int) $numberOfComments, $messages
 		);
 	}

@@ -25,6 +25,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
@@ -51,7 +52,7 @@ class CapabilitiesContext implements Context {
 
 		foreach ($formData->getHash() as $row) {
 			$row['value'] = $this->featureContext->substituteInLineCodes($row['value']);
-			PHPUnit\Framework\Assert::assertEquals(
+			Assert::assertEquals(
 				$row['value'] === "EMPTY" ? '' : $row['value'],
 				$this->featureContext->getParameterValueFromXml(
 					$capabilitiesXML,
@@ -78,7 +79,7 @@ class CapabilitiesContext implements Context {
 			$this->featureContext->getCurrentUser()
 		);
 		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$value === "EMPTY" ? '' : $value,
 			$this->featureContext->getParameterValueFromXml(
 				$capabilitiesXML,
@@ -99,7 +100,7 @@ class CapabilitiesContext implements Context {
 		$capabilitiesXML = $this->featureContext->getCapabilitiesXml();
 
 		foreach ($formData->getHash() as $row) {
-			PHPUnit\Framework\Assert::assertFalse(
+			Assert::assertFalse(
 				$this->featureContext->parameterValueExistsInXml(
 					$capabilitiesXML,
 					$row['capability'],

@@ -25,6 +25,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
+use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
 
 require_once 'bootstrap.php';
@@ -356,12 +357,12 @@ class OCSContext implements Context {
 			$this->featureContext->getResponse()
 		);
 		if (\is_array($statusCode)) {
-			PHPUnit\Framework\Assert::assertContains(
+			Assert::assertContains(
 				$responseStatusCode, $statusCode,
 				$message
 			);
 		} else {
-			PHPUnit\Framework\Assert::assertEquals(
+			Assert::assertEquals(
 				$statusCode, $responseStatusCode,
 				$message
 			);
@@ -378,7 +379,7 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function theOCSStatusMessageShouldBe($statusMessage) {
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$statusMessage,
 			$this->getOCSResponseStatusMessage(
 				$this->featureContext->getResponse()
@@ -408,7 +409,7 @@ class OCSContext implements Context {
 	public function theOCSStatusMessageShouldBePyString(
 		PyStringNode $statusMessage
 	) {
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$statusMessage->getRaw(),
 			$this->getOCSResponseStatusMessage(
 				$this->featureContext->getResponse()
