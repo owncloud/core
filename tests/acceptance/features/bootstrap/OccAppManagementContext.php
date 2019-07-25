@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
@@ -116,7 +117,7 @@ class OccAppManagementContext implements Context {
 	public function theAppNameReturnedByTheOccCommandShouldBe($appName) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputArray = \json_decode($lastOutput, true);
-		PHPUnit\Framework\Assert::assertEquals($appName, \key($lastOutputArray['apps']));
+		Assert::assertEquals($appName, \key($lastOutputArray['apps']));
 	}
 
 	/**
@@ -166,7 +167,7 @@ class OccAppManagementContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputArray = \json_decode($lastOutput, true);
 		$actualAppEnabledStatus = $lastOutputArray['apps'][$appName]['enabled'];
-		PHPUnit\Framework\Assert::assertEquals($appStatus, $actualAppEnabledStatus);
+		Assert::assertEquals($appStatus, $actualAppEnabledStatus);
 	}
 
 	/**
@@ -184,7 +185,7 @@ class OccAppManagementContext implements Context {
 		$appsSimplified = $this->featureContext->simplifyArray($apps);
 
 		foreach ($appsSimplified as $app) {
-			PHPUnit\Framework\Assert::assertContains($app, $lastOutputApps);
+			Assert::assertContains($app, $lastOutputApps);
 		}
 	}
 

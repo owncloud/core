@@ -26,6 +26,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\AdminGeneralSettingsPage;
+use PHPUnit\Framework\Assert;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\SetupHelper;
 
@@ -209,7 +210,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	public function theVersionOfOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage() {
 		$actualVersion = $this->adminGeneralSettingsPage->getOwncloudVersion();
 		$expectedVersion = $this->featureContext->getSystemConfigValue('version');
-		PHPUnit\Framework\Assert::assertEquals(\trim($expectedVersion), $actualVersion);
+		Assert::assertEquals(\trim($expectedVersion), $actualVersion);
 	}
 
 	/**
@@ -220,7 +221,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	public function theVersionStringOfTheOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage() {
 		$actualVersion =  $this->adminGeneralSettingsPage->getOwncloudVersionString();
 		$expectedVersion = SetupHelper::runOcc(['-V'])['stdOut'];
-		PHPUnit\Framework\Assert::assertStringEndsWith($actualVersion, \trim($expectedVersion));
+		Assert::assertStringEndsWith($actualVersion, \trim($expectedVersion));
 	}
 
 	/**

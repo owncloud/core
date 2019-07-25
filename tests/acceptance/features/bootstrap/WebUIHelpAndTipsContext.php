@@ -25,6 +25,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\HelpAndTipsPage;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
@@ -132,7 +133,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	public function theLinkForShouldBeValid($linkTitle) {
 		$linkUrl = $this->generateHelpLinks($this->getLinkID($linkTitle));
 		$linkOnUI = $this->helpAndTipsPage->getLinkUrlByTitle($linkTitle);
-		PHPUnit\Framework\Assert::assertSame($linkUrl, $linkOnUI);
+		Assert::assertSame($linkUrl, $linkOnUI);
 	}
 
 	/**

@@ -25,6 +25,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
 use Page\TagsPage;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
@@ -126,7 +127,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	public function allTheTagsStartingWithInTheirNameShouldBeListedInTheDropdownListOnTheWebUI($value) {
 		$results = $this->filesPage->getDetailsDialog()->getDropDownTagsSuggestionResults();
 		foreach ($results as $tagResult) {
-			PHPUnit\Framework\Assert::assertStringStartsWith($value, $tagResult->getText());
+			Assert::assertStringStartsWith($value, $tagResult->getText());
 		}
 
 		// check also that all tags that have been created and starts with $value

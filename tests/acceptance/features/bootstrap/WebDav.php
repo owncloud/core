@@ -25,6 +25,7 @@ use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Ring\Exception\ConnectException;
 use GuzzleHttp\Stream\StreamInterface;
 use Guzzle\Http\Exception\BadResponseException;
+use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
@@ -449,7 +450,7 @@ trait WebDav {
 		$this->response = $this->makeDavRequest(
 			$user, "MOVE", $fileSource, $headers
 		);
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			201, $this->response->getStatusCode()
 		);
 	}
@@ -606,10 +607,10 @@ trait WebDav {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
 		$this->downloadFileAsUserUsingPassword($user, $fileName, $password);
-		PHPUnit\Framework\Assert::assertGreaterThanOrEqual(
+		Assert::assertGreaterThanOrEqual(
 			400, $this->getResponse()->getStatusCode(), 'download must fail'
 		);
-		PHPUnit\Framework\Assert::assertLessThanOrEqual(
+		Assert::assertLessThanOrEqual(
 			499, $this->getResponse()->getStatusCode(), '4xx error expected'
 		);
 	}
@@ -635,7 +636,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function downloadedContentShouldBe($content) {
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$content, (string)$this->response->getBody()
 		);
 	}
@@ -986,16 +987,16 @@ trait WebDav {
 		$url = $this->getBaseUrlWithoutPath() . $url;
 		$response = HttpRequestHelper::get($url, $user, $this->getPasswordForUser($user));
 		$result = \json_decode($response->getBody()->getContents(), true);
-		PHPUnit\Framework\Assert::assertNotNull($result, "'$response' is not valid JSON");
+		Assert::assertNotNull($result, "'$response' is not valid JSON");
 		foreach ($table->getTable() as $row) {
 			$expectedKey = $row[0];
-			PHPUnit\Framework\Assert::assertArrayHasKey(
+			Assert::assertArrayHasKey(
 				$expectedKey, $result, "response does not have expected key '$expectedKey'"
 			);
 			$expectedValue = $this->substituteInLineCodes(
 				$row[1], ['preg_quote' => ['/'] ]
 			);
-			PHPUnit\Framework\Assert::assertNotFalse(
+			Assert::assertNotFalse(
 				(bool)\preg_match($expectedValue, $result[$expectedKey]),
 				"'$expectedValue' does not match '$result[$expectedKey]'"
 			);
@@ -1041,7 +1042,7 @@ trait WebDav {
 	public function asFileOrFolderShouldExist($user, $entry, $path) {
 		$path = $this->substituteInLineCodes($path);
 		$this->responseXmlObject = $this->listFolder($user, $path, 0);
-		PHPUnit\Framework\Assert::assertTrue(
+		Assert::assertTrue(
 			$this->isEtagValid(),
 			"$entry '$path' expected to exist but not found"
 		);
@@ -1066,7 +1067,7 @@ trait WebDav {
 				$numEntriesThatExist = $numEntriesThatExist + 1;
 			}
 		}
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			1,
 			$numEntriesThatExist,
 			"exactly one of these $entries should exist but found $numEntriesThatExist $entries"
@@ -1145,12 +1146,12 @@ trait WebDav {
 			if ($expectedToBeListed
 				&& (!isset($element[0]) || $element[0]->__toString() !== $webdavPath)
 			) {
-				PHPUnit\Framework\Assert::fail(
+				Assert::fail(
 					"$webdavPath is not in propfind answer but should"
 				);
 			} elseif (!$expectedToBeListed && isset($element[0])
 			) {
-				PHPUnit\Framework\Assert::fail(
+				Assert::fail(
 					"$webdavPath is in propfind answer but should not be"
 				);
 			}
@@ -1274,7 +1275,7 @@ trait WebDav {
 	public function userUploadsAFileToWithChunks(
 		$user, $source, $destination, $noOfChunks = 2, $chunkingVersion = null, $async = false, $headers = []
 	) {
-		PHPUnit\Framework\Assert::assertGreaterThan(
+		Assert::assertGreaterThan(
 			0, $noOfChunks, "What does it mean to have $noOfChunks chunks?"
 		);
 		//use the chunking version that works with the set dav version
@@ -1286,7 +1287,7 @@ trait WebDav {
 			}
 		}
 		$this->useSpecificChunking($chunkingVersion);
-		PHPUnit\Framework\Assert::assertTrue(
+		Assert::assertTrue(
 			WebDavHelper::isValidDavChunkingCombination(
 				($this->usingOldDavPath) ? 1 : 2,
 				$this->chunkingToUse
@@ -1397,7 +1398,7 @@ trait WebDav {
 	 */
 	public function theHTTPStatusCodeOfAllUploadResponsesShouldBe($statusCode) {
 		foreach ($this->uploadResponses as $response) {
-			PHPUnit\Framework\Assert::assertEquals(
+			Assert::assertEquals(
 				$statusCode,
 				$response->getStatusCode(),
 				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
@@ -1414,7 +1415,7 @@ trait WebDav {
 	 */
 	public function theHTTPReasonPhraseOfAllUploadResponsesShouldBe($reasonPhrase) {
 		foreach ($this->uploadResponses as $response) {
-			PHPUnit\Framework\Assert::assertEquals(
+			Assert::assertEquals(
 				$reasonPhrase,
 				$response->getReasonPhrase(),
 				'Response for ' . $response->getEffectiveUrl() . ' did not return expected reason phrase'
@@ -1462,12 +1463,12 @@ trait WebDav {
 		$minStatusCode, $maxStatusCode
 	) {
 		foreach ($this->uploadResponses as $response) {
-			PHPUnit\Framework\Assert::assertGreaterThanOrEqual(
+			Assert::assertGreaterThanOrEqual(
 				$minStatusCode,
 				$response->getStatusCode(),
 				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
 			);
-			PHPUnit\Framework\Assert::assertLessThanOrEqual(
+			Assert::assertLessThanOrEqual(
 				$maxStatusCode,
 				$response->getStatusCode(),
 				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
@@ -1555,7 +1556,7 @@ trait WebDav {
 	public function userUploadsAFileToOfBytes($user, $destination, $bytes) {
 		$filename = "filespecificSize.txt";
 		$this->createLocalFileOfSpecificSize($filename, $bytes);
-		PHPUnit\Framework\Assert::assertFileExists($this->workStorageDirLocation() . $filename);
+		Assert::assertFileExists($this->workStorageDirLocation() . $filename);
 		$this->userUploadsAFileTo(
 			$user,
 			$this->temporaryStorageSubfolderName() . "/$filename",
@@ -2106,7 +2107,7 @@ trait WebDav {
 			$headerValue = $this->response->getHeader($headerName);
 			//Note: according to the documentation of getHeader it must return null
 			//if the header does not exist, but its returning an empty string
-			PHPUnit\Framework\Assert::assertEmpty(
+			Assert::assertEmpty(
 				$headerValue,
 				"header $headerName should not exist " .
 				"but does and is set to $headerValue"
@@ -2131,7 +2132,7 @@ trait WebDav {
 			);
 
 			$returnedHeader = $this->response->getHeader($headerName);
-			PHPUnit\Framework\Assert::assertNotFalse(
+			Assert::assertNotFalse(
 				(bool)\preg_match($expectedHeaderValue, $returnedHeader),
 				"'$expectedHeaderValue' does not match '$returnedHeader'"
 			);
@@ -2201,7 +2202,7 @@ trait WebDav {
 	 */
 	public function userFileShouldHaveStoredId($user, $path) {
 		$currentFileID = $this->getFileIdForPath($user, $path);
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$currentFileID, $this->storedFileID
 		);
 	}
@@ -2240,12 +2241,12 @@ trait WebDav {
 				$expectedFile[0]
 			);
 			if ($should) {
-				PHPUnit\Framework\Assert::assertNotEmpty(
+				Assert::assertNotEmpty(
 					$fileFound,
 					"response does not contain the entry '$expectedFile[0]'"
 				);
 			} else {
-				PHPUnit\Framework\Assert::assertFalse(
+				Assert::assertFalse(
 					$fileFound,
 					"response does contain the entry '$expectedFile[0]' but should not"
 				);
@@ -2272,7 +2273,7 @@ trait WebDav {
 		if ($multistatusResults === null) {
 			$multistatusResults = [];
 		}
-		PHPUnit\Framework\Assert::assertEquals((int)$numFiles, \count($multistatusResults));
+		Assert::assertEquals((int)$numFiles, \count($multistatusResults));
 	}
 
 	/**
@@ -2290,7 +2291,7 @@ trait WebDav {
 		$elementRows = $expectedFiles->getRowsHash();
 		$resultEntries = $this->findEntryFromPropfindResponse();
 		foreach ($resultEntries as $resultEntry) {
-			PHPUnit\Framework\Assert::assertArrayHasKey($resultEntry, $elementRows);
+			Assert::assertArrayHasKey($resultEntry, $elementRows);
 		}
 	}
 

@@ -25,6 +25,7 @@ require_once 'bootstrap.php';
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\PersonalSharingSettingsPage;
+use PHPUnit\Framework\Assert;
 
 /**
  * steps for personal sharing settings
@@ -100,7 +101,7 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function autoAcceptingCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPageOnTheWebui() {
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			$this->personalSharingSettingsPage->isAutoAcceptLocalSharesCheckboxDisplayed()
 		);
 	}
@@ -111,7 +112,7 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function autoAcceptingFederatedCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPageOnTheWebui() {
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			$this->personalSharingSettingsPage->isAutoAcceptFederatedSharesCheckboxDisplayed()
 		);
 	}
@@ -122,7 +123,7 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function allowFindingYouViaAutocompleteCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPage() {
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			$this->personalSharingSettingsPage->isAllowFindingYouViaAutocompleteCheckboxDisplayed()
 		);
 	}
