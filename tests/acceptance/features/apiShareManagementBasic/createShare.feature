@@ -14,11 +14,17 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | user1             |
-      | file_target | /welcome.txt      |
-      | path        | /welcome.txt      |
-      | permissions | share,read,update |
-      | uid_owner   | user0             |
+      | share_with                 | user1             |
+      | share_with_displayname     | User One          |
+      | file_target                | /welcome.txt      |
+      | path                       | /welcome.txt      |
+      | permissions                | share,read,update |
+      | uid_owner                  | user0             |
+      | displayname_owner          | User Zero         |
+      | item_type                  | file              |
+      | mimetype                   | text/plain        |
+      | storage_id                 | home::user0       |
+      | share_type                 | user              |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -31,11 +37,17 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | user1                 |
-      | file_target | /welcome.txt          |
-      | path        | /welcome.txt          |
-      | permissions | <granted_permissions> |
-      | uid_owner   | user0                 |
+      | share_with                 | user1                 |
+      | share_with_displayname     | User One              |
+      | file_target                | /welcome.txt          |
+      | path                       | /welcome.txt          |
+      | permissions                | <granted_permissions> |
+      | uid_owner                  | user0                 |
+      | displayname_owner          | User Zero             |
+      | item_type                  | file                  |
+      | mimetype                   | text/plain            |
+      | storage_id                 | home::user0           |
+      | share_type                 | user                  |
     Examples:
       | ocs_api_version | requested_permissions | granted_permissions | ocs_status_code |
       # Ask for full permissions. You get share plus read plus update. create and delete do not apply to shares of a file
@@ -61,11 +73,17 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | user1   |
-      | file_target | /FOLDER |
-      | path        | /FOLDER |
-      | permissions | all     |
-      | uid_owner   | user0   |
+      | share_with                 | user1                |
+      | share_with_displayname     | User One             |
+      | file_target                | /FOLDER              |
+      | path                       | /FOLDER              |
+      | permissions                | all                  |
+      | uid_owner                  | user0                |
+      | displayname_owner          | User Zero            |
+      | item_type                  | folder               |
+      | mimetype                   | httpd/unix-directory |
+      | storage_id                 | home::user0          |
+      | share_type                 | user                 |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -78,11 +96,17 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | grp1              |
-      | file_target | /welcome.txt      |
-      | path        | /welcome.txt      |
-      | permissions | share,read,update |
-      | uid_owner   | user0             |
+      | share_with             | grp1              |
+      | share_with_displayname | grp1              |
+      | file_target            | /welcome.txt      |
+      | path                   | /welcome.txt      |
+      | permissions            | share,read,update |
+      | uid_owner              | user0             |
+      | displayname_owner      | User Zero         |
+      | item_type              | file              |
+      | mimetype               | text/plain        |
+      | storage_id             | home::user0       |
+      | share_type             | group             |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -95,11 +119,17 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | grp1    |
-      | file_target | /FOLDER |
-      | path        | /FOLDER |
-      | permissions | all     |
-      | uid_owner   | user0   |
+      | share_with             | grp1                 |
+      | share_with_displayname | grp1                 |
+      | file_target            | /FOLDER              |
+      | path                   | /FOLDER              |
+      | permissions            | all                  |
+      | uid_owner              | user0                |
+      | displayname_owner      | User Zero            |
+      | item_type              | folder               |
+      | mimetype               | httpd/unix-directory |
+      | storage_id             | home::user0          |
+      | share_type             | group                |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -116,11 +146,17 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response should include
-      | share_with  | user1             |
-      | file_target | /welcome.txt      |
-      | path        | /welcome.txt      |
-      | permissions | share,read,update |
-      | uid_owner   | user0             |
+      | share_with                 | user1             |
+      | share_with_displayname     | User One          |
+      | file_target                | /welcome.txt      |
+      | path                       | /welcome.txt      |
+      | permissions                | share,read,update |
+      | uid_owner                  | user0             |
+      | displayname_owner          | User Zero         |
+      | item_type                  | file              |
+      | mimetype                   | text/plain        |
+      | storage_id                 | home::user0       |
+      | share_type                 | user              |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
