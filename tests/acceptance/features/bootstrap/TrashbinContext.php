@@ -269,7 +269,6 @@ class TrashbinContext implements Context {
 			$this->featureContext->downloadedContentShouldBe($content);
 		} else {
 			$this->featureContext->downloadedContentShouldBe($alternativeContent);
-
 		}
 	}
 
