@@ -644,3 +644,23 @@ Feature: Share by public link
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | expiration | +7 days |
+
+  Scenario: user creates a new public link and the public checks its content
+    Given user "user1" has created folder "/simple-folder"
+    And user "user1" has uploaded file with content "original content" to "/simple-folder/lorem.txt"
+    And user "user1" has logged in using the webUI
+    When the user creates a new public link for folder "simple-folder" using the webUI
+    And the user logs out of the webUI
+    And the public accesses the last created public link using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    When the public downloads file "lorem.txt" using the webUI
+    Then the downloaded content should be "original content"
+
+  Scenario: user creates a new public link for a file and the public checks all the download links for the file
+    Given user "user1" has uploaded file with content "original content" to "/lorem.txt"
+    And user "user1" has logged in using the webUI
+    When the user creates a new public link for file "lorem.txt" using the webUI
+    And the user logs out of the webUI
+    And the public accesses the last created public link using the webUI
+    Then the text preview of the public link should contain "original content"
+    And all the links to download the public share should be the same

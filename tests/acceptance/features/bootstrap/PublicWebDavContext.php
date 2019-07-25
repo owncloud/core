@@ -105,7 +105,7 @@ class PublicWebDavContext implements Context {
 			HttpRequestHelper::sendRequest($fullUrl, "MOVE", $token, "", $headers)
 		);
 	}
-	
+
 	/**
 	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder using the public WebDAV API$/
 	 *
@@ -463,7 +463,7 @@ class PublicWebDavContext implements Context {
 		$url .= \ltrim($filename, '/');
 		$token = $this->featureContext->getLastShareToken();
 		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
-		
+
 		if ($autorename) {
 			$headers['OC-Autorename'] = 1;
 		}

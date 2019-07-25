@@ -42,6 +42,7 @@ class FileActionsMenu extends OwncloudPage {
 	protected $deleteActionLabel = "Delete";
 	protected $detailsActionLabel = "Details";
 	protected $declineShareDataAction = "Reject";
+	protected $fileRowDownloadBtnXpath = "//td[@class='filename']//a[@class='name']";
 
 	/**
 	 * sets the NodeElement for the current action menu
@@ -119,6 +120,24 @@ class FileActionsMenu extends OwncloudPage {
 		);
 		$deleteBtn->focus();
 		$deleteBtn->click();
+	}
+
+	/**
+	 * gets the url to download a file/folder
+	 *
+	 * @return null|string
+	 */
+	public function getDownloadUrlForFile() {
+		$downloadBtn = $this->find("xpath", $this->fileRowDownloadBtnXpath);
+		$this->assertElementNotNull(
+			$downloadBtn,
+			__METHOD__ . " xpath $this->fileRowDownloadBtnXpath " .
+			" could not find download button"
+		);
+		if ($downloadBtn->hasAttribute("href")) {
+			return $downloadBtn->getAttribute("href");
+		}
+		return null;
 	}
 
 	/**

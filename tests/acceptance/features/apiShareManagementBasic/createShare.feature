@@ -1326,3 +1326,26 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+  @public_link_share-feature-required
+  Scenario Outline: Creating a new public link share of a folder, and checking it's content
+    Given using OCS API version "<ocs_api_version>"
+    When user "user0" creates a public link share using the sharing API with settings
+      | path     | PARENT   |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response should include
+      | item_type              | folder               |
+      | file_target            | /PARENT              |
+      | path                   | /PARENT              |
+      | share_type             | public_link          |
+      | displayname_file_owner | User Zero            |
+      | displayname_owner      | User Zero            |
+      | uid_file_owner         | user0                |
+      | uid_owner              | user0                |
+    When the public downloads file "/parent.txt" from inside the last public shared folder using the public WebDAV API
+    Then the downloaded content should be "ownCloud test text file parent" plus end-of-line
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
