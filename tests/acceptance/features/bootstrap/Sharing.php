@@ -23,11 +23,11 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use GuzzleHttp\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\SetupHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
-use GuzzleHttp\Message\ResponseInterface;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 

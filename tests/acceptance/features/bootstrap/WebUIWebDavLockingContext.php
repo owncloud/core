@@ -25,6 +25,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
 use Page\SharedWithYouPage;
+use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 require_once 'bootstrap.php';
@@ -94,7 +95,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 		$this->closeDetailsDialog();
 		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
 		$fileRow = $pageObject->findFileRowByName($file, $this->getSession());
-		PHPUnit\Framework\Assert::assertTrue(
+		Assert::assertTrue(
 			$fileRow->getLockState(),
 			"'$file' should be marked as locked, but its not"
 		);
@@ -111,7 +112,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 		$this->closeDetailsDialog();
 		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
 		$fileRow = $pageObject->findFileRowByName($file, $this->getSession());
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			$fileRow->getLockState(),
 			"'$file' should not be marked as locked, but it is"
 		);
@@ -137,7 +138,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 			$lockDialog = $fileRow->openLockDialog();
 		} catch (ElementNotFoundException $e) {
 			if ($should) {
-				PHPUnit\Framework\Assert::fail(
+				Assert::fail(
 					"looking for a lock set by $lockedBy but no lock dialog exists"
 				);
 			} else {
@@ -153,14 +154,14 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 				if ($should) {
 					return true;
 				} else {
-					PHPUnit\Framework\Assert::fail(
+					Assert::fail(
 						"found a lock set by $lockedBy that should not be listed"
 					);
 				}
 			}
 		}
 		if ($should) {
-			PHPUnit\Framework\Assert::fail("cannot find a lock set by $lockedBy");
+			Assert::fail("cannot find a lock set by $lockedBy");
 		} else {
 			return true;
 		}

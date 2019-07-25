@@ -26,6 +26,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\NotificationsEnabledOwncloudPage;
+use PHPUnit\Framework\Assert;
 
 /**
  * Context for Notifications App
@@ -62,7 +63,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	) {
 		$notificationsDialog = $this->openNotificationsDialog($this->getSession());
 		$notifications = $notificationsDialog->getAllNotifications();
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$number,
 			\count($notifications),
 			"expected $number notifications, found " . \count($notifications)
@@ -84,7 +85,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 				}
 			}
 			if (!$found) {
-				PHPUnit\Framework\Assert::fail(
+				Assert::fail(
 					"could not find expected notification: " .
 					\print_r($expectedNotification, true) .
 					" in viewed notifications: " .

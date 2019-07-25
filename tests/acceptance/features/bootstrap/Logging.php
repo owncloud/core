@@ -21,6 +21,7 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 use TestHelpers\LoggingHelper;
 
 /**
@@ -81,7 +82,7 @@ trait Logging {
 				}
 
 				if ($expectedLogEntry[$attribute] !== "") {
-					PHPUnit\Framework\Assert::assertArrayHasKey(
+					Assert::assertArrayHasKey(
 						$attribute, $logEntry,
 						"could not find attribute: '$attribute' in log entry: '{$logLines[$lineNo]}'"
 					);
@@ -92,17 +93,17 @@ trait Logging {
 						);
 					}
 					if ($comparingMode === 'with') {
-						PHPUnit\Framework\Assert::assertEquals(
+						Assert::assertEquals(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
 					} elseif ($comparingMode === 'containing') {
-						PHPUnit\Framework\Assert::assertContains(
+						Assert::assertContains(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
 					} elseif ($comparingMode === 'matching') {
-						PHPUnit\Framework\Assert::assertRegExp(
+						Assert::assertRegExp(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],
 							$message
 						);
@@ -279,7 +280,7 @@ trait Logging {
 		}
 		
 		$notFoundLines = \print_r($expectedLogEntries, true);
-		PHPUnit\Framework\Assert::assertEmpty(
+		Assert::assertEmpty(
 			$expectedLogEntries,
 			"could not find these expected line(s):\n $notFoundLines"
 		);
@@ -336,7 +337,7 @@ trait Logging {
 					}
 				}
 			}
-			PHPUnit\Framework\Assert::assertFalse(
+			Assert::assertFalse(
 				$match,
 				"found a log entry that should not be there\n$logLine\n"
 			);

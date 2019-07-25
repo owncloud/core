@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';
@@ -97,7 +98,7 @@ class SearchContext implements Context {
 		$fileResult = $this->featureContext->findEntryFromPropfindResponse(
 			$path
 		);
-		PHPUnit\Framework\Assert::assertNotFalse(
+		Assert::assertNotFalse(
 			$fileResult, "could not find file/folder '$path'"
 		);
 		$fileProperties = $fileResult['value'][1]['value'][0]['value'];
@@ -105,14 +106,14 @@ class SearchContext implements Context {
 			$foundProperty = false;
 			foreach ($fileProperties as $fileProperty) {
 				if ($fileProperty['name'] === $property['name']) {
-					PHPUnit\Framework\Assert::assertRegExp(
+					Assert::assertRegExp(
 						"/" . $property['value'] . "/", $fileProperty['value']
 					);
 					$foundProperty = true;
 					break;
 				}
 			}
-			PHPUnit\Framework\Assert::assertTrue(
+			Assert::assertTrue(
 				$foundProperty, "could not find property '" . $property['name'] . "'"
 			);
 		}

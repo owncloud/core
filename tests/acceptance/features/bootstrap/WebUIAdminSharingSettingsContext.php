@@ -25,6 +25,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\AdminSharingSettingsPage;
+use PHPUnit\Framework\Assert;
 use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
@@ -331,7 +332,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function aErrorMessageForTrustedServerShouldContain($text) {
 		$msg = $this->adminSharingSettingsPage->getTrustedServerErrorMsg();
-		\PHPUnit\Framework\Assert::assertContains($text, $msg);
+		Assert::assertContains($text, $msg);
 	}
 
 	/**
