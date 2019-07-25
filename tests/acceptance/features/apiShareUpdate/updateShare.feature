@@ -309,6 +309,46 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
+  Scenario Outline: Cannot update a share of a file with a user to have only create and/or delete permission
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And user "user0" has shared file "textfile0.txt" with user "user1"
+    When user "user0" updates the last share using the sharing API with
+      | permissions | <permissions> |
+    Then the OCS status code should be "400"
+    And the HTTP status code should be "<http_status_code>"
+    # user1 should still have at least read access to the shared file
+    And as "user1" entry "textfile0.txt" should exist
+    Examples:
+      | ocs_api_version | http_status_code | permissions   |
+      | 1               | 200              | create        |
+      | 2               | 400              | create        |
+      | 1               | 200              | delete        |
+      | 2               | 400              | delete        |
+      | 1               | 200              | create,delete |
+      | 2               | 400              | create,delete |
+
+  Scenario Outline: Cannot update a share of a file with a group to have only create and/or delete permission
+    Given using OCS API version "<ocs_api_version>"
+    And user "user1" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "user1" has been added to group "grp1"
+    And user "user0" has shared file "textfile0.txt" with group "grp1"
+    When user "user0" updates the last share using the sharing API with
+      | permissions | <permissions> |
+    Then the OCS status code should be "400"
+    And the HTTP status code should be "<http_status_code>"
+    # user1 in grp1 should still have at least read access to the shared file
+    And as "user1" entry "textfile0.txt" should exist
+    Examples:
+      | ocs_api_version | http_status_code | permissions   |
+      | 1               | 200              | create        |
+      | 2               | 400              | create        |
+      | 1               | 200              | delete        |
+      | 2               | 400              | delete        |
+      | 1               | 200              | create,delete |
+      | 2               | 400              | create,delete |
+
   Scenario: Share ownership change after moving a shared file outside of an outer share
     Given these users have been created with default attributes and without skeleton files:
       | username |
