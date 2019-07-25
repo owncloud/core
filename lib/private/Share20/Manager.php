@@ -286,6 +286,17 @@ class Manager implements IManager {
 			throw new \InvalidArgumentException('A share requires permissions');
 		}
 
+		$shareNode = $share->getNode();
+		if ($shareNode instanceof \OCP\Files\File) {
+			// Single file shares should never have delete or create permissions
+			$share->setPermissions($share->getPermissions() & ~\OCP\Constants::PERMISSION_DELETE);
+			$share->setPermissions($share->getPermissions() & ~\OCP\Constants::PERMISSION_CREATE);
+		}
+
+		/**
+		 * TODO: ideally, getPermissions should always return valid permission
+		 *       and this check should be done in Share object's setPermission method
+		 */
 		if ($share->getPermissions() < 0 || $share->getPermissions() > \OCP\Constants::PERMISSION_ALL) {
 			$message_t = $this->l->t('invalid permissionss');
 			throw new GenericShareException($message_t, $message_t, 404);
@@ -296,7 +307,6 @@ class Manager implements IManager {
 			throw new GenericShareException($message_t, $message_t, 400);
 		}
 
-		$shareNode = $share->getNode();
 		/** Use share node permission as default $maxPermissions*/
 		$maxPermissions = $shareNode->getPermissions();
 		/*
@@ -317,17 +327,6 @@ class Manager implements IManager {
 		if (!$this->strictSubsetOf($maxPermissions, $share->getPermissions())) {
 			$message_t = $this->l->t('Cannot increase permissions of %s', [$share->getNode()->getPath()]);
 			throw new GenericShareException($message_t, $message_t, 404);
-		}
-
-		if ($shareNode instanceof \OCP\Files\File) {
-			if ($share->getPermissions() & \OCP\Constants::PERMISSION_DELETE) {
-				$message_t = $this->l->t('Files can\'t be shared with delete permissions');
-				throw new GenericShareException($message_t);
-			}
-			if ($share->getPermissions() & \OCP\Constants::PERMISSION_CREATE) {
-				$message_t = $this->l->t('Files can\'t be shared with create permissions');
-				throw new GenericShareException($message_t);
-			}
 		}
 	}
 

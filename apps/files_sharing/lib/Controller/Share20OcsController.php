@@ -348,33 +348,11 @@ class Share20OcsController extends OCSController {
 		if ($permissions === null) {
 			if ($shareType !== Share::SHARE_TYPE_LINK) {
 				$permissions = $this->config->getAppValue('core', 'shareapi_default_permissions', Constants::PERMISSION_ALL);
-				$permissions |= Constants::PERMISSION_READ;
 			} else {
 				$permissions = Constants::PERMISSION_ALL;
 			}
 		} else {
 			$permissions = (int)$permissions;
-		}
-
-		if ($permissions < 0 || $permissions > Constants::PERMISSION_ALL) {
-			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
-			return new Result(null, 404, 'invalid permissions');
-		}
-
-		if ($permissions === 0) {
-			return new Result(null, 400, $this->l->t('Cannot remove all permissions'));
-		}
-
-		// link shares can have create-only without read (anonymous upload)
-		if ($shareType !== Share::SHARE_TYPE_LINK && $permissions !== Constants::PERMISSION_CREATE) {
-			// Shares always require read permissions
-			$permissions |= Constants::PERMISSION_READ;
-		}
-
-		if ($path instanceof \OCP\Files\File) {
-			// Single file shares should never have delete or create permissions
-			$permissions &= ~Constants::PERMISSION_DELETE;
-			$permissions &= ~Constants::PERMISSION_CREATE;
 		}
 
 		/*

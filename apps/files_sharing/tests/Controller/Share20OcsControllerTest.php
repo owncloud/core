@@ -718,76 +718,6 @@ class Share20OcsControllerTest extends TestCase {
 		$this->assertEquals($expected->getData(), $result->getData());
 	}
 
-	public function testCreateShareInvalidPermissions() {
-		$share = $this->newShare();
-		$this->shareManager->method('newShare')->willReturn($share);
-
-		$this->request
-			->method('getParam')
-			->will($this->returnValueMap([
-				['path', null, 'valid-path'],
-				['permissions', null, 32],
-			]));
-
-		$userFolder = $this->createMock('\OCP\Files\Folder');
-		$this->rootFolder->expects($this->once())
-			->method('getUserFolder')
-			->with('currentUser')
-			->willReturn($userFolder);
-
-		$path = $this->createMock('\OCP\Files\File');
-		$userFolder->expects($this->once())
-			->method('get')
-			->with('valid-path')
-			->willReturn($path);
-
-		$path->expects($this->once())
-			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
-
-		$expected = new \OC\OCS\Result(null, 404, 'invalid permissions');
-
-		$result = $this->ocs->createShare();
-
-		$this->assertEquals($expected->getMeta(), $result->getMeta());
-		$this->assertEquals($expected->getData(), $result->getData());
-	}
-
-	public function testCreateShareZeroPermissions() {
-		$share = $this->newShare();
-		$this->shareManager->method('newShare')->willReturn($share);
-
-		$this->request
-			->method('getParam')
-			->will($this->returnValueMap([
-				['path', null, 'valid-path'],
-				['permissions', null, 0],
-			]));
-
-		$userFolder = $this->createMock('\OCP\Files\Folder');
-		$this->rootFolder->expects($this->once())
-			->method('getUserFolder')
-			->with('currentUser')
-			->willReturn($userFolder);
-
-		$path = $this->createMock('\OCP\Files\File');
-		$userFolder->expects($this->once())
-			->method('get')
-			->with('valid-path')
-			->willReturn($path);
-
-		$path->expects($this->once())
-			->method('lock')
-			->with(\OCP\Lock\ILockingProvider::LOCK_SHARED);
-
-		$expected = new \OC\OCS\Result(null, 400, 'Cannot remove all permissions');
-
-		$result = $this->ocs->createShare();
-
-		$this->assertEquals($expected->getMeta(), $result->getMeta());
-		$this->assertEquals($expected->getData(), $result->getData());
-	}
-
 	public function testCreateShareUserNoShareWith() {
 		$share = $this->newShare();
 		$this->shareManager->method('newShare')->willReturn($share);
@@ -918,9 +848,7 @@ class Share20OcsControllerTest extends TestCase {
 			->with($this->callback(function (\OCP\Share\IShare $share) use ($path) {
 				return $share->getNode() === $path &&
 					$share->getPermissions() === (
-						\OCP\Constants::PERMISSION_ALL &
-						~\OCP\Constants::PERMISSION_DELETE &
-						~\OCP\Constants::PERMISSION_CREATE
+						\OCP\Constants::PERMISSION_ALL
 					) &&
 					$share->getShareType() === Share::SHARE_TYPE_USER &&
 					$share->getSharedWith() === 'validUser' &&

@@ -800,8 +800,6 @@ class ManagerTest extends \Test\TestCase {
 		$fileFullPermission->method('getOwner')->willReturn($ownerUser);
 		$fileFullPermission->method('isShareable')->willReturn(true);
 		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $fileFullPermission, $user0, $user1, $user1, null, null, null), 'A share requires permissions', true];
-		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $fileFullPermission, $user0, $user1, $user1, 25, null, null), 'Files can\'t be shared with delete permissions', true];
-		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_USER, $fileFullPermission, $user0, $user1, $user1, 21, null, null), 'Files can\'t be shared with create permissions', true];
 
 		/**
 		 * Normal share (not re-share) with not enough permission input

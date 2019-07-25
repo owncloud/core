@@ -1083,9 +1083,9 @@ class ApiTest extends TestCase {
 		$ocs = $this->createOCS($request, self::TEST_FILES_SHARING_API_USER1);
 		$result = $ocs->updateShare($share1->getId());
 
-		//Updating should fail with 404
-		$this->assertFalse($result->succeeded());
-		$this->assertEquals(404, $result->getStatusCode());
+		//Redundant bits should be masking out and updating should not fail
+		$this->assertTrue($result->succeeded());
+		$this->assertEquals(100, $result->getStatusCode());
 
 		//Permissions should not have changed!
 		$share1 = $this->shareManager->getShareById('ocinternal:' . $share1->getId());
