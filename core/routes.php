@@ -92,7 +92,13 @@ $this->create('files.viewcontroller.showFile', '/f/{fileId}')->action(static fun
 });
 
 // Sharing routes
-$this->create('files_sharing.sharecontroller.showShare', '/s/{token}')->action(function ($urlParams) {
+$this->create('files_sharing.sharecontroller.showShare', '/s/{token}')->action(static function ($urlParams) {
+	$phoenixBaseUrl = \OC::$server->getConfig()->getSystemValue('phoenix.baseUrl', null);
+	if ($phoenixBaseUrl) {
+		$token = $urlParams['token'];
+		\OC_Response::redirect("$phoenixBaseUrl/index.html#/s/$token");
+		return;
+	}
 	$app = new \OCA\Files_Sharing\AppInfo\Application($urlParams);
 	$app->dispatch('ShareController', 'showShare');
 });
