@@ -591,6 +591,31 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the following permissions are seen for :fileName in the sharing dialog for user :userName
+	 *
+	 * @param string $fileName
+	 * @param string $userName
+	 * @param TableNode $permissionsTable table with two columns and no heading
+	 *                                    first column one of the permissions
+	 *                                    (share|edit|create|change|delete)
+	 *                                    second column yes|no
+	 *                                    not mentioned permissions will not be
+	 *                                    touched
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingPermissionsAreSeenForInTheSharingDialogFor(
+		$fileName, $userName, TableNode $permissionsTable
+	) {
+		$userName = $this->featureContext->substituteInLineCodes($userName);
+		$this->theUserOpensTheShareDialogForFileFolder($fileName);
+		$this->sharingDialog->checkSharingPermissions(
+			$userName, $permissionsTable->getRowsHash(), $this->getSession()
+		);
+	}
+
+	/**
 	 * @When the user accepts the offered remote shares using the webUI
 	 * @Given the user has accepted the offered remote shares
 	 *
