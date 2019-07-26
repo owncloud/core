@@ -1448,7 +1448,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theContentOfTheFileSharedByLastPublicLinkShouldBeTheSameAs($originalFile) {
-		$response = $this->thePublicDownloadsTheLastCreatedFileUsingTheWebui();
+		$response = $this->thePublicDownloadsAllTheSharedDataUsingTheWebui();
 		PHPUnit\Framework\Assert::assertEquals(200, $response->getStatusCode());
 		$body = $response->getBody()->getContents();
 
@@ -1462,13 +1462,25 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the public downloads the last created file/folder using the webUI
+	 * @When the public downloads all the shared data using the webUI
 	 *
 	 * @return ResponseInterface
 	 */
-	public function thePublicDownloadsTheLastCreatedFileUsingTheWebui() {
+	public function thePublicDownloadsAllTheSharedDataUsingTheWebui() {
 		$url = $this->publicLinkFilesPage->getDownloadUrl();
 		return HttpRequestHelper::get($url);
+	}
+
+	/**
+	 * @Then all the links to download the public share should be the same
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function allThePublicShareDownloadLinkShouldBeSame() {
+		$urls = $this->publicLinkFilesPage->getAllDownloadUrls();
+		$url = \array_unique($urls);
+		PHPUnit\Framework\Assert::assertCount(1, $url, "Download links are not the same");
 	}
 
 	/**

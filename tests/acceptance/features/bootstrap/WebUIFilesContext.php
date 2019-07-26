@@ -35,9 +35,11 @@ use Page\TrashbinPage;
 use Page\FilesPageElement\ConflictDialog;
 use Page\FilesPageElement\FileActionsMenu;
 use Page\GeneralExceptionPage;
+use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\DeleteHelper;
 use TestHelpers\Asserts\WebDav as WebDavAssert;
+use TestHelpers\HttpRequestHelper;
 
 require_once 'bootstrap.php';
 
@@ -2041,6 +2043,27 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$session = $this->getSession();
 		$this->selectedFileRow = $this->getCurrentPageObject()->findFileRowByName($name, $session);
 		$this->openedFileActionMenu = $this->selectedFileRow->openFileActionsMenu($session);
+	}
+
+	/**
+	 * @When the public/user downloads file/folder :fileName using the webUI
+	 *
+	 * @param string $fileName Name of the file/Folder
+	 *
+	 * @return ResponseInterface
+	 */
+	public function userDownloadsFile($fileName) {
+		$session = $this->getSession();
+		$this->selectedFileRow = $this->getCurrentPageObject()->findFileRowByName($fileName, $session);
+		$this->openedFileActionMenu = $this->selectedFileRow->openFileActionsMenu($session);
+		$url = $this->openedFileActionMenu->getDownloadUrlForFile();
+		$baseUrl = $this->featureContext->getBaseUrlWithoutPath();
+		$this->response = HttpRequestHelper::get($baseUrl . $url);
+		Assert::assertEquals(
+			200,
+			$this->response->getStatusCode()
+		);
+		$this->featureContext->setResponse($this->response);
 	}
 
 	/**
