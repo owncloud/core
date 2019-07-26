@@ -409,6 +409,51 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
+	 *
+	 * @param string $shareReceiverName
+	 * @param array $permissions [['permission' => 'yes|no']]
+	 * @param Session $session
+	 *
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function checkSharingPermissions(
+		$shareReceiverName,
+		$permissions,
+		Session $session
+	) {
+		$xpathLocator = \sprintf(
+			$this->permissionsFieldByUserName, $shareReceiverName
+		);
+		$permissionsField = $this->waitTillElementIsNotNull($xpathLocator);
+		$this->assertElementNotNull(
+			$permissionsField,
+			__METHOD__
+			. " xpath $xpathLocator could not find share permissions field for user "
+			. $shareReceiverName
+		);
+		$showCrudsBtn = $permissionsField->find("xpath", $this->showCrudsXpath);
+		$this->assertElementNotNull(
+			$showCrudsBtn,
+			__METHOD__
+			. " xpath $this->showCrudsXpath could not find show-cruds button for user "
+			. $shareReceiverName
+		);
+		$showCrudsBtn->click();
+		foreach ($permissions as $permission => $value) {
+			$permissionCheckBox = $permissionsField->findField($permission);
+
+			$this->waitForAjaxCallsToStartAndFinish($session);
+
+			if ($value === "yes" && !$permissionCheckBox->isChecked()) {
+				throw new \Exception("The checkbox for permission {$permission} is not enabled.");
+			} elseif ($value === "no" && $permissionCheckBox->isChecked()) {
+				throw new \Exception("The checkbox for permission {$permission} is enabled.");
+			}
+		}
+	}
+
+	/**
 	 * gets the text of the tooltip associated with the "share-with" input
 	 *
 	 * @throws ElementNotFoundException
