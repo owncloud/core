@@ -39,7 +39,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	protected $uploadFormXpath = "//div[@class='uploadForm']";
 	protected $emptyContentXpath = ".//div[@id='emptycontent']";
 	protected $addToYourOcBtnId = "save-button";
-	protected $singleFileDownloadBtnXpath = "//a[@id='download']";
+	protected $DownloadBtnXpath = "//a[@id='download']";
+	protected $directLinkXpath = "//input[@id='directLink']";
+	protected $downloadFileXpath = "//a[@id='downloadFile']";
 	protected $textPreviewContainerXpath = "//div[@class='text-preview']";
 	protected $remoteAddressInputId = "remote_address";
 	protected $confirmBtnId = "save-button-confirm";
@@ -47,6 +49,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	protected $passwordSubmitButtonId = 'password-submit';
 	protected $warningMessageCss = '.warning';
 	protected $deleteAllSelectedBtnXpath = "//a[@class='delete-selected']";
+
 	/**
 	 *
 	 * @var FilesPageCRUD $filesPageCRUDFunctions
@@ -143,7 +146,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		);
 		$confirmBtn->click();
 	}
-	
+
 	/**
 	 * create a folder with the given name.
 	 * If name is not given a random one is chosen
@@ -227,10 +230,10 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @throws ElementNotFoundException
 	 */
 	public function getDownloadUrl() {
-		$downloadBtn = $this->find("xpath", $this->singleFileDownloadBtnXpath);
+		$downloadBtn = $this->find("xpath", $this->DownloadBtnXpath);
 		$this->assertElementNotNull(
 			$downloadBtn,
-			__METHOD__ . " xpath $this->singleFileDownloadBtnXpath " .
+			__METHOD__ . " xpath $this->DownloadBtnXpath " .
 			" could not find download button"
 		);
 		if ($downloadBtn->hasAttribute("href")) {
@@ -239,6 +242,36 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		return null;
 	}
 
+	/**
+	 * returns all the download url from single file download page
+	 *
+	 * @return array
+	 * @throws ElementNotFoundException
+	 */
+	public function getAllDownloadUrls() {
+		$downloadBtn = $this->find("xpath", $this->DownloadBtnXpath);
+		$downloadFileBtn = $this->find("xpath", $this->downloadFileXpath);
+		$directLink = $this->find("xpath", $this->directLinkXpath);
+		$this->assertElementNotNull(
+			$downloadBtn,
+			__METHOD__ . " xpath $this->DownloadBtnXpath " .
+			" could not find download button"
+		);
+		$this->assertElementNotNull(
+			$downloadFileBtn,
+			__METHOD__ . " xpath $this->DownloadBtnXpath " .
+			" could not find download file button"
+		);
+		$this->assertElementNotNull(
+			$directLink,
+			__METHOD__ . " xpath $this->DownloadBtnXpath " .
+			" could not find direct link"
+		);
+		$url1 = $downloadBtn->getAttribute("href");
+		$url2 = $downloadFileBtn->getAttribute("href");
+		$url3 = $directLink->getAttribute("value");
+		return [$url1, $url2, $url3];
+	}
 	/**
 	 * enter public link password
 	 *
@@ -334,7 +367,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		while ($currentTime <= $end) {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
 			$downloadButton = $this->find(
-				"xpath", $this->singleFileDownloadBtnXpath
+				"xpath", $this->DownloadBtnXpath
 			);
 			$uploadForm = $this->find(
 				"xpath", $this->uploadFormXpath
