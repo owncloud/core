@@ -28,6 +28,7 @@
     "Unsatisfied authentication mechanism parameters" : "無法滿足驗證機制所需的參數條件",
     "Insufficient data: %s" : "資料不足: %s",
     "%s" : "%s",
+    "Storage with id \"%i\" is not user editable" : "編號 \"%i\" 的儲存空間 不開放給用戶編輯",
     "App key" : "App 金鑰",
     "App secret" : "App 密碼",
     "Client ID" : "客戶端ID",
