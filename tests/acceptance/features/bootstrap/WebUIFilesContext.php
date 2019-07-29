@@ -301,8 +301,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given the user has browsed directly to display the details of file :fileName in folder :folderName
-	 * @When the user browses directly to display the details of file :fileName in folder :folderName
+	 * @Given the user has browsed directly to display the details of file/folder :fileName in folder :folderName
+	 * @When the user browses directly to display the details of file/folder :fileName in folder :folderName
 	 *
 	 * @param string $fileName
 	 * @param string $folderName

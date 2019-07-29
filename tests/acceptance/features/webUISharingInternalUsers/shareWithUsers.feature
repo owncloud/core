@@ -99,7 +99,7 @@ Feature: Sharing files and folders with internal users
       | user2    |
     And user "user2" has logged in using the webUI
     When the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+    And the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
       | delete | no |
     And the user re-logs in as "user1" using the webUI
     And the user opens folder "simple-folder (2)" using the webUI
@@ -431,7 +431,7 @@ Feature: Sharing files and folders with internal users
     And user "user2" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
     And user "user2" has logged in using the webUI
     When the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+    And the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
       | edit   | no |
     And the user re-logs in as "user1" using the webUI
     And the user opens folder "simple-folder" using the webUI
@@ -455,7 +455,7 @@ Feature: Sharing files and folders with internal users
     And user "user2" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
     And user "user2" has logged in using the webUI
     When the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+    And the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
       | change | no |
       | delete | no |
     And the user re-logs in as "user1" using the webUI
@@ -475,7 +475,7 @@ Feature: Sharing files and folders with internal users
     And user "user2" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
     And user "user2" has logged in using the webUI
     When the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+    And the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
       | create | no |
       | delete | no |
     And the user re-logs in as "user1" using the webUI
@@ -495,7 +495,7 @@ Feature: Sharing files and folders with internal users
     And user "user2" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
     And user "user2" has logged in using the webUI
     When the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+    And the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
       | change | no |
       | create | no |
     And the user re-logs in as "user1" using the webUI
@@ -515,7 +515,7 @@ Feature: Sharing files and folders with internal users
     And user "user2" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
     And user "user2" has logged in using the webUI
     When the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+    And the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
       | share   | no |
     And the user re-logs in as "user1" using the webUI
     And the user opens folder "simple-folder" using the webUI
@@ -628,7 +628,7 @@ Feature: Sharing files and folders with internal users
     When the administrator disables permission delete for default user and group share using the webUI
     And the user re-logs in as "user2" using the webUI
     And the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+    And the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
       | delete | yes |
     And the user re-logs in as "user1" using the webUI
     And the user opens folder "simple-folder" using the webUI
@@ -650,7 +650,7 @@ Feature: Sharing files and folders with internal users
     And the administrator disables permission share for default user and group share using the webUI
     And the user re-logs in as "user2" using the webUI
     And the user shares folder "simple-folder" with user "User One" using the webUI
-    And the user sets the sharing permissions of "User One" for "simple-folder" using the webUI to
+    And the user sets the sharing permissions of user "User One" for "simple-folder" using the webUI to
       | share | yes |
     And the user re-logs in as "user1" using the webUI
     And the user opens folder "simple-folder" using the webUI

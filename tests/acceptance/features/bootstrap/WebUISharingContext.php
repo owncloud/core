@@ -248,6 +248,37 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then /^group ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed in the shared with list$/
+	 *
+	 * @param string $groupName
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function shouldBeListedInTheSharedWithList(
+		$groupName,
+		$shouldOrNot
+	) {
+		$should = ($shouldOrNot !== "not");
+		// The capturing groups of the regex include the quotes at each
+		// end of the captured string, so trim them.
+		$groupName = \trim($groupName, '""');
+		$presence = $this->sharingDialog->isGroupPresentInShareWithList($groupName);
+		if ($should) {
+			PHPUnit\Framework\Assert::assertTrue(
+				$presence,
+				"group $groupName is not listed in share with list"
+			);
+		} else {
+			PHPUnit\Framework\Assert::assertFalse(
+				$presence,
+				"group $groupName is listed in share with list"
+			);
+		}
+	}
+
+	/**
 	 * @Given the user has opened the public link share tab
 	 * @When the user opens the public link share tab
 	 *
@@ -566,9 +597,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user sets the sharing permissions of :userName for :fileName using the webUI to
-	 * @Given the user has set the sharing permissions of :userName for :fileName using the webUI to
+	 * @When /^the user sets the sharing permissions of (user|group) ((?:[^']*)|(?:[^"]*)) for ((?:'[^']*')|(?:"[^"]*")) using the webUI to$/
+	 * @Given /^the user has set the sharing permissions of (user|group) ((?:'[^']*')|(?:"[^"]*")) for ((?:'[^']*')|(?:"[^"]*")) using the webUI to$/
 	 *
+	 * @param string $userOrGroup
 	 * @param string $userName
 	 * @param string $fileName
 	 * @param TableNode $permissionsTable table with two columns and no heading
@@ -582,19 +614,22 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserSetsTheSharingPermissionsOfForOnTheWebUI(
-		$userName, $fileName, TableNode $permissionsTable
+		$userOrGroup, $userName, $fileName, TableNode $permissionsTable
 	) {
-		$userName = $this->featureContext->substituteInLineCodes($userName);
-		$this->theUserOpensTheShareDialogForFileFolder($fileName);
+		// The capturing groups of the regex include the quotes at each
+		// end of the captured string, so trim them.
+		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '""'));
+		$this->theUserOpensTheShareDialogForFileFolder(\trim($fileName, '""'));
 		$this->sharingDialog->setSharingPermissions(
-			$userName, $permissionsTable->getRowsHash(), $this->getSession()
+			$userOrGroup, $userName, $permissionsTable->getRowsHash(), $this->getSession()
 		);
 	}
 
 	/**
-	 * @Then the following permissions are seen for :fileName in the sharing dialog for user :userName
+	 * @Then /^the following permissions are seen for ((?:[^']*)|(?:[^"]*)) in the sharing dialog for (user|group) ((?:[^']*)|(?:[^"]*))$/
 	 *
 	 * @param string $fileName
+	 * @param string $userOrGroup
 	 * @param string $userName
 	 * @param TableNode $permissionsTable table with two columns and no heading
 	 *                                    first column one of the permissions
@@ -607,12 +642,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theFollowingPermissionsAreSeenForInTheSharingDialogFor(
-		$fileName, $userName, TableNode $permissionsTable
+		$fileName, $userOrGroup, $userName, TableNode $permissionsTable
 	) {
-		$userName = $this->featureContext->substituteInLineCodes($userName);
-		$this->theUserOpensTheShareDialogForFileFolder($fileName);
+		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '""'));
+		$this->theUserOpensTheShareDialogForFileFolder(\trim($fileName, '""'));
 		$this->sharingDialog->checkSharingPermissions(
-			$userName, $permissionsTable->getRowsHash(), $this->getSession()
+			$userOrGroup, $userName, $permissionsTable->getRowsHash(), $this->getSession()
 		);
 	}
 
