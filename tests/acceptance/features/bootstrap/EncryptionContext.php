@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use PHPUnit\Framework\Assert;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\SetupHelper;
 
@@ -124,7 +125,7 @@ class EncryptionContext implements Context {
 		$this->featureContext->userDownloadsFileUsingTheAPI($username, "/$fileName");
 		$fileContentServer = (string)$this->featureContext->getResponse()->getBody();
 
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$fileContentServer,
 			$fileContent
 		);
@@ -148,7 +149,7 @@ class EncryptionContext implements Context {
 		$encodedFileContent = (string)$parsedResponse->data->element->contentUrlEncoded;
 		$fileContent = \urldecode($encodedFileContent);
 
-		PHPUnit\Framework\Assert::assertStringStartsWith(
+		Assert::assertStringStartsWith(
 			"HBEGIN:oc_encryption_module:OC_DEFAULT_MODULE:cipher:AES-256-CTR:signed:true",
 			$fileContent
 		);
