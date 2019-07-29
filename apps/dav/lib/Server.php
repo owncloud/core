@@ -26,8 +26,10 @@
  */
 namespace OCA\DAV;
 
+use OC;
 use OC\Files\Filesystem;
 use OCA\DAV\AppInfo\PluginManager;
+use OCA\DAV\CalDAV\Publishing\PublishPlugin;
 use OCA\DAV\CalDAV\Schedule\IMipPlugin;
 use OCA\DAV\CardDAV\ImageExportPlugin;
 use OCA\DAV\Connector\Sabre\Auth;
@@ -37,8 +39,11 @@ use OCA\DAV\Connector\Sabre\CopyEtagHeaderPlugin;
 use OCA\DAV\Connector\Sabre\CorsPlugin;
 use OCA\DAV\Connector\Sabre\DavAclPlugin;
 use OCA\DAV\Connector\Sabre\DummyGetResponsePlugin;
+use OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin;
 use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCA\DAV\Connector\Sabre\FilesReportPlugin;
+use OCA\DAV\Connector\Sabre\FilesSearchReportPlugin;
+use OCA\DAV\Connector\Sabre\LockPlugin;
 use OCA\DAV\Connector\Sabre\MaintenancePlugin;
 use OCA\DAV\Connector\Sabre\QuotaPlugin;
 use OCA\DAV\Connector\Sabre\SharesPlugin;
@@ -53,16 +58,20 @@ use OCA\DAV\DAV\ViewOnlyPlugin;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCA\DAV\Files\FileLocksBackend;
 use OCA\DAV\Files\PreviewPlugin;
+use OCA\DAV\Files\PublicFiles\PublicFilesPlugin;
 use OCA\DAV\JobStatus\Entity\JobStatusMapper;
 use OCA\DAV\Meta\MetaPlugin;
 use OCA\DAV\Files\PublicFiles\PublicSharingAuth;
 use OCA\DAV\SystemTag\SystemTagPlugin;
 use OCA\DAV\TrashBin\TrashBinPlugin;
 use OCA\DAV\Upload\ChunkingPlugin;
+use OCP\AppFramework\QueryException;
 use OCP\IRequest;
 use OCP\SabrePluginEvent;
+use Sabre\CalDAV\ICSExportPlugin;
 use Sabre\CardDAV\VCFExportPlugin;
 use Sabre\DAV\Auth\Plugin;
+use Sabre\DAV\Exception;
 
 class Server {
 
@@ -79,37 +88,37 @@ class Server {
 	 *
 	 * @param IRequest $request
 	 * @param string $baseUri
-	 * @throws \OCP\AppFramework\QueryException
-	 * @throws \Sabre\DAV\Exception
+	 * @throws QueryException
+	 * @throws Exception
 	 */
 	public function __construct(IRequest $request, $baseUri) {
 		$this->request = $request;
 		$this->baseUri = $baseUri;
-		$logger = \OC::$server->getLogger();
-		$dispatcher = \OC::$server->getEventDispatcher();
+		$logger = OC::$server->getLogger();
+		$dispatcher = OC::$server->getEventDispatcher();
 
 		$root = new RootCollection();
-		$tree = new \OCA\DAV\Tree($root);
-		$this->server = new \OCA\DAV\Connector\Sabre\Server($tree);
+		$tree = new Tree($root);
+		$this->server = new Connector\Sabre\Server($tree);
 
-		$config = \OC::$server->getConfig();
+		$config = OC::$server->getConfig();
 		if ($config->getSystemValue('dav.enable.async', false)) {
 			$this->server->addPlugin(new LazyOpsPlugin(
-				\OC::$server->getUserSession(),
-				\OC::$server->getURLGenerator(),
-				\OC::$server->getShutdownHandler(),
-				\OC::$server->query(JobStatusMapper::class),
-				\OC::$server->getLogger()
+				OC::$server->getUserSession(),
+				OC::$server->getURLGenerator(),
+				OC::$server->getShutdownHandler(),
+				OC::$server->query(JobStatusMapper::class),
+				OC::$server->getLogger()
 			));
 		}
 
 		// Backends
 		$authBackend = new Auth(
-			\OC::$server->getSession(),
-			\OC::$server->getUserSession(),
-			\OC::$server->getRequest(),
-			\OC::$server->getTwoFactorAuthManager(),
-			\OC::$server->getAccountModuleManager()
+			OC::$server->getSession(),
+			OC::$server->getUserSession(),
+			OC::$server->getRequest(),
+			OC::$server->getTwoFactorAuthManager(),
+			OC::$server->getAccountModuleManager()
 		);
 
 		// Set URL explicitly due to reverse-proxy situations
@@ -119,10 +128,10 @@ class Server {
 		$this->server->addPlugin(new MaintenancePlugin($config));
 		$this->server->addPlugin(new ValidateRequestPlugin('dav'));
 		$this->server->addPlugin(new BlockLegacyClientPlugin($config));
-		$this->server->addPlugin(new CorsPlugin(\OC::$server->getUserSession()));
+		$this->server->addPlugin(new CorsPlugin(OC::$server->getUserSession()));
 		$authPlugin = new Plugin();
 		if ($this->isRequestForSubtree(['public-files'])) {
-			$authPlugin->addBackend(new PublicSharingAuth($this->server, \OC::$server->getShareManager()));
+			$authPlugin->addBackend(new PublicSharingAuth($this->server, OC::$server->getShareManager()));
 		}
 		$authPlugin->addBackend(new PublicAuth());
 		$this->server->addPlugin($authPlugin);
@@ -135,16 +144,17 @@ class Server {
 		$authPlugin->addBackend($authBackend);
 
 		// debugging
-		if (\OC::$server->getConfig()->getSystemValue('debug', false)) {
+		if (OC::$server->getConfig()->getSystemValue('debug', false)) {
 			$this->server->addPlugin(new \Sabre\DAV\Browser\Plugin());
 		} else {
 			$this->server->addPlugin(new DummyGetResponsePlugin());
 		}
 
-		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $logger));
-		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
+		$this->server->addPlugin(new ExceptionLoggerPlugin('webdav', $logger));
+		$this->server->addPlugin(new LockPlugin());
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
-		$this->server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($this->server->tree, false, \OC::$server->getTimeFactory())));
+		$this->server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($this->server->tree, false, OC::$server->getTimeFactory())));
+		$this->server->addPlugin(new PublicFilesPlugin());
 
 		// ACL plugin not used in files subtree, also it causes issues
 		// with performance and locking issues because it will query
@@ -162,67 +172,67 @@ class Server {
 
 		// calendar plugins
 		if ($this->isRequestForSubtree(['calendars', 'public-calendars', 'principals'])) {
-			$mailer = \OC::$server->getMailer();
-			$this->server->addPlugin(new \OCA\DAV\CalDAV\Plugin());
-			$this->server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
-			$this->server->addPlugin(new \OCA\DAV\CalDAV\Schedule\Plugin());
+			$mailer = OC::$server->getMailer();
+			$this->server->addPlugin(new CalDAV\Plugin());
+			$this->server->addPlugin(new ICSExportPlugin());
+			$this->server->addPlugin(new CalDAV\Schedule\Plugin());
 			$this->server->addPlugin(new IMipPlugin($mailer, $logger, $request));
 			$this->server->addPlugin(new \Sabre\CalDAV\Subscriptions\Plugin());
 			$this->server->addPlugin(new \Sabre\CalDAV\Notifications\Plugin());
-			$this->server->addPlugin(new DAV\Sharing\Plugin($authBackend, \OC::$server->getRequest()));
-			$this->server->addPlugin(new \OCA\DAV\CalDAV\Publishing\PublishPlugin(
-				\OC::$server->getConfig(),
-				\OC::$server->getURLGenerator()
+			$this->server->addPlugin(new DAV\Sharing\Plugin($authBackend, OC::$server->getRequest()));
+			$this->server->addPlugin(new PublishPlugin(
+				OC::$server->getConfig(),
+				OC::$server->getURLGenerator()
 			));
 		}
 
 		// addressbook plugins
 		if ($this->isRequestForSubtree(['addressbooks', 'principals'])) {
-			$this->server->addPlugin(new DAV\Sharing\Plugin($authBackend, \OC::$server->getRequest()));
-			$this->server->addPlugin(new \OCA\DAV\CardDAV\Plugin());
+			$this->server->addPlugin(new DAV\Sharing\Plugin($authBackend, OC::$server->getRequest()));
+			$this->server->addPlugin(new CardDAV\Plugin());
 			$this->server->addPlugin(new VCFExportPlugin());
-			$this->server->addPlugin(new ImageExportPlugin(\OC::$server->getLogger()));
+			$this->server->addPlugin(new ImageExportPlugin(OC::$server->getLogger()));
 		}
 
 		// system tags plugins
 		$this->server->addPlugin(new SystemTagPlugin(
-			\OC::$server->getSystemTagManager(),
-			\OC::$server->getGroupManager(),
-			\OC::$server->getUserSession()
+			OC::$server->getSystemTagManager(),
+			OC::$server->getGroupManager(),
+			OC::$server->getUserSession()
 		));
 
 		$this->server->addPlugin(new CopyEtagHeaderPlugin());
 		$this->server->addPlugin(new ChunkingPlugin());
 		$this->server->addPlugin(new TrashBinPlugin());
 		$this->server->addPlugin(new MetaPlugin(
-			\OC::$server->getUserSession(),
-			\OC::$server->getLazyRootFolder()
+			OC::$server->getUserSession(),
+			OC::$server->getLazyRootFolder()
 		));
 
 		// Allow view-only plugin for webdav requests
 		$this->server->addPlugin(new ViewOnlyPlugin(
-			\OC::$server->getLogger()
+			OC::$server->getLogger()
 		));
 
 		if (BrowserErrorPagePlugin::isBrowserRequest($request)) {
 			$this->server->addPlugin(new BrowserErrorPagePlugin());
 		}
 
-		$this->server->addPlugin(new PreviewPlugin(\OC::$server->getTimeFactory(), \OC::$server->getPreviewManager()));
+		$this->server->addPlugin(new PreviewPlugin(OC::$server->getTimeFactory(), OC::$server->getPreviewManager()));
 		// wait with registering these until auth is handled and the filesystem is setup
 		$this->server->on('beforeMethod:*', function () use ($root) {
 			// custom properties plugin must be the last one
-			$userSession = \OC::$server->getUserSession();
+			$userSession = OC::$server->getUserSession();
 			$user = $userSession->getUser();
 			if ($user !== null) {
 				$view = Filesystem::getView();
 				$this->server->addPlugin(
 					new FilesPlugin(
 						$this->server->tree,
-						\OC::$server->getConfig(),
+						OC::$server->getConfig(),
 						$this->request,
 						false,
-						!\OC::$server->getConfig()->getSystemValue('debug', false)
+						!OC::$server->getConfig()->getSystemValue('debug', false)
 					)
 				);
 
@@ -231,9 +241,9 @@ class Server {
 					$filePropertiesPlugin = new FileCustomPropertiesPlugin(
 						new FileCustomPropertiesBackend(
 							$this->server->tree,
-							\OC::$server->getDatabaseConnection(),
-							\OC::$server->getUserSession()->getUser(),
-							\OC::$server->getRootFolder()
+							OC::$server->getDatabaseConnection(),
+							OC::$server->getUserSession()->getUser(),
+							OC::$server->getRootFolder()
 						)
 					);
 					$this->server->addPlugin($filePropertiesPlugin);
@@ -241,9 +251,9 @@ class Server {
 					$miscPropertiesPlugin = new \Sabre\DAV\PropertyStorage\Plugin(
 						new MiscCustomPropertiesBackend(
 							$this->server->tree,
-							\OC::$server->getDatabaseConnection(),
-							\OC::$server->getUserSession()->getUser(),
-							\OC::$server->getRootFolder()
+							OC::$server->getDatabaseConnection(),
+							OC::$server->getUserSession()->getUser(),
+							OC::$server->getRootFolder()
 						)
 					);
 					$this->server->addPlugin($miscPropertiesPlugin);
@@ -255,18 +265,18 @@ class Server {
 				}
 				$this->server->addPlugin(
 					new TagsPlugin(
-						$this->server->tree, \OC::$server->getTagManager()
+						$this->server->tree, OC::$server->getTagManager()
 					)
 				);
 				// TODO: switch to LazyUserFolder
-				$userFolder = \OC::$server->getUserFolder();
+				$userFolder = OC::$server->getUserFolder();
 				$this->server->addPlugin(new SharesPlugin(
 					$this->server->tree,
 					$userSession,
-					\OC::$server->getShareManager()
+					OC::$server->getShareManager()
 				));
 				$this->server->addPlugin(new CommentPropertiesPlugin(
-					\OC::$server->getCommentsManager(),
+					OC::$server->getCommentsManager(),
 					$userSession
 				));
 
@@ -274,25 +284,25 @@ class Server {
 					$this->server->addPlugin(new FilesReportPlugin(
 						$this->server->tree,
 						$view,
-						\OC::$server->getSystemTagManager(),
-						\OC::$server->getSystemTagObjectMapper(),
-						\OC::$server->getTagManager(),
+						OC::$server->getSystemTagManager(),
+						OC::$server->getSystemTagObjectMapper(),
+						OC::$server->getTagManager(),
 						$userSession,
-						\OC::$server->getGroupManager(),
+						OC::$server->getGroupManager(),
 						$userFolder
 					));
 				}
 				$this->server->addPlugin(
-					new \OCA\DAV\Connector\Sabre\FilesSearchReportPlugin(
-						\OC::$server->getSearch()
+					new FilesSearchReportPlugin(
+						OC::$server->getSearch()
 					)
 				);
 			}
 
 			// register plugins from apps
 			$pluginManager = new PluginManager(
-				\OC::$server,
-				\OC::$server->getAppManager()
+				OC::$server,
+				OC::$server->getAppManager()
 			);
 			foreach ($pluginManager->getAppPlugins() as $appPlugin) {
 				$this->server->addPlugin($appPlugin);
@@ -304,7 +314,7 @@ class Server {
 	}
 
 	public function exec() {
-		$this->server->exec();
+		$this->server->start();
 	}
 
 	/**

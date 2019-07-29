@@ -8,6 +8,7 @@
 
 namespace OCA\DAV\Files\PublicFiles;
 
+use OCP\Constants;
 use OCP\Files\FileInfo;
 use OCP\Files\Node;
 use OCP\Share\IShare;
@@ -54,5 +55,23 @@ class ShareNode extends Collection {
 
 	public function getShare() {
 		return $this->share;
+	}
+
+	public function getPermissions() {
+		$p = '';
+		if ($this->checkPermissions(Constants::PERMISSION_DELETE)) {
+			$p .= 'D';
+		}
+		if ($this->checkPermissions(Constants::PERMISSION_UPDATE)) {
+			$p .= 'NV'; // Renameable, Moveable
+		}
+		if ($this->checkPermissions(Constants::PERMISSION_CREATE)) {
+			$p .= 'CK';
+		}
+		return $p;
+	}
+
+	protected function checkPermissions($permissions) {
+		return ($this->share->getPermissions() & $permissions) === $permissions;
 	}
 }

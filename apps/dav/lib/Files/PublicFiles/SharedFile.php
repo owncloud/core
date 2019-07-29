@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -21,6 +21,9 @@
 
 namespace OCA\DAV\Files\PublicFiles;
 
+use OCA\DAV\Files\IFileNode;
+use OCP\Constants;
+use OCP\Files\Node;
 use OCP\Share\IShare;
 use Sabre\DAV\File;
 use Sabre\DAVACL\ACLTrait;
@@ -32,7 +35,7 @@ use Sabre\DAVACL\IACL;
  *
  * @package OCA\DAV\Meta
  */
-class SharedFile extends File implements IACL {
+class SharedFile extends File implements IACL, IFileNode, IPublicSharedNode {
 	use ACLTrait;
 
 	/** @var \OCP\Files\File */
@@ -85,10 +88,6 @@ class SharedFile extends File implements IACL {
 		$this->file->delete();
 	}
 
-//	function setName($name) {
-//		$this->file->setName($name);
-//	}
-
 	public function getOwner() {
 		return '';
 	}
@@ -110,5 +109,39 @@ class SharedFile extends File implements IACL {
 
 	public function getShare() {
 		return $this->share;
+	}
+
+	/**
+	 * @return Node
+	 */
+	public function getNode() {
+		return $this->file;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDavPermissions() {
+		$node = $this->getNode();
+		$p = '';
+		if ($node->isDeletable() && $this->checkSharePermissions(Constants::PERMISSION_DELETE)) {
+			$p .= 'D';
+		}
+		if ($node->isUpdateable() && $this->checkSharePermissions(Constants::PERMISSION_UPDATE)) {
+			$p .= 'NV'; // Renameable, Moveable
+		}
+		if ($node->getType() === \OCP\Files\FileInfo::TYPE_FILE) {
+			if ($node->isUpdateable() && $this->checkSharePermissions(Constants::PERMISSION_UPDATE)) {
+				$p .= 'W';
+			}
+		} else {
+			if ($node->isCreatable() && $this->checkSharePermissions(Constants::PERMISSION_CREATE)) {
+				$p .= 'CK';
+			}
+		}
+		return $p;
+	}
+	protected function checkSharePermissions($permissions) {
+		return ($this->share->getPermissions() & $permissions) === $permissions;
 	}
 }
