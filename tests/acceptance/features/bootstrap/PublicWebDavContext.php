@@ -179,8 +179,8 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" using the old WebDAV API
-	 * @Given the public has uploaded file ":filename"
+	 * @When the public uploads file :filename using the old WebDAV API
+	 * @Given the public has uploaded file :filename
 	 *
 	 * @param string $source target file name
 	 *
@@ -192,8 +192,8 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" with content ":body" with autorename mode using the public WebDAV API
-	 * @Given the public has uploaded file ":filename" with content ":body" with autorename mode
+	 * @When the public uploads file :filename with content :body with autorename mode using the public WebDAV API
+	 * @Given the public has uploaded file :filename with content :body with autorename mode
 	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
@@ -205,8 +205,8 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" with password ":password" and content ":body" using the public WebDAV API
-	 * @Given the public has uploaded file ":filename" with password ":password" and content ":body"
+	 * @When the public uploads file :filename with password :password and content :body using the public WebDAV API
+	 * @Given the public has uploaded file :filename" with password :password and content :body
 	 *
 	 * @param string $filename target file name
 	 * @param string $password
@@ -221,8 +221,8 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When the public overwrites file ":filename" with content ":body" using the old WebDAV API
-	 * @Given the public has overwritten file ":filename" with content ":body"
+	 * @When the public overwrites file :filename with content :body using the old WebDAV API
+	 * @Given the public has overwritten file :filename with content :body
 	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
@@ -234,8 +234,8 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" with content ":body" using the public WebDAV API
-	 * @Given the public has uploaded file ":filename" with content ":body"
+	 * @When the public uploads file :filename with content :body using the public WebDAV API
+	 * @Given the public has uploaded file :filename with content :body
 	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
