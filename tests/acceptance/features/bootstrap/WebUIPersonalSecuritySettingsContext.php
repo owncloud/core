@@ -25,6 +25,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
 use Page\PersonalSecuritySettingsPage;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
@@ -91,10 +92,10 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 		$appTr = $this->personalSecuritySettingsPage->getLinkedAppByName(
 			$this->appName
 		);
-		PHPUnit\Framework\Assert::assertNotEmpty($appTr);
+		Assert::assertNotEmpty($appTr);
 		$disconnectButton
 			= $this->personalSecuritySettingsPage->getDisconnectButton($appTr);
-		PHPUnit\Framework\Assert::assertNotEmpty($disconnectButton);
+		Assert::assertNotEmpty($disconnectButton);
 	}
 
 	/**
@@ -104,12 +105,12 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 */
 	public function theUserDisplayNameAndAppPasswordShouldBeDisplayedOnTheWebUI() {
 		$result = $this->personalSecuritySettingsPage->getAppPasswordResult();
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$this->featureContext->getCurrentUser(),
 			$result[0]->getValue()
 		);
 
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			1, \preg_match(
 				'/(([A-Z]){5}-){3}([A-Z]){5}/', $result[1]->getValue()
 			)

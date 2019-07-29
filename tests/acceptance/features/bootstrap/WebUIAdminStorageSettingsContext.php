@@ -25,6 +25,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\AdminStorageSettingsPage;
+use PHPUnit\Framework\Assert;
 use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
@@ -175,11 +176,11 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 		);
 		$should = ($shouldOrNot !== "not");
 		if ($should) {
-			PHPUnit\Framework\Assert::assertTrue(
+			Assert::assertTrue(
 				$result, "Last created mount was expected to be present but was not"
 			);
 		} else {
-			PHPUnit\Framework\Assert::assertFalse(
+			Assert::assertFalse(
 				$result, "Last created mount was not expected to be present but was"
 			);
 		}
@@ -192,7 +193,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 */
 	public function theExternalStorageFormShouldBeOnTheStorageSettingsPage() {
 		$isDisplayed = $this->adminStorageSettingsPage->externalStorageFormVisible();
-		PHPUnit\Framework\Assert::assertTrue(
+		Assert::assertTrue(
 			$isDisplayed, "External storage is expected to be visible but is not"
 		);
 	}
@@ -204,7 +205,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 */
 	public function theExternalStorageFormShouldNotBeOnTheStorageSettingsPage() {
 		$isDisplayed = $this->adminStorageSettingsPage->externalStorageFormVisible();
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			$isDisplayed, "External storage is not expected to be visible but is"
 		);
 	}

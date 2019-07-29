@@ -21,6 +21,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use PHPUnit\Framework\Assert;
 use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';
@@ -58,7 +59,7 @@ class TrashbinContext implements Context {
 			'trash-bin'
 		);
 
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			204, $response->getStatusCode()
 		);
 	}
@@ -148,7 +149,7 @@ class TrashbinContext implements Context {
 
 		$firstEntry = $this->findFirstTrashedEntry($user, \trim($sections[0], '/'));
 
-		PHPUnit\Framework\Assert::assertNotNull($firstEntry);
+		Assert::assertNotNull($firstEntry);
 
 		// query was on the main element ?
 		if (\count($sections) === 1) {
@@ -168,7 +169,7 @@ class TrashbinContext implements Context {
 			}
 		}
 
-		PHPUnit\Framework\Assert::assertTrue($found);
+		Assert::assertTrue($found);
 	}
 
 	/**
@@ -258,7 +259,7 @@ class TrashbinContext implements Context {
 	 */
 	public function elementInTrashIsRestored($user, $originalPath) {
 		$this->restoreElement($user, $originalPath);
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath is still in the trashbin"
 		);
@@ -290,7 +291,7 @@ class TrashbinContext implements Context {
 	public function elementIsInTrashCheckingOriginalPath(
 		$user, $originalPath
 	) {
-		PHPUnit\Framework\Assert::assertTrue(
+		Assert::assertTrue(
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath wasn't found in the trashbin"
 		);
@@ -307,7 +308,7 @@ class TrashbinContext implements Context {
 	public function elementIsNotInTrashCheckingOriginalPath(
 		$user, $originalPath
 	) {
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath was found in the trashbin"
 		);

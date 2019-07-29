@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Exception\ConnectException;
+use PHPUnit\Framework\Assert;
 use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';
@@ -102,7 +103,7 @@ class WebDavLockingContext implements Context {
 			$this->tokenOfLastLock[$user][$file] = (string)$xmlPart[0];
 		} else {
 			if ($expectToSucceed === true) {
-				PHPUnit\Framework\Assert::fail("could not find lock token");
+				Assert::fail("could not find lock token");
 			}
 		}
 	}
@@ -440,7 +441,7 @@ class WebDavLockingContext implements Context {
 		$responseXml = $this->featureContext->getResponseXml($response);
 		$responseXml->registerXPathNamespace('d', 'DAV:');
 		$xmlPart = $responseXml->xpath("//d:response//d:lockdiscovery/d:activelock");
-		PHPUnit\Framework\Assert::assertCount(
+		Assert::assertCount(
 			(int)$count, $xmlPart,
 			"expected $count lock(s) for '$file' but found " . \count($xmlPart)
 		);

@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use PHPUnit\Framework\Assert;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\WebDavHelper;
 
@@ -77,7 +78,7 @@ class FilesVersionsContext implements Context {
 		$path, $user, $count
 	) {
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
-		PHPUnit\Framework\Assert::assertNotNull($fileId, "file $path not found");
+		Assert::assertNotNull($fileId, "file $path not found");
 		$this->theVersionFolderOfFileIdShouldContainElements($fileId, $user, $count);
 	}
 
@@ -95,7 +96,7 @@ class FilesVersionsContext implements Context {
 	) {
 		$responseXml = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
 		$xmlPart = $responseXml->xpath("//d:prop/d:getetag");
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$count, \count($xmlPart) - 1,
 			"could not find $count version element(s) in \n" . $responseXml->asXML()
 		);
@@ -119,7 +120,7 @@ class FilesVersionsContext implements Context {
 			$user, "/meta/$fileId/v", 1, ['getcontentlength']
 		);
 		$xmlPart = $responseXml->xpath("//d:prop/d:getcontentlength");
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$length, (int)$xmlPart[$index]
 		);
 	}

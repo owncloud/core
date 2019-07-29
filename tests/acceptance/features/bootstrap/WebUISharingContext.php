@@ -24,18 +24,19 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use GuzzleHttp\Message\ResponseInterface;
 use Page\FilesPage;
 use Page\FilesPageElement\SharingDialog;
-use Page\PublicLinkFilesPage;
-use Page\SharedWithYouPage;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-use TestHelpers\HttpRequestHelper;
-use TestHelpers\EmailHelper;
 use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
 use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
-use GuzzleHttp\Message\ResponseInterface;
 use Page\GeneralErrorPage;
+use Page\PublicLinkFilesPage;
 use Page\SharedWithOthersPage;
+use Page\SharedWithYouPage;
+use PHPUnit\Framework\Assert;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use TestHelpers\EmailHelper;
+use TestHelpers\HttpRequestHelper;
 
 require_once 'bootstrap.php';
 
@@ -508,7 +509,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$expectedWarningMessage
 	) {
 		$warningMessage = $this->publicShareTab->getWarningMessage();
-		PHPUnit\Framework\Assert::assertEquals($expectedWarningMessage, $warningMessage);
+		Assert::assertEquals($expectedWarningMessage, $warningMessage);
 	}
 
 	/**
@@ -522,7 +523,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		// update public-sharing popup, as it might not have been set previously.
 		$this->publicSharingPopup = $this->publicShareTab->updateSharingPopup($this->getSession());
 		$errormessage = $this->publicSharingPopup->getErrorMessage();
-		PHPUnit\Framework\Assert::assertEquals($message, $errormessage);
+		Assert::assertEquals($message, $errormessage);
 	}
 
 	/**
@@ -534,7 +535,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		try {
 			$this->publicShareTab->getLinkUrl($this->linkName);
 		} catch (Exception $e) {
-			PHPUnit\Framework\Assert::assertContains(
+			Assert::assertContains(
 				"could not find link entry with the given name",
 				$e->getMessage()
 			);
@@ -853,7 +854,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserSendsTheShareNotificationByEmailUsingTheWebui() {
-		PHPUnit\Framework\Assert::assertNotNull(
+		Assert::assertNotNull(
 			$this->sharingDialog, "Sharing Dialog is not open"
 		);
 		$this->sharingDialog->sendShareNotificationByEmail($this->getSession());
@@ -866,7 +867,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theUserShouldNotBeAbleToSendTheShareNotificationByEmailUsingTheWebui() {
 		$errorMessage = "";
-		PHPUnit\Framework\Assert::assertNotNull(
+		Assert::assertNotNull(
 			$this->sharingDialog, "Sharing Dialog is not open"
 		);
 		try {
@@ -874,7 +875,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		} catch (Exception $e) {
 			$errorMessage = $e->getMessage();
 		}
-		PHPUnit\Framework\Assert::assertContains(
+		Assert::assertContains(
 			"could not find notify by email button",
 			$errorMessage,
 			"User was not expected to be able to send the share notification by email but was"
@@ -888,12 +889,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function thePublicShouldNotGetAccessToPublicShareFile() {
 		$warningMessage = $this->publicLinkFilesPage->getWarningMessage();
-		PHPUnit\Framework\Assert::assertEquals('The password is wrong. Try again.', $warningMessage);
+		Assert::assertEquals('The password is wrong. Try again.', $warningMessage);
 
 		$lastCreatedLink = \end($this->createdPublicLinks);
 		$lastSharePath = $lastCreatedLink['url'] . '/authenticate';
 		$currentPath = $this->getSession()->getCurrentUrl();
-		PHPUnit\Framework\Assert::assertEquals($lastSharePath, $currentPath);
+		Assert::assertEquals($lastSharePath, $currentPath);
 	}
 
 	/**
@@ -935,12 +936,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$autocompleteString
 	) {
 		$autocompleteItems = $this->sharingDialog->getAutocompleteItemsList();
-		PHPUnit\Framework\Assert::assertCount(
+		Assert::assertCount(
 			1,
 			$autocompleteItems,
 			"expected 1 autocomplete item but there are " . \count($autocompleteItems)
 		);
-		PHPUnit\Framework\Assert::assertContains(
+		Assert::assertContains(
 			$autocompleteString,
 			$autocompleteItems,
 			"'$autocompleteString' not in autocomplete list"
@@ -1005,7 +1006,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 					&& ($displayName !== $this->featureContext->getCurrentUser())
 					&& ($displayName !== $this->featureContext->getCurrentUserDisplayName())
 				) {
-					PHPUnit\Framework\Assert::assertContains(
+					Assert::assertContains(
 						$fullDisplayText,
 						$autocompleteItems,
 						"'$fullDisplayText' not in autocomplete list"
@@ -1015,13 +1016,13 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			}
 		}
 
-		PHPUnit\Framework\Assert::assertCount(
+		Assert::assertCount(
 			$numExpectedItems,
 			$autocompleteItems,
 			"expected $numExpectedItems in autocomplete list but there are " . \count($autocompleteItems)
 		);
 
-		PHPUnit\Framework\Assert::assertNotContains(
+		Assert::assertNotContains(
 			$notToBeListed,
 			$this->sharingDialog->getAutocompleteItemsList()
 		);
@@ -1033,7 +1034,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUsersOwnNameShouldNotBeListedInTheAutocompleteList() {
-		PHPUnit\Framework\Assert::assertNotContains(
+		Assert::assertNotContains(
 			$this->sharingDialog->userStringsToMatchAutoComplete(
 				$this->filesPage->getMyDisplayname()
 			),
@@ -1051,7 +1052,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function userShouldBeListedInTheAutocompleteListOnTheWebui($username) {
 		$names = $this->sharingDialog->getAutocompleteItemsList();
-		PHPUnit\Framework\Assert::assertContains(
+		Assert::assertContains(
 			$this->sharingDialog->userStringsToMatchAutoComplete($username),
 			$names,
 			"$username not found in autocomplete list"
@@ -1069,7 +1070,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function userShouldNotBeListedInTheAutocompleteListOnTheWebui($username) {
 		$names = $this->sharingDialog->getAutocompleteItemsList();
 		$userString = $this->sharingDialog->userStringsToMatchAutoComplete($username);
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			\in_array($userString, $names),
 			"$username ($userString) found in autocomplete list but not expected"
 		);
@@ -1085,7 +1086,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function groupShouldNotBeListedInTheAutocompleteListOnTheWebui($groupName) {
 		$names = $this->sharingDialog->getAutocompleteItemsList();
 		$groupName = $this->sharingDialog->groupStringsToMatchAutoComplete($groupName);
-		PHPUnit\Framework\Assert::assertNotContains(
+		Assert::assertNotContains(
 			$groupName,
 			$names,
 			"$groupName found in autocomplete list but not expected"
@@ -1100,7 +1101,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function aTooltipWithTheTextShouldBeShownNearTheShareWithField($text) {
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$text,
 			$this->sharingDialog->getShareWithTooltip()
 		);
@@ -1112,7 +1113,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAutocompleteListShouldNotBeDisplayed() {
-		PHPUnit\Framework\Assert::assertEmpty(
+		Assert::assertEmpty(
 			$this->sharingDialog->getAutocompleteItemsList()
 		);
 	}
@@ -1125,7 +1126,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserShouldNotBeInShareWithUserList($username) {
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			$this->sharingDialog->isUserPresentInShareWithList($username),
 			"user $username is present in the list"
 		);
@@ -1139,7 +1140,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theGroupShouldNotBeInShareWithGroupList($groupName) {
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			$this->sharingDialog->isGroupPresentInShareWithList($groupName),
 			"group $groupName is present in the list"
 		);
@@ -1169,28 +1170,28 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		$row = $this->filesPage->findFileRowByName($itemName, $this->getSession());
 		$sharingBtn = $row->findSharingButton();
-		PHPUnit\Framework\Assert::assertSame(
+		Assert::assertSame(
 			$sharerName, $this->filesPage->getTrimmedText($sharingBtn)
 		);
 		$sharingDialog = $this->filesPage->openSharingDialog(
 			$itemName, $this->getSession()
 		);
-		PHPUnit\Framework\Assert::assertSame(
+		Assert::assertSame(
 			$sharerName, $sharingDialog->getSharerName()
 		);
 		if ($fileOrFolder === "folder") {
-			PHPUnit\Framework\Assert::assertContains(
+			Assert::assertContains(
 				"folder-shared.svg",
 				$row->findThumbnail()->getAttribute("style")
 			);
 			$detailsDialog = $this->filesPage->getDetailsDialog();
-			PHPUnit\Framework\Assert::assertContains(
+			Assert::assertContains(
 				"folder-shared.svg",
 				$detailsDialog->findThumbnail()->getAttribute("style")
 			);
 		}
 		if ($sharedWithGroup !== "") {
-			PHPUnit\Framework\Assert::assertSame(
+			Assert::assertSame(
 				$sharedWithGroup,
 				$sharingDialog->getSharedWithGroupName()
 			);
@@ -1210,7 +1211,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$fileRow = $this->sharedWithYouPage->findFileRowByName(
 			$item, $this->getSession()
 		);
-		PHPUnit\Framework\Assert::assertSame($state, $fileRow->getShareState());
+		Assert::assertSame($state, $fileRow->getShareState());
 	}
 
 	/**
@@ -1236,10 +1237,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				break;
 			}
 		}
-		PHPUnit\Framework\Assert::assertTrue(
+		Assert::assertTrue(
 			$found, "could not find item called $item shared by $sharedBy"
 		);
-		PHPUnit\Framework\Assert::assertSame($state, $currentState);
+		Assert::assertSame($state, $currentState);
 	}
 
 	/**
@@ -1351,7 +1352,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->generalErrorPage->setPagePath($path);
 		$this->generalErrorPage->open();
 		$actualErrorMsg = $this->generalErrorPage->getErrorMessage();
-		PHPUnit\Framework\Assert::assertContains($errorMsg, $actualErrorMsg);
+		Assert::assertContains($errorMsg, $actualErrorMsg);
 	}
 
 	/**
@@ -1414,7 +1415,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				$settingsArray ['personalMessage']
 			);
 			if ($settingsArray['name'] !== null) {
-				PHPUnit\Framework\Assert::assertSame(
+				Assert::assertSame(
 					$settingsArray ['name'], $linkName,
 					"set and retrieved public link names are not the same"
 				);
@@ -1434,7 +1435,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theTextPreviewOfThePublicLinkShouldContain($content) {
 		$previewText = $this->publicLinkFilesPage->getPreviewText();
-		PHPUnit\Framework\Assert::assertContains(
+		Assert::assertContains(
 			$content, $previewText,
 			__METHOD__ . " file preview does not contain expected content"
 		);
@@ -1449,7 +1450,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theContentOfTheFileSharedByLastPublicLinkShouldBeTheSameAs($originalFile) {
 		$response = $this->thePublicDownloadsAllTheSharedDataUsingTheWebui();
-		PHPUnit\Framework\Assert::assertEquals(200, $response->getStatusCode());
+		Assert::assertEquals(200, $response->getStatusCode());
 		$body = $response->getBody()->getContents();
 
 		$user = $this->featureContext->getCurrentUser();
@@ -1458,7 +1459,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->featureContext->downloadFileAsUserUsingPassword($user, $originalFile, $password);
 		$originalContent = $this->featureContext->getResponse()->getBody()->getContents();
 
-		PHPUnit\Framework\Assert::assertSame($originalContent, $body);
+		Assert::assertSame($originalContent, $body);
 	}
 
 	/**
@@ -1480,7 +1481,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function allThePublicShareDownloadLinkShouldBeSame() {
 		$urls = $this->publicLinkFilesPage->getAllDownloadUrls();
 		$url = \array_unique($urls);
-		PHPUnit\Framework\Assert::assertCount(1, $url, "Download links are not the same");
+		Assert::assertCount(1, $url, "Download links are not the same");
 	}
 
 	/**
@@ -1496,7 +1497,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$address
 		);
 		$lastCreatedPublicLink = \end($this->createdPublicLinks);
-		PHPUnit\Framework\Assert::assertContains($lastCreatedPublicLink["url"], $content);
+		Assert::assertContains($lastCreatedPublicLink["url"], $content);
 	}
 
 	/**
@@ -1511,7 +1512,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$actualMessage = $sharingDialog->getNoSharingMessage(
 			$this->getSession()
 		);
-		PHPUnit\Framework\Assert::assertEquals($message, $actualMessage);
+		Assert::assertEquals($message, $actualMessage);
 	}
 
 	/**

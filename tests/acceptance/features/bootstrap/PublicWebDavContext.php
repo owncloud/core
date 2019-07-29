@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use PHPUnit\Framework\Assert;
 use TestHelpers\HttpRequestHelper;
 
 require_once 'bootstrap.php';
@@ -406,7 +407,7 @@ class PublicWebDavContext implements Context {
 	public function publiclyUploadingShouldNotWork() {
 		$this->publicUploadContent('whateverfilefortesting.txt', '', 'test');
 		$response = $this->featureContext->getResponse();
-		PHPUnit\Framework\Assert::assertTrue(
+		Assert::assertTrue(
 			($response->getStatusCode() == 507)
 			|| (
 				($response->getStatusCode() >= 400)
@@ -427,7 +428,7 @@ class PublicWebDavContext implements Context {
 		$content = 'test';
 		$this->publicUploadContent($path, '', $content);
 		$response = $this->featureContext->getResponse();
-		PHPUnit\Framework\Assert::assertTrue(
+		Assert::assertTrue(
 			($response->getStatusCode() == 201),
 			"upload should have passed but failed with code " .
 			$response->getStatusCode()
