@@ -674,7 +674,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theUserCountOfGroupShouldDisplayUsersOnTheWebUI($group, $count) {
 		$expectedCount = (int) $count;
 		$actualCount = $this->usersPage->getUserCountOfGroup($group);
-		PHPUnit\Framework\Assert::assertEquals($expectedCount, $actualCount);
+		Assert::assertEquals($expectedCount, $actualCount);
 	}
 
 	/**
@@ -686,7 +686,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theUserCountOfGroupShouldNotBeDisplayedOnTheWebui($group) {
 		$count = $this->usersPage->getUserCountOfGroup($group);
-		PHPUnit\Framework\Assert::assertNull(
+		Assert::assertNull(
 			$count, "Failed asserting that user count of group $group is not displayed"
 		);
 	}
