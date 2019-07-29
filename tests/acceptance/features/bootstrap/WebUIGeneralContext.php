@@ -344,23 +344,25 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			"expected at least $numExpectedNotifications notifications but only found $numActualNotifications"
 		);
 
-		$notificationCounter = 0;
 		foreach ($expectedNotifications as $expectedNotification) {
 			$expectedNotificationText = $expectedNotification[0];
-			$actualNotificationText = $actualNotifications[$notificationCounter];
-			if ($matching === "matching") {
-				if (!\preg_match($expectedNotificationText, $actualNotificationText)) {
-					throw new Exception(
-						"$actualNotificationText does not match $expectedNotificationText"
-					);
+			$matchingSucceeded = false;
+			foreach ($actualNotifications as $key => $actualNotificationText) {
+				$latestActualNotificationText = $actualNotificationText;
+				if ((($matching !== "matching") && ($expectedNotificationText === $actualNotificationText))
+					|| (($matching === "matching") && (\preg_match($expectedNotificationText, $actualNotificationText)))
+				) {
+					// it matches, remove this actual entry and go on to look for the next expected notification
+					unset($actualNotifications[$key]);
+					$matchingSucceeded = true;
+					break;
 				}
-			} else {
-				Assert::assertEquals(
-					$expectedNotificationText,
-					$actualNotificationText
+			}
+			if (!$matchingSucceeded) {
+				Assert::fail(
+					"$latestActualNotificationText does not match $expectedNotificationText"
 				);
 			}
-			$notificationCounter++;
 		}
 	}
 
