@@ -36,7 +36,7 @@ use Sabre\DAVACL\IACL;
  *
  * @package OCA\DAV\Meta
  */
-class SharedFolder extends Collection implements IACL {
+class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 	use ACLTrait;
 
 	/** @var Folder */
@@ -124,5 +124,39 @@ class SharedFolder extends Collection implements IACL {
 
 	public function getShare() {
 		return $this->share;
+	}
+
+	/**
+	 * @return Node
+	 */
+	public function getNode() {
+		return $this->folder;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDavPermissions() {
+		$node = $this->getNode();
+		$p = '';
+		if ($node->isDeletable() && $this->checkSharePermissions(Constants::PERMISSION_DELETE)) {
+			$p .= 'D';
+		}
+		if ($node->isUpdateable() && $this->checkSharePermissions(Constants::PERMISSION_UPDATE)) {
+			$p .= 'NV'; // Renameable, Moveable
+		}
+		if ($node->getType() === \OCP\Files\FileInfo::TYPE_FILE) {
+			if ($node->isUpdateable() && $this->checkSharePermissions(Constants::PERMISSION_UPDATE)) {
+				$p .= 'W';
+			}
+		} else {
+			if ($node->isCreatable() && $this->checkSharePermissions(Constants::PERMISSION_CREATE)) {
+				$p .= 'CK';
+			}
+		}
+		return $p;
+	}
+	protected function checkSharePermissions($permissions) {
+		return ($this->share->getPermissions() & $permissions) === $permissions;
 	}
 }
