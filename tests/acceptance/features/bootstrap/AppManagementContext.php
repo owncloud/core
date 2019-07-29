@@ -22,6 +22,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 use TestHelpers\SetupHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -160,7 +161,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 */
 	public function appPathIs($appId, $dir) {
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$this->featureContext->getServerRoot() . "/$dir/$appId",
 			\trim($this->cmdOutput)
 		);
@@ -178,7 +179,7 @@ class AppManagementContext implements Context {
 		$cmdOutput = SetupHelper::runOcc(
 			['config:app:get', $appId, 'installed_version', '--no-ansi']
 		)['stdOut'];
-		PHPUnit\Framework\Assert::assertEquals($version, \trim($cmdOutput));
+		Assert::assertEquals($version, \trim($cmdOutput));
 	}
 
 	/**

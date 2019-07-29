@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\PersonalGeneralSettingsPage;
+use PHPUnit\Framework\Assert;
 use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
@@ -167,7 +168,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 			$this->personalGeneralSettingsPage->changeFullname(
 				"anything", $this->getSession()
 			);
-			PHPUnit\Framework\Assert::fail("changing the full name was possible, but should not");
+			Assert::fail("changing the full name was possible, but should not");
 		} catch (Behat\Mink\Exception\ElementNotFoundException $e) {
 		}
 	}
@@ -192,7 +193,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function theOwncloudVersionShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui() {
-		PHPUnit\Framework\Assert::assertTrue($this->personalGeneralSettingsPage->isVersionDisplayed());
+		Assert::assertTrue($this->personalGeneralSettingsPage->isVersionDisplayed());
 	}
 
 	/**
@@ -204,7 +205,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function theFederatedCloudIdForUserShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui($user) {
 		$userFederatedCloudId = $user . "@" . $this->featureContext->getLocalBaseUrlWithoutScheme();
-		PHPUnit\Framework\Assert::assertEquals($this->personalGeneralSettingsPage->getFederatedCloudID(), $userFederatedCloudId);
+		Assert::assertEquals($this->personalGeneralSettingsPage->getFederatedCloudID(), $userFederatedCloudId);
 	}
 
 	/**
@@ -215,7 +216,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function groupShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui($groupName) {
-		PHPUnit\Framework\Assert::assertTrue($this->personalGeneralSettingsPage->isGroupNameDisplayed($groupName));
+		Assert::assertTrue($this->personalGeneralSettingsPage->isGroupNameDisplayed($groupName));
 	}
 
 	/**
@@ -236,7 +237,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 			'/Use the following link to confirm your changes to the email address: (http.*)/',
 			$content, $matches
 		);
-		PHPUnit\Framework\Assert::assertArrayHasKey(
+		Assert::assertArrayHasKey(
 			1, $matches,
 			"Couldn't find confirmation link in the email"
 		);
@@ -253,7 +254,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	public function aPasswordErrorMessageShouldBeDisplayedOnTheWebUIWithTheText(
 		$wrongPasswordMessageText
 	) {
-		PHPUnit\Framework\Assert::assertEquals(
+		Assert::assertEquals(
 			$wrongPasswordMessageText,
 			$this->personalGeneralSettingsPage->getWrongPasswordMessageText()
 		);
@@ -291,11 +292,11 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function thePreviewOfTheProfilePictureShouldBeShownOnTheWebui($shouldOrNot) {
 		if ($shouldOrNot !== "not") {
-			PHPUnit\Framework\Assert::assertTrue(
+			Assert::assertTrue(
 				$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
 			);
 		} else {
-			PHPUnit\Framework\Assert::assertFalse(
+			Assert::assertFalse(
 				$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
 			);
 		}
@@ -319,7 +320,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function theUserHasDeletedAnyExistingProfilePicture() {
 		$this->theUserDeletesTheExistingProfilePicture();
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()
 		);
 	}
@@ -355,11 +356,11 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function theUserShouldBeAbleToUploadTheFileAsTheProfilePicture($shouldOrNot) {
 		if ($shouldOrNot !== "not") {
-			PHPUnit\Framework\Assert::assertFalse(
+			Assert::assertFalse(
 				$this->personalGeneralSettingsPage->isFileUploadErrorMsgVisible()
 			);
 		} else {
-			PHPUnit\Framework\Assert::assertTrue(
+			Assert::assertTrue(
 				$this->personalGeneralSettingsPage->isFileUploadErrorMsgVisible()
 			);
 		}

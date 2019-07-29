@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 /**
@@ -94,7 +95,7 @@ class CorsContext implements Context {
 			]
 		);
 		$domains = \json_decode($this->featureContext->getStdOutOfOccCommand());
-		PHPUnit\Framework\Assert::assertContains(
+		Assert::assertContains(
 			$domain, $domains, "CORS domain was not added correctly"
 		);
 	}

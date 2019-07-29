@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
+use PHPUnit\Framework\Assert;
 use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
@@ -60,7 +61,7 @@ class EmailContext implements Context {
 		$expectedContent = $this->featureContext->substituteInLineCodes(
 			$expectedContent
 		);
-		PHPUnit\Framework\Assert::assertContains(
+		Assert::assertContains(
 			$expectedContent,
 			EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address)
 		);
@@ -75,7 +76,7 @@ class EmailContext implements Context {
 	 * @return void
 	 */
 	public function theResetEmailSenderEmailAddressShouldBe($receiverAddress, $senderAddress) {
-		PHPUnit\Framework\Assert::assertContains(
+		Assert::assertContains(
 			$senderAddress,
 			EmailHelper::getSenderOfEmail($this->localMailhogUrl, $receiverAddress)
 		);
@@ -90,7 +91,7 @@ class EmailContext implements Context {
 	 * @throws \Exception
 	 */
 	public function assertThatEmailDoesntExistWithTheAddress($address) {
-		PHPUnit\Framework\Assert::assertFalse(
+		Assert::assertFalse(
 			EmailHelper::emailReceived(
 				EmailHelper::getLocalMailhogUrl(), $address
 			),
