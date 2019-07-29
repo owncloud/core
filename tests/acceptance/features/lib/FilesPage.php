@@ -74,7 +74,7 @@ class FilesPage extends FilesPageBasic {
 	protected function getEmptyContentXpath() {
 		return $this->emptyContentXpath;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 *

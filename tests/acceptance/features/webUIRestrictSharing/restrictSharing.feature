@@ -60,3 +60,39 @@ Feature: restrict Sharing
     When the user shares folder "simple-folder" with user "User One" using the webUI
     And the user re-logs in as "user1" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
+
+  Scenario: Editing share permission of existing share when sharing with groups is forbidden
+    Given the user has shared folder "simple-folder" with group "grp1"
+    And the setting "Allow sharing with groups" in the section "Sharing" has been disabled
+    When the user opens the share dialog for folder "simple-folder"
+    Then group "grp1" should be listed in the shared with list
+    When the user sets the sharing permissions of group "grp1" for "simple-folder" using the webUI to
+      | share | no |
+    Then dialog should be displayed on the webUI
+      | title | content               |
+      | Error while sharing |Group sharing is not allowed   |
+    When the user reloads the current page of the webUI
+    Then the following permissions are seen for "simple-folder" in the sharing dialog for group "grp1"
+      | share  | yes  |
+
+  Scenario: Editing create permission of existing share when sharing with groups is forbidden
+    Given the user has shared folder "simple-folder" with group "grp1"
+    And the setting "Allow sharing with groups" in the section "Sharing" has been disabled
+    When the user opens the share dialog for folder "simple-folder"
+    Then group "grp1" should be listed in the shared with list
+    When the user sets the sharing permissions of group "grp1" for "simple-folder" using the webUI to
+      | create | no |
+    Then dialog should be displayed on the webUI
+      | title | content               |
+      | Error while sharing |Group sharing is not allowed   |
+    When the user reloads the current page of the webUI
+    Then the following permissions are seen for "simple-folder" in the sharing dialog for group "grp1"
+      | create  | yes  |
+
+  Scenario: Deleting group share when sharing with groups is forbidden
+    Given the user has shared folder "simple-folder" with group "grp1"
+    And the setting "Allow sharing with groups" in the section "Sharing" has been disabled
+    When the user opens the share dialog for folder "simple-folder"
+    Then group "grp1" should be listed in the shared with list
+    When the user deletes share with user "grp1 (group)" for the current file
+    Then group "grp1" should not be listed in the shared with list
