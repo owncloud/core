@@ -53,6 +53,7 @@ class SharingDialog extends OwncloudPage {
 	private $sharerInformationXpath = ".//*[@class='reshare']";
 	private $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
 	private $permissionsFieldByUserName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s']/..";
+	private $permissionsFieldByGroupName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s (group)']/..";
 	private $permissionLabelXpath = ".//label[@for='%s']";
 	private $showCrudsXpath = ".//*[@class='showCruds']";
 	private $publicLinksShareTabXpath = ".//li[contains(@class,'subtab-publicshare')]";
@@ -323,6 +324,7 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 *
+	 * @param string $userOrGroup
 	 * @param string $shareReceiverName
 	 * @param array $permissions [['permission' => 'yes|no']]
 	 * @param Session $session
@@ -331,13 +333,20 @@ class SharingDialog extends OwncloudPage {
 	 * @return void
 	 */
 	public function setSharingPermissions(
+		$userOrGroup,
 		$shareReceiverName,
 		$permissions,
 		Session $session
 	) {
-		$xpathLocator = \sprintf(
-			$this->permissionsFieldByUserName, $shareReceiverName
-		);
+		if ($userOrGroup == "group") {
+			$xpathLocator = \sprintf(
+				$this->permissionsFieldByGroupName, $shareReceiverName
+			);
+		} else {
+			$xpathLocator = \sprintf(
+				$this->permissionsFieldByUserName, $shareReceiverName
+			);
+		}
 		$permissionsField = $this->waitTillElementIsNotNull($xpathLocator);
 		$this->assertElementNotNull(
 			$permissionsField,
@@ -410,6 +419,7 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 *
+	 * @param string $userOrGroup
 	 * @param string $shareReceiverName
 	 * @param array $permissions [['permission' => 'yes|no']]
 	 * @param Session $session
@@ -418,13 +428,20 @@ class SharingDialog extends OwncloudPage {
 	 * @return void
 	 */
 	public function checkSharingPermissions(
+		$userOrGroup,
 		$shareReceiverName,
 		$permissions,
 		Session $session
 	) {
-		$xpathLocator = \sprintf(
-			$this->permissionsFieldByUserName, $shareReceiverName
-		);
+		if ($userOrGroup == "group") {
+			$xpathLocator = \sprintf(
+				$this->permissionsFieldByGroupName, $shareReceiverName
+			);
+		} else {
+			$xpathLocator = \sprintf(
+				$this->permissionsFieldByUserName, $shareReceiverName
+			);
+		}
 		$permissionsField = $this->waitTillElementIsNotNull($xpathLocator);
 		$this->assertElementNotNull(
 			$permissionsField,
@@ -718,9 +735,7 @@ class SharingDialog extends OwncloudPage {
 		$shareWithList = $this->getShareWithList();
 		foreach ($shareWithList as $group) {
 			$actualGroupName = $group->find('xpath', $this->userOrGroupNameSpanXpath);
-			if ($actualGroupName->getHtml() === \sprintf($this->groupFramework, $groupName)) {
-				return true;
-			}
+			return $actualGroupName->getHtml() === \sprintf($this->groupFramework, $groupName);
 		}
 		return false;
 	}
