@@ -422,11 +422,11 @@ caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
 
-catharsis@^0.8.10:
-  version "0.8.10"
-  resolved "https://registry.yarnpkg.com/catharsis/-/catharsis-0.8.10.tgz#364198c1fbf084ae17028ee33ec7db53ca942ee6"
+catharsis@^0.8.11:
+  version "0.8.11"
+  resolved "https://registry.yarnpkg.com/catharsis/-/catharsis-0.8.11.tgz#d0eb3d2b82b7da7a3ce2efb1a7b00becc6643468"
   dependencies:
-    lodash "^4.17.11"
+    lodash "^4.17.14"
 
 chalk@^2.0.1, chalk@^2.3.1, chalk@^2.4.1:
   version "2.4.1"
@@ -1479,21 +1479,21 @@ jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
 
-jsdoc@~3.6.2:
-  version "3.6.2"
-  resolved "https://registry.yarnpkg.com/jsdoc/-/jsdoc-3.6.2.tgz#ee289fc6ba9263b7e4eceb99921179fe1c31489a"
+jsdoc@~3.6.3:
+  version "3.6.3"
+  resolved "https://registry.yarnpkg.com/jsdoc/-/jsdoc-3.6.3.tgz#dccea97d0e62d63d306b8b3ed1527173b5e2190d"
   dependencies:
     "@babel/parser" "^7.4.4"
     bluebird "^3.5.4"
-    catharsis "^0.8.10"
+    catharsis "^0.8.11"
     escape-string-regexp "^2.0.0"
     js2xmlparser "^4.0.0"
     klaw "^3.0.0"
     markdown-it "^8.4.2"
     markdown-it-anchor "^5.0.2"
-    marked "^0.6.2"
+    marked "^0.7.0"
     mkdirp "^0.5.1"
-    requizzle "^0.2.2"
+    requizzle "^0.2.3"
     strip-json-comments "^3.0.1"
     taffydb "2.6.2"
     underscore "~1.9.1"
@@ -1683,6 +1683,10 @@ lodash@^4.0.1, lodash@^4.17.0, lodash@^4.17.10, lodash@^4.17.11:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
+lodash@^4.17.14:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+
 log-symbols@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-2.2.0.tgz#5740e1c5d6f0dfda4ad9323b5332107ef6b4c40a"
@@ -1756,9 +1760,9 @@ markdown-it@^8.4.2:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-marked@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.6.2.tgz#c574be8b545a8b48641456ca1dbe0e37b6dccc1a"
+marked@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-0.7.0.tgz#b64201f051d271b1edc10a04d1ae9b74bb8e5c0e"
 
 mdurl@^1.0.1:
   version "1.0.1"
@@ -2417,11 +2421,11 @@ requires-port@1.x.x:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
 
-requizzle@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/requizzle/-/requizzle-0.2.2.tgz#df991c0cffbbbdde721504c1455f68f53f7c7bd1"
+requizzle@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/requizzle/-/requizzle-0.2.3.tgz#4675c90aacafb2c036bd39ba2daa4a1cb777fded"
   dependencies:
-    lodash "^4.17.11"
+    lodash "^4.17.14"
 
 resolve-url@^0.2.1:
   version "0.2.1"
