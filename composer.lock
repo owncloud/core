@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de02856e0fd6ffe69f963cb9118ea729",
+    "content-hash": "1f17fefdc3daddca1ec3d0a6ba31bc4e",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -815,208 +815,6 @@
                 "validator"
             ],
             "time": "2019-07-19T20:52:08+00:00"
-        },
-        {
-            "name": "guzzle/common",
-            "version": "v3.8.1",
-            "target-dir": "Guzzle/Common",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Guzzle3/common.git",
-                "reference": "67f6c3fd04bae387d47c2a673fa623ed8f4189bb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Guzzle3/common/zipball/67f6c3fd04bae387d47c2a673fa623ed8f4189bb",
-                "reference": "67f6c3fd04bae387d47c2a673fa623ed8f4189bb",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "symfony/event-dispatcher": ">=2.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Guzzle\\Common": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Common libraries used by Guzzle",
-            "homepage": "http://guzzlephp.org/",
-            "keywords": [
-                "collection",
-                "common",
-                "event",
-                "exception"
-            ],
-            "abandoned": "guzzle/guzzle",
-            "time": "2014-01-28T22:29:15+00:00"
-        },
-        {
-            "name": "guzzle/http",
-            "version": "v3.8.1",
-            "target-dir": "Guzzle/Http",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Guzzle3/http.git",
-                "reference": "565fd64be16d91c840f497c5de76f86d54a822d8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Guzzle3/http/zipball/565fd64be16d91c840f497c5de76f86d54a822d8",
-                "reference": "565fd64be16d91c840f497c5de76f86d54a822d8",
-                "shasum": ""
-            },
-            "require": {
-                "guzzle/common": "self.version",
-                "guzzle/parser": "self.version",
-                "guzzle/stream": "self.version",
-                "php": ">=5.3.2"
-            },
-            "suggest": {
-                "ext-curl": "*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Guzzle\\Http": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "HTTP libraries used by Guzzle",
-            "homepage": "http://guzzlephp.org/",
-            "keywords": [
-                "Guzzle",
-                "client",
-                "curl",
-                "http",
-                "http client"
-            ],
-            "abandoned": "guzzle/guzzle",
-            "time": "2014-01-23T18:23:29+00:00"
-        },
-        {
-            "name": "guzzle/parser",
-            "version": "v3.8.1",
-            "target-dir": "Guzzle/Parser",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Guzzle3/parser.git",
-                "reference": "3f52387052f2e4ef083145a0f73c3654aa14e086"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Guzzle3/parser/zipball/3f52387052f2e4ef083145a0f73c3654aa14e086",
-                "reference": "3f52387052f2e4ef083145a0f73c3654aa14e086",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Guzzle\\Parser": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Interchangeable parsers used by Guzzle",
-            "homepage": "http://guzzlephp.org/",
-            "keywords": [
-                "URI Template",
-                "cookie",
-                "http",
-                "message",
-                "url"
-            ],
-            "abandoned": "guzzle/guzzle",
-            "time": "2013-10-24T00:04:09+00:00"
-        },
-        {
-            "name": "guzzle/stream",
-            "version": "v3.8.1",
-            "target-dir": "Guzzle/Stream",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Guzzle3/stream.git",
-                "reference": "fa8af730ca714861c0001cfba64aaecc5f21bb96"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Guzzle3/stream/zipball/fa8af730ca714861c0001cfba64aaecc5f21bb96",
-                "reference": "fa8af730ca714861c0001cfba64aaecc5f21bb96",
-                "shasum": ""
-            },
-            "require": {
-                "guzzle/common": "self.version",
-                "php": ">=5.3.2"
-            },
-            "suggest": {
-                "guzzle/http": "To convert Guzzle request objects to PHP streams"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Guzzle\\Stream": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "Guzzle stream wrapper component",
-            "homepage": "http://guzzlephp.org/",
-            "keywords": [
-                "Guzzle",
-                "component",
-                "stream"
-            ],
-            "abandoned": "guzzle/guzzle",
-            "time": "2014-01-28T22:14:17+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2123,63 +1921,6 @@
                 "unicode"
             ],
             "time": "2019-05-22T08:47:32+00:00"
-        },
-        {
-            "name": "rackspace/php-opencloud",
-            "version": "v1.9.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rackspace/php-opencloud.git",
-                "reference": "6551de7aebcebb369d025662f99ab27c9b4527ac"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rackspace/php-opencloud/zipball/6551de7aebcebb369d025662f99ab27c9b4527ac",
-                "reference": "6551de7aebcebb369d025662f99ab27c9b4527ac",
-                "shasum": ""
-            },
-            "require": {
-                "guzzle/http": "3.8.*@dev",
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "guzzle/guzzle": "dev-master",
-                "psr/log": "1.0.*",
-                "satooshi/php-coveralls": "0.6.*@dev"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "OpenCloud": [
-                        "lib/",
-                        "tests/"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Glen Campbell",
-                    "email": "glen.campbell@rackspace.com"
-                },
-                {
-                    "name": "Jamie Hannaford",
-                    "email": "jamie.hannaford@rackspace.com",
-                    "homepage": "https://github.com/jamiehannaford"
-                }
-            ],
-            "description": "PHP SDK for Rackspace/OpenStack APIs",
-            "keywords": [
-                "Openstack",
-                "nova",
-                "opencloud",
-                "rackspace",
-                "swift"
-            ],
-            "time": "2014-02-06T20:53:21+00:00"
         },
         {
             "name": "react/promise",
@@ -4717,17 +4458,6 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "ea693fa060702164985511acc3ceb5389c9ac761"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/ea693fa060702164985511acc3ceb5389c9ac761",
-                "reference": "ea693fa060702164985511acc3ceb5389c9ac761",
-                "shasum": ""
-            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
@@ -5533,7 +5263,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
