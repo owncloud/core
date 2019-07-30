@@ -29,7 +29,7 @@
     "@bower_components/select2": "ivaynberg/select2#3.5.4",
     "@bower_components/showdown": "showdownjs/showdown#1.9.0",
     "@bower_components/snapjs": "jakiestfu/Snap.js#2.0.0-rc1",
-    "@bower_components/strengthify": "MorrisJobke/strengthify#0.5.6",
+    "@bower_components/strengthify": "MorrisJobke/strengthify#0.5.8",
     "@bower_components/underscore": "jashkenas/underscore#1.9.1",
     "@bower_components/zxcvbn": "dropbox/zxcvbn#4.4.2",
     "modclean": "^3.0.0-beta.1",
