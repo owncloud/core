@@ -25,6 +25,8 @@ OC.L10N.register(
     "Pending" : "Pendientes",
     "Unable to determine date" : "No fue posible determinar la fecha",
     "Invalid path" : "Ruta no válida",
+    "This operation is forbidden" : "Esta operación está prohibida",
+    "This directory is unavailable, please check the logs or contact the administrator" : "El directorio no está disponible, por favor revisa los registros o contacta al administrador",
     "Name" : "Nombre",
     "Size" : "Tamaño",
     "Modified" : "Modificado",
@@ -51,10 +53,14 @@ OC.L10N.register(
     "%2$s changed %1$s" : "%2$s modificó %1$s",
     "You deleted %1$s" : "Eliminaste %1$s",
     "%2$s deleted %1$s" : "%2$s eliminó %1$s",
+    "Upload (max. %s)" : "Subir (máx. %s)",
     "Settings" : "Configuración",
     "WebDAV" : "WebDAV",
+    "No entries found in this folder" : "No se encontraron entradas en esta carpeta",
+    "Select all" : "Seleccionar todos",
     "Upload too large" : "El tamaño del archivo que querés subir es demasiado grande",
     "The files you are trying to upload exceed the maximum size for file uploads on this server." : "Los archivos que intentás subir sobrepasan el tamaño máximo ",
-    "Text file" : "Archivo de texto"
+    "Text file" : "Archivo de texto",
+    "New text file.txt" : "Nuevo archivo de texto.txt"
 },
 "nplurals=2; plural=(n != 1);");

@@ -1,6 +1,8 @@
 { "translations": {
     "Cannot write into \"config\" directory!" : "¡No se puede escribir en el directorio \"config\"!",
+    "This can usually be fixed by giving the webserver write access to the config directory" : "Esto puede ser usualmente solucionado colocando la dirección de escritura del servidor web en el directorio de configuración",
     "See %s" : "Ver %s",
+    "This can usually be fixed by %sgiving the webserver write access to the config directory%s." : "Esto puede ser usualmente solucionado por %s colocando la dirección de escritura del servidor web en el directorio de configuración %s.",
     "Unknown filetype" : "Tipo de archivo desconocido",
     "Invalid image" : "Imagen inválida",
     "today" : "hoy",
@@ -14,6 +16,7 @@
     "None" : "Ninguno",
     "Username" : "Nombre de usuario",
     "Password" : "Contraseña",
+    "File name contains at least one invalid character" : "El nombre del archivo contiene algún caracter inválido",
     "__language_name__" : "Castellano (Argentina)",
     "App directory already exists" : "El directorio de la app ya existe",
     "Can't create app folder. Please fix permissions. %s" : "No se puede crear el directorio para la app. Corregí los permisos. %s",
@@ -45,9 +48,11 @@
     "Set an admin username." : "Configurar un nombre de administrador.",
     "Set an admin password." : "Configurar una contraseña de administrador.",
     "%s shared »%s« with you" : "%s compartió \"%s\" con vos",
+    "You are not allowed to share %s" : "No estás autorizado a compartir %s",
     "Could not find category \"%s\"" : "No fue posible encontrar la categoría \"%s\"",
     "A valid username must be provided" : "Debe ingresar un nombre de usuario válido",
     "A valid password must be provided" : "Debe ingresar una contraseña válida",
+    "The username is already being used" : "El nombre de usuario ya fue utilizado",
     "Settings" : "Configuración",
     "A safe home for all your data" : "Un lugar seguro para todos sus datos",
     "Imprint" : "Imprint",
@@ -55,6 +60,7 @@
     "Authentication error" : "Error al autenticar",
     "Token expired. Please reload page." : "Token expirado. Por favor, recargá la página.",
     "Unknown user" : "Usuario desconocido",
+    "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "Esto ha sido probablemente causado por un acelerador de caché como ser Zend OPcache o eAccelerator.",
     "Storage is temporarily not available" : "El repositorio no está disponible temporalmente"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

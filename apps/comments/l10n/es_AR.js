@@ -17,6 +17,7 @@ OC.L10N.register(
     "Error occurred while posting comment" : "Error al publicar comentario",
     "{count} unread comments" : "{count} comentarios sin leer",
     "Comment" : "Comentario",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Comentarios</strong> para archivos <em>(siempre listados)</em>",
     "You commented" : "Comentaste",
     "%1$s commented" : "%1$scomentarios",
     "You commented on %2$s" : "Comentaste en %2$s",
