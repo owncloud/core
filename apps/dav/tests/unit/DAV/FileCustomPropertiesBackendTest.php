@@ -87,7 +87,8 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$this->backend = new FileCustomPropertiesBackend(
 			$this->tree,
 			\OC::$server->getDatabaseConnection(),
-			$this->user
+			$this->user,
+			\OC::$server->getRootFolder()
 		);
 		$this->plugin = new FileCustomPropertiesPlugin($this->backend);
 		
@@ -436,7 +437,8 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$this->backend = new FileCustomPropertiesBackend(
 			$this->tree,
 			$dbConnectionMock,
-			$this->user
+			$this->user,
+			\OC::$server->getRootFolder()
 		);
 
 		$actual = $this->invokePrivate(

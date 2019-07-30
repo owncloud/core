@@ -198,7 +198,8 @@ class ServerFactory {
 						new FileCustomPropertiesBackend(
 							$objectTree,
 							$this->databaseConnection,
-							$this->userSession->getUser()
+							$this->userSession->getUser(),
+							\OC::$server->getRootFolder()
 						)
 					)
 				);

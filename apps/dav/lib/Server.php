@@ -228,7 +228,8 @@ class Server {
 						new FileCustomPropertiesBackend(
 							$this->server->tree,
 							\OC::$server->getDatabaseConnection(),
-							\OC::$server->getUserSession()->getUser()
+							\OC::$server->getUserSession()->getUser(),
+							\OC::$server->getRootFolder()
 						)
 					);
 					$this->server->addPlugin($filePropertiesPlugin);
@@ -237,7 +238,8 @@ class Server {
 						new MiscCustomPropertiesBackend(
 							$this->server->tree,
 							\OC::$server->getDatabaseConnection(),
-							\OC::$server->getUserSession()->getUser()
+							\OC::$server->getUserSession()->getUser(),
+							\OC::$server->getRootFolder()
 						)
 					);
 					$this->server->addPlugin($miscPropertiesPlugin);

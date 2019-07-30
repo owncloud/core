@@ -105,6 +105,14 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 
 		$fileId = $this->deletedItemsCache->get($path);
 		if ($fileId !== null) {
+			$items = $this->rootFolder->getById($fileId);
+			/** @var \OCP\Files\Node $item */
+			foreach ($items as $item) {
+				if ($item->getStorage()->instanceOfStorage(\OCA\Files_Trashbin\Storage::class)) {
+					return;
+				}
+			}
+
 			$statement = $this->connection->prepare(self::DELETE_BY_ID_STMT);
 			$statement->execute([$fileId]);
 			$this->offsetUnset($fileId);
