@@ -23,7 +23,7 @@ Feature: sharing
       | displayname_owner          | User Zero         |
       | item_type                  | file              |
       | mimetype                   | text/plain        |
-      | storage_id                 | home::user0       |
+      | storage_id                 | ANY_VALUE         |
       | share_type                 | user              |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -46,7 +46,7 @@ Feature: sharing
       | displayname_owner          | User Zero             |
       | item_type                  | file                  |
       | mimetype                   | text/plain            |
-      | storage_id                 | home::user0           |
+      | storage_id                 | ANY_VALUE             |
       | share_type                 | user                  |
     Examples:
       | ocs_api_version | requested_permissions | granted_permissions | ocs_status_code |
@@ -82,7 +82,7 @@ Feature: sharing
       | displayname_owner          | User Zero            |
       | item_type                  | folder               |
       | mimetype                   | httpd/unix-directory |
-      | storage_id                 | home::user0          |
+      | storage_id                 | ANY_VALUE            |
       | share_type                 | user                 |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -105,7 +105,7 @@ Feature: sharing
       | displayname_owner      | User Zero         |
       | item_type              | file              |
       | mimetype               | text/plain        |
-      | storage_id             | home::user0       |
+      | storage_id             | ANY_VALUE         |
       | share_type             | group             |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -128,7 +128,7 @@ Feature: sharing
       | displayname_owner      | User Zero            |
       | item_type              | folder               |
       | mimetype               | httpd/unix-directory |
-      | storage_id             | home::user0          |
+      | storage_id             | ANY_VALUE            |
       | share_type             | group                |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -155,7 +155,7 @@ Feature: sharing
       | displayname_owner          | User Zero         |
       | item_type                  | file              |
       | mimetype                   | text/plain        |
-      | storage_id                 | home::user0       |
+      | storage_id                 | ANY_VALUE         |
       | share_type                 | user              |
     Examples:
       | ocs_api_version | ocs_status_code |
