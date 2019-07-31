@@ -234,14 +234,26 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserBrowsesToTheFilesPage() {
-		$this->filesPage->setPagePath(
+		$this->theUserBrowsesToThePage($this->filesPage);
+	}
+
+	/**
+	 * browses to the specific files page
+	 *
+	 * @param FilesPageBasic $pageObject
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserBrowsesToThePage($pageObject) {
+		$pageObject->setPagePath(
 			$this->webUIGeneralContext->getCurrentServer() .
-			$this->filesPage->getOriginalPath()
+			$pageObject->getOriginalPath()
 		);
-		if (!$this->filesPage->isOpen()) {
-			$this->filesPage->open();
-			$this->filesPage->waitTillPageIsLoaded($this->getSession());
-			$this->webUIGeneralContext->setCurrentPageObject($this->filesPage);
+		if (!$pageObject->isOpen()) {
+			$pageObject->open();
+			$pageObject->waitTillPageIsLoaded($this->getSession());
+			$this->webUIGeneralContext->setCurrentPageObject($pageObject);
 		}
 	}
 
@@ -404,15 +416,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserBrowsesToTheTrashbinPage() {
-		$this->trashbinPage->setPagePath(
-			$this->webUIGeneralContext->getCurrentServer() .
-			$this->trashbinPage->getOriginalPath()
-		);
-		if (!$this->trashbinPage->isOpen()) {
-			$this->trashbinPage->open();
-			$this->trashbinPage->waitTillPageIsLoaded($this->getSession());
-			$this->webUIGeneralContext->setCurrentPageObject($this->trashbinPage);
-		}
+		$this->theUserBrowsesToThePage($this->trashbinPage);
 	}
 
 	/**
@@ -423,15 +427,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserBrowsesToTheFavoritesPage() {
-		$this->favoritesPage->setPagePath(
-			$this->webUIGeneralContext->getCurrentServer() .
-			$this->favoritesPage->getOriginalPath()
-		);
-		if (!$this->favoritesPage->isOpen()) {
-			$this->favoritesPage->open();
-			$this->favoritesPage->waitTillPageIsLoaded($this->getSession());
-			$this->webUIGeneralContext->setCurrentPageObject($this->favoritesPage);
-		}
+		$this->theUserBrowsesToThePage($this->favoritesPage);
 	}
 
 	/**
@@ -442,17 +438,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserBrowsesToTheSharedWithYouPage() {
-		$this->sharedWithYouPage->setPagePath(
-			$this->webUIGeneralContext->getCurrentServer() .
-			$this->sharedWithYouPage->getOriginalPath()
-		);
-		if (!$this->sharedWithYouPage->isOpen()) {
-			$this->sharedWithYouPage->open();
-			$this->sharedWithYouPage->waitTillPageIsLoaded($this->getSession());
-			$this->webUIGeneralContext->setCurrentPageObject(
-				$this->sharedWithYouPage
-			);
-		}
+		$this->theUserBrowsesToThePage($this->sharedWithYouPage);
 	}
 
 	/**
@@ -463,17 +449,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserBrowsesToTheSharedByLinkPage() {
-		$this->sharedByLinkPage->setPagePath(
-			$this->webUIGeneralContext->getCurrentServer() .
-			$this->sharedByLinkPage->getOriginalPath()
-		);
-		if (!$this->sharedByLinkPage->isOpen()) {
-			$this->sharedByLinkPage->open();
-			$this->sharedByLinkPage->waitTillPageIsLoaded($this->getSession());
-			$this->webUIGeneralContext->setCurrentPageObject(
-				$this->sharedByLinkPage
-			);
-		}
+		$this->theUserBrowsesToThePage($this->sharedByLinkPage);
 	}
 
 	/**
@@ -484,17 +460,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserBrowsesToTheSharedWithOthersPage() {
-		$this->sharedWithOthersPage->setPagePath(
-			$this->webUIGeneralContext->getCurrentServer() .
-			$this->sharedWithOthersPage->getOriginalPath()
-		);
-		if (!$this->sharedWithOthersPage->isOpen()) {
-			$this->sharedWithOthersPage->open();
-			$this->sharedWithOthersPage->waitTillPageIsLoaded($this->getSession());
-			$this->webUIGeneralContext->setCurrentPageObject(
-				$this->sharedWithOthersPage
-			);
-		}
+		$this->theUserBrowsesToThePage($this->sharedWithOthersPage);
 	}
 
 	/**
@@ -505,17 +471,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserBrowsesToTheTagsPage() {
-		$this->tagsPage->setPagePath(
-			$this->webUIGeneralContext->getCurrentServer() .
-			$this->tagsPage->getOriginalPath()
-		);
-		if (!$this->tagsPage->isOpen()) {
-			$this->tagsPage->open();
-			$this->tagsPage->waitTillPageIsLoaded($this->getSession());
-			$this->webUIGeneralContext->setCurrentPageObject(
-				$this->tagsPage
-			);
-		}
+		$this->theUserBrowsesToThePage($this->tagsPage);
 	}
 
 	/**
@@ -1425,23 +1381,23 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$exceptionMessage = null;
 		switch ($typeOfFilesPage) {
 			case "files page":
-				$this->theUserBrowsesToTheFilesPage();
+				$this->theUserBrowsesToThePage($this->filesPage);
 				break;
 			case "trashbin":
-				$this->theUserBrowsesToTheTrashbinPage();
+				$this->theUserBrowsesToThePage($this->trashbinPage);
 				break;
 			case "favorites page":
-				$this->theUserBrowsesToTheFavoritesPage();
+				$this->theUserBrowsesToThePage($this->favoritesPage);
 				break;
 			case "shared-with-you page":
-				$this->theUserBrowsesToTheSharedWithYouPage();
+				$this->theUserBrowsesToThePage($this->sharedWithYouPage);
 				break;
 			case "shared-by-link page":
-				$this->theUserBrowsesToTheSharedByLinkPage();
+				$this->theUserBrowsesToThePage($this->sharedByLinkPage);
 				break;
 			case "shared with others page":
 			case "shared-with-others page":
-				$this->theUserBrowsesToTheSharedWithOthersPage();
+				$this->theUserBrowsesToThePage($this->sharedWithOthersPage);
 				break;
 			case "tags page":
 				break;
