@@ -2,7 +2,7 @@ workspace:
   base: /drone
   path: src
 
-branches: [master, stable10, release*]
+branches: [master, release*]
 
 clone:
   git:
@@ -923,7 +923,7 @@ matrix:
       USE_SERVER: true
       SERVER_PROTOCOL: https
       USE_FEDERATED_SERVER: true
-      FEDERATION_OC_VERSION: daily-stable10-qa
+      FEDERATION_OC_VERSION: daily-master-qa
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1380,7 +1380,7 @@ matrix:
       USE_SERVER: true
       SERVER_PROTOCOL: https
       USE_FEDERATED_SERVER: true
-      FEDERATION_OC_VERSION: daily-stable10-qa
+      FEDERATION_OC_VERSION: daily-master-qa
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1440,7 +1440,7 @@ matrix:
       INSTALL_TESTING_APP: true
       USE_EMAIL: true
       USE_FEDERATED_SERVER: true
-      FEDERATION_OC_VERSION: daily-stable10-qa
+      FEDERATION_OC_VERSION: daily-master-qa
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -1564,7 +1564,7 @@ matrix:
       USE_SERVER: true
       SERVER_PROTOCOL: http
       USE_FEDERATED_SERVER: true
-      FEDERATION_OC_VERSION: daily-stable10-qa
+      FEDERATION_OC_VERSION: daily-master-qa
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1581,7 +1581,7 @@ matrix:
       USE_SERVER: true
       SERVER_PROTOCOL: http
       USE_FEDERATED_SERVER: true
-      FEDERATION_OC_VERSION: daily-stable10-qa
+      FEDERATION_OC_VERSION: daily-master-qa
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
@@ -1598,7 +1598,7 @@ matrix:
       USE_SERVER: true
       SERVER_PROTOCOL: http
       USE_FEDERATED_SERVER: true
-      FEDERATION_OC_VERSION: daily-stable10-qa
+      FEDERATION_OC_VERSION: daily-master-qa
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
