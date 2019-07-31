@@ -333,6 +333,9 @@ class WebDavHelper {
 		if ($type === "public-files") {
 			return "public.php/webdav/";
 		}
+		if ($type === "archive") {
+			return "remote.php/dav/archive/$user/files";
+		}
 		if ($davPathVersionToUse === 1) {
 			return "remote.php/webdav/";
 		} elseif ($davPathVersionToUse === 2) {

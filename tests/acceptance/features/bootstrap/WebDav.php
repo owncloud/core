@@ -1009,15 +1009,19 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $entry
 	 * @param string $path
+	 * @param string $type
 	 *
 	 * @return ResponseInterface
 	 * @throws \Exception
 	 */
-	public function asFileOrFolderShouldNotExist($user, $entry, $path) {
+	public function asFileOrFolderShouldNotExist(
+		$user, $entry, $path, $type = "files"
+	) {
 		$path = $this->substituteInLineCodes($path);
 		$response = WebDavHelper::makeDavRequest(
 			$this->getBaseUrl(), $this->getActualUsername($user),
-			$this->getPasswordForUser($user), 'GET', $path, []
+			$this->getPasswordForUser($user), 'GET', $path, [],
+			null, null, 2, $type
 		);
 		if ($response->getStatusCode() < 401 || $response->getStatusCode() > 404) {
 			throw new \Exception(
@@ -1035,13 +1039,18 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $entry
 	 * @param string $path
+	 * @param string $type
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function asFileOrFolderShouldExist($user, $entry, $path) {
+	public function asFileOrFolderShouldExist(
+		$user, $entry, $path, $type = "files"
+	) {
 		$path = $this->substituteInLineCodes($path);
-		$this->responseXmlObject = $this->listFolder($user, $path, 0);
+		$this->responseXmlObject = $this->listFolder(
+			$user, $path, 0, null, $type
+		);
 		Assert::assertTrue(
 			$this->isEtagValid(),
 			"$entry '$path' expected to exist but not found"
