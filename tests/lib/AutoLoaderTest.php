@@ -21,22 +21,22 @@ class AutoLoaderTest extends TestCase {
 		$this->loader = new AutoLoader();
 	}
 
-	public function testLoadPublicNamespace() {
+	public function testLoadPublicNamespace(): void {
 		$this->assertEquals([], $this->loader->findClass('OCP\Foo\Bar'));
 	}
 
-	public function testLoadAppNamespace() {
+	public function testLoadAppNamespace(): void {
 		$result = $this->loader->findClass('OCA\Files\Foobar');
 		$this->assertCount(2, $result);
 		$this->assertStringEndsWith('apps/files/foobar.php', $result[0]);
 		$this->assertStringEndsWith('apps/files/lib/foobar.php', $result[1]);
 	}
 
-	public function testLoadCoreNamespaceCore() {
+	public function testLoadCoreNamespaceCore(): void {
 		$this->assertEquals([], $this->loader->findClass('OC\Core\Foo\Bar'));
 	}
 
-	public function testLoadCoreNamespaceSettings() {
+	public function testLoadCoreNamespaceSettings(): void {
 		$this->assertEquals([], $this->loader->findClass('OC\Settings\Foo\Bar'));
 	}
 }
