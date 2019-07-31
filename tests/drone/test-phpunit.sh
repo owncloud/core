@@ -51,7 +51,7 @@ else
   GROUP="--group DB"
 fi
 
-# still required on stable10 to run unit tests for encryption
+# still required to run unit tests for encryption
 php occ app:enable encryption
 
 # show a little debug information
