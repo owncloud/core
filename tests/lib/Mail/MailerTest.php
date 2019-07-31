@@ -37,7 +37,7 @@ class MailerTest extends TestCase {
 		$this->mailer = new Mailer($this->config, $this->logger, $this->defaults);
 	}
 
-	public function testGetSendMailInstanceSendMail(): void {
+	public function testGetSendMailInstanceSendMail() {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
@@ -49,7 +49,7 @@ class MailerTest extends TestCase {
 		$this->assertEquals('/usr/sbin/sendmail -bs', $mailer->getCommand());
 	}
 
-	public function testGetSendMailInstanceSendMailQmail(): void {
+	public function testGetSendMailInstanceSendMailQmail() {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
@@ -60,11 +60,11 @@ class MailerTest extends TestCase {
 		$this->assertEquals('/var/qmail/bin/sendmail -bs', $mailer->getCommand());
 	}
 
-	public function testGetInstanceDefault(): void {
+	public function testGetInstanceDefault() {
 		$this->assertInstanceOf(\Swift_Mailer::class, self::invokePrivate($this->mailer, 'getInstance'));
 	}
 
-	public function testGetInstanceSendmail(): void {
+	public function testGetInstanceSendmail() {
 		$this->config
 			->method('getSystemValue')
 			->will($this->returnValue('sendmail'));
@@ -72,14 +72,14 @@ class MailerTest extends TestCase {
 		$this->assertInstanceOf(\Swift_Mailer::class, self::invokePrivate($this->mailer, 'getInstance'));
 	}
 
-	public function testCreateMessage(): void {
+	public function testCreateMessage() {
 		$this->assertInstanceOf(Message::class, $this->mailer->createMessage());
 	}
 
 	/**
 	 * @expectedException \Exception
 	 */
-	public function testSendInvalidMailException(): void {
+	public function testSendInvalidMailException() {
 		/** @var Message | \PHPUnit\Framework\MockObject\MockObject $message */
 		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
@@ -108,11 +108,11 @@ class MailerTest extends TestCase {
 	/**
 	 * @dataProvider mailAddressProvider
 	 */
-	public function testValidateMailAddress($email, $expected): void {
+	public function testValidateMailAddress($email, $expected) {
 		$this->assertSame($expected, $this->mailer->validateMailAddress($email));
 	}
 
-	public function testLogEntry(): void {
+	public function testLogEntry() {
 		$this->mailer = $this->getMockBuilder(Mailer::class)
 			->setConstructorArgs([$this->config, $this->logger, $this->defaults])
 			->setMethods(['getInstance'])
