@@ -730,6 +730,12 @@ matrix:
 
     # PHP 7.0
     - PHP_VERSION: 7.0
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.0
       DB_TYPE: mysql
       TEST_SUITE: phpunit
       INSTALL_SERVER: true
