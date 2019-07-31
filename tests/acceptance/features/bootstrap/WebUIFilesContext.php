@@ -1370,12 +1370,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $typeOfFilesPage
 	 * @param string $folder
 	 * @param string $path if set, name and path (shown on the webUI) of the file to match
+	 * @param \Page\FilesPageBasic $pageObject if not null use this pageObject and ignore $typeOfFilesPage
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function checkIfFileFolderIsListedOnTheWebUI(
-		$name, $shouldOrNot, $typeOfFilesPage = "", $folder = "", $path = ""
+		$name, $shouldOrNot, $typeOfFilesPage = "", $folder = "", $path = "", $pageObject = null
 	) {
 		$should = ($shouldOrNot !== "not");
 		$exceptionMessage = null;
@@ -1409,7 +1410,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		 *
 		 * @var FilesPageBasic $pageObject
 		 */
-		$pageObject = $this->getCurrentPageObject();
+		if ($pageObject === null) {
+			$pageObject = $this->getCurrentPageObject();
+		} else {
+			$this->theUserBrowsesToThePage($pageObject);
+		}
 		$pageObject->waitTillPageIsLoaded($this->getSession());
 		if ($folder !== "") {
 			$this->theUserOpensTheFileOrFolderUsingTheWebUI(
