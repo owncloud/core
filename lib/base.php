@@ -462,7 +462,7 @@ class OC {
 	 * @return string
 	 */
 	private static function getSessionLifeTime() {
-		return \OC::$server->getConfig()->getSystemValue('session_lifetime', 60 * 60 * 24);
+		return \OC::$server->getConfig()->getSystemValue('session_lifetime', 60 * 20);
 	}
 
 	public static function loadAppClassPaths() {
