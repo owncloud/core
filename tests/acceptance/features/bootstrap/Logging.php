@@ -177,7 +177,7 @@ trait Logging {
 		TableNode $expectedLogEntries
 	) {
 		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
-			$expectedLogEntries
+			true, $expectedLogEntries
 		);
 	}
 
@@ -197,7 +197,23 @@ trait Logging {
 		TableNode $expectedLogEntries
 	) {
 		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
-			$expectedLogEntries, true
+			true, $expectedLogEntries, true
+		);
+	}
+
+	/**
+	 * @Then the log file should not contain any entry matching the regular expressions in each of these lines:
+	 *
+	 * @param TableNode $expectedLogEntries
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function logFileShouldNotContainAnyTheEntriesMatchingTheRegularExpression(
+		TableNode $expectedLogEntries
+	) {
+		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
+			false, $expectedLogEntries, true
 		);
 	}
 
@@ -206,6 +222,10 @@ trait Logging {
 	 * corresponding line in the log file
 	 * empty cells in the table will not be checked!
 	 *
+	 * @param boolean $shouldOrNot if true the table entries are expected to match
+	 *                             at least one entry in the log
+	 * 							   if false the table entries are expected not
+	 *                             to match any log in the log file
 	 * @param TableNode $expectedLogEntries table with headings that correspond
 	 *                                      to the json keys in the log entry
 	 *                                      e.g.
@@ -217,7 +237,7 @@ trait Logging {
 	 * @throws \Exception
 	 */
 	private function assertLogFileContainsAtLeastOneEntryMatchingTable(
-		TableNode $expectedLogEntries, $regexCompare = false
+		$shouldOrNot, TableNode $expectedLogEntries, $regexCompare = false
 	) {
 		$logLines = LoggingHelper::getLogFileContent(
 			$this->featureContext->getBaseUrl(),
@@ -233,6 +253,7 @@ trait Logging {
 			//reindex the array, we might have deleted entries
 			$expectedLogEntries = \array_values($expectedLogEntries);
 			for ($entryNo = 0; $entryNo < \count($expectedLogEntries); $entryNo++) {
+				$count = 0;
 				$expectedLogEntry = $expectedLogEntries[$entryNo];
 				$foundLine = true;
 				foreach (\array_keys($expectedLogEntry) as $attribute) {
@@ -267,10 +288,17 @@ trait Logging {
 						$matchAttribute
 							= ($expectedLogEntry[$attribute] === $logEntry[$attribute]);
 					}
-					
 					if (!$matchAttribute) {
 						$foundLine = false;
 						break;
+					}
+					if ($matchAttribute and !$shouldOrNot) {
+						$count += 1;
+						Assert::assertNotEquals(
+							$count,
+							\count($expectedLogEntry),
+							"The entry matches"
+						);
 					}
 				}
 				if ($foundLine === true) {
@@ -278,12 +306,13 @@ trait Logging {
 				}
 			}
 		}
-		
 		$notFoundLines = \print_r($expectedLogEntries, true);
-		Assert::assertEmpty(
-			$expectedLogEntries,
-			"could not find these expected line(s):\n $notFoundLines"
-		);
+		if ($shouldOrNot) {
+			Assert::assertEmpty(
+				$expectedLogEntries,
+				"could not find these expected line(s):\n $notFoundLines"
+			);
+		}
 	}
 
 	/**
