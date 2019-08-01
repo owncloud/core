@@ -6,4 +6,4 @@ OC.L10N.register(
     "Remote Address: %s" : "ಆಚೆ-ಗಣಕದ ವಿಳಾಸ : %s",
     "Request ID: %s" : "ವಿನಂತಿಯ ಸಂಖ್ಯೆ: %s"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

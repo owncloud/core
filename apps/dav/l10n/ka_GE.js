@@ -4,4 +4,4 @@ OC.L10N.register(
     "Personal" : "პირადი",
     "Contacts" : "კონტაქტები"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n!=1);");

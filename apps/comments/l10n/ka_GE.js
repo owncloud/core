@@ -4,4 +4,4 @@ OC.L10N.register(
     "Cancel" : "უარყოფა",
     "Save" : "შენახვა"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n!=1);");

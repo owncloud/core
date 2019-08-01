@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Federa kunhavado",
+    "Add to your ownCloud" : "Aldoni al via ownCloud",
     "Sharing %s failed, because this item is already shared with %s" : "Kunhavigo de %s malsukcesis, ĉar la ero jam kunhavatas kun %s",
     "Not allowed to create a federated share with the same user" : "Vi ne permesas krei federan kunhavon kun la sama uzanto",
     "Accept" : "Akcepti",
@@ -15,7 +16,6 @@ OC.L10N.register(
     "Share it:" : "Kunhavigi ĝin:",
     "Add to your website" : "Aldoni al via TTT-ejo",
     "Share with me via ownCloud" : "Kunhavigi kun mi per ownCloud",
-    "HTML Code:" : "HTML-kodo:",
-    "Add to your ownCloud" : "Aldoni al via ownCloud"
+    "HTML Code:" : "HTML-kodo:"
 },
 "nplurals=2; plural=(n != 1);");

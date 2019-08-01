@@ -2,13 +2,12 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Propojené sdílení",
+    "Add to your ownCloud" : "Přidat do svého ownCloudu",
     "Invalid Federated Cloud ID" : "Neplatné sdružené cloud ID",
     "Sharing %s failed, because this item is already shared with %s" : "Sdílení položky %s selhalo, protože položka již je s uživatelem %s sdílena",
     "Not allowed to create a federated share with the same user" : "Není povoleno vytvořit propojené sdílení s tím samým uživatelem",
     "File is already shared with %s" : "Soubor je již sdílen s %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Sdílení %s selhalo, %s se nepodařilo nalézt, server pravděpodobně právě není dostupný.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "Obdrželi jste \"/%3$s\" jako vzdálené sdílení od %1$s (zastupuje %2$s)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "Obdrželi jste \"/%3$s\" jako vzdálené sdílení od %1$s",
     "Accept" : "Přijmout",
     "Decline" : "Zamítnout",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Sdílej se mnou pomocí mého #ownCloud sdruženého cloud ID, více na %s",
@@ -22,7 +21,6 @@ OC.L10N.register(
     "Share it:" : "Sdílet:",
     "Add to your website" : "Přidat na svou webovou stránku",
     "Share with me via ownCloud" : "Sdíleno se mnou přes ownCloud",
-    "HTML Code:" : "HTML kód:",
-    "Add to your ownCloud" : "Přidat do svého ownCloudu"
+    "HTML Code:" : "HTML kód:"
 },
-"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");
+"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

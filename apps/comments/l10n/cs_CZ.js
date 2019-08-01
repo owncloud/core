@@ -23,4 +23,4 @@ OC.L10N.register(
     "You commented on %2$s" : "Okomentoval(a) jsi %2$s",
     "%1$s commented on %2$s" : "%1$s okomentoval %2$s"
 },
-"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");
+"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

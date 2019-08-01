@@ -2,13 +2,16 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Federated sharing",
+    "Add to your ownCloud" : "Add to your ownCloud",
     "Invalid Federated Cloud ID" : "Invalid Federated Cloud ID",
     "Sharing %s failed, because this item is already shared with %s" : "Sharing %s failed, because this item is already shared with %s",
     "Not allowed to create a federated share with the same user" : "Not allowed to create a federated share with the same user",
     "File is already shared with %s" : "File is already shared with %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Sharing %s failed, could not find %s, maybe the server is currently unreachable.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "You received \"/%3$s\" as a remote share from %1$s",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" shared \"%3$s\" with you",
+    "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" invited you to view \"%3$s\"",
     "Accept" : "Accept",
     "Decline" : "Decline",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Share with me through my #ownCloud Federated Cloud ID, see %s",
@@ -22,7 +25,6 @@ OC.L10N.register(
     "Share it:" : "Share it:",
     "Add to your website" : "Add to your website",
     "Share with me via ownCloud" : "Share with me via ownCloud",
-    "HTML Code:" : "HTML Code:",
-    "Add to your ownCloud" : "Add to your ownCloud"
+    "HTML Code:" : "HTML Code:"
 },
 "nplurals=2; plural=(n != 1);");

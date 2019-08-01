@@ -5,4 +5,4 @@ OC.L10N.register(
     "Size" : "﻿ ಗಾತ್ರ",
     "Modified" : "﻿ಬದಲಾಯಿಸಿದ"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

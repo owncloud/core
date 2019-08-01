@@ -2,7 +2,7 @@ OC.L10N.register(
     "comments",
     {
     "Type in a new comment..." : "نوشتن دیدگاه جدید ...",
-    "Delete comment" : "حذف دیدگاه",
+    "Delete comment" : "حذف نظر",
     "Post" : "ارسال",
     "Cancel" : "منصرف شدن",
     "Edit comment" : "ویرایش دیدگاه",
@@ -23,4 +23,4 @@ OC.L10N.register(
     "You commented on %2$s" : "شما بر %2$s دیدگاهی ارسال کردید",
     "%1$s commented on %2$s" : "%1$s دیدگاهی در %2$s ارسال کرده است"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

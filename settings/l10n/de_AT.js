@@ -3,9 +3,9 @@ OC.L10N.register(
     {
     "Couldn't send reset email. Please contact your administrator." : "Die E-Mail zum Zurücksetzen konnte nicht versendet werden. Bitte kontaktiere Deinen Administrator.",
     "Email sent" : "E-Mail wurde verschickt",
-    "__language_name__" : "Deutsch (Österreich)",
-    "Invalid request" : "Fehlerhafte Anfrage",
     "Delete" : "Löschen",
+    "Share" : "Teilen",
+    "Invalid request" : "Fehlerhafte Anfrage",
     "Very weak password" : "Sehr schwaches Passwort",
     "Weak password" : "Schwaches Passwort",
     "So-so password" : "Durchschnittliches Passwort",
@@ -16,6 +16,7 @@ OC.L10N.register(
     "Server address" : "Adresse des Servers",
     "Port" : "Port",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Insbesondere bei Nutzung des Desktop Clients zur Dateisynchronisierung wird vom Einsatz von SQLite abgeraten.",
+    "Add" : "Hinzufügen",
     "Cancel" : "Abbrechen",
     "Email" : "E-Mail",
     "Password" : "Passwort",
@@ -23,11 +24,12 @@ OC.L10N.register(
     "Change password" : "Passwort ändern",
     "Name" : "Name",
     "Username" : "Benutzername",
+    "New Password" : "Neues Passwort",
     "Personal" : "Persönlich",
     "Admin" : "Administration",
     "Error" : "Fehler",
-    "Other" : "Anderes",
-    "Share" : "Teilen",
-    "Add" : "Hinzufügen"
+    "Settings" : "Einstellungen",
+    "Group" : "Gruppe",
+    "Other" : "Anderes"
 },
 "nplurals=2; plural=(n != 1);");

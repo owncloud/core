@@ -1,6 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
+    "Add to your ownCloud" : "加入到你的 ownCloud",
     "Invalid Federated Cloud ID" : "無效的雲端聯盟ID:",
     "Sharing %s failed, because this item is already shared with %s" : "分享 %s 失敗，因為此項目目前已經與 %s 分享",
     "Not allowed to create a federated share with the same user" : "不允許與同一個使用者建立聯盟式分享",
@@ -18,7 +19,6 @@ OC.L10N.register(
     "Share it:" : "分享它：",
     "Add to your website" : "新增至您的網站",
     "Share with me via ownCloud" : "透過 ownCloud 與我分享",
-    "HTML Code:" : "HTML Code:",
-    "Add to your ownCloud" : "加入到你的 ownCloud"
+    "HTML Code:" : "HTML Code:"
 },
 "nplurals=1; plural=0;");

@@ -26,6 +26,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Yüklənmiş (7 yada yuxarı) ownCloud {uzaq} unvanında tapılmadı ",
     "Invalid ownCloud url" : "Yalnış ownCloud url-i",
     "Share" : "Paylaş",
+    "Pending" : "Gözləmə",
     "Shared by" : "Tərəfindən yayımlanıb",
     "Sharing" : "Paylaşılır",
     "A file or folder has been <strong>shared</strong>" : "Fayl və ya direktoriya <strong>yayımlandı</strong>",
@@ -54,10 +55,8 @@ OC.L10N.register(
     "the link expired" : "linkin vaxtı bitmişdir",
     "sharing is disabled" : "paylaşım dayandırılmışdır",
     "For more info, please ask the person who sent this link." : "Ətraflı məlumat üçün, xahiş olunur linkin kim tərəfindən göndərilməsini soruşun.",
-    "Add to your ownCloud" : "Öz ownCloud-nuza əlavə edin",
     "Download" : "Yüklə",
     "Download %s" : "Endir %s",
-    "Direct link" : "Birbaşa link",
-    "Pending" : "Gözləmə"
+    "Direct link" : "Birbaşa link"
 },
 "nplurals=2; plural=(n != 1);");

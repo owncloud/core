@@ -1,14 +1,14 @@
 OC.L10N.register(
     "settings",
     {
-    "__language_name__" : "__ਭਾਸ਼ਾ_ਨਾਂ__",
+    "Delete" : "ਹਟਾਓ",
+    "Share" : "ਸਾਂਝਾ ਕਰੋ",
     "Language changed" : "ਭਾਸ਼ਾ ਬਦਲੀ",
     "Please wait...." : "...ਉਡੀਕੋ ਜੀ",
     "Disable" : "ਬੰਦ",
     "Enable" : "ਚਾਲੂ",
     "Updating...." : "...ਅੱਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ",
     "Updated" : "ਅੱਪਡੇਟ ਕੀਤਾ",
-    "Delete" : "ਹਟਾਓ",
     "Groups" : "ਗਰੁੱਪ",
     "undo" : "ਵਾਪਸ",
     "add group" : "ਗਰੁੱਪ ਸ਼ਾਮਲ",
@@ -20,6 +20,6 @@ OC.L10N.register(
     "Change password" : "ਪਾਸਵਰਡ ਬਦਲੋ",
     "Username" : "ਯੂਜ਼ਰ-ਨਾਂ",
     "Error" : "ਗਲਤੀ",
-    "Share" : "ਸਾਂਝਾ ਕਰੋ"
+    "Settings" : "ਸੈਟਿੰਗ"
 },
 "nplurals=2; plural=(n != 1);");

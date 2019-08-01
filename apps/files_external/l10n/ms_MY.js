@@ -5,11 +5,11 @@ OC.L10N.register(
     "Username" : "Nama pengguna",
     "Password" : "Kata laluan",
     "Save" : "Simpan",
-    "Region" : "Wilayah",
     "URL" : "URL",
     "Location" : "Lokasi",
     "ownCloud" : "ownCloud",
     "Share" : "Kongsi",
+    "Region" : "Wilayah",
     "Name" : "Nama",
     "Delete" : "Padam"
 },

@@ -2,16 +2,10 @@ OC.L10N.register(
     "systemtags",
     {
     "Tags" : "Etiquetas",
-    "No files in here" : "Aquí non hai ficheiros",
-    "No entries found in this folder" : "Non se atoparon entradas neste cartafol",
-    "Name" : "Nome",
-    "Size" : "Tamaño",
-    "Modified" : "Modificado",
-    "%s (static)" : "%s (estática)",
     "Tagged files" : "Ficheiros etiquetados",
+    "Select tags to filter by" : "Seleccionar etiquetas polas que filtrar",
     "Please select tags to filter by" : "Seleccione as etiquetas polas que filtrar",
     "No files found for the selected tags" : "Non se atoparon ficheiros para as etiquetas seleccionadas",
-    "Select tags to filter by" : "Seleccionar etiquetas polas que filtrar",
     "<strong>System tags</strong> for a file have been modified" : "Modificáronse as <strong>etiquetas de sistemas</strong> dun ficheio",
     "You assigned system tag %3$s" : "Vostede asignou a etiqueta de sistema %3$s",
     "%1$s assigned system tag %3$s" : "%1$s asignou a etiqueta de sistema %3$s",
@@ -28,6 +22,12 @@ OC.L10N.register(
     "You unassigned system tag %3$s from %2$s" : "Vostede retirou a asignación da etiqueta de sistema %3$s de %3$s",
     "%1$s unassigned system tag %3$s from %2$s" : "%1$s asignou a etiqueta de sistema %3$s a %2$s",
     "%s (restricted)" : "%s (restrinxida)",
-    "%s (invisible)" : "%s (invisíbel)"
+    "%s (invisible)" : "%s (invisíbel)",
+    "%s (static)" : "%s (estática)",
+    "No files in here" : "Aquí non hai ficheiros",
+    "No entries found in this folder" : "Non se atoparon entradas neste cartafol",
+    "Name" : "Nome",
+    "Size" : "Tamaño",
+    "Modified" : "Modificado"
 },
 "nplurals=2; plural=(n != 1);");

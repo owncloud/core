@@ -8,20 +8,19 @@ OC.L10N.register(
     "Username" : "Tên đăng nhập",
     "Password" : "Mật khẩu",
     "Save" : "Lưu",
-    "Port" : "Cổng",
-    "Region" : "Vùng/miền",
     "WebDAV" : "WebDAV",
     "URL" : "URL",
     "Location" : "Vị trí",
     "ownCloud" : "ownCloud",
     "Host" : "Máy chủ",
     "Share" : "Chia sẻ",
+    "Domain" : "Tên miền",
+    "Region" : "Vùng/miền",
     "Name" : "Tên",
     "External Storage" : "Lưu trữ ngoài",
     "Folder name" : "Tên thư mục",
     "Configuration" : "Cấu hình",
     "Add storage" : "Thêm bộ nhớ",
-    "Delete" : "Xóa",
-    "Domain" : "Tên miền"
+    "Delete" : "Xóa"
 },
 "nplurals=1; plural=0;");

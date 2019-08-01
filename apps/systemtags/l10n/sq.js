@@ -23,11 +23,11 @@ OC.L10N.register(
     "%1$s unassigned system tag %3$s from %2$s" : "%1$s hoqi prej %2$s etiketën e sistemit %3$s",
     "%s (restricted)" : "%s (e kufizuar)",
     "%s (invisible)" : "%s (e padukshme)",
+    "%s (static)" : "%s (statike)",
     "No files in here" : "S’ka kartela këtu",
     "No entries found in this folder" : "S’u gjetën zëra në këtë dosje",
     "Name" : "Emër",
     "Size" : "Madhësi",
-    "Modified" : "Ndryshuar më",
-    "%s (static)" : "%s (statike)"
+    "Modified" : "Ndryshuar më"
 },
 "nplurals=2; plural=(n != 1);");

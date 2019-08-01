@@ -1,6 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
+    "Add to your ownCloud" : "Lisa oma ownCloudi",
     "Sharing %s failed, because this item is already shared with %s" : "%s jagamine ebaõnnestus, kuna see üksus on juba jagatud %s",
     "Accept" : "Nõustu",
     "Decline" : "Lükka tagasi",
@@ -10,7 +11,6 @@ OC.L10N.register(
     "Share it:" : "Jaga seda:",
     "Add to your website" : "Lisa oma veebisaidile",
     "Share with me via ownCloud" : "Jaga minuga läbi ownCloudiga",
-    "HTML Code:" : "HTML kood:",
-    "Add to your ownCloud" : "Lisa oma ownCloudi"
+    "HTML Code:" : "HTML kood:"
 },
 "nplurals=2; plural=(n != 1);");

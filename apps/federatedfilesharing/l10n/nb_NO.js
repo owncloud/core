@@ -2,13 +2,16 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Forent deling",
+    "Add to your ownCloud" : "Legg til i din ownCloud",
     "Invalid Federated Cloud ID" : "Ugyldig ID for forent sky",
     "Sharing %s failed, because this item is already shared with %s" : "Deling av %s feilet, fordi dette elementet allerede er delt med %s",
     "Not allowed to create a federated share with the same user" : "Ikke tillatt å opprette en forent deling med den samme brukeren",
     "File is already shared with %s" : "Filen deles allerede med %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Deling %s feilet, fant ikke %s, kanskje servern er utilgjengelig for øyeblikket.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "Du mottok \"/%3$s\" som en ekstern deling fra %1$s (på vegne av %2$s)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "Du mottok \"/%3$s\" som en ekstern deling fra %1$s",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" delte \"%3$s\" med deg (på vegne av \"%2$s\")",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" delte \"%3$s\" med deg",
+    "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" har invitert deg til å se \"%3$s\" (på vegne av \"%2$s\")",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" har invitert deg til å se \"%3$s\"",
     "Accept" : "Aksepter",
     "Decline" : "Avslå",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Del med meg gjennom min #ownCloud ID for Forent Sky, se %s",
@@ -22,7 +25,6 @@ OC.L10N.register(
     "Share it:" : "Del den:",
     "Add to your website" : "Legg på websiden din",
     "Share with me via ownCloud" : "Del med meg via ownCloud",
-    "HTML Code:" : "HTML-kode:",
-    "Add to your ownCloud" : "Legg til i din ownCloud"
+    "HTML Code:" : "HTML-kode:"
 },
 "nplurals=2; plural=(n != 1);");

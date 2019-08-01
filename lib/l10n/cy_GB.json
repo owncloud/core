@@ -23,13 +23,11 @@
     "Set an admin username." : "Creu enw defnyddiwr i'r gweinyddwr.",
     "Set an admin password." : "Gosod cyfrinair y gweinyddwr.",
     "Could not find category \"%s\"" : "Methu canfod categori \"%s\"",
-    "Help" : "Cymorth",
     "Settings" : "Gosodiadau",
     "Users" : "Defnyddwyr",
-    "web services under your control" : "gwasanaethau gwe a reolir gennych",
+    "Imprint" : "Imprint",
     "Application is not enabled" : "Nid yw'r pecyn wedi'i alluogi",
     "Authentication error" : "Gwall dilysu",
-    "Token expired. Please reload page." : "Tocyn wedi dod i ben. Ail-lwythwch y dudalen.",
-    "Imprint" : "Imprint"
+    "Token expired. Please reload page." : "Tocyn wedi dod i ben. Ail-lwythwch y dudalen."
 },"pluralForm" :"nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;"
 }

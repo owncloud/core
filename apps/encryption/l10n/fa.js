@@ -41,4 +41,4 @@ OC.L10N.register(
     "Enabled" : "فعال شده",
     "Disabled" : "غیرفعال شده"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

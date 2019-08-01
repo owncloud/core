@@ -9,14 +9,15 @@ OC.L10N.register(
     "Friday" : "Баасан",
     "Saturday" : "Бямба",
     "Settings" : "Тохиргоо",
+    "Cancel" : "Цуцлах",
+    "Error" : "Алдаа",
+    "Edit" : "Засах",
     "Remove" : "Устгах",
     "Password" : "Нууц үг",
-    "Save" : "Хадгалах",
     "Share" : "Түгээх",
-    "Username" : "Хэрэглэгчийн нэр",
-    "Edit" : "Засах",
+    "Save" : "Хадгалах",
+    "Group" : "Грүпп",
     "Delete" : "Устгах",
-    "Cancel" : "Цуцлах",
-    "Error" : "Алдаа"
+    "Username" : "Хэрэглэгчийн нэр"
 },
 "nplurals=2; plural=(n != 1);");

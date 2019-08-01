@@ -52,14 +52,13 @@
     "Error while unsharing" : "შეცდომა გაზიარების გაუქმების დროს",
     "Set expiration date" : "მიუთითე ვადის გასვლის დრო",
     "Expiration" : "ვადის გასვლის დრო",
-    "Expiration date" : "ვადის გასვლის დრო",
     "Edit" : "რედაქტირება",
     "Remove" : "წაშლა",
-    "Password" : "პაროლი",
+    "Copy to clipboard" : "კოპირებულია ქლიპბორდში ",
     "Name" : "სახელი",
+    "Password" : "პაროლი",
+    "Share" : "გაზიარება",
     "Save" : "შენახვა",
-    "Sending ..." : "გაგზავნა ....",
-    "Email sent" : "იმეილი გაიგზავნა",
     "Email link to person" : "ლინკის პიროვნების იმეილზე გაგზავნა",
     "Shared with you and the group {group} by {owner}" : "გაზიარდა თქვენთვის და ჯგუფისთვის {group}, {owner}–ის მიერ",
     "Shared with you by {owner}" : "გაზიარდა თქვენთვის {owner}–ის მიერ",
@@ -69,9 +68,7 @@
     "create" : "შექმნა",
     "delete" : "წაშლა",
     "access control" : "დაშვების კონტროლი",
-    "Share" : "გაზიარება",
-    "Resharing is not allowed" : "მეორეჯერ გაზიარება არ არის დაშვებული",
-    "Warning" : "გაფრთხილება",
+    "User" : "მომხმარებელი",
     "Delete" : "წაშლა",
     "Rename" : "გადარქმევა",
     "The object type is not specified." : "ობიექტის ტიპი არ არის მითითებული.",
@@ -84,6 +81,7 @@
     "Admin" : "ადმინისტრატორი",
     "Help" : "დახმარება",
     "Access forbidden" : "წვდომა აკრძალულია",
+    "Imprint" : "ბეჭედი",
     "Create an <strong>admin account</strong>" : "შექმენი <strong>ადმინ ექაუნტი</strong>",
     "Username" : "მომხმარებლის სახელი",
     "Data folder" : "მონაცემთა საქაღალდე",
@@ -100,8 +98,6 @@
     "Alternative Logins" : "ალტერნატიული Login–ი",
     "Use the following link to reset your password: {link}" : "გამოიყენე შემდეგი ლინკი პაროლის შესაცვლელად: {link}",
     "New password" : "ახალი პაროლი",
-    "Reset password" : "პაროლის შეცვლა",
-    "Copy to clipboard" : "კოპირებულია ქლიპბორდში ",
-    "Imprint" : "ბეჭედი"
-},"pluralForm" :"nplurals=1; plural=0;"
+    "Reset password" : "პაროლის შეცვლა"
+},"pluralForm" :"nplurals=2; plural=(n!=1);"
 }

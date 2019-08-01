@@ -25,6 +25,8 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Ne troviĝis instalo de ownCloud (7 aŭ pli alta) ĉe {remote}",
     "Invalid ownCloud url" : "Nevalidas URL de ownCloud",
     "Share" : "Kunhavigi",
+    "Declined" : "Malakceptita",
+    "Pending" : "Traktotaj",
     "Shared by" : "Kunhavigita de",
     "Sharing" : "Kunhavigo",
     "A file or folder has been <strong>shared</strong>" : "Dosiero aŭ dosierujo <strong>kunhaviĝis</strong>",
@@ -64,6 +66,8 @@ OC.L10N.register(
     "%2$s removed public link" : "%2$s forigis publikan ligilon",
     "Shared by %2$s" : "Kunhavigata de %2$s",
     "Shares" : "Kunhavoj",
+    "Accept" : "Akcepti",
+    "Decline" : "Malakcepti",
     "This share is password-protected" : "Ĉi tiu kunhavigo estas protektata per pasvorto",
     "The password is wrong. Try again." : "La pasvorto malĝustas. Provu denove.",
     "Password" : "Pasvorto",
@@ -77,13 +81,8 @@ OC.L10N.register(
     "the link expired" : "la ligilo eksvalidiĝis",
     "sharing is disabled" : "kunhavigo malkapablas",
     "For more info, please ask the person who sent this link." : "Por plia informo, bonvolu peti al la persono, kiu sendis ĉi tiun ligilon.",
-    "Add to your ownCloud" : "Aldoni al via ownCloud",
     "Download" : "Elŝuti",
     "Download %s" : "Elŝuti %s",
-    "Direct link" : "Direkta ligilo",
-    "Pending" : "Traktotaj",
-    "Accept" : "Akcepti",
-    "Decline" : "Malakcepti",
-    "Declined" : "Malakceptita"
+    "Direct link" : "Direkta ligilo"
 },
 "nplurals=2; plural=(n != 1);");

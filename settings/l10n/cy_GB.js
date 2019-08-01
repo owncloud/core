@@ -3,14 +3,16 @@ OC.L10N.register(
     {
     "Authentication error" : "Gwall dilysu",
     "Email sent" : "Anfonwyd yr e-bost",
-    "Invalid request" : "Cais annilys",
     "Delete" : "Dileu",
+    "Share" : "Rhannu",
+    "Invalid request" : "Cais annilys",
     "Groups" : "Grwpiau",
     "undo" : "dadwneud",
     "never" : "byth",
     "None" : "Dim",
     "Login" : "Mewngofnodi",
     "Encryption" : "Amgryptiad",
+    "Add" : "Ychwanegu",
     "Cancel" : "Diddymu",
     "Email" : "E-bost",
     "Password" : "Cyfrinair",
@@ -20,8 +22,7 @@ OC.L10N.register(
     "Personal" : "Personol",
     "Admin" : "Gweinyddu",
     "Error" : "Gwall",
-    "Other" : "Arall",
-    "Share" : "Rhannu",
-    "Add" : "Ychwanegu"
+    "Settings" : "Gosodiadau",
+    "Other" : "Arall"
 },
 "nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;");

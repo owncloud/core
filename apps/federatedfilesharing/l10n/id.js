@@ -1,6 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
+    "Add to your ownCloud" : "Tambahkan ke ownCloud Anda",
     "Invalid Federated Cloud ID" : "Federated Cloud ID tidak sah",
     "Sharing %s failed, because this item is already shared with %s" : "Gagal membagkan %s, karena item ini sudah dibagikan dengan %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Berbagi %s gagal, tidak menemukan %s, kemungkinan saat ini server tidak dapat dijangkau.",
@@ -17,7 +18,6 @@ OC.L10N.register(
     "Share it:" : "Bagikan:",
     "Add to your website" : "Tambahkan pada situs web Anda",
     "Share with me via ownCloud" : "Dibagikan pada saya via ownCloud",
-    "HTML Code:" : "Kode HTML:",
-    "Add to your ownCloud" : "Tambahkan ke ownCloud Anda"
+    "HTML Code:" : "Kode HTML:"
 },
 "nplurals=1; plural=0;");

@@ -5,4 +5,4 @@ OC.L10N.register(
     "Enabled" : "ಸಕ್ರಿಯಗೊಳಿಸಿದೆ",
     "Disabled" : "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

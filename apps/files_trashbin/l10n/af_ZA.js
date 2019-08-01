@@ -1,13 +1,13 @@
 OC.L10N.register(
     "files_trashbin",
     {
-    "Error" : "Fout",
     "Couldn't delete %s permanently" : "Kon nie %s permanent skrap nie",
     "Couldn't restore %s" : "Kon nie %s herstel nie",
     "Deleted files" : "Geskrapte lêers",
     "Restore" : "Herstel",
     "Delete" : "Skrap",
     "Delete permanently" : "Skrap permanent",
+    "Error" : "Fout",
     "This operation is forbidden" : "Hierdie bewerking is verbode",
     "This directory is unavailable, please check the logs or contact the administrator" : "Hierdie gids is onbeskikbaar, gaan die logs na of kontak die stelseladministrateur",
     "restored" : "herstel",

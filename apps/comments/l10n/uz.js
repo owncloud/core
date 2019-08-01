@@ -1,0 +1,26 @@
+OC.L10N.register(
+    "comments",
+    {
+    "Type in a new comment..." : "Yangi izohni kiriting...",
+    "Delete comment" : "izohni o'chirish",
+    "Post" : "Yozish",
+    "Cancel" : "Bekor qilish",
+    "Edit comment" : "Izohni tahrirlash",
+    "[Deleted user]" : "[O'chirilgan foydalanuvchi]",
+    "Comments" : "Izohlar",
+    "No other comments available" : "Boshqa izohlar mavjud emas",
+    "More comments..." : "Ko'proq izohlar...",
+    "Save" : "Saqlash",
+    "Allowed characters {count} of {max}" : " Ruxsat etilgan simvollar {max} tadan {count} ta",
+    "Error occurred while retrieving comment with id {id}" : "{id} id dan izohlarni yuklashda xatolik yuz berdi",
+    "Error occurred while updating comment with id {id}" : "{id} id dagi izohni yangilashda xatolik yuz berdi",
+    "Error occurred while posting comment" : "Izohni saqlashda xaolik yuz berdi",
+    "{count} unread comments" : "{count} ta o'qilmagan izohlar",
+    "Comment" : "Izoh",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<em>(ro'yxatda ko'rsatilgan)</em>fayllar uchun <strong>Izohlar</strong>",
+    "You commented" : "Siz izoh qoldirdingiz",
+    "%1$s commented" : "%1$s izoh qoldirildi",
+    "You commented on %2$s" : "%2$sga izoh qoldirdingiz",
+    "%1$s commented on %2$s" : "%1$s%2$sga izoh qoldirdi"
+},
+"nplurals=1; plural=0;");

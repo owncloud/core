@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Cancel" : "Цуцлах",
     "Share" : "Түгээх",
     "Sharing" : "Түгээлт",
     "A file or folder has been <strong>shared</strong>" : "Файл эсвэл хавтас амжилттай <strong>түгээгдлээ</strong>",
@@ -9,7 +10,6 @@ OC.L10N.register(
     "You shared %1$s via link" : "Та %1$s-ийг холбоосоор түгээлээ",
     "%2$s shared %1$s with you" : "%2$s %1$s-ийг тань руу түгээлээ",
     "Shares" : "Түгээлтүүд",
-    "Password" : "Нууц үг",
-    "Cancel" : "Цуцлах"
+    "Password" : "Нууц үг"
 },
 "nplurals=2; plural=(n != 1);");

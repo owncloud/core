@@ -6,7 +6,6 @@ OC.L10N.register(
     "Username" : "﻿ಬಳಕೆಯ ಹೆಸರು",
     "Password" : "ಗುಪ್ತ ಪದ",
     "Save" : "﻿ಉಳಿಸಿ",
-    "Port" : "﻿ರೇವು",
     "WebDAV" : "﻿WebDAV",
     "URL" : "ಜಾಲದ ಕೊಂಡಿ",
     "Local" : "ಸ್ಥಳೀಯ",
@@ -15,4 +14,4 @@ OC.L10N.register(
     "Name" : "﻿ಹೆಸರು",
     "Delete" : "﻿ಅಳಿಸಿ"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

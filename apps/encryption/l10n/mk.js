@@ -6,6 +6,7 @@ OC.L10N.register(
     "Could not change the password. Maybe the old password was not correct." : "Лозинката не можеше да се промени. Можеби старата лозинка не беше исправна.",
     "Bad Signature" : "Лош потпис",
     "Missing Signature" : "Недостасува потписот",
+    "The share will expire on %s." : "Овој линк е достапен до %s.",
     "Cheers!" : "Поздрав!",
     "Change Password" : "Смени лозинка",
     "Old log-in password" : "Старата лозинка за најавување",

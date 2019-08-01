@@ -24,6 +24,8 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "Tidak ditemukan instalasi ownCloud (7 atau lebih tinggi) pada {remote}",
     "Invalid ownCloud url" : "URL ownCloud tidak sah",
     "Share" : "Bagikan",
+    "Declined" : "Tolak",
+    "Pending" : "Tertunda",
     "Shared by" : "Dibagikan oleh",
     "Sharing" : "Berbagi",
     "A file or folder has been <strong>shared</strong>" : "Sebuah berkas atau folder telah <strong>dibagikan</strong>",
@@ -52,6 +54,10 @@
     "Shared via public link" : "Dibagikan via tautan publik",
     "Shared by %2$s" : "Dibagikan oleh %2$s",
     "Shares" : "Dibagikan",
+    "Public link" : "Tautan publik",
+    "Couldn't send mail to following recipient(s): %s " : "Tidak dapat mengirim surel kepada penerima berikut: %s",
+    "Accept" : "Terima",
+    "Decline" : "Tolak",
     "This share is password-protected" : "Berbagi ini dilindungi sandi",
     "The password is wrong. Try again." : "Sandi salah. Coba lagi",
     "Password" : "Sandi",
@@ -65,14 +71,8 @@
     "the link expired" : "tautan telah kadaluarsa",
     "sharing is disabled" : "berbagi dinonaktifkan",
     "For more info, please ask the person who sent this link." : "Untuk info lebih lanjut, silakan tanyakan orang yang mengirim tautan ini.",
-    "Add to your ownCloud" : "Tambahkan ke ownCloud Anda",
     "Download" : "Unduh",
     "Download %s" : "Unduh %s",
-    "Direct link" : "Tautan langsung",
-    "Pending" : "Tertunda",
-    "Accept" : "Terima",
-    "Decline" : "Tolak",
-    "Declined" : "Tolak",
-    "Public link" : "Tautan publik"
+    "Direct link" : "Tautan langsung"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

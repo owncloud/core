@@ -48,14 +48,15 @@ OC.L10N.register(
     "Error" : "خاتالىق",
     "Edit" : "تەھرىر",
     "Remove" : "چىقىرىۋەت",
-    "Password" : "ئىم",
+    "Copy to clipboard" : "چاپلاش تاختىسىغا كۆچۈر",
     "Name" : "ئاتى",
+    "Password" : "ئىم",
+    "Share" : "ھەمبەھىر",
     "Save" : "ساقلا",
     "group" : "گۇرۇپپا",
     "Unshare" : "ھەمبەھىرلىمە",
     "delete" : "ئۆچۈر",
-    "Share" : "ھەمبەھىر",
-    "Warning" : "ئاگاھلاندۇرۇش",
+    "User" : "ئىشلەتكۈچى",
     "Delete" : "ئۆچۈر",
     "Rename" : "ئات ئۆزگەرت",
     "Add" : "قوش",
@@ -67,7 +68,6 @@ OC.L10N.register(
     "Finish setup" : "تەڭشەك تامام",
     "Log out" : "تىزىمدىن چىق",
     "Search" : "ئىزدە",
-    "New password" : "يېڭى ئىم",
-    "Copy to clipboard" : "چاپلاش تاختىسىغا كۆچۈر"
+    "New password" : "يېڭى ئىم"
 },
 "nplurals=1; plural=0;");

@@ -23,4 +23,4 @@ OC.L10N.register(
     "You commented on %2$s" : "הערות שלך ב- %2$s",
     "%1$s commented on %2$s" : "התקבלו תגובות %1$s ב- %2$s "
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");

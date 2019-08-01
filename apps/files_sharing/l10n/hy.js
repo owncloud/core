@@ -30,7 +30,6 @@ OC.L10N.register(
     "the item was removed" : "նյութը հեռացվել է",
     "the link expired" : "հղումը ժամկետանց է",
     "For more info, please ask the person who sent this link." : "Լրացուցիչ տեղեկության համար խնդրում ենք կապվել հղումը ուղարկողի հետ:",
-    "Add to your ownCloud" : "Ավելացնել քո ownCloudին",
     "Download" : "Ներբեռնել",
     "Download %s" : "Ներբեռնել %s"
 },

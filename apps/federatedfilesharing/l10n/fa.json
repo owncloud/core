@@ -1,7 +1,7 @@
 { "translations": {
+    "Add to your ownCloud" : "افزودن به ownCloud شما",
     "Accept" : "قبول",
     "Open documentation" : "بازکردن مستند",
-    "HTML Code:" : "کد HTML :",
-    "Add to your ownCloud" : "افزودن به ownCloud شما"
-},"pluralForm" :"nplurals=1; plural=0;"
+    "HTML Code:" : "کد HTML :"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

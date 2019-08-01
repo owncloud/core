@@ -1,4 +1,6 @@
 { "translations": {
+    "Missing recovery key password" : "Falta la clau de recuperació de contrasenya:",
+    "Please repeat the recovery key password" : "Si us plau, repeteix la clau per recuperar la contrasenya ",
     "Recovery key successfully enabled" : "La clau de recuperació s'ha activat",
     "Could not enable recovery key. Please check your recovery key password!" : "No s'ha pogut activar la clau de recuperació. Comproveu contrasenya de la clau de recuperació!",
     "Recovery key successfully disabled" : "La clau de recuperació s'ha descativat",

@@ -12,15 +12,15 @@ OC.L10N.register(
     "More comments..." : "Több hozzászólás...",
     "Save" : "Mentés",
     "Allowed characters {count} of {max}" : "Engedélyezett karakterek: {count} / {max}",
+    "Error occurred while retrieving comment with id {id}" : "Hiba merült fel a hozzászólás lekérése közben az alábbi azonosítóval {id}",
+    "Error occurred while updating comment with id {id}" : "Hiba merült fel a hozzászólás frissítése közben az alábbi azonosítóval {id}",
+    "Error occurred while posting comment" : "Hiba merült fel a hozzászólás elküldésekor",
     "{count} unread comments" : "{count} olvasatlan hozzászólás",
     "Comment" : "Hozzászólás",
     "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Hozzászólás</strong> a fájlokhoz <em>(mindig listázásra kerül a hírfolyamon)</em>",
     "You commented" : "Hozzászólt",
     "%1$s commented" : "%1$s hozzászólt",
     "You commented on %2$s" : "Hozzászólt ehhez: %2$s",
-    "%1$s commented on %2$s" : "%1$s hozzászólt ehhez: %2$s",
-    "Error occurred while posting comment" : "Hiba merült fel a hozzászólás elküldésekor",
-    "Error occurred while retrieving comment with id {id}" : "Hiba merült fel a hozzászólás lekérése közben az alábbi azonosítóval {id}",
-    "Error occurred while updating comment with id {id}" : "Hiba merült fel a hozzászólás frissítése közben az alábbi azonosítóval {id}"
+    "%1$s commented on %2$s" : "%1$s hozzászólt ehhez: %2$s"
 },
 "nplurals=2; plural=(n != 1);");

@@ -4,12 +4,11 @@
     "seconds ago" : "Sekunden zuvor",
     "Username" : "Benutzername",
     "Password" : "Passwort",
+    "__language_name__" : "Deutsch (Österreich)",
     "Apps" : "Apps",
     "General" : "Allgemein",
     "Search" : "Suche",
-    "Help" : "Hilfe",
     "Settings" : "Einstellungen",
-    "Users" : "Benutzer",
-    "__language_name__" : "Deutsch (Österreich)"
+    "Users" : "Benutzer"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

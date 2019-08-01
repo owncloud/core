@@ -2,13 +2,12 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Egyesített megosztás",
+    "Add to your ownCloud" : "Adjuk hozzá a saját ownCloudunkhoz",
     "Invalid Federated Cloud ID" : "Érvénytelen Egyesített Felhő Azonosító",
     "Sharing %s failed, because this item is already shared with %s" : "%s megosztása nem sikerült, mert ez már meg van osztva vele: %s",
     "Not allowed to create a federated share with the same user" : "Azonos felhasználóval nem lehet létrehozni egyesített megosztást",
     "File is already shared with %s" : "Fájl már megosztva vele: %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "%s megosztása sikertelen, mert %s nem található; talán a szerver jelenleg nem elérhető.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "Kapott egy távoli megosztást: \"/%3$s\", innen: %1$s (%2$s nevében)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "Kapott egy távoli megosztást: \"/%3$s\", innen: %1$s",
     "Accept" : "Elfogadás",
     "Decline" : "Elutasítás",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Ossza meg velem az #ownCloud Egyesített Felhő Azonosító segítségével, lásd %s",
@@ -22,7 +21,6 @@ OC.L10N.register(
     "Share it:" : "Ossza meg:",
     "Add to your website" : "Adja hozzá saját weboldalához",
     "Share with me via ownCloud" : "Ossza meg velem ownCloud-on keresztül",
-    "HTML Code:" : "HTML kód:",
-    "Add to your ownCloud" : "Adjuk hozzá a saját ownCloudunkhoz"
+    "HTML Code:" : "HTML kód:"
 },
 "nplurals=2; plural=(n != 1);");

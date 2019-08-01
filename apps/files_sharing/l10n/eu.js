@@ -24,6 +24,8 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Ez da ownClouden instalaziorik (7 edo haundiago) aurkitu {remote}n",
     "Invalid ownCloud url" : "ownCloud url baliogabea",
     "Share" : "Partekatu",
+    "Declined" : "Ez onartua",
+    "Pending" : "Zain",
     "Shared by" : "Honek elkarbanatuta",
     "Sharing" : "Partekatzea",
     "A file or folder has been <strong>shared</strong>" : "Fitxategia edo karpeta <strong>konpartitu</strong> da",
@@ -36,6 +38,7 @@ OC.L10N.register(
     "You shared %1$s via link" : "Konpartitu duzu %1$s esteka baten bidez",
     "%2$s shared %1$s with you" : "%2$sk zurekin %1$s elkarbanatu du",
     "Shares" : "Partekatuak",
+    "Couldn't send mail to following recipient(s): %s " : "Ezin izan da ondorengo helbidetara posta mezurik bidali: %s",
     "This share is password-protected" : "Elkarbanatutako hau pasahitzarekin babestuta dago",
     "The password is wrong. Try again." : "Pasahitza ez da egokia. Saiatu berriro.",
     "Password" : "Pasahitza",
@@ -49,12 +52,8 @@ OC.L10N.register(
     "the link expired" : "lotura iraungi da",
     "sharing is disabled" : "elkarbanatzea ez dago gaituta",
     "For more info, please ask the person who sent this link." : "Informazio gehiagorako, mesedez eskatu lotura hau bidali zuen pertsonari",
-    "Add to your ownCloud" : "Gehitu zure ownCloud-era",
     "Download" : "Deskargatu",
     "Download %s" : "Deskargatu %s",
-    "Direct link" : "Lotura zuzena",
-    "Pending" : "Zain",
-    "Declined" : "Ez onartua",
-    "Couldn't send mail to following recipient(s): %s " : "Ezin izan da ondorengo helbidetara posta mezurik bidali: %s"
+    "Direct link" : "Lotura zuzena"
 },
 "nplurals=2; plural=(n != 1);");

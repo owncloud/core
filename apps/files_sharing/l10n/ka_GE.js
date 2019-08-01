@@ -4,12 +4,12 @@ OC.L10N.register(
     "Uploading..." : "მიმდინარეობს ატვირთვა...",
     "Cancel" : "უარყოფა",
     "Share" : "გაზიარება",
+    "Pending" : "მოცდის რეჟიმში",
     "Shared by" : "აზიარებს",
     "Sharing" : "გაზიარება",
     "Password" : "პაროლი",
     "Name" : "სახელი",
     "Expiration date" : "ვადის გასვლის დრო",
-    "Download" : "ჩამოტვირთვა",
-    "Pending" : "მოცდის რეჟიმში"
+    "Download" : "ჩამოტვირთვა"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n!=1);");

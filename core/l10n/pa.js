@@ -31,17 +31,15 @@ OC.L10N.register(
     "Error" : "ਗਲ",
     "Remove" : "ਹਟਾਓ",
     "Password" : "ਪਾਸਵਰ",
-    "Allow editing" : "ਸੰਪਾਦਨ ਦੀ ਇਜ਼ਾਜਤ",
+    "Share" : "ਸਾਂਝਾ ਕਰੋ",
     "create" : "ਬਣਾਓ",
     "change" : "ਬਦਲੋ",
     "delete" : "ਹਟਾਓ",
-    "Share" : "ਸਾਂਝਾ ਕਰੋ",
-    "Warning" : "ਚੇਤਾਵਨੀ",
     "Delete" : "ਹਟਾਓ",
     "Rename" : "ਨਾਂ ਬਦਲੋ",
     "Help" : "ਮਦਦ",
+    "Imprint" : "ਛਾਪ",
     "Username" : "ਯੂਜ਼ਰ-ਨਾਂ",
-    "Search" : "ਖੋਜ",
-    "Imprint" : "ਛਾਪ"
+    "Search" : "ਖੋਜ"
 },
 "nplurals=2; plural=(n != 1);");

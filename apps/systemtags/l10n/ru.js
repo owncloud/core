@@ -23,11 +23,11 @@ OC.L10N.register(
     "%1$s unassigned system tag %3$s from %2$s" : "%1$s убрал системную метку %3$s с %2$s",
     "%s (restricted)" : "%s (ограничено)",
     "%s (invisible)" : "%s (невидимые)",
+    "%s (static)" : "%s (статические)",
     "No files in here" : "Здесь нет файлов",
     "No entries found in this folder" : "Нет элементов в этом каталоге",
     "Name" : "Имя",
     "Size" : "Размер",
-    "Modified" : "Изменён",
-    "%s (static)" : "%s (статические)"
+    "Modified" : "Изменён"
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

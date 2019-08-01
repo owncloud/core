@@ -1,9 +1,9 @@
 OC.L10N.register(
     "dav",
     {
+    "Contact birthdays" : "Kontak verjaardae",
     "Personal" : "Persoonlik",
     "Contacts" : "Kontakte",
-    "Contact birthdays" : "Kontak verjaardae",
     "Technical details" : "Tegniese details",
     "Remote Address: %s" : "Afstandsadres: %s",
     "Request ID: %s" : "Versoek-ID: %s"

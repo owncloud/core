@@ -5,6 +5,7 @@ OC.L10N.register(
     "Saved" : "Gespeichert",
     "Email sent" : "eMail gesendet",
     "Delete" : "Löschen",
+    "Share" : "Teilen",
     "Very weak password" : "Sehr schwaches Passwort",
     "Weak password" : "Schwaches Passwort",
     "So-so password" : "Mittelstarkes Passwort",
@@ -13,13 +14,13 @@ OC.L10N.register(
     "Enable encryption" : "Verschlüsselung aktivieren",
     "None" : "Keine(r)",
     "Port" : "Port",
+    "Domain" : "Domäne",
     "Cancel" : "Abbrechen",
     "Password" : "Passwort",
     "Name" : "Name",
     "Username" : "Benutzername",
     "Personal" : "Persönlich",
     "Error" : "Fehler",
-    "Share" : "Teilen",
-    "Domain" : "Domäne"
+    "Settings" : "Einstellungen"
 },
 "nplurals=2; plural=(n != 1);");

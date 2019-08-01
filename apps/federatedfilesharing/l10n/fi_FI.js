@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Federoitu jakaminen",
+    "Add to your ownCloud" : "Lisää ownCloudiisi",
     "Invalid Federated Cloud ID" : "Virheellinen federoidun pilven tunniste",
     "Sharing %s failed, because this item is already shared with %s" : "Kohteen %s jakaminen epäonnistui, koska kohde on jo jaettu käyttäjän %s kanssa",
     "Not allowed to create a federated share with the same user" : "Saman käyttäjän kanssa ei ole sallittua luoda federoitua jakoa",
@@ -20,7 +21,6 @@ OC.L10N.register(
     "Share it:" : "Jaa se:",
     "Add to your website" : "Lisää verkkosivuillesi",
     "Share with me via ownCloud" : "Jaa kanssani ownCloudin kautta",
-    "HTML Code:" : "HTML-koodi:",
-    "Add to your ownCloud" : "Lisää ownCloudiisi"
+    "HTML Code:" : "HTML-koodi:"
 },
 "nplurals=2; plural=(n != 1);");

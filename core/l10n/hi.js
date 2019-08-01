@@ -25,11 +25,9 @@ OC.L10N.register(
     "Cancel" : "रद्द करें ",
     "Error" : "त्रुटि",
     "Password" : "पासवर्ड",
-    "Save" : "सहेजें",
-    "Sending ..." : "भेजा जा रहा है",
-    "Email sent" : "ईमेल भेज दिया गया है ",
     "Share" : "साझा करें",
-    "Warning" : "चेतावनी ",
+    "Save" : "सहेजें",
+    "Delete" : "हटाना",
     "Add" : "डाले",
     "Personal" : "यक्तिगत",
     "Users" : "उपयोगकर्ता",
@@ -45,7 +43,6 @@ OC.L10N.register(
     "Finish setup" : "सेटअप समाप्त करे",
     "Log out" : "लोग  आउट",
     "Use the following link to reset your password: {link}" : "आगे दिये गये लिंक का उपयोग पासवर्ड बदलने के लिये किजीये: {link}",
-    "New password" : "नया पासवर्ड",
-    "Delete" : "हटाना"
+    "New password" : "नया पासवर्ड"
 },
 "nplurals=2; plural=(n != 1);");

@@ -9,6 +9,7 @@
     "None" : "Nav",
     "Username" : "Lietotājvārds",
     "Password" : "Parole",
+    "__language_name__" : "__valodas_nosaukums__",
     "Apps" : "Lietotnes",
     "General" : "Vispārīgi",
     "Storage" : "Krātuve",
@@ -16,7 +17,6 @@
     "Encryption" : "Šifrēšana",
     "Sharing" : "Dalīšanās",
     "Search" : "Meklēt",
-    "Updates" : "Atjauninājumi",
     "%s enter the database username." : "%s ievadiet datubāzes lietotājvārdu.",
     "%s enter the database name." : "%s ievadiet datubāzes nosaukumu.",
     "%s you may not use dots in the database name" : "%s datubāžu nosaukumos nedrīkst izmantot punktus",
@@ -34,13 +34,10 @@
     "A valid username must be provided" : "Jānorāda derīgs lietotājvārds",
     "A valid password must be provided" : "Jānorāda derīga parole",
     "The username is already being used" : "Šāds lietotājvārds jau tiek izmantots",
-    "Help" : "Palīdzība",
     "Settings" : "Iestatījumi",
     "Users" : "Lietotāji",
-    "web services under your control" : "tīmekļa servisi tavā varā",
     "Application is not enabled" : "Lietotne nav aktivēta",
     "Authentication error" : "Autentifikācijas kļūda",
-    "Token expired. Please reload page." : "Pilnvarai ir beidzies termiņš. Lūdzu, pārlādējiet lapu.",
-    "__language_name__" : "__valodas_nosaukums__"
+    "Token expired. Please reload page." : "Pilnvarai ir beidzies termiņš. Lūdzu, pārlādējiet lapu."
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);"
 }

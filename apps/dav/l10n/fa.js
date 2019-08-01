@@ -8,4 +8,4 @@ OC.L10N.register(
     "Remote Address: %s" : "آدرس راه‌دور: %s",
     "Request ID: %s" : "ID درخواست: %s"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n > 1);");

@@ -1,7 +1,7 @@
 OC.L10N.register(
     "files_trashbin",
     {
-    "Couldn't delete %s permanently" : "Nem sikerült %s végleges törlése",
+    "Couldn't delete %s permanently" : "A(z) %s nem törölhető véglegesen",
     "Couldn't restore %s" : "Nem sikerült %s visszaállítása",
     "Deleted files" : "Törölt fájlok",
     "Restore" : "Visszaállítás",

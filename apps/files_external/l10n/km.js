@@ -8,7 +8,6 @@ OC.L10N.register(
     "Username" : "ឈ្មោះ​អ្នកប្រើ",
     "Password" : "ពាក្យសម្ងាត់",
     "Save" : "រក្សាទុក",
-    "Port" : "ច្រក",
     "WebDAV" : "WebDAV",
     "URL" : "URL",
     "Location" : "ទីតាំង",

@@ -1,7 +1,7 @@
 OC.L10N.register(
     "comments",
     {
-    "Save" : "Хадгалах",
-    "Cancel" : "Цуцлах"
+    "Cancel" : "Цуцлах",
+    "Save" : "Хадгалах"
 },
 "nplurals=2; plural=(n != 1);");

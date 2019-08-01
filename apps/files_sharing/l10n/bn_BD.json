@@ -9,6 +9,7 @@
     "Cancel" : "বাতিল",
     "Invalid ownCloud url" : "অবৈধ ওউনক্লাউড url",
     "Share" : "ভাগাভাগি কর",
+    "Pending" : "মুলতুবি",
     "Shared by" : "যাদের মাঝে ভাগাভাগি করা হয়েছে",
     "Sharing" : "ভাগাভাগিরত",
     "A file or folder has been <strong>shared</strong>" : "একটি ফাইল বা ফোলডার <strong>ভাগাভাগি</strong> করা হয়েছে",
@@ -31,7 +32,6 @@
     "For more info, please ask the person who sent this link." : "বিস্তারিত তথ্যের জন্য এই লিঙ্কের প্রেরককে জিজ্ঞাসা করুন।",
     "Download" : "ডাউনলোড",
     "Download %s" : "ডাউনলোড  %s",
-    "Direct link" : "সরাসরি লিঙ্ক",
-    "Pending" : "মুলতুবি"
+    "Direct link" : "সরাসরি লিঙ্ক"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

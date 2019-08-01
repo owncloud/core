@@ -4,11 +4,11 @@ OC.L10N.register(
     "Uploading..." : "يۈكلەۋاتىدۇ…",
     "Cancel" : "ۋاز كەچ",
     "Share" : "ھەمبەھىر",
+    "Pending" : "كۈتۈۋاتىدۇ",
     "Shared by" : "ھەمبەھىرلىگۈچى",
     "Sharing" : "ھەمبەھىر",
     "Password" : "ئىم",
     "Name" : "ئاتى",
-    "Download" : "چۈشۈر",
-    "Pending" : "كۈتۈۋاتىدۇ"
+    "Download" : "چۈشۈر"
 },
 "nplurals=1; plural=0;");

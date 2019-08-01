@@ -23,11 +23,11 @@ OC.L10N.register(
     "%1$s unassigned system tag %3$s from %2$s" : "%1$s הסיר/ה שיוך תגית מערכת %3$s מ- %2$s",
     "%s (restricted)" : "%s (מוגבל)",
     "%s (invisible)" : "%s (נסתר)",
+    "%s (static)" : "%s (סטטי)",
     "No files in here" : "אין כאן קבצים",
     "No entries found in this folder" : "לא נמצאו כניסות לתיקייה זו",
     "Name" : "שם",
     "Size" : "גודל",
-    "Modified" : "זמן שינוי",
-    "%s (static)" : "%s (סטטי)"
+    "Modified" : "זמן שינוי"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");

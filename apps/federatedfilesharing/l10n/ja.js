@@ -2,13 +2,12 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "サーバー連携共有",
+    "Add to your ownCloud" : "ownCloud に追加",
     "Invalid Federated Cloud ID" : "クラウド連携IDが無効です",
     "Sharing %s failed, because this item is already shared with %s" : "%s を共有できませんでした。このアイテムはすでに %s に共有されています。",
     "Not allowed to create a federated share with the same user" : "同じユーザーではサーバー連携共有は作成できません",
     "File is already shared with %s" : "ファイルはすでに %s と共有されています。",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "%s を共有できませんでした。%s が見つかりませんでした。現在サーバーに接続できないようです。",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "%1$s からリモート共有として \"/%3$s\" を受け取りました。(%2$s の代理として)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "%1$s からリモート共有として \"/%3$s\" を受け取りました。",
     "Accept" : "受領",
     "Decline" : "拒否",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "#ownCloud の「クラウド連携ID」で私と共有できます。こちらを見てください。%s",
@@ -22,7 +21,6 @@ OC.L10N.register(
     "Share it:" : "以下で共有:",
     "Add to your website" : "ウェブサイトに追加",
     "Share with me via ownCloud" : "OwnCloud経由で共有",
-    "HTML Code:" : "HTMLコード:",
-    "Add to your ownCloud" : "ownCloud に追加"
+    "HTML Code:" : "HTMLコード:"
 },
 "nplurals=1; plural=0;");
