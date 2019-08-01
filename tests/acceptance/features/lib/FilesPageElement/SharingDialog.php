@@ -672,18 +672,22 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
-	 * delete user from shared with list
+	 * delete user/group from shared with list
 	 *
 	 * @param Session $session
+	 * @param string $userOrGroup
 	 * @param string $username
 	 *
 	 * @return void
 	 */
-	public function deleteShareWithUser(Session $session, $username) {
+	public function deleteShareWith(Session $session, $userOrGroup, $username) {
 		$shareWithList = $this->getShareWithList();
-		foreach ($shareWithList as $userOrGroup) {
-			if ($userOrGroup->find('xpath', $this->userOrGroupNameSpanXpath)->getHtml() === $username) {
-				$userOrGroup->find('xpath', $this->unShareTabXpath)->click();
+		foreach ($shareWithList as $item) {
+			if ($userOrGroup == "group") {
+				$username = \sprintf($this->groupFramework, $username);
+			}
+			if ($item->find('xpath', $this->userOrGroupNameSpanXpath)->getHtml() === $username) {
+				$item->find('xpath', $this->unShareTabXpath)->click();
 				$this->waitForAjaxCallsToStartAndFinish($session);
 			}
 		}

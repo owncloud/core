@@ -530,3 +530,59 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+  Scenario Outline: Forbid sharing with groups
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    And parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
+    When user "user0" shares file "/welcome.txt" with group "grp1" using the sharing API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "<http_status_code>"
+    When user "user0" gets the info of the last share using the sharing API
+    Then the last response should be empty
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 404              |
+
+  Scenario Outline: Editing share permission of existing share is forbidden when sharing with groups is forbidden
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    # Note: in the user_ldap test environment user1 is in grp1
+    And user "user0" has shared file "textfile0.txt" with group "grp1"
+    And parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
+    When user "user0" updates the last share using the sharing API with
+      | permissions | read, create |
+    Then the OCS status code should be "400"
+    And the HTTP status code should be "<http_status_code>"
+    When user "user0" gets the info of the last share using the sharing API
+    Then the fields of the last response should include
+      | item_type         | file           |
+      | item_source       | A_NUMBER       |
+      | share_type        | group          |
+      | file_target       | /textfile0.txt |
+      | permissions       | read, update, share  |
+      | mail_send         | 0              |
+      | uid_owner         | user0          |
+      | file_parent       | A_NUMBER       |
+      | displayname_owner | User Zero      |
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 400              |
+
+  Scenario Outline: Deleting group share is allowed when sharing with groups is forbidden
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    # Note: in the user_ldap test environment user1 is in grp1
+    And user "user0" has shared file "textfile0.txt" with group "grp1"
+    And parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
+    When user "user0" deletes the last share using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "user0" gets the info of the last share using the sharing API
+    Then the last response should be empty
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
