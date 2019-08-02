@@ -21,6 +21,7 @@
 
 namespace OCA\DAV\DAV;
 
+use OCP\Files\IRootFolder;
 use OCP\IDBConnection;
 use OCP\IUser;
 use Sabre\DAV\Exception\Forbidden;
@@ -67,6 +68,11 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 	protected $user;
 
 	/**
+	 * @var IRootFolder
+	 */
+	protected $rootFolder;
+
+	/**
 	 * Property cache for the filesystem items
 	 * @var array
 	 */
@@ -80,10 +86,12 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 	public function __construct(
 		Tree $tree,
 		IDBConnection $connection,
-		IUser $user) {
+		IUser $user,
+		IRootFolder $rootFolder) {
 		$this->tree = $tree;
 		$this->connection = $connection;
 		$this->user = $user->getUID();
+		$this->rootFolder = $rootFolder;
 	}
 
 	/**

@@ -76,7 +76,8 @@ class MiscCustomPropertiesBackendTest extends \Test\TestCase {
 		$this->plugin = new MiscCustomPropertiesBackend(
 			$this->tree,
 			\OC::$server->getDatabaseConnection(),
-			$this->user
+			$this->user,
+			\OC::$server->getRootFolder()
 		);
 		
 		$connection = \OC::$server->getDatabaseConnection();

@@ -30,6 +30,10 @@ use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\DAV\FileCustomPropertiesBackend;
 use OCA\DAV\DAV\FileCustomPropertiesPlugin;
 use OCA\DAV\Tree;
+use OCA\Files_Trashbin\Storage as TrashbinStorage;
+use OC\Files\Storage\Storage as FileStorage;
+use OCP\Files\IRootFolder;
+use OCP\Files\Node;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\SimpleCollection;
 
@@ -66,7 +70,12 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 	 * @var \OCP\IUser
 	 */
 	private $user;
-	
+
+	/**
+	 * @var IRootFolder | \PHPUnit_Framework_MockObject_MockObject Obj$rootFolder
+	 */
+	private $rootFolder;
+
 	/** @var int */
 	private $maxId;
 
@@ -84,10 +93,12 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			->method('getUID')
 			->will($this->returnValue($userId));
 
+		$this->rootFolder = $this->createMock(IRootFolder::class);
 		$this->backend = new FileCustomPropertiesBackend(
 			$this->tree,
 			\OC::$server->getDatabaseConnection(),
-			$this->user
+			$this->user,
+			$this->rootFolder
 		);
 		$this->plugin = new FileCustomPropertiesPlugin($this->backend);
 		
@@ -347,6 +358,17 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 	public function testDeleteProperty() {
 		$path = '/dummypath';
 		$node = $this->createTestNode(File::class);
+		$nodeAfterDelete = $this->createTestNode(Node::class);
+		$storage = $this->createMock(FileStorage::class);
+		$storage->method('instanceOfStorage')
+			->with(TrashbinStorage::class)
+			->willReturn(false);
+		$nodeAfterDelete->method('getStorage')
+			->willReturn($storage);
+		$this->rootFolder
+			->method('getById')
+			->with($node->getId())
+			->willReturn([$nodeAfterDelete]);
 
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
@@ -383,6 +405,62 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		);
 		$this->backend->propFind($path, $propFindAfter);
 		$this->assertNull($propFindAfter->get('customprop'));
+	}
+
+	/**
+	 * Test don't delete property if file moved to trashbin
+	 */
+	public function testDontDeletePropertyIfTrashbin() {
+		$path = '/dummypath';
+		$node = $this->createTestNode(File::class);
+		$nodeAfterDelete = $this->createTestNode(Node::class);
+		$storage = $this->createMock(TrashbinStorage::class);
+		$storage->method('instanceOfStorage')
+			->with(TrashbinStorage::class)
+			->willReturn(true);
+		$nodeAfterDelete->method('getStorage')
+			->willReturn($storage);
+
+		$this->rootFolder
+			->method('getById')
+			->with($node->getId())
+			->willReturn([$nodeAfterDelete]);
+
+		$this->tree->expects($this->any())
+			->method('getNodeForPath')
+			->with($path)
+			->will($this->returnValue($node));
+
+		$this->applyDefaultProps();
+
+		$propPatch = new \Sabre\DAV\PropPatch([
+			'customprop' => 'propvalue',
+		]);
+		$this->backend->propPatch($path, $propPatch);
+		$propPatch->commit();
+		$this->assertEmpty($propPatch->getRemainingMutations());
+
+		$result = $propPatch->getResult();
+		$this->assertEquals(200, $result['customprop']);
+
+		$propFindBefore = new PropFind(
+			$path,
+			[ 'customprop' ],
+			0
+		);
+		$this->backend->propFind($path, $propFindBefore);
+		$this->assertEquals('propvalue', $propFindBefore->get('customprop'));
+
+		$this->plugin->beforeUnbind($path);
+		$this->backend->delete($path);
+
+		$propFindAfter = new PropFind(
+			$path,
+			[ 'customprop' ],
+			0
+		);
+		$this->backend->propFind($path, $propFindAfter);
+		$this->assertEquals('propvalue', $propFindAfter->get('customprop'));
 	}
 
 	public function slicesProvider() {
@@ -436,7 +514,8 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$this->backend = new FileCustomPropertiesBackend(
 			$this->tree,
 			$dbConnectionMock,
-			$this->user
+			$this->user,
+			\OC::$server->getRootFolder()
 		);
 
 		$actual = $this->invokePrivate(
