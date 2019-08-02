@@ -91,6 +91,7 @@
     "Invalid Federated Cloud ID" : "Associação Inválida de Nuvem ID",
     "%s shared »%s« with you" : "%s compartilhou »%s« com você",
     "%s via %s" : "%s via %s",
+    "Sharing %s failed, because the backend does not allow shares from type %d" : "O compartilhamento de %s falhou porque o back-end não permite compartilhamentos do tipo %d",
     "Sharing %s failed, because the file does not exist" : "Compartilhamento %s falhou, porque o arquivo não existe",
     "You are not allowed to share %s" : "Você não tem permissão para compartilhar %s",
     "Sharing %s failed, because you can not share with yourself" : "O compartilhamento %s falhou, porque você não pode compartilhar com você mesmo",
