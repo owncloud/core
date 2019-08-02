@@ -292,14 +292,15 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user deletes share with user :username for the current file
+	 * @When /^the user deletes share with (user|group) ((?:[^']*)|(?:[^"]*)) for the current file$/
 	 *
-	 * @param string $username
+	 * @param string $userOrGroup
+	 * @param string $name
 	 *
 	 * @return void
 	 */
-	public function theUserDeleteShareWithUser($username) {
-		$this->sharingDialog->deleteShareWithUser($this->getSession(), $username);
+	public function theUserDeleteShareWithUser($userOrGroup, $name) {
+		$this->sharingDialog->deleteShareWith($this->getSession(), $userOrGroup, \trim($name, '""'));
 	}
 
 	/**

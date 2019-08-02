@@ -1566,6 +1566,18 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then the last response should be empty
+	 *
+	 * @return void
+	 */
+	public function theFieldsOfTheLastResponseShouldBeEmpty() {
+		$data = $this->getResponseXml()->data[0];
+		Assert::assertEquals(
+			\count($data->element), 0, "last response contains data"
+		);
+	}
+
+	/**
 	 *
 	 * @return string
 	 *

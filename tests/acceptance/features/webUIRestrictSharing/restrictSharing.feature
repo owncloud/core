@@ -94,5 +94,5 @@ Feature: restrict Sharing
     And the setting "Allow sharing with groups" in the section "Sharing" has been disabled
     When the user opens the share dialog for folder "simple-folder"
     Then group "grp1" should be listed in the shared with list
-    When the user deletes share with user "grp1 (group)" for the current file
+    When the user deletes share with group "grp1" for the current file
     Then group "grp1" should not be listed in the shared with list
