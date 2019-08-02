@@ -57,7 +57,7 @@ $CONFIG = array(
 /**
  * Your list of trusted domains that users can log into. Specifying trusted
  * domains prevents host header poisoning. Do not remove this, as it performs
- * necessary security checks. Please consider that for backend processes like 
+ * necessary security checks. Please consider that for backend processes like
  * background jobs or occ commands, the url parameter in key `overwrite.cli.url`
  * is used. For more details please see that key.
  */
@@ -222,10 +222,10 @@ $CONFIG = array(
 'session_keepalive' => true,
 
 /**
- * Enforces token only authentication for apps and clients connecting to ownCloud. 
- * If enabled, all access requests using the users password are blocked for enhanced security. 
- * Users have to generate special app-passwords (tokens) for their apps or clients in their personal 
- * settings which are further used for app or client authentication. Browser logon is not affected. 
+ * Enforces token only authentication for apps and clients connecting to ownCloud.
+ * If enabled, all access requests using the users password are blocked for enhanced security.
+ * Users have to generate special app-passwords (tokens) for their apps or clients in their personal
+ * settings which are further used for app or client authentication. Browser logon is not affected.
  */
 'token_auth_enforced' => false,
 
@@ -292,10 +292,10 @@ $CONFIG = array(
 'groups.enable_medial_search' => true,
 
 /**
- * Defines the minimum characters entered before a search returns results for 
+ * Defines the minimum characters entered before a search returns results for
  * users or groups in the share autocomplete form. Lower values increase search
  * time especially for large backends.
- * Any exact matches to a user or group will be returned, even though less than 
+ * Any exact matches to a user or group will be returned, even though less than
  * the minimum characters have been entered. The search is case insensitive.
  * e.g. entering "tom" will always return "Tom" if there is an exact match.
  */
@@ -354,7 +354,7 @@ $CONFIG = array(
 'mail_smtpport' => 25,
 
 /**
- * This depends on `mail_smtpmode`. This sets the SMTP server timeout, in seconds. 
+ * This depends on `mail_smtpmode`. This sets the SMTP server timeout, in seconds.
  * You may need to increase this if you are running an anti-malware or spam scanner.
  */
 'mail_smtptimeout' => 10,
@@ -436,7 +436,7 @@ $CONFIG = array(
  * `https://www.example.com/owncloud`
  * As an example, alerts shown in the browser to upgrade an app are triggered by
  * a cron background process and therefore uses the url of this key, even if the user
- * has logged on via a different domain defined in key `trusted_domains`. When the 
+ * has logged on via a different domain defined in key `trusted_domains`. When the
  * user clicks an alert like this, he will be redirected to that URL and must logon again.
  */
 'overwrite.cli.url' => '',
@@ -618,11 +618,11 @@ $CONFIG = array(
 
 /**
  * Logging
- * 
+ *
  * These parameters configure the logging options.
- * For additional information or advanced configuration, please see the logging 
+ * For additional information or advanced configuration, please see the logging
  * section in the documentation.
- * 
+ *
  */
 
 /**
@@ -711,11 +711,11 @@ $CONFIG = array(
 'cron_log' => true,
 
 /**
- * Enables log rotation and limits the total size of the logfiles. 
- * The default is 0 or false which disables log rotation. 
- * Specify a size in bytes, for example 104857600 
- * (100 megabytes = 100 * 1024 * 1024 bytes). 
- * A new logfile is created with a new name when the old logfile reaches the defined limit. 
+ * Enables log rotation and limits the total size of the logfiles.
+ * The default is 0 or false which disables log rotation.
+ * Specify a size in bytes, for example 104857600
+ * (100 megabytes = 100 * 1024 * 1024 bytes).
+ * A new logfile is created with a new name when the old logfile reaches the defined limit.
  * If a rotated log file is already present, it will be overwritten.
  * If enabled, only the active log file and one rotated file are stored.
  */
@@ -730,13 +730,13 @@ $CONFIG = array(
 
 
 /**
- * If you want to store apps in a custom directory instead of ownCloud’s default 
- * `/apps`, you need to modify the `apps_paths` key. There, you need to add a 
+ * If you want to store apps in a custom directory instead of ownCloud’s default
+ * `/apps`, you need to modify the `apps_paths` key. There, you need to add a
  * new associative array that contains three elements. These are:
  *
  * - `path`      The absolute file system path to the custom app folder.
  * - `url`       The request path to that folder relative to the ownCloud web root, prefixed with /.
- * - `writable`  Whether users can install apps in that folder. After the configuration is added, 
+ * - `writable`  Whether users can install apps in that folder. After the configuration is added,
  *               new apps will only install in a directory where writable is set to true.
  *
  * The configuration example shows how to add a second directory, called `/apps-external`.
@@ -747,13 +747,13 @@ $CONFIG = array(
  */
 'apps_paths' =>
     array (
-      0 => 
+      0 =>
       array (
         'path' => OC::$SERVERROOT.'/apps',
         'url' => '/apps',
         'writable' => false,
       ),
-      1 => 
+      1 =>
       array (
         'path' => OC::$SERVERROOT.'/apps-external',
         'url' => '/apps-external',
@@ -1086,52 +1086,6 @@ $CONFIG = array(
  */
 
 /**
- * This example shows how to configure ownCloud to store all files in a
- * swift object storage.
- *
- * It is important to note that ownCloud in object store mode will expect
- * exclusive access to the object store container because it only stores the
- * binary data for each file. The metadata is currently kept in the local
- * database for performance reasons.
- *
- * WARNING: The current implementation is incompatible with any app that uses
- * direct file IO and circumvents our virtual filesystem. That includes
- * Encryption and Gallery. Gallery will store thumbnails directly in the
- * filesystem and encryption will cause severe overhead because key files need
- * to be fetched in addition to any requested file.
- *
- * One way to test is applying for a trystack account at http://trystack.org/
- */
-'objectstore' => [
-	'class' => 'OC\\Files\\ObjectStore\\Swift',
-	'arguments' => [
-		// trystack will use your facebook id as the user name
-		'username' => 'facebook100000123456789',
-		// in the trystack dashboard go to user -> settings -> API Password to
-		// generate a password
-		'password' => 'Secr3tPaSSWoRdt7',
-		// must already exist in the objectstore, name can be different
-		'container' => 'owncloud',
-		// prefix to prepend to the fileid, default is 'oid:urn:'
-		'objectPrefix' => 'oid:urn:',
-		// create the container if it does not exist. default is false
-		'autocreate' => true,
-		// required, dev-/trystack defaults to 'RegionOne'
-		'region' => 'RegionOne',
-		// The Identity / Keystone endpoint
-		'url' => 'http://8.21.28.222:5000/v2.0',
-		// required on dev-/trystack
-		'tenantName' => 'facebook100000123456789',
-		// dev-/trystack uses swift by default, the lib defaults to 'cloudFiles'
-		// if omitted
-		'serviceName' => 'swift',
-		// The Interface / url Type, optional
-		'urlType' => 'internal'
-	],
-],
-
-
-/**
  * Sharing
  *
  * Global settings for Sharing
@@ -1174,13 +1128,13 @@ $CONFIG = array(
  * During setup, if requirements are met (see below), this setting is set to true
  * and MySQL can handle 4 byte characters instead of 3 byte characters.
  *
- * If you want to convert an existing 3-byte setup into a 4-byte setup please 
+ * If you want to convert an existing 3-byte setup into a 4-byte setup please
  * set the parameters in MySQL as mentioned below and run the migration command:
  * `sudo -u www-data php occ db:convert-mysql-charset`
  * The config setting will be set automatically after a successful run.
- * 
+ *
  * Consult the documentation for more details.
- * 
+ *
  * MySQL requires a special setup for longer indexes (> 767 bytes) which are needed:
  *
  * [source,console]
@@ -1274,7 +1228,7 @@ $CONFIG = array(
 /**
  * The list of apps that are allowed to have no signature.json. Besides
  * ownCloud apps, this is particularly useful when creating ownCloud themes,
- * because themes are treated as apps. The app is identified with it´s app-id. 
+ * because themes are treated as apps. The app is identified with it´s app-id.
  * The following example allows app-1 and theme-2 to have no signature.
  */
 'integrity.ignore.missing.app.signature' =>
@@ -1465,7 +1419,7 @@ $CONFIG = array(
 /**
  * Set this property to true if you want to enable debug logging for SMB access.
  */
-'smb.logging.enable' => false, 
+'smb.logging.enable' => false,
 
 
 /**

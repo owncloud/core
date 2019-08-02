@@ -134,10 +134,6 @@ function cleanup_config {
 	fi
 
 	cd "$BASEDIR"
-	if [ "$PRIMARY_STORAGE_CONFIG" == "swift" ] ; then
-		echo "Kill the swift docker"
-		tests/objectstore/stop-swift-ceph.sh
-	fi
 	# Restore existing config
 	if [ -f config/config-autotest-backup.php ]; then
 		mv config/config-autotest-backup.php config/config.php
@@ -145,10 +141,6 @@ function cleanup_config {
 	# Remove autotest config
 	if [ -f config/autoconfig.php ]; then
 		rm config/autoconfig.php
-	fi
-	# Remove autotest swift storage config
-	if [ -f config/autotest-storage-swift.config.php ]; then
-		rm config/autotest-storage-swift.config.php
 	fi
 	# Remove mysqlmb4.config.php
 	rm -f config/mysqlmb4.config.php
@@ -179,10 +171,6 @@ function execute_tests {
 	rm -rf "$DATADIR"
 	mkdir "$DATADIR"
 
-	if [ "$PRIMARY_STORAGE_CONFIG" == "swift" ] ; then
-		tests/objectstore/start-swift-ceph.sh
-		cp tests/objectstore/swift.config.php config/autotest-storage-swift.config.php
-	fi
 	cp tests/preseed-config.php config/config.php
 
 	_DB=$DB
@@ -345,12 +333,6 @@ function execute_tests {
 	echo "${PHPUNIT[@]}" --configuration phpunit-autotest.xml $GROUP $COVER --log-junit "autotest-results-$DB.xml" "$2" "$3"
 	"${PHPUNIT[@]}" --configuration phpunit-autotest.xml $GROUP $COVER --log-junit "autotest-results-$DB.xml" "$2" "$3"
 		RESULT=$?
-
-	if [ "$PRIMARY_STORAGE_CONFIG" == "swift" ] ; then
-		cd ..
-		echo "Kill the swift docker"
-		tests/objectstore/stop-swift-ceph.sh
-	fi
 }
 
 #
