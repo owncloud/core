@@ -9,7 +9,6 @@ OC.L10N.register(
     "Location" : "Lokasi",
     "ownCloud" : "ownCloud",
     "Share" : "Kongsi",
-    "Region" : "Wilayah",
     "Name" : "Nama",
     "Delete" : "Padam"
 },

@@ -14,7 +14,6 @@ OC.L10N.register(
     "ownCloud" : "ownCloud–ი",
     "Host" : "ჰოსტი",
     "Share" : "გაზიარება",
-    "Region" : "რეგიონი",
     "Name" : "სახელი",
     "External Storage" : "ექსტერნალ საცავი",
     "Folder name" : "ფოლდერის სახელი",

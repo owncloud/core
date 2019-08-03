@@ -32,8 +32,6 @@ OC.L10N.register(
     "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Deel",
     "Domain" : "Domein",
-    "Service name" : "Diensnaam",
-    "Region" : "Streek",
     "<b>Note:</b> " : "<b>Nota:</b> ",
     "Name" : "Naam",
     "Scope" : "Omvang",

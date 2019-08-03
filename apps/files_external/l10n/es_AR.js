@@ -25,7 +25,6 @@ OC.L10N.register(
     "Host" : "Servidor",
     "Share" : "Compartir",
     "Username as share" : "Nombre de usuario para compartir",
-    "Region" : "Provincia",
     "<b>Note:</b> " : "<b>Nota:</b> ",
     "Name" : "Nombre",
     "Storage type" : "Tipo de almacenamiento",

@@ -11,7 +11,6 @@ OC.L10N.register(
     "ownCloud" : "ownCloud",
     "Host" : "Host",
     "Share" : "Deelen",
-    "Region" : "Regioun",
     "Name" : "Numm",
     "Enable encryption" : "Verschlësselung aschalten",
     "External Storage" : "Externt Lager",

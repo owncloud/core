@@ -31,7 +31,6 @@ OC.L10N.register(
     "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Dalintis",
     "Domain" : "Domenas",
-    "Region" : "Regionas",
     "<b>Note:</b> " : "<b>Užrašai:</b> ",
     "Name" : "Pavadinimas",
     "Storage type" : "Saugyklos tipas",

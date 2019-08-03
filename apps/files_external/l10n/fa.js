@@ -34,8 +34,6 @@ OC.L10N.register(
     "SMB / CIFS" : "SMB / CIFS",
     "Share" : "اشتراک‌گذاری",
     "Domain" : "دامنه",
-    "Service name" : "نام سرویس",
-    "Region" : "ناحیه",
     "No external storage configured" : "هیچ فضای ذخیره‌سازی خارجی‌ای تنظیم نشده است",
     "Name" : "نام",
     "Storage type" : "نوع فضای ذخیره‌سازی",

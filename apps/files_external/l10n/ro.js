@@ -50,8 +50,6 @@ OC.L10N.register(
     "Share" : "Partajează",
     "Domain" : "Domeniu",
     "SMB / CIFS using OC login" : "SMB / CIFS folosind autentificare OC",
-    "Service name" : "Nume serviciu",
-    "Region" : "Regiune",
     "Name" : "Nume",
     "Storage type" : "Tip stocare",
     "Scope" : "Scop",

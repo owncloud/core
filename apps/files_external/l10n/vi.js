@@ -15,7 +15,6 @@ OC.L10N.register(
     "Host" : "Máy chủ",
     "Share" : "Chia sẻ",
     "Domain" : "Tên miền",
-    "Region" : "Vùng/miền",
     "Name" : "Tên",
     "External Storage" : "Lưu trữ ngoài",
     "Folder name" : "Tên thư mục",

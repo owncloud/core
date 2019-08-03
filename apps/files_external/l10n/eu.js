@@ -31,8 +31,6 @@ OC.L10N.register(
     "Share" : "Partekatu",
     "SMB / CIFS using OC login" : "SMB / CIFS saioa hasteko OC erabiliz",
     "Username as share" : "Erabiltzaile izena elkarbanaketa bezala",
-    "OpenStack Object Storage" : "OpenStack Objektu Biltegiratzea",
-    "Region" : "Eskualdea",
     "<b>Note:</b> " : "<b>Oharra:</b>",
     "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Oharra:</b> :PHPko cURL euskarria ez dago instalatuta edo gaitua. Ezinezko da %s muntatzea. Mesedez eskatu sistema administratzaleari instala dezan. ",
     "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Oharra:</b>\"%s\" euskarria ez dago instalatuta Ezinezko da %s muntatzea. Mesedez eskatu sistema administratzaleari instala dezan. ",

@@ -11,7 +11,6 @@ OC.L10N.register(
     "ownCloud" : "OwnCloud",
     "Host" : "ஓம்புனர்",
     "Share" : "பகிர்வு",
-    "Region" : "பிரதேசம்",
     "Name" : "பெயர்",
     "External Storage" : "வெளி சேமிப்பு",
     "Folder name" : "கோப்புறை பெயர்",

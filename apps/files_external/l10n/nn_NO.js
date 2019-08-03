@@ -18,7 +18,6 @@ OC.L10N.register(
     "Host" : "Tenar",
     "Root" : "Rot",
     "Share" : "Del",
-    "Region" : "Region/fylke",
     "Name" : "Namn",
     "Folder name" : "Mappenamn",
     "Configuration" : "Innstillingar",

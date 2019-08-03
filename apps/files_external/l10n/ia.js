@@ -9,7 +9,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Location" : "Loco",
     "Share" : "Compartir",
-    "Region" : "Region",
     "Name" : "Nomine",
     "Folder name" : "Nomine de dossier",
     "Delete" : "Deler"

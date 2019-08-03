@@ -16,8 +16,6 @@ OC.L10N.register(
     "ownCloud" : "ownCloud",
     "Host" : "المضيف",
     "Share" : "شارك",
-    "Region" : "المنطقة",
-    "Bucket" : "الحزمة",
     "Name" : "اسم",
     "Never" : "أبدا",
     "Folder name" : "اسم المجلد",

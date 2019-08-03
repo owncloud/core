@@ -21,8 +21,6 @@ OC.L10N.register(
     "Host" : "হোস্ট",
     "Root" : "শেকড়",
     "Share" : "ভাগাভাগি কর",
-    "Region" : "এলাকা",
-    "Bucket" : "বালতি",
     "<b>Note:</b> " : "<b>দ্রষ্টব্য:</b> ",
     "Name" : "রাম",
     "External Storage" : "বাহ্যিক সংরক্ষণাগার",

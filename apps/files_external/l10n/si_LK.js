@@ -11,7 +11,6 @@ OC.L10N.register(
     "ownCloud" : "ownCloud",
     "Host" : "සත්කාරකය",
     "Share" : "බෙදා හදා ගන්න",
-    "Region" : "කළාපය",
     "Name" : "නම",
     "External Storage" : "භාහිර ගබඩාව",
     "Folder name" : "ෆොල්ඩරයේ නම",
