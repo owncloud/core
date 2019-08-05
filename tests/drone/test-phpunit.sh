@@ -33,7 +33,8 @@ set_up_external_storage() {
       FILES_EXTERNAL_TEST_TO_RUN=SmbTest.php
       ;;
     sftp)
-      ./apps/files_external/tests/env/start-sftp-atmoz.sh
+      wait-for-it -t 120 vsftp:22
+      cp tests/drone/configs/config.files_external.sftp.php apps/files_external/tests/config.sftp.php
       FILES_EXTERNAL_TEST_TO_RUN=SftpTest.php
       ;;
     *)
