@@ -47,12 +47,14 @@ class SftpTest extends \Test\Files\Storage\Storage {
 	protected function setUp() {
 		parent::setUp();
 
-		$id = $this->getUniqueID();
 		$this->config = include('files_external/tests/config.sftp.php');
 		if (!\is_array($this->config) or !$this->config['run']) {
 			$this->markTestSkipped('SFTP backend not configured');
 		}
-		$this->config['root'] .= '/' . $id; //make sure we have an new empty folder to work in
+		if ($this->config['root'] !== '') {
+			$this->config['root'] .= \rtrim($this->config['root'], "/") . '/';
+		}
+		$this->config['root'] .= $this->getUniqueID(); //make sure we have an new empty folder to work in
 		$this->instance = new SFTP($this->config);
 		$this->instance->mkdir('/');
 	}
