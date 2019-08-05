@@ -795,6 +795,14 @@ matrix:
       INSTALL_SERVER: true
       INSTALL_TESTING_APP: true
 
+    - PHP_VERSION: 7.1
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      DB_TYPE: sqlite
+      FILES_EXTERNAL_TYPE: sftp
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
   # files_primary_s3
 
     - PHP_VERSION: 7.1
