@@ -23,9 +23,12 @@ namespace OCA\DAV\Files\PublicFiles;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
 use Sabre\DAV\Auth\Backend\AbstractBasic;
+use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\INode;
 use Sabre\DAV\Server;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
+use function explode;
 
 class PublicSharingAuth extends AbstractBasic {
 
@@ -40,6 +43,7 @@ class PublicSharingAuth extends AbstractBasic {
 	 * PublicSharingAuth constructor.
 	 *
 	 * @param Server $server
+	 * @param IManager $manager
 	 */
 	public function __construct(Server $server, IManager $manager) {
 		$this->server = $server;
@@ -75,16 +79,17 @@ class PublicSharingAuth extends AbstractBasic {
 	 * @param RequestInterface $request
 	 * @param ResponseInterface $response
 	 * @return array
+	 * @throws NotFound
 	 */
 	public function check(RequestInterface $request, ResponseInterface $response) {
-		$node = $this->server->tree->getNodeForPath($request->getPath());
+		$node = $this->resolveShare($request->getPath());
 		if (!$node instanceof ShareNode && !$node instanceof SharedFile && !$node instanceof SharedFolder) {
-			return [true, "principals/system/public"];
+			return [true, 'principals/system/public'];
 		}
 		$this->share = $node->getShare();
 		$password = $this->share->getPassword();
 		if ($password === null) {
-			return [true, "principals/system/public"];
+			return [true, 'principals/system/public'];
 		}
 
 		return parent::check($request, $response);
@@ -111,5 +116,19 @@ class PublicSharingAuth extends AbstractBasic {
 			return false;
 		}
 		return $this->shareManager->checkPassword($this->share, $password);
+	}
+
+	/**
+	 * @param string $path
+	 * @return INode
+	 * @throws NotFound
+	 */
+	private function resolveShare($path) {
+		$elements = explode('/', $path);
+		if ($elements[0] !== 'public-files') {
+			return null;
+		}
+
+		return $this->server->tree->getNodeForPath($elements[0] .'/' . $elements[1]);
 	}
 }
