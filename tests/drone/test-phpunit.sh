@@ -33,7 +33,7 @@ set_up_external_storage() {
       FILES_EXTERNAL_TEST_TO_RUN=SmbTest.php
       ;;
     sftp)
-      wait-for-it -t 120 vsftp:22
+      wait-for-it -t 120 vsftp:21
       cp tests/drone/configs/config.files_external.sftp.php apps/files_external/tests/config.sftp.php
       FILES_EXTERNAL_TEST_TO_RUN=SftpTest.php
       ;;
