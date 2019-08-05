@@ -25,8 +25,10 @@ use OCP\Constants;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\Node;
+use OCP\Files\NotPermittedException;
 use OCP\Share\IShare;
 use Sabre\DAV\Collection;
+use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAVACL\ACLTrait;
 use Sabre\DAVACL\IACL;
 
@@ -48,6 +50,7 @@ class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 	 * MetaFolder constructor.
 	 *
 	 * @param Folder $folder
+	 * @param IShare $share
 	 */
 	public function __construct(Folder $folder, IShare $share) {
 		$this->folder = $folder;
@@ -76,12 +79,33 @@ class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 	}
 
 	public function createDirectory($name) {
-		$this->folder->newFolder($name);
+		try {
+			$this->folder->newFolder($name);
+		} catch (NotPermittedException $ex) {
+			throw new Forbidden('Permission denied to create directory');
+		}
 	}
 
 	public function createFile($name, $data = null) {
 		$file = $this->folder->newFile($name);
 		$file->putContent($data);
+	}
+
+	public function delete() {
+		try {
+			$this->folder->delete();
+		} catch (NotPermittedException $ex) {
+			throw new Forbidden('Permission denied to delete node');
+		}
+	}
+
+	public function setName($name) {
+		try {
+			$newPath = $this->folder->getParent()->getPath() . '/' . $name;
+			$this->folder->move($newPath);
+		} catch (NotPermittedException $ex) {
+			throw new Forbidden('Permission denied to rename file');
+		}
 	}
 
 	private function nodeFactory(Node $node) {
@@ -108,15 +132,21 @@ class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 			]
 		];
 
-		// TODO: add more acl to convert the logic
-		if ($this->share->getPermissions() & Constants::PERMISSION_DELETE === Constants::PERMISSION_DELETE) {
-			$acl[]= [
+		if ($this->checkSharePermissions(Constants::PERMISSION_DELETE)) {
+			$acl[] =
 				[
 					'privilege' => '{DAV:}unbind',
 					'principal' => 'principals/system/public',
 					'protected' => true,
-				]
-			];
+				];
+		}
+		if ($this->checkSharePermissions(Constants::PERMISSION_CREATE)) {
+			$acl[] =
+				[
+					'privilege' => '{DAV:}bind',
+					'principal' => 'principals/system/public',
+					'protected' => true,
+				];
 		}
 
 		return $acl;
@@ -156,6 +186,7 @@ class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 		}
 		return $p;
 	}
+
 	protected function checkSharePermissions($permissions) {
 		return ($this->share->getPermissions() & $permissions) === $permissions;
 	}

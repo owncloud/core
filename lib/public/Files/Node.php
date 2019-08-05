@@ -52,6 +52,7 @@ interface Node extends FileInfo {
 	/**
 	 * Delete the file or folder
 	 * @return void
+	 * @throws NotPermittedException
 	 * @since 6.0.0
 	 */
 	public function delete();

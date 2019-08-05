@@ -24,7 +24,9 @@ namespace OCA\DAV\Files\PublicFiles;
 use OCA\DAV\Files\IFileNode;
 use OCP\Constants;
 use OCP\Files\Node;
+use OCP\Files\NotPermittedException;
 use OCP\Share\IShare;
+use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\File;
 use Sabre\DAVACL\ACLTrait;
 use Sabre\DAVACL\IACL;
@@ -84,8 +86,29 @@ class SharedFile extends File implements IACL, IFileNode, IPublicSharedNode {
 	}
 
 	public function delete() {
-		// TODO: check permissions - via ACL?
-		$this->file->delete();
+		try {
+			$this->file->delete();
+		} catch (NotPermittedException $ex) {
+			throw new Forbidden('Permission denied to create directory');
+		}
+	}
+
+	public function put($data) {
+		try {
+			$this->file->putContent($data);
+			return $this->file->getEtag();
+		} catch (NotPermittedException $ex) {
+			throw new Forbidden('Permission denied to create directory');
+		}
+	}
+
+	public function setName($name) {
+		try {
+			$newPath = $this->file->getParent()->getPath() . '/' . $name;
+			$this->file->move($newPath);
+		} catch (NotPermittedException $ex) {
+			throw new Forbidden('Permission denied to rename file');
+		}
 	}
 
 	public function getOwner() {
@@ -93,7 +116,7 @@ class SharedFile extends File implements IACL, IFileNode, IPublicSharedNode {
 	}
 
 	public function getACL() {
-		return [
+		$acl = [
 			[
 				'privilege' => '{DAV:}all',
 				'principal' => '{DAV:}owner',
@@ -105,6 +128,16 @@ class SharedFile extends File implements IACL, IFileNode, IPublicSharedNode {
 				'protected' => true,
 			]
 		];
+		if ($this->checkSharePermissions(Constants::PERMISSION_UPDATE)) {
+			$acl[] =
+				[
+					'privilege' => '{DAV:}write-content',
+					'principal' => 'principals/system/public',
+					'protected' => true,
+				];
+		}
+
+		return $acl;
 	}
 
 	public function getShare() {
