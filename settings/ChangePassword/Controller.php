@@ -101,12 +101,14 @@ class Controller {
 
 		if (\OC_App::isEnabled('encryption')) {
 			//handle the recovery case
+			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 			$crypt = new \OCA\Encryption\Crypto\Crypt(
 				\OC::$server->getLogger(),
 				\OC::$server->getUserSession(),
 				\OC::$server->getConfig(),
 				\OC::$server->getL10N('encryption'));
 			$keyStorage = \OC::$server->getEncryptionKeyStorage();
+			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 			$util = new \OCA\Encryption\Util(
 				new \OC\Files\View(),
 				$crypt,
@@ -114,14 +116,17 @@ class Controller {
 				\OC::$server->getUserSession(),
 				\OC::$server->getConfig(),
 				\OC::$server->getUserManager());
+			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 			$keyManager = new \OCA\Encryption\KeyManager(
 				$keyStorage,
 				$crypt,
 				\OC::$server->getConfig(),
 				\OC::$server->getUserSession(),
+				/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 				new \OCA\Encryption\Session(\OC::$server->getSession()),
 				\OC::$server->getLogger(),
 				$util);
+			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 			$recovery = new \OCA\Encryption\Recovery(
 				\OC::$server->getUserSession(),
 				$crypt,
@@ -131,12 +136,15 @@ class Controller {
 				$keyStorage,
 				\OC::$server->getEncryptionFilesHelper(),
 				new \OC\Files\View());
+			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 			$recoveryAdminEnabled = $recovery->isRecoveryKeyEnabled();
 
 			$validRecoveryPassword = false;
 			$recoveryEnabledForUser = false;
 			if ($recoveryAdminEnabled) {
+				/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 				$validRecoveryPassword = $keyManager->checkRecoveryPassword($recoveryPassword);
+				/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 				$recoveryEnabledForUser = $recovery->isRecoveryEnabledForUser($username);
 			}
 
