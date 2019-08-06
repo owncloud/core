@@ -41,6 +41,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Share;
+use OCP\Util\UserSearch;
 
 /**
  * Class ShareesTest
@@ -77,6 +78,9 @@ class ShareesTest extends TestCase {
 	/** @var SharingBlacklist|\PHPUnit\Framework\MockObject\MockObject */
 	protected $sharingBlacklist;
 
+	/** @var UserSearch|\PHPUnit\Framework\MockObject\MockObject */
+	protected $userSearch;
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -112,6 +116,10 @@ class ShareesTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->userSearch = $this->getMockBuilder(UserSearch::class)
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->sharees = new ShareesController(
 			'files_sharing',
 			$this->request,
@@ -123,7 +131,8 @@ class ShareesTest extends TestCase {
 			$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 			$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
 			$this->shareManager,
-			$this->sharingBlacklist
+			$this->sharingBlacklist,
+			$this->userSearch
 		);
 	}
 
@@ -571,7 +580,8 @@ class ShareesTest extends TestCase {
 			$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 			$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
 			$this->shareManager,
-			$this->sharingBlacklist
+			$this->sharingBlacklist,
+			$this->userSearch
 		);
 		$this->invokePrivate($this->sharees, 'limit', [2]);
 		$this->invokePrivate($this->sharees, 'offset', [0]);
@@ -1371,6 +1381,30 @@ class ShareesTest extends TestCase {
 				[],
 				true,
 			],
+			// #17: keep remote entry if search pattern has enough length
+			[
+				'test@domain.tld',
+				[],
+				true,
+				[
+					['label' => 'test@domain.tld', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'test@domain.tld']],
+				],
+				[],
+				true,
+				[],
+				true
+			],
+			// #18: do not keep remote entry if search pattern has not enough length
+			[
+				'test@domain.tld',
+				[],
+				true,
+				[],
+				[],
+				true,
+				[],
+				false
+			],
 		];
 	}
 
@@ -1384,8 +1418,9 @@ class ShareesTest extends TestCase {
 	 * @param array $expected
 	 * @param bool $reachedEnd
 	 * @param array $previousExact
+	 * @param bool $isSearchable
 	 */
-	public function testGetRemote($searchTerm, $contacts, $shareeEnumeration, $exactExpected, $expected, $reachedEnd, $previousExact = []) {
+	public function testGetRemote($searchTerm, $contacts, $shareeEnumeration, $exactExpected, $expected, $reachedEnd, $previousExact = [], $isSearchable = true) {
 
 		// Set the limit and offset for remote user searching
 		$this->invokePrivate($this->sharees, 'limit', [2]);
@@ -1395,6 +1430,9 @@ class ShareesTest extends TestCase {
 			->method('getSystemValue')
 			->with('trusted_domains')
 			->willReturn(['trusted.domain.tld', 'trusted2.domain.tld']);
+		$this->userSearch->expects($this->any())
+			->method('isSearchable')
+			->willReturn($isSearchable);
 		// inject previous results if needed
 		if (!empty($previousExact)) {
 			$result = $this->invokePrivate($this->sharees, 'result');
@@ -1550,7 +1588,8 @@ class ShareesTest extends TestCase {
 				$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
 				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock(),
 				$this->shareManager,
-				$this->sharingBlacklist
+				$this->sharingBlacklist,
+				$this->userSearch
 			])
 			->setMethods(['searchSharees', 'isRemoteSharingAllowed'])
 			->getMock();
@@ -1700,7 +1739,8 @@ class ShareesTest extends TestCase {
 				$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 				$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
 				$this->shareManager,
-				$this->sharingBlacklist
+				$this->sharingBlacklist,
+				$this->userSearch
 			])
 			->setMethods(['getShareesForShareIds', 'getUsers', 'getGroups', 'getRemote'])
 			->getMock();
@@ -1960,7 +2000,7 @@ class ShareesTest extends TestCase {
 				$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
 				$this->shareManager,
 				$this->sharingBlacklist,
-				$this->getMockBuilder(FederatedShareProvider::class)->disableOriginalConstructor()->getMock()
+				$this->userSearch
 			])
 			->setMethods(['getUsers', 'getGroups', 'getRemote'])
 			->getMock();

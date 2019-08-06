@@ -41,6 +41,7 @@ use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Share;
 use OCA\Files_Sharing\SharingBlacklist;
+use OCP\Util\UserSearch;
 
 class ShareesController extends OCSController {
 
@@ -70,6 +71,9 @@ class ShareesController extends OCSController {
 
 	/** @var \OCP\Share\IManager */
 	protected $shareManager;
+
+	/** @var UserSearch*/
+	protected $userSearch;
 
 	/** @var bool */
 	protected $shareWithGroupOnly = false;
@@ -112,27 +116,32 @@ class ShareesController extends OCSController {
 	protected $sharingBlacklist;
 
 	/**
+	 * @param $appName
+	 * @param IRequest $request
 	 * @param IGroupManager $groupManager
 	 * @param IUserManager $userManager
 	 * @param IManager $contactsManager
 	 * @param IConfig $config
 	 * @param IUserSession $userSession
 	 * @param IURLGenerator $urlGenerator
-	 * @param IRequest $request
 	 * @param ILogger $logger
 	 * @param \OCP\Share\IManager $shareManager
+	 * @param SharingBlacklist $sharingBlacklist
+	 * @param UserSearch $userSearch
 	 */
 	public function __construct($appName,
-			IRequest $request,
-			IGroupManager $groupManager,
-			IUserManager $userManager,
-			IManager $contactsManager,
-			IConfig $config,
-			IUserSession $userSession,
-			IURLGenerator $urlGenerator,
-			ILogger $logger,
-			\OCP\Share\IManager $shareManager,
-			SharingBlacklist $sharingBlacklist) {
+		IRequest $request,
+		IGroupManager $groupManager,
+		IUserManager $userManager,
+		IManager $contactsManager,
+		IConfig $config,
+		IUserSession $userSession,
+		IURLGenerator $urlGenerator,
+		ILogger $logger,
+		\OCP\Share\IManager $shareManager,
+		SharingBlacklist $sharingBlacklist,
+		UserSearch $userSearch
+	) {
 		parent::__construct($appName, $request);
 
 		$this->groupManager = $groupManager;
@@ -145,6 +154,7 @@ class ShareesController extends OCSController {
 		$this->logger = $logger;
 		$this->shareManager = $shareManager;
 		$this->sharingBlacklist = $sharingBlacklist;
+		$this->userSearch = $userSearch;
 		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
 	}
 
@@ -418,14 +428,16 @@ class ShareesController extends OCSController {
 				}
 
 				// If we get here, we didnt find an exact match, so add to other matches
-				$this->result['remotes'][] = [
-					'label' => $contact['FN'],
-					'value' => [
-						'shareType' => Share::SHARE_TYPE_REMOTE,
-						'shareWith' => $cloudId,
-						'server' => $serverUrl,
-					],
-				];
+				if ($this->userSearch->isSearchable($search)) {
+					$this->result['remotes'][] = [
+						'label' => $contact['FN'],
+						'value' => [
+							'shareType' => Share::SHARE_TYPE_REMOTE,
+							'shareWith' => $cloudId,
+							'server' => $serverUrl,
+						],
+					];
+				}
 			}
 		}
 
@@ -434,7 +446,8 @@ class ShareesController extends OCSController {
 			$this->result['remotes'] = [];
 		}
 
-		if (!$foundRemoteById && \substr_count($search, '@') >= 1 && $this->offset === 0
+		if (!$foundRemoteById && \substr_count($search, '@') >= 1
+			&& $this->offset === 0 && $this->userSearch->isSearchable($search)
 			// if an exact local user is found, only keep the remote entry if
 			// its domain does not matches the trusted domains
 			// (if it does, it is a user whose local login domain matches the ownCloud
