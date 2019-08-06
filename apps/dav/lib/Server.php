@@ -59,6 +59,7 @@ use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCA\DAV\Files\FileLocksBackend;
 use OCA\DAV\Files\PreviewPlugin;
 use OCA\DAV\Files\PublicFiles\PublicFilesPlugin;
+use OCA\DAV\Files\Sharing\PublicLinkEventsPlugin;
 use OCA\DAV\JobStatus\Entity\JobStatusMapper;
 use OCA\DAV\Meta\MetaPlugin;
 use OCA\DAV\Files\PublicFiles\PublicSharingAuth;
@@ -132,6 +133,7 @@ class Server {
 		$authPlugin = new Plugin();
 		if ($this->isRequestForSubtree(['public-files'])) {
 			$authPlugin->addBackend(new PublicSharingAuth($this->server, OC::$server->getShareManager()));
+			$this->server->addPlugin(new PublicLinkEventsPlugin(\OC::$server->getEventDispatcher()));
 		}
 		$authPlugin->addBackend(new PublicAuth());
 		$this->server->addPlugin($authPlugin);
@@ -323,7 +325,7 @@ class Server {
 	 */
 	private function isRequestForSubtree(array $subTrees) {
 		foreach ($subTrees as $subTree) {
-			$subTree = \trim($subTree, " /");
+			$subTree = \trim($subTree, ' /');
 			if (\strpos($this->server->getRequestUri(), "$subTree/") === 0) {
 				return true;
 			}
