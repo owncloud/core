@@ -53,18 +53,15 @@ Feature: sharing
       # Ask for full permissions. You get share plus read plus update. create and delete do not apply to shares of a file
       | 1               | 31                    | 19                  | 100             |
       | 2               | 31                    | 19                  | 200             |
-      # Ask for share (16), create and delete. You get share plus read
-      | 1               | 28                    | 17                  | 100             |
-      | 2               | 28                    | 17                  | 200             |
+      # Ask for read, share (17), create and delete. You get share plus read
+      | 1               | 29                    | 17                  | 100             |
+      | 2               | 29                    | 17                  | 200             |
       # Ask for read, update, create, delete. You get read plus update.
       | 1               | 15                    | 3                   | 100             |
       | 2               | 15                    | 3                   | 200             |
-      # Ask for create and delete. You get just read.
-      | 1               | 12                    | 1                   | 100             |
-      | 2               | 12                    | 1                   | 200             |
-      # Ask for just update. You get read plus update.
-      | 1               | 2                     | 3                   | 100             |
-      | 2               | 2                     | 3                   | 200             |
+      # Ask for just update. You get exactly update (you do not get read or anything else)
+      | 1               | 2                     | 2                   | 100             |
+      | 2               | 2                     | 2                   | 200             |
 
   Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
@@ -612,7 +609,6 @@ Feature: sharing
       | 1               | 404             | 200              | PARENT        | 32          |
       | 2               | 404             | 404              | PARENT        | 32          |
 
-  @issue-35922
   Scenario Outline: Cannot create a share of a file with a user with only create permission
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -623,23 +619,13 @@ Feature: sharing
       | permissions | create        |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    # delete the following step when the issue is fixed. The share should not be created at all.
-    And the fields of the last response should include
-      | share_with  | user1          |
-      | share_type  | user           |
-      | file_target | /textfile0.txt |
-      | path        | /textfile0.txt |
-      | permissions | 0              |
     And as "user1" entry "textfile0.txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 100             | 200              |
-      | 2               | 200             | 200              |
-      #| 1               | 400             | 200              |
-      #| 2               | 400             | 400              |
+      | 1               | 400             | 200              |
+      | 2               | 400             | 400              |
 
-  @issue-35922
-  Scenario Outline: Cannot create a share of a file with a user with only (create,)delete permission
+  Scenario Outline: Cannot create a share of a file with a user with only (create,delete) permission
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     When user "user0" creates a share using the sharing API with settings
@@ -649,27 +635,14 @@ Feature: sharing
       | permissions | <permissions> |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    # delete the following step when the issue is fixed. The share should not be created at all.
-    And the fields of the last response should include
-      | share_with  | user1          |
-      | share_type  | user           |
-      | file_target | /textfile0.txt |
-      | path        | /textfile0.txt |
-      | permissions | 1              |
-    # because the share got created wrongly with read permission, the file exists for the sharee
-    And as "user1" entry "textfile0.txt" should exist
-    #And as "user1" entry "textfile0.txt" should not exist
+    And as "user1" entry "textfile0.txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | permissions   |
-      | 1               | 100             | 200              | delete        |
-      | 2               | 200             | 200              | delete        |
-      | 1               | 100             | 200              | create,delete |
-      | 2               | 200             | 200              | create,delete |
-      #| 1               | 404             | 200              | delete        |
-      #| 2               | 404             | 404              | delete        |
-      #| 1               | 404             | 200              | create,delete |
-      #| 2               | 404             | 404              | create,delete |
-  @issue-35922
+      | 1               | 400             | 200              | delete        |
+      | 2               | 400             | 400              | delete        |
+      | 1               | 400             | 200              | create,delete |
+      | 2               | 400             | 400              | create,delete |
+
   Scenario Outline: Cannot create a share of a file with a group with only create permission
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
@@ -682,23 +655,13 @@ Feature: sharing
       | permissions | create        |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    # delete the following step when the issue is fixed. The share should not be created at all.
-    And the fields of the last response should include
-      | share_with  | grp1           |
-      | share_type  | group          |
-      | file_target | /textfile0.txt |
-      | path        | /textfile0.txt |
-      | permissions | 0              |
     And as "user1" entry "textfile0.txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 100             | 200              |
-      | 2               | 200             | 200              |
-      #| 1               | 400             | 200              |
-      #| 2               | 400             | 400              |
+      | 1               | 400             | 200              |
+      | 2               | 400             | 400              |
 
-  @issue-35922
-  Scenario Outline: Cannot create a share of a file with a group with only (create,)delete permission
+  Scenario Outline: Cannot create a share of a file with a group with only (create,delete) permission
     Given using OCS API version "<ocs_api_version>"
     And user "user1" has been created with default attributes and without skeleton files
     And group "grp1" has been created
@@ -710,26 +673,13 @@ Feature: sharing
       | permissions | <permissions> |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    # delete the following step when the issue is fixed. The share should not be created at all.
-    And the fields of the last response should include
-      | share_with  | grp1           |
-      | share_type  | group          |
-      | file_target | /textfile0.txt |
-      | path        | /textfile0.txt |
-      | permissions | 1              |
-    # because the share got created wrongly with read permission, the file exists for the sharee
-    And as "user1" entry "textfile0.txt" should exist
-    #And as "user1" entry "textfile0.txt" should not exist
+    And as "user1" entry "textfile0.txt" should not exist
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | permissions   |
-      | 1               | 100             | 200              | delete        |
-      | 2               | 200             | 200              | delete        |
-      | 1               | 100             | 200              | create,delete |
-      | 2               | 200             | 200              | create,delete |
-      #| 1               | 404             | 200              | delete        |
-      #| 2               | 404             | 404              | delete        |
-      #| 1               | 404             | 200              | create,delete |
-      #| 2               | 404             | 404              | create,delete |
+      | 1               | 400             | 200              | delete        |
+      | 2               | 400             | 400              | delete        |
+      | 1               | 400             | 200              | create,delete |
+      | 2               | 400             | 400              | create,delete |
 
   Scenario Outline: user who is excluded from sharing tries to share a file with another user
     Given using OCS API version "<ocs_api_version>"
@@ -983,7 +933,7 @@ Feature: sharing
       | file_target | /randomfile.txt |
       | item_type   | file            |
       | permissions | read            |
-    When user "user3" shares file "randomfile.txt" with user "user1" with permissions "update" using the sharing API
+    When user "user3" shares file "randomfile.txt" with user "user1" with permissions "read,update" using the sharing API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | uid_owner   | user3              |
@@ -991,7 +941,6 @@ Feature: sharing
       | file_target | /randomfile (2).txt|
       | item_type   | file               |
       | permissions | read,update        |
-    # Here the last response contains permissions = 3 which is equivalent to permissons: read(1) + update(2)
     And the content of file "randomfile.txt" for user "user1" should be "user2 file"
     And the content of file "randomfile (2).txt" for user "user1" should be "user3 file"
     Examples:
@@ -1010,7 +959,7 @@ Feature: sharing
     And user "user2" has created folder "zzzfolder/user2"
     And user "user3" has created folder "/zzzfolder"
     And user "user3" has created folder "zzzfolder/user3"
-    When user "user2" shares folder "zzzfolder" with user "user1" with permissions "delete" using the sharing API
+    When user "user2" shares folder "zzzfolder" with user "user1" with permissions "read,delete" using the sharing API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | uid_owner   | user2       |
@@ -1018,14 +967,14 @@ Feature: sharing
       | file_target | /zzzfolder  |
       | item_type   | folder      |
       | permissions | read,delete |
-    When user "user3" shares folder "zzzfolder" with user "user1" with permissions "share" using the sharing API
+    When user "user3" shares folder "zzzfolder" with user "user1" with permissions "read,share" using the sharing API
     And user "user1" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | uid_owner   | user3          |
       | share_with  | user1          |
       | file_target | /zzzfolder (2) |
       | item_type   | folder         |
-      | permissions | share,read     |
+      | permissions | read,share     |
     And as "user1" folder "zzzfolder/user2" should exist
     And as "user1" folder "zzzfolder (2)/user3" should exist
     Examples:

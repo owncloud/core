@@ -53,16 +53,16 @@ Feature: Comments
     And the user should have the following comments on file "/myFileToComment.txt"
       | user1 | Comment from sharee |
 
-  Scenario: sharee comments on upload-only shared file
-    Given the user has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
+  Scenario: sharee comments on upload-only shared folder
+    Given the user has created folder "/FOLDER_TO_SHARE"
     And the user has created a share with settings
-      | path        | /myFileToComment.txt |
-      | shareType   | user                 |
-      | shareWith   | user1                |
-      | permissions | create               |
-    When user "user1" comments with content "Comment from sharee" on file "/myFileToComment.txt" using the WebDAV API
+      | path        | /FOLDER_TO_SHARE |
+      | shareType   | user             |
+      | shareWith   | user1            |
+      | permissions | create           |
+    When user "user1" comments with content "Comment from sharee" on folder "/FOLDER_TO_SHARE" using the WebDAV API
     Then the HTTP status code should be "501"
-    And the user should have 0 comments on file "/myFileToComment.txt"
+    And the user should have 0 comments on file "/FOLDER_TO_SHARE"
 
   Scenario: Creating a comment on a folder belonging to myself
     When the user comments with content "My first comment" on folder "/FOLDER" using the WebDAV API

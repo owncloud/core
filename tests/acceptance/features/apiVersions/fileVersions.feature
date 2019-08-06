@@ -109,7 +109,7 @@ Feature: dav-versions
       | path        | /davtest.txt |
       | shareType   | user         |
       | shareWith   | user1        |
-      | permissions | delete       |
+      | permissions | read         |
     Then the version folder of fileId "<<FILEID>>" for user "user1" should contain "1" element
 
   Scenario: sharer of a file can see the old version information when the sharee changes the content of the file

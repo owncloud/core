@@ -190,24 +190,21 @@ class ShareTest extends TestCase {
 	}
 
 	/**
-	 * shared files should never have delete permissions
+	 * @param int $permission
+	 * shared files should never have delete and create permissions
 	 * @dataProvider dataProviderTestFileSharePermissions
 	 */
-	public function testFileSharePermissions($permission, $expectedvalid) {
-		$pass = true;
-		try {
-			$this->share(
-				\OCP\Share::SHARE_TYPE_USER,
-				$this->filename,
-				self::TEST_FILES_SHARING_API_USER1,
-				self::TEST_FILES_SHARING_API_USER2,
-				$permission
-			);
-		} catch (\Exception $e) {
-			$pass = false;
-		}
-
-		$this->assertEquals($expectedvalid, $pass);
+	public function testFileSharePermissions($permission) {
+		$share = $this->share(
+			\OCP\Share::SHARE_TYPE_USER,
+			$this->filename,
+			self::TEST_FILES_SHARING_API_USER1,
+			self::TEST_FILES_SHARING_API_USER2,
+			$permission
+		);
+		$permission &= ~\OCP\Constants::PERMISSION_DELETE;
+		$permission &= ~\OCP\Constants::PERMISSION_CREATE;
+		$this->assertEquals($share->getPermissions(), $permission);
 	}
 
 	public function dataProviderTestFileSharePermissions() {
@@ -215,14 +212,16 @@ class ShareTest extends TestCase {
 		$permission3 = \OCP\Constants::PERMISSION_READ;
 		$permission4 = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE;
 		$permission5 = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_DELETE;
-		$permission6 = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE;
+		$permission6 = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE;
+		$permission7 = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE;
 
 		return [
-			[$permission1, false],
-			[$permission3, true],
-			[$permission4, true],
-			[$permission5, false],
-			[$permission6, false],
+			[$permission1],
+			[$permission3],
+			[$permission4],
+			[$permission5],
+			[$permission6],
+			[$permission7],
 		];
 	}
 

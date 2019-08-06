@@ -25,6 +25,7 @@ use OC\User\NoUserException;
 use OCP\Files\Node;
 
 use OCP\Files\NotFoundException;
+use OCP\Share\Exceptions\GenericShareException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\Exceptions\TransferSharesException;
 
@@ -41,6 +42,7 @@ interface IManager {
 	 *
 	 * @param IShare $share
 	 * @return IShare The share object
+	 * @throws GenericShareException If $share requirements do not match
 	 * @since 9.0.0
 	 */
 	public function createShare(IShare $share);
@@ -52,6 +54,8 @@ interface IManager {
 	 *
 	 * @param IShare $share
 	 * @return IShare The share object
+	 * @throws \InvalidArgumentException If $share is a link share or the $recipient does not match
+	 * @throws GenericShareException If $share requirements do not match
 	 * @since 9.0.0
 	 */
 	public function updateShare(IShare $share);
