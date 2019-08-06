@@ -41,6 +41,9 @@ class FilesPage extends FilesPageBasic {
 	protected $emptyContentXpath = ".//div[@id='app-content-files']//div[@id='emptycontent']";
 	protected $newFolderTooltipXpath = './/div[contains(@class, "newFileMenu")]//div[@class="tooltip-inner"]';
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
+	protected $homePageIconXpath = "//div[@class='breadcrumb']//img[@alt='Home']";
+	protected $folderBreadCrumbXpath = "//div[@class='breadcrumb']//a[contains(@href,'%s')]";
+
 	/**
 	 *
 	 * @var FilesPageCRUD $filesPageCRUDFunctions
@@ -340,6 +343,51 @@ class FilesPage extends FilesPageBasic {
 		$this->getDriver()->visit($fullUrl);
 
 		return $this;
+	}
+	/**
+	 * Browse to Home Page by clicking on home icon.
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function browseToHomePage() {
+		$homePageIcon = $this->find("xpath", $this->homePageIconXpath);
+		$this->assertElementNotNull(
+			$homePageIcon,
+			__METHOD__ .
+			" xpath $this->homePageIconXpath " .
+			"could not find home page icon."
+		);
+		$homePageIcon->click();
+	}
+
+	/**
+	 * Browse directly to a particular parent folder.
+	 *
+	 * @param string $folderName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function browseToFolder($folderName) {
+
+		// foldername is encoded into query-string
+		$folderName = \urlencode($folderName);
+
+		// urlencode encodes '/' into '%2F' and ' ' into '+'.
+		// Hence, undoing the conversion of '/' and ' '
+		$folderName = \preg_replace('/\%2F/', '/', $folderName);
+		$folderName = \preg_replace('/\+/', '%20', $folderName);
+
+		$folderUrlXpathLocator = \sprintf($this->folderBreadCrumbXpath, $folderName);
+		$folder = $this->find("xpath", $folderUrlXpathLocator);
+		$this->assertElementNotNull(
+			$folder,
+			__METHOD__
+			. " xpath $folderUrlXpathLocator could not be found for folder "
+			. $folderName
+		);
+		$folder->click();
 	}
 
 	/**

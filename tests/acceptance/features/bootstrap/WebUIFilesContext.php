@@ -238,6 +238,28 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user browses to the home page
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserBrowsesToTheHomePage() {
+		$this->filesPage->browseToHomePage();
+	}
+
+	/**
+	 * @When the user selects the breadcrumb for folder :folder
+	 *
+	 * @param string $folderName
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserBrowsesToFolder($folderName) {
+		$this->filesPage->browseToFolder($folderName);
+	}
+
+	/**
 	 * browses to the specific files page
 	 *
 	 * @param FilesPageBasic $pageObject

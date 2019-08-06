@@ -109,3 +109,29 @@ Feature: User can open the details panel for any file or folder
     Then the "sharing" details panel should be visible
     When the user switches to "comments" tab in details panel using the webUI
     Then the "comments" details panel should be visible
+
+  Scenario Outline: Breadcrumb through folders
+    Given user "user0" has been created with default attributes and without skeleton files
+    And user "user0" has created folder "<grand-parent>"
+    And user "user0" has created folder "<grand-parent>/<parent>"
+    And user "user0" has created folder "<grand-parent>/<parent>/<child>"
+    And user "user0" has created folder "<grand-parent>/<parent>/<child>/<grand-child>"
+    And user "user0" has logged in using the webUI
+    When the user opens folder "<grand-parent>" using the webUI
+    Then folder "<parent>" should be listed on the webUI
+    When the user browses to the home page
+    Then folder "<grand-parent>" should be listed on the webUI
+    When the user opens folder "<grand-parent>" using the webUI
+    And the user opens folder "<parent>" using the webUI
+    And the user opens folder "<child>" using the webUI
+    And the user opens folder "<grand-child>" using the webUI
+    And the user selects the breadcrumb for folder "<grand-parent>/<parent>"
+    Then folder "<child>" should be listed on the webUI
+    When the user selects the breadcrumb for folder "<grand-parent>"
+    Then folder "<parent>" should be listed on the webUI
+    Examples:
+      | grand-parent  | parent       | child        | grand-child   |
+      | grand-parent  | parent       | child        | grand-child   |
+      | PARENT        | PARENT       | PARENT       | PARENT        |
+      | Grand parent  | grand child  | grand child  | grand child   |
+      | Folder12      | #fol3der     | FOL DER       | FoLdEr       |
