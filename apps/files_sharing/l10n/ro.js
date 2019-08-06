@@ -48,7 +48,6 @@ OC.L10N.register(
     "Invalid date, date format must be YYYY-MM-DD" : "Dată invalidă, formatul trebuie să fie AAAA-LL-ZZ",
     "Not a directory" : "Nu este un director",
     "Could not lock path" : "Calea nu a putut fi blocată",
-    "Cannot increase permissions" : "Nu se pot extinde permisiunile",
     "Accept" : "Accept",
     "Decline" : "Refuză",
     "This share is password-protected" : "Această partajare este protejată cu parolă",

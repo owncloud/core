@@ -65,7 +65,6 @@ OC.L10N.register(
     "Unknown share type" : "Nezināms koplietošanas tips",
     "Could not lock path" : "Nevarēja bloķēt ceļu",
     "Can't change permissions for public share links" : "Publiskai koplietošanas saitei nevar mainīt tiesības",
-    "Cannot increase permissions" : "Nevar palielināt tiesības",
     "This share is password-protected" : "Šī koplietotne ir aizsargāta ar paroli",
     "The password is wrong. Try again." : "Nepareiza parole. Mēģiniet vēlreiz.",
     "Password" : "Parole",

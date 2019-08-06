@@ -95,7 +95,6 @@ OC.L10N.register(
     "Could not lock path" : "Неуспешно заключване на пътя",
     "Can't change permissions for public share links" : "Неуспешна промяна на правилата за публично споделяне на връзки",
     "Wrong or no update parameter given" : "Грешен или липсващ параметър за обновяване",
-    "Cannot increase permissions" : "Неуспешно увеличаване на правата",
     "Accept" : "Приемам",
     "Decline" : "Отказвам",
     "This share is password-protected" : "Тази зона е защитена с парола.",

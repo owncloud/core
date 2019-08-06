@@ -41,6 +41,7 @@
     "Set an admin password." : "Постави администраторска лозинка.",
     "%s shared »%s« with you" : "%s сподели »%s« со вас",
     "%s via %s" : "%s преку %s",
+    "Cannot remove all permissions" : "Не може да се отстранат сите дозволи",
     "Could not find category \"%s\"" : "Не можам да најдам категорија „%s“",
     "A valid username must be provided" : "Мора да се обезбеди валидно корисничко име ",
     "A valid password must be provided" : "Мора да се обезбеди валидна лозинка",

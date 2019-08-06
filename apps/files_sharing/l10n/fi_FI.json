@@ -77,7 +77,6 @@
     "Not a directory" : "Ei hakemisto",
     "Could not lock path" : "Polun lukitseminen ei onnistunut",
     "Can't change permissions for public share links" : "Julkisten jakolinkkien käyttöoikeuksia ei voi muuttaa",
-    "Cannot increase permissions" : "Oikeuksien lisääminen ei onnistu",
     "Couldn't send mail to following recipient(s): %s " : "Ei voitu lähettää sähköpostia seuraaville vastaanottajille: %s",
     "Accept" : "Hyväksy",
     "Decline" : "Kieltäydy",

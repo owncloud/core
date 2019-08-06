@@ -92,7 +92,6 @@ OC.L10N.register(
     "Could not lock path" : "Nun pudo bloquiase'l camín",
     "Can't change permissions for public share links" : "Nun puedes camudar permisos pa enllaces públicos compartíos",
     "Wrong or no update parameter given" : "El parámetru afitáu nun ye correutu o nun ta anováu",
-    "Cannot increase permissions" : "Nun se pueden aumentar los permisos",
     "Accept" : "Aceptar",
     "Decline" : "Declinar",
     "This share is password-protected" : "Esta compartición tien contraseña protexida",
