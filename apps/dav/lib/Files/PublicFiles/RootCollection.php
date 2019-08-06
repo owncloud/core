@@ -31,6 +31,13 @@ use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\SimpleCollection;
 use Sabre\DAV\SimpleFile;
 
+/**
+ * Class RootCollection - represents the list of public shares.
+ * Only in debug mode all shares will be listed.
+ * In production enumerating public shares is considered an information disclosure.
+ *
+ * @package OCA\DAV\Files\PublicFiles
+ */
 class RootCollection extends Collection {
 
 	/** @var IManager */
@@ -64,7 +71,6 @@ class RootCollection extends Collection {
 	public function getChild($name) {
 		try {
 			$share = $this->shareManager->getShareByToken($name);
-			$password = $share->getPassword();
 			return new ShareNode($share);
 		} catch (ShareNotFound $ex) {
 			throw new NotFound();
@@ -80,7 +86,7 @@ class RootCollection extends Collection {
 		}
 
 		$shares = $this->shareManager->getAllSharedWith(null, [Constants::SHARE_TYPE_LINK]);
-		return \array_map(function (IShare $share) {
+		return \array_map(static function (IShare $share) {
 			return new ShareNode($share);
 		}, $shares);
 	}

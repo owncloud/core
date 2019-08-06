@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -33,10 +33,9 @@ use Sabre\DAVACL\ACLTrait;
 use Sabre\DAVACL\IACL;
 
 /**
- * Class MetaFolder
- * This is a Sabre based implementation of a folder living in the /meta resource.
+ * Class SharedFolder - represents a folder living in a public shared folder
  *
- * @package OCA\DAV\Meta
+ * @package OCA\DAV\Files\PublicFiles
  */
 class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 	use ACLTrait;
@@ -165,6 +164,8 @@ class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 
 	/**
 	 * @return string
+	 * @throws \OCP\Files\InvalidPathException
+	 * @throws \OCP\Files\NotFoundException
 	 */
 	public function getDavPermissions() {
 		$node = $this->getNode();

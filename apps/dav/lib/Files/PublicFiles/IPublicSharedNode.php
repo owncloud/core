@@ -24,6 +24,12 @@ namespace OCA\DAV\Files\PublicFiles;
 use OCP\Files\Node;
 use OCP\Share\IShare;
 
+/**
+ * Interface IPublicSharedNode - common interface of all files and folders
+ * in a shared node
+ *
+ * @package OCA\DAV\Files\PublicFiles
+ */
 interface IPublicSharedNode {
 	/**
 	 * @return IShare

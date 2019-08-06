@@ -29,7 +29,7 @@ use Sabre\DAV\Server;
 use Sabre\DAV\Xml\Property\GetLastModified;
 use Test\TestCase;
 
-class PublicFilesPluginTests extends TestCase {
+class PublicFilesPluginTest extends TestCase {
 	public function testInit() {
 		$server = $this->createMock(Server::class);
 		$server->expects($this->once())->method('on')->with('propFind');

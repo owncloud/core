@@ -30,6 +30,12 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use function explode;
 
+/**
+ * Class PublicSharingAuth - sabre dav auth backend to handle password for
+ * public shared files and folders
+ *
+ * @package OCA\DAV\Files\PublicFiles
+ */
 class PublicSharingAuth extends AbstractBasic {
 
 	/** @var Server */
@@ -99,6 +105,7 @@ class PublicSharingAuth extends AbstractBasic {
 	 * @inheritdoc
 	 */
 	public function challenge(RequestInterface $request, ResponseInterface $response) {
+		// intentionally left empty - no need to challenge the user here
 	}
 
 	/**

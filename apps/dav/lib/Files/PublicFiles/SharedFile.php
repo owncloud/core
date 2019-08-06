@@ -23,7 +23,9 @@ namespace OCA\DAV\Files\PublicFiles;
 
 use OCA\DAV\Files\IFileNode;
 use OCP\Constants;
+use OCP\Files\InvalidPathException;
 use OCP\Files\Node;
+use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OCP\Share\IShare;
 use Sabre\DAV\Exception\Forbidden;
@@ -32,10 +34,9 @@ use Sabre\DAVACL\ACLTrait;
 use Sabre\DAVACL\IACL;
 
 /**
- * Class MetaFile
- * This is a Sabre based implementation of a file living in the /meta resource.
+ * Class SharedFile - represents a file living in a public shared folder
  *
- * @package OCA\DAV\Meta
+ * @package OCA\DAV\Files\PublicFiles
  */
 class SharedFile extends File implements IACL, IFileNode, IPublicSharedNode {
 	use ACLTrait;
@@ -66,7 +67,11 @@ class SharedFile extends File implements IACL, IFileNode, IPublicSharedNode {
 	}
 
 	public function get() {
-		return $this->file->fopen('r');
+		try {
+			return $this->file->fopen('r');
+		} catch (NotPermittedException $ex) {
+			throw new Forbidden('Permission denied to read this file');
+		}
 	}
 
 	public function getSize() {
@@ -153,6 +158,8 @@ class SharedFile extends File implements IACL, IFileNode, IPublicSharedNode {
 
 	/**
 	 * @return string
+	 * @throws InvalidPathException
+	 * @throws NotFoundException
 	 */
 	public function getDavPermissions() {
 		$node = $this->getNode();

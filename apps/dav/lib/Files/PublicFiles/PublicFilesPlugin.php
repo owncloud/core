@@ -28,6 +28,12 @@ use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
 use Sabre\DAV\Xml\Property\GetLastModified;
 
+/**
+ * Class PublicFilesPlugin - additional PROPFIND properties for public shared
+ * files and folders are handled with this plugin
+ *
+ * @package OCA\DAV\Files\PublicFiles
+ */
 class PublicFilesPlugin extends ServerPlugin {
 	const PUBLIC_LINK_ITEM_TYPE = '{http://owncloud.org/ns}public-link-item-type';
 	const PUBLIC_LINK_PERMISSION = '{http://owncloud.org/ns}public-link-permission';

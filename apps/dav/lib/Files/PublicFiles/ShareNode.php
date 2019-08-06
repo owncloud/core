@@ -1,9 +1,22 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: deepdiver
- * Date: 26.10.17
- * Time: 14:40
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ *
+ * @copyright Copyright (c) 2019, ownCloud GmbH
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
 namespace OCA\DAV\Files\PublicFiles;
@@ -15,14 +28,23 @@ use OCP\Files\NotPermittedException;
 use OCP\Share\IShare;
 use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\Forbidden;
-use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\INode;
 
+/**
+ * Class ShareNode - root node of a public share
+ *
+ * @package OCA\DAV\Files\PublicFiles
+ */
 class ShareNode extends Collection {
 
 	/** @var IShare */
 	private $share;
 
+	/**
+	 * ShareNode constructor.
+	 *
+	 * @param IShare $share
+	 */
 	public function __construct(IShare $share) {
 		$this->share = $share;
 	}
@@ -61,17 +83,17 @@ class ShareNode extends Collection {
 
 	public function createFile($name, $data = null) {
 		if (!$this->checkPermissions(Constants::PERMISSION_CREATE)) {
-			throw new Forbidden('Permission denied to create directory');
+			throw new Forbidden('Permission denied to create file');
 		}
 		if ($this->share->getNodeType() !== 'folder') {
-			throw new Forbidden('Permission denied to create directory');
+			throw new Forbidden('Permission denied to create file');
 		}
 		try {
 			$file = $this->share->getNode()->newFile($name);
 			$file->putContent(data);
 			return $file->getEtag();
 		} catch (NotPermittedException $ex) {
-			throw new Forbidden('Permission denied to create directory');
+			throw new Forbidden('Permission denied to create file');
 		}
 	}
 
