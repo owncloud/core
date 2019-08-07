@@ -633,7 +633,7 @@ services:
     image: atmoz/sftp
     pull: true
     environment:
-      - SFTP_USERS="test:12345"
+      - SFTP_USERS=test:12345
     when:
       matrix:
         FILES_EXTERNAL_TYPE: sftp
