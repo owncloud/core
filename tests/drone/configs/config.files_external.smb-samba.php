@@ -2,7 +2,7 @@
 
 return [
 	'run'=>true,
-	'host'=>'smb-samba',
+	'host'=>'samba',
 	'user'=>'test',
 	'password'=>'test',
 	'root'=>'',
