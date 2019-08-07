@@ -31,9 +31,10 @@ script('settings', 'setpassword');
 			<label for="password" class="infield"><?php p($l->t('New password')); ?></label>
 			<input type="password" name="password" id="password" value=""
 				   placeholder="<?php p($l->t('New Password')); ?>"
-				   autocomplete="off" autocapitalize="off" autocorrect="off"
+				   autocomplete="new-password" autocapitalize="off" autocorrect="off"
 				   required autofocus />
 			<input type="password" name="retypepassword" id="retypepassword" value=""
+				   autocomplete="new-password" autocapitalize="off" autocorrect="off"
 				   placeholder="<?php p($l->t('Confirm Password')); ?>"/>
 			<span id='message'></span>
 		</p>

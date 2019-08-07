@@ -6,7 +6,7 @@
 		<input
 			type="password" id="newuserpassword" style="display:none"
 			placeholder="<?php p($l->t('Password'))?>"
-			autocomplete="off" autocapitalize="off" autocorrect="off" />
+			autocomplete="new-password" autocapitalize="off" autocorrect="off" />
 		<input id="newemail" type="text"
 			   placeholder="<?php p($l->t('E-Mail'))?>"
 			   autocomplete="off" autocapitalize="off" autocorrect="off" />
