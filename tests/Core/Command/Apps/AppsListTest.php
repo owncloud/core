@@ -41,7 +41,7 @@ class AppsListTest extends TestCase {
 		$command = new ListApps(\OC::$server->getAppManager());
 		$this->commandTester = new CommandTester($command);
 
-		\OC_App::enable('testing');
+		\OC_App::enable('comments');
 	}
 
 	/**
@@ -59,7 +59,7 @@ class AppsListTest extends TestCase {
 		return [
 			[[], '- files: 1.5'],
 			[['--shipped' => 'true'], '- dav: 0.4.0'],
-			[['--shipped' => 'false'], '- testing:'],
+			[['--shipped' => 'false'], '- comments:'],
 			[['search-pattern' => 'dav'], '- dav: 0.4.0']
 		];
 	}
