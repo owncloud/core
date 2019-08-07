@@ -41,7 +41,7 @@ class AppsDisableTest extends TestCase {
 		$command = new Disable(\OC::$server->getAppManager());
 		$this->commandTester = new CommandTester($command);
 
-		\OC_App::enable('testing');
+		\OC_App::enable('comments');
 	}
 
 	/**
@@ -58,7 +58,7 @@ class AppsDisableTest extends TestCase {
 
 	public function providesAppIds() {
 		return [
-			['testing', 'testing disabled'],
+			['comments', 'comments disabled'],
 			['hui-buh', 'No such app enabled: hui-buh'],
 			['files', 'files can\'t be disabled.'],
 		];

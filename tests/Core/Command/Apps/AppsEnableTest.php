@@ -60,7 +60,7 @@ class AppsEnableTest extends TestCase {
 
 	public function providesAppIds() {
 		return [
-			['testing', 'testing enabled'],
+			['comments', 'comments enabled'],
 			['hui-buh', 'hui-buh not found'],
 			['updatenotification', 'updatenotification enabled for groups: admin', 'admin'],
 			['hui-buh', 'hui-buh not found', 'admin'],
