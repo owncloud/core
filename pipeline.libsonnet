@@ -76,6 +76,7 @@ local objects = {
       pull: 'always',
       environment: {
         HOST_NAME: 'scality',
+        LOG_LEVEL: 'trace',
       },
     }],
 
