@@ -73,6 +73,7 @@ local pipelines = [
   pipeline.litmus(
     php='7.1',
     db='mariadb:10.2',
+    trigger=trigger,
     depends_on=phpunit_deps,
   ),
 

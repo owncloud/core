@@ -577,6 +577,12 @@ services:
     MYSQL_ROOT_PASSWORD: owncloud
     MYSQL_USER: owncloud
 
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
 depends_on:
 - coding-standard
 - phan-php7.1
