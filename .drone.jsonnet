@@ -2,7 +2,7 @@ local pipeline = import 'pipeline.libsonnet';
 
 local trigger = {
   ref: [
-    'refs/heads/drone-jsonnet',
+    'refs/heads/master',
     'refs/tags/**',
     'refs/pull/**',
   ],
@@ -73,6 +73,7 @@ local pipelines = [
   pipeline.litmus(
     php='7.1',
     db='mariadb:10.2',
+    trigger=trigger,
     depends_on=phpunit_deps,
   ),
 
@@ -177,18 +178,6 @@ local pipelines = [
     'samba',
     'windows',
   ]
-] + [
-  #
-  # scality storage
-  #
-  pipeline.phpunit(
-    php='7.1',
-    db='sqlite',
-    coverage=true,
-    object='scality',
-    trigger=trigger,
-    depends_on=phpunit_deps
-  ),
 ] + [
   #
   # acceptance api

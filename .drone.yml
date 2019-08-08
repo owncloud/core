@@ -90,7 +90,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -153,7 +153,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -233,7 +233,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -313,7 +313,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -397,7 +397,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -577,6 +577,12 @@ services:
     MYSQL_ROOT_PASSWORD: owncloud
     MYSQL_USER: owncloud
 
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
 depends_on:
 - coding-standard
 - phan-php7.1
@@ -683,7 +689,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -793,7 +799,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -903,7 +909,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1013,7 +1019,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1111,7 +1117,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1218,7 +1224,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1325,7 +1331,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1432,7 +1438,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1538,7 +1544,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1642,7 +1648,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1740,7 +1746,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1847,7 +1853,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1945,7 +1951,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2052,7 +2058,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2162,7 +2168,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2272,7 +2278,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2371,132 +2377,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
-  - refs/tags/**
-  - refs/pull/**
-
-depends_on:
-- coding-standard
-- phan-php7.1
-- stan-php7.1
-
----
-kind: pipeline
-name: phpunit-php7.1-sqlite-object-scality
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-- name: cache-restore
-  pull: always
-  image: plugins/s3-cache:1
-  settings:
-    access_key:
-      from_secret: cache_s3_access_key
-    endpoint:
-      from_secret: cache_s3_endpoint
-    restore: true
-    secret_key:
-      from_secret: cache_s3_secret_key
-  when:
-    instance:
-    - drone.owncloud.services
-    - drone.owncloud.com
-
-- name: composer-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-composer-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: vendorbin-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make vendor-bin-deps
-  environment:
-    COMPOSER_HOME: /drone/src/.cache/composer
-
-- name: yarn-install
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - make install-nodejs-deps
-  environment:
-    NPM_CONFIG_CACHE: /drone/src/.cache/npm
-    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
-    bower_storage__packages: /drone/src/.cache/bower
-
-- name: install-server
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - bash tests/drone/install-server.sh
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-  - php occ config:list
-  - php occ security:certificates:import /drone/server.crt
-  - php occ security:certificates
-  environment:
-    DB_TYPE: sqlite
-
-- name: primarys3-application
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - git clone https://github.com/owncloud/files_primary_s3.git /drone/src/apps/files_primary_s3
-  - cd /drone/src/apps/files_primary_s3
-  - composer install
-  - cd /drone/src
-  - php occ a:l
-  - php occ a:e files_primary_s3
-  - php occ a:l
-
-- name: primarys3-prepare
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - cp /drone/src/apps/files_primary_s3/tests/drone/scality.config.php /drone/src/config
-  - php ./occ s3:create-bucket owncloud --accept-warning
-
-- name: owncloud-permissions
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - chown www-data -R /drone/src
-
-- name: owncloud-logfile
-  pull: always
-  image: owncloudci/php:7.1
-  detach: true
-  commands:
-  - tail -f /drone/src/data/owncloud.log
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.1
-  commands:
-  - su-exec www-data bash tests/drone/test-phpunit.sh
-  environment:
-    COVERAGE: true
-    DB_TYPE: sqlite
-    PRIMARY_OBJECTSTORE: files_primary_s3
-
-services:
-- name: scality
-  pull: always
-  image: owncloudci/scality-s3server:latest
-  environment:
-    HOST_NAME: scality
-
-trigger:
-  ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2637,7 +2518,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2778,7 +2659,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2919,7 +2800,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3060,7 +2941,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3201,7 +3082,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3342,7 +3223,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3483,7 +3364,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3624,7 +3505,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3765,7 +3646,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3906,7 +3787,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4047,7 +3928,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4188,7 +4069,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4329,7 +4210,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4470,7 +4351,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4611,7 +4492,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4752,7 +4633,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4893,7 +4774,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5046,7 +4927,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5187,7 +5068,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5328,7 +5209,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5469,7 +5350,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5610,7 +5491,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5751,7 +5632,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5892,7 +5773,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6033,7 +5914,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6174,7 +6055,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6315,7 +6196,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6457,7 +6338,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6599,7 +6480,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6745,7 +6626,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6887,7 +6768,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7029,7 +6910,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7181,7 +7062,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7333,7 +7214,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7481,7 +7362,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7629,7 +7510,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7777,7 +7658,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7929,7 +7810,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8077,7 +7958,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8229,7 +8110,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8377,7 +8258,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8525,7 +8406,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8673,7 +8554,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8821,7 +8702,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8969,7 +8850,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -9171,7 +9052,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -9323,7 +9204,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -9475,7 +9356,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -9639,7 +9520,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -9791,7 +9672,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -9939,7 +9820,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10087,7 +9968,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10235,7 +10116,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10383,7 +10264,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10531,7 +10412,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10683,7 +10564,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10835,7 +10716,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10987,7 +10868,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -11139,7 +11020,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -11294,7 +11175,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -11449,7 +11330,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -11604,7 +11485,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -11634,7 +11515,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   status:
   - failure
@@ -11663,7 +11544,6 @@ depends_on:
 - phpunit-php7.1-sqlite-external-webdav
 - phpunit-php7.1-sqlite-external-samba
 - phpunit-php7.1-sqlite-external-windows
-- phpunit-php7.1-sqlite-object-scality
 - behat-headless-apiMain
 - behat-headless-apiAuth
 - behat-headless-apiAuthOcs
