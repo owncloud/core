@@ -22,14 +22,11 @@
 namespace OCA\DAV\Files\PublicFiles;
 
 use OCP\Constants;
-use OCP\Files\File;
 use OCP\Files\Folder;
-use OCP\Files\Node;
 use OCP\Files\NotPermittedException;
 use OCP\Share\IShare;
 use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\Forbidden;
-use Sabre\DAVACL\ACLTrait;
 use Sabre\DAVACL\IACL;
 
 /**
@@ -38,21 +35,20 @@ use Sabre\DAVACL\IACL;
  * @package OCA\DAV\Files\PublicFiles
  */
 class SharedFolder extends Collection implements IACL, IPublicSharedNode {
-	use ACLTrait;
+	use SharedNodeTrait, NodeFactoryTrait;
 
 	/** @var Folder */
 	private $folder;
-	/** @var IShare */
-	private $share;
 
 	/**
-	 * MetaFolder constructor.
+	 * SharedFolder constructor.
 	 *
 	 * @param Folder $folder
 	 * @param IShare $share
 	 */
 	public function __construct(Folder $folder, IShare $share) {
 		$this->folder = $folder;
+		$this->node = $folder;
 		$this->share = $share;
 	}
 
@@ -62,19 +58,8 @@ class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 	public function getChildren() {
 		$nodes = $this->folder->getDirectoryListing();
 		return \array_map(function ($node) {
-			return $this->nodeFactory($node);
+			return $this->nodeFactory($node, $this->share);
 		}, $nodes);
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getName() {
-		return $this->folder->getName();
-	}
-
-	public function getLastModified() {
-		return $this->folder->getMTime();
 	}
 
 	public function createDirectory($name) {
@@ -88,33 +73,6 @@ class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 	public function createFile($name, $data = null) {
 		$file = $this->folder->newFile($name);
 		$file->putContent($data);
-	}
-
-	public function delete() {
-		try {
-			$this->folder->delete();
-		} catch (NotPermittedException $ex) {
-			throw new Forbidden('Permission denied to delete node');
-		}
-	}
-
-	public function setName($name) {
-		try {
-			$newPath = $this->folder->getParent()->getPath() . '/' . $name;
-			$this->folder->move($newPath);
-		} catch (NotPermittedException $ex) {
-			throw new Forbidden('Permission denied to rename file');
-		}
-	}
-
-	private function nodeFactory(Node $node) {
-		if ($node instanceof Folder) {
-			return new SharedFolder($node, $this->share);
-		}
-		if ($node instanceof File) {
-			return new SharedFile($node, $this->share);
-		}
-		throw new \InvalidArgumentException();
 	}
 
 	public function getACL() {
@@ -149,46 +107,5 @@ class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 		}
 
 		return $acl;
-	}
-
-	public function getShare() {
-		return $this->share;
-	}
-
-	/**
-	 * @return Node
-	 */
-	public function getNode() {
-		return $this->folder;
-	}
-
-	/**
-	 * @return string
-	 * @throws \OCP\Files\InvalidPathException
-	 * @throws \OCP\Files\NotFoundException
-	 */
-	public function getDavPermissions() {
-		$node = $this->getNode();
-		$p = '';
-		if ($node->isDeletable() && $this->checkSharePermissions(Constants::PERMISSION_DELETE)) {
-			$p .= 'D';
-		}
-		if ($node->isUpdateable() && $this->checkSharePermissions(Constants::PERMISSION_UPDATE)) {
-			$p .= 'NV'; // Renameable, Moveable
-		}
-		if ($node->getType() === \OCP\Files\FileInfo::TYPE_FILE) {
-			if ($node->isUpdateable() && $this->checkSharePermissions(Constants::PERMISSION_UPDATE)) {
-				$p .= 'W';
-			}
-		} else {
-			if ($node->isCreatable() && $this->checkSharePermissions(Constants::PERMISSION_CREATE)) {
-				$p .= 'CK';
-			}
-		}
-		return $p;
-	}
-
-	protected function checkSharePermissions($permissions) {
-		return ($this->share->getPermissions() & $permissions) === $permissions;
 	}
 }

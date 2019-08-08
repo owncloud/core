@@ -71,7 +71,7 @@ class RootCollection extends Collection {
 	public function getChild($name) {
 		try {
 			$share = $this->shareManager->getShareByToken($name);
-			return new ShareNode($share);
+			return new PublicSharedRootNode($share);
 		} catch (ShareNotFound $ex) {
 			throw new NotFound();
 		}
@@ -87,7 +87,7 @@ class RootCollection extends Collection {
 
 		$shares = $this->shareManager->getAllSharedWith(null, [Constants::SHARE_TYPE_LINK]);
 		return \array_map(static function (IShare $share) {
-			return new ShareNode($share);
+			return new PublicSharedRootNode($share);
 		}, $shares);
 	}
 }

@@ -23,7 +23,7 @@ namespace OCA\DAV\Tests\Unit\Files\PublicFiles;
 
 use OCA\DAV\Files\PublicFiles\PublicFilesPlugin;
 use OCA\DAV\Files\PublicFiles\PublicSharingAuth;
-use OCA\DAV\Files\PublicFiles\ShareNode;
+use OCA\DAV\Files\PublicFiles\PublicSharedRootNode;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -71,8 +71,8 @@ class PublicSharingAuthTest extends TestCase {
 		$validResult = [true, 'principals/system/public'];
 		$authHeaderMissing = [false, 'No \'Authorization: Basic\' header found. Either the client didn\'t send one, or the server is misconfigured'];
 		$wrongUserOrPassword = [false, 'Username or password was incorrect'];
-		$shareWithoutPassword = $this->createShareNode();
-		$shareWithPassword = $this->createShareNode('123456');
+		$shareWithoutPassword = $this->createPublicSharedRootNode();
+		$shareWithPassword = $this->createPublicSharedRootNode('123456');
 
 		return [
 			'not a share node' => [$validResult, null],
@@ -87,8 +87,8 @@ class PublicSharingAuthTest extends TestCase {
 	/**
 	 * @return MockObject
 	 */
-	private function createShareNode($password = null) {
-		$shareWithoutPassword = $this->createMock(ShareNode::class);
+	private function createPublicSharedRootNode($password = null) {
+		$shareWithoutPassword = $this->createMock(PublicSharedRootNode::class);
 		$share = $this->createMock(IShare::class);
 		if ($password) {
 			$share->method('getPassword')->willReturn($password);

@@ -52,7 +52,7 @@ class PublicFilesPlugin extends ServerPlugin {
 
 	public function propFind(PropFind $propFind, INode $node) {
 		// properties about the share
-		if ($node instanceof ShareNode) {
+		if ($node instanceof PublicSharedRootNode) {
 			$propFind->handle(self::PUBLIC_LINK_ITEM_TYPE, static function () use ($node) {
 				return $node->getShare()->getNodeType();
 			});

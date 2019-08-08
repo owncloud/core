@@ -89,7 +89,7 @@ class PublicSharingAuth extends AbstractBasic {
 	 */
 	public function check(RequestInterface $request, ResponseInterface $response) {
 		$node = $this->resolveShare($request->getPath());
-		if (!$node instanceof ShareNode && !$node instanceof SharedFile && !$node instanceof SharedFolder) {
+		if (!$node instanceof PublicSharedRootNode) {
 			return [true, 'principals/system/public'];
 		}
 		$this->share = $node->getShare();
@@ -127,7 +127,7 @@ class PublicSharingAuth extends AbstractBasic {
 
 	/**
 	 * @param string $path
-	 * @return INode
+	 * @return INode|null
 	 * @throws NotFound
 	 */
 	private function resolveShare($path) {

@@ -23,7 +23,9 @@ namespace OCA\DAV\Files\PublicFiles;
 
 use OCP\Constants;
 use OCP\Files\FileInfo;
+use OCP\Files\InvalidPathException;
 use OCP\Files\Node;
+use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OCP\Share\IShare;
 use Sabre\DAV\Collection;
@@ -31,17 +33,18 @@ use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\INode;
 
 /**
- * Class ShareNode - root node of a public share
+ * Class PublicSharedRootNode - root node of a public share
  *
  * @package OCA\DAV\Files\PublicFiles
  */
-class ShareNode extends Collection {
+class PublicSharedRootNode extends Collection {
+	use NodeFactoryTrait;
 
 	/** @var IShare */
 	private $share;
 
 	/**
-	 * ShareNode constructor.
+	 * PublicSharedRootNode constructor.
 	 *
 	 * @param IShare $share
 	 */
@@ -60,10 +63,7 @@ class ShareNode extends Collection {
 			$nodes = [$this->share->getNode()];
 		}
 		return \array_map(function (Node $node) {
-			if ($node->getType() === FileInfo::TYPE_FOLDER) {
-				return new SharedFolder($node, $this->share);
-			}
-			return new SharedFile($node, $this->share);
+			return $this->nodeFactory($node, $this->share);
 		}, $nodes);
 	}
 
@@ -72,7 +72,7 @@ class ShareNode extends Collection {
 			throw new Forbidden('Permission denied to create directory');
 		}
 		if ($this->share->getNodeType() !== 'folder') {
-			throw new Forbidden('Permission denied to create directory');
+			throw new Forbidden('Creating a folder in a file is not allowed');
 		}
 		try {
 			$this->share->getNode()->newFolder($name);
@@ -81,6 +81,13 @@ class ShareNode extends Collection {
 		}
 	}
 
+	/**
+	 * @param string $name
+	 * @param resource|string|null $data
+	 * @return string|null - the quoted etag - see base class
+	 * @throws Forbidden
+	 * @throws NotFoundException
+	 */
 	public function createFile($name, $data = null) {
 		if (!$this->checkPermissions(Constants::PERMISSION_CREATE)) {
 			throw new Forbidden('Permission denied to create file');
@@ -93,6 +100,10 @@ class ShareNode extends Collection {
 			$file->putContent(data);
 			return $file->getEtag();
 		} catch (NotPermittedException $ex) {
+			throw new Forbidden('Permission denied to create file');
+		} catch (InvalidPathException $ex) {
+			throw new Forbidden('Permission denied to create file');
+		} catch (NotFoundException $ex) {
 			throw new Forbidden('Permission denied to create file');
 		}
 	}

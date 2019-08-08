@@ -22,7 +22,7 @@
 namespace OCA\DAV\Tests\Unit\Files\PublicFiles;
 
 use OCA\DAV\Files\PublicFiles\PublicFilesPlugin;
-use OCA\DAV\Files\PublicFiles\ShareNode;
+use OCA\DAV\Files\PublicFiles\PublicSharedRootNode;
 use OCP\Share\IShare;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
@@ -41,11 +41,11 @@ class PublicFilesPluginTest extends TestCase {
 	/**
 	 * @dataProvider providesMethods
 	 */
-	public function testPropFindShareNode($expectedMethod, $expectedMethodReturn, $prop, $methodReturnValue = null) {
+	public function testPropFindPublicSharedRootNode($expectedMethod, $expectedMethodReturn, $prop, $methodReturnValue = null) {
 		if ($methodReturnValue === null) {
 			$methodReturnValue = $expectedMethodReturn;
 		}
-		$node = $this->createMock(ShareNode::class);
+		$node = $this->createMock(PublicSharedRootNode::class);
 		$share = $this->createMock(IShare::class);
 		$node->method('getShare')->willReturn($share);
 		$share->expects(self::once())->method($expectedMethod)->willReturn($methodReturnValue);
