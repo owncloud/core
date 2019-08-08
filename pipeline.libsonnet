@@ -72,7 +72,7 @@ local objects = {
 
     [{
       name: 'scality',
-      image: 'owncloudci/scality-s3server:' + v,
+      image: 'owncloudci/scality-s3server',
       pull: 'always',
       environment: {
         HOST_NAME: 'scality',

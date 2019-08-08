@@ -2496,7 +2496,7 @@ steps:
 services:
 - name: scality
   pull: always
-  image: owncloudci/scality-s3server:latest
+  image: owncloudci/scality-s3server
   environment:
     HOST_NAME: scality
     LOG_LEVEL: trace
