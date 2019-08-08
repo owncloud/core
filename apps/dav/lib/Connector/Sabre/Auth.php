@@ -153,8 +153,7 @@ class Auth extends AbstractBasic {
 	 */
 	public function check(RequestInterface $request, ResponseInterface $response) {
 		try {
-			$result = $this->auth($request, $response);
-			return $result;
+			return $this->auth($request, $response);
 		} catch (LoginException $e) {
 			throw new NotAuthenticated($e->getMessage(), $e->getCode(), $e);
 		} catch (NotAuthenticated $e) {
@@ -219,7 +218,7 @@ class Auth extends AbstractBasic {
 			$this->userSession->logout();
 		} else {
 			if ($this->twoFactorManager->needsSecondFactor()) {
-				throw new \Sabre\DAV\Exception\NotAuthenticated('2FA challenge not passed.');
+				throw new NotAuthenticated('2FA challenge not passed.');
 			}
 			if (\OC_User::handleApacheAuth() ||
 				//Fix for broken webdav clients
@@ -237,16 +236,12 @@ class Auth extends AbstractBasic {
 			}
 		}
 
-		if (!$this->userSession->isLoggedIn() && \in_array('XMLHttpRequest', \explode(',', $request->getHeader('X-Requested-With')))) {
-			// do not re-authenticate over ajax, use dummy auth name to prevent browser popup
-			$response->addHeader('WWW-Authenticate', 'DummyBasic realm="' . $this->realm . '"');
-			$response->setStatus(401);
-			throw new \Sabre\DAV\Exception\NotAuthenticated('Cannot authenticate over ajax calls');
-		}
-
 		$data = parent::check($request, $response);
 		if ($data[0] === true) {
 			$user = $this->userSession->getUser();
+			if ($user === null) {
+				throw new \LogicException('Logged in but no user -> :boom:');
+			}
 			$this->checkAccountModule($user);
 			$startPos = \strrpos($data[1], '/') + 1;
 			$data[1] = \substr_replace($data[1], $user->getUID(), $startPos);
@@ -267,5 +262,16 @@ class Auth extends AbstractBasic {
 		} catch (AccountCheckException $ex) {
 			throw new ServiceUnavailable($ex->getMessage(), $ex->getCode(), $ex);
 		}
+	}
+
+	public function challenge(RequestInterface $request, ResponseInterface $response) {
+		$schema = 'Basic';
+		// do not re-authenticate over ajax, use dummy auth name to prevent browser popup
+		if (\in_array('XMLHttpRequest', \explode(',', $request->getHeader('X-Requested-With')), true)) {
+			$schema = 'DummyBasic';
+		}
+
+		$response->addHeader('WWW-Authenticate', "$schema realm=\"{$this->realm}\", charset=\"UTF-8\"");
+		$response->setStatus(401);
 	}
 }
