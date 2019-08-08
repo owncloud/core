@@ -2,7 +2,7 @@ local pipeline = import 'pipeline.libsonnet';
 
 local trigger = {
   ref: [
-    'refs/heads/drone-jsonnet',
+    'refs/heads/master',
     'refs/tags/**',
     'refs/pull/**',
   ],

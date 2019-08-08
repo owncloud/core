@@ -90,7 +90,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -153,7 +153,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -233,7 +233,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -313,7 +313,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -397,7 +397,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -683,7 +683,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -793,7 +793,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -903,7 +903,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1013,7 +1013,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1111,7 +1111,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1218,7 +1218,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1325,7 +1325,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1432,7 +1432,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1538,7 +1538,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1642,7 +1642,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1740,7 +1740,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1847,7 +1847,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -1945,7 +1945,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2052,7 +2052,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2162,7 +2162,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2272,7 +2272,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2371,7 +2371,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2496,7 +2496,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2637,7 +2637,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2778,7 +2778,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -2919,7 +2919,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3060,7 +3060,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3201,7 +3201,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3342,7 +3342,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3483,7 +3483,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3624,7 +3624,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3765,7 +3765,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -3906,7 +3906,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4047,7 +4047,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4188,7 +4188,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4329,7 +4329,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4470,7 +4470,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4611,7 +4611,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4752,7 +4752,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -4893,7 +4893,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5046,7 +5046,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5187,7 +5187,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5328,7 +5328,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5469,7 +5469,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5610,7 +5610,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5751,7 +5751,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -5892,7 +5892,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6033,7 +6033,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6174,7 +6174,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6315,7 +6315,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6457,7 +6457,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6599,7 +6599,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6745,7 +6745,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -6887,7 +6887,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7029,7 +7029,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7181,7 +7181,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7333,7 +7333,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7481,7 +7481,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7629,7 +7629,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7777,7 +7777,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -7929,7 +7929,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8077,7 +8077,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8229,7 +8229,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8377,7 +8377,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8525,7 +8525,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8673,7 +8673,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8821,7 +8821,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -8969,7 +8969,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -9171,7 +9171,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -9323,7 +9323,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -9475,7 +9475,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -9639,7 +9639,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -9791,7 +9791,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -9939,7 +9939,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10087,7 +10087,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10235,7 +10235,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10383,7 +10383,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10531,7 +10531,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10683,7 +10683,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10835,7 +10835,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -10987,7 +10987,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -11139,7 +11139,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -11294,7 +11294,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -11449,7 +11449,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -11604,7 +11604,7 @@ services:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   - refs/pull/**
 
@@ -11634,7 +11634,7 @@ steps:
 
 trigger:
   ref:
-  - refs/heads/drone-jsonnet
+  - refs/heads/master
   - refs/tags/**
   status:
   - failure
