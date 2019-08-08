@@ -180,18 +180,6 @@ local pipelines = [
   ]
 ] + [
   #
-  # scality storage
-  #
-  pipeline.phpunit(
-    php='7.1',
-    db='sqlite',
-    coverage=true,
-    object='scality',
-    trigger=trigger,
-    depends_on=phpunit_deps
-  ),
-] + [
-  #
   # acceptance api
   #
   pipeline.behat(
