@@ -46,9 +46,6 @@ else
   GROUP="--group DB"
 fi
 
-# still required to run unit tests for encryption
-php occ app:enable encryption
-
 # show a little debug information
 php occ app:list
 

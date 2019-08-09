@@ -26,12 +26,6 @@ source_file = templates/lib.pot
 source_lang = en
 type = PO
 
-[owncloud.files_encryption]
-file_filter = <lang>/encryption.po
-source_file = templates/encryption.pot
-source_lang = en
-type = PO
-
 [owncloud.files_external]
 file_filter = <lang>/files_external.po
 source_file = templates/files_external.pot
