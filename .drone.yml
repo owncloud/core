@@ -1030,6 +1030,211 @@ depends_on:
 
 ---
 kind: pipeline
+name: phpunit-php7.0-sqlite
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  environment:
+    DB_TYPE: sqlite
+
+- name: owncloud-permissions
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - chown www-data -R /drone/src
+
+- name: owncloud-logfile
+  pull: always
+  image: owncloudci/php:7.0
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: phpunit-tests
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - su-exec www-data bash tests/drone/test-phpunit.sh
+  environment:
+    COVERAGE: false
+    DB_TYPE: sqlite
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+depends_on:
+- coding-standard
+- phan-php7.1
+- stan-php7.1
+
+---
+kind: pipeline
+name: phpunit-php7.0-mariadb10.2
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  environment:
+    DB_TYPE: mariadb
+
+- name: owncloud-permissions
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - chown www-data -R /drone/src
+
+- name: owncloud-logfile
+  pull: always
+  image: owncloudci/php:7.0
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: phpunit-tests
+  pull: always
+  image: owncloudci/php:7.0
+  commands:
+  - su-exec www-data bash tests/drone/test-phpunit.sh
+  environment:
+    COVERAGE: false
+    DB_TYPE: mariadb
+
+services:
+- name: mariadb
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+depends_on:
+- coding-standard
+- phan-php7.1
+- stan-php7.1
+
+---
+kind: pipeline
 name: phpunit-php7.1-sqlite
 
 platform:
@@ -11531,6 +11736,8 @@ depends_on:
 - caldav-old-php7.1-mariadb10.2
 - carddav-new-php7.1-mariadb10.2
 - carddav-old-php7.1-mariadb10.2
+- phpunit-php7.0-sqlite
+- phpunit-php7.0-mariadb10.2
 - phpunit-php7.1-sqlite
 - phpunit-php7.1-mariadb10.2
 - phpunit-php7.1-mysql5.5

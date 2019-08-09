@@ -114,6 +114,21 @@ local pipelines = [
   ),
 ] + [
   #
+  # php 7.0
+  #
+  pipeline.phpunit(
+    php='7.0',
+    db=matrix,
+    coverage=false,
+    trigger=trigger,
+    depends_on=phpunit_deps
+  )
+  for matrix in [
+    'sqlite',
+    'mariadb:10.2',
+  ]
+] + [
+  #
   # php 7.1
   #
   pipeline.phpunit(
