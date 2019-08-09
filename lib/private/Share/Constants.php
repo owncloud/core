@@ -43,7 +43,7 @@ class Constants {
 	const FORMAT_STATUSES = -2;
 	const FORMAT_SOURCES = -3;  // ToDo Check if it is still in use otherwise remove it
 
-	const RESPONSE_FORMAT = 'json'; // default resonse format for ocs calls
+	const RESPONSE_FORMAT = 'json'; // default response format for ocs calls
 
 	const TOKEN_LENGTH = 15; // old (oc7) length is 32, keep token length in db at least that for compatibility
 
