@@ -442,6 +442,15 @@ $CONFIG = array(
 'overwrite.cli.url' => '',
 
 /**
+ * If phoenix.baseUrl is set, public and private links will be redirected to this
+ * url. Phoenix will handle these links accordingly.
+ *
+ * As an example, in case 'phoenix.baseUrl' is set to 'http://phoenix,example.com',
+ * the shared link 'http://ocx.example.com/index.php/s/THoQjwYYMJvXMdW' will be redirected
+ * by ownCloud to 'http://phoenix.example.com/index.html#//s/THoQjwYYMJvXMdW'.
+ */
+'phoenix.baseUrl' => '',
+/**
  * To have clean URLs without `/index.php` this parameter needs to be configured.
  *
  * This parameter will be written as `RewriteBase` on update and installation of
