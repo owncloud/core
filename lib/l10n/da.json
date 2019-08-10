@@ -124,6 +124,8 @@
     "Username contains whitespace at the beginning or at the end" : "Brugernavn indeholder blanke tegn i begyndelsen eller slutningen",
     "A valid password must be provided" : "En gyldig adgangskode skal angives",
     "The username is already being used" : "Brugernavnet er allerede i brug",
+    "Your %s account was created" : "Din %s-konto blev oprettet",
+    "%s password changed successfully" : "App %s succesfuldt opdateret",
     "Login canceled by app" : "Log ind er annulleret af app",
     "User disabled" : "Bruger deaktiveret",
     "Settings" : "Indstillinger",

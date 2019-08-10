@@ -127,6 +127,8 @@
     "The username can not be longer than 64 characters" : "שם המשתמש אינו יכול להיות ארוך מ- 64 תווים",
     "A valid password must be provided" : "יש לספק ססמה תקנית",
     "The username is already being used" : "השם משתמש כבר בשימוש",
+    "Your %s account was created" : "חשבון %s שלך נוצר",
+    "%s password changed successfully" : "סיסמא %s שונתה בהצלחה",
     "Login canceled by app" : "התחברות בוטלה על ידי יישום",
     "User disabled" : "משתמש מנוטרל",
     "Settings" : "הגדרות",

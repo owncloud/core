@@ -89,6 +89,7 @@ OC.L10N.register(
     "Search" : "Axtarış",
     "Log in" : "Giriş",
     "New password" : "Yeni şifrə",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Ey ora,\n\nancaq deyirik ki, sizin artiq %s hesabınız var.\n\nizin istifadəçi adınız: %s\nYetkilidir: %s\n\n",
     "You are accessing the server from an untrusted domain." : "Siz serverə inamsız domain-dən girməyə çalışırsız."
 },
 "nplurals=2; plural=(n != 1);");

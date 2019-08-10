@@ -13,8 +13,6 @@ OC.L10N.register(
     "Couldn't send reset email. Please contact your administrator." : "Klarte ikke å sende e-post for tilbakestilling. Kontakt administratoren.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "installering og oppdatering av apper via markedet eller ved deling i Forent sky",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL bruker en utdatert %s-versjon (%s). Vennligst oppdater operativsystemet ditt; ellers vil ikke funksjoner som %s virke korrekt.",
-    "A problem occurred, please check your log files (Error: %s)" : "Det oppstod et problem. Sjekk loggfilene (Feil: %s)",
-    "Migration Completed" : "Migrering ferdig",
     "Group already exists." : "Gruppe finnes allerede.",
     "Unable to add group." : "Kan ikke legge til gruppe.",
     "Unable to delete group." : "Kan ikke slette gruppe.",

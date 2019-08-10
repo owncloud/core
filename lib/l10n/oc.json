@@ -113,6 +113,7 @@
     "A valid username must be provided" : "Un nom d'utilizaire valid deu èsser sasit",
     "A valid password must be provided" : "Un senhal valid deu èsser sasit",
     "The username is already being used" : "Aqueste nom d'utilizaire es ja utilizat",
+    "Your %s account was created" : "Vòstre compte %s es estat creat.",
     "User disabled" : "Utilizaire desactivat",
     "Settings" : "Paramètres",
     "Users" : "Utilizaires",

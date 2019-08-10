@@ -128,6 +128,8 @@
     "The username can not be longer than 64 characters" : "Il nome utente non può essere più lungo di 64 caratteri",
     "A valid password must be provided" : "Deve essere fornita una password valida",
     "The username is already being used" : "Il nome utente è già utilizzato",
+    "Your %s account was created" : "Il tuo account %s è stato creato",
+    "%s password changed successfully" : "Password di %s modificata correttamente",
     "Login canceled by app" : "Accesso annullato dall'applicazione",
     "User disabled" : "Utente disabilitato",
     "Settings" : "Impostazioni",

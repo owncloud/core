@@ -13,8 +13,6 @@ OC.L10N.register(
     "Couldn't send reset email. Please contact your administrator." : "Αδυναμία αποστολής ηλ. μηνύματος επαναφοράς. Παρακαλούμε επικοινωνήστε με το διαχειριστή σας.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "γίνεται εγκατάσταση και ενημέρωση εφαρμογών μέσω του κέντρου εφαρμογών ή του κοινόχρηστου Federated Cloud",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "Το cURL χρησιμοποιεί μια παρωχημένη %s έκδοση (%s). Παρακαλούμε αναβαθμίστε το λειτουργικό σας σύστημα αλλιώς δυνατότητες όπως %s δεν θα δουλέψουν αξιόπιστα.",
-    "A problem occurred, please check your log files (Error: %s)" : "Παρουσιάστηκε πρόβλημα, παρακαλώ ελέγξτε τα αρχεία καταγραφής σας (Σφάλμα: %s)",
-    "Migration Completed" : "Η μετάβαση ολοκληρώθηκε",
     "Group already exists." : "Η ομάδα υπάρχει ήδη.",
     "Unable to add group." : "Αδυναμία προσθήκης ομάδας.",
     "Unable to delete group." : "Αδυναμία διαγραφής ομάδας.",

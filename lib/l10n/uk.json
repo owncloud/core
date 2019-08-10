@@ -110,6 +110,8 @@
     "Username contains whitespace at the beginning or at the end" : "Ім'я користувача містить символ пробілу в початку або в кінці",
     "A valid password must be provided" : "Потрібно задати вірний пароль",
     "The username is already being used" : "Ім'я користувача вже використовується",
+    "Your %s account was created" : "Ваш %s аккаунт створений",
+    "%s password changed successfully" : "%s пароль змінено успішно",
     "Login canceled by app" : "Вхід скасовано додатком",
     "User disabled" : "Користувач виключений",
     "Settings" : "Налаштування",

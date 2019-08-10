@@ -132,6 +132,8 @@
     "The username can not be longer than 64 characters" : "O nome de usuario non pode ter máis de 64 caracteres",
     "A valid password must be provided" : "Debe fornecer un contrasinal",
     "The username is already being used" : "Este nome de usuario xa está a ser usado",
+    "Your %s account was created" : "Foi creada a conta %s",
+    "%s password changed successfully" : "O contrasinal %s foi cambiado satisfactoriamente",
     "Login canceled by app" : "Acceso cancelado polo aplicativo",
     "User disabled" : "Usuario desactivado",
     "Settings" : "Axustes",

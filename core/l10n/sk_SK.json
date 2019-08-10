@@ -271,6 +271,7 @@
     "New password" : "Nové heslo",
     "New Password" : "Nové heslo",
     "Reset password" : "Obnovenie hesla",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Ahoj,\n\ntoto je oznámenie o novo vytvorenom účte %s.\n\nVaše používateľské meno: %s\nPrihlásiť sa môžete tu: %s\n\n",
     "This ownCloud instance is currently in single user mode." : "Táto inštancia ownCloudu je teraz v jednopoužívateľskom móde.",
     "This means only administrators can use the instance." : "Len správca systému môže používať túto inštanciu.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Kontaktujte prosím správcu systému, ak sa táto správa objavuje opakovane alebo neočakávane.",

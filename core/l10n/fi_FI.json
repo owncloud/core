@@ -308,6 +308,7 @@
     "New Password" : "Uusi salasana",
     "Reset password" : "Palauta salasana",
     "Personal note from the sender: <br> %s." : "Henkilökohtainen viesti lähettäjältä: <br> %s.",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Hei\n\nSinulla on nyt %s-tili.\n\nKäyttäjätunnuksesi: %s\nAloita käyttö: %s\n\n",
     "This ownCloud instance is currently in single user mode." : "Tämä ownCloud-asennus on parhaillaan single user -tilassa.",
     "This means only administrators can use the instance." : "Se tarkoittaa, että vain ylläpitäjät voivat nyt käyttää tätä ownCloudia.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Ota yhteys järjestelmän ylläpitäjään, jos tämä viesti ilmenee uudelleen tai odottamatta.",

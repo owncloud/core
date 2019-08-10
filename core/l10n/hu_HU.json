@@ -323,6 +323,7 @@
     "New Password" : "Új jelszó",
     "Reset password" : "Jelszó-visszaállítás",
     "Personal note from the sender: <br> %s." : "A küldő személyes megjegyzése: <br> %s.",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Üdv!\n\nÉrtesítünk, hogy van egy %s fiókja.\n\nFelhasználónév: %s\nHozzáférés: %s\n\n",
     "This ownCloud instance is currently in single user mode." : "Ez az ownCloud szolgáltatás jelenleg egyfelhasználós üzemmódban működik.",
     "This means only administrators can use the instance." : "Ez azt jelenti, hogy csak az adminisztrátor használhatja ezt a példányt",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Ha ez az üzenet ismételten vagy indokolatlanul megjelenik, akkor keresse fel a rendszergazdáját!",

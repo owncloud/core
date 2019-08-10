@@ -8,7 +8,6 @@ OC.L10N.register(
     "Unable to change password" : "Imposibil de schimbat parola",
     "%s password changed successfully" : "parola %s a fost schimbată cu succes",
     "Couldn't send reset email. Please contact your administrator." : "Expedierea email-ului de resetare a eşuat. Vă rugăm să contactaţi administratorul dvs.",
-    "Migration Completed" : "Migrare încheiată",
     "Group already exists." : "Grupul există deja.",
     "Unable to add group." : "Nu se poate adăuga grupul.",
     "Unable to delete group." : "Nu se poate șterge grupul.",

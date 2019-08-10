@@ -123,6 +123,8 @@
     "Username contains whitespace at the beginning or at the end" : "ユーザー名の最初か最後に空白が含まれています",
     "A valid password must be provided" : "有効なパスワードを指定する必要があります",
     "The username is already being used" : "ユーザー名はすでに使われています",
+    "Your %s account was created" : "アカウント %s を作成しました",
+    "%s password changed successfully" : "%s パスワードは正常に変更されました",
     "Login canceled by app" : "アプリによりログインが中止されました",
     "User disabled" : "ユーザーは無効です",
     "Settings" : "設定",

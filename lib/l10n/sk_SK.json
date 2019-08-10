@@ -117,6 +117,7 @@
     "Username contains whitespace at the beginning or at the end" : "Používateľské meno obsahuje na začiatku alebo na konci netlačiteľné znaky",
     "A valid password must be provided" : "Musíte zadať platné heslo",
     "The username is already being used" : "Meno používateľa je už použité",
+    "Your %s account was created" : "Váš účet %s bol vytvorený",
     "Login canceled by app" : "Aplikácia zrušila prihlásenie",
     "User disabled" : "Používateľ je deaktivovaný",
     "Settings" : "Nastavenia",

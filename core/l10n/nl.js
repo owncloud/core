@@ -319,6 +319,7 @@ OC.L10N.register(
     "New password" : "Nieuw wachtwoord",
     "New Password" : "Nieuw wachtwoord",
     "Reset password" : "Reset wachtwoord",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Hallo,\n\nwe willen u laten weten dat u nu een %s account hebt.\n\nUw gebruikersnaam: %s\nGa naar: %s\n\n",
     "This ownCloud instance is currently in single user mode." : "Deze ownCloud werkt momenteel in enkele gebruiker modus.",
     "This means only administrators can use the instance." : "Dat betekent dat alleen beheerders deze installatie kunnen gebruiken.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Neem contact op met uw systeembeheerder als deze melding aanhoudt of onverwacht verscheen.",

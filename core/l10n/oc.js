@@ -259,6 +259,7 @@ OC.L10N.register(
     "New password" : "Senhal novèl",
     "New Password" : "Senhal novèl",
     "Reset password" : "Reïnicializar lo senhal",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Bonjorn,<br><br>Un compte %s es estat creat per vos.<br><br>Vòstre nom d'utilizaire es : %s<br>Visitatz vòstre compte : %s<br><br>\n",
     "This ownCloud instance is currently in single user mode." : "Aquesta instància de ownCloud es actualament en mòde utilizaire unic.",
     "This means only administrators can use the instance." : "Aquò significa que sols los administrators pòdon utilizar l'instància.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Contactatz vòstre administrator sistèma se aqueste messatge persistís o apareis de faiçon imprevista.",

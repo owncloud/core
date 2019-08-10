@@ -56,6 +56,8 @@
     "Could not find category \"%s\"" : "Nepavyko rasti kategorijos „%s“",
     "A valid username must be provided" : "Vartotojo vardas turi būti tinkamas",
     "A valid password must be provided" : "Slaptažodis turi būti tinkamas",
+    "Your %s account was created" : "Tavo paskyra %s sukurta",
+    "%s password changed successfully" : "%sslaptažodis pakeistas",
     "Settings" : "Parinktys",
     "Users" : "Vartotojai",
     "A safe home for all your data" : "Saugus namai jūsų visiems duomenims",

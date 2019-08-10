@@ -298,6 +298,7 @@ OC.L10N.register(
     "New password" : "Yeni parola",
     "New Password" : "Yeni Parola",
     "Reset password" : "Parolayı sıfırla",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Merhaba,\n\nSadece, artık bir %s hesabınızın olduğunu söylemek istedim.\n\nKullanıcı adınız: %s\nErişim: %s\n\n",
     "This ownCloud instance is currently in single user mode." : "Bu ownCloud örneği şu anda tek kullanıcı kipinde.",
     "This means only administrators can use the instance." : "Bu, örneği sadece yöneticiler kullanabilir demektir.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Eğer bu ileti görünmeye devam ederse veya beklenmedik şekilde ortaya çıkmışsa sistem yöneticinizle iletişime geçin.",

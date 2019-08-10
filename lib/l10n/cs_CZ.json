@@ -127,6 +127,8 @@
     "The username must be at least 3 characters long" : "Uživatelské jméno musí mít délku alespoň 3 znaky",
     "A valid password must be provided" : "Musíte zadat platné heslo",
     "The username is already being used" : "Uživatelské jméno je již využíváno",
+    "Your %s account was created" : "Účet %s byl vytvořen",
+    "%s password changed successfully" : "%s heslo bylo změněno vpořádku",
     "Login canceled by app" : "Přihlášení zrušeno aplikací",
     "User disabled" : "Uživatel zakázán",
     "Settings" : "Nastavení",

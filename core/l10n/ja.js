@@ -326,6 +326,7 @@ OC.L10N.register(
     "New Password" : "新しいパスワード",
     "Reset password" : "パスワードをリセット",
     "Personal note from the sender: <br> %s." : "送信者からの個人的なお知らせ: <br>%s",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "こんにちは、\n\nあなたのアカウント %s が利用可能になったことをお知らせします。\n\nユーザー名: %s\n接続URL: %s\n\n",
     "This ownCloud instance is currently in single user mode." : "このownCloudインスタンスは、現在シングルユーザーモードです。",
     "This means only administrators can use the instance." : "これは、管理者のみがインスタンスを利用できることを意味しています。",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "このメッセージが引き続き現れる、または予期せず現れる場合は、システム管理者に問い合わせてください。",

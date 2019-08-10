@@ -297,6 +297,8 @@
     "New password" : "Новий пароль",
     "New Password" : "Новий пароль",
     "Reset password" : "Скинути пароль",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Агов,\n\nпросто щоб ви знали, у вас є аккаунт %s.\n\nВаше ім'я користувача: %s\nПерейдіть сюди: %s\n\n",
+    "Please set your password" : "Будь ласка, встановіть свій пароль",
     "This ownCloud instance is currently in single user mode." : "Сервер ownCloud в даний час працює в однокористувацькому режимі.",
     "This means only administrators can use the instance." : "Це означає, що тільки адміністратори можуть використовувати сервер.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Зверніться до вашого системного адміністратора якщо це повідомлення не зникає або з'являється несподівано.",

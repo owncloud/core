@@ -296,6 +296,7 @@
     "New password" : "Nytt lösenord",
     "New Password" : "Nytt lösenord",
     "Reset password" : "Återställ lösenordet",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Hej där,\n\nvill bara informera dig om att du nu har ett %s konto.\n\nDitt användarnamn: %s\nAccessa det genom: %s\n",
     "This ownCloud instance is currently in single user mode." : "Denna ownCloud instans är för närvarande i enanvändarläge",
     "This means only administrators can use the instance." : "Detta betyder att endast administartörer kan använda instansen.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Hör av dig till din systemadministratör ifall detta meddelande fortsätter eller visas oväntat.",

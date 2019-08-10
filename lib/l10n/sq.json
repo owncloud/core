@@ -132,6 +132,8 @@
     "The username can not be longer than 64 characters" : "Emri i përdoruesit s’mund të jetë më i gjatë se 64 shenja",
     "A valid password must be provided" : "Duhet dhënë një fjalëkalim i vlefshëm",
     "The username is already being used" : "Emri i përdoruesit është tashmë i përdorur",
+    "Your %s account was created" : "Llogaria juaj %s u krijua",
+    "%s password changed successfully" : "Fjalëkalimi për %s u ndryshua me sukses",
     "Login canceled by app" : "Hyrja u anulua nga aplikacioni",
     "User disabled" : "Përdorues i çaktivizuar",
     "Settings" : "Rregullime",

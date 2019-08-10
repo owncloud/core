@@ -243,6 +243,7 @@ OC.L10N.register(
     "Use the following link to reset your password: {link}" : "Gebruik die volgende skakel om u wagwoord te herstel: {link}",
     "New password" : "Nuwe wagwoord",
     "New Password" : "Nuwe Wagwoord",
-    "Reset password" : "Herstel wagwoord"
+    "Reset password" : "Herstel wagwoord",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Goeiedag,\n\nOns wil u laat weet dat u nou ’n %s-rekening het.\n\nU gebruikersnaam: %s\nKry toegang by: %s\n\n"
 },
 "nplurals=2; plural=(n != 1);");

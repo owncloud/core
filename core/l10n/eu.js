@@ -243,6 +243,7 @@ OC.L10N.register(
     "New password" : "Pasahitz berria",
     "New Password" : "Pasahitz Berria",
     "Reset password" : "Berrezarri pasahitza",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Kaixo,\n\norain %s kontu bat duzula esateko besterik ez.\n\nZure erabiltzailea: %s\nSar zaitez: %s\n\n",
     "This ownCloud instance is currently in single user mode." : "ownCloud instantzia hau erabiltzaile bakar moduan dago.",
     "This means only administrators can use the instance." : "Honek administradoreak bakarrik erabili dezakeela esan nahi du.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Jarri harremanetan zure sistema administratzailearekin mezu hau irauten badu edo bat-batean agertu bada.",

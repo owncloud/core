@@ -331,6 +331,8 @@ OC.L10N.register(
     "New Password" : "Nýtt lykilorð",
     "Confirm Password" : "Staðfestu lykilorðið",
     "Reset password" : "Endursetja lykilorð",
+    "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Hæ þú,\n\nbara að láta þig vita að þú átt núna %s aðgang.\n\nNotandanafnið þitt: %s\nTengstu honum: %s\n\n",
+    "Please set your password" : "Stilltu lykilorðið þitt",
     "This ownCloud instance is currently in single user mode." : "Þetta ownCloud-tilvik er nú í eins-notanda ham.",
     "This means only administrators can use the instance." : "Þetta þýðir aðeins stjórnendur geta notað eintakið.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Hafðu samband við kerfisstjóra ef þessi skilaboð eru viðvarandi eða birtust óvænt.",
