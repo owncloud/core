@@ -100,7 +100,11 @@ class View {
 	/** @var \OC\User\Manager  */
 	private $userManager;
 
+	/** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface */
 	private $eventDispatcher;
+
+	/** @var \OCP\IConfig */
+	private $config;
 
 	private static $ignorePartFile = false;
 
@@ -121,6 +125,7 @@ class View {
 		$this->lockingEnabled = !($this->lockingProvider instanceof \OC\Lock\NoopLockingProvider);
 		$this->userManager = \OC::$server->getUserManager();
 		$this->eventDispatcher = \OC::$server->getEventDispatcher();
+		$this->config = \OC::$server->getConfig();
 	}
 
 	public function getAbsolutePath($path = '/') {
@@ -347,6 +352,11 @@ class View {
 	 */
 	public function rmdir($path) {
 		return $this->emittingCall(function () use (&$path) {
+			if (($path !== '') &&
+				(\strpos($this->config->getSystemValue('share_folder', '/'), $path) !== false)) {
+				Util::writeLog("core", "The folder $path could not be deleted as it is configured as share_folder in config.", Util::WARN);
+				return false;
+			}
 			$absolutePath = $this->getAbsolutePath($path);
 			$mount = Filesystem::getMountManager()->find($absolutePath);
 			if ($mount->getInternalPath($absolutePath) === '') {
