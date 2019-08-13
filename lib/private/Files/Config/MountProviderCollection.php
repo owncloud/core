@@ -94,8 +94,13 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 						new View('/' . $user->getUID() . '/files'),
 						$takenMountpoints
 					);
-					$mount->moveMount($newMountpoint);
-					$takenMountpoints[] = $newMountpoint;
+					if ($mount->moveMount($newMountpoint)) {
+						$fsMountManager = Filesystem::getMountManager();
+						if ($fsMountManager->findIn($mountpoint)) {
+							$fsMountManager->moveMount($mountpoint, $newMountpoint);
+						}
+					}
+					$takenMountpoints[] = $mount->getMountPoint(); // mount might not have been moved
 				} else {
 					$takenMountpoints[] = $mountpoint;
 				}

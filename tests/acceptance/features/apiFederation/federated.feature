@@ -498,14 +498,11 @@ Feature: federated
     And user "user2" from server "LOCAL" accepts the last pending share using the sharing API
     And user "user1" shares folder "zzzfolder" with user "user2" using the sharing API
     And user "user1" shares folder "randomfile.txt" with user "user2" using the sharing API
-    Then as "user2" folder "zzzfolder/remote" should exist
-    #when fixing the issue delete the following line and use the one below to test the correct behaviour
-    And as "user2" folder "zzzfolder (2)" should not exist
-    #And as "user2" folder "zzzfolder (2)/local" should exist
-    And the content of file "/randomfile.txt" for user "user2" on server "LOCAL" should be "remote content"
-    #when fixing the issue delete the following line and use the one below to test the correct behaviour
-    And as "user2" file "/randomfile (2).txt" should not exist
-    #And the content of file "/randomfile (2).txt" for user "user2" on server "LOCAL" should be "local content"
+    # local shares are taking priority at the moment
+    Then as "user2" folder "zzzfolder (2)/remote" should exist
+    And as "user2" folder "zzzfolder/local" should exist
+    And the content of file "/randomfile (2).txt" for user "user2" on server "LOCAL" should be "remote content"
+    And the content of file "/randomfile.txt" for user "user2" on server "LOCAL" should be "local content"
 
   Scenario: receive a remote share that has the same name as a previously received local share
     Given using server "REMOTE"
