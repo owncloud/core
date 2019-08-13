@@ -140,7 +140,7 @@ class CreateUserServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedExceptionMessage Unable to create user due to exception:
+	 * @expectedExceptionMessage Unable to create user:
 	 * @expectedException  \OCP\User\Exceptions\CannotCreateUserException
 	 */
 	public function testUserCreateException() {
