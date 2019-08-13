@@ -387,6 +387,96 @@ local pipelines = [
     trigger=trigger,
     depends_on=phpunit_deps
   ),
+
+  pipeline.behat(
+    type='webui',
+    php='7.1',
+    db='mariadb:10.2',
+    proto='http',
+    browser='chrome',
+    filter='@smokeTest&&~@notifications-app-required',
+    num='1/3',
+    notification=false,
+    email=true,
+    proxy=true,
+    federated='',
+    trigger=trigger,
+    depends_on=phpunit_deps
+  ),
+
+  pipeline.behat(
+    type='webui',
+    php='7.1',
+    db='mariadb:10.2',
+    proto='http',
+    browser='chrome',
+    filter='@smokeTest&&~@notifications-app-required',
+    num='2/3',
+    notification=false,
+    email=true,
+    proxy=true,
+    federated='',
+    trigger=trigger,
+    depends_on=phpunit_deps
+  ),
+
+  pipeline.behat(
+    type='webui',
+    php='7.1',
+    db='mariadb:10.2',
+    proto='http',
+    browser='chrome',
+    filter='@smokeTest&&~@notifications-app-required',
+    num='3/3',
+    notification=false,
+    email=true,
+    proxy=true,
+    federated='',
+    trigger=trigger,
+    depends_on=phpunit_deps
+  ),
+
+  pipeline.behat(
+    type='api',
+    php='7.1',
+    db='mariadb:10.2',
+    proto='http',
+    filter='@smokeTest&&~@notifications-app-required',
+    num='1/3',
+    notification=false,
+    proxy=true,
+    federated='',
+    trigger=trigger,
+    depends_on=phpunit_deps
+  ),
+
+  pipeline.behat(
+    type='api',
+    php='7.1',
+    db='mariadb:10.2',
+    proto='http',
+    filter='@smokeTest&&~@notifications-app-required',
+    num='2/3',
+    notification=false,
+    proxy=true,
+    federated='',
+    trigger=trigger,
+    depends_on=phpunit_deps
+  ),
+
+  pipeline.behat(
+    type='api',
+    php='7.1',
+    db='mariadb:10.2',
+    proto='http',
+    filter='@smokeTest&&~@notifications-app-required',
+    num='3/3',
+    notification=false,
+    proxy=true,
+    federated='',
+    trigger=trigger,
+    depends_on=phpunit_deps
+  ),
 ];
 
 local notification_deps = std.filterMap(function(p) p.kind == 'pipeline', function(p) p.name, pipelines);

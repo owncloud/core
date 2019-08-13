@@ -11864,6 +11864,927 @@ depends_on:
 
 ---
 kind: pipeline
+name: behat-chrome-proxy-1-of-3
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /drone
+  path: src
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  - php occ config:system:set trusted_domains 3 --value=proxy
+  environment:
+    DB_TYPE: mariadb
+
+- name: testing-application
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
+  - cd /drone/src/apps/testing
+  - composer install
+  - cd /drone/src
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+
+- name: owncloud-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown www-data -R /drone/src
+
+- name: owncloud-logfile
+  pull: always
+  image: owncloudci/php:7.1
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: webui-acceptance-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - touch /drone/saved-settings.sh
+  - . /drone/saved-settings.sh
+  - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
+  environment:
+    BEHAT_FILTER_TAGS: "@smokeTest&&~@notifications-app-required"
+    BROWSER: chrome
+    DIVIDE_INTO_NUM_PARTS: 3
+    MAILHOG_HOST: email
+    PLATFORM: Linux
+    RUN_PART: 1
+    SELENIUM_HOST: chrome
+    SELENIUM_PORT: 4444
+    TEST_SERVER_URL: http://proxy
+
+services:
+- name: server
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_WEBROOT: /drone/src
+
+- name: chrome
+  pull: always
+  image: selenium/standalone-chrome-debug:3.141.59-oxygen
+  environment:
+    JAVA_OPTS: -Dselenium.LOGGER.level=WARNING
+
+- name: mariadb
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+- name: email
+  pull: always
+  image: mailhog/mailhog:latest
+
+- name: proxy
+  pull: always
+  image: pottava/proxy
+  environment:
+    PROXY_URL: http://server
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+depends_on:
+- coding-standard
+- phan-php7.1
+- stan-php7.1
+
+---
+kind: pipeline
+name: behat-chrome-proxy-2-of-3
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /drone
+  path: src
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  - php occ config:system:set trusted_domains 3 --value=proxy
+  environment:
+    DB_TYPE: mariadb
+
+- name: testing-application
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
+  - cd /drone/src/apps/testing
+  - composer install
+  - cd /drone/src
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+
+- name: owncloud-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown www-data -R /drone/src
+
+- name: owncloud-logfile
+  pull: always
+  image: owncloudci/php:7.1
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: webui-acceptance-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - touch /drone/saved-settings.sh
+  - . /drone/saved-settings.sh
+  - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
+  environment:
+    BEHAT_FILTER_TAGS: "@smokeTest&&~@notifications-app-required"
+    BROWSER: chrome
+    DIVIDE_INTO_NUM_PARTS: 3
+    MAILHOG_HOST: email
+    PLATFORM: Linux
+    RUN_PART: 2
+    SELENIUM_HOST: chrome
+    SELENIUM_PORT: 4444
+    TEST_SERVER_URL: http://proxy
+
+services:
+- name: server
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_WEBROOT: /drone/src
+
+- name: chrome
+  pull: always
+  image: selenium/standalone-chrome-debug:3.141.59-oxygen
+  environment:
+    JAVA_OPTS: -Dselenium.LOGGER.level=WARNING
+
+- name: mariadb
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+- name: email
+  pull: always
+  image: mailhog/mailhog:latest
+
+- name: proxy
+  pull: always
+  image: pottava/proxy
+  environment:
+    PROXY_URL: http://server
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+depends_on:
+- coding-standard
+- phan-php7.1
+- stan-php7.1
+
+---
+kind: pipeline
+name: behat-chrome-proxy-3-of-3
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /drone
+  path: src
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  - php occ config:system:set trusted_domains 3 --value=proxy
+  environment:
+    DB_TYPE: mariadb
+
+- name: testing-application
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
+  - cd /drone/src/apps/testing
+  - composer install
+  - cd /drone/src
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+
+- name: owncloud-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown www-data -R /drone/src
+
+- name: owncloud-logfile
+  pull: always
+  image: owncloudci/php:7.1
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: webui-acceptance-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - touch /drone/saved-settings.sh
+  - . /drone/saved-settings.sh
+  - make test-acceptance-webui TESTING_REMOTE_SYSTEM=true
+  environment:
+    BEHAT_FILTER_TAGS: "@smokeTest&&~@notifications-app-required"
+    BROWSER: chrome
+    DIVIDE_INTO_NUM_PARTS: 3
+    MAILHOG_HOST: email
+    PLATFORM: Linux
+    RUN_PART: 3
+    SELENIUM_HOST: chrome
+    SELENIUM_PORT: 4444
+    TEST_SERVER_URL: http://proxy
+
+services:
+- name: server
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_WEBROOT: /drone/src
+
+- name: chrome
+  pull: always
+  image: selenium/standalone-chrome-debug:3.141.59-oxygen
+  environment:
+    JAVA_OPTS: -Dselenium.LOGGER.level=WARNING
+
+- name: mariadb
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+- name: email
+  pull: always
+  image: mailhog/mailhog:latest
+
+- name: proxy
+  pull: always
+  image: pottava/proxy
+  environment:
+    PROXY_URL: http://server
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+depends_on:
+- coding-standard
+- phan-php7.1
+- stan-php7.1
+
+---
+kind: pipeline
+name: behat-headless-proxy-1-of-3
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /drone
+  path: src
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  - php occ config:system:set trusted_domains 3 --value=proxy
+  environment:
+    DB_TYPE: mariadb
+
+- name: testing-application
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
+  - cd /drone/src/apps/testing
+  - composer install
+  - cd /drone/src
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+
+- name: owncloud-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown www-data -R /drone/src
+
+- name: owncloud-logfile
+  pull: always
+  image: owncloudci/php:7.1
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: api-acceptance-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - touch /drone/saved-settings.sh
+  - . /drone/saved-settings.sh
+  - make test-acceptance-api TESTING_REMOTE_SYSTEM=true
+  environment:
+    BEHAT_FILTER_TAGS: "@smokeTest&&~@notifications-app-required"
+    DIVIDE_INTO_NUM_PARTS: 3
+    RUN_PART: 1
+    TEST_SERVER_URL: http://proxy
+
+services:
+- name: server
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_WEBROOT: /drone/src
+
+- name: mariadb
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+- name: proxy
+  pull: always
+  image: pottava/proxy
+  environment:
+    PROXY_URL: http://server
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+depends_on:
+- coding-standard
+- phan-php7.1
+- stan-php7.1
+
+---
+kind: pipeline
+name: behat-headless-proxy-2-of-3
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /drone
+  path: src
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  - php occ config:system:set trusted_domains 3 --value=proxy
+  environment:
+    DB_TYPE: mariadb
+
+- name: testing-application
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
+  - cd /drone/src/apps/testing
+  - composer install
+  - cd /drone/src
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+
+- name: owncloud-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown www-data -R /drone/src
+
+- name: owncloud-logfile
+  pull: always
+  image: owncloudci/php:7.1
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: api-acceptance-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - touch /drone/saved-settings.sh
+  - . /drone/saved-settings.sh
+  - make test-acceptance-api TESTING_REMOTE_SYSTEM=true
+  environment:
+    BEHAT_FILTER_TAGS: "@smokeTest&&~@notifications-app-required"
+    DIVIDE_INTO_NUM_PARTS: 3
+    RUN_PART: 2
+    TEST_SERVER_URL: http://proxy
+
+services:
+- name: server
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_WEBROOT: /drone/src
+
+- name: mariadb
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+- name: proxy
+  pull: always
+  image: pottava/proxy
+  environment:
+    PROXY_URL: http://server
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+depends_on:
+- coding-standard
+- phan-php7.1
+- stan-php7.1
+
+---
+kind: pipeline
+name: behat-headless-proxy-3-of-3
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /drone
+  path: src
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    restore: true
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.services
+    - drone.owncloud.com
+
+- name: composer-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-composer-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: vendorbin-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make vendor-bin-deps
+  environment:
+    COMPOSER_HOME: /drone/src/.cache/composer
+
+- name: yarn-install
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make install-nodejs-deps
+  environment:
+    NPM_CONFIG_CACHE: /drone/src/.cache/npm
+    YARN_CACHE_FOLDER: /drone/src/.cache/yarn
+    bower_storage__packages: /drone/src/.cache/bower
+
+- name: install-server
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - bash tests/drone/install-server.sh
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+  - php occ config:list
+  - php occ security:certificates:import /drone/server.crt
+  - php occ security:certificates
+  - php occ config:system:set trusted_domains 3 --value=proxy
+  environment:
+    DB_TYPE: mariadb
+
+- name: testing-application
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - git clone https://github.com/owncloud/testing.git /drone/src/apps/testing
+  - cd /drone/src/apps/testing
+  - composer install
+  - cd /drone/src
+  - php occ a:l
+  - php occ a:e testing
+  - php occ a:l
+
+- name: owncloud-permissions
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - chown www-data -R /drone/src
+
+- name: owncloud-logfile
+  pull: always
+  image: owncloudci/php:7.1
+  detach: true
+  commands:
+  - tail -f /drone/src/data/owncloud.log
+
+- name: api-acceptance-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - touch /drone/saved-settings.sh
+  - . /drone/saved-settings.sh
+  - make test-acceptance-api TESTING_REMOTE_SYSTEM=true
+  environment:
+    BEHAT_FILTER_TAGS: "@smokeTest&&~@notifications-app-required"
+    DIVIDE_INTO_NUM_PARTS: 3
+    RUN_PART: 3
+    TEST_SERVER_URL: http://proxy
+
+services:
+- name: server
+  pull: always
+  image: owncloudci/php:7.1
+  command:
+  - /usr/local/bin/apachectl
+  - -e
+  - debug
+  - -D
+  - FOREGROUND
+  environment:
+    APACHE_WEBROOT: /drone/src
+
+- name: mariadb
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+- name: proxy
+  pull: always
+  image: pottava/proxy
+  environment:
+    PROXY_URL: http://server
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+depends_on:
+- coding-standard
+- phan-php7.1
+- stan-php7.1
+
+---
+kind: pipeline
 name: chat-notifications
 
 platform:
@@ -11977,5 +12898,11 @@ depends_on:
 - behat-firefox-1-of-3
 - behat-firefox-2-of-3
 - behat-firefox-3-of-3
+- behat-chrome-proxy-1-of-3
+- behat-chrome-proxy-2-of-3
+- behat-chrome-proxy-3-of-3
+- behat-headless-proxy-1-of-3
+- behat-headless-proxy-2-of-3
+- behat-headless-proxy-3-of-3
 
 ...
