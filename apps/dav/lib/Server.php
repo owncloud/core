@@ -134,6 +134,7 @@ class Server {
 		if ($this->isRequestForSubtree(['public-files'])) {
 			$authPlugin->addBackend(new PublicSharingAuth($this->server, OC::$server->getShareManager()));
 			$this->server->addPlugin(new PublicLinkEventsPlugin(\OC::$server->getEventDispatcher()));
+			$this->server->addPlugin(new PublicFilesPlugin());
 		}
 		$authPlugin->addBackend(new PublicAuth());
 		$this->server->addPlugin($authPlugin);
@@ -156,7 +157,6 @@ class Server {
 		$this->server->addPlugin(new LockPlugin());
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
 		$this->server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($this->server->tree, false, OC::$server->getTimeFactory())));
-		$this->server->addPlugin(new PublicFilesPlugin());
 
 		// ACL plugin not used in files subtree, also it causes issues
 		// with performance and locking issues because it will query
