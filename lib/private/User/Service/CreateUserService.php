@@ -125,7 +125,7 @@ class CreateUserService {
 			}
 			$user = $this->userManager->createUser($username, $password);
 		} catch (\Exception $exception) {
-			throw new CannotCreateUserException("Unable to create user due to exception: {$exception->getMessage()}");
+			throw new CannotCreateUserException("Unable to create user: {$exception->getMessage()}");
 		}
 
 		if ($user === false) {
