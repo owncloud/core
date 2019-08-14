@@ -7,6 +7,7 @@
 
 namespace Test\Files;
 
+use OC\AllConfig;
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Cache\Watcher;
 use OC\Files\Filesystem;
@@ -80,6 +81,9 @@ class ViewTest extends TestCase {
 	/** @var \OC\Files\Storage\Storage */
 	private $tempStorage;
 
+	/** @var \OC\AllConfig */
+	private $config;
+
 	protected function setUp() {
 		parent::setUp();
 		\OC_Hook::clear();
@@ -104,9 +108,12 @@ class ViewTest extends TestCase {
 		Filesystem::clearMounts();
 
 		$this->tempStorage = null;
+
+		$this->config = $this->createMock(AllConfig::class);
 	}
 
 	protected function tearDown() {
+		$this->restoreService('AllConfig');
 		\OC_User::setUserId($this->user);
 		foreach ($this->storages as $storage) {
 			$cache = $storage->getCache();
@@ -2669,5 +2676,29 @@ class ViewTest extends TestCase {
 		$view = new View('/files');
 		$result = $view->fopen('unexist.txt', 'r');
 		$this->assertFalse($result);
+	}
+
+	public function providesShareFolder() {
+		return [
+			['/MyTestShareFolder', '/MyTestShareFolder'],
+			['/MyTestShareFolder/Share/Foo', '/MyTestShareFolder'],
+		];
+	}
+
+	/**
+	 * @dataProvider providesShareFolder
+	 */
+	public function testDeleteShareFolder($shareFolder, $deleteFolder) {
+		/**
+		 * Using overwriteService in this method instead of setUp, because there
+		 * are other methods in the test's which might get affected if we use it
+		 * in setUp.
+		 */
+		$this->overwriteService('AllConfig', $this->config);
+		$this->config->method('getSystemValue')
+			->willReturn($shareFolder);
+		$view = new View('/' . $this->user . '/files');
+		$view->mkdir($shareFolder);
+		$this->assertFalse($view->rmdir($deleteFolder));
 	}
 }
