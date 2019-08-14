@@ -21,9 +21,7 @@ local externals = {
         APACHE_CONFIG_TEMPLATE: 'webdav',
       },
       command: [
-        '/usr/local/bin/apachectl',
-        '-D',
-        'FOREGROUND',
+        '/usr/local/bin/apachectl -D FOREGROUND',
       ],
     }],
 
@@ -783,11 +781,7 @@ local suites = {
         APACHE_SSL_KEY: '/drone/' + basename + '.key',
       } else {},
       command: [
-        '/usr/local/bin/apachectl',
-        '-e',
-        'debug',
-        '-D',
-        'FOREGROUND',
+        '/usr/local/bin/apachectl -e debug -D FOREGROUND',
       ],
     }],
 

@@ -557,11 +557,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -2365,9 +2361,7 @@ services:
   pull: always
   image: owncloudci/php:latest
   command:
-  - /usr/local/bin/apachectl
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: webdav
 
@@ -2826,11 +2820,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -2967,11 +2957,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -3108,11 +3094,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -3249,11 +3231,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -3390,11 +3368,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -3531,11 +3505,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -3672,11 +3642,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -3813,11 +3779,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -3954,11 +3916,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -4095,11 +4053,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -4236,11 +4190,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -4377,11 +4327,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -4518,11 +4464,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -4659,11 +4601,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -4800,11 +4738,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -4941,11 +4875,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -5082,11 +5012,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -5235,11 +5161,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -5376,11 +5298,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -5517,11 +5435,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -5658,11 +5572,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -5799,11 +5709,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -5940,11 +5846,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -6081,11 +5983,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -6222,11 +6120,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -6363,11 +6257,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -6504,11 +6394,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -6646,11 +6532,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -6788,11 +6670,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -6930,11 +6808,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -7076,11 +6950,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -7218,11 +7088,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_CONFIG_TEMPLATE: ssl
     APACHE_SSL_CERT: /drone/server.crt
@@ -7364,11 +7230,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -7516,11 +7378,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -7668,11 +7526,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -7816,11 +7670,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -7964,11 +7814,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -8112,11 +7958,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -8264,11 +8106,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -8412,11 +8250,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -8564,11 +8398,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -8712,11 +8542,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -8860,11 +8686,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -9008,11 +8830,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -9156,11 +8974,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -9342,11 +9156,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -9354,11 +9164,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/federated
 
@@ -9506,11 +9312,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -9658,11 +9460,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -9822,11 +9620,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -9974,11 +9768,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -10126,11 +9916,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -10274,11 +10060,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -10422,11 +10204,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -10570,11 +10348,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -10718,11 +10492,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -10866,11 +10636,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -11018,11 +10784,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -11170,11 +10932,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -11322,11 +11080,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -11476,11 +11230,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -11631,11 +11381,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
@@ -11786,11 +11532,7 @@ services:
   pull: always
   image: owncloudci/php:7.1
   command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /drone/src
 
