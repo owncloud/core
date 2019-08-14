@@ -36,6 +36,7 @@ use OCP\IRequest;
 use OCP\ISession;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
+use OCP\Util;
 
 class TwoFactorChallengeController extends Controller {
 
@@ -73,6 +74,13 @@ class TwoFactorChallengeController extends Controller {
 	 */
 	protected function getLogoutAttribute() {
 		return \OC_User::getLogoutAttribute();
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getDefaultPageUrl() {
+		return \OC_Util::getDefaultPageUrl();
 	}
 
 	/**
@@ -127,7 +135,7 @@ class TwoFactorChallengeController extends Controller {
 		if ($this->session->exists('two_factor_auth_error')) {
 			$this->session->remove('two_factor_auth_error');
 			$error = true;
-			$error_message = $this->session->get("two_factor_auth_error_message");
+			$error_message = $this->session->get('two_factor_auth_error_message');
 			$this->session->remove('two_factor_auth_error_message');
 		} else {
 			$error = false;
@@ -173,7 +181,7 @@ class TwoFactorChallengeController extends Controller {
 				if ($redirect_url !== null) {
 					return new RedirectResponse($this->urlGenerator->getAbsoluteURL(\urldecode($redirect_url)));
 				}
-				return new RedirectResponse($this->urlGenerator->linkToRoute('files.view.index'));
+				return new RedirectResponse($this->getDefaultPageUrl());
 			}
 		} catch (TwoFactorException $e) {
 			/*
