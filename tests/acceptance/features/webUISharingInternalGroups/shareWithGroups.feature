@@ -216,7 +216,7 @@ Feature: Sharing files and folders with internal groups
     And the content of file "lorem (2).txt" for user "user3" should be "some content"
 
   Scenario Outline: group names are case-sensitive, sharing with groups with different upper and lower case names
-    Given user "some-user" has been created with default attributes and skeleton files
+    Given user "some-user" has been created with default attributes and without skeleton files
     And group "<group_id1>" has been created
     And group "<group_id2>" has been created
     And group "<group_id3>" has been created
