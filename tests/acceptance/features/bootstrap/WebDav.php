@@ -527,7 +527,6 @@ trait WebDav {
 
 	/**
 	 * @When /^user "([^"]*)" copies file "([^"]*)" to "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has copied file "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $fileSource
@@ -550,8 +549,23 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has copied file "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $fileSource
+	 * @param string $fileDestination
+	 *
+	 * @return void
+	 */
+	public function userHasCopiedFileUsingTheAPI(
+		$user, $fileSource, $fileDestination
+	) {
+		$this->userCopiesFileUsingTheAPI($user, $fileSource, $fileDestination);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+	}
+
+	/**
 	 * @When /^the user copies file "([^"]*)" to "([^"]*)" using the WebDAV API$/
-	 * @Given /^the user has copied file "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $fileSource
 	 * @param string $fileDestination
@@ -560,6 +574,19 @@ trait WebDav {
 	 */
 	public function theUserCopiesFileUsingTheAPI($fileSource, $fileDestination) {
 		$this->userCopiesFileUsingTheAPI($this->getCurrentUser(), $fileSource, $fileDestination);
+	}
+
+	/**
+	 * @Given /^the user has copied file "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $fileSource
+	 * @param string $fileDestination
+	 *
+	 * @return void
+	 */
+	public function theUserHasCopiedFileUsingTheAPI($fileSource, $fileDestination) {
+		$this->theUserCopiesFileUsingTheAPI($fileSource, $fileDestination);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
 	}
 
 	/**
@@ -1169,7 +1196,6 @@ trait WebDav {
 
 	/**
 	 * @When user :user uploads file :source to :destination using the WebDAV API
-	 * @Given user :user has uploaded file :source to :destination
 	 *
 	 * @param string $user
 	 * @param string $source
@@ -1195,8 +1221,21 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given user :user has uploaded file :source to :destination
+	 *
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userHasUploadedAFileTo($user, $source, $destination) {
+		$this->userUploadsAFileTo($user, $source, $destination);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+	}
+
+	/**
 	 * @When the user uploads file :source to :destination using the WebDAV API
-	 * @Given the user has uploaded file :source to :destination
 	 *
 	 * @param string $source
 	 * @param string $destination
@@ -1208,7 +1247,19 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" on "(LOCAL|REMOTE)" has uploaded file "([^"]*)" to "([^"]*)"$/
+	 * @Given the user has uploaded file :source to :destination
+	 *
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function theUserHasUploadedFileTo($source, $destination) {
+		$this->theUserUploadsAFileTo($source, $destination);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+	}
+
+	/**
 	 * @When /^user "([^"]*)" on "(LOCAL|REMOTE)" uploads file "([^"]*)" to "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
@@ -1222,6 +1273,21 @@ trait WebDav {
 		$previousServer = $this->usingServer($server);
 		$this->userUploadsAFileTo($user, $source, $destination);
 		$this->usingServer($previousServer);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" on "(LOCAL|REMOTE)" has uploaded file "([^"]*)" to "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $server
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userOnHasUploadedAFileTo($user, $server, $source, $destination) {
+		$this->userOnUploadsAFileTo($user, $server, $source, $destination);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
 	}
 
 	/**
@@ -1576,7 +1642,6 @@ trait WebDav {
 
 	/**
 	 * @When user :user uploads file with content :content to :destination using the WebDAV API
-	 * @Given user :user has uploaded file with content :content to :destination
 	 *
 	 * @param string $user
 	 * @param string $content
@@ -1597,8 +1662,24 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given user :user has uploaded file with content :content to :destination
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param string $destination
+	 *
+	 * @return string
+	 */
+	public function userHasUploadedAFileWithContentTo(
+		$user, $content, $destination
+	) {
+		$fileId = $this->userUploadsAFileWithContentTo($user, $content, $destination);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		return $fileId;
+	}
+
+	/**
 	 * @When user :user uploads file with checksum :checksum and content :content to :destination using the WebDAV API
-	 * @Given user :user has uploaded file with checksum :checksum and content :content to :destination
 	 *
 	 * @param string $user
 	 * @param string $checksum
@@ -1620,6 +1701,25 @@ trait WebDav {
 			$file
 		);
 		$this->lastUploadDeleteTime = \time();
+	}
+
+	/**
+	 * @Given user :user has uploaded file with checksum :checksum and content :content to :destination
+	 *
+	 * @param string $user
+	 * @param string $checksum
+	 * @param string $content
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userHasUploadedAFileWithChecksumAndContentTo(
+		$user, $checksum, $content, $destination
+	) {
+		$this->userUploadsAFileWithChecksumAndContentTo(
+			$user, $checksum, $content, $destination
+		);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
 	}
 
 	/**
@@ -1659,12 +1759,11 @@ trait WebDav {
 	 * @return void
 	 */
 	public function fileHasBeenDeleted($file, $user) {
-		$this->userDeletesFile($user, $file);
+		$this->userHasDeletedFile($user, $file);
 	}
 
 	/**
 	 * @When /^user "([^"]*)" (?:deletes|unshares) (?:file|folder) "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $file
@@ -1678,8 +1777,23 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $file
+	 *
+	 * @return void
+	 */
+	public function userHasDeletedFile($user, $file) {
+		$this->userDeletesFile($user, $file);
+		// If the file was there and got deleted then we get a 204
+		// If the file was already not there then then get a 404
+		// Either way, the outcome of the "given" step is OK
+		$this->theHTTPStatusCodeShouldBeOr("204", "404");
+	}
+
+	/**
 	 * @When /^the user (?:deletes|unshares) (?:file|folder) "([^"]*)" using the WebDAV API$/
-	 * @Given /^the user has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $file
 	 *
@@ -1687,6 +1801,17 @@ trait WebDav {
 	 */
 	public function theUserDeletesFile($file) {
 		$this->userDeletesFile($this->getCurrentUser(), $file);
+	}
+
+	/**
+	 * @Given /^the user has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $file
+	 *
+	 * @return void
+	 */
+	public function theUserHasDeletedFile($file) {
+		$this->userHasDeletedFile($this->getCurrentUser(), $file);
 	}
 
 	/**
@@ -1718,7 +1843,6 @@ trait WebDav {
 
 	/**
 	 * @When /^user "([^"]*)" on "(LOCAL|REMOTE)" (?:deletes|unshares) (?:file|folder) "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" on "(LOCAL|REMOTE)" has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $server
@@ -1733,8 +1857,24 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" on "(LOCAL|REMOTE)" has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $server
+	 * @param string $file
+	 *
+	 * @return void
+	 */
+	public function userOnHasDeletedFile($user, $server, $file) {
+		$this->userOnDeletesFile($user, $server, $file);
+		// If the file was there and got deleted then we get a 204
+		// If the file was already not there then then get a 404
+		// Either way, the outcome of the "given" step is OK
+		$this->theHTTPStatusCodeShouldBeOr("204", "404");
+	}
+
+	/**
 	 * @When user :user creates folder :destination using the WebDAV API
-	 * @Given user :user has created folder :destination
 	 *
 	 * @param string $user
 	 * @param string $destination
@@ -1752,8 +1892,20 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given user :user has created folder :destination
+	 *
+	 * @param string $user
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userHasCreatedFolder($user, $destination) {
+		$this->userCreatesFolder($user, $destination);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+	}
+
+	/**
 	 * @When the user creates folder :destination using the WebDAV API
-	 * @Given the user has created folder :destination
 	 *
 	 * @param string $destination
 	 *
@@ -1764,10 +1916,21 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given the user has created folder :destination
+	 *
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function theUserHasCreatedFolder($destination) {
+		$this->theUserCreatesFolder($destination);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+	}
+
+	/**
 	 * Old style chunking upload
 	 *
 	 * @When user :user uploads the following :total chunks to :file with old chunking and using the WebDAV API
-	 * @Given user :user has uploaded the following :total chunks to :file with old chunking
 	 *
 	 * @param string $user
 	 * @param string $total
@@ -1793,8 +1956,33 @@ trait WebDav {
 	/**
 	 * Old style chunking upload
 	 *
+	 * @Given user :user has uploaded the following :total chunks to :file with old chunking
+	 *
+	 * @param string $user
+	 * @param string $total
+	 * @param string $file
+	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
+	 *                                content without column headings, e.g.
+	 *                                | 1 | first data              |
+	 *                                | 2 | followed by second data |
+	 *                                Chunks may be numbered out-of-order if desired.
+	 *
+	 * @return void
+	 */
+	public function userHasUploadedTheFollowingTotalChunksUsingOldChunking(
+		$user, $total, $file, TableNode $chunkDetails
+	) {
+		foreach ($chunkDetails->getTable() as $chunkDetail) {
+			$chunkNumber = $chunkDetail[0];
+			$chunkContent = $chunkDetail[1];
+			$this->userHasUploadedChunkedFile($user, $chunkNumber, $total, $chunkContent, $file);
+		}
+	}
+
+	/**
+	 * Old style chunking upload
+	 *
 	 * @When user :user uploads the following chunks to :file with old chunking and using the WebDAV API
-	 * @Given user :user has uploaded the following chunks to :file with old chunking
 	 *
 	 * @param string $user
 	 * @param string $file
@@ -1818,8 +2006,31 @@ trait WebDav {
 	/**
 	 * Old style chunking upload
 	 *
+	 * @Given user :user has uploaded the following chunks to :file with old chunking
+	 *
+	 * @param string $user
+	 * @param string $file
+	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
+	 *                                content without column headings, e.g.
+	 *                                | 1 | first data              |
+	 *                                | 2 | followed by second data |
+	 *                                Chunks may be numbered out-of-order if desired.
+	 *
+	 * @return void
+	 */
+	public function userHasUploadedTheFollowingChunksUsingOldChunking(
+		$user, $file, TableNode $chunkDetails
+	) {
+		$total = \count($chunkDetails->getRows());
+		$this->userHasUploadedTheFollowingTotalChunksUsingOldChunking(
+			$user, $total, $file, $chunkDetails
+		);
+	}
+
+	/**
+	 * Old style chunking upload
+	 *
 	 * @When user :user uploads chunk file :num of :total with :data to :destination using the WebDAV API
-	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination
 	 *
 	 * @param string $user
 	 * @param int $num
@@ -1843,10 +2054,29 @@ trait WebDav {
 	}
 
 	/**
+	 * Old style chunking upload
+	 *
+	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination
+	 *
+	 * @param string $user
+	 * @param int $num
+	 * @param int $total
+	 * @param string $data
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userHasUploadedChunkedFile(
+		$user, $num, $total, $data, $destination
+	) {
+		$this->userUploadsChunkedFile($user, $num, $total, $data, $destination);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+	}
+
+	/**
 	 * New style chunking upload
 	 *
 	 * @When /^user "([^"]*)" uploads the following chunks\s?(asynchronously|) to "([^"]*)" with new chunking and using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has uploaded the following chunks\s?(asynchronously|) to "([^"]*)" with new chunking$/
 	 *
 	 * @param string $user
 	 * @param string $type "asynchronously" or empty
@@ -1862,12 +2092,59 @@ trait WebDav {
 	public function userUploadsTheFollowingChunksUsingNewChunking(
 		$user, $type, $file, TableNode $chunkDetails
 	) {
+		$this->uploadTheFollowingChunksUsingNewChunking(
+			$user, $type, $file, $chunkDetails
+		);
+	}
+
+	/**
+	 * New style chunking upload
+	 *
+	 * @Given /^user "([^"]*)" has uploaded the following chunks\s?(asynchronously|) to "([^"]*)" with new chunking$/
+	 *
+	 * @param string $user
+	 * @param string $type "asynchronously" or empty
+	 * @param string $file
+	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
+	 *                                content without column headings, e.g.
+	 *                                | 1 | first data              |
+	 *                                | 2 | followed by second data |
+	 *                                Chunks may be numbered out-of-order if desired.
+	 *
+	 * @return void
+	 */
+	public function userHasUploadedTheFollowingChunksUsingNewChunking(
+		$user, $type, $file, TableNode $chunkDetails
+	) {
+		$this->uploadTheFollowingChunksUsingNewChunking(
+			$user, $type, $file, $chunkDetails, true
+		);
+	}
+
+	/**
+	 * New style chunking upload
+	 *
+	 * @param string $user
+	 * @param string $type "asynchronously" or empty
+	 * @param string $file
+	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
+	 *                                content without column headings, e.g.
+	 *                                | 1 | first data              |
+	 *                                | 2 | followed by second data |
+	 *                                Chunks may be numbered out-of-order if desired.
+	 * @param bool $checkActions
+	 *
+	 * @return void
+	 */
+	public function uploadTheFollowingChunksUsingNewChunking(
+		$user, $type, $file, TableNode $chunkDetails, $checkActions = false
+	) {
 		$async = false;
 		if ($type === "asynchronously") {
 			$async = true;
 		}
 		$this->userUploadsChunksUsingNewChunking(
-			$user, $file, 'chunking-42', $chunkDetails->getTable(), $async
+			$user, $file, 'chunking-42', $chunkDetails->getTable(), $async, $checkActions
 		);
 	}
 
@@ -1883,30 +2160,41 @@ trait WebDav {
 	 *                            [1] data content of the chunk
 	 *                            Chunks may be numbered out-of-order if desired.
 	 * @param bool $async use asynchronous MOVE at the end or not
+	 * @param bool $checkActions
 	 *
 	 * @return void
 	 */
 	public function userUploadsChunksUsingNewChunking(
-		$user, $file, $chunkingId, $chunkDetails, $async = false
+		$user, $file, $chunkingId, $chunkDetails, $async = false, $checkActions = false
 	) {
 		$this->pauseUploadDelete();
-		$this->userCreatesANewChunkingUploadWithId($user, $chunkingId);
+		if ($checkActions) {
+			$this->userHasCreatedANewChunkingUploadWithId($user, $chunkingId);
+		} else {
+			$this->userCreatesANewChunkingUploadWithId($user, $chunkingId);
+		}
 		foreach ($chunkDetails as $chunkDetail) {
 			$chunkNumber = $chunkDetail[0];
 			$chunkContent = $chunkDetail[1];
-			$this->userUploadsNewChunkFileOfWithToId($user, $chunkNumber, $chunkContent, $chunkingId);
+			if ($checkActions) {
+				$this->userHasUploadedNewChunkFileOfWithToId($user, $chunkNumber, $chunkContent, $chunkingId);
+			} else {
+				$this->userUploadsNewChunkFileOfWithToId($user, $chunkNumber, $chunkContent, $chunkingId);
+			}
 		}
 		$headers = [];
 		if ($async === true) {
 			$headers = ['OC-LazyOps' => 'true'];
 		}
 		$this->moveNewDavChunkToFinalFile($user, $chunkingId, $file, $headers);
+		if ($checkActions) {
+			$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		}
 		$this->lastUploadDeleteTime = \time();
 	}
 
 	/**
 	 * @When user :user creates a new chunking upload with id :id using the WebDAV API
-	 * @Given user :user has created a new chunking upload with id :id
 	 *
 	 * @param string $user
 	 * @param string $id
@@ -1921,8 +2209,20 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given user :user has created a new chunking upload with id :id
+	 *
+	 * @param string $user
+	 * @param string $id
+	 *
+	 * @return void
+	 */
+	public function userHasCreatedANewChunkingUploadWithId($user, $id) {
+		$this->userCreatesANewChunkingUploadWithId($user, $id);
+		$this->theHTTPStatusCodeShouldBe("201");
+	}
+
+	/**
 	 * @When user :user uploads new chunk file :num with :data to id :id using the WebDAV API
-	 * @Given user :user has uploaded new chunk file :num with :data to id :id
 	 *
 	 * @param string $user
 	 * @param int $num
@@ -1940,8 +2240,22 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given user :user has uploaded new chunk file :num with :data to id :id
+	 *
+	 * @param string $user
+	 * @param int $num
+	 * @param string $data
+	 * @param string $id
+	 *
+	 * @return void
+	 */
+	public function userHasUploadedNewChunkFileOfWithToId($user, $num, $data, $id) {
+		$this->userUploadsNewChunkFileOfWithToId($user, $num, $data, $id);
+		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+	}
+
+	/**
 	 * @When /^user "([^"]*)" moves new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has moved new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $id
@@ -1961,8 +2275,24 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has moved new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $id
+	 * @param string $type "asynchronously" or empty
+	 * @param string $dest
+	 *
+	 * @return void
+	 */
+	public function userHasMovedNewChunkFileWithIdToMychunkedfile(
+		$user, $id, $type, $dest
+	) {
+		$this->userMovesNewChunkFileWithIdToMychunkedfile($user, $id, $type, $dest);
+		$this->theHTTPStatusCodeShouldBe("201");
+	}
+
+	/**
 	 * @When user :user cancels chunking-upload with id :id using the WebDAV API
-	 * @Given user :user has canceled new chunking-upload with id :id
 	 *
 	 * @param string $user
 	 * @param string $id
@@ -1976,8 +2306,22 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given user :user has canceled new chunking-upload with id :id
+	 *
+	 * @param string $user
+	 * @param string $id
+	 *
+	 * @return void
+	 */
+	public function userHasCanceledUploadWithId(
+		$user, $id
+	) {
+		$this->userCancelsUploadWithId($user, $id);
+		$this->theHTTPStatusCodeShouldBe("201");
+	}
+
+	/**
 	 * @When /^user "([^"]*)" moves new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)" with size (.*) using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has moved new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)" with size (.*)$/
 	 *
 	 * @param string $user
 	 * @param string $id
@@ -2000,8 +2344,27 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has moved new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)" with size (.*)$/
+	 *
+	 * @param string $user
+	 * @param string $id
+	 * @param string $type "asynchronously" or empty
+	 * @param string $dest
+	 * @param int $size
+	 *
+	 * @return void
+	 */
+	public function userHasMovedNewChunkFileWithIdToMychunkedfileWithSize(
+		$user, $id, $type, $dest, $size
+	) {
+		$this->userMovesNewChunkFileWithIdToMychunkedfileWithSize(
+			$user, $id, $type, $dest, $size
+		);
+		$this->theHTTPStatusCodeShouldBe("201");
+	}
+
+	/**
 	 * @When /^user "([^"]*)" moves new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)" with checksum "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has moved new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)" with checksum "([^"]*)"
 	 *
 	 * @param string $user
 	 * @param string $id
@@ -2021,6 +2384,26 @@ trait WebDav {
 		$this->moveNewDavChunkToFinalFile(
 			$user, $id, $dest, $headers
 		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has moved new chunk file with id "([^"]*)"\s?(asynchronously|) to "([^"]*)" with checksum "([^"]*)"
+	 *
+	 * @param string $user
+	 * @param string $id
+	 * @param string $type "asynchronously" or empty
+	 * @param string $dest
+	 * @param string $checksum
+	 *
+	 * @return void
+	 */
+	public function userHasMovedNewChunkFileWithIdToMychunkedfileWithChecksum(
+		$user, $id, $type, $dest, $checksum
+	) {
+		$this->userMovesNewChunkFileWithIdToMychunkedfileWithChecksum(
+			$user, $id, $type, $dest, $checksum
+		);
+		$this->theHTTPStatusCodeShouldBe("201");
 	}
 
 	/**
@@ -2074,7 +2457,6 @@ trait WebDav {
 
 	/**
 	 * @When an unauthenticated client connects to the dav endpoint using the WebDAV API
-	 * @Given an unauthenticated client has connected to the dav endpoint
 	 *
 	 * @return void
 	 */
@@ -2082,6 +2464,16 @@ trait WebDav {
 		$this->response = $this->makeDavRequest(
 			null, 'PROPFIND', '', []
 		);
+	}
+
+	/**
+	 * @Given an unauthenticated client has connected to the dav endpoint
+	 *
+	 * @return void
+	 */
+	public function hasConnectedToDavEndpoint() {
+		$this->connectingToDavEndpoint();
+		$this->theHTTPStatusCodeShouldBe("401");
 	}
 
 	/**
@@ -2150,14 +2542,16 @@ trait WebDav {
 
 	/**
 	 * @When /^user "([^"]*)" deletes everything from folder "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has deleted everything from folder "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $folder
+	 * @param bool $checkEachDelete
 	 *
 	 * @return void
 	 */
-	public function userDeletesEverythingInFolder($user, $folder) {
+	public function userDeletesEverythingInFolder(
+		$user, $folder, $checkEachDelete = false
+	) {
 		$responseXmlObject = $this->listFolder($user, $folder, 1);
 		$elementList = $responseXmlObject->xpath("//d:response/d:href");
 		if (\is_array($elementList) && \count($elementList)) {
@@ -2165,9 +2559,25 @@ trait WebDav {
 			$davPrefix = "/" . $this->getFullDavFilesPath($user);
 			foreach ($elementList as $element) {
 				$element = \substr($element, \strlen($davPrefix));
-				$this->userDeletesFile($user, $element);
+				if ($checkEachDelete) {
+					$this->userHasDeletedFile($user, $element);
+				} else {
+					$this->userDeletesFile($user, $element);
+				}
 			}
 		}
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has deleted everything from folder "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $folder
+	 *
+	 * @return void
+	 */
+	public function userHasDeletedEverythingInFolder($user, $folder) {
+		$this->userDeletesEverythingInFolder($user, $folder, true);
 	}
 
 	/**
