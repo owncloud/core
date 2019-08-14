@@ -1446,7 +1446,7 @@ trait WebDav {
 	/**
 	 * Overwriting with old/new dav and chunked/non-chunked.
 	 *
-	 * @When user :user overwrites file :source to filenames based on :destination with all mechanisms using the WebDAV API
+	 * @When user :user overwrites from file :source to file :destination with all mechanisms using the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $source
