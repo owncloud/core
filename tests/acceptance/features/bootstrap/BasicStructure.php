@@ -985,7 +985,7 @@ trait BasicStructure {
 	/**
 	 * @Then /^the HTTP status code should be "([^"]*)"$/
 	 *
-	 * @param int|int[] $statusCode
+	 * @param int|int[]|string|string[] $statusCode
 	 * @param string $message
 	 *
 	 * @return void
@@ -1010,8 +1010,8 @@ trait BasicStructure {
 	/**
 	 * @Then /^the HTTP status code should be "([^"]*)" or "([^"]*)"$/
 	 *
-	 * @param int $statusCode1
-	 * @param int $statusCode2
+	 * @param int|string $statusCode1
+	 * @param int|string $statusCode2
 	 *
 	 * @return void
 	 */
@@ -1024,8 +1024,8 @@ trait BasicStructure {
 	/**
 	 * @Then /^the HTTP status code should be between "(\d+)" and "(\d+)"$/
 	 *
-	 * @param int $minStatusCode
-	 * @param int $maxStatusCode
+	 * @param int|string $minStatusCode
+	 * @param int|string $maxStatusCode
 	 *
 	 * @return void
 	 */
@@ -1052,7 +1052,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function theHTTPStatusCodeShouldBeSuccess() {
-		$this->theHTTPStatusCodeShouldBeBetween("200", "299");
+		$this->theHTTPStatusCodeShouldBeBetween(200, 299);
 	}
 
 	/**
