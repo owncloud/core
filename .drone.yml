@@ -496,6 +496,8 @@ steps:
   commands:
   - curl -k -s -u user1:123456 -X MKCOL "https://server/remote.php/webdav/new_folder"
   - curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data "path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin"
+  - echo -n "PUBLIC_TOKEN=" > .env
+  - curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data "path=/new_folder&shareType=3&permissions=15&name=new_folder" | grep token | cut -d">" -f2 | cut -d"<" -f1 >> .env
 
 - name: owncloud-logfile
   pull: always
@@ -507,50 +509,86 @@ steps:
 - name: old-endpoint
   pull: always
   image: owncloud/litmus:latest
+  commands:
+  - source .env
+  - export LITMUS_URL='https://server/remote.php/webdav'
+  - /usr/local/bin/litmus-wrapper
   environment:
     LITMUS_PASSWORD: admin
-    LITMUS_URL: https://server/remote.php/webdav
     LITMUS_USERNAME: admin
+    TESTS: basic copymove props locks http
 
 - name: new-endpoint
   pull: always
   image: owncloud/litmus:latest
+  commands:
+  - source .env
+  - export LITMUS_URL='https://server/remote.php/dav/files/admin'
+  - /usr/local/bin/litmus-wrapper
   environment:
     LITMUS_PASSWORD: admin
-    LITMUS_URL: https://server/remote.php/dav/files/admin
     LITMUS_USERNAME: admin
+    TESTS: basic copymove props locks http
 
 - name: new-mount
   pull: always
   image: owncloud/litmus:latest
+  commands:
+  - source .env
+  - export LITMUS_URL='https://server/remote.php/dav/files/admin/local_storage/'
+  - /usr/local/bin/litmus-wrapper
   environment:
     LITMUS_PASSWORD: admin
-    LITMUS_URL: https://server/remote.php/dav/files/admin/local_storage/
     LITMUS_USERNAME: admin
+    TESTS: basic copymove props locks http
 
 - name: old-mount
   pull: always
   image: owncloud/litmus:latest
+  commands:
+  - source .env
+  - export LITMUS_URL='https://server/remote.php/webdav/local_storage/'
+  - /usr/local/bin/litmus-wrapper
   environment:
     LITMUS_PASSWORD: admin
-    LITMUS_URL: https://server/remote.php/webdav/local_storage/
     LITMUS_USERNAME: admin
+    TESTS: basic copymove props locks http
 
 - name: new-shared
   pull: always
   image: owncloud/litmus:latest
+  commands:
+  - source .env
+  - export LITMUS_URL='https://server/remote.php/dav/files/admin/new_folder/'
+  - /usr/local/bin/litmus-wrapper
   environment:
     LITMUS_PASSWORD: admin
-    LITMUS_URL: https://server/remote.php/dav/files/admin/new_folder/
     LITMUS_USERNAME: admin
+    TESTS: basic copymove props locks http
 
 - name: old-shared
   pull: always
   image: owncloud/litmus:latest
+  commands:
+  - source .env
+  - export LITMUS_URL='https://server/remote.php/webdav/new_folder/'
+  - /usr/local/bin/litmus-wrapper
   environment:
     LITMUS_PASSWORD: admin
-    LITMUS_URL: https://server/remote.php/webdav/new_folder/
     LITMUS_USERNAME: admin
+    TESTS: basic copymove props locks http
+
+- name: public-share
+  pull: always
+  image: owncloud/litmus:latest
+  commands:
+  - source .env
+  - export LITMUS_URL='https://server/remote.php/dav/public-files/'$PUBLIC_TOKEN
+  - /usr/local/bin/litmus-wrapper
+  environment:
+    LITMUS_PASSWORD: admin
+    LITMUS_USERNAME: admin
+    TESTS: basic copymove http
 
 services:
 - name: server
