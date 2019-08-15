@@ -3,11 +3,97 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
+
+## [Unreleased]
+
+### Added
+- Support for php 7.3 [#34559](https://github.com/owncloud/core/pull/34559) [#35775](https://github.com/owncloud/core/pull/35775) [#35752](https://github.com/owncloud/core/pull/35752)
+- Support for redirecting private links to ownCloud phoenix frontend [#35819](https://github.com/owncloud/core/pull/35819)
+- `encryption:fixencryptedversion` command to address issues related to encrypted versions  [#115](https://github.com/owncloud/encryption/pull/115)
+- DAV endpoint for public shares [#35932](https://github.com/owncloud/core/pull/35932)
+- Webdav trashbin api [#35716](https://github.com/owncloud/core/pull/35716) [#35879](https://github.com/owncloud/core/pull/35879) 
+- Url `/cron` in addition to `/cron.php` to execute cronjobs via webcron [#34932](https://github.com/owncloud/core/pull/34932)
+- `system:cron` occ command for executing background tasks via system cron [#34932](https://github.com/owncloud/core/pull/34932)
+- `previews_path` config option to configure thumbnail storage path [#35131](https://github.com/owncloud/core/pull/35131)
+- Show activity when share receiver unshares a received share [#35193](https://github.com/owncloud/core/pull/35193)
+
+### Changed
+- Allow two-factor providers to display custom challenge message [#34848](https://github.com/owncloud/core/issues/34848)
+- Handling of unauthenticated ajax requests to prevent browser issues [#36003](https://github.com/owncloud/core/pull/36003)
+- Improved share permission handling [#35884](https://github.com/owncloud/core/pull/35884)
+- Refined user administration setting button [#35877](https://github.com/owncloud/core/pull/35877)
+- Improved mobile device experience [#35919](https://github.com/owncloud/core/pull/35919) [#35813](https://github.com/owncloud/core/pull/35813) [#35347](https://github.com/owncloud/core/pull/35347)
+- Reference the new iOS app in the list of available applications [#35918](https://github.com/owncloud/core/pull/35918)
+- Improved sharing autocomplete dropdown layout [#35397](https://github.com/owncloud/core/pull/35397)
+- Improved theming capabilities by allowing html for Name and LogoClaim [#35273](https://github.com/owncloud/core/pull/35273)
+- Improved private link UX for large resolutions [#34998](https://github.com/owncloud/core/pull/34998) 
+- Improved wording for several user/administrator encryption related interactions [#21](https://github.com/owncloud/encryption/pull/21) [#117](https://github.com/owncloud/encryption/pull/117)
+- Handling of composer autoloader for `apps/files_external` [#35755](https://github.com/owncloud/core/pull/35755)
+- Renamed share icon to be adblock friendly [#35199](https://github.com/owncloud/core/pull/35199)
+- Bump sabre/xml 2.1.2 from to 2.1.3 [#36036](https://github.com/owncloud/core/pull/36036)
+- Bump sabre/dav from 3.2 to 4.0 [#34559](https://github.com/owncloud/core/pull/34559)
+- Bump icewind/smb from 3.1.1 to 3.1.2 [#36017](https://github.com/owncloud/core/pull/36017)
+- Bump symfony/polyfill components from v1.11.0 to v1.12.0 [#35989](https://github.com/owncloud/core/pull/35989)
+- Bump doctrine/lexer from v1.0.1 to 1.0.2 [#35625](https://github.com/owncloud/core/pull/35625)
+- Bump theseer/tokenizer from 1.1.2 to 1.1.3 [#35625](https://github.com/owncloud/core/pull/35625)
+- Bump egulias/email-validator from 2.1.7 to 2.1.11 [#35341](https://github.com/owncloud/core/pull/35341) [#35625](https://github.com/owncloud/core/pull/35625) [#35934](https://github.com/owncloud/core/pull/35934) [#36026](https://github.com/owncloud/core/pull/36026)
+- Bump nikic/php-parser from 4.2.1 to 4.2.3 [#35337](https://github.com/owncloud/core/pull/35337) [#36015](https://github.com/owncloud/core/pull/36015)
+- Bump phpseclib/phpseclib from 2.0.15 to 2.0.21 [#35336](https://github.com/owncloud/core/pull/35336) [#35565](https://github.com/owncloud/core/pull/35565) [#35643](https://github.com/owncloud/core/pull/35643) [#35827](https://github.com/owncloud/core/pull/35827)
+- Bump league/flysystem from 1.0.51 to 1.0.53 [#35275](https://github.com/owncloud/core/pull/35275) [#35644](https://github.com/owncloud/core/pull/35644)
+- Bump symfony from v3.4.26 to v3.4.30 [#35146](https://github.com/owncloud/core/pull/35146) [#35348](https://github.com/owncloud/core/pull/35348) [#35625](https://github.com/owncloud/core/pull/35625) [#35934](https://github.com/owncloud/core/pull/35934)
+- Bump swiftmailer/swiftmailer from 6.2.0 to 6.2.1 [#35075](https://github.com/owncloud/core/pull/35075)
+- Bump @bower_components/handlebars from v4.1.1 to v4.1.2 [#35025](https://github.com/owncloud/core/pull/35025)
+- Bump @bower_components/jsTimezoneDetect from 1.0.5 to v1.0.6  [#33776](https://github.com/owncloud/core/pull/33776)
+
+
+### Removed
+- Deprecated `update` script from `files` app [#35781](https://github.com/owncloud/core/pull/35781)
+- Dropped `APC` and `XCache` support [#35782](https://github.com/owncloud/core/pull/35782)
+- Old table repair step will drop deprecated `contacts_cards_properties` table [#35721](https://github.com/owncloud/core/pull/35721)
+- Removed support for swift as primary / external storage [#35951](https://github.com/owncloud/core/pull/35951)
+- Moved S3 external integration into separate app ([files_external_s3](https://github.com/owncloud/files_external_s3)) [#34986](https://github.com/owncloud/core/pull/34986)
+- Moved ownCloud default encryption app into separate repository [#35949](https://github.com/owncloud/core/pull/35949)
+
+### Fixed
+- Handling of OCM sharing when receiving server did not include a protocol (i.e. `https`) [#35711](https://github.com/owncloud/core/pull/35711)
+- Performance improvements when loading groups of users [#35822](https://github.com/owncloud/core/pull/35822) 
+- Relative path handling for `files:checksums:verify` occ command [#35694](https://github.com/owncloud/core/pull/35694)
+- Failed rename operation leading to unavailable external storage [#35598](https://github.com/owncloud/core/pull/35598)
+- Comment creation event missing ID field [#35799](https://github.com/owncloud/core/pull/35799)
+- Improved handling of share expire input fields to avoid user error [#35779](https://github.com/owncloud/core/pull/35779)
+- Refactored user creation in order to allow same flow for `occ` and `api` [#35972](https://github.com/owncloud/core/pull/35972)
+- Maintain dav properties when files are moved to trashbin [#35954](https://github.com/owncloud/core/pull/35954)
+- Usage of domain when authenticate with SMB/WND shares [#35892](https://github.com/owncloud/core/pull/35892) 
+- Triggering dav events on the public webdav endpoint [#35820](https://github.com/owncloud/core/pull/35820)
+- Prevent deletion of configured `share_folder` [#35998](https://github.com/owncloud/core/pull/35998)
+- Issues with improper displayed languages [#35973](https://github.com/owncloud/core/pull/35973)
+- Respect `user.min_search_length` with federated sharing [#35977](https://github.com/owncloud/core/pull/35977)
+- Avoid password manager autocomplete on user administration [#35931](https://github.com/owncloud/core/pull/35931)
+- Changing config settings produced duplicate emitted events [#35875](https://github.com/owncloud/core/pull/35875)
+- Properly return StorageNotAvailable on network failures with external storages [#35707](https://github.com/owncloud/core/pull/35707)
+- Improved error message when trying to share with a non-existing federated user [#35542](https://github.com/owncloud/core/pull/35542)
+- Allow selection of UI errors during web-installation [#35681](https://github.com/owncloud/core/pull/35681)
+- Added missing events for webdav copy operations on new endpoint [#35604](https://github.com/owncloud/core/pull/35604)
+- Double-appearing address book entries when shared with groups [#35603](https://github.com/owncloud/core/pull/35603) 
+- Issues with federation when proxy requires credentials [#35868](https://github.com/owncloud/core/pull/35868)
+- Respect `share_folder` with federated shares [#35396](https://github.com/owncloud/core/pull/35396)
+- Issues with sqlite to mysql migration with `db:convert-type` [#35390](https://github.com/owncloud/core/pull/35390)
+- Upload issues with mismatching checksums [#35294](https://github.com/owncloud/core/pull/35294)
+- Improved memory handling for trashbin expiry background job [#35708](https://github.com/owncloud/core/pull/35708)
+- Proper handling of objecstorage S3 issues on object upload for `files_primary_s3` [core#35389](https://github.com/owncloud/core/pull/35389) [files_primary_s3#212](https://github.com/owncloud/files_primary_s3/pull/212)
+- Respect default application configuration when using TwoFactor Authentication [#36031](https://github.com/owncloud/core/pull/36031)
+- Improved mobile view for file drop links [#34803](https://github.com/owncloud/core/pull/34803)
+- Ignore case of userid in occ `files:scan` command [#35324](https://github.com/owncloud/core/pull/35324)
+- Properly handle errors from remote server when declining a non-existing federated share [#35321](https://github.com/owncloud/core/pull/35321)
+- UI issues on setup page when mobile devices where used [#35347](https://github.com/owncloud/core/pull/35347)
+- Direct access to sharing tab for long file listings [#35306](https://github.com/owncloud/core/pull/35306)
+- Improved OCM compliance on providerId and remoteId fields [#35122](https://github.com/owncloud/core/pull/35122)
+- Issue with adding multiple Google Drive external storages [#34987](https://github.com/owncloud/core/pull/34987)
+- Issues with recreating masterkeys when HSM is used [#128](https://github.com/owncloud/encryption/pull/128)
+
 ## [10.2.1]- 2019-07-03
 
 ### Fixed
-
-- Handling of "password fields" on public link shares - [#35541](https://github.com/owncloud/core/issues/35541) [#35563](https://github.com/owncloud/core/issues/35563)
 - Error when user was removed from a group - [#35289](https://github.com/owncloud/core/issues/35289) [#35570](https://github.com/owncloud/core/issues/35570)
 - Incorrect avatar storage location - [#35311](https://github.com/owncloud/core/issues/35311) [#35531](https://github.com/owncloud/core/issues/35531)
 - Incorrect rendering of password changed notification email - [#35255](https://github.com/owncloud/core/issues/35255) [#35491](https://github.com/owncloud/core/issues/35491)
@@ -1042,6 +1128,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
+[Unreleased]: https://github.com/owncloud/core/compare/v10.2.1...master
 [10.2.1]: https://github.com/owncloud/core/compare/v10.2.0...v10.2.1
 [10.2.0]: https://github.com/owncloud/core/compare/v10.1.1...v10.2.0
 [10.1.1]: https://github.com/owncloud/core/compare/v10.1.0...v10.1.1
