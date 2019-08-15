@@ -38,7 +38,7 @@ class PublicWebDavContext implements Context {
 	private $featureContext;
 
 	/**
-	 * @When /^the public downloads the last public shared file with range "([^"]*)" using the public WebDAV API$/
+	 * @When /^the public downloads the last public shared file with range "([^"]*)" using the old public WebDAV API$/
 	 *
 	 * @param string $range
 	 *
@@ -57,7 +57,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public downloads the last public shared file using the public WebDAV API$/
+	 * @When /^the public downloads the last public shared file using the old public WebDAV API$/
 	 *
 	 * @return void
 	 */
@@ -70,7 +70,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public deletes file "([^"]*)" from the last public share using the public WebDAV API$/
+	 * @When /^the public deletes file "([^"]*)" from the last public share using the old public WebDAV API$/
 	 *
 	 * @param string $fileName
 	 *
@@ -88,7 +88,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public renames file "([^"]*)" to "([^"]*)" from the last public share using the public WebDAV API$/
+	 * @When /^the public renames file "([^"]*)" to "([^"]*)" from the last public share using the old public WebDAV API$/
 	 *
 	 * @param string $fileName
 	 * @param string $toFileName
@@ -108,7 +108,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder using the public WebDAV API$/
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder using the old public WebDAV API$/
 	 *
 	 * @param string $path
 	 *
@@ -121,7 +121,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with password "([^"]*)" using the public WebDAV API$/
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder using the old public WebDAV API with password "([^"]*)" using the old public WebDAV API$/
 	 *
 	 * @param string $path
 	 * @param string $password
@@ -137,7 +137,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with range "([^"]*)" using the public WebDAV API$/
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder using the old public WebDAV API with range "([^"]*)" using the old public WebDAV API$/
 	 *
 	 * @param string $path
 	 * @param string $range
@@ -151,7 +151,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with password "([^"]*)" with range "([^"]*)" using the public WebDAV API$/
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder using the old public WebDAV API with password "([^"]*)" with range "([^"]*)" using the old public WebDAV API$/
 	 *
 	 * @param string $path
 	 * @param string $password
@@ -192,7 +192,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When the public uploads file :filename with content :body with autorename mode using the public WebDAV API
+	 * @When the public uploads file :filename with content :body with autorename mode using the old public WebDAV API
 	 * @Given the public has uploaded file :filename with content :body with autorename mode
 	 *
 	 * @param string $filename target file name
@@ -205,7 +205,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When the public uploads file :filename with password :password and content :body using the public WebDAV API
+	 * @When the public uploads file :filename with password :password and content :body using the old public WebDAV API
 	 * @Given the public has uploaded file :filename" with password :password and content :body
 	 *
 	 * @param string $filename target file name
@@ -234,7 +234,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When the public uploads file :filename with content :body using the public WebDAV API
+	 * @When the public uploads file :filename with content :body using the old public WebDAV API
 	 * @Given the public has uploaded file :filename with content :body
 	 *
 	 * @param string $filename target file name
@@ -247,7 +247,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public shared folder and the content should be "([^"]*)"$/
+	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public shared folder using the old public WebDAV API and the content should be "([^"]*)"$/
 	 *
 	 * @param string $path
 	 * @param string $content
@@ -263,7 +263,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should not be able to download file "([^"]*)" from inside the last public shared folder without a password$/
+	 * @Then /^the public should not be able to download file "([^"]*)" from inside the last public shared folder using the old public WebDAV API without a password$/
 	 *
 	 * @param string $path
 	 *
@@ -278,7 +278,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public shared folder with password "([^"]*)" and the content should be "([^"]*)"$/
+	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public shared folder using the old public WebDAV API with password "([^"]*)" and the content should be "([^"]*)"$/
 	 *
 	 * @param string $path
 	 * @param string $password
@@ -295,7 +295,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should not be able to download file "([^"]*)" from inside the last public shared folder with password "([^"]*)"$/
+	 * @Then /^the public should not be able to download file "([^"]*)" from inside the last public shared folder using the old public WebDAV API with password "([^"]*)"$/
 	 *
 	 * @param string $path
 	 * @param string $password
@@ -311,7 +311,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder with password "([^"]*)" and the content should be "([^"]*)"$/
+	 * @Then /^the public should be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder using the old public WebDAV API with password "([^"]*)" and the content should be "([^"]*)"$/
 	 *
 	 * @param string $range
 	 * @param string $path
@@ -330,7 +330,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should not be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder with password "([^"]*)"$/
+	 * @Then /^the public should not be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder using the old public WebDAV API with password "([^"]*)"$/
 	 *
 	 * @param string $range
 	 * @param string $path
@@ -348,7 +348,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder and the content should be "([^"]*)"$/
+	 * @Then /^the public should be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder using the old public WebDAV API and the content should be "([^"]*)"$/
 	 *
 	 * @param string $range
 	 * @param string $path
@@ -365,7 +365,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should not be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder without a password$/
+	 * @Then /^the public should not be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder using the old public WebDAV API without a password$/
 	 *
 	 * @param string $range
 	 * @param string $path
@@ -381,26 +381,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should be able to upload file "([^"]*)" with content "([^"]*)" to the last public shared folder$/
-	 *
-	 * @param string $path
-	 * @param string $content
-	 *
-	 * @return void
-	 */
-	public function shouldBeAbleToUploadFileWithContentToTheLastPublicSharedFolder(
-		$path, $content
-	) {
-		$this->publiclyUploadingContent($path, $content);
-		$this->featureContext->theHTTPStatusCodeShouldBe(
-			"201", "Failed to upload file to public share"
-		);
-		$this->downloadPublicFileInsideAFolder($path);
-		$this->featureContext->downloadedContentShouldBe($content);
-	}
-
-	/**
-	 * @Then publicly uploading a file should not work
+	 * @Then uploading a file should not work using the old public WebDAV API
 	 *
 	 * @return void
 	 */
@@ -419,7 +400,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then publicly uploading a file should work
+	 * @Then uploading a file should work using the old public WebDAV API
 	 *
 	 * @return void
 	 */
@@ -439,7 +420,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * Uploads a file through the public WebDAV API and sets the response in FeatureContext
+	 * Uploads a file through the old public WebDAV API and sets the response in FeatureContext
 	 *
 	 * @param string $filename
 	 * @param string $password

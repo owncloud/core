@@ -35,8 +35,8 @@ Feature: reshare as public link
       | publicUpload | false |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download file "file.txt" from inside the last public shared folder and the content should be "some content"
-    But publicly uploading a file should not work
+    And the public should be able to download file "file.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "some content"
+    But uploading a file should not work using the old public WebDAV API
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -84,8 +84,8 @@ Feature: reshare as public link
       | publicUpload | false |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download file "file.txt" from inside the last public shared folder and the content should be "some content"
-    But publicly uploading a file should not work
+    And the public should be able to download file "file.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "some content"
+    But uploading a file should not work using the old public WebDAV API
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -103,8 +103,8 @@ Feature: reshare as public link
       | publicUpload | true                      |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download file "file.txt" from inside the last public shared folder and the content should be "some content"
-    And publicly uploading a file should work
+    And the public should be able to download file "file.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "some content"
+    And uploading a file should work using the old public WebDAV API
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -141,7 +141,7 @@ Feature: reshare as public link
       | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And publicly uploading a file should not work
+    And uploading a file should not work using the old public WebDAV API
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -157,12 +157,12 @@ Feature: reshare as public link
       | path         | /test/sub |
       | permissions  | read      |
       | publicUpload | false     |
-    And publicly uploading a file should not work
+    And uploading a file should not work using the old public WebDAV API
     When user "user1" updates the last share using the sharing API with
       | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And publicly uploading a file should not work
+    And uploading a file should not work using the old public WebDAV API
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |

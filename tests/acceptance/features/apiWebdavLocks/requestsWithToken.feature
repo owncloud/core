@@ -77,7 +77,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
     Given user "user0" has created a public link share of folder "PARENT" with change permission
     And user "user0" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
-    When the public uploads file "parent.txt" with content "test" sending the locktoken of file "PARENT" of user "user0" using the public WebDAV API
+    When the public uploads file "parent.txt" with content "test" sending the locktoken of file "PARENT" of user "user0" using the old public WebDAV API
     Then the HTTP status code should be "423"
     And the content of file "/PARENT/parent.txt" for user "user0" should be "ownCloud test text file parent" plus end-of-line
     Examples:
