@@ -2311,16 +2311,16 @@
         },
         {
             "name": "sabre/xml",
-            "version": "2.1.2",
+            "version": "2.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/xml.git",
-                "reference": "e15454e68805e3713271ea58c0b2d6a82dac56b7"
+                "reference": "f08a58f57e2b0d7df769a432756aa371417ab9eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/xml/zipball/e15454e68805e3713271ea58c0b2d6a82dac56b7",
-                "reference": "e15454e68805e3713271ea58c0b2d6a82dac56b7",
+                "url": "https://api.github.com/repos/sabre-io/xml/zipball/f08a58f57e2b0d7df769a432756aa371417ab9eb",
+                "reference": "f08a58f57e2b0d7df769a432756aa371417ab9eb",
                 "shasum": ""
             },
             "require": {
@@ -2332,7 +2332,7 @@
                 "sabre/uri": ">=1.0,<3.0.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "*"
+                "phpunit/phpunit": "^6"
             },
             "type": "library",
             "autoload": {
@@ -2351,14 +2351,14 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 },
                 {
                     "name": "Markus Staab",
-                    "email": "markus.staab@redaxo.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "markus.staab@redaxo.de"
                 }
             ],
             "description": "sabre/xml is an XML library that you may not hate.",
@@ -2369,7 +2369,7 @@
                 "dom",
                 "xml"
             ],
-            "time": "2019-01-09T13:50:52+00:00"
+            "time": "2019-08-14T15:41:34+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
