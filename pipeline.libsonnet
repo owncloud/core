@@ -466,6 +466,8 @@ local suites = {
           commands: [
             'curl -k -s -u user1:123456 -X MKCOL "https://server/remote.php/webdav/new_folder"',
             'curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data "path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin"',
+            'echo -n "PUBLIC_TOKEN=" > .env',
+            'curl -k -s -u user1:123456 "https://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data "path=/new_folder&shareType=3&permissions=15&name=new_folder" | grep token | cut -d">" -f2 | cut -d"<" -f1 >> .env'
           ],
         },
       ] + $.logging(image='owncloudci/php:' + php) + [
@@ -474,35 +476,51 @@ local suites = {
           image: 'owncloud/litmus:latest',
           pull: 'always',
           environment: {
-            LITMUS_URL: 'https://server/remote.php' + test.endpoint,
             LITMUS_USERNAME: 'admin',
             LITMUS_PASSWORD: 'admin',
+            TESTS: test.tests,
           },
+          commands: [
+            'source .env',
+            'export LITMUS_URL=\'https://server/remote.php' + test.endpoint  + (if test.name == 'public-share' then '\'$PUBLIC_TOKEN' else '\''),
+            '/usr/local/bin/litmus-wrapper'
+          ]
         }
         for test in [
           {
             name: 'old-endpoint',
             endpoint: '/webdav',
+            tests: 'basic copymove props locks http'
           },
           {
             name: 'new-endpoint',
             endpoint: '/dav/files/admin',
+            tests: 'basic copymove props locks http'
           },
           {
             name: 'new-mount',
             endpoint: '/dav/files/admin/local_storage/',
+            tests: 'basic copymove props locks http'
           },
           {
             name: 'old-mount',
             endpoint: '/webdav/local_storage/',
+            tests: 'basic copymove props locks http'
           },
           {
             name: 'new-shared',
             endpoint: '/dav/files/admin/new_folder/',
+            tests: 'basic copymove props locks http'
           },
           {
             name: 'old-shared',
             endpoint: '/webdav/new_folder/',
+            tests: 'basic copymove props locks http'
+          },
+          {
+            name: 'public-share',
+            endpoint: '/dav/public-files/',
+            tests: 'basic copymove http'
           },
         ]
       ],
