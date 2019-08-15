@@ -51,7 +51,6 @@ class CommentsContext implements Context {
 
 	/**
 	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (?:file|folder) "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has commented with content "([^"]*)" on (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $content
@@ -89,8 +88,21 @@ class CommentsContext implements Context {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has commented with content "([^"]*)" on (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userHasCommentedWithContentOnEntry($user, $content, $path) {
+		$this->userCommentsWithContentOnEntry($user, $content, $path);
+		$this->featureContext->theHTTPStatusCodeShouldBe("201");
+	}
+
+	/**
 	 * @When /^the user comments with content "([^"]*)" on (?:file|folder) "([^"]*)" using the WebDAV API$/
-	 * @Given /^the user has commented with content "([^"]*)" on (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $content
 	 * @param string $path
@@ -101,6 +113,19 @@ class CommentsContext implements Context {
 		$this->userCommentsWithContentOnEntry(
 			$this->featureContext->getCurrentUser(), $content, $path
 		);
+	}
+
+	/**
+	 * @Given /^the user has commented with content "([^"]*)" on (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $content
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function theUserHasCommentedWithContentOnEntry($content, $path) {
+		$this->theUserCommentsWithContentOnEntry($content, $path);
+		$this->featureContext->theHTTPStatusCodeShouldBe("201");
 	}
 
 	/**
@@ -217,8 +242,6 @@ class CommentsContext implements Context {
 	/**
 	 * @When user :user deletes the last created comment using the WebDAV API
 	 * @When the user deletes the last created comment using the WebDAV API
-	 * @Given user :user has deleted the last created comment
-	 * @Given the user has deleted the last created comment
 	 *
 	 * @param string $user | null
 	 *
@@ -230,6 +253,20 @@ class CommentsContext implements Context {
 			$user = $this->featureContext->getCurrentUser();
 		}
 		$this->deleteComment($user, $this->lastFileId, $this->lastCommentId);
+	}
+
+	/**
+	 * @Given user :user has deleted the last created comment
+	 * @Given the user has deleted the last created comment
+	 *
+	 * @param string $user | null
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userHasDeletedLastComment($user=null) {
+		$this->userDeletesLastComment($user);
+		$this->featureContext->theHTTPStatusCodeShouldBe("204");
 	}
 
 	/**
@@ -305,7 +342,6 @@ class CommentsContext implements Context {
 
 	/**
 	 * @When /^user "([^"]*)" edits the last created comment with content "([^"]*)" using the WebDAV API$/
-	 * @Given /^user "([^"]*)" has edited the last created comment with content "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $content
@@ -320,8 +356,21 @@ class CommentsContext implements Context {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has edited the last created comment with content "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $content
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userHasEditedLastCreatedComment($user, $content) {
+		$this->userEditsLastCreatedComment($user, $content);
+		$this->featureContext->theHTTPStatusCodeShouldBe("207");
+	}
+
+	/**
 	 * @When /^the user edits the last created comment with content "([^"]*)" using the WebDAV API$/
-	 * @Given /^the user has edited the last created comment with content "([^"]*)"$/
 	 *
 	 * @param string $content
 	 *
@@ -335,6 +384,19 @@ class CommentsContext implements Context {
 			$this->lastFileId,
 			$this->lastCommentId
 		);
+	}
+
+	/**
+	 * @Given /^the user has edited the last created comment with content "([^"]*)"$/
+	 *
+	 * @param string $content
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theUserHasEditedLastCreatedComment($content) {
+		$this->theUserEditsLastCreatedComment($content);
+		$this->featureContext->theHTTPStatusCodeShouldBe("207");
 	}
 
 	/**
