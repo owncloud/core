@@ -11,8 +11,8 @@ Feature: sharing
     And the user has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
-    When the public uploads file "test.txt" with content "test" using the public WebDAV API
-    And the public uploads file "test.txt" with content "test2" with autorename mode using the public WebDAV API
+    When the public uploads file "test.txt" with content "test" using the old public WebDAV API
+    And the public uploads file "test.txt" with content "test2" with autorename mode using the old public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
     And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
 
@@ -23,7 +23,7 @@ Feature: sharing
       | path        | FOLDER |
       | permissions | create |
     When user "user0" deletes file "/FOLDER" using the WebDAV API
-    Then publicly uploading a file should not work
+    Then uploading a file should not work using the old public WebDAV API
     And the HTTP status code should be "404"
     Examples:
       | dav-path |
@@ -35,7 +35,7 @@ Feature: sharing
     When user "user0" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | read   |
-    Then publicly uploading a file should not work
+    Then uploading a file should not work using the old public WebDAV API
     And the HTTP status code should be "403"
 
   Scenario: Uploading file to a user read-only share folder does not work
@@ -71,7 +71,7 @@ Feature: sharing
     And the user has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
-    When the public uploads file "test.txt" with content "test" using the public WebDAV API
+    When the public uploads file "test.txt" with content "test" using the old public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
   @public_link_share-feature-required
@@ -81,7 +81,7 @@ Feature: sharing
       | path        | FOLDER   |
       | password    | %public% |
       | permissions | create   |
-    When the public uploads file "test.txt" with password "%public%" and content "test" using the public WebDAV API
+    When the public uploads file "test.txt" with password "%public%" and content "test" using the old public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
   Scenario Outline: Uploading file to a user upload-only share folder works
@@ -123,7 +123,7 @@ Feature: sharing
       | path        | FOLDER   |
       | password    | %public% |
       | permissions | change   |
-    When the public uploads file "test.txt" with password "%public%" and content "test" using the public WebDAV API
+    When the public uploads file "test.txt" with password "%public%" and content "test" using the old public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
   @smokeTest
@@ -180,7 +180,7 @@ Feature: sharing
       | path        | FOLDER   |
       | password    | %public% |
       | permissions | change   |
-    When the public uploads file "test.txt" with password "%public%" and content "test" using the public WebDAV API
+    When the public uploads file "test.txt" with password "%public%" and content "test" using the old public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
   Scenario Outline: Uploading to a user shared folder with read/write permission when the sharer has unsufficient quota does not work
@@ -223,7 +223,7 @@ Feature: sharing
       | path        | FOLDER |
       | permissions | change |
     When the quota of user "user0" has been set to "0"
-    Then publicly uploading a file should not work
+    Then uploading a file should not work using the old public WebDAV API
     And the HTTP status code should be "507"
 
   Scenario Outline: Uploading to a user shared folder with upload-only permission when the sharer has unsufficient quota does not work
@@ -266,7 +266,7 @@ Feature: sharing
       | path        | FOLDER |
       | permissions | create |
     When the quota of user "user0" has been set to "0"
-    Then publicly uploading a file should not work
+    Then uploading a file should not work using the old public WebDAV API
     And the HTTP status code should be "507"
 
   @public_link_share-feature-required
@@ -275,7 +275,7 @@ Feature: sharing
       | path        | FOLDER |
       | permissions | create |
     When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "no"
-    Then publicly uploading a file should not work
+    Then uploading a file should not work using the old public WebDAV API
     And the HTTP status code should be "403"
 
   @public_link_share-feature-required
@@ -285,7 +285,7 @@ Feature: sharing
       | path        | FOLDER |
       | permissions | all    |
     When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "yes"
-    Then publicly uploading a file should not work
+    Then uploading a file should not work using the old public WebDAV API
     And the HTTP status code should be "403"
 
   @public_link_share-feature-required
@@ -295,7 +295,7 @@ Feature: sharing
       | permissions | create |
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "yes"
-    When the public uploads file "test.txt" with content "test" using the public WebDAV API
+    When the public uploads file "test.txt" with content "test" using the old public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
   Scenario: Uploading a file in to a shared folder without edit permissions
@@ -318,7 +318,7 @@ Feature: sharing
     And the user has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
-    When the public uploads file "test.txt" with content "test" using the public WebDAV API
+    When the public uploads file "test.txt" with content "test" using the old public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
   @smokeTest @public_link_share-feature-required
@@ -327,6 +327,6 @@ Feature: sharing
     And the user has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
-    When the public uploads file "test.txt" with content "test" using the public WebDAV API
-    And the public uploads file "test.txt" with content "test2" using the public WebDAV API
+    When the public uploads file "test.txt" with content "test" using the old public WebDAV API
+    And the public uploads file "test.txt" with content "test2" using the old public WebDAV API
     Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"

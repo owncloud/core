@@ -257,8 +257,8 @@ Feature: sharing
       | uid_file_owner         | user0                |
       | uid_owner              | user0                |
       | name                   |                      |
-    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder and the content should be "wnCloud"
-    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder with password "%regular%" and the content should be "wnCloud"
+    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "wnCloud"
+    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder using the old public WebDAV API with password "%regular%" and the content should be "wnCloud"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -284,9 +284,9 @@ Feature: sharing
       | uid_file_owner         | user0                |
       | uid_owner              | user0                |
       | name                   |                      |
-    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder with password "%public%" and the content should be "wnCloud"
-    But the public should not be able to download file "/parent.txt" from inside the last public shared folder without a password
-    And the public should not be able to download file "/parent.txt" from inside the last public shared folder with password "%regular%"
+    And the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder using the old public WebDAV API with password "%public%" and the content should be "wnCloud"
+    But the public should not be able to download file "/parent.txt" from inside the last public shared folder using the old public WebDAV API without a password
+    And the public should not be able to download file "/parent.txt" from inside the last public shared folder using the old public WebDAV API with password "%regular%"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -842,7 +842,7 @@ Feature: sharing
       | path | /aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    Then the public should be able to download the range "bytes=1-6" of file "/welcome.txt" from inside the last public shared folder and the content should be "elcome"
+    Then the public should be able to download the range "bytes=1-6" of file "/welcome.txt" from inside the last public shared folder using the old public WebDAV API and the content should be "elcome"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -1292,7 +1292,7 @@ Feature: sharing
       | displayname_owner      | User Zero            |
       | uid_file_owner         | user0                |
       | uid_owner              | user0                |
-    When the public downloads file "/parent.txt" from inside the last public shared folder using the public WebDAV API
+    When the public downloads file "/parent.txt" from inside the last public shared folder using the old public WebDAV API
     Then the downloaded content should be "ownCloud test text file parent" plus end-of-line
     Examples:
       | ocs_api_version | ocs_status_code |

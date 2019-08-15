@@ -31,14 +31,14 @@ Feature: download file
   Scenario: download a public shared file with range
     When user "user0" creates a public link share using the sharing API with settings
       | path | welcome.txt |
-    And the public downloads the last public shared file with range "bytes=51-77" using the public WebDAV API
+    And the public downloads the last public shared file with range "bytes=51-77" using the old public WebDAV API
     Then the downloaded content should be "example file for developers"
 
   @public_link_share-feature-required
   Scenario: download a public shared file inside a folder with range
     When user "user0" creates a public link share using the sharing API with settings
       | path | PARENT |
-    And the public downloads file "/parent.txt" from inside the last public shared folder with range "bytes=1-7" using the public WebDAV API
+    And the public downloads file "/parent.txt" from inside the last public shared folder using the old public WebDAV API with range "bytes=1-7" using the old public WebDAV API
     Then the downloaded content should be "wnCloud"
 
   @smokeTest

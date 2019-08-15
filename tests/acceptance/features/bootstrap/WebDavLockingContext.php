@@ -379,7 +379,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @When the public uploads file :filename with content :content sending the locktoken of file :itemToUseLockOf of user :lockOwner using the public WebDAV API
+	 * @When the public uploads file :filename with content :content sending the locktoken of file :itemToUseLockOf of user :lockOwner using the old public WebDAV API
 	 *
 	 * @param string $filename
 	 * @param string $content
@@ -401,7 +401,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @When the public uploads file :filename with content :content sending the locktoken of :itemToUseLockOf of the public using the public WebDAV API
+	 * @When the public uploads file :filename with content :content sending the locktoken of :itemToUseLockOf of the public using the old public WebDAV API
 	 *
 	 * @param string $filename
 	 * @param string $content

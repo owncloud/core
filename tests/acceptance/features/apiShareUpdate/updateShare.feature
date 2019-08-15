@@ -290,7 +290,7 @@ Feature: sharing
       | publicUpload | true |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And publicly uploading a file should not work
+    And uploading a file should not work using the old public WebDAV API
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -423,7 +423,7 @@ Feature: sharing
       | publicUpload | true |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And publicly uploading a file should work
+    And uploading a file should work using the old public WebDAV API
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -443,7 +443,7 @@ Feature: sharing
       | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And publicly uploading a file should not work
+    And uploading a file should not work using the old public WebDAV API
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -463,7 +463,7 @@ Feature: sharing
       | permissions | read,update,create,delete |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And publicly uploading a file should work
+    And uploading a file should work using the old public WebDAV API
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -504,7 +504,7 @@ Feature: sharing
     When user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | permissions | read,update,create |
-    When the public deletes file "CHILD/child.txt" from the last public share using the public WebDAV API
+    When the public deletes file "CHILD/child.txt" from the last public share using the old public WebDAV API
     Then the HTTP status code should be "403"
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -524,7 +524,7 @@ Feature: sharing
     When user "user0" gets the info of the last share using the sharing API
     Then the fields of the last response should include
       | permissions | read,update,create,delete |
-    When the public deletes file "CHILD/child.txt" from the last public share using the public WebDAV API
+    When the public deletes file "CHILD/child.txt" from the last public share using the old public WebDAV API
     Then the HTTP status code should be "204"
     Examples:
       | ocs_api_version | ocs_status_code |

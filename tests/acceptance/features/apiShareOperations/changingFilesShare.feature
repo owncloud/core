@@ -48,7 +48,7 @@ Feature: sharing
     When user "user0" creates a public link share using the sharing API with settings
       | path        | /PARENT       |
       | permissions | <permissions> |
-    And the public deletes file "welcome.txt" from the last public share using the public WebDAV API
+    And the public deletes file "welcome.txt" from the last public share using the old public WebDAV API
     Then the HTTP status code should be "<http-status-code>"
     And as "user0" file "PARENT/welcome.txt" <should-or-not> exist
     Examples:
@@ -64,7 +64,7 @@ Feature: sharing
     When user "user0" creates a public link share using the sharing API with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
-    And the public renames file "parent.txt" to "newparent.txt" from the last public share using the public WebDAV API
+    And the public renames file "parent.txt" to "newparent.txt" from the last public share using the old public WebDAV API
     Then the HTTP status code should be "403"
     And as "user0" file "/PARENT/parent.txt" should exist
     And as "user0" file "/PARENT/newparent.txt" should not exist
@@ -79,7 +79,7 @@ Feature: sharing
     When user "user0" creates a public link share using the sharing API with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
-    And the public renames file "parent.txt" to "newparent.txt" from the last public share using the public WebDAV API
+    And the public renames file "parent.txt" to "newparent.txt" from the last public share using the old public WebDAV API
     Then the HTTP status code should be "201"
     And as "user0" file "/PARENT/parent.txt" should not exist
     And as "user0" file "/PARENT/newparent.txt" should exist
@@ -95,7 +95,7 @@ Feature: sharing
     When user "user0" creates a public link share using the sharing API with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
-    And the public uploads file "lorem.txt" with content "test" using the public WebDAV API
+    And the public uploads file "lorem.txt" with content "test" using the old public WebDAV API
     Then the HTTP status code should be "403"
     And as "user0" file "/PARENT/lorem.txt" should not exist
     Examples:
@@ -110,7 +110,7 @@ Feature: sharing
     When user "user0" creates a public link share using the sharing API with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
-    And the public uploads file "lorem.txt" with content "test" using the public WebDAV API
+    And the public uploads file "lorem.txt" with content "test" using the old public WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "PARENT/lorem.txt" for user "user0" should be "test"
     Examples:

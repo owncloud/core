@@ -9,7 +9,7 @@ Feature: persistent-locking in case of a public link
     And user "user0" has created a public link share of folder "FOLDER" with change permission
     When user "user0" locks folder "FOLDER" using the WebDAV API setting following properties
       | lockscope | <lock-scope> |
-    Then publicly uploading a file should not work
+    Then uploading a file should not work using the old public WebDAV API
     And the HTTP status code should be "423"
     Examples:
       | dav-path | lock-scope |
@@ -23,8 +23,8 @@ Feature: persistent-locking in case of a public link
     And user "user0" has created a public link share of folder "PARENT" with change permission
     And user "user0" has locked folder "PARENT/CHILD" setting following properties
       | lockscope | <lock-scope> |
-    When the public uploads file "test.txt" with content "test" using the public WebDAV API
-    And the public uploads file "CHILD/test.txt" with content "test" using the public WebDAV API
+    When the public uploads file "test.txt" with content "test" using the old public WebDAV API
+    And the public uploads file "CHILD/test.txt" with content "test" using the old public WebDAV API
     Then the HTTP status code should be "423"
     And as "user0" file "/PARENT/CHILD/test.txt" should not exist
     But the content of file "/PARENT/test.txt" for user "user0" should be "test"
@@ -40,7 +40,7 @@ Feature: persistent-locking in case of a public link
     And user "user0" has created a public link share of folder "PARENT" with change permission
     And user "user0" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
-    When the public uploads file "parent.txt" with content "test" using the public WebDAV API
+    When the public uploads file "parent.txt" with content "test" using the old public WebDAV API
     Then the HTTP status code should be "423"
     And the content of file "/PARENT/parent.txt" for user "user0" should be "ownCloud test text file parent" plus end-of-line
     Examples:
@@ -55,8 +55,8 @@ Feature: persistent-locking in case of a public link
     And user "user0" has created a public link share of folder "PARENT" with change permission
     And user "user0" has locked folder "PARENT/CHILD" setting following properties
       | lockscope | <lock-scope> |
-    When the public uploads file "parent.txt" with content "changed text" using the public WebDAV API
-    And the public uploads file "CHILD/child.txt" with content "test" using the public WebDAV API
+    When the public uploads file "parent.txt" with content "changed text" using the old public WebDAV API
+    And the public uploads file "CHILD/child.txt" with content "test" using the old public WebDAV API
     Then the HTTP status code should be "423"
     And the content of file "/PARENT/parent.txt" for user "user0" should be "changed text"
     But the content of file "/PARENT/CHILD/child.txt" for user "user0" should be "ownCloud test text file child" plus end-of-line

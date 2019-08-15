@@ -55,7 +55,7 @@ Feature: lock should propagate correctly if a share is reshared
     And user "user2" has created a public link share of folder "PARENT (2)" with change permission
     And user "user0" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
-    When the public uploads file "test.txt" with content "test" using the public WebDAV API
+    When the public uploads file "test.txt" with content "test" using the old public WebDAV API
     Then the HTTP status code should be "423"
     And as "user0" file "/PARENT/test.txt" should not exist
     Examples:
