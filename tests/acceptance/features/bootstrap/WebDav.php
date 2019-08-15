@@ -2188,7 +2188,7 @@ trait WebDav {
 		}
 		$this->moveNewDavChunkToFinalFile($user, $chunkingId, $file, $headers);
 		if ($checkActions) {
-			$this->theHTTPStatusCodeShouldBeOr("201", "204");
+			$this->theHTTPStatusCodeShouldBeSuccess();
 		}
 		$this->lastUploadDeleteTime = \time();
 	}
@@ -2218,7 +2218,7 @@ trait WebDav {
 	 */
 	public function userHasCreatedANewChunkingUploadWithId($user, $id) {
 		$this->userCreatesANewChunkingUploadWithId($user, $id);
-		$this->theHTTPStatusCodeShouldBe("201");
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -2251,7 +2251,7 @@ trait WebDav {
 	 */
 	public function userHasUploadedNewChunkFileOfWithToId($user, $num, $data, $id) {
 		$this->userUploadsNewChunkFileOfWithToId($user, $num, $data, $id);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
