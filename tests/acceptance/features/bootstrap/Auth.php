@@ -19,6 +19,7 @@
  *
  */
 
+use PHPUnit\Framework\Assert;
 use TestHelpers\HttpRequestHelper;
 use Behat\Gherkin\Node\TableNode;
 
@@ -86,7 +87,6 @@ trait Auth {
 
 	/**
 	 * @When a user requests :url with :method and no authentication
-	 * @Given a user has requested :url with :method and no authentication
 	 *
 	 * @param string $url
 	 * @param string $method
@@ -95,6 +95,19 @@ trait Auth {
 	 */
 	public function userRequestsURLWith($url, $method) {
 		$this->sendRequest($url, $method);
+	}
+
+	/**
+	 * @Given a user has requested :url with :method and no authentication
+	 *
+	 * @param string $url
+	 * @param string $method
+	 *
+	 * @return void
+	 */
+	public function userHasRequestedURLWith($url, $method) {
+		$this->sendRequest($url, $method);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -331,9 +344,10 @@ trait Auth {
 		);
 		$headers = ['Content-Type' => 'application/json'];
 		$url = $this->getBaseUrl() . '/token/generate';
-		$resp = HttpRequestHelper::post($url, null, null, $headers, $body);
+		$this->response = HttpRequestHelper::post($url, null, null, $headers, $body);
+		$this->theHTTPStatusCodeShouldBe("200");
 		$this->clientToken
-			= \json_decode($resp->getBody()->getContents())->token;
+			= \json_decode($this->response->getBody()->getContents())->token;
 	}
 
 	/**
@@ -349,7 +363,6 @@ trait Auth {
 
 	/**
 	 * @When user :user requests :url with :method using basic auth
-	 * @Given user :user has requested :url with :method using basic auth
 	 *
 	 * @param string $user
 	 * @param string $url
@@ -371,6 +384,26 @@ trait Auth {
 	}
 
 	/**
+	 * @Given user :user has requested :url with :method using basic auth
+	 *
+	 * @param string $user
+	 * @param string $url
+	 * @param string $method
+	 * @param string $password
+	 * @param string $body
+	 *
+	 * @return void
+	 */
+	public function userHasRequestedURLWithUsingBasicAuth(
+		$user, $url, $method, $password=null, $body=null
+	) {
+		$this->userRequestsURLWithUsingBasicAuth(
+			$user, $url, $method, $password, $body
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When the administrator requests :url with :method using basic auth
 	 *
 	 * @param string $url
@@ -387,7 +420,6 @@ trait Auth {
 
 	/**
 	 * @When user :user requests :url with :method using basic token auth
-	 * @Given user :user has requested :url with :method using basic token auth
 	 *
 	 * @param string $user
 	 * @param string $url
@@ -404,8 +436,21 @@ trait Auth {
 	}
 
 	/**
+	 * @Given user :user has requested :url with :method using basic token auth
+	 *
+	 * @param string $user
+	 * @param string $url
+	 * @param string $method
+	 *
+	 * @return void
+	 */
+	public function userHasRequestedURLWithUsingBasicTokenAuth($user, $url, $method) {
+		$this->userRequestsURLWithUsingBasicTokenAuth($user, $url, $method);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When the user requests :url with :method using the generated client token
-	 * @Given the user has requested :url with :method using the generated client token
 	 *
 	 * @param string $url
 	 * @param string $method
@@ -417,8 +462,20 @@ trait Auth {
 	}
 
 	/**
+	 * @Given the user has requested :url with :method using the generated client token
+	 *
+	 * @param string $url
+	 * @param string $method
+	 *
+	 * @return void
+	 */
+	public function userHasRequestedURLWithUsingAClientToken($url, $method) {
+		$this->userRequestsURLWithUsingAClientToken($url, $method);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When the user requests :url with :method using the generated app password
-	 * @Given the user has requested :url with :method using the generated app password
 	 *
 	 * @param string $url
 	 * @param string $method
@@ -430,8 +487,20 @@ trait Auth {
 	}
 
 	/**
+	 * @Given the user has requested :url with :method using the generated app password
+	 *
+	 * @param string $url
+	 * @param string $method
+	 *
+	 * @return void
+	 */
+	public function userHasRequestedURLWithUsingAppPassword($url, $method) {
+		$this->userRequestsURLWithUsingAppPassword($url, $method);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When the user requests :url with :method using the browser session
-	 * @Given the user has requested :url with :method using the browser session
 	 *
 	 * @param string $url
 	 * @param string $method
@@ -440,6 +509,19 @@ trait Auth {
 	 */
 	public function userRequestsURLWithBrowserSession($url, $method) {
 		$this->sendRequest($url, $method, null, true);
+	}
+
+	/**
+	 * @Given the user has requested :url with :method using the browser session
+	 *
+	 * @param string $url
+	 * @param string $method
+	 *
+	 * @return void
+	 */
+	public function userHasRequestedURLWithBrowserSession($url, $method) {
+		$this->userRequestsURLWithBrowserSession($url, $method);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -452,10 +534,11 @@ trait Auth {
 	public function aNewBrowserSessionForHasBeenStarted($user) {
 		$loginUrl = $this->getBaseUrl() . '/index.php/login';
 		// Request a new session and extract CSRF token
-		$response = HttpRequestHelper::get(
+		$this->response = HttpRequestHelper::get(
 			$loginUrl, null, null, null, null, null, $this->cookieJar
 		);
-		$this->extractRequestTokenFromResponse($response);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->extractRequestTokenFromResponse($this->response);
 
 		// Login and extract new token
 		$body = [
@@ -463,10 +546,11 @@ trait Auth {
 			'password' => $this->getPasswordForUser($user),
 			'requesttoken' => $this->requestToken
 		];
-		$response = HttpRequestHelper::post(
+		$this->response = HttpRequestHelper::post(
 			$loginUrl, null, null, null, $body, null, $this->cookieJar
 		);
-		$this->extractRequestTokenFromResponse($response);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->extractRequestTokenFromResponse($this->response);
 	}
 
 	/**
@@ -495,10 +579,15 @@ trait Auth {
 		} else {
 			$value = 'false';
 		}
-		$this->setSystemConfig(
+		$occStatus = $this->setSystemConfig(
 			'token_auth_enforced',
 			$value,
 			'boolean'
+		);
+		Assert::assertEquals(
+			"0",
+			$occStatus['code'],
+			"setSystemConfig token_auth_enforced returned error code " . $occStatus['code']
 		);
 
 		// Remember that we set this value, so it can be removed after the scenario

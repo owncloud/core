@@ -872,7 +872,6 @@ trait BasicStructure {
 
 	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to URL "([^"]*)"$/
-	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to URL "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $verb
@@ -885,8 +884,21 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to URL "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function userHasSentHTTPMethodToUrl($user, $verb, $url) {
+		$this->userSendsHTTPMethodToUrl($user, $verb, $url);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to URL "([^"]*)" with password "([^"]*)"$/
-	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to URL "([^"]*)" with password "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $verb
@@ -897,6 +909,21 @@ trait BasicStructure {
 	 */
 	public function userSendsHTTPMethodToUrlWithPassword($user, $verb, $url, $password) {
 		$this->sendingToWithDirectUrl($user, $verb, $url, null, $password);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to URL "([^"]*)" with password "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function userHasSentHTTPMethodToUrlWithPassword($user, $verb, $url, $password) {
+		$this->userSendsHTTPMethodToUrlWithPassword($user, $verb, $url, $password);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -992,6 +1019,40 @@ trait BasicStructure {
 		$this->theHTTPStatusCodeShouldBe(
 			[$statusCode1, $statusCode2]
 		);
+	}
+
+	/**
+	 * @Then /^the HTTP status code should be between "(\d+)" and "(\d+)"$/
+	 *
+	 * @param int $minStatusCode
+	 * @param int $maxStatusCode
+	 *
+	 * @return void
+	 */
+	public function theHTTPStatusCodeShouldBeBetween(
+		$minStatusCode, $maxStatusCode
+	) {
+		$statusCode = $this->response->getStatusCode();
+		$message = "The HTTP status code $statusCode is not between $minStatusCode and $maxStatusCode";
+		Assert::assertGreaterThanOrEqual(
+			$minStatusCode,
+			$statusCode,
+			$message
+		);
+		Assert::assertLessThanOrEqual(
+			$maxStatusCode,
+			$statusCode,
+			$message
+		);
+	}
+
+	/**
+	 * @Then the HTTP status code should be success
+	 *
+	 * @return void
+	 */
+	public function theHTTPStatusCodeShouldBeSuccess() {
+		$this->theHTTPStatusCodeShouldBeBetween("200", "299");
 	}
 
 	/**
@@ -1132,10 +1193,11 @@ trait BasicStructure {
 			];
 		}
 
-		$response = HttpRequestHelper::get(
+		$this->response = HttpRequestHelper::get(
 			$loginUrl, null, null, $this->guzzleClientHeaders, null, $config, $this->cookieJar
 		);
-		$this->extractRequestTokenFromResponse($response);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->extractRequestTokenFromResponse($this->response);
 
 		// Login and extract new token
 		$password = $this->getPasswordForUser($user);
@@ -1144,15 +1206,15 @@ trait BasicStructure {
 			'password' => $password,
 			'requesttoken' => $this->requestToken
 		];
-		$response = HttpRequestHelper::post(
+		$this->response = HttpRequestHelper::post(
 			$loginUrl, null, null, $this->guzzleClientHeaders, $body, $config, $this->cookieJar
 		);
-		$this->extractRequestTokenFromResponse($response);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+		$this->extractRequestTokenFromResponse($this->response);
 	}
 
 	/**
 	 * @When the client sends a :method to :url with requesttoken
-	 * @Given the client has sent a :method to :url with requesttoken
 	 *
 	 * @param string $method
 	 * @param string $url
@@ -1180,8 +1242,20 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Given the client has sent a :method to :url with requesttoken
+	 *
+	 * @param string $method
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function theClientHasSentAToWithRequesttoken($method, $url) {
+		$this->sendingAToWithRequesttoken($method, $url);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @When the client sends a :method to :url without requesttoken
-	 * @Given the client has sent a :method to :url without requesttoken
 	 *
 	 * @param string $method
 	 * @param string $url
@@ -1203,6 +1277,19 @@ trait BasicStructure {
 			$url, $method, null, null, $this->guzzleClientHeaders,
 			null, $config, $this->cookieJar
 		);
+	}
+
+	/**
+	 * @Given the client has sent a :method to :url without requesttoken
+	 *
+	 * @param string $method
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	public function theClientHasSentAToWithoutRequesttoken($method, $url) {
+		$this->sendingAToWithoutRequesttoken($method, $url);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -1259,6 +1346,7 @@ trait BasicStructure {
 	 * @param string $content
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function createFileOnServerWithContent(
 		$filePathFromServerRoot, $content
@@ -1279,6 +1367,7 @@ trait BasicStructure {
 	 * @param string $text
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function fileHasBeenCreatedInLocalStorageWithText($filename, $text) {
 		$this->createFileOnServerWithContent(
@@ -1292,6 +1381,7 @@ trait BasicStructure {
 	 * @param string $filename
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function fileHasBeenDeletedInLocalStorage($filename) {
 		SetupHelper::deleteFileOnServer(
@@ -1560,6 +1650,7 @@ trait BasicStructure {
 			$this->getOcsApiVersion()
 		);
 		$this->setResponse($response);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
