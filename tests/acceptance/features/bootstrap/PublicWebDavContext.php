@@ -381,25 +381,6 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public should be able to upload file "([^"]*)" with content "([^"]*)" to the last public shared folder$/
-	 *
-	 * @param string $path
-	 * @param string $content
-	 *
-	 * @return void
-	 */
-	public function shouldBeAbleToUploadFileWithContentToTheLastPublicSharedFolder(
-		$path, $content
-	) {
-		$this->publiclyUploadingContent($path, $content);
-		$this->featureContext->theHTTPStatusCodeShouldBe(
-			"201", "Failed to upload file to public share"
-		);
-		$this->downloadPublicFileInsideAFolder($path);
-		$this->featureContext->downloadedContentShouldBe($content);
-	}
-
-	/**
 	 * @Then uploading a file should not work using the old public WebDAV API
 	 *
 	 * @return void
