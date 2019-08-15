@@ -147,9 +147,18 @@ class AppManagementContext implements Context {
 	 * @return void
 	 */
 	public function adminGetsPathForApp($appId) {
-		$this->cmdOutput = SetupHelper::runOcc(
+		$occStatus = SetupHelper::runOcc(
 			['app:getpath', $appId, '--no-ansi']
-		)['stdOut'];
+		);
+		$this->cmdOutput = $occStatus['stdOut'];
+		// check that the command seems to have executed OK, for both When and Given
+		// step forms. There is no point continuing the scenario if the command itself
+		// has reported an error.
+		Assert::assertEquals(
+			"0",
+			$occStatus['code'],
+			"app:getpath returned error code " . $occStatus['code']
+		);
 	}
 
 	/**

@@ -343,7 +343,7 @@ class OCSContext implements Context {
 	/**
 	 * @Then /^the OCS status code should be "([^"]*)"$/
 	 *
-	 * @param int|int[] $statusCode
+	 * @param int|int[]|string|string[] $statusCode
 	 * @param string $message
 	 *
 	 * @return void
