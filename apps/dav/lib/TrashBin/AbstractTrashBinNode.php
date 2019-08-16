@@ -74,7 +74,7 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 	}
 
 	public function getETag() {
-		return $this->fileInfo->getEtag();
+		return '"' . $this->fileInfo->getEtag() . '"';
 	}
 
 	public function getLastModified() {

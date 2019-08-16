@@ -24,6 +24,7 @@ namespace OCA\DAV\Tests\Unit\TrashBin;
 use OCA\DAV\TrashBin\TrashBinFolder;
 use OCA\DAV\TrashBin\TrashBinManager;
 use OCP\Files\FileInfo;
+use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\DAV\Exception\NotFound;
 use Test\TestCase;
 
@@ -33,11 +34,11 @@ class TrashBinFolderTest extends TestCase {
 	 */
 	private $trashBinFolder;
 	/**
-	 * @var TrashBinManager | \PHPUnit\Framework\MockObject\MockObject
+	 * @var TrashBinManager | MockObject
 	 */
 	private $trashBinManager;
 	/**
-	 * @var FileInfo | \PHPUnit\Framework\MockObject\MockObject
+	 * @var FileInfo | MockObject
 	 */
 	private $fileInfo;
 
@@ -122,7 +123,7 @@ class TrashBinFolderTest extends TestCase {
 		return [
 			['666', 'getName'],
 			['foo', 'getContentType'],
-			['abcdefgh', 'getEtag'],
+			['"abcdefgh"', 'getEtag'],
 			[789123456, 'getLastModified'],
 			[12345678, 'getSize'],
 			['foo', 'getOriginalFileName'],

@@ -29,6 +29,7 @@ use OCP\Files\FileInfo;
 use OCP\Files\ForbiddenException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Lock\LockedException;
+use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Test\TestCase;
 
@@ -38,7 +39,7 @@ class TrashBinFileTest extends TestCase {
 	 */
 	private $trashBinFile;
 	/**
-	 * @var TrashBinManager | \PHPUnit\Framework\MockObject\MockObject
+	 * @var TrashBinManager | MockObject
 	 */
 	private $trashBinManager;
 

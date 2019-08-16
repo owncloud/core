@@ -87,7 +87,7 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 	 * @inheritdoc
 	 */
 	public function getETag() {
-		return $this->file->getEtag();
+		return '"' . $this->file->getEtag() . '"';
 	}
 
 	/**
