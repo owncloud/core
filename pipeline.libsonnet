@@ -615,7 +615,7 @@ local suites = {
 
     {
       kind: 'pipeline',
-      name: 'behat' + (if browser != '' then '-' + browser else '-headless') + (if suite != '' then '-' + suite else '') + + (if proxy == true then '-' + 'proxy' else '') + (if num != '' then '-' + std.join('-of-', std.split(num, "/")) else ''),
+      name: 'behat' + (if browser != '' then '-' + browser else '-headless') + (if federated == 'daily-master-qa' then '-master-qa-fed'  else (if federated != '' then '-' + federated + '-fed' else '')) + (if suite != '' then '-' + suite else '') + (if proxy == true then '-' + 'proxy' else '') + (if num != '' then '-' + std.join('-of-', std.split(num, "/")) else ''),
       platform: {
         os: 'linux',
         arch: 'amd64',
@@ -630,7 +630,7 @@ local suites = {
         $.vendorbin(image='owncloudci/php:' + php),
         $.yarn(image='owncloudci/php:' + php),
       ]
-      + $.server(image='owncloudci/php:' + php, db=database_name, proxy=proxy)
+      + $.server(image='owncloudci/php:' + php, db=database_name, federated=federated, proxy=proxy)
       + $.testingapp(image='owncloudci/php:' + php)
       + (if notification then $.notificationsapp(image='owncloudci/php:' + php) else [])
       + $.permissions(image='owncloudci/php:' + php, name='owncloud', path='/drone/src')
@@ -819,12 +819,13 @@ local suites = {
       ],
     }],
 
-  server(image='owncloudci/php:7.1', db='', federated=false, proxy=false)::
+  server(image='owncloudci/php:7.1', db='', federated='', proxy=false)::
     [{
       name: 'install-server',
       image: image,
       pull: 'always',
       proxy: proxy,
+      federated: federated,
       environment: {
         DB_TYPE: db,
       },
@@ -832,13 +833,13 @@ local suites = {
         'bash tests/drone/install-server.sh',
         'php occ a:l',
         'php occ config:system:set trusted_domains 1 --value=server',
-      ] + if federated then ['php occ config:system:set trusted_domains 2 --value=federated'] else [] + [
+      ] + (if federated != '' then ['php occ config:system:set trusted_domains 2 --value=federated'] else []) + [
         'php occ log:manage --level 2',
         'php occ config:list',
         'php occ security:certificates:import /drone/server.crt',
-      ] + if federated then ['php occ security:certificates:import /drone/federated.crt'] else [] + [
+      ] + (if federated != '' then ['php occ security:certificates:import /drone/federated.crt'] else []) + [
         'php occ security:certificates',
-      ] + if proxy then ['php occ config:system:set trusted_domains 3 --value=proxy'] else [],
+      ] + (if proxy then ['php occ config:system:set trusted_domains 3 --value=proxy'] else []),
     }],
 
   federated(image='owncloudci/php:7.1', version='', proto='https')::
