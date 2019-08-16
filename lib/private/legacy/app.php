@@ -236,7 +236,7 @@ class OC_App {
 	private static function requireAppFile($app) {
 		try {
 			// encapsulated here to avoid variable scope conflicts
-			require_once $app . '/appinfo/app.php';
+			require_once self::getAppPath($app) . '/appinfo/app.php';
 		} catch (Exception $ex) {
 			\OC::$server->getLogger()->logException($ex);
 			$blacklist = \OC::$server->getAppManager()->getAlwaysEnabledApps();
