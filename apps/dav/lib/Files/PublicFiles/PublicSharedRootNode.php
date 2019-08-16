@@ -97,7 +97,7 @@ class PublicSharedRootNode extends Collection {
 		}
 		try {
 			$file = $this->share->getNode()->newFile($name);
-			$file->putContent(data);
+			$file->putContent($data);
 			return $file->getEtag();
 		} catch (NotPermittedException $ex) {
 			throw new Forbidden('Permission denied to create file');
