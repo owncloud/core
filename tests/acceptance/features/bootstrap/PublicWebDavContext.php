@@ -121,7 +121,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder using the old public WebDAV API with password "([^"]*)" using the old public WebDAV API$/
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with password "([^"]*)" using the old public WebDAV API$/
 	 *
 	 * @param string $path
 	 * @param string $password
@@ -137,7 +137,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder using the old public WebDAV API with range "([^"]*)" using the old public WebDAV API$/
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with range "([^"]*)" using the old public WebDAV API$/
 	 *
 	 * @param string $path
 	 * @param string $range
@@ -151,7 +151,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder using the old public WebDAV API with password "([^"]*)" with range "([^"]*)" using the old public WebDAV API$/
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with password "([^"]*)" with range "([^"]*)" using the old public WebDAV API$/
 	 *
 	 * @param string $path
 	 * @param string $password
