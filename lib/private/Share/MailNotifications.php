@@ -37,6 +37,7 @@ use OCP\IUser;
 use OCP\Mail\IMailer;
 use OCP\ILogger;
 use OCP\Defaults;
+use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
 use OCP\Util;
@@ -74,6 +75,7 @@ class MailNotifications {
 	private $eventDispatcher;
 
 	/**
+	 * @param IManager $shareManager
 	 * @param IUser $user
 	 * @param IL10N $l10n
 	 * @param IMailer $mailer
@@ -213,109 +215,114 @@ class MailNotifications {
 		return $noMail;
 	}
 
-	public function sendLinkShareMail($recipient, $filename, $link, $expiration, $personalNote = null, $options = []) {
+	/**
+	 *
+	 * @param string $recipients recipient email addresses
+	 * @param string $link the share link
+	 * @param string $personalNote sender note
+	 *
+	 * @return string[] $result of failed recipients
+	 */
+	public function sendLinkShareMail($recipients, $link, $personalNote = null) {
+		$currentUser = $this->user->getUID();
 		$notificationLang = $this->config->getAppValue(
 			'core',
 			'shareapi_public_notification_lang',
 			null
 		);
+		$linkParts = \explode('/', $link);
+		$token = \array_pop($linkParts);
+		try {
+			$share = $this->shareManager->getShareByToken($token);
+			if ($share->getShareOwner() !== $currentUser) {
+				return $this->_mailStringToArray($recipients);
+			}
+		} catch (ShareNotFound $e) {
+			return $this->_mailStringToArray($recipients);
+		}
 		if ($notificationLang !== null) {
 			$l10n = \OC::$server->getL10N('lib', $notificationLang);
 		} else {
 			$l10n = $this->l;
 		}
-		$subject = (string)$l10n->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
-		list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, $personalNote, '', $l10n);
+		$expirationDate = null;
+		if ($share->getExpirationDate()) {
+			$expirationDate = $share->getExpirationDate()->getTimestamp();
+		}
+		$filter = new MailNotificationFilter([
+			'link' => $link,
+			'file' => $share->getName(),
+			'expirationDate' => $expirationDate,
+			'personalNote' => $personalNote
+		]);
+		$subject = (string)$l10n->t('%s shared »%s« with you', [$this->senderDisplayName, $filter->getFile()]);
+		list($htmlBody, $textBody) = $this->createMailBody(
+			$filter->getFile(),
+			$filter->getLink(),
+			$filter->getExpirationDate(),
+			$filter->getPersonalNote(),
+			'',
+			$l10n
+		);
 
-		/**
-		 * The event consumer of share.sendmail would have following data
-		 * - link ( the public link created )
-		 * - to ( the to recipient in mail )
-		 * - cc ( the cc recipient in mail )
-		 * - bcc ( the bcc recipient in mail )
-		 */
-		$toRecipients = isset($options['to']) ? $options['to'] : '';
-		$ccRecipients = isset($options['cc']) ? $options['cc'] : '';
-		$bccRecipients = isset($options['bcc']) ? $options['bcc'] : '';
-		$event = new GenericEvent(null, ['link' => $link, 'to' => $toRecipients, 'cc' => $ccRecipients, 'bcc' => $bccRecipients]);
+		$event = new GenericEvent(null, ['link' => $link, 'to' => $recipients]);
 		$this->eventDispatcher->dispatch('share.sendmail', $event);
-		$options['l10n'] = $l10n;
-		return $this->sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options);
+		$failedRecipients =  $this->sendLinkShareMailFromBody($recipients, $subject, $htmlBody, $textBody, $l10n);
+		if (empty($failedRecipients)) {
+			$event = \OC::$server->getActivityManager()->generateEvent();
+			$path = $share->getNode()->getPath();
+			$event->setApp(\OCA\Files_Sharing\Activity::FILES_SHARING_APP)
+				->setType(\OCA\Files_Sharing\Activity::TYPE_SHARED)
+				->setAuthor($currentUser)
+				->setAffectedUser($currentUser)
+				->setObject('files', $share->getNodeId(), $path)
+				->setSubject(\OCA\Files_Sharing\Activity::SUBJECT_SHARED_EMAIL, [$path, $recipients]);
+			\OC::$server->getActivityManager()->publish($event);
+		}
+		return $failedRecipients;
 	}
 
 	/**
-	 * inform recipient about public link share
+	 * inform recipients about public link share
 	 *
-	 * @param string $recipient recipient email address
-	 * @param string $filename the shared file
-	 * @param string $link the public link
-	 * @param array $options allows ['to], ['cc'] and ['bcc'] recipients
-	 * @param int $expiration expiration date (timestamp)
+	 * @param string $recipients recipient list
+	 * @param string $subject the shared file
+	 * @param string $htmlBody the public link
+	 * @param string $textBody the public link
+	 * @param IL10N
 	 * @return string[] $result of failed recipients
 	 */
-	public function sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options = []) {
-		$recipients = [];
-		if ($recipient !== null) {
-			$recipients    = $this->_mailStringToArray($recipient);
-		}
-		$toRecipients  = (isset($options['to']) && $options['to'] !== '') ? $this->_mailStringToArray($options['to']) : null;
-		$ccRecipients  = (isset($options['cc']) && $options['cc'] !== '') ? $this->_mailStringToArray($options['cc']) : null;
-		$bccRecipients = (isset($options['bcc']) && $options['bcc'] !== '') ? $this->_mailStringToArray($options['bcc']) : null;
-		$l10n = (isset($options['l10n'])) ? $options['l10n'] : $this->l;
-
+	public function sendLinkShareMailFromBody($recipients, $subject, $htmlBody, $textBody, $l10n) {
+		$recipientsArray = $this->_mailStringToArray($recipients);
+		$failedRecipients = [];
 		try {
-			$message = $this->mailer->createMessage();
-			$message->setSubject($subject);
-			$message->setTo($recipients);
-			if ($htmlBody !== null) {
+			/**
+			 * Send separate mail for all recipients
+			 */
+			foreach ($recipientsArray as $recipient) {
+				$message = $this->mailer->createMessage();
+				$message->setSubject($subject);
+				$message->setTo([$recipient]);
 				$message->setHtmlBody($htmlBody);
+				$message->setPlainBody($textBody);
+				$message->setFrom($this->getFrom($l10n));
+				if ($this->replyTo !== null) {
+					$message->setReplyTo([$this->replyTo]);
+				}
+				$result = $this->mailer->send($message);
+				if (!empty($result)) {
+					$failedRecipients [] = $recipient;
+				}
 			}
-			if ($toRecipients !== null) {
-				$message->setTo($toRecipients);
-			}
-			if ($bccRecipients !== null) {
-				$message->setBcc($bccRecipients);
-			}
-			if ($ccRecipients !== null) {
-				$message->setCc($ccRecipients);
-			}
-			$message->setPlainBody($textBody);
-			$message->setFrom($this->getFrom($l10n));
-			if ($this->replyTo !== null) {
-				$message->setReplyTo([$this->replyTo]);
-			}
-
-			return $this->mailer->send($message);
 		} catch (\Exception $e) {
-			$allRecipientsArr = [];
-			if ($recipient !== null && $recipient !== '') {
-				$allRecipientsArr = \explode(',', $recipient);
-			}
-			if (isset($options['to']) && $options['to'] !== '') {
-				$allRecipientsArr = \array_merge(
-					$allRecipientsArr,
-					\explode(',', $options['to'])
-				);
-			}
-			if (isset($options['cc']) && $options['cc'] !== '') {
-				$allRecipientsArr = \array_merge(
-					$allRecipientsArr,
-					\explode(',', $options['cc'])
-				);
-			}
-			if (isset($options['bcc']) && $options['bcc'] !== '') {
-				$allRecipientsArr = \array_merge(
-					$allRecipientsArr,
-					\explode(',', $options['bcc'])
-				);
-			}
-			$allRecipients = \implode(',', $allRecipientsArr);
+			$allRecipients = \implode(',', $recipientsArray);
 			$this->logger->error(
 				"Can't send mail with public link to $allRecipients: ".$e->getMessage(),
 				['app' => 'sharing']
 			);
-			return [$allRecipients];
+			return $recipientsArray;
 		}
+		return $failedRecipients;
 	}
 
 	/**
@@ -330,7 +337,7 @@ class MailNotifications {
 	 *
 	 * @return array an array of the html mail body and the plain text mail body
 	 */
-	public function createMailBody($filename,
+	protected function createMailBody($filename,
 								   $link,
 								   $expiration,
 								   $personalNote = null,

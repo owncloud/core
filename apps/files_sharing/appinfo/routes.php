@@ -96,6 +96,11 @@ $application->registerRoutes($this, [
 			'url' => '/api/v1/notification/marksent',
 			'verb' => 'POST'
 		],
+		[
+			'name' => 'Notification#notifyPublicLinkRecipientsWithEmail',
+			'url' => '/api/v1/notification/notifypubliclinkwithemail',
+			'verb' => 'POST'
+		],
 	]
 ]);
 

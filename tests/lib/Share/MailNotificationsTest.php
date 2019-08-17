@@ -24,6 +24,7 @@ namespace Test\Share;
 use OC\Mail\Message;
 use OC\Share\MailNotifications;
 use OCP\Defaults;
+use OCP\Files\Node;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\ILogger;
@@ -34,6 +35,7 @@ use OCP\Share\IManager;
 use OCP\Share\IShare;
 use OCP\Util;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 
@@ -45,13 +47,13 @@ use Test\TestCase;
 class MailNotificationsTest extends TestCase {
 	/** @var IManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $shareManager;
-	/** @var IL10N */
+	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject */
 	private $l10n;
 	/** @var IMailer | \PHPUnit\Framework\MockObject\MockObject */
 	private $mailer;
-	/** @var ILogger */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
-	/** @var IConfig */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var Defaults | \PHPUnit\Framework\MockObject\MockObject */
 	private $defaults;
@@ -59,8 +61,8 @@ class MailNotificationsTest extends TestCase {
 	private $user;
 	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
 	private $urlGenerator;
+	/** @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $eventDispatcher;
-
 	/** @var MailNotifications */
 	private $mailNotifications;
 
@@ -89,13 +91,14 @@ class MailNotificationsTest extends TestCase {
 				->will($this->returnValue('UnitTestCloud'));
 
 		$this->user
-				->expects($this->once())
 				->method('getEMailAddress')
 				->willReturn('sharer@owncloud.com');
 		$this->user
-				->expects($this->once())
 				->method('getDisplayName')
 				->willReturn('<evil>TestUser</evil>');
+		$this->user
+			->method('getUID')
+			->willReturn('testuser');
 
 		$this->mailNotifications = new MailNotifications(
 			$this->shareManager,
@@ -108,6 +111,25 @@ class MailNotificationsTest extends TestCase {
 			$this->urlGenerator,
 			$this->eventDispatcher
 		);
+	}
+
+	private function createMockShare($filename, $expiration=null) {
+		$expirationDate = null;
+		if ($expiration) {
+			$expirationDate = $this->createMock(\DateTime::class);
+			$expirationDate->method('getTimestamp')->willReturn($expiration);
+		}
+
+		$node = $this->createMock(Node::class);
+		$node->method('getPath')->willReturn('/testuser/' . $filename);
+
+		$share = $this->createMock(IShare::class);
+		$share->method('getExpirationDate')->willReturn($expirationDate);
+		$share->method('getName')->willReturn($filename);
+		$share->method('getNodeId')->willReturn(1);
+		$share->method('getNode')->willReturn($node);
+		$share->method('getShareOwner')->willReturn('testuser');
+		return $share;
 	}
 
 	public function testSendLinkShareMailWithoutReplyTo() {
@@ -140,66 +162,17 @@ class MailNotificationsTest extends TestCase {
 			->method('send')
 			->with($message)
 			->will($this->returnValue([]));
+		$this->shareManager
+			->method('getShareByToken')
+			->willReturn($this->createMockShare('MyFile', 3600));
 
 		$this->assertSame(
 			[],
-			$this->mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600)
+			$this->mailNotifications->sendLinkShareMail(
+				'lukas@owncloud.com',
+				'https://owncloud.com/file/?foo=bar'
+			)
 		);
-	}
-
-	public function testSendLinkShareMailWithRecipientAndOptions() {
-		$message = $this->createMock(Message::class);
-		$message
-			->expects($this->once())
-			->method('setSubject')
-			->with('TestUser shared »MyFile« with you');
-		$message
-			->expects($this->exactly(2))
-			->method('setTo')
-			->with(['lukas@owncloud.com']);
-		$message
-			->expects($this->once())
-			->method('setHtmlBody')
-			->with($this->stringContains('personal note<br />'));
-		$message
-			->expects($this->once())
-			->method('setPlainBody')
-			->with($this->stringContains("personal note\n"));
-		$message
-			->expects($this->once())
-			->method('setFrom')
-			->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
-
-		$this->mailer
-			->expects($this->once())
-			->method('createMessage')
-			->will($this->returnValue($message));
-		$this->mailer
-			->expects($this->once())
-			->method('send')
-			->with($message)
-			->will($this->returnValue([]));
-
-		$calledEvent = [];
-		$this->eventDispatcher->addListener('share.sendmail', function (GenericEvent $event) use (&$calledEvent) {
-			$calledEvent[] = 'share.sendmail';
-			$calledEvent[] = $event;
-		});
-		$this->assertSame(
-			[],
-			$this->mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, "personal note\n", ['to' => 'lukas@owncloud.com', 'bcc' => 'foo@bar.com,fabulous@world.com', 'cc' => 'abc@foo.com,tester@world.com'])
-		);
-
-		$this->assertEquals('share.sendmail', $calledEvent[0]);
-		$this->assertInstanceOf(GenericEvent::class, $calledEvent[1]);
-		$this->assertArrayHasKey('link', $calledEvent[1]);
-		$this->assertEquals('https://owncloud.com/file/?foo=bar', $calledEvent[1]->getArgument('link'));
-		$this->assertArrayHasKey('to', $calledEvent[1]);
-		$this->assertEquals('lukas@owncloud.com', $calledEvent[1]->getArgument('to'));
-		$this->assertArrayHasKey('bcc', $calledEvent[1]);
-		$this->assertEquals('foo@bar.com,fabulous@world.com', $calledEvent[1]->getArgument('bcc'));
-		$this->assertArrayHasKey('cc', $calledEvent[1]);
-		$this->assertEquals('abc@foo.com,tester@world.com', $calledEvent[1]->getArgument('cc'));
 	}
 
 	public function testSendLinkShareMailPersonalNote() {
@@ -209,17 +182,17 @@ class MailNotificationsTest extends TestCase {
 			->method('setSubject')
 			->with('TestUser shared »MyFile« with you');
 		$message
-			->expects($this->exactly(2))
+			->expects($this->once())
 			->method('setTo')
 			->with(['lukas@owncloud.com']);
 		$message
 			->expects($this->once())
 			->method('setHtmlBody')
-			->with($this->stringContains('personal note<br />'));
+			->with($this->stringContains('personal note'));
 		$message
 			->expects($this->once())
 			->method('setPlainBody')
-			->with($this->stringContains("personal note\n"));
+			->with($this->stringContains("personal note"));
 		$message
 			->expects($this->once())
 			->method('setFrom')
@@ -235,14 +208,23 @@ class MailNotificationsTest extends TestCase {
 			->with($message)
 			->will($this->returnValue([]));
 
+		$this->shareManager
+			->method('getShareByToken')
+			->willReturn($this->createMockShare('MyFile', 3600));
+
 		$calledEvent = [];
 		$this->eventDispatcher->addListener('share.sendmail', function (GenericEvent $event) use (&$calledEvent) {
 			$calledEvent[] = 'share.sendmail';
 			$calledEvent[] = $event;
 		});
+
 		$this->assertSame(
 			[],
-			$this->mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, "personal note\n", ['to' => 'lukas@owncloud.com'])
+			$this->mailNotifications->sendLinkShareMail(
+				'lukas@owncloud.com',
+				'https://owncloud.com/file/?foo=bar',
+				"personal note\n"
+			)
 		);
 
 		$this->assertEquals('share.sendmail', $calledEvent[0]);
@@ -272,83 +254,71 @@ class MailNotificationsTest extends TestCase {
 	public function testSendLinkShareMailWithReplyTo($to, array $expectedTo) {
 		$message = $this->createMock(Message::class);
 		$message
-			->expects($this->once())
+			->expects($this->exactly(\count($expectedTo)))
 			->method('setSubject')
 			->with('TestUser shared »MyFile« with you');
 		$message
-			->expects($this->once())
-			->method('setTo')
-			->with($expectedTo);
+			->expects($this->exactly(\count($expectedTo)))
+			->method('setTo');
 		$message
-			->expects($this->once())
+			->expects($this->exactly(\count($expectedTo)))
 			->method('setHtmlBody');
 		$message
-			->expects($this->once())
+			->expects($this->exactly(\count($expectedTo)))
 			->method('setPlainBody');
 		$message
-			->expects($this->once())
+			->expects($this->exactly(\count($expectedTo)))
 			->method('setFrom')
 			->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
 		$message
-			->expects($this->once())
+			->expects($this->exactly(\count($expectedTo)))
 			->method('setReplyTo')
 			->with(['sharer@owncloud.com']);
 
 		$this->mailer
-			->expects($this->once())
+			->expects($this->exactly(\count($expectedTo)))
 			->method('createMessage')
 			->will($this->returnValue($message));
 		$this->mailer
-			->expects($this->once())
+			->expects($this->exactly(\count($expectedTo)))
 			->method('send')
 			->with($message)
 			->will($this->returnValue([]));
 
+		$this->shareManager
+			->method('getShareByToken')
+			->willReturn($this->createMockShare('MyFile', 3600));
+
 		$this->assertSame(
 			[],
-			$this->mailNotifications->sendLinkShareMail($to, 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600)
+			$this->mailNotifications->sendLinkShareMail(
+				$to,
+				'https://owncloud.com/file/?foo=bar'
+			)
 		);
 	}
 
 	public function dataSendLinkShareMailException() {
 		return [
-			['lukas@owncloud.com', '', '', 'abc@foo.com', 'lukas@owncloud.com,abc@foo.com'],
-			['you@owncloud.com', 'cc1@example.com,cc2@example.com', '', '', 'you@owncloud.com,cc1@example.com,cc2@example.com'],
-			['you@owncloud.com', '', 'phil@example.com,jim@example.com.np', '', 'you@owncloud.com,phil@example.com,jim@example.com.np'],
-			['you@owncloud.com', 'cc1@example.com,cc2@example.com', 'phil@example.com,jim@example.com.np', '', 'you@owncloud.com,cc1@example.com,cc2@example.com,phil@example.com,jim@example.com.np'],
-			['', 'cc1@example.com,cc2@example.com', '', '', 'cc1@example.com,cc2@example.com'],
-			['', '', 'phil@example.com,jim@example.com.np', '', 'phil@example.com,jim@example.com.np'],
-			['', 'cc1@example.com,cc2@example.com', 'phil@example.com,jim@example.com.np', '', 'cc1@example.com,cc2@example.com,phil@example.com,jim@example.com.np'],
+			['lukas@owncloud.com', ['lukas@owncloud.com']],
+			['you@owncloud.com,phil@example.com,jim@example.com.np', ['you@owncloud.com','phil@example.com','jim@example.com.np']]
 		];
 	}
 
 	/**
 	 * @dataProvider dataSendLinkShareMailException
 	 * @param string $to
-	 * @param string $cc
-	 * @param string $bcc
-	 * @param string $expectedRecipientErrorList
+	 * @param array $expectedRecipientErrorList
 	 */
-	public function testSendLinkShareMailException($to, $cc, $bcc, $toList, $expectedRecipientErrorList) {
-		$this->setupMailerMock('TestUser shared »MyFile« with you', [$to]);
-
-		$options = [];
-
-		if ($toList !== '') {
-			$options['to'] = $toList;
-		}
-
-		if ($cc !== '') {
-			$options['cc'] = $cc;
-		}
-
-		if ($bcc !== '') {
-			$options['bcc'] = $bcc;
-		}
+	public function testSendLinkShareMailException($to, $expectedRecipientErrorList) {
+		$this->setupMailerMock('TestUser shared »MyFile« with you', $expectedRecipientErrorList);
+		$this->shareManager
+			->method('getShareByToken')
+			->willReturn($this->createMockShare('MyFile', 3600));
 
 		$this->assertSame(
-			[$expectedRecipientErrorList],
-			$this->mailNotifications->sendLinkShareMail($to, 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, null, $options)
+			$expectedRecipientErrorList,
+			$this->mailNotifications->sendLinkShareMail($to, 'https://owncloud.com/file/?foo=bar')
 		);
 	}
 
@@ -478,13 +448,20 @@ class MailNotificationsTest extends TestCase {
 		$this->l10n->expects($this->never())
 			->method('t');
 
+		$this->shareManager
+			->method('getShareByToken')
+			->willReturn($this->createMockShare('MyFile', 3600));
+
 		$this->mailNotifications->sendLinkShareMail(
-			'justin@piper.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600
+			'justin@piper.com',
+			'https://owncloud.com/file/?foo=bar'
 		);
 	}
 
 	/**
 	 * @param string $subject
+	 * @param array $to
+	 * @param bool $exceptionOnSend
 	 */
 	protected function setupMailerMock($subject, $to, $exceptionOnSend = true) {
 		$message = $this->createMock(Message::class);
@@ -494,8 +471,7 @@ class MailNotificationsTest extends TestCase {
 				->with($subject);
 		$message
 				->expects($this->any())
-				->method('setTo')
-				->with($to);
+				->method('setTo');
 		$message
 				->expects($this->once())
 				->method('setHtmlBody');

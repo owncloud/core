@@ -35,12 +35,8 @@
  *
  */
 
-use OC\Share\Filters\MailNotificationFilter;
-
 OC_JSON::checkLoggedIn();
 OCP\JSON::callCheck();
-
-$defaults = new \OCP\Defaults();
 
 /**
  * @return mixed
@@ -76,123 +72,7 @@ function displayNamesInGroups($gids, $search = '', $limit = -1, $offset = 0) {
 	return $displayNames;
 }
 
-if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
-	switch ($_POST['action']) {
-		case 'email':
-			$emailBody = null;
-
-			if (isset($_POST['emailBody'])) {
-				$emailBody = \trim((string)$_POST['emailBody']);
-			}
-
-			// read and filter post variables
-			$filter = new MailNotificationFilter([
-				'link' => $_POST['link'],
-				'file' => $_POST['file'],
-				'toAddress' => $_POST['toAddress'],
-				'expirationDate' => $_POST['expiration'],
-				'personalNote' => $emailBody
-			]);
-
-			$options = [];
-			$results = [];
-			$toEmails = \explode(',', $filter->getToAddress());
-
-			//Lets get the senders email address and add to the 'to'
-			if (isset($_POST['toSelf']) && $_POST['toSelf'] === 'true') {
-				$toEmails [] = \OC::$server->getUserSession()->getUser()->getEMailAddress();
-			}
-			//Send separate email
-			foreach ($toEmails as $toEmail) {
-				$options['to'] = $toEmail;
-
-				$l10n = \OC::$server->getL10N('lib');
-
-				$sendingUser = \OC::$server->getUserSession()->getUser();
-				$mailNotification = new \OC\Share\MailNotifications(
-					\OC::$server->getShareManager(),
-					$sendingUser,
-					$l10n,
-					\OC::$server->getMailer(),
-					\OC::$server->getConfig(),
-					\OC::$server->getLogger(),
-					$defaults,
-					\OC::$server->getURLGenerator(),
-					\OC::$server->getEventDispatcher()
-				);
-
-				$expiration = null;
-				if ($filter->getExpirationDate() !== '') {
-					try {
-						$date = new DateTime($filter->getExpirationDate());
-						$expiration = $date->getTimestamp();
-					} catch (Exception $e) {
-						\OCP\Util::writeLog('sharing', "Couldn't read date: " . $e->getMessage(), \OCP\Util::ERROR);
-					}
-				}
-
-				if ($emailBody !== null || $emailBody !== '') {
-					$emailBody = \strip_tags($emailBody);
-				}
-				$result = $mailNotification->sendLinkShareMail(
-					null,
-					$filter->getFile(),
-					$filter->getLink(),
-					$expiration,
-					$filter->getPersonalNote(),
-					$options
-				);
-
-				$results = \array_merge($results, $result);
-			}
-
-			if (empty($results)) {
-				// Get the token from the link
-				$linkParts = \explode('/', $filter->getLink());
-				$token = \array_pop($linkParts);
-
-				// Get the share for the token
-				$share = \OCP\Share::getShareByToken($token, false);
-				if ($share !== false) {
-					$currentUser = \OC::$server->getUserSession()->getUser()->getUID();
-					$file = '/' . \ltrim($file, '/');
-
-					// Check whether share belongs to the user and whether the file is the same
-					if ($share['file_target'] === $file && $share['uid_owner'] === $currentUser) {
-
-						// Get the path for the user
-						$view = new \OC\Files\View('/' . $currentUser . '/files');
-						$fileId = (int) $share['item_source'];
-						$path = $view->getPath((int) $share['item_source']);
-
-						if ($path !== null) {
-							$event = \OC::$server->getActivityManager()->generateEvent();
-							$event->setApp(\OCA\Files_Sharing\Activity::FILES_SHARING_APP)
-								->setType(\OCA\Files_Sharing\Activity::TYPE_SHARED)
-								->setAuthor($currentUser)
-								->setAffectedUser($currentUser)
-								->setObject('files', $fileId, $path)
-								->setSubject(\OCA\Files_Sharing\Activity::SUBJECT_SHARED_EMAIL, [$path, $toAddress]);
-							\OC::$server->getActivityManager()->publish($event);
-						}
-					}
-				}
-
-				\OCP\JSON::success();
-			} else {
-				$l = \OC::$server->getL10N('core');
-				OCP\JSON::error([
-					'data' => [
-						'message' => $l->t("Couldn't send mail to following recipient(s): %s ",
-								\implode(', ', $results)
-							)
-					]
-				]);
-			}
-
-			break;
-	}
-} elseif (isset($_GET['fetch'])) {
+if (isset($_GET['fetch'])) {
 	switch ($_GET['fetch']) {
 		case 'getItemsSharedStatuses':
 			if (isset($_GET['itemType'])) {
