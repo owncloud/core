@@ -63,7 +63,7 @@
     "The public link of %2$s for %1$s expired" : "Die Freigabe als Link von %2$s für %1$s ist abgelaufen",
     "%2$s shared %1$s with you" : "%2$s hat %1$s mit Ihnen geteilt",
     "%2$s removed the share for %1$s" : "%2$s hat die Freigabe für %1$s entfernt",
-    "Downloaded via public link" : "Über den öffentlichen Link heruntergeladen",
+    "Downloaded via public link" : "Heruntergeladen mittels öffentlichen Link",
     "Shared with %2$s" : "Geteilt mit %2$s",
     "Shared with %3$s by %2$s" : "Geteilt mit %3$s von %2$s",
     "Removed share for %2$s" : "Freigabe für %2$s entfernt",
