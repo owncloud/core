@@ -1,6 +1,6 @@
 OC.L10N.register(
-    "lib",
+    "dav",
     {
-    "Settings" : "सेटिंग्ज"
+    "Contacts" : "संपर्क"
 },
 "nplurals=2; plural=(n != 1);");

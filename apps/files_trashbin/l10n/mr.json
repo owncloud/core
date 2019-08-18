@@ -1,4 +1,5 @@
 { "translations": {
-    "Settings" : "सेटिंग्ज"
+    "Delete" : "का",
+    "Name" : "नाव"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

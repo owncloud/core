@@ -1,6 +1,6 @@
 OC.L10N.register(
-    "lib",
+    "systemtags",
     {
-    "Settings" : "सेटिंग्ज"
+    "Name" : "नाव"
 },
 "nplurals=2; plural=(n != 1);");
